@@ -1,0 +1,131 @@
+<!--
+  Copyright 2011 Google Inc.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+       http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+  -->
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:fillViewport="true">
+
+    <LinearLayout android:orientation="vertical"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent">
+
+        <RelativeLayout android:id="@+id/notes_catch_market_link"
+            style="@style/SimpleListItem"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:focusable="true"
+            android:clickable="true"
+            android:background="@android:drawable/list_selector_background">
+            <ImageView android:id="@+id/notes_catch_market_icon"
+                android:layout_alignParentLeft="true"
+                android:layout_centerVertical="true"
+                android:layout_width="@android:dimen/app_icon_size"
+                android:layout_height="@android:dimen/app_icon_size"
+                android:layout_marginRight="@dimen/body_padding_medium"
+                android:src="@null" />
+            <TextView android:id="@+id/notes_catch_market_title"
+                android:layout_toRightOf="@id/notes_catch_market_icon"
+                android:layout_alignParentTop="true"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                style="@style/ListItemTitle"
+                android:text="@string/notes_catch_market_title" />
+            <TextView android:id="@+id/notes_catch_market_subtitle"
+                android:layout_below="@id/notes_catch_market_title"
+                android:layout_alignLeft="@id/notes_catch_market_title"
+                android:layout_alignRight="@id/notes_catch_market_title"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                style="@style/ListItemSubtitle"
+                android:text="@string/notes_catch_market_subtitle" />
+        </RelativeLayout>
+
+        <ImageView
+            android:id="@+id/notes_catch_market_separator"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:background="@android:drawable/divider_horizontal_bright" />
+
+        <RelativeLayout android:id="@+id/notes_catch_new_link"
+            style="@style/SimpleListItem"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:focusable="true"
+            android:clickable="true"
+            android:background="@android:drawable/list_selector_background">
+            <ImageView android:id="@+id/notes_catch_new_icon"
+                android:layout_alignParentLeft="true"
+                android:layout_centerVertical="true"
+                android:layout_width="@android:dimen/app_icon_size"
+                android:layout_height="@android:dimen/app_icon_size"
+                android:layout_marginRight="@dimen/body_padding_medium"
+                android:src="@null" />
+            <TextView android:id="@+id/notes_catch_new_title"
+                android:layout_toRightOf="@id/notes_catch_new_icon"
+                android:layout_centerVertical="true"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                style="@style/ListItemTitle"
+                android:text="@string/notes_catch_new_title" />
+        </RelativeLayout>
+
+        <ImageView
+            android:id="@+id/notes_catch_new_separator"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:background="@android:drawable/divider_horizontal_bright" />
+
+        <RelativeLayout android:id="@+id/notes_catch_view_link"
+            style="@style/SimpleListItem"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:focusable="true"
+            android:clickable="true"
+            android:background="@android:drawable/list_selector_background">
+            <ImageView android:id="@+id/notes_catch_view_icon"
+                android:layout_alignParentLeft="true"
+                android:layout_centerVertical="true"
+                android:layout_width="@android:dimen/app_icon_size"
+                android:layout_height="@android:dimen/app_icon_size"
+                android:layout_marginRight="@dimen/body_padding_medium"
+                android:src="@null" />
+            <TextView android:id="@+id/notes_catch_view_title"
+                android:layout_toRightOf="@id/notes_catch_view_icon"
+                android:layout_centerVertical="true"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                style="@style/ListItemTitle"
+                android:text="@string/notes_catch_view_title" />
+        </RelativeLayout>
+
+        <ImageView
+            android:id="@+id/notes_catch_view_separator"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:background="@android:drawable/divider_horizontal_bright" />
+
+        <TextView android:id="@+id/notes_powered_by"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/text_size_small"
+            android:textColor="@color/body_text_1"
+            android:gravity="center"
+            android:text="@string/notes_catch_powered_by"
+            android:padding="@dimen/body_padding_large" />
+
+    </LinearLayout>
+
+</ScrollView>

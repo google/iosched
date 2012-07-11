@@ -1,0 +1,11 @@
+You can use ant, Eclipse, IntelliJ IDEA, or pretty much any IDE
+to compile the app. Before building, you should ensure that:
+
+1) You've read `libs/readme.txt' and have places the necessary
+   JARs into the `libs' directory.
+
+2) Your Eclipse/IDEA/ant/etc. project targets API level 13 or
+   higher.
+
+Forgetting to do either of these will result in compile errors.
+

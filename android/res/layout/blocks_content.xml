@@ -1,0 +1,51 @@
+<!--
+  Copyright 2011 Google Inc.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+       http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+  -->
+<view
+    class="com.google.android.apps.iosched.ui.widget.ObservableScrollView"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:iosched="http://schemas.android.com/apk/res/com.google.android.apps.iosched"
+    android:id="@+id/blocks_scroll"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:fadingEdge="vertical">
+    <view
+        class="com.google.android.apps.iosched.ui.widget.BlocksLayout"
+        android:id="@+id/blocks"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layerType="software"
+        iosched:columns="3">
+        <view
+            class="com.google.android.apps.iosched.ui.widget.TimeRulerView"
+            android:id="@id/blocks_ruler"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            iosched:headerWidth="@dimen/schedule_label_header_width"
+            iosched:hourHeight="@dimen/schedule_hour_height"
+            iosched:horizontalDivider="true"
+            iosched:labelTextSize="@dimen/text_size_small"
+            iosched:labelPaddingLeft="@dimen/schedule_label_padding"
+            iosched:labelColor="#000000"
+            iosched:dividerColor="#22000000"
+            iosched:startHour="7"
+            iosched:endHour="23" />
+        <View
+            android:id="@id/blocks_now"
+            android:background="@drawable/now_bar"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content" />
+    </view>
+</view>

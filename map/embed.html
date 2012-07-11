@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta name="viewport" content="width=device-width; initial-scale=1.0; maximum-scale=1.0; minimum-scale=1.0; user-scalable=0" />
+    <meta content="text/html; charset=utf-8" http-equiv="Content-type">
+    <meta content="IE=8" http-equiv="X-UA-Compatible">
+    <meta content=
+    "Google I/O 2011 brings together thousands of developers for two days of deep technical content, focused on building the next generation of web, mobile, and enterprise applications with Google and open web technologies such as Android, Google Chrome, Google APIs, Google Web Toolkit, App Engine, and more."
+    name="description">
+    <meta content=
+    "event, google, i/o, programming, android, chrome, developers, moscone, san francisco" name=
+    "keywords">
+    <meta content="Google" name="author">
+    <title>
+      Google I/O 2011
+    </title>
+
+    <link href="map.css" media="all" rel="stylesheet">
+    <style type="text/css">
+      html, body, #map-canvas {
+        margin: 0;
+        padding: 0;
+        height: 100%;
+      }
+
+      #level-select {
+        height: 22px;
+      }
+    </style>
+    <script src="http://maps.google.com/maps/api/js?sensor=false"></script>
+    <script type="text/javascript">
+      window['ioEmbed'] = true;
+    </script>
+    <script src="http://google-maps-utility-library-v3.googlecode.com/svn/trunk/maplabel/src/maplabel-compiled.js"></script>
+    <script src="floor.js"></script>
+    <script src="levelcontrol.js"></script>
+    <script src="smartmarker.js"></script>
+    <script src="map.js"></script>
+    <script src="http://www.google.com/js/gweb/analytics/autotrack.js"></script>
+    <script>
+      new gweb.analytics.AutoTrack({
+        profile: 'UA-20834900-1'
+      });
+    </script>
+  </head>
+  <body>
+    <div id="map-canvas"></div>
+  </div>
+  </body>
+</html>

@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  Copyright 2011 Google Inc.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+       http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+  -->
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+    <string name="app_name">Google I/O 2011</string>
+
+    <string name="description_logo">Google I/O 2011</string>
+    <string name="description_home">Home</string>
+    <string name="description_search">Search</string>
+    <string name="description_map">Map</string>
+    <string name="description_refresh">Refresh</string>
+    <string name="description_share">Share</string>
+    <string name="description_export">Export</string>
+    <string name="description_star">Star</string>
+    <string name="description_now">Go to Now</string>
+
+    <string name="title_now_playing">Now playing</string>
+    <string name="title_schedule">Schedule</string>
+    <string name="title_sessions">Sessions</string>
+    <string name="title_session_detail">Session information</string>
+    <string name="title_starred">Starred</string>
+    <string name="title_tracks">Tracks</string>
+    <string name="title_vendors">Sandbox</string>
+    <string name="title_vendor_detail">Company information</string>
+    <string name="title_map">Map</string>
+    <string name="title_tagstream">Realtime stream</string>
+    <string name="title_bulletin">Bulletin</string>
+
+    <string name="title_session_tracks">Session tracks</string>
+    <string name="title_vendor_tracks">Sandbox pods</string>
+
+    <string name="title_share">Share using</string>
+
+    <string name="title_search">Search</string>
+    <string name="title_search_query">Search for \"<xliff:g id="query">%1$s</xliff:g>\"</string>
+
+    <string name="btn_schedule">Schedule</string>
+    <string name="btn_map">Map</string>
+    <string name="btn_sessions">Sessions</string>
+    <string name="btn_starred">Starred</string>
+    <string name="btn_vendors">Sandbox</string>
+    <string name="btn_announcements">Bulletin</string>
+
+    <string name="toast_sync_error">Sync error: <xliff:g id="error">%1$s</xliff:g></string>
+
+    <string name="session_subtitle"><xliff:g id="time">%1$s</xliff:g> in <xliff:g id="room">%2$s</xliff:g></string>
+    <string name="session_moderator_status"><xliff:g id="questions">%1$s</xliff:g> questions submitted and <xliff:g id="votes">%2$s</xliff:g> votes cast.</string>
+
+    <string name="all_sandbox_title">All companies</string>
+    <string name="all_sandbox_subtitle">Touch to filter by sandbox companies by pod.</string>
+
+    <string name="all_sessions_title">All sessions</string>
+    <string name="all_sessions_subtitle">Touch to filter sessions by track.</string>
+
+    <string name="empty_sessions">No sessions found.</string>
+    <string name="empty_session_detail">No session details found.</string>
+    <string name="empty_vendors">No sandbox results found.</string>
+    <string name="empty_search">No search results found.</string>
+    <string name="empty_links">No links available.</string>
+
+    <string name="session_summary">Summary</string>
+    <string name="session_notes">Notes</string>
+    <string name="session_links">Links</string>
+    <string name="session_requirements">Requirements</string>
+    <string name="session_speakers">Speakers</string>
+
+    <string name="tag_stream">Realtime stream for</string>
+    
+    <string name="session_link_main">Web link</string>
+    <string name="session_link_moderator">Ask questions</string>
+    <string name="session_link_youtube">YouTube video</string>
+    <string name="session_link_pdf">Slides (PDF)</string>
+    <string name="session_link_feedback">Feedback on this session</string>
+    <string name="session_link_notes">Official notes</string>
+
+    <string name="search_sessions">Sessions</string>
+    <string name="search_vendors">Sandbox</string>
+
+    <string name="starred_sessions">Sessions</string>
+    <string name="starred_vendors">Sandbox</string>
+
+    <string name="search_label">Google I/O</string>
+    <string name="search_hint">Session keywords</string>
+
+    <string name="share_template">Checking out \'<xliff:g id="title">%1$s</xliff:g>\' at <xliff:g id="hashtags">%2$s</xliff:g> <xliff:g id="url">%3$s</xliff:g></string>
+
+    <string name="moderator_header">Moderator</string>
+
+    <string name="dialog_moderator_title">Google Moderator</string>
+    <string name="dialog_moderator_message">The official Google Moderator app is available in Market. Do you want to install it or continue using a normal browser?</string>
+
+    <string name="dialog_moderator_web">Use browser</string>
+    <string name="dialog_moderator_market">Visit Market</string>
+
+    <plurals name="whats_on_countdown_title">
+        <item quantity="zero"><xliff:g id="remaining_time">%2$s</xliff:g>\nuntil Google I/O</item>
+        <item quantity="one"><xliff:g id="number_of_days">%1$s</xliff:g> day, <xliff:g id="remaining_time">%2$s</xliff:g>\nuntil Google I/O</item>
+        <item quantity="other"><xliff:g id="number_of_days">%1$s</xliff:g> days, <xliff:g id="remaining_time">%2$s</xliff:g>\nuntil Google I/O</item>
+    </plurals>
+
+    <string name="whats_on_stream_title">Realtime\nstream</string>
+    <string name="whats_on_now_playing_title">Now playing</string>
+    <string name="whats_on_thank_you_title">See you next year!</string>
+
+    <string name="permission_write">Modify Google I/O schedule data</string>
+
+    <string name="toast_now_not_visible">Touch this button during Google I/O to show the current time.</string>
+
+    <!-- Notes integration -->
+    <string name="notes_catch_powered_by">Notes are powered by <a href="http://www.catch.com/">Catch.com</a>.</string>
+    <string name="notes_catch_market_title">Install Catch Notes</string>
+    <string name="notes_catch_market_subtitle">You can take notes for Google I/O sessions using the latest version of Catch Notes, available from Android Market.</string>
+    <string name="notes_catch_new_title">Create a new note</string>
+    <string name="notes_catch_view_title">View track notes</string>
+    <string name="toast_notes_error_invoking">Couldn\'t start Catch Notes.</string>
+
+    <string name="note_template">Session: <xliff:g id="title">%1$s</xliff:g>\n\n\n\n__________\nTags: <xliff:g id="hashtags">%2$s</xliff:g></string>
+
+    <!-- EULA -->
+    <string name="eula_title">EULA title.</string>
+    <string name="eula_text">EULA goes here.</string>
+    <string name="accept">Accept</string>
+    <string name="decline">Decline</string>
+
+</resources>

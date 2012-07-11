@@ -1,0 +1,109 @@
+#map-canvas {
+  height: 500px;
+}
+
+#levels-wrapper {
+  margin: 10px;
+  padding: 5px;
+  background: #fff;
+  -webkit-border-radius: 6px;
+  -moz-border-radius: 6px;
+  border-radius: 6px;
+  -webkit-box-shadow: 0px 1px 3px rgba(0, 0, 0, 0.3);
+  -moz-box-shadow: 0px 1px 3px rgba(0, 0, 0, 0.3);
+  box-shadow: 0px 1px 3px rgba(0, 0, 0, 0.3);
+}
+
+#levels {
+  padding: 3px;
+  font-family: 'Droid Sans',Arial;
+  font-size: 16px;
+  color: #205aaf;
+  -webkit-border-radius: 3px;
+  -moz-border-radius: 3px;
+  border-radius: 3px;
+  background: #FFFFFF;
+  background: -moz-linear-gradient(top, #E8E8E8 0%, #FFFFFF 100%);
+  background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#E8E8E8), color-stop(100%,#FFFFFF));
+  -webkit-box-shadow: inset 0px 0px 2px rgba(0, 0, 0, 0.5);
+  -moz-box-shadow: inset 0px 0px 2px rgba(0, 0, 0, 0.5);
+  box-shadow: inset 0px 0px 2px rgba(0, 0, 0, 0.5);
+}
+
+.level {
+  position: relative;
+  z-index: 100;
+  padding: 3px 5px;
+  cursor: pointer;
+}
+
+#level-select {
+  position: absolute;
+  top: 9px;
+  left: 10px;
+  right: 10px;
+  height: 24px;
+  -webkit-border-radius: 3px;
+  -moz-border-radius: 3px;
+  border-radius: 3px;
+  z-index: 1;
+  background: #1C72D0; /* old browsers */
+  background: -moz-linear-gradient(top, #1C72D0 0%, #015CB9 100%); /* firefox */
+  background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#1C72D0), color-stop(100%,#015CB9)); /* webkit */
+}
+
+@media only screen and (min-device-width:600px) {
+  #level-select {
+    height: 32px !important;
+  }
+
+  .level {
+    font-size: 24px;
+  }
+}
+
+.level-selected {
+  color: #fff;
+}
+
+.level-selected, #level-select {
+  -webkit-transition: all 500ms cubic-bezier(0.645, 0.045, 0.355, 1.000);
+  -moz-transition: all 500ms cubic-bezier(0.645, 0.045, 0.355, 1.000);
+  -o-transition: all 500ms cubic-bezier(0.645, 0.045, 0.355, 1.000);
+  transition: all 500ms cubic-bezier(0.645, 0.045, 0.355, 1.000);
+
+  -webkit-transition-timing-function: cubic-bezier(0.645, 0.045, 0.355, 1.000);
+  -moz-transition-timing-function: cubic-bezier(0.645, 0.045, 0.355, 1.000);
+  -o-transition-timing-function: cubic-bezier(0.645, 0.045, 0.355, 1.000);
+  transition-timing-function: cubic-bezier(0.645, 0.045, 0.355, 1.000);
+}
+
+.infowindow {
+  max-width: 330px;
+}
+
+.infowindow h3 {
+  margin: 0 0 4px 0;
+  padding: 0;
+  font-size: 13px;
+  color: #000;
+  font-family: 'Droid Sans', arial, helvetica;
+  text-align: left;
+}
+
+.session, .sandbox {
+  padding: 2px 0;
+  clear: both;
+  font-size: 13px;
+  font-family: 'Droid Sans', arial, helvetica;
+}
+
+.session-time {
+  float: left;
+  width: 8.1em;
+  color: #999;
+}
+
+.session-title, .session-products {
+  margin-left: 8.5em;
+}

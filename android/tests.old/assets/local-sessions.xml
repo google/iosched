@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<sessions>
+    
+    <session>
+        <id>beginners-guide-android</id>
+        <start>2010-05-19T10:45:00.000-07:00</start>
+          <end>2010-05-19T11:45:00.000-07:00</end>
+        <room>4</room>
+        <track>Android</track>
+        <title>A beginner's guide to Android</title>
+    </session>
+    
+    <session>
+        <start>2010-05-19T05:00:00.000-07:00</start>
+          <end>2010-05-19T12:00:00.000-07:00</end>
+        <room>6</room>
+        <track>Android</track>
+        <title>Writing real-time games for Android redux</title>
+    </session>
+    
+</sessions>

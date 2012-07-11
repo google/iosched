@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  Copyright 2011 Google Inc.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+       http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+  -->
+<blocks>
+
+    <!-- Monday, May 9th 2011 -->
+    <block>
+        <start>2011-05-09T13:00:00.000-07:00</start>
+          <end>2011-05-09T19:00:00.000-07:00</end>
+        <title>On-site check-in</title>
+    </block>
+    <block>
+        <start>2011-05-09T09:00:00.000-07:00</start>
+          <end>2011-05-09T18:00:00.000-07:00</end>
+        <title>BootCamp</title>
+        <type>session</type>
+    </block>
+
+    <!-- Tuesday, May 10th 2011 -->
+    <block>
+        <start>2011-05-10T07:00:00.000-07:00</start>
+          <end>2011-05-10T22:00:00.000-07:00</end>
+        <title>On-site check-in</title>
+    </block>
+    <block>
+        <start>2011-05-10T07:00:00.000-07:00</start>
+          <end>2011-05-10T10:00:00.000-07:00</end>
+        <title>Breakfast</title>
+        <type>food</type>
+    </block>
+    <block>
+        <start>2011-05-10T09:00:00.000-07:00</start>
+          <end>2011-05-10T10:00:00.000-07:00</end>
+        <title>Keynote</title>
+        <type>session</type>
+    </block>
+    <block>
+        <start>2011-05-10T10:30:00.000-07:00</start>
+          <end>2011-05-10T18:30:00.000-07:00</end>
+        <title>Developer Sandbox</title>
+    </block>
+    <block>
+        <start>2011-05-10T11:45:00.000-07:00</start>
+          <end>2011-05-10T13:30:00.000-07:00</end>
+        <title>Lunch served</title>
+        <type>food</type>
+    </block>
+    <block>
+        <start>2011-05-10T12:00:00.000-07:00</start>
+          <end>2011-05-10T15:00:00.000-07:00</end>
+        <title>Office hours</title>
+        <type>officehours</type>
+    </block>
+    <block>
+        <start>2011-05-10T15:00:00.000-07:00</start>
+          <end>2011-05-10T18:30:00.000-07:00</end>
+        <title>Office hours</title>
+        <type>officehours</type>
+    </block>
+    <block>
+        <start>2011-05-10T18:30:00.000-07:00</start>
+          <end>2011-05-10T22:30:00.000-07:00</end>
+        <title>After Hours evening party</title>
+        <type>food</type>
+    </block>
+
+    <!-- Wednesday, May 11th 2011 -->
+    <block>
+        <start>2011-05-11T07:00:00.000-07:00</start>
+          <end>2011-05-11T16:00:00.000-07:00</end>
+        <title>On-site check-in</title>
+    </block>
+    <block>
+        <start>2011-05-11T07:00:00.000-07:00</start>
+          <end>2011-05-11T10:00:00.000-07:00</end>
+        <title>Breakfast</title>
+        <type>food</type>
+    </block>
+    <block>
+        <start>2011-05-11T09:30:00.000-07:00</start>
+          <end>2011-05-11T10:30:00.000-07:00</end>
+        <title>Keynote</title>
+        <type>session</type>
+    </block>
+    <block>
+        <start>2011-05-11T10:30:00.000-07:00</start>
+          <end>2011-05-11T17:30:00.000-07:00</end>
+        <title>Developer Sandbox</title>
+    </block>
+    <block>
+        <start>2011-05-11T11:45:00.000-07:00</start>
+          <end>2011-05-11T13:30:00.000-07:00</end>
+        <title>Lunch served</title>
+        <type>food</type>
+    </block>
+    <block>
+        <start>2011-05-11T12:00:00.000-07:00</start>
+          <end>2011-05-11T15:00:00.000-07:00</end>
+        <title>Office hours</title>
+        <type>officehours</type>
+    </block>
+    <block>
+        <start>2011-05-11T15:00:00.000-07:00</start>
+          <end>2011-05-11T17:30:00.000-07:00</end>
+        <title>Office hours</title>
+        <type>officehours</type>
+    </block>
+
+</blocks>

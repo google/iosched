@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  Copyright 2011 Google Inc.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+       http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+  -->
+<tracks>
+
+    <!-- Sandbox only -->
+    <track>
+        <name>Accessibility</name>
+        <color>#00658A</color>
+        <abstract>The accessibility developer sandbox pod.</abstract>
+    </track>
+
+    <track>
+        <name>Android</name>
+        <color>#A4C639</color>
+        <abstract>Android is the first free, open source, and fully customizable mobile platform.</abstract>
+    </track>
+
+    <track>
+        <name>App Engine</name>
+        <color>#FFCF53</color>
+        <abstract>App Engine is a powerful cloud computing platform which lets you build and run your apps on Google's reliable, scalable infrastructure.</abstract>
+    </track>
+
+    <track>
+        <name>Chrome</name>
+        <color>#0FABFF</color>
+        <abstract>Users know Google Chrome for its speed, stability, and security. We also have a lot to offer developers, including developer tools...</abstract>
+    </track>
+
+    <track>
+        <name>Commerce</name>
+        <color>#CC0033</color>
+        <abstract>Monetization is an important aspect of almost all projects. This track will cover the products Google offers to help you monetize.</abstract>
+    </track>
+
+    <track>
+        <name>Developer Tools</name>
+        <color>#009939</color>
+        <abstract>A Craftsman is only as good as her tools. Google offers developers a rich collection of developer tools and programming language...</abstract>
+    </track>
+
+    <track>
+        <name>Game Development</name>
+        <color>#0075B6</color>
+        <abstract>Think Google is all work and no play? This track shows how Google technologies are being used to create amazing games...</abstract>
+    </track>
+
+    <track>
+        <name>Geo</name>
+        <color>#007D5D</color>
+        <abstract>This year the Geo track focuses on helping you connect users to the world around them, manage and visualize a world of spatial data...</abstract>
+    </track>
+
+    <!-- Sessions only -->
+    <track>
+        <name>Google APIs</name>
+        <color>#00658a</color>
+        <abstract>Learn about Google's various developer platforms.</abstract>
+    </track>
+
+    <track>
+        <name>Google Apps</name>
+        <color>#F3AF1C</color>
+        <abstract>Google Apps is an open application platform that can be extended and integrated, and a built-in marketplace for distribution and...</abstract>
+    </track>
+
+    <!-- Sandbox only -->
+    <track>
+        <name>Google TV</name>
+        <color>#00658a</color>
+        <abstract>The Google TV developer sandbox pod.</abstract>
+    </track>
+
+    <!-- Sessions only -->
+    <track>
+        <name>Tech Talk</name>
+        <color>#999999</color>
+        <abstract>Google I/O features Tech Talks on subjects of interest to developers, such as computer science problems, programming languages, and more.</abstract>
+    </track>
+
+    <!-- Sessions only -->
+    <track>
+        <name>Web Games</name>
+        <color>#ff3333</color>
+        <abstract>This track shows how web technologies are being used to create amazing games.</abstract>
+    </track>
+
+    <!-- Sandbox only -->
+    <track>
+        <name>YouTube</name>
+        <color>#ff3333</color>
+        <abstract>The YouTube developer sandbox pod.</abstract>
+    </track>
+
+</tracks>

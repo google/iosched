@@ -1,0 +1,43 @@
+<!--
+  Copyright 2011 Google Inc.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+       http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+  -->
+
+<resources>
+    <!-- Start with the Holographic Light theme -->
+    <style name="Theme.IOSched" parent="android:style/Theme.Holo.Light">
+        <item name="android:windowBackground">@drawable/window_background</item>
+        <item name="android:actionBarStyle">@style/ActionBar</item>
+
+        <!-- custom attributes -->
+        <item name="textHeaderMaxLines">@integer/text_header_max_lines</item>
+        <item name="trackAbstractMaxLines">@integer/track_abstract_max_lines</item>
+    </style>
+
+    <style name="Theme.IOSched.Home" parent="style/Theme.IOSched">
+        <item name="android:windowBackground">@drawable/window_background_home</item>
+        <item name="android:actionBarStyle">@style/ActionBar</item>
+    </style>
+
+    <style name="ActionBar" parent="android:style/Widget.Holo.Light.ActionBar">
+        <item name="android:background">@color/actionbar_background</item>
+        <item name="android:textColor">@color/accent_1</item>
+        <item name="android:titleTextStyle">@style/ActionBarText</item>
+    </style>
+
+    <style name="ActionBarText" parent="android:style/TextAppearance.Holo.Widget.ActionBar.Title">
+        <item name="android:textColor">@color/accent_1</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+</resources>

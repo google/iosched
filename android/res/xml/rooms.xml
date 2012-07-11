@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  Copyright 2011 Google Inc.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+       http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+  -->
+<rooms>
+
+    <room><id>1</id><name>Room 1</name><floor>2</floor></room>
+    <room><id>2</id><name>Room 2</name><floor>2</floor></room>
+    <room><id>3</id><name>Room 3</name><floor>2</floor></room>
+    <room><id>4</id><name>Room 4</name><floor>2</floor></room>
+    <room><id>5</id><name>Room 5</name><floor>2</floor></room>
+    <room><id>6</id><name>Room 6</name><floor>2</floor></room>
+    <room><id>7</id><name>Room 7</name><floor>2</floor></room>
+    <room><id>8</id><name>Room 8</name><floor>2</floor></room>
+    <room><id>9</id><name>Room 9</name><floor>2</floor></room>
+    <room><id>10</id><name>Room 10</name><floor>2</floor></room>
+    <room><id>11</id><name>Room 11</name><floor>3</floor></room>
+
+    <room><id>lunchroom</id><name>Lunch Room</name><floor>1</floor></room>
+    <room><id>officehoursfloor2</id><name>Office Hours Floor 2</name><floor>2</floor></room>
+    <room><id>officehoursfloor3</id><name>Office Hours Floor 3</name><floor>3</floor></room>
+
+</rooms>

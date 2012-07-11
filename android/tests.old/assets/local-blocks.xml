@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<blocks>
+
+    <block>
+        <start>2010-05-19T10:45:00.000-07:00</start>
+          <end>2010-05-19T11:45:00.000-07:00</end>
+        <title>Office hours</title>
+        <type>officehours</type>
+    </block>
+    <block>
+        <start>2010-05-19T05:00:00.000-07:00</start>
+          <end>2010-05-19T12:00:00.000-07:00</end>
+        <title>Office hours</title>
+        <type>officehours</type>
+    </block>
+
+</blocks>

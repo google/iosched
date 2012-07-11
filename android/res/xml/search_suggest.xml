@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  Copyright 2011 Google Inc.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+       http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+  -->
+<search_suggest>
+    <word>ajax</word>
+    <word>analytics</word>
+    <word>android</word>
+    <word>api</word>
+    <word>app engine</word>
+    <word>applications</word>
+    <word>accessibility</word>
+    <word>apps</word>
+    <word>body</word>
+    <word>build</word>
+    <word>business</word>
+    <word>buzz</word>
+    <word>calendar</word>
+    <word>charts</word>
+    <word>chat</word>
+    <word>chrome</word>
+    <word>client</word>
+    <word>cloud</word>
+    <word>closure</word>
+    <word>cloud</word>
+    <word>css</word>
+    <word>compiler</word>
+    <word>dalvik</word>
+    <word>data</word>
+    <word>datastore</word>
+    <word>design</word>
+    <word>desktop</word>
+    <word>development</word>
+    <word>docs</word>
+    <word>earth</word>
+    <word>eclipse</word>
+    <word>embedded</word>
+    <word>enterprise</word>
+    <word>extension</word>
+    <word>extensions</word>
+    <word>fireside</word>
+    <word>flash</word>
+    <word>framework</word>
+    <word>friends</word>
+    <word>fusion tables</word>
+    <word>gadgets</word>
+    <word>gaming</word>
+    <word>geo</word>
+    <word>geospatial</word>
+    <word>go</word>
+    <word>google</word>
+    <word>gwt</word>
+    <word>honeycomb</word>
+    <word>html</word>
+    <word>html5</word>
+    <word>java</word>
+    <word>javascript</word>
+    <word>kml</word>
+    <word>library</word>
+    <word>maps</word>
+    <word>marketplace</word>
+    <word>mobile</word>
+    <word>monetizing</word>
+    <word>native</word>
+    <word>oauth</word>
+    <word>oauth2</word>
+    <word>openid</word>
+    <word>performance</word>
+    <word>platform</word>
+    <word>power</word>
+    <word>python</word>
+    <word>restful</word>
+    <word>robotics</word>
+    <word>scalable</word>
+    <word>scripting</word>
+    <word>search</word>
+    <word>security</word>
+    <word>server</word>
+    <word>share</word>
+    <word>sites</word>
+    <word>social</word>
+    <word>source</word>
+    <word>speed</word>
+    <word>storage</word>
+    <word>team</word>
+    <word>testing</word>
+    <word>toolkit</word>
+    <word>tv</word>
+    <word>ui</word>
+    <word>ux</word>
+    <word>youtube</word>
+</search_suggest>
