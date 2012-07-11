@@ -1,0 +1,25 @@
+-dontobfuscate
+
+# Needed by google-http-client to keep generic types and @Key annotations accessed via reflection
+
+-keepclassmembers class * {
+  @com.google.api.client.util.Key <fields>;
+}
+
+# Needed just to be safe in terms of keeping Google API service model classes
+
+-keep class com.google.api.services.*.model.*
+-keep class com.google.api.client.**
+
+-keepattributes Signature,RuntimeVisibleAnnotations,AnnotationDefault
+
+# See https://groups.google.com/forum/#!topic/guava-discuss/YCZzeCiIVoI
+-dontwarn com.google.common.collect.MinMaxPriorityQueue
+
+# Assume dependency libraries Just Work(TM)
+-dontwarn com.google.android.youtube.**
+-dontwarn com.google.android.analytics.**
+-dontwarn com.google.common.**
+
+# Maps JavaScript interface proguard flags
+-keep class * implements com.google.android.apps.iosched.ui.MapFragment$MapJsi { *; }

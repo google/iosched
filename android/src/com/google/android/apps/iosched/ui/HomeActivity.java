@@ -1,5 +1,5 @@
 /*
- * Copyright 2011 Google Inc.
+ * Copyright 2012 Google Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,152 +16,434 @@
 
 package com.google.android.apps.iosched.ui;
 
+import com.google.analytics.tracking.android.EasyTracker;
+import com.google.android.apps.iosched.BuildConfig;
+import com.google.android.apps.iosched.Config;
 import com.google.android.apps.iosched.R;
-import com.google.android.apps.iosched.service.SyncService;
-import com.google.android.apps.iosched.util.AnalyticsUtils;
-import com.google.android.apps.iosched.util.DetachableResultReceiver;
-import com.google.android.apps.iosched.util.EulaHelper;
+import com.google.android.apps.iosched.gcm.ServerUtilities;
+import com.google.android.apps.iosched.provider.ScheduleContract;
+import com.google.android.apps.iosched.ui.gtv.GoogleTVSessionLivestreamActivity;
+import com.google.android.apps.iosched.util.AccountUtils;
+import com.google.android.apps.iosched.util.BeamUtils;
+import com.google.android.apps.iosched.util.HelpUtils;
+import com.google.android.apps.iosched.util.UIUtils;
+import com.google.android.gcm.GCMRegistrar;
+import com.google.api.client.googleapis.extensions.android2.auth.GoogleAccountManager;
 
-import android.app.Activity;
+import com.actionbarsherlock.app.ActionBar;
+import com.actionbarsherlock.view.Menu;
+import com.actionbarsherlock.view.MenuItem;
+
+import android.accounts.Account;
+import android.annotation.TargetApi;
+import android.app.SearchManager;
+import android.content.ContentResolver;
 import android.content.Intent;
+import android.content.SyncStatusObserver;
+import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
-import android.os.Handler;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
-import android.view.Menu;
-import android.view.MenuItem;
-import android.widget.Toast;
+import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.app.FragmentTransaction;
+import android.support.v4.view.ViewPager;
+import android.text.TextUtils;
+import android.widget.SearchView;
+
+import static com.google.android.apps.iosched.util.LogUtils.LOGD;
+import static com.google.android.apps.iosched.util.LogUtils.LOGI;
+import static com.google.android.apps.iosched.util.LogUtils.LOGW;
+import static com.google.android.apps.iosched.util.LogUtils.makeLogTag;
 
 /**
- * Front-door {@link Activity} that displays high-level features the schedule application offers to
- * users. Depending on whether the device is a phone or an Android 3.0+ tablet, different layouts
- * will be used. For example, on a phone, the primary content is a {@link DashboardFragment},
- * whereas on a tablet, both a {@link DashboardFragment} and a {@link TagStreamFragment} are
- * displayed.
+ * The landing screen for the app, once the user has logged in.
+ *
+ * <p>This activity uses different layouts to present its various fragments, depending on the
+ * device configuration. {@link MyScheduleFragment}, {@link ExploreFragment}, and
+ * {@link SocialStreamFragment} are always available to the user. {@link WhatsOnFragment} is
+ * always available on tablets and phones in portrait, but is hidden on phones held in landscape.
+ *
+ * <p>On phone-size screens, the three fragments are represented by {@link ActionBar} tabs, and
+ * can are held inside a {@link ViewPager} to allow horizontal swiping.
+ *
+ * <p>On tablets, the three fragments are always visible and are presented as either three panes
+ * (landscape) or a grid (portrait).
  */
-public class HomeActivity extends BaseActivity {
-    private static final String TAG = "HomeActivity";
+public class HomeActivity extends BaseActivity implements
+        ActionBar.TabListener,
+        ViewPager.OnPageChangeListener {
 
-    private TagStreamFragment mTagStreamFragment;
-    private SyncStatusUpdaterFragment mSyncStatusUpdaterFragment;
+    private static final String TAG = makeLogTag(HomeActivity.class);
+
+    private Object mSyncObserverHandle;
+
+    private MyScheduleFragment mMyScheduleFragment;
+    private ExploreFragment mExploreFragment;
+    private SocialStreamFragment mSocialStreamFragment;
+
+    private ViewPager mViewPager;
+    private Menu mOptionsMenu;
+    private AsyncTask<Void, Void, Void> mGCMRegisterTask;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        if (!EulaHelper.hasAcceptedEula(this)) {
-            EulaHelper.showEula(false, this);
+        // We're on Google TV; immediately short-circuit the normal behavior and show the
+        // Google TV-specific landing page.
+        if (UIUtils.isGoogleTV(this)) {
+            Intent intent = new Intent(HomeActivity.this, GoogleTVSessionLivestreamActivity.class);
+            startActivity(intent);
+            finish();
         }
 
-        AnalyticsUtils.getInstance(this).trackPageView("/Home");
+        if (isFinishing()) {
+            return;
+        }
 
+        UIUtils.enableDisableActivities(this);
+        EasyTracker.getTracker().setContext(this);
         setContentView(R.layout.activity_home);
-        getActivityHelper().setupActionBar(null, 0);
-
         FragmentManager fm = getSupportFragmentManager();
 
-        mTagStreamFragment = (TagStreamFragment) fm.findFragmentById(R.id.fragment_tag_stream);
+        mViewPager = (ViewPager) findViewById(R.id.pager);
+        String homeScreenLabel;
+        if (mViewPager != null) {
+            // Phone setup
+            mViewPager.setAdapter(new HomePagerAdapter(getSupportFragmentManager()));
+            mViewPager.setOnPageChangeListener(this);
+            mViewPager.setPageMarginDrawable(R.drawable.grey_border_inset_lr);
+            mViewPager.setPageMargin(getResources()
+                    .getDimensionPixelSize(R.dimen.page_margin_width));
 
-        mSyncStatusUpdaterFragment = (SyncStatusUpdaterFragment) fm
-                .findFragmentByTag(SyncStatusUpdaterFragment.TAG);
-        if (mSyncStatusUpdaterFragment == null) {
-            mSyncStatusUpdaterFragment = new SyncStatusUpdaterFragment();
-            fm.beginTransaction().add(mSyncStatusUpdaterFragment,
-                    SyncStatusUpdaterFragment.TAG).commit();
+            final ActionBar actionBar = getSupportActionBar();
+            actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
+            actionBar.addTab(actionBar.newTab()
+                    .setText(R.string.title_my_schedule)
+                    .setTabListener(this));
+            actionBar.addTab(actionBar.newTab()
+                    .setText(R.string.title_explore)
+                    .setTabListener(this));
+            actionBar.addTab(actionBar.newTab()
+                    .setText(R.string.title_stream)
+                    .setTabListener(this));
 
+            homeScreenLabel = getString(R.string.title_my_schedule);
+
+        } else {
+            mExploreFragment = (ExploreFragment) fm.findFragmentById(R.id.fragment_tracks);
+            mMyScheduleFragment = (MyScheduleFragment) fm.findFragmentById(
+                    R.id.fragment_my_schedule);
+            mSocialStreamFragment = (SocialStreamFragment) fm.findFragmentById(R.id.fragment_stream);
+
+            homeScreenLabel = "Home";
+        }
+        getSupportActionBar().setHomeButtonEnabled(false);
+
+        EasyTracker.getTracker().trackView(homeScreenLabel);
+        LOGD("Tracker", homeScreenLabel);
+
+        // Sync data on load
+        if (savedInstanceState == null) {
             triggerRefresh();
+            registerGCMClient();
         }
     }
 
+    private void registerGCMClient() {
+        GCMRegistrar.checkDevice(this);
+        if (BuildConfig.DEBUG) {
+            GCMRegistrar.checkManifest(this);
+        }
+
+        final String regId = GCMRegistrar.getRegistrationId(this);
+
+        if (TextUtils.isEmpty(regId)) {
+            // Automatically registers application on startup.
+            GCMRegistrar.register(this, Config.GCM_SENDER_ID);
+
+        } else {
+            // Device is already registered on GCM, check server.
+            if (GCMRegistrar.isRegisteredOnServer(this)) {
+                // In theory, the device is already registered in the server,
+                // but to be safe, send the registration again, otherwise the
+                // device will never receive messages again if the server lost
+                // the registration id (due to a bug or a database cleanup, for
+                // instance).
+                LOGI(TAG, "Already registered on the GCM server");
+            }
+            // Try to register again, but not in the UI thread.
+            // It's also necessary to cancel the thread onDestroy(),
+            // hence the use of AsyncTask instead of a raw thread.
+            mGCMRegisterTask = new AsyncTask<Void, Void, Void>() {
+                @Override
+                protected Void doInBackground(Void... params) {
+                    boolean registered = ServerUtilities.register(HomeActivity.this, regId);
+                    // At this point all attempts to register with the app
+                    // server failed, so we need to unregister the device
+                    // from GCM - the app will try to register again when
+                    // it is restarted. Note that GCM will send an
+                    // unregistered callback upon completion, but
+                    // GCMIntentService.onUnregistered() will ignore it.
+                    if (!registered) {
+                        GCMRegistrar.unregister(HomeActivity.this);
+                    }
+                    return null;
+                }
+
+                @Override
+                protected void onPostExecute(Void result) {
+                    mGCMRegisterTask = null;
+                }
+            };
+            mGCMRegisterTask.execute(null, null, null);
+        }
+    }
 
     @Override
-    protected void onPostCreate(Bundle savedInstanceState) {
-        super.onPostCreate(savedInstanceState);
-        getActivityHelper().setupHomeActivity();
+    protected void onDestroy() {
+        super.onDestroy();
+
+        if (mGCMRegisterTask != null) {
+            mGCMRegisterTask.cancel(true);
+        }
+
+        try {
+            GCMRegistrar.onDestroy(this);
+        } catch (Exception e) {
+            LOGW(TAG, "GCM unregistration error", e);
+        }
+    }
+
+    @Override
+    public void onTabSelected(ActionBar.Tab tab, FragmentTransaction fragmentTransaction) {
+        mViewPager.setCurrentItem(tab.getPosition());
+    }
+
+    @Override
+    public void onTabUnselected(ActionBar.Tab tab, FragmentTransaction fragmentTransaction) {
+    }
+
+    @Override
+    public void onTabReselected(ActionBar.Tab tab, FragmentTransaction fragmentTransaction) {
+    }
+
+    @Override
+    public void onPageScrolled(int i, float v, int i1) {
+    }
+
+    @Override
+    public void onPageSelected(int position) {
+        getSupportActionBar().setSelectedNavigationItem(position);
+
+        int titleId = -1;
+        switch (position) {
+            case 0:
+                titleId = R.string.title_my_schedule;
+                break;
+            case 1:
+                titleId = R.string.title_explore;
+                break;
+            case 2:
+                titleId = R.string.title_stream;
+                break;
+        }
+
+        String title = getString(titleId);
+        EasyTracker.getTracker().trackView(title);
+        LOGD("Tracker", title);
+
+    }
+
+    @Override
+    public void onPageScrollStateChanged(int i) {
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+
+        // Since the pager fragments don't have known tags or IDs, the only way to persist the
+        // reference is to use putFragment/getFragment. Remember, we're not persisting the exact
+        // Fragment instance. This mechanism simply gives us a way to persist access to the
+        // 'current' fragment instance for the given fragment (which changes across orientation
+        // changes).
+        //
+        // The outcome of all this is that the "Refresh" menu button refreshes the stream across
+        // orientation changes.
+        if (mSocialStreamFragment != null) {
+            getSupportFragmentManager().putFragment(outState, "stream_fragment",
+                    mSocialStreamFragment);
+        }
+    }
+
+    @Override
+    protected void onRestoreInstanceState(Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+        if (mSocialStreamFragment == null) {
+            mSocialStreamFragment = (SocialStreamFragment) getSupportFragmentManager()
+                    .getFragment(savedInstanceState, "stream_fragment");
+        }
+    }
+
+    private class HomePagerAdapter extends FragmentPagerAdapter {
+        public HomePagerAdapter(FragmentManager fm) {
+            super(fm);
+        }
+
+        @Override
+        public Fragment getItem(int position) {
+            switch (position) {
+                case 0:
+                    return (mMyScheduleFragment = new MyScheduleFragment());
+
+                case 1:
+                    return (mExploreFragment = new ExploreFragment());
+
+                case 2:
+                    return (mSocialStreamFragment = new SocialStreamFragment());
+            }
+            return null;
+        }
+
+        @Override
+        public int getCount() {
+            return 3;
+        }
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.refresh_menu_items, menu);
         super.onCreateOptionsMenu(menu);
+        mOptionsMenu = menu;
+        getSupportMenuInflater().inflate(R.menu.home, menu);
+        setupSearchMenuItem(menu);
+
+        if (!BeamUtils.isBeamUnlocked(this)) {
+            // Only show Beam unlocked after first Beam
+            MenuItem beamItem = menu.findItem(R.id.menu_beam);
+            if (beamItem != null) {
+                menu.removeItem(beamItem.getItemId());
+            }
+        }
         return true;
+    }
+
+    @TargetApi(Build.VERSION_CODES.HONEYCOMB)
+    private void setupSearchMenuItem(Menu menu) {
+        MenuItem searchItem = menu.findItem(R.id.menu_search);
+        if (searchItem != null && UIUtils.hasHoneycomb()) {
+            SearchView searchView = (SearchView) searchItem.getActionView();
+            if (searchView != null) {
+                SearchManager searchManager = (SearchManager) getSystemService(SEARCH_SERVICE);
+                searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
+            }
+        }
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        if (item.getItemId() == R.id.menu_refresh) {
-            triggerRefresh();
-            return true;
+        switch (item.getItemId()) {
+            case R.id.menu_refresh:
+                triggerRefresh();
+                return true;
+
+            case R.id.menu_search:
+                if (!UIUtils.hasHoneycomb()) {
+                    startSearch(null, false, Bundle.EMPTY, false);
+                    return true;
+                }
+                break;
+
+            case R.id.menu_about:
+                HelpUtils.showAbout(this);
+                return true;
+
+            case R.id.menu_sign_out:
+                AccountUtils.signOut(this);
+                finish();
+                return true;
+
+            case R.id.menu_beam:
+                Intent beamIntent = new Intent(this, BeamActivity.class);
+                startActivity(beamIntent);
+                return true;
+
         }
         return super.onOptionsItemSelected(item);
     }
 
     private void triggerRefresh() {
-        final Intent intent = new Intent(Intent.ACTION_SYNC, null, this, SyncService.class);
-        intent.putExtra(SyncService.EXTRA_STATUS_RECEIVER, mSyncStatusUpdaterFragment.mReceiver);
-        startService(intent);
+        Bundle extras = new Bundle();
+        extras.putBoolean(ContentResolver.SYNC_EXTRAS_MANUAL, true);
+        if (!UIUtils.isGoogleTV(this)) {
+	        ContentResolver.requestSync(
+	                new Account(AccountUtils.getChosenAccountName(this),
+	                        GoogleAccountManager.ACCOUNT_TYPE),
+	                ScheduleContract.CONTENT_AUTHORITY, extras);
+        }
 
-        if (mTagStreamFragment != null) {
-            mTagStreamFragment.refresh();
+        if (mSocialStreamFragment != null) {
+            mSocialStreamFragment.refresh();
         }
     }
 
-    private void updateRefreshStatus(boolean refreshing) {
-        getActivityHelper().setRefreshActionButtonCompatState(refreshing);
+    @Override
+    protected void onPause() {
+        super.onPause();
+        if (mSyncObserverHandle != null) {
+            ContentResolver.removeStatusChangeListener(mSyncObserverHandle);
+            mSyncObserverHandle = null;
+        }
     }
 
-    /**
-     * A non-UI fragment, retained across configuration changes, that updates its activity's UI
-     * when sync status changes.
-     */
-    public static class SyncStatusUpdaterFragment extends Fragment
-            implements DetachableResultReceiver.Receiver {
-        public static final String TAG = SyncStatusUpdaterFragment.class.getName();
+    @Override
+    protected void onResume() {
+        super.onResume();
+        mSyncStatusObserver.onStatusChanged(0);
 
-        private boolean mSyncing = false;
-        private DetachableResultReceiver mReceiver;
+        // Watch for sync state changes
+        final int mask = ContentResolver.SYNC_OBSERVER_TYPE_PENDING |
+                ContentResolver.SYNC_OBSERVER_TYPE_ACTIVE;
+        mSyncObserverHandle = ContentResolver.addStatusChangeListener(mask, mSyncStatusObserver);
+    }
 
-        @Override
-        public void onCreate(Bundle savedInstanceState) {
-            super.onCreate(savedInstanceState);
-            setRetainInstance(true);
-            mReceiver = new DetachableResultReceiver(new Handler());
-            mReceiver.setReceiver(this);
+    public void setRefreshActionButtonState(boolean refreshing) {
+        if (mOptionsMenu == null) {
+            return;
         }
 
-        /** {@inheritDoc} */
-        public void onReceiveResult(int resultCode, Bundle resultData) {
-            HomeActivity activity = (HomeActivity) getActivity();
-            if (activity == null) {
-                return;
+        final MenuItem refreshItem = mOptionsMenu.findItem(R.id.menu_refresh);
+        if (refreshItem != null) {
+            if (refreshing) {
+                refreshItem.setActionView(R.layout.actionbar_indeterminate_progress);
+            } else {
+                refreshItem.setActionView(null);
             }
-
-            switch (resultCode) {
-                case SyncService.STATUS_RUNNING: {
-                    mSyncing = true;
-                    break;
-                }
-                case SyncService.STATUS_FINISHED: {
-                    mSyncing = false;
-                    break;
-                }
-                case SyncService.STATUS_ERROR: {
-                    // Error happened down in SyncService, show as toast.
-                    mSyncing = false;
-                    final String errorText = getString(R.string.toast_sync_error, resultData
-                            .getString(Intent.EXTRA_TEXT));
-                    Toast.makeText(activity, errorText, Toast.LENGTH_LONG).show();
-                    break;
-                }
-            }
-
-            activity.updateRefreshStatus(mSyncing);
-        }
-
-        @Override
-        public void onActivityCreated(Bundle savedInstanceState) {
-            super.onActivityCreated(savedInstanceState);
-            ((HomeActivity) getActivity()).updateRefreshStatus(mSyncing);
         }
     }
+
+    private final SyncStatusObserver mSyncStatusObserver = new SyncStatusObserver() {
+        @Override
+        public void onStatusChanged(int which) {
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    String accountName = AccountUtils.getChosenAccountName(HomeActivity.this);
+                    if (TextUtils.isEmpty(accountName)) {
+                        setRefreshActionButtonState(false);
+                        return;
+                    }
+
+                    Account account = new Account(accountName, GoogleAccountManager.ACCOUNT_TYPE);
+                    boolean syncActive = ContentResolver.isSyncActive(
+                            account, ScheduleContract.CONTENT_AUTHORITY);
+                    boolean syncPending = ContentResolver.isSyncPending(
+                            account, ScheduleContract.CONTENT_AUTHORITY);
+                    setRefreshActionButtonState(syncActive || syncPending);
+                }
+            });
+        }
+    };
 }

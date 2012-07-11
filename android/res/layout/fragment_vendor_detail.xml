@@ -1,5 +1,5 @@
 <!--
-  Copyright 2011 Google Inc.
+  Copyright 2012 Google Inc.
 
   Licensed under the Apache License, Version 2.0 (the "License");
   you may not use this file except in compliance with the License.
@@ -14,64 +14,41 @@
   limitations under the License.
   -->
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="fill_parent"
-    android:layout_height="fill_parent">
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
     <LinearLayout android:orientation="vertical"
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
-        android:paddingLeft="@dimen/body_padding_large"
-        android:paddingRight="@dimen/body_padding_large"
-        android:paddingTop="@dimen/body_padding_medium"
-        android:paddingBottom="@dimen/body_padding_medium">
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingLeft="@dimen/content_padding_normal"
+        android:paddingRight="@dimen/content_padding_normal"
+        android:paddingTop="@dimen/content_padding_normal"
+        android:paddingBottom="@dimen/content_padding_normal">
 
-        <RelativeLayout android:id="@+id/header_vendor"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content">
+        <TextView android:id="@+id/vendor_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            style="@style/TextHeader" />
 
-            <CheckBox android:id="@+id/star_button"
-                android:layout_alignParentRight="true"
-                android:layout_alignParentTop="true"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/star_button_padding"
-                android:layout_marginLeft="@dimen/star_button_padding"
-                android:focusable="false"
-                android:clickable="false"
-                android:contentDescription="@string/description_star"
-                android:button="@drawable/btn_star" />
-
-            <TextView android:id="@+id/vendor_name"
-                android:layout_toLeftOf="@id/star_button"
-                android:layout_alignParentLeft="true"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                style="@style/TextHeader" />
-        </RelativeLayout>
+        <TextView android:id="@+id/vendor_url"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:autoLink="web"
+            android:paddingBottom="@dimen/element_spacing_normal"
+            style="@style/TextBody" />
 
         <com.google.android.apps.iosched.ui.widget.BezelImageView android:id="@+id/vendor_logo"
             android:scaleType="centerCrop"
             android:layout_width="@dimen/vendor_image_size"
             android:layout_height="@dimen/vendor_image_size"
-            android:layout_marginTop="@dimen/body_padding_large"
+            android:layout_marginTop="@dimen/element_spacing_normal"
             android:src="@drawable/sandbox_logo_empty"/>
 
-        <TextView android:id="@+id/vendor_url"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:autoLink="web"
-            android:layout_marginTop="@dimen/body_padding_medium"
-            style="@style/TextBody" />
-
         <TextView android:id="@+id/vendor_desc"
-            android:layout_width="fill_parent"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/body_padding_medium"
-            style="@style/TextBody" />
-
-        <TextView android:id="@+id/vendor_product_desc"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/body_padding_medium"
+            android:layout_marginTop="@dimen/element_spacing_normal"
+            android:paddingTop="@dimen/element_spacing_normal"
             style="@style/TextBody" />
     </LinearLayout>
 </ScrollView>

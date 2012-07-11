@@ -1,5 +1,5 @@
 <!--
-  Copyright 2011 Google Inc.
+  Copyright 2012 Google Inc.
 
   Licensed under the Apache License, Version 2.0 (the "License");
   you may not use this file except in compliance with the License.
@@ -15,184 +15,191 @@
   -->
 
 <resources>
-    <!-- Base application theme is the default theme. -->
-    <style name="Theme" parent="android:style/Theme" />
+    <!-- Empty parent idiom -->
+    <style name="NoParent" />
 
-    <!-- Variation on the Light theme that turns off the title -->
-    <style name="Theme.IOSched" parent="android:style/Theme.Light">
-        <item name="android:windowNoTitle">true</item>
-        <item name="android:windowContentOverlay">@null</item>
+    <!-- Root styles that vary by API level -->
+    <style name="FrameworkRoot.Theme" parent="Theme.Sherlock.Light.DarkActionBar">
+        <!-- API 11+ (compatibility) -->
+        <item name="buttonBarStyle">@style/Compat.ButtonBar</item>
+        <item name="buttonBarButtonStyle">@style/Compat.ButtonBarButton</item>
+        <item name="indeterminateProgressStyle">@style/Compat.IndeterminateProgress</item>
+        <!-- API 14+ (compatibility) -->
+        <item name="listPreferredItemPaddingLeft">@dimen/compat_list_preferred_item_padding_left</item>
+        <item name="listPreferredItemPaddingRight">@dimen/compat_list_preferred_item_padding_right</item>
+        <item name="listPreferredItemHeightSmall">@dimen/compat_list_preferred_item_height_small</item>
+    </style>
 
-        <!-- custom attributes -->
+    <style name="FrameworkRoot.ActionBar" parent="Widget.Sherlock.Light.ActionBar.Solid.Inverse" />
+    <style name="FrameworkRoot.ActionBar.TitleText" parent="TextAppearance.Sherlock.Widget.ActionBar.Title.Inverse" />
+    <style name="FrameworkRoot.ActionBar.TabBar" parent="Widget.Sherlock.Light.ActionBar.TabBar.Inverse" />
+    <style name="FrameworkRoot.ActionBar.TabText" parent="Widget.Sherlock.Light.ActionBar.TabText.Inverse" />
+    <style name="FrameworkRoot.ActionBar.TabView" parent="Widget.Sherlock.Light.ActionBar.TabView.Inverse" />
+
+    <!-- Immediate parent theme to specify base values for custom attributes -->
+    <style name="Theme.Base" parent="FrameworkRoot.Theme">
         <item name="textHeaderMaxLines">@integer/text_header_max_lines</item>
         <item name="trackAbstractMaxLines">@integer/track_abstract_max_lines</item>
-
-        <!-- for programmatic instantiation -->
-        <item name="actionbarCompatButtonStyle">@style/ActionBarCompatButton</item>
-        <item name="actionbarCompatProgressIndicatorStyle">@style/ActionBarCompatProgressIndicator</item>
-        <item name="actionbarCompatSeparatorStyle">@style/ActionBarCompatSeparator</item>
-        <item name="actionbarCompatLogoStyle">@style/ActionBarCompatLogo</item>
-        <item name="actionbarCompatTextStyle">@style/ActionBarCompatText</item>
+        <item name="activatableItemBackground">@drawable/activatable_item_background</item>
     </style>
 
-    <!-- Start with the Holographic Light theme -->
-    <style name="Theme.IOSched.Home" parent="style/Theme.IOSched">
-        <item name="android:windowBackground">@drawable/background_noise</item>
+    <!-- Base themes for the app -->
+    <style name="Theme.Iosched" parent="Theme.Base">
+        <item name="android:windowBackground">@android:color/white</item>
+        <item name="android:windowContentOverlay">@drawable/actionbar_shadow</item>
+        <item name="windowContentOverlay">@drawable/actionbar_shadow</item>
+        <item name="android:actionBarStyle">@style/ActionBar</item>
+        <item name="actionBarStyle">@style/ActionBar</item>
+        <item name="android:actionBarTabStyle">@style/ActionBar.TabView</item>
+        <item name="actionBarTabStyle">@style/ActionBar.TabView</item>
+        <item name="android:actionBarTabBarStyle">@style/ActionBar.TabBar</item>
+        <item name="actionBarTabBarStyle">@style/ActionBar.TabBar</item>
+        <item name="android:actionBarTabTextStyle">@style/ActionBar.TabText</item>
+        <item name="actionBarTabTextStyle">@style/ActionBar.TabText</item>
     </style>
 
-    <style name="ActionBarCompat">
-        <item name="android:id">@id/actionbar_compat</item>
-        <item name="android:layout_width">fill_parent</item>
-        <item name="android:layout_height">@dimen/actionbar_compat_height</item>
-        <item name="android:orientation">horizontal</item>
-        <item name="android:background">@drawable/actionbar_compat_background</item>
+    <style name="Theme.Iosched.GreyBackground" parent="Theme.Iosched">
+        <item name="android:windowBackground">@drawable/grey_background_pattern</item>
     </style>
 
-    <style name="ActionBarCompatButton">
-        <item name="android:layout_width">@dimen/actionbar_compat_height</item>
-        <item name="android:layout_height">fill_parent</item>
-        <item name="android:scaleType">center</item>
-        <item name="android:background">@drawable/actionbar_compat_button</item>
+    <!-- Home -->
+    <style name="Theme.Iosched.Home" parent="Theme.Iosched">
+        <item name="android:windowBackground">@drawable/grey_background_pattern</item>
+        <item name="android:actionBarStyle">@style/ActionBar.Home</item>
+        <item name="actionBarStyle">@style/ActionBar.Home</item>
     </style>
 
-    <style name="ActionBarCompatProgressIndicator" parent="android:style/Widget.ProgressBar.Small">
-        <item name="android:indeterminate">true</item>
+    <style name="ActionBar.Home" parent="ActionBar">
+        <item name="android:displayOptions">showHome|useLogo|disableHome</item>
+        <item name="displayOptions">showHome|useLogo|disableHome</item>
     </style>
 
-    <style name="ActionBarCompatSeparator">
-        <item name="android:layout_width">2px</item>
-        <item name="android:layout_height">fill_parent</item>
-        <item name="android:background">@drawable/actionbar_compat_separator</item>
+    <!-- Account chooser -->
+    <style name="Theme.Iosched.Accounts" parent="Theme.Iosched">
+        <item name="android:actionBarStyle">@style/ActionBar.Accounts</item>
+        <item name="actionBarStyle">@style/ActionBar.Accounts</item>
     </style>
 
-    <style name="ActionBarCompatLogo">
-        <item name="android:id">@id/actionbar_compat_logo</item>
-        <item name="android:layout_width">wrap_content</item>
-        <item name="android:layout_height">fill_parent</item>
-        <item name="android:clickable">false</item>
-        <item name="android:scaleType">center</item>
-        <item name="android:contentDescription">@string/description_logo</item>
-        <item name="android:src">@drawable/actionbar_compat_logo</item>
+    <style name="ActionBar.Accounts" parent="ActionBar">
+        <item name="android:displayOptions">showHome|useLogo</item>
+        <item name="displayOptions">showHome|useLogo</item>
     </style>
 
-    <style name="ActionBarCompatText">
-        <item name="android:id">@id/actionbar_compat_text</item>
-        <item name="android:layout_width">0dp</item>
-        <item name="android:layout_height">fill_parent</item>
-        <item name="android:layout_weight">1</item>
-        <item name="android:gravity">center_vertical</item>
-        <item name="android:textSize">@dimen/text_size_medium</item>
-        <item name="android:paddingLeft">12dp</item>
-        <item name="android:paddingRight">12dp</item>
-        <item name="android:textStyle">bold</item>
-        <item name="android:textColor">@color/actionbar_text</item>
-        <item name="android:shadowColor">#fff</item>
-        <item name="android:shadowDx">0</item>
-        <item name="android:shadowDy">1</item>
-        <item name="android:shadowRadius">0.00001</item>
-        <item name="android:singleLine">true</item>
-        <item name="android:ellipsize">end</item>
+    <!-- Action bar -->
+    <style name="ActionBar" parent="FrameworkRoot.ActionBar">
+        <item name="android:background">@drawable/actionbar_background</item>
+        <item name="background">@drawable/actionbar_background</item>
+        <item name="android:icon">@drawable/actionbar_icon</item>
+        <item name="icon">@drawable/actionbar_icon</item>
+        <item name="android:displayOptions">showHome|homeAsUp|showTitle</item>
+        <item name="displayOptions">showHome|homeAsUp|showTitle</item>
+        <item name="android:titleTextStyle">@style/ActionBar.TitleText</item>
+        <item name="titleTextStyle">@style/ActionBar.TitleText</item>
     </style>
 
-    <style name="DashboardButton">
-        <item name="android:layout_gravity">center_vertical</item>
-        <item name="android:layout_width">wrap_content</item>
-        <item name="android:layout_height">wrap_content</item>
-        <item name="android:gravity">center_horizontal</item>
-        <item name="android:drawablePadding">2dp</item>
-        <item name="android:textSize">@dimen/text_size_small</item>
-        <item name="android:textStyle">bold</item>
-        <item name="android:textColor">@color/accent_1</item>
-        <item name="android:background">@null</item>
+    <style name="ActionBar.TitleText" parent="FrameworkRoot.ActionBar.TitleText">
+        <item name="android:textColor">@android:color/white</item>
     </style>
 
+    <style name="ActionBar.TabBar" parent="FrameworkRoot.ActionBar.TabBar">
+        <item name="android:background">@color/accent_1</item>
+    </style>
+
+    <style name="ActionBar.TabText" parent="FrameworkRoot.ActionBar.TabText">
+        <item name="android:textColor">@android:color/white</item>
+    </style>
+
+    <style name="ActionBar.TabView" parent="FrameworkRoot.ActionBar.TabView">
+        <item name="android:background">@drawable/tab_white_ab</item>
+    </style>
+
+    <!-- Live stream -->
+    <style name="Theme.Iosched.Livestream" parent="Theme.Iosched.GreyBackground">
+        <item name="android:actionBarTabBarStyle">@style/FrameworkRoot.ActionBar.TabBar</item>
+        <item name="android:actionBarTabTextStyle">@style/FrameworkRoot.ActionBar.TabText</item>
+    </style>
+
+    <!-- Google TV -->
+    <style name="Theme.Iosched.GoogleTV" parent="Theme.Iosched.GreyBackground">
+        <item name="android:windowContentOverlay">@null</item>
+        <item name="windowContentOverlay">@null</item>
+    </style>
+
+    <!-- List views and list items -->
+    <style name="ListItemContainerBase">
+        <item name="android:background">?activatableItemBackground</item>
+        <item name="android:minHeight">?android:listPreferredItemHeight</item>
+    </style>
+
+    <!-- SimpleListItems are items whose containers provides the appropriate padding, and
+         usually the container and content are a single view. -->
+    <style name="SimpleListItem" parent="ListItemContainerBase">
+        <item name="android:paddingLeft">?listPreferredItemPaddingLeft</item>
+        <item name="android:paddingRight">?listPreferredItemPaddingRight</item>
+        <item name="android:paddingTop">8dp</item>
+        <item name="android:paddingBottom">8dp</item>
+    </style>
+
+    <style name="SimpleListItemSmall" parent="SimpleListItem">
+        <item name="android:minHeight">48dp</item>
+    </style>
+
+    <!-- ComplexListItems are items whose content must provide the padding. -->
+    <style name="ComplexListItem" parent="ListItemContainerBase" />
+
+    <style name="ComplexListItemContent">
+        <item name="android:paddingLeft">?listPreferredItemPaddingLeft</item>
+        <item name="android:paddingRight">?listPreferredItemPaddingRight</item>
+        <item name="android:paddingTop">8dp</item>
+        <item name="android:paddingBottom">8dp</item>
+    </style>
+
+    <!-- List item text -->
     <style name="ListItemTitle">
         <item name="android:textStyle">bold</item>
-        <item name="android:textSize">@dimen/text_size_medium</item>
+        <item name="android:textSize">@dimen/text_size_large</item>
         <item name="android:textColor">@color/body_text_1</item>
     </style>
 
     <style name="ListItemSubtitle">
-        <item name="android:textSize">@dimen/text_size_small</item>
+        <item name="android:textSize">@dimen/text_size_medium</item>
         <item name="android:textColor">@color/body_text_2</item>
     </style>
 
-    <style name="ListItemContainerBase">
-        <item name="android:minHeight">?android:attr/listPreferredItemHeight</item>
+    <style name="ListItemTitle.Inverse">
+        <item name="android:textStyle">normal</item>
+        <item name="android:textColor">@color/body_text_1_inverse</item>
     </style>
 
-    <!-- a simple list item is one whose container and content are the same view -->
-    <style name="SimpleListItem" parent="style/ListItemContainerBase">
-        <item name="android:paddingLeft">10dp</item>
-        <item name="android:paddingRight">10dp</item>
-        <item name="android:paddingTop">8dp</item>
-        <item name="android:paddingBottom">8dp</item>
+    <style name="ListItemSubtitle.Inverse">
+        <item name="android:textColor">@color/body_text_2_inverse</item>
     </style>
 
-    <!-- used for more complex list items, e.g. those with stars aligned to the top-right -->
-
-    <style name="ListItemContainer" parent="style/ListItemContainerBase" />
-
-    <style name="ListItemContent">
-        <item name="android:paddingLeft">10dp</item>
-        <item name="android:paddingRight">10dp</item>
-        <item name="android:paddingTop">8dp</item>
-        <item name="android:paddingBottom">8dp</item>
-    </style>
-
-    <!-- What's On section in Home activity -->
-
-    <style name="WhatsOnItemBase">
-        <item name="android:layout_width">0dp</item>
-        <item name="android:layout_weight">1</item>
-        <item name="android:layout_height">fill_parent</item>
-        <item name="android:textSize">@dimen/text_size_small</item>
-        <item name="android:textStyle">bold</item>
-        <item name="android:textColor">@color/body_text_1</item>
-        <item name="android:maxLines">2</item>
-        <item name="android:paddingLeft">@dimen/whats_on_item_padding</item>
-        <item name="android:paddingRight">@dimen/whats_on_item_padding</item>
-        <item name="android:gravity">center</item>
-    </style>
-
-    <style name="WhatsOnStaticItem" parent="style/WhatsOnItemBase">
-        <item name="android:textSize">@dimen/text_size_small</item>
-        <item name="android:textStyle">bold</item>
-        <item name="android:textColor">@color/body_text_1</item>
-        <item name="android:maxLines">2</item>
-    </style>
-
-    <style name="WhatsOnButtonItem" parent="style/WhatsOnStaticItem">
-        <item name="android:textColor">@color/accent_1</item>
-        <item name="android:background">@drawable/whats_on_button</item>
-        <item name="android:paddingRight">@dimen/whats_on_button_right_padding</item>
-        <item name="android:focusable">true</item>
-        <item name="android:clickable">true</item>
-    </style>
-
-    <!-- body content -->
-
+    <!-- Body content -->
     <style name="TextHeader">
         <item name="android:textSize">@dimen/text_size_xlarge</item>
         <item name="android:textStyle">bold</item>
         <item name="android:textColor">@color/body_text_1</item>
-        <item name="android:maxLines">?attr/textHeaderMaxLines</item>
+        <item name="android:maxLines">?textHeaderMaxLines</item>
         <item name="android:ellipsize">end</item>
         <item name="android:textIsSelectable">true</item>
     </style>
 
     <style name="TextHeaderSub">
-        <item name="android:textSize">@dimen/text_size_small</item>
+        <item name="android:textSize">@dimen/text_size_medium</item>
         <item name="android:textStyle">normal</item>
         <item name="android:textColor">@color/body_text_2</item>
         <item name="android:textIsSelectable">true</item>
     </style>
 
     <style name="TextHeader2">
-        <item name="android:textSize">@dimen/text_size_medium</item>
+        <item name="android:textSize">@dimen/text_size_small</item>
         <item name="android:textStyle">bold</item>
+        <item name="android:textAllCaps">true</item>
         <item name="android:textColor">@color/accent_1</item>
-        <item name="android:textIsSelectable">true</item>
+        <item name="android:paddingTop">4dp</item>
+        <item name="android:paddingBottom">4dp</item>
+        <item name="android:background">@drawable/accent_bottom_border</item>
     </style>
 
     <style name="TextHeader3">
@@ -203,16 +210,74 @@
     </style>
 
     <style name="TextBody">
-        <item name="android:textSize">@dimen/text_size_small</item>
+        <item name="android:textSize">@dimen/text_size_medium</item>
         <item name="android:lineSpacingMultiplier">1.1</item>
         <item name="android:textColor">@color/body_text_1</item>
         <item name="android:textIsSelectable">true</item>
     </style>
 
-    <style name="PushButton">
-        <item name="android:textSize">@dimen/text_size_small</item>
-        <item name="android:background">@drawable/btn</item>
+    <!-- What's On section in Home activity -->
+    <style name="WhatsOnItemBase">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:textSize">@dimen/text_size_medium</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textColor">@android:color/white</item>
+        <item name="android:maxLines">2</item>
+        <item name="android:paddingLeft">@dimen/whats_on_item_padding</item>
+        <item name="android:paddingRight">@dimen/whats_on_item_padding</item>
+        <item name="android:gravity">center</item>
     </style>
 
+    <style name="WhatsOnStaticItem" parent="WhatsOnItemBase">
+        <item name="android:textSize">@dimen/text_size_medium</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textColor">@android:color/white</item>
+        <item name="android:maxLines">2</item>
+        <item name="android:background">@drawable/actionbar_background</item>
+    </style>
 
+    <style name="WhatsOnButtonItem" parent="WhatsOnStaticItem">
+        <item name="android:textColor">@android:color/white</item>
+        <item name="android:paddingRight">@dimen/whats_on_button_right_padding</item>
+        <item name="android:focusable">true</item>
+        <item name="android:clickable">true</item>
+    </style>
+    
+    <style name="Announcement">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:background">?activatableItemBackground</item>
+        <item name="android:orientation">vertical</item>
+        <item name="android:focusable">true</item>
+        <item name="android:clickable">true</item>
+        <item name="android:paddingTop">@dimen/whats_on_item_padding</item>
+        <item name="android:paddingBottom">@dimen/whats_on_item_padding</item>
+        <item name="android:paddingLeft">48dp</item>
+        <item name="android:paddingRight">48dp</item>
+    </style>
+
+    <style name="AnnouncementTitle">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">0dp</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:textSize">@dimen/text_size_medium</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textColor">@android:color/white</item>
+        <item name="android:gravity">center</item>
+        <item name="android:singleLine">true</item>
+        <item name="android:maxLines">1</item>
+        <item name="android:ellipsize">end</item>
+        <item name="android:focusable">false</item>
+        <item name="android:clickable">false</item>
+    </style>
+
+    <style name="AnnouncementSubTitle" parent="AnnouncementTitle">
+        <item name="android:layout_weight">1</item>
+        <item name="android:textStyle">normal</item>
+        <item name="android:textColor">@color/body_text_2_inverse</item>
+        <item name="android:singleLine">true</item>
+    </style>
+    
 </resources>

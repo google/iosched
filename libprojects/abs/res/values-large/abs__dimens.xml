@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+/* //device/apps/common/assets/res/any/dimens.xml
+**
+** Copyright 2006, The Android Open Source Project
+**
+** Licensed under the Apache License, Version 2.0 (the "License");
+** you may not use this file except in compliance with the License.
+** You may obtain a copy of the License at
+**
+**     http://www.apache.org/licenses/LICENSE-2.0
+**
+** Unless required by applicable law or agreed to in writing, software
+** distributed under the License is distributed on an "AS IS" BASIS,
+** WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+** See the License for the specific language governing permissions and
+** limitations under the License.
+*/
+-->
+<resources>
+    <!-- The platform's desired minimum size for a dialog's width when it
+         is along the major axis (that is the screen is landscape).  This may
+         be either a fraction or a dimension. -->
+    <item type="dimen" name="abs__dialog_min_width_major">55%</item>
+    <!-- The platform's desired minimum size for a dialog's width when it
+         is along the minor axis (that is the screen is portrait).  This may
+         be either a fraction or a dimension. -->
+    <item type="dimen" name="abs__dialog_min_width_minor">80%</item>
+</resources>

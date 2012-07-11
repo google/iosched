@@ -1,5 +1,5 @@
 <!--
-  Copyright 2011 Google Inc.
+  Copyright 2012 Google Inc.
 
   Licensed under the Apache License, Version 2.0 (the "License");
   you may not use this file except in compliance with the License.
@@ -15,30 +15,19 @@
   -->
 <resources>
 
-    <declare-styleable name="AppTheme">
-        <attr name="actionbarCompatButtonStyle" format="reference" />
-        <attr name="actionbarCompatProgressIndicatorStyle" format="reference" />
-        <attr name="actionbarCompatSeparatorStyle" format="reference" />
-        <attr name="actionbarCompatLogoStyle" format="reference" />
-        <attr name="actionbarCompatTextStyle" format="reference" />
+    <declare-styleable name="BaseTheme">
         <attr name="textHeaderMaxLines" format="integer" />
         <attr name="trackAbstractMaxLines" format="integer" />
-    </declare-styleable>
+        <attr name="activatableItemBackground" format="reference" />
 
-    <declare-styleable name="BlocksLayout">
-        <attr name="columns" format="integer" />
-    </declare-styleable>
-
-    <declare-styleable name="TimeRulerView">
-        <attr name="headerWidth" format="dimension" />
-        <attr name="hourHeight" format="dimension" />
-        <attr name="horizontalDivider" format="boolean" />
-        <attr name="labelTextSize" format="dimension" />
-        <attr name="labelPaddingLeft" format="dimension" />
-        <attr name="labelColor" format="color" />
-        <attr name="dividerColor" format="color" />
-        <attr name="startHour" format="integer" />
-        <attr name="endHour" format="integer" />
+        <!-- backward-compatibility -->
+        <attr name="buttonBarStyle" format="reference" />
+        <attr name="buttonBarButtonStyle" format="reference" />
+        <!-- provided by ActionBarSherlock -->
+        <!--<attr name="indeterminateProgressStyle" format="reference" />-->
+        <!--<attr name="listPreferredItemPaddingLeft" format="reference" />-->
+        <!--<attr name="listPreferredItemPaddingRight" format="reference" />-->
+        <!--<attr name="listPreferredItemHeightSmall" format="reference" />-->
     </declare-styleable>
 
     <declare-styleable name="BezelImageView">

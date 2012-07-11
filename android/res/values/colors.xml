@@ -1,5 +1,5 @@
 <!--
-  Copyright 2011 Google Inc.
+  Copyright 2012 Google Inc.
 
   Licensed under the Apache License, Version 2.0 (the "License");
   you may not use this file except in compliance with the License.
@@ -14,8 +14,6 @@
   limitations under the License.
   -->
 <resources>
-    <color name="actionbar_text">#ff29549f</color>
-
     <color name="body_text_1">#ff000000</color>
     <color name="body_text_2">#99000000</color>
     <color name="body_text_disabled">#66000000</color>
@@ -23,15 +21,21 @@
     <color name="body_text_1_inverse">#ffffffff</color>
     <color name="body_text_2_inverse">#99ffffff</color>
 
-    <color name="accent_1">#ff29549f</color>
-    <color name="hyperlink">#ffff549f</color>
-    <color name="background_1">#ffffffff</color>
+    <color name="body_text_1_positive">#ff669900</color>
+    <color name="body_text_1_negative">#ffff4444</color>
 
-    <color name="whats_on_separator">#4d000000</color>
+    <color name="accent_1">#ff4683ec</color>
 
     <color name="all_track_color">#ff222222</color>
+    <color name="home_pane_header">#99000000</color>
 
-    <color name="block_column_1">#ff0fabff</color>
-    <color name="block_column_2">#ffdf1831</color>
-    <color name="block_column_3">#ff009939</color>
+    <color name="past_background_color">#11000000</color>
+
+    <!-- Google+ -->
+    <color name="stream_name_color">#333</color>
+    <color name="stream_link_color">#ff6f8fc7</color>
+    <color name="stream_content_color">#333</color>
+    <color name="stream_reshare_line_color">#ffcccccc</color>
+    <color name="default_stream_image_background">#eee</color>
+
 </resources>

@@ -1,5 +1,5 @@
 /*
- * Copyright 2011 Google Inc.
+ * Copyright 2012 Google Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,198 +16,211 @@
 
 package com.google.android.apps.iosched.ui;
 
-import com.google.android.apps.iosched.R;
-import com.google.android.apps.iosched.provider.ScheduleContract.Sessions;
-import com.google.android.apps.iosched.provider.ScheduleContract.Vendors;
-import com.google.android.apps.iosched.ui.phone.SessionDetailActivity;
-import com.google.android.apps.iosched.ui.phone.VendorDetailActivity;
 
+import com.google.analytics.tracking.android.EasyTracker;
+import com.google.android.apps.iosched.R;
+import com.google.android.apps.iosched.provider.ScheduleContract;
+import com.google.android.apps.iosched.provider.ScheduleContract.Sessions;
+import com.google.android.apps.iosched.util.BeamUtils;
+import com.google.android.apps.iosched.util.ReflectionUtils;
+import com.google.android.apps.iosched.util.UIUtils;
+
+import com.actionbarsherlock.view.Menu;
+import com.actionbarsherlock.view.MenuItem;
+
+import android.annotation.TargetApi;
+import android.app.AlertDialog;
 import android.app.SearchManager;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.net.Uri;
+import android.nfc.NfcAdapter;
+import android.nfc.NfcEvent;
+import android.os.Build;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.FrameLayout;
-import android.widget.TabHost;
-import android.widget.TabWidget;
-import android.widget.TextView;
+import android.text.Html;
+import android.widget.SearchView;
+
+import static com.google.android.apps.iosched.util.LogUtils.LOGD;
 
 /**
- * An activity that shows session and sandbox search results. This activity can be either single
- * or multi-pane, depending on the device configuration. We want the multi-pane support that
- * {@link BaseMultiPaneActivity} offers, so we inherit from it instead of
- * {@link BaseSinglePaneActivity}.
+ * An activity that shows session search results. This activity can be either single
+ * or multi-pane, depending on the device configuration.
  */
-public class SearchActivity extends BaseMultiPaneActivity {
+public class SearchActivity extends BaseActivity implements SessionsFragment.Callbacks {
 
-    public static final String TAG_SESSIONS = "sessions";
-    public static final String TAG_VENDORS = "vendors";
-
-    private String mQuery;
-
-    private TabHost mTabHost;
-    private TabWidget mTabWidget;
+    private boolean mTwoPane;
 
     private SessionsFragment mSessionsFragment;
-    private VendorsFragment mVendorsFragment;
+    private Fragment mDetailFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        Intent intent = getIntent();        
-        mQuery = intent.getStringExtra(SearchManager.QUERY);
-
         setContentView(R.layout.activity_search);
+        mTwoPane = (findViewById(R.id.fragment_container_detail) != null);
 
-        getActivityHelper().setupActionBar(getTitle(), 0);
-        final CharSequence title = getString(R.string.title_search_query, mQuery);
-        getActivityHelper().setActionBarTitle(title);
+        FragmentManager fm = getSupportFragmentManager();
+        mSessionsFragment = (SessionsFragment) fm.findFragmentById(R.id.fragment_container_master);
+        if (mSessionsFragment == null) {
+            mSessionsFragment = new SessionsFragment();
+            fm.beginTransaction()
+                    .add(R.id.fragment_container_master, mSessionsFragment)
+                    .commit();
+        }
 
-        mTabHost = (TabHost) findViewById(android.R.id.tabhost);
-        mTabWidget = (TabWidget) findViewById(android.R.id.tabs);
-        mTabHost.setup();
-
-        setupSessionsTab();
-        setupVendorsTab();
+        mDetailFragment = fm.findFragmentById(R.id.fragment_container_detail);
+           
     }
 
     @Override
     protected void onPostCreate(Bundle savedInstanceState) {
         super.onPostCreate(savedInstanceState);
-        getActivityHelper().setupSubActivity();
-
-        ViewGroup detailContainer = (ViewGroup) findViewById(R.id.fragment_container_search_detail);
-        if (detailContainer != null && detailContainer.getChildCount() > 1) {
-            findViewById(android.R.id.empty).setVisibility(View.GONE);
-        }
+        onNewIntent(getIntent());
     }
 
     @Override
     public void onNewIntent(Intent intent) {
         setIntent(intent);
-        mQuery = intent.getStringExtra(SearchManager.QUERY);
+        String query = intent.getStringExtra(SearchManager.QUERY);
 
-        final CharSequence title = getString(R.string.title_search_query, mQuery);
-        getActivityHelper().setActionBarTitle(title);
+        setTitle(Html.fromHtml(getString(R.string.title_search_query, query)));
 
-        mTabHost.setCurrentTab(0);
+        mSessionsFragment.reloadFromArguments(intentToFragmentArguments(
+                new Intent(Intent.ACTION_VIEW, Sessions.buildSearchUri(query))));
 
-        mSessionsFragment.reloadFromArguments(getSessionsFragmentArguments());
-        mVendorsFragment.reloadFromArguments(getVendorsFragmentArguments());
-    }
-
-    /**
-     * Build and add "sessions" tab.
-     */
-    private void setupSessionsTab() {
-        // TODO: this is very inefficient and messy, clean it up
-        FrameLayout fragmentContainer = new FrameLayout(this);
-        fragmentContainer.setId(R.id.fragment_sessions);
-        fragmentContainer.setLayoutParams(
-                new ViewGroup.LayoutParams(ViewGroup.LayoutParams.FILL_PARENT,
-                        ViewGroup.LayoutParams.FILL_PARENT));
-        ((ViewGroup) findViewById(android.R.id.tabcontent)).addView(fragmentContainer);
-
-        final FragmentManager fm = getSupportFragmentManager();
-        mSessionsFragment = (SessionsFragment) fm.findFragmentByTag("sessions");
-        if (mSessionsFragment == null) {
-            mSessionsFragment = new SessionsFragment();
-            mSessionsFragment.setArguments(getSessionsFragmentArguments());
-            fm.beginTransaction()
-                    .add(R.id.fragment_sessions, mSessionsFragment, "sessions")
-                    .commit();
-        } else {
-            mSessionsFragment.reloadFromArguments(getSessionsFragmentArguments());
-        }
-
-        // Sessions content comes from reused activity
-        mTabHost.addTab(mTabHost.newTabSpec(TAG_SESSIONS)
-                .setIndicator(buildIndicator(R.string.starred_sessions))
-                .setContent(R.id.fragment_sessions));
-    }
-
-    /**
-     * Build and add "vendors" tab.
-     */
-    private void setupVendorsTab() {
-        // TODO: this is very inefficient and messy, clean it up
-        FrameLayout fragmentContainer = new FrameLayout(this);
-        fragmentContainer.setId(R.id.fragment_vendors);
-        fragmentContainer.setLayoutParams(
-                new ViewGroup.LayoutParams(ViewGroup.LayoutParams.FILL_PARENT,
-                        ViewGroup.LayoutParams.FILL_PARENT));
-        ((ViewGroup) findViewById(android.R.id.tabcontent)).addView(fragmentContainer);
-
-        final FragmentManager fm = getSupportFragmentManager();
-        mVendorsFragment = (VendorsFragment) fm.findFragmentByTag("vendors");
-        if (mVendorsFragment == null) {
-            mVendorsFragment = new VendorsFragment();
-            mVendorsFragment.setArguments(getVendorsFragmentArguments());
-            fm.beginTransaction()
-                    .add(R.id.fragment_vendors, mVendorsFragment, "vendors")
-                    .commit();
-        } else {
-            mVendorsFragment.reloadFromArguments(getVendorsFragmentArguments());
-        }
-
-        // Vendors content comes from reused activity
-        mTabHost.addTab(mTabHost.newTabSpec(TAG_VENDORS)
-                .setIndicator(buildIndicator(R.string.starred_vendors))
-                .setContent(R.id.fragment_vendors));
-    }
-
-    private Bundle getSessionsFragmentArguments() {
-        return intentToFragmentArguments(
-                new Intent(Intent.ACTION_VIEW, Sessions.buildSearchUri(mQuery)));
-    }
-
-    private Bundle getVendorsFragmentArguments() {
-        return intentToFragmentArguments(
-                new Intent(Intent.ACTION_VIEW, Vendors.buildSearchUri(mQuery)));
-    }
-
-    /**
-     * Build a {@link View} to be used as a tab indicator, setting the requested string resource as
-     * its label.
-     */
-    private View buildIndicator(int textRes) {
-        final TextView indicator = (TextView) getLayoutInflater().inflate(R.layout.tab_indicator,
-                mTabWidget, false);
-        indicator.setText(textRes);
-        return indicator;
+        EasyTracker.getTracker().trackView("Search: " + query);
+        LOGD("Tracker", "Search: " + query);
+        
+        updateDetailBackground();
     }
 
     @Override
-    public BaseMultiPaneActivity.FragmentReplaceInfo onSubstituteFragmentForActivityLaunch(
-            String activityClassName) {
-        if (findViewById(R.id.fragment_container_search_detail) != null) {
-            // The layout we currently have has a detail container, we can add fragments there.
-            findViewById(android.R.id.empty).setVisibility(View.GONE);
-            if (SessionDetailActivity.class.getName().equals(activityClassName)) {
-                clearSelectedItems();
-                return new BaseMultiPaneActivity.FragmentReplaceInfo(
-                        SessionDetailFragment.class,
-                        "session_detail",
-                        R.id.fragment_container_search_detail);
-            } else if (VendorDetailActivity.class.getName().equals(activityClassName)) {
-                clearSelectedItems();
-                return new BaseMultiPaneActivity.FragmentReplaceInfo(
-                        VendorDetailFragment.class,
-                        "vendor_detail",
-                        R.id.fragment_container_search_detail);
-            }
-        }
-        return null;
+    public boolean onCreateOptionsMenu(Menu menu) {
+        super.onCreateOptionsMenu(menu);
+        getSupportMenuInflater().inflate(R.menu.search, menu);
+        setupSearchMenuItem(menu);
+        return true;
     }
 
-    private void clearSelectedItems() {
-        if (mSessionsFragment != null) {
-            mSessionsFragment.clearCheckedPosition();
+    @TargetApi(Build.VERSION_CODES.HONEYCOMB)
+    private void setupSearchMenuItem(Menu menu) {
+        final MenuItem searchItem = menu.findItem(R.id.menu_search);
+        if (searchItem != null && UIUtils.hasHoneycomb()) {
+            SearchView searchView = (SearchView) searchItem.getActionView();
+            if (searchView != null) {
+                SearchManager searchManager = (SearchManager) getSystemService(SEARCH_SERVICE);
+                searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
+                searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+                    @Override
+                    public boolean onQueryTextSubmit(String s) {
+                        ReflectionUtils.tryInvoke(searchItem, "collapseActionView");
+                        return false;
+                    }
+
+                    @Override
+                    public boolean onQueryTextChange(String s) {
+                        return false;
+                    }
+                });
+                searchView.setOnSuggestionListener(new SearchView.OnSuggestionListener() {
+                    @Override
+                    public boolean onSuggestionSelect(int i) {
+                        return false;
+                    }
+
+                    @Override
+                    public boolean onSuggestionClick(int i) {
+                        ReflectionUtils.tryInvoke(searchItem, "collapseActionView");
+                        return false;
+                    }
+                });
+            }
         }
-        if (mVendorsFragment != null) {
-            mVendorsFragment.clearCheckedPosition();
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.menu_search:
+                if (!UIUtils.hasHoneycomb()) {
+                    startSearch(null, false, Bundle.EMPTY, false);
+                    return true;
+                }
+                break;
         }
+        return super.onOptionsItemSelected(item);
+    }
+
+    private void updateDetailBackground() {
+        if (mTwoPane) {
+            findViewById(R.id.fragment_container_detail).setBackgroundResource(
+                    (mDetailFragment == null)
+                            ? R.drawable.grey_frame_on_white_empty_sessions
+                            : R.drawable.grey_frame_on_white);
+        }
+    }
+
+    @Override
+    public boolean onSessionSelected(String sessionId) {
+        Uri sessionUri = ScheduleContract.Sessions.buildSessionUri(sessionId);
+        Intent detailIntent = new Intent(Intent.ACTION_VIEW, sessionUri);
+
+        if (mTwoPane) {
+            BeamUtils.setBeamSessionUri(this, sessionUri);
+            trySetBeamCallback();
+            SessionDetailFragment fragment = new SessionDetailFragment();
+            fragment.setArguments(BaseActivity.intentToFragmentArguments(detailIntent));
+            getSupportFragmentManager().beginTransaction()
+                    .replace(R.id.fragment_container_detail, fragment)
+                    .commit();
+            mDetailFragment = fragment;
+            updateDetailBackground();
+            return true;
+        } else {
+            startActivity(detailIntent);
+            return false;
+        }
+    }
+
+    @TargetApi(Build.VERSION_CODES.ICE_CREAM_SANDWICH)
+    private void trySetBeamCallback() {
+        if (UIUtils.hasICS()) {
+            BeamUtils.setBeamCompleteCallback(this, new NfcAdapter.OnNdefPushCompleteCallback() {
+                @Override
+                public void onNdefPushComplete(NfcEvent event) {
+                    // Beam has been sent
+                    if (!BeamUtils.isBeamUnlocked(SearchActivity.this)) {
+                        BeamUtils.setBeamUnlocked(SearchActivity.this);
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                showFirstBeamDialog();
+                            }
+                        });
+                    }
+                }
+            });
+        }
+    }
+
+    private void showFirstBeamDialog() {
+        new AlertDialog.Builder(this)
+                .setTitle(R.string.just_beamed)
+                .setMessage(R.string.beam_unlocked_session)
+                .setNegativeButton(R.string.close, null)
+                .setPositiveButton(R.string.view_beam_session,
+                        new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface di, int i) {
+                                BeamUtils.launchBeamSession(SearchActivity.this);
+                                di.dismiss();
+                            }
+                        })
+                .create()
+                .show();
     }
 }

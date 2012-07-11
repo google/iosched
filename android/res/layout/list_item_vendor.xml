@@ -1,5 +1,5 @@
 <!--
-  Copyright 2011 Google Inc.
+  Copyright 2012 Google Inc.
 
   Licensed under the Apache License, Version 2.0 (the "License");
   you may not use this file except in compliance with the License.
@@ -14,34 +14,13 @@
   limitations under the License.
   -->
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="fill_parent"
+    android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    style="@style/ListItemContainer">
+    style="@style/SimpleListItemSmall">
 
-    <ImageView android:id="@+id/star_button"
-        android:layout_gravity="top|right"
-        android:layout_width="wrap_content"
+    <TextView android:id="@+id/vendor_name"
+        android:layout_gravity="center_vertical"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:src="@drawable/indicator_starred" />
-
-    <RelativeLayout android:id="@+id/list_item_vendor"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        style="@style/ListItemContent">
-
-        <TextView android:id="@+id/vendor_name"
-            android:layout_toLeftOf="@id/star_button"
-            android:layout_alignParentLeft="true"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            style="@style/ListItemTitle" />
-
-        <TextView android:id="@+id/vendor_location"
-            android:layout_below="@id/vendor_name"
-            android:layout_toLeftOf="@id/star_button"
-            android:layout_alignParentLeft="true"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            style="@style/ListItemSubtitle" />
-    </RelativeLayout>
+        style="@style/ListItemTitle" />
 </FrameLayout>

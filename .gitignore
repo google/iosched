@@ -1,0 +1,29 @@
+# built application files
+*.apk
+*.ap_
+
+# files for the dex VM
+*.dex
+
+# Java class files
+*.class
+
+# generated files
+bin/
+gen/
+out/
+
+# Local configuration file (sdk path, etc)
+local.properties
+
+# Windows thumbnail db
+.DS_Store
+
+# Idea non-crucial project fileS
+*.idea
+*.iws
+.idea
+
+# Sandbox stuff
+_sandbox
+

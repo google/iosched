@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2011 The Android Open Source Project
+ * Copyright 2012 Google Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -26,11 +26,14 @@ import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.text.TextUtils;
-import android.util.Log;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.Map;
+
+import static com.google.android.apps.iosched.util.LogUtils.LOGV;
+import static com.google.android.apps.iosched.util.LogUtils.makeLogTag;
 
 /**
  * Helper for building selection clauses for {@link SQLiteDatabase}. Each
@@ -38,8 +41,7 @@ import java.util.Map;
  * thread safe.
  */
 public class SelectionBuilder {
-    private static final String TAG = "SelectionBuilder";
-    private static final boolean LOGV = false;
+    private static final String TAG = makeLogTag(SelectionBuilder.class);
 
     private String mTable = null;
     private Map<String, String> mProjectionMap = Maps.newHashMap();
@@ -77,9 +79,7 @@ public class SelectionBuilder {
 
         mSelection.append("(").append(selection).append(")");
         if (selectionArgs != null) {
-            for (String arg : selectionArgs) {
-                mSelectionArgs.add(arg);
-            }
+            Collections.addAll(mSelectionArgs, selectionArgs);
         }
 
         return this;
@@ -153,7 +153,7 @@ public class SelectionBuilder {
             String having, String orderBy, String limit) {
         assertTable();
         if (columns != null) mapColumns(columns);
-        if (LOGV) Log.v(TAG, "query(columns=" + Arrays.toString(columns) + ") " + this);
+        LOGV(TAG, "query(columns=" + Arrays.toString(columns) + ") " + this);
         return db.query(mTable, columns, getSelection(), getSelectionArgs(), groupBy, having,
                 orderBy, limit);
     }
@@ -163,7 +163,7 @@ public class SelectionBuilder {
      */
     public int update(SQLiteDatabase db, ContentValues values) {
         assertTable();
-        if (LOGV) Log.v(TAG, "update() " + this);
+        LOGV(TAG, "update() " + this);
         return db.update(mTable, values, getSelection(), getSelectionArgs());
     }
 
@@ -172,7 +172,7 @@ public class SelectionBuilder {
      */
     public int delete(SQLiteDatabase db) {
         assertTable();
-        if (LOGV) Log.v(TAG, "delete() " + this);
+        LOGV(TAG, "delete() " + this);
         return db.delete(mTable, getSelection(), getSelectionArgs());
     }
 }

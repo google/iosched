@@ -1,5 +1,5 @@
 <!--
-  Copyright 2011 Google Inc.
+  Copyright 2012 Google Inc.
 
   Licensed under the Apache License, Version 2.0 (the "License");
   you may not use this file except in compliance with the License.
@@ -13,32 +13,33 @@
   See the License for the specific language governing permissions and
   limitations under the License.
   -->
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="fill_parent"
+<com.google.android.apps.iosched.ui.widget.CheckableFrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    style="@style/ListItemContainer">
-    <!-- TODO: swap out with better star drawable when disabled -->
-    <ImageView android:id="@+id/star_button"
+    style="@style/ComplexListItem">
+    <ImageView android:id="@+id/indicator_in_schedule"
         android:layout_gravity="top|right"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:src="@drawable/indicator_starred" />
+        android:src="@drawable/indicator_in_schedule"
+        android:contentDescription="@string/indicator_in_schedule" />
     <RelativeLayout android:id="@+id/list_item_session"
-        android:layout_width="fill_parent"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        style="@style/ListItemContent">
+        android:minHeight="?android:listPreferredItemHeight"
+        style="@style/ComplexListItemContent">
         <TextView android:id="@+id/session_title"
-            android:layout_toLeftOf="@id/star_button"
+            android:layout_toLeftOf="@id/indicator_in_schedule"
             android:layout_alignParentLeft="true"
-            android:layout_width="fill_parent"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             style="@style/ListItemTitle" />
         <TextView android:id="@+id/session_subtitle"
             android:layout_below="@id/session_title"
-            android:layout_toLeftOf="@id/star_button"
+            android:layout_toLeftOf="@id/indicator_in_schedule"
             android:layout_alignParentLeft="true"
-            android:layout_width="fill_parent"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             style="@style/ListItemSubtitle" />
     </RelativeLayout>
-</FrameLayout>
+</com.google.android.apps.iosched.ui.widget.CheckableFrameLayout>

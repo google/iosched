@@ -1,5 +1,5 @@
 <!--
-  Copyright 2011 Google Inc.
+  Copyright 2012 Google Inc.
 
   Licensed under the Apache License, Version 2.0 (the "License");
   you may not use this file except in compliance with the License.
@@ -17,4 +17,5 @@
     android:label="@string/search_label"
     android:hint="@string/search_hint"
     android:searchSuggestAuthority="com.google.android.apps.iosched"
-    android:searchSuggestSelection="suggest_text_1 LIKE ?" />
+    android:searchSuggestSelection="suggest_text_1 LIKE ?"
+    android:voiceSearchMode="showVoiceSearchButton|launchRecognizer" />

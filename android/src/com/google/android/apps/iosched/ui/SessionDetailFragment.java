@@ -1,5 +1,5 @@
 /*
- * Copyright 2011 Google Inc.
+ * Copyright 2012 Google Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,98 +16,107 @@
 
 package com.google.android.apps.iosched.ui;
 
+import com.google.analytics.tracking.android.EasyTracker;
+import com.google.android.apps.iosched.Config;
 import com.google.android.apps.iosched.R;
+import com.google.android.apps.iosched.calendar.SessionAlarmService;
+import com.google.android.apps.iosched.calendar.SessionCalendarService;
 import com.google.android.apps.iosched.provider.ScheduleContract;
-import com.google.android.apps.iosched.util.ActivityHelper;
-import com.google.android.apps.iosched.util.AnalyticsUtils;
-import com.google.android.apps.iosched.util.BitmapUtils;
-import com.google.android.apps.iosched.util.CatchNotesHelper;
 import com.google.android.apps.iosched.util.FractionalTouchDelegate;
-import com.google.android.apps.iosched.util.NotifyingAsyncQueryHandler;
+import com.google.android.apps.iosched.util.HelpUtils;
+import com.google.android.apps.iosched.util.ImageFetcher;
+import com.google.android.apps.iosched.util.SessionsHelper;
 import com.google.android.apps.iosched.util.UIUtils;
+import com.google.api.android.plus.GooglePlus;
+import com.google.api.android.plus.PlusOneButton;
 
-import android.content.BroadcastReceiver;
-import android.content.ContentValues;
+import com.actionbarsherlock.app.SherlockFragment;
+import com.actionbarsherlock.view.Menu;
+import com.actionbarsherlock.view.MenuInflater;
+import com.actionbarsherlock.view.MenuItem;
+
 import android.content.Context;
 import android.content.Intent;
-import android.content.IntentFilter;
 import android.database.Cursor;
-import android.graphics.Bitmap;
 import android.graphics.RectF;
-import android.graphics.Typeface;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
-import android.text.Spannable;
-import android.text.SpannableStringBuilder;
+import android.support.v4.app.LoaderManager;
+import android.support.v4.content.CursorLoader;
+import android.support.v4.content.Loader;
 import android.text.TextUtils;
-import android.text.method.LinkMovementMethod;
-import android.text.style.StyleSpan;
-import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
-import android.widget.CompoundButton;
 import android.widget.ImageView;
-import android.widget.TabHost;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import static com.google.android.apps.iosched.util.LogUtils.LOGD;
+import static com.google.android.apps.iosched.util.LogUtils.makeLogTag;
 
 /**
  * A fragment that shows detail information for a session, including session title, abstract,
  * time information, speaker photos and bios, etc.
+ *
+ * <p>This fragment is used in a number of activities, including
+ * {@link com.google.android.apps.iosched.ui.phone.SessionDetailActivity},
+ * {@link com.google.android.apps.iosched.ui.tablet.SessionsVendorsMultiPaneActivity},
+ * {@link com.google.android.apps.iosched.ui.tablet.MapMultiPaneActivity}, etc.
  */
-public class SessionDetailFragment extends Fragment implements
-        NotifyingAsyncQueryHandler.AsyncQueryListener,
-        CompoundButton.OnCheckedChangeListener {
-    private static final String TAG = "SessionDetailFragment";
+public class SessionDetailFragment extends SherlockFragment implements
+        LoaderManager.LoaderCallbacks<Cursor> {
+    private static final String TAG = makeLogTag(SessionDetailFragment.class);
 
-    /**
-     * Since sessions can belong tracks, the parent activity can send this extra specifying a
-     * track URI that should be used for coloring the title-bar.
-     */
-    public static final String EXTRA_TRACK = "com.google.android.iosched.extra.TRACK";
-
-    private static final String TAG_SUMMARY = "summary";
-    private static final String TAG_NOTES = "notes";
-    private static final String TAG_LINKS = "links";
-
-    private static StyleSpan sBoldSpan = new StyleSpan(Typeface.BOLD);
+    // Set this boolean extra to true to show a variable height header
+    public static final String EXTRA_VARIABLE_HEIGHT_HEADER =
+            "com.google.android.iosched.extra.VARIABLE_HEIGHT_HEADER";
 
     private String mSessionId;
     private Uri mSessionUri;
-    private Uri mTrackUri;
 
+    private long mSessionBlockStart;
+    private long mSessionBlockEnd;
     private String mTitleString;
-    private String mHashtag;
+    private String mHashtags;
     private String mUrl;
-    private TextView mTagDisplay;
     private String mRoomId;
+    private String mRoomName;
+
+    private boolean mStarred;
+    private boolean mInitStarred;
+    private MenuItem mShareMenuItem;
+    private MenuItem mStarMenuItem;
+    private MenuItem mSocialStreamMenuItem;
 
     private ViewGroup mRootView;
-    private TabHost mTabHost;
     private TextView mTitle;
     private TextView mSubtitle;
-    private CompoundButton mStarred;
-    
+    private PlusOneButton mPlusOneButton;
+
     private TextView mAbstract;
     private TextView mRequirements;
-
-    private NotifyingAsyncQueryHandler mHandler;
 
     private boolean mSessionCursor = false;
     private boolean mSpeakersCursor = false;
     private boolean mHasSummaryContent = false;
+    private boolean mVariableHeightHeader = false;
+
+    private ImageFetcher mImageFetcher;
+    private List<Runnable> mDeferredUiOperations = new ArrayList<Runnable>();
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        GooglePlus.initialize(getActivity(), Config.API_KEY, Config.CLIENT_ID);
+
         final Intent intent = BaseActivity.fragmentArgumentsToIntent(getArguments());
         mSessionUri = intent.getData();
-        mTrackUri = resolveTrackUri(intent);
 
         if (mSessionUri == null) {
             return;
@@ -115,45 +124,18 @@ public class SessionDetailFragment extends Fragment implements
 
         mSessionId = ScheduleContract.Sessions.getSessionId(mSessionUri);
 
+        mVariableHeightHeader = intent.getBooleanExtra(EXTRA_VARIABLE_HEIGHT_HEADER, false);
+
+        LoaderManager manager = getLoaderManager();
+        manager.restartLoader(SessionsQuery._TOKEN, null, this);
+        manager.restartLoader(SpeakersQuery._TOKEN, null, this);
+
+        mImageFetcher = UIUtils.getImageFetcher(getActivity());
+        mImageFetcher.setImageFadeIn(false);
+
         setHasOptionsMenu(true);
-    }
 
-    @Override
-    public void onResume() {
-        super.onResume();
-        updateNotesTab();
-
-        // Start listening for time updates to adjust "now" bar. TIME_TICK is
-        // triggered once per minute, which is how we move the bar over time.
-        final IntentFilter filter = new IntentFilter();
-        filter.addAction(Intent.ACTION_PACKAGE_ADDED);
-        filter.addAction(Intent.ACTION_PACKAGE_REMOVED);
-        filter.addAction(Intent.ACTION_PACKAGE_REPLACED);
-        filter.addDataScheme("package");
-        getActivity().registerReceiver(mPackageChangesReceiver, filter);
-    }
-
-    @Override
-    public void onPause() {
-        super.onPause();
-        getActivity().unregisterReceiver(mPackageChangesReceiver);
-    }
-
-    @Override
-    public void onActivityCreated(Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-
-        if (mSessionUri == null) {
-            return;
-        }
-
-        // Start background queries to load session and track details
-        final Uri speakersUri = ScheduleContract.Sessions.buildSpeakersDirUri(mSessionId);
-
-        mHandler = new NotifyingAsyncQueryHandler(getActivity().getContentResolver(), this);
-        mHandler.startQuery(SessionsQuery._TOKEN, mSessionUri, SessionsQuery.PROJECTION);
-        mHandler.startQuery(TracksQuery._TOKEN, mTrackUri, TracksQuery.PROJECTION);
-        mHandler.startQuery(SpeakersQuery._TOKEN, speakersUri, SpeakersQuery.PROJECTION);
+        HelpUtils.maybeShowAddToScheduleTutorial(getActivity());
     }
 
     @Override
@@ -161,346 +143,405 @@ public class SessionDetailFragment extends Fragment implements
             Bundle savedInstanceState) {
 
         mRootView = (ViewGroup) inflater.inflate(R.layout.fragment_session_detail, null);
-        mTabHost = (TabHost) mRootView.findViewById(android.R.id.tabhost);
-        mTabHost.setup();
 
         mTitle = (TextView) mRootView.findViewById(R.id.session_title);
         mSubtitle = (TextView) mRootView.findViewById(R.id.session_subtitle);
-        mStarred = (CompoundButton) mRootView.findViewById(R.id.star_button);
 
-        mStarred.setFocusable(true);
-        mStarred.setClickable(true);
-
-        // Larger target triggers star toggle
-        final View starParent = mRootView.findViewById(R.id.header_session);
-        FractionalTouchDelegate.setupDelegate(starParent, mStarred, new RectF(0.6f, 0f, 1f, 0.8f));
+        // Larger target triggers plus one button
+        mPlusOneButton = (PlusOneButton) mRootView.findViewById(R.id.plus_one_button);
+        final View plusOneParent = mRootView.findViewById(R.id.header_session);
+        FractionalTouchDelegate.setupDelegate(plusOneParent, mPlusOneButton,
+                new RectF(0.6f, 0f, 1f, 1.0f));
 
         mAbstract = (TextView) mRootView.findViewById(R.id.session_abstract);
         mRequirements = (TextView) mRootView.findViewById(R.id.session_requirements);
 
-        setupSummaryTab();
-        setupNotesTab();
-        setupLinksTab();
+        if (mVariableHeightHeader) {
+            View headerView = mRootView.findViewById(R.id.header_session);
+            ViewGroup.LayoutParams layoutParams = headerView.getLayoutParams();
+            layoutParams.height = ViewGroup.LayoutParams.WRAP_CONTENT;
+            headerView.setLayoutParams(layoutParams);
+        }
 
         return mRootView;
     }
 
-    /**
-     * Build and add "summary" tab.
-     */
-    private void setupSummaryTab() {
-        // Summary content comes from existing layout
-        mTabHost.addTab(mTabHost.newTabSpec(TAG_SUMMARY)
-                .setIndicator(buildIndicator(R.string.session_summary))
-                .setContent(R.id.tab_session_summary));
-    }
+    @Override
+    public void onStop() {
+        super.onStop();
 
-    /**
-     * Build a {@link View} to be used as a tab indicator, setting the requested string resource as
-     * its label.
-     *
-     * @param textRes
-     * @return View
-     */
-    private View buildIndicator(int textRes) {
-        final TextView indicator = (TextView) getActivity().getLayoutInflater()
-                .inflate(R.layout.tab_indicator,
-                        (ViewGroup) mRootView.findViewById(android.R.id.tabs), false);
-        indicator.setText(textRes);
-        return indicator;
-    }
+        if (mImageFetcher != null) {
+            mImageFetcher.closeCache();
+        }
 
-    /**
-     * Derive {@link com.google.android.apps.iosched.provider.ScheduleContract.Tracks#CONTENT_ITEM_TYPE}
-     * {@link Uri} based on incoming {@link Intent}, using
-     * {@link #EXTRA_TRACK} when set.
-     * @param intent
-     * @return Uri
-     */
-    private Uri resolveTrackUri(Intent intent) {
-        final Uri trackUri = intent.getParcelableExtra(EXTRA_TRACK);
-        if (trackUri != null) {
-            return trackUri;
-        } else {
-            return ScheduleContract.Sessions.buildTracksDirUri(mSessionId);
+        if (mInitStarred != mStarred) {
+            // Update Calendar event through the Calendar API on Android 4.0 or new versions.
+            if (UIUtils.hasICS()) {
+                Intent intent;
+                if (mStarred) {
+                    // Set up intent to add session to Calendar, if it doesn't exist already.
+                    intent = new Intent(SessionCalendarService.ACTION_ADD_SESSION_CALENDAR,
+                            mSessionUri);
+                    intent.putExtra(SessionCalendarService.EXTRA_SESSION_BLOCK_START,
+                            mSessionBlockStart);
+                    intent.putExtra(SessionCalendarService.EXTRA_SESSION_BLOCK_END,
+                            mSessionBlockEnd);
+                    intent.putExtra(SessionCalendarService.EXTRA_SESSION_ROOM, mRoomName);
+                    intent.putExtra(SessionCalendarService.EXTRA_SESSION_TITLE, mTitleString);
+
+                } else {
+                    // Set up intent to remove session from Calendar, if exists.
+                    intent = new Intent(SessionCalendarService.ACTION_REMOVE_SESSION_CALENDAR,
+                            mSessionUri);
+                    intent.putExtra(SessionCalendarService.EXTRA_SESSION_BLOCK_START,
+                            mSessionBlockStart);
+                    intent.putExtra(SessionCalendarService.EXTRA_SESSION_BLOCK_END,
+                            mSessionBlockEnd);
+                    intent.putExtra(SessionCalendarService.EXTRA_SESSION_TITLE, mTitleString);
+                }
+                intent.setClass(getActivity(), SessionCalendarService.class);
+                getActivity().startService(intent);
+            }
+
+            if (mStarred && System.currentTimeMillis() < mSessionBlockStart) {
+                setupNotification();
+            }
         }
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    public void onQueryComplete(int token, Object cookie, Cursor cursor) {
-        if (getActivity() == null) {
-            return;
-        }
-
-        if (token == SessionsQuery._TOKEN) {
-            onSessionQueryComplete(cursor);
-        } else if (token == TracksQuery._TOKEN) {
-            onTrackQueryComplete(cursor);
-        } else if (token == SpeakersQuery._TOKEN) {
-            onSpeakersQueryComplete(cursor);
-        } else {
-            cursor.close();
-        }
+    private void setupNotification() {
+        // Schedule an alarm that fires a system notification when expires.
+        final Context ctx = getActivity();
+        Intent scheduleIntent = new Intent(
+                SessionAlarmService.ACTION_SCHEDULE_STARRED_BLOCK,
+                null, ctx, SessionAlarmService.class);
+        scheduleIntent.putExtra(SessionAlarmService.EXTRA_SESSION_START, mSessionBlockStart);
+        scheduleIntent.putExtra(SessionAlarmService.EXTRA_SESSION_END, mSessionBlockEnd);
+        ctx.startService(scheduleIntent);
     }
 
     /**
      * Handle {@link SessionsQuery} {@link Cursor}.
      */
     private void onSessionQueryComplete(Cursor cursor) {
-        try {
-            mSessionCursor = true;
-            if (!cursor.moveToFirst()) {
-                return;
-            }
+        mSessionCursor = true;
+        if (!cursor.moveToFirst()) {
+            return;
+        }
 
-            // Format time block this session occupies
-            final long blockStart = cursor.getLong(SessionsQuery.BLOCK_START);
-            final long blockEnd = cursor.getLong(SessionsQuery.BLOCK_END);
-            final String roomName = cursor.getString(SessionsQuery.ROOM_NAME);
-            final String subtitle = UIUtils.formatSessionSubtitle(blockStart,
-                    blockEnd, roomName, getActivity());
+        mTitleString = cursor.getString(SessionsQuery.TITLE);
 
-            mTitleString = cursor.getString(SessionsQuery.TITLE);
-            mTitle.setText(mTitleString);
-            mSubtitle.setText(subtitle);
+        // Format time block this session occupies
+        mSessionBlockStart = cursor.getLong(SessionsQuery.BLOCK_START);
+        mSessionBlockEnd = cursor.getLong(SessionsQuery.BLOCK_END);
+        mRoomName = cursor.getString(SessionsQuery.ROOM_NAME);
+        final String subtitle = UIUtils.formatSessionSubtitle(
+                mTitleString, mSessionBlockStart, mSessionBlockEnd, mRoomName, getActivity());
 
-            mUrl = cursor.getString(SessionsQuery.URL);
-            if (TextUtils.isEmpty(mUrl)) {
-                mUrl = "";
-            }
+        mTitle.setText(mTitleString);
 
-            mHashtag = cursor.getString(SessionsQuery.HASHTAG);
-            mTagDisplay = (TextView) mRootView.findViewById(R.id.session_tags_button);
-            if (!TextUtils.isEmpty(mHashtag)) {
-                // Create the button text
-                SpannableStringBuilder sb = new SpannableStringBuilder();
-                sb.append(getString(R.string.tag_stream) + " ");
-                int boldStart = sb.length();
-                sb.append(getHashtagsString());
-                sb.setSpan(sBoldSpan, boldStart, sb.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+        mUrl = cursor.getString(SessionsQuery.URL);
+        if (TextUtils.isEmpty(mUrl)) {
+            mUrl = "";
+        }
 
-                mTagDisplay.setText(sb);
+        mHashtags = cursor.getString(SessionsQuery.HASHTAGS);
+        if (!TextUtils.isEmpty(mHashtags)) {
+            enableSocialStreamMenuItemDeferred();
+        }
 
-                mTagDisplay.setOnClickListener(new View.OnClickListener() {
-                    public void onClick(View v) {
-                        Intent intent = new Intent(getActivity(), TagStreamActivity.class);
-                        intent.putExtra(TagStreamFragment.EXTRA_QUERY, getHashtagsString());
-                        startActivity(intent);
+        mRoomId = cursor.getString(SessionsQuery.ROOM_ID);
+
+        setupShareMenuItemDeferred();
+        showStarredDeferred(mInitStarred = (cursor.getInt(SessionsQuery.STARRED) != 0));
+
+        final String sessionAbstract = cursor.getString(SessionsQuery.ABSTRACT);
+        if (!TextUtils.isEmpty(sessionAbstract)) {
+            UIUtils.setTextMaybeHtml(mAbstract, sessionAbstract);
+            mAbstract.setVisibility(View.VISIBLE);
+            mHasSummaryContent = true;
+        } else {
+            mAbstract.setVisibility(View.GONE);
+        }
+
+        mPlusOneButton.setSize(PlusOneButton.Size.TALL);
+        String url = cursor.getString(SessionsQuery.URL);
+        if (TextUtils.isEmpty(url)) {
+            mPlusOneButton.setVisibility(View.GONE);
+        } else {
+            mPlusOneButton.setUrl(url);
+        }
+
+        final View requirementsBlock = mRootView.findViewById(R.id.session_requirements_block);
+        final String sessionRequirements = cursor.getString(SessionsQuery.REQUIREMENTS);
+        if (!TextUtils.isEmpty(sessionRequirements)) {
+            UIUtils.setTextMaybeHtml(mRequirements, sessionRequirements);
+            requirementsBlock.setVisibility(View.VISIBLE);
+            mHasSummaryContent = true;
+        } else {
+            requirementsBlock.setVisibility(View.GONE);
+        }
+
+        // Show empty message when all data is loaded, and nothing to show
+        if (mSpeakersCursor && !mHasSummaryContent) {
+            mRootView.findViewById(android.R.id.empty).setVisibility(View.VISIBLE);
+        }
+
+        ViewGroup linksContainer = (ViewGroup) mRootView.findViewById(R.id.links_container);
+        linksContainer.removeAllViews();
+
+        LayoutInflater inflater = getLayoutInflater(null);
+
+        boolean hasLinks = false;
+
+        final Context context = mRootView.getContext();
+
+        // Render I/O live link
+        final boolean hasLivestream = !TextUtils.isEmpty(
+                cursor.getString(SessionsQuery.LIVESTREAM_URL));
+        long currentTimeMillis = UIUtils.getCurrentTime(context);
+        if (UIUtils.hasHoneycomb() // Needs Honeycomb+ for the live stream
+                && hasLivestream
+                && currentTimeMillis > mSessionBlockStart
+                && currentTimeMillis <= mSessionBlockEnd) {
+            hasLinks = true;
+
+            // Create the link item
+            ViewGroup linkContainer = (ViewGroup)
+                    inflater.inflate(R.layout.list_item_session_link, linksContainer, false);
+            ((TextView) linkContainer.findViewById(R.id.link_text)).setText(
+                    R.string.session_link_livestream);
+            linkContainer.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    fireLinkEvent(R.string.session_link_livestream);
+                    Intent livestreamIntent = new Intent(Intent.ACTION_VIEW, mSessionUri);
+                    livestreamIntent.setClass(context, SessionLivestreamActivity.class);
+                    startActivity(livestreamIntent);
+                }
+            });
+
+            linksContainer.addView(linkContainer);
+        }
+
+        // Render normal links
+        for (int i = 0; i < SessionsQuery.LINKS_INDICES.length; i++) {
+            final String linkUrl = cursor.getString(SessionsQuery.LINKS_INDICES[i]);
+            if (!TextUtils.isEmpty(linkUrl)) {
+                hasLinks = true;
+
+                // Create the link item
+                ViewGroup linkContainer = (ViewGroup)
+                        inflater.inflate(R.layout.list_item_session_link, linksContainer, false);
+                ((TextView) linkContainer.findViewById(R.id.link_text)).setText(
+                        SessionsQuery.LINKS_TITLES[i]);
+                final int linkTitleIndex = i;
+                linkContainer.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        fireLinkEvent(SessionsQuery.LINKS_TITLES[linkTitleIndex]);
+                        Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(linkUrl));
+                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_WHEN_TASK_RESET);
+                        UIUtils.safeOpenLink(context, intent);
                     }
                 });
-            } else {
-                mTagDisplay.setVisibility(View.GONE);
+
+                linksContainer.addView(linkContainer);
             }
-
-            mRoomId = cursor.getString(SessionsQuery.ROOM_ID);
-
-            // Unregister around setting checked state to avoid triggering
-            // listener since change isn't user generated.
-            mStarred.setOnCheckedChangeListener(null);
-            mStarred.setChecked(cursor.getInt(SessionsQuery.STARRED) != 0);
-            mStarred.setOnCheckedChangeListener(this);
-
-            final String sessionAbstract = cursor.getString(SessionsQuery.ABSTRACT);
-            if (!TextUtils.isEmpty(sessionAbstract)) {
-                UIUtils.setTextMaybeHtml(mAbstract, sessionAbstract);
-                mAbstract.setVisibility(View.VISIBLE);
-                mHasSummaryContent = true;
-            } else {
-                mAbstract.setVisibility(View.GONE);
-            }
-
-            final View requirementsBlock = mRootView.findViewById(R.id.session_requirements_block);
-            final String sessionRequirements = cursor.getString(SessionsQuery.REQUIREMENTS);
-            if (!TextUtils.isEmpty(sessionRequirements)) {
-                UIUtils.setTextMaybeHtml(mRequirements, sessionRequirements);
-                requirementsBlock.setVisibility(View.VISIBLE);
-                mHasSummaryContent = true;
-            } else {
-                requirementsBlock.setVisibility(View.GONE);
-            }
-
-            // Show empty message when all data is loaded, and nothing to show
-            if (mSpeakersCursor && !mHasSummaryContent) {
-                mRootView.findViewById(android.R.id.empty).setVisibility(View.VISIBLE);
-            }
-
-            AnalyticsUtils.getInstance(getActivity()).trackPageView("/Sessions/" + mTitleString);
-
-            updateLinksTab(cursor);
-            updateNotesTab();
-
-        } finally {
-            cursor.close();
         }
+
+        // Show past/present/future and livestream status for this block.
+        UIUtils.updateTimeAndLivestreamBlockUI(context,
+                mSessionBlockStart, mSessionBlockEnd, hasLivestream,
+                null, null, mSubtitle, subtitle);
+        mRootView.findViewById(R.id.session_links_block)
+                .setVisibility(hasLinks ? View.VISIBLE : View.GONE);
+        
+        EasyTracker.getTracker().trackView("Session: " + mTitleString);
+        LOGD("Tracker", "Session: " + mTitleString);
     }
 
-    /**
-     * Handle {@link TracksQuery} {@link Cursor}.
-     */
-    private void onTrackQueryComplete(Cursor cursor) {
-        try {
-            if (!cursor.moveToFirst()) {
-                return;
+    private void enableSocialStreamMenuItemDeferred() {
+        mDeferredUiOperations.add(new Runnable() {
+            @Override
+            public void run() {
+                mSocialStreamMenuItem.setVisible(true);
             }
+        });
+        tryExecuteDeferredUiOperations();
+    }
 
-            // Use found track to build title-bar
-            ActivityHelper activityHelper = ((BaseActivity) getActivity()).getActivityHelper();
-            activityHelper.setActionBarTitle(cursor.getString(TracksQuery.TRACK_NAME));
-            activityHelper.setActionBarColor(cursor.getInt(TracksQuery.TRACK_COLOR));
-        } finally {
-            cursor.close();
+    private void showStarredDeferred(final boolean starred) {
+        mDeferredUiOperations.add(new Runnable() {
+            @Override
+            public void run() {
+                showStarred(starred);
+            }
+        });
+        tryExecuteDeferredUiOperations();
+    }
+
+    private void showStarred(boolean starred) {
+        mStarMenuItem.setTitle(starred
+                ? R.string.description_remove_schedule
+                : R.string.description_add_schedule);
+        mStarMenuItem.setIcon(starred
+                ? R.drawable.ic_action_remove_schedule
+                : R.drawable.ic_action_add_schedule);
+        mStarred = starred;
+    }
+
+    private void setupShareMenuItemDeferred() {
+        mDeferredUiOperations.add(new Runnable() {
+            @Override
+            public void run() {
+                new SessionsHelper(getActivity())
+                        .tryConfigureShareMenuItem(mShareMenuItem, R.string.share_template,
+                                mTitleString, mHashtags, mUrl);
+            }
+        });
+        tryExecuteDeferredUiOperations();
+    }
+
+    private void tryExecuteDeferredUiOperations() {
+        if (mStarMenuItem != null && mSocialStreamMenuItem != null) {
+            for (Runnable r : mDeferredUiOperations) {
+                r.run();
+            }
+            mDeferredUiOperations.clear();
         }
     }
 
     private void onSpeakersQueryComplete(Cursor cursor) {
-        try {
-            mSpeakersCursor = true;
-            // TODO: remove any existing speakers from layout, since this cursor
-            // might be from a data change notification.
-            final ViewGroup speakersGroup = (ViewGroup)
-                    mRootView.findViewById(R.id.session_speakers_block);
-            final LayoutInflater inflater = getActivity().getLayoutInflater();
+        mSpeakersCursor = true;
+        // TODO: remove existing speakers from layout, since this cursor might be from a data change
+        final ViewGroup speakersGroup = (ViewGroup)
+                mRootView.findViewById(R.id.session_speakers_block);
+        final LayoutInflater inflater = getActivity().getLayoutInflater();
 
-            boolean hasSpeakers = false;
+        boolean hasSpeakers = false;
 
-            while (cursor.moveToNext()) {
-                final String speakerName = cursor.getString(SpeakersQuery.SPEAKER_NAME);
-                if (TextUtils.isEmpty(speakerName)) {
-                    continue;
-                }
-
-                final String speakerImageUrl = cursor.getString(SpeakersQuery.SPEAKER_IMAGE_URL);
-                final String speakerCompany = cursor.getString(SpeakersQuery.SPEAKER_COMPANY);
-                final String speakerUrl = cursor.getString(SpeakersQuery.SPEAKER_URL);
-                final String speakerAbstract = cursor.getString(SpeakersQuery.SPEAKER_ABSTRACT);
-
-                String speakerHeader = speakerName;
-                if (!TextUtils.isEmpty(speakerCompany)) {
-                    speakerHeader += ", " + speakerCompany;
-                }
-
-                final View speakerView = inflater
-                        .inflate(R.layout.speaker_detail, speakersGroup, false);
-                final TextView speakerHeaderView = (TextView) speakerView
-                        .findViewById(R.id.speaker_header);
-                final ImageView speakerImgView = (ImageView) speakerView
-                        .findViewById(R.id.speaker_image);
-                final TextView speakerUrlView = (TextView) speakerView
-                        .findViewById(R.id.speaker_url);
-                final TextView speakerAbstractView = (TextView) speakerView
-                        .findViewById(R.id.speaker_abstract);
-
-                if (!TextUtils.isEmpty(speakerImageUrl)) {
-                    BitmapUtils.fetchImage(getActivity(), speakerImageUrl, null, null,
-                            new BitmapUtils.OnFetchCompleteListener() {
-                                public void onFetchComplete(Object cookie, Bitmap result) {
-                                    if (result != null) {
-                                        speakerImgView.setImageBitmap(result);
-                                    }
-                                }
-                            });
-                }
-
-                speakerHeaderView.setText(speakerHeader);
-                UIUtils.setTextMaybeHtml(speakerAbstractView, speakerAbstract);
-
-                if (!TextUtils.isEmpty(speakerUrl)) {
-                    UIUtils.setTextMaybeHtml(speakerUrlView, speakerUrl);
-                    speakerUrlView.setVisibility(View.VISIBLE);
-                } else {
-                    speakerUrlView.setVisibility(View.GONE);
-                }
-
-                speakersGroup.addView(speakerView);
-                hasSpeakers = true;
-                mHasSummaryContent = true;
+        while (cursor.moveToNext()) {
+            final String speakerName = cursor.getString(SpeakersQuery.SPEAKER_NAME);
+            if (TextUtils.isEmpty(speakerName)) {
+                continue;
             }
 
-            speakersGroup.setVisibility(hasSpeakers ? View.VISIBLE : View.GONE);
+            final String speakerImageUrl = cursor.getString(SpeakersQuery.SPEAKER_IMAGE_URL);
+            final String speakerCompany = cursor.getString(SpeakersQuery.SPEAKER_COMPANY);
+            final String speakerUrl = cursor.getString(SpeakersQuery.SPEAKER_URL);
+            final String speakerAbstract = cursor.getString(SpeakersQuery.SPEAKER_ABSTRACT);
 
-            // Show empty message when all data is loaded, and nothing to show
-            if (mSessionCursor && !mHasSummaryContent) {
-                mRootView.findViewById(android.R.id.empty).setVisibility(View.VISIBLE);
+            String speakerHeader = speakerName;
+            if (!TextUtils.isEmpty(speakerCompany)) {
+                speakerHeader += ", " + speakerCompany;
             }
-        } finally {
-            if (null != cursor) {
-                cursor.close();
+
+            final View speakerView = inflater
+                    .inflate(R.layout.speaker_detail, speakersGroup, false);
+            final TextView speakerHeaderView = (TextView) speakerView
+                    .findViewById(R.id.speaker_header);
+            final ImageView speakerImageView = (ImageView) speakerView
+                    .findViewById(R.id.speaker_image);
+            final TextView speakerAbstractView = (TextView) speakerView
+                    .findViewById(R.id.speaker_abstract);
+
+            if (!TextUtils.isEmpty(speakerImageUrl)) {
+                mImageFetcher.loadThumbnailImage(speakerImageUrl, speakerImageView,
+                        R.drawable.person_image_empty);
             }
+
+            speakerHeaderView.setText(speakerHeader);
+            speakerImageView.setContentDescription(
+                    getString(R.string.speaker_googleplus_profile, speakerHeader));
+            UIUtils.setTextMaybeHtml(speakerAbstractView, speakerAbstract);
+
+            if (!TextUtils.isEmpty(speakerUrl)) {
+                speakerImageView.setEnabled(true);
+                speakerImageView.setOnClickListener(new OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        Intent speakerProfileIntent = new Intent(Intent.ACTION_VIEW,
+                                Uri.parse(speakerUrl));
+                        speakerProfileIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_WHEN_TASK_RESET);
+                        UIUtils.preferPackageForIntent(getActivity(), speakerProfileIntent,
+                                UIUtils.GOOGLE_PLUS_PACKAGE_NAME);
+                        UIUtils.safeOpenLink(getActivity(), speakerProfileIntent);
+                    }
+                });
+            } else {
+                speakerImageView.setEnabled(false);
+                speakerImageView.setOnClickListener(null);
+            }
+
+            speakersGroup.addView(speakerView);
+            hasSpeakers = true;
+            mHasSummaryContent = true;
+        }
+
+        speakersGroup.setVisibility(hasSpeakers ? View.VISIBLE : View.GONE);
+
+        // Show empty message when all data is loaded, and nothing to show
+        if (mSessionCursor && !mHasSummaryContent) {
+            mRootView.findViewById(android.R.id.empty).setVisibility(View.VISIBLE);
         }
     }
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        inflater.inflate(R.menu.session_detail_menu_items, menu);
+        inflater.inflate(R.menu.session_detail, menu);
+        mStarMenuItem = menu.findItem(R.id.menu_star);
+        mSocialStreamMenuItem = menu.findItem(R.id.menu_social_stream);
+        mShareMenuItem = menu.findItem(R.id.menu_share);
+        tryExecuteDeferredUiOperations();
         super.onCreateOptionsMenu(menu, inflater);
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        final String shareString;
-        final Intent intent;
-
+        SessionsHelper helper = new SessionsHelper(getActivity());
         switch (item.getItemId()) {
-            case R.id.menu_map:
-                intent = new Intent(getActivity().getApplicationContext(),
-                        UIUtils.getMapActivityClass(getActivity()));
-                intent.putExtra(MapFragment.EXTRA_ROOM, mRoomId);
-                startActivity(intent);
+            case R.id.menu_map:                
+                EasyTracker.getTracker().trackEvent(
+                        "Session", "Map", mTitleString, 0L);
+                LOGD("Tracker", "Map: " + mTitleString);
+                
+                helper.startMapActivity(mRoomId);
+                return true;
+
+            case R.id.menu_star:
+                boolean star = !mStarred;
+                showStarred(star);
+                helper.setSessionStarred(mSessionUri, star, mTitleString);
+                Toast.makeText(
+                        getActivity(),
+                        getResources().getQuantityString(star
+                                ? R.plurals.toast_added_to_schedule
+                                : R.plurals.toast_removed_from_schedule, 1, 1),
+                        Toast.LENGTH_SHORT).show();
+                
+                EasyTracker.getTracker().trackEvent(
+                        "Session", star ? "Starred" : "Unstarred", mTitleString, 0L);
+                LOGD("Tracker", (star ? "Starred: " : "Unstarred: ") + mTitleString);
+
                 return true;
 
             case R.id.menu_share:
-                // TODO: consider bringing in shortlink to session
-                shareString = getString(R.string.share_template, mTitleString, getHashtagsString(),
-                        mUrl);
-                intent = new Intent(Intent.ACTION_SEND);
-                intent.setType("text/plain");
-                intent.putExtra(Intent.EXTRA_TEXT, shareString);
-                startActivity(Intent.createChooser(intent, getText(R.string.title_share)));
+                // On ICS+ devices, we normally won't reach this as ShareActionProvider will handle
+                // sharing.
+                helper.shareSession(getActivity(), R.string.share_template, mTitleString,
+                        mHashtags, mUrl);
+                return true;
+
+            case R.id.menu_social_stream:
+                EasyTracker.getTracker().trackEvent(
+                        "Session", "Stream", mTitleString, 0L);
+                LOGD("Tracker", "Stream: " + mTitleString);
+
+                helper.startSocialStream(UIUtils.getSessionHashtagsString(mHashtags));
                 return true;
         }
         return super.onOptionsItemSelected(item);
-    }
-
-    /**
-     * Handle toggling of starred checkbox.
-     */
-    public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-        final ContentValues values = new ContentValues();
-        values.put(ScheduleContract.Sessions.SESSION_STARRED, isChecked ? 1 : 0);
-        mHandler.startUpdate(mSessionUri, values);
-
-        // Because change listener is set to null during initialization, these won't fire on
-        // pageview.
-        AnalyticsUtils.getInstance(getActivity()).trackEvent(
-                "Sandbox", isChecked ? "Starred" : "Unstarred", mTitleString, 0);
-    }
-
-    /**
-     * Build and add "notes" tab.
-     */
-    private void setupNotesTab() {
-        // Make powered-by clickable
-        ((TextView) mRootView.findViewById(R.id.notes_powered_by)).setMovementMethod(
-                LinkMovementMethod.getInstance());
-
-        // Setup tab
-        mTabHost.addTab(mTabHost.newTabSpec(TAG_NOTES)
-                .setIndicator(buildIndicator(R.string.session_notes))
-                .setContent(R.id.tab_session_notes));
-    }
-
-    /*
-     * Event structure:
-     * Category -> "Session Details"
-     * Action -> "Create Note", "View Note", etc
-     * Label -> Session's Title
-     * Value -> 0.
-     */
-    public void fireNotesEvent(int actionId) {
-        AnalyticsUtils.getInstance(getActivity()).trackEvent(
-                "Session Details", getActivity().getString(actionId), mTitleString, 0);
     }
 
     /*
@@ -511,140 +552,43 @@ public class SessionDetailFragment extends Fragment implements
      * Value -> 0.
      */
     public void fireLinkEvent(int actionId) {
-        AnalyticsUtils.getInstance(getActivity()).trackEvent(
-                "Link Details", getActivity().getString(actionId), mTitleString, 0);
+        EasyTracker.getTracker().trackEvent(
+                "Session", getActivity().getString(actionId), mTitleString, 0L);
+        LOGD("Tracker", getActivity().getString(actionId) + ": " + mTitleString);
     }
 
-    private void updateNotesTab() {
-        final CatchNotesHelper helper = new CatchNotesHelper(getActivity());
-        final boolean notesInstalled = helper.isNotesInstalledAndMinimumVersion();
+	@Override
+	public Loader<Cursor> onCreateLoader(int id, Bundle data) {
+		CursorLoader loader = null;
+		if (id == SessionsQuery._TOKEN){
+			loader = new CursorLoader(getActivity(), mSessionUri, SessionsQuery.PROJECTION, null, 
+					null, null);
+		} else if (id == SpeakersQuery._TOKEN  && mSessionUri != null){
+			Uri speakersUri = ScheduleContract.Sessions.buildSpeakersDirUri(mSessionId);
+			loader = new CursorLoader(getActivity(), speakersUri, SpeakersQuery.PROJECTION, null, 
+					null, null);
+		}
+		return loader;
+	}
 
-        final Intent marketIntent = helper.notesMarketIntent();
-        final Intent newIntent = helper.createNoteIntent(
-                getString(R.string.note_template, mTitleString, getHashtagsString()));
-        
-        final Intent viewIntent = helper.viewNotesIntent(getHashtagsString());
-
-        // Set icons and click listeners
-        ((ImageView) mRootView.findViewById(R.id.notes_catch_market_icon)).setImageDrawable(
-                UIUtils.getIconForIntent(getActivity(), marketIntent));
-        ((ImageView) mRootView.findViewById(R.id.notes_catch_new_icon)).setImageDrawable(
-                UIUtils.getIconForIntent(getActivity(), newIntent));
-        ((ImageView) mRootView.findViewById(R.id.notes_catch_view_icon)).setImageDrawable(
-                UIUtils.getIconForIntent(getActivity(), viewIntent));
-
-        // Set click listeners
-        mRootView.findViewById(R.id.notes_catch_market_link).setOnClickListener(
-                new View.OnClickListener() {
-                    public void onClick(View view) {
-                        startActivity(marketIntent);
-                        fireNotesEvent(R.string.notes_catch_market_title);
-                    }
-                });
-
-        mRootView.findViewById(R.id.notes_catch_new_link).setOnClickListener(
-                new View.OnClickListener() {
-                    public void onClick(View view) {
-                        startActivity(newIntent);
-                        fireNotesEvent(R.string.notes_catch_new_title);
-                    }
-                });
-
-        mRootView.findViewById(R.id.notes_catch_view_link).setOnClickListener(
-                new View.OnClickListener() {
-                    public void onClick(View view) {
-                        startActivity(viewIntent);
-                        fireNotesEvent(R.string.notes_catch_view_title);
-                    }
-                });
-
-        // Show/hide elements
-        mRootView.findViewById(R.id.notes_catch_market_link).setVisibility(
-                notesInstalled ? View.GONE : View.VISIBLE);
-        mRootView.findViewById(R.id.notes_catch_market_separator).setVisibility(
-                notesInstalled ? View.GONE : View.VISIBLE);
-
-        mRootView.findViewById(R.id.notes_catch_new_link).setVisibility(
-                !notesInstalled ? View.GONE : View.VISIBLE);
-        mRootView.findViewById(R.id.notes_catch_new_separator).setVisibility(
-                !notesInstalled ? View.GONE : View.VISIBLE);
-
-        mRootView.findViewById(R.id.notes_catch_view_link).setVisibility(
-                !notesInstalled ? View.GONE : View.VISIBLE);
-        mRootView.findViewById(R.id.notes_catch_view_separator).setVisibility(
-                !notesInstalled ? View.GONE : View.VISIBLE);
-    }
-
-    /**
-     * Build and add "summary" tab.
-     */
-    private void setupLinksTab() {
-        // Summary content comes from existing layout
-        mTabHost.addTab(mTabHost.newTabSpec(TAG_LINKS)
-                .setIndicator(buildIndicator(R.string.session_links))
-                .setContent(R.id.tab_session_links));
-    }
-
-    private void updateLinksTab(Cursor cursor) {
-        ViewGroup container = (ViewGroup) mRootView.findViewById(R.id.links_container);
-
-        // Remove all views but the 'empty' view
-        int childCount = container.getChildCount();
-        if (childCount > 1) {
-            container.removeViews(1, childCount - 1);
+	@Override
+	public void onLoadFinished(Loader<Cursor> loader, Cursor cursor) {
+        if (getActivity() == null) {
+            return;
         }
 
-        LayoutInflater inflater = getLayoutInflater(null);
-
-        boolean hasLinks = false;
-        for (int i = 0; i < SessionsQuery.LINKS_INDICES.length; i++) {
-            final String url = cursor.getString(SessionsQuery.LINKS_INDICES[i]);
-            if (!TextUtils.isEmpty(url)) {
-                hasLinks = true;
-                ViewGroup linkContainer = (ViewGroup)
-                        inflater.inflate(R.layout.list_item_session_link, container, false);
-                ((TextView) linkContainer.findViewById(R.id.link_text)).setText(
-                        SessionsQuery.LINKS_TITLES[i]);
-                final int linkTitleIndex = i;
-                linkContainer.setOnClickListener(new View.OnClickListener() {
-                    public void onClick(View view) {
-                        fireLinkEvent(SessionsQuery.LINKS_TITLES[linkTitleIndex]);
-                    	Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
-                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_WHEN_TASK_RESET);
-                        startActivity(intent);
-                        
-                    }
-                });
-
-                container.addView(linkContainer);
-
-                // Create separator
-                View separatorView = new ImageView(getActivity());
-                separatorView.setLayoutParams(
-                        new ViewGroup.LayoutParams(ViewGroup.LayoutParams.FILL_PARENT,
-                                ViewGroup.LayoutParams.WRAP_CONTENT));
-                separatorView.setBackgroundResource(android.R.drawable.divider_horizontal_bright);
-                container.addView(separatorView);
-            }
-        }
-
-        container.findViewById(R.id.empty_links).setVisibility(hasLinks ? View.GONE : View.VISIBLE);
-    }
-
-    private String getHashtagsString() {
-        if (!TextUtils.isEmpty(mHashtag)) {
-            return TagStreamFragment.CONFERENCE_HASHTAG + " #" + mHashtag;
+        if (loader.getId() == SessionsQuery._TOKEN) {
+            onSessionQueryComplete(cursor);
+        } else if (loader.getId() == SpeakersQuery._TOKEN) {
+            onSpeakersQueryComplete(cursor);
         } else {
-            return TagStreamFragment.CONFERENCE_HASHTAG;
+            cursor.close();
         }
-    }
+	}
 
-    private BroadcastReceiver mPackageChangesReceiver = new BroadcastReceiver() {
-        @Override
-        public void onReceive(Context context, Intent intent) {
-            updateNotesTab();
-        }
-    };
+	@Override
+	public void onLoaderReset(Loader<Cursor> loader) {}
+
     /**
      * {@link com.google.android.apps.iosched.provider.ScheduleContract.Sessions} query parameters.
      */
@@ -659,14 +603,12 @@ public class SessionDetailFragment extends Fragment implements
                 ScheduleContract.Sessions.SESSION_ABSTRACT,
                 ScheduleContract.Sessions.SESSION_REQUIREMENTS,
                 ScheduleContract.Sessions.SESSION_STARRED,
-                ScheduleContract.Sessions.SESSION_HASHTAG,
-                ScheduleContract.Sessions.SESSION_SLUG,
+                ScheduleContract.Sessions.SESSION_HASHTAGS,
                 ScheduleContract.Sessions.SESSION_URL,
-                ScheduleContract.Sessions.SESSION_MODERATOR_URL,
                 ScheduleContract.Sessions.SESSION_YOUTUBE_URL,
                 ScheduleContract.Sessions.SESSION_PDF_URL,
-                ScheduleContract.Sessions.SESSION_FEEDBACK_URL,
                 ScheduleContract.Sessions.SESSION_NOTES_URL,
+                ScheduleContract.Sessions.SESSION_LIVESTREAM_URL,
                 ScheduleContract.Sessions.ROOM_ID,
                 ScheduleContract.Rooms.ROOM_NAME,
         };
@@ -678,49 +620,28 @@ public class SessionDetailFragment extends Fragment implements
         int ABSTRACT = 4;
         int REQUIREMENTS = 5;
         int STARRED = 6;
-        int HASHTAG = 7;
-        int SLUG = 8;
-        int URL = 9;
-        int MODERATOR_URL = 10;
-        int YOUTUBE_URL = 11;
-        int PDF_URL = 12;
-        int FEEDBACK_URL = 13;
-        int NOTES_URL = 14;
-        int ROOM_ID = 15;
-        int ROOM_NAME = 16;
+        int HASHTAGS = 7;
+        int URL = 8;
+        int YOUTUBE_URL = 9;
+        int PDF_URL = 10;
+        int NOTES_URL = 11;
+        int LIVESTREAM_URL = 12;
+        int ROOM_ID = 13;
+        int ROOM_NAME = 14;
 
         int[] LINKS_INDICES = {
                 URL,
-                MODERATOR_URL,
                 YOUTUBE_URL,
                 PDF_URL,
-                FEEDBACK_URL,
                 NOTES_URL,
         };
 
         int[] LINKS_TITLES = {
                 R.string.session_link_main,
-                R.string.session_link_moderator,
                 R.string.session_link_youtube,
                 R.string.session_link_pdf,
-                R.string.session_link_feedback,
                 R.string.session_link_notes,
         };
-    }
-
-    /**
-     * {@link com.google.android.apps.iosched.provider.ScheduleContract.Tracks} query parameters.
-     */
-    private interface TracksQuery {
-        int _TOKEN = 0x2;
-
-        String[] PROJECTION = {
-                ScheduleContract.Tracks.TRACK_NAME,
-                ScheduleContract.Tracks.TRACK_COLOR,
-        };
-
-        int TRACK_NAME = 0;
-        int TRACK_COLOR = 1;
     }
 
     private interface SpeakersQuery {

@@ -1,5 +1,5 @@
 /*
- * Copyright 2011 Google Inc.
+ * Copyright 2012 Google Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,56 +17,69 @@
 package com.google.android.apps.iosched.ui;
 
 import com.google.android.apps.iosched.R;
-import com.google.android.apps.iosched.provider.ScheduleContract;
-import com.google.android.apps.iosched.ui.tablet.NowPlayingMultiPaneActivity;
-import com.google.android.apps.iosched.util.AnalyticsUtils;
+import com.google.android.apps.iosched.provider.ScheduleContract.Announcements;
 import com.google.android.apps.iosched.util.UIUtils;
 
-import android.app.Activity;
 import android.content.Intent;
+import android.database.ContentObserver;
+import android.database.Cursor;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.LoaderManager.LoaderCallbacks;
+import android.support.v4.content.CursorLoader;
+import android.support.v4.content.Loader;
+import android.support.v4.view.PagerAdapter;
+import android.support.v4.view.ViewPager;
+import android.text.TextUtils;
 import android.text.format.DateUtils;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 /**
- * A fragment used in {@link HomeActivity} that shows either a countdown, 'now playing' link to
- * current sessions, or 'thank you' text, at different times (before/during/after the conference).
- * It also shows a 'Realtime Search' button on phones, as a replacement for the
- * {@link TagStreamFragment} that is visible on tablets on the home screen.
+ * A fragment used in {@link HomeActivity} that shows either a countdown,
+ * announcements, or 'thank you' text, at different times (before/during/after
+ * the conference).
  */
-public class WhatsOnFragment extends Fragment {
+public class WhatsOnFragment extends Fragment implements
+        LoaderCallbacks<Cursor> {
 
-    private Handler mMessageHandler = new Handler();
+    private Handler mHandler = new Handler();
 
     private TextView mCountdownTextView;
     private ViewGroup mRootView;
+    private Cursor mAnnouncementsCursor;
+    private LayoutInflater mInflater;
+    private int mTitleCol = -1;
+    private int mDateCol = -1;
+    private int mUrlCol = -1;
+
+    private static final int ANNOUNCEMENTS_LOADER_ID = 0;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState) {
-        mRootView = (ViewGroup) inflater.inflate(R.layout.fragment_whats_on, container);
+        mInflater = inflater;
+        mRootView = (ViewGroup) inflater.inflate(R.layout.fragment_whats_on,
+                container);
         refresh();
         return mRootView;
     }
 
     @Override
-    public void onAttach(Activity activity) {
-        super.onAttach(activity);
-    }
-
-    @Override
     public void onDetach() {
         super.onDetach();
-        mMessageHandler.removeCallbacks(mCountdownRunnable);
+        mHandler.removeCallbacks(mCountdownRunnable);
+        getActivity().getContentResolver().unregisterContentObserver(mObserver);
     }
 
     private void refresh() {
-        mMessageHandler.removeCallbacks(mCountdownRunnable);
+        mHandler.removeCallbacks(mCountdownRunnable);
         mRootView.removeAllViews();
 
         final long currentTimeMillis = UIUtils.getCurrentTime(getActivity());
@@ -79,76 +92,44 @@ public class WhatsOnFragment extends Fragment {
         } else {
             setupDuring();
         }
-
-        if (!UIUtils.isHoneycombTablet(getActivity())) {
-            View separator = new View(getActivity());
-            separator.setLayoutParams(
-                    new ViewGroup.LayoutParams(1, ViewGroup.LayoutParams.FILL_PARENT));
-            separator.setBackgroundResource(R.drawable.whats_on_separator);
-            mRootView.addView(separator);
-
-            View view = getActivity().getLayoutInflater().inflate(
-                    R.layout.whats_on_stream, mRootView, false);
-            view.setOnClickListener(new View.OnClickListener() {
-                public void onClick(View view) {
-                    AnalyticsUtils.getInstance(getActivity()).trackEvent(
-                            "Home Screen Dashboard", "Click", "Realtime Stream", 0);
-                    Intent intent = new Intent(getActivity(), TagStreamActivity.class);
-                    startActivity(intent);
-                }
-            });
-            mRootView.addView(view);
-        }
     }
 
     private void setupBefore() {
         // Before conference, show countdown.
-        mCountdownTextView = (TextView) getActivity().getLayoutInflater().inflate(
-                R.layout.whats_on_countdown, mRootView, false);
+        mCountdownTextView = (TextView) mInflater
+                .inflate(R.layout.whats_on_countdown, mRootView, false);
         mRootView.addView(mCountdownTextView);
-        mMessageHandler.post(mCountdownRunnable);
+        mHandler.post(mCountdownRunnable);
     }
 
     private void setupAfter() {
         // After conference, show canned text.
-        getActivity().getLayoutInflater().inflate(
-                R.layout.whats_on_thank_you, mRootView, true);
+        mInflater.inflate(R.layout.whats_on_thank_you,
+                mRootView, true);
     }
 
     private void setupDuring() {
-        // Conference in progress, show "Now Playing" link.
-        View view = getActivity().getLayoutInflater().inflate(
-                R.layout.whats_on_now_playing, mRootView, false);
-        view.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View view) {
-                if (UIUtils.isHoneycombTablet(getActivity())) {
-                    startActivity(new Intent(getActivity(), NowPlayingMultiPaneActivity.class));
-                } else {
-                    Intent intent = new Intent(Intent.ACTION_VIEW);
-                    intent.setData(ScheduleContract.Sessions
-                            .buildSessionsAtDirUri(System.currentTimeMillis()));
-                    intent.putExtra(Intent.EXTRA_TITLE, getString(R.string.title_now_playing));
-                    startActivity(intent);
-                }
-            }
-        });
-        mRootView.addView(view);
+        // Start background query to load announcements
+        getLoaderManager().initLoader(ANNOUNCEMENTS_LOADER_ID, null, this);
+        getActivity().getContentResolver().registerContentObserver(
+                Announcements.CONTENT_URI, true, mObserver);
     }
 
     /**
-     * Event that updates countdown timer. Posts itself again to {@link #mMessageHandler} to
-     * continue updating time.
+     * Event that updates countdown timer. Posts itself again to
+     * {@link #mHandler} to continue updating time.
      */
-    private Runnable mCountdownRunnable = new Runnable() {
+    private final Runnable mCountdownRunnable = new Runnable() {
         public void run() {
             int remainingSec = (int) Math.max(0,
-                    (UIUtils.CONFERENCE_START_MILLIS - System.currentTimeMillis()) / 1000);
+                    (UIUtils.CONFERENCE_START_MILLIS - UIUtils
+                            .getCurrentTime(getActivity())) / 1000);
             final boolean conferenceStarted = remainingSec == 0;
 
             if (conferenceStarted) {
                 // Conference started while in countdown mode, switch modes and
                 // bail on future countdown updates.
-                mMessageHandler.postDelayed(new Runnable() {
+                mHandler.postDelayed(new Runnable() {
                     public void run() {
                         refresh();
                     }
@@ -158,13 +139,178 @@ public class WhatsOnFragment extends Fragment {
 
             final int secs = remainingSec % 86400;
             final int days = remainingSec / 86400;
-            final String str = getResources().getQuantityString(
-                    R.plurals.whats_on_countdown_title, days, days,
-                    DateUtils.formatElapsedTime(secs));
+            final String str;
+            if (days == 0) {
+                str = getResources().getString(
+                        R.string.whats_on_countdown_title_0,
+                        DateUtils.formatElapsedTime(secs));
+            } else {
+                str = getResources().getQuantityString(
+                        R.plurals.whats_on_countdown_title, days, days,
+                        DateUtils.formatElapsedTime(secs));
+            }
             mCountdownTextView.setText(str);
 
             // Repost ourselves to keep updating countdown
-            mMessageHandler.postDelayed(mCountdownRunnable, 1000);
+            mHandler.postDelayed(mCountdownRunnable, 1000);
+        }
+    };
+
+    @Override
+    public Loader<Cursor> onCreateLoader(int id, Bundle args) {
+        return new CursorLoader(getActivity(),
+                Announcements.CONTENT_URI, null, null, null,
+                Announcements.ANNOUNCEMENT_DATE + " DESC");
+    }
+
+    @Override
+    public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
+        if (getActivity() == null) {
+            return;
+        }
+        if (data != null && data.getCount() > 0) {
+            mTitleCol = data.getColumnIndex(Announcements.ANNOUNCEMENT_TITLE);
+            mDateCol = data.getColumnIndex(Announcements.ANNOUNCEMENT_DATE);
+            mUrlCol = data.getColumnIndex(Announcements.ANNOUNCEMENT_URL);
+            showAnnouncements(data);
+        } else {
+            showNoAnnouncements();
+        }
+    }
+
+    @Override
+    public void onLoaderReset(Loader<Cursor> loader) {
+        mAnnouncementsCursor = null;
+    }
+
+    /**
+     * Show the the announcements
+     */
+    private void showAnnouncements(Cursor announcements) {
+        mAnnouncementsCursor = announcements;
+
+        ViewGroup announcementsRootView = (ViewGroup) mInflater.inflate(
+                R.layout.whats_on_announcements, mRootView, false);
+        final ViewPager pager = (ViewPager) announcementsRootView.findViewById(
+                R.id.announcements_pager);
+        final View previousButton = announcementsRootView.findViewById(
+                R.id.announcements_previous_button);
+        final View nextButton = announcementsRootView.findViewById(
+                R.id.announcements_next_button);
+
+        final PagerAdapter adapter = new AnnouncementsAdapter();
+        pager.setAdapter(adapter);
+        pager.setPageMargin(
+                getResources().getDimensionPixelSize(R.dimen.announcements_margin_width));
+        pager.setPageMarginDrawable(R.drawable.announcements_divider);
+
+        pager.setOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener() {
+            @Override
+            public void onPageSelected(int position) {
+                previousButton.setEnabled(position > 0);
+                nextButton.setEnabled(position < adapter.getCount() - 1);
+            }
+        });
+
+        previousButton.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                pager.setCurrentItem(pager.getCurrentItem() - 1);
+            }
+        });
+
+        nextButton.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                pager.setCurrentItem(pager.getCurrentItem() + 1);
+            }
+        });
+
+        previousButton.setEnabled(false);
+        nextButton.setEnabled(adapter.getCount() > 1);
+        mRootView.removeAllViews();
+        mRootView.addView(announcementsRootView);
+    }
+
+    /**
+     * Show a placeholder message
+     */
+    private void showNoAnnouncements() {
+        mInflater.inflate(R.layout.empty_announcements, mRootView, true);
+    }
+
+    public class AnnouncementsAdapter extends PagerAdapter {
+
+        @Override
+        public Object instantiateItem(ViewGroup pager, int position) {
+            mAnnouncementsCursor.moveToPosition(position);
+            LinearLayout rootView = (LinearLayout) mInflater.inflate(
+                    R.layout.pager_item_announcement, pager, false);
+            TextView titleView = (TextView) rootView.findViewById(R.id.announcement_title);
+            TextView subtitleView = (TextView) rootView.findViewById(R.id.announcement_ago);
+            titleView.setText(mAnnouncementsCursor.getString(mTitleCol));
+
+            final long date = mAnnouncementsCursor.getLong(mDateCol);
+            final String when = UIUtils.getTimeAgo(date, getActivity());
+            final String url = mAnnouncementsCursor.getString(mUrlCol);
+
+            subtitleView.setText(when);
+            rootView.setTag(url);
+
+            if (!TextUtils.isEmpty(url)) {
+                rootView.setClickable(true);
+                rootView.setOnClickListener(mAnnouncementClick);
+            } else {
+                rootView.setClickable(false);
+            }
+
+            pager.addView(rootView, 0);
+            return rootView;
+        }
+
+        private final OnClickListener mAnnouncementClick = new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String url = (String) v.getTag();
+                if (!TextUtils.isEmpty(url)) {
+                    UIUtils.safeOpenLink(getActivity(),
+                            new Intent(Intent.ACTION_VIEW, Uri.parse(url)));
+                }
+            }
+        };
+
+        @Override
+        public void destroyItem(ViewGroup pager, int position, Object view) {
+            pager.removeView((View) view);
+        }
+
+        @Override
+        public int getCount() {
+            return mAnnouncementsCursor.getCount();
+        }
+
+        @Override
+        public boolean isViewFromObject(View view, Object object) {
+            return view.equals(object);
+        }
+
+        @Override
+        public int getItemPosition(Object object) {
+            return POSITION_NONE;
+        }
+    }
+
+    private final ContentObserver mObserver = new ContentObserver(new Handler()) {
+        @Override
+        public void onChange(boolean selfChange) {
+            if (getActivity() == null) {
+                return;
+            }
+
+            Loader<Cursor> loader = getLoaderManager().getLoader(ANNOUNCEMENTS_LOADER_ID);
+            if (loader != null) {
+                loader.forceLoad();
+            }
         }
     };
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright 2011 Google Inc.
+ * Copyright 2012 Google Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,93 +16,128 @@
 
 package com.google.android.apps.iosched.ui;
 
+import com.google.analytics.tracking.android.EasyTracker;
+import com.google.android.apps.iosched.BuildConfig;
 import com.google.android.apps.iosched.R;
-import com.google.android.apps.iosched.provider.ScheduleContract;
-import com.google.android.apps.iosched.provider.ScheduleContract.Rooms;
-import com.google.android.apps.iosched.util.AnalyticsUtils;
-import com.google.android.apps.iosched.util.ParserUtils;
+import com.google.android.apps.iosched.util.UIUtils;
 
+import com.actionbarsherlock.app.SherlockFragment;
+import com.actionbarsherlock.view.Menu;
+import com.actionbarsherlock.view.MenuInflater;
+import com.actionbarsherlock.view.MenuItem;
+
+import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.net.Uri;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.webkit.ConsoleMessage;
 import android.webkit.WebChromeClient;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.Toast;
 
+import static com.google.android.apps.iosched.util.LogUtils.LOGD;
+import static com.google.android.apps.iosched.util.LogUtils.LOGE;
+import static com.google.android.apps.iosched.util.LogUtils.makeLogTag;
+
 /**
  * Shows a {@link WebView} with a map of the conference venue.
  */
-public class MapFragment extends Fragment {
-    private static final String TAG = "MapFragment";
+public class MapFragment extends SherlockFragment {
+    private static final String TAG = makeLogTag(MapFragment.class);
 
     /**
      * When specified, will automatically point the map to the requested room.
      */
     public static final String EXTRA_ROOM = "com.google.android.iosched.extra.ROOM";
 
+    private static final String SYSTEM_FEATURE_MULTITOUCH
+            = "android.hardware.touchscreen.multitouch";
+
     private static final String MAP_JSI_NAME = "MAP_CONTAINER";
-    private static final String MAP_URL = "http://www.google.com/events/io/2011/embed.html";
-    private static boolean CLEAR_CACHE_ON_LOAD = false;
+    private static final String MAP_URL = "http://ioschedmap.appspot.com/embed.html";
+
+    private static boolean CLEAR_CACHE_ON_LOAD = BuildConfig.DEBUG;
 
     private WebView mWebView;
     private View mLoadingSpinner;
     private boolean mMapInitialized = false;
 
+    public interface Callbacks {
+        public void onRoomSelected(String roomId);
+    }
+
+    private static Callbacks sDummyCallbacks = new Callbacks() {
+        @Override
+        public void onRoomSelected(String roomId) {
+        }
+    };
+
+    private Callbacks mCallbacks = sDummyCallbacks;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
-        AnalyticsUtils.getInstance(getActivity()).trackPageView("/Map");
+        EasyTracker.getTracker().trackView("Map");
+        LOGD("Tracker", "Map");
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState) {
 
-        ViewGroup root = (ViewGroup) inflater.inflate(R.layout.fragment_webview_with_spinner, null);
-
-        // For some reason, if we omit this, NoSaveStateFrameLayout thinks we are
-        // FILL_PARENT / WRAP_CONTENT, making the progress bar stick to the top of the activity.
-        root.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.FILL_PARENT,
-                ViewGroup.LayoutParams.FILL_PARENT));
+        ViewGroup root = (ViewGroup) inflater.inflate(R.layout.fragment_webview_with_spinner,
+                container, false);
 
         mLoadingSpinner = root.findViewById(R.id.loading_spinner);
         mWebView = (WebView) root.findViewById(R.id.webview);
         mWebView.setWebChromeClient(mWebChromeClient);
         mWebView.setWebViewClient(mWebViewClient);
-
-        mWebView.post(new Runnable() {
-            public void run() {
-                // Initialize web view
-                if (CLEAR_CACHE_ON_LOAD) {
-                    mWebView.clearCache(true);
-                }
-
-                mWebView.getSettings().setJavaScriptEnabled(true);
-                mWebView.getSettings().setJavaScriptCanOpenWindowsAutomatically(false);
-                mWebView.loadUrl(MAP_URL);
-                mWebView.addJavascriptInterface(mMapJsiImpl, MAP_JSI_NAME);
-            }
-        });
-
         return root;
     }
 
+    @Override
+    public void onViewCreated(View view, Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        // Initialize web view
+        if (CLEAR_CACHE_ON_LOAD) {
+            mWebView.clearCache(true);
+        }
+
+        boolean hideZoomControls =
+                getActivity().getPackageManager().hasSystemFeature(SYSTEM_FEATURE_MULTITOUCH)
+                && UIUtils.hasHoneycomb();
+
+        mWebView.getSettings().setJavaScriptEnabled(true);
+        mWebView.getSettings().setJavaScriptCanOpenWindowsAutomatically(false);
+        mWebView.loadUrl(MAP_URL + "?multitouch=" + (hideZoomControls ? 1 : 0));
+        mWebView.addJavascriptInterface(mMapJsiImpl, MAP_JSI_NAME);
+    }
+
+    @Override
+    public void onAttach(Activity activity) {
+        super.onAttach(activity);
+        if (!(activity instanceof Callbacks)) {
+            throw new ClassCastException("Activity must implement fragment's callbacks.");
+        }
+
+        mCallbacks = (Callbacks) activity;
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        mCallbacks = sDummyCallbacks;
+    }
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
-        inflater.inflate(R.menu.refresh_menu_items, menu);
+        inflater.inflate(R.menu.map, menu);
     }
 
     @Override
@@ -114,11 +149,19 @@ public class MapFragment extends Fragment {
         return super.onOptionsItemSelected(item);
     }
 
-    private void runJs(String js) {
-        if (Log.isLoggable(TAG, Log.DEBUG)) {
-            Log.d(TAG, "Loading javascript:" + js);
+    private void runJs(final String js) {
+        Activity activity = getActivity();
+        if (activity == null) {
+            return;
         }
-        mWebView.loadUrl("javascript:" + js);
+
+        activity.runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                LOGD(TAG, "Loading javascript:" + js);
+                mWebView.loadUrl("javascript:" + js);
+            }
+        });
     }
 
     /**
@@ -133,25 +176,28 @@ public class MapFragment extends Fragment {
         return s.replace("'", "\\'").replace("\"", "\\\"");
     }
 
-    public void panLeft(float screenFraction) {
-        runJs("IoMap.panLeft('" + screenFraction + "');");
+    public void panBy(float xFraction, float yFraction) {
+        runJs("IoMap.panBy(" + xFraction + "," + yFraction + ");");
     }
 
     /**
      * I/O Conference Map JavaScript interface.
      */
     private interface MapJsi {
-        void openContentInfo(String test);
-        void onMapReady();
+        public void openContentInfo(final String roomId);
+        public void onMapReady();
     }
 
-    private WebChromeClient mWebChromeClient = new WebChromeClient() {
-        public void onConsoleMessage(String message, int lineNumber, String sourceID) {
-            Log.i(TAG, "JS Console message: (" + sourceID + ": " + lineNumber + ") " + message);
+    private final WebChromeClient mWebChromeClient = new WebChromeClient() {
+        @Override
+        public boolean onConsoleMessage(ConsoleMessage consoleMessage) {
+            LOGD(TAG, "JS Console message: (" + consoleMessage.sourceId() + ": "
+                    + consoleMessage.lineNumber() + ") " + consoleMessage.message());
+            return false;
         }
     };
 
-    private WebViewClient mWebViewClient = new WebViewClient() {
+    private final WebViewClient mWebViewClient = new WebViewClient() {
         @Override
         public void onPageStarted(WebView view, String url, Bitmap favicon) {
             super.onPageStarted(view, url, favicon);
@@ -169,37 +215,30 @@ public class MapFragment extends Fragment {
         @Override
         public void onReceivedError(WebView view, int errorCode, String description,
                 String failingUrl) {
-            Log.e(TAG, "Error " + errorCode + ": " + description);
+            LOGE(TAG, "Error " + errorCode + ": " + description);
             Toast.makeText(view.getContext(), "Error " + errorCode + ": " + description,
                     Toast.LENGTH_LONG).show();
             super.onReceivedError(view, errorCode, description, failingUrl);
         }
     };
 
-    private MapJsi mMapJsiImpl = new MapJsi() {
-        public void openContentInfo(String roomId) {
-            final String possibleTrackId = ParserUtils.translateTrackIdAlias(roomId);
-            final Intent intent;
-            if (ParserUtils.LOCAL_TRACK_IDS.contains(possibleTrackId)) {
-                // This is a track; open up the sandbox for the track, since room IDs that are
-                // track IDs are sandbox areas in the map.
-                Uri trackVendorsUri = ScheduleContract.Tracks.buildVendorsUri(possibleTrackId);
-                intent = new Intent(Intent.ACTION_VIEW, trackVendorsUri);
-            } else {
-                Uri roomUri = Rooms.buildSessionsDirUri(roomId);
-                intent = new Intent(Intent.ACTION_VIEW, roomUri);
+    private final MapJsi mMapJsiImpl = new MapJsi() {
+        public void openContentInfo(final String roomId) {
+            Activity activity = getActivity();
+            if (activity == null) {
+                return;
             }
-            getActivity().runOnUiThread(new Runnable() {
+
+            activity.runOnUiThread(new Runnable() {
+                @Override
                 public void run() {
-                    ((BaseActivity) getActivity()).openActivityOrFragment(intent);
+                    mCallbacks.onRoomSelected(roomId);
                 }
             });
         }
 
         public void onMapReady() {
-            if (Log.isLoggable(TAG, Log.DEBUG)) {
-                Log.d(TAG, "onMapReady");
-            }
+            LOGD(TAG, "onMapReady");
 
             final Intent intent = BaseActivity.fragmentArgumentsToIntent(getArguments());
 

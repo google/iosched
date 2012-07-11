@@ -1,5 +1,5 @@
 <!--
-  Copyright 2011 Google Inc.
+  Copyright 2012 Google Inc.
 
   Licensed under the Apache License, Version 2.0 (the "License");
   you may not use this file except in compliance with the License.
@@ -15,33 +15,30 @@
   -->
 
 <resources>
-    <style name="Theme.IOSched.Home" parent="style/Theme.IOSched">
-        <item name="android:windowBackground">@drawable/window_background_home</item>
-        <item name="android:actionBarStyle">@null</item>
+    <!--
+    Cancel out blue tab bar styling. This is a hack because there isn't a way to determine if the
+    tab bar is stacked or not.
+    -->
+    <style name="ActionBar.TabBar" parent="FrameworkRoot.ActionBar.TabBar" />
+
+    <style name="HomePaneHeader">
+        <item name="android:textSize">@dimen/text_size_medium</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textAllCaps">true</item>
+        <item name="android:textColor">@color/home_pane_header</item>
     </style>
 
     <style name="ListItemContainerBase">
-        <item name="android:minHeight">?android:attr/listPreferredItemHeight</item>
-        <item name="android:background">?android:attr/activatedBackgroundIndicator</item>
+        <item name="android:minHeight">?android:listPreferredItemHeight</item>
+        <item name="android:background">?activatableItemBackground</item>
     </style>
 
-    <style name="DashboardButton">
-        <item name="android:layout_gravity">center_vertical</item>
-        <item name="android:layout_width">wrap_content</item>
-        <item name="android:layout_height">wrap_content</item>
-        <item name="android:gravity">center_horizontal</item>
-        <item name="android:drawablePadding">3dp</item>
+    <style name="WhatsOnStaticItem" parent="WhatsOnItemBase">
         <item name="android:textSize">@dimen/text_size_medium</item>
         <item name="android:textStyle">bold</item>
-        <item name="android:textColor">@color/accent_1</item>
-        <item name="android:background">@null</item>
-    </style>
-
-    <style name="WhatsOnStaticItem" parent="style/WhatsOnItemBase">
-        <item name="android:textSize">@dimen/text_size_medium</item>
-        <item name="android:textStyle">bold</item>
-        <item name="android:textColor">@color/body_text_1</item>
+        <item name="android:textColor">@android:color/white</item>
         <item name="android:maxLines">2</item>
+        <item name="android:background">@drawable/actionbar_background</item>
     </style>
 
     <!-- body content -->
@@ -53,6 +50,23 @@
         <item name="android:textIsSelectable">true</item>
     </style>
 
+    <style name="TextHeader2">
+        <item name="android:textSize">@dimen/text_size_small</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textAllCaps">true</item>
+        <item name="android:textColor">@color/accent_1</item>
+        <item name="android:paddingTop">4dp</item>
+        <item name="android:paddingBottom">4dp</item>
+        <item name="android:background">@drawable/accent_bottom_border</item>
+    </style>
+
+    <style name="TextHeader3">
+        <item name="android:textSize">@dimen/text_size_medium</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textColor">@color/body_text_1</item>
+        <item name="android:textIsSelectable">true</item>
+    </style>
+
     <style name="TextBody">
         <item name="android:textSize">@dimen/text_size_medium</item>
         <item name="android:typeface">serif</item>
@@ -60,4 +74,5 @@
         <item name="android:textColor">@color/body_text_1</item>
         <item name="android:textIsSelectable">true</item>
     </style>
+
 </resources>

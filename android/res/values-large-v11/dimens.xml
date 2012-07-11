@@ -1,5 +1,5 @@
 <!--
-  Copyright 2011 Google Inc.
+  Copyright 2012 Google Inc.
 
   Licensed under the Apache License, Version 2.0 (the "License");
   you may not use this file except in compliance with the License.
@@ -16,25 +16,15 @@
 <resources>
 
     <!-- UI elements -->
-    <dimen name="colorstrip_height">4dp</dimen>
     <dimen name="thickbar_height">200dp</dimen>
-    <dimen name="whats_on_height">40dp</dimen>
-    <dimen name="activity_side_padding">20dp</dimen>
-    <dimen name="activity_vert_padding">20dp</dimen>
-    <dimen name="activity_pane_spacing">12dp</dimen>
-    <dimen name="activity_padding_small">10dp</dimen>
-    <dimen name="schedule_hour_height">80dp</dimen>
-    <dimen name="detail_pane_padding">16dp</dimen>
-    <dimen name="detail_breadcrumb_height">40dp</dimen>
+    <dimen name="detail_breadcrumb_height">48dp</dimen>
     <dimen name="tab_height">56dp</dimen>
-    <dimen name="tab_side_padding">30dp</dimen>
-    <dimen name="panel_button_width">64dp</dimen>
-    <dimen name="panel_button_height">64dp</dimen>
+    <dimen name="action_button_min_width">64dp</dimen>
+    <dimen name="track_dropdown_width">300dp</dimen>
+    <dimen name="left_pane_width_portrait">300dp</dimen>
 
     <!-- body content -->
     <dimen name="text_size_xlarge">32sp</dimen>
-    <dimen name="body_padding_medium">10dp</dimen>
-    <dimen name="body_padding_large">20dp</dimen>
     <dimen name="speaker_image_size">64dp</dimen>
     <dimen name="speaker_image_padding">16dp</dimen>
     <dimen name="vendor_image_size">100dp</dimen>

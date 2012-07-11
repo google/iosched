@@ -1,5 +1,5 @@
 <!--
-  Copyright 2011 Google Inc.
+  Copyright 2012 Google Inc.
 
   Licensed under the Apache License, Version 2.0 (the "License");
   you may not use this file except in compliance with the License.
@@ -15,29 +15,14 @@
   -->
 
 <resources>
-    <!-- Start with the Holographic Light theme -->
-    <style name="Theme.IOSched" parent="android:style/Theme.Holo.Light">
-        <item name="android:windowBackground">@drawable/window_background</item>
-        <item name="android:actionBarStyle">@style/ActionBar</item>
-
-        <!-- custom attributes -->
-        <item name="textHeaderMaxLines">@integer/text_header_max_lines</item>
-        <item name="trackAbstractMaxLines">@integer/track_abstract_max_lines</item>
-    </style>
-
-    <style name="Theme.IOSched.Home" parent="style/Theme.IOSched">
-        <item name="android:windowBackground">@drawable/window_background_home</item>
-        <item name="android:actionBarStyle">@style/ActionBar</item>
-    </style>
-
-    <style name="ActionBar" parent="android:style/Widget.Holo.Light.ActionBar">
-        <item name="android:background">@color/actionbar_background</item>
-        <item name="android:textColor">@color/accent_1</item>
-        <item name="android:titleTextStyle">@style/ActionBarText</item>
-    </style>
-
-    <style name="ActionBarText" parent="android:style/TextAppearance.Holo.Widget.ActionBar.Title">
-        <item name="android:textColor">@color/accent_1</item>
-        <item name="android:textStyle">bold</item>
+    <style name="FrameworkRoot.Theme" parent="Theme.Sherlock.Light.DarkActionBar">
+        <!-- API 11+ -->
+        <item name="buttonBarStyle">?android:buttonBarStyle</item>
+        <item name="buttonBarButtonStyle">?android:buttonBarButtonStyle</item>
+        <item name="indeterminateProgressStyle">?android:indeterminateProgressStyle</item>
+        <!-- API 14+ (compatibility) -->
+        <item name="listPreferredItemPaddingLeft">@dimen/compat_list_preferred_item_padding_left</item>
+        <item name="listPreferredItemPaddingRight">@dimen/compat_list_preferred_item_padding_right</item>
+        <item name="listPreferredItemHeightSmall">@dimen/compat_list_preferred_item_height_small</item>
     </style>
 </resources>

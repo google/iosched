@@ -1,5 +1,5 @@
 /*
- * Copyright 2011 Google Inc.
+ * Copyright 2012 Google Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,6 +18,9 @@ package com.google.android.apps.iosched.util;
 
 import java.lang.reflect.InvocationTargetException;
 
+/**
+ * A set of helper methods for best-effort method calls via reflection.
+ */
 public class ReflectionUtils {
     public static Object tryInvoke(Object target, String methodName, Object... args) {
         Class<?>[] argTypes = new Class<?>[args.length];
@@ -32,9 +35,9 @@ public class ReflectionUtils {
             Object... args) {
         try {
             return target.getClass().getMethod(methodName, argTypes).invoke(target, args);
-        } catch (NoSuchMethodException e) {
-        } catch (IllegalAccessException e) {
-        } catch (InvocationTargetException e) {
+        } catch (NoSuchMethodException ignored) {
+        } catch (IllegalAccessException ignored) {
+        } catch (InvocationTargetException ignored) {
         }
 
         return null;
@@ -42,10 +45,11 @@ public class ReflectionUtils {
 
     public static <E> E callWithDefault(Object target, String methodName, E defaultValue) {
         try {
+            //noinspection unchecked
             return (E) target.getClass().getMethod(methodName, (Class[]) null).invoke(target);
-        } catch (NoSuchMethodException e) {
-        } catch (IllegalAccessException e) {
-        } catch (InvocationTargetException e) {
+        } catch (NoSuchMethodException ignored) {
+        } catch (IllegalAccessException ignored) {
+        } catch (InvocationTargetException ignored) {
         }
 
         return defaultValue;

@@ -1,5 +1,5 @@
 <!--
-  Copyright 2011 Google Inc.
+  Copyright 2012 Google Inc.
 
   Licensed under the Apache License, Version 2.0 (the "License");
   you may not use this file except in compliance with the License.
@@ -14,40 +14,40 @@
   limitations under the License.
   -->
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="fill_parent"
+    android:layout_width="match_parent"
     android:layout_height="@dimen/thickbar_height"
     android:clickable="true"
     android:focusable="true">
 
     <LinearLayout android:duplicateParentState="true"
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         android:orientation="vertical"
-        android:background="@drawable/thickbar_left_background_interactive">
+        android:background="@drawable/thickbar_left_background">
 
         <TextView android:id="@+id/track_title"
-            android:layout_width="fill_parent"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textColor="#fff"
             android:maxLines="1"
             android:ellipsize="end"
             android:textStyle="normal"
-            android:paddingLeft="@dimen/activity_padding_small"
-            android:paddingRight="@dimen/activity_padding_small"
-            android:paddingTop="@dimen/body_padding_medium"
+            android:paddingLeft="@dimen/content_padding_normal"
+            android:paddingRight="@dimen/content_padding_normal"
+            android:paddingTop="@dimen/content_padding_normal"
             android:textIsSelectable="false"
             style="@style/TextHeader" />
 
         <TextView android:id="@+id/track_abstract"
-            android:layout_width="fill_parent"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textColor="#fff"
             style="@style/TextHeaderSub"
-            android:paddingLeft="@dimen/activity_padding_small"
-            android:paddingRight="@dimen/activity_padding_small"
-            android:paddingBottom="@dimen/body_padding_medium"
+            android:paddingLeft="@dimen/content_padding_normal"
+            android:paddingRight="@dimen/content_padding_normal"
+            android:paddingBottom="@dimen/content_padding_normal"
             android:textIsSelectable="false"
-            android:maxLines="?attr/trackAbstractMaxLines" />
+            android:maxLines="?trackAbstractMaxLines" />
     </LinearLayout>
 
     <View android:id="@+id/track_dropdown_arrow"

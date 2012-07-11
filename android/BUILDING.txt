@@ -1,11 +1,13 @@
 You can use ant, Eclipse, IntelliJ IDEA, or pretty much any IDE
 to compile the app. Before building, you should ensure that:
 
-1) You've read `libs/readme.txt' and have places the necessary
-   JARs into the `libs' directory.
+1) You've read 'libs/README.txt' and have placed the necessary
+   JARs into the 'libs' directory.
 
-2) Your Eclipse/IDEA/ant/etc. project targets API level 13 or
+2) You've added the ActionBarSherlock library project as a
+   dependency.
+
+3) Your Eclipse/IDEA/ant/etc. project targets API level 16 or
    higher.
 
-Forgetting to do either of these will result in compile errors.
-
+Forgetting to do any of these will result in compile errors.

@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<com.actionbarsherlock.internal.widget.IcsLinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    style="?attr/actionBarTabBarStyle"
+/>

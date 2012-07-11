@@ -1,5 +1,5 @@
 <!--
-  Copyright 2011 Google Inc.
+  Copyright 2012 Google Inc.
 
   Licensed under the Apache License, Version 2.0 (the "License");
   you may not use this file except in compliance with the License.
@@ -13,18 +13,12 @@
   See the License for the specific language governing permissions and
   limitations under the License.
   -->
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/home_root"
-    android:orientation="vertical"
-    android:layout_width="fill_parent"
-    android:layout_height="fill_parent">
-    <include layout="@layout/actionbar" />
+<merge xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <fragment android:name="com.google.android.apps.iosched.ui.DashboardFragment"
-        android:id="@+id/fragment_dashboard"
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
-        android:layout_weight="1" />
+    <android.support.v4.view.ViewPager
+        android:id="@+id/pager"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
 
     <!--
         We can't omit this fragment because instantiating a layout WITHOUT a fragment and then
@@ -33,9 +27,9 @@
                 create a view.
     -->
     <fragment android:name="com.google.android.apps.iosched.ui.WhatsOnFragment"
-        android:id="@+id/fragment_now_playing"
-        android:layout_width="fill_parent"
+        android:id="@+id/fragment_whats_on"
+        android:layout_width="match_parent"
         android:layout_height="0dp"
         android:visibility="gone" />
 
-</LinearLayout>
+</merge>

@@ -1,5 +1,5 @@
 /*
- * Copyright 2011 Google Inc.
+ * Copyright 2012 Google Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -31,28 +31,43 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 /**
- * A {@link android.widget.CursorAdapter} that renders a {@link TracksQuery}.
+ * A {@link android.widget.CursorAdapter} that renders a {@link TracksQuery}, additionally showing
+ * "Map" and/or "All tracks" list items at the top.
  */
 public class TracksAdapter extends CursorAdapter {
     private static final int ALL_ITEM_ID = Integer.MAX_VALUE;
+    private static final int MAP_ITEM_ID = Integer.MAX_VALUE - 1;
 
     private Activity mActivity;
     private boolean mHasAllItem;
+    private boolean mHasMapItem;
     private int mPositionDisplacement;
-    private boolean mIsSessions = true;
 
     public TracksAdapter(Activity activity) {
-        super(activity, null);
+        super(activity, null, false);
         mActivity = activity;
     }
 
     public void setHasAllItem(boolean hasAllItem) {
         mHasAllItem = hasAllItem;
-        mPositionDisplacement = mHasAllItem ? 1 : 0;
+        updatePositionDisplacement();
     }
 
-    public void setIsSessions(boolean isSessions) {
-        mIsSessions = isSessions;
+    public void setHasMapItem(boolean hasMapItem) {
+        mHasMapItem = hasMapItem;
+        updatePositionDisplacement();
+    }
+
+    private void updatePositionDisplacement() {
+        mPositionDisplacement = (mHasAllItem ? 1 : 0) + (mHasMapItem ? 1 : 0);
+    }
+
+    public boolean isMapItem(int position) {
+        return mHasMapItem && position == 0;
+    }
+
+    public boolean isAllItem(int position) {
+        return mHasAllItem && position == (mHasMapItem ? 1 : 0);
     }
 
     @Override
@@ -62,7 +77,15 @@ public class TracksAdapter extends CursorAdapter {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        if (mHasAllItem && position == 0) {
+        if (isMapItem(position)) {
+            if (convertView == null) {
+                convertView = mActivity.getLayoutInflater().inflate(
+                        R.layout.list_item_track_map, parent, false);
+            }
+
+            return convertView;
+
+        } else if (isAllItem(position)) {
             if (convertView == null) {
                 convertView = mActivity.getLayoutInflater().inflate(
                         R.layout.list_item_track, parent, false);
@@ -70,10 +93,7 @@ public class TracksAdapter extends CursorAdapter {
 
             // Custom binding for the first item
             ((TextView) convertView.findViewById(android.R.id.text1)).setText(
-                    "(" + mActivity.getResources().getString(mIsSessions
-                            ? R.string.all_sessions_title
-                            : R.string.all_sandbox_title)
-                            + ")");
+                    "(" + mActivity.getResources().getString(R.string.all_tracks) + ")");
             convertView.findViewById(android.R.id.icon1).setVisibility(View.INVISIBLE);
 
             return convertView;
@@ -83,7 +103,7 @@ public class TracksAdapter extends CursorAdapter {
 
     @Override
     public Object getItem(int position) {
-        if (mHasAllItem && position == 0) {
+        if (isMapItem(position) || isAllItem(position)) {
             return null;
         }
         return super.getItem(position - mPositionDisplacement);
@@ -91,7 +111,9 @@ public class TracksAdapter extends CursorAdapter {
 
     @Override
     public long getItemId(int position) {
-        if (mHasAllItem && position == 0) {
+        if (isMapItem(position)) {
+            return MAP_ITEM_ID;
+        } else if (isAllItem(position)) {
             return ALL_ITEM_ID;
         }
         return super.getItemId(position - mPositionDisplacement);
@@ -99,22 +121,21 @@ public class TracksAdapter extends CursorAdapter {
 
     @Override
     public boolean isEnabled(int position) {
-        if (mHasAllItem && position == 0) {
-            return true;
-        }
-        return super.isEnabled(position - mPositionDisplacement);
+        return (mHasAllItem && position == 0) || super.isEnabled(position - mPositionDisplacement);
     }
 
     @Override
     public int getViewTypeCount() {
-        // Add an item type for the "All" view.
-        return super.getViewTypeCount() + 1;
+        // Add an item type for the "All" and map views.
+        return super.getViewTypeCount() + 2;
     }
 
     @Override
     public int getItemViewType(int position) {
-        if (mHasAllItem && position == 0) {
+        if (isMapItem(position)) {
             return getViewTypeCount() - 1;
+        } else if (isAllItem(position)) {
+            return getViewTypeCount() - 2;
         }
         return super.getItemViewType(position - mPositionDisplacement);
     }

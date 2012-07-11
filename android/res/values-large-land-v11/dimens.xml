@@ -1,5 +1,5 @@
 <!--
-  Copyright 2011 Google Inc.
+  Copyright 2012 Google Inc.
 
   Licensed under the Apache License, Version 2.0 (the "License");
   you may not use this file except in compliance with the License.
@@ -16,7 +16,7 @@
 <resources>
 
     <!-- UI elements -->
-    <dimen name="activity_side_padding">56dp</dimen>
+    <dimen name="track_dropdown_width">400dp</dimen>
     <dimen name="thickbar_height">134dp</dimen>
 
 </resources>

@@ -1,5 +1,5 @@
 <!--
-  Copyright 2011 Google Inc.
+  Copyright 2012 Google Inc.
 
   Licensed under the Apache License, Version 2.0 (the "License");
   you may not use this file except in compliance with the License.
@@ -14,10 +14,12 @@
   limitations under the License.
   -->
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:iosched="http://schemas.android.com/apk/res/com.google.android.apps.iosched"
     android:orientation="vertical"
-    android:layout_width="fill_parent"
+    android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginTop="@dimen/body_padding_large">
+    android:layout_marginTop="@dimen/element_spacing_normal"
+    android:layout_marginBottom="@dimen/element_spacing_normal">
 
     <com.google.android.apps.iosched.ui.widget.BezelImageView android:id="@+id/speaker_image"
         android:scaleType="centerCrop"
@@ -26,13 +28,16 @@
         android:layout_width="@dimen/speaker_image_size"
         android:layout_height="@dimen/speaker_image_size"
         android:layout_marginRight="@dimen/speaker_image_padding"
-        android:src="@drawable/speaker_image_empty" />
+        android:clickable="true"
+        android:focusable="true"
+        iosched:borderDrawable="@drawable/bezel_border"
+        android:src="@drawable/person_image_empty" />
 
     <TextView android:id="@+id/speaker_header"
         android:layout_toRightOf="@id/speaker_image"
         android:layout_alignParentTop="true"
         android:layout_alignParentRight="true"
-        android:layout_width="fill_parent"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         style="@style/TextHeader3" />
 
@@ -40,17 +45,7 @@
         android:layout_below="@id/speaker_header"
         android:layout_alignLeft="@id/speaker_header"
         android:layout_alignRight="@id/speaker_header"
-        android:layout_width="fill_parent"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        style="@style/TextBody" />
-
-    <TextView android:id="@+id/speaker_url"
-        android:layout_below="@id/speaker_abstract"
-        android:layout_alignLeft="@id/speaker_header"
-        android:layout_alignRight="@id/speaker_header"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/body_padding_medium"
-        android:autoLink="web"
         style="@style/TextBody" />
 </RelativeLayout>

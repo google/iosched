@@ -1,5 +1,5 @@
 <!--
-  Copyright 2011 Google Inc.
+  Copyright 2012 Google Inc.
 
   Licensed under the Apache License, Version 2.0 (the "License");
   you may not use this file except in compliance with the License.
@@ -15,8 +15,8 @@
   -->
 
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="fill_parent"
-    android:layout_height="fill_parent">
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
     <ProgressBar android:id="@+id/loading_spinner"
         android:indeterminate="true"
         android:layout_width="wrap_content"
@@ -25,8 +25,8 @@
         android:visibility="gone" />
     <WebView android:id="@+id/webview"
         android:scrollbars="none"
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         android:fadingEdge="vertical"
         android:layerType="software" />
 </FrameLayout>

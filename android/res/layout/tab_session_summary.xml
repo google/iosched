@@ -1,5 +1,5 @@
 <!--
-  Copyright 2011 Google Inc.
+  Copyright 2012 Google Inc.
 
   Licensed under the Apache License, Version 2.0 (the "License");
   you may not use this file except in compliance with the License.
@@ -14,33 +14,26 @@
   limitations under the License.
   -->
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="fill_parent"
-    android:layout_height="fill_parent"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
     android:fillViewport="true">
 
     <LinearLayout android:orientation="vertical"
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
-        android:padding="@dimen/body_padding_large">
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="@dimen/content_padding_normal">
 
         <TextView android:id="@+id/session_abstract"
-            android:layout_width="fill_parent"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             style="@style/TextBody" />
 
-        <Button
-            style="@style/PushButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/session_tags_button"
-            android:layout_marginTop="@dimen/body_padding_medium" />
-
         <LinearLayout android:id="@+id/session_speakers_block"
             android:orientation="vertical"
-            android:layout_width="fill_parent"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/body_padding_medium">
-            <TextView android:layout_width="fill_parent"
+            android:layout_marginTop="@dimen/element_spacing_normal">
+            <TextView android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/session_speakers"
                 style="@style/TextHeader2" />
@@ -48,25 +41,44 @@
 
         <LinearLayout android:id="@+id/session_requirements_block"
             android:orientation="vertical"
-            android:layout_marginTop="@dimen/body_padding_medium"
-            android:layout_width="fill_parent"
-            android:layout_height="fill_parent">
-            <TextView android:layout_width="fill_parent"
+            android:layout_marginTop="@dimen/element_spacing_normal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <TextView android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/session_requirements"
                 style="@style/TextHeader2" />
             <TextView android:id="@+id/session_requirements"
-                android:layout_width="fill_parent"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/element_spacing_normal"
+                android:layout_marginBottom="@dimen/element_spacing_normal"
                 style="@style/TextBody" />
         </LinearLayout>
 
+        <LinearLayout android:id="@+id/session_links_block"
+            android:orientation="vertical"
+            android:layout_marginTop="@dimen/element_spacing_normal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <TextView android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/session_links"
+                style="@style/TextHeader2" />
+            <LinearLayout android:orientation="vertical"
+                android:id="@+id/links_container"
+                android:divider="?android:dividerHorizontal"
+                android:showDividers="middle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+        </LinearLayout>
+
         <TextView android:id="@android:id/empty"
-            style="@android:style/TextAppearance.Medium"
-            android:layout_width="fill_parent"
-            android:layout_height="fill_parent"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
             android:layout_weight="1"
             android:text="@string/empty_session_detail"
+            android:textAppearance="?android:textAppearanceSmall"
             android:gravity="center"
             android:visibility="gone" />
 

@@ -1,5 +1,5 @@
 <!--
-  Copyright 2011 Google Inc.
+  Copyright 2012 Google Inc.
 
   Licensed under the Apache License, Version 2.0 (the "License");
   you may not use this file except in compliance with the License.
@@ -14,8 +14,7 @@
   limitations under the License.
   -->
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="fill_parent"
+    android:layout_width="match_parent"
     android:layout_height="@dimen/whats_on_height"
     android:orientation="horizontal"
-    android:baselineAligned="false"
-    android:background="@drawable/whats_on_background" />
+    android:baselineAligned="false" />

@@ -1,5 +1,5 @@
 <!--
-  Copyright 2011 Google Inc.
+  Copyright 2012 Google Inc.
 
   Licensed under the Apache License, Version 2.0 (the "License");
   you may not use this file except in compliance with the License.
@@ -14,32 +14,42 @@
   limitations under the License.
   -->
 <resources>
-
     <!-- UI elements -->
-    <dimen name="colorstrip_height">6dp</dimen>
-    <dimen name="actionbar_compat_height">45dp</dimen>
-    <dimen name="whats_on_height">70dp</dimen>
+    <dimen name="whats_on_height">64dp</dimen>
     <dimen name="whats_on_item_padding">10dp</dimen>
     <dimen name="whats_on_button_right_padding">20dp</dimen>
-    <dimen name="schedule_header_padding">10dp</dimen>
-    <dimen name="schedule_hour_height">60dp</dimen>
-    <dimen name="schedule_label_header_width">46dp</dimen>
-    <dimen name="schedule_label_padding">5dp</dimen>
-    <dimen name="star_button_padding">3dp</dimen>
-    <dimen name="tab_height">38dp</dimen>
-    <dimen name="tab_side_padding">2dp</dimen>
-    <dimen name="track_icon_width">40dp</dimen>
-    <dimen name="track_icon_padding">4dp</dimen>
+    <dimen name="tab_height">48dp</dimen>
+    <dimen name="track_icon_width">32dp</dimen>
+    <dimen name="track_icon_padding">2dp</dimen>
+    <dimen name="page_margin_width">16dp</dimen>
+    <dimen name="list_extra_button_width">48dp</dimen>
+    <dimen name="action_button_min_width">56dp</dimen>
+    <dimen name="multipane_half_padding">8dp</dimen>
+    <dimen name="multipane_padding">16dp</dimen>
+    <dimen name="list_scroll_top_offset">16dp</dimen>
+    <dimen name="schedule_block_time_width">72dp</dimen>
+    <dimen name="map_multipane_right_padding">48dp</dimen>
+    <dimen name="announcements_margin_width">8dp</dimen>
 
     <!-- body content -->
-    <dimen name="body_padding_medium">10dp</dimen>
-    <dimen name="body_padding_large">10dp</dimen>
-    <dimen name="text_size_small">14sp</dimen>
-    <dimen name="text_size_medium">18sp</dimen>
+    <dimen name="element_spacing_normal">8dp</dimen>
+    <dimen name="content_padding_normal">16dp</dimen>
+    <dimen name="text_size_small">12sp</dimen>
+    <dimen name="text_size_medium">14sp</dimen>
     <dimen name="text_size_large">18sp</dimen>
     <dimen name="text_size_xlarge">18sp</dimen>
-    <dimen name="speaker_image_size">36dp</dimen>
+    <dimen name="text_size_diff_large_small">6sp</dimen>
+    <dimen name="speaker_image_size">48dp</dimen>
     <dimen name="speaker_image_padding">8dp</dimen>
     <dimen name="vendor_image_size">100dp</dimen>
 
+    <!-- Google+ -->
+    <dimen name="stream_name_text_size">16sp</dimen>
+    <dimen name="stream_original_author_name_text_size">14sp</dimen>
+    <dimen name="stream_content_text_size">14sp</dimen>
+    <dimen name="stream_feedback_text_size">12sp</dimen>
+    <dimen name="stream_fav_icon_size">14dip</dimen>
+    
+     <!-- Widget -->
+    <dimen name="widget_margin">8dp</dimen>
 </resources>
