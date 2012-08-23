@@ -116,11 +116,15 @@ public class VendorDetailFragment extends SherlockFragment implements
     }
 
     @Override
-    public void onStop() {
-        super.onStop();
-        if (mImageFetcher != null) {
-            mImageFetcher.closeCache();
-        }
+    public void onPause() {
+        super.onPause();
+        mImageFetcher.flushCache();
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        mImageFetcher.closeCache();
     }
 
     @Override

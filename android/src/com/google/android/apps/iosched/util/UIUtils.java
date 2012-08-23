@@ -294,7 +294,7 @@ public class UIUtils {
     public static ImageFetcher getImageFetcher(final FragmentActivity activity) {
         // The ImageFetcher takes care of loading remote images into our ImageView
         ImageFetcher fetcher = new ImageFetcher(activity);
-        fetcher.setImageCache(ImageCache.findOrCreateCache(activity, "imageFetcher"));
+        fetcher.addImageCache(activity);
         return fetcher;
     }
 

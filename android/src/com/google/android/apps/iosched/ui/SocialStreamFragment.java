@@ -163,11 +163,15 @@ public class SocialStreamFragment extends SherlockListFragment implements
     }
 
     @Override
-    public void onStop() {
-        super.onStop();
-        if (mImageFetcher != null) {
-            mImageFetcher.closeCache();
-        }
+    public void onPause() {
+        super.onPause();
+        mImageFetcher.flushCache();
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        mImageFetcher.closeCache();
     }
 
     @Override
@@ -261,9 +265,9 @@ public class SocialStreamFragment extends SherlockListFragment implements
         // Pause disk cache access to ensure smoother scrolling
         if (scrollState == AbsListView.OnScrollListener.SCROLL_STATE_FLING ||
                 scrollState == AbsListView.OnScrollListener.SCROLL_STATE_TOUCH_SCROLL) {
-            mImageFetcher.setPauseDiskCache(true);
+            mImageFetcher.setPauseWork(true);
         } else {
-            mImageFetcher.setPauseDiskCache(false);
+            mImageFetcher.setPauseWork(false);
         }
     }
 

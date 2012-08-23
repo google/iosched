@@ -170,10 +170,6 @@ public class SessionDetailFragment extends SherlockFragment implements
     public void onStop() {
         super.onStop();
 
-        if (mImageFetcher != null) {
-            mImageFetcher.closeCache();
-        }
-
         if (mInitStarred != mStarred) {
             // Update Calendar event through the Calendar API on Android 4.0 or new versions.
             if (UIUtils.hasICS()) {
@@ -207,6 +203,18 @@ public class SessionDetailFragment extends SherlockFragment implements
                 setupNotification();
             }
         }
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        mImageFetcher.flushCache();
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        mImageFetcher.closeCache();
     }
 
     private void setupNotification() {
