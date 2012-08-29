@@ -16,7 +16,7 @@
 
 package com.google.android.apps.iosched.util;
 
-import com.actionbarsherlock.BuildConfig;
+import com.google.android.apps.iosched.BuildConfig;
 
 import android.content.Context;
 import android.content.res.Resources;
@@ -373,8 +373,8 @@ public abstract class ImageWorker {
         }
 
         @Override
-        protected void onCancelled(Bitmap bitmap) {
-            super.onCancelled(bitmap);
+        protected void onCancelled() {
+            super.onCancelled();
             synchronized (mPauseWorkLock) {
                 mPauseWorkLock.notifyAll();
             }
