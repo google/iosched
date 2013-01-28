@@ -229,6 +229,7 @@ public abstract class ImageWorker {
      */
     public void setExitTasksEarly(boolean exitTasksEarly) {
         mExitTasksEarly = exitTasksEarly;
+        setPauseWork(false);
     }
 
     /**
@@ -439,6 +440,18 @@ public abstract class ImageWorker {
         }
     }
 
+    /**
+     * Pause any ongoing background work. This can be used as a temporary
+     * measure to improve performance. For example background work could
+     * be paused when a ListView or GridView is being scrolled using a
+     * {@link android.widget.AbsListView.OnScrollListener} to keep
+     * scrolling smooth.
+     * <p>
+     * If work is paused, be sure setPauseWork(false) is called again
+     * before your fragment or activity is destroyed (for example during
+     * {@link android.app.Activity#onPause()}), or there is a risk the
+     * background thread will never finish.
+     */
     public void setPauseWork(boolean pauseWork) {
         synchronized (mPauseWorkLock) {
             mPauseWork = pauseWork;

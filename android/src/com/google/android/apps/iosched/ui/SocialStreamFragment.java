@@ -165,6 +165,7 @@ public class SocialStreamFragment extends SherlockListFragment implements
     @Override
     public void onPause() {
         super.onPause();
+        mImageFetcher.setPauseWork(false);
         mImageFetcher.flushCache();
     }
 

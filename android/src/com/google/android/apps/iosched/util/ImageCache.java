@@ -129,12 +129,13 @@ public class ImageCache {
             LOGD(TAG, "Memory cache created (size = " + mCacheParams.memCacheSize + ")");
             mMemoryCache = new LruCache<String, Bitmap>(mCacheParams.memCacheSize) {
                 /**
-                 * Measure item size in bytes rather than units which is more practical
+                 * Measure item size in kilobytes rather than units which is more practical
                  * for a bitmap cache
                  */
                 @Override
                 protected int sizeOf(String key, Bitmap bitmap) {
-                    return getBitmapSize(bitmap);
+                    final int bitmapSize = getBitmapSize(bitmap) / 1024;
+                    return bitmapSize == 0 ? 1 : bitmapSize;
                 }
             };
         }
@@ -362,40 +363,41 @@ public class ImageCache {
         public boolean initDiskCacheOnCreate = DEFAULT_INIT_DISK_CACHE_ON_CREATE;
 
         public ImageCacheParams(Context context) {
-            init(context, getDiskCacheDir(context, DEFAULT_DISK_CACHE_DIR));
+            init(getDiskCacheDir(context, DEFAULT_DISK_CACHE_DIR));
         }
 
         public ImageCacheParams(Context context, String uniqueName) {
-            init(context, getDiskCacheDir(context, uniqueName));
+            init(getDiskCacheDir(context, uniqueName));
         }
 
-        public ImageCacheParams(Context context, File diskCacheDir) {
-            init(context, diskCacheDir);
+        public ImageCacheParams(File diskCacheDir) {
+            init(diskCacheDir);
         }
 
-        private void init(Context context, File diskCacheDir) {
-            setMemCacheSizePercent(context, DEFAULT_MEM_CACHE_PERCENT);
+        private void init(File diskCacheDir) {
+            setMemCacheSizePercent(DEFAULT_MEM_CACHE_PERCENT);
             this.diskCacheDir = diskCacheDir;
         }
 
         /**
-         * Sets the memory cache size based on a percentage of the device memory class.
-         * Eg. setting percent to 0.2 would set the memory cache to one fifth of the device memory
-         * class. Throws {@link IllegalArgumentException} if percent is < 0.05 or > .8.
+         * Sets the memory cache size based on a percentage of the max available VM memory.
+         * Eg. setting percent to 0.2 would set the memory cache to one fifth of the avilable
+         * memory. Throws {@link IllegalArgumentException} if percent is < 0.05 or > .8.
+         * memCacheSize is stored in kilobytes instead of bytes as this will eventually be passed
+         * to construct a LruCache which takes an int in its constructor.
          *
          * This value should be chosen carefully based on a number of factors
          * Refer to the corresponding Android Training class for more discussion:
          * http://developer.android.com/training/displaying-bitmaps/
          *
-         * @param context Context to use to fetch memory class
          * @param percent Percent of memory class to use to size memory cache
          */
-        public void setMemCacheSizePercent(Context context, float percent) {
+        public void setMemCacheSizePercent(float percent) {
             if (percent < 0.05f || percent > 0.8f) {
                 throw new IllegalArgumentException("setMemCacheSizePercent - percent must be "
                         + "between 0.05 and 0.8 (inclusive)");
             }
-            memCacheSize = Math.round(percent * getMemoryClass(context) * 1024 * 1024);
+            memCacheSize = Math.round(percent * Runtime.getRuntime().maxMemory() / 1024);
         }
 
         private static int getMemoryClass(Context context) {
