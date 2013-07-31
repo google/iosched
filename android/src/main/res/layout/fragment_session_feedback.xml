@@ -1,0 +1,202 @@
+<!--
+  Copyright 2013 Google Inc.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+       http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+  -->
+
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/scroll_view"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:padding="16dp"
+            android:clipToPadding="false">
+
+            <TextView android:id="@+id/session_title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                style="@style/TextHeader" />
+
+            <!-- Q1 -->
+            <TextView style="@style/FeedbackQuestion"
+                android:text="@string/session_rating_label"
+                android:textAlignment="viewStart" />
+
+            <include android:id="@+id/session_rating_container"
+                layout="@layout/rating_bar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+            <LinearLayout android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="-4dp">
+
+                <TextView
+                    style="@style/FeedbackQuestionGuideText"
+                    android:text="@string/session_feedback_notgreat" />
+
+                <TextView
+                    style="@style/FeedbackQuestionGuideText.Right"
+                    android:text="@string/session_feedback_great" />
+            </LinearLayout>
+
+            <!-- Q1 -->
+            <TextView style="@style/FeedbackQuestion"
+                android:text="@string/session_feedback_relevance" />
+
+            <include android:id="@+id/session_feedback_q1_container"
+                layout="@layout/rating_bar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+            <LinearLayout android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="-4dp">
+
+                <TextView
+                    style="@style/FeedbackQuestionGuideText"
+                    android:text="@string/session_feedback_notrel" />
+
+                <TextView
+                    style="@style/FeedbackQuestionGuideText.Right"
+                    android:text="@string/session_feedback_rel" />
+            </LinearLayout>
+
+            <!-- Q2 -->
+            <TextView style="@style/FeedbackQuestion"
+                android:text="@string/session_feedback_content" />
+
+            <include android:id="@+id/session_feedback_q2_container"
+                layout="@layout/rating_bar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+            <LinearLayout android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="-4dp">
+
+                <TextView
+                    style="@style/FeedbackQuestionGuideText"
+                    android:text="@string/session_feedback_basic" />
+
+                <TextView
+                    style="@style/FeedbackQuestionGuideText.Right"
+                    android:text="@string/session_feedback_advanced" />
+            </LinearLayout>
+
+            <!-- Q3 -->
+            <TextView style="@style/FeedbackQuestion"
+                android:text="@string/session_feedback_speaker_quality" />
+
+            <include android:id="@+id/session_feedback_q3_container"
+                layout="@layout/rating_bar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+            <LinearLayout android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="-4dp">
+
+                <TextView
+                    style="@style/FeedbackQuestionGuideText"
+                    android:text="@string/session_feedback_poor" />
+
+                <TextView
+                    style="@style/FeedbackQuestionGuideText.Right"
+                    android:text="@string/session_feedback_outstanding" />
+            </LinearLayout>
+
+            <!-- Q4 -->
+            <TextView style="@style/FeedbackQuestion"
+                android:text="@string/session_feedback_6months" />
+
+            <RadioGroup
+                android:id="@+id/session_feedback_q4"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/element_spacing_normal"
+                android:paddingBottom="4dp"
+                android:orientation="horizontal">
+
+                <RadioButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/session_feedback_probnot" />
+
+                <RadioButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/element_spacing_normal"
+                    android:text="@string/session_feedback_probably" />
+
+            </RadioGroup>
+
+            <TextView style="@style/FeedbackQuestion"
+                android:text="@string/session_feedback_other" />
+
+            <EditText
+                android:id="@+id/session_feedback_comments"
+                android:minLines="1"
+                android:hint="@string/session_feedback_tell_us"
+                android:layout_marginTop="@dimen/element_spacing_normal"
+                android:layout_marginLeft="-4dp"
+                android:layout_marginRight="-4dp"
+                android:layout_height="wrap_content"
+                android:layout_width="match_parent"
+                android:scrollbars="vertical" />
+        </LinearLayout>
+
+        <!-- Submit button -->
+
+        <View android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@drawable/list_divider_holo_light" />
+
+        <FrameLayout android:id="@+id/submit_feedback_button"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:background="?activatableItemBackground"
+            android:clickable="true"
+            android:focusable="true"
+            android:contentDescription="@string/session_feedback_submitlink">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingRight="20dp"
+                android:drawableLeft="@drawable/ic_action_done"
+                android:drawablePadding="8dp"
+                android:gravity="center_vertical"
+                android:layout_gravity="center"
+                android:textStyle="bold"
+                android:textAllCaps="true"
+                android:textSize="@dimen/text_size_medium"
+                android:text="@string/session_feedback_submitlink" />
+        </FrameLayout>
+    </LinearLayout>
+</ScrollView>

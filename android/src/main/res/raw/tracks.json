@@ -1,0 +1,128 @@
+{
+ "track": [
+   {
+     "id": "496738724",
+     "name": "Accessibility",
+     "level": 2,
+     "meta": 2,
+     "color": "#993366",
+     "abstract": "Accessibility at Google I/O."
+   },
+   {
+     "id": "324437288",
+     "name": "Android",
+     "level": 1,
+     "order_in_level": 1,
+     "color": "#99cc00",
+     "abstract": "Learn about developing mobile handset and tablet apps for Android."
+   },
+   {
+     "id": "324543074",
+     "name": "Chrome & Apps",
+     "level": 1,
+     "order_in_level": 2,
+     "color": "#0294c7",
+     "abstract": "Learn about Google Chrome, Google Apps, and the future of the web."
+   },
+   {
+     "id": "CODE_LABS",
+     "name": "Code Labs",
+     "level": 2,
+     "meta": 1,
+     "color": "#666699",
+     "abstract": "Get your hands dirty in longer, classroom-style sessions. Bring your laptop. Write code."
+   },
+   {
+     "id": "497574398",
+     "name": "Develop for Good",
+     "level": 2,
+     "meta": 2,
+     "color": "#0033cc",
+     "abstract": "Develop for Good at Google I/O."
+   },
+   {
+     "id": "497058120",
+     "name": "Google TV",
+     "level": 2,
+     "meta": 2,
+     "color": "#333333",
+     "abstract": "Google TV at I/O."
+   },
+   {
+     "id": "331178416",
+     "name": "Google Wallet",
+     "level": 2,
+     "color": "#009966",
+     "abstract": "Learn about the Google Wallet platform and how you can use it in your mobile apps, websites, and onsite store."
+   },
+   {
+     "id": "325521271",
+     "name": "Glass",
+     "level": 2,
+     "color": "#47b7e6",
+     "abstract": "Learn how to build software designed specifically for Glass."
+   },
+   {
+     "id": "332109105",
+     "name": "Google Ads",
+     "level": 2,
+     "color": "#66cc66",
+     "abstract": "Learn about using Google Advertising products and developer tools."
+   },
+   {
+     "id": "331963319",
+     "name": "Google Cloud Platform",
+     "level": 1,
+     "order_in_level": 4,
+     "color": "#ff8800",
+     "abstract": "Hear the latest news and learn how to advance your use of Compute Engine, App Engine, BigQuery, Cloud Storage and more."
+   },
+   {
+     "id": "326519001",
+     "name": "Google Maps",
+     "level": 1,
+     "order_in_level": 5,
+     "color": "#ff4444",
+     "abstract": "Build your world with Google Maps and our geospatial products."
+   },
+   {
+     "id": "331436367",
+     "name": "Google+",
+     "level": 1,
+     "color": "#cf4a2c",
+     "order_in_level": 3,
+     "abstract": "Learn about creating engaging user experiences and driving app usage across devices with the Google+ platform."
+   },
+   {
+     "id": "506058779",
+     "name": "Google Developer Groups",
+     "level": 2,
+     "meta": 3,
+     "color": "#6699ff",
+     "abstract": "Google Developer Groups (GDGs) at I/O."
+   },
+   {
+     "id": "331487867",
+     "name": "Knowledge & Structured Data",
+     "level": 2,
+     "color": "#3366cc",
+     "abstract": "Learn about The Knowledge Graph, Google's massive and growing model of entities that make up the world such as people, places and things."
+   },
+   {
+     "id": "328270232",
+     "name": "Tech Talk",
+     "level": 2,
+     "meta": 1,
+     "color": "#99cc99",
+     "abstract": "Sessions on a variety of technical topics. Learn about how Google and others use the technologies being showcased in other tracks."
+   },
+   {
+     "id": "328366324",
+     "name": "YouTube",
+     "level": 1,
+     "order_in_level": 6,
+     "color": "#cc0000",
+     "abstract": "Learn about rich video integration with the YouTube APIs, and how to launch and market your services on the YouTube platform."
+   }
+ ]
+}

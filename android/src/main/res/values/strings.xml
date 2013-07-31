@@ -1,0 +1,325 @@
+<!--
+  Copyright 2012 Google Inc.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+       http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+  -->
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+    <string name="app_name">Google I/O 2013</string>
+
+    <string name="description_search">Search</string>
+    <string name="description_map">Map</string>
+    <string name="description_refresh">Refresh</string>
+    <string name="description_share">Share</string>
+    <string name="description_add_schedule">Add to schedule</string>
+    <string name="description_remove_schedule">Remove from schedule</string>
+    <string name="description_social_stream">View Google+ stream</string>
+    <string name="description_compose">New post</string>
+    <string name="description_add_account">Add account</string>
+    <string name="description_about">About</string>
+    <string name="description_configure_wifi">Configure Wi-Fi</string>
+    <string name="description_settings">Settings</string>
+    <string name="description_sign_out">Sign out</string>
+    <string name="description_captions">Captions</string>
+    <string name="description_presentation">Toggle Screen Output</string>
+
+    <string name="title_sessions">Sessions</string>
+    <string name="title_session_detail">Session Information</string>
+    <string name="title_session_feedback">Session Feedback</string>
+    <string name="title_tracks">Tracks</string>
+    <string name="title_office_hours">Office Hours</string>
+    <string name="title_sandbox">Sandbox</string>
+    <string name="title_sandbox_detail">Company Information</string>
+    <string name="title_map">Map</string>
+    <string name="title_tagstream">Google+ Posts</string>
+    <string name="title_announcements">Announcements</string>
+    <string name="title_about">About</string>
+    <string name="title_settings">Settings</string>
+
+    <string name="title_share">Share using</string>
+
+    <string name="title_search">Search</string>
+    <string name="title_search_query">Search for \"&lt;b&gt;<xliff:g id="query">%1$s</xliff:g>&lt;b&gt;\"</string>
+
+    <string name="title_my_schedule">Schedule</string>
+    <string name="title_explore">Explore</string>
+    <string name="title_stream">Stream</string>
+
+    <plurals name="title_selected_sessions">
+        <item quantity="one">1 session</item>
+        <item quantity="other"><xliff:g id="num_sessions">%1$d</xliff:g> sessions</item>
+    </plurals>
+
+    <string name="session_subtitle"><xliff:g id="time">%1$s</xliff:g> in <xliff:g id="room">%2$s</xliff:g></string>
+
+    <string name="all_tracks">All tracks</string>
+    <string name="all_tracks_sessions">All sessions</string>
+    <string name="all_tracks_office_hours">All office hours</string>
+    <string name="all_tracks_sandbox">All companies</string>
+    <string name="all_tracks_subtitle_sessions">All sessions at Google I/O 2013.</string>
+    <string name="all_tracks_subtitle_office_hours">All office hours at Google I/O 2013.</string>
+    <string name="all_tracks_subtitle_sandbox">All developer sandbox companies at Google I/O 2013.</string>
+    <string name="other_tracks">Other tracks</string>
+
+    <string name="empty_sessions">No sessions found.</string>
+    <string name="empty_live_streamed_sessions">No live streamed sessions found.</string>
+    <string name="empty_session_detail">No session details found.</string>
+    <string name="empty_sandbox">No developer sandbox companies found.</string>
+    <string name="empty_social_stream">No posts found.</string>
+    <string name="empty_announcements">Announcements will appear here.</string>
+    <string name="empty_waiting_for_sync">Waiting for sync&#8230;</string>
+    <string name="empty_captions">No captions found for this session.</string>
+
+    <string name="unknown_room">(Unspecified Room)</string>
+    <string name="codelab_room">Code Labs (Level 2)</string>
+    <string name="keynote_room">Level 3</string>
+
+    <string name="session_links">More</string>
+    <string name="session_requirements">Requirements</string>
+    <string name="session_speakers">Speakers</string>
+
+    <string name="session_link_main">Web link</string>
+    <string name="session_link_youtube">YouTube video</string>
+    <string name="session_link_moderator">Moderator</string>
+    <string name="session_link_pdf">Slides (PDF)</string>
+    <string name="session_link_notes">Official notes</string>
+    <string name="session_link_livestream">Watch on I/O Live</string>
+
+    <string name="session_livestream_title">I/O Live</string>
+    <string name="session_livestream_track_title">%s Track</string>
+    <string name="session_livestream_info">Info</string>
+    <string name="session_livestream_captions">Captions</string>
+    <string name="session_livestream_error_init">Sorry, there was an error initializing the YouTube Player (%1$s)</string>
+    <string name="session_livestream_error_playback">Sorry, there was an error loading the live stream, please try again later</string>
+    <string name="session_livestream_keynote_title">Google I/O - %s</string>
+    <string name="session_livestream_keynote_desc">Google I/O\'s much-anticipated kickoff event will make you among the first developers to see what we\'ve been working on here at Google. Grab some popcorn, kick back and enjoy the show directly from your Android powered device.</string>
+    <string name="session_livestream_play_pause">Play / Pause</string>
+
+    <string name="codelab_title_template">Code Lab: <xliff:g id="title">%1$s</xliff:g></string>
+
+    <string name="search_label">Google I/O Sessions</string>
+    <string name="search_hint">Search sessions</string>
+
+    <string name="share_template">Checking out \'<xliff:g id="title">%1$s</xliff:g>\' at <xliff:g id="hashtags">%2$s</xliff:g> <xliff:g id="url">%3$s</xliff:g></string>
+    <string name="share_livestream_template">Watching I/O Live: \'<xliff:g id="title">%1$s</xliff:g>\' at <xliff:g id="hashtags">%2$s</xliff:g> <xliff:g id="url">%3$s</xliff:g></string>
+
+    <string name="add_to_schedule">Add to schedule</string>
+    <string name="remove_from_schedule">In schedule</string>
+
+    <string name="add_to_schedule_desc">Add to schedule</string>
+    <string name="remove_from_schedule_desc">Remove from schedule</string>
+
+    <!-- Announcements -->
+    <string name="whats_on_countdown_title_0"><xliff:g id="remaining_time">%1$s</xliff:g>\nuntil Google I/O</string>
+    <plurals name="whats_on_countdown_title">
+        <item quantity="one"><xliff:g id="number_of_days">%1$s</xliff:g> day, <xliff:g id="remaining_time">%2$s</xliff:g>\nuntil Google I/O</item>
+        <item quantity="other"><xliff:g id="number_of_days">%1$s</xliff:g> days, <xliff:g id="remaining_time">%2$s</xliff:g>\nuntil Google I/O</item>
+    </plurals>
+    <string name="whats_on_thank_you_short">Thanks!</string>
+    <string name="whats_on_thank_you_title">See you next year!</string>
+    <string name="whats_on_thank_you_subtitle">Google I/O 2013 has ended.</string>
+    <string name="news_will_appear_here">Announcements will appear here</string>
+    <string name="welcome_to_google_i_o">Welcome to Google I/O!</string>
+
+    <string name="permission_write">Modify Google I/O schedule data</string>
+
+    <plurals name="toast_added_to_schedule">
+        <item quantity="one">Session added to your schedule</item>
+        <item quantity="other"><xliff:g id="number_of_sessions">%1$s</xliff:g> sessions added to your schedule</item>
+    </plurals>
+    <plurals name="toast_removed_from_schedule">
+        <item quantity="one">Session removed from your schedule</item>
+        <item quantity="other"><xliff:g id="number_of_sessions">%1$s</xliff:g> sessions removed from your schedule</item>
+    </plurals>
+
+    <!-- Schedule -->
+    <string name="schedule_empty_slot_title_template">Browse<xliff:g id="block_type">%1$s</xliff:g>&#8230;</string>
+    <string name="schedule_empty_slot_subtitle">Empty slot</string>
+    <string name="schedule_conflict_title"><xliff:g id="num_sessions">%1$s</xliff:g> chosen sessions</string>
+    <string name="schedule_conflict_subtitle">Conflict in slot</string>
+    <string name="schedule_block_title_sessions">Sessions</string>
+    <string name="schedule_block_title_code_labs">Code Labs</string>
+    <string name="schedule_block_title_office_hours">Office Hours</string>
+    <string name="schedule_block_title_keynote">Keynote</string>
+    <string name="schedule_block_title_sandbox">Sandbox</string>
+
+    <!-- Map -->
+    <string name="map_floorcontrol_1">1</string>
+    <string name="map_floorcontrol_2">2</string>
+    <string name="map_floorcontrol_3">3</string>
+    <string name="map_touch_to_see_session">Touch to see sessions</string>
+    <string name="map_at">At %1$s:<![CDATA[<br><b>%2$s</b>]]></string>
+    <string name="map_now_playing">Now playing:<![CDATA[<br><b>%1$s</b>]]></string>
+    <string name="map_touch_to_see_sandbox">Touch to see sandbox partners</string>
+    <string name="map_now_sandbox">Now in the sandbox:<![CDATA[<br><b>%1$s</b>]]></string>
+    <string name="map_infowindow_text_empty">-</string>
+
+    <!-- EULA, login, and about -->
+    <string name="description_choose_account"><![CDATA[
+        <font color="#4d90fe"><b>Choose an account below. If you registered to attend Google I/O,
+        make sure to use the same account.</b></font>
+    ]]></string>
+    <string name="description_setup_attendee_mode_header"><![CDATA[
+        <font color="#4d90fe"><b>Are you attending Google I/O in person this year?</b></font>
+        <br><br>
+    ]]></string>
+    <string name="description_setup_attendee_mode_body"><![CDATA[
+        If not, we\'ll only show live-streamed sessions. You can always change this in Settings.
+    ]]></string>
+    <string name="description_setup_wifi_header"><![CDATA[
+        <font color="#4d90fe"><b>Configure Wi-Fi access on this device?</b></font>
+        <br><br>
+    ]]></string>
+    <string name="description_setup_wifi_body"><![CDATA[
+        Since you\'re attending in person, we can set up this device to access the conference Wi-Fi network.
+        By configuring your Wi-Fi now, you\'ll help prevent network congestion.<br>
+        <br>
+        <i>Note: If your device only supports 2.4 GHz networks, you\'ll need to manually connect upon
+        arrival.</i>
+    ]]></string>
+    <string name="description_sign_in_main"><![CDATA[
+        Welcome to the Google I/O 2013 app, your official companion to the Google I/O conference
+        taking place in San Francisco from May 15th to May 17th, 2013.<br>
+        <br>
+        We just need to ask you a couple of quick questions. Press the &quot;Sign-in&quot; button
+        to get started.
+    ]]></string>
+    <string name="calltoaction_wifi_configure"><![CDATA[
+        <br><br>Tap \'Add Wi-Fi Network\' to proceed.
+    ]]></string>
+    <string name="calltoaction_wifi_settings"><![CDATA[
+        <br><br>Tap \'Open Wi-Fi Settings\' to enable Wi-Fi.
+    ]]></string>
+    <string name="wifi_dialog_button_configure">Add Wi-Fi Network</string>
+    <string name="wifi_dialog_button_settings">Open Wi-Fi Settings</string>
+    <string-array name="selection_setup_wifi">
+        <item>Yes, add the conference Wi-Fi network now.</item>
+        <item>No thanks, I\'ll connect on my own.</item>
+    </string-array>
+    <string-array name="selection_setup_attendee">
+        <item>Yes, I\'ll be attending from San Francisco.</item>
+        <item>No, I\'ll be viewing from home or attending a Google I/O Extended event.</item>
+    </string-array>
+    <string name="empty_accounts">No Google accounts are available. Add an account to continue.</string>
+    <string name="no_connection_cant_login">Can\'t sign in. Check your network connection.</string>
+    <string name="taking_a_while">This is taking a while&#8230;</string>
+    <string name="about_eula">End User License Agreement</string>
+    <string name="about_licenses">Open Source Licenses</string>
+    <string name="about_body"><![CDATA[
+        <b>Google I/O 2013</b><br>
+        Version %s<br><br>
+        <a href="http://m.google.com/utos">Terms of Service</a><br><br>
+        <a href="http://www.google.com/policies/privacy/">Privacy Policy</a>
+    ]]></string>
+
+    <!--suppress AndroidLintTypographyOther -->
+    <string name="eula_text"><![CDATA[
+        By downloading, installing or using this application or any portion thereof
+        (\"Application\"), you agree to these terms and conditions.<br>
+        <br>
+        Your use of this Application is governed by: (a) the Google Terms of Service
+        (<a href="http://m.google.com/utos">m.google.com/utos</a>); (b) Google\'s Privacy Policy
+        (<a href="http://www.google.com/policies/privacy">http://www.google.com/policies/privacy</a>);
+        and (c) any applicable Google Service-specific terms of service or privacy policies.
+        Google\'s terms of service and privacy policies may be updated from time to time and without
+        notice.<br>
+        <br>
+        This Application collects certain information as you use it, including via Google Analytics.
+        Google\'s Privacy Policy explains how Google treats your information and protects your
+        privacy when you use the Application.  You agree to the use of your data in accordance
+        with Google\'s privacy policy.
+    ]]></string>
+
+    <!-- Session notification -->
+    <plurals name="session_notification_ticker">
+        <item quantity="one">1 session is about to start.</item>
+        <item quantity="other">%d sessions are about to start.</item>
+    </plurals>
+
+    <string name="session_notification_text_1">starting in <xliff:g id="remaining_time">%1$d</xliff:g> min.</string>
+    <plurals name="session_notification_text">
+        <item quantity="one">and 1 other starting in <xliff:g id="remaining_time">%1$d</xliff:g> min.</item>
+        <item quantity="other">and <xliff:g id="num_sessions">%2$d</xliff:g> others starting in <xliff:g id="remaining_time">%1$d</xliff:g> min.</item>
+    </plurals>
+    <plurals name="session_notification_title">
+        <item quantity="one">1 session is starting in <xliff:g id="remaining_time">%1$d</xliff:g> min.</item>
+        <item quantity="other"><xliff:g id="num_sessions">%2$d</xliff:g> sessions are starting in <xliff:g id="remaining_time">%1$d</xliff:g> min.</item>
+    </plurals>
+    <string name="snooze_x_min">Snooze <xliff:g id="remaining_time">%1$d</xliff:g> min.</string>
+
+    <!-- Others -->
+    <string name="ok">OK</string>
+    <string name="loading">Loading&#8230;</string>
+    <string name="retry">Retry</string>
+    <string name="stream_error">Couldn\'t load the Google+ stream.</string>
+    <string name="stream_originally_shared">Originally shared by <xliff:g id="name">%s</xliff:g></string>
+    <string name="empty_widget_text">No more upcoming sessions.\nSee you next year!</string>
+    <string name="empty_widget_text_signed_out">Touch the Google I/O 2013 logo above to sign in and begin using the app.</string>
+
+    <string name="now_playing_badge"><![CDATA[<font color="#4d90fe"><small><b>NOW</b></small></font>]]></string>
+    <string name="live_available_badge"><![CDATA[<font color="#999999"><small><b>LIVE</b></small></font>]]></string>
+    <string name="live_now_badge"><![CDATA[<font color="#ff4444"><small><b>LIVE</b></small></font>]]></string>
+    <string name="session_finished">Ended</string>
+
+    <!-- Strings only used for accessibility -->
+    <string name="speaker_googleplus_profile">Google+ profile: <xliff:g id="speakername">%1$s</xliff:g></string>
+    <string name="close_detail_pane">Close detail pane</string>
+    <string name="more_sessions">More sessions</string>
+    <string name="more_announcements">More announcements</string>
+    <string name="plus_one_description_standard">Touch to plus one.</string>
+
+    <!-- Preferences -->
+    <string name="pref_local_times_title">Show local times</string>
+    <string name="pref_local_times_description">When checked, show local times instead of Pacific time (the timezone at the conference)</string>
+    <string name="pref_attendee_at_venue_title">I\'ll be at Google I/O!</string>
+    <string name="pref_attendee_at_venue_description">When checked, all sessions and on-site events will be shown. Otherwise, only live-streamed sessions will be shown.</string>
+    <string name="wifi_install_error_message">Sorry, unable to update WiFi configuration</string>
+
+    <!-- Feedback -->
+    <string name="session_feedback_submitlink">Submit Feedback</string>
+    <string name="session_rating_label">Rate this session overall:</string>
+
+    <string name="session_feedback_relevance">
+        How relevant was this session to your coding projects?
+    </string>
+
+    <string name="session_feedback_notgreat">Not so awesome</string>
+    <string name="session_feedback_great">Awesome</string>
+
+    <string name="session_feedback_notrel">Not relevant</string>
+    <string name="session_feedback_rel">Relevant</string>
+
+    <string name="session_feedback_content">The content was:</string>
+    <string name="session_feedback_basic">Too basic</string>
+    <string name="session_feedback_advanced">Too advanced</string>
+
+    <string name="session_feedback_speaker_quality">Speaker quality:</string>
+    <string name="session_feedback_poor">Poor</string>
+    <string name="session_feedback_outstanding">Outstanding</string>
+    <string name="session_feedback_tell_us">Tell us!</string>
+    <string name="session_feedback_6months">
+        Will you use the technology featured in this section in the next 6 months?
+    </string>
+    <string name="session_feedback_probably">Probably</string>
+    <string name="session_feedback_probnot">Probably not</string>
+    <string name="number_1">1</string>
+    <string name="number_2">2</string>
+    <string name="number_3">3</string>
+    <string name="number_4">4</string>
+    <string name="number_5">5</string>
+    <string name="session_feedback_other">Anything else we should know?</string>
+
+    <!-- More Misc -->
+    <string name="dashclock_extension_description">
+        Displays the next few items in your Google I/O 2013 schedule.
+    </string>
+</resources>

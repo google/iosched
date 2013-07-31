@@ -1,0 +1,32 @@
+<!--
+  Copyright 2012 Google Inc.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+       http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+  -->
+
+<resources>
+    <style name="FrameworkRoot.Theme" parent="Theme.AppCompat.Light">
+        <!-- API 11+ -->
+        <item name="buttonBarStyle">?android:buttonBarStyle</item>
+        <item name="buttonBarButtonStyle">?android:buttonBarButtonStyle</item>
+        <item name="indeterminateProgressStyle">?android:indeterminateProgressStyle</item>
+        <!-- API 14+ (compatibility) -->
+        <item name="listPreferredItemPaddingLeft">@dimen/compat_list_preferred_item_padding_left</item>
+        <item name="listPreferredItemPaddingRight">@dimen/compat_list_preferred_item_padding_right</item>
+        <item name="listPreferredItemHeightSmall">@dimen/compat_list_preferred_item_height_small</item>
+    </style>
+
+    <style name="FrameworkRoot.EditText" parent="android:Widget.Holo.Light.EditText" />
+    <style name="FrameworkRoot.RadioButton" parent="android:Widget.Holo.Light.CompoundButton.RadioButton" />
+
+</resources>

@@ -1,0 +1,271 @@
+{
+    "config": {
+        "enableMyLocation" : "false"
+    },
+    "tiles": {
+        "0" : {
+            "filename" : "floor0-v2.svg",
+            "url" : ""
+        },
+        "1" : {
+            "filename" : "floor1-v2.svg",
+            "url" : ""
+        },
+        "2" : {
+            "filename" : "floor2-v2.svg",
+            "url" : ""
+        }
+    },
+    "markers" : {
+    "0" : [
+            {
+                "id": "northentrance",
+                "type": "label",
+                "lat": 37.78381535905965,
+                "lng": -122.40362226963043,
+                "title": "Entrance"
+            },
+            {
+                "id": "eastentrance",
+                "type": "label",
+                "lat": 37.783153970642175,
+                "lng": -122.40306705236436,
+                "title": "Entrance" 
+            },
+            {
+                "id": "lunchroom",
+                "type": "label",
+                "lat": 37.78291495782711,
+                "lng": -122.40424688905476,
+                "title": "Breakfast / Lunch Cafes"
+            },
+            {
+                "id": "bikeparking",
+                "type": "label",
+                "lat": 37.78336807459184,
+                "lng": -122.40321557968855,
+                "title": "Bike Parking"
+            },
+            {
+                "id": "mothersroom",
+                "type": "label",
+                "lat": 37.78308163092494,
+                "lng": -122.40339562296866,
+                "title": "Mothers Room"
+            },
+            {
+                "id": "information",
+                "type": "label",
+                "lat": 37.7836039061948,
+                "lng": -122.40369737148283,
+                "title": "Information Desk"
+            },
+            {
+                "id": "googlestore",
+                "type": "label",
+                "lat": 37.78370406815354,
+                "lng": -122.40400850772858,
+                "title": "Google Store"
+            },
+            {
+                "id": "registration",
+                "type": "label",
+                "lat": 37.78331825838168,
+                "lng": -122.40340635180475,
+                "title": "Registration"
+            }
+        ],
+        "1": [
+            {
+                "id": "room1",
+                "type": "session",
+                "lat": 37.783387683090886,
+                "lng": -122.40415100008249,
+                "title": "Room 1"
+            },
+            {
+                "id": "room2",
+                "type": "session",
+                "lat": 37.783247243726194,
+                "lng": -122.40433372557162,
+                "title": "Room 2"
+            },
+            {
+                "id": "room3",
+                "type": "session",
+                "lat": 37.78310998386286,
+                "lng": -122.40450974553823,
+                "title": "Room 3"
+            },
+            {
+                "id": "room4",
+                "type": "session",
+                "lat": 37.782989152575254,
+                "lng": -122.40466330200434,
+                "title": "Room 4"
+            },
+            {
+                "id": "room5",
+                "type": "session",
+                "lat": 37.783217830919796,
+                "lng": -122.40386098623274,
+                "title": "Room 5"
+            },
+            {
+                "id": "room6",
+                "type": "session",
+                "lat": 37.783044533606585,
+                "lng": -122.40409433841705,
+                "title": "Room 6"
+            },
+            {
+                "id": "room7",
+                "type": "session",
+                "lat": 37.78286938101629,
+                "lng": -122.4043035507202,
+                "title": "Room 7"
+            },
+            {
+                "id": "room8",
+                "type": "session",
+                "lat": 37.78302254018763,
+                "lng": -122.40376710891724,
+                "title": "Room 8"
+            },
+            {
+                "id": "room9",
+                "type": "session",
+                "lat": 37.782939601091,
+                "lng": -122.40387909114362,
+                "title": "Room 9"
+            },
+            {
+                "id": "room10",
+                "type": "session",
+                "lat": 37.78275146413703,
+                "lng": -122.40409031510355,
+                "title": "Room 10"
+            },
+            {
+                "id": "gdglounge-short",
+                "type": "label",
+                "lat": 37.78329705998422,
+                "lng": -122.40366887301208,
+                "title": "GDG"
+            },
+            {
+                "id": "cloudplatformsandbox",
+                "type": "sandbox",
+                "lat": 37.78335032094632,
+                "lng": -122.40346100181341,
+                "title": "Cloud Platform",
+                "track": "331963319"
+
+            },
+            {
+                "id": "youtubesandbox",
+                "type": "sandbox",
+                "lat": 37.78339324766399,
+                "lng": -122.40379191935062,
+                "title": "YouTube",
+                "track":"328366324"
+
+            },
+            {
+                "id": "developforgoodsandbox",
+                "type": "sandbox",
+                "lat": 37.78343458447965,
+                "lng": -122.40341205149888,
+                "title": "Develop for Good",
+                "track":"497574398"
+            },
+            {
+                "id": "mapssandbox",
+                "type": "sandbox",
+                "lat": 37.78329705998422,
+                "lng": -122.40338992327453,
+                "title": "Maps",
+                "track":"326519001"
+            },
+            {
+                "id": "accessibilitysandbox",
+                "type": "sandbox",
+                "lat": 37.78351301837403,
+                "lng": -122.40367658436298,
+                "title": "Accessibility",
+                "track":"496738724"
+            },
+            {
+                "id": "plussandbox",
+                "type": "sandbox",
+                "lat": 37.783654782127336,
+                "lng": -122.40378856658937,
+                "title": "Google+",
+                "track": "331436367"
+            },
+            {
+                "id": "adssandbox",
+                "type": "sandbox",
+                "lat": 37.78341179623799,
+                "lng": -122.40353476256132,
+                "title": "Ads",
+                "track": "332109105"
+            },
+            {
+                "id": "walletsandbox",
+                "type": "sandbox",
+                "lat": 37.78347035670531,
+                "lng": -122.40361087024212,
+                "title": "Wallet",
+                "track": "331178416"
+            },
+            {
+                "id": "glasssandbox",
+                "type": "sandbox",
+                "lat": 37.78323611455759,
+                "lng": -122.40317534655333,
+                "title": "Glass",
+                "track": "325521271"
+            }
+        ],
+        "2": [
+            {
+                "id": "room12",
+                "type": "session",
+                "lat": 37.78280631538293,
+                "lng": -122.40401487797499,
+                "title": "Room 12"
+            },
+            {
+                "id": "room11",
+                "type": "session",
+                "lat": 37.78304877330107,
+                "lng": -122.40369502454996,
+                "title": "Room 11"
+            },
+            {
+                "id": "keynote",
+                "type": "label",
+                "lat": 37.78311289865024,
+                "lng": -122.40422375500204,
+                "title": "Keynote"
+            },
+            {
+                "id": "androidsandbox",
+                "type": "sandbox",
+                "lat": 37.78341391607471,
+                "lng": -122.40345396101476,
+                "title": "Android",
+                "track": "324437288"
+            },
+            {
+                "id": "chromeappssandbox",
+                "type": "sandbox",
+                "lat": 37.78365372221243,
+                "lng": -122.40372318774462,
+                "title": "Chrome",
+                "track":"324543074"
+            }
+        ]
+    }
+}

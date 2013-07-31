@@ -1,0 +1,114 @@
+{
+  "day": [
+    {
+      "date": "2013-05-14",
+      "slot": [
+        {
+          "start": "14:00",
+          "end": "20:00",
+          "title": "On-site check-in",
+          "meta": "Level 1"
+        },
+        {
+          "start": "16:00",
+          "end": "18:00",
+          "title": "Ingress game",
+          "meta": "Level 1, for early I/O attendees"
+        }
+      ]
+    },
+    {
+      "date": "2013-05-15",
+      "slot": [
+        {
+          "start": "07:00",
+          "end": "18:00",
+          "title": "On-site check-in",
+          "meta": "Level 1"
+        },
+        {
+          "start": "07:00",
+          "end": "09:00",
+          "type": "food",
+          "title": "Breakfast",
+          "meta": "Level 1" 
+        },
+        {
+          "start": "12:00",
+          "end": "12:45",
+          "type": "food",
+          "title": "Lunch break",
+          "meta": "Level 1"
+        },
+        {
+          "start": "19:00",
+          "end": "22:00",
+          "title": "After Hours",
+          "meta": "Level 3"
+        },
+        {
+          "start": "19:01",
+          "end": "22:00",
+          "title": "Ingress game",
+          "meta": "Level 3, at After Hours"
+        }
+      ]
+    },
+    {
+      "date": "2013-05-16",
+      "slot": [
+        {
+          "start": "08:00",
+          "end": "18:00",
+          "title": "On-site check-in",
+          "meta": "Level 1"
+        },
+        {
+          "start": "08:00",
+          "end": "09:00",
+          "type": "food",
+          "title": "Breakfast",
+          "meta": "Level 1"
+        },
+        {
+          "start": "12:00",
+          "end": "12:45",
+          "type": "food",
+          "title": "Lunch break",
+          "meta": "Level 1"
+        },
+        {
+          "start": "19:00",
+          "end": "21:00",
+          "title": "Ingress game",
+          "meta": "Level 1, open to anyone in San Francisco"
+        }
+      ]
+    },
+    {
+      "date": "2013-05-17",
+      "slot": [
+         {
+          "start": "08:00",
+          "end": "14:00",
+          "title": "On-site check-in",
+          "meta": "Level 1"
+        },
+        {
+          "start": "08:00",
+          "end": "09:00",
+          "type": "food",
+          "title": "Breakfast",
+          "meta": "Level 1"
+        },
+        {
+          "start": "12:15",
+          "end": "13:00",
+          "type": "food",
+          "title": "Lunch break",
+          "meta": "Level 1"
+        }
+      ]
+    }
+  ]
+}

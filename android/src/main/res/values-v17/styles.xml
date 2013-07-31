@@ -1,0 +1,312 @@
+<!--
+  Copyright 2012 Google Inc.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+       http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+  -->
+
+<resources>
+
+    <!-- Enable RTL support on newer devices -->
+    <!-- Prevents crash on certain devices to namespace conflict -->
+    <style name="FrameworkRoot.Base" parent="Theme.AppCompat.Light">
+        <item name="android:paddingStart">?android:attr/paddingLeft</item>
+        <item name="android:paddingEnd">?android:attr/paddingRight</item>
+        <item name="android:layout_marginStart">?android:attr/layout_marginLeft</item>
+        <item name="android:layout_marginEnd">?android:attr/layout_marginRight</item>
+        <item name="android:layout_toStartOf">?android:attr/layout_toLeftOf</item>
+        <item name="android:layout_toEndOf">?android:attr/layout_toRightOf</item>
+        <item name="android:layout_alignParentStart">?android:attr/layout_alignParentLeft</item>
+        <item name="android:layout_alignParentEnd">?android:attr/layout_alignParentRight</item>
+        <item name="android:drawableStart">?android:attr/drawableLeft</item>
+        <item name="android:drawableEnd">?android:attr/drawableRight</item>
+    </style>
+
+    <style name="FeedbackQuestionGuideText">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:textAlignment">viewStart</item>
+        <item name="android:textSize">@dimen/text_size_small</item>
+        <item name="android:textColor">@color/accent_1</item>
+    </style>
+    <!--<item name="android:gravity">start</item>-->
+
+    <style name="FeedbackQuestionGuideText.Right">
+        <item name="android:textAlignment">viewEnd</item>
+    </style>
+    <!--<item name="android:gravity">end</item>-->
+
+    <!-- Stream -->
+
+    <style name="StreamActivity">
+        <item name="android:background">@drawable/stream_item_background</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:paddingTop">16dp</item>
+        <item name="android:orientation">vertical</item>
+    </style>
+
+    <style name="StreamContainer">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginStart">16dp</item>
+        <item name="android:layout_marginEnd">16dp</item>
+        <item name="android:layout_marginBottom">8dp</item>
+    </style>
+
+    <style name="StreamUserImage">
+        <item name="android:layout_width">48dp</item>
+        <item name="android:layout_height">48dp</item>
+        <item name="android:layout_alignParentStart">true</item>
+        <item name="android:layout_alignParentTop">true</item>
+        <item name="android:layout_marginEnd">16dp</item>
+        <item name="android:src">@drawable/person_image_empty</item>
+        <item name="android:scaleType">centerCrop</item>
+    </style>
+
+    <style name="StreamUserName">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_alignParentTop">true</item>
+        <item name="android:layout_marginTop">4dp</item>
+        <item name="android:layout_toEndOf">@id/stream_user_image</item>
+        <item name="android:maxLines">1</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textColor">@color/body_text_1</item>
+        <item name="android:textSize">@dimen/stream_name_text_size</item>
+        <item name="android:textAlignment">viewStart</item>
+    </style>
+
+    <style name="StreamTime">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_below">@id/stream_user_name</item>
+        <item name="android:layout_alignStart">@id/stream_user_name</item>
+        <item name="android:layout_marginTop">4dp</item>
+        <item name="android:layout_toEndOf">@id/stream_user_image</item>
+        <item name="android:maxLines">1</item>
+        <item name="android:textColor">@color/body_text_2</item>
+        <item name="android:textSize">@dimen/text_size_small</item>
+    </style>
+
+    <style name="StreamContent">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginStart">16dp</item>
+        <item name="android:layout_marginEnd">16dp</item>
+        <item name="android:ellipsize">end</item>
+        <item name="android:textColor">@color/body_text_1</item>
+        <item name="android:textColorLink">@color/accent_1</item>
+        <item name="android:textSize">@dimen/text_size_medium</item>
+        <item name="android:visibility">gone</item>
+        <item name="android:layout_marginBottom">8dp</item>
+        <item name="android:textAlignment">viewStart</item>
+    </style>
+
+    <style name="StreamOriginalContainer">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginStart">16dp</item>
+        <item name="android:layout_marginEnd">16dp</item>
+        <item name="android:layout_marginBottom">8dp</item>
+        <item name="android:orientation">vertical</item>
+        <item name="android:visibility">gone</item>
+    </style>
+
+    <style name="StreamOriginalAuthor">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textColor">@color/body_text_2</item>
+        <item name="android:textSize">@dimen/text_size_medium</item>
+        <item name="android:layout_marginBottom">4dp</item>
+        <item name="android:textAlignment">viewStart</item>
+    </style>
+
+    <style name="StreamOriginalContent">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:ellipsize">end</item>
+        <item name="android:textColor">@color/body_text_1</item>
+        <item name="android:textColorLink">@color/accent_1</item>
+        <item name="android:textSize">@dimen/text_size_medium</item>
+        <item name="android:visibility">gone</item>
+        <item name="android:layout_marginBottom">8dp</item>
+        <item name="android:textAlignment">viewStart</item>
+    </style>
+
+    <style name="StreamMediaContainer">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">128dp</item>
+        <item name="android:background">@color/plus_stream_media_background</item>
+        <item name="android:visibility">gone</item>
+    </style>
+
+    <style name="StreamMediaBackground">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:layout_alignParentStart">true</item>
+        <item name="android:layout_alignParentEnd">true</item>
+        <item name="android:layout_alignParentTop">true</item>
+        <item name="android:layout_alignParentBottom">true</item>
+        <item name="android:scaleType">centerCrop</item>
+        <item name="android:tint">@color/plus_media_item_tint</item>
+    </style>
+
+    <style name="StreamMediaOverlay">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_centerInParent">true</item>
+        <item name="android:visibility">gone</item>
+    </style>
+
+    <style name="StreamMediaTitle">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginStart">16dp</item>
+        <item name="android:layout_marginTop">16dp</item>
+        <item name="android:layout_marginBottom">4dp</item>
+        <item name="android:maxLines">4</item>
+        <item name="android:ellipsize">end</item>
+        <item name="android:textColor">@android:color/white</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textSize">@dimen/text_size_medium</item>
+        <item name="android:visibility">gone</item>
+    </style>
+
+    <style name="StreamMediaSubtitle">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_below">@id/stream_media_title</item>
+        <item name="android:layout_alignStart">@id/stream_media_title</item>
+        <item name="android:maxLines">1</item>
+        <item name="android:ellipsize">end</item>
+        <item name="android:textColor">#afff</item>
+        <item name="android:textSize">@dimen/text_size_small</item>
+        <item name="android:visibility">gone</item>
+    </style>
+
+    <style name="StreamInteractionsContainer">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:padding">16dp</item>
+        <item name="android:orientation">horizontal</item>
+        <item name="android:visibility">gone</item>
+    </style>
+
+    <style name="StreamPlusOnes">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginEnd">16dp</item>
+        <item name="android:textSize">@dimen/text_size_medium</item>
+        <item name="android:textColor">@color/plus_color</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:visibility">gone</item>
+    </style>
+
+    <style name="StreamShares">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textSize">@dimen/text_size_medium</item>
+        <item name="android:textColor">@color/body_text_2</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:drawableStart">@drawable/ic_stream_reshares</item>
+        <item name="android:drawablePadding">4dp</item>
+        <item name="android:visibility">gone</item>
+    </style>
+
+    <style name="StreamComments">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textSize">@dimen/text_size_medium</item>
+        <item name="android:textColor">@color/body_text_2</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:drawableLeft">@drawable/ic_stream_comments</item>
+        <item name="android:drawablePadding">4dp</item>
+        <item name="android:visibility">gone</item>
+    </style>
+
+    <style name="SessionDetailHeader">
+        <item name="android:background">@drawable/transparent_background_pattern</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:paddingStart">@dimen/content_padding_normal</item>
+        <item name="android:paddingEnd">@dimen/content_padding_normal</item>
+        <item name="android:paddingTop">@dimen/content_padding_normal</item>
+        <item name="android:paddingBottom">@dimen/content_padding_normal</item>
+    </style>
+
+    <style name="SessionDetailPlusOne">
+        <item name="android:layout_alignParentEnd">true</item>
+        <item name="android:layout_alignParentTop">true</item>
+        <item name="android:layout_marginStart">@dimen/content_padding_normal</item>
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:contentDescription">@string/plus_one_description_standard</item>
+    </style>
+
+    <style name="SessionDetailTitle" parent="@style/TextHeader">
+        <item name="android:layout_toStartOf">@id/plus_one_button</item>
+        <item name="android:layout_alignParentStart">true</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+    </style>
+
+    <style name="SessionDetailSubtitle" parent="@style/TextHeaderSub">
+        <item name="android:layout_below">@id/session_title</item>
+        <item name="android:layout_toStartOf">@id/plus_one_button</item>
+        <item name="android:layout_alignParentStart">true</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+    </style>
+
+    <style name="SpeakerDetailImage">
+        <item name="android:scaleType">centerCrop</item>
+        <item name="android:layout_alignParentStart">true</item>
+        <item name="android:layout_alignParentTop">true</item>
+        <item name="android:layout_width">@dimen/speaker_image_size</item>
+        <item name="android:layout_height">@dimen/speaker_image_size</item>
+        <item name="android:layout_marginEnd">@dimen/speaker_image_padding</item>
+        <item name="android:clickable">true</item>
+        <item name="android:focusable">true</item>
+    </style>
+
+    <style name="SpeakerDetailHeader" parent="@style/TextHeader3">
+        <item name="android:layout_toEndOf">@id/speaker_image</item>
+        <item name="android:layout_alignParentTop">true</item>
+        <item name="android:layout_alignParentEnd">true</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+    </style>
+
+    <style name="SpeakerDetailAbstract" parent="@style/TextBody">
+        <item name="android:layout_below">@id/speaker_header</item>
+        <item name="android:layout_alignStart">@id/speaker_header</item>
+        <item name="android:layout_alignEnd">@id/speaker_header</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+    </style>
+
+    <style name="FeedbackRatingBarLabelOne" parent="FeedbackRatingBarLabel">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:layout_height">48dp</item>
+        <item name="android:gravity">start|center_vertical</item>
+    </style>
+
+    <style name="FeedbackRatingBarLabelFive" parent="FeedbackRatingBarLabel">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:layout_height">48dp</item>
+        <item name="android:gravity">end|center_vertical</item>
+    </style>
+
+</resources>

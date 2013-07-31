@@ -1,0 +1,153 @@
+{
+  "rooms": [
+
+
+    {
+      "id": "lunchroom",
+      "name":"Lunch Room",
+      "floor": "1"
+    },
+
+
+    {
+      "id": "room1",
+      "name":"Room 1",
+      "floor": "2"
+    },
+    {
+      "id": "room2",
+      "name":"Room 2",
+      "floor": "2"
+    },
+    {
+      "id": "room3",
+      "name":"Room 3",
+      "floor": "2"
+    },
+    {
+      "id": "room4",
+      "name":"Room 4",
+      "floor": "2"
+    },
+    {
+      "id": "room5",
+      "name":"Room 5",
+      "floor": "2"
+    },
+    {
+      "id": "room6",
+      "name":"Room 6",
+      "floor": "2"
+    },
+    {
+      "id": "room7",
+      "name":"Room 7",
+      "floor": "2"
+    },
+    {
+      "id": "room8",
+      "name":"Room 8",
+      "floor": "2"
+    },
+    {
+      "id": "room9",
+      "name":"Room 9",
+      "floor": "2"
+    },
+    {
+      "id": "codelab1",
+      "name":"Code Lab 1",
+      "floor": "2"
+    },
+    {
+      "id": "codelab2",
+      "name":"Code Lab 2",
+      "floor": "2"
+    },
+    {
+      "id": "room10",
+      "name":"Room 10",
+      "floor": "3"
+    },
+    {
+      "id": "room11",
+      "name":"Room 11",
+      "floor": "3"
+    },
+    {
+      "id": "room12",
+      "name":"Room 12",
+      "floor": "3"
+    },
+    {
+      "id": "keynote",
+      "name":"Keynote Room",
+      "floor": "3"
+    },
+    {
+      "id": "chromeappssandbox",
+      "name":"Chrome & Apps Sandbox",
+      "floor": "2"
+    },
+    {
+      "id": "cloudplatformsandbox",
+      "name":"Cloud Platform Sandbox",
+      "floor": "2"
+    },
+    {
+      "id": "youtubesandbox",
+      "name":"YouTube Sandbox",
+      "floor": "2"
+    },
+    {
+      "id": "developforgoodsandbox",
+      "name":"Develop for Good Sandbox",
+      "floor": "2"
+    },
+    {
+      "id": "mapssandbox",
+      "name":"Maps Sandbox",
+      "floor": "2"
+    },
+    {
+      "id": "accessibilitysandbox",
+      "name":"Accessibility Sandbox",
+      "floor": "2"
+    },
+    {
+      "id": "googletvsandbox",
+      "name":"Google TV Sandbox",
+      "floor": "2"
+    },
+    {
+      "id": "walletsandbox",
+      "name":"Wallet Sandbox",
+      "floor": "2"
+    },
+    {
+          "id": "googleplussandbox",
+          "name":"Google+ Sandbox",
+          "floor": "2"
+    },
+    {
+          "id": "glasssandbox",
+          "name":"Glass Sandbox",
+          "floor": "2"
+    },
+    {
+          "id": "adssandbox",
+          "name":"Ads Sandbox",
+          "floor": "2"
+    },
+    {
+          "id": "googledevelopergroupssandbox",
+          "name":"Google Developers Groups Lounge",
+          "floor": "2"
+    },
+    {
+      "id": "androidsandbox",
+      "name":"Android Sandbox",
+      "floor": "3"
+    }
+  ]
+}

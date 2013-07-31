@@ -1,0 +1,339 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+    <string name="app_name">Google I/O 2013</string>
+
+    <string name="description_search">検索</string>
+    <string name="description_map">地図</string>
+    <string name="description_refresh">リフレッシュ</string>
+    <string name="description_share">共有</string>
+    <string name="description_add_schedule">予定表に追加する</string>
+    <string name="description_remove_schedule">スケジュールから削除する</string>
+    <string name="description_social_stream">Google+のストリームを見る</string>
+    <string name="description_compose">新規投稿</string>
+    <string name="description_add_account">アカウントを追加する</string>
+    <string name="description_about">詳細</string>
+    <string name="description_settings">設定</string>
+    <string name="description_sign_out">ログアウト</string>
+    <string name="description_captions">キャプション</string>
+    <string name="description_presentation">トグル画面出力</string>
+
+    <string name="title_sessions">セッション</string>
+    <string name="title_session_detail">セッション情報</string>
+    <string name="title_session_feedback">セッションフィードバック</string>
+    <string name="title_tracks">トラック</string>
+    <string name="title_office_hours">営業時間</string>
+    <string name="title_sandbox">サンドボックス</string>
+    <string name="title_sandbox_detail">会社情報:</string>
+    <string name="title_map">地図</string>
+    <string name="title_tagstream">Google+の投稿</string>
+    <string name="title_announcements">発表</string>
+    <string name="title_about">詳細</string>
+    <string name="title_settings">設定</string>
+
+    <string name="title_share">使用して共有</string>
+
+    <string name="title_search">検索</string>
+    <string name="title_search_query"> \"&lt;b&gt;<xliff:g id="query">%1$s</xliff:g>&lt;b&gt;\"を検索する</string>
+
+    <string name="title_my_schedule">スケジュール</string>
+    <string name="title_explore">探索</string>
+    <string name="title_stream">ストリーム</string>
+
+    <string name="session_subtitle">
+    <xliff:g id="room">%2$s</xliff:g>で<xliff:g id="time">%1$s</xliff:g>
+  </string>
+
+    <string name="all_tracks">全てのトラック</string>
+    <string name="all_tracks_sessions">全てのセッション</string>
+    <string name="all_tracks_office_hours">全営業時間</string>
+    <string name="all_tracks_sandbox">全ての会社</string>
+    <string name="all_tracks_subtitle_sessions">Google I/O 2013での全てのセッション</string>
+    <string name="all_tracks_subtitle_office_hours">Google I/O 2013での全営業時間</string>
+    <string name="all_tracks_subtitle_sandbox">Google I/O 2013のディベロッパー・サンドボックス全社</string>
+    <string name="other_tracks">その他のトラック</string>
+
+    <string name="empty_sessions">セッションは見つかりませんでした。</string>
+    <string name="empty_session_detail">セッションの詳細は見つかりませんでした。</string>
+    <string name="empty_sandbox">ディベロッパーサンドボックス会社は見つかりませんでした。</string>
+    <string name="empty_social_stream">投稿は見つかりませんでした。</string>
+    <string name="empty_announcements">発表内容がここに表示されます。</string>
+    <string name="empty_waiting_for_sync">同期中</string>
+    <string name="empty_captions">このセッションのキャプションは見つかりませんでした。</string>
+
+    <string name="unknown_room">（不特定の部屋）</string>
+    <string name="codelab_room">コー​​ドラボ（レベル2）</string>
+    <string name="keynote_room">レベル3</string>
+
+    <string name="session_links">もっと見る</string>
+    <string name="session_requirements">必要条件</string>
+    <string name="session_speakers">スピーカー</string>
+
+    <string name="session_link_main">ウェブリンク</string>
+    <string name="session_link_youtube">YouTube 動画</string>
+    <string name="session_link_moderator">司会者</string>
+    <string name="session_link_pdf">スライド（PDF）</string>
+    <string name="session_link_notes">公式の注意事項</string>
+    <string name="session_link_livestream">I / Oライブで見る</string>
+
+    <string name="session_livestream_title">I / Oライブ</string>
+    <string name="session_livestream_track_title">%sトラック</string>
+    <string name="session_livestream_info">情報</string>
+    <string name="session_livestream_captions">キャプション</string>
+    <string name="session_livestream_error_init">申し訳ありませんが、YouTubeのプレイヤー（%1$s）の初期化中にエラーが発生しました</string>
+    <string name="session_livestream_error_playback">申し訳ありませんが、ライブストリームを読み込み中にエラーが発生しました。後でもう一度試してください。</string>
+    <string name="session_livestream_keynote_title">Google I/O</string>
+    <string name="session_livestream_play_pause">再生/一時停止</string>
+
+    <string name="codelab_title_template">コー​​ドラボ：<xliff:g id="title">%1$s</xliff:g>
+  </string>
+
+    <string name="search_label">Google I/Oセッション</string>
+    <string name="search_hint">セッションを検索する</string>
+
+    <string name="share_template">
+    <xliff:g id="hashtags">%2$s</xliff:g> <xliff:g id="url">%3$s</xliff:g>で \'<xliff:g id="title">%1$s</xliff:g>\'をチェックアウトする</string>
+    <string name="share_livestream_template">
+    <xliff:g id="hashtags">%2$s</xliff:g>
+    <xliff:g id="url">%3$s</xliff:g>でI / Oのライブ： \'<xliff:g id="title">%1$s</xliff:g>\' を見る</string>
+
+    <string name="add_to_schedule">予定表に追加する</string>
+    <string name="remove_from_schedule">予定通り</string>
+
+    <string name="add_to_schedule_desc">予定表に追加する</string>
+    <string name="remove_from_schedule_desc">スケジュールから削除する</string>
+
+    <!-- Announcements -->
+    <string name="whats_on_countdown_title_0">Google I/Oまで<xliff:g id="remaining_time">%1$s</xliff:g>
+  </string>
+    <plurals name="whats_on_countdown_title">
+    <item quantity="zero">
+      <xliff:g id="number_of_days">%1$s</xliff:g>日、Google I/Oまで<xliff:g id="remaining_time">%2$s</xliff:g>
+    </item>
+    <item quantity="one">
+      <xliff:g id="number_of_days">%1$s</xliff:g>日、Google I/Oまで<xliff:g id="remaining_time">%2$s</xliff:g>
+    </item>
+    <item quantity="two">
+      <xliff:g id="number_of_days">%1$s</xliff:g>日、Google I/Oまで<xliff:g id="remaining_time">%2$s</xliff:g>
+    </item>
+    <item quantity="few">
+      <xliff:g id="number_of_days">%1$s</xliff:g>日、Google I/Oまで<xliff:g id="remaining_time">%2$s</xliff:g>
+    </item>
+    <item quantity="many">
+      <xliff:g id="number_of_days">%1$s</xliff:g>日、Google I/Oまで<xliff:g id="remaining_time">%2$s</xliff:g>
+    </item>
+    <item quantity="other">
+      <xliff:g id="number_of_days">%1$s</xliff:g>日、Google I/Oまで<xliff:g id="remaining_time">%2$s</xliff:g>
+    </item>
+  </plurals>
+    <string name="whats_on_thank_you_title">来年お会いしましょう！</string>
+    <string name="news_will_appear_here">発表内容がここに表示されます。</string>
+    <string name="welcome_to_google_i_o">Google I / Oへようこそ！</string>
+
+    <string name="permission_write">GoogleのI / Oのスケジュールデータを変更</string>
+
+    <plurals name="toast_added_to_schedule">
+    <item quantity="zero">
+      <xliff:g id="number_of_sessions">%1$s</xliff:g>セッションがあなたの予定表に追加されました</item>
+    <item quantity="one">セッションがあなたの予定表に追加されました</item>
+    <item quantity="two">
+      <xliff:g id="number_of_sessions">%1$s</xliff:g>セッションがあなたの予定表に追加されました</item>
+    <item quantity="few">
+      <xliff:g id="number_of_sessions">%1$s</xliff:g>セッションがあなたの予定表に追加されました</item>
+    <item quantity="many">
+      <xliff:g id="number_of_sessions">%1$s</xliff:g>セッションがあなたの予定表に追加されました</item>
+    <item quantity="other">
+      <xliff:g id="number_of_sessions">%1$s</xliff:g>セッションがあなたの予定表に追加されました</item>
+  </plurals>
+    <plurals name="toast_removed_from_schedule">
+    <item quantity="zero">
+      <xliff:g id="number_of_sessions">%1$s</xliff:g>セッションがあなたの予定表から削除されました</item>
+    <item quantity="one">セッションがあなたの予定表から削除されました</item>
+    <item quantity="two">
+      <xliff:g id="number_of_sessions">%1$s</xliff:g>セッションがあなたの予定表から削除されました</item>
+    <item quantity="few">
+      <xliff:g id="number_of_sessions">%1$s</xliff:g>セッションがあなたの予定表から削除されました</item>
+    <item quantity="many">
+      <xliff:g id="number_of_sessions">%1$s</xliff:g>セッションがあなたの予定表から削除されました</item>
+    <item quantity="other">
+      <xliff:g id="number_of_sessions">%1$s</xliff:g>セッションがあなたの予定表から削除されました</item>
+  </plurals>
+
+    <!-- Schedule -->
+    <string name="schedule_empty_slot_title_template">
+    <xliff:g id="block_type">%1$s</xliff:g>をブラウズする</string>
+    <string name="schedule_empty_slot_subtitle">空きスロット</string>
+    <string name="schedule_conflict_title">
+    <xliff:g id="num_sessions">%1$s</xliff:g>選択したセッション</string>
+    <string name="schedule_conflict_subtitle">スロット内の対立</string>
+    <string name="schedule_block_title_sessions">セッション</string>
+    <string name="schedule_block_title_code_labs">コードラボ</string>
+    <string name="schedule_block_title_office_hours">営業時間</string>
+    <string name="schedule_block_title_keynote">キーノート</string>
+
+    <!-- Map -->
+    <string name="map_floorcontrol_1">1</string>
+    <string name="map_floorcontrol_2">2</string>
+    <string name="map_floorcontrol_3">3</string>
+    <string name="map_touch_to_see_session">触ってセッションを見る</string>
+    <string name="map_at">%1$sで：&lt;br&gt;&lt;b&gt;%2$s&lt;/b&gt;</string>
+    <string name="map_now_playing">現在、プレイ中：&lt;br&gt;&lt;b&gt;%1$s&lt;/b&gt;</string>
+    <string name="map_touch_to_see_sandbox">触ってサンドボックスのパートナーを見る</string>
+    <string name="map_now_sandbox">現在、サンドボックス内：検索&lt;br&gt;&lt;b&gt; %1$s&lt;/ b&gt;</string>
+
+
+    <!-- EULA, login, and about -->
+    <string name="description_choose_account">&lt;font color=#4d90fe&gt;&lt;b&gt;下の口座を選択して下さい。Google I/Oを参加するように登録している場合は、同じ口座を使用するようにして下さい。&lt;/b&gt;&lt;/font&gt;</string>
+    <string name="description_sign_in_main">Google I / O 2013のアプリへようこそ、2013年5月15日から5月17日にサンフランシスコで開催されるGoogle I / Oカンファレンスへの公式コンパニオンです。&lt;br&gt; &lt;br&gt;あなたに幾つか質問があります。&amp;quot;サインイン&amp;quot; ボタンを押して始めてください。</string>
+    <string-array name="selection_setup_wifi">
+    <item>はい、今すぐ会議のWi-Fiネットワークを追加します。</item>
+    <item>結構です。自分で接続します。</item>
+  </string-array>
+    <string-array name="selection_setup_attendee">
+    <item>はい、私はサンフランシスコから出席します。</item>
+    <item>いいえ、私は自宅から見るか、Google I / Oの拡張イベントに参加します。</item>
+  </string-array>
+    <string name="empty_accounts">Googleのアカウントが用意されていません。アカウントを追加し手、継続して下さい。</string>
+    <string name="no_connection_cant_login">サインインが出来ません。ネットワーク接続を確認して下さい。</string>
+    <string name="taking_a_while">しばらく時間がかかっています</string>
+    <string name="about_eula">エンドユーザーライセンス契約</string>
+    <string name="about_licenses">オープンソースライセンス</string>
+    <string name="about_body">&lt;b&gt;Google I/O 2013&lt;/b&gt;&lt;br&gt; バージョン%s&lt;br&gt;&lt;br&gt; &lt;a href=http://m.google.com/utos&gt;サービス条件&lt;/a&gt;&lt;br&gt;&lt;br&gt; &lt;a href=http://www.google.com/policies/privacy/&gt;プライバシー・ポリシー&lt;/a&gt;</string>
+
+    <!--suppress AndroidLintTypographyOther -->
+    <string name="eula_text">このアプリケーション又はその如何なる部分（「アプリケーション」）をダウンロードすることで、あなたはこれらの規定と条件に同意することになります。&lt;br&gt; &lt;br&gt; あなたがこのアプリケーションを使用することは、下記によって管理されています：(a) Google サービス規定 (&lt;a href=http://m.google.com/utos&gt;m.google.com/utos&lt;/a&gt;); (b) Googleのプライバシー・ポリシー (&lt;a href=http://www.google.com/policies/privacy&gt;http://www.google.com/policies/privacy&lt;/a&gt;); 及び (c) 該当する如何なるGoogleサービス特定のサービス規定及びプライバシー・ポリシー。Googleのサービス規定とプライバシー・ポリシーは、時折、通知なしに更新されます。&lt;br&gt; &lt;br&gt; このアプリケーションを使用すると、Google Analytics等を通して、特定の情報を回収します。Googleのプライバシー・ポリシーでは、あなたがこのアプリケーションを使用する際、Googleが如何にあなたの情報を取り扱い、あなたのプライバシーを保護するかを説明しています。あなたは、Googleのプライバシー・ポリシーに沿って、あなたのデータの使用について同意します。</string>
+
+    <!-- Session notification -->
+    <plurals name="session_notification_ticker">
+    <item quantity="zero">%dセッションがもう直ぐ始まります</item>
+    <item quantity="one">1つのセッションがもう直ぐ始まります</item>
+    <item quantity="two">%dセッションがもう直ぐ始まります</item>
+    <item quantity="few">%dセッションがもう直ぐ始まります</item>
+    <item quantity="many">%dセッションがもう直ぐ始まります</item>
+    <item quantity="other">%dセッションがもう直ぐ始まります</item>
+  </plurals>
+
+    <string name="session_notification_text_1">
+    <xliff:g id="remaining_time">%1$d</xliff:g>分後に始まります。</string>
+    <plurals name="session_notification_text">
+    <item quantity="zero">そして<xliff:g id="remaining_time">%1$d</xliff:g>後に、他の<xliff:g id="num_sessions">%2$d</xliff:g>が始まります。</item>
+    <item quantity="one">そして<xliff:g id="remaining_time">%1$d</xliff:g>後に、他の1セッションが始まります。</item>
+    <item quantity="two">そして<xliff:g id="remaining_time">%1$d</xliff:g>後に、他の<xliff:g id="num_sessions">%2$d</xliff:g>が始まります。</item>
+    <item quantity="few">そして<xliff:g id="remaining_time">%1$d</xliff:g>後に、他の<xliff:g id="num_sessions">%2$d</xliff:g>が始まります。</item>
+    <item quantity="many">そして<xliff:g id="remaining_time">%1$d</xliff:g>後に、他の<xliff:g id="num_sessions">%2$d</xliff:g>が始まります。</item>
+    <item quantity="other">そして<xliff:g id="remaining_time">%1$d</xliff:g>後に、他の<xliff:g id="num_sessions">%2$d</xliff:g>が始まります。</item>
+  </plurals>
+    <plurals name="session_notification_title">
+    <item quantity="zero">
+      <xliff:g id="num_sessions">%2$d</xliff:g>セッションが<xliff:g id="remaining_time">%1$d</xliff:g>分後に始まります</item>
+    <item quantity="one">
+      <xliff:g id="remaining_time">%1$d</xliff:g>分後に1つのセッションが始まります</item>
+    <item quantity="two">
+      <xliff:g id="num_sessions">%2$d</xliff:g>セッションが<xliff:g id="remaining_time">%1$d</xliff:g>分後に始まります</item>
+    <item quantity="few">
+      <xliff:g id="num_sessions">%2$d</xliff:g>セッションが<xliff:g id="remaining_time">%1$d</xliff:g>分後に始まります</item>
+    <item quantity="many">
+      <xliff:g id="num_sessions">%2$d</xliff:g>セッションが<xliff:g id="remaining_time">%1$d</xliff:g>分後に始まります</item>
+    <item quantity="other">
+      <xliff:g id="num_sessions">%2$d</xliff:g>セッションが<xliff:g id="remaining_time">%1$d</xliff:g>分後に始まります</item>
+  </plurals>
+    <string name="snooze_x_min">
+    <xliff:g id="remaining_time">%1$d</xliff:g>分間スヌーズする</string>
+
+    <!-- Others -->
+    <string name="ok">OK</string>
+    <string name="loading">読み込み中...</string>
+    <string name="retry">再び試みる</string>
+    <string name="stream_error">Google+のストリームをロードできませんでした。</string>
+    <string name="stream_originally_shared">もともとは<xliff:g id="name">%s</xliff:g>で共有</string>
+    <string name="empty_widget_text">これ以上セッションはありません。\n来年お会いしましょう​​！</string>
+    <string name="empty_widget_text_signed_out">上記のGoogle I / O 2013のロゴを触ってサインインして、アプリを使用し始めて下さい。</string>
+
+    <string name="now_playing_badge">&lt;font color=#4d90fe&gt;&lt;small&gt;&lt;b&gt;今すぐ&lt;/b&gt;&lt;/small&gt;&lt;/font&gt;</string>
+    <string name="live_available_badge">&lt;font color=#999999&gt;&lt;small&gt;&lt;b&gt;ライブ&lt;/b&gt;&lt;/small&gt;&lt;/font&gt;</string>
+    <string name="live_now_badge">&lt;font color=#ff4444&gt;&lt;small&gt;&lt;b&gt;ライブ&lt;/b&gt;&lt;/small&gt;&lt;/font&gt;</string>
+    <string name="session_finished">終了</string>
+
+    <!-- Strings only used for accessibility -->
+    <string name="speaker_googleplus_profile">Google+プロフィール：<xliff:g id="speakername">%1$s</xliff:g>
+  </string>
+    <string name="close_detail_pane">詳細ペインを終了する</string>
+    <string name="more_sessions">その他のセッション</string>
+    <string name="more_announcements">その他の発表</string>
+    <string name="plus_one_description_standard">プラスワンにタッチする</string>
+
+    <!-- Preferences -->
+    <string name="pref_local_times_title">現地時間を表示する</string>
+    <string name="pref_local_times_description">チェックすると、太平洋時間（会議開催地のタイムゾーン）の代わりに現地時間を表示します</string>
+    <string name="pref_attendee_at_venue_description">チェックすると、すべてのセッションおよびオンサイトイベントが表示されます。チェックしなければ、ライブストリーミングセッションだけが表示されます。</string>
+    <string name="wifi_install_error_message">申し訳ありませんが、WiFiの設定を更新することができません。</string>
+    <!-- Feedback -->
+    <string name="session_feedback_submitlink">フィードバックを送信する</string>
+
+    <string name="session_feedback_relevance">あなたのコーディングプロジェクトに、このセッションどう関連していましたか？</string>
+    <string name="session_feedback_notrel">関連していません</string>
+    <string name="session_feedback_rel">関連している</string>
+
+    <string name="session_feedback_content">内容：</string>
+    <string name="session_feedback_basic">簡単過ぎる</string>
+    <string name="session_feedback_advanced">高度過ぎる</string>
+
+    <string name="session_feedback_speaker_quality">スピーカーの質：</string>
+    <string name="session_feedback_poor">悪い</string>
+    <string name="session_feedback_outstanding">未払い</string>
+
+    <string name="session_feedback_6months">あなたは、今後6ヶ月以内に、このセッションで紹介された技術を使用しますか？</string>
+    <string name="session_feedback_probably">多分</string>
+    <string name="session_feedback_probnot">おそらく違うでしょう</string>
+    <string name="description_configure_wifi">Wi-Fiを設定</string>
+        <plurals name="title_selected_sessions">
+        <item quantity="one">1 セッション</item>
+        <item quantity="other"><xliff:g id="num_sessions">%1$d</xliff:g> セッション</item>
+    </plurals>
+    
+    <string name="empty_live_streamed_sessions">ライブ・ストリームは見つかりませんでした。</string>
+     <string name="session_livestream_keynote_desc">待ちに待った Google I/O　のキックオフ・イベントはデベロッパーにGoogle の今までの仕事の成果をいち早く提供します。 ドリンクや食べ物でも用意してくつろぎながら、アンドロイドデバイスから直接に会議の様子をお楽しみ下さい。</string>
+    <string name="whats_on_thank_you_short">ありがとうございました！</string>
+  <string name="whats_on_thank_you_subtitle">2013年の Google I/O　は終了しました。</string>
+  <string name="schedule_block_title_sandbox">Sandbox</string>
+ <string name="map_infowindow_text_empty">-</string>
+ <string name="description_setup_attendee_mode_header"><![CDATA[
+        <font color="#4d90fe"><b>今年のGoogle I/O は会場で直接参加しますか。</b></font>
+        <br><br>
+    ]]></string>
+    <string name="description_setup_attendee_mode_body"><![CDATA[
+        会場参加でない場合はライブ・ストリームのセッションのみを表示します。これは「設定」で変えることができます。
+    ]]></string>
+    <string name="description_setup_wifi_header"><![CDATA[
+        <font color="#4d90fe"><b>このデバイスの　Wi-Fi アクセスを設定しますか。</b></font>
+        <br><br>
+    ]]></string>
+    <string name="description_setup_wifi_body"><![CDATA[
+        会場参加の方はこのデバイスの　Wi-Fi　ネットワークの設定をすることができます。
+        今ネットワークを設定することで、当日のネットワーク混雑問題を減少することができます。<br>
+        <br>
+        <i>注：　ご使用のデバイスが　2.4 GHz ネットワークしか使用できない場合は、当日会場にてネットワーク接続設定を行なってください。</i>
+    ]]></string>
+ <string name="calltoaction_wifi_configure"><![CDATA[
+        <br><br>「Wi-Fi　ネットワークを追加」をタップして次に進んでください。.
+    ]]></string>
+    <string name="calltoaction_wifi_settings"><![CDATA[
+        <br><br>「Wi-Fi 設定を開く」をタップしてWi-Fi　を有効にして下さい。
+    ]]></string>
+    <string name="wifi_dialog_button_configure">Wi-Fi　ネットワークを追加</string>
+    <string name="wifi_dialog_button_settings">Wi-Fi 設定を開く</string>
+ <string name="pref_attendee_at_venue_title">私は　Google I/O　に参加します！</string>
+  <string name="session_rating_label">このセッションの全体評価をする：</string>
+ <string name="session_feedback_notgreat">余りよくなかった</string>
+    <string name="session_feedback_great">とてもよかった</string>
+ <string name="session_feedback_tell_us">フィードバックをお願いします！</string>
+   <string name="number_1">1</string>
+    <string name="number_2">2</string>
+    <string name="number_3">3</string>
+    <string name="number_4">4</string>
+    <string name="number_5">5</string>
+    <string name="session_feedback_other">その他のコメントがあれば、どうぞ。</string>
+  <!-- More Misc -->
+    <string name="dashclock_extension_description">
+        2013年の　Google I/O スケジュールの　更に幾つかの項目を表示する。
+    </string>
+</resources>

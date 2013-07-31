@@ -1,0 +1,138 @@
+<!--
+  Copyright 2012 Google Inc.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+       http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+  -->
+<web-app id="IoschedGCM" version="2.5">
+
+    <!-- Objectify support -->
+    <filter>
+        <filter-name>ObjectifyFilter</filter-name>
+        <filter-class>com.googlecode.objectify.ObjectifyFilter</filter-class>
+    </filter>
+    <filter-mapping>
+        <filter-name>ObjectifyFilter</filter-name>
+        <url-pattern>/*</url-pattern>
+    </filter-mapping>
+
+    <!-- context initializer -->
+    <listener>
+        <listener-class>
+            com.google.android.apps.iosched.gcm.server.db.ApiKeyInitializer
+        </listener-class>
+    </listener>
+
+    <!-- inbound device endpoints -->
+    <servlet>
+        <servlet-name>RegisterServlet</servlet-name>
+        <servlet-class>
+            com.google.android.apps.iosched.gcm.server.device.RegisterServlet
+        </servlet-class>
+        <load-on-startup>1</load-on-startup>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>RegisterServlet</servlet-name>
+        <url-pattern>/register/*</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>UnregisterServlet</servlet-name>
+        <servlet-class>
+            com.google.android.apps.iosched.gcm.server.device.UnregisterServlet
+        </servlet-class>
+        <load-on-startup>1</load-on-startup>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>UnregisterServlet</servlet-name>
+        <url-pattern>/unregister/*</url-pattern>
+    </servlet-mapping>
+
+    <!-- outbound device endpoints -->
+    <servlet>
+        <servlet-name>MulticastQueueWorker</servlet-name>
+        <servlet-class>
+            com.google.android.apps.iosched.gcm.server.device.MulticastQueueWorker
+        </servlet-class>
+        <load-on-startup>1</load-on-startup>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>MulticastQueueWorker</servlet-name>
+        <url-pattern>/queue/send</url-pattern>
+    </servlet-mapping>
+
+    <!-- API endpoints -->
+    <servlet>
+        <servlet-name>SendMessageServlet</servlet-name>
+        <servlet-class>
+            com.google.android.apps.iosched.gcm.server.api.SendMessageServlet
+        </servlet-class>
+        <load-on-startup>1</load-on-startup>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>SendMessageServlet</servlet-name>
+        <url-pattern>/send/*</url-pattern>
+    </servlet-mapping>
+
+    <!-- admin-facing endpoints -->
+    <servlet>
+        <servlet-name>AdminServlet</servlet-name>
+        <servlet-class>
+            com.google.android.apps.iosched.gcm.server.admin.AdminServlet
+        </servlet-class>
+        <load-on-startup>1</load-on-startup>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>AdminServlet</servlet-name>
+        <url-pattern>/admin</url-pattern>
+    </servlet-mapping>
+    <security-constraint>
+        <web-resource-collection>
+            <url-pattern>/admin</url-pattern>
+        </web-resource-collection>
+        <auth-constraint>
+            <role-name>admin</role-name>
+        </auth-constraint>
+    </security-constraint>
+
+    <!-- Cron endpoints -->
+    <!-- Restricted to admin users only to prevent unauthorized execution. -->
+    <servlet>
+        <servlet-name>VacuumDbServlet</servlet-name>
+        <servlet-class>
+            com.google.android.apps.iosched.gcm.server.cron.VacuumDbServlet
+        </servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>VacuumDbServlet</servlet-name>
+        <url-pattern>/cron/vacuum_db</url-pattern>
+    </servlet-mapping>
+
+    <security-constraint>
+        <web-resource-collection>
+            <url-pattern>/cron/*</url-pattern>
+        </web-resource-collection>
+        <auth-constraint>
+            <role-name>admin</role-name>
+        </auth-constraint>
+    </security-constraint>
+
+    <!-- HTTPS requirement -->
+    <security-constraint>
+        <web-resource-collection>
+            <url-pattern>/*</url-pattern>
+        </web-resource-collection>
+        <user-data-constraint>
+            <transport-guarantee>CONFIDENTIAL</transport-guarantee>
+        </user-data-constraint>
+    </security-constraint>
+</web-app>

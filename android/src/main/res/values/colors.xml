@@ -1,0 +1,48 @@
+<!--
+  Copyright 2012 Google Inc.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+       http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+  -->
+<resources>
+    <color name="body_text_1">#ff000000</color>
+    <color name="body_text_2">#77000000</color>
+    <color name="body_text_3">#33000000</color>
+    <color name="body_text_disabled">#44000000</color>
+
+    <color name="body_text_1_inverse">#ffffffff</color>
+    <color name="body_text_2_inverse">#99ffffff</color>
+
+    <color name="body_text_1_positive">#ff4CAA47</color>
+
+    <color name="accent_1">#ff4d90fe</color>
+
+    <color name="all_track_color">#ff222222</color>
+    <color name="home_pane_header">#99000000</color>
+
+    <color name="sliding_pane_content_fade">#cceeeeee</color>
+    <color name="sticky_block_background">#ddffffff</color>
+    
+    <color name="map_info_1">#ff000000</color>
+    <color name="map_info_2">#ff777777</color>
+    <color name="map_floorselect_active">#FF000000</color>
+    <color name="map_floorselect_inactive">#FF333333</color>
+
+    <color name="dark_divider">#32000000</color>
+
+    <!-- Google+ -->
+    <color name="plus_stream_spacer_color">#eee</color>
+    <color name="plus_stream_media_background">#eee</color>
+    <color name="plus_color">#dd4b39</color>
+    <color name="plus_media_item_tint">#b3000000</color>
+    <color name="plus_empty_image_background_color">#888</color>
+</resources>

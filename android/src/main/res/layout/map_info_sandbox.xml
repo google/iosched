@@ -1,0 +1,91 @@
+<!--
+  Copyright 2013 Google Inc.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+       http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+  -->
+
+<LinearLayout
+    android:layout_height="wrap_content"
+    android:layout_width="wrap_content"
+    android:orientation="vertical"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:background="@drawable/map_infowindow_popup">
+
+    <FrameLayout
+        android:layout_width="@dimen/map_infowindow_width"
+        android:layout_height="wrap_content"
+        android:clickable="true"
+        android:focusable="true"
+        android:foreground="?activatableItemBackground"
+        android:id="@+id/map_info_top"
+        >
+
+        <ImageView
+            android:id="@+id/map_info_icon"
+            android:layout_width="64dp"
+            android:layout_height="64dp"
+            android:layout_gravity="top|right"
+            android:layout_marginRight="-12dp"
+            android:layout_marginTop="-12dp"
+            android:contentDescription="@null"
+            android:alpha="0.3"
+            android:scaleType="fitXY" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:background="@drawable/thickbar_left_background">
+
+            <TextView
+                android:id="@+id/map_info_roomtitle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="@color/body_text_1_inverse"
+                android:ellipsize="end"
+                android:textStyle="normal"
+                android:paddingLeft="@dimen/map_content_padding"
+                android:paddingRight="@dimen/map_content_padding"
+                android:paddingTop="@dimen/map_content_padding"
+                android:singleLine="true"
+                style="@style/MapRoomTitle" />
+
+            <TextView
+                android:id="@+id/track_abstract"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="@color/body_text_2_inverse"
+                style="@style/TextHeaderSub"
+                android:paddingLeft="@dimen/map_content_padding"
+                android:paddingRight="@dimen/map_content_padding"
+                android:paddingBottom="@dimen/map_content_padding"
+                android:text="@string/map_touch_to_see_sandbox" />
+        </LinearLayout>
+
+
+    </FrameLayout>
+
+    <com.google.android.apps.iosched.ui.widget.EllipsizedTextView
+        style="@style/MapInfoTextSub"
+        android:id="@+id/map_info_sandbox_now"
+        android:layout_width="@dimen/map_infowindow_width"
+        android:layout_height="wrap_content"
+        android:ellipsize="end"
+        android:textColor="@color/map_info_2"
+        android:maxLines="3"
+        android:paddingLeft="@dimen/map_content_padding"
+        android:paddingRight="@dimen/map_content_padding"
+        android:paddingTop="@dimen/map_content_padding"
+        />
+
+</LinearLayout>

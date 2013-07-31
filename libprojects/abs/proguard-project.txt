@@ -1,2 +1,0 @@
--keep class com.actionbarsherlock.** { *; }
--keep interface com.actionbarsherlock.** { *; }

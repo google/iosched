@@ -1,0 +1,56 @@
+<!--
+  Copyright 2012 Google Inc.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+       http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+  -->
+
+<android.support.v4.widget.SlidingPaneLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/sliding_pane_layout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <FrameLayout android:layout_width="wrap_content"
+        android:layout_height="match_parent">
+
+        <!--suppress AndroidLintUselessParent -->
+        <LinearLayout android:orientation="vertical"
+            android:layout_width="@dimen/sliding_pane_width"
+            android:layout_height="match_parent"
+            android:layout_marginTop="@dimen/multipane_padding"
+            android:layout_marginLeft="@dimen/multipane_padding"
+            android:layout_marginBottom="@dimen/multipane_padding"
+            android:background="@drawable/grey_frame_on_white">
+
+            <fragment android:name="com.google.android.apps.iosched.ui.tablet.TracksDropdownFragment"
+                android:id="@+id/fragment_tracks_dropdown"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/thickbar_height" />
+
+            <FrameLayout android:id="@+id/fragment_container_master"
+                android:background="@android:color/white"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1" />
+        </LinearLayout>
+    </FrameLayout>
+
+    <FrameLayout style="@style/SlidingPaneContent.ExpandedInLandscape">
+        <FrameLayout android:id="@+id/fragment_container_detail"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_margin="@dimen/multipane_padding"
+            android:background="@drawable/grey_frame_on_white" />
+    </FrameLayout>
+
+</android.support.v4.widget.SlidingPaneLayout>

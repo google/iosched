@@ -1,0 +1,40 @@
+This is a Gradle-based project that works best with Android Studio:
+
+    http://developer.android.com/sdk/installing/studio.html
+
+
+To build the app:
+
+    1) Install the following software:
+
+       - Android SDK:
+         http://developer.android.com/sdk/index.html
+
+       - Gradle:
+         http://www.gradle.org/downloads
+
+       - Android Studio (optional):
+         http://developer.android.com/sdk/installing/studio.html
+
+    2) Run the Android SDK Manager by pressing the SDK Manager toolbar button
+       in Android Studio or by running the 'android' command in a terminal
+       window.
+
+    3) In the Android SDK Manager, ensure that the following are installed:
+
+       - Android 4.3 > SDK Platform
+       - Extras > Android Support Repository
+       - Extras > Android Support Library
+       - Extras > Google Play services
+
+    4) Import the project in Android Studio:
+
+         i. Press File > Import Project
+        ii. Navigate to and choose the settings.gradle file in this project
+       iii. Press OK
+
+    5) Choose Build > Make Project in Android Studio or run the following command
+       in the project root directory:
+
+       ./gradlew clean assembleDebug
+

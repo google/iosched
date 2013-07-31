@@ -1,0 +1,85 @@
+<!--
+  Copyright 2012 Google Inc.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+       http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+  -->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="horizontal"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:baselineAligned="false"
+    android:background="?android:selectableItemBackground"
+    style="@style/ListItemContainerBase">
+
+    <FrameLayout android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1">
+
+        <LinearLayout android:id="@+id/block_time_container"
+            android:orientation="vertical"
+            android:layout_width="@dimen/schedule_block_time_width"
+            android:layout_height="match_parent"
+            android:background="@drawable/transparent_background_pattern"
+            android:padding="8dp">
+
+            <TextView android:id="@+id/block_time"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="@dimen/text_size_small"
+                android:textColor="@color/body_text_2"
+                android:paddingTop="@dimen/text_size_diff_large_small" />
+
+            <TextView android:id="@+id/block_endtime"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="@dimen/text_size_small"
+                android:textColor="@color/body_text_3"
+                android:paddingTop="4dp"/>
+        </LinearLayout>
+
+        <RelativeLayout android:id="@+id/list_item_middle_container"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:paddingTop="8dp"
+            android:paddingRight="8dp"
+            android:paddingBottom="8dp"
+            android:paddingLeft="80dp"
+            android:clickable="true"
+            android:focusable="true"
+            android:background="?android:selectableItemBackground">
+            <TextView android:id="@+id/block_title"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentRight="true"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                style="@style/ListItemTitle" />
+
+            <TextView android:id="@+id/block_subtitle"
+                android:layout_below="@id/block_title"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentRight="true"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                style="@style/ListItemSubtitle" />
+        </RelativeLayout>
+    </FrameLayout>
+
+    <ImageButton android:id="@+id/extra_button"
+        android:layout_width="@dimen/list_extra_button_width"
+        android:layout_height="match_parent"
+        android:background="@drawable/list_extra_button_background"
+        android:scaleType="center"
+        android:src="@drawable/schedule_button_more"
+        android:contentDescription="@string/more_sessions" />
+
+</LinearLayout>

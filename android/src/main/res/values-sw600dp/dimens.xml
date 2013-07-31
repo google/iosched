@@ -1,0 +1,35 @@
+<!--
+  Copyright 2012 Google Inc.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+       http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+  -->
+<resources>
+
+    <!-- UI elements -->
+    <dimen name="thickbar_height">200dp</dimen>
+    <dimen name="detail_breadcrumb_height">48dp</dimen>
+    <dimen name="tab_height">56dp</dimen>
+    <dimen name="action_button_min_width">64dp</dimen>
+    <dimen name="track_dropdown_width">288dp</dimen>
+    <dimen name="sliding_pane_width">300dp</dimen>
+
+    <dimen name="plus_stream_padding_horizontal">64dp</dimen>
+    <dimen name="plus_stream_padding_vertical">16dp</dimen>
+
+    <!-- body content -->
+    <dimen name="text_size_xlarge">32sp</dimen>
+    <dimen name="speaker_image_size">64dp</dimen>
+    <dimen name="speaker_image_padding">16dp</dimen>
+    <dimen name="sandbox_company_image_size">100dp</dimen>
+
+</resources>

@@ -1,0 +1,328 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+    <string name="app_name">Google I/O 2013</string>
+
+    <string name="description_search">Поиск</string>
+    <string name="description_map">Карта</string>
+    <string name="description_refresh">Обновить</string>
+    <string name="description_share">Поделиться</string>
+    <string name="description_add_schedule">Добавить в расписание</string>
+    <string name="description_remove_schedule">Удалить из расписания</string>
+    <string name="description_social_stream">Смотреть поток Google+</string>
+    <string name="description_compose">Новое сообщение</string>
+    <string name="description_add_account">Добавить учетную запись</string>
+    <string name="description_about">О нас</string>
+    <string name="description_settings">Настройки</string>
+    <string name="description_sign_out">Выйти</string>
+    <string name="description_captions">Титры</string>
+    <string name="description_presentation">Переключить вывод данных на экран</string>
+
+    <string name="title_sessions">Сеансы</string>
+    <string name="title_session_detail">Информация о сеансе</string>
+    <string name="title_session_feedback">Отзыв о сеансе</string>
+    <string name="title_tracks">Дорожки</string>
+    <string name="title_office_hours">Часы работы</string>
+    <string name="title_sandbox">Песочница</string>
+    <string name="title_sandbox_detail">Информация о компании</string>
+    <string name="title_map">Карта</string>
+    <string name="title_tagstream">Сообщения Google+</string>
+    <string name="title_announcements">Объявления</string>
+    <string name="title_about">О нас</string>
+    <string name="title_settings">Настройки</string>
+
+    <string name="title_share">Поделиться через</string>
+
+    <string name="title_search">Поиск</string>
+    <string name="title_search_query">Поиск \"&lt;b&gt;<xliff:g id="query">%1$s</xliff:g>&lt;b&gt;\"</string>
+
+    <string name="title_my_schedule">Расписание</string>
+    <string name="title_explore">Подробнее</string>
+    <string name="title_stream">Поток</string>
+
+    <string name="session_subtitle">
+    <xliff:g id="time">%1$s</xliff:g> в <xliff:g id="room">%2$s</xliff:g>
+  </string>
+
+    <string name="all_tracks">Все дорожки</string>
+    <string name="all_tracks_sessions">Все сеансы</string>
+    <string name="all_tracks_office_hours">Все часы работы</string>
+    <string name="all_tracks_sandbox">Все компании</string>
+    <string name="all_tracks_subtitle_sessions">Все сеансы в Google I/O 2013.</string>
+    <string name="all_tracks_subtitle_office_hours">Все часы работы в Google I/O 2013.</string>
+    <string name="all_tracks_subtitle_sandbox">Все компании Developer Sandbox в Google I/O 2013.</string>
+    <string name="other_tracks">Другие дорожки</string>
+
+    <string name="empty_sessions">Сеансы не найдены.</string>
+    <string name="empty_session_detail">Сведений о сеансе не найдено.</string>
+    <string name="empty_sandbox">Не найдено компаний Developer Sandbox.</string>
+    <string name="empty_social_stream">Сообщений не найдено.</string>
+    <string name="empty_announcements">Объявления будут показаны здесь.</string>
+    <string name="empty_waiting_for_sync">Ожидание синхронизации...</string>
+    <string name="empty_captions">Для сеанса не найдено титров.</string>
+
+    <string name="unknown_room">(Неуказанное пространство)</string>
+    <string name="codelab_room">Code Labs (уровень 2)</string>
+    <string name="keynote_room">Уровень 3</string>
+
+    <string name="session_links">Еще</string>
+    <string name="session_requirements">Требования</string>
+    <string name="session_speakers">Докладчики</string>
+
+    <string name="session_link_main">Веб-ссылка</string>
+    <string name="session_link_youtube">Видео YouTube</string>
+    <string name="session_link_moderator">Модератор</string>
+    <string name="session_link_pdf">Слайды (PDF)</string>
+    <string name="session_link_notes">Официальные примечания</string>
+    <string name="session_link_livestream">Смотреть прямую трансляцию по I/O</string>
+
+    <string name="session_livestream_title">Прямая трансляция I/O</string>
+    <string name="session_livestream_track_title">%sДорожка</string>
+    <string name="session_livestream_info">Информация</string>
+    <string name="session_livestream_captions">Титры</string>
+    <string name="session_livestream_error_init">Произошла ошибка инициализации YouTube Player (%1$s)</string>
+    <string name="session_livestream_error_playback">Произошла ошибка при загрузке прямой трансляции. Повторите попытку позже.</string>
+    <string name="session_livestream_keynote_title">Google I/O - %s</string>
+    <string name="session_livestream_play_pause">Воспроизведение / Пауза</string>
+
+    <string name="codelab_title_template">Code Lab: <xliff:g id="title">%1$s</xliff:g>
+  </string>
+
+    <string name="search_label">Сеансы Google I/O</string>
+    <string name="search_hint">Поиск сеансов</string>
+
+    <string name="share_template">Выход из \'\' в</string>
+    <string name="share_livestream_template">Смотрит прямую трансляцию по I/O: \'<xliff:g id="title">%1$s</xliff:g>\' в <xliff:g id="hashtags">%2$s</xliff:g> <xliff:g id="url">%3$s</xliff:g>
+  </string>
+
+    <string name="add_to_schedule">Добавить в расписание</string>
+    <string name="remove_from_schedule">В расписании</string>
+
+    <string name="add_to_schedule_desc">Добавить в расписание</string>
+    <string name="remove_from_schedule_desc">Удалить из расписания</string>
+
+    <!-- Announcements -->
+    <string name="whats_on_countdown_title_0">
+    <xliff:g id="remaining_time">%1$s</xliff:g>до Google I/O</string>
+    <plurals name="whats_on_countdown_title">
+    <item quantity="zero">
+      <xliff:g id="number_of_days">%1$s</xliff:g> д. <xliff:g id="remaining_time">%2$s</xliff:g>до Google I/O</item>
+    <item quantity="one">
+      <xliff:g id="number_of_days">%1$s</xliff:g> день <xliff:g id="remaining_time">%2$s</xliff:g>до Google I/O</item>
+    <item quantity="two">
+      <xliff:g id="number_of_days">%1$s</xliff:g> дня <xliff:g id="remaining_time">%2$s</xliff:g>до Google I/O</item>
+    <item quantity="few">
+      <xliff:g id="number_of_days">%1$s</xliff:g> д. <xliff:g id="remaining_time">%2$s</xliff:g>до Google I/O</item>
+    <item quantity="many">
+      <xliff:g id="number_of_days">%1$s</xliff:g> д. <xliff:g id="remaining_time">%2$s</xliff:g>до Google I/O</item>
+    <item quantity="other">
+      <xliff:g id="number_of_days">%1$s</xliff:g> д. <xliff:g id="remaining_time">%2$s</xliff:g>до Google I/O</item>
+  </plurals>
+    <string name="whats_on_thank_you_title">Увидимся в следующем году!</string>
+    <string name="news_will_appear_here">Объявления будут показаны здесь</string>
+    <string name="welcome_to_google_i_o">Добро пожаловать в Google I/O!</string>
+
+    <string name="permission_write">Изменить данные расписания Google I/O</string>
+
+    <plurals name="toast_added_to_schedule">
+    <item quantity="zero">кол-во сеансов, добавленных в ваше расписание: <xliff:g id="number_of_sessions">%1$s</xliff:g>
+    </item>
+    <item quantity="one">Сеанс добавлен в ваше расписание</item>
+    <item quantity="two">кол-во сеансов, добавленных в ваше расписание: <xliff:g id="number_of_sessions">%1$s</xliff:g>
+    </item>
+    <item quantity="few">кол-во сеансов, добавленных в ваше расписание: <xliff:g id="number_of_sessions">%1$s</xliff:g>
+    </item>
+    <item quantity="many">кол-во сеансов, добавленных в ваше расписание: <xliff:g id="number_of_sessions">%1$s</xliff:g>
+    </item>
+    <item quantity="other">кол-во сеансов, добавленных в ваше расписание: <xliff:g id="number_of_sessions">%1$s</xliff:g>
+    </item>
+  </plurals>
+    <plurals name="toast_removed_from_schedule">
+    <item quantity="zero">кол-во сеансов, удаленных из вашего расписания: <xliff:g id="number_of_sessions">%1$s</xliff:g>
+    </item>
+    <item quantity="one">Сеанс удален из вашего расписания</item>
+    <item quantity="two">кол-во сеансов, удаленных из вашего расписания: <xliff:g id="number_of_sessions">%1$s</xliff:g>
+    </item>
+    <item quantity="few">кол-во сеансов, удаленных из вашего расписания: <xliff:g id="number_of_sessions">%1$s</xliff:g>
+    </item>
+    <item quantity="many">кол-во сеансов, удаленных из вашего расписания: <xliff:g id="number_of_sessions">%1$s</xliff:g>
+    </item>
+    <item quantity="other">кол-во сеансов, удаленных из вашего расписания: <xliff:g id="number_of_sessions">%1$s</xliff:g>
+    </item>
+  </plurals>
+
+    <!-- Schedule -->
+    <string name="schedule_empty_slot_title_template">Просмотр <xliff:g id="block_type">%1$s</xliff:g>...</string>
+    <string name="schedule_empty_slot_subtitle">Пустой слот</string>
+    <string name="schedule_conflict_title">выбрано сеансов: <xliff:g id="num_sessions">%1$s</xliff:g>
+  </string>
+    <string name="schedule_conflict_subtitle">Конфликт в слоте</string>
+    <string name="schedule_block_title_sessions">Сеансы</string>
+    <string name="schedule_block_title_code_labs">Code Labs</string>
+    <string name="schedule_block_title_office_hours">Часы работы</string>
+    <string name="schedule_block_title_keynote">Основная идея</string>
+
+    <!-- Map -->
+    <string name="map_floorcontrol_1">1</string>
+    <string name="map_floorcontrol_2">2</string>
+    <string name="map_floorcontrol_3">3</string>
+    <string name="map_touch_to_see_session">Нажмите для просмотра сеансов</string>
+    <string name="map_at">В :&lt;br&gt;&lt;b&gt;&lt;/b&gt;</string>
+    <string name="map_now_playing">Сейчас вопроизводится:&lt;br&gt;&lt;b&gt;&lt;/b&gt;</string>
+    <string name="map_touch_to_see_sandbox">Нажмите для просмотра партнеров Sandbox</string>
+    <string name="map_now_sandbox">Сейчас в песочнице:&lt;br&gt;&lt;b&gt;&lt;/b&gt;</string>
+
+
+    <!-- EULA, login, and about -->
+    <string name="description_choose_account">&lt;font color=#4d90fe&gt;&lt;b&gt;Выберите учетную запись ниже. Если вы зарегистрировались для присутствия на Google I/O, используйте ту же самую учетную запись.&lt;/b&gt;&lt;/font&gt;</string>
+    <string name="description_sign_in_main">Добро пожаловать в приложение Google I/O 2013. С его помощью вы сможете принять участие в конференции, которая будет проходить в Сан-Франциско с 15 по 17 мая 2013 г.&lt;br&gt; &lt;br&gt; Для этого вам потребуется просто ответить на несколько вопросов. Нажмите кнопку \"Вход в систему\", чтобы начать.</string>
+    <string-array name="selection_setup_wifi">
+    <item>Да, добавить сеть конференции Wi-Fi.</item>
+    <item>Нет, спасибо, я подключусь самостоятельно.</item>
+  </string-array>
+    <string-array name="selection_setup_attendee">
+    <item>Да, я буду участвовать в конференции из Сан-Франциско.</item>
+    <item>Нет, я буду смотреть из дома или присутствовать на событии Google I/O Extended.</item>
+  </string-array>
+    <string name="empty_accounts">Учетные записи Google отсутствуют. Добавьте учетную запись, чтобы продолжить.</string>
+    <string name="no_connection_cant_login">Вход не выполнен. Проверьте подключение к сети.</string>
+    <string name="taking_a_while">Это может занять некоторое время...</string>
+    <string name="about_eula">Лицензионное соглашение конечного пользователя</string>
+    <string name="about_licenses">Лицензии на открытое ПО</string>
+    <string name="about_body">&lt;b&gt;Google I/O 2013&lt;/b&gt;&lt;br&gt; Версия %s &lt;br&gt;&lt;br&gt; &lt;a \nhref=http://m.google.com/utos&gt;Условия предоставления услуг&lt;/a&gt;&lt;br&gt;&lt;br&gt; &lt;a \nhref=http://www.google.com/policies/privacy/&gt;Политика конфиденциальности&lt;/a&gt;</string>
+
+    <!--suppress AndroidLintTypographyOther -->
+    <string name="eula_text">Загружая, устанавливая или используя данное приложение или любую его часть (\"Приложение\"), вы принимаете настоящие условия и положения.&lt;br&gt; &lt;br&gt; Использование Приложения регулируется: (a) Условиями предоставления услуг Google (&lt;a \nhref=http://m.google.com/utos&gt;m.google.com/utos&lt;/a&gt;); (б) \nПолитикой конфиденциальности Google (&lt;a \nhref=http://www.google.com/policies/privacy&gt;http://www.google.com/policies/privacy&lt;/a&gt;);\n и (в) любыми применимыми конкретными условиями предоставления услуг и политиками конфиденциальности Google. Условия предоставления услуг и политики конфиденциальности Google могут обновляться время от времени без предварительного уведомления.&lt;br&gt; &lt;br&gt; Приложение собирает определенную информацию о вас во время использования, в том числе через Google Analytics. В Политике конфиденциальности Google объясняется то, как Google обращается с вашими данными и защищает их при использовании Приложения.\n  Вы соглашаетесь с использованием ваших данных согласно Политике конфиденциальности Google.</string>
+
+    <!-- Session notification -->
+    <plurals name="session_notification_ticker">
+    <item quantity="zero">начинается сеансов: %d.</item>
+    <item quantity="one">1 сеанс вот-вот начнется.</item>
+    <item quantity="two">начинается сеансов: %d.</item>
+    <item quantity="few">начинается сеансов: %d</item>
+    <item quantity="many">начинается сеансов: %d.</item>
+    <item quantity="other">начинается сеансов: %d.</item>
+  </plurals>
+
+    <string name="session_notification_text_1">начнется через <xliff:g id="remaining_time">%1$d</xliff:g>мин.</string>
+    <plurals name="session_notification_text">
+    <item quantity="zero">и <xliff:g id="num_sessions">%2$d</xliff:g> других начнутся через <xliff:g id="remaining_time">%1$d</xliff:g>мин.</item>
+    <item quantity="one">и еще 1 начнутся через <xliff:g id="remaining_time">%1$d</xliff:g>мин.</item>
+    <item quantity="two">и <xliff:g id="num_sessions">%2$d</xliff:g> других начнутся через <xliff:g id="remaining_time">%1$d</xliff:g>мин.</item>
+    <item quantity="few">и <xliff:g id="num_sessions">%2$d</xliff:g> других начнутся через <xliff:g id="remaining_time">%1$d</xliff:g>мин.</item>
+    <item quantity="many">и <xliff:g id="num_sessions">%2$d</xliff:g> других начнутся через <xliff:g id="remaining_time">%1$d</xliff:g>мин.</item>
+    <item quantity="other">и <xliff:g id="num_sessions">%2$d</xliff:g> других начнутся через <xliff:g id="remaining_time">%1$d</xliff:g>мин.</item>
+  </plurals>
+    <plurals name="session_notification_title">
+    <item quantity="zero">кол-во сеансов, которые начнутся через <xliff:g id="remaining_time">%1$d</xliff:g> мин.: <xliff:g id="num_sessions">%2$d</xliff:g>.</item>
+    <item quantity="one">1 сеанс начнется через <xliff:g id="remaining_time">%1$d</xliff:g>мин.</item>
+    <item quantity="two">кол-во сеансов, которые начнутся через <xliff:g id="remaining_time">%1$d</xliff:g> мин.: <xliff:g id="num_sessions">%2$d</xliff:g>.</item>
+    <item quantity="few">кол-во сеансов, которые начнутся через <xliff:g id="remaining_time">%1$d</xliff:g> мин.: <xliff:g id="num_sessions">%2$d</xliff:g>
+    </item>
+    <item quantity="many">кол-во сеансов, которые начнутся через <xliff:g id="remaining_time">%1$d</xliff:g> мин.: <xliff:g id="num_sessions">%2$d</xliff:g>.</item>
+    <item quantity="other">кол-во сеансов, которые начнутся через <xliff:g id="remaining_time">%1$d</xliff:g> мин.: <xliff:g id="num_sessions">%2$d</xliff:g>.</item>
+  </plurals>
+    <string name="snooze_x_min">Отложить на <xliff:g id="remaining_time">%1$d</xliff:g>мин.</string>
+
+    <!-- Others -->
+    <string name="ok">ОK</string>
+    <string name="loading">Загрузка...</string>
+    <string name="retry">Повторить попытку</string>
+    <string name="stream_error">Не удалось загрузить поток Google+.</string>
+    <string name="stream_originally_shared">Изначально предоставлено <xliff:g id="name">%s</xliff:g>
+  </string>
+    <string name="empty_widget_text">Сеансы закончились.\nУвидимся в следующем году!</string>
+    <string name="empty_widget_text_signed_out">Нажмите на логотип Google I/O 2013 выше, чтобы войти в систему и начать работу с приложением.</string>
+
+    <string name="now_playing_badge">&lt;font color=#4d90fe&gt;&lt;small&gt;&lt;b&gt;СЕЙЧАС&lt;/b&gt;&lt;/small&gt;&lt;/font&gt;</string>
+    <string name="live_available_badge">&lt;font color=#999999&gt;&lt;small&gt;&lt;b&gt;ПРЯМАЯ ТРАНСЛЯЦИЯ&lt;/b&gt;&lt;/small&gt;&lt;/font&gt;</string>
+    <string name="live_now_badge">&lt;font color=#ff4444&gt;&lt;small&gt;&lt;b&gt;ПРЯМАЯ ТРАНСЛЯЦИЯ&lt;/b&gt;&lt;/small&gt;&lt;/font&gt;</string>
+    <string name="session_finished">Закончен</string>
+
+    <!-- Strings only used for accessibility -->
+    <string name="speaker_googleplus_profile">Профиль Google+: <xliff:g id="speakername">%1$s</xliff:g>
+  </string>
+    <string name="close_detail_pane">Закрыть панель подробностей</string>
+    <string name="more_sessions">Другие сеансы</string>
+    <string name="more_announcements">Другие объявления</string>
+    <string name="plus_one_description_standard">Нажмите, чтобы добавить еще одного участника.</string>
+
+    <!-- Preferences -->
+    <string name="pref_local_times_title">Показать местное время</string>
+    <string name="pref_local_times_description">Поставьте флажок для отображения местного времени вместо тихоокеанского (часовой пояс конференции)</string>
+    <string name="pref_attendee_at_venue_description">Для просмотра сеансов и событий на месте отметьте их флажками. В противном случае будут показаны только сеансы в прямой трансляции.</string>
+    <string name="wifi_install_error_message">Не удалось обновить конфигурацию WiFi</string>
+    <!-- Feedback -->
+    <string name="session_feedback_submitlink">Отправить отзыв</string>
+
+    <string name="session_feedback_relevance">Насколько актуален был этот сеанс для ваших проектов кодирования?</string>
+    <string name="session_feedback_notrel">Не используется</string>
+    <string name="session_feedback_rel">Важно</string>
+
+    <string name="session_feedback_content">Содержимое:</string>
+    <string name="session_feedback_basic">Слишком простой</string>
+    <string name="session_feedback_advanced">Слишком продвинутый</string>
+
+    <string name="session_feedback_speaker_quality">Качество докладчика:</string>
+    <string name="session_feedback_poor">Плохой</string>
+    <string name="session_feedback_outstanding">Невыполненные</string>
+
+    <string name="session_feedback_6months">Будете ли вы использовать технологии, указанные в этом разделе, в ближайшие шесть месяцев?</string>
+    <string name="session_feedback_probably">Наверно</string>
+    <string name="session_feedback_probnot">Наверно, нет</string>
+
+    <string name="description_configure_wifi">Конфигурировать Wi-Fi</string>
+        <plurals name="title_selected_sessions">
+        <item quantity="one">1 сессия</item>
+        <item quantity="few"><xliff:g id="num_sessions">%1$d</xliff:g> сессии</item>
+        <item quantity="many"><xliff:g id="num_sessions">%1$d</xliff:g> сессий</item>
+        <item quantity="other"><xliff:g id="num_sessions">%1$d</xliff:g> сессий</item>
+    </plurals>
+    
+    <string name="empty_live_streamed_sessions">Не найдена сессия прямой трансляции.</string>
+    <string name="session_livestream_keynote_desc">Участвуя в долгожданных ежедневных событиях Google I/O, вы войдете в ряды разработчиков, которые первыми узнают, над чем именно мы работали. Запаситесь попкорном, устройтесь поудобнее и наслаждайтесь просмотром прямо с вашего устройства Android.</string>
+    <string name="whats_on_thank_you_short">Спасибо!</string>
+  <string name="whats_on_thank_you_subtitle">Конференция Google I/O 2013 завершилась.</string>
+  <string name="schedule_block_title_sandbox">Песочница</string>
+ <string name="map_infowindow_text_empty">-</string>
+ <string name="description_setup_attendee_mode_header"><![CDATA[
+        <font color="#4d90fe"><b>Вы будете присутствовать лично на Google I/O в этом году?</b></font>
+        <br><br>
+    ]]></string>
+    <string name="description_setup_attendee_mode_body"><![CDATA[
+        Если нет, мы будем показывать только сеансы в прямой трансляции. Это всегда можно изменить в Настройках
+    ]]></string>
+    <string name="description_setup_wifi_header"><![CDATA[
+        <font color="#4d90fe"><b>Настроить доступ через Wi-Fi на данном устройстве?</b></font>
+        <br><br>
+    ]]></string>
+    <string name="description_setup_wifi_body"><![CDATA[
+        Поскольку вы собираетесь присутствовать лично, мы можем настроить ваше устройство таким образом, чтобы обеспечить вам доступ к конференции через WiFi.
+        Настроив Wi-Fi, вы сможете избежать перегрузки сети.<br>
+        <br>
+        <i>Обратите внимание: если ваше устройство поддерживает только сети с частотой 2,4 ГГц, вам потребуется подключиться к сети вручную по прибытии.</i>
+    ]]></string>
+ <string name="calltoaction_wifi_configure"><![CDATA[
+        <br><br>Чтобы продолжить, нажмите \'Добавить сеть Wi-Fi\'.
+    ]]></string>
+    <string name="calltoaction_wifi_settings"><![CDATA[
+        <br><br>Нажмите \'Открыть настройки Wi-Fi\' чтобы подключиться к сети Wi-Fi.
+    ]]></string>
+    <string name="wifi_dialog_button_configure">Добавить сеть Wi-Fi.</string>
+    <string name="wifi_dialog_button_settings">Открыть настройки Wi-Fi</string>
+ <string name="pref_attendee_at_venue_title">Я буду присутствовать на Google I/O!</string>
+  <string name="session_rating_label">Оцените эту сессию в целом:</string>
+ <string name="session_feedback_notgreat">Не очень</string>
+    <string name="session_feedback_great">Класс</string>
+ <string name="session_feedback_tell_us">Поделитесь отзывом!</string>
+   <string name="number_1">1</string>
+    <string name="number_2">2</string>
+    <string name="number_3">3</string>
+    <string name="number_4">4</string>
+    <string name="number_5">5</string>
+    <string name="session_feedback_other">Что еще вы хотели бы нам сказать?</string>
+  <!-- More Misc -->
+    <string name="dashclock_extension_description">
+        Показать следующие несколько программ в вашем расписании Google I/O 2013.
+    </string>
+
+</resources>
