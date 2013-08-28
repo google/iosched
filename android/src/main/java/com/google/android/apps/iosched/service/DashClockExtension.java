@@ -17,7 +17,6 @@
 package com.google.android.apps.iosched.service;
 
 import android.content.Intent;
-import android.content.res.Resources;
 import android.database.Cursor;
 import android.provider.BaseColumns;
 import android.text.TextUtils;

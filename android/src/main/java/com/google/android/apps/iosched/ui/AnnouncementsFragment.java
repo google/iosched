@@ -20,8 +20,8 @@ import com.google.android.apps.iosched.R;
 import com.google.android.apps.iosched.provider.ScheduleContract;
 import com.google.android.apps.iosched.util.ImageLoader;
 import com.google.android.apps.iosched.util.UIUtils;
+import com.google.api.client.extensions.android.json.AndroidJsonFactory;
 import com.google.api.client.json.JsonFactory;
-import com.google.api.client.json.gson.GsonFactory;
 import com.google.api.services.plus.model.Activity;
 
 import android.content.Context;
@@ -195,7 +195,7 @@ public class AnnouncementsFragment extends ListFragment implements
     }
 
     private class StreamAdapter extends CursorAdapter {
-        private JsonFactory mFactory = new GsonFactory();
+        private JsonFactory mFactory = new AndroidJsonFactory();
         private Map<Long, Activity> mActivityCache = new HashMap<Long, Activity>();
 
         public StreamAdapter(Context context) {

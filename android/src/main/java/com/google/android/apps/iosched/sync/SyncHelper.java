@@ -31,13 +31,13 @@ import com.google.android.apps.iosched.io.*;
 import com.google.android.apps.iosched.io.map.model.Tile;
 import com.google.android.apps.iosched.provider.ScheduleContract;
 import com.google.android.apps.iosched.util.*;
+import com.google.api.client.extensions.android.json.AndroidJsonFactory;
 import com.google.api.client.googleapis.auth.oauth2.GoogleCredential;
 import com.google.api.client.googleapis.json.GoogleJsonResponseException;
 import com.google.api.client.googleapis.services.CommonGoogleClientRequestInitializer;
 import com.google.api.client.http.HttpTransport;
 import com.google.api.client.http.javanet.NetHttpTransport;
 import com.google.api.client.json.JsonFactory;
-import com.google.api.client.json.gson.GsonFactory;
 import com.google.api.services.googledevelopers.Googledevelopers;
 
 import java.io.*;
@@ -359,7 +359,7 @@ public class SyncHelper {
 
     private Googledevelopers getConferenceAPIClient() {
         HttpTransport httpTransport = new NetHttpTransport();
-        JsonFactory jsonFactory = new GsonFactory();
+        JsonFactory jsonFactory = new AndroidJsonFactory();
         GoogleCredential credential =
                 new GoogleCredential().setAccessToken(AccountUtils.getAuthToken(mContext));
         // Note: The Googledevelopers API is unique, in that it requires an API key in addition to the client

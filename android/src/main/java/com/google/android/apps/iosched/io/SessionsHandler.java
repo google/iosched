@@ -30,9 +30,9 @@ import com.google.android.apps.iosched.provider.ScheduleContract.Sessions;
 import com.google.android.apps.iosched.provider.ScheduleContract.SyncColumns;
 import com.google.android.apps.iosched.provider.ScheduleDatabase;
 import com.google.android.apps.iosched.util.*;
+import com.google.api.client.extensions.android.json.AndroidJsonFactory;
 import com.google.api.client.googleapis.json.GoogleJsonResponseException;
 import com.google.api.client.json.JsonFactory;
-import com.google.api.client.json.gson.GsonFactory;
 import com.google.api.services.googledevelopers.Googledevelopers;
 import com.google.api.services.googledevelopers.model.SessionResponse;
 import com.google.api.services.googledevelopers.model.SessionsResponse;
@@ -146,7 +146,7 @@ public class SessionsHandler {
     }
 
     public ArrayList<ContentProviderOperation> parseString(String sessionsJson, String tracksJson) {
-        JsonFactory jsonFactory = new GsonFactory();
+        JsonFactory jsonFactory = new AndroidJsonFactory();
         try {
             SessionsResponse sessions = jsonFactory.fromString(sessionsJson, SessionsResponse.class);
             TracksResponse tracks =

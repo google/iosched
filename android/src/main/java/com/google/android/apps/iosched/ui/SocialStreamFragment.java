@@ -39,11 +39,11 @@ import com.google.android.apps.iosched.R;
 import com.google.android.apps.iosched.util.ImageLoader;
 import com.google.android.apps.iosched.util.NetUtils;
 import com.google.android.apps.iosched.util.UIUtils;
+import com.google.api.client.extensions.android.json.AndroidJsonFactory;
 import com.google.api.client.googleapis.services.CommonGoogleClientRequestInitializer;
 import com.google.api.client.http.HttpTransport;
 import com.google.api.client.http.javanet.NetHttpTransport;
 import com.google.api.client.json.JsonFactory;
-import com.google.api.client.json.gson.GsonFactory;
 import com.google.api.services.plus.Plus;
 import com.google.api.services.plus.model.Activity;
 import com.google.api.services.plus.model.ActivityFeed;
@@ -362,7 +362,7 @@ public class SocialStreamFragment extends ListFragment implements
 
             // Set up the HTTP transport and JSON factory
             HttpTransport httpTransport = new NetHttpTransport();
-            JsonFactory jsonFactory = new GsonFactory();
+            JsonFactory jsonFactory = new AndroidJsonFactory();
 
             // Set up the main Google+ class
             Plus plus = new Plus.Builder(httpTransport, jsonFactory, null)

@@ -22,10 +22,8 @@ import com.google.android.apps.iosched.Config;
 import com.google.android.apps.iosched.provider.ScheduleContract;
 import com.google.android.apps.iosched.provider.ScheduleContract.SyncColumns;
 import com.google.android.apps.iosched.util.Lists;
-import com.google.api.client.http.HttpTransport;
-import com.google.api.client.http.javanet.NetHttpTransport;
+import com.google.api.client.extensions.android.json.AndroidJsonFactory;
 import com.google.api.client.json.JsonFactory;
-import com.google.api.client.json.gson.GsonFactory;
 import com.google.api.services.googledevelopers.Googledevelopers;
 import com.google.api.services.googledevelopers.model.PresenterResponse;
 import com.google.api.services.googledevelopers.model.PresentersResponse;
@@ -63,7 +61,7 @@ public class SpeakersHandler {
     }
 
     public ArrayList<ContentProviderOperation> parseString(String json) {
-        JsonFactory jsonFactory = new GsonFactory();
+        JsonFactory jsonFactory = new AndroidJsonFactory();
         try {
             PresentersResponse presenters = jsonFactory.fromString(json, PresentersResponse.class);
             return buildContentProviderOperations(presenters);
