@@ -54,7 +54,7 @@ import com.google.android.gms.common.GooglePlayServicesClient;
 import com.google.android.gms.common.GooglePlayServicesUtil;
 import com.google.android.gms.common.SignInButton;
 import com.google.android.gms.plus.PlusClient;
-import com.google.android.gms.plus.model.people.Person;
+import com.google.android.gms.plus.model.people.PersonBuffer;
 
 import java.util.Arrays;
 import java.util.List;
@@ -65,7 +65,7 @@ import static com.google.android.apps.iosched.util.LogUtils.makeLogTag;
 
 public class AccountActivity extends ActionBarActivity
         implements AccountUtils.AuthenticateCallback, GooglePlayServicesClient.ConnectionCallbacks,
-        GooglePlayServicesClient.OnConnectionFailedListener, PlusClient.OnPersonLoadedListener {
+        GooglePlayServicesClient.OnConnectionFailedListener, PlusClient.OnPeopleLoadedListener {
 
     private static final String TAG = makeLogTag(AccountActivity.class);
 
@@ -187,14 +187,15 @@ public class AccountActivity extends ActionBarActivity
     }
 
     @Override
-    public void onPersonLoaded(ConnectionResult connectionResult, Person person) {
-        if (connectionResult.isSuccess()) {
-            // Se the profile id
-            if (person != null) {
-                AccountUtils.setPlusProfileId(this, person.getId());
+    public void onPeopleLoaded(ConnectionResult status, PersonBuffer personBuffer,
+            String nextPageToken) {
+        if (status.isSuccess()) {
+            if (personBuffer != null && personBuffer.getCount() > 0) {
+                // Set the profile id
+                AccountUtils.setPlusProfileId(this, personBuffer.get(0).getId());
             }
         } else {
-            LOGE(TAG, "Got " + connectionResult.getErrorCode() + ". Could not load plus profile.");
+            LOGE(TAG, "Got " + status.getErrorCode() + ". Could not load plus profile.");
         }
     }
 
@@ -553,7 +554,7 @@ public class AccountActivity extends ActionBarActivity
     @Override
     public void onConnected(Bundle connectionHint) {
         // It is possible that the authenticated account doesn't have a profile.
-        mPlusClient.loadPerson(this, "me");
+        mPlusClient.loadPeople(this, "me");
         tryAuthenticate();
     }
 

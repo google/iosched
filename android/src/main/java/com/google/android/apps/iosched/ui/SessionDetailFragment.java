@@ -49,9 +49,6 @@ import com.google.android.apps.iosched.provider.ScheduleContract;
 import com.google.android.apps.iosched.service.SessionAlarmService;
 import com.google.android.apps.iosched.ui.widget.ObservableScrollView;
 import com.google.android.apps.iosched.util.*;
-import com.google.android.gms.common.ConnectionResult;
-import com.google.android.gms.common.GooglePlayServicesClient;
-import com.google.android.gms.plus.PlusClient;
 import com.google.android.gms.plus.PlusOneButton;
 
 import java.util.ArrayList;
@@ -66,8 +63,6 @@ import static com.google.android.apps.iosched.util.LogUtils.makeLogTag;
  */
 public class SessionDetailFragment extends Fragment implements
         LoaderManager.LoaderCallbacks<Cursor>,
-        GooglePlayServicesClient.ConnectionCallbacks,
-        GooglePlayServicesClient.OnConnectionFailedListener,
         ObservableScrollView.Callbacks {
 
     private static final String TAG = makeLogTag(SessionDetailFragment.class);
@@ -97,7 +92,6 @@ public class SessionDetailFragment extends Fragment implements
     private ViewGroup mRootView;
     private TextView mTitle;
     private TextView mSubtitle;
-    private PlusClient mPlusClient;
     private PlusOneButton mPlusOneButton;
 
     private ObservableScrollView mScrollView;
@@ -121,11 +115,6 @@ public class SessionDetailFragment extends Fragment implements
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        final String chosenAccountName = AccountUtils.getChosenAccountName(getActivity());
-        mPlusClient = new PlusClient.Builder(getActivity(), this, this)
-                .clearScopes()
-                .setAccountName(chosenAccountName)
-                .build();
 
         final Intent intent = BaseActivity.fragmentArgumentsToIntent(getArguments());
         mSessionUri = intent.getData();
@@ -261,35 +250,13 @@ public class SessionDetailFragment extends Fragment implements
     }
 
     @Override
-    public void onStart() {
-        super.onStart();
-        mPlusClient.connect();
-    }
-
-    @Override
     public void onStop() {
         super.onStop();
-        mPlusClient.disconnect();
         if (mInitStarred != mStarred) {
             if (mStarred && UIUtils.getCurrentTime(getActivity()) < mSessionBlockStart) {
                 setupNotification();
             }
         }
-    }
-
-    @Override
-    public void onConnected(Bundle connectionHint) {
-        updatePlusOneButton();
-    }
-
-    @Override
-    public void onDisconnected() {
-    }
-
-    @Override
-    public void onConnectionFailed(ConnectionResult connectionResult) {
-        // Don't show an error just for the +1 button. Google Play services errors
-        // should be caught at a higher level in the app
     }
 
     private void setupNotification() {
@@ -474,8 +441,8 @@ public class SessionDetailFragment extends Fragment implements
             return;
         }
 
-        if (mPlusClient.isConnected() && !TextUtils.isEmpty(mUrl)) {
-            mPlusOneButton.initialize(mPlusClient, mUrl, null);
+        if (!TextUtils.isEmpty(mUrl)) {
+            mPlusOneButton.initialize(mUrl, 0);
             mPlusOneButton.setVisibility(View.VISIBLE);
         } else {
             mPlusOneButton.setVisibility(View.GONE);
