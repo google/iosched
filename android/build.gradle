@@ -31,7 +31,7 @@ dependencies {
         exclude group: 'junit', module: 'junit'
         exclude group: 'com.google.android', module: 'android'
     }
-    compile 'com.google.api-client:google-api-client-android:1.+'
+    compile 'com.google.api-client:google-api-client-android:1.17.+'
     compile 'com.google.apis:google-api-services-plus:+'
     compile fileTree(dir: 'libs', include: '*.jar')
 }
