@@ -24,7 +24,7 @@
 
     <uses-sdk
         android:minSdkVersion="10"
-        android:targetSdkVersion="18" />
+        android:targetSdkVersion="19" />
 
     <permission
         android:name="com.google.android.apps.iosched.permission.WRITE_SCHEDULE"
