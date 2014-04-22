@@ -1,0 +1,325 @@
+<!--
+  Copyright 2012 Google Inc.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+       http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+  -->
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+	<string name="app_name">Google I/O 2014</string>
+
+    <string name="description_search">Cerca</string>
+    <string name="description_map">Mappa</string>
+    <string name="description_refresh">Aggiorna</string>
+    <string name="description_share">Condividi</string>
+    <string name="description_add_schedule">Aggiungi al calendario</string>
+    <string name="description_remove_schedule">Rimuovi dal calendario</string>
+    <string name="description_social_stream">Vedi lo stream Google+</string>
+    <string name="description_compose">Nuovo messaggio</string>
+    <string name="description_add_account">Aggiungi account</string>
+    <string name="description_about">Informazioni</string>
+    <string name="description_configure_wifi">Configura il Wi-Fi</string>
+    <string name="description_settings">Impostazioni</string>
+    <string name="description_sign_out">Esci</string>
+    <string name="description_captions">Captions</string>
+    <string name="description_presentation">Alterna visualizzazione</string>
+
+    <string name="title_sessions">Sessioni</string>
+    <string name="title_session_detail">Informazione sulla sessione</string>
+    <string name="title_session_feedback">Commenti della sessione</string>
+    <string name="title_tracks">Tracce</string>
+    <string name="title_office_hours">Orari</string>
+    <string name="title_sandbox">Sandbox</string>
+    <string name="title_sandbox_detail">Informazioni sulla compagnia</string>
+    <string name="title_map">Mappa</string>
+    <string name="title_tagstream">Messaggi di Google+</string>
+    <string name="title_announcements">Announci</string>
+	<string name="title_about">Informazioni</string>
+	<string name="title_settings">Impostazioni</string>
+
+    <string name="title_share">Condividi</string>
+
+    <string name="title_search">Cerca</string>
+    <string name="title_search_query">Cerca \"&lt;b&gt;<xliff:g id="query">%1$s</xliff:g>&lt;b&gt;\"</string>
+
+    <string name="title_my_schedule">Programma</string>
+    <string name="title_explore">Esplora</string>
+    <string name="title_stream">Stream</string>
+
+    <plurals name="title_selected_sessions">
+        <item quantity="one">1 sessione</item>
+        <item quantity="other"><xliff:g id="num_sessions">%1$d</xliff:g> sessioni</item>
+    </plurals>
+
+    <string name="session_subtitle"><xliff:g id="time">%1$s</xliff:g> in <xliff:g id="room">%2$s</xliff:g></string>
+
+    <string name="all_tracks">Tutte le tracce</string>
+    <string name="all_tracks_sessions">Tutte le sessioni</string>
+    <string name="all_tracks_office_hours">Tutti gli orari</string>
+    <string name="all_tracks_sandbox">Tutte le compagnie</string>
+    <string name="all_tracks_subtitle_sessions">Tutte le sessioni del Google I/O 2014.</string>
+	<string name="all_tracks_subtitle_office_hours">Tutti gli orari del Google I/O 2014.</string>
+	<string name="all_tracks_subtitle_sandbox">Tutte le sandbox delle compagnie del Google I/O 2014.</string>
+    <string name="other_tracks">Altre tracce</string>
+
+    <string name="empty_sessions">Nessuna sezione trovata.</string>
+    <string name="empty_live_streamed_sessions">Nessuna sezione live trovata.</string>
+    <string name="empty_session_detail">Dettagli della sezione non trovati.</string>
+    <string name="empty_sandbox">Sandbox delle compagnie non trovate.</string>
+    <string name="empty_social_stream">Nessun messaggio trovato.</string>
+    <string name="empty_announcements">Gli annunci appariranno qui.</string>
+    <string name="empty_waiting_for_sync">In attesa di sincronizzazione&#8230;</string>
+    <string name="empty_captions">Didascalia non disponibile per questa sessione.</string>
+
+    <string name="unknown_room">(Luogo non specificato)</string>
+    <string name="codelab_room">Code Labs (Livello 2)</string>
+	<string name="keynote_room">Livello 3</string>
+
+    <string name="session_links">Altro</string>
+    <string name="session_requirements">Requisiti</string>
+    <string name="session_speakers">Oratore</string>
+
+    <string name="session_link_main">Collegamenti Web</string>
+    <string name="session_link_youtube">Video YouTube</string>
+    <string name="session_link_moderator">Moderatore</string>
+    <string name="session_link_pdf">Diapositive (PDF)</string>
+    <string name="session_link_notes">Note ufficiali</string>
+    <string name="session_link_livestream">Guarda la Google I/O Live</string>
+
+	<string name="session_livestream_title">Google I/O Live</string>
+    <string name="session_livestream_track_title">%s tracce</string>
+    <string name="session_livestream_info">Informazioni</string>
+    <string name="session_livestream_captions">Didascalie</string>
+    <string name="session_livestream_error_init">Spiacenti: c\'è stata un errore d\'inizializzazione del riproduttore YouTube (%1$s)</string>
+    <string name="session_livestream_error_playback">Spiacenti, c\'è un errore nel caricamento dello stream live, riprova più tardi</string>
+	<string name="session_livestream_keynote_title">Google I/O - %s</string>
+	<string name="session_livestream_keynote_desc">Google I/O\'s much-anticipated kickoff event will make you among the first developers to see what we\'ve been working on here at Google. Grab some popcorn, kick back and enjoy the show directly from your Android powered device.</string>
+    <string name="session_livestream_play_pause">Riproduci / Pausa</string>
+
+    <string name="codelab_title_template">Code Lab: <xliff:g id="title">%1$s</xliff:g></string>
+
+	<string name="search_label">Sessioni Google I/O</string>
+    <string name="search_hint">Cerca sessioni</string>
+
+    <string name="share_template">Checking out \'<xliff:g id="title">%1$s</xliff:g>\' at <xliff:g id="hashtags">%2$s</xliff:g> <xliff:g id="url">%3$s</xliff:g></string>
+    <string name="share_livestream_template">Watching I/O Live: \'<xliff:g id="title">%1$s</xliff:g>\' at <xliff:g id="hashtags">%2$s</xliff:g> <xliff:g id="url">%3$s</xliff:g></string>
+
+    <string name="add_to_schedule">Aggiungi al calendario</string>
+    <string name="remove_from_schedule">In schedule</string>
+
+    <string name="add_to_schedule_desc">Add to schedule</string>
+    <string name="remove_from_schedule_desc">Rimuovi dal calendario</string>
+
+    <!-- Announcements -->
+	<string name="whats_on_countdown_title_0"><xliff:g id="remaining_time">%1$s</xliff:g>\nal Google I/O</string>
+    <plurals name="whats_on_countdown_title">
+    	<item quantity="one"><xliff:g id="number_of_days">%1$s</xliff:g> giorni, <xliff:g id="remaining_time">%2$s</xliff:g>\nal Google I/O</item>
+    	<item quantity="other"><xliff:g id="number_of_days">%1$s</xliff:g> giorni, <xliff:g id="remaining_time">%2$s</xliff:g>\nal Google I/O</item>
+    </plurals>
+    <string name="whats_on_thank_you_short">Grazie!</string>
+    <string name="whats_on_thank_you_title">Arrivederci all'anno prossimo!</string>
+	<string name="whats_on_thank_you_subtitle">Il Google I/O è finito.</string>
+    <string name="news_will_appear_here">Qui troverai gli annunci</string>
+	<string name="welcome_to_google_i_o">Benvenuti al Google I/O!</string>
+
+	<string name="permission_write">Modifica le informazioni di calendario del Google I/O</string>
+
+    <plurals name="toast_added_to_schedule">
+        <item quantity="one">Sessioni aggiunte al tuo calendario</item>
+    	<item quantity="other"><xliff:g id="number_of_sessions">%1$s</xliff:g> sessioni aggiunte al tuo calendario</item>
+    </plurals>
+    <plurals name="toast_removed_from_schedule">
+    	<item quantity="one">Sessioni rimosse dal tuo calendario</item>
+    	<item quantity="other"><xliff:g id="number_of_sessions">%1$s</xliff:g> sessioni rimosse dal tuo calendario</item>
+    </plurals>
+
+    <!-- Schedule -->
+    <string name="schedule_empty_slot_title_template">Sfoglia<xliff:g id="block_type">%1$s</xliff:g>&#8230;</string>
+    <string name="schedule_empty_slot_subtitle">Spazio libero</string>
+    <string name="schedule_conflict_title"><xliff:g id="num_sessions">%1$s</xliff:g> sessioni scelte</string>
+    <string name="schedule_conflict_subtitle">Conflitto</string>
+    <string name="schedule_block_title_sessions">Sessioni</string>
+    <string name="schedule_block_title_code_labs">Code Labs</string>
+    <string name="schedule_block_title_office_hours">Orari</string>
+    <string name="schedule_block_title_keynote">Keynote</string>
+    <string name="schedule_block_title_sandbox">Sandbox</string>
+
+    <!-- Map -->
+    <string name="map_floorcontrol_1">1</string>
+    <string name="map_floorcontrol_2">2</string>
+    <string name="map_floorcontrol_3">3</string>
+    <string name="map_touch_to_see_session">Tocca per vedere le sessioni</string>
+    <string name="map_at">A %1$s:<![CDATA[<br><b>%2$s</b>]]></string>
+    <string name="map_now_playing">Ora online:<![CDATA[<br><b>%1$s</b>]]></string>
+    <string name="map_touch_to_see_sandbox">Tocca per vedere i partner della sandbox</string>
+    <string name="map_now_sandbox">Ora nella sandbox:<![CDATA[<br><b>%1$s</b>]]></string>
+    <string name="map_infowindow_text_empty">-</string>
+
+    <!-- EULA, login, and about -->
+    <string name="description_choose_account"><![CDATA[
+        <font color="#4d90fe"><b>Seleziona un account. Se ti sei registrato per assistere alla Google I/O,
+        assicurati di usare lo stesso account.</b></font>
+    ]]></string>
+    <string name="description_setup_attendee_mode_header"><![CDATA[
+        <font color="#4d90fe"><b>Parteciperai personalmente alla Google I/O quest\'anno?</b></font>
+        <br><br>
+    ]]></string>
+    <string name="description_setup_attendee_mode_body"><![CDATA[
+        Se no, vedrai solo le sessione trasmesse in streaming. Potrai cambiare quest\'impostazione.
+    ]]></string>
+    <string name="description_setup_wifi_header"><![CDATA[
+        <font color="#4d90fe"><b>Configura l\'accesso Wi-Fi su questo dispositivo?</b></font>
+        <br><br>
+    ]]></string>
+    <string name="description_setup_wifi_body"><![CDATA[
+        Poiché assisterai in persona, possiamo configurare questo dispositivo per accedere alla rete Wi-Fi della conferenza.
+        Configurando ora il Wi-Fi, prevenirai la congestione della rete.<br>
+        <br>
+        <i>Nota: Se il tuo dispositivo supporta solo le reti a 2.4 GHz, dovrai connetterti manualmente una volta arrivato
+         a destinazione.</i>
+    ]]></string>
+    <string name="description_sign_in_main"><![CDATA[
+        Benvenuto/a al Google I/O, il tuo compagno ufficiale per la conferenza Google I/O 2014
+        che si svolge a San Francisco dal 15 al 17 maggio 2013.<br>
+        <br>
+        Dobbiamo farti solo un paio di domande veloci. Premi il tasto &quot;Entra&quot; 
+        per iniziare.
+    ]]></string>
+    <string name="calltoaction_wifi_configure"><![CDATA[
+        <br><br>Tappa \'Aggiungi rete Wi-Fi\' per proseguire.
+    ]]></string>
+    <string name="calltoaction_wifi_settings"><![CDATA[
+        <br><br>Tappa \'Apri impostazioni Wi-Fi\' per abilitare il Wi-Fi.
+    ]]></string>
+	<string name="wifi_dialog_button_configure">Aggiungi rete Wi-Fi</string>
+	<string name="wifi_dialog_button_settings">Apri impostazioni Wi-Fi</string>
+    <string-array name="selection_setup_wifi">
+        <item>Si, aggiungi ora la rete Wi-Fi della conferenza.</item>
+        <item>No grazie, lo farò da solo.</item>
+    </string-array>
+    <string-array name="selection_setup_attendee">
+        <item>Si, sarò a San Francisco.</item>
+        <item>No, Ivedrò l'evento da casa.</item>
+    </string-array>
+    <string name="empty_accounts">Nessun account Google disponibile. Aggiungine uno per continuare.</string>
+    <string name="no_connection_cant_login">Non posso accedere. Verifica la tua connessione alla rete.</string>
+    <string name="taking_a_while">Ci sta mettendo un po\'&#8230;</string>
+    <string name="about_eula">Accordo di licenza con l\'utente</string>
+    <string name="about_licenses">Licenze Open Source</string>
+    <string name="about_body"><![CDATA[
+        <b>Google I/O 2014</b><br>
+        Versione %s<br><br>
+        <a href="http://m.google.com/utos">Termini del servizio</a><br><br>
+        <a href="http://www.google.com/policies/privacy/">Privacy</a>
+    ]]></string>
+
+    <!--suppress AndroidLintTypographyOther -->
+    <string name="eula_text"><![CDATA[
+        Scaricando, installando o usando quest\'applicazione o qualsiasi porzione di quest\'applicazione
+        (\"Applicazione\"), accetti questi termini e condizioni.<br>
+        <br>
+        Il tuo uso di questa Applicazione è gestito da: (a) the Google Terms of Service
+        (<a href="http://m.google.com/utos">m.google.com/utos</a>); (b) Google\'s Privacy Policy
+        (<a href="http://www.google.com/policies/privacy">http://www.google.com/policies/privacy</a>);
+        e (c) di tutti i termini di servizio e condizioni di privacy di qualsiasi servizio di Google utilizzato.
+        I termini del servizio di Google e le condizioni di privacy possono essere aggiornate in qualsiasi momento
+        senza preavviso.<br>
+        <br>
+        Quest\'Applicazione fa uso di alcune informazioni raccole , incluso tramite Google Analytics.
+        Le condizioni di Privacy di Google spiegano come Google tratta e protegge le tue informazioni
+        mentre usi l\'Applicazione.  Acconsenti che queste vengano usate secondo le condizioni di privacy
+        di Google.
+    ]]></string>
+
+    <!-- Session notification -->
+    <plurals name="session_notification_ticker">
+        <item quantity="one">1 sessione sta per iniziare.</item>
+    	<item quantity="other">%d sessioni stanno per iniziare.</item>
+    </plurals>
+
+    <string name="session_notification_text_1">inizia tra <xliff:g id="remaining_time">%1$d</xliff:g> minuti</string>
+    <plurals name="session_notification_text">
+        <item quantity="one">e un\'altra tra <xliff:g id="remaining_time">%1$d</xliff:g> minuti</item>
+        <item quantity="other">e <xliff:g id="num_sessions">%2$d</xliff:g> altre inizierannotra <xliff:g id="remaining_time">%1$d</xliff:g> minuti</item>
+    </plurals>
+    <plurals name="session_notification_title">
+        <item quantity="one">1 sessione inizierà tra <xliff:g id="remaining_time">%1$d</xliff:g> minuti</item>
+        <item quantity="other"><xliff:g id="num_sessions">%2$d</xliff:g> sessioni inizieranno tra <xliff:g id="remaining_time">%1$d</xliff:g> minuti</item>
+    </plurals>
+    <string name="snooze_x_min">Ritarda di <xliff:g id="remaining_time">%1$d</xliff:g> minuti</string>
+
+    <!-- Others -->
+    <string name="ok">OK</string>
+    <string name="loading">Caricamento&#8230;</string>
+    <string name="retry">Riprova</string>
+    <string name="stream_error">Non posso caricare lo stream di Google+.</string>
+    <string name="stream_originally_shared">Condiviso originariamente da <xliff:g id="name">%s</xliff:g></string>
+    <string name="empty_widget_text">Non ci sono più sessioni.\nCi vediamo l\'anno prossimo!</string>
+    <string name="empty_widget_text_signed_out">Tocca il logo della Google I/O 2014 per entrare e usare l'applicazione.</string>
+
+    <string name="now_playing_badge"><![CDATA[<font color="#4d90fe"><small><b>Ora</b></small></font>]]></string>
+    <string name="live_available_badge"><![CDATA[<font color="#999999"><small><b>LIVE</b></small></font>]]></string>
+    <string name="live_now_badge"><![CDATA[<font color="#ff4444"><small><b>LIVE</b></small></font>]]></string>
+    <string name="session_finished">Finita</string>
+
+    <!-- Strings only used for accessibility -->
+    <string name="speaker_googleplus_profile">Profilo di Google+: <xliff:g id="speakername">%1$s</xliff:g></string>
+    <string name="close_detail_pane">Chiudi il pannello</string>
+    <string name="more_sessions">Altre sessioni</string>
+    <string name="more_announcements">Altri annunci</string>
+    <string name="plus_one_description_standard">Tocca per fare +1.</string>
+
+    <!-- Preferences -->
+    <string name="pref_local_times_title">Mostra orario locale</string>
+    <string name="pref_local_times_description">Se selezionato mostra l\'orario locale invece dell\'orario di San Francisco (il fuso orario della conferenza)</string>
+    <string name="pref_attendee_at_venue_title">Sarò alla Google I/O 2014!</string>
+    <string name="pref_attendee_at_venue_description">Se selezionato saranno mostrate tutte le sessioni e tutti gli eventi. Altrimenti verranno mostrate solo le sessioni trasmesse in streaming.</string>
+    <string name="wifi_install_error_message">Impossibile aggiornare la configurazione WiFi</string>
+
+    <!-- Feedback -->
+    <string name="session_feedback_submitlink">Invia commenti</string>
+    <string name="session_rating_label">Giudica questa sessione:</string>
+
+    <string name="session_feedback_relevance">
+        Quanto è stata efficace questa sessione per i tuoi progetti?
+    </string>
+
+    <string name="session_feedback_notgreat">Non tanto</string>
+    <string name="session_feedback_great">Grande!</string>
+
+    <string name="session_feedback_notrel">Irrilevante</string>
+    <string name="session_feedback_rel">Rilevante</string>
+
+    <string name="session_feedback_content">Il contenuto era:</string>
+    <string name="session_feedback_basic">Troppo di base</string>
+    <string name="session_feedback_advanced">Troppo avanzato</string>
+
+    <string name="session_feedback_speaker_quality">Doti dell\'oratore:</string>
+    <string name="session_feedback_poor">Poche</string>
+    <string name="session_feedback_outstanding">Ottime</string>
+    <string name="session_feedback_tell_us">Raccontaci di più!</string>
+    <string name="session_feedback_6months">
+        Userai la tecnologia di questa sessione nei prossimi 6 mesi?
+    </string>
+    <string name="session_feedback_probably">Probabilmente si</string>
+	<string name="session_feedback_probnot">Probabilmente no</string>
+    <string name="number_1">1</string>
+    <string name="number_2">2</string>
+    <string name="number_3">3</string>
+    <string name="number_4">4</string>
+    <string name="number_5">5</string>
+    <string name="session_feedback_other">Vuoi aggiungere qualcosa?</string>
+
+    <!-- More Misc -->
+    <string name="dashclock_extension_description">
+        Mostra i prossimi elementi del tuo calendario Google I/O 2014.
+    </string>
+</resources>
