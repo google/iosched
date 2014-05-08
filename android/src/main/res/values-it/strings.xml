@@ -14,7 +14,7 @@
   limitations under the License.
   -->
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
-	<string name="app_name">Google I/O 2014</string>
+	<string name="app_name">Google I/O 2013</string>
 
     <string name="description_search">Cerca</string>
     <string name="description_map">Mappa</string>
@@ -65,9 +65,9 @@
     <string name="all_tracks_sessions">Tutte le sessioni</string>
     <string name="all_tracks_office_hours">Tutti gli orari</string>
     <string name="all_tracks_sandbox">Tutte le compagnie</string>
-    <string name="all_tracks_subtitle_sessions">Tutte le sessioni del Google I/O 2014.</string>
-	<string name="all_tracks_subtitle_office_hours">Tutti gli orari del Google I/O 2014.</string>
-	<string name="all_tracks_subtitle_sandbox">Tutte le sandbox delle compagnie del Google I/O 2014.</string>
+    <string name="all_tracks_subtitle_sessions">Tutte le sessioni del Google I/O 2013.</string>
+	<string name="all_tracks_subtitle_office_hours">Tutti gli orari del Google I/O 2013.</string>
+	<string name="all_tracks_subtitle_sandbox">Tutte le sandbox delle compagnie del Google I/O 2013.</string>
     <string name="other_tracks">Altre tracce</string>
 
     <string name="empty_sessions">Nessuna sezione trovata.</string>
@@ -187,7 +187,7 @@
          a destinazione.</i>
     ]]></string>
     <string name="description_sign_in_main"><![CDATA[
-        Benvenuto/a al Google I/O, il tuo compagno ufficiale per la conferenza Google I/O 2014
+        Benvenuto/a al Google I/O, il tuo compagno ufficiale per la conferenza Google I/O 2013
         che si svolge a San Francisco dal 15 al 17 maggio 2013.<br>
         <br>
         Dobbiamo farti solo un paio di domande veloci. Premi il tasto &quot;Entra&quot; 
@@ -215,7 +215,7 @@
     <string name="about_eula">Accordo di licenza con l\'utente</string>
     <string name="about_licenses">Licenze Open Source</string>
     <string name="about_body"><![CDATA[
-        <b>Google I/O 2014</b><br>
+        <b>Google I/O 2013</b><br>
         Versione %s<br><br>
         <a href="http://m.google.com/utos">Termini del servizio</a><br><br>
         <a href="http://www.google.com/policies/privacy/">Privacy</a>
@@ -263,7 +263,7 @@
     <string name="stream_error">Non posso caricare lo stream di Google+.</string>
     <string name="stream_originally_shared">Condiviso originariamente da <xliff:g id="name">%s</xliff:g></string>
     <string name="empty_widget_text">Non ci sono più sessioni.\nCi vediamo l\'anno prossimo!</string>
-    <string name="empty_widget_text_signed_out">Tocca il logo della Google I/O 2014 per entrare e usare l\'applicazione.</string>
+    <string name="empty_widget_text_signed_out">Tocca il logo della Google I/O 2013 per entrare e usare l\'applicazione.</string>
 
     <string name="now_playing_badge"><![CDATA[<font color="#4d90fe"><small><b>Ora</b></small></font>]]></string>
     <string name="live_available_badge"><![CDATA[<font color="#999999"><small><b>LIVE</b></small></font>]]></string>
@@ -280,7 +280,7 @@
     <!-- Preferences -->
     <string name="pref_local_times_title">Mostra orario locale</string>
     <string name="pref_local_times_description">Se selezionato mostra l\'orario locale invece dell\'orario di San Francisco (il fuso orario della conferenza)</string>
-    <string name="pref_attendee_at_venue_title">Sarò alla Google I/O 2014!</string>
+    <string name="pref_attendee_at_venue_title">Sarò alla Google I/O 2013!</string>
     <string name="pref_attendee_at_venue_description">Se selezionato saranno mostrate tutte le sessioni e tutti gli eventi. Altrimenti verranno mostrate solo le sessioni trasmesse in streaming.</string>
     <string name="wifi_install_error_message">Impossibile aggiornare la configurazione WiFi</string>
 
@@ -320,6 +320,6 @@
 
     <!-- More Misc -->
     <string name="dashclock_extension_description">
-        Mostra i prossimi elementi del tuo calendario Google I/O 2014.
+        Mostra i prossimi elementi del tuo calendario Google I/O 2013.
     </string>
 </resources>
