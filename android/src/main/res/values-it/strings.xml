@@ -125,7 +125,7 @@
     	<item quantity="other"><xliff:g id="number_of_days">%1$s</xliff:g> giorni, <xliff:g id="remaining_time">%2$s</xliff:g>\nal Google I/O</item>
     </plurals>
     <string name="whats_on_thank_you_short">Grazie!</string>
-    <string name="whats_on_thank_you_title">Arrivederci all'anno prossimo!</string>
+    <string name="whats_on_thank_you_title">Arrivederci all\'anno prossimo!</string>
 	<string name="whats_on_thank_you_subtitle">Il Google I/O è finito.</string>
     <string name="news_will_appear_here">Qui troverai gli annunci</string>
 	<string name="welcome_to_google_i_o">Benvenuti al Google I/O!</string>
@@ -207,7 +207,7 @@
     </string-array>
     <string-array name="selection_setup_attendee">
         <item>Si, sarò a San Francisco.</item>
-        <item>No, Ivedrò l'evento da casa.</item>
+        <item>No, Ivedrò l\'evento da casa.</item>
     </string-array>
     <string name="empty_accounts">Nessun account Google disponibile. Aggiungine uno per continuare.</string>
     <string name="no_connection_cant_login">Non posso accedere. Verifica la tua connessione alla rete.</string>
@@ -263,7 +263,7 @@
     <string name="stream_error">Non posso caricare lo stream di Google+.</string>
     <string name="stream_originally_shared">Condiviso originariamente da <xliff:g id="name">%s</xliff:g></string>
     <string name="empty_widget_text">Non ci sono più sessioni.\nCi vediamo l\'anno prossimo!</string>
-    <string name="empty_widget_text_signed_out">Tocca il logo della Google I/O 2014 per entrare e usare l'applicazione.</string>
+    <string name="empty_widget_text_signed_out">Tocca il logo della Google I/O 2014 per entrare e usare l\'applicazione.</string>
 
     <string name="now_playing_badge"><![CDATA[<font color="#4d90fe"><small><b>Ora</b></small></font>]]></string>
     <string name="live_available_badge"><![CDATA[<font color="#999999"><small><b>LIVE</b></small></font>]]></string>
