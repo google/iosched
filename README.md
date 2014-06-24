@@ -6,6 +6,9 @@ This project is the Android app for the conference. The app supports devices
 running Android 2.3.3+, and is optimized for phones and tablets of all shapes
 and sizes.
 
+Currently, this reflects the source code of the app as of I/O 2013.
+We will update this repository with the source code for the I/O 2014 shortly.
+
 ![Screenshot](https://iosched.googlecode.com/git/art/hero.png)
 
 With the app, you can:
