@@ -9,6 +9,9 @@ and sizes.
 Currently, this reflects the source code of the app as of I/O 2013.
 We will update this repository with the source code for the I/O 2014 shortly.
 
+This repository is a replacement for the old repository located at
+code.google.com/p/iosched, which is now deprecated.
+
 ![Screenshot](https://iosched.googlecode.com/git/art/hero.png)
 
 With the app, you can:
@@ -30,3 +33,4 @@ With the app, you can:
 - Beam session details from your Android 4.0, NFC-enabled device to another
   using Android Beam
 - Scan attendee badges on your NFC-enabled device
+
