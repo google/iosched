@@ -33,4 +33,3 @@ With the app, you can:
 - Beam session details from your Android 4.0, NFC-enabled device to another
   using Android Beam
 - Scan attendee badges on your NFC-enabled device
-
