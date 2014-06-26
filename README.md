@@ -1,18 +1,30 @@
+Google I/O Android App
+======================
+
 Google I/O is a developer conference held each year with two days of deep
 technical content featuring technical sessions and hundreds of demonstrations
 from developers showcasing their technologies.
 
 This project is the Android app for the conference. The app supports devices
-running Android 2.3.3+, and is optimized for phones and tablets of all shapes
-and sizes.
+running Android 4.0+, and is optimized for phones and tablets of all shapes
+and sizes. It also contains an Android Wear integration.
 
-Currently, this reflects the source code of the app as of I/O 2013.
-We will update this repository with the source code for the I/O 2014 shortly.
+<h2>Android L Developer Preview</h2>
 
-This repository is a replacement for the old repository located at
-code.google.com/p/iosched, which is now deprecated.
+![Screenshot](art/hero.png)
 
-![Screenshot](https://iosched.googlecode.com/git/art/hero.png)
+We're updating the I/O app with [material design](http://www.google.com/design/spec) and the [Android L Developer Preview](http://developer.android.com/preview/index.html)! Source code for the updated I/O app is coming soon but you can get a sneak peek of the new tactile surfaces, animated touch feedback, bold use of color, and refreshed iconography by checking out this [teaser video](https://www.youtube.com/watch?v=mCgteBXYxQc) or downloading the preview APK below.
+
+<a href="../../raw/master/binaries/iosched-lpreview.apk"><b>Download the I/O app APK for Android L Preview</b></a>
+
+To run this APK, you will need a device/emulator set up with the Android L Preview system image. For
+more information, please refer to the [Android L Developer Preview page](http://developer.android.com/preview/index.html).
+
+<h2>Source</h2>
+
+**Note:** The source code in this repository still reflects the app as of I/O 2013. We will updated it to the I/O 2014 code shortly.
+
+<h2>Features</h2>
 
 With the app, you can:
 
@@ -21,15 +33,31 @@ With the app, you can:
 - View detailed session, code lab, office hours, and speaker information,
   including speaker bios, photos, and Google+ profiles
 - +1 sessions right from the app
-- Participate in public #io13 conversations on Google+
+- Participate in public #io14 conversations on Google+
 - Guide yourself using the vector-based conference map
 - Get a reminder a few minutes before sessions in your schedule are due to
   start
 - View information about companies in the Developer Sandbox
-- Keep up with announcements from the I/O team during the conference
-- View your schedule on your Android 3.0+ device's home and lock screens using
-  widget
-- Play "I/O Live" session video streams on your Android 3.0+ devices
-- Beam session details from your Android 4.0, NFC-enabled device to another
-  using Android Beam
+- Play "I/O Live" session video streams
+- Beam session details from your NFC-enabled device to another using Android Beam
 - Scan attendee badges on your NFC-enabled device
+- See a list of people whose badges you have scanned, and take notes about your meeting with them
+- Send feedback on sessions, from your phone/tablet, or from your Android Wear device
+
+Please refer to BUILDING.TXT for details about how to build and run the source.
+
+<h2>Copyright</h2>
+
+    Copyright 2014 Google Inc. All rights reserved.
+
+    Licensed under the Apache License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
+
+        http://www.apache.org/licenses/LICENSE-2.0
+
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
