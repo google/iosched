@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?><resources>
+<!--
+   Copyright 2014 Google Inc. All rights reserved.
+
+   Licensed under the Apache License, Version 2.0 (the "License");
+   you may not use this file except in compliance with the License.
+   You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+   Unless required by applicable law or agreed to in writing, software
+   distributed under the License is distributed on an "AS IS" BASIS,
+   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+   See the License for the specific language governing permissions and
+   limitations under the License.
+-->
+
+    <!-- Question on survey form asking the user to give their overall opinion on the session. -->
+    <string name="q0">Valuta questa sessione in generale:</string>
+
+    <!-- Possible ratings for a session, from 1 Star being the worst to 5 stars being best -->
+    <string-array name="q0_options">
+    <item>1 stella!</item>
+    <item>2 stelle</item>
+    <item>3 stelle</item>
+    <item>4 stelle</item>
+    <item>5 stelle</item>
+  </string-array>
+
+    <!-- Question on survey form asking the user to rate how relevant (to one's projects/goals/priorities) the session was. -->
+    <string name="q1">Quanto era pertinente questa sessione?</string>
+    
+    <!-- Possible answers to the survey question about how relevant the session was to one's projects. -->
+    <string-array name="q1_options">
+    <item>Per niente</item>
+    <item>Poco</item>
+    <item>Moderatamente</item>
+    <item>Molto</item>
+    <item>Estremamente</item>
+  </string-array>
+
+    <!-- Question on survey form asking the user to rate how basic/advanced the content of the session was (from Too Basic to Too Advanced). -->
+    <string name="q2">Il contenuto era:</string>
+
+    <!-- Possible answers to the survey question about how basic/advanced the content of a session was. -->
+    <string-array name="q2_options">
+    <item>Troppo elementare</item>
+    <item>Elementare</item>
+    <item>Focalizzato</item>
+    <item>Avanzato</item>
+    <item>Troppo avanzato</item>
+  </string-array>
+
+    <!-- Question on survey form asking the user to rate the quality of the session speaker (from Poor to Excellent). -->
+    <string name="q3">Qualità dell\'oratore:</string>
+
+    <!-- Button text on a button to submit the survey form. -->
+    <string name="submit">Invia</string>
+    
+    <!-- Message that appears after the user has submitted the survey form. -->
+    <string name="thanks">Grazie!</string>
+
+    <!-- Notification that appears to ask the user to rate a particular session that they have attended. -->
+    <string name="rate_this_session">Valuta questa sessione</string>
+    
+    <!-- Possible answers to the survey question about how good the speaker of a session was. -->
+    <string-array name="q3_options">
+    <item>Scadente</item>
+    <item>Modesta</item>
+    <item>Media</item>
+    <item>Buona</item>
+    <item>Eccellente</item>
+  </string-array>
+</resources>

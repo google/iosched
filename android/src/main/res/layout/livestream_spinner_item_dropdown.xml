@@ -1,0 +1,33 @@
+<!--
+  Copyright 2014 Google Inc. All rights reserved.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+       http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+  -->
+
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/livestream_dropdown_item_height"
+    android:paddingLeft="@dimen/content_padding_normal"
+    android:paddingRight="@dimen/content_padding_normal">
+
+    <TextView
+        android:id="@android:id/text1"
+        android:layout_height="match_parent"
+        android:layout_width="match_parent"
+        android:gravity="center_vertical|start"
+        android:textSize="@dimen/livestream_dropdown_text_size"
+        android:ellipsize="end"
+        android:singleLine="true"
+        android:textColor="@color/list_dropdown_foreground_color" />
+
+</FrameLayout>

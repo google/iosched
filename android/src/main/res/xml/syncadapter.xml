@@ -1,5 +1,5 @@
 <!--
-  Copyright 2012 Google Inc.
+  Copyright 2014 Google Inc. All rights reserved.
 
   Licensed under the Apache License, Version 2.0 (the "License");
   you may not use this file except in compliance with the License.
@@ -16,7 +16,7 @@
 
 <!-- The attributes in this XML file provide configuration information for the SyncAdapter. -->
 <sync-adapter xmlns:android="http://schemas.android.com/apk/res/android"
-    android:contentAuthority="com.google.android.apps.iosched"
+    android:contentAuthority="com.google.samples.apps.iosched"
     android:accountType="com.google"
     android:supportsUploading="false"
     android:userVisible="true" />

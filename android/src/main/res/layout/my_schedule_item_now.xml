@@ -1,0 +1,113 @@
+<!--
+  Copyright 2014 Google Inc. All rights reserved.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+       http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+  -->
+
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/box"
+    android:paddingBottom="8dp"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <!-- Background photo -->
+    <com.google.samples.apps.iosched.ui.widget.BezelImageView
+        android:id="@+id/background_image"
+        android:layout_height="match_parent"
+        android:layout_width="match_parent"
+        android:scaleType="centerCrop" />
+
+    <!-- Session photo -->
+    <com.google.samples.apps.iosched.ui.widget.BezelImageView
+        android:id="@+id/session_image"
+        android:layout_height="match_parent"
+        android:layout_width="match_parent"
+        android:scaleType="centerCrop" />
+
+    <!-- "LIVE NOW" indicator -->
+    <include layout="@layout/include_live_now_badge"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|start" />
+
+    <LinearLayout
+        android:paddingLeft="@dimen/keyline_1"
+        android:paddingRight="@dimen/keyline_1"
+        android:orientation="horizontal"
+        android:layout_height="@dimen/my_schedule_item_height"
+        android:layout_width="match_parent">
+
+        <!-- Start and end times -->
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="@dimen/my_schedule_time_column_width"
+            android:layout_height="match_parent">
+
+            <TextView
+                android:id="@+id/start_time"
+                android:layout_width="wrap_content"
+                android:layout_height="36dp"
+                android:gravity="bottom"
+                android:textSize="@dimen/text_size_large"
+                android:textColor="@color/body_text_1_inverse"
+                android:text="@string/placeholder_session_start_time" />
+
+            <TextView
+                android:id="@+id/end_time"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="@dimen/text_size_small"
+                android:textColor="@color/body_text_1_inverse"
+                android:text="@string/placeholder_session_end_time" />
+
+            <TextView
+                android:id="@+id/conflict_warning"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="@dimen/text_size_small"
+                android:textColor="@color/my_schedule_conflict"
+                android:text="@string/schedule_conflict_with_previous"
+                android:visibility="invisible" />
+        </LinearLayout>
+
+        <!-- Block/slot chip contents -->
+        <LinearLayout
+            android:id="@+id/slot_chip_content"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:paddingLeft="16dp"
+            android:paddingRight="8dp">
+
+            <TextView
+                android:id="@+id/slot_title"
+                android:layout_width="wrap_content"
+                android:layout_height="36dp"
+                android:gravity="bottom"
+                android:text="@string/placeholder_session_title"
+                android:textSize="@dimen/text_size_large"
+                android:ellipsize="end"
+                android:maxLines="1" />
+
+            <TextView
+                android:id="@+id/slot_subtitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/placeholder_session_subtitle"
+                android:textSize="@dimen/text_size_small"
+                />
+        </LinearLayout>
+
+    </LinearLayout>
+</FrameLayout>

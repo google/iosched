@@ -1,5 +1,5 @@
 <!--
-  Copyright 2012 Google Inc.
+  Copyright 2014 Google Inc. All rights reserved.
 
   Licensed under the Apache License, Version 2.0 (the "License");
   you may not use this file except in compliance with the License.
@@ -14,312 +14,822 @@
   limitations under the License.
   -->
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
-    <string name="app_name">Google I/O 2013</string>
-
-    <string name="description_search">Search</string>
-    <string name="description_map">Map</string>
-    <string name="description_refresh">Refresh</string>
-    <string name="description_share">Share</string>
-    <string name="description_add_schedule">Add to schedule</string>
-    <string name="description_remove_schedule">Remove from schedule</string>
-    <string name="description_social_stream">View Google+ stream</string>
-    <string name="description_compose">New post</string>
-    <string name="description_add_account">Add account</string>
-    <string name="description_about">About</string>
-    <string name="description_configure_wifi">Configure Wi-Fi</string>
-    <string name="description_settings">Settings</string>
-    <string name="description_sign_out">Sign out</string>
-    <string name="description_captions">Captions</string>
-    <string name="description_presentation">Toggle Screen Output</string>
-
-    <string name="title_sessions">Sessions</string>
-    <string name="title_session_detail">Session Information</string>
-    <string name="title_session_feedback">Session Feedback</string>
-    <string name="title_tracks">Tracks</string>
-    <string name="title_office_hours">Office Hours</string>
-    <string name="title_sandbox">Sandbox</string>
-    <string name="title_sandbox_detail">Company Information</string>
-    <string name="title_map">Map</string>
-    <string name="title_tagstream">Google+ Posts</string>
-    <string name="title_announcements">Announcements</string>
-    <string name="title_about">About</string>
-    <string name="title_settings">Settings</string>
-
-    <string name="title_share">Share using</string>
-
-    <string name="title_search">Search</string>
-    <string name="title_search_query">Search for \"&lt;b&gt;<xliff:g id="query">%1$s</xliff:g>&lt;b&gt;\"</string>
-
-    <string name="title_my_schedule">Schedule</string>
-    <string name="title_explore">Explore</string>
-    <string name="title_stream">Stream</string>
-
-    <plurals name="title_selected_sessions">
-        <item quantity="one">1 session</item>
-        <item quantity="other"><xliff:g id="num_sessions">%1$d</xliff:g> sessions</item>
+    <!-- Shown in the schedule to indicate how many sessions are available on that particular time slot. -->
+    <plurals name="schedule_block_subtitle">
+        <item quantity="one"><xliff:g id="number_of_sessions">%1$d</xliff:g> available session</item>
+        <item quantity="other"><xliff:g id="number_of_sessions">%1$d</xliff:g> available sessions</item>
     </plurals>
 
-    <string name="session_subtitle"><xliff:g id="time">%1$s</xliff:g> in <xliff:g id="room">%2$s</xliff:g></string>
-
-    <string name="all_tracks">All tracks</string>
-    <string name="all_tracks_sessions">All sessions</string>
-    <string name="all_tracks_office_hours">All office hours</string>
-    <string name="all_tracks_sandbox">All companies</string>
-    <string name="all_tracks_subtitle_sessions">All sessions at Google I/O 2013.</string>
-    <string name="all_tracks_subtitle_office_hours">All office hours at Google I/O 2013.</string>
-    <string name="all_tracks_subtitle_sandbox">All developer sandbox companies at Google I/O 2013.</string>
-    <string name="other_tracks">Other tracks</string>
-
-    <string name="empty_sessions">No sessions found.</string>
-    <string name="empty_live_streamed_sessions">No live streamed sessions found.</string>
-    <string name="empty_session_detail">No session details found.</string>
-    <string name="empty_sandbox">No developer sandbox companies found.</string>
-    <string name="empty_social_stream">No posts found.</string>
-    <string name="empty_announcements">Announcements will appear here.</string>
-    <string name="empty_waiting_for_sync">Waiting for sync&#8230;</string>
-    <string name="empty_captions">No captions found for this session.</string>
-
-    <string name="unknown_room">(Unspecified Room)</string>
-    <string name="codelab_room">Code Labs (Level 2)</string>
-    <string name="keynote_room">Level 3</string>
-
-    <string name="session_links">More</string>
-    <string name="session_requirements">Requirements</string>
-    <string name="session_speakers">Speakers</string>
-
-    <string name="session_link_main">Web link</string>
-    <string name="session_link_youtube">YouTube video</string>
-    <string name="session_link_moderator">Moderator</string>
-    <string name="session_link_pdf">Slides (PDF)</string>
-    <string name="session_link_notes">Official notes</string>
-    <string name="session_link_livestream">Watch on I/O Live</string>
-
-    <string name="session_livestream_title">I/O Live</string>
-    <string name="session_livestream_track_title">%s Track</string>
-    <string name="session_livestream_info">Info</string>
-    <string name="session_livestream_captions">Captions</string>
-    <string name="session_livestream_error_init">Sorry, there was an error initializing the YouTube Player (%1$s)</string>
-    <string name="session_livestream_error_playback">Sorry, there was an error loading the live stream, please try again later</string>
-    <string name="session_livestream_keynote_title">Google I/O - %s</string>
-    <string name="session_livestream_keynote_desc">Google I/O\'s much-anticipated kickoff event will make you among the first developers to see what we\'ve been working on here at Google. Grab some popcorn, kick back and enjoy the show directly from your Android powered device.</string>
-    <string name="session_livestream_play_pause">Play / Pause</string>
-
-    <string name="codelab_title_template">Code Lab: <xliff:g id="title">%1$s</xliff:g></string>
-
-    <string name="search_label">Google I/O Sessions</string>
-    <string name="search_hint">Search sessions</string>
-
-    <string name="share_template">Checking out \'<xliff:g id="title">%1$s</xliff:g>\' at <xliff:g id="hashtags">%2$s</xliff:g> <xliff:g id="url">%3$s</xliff:g></string>
-    <string name="share_livestream_template">Watching I/O Live: \'<xliff:g id="title">%1$s</xliff:g>\' at <xliff:g id="hashtags">%2$s</xliff:g> <xliff:g id="url">%3$s</xliff:g></string>
-
-    <string name="add_to_schedule">Add to schedule</string>
-    <string name="remove_from_schedule">In schedule</string>
-
-    <string name="add_to_schedule_desc">Add to schedule</string>
-    <string name="remove_from_schedule_desc">Remove from schedule</string>
-
-    <!-- Announcements -->
-    <string name="whats_on_countdown_title_0"><xliff:g id="remaining_time">%1$s</xliff:g>\nuntil Google I/O</string>
-    <plurals name="whats_on_countdown_title">
-        <item quantity="one"><xliff:g id="number_of_days">%1$s</xliff:g> day, <xliff:g id="remaining_time">%2$s</xliff:g>\nuntil Google I/O</item>
-        <item quantity="other"><xliff:g id="number_of_days">%1$s</xliff:g> days, <xliff:g id="remaining_time">%2$s</xliff:g>\nuntil Google I/O</item>
-    </plurals>
-    <string name="whats_on_thank_you_short">Thanks!</string>
-    <string name="whats_on_thank_you_title">See you next year!</string>
-    <string name="whats_on_thank_you_subtitle">Google I/O 2013 has ended.</string>
-    <string name="news_will_appear_here">Announcements will appear here</string>
-    <string name="welcome_to_google_i_o">Welcome to Google I/O!</string>
-
-    <string name="permission_write">Modify Google I/O schedule data</string>
-
-    <plurals name="toast_added_to_schedule">
-        <item quantity="one">Session added to your schedule</item>
-        <item quantity="other"><xliff:g id="number_of_sessions">%1$s</xliff:g> sessions added to your schedule</item>
-    </plurals>
-    <plurals name="toast_removed_from_schedule">
-        <item quantity="one">Session removed from your schedule</item>
-        <item quantity="other"><xliff:g id="number_of_sessions">%1$s</xliff:g> sessions removed from your schedule</item>
+    <!-- Shows as a notification on the system bar to alert user that some of their sessions are about to begin. -->
+    <plurals name="session_notification_text">
+        <item quantity="one">and 1 other starting in <xliff:g id="remaining_time">%1$d</xliff:g> min.</item>
+        <item quantity="other">and <xliff:g id="num_sessions">%2$d</xliff:g> others starting in <xliff:g id="remaining_time">%1$d</xliff:g> min.</item>
     </plurals>
 
-    <!-- Schedule -->
-    <string name="schedule_empty_slot_title_template">Browse<xliff:g id="block_type">%1$s</xliff:g>&#8230;</string>
-    <string name="schedule_empty_slot_subtitle">Empty slot</string>
-    <string name="schedule_conflict_title"><xliff:g id="num_sessions">%1$s</xliff:g> chosen sessions</string>
-    <string name="schedule_conflict_subtitle">Conflict in slot</string>
-    <string name="schedule_block_title_sessions">Sessions</string>
-    <string name="schedule_block_title_code_labs">Code Labs</string>
-    <string name="schedule_block_title_office_hours">Office Hours</string>
-    <string name="schedule_block_title_keynote">Keynote</string>
-    <string name="schedule_block_title_sandbox">Sandbox</string>
-
-    <!-- Map -->
-    <string name="map_floorcontrol_1">1</string>
-    <string name="map_floorcontrol_2">2</string>
-    <string name="map_floorcontrol_3">3</string>
-    <string name="map_touch_to_see_session">Touch to see sessions</string>
-    <string name="map_at">At %1$s:<![CDATA[<br><b>%2$s</b>]]></string>
-    <string name="map_now_playing">Now playing:<![CDATA[<br><b>%1$s</b>]]></string>
-    <string name="map_touch_to_see_sandbox">Touch to see sandbox partners</string>
-    <string name="map_now_sandbox">Now in the sandbox:<![CDATA[<br><b>%1$s</b>]]></string>
-    <string name="map_infowindow_text_empty">-</string>
-
-    <!-- EULA, login, and about -->
-    <string name="description_choose_account"><![CDATA[
-        <font color="#4d90fe"><b>Choose an account below. If you registered to attend Google I/O,
-        make sure to use the same account.</b></font>
-    ]]></string>
-    <string name="description_setup_attendee_mode_header"><![CDATA[
-        <font color="#4d90fe"><b>Are you attending Google I/O in person this year?</b></font>
-        <br><br>
-    ]]></string>
-    <string name="description_setup_attendee_mode_body"><![CDATA[
-        If not, we\'ll only show live-streamed sessions. You can always change this in Settings.
-    ]]></string>
-    <string name="description_setup_wifi_header"><![CDATA[
-        <font color="#4d90fe"><b>Configure Wi-Fi access on this device?</b></font>
-        <br><br>
-    ]]></string>
-    <string name="description_setup_wifi_body"><![CDATA[
-        Since you\'re attending in person, we can set up this device to access the conference Wi-Fi network.
-        By configuring your Wi-Fi now, you\'ll help prevent network congestion.<br>
-        <br>
-        <i>Note: If your device only supports 2.4 GHz networks, you\'ll need to manually connect upon
-        arrival.</i>
-    ]]></string>
-    <string name="description_sign_in_main"><![CDATA[
-        Welcome to the Google I/O 2013 app, your official companion to the Google I/O conference
-        taking place in San Francisco from May 15th to May 17th, 2013.<br>
-        <br>
-        We just need to ask you a couple of quick questions. Press the &quot;Sign-in&quot; button
-        to get started.
-    ]]></string>
-    <string name="calltoaction_wifi_configure"><![CDATA[
-        <br><br>Tap \'Add Wi-Fi Network\' to proceed.
-    ]]></string>
-    <string name="calltoaction_wifi_settings"><![CDATA[
-        <br><br>Tap \'Open Wi-Fi Settings\' to enable Wi-Fi.
-    ]]></string>
-    <string name="wifi_dialog_button_configure">Add Wi-Fi Network</string>
-    <string name="wifi_dialog_button_settings">Open Wi-Fi Settings</string>
-    <string-array name="selection_setup_wifi">
-        <item>Yes, add the conference Wi-Fi network now.</item>
-        <item>No thanks, I\'ll connect on my own.</item>
-    </string-array>
-    <string-array name="selection_setup_attendee">
-        <item>Yes, I\'ll be attending from San Francisco.</item>
-        <item>No, I\'ll be viewing from home or attending a Google I/O Extended event.</item>
-    </string-array>
-    <string name="empty_accounts">No Google accounts are available. Add an account to continue.</string>
-    <string name="no_connection_cant_login">Can\'t sign in. Check your network connection.</string>
-    <string name="taking_a_while">This is taking a while&#8230;</string>
-    <string name="about_eula">End User License Agreement</string>
-    <string name="about_licenses">Open Source Licenses</string>
-    <string name="about_body"><![CDATA[
-        <b>Google I/O 2013</b><br>
-        Version %s<br><br>
-        <a href="http://m.google.com/utos">Terms of Service</a><br><br>
-        <a href="http://www.google.com/policies/privacy/">Privacy Policy</a>
-    ]]></string>
-
-    <!--suppress AndroidLintTypographyOther -->
-    <string name="eula_text"><![CDATA[
-        By downloading, installing or using this application or any portion thereof
-        (\"Application\"), you agree to these terms and conditions.<br>
-        <br>
-        Your use of this Application is governed by: (a) the Google Terms of Service
-        (<a href="http://m.google.com/utos">m.google.com/utos</a>); (b) Google\'s Privacy Policy
-        (<a href="http://www.google.com/policies/privacy">http://www.google.com/policies/privacy</a>);
-        and (c) any applicable Google Service-specific terms of service or privacy policies.
-        Google\'s terms of service and privacy policies may be updated from time to time and without
-        notice.<br>
-        <br>
-        This Application collects certain information as you use it, including via Google Analytics.
-        Google\'s Privacy Policy explains how Google treats your information and protects your
-        privacy when you use the Application.  You agree to the use of your data in accordance
-        with Google\'s privacy policy.
-    ]]></string>
-
-    <!-- Session notification -->
+    <!-- Shown as a notification on the system bar to alert user that some of their sessions are about to begin. -->
     <plurals name="session_notification_ticker">
         <item quantity="one">1 session is about to start.</item>
         <item quantity="other">%d sessions are about to start.</item>
     </plurals>
 
-    <string name="session_notification_text_1">starting in <xliff:g id="remaining_time">%1$d</xliff:g> min.</string>
-    <plurals name="session_notification_text">
-        <item quantity="one">and 1 other starting in <xliff:g id="remaining_time">%1$d</xliff:g> min.</item>
-        <item quantity="other">and <xliff:g id="num_sessions">%2$d</xliff:g> others starting in <xliff:g id="remaining_time">%1$d</xliff:g> min.</item>
-    </plurals>
+    <!-- Title for the notification that alerts the user that some of their sessions are about to begin. -->
     <plurals name="session_notification_title">
         <item quantity="one">1 session is starting in <xliff:g id="remaining_time">%1$d</xliff:g> min.</item>
         <item quantity="other"><xliff:g id="num_sessions">%2$d</xliff:g> sessions are starting in <xliff:g id="remaining_time">%1$d</xliff:g> min.</item>
     </plurals>
-    <string name="snooze_x_min">Snooze <xliff:g id="remaining_time">%1$d</xliff:g> min.</string>
 
-    <!-- Others -->
-    <string name="ok">OK</string>
-    <string name="loading">Loading&#8230;</string>
-    <string name="retry">Retry</string>
-    <string name="stream_error">Couldn\'t load the Google+ stream.</string>
-    <string name="stream_originally_shared">Originally shared by <xliff:g id="name">%s</xliff:g></string>
-    <string name="empty_widget_text">No more upcoming sessions.\nSee you next year!</string>
-    <string name="empty_widget_text_signed_out">Touch the Google I/O 2013 logo above to sign in and begin using the app.</string>
+    <!-- Shown in the 'About' window of the app. -->
+    <string name="about_body"><![CDATA[
+        <b>Google I/O 2014</b><br>
+        Version %s<br><br>
+        <a href="http://m.google.com/utos">Terms of Service</a><br><br>
+        <a href="http://www.google.com/policies/privacy/">Privacy Policy</a>
+    ]]></string>
 
-    <string name="now_playing_badge"><![CDATA[<font color="#4d90fe"><small><b>NOW</b></small></font>]]></string>
-    <string name="live_available_badge"><![CDATA[<font color="#999999"><small><b>LIVE</b></small></font>]]></string>
-    <string name="live_now_badge"><![CDATA[<font color="#ff4444"><small><b>LIVE</b></small></font>]]></string>
-    <string name="session_finished">Ended</string>
+    <!-- Shown as a link in the About screen of the app; user can click to see the EULA. -->
+    <string name="about_eula">End User License Agreement</string>
 
-    <!-- Strings only used for accessibility -->
-    <string name="speaker_googleplus_profile">Google+ profile: <xliff:g id="speakername">%1$s</xliff:g></string>
+    <!-- Shown as a link in the About screen of the app; user can click it to see the licenses. -->
+    <string name="about_licenses">Open Source Licenses</string>
+
+    <!-- Label on a button that the user clicks to accept a license agreement. -->
+    <string name="accept">Accept</string>
+
+    <!-- Label on a button that, when clicked, allows user to add an account to the device. -->
+    <string name="add_account">Add Account</string>
+
+    <!-- Label on a button that, when clicked, adds the currently displayed session to their schedule. -->
+    <string name="add_to_schedule">Add to schedule</string>
+
+    <!-- Accessibility description for a button that, when clicked, adds the currently
+    displayed session to the user's schedule. -->
+    <string name="add_to_schedule_desc">Button to add session to your schedule</string>
+
+    <!-- Shown in a drop-down list on the main screen, indicating that all conference sessions
+    are being displayed. -->
+    <string name="all_sessions">All Sessions</string>
+
+    <!-- Shown in a drop-down list on the main screen, indicating that all conference themes
+    are being displayed. Themes are major categories for sessions (the themes are Design,
+    Develop and Distribute). -->
+    <string name="all_themes">All Themes</string>
+
+    <!-- Shown in a drop-down list on the main screen, indicating that all conference topics
+    are being displayed. Topics are major categories for sessions (example topics are: Android,
+    Chrome, Google APIs, Wearables, etc). -->
+    <string name="all_topics">All Topics</string>
+
+    <!-- Shown in a drop-down list on the main screen, indicating that all session types
+    are being displayed. Some examples of session types are: session, office hours, code lab. -->
+    <string name="all_types">All Types</string>
+
+    <!-- Shown in a drop-down list on the Video Library screen, indicating that videos from all
+    I/O years are being displayed. -->
+    <string name="all_years">All Years</string>
+
+    <!-- Name of the application, shown in the application's title bar. -->
+    <string name="app_name">Google I/O 2014</string>
+
+    <!-- Label on a button that is one possible answer to the question "Are you attending the
+    conference in person in San Francisco or remotely via livestream?" -->
+    <string name="attending_in_person">In Person</string>
+
+    <!-- Label on a button that is one possible answer to the question "Are you attending the
+    conference in person in San Francisco or remotely via livestream?" -->
+    <string name="attending_remotely">Remotely</string>
+
+    <!-- Label on a button that allows the user to browse Google I/O Extended events that they
+    might be interested in attending. -->
+    <string name="browse_events">Browse events</string>
+
+    <!-- Label on a button that allows the user to see what conference sessions are available
+    at a particular time. -->
+    <string name="browse_sessions">Browse sessions...</string>
+
+    <!-- Shown on Configure WiFi dialog, instructing user on what button to click. -->
+    <string name="calltoaction_wifi_configure"><![CDATA[
+        <br><br>Tap \'Add Wi-Fi Network\' to proceed.
+    ]]></string>
+
+    <!-- Shown on Configure WiFi dialog, instructing user on what button to click. -->
+    <string name="calltoaction_wifi_settings"><![CDATA[
+        <br><br>Tap \'Open Wi-Fi Settings\' to enable Wi-Fi.
+    ]]></string>
+
+    <!-- Accessibility description for a button that allows the user to close a session details pane. -->
     <string name="close_detail_pane">Close detail pane</string>
-    <string name="more_sessions">More sessions</string>
-    <string name="more_announcements">More announcements</string>
+
+    <!-- Label on a button that allows the user to cancel an operation before it starts. For
+    example, this may be a button on a dialog that says "This will delete your data." -->
+    <string name="cancel">Cancel</string>
+
+    <!-- Text on a warning box that appears to warn the user they are viewing data that hasn't
+    been updated by the server recently, so it might be out of date.-->
+    <string name="data_stale_warning">The data you are viewing may be out of date.</string>
+
+    <!-- Shown as the title of the user's schedule for today -->
+    <string name="day_title_today">Today</string>
+
+    <!-- Shown as the title of the user's schedule for tomorrow -->
+    <string name="day_title_tomorrow">Tomorrow</string>
+
+    <!-- Shown as the title of the user's schedule for yesterday -->
+    <string name="day_title_yesterday">Yesterday</string>
+
+    <!-- Label on a button that the user clicks to decline something (for example, a license
+    agreement). -->
+    <string name="decline">Decline</string>
+
+    <!-- Menu item that brings up the application's About screen -->
+    <string name="description_about">About</string>
+
+    <!-- Menu item that allows user to add a session to their schedule -->
+    <string name="description_add_schedule">Add to schedule</string>
+
+    <!-- Menu item that allows the user to send feedback about the application to Google. This
+    says 'App Feedback' to clarify that it's feedback about the application, and not about a
+    session. -->
+    <string name="description_app_feedback">App Feedback</string>
+
+    <!-- Menu item that allows the user to send feedback about the application to Google -->
+    <string name="description_app_feedback_old">Feedback</string>
+
+    <!-- Menu item that, when clicked, shows the captions on a video. -->
+    <string name="description_captions">Captions</string>
+
+    <!-- Menu item that allows user to configure the conference WiFi on their device. -->
+    <string name="description_configure_wifi">Configure Wi-Fi</string>
+
+    <string name="description_debug" translatable="false">Debug and tests</string>
+
+    <!-- Menu item that takes the user to a page that shows a list of Google I/O Extended events. -->
+    <string name="description_i_o_extended">I/O Extended</string>
+
+    <!-- Menu item that takes the user to the conference venue map screen -->
+    <string name="description_map">Map</string>
+
+    <!-- Menu item that allows user to turn on or turn off the output of a video to a
+    second screen. -->
+    <string name="description_presentation">Toggle Screen Output</string>
+
+    <!-- Menu item that allows user to reload the data in the current screen so they see
+    the most up-to-date version from the server. -->
+    <string name="description_refresh">Refresh</string>
+
+    <!-- Menu item that allows the user to remove the currently session from their schedule. -->
+    <string name="description_remove_schedule">Remove from schedule</string>
+
+    <!-- Menu item that allows the user to start a search for a session by name. After clicking,
+    they type in their search query. -->
+    <string name="description_search">Search</string>
+
+    <!-- Menu item that takes the user to the application's Settings screen -->
+    <string name="description_settings">Settings</string>
+
+    <!-- Explanation of wifi setup that appears in the WiFi setup dialog box. -->
+    <string name="description_setup_wifi_body"><![CDATA[
+        Since you\'re attending in person, we can set up this device to access the conference Wi-Fi network (5Ghz only).
+        By configuring your Wi-Fi now, you\'ll help prevent network congestion.
+    ]]></string>
+
+    <!-- Menu item that allows user to share the currently displayed session. Sharing can be done
+    by email, social networks, etc. -->
+    <string name="description_share">Share</string>
+
+    <!-- Menu item that allows the user to view the Google+ stream about a particular topic. This
+    appears as a menu item on a Sesssion screen, and opens the Google+ app to show the Google+
+    posts about that session's topic. -->
+    <string name="description_social_stream">View Google+ stream</string>
+
+    <!-- Accessibility description saying that the app's navigation drawer has been closed -->
+    <string name="drawer_close">Close navigation drawer</string>
+
+    <!-- Accessibility description saying that the app's navigation drawer has been opened -->
+    <string name="drawer_open">Open navigation drawer</string>
+
+    <!-- Shown when trying to watch a video of a session, alerting user that no captions are
+    available for that video. -->
+    <string name="empty_captions">No captions found for this session.</string>
+
+    <!-- Shown on the Session page, alerting user that no details could be found for that session. -->
+    <string name="empty_session_detail">No session details found.</string>
+
+    <!-- Shown on the session search page, alerting user that no conference sessions could be found. -->
+    <string name="empty_sessions">No sessions found.</string>
+
+    <!-- Shown on several screens alerting user that no data is being shown because a background
+    data synchronization is still in progress. Data will show as soon as the sync ends. -->
+    <string name="empty_waiting_for_sync">Waiting for sync&#8230;</string>
+
+    <!-- Shown on a widget that normally displays upcoming sessions. This is shown after the
+    conference, when there are no more sessions to show. -->
+    <string name="empty_widget_text">No more upcoming sessions.\nSee you next year!</string>
+
+    <!-- Shown on a widget instructing user how to start using the widget. -->
+    <string name="empty_widget_text_signed_out">Touch the Google I/O 2014 logo above to sign in and begin using the app.</string>
+
+    <!-- Shown as a header on a list of sessions to indicate that the sessions that appear on that
+    group have already ended. -->
+    <string name="ended_sessions">Ended sessions</string>
+
+    <!-- Text on a drop-down list that allows the user to view Google Developer Experts from all cities (this is a filter). -->
+    <string name="experts_directory_all_cities">All cities</string>
+
+    <!-- Text on a drop-down list that allows the user to view Google Developer Experts from all countries (this is a filter). -->
+    <string name="experts_directory_all_countries">All countries</string>
+
+    <!-- Text that appears next to a person's name to indicate that they are attending Google I/O in person. Alternate translations might be: "present in person", "present at the event", "present onsite", etc. -->
+    <string name="experts_directory_attending">attending I/O</string>
+
+    <!-- Description of the Google Developer Expert program that appears in the Google Developer Expert directory screen, giving an introduction about what the term means. -->
+    <string name="experts_directory_header_body">The Google Developer Experts (GDE) title recognizes the outstanding developers who exhibit great expertise in one or more Google technologies and share it with the developer community. GDEs are gurus, mentors and evangelists; they create tutorials, code samples, and write books and blogs; they publish videos, drive community projects, and present at events large and small. These independent developers bring their real-world experience and knowledge working with Google technologies to developer communities worldwide.</string>
+
+    <!-- Text on a button that dismisses the explanation about Google Developer Experts. -->
+    <string name="experts_directory_header_dismiss">Got it</string>
+
+    <!-- Title of the screen that gives an explanation about who are the Google Developer Experts. Alternate translations might be: "About the Google Developers Experts", or even just "Google Developer Experts" if nothing else sounds natural. -->
+    <string name="experts_directory_header_title">Who are the Google Developers Experts?</string>
+
+    <!-- Message that appears as feedback when the user has indicated that they are attending I/O in person. -->
+    <string name="explore_attending_in_person_toast">Attending I/O in person (you can change this in Settings)</string>
+
+    <!-- Message that appears as feedback when the user has indicated that they are attending I/O remotely. -->
+    <string name="explore_attending_remotely_toast">Attending I/O remotely (you can change this in Settings)</string>
+
+    <!-- Label for a button to answer the question "Would you like to send feedback
+    about this session?" which, when clicked, allows the user to send their feedback (ratings
+    and comments) about a particular session [CHAR_LIMIT=10]. -->
+    <string name="give_feedback">Yes</string>
+
+    <!-- Text on a button that takes the user to the device's Settings screen. -->
+    <string name="go_to_settings">Go to Settings</string>
+
+    <!-- Error message that shows when the user tries to use the app without a Google account
+    configured on their device. -->
+    <string name="google_account_required_message">To use this application, you must have at least one Google account on your device.</string>
+
+    <!-- Title for an error message that appears when the user tries to use the app without
+    a Google account configured on their device. -->
+    <string name="google_account_required_title">Google Account Required</string>
+
+    <!-- List dropdown item on the Video Library screen allowing the user to choose to see
+    the videos from a particular year of Google I/O. -->
+    <string name="google_i_o_year">I/O <xliff:g id="year">%1$d</xliff:g></string>
+
+    <!-- Label on a button that the user can click to dismiss an reminder or information message.
+    For example "To scan an attendee's badge, hold your phone close to the badge for a few
+    seconds." -->
+    <string name="got_it">Got it</string>
+
+    <!-- Conference hashtag -->
+    <string name="io14_hashtag" translatable="false">#io14</string>
+
+    <!-- Short text appended to the end of the session subtitle when the session will be live
+    streamed. Constrained to 10 chars because the session subtitle should be small enough to fit
+    into the explore cards. [CHAR_LIMIT=10] -->
+    <string name="live_available">LIVE</string>
+
+    <!-- Short text appended to the end of the session subtitle when the session is currently being
+    streamed. Also used in a "LIVE" badge overlay that shows up on top of the session card.
+    Constrained because the session subtitle should be small enough to fit into the
+    explore cards. [CHAR_LIMIT=10] -->
+    <string name="live_now">LIVE NOW</string>
+
+    <!-- Message presented while data is loading in Explore view -->
+    <string name="loading">Loading&#8230;</string>
+
+    <!-- Message shown in an error bar when there is a problem synchronizing the user's sessions
+    to their account. Can be summarized as "Synchronization failed." if too long [CHAR_LIMIT=50] -->
+    <string name="login_failed_text">Could not sync your sessions due to an error.</string>
+
+    <!-- Button to retry a failed login attempt [CHAR_LIMIT=2 lines of 9 characters].
+    If using multiple lines, separate them with "\n" ("Tentar\nde novo" for example)
+    -->
+    <string name="login_failed_text_retry">Retry</string>
+    <string name="lorem_ipsum">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</string>
+
+    <!-- Message shown in a popup to request a mandatory upgrade -->
+    <string name="mandatory_update_error">Your application is out of date. You must upgrade it to continue to use it.</string>
+
+    <!-- Message shown in a popup to indicate that there is a mandatory upgrade -->
+    <string name="update_available">There is a newer version of this application available on Google Play.</string>
+
+    <!-- Message shown in a map popup to indicate the next session.
+      Param %1$s: time of the next session
+      Param %2$s: title of the next session
+     -->
+    <string name="map_at">At %1$s:<![CDATA[<br><b>%2$s</b>]]></string>
+
+    <string name="map_floorcontrol_1" translatable="false">1</string>
+    <string name="map_floorcontrol_2" translatable="false">2</string>
+    <string name="map_floorcontrol_3" translatable="false">3</string>
+
+    <!-- Indicator shown when there is no upcoming session in a room -->
+    <string name="map_infowindow_text_empty">-</string>
+
+    <!-- Text on map popup to ask the user to click the popup to show a list of all partners with more details -->
+    <string name="map_infowindow_partner_seemore">Touch to see more details</string>
+
+    <!-- Actionbar button text to show nearby BLE devices -->
+    <string name="map_nearby_button">Nearby</string>
+
+    <!-- Message shown in a map popup to indicate the current session.
+      Param %1$s: title of the next session
+     -->
+    <string name="map_now_playing">Now playing:<![CDATA[<br><b>%1$s</b>]]></string>
+
+    <!-- Clickable text in the map popup that leads to sessions in a room -->
+    <string name="map_touch_to_see_session">Touch to see Sessions</string>
+
+    <!-- Label for map marker that indicates Moscone Center at a lower zoom level -->
+    <string name="map_label_moscone" translatable="false">Moscone Center</string>
+
+    <!-- Accessibility content description on a button that will show more information about something. -->
+    <string name="more_information">More information</string>
+
+    <!-- Text on a button that allows the user to browse more sessions -->
+    <string name="more_sessions">More Sessions</string>
+
+    <!-- Accessibility description for tab that shows the attendee's schedule for a given day. -->
+    <string name="my_schedule_tab_desc_a11y">Tap to show your schedule for <xliff:g id="day">%1$s</xliff:g>.</string>
+
+    <!-- Accessibility announcement to alert user that they are now viewing their schedule of a given day. -->
+    <string name="my_schedule_page_desc_a11y">Now showing your schedule for <xliff:g id="day">%1$s</xliff:g></string>
+
+    <!-- Menu item to open the Experts screen [CHAR_LIMIT=20] -->
+    <string name="navdrawer_item_experts_directory">Experts</string>
+
+    <!-- Accessibility description for menu item to open the Experts screen. -->
+    <string name="navdrawer_item_experts_directory_a11y">Experts Directory</string>
+
+    <!-- Menu item to open the Explore screen [CHAR_LIMIT=20] -->
+    <string name="navdrawer_item_explore">Explore</string>
+
+    <!-- Accessibility description for menu item to open the Explore screen. -->
+    <string name="navdrawer_item_explore_a11y">Explore Google I/O</string>
+
+    <!-- Menu item to open the Map screen [CHAR_LIMIT=20] -->
+    <string name="navdrawer_item_map">Map</string>
+
+    <!-- Menu item to open the My Schedule screen [CHAR_LIMIT=20] -->
+    <string name="navdrawer_item_my_schedule">My Schedule</string>
+
+    <!-- Menu item to open the People I've Met screen [CHAR_LIMIT=20] -->
+    <string name="navdrawer_item_people_ive_met">People I\'ve Met</string>
+
+    <!-- Accessibility description of item to open the People I've Met screen -->
+    <string name="navdrawer_item_people_ive_met_a11y">People I\'ve Met</string>
+
+    <!-- Menu item to open the Settings screen [CHAR_LIMIT=20] -->
+    <string name="navdrawer_item_settings">Settings</string>
+
+    <!-- Menu item to start the Sign In flow [CHAR_LIMIT=20] -->
+    <string name="navdrawer_item_sign_in">Sign in</string>
+
+    <!-- Menu item to open a screen that lists I/O related hashtags. Each hashtag, when clicked, will
+    open Google+ stream of posts that uses the hashtag [CHAR_LIMIT=20] -->
+    <string name="navdrawer_item_social">Social</string>
+
+    <!-- Menu item to open a list of current and past I/O videos [CHAR_LIMIT=20] -->
+    <string name="navdrawer_item_video_library">Video library</string>
+
+    <!-- Text indicator that appears below the user's name, showing that they are
+    attending the conference in person in San Francisco. -->
+    <string name="navdrawer_status_attending_in_person">Attending I/O in person</string>
+
+    <!-- Text indicator that appears below the user's name, showing that they are
+    attending the conference remotely via live streaming. -->
+    <string name="navdrawer_status_attending_remotely">Attending I/O remotely</string>
+
+    <!-- Header text for the Nearby EULA fragment -->
+    <string name="nearby_eula_header">PhysicalWeb Experiment</string>
+
+    <!-- Title of the window that explains what the PhysicalWeb experiment is. PhysicalWeb is a proper noun and should not be translated, but 'experiment' should be translated. It is an experiment in the sense that we are trying out a new idea that's not an official product. -->
+    <string name="physicalweb_intro_title">PhysicalWeb Experiment</string>
+
+    <!-- Explanation of the PhysicalWeb experiment that appears on the 'Nearby' tab. -->
+    <string name="physicalweb_intro_text">This tab can show you links to content related to the conference features near your current location (e.g., partner websites, apps, demos and interactive content). To do this, the app will perform a Bluetooth LE scan of your surroundings to look for tags and send that information to a Google server for processing. Once activated, this will continue for the duration of the event, as long as your device has Bluetooth turned on. If you want to turn the feature off, visit the app\'s Settings menu or deactivate Bluetooth on the device. Keep in mind this is just an experiment with BLE, not a full product, so there may be some rough edges! It may not work if there is poor or no network connection, or if there is too much interference.\n\nWould you like to enable this feature now?</string>
+
+    <!-- Text shown on the Nearby tab when Bluetooth is off, to ask the user to turn it on. -->
+    <string name="physical_web_bluetooth_off">This feature requires Bluetooth, but your device\'s Bluetooth is turned off. To use this feature, please enable Bluetooth in your device\'s Settings screen.</string>
+
+    <!-- Message shown in the nearby screen when there are no nearby URLs. -->
+    <string name="no_nearby_urls">There are no PhysicalWeb beacons in your area. Try again when you are near a point of interest at Moscone during the conference.</string>
+
+    <!-- Message shown in a toast (popup) when the user clicks to change the active account but
+    there is no network connection -->
+    <string name="no_connection_cant_login">Can\'t sign in. Check your network connection.</string>
+
+    <!-- Message shown in a toast (popup) when the user selected a partner that could not be
+    found -->
+    <string name="no_matching_partner">No matching partner.</string>
+
+    <!-- Message shown in the session explorer when the user applies a filter that results no
+    session -->
+    <string name="no_matching_sessions">No matching sessions.</string>
+
+    <!-- Message shown in the session explorer when the user selects a time slot that has no
+    session  -->
+    <string name="no_matching_sessions_in_interval">No sessions available in this time slot.</string>
+
+    <!-- Message shown in the video library when the user applies a filter that results no video -->
+    <string name="no_matching_videos">No matching videos.</string>
+
+    <!-- Button of a card in session or session explorer that dismiss the card.
+    One sample of such card is "How was this session? We would love to hear your feedback"  with
+    "Give feedback" and "No, thanks" as buttons. [CHAR_LIMIT=20]-->
+    <string name="no_thanks">No, thanks</string>
+
+    <!-- Button of a popup that shows up when the user has no Google account registered in the
+    device. The popup says that the user needs to have at least one Google account registered in the
+    device to be able to use the app. [CHAR_LIMIT=20] -->
+    <string name="not_now">Not now</string>
+
+    <!-- Number in a scale of 1 to 5 used to rate a session [CHAR_LIMIT=2]-->
+    <string name="number_1">1</string>
+
+    <!-- Number in a scale of 1 to 5 used to rate a session [CHAR_LIMIT=2]-->
+    <string name="number_2">2</string>
+
+    <!-- Number in a scale of 1 to 5 used to rate a session [CHAR_LIMIT=2]-->
+    <string name="number_3">3</string>
+
+    <!-- Number in a scale of 1 to 5 used to rate a session [CHAR_LIMIT=2]-->
+    <string name="number_4">4</string>
+
+    <!-- Number in a scale of 1 to 5 used to rate a session [CHAR_LIMIT=2]-->
+    <string name="number_5">5</string>
+
+    <!-- A single button shown on informative popups, like EULA, open source licenses and About -->
+    <string name="ok">OK</string>
+
+    <!-- Header for a group of sessions in Session Explorer that don't fit into other tag-based groups -->
+    <string name="others">Others</string>
+
+    <!-- Header for a dialog listing event partners -->
+    <string name="partners">Partners</string>
+
+    <!-- Menu item that, when clicked, causes an entry to be deleted in the People I've Met screen -->
+    <string name="people_ive_met_delete">Delete</string>
+
+    <!-- Confirmation message before deleting a person from the People I've Met Screen -->
+    <string name="people_ive_met_delete_confirmation">Are you sure you want to delete this person from the list?</string>
+
+    <!-- Title of a dialog box where the user can enter their own notes about a given person they have met. -->
+    <string name="people_ive_met_edit_note_title_with_name">Notes about <xliff:g id="name">%1$s</xliff:g></string>
+
+    <!-- Title of a dialog box where the user can enter their own notes about a given person they have met. -->
+    <string name="people_ive_met_edit_note_title">Notes</string>
+
+    <!-- Explanation that appears when the user goes to the badge scanning screen and there are badges to show. -->
+    <string name="people_ive_met_empty">You haven\'t scanned anyone\'s badge yet. When you wish to exchange contact information with another attendee, hold your device over their badge for a few seconds and their Google+ profile will be added to this list (requires NFC).</string>
+
+    <!-- Header for the People I've Met screen, explaining that the list below is a list of people whose badges the user has scanned at the conference. -->
+    <string name="people_ive_met_header">Attendees whose badges you have scanned:</string>
+
+    <!-- Menu item that allows the user to enter or edit a note about a person they have met at the conference. Alternate translations can be: "Edit Note", "-->
+    <string name="people_ive_met_note">Note</string>
+
+    <!-- Error message that appears when the user tries to scan a conference attendee badge that does not contain a valid Google+ profile. 'Badge' is used in the sense of the identification badge that attendees at the event will carry with them. -->
+    <string name="people_ive_met_dummy_badge">This badge does not contain a link to a Google+ profile</string>
+
+    <!-- An application permission (this permission allows the application to modify the Google
+    I/O schedule data). Shows on a permissions dialog screen. -->
+    <string name="permission_write">Modify Google I/O schedule data</string>
+
+    <!-- Description of the Google+ +1 button for accessibility screen readers -->
     <string name="plus_one_description_standard">Touch to plus one.</string>
 
-    <!-- Preferences -->
-    <string name="pref_local_times_title">Show local times</string>
-    <string name="pref_local_times_description">When checked, show local times instead of Pacific time (the timezone at the conference)</string>
+    <!-- Title in the Settings screen for the setting that enables sending of anonymous usage
+    statistics to Google. -->
+    <string name="pref_analytics_enabled_title">Send anonymous usage statistics</string>
+
+    <!-- Description in the Settings screen for the setting that enables sending of anonymous usage
+    statistics to Google. -->
+    <string name="pref_analytics_enabled_description">Send anonymous statistics about app usage
+    to Google.</string>
+
+    <!-- Summary in the Settings screen for the "I will be at Google I/O" option -->
+    <string name="pref_attendee_at_venue_description">Display all sessions and on-site events. If unchecked, only live-streamed sessions will be shown.</string>
+
+    <!-- Title in the Settings screen for the "I will be at Google I/O" option -->
     <string name="pref_attendee_at_venue_title">I\'ll be at Google I/O!</string>
-    <string name="pref_attendee_at_venue_description">When checked, all sessions and on-site events will be shown. Otherwise, only live-streamed sessions will be shown.</string>
-    <string name="wifi_install_error_message">Sorry, unable to update WiFi configuration</string>
 
-    <!-- Feedback -->
-    <string name="session_feedback_submitlink">Submit Feedback</string>
-    <string name="session_rating_label">Rate this session overall:</string>
+    <!-- Summary in the Settings screen for the "Show local times" option -->
+    <string name="pref_local_times_description">Use your local time instead of the conference’s local time.</string>
 
-    <string name="session_feedback_relevance">
-        How relevant was this session to your coding projects?
-    </string>
+    <!-- Title in the Settings screen for the "Show local times" option -->
+    <string name="pref_local_times_title">Show local times</string>
 
-    <string name="session_feedback_notgreat">Not so awesome</string>
-    <string name="session_feedback_great">Awesome</string>
+    <!-- Description of PhysicalWeb experiment setting in the Settings screen. BLE stands for Bluetooth Low Energy.-->
+    <string name="pref_nearby_summary">Enables the PhysicalWeb BLE experiment in the Map screen, which performs BLE scans to show you PhysicalWeb tags near you (requires Bluetooth).</string>
 
-    <string name="session_feedback_notrel">Not relevant</string>
-    <string name="session_feedback_rel">Relevant</string>
+    <!-- Title in the Settings screen of the setting to enable the PhysicalWeb experiment feature in the app. -->
+    <string name="pref_nearby_title">Enable PhysicalWeb Experiment</string>
 
-    <string name="session_feedback_content">The content was:</string>
-    <string name="session_feedback_basic">Too basic</string>
+    <!-- Summary in the Settings screen for the "Notify me to send feedback about my sessions" option -->
+    <string name="pref_notify_feedback_description">Display notifications asking for your feedback about your selected sessions.</string>
+
+    <!-- Title in the Settings screen for the "Notify me to send feedback about my sessions" option -->
+    <string name="pref_notify_feedback_title">Notify me to send feedback</string>
+
+    <!-- Summary in the Settings screen for the "Notify me when my sessions are about to begin" option -->
+    <string name="pref_notify_starred_sessions_description">Display a notification when your selected sessions are about to begin.</string>
+
+    <!-- Title in the Settings screen for the "Notify me when my sessions are about to begin" option -->
+    <string name="pref_notify_starred_sessions_title">Notify me about my sessions</string>
+
+    <!-- Title in the Settings screen for the "Synchronize my schedule with Google Calendar" option -->
+    <string name="pref_sync_with_calendar_description">Automatically sync your sessions to Google Calendar.</string>
+
+    <!-- Summary in the Settings screen for the "Synchronize my schedule with Google Calendar" option -->
+    <string name="pref_sync_with_calendar_title">Sync with Google Calendar</string>
+
+    <!-- Text of a card shown in the session explorer that asks the user if he wants to see I/O
+    extended events in his area. "Browse events" and "No, thanks" are the buttons shown in the card -->
+    <string name="question_i_o_extended">Would you like to know more about I/O Extended events happening near your location?</string>
+
+    <!-- Text of a card shown in the session explorer that asks the user if he will be attending I/O
+    in person or remotely. "Remotely" and "In person" are the buttons shown in the card -->
+    <string name="question_local_or_remote">Are you attending I/O remotely or in person in San Francisco?</string>
+
+    <!-- Text of a card shown in the session explorer after I/O has started that asks the user if
+    he wants to configure the WiFi. "Yes!" and "No, thanks" are the buttons shown in the card -->
+    <string name="question_setup_wifi_after_i_o_start">Google I/O is here! Would you like to configure the conference WiFi now?</string>
+
+    <!-- Text of a card shown in the session explorer before I/O has started that asks the user if
+    he wants to configure the WiFi. "Yes!" and "No, thanks" are the buttons shown in the card -->
+    <string name="question_setup_wifi_before_i_o_start">Google I/O is coming up! Would you like to configure the conference WiFi now?</string>
+
+    <!-- Section title for videos related to a particular event session -->
+    <string name="related_videos">Related Videos</string>
+
+    <!-- Button text indicating the session is in the user's schedule -->
+    <string name="remove_from_schedule">In schedule</string>
+
+    <!-- Accessibility content description for button used to remove the session from the user's schedule -->
+    <string name="remove_from_schedule_desc">Button to remove session from your schedule.</string>
+
+    <!-- Button label allowing users to retry a failed operation -->
+    <string name="retry">Retry</string>
+
+    <!-- Text hint that shows when a session is in conflict with a session already on the user's schedule -->
+    <string name="schedule_conflict_with_previous">(conflict)</string>
+
+    <!-- Indicates the ending block of a session time. Used in a text fragment like "8:00 AM to 9:00 AM" [CHAR_LIMIT=4 (excluding placeholders)]-->
+    <string name="schedule_end_time">to <xliff:g id="endTime">%1$s</xliff:g></string>
+
+    <!-- Hint that the user can search across sessions -->
+    <string name="search_hint">Search sessions</string>
+
+    <!-- Search label that shows the type of data being searched for when the user clicks the
+    Search button. -->
+    <string name="search_label">Google I/O sessions</string>
+
+    <!-- A fragment of text appended to a Google calendar event indicating it was added by this application -->
+    <string name="session_calendar_suffix">- added by Google I/O Android app</string>
+
+    <!-- Accessibility text announced as a response to pressing a button to add a session to the schedule. -->
+    <string name="session_details_a11y_session_added">Session added to your schedule</string>
+
+    <!-- Accessibility text announced as a response to pressing a button to remove a session from the schedule. -->
+    <string name="session_details_a11y_session_removed">Session removed from your schedule</string>
+
+    <!-- A session feedback option indicating the content was too advanced -->
     <string name="session_feedback_advanced">Too advanced</string>
 
-    <string name="session_feedback_speaker_quality">Speaker quality:</string>
-    <string name="session_feedback_poor">Poor</string>
-    <string name="session_feedback_outstanding">Outstanding</string>
-    <string name="session_feedback_tell_us">Tell us!</string>
-    <string name="session_feedback_6months">
-        Will you use the technology featured in this section in the next 6 months?
-    </string>
-    <string name="session_feedback_probably">Probably</string>
-    <string name="session_feedback_probnot">Probably not</string>
-    <string name="number_1">1</string>
-    <string name="number_2">2</string>
-    <string name="number_3">3</string>
-    <string name="number_4">4</string>
-    <string name="number_5">5</string>
-    <string name="session_feedback_other">Anything else we should know?</string>
+    <!-- A session feedback option indicating the content was too basic -->
+    <string name="session_feedback_basic">Too basic</string>
 
-    <!-- More Misc -->
-    <string name="dashclock_extension_description">
-        Displays the next few items in your Google I/O 2013 schedule.
-    </string>
+    <!-- Session feedback section title -->
+    <string name="session_feedback_content">The content was:</string>
+
+    <!-- A positive overall session feedback option -->
+    <string name="session_feedback_great">Awesome</string>
+
+    <!-- A negative overall session feedback option -->
+    <string name="session_feedback_notgreat">Not so awesome</string>
+
+    <!-- Notification text asking the user to provide feedback for a particular session -->
+    <string name="session_feedback_notification_text">Provide feedback for %1$s</string>
+
+    <!-- Notification ticker text asking the user to provide session feedback -->
+    <string name="session_feedback_notification_ticker">Provide session feedback</string>
+
+    <!-- A negative relevance session feedback option -->
+    <string name="session_feedback_notrel">Not relevant</string>
+
+    <!-- A session feedback section label asking for any other feedback. It indicates the user should not add personal information -->
+    <string name="session_feedback_other"> Anything else we should know?\n(Please don\'t add any personal information in your comments.) </string>
+
+    <!-- A positive speaker quality session feedback option -->
+    <string name="session_feedback_outstanding">Outstanding</string>
+
+    <!-- A negative speaker quality session feedback option -->
+    <string name="session_feedback_poor">Poor</string>
+
+    <!-- A positive relevance session feedback option -->
+    <string name="session_feedback_rel">Relevant</string>
+
+    <!-- A session feedback section label asking for the session's relevance to the user's projects -->
+    <string name="session_feedback_relevance"> How relevant was this session to your projects?  </string>
+
+    <!-- A session feedback section label asking for the speaker's quality -->
+    <string name="session_feedback_speaker_quality">Speaker quality:</string>
+
+    <!-- Button text for submitting session feedback -->
+    <string name="session_feedback_submitlink">Submit Feedback</string>
+
+    <!-- Hint for adding other session feedback -->
+    <string name="session_feedback_tell_us">Tell us!</string>
+
+    <!-- Text indicating the session has ended -->
+    <string name="session_finished">Ended</string>
+
+    <!-- Card text asking the user to provide session feedback -->
+    <string name="session_give_feedback_message">How was this session? Would you like to send feedback?</string>
+
+    <!-- Link text for the user to watch a live video stream of the session -->
+    <string name="session_link_livestream">Watch Live</string>
+
+    <!-- Link text taking the user to the session's Google Moderator page -->
+    <string name="session_link_moderator">Moderator</string>
+
+    <!-- Link text taking the user to the session's notes page -->
+    <string name="session_link_notes">Official notes</string>
+
+    <!-- Link text taking the user to the session's slides page -->
+    <string name="session_link_pdf">Slides</string>
+
+    <!-- Link text taking the user to the session's YouTube page -->
+    <string name="session_link_youtube">YouTube video</string>
+
+    <!-- Text indicating additional session links -->
+    <string name="session_links">More</string>
+
+    <!-- Card text indicating the session is being broadcast right now and is available on live stream -->
+    <string name="session_live_now_message">This session is being broadcast live right now! Would you like to watch the live stream?</string>
+
+    <!-- Short text indicating the session's live stream is live -->
+    <string name="session_livestream_block">Live!</string>
+
+    <!-- Tab text on the session livestream to view captions -->
+    <string name="session_livestream_captions">Captions</string>
+
+    <!-- Toast error message indicating an issue with the YouTube player -->
+    <string name="session_livestream_error_init">Sorry, there was an error initializing the YouTube Player (%1$s)</string>
+
+    <!-- Toast error message indicating an issue with YouTube playback -->
+    <string name="session_livestream_error_playback">Sorry, there was an error loading the live stream, please try again later</string>
+
+    <!-- Tab text on the session livestream to view info -->
+    <string name="session_livestream_info">Info</string>
+
+    <!-- Hint for a play/pause video button -->
+    <string name="session_livestream_play_pause">Play / Pause</string>
+
+    <!-- Actionbar title for I/O Live -->
+    <string name="session_livestream_title">I/O Live</string>
+
+    <!-- Notification text that a session is starting in some number of minutes -->
+    <string name="session_notification_text_1">starting in <xliff:g id="remaining_time">%1$d</xliff:g> min.</string>
+
+    <!-- Short text indicating that the session is currently happening -->
+    <string name="session_now">Now</string>
+
+    <!-- A session feedback section label asking the user to rate the session overall -->
+    <string name="session_rating_label">Rate this session overall:</string>
+
+    <!-- Label for a session section listing the requirements for the session -->
+    <string name="session_requirements">Requirements</string>
+
+    <!-- Label for a session section listing the presenters at the session -->
+    <string name="session_speakers">Speakers</string>
+
+    <!-- Subtitle of a session indicating time interval and room number -->
+    <string name="session_subtitle"><xliff:g id="time">%1$s</xliff:g> in <xliff:g id="room">%2$s</xliff:g></string>
+
+    <!-- Short subtitle for a session indicating time interval -->
+    <string name="session_subtitle_short"><xliff:g id="time">%1$s</xliff:g></string>
+
+    <!-- Button text indicating the user would like us to set up wifi access -->
+    <string name="setup_wifi_yes">Yes!</string>
+
+    <!-- Re-share template text indicating the user is watching I/O Live -->
+    <string name="share_livestream_template">Watching I/O Live: \'<xliff:g id="title">%1$s</xliff:g>\' at <xliff:g id="hashtags">%2$s</xliff:g> <xliff:g id="url">%3$s</xliff:g></string>
+
+    <!-- Re-share template text indicating the user is at a particular session -->
+    <string name="share_template">Check out \'<xliff:g id="title">%1$s</xliff:g>\' at <xliff:g id="hashtags">%2$s</xliff:g> <xliff:g id="url">%3$s</xliff:g></string>
+
+    <!-- Notification action text for snoozing the notification for some number of minutes -->
+    <string name="snooze_x_min">Snooze <xliff:g id="remaining_time">%1$d</xliff:g> min.</string>
+
+    <!-- Introductory text for a screen that shows several hashtags the user can click on to
+    see the corresponding stream on the Google+ application. -->
+    <string name="social_intro">Click on a hashtag to follow the conversation on Google+</string>
+
+    <!-- Speaker image content description -->
+    <string name="speaker_googleplus_profile">Google+ profile: <xliff:g id="speakername">%1$s</xliff:g></string>
+
+    <!-- Short text label indicating a grouping of themes -->
+    <string name="themes">Themes</string>
+
+    <!-- Text indicating the session is going to start in some number of minutes -->
+    <string name="time_hint_about_to_start_min">This session will start in <xliff:g id="minutes">%1$d</xliff:g> min.</string>
+
+    <!-- Text indicating the session is going to start in less than 1 minute -->
+    <string name="time_hint_about_to_start_shortly">This session is about to start (less than 1 minute).</string>
+
+    <!-- Text indicating the session has ended -->
+    <string name="time_hint_session_ended">This session has ended.</string>
+
+    <!-- Text indicating the session just started -->
+    <string name="time_hint_started_just">This session is happening now! (just started)</string>
+
+    <!-- Text indicating the session is in progress but has not completed -->
+    <string name="time_hint_started_min">This session is happening now! (started <xliff:g id="minutes">%1$d</xliff:g> min. ago)</string>
+
+    <!-- Explanation text shown below the user's schedule clarifying the timezone used for display.
+    For example, 'All times shown in UTC-7' -->
+    <string name="times_shown_in_tz">All times shown in <xliff:g id="timezone">%1$s</xliff:g></string>
+
+    <!-- Title text for dialog screen about the application -->
+    <string name="title_about">About</string>
+
+    <string name="title_activity_ble" translatable="false">Ble Activity</string>
+
+    <!-- Title text for the screen that shows a directory of Google Developer Experts, who are independent developers who are experts at Google technologies. This should be translated as just 'Experts' because it's smaller. [CHAR_LIMIT=20] -->
+    <string name="title_experts_directory">Experts</string>
+
+    <string name="title_activity_debug_test_runner" translatable="false">Debug Test Runner</string>
+
+    <!-- Navigation bar text for exploring the sessions -->
+    <string name="title_explore">Explore</string>
+
+    <!-- Navigation bar text for the map -->
+    <string name="title_map">Map</string>
+
+    <!-- Navigation bar text for viewing the user's schedule -->
+    <string name="title_my_schedule">My Schedule</string>
+
+    <!-- Navigation bar text for viewing Office Hours -->
+    <string name="title_office_hours">Office Hours</string>
+
+    <!-- Title of the People I've Met screen, that shows a list of people with whom the user has exchanged contact information during the conference [CHAR_LIMIT=20]. -->
+    <string name="title_people_ive_met">People I\'ve Met</string>
+
+    <!-- Map breadcrumb text for navigating company showcase entries -->
+    <string name="title_sandbox_detail">Company Information</string>
+
+    <!-- Label for Search screen, that allows users to search for sessions. -->
+    <string name="title_search">Search</string>
+
+    <!-- Map breadcrumb text for navigating session entries -->
+    <string name="title_session_detail">Session Information</string>
+
+    <!-- Label for SessionFeedback activity -->
+    <string name="title_session_feedback">Session Feedback</string>
+
+    <!-- Label for Settings activity -->
+    <string name="title_settings">Settings</string>
+
+    <!-- Chooser dialog text when the user is selecting an application with which to share something -->
+    <string name="title_share">Share using</string>
+
+    <!-- Label for VideoLibrary activity -->
+    <string name="title_video_library">Video library</string>
+
+    <!-- Label for exploration category which groups session topics -->
+    <string name="topics">Topics</string>
+
+    <!-- Label for exploration category which groups session types -->
+    <string name="types">Types</string>
+
+    <!-- Text for a session subtitle indicating it does not have a room specified -->
+    <string name="unknown_room">(Unspecified Room)</string>
+
+    <!-- Label on a button that, when clicked, will let the user update the application to
+    a newer version. -->
+    <string name="update_app">Update App</string>
+
+    <!-- Text for a button which allows the user to watch this particular session on live stream. -->
+    <string name="watch_now">Watch Now!</string>
+
+    <!-- Medium-length welcome text indicating the subsequent text is important legal information -->
+    <string name="welcome_text">Before we begin, here is some important legal information regarding your use of this app. This will only take a minute!</string>
+
+    <!-- Short text welcoming the user to the application -->
+    <string name="welcome_to_google_i_o_app">Welcome to the Google I/O app!</string>
+
+    <!-- Text for a button which will add a wi-fi network -->
+    <string name="wifi_dialog_button_configure">Add WiFi Network</string>
+
+    <!-- Text for a button which will open the user's Wi-Fi settings -->
+    <string name="wifi_dialog_button_settings">Open WiFi Settings</string>
+
+    <!-- Toast failure message if the user's wifi couldn't be updated -->
+    <string name="wifi_install_error_message">Sorry, unable to update WiFi configuration</string>
+    <string name="description_i_o_hunt">I/O Hunt</string>
+
 </resources>
+

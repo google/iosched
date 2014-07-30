@@ -1,0 +1,140 @@
+<!--
+  Copyright 2014 Google Inc. All rights reserved.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+       http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+  -->
+
+<resources>
+
+    <style name="FrameworkRoot.Theme" parent="android:Theme.Material.Light.DarkActionBar" />
+    <style name="FrameworkRoot.ActionBar" parent="android:Widget.Material.ActionBar" />
+    <style name="FrameworkRoot.ActionBar.TitleText" parent="android:TextAppearance.Material.Widget.ActionBar.Title" />
+    <style name="FrameworkRoot.ActionBar.TabBar" parent="android:Widget.Material.ActionBar.TabBar" />
+    <style name="FrameworkRoot.EditText" parent="android:Widget.Material.Light.EditText" />
+    <style name="FrameworkRoot.Widget" parent="android:Theme.Material" />
+    <style name="FrameworkRoot.Widget.ActionButton.Overflow" parent="android:Widget.Material.ActionButton.Overflow" />
+    <style name="FrameworkRoot.Widget.Spinner" parent="android:Widget.Material.Light.Spinner" />
+    <style name="FrameworkRoot.Widget.ListView.DropDown" parent="android:Widget.Material.Light.ListView.DropDown" />
+    <style name="FrameworkRoot.Widget.PopupMenu" parent="android:Widget.Material.Light.PopupMenu" />
+    <style name="FrameworkRoot.TextAppearance.Widget.PopupMenu.Large" parent="android:TextAppearance.Material.Widget.PopupMenu.Large" />
+
+    <style name="Theme" parent="FrameworkRoot.Theme" /> <!-- doesn't contain the pre-L code from the values/styles.xml -->
+
+    <style name="Theme.IOSched" parent="Theme.IOSched.Base">
+        <item name="actionBarIconColor">#fff</item>
+        <item name="actionBarOverlayTopOffset">0dp</item> <!-- action bars replaced by Toolbars -->
+        <item name="actionBarInsetStart">@dimen/keyline_2</item>
+        <item name="spinnerBarInsetStart">@dimen/keyline_2_minus_16dp</item>
+        <item name="selectableItemBackgroundBorderless">?android:selectableItemBackgroundBorderless</item>
+        <item name="popupItemBackground">@drawable/popup_item_background</item>
+        <item name="photoItemForeground">@drawable/photo_item_foreground</item>
+
+        <item name="android:colorPrimary">@color/theme_primary</item>
+        <item name="android:colorPrimaryDark">@color/theme_primary_dark</item>
+        <item name="android:colorAccent">@color/theme_accent_2</item>
+        <item name="android:navigationBarColor">#000</item>
+        <item name="android:actionBarTheme">@style/ActionBarThemeOverlay</item>
+        <item name="android:homeAsUpIndicator">@drawable/ic_up</item>
+
+        <!-- used only if windowContentTransitions is true -->
+        <item name="android:windowSharedElementEnterTransition">@transition/shared_element</item>
+        <item name="android:windowSharedElementExitTransition">@transition/shared_element</item>
+        <item name="android:windowEnterTransition">@android:transition/no_transition</item>
+        <item name="android:windowExitTransition">@android:transition/no_transition</item>
+        <item name="android:windowAllowExitTransitionOverlap">true</item>
+        <item name="android:windowAllowEnterTransitionOverlap">true</item>
+    </style>
+
+    <style name="Theme.IOSched.SessionDetails" parent="Theme.IOSched.SessionDetails.Base">
+        <item name="android:actionBarStyle">@style/TransparentActionBar</item>
+        <item name="android:windowActionBarOverlay">true</item>
+        <!--<item name="android:windowContentTransitions">true</item>-->
+    </style>
+
+    <style name="Theme.IOSched.Sessions" parent="Theme.IOSched.Sessions.Base">
+        <item name="actionBarInsetStart">@dimen/keyline_2_minus_16dp</item>
+        <item name="android:windowActionBar">false</item> <!-- replaced by toolbar -->
+        <item name="android:windowNoTitle">true</item>
+        <!--<item name="android:windowContentTransitions">true</item>-->
+    </style>
+
+    <!-- Live stream -->
+    <style name="Theme.IOSched.Livestream" parent="Theme.IOSched">
+        <item name="android:windowBackground">@color/gray_background</item>
+        <item name="actionBarInsetStart">@dimen/keyline_2_minus_16dp</item>
+    </style>
+
+    <style name="Theme.IOSched.WithElevatedHeader" parent="Theme.IOSched">
+        <item name="android:actionBarStyle">@style/ElevatedActionBar</item>
+    </style>
+
+    <style name="Theme.IOSched.MySchedule" parent="Theme.IOSched">
+        <item name="android:windowActionBar">false</item> <!-- replaced by toolbar -->
+        <item name="android:windowNoTitle">true</item>
+    </style>
+
+    <style name="Theme.IOSched.Map" parent="Theme.IOSched">
+        <item name="android:windowActionBar">false</item> <!-- replaced by toolbar -->
+        <item name="android:windowNoTitle">true</item>
+    </style>
+
+    <style name="Theme.IOSched.PeopleIveMet" parent="Theme.IOSched">
+        <item name="android:windowActionBar">false</item> <!-- replaced by toolbar -->
+        <item name="android:windowNoTitle">true</item>
+    </style>
+
+    <style name="Theme.IOSched.ExpertsDirectory" parent="Theme.IOSched">
+        <item name="android:windowActionBar">false</item> <!-- replaced by toolbar -->
+        <item name="android:windowNoTitle">true</item>
+    </style>
+
+    <style name="Theme.IOSched.Social" parent="Theme.IOSched">
+        <item name="android:windowActionBar">false</item> <!-- replaced by toolbar -->
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowBackground">@color/gray_background</item>
+    </style>
+
+    <style name="Theme.IOSched.VideoLibrary" parent="Theme.IOSched">
+        <item name="android:windowActionBar">false</item> <!-- replaced by toolbar -->
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowActionBarOverlay">true</item>
+    </style>
+
+    <style name="Widget.IOSched.HeaderBar.Spinner" parent="Widget.IOSched.HeaderBar.Spinner.Base">
+        <item name="android:theme">@style/ActionBarThemeOverlay</item>
+    </style>
+
+    <style name="ActionBar" parent="ActionBar.Base">
+        <item name="android:displayOptions">homeAsUp|showTitle</item>
+        <item name="android:contentInsetStart">?actionBarInsetStart</item>
+    </style>
+
+    <style name="ElevatedActionBar" parent="ActionBar">
+        <item name="android:elevation">@dimen/headerbar_elevation</item>
+    </style>
+
+    <style name="TabIndicator">
+        <item name="android:theme">@style/ActionBarThemeOverlay</item>
+    </style>
+
+    <style name="ActionBarThemeOverlay" parent="">
+        <item name="android:textColorPrimary">#fff</item>
+        <item name="android:colorControlNormal">?actionBarIconColor</item>
+        <item name="android:colorControlHighlight">#3fff</item>
+    </style>
+
+    <style name="HeaderBar">
+        <item name="android:elevation">@dimen/headerbar_elevation</item>
+        <item name="android:background">?android:colorPrimary</item>
+    </style>
+</resources>

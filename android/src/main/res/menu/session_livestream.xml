@@ -1,5 +1,5 @@
 <!--
-  Copyright 2012 Google Inc.
+  Copyright 2014 Google Inc. All rights reserved.
 
   Licensed under the Apache License, Version 2.0 (the "License");
   you may not use this file except in compliance with the License.
@@ -13,27 +13,26 @@
   See the License for the specific language governing permissions and
   limitations under the License.
   -->
-<menu xmlns:android="http://schemas.android.com/apk/res/android"
-      xmlns:iosched="http://schemas.android.com/apk/res-auto">
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item android:id="@+id/menu_presentation"
           android:icon="@drawable/ic_media_route_off_holo_light"
           android:title="@string/description_presentation"
           android:orderInCategory="1"
           android:visible="false"
-          iosched:showAsAction="ifRoom" />
+          android:showAsAction="ifRoom" />
 
     <item android:id="@+id/menu_captions"
           android:icon="@drawable/ic_action_captions"
           android:title="@string/description_captions"
           android:orderInCategory="1"
           android:visible="false"
-          iosched:showAsAction="ifRoom" />
+          android:showAsAction="ifRoom" />
 
     <item android:id="@+id/menu_share"
         android:icon="@drawable/ic_action_share"
         android:title="@string/description_share"
         android:orderInCategory="1"
-        iosched:showAsAction="ifRoom" />
+        android:showAsAction="ifRoom" />
 
 </menu>

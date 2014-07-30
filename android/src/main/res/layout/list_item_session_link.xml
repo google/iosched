@@ -1,5 +1,5 @@
 <!--
-  Copyright 2012 Google Inc.
+  Copyright 2014 Google Inc. All rights reserved.
 
   Licensed under the Apache License, Version 2.0 (the "License");
   you may not use this file except in compliance with the License.
@@ -14,5 +14,15 @@
   limitations under the License.
   -->
 <TextView xmlns:android="http://schemas.android.com/apk/res/android"
-    style="@style/ListItemSessionLink"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:focusable="true"
+    android:clickable="true"
+    android:background="?android:selectableItemBackground"
+    android:paddingTop="8dp"
+    android:paddingBottom="8dp"
+    android:minHeight="?android:listPreferredItemHeightSmall"
+    android:gravity="center_vertical"
+    android:textSize="@dimen/text_size_large"
+    android:textColor="@color/body_text_1"
     android:id="@android:id/text1" />

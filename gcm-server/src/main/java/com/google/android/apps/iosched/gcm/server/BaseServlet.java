@@ -1,5 +1,5 @@
 /*
- * Copyright 2012 Google Inc.
+ * Copyright 2014 Google Inc. All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not
  * use this file except in compliance with the License. You may obtain a copy of
@@ -20,6 +20,7 @@ import com.google.appengine.api.users.UserService;
 import com.google.appengine.api.users.UserServiceFactory;
 
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.Enumeration;
 import java.util.logging.Logger;
 
@@ -38,6 +39,7 @@ public abstract class BaseServlet extends HttpServlet {
 
   // change to true to allow GET calls
   static final boolean DEBUG = true;
+  private static final Logger LOG = Logger.getLogger(BaseServlet.class.getName());
 
   protected final Logger logger = Logger.getLogger(getClass().getName());
 
@@ -89,7 +91,7 @@ public abstract class BaseServlet extends HttpServlet {
     resp.setContentType("text/plain");
     resp.setContentLength(size);
   }
-  
+
   protected boolean checkUser() {
     UserService userService = UserServiceFactory.getUserService();
     User user = userService.getCurrentUser();
@@ -102,5 +104,24 @@ public abstract class BaseServlet extends HttpServlet {
     }
   }
 
+  protected void send(HttpServletResponse resp, int status, String body)
+      throws IOException {
+    if (status >= 400) {
+        LOG.warning(body);
+    } else {
+        LOG.info(body);
+    }
 
+    // Allow CORS requests from any domain
+    resp.addHeader("Access-Control-Allow-Origin", "*");
+
+    // Prevent frame hijacking
+    resp.addHeader("X-FRAME-OPTIONS", "DENY");
+
+    // Write response data
+    resp.setContentType("text/plain");
+    PrintWriter out = resp.getWriter();
+    out.print(body);
+    resp.setStatus(status);
+  }
 }

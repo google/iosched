@@ -1,5 +1,5 @@
 <!--
-  Copyright 2013 Google Inc.
+  Copyright 2014 Google Inc. All rights reserved.
 
   Licensed under the Apache License, Version 2.0 (the "License");
   you may not use this file except in compliance with the License.
@@ -18,84 +18,26 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:background="@drawable/map_infowindow_popup"
-    >
+    android:paddingBottom="@dimen/map_content_padding"
+    android:background="@drawable/map_infowindow_popup">
 
-
-    <FrameLayout
+    <TextView
+        android:id="@+id/map_info_roomtitle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:clickable="true"
-        android:focusable="true"
-        android:foreground="?activatableItemBackground"
-        android:id="@+id/map_info_top"
-        android:background="#FF666666"
-        android:layout_marginBottom="@dimen/map_content_padding"
-        >
-
-        <ImageView
-            android:id="@+id/map_info_icon"
-            android:layout_width="64dp"
-            android:layout_height="64dp"
-            android:layout_gravity="top|right"
-            android:layout_marginRight="-12dp"
-            android:layout_marginTop="-12dp"
-            android:contentDescription="@null"
-            android:alpha="0.3"
-            android:scaleType="fitXY"
-            android:src="@drawable/icon_plainroom"/>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical"
-            android:background="@drawable/thickbar_left_background">
-
-            <TextView
-                android:id="@+id/map_info_roomtitle"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:textColor="@color/body_text_1_inverse"
-                android:ellipsize="end"
-                android:textStyle="normal"
-                android:paddingLeft="@dimen/map_content_padding"
-                android:paddingRight="@dimen/map_content_padding"
-                android:paddingTop="@dimen/map_content_padding"
-                android:singleLine="true"
-                style="@style/MapRoomTitle"/>
-
-            <TextView
-                android:id="@+id/map_info_subtitle"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:textColor="@color/body_text_2_inverse"
-                style="@style/TextHeaderSub"
-                android:paddingLeft="@dimen/map_content_padding"
-                android:paddingRight="@dimen/map_content_padding"
-                android:paddingBottom="@dimen/map_content_padding"
-                android:text="@string/map_touch_to_see_session" />
-        </LinearLayout>
-
-
-
-    </FrameLayout>
+        style="@style/MapRoomTitle" />
 
     <TextView
         android:id="@+id/map_info_session_now"
         style="@style/MapInfoText"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:maxWidth="@dimen/map_info_maxwidth"
         android:minWidth="@dimen/map_infowindow_width"
         android:visibility="gone"
+        android:paddingTop="@dimen/map_content_padding"
         android:paddingLeft="@dimen/map_content_padding"
-        android:paddingRight="@dimen/map_content_padding"
-        />
-    <View
-        android:id="@+id/map_info_session_spacer"
-        android:layout_width="0dp"
-        android:layout_height="@dimen/map_content_padding"
-        android:visibility="gone" />
+        android:paddingRight="@dimen/map_content_padding" />
 
     <TextView
         android:id="@+id/map_info_session_next"
@@ -108,7 +50,6 @@
         android:visibility="gone"
         android:paddingLeft="@dimen/map_content_padding"
         android:paddingRight="@dimen/map_content_padding"
-        />
-
+        android:layout_marginTop="@dimen/map_content_padding" />
 
 </LinearLayout>

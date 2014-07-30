@@ -1,5 +1,5 @@
 /*
- * Copyright 2012 Google Inc.
+ * Copyright 2014 Google Inc. All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not
  * use this file except in compliance with the License. You may obtain a copy of
@@ -15,8 +15,12 @@
  */
 package com.google.android.apps.iosched.gcm.server.device;
 
+import com.google.android.apps.iosched.gcm.server.AuthHelper;
 import com.google.android.apps.iosched.gcm.server.BaseServlet;
+import com.google.android.apps.iosched.gcm.server.AuthHelper.AuthInfo;
 import com.google.android.apps.iosched.gcm.server.db.DeviceStore;
+
+import java.io.IOException;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -35,14 +39,22 @@ import javax.servlet.http.HttpServletResponse;
 public class RegisterServlet extends BaseServlet {
 
   private static final String PARAMETER_REG_ID = "gcm_id";
-  private static final String PARAMETER_USER_ID = "gplus_id";
+  private static final String PARAMETER_GROUP_ID = "gcm_key";
 
   @Override
   protected void doPost(HttpServletRequest req, HttpServletResponse resp)
-      throws ServletException {
+      throws IOException, ServletException {
+
+    // Let's see what this user is authorized to do
+    AuthInfo authInfo = AuthHelper.processAuthorization(req);
+
+    if (authInfo == null || !authInfo.permRegister) {
+      send(resp, 403, "Not authorized");
+      return;
+    }
     String gcmId = getParameter(req, PARAMETER_REG_ID);
-    String gPlusId = getParameter(req, PARAMETER_USER_ID);
-    DeviceStore.register(gcmId, gPlusId);
+    String gcmGroupId = getParameter(req, PARAMETER_GROUP_ID);
+    DeviceStore.register(gcmId, gcmGroupId);
     setSuccess(resp);
   }
 

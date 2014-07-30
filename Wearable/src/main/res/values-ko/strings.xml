@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?><resources>
+<!--
+   Copyright 2014 Google Inc. All rights reserved.
+
+   Licensed under the Apache License, Version 2.0 (the "License");
+   you may not use this file except in compliance with the License.
+   You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+   Unless required by applicable law or agreed to in writing, software
+   distributed under the License is distributed on an "AS IS" BASIS,
+   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+   See the License for the specific language governing permissions and
+   limitations under the License.
+-->
+
+    <!-- Question on survey form asking the user to give their overall opinion on the session. -->
+    <string name="q0">종합적으로 세션 평가하기:</string>
+
+    <!-- Possible ratings for a session, from 1 Star being the worst to 5 stars being best -->
+    <string-array name="q0_options">
+    <item>별 1개!</item>
+    <item>별 2개</item>
+    <item>별 3개</item>
+    <item>별 4개</item>
+    <item>별 5개</item>
+  </string-array>
+
+    <!-- Question on survey form asking the user to rate how relevant (to one's projects/goals/priorities) the session was. -->
+    <string name="q1">세션이 얼마나 적절했습니까?</string>
+    
+    <!-- Possible answers to the survey question about how relevant the session was to one's projects. -->
+    <string-array name="q1_options">
+    <item>전혀</item>
+    <item>약간</item>
+    <item>보통</item>
+    <item>매우</item>
+    <item>대단히</item>
+  </string-array>
+
+    <!-- Question on survey form asking the user to rate how basic/advanced the content of the session was (from Too Basic to Too Advanced). -->
+    <string name="q2">세션 내용:</string>
+
+    <!-- Possible answers to the survey question about how basic/advanced the content of a session was. -->
+    <string-array name="q2_options">
+    <item>너무 초급 수준</item>
+    <item>초급 수준</item>
+    <item>딱 맞음</item>
+    <item>고급 수준</item>
+    <item>너무 고급 수준</item>
+  </string-array>
+
+    <!-- Question on survey form asking the user to rate the quality of the session speaker (from Poor to Excellent). -->
+    <string name="q3">발표자 수준:</string>
+
+    <!-- Button text on a button to submit the survey form. -->
+    <string name="submit">제출</string>
+    
+    <!-- Message that appears after the user has submitted the survey form. -->
+    <string name="thanks">감사합니다!</string>
+
+    <!-- Notification that appears to ask the user to rate a particular session that they have attended. -->
+    <string name="rate_this_session">세션 평가하기</string>
+    
+    <!-- Possible answers to the survey question about how good the speaker of a session was. -->
+    <string-array name="q3_options">
+    <item>형편없음</item>
+    <item>그저 그럼</item>
+    <item>보통</item>
+    <item>좋음</item>
+    <item>뛰어남</item>
+  </string-array>
+</resources>

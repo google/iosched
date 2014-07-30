@@ -1,5 +1,5 @@
 <!--
-  Copyright 2012 Google Inc.
+  Copyright 2014 Google Inc. All rights reserved.
 
   Licensed under the Apache License, Version 2.0 (the "License");
   you may not use this file except in compliance with the License.
@@ -13,27 +13,21 @@
   See the License for the specific language governing permissions and
   limitations under the License.
   -->
-<menu xmlns:android="http://schemas.android.com/apk/res/android"
-      xmlns:iosched="http://schemas.android.com/apk/res-auto">
-    <item android:id="@+id/menu_map"
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:id="@+id/menu_map_room"
         android:icon="@drawable/ic_action_map"
         android:title="@string/description_map"
         android:orderInCategory="1"
-        iosched:showAsAction="ifRoom" />
-    <item android:id="@+id/menu_star"
-        android:icon="@drawable/ic_action_add_schedule"
-        android:title="@string/description_add_schedule"
-        android:orderInCategory="1"
-        iosched:showAsAction="ifRoom" />
+        android:showAsAction="ifRoom" />
     <item android:id="@+id/menu_share"
         android:icon="@drawable/ic_action_share"
         android:title="@string/description_share"
         android:orderInCategory="1"
-        iosched:showAsAction="ifRoom" />
+        android:showAsAction="ifRoom" />
     <item android:id="@+id/menu_social_stream"
         android:icon="@drawable/ic_action_social_stream"
         android:title="@string/description_social_stream"
         android:orderInCategory="1"
         android:visible="false"
-        iosched:showAsAction="ifRoom" />
+        android:showAsAction="ifRoom" />
 </menu>
