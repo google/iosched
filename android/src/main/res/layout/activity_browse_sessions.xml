@@ -1,0 +1,93 @@
+<!--
+  Copyright 2014 Google Inc. All rights reserved.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+       http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+  -->
+<android.support.v4.widget.DrawerLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/drawer_layout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ui.BrowseSessionsActivity">
+
+    <!-- Main layout -->
+    <com.google.samples.apps.iosched.ui.widget.DrawShadowFrameLayout
+        android:id="@+id/main_content"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:clipChildren="false"
+        app:shadowDrawable="@drawable/header_shadow">
+
+        <com.google.samples.apps.iosched.ui.widget.MultiSwipeRefreshLayout
+            android:id="@+id/swipe_refresh_layout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <!-- Sessions fragment showing the session grid -->
+            <fragment android:name="com.google.samples.apps.iosched.ui.SessionsFragment"
+                android:id="@+id/sessions_fragment"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                tools:layout="@layout/fragment_sessions" />
+        </com.google.samples.apps.iosched.ui.widget.MultiSwipeRefreshLayout>
+
+        <LinearLayout style="@style/HeaderBar"
+            android:id="@+id/headerbar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:clickable="true"
+            android:orientation="vertical">
+
+            <include layout="@layout/toolbar_actionbar" /> <!-- placeholder, empty except on L -->
+
+            <!-- Spinners for additional filters -->
+            <LinearLayout
+                android:id="@+id/filters_box"
+                android:visibility="gone"
+                android:layout_marginTop="?actionBarOverlayTopOffset"
+                android:paddingLeft="?spinnerBarInsetStart"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/filterbar_height"
+                android:background="@color/theme_primary"
+                android:orientation="horizontal">
+
+                <Spinner style="@style/Widget.IOSched.HeaderBar.Spinner"
+                    android:id="@+id/secondary_filter_spinner_1"
+                    android:layout_width="@dimen/filter_spinner_width"
+                    android:layout_weight="@integer/filter_spinner_weight"
+                    android:layout_height="match_parent" />
+
+                <Spinner style="@style/Widget.IOSched.HeaderBar.Spinner"
+                    android:id="@+id/secondary_filter_spinner_2"
+                    android:layout_width="@dimen/filter_spinner_width"
+                    android:layout_weight="@integer/filter_spinner_weight"
+                    android:layout_height="match_parent" />
+
+            </LinearLayout>
+        </LinearLayout>
+
+        <!-- Butter bar -->
+        <FrameLayout android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="top"
+            android:layout_marginTop="?android:actionBarSize">
+            <include layout="@layout/include_butter_bar" />
+        </FrameLayout>
+    </com.google.samples.apps.iosched.ui.widget.DrawShadowFrameLayout>
+
+    <!-- Nav drawer -->
+    <include layout="@layout/navdrawer_for_ab_overlay" />
+
+</android.support.v4.widget.DrawerLayout>

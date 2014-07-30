@@ -1,0 +1,763 @@
+<!--
+  Copyright 2014 Google Inc. All rights reserved.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+       http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+  -->
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+    <!-- Shown in the schedule to indicate how many sessions are available on that particular time slot. -->
+    <plurals name="schedule_block_subtitle">
+    <item quantity="other">사용 가능한 세션 <xliff:g id="number_of_sessions">%1$d</xliff:g>개</item>
+  </plurals>
+
+    <!-- Shows as a notification on the system bar to alert user that some of their sessions are about to begin. -->
+    <plurals name="session_notification_text">
+    <item quantity="other">및 다른 <xliff:g id="num_sessions">%2$d</xliff:g>개가 <xliff:g id="remaining_time">%1$d</xliff:g>분에 시작합니다.</item>
+  </plurals>
+
+    <!-- Shown as a notification on the system bar to alert user that some of their sessions are about to begin. -->
+    <plurals name="session_notification_ticker">
+    <item quantity="other">%d 세션을 시작하려 합니다.</item>
+  </plurals>
+
+    <!-- Title for the notification that alerts the user that some of their sessions are about to begin. -->
+    <plurals name="session_notification_title">
+    <item quantity="other">
+      <xliff:g id="num_sessions">%2$d</xliff:g>개 세션이 <xliff:g id="remaining_time">%1$d</xliff:g>분에 시작합니다.</item>
+  </plurals>
+
+    <!-- Shown in the 'About' window of the app. -->
+    <string name="about_body">&lt;b&gt;Google I/O 2014&lt;/b&gt;&lt;br&gt; 버전 %s&lt;br&gt;&lt;br&gt; &lt;a href=http://m.google.com/utos&gt;서비스 계약&lt;/a&gt;&lt;br&gt;&lt;br&gt; &lt;a href=http://www.google.com/policies/privacy/&gt;개인 정보 취급 방침&lt;/a&gt;</string>
+
+    <!-- Shown as a link in the About screen of the app; user can click to see the EULA. -->
+    <string name="about_eula">최종 사용자 사용권 계약</string>
+
+    <!-- Shown as a link in the About screen of the app; user can click it to see the licenses. -->
+    <string name="about_licenses">오픈소스 라이센스</string>
+
+    <!-- Label on a button that the user clicks to accept a license agreement. -->
+    <string name="accept">수락</string>
+
+    <!-- Label on a button that, when clicked, allows user to add an account to the device. -->
+    <string name="add_account">계정 추가</string>
+
+    <!-- Label on a button that, when clicked, adds the currently displayed session to their schedule. -->
+    <string name="add_to_schedule">일정에 추가</string>
+
+    <!-- Accessibility description for a button that, when clicked, adds the currently
+    displayed session to the user's schedule. -->
+    <string name="add_to_schedule_desc">일정에 세션을 추가하는 버튼</string>
+
+    <!-- Shown in a drop-down list on the main screen, indicating that all conference sessions
+    are being displayed. -->
+    <string name="all_sessions">모든 세션</string>
+
+    <!-- Shown in a drop-down list on the main screen, indicating that all conference themes
+    are being displayed. Themes are major categories for sessions (the themes are Design,
+    Develop and Distribute). -->
+    <string name="all_themes">모든 테마</string>
+
+    <!-- Shown in a drop-down list on the main screen, indicating that all conference topics
+    are being displayed. Topics are major categories for sessions (example topics are: Android,
+    Chrome, Google APIs, Wearables, etc). -->
+    <string name="all_topics">모든 주제</string>
+
+    <!-- Shown in a drop-down list on the main screen, indicating that all session types
+    are being displayed. Some examples of session types are: session, office hours, code lab. -->
+    <string name="all_types">모든 유형</string>
+
+    <!-- Shown in a drop-down list on the Video Library screen, indicating that videos from all
+    I/O years are being displayed. -->
+    <string name="all_years">모든 년도</string>
+
+    <!-- Name of the application, shown in the application's title bar. -->
+    <string name="app_name">Google I/O 2014</string>
+
+    <!-- Label on a button that is one possible answer to the question "Are you attending the
+    conference in person in San Francisco or remotely via livestream?" -->
+    <string name="attending_in_person">직접 참석</string>
+
+    <!-- Label on a button that is one possible answer to the question "Are you attending the
+    conference in person in San Francisco or remotely via livestream?" -->
+    <string name="attending_remotely">원격 연결</string>
+
+    <!-- Label on a button that allows the user to browse Google I/O Extended events that they
+    might be interested in attending. -->
+    <string name="browse_events">이벤트 가져오기</string>
+
+    <!-- Label on a button that allows the user to see what conference sessions are available
+    at a particular time. -->
+    <string name="browse_sessions">세션 가져오기...</string>
+
+    <!-- Shown on Configure WiFi dialog, instructing user on what button to click. -->
+    <string name="calltoaction_wifi_configure">&lt;br&gt;&lt;br&gt;계속하려면 \'Wi-Fi 네트워크 추가\'를 누릅니다.</string>
+
+    <!-- Shown on Configure WiFi dialog, instructing user on what button to click. -->
+    <string name="calltoaction_wifi_settings">&lt;br&gt;&lt;br&gt;Wi-Fi를 사용하려면 \'Wi-Fi 설정 열기\'를 누릅니다.</string>
+
+    <!-- Accessibility description for a button that allows the user to close a session details pane. -->
+    <string name="close_detail_pane">세부 정보 창 닫기</string>
+
+    <!-- Label on a button that allows the user to cancel an operation before it starts. For
+    example, this may be a button on a dialog that says "This will delete your data." -->
+    <string name="cancel">취소</string>
+
+    <!-- Text on a warning box that appears to warn the user they are viewing data that hasn't
+    been updated by the server recently, so it might be out of date.-->
+    <string name="data_stale_warning">지금 보고 계신 데이터는 업데이트 되지 않은 정보입니다.</string>
+
+    <!-- Shown as the title of the user's schedule for today -->
+    <string name="day_title_today">오늘</string>
+
+    <!-- Shown as the title of the user's schedule for tomorrow -->
+    <string name="day_title_tomorrow">내일</string>
+
+    <!-- Shown as the title of the user's schedule for yesterday -->
+    <string name="day_title_yesterday">어제</string>
+
+    <!-- Label on a button that the user clicks to decline something (for example, a license
+    agreement). -->
+    <string name="decline">거부</string>
+
+    <!-- Menu item that brings up the application's About screen -->
+    <string name="description_about">정보</string>
+
+    <!-- Menu item that allows user to add a session to their schedule -->
+    <string name="description_add_schedule">일정에 추가</string>
+
+    <!-- Menu item that allows the user to send feedback about the application to Google. This
+    says 'App Feedback' to clarify that it's feedback about the application, and not about a
+    session. -->
+    <string name="description_app_feedback">앱 피드백</string>
+
+    <!-- Menu item that allows the user to send feedback about the application to Google -->
+    <string name="description_app_feedback_old">피드백</string>
+
+    <!-- Menu item that, when clicked, shows the captions on a video. -->
+    <string name="description_captions">자막</string>
+
+    <!-- Menu item that allows user to configure the conference WiFi on their device. -->
+    <string name="description_configure_wifi">Wi-Fi 구성</string>
+
+    <!-- Menu item that takes the user to a page that shows a list of Google I/O Extended events. -->
+    <string name="description_i_o_extended">I/O 확장</string>
+
+    <!-- Menu item that takes the user to the conference venue map screen -->
+    <string name="description_map">지도</string>
+
+    <!-- Menu item that allows user to turn on or turn off the output of a video to a
+    second screen. -->
+    <string name="description_presentation">화면 출력 전환</string>
+
+    <!-- Menu item that allows user to reload the data in the current screen so they see
+    the most up-to-date version from the server. -->
+    <string name="description_refresh">새로 고침</string>
+
+    <!-- Menu item that allows the user to remove the currently session from their schedule. -->
+    <string name="description_remove_schedule">일정에서 제거</string>
+
+    <!-- Menu item that allows the user to start a search for a session by name. After clicking,
+    they type in their search query. -->
+    <string name="description_search">검색</string>
+
+    <!-- Menu item that takes the user to the application's Settings screen -->
+    <string name="description_settings">설정</string>
+
+    <!-- Explanation of wifi setup that appears in the WiFi setup dialog box. -->
+    <string name="description_setup_wifi_body">직접 참석했기 때문에 이 장치가 회의 Wi-Fi 네트워크를 액세스하도록 설정할 수 있습니다 (5Ghz). 지금 Wi-Fi를 구성하면 네트워크 혼잡을 피할 수 있습니다.</string>
+
+    <!-- Menu item that allows user to share the currently displayed session. Sharing can be done
+    by email, social networks, etc. -->
+    <string name="description_share">공유</string>
+
+    <!-- Menu item that allows the user to view the Google+ stream about a particular topic. This
+    appears as a menu item on a Sesssion screen, and opens the Google+ app to show the Google+
+    posts about that session's topic. -->
+    <string name="description_social_stream">Google+ 스트림 보기</string>
+
+    <!-- Accessibility description saying that the app's navigation drawer has been closed -->
+    <string name="drawer_close">내비게이션 서랍 닫힘</string>
+
+    <!-- Accessibility description saying that the app's navigation drawer has been opened -->
+    <string name="drawer_open">내비게이션 서랍 열기</string>
+
+    <!-- Shown when trying to watch a video of a session, alerting user that no captions are
+    available for that video. -->
+    <string name="empty_captions">이 세션에서 자막을 찾을 수 없습니다.</string>
+
+    <!-- Shown on the Session page, alerting user that no details could be found for that session. -->
+    <string name="empty_session_detail">세션 세부 정보가 없습니다.</string>
+
+    <!-- Shown on the session search page, alerting user that no conference sessions could be found. -->
+    <string name="empty_sessions">세션이 없습니다.</string>
+
+    <!-- Shown on several screens alerting user that no data is being shown because a background
+    data synchronization is still in progress. Data will show as soon as the sync ends. -->
+    <string name="empty_waiting_for_sync">동기화를 기다리는 중...</string>
+
+    <!-- Shown on a widget that normally displays upcoming sessions. This is shown after the
+    conference, when there are no more sessions to show. -->
+    <string name="empty_widget_text">예정된 세션이 더 이상 없습니다.\n내년에 뵙겠습니다!</string>
+
+    <!-- Shown on a widget instructing user how to start using the widget. -->
+    <string name="empty_widget_text_signed_out">앱에 로그인해 사용을 시작하려면 위에 있는 Google I/O 2014 로고를 누릅니다.</string>
+
+    <!-- Shown as a header on a list of sessions to indicate that the sessions that appear on that
+    group have already ended. -->
+    <string name="ended_sessions">종료된 세션</string>
+
+    <!-- Label for a button that, when clicked, allows the user to send their feedback (ratings
+    and comments) about a particular session. -->
+    <string name="give_feedback">예</string>
+
+    <!-- Error message that shows when the user tries to use the app without a Google account
+    configured on their device. -->
+    <string name="google_account_required_message">이 애플리케이션을 사용하려면 장치에 하나 이상의 Google 계정이 있어야 합니다.</string>
+
+    <!-- Title for an error message that appears when the user tries to use the app without
+    a Google account configured on their device. -->
+    <string name="google_account_required_title">Google 계정 필요</string>
+
+    <!-- List dropdown item on the Video Library screen allowing the user to choose to see
+    the videos from a particular year of Google I/O. -->
+    <string name="google_i_o_year">I/O <xliff:g id="year">%1$d</xliff:g>
+  </string>
+
+    <!-- Label on a button that the user can click to dismiss an reminder or information message.
+    For example "To scan an attendee's badge, hold your phone close to the badge for a few
+    seconds." -->
+    <string name="got_it">확인</string>
+
+    <!-- Short text appended to the end of the session subtitle when the session will be live
+    streamed. Constrained to 10 chars because the session subtitle should be small enough to fit
+    into the explore cards. [CHAR_LIMIT=10] -->
+    <string name="live_available">생방송</string>
+
+    <!-- Short text appended to the end of the session subtitle when the session is currently being
+    streamed. Also used in a "LIVE" badge overlay that shows up on top of the session card.
+    Constrained because the session subtitle should be small enough to fit into the
+    explore cards. [CHAR_LIMIT=10] -->
+    <string name="live_now">생방송 중</string>
+
+    <!-- Message presented while data is loading in Explore view -->
+    <string name="loading">로드 중...</string>
+
+    <!-- Message shown in an error bar when user could not be logged in. [CHAR_LIMIT=75] -->
+    <string name="login_failed_text">오류가 발생하여 세션 정보를 동기화 하지 못했습니다.</string>
+
+    <!-- Button to retry a failed login attempt [CHAR_LIMIT=2 lines of 9 characters].
+    If using multiple lines, separate them with "\n" ("Tentar\nde novo" for example)
+    -->
+    <string name="login_failed_text_retry">다시 시도</string>
+
+    <!-- Message shown in a popup to request a mandatory upgrade -->
+    <string name="mandatory_update_error">애플리케이션이 이전 버전입니다. 계속 사용하려면 업그레이드해야 합니다.</string>
+
+    <!-- Message shown in a popup to indicate that there is a mandatory upgrade -->
+    <string name="update_available">Google Play에서 이 애플리케이션의 새 버전을 사용할 수 있습니다.</string>
+
+    <!-- Message shown in a map popup to indicate the next session.
+      Param %1$s: time of the next session
+      Param %2$s: title of the next session
+     -->
+    <string name="map_at">&lt;b&gt;%2$s&lt;/b&gt; 시간:&lt;br&gt;%1$s</string>
+
+    <!-- Indicator shown when there is no upcoming session in a room -->
+    <string name="map_infowindow_text_empty">-</string>
+
+    <!-- Message shown in a map popup to indicate the current session.
+      Param %1$s: title of the next session
+     -->
+    <string name="map_now_playing">재생 중:&lt;br&gt;&lt;b&gt;%1$s&lt;/b&gt;</string>
+
+    <!-- Clickable text in the map popup that leads to sessions in a room -->
+    <string name="map_touch_to_see_session">세션을 보려면 누릅니다.</string>
+
+    <!-- Text on a button that allows the user to browse more sessions -->
+    <string name="more_sessions">세션 더 보기</string>
+
+    <!-- Accessibility description for tab that shows the attendee's schedule for a given day. -->
+    <string name="my_schedule_tab_desc_a11y">
+    <xliff:g id="day">%1$s</xliff:g>일 일정을 보려면 누릅니다.</string>
+
+    <!-- Accessibility announcement to alert user that they are now viewing their schedule of a given day. -->
+    <string name="my_schedule_page_desc_a11y">
+    <xliff:g id="day">%1$s</xliff:g>일 일정을 표시합니다.</string>
+
+    <!-- Accessibility description for navigation drawer -->
+    <string name="navdrawer_description_a11y">내비게이션 서랍. 이 서랍에는 애플리케이션의 다양한 화면을 보관할 수 있는 단추가 있습니다.</string>
+
+    <!-- Menu item to send feedback about the app [CHAR_LIMIT=20] -->
+    <string name="navdrawer_item_app_feedback">앱 피드백</string>
+
+    <!-- Accessibility description for menu item to send feedback about the app -->
+    <string name="navdrawer_item_app_feedback_a11y">앱 피드백</string>
+
+    <!-- Menu item to open the Experts screen [CHAR_LIMIT=20] -->
+    <string name="navdrawer_item_experts_directory">전문가</string>
+
+    <!-- Accessibility description for menu item to open the Experts screen. -->
+    <string name="navdrawer_item_experts_directory_a11y">전문가 디렉토리</string>
+
+    <!-- Menu item to open the Explore screen [CHAR_LIMIT=20] -->
+    <string name="navdrawer_item_explore">탐색</string>
+
+    <!-- Accessibility description for menu item to open the Explore screen. -->
+    <string name="navdrawer_item_explore_a11y">Google I/O 탐색</string>
+
+    <!-- Menu item to open the Map screen [CHAR_LIMIT=20] -->
+    <string name="navdrawer_item_map">지도</string>
+
+    <!-- Menu item to open the My Schedule screen [CHAR_LIMIT=20] -->
+    <string name="navdrawer_item_my_schedule">내 일정</string>
+
+    <!-- Menu item to open the People I've Met screen [CHAR_LIMIT=20] -->
+    <string name="navdrawer_item_people_ive_met">만난 사람</string>
+
+    <!-- Accessibility description of item to open the People I've Met screen -->
+    <string name="navdrawer_item_people_ive_met_a11y">만난 사람</string>
+
+    <!-- Menu item to open the Settings screen [CHAR_LIMIT=20] -->
+    <string name="navdrawer_item_settings">설정</string>
+
+    <!-- Menu item to start the Sign In flow [CHAR_LIMIT=20] -->
+    <string name="navdrawer_item_sign_in">로그인</string>
+
+    <!-- Menu item to open a screen that lists I/O related hashtags. Each hashtag, when clicked, will
+    open Google+ stream of posts that uses the hashtag [CHAR_LIMIT=20] -->
+    <string name="navdrawer_item_social">소셜</string>
+
+    <!-- Menu item to open a list of current and past I/O videos [CHAR_LIMIT=20] -->
+    <string name="navdrawer_item_video_library">비디오 라이브러리</string>
+
+    <!-- Text indicator that appears below the user's name, showing that they are
+    attending the conference in person in San Francisco. -->
+    <string name="navdrawer_status_attending_in_person">I/O에 직접 참석</string>
+
+    <!-- Text indicator that appears below the user's name, showing that they are
+    attending the conference remotely via live streaming. -->
+    <string name="navdrawer_status_attending_remotely">I/O에 원격으로 참석</string>
+
+    <!-- Message shown in a toast (popup) when the user clicks to change the active account but
+    there is no network connection -->
+    <string name="no_connection_cant_login">로그인할 수 없습니다. 네트워크 연결을 확인하십시오.</string>
+
+    <!-- Message shown in the session explorer when the user applies a filter that results no
+    session -->
+    <string name="no_matching_sessions">일치하는 세션이 없습니다.</string>
+
+    <!-- Message shown in the session explorer when the user selects a time slot that has no
+    session  -->
+    <string name="no_matching_sessions_in_interval">이 시간 슬롯에서 사용할 수 있는 세션이 없습니다.</string>
+
+    <!-- Message shown in the video library when the user applies a filter that results no video -->
+    <string name="no_matching_videos">일치하는 비디오가 없습니다.</string>
+
+    <!-- Button of a card in session or session explorer that dismiss the card.
+    One sample of such card is "How was this session? We would love to hear your feedback"  with
+    "Give feedback" and "No, thanks" as buttons. [CHAR_LIMIT=20]-->
+    <string name="no_thanks">아니오. 괜찮습니다.</string>
+
+    <!-- Button of a popup that shows up when the user has no Google account registered in the
+    device. The popup says that the user needs to have at least one Google account registered in the
+    device to be able to use the app. [CHAR_LIMIT=20] -->
+    <string name="not_now">지금 하지 않음</string>
+
+    <!-- Number in a scale of 1 to 5 used to rate a session [CHAR_LIMIT=2]-->
+    <string name="number_1">1</string>
+
+    <!-- Number in a scale of 1 to 5 used to rate a session [CHAR_LIMIT=2]-->
+    <string name="number_2">2</string>
+
+    <!-- Number in a scale of 1 to 5 used to rate a session [CHAR_LIMIT=2]-->
+    <string name="number_3">3</string>
+
+    <!-- Number in a scale of 1 to 5 used to rate a session [CHAR_LIMIT=2]-->
+    <string name="number_4">4</string>
+
+    <!-- Number in a scale of 1 to 5 used to rate a session [CHAR_LIMIT=2]-->
+    <string name="number_5">5</string>
+
+    <!-- A single button shown on informative popups, like EULA, open source licenses and About -->
+    <string name="ok">확인</string>
+
+    <!-- Header for a group of sessions in Session Explorer that don't fit into other tag-based groups -->
+    <string name="others">기타</string>
+
+    <!-- An application permission (this permission allows the application to modify the Google
+    I/O schedule data). Shows on a permissions dialog screen. -->
+    <string name="permission_write">Google I/O 일정 데이터 수정</string>
+
+    <!-- Description of the Google+ +1 button for accessibility screen readers -->
+    <string name="plus_one_description_standard">하나를 더하려면 누릅니다.</string>
+
+    <!-- Title in the Settings screen for the setting that enables sending of anonymous usage
+    statistics to Google. This title will be accompanied by a longer description
+    of the setting, so it does not need to be too verbose. [CHAR_LIMIT=40] -->
+    <string name="pref_analytics_enabled_title">사용 통계 익명으로 전송</string>
+
+    <!-- Description in the Settings screen for the setting that enables sending of anonymous usage
+    statistics to Google. -->
+    <string name="pref_analytics_enabled_description">이 옵션을 선택하면 사용 통계가 익명으로 Google에 전송됩니다.</string>
+
+    <!-- Summary in the Settings screen for the "I will be at Google I/O" option -->
+    <string name="pref_attendee_at_venue_description">확인 표시를 하면 모든 세션과 현장 이벤트가 표시됩니다.\n확인 표시를 하지 않으면 생방송 세션만 표시됩니다.</string>
+
+    <!-- Title in the Settings screen for the "I will be at Google I/O" option -->
+    <string name="pref_attendee_at_venue_title">Google I/O에 있습니다!</string>
+
+    <!-- Summary in the Settings screen for the "Show local times" option -->
+    <string name="pref_local_times_description">확인 표시를 하면 장치에 설정된 지역 시간으로 시간이 표시됩니다. 확인 표시를 하지 않으면 회의의 지역 시간인 PDT로 시간이 표시됩니다.</string>
+
+    <!-- Title in the Settings screen for the "Show local times" option -->
+    <string name="pref_local_times_title">지역 시간 표시</string>
+
+    <!-- Summary in the Settings screen for the "Notify me to send feedback about my sessions" option -->
+    <string name="pref_notify_feedback_description">확인 표시를 하면 선택한 세션에 대한 피드백을 요청하는 알림 메시지가 표시됩니다.</string>
+
+    <!-- Title in the Settings screen for the "Notify me to send feedback about my sessions" option -->
+    <string name="pref_notify_feedback_title">피드백 보내기 알림</string>
+
+    <!-- Summary in the Settings screen for the "Notify me when my sessions are about to begin" option -->
+    <string name="pref_notify_starred_sessions_description">확인 표시를 하면 선택한 세션이 시작될 때 알림 메시지가 표시됩니다.</string>
+
+    <!-- Title in the Settings screen for the "Notify me when my sessions are about to begin" option -->
+    <string name="pref_notify_starred_sessions_title">세션 시작 알림</string>
+
+    <!-- Title in the Settings screen for the "Synchronize my schedule with Google Calendar" option -->
+    <string name="pref_sync_with_calendar_description">확인 표시를 하면 선택한 세션이 Google 캘린더에 자동으로 동기화됩니다.</string>
+
+    <!-- Summary in the Settings screen for the "Synchronize my schedule with Google Calendar" option -->
+    <string name="pref_sync_with_calendar_title">구글 캘린더와 동기화</string>
+
+    <!-- Text of a card shown in the session explorer that asks the user if he wants to see I/O
+    extended events in his area. "Browse events" and "No, thanks" are the buttons shown in the card -->
+    <string name="question_i_o_extended">귀하의 지역 근처에서 열리는 I/O 확장 이벤트에 대한 추가 정보를 알고 싶나요?</string>
+
+    <!-- Text of a card shown in the session explorer that asks the user if he will be attending I/O
+    in person or remotely. "Remotely" and "In person" are the buttons shown in the card -->
+    <string name="question_local_or_remote">샌프란시스코에서 열리는 I/O에 원격 또는 직접 참가하시겠습니까?</string>
+
+    <!-- Text of a card shown in the session explorer after I/O has started that asks the user if
+    he wants to configure the WiFi. "Yes!" and "No, thanks" are the buttons shown in the card -->
+    <string name="question_setup_wifi_after_i_o_start">Google I/O에 오셨습니다! 지금 회의 WiFi를 구성하시겠습니까?</string>
+
+    <!-- Text of a card shown in the session explorer before I/O has started that asks the user if
+    he wants to configure the WiFi. "Yes!" and "No, thanks" are the buttons shown in the card -->
+    <string name="question_setup_wifi_before_i_o_start">Google I/O가 다가오고 있습니다. 지금 회의 WiFi를 구성하시겠습니까?</string>
+
+    <!-- Section title for videos related to a particular event session -->
+    <string name="related_videos">관련 비디오</string>
+
+    <!-- Button text indicating the session is in the user's schedule -->
+    <string name="remove_from_schedule">일정</string>
+
+    <!-- Accessibility content description for button used to remove the session from the user's schedule -->
+    <string name="remove_from_schedule_desc">일정에서 세션을 제거하는 단추입니다.</string>
+
+    <!-- Button label allowing users to retry a failed operation -->
+    <string name="retry">다시 시도</string>
+
+    <!-- Text hint that shows when a session is in conflict with a session already on the user's schedule -->
+    <string name="schedule_conflict_with_previous">(충돌)</string>
+
+    <!-- Indicates the ending block of a session time. Used in a text fragment like "8:00 AM to 9:00 AM" [CHAR_LIMIT=4 (excluding placeholders)]-->
+    <string name="schedule_end_time">- <xliff:g id="endTime">%1$s</xliff:g>
+  </string>
+
+    <!-- -->
+    <string name="schedule_session_subtitle">
+    <xliff:g id="speakers">%1$s</xliff:g>\n<xliff:g id="room">%2$s</xliff:g>
+  </string>
+
+    <!-- Hint that the user can search across sessions -->
+    <string name="search_hint">세션 검색</string>
+
+    <!-- Search label that shows the type of data being searched for when the user clicks the
+    Search button. -->
+    <string name="search_label">Google I/O 세션</string>
+
+    <!-- A fragment of text appended to a Google calendar event indicating it was added by this application -->
+    <string name="session_calendar_suffix">- Google I/O Android 앱이 추가함</string>
+
+    <!-- Accessibility text announced as a response to pressing a button to add a session to the schedule. -->
+    <string name="session_details_a11y_session_added">일정에 세션이 추가되었습니다.</string>
+
+    <!-- Accessibility text announced as a response to pressing a button to remove a session from the schedule. -->
+    <string name="session_details_a11y_session_removed">일정에서 세션이 제거되었습니다.</string>
+
+    <!-- A session feedback option indicating the content was too advanced -->
+    <string name="session_feedback_advanced">너무 빠름</string>
+
+    <!-- A session feedback option indicating the content was too basic -->
+    <string name="session_feedback_basic">너무 기초적</string>
+
+    <!-- Session feedback section title -->
+    <string name="session_feedback_content">내용:</string>
+
+    <!-- A positive overall session feedback option -->
+    <string name="session_feedback_great">대단합니다!</string>
+
+    <!-- A negative overall session feedback option -->
+    <string name="session_feedback_notgreat">그냥 그래요.</string>
+
+    <!-- Notification text asking the user to provide feedback for a particular session -->
+    <string name="session_feedback_notification_text">%1$s에 대한 피드백 제공</string>
+
+    <!-- Notification ticker text asking the user to provide session feedback -->
+    <string name="session_feedback_notification_ticker">세션 피드백 제공</string>
+
+    <!-- A negative relevance session feedback option -->
+    <string name="session_feedback_notrel">적절하지 않음</string>
+
+    <!-- A session feedback section label asking for any other feedback. It indicates the user should not add personal information -->
+    <string name="session_feedback_other">우리가 더 알아야 할 것이 있습니까?\n(덧글에 개인 정보를 입력하지 마십시오.)</string>
+
+    <!-- A positive speaker quality session feedback option -->
+    <string name="session_feedback_outstanding">아주 좋습니다.</string>
+
+    <!-- A negative speaker quality session feedback option -->
+    <string name="session_feedback_poor">좋지 않습니다.</string>
+
+    <!-- A positive relevance session feedback option -->
+    <string name="session_feedback_rel">적당합니다.</string>
+
+    <!-- A session feedback section label asking for the session's relevance to the user's projects -->
+    <string name="session_feedback_relevance">이 세션이 귀하의 프로젝트에 얼마나 적절한가요?</string>
+
+    <!-- A session feedback section label asking for the speaker's quality -->
+    <string name="session_feedback_speaker_quality">발표자 수준:</string>
+
+    <!-- Button text for submitting session feedback -->
+    <string name="session_feedback_submitlink">피드백 제출</string>
+
+    <!-- Hint for adding other session feedback -->
+    <string name="session_feedback_tell_us">알려 주십시오!</string>
+
+    <!-- Text indicating the session has ended -->
+    <string name="session_finished">종료됨</string>
+
+    <!-- Card text asking the user to provide session feedback -->
+    <string name="session_give_feedback_message">이 세션은 어떠셨나요? 세션 피드백을 보내시겠습니까?</string>
+
+    <!-- Link text for the user to watch a live video stream of the session -->
+    <string name="session_link_livestream">생방송 보기</string>
+
+    <!-- Link text taking the user to the session's Google Moderator page -->
+    <string name="session_link_moderator">중재자</string>
+
+    <!-- Link text taking the user to the session's notes page -->
+    <string name="session_link_notes">공식 주석</string>
+
+    <!-- Link text taking the user to the session's slides page -->
+    <string name="session_link_pdf">슬라이드</string>
+
+    <!-- Link text taking the user to the session's YouTube page -->
+    <string name="session_link_youtube">YouTube 비디오</string>
+
+    <!-- Text indicating additional session links -->
+    <string name="session_links">더 보기</string>
+
+    <!-- Card text indicating the session is being broadcast right now and is available on live stream -->
+    <string name="session_live_now_message">이 세션은 지금 실시간으로 방송됩니다! 라이브 스트림으로 시청하시겠습니까?</string>
+
+    <!-- Short text indicating the session's live stream is live -->
+    <string name="session_livestream_block">라이브!</string>
+
+    <!-- Tab text on the session livestream to view captions -->
+    <string name="session_livestream_captions">자막</string>
+
+    <!-- Toast error message indicating an issue with the YouTube player -->
+    <string name="session_livestream_error_init">YouTube 플레이어를 초기화하는 도중 오류가 발생했습니다. (%1$s)</string>
+
+    <!-- Toast error message indicating an issue with YouTube playback -->
+    <string name="session_livestream_error_playback">라이브 스트림을 로드하는 도중 오류가 발생했습니다. 나중에 다시 시도하십시오.</string>
+
+    <!-- Tab text on the session livestream to view info -->
+    <string name="session_livestream_info">정보</string>
+
+    <!-- Hint for a play/pause video button -->
+    <string name="session_livestream_play_pause">재생/일시 정지</string>
+
+    <!-- Actionbar title for I/O Live -->
+    <string name="session_livestream_title">I/O 라이브</string>
+
+    <!-- Notification text that a session is starting in some number of minutes -->
+    <string name="session_notification_text_1">
+    <xliff:g id="remaining_time">%1$d</xliff:g>분에 시작합니다.</string>
+
+    <!-- Short text indicating that the session is currently happening -->
+    <string name="session_now">지금</string>
+
+    <!-- A session feedback section label asking the user to rate the session overall -->
+    <string name="session_rating_label">이 세션을 전체적으로 평가:</string>
+
+    <!-- Label for a session section listing the requirements for the session -->
+    <string name="session_requirements">요구 사항</string>
+
+    <!-- Label for a session section listing the presenters at the session -->
+    <string name="session_speakers">발표자</string>
+
+    <!-- Subtitle of a session indicating time interval and room number -->
+    <string name="session_subtitle">
+    <xliff:g id="room">%2$s</xliff:g>의 <xliff:g id="time">%1$s</xliff:g>
+  </string>
+
+    <!-- Short subtitle for a session indicating time interval -->
+    <string name="session_subtitle_short">
+    <xliff:g id="time">%1$s</xliff:g>
+  </string>
+
+    <!-- Button text indicating the user would like us to set up wifi access -->
+    <string name="setup_wifi_yes">예!</string>
+
+    <!-- Re-share template text indicating the user is watching I/O Live -->
+    <string name="share_livestream_template">I/O 라이브 시청: <xliff:g id="hashtags">%2$s</xliff:g> <xliff:g id="url">%3$s</xliff:g>의 \'<xliff:g id="title">%1$s</xliff:g>\'</string>
+
+    <!-- Re-share template text indicating the user is at a particular session -->
+    <string name="share_template">
+    <xliff:g id="hashtags">%2$s</xliff:g> <xliff:g id="url">%3$s</xliff:g>의 \'<xliff:g id="title">%1$s</xliff:g>\' 확인</string>
+
+    <!-- Notification action text for snoozing the notification for some number of minutes -->
+    <string name="snooze_x_min">
+    <xliff:g id="remaining_time">%1$d</xliff:g>분 지연되고 있습니다.</string>
+
+    <!-- Introductory text for a screen that shows several hashtags the user can click on to
+    see the corresponding stream on the Google+ application. -->
+    <string name="social_intro">Google+에서 대화에 참여하려면 해시 태그를 클릭합니다.</string>
+
+    <!-- Speaker image content description -->
+    <string name="speaker_googleplus_profile">Google+ 프로필: <xliff:g id="speakername">%1$s</xliff:g>
+  </string>
+
+    <!-- Short text label indicating a grouping of themes -->
+    <string name="themes">테마</string>
+
+    <!-- Text indicating the session is going to start in some number of minutes -->
+    <string name="time_hint_about_to_start_min">이 세션은 <xliff:g id="minutes">%1$d</xliff:g>분 내에 시작합니다.</string>
+
+    <!-- Text indicating the session is going to start in less than 1 minute -->
+    <string name="time_hint_about_to_start_shortly">이 세션이 시작됩니다. (1분 이내)</string>
+
+    <!-- Text indicating the session has ended -->
+    <string name="time_hint_session_ended">이 세션이 종료됩니다.</string>
+
+    <!-- Text indicating the session just started -->
+    <string name="time_hint_started_just">이 세션이 진행 중입니다! (방금 시작됨)</string>
+
+    <!-- Text indicating the session is in progress but has not completed -->
+    <string name="time_hint_started_min">이 세션이 진행 중입니다! (<xliff:g id="minutes">%1$d</xliff:g>분 전에 시작됨)</string>
+
+    <!-- Explanation text shown below the user's schedule clarifying the timezone used for display.
+    For example, 'All times shown in UTC-7' -->
+    <string name="times_shown_in_tz">모든 시간은 <xliff:g id="timezone">%1$s</xliff:g>(으)로 표시됩니다.</string>
+
+    <!-- Title text for dialog screen about the application -->
+    <string name="title_about">정보</string>
+
+    <!-- Navigation bar text for exploring the sessions -->
+    <string name="title_explore">탐색</string>
+
+    <!-- Navigation bar text for the map -->
+    <string name="title_map">지도</string>
+
+    <!-- Navigation bar text for viewing the user's schedule -->
+    <string name="title_my_schedule">내 일정</string>
+
+    <!-- Navigation bar text for viewing Office Hours -->
+    <string name="title_office_hours">근무 시간</string>
+
+    <!-- Map breadcrumb text for navigating company showcase entries -->
+    <string name="title_sandbox_detail">회사 정보</string>
+
+    <!-- Label for Search screen, that allows users to search for sessions. -->
+    <string name="title_search">검색</string>
+
+    <!-- Map breadcrumb text for navigating session entries -->
+    <string name="title_session_detail">세션 정보</string>
+
+    <!-- Label for SessionFeedback activity -->
+    <string name="title_session_feedback">세션 피드백</string>
+
+    <!-- Label for Settings activity -->
+    <string name="title_settings">설정</string>
+
+    <!-- Chooser dialog text when the user is selecting an application with which to share something -->
+    <string name="title_share">공유:</string>
+
+    <!-- Label for Social activity -->
+    <string name="title_stream">스트림</string>
+
+    <!-- Label for VideoLibrary activity -->
+    <string name="title_video_library">비디오 라이브러리</string>
+
+    <!-- Label for exploration category which groups session topics -->
+    <string name="topics">주제</string>
+
+    <!-- Label for exploration category which groups session types -->
+    <string name="types">유형</string>
+
+    <!-- Text for a session subtitle indicating it does not have a room specified -->
+    <string name="unknown_room">(지정되지 않은 회의실)</string>
+
+    <!-- Label on a button that, when clicked, will let the user update the application to
+    a newer version. -->
+    <string name="update_app">앱 업데이트</string>
+
+    <!-- Text for a button which allows the user to watch this particular session on live stream. -->
+    <string name="watch_now">지금 시청!</string>
+
+    <!-- Medium-length welcome text indicating the subsequent text is important legal information -->
+    <string name="welcome_text">시작하기 전에 이 앱 사용과 관련된 중요한 법률 정보를 읽으시기 바랍니다. 1분이면 다 읽을 수 있습니다!</string>
+
+    <!-- Short text welcoming the user to the application -->
+    <string name="welcome_to_google_i_o_app">Google I/O 앱을 시작합니다!</string>
+
+    <!-- Text for a button which will add a wi-fi network -->
+    <string name="wifi_dialog_button_configure">WiFi 네트워크 추가</string>
+
+    <!-- Text for a button which will open the user's Wi-Fi settings -->
+    <string name="wifi_dialog_button_settings">WiFi 설정 열기</string>
+
+    <!-- Toast failure message if the user's wifi couldn't be updated -->
+    <string name="wifi_install_error_message">WiFi 구성을 업데이트할 수 없습니다.</string>
+
+    <string name="experts_directory_all_cities">모든 도시</string>
+    <string name="experts_directory_all_countries">모든 국가</string>
+    <string name="experts_directory_attending">I/O 참석</string>
+    <string name="experts_directory_header_body">구글 개발자 전문가(GDE) 타이틀은 하나 이상의 구글 기술 분야에 대해 상당한 전문 지식을 보유하고 있고 그것을 개발자 커뮤니티와 공유하는 훌륭한 개발자들을 공인합니다. 구글 개발자 전문가들은 권위자이고 멘토이며 전도자입니다. 그들은 지침서와 코드 샘플을 만들고 책과 블로그를 씁니다. 동영상을 게시하고 커뮤니티 프로젝트를 추진하며 크고 작은 행사에 참여하고 있습니다. 이러한 독립 개발자들은 구글의 기술을 이용하여 일하며 전 세계 개발자 커뮤니티에 자신의 실제 경험과 지식을 제공합니다.</string>
+    <string name="experts_directory_header_dismiss">확인</string>
+    <string name="experts_directory_header_title">구글 개발자 전문가에 대하여</string>
+    <string name="explore_attending_in_person_toast">직접 I/O 참석(설정에서 변경할 수 있습니다)</string>
+    <string name="explore_attending_remotely_toast">원격으로 I/O 참석(설정에서 변경할 수 있습니다)</string>
+    <string name="go_to_settings">설정으로 이동</string>
+    <string name="map_infowindow_partner_seemore">더 자세한 내용을 보려면 터치하세요</string>
+    <string name="map_nearby_button">근처</string>
+    <string name="more_information">추가 정보</string>
+    <string name="nearby_eula_header">PhysicalWeb 실험</string>
+    <string name="no_matching_partner">일치하는 파트너가 없습니다.</string>
+    <string name="no_nearby_urls">귀하의 지역에 PhysicalWeb 비콘이 없습니다. 회의 동안 모스콘의 관심 지역 근처에 있을 때 다시 시도하십시오.</string>
+    <string name="people_ive_met_delete">삭제</string>
+    <string name="people_ive_met_delete_confirmation">정말로 목록에서 이 사람을 삭제하시겠습니까?</string>
+    <string name="people_ive_met_dummy_badge">이 배지는 구글플러스 프로필에 대한 링크를 포함하고 있지 않습니다</string>
+    <string name="people_ive_met_edit_note_title">참고 사항</string>
+    <string name="people_ive_met_empty">귀하는 아직 누구의 배지도 스캔하지 않았습니다. 다른 참석자와 연락처 정보를 교환하고자 하는 경우, 몇 초 동안 그 사람의 배지에 기기를 대고 있으면 그 사람의 구글플러스 프로필이 이 목록에 추가됩니다(NFC 필요).</string>
+    <string name="people_ive_met_header">귀하가 배지를 스캔한 참석자:</string>
+    <string name="people_ive_met_note">참고 사항</string>
+    <string name="physical_web_bluetooth_off">이 기능은 Bluetooth를 필요로 하는데, 기기의 Bluetooth가 꺼져 있습니다. 이 기능을 사용하시려면 기기 설정 화면에서 Bluetooth를 활성화하십시오.</string>
+    <string name="physicalweb_intro_text">이 탭은 귀하의 현재 위치(예를 들어, 협력사 웹사이트, 앱, 데모 및 대화형 콘텐츠)에 가까이 있는 회의 기능과 관련 있는 콘텐츠에 대한 링크를 표시할 수 있습니다. 이를 위해서 앱은 태그를 찾기 위해 귀하의 주위에 대한 Bluetooth 저전력(LE) 스캔을 수행하고 처리를 위해 그 정보를 구글 서버로 전송할 것입니다. 일단 활성화되면 기기의 Bluetooth가 켜져 있는 한 이 기능이 행사 내내 계속됩니다. 기능을 해제하려면 앱의 설정 메뉴로 가거나 기기에서 Bluetooth를 비활성화하십시오. 이것은 완성 제품이 아니고 Bluetooth 저전력(BLE) 실험용이기 때문에 제대로 작동하지 않을 수 있다는 점을 유념하시기 바랍니다. 네트워크 연결이 약하거나 끊어진 경우 또는 너무 많은 간섭이 있는 경우 작동하지 않을 수도 있습니다.\n\n지금 이 기능을 활성화하시겠습니까?</string>
+    <string name="physicalweb_intro_title">PhysicalWeb 실험</string>
+    <string name="pref_nearby_summary">이 옵션을 선택하면 Map 화면에서 PhysicalWeb Bluetooth 저전력 실험이 활성화되는데 이 기능은 귀하와 가까이 있는 PhysicalWeb 태그를 보여주기 위해 Bluetooth 저전력 스캔을 수행합니다(Bluetooth 필요).</string>
+    <string name="pref_nearby_title">PhysicalWeb 실험을 활성화</string>
+    <string name="title_experts_directory">전문가</string>
+    <string name="title_people_ive_met">내가 만난 사람들</string>
+</resources>

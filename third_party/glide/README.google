@@ -1,0 +1,17 @@
+URL: https://github.com/bumptech/glide/archive/50f743d619eca0df15a9edd531f54c73cadec9c4.zip
+
+Version: 50f743d619eca0df15a9edd531f54c73cadec9c4
+License: BSD
+License File: LICENSE
+
+Description:
+
+Glide is fast and efficient image loading library for Android that wraps image
+downloading, resizing, memory and disk caching, and bitmap recycling into one
+simple and easy to use interface. By default, Glide includes an implementation
+for fetching images over http based on Google's Volley project for fast,
+parallelized network operations on Android.
+
+Local Modifications:
+Removed samples and tests. Moved third party gif decoder into top level
+third_party directory.

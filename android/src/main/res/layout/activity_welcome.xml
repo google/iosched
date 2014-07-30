@@ -1,0 +1,124 @@
+<!--
+  Copyright 2014 Google Inc. All rights reserved.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+       http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+  -->
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ui.WelcomeActivity">
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:background="#e5e5e5">
+
+        <ImageView
+            android:src="@drawable/io2014_logo"
+            android:layout_width="200dp"
+            android:layout_height="100dp"
+            android:scaleType="fitCenter"
+            android:tint="#7000"
+            android:layout_gravity="center|top" />
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingTop="100dp"
+                android:paddingBottom="16dp"
+                android:paddingLeft="16dp"
+                android:paddingRight="16dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:padding="24dp"
+                    android:orientation="vertical"
+                    android:background="@drawable/card_bg"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textSize="@dimen/text_size_xlarge"
+                        android:textColor="@color/theme_primary"
+                        android:textStyle="@integer/font_textStyle_medium"
+                        android:fontFamily="@string/font_fontFamily_medium"
+                        android:text="@string/welcome_to_google_i_o_app" />
+
+                    <TextView
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="16dp"
+                        android:layout_width="match_parent"
+                        android:textColor="@color/body_text_2"
+                        android:autoLink="web"
+                        android:textSize="@dimen/text_size_medium"
+                        android:text="@string/welcome_text" />
+
+                    <TextView
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="16dp"
+                        android:layout_width="match_parent"
+                        android:textColor="@color/body_text_2"
+                        android:textSize="@dimen/text_size_medium"
+                        android:autoLink="web"
+                        android:text="@string/eula_legal_text" />
+
+                </LinearLayout>
+            </FrameLayout>
+        </ScrollView>
+
+    </FrameLayout>
+
+    <!-- Button bar -->
+    <LinearLayout
+        android:layout_height="48dp"
+        android:background="@color/theme_primary"
+        android:layout_gravity="bottom"
+        android:layout_width="match_parent">
+
+        <Button
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="match_parent"
+            android:background="?photoItemForeground"
+            android:text="@string/decline"
+            android:textColor="#8fff"
+            android:textSize="@dimen/text_size_medium"
+            android:textStyle="@integer/font_textStyle_medium"
+            android:fontFamily="@string/font_fontFamily_medium"
+            android:textAllCaps="true"
+            android:id="@+id/button_decline" />
+
+        <Button
+            android:id="@+id/button_accept"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="match_parent"
+            android:background="?photoItemForeground"
+            android:text="@string/accept"
+            android:textSize="@dimen/text_size_medium"
+            android:textStyle="@integer/font_textStyle_medium"
+            android:fontFamily="@string/font_fontFamily_medium"
+            android:textAllCaps="true"
+            android:textColor="#fff" />
+
+    </LinearLayout>
+</LinearLayout>

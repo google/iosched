@@ -1,0 +1,63 @@
+<!--
+  Copyright 2014 Google Inc. All rights reserved.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+       http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+  -->
+
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout android:id="@+id/headerbar"
+        android:layout_width="match_parent"
+        android:layout_height="?android:actionBarSize"
+        android:orientation="horizontal"
+        android:background="#e5e5e5">
+
+        <ImageButton android:id="@+id/close_button"
+            android:layout_width="48dp"
+            android:layout_height="match_parent"
+            android:background="?selectableItemBackgroundBorderless"
+            android:src="@drawable/ic_pane_close"
+            android:contentDescription="@string/close_detail_pane" />
+
+        <TextView android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="4dp"
+            android:textSize="@dimen/text_size_large"
+            android:textColor="@color/body_text_1"
+            android:gravity="center_vertical"
+            android:text="@string/partners" />
+
+    </LinearLayout>
+
+    <FrameLayout android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:id="@+id/list_container">
+
+        <com.google.samples.apps.iosched.ui.widget.CollectionView
+            android:id="@+id/collection_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:paddingLeft="@dimen/half_explore_grid_padding"
+            android:paddingRight="@dimen/half_explore_grid_padding"
+            android:paddingTop="@dimen/explore_grid_padding"
+            android:clipToPadding="false"
+            android:scrollbarStyle="outsideOverlay"
+            app:internalPadding="@dimen/explore_grid_padding" />
+    </FrameLayout>
+</LinearLayout>

@@ -1,5 +1,5 @@
 /**
- * Copyright 2012 Google
+ * Copyright 2014 Google Inc. All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,13 +15,16 @@
  */
 package com.google.android.apps.iosched.gcm.server.api;
 
+import com.google.android.apps.iosched.gcm.server.AuthHelper;
+import com.google.android.apps.iosched.gcm.server.AuthHelper.AuthInfo;
 import com.google.android.apps.iosched.gcm.server.BaseServlet;
 import com.google.android.apps.iosched.gcm.server.db.DeviceStore;
 import com.google.android.apps.iosched.gcm.server.db.models.Device;
 import com.google.android.apps.iosched.gcm.server.device.MessageSender;
 
 import java.io.IOException;
-import java.io.PrintWriter;
+import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
 import java.util.logging.Logger;
 
@@ -33,45 +36,24 @@ import javax.servlet.http.HttpServletResponse;
 @SuppressWarnings("serial")
 public class SendMessageServlet extends BaseServlet {
     private static final Logger LOG = Logger.getLogger(SendMessageServlet.class.getName());
+    private static final String SELF = "self";
 
-    /** Authentication key for incoming message requests */
-    private static final String[][] AUTHORIZED_KEYS = {
-            {"YOUR_API_KEYS_HERE", "developers.google.com"},
-            {"YOUR_API_KEYS_HERE", "googleapis.com/googledevelopers"},
-            {"YOUR_API_KEYS_HERE", "Device Key"}
-    };
+
+    /** Actions that can be executed by non admins. */
+    private static final HashSet<String> UNPRIVILEGED_ACTIONS = new HashSet<String>(
+        Arrays.asList(new String[]{"sync_schedule", "test", "sync_user"}));
+
+    @Override
+    protected void doOptions(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+      // Allow CORS requests from any domain. The response below allows
+      // preflight requests to be correctly responded.
+      resp.addHeader("Access-Control-Allow-Origin", "*");
+      resp.addHeader("Access-Control-Allow-Headers", "authorization");
+      resp.setStatus(200);
+    }
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
-
-        // Authenticate request
-        String authKey = null;
-        String authHeader = req.getHeader("Authorization");
-        String squelch = null;
-        if (authHeader != null) {
-            // Use 'Authorization: key=...' header
-            String splitHeader[] = authHeader.split("=");
-            if ("key".equals(splitHeader[0])) {
-                authKey = splitHeader[1];
-            }
-        }
-        if (authKey == null) {
-            // Valid auth key not found. Check for 'key' query parameter.
-            // Note: This is included for WebHooks support, but will consume message body!
-            authKey = req.getParameter("key");
-            squelch = req.getParameter("squelch");
-        }
-        String authorizedUser = null;
-        for (String[] candidateKey : AUTHORIZED_KEYS) {
-            if (candidateKey[0].equals(authKey)) {
-                authorizedUser = candidateKey[1];
-                break;
-            }
-        }
-        if (authorizedUser == null) {
-            send(resp, 403, "Not authorized");
-            return;
-        }
 
         // Extract URL components
         String result = req.getPathInfo();
@@ -87,42 +69,72 @@ public class SendMessageServlet extends BaseServlet {
         String target = components[1];
         String action = components[2];
 
+        // Let's see what this user is authorized to do
+        AuthInfo authInfo = AuthHelper.processAuthorization(req);
+
+        // If no auth info or non-admin trying to run non-whitelisted actions, no access.
+        if (authInfo == null || action == null ||
+            (!UNPRIVILEGED_ACTIONS.contains(action) && !authInfo.permAdmin)) {
+          send(resp, 403, "Not authorized");
+          return;
+        }
+
         // Extract extraData
         String payload = readBody(req);
 
-        // Override: add jitter for server update requests
-//        if ("sync_schedule".equals(action)) {
-//            payload = "{ \"sync_jitter\": 21600000 }";
-//        }
-
         // Request decoding complete. Log request parameters
-        LOG.info("Authorized User: " + authorizedUser +
+        LOG.info("Authorized User: " + authInfo.clientName +
                 "\nTarget: " + target +
                 "\nAction: " + action +
-                "\nSquelch: " + (squelch != null ? squelch : "null") +
                 "\nExtra Data: " + payload);
 
-        // Send broadcast message
         MessageSender sender = new MessageSender(getServletConfig());
+
+        // what's the audience of the message?
         if ("global".equals(target)) {
+            // Only admins can spam the world
+            if (!authInfo.permAdmin) {
+              LOG.info("Attempt to send global message, but no admin perm.");
+              send(resp, 403, "Not authorized");
+              return;
+            }
+
             List<Device> allDevices = DeviceStore.getAllDevices();
             if (allDevices == null || allDevices.isEmpty()) {
                 send(resp, 404, "No devices registered");
             } else {
                 int resultCount = allDevices.size();
                 LOG.info("Selected " + resultCount + " devices");
-                sender.multicastSend(allDevices, action, squelch, payload);
+                sender.multicastSend(allDevices, action, payload);
                 send(resp, 200, "Message queued: " + resultCount + " devices");
             }
         } else {
             // Send message to one device
-            List<Device> userDevices = DeviceStore.findDevicesByGPlusId(target);
+            // If target is SELF, the GCM Group ID will be the auth key in header
+            if (SELF.equals(target)) {
+              // do we have permission to send message to self?
+              if (!authInfo.permSendSelfMessage) {
+                LOG.info("Attempt to send self message, but no self message perm.");
+                send(resp, 403, "Not authorized");
+                return;
+              }
+              // the target is the auth key (it represents the group)
+              target = authInfo.authKey;
+            } else {
+              // sending message to a specific user. Only admin can do it.
+              if (!authInfo.permAdmin) {
+                LOG.info("Attempt to send message to specific target, but no admin perm.");
+                send(resp, 403, "Not authorized");
+                return;
+              }
+            }
+            List<Device> userDevices = DeviceStore.findDevicesByGcmGroupId(target);
             if (userDevices == null || userDevices.isEmpty()) {
                 send(resp, 404, "User not found");
             } else {
                 int resultCount = userDevices.size();
                 LOG.info("Selected " + resultCount + " devices");
-                sender.multicastSend(userDevices, action, squelch, payload);
+                sender.multicastSend(userDevices, action, payload);
                 send(resp, 200, "Message queued: " + resultCount + " devices");
             }
         }
@@ -132,24 +144,6 @@ public class SendMessageServlet extends BaseServlet {
         ServletInputStream inputStream = req.getInputStream();
         java.util.Scanner s = new java.util.Scanner(inputStream).useDelimiter("\\A");
         return s.hasNext() ? s.next() : "";
-    }
-
-    private static void send(HttpServletResponse resp, int status, String body)
-            throws IOException {
-        if (status >= 400) {
-            LOG.warning(body);
-        } else {
-            LOG.info(body);
-        }
-
-        // Prevent frame hijacking
-        resp.addHeader("X-FRAME-OPTIONS", "DENY");
-
-        // Write response data
-        resp.setContentType("text/plain");
-        PrintWriter out = resp.getWriter();
-        out.print(body);
-        resp.setStatus(status);
     }
 
 }

@@ -1,0 +1,77 @@
+<!--
+  Copyright 2014 Google Inc. All rights reserved.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+       http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applica`ble law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+  -->
+
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="92dp"
+    android:orientation="horizontal"
+    android:background="#fff"
+    android:foreground="?android:selectableItemBackground">
+
+    <ImageView
+        android:layout_width="165dp"
+        android:layout_height="match_parent"
+        android:id="@+id/thumbnail"
+        android:layout_gravity="left"
+        android:scaleType="centerCrop" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_marginLeft="164dp"
+        android:paddingLeft="16dp"
+        android:paddingRight="16dp"
+        android:paddingTop="8dp"
+        android:paddingBottom="8dp"
+        android:gravity="center_vertical">
+
+        <!-- Video title -->
+        <TextView
+            android:id="@+id/title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/text_size_small"
+            android:maxLines="2"
+            android:ellipsize="end"
+            android:textStyle="@integer/font_textStyle_medium"
+            android:fontFamily="@string/font_fontFamily_medium"
+            android:textColor="@color/body_text_1" />
+
+        <!-- Speakers -->
+        <TextView
+            android:id="@+id/speakers"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/text_size_small"
+            android:maxLines="1"
+            android:ellipsize="end"
+            android:textColor="@color/body_text_2" />
+
+        <!-- Description -->
+        <TextView
+            android:id="@+id/description"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/text_size_small"
+            android:maxLines="3"
+            android:ellipsize="end"
+            android:textStyle="italic"
+            android:text="@string/placeholder_lorem_ipsum"
+            android:textColor="@color/body_text_3" />
+
+    </LinearLayout>
+</FrameLayout>

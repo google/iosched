@@ -1,5 +1,5 @@
 <!--
-  Copyright 2012 Google Inc.
+  Copyright 2014 Google Inc. All rights reserved.
 
   Licensed under the Apache License, Version 2.0 (the "License");
   you may not use this file except in compliance with the License.
@@ -14,12 +14,29 @@
   limitations under the License.
   -->
 
-<merge xmlns:android="http://schemas.android.com/apk/res/android">
+<android.support.v4.widget.DrawerLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/drawer_layout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ui.phone.MapActivity">
 
-    <FrameLayout
-        android:id="@+id/fragment_container_map"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+    <FrameLayout android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <FrameLayout
+            android:id="@+id/fragment_container_map"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+        <!-- Empty view on top of map to avoid rendering issues with navigation drawer pre-JB -->
+        <View android:layout_width="fill_parent"
+            android:layout_height="fill_parent" />
+
+        <include layout="@layout/toolbar_actionbar_with_translucent_background" />
+
+    </FrameLayout>
 
     <LinearLayout android:id="@+id/map_detail_spacer"
         android:visibility="gone"
@@ -36,19 +53,18 @@
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:layout_marginLeft="@dimen/multipane_half_padding"
-            android:layout_marginTop="@dimen/multipane_half_padding"
             android:layout_marginBottom="@dimen/multipane_half_padding"
             android:layout_marginRight="@dimen/map_multipane_right_padding"
-            android:background="@drawable/grey_frame_on_white">
+            android:background="@drawable/card_bg">
 
             <ImageButton android:id="@+id/close_button"
                 android:layout_alignParentTop="true"
                 android:layout_alignParentRight="true"
-                android:src="@drawable/ic_close"
-                android:background="?activatableItemBackground"
-                android:layout_width="@dimen/action_button_min_width"
+                android:src="@drawable/ic_pane_close"
+                android:background="?selectableItemBackgroundBorderless"
+                android:layout_width="48dp"
                 android:layout_height="@dimen/detail_breadcrumb_height"
-                android:contentDescription="@string/close_detail_pane"/>
+                android:contentDescription="@string/close_detail_pane" />
 
             <android.app.FragmentBreadCrumbs android:id="@+id/breadcrumbs"
                 android:layout_alignParentTop="true"
@@ -68,4 +84,8 @@
                 android:layout_height="0dp" />
         </RelativeLayout>
     </LinearLayout>
-</merge>
+
+    <!-- Nav drawer -->
+    <include layout="@layout/navdrawer_for_ab_overlay" />
+
+</android.support.v4.widget.DrawerLayout>

@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+
+<!--
+   Copyright 2014 Google Inc. All rights reserved.
+
+   Licensed under the Apache License, Version 2.0 (the "License");
+   you may not use this file except in compliance with the License.
+   You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+   Unless required by applicable law or agreed to in writing, software
+   distributed under the License is distributed on an "AS IS" BASIS,
+   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+   See the License for the specific language governing permissions and
+   limitations under the License.
+-->
+
+
+<web-app
+   xmlns="http://java.sun.com/xml/ns/javaee"
+   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+   xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
+   version="2.5">
+  <display-name>IOSched updater</display-name>
+
+  <servlet>
+    <servlet-name>logData</servlet-name>
+    <servlet-class>com.google.iosched.server.servlet.LogDataServlet</servlet-class>
+  </servlet>
+
+  <servlet-mapping>
+    <servlet-name>logData</servlet-name>
+    <url-pattern>/admin/log_data</url-pattern>
+  </servlet-mapping>
+
+  <servlet>
+    <servlet-name>runupdate</servlet-name>
+    <servlet-class>com.google.iosched.server.servlet.RunUpdateServlet</servlet-class>
+  </servlet>
+
+  <servlet-mapping>
+    <servlet-name>runupdate</servlet-name>
+    <url-pattern>/admin/runupdate</url-pattern>
+  </servlet-mapping>
+
+   <security-constraint>
+     <web-resource-collection>
+        <web-resource-name>admin</web-resource-name>
+        <url-pattern>/*</url-pattern>
+     </web-resource-collection>
+    <auth-constraint>
+       <role-name>admin</role-name>
+     </auth-constraint>
+   </security-constraint>
+
+</web-app>

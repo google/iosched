@@ -1,5 +1,5 @@
 <!--
-  Copyright 2013 Google Inc.
+  Copyright 2014 Google Inc. All rights reserved.
 
   Licensed under the Apache License, Version 2.0 (the "License");
   you may not use this file except in compliance with the License.
@@ -38,123 +38,128 @@
                 android:layout_height="wrap_content"
                 style="@style/TextHeader" />
 
-            <!-- Q1 -->
+            <!-- Q0 -->
             <TextView style="@style/FeedbackQuestion"
                 android:text="@string/session_rating_label"
                 android:textAlignment="viewStart" />
 
-            <include android:id="@+id/session_rating_container"
-                layout="@layout/rating_bar"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
-
-            <LinearLayout android:orientation="horizontal"
-                android:layout_width="match_parent"
+            <RelativeLayout
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="-4dp">
+                android:layout_gravity="center_horizontal">
+
+                <RatingBar
+                    style="@style/FeedbackRatingBar"
+                    android:id="@+id/rating_bar_0" />
 
                 <TextView
                     style="@style/FeedbackQuestionGuideText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/rating_bar_0"
+                    android:layout_alignLeft="@id/rating_bar_0"
                     android:text="@string/session_feedback_notgreat" />
 
                 <TextView
-                    style="@style/FeedbackQuestionGuideText.Right"
+                    style="@style/FeedbackQuestionGuideText"
+                    android:layout_below="@id/rating_bar_0"
+                    android:layout_alignRight="@id/rating_bar_0"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
                     android:text="@string/session_feedback_great" />
-            </LinearLayout>
+            </RelativeLayout>
 
             <!-- Q1 -->
             <TextView style="@style/FeedbackQuestion"
                 android:text="@string/session_feedback_relevance" />
 
-            <include android:id="@+id/session_feedback_q1_container"
-                layout="@layout/rating_bar"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
-
-            <LinearLayout android:orientation="horizontal"
-                android:layout_width="match_parent"
+            <RelativeLayout
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="-4dp">
+                android:layout_gravity="center_horizontal">
+
+                <com.google.samples.apps.iosched.ui.widget.NumberRatingBar
+                    style="@style/FeedbackNumberRatingBar"
+                    android:id="@+id/rating_bar_1" />
 
                 <TextView
                     style="@style/FeedbackQuestionGuideText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/rating_bar_1"
+                    android:layout_alignLeft="@id/rating_bar_1"
                     android:text="@string/session_feedback_notrel" />
 
                 <TextView
-                    style="@style/FeedbackQuestionGuideText.Right"
+                    style="@style/FeedbackQuestionGuideText"
+                    android:layout_below="@id/rating_bar_1"
+                    android:layout_alignRight="@id/rating_bar_1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
                     android:text="@string/session_feedback_rel" />
-            </LinearLayout>
+            </RelativeLayout>
 
             <!-- Q2 -->
             <TextView style="@style/FeedbackQuestion"
                 android:text="@string/session_feedback_content" />
 
-            <include android:id="@+id/session_feedback_q2_container"
-                layout="@layout/rating_bar"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
 
-            <LinearLayout android:orientation="horizontal"
-                android:layout_width="match_parent"
+            <RelativeLayout
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="-4dp">
+                android:layout_gravity="center_horizontal">
+
+                <com.google.samples.apps.iosched.ui.widget.NumberRatingBar
+                    style="@style/FeedbackNumberRatingBar"
+                    android:id="@+id/rating_bar_2" />
 
                 <TextView
                     style="@style/FeedbackQuestionGuideText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/rating_bar_2"
+                    android:layout_alignLeft="@id/rating_bar_2"
                     android:text="@string/session_feedback_basic" />
 
                 <TextView
-                    style="@style/FeedbackQuestionGuideText.Right"
+                    style="@style/FeedbackQuestionGuideText"
+                    android:layout_below="@id/rating_bar_2"
+                    android:layout_alignRight="@id/rating_bar_2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
                     android:text="@string/session_feedback_advanced" />
-            </LinearLayout>
+            </RelativeLayout>
 
             <!-- Q3 -->
             <TextView style="@style/FeedbackQuestion"
                 android:text="@string/session_feedback_speaker_quality" />
 
-            <include android:id="@+id/session_feedback_q3_container"
-                layout="@layout/rating_bar"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
 
-            <LinearLayout android:orientation="horizontal"
-                android:layout_width="match_parent"
+            <RelativeLayout
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="-4dp">
+                android:layout_gravity="center_horizontal">
+
+                <com.google.samples.apps.iosched.ui.widget.NumberRatingBar
+                    style="@style/FeedbackNumberRatingBar"
+                    android:id="@+id/rating_bar_3" />
 
                 <TextView
                     style="@style/FeedbackQuestionGuideText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/rating_bar_3"
+                    android:layout_alignLeft="@id/rating_bar_3"
                     android:text="@string/session_feedback_poor" />
 
                 <TextView
-                    style="@style/FeedbackQuestionGuideText.Right"
+                    style="@style/FeedbackQuestionGuideText"
+                    android:layout_below="@id/rating_bar_3"
+                    android:layout_alignRight="@id/rating_bar_3"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
                     android:text="@string/session_feedback_outstanding" />
-            </LinearLayout>
-
-            <!-- Q4 -->
-            <TextView style="@style/FeedbackQuestion"
-                android:text="@string/session_feedback_6months" />
-
-            <RadioGroup
-                android:id="@+id/session_feedback_q4"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/element_spacing_normal"
-                android:paddingBottom="4dp"
-                android:orientation="horizontal">
-
-                <RadioButton
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/session_feedback_probnot" />
-
-                <RadioButton
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="@dimen/element_spacing_normal"
-                    android:text="@string/session_feedback_probably" />
-
-            </RadioGroup>
+            </RelativeLayout>
 
             <TextView style="@style/FeedbackQuestion"
                 android:text="@string/session_feedback_other" />
@@ -163,7 +168,8 @@
                 android:id="@+id/session_feedback_comments"
                 android:minLines="1"
                 android:hint="@string/session_feedback_tell_us"
-                android:layout_marginTop="@dimen/element_spacing_normal"
+                android:inputType="textCapSentences"
+                android:layout_marginTop="8dp"
                 android:layout_marginLeft="-4dp"
                 android:layout_marginRight="-4dp"
                 android:layout_height="wrap_content"
@@ -173,14 +179,11 @@
 
         <!-- Submit button -->
 
-        <View android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="@drawable/list_divider_holo_light" />
-
         <FrameLayout android:id="@+id/submit_feedback_button"
             android:layout_width="match_parent"
             android:layout_height="48dp"
-            android:background="?activatableItemBackground"
+            android:background="@color/theme_primary"
+            android:foreground="?photoItemForeground"
             android:clickable="true"
             android:focusable="true"
             android:contentDescription="@string/session_feedback_submitlink">
@@ -189,12 +192,14 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:paddingRight="20dp"
-                android:drawableLeft="@drawable/ic_action_done"
+                android:drawableLeft="@drawable/ic_submit_feedback"
                 android:drawablePadding="8dp"
                 android:gravity="center_vertical"
                 android:layout_gravity="center"
-                android:textStyle="bold"
+                android:textStyle="@integer/font_textStyle_medium"
+                android:fontFamily="@string/font_fontFamily_medium"
                 android:textAllCaps="true"
+                android:textColor="#fff"
                 android:textSize="@dimen/text_size_medium"
                 android:text="@string/session_feedback_submitlink" />
         </FrameLayout>

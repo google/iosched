@@ -1,5 +1,5 @@
 <!--
-  Copyright 2012 Google Inc.
+  Copyright 2014 Google Inc. All rights reserved.
 
   Licensed under the Apache License, Version 2.0 (the "License");
   you may not use this file except in compliance with the License.
@@ -16,19 +16,21 @@
 <resources>
 
     <declare-styleable name="BaseTheme">
-        <attr name="textHeaderMaxLines" format="integer" />
-        <attr name="trackAbstractMaxLines" format="integer" />
-        <attr name="activatableItemBackground" format="reference" />
-        <attr name="emptyText" format="reference" />
+        <attr name="actionBarOverlayTopOffset" format="dimension" />
+        <attr name="actionBarInsetStart" format="dimension" />
+        <attr name="spinnerBarInsetStart" format="dimension" />
+        <attr name="selectableItemBackgroundBorderless" format="dimension" />
+        <attr name="popupItemBackground" format="dimension" />
+        <attr name="photoItemForeground" format="dimension" />
+    </declare-styleable>
 
-        <!-- backward-compatibility -->
-        <!--<attr name="buttonBarStyle" format="reference" />-->
-        <!--<attr name="buttonBarButtonStyle" format="reference" />-->
-        <!-- provided by ActionBarSherlock -->
-        <!--<attr name="indeterminateProgressStyle" format="reference" />-->
-        <!--<attr name="listPreferredItemPaddingLeft" format="reference" />-->
-        <!--<attr name="listPreferredItemPaddingRight" format="reference" />-->
-        <!--<attr name="listPreferredItemHeightSmall" format="reference" />-->
+    <declare-styleable name="MultiSwipeRefreshLayout">
+        <attr name="foreground" format="reference" />
+    </declare-styleable>
+
+    <declare-styleable name="DrawShadowFrameLayout">
+        <attr name="shadowDrawable" format="reference" />
+        <attr name="shadowVisible" format="boolean" />
     </declare-styleable>
 
     <declare-styleable name="BezelImageView">
@@ -37,4 +39,24 @@
         <attr name="desaturateOnPress" format="boolean" />
     </declare-styleable>
 
+    <declare-styleable name="CollectionView">
+        <attr name="internalPadding" format="dimension" />
+        <attr name="contentTopClearance" format="dimension" />
+    </declare-styleable>
+
+    <declare-styleable name="MessageCard">
+        <attr name="messageTitle" format="string" />
+        <attr name="messageText" format="string" />
+        <attr name="button1text" format="string" />
+        <attr name="button1tag" format="string" />
+        <attr name="button1emphasis" format="boolean" />
+        <attr name="button2text" format="string" />
+        <attr name="button2tag" format="string" />
+        <attr name="button2emphasis" format="boolean" />
+        <attr name="emphasisColor" format="color" />
+    </declare-styleable>
+
+    <declare-styleable name="ThemeIOSched">
+        <attr name="isFloatingWindow" format="boolean" />
+    </declare-styleable>
 </resources>

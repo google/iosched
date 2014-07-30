@@ -1,0 +1,5 @@
+bin
+gen
+.gradle
+build
+.settings

@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?><resources>
+<!--
+   Copyright 2014 Google Inc. All rights reserved.
+
+   Licensed under the Apache License, Version 2.0 (the "License");
+   you may not use this file except in compliance with the License.
+   You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+   Unless required by applicable law or agreed to in writing, software
+   distributed under the License is distributed on an "AS IS" BASIS,
+   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+   See the License for the specific language governing permissions and
+   limitations under the License.
+-->
+    <!-- Question on survey form asking the user to give their overall opinion on the session. -->
+    <string name="q0">Valore de manera general esta sesión:</string>
+
+    <!-- Possible ratings for a session, from 1 Star being the worst to 5 stars being best -->
+    <string-array name="q0_options">
+    <item>1 estrella</item>
+    <item>2 estrellas</item>
+    <item>3 estrellas</item>
+    <item>4 estrellas</item>
+    <item>5 estrellas</item>
+  </string-array>
+
+    <!-- Question on survey form asking the user to rate how relevant (to one's projects/goals/priorities) the session was. -->
+    <string name="q1">¿Le ha resultado relevante esta sesión?</string>
+    
+    <!-- Possible answers to the survey question about how relevant the session was to one's projects. -->
+    <string-array name="q1_options">
+    <item>En absoluto</item>
+    <item>Ligeramente</item>
+    <item>Moderadamente</item>
+    <item>Mucho</item>
+    <item>Muchísimo</item>
+  </string-array>
+
+    <!-- Question on survey form asking the user to rate how basic/advanced the content of the session was (from Too Basic to Too Advanced). -->
+    <string name="q2">El contenido le ha parecido:</string>
+
+    <!-- Possible answers to the survey question about how basic/advanced the content of a session was. -->
+    <string-array name="q2_options">
+    <item>Demasiado básico</item>
+    <item>Básico</item>
+    <item>Perfecto</item>
+    <item>Avanzado</item>
+    <item>Demasiado avanzado</item>
+  </string-array>
+
+    <!-- Question on survey form asking the user to rate the quality of the session speaker (from Poor to Excellent). -->
+    <string name="q3">Nivel del ponente:</string>
+
+    <!-- Button text on a button to submit the survey form. -->
+    <string name="submit">Enviar</string>
+    
+    <!-- Message that appears after the user has submitted the survey form. -->
+    <string name="thanks">¡Gracias!</string>
+
+    <!-- Notification that appears to ask the user to rate a particular session that they have attended. -->
+    <string name="rate_this_session">Valore esta sesión</string>
+    
+    <!-- Possible answers to the survey question about how good the speaker of a session was. -->
+    <string-array name="q3_options">
+    <item>Bajo</item>
+    <item>Aceptable</item>
+    <item>Medio</item>
+    <item>Bueno</item>
+    <item>Excelente</item>
+  </string-array>
+</resources>

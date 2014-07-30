@@ -1,5 +1,5 @@
 <!--
-  Copyright 2013 Google Inc.
+  Copyright 2014 Google Inc. All rights reserved.
 
   Licensed under the Apache License, Version 2.0 (the "License");
   you may not use this file except in compliance with the License.
@@ -15,6 +15,6 @@
   -->
 
 <resources>
-    <!-- TODO: Add your Maps API key here. -->
-    <string name="maps_api_key" translatable="false">YOUR_MAPS_API_KEY_HERE</string>
+    <!-- Replace with your own API key -->
+    <string name="maps_api_key" translatable="false">ReplaceWithYourApiKey</string>
 </resources>

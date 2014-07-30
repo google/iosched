@@ -1,5 +1,5 @@
 <!--
-  Copyright 2013 Google Inc.
+  Copyright 2014 Google Inc. All rights reserved.
 
   Licensed under the Apache License, Version 2.0 (the "License");
   you may not use this file except in compliance with the License.
@@ -16,4 +16,13 @@
 
 <resources>
     <integer name="links_columns">2</integer>
+
+    <integer name="explore_1st_level_grid_columns">3</integer>
+    <!-- Number of grid columns spanned by the hero on wide layout.
+    Recommended: 1 less than explore_1st_level_grid_columns -->
+    <integer name="explore_wide_layout_hero_weight">2</integer>
+    <integer name="experts_directory_columns">3</integer>
+    <integer name="partners_columns">3</integer>
+
+    <integer name="explore_2nd_level_grid_columns">2</integer>
 </resources>

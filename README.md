@@ -13,7 +13,7 @@ and sizes. It also contains an Android Wear integration.
 
 ![Screenshot](art/hero.png)
 
-We're updating the I/O app with [material design](http://www.google.com/design/spec) and the [Android L Developer Preview](http://developer.android.com/preview/index.html)! Source code for the updated I/O app is coming soon but you can get a sneak peek of the new tactile surfaces, animated touch feedback, bold use of color, and refreshed iconography by checking out this [teaser video](https://www.youtube.com/watch?v=mCgteBXYxQc) or downloading the preview APK below.
+We have updated the I/O app with [material design](http://www.google.com/design/spec) and the [Android L Developer Preview](http://developer.android.com/preview/index.html)! For a quick preview of the new tactile surfaces, animated touch feedback, bold use of color, and refreshed iconography by checking out this [teaser video](https://www.youtube.com/watch?v=mCgteBXYxQc) or download the preview APK below.
 
 <a href="../../raw/master/binaries/iosched-lpreview.apk"><b>Download the I/O app APK for Android L Preview</b></a>
 
@@ -22,7 +22,7 @@ more information, please refer to the [Android L Developer Preview page](http://
 
 <h2>Source</h2>
 
-**Note:** The source code in this repository still reflects the app as of I/O 2013. We will updated it to the I/O 2014 code shortly.
+The source code in this repository reflects the app as of I/O 2014.
 
 <h2>Features</h2>
 
@@ -44,7 +44,15 @@ With the app, you can:
 - See a list of people whose badges you have scanned, and take notes about your meeting with them
 - Send feedback on sessions, from your phone/tablet, or from your Android Wear device
 
-Please refer to BUILDING.TXT for details about how to build and run the source.
+<h2>How to Work with the Source</h2>
+
+We hope the source code for this app is useful for you as a reference or starting point for creating your own apps. Here is some additional reading to help you better understand and reuse this code.
+
+  * [Build instructions](doc/BUILDING.md): instructions on how to build and run the code.
+  * [Sync protocol and data format](doc/SYNC.md)
+  * [Image loading](doc/IMAGES.md)
+  * [Use of GCM](doc/GCM.md)
+  * [Customization guide](doc/CUSTOM.md)
 
 <h2>Copyright</h2>
 

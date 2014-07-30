@@ -1,5 +1,5 @@
 <!--
-  Copyright 2012 Google Inc.
+  Copyright 2014 Google Inc. All rights reserved.
 
   Licensed under the Apache License, Version 2.0 (the "License");
   you may not use this file except in compliance with the License.
@@ -47,7 +47,7 @@
             android:layout_height="match_parent"
             android:layout_gravity="center_vertical|end"
             android:scaleType="center"
-            android:src="@drawable/ic_action_refresh"
+            android:visibility="gone"
             android:contentDescription="@string/description_refresh"
             android:background="?android:selectableItemBackground" />
     </LinearLayout>
@@ -60,16 +60,19 @@
         android:background="@drawable/actionbar_background">
         <ListView
             android:background="@android:color/white"
+            android:paddingTop="8dp"
+            android:clipToPadding="false"
             android:id="@+id/widget_schedule_list"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:cacheColorHint="@android:color/white"
-            android:divider="@drawable/list_divider_holo_light"
-            android:listSelector="@null" />
+            android:divider="@null"
+            android:dividerHeight="0dp"
+            android:listSelector="@drawable/schedule_item_touchoverlay" />
         <TextView
             android:background="@android:color/white"
             android:id="@android:id/empty"
-            style="?emptyText"
+            style="@style/EmptyText"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:gravity="center"

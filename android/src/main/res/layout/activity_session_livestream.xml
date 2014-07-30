@@ -1,5 +1,5 @@
 <!--
-  Copyright 2012 Google Inc.
+  Copyright 2014 Google Inc. All rights reserved.
 
   Licensed under the Apache License, Version 2.0 (the "License");
   you may not use this file except in compliance with the License.
@@ -15,28 +15,12 @@
   -->
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/livestream_mainlayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical">
-
-    <FrameLayout
-        android:id="@+id/presentation_controls"
-        android:layout_height="0dp"
-        android:layout_width="match_parent"
-        android:layout_weight="3"
-        android:background="@drawable/transparent_background_pattern"
-        android:visibility="gone">
-
-        <ImageButton
-            android:background="?activatableItemBackground"
-            android:id="@+id/play_pause_button"
-            android:src="@drawable/ic_livestream_play"
-            android:layout_height="match_parent"
-            android:layout_width="match_parent"
-            android:contentDescription="@string/session_livestream_play_pause" />
-
-    </FrameLayout>
+    android:orientation="vertical"
+    tools:context=".ui.SessionLivestreamActivity">
 
     <LinearLayout
         android:id="@+id/livestream_player_container"
@@ -54,7 +38,7 @@
 
         <fragment
             android:id="@+id/livestream_player"
-            android:name="com.google.android.youtube.player.YouTubePlayerSupportFragment"
+            android:name="com.google.android.youtube.player.YouTubePlayerFragment"
             android:layout_gravity="center"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -62,37 +46,25 @@
 
     </LinearLayout>
 
-    <TabHost
-        android:id="@android:id/tabhost"
+    <LinearLayout
+        android:id="@+id/livestream_tabs_layout"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="5">
+        android:layout_weight="5"
+        android:orientation="vertical">
 
-        <LinearLayout
+        <com.google.samples.apps.iosched.ui.widget.SlidingTabLayout
+            android:background="@color/tab_background"
+            android:id="@+id/livestream_sliding_tabs"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical">
+            android:layout_height="wrap_content" />
 
-            <TabWidget
-                android:id="@android:id/tabs"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="0"
-                android:orientation="horizontal" />
+        <android.support.v4.view.ViewPager
+            android:id="@+id/livestream_pager"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1" />
 
-            <FrameLayout
-                android:id="@android:id/tabcontent"
-                android:layout_width="0dp"
-                android:layout_height="0dp"
-                android:layout_weight="0" />
-
-            <android.support.v4.view.ViewPager
-                android:id="@+id/pager"
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="1" />
-        </LinearLayout>
-
-    </TabHost>
+    </LinearLayout>
 
 </LinearLayout>

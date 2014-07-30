@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?><resources>
+<!--
+   Copyright 2014 Google Inc. All rights reserved.
+
+   Licensed under the Apache License, Version 2.0 (the "License");
+   you may not use this file except in compliance with the License.
+   You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+   Unless required by applicable law or agreed to in writing, software
+   distributed under the License is distributed on an "AS IS" BASIS,
+   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+   See the License for the specific language governing permissions and
+   limitations under the License.
+-->
+
+    <!-- Question on survey form asking the user to give their overall opinion on the session. -->
+    <string name="q0">Ihr Gesamteindruck dieser Sitzung:</string>
+
+    <!-- Possible ratings for a session, from 1 Star being the worst to 5 stars being best -->
+    <string-array name="q0_options">
+    <item>1 Stern!</item>
+    <item>2 Sterne</item>
+    <item>3 Sterne</item>
+    <item>4 Sterne</item>
+    <item>5 Sterne</item>
+  </string-array>
+
+    <!-- Question on survey form asking the user to rate how relevant (to one's projects/goals/priorities) the session was. -->
+    <string name="q1">Wie nützlich war diese Sitzung für Sie?</string>
+    
+    <!-- Possible answers to the survey question about how relevant the session was to one's projects. -->
+    <string-array name="q1_options">
+    <item>Gar nicht</item>
+    <item>Ein wenig</item>
+    <item>Eher nützlich</item>
+    <item>Sehr nützlich</item>
+    <item>Extrem nützlich</item>
+  </string-array>
+
+    <!-- Question on survey form asking the user to rate how basic/advanced the content of the session was (from Too Basic to Too Advanced). -->
+    <string name="q2">Die Inhalte waren:</string>
+
+    <!-- Possible answers to the survey question about how basic/advanced the content of a session was. -->
+    <string-array name="q2_options">
+    <item>Zu grundlegend</item>
+    <item>Einfach</item>
+    <item>Auf den Punkt</item>
+    <item>Fortgeschritten</item>
+    <item>Zu fortgeschritten</item>
+  </string-array>
+
+    <!-- Question on survey form asking the user to rate the quality of the session speaker (from Poor to Excellent). -->
+    <string name="q3">Qualität des Sprechers / der Sprecherin:</string>
+
+    <!-- Button text on a button to submit the survey form. -->
+    <string name="submit">Absenden</string>
+    
+    <!-- Message that appears after the user has submitted the survey form. -->
+    <string name="thanks">Vielen Dank!</string>
+
+    <!-- Notification that appears to ask the user to rate a particular session that they have attended. -->
+    <string name="rate_this_session">Bewerten Sie diese Sitzung</string>
+    
+    <!-- Possible answers to the survey question about how good the speaker of a session was. -->
+    <string-array name="q3_options">
+    <item>Schlecht</item>
+    <item>Ausreichend</item>
+    <item>Durchschnittlich</item>
+    <item>Gut</item>
+    <item>Ausgezeichnet</item>
+  </string-array>
+</resources>

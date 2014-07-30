@@ -1,5 +1,5 @@
 <!--
-  Copyright 2012 Google Inc.
+  Copyright 2014 Google Inc. All rights reserved.
 
   Licensed under the Apache License, Version 2.0 (the "License");
   you may not use this file except in compliance with the License.
@@ -28,14 +28,16 @@
         <TextView
             android:id="@+id/session_title"
             style="@style/TextHeader"
-            android:textSize="@dimen/text_size_large"
+            android:textSize="@dimen/livestream_session_title_text_size"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:ellipsize="none"
             android:layout_marginBottom="@dimen/content_padding_normal" />
 
         <TextView
             android:id="@+id/session_abstract"
             style="@style/TextBody"
+            android:textSize="@dimen/livestream_session_summary_text_size"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"/>
 

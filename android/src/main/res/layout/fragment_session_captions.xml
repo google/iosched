@@ -1,5 +1,5 @@
 <!--
-  Copyright 2012 Google Inc.
+  Copyright 2014 Google Inc. All rights reserved.
 
   Licensed under the Apache License, Version 2.0 (the "License");
   you may not use this file except in compliance with the License.
@@ -15,7 +15,6 @@
   -->
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/session_caption_container"
-    android:background="@drawable/grey_frame_on_white"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -25,9 +24,10 @@
         android:layout_height="match_parent"
         android:layout_gravity="center"
         android:visibility="gone"
+        android:longClickable="false"
         android:fillViewport="true" />
 
-    <TextView style="?emptyText"
+    <TextView style="@style/EmptyText"
         android:id="@id/android:empty"
         android:layout_width="match_parent"
         android:layout_height="match_parent"

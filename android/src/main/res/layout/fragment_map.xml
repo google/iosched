@@ -1,5 +1,5 @@
 <!--
-  Copyright 2013 Google Inc.
+  Copyright 2014 Google Inc. All rights reserved.
 
   Licensed under the Apache License, Version 2.0 (the "License");
   you may not use this file except in compliance with the License.
@@ -17,40 +17,6 @@
     android:id="@+id/map_container"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/accent_1" >
-
-    <LinearLayout
-        android:id="@+id/map_floorcontrol"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_vertical|right"
-        android:layout_marginRight="15dp"
-        android:background="@drawable/map_floor_layout_background"
-        android:orientation="vertical"
-        android:paddingBottom="5dp"
-        android:paddingTop="5dp"
-        android:visibility="invisible" >
-
-        <Button
-            android:id="@+id/map_floor3"
-            style="@style/MapFloorSelectorButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/map_floorcontrol_3" />
-
-        <Button
-            android:id="@+id/map_floor2"
-            style="@style/MapFloorSelectorButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/map_floorcontrol_2" />
-
-        <Button
-            android:id="@+id/map_floor1"
-            style="@style/MapFloorSelectorButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/map_floorcontrol_1" />
-    </LinearLayout>
+    android:background="@color/theme_primary" >
 
 </FrameLayout>
