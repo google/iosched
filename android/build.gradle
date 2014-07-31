@@ -16,7 +16,7 @@
 
 lpreview = hasProperty('lpreview')
 
-apply plugin: 'android'
+apply plugin: 'com.android.application'
 
 repositories {
     mavenCentral()
@@ -27,7 +27,7 @@ repositories {
 
 android {
     compileSdkVersion lpreview ? "android-L" : 19
-    buildToolsVersion "19.1.0"
+    buildToolsVersion "20.0.0"
 
     productFlavors { lpreview ? lpreview{} : classic{} }
 
