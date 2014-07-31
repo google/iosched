@@ -1,5 +1,5 @@
 /*
- * Copyright 2013 Google Inc.
+ * Copyright 2014 Google Inc. All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not
  * use this file except in compliance with the License. You may obtain a copy of
@@ -56,8 +56,7 @@ public class MessageSender {
         mGcmService = new Sender(mApiKey);
     }
 
-    public void multicastSend(List<Device> devices, String action,
-                              String squelch, String extraData) {
+    public void multicastSend(List<Device> devices, String action, String extraData) {
         Queue queue = QueueFactory.getQueue("MulticastMessagesQueue");
 
         // Split messages into batches for multicast
@@ -68,12 +67,7 @@ public class MessageSender {
         int counter = 0;
         for (Device device : devices) {
             counter ++;
-            // If squelch is set, device is the originator of this message,
-            // and has asked us to squelch itself. This prevents message echos.
-            if (!device.getGcmId().equals(squelch)) {
-                // Device not squelched.
-                partialDevices.add(device.getGcmId());
-            }
+            partialDevices.add(device.getGcmId());
             int partialSize = partialDevices.size();
             if (partialSize == MAX_DEVICES || counter == total) {
                 // Send multicast message
@@ -107,7 +101,7 @@ public class MessageSender {
         Message message = builder.build();
         MulticastResult multicastResult = null;
         try {
-            // TODO(trevorjohns): We occasionally see null messages. (Maybe due to squelch?)
+            // TODO: We occasionally see null messages. (Maybe due to squelch?)
             // We should these from entering the send queue in the first place. In the meantime,
             // here's a hack to prevent this.
             if (devices != null) {

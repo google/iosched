@@ -1,5 +1,5 @@
 <!--
-  Copyright 2012 Google Inc.
+  Copyright 2014 Google Inc. All rights reserved.
 
   Licensed under the Apache License, Version 2.0 (the "License");
   you may not use this file except in compliance with the License.
@@ -13,12 +13,78 @@
   See the License for the specific language governing permissions and
   limitations under the License.
   -->
-<com.google.android.apps.iosched.ui.widget.CheckableFrameLayout
+<FrameLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    style="@style/ComplexListItem.Inset">
+    android:layout_height="300dp"
+    android:id="@+id/session_target"
+    android:foreground="?photoItemForeground">
 
+    <!-- Session info -->
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <!-- Session image -->
+        <FrameLayout android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1">
+
+            <ImageView android:id="@+id/session_photo"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:scaleType="centerCrop" />
+
+            <!-- Live Now indicator -->
+            <include layout="@layout/include_live_now_badge" />
+
+            <!-- Session category/group if non-default (e.g. "Workshop") -->
+            <TextView android:id="@+id/session_category"
+                style="@style/ExploreItem.Category"
+                android:padding="16dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+        </FrameLayout>
+
+        <!-- Info box -->
+        <LinearLayout
+            android:id="@+id/info_box"
+            android:layout_width="match_parent"
+            android:layout_height="120dp"
+            android:gravity="center"
+            android:padding="16dp"
+            android:orientation="vertical"
+            android:background="@color/theme_primary">
+
+            <!-- Session title -->
+            <TextView android:id="@+id/session_title"
+                style="@style/ExploreItem.Title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/placeholder_session_title" />
+
+            <!-- Subtitle -->
+            <TextView android:id="@+id/session_subtitle"
+                style="@style/ExploreItem.Subtitle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingBottom="8dp"
+                android:text="@string/placeholder_session_subtitle" />
+
+            <!-- Abstract snippet -->
+            <TextView android:id="@+id/session_snippet"
+                style="@style/ExploreItem.Snippet"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:maxLines="3"
+                android:text="@string/placeholder_lorem_ipsum" />
+
+        </LinearLayout>
+    </LinearLayout>
+
+    <!-- "In schedule" indicator -->
     <ImageView android:id="@+id/indicator_in_schedule"
         android:layout_gravity="top|end"
         android:layout_width="wrap_content"
@@ -26,21 +92,4 @@
         android:src="@drawable/indicator_in_schedule"
         android:contentDescription="@null" />
 
-    <LinearLayout android:id="@+id/list_item_session"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:minHeight="?android:listPreferredItemHeight"
-        android:orientation="vertical"
-        style="@style/ComplexListItemContent.Inset">
-
-        <TextView android:id="@+id/session_title"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            style="@style/ListItemTitle" />
-
-        <TextView android:id="@+id/session_subtitle"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            style="@style/ListItemSubtitle" />
-    </LinearLayout>
-</com.google.android.apps.iosched.ui.widget.CheckableFrameLayout>
+</FrameLayout>

@@ -1,5 +1,5 @@
 /*
- * Copyright 2013 Google Inc.
+ * Copyright 2014 Google Inc. All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not
  * use this file except in compliance with the License. You may obtain a copy of
@@ -16,15 +16,12 @@
 
 package com.google.android.apps.iosched.gcm.server.db;
 
+import static com.google.android.apps.iosched.gcm.server.db.OfyService.ofy;
+
 import com.google.android.apps.iosched.gcm.server.db.models.Device;
 
-import javax.persistence.EntityManager;
-import javax.persistence.NoResultException;
-import javax.persistence.Query;
 import java.util.List;
 import java.util.logging.Logger;
-
-import static com.google.android.apps.iosched.gcm.server.db.OfyService.ofy;
 
 public class DeviceStore {
     private static final Logger LOG = Logger.getLogger(DeviceStore.class.getName());
@@ -34,22 +31,22 @@ public class DeviceStore {
      *
      * @param gcmId device's registration id.
      */
-    public static void register(String gcmId, String gPlusId) {
-        LOG.info("Registering device.\nG+ ID: " + gPlusId + "\nGCM ID: " + gcmId);
+    public static void register(String gcmId, String gcmGroupId) {
+        LOG.info("Registering device.\nGroup ID: " + gcmGroupId + "\nGCM ID: " + gcmId);
         Device oldDevice = findDeviceByGcmId(gcmId);
         if (oldDevice == null) {
             // Existing device not found (as expected)
             Device newDevice = new Device();
             newDevice.setGcmId(gcmId);
-            newDevice.setGPlusId(gPlusId);
+            newDevice.setGcmGroupId(gcmGroupId);
             ofy().save().entity(newDevice);
         } else {
             // Existing device found
             LOG.warning(gcmId + " is already registered");
-            if (!gPlusId.equals(oldDevice.getGPlusId())) {
-                LOG.info("gPlusId has changed from '" + oldDevice.getGPlusId() + "' to '"
-                        + gPlusId + "'");
-                oldDevice.setGPlusId(gPlusId);
+            if (!gcmGroupId.equals(oldDevice.getGcmGroupId())) {
+                LOG.info("GcmGroupId has changed from '" + oldDevice.getGcmGroupId() + "' to '"
+                        + gcmGroupId + "'");
+                oldDevice.setGcmGroupId(gcmGroupId);
                 ofy().save().entity(oldDevice);
             }
         }
@@ -84,7 +81,7 @@ public class DeviceStore {
         // we must create a new entity.
         Device newDevice = new Device();
         newDevice.setGcmId(newGcmId);
-        newDevice.setGPlusId(oldDevice.getGPlusId());
+        newDevice.setGcmGroupId(oldDevice.getGcmGroupId());
         ofy().save().entity(newDevice);
         ofy().delete().entity(oldDevice);
     }
@@ -104,7 +101,7 @@ public class DeviceStore {
         return ofy().load().type(Device.class).id(regId).get();
     }
 
-    public static List<Device> findDevicesByGPlusId(String target) {
+    public static List<Device> findDevicesByGcmGroupId(String target) {
         return ofy().load().type(Device.class).filter("gPlusId", target).list();
     }
 }

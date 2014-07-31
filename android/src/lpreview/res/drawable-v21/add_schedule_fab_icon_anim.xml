@@ -1,0 +1,283 @@
+<!--
+  Copyright 2014 Google Inc. All rights reserved.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+       http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+  -->
+
+<animated-selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:state_checked="true" android:id="@+id/state_on">
+        <bitmap android:src="@drawable/ic_done_anim_030"
+            android:tint="@color/theme_accent_1" />
+    </item>
+    <item android:id="@+id/state_off">
+        <bitmap android:src="@drawable/ic_plus_anim_030"
+            android:tint="#fff" />
+    </item>
+    <transition android:fromId="@+id/state_on" android:toId="@+id/state_off">
+        <animation-list>
+            <item android:duration="16">
+                <bitmap android:src="@drawable/ic_plus_anim_000"
+                    android:tint="#fff" />
+            </item>
+            <item android:duration="16">
+                <bitmap android:src="@drawable/ic_plus_anim_001"
+                    android:tint="#fff" />
+            </item>
+            <item android:duration="16">
+                <bitmap android:src="@drawable/ic_plus_anim_002"
+                    android:tint="#fff" />
+            </item>
+            <item android:duration="16">
+                <bitmap android:src="@drawable/ic_plus_anim_003"
+                    android:tint="#fff" />
+            </item>
+            <item android:duration="16">
+                <bitmap android:src="@drawable/ic_plus_anim_004"
+                    android:tint="#fff" />
+            </item>
+            <item android:duration="16">
+                <bitmap android:src="@drawable/ic_plus_anim_005"
+                    android:tint="#fff" />
+            </item>
+            <item android:duration="16">
+                <bitmap android:src="@drawable/ic_plus_anim_006"
+                    android:tint="#fff" />
+            </item>
+            <item android:duration="16">
+                <bitmap android:src="@drawable/ic_plus_anim_007"
+                    android:tint="#fff" />
+            </item>
+            <item android:duration="16">
+                <bitmap android:src="@drawable/ic_plus_anim_008"
+                    android:tint="#fff" />
+            </item>
+            <item android:duration="16">
+                <bitmap android:src="@drawable/ic_plus_anim_009"
+                    android:tint="#fff" />
+            </item>
+            <item android:duration="16">
+                <bitmap android:src="@drawable/ic_plus_anim_010"
+                    android:tint="#fff" />
+            </item>
+            <item android:duration="16">
+                <bitmap android:src="@drawable/ic_plus_anim_011"
+                    android:tint="#fff" />
+            </item>
+            <item android:duration="16">
+                <bitmap android:src="@drawable/ic_plus_anim_012"
+                    android:tint="#fff" />
+            </item>
+            <item android:duration="16">
+                <bitmap android:src="@drawable/ic_plus_anim_013"
+                    android:tint="#fff" />
+            </item>
+            <item android:duration="16">
+                <bitmap android:src="@drawable/ic_plus_anim_014"
+                    android:tint="#fff" />
+            </item>
+            <item android:duration="16">
+                <bitmap android:src="@drawable/ic_plus_anim_015"
+                    android:tint="#fff" />
+            </item>
+            <item android:duration="16">
+                <bitmap android:src="@drawable/ic_plus_anim_016"
+                    android:tint="#fff" />
+            </item>
+            <item android:duration="16">
+                <bitmap android:src="@drawable/ic_plus_anim_017"
+                    android:tint="#fff" />
+            </item>
+            <item android:duration="16">
+                <bitmap android:src="@drawable/ic_plus_anim_018"
+                    android:tint="#fff" />
+            </item>
+            <item android:duration="16">
+                <bitmap android:src="@drawable/ic_plus_anim_019"
+                    android:tint="#fff" />
+            </item>
+            <item android:duration="16">
+                <bitmap android:src="@drawable/ic_plus_anim_020"
+                    android:tint="#fff" />
+            </item>
+            <item android:duration="16">
+                <bitmap android:src="@drawable/ic_plus_anim_021"
+                    android:tint="#fff" />
+            </item>
+            <item android:duration="16">
+                <bitmap android:src="@drawable/ic_plus_anim_022"
+                    android:tint="#fff" />
+            </item>
+            <item android:duration="16">
+                <bitmap android:src="@drawable/ic_plus_anim_023"
+                    android:tint="#fff" />
+            </item>
+            <item android:duration="16">
+                <bitmap android:src="@drawable/ic_plus_anim_024"
+                    android:tint="#fff" />
+            </item>
+            <item android:duration="16">
+                <bitmap android:src="@drawable/ic_plus_anim_025"
+                    android:tint="#fff" />
+            </item>
+            <item android:duration="16">
+                <bitmap android:src="@drawable/ic_plus_anim_026"
+                    android:tint="#fff" />
+            </item>
+            <item android:duration="16">
+                <bitmap android:src="@drawable/ic_plus_anim_027"
+                    android:tint="#fff" />
+            </item>
+            <item android:duration="16">
+                <bitmap android:src="@drawable/ic_plus_anim_028"
+                    android:tint="#fff" />
+            </item>
+            <item android:duration="16">
+                <bitmap android:src="@drawable/ic_plus_anim_029"
+                    android:tint="#fff" />
+            </item>
+            <item android:duration="16">
+                <bitmap android:src="@drawable/ic_plus_anim_030"
+                    android:tint="#fff" />
+            </item>
+        </animation-list>
+    </transition>
+    <transition android:fromId="@+id/state_off" android:toId="@+id/state_on">
+        <animation-list>
+            <item android:duration="16">
+                <bitmap android:src="@drawable/ic_done_anim_000"
+                    android:tint="@color/theme_accent_1" />
+            </item>
+            <item android:duration="16">
+                <bitmap android:src="@drawable/ic_done_anim_001"
+                    android:tint="@color/theme_accent_1" />
+            </item>
+            <item android:duration="16">
+                <bitmap android:src="@drawable/ic_done_anim_002"
+                    android:tint="@color/theme_accent_1" />
+            </item>
+            <item android:duration="16">
+                <bitmap android:src="@drawable/ic_done_anim_003"
+                    android:tint="@color/theme_accent_1" />
+            </item>
+            <item android:duration="16">
+                <bitmap android:src="@drawable/ic_done_anim_004"
+                    android:tint="@color/theme_accent_1" />
+            </item>
+            <item android:duration="16">
+                <bitmap android:src="@drawable/ic_done_anim_005"
+                    android:tint="@color/theme_accent_1" />
+            </item>
+            <item android:duration="16">
+                <bitmap android:src="@drawable/ic_done_anim_006"
+                    android:tint="@color/theme_accent_1" />
+            </item>
+            <item android:duration="16">
+                <bitmap android:src="@drawable/ic_done_anim_007"
+                    android:tint="@color/theme_accent_1" />
+            </item>
+            <item android:duration="16">
+                <bitmap android:src="@drawable/ic_done_anim_008"
+                    android:tint="@color/theme_accent_1" />
+            </item>
+            <item android:duration="16">
+                <bitmap android:src="@drawable/ic_done_anim_009"
+                    android:tint="@color/theme_accent_1" />
+            </item>
+            <item android:duration="16">
+                <bitmap android:src="@drawable/ic_done_anim_010"
+                    android:tint="@color/theme_accent_1" />
+            </item>
+            <item android:duration="16">
+                <bitmap android:src="@drawable/ic_done_anim_011"
+                    android:tint="@color/theme_accent_1" />
+            </item>
+            <item android:duration="16">
+                <bitmap android:src="@drawable/ic_done_anim_012"
+                    android:tint="@color/theme_accent_1" />
+            </item>
+            <item android:duration="16">
+                <bitmap android:src="@drawable/ic_done_anim_013"
+                    android:tint="@color/theme_accent_1" />
+            </item>
+            <item android:duration="16">
+                <bitmap android:src="@drawable/ic_done_anim_014"
+                    android:tint="@color/theme_accent_1" />
+            </item>
+            <item android:duration="16">
+                <bitmap android:src="@drawable/ic_done_anim_015"
+                    android:tint="@color/theme_accent_1" />
+            </item>
+            <item android:duration="16">
+                <bitmap android:src="@drawable/ic_done_anim_016"
+                    android:tint="@color/theme_accent_1" />
+            </item>
+            <item android:duration="16">
+                <bitmap android:src="@drawable/ic_done_anim_017"
+                    android:tint="@color/theme_accent_1" />
+            </item>
+            <item android:duration="16">
+                <bitmap android:src="@drawable/ic_done_anim_018"
+                    android:tint="@color/theme_accent_1" />
+            </item>
+            <item android:duration="16">
+                <bitmap android:src="@drawable/ic_done_anim_019"
+                    android:tint="@color/theme_accent_1" />
+            </item>
+            <item android:duration="16">
+                <bitmap android:src="@drawable/ic_done_anim_020"
+                    android:tint="@color/theme_accent_1" />
+            </item>
+            <item android:duration="16">
+                <bitmap android:src="@drawable/ic_done_anim_021"
+                    android:tint="@color/theme_accent_1" />
+            </item>
+            <item android:duration="16">
+                <bitmap android:src="@drawable/ic_done_anim_022"
+                    android:tint="@color/theme_accent_1" />
+            </item>
+            <item android:duration="16">
+                <bitmap android:src="@drawable/ic_done_anim_023"
+                    android:tint="@color/theme_accent_1" />
+            </item>
+            <item android:duration="16">
+                <bitmap android:src="@drawable/ic_done_anim_024"
+                    android:tint="@color/theme_accent_1" />
+            </item>
+            <item android:duration="16">
+                <bitmap android:src="@drawable/ic_done_anim_025"
+                    android:tint="@color/theme_accent_1" />
+            </item>
+            <item android:duration="16">
+                <bitmap android:src="@drawable/ic_done_anim_026"
+                    android:tint="@color/theme_accent_1" />
+            </item>
+            <item android:duration="16">
+                <bitmap android:src="@drawable/ic_done_anim_027"
+                    android:tint="@color/theme_accent_1" />
+            </item>
+            <item android:duration="16">
+                <bitmap android:src="@drawable/ic_done_anim_028"
+                    android:tint="@color/theme_accent_1" />
+            </item>
+            <item android:duration="16">
+                <bitmap android:src="@drawable/ic_done_anim_029"
+                    android:tint="@color/theme_accent_1" />
+            </item>
+            <item android:duration="16">
+                <bitmap android:src="@drawable/ic_done_anim_030"
+                    android:tint="@color/theme_accent_1" />
+            </item>
+        </animation-list>
+    </transition>
+</animated-selector>
+

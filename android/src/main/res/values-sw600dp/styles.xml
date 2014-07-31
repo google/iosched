@@ -1,5 +1,5 @@
 <!--
-  Copyright 2012 Google Inc.
+  Copyright 2014 Google Inc. All rights reserved.
 
   Licensed under the Apache License, Version 2.0 (the "License");
   you may not use this file except in compliance with the License.
@@ -15,51 +15,17 @@
   -->
 
 <resources>
-    <style name="HomePaneHeader">
-        <item name="android:textSize">@dimen/text_size_medium</item>
-        <item name="android:textStyle">bold</item>
-        <item name="android:textAllCaps">true</item>
-        <item name="android:textColor">@color/home_pane_header</item>
-    </style>
 
-    <style name="ListItemContainerBase">
-        <item name="android:minHeight">?android:listPreferredItemHeight</item>
-        <item name="android:background">?activatableItemBackground</item>
-    </style>
-
-    <!-- body content -->
-
-    <style name="TextHeaderSub">
-        <item name="android:textSize">@dimen/text_size_medium</item>
-        <item name="android:textStyle">normal</item>
-        <item name="android:textColor">@color/body_text_1</item>
-        <item name="android:textIsSelectable">true</item>
-        <item name="android:textAlignment">viewStart</item>
-    </style>
-
-    <style name="TextHeader2">
-        <item name="android:textSize">@dimen/text_size_small</item>
-        <item name="android:textStyle">bold</item>
-        <item name="android:textAllCaps">true</item>
-        <item name="android:textColor">@color/accent_1</item>
-        <item name="android:paddingTop">4dp</item>
-        <item name="android:paddingBottom">4dp</item>
-        <item name="android:background">@drawable/accent_bottom_border</item>
-    </style>
-
-    <style name="TextHeader3">
-        <item name="android:textSize">@dimen/text_size_medium</item>
-        <item name="android:textStyle">bold</item>
-        <item name="android:textColor">@color/body_text_1</item>
-        <item name="android:textIsSelectable">true</item>
-    </style>
-
-    <style name="TextBody">
-        <item name="android:textSize">@dimen/text_size_medium</item>
-        <item name="android:lineSpacingMultiplier">1.3</item>
-        <item name="android:textColor">@color/body_text_1</item>
-        <item name="android:textIsSelectable">true</item>
-        <item name="android:textAlignment">textStart</item>
+    <!-- Intermediary theme for SessionDetails, making it a floating dialog -->
+    <style name="Theme.IOSched.SessionDetails.Base" parent="Theme.IOSched">
+        <item name="isFloatingWindow">true</item>
+        <item name="android:windowContentOverlay">@null</item>
+        <item name="android:windowIsFloating">false</item>
+        <item name="android:windowSoftInputMode">stateAlwaysHidden</item>
+        <item name="android:windowIsTranslucent">true</item>
+        <item name="android:windowCloseOnTouchOutside">true</item>
+        <item name="android:windowFrame">@null</item>
+        <item name="android:colorBackgroundCacheHint">@null</item>
     </style>
 
 </resources>

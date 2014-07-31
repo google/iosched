@@ -1,5 +1,5 @@
 /*
- * Copyright 2013 Google Inc.
+ * Copyright 2014 Google Inc. All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not
  * use this file except in compliance with the License. You may obtain a copy of
@@ -23,6 +23,9 @@ import com.googlecode.objectify.annotation.Index;
 @Entity
 public class Device {
     @Id private String gcmId;
+
+    // Keep old property name to avoid loosing all registered devices from 2013.
+    // Objectify doesn't support the JPA's @Column annotation
     @Index private String gPlusId;
 
     public String getGcmId() {
@@ -33,11 +36,11 @@ public class Device {
         this.gcmId = gcmId;
     }
 
-    public String getGPlusId () {
+    public String getGcmGroupId () {
         return gPlusId;
     }
 
-    public void setGPlusId(String gPlusId) {
-        this.gPlusId = gPlusId;
+    public void setGcmGroupId(String gcmGroupId) {
+        this.gPlusId = gcmGroupId;
     }
 }

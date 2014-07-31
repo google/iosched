@@ -1,5 +1,5 @@
 <!--
-  Copyright 2012 Google Inc.
+  Copyright 2014 Google Inc. All rights reserved.
 
   Licensed under the Apache License, Version 2.0 (the "License");
   you may not use this file except in compliance with the License.
@@ -19,6 +19,6 @@
     <dimen name="multipane_half_padding">16dp</dimen>
     <dimen name="multipane_padding">32dp</dimen>
 
-    <dimen name="plus_stream_padding_horizontal">128dp</dimen>
-    <dimen name="plus_stream_padding_vertical">32dp</dimen>
+    <dimen name="session_details_floating_width">600dp</dimen>
+    <dimen name="session_details_floating_height">750dp</dimen>
 </resources>

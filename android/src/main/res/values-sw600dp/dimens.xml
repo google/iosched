@@ -1,5 +1,5 @@
 <!--
-  Copyright 2012 Google Inc.
+  Copyright 2014 Google Inc. All rights reserved.
 
   Licensed under the Apache License, Version 2.0 (the "License");
   you may not use this file except in compliance with the License.
@@ -16,20 +16,42 @@
 <resources>
 
     <!-- UI elements -->
-    <dimen name="thickbar_height">200dp</dimen>
     <dimen name="detail_breadcrumb_height">48dp</dimen>
-    <dimen name="tab_height">56dp</dimen>
     <dimen name="action_button_min_width">64dp</dimen>
-    <dimen name="track_dropdown_width">288dp</dimen>
-    <dimen name="sliding_pane_width">300dp</dimen>
+    <dimen name="add_to_schedule_button_height">72dp</dimen> <!-- including padding -->
+    <dimen name="add_to_schedule_button_height_no_padding">56dp</dimen>
 
-    <dimen name="plus_stream_padding_horizontal">64dp</dimen>
-    <dimen name="plus_stream_padding_vertical">16dp</dimen>
+    <dimen name="navdrawer_chosen_account_height">140dp</dimen>
 
-    <!-- body content -->
-    <dimen name="text_size_xlarge">32sp</dimen>
-    <dimen name="speaker_image_size">64dp</dimen>
-    <dimen name="speaker_image_padding">16dp</dimen>
+    <dimen name="filter_spinner_width">200dp</dimen>
+    <integer name="filter_spinner_weight">0</integer>
+
+    <!-- social -->
+    <dimen name="hashtag_text_size">16sp</dimen>
+    <dimen name="hashtag_hero_text_size">56sp</dimen>
+
+    <dimen name="my_schedule_item_height">180dp</dimen>
+    <dimen name="my_schedule_item_height_break">96dp</dimen>
+
+    <dimen name="explore_hero_item_height">320dp</dimen>
+
     <dimen name="sandbox_company_image_size">100dp</dimen>
+
+    <!-- Live Stream -->
+    <dimen name="livestream_dropdown_item_width">420dp</dimen>
+    <dimen name="livestream_dropdown_item_height">48dp</dimen>
+    <dimen name="livestream_spinner_width">420dp</dimen>
+    <dimen name="livestream_spinner_text_size">20sp</dimen>
+    <dimen name="livestream_dropdown_text_size">16sp</dimen>
+    <dimen name="livestream_session_title_text_size">22sp</dimen>
+    <dimen name="livestream_session_summary_text_size">16sp</dimen>
+
+    <dimen name="keyline_1">24dp</dimen>
+    <dimen name="keyline_1_minus_8dp">16dp</dimen>
+    <dimen name="keyline_2">80dp</dimen>
+    <dimen name="keyline_2_minus_16dp">64dp</dimen>
+    <dimen name="keyline_2_session_detail">104dp</dimen>
+
+    <dimen name="session_detail_speaker_left_offset">32dp</dimen> <!-- to center with FAB -->
 
 </resources>

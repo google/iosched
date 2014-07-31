@@ -1,5 +1,5 @@
 <!--
-  Copyright 2012 Google Inc.
+  Copyright 2014 Google Inc. All rights reserved.
 
   Licensed under the Apache License, Version 2.0 (the "License");
   you may not use this file except in compliance with the License.
@@ -14,23 +14,45 @@
   limitations under the License.
   -->
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:iosched="http://schemas.android.com/apk/res/com.google.android.apps.iosched"
+    xmlns:iosched="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginTop="@dimen/element_spacing_normal"
-    android:layout_marginBottom="@dimen/element_spacing_normal">
+    android:layout_marginBottom="16dp">
 
-    <com.google.android.apps.iosched.ui.widget.BezelImageView android:id="@+id/speaker_image"
-        style="@style/SpeakerDetailImage"
+    <com.google.samples.apps.iosched.ui.widget.BezelImageView android:id="@+id/speaker_image"
+        android:scaleType="centerCrop"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:layout_width="@dimen/speaker_image_size"
+        android:layout_height="@dimen/speaker_image_size"
+        android:layout_marginLeft="@dimen/session_detail_speaker_left_offset"
+        android:layout_marginTop="6dp"
+        android:clickable="true"
+        android:focusable="true"
         iosched:maskDrawable="@drawable/circle_mask"
         iosched:borderDrawable="@drawable/circle_border"
-        iosched:desaturateOnPress="true"
         android:src="@drawable/person_image_empty" />
 
     <TextView android:id="@+id/speaker_header"
-        style="@style/SpeakerDetailHeader" />
+        android:clickable="true"
+        android:focusable="true"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/keyline_2_session_detail"
+        android:layout_marginBottom="4dp"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentRight="true"
+        android:textSize="16sp"
+        android:textColor="@color/body_text_1" />
 
     <TextView android:id="@+id/speaker_abstract"
-        style="@style/SpeakerDetailAbstract" />
+        style="@style/TextBody"
+        android:textColor="@color/body_text_2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/speaker_header"
+        android:layout_alignLeft="@id/speaker_header"
+        android:layout_alignRight="@id/speaker_header" />
 </RelativeLayout>

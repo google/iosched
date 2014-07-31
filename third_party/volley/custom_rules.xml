@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="volley-rules" default="help">
+
+  <!-- A rule to generate the JAR for inclusion in an Android
+       application. Output file will be bin/volley.jar -->
+  <target name="jar" depends="-compile">
+    <jar destfile="bin/volley.jar"
+         basedir="bin/classes" />
+  </target>
+</project>

@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!--
+  Copyright 2014 Google Inc. All rights reserved.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+       http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+  -->
+
+<com.google.samples.apps.iosched.ui.widget.CollectionView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:iosched="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/social_collection_vew"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="@dimen/social_grid_padding"
+    android:layout_marginStart="@dimen/social_hz_margin"
+    android:layout_marginEnd="@dimen/social_hz_margin"
+    android:clipToPadding="false"
+    iosched:internalPadding="@dimen/social_grid_padding"
+    tools:context="com.google.samples.apps.iosched.ui.HashtagsFragment" />

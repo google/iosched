@@ -1,5 +1,5 @@
 <!--
-  Copyright 2012 Google Inc.
+  Copyright 2014 Google Inc. All rights reserved.
 
   Licensed under the Apache License, Version 2.0 (the "License");
   you may not use this file except in compliance with the License.
@@ -16,7 +16,6 @@
 <resources>
     <!-- UI elements -->
     <dimen name="whats_on_height">64dp</dimen>
-    <dimen name="tab_height">48dp</dimen>
     <dimen name="track_icon_source_size">48dp</dimen>
     <dimen name="track_icon_size">32dp</dimen>
     <dimen name="track_icon_padding">2dp</dimen>
@@ -25,35 +24,108 @@
     <dimen name="action_button_min_width">56dp</dimen>
     <dimen name="multipane_half_padding">8dp</dimen>
     <dimen name="multipane_padding">16dp</dimen>
-    <dimen name="plus_stream_padding_horizontal">0dp</dimen>
-    <dimen name="plus_stream_padding_vertical">0dp</dimen>
     <dimen name="list_scroll_top_offset">16dp</dimen>
     <dimen name="schedule_block_time_width">72dp</dimen>
     <dimen name="map_multipane_right_padding">48dp</dimen>
-    <dimen name="map_info_maxwidth">400dp</dimen>
-    <dimen name="add_to_schedule_button_height">48dp</dimen>
+    <dimen name="map_info_maxwidth">360dp</dimen>
+    <dimen name="add_to_schedule_button_height">56dp</dimen> <!-- including padding -->
+    <dimen name="add_to_schedule_button_height_no_padding">40dp</dimen>
     <dimen name="indeterminate_progress_size">16dp</dimen>
-    <dimen name="rating_bar_thumb_offset">0dp</dimen>
+    <dimen name="expert_icon_size">120dp</dimen>
+    <dimen name="partner_icon_size">120dp</dimen>
+    <dimen name="data_item_padding">16dp</dimen>
+    <dimen name="session_details_floating_width">500dp</dimen>
+    <dimen name="session_details_floating_height">650dp</dimen>
+    <dimen name="session_details_extra_space_bottom">48dp</dimen>
+    <dimen name="my_schedule_item_height">136dp</dimen>
+    <dimen name="my_schedule_item_height_break">80dp</dimen>
+    <dimen name="my_schedule_item_height_past">60dp</dimen>
+    <dimen name="my_schedule_time_column_width">100dp</dimen>
+    <dimen name="my_schedule_title_strip_padding">8dp</dimen>
+    <dimen name="widget_schedule_time_width">72dp</dimen>
+    <dimen name="widget_item_height">108dp</dimen>
+    <dimen name="widget_item_height_break">80dp</dimen>
+
+    <!-- Explore activity -->
+    <dimen name="list_item_action_width">105dp</dimen>
+    <dimen name="list_item_action_height">90dp</dimen>
+    <dimen name="list_item_action_margin">2dp</dimen>
+    <dimen name="action_button_padding">10dp</dimen>
+    <dimen name="spinner_left_padding">4dp</dimen>
 
     <!-- body content -->
     <dimen name="element_spacing_normal">8dp</dimen>
     <dimen name="content_padding_normal">16dp</dimen>
+    <dimen name="text_size_xsmall">11sp</dimen>
     <dimen name="text_size_small">12sp</dimen>
     <dimen name="text_size_medium">14sp</dimen>
     <dimen name="text_size_large">18sp</dimen>
-    <dimen name="text_size_xlarge">18sp</dimen>
+    <dimen name="text_size_xlarge">20sp</dimen>
     <dimen name="text_size_diff_large_small">6sp</dimen>
-    <dimen name="speaker_image_size">48dp</dimen>
-    <dimen name="speaker_image_padding">8dp</dimen>
-    <dimen name="sandbox_company_image_size">100dp</dimen>
-    <!-- Google+ -->
-    <dimen name="stream_name_text_size">16sp</dimen>
-    
+    <dimen name="speaker_image_size">40dp</dimen>
+
      <!-- Widget -->
-    <dimen name="widget_margin">8dp</dimen>
+    <dimen name="widget_margin">0dp</dimen>
 
     <!-- Map -->
     <dimen name="map_content_padding">8dp</dimen>
-    <dimen name="map_infowindow_width">300dp</dimen>
+    <dimen name="map_infowindow_width">260dp</dimen>
+
+    <dimen name="navdrawer_chosen_account_height">120dp</dimen>
+    <dimen name="navdrawer_width">260dp</dimen>
+    <dimen name="navdrawer_profile_image_size">40dp</dimen>
+
+    <!-- Action Bar auto-hide-on-scroll behavior parameters -->
+    <dimen name="action_bar_auto_hide_min_y">152dp</dimen>
+    <dimen name="action_bar_auto_hide_sensivity">48dp</dimen>
+
+    <dimen name="browse_sessions_anim_amount">400dp</dimen>
+    <dimen name="butter_bar_height">64dp</dimen>
+    <dimen name="filterbar_height">48dp</dimen>
+
+    <dimen name="explore_dropdown_item_padding_normal">16dp</dimen>
+    <dimen name="explore_dropdown_item_padding_indented">16dp</dimen>
+    <dimen name="explore_dropdown_item_width">240dp</dimen>
+    <dimen name="explore_dropdown_item_height">48dp</dimen>
+    <dimen name="explore_spinner_width">200dp</dimen>
+    <dimen name="explore_grid_padding">4dp</dimen>
+    <dimen name="half_explore_grid_padding">2dp</dimen>
+    <dimen name="explore_hero_item_height">240dp</dimen>
+
+    <dimen name="filter_spinner_width">0dp</dimen>
+    <integer name="filter_spinner_weight">1</integer>
+
+    <dimen name="tag_color_dot_size">12dp</dimen>
+
+    <!-- Live Stream -->
+    <dimen name="livestream_dropdown_item_width">240dp</dimen>
+    <dimen name="livestream_dropdown_item_height">48dp</dimen>
+    <dimen name="livestream_spinner_width">210dp</dimen>
+    <dimen name="livestream_spinner_text_size">16sp</dimen>
+    <dimen name="livestream_dropdown_text_size">14sp</dimen>
+    <dimen name="livestream_session_title_text_size">20sp</dimen>
+    <dimen name="livestream_session_summary_text_size">14sp</dimen>
+
+    <dimen name="keyline_1">16dp</dimen>
+    <dimen name="keyline_1_minus_8dp">8dp</dimen>
+    <dimen name="keyline_2">72dp</dimen>
+    <dimen name="keyline_2_minus_16dp">56dp</dimen>
+    <dimen name="keyline_2_session_detail">@dimen/keyline_2</dimen>
+
+    <dimen name="session_detail_speaker_left_offset">@dimen/keyline_1</dimen>
+    <dimen name="fab_elevation">2dp</dimen>
+    <dimen name="fab_press_translation_z">2dp</dimen>
+
+    <dimen name="session_detail_max_header_elevation">2dp</dimen>
+    <dimen name="headerbar_elevation">2dp</dimen>
+
+    <!-- Social -->
+    <dimen name="hashtag_line_height">1dp</dimen>
+    <dimen name="hashtag_height">120dp</dimen>
+    <dimen name="hashtag_desc_size">40dp</dimen>
+    <dimen name="social_grid_padding">4dp</dimen>
+    <dimen name="social_hz_margin">0dp</dimen>
+    <dimen name="hashtag_text_size">14sp</dimen>
+    <dimen name="hashtag_hero_text_size">45sp</dimen>
 
 </resources>
