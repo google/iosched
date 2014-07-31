@@ -17,7 +17,7 @@ We have updated the I/O app with [material design](http://www.google.com/design/
 
 <a href="../../raw/master/binaries/iosched-lpreview.apk"><b>Download the I/O app APK for Android L Preview</b></a>
 
-To run this APK, you will need a device/emulator set up with the Android L Preview system image. For
+To run this APK, you will need a device set up with the Android L Preview system image. For
 more information, please refer to the [Android L Developer Preview page](http://developer.android.com/preview/index.html).
 
 <h2>Source</h2>
