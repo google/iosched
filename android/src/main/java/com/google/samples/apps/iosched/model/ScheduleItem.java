@@ -85,7 +85,7 @@ public class ScheduleItem implements Cloneable, Comparable<ScheduleItem> {
         }
         ScheduleItem i = (ScheduleItem) o;
         return type == i.type &&
-                sessionId == i.sessionId &&
+                sessionId.equals(i.sessionId) &&
                 startTime == i.startTime &&
                 endTime == i.endTime;
     }
