@@ -161,7 +161,7 @@ public class PrefUtils  {
 
     public static void markUserRefusedSignIn(final Context context, final boolean refused) {
         SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(context);
-        sp.edit().putBoolean(PREF_USER_REFUSED_SIGN_IN, refused).commit();
+        sp.edit().putBoolean(PREF_USER_REFUSED_SIGN_IN, refused).apply();
     }
 
     public static boolean hasUserRefusedSignIn(final Context context) {
