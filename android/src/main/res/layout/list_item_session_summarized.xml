@@ -48,14 +48,14 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:paddingBottom="4dp"
-            android:text="@string/placeholder_session_title" />
+            />
 
         <!-- Subtitle -->
         <TextView android:id="@+id/session_subtitle_short"
             style="@style/ExploreItem.Subtitle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/placeholder_session_subtitle" />
+             />
 
     </LinearLayout>
 

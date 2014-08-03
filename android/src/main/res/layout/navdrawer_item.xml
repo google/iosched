@@ -38,6 +38,6 @@
         android:textSize="14sp"
         android:textStyle="@integer/font_textStyle_drawer_item"
         android:fontFamily="@string/font_fontFamily_drawer_item"
-        android:text="@string/placeholder_lorem_ipsum" />
+         />
 
 </LinearLayout>

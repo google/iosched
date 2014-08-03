@@ -24,8 +24,8 @@
 
     <!-- targetSdkVersion set to 19 from build.gradle on non-L-preview builds -->
     <uses-sdk
-        android:minSdkVersion="14"
-        android:targetSdkVersion="L" />
+        android:minSdkVersion="19"
+        android:targetSdkVersion="19" />
 
     <permission
         android:name="com.google.samples.apps.iosched.permission.WRITE_SCHEDULE"
