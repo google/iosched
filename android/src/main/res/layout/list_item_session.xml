@@ -63,7 +63,7 @@
                 style="@style/ExploreItem.Title"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/placeholder_session_title" />
+                 />
 
             <!-- Subtitle -->
             <TextView android:id="@+id/session_subtitle"
@@ -71,7 +71,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:paddingBottom="8dp"
-                android:text="@string/placeholder_session_subtitle" />
+                 />
 
             <!-- Abstract snippet -->
             <TextView android:id="@+id/session_snippet"
@@ -79,7 +79,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:maxLines="3"
-                android:text="@string/placeholder_lorem_ipsum" />
+                 />
 
         </LinearLayout>
     </LinearLayout>
