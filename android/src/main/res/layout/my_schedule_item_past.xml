@@ -36,7 +36,7 @@
             android:gravity="bottom"
             android:textSize="@dimen/text_size_medium"
             android:textColor="@color/body_text_2"
-            android:text="@string/placeholder_session_start_time" />
+           />
 
     </LinearLayout>
 
@@ -78,7 +78,7 @@
                 android:layout_height="36dp"
                 android:layout_marginRight="8dp"
                 android:gravity="bottom"
-                android:text="@string/placeholder_session_title"
+               
                 android:textSize="@dimen/text_size_large"
                 android:ellipsize="end"
                 android:maxLines="1" />

@@ -237,7 +237,7 @@
                 <TextView android:layout_height="wrap_content"
                     android:layout_width="match_parent"
                     android:layout_marginBottom="0dp"
-                    android:text="@string/placeholder_session_title"
+                    android:text=""
                     android:id="@+id/session_title"
                     android:maxLines="4"
                     android:ellipsize="end"
@@ -251,7 +251,7 @@
                 <!-- Session subtitle -->
                 <TextView android:layout_height="wrap_content"
                     android:layout_width="match_parent"
-                    android:text="@string/placeholder_session_subtitle"
+                    android:text=""
                     android:id="@+id/session_subtitle"
                     android:maxLines="2"
                     android:ellipsize="end"
