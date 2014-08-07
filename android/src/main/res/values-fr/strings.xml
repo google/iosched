@@ -542,7 +542,7 @@
     <string name="session_feedback_relevance">Quelle était la pertinence de cette session par rapport à vos projets ?</string>
 
     <!-- A session feedback section label asking for the speaker's quality -->
-    <string name="session_feedback_speaker_quality">Qualité des haut-parleurs :</string>
+    <string name="session_feedback_speaker_quality">Qualité des orateurs :</string>
 
     <!-- Button text for submitting session feedback -->
     <string name="session_feedback_submitlink">Envoyer l\'avis</string>
@@ -611,7 +611,7 @@
     <string name="session_requirements">Pré-requis</string>
 
     <!-- Label for a session section listing the presenters at the session -->
-    <string name="session_speakers">Haut-parleurs</string>
+    <string name="session_speakers">Orateurs</string>
 
     <!-- Subtitle of a session indicating time interval and room number -->
     <string name="session_subtitle">
