@@ -16,33 +16,30 @@
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
     <!-- Shown in the schedule to indicate how many sessions are available on that particular time slot. -->
     <plurals name="schedule_block_subtitle">
-    <item quantity="one">
-      <xliff:g id="number_of_sessions">%1$d</xliff:g> sessione disponibile</item>
-    <item quantity="other">
-      <xliff:g id="number_of_sessions">%1$d</xliff:g> sessioni disponibili</item>
-  </plurals>
+        <item quantity="one"><xliff:g id="number_of_sessions">%1$d</xliff:g> sessione disponibile</item>
+        <item quantity="other"><xliff:g id="number_of_sessions">%1$d</xliff:g> sessioni disponibili</item>
+    </plurals>
 
     <!-- Shows as a notification on the system bar to alert user that some of their sessions are about to begin. -->
     <plurals name="session_notification_text">
-    <item quantity="one">e 1 altra inizierà tra <xliff:g id="remaining_time">%1$d</xliff:g> min.</item>
-    <item quantity="other">e <xliff:g id="num_sessions">%2$d</xliff:g> altre inizieranno tra <xliff:g id="remaining_time">%1$d</xliff:g> min.</item>
-  </plurals>
+        <item quantity="one">e 1 altra inizierà tra <xliff:g id="remaining_time">%1$d</xliff:g> min.</item>
+        <item quantity="other">e <xliff:g id="num_sessions">%2$d</xliff:g> altre inizieranno tra <xliff:g id="remaining_time">%1$d</xliff:g> min.</item>
+    </plurals>
 
     <!-- Shown as a notification on the system bar to alert user that some of their sessions are about to begin. -->
     <plurals name="session_notification_ticker">
-    <item quantity="one">1 sessione sta per iniziare.</item>
-    <item quantity="other">%d sessioni stanno per iniziare.</item>
-  </plurals>
+        <item quantity="one">1 sessione sta per iniziare.</item>
+        <item quantity="other">%d sessioni stanno per iniziare.</item>
+    </plurals>
 
     <!-- Title for the notification that alerts the user that some of their sessions are about to begin. -->
     <plurals name="session_notification_title">
-    <item quantity="one">1 sessione inizia tra <xliff:g id="remaining_time">%1$d</xliff:g> min.</item>
-    <item quantity="other">
-      <xliff:g id="num_sessions">%2$d</xliff:g> sessioni inizieranno tra  <xliff:g id="remaining_time">%1$d</xliff:g> min.</item>
-  </plurals>
+        <item quantity="one">1 sessione inizerà tra <xliff:g id="remaining_time">%1$d</xliff:g> min.</item>
+        <item quantity="other"><xliff:g id="num_sessions">%2$d</xliff:g> sessioni inizieranno tra <xliff:g id="remaining_time">%1$d</xliff:g> min.</item>
+    </plurals>
 
     <!-- Shown in the 'About' window of the app. -->
-    <string name="about_body">&lt;b&gt; Google I/O 2014 &lt;/b&gt; &lt;br&gt; Versione %s&lt;br&gt;&lt;br&gt; &lt;a href=http://m.google.com/utos&gt; Condizioni generali d\'uso &lt;/a&gt; &lt;br&gt;&lt;br&gt; &lt;a href=http://www.google.com/policies/privacy/&gt; sulla privacy&lt;/a&gt;</string>
+    <string name="about_body">&lt;b&gt; Google I/O 2014 &lt;/b&gt; &lt;br&gt; Versione %s&lt;br&gt;&lt;br&gt;&lt;a href=http://m.google.com/utos&gt;Condizioni generali d\'uso&lt;/a&gt;&lt;br&gt;&lt;br&gt;&lt;a href=http://www.google.com/policies/privacy/&gt;Politiche sulla privacy&lt;/a&gt;</string>
 
     <!-- Shown as a link in the About screen of the app; user can click to see the EULA. -->
     <string name="about_eula">Accordo di Licenza con l\'Utente Finale</string>
@@ -102,13 +99,13 @@
 
     <!-- Label on a button that allows the user to see what conference sessions are available
     at a particular time. -->
-    <string name="browse_sessions">Sfoglia le sessioni ...</string>
+    <string name="browse_sessions">Sfoglia le sessioni…</string>
 
     <!-- Shown on Configure WiFi dialog, instructing user on what button to click. -->
-    <string name="calltoaction_wifi_configure">&lt;br&gt;&lt;br&gt; Premi \'Aggiungi rete Wi-Fi\' per procedere.</string>
+    <string name="calltoaction_wifi_configure">&lt;br&gt;&lt;br&gt; Premi \'Aggiungi rete WiFi\' per procedere.</string>
 
     <!-- Shown on Configure WiFi dialog, instructing user on what button to click. -->
-    <string name="calltoaction_wifi_settings">&lt;br&gt;&lt;br&gt; Tocca\' Apri impostazioni Wi-Fi\'  per attivare la connessione Wi-Fi.</string>
+    <string name="calltoaction_wifi_settings">&lt;br&gt;&lt;br&gt; Tocca \'Apri impostazioni WiFi\' per attivare la connessione WiFi.</string>
 
     <!-- Accessibility description for a button that allows the user to close a session details pane. -->
     <string name="close_detail_pane">Chiudi riquadro dei dettagli</string>
@@ -143,7 +140,7 @@
     <!-- Menu item that allows the user to send feedback about the application to Google. This
     says 'App Feedback' to clarify that it's feedback about the application, and not about a
     session. -->
-    <string name="description_app_feedback">Feedback sulla app</string>
+    <string name="description_app_feedback">Feedback sull\'app</string>
 
     <!-- Menu item that allows the user to send feedback about the application to Google -->
     <string name="description_app_feedback_old">Feedback</string>
@@ -152,17 +149,17 @@
     <string name="description_captions">Didascalie</string>
 
     <!-- Menu item that allows user to configure the conference WiFi on their device. -->
-    <string name="description_configure_wifi">Configurazione Wi-Fi</string>
+    <string name="description_configure_wifi">Configurazione WiFi</string>
 
     <!-- Menu item that takes the user to a page that shows a list of Google I/O Extended events. -->
-    <string name="description_i_o_extended">I/O Extended (altri eventi correlati)</string>
+    <string name="description_i_o_extended">I/O Extended</string>
 
     <!-- Menu item that takes the user to the conference venue map screen -->
     <string name="description_map">Mappa</string>
 
     <!-- Menu item that allows user to turn on or turn off the output of a video to a
     second screen. -->
-    <string name="description_presentation">Attiva/disattiva la riprodizione del video sullo schermo</string>
+    <string name="description_presentation">Video su schermo esterno ON/OFF</string>
 
     <!-- Menu item that allows user to reload the data in the current screen so they see
     the most up-to-date version from the server. -->
@@ -179,7 +176,7 @@
     <string name="description_settings">Impostazioni</string>
 
     <!-- Explanation of wifi setup that appears in the WiFi setup dialog box. -->
-    <string name="description_setup_wifi_body">Dato che che parteciperai di persona, possiamo impostare il dispositivo per accedere alla rete Wi-Fi  presso la sede della conferenza (solo 5Ghz). Configurando il tuo Wi-Fi ora, potrai evitare la congestione della rete.</string>
+    <string name="description_setup_wifi_body">Dato che parteciperai di persona, possiamo impostare il dispositivo per accedere alla rete WiFi presso la sede della conferenza (solo 5Ghz). Configurando il tuo WiFi ora, potrai aiutare ad evitare la congestione della rete.</string>
 
     <!-- Menu item that allows user to share the currently displayed session. Sharing can be done
     by email, social networks, etc. -->
@@ -188,13 +185,13 @@
     <!-- Menu item that allows the user to view the Google+ stream about a particular topic. This
     appears as a menu item on a Sesssion screen, and opens the Google+ app to show the Google+
     posts about that session's topic. -->
-    <string name="description_social_stream">Visualizza il flusso di informazioni su Google +</string>
+    <string name="description_social_stream">Visualizza lo stream su Google+</string>
 
     <!-- Accessibility description saying that the app's navigation drawer has been closed -->
-    <string name="drawer_close">Menù Laterale Chiuso</string>
+    <string name="drawer_close">Menu laterale Chiuso</string>
 
     <!-- Accessibility description saying that the app's navigation drawer has been opened -->
-    <string name="drawer_open">Menù laterale aperto</string>
+    <string name="drawer_open">Menu laterale aperto</string>
 
     <!-- Shown when trying to watch a video of a session, alerting user that no captions are
     available for that video. -->
@@ -208,22 +205,49 @@
 
     <!-- Shown on several screens alerting user that no data is being shown because a background
     data synchronization is still in progress. Data will show as soon as the sync ends. -->
-    <string name="empty_waiting_for_sync">In attesa di sincronizzazione ...</string>
+    <string name="empty_waiting_for_sync">In attesa di sincronizzazione…</string>
 
     <!-- Shown on a widget that normally displays upcoming sessions. This is shown after the
     conference, when there are no more sessions to show. -->
-    <string name="empty_widget_text">Niente più sessioni.\nCi vediamo l\'anno prossimo!</string>
+    <string name="empty_widget_text">Tutte le sessioni sono finite.\nCi vediamo l\'anno prossimo!</string>
 
     <!-- Shown on a widget instructing user how to start using the widget. -->
-    <string name="empty_widget_text_signed_out">Tocca il logo Google I/O 2014  qui sopra per accedere e iniziare a utilizzare l\'applicazione.</string>
+    <string name="empty_widget_text_signed_out">Tocca il logo Google I/O 2014 qui sopra per accedere e iniziare ad utilizzare l\'applicazione.</string>
 
     <!-- Shown as a header on a list of sessions to indicate that the sessions that appear on that
     group have already ended. -->
     <string name="ended_sessions">Sessioni terminate</string>
 
+    <!-- Text on a drop-down list that allows the user to view Google Developer Experts from all cities (this is a filter). -->
+    <string name="experts_directory_all_cities">Tutte le città</string>
+
+    <!-- Text on a drop-down list that allows the user to view Google Developer Experts from all countries (this is a filter). -->
+    <string name="experts_directory_all_countries">Tutti i paesi</string>
+
+    <!-- Text that appears next to a person's name to indicate that they are attending Google I/O in person. Alternate translations might be: "present in person", "present at the event", "present onsite", etc. -->
+    <string name="experts_directory_attending">presente all\'evento</string>
+
+    <!-- Description of the Google Developer Expert program that appears in the Google Developer Expert directory screen, giving an introduction about what the term means. -->
+    <string name="experts_directory_header_body">Il titolo Google Developer Experts (GDE) indica gli sviluppatori di rilievo, che vantano una notevole esperienza in una o più tecnologie Google e la condividono con la comunità degli sviluppatori. I GDE sono guru, maestri ed evangelizzatori; creano tutorial, esempi di codice e scrivono libri e blog; pubblicano video, guidano progetti della community e sono presenti in occasione degli eventi di maggiore e minore portata. Questi sviluppatori indipendenti portano la propria esperienza e conoscenza concreta nell\'utilizzo delle tecnologie Google alle comunità di sviluppatori di tutto il mondo.</string>
+
+    <!-- Text on a button that dismisses the explanation about Google Developer Experts. -->
+    <string name="experts_directory_header_dismiss">Ho capito</string>
+
+    <!-- Title of the screen that gives an explanation about who are the Google Developer Experts. Alternate translations might be: "About the Google Developers Experts", or even just "Google Developer Experts" if nothing else sounds natural. -->
+    <string name="experts_directory_header_title">Chi sono i Google Developers Experts (GDE)?</string>
+
+    <!-- Message that appears as feedback when the user has indicated that they are attending I/O in person. -->
+    <string name="explore_attending_in_person_toast">Partecipante alla conferenza I/O di persona (puoi cambiarlo nelle Impostazioni)</string>
+
+    <!-- Message that appears as feedback when the user has indicated that they are attending I/O remotely. -->
+    <string name="explore_attending_remotely_toast">Partecipante alla conferenza I/O da remoto (puoi cambiarlo nelle Impostazioni)</string>
+
     <!-- Label for a button that, when clicked, allows the user to send their feedback (ratings
     and comments) about a particular session. -->
-    <string name="give_feedback">Sì!</string>
+    <string name="give_feedback">Sì</string>
+
+    <!-- Text on a button that takes the user to the device's Settings screen. -->
+    <string name="go_to_settings">Vai alla schermata Impostazioni</string>
 
     <!-- Error message that shows when the user tries to use the app without a Google account
     configured on their device. -->
@@ -231,7 +255,7 @@
 
     <!-- Title for an error message that appears when the user tries to use the app without
     a Google account configured on their device. -->
-    <string name="google_account_required_title">Google Account Obbligatorio</string>
+    <string name="google_account_required_title">Necessario un Account Google</string>
 
     <!-- List dropdown item on the Video Library screen allowing the user to choose to see
     the videos from a particular year of Google I/O. -->
@@ -252,13 +276,13 @@
     streamed. Also used in a "LIVE" badge overlay that shows up on top of the session card.
     Constrained because the session subtitle should be small enough to fit into the
     explore cards. [CHAR_LIMIT=10] -->
-    <string name="live_now">LIVE ORA</string>
+    <string name="live_now">GUARDA ORA</string>
 
     <!-- Message presented while data is loading in Explore view -->
-    <string name="loading">Caricamento in corso ...</string>
+    <string name="loading">Caricamento in corso…</string>
 
     <!-- Message shown in an error bar when user could not be logged in. [CHAR_LIMIT=75] -->
-    <string name="login_failed_text">Non siamo riusciti a sincronizzare le sessioni a causa di un errore.</string>
+    <string name="login_failed_text">Non siamo riusciti a sincronizzare le tue sessioni a causa di un errore.</string>
 
     <!-- Button to retry a failed login attempt [CHAR_LIMIT=2 lines of 9 characters].
     If using multiple lines, separate them with "\n" ("Tentar\nde novo" for example)
@@ -269,7 +293,7 @@
     <string name="mandatory_update_error">L\'applicazione non è aggiornata. È necessario aggiornarla per continuare ad usarla.</string>
 
     <!-- Message shown in a popup to indicate that there is a mandatory upgrade -->
-    <string name="update_available">C\'è una versione più nuova di questa applicazione disponibile su Google Play.</string>
+    <string name="update_available">Una versione più recente di questa applicazione è disponibile su Google Play.</string>
 
     <!-- Message shown in a map popup to indicate the next session.
       Param %1$s: time of the next session
@@ -280,32 +304,31 @@
     <!-- Indicator shown when there is no upcoming session in a room -->
     <string name="map_infowindow_text_empty">-</string>
 
+    <!-- Text on map popup to ask the user to click the popup to show a list of all partners with more details -->
+    <string name="map_infowindow_partner_seemore">Tocca per maggiori dettagli</string>
+
+    <!-- Actionbar button text to show nearby BLE devices -->
+    <string name="map_nearby_button">Qui vicino</string>
+
     <!-- Message shown in a map popup to indicate the current session.
       Param %1$s: title of the next session
      -->
-    <string name="map_now_playing">In svolgimento: &lt;br&gt;&lt;b&gt;%1$s&lt;/b&gt;</string>
+    <string name="map_now_playing">In svolgimento:&lt;br&gt;&lt;b&gt;%1$s&lt;/b&gt;</string>
 
     <!-- Clickable text in the map popup that leads to sessions in a room -->
     <string name="map_touch_to_see_session">Tocca per vedere le Sessioni</string>
 
+    <!-- Accessibility content description on a button that will show more information about something. -->
+    <string name="more_information">Ulteriori informazioni</string>
+
     <!-- Text on a button that allows the user to browse more sessions -->
-    <string name="more_sessions">Più Sessioni</string>
+    <string name="more_sessions">Altre Sessioni</string>
 
     <!-- Accessibility description for tab that shows the attendee's schedule for a given day. -->
     <string name="my_schedule_tab_desc_a11y">Tocca per mostrare il tuo programma di <xliff:g id="day">%1$s</xliff:g>.</string>
 
     <!-- Accessibility announcement to alert user that they are now viewing their schedule of a given day. -->
-    <string name="my_schedule_page_desc_a11y">Ora mostra il tuo programma di <xliff:g id="day">%1$s</xliff:g>
-  </string>
-
-    <!-- Accessibility description for navigation drawer -->
-    <string name="navdrawer_description_a11y">Menù laterale. Questo menù ha pulsanti che portano alle varie schermate dell\'applicazione.</string>
-
-    <!-- Menu item to send feedback about the app [CHAR_LIMIT=20] -->
-    <string name="navdrawer_item_app_feedback">Feedback dell\'App</string>
-
-    <!-- Accessibility description for menu item to send feedback about the app -->
-    <string name="navdrawer_item_app_feedback_a11y">Feedback dell\'App</string>
+    <string name="my_schedule_page_desc_a11y">Stiamo mostrando il tuo programma di <xliff:g id="day">%1$s</xliff:g></string>
 
     <!-- Menu item to open the Experts screen [CHAR_LIMIT=20] -->
     <string name="navdrawer_item_experts_directory">Esperti</string>
@@ -342,19 +365,38 @@
     <string name="navdrawer_item_social">Social</string>
 
     <!-- Menu item to open a list of current and past I/O videos [CHAR_LIMIT=20] -->
-    <string name="navdrawer_item_video_library">Videoteca</string>
+    <string name="navdrawer_item_video_library">Archivio video</string>
 
     <!-- Text indicator that appears below the user's name, showing that they are
     attending the conference in person in San Francisco. -->
-    <string name="navdrawer_status_attending_in_person">Partecipare di persona a I/O</string>
+    <string name="navdrawer_status_attending_in_person">Partecipo di persona all\'I/O</string>
 
     <!-- Text indicator that appears below the user's name, showing that they are
     attending the conference remotely via live streaming. -->
-    <string name="navdrawer_status_attending_remotely">Partecipare a distanza a I/O</string>
+    <string name="navdrawer_status_attending_remotely">Partecipo a distanza all\'I/O</string>
+
+    <!-- Header text for the Nearby EULA fragment -->
+    <string name="nearby_eula_header">Esperimento PhysicalWeb</string>
+
+    <!-- Title of the window that explains what the PhysicalWeb experiment is. PhysicalWeb is a proper noun and should not be translated, but 'experiment' should be translated. It is an experiment in the sense that we are trying out a new idea that's not an official product. -->
+    <string name="physicalweb_intro_title">Esperimento PhysicalWeb</string>
+
+    <!-- Explanation of the PhysicalWeb experiment that appears on the 'Nearby' tab. -->
+    <string name="physicalweb_intro_text">Tramite questa scheda è possibile visualizzare alcuni link ai contenuti correlati alle funzionalità della conferenza nei pressi della tua attuale posizione (ad esempio, siti partner, applicazioni, demo e contenuti interattivi). A tale scopo, l\'applicazione eseguirà una scansione Bluetooth LE dell\'ambiente circostante per cercare tag e inviare queste informazioni a un server Google per l\'elaborazione. Una volta attivata, questa funzione continuerà per tutta la durata dell\'evento, purché il dispositivo Bluetooth sia acceso. Per disattivare la funzione, visitare il menu Impostazioni dell\'app, oppure disattivare la funzione Bluetooth sul dispositivo. Si ricorda che si tratta soltanto di un esperimento BLE, non di un prodotto completo, quindi potrebbe presentare qualche imperfezione. Potrebbe non funzionare se la connessione di rete è scarsa o assente, oppure in presenza di interferenze.\n\nDesideri abilitare questa funzionalità ora?</string>
+
+    <!-- Title of the window that explains what the PhysicalWeb experiment is. PhysicalWeb is a proper noun and should not be translated, but 'experiment' should be translated. It is an experiment in the sense that we are trying out a new idea that's not an official product. -->
+    <string name="physical_web_bluetooth_off">Questa funzionalità richiede una connessione Bluetooth, tuttavia la funzione Bluetooth del dispositivo è disattivata. Per utilizzare questa funzione, abilitare la funzione Bluetooth nella schermata Impostazioni del dispositivo.</string>
+
+    <!-- Message shown in the nearby screen when there are no nearby URLs. -->
+    <string name="no_nearby_urls">Non ci sono tag PhysicalWeb nella tua zona. Riprova quando sarai in prossimità di un punto di interesse presso il Moscone Center durante la conferenza.</string>
 
     <!-- Message shown in a toast (popup) when the user clicks to change the active account but
     there is no network connection -->
-    <string name="no_connection_cant_login">Impossibile Entrare. Controlla la connessione di rete.</string>
+    <string name="no_connection_cant_login">Impossibile accedere. Controlla la connessione di rete.</string>
+
+    <!-- Message shown in a toast (popup) when the user selected a partner that could not be
+    found -->
+    <string name="no_matching_partner">Nessun partner corrispondente.</string>
 
     <!-- Message shown in the session explorer when the user applies a filter that results no
     session -->
@@ -398,48 +440,81 @@
     <!-- Header for a group of sessions in Session Explorer that don't fit into other tag-based groups -->
     <string name="others">Altri</string>
 
+    <!-- Header for a dialog listing event partners -->
+    <string name="partners">Partner</string>
+
+    <!-- Menu item that, when clicked, causes an entry to be deleted in the People I've Met screen -->
+    <string name="people_ive_met_delete">Elimina</string>
+
+    <!-- Confirmation message before deleting a person from the People I've Met Screen -->
+    <string name="people_ive_met_delete_confirmation">Sei sicuro di voler eliminare questa persona dall\'elenco?</string>
+
+    <!-- Title of a dialog box where the user can enter their own notes about a given person they have met. -->
+    <string name="people_ive_met_dummy_badge">Questo tesserino non contiene alcun collegamento a un profilo Google+</string>
+
+    <!-- Title of a dialog box where the user can enter their own notes about a given person they have met. -->
+    <string name="people_ive_met_edit_note_title">Note</string>
+
+    <!-- Explanation that appears when the user goes to the badge scanning screen and there are badges to show. -->
+    <string name="people_ive_met_empty">Non hai ancora scansionato il tesserino di alcun partecipante. Se desideri scambiare informazioni di contatto con un altro partecipante, tieni il dispositivo sopra il suo tesserino per alcuni secondi in modo che il suo profilo Google+ sia aggiunto a questo elenco (richiede NFC).</string>
+
+    <!-- Header for the People I've Met screen, explaining that the list below is a list of people whose badges the user has scanned at the conference. -->
+    <string name="people_ive_met_header">Partecipanti di cui hai scansionato il tesserino:</string>
+
+    <!-- Menu item that allows the user to enter or edit a note about a person they have met at the conference. Alternate translations can be: "Edit Note", "-->
+    <string name="people_ive_met_note">NB</string>
+
     <!-- An application permission (this permission allows the application to modify the Google
     I/O schedule data). Shows on a permissions dialog screen. -->
     <string name="permission_write">Modifica i dati del calendario Google I/O</string>
 
     <!-- Description of the Google+ +1 button for accessibility screen readers -->
-    <string name="plus_one_description_standard">Tocca il tasto plus one</string>
+    <string name="plus_one_description_standard">Tocca il tasto per fare +1.</string>
 
-    <!-- Title in the Settings screen for the setting that enables sending of anonymous usage statistics to Google. -->
+    <!-- Title in the Settings screen for the setting that enables sending of anonymous usage
+    statistics to Google. -->
     <string name="pref_analytics_enabled_title">Invia statistiche anonime di utilizzo</string>
 
-    <!-- Description in the Settings screen for the setting that enables sending of anonymous usage statistics to Google. -->
-    <string name="pref_analytics_enabled_description">Se selezioni l\'opzione, statistiche anonime di utilizzo saranno inviate a Google.</string>
+    <!-- Description in the Settings screen for the setting that enables sending of anonymous usage
+    statistics to Google. -->
+    <string name="pref_analytics_enabled_description">Invia statistiche anonime sull\'utilizzo dell\'app
+    a Google.</string>
 
     <!-- Summary in the Settings screen for the "I will be at Google I/O" option -->
-    <string name="pref_attendee_at_venue_description">Se selezioni l\'opzione, verranno visualizzate tutte le sessioni e gli eventi in loco. In caso contrario, verranno visualizzate solo sessioni live-streaming.</string>
+    <string name="pref_attendee_at_venue_description">Visualizza tutte le sessioni e gli eventi in loco. Se deselezionato, visualizza solo sessioni live-streaming.</string>
 
     <!-- Title in the Settings screen for the "I will be at Google I/O" option -->
     <string name="pref_attendee_at_venue_title">Parteciperò al Google I/O!</string>
 
     <!-- Summary in the Settings screen for the "Show local times" option -->
-    <string name="pref_local_times_description">Se selezioni l\'opzione, gli orari saranno visualizzati nell\'ora locale del dispositivo. Se non selezioni l\'opzione, gli orari saranno visualizzati in PDT, ora locale della conferenza.</string>
+    <string name="pref_local_times_description">Usa il fuso orario del dispositivo invece di quello della conferenza (PDT).</string>
 
     <!-- Title in the Settings screen for the "Show local times" option -->
     <string name="pref_local_times_title">Visualizza ora locale</string>
 
+    <!-- Description of PhysicalWeb experiment setting in the Settings screen. BLE stands for Bluetooth Low Energy.-->
+    <string name="pref_nearby_summary">Abilita l\'esperimento PhysicalWeb nella schermata Mappa, che esegue scansioni BLE per visualizzare i tag PhysicalWeb vicino a te (richiede Bluetooth).</string>
+
+    <!-- Title in the Settings screen of the setting to enable the PhysicalWeb experiment feature in the app. -->
+    <string name="pref_nearby_title">Abilita l\'esperimento PhysicalWeb</string>
+
     <!-- Summary in the Settings screen for the "Notify me to send feedback about my sessions" option -->
-    <string name="pref_notify_feedback_description">Se selezioni l\'opzione, l\'applicazione visualizza notifiche per chiedere il tuo feedback sulle tue sessioni selezionate.</string>
+    <string name="pref_notify_feedback_description">Visualizza notifiche per chiedere il tuo feedback sulle tue sessioni selezionate.</string>
 
     <!-- Title in the Settings screen for the "Notify me to send feedback about my sessions" option -->
-    <string name="pref_notify_feedback_title">Avvisami per inviare commenti</string>
+    <string name="pref_notify_feedback_title">Ricordami di inviare feedback</string>
 
     <!-- Summary in the Settings screen for the "Notify me when my sessions are about to begin" option -->
-    <string name="pref_notify_starred_sessions_description">Se selezioni l\'opzione, l\'applicazione visualizza una notifica quando le tue sessioni selezionate stanno per iniziare.</string>
+    <string name="pref_notify_starred_sessions_description">Visualizza una notifica quando le sessioni che hai selezionato stanno per iniziare.</string>
 
     <!-- Title in the Settings screen for the "Notify me when my sessions are about to begin" option -->
-    <string name="pref_notify_starred_sessions_title">Avvisami quando le mie sessioni stanno per iniziare</string>
+    <string name="pref_notify_starred_sessions_title">Ricordami delle mie sessioni</string>
 
     <!-- Title in the Settings screen for the "Synchronize my schedule with Google Calendar" option -->
-    <string name="pref_sync_with_calendar_description">Se selezioni l\'opzione, le sessioni selezionate saranno automaticamente sincronizzate con il tuo Calendario Google.</string>
+    <string name="pref_sync_with_calendar_description">Sincronizza automaticamente le tue sessioni con Google Calendar.</string>
 
     <!-- Summary in the Settings screen for the "Synchronize my schedule with Google Calendar" option -->
-    <string name="pref_sync_with_calendar_title">Sincronizzazione con Google Calendar</string>
+    <string name="pref_sync_with_calendar_title">Sincronizza con Google Calendar</string>
 
     <!-- Text of a card shown in the session explorer that asks the user if he wants to see I/O
     extended events in his area. "Browse events" and "No, thanks" are the buttons shown in the card -->
@@ -447,11 +522,11 @@
 
     <!-- Text of a card shown in the session explorer that asks the user if he will be attending I/O
     in person or remotely. "Remotely" and "In person" are the buttons shown in the card -->
-    <string name="question_local_or_remote">Stai partecipando a I/O a distanza o di persona a San Francisco?</string>
+    <string name="question_local_or_remote">Stai partecipando all\'I/O a distanza o di persona a San Francisco?</string>
 
     <!-- Text of a card shown in the session explorer after I/O has started that asks the user if
     he wants to configure the WiFi. "Yes!" and "No, thanks" are the buttons shown in the card -->
-    <string name="question_setup_wifi_after_i_o_start">Google I/O è qui! Vuoi configurare il WiFi della conferenza adesso?</string>
+    <string name="question_setup_wifi_after_i_o_start">Google I/O è iniziato! Vuoi configurare il WiFi della conferenza adesso?</string>
 
     <!-- Text of a card shown in the session explorer before I/O has started that asks the user if
     he wants to configure the WiFi. "Yes!" and "No, thanks" are the buttons shown in the card -->
@@ -464,32 +539,26 @@
     <string name="remove_from_schedule">In programma</string>
 
     <!-- Accessibility content description for button used to remove the session from the user's schedule -->
-    <string name="remove_from_schedule_desc">Pulsante per rimuovere sessioni dal tuo programma.</string>
+    <string name="remove_from_schedule_desc">Pulsante per rimuovere la sessione dal tuo programma.</string>
 
     <!-- Button label allowing users to retry a failed operation -->
     <string name="retry">Riprova</string>
 
     <!-- Text hint that shows when a session is in conflict with a session already on the user's schedule -->
-    <string name="schedule_conflict_with_previous">Sessione contemporanea a un\'altra che vuoi seguire</string>
+    <string name="schedule_conflict_with_previous">(conflitto)</string>
 
     <!-- Indicates the ending block of a session time. Used in a text fragment like "8:00 AM to 9:00 AM" [CHAR_LIMIT=4 (excluding placeholders)]-->
-    <string name="schedule_end_time">fino a <xliff:g id="endTime">%1$s</xliff:g>
-  </string>
-
-    <!-- -->
-    <string name="schedule_session_subtitle">
-    <xliff:g id="speakers">%1$s</xliff:g>\n<xliff:g id="room">%2$s</xliff:g>
-  </string>
+    <string name="schedule_end_time">fino a <xliff:g id="endTime">%1$s</xliff:g></string>
 
     <!-- Hint that the user can search across sessions -->
     <string name="search_hint">Cerca sessioni</string>
 
     <!-- Search label that shows the type of data being searched for when the user clicks the
     Search button. -->
-    <string name="search_label">Sessioni di Google I/O</string>
+    <string name="search_label">Sessioni del Google I/O</string>
 
     <!-- A fragment of text appended to a Google calendar event indicating it was added by this application -->
-    <string name="session_calendar_suffix">- Aggiunto dall\' app Android Google I/O</string>
+    <string name="session_calendar_suffix">- aggiunto dall\'app Android Google I/O</string>
 
     <!-- Accessibility text announced as a response to pressing a button to add a session to the schedule. -->
     <string name="session_details_a11y_session_added">Sessione aggiunta al tuo programma</string>
@@ -498,7 +567,7 @@
     <string name="session_details_a11y_session_removed">Sessione rimossa dal tuo programma</string>
 
     <!-- A session feedback option indicating the content was too advanced -->
-    <string name="session_feedback_advanced">Troppo avanzata</string>
+    <string name="session_feedback_advanced">Troppo avanzato</string>
 
     <!-- A session feedback option indicating the content was too basic -->
     <string name="session_feedback_basic">Troppo di base</string>
@@ -516,13 +585,13 @@
     <string name="session_feedback_notification_text">Fornisci feedback per %1$s</string>
 
     <!-- Notification ticker text asking the user to provide session feedback -->
-    <string name="session_feedback_notification_ticker">Fornisci un feedback della sessione</string>
+    <string name="session_feedback_notification_ticker">Fornisci un feedback sulla sessione</string>
 
     <!-- A negative relevance session feedback option -->
     <string name="session_feedback_notrel">Non pertinente</string>
 
     <!-- A session feedback section label asking for any other feedback. It indicates the user should not add personal information -->
-    <string name="session_feedback_other"> Qualcos\'altro che dovremmo sapere?\n(Sei pregato di non aggiungere informazioni personali nei commenti.)</string>
+    <string name="session_feedback_other">Qualcos\'altro che dovremmo sapere?\n(Sei pregato di non aggiungere informazioni personali nei commenti)</string>
 
     <!-- A positive speaker quality session feedback option -->
     <string name="session_feedback_outstanding">Eccezionale</string>
@@ -540,19 +609,19 @@
     <string name="session_feedback_speaker_quality">Il relatore è stato:</string>
 
     <!-- Button text for submitting session feedback -->
-    <string name="session_feedback_submitlink">Invia un feedback</string>
+    <string name="session_feedback_submitlink">Invia il feedback</string>
 
     <!-- Hint for adding other session feedback -->
-    <string name="session_feedback_tell_us">Condividi con noi!</string>
+    <string name="session_feedback_tell_us">Facci sapere!</string>
 
     <!-- Text indicating the session has ended -->
     <string name="session_finished">Terminata</string>
 
     <!-- Card text asking the user to provide session feedback -->
-    <string name="session_give_feedback_message">Come è stata questa sessione? Ti piacerebbe inviare i tuoi commenti?</string>
+    <string name="session_give_feedback_message">Come è stata questa sessione? Ti piacerebbe inviare il tuo feedback?</string>
 
     <!-- Link text for the user to watch a live video stream of the session -->
-    <string name="session_link_livestream">Guarda la diretta</string>
+    <string name="session_link_livestream">Guarda in diretta</string>
 
     <!-- Link text taking the user to the session's Google Moderator page -->
     <string name="session_link_moderator">Moderatore</string>
@@ -567,19 +636,19 @@
     <string name="session_link_youtube">Video YouTube</string>
 
     <!-- Text indicating additional session links -->
-    <string name="session_links">Di più</string>
+    <string name="session_links">Altro</string>
 
     <!-- Card text indicating the session is being broadcast right now and is available on live stream -->
     <string name="session_live_now_message">Questa sessione viene trasmessa in diretta in questo momento! Ti piacerebbe guardarla in streaming?</string>
 
     <!-- Short text indicating the session's live stream is live -->
-    <string name="session_livestream_block">Diretta</string>
+    <string name="session_livestream_block">Diretta!</string>
 
     <!-- Tab text on the session livestream to view captions -->
-    <string name="session_livestream_captions">Didascalie</string>
+    <string name="session_livestream_captions">Sottotitoli</string>
 
     <!-- Toast error message indicating an issue with the YouTube player -->
-    <string name="session_livestream_error_init">Spiacente, c\'è stato un errore nell\'avviare YouTube Player (%1$s)</string>
+    <string name="session_livestream_error_init">Spiacente, c\'è stato un errore nell\'avviare il player di YouTube (%1$s)</string>
 
     <!-- Toast error message indicating an issue with YouTube playback -->
     <string name="session_livestream_error_playback">Spiacente, c\'è stato un errore durante il caricamento della diretta, riprova più tardi</string>
@@ -600,7 +669,7 @@
     <string name="session_now">Ora</string>
 
     <!-- A session feedback section label asking the user to rate the session overall -->
-    <string name="session_rating_label">Vota questa sessione complessivamente:</string>
+    <string name="session_rating_label">Valuta questa sessione nel complesso:</string>
 
     <!-- Label for a session section listing the requirements for the session -->
     <string name="session_requirements">Requisiti</string>
@@ -609,42 +678,35 @@
     <string name="session_speakers">Relatori</string>
 
     <!-- Subtitle of a session indicating time interval and room number -->
-    <string name="session_subtitle">
-    <xliff:g id="time">%1$s</xliff:g> in <xliff:g id="room">%2$s</xliff:g>
-  </string>
+    <string name="session_subtitle"><xliff:g id="time">%1$s</xliff:g> in <xliff:g id="room">%2$s</xliff:g></string>
 
     <!-- Short subtitle for a session indicating time interval -->
-    <string name="session_subtitle_short">
-    <xliff:g id="time">%1$s</xliff:g>
-  </string>
+    <string name="session_subtitle_short"><xliff:g id="time">%1$s</xliff:g></string>
 
     <!-- Button text indicating the user would like us to set up wifi access -->
     <string name="setup_wifi_yes">Sì!</string>
 
     <!-- Re-share template text indicating the user is watching I/O Live -->
-    <string name="share_livestream_template">Guarda I/O in diretta: \'<xliff:g id="title">%1$s</xliff:g>\' a <xliff:g id="hashtags">%2$s</xliff:g> <xliff:g id="url">%3$s</xliff:g>
-  </string>
+    <string name="share_livestream_template">Guarda I/O in diretta: \'<xliff:g id="title">%1$s</xliff:g>\' a <xliff:g id="hashtags">%2$s</xliff:g> <xliff:g id="url">%3$s</xliff:g></string>
 
     <!-- Re-share template text indicating the user is at a particular session -->
-    <string name="share_template">Segue la sessione \'<xliff:g id="title">%1$s</xliff:g>\' a <xliff:g id="hashtags">%2$s</xliff:g> <xliff:g id="url">%3$s</xliff:g>
-  </string>
+    <string name="share_template">Guarda \'<xliff:g id="title">%1$s</xliff:g>\' a <xliff:g id="hashtags">%2$s</xliff:g> <xliff:g id="url">%3$s</xliff:g></string>
 
     <!-- Notification action text for snoozing the notification for some number of minutes -->
-    <string name="snooze_x_min">Rimanda <xliff:g id="remaining_time">%1$d</xliff:g> min.</string>
+    <string name="snooze_x_min">Rimanda per <xliff:g id="remaining_time">%1$d</xliff:g> min.</string>
 
     <!-- Introductory text for a screen that shows several hashtags the user can click on to
     see the corresponding stream on the Google+ application. -->
     <string name="social_intro">Clicca su un hashtag per seguire la conversazione su Google+</string>
 
     <!-- Speaker image content description -->
-    <string name="speaker_googleplus_profile">Profilo Google+: <xliff:g id="speakername">%1$s</xliff:g>
-  </string>
+    <string name="speaker_googleplus_profile">Profilo Google+: <xliff:g id="speakername">%1$s</xliff:g></string>
 
     <!-- Short text label indicating a grouping of themes -->
     <string name="themes">Temi</string>
 
     <!-- Text indicating the session is going to start in some number of minutes -->
-    <string name="time_hint_about_to_start_min">Questa sessione inizierà tra   <xliff:g id="minutes">%1$d</xliff:g> min.</string>
+    <string name="time_hint_about_to_start_min">Questa sessione inizierà tra <xliff:g id="minutes">%1$d</xliff:g> min.</string>
 
     <!-- Text indicating the session is going to start in less than 1 minute -->
     <string name="time_hint_about_to_start_shortly">Questa sessione sta per iniziare tra (meno di 1 minuto).</string>
@@ -660,11 +722,13 @@
 
     <!-- Explanation text shown below the user's schedule clarifying the timezone used for display.
     For example, 'All times shown in UTC-7' -->
-    <string name="times_shown_in_tz">Tutti gli orari visualizzati in <xliff:g id="timezone">%1$s</xliff:g>
-  </string>
+    <string name="times_shown_in_tz">Tutti gli orari visualizzati in <xliff:g id="timezone">%1$s</xliff:g></string>
 
     <!-- Title text for dialog screen about the application -->
     <string name="title_about">Informazioni su</string>
+
+    <!-- Title text for the screen that shows a directory of Google Developer Experts, who are independent developers who are experts at Google technologies. This should be translated as just 'Experts' because it's smaller. [CHAR_LIMIT=20] -->
+    <string name="title_experts_directory">Esperti</string>
 
     <!-- Navigation bar text for exploring the sessions -->
     <string name="title_explore">Esplora</string>
@@ -676,7 +740,10 @@
     <string name="title_my_schedule">Il mio programma</string>
 
     <!-- Navigation bar text for viewing Office Hours -->
-    <string name="title_office_hours">Orari di apertura</string>
+    <string name="title_office_hours">Office Hours</string>
+
+    <!-- Title of the People I've Met screen, that shows a list of people with whom the user has exchanged contact information during the conference [CHAR_LIMIT=20]. -->
+    <string name="title_people_ive_met">Persone che ho incontrato</string>
 
     <!-- Map breadcrumb text for navigating company showcase entries -->
     <string name="title_sandbox_detail">Informazioni sull\'azienda</string>
@@ -696,11 +763,8 @@
     <!-- Chooser dialog text when the user is selecting an application with which to share something -->
     <string name="title_share">Condividi con</string>
 
-    <!-- Label for Social activity -->
-    <string name="title_stream">Stream</string>
-
     <!-- Label for VideoLibrary activity -->
-    <string name="title_video_library">Videoteca</string>
+    <string name="title_video_library">Archivio video</string>
 
     <!-- Label for exploration category which groups session topics -->
     <string name="topics">Argomenti</string>
@@ -713,53 +777,25 @@
 
     <!-- Label on a button that, when clicked, will let the user update the application to
     a newer version. -->
-    <string name="update_app">Aggiornamento App</string>
+    <string name="update_app">Aggiorna App</string>
 
     <!-- Text for a button which allows the user to watch this particular session on live stream. -->
     <string name="watch_now">Guarda ora!</string>
 
     <!-- Medium-length welcome text indicating the subsequent text is important legal information -->
-    <string name="welcome_text">Prima di iniziare, ecco alcune informazioni legali importanti per quanto riguarda l\'utilizzo di questa applicazione. Ci vorrà solo un minuto!</string>
+    <string name="welcome_text">Prima di iniziare, ecco alcune informazioni legali importanti in merito all\'utilizzo di questa applicazione. Ci vorrà solo un minuto!</string>
 
     <!-- Short text welcoming the user to the application -->
-    <string name="welcome_to_google_i_o_app">Benvenuti alla app Google I/O!</string>
+    <string name="welcome_to_google_i_o_app">Benvenuti alla app del Google I/O!</string>
 
-    <!-- Text for a button which will add a wi-fi network -->
+    <!-- Text for a button which will add a WiFi network -->
     <string name="wifi_dialog_button_configure">Aggiungi rete WiFi</string>
 
-    <!-- Text for a button which will open the user's Wi-Fi settings -->
+    <!-- Text for a button which will open the user's WiFi settings -->
     <string name="wifi_dialog_button_settings">Apri Impostazioni WiFi</string>
 
     <!-- Toast failure message if the user's wifi couldn't be updated -->
     <string name="wifi_install_error_message">Spiacenti, non siamo in grado di aggiornare la configurazione WiFi</string>
+    <string name="description_i_o_hunt">I/O Hunt</string>
 
-    <string name="experts_directory_all_cities">Tutte le città</string>
-    <string name="experts_directory_all_countries">Tutti i paesi</string>
-    <string name="experts_directory_attending">partecipante alla conferenza I/O</string>
-    <string name="experts_directory_header_body">Il titolo Google Developer Experts (GDE) indica gli sviluppatori di rilievo, che vantano una notevole esperienza in una o più tecnologie Google e la condividono con la comunità degli sviluppatori. I GDE sono guru, maestri ed evangelizzatori; creano tutorial, esempi di codice e scrivono libri e blog; pubblicano video, guidano progetti comunitari e sono presenti in occasione degli eventi di maggiore e minore portata. Questi sviluppatori indipendenti portano la propria esperienza e conoscenza concreta nell\'utilizzo delle tecnologie Google alle comunità di sviluppatori di tutto il mondo.</string>
-    <string name="experts_directory_header_dismiss">Ho capito</string>
-    <string name="experts_directory_header_title">Chi sono i Google Developers Experts (GDE)?</string>
-    <string name="explore_attending_in_person_toast">Partecipante alla conferenza I/O di persona (opzione modificabile nella schermata Impostazioni)</string>
-    <string name="explore_attending_remotely_toast">Partecipante alla conferenza I/O da remoto (opzione modificabile nella schermata Impostazioni)</string>
-    <string name="go_to_settings">Vai alla schermata Impostazioni</string>
-    <string name="map_infowindow_partner_seemore">Tocca per maggiori dettagli</string>
-    <string name="map_nearby_button">Nelle vicinanze</string>
-    <string name="more_information">Maggiori informazioni</string>
-    <string name="nearby_eula_header">Esperimento PhysicalWeb</string>
-    <string name="no_matching_partner">Nessun partner corrispondente.</string>
-    <string name="no_nearby_urls">Non ci sono segnali PhysicalWeb nella tua zona. Riprova quando sarai in prossimità di un punto di interesse presso il centro Moscone durante la conferenza.</string>
-    <string name="people_ive_met_delete">Elimina</string>
-    <string name="people_ive_met_delete_confirmation">Sei sicuro di voler eliminare questa persona dall\'elenco?</string>
-    <string name="people_ive_met_dummy_badge">Questo tesserino non contiene alcun collegamento a un profilo Google+</string>
-    <string name="people_ive_met_edit_note_title">Note</string>
-    <string name="people_ive_met_empty">Non hai ancora scansionato il tesserino di alcun partecipante. Se desideri scambiare informazioni di contatto con un altro partecipante, tieni il dispositivo sopra il suo tesserino per alcuni secondi in modo che il suo profilo Google+ sia aggiunto a questo elenco (richiede NFC).</string>
-    <string name="people_ive_met_header">Partecipanti di cui hai scansionato il tesserino:</string>
-    <string name="people_ive_met_note">NB</string>
-    <string name="physical_web_bluetooth_off">Questa funzionalità richiede una connessione Bluetooth, tuttavia la funzione Bluetooth del dispositivo è disattivata. Per utilizzare questa funzione, abilitare la funzione Bluetooth nella schermata Impostazioni del dispositivo.</string>
-    <string name="physicalweb_intro_text">Tramite questa scheda è possibile visualizzare alcuni link ai contenuti correlati alle funzionalità della conferenza nei pressi della tua attuale posizione (ad esempio, siti partner, applicazioni, demo e contenuti interattivi). A tale scopo, l\'applicazione eseguirà una scansione Bluetooth LE dell\'ambiente circostante per cercare tag e inviare queste informazioni a un server Google per l\'elaborazione. Una volta attivata, questa funzione continuerà per tutta la durata dell\'evento, purché il dispositivo Bluetooth sia acceso. Per disattivare la funzione, visitare il menu Impostazioni dell\'app, oppure disattivare la funzione Bluetooth sul dispositivo. Si ricorda che si tratta soltanto di un esperimento BLE, non di un prodotto completo, quindi potrebbe presentare qualche imperfezione. Potrebbe non funzionare se la connessione di rete è scarsa o assente, oppure in presenza di interferenze. \n\nDesideri abilitare questa funzionalità ora?</string>
-    <string name="physicalweb_intro_title">Esperimento PhysicalWeb</string>
-    <string name="pref_nearby_summary">Se selezionato, abilita l\'esperimento PhysicalWeb Bluetooth a bassa energia (BLE) nella schermata Mappa, che esegue scansioni BLE per visualizzare i tag PhysicalWeb vicino a te (richiede Bluetooth).</string>
-    <string name="pref_nearby_title">Abilita l\'esperimento PhysicalWeb</string>
-    <string name="title_experts_directory">Esperti</string>
-    <string name="title_people_ive_met">Persone che ho incontrato</string>
 </resources>
