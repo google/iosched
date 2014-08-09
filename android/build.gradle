@@ -31,10 +31,13 @@ android {
 
     productFlavors { lpreview ? lpreview{} : classic{} }
 
-    defaultConfig lpreview ? {} : {
+    defaultConfig lpreview ? {
+        applicationId "co.touchlab.droidconnyc"
+    } : {
         // Non-L-preview configuration
         minSdkVersion 14
         targetSdkVersion 19
+        applicationId "co.touchlab.droidconnyc"
     }
 
     signingConfigs {

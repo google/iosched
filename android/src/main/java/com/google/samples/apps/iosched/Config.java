@@ -43,12 +43,12 @@ public class Config {
     public static final String BOOTSTRAP_DATA_TIMESTAMP = "Thu, 10 Apr 2014 00:01:03 GMT";
 
     // Conference hashtag
-    public static final String CONFERENCE_HASHTAG = "#io14";
+    public static final String CONFERENCE_HASHTAG = "#androidnyc";
 
     // Patterns that, when absent from a hashtag, will trigger the addition of the
     // CONFERENCE_HASHTAG on sharing snippets. Ex: "#Android" will be shared as "#io14 #Android",
     // but "#iohunt" won't be modified.
-    public static final String CONFERENCE_HASHTAG_PREFIX = "#io";
+    public static final String CONFERENCE_HASHTAG_PREFIX = "#droidcon";
 
     // Hard-coded conference dates. This is hardcoded here instead of extracted from the conference
     // data to avoid the Schedule UI breaking if some session is incorrectly set to a wrong date.
@@ -56,14 +56,14 @@ public class Config {
 
     public static final long[][] CONFERENCE_DAYS = new long[][] {
             // start and end of day 1
-            { ParserUtils.parseTime("2014-06-25T07:00:00.000Z"),
-              ParserUtils.parseTime("2014-06-26T06:59:59.999Z") },
+            { ParserUtils.parseTime("2014-09-20T07:00:00.000Z"),
+              ParserUtils.parseTime("2014-09-21T06:59:59.999Z") },
             // start and end of day 2
-            { ParserUtils.parseTime("2014-06-26T07:00:00.000Z"),
-              ParserUtils.parseTime("2014-06-27T06:59:59.999Z") },
+            { ParserUtils.parseTime("2014-09-21T07:00:00.000Z"),
+              ParserUtils.parseTime("2014-09-22T06:59:59.999Z") },
         };
 
-    public static final TimeZone CONFERENCE_TIMEZONE = TimeZone.getTimeZone("America/Los_Angeles");
+    public static final TimeZone CONFERENCE_TIMEZONE = TimeZone.getTimeZone("America/New_York");
 
     public static final long CONFERENCE_START_MILLIS = CONFERENCE_DAYS[0][0];
     public static final long CONFERENCE_END_MILLIS = CONFERENCE_DAYS[CONFERENCE_DAYS.length-1][1];
@@ -75,14 +75,14 @@ public class Config {
     public static final long DAY_MILLIS = 24 * HOUR_MILLIS;
 
     // OAuth 2.0 related config
-    public static final String APP_NAME = "GoogleIO-Android";
+    public static final String APP_NAME = "DroidconNYC-Android";
     public static final String API_KEY = "";
 
     // Announcements
     public static final String ANNOUNCEMENTS_PLUS_ID = "";
 
     // YouTube API config
-    public static final String YOUTUBE_API_KEY = "";
+    public static final String YOUTUBE_API_KEY = "AIzaSyA3kilV1-hzrPUlU9UjaRLwdHYDwlKflig";
 
     // YouTube share URL
     public static final String YOUTUBE_SHARE_URL_PREFIX = "http://youtu.be/";
@@ -91,19 +91,19 @@ public class Config {
     public static final String LIVESTREAM_CAPTIONS_DARK_THEME_URL_PARAM = "&theme=dark";
 
     // Conference public WiFi AP parameters
-    public static final String WIFI_SSID = "IO2014";
-    public static final String WIFI_PASSPHRASE = "letsdothis";
+    public static final String WIFI_SSID = "DROIDCONNYC";
+    public static final String WIFI_PASSPHRASE = "madeinny";
 
     // GCM config
-    public static final String GCM_SERVER_PROD_URL = "";
-    public static final String GCM_SERVER_URL = "";
+    public static final String GCM_SERVER_PROD_URL = "https://droidconnyc.appspot.com";
+    public static final String GCM_SERVER_URL = "https://droidconnyc.appspot.com";
 
     // the GCM sender ID is the ID of the app in Google Cloud Console
-    public static final String GCM_SENDER_ID = "";
+    public static final String GCM_SENDER_ID = "droidconnyc";
 
     // The registration api KEY in the gcm server (configured in the GCM
     // server's AuthHelper.java file)
-    public static final String GCM_API_KEY = "";
+    public static final String GCM_API_KEY = "REG-madeinny";
 
     // When do we start to offer to set up the user's wifi?
     public static final long WIFI_SETUP_OFFER_START =
@@ -118,10 +118,12 @@ public class Config {
             "http://img.youtube.com/vi/%s/default.jpg";
 
     // Link to Google I/O Extended events presented in Explore screen
+    // TODO Remove this feature
     public static final String IO_EXTENDED_LINK = "http://www.google.com/events/io/io-extended";
 
     // 2014-07-25: Time of expiration for experts directory data.
     // Represented as elapsed milliseconds since the epoch.
+    //TODO Remove this feature
     public static final long EXPERTS_DIRECTORY_EXPIRATION = 1406214000000L;
 
     /**
@@ -142,7 +144,7 @@ public class Config {
 
     // How long before a session we display "This session starts in N minutes." in the
     // Session details page.
-    public static final long HINT_TIME_BEFORE_SESSION = 60 * MINUTE_MILLIS; // 60 min
+    public static final long HINT_TIME_BEFORE_SESSION = 30 * MINUTE_MILLIS; // 60 min
 
     // how long before the end of a session the user can give feedback
     public static final long FEEDBACK_MILLIS_BEFORE_SESSION_END = 15 * MINUTE_MILLIS; // 15min
@@ -171,6 +173,7 @@ public class Config {
     public static final long STALE_DATA_WARNING_SNOOZE = 10 * MINUTE_MILLIS;
 
     // Package name for the I/O Hunt game
+    // TODO Remove this
     public static final String IO_HUNT_PACKAGE_NAME = "com.google.wolff.androidhunt2";
 
     // Play store URL prefix
@@ -224,7 +227,7 @@ public class Config {
 
     // URL prefix for web links to session pages
     public static final Uri SESSION_DETAIL_WEB_URL_PREFIX
-            = Uri.parse("https://www.google.com/events/io/schedule/session/");
+            = Uri.parse("http://nyc.droidcon.com/2014/session/");
 
 
     // Profile URLs for simulated badge reads for the debug feature.

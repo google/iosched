@@ -52,7 +52,7 @@ gae {
     downloadSdk = true
 
     appcfg {
-        email = 'mangini@google.com'
+        email = 'kevin@touchlab.co'
         passIn = true
         oauth2 = true
 
@@ -62,7 +62,7 @@ gae {
         }
 
         app {
-            id = 'iosched-gcm-dev'
+            id = 'droidconnyc'
         }
     }
 }
