@@ -19,7 +19,7 @@ package com.google.samples.apps.iosched.ui;
 import android.os.Bundle;
 import android.app.ActionBar;
 
-import com.google.samples.apps.iosched.R;
+import co.touchlab.droidconnyc.R;
 import com.google.samples.apps.iosched.util.AnalyticsManager;
 
 import static com.google.samples.apps.iosched.util.LogUtils.LOGD;

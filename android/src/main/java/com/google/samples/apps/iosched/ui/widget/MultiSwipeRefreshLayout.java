@@ -22,7 +22,7 @@ import android.graphics.Canvas;
 import android.graphics.drawable.Drawable;
 import android.util.AttributeSet;
 
-import com.google.samples.apps.iosched.R;
+import co.touchlab.droidconnyc.R;
 
 public class MultiSwipeRefreshLayout extends SwipeRefreshLayout {
     private CanChildScrollUpCallback mCanChildScrollUpCallback;

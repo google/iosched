@@ -21,7 +21,7 @@ import android.text.TextUtils;
 
 import com.google.samples.apps.iosched.Config;
 import com.google.gson.Gson;
-import com.google.samples.apps.iosched.R;
+import co.touchlab.droidconnyc.R;
 import com.google.samples.apps.iosched.io.model.DataManifest;
 import com.google.samples.apps.iosched.util.FileUtils;
 import com.google.samples.apps.iosched.util.HashUtils;

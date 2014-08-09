@@ -16,7 +16,7 @@
 
 package com.google.samples.apps.iosched.ui.widget;
 
-import com.google.samples.apps.iosched.R;
+import co.touchlab.droidconnyc.R;
 
 import android.content.Context;
 import android.content.res.TypedArray;

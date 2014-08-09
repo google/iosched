@@ -45,7 +45,7 @@ import android.view.ViewTreeObserver;
 import android.widget.FrameLayout;
 
 import com.google.android.gms.maps.CameraUpdate;
-import com.google.samples.apps.iosched.R;
+import co.touchlab.droidconnyc.R;
 import com.google.samples.apps.iosched.provider.ScheduleContract;
 import com.google.samples.apps.iosched.util.*;
 import com.google.android.gms.maps.CameraUpdateFactory;

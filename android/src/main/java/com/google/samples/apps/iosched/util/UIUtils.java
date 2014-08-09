@@ -45,9 +45,10 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
-import com.google.samples.apps.iosched.BuildConfig;
 import com.google.samples.apps.iosched.Config;
-import com.google.samples.apps.iosched.R;
+
+import co.touchlab.droidconnyc.BuildConfig;
+import co.touchlab.droidconnyc.R;
 import com.google.samples.apps.iosched.provider.ScheduleContract;
 import com.google.samples.apps.iosched.provider.ScheduleContract.Rooms;
 import com.google.samples.apps.iosched.ui.phone.MapActivity;

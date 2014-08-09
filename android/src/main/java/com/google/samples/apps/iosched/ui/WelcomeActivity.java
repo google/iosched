@@ -22,7 +22,7 @@ import android.os.Bundle;
 import android.view.View;
 
 import com.google.samples.apps.iosched.Config;
-import com.google.samples.apps.iosched.R;
+import co.touchlab.droidconnyc.R;
 import com.google.samples.apps.iosched.util.PrefUtils;
 
 public class WelcomeActivity extends Activity {

@@ -32,7 +32,7 @@ import android.support.v4.app.TaskStackBuilder;
 import android.widget.Toast;
 
 import com.google.samples.apps.iosched.Config;
-import com.google.samples.apps.iosched.R;
+import co.touchlab.droidconnyc.R;
 import com.google.samples.apps.iosched.provider.ScheduleContract;
 import com.google.samples.apps.iosched.util.AnalyticsManager;
 

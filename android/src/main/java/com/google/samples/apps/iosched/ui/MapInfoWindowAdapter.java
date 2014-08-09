@@ -24,7 +24,7 @@ import android.view.View;
 import android.view.ViewParent;
 import android.widget.TextView;
 
-import com.google.samples.apps.iosched.R;
+import co.touchlab.droidconnyc.R;
 import com.google.samples.apps.iosched.ui.MapFragment.MarkerModel;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.model.Marker;

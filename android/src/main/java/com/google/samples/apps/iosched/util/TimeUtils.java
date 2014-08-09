@@ -21,7 +21,7 @@ import android.text.TextUtils;
 import android.text.format.DateUtils;
 
 import com.google.samples.apps.iosched.Config;
-import com.google.samples.apps.iosched.R;
+import co.touchlab.droidconnyc.R;
 
 import java.text.DateFormat;
 import java.text.ParseException;

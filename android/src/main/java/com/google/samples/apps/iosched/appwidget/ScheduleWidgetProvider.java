@@ -26,7 +26,7 @@ import android.content.Intent;
 import android.net.Uri;
 import android.widget.RemoteViews;
 
-import com.google.samples.apps.iosched.R;
+import co.touchlab.droidconnyc.R;
 import com.google.samples.apps.iosched.sync.SyncHelper;
 import com.google.samples.apps.iosched.ui.MyScheduleActivity;
 import com.google.samples.apps.iosched.ui.TaskStackBuilderProxyActivity;

@@ -24,7 +24,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.provider.Settings;
 
-import com.google.samples.apps.iosched.R;
+import co.touchlab.droidconnyc.R;
 
 /**
  * A fragment for asking the user to enable bluetooth.

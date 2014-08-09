@@ -27,7 +27,7 @@ import com.google.android.gms.wearable.DataMap;
 import com.google.android.gms.wearable.PutDataMapRequest;
 import com.google.android.gms.wearable.PutDataRequest;
 import com.google.android.gms.wearable.Wearable;
-import com.google.samples.apps.iosched.R;
+import co.touchlab.droidconnyc.R;
 import com.google.samples.apps.iosched.iowear.utils.Utils;
 import com.google.samples.apps.iosched.iowear.fragments.FeedbackFragment;
 import com.google.samples.apps.iosched.iowear.fragments.RadioFragment;

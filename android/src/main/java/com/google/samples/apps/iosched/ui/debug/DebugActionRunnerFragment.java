@@ -25,7 +25,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 
-import com.google.samples.apps.iosched.R;
+import co.touchlab.droidconnyc.R;
 import com.google.samples.apps.iosched.ui.debug.actions.*;
 
 import static com.google.samples.apps.iosched.util.LogUtils.makeLogTag;

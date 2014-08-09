@@ -16,10 +16,11 @@
 
 package com.google.samples.apps.iosched.util;
 
-import com.google.samples.apps.iosched.BuildConfig;
 import com.google.samples.apps.iosched.Config;
 
 import android.util.Log;
+
+import co.touchlab.droidconnyc.BuildConfig;
 
 public class LogUtils {
     private static final String LOG_PREFIX = "iosched_";

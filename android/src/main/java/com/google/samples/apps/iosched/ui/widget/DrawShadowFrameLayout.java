@@ -29,7 +29,7 @@ import android.util.Property;
 import android.widget.Checkable;
 import android.widget.FrameLayout;
 
-import com.google.samples.apps.iosched.R;
+import co.touchlab.droidconnyc.R;
 
 public class DrawShadowFrameLayout extends FrameLayout {
     private Drawable mShadowDrawable;

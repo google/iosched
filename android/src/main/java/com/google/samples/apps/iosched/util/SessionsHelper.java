@@ -27,7 +27,7 @@ import android.os.Build;
 import android.support.v4.app.ShareCompat;
 import android.view.MenuItem;
 
-import com.google.samples.apps.iosched.R;
+import co.touchlab.droidconnyc.R;
 import com.google.samples.apps.iosched.appwidget.ScheduleWidgetProvider;
 import com.google.samples.apps.iosched.gcm.ServerUtilities;
 import com.google.samples.apps.iosched.provider.ScheduleContract;

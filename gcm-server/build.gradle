@@ -44,7 +44,7 @@ dependencies {
     compile "javax.servlet:servlet-api:2.5"
     compile fileTree('lib')
 }
-
+sourceCompatibility = 1.6
 
 gae {
     httpPort = 8080

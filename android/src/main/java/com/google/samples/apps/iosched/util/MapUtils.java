@@ -20,7 +20,7 @@ import android.content.SharedPreferences;
 import android.graphics.BitmapFactory;
 import android.preference.PreferenceManager;
 
-import com.google.samples.apps.iosched.R;
+import co.touchlab.droidconnyc.R;
 import com.google.samples.apps.iosched.ui.MapFragment;
 import com.google.android.gms.maps.model.*;
 import com.google.maps.android.ui.IconGenerator;

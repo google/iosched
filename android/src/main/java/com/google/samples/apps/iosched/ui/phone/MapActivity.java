@@ -25,7 +25,7 @@ import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.view.MenuItem;
 
-import com.google.samples.apps.iosched.R;
+import co.touchlab.droidconnyc.R;
 import com.google.samples.apps.iosched.ui.MapFragment;
 import com.google.samples.apps.iosched.ui.NearbyActivity;
 import com.google.samples.apps.iosched.ui.NearbyFragment;

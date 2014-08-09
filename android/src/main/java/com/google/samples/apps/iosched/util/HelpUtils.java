@@ -16,7 +16,7 @@
 
 package com.google.samples.apps.iosched.util;
 
-import com.google.samples.apps.iosched.R;
+import co.touchlab.droidconnyc.R;
 
 import android.app.*;
 import android.content.Context;

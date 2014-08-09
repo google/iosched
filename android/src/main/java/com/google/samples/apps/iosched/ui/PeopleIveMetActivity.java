@@ -20,7 +20,7 @@ import android.app.ActionBar;
 import android.content.*;
 import android.os.Bundle;
 
-import com.google.samples.apps.iosched.R;
+import co.touchlab.droidconnyc.R;
 import com.google.samples.apps.iosched.util.PrefUtils;
 
 import static com.google.samples.apps.iosched.util.LogUtils.LOGD;

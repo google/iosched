@@ -32,9 +32,8 @@ import android.util.Log;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.samples.apps.iosched.BuildConfig;
 import com.google.samples.apps.iosched.Config;
-import com.google.samples.apps.iosched.R;
+import co.touchlab.droidconnyc.R;
 
 import java.util.List;
 

@@ -16,7 +16,7 @@
 
 package com.google.samples.apps.iosched.iowear.fragments;
 
-import com.google.samples.apps.iosched.R;
+import co.touchlab.droidconnyc.R;
 import com.google.samples.apps.iosched.iowear.OnQuestionAnsweredListener;
 
 import android.app.Fragment;

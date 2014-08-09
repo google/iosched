@@ -35,7 +35,7 @@ import com.google.android.gms.wearable.DataApi;
 import com.google.android.gms.wearable.PutDataMapRequest;
 import com.google.android.gms.wearable.PutDataRequest;
 import com.google.android.gms.wearable.Wearable;
-import com.google.samples.apps.iosched.R;
+import co.touchlab.droidconnyc.R;
 import com.google.samples.apps.iosched.provider.ScheduleContract;
 import com.google.samples.apps.iosched.ui.BrowseSessionsActivity;
 import com.google.samples.apps.iosched.ui.MapFragment;
@@ -228,7 +228,7 @@ public class SessionAlarmService extends IntentService
                 this,
                 SessionAlarmService.class);
         feedbackIntent.setData(
-                new Uri.Builder().authority("com.google.samples.apps.iosched")
+                new Uri.Builder().authority("co.touchlab.droidconnyc")
                         .path(sessionId).build()
         );
         feedbackIntent.putExtra(SessionAlarmService.EXTRA_SESSION_END, sessionEnd);
@@ -274,7 +274,7 @@ public class SessionAlarmService extends IntentService
                 SessionAlarmService.class);
         // Setting data to ensure intent's uniqueness for different session start times.
         notifIntent.setData(
-                new Uri.Builder().authority("com.google.samples.apps.iosched")
+                new Uri.Builder().authority("co.touchlab.droidconnyc")
                         .path(String.valueOf(sessionStart)).build()
         );
         notifIntent.putExtra(SessionAlarmService.EXTRA_SESSION_START, sessionStart);

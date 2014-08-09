@@ -24,6 +24,8 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.TimeZone;
 
+import co.touchlab.droidconnyc.R;
+
 public class Config {
     // General configuration
 
@@ -76,7 +78,7 @@ public class Config {
 
     // OAuth 2.0 related config
     public static final String APP_NAME = "DroidconNYC-Android";
-    public static final String API_KEY = "";
+    public static final String API_KEY = "654878069390-husoang6d0qr6dq14uflb4bn33g79ku8.apps.googleusercontent.com";
 
     // Announcements
     public static final String ANNOUNCEMENTS_PLUS_ID = "";
@@ -99,7 +101,8 @@ public class Config {
     public static final String GCM_SERVER_URL = "https://droidconnyc.appspot.com";
 
     // the GCM sender ID is the ID of the app in Google Cloud Console
-    public static final String GCM_SENDER_ID = "droidconnyc";
+//    public static final String GCM_SENDER_ID = "droidconnyc";
+    public static final String GCM_SENDER_ID = "654878069390";
 
     // The registration api KEY in the gcm server (configured in the GCM
     // server's AuthHelper.java file)

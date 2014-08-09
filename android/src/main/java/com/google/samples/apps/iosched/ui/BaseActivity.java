@@ -43,9 +43,10 @@ import android.widget.*;
 
 import com.google.android.gcm.GCMRegistrar;
 import com.google.android.gms.auth.GoogleAuthUtil;
-import com.google.samples.apps.iosched.BuildConfig;
 import com.google.samples.apps.iosched.Config;
-import com.google.samples.apps.iosched.R;
+
+import co.touchlab.droidconnyc.BuildConfig;
+import co.touchlab.droidconnyc.R;
 import com.google.samples.apps.iosched.gcm.ServerUtilities;
 import com.google.samples.apps.iosched.io.JSONHandler;
 import com.google.samples.apps.iosched.provider.ScheduleContract;

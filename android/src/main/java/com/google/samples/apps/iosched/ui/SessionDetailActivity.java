@@ -26,7 +26,7 @@ import android.view.MenuItem;
 import android.view.Window;
 import android.view.WindowManager;
 
-import com.google.samples.apps.iosched.R;
+import co.touchlab.droidconnyc.R;
 import com.google.samples.apps.iosched.util.BeamUtils;
 import com.google.samples.apps.iosched.util.UIUtils;
 

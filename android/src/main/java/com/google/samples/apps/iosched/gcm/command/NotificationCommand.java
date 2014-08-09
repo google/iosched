@@ -25,7 +25,7 @@ import android.net.Uri;
 import android.support.v4.app.NotificationCompat;
 import android.text.TextUtils;
 
-import com.google.samples.apps.iosched.R;
+import co.touchlab.droidconnyc.R;
 import com.google.samples.apps.iosched.gcm.GCMCommand;
 import com.google.samples.apps.iosched.ui.MyScheduleActivity;
 import com.google.samples.apps.iosched.util.PrefUtils;

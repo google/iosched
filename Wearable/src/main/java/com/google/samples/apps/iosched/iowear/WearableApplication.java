@@ -17,7 +17,7 @@
 package com.google.samples.apps.iosched.iowear;
 
 
-import com.google.samples.apps.iosched.R;
+import co.touchlab.droidconnyc.R;
 
 import android.app.Application;
 

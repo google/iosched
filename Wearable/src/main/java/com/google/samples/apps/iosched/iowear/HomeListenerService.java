@@ -31,7 +31,7 @@ import com.google.android.gms.wearable.DataMapItem;
 import com.google.android.gms.wearable.PutDataMapRequest;
 import com.google.android.gms.wearable.Wearable;
 import com.google.android.gms.wearable.WearableListenerService;
-import com.google.samples.apps.iosched.R;
+import co.touchlab.droidconnyc.R;
 
 import android.app.PendingIntent;
 import android.app.Service;

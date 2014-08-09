@@ -39,7 +39,7 @@ import android.widget.TextView;
 import com.google.android.gms.plus.PlusOneButton;
 import com.google.android.youtube.player.YouTubeIntents;
 import com.google.samples.apps.iosched.Config;
-import com.google.samples.apps.iosched.R;
+import co.touchlab.droidconnyc.R;
 import com.google.samples.apps.iosched.model.TagMetadata;
 import com.google.samples.apps.iosched.provider.ScheduleContract;
 import com.google.samples.apps.iosched.service.SessionAlarmService;

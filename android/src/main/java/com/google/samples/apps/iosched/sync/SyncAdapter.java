@@ -20,9 +20,10 @@ import android.accounts.Account;
 import android.content.*;
 import android.os.Bundle;
 
-import com.google.samples.apps.iosched.BuildConfig;
 
 import java.util.regex.Pattern;
+
+import co.touchlab.droidconnyc.BuildConfig;
 
 import static com.google.samples.apps.iosched.util.LogUtils.*;
 

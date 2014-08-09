@@ -23,7 +23,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceActivity;
 
-import com.google.samples.apps.iosched.R;
+import co.touchlab.droidconnyc.R;
 import com.google.samples.apps.iosched.service.SessionCalendarService;
 import com.google.samples.apps.iosched.util.PrefUtils;
 
