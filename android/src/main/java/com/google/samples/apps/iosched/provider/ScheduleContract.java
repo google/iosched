@@ -308,7 +308,7 @@ public class ScheduleContract {
         String VIDEO_IMPORT_HASHCODE = "video_import_hashcode";
     }
 
-    public static final String CONTENT_AUTHORITY = "com.google.samples.apps.iosched";
+    public static final String CONTENT_AUTHORITY = "co.touchlab.droidconnyc";
 
     public static final Uri BASE_CONTENT_URI = Uri.parse("content://" + CONTENT_AUTHORITY);
 

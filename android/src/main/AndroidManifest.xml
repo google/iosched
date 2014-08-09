@@ -28,7 +28,7 @@
         android:targetSdkVersion="L" />
 
     <permission
-        android:name="com.google.samples.apps.iosched.permission.WRITE_SCHEDULE"
+        android:name="co.touchlab.droidconnyc.permission.WRITE_SCHEDULE"
         android:protectionLevel="normal"
         android:label="@string/permission_write"
         android:description="@string/permission_write" />
@@ -57,16 +57,16 @@
     <uses-permission
             android:name="com.google.android.c2dm.permission.RECEIVE" />
     <permission
-            android:name="com.google.samples.apps.iosched.permission.C2D_MESSAGE"
+            android:name="co.touchlab.droidconnyc.permission.C2D_MESSAGE"
             android:protectionLevel="signature" />
     <uses-permission
-            android:name="com.google.samples.apps.iosched.permission.C2D_MESSAGE" />
+            android:name="co.touchlab.droidconnyc.permission.C2D_MESSAGE" />
 
     <!-- required for MapView v2 -->
     <permission
-        android:name="com.google.samples.apps.iosched.permission.MAPS_RECEIVE"
+        android:name="co.touchlab.droidconnyc.permission.MAPS_RECEIVE"
         android:protectionLevel="signature"/>
-    <uses-permission android:name="com.google.samples.apps.iosched.permission.MAPS_RECEIVE"/>
+    <uses-permission android:name="co.touchlab.droidconnyc.permission.MAPS_RECEIVE"/>
     <uses-feature
         android:glEsVersion="0x00020000"
         android:required="true"/>
@@ -223,7 +223,7 @@
             android:exported="true"
             android:configChanges="orientation|keyboardHidden"
             android:theme="@style/Theme.IOSched.Map">
-            <meta-data android:name="com.google.samples.apps.iosched.meta.TARGET_FORM_FACTOR"
+            <meta-data android:name="co.touchlab.droidconnyc.meta.TARGET_FORM_FACTOR"
                 android:value="handset" />
         </activity>
 
@@ -234,7 +234,7 @@
             android:exported="true"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:theme="@style/Theme.IOSched.Map">
-            <meta-data android:name="com.google.samples.apps.iosched.meta.TARGET_FORM_FACTOR"
+            <meta-data android:name="co.touchlab.droidconnyc.meta.TARGET_FORM_FACTOR"
                 android:value="tablet" />
         </activity>
 
@@ -257,7 +257,7 @@
         <activity
             android:name=".ui.debug.actions.ViewFilesInAppFolderActivity"
             android:label="list files in appdata folder"
-            android:parentActivityName="com.google.samples.apps.iosched.ui.debug.DebugActionRunnerActivity" >
+            android:parentActivityName="co.touchlab.droidconnyc.ui.debug.DebugActionRunnerActivity" >
         </activity>
 
         <!-- People I've Met -->
@@ -269,7 +269,7 @@
         <receiver android:name=".receiver.SessionAlarmReceiver" >
             <intent-filter>
                 <action android:name="android.intent.action.BOOT_COMPLETED" />
-                <action android:name="com.google.samples.apps.iosched.action.UPDATE_CALENDAR_COMPLETED" />
+                <action android:name="co.touchlab.droidconnyc.action.UPDATE_CALENDAR_COMPLETED" />
             </intent-filter>
         </receiver>
         <service android:name=".service.SessionAlarmService" />
@@ -300,7 +300,7 @@
                 <action android:name="com.google.android.c2dm.intent.RECEIVE" />
                 <!-- Receives the registration id. -->
                 <action android:name="com.google.android.c2dm.intent.REGISTRATION" />
-                <category android:name="com.google.samples.apps.iosched" />
+                <category android:name="co.touchlab.droidconnyc" />
             </intent-filter>
         </receiver>
 
@@ -317,8 +317,8 @@
 
         <provider
             android:name=".provider.ScheduleProvider"
-            android:authorities="com.google.samples.apps.iosched"
-            android:writePermission="com.google.samples.apps.iosched.permission.WRITE_SCHEDULE"
+            android:authorities="co.touchlab.droidconnyc"
+            android:writePermission="co.touchlab.droidconnyc.permission.WRITE_SCHEDULE"
             android:syncable="true"
             android:label="@string/app_name"
             android:exported="true" />
