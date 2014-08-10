@@ -36,7 +36,7 @@
   </plurals>
 
     <!-- Shown in the 'About' window of the app. -->
-    <string name="about_body">&lt;b&gt;Google I/O 2014&lt;/b&gt;&lt;br&gt; 版本 %s&lt;br&gt;&lt;br&gt; &lt;a href=http://m.google.com/utos&gt;服務條款&lt;/a&gt;&lt;br&gt;&lt;br&gt; &lt;a href=http://www.google.com/policies/privacy/&gt;隱私權政策&lt;/a&gt;</string>
+    <string name="about_body">&lt;b&gt;Droidcon NYC 2014&lt;/b&gt;&lt;br&gt; 版本 %s&lt;br&gt;&lt;br&gt; &lt;a href=http://m.google.com/utos&gt;服務條款&lt;/a&gt;&lt;br&gt;&lt;br&gt; &lt;a href=http://www.google.com/policies/privacy/&gt;隱私權政策&lt;/a&gt;</string>
 
     <!-- Shown as a link in the About screen of the app; user can click to see the EULA. -->
     <string name="about_eula">最終用戶許可協議</string>
@@ -80,7 +80,7 @@
     <string name="all_years">所有年份</string>
 
     <!-- Name of the application, shown in the application's title bar. -->
-    <string name="app_name">Google I/O 2014</string>
+    <string name="app_name">Droidcon NYC 2014</string>
 
     <!-- Label on a button that is one possible answer to the question "Are you attending the
     conference in person in San Francisco or remotely via livestream?" -->
@@ -90,7 +90,7 @@
     conference in person in San Francisco or remotely via livestream?" -->
     <string name="attending_remotely">遠程</string>
 
-    <!-- Label on a button that allows the user to browse Google I/O Extended events that they
+    <!-- Label on a button that allows the user to browse Droidcon NYC Extended events that they
     might be interested in attending. -->
     <string name="browse_events">瀏覽事件</string>
 
@@ -148,7 +148,7 @@
     <!-- Menu item that allows user to configure the conference WiFi on their device. -->
     <string name="description_configure_wifi">配置 Wi-Fi</string>
 
-    <!-- Menu item that takes the user to a page that shows a list of Google I/O Extended events. -->
+    <!-- Menu item that takes the user to a page that shows a list of Droidcon NYC Extended events. -->
     <string name="description_i_o_extended">I/O 拓展事件</string>
 
     <!-- Menu item that takes the user to the conference venue map screen -->
@@ -209,7 +209,7 @@
     <string name="empty_widget_text">接下來沒有更多會議了。\n我們明天再見！</string>
 
     <!-- Shown on a widget instructing user how to start using the widget. -->
-    <string name="empty_widget_text_signed_out">觸摸上方的 Google I/O 2014 標誌以登入並開始使用該應用。</string>
+    <string name="empty_widget_text_signed_out">觸摸上方的 Droidcon NYC 2014 標誌以登入並開始使用該應用。</string>
 
     <!-- Shown as a header on a list of sessions to indicate that the sessions that appear on that
     group have already ended. -->
@@ -228,7 +228,7 @@
     <string name="google_account_required_title">需要谷歌帳戶</string>
 
     <!-- List dropdown item on the Video Library screen allowing the user to choose to see
-    the videos from a particular year of Google I/O. -->
+    the videos from a particular year of Droidcon NYC. -->
     <string name="google_i_o_year">I/O <xliff:g id="year">%1$d</xliff:g>
   </string>
 
@@ -310,7 +310,7 @@
     <string name="navdrawer_item_explore">探索</string>
 
     <!-- Accessibility description for menu item to open the Explore screen. -->
-    <string name="navdrawer_item_explore_a11y">探索 Google I/O</string>
+    <string name="navdrawer_item_explore_a11y">探索 Droidcon NYC</string>
 
     <!-- Menu item to open the Map screen [CHAR_LIMIT=20] -->
     <string name="navdrawer_item_map">地圖</string>
@@ -407,11 +407,11 @@
     statistics to Google. -->
     <string name="pref_analytics_enabled_description">如果選中，匿名使用統計資訊將被發送給穀歌。</string>
 
-    <!-- Summary in the Settings screen for the "I will be at Google I/O" option -->
+    <!-- Summary in the Settings screen for the "I will be at Droidcon NYC" option -->
     <string name="pref_attendee_at_venue_description">如果選中，將顯示所有的會議和現場活動。否則，將只顯示實時會議。</string>
 
-    <!-- Title in the Settings screen for the "I will be at Google I/O" option -->
-    <string name="pref_attendee_at_venue_title">我會在 Google I/O！</string>
+    <!-- Title in the Settings screen for the "I will be at Droidcon NYC" option -->
+    <string name="pref_attendee_at_venue_title">我會在 Droidcon NYC！</string>
 
     <!-- Summary in the Settings screen for the "Show local times" option -->
     <string name="pref_local_times_description">如果選中，時間會顯示為您設備的本地時間。如果不選中，時間會顯示為PDT 時間，會議的本地時間。</string>
@@ -447,11 +447,11 @@
 
     <!-- Text of a card shown in the session explorer after I/O has started that asks the user if
     he wants to configure the WiFi. "Yes!" and "No, thanks" are the buttons shown in the card -->
-    <string name="question_setup_wifi_after_i_o_start">Google I/O 在這裡！您想現在配置會議 WiFi 嗎？</string>
+    <string name="question_setup_wifi_after_i_o_start">Droidcon NYC 在這裡！您想現在配置會議 WiFi 嗎？</string>
 
     <!-- Text of a card shown in the session explorer before I/O has started that asks the user if
     he wants to configure the WiFi. "Yes!" and "No, thanks" are the buttons shown in the card -->
-    <string name="question_setup_wifi_before_i_o_start">Google I/O 快來了！您想現在配置會議 WiFi 嗎？</string>
+    <string name="question_setup_wifi_before_i_o_start">Droidcon NYC 快來了！您想現在配置會議 WiFi 嗎？</string>
 
     <!-- Section title for videos related to a particular event session -->
     <string name="related_videos">相關視頻</string>
@@ -482,10 +482,10 @@
 
     <!-- Search label that shows the type of data being searched for when the user clicks the
     Search button. -->
-    <string name="search_label">Google I/O 大會</string>
+    <string name="search_label">Droidcon NYC 大會</string>
 
     <!-- A fragment of text appended to a Google calendar event indicating it was added by this application -->
-    <string name="session_calendar_suffix">- 由谷歌 Google I/O 安卓應用添加</string>
+    <string name="session_calendar_suffix">- 由谷歌 Droidcon NYC 安卓應用添加</string>
 
     <!-- Accessibility text announced as a response to pressing a button to add a session to the schedule. -->
     <string name="session_details_a11y_session_added">會議已經添加到您的日程安排</string>

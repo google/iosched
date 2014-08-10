@@ -42,7 +42,7 @@
   </plurals>
 
     <!-- Shown in the 'About' window of the app. -->
-    <string name="about_body">&lt;b&gt;Google I/O 2014&lt;/b&gt;&lt;br&gt; Versão %s &lt;br&gt;&lt;br&gt; &lt;a href=http://m.google.com/utos&gt;Termos de Serviço&lt;/a&gt;&lt;br&gt;&lt;br&gt; &lt;a href=http://www.google.com/policies/privacy/&gt;Política de Privacidade&lt;/a&gt;</string>
+    <string name="about_body">&lt;b&gt;Droidcon NYC 2014&lt;/b&gt;&lt;br&gt; Versão %s &lt;br&gt;&lt;br&gt; &lt;a href=http://m.google.com/utos&gt;Termos de Serviço&lt;/a&gt;&lt;br&gt;&lt;br&gt; &lt;a href=http://www.google.com/policies/privacy/&gt;Política de Privacidade&lt;/a&gt;</string>
 
     <!-- Shown as a link in the About screen of the app; user can click to see the EULA. -->
     <string name="about_eula">Contrato de Licença do Usuário Final</string>
@@ -86,7 +86,7 @@
     <string name="all_years">Todos os Anos</string>
 
     <!-- Name of the application, shown in the application's title bar. -->
-    <string name="app_name">Google I/O 2014</string>
+    <string name="app_name">Droidcon NYC 2014</string>
 
     <!-- Label on a button that is one possible answer to the question "Are you attending the
     conference in person in San Francisco or remotely via livestream?" -->
@@ -96,7 +96,7 @@
     conference in person in San Francisco or remotely via livestream?" -->
     <string name="attending_remotely">Remotamente</string>
 
-    <!-- Label on a button that allows the user to browse Google I/O Extended events that they
+    <!-- Label on a button that allows the user to browse Droidcon NYC Extended events that they
     might be interested in attending. -->
     <string name="browse_events">Navegar entre os eventos</string>
 
@@ -154,7 +154,7 @@
     <!-- Menu item that allows user to configure the conference WiFi on their device. -->
     <string name="description_configure_wifi">Configurar Wi-Fi</string>
 
-    <!-- Menu item that takes the user to a page that shows a list of Google I/O Extended events. -->
+    <!-- Menu item that takes the user to a page that shows a list of Droidcon NYC Extended events. -->
     <string name="description_i_o_extended">I/O Extendidos</string>
 
     <!-- Menu item that takes the user to the conference venue map screen -->
@@ -215,7 +215,7 @@
     <string name="empty_widget_text">Não há mais sessões futuras.\nAté ano que vem!</string>
 
     <!-- Shown on a widget instructing user how to start using the widget. -->
-    <string name="empty_widget_text_signed_out">Toque na logo Google I/O 2014 acima para fazer o login e começar a usar o aplicativo.</string>
+    <string name="empty_widget_text_signed_out">Toque na logo Droidcon NYC 2014 acima para fazer o login e começar a usar o aplicativo.</string>
 
     <!-- Shown as a header on a list of sessions to indicate that the sessions that appear on that
     group have already ended. -->
@@ -234,7 +234,7 @@
     <string name="google_account_required_title">É Necessário Uma Conta Google</string>
 
     <!-- List dropdown item on the Video Library screen allowing the user to choose to see
-    the videos from a particular year of Google I/O. -->
+    the videos from a particular year of Droidcon NYC. -->
     <string name="google_i_o_year">I/O <xliff:g id="year">%1$d</xliff:g>
   </string>
 
@@ -317,7 +317,7 @@
     <string name="navdrawer_item_explore">Explorar</string>
 
     <!-- Accessibility description for menu item to open the Explore screen. -->
-    <string name="navdrawer_item_explore_a11y">Explorar Google I/O</string>
+    <string name="navdrawer_item_explore_a11y">Explorar Droidcon NYC</string>
 
     <!-- Menu item to open the Map screen [CHAR_LIMIT=20] -->
     <string name="navdrawer_item_map">Mapa</string>
@@ -400,7 +400,7 @@
 
     <!-- An application permission (this permission allows the application to modify the Google
     I/O schedule data). Shows on a permissions dialog screen. -->
-    <string name="permission_write">Modificar dados da agenda Google I/O</string>
+    <string name="permission_write">Modificar dados da agenda Droidcon NYC</string>
 
     <!-- Description of the Google+ +1 button for accessibility screen readers -->
     <string name="plus_one_description_standard">Toque para +1.</string>
@@ -412,11 +412,11 @@
     statistics to Google. -->
     <string name="pref_analytics_enabled_description">Se marcado, estatísticas anônimas de uso serão enviadas ao Google.</string>
 
-    <!-- Summary in the Settings screen for the "I will be at Google I/O" option -->
+    <!-- Summary in the Settings screen for the "I will be at Droidcon NYC" option -->
     <string name="pref_attendee_at_venue_description">Se marcado, todas as sessões e eventos no local serão mostrados. Caso contrário, apenas as sessões transmitidas ao vivo serão mostradas.</string>
 
-    <!-- Title in the Settings screen for the "I will be at Google I/O" option -->
-    <string name="pref_attendee_at_venue_title">Eu estarei no Google I/O!</string>
+    <!-- Title in the Settings screen for the "I will be at Droidcon NYC" option -->
+    <string name="pref_attendee_at_venue_title">Eu estarei no Droidcon NYC!</string>
 
     <!-- Summary in the Settings screen for the "Show local times" option -->
     <string name="pref_local_times_description">Se marcado, os horários serão mostrados no horário local de seu dispositivo. Se não marcado, os horários serão marcados em PDT, o horário local da conferência.</string>
@@ -452,11 +452,11 @@
 
     <!-- Text of a card shown in the session explorer after I/O has started that asks the user if
     he wants to configure the WiFi. "Yes!" and "No, thanks" are the buttons shown in the card -->
-    <string name="question_setup_wifi_after_i_o_start">O Google I/O chegou! Você gostaria de configurar o WiFi da conferência agora?</string>
+    <string name="question_setup_wifi_after_i_o_start">O Droidcon NYC chegou! Você gostaria de configurar o WiFi da conferência agora?</string>
 
     <!-- Text of a card shown in the session explorer before I/O has started that asks the user if
     he wants to configure the WiFi. "Yes!" and "No, thanks" are the buttons shown in the card -->
-    <string name="question_setup_wifi_before_i_o_start">O Google I/O se aproxima! Você gostaria de configurar o WiFi da conferência agora?</string>
+    <string name="question_setup_wifi_before_i_o_start">O Droidcon NYC se aproxima! Você gostaria de configurar o WiFi da conferência agora?</string>
 
     <!-- Section title for videos related to a particular event session -->
     <string name="related_videos">Vídeos Relacionados</string>
@@ -487,10 +487,10 @@
 
     <!-- Search label that shows the type of data being searched for when the user clicks the
     Search button. -->
-    <string name="search_label">Sessões Google I/O</string>
+    <string name="search_label">Sessões Droidcon NYC</string>
 
     <!-- A fragment of text appended to a Google calendar event indicating it was added by this application -->
-    <string name="session_calendar_suffix">- adicionado pelo aplicativo Android Google I/O</string>
+    <string name="session_calendar_suffix">- adicionado pelo aplicativo Android Droidcon NYC</string>
 
     <!-- Accessibility text announced as a response to pressing a button to add a session to the schedule. -->
     <string name="session_details_a11y_session_added">Sessão adicionada à sua agenda</string>
@@ -725,7 +725,7 @@
     <string name="welcome_text">Antes de começarmos, seguem algumas informações legais importantes em relação ao seu uso deste aplicativo. Isso demora apenas um minuto.</string>
 
     <!-- Short text welcoming the user to the application -->
-    <string name="welcome_to_google_i_o_app">Bem-vindo ao aplicativo Google I/O!</string>
+    <string name="welcome_to_google_i_o_app">Bem-vindo ao aplicativo Droidcon NYC!</string>
 
     <!-- Text for a button which will add a wi-fi network -->
     <string name="wifi_dialog_button_configure">Adicionar rede WiFi</string>

@@ -72,12 +72,13 @@ public class MapFragment extends com.google.android.gms.maps.MapFragment impleme
         GoogleMap.OnIndoorStateChangeListener, LoaderCallbacks<Cursor>,
         GoogleMap.OnMapLoadedCallback {
 
-    private static final LatLng MOSCONE =  new LatLng(37.783107, -122.403789);
-    private static final LatLng MOSCONE_CAMERA =  new LatLng(37.78308931536713, -122.40409433841705);
+    //40.74058,-73.995987
+    private static final LatLng MOSCONE =  new LatLng(40.74058, -73.995987);
+    private static final LatLng MOSCONE_CAMERA =  new LatLng(40.74058, -73.995987);
 
     // Initial camera zoom
     private static final float CAMERA_ZOOM = 18.19f;
-    private static final float CAMERA_BEARING = 234.2f;
+    private static final float CAMERA_BEARING = 0f;
 
     private static final int INVALID_FLOOR = Integer.MIN_VALUE;
 

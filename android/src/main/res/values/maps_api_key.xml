@@ -16,5 +16,5 @@
 
 <resources>
     <!-- Replace with your own API key -->
-    <string name="maps_api_key" translatable="false">654878069390-husoang6d0qr6dq14uflb4bn33g79ku8.apps.googleusercontent.com</string>
+    <string name="maps_api_key" translatable="false">AIzaSyA3kilV1-hzrPUlU9UjaRLwdHYDwlKflig</string>
 </resources>

@@ -91,7 +91,7 @@
     conference in person in San Francisco or remotely via livestream?" -->
     <string name="attending_remotely">远程地</string>
 
-    <!-- Label on a button that allows the user to browse Google I/O Extended events that they
+    <!-- Label on a button that allows the user to browse Droidcon NYC Extended events that they
     might be interested in attending. -->
     <string name="browse_events">浏览活动</string>
 
@@ -149,7 +149,7 @@
     <!-- Menu item that allows user to configure the conference WiFi on their device. -->
     <string name="description_configure_wifi">配置Wi-Fi</string>
 
-    <!-- Menu item that takes the user to a page that shows a list of Google I/O Extended events. -->
+    <!-- Menu item that takes the user to a page that shows a list of Droidcon NYC Extended events. -->
     <string name="description_i_o_extended"> I/O 扩展活动</string>
 
     <!-- Menu item that takes the user to the conference venue map screen -->
@@ -229,7 +229,7 @@
     <string name="google_account_required_title">需要谷歌帐户</string>
 
     <!-- List dropdown item on the Video Library screen allowing the user to choose to see
-    the videos from a particular year of Google I/O. -->
+    the videos from a particular year of Droidcon NYC. -->
     <string name="google_i_o_year">I/O <xliff:g id="year">%1$d</xliff:g>
   </string>
 
@@ -408,10 +408,10 @@
     statistics to Google. -->
     <string name="pref_analytics_enabled_description">如果选中，匿名使用统计信息将被发送到谷歌。</string>
 
-    <!-- Summary in the Settings screen for the "I will be at Google I/O" option -->
+    <!-- Summary in the Settings screen for the "I will be at Droidcon NYC" option -->
     <string name="pref_attendee_at_venue_description">如果勾选，所有的会议和现场活动将被显示。否则，只有现场直播会议将被显示。</string>
 
-    <!-- Title in the Settings screen for the "I will be at Google I/O" option -->
+    <!-- Title in the Settings screen for the "I will be at Droidcon NYC" option -->
     <string name="pref_attendee_at_venue_title">我会在谷歌 I/O 大会！</string>
 
     <!-- Summary in the Settings screen for the "Show local times" option -->

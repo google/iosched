@@ -75,7 +75,7 @@ public class SessionCalendarService extends IntentService {
 
     // TODO: localize
     private static final String CALENDAR_CLEAR_SEARCH_LIKE_EXPRESSION =
-            "%added by Google I/O Android app%";
+            "%added by Droidcon NYC Android app%";
 
     public SessionCalendarService() {
         super(TAG);
