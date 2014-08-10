@@ -32,6 +32,7 @@ import android.provider.BaseColumns;
 import android.support.v4.view.ViewCompat;
 import android.text.Spannable;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -726,6 +727,9 @@ public class SessionsFragment extends Fragment implements
         }
         sessionColor = UIUtils.scaleSessionColorToDefaultBG(sessionColor);
 
+        String photo = mCursor.getString(SessionsQuery.PHOTO_URL);
+        boolean hasPhoto = !TextUtils.isEmpty(photo);
+
         ImageView photoView = (ImageView) view.findViewById(R.id.session_photo_colored);
         if (photoView != null) {
             if (!mPreloader.isDimensSet()) {
@@ -738,8 +742,14 @@ public class SessionsFragment extends Fragment implements
                 });
             }
             // colored
-            photoView.setColorFilter(UIUtils.setColorAlpha(sessionColor,
-                    UIUtils.SESSION_PHOTO_SCRIM_ALPHA));
+            if(hasPhoto) {
+                photoView.setColorFilter(UIUtils.setColorAlpha(sessionColor,
+                        UIUtils.SESSION_PHOTO_SCRIM_ALPHA));
+            }
+            else {
+                photoView.setColorFilter(UIUtils.setColorAlpha(getResources().getColor(R.color.default_item_color_filter),
+                        UIUtils.SESSION_PHOTO_SCRIM_ALPHA));
+            }
         } else {
             photoView = (ImageView) view.findViewById(R.id.session_photo);
         }
@@ -757,12 +767,12 @@ public class SessionsFragment extends Fragment implements
             photoView.setBackgroundColor(sessionColor);
         }
 
-        String photo = mCursor.getString(SessionsQuery.PHOTO_URL);
-        if (!TextUtils.isEmpty(photo)) {
+
+        if (hasPhoto) {
             mImageLoader.loadImage(photo, photoView, true /*crop*/);
         } else {
-            // cleaning the (potentially) recycled photoView, in case this session has no photo:
-            photoView.setImageDrawable(null);
+            // Show default view.
+            mImageLoader.loadImage("https://droidconimages.s3.amazonaws.com/statue.jpg", photoView, true /*crop*/);
         }
 
         // render title

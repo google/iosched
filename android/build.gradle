@@ -48,10 +48,10 @@ android {
             keyPassword "android"
         }
         release {
-            storeFile file("../android/debug.keystore")
-            storePassword "android"
-            keyAlias "androiddebugkey"
-            keyPassword "android"
+            storeFile file("../android/release.jks")
+            storePassword releasePassword
+            keyAlias "android"
+            keyPassword releasePassword
         }
     }
 
@@ -61,7 +61,7 @@ android {
             signingConfig signingConfigs.debug
         }
         release {
-            runProguard true
+            runProguard false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), file('proguard-project.txt')
             signingConfig signingConfigs.release
         }

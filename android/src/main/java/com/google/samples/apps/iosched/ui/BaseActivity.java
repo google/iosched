@@ -403,7 +403,7 @@ public abstract class BaseActivity extends Activity implements
         // Other items that are always in the nav drawer irrespective of whether the
         // attendee is on-site or remote:
         mNavDrawerItems.add(NAVDRAWER_ITEM_SOCIAL);
-        if (!Config.hasExpertsDirectoryExpired()) {
+        if (!Config.hasConferenceEnded()) {
             mNavDrawerItems.add(NAVDRAWER_ITEM_VIDEO_LIBRARY);
         }
         mNavDrawerItems.add(NAVDRAWER_ITEM_SEPARATOR_SPECIAL);
@@ -861,7 +861,7 @@ public abstract class BaseActivity extends Activity implements
 
         MenuItem ioHuntItem = menu.findItem(R.id.menu_i_o_hunt);
         if (ioHuntItem != null) {
-            ioHuntItem.setVisible(!isRemote && !TextUtils.isEmpty(Config.IO_HUNT_PACKAGE_NAME));
+            ioHuntItem.setVisible(false);
         }
     }
 

@@ -24,6 +24,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.TimeZone;
 
+import co.touchlab.droidconnyc.BuildConfig;
 import co.touchlab.droidconnyc.R;
 
 public class Config {
@@ -45,7 +46,7 @@ public class Config {
     public static final String BOOTSTRAP_DATA_TIMESTAMP = "Thu, 10 Apr 2014 00:01:03 GMT";
 
     // Conference hashtag
-    public static final String CONFERENCE_HASHTAG = "#androidnyc";
+    public static final String CONFERENCE_HASHTAG = "#droidconnyc";
 
     // Patterns that, when absent from a hashtag, will trigger the addition of the
     // CONFERENCE_HASHTAG on sharing snippets. Ex: "#Android" will be shared as "#io14 #Android",
@@ -149,7 +150,7 @@ public static final long[][] CONFERENCE_DAYS = new long[][] {
     }
 
     public static boolean hasConferenceEnded(){
-        return CONFERENCE_DAYS[CONFERENCE_DAYS.length - 1][1] < System.currentTimeMillis();
+        return CONFERENCE_END_MILLIS < System.currentTimeMillis();
     }
 
     // URL to use for resolving NearbyDevice metadata.
@@ -179,7 +180,8 @@ public static final long[][] CONFERENCE_DAYS = new long[][] {
     // Minimum interval between two consecutive syncs. This is a safety mechanism to throttle
     // syncs in case conference data gets updated too often or something else goes wrong that
     // causes repeated syncs.
-    public static final long MIN_INTERVAL_BETWEEN_SYNCS = 10 * MINUTE_MILLIS;
+    // For debug, make it short.  Testing.
+    public static final long MIN_INTERVAL_BETWEEN_SYNCS = BuildConfig.DEBUG ? (MINUTE_MILLIS/2) :10 * MINUTE_MILLIS;
 
     // If data is not synced in this much time, we show the "data may be stale" warning
     public static final long STALE_DATA_THRESHOLD_NOT_DURING_CONFERENCE = 2 * DAY_MILLIS;

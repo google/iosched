@@ -28,7 +28,7 @@ android {
     buildToolsVersion "19.1.0"
 
     defaultConfig {
-        applicationId "com.google.samples.apps.iosched"
+//        applicationId "com.google.samples.apps.iosched"
         minSdkVersion 20
         targetSdkVersion 20
         versionCode 1
