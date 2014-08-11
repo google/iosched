@@ -6610,7 +6610,7 @@
         "id": "b6879711-c8b9-e311-b297-00155d5066d7",
         "desc": "Use the Dart VM's builtin Observatory tool to analyze and fix performances issues in Dart applications. Peer into a running VM and get real-time feedback on memory and CPU usage."
     }
-], "hashtags": [
+], "b": [
     {
         "color": "#303f9f",
         "order": 1,

@@ -59,11 +59,14 @@ public class Config {
 
     public static final long[][] CONFERENCE_DAYS = new long[][] {
             // start and end of day 1
-            { ParserUtils.parseTime("2014-08-09T07:00:00.000Z"),
-              ParserUtils.parseTime("2014-08-10T06:59:59.999Z") },
-            // start and end of day 2
             { ParserUtils.parseTime("2014-08-10T07:00:00.000Z"),
               ParserUtils.parseTime("2014-08-11T06:59:59.999Z") },
+            // start and end of day 2
+            { ParserUtils.parseTime("2014-08-11T07:00:00.000Z"),
+              ParserUtils.parseTime("2014-08-12T06:59:59.999Z") },
+            // start and end of day 3
+            { ParserUtils.parseTime("2014-08-12T07:00:00.000Z"),
+              ParserUtils.parseTime("2014-08-13T06:59:59.999Z") },
         };
 /*
 public static final long[][] CONFERENCE_DAYS = new long[][] {
@@ -86,6 +89,8 @@ public static final long[][] CONFERENCE_DAYS = new long[][] {
     public static final long MINUTE_MILLIS = 60 * SECOND_MILLIS;
     public static final long HOUR_MILLIS = 60 * MINUTE_MILLIS;
     public static final long DAY_MILLIS = 24 * HOUR_MILLIS;
+
+    public static final long CACHE_DATA_MAX_AGE = BuildConfig.DEBUG ? 1 : (30*MINUTE_MILLIS);
 
     // OAuth 2.0 related config
     public static final String APP_NAME = "DroidconNYC-Android";

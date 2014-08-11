@@ -330,13 +330,13 @@ public class UIUtils {
     private static final long sAppLoadTime = System.currentTimeMillis();
 
     public static long getCurrentTime(final Context context) {
-        if (BuildConfig.DEBUG) {
+        /*if (BuildConfig.DEBUG) {
             return context.getSharedPreferences("mock_data", Context.MODE_PRIVATE)
                     .getLong("mock_current_time", System.currentTimeMillis())
                     + System.currentTimeMillis() - sAppLoadTime;
 //            return ParserUtils.parseTime("2012-06-27T09:44:45.000-07:00")
 //                    + System.currentTimeMillis() - sAppLoadTime;
-        } else {
+        } else*/ {
             return System.currentTimeMillis();
         }
     }

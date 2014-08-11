@@ -263,7 +263,8 @@ public class RemoteConferenceDataFetcher {
     private String loadFromCache(String url) throws IOException {
         String cacheKey = getCacheKey(url);
         File cacheFile = getCacheFile(url);
-        if (cacheFile.exists()) {
+        //Looking at the code, it didn't look like the cache would ever expire.
+        if (cacheFile.exists() && (System.currentTimeMillis() - Config.CACHE_DATA_MAX_AGE < cacheFile.lastModified())) {
             LOGD(TAG, "Cache hit " + cacheKey + " for " + sanitizeUrl(url));
             return FileUtils.readFileAsString(cacheFile);
         } else {

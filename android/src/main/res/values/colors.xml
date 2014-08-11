@@ -24,20 +24,27 @@
     <color name="body_text_1_inverse">#deffffff</color>
     <color name="body_text_2_inverse">#8affffff</color>
 
-    <color name="theme_primary">#ff747274</color>
+    <!--<color name="theme_primary">#ff747274</color>
     <color name="theme_primary_dark">#ff49484b</color>
     <color name="theme_primary_light">#ffc3c5cb</color>
+-->
+
+    <color name="theme_primary">#2f9015</color>
+    <color name="theme_primary_dark">#108f1f</color>
+    <color name="theme_primary_light">#79cb86</color>
+<!--<color name="theme_primary">#3f51b5</color>
+    <color name="theme_primary_dark">#303f9f</color>
+    <color name="theme_primary_light">#7986cb</color>-->
 
     <color name="default_item_color_filter">#666666</color>
-    <!--<color name="theme_primary">#3f51b5</color>-->
-    <!--<color name="theme_primary_dark">#303f9f</color>-->
-    <!--<color name="theme_primary_light">#7986cb</color>-->
 
-    <color name="theme_accent_1">#ffb4b3b9</color>
-    <color name="theme_accent_1_light">#8ad4fa</color>
+    <!--<color name="theme_accent_1">#ffb4b3b9</color>
+    <color name="theme_accent_1_light">#8ad4fa</color>-->
 
-    <!--<color name="theme_accent_1">#00b0ff</color>-->
-    <!--<color name="theme_accent_1_light">#8ad4fa</color>-->
+    <color name="theme_accent_1">#00ff60</color>
+    <color name="theme_accent_1_light">#8afac4</color>
+<!--<color name="theme_accent_1">#00b0ff</color>
+    <color name="theme_accent_1_light">#8ad4fa</color>-->
 
     <color name="theme_accent_2">#e91e63</color>
 
@@ -84,7 +91,8 @@
     <color name="list_dropdown_divider_color">#92a3a3a3</color>
     <color name="butter_bar_light">#eee0e0e0</color>
 
-    <color name="translucent_actionbar_background">#cc3f51b5</color>
+    <color name="translucent_actionbar_background">#cc3fb551</color>
+    <!--<color name="translucent_actionbar_background">#cc3f51b5</color>-->
 
     <color name="tab_background">@color/theme_primary</color>
     <color name="tab_selected_strip">@color/theme_accent_1</color>

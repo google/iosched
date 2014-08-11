@@ -29,26 +29,27 @@
     "thumbnailUrl": "https://droidconimages.s3.amazonaws.com/16c26beb-48cd-446e-8bf3-224c4ad089f2",
     "id": "4419221b-527a-4116-9687-531dba9f0475"
   }],
-  "blocks": [],
+  "blocks": [{
+    "end": "2014-08-11T13:30:00.000Z",
+    "start": "2014-08-11T12:00:00.000Z",
+    "subtitle": "Google Cafe",
+    "title": "Breakfast",
+    "type": "break"
+  }, {
+    "end": "2014-08-11T17:00:00.000Z",
+    "start": "2014-08-11T16:00:00.000Z",
+    "subtitle": "Food Bar",
+    "title": "Lunch",
+    "type": "break"
+  }, {
+    "end": "2014-08-12T01:30:00.000Z",
+    "start": "2014-08-11T21:30:00.000Z",
+    "subtitle": "",
+    "title": "Party!",
+    "type": "break"
+  }],
   "partners": [],
   "sessions": [{
-    "speakers": ["98a29f44-8135-404a-a71d-ffdf4a317d21"],
-    "description": "A talk about things",
-    "photoUrl": "https://droidconimages.s3.amazonaws.com/Event_2c13c25d-8735-4919-943a-fa21405edf72",
-    "url": "http://www.droidconnyc.com/",
-    "startTimestamp": "2014-08-10T10:10:00Z",
-    "title": "Sustainable Apps",
-    "youtubeUrl": "",
-    "endTimestamp": "2014-08-10T10:50:00Z",
-    "hashtag": "androidnyc",
-    "isLivestream": false,
-    "captionsUrl": "",
-    "id": "152",
-    "tags": ["THEME_DEVELOP", "TOPIC_PERFORMANCE"],
-    "color": "#8e24aa",
-    "mainTag": "TOPIC_PERFORMANCE",
-    "room": "mainroom"
-  }, {
     "speakers": ["80d433da-2181-48a3-bd60-323eaaeaed0b"],
     "description": "The big welcome",
     "photoUrl": "",
@@ -81,14 +82,31 @@
     "color": "#666666",
     "room": "mainroom"
   }, {
+    "speakers": ["98a29f44-8135-404a-a71d-ffdf4a317d21"],
+    "description": "A talk about things",
+    "photoUrl": "https://droidconimages.s3.amazonaws.com/Event_2c13c25d-8735-4919-943a-fa21405edf72",
+    "url": "http://www.droidconnyc.com/",
+    "startTimestamp": "2014-08-11T10:10:00Z",
+    "title": "Sustainable Apps",
+    "youtubeUrl": "",
+    "endTimestamp": "2014-08-11T10:50:00Z",
+    "hashtag": "androidnyc",
+    "isLivestream": false,
+    "captionsUrl": "",
+    "id": "152",
+    "tags": ["THEME_DEVELOP", "TOPIC_PERFORMANCE"],
+    "color": "#8e24aa",
+    "mainTag": "TOPIC_PERFORMANCE",
+    "room": "mainroom"
+  }, {
     "speakers": [],
     "description": "Lots of people talking about shit.",
     "photoUrl": "",
     "url": "http://www.droidconnyc.com/",
-    "startTimestamp": "2014-08-10T11:00:00Z",
+    "startTimestamp": "2014-08-11T11:00:00Z",
     "title": "Wearables Panel",
     "youtubeUrl": "",
-    "endTimestamp": "2014-08-10T11:40:00Z",
+    "endTimestamp": "2014-08-11T11:40:00Z",
     "hashtag": "androidnyc",
     "isLivestream": false,
     "captionsUrl": "",
@@ -102,10 +120,10 @@
     "description": "Hello.  Also http://google.com. Hi.",
     "photoUrl": "",
     "url": "http://www.droidconnyc.com/",
-    "startTimestamp": "2014-08-10T11:50:00Z",
+    "startTimestamp": "2014-08-11T11:50:00Z",
     "title": "Some other talk",
     "youtubeUrl": "",
-    "endTimestamp": "2014-08-10T12:40:00Z",
+    "endTimestamp": "2014-08-11T12:40:00Z",
     "hashtag": "androidnyc",
     "isLivestream": false,
     "captionsUrl": "",
@@ -119,10 +137,10 @@
     "description": "Hello",
     "photoUrl": "",
     "url": "http://www.droidconnyc.com/",
-    "startTimestamp": "2014-08-10T12:50:00Z",
+    "startTimestamp": "2014-08-11T12:50:00Z",
     "title": "Another talk",
     "youtubeUrl": "",
-    "endTimestamp": "2014-08-10T13:40:00Z",
+    "endTimestamp": "2014-08-11T13:40:00Z",
     "hashtag": "androidnyc",
     "isLivestream": false,
     "captionsUrl": "",
@@ -135,10 +153,10 @@
     "description": "Asdf",
     "photoUrl": "https://droidconimages.s3.amazonaws.com/Event_4678350b-5b0d-47c2-83fa-761b40e05057",
     "url": "http://www.droidconnyc.com/",
-    "startTimestamp": "2014-08-10T15:20:00Z",
+    "startTimestamp": "2014-08-11T15:20:00Z",
     "title": "Second Day",
     "youtubeUrl": "",
-    "endTimestamp": "2014-08-10T16:10:00Z",
+    "endTimestamp": "2014-08-11T16:10:00Z",
     "hashtag": "androidnyc",
     "isLivestream": false,
     "captionsUrl": "",
@@ -152,10 +170,10 @@
     "description": "Habidashery and things",
     "photoUrl": "https://droidconimages.s3.amazonaws.com/Event_8e53dd1a-21f1-4568-bc55-185cccfc313c",
     "url": "http://www.droidconnyc.com/",
-    "startTimestamp": "2014-08-10T16:20:00Z",
+    "startTimestamp": "2014-08-12T16:20:00Z",
     "title": "Heyo",
     "youtubeUrl": "",
-    "endTimestamp": "2014-08-10T17:10:00Z",
+    "endTimestamp": "2014-08-12T17:10:00Z",
     "hashtag": "androidnyc",
     "isLivestream": false,
     "captionsUrl": "",
@@ -164,6 +182,22 @@
     "color": "#00897b",
     "mainTag": "TOPIC_UX",
     "room": "mainroom"
+  }, {
+    "speakers": [],
+    "description": "Hello 8:50 start!",
+    "photoUrl": "",
+    "url": "http://www.droidconnyc.com/",
+    "startTimestamp": "2014-08-12T00:50:00Z",
+    "title": "Test Afternoon",
+    "youtubeUrl": "",
+    "endTimestamp": "2014-08-12T01:40:00Z",
+    "hashtag": "androidnyc",
+    "isLivestream": false,
+    "captionsUrl": "",
+    "id": "1100",
+    "tags": [],
+    "color": "#666666",
+    "room": "mainroom"
   }],
   "video_library": [],
   "hashtags": [{
@@ -171,6 +205,11 @@
     "order": 1,
     "name": "#androidnyc",
     "description": "Android NYC is cool"
+  }, {
+    "color": "#80cbc4",
+    "order": 15,
+    "name": "#androidnyc #Jamaoke",
+    "description": "Chat about the party"
   }],
   "experts": [],
   "rooms": [{
@@ -179,28 +218,6 @@
     "name": "Main Room"
   }],
   "tags": [{
-    "category": "THEME",
-    "name": "Develop",
-    "abstract": "",
-    "tag": "THEME_DEVELOP",
-    "original_id": "2ade1c01-8ed0-e311-b297-00155d5066d7",
-    "order_in_category": 2
-  }, {
-    "category": "TOPIC",
-    "name": "Android",
-    "abstract": "",
-    "color": "#558b2f",
-    "tag": "TOPIC_ANDROID",
-    "original_id": "c8e37a77-3688-e311-84db-00155d5066d7",
-    "order_in_category": 1
-  }, {
-    "category": "THEME",
-    "name": "Distribute",
-    "abstract": "",
-    "tag": "THEME_DISTRIBUTE",
-    "original_id": "41335208-8ed0-e311-b297-00155d5066d7",
-    "order_in_category": 3
-  }, {
     "category": "TOPIC",
     "name": "Performance",
     "abstract": "",
@@ -208,6 +225,14 @@
     "tag": "TOPIC_PERFORMANCE",
     "original_id": "d472f7fb-3688-e311-84db-00155d5066d7",
     "order_in_category": 11
+  }, {
+    "category": "TOPIC",
+    "name": "UX",
+    "abstract": "",
+    "color": "#00897b",
+    "tag": "TOPIC_UX",
+    "original_id": "f2a54986-3688-e311-84db-00155d5066d7",
+    "order_in_category": 14
   }, {
     "category": "THEME",
     "name": "Design",
@@ -224,6 +249,14 @@
     "order_in_category": 1
   }, {
     "category": "TOPIC",
+    "name": "Android",
+    "abstract": "",
+    "color": "#558b2f",
+    "tag": "TOPIC_ANDROID",
+    "original_id": "c8e37a77-3688-e311-84db-00155d5066d7",
+    "order_in_category": 1
+  }, {
+    "category": "TOPIC",
     "name": "Wearables",
     "abstract": "",
     "color": "#ad1457",
@@ -231,12 +264,18 @@
     "original_id": "a1305602-3788-e311-84db-00155d5066d7",
     "order_in_category": 15
   }, {
-    "category": "TOPIC",
-    "name": "UX",
+    "category": "THEME",
+    "name": "Distribute",
     "abstract": "",
-    "color": "#00897b",
-    "tag": "TOPIC_UX",
-    "original_id": "f2a54986-3688-e311-84db-00155d5066d7",
-    "order_in_category": 14
+    "tag": "THEME_DISTRIBUTE",
+    "original_id": "41335208-8ed0-e311-b297-00155d5066d7",
+    "order_in_category": 3
+  }, {
+    "category": "THEME",
+    "name": "Develop",
+    "abstract": "",
+    "tag": "THEME_DEVELOP",
+    "original_id": "2ade1c01-8ed0-e311-b297-00155d5066d7",
+    "order_in_category": 2
   }]
 }

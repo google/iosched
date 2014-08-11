@@ -181,7 +181,7 @@ public class ScheduleHelper {
             item.hasGivenFeedback = (cursor.getInt(SessionsQuery.HAS_GIVEN_FEEDBACK) > 0);
             immutableItems.add(item);
         }
-        cursor.close();;
+        cursor.close();
     }
 
     protected void addBlocks(long start, long end,
