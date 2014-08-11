@@ -18,8 +18,8 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     package="co.touchlab.droidconnyc"
-    android:versionCode="302"
-    android:versionName="3.0.2"
+    android:versionCode="303"
+    android:versionName="3.0.3"
     android:installLocation="auto">
 
     <!-- targetSdkVersion set to 19 from build.gradle on non-L-preview builds -->
