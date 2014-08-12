@@ -127,7 +127,7 @@
 
     <!-- Label on a button that the user clicks to decline something (for example, a license
     agreement). -->
-    <string name="decline">下降</string>
+    <string name="decline">拒绝</string>
 
     <!-- Menu item that brings up the application's About screen -->
     <string name="description_about">关于</string>
