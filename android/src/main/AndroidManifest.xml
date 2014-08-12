@@ -18,8 +18,8 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     package="co.touchlab.droidconnyc"
-    android:versionCode="303"
-    android:versionName="3.0.3"
+    android:versionCode="304"
+    android:versionName="3.0.4"
     android:installLocation="auto">
 
     <!-- targetSdkVersion set to 19 from build.gradle on non-L-preview builds -->
@@ -102,6 +102,12 @@
         <activity
             android:name="com.google.samples.apps.iosched.ui.MyScheduleActivity"
             android:label="@string/title_my_schedule"
+            android:theme="@style/Theme.IOSched.MySchedule"
+            android:launchMode="singleTop"/>
+
+        <activity
+            android:name="com.google.samples.apps.iosched.ui.AllScheduleActivity"
+            android:label="@string/title_full_schedule"
             android:theme="@style/Theme.IOSched.MySchedule"
             android:launchMode="singleTop"/>
 

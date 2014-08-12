@@ -116,5 +116,13 @@
             android:src="@drawable/ic_schedule_feedback"
             android:background="?photoItemForeground" />
 
+        <ImageView android:id="@+id/indicator_in_schedule"
+            android:layout_gravity="top|end"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            android:src="@drawable/indicator_in_schedule"
+            android:contentDescription="@null" />
+
     </FrameLayout>
 </LinearLayout>

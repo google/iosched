@@ -106,14 +106,15 @@ public abstract class BaseActivity extends Activity implements
     // not a list of items that are necessarily *present* in the Nav Drawer; rather,
     // it's a list of all possible items.
     protected static final int NAVDRAWER_ITEM_MY_SCHEDULE = 0;
-    protected static final int NAVDRAWER_ITEM_EXPLORE = 1;
-    protected static final int NAVDRAWER_ITEM_MAP = 2;
-    protected static final int NAVDRAWER_ITEM_SOCIAL = 3;
-    protected static final int NAVDRAWER_ITEM_VIDEO_LIBRARY = 4;
-    protected static final int NAVDRAWER_ITEM_SIGN_IN = 5;
-    protected static final int NAVDRAWER_ITEM_SETTINGS = 6;
-    protected static final int NAVDRAWER_ITEM_EXPERTS_DIRECTORY = 7;
-    protected static final int NAVDRAWER_ITEM_PEOPLE_IVE_MET = 8;
+    protected static final int NAVDRAWER_ITEM_FULL_SCHEDULE = 1;
+    protected static final int NAVDRAWER_ITEM_EXPLORE = 2;
+    protected static final int NAVDRAWER_ITEM_MAP = 3;
+    protected static final int NAVDRAWER_ITEM_SOCIAL = 4;
+    protected static final int NAVDRAWER_ITEM_VIDEO_LIBRARY = 5;
+    protected static final int NAVDRAWER_ITEM_SIGN_IN = 6;
+    protected static final int NAVDRAWER_ITEM_SETTINGS = 7;
+    protected static final int NAVDRAWER_ITEM_EXPERTS_DIRECTORY = 8;
+    protected static final int NAVDRAWER_ITEM_PEOPLE_IVE_MET = 9;
     protected static final int NAVDRAWER_ITEM_INVALID = -1;
     protected static final int NAVDRAWER_ITEM_SEPARATOR = -2;
     protected static final int NAVDRAWER_ITEM_SEPARATOR_SPECIAL = -3;
@@ -121,6 +122,7 @@ public abstract class BaseActivity extends Activity implements
     // titles for navdrawer items (indices must correspond to the above)
     private static final int[] NAVDRAWER_TITLE_RES_ID = new int[]{
             R.string.navdrawer_item_my_schedule,
+            R.string.navdrawer_item_full_schedule,
             R.string.navdrawer_item_explore,
             R.string.navdrawer_item_map,
             R.string.navdrawer_item_social,
@@ -133,6 +135,7 @@ public abstract class BaseActivity extends Activity implements
 
     // icons for navdrawer items (indices must correspond to above array)
     private static final int[] NAVDRAWER_ICON_RES_ID = new int[] {
+            R.drawable.ic_drawer_my_schedule,  // My Schedule
             R.drawable.ic_drawer_my_schedule,  // My Schedule
             R.drawable.ic_drawer_explore,  // Explore
             R.drawable.ic_drawer_map, // Map
@@ -380,6 +383,8 @@ public abstract class BaseActivity extends Activity implements
             // If no active account, show Sign In
             mNavDrawerItems.add(NAVDRAWER_ITEM_SIGN_IN);
         }
+
+        mNavDrawerItems.add(NAVDRAWER_ITEM_FULL_SCHEDULE);
 
         // Explore is always shown
         mNavDrawerItems.add(NAVDRAWER_ITEM_EXPLORE);
@@ -748,6 +753,11 @@ public abstract class BaseActivity extends Activity implements
         switch (item) {
             case NAVDRAWER_ITEM_MY_SCHEDULE:
                 intent = new Intent(this, MyScheduleActivity.class);
+                startActivity(intent);
+                finish();
+                break;
+            case NAVDRAWER_ITEM_FULL_SCHEDULE:
+                intent = new Intent(this, AllScheduleActivity.class);
                 startActivity(intent);
                 finish();
                 break;

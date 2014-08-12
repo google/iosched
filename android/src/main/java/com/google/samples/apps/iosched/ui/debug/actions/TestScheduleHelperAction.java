@@ -65,42 +65,42 @@ public class TestScheduleHelperAction implements DebugAction {
         mut.add(item("14:00", "14:30", "m1"));
         immut.add(item("14:25", "14:50", "i1"));
         success &= check("no intersection - within range",
-                ScheduleItemHelper.processItems(mut, immut),
+                ScheduleItemHelper.processItems(mut, immut, true),
                 new ScheduleItem[]{item("14:00", "14:30", "m1"), item("14:25", "14:50", "i1")});
 
         mut.clear(); immut.clear();
         mut.add(item("14:00", "16:00", "m1"));
         immut.add(item("15:00", "16:00", "i1"));
         success &= check("Simple intersection1",
-                ScheduleItemHelper.processItems(mut, immut),
+                ScheduleItemHelper.processItems(mut, immut, true),
                 new ScheduleItem[]{item("14:00", "15:00", "m1"), item("15:00", "16:00", "i1")});
 
         mut.clear(); immut.clear();
         mut.add(item("14:00", "16:00", "m1"));
         immut.add(item("13:00", "15:00", "i1"));
         success &= check("Simple intersection2",
-                ScheduleItemHelper.processItems(mut, immut),
+                ScheduleItemHelper.processItems(mut, immut, true),
                 new ScheduleItem[]{item("13:00", "15:00", "i1"), item("15:00", "16:00", "m1")});
 
         mut.clear(); immut.clear();
         mut.add(item("14:00", "16:00", "m1"));
         immut.add(item("14:00", "16:00", "i1"));
         success &= check("same time",
-                ScheduleItemHelper.processItems(mut, immut),
+                ScheduleItemHelper.processItems(mut, immut, true),
                 new ScheduleItem[]{item("14:00", "16:00", "i1")});
 
         mut.clear(); immut.clear();
         mut.add(item("14:00", "16:09", "m1"));
         immut.add(item("14:05", "16:00", "i1"));
         success &= check("no split, remaining not big enough",
-                ScheduleItemHelper.processItems(mut, immut),
+                ScheduleItemHelper.processItems(mut, immut, true),
                 new ScheduleItem[]{item("14:05", "16:00", "i1")});
 
         mut.clear(); immut.clear();
         mut.add(item("14:00", "16:10", "m1"));
         immut.add(item("14:00", "16:00", "i1"));
         success &= check("split",
-                ScheduleItemHelper.processItems(mut, immut),
+                ScheduleItemHelper.processItems(mut, immut, true),
                 new ScheduleItem[]{item("14:00", "16:00", "i1"), item("16:00", "16:10", "m1")});
 
         mut.clear(); immut.clear();
@@ -108,7 +108,7 @@ public class TestScheduleHelperAction implements DebugAction {
         immut.add(item("14:30", "15:00", "i1"));
         immut.add(item("15:30", "16:00", "i2"));
         success &= check("2 splits",
-                ScheduleItemHelper.processItems(mut, immut),
+                ScheduleItemHelper.processItems(mut, immut, true),
                 new ScheduleItem[]{
                         item("14:00", "14:30", "m1"),
                         item("14:30", "15:00", "i1"),
@@ -122,7 +122,7 @@ public class TestScheduleHelperAction implements DebugAction {
         immut.add(item("14:30", "15:00", "i1"));
         immut.add(item("16:30", "16:51", "i2"));
         success &= check("2 splits with no remaining",
-                ScheduleItemHelper.processItems(mut, immut),
+                ScheduleItemHelper.processItems(mut, immut, true),
                 new ScheduleItem[]{
                         item("14:00", "14:30", "m1"),
                         item("14:30", "15:00", "i1"),
@@ -137,7 +137,7 @@ public class TestScheduleHelperAction implements DebugAction {
         immut.add(item("14:30", "15:00", "i1"));
         immut.add(item("16:30", "16:51", "i2"));
         success &= check("2 splits, 3 free blocks, no remaining",
-                ScheduleItemHelper.processItems(mut, immut),
+                ScheduleItemHelper.processItems(mut, immut, true),
                 new ScheduleItem[]{
                         item("12:00", "14:30", "m1"),
                         item("14:30", "15:00", "i1"),
@@ -154,7 +154,7 @@ public class TestScheduleHelperAction implements DebugAction {
         immut.add(item("16:30", "16:51", "i2"));
         immut.add(item("16:30", "16:40", "i3"));
         success &= check("conflicting sessions, 2 splits, 3 free blocks, no remaining",
-                ScheduleItemHelper.processItems(mut, immut),
+                ScheduleItemHelper.processItems(mut, immut, true),
                 new ScheduleItem[]{
                         item("12:00", "14:30", "m1"),
                         item("14:30", "15:00", "i1"),
@@ -173,7 +173,7 @@ public class TestScheduleHelperAction implements DebugAction {
         immut.add(item("16:30", "16:51", "i2"));
         immut.add(item("16:50", "17:00", "i3"));
         success &= check("borderline conflicting sessions, 2 splits, 3 free blocks, no remaining",
-                ScheduleItemHelper.processItems(mut, immut),
+                ScheduleItemHelper.processItems(mut, immut, true),
                 new ScheduleItem[]{
                         item("12:00", "14:30", "m1"),
                         item("14:30", "15:00", "i1"),
@@ -190,7 +190,7 @@ public class TestScheduleHelperAction implements DebugAction {
         immut.add(item("16:30", "17:00", "i3"));
         immut.add(item("18:00", "18:30", "i4"));
         success &= check("conflicting sessions",
-                ScheduleItemHelper.processItems(mut, immut),
+                ScheduleItemHelper.processItems(mut, immut, true),
                 new ScheduleItem[]{
                         item("14:30", "15:00", "i1"),
                         item("16:30", "19:00", "i2"),

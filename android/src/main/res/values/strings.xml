@@ -373,6 +373,7 @@
 
     <!-- Menu item to open the My Schedule screen [CHAR_LIMIT=20] -->
     <string name="navdrawer_item_my_schedule">My Schedule</string>
+    <string name="navdrawer_item_full_schedule">Full Schedule</string>
 
     <!-- Menu item to open the People I've Met screen [CHAR_LIMIT=20] -->
     <string name="navdrawer_item_people_ive_met">People I\'ve Met</string>
@@ -771,6 +772,8 @@
 
     <!-- Navigation bar text for viewing the user's schedule -->
     <string name="title_my_schedule">My Schedule</string>
+
+    <string name="title_full_schedule">Full Schedule</string>
 
     <!-- Navigation bar text for viewing Office Hours -->
     <string name="title_office_hours">Office Hours</string>

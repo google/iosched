@@ -47,6 +47,8 @@ public class ScheduleItem implements Cloneable, Comparable<ScheduleItem> {
     public String backgroundImageUrl = "";
     public int backgroundColor = 0;
 
+    public boolean mySchedule;
+
     // flags
     public int flags = 0;
     public static final int FLAG_HAS_LIVESTREAM = 0x01;

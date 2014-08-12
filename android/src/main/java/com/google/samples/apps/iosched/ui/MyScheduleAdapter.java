@@ -203,6 +203,7 @@ public class MyScheduleAdapter implements ListAdapter, AbsListView.RecyclerListe
         TextView slotTitleView = (TextView) view.findViewById(R.id.slot_title);
         TextView slotSubtitleView = (TextView) view.findViewById(R.id.slot_subtitle);
         ImageButton giveFeedbackButton = (ImageButton) view.findViewById(R.id.give_feedback_button);
+        ImageView inSchedule = (ImageView)view.findViewById(R.id.indicator_in_schedule);
         int heightNormal = res.getDimensionPixelSize(R.dimen.my_schedule_item_height);
         int heightBreak = ViewGroup.LayoutParams.WRAP_CONTENT;
         int heightPast = res.getDimensionPixelSize(R.dimen.my_schedule_item_height_past);
@@ -223,6 +224,7 @@ public class MyScheduleAdapter implements ListAdapter, AbsListView.RecyclerListe
             startTimeView.setText(TimeUtils.formatShortTime(mContext, new Date(item.startTime)));
             // do we need and end time view?
             showEndTime = nextItem == null || nextItem.startTime != item.endTime;
+
         }
 
         if (endTimeView != null) {
@@ -375,6 +377,9 @@ public class MyScheduleAdapter implements ListAdapter, AbsListView.RecyclerListe
                     }
                 }
             }
+
+            if(inSchedule != null)
+                inSchedule.setVisibility(item.mySchedule ? View.VISIBLE : View.GONE);
 
         } else {
             LOGE(TAG, "Invalid item type in MyScheduleAdapter: " + item.type);
