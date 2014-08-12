@@ -126,3 +126,7 @@
 -keep class com.google.api.client.**
 -keep class com.google.maps.android.**
 -keep class libcore.**
+-dontwarn org.junit.**
+-dontwarn org.mockito.**
+-dontwarn org.robolectric.**
+-dontwarn com.bumptech.glide.GlideTest
