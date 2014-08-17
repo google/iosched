@@ -38,7 +38,7 @@ public class Config {
     public static final String DOGFOOD_BUILD_WARNING_TEXT = "This is a test build.";
 
     // Public data manifest URL
-    public static final String PROD_CONFERENCE_DATA_MANIFEST_URL = "http://droidcon-server.herokuapp.com/dataTest/manifestWrapper/50";
+    public static final String PROD_CONFERENCE_DATA_MANIFEST_URL = "http://droidcon-server.herokuapp.com/dataTest/manifestWrapper/1450";
 
     // Manifest URL override for Debug (staging) builds:
     public static final String MANIFEST_URL = PROD_CONFERENCE_DATA_MANIFEST_URL;
@@ -62,11 +62,11 @@ public class Config {
 //            { ParserUtils.parseTime("2014-08-10T07:00:00.000Z"),
 //              ParserUtils.parseTime("2014-08-11T06:59:59.999Z") },
             // start and end of day 2
-            { ParserUtils.parseTime("2014-08-11T07:00:00.000Z"),
-              ParserUtils.parseTime("2014-08-12T06:59:59.999Z") },
+            { ParserUtils.parseTime("2014-09-20T07:00:00.000Z"),
+              ParserUtils.parseTime("2014-09-21T06:59:59.999Z") },
             // start and end of day 3
-            { ParserUtils.parseTime("2014-08-12T07:00:00.000Z"),
-              ParserUtils.parseTime("2014-08-13T06:59:59.999Z") },
+            { ParserUtils.parseTime("2014-09-21T07:00:00.000Z"),
+              ParserUtils.parseTime("2014-09-22T06:59:59.999Z") },
         };
 /*
 public static final long[][] CONFERENCE_DAYS = new long[][] {

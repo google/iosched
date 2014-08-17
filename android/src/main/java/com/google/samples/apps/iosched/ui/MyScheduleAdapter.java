@@ -204,6 +204,8 @@ public class MyScheduleAdapter implements ListAdapter, AbsListView.RecyclerListe
         TextView slotSubtitleView = (TextView) view.findViewById(R.id.slot_subtitle);
         ImageButton giveFeedbackButton = (ImageButton) view.findViewById(R.id.give_feedback_button);
         ImageView inSchedule = (ImageView)view.findViewById(R.id.indicator_in_schedule);
+        if(inSchedule != null)
+            inSchedule.setVisibility(View.GONE);
         int heightNormal = res.getDimensionPixelSize(R.dimen.my_schedule_item_height);
         int heightBreak = ViewGroup.LayoutParams.WRAP_CONTENT;
         int heightPast = res.getDimensionPixelSize(R.dimen.my_schedule_item_height_past);
