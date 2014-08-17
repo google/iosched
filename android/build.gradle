@@ -101,6 +101,9 @@ dependencies {
         exclude group: "com.google.android.gms"
     }
 
+    compile 'de.greenrobot:eventbus:2.2.1'
+    compile 'com.squareup.retrofit:retrofit:1.6.1'
+
     /* The two dependencies below are only required while we are using http
        Drive appdata. When we start using AppData through GMS,
        they should be removed. */

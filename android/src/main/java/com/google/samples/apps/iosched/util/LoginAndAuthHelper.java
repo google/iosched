@@ -39,9 +39,13 @@ import com.google.android.gms.plus.People;
 import com.google.android.gms.plus.Plus;
 import com.google.android.gms.plus.model.people.Person;
 import com.google.android.gms.plus.model.people.PersonBuffer;
+import com.google.samples.apps.iosched.port.tasks.AppPrefs;
+import com.google.samples.apps.iosched.port.tasks.GoogleLoginTask;
 
 import java.io.IOException;
 import java.lang.ref.WeakReference;
+
+import co.touchlab.android.threading.tasks.TaskQueue;
 
 import static com.google.samples.apps.iosched.util.LogUtils.*;
 
@@ -222,7 +226,25 @@ public class LoginAndAuthHelper implements GoogleApiClient.ConnectionCallbacks, 
             mTokenTask.execute();
         } else {
             LOGD(TAG, "No need for auth token, we already have it.");
-            reportAuthSuccess(false);
+            sendServerLogin(false);
+        }
+    }
+
+    private void sendServerLogin(boolean firstLogin)
+    {
+        if(!AppPrefs.getInstance(mAppContext).isLoggedIn()) {
+            String accountName = Plus.AccountApi.getAccountName(mGoogleApiClient);
+            Person person = Plus.PeopleApi.getCurrentPerson(mGoogleApiClient);
+            String imageURL = null;
+            if (person != null && person.hasImage()) {
+                Person.Image image = person.getImage();
+
+                if (image != null && image.hasUrl()) {
+                    imageURL = image.getUrl();
+                }
+            }
+
+            TaskQueue.execute(mAppContext, new GoogleLoginTask(accountName, person.getDisplayName(), imageURL, firstLogin));
         }
     }
 
@@ -399,6 +421,14 @@ public class LoginAndAuthHelper implements GoogleApiClient.ConnectionCallbacks, 
         }
     }
 
+    public void onEventMainThread(GoogleLoginTask task)
+    {
+        if(task.success)
+            reportAuthSuccess(task.firstLogin);
+        else
+            reportAuthFailure();
+    }
+
     private void reportAuthSuccess(boolean newlyAuthenticated) {
         LOGD(TAG, "Auth success for account " + mAccountName + ", newlyAuthenticated=" + newlyAuthenticated);
         Callbacks callbacks;
@@ -459,7 +489,7 @@ public class LoginAndAuthHelper implements GoogleApiClient.ConnectionCallbacks, 
                 LOGD(TAG, "Activity not started, so not reporting auth success.");
             } else {
                 LOGD(TAG, "GetTokenTask reporting auth success.");
-                reportAuthSuccess(true);
+                sendServerLogin(false);
             }
         }
 
