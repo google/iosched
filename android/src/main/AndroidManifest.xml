@@ -85,6 +85,7 @@
         android:theme="@style/Theme.IOSched"
         android:hardwareAccelerated="true"
         android:allowBackup="true"
+        android:name="com.google.samples.apps.iosched.port.DroidconApplication"
         android:supportsRtl="true">
 
         <!-- Google Play Services -->
@@ -377,6 +378,10 @@
                 <action android:name="com.google.sample.apps.iosched.ACTION_NOTIFICATION_DISMISSAL"/>
             </intent-filter>
         </service>
+
+        <service
+            android:name="co.touchlab.android.superbus.SuperbusService"
+            android:exported="false" />
 
     </application>
 </manifest>

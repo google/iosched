@@ -38,7 +38,7 @@ public class Config {
     public static final String DOGFOOD_BUILD_WARNING_TEXT = "This is a test build.";
 
     // Public data manifest URL
-    public static final String PROD_CONFERENCE_DATA_MANIFEST_URL = "http://droidcon-server.herokuapp.com/dataTest/manifestWrapper/1450";
+    public static final String PROD_CONFERENCE_DATA_MANIFEST_URL = "http://droidcon-server.herokuapp.com/dataTest/manifestWrapper/2000";
 
     // Manifest URL override for Debug (staging) builds:
     public static final String MANIFEST_URL = PROD_CONFERENCE_DATA_MANIFEST_URL;

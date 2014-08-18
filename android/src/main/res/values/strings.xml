@@ -835,7 +835,7 @@
     <string name="description_i_o_hunt">I/O Hunt</string>
 
 
-    <!--<string name="base_url">http://droidcon-server.herokuapp.com/</string>-->
-    <string name="base_url">http://192.168.1.7:9000/</string>
+    <string name="base_url">http://droidcon-server.herokuapp.com/</string>
+    <!--<string name="base_url">http://192.168.1.7:9000/</string>-->
 </resources>
 

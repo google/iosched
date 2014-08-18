@@ -165,6 +165,7 @@ public class SessionDetailFragment extends Fragment implements
     private float mFABElevation;
 
     private int mTagColorDotSize;
+    private String mServerId;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -222,7 +223,7 @@ public class SessionDetailFragment extends Fragment implements
                 boolean starred = !mStarred;
                 SessionsHelper helper = new SessionsHelper(getActivity());
                 showStarred(starred, true);
-                helper.setSessionStarred(mSessionUri, starred, mTitleString);
+                helper.setSessionStarred(mSessionUri, starred, mTitleString, mServerId);
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
                     mRootView.announceForAccessibility(starred ?
                             getString(R.string.session_details_a11y_session_added) :
@@ -560,6 +561,7 @@ public class SessionDetailFragment extends Fragment implements
             return;
         }
 
+        mServerId = cursor.getString(SessionsQuery.SESSION_ID);
         mTitleString = cursor.getString(SessionsQuery.TITLE);
         mSessionColor = cursor.getInt(SessionsQuery.COLOR);
 
@@ -1192,7 +1194,8 @@ public class SessionDetailFragment extends Fragment implements
                 ScheduleContract.Sessions.SESSION_PHOTO_URL,
                 ScheduleContract.Sessions.SESSION_RELATED_CONTENT,
                 ScheduleContract.Sessions.SESSION_TAGS,
-                ScheduleContract.Sessions.SESSION_SPEAKER_NAMES
+                ScheduleContract.Sessions.SESSION_SPEAKER_NAMES,
+                ScheduleContract.Sessions.SESSION_ID,
         };
 
         int START = 0;
@@ -1216,6 +1219,7 @@ public class SessionDetailFragment extends Fragment implements
         int RELATED_CONTENT = 18;
         int TAGS = 19;
         int SPEAKER_NAMES = 20;
+        int SESSION_ID = 21;
 
         int[] LINKS_INDICES = {
                 YOUTUBE_URL,

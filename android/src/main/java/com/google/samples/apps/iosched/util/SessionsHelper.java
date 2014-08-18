@@ -27,9 +27,12 @@ import android.os.Build;
 import android.support.v4.app.ShareCompat;
 import android.view.MenuItem;
 
+import co.touchlab.android.superbus.appsupport.CommandBusHelper;
 import co.touchlab.droidconnyc.R;
 import com.google.samples.apps.iosched.appwidget.ScheduleWidgetProvider;
 import com.google.samples.apps.iosched.gcm.ServerUtilities;
+import com.google.samples.apps.iosched.port.superbus.AddRsvpCommand;
+import com.google.samples.apps.iosched.port.superbus.RemoveRsvpCommand;
 import com.google.samples.apps.iosched.provider.ScheduleContract;
 import com.google.samples.apps.iosched.sync.SyncHelper;
 import com.google.samples.apps.iosched.sync.TriggerSyncReceiver;
@@ -109,7 +112,7 @@ public final class SessionsHelper {
                 context.getString(R.string.title_share)));
     }
 
-    public void setSessionStarred(Uri sessionUri, boolean starred, String title) {
+    public void setSessionStarred(Uri sessionUri, boolean starred, String title, String serverId) {
         LOGD(TAG, "setSessionStarred uri=" + sessionUri + " starred=" +
                 starred + " title=" + title);
         String sessionId = ScheduleContract.Sessions.getSessionId(sessionUri);
@@ -122,6 +125,20 @@ public final class SessionsHelper {
         values.put(ScheduleContract.MySchedule.SESSION_ID, sessionId);
         values.put(ScheduleContract.MySchedule.MY_SCHEDULE_IN_SCHEDULE, starred?1:0);
         handler.startInsert(-1, null, myScheduleUri, values);
+
+
+        try
+        {
+            long id = Long.parseLong(serverId);
+            if(starred)
+                CommandBusHelper.submitCommandAsync(mActivity, new AddRsvpCommand(id));
+            else
+                CommandBusHelper.submitCommandAsync(mActivity, new RemoveRsvpCommand(id));
+        }
+        catch (Exception e)
+        {
+            //TODO: Need loggin plan.  This is just "best efforts", but ok if fail.
+        }
 
         /* [ANALYTICS:EVENT]
          * TRIGGER:   Add or remove a session from the schedule.
