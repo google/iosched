@@ -32,6 +32,12 @@
         <item quantity="other">%d sessions are about to start.</item>
     </plurals>
 
+    <!-- Indicates a certain number of sessions. -->
+    <plurals name="session_plurals">
+        <item quantity="one">1 session</item>
+        <item quantity="other">%1$d sessions</item>
+    </plurals>
+
     <!-- Title for the notification that alerts the user that some of their sessions are about to begin. -->
     <plurals name="session_notification_title">
         <item quantity="one">1 session is starting in <xliff:g id="remaining_time">%1$d</xliff:g> min.</item>
