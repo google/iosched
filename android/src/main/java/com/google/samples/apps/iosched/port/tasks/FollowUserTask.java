@@ -34,6 +34,6 @@ public class FollowUserTask extends TaskQueue.Task
     @Override
     protected boolean handleError(Exception e)
     {
-        return true;
+        return false;
     }
 }

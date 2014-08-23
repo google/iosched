@@ -12,3 +12,5 @@ data class UserAccount(var id: Long, var name: String, var profile: String,
                        var twitter: String, var linkedIn: String, var website: String, var following: Boolean)
 
 data class EventInfo(var id: Long, var name: String, var description: String)
+
+data class UserFollowResponse(var users: Array<UserInfoResponse>)
