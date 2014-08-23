@@ -15,11 +15,11 @@
  */
 package com.google.samples.apps.iosched.ui.debug.actions;
 
-import android.content.ContentResolver;
 import android.accounts.Account;
+import android.content.ContentResolver;
 import android.content.Context;
-import android.os.AsyncTask;
 import android.content.SyncResult;
+import android.os.AsyncTask;
 import android.os.Bundle;
 
 import com.google.samples.apps.iosched.sync.SyncHelper;

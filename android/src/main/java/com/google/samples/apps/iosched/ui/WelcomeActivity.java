@@ -22,8 +22,9 @@ import android.os.Bundle;
 import android.view.View;
 
 import com.google.samples.apps.iosched.Config;
-import co.touchlab.droidconnyc.R;
 import com.google.samples.apps.iosched.util.PrefUtils;
+
+import co.touchlab.droidconnyc.R;
 
 public class WelcomeActivity extends Activity {
     @Override

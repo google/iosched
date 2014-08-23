@@ -47,7 +47,10 @@ import java.lang.ref.WeakReference;
 
 import co.touchlab.android.threading.tasks.TaskQueue;
 
-import static com.google.samples.apps.iosched.util.LogUtils.*;
+import static com.google.samples.apps.iosched.util.LogUtils.LOGD;
+import static com.google.samples.apps.iosched.util.LogUtils.LOGE;
+import static com.google.samples.apps.iosched.util.LogUtils.LOGW;
+import static com.google.samples.apps.iosched.util.LogUtils.makeLogTag;
 
 /**
  * This helper handles the UI flow for signing in and authenticating an account. It handles

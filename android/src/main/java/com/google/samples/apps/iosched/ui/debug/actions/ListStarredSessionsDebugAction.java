@@ -18,9 +18,9 @@ package com.google.samples.apps.iosched.ui.debug.actions;
 import android.content.Context;
 import android.os.AsyncTask;
 
+import com.google.api.client.util.Charsets;
 import com.google.samples.apps.iosched.sync.userdata.util.UserDataHelper;
 import com.google.samples.apps.iosched.ui.debug.DebugAction;
-import com.google.api.client.util.Charsets;
 
 import java.util.Set;
 

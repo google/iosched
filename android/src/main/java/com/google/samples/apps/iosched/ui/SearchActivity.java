@@ -26,13 +26,16 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.SearchView;
 
-import co.touchlab.droidconnyc.R;
 import com.google.samples.apps.iosched.model.TagMetadata;
 import com.google.samples.apps.iosched.provider.ScheduleContract;
 import com.google.samples.apps.iosched.ui.debug.actions.ShowFeedbackNotificationAction;
 import com.google.samples.apps.iosched.util.AnalyticsManager;
 
-import static com.google.samples.apps.iosched.util.LogUtils.*;
+import co.touchlab.droidconnyc.R;
+
+import static com.google.samples.apps.iosched.util.LogUtils.LOGD;
+import static com.google.samples.apps.iosched.util.LogUtils.LOGW;
+import static com.google.samples.apps.iosched.util.LogUtils.makeLogTag;
 
 public class SearchActivity extends BaseActivity implements SessionsFragment.Callbacks {
     private static final String TAG = makeLogTag("SearchActivity");

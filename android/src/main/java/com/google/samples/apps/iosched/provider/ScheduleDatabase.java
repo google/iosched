@@ -24,12 +24,34 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.provider.BaseColumns;
 
-import com.google.samples.apps.iosched.provider.ScheduleContract.*;
+import com.google.samples.apps.iosched.provider.ScheduleContract.AnnouncementsColumns;
+import com.google.samples.apps.iosched.provider.ScheduleContract.Blocks;
+import com.google.samples.apps.iosched.provider.ScheduleContract.BlocksColumns;
+import com.google.samples.apps.iosched.provider.ScheduleContract.ExpertsColumns;
+import com.google.samples.apps.iosched.provider.ScheduleContract.FeedbackColumns;
+import com.google.samples.apps.iosched.provider.ScheduleContract.HashtagColumns;
+import com.google.samples.apps.iosched.provider.ScheduleContract.MapMarkerColumns;
+import com.google.samples.apps.iosched.provider.ScheduleContract.MapTileColumns;
+import com.google.samples.apps.iosched.provider.ScheduleContract.MySchedule;
+import com.google.samples.apps.iosched.provider.ScheduleContract.PartnersColumns;
+import com.google.samples.apps.iosched.provider.ScheduleContract.Rooms;
+import com.google.samples.apps.iosched.provider.ScheduleContract.RoomsColumns;
+import com.google.samples.apps.iosched.provider.ScheduleContract.Sessions;
+import com.google.samples.apps.iosched.provider.ScheduleContract.SessionsColumns;
+import com.google.samples.apps.iosched.provider.ScheduleContract.Speakers;
+import com.google.samples.apps.iosched.provider.ScheduleContract.SpeakersColumns;
+import com.google.samples.apps.iosched.provider.ScheduleContract.SyncColumns;
+import com.google.samples.apps.iosched.provider.ScheduleContract.Tags;
+import com.google.samples.apps.iosched.provider.ScheduleContract.TagsColumns;
+import com.google.samples.apps.iosched.provider.ScheduleContract.VideoColumns;
 import com.google.samples.apps.iosched.sync.ConferenceDataHandler;
 import com.google.samples.apps.iosched.sync.SyncHelper;
 import com.google.samples.apps.iosched.util.AccountUtils;
 
-import static com.google.samples.apps.iosched.util.LogUtils.*;
+import static com.google.samples.apps.iosched.util.LogUtils.LOGD;
+import static com.google.samples.apps.iosched.util.LogUtils.LOGI;
+import static com.google.samples.apps.iosched.util.LogUtils.LOGW;
+import static com.google.samples.apps.iosched.util.LogUtils.makeLogTag;
 
 /**
  * Helper for managing {@link SQLiteDatabase} that stores data for

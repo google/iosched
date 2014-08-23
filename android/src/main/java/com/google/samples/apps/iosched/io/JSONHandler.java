@@ -16,10 +16,10 @@
 
 package com.google.samples.apps.iosched.io;
 
-import com.google.gson.JsonElement;
-
 import android.content.ContentProviderOperation;
 import android.content.Context;
+
+import com.google.gson.JsonElement;
 
 import java.io.BufferedReader;
 import java.io.IOException;

@@ -16,14 +16,14 @@
 
 package com.google.samples.apps.iosched.io;
 
-import com.google.samples.apps.iosched.io.model.Room;
-import com.google.samples.apps.iosched.provider.ScheduleContract;
-import com.google.gson.Gson;
-import com.google.gson.JsonElement;
-
 import android.content.ContentProviderOperation;
 import android.content.Context;
 import android.net.Uri;
+
+import com.google.gson.Gson;
+import com.google.gson.JsonElement;
+import com.google.samples.apps.iosched.io.model.Room;
+import com.google.samples.apps.iosched.provider.ScheduleContract;
 
 import java.util.ArrayList;
 import java.util.HashMap;

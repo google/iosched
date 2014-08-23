@@ -33,13 +33,20 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 
-import co.touchlab.droidconnyc.R;
 import com.google.samples.apps.iosched.model.TagMetadata;
 import com.google.samples.apps.iosched.provider.ScheduleContract;
-import com.google.samples.apps.iosched.ui.*;
+import com.google.samples.apps.iosched.ui.BaseActivity;
+import com.google.samples.apps.iosched.ui.MapFragment;
+import com.google.samples.apps.iosched.ui.NearbyActivity;
+import com.google.samples.apps.iosched.ui.NearbyFragment;
+import com.google.samples.apps.iosched.ui.PartnersFragment;
+import com.google.samples.apps.iosched.ui.SessionDetailFragment;
+import com.google.samples.apps.iosched.ui.SessionsFragment;
 import com.google.samples.apps.iosched.ui.phone.MapActivity;
 import com.google.samples.apps.iosched.util.AnalyticsManager;
 import com.google.samples.apps.iosched.util.UIUtils;
+
+import co.touchlab.droidconnyc.R;
 
 import static com.google.samples.apps.iosched.util.LogUtils.LOGD;
 

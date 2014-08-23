@@ -26,7 +26,6 @@ import android.graphics.drawable.NinePatchDrawable;
 import android.support.v4.view.ViewCompat;
 import android.util.AttributeSet;
 import android.util.Property;
-import android.widget.Checkable;
 import android.widget.FrameLayout;
 
 import co.touchlab.droidconnyc.R;

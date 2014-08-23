@@ -22,7 +22,6 @@ import android.util.AttributeSet;
 import android.view.View;
 import android.widget.LinearLayout;
 
-import com.google.samples.apps.iosched.provider.ScheduleContract;
 import com.google.samples.apps.iosched.ui.MyScheduleAdapter;
 
 import static com.google.samples.apps.iosched.util.LogUtils.LOGD;

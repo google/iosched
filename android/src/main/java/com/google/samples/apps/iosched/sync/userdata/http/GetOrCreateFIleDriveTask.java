@@ -16,10 +16,10 @@
 
 package com.google.samples.apps.iosched.sync.userdata.http;
 
-import java.io.IOException;
-
 import com.google.api.services.drive.Drive;
 import com.google.api.services.drive.model.File;
+
+import java.io.IOException;
 
 /**
  * Gets or creates a file on user's appdata folder.

@@ -16,7 +16,11 @@
 
 package com.google.samples.apps.iosched.model;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.Iterator;
+import java.util.ListIterator;
 
 public class ScheduleItemHelper {
 

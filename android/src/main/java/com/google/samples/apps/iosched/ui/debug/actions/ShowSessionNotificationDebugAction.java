@@ -24,11 +24,12 @@ import android.content.Intent;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.app.TaskStackBuilder;
 
-import co.touchlab.droidconnyc.R;
 import com.google.samples.apps.iosched.provider.ScheduleContract;
 import com.google.samples.apps.iosched.ui.MapFragment;
 import com.google.samples.apps.iosched.ui.debug.DebugAction;
 import com.google.samples.apps.iosched.util.UIUtils;
+
+import co.touchlab.droidconnyc.R;
 
 /**
 * Show a notification that a session is about to start. Simplified version of the one shown at

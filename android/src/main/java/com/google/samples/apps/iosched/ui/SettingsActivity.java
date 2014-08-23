@@ -16,16 +16,15 @@
 
 package com.google.samples.apps.iosched.ui;
 
-import android.annotation.TargetApi;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceActivity;
 
-import co.touchlab.droidconnyc.R;
 import com.google.samples.apps.iosched.service.SessionCalendarService;
 import com.google.samples.apps.iosched.util.PrefUtils;
+
+import co.touchlab.droidconnyc.R;
 
 /**
  * Activity for customizing app settings.

@@ -16,12 +16,10 @@
 
 package com.google.samples.apps.iosched.io;
 
-import com.google.samples.apps.iosched.Config;
-import com.google.samples.apps.iosched.provider.ScheduleContract;
-import com.google.samples.apps.iosched.provider.ScheduleContract.Announcements;
-import com.google.samples.apps.iosched.provider.ScheduleContract.SyncColumns;
-import com.google.samples.apps.iosched.util.Lists;
-import com.google.samples.apps.iosched.util.NetUtils;
+import android.content.ContentProviderOperation;
+import android.content.Context;
+import android.text.TextUtils;
+
 import com.google.api.client.extensions.android.json.AndroidJsonFactory;
 import com.google.api.client.googleapis.services.CommonGoogleClientRequestInitializer;
 import com.google.api.client.http.HttpTransport;
@@ -30,10 +28,12 @@ import com.google.api.client.json.JsonFactory;
 import com.google.api.services.plus.Plus;
 import com.google.api.services.plus.model.Activity;
 import com.google.api.services.plus.model.ActivityFeed;
-
-import android.content.ContentProviderOperation;
-import android.content.Context;
-import android.text.TextUtils;
+import com.google.samples.apps.iosched.Config;
+import com.google.samples.apps.iosched.provider.ScheduleContract;
+import com.google.samples.apps.iosched.provider.ScheduleContract.Announcements;
+import com.google.samples.apps.iosched.provider.ScheduleContract.SyncColumns;
+import com.google.samples.apps.iosched.util.Lists;
+import com.google.samples.apps.iosched.util.NetUtils;
 
 import java.io.IOException;
 import java.util.ArrayList;

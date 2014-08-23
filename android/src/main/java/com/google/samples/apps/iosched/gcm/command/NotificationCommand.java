@@ -20,22 +20,26 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageInfo;
-import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.support.v4.app.NotificationCompat;
 import android.text.TextUtils;
 
-import co.touchlab.droidconnyc.R;
+import com.google.gson.Gson;
 import com.google.samples.apps.iosched.gcm.GCMCommand;
 import com.google.samples.apps.iosched.ui.MyScheduleActivity;
 import com.google.samples.apps.iosched.util.PrefUtils;
 import com.google.samples.apps.iosched.util.TimeUtils;
 import com.google.samples.apps.iosched.util.UIUtils;
-import com.google.gson.Gson;
 
 import java.util.Date;
 
-import static com.google.samples.apps.iosched.util.LogUtils.*;
+import co.touchlab.droidconnyc.R;
+
+import static com.google.samples.apps.iosched.util.LogUtils.LOGD;
+import static com.google.samples.apps.iosched.util.LogUtils.LOGE;
+import static com.google.samples.apps.iosched.util.LogUtils.LOGI;
+import static com.google.samples.apps.iosched.util.LogUtils.LOGW;
+import static com.google.samples.apps.iosched.util.LogUtils.makeLogTag;
 
 public class NotificationCommand extends GCMCommand {
     private static final String TAG = makeLogTag("NotificationCommand");

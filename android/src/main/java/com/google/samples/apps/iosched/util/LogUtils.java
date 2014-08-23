@@ -16,9 +16,9 @@
 
 package com.google.samples.apps.iosched.util;
 
-import com.google.samples.apps.iosched.Config;
-
 import android.util.Log;
+
+import com.google.samples.apps.iosched.Config;
 
 import co.touchlab.droidconnyc.BuildConfig;
 

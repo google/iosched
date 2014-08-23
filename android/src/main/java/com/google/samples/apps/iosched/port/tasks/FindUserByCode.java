@@ -1,6 +1,6 @@
 package com.google.samples.apps.iosched.port.tasks;
 
-import retrofit.client.Response;
+import co.touchlab.droidconandroid.network.dao.UserInfoResponse;
 import retrofit.http.GET;
 import retrofit.http.Path;
 

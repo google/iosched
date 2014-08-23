@@ -20,8 +20,6 @@ import android.app.Fragment;
 
 import com.google.samples.apps.iosched.ui.SimpleSinglePaneActivity;
 
-import static com.google.samples.apps.iosched.util.LogUtils.makeLogTag;
-
 /**
  * Activity that implements the debug UI. This UI has buttons and other widgets
  * that allows the user to invoke tests and tweak other debug settings.

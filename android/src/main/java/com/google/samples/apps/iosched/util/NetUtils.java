@@ -21,7 +21,9 @@ import android.content.pm.PackageManager;
 
 import com.google.samples.apps.iosched.Config;
 
-import static com.google.samples.apps.iosched.util.LogUtils.*;
+import static com.google.samples.apps.iosched.util.LogUtils.LOGD;
+import static com.google.samples.apps.iosched.util.LogUtils.LOGE;
+import static com.google.samples.apps.iosched.util.LogUtils.makeLogTag;
 
 public class NetUtils {
     private static final String TAG = makeLogTag(AccountUtils.class);

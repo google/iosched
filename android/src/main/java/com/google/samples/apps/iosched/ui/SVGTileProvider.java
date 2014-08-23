@@ -16,17 +16,25 @@
 
 package com.google.samples.apps.iosched.ui;
 
-import android.graphics.*;
+import android.graphics.Bitmap;
+import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.Matrix;
+import android.graphics.Picture;
+import android.graphics.RectF;
 import android.util.Log;
 
 import com.google.android.gms.maps.model.Tile;
 import com.google.android.gms.maps.model.TileProvider;
-
-import java.io.*;
-import java.util.concurrent.ConcurrentLinkedQueue;
-
 import com.larvalabs.svgandroid.SVG;
 import com.larvalabs.svgandroid.SVGBuilder;
+
+import java.io.BufferedOutputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.util.concurrent.ConcurrentLinkedQueue;
 
 import static com.google.samples.apps.iosched.util.LogUtils.makeLogTag;
 

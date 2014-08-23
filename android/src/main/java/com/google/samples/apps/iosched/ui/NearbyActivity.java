@@ -32,10 +32,11 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 
-import co.touchlab.droidconnyc.R;
 import com.google.samples.apps.iosched.nearby.MetadataResolver;
 import com.google.samples.apps.iosched.nearby.NearbyDeviceManager;
 import com.google.samples.apps.iosched.util.PrefUtils;
+
+import co.touchlab.droidconnyc.R;
 
 import static com.google.samples.apps.iosched.util.LogUtils.makeLogTag;
 

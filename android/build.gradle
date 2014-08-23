@@ -14,9 +14,23 @@
  * limitations under the License.
  */
 
+buildscript {
+    ext.kotlin_version = '0.8.11'
+    repositories {
+//        maven { url 'http://download.crashlytics.com/maven' }
+        mavenCentral()
+    }
+
+    dependencies {
+//        classpath 'com.crashlytics.tools.gradle:crashlytics-gradle:1.+'
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
+    }
+}
+
 lpreview = hasProperty('lpreview')
 
 apply plugin: 'android'
+apply plugin: 'kotlin-android'
 
 repositories {
     mavenCentral()
@@ -74,6 +88,10 @@ android {
     aaptOptions {
         noCompress 'apk'
     }
+
+    sourceSets {
+        main.java.srcDirs += 'src/main/kotlin'
+    }
 }
 
 dependencies {
@@ -109,4 +127,6 @@ dependencies {
        they should be removed. */
     compile 'com.google.http-client:google-http-client-gson:+'
     compile 'com.google.apis:google-api-services-drive:+'
+
+    compile "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
 }

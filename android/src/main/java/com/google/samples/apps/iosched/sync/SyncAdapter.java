@@ -17,15 +17,20 @@
 package com.google.samples.apps.iosched.sync;
 
 import android.accounts.Account;
-import android.content.*;
+import android.content.AbstractThreadedSyncAdapter;
+import android.content.ContentProviderClient;
+import android.content.ContentResolver;
+import android.content.Context;
+import android.content.SyncResult;
 import android.os.Bundle;
-
 
 import java.util.regex.Pattern;
 
 import co.touchlab.droidconnyc.BuildConfig;
 
-import static com.google.samples.apps.iosched.util.LogUtils.*;
+import static com.google.samples.apps.iosched.util.LogUtils.LOGE;
+import static com.google.samples.apps.iosched.util.LogUtils.LOGI;
+import static com.google.samples.apps.iosched.util.LogUtils.makeLogTag;
 
 /**
  * Sync adapter for Google I/O data

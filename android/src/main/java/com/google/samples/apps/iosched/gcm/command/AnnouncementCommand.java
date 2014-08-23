@@ -20,9 +20,11 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.support.v4.app.NotificationCompat;
-import co.touchlab.droidconnyc.R;
+
 import com.google.samples.apps.iosched.gcm.GCMCommand;
 import com.google.samples.apps.iosched.ui.MyScheduleActivity;
+
+import co.touchlab.droidconnyc.R;
 
 import static com.google.samples.apps.iosched.util.LogUtils.LOGI;
 import static com.google.samples.apps.iosched.util.LogUtils.makeLogTag;

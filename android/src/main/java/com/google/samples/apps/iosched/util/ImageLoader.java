@@ -21,11 +21,6 @@ import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
 import android.widget.ImageView;
 
-import co.touchlab.droidconnyc.R;
-
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
 import com.bumptech.glide.DrawableRequestBuilder;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.ModelRequest;
@@ -35,6 +30,11 @@ import com.bumptech.glide.load.model.ModelCache;
 import com.bumptech.glide.load.model.stream.BaseGlideUrlLoader;
 import com.bumptech.glide.load.resource.bitmap.CenterCrop;
 import com.bumptech.glide.request.bitmap.RequestListener;
+
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
+import co.touchlab.droidconnyc.R;
 
 import static com.google.samples.apps.iosched.util.LogUtils.LOGD;
 import static com.google.samples.apps.iosched.util.LogUtils.makeLogTag;

@@ -16,11 +16,9 @@
 
 package com.google.samples.apps.iosched.appwidget;
 
-import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.os.Build;
 import android.text.format.DateUtils;
 import android.util.SparseBooleanArray;
 import android.util.SparseIntArray;
@@ -28,7 +26,6 @@ import android.view.View;
 import android.widget.RemoteViews;
 import android.widget.RemoteViewsService;
 
-import co.touchlab.droidconnyc.R;
 import com.google.samples.apps.iosched.model.ScheduleHelper;
 import com.google.samples.apps.iosched.model.ScheduleItem;
 import com.google.samples.apps.iosched.provider.ScheduleContract;
@@ -40,9 +37,16 @@ import com.google.samples.apps.iosched.util.PrefUtils;
 import com.google.samples.apps.iosched.util.TimeUtils;
 import com.google.samples.apps.iosched.util.UIUtils;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.Formatter;
+import java.util.List;
+import java.util.Locale;
 
-import static com.google.samples.apps.iosched.util.LogUtils.*;
+import co.touchlab.droidconnyc.R;
+
+import static com.google.samples.apps.iosched.util.LogUtils.LOGE;
+import static com.google.samples.apps.iosched.util.LogUtils.makeLogTag;
 
 /**
  * This is the service that provides the factory to be bound to the collection service.

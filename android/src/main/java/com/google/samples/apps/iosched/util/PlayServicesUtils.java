@@ -19,6 +19,7 @@ package com.google.samples.apps.iosched.util;
 import android.app.Activity;
 import android.app.Dialog;
 import android.content.DialogInterface;
+
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesUtil;
 

@@ -19,15 +19,16 @@ package com.google.samples.apps.iosched.sync;
 import android.content.Context;
 
 import com.google.samples.apps.iosched.Config;
-
-import java.net.HttpURLConnection;
-import java.util.List;
-
 import com.turbomanage.httpclient.BasicHttpClient;
 import com.turbomanage.httpclient.HttpResponse;
 import com.turbomanage.httpclient.ParameterMap;
 
-import static com.google.samples.apps.iosched.util.LogUtils.*;
+import java.net.HttpURLConnection;
+import java.util.List;
+
+import static com.google.samples.apps.iosched.util.LogUtils.LOGD;
+import static com.google.samples.apps.iosched.util.LogUtils.LOGE;
+import static com.google.samples.apps.iosched.util.LogUtils.makeLogTag;
 
 /**
  * Created by lwray on 5/7/14.

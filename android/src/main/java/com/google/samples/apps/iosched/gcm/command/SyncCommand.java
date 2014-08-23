@@ -19,10 +19,11 @@ import android.app.AlarmManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
-import com.google.samples.apps.iosched.gcm.GCMCommand;
-import com.google.samples.apps.iosched.sync.TriggerSyncReceiver;
+
 import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
+import com.google.samples.apps.iosched.gcm.GCMCommand;
+import com.google.samples.apps.iosched.sync.TriggerSyncReceiver;
 
 import java.util.Random;
 

@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
 <!--
   Copyright 2014 Google Inc. All rights reserved.
 
@@ -12,8 +13,9 @@
   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
   See the License for the specific language governing permissions and
   limitations under the License.
-  -->
+-->
 <resources>
+
     <!-- UI elements -->
     <dimen name="whats_on_height">64dp</dimen>
     <dimen name="track_icon_source_size">48dp</dimen>
@@ -64,13 +66,12 @@
     <dimen name="text_size_diff_large_small">6sp</dimen>
     <dimen name="speaker_image_size">40dp</dimen>
 
-     <!-- Widget -->
+    <!-- Widget -->
     <dimen name="widget_margin">0dp</dimen>
 
     <!-- Map -->
     <dimen name="map_content_padding">8dp</dimen>
     <dimen name="map_infowindow_width">260dp</dimen>
-
     <dimen name="navdrawer_chosen_account_height">120dp</dimen>
     <dimen name="navdrawer_width">260dp</dimen>
     <dimen name="navdrawer_profile_image_size">40dp</dimen>
@@ -78,11 +79,9 @@
     <!-- Action Bar auto-hide-on-scroll behavior parameters -->
     <dimen name="action_bar_auto_hide_min_y">152dp</dimen>
     <dimen name="action_bar_auto_hide_sensivity">48dp</dimen>
-
     <dimen name="browse_sessions_anim_amount">400dp</dimen>
     <dimen name="butter_bar_height">64dp</dimen>
     <dimen name="filterbar_height">48dp</dimen>
-
     <dimen name="explore_dropdown_item_padding_normal">16dp</dimen>
     <dimen name="explore_dropdown_item_padding_indented">16dp</dimen>
     <dimen name="explore_dropdown_item_width">240dp</dimen>
@@ -91,8 +90,8 @@
     <dimen name="explore_grid_padding">4dp</dimen>
     <dimen name="half_explore_grid_padding">2dp</dimen>
     <dimen name="explore_hero_item_height">240dp</dimen>
-
     <dimen name="filter_spinner_width">0dp</dimen>
+
     <integer name="filter_spinner_weight">1</integer>
 
     <dimen name="tag_color_dot_size">12dp</dimen>
@@ -105,17 +104,14 @@
     <dimen name="livestream_dropdown_text_size">14sp</dimen>
     <dimen name="livestream_session_title_text_size">20sp</dimen>
     <dimen name="livestream_session_summary_text_size">14sp</dimen>
-
     <dimen name="keyline_1">16dp</dimen>
     <dimen name="keyline_1_minus_8dp">8dp</dimen>
     <dimen name="keyline_2">72dp</dimen>
     <dimen name="keyline_2_minus_16dp">56dp</dimen>
     <dimen name="keyline_2_session_detail">@dimen/keyline_2</dimen>
-
     <dimen name="session_detail_speaker_left_offset">@dimen/keyline_1</dimen>
     <dimen name="fab_elevation">2dp</dimen>
     <dimen name="fab_press_translation_z">2dp</dimen>
-
     <dimen name="session_detail_max_header_elevation">2dp</dimen>
     <dimen name="headerbar_elevation">2dp</dimen>
 
@@ -127,5 +123,7 @@
     <dimen name="social_hz_margin">0dp</dimen>
     <dimen name="hashtag_text_size">14sp</dimen>
     <dimen name="hashtag_hero_text_size">45sp</dimen>
+    <dimen name="activity_horizontal_margin">16dp</dimen>
+    <dimen name="activity_vertical_margin">16dp</dimen>
 
 </resources>

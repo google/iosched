@@ -19,6 +19,7 @@ package com.google.samples.apps.iosched.receiver;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+
 import com.google.samples.apps.iosched.service.SessionAlarmService;
 
 import static com.google.samples.apps.iosched.util.LogUtils.makeLogTag;

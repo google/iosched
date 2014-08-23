@@ -27,7 +27,10 @@ import com.google.samples.apps.iosched.provider.ScheduleContract;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.google.samples.apps.iosched.util.LogUtils.*;
+import static com.google.samples.apps.iosched.util.LogUtils.LOGD;
+import static com.google.samples.apps.iosched.util.LogUtils.LOGE;
+import static com.google.samples.apps.iosched.util.LogUtils.LOGI;
+import static com.google.samples.apps.iosched.util.LogUtils.makeLogTag;
 
 /**
  * Created by lwray on 5/8/14.

@@ -16,25 +16,25 @@
 
 package com.google.samples.apps.iosched.io;
 
-import static com.google.samples.apps.iosched.util.LogUtils.makeLogTag;
-
 import android.content.ContentProviderOperation;
 import android.content.Context;
 import android.net.Uri;
 
-import com.google.samples.apps.iosched.io.map.model.MapData;
+import com.google.gson.Gson;
+import com.google.gson.JsonElement;
 import com.google.samples.apps.iosched.io.map.model.MapConfig;
+import com.google.samples.apps.iosched.io.map.model.MapData;
 import com.google.samples.apps.iosched.io.map.model.Marker;
 import com.google.samples.apps.iosched.io.map.model.Tile;
 import com.google.samples.apps.iosched.provider.ScheduleContract;
 import com.google.samples.apps.iosched.util.MapUtils;
-import com.google.gson.Gson;
-import com.google.gson.JsonElement;
 
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
+
+import static com.google.samples.apps.iosched.util.LogUtils.makeLogTag;
 
 public class MapPropertyHandler extends JSONHandler {
     private static final String TAG = makeLogTag(MapPropertyHandler.class);

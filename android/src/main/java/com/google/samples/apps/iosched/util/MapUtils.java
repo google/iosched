@@ -17,13 +17,15 @@ package com.google.samples.apps.iosched.util;
 
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.graphics.BitmapFactory;
 import android.preference.PreferenceManager;
 
-import co.touchlab.droidconnyc.R;
-import com.google.samples.apps.iosched.ui.MapFragment;
-import com.google.android.gms.maps.model.*;
+import com.google.android.gms.maps.model.BitmapDescriptor;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.maps.android.ui.IconGenerator;
+import com.google.samples.apps.iosched.ui.MapFragment;
+import com.jakewharton.disklrucache.DiskLruCache;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -32,7 +34,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 
-import com.jakewharton.disklrucache.DiskLruCache;
+import co.touchlab.droidconnyc.R;
 
 import static com.google.samples.apps.iosched.util.LogUtils.LOGD;
 import static com.google.samples.apps.iosched.util.LogUtils.LOGE;

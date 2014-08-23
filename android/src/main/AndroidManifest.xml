@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
 <!--
   Copyright 2014 Google Inc. All rights reserved.
 
@@ -12,15 +13,13 @@
   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
   See the License for the specific language governing permissions and
   limitations under the License.
-  -->
-
-<manifest
-    xmlns:android="http://schemas.android.com/apk/res/android"
+-->
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     package="co.touchlab.droidconnyc"
+    android:installLocation="auto"
     android:versionCode="304"
-    android:versionName="3.0.4"
-    android:installLocation="auto">
+    android:versionName="3.0.4" >
 
     <!-- targetSdkVersion set to 19 from build.gradle on non-L-preview builds -->
     <uses-sdk
@@ -29,9 +28,9 @@
 
     <permission
         android:name="co.touchlab.droidconnyc.permission.WRITE_SCHEDULE"
-        android:protectionLevel="normal"
+        android:description="@string/permission_write"
         android:label="@string/permission_write"
-        android:description="@string/permission_write" />
+        android:protectionLevel="normal" />
 
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
     <uses-permission android:name="android.permission.INTERNET" />
@@ -54,39 +53,42 @@
     <uses-permission android:name="android.permission.WRITE_SYNC_SETTINGS" />
     <!-- required for GCM -->
     <uses-permission android:name="android.permission.WAKE_LOCK" />
-    <uses-permission
-            android:name="com.google.android.c2dm.permission.RECEIVE" />
+    <uses-permission android:name="com.google.android.c2dm.permission.RECEIVE" />
+
     <permission
-            android:name="co.touchlab.droidconnyc.permission.C2D_MESSAGE"
-            android:protectionLevel="signature" />
-    <uses-permission
-            android:name="co.touchlab.droidconnyc.permission.C2D_MESSAGE" />
+        android:name="co.touchlab.droidconnyc.permission.C2D_MESSAGE"
+        android:protectionLevel="signature" />
+
+    <uses-permission android:name="co.touchlab.droidconnyc.permission.C2D_MESSAGE" />
 
     <!-- required for MapView v2 -->
     <permission
         android:name="co.touchlab.droidconnyc.permission.MAPS_RECEIVE"
-        android:protectionLevel="signature"/>
-    <uses-permission android:name="co.touchlab.droidconnyc.permission.MAPS_RECEIVE"/>
+        android:protectionLevel="signature" />
+
+    <uses-permission android:name="co.touchlab.droidconnyc.permission.MAPS_RECEIVE" />
+
     <uses-feature
         android:glEsVersion="0x00020000"
-        android:required="true"/>
+        android:required="true" />
 
     <!-- Required for BLE -->
-    <uses-permission android:name="android.permission.BLUETOOTH"/>
-    <uses-permission android:name="android.permission.BLUETOOTH_ADMIN"/>
+    <uses-permission android:name="android.permission.BLUETOOTH" />
+    <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
+
     <uses-feature
-	    android:name="android.hardware.bluetooth_le"
-	    android:required="false"/>
+        android:name="android.hardware.bluetooth_le"
+        android:required="false" />
 
     <application
-        android:label="@string/app_name"
-        android:icon="@drawable/ic_launcher"
-        android:logo="@drawable/actionbar_logo"
-        android:theme="@style/Theme.IOSched"
-        android:hardwareAccelerated="true"
-        android:allowBackup="true"
         android:name="com.google.samples.apps.iosched.port.DroidconApplication"
-        android:supportsRtl="true">
+        android:allowBackup="true"
+        android:hardwareAccelerated="true"
+        android:icon="@drawable/ic_launcher"
+        android:label="@string/app_name"
+        android:logo="@drawable/actionbar_logo"
+        android:supportsRtl="true"
+        android:theme="@style/Theme.IOSched" >
 
         <!-- Google Play Services -->
         <meta-data
@@ -103,122 +105,137 @@
         <activity
             android:name="com.google.samples.apps.iosched.ui.MyScheduleActivity"
             android:label="@string/title_my_schedule"
-            android:theme="@style/Theme.IOSched.MySchedule"
-            android:launchMode="singleTop"/>
-
+            android:launchMode="singleTop"
+            android:theme="@style/Theme.IOSched.MySchedule" />
         <activity
             android:name="com.google.samples.apps.iosched.ui.AllScheduleActivity"
             android:label="@string/title_full_schedule"
-            android:theme="@style/Theme.IOSched.MySchedule"
-            android:launchMode="singleTop"/>
-
+            android:launchMode="singleTop"
+            android:theme="@style/Theme.IOSched.MySchedule" />
         <activity
             android:name="com.google.samples.apps.iosched.ui.SocialActivity"
             android:label="@string/navdrawer_item_social"
             android:theme="@style/Theme.IOSched.Social" />
-
-        <activity android:name="com.google.samples.apps.iosched.ui.SessionLivestreamActivity"
-            android:label="@string/session_livestream_title"
+        <activity
+            android:name="com.google.samples.apps.iosched.ui.SessionLivestreamActivity"
             android:configChanges="orientation|screenSize"
-            android:theme="@style/Theme.IOSched.Livestream"
-            android:parentActivityName="com.google.samples.apps.iosched.ui.MyScheduleActivity">
+            android:label="@string/session_livestream_title"
+            android:parentActivityName="com.google.samples.apps.iosched.ui.MyScheduleActivity"
+            android:theme="@style/Theme.IOSched.Livestream" >
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
+
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
-
         <activity
             android:name="com.google.samples.apps.iosched.ui.SettingsActivity"
             android:label="@string/title_settings"
-            android:theme="@style/Theme.IOSched.WithElevatedHeader"
-            android:parentActivityName="com.google.samples.apps.iosched.ui.MyScheduleActivity" />
-
+            android:parentActivityName="com.google.samples.apps.iosched.ui.MyScheduleActivity"
+            android:theme="@style/Theme.IOSched.WithElevatedHeader" />
         <activity
             android:name="com.google.samples.apps.iosched.ui.NfcBadgeActivity"
-            android:theme="@android:style/Theme.NoDisplay"
             android:label="@string/app_name"
+            android:launchMode="singleTask"
             android:noHistory="true"
-            android:launchMode="singleTask">
-            <intent-filter android:priority="-999">
+            android:theme="@android:style/Theme.NoDisplay" >
+            <intent-filter android:priority="-999" >
                 <action android:name="android.nfc.action.NDEF_DISCOVERED" />
+
                 <category android:name="android.intent.category.DEFAULT" />
-                <data android:scheme="https" android:host="plus.google.com" />
+
+                <data
+                    android:host="plus.google.com"
+                    android:scheme="https" />
             </intent-filter>
         </activity>
-
         <activity
             android:name="com.google.samples.apps.iosched.ui.BrowseSessionsActivity"
             android:label="@string/app_name"
-            android:theme="@style/Theme.IOSched.Sessions"
-            android:parentActivityName="com.google.samples.apps.iosched.ui.MyScheduleActivity">
+            android:parentActivityName="com.google.samples.apps.iosched.ui.MyScheduleActivity"
+            android:theme="@style/Theme.IOSched.Sessions" >
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
+
                 <category android:name="android.intent.category.DEFAULT" />
+
                 <data android:mimeType="vnd.android.cursor.dir/vnd.iosched2014.session" />
             </intent-filter>
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
-        <activity android:name="com.google.samples.apps.iosched.ui.SearchActivity"
+        <activity
+            android:name="com.google.samples.apps.iosched.ui.SearchActivity"
             android:label="@string/title_search"
-            android:theme="@style/Theme.IOSched.Search"
-            android:parentActivityName="com.google.samples.apps.iosched.ui.BrowseSessionsActivity">
+            android:parentActivityName="com.google.samples.apps.iosched.ui.BrowseSessionsActivity"
+            android:theme="@style/Theme.IOSched.Search" >
 
             <!-- This Activity handles the search intent -->
             <intent-filter>
                 <action android:name="android.intent.action.SEARCH" />
+
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
-            <meta-data android:name="android.app.searchable" android:resource="@xml/searchable" />
-        </activity>
 
-        <activity android:name="com.google.samples.apps.iosched.ui.SessionFeedbackActivity"
+            <meta-data
+                android:name="android.app.searchable"
+                android:resource="@xml/searchable" />
+        </activity>
+        <activity
+            android:name="com.google.samples.apps.iosched.ui.SessionFeedbackActivity"
             android:label="@string/title_session_feedback"
-            android:theme="@style/Theme.IOSched.WithElevatedHeader">
+            android:theme="@style/Theme.IOSched.WithElevatedHeader" >
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
+
                 <category android:name="android.intent.category.DEFAULT" />
+
                 <data android:mimeType="vnd.android.cursor.item/vnd.iosched2014.session_feedback" />
             </intent-filter>
         </activity>
-
-        <activity android:name="com.google.samples.apps.iosched.ui.WelcomeActivity" android:theme="@style/Theme.IOSched.Welcome" />
-
-        <activity android:name="com.google.samples.apps.iosched.ui.VideoLibraryActivity"
-            android:theme="@style/Theme.IOSched.VideoLibrary"
+        <activity
+            android:name="com.google.samples.apps.iosched.ui.WelcomeActivity"
+            android:theme="@style/Theme.IOSched.Welcome" />
+        <activity
+            android:name="com.google.samples.apps.iosched.ui.VideoLibraryActivity"
             android:label="@string/title_video_library"
-        />
-
-        <activity android:name="com.google.samples.apps.iosched.ui.SessionDetailActivity"
+            android:theme="@style/Theme.IOSched.VideoLibrary" />
+        <activity
+            android:name="com.google.samples.apps.iosched.ui.SessionDetailActivity"
             android:label="@string/title_session_detail"
-            android:theme="@style/Theme.IOSched.SessionDetails"
-            android:parentActivityName="com.google.samples.apps.iosched.ui.BrowseSessionsActivity">
+            android:parentActivityName="com.google.samples.apps.iosched.ui.BrowseSessionsActivity"
+            android:theme="@style/Theme.IOSched.SessionDetails" >
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
+
                 <category android:name="android.intent.category.DEFAULT" />
+
                 <data android:mimeType="vnd.android.cursor.item/vnd.iosched2014.session" />
             </intent-filter>
             <!-- Android Beam for session details -->
             <intent-filter>
                 <action android:name="android.nfc.action.NDEF_DISCOVERED" />
+
                 <category android:name="android.intent.category.DEFAULT" />
+
                 <data android:mimeType="vnd.android.cursor.item/vnd.iosched2014.session" />
             </intent-filter>
             <!-- Web URLs -->
-            <intent-filter android:label="@string/app_name">
+            <intent-filter android:label="@string/app_name" >
                 <action android:name="android.intent.action.VIEW" />
+
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
-                <data android:scheme="https"
+
+                <data
                     android:host="www.google.com"
-                    android:pathPrefix="/events/io/schedule/session/" />
+                    android:pathPrefix="/events/io/schedule/session/"
+                    android:scheme="https" />
             </intent-filter>
         </activity>
-
         <activity
             android:name="com.google.samples.apps.iosched.ui.NearbyEulaActivity"
             android:theme="@style/Theme.IOSched.Welcome" />
@@ -226,22 +243,24 @@
         <!-- Phone-only activities -->
         <activity
             android:name="com.google.samples.apps.iosched.ui.phone.MapActivity"
-            android:label="@string/title_map"
-            android:exported="true"
             android:configChanges="orientation|keyboardHidden"
-            android:theme="@style/Theme.IOSched.Map">
-            <meta-data android:name="co.touchlab.droidconnyc.meta.TARGET_FORM_FACTOR"
+            android:exported="true"
+            android:label="@string/title_map"
+            android:theme="@style/Theme.IOSched.Map" >
+            <meta-data
+                android:name="co.touchlab.droidconnyc.meta.TARGET_FORM_FACTOR"
                 android:value="handset" />
         </activity>
 
         <!-- Tablet-only activities -->
         <activity
             android:name="com.google.samples.apps.iosched.ui.tablet.MapMultiPaneActivity"
-            android:label="@string/title_map"
-            android:exported="true"
             android:configChanges="orientation|keyboardHidden|screenSize"
-            android:theme="@style/Theme.IOSched.Map">
-            <meta-data android:name="co.touchlab.droidconnyc.meta.TARGET_FORM_FACTOR"
+            android:exported="true"
+            android:label="@string/title_map"
+            android:theme="@style/Theme.IOSched.Map" >
+            <meta-data
+                android:name="co.touchlab.droidconnyc.meta.TARGET_FORM_FACTOR"
                 android:value="tablet" />
         </activity>
 
@@ -250,44 +269,45 @@
         <activity
             android:name="com.google.samples.apps.iosched.ui.TaskStackBuilderProxyActivity"
             android:theme="@android:style/Theme.NoDisplay" />
-
         <activity
             android:name="com.google.samples.apps.iosched.ui.debug.DebugActionRunnerActivity"
             android:label="@string/title_activity_debug_test_runner"
             android:parentActivityName="com.google.samples.apps.iosched.ui.MyScheduleActivity" />
 
         <!-- Experts directory -->
-        <activity android:name="com.google.samples.apps.iosched.ui.ExpertsDirectoryActivity"
+        <activity
+            android:name="com.google.samples.apps.iosched.ui.ExpertsDirectoryActivity"
             android:label="@string/title_experts_directory"
-            android:theme="@style/Theme.IOSched.ExpertsDirectory"/>
-
+            android:theme="@style/Theme.IOSched.ExpertsDirectory" />
         <activity
             android:name="com.google.samples.apps.iosched.ui.debug.actions.ViewFilesInAppFolderActivity"
             android:label="list files in appdata folder"
-            android:parentActivityName="co.touchlab.droidconnyc.ui.debug.DebugActionRunnerActivity" >
+            android:parentActivityName=".ui.debug.DebugActionRunnerActivity" >
         </activity>
 
         <!-- People I've Met -->
-        <activity android:name="com.google.samples.apps.iosched.ui.PeopleIveMetActivity"
+        <activity
+            android:name="com.google.samples.apps.iosched.ui.PeopleIveMetActivity"
             android:label="@string/app_name"
-            android:theme="@style/Theme.IOSched.PeopleIveMet"/>
+            android:theme="@style/Theme.IOSched.PeopleIveMet" />
 
-	    <!-- Session alarm/calendar integrating components. -->
+        <!-- Session alarm/calendar integrating components. -->
         <receiver android:name="com.google.samples.apps.iosched.receiver.SessionAlarmReceiver" >
             <intent-filter>
                 <action android:name="android.intent.action.BOOT_COMPLETED" />
                 <action android:name="co.touchlab.droidconnyc.action.UPDATE_CALENDAR_COMPLETED" />
             </intent-filter>
         </receiver>
-        <service android:name="com.google.samples.apps.iosched.service.SessionAlarmService" />
 
+        <service android:name="com.google.samples.apps.iosched.service.SessionAlarmService" />
         <service android:name="com.google.samples.apps.iosched.service.SessionCalendarService" />
 
-        <!-- Used for install referral measurement-->
+        <!-- Used for install referral measurement -->
         <service android:name="com.google.analytics.tracking.android.CampaignTrackingService" />
+
         <receiver
             android:name="com.google.analytics.tracking.android.CampaignTrackingReceiver"
-            android:exported="true">
+            android:exported="true" >
             <intent-filter>
                 <action android:name="com.android.vending.INSTALL_REFERRER" />
             </intent-filter>
@@ -300,13 +320,16 @@
           The com.google.android.c2dm.permission.SEND permission is necessary
           so only GCM services can send data messages for the app.
         -->
-        <receiver android:name="com.google.samples.apps.iosched.gcm.GCMRedirectedBroadcastReceiver"
-            android:permission="com.google.android.c2dm.permission.SEND">
+        <receiver
+            android:name="com.google.samples.apps.iosched.gcm.GCMRedirectedBroadcastReceiver"
+            android:permission="com.google.android.c2dm.permission.SEND" >
             <intent-filter>
+
                 <!-- Receives the actual messages. -->
                 <action android:name="com.google.android.c2dm.intent.RECEIVE" />
                 <!-- Receives the registration id. -->
                 <action android:name="com.google.android.c2dm.intent.REGISTRATION" />
+
                 <category android:name="co.touchlab.droidconnyc" />
             </intent-filter>
         </receiver>
@@ -325,23 +348,28 @@
         <provider
             android:name="com.google.samples.apps.iosched.provider.ScheduleProvider"
             android:authorities="co.touchlab.droidconnyc"
-            android:writePermission="co.touchlab.droidconnyc.permission.WRITE_SCHEDULE"
-            android:syncable="true"
-            android:label="@string/app_name"
-            android:exported="true" />
-
-        <service android:name="com.google.samples.apps.iosched.sync.SyncService"
             android:exported="true"
-            tools:ignore="ExportedService">
+            android:label="@string/app_name"
+            android:syncable="true"
+            android:writePermission="co.touchlab.droidconnyc.permission.WRITE_SCHEDULE" />
+
+        <service
+            android:name="com.google.samples.apps.iosched.sync.SyncService"
+            android:exported="true"
+            tools:ignore="ExportedService" >
             <intent-filter>
                 <action android:name="android.content.SyncAdapter" />
             </intent-filter>
-            <meta-data android:name="android.content.SyncAdapter"
+
+            <meta-data
+                android:name="android.content.SyncAdapter"
                 android:resource="@xml/syncadapter" />
         </service>
 
-        <!-- a simple receiver that triggers a sync for any message it receives. used by our
-             GCM implementation -->
+        <!--
+             a simple receiver that triggers a sync for any message it receives. used by our
+             GCM implementation
+        -->
         <receiver android:name="com.google.samples.apps.iosched.sync.TriggerSyncReceiver" />
 
         <!-- Other manifest items -->
@@ -352,22 +380,25 @@
 
         <!-- App widget components -->
 
-        <receiver android:name="com.google.samples.apps.iosched.appwidget.ScheduleWidgetProvider"
-            android:enabled="true">
+        <receiver
+            android:name="com.google.samples.apps.iosched.appwidget.ScheduleWidgetProvider"
+            android:enabled="true" >
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
             </intent-filter>
             <!-- This specifies the widget provider info -->
-            <meta-data android:name="android.appwidget.provider"
+            <meta-data
+                android:name="android.appwidget.provider"
                 android:resource="@xml/widgetinfo" />
         </receiver>
 
         <!-- The service serving the RemoteViews to the collection widget -->
 
-        <service android:name="com.google.samples.apps.iosched.appwidget.ScheduleWidgetRemoteViewsService"
-            android:permission="android.permission.BIND_REMOTEVIEWS"
+        <service
+            android:name="com.google.samples.apps.iosched.appwidget.ScheduleWidgetRemoteViewsService"
+            android:enabled="true"
             android:exported="false"
-            android:enabled="true" />
+            android:permission="android.permission.BIND_REMOTEVIEWS" />
 
         <!-- The service listening for incoming messages from the wear device -->
         <service android:name="com.google.samples.apps.iosched.service.FeedbackListenerService" >
@@ -375,13 +406,17 @@
                 <action android:name="com.google.android.gms.wearable.BIND_LISTENER" />
             </intent-filter>
             <intent-filter>
-                <action android:name="com.google.sample.apps.iosched.ACTION_NOTIFICATION_DISMISSAL"/>
+                <action android:name="com.google.sample.apps.iosched.ACTION_NOTIFICATION_DISMISSAL" />
             </intent-filter>
         </service>
-
         <service
             android:name="co.touchlab.android.superbus.SuperbusService"
             android:exported="false" />
 
+        <activity
+            android:name="com.google.samples.apps.iosched.port.FindUserActivity"
+            android:label="@string/title_activity_find_user" >
+        </activity>
     </application>
+
 </manifest>

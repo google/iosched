@@ -37,17 +37,25 @@ import android.provider.BaseColumns;
 import android.support.v13.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.text.TextUtils;
-import android.view.*;
+import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuItem;
+import android.view.View;
+import android.view.ViewGroup;
+import android.view.Window;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
-import android.widget.*;
+import android.widget.CursorAdapter;
+import android.widget.FrameLayout;
+import android.widget.LinearLayout;
 import android.widget.LinearLayout.LayoutParams;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.youtube.player.YouTubeInitializationResult;
 import com.google.android.youtube.player.YouTubePlayer;
 import com.google.android.youtube.player.YouTubePlayerFragment;
 import com.google.samples.apps.iosched.Config;
-import co.touchlab.droidconnyc.R;
 import com.google.samples.apps.iosched.provider.ScheduleContract.Sessions;
 import com.google.samples.apps.iosched.ui.widget.SlidingTabLayout;
 import com.google.samples.apps.iosched.util.AnalyticsManager;
@@ -57,7 +65,11 @@ import com.google.samples.apps.iosched.util.UIUtils;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import static com.google.samples.apps.iosched.util.LogUtils.*;
+import co.touchlab.droidconnyc.R;
+
+import static com.google.samples.apps.iosched.util.LogUtils.LOGD;
+import static com.google.samples.apps.iosched.util.LogUtils.LOGE;
+import static com.google.samples.apps.iosched.util.LogUtils.makeLogTag;
 
 /**
  * An activity that displays the session live stream video which is pulled in from YouTube. The

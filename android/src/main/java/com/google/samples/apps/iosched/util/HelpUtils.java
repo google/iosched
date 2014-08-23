@@ -16,9 +16,13 @@
 
 package com.google.samples.apps.iosched.util;
 
-import co.touchlab.droidconnyc.R;
-
-import android.app.*;
+import android.app.Activity;
+import android.app.AlertDialog;
+import android.app.Dialog;
+import android.app.DialogFragment;
+import android.app.Fragment;
+import android.app.FragmentManager;
+import android.app.FragmentTransaction;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.pm.PackageInfo;
@@ -33,6 +37,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.webkit.WebView;
 import android.widget.TextView;
+
+import co.touchlab.droidconnyc.R;
 
 /**
  * This is a set of helper methods for showing contextual help information in the app.

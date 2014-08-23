@@ -16,8 +16,6 @@
 
 package com.google.samples.apps.iosched.ui.widget;
 
-import android.animation.Animator;
-import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Typeface;
@@ -30,9 +28,7 @@ import android.widget.FrameLayout;
 import android.widget.TextView;
 
 import co.touchlab.droidconnyc.R;
-import com.google.samples.apps.iosched.util.UIUtils;
 
-import static com.google.samples.apps.iosched.util.LogUtils.LOGD;
 import static com.google.samples.apps.iosched.util.LogUtils.LOGW;
 import static com.google.samples.apps.iosched.util.LogUtils.makeLogTag;
 

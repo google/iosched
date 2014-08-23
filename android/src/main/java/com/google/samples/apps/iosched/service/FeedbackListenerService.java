@@ -16,6 +16,14 @@
 
 package com.google.samples.apps.iosched.service;
 
+import android.app.Service;
+import android.content.Intent;
+import android.net.Uri;
+import android.os.Bundle;
+import android.support.v4.app.NotificationManagerCompat;
+import android.text.TextUtils;
+import android.util.Log;
+
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.ResultCallback;
@@ -32,14 +40,6 @@ import com.google.samples.apps.iosched.util.FeedbackUtils;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-
-import android.app.Service;
-import android.content.Intent;
-import android.net.Uri;
-import android.os.Bundle;
-import android.support.v4.app.NotificationManagerCompat;
-import android.text.TextUtils;
-import android.util.Log;
 
 import java.util.concurrent.TimeUnit;
 

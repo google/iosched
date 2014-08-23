@@ -18,7 +18,6 @@ package com.google.samples.apps.iosched.sync.userdata.http;
 
 import android.util.Log;
 
-import com.google.samples.apps.iosched.sync.userdata.util.UserDataHelper;
 import com.google.api.client.http.ByteArrayContent;
 import com.google.api.client.http.GenericUrl;
 import com.google.api.client.http.HttpResponse;
@@ -26,6 +25,7 @@ import com.google.api.services.drive.Drive;
 import com.google.api.services.drive.model.File;
 import com.google.api.services.drive.model.FileList;
 import com.google.api.services.drive.model.ParentReference;
+import com.google.samples.apps.iosched.sync.userdata.util.UserDataHelper;
 
 import java.io.IOException;
 import java.util.Arrays;

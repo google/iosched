@@ -34,7 +34,6 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import co.touchlab.droidconnyc.R;
 import com.google.samples.apps.iosched.provider.ScheduleContract;
 import com.google.samples.apps.iosched.ui.widget.CollectionView;
 import com.google.samples.apps.iosched.ui.widget.CollectionViewCallbacks;
@@ -42,6 +41,8 @@ import com.google.samples.apps.iosched.util.ImageLoader;
 import com.google.samples.apps.iosched.util.UIUtils;
 
 import java.util.regex.Pattern;
+
+import co.touchlab.droidconnyc.R;
 
 import static com.google.samples.apps.iosched.util.LogUtils.makeLogTag;
 

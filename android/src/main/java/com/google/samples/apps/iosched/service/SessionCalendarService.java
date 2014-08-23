@@ -16,13 +16,6 @@
 
 package com.google.samples.apps.iosched.service;
 
-import android.util.Log;
-import com.google.samples.apps.iosched.Config;
-import co.touchlab.droidconnyc.R;
-import com.google.samples.apps.iosched.provider.ScheduleContract;
-import com.google.samples.apps.iosched.util.AccountUtils;
-
-import android.annotation.TargetApi;
 import android.app.IntentService;
 import android.content.ContentProviderOperation;
 import android.content.ContentResolver;
@@ -35,9 +28,16 @@ import android.os.Bundle;
 import android.os.RemoteException;
 import android.provider.CalendarContract;
 import android.text.TextUtils;
+import android.util.Log;
+
+import com.google.samples.apps.iosched.Config;
+import com.google.samples.apps.iosched.provider.ScheduleContract;
+import com.google.samples.apps.iosched.util.AccountUtils;
 import com.google.samples.apps.iosched.util.PrefUtils;
 
 import java.util.ArrayList;
+
+import co.touchlab.droidconnyc.R;
 
 import static com.google.samples.apps.iosched.util.LogUtils.LOGE;
 import static com.google.samples.apps.iosched.util.LogUtils.LOGW;

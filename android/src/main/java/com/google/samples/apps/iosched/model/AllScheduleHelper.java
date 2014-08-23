@@ -17,26 +17,15 @@ package com.google.samples.apps.iosched.model;
 
 import android.content.Context;
 import android.database.Cursor;
-import android.os.AsyncTask;
 import android.text.TextUtils;
-import android.util.Log;
 
 import com.google.samples.apps.iosched.provider.ScheduleContract;
-import com.google.samples.apps.iosched.provider.ScheduleContract.Blocks;
 import com.google.samples.apps.iosched.provider.ScheduleContract.Sessions;
-import com.google.samples.apps.iosched.ui.MyScheduleAdapter;
 import com.google.samples.apps.iosched.util.AccountUtils;
-import com.google.samples.apps.iosched.util.PrefUtils;
 import com.google.samples.apps.iosched.util.UIUtils;
 
 import java.util.ArrayList;
-import java.util.Date;
-import java.util.Iterator;
 
-import co.touchlab.droidconnyc.BuildConfig;
-import co.touchlab.droidconnyc.R;
-
-import static com.google.samples.apps.iosched.util.LogUtils.LOGD;
 import static com.google.samples.apps.iosched.util.LogUtils.makeLogTag;
 
 public class AllScheduleHelper extends BaseScheduleHelper {

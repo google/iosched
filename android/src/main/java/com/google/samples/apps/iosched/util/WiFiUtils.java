@@ -16,7 +16,13 @@
 
 package com.google.samples.apps.iosched.util;
 
-import android.app.*;
+import android.app.Activity;
+import android.app.AlertDialog;
+import android.app.Dialog;
+import android.app.DialogFragment;
+import android.app.Fragment;
+import android.app.FragmentManager;
+import android.app.FragmentTransaction;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -33,9 +39,10 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.samples.apps.iosched.Config;
-import co.touchlab.droidconnyc.R;
 
 import java.util.List;
+
+import co.touchlab.droidconnyc.R;
 
 import static com.google.samples.apps.iosched.util.LogUtils.makeLogTag;
 

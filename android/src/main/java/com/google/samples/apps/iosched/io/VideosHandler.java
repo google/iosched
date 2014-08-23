@@ -23,18 +23,21 @@ import android.net.Uri;
 import android.provider.BaseColumns;
 import android.text.TextUtils;
 
+import com.google.gson.Gson;
+import com.google.gson.JsonElement;
 import com.google.samples.apps.iosched.Config;
 import com.google.samples.apps.iosched.io.model.Video;
 import com.google.samples.apps.iosched.provider.ScheduleContract;
-import com.google.gson.Gson;
-import com.google.gson.JsonElement;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Locale;
 
-import static com.google.samples.apps.iosched.util.LogUtils.*;
+import static com.google.samples.apps.iosched.util.LogUtils.LOGD;
+import static com.google.samples.apps.iosched.util.LogUtils.LOGE;
+import static com.google.samples.apps.iosched.util.LogUtils.LOGW;
+import static com.google.samples.apps.iosched.util.LogUtils.makeLogTag;
 
 public class VideosHandler extends JSONHandler {
     private static final String TAG = makeLogTag(VideosHandler.class);

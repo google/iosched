@@ -29,8 +29,8 @@ import android.content.pm.ResolveInfo;
 import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.content.res.TypedArray;
-import android.graphics.*;
-import android.graphics.drawable.Drawable;
+import android.graphics.Color;
+import android.graphics.Typeface;
 import android.net.Uri;
 import android.os.Build;
 import android.preference.PreferenceManager;
@@ -46,9 +46,6 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.google.samples.apps.iosched.Config;
-
-import co.touchlab.droidconnyc.BuildConfig;
-import co.touchlab.droidconnyc.R;
 import com.google.samples.apps.iosched.provider.ScheduleContract;
 import com.google.samples.apps.iosched.provider.ScheduleContract.Rooms;
 import com.google.samples.apps.iosched.ui.phone.MapActivity;
@@ -61,6 +58,8 @@ import java.util.Date;
 import java.util.Formatter;
 import java.util.TimeZone;
 import java.util.regex.Pattern;
+
+import co.touchlab.droidconnyc.R;
 
 import static com.google.samples.apps.iosched.util.LogUtils.LOGE;
 import static com.google.samples.apps.iosched.util.LogUtils.makeLogTag;

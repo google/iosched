@@ -21,10 +21,10 @@ import android.content.Context;
 import android.graphics.Color;
 import android.net.Uri;
 
-import com.google.samples.apps.iosched.io.model.Hashtag;
-import com.google.samples.apps.iosched.provider.ScheduleContract;
 import com.google.gson.Gson;
 import com.google.gson.JsonElement;
+import com.google.samples.apps.iosched.io.model.Hashtag;
+import com.google.samples.apps.iosched.provider.ScheduleContract;
 
 import java.util.ArrayList;
 import java.util.HashMap;

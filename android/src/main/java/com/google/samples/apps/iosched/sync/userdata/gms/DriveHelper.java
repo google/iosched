@@ -18,7 +18,16 @@ package com.google.samples.apps.iosched.sync.userdata.gms;
 import android.util.Log;
 
 import com.google.android.gms.common.api.GoogleApiClient;
-import com.google.android.gms.drive.*;
+import com.google.android.gms.drive.Contents;
+import com.google.android.gms.drive.Drive;
+import com.google.android.gms.drive.DriveApi;
+import com.google.android.gms.drive.DriveFile;
+import com.google.android.gms.drive.DriveFolder;
+import com.google.android.gms.drive.DriveId;
+import com.google.android.gms.drive.DriveResource;
+import com.google.android.gms.drive.Metadata;
+import com.google.android.gms.drive.MetadataBuffer;
+import com.google.android.gms.drive.MetadataChangeSet;
 import com.google.api.client.util.Charsets;
 
 import java.io.FileInputStream;
@@ -27,7 +36,9 @@ import java.io.IOException;
 import java.util.HashSet;
 import java.util.Set;
 
-import static com.google.samples.apps.iosched.sync.userdata.util.UserDataHelper.*;
+import static com.google.samples.apps.iosched.sync.userdata.util.UserDataHelper.fromStreamToString;
+import static com.google.samples.apps.iosched.sync.userdata.util.UserDataHelper.fromString;
+import static com.google.samples.apps.iosched.sync.userdata.util.UserDataHelper.toByteArray;
 import static com.google.samples.apps.iosched.util.LogUtils.LOGD;
 import static com.google.samples.apps.iosched.util.LogUtils.makeLogTag;
 

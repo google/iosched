@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
 <!--
   Copyright 2014 Google Inc. All rights reserved.
 
@@ -12,8 +13,9 @@
   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
   See the License for the specific language governing permissions and
   limitations under the License.
-  -->
+-->
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+
     <!-- Shown in the schedule to indicate how many sessions are available on that particular time slot. -->
     <plurals name="schedule_block_subtitle">
         <item quantity="one"><xliff:g id="number_of_sessions">%1$d</xliff:g> available session</item>
@@ -39,12 +41,14 @@
     </plurals>
 
     <!-- Shown in the 'About' window of the app. -->
-    <string name="about_body"><![CDATA[
+    <string name="about_body">
+<![CDATA[
         <b>Droidcon NYC 2014 (from Google I/O 2014 app)</b><br>
         Version %s<br><br>
         <a href="http://m.google.com/utos">Terms of Service</a><br><br>
         <a href="http://www.google.com/policies/privacy/">Privacy Policy</a>
-    ]]></string>
+    ]]>
+    </string>
 
     <!-- Shown as a link in the About screen of the app; user can click to see the EULA. -->
     <string name="about_eula">End User License Agreement</string>
@@ -61,70 +65,98 @@
     <!-- Label on a button that, when clicked, adds the currently displayed session to their schedule. -->
     <string name="add_to_schedule">Add to schedule</string>
 
-    <!-- Accessibility description for a button that, when clicked, adds the currently
-    displayed session to the user's schedule. -->
+    <!--
+    Accessibility description for a button that, when clicked, adds the currently
+    displayed session to the user's schedule.
+    -->
     <string name="add_to_schedule_desc">Button to add session to your schedule</string>
 
-    <!-- Shown in a drop-down list on the main screen, indicating that all conference sessions
-    are being displayed. -->
+    <!--
+    Shown in a drop-down list on the main screen, indicating that all conference sessions
+    are being displayed.
+    -->
     <string name="all_sessions">All Sessions</string>
 
-    <!-- Shown in a drop-down list on the main screen, indicating that all conference themes
+    <!--
+    Shown in a drop-down list on the main screen, indicating that all conference themes
     are being displayed. Themes are major categories for sessions (the themes are Design,
-    Develop and Distribute). -->
+    Develop and Distribute).
+    -->
     <string name="all_themes">All Themes</string>
 
-    <!-- Shown in a drop-down list on the main screen, indicating that all conference topics
+    <!--
+    Shown in a drop-down list on the main screen, indicating that all conference topics
     are being displayed. Topics are major categories for sessions (example topics are: Android,
-    Chrome, Google APIs, Wearables, etc). -->
+    Chrome, Google APIs, Wearables, etc).
+    -->
     <string name="all_topics">All Topics</string>
 
-    <!-- Shown in a drop-down list on the main screen, indicating that all session types
-    are being displayed. Some examples of session types are: session, office hours, code lab. -->
+    <!--
+    Shown in a drop-down list on the main screen, indicating that all session types
+    are being displayed. Some examples of session types are: session, office hours, code lab.
+    -->
     <string name="all_types">All Types</string>
 
-    <!-- Shown in a drop-down list on the Video Library screen, indicating that videos from all
-    I/O years are being displayed. -->
+    <!--
+    Shown in a drop-down list on the Video Library screen, indicating that videos from all
+    I/O years are being displayed.
+    -->
     <string name="all_years">All Years</string>
 
     <!-- Name of the application, shown in the application's title bar. -->
     <string name="app_name">Droidcon NYC</string>
 
-    <!-- Label on a button that is one possible answer to the question "Are you attending the
-    conference in person in San Francisco or remotely via livestream?" -->
+    <!--
+    Label on a button that is one possible answer to the question "Are you attending the
+    conference in person in San Francisco or remotely via livestream?"
+    -->
     <string name="attending_in_person">In Person</string>
 
-    <!-- Label on a button that is one possible answer to the question "Are you attending the
-    conference in person in San Francisco or remotely via livestream?" -->
+    <!--
+    Label on a button that is one possible answer to the question "Are you attending the
+    conference in person in San Francisco or remotely via livestream?"
+    -->
     <string name="attending_remotely">Remotely</string>
 
-    <!-- Label on a button that allows the user to browse Droidcon NYC Extended events that they
-    might be interested in attending. -->
+    <!--
+    Label on a button that allows the user to browse Droidcon NYC Extended events that they
+    might be interested in attending.
+    -->
     <string name="browse_events">Browse events</string>
 
-    <!-- Label on a button that allows the user to see what conference sessions are available
-    at a particular time. -->
+    <!--
+    Label on a button that allows the user to see what conference sessions are available
+    at a particular time.
+    -->
     <string name="browse_sessions">Browse sessions...</string>
 
     <!-- Shown on Configure WiFi dialog, instructing user on what button to click. -->
-    <string name="calltoaction_wifi_configure"><![CDATA[
+    <string name="calltoaction_wifi_configure">
+<![CDATA[
         <br><br>Tap \'Add Wi-Fi Network\' to proceed.
-    ]]></string>
+    ]]>
+    </string>
 
     <!-- Shown on Configure WiFi dialog, instructing user on what button to click. -->
-    <string name="calltoaction_wifi_settings"><![CDATA[
+    <string name="calltoaction_wifi_settings">
+<![CDATA[
         <br><br>Tap \'Open Wi-Fi Settings\' to enable Wi-Fi.
-    ]]></string>
+    ]]>
+    </string>
 
     <!-- Accessibility description for a button that allows the user to close a session details pane. -->
     <string name="close_detail_pane">Close detail pane</string>
 
-    <!-- Label on a button that allows the user to cancel an operation before it starts. For
-    example, this may be a button on a dialog that says "This will delete your data." -->
+    <!--
+    Label on a button that allows the user to cancel an operation before it starts. For
+    example, this may be a button on a dialog that says "This will delete your data."
+    -->
     <string name="cancel">Cancel</string>
 
-    <!-- Text on a warning box that appears to warn the user they are viewing data that hasn't
-    been updated by the server recently, so it might be out of date.-->
+    <!--
+    Text on a warning box that appears to warn the user they are viewing data that hasn't
+    been updated by the server recently, so it might be out of date.
+    -->
     <string name="data_stale_warning">The data you are viewing may be out of date.</string>
 
     <!-- Shown as the title of the user's schedule for today -->
@@ -136,8 +168,10 @@
     <!-- Shown as the title of the user's schedule for yesterday -->
     <string name="day_title_yesterday">Yesterday</string>
 
-    <!-- Label on a button that the user clicks to decline something (for example, a license
-    agreement). -->
+    <!--
+    Label on a button that the user clicks to decline something (for example, a license
+    agreement).
+    -->
     <string name="decline">Decline</string>
 
     <!-- Menu item that brings up the application's About screen -->
@@ -146,9 +180,11 @@
     <!-- Menu item that allows user to add a session to their schedule -->
     <string name="description_add_schedule">Add to schedule</string>
 
-    <!-- Menu item that allows the user to send feedback about the application to Google. This
+    <!--
+    Menu item that allows the user to send feedback about the application to Google. This
     says 'App Feedback' to clarify that it's feedback about the application, and not about a
-    session. -->
+    session.
+    -->
     <string name="description_app_feedback">App Feedback</string>
 
     <!-- Menu item that allows the user to send feedback about the application to Google -->
@@ -159,7 +195,6 @@
 
     <!-- Menu item that allows user to configure the conference WiFi on their device. -->
     <string name="description_configure_wifi">Configure Wi-Fi</string>
-
     <string name="description_debug" translatable="false">Debug and tests</string>
 
     <!-- Menu item that takes the user to a page that shows a list of Droidcon NYC Extended events. -->
@@ -168,37 +203,49 @@
     <!-- Menu item that takes the user to the conference venue map screen -->
     <string name="description_map">Map</string>
 
-    <!-- Menu item that allows user to turn on or turn off the output of a video to a
-    second screen. -->
+    <!--
+    Menu item that allows user to turn on or turn off the output of a video to a
+    second screen.
+    -->
     <string name="description_presentation">Toggle Screen Output</string>
 
-    <!-- Menu item that allows user to reload the data in the current screen so they see
-    the most up-to-date version from the server. -->
+    <!--
+    Menu item that allows user to reload the data in the current screen so they see
+    the most up-to-date version from the server.
+    -->
     <string name="description_refresh">Refresh</string>
 
     <!-- Menu item that allows the user to remove the currently session from their schedule. -->
     <string name="description_remove_schedule">Remove from schedule</string>
 
-    <!-- Menu item that allows the user to start a search for a session by name. After clicking,
-    they type in their search query. -->
+    <!--
+    Menu item that allows the user to start a search for a session by name. After clicking,
+    they type in their search query.
+    -->
     <string name="description_search">Search</string>
 
     <!-- Menu item that takes the user to the application's Settings screen -->
     <string name="description_settings">Settings</string>
 
     <!-- Explanation of wifi setup that appears in the WiFi setup dialog box. -->
-    <string name="description_setup_wifi_body"><![CDATA[
+    <string name="description_setup_wifi_body">
+<![CDATA[
         Since you\'re attending in person, we can set up this device to access the conference Wi-Fi network (5Ghz only).
         By configuring your Wi-Fi now, you\'ll help prevent network congestion.
-    ]]></string>
+    ]]>
+    </string>
 
-    <!-- Menu item that allows user to share the currently displayed session. Sharing can be done
-    by email, social networks, etc. -->
+    <!--
+    Menu item that allows user to share the currently displayed session. Sharing can be done
+    by email, social networks, etc.
+    -->
     <string name="description_share">Share</string>
 
-    <!-- Menu item that allows the user to view the Google+ stream about a particular topic. This
+    <!--
+    Menu item that allows the user to view the Google+ stream about a particular topic. This
     appears as a menu item on a Sesssion screen, and opens the Google+ app to show the Google+
-    posts about that session's topic. -->
+    posts about that session's topic.
+    -->
     <string name="description_social_stream">View Google+ stream</string>
 
     <!-- Accessibility description saying that the app's navigation drawer has been closed -->
@@ -207,8 +254,10 @@
     <!-- Accessibility description saying that the app's navigation drawer has been opened -->
     <string name="drawer_open">Open navigation drawer</string>
 
-    <!-- Shown when trying to watch a video of a session, alerting user that no captions are
-    available for that video. -->
+    <!--
+    Shown when trying to watch a video of a session, alerting user that no captions are
+    available for that video.
+    -->
     <string name="empty_captions">No captions found for this session.</string>
 
     <!-- Shown on the Session page, alerting user that no details could be found for that session. -->
@@ -217,19 +266,25 @@
     <!-- Shown on the session search page, alerting user that no conference sessions could be found. -->
     <string name="empty_sessions">No sessions found.</string>
 
-    <!-- Shown on several screens alerting user that no data is being shown because a background
-    data synchronization is still in progress. Data will show as soon as the sync ends. -->
-    <string name="empty_waiting_for_sync">Waiting for sync&#8230;</string>
+    <!--
+    Shown on several screens alerting user that no data is being shown because a background
+    data synchronization is still in progress. Data will show as soon as the sync ends.
+    -->
+    <string name="empty_waiting_for_sync">Waiting for sync…</string>
 
-    <!-- Shown on a widget that normally displays upcoming sessions. This is shown after the
-    conference, when there are no more sessions to show. -->
+    <!--
+    Shown on a widget that normally displays upcoming sessions. This is shown after the
+    conference, when there are no more sessions to show.
+    -->
     <string name="empty_widget_text">No more upcoming sessions.\nSee you next year!</string>
 
     <!-- Shown on a widget instructing user how to start using the widget. -->
     <string name="empty_widget_text_signed_out">Touch the Droidcon logo above to sign in and begin using the app.</string>
 
-    <!-- Shown as a header on a list of sessions to indicate that the sessions that appear on that
-    group have already ended. -->
+    <!--
+    Shown as a header on a list of sessions to indicate that the sessions that appear on that
+    group have already ended.
+    -->
     <string name="ended_sessions">Ended sessions</string>
 
     <!-- Text on a drop-down list that allows the user to view Google Developer Experts from all cities (this is a filter). -->
@@ -256,53 +311,70 @@
     <!-- Message that appears as feedback when the user has indicated that they are attending I/O remotely. -->
     <string name="explore_attending_remotely_toast">Attending I/O remotely (you can change this in Settings)</string>
 
-    <!-- Label for a button to answer the question "Would you like to send feedback
+    <!--
+    Label for a button to answer the question "Would you like to send feedback
     about this session?" which, when clicked, allows the user to send their feedback (ratings
-    and comments) about a particular session [CHAR_LIMIT=10]. -->
+    and comments) about a particular session [CHAR_LIMIT=10].
+    -->
     <string name="give_feedback">Yes</string>
 
     <!-- Text on a button that takes the user to the device's Settings screen. -->
     <string name="go_to_settings">Go to Settings</string>
 
-    <!-- Error message that shows when the user tries to use the app without a Google account
-    configured on their device. -->
+    <!--
+    Error message that shows when the user tries to use the app without a Google account
+    configured on their device.
+    -->
     <string name="google_account_required_message">To use this application, you must have at least one Google account on your device.</string>
 
-    <!-- Title for an error message that appears when the user tries to use the app without
-    a Google account configured on their device. -->
+    <!--
+    Title for an error message that appears when the user tries to use the app without
+    a Google account configured on their device.
+    -->
     <string name="google_account_required_title">Google Account Required</string>
 
-    <!-- List dropdown item on the Video Library screen allowing the user to choose to see
-    the videos from a particular year of Droidcon NYC. -->
+    <!--
+    List dropdown item on the Video Library screen allowing the user to choose to see
+    the videos from a particular year of Droidcon NYC.
+    -->
     <string name="google_i_o_year">I/O <xliff:g id="year">%1$d</xliff:g></string>
 
-    <!-- Label on a button that the user can click to dismiss an reminder or information message.
+    <!--
+    Label on a button that the user can click to dismiss an reminder or information message.
     For example "To scan an attendee's badge, hold your phone close to the badge for a few
-    seconds." -->
+    seconds."
+    -->
     <string name="got_it">Got it</string>
 
     <!-- Conference hashtag -->
     <string name="io14_hashtag" translatable="false">#io14</string>
 
-    <!-- Short text appended to the end of the session subtitle when the session will be live
+    <!--
+    Short text appended to the end of the session subtitle when the session will be live
     streamed. Constrained to 10 chars because the session subtitle should be small enough to fit
-    into the explore cards. [CHAR_LIMIT=10] -->
+    into the explore cards. [CHAR_LIMIT=10]
+    -->
     <string name="live_available">LIVE</string>
 
-    <!-- Short text appended to the end of the session subtitle when the session is currently being
+    <!--
+    Short text appended to the end of the session subtitle when the session is currently being
     streamed. Also used in a "LIVE" badge overlay that shows up on top of the session card.
     Constrained because the session subtitle should be small enough to fit into the
-    explore cards. [CHAR_LIMIT=10] -->
+    explore cards. [CHAR_LIMIT=10]
+    -->
     <string name="live_now">LIVE NOW</string>
 
     <!-- Message presented while data is loading in Explore view -->
-    <string name="loading">Loading&#8230;</string>
+    <string name="loading">Loading…</string>
 
-    <!-- Message shown in an error bar when there is a problem synchronizing the user's sessions
-    to their account. Can be summarized as "Synchronization failed." if too long [CHAR_LIMIT=50] -->
+    <!--
+    Message shown in an error bar when there is a problem synchronizing the user's sessions
+    to their account. Can be summarized as "Synchronization failed." if too long [CHAR_LIMIT=50]
+    -->
     <string name="login_failed_text">Could not sync your sessions due to an error.</string>
 
-    <!-- Button to retry a failed login attempt [CHAR_LIMIT=2 lines of 9 characters].
+    <!--
+    Button to retry a failed login attempt [CHAR_LIMIT=2 lines of 9 characters].
     If using multiple lines, separate them with "\n" ("Tentar\nde novo" for example)
     -->
     <string name="login_failed_text_retry">Retry</string>
@@ -314,12 +386,12 @@
     <!-- Message shown in a popup to indicate that there is a mandatory upgrade -->
     <string name="update_available">There is a newer version of this application available on Google Play.</string>
 
-    <!-- Message shown in a map popup to indicate the next session.
+    <!--
+      Message shown in a map popup to indicate the next session.
       Param %1$s: time of the next session
       Param %2$s: title of the next session
-     -->
+    -->
     <string name="map_at">At %1$s:<![CDATA[<br><b>%2$s</b>]]></string>
-
     <string name="map_floorcontrol_1" translatable="false">1</string>
     <string name="map_floorcontrol_2" translatable="false">2</string>
     <string name="map_floorcontrol_3" translatable="false">3</string>
@@ -333,9 +405,10 @@
     <!-- Actionbar button text to show nearby BLE devices -->
     <string name="map_nearby_button">Nearby</string>
 
-    <!-- Message shown in a map popup to indicate the current session.
+    <!--
+      Message shown in a map popup to indicate the current session.
       Param %1$s: title of the next session
-     -->
+    -->
     <string name="map_now_playing">Now playing:<![CDATA[<br><b>%1$s</b>]]></string>
 
     <!-- Clickable text in the map popup that leads to sessions in a room -->
@@ -387,19 +460,25 @@
     <!-- Menu item to start the Sign In flow [CHAR_LIMIT=20] -->
     <string name="navdrawer_item_sign_in">Sign in</string>
 
-    <!-- Menu item to open a screen that lists I/O related hashtags. Each hashtag, when clicked, will
-    open Google+ stream of posts that uses the hashtag [CHAR_LIMIT=20] -->
+    <!--
+    Menu item to open a screen that lists I/O related hashtags. Each hashtag, when clicked, will
+    open Google+ stream of posts that uses the hashtag [CHAR_LIMIT=20]
+    -->
     <string name="navdrawer_item_social">Social</string>
 
     <!-- Menu item to open a list of current and past I/O videos [CHAR_LIMIT=20] -->
     <string name="navdrawer_item_video_library">Video library</string>
 
-    <!-- Text indicator that appears below the user's name, showing that they are
-    attending the conference in person in San Francisco. -->
+    <!--
+    Text indicator that appears below the user's name, showing that they are
+    attending the conference in person in San Francisco.
+    -->
     <string name="navdrawer_status_attending_in_person">Attending I/O in person</string>
 
-    <!-- Text indicator that appears below the user's name, showing that they are
-    attending the conference remotely via live streaming. -->
+    <!--
+    Text indicator that appears below the user's name, showing that they are
+    attending the conference remotely via live streaming.
+    -->
     <string name="navdrawer_status_attending_remotely">Attending I/O remotely</string>
 
     <!-- Header text for the Nearby EULA fragment -->
@@ -417,48 +496,60 @@
     <!-- Message shown in the nearby screen when there are no nearby URLs. -->
     <string name="no_nearby_urls">There are no PhysicalWeb beacons in your area. Try again when you are near a point of interest at Moscone during the conference.</string>
 
-    <!-- Message shown in a toast (popup) when the user clicks to change the active account but
-    there is no network connection -->
+    <!--
+    Message shown in a toast (popup) when the user clicks to change the active account but
+    there is no network connection
+    -->
     <string name="no_connection_cant_login">Can\'t sign in. Check your network connection.</string>
 
-    <!-- Message shown in a toast (popup) when the user selected a partner that could not be
-    found -->
+    <!--
+    Message shown in a toast (popup) when the user selected a partner that could not be
+    found
+    -->
     <string name="no_matching_partner">No matching partner.</string>
 
-    <!-- Message shown in the session explorer when the user applies a filter that results no
-    session -->
+    <!--
+    Message shown in the session explorer when the user applies a filter that results no
+    session
+    -->
     <string name="no_matching_sessions">No matching sessions.</string>
 
-    <!-- Message shown in the session explorer when the user selects a time slot that has no
-    session  -->
+    <!--
+    Message shown in the session explorer when the user selects a time slot that has no
+    session
+    -->
     <string name="no_matching_sessions_in_interval">No sessions available in this time slot.</string>
 
     <!-- Message shown in the video library when the user applies a filter that results no video -->
     <string name="no_matching_videos">No matching videos.</string>
 
-    <!-- Button of a card in session or session explorer that dismiss the card.
+    <!--
+    Button of a card in session or session explorer that dismiss the card.
     One sample of such card is "How was this session? We would love to hear your feedback"  with
-    "Give feedback" and "No, thanks" as buttons. [CHAR_LIMIT=20]-->
+    "Give feedback" and "No, thanks" as buttons. [CHAR_LIMIT=20]
+    -->
     <string name="no_thanks">No, thanks</string>
 
-    <!-- Button of a popup that shows up when the user has no Google account registered in the
+    <!--
+    Button of a popup that shows up when the user has no Google account registered in the
     device. The popup says that the user needs to have at least one Google account registered in the
-    device to be able to use the app. [CHAR_LIMIT=20] -->
+    device to be able to use the app. [CHAR_LIMIT=20]
+    -->
     <string name="not_now">Not now</string>
 
-    <!-- Number in a scale of 1 to 5 used to rate a session [CHAR_LIMIT=2]-->
+    <!-- Number in a scale of 1 to 5 used to rate a session [CHAR_LIMIT=2] -->
     <string name="number_1">1</string>
 
-    <!-- Number in a scale of 1 to 5 used to rate a session [CHAR_LIMIT=2]-->
+    <!-- Number in a scale of 1 to 5 used to rate a session [CHAR_LIMIT=2] -->
     <string name="number_2">2</string>
 
-    <!-- Number in a scale of 1 to 5 used to rate a session [CHAR_LIMIT=2]-->
+    <!-- Number in a scale of 1 to 5 used to rate a session [CHAR_LIMIT=2] -->
     <string name="number_3">3</string>
 
-    <!-- Number in a scale of 1 to 5 used to rate a session [CHAR_LIMIT=2]-->
+    <!-- Number in a scale of 1 to 5 used to rate a session [CHAR_LIMIT=2] -->
     <string name="number_4">4</string>
 
-    <!-- Number in a scale of 1 to 5 used to rate a session [CHAR_LIMIT=2]-->
+    <!-- Number in a scale of 1 to 5 used to rate a session [CHAR_LIMIT=2] -->
     <string name="number_5">5</string>
 
     <!-- A single button shown on informative popups, like EULA, open source licenses and About -->
@@ -488,25 +579,31 @@
     <!-- Header for the People I've Met screen, explaining that the list below is a list of people whose badges the user has scanned at the conference. -->
     <string name="people_ive_met_header">Attendees whose badges you have scanned:</string>
 
-    <!-- Menu item that allows the user to enter or edit a note about a person they have met at the conference. Alternate translations can be: "Edit Note", "-->
+    <!-- Menu item that allows the user to enter or edit a note about a person they have met at the conference. Alternate translations can be: "Edit Note", " -->
     <string name="people_ive_met_note">Note</string>
 
     <!-- Error message that appears when the user tries to scan a conference attendee badge that does not contain a valid Google+ profile. 'Badge' is used in the sense of the identification badge that attendees at the event will carry with them. -->
     <string name="people_ive_met_dummy_badge">This badge does not contain a link to a Google+ profile</string>
 
-    <!-- An application permission (this permission allows the application to modify the Google
-    I/O schedule data). Shows on a permissions dialog screen. -->
+    <!--
+    An application permission (this permission allows the application to modify the Google
+    I/O schedule data). Shows on a permissions dialog screen.
+    -->
     <string name="permission_write">Modify Droidcon NYC schedule data</string>
 
     <!-- Description of the Google+ +1 button for accessibility screen readers -->
     <string name="plus_one_description_standard">Touch to plus one.</string>
 
-    <!-- Title in the Settings screen for the setting that enables sending of anonymous usage
-    statistics to Google. -->
+    <!--
+    Title in the Settings screen for the setting that enables sending of anonymous usage
+    statistics to Google.
+    -->
     <string name="pref_analytics_enabled_title">Send anonymous usage statistics</string>
 
-    <!-- Description in the Settings screen for the setting that enables sending of anonymous usage
-    statistics to Google. -->
+    <!--
+    Description in the Settings screen for the setting that enables sending of anonymous usage
+    statistics to Google.
+    -->
     <string name="pref_analytics_enabled_description">Send anonymous statistics about app usage
     to Google.</string>
 
@@ -522,7 +619,7 @@
     <!-- Title in the Settings screen for the "Show local times" option -->
     <string name="pref_local_times_title">Show local times</string>
 
-    <!-- Description of PhysicalWeb experiment setting in the Settings screen. BLE stands for Bluetooth Low Energy.-->
+    <!-- Description of PhysicalWeb experiment setting in the Settings screen. BLE stands for Bluetooth Low Energy. -->
     <string name="pref_nearby_summary">Enables the PhysicalWeb BLE experiment in the Map screen, which performs BLE scans to show you PhysicalWeb tags near you (requires Bluetooth).</string>
 
     <!-- Title in the Settings screen of the setting to enable the PhysicalWeb experiment feature in the app. -->
@@ -546,20 +643,28 @@
     <!-- Summary in the Settings screen for the "Synchronize my schedule with Google Calendar" option -->
     <string name="pref_sync_with_calendar_title">Sync with Google Calendar</string>
 
-    <!-- Text of a card shown in the session explorer that asks the user if he wants to see I/O
-    extended events in his area. "Browse events" and "No, thanks" are the buttons shown in the card -->
+    <!--
+    Text of a card shown in the session explorer that asks the user if he wants to see I/O
+    extended events in his area. "Browse events" and "No, thanks" are the buttons shown in the card
+    -->
     <string name="question_i_o_extended">Would you like to know more about I/O Extended events happening near your location?</string>
 
-    <!-- Text of a card shown in the session explorer that asks the user if he will be attending I/O
-    in person or remotely. "Remotely" and "In person" are the buttons shown in the card -->
+    <!--
+    Text of a card shown in the session explorer that asks the user if he will be attending I/O
+    in person or remotely. "Remotely" and "In person" are the buttons shown in the card
+    -->
     <string name="question_local_or_remote">Are you attending I/O remotely or in person in San Francisco?</string>
 
-    <!-- Text of a card shown in the session explorer after I/O has started that asks the user if
-    he wants to configure the WiFi. "Yes!" and "No, thanks" are the buttons shown in the card -->
+    <!--
+    Text of a card shown in the session explorer after I/O has started that asks the user if
+    he wants to configure the WiFi. "Yes!" and "No, thanks" are the buttons shown in the card
+    -->
     <string name="question_setup_wifi_after_i_o_start">Droidcon NYC is here! Would you like to configure the conference WiFi now?</string>
 
-    <!-- Text of a card shown in the session explorer before I/O has started that asks the user if
-    he wants to configure the WiFi. "Yes!" and "No, thanks" are the buttons shown in the card -->
+    <!--
+    Text of a card shown in the session explorer before I/O has started that asks the user if
+    he wants to configure the WiFi. "Yes!" and "No, thanks" are the buttons shown in the card
+    -->
     <string name="question_setup_wifi_before_i_o_start">Droidcon NYC is coming up! Would you like to configure the conference WiFi now?</string>
 
     <!-- Section title for videos related to a particular event session -->
@@ -577,14 +682,16 @@
     <!-- Text hint that shows when a session is in conflict with a session already on the user's schedule -->
     <string name="schedule_conflict_with_previous">(conflict)</string>
 
-    <!-- Indicates the ending block of a session time. Used in a text fragment like "8:00 AM to 9:00 AM" [CHAR_LIMIT=4 (excluding placeholders)]-->
+    <!-- Indicates the ending block of a session time. Used in a text fragment like "8:00 AM to 9:00 AM" [CHAR_LIMIT=4 (excluding placeholders)] -->
     <string name="schedule_end_time">to <xliff:g id="endTime">%1$s</xliff:g></string>
 
     <!-- Hint that the user can search across sessions -->
     <string name="search_hint">Search sessions</string>
 
-    <!-- Search label that shows the type of data being searched for when the user clicks the
-    Search button. -->
+    <!--
+    Search label that shows the type of data being searched for when the user clicks the
+    Search button.
+    -->
     <string name="search_label">Droidcon NYC sessions</string>
 
     <!-- A fragment of text appended to a Google calendar event indicating it was added by this application -->
@@ -725,8 +832,10 @@
     <!-- Notification action text for snoozing the notification for some number of minutes -->
     <string name="snooze_x_min">Snooze <xliff:g id="remaining_time">%1$d</xliff:g> min.</string>
 
-    <!-- Introductory text for a screen that shows several hashtags the user can click on to
-    see the corresponding stream on the Google+ application. -->
+    <!--
+    Introductory text for a screen that shows several hashtags the user can click on to
+    see the corresponding stream on the Google+ application.
+    -->
     <string name="social_intro">Click on a hashtag to follow the conversation on Google+</string>
 
     <!-- Speaker image content description -->
@@ -750,18 +859,18 @@
     <!-- Text indicating the session is in progress but has not completed -->
     <string name="time_hint_started_min">This session is happening now! (started <xliff:g id="minutes">%1$d</xliff:g> min. ago)</string>
 
-    <!-- Explanation text shown below the user's schedule clarifying the timezone used for display.
-    For example, 'All times shown in UTC-7' -->
+    <!--
+    Explanation text shown below the user's schedule clarifying the timezone used for display.
+    For example, 'All times shown in UTC-7'
+    -->
     <string name="times_shown_in_tz">All times shown in <xliff:g id="timezone">%1$s</xliff:g></string>
 
     <!-- Title text for dialog screen about the application -->
     <string name="title_about">About</string>
-
     <string name="title_activity_ble" translatable="false">Ble Activity</string>
 
     <!-- Title text for the screen that shows a directory of Google Developer Experts, who are independent developers who are experts at Google technologies. This should be translated as just 'Experts' because it's smaller. [CHAR_LIMIT=20] -->
     <string name="title_experts_directory">Experts</string>
-
     <string name="title_activity_debug_test_runner" translatable="false">Debug Test Runner</string>
 
     <!-- Navigation bar text for exploring the sessions -->
@@ -772,7 +881,6 @@
 
     <!-- Navigation bar text for viewing the user's schedule -->
     <string name="title_my_schedule">My Schedule</string>
-
     <string name="title_full_schedule">Full Schedule</string>
 
     <!-- Navigation bar text for viewing Office Hours -->
@@ -811,8 +919,10 @@
     <!-- Text for a session subtitle indicating it does not have a room specified -->
     <string name="unknown_room">(Unspecified Room)</string>
 
-    <!-- Label on a button that, when clicked, will let the user update the application to
-    a newer version. -->
+    <!--
+    Label on a button that, when clicked, will let the user update the application to
+    a newer version.
+    -->
     <string name="update_app">Update App</string>
 
     <!-- Text for a button which allows the user to watch this particular session on live stream. -->
@@ -833,9 +943,10 @@
     <!-- Toast failure message if the user's wifi couldn't be updated -->
     <string name="wifi_install_error_message">Sorry, unable to update WiFi configuration</string>
     <string name="description_i_o_hunt">I/O Hunt</string>
-
-
     <string name="base_url">http://droidcon-server.herokuapp.com/</string>
-    <!--<string name="base_url">http://192.168.1.7:9000/</string>-->
-</resources>
+    <!-- <string name="base_url">http://192.168.1.7:9000/</string> -->
+    <string name="title_activity_find_user">FindUserActivity</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="action_settings">Settings</string>
 
+</resources>

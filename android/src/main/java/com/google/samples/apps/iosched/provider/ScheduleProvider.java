@@ -16,27 +16,15 @@
 
 package com.google.samples.apps.iosched.provider;
 
-import com.google.samples.apps.iosched.appwidget.ScheduleWidgetProvider;
-import com.google.samples.apps.iosched.provider.ScheduleContract.Announcements;
-import com.google.samples.apps.iosched.provider.ScheduleContract.PeopleIveMet;
-import com.google.samples.apps.iosched.provider.ScheduleContract.Blocks;
-import com.google.samples.apps.iosched.provider.ScheduleContract.Experts;
-import com.google.samples.apps.iosched.provider.ScheduleContract.Feedback;
-import com.google.samples.apps.iosched.provider.ScheduleContract.MapMarkers;
-import com.google.samples.apps.iosched.provider.ScheduleContract.MapTiles;
-import com.google.samples.apps.iosched.provider.ScheduleContract.Rooms;
-import com.google.samples.apps.iosched.provider.ScheduleContract.SearchSuggest;
-import com.google.samples.apps.iosched.provider.ScheduleContract.Sessions;
-import com.google.samples.apps.iosched.provider.ScheduleContract.Speakers;
-import com.google.samples.apps.iosched.provider.ScheduleContract.Tags;
-import com.google.samples.apps.iosched.provider.ScheduleDatabase.SessionsSearchColumns;
-import com.google.samples.apps.iosched.provider.ScheduleDatabase.SessionsSpeakers;
-import com.google.samples.apps.iosched.provider.ScheduleDatabase.Tables;
-import com.google.samples.apps.iosched.util.SelectionBuilder;
-
 import android.app.Activity;
 import android.app.SearchManager;
-import android.content.*;
+import android.content.ContentProvider;
+import android.content.ContentProviderOperation;
+import android.content.ContentProviderResult;
+import android.content.ContentValues;
+import android.content.Context;
+import android.content.OperationApplicationException;
+import android.content.UriMatcher;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
@@ -47,7 +35,24 @@ import android.util.Log;
 
 import com.google.samples.apps.iosched.Config;
 import com.google.samples.apps.iosched.appwidget.ScheduleWidgetProvider;
-import com.google.samples.apps.iosched.provider.ScheduleContract.*;
+import com.google.samples.apps.iosched.provider.ScheduleContract.Announcements;
+import com.google.samples.apps.iosched.provider.ScheduleContract.Blocks;
+import com.google.samples.apps.iosched.provider.ScheduleContract.Experts;
+import com.google.samples.apps.iosched.provider.ScheduleContract.Feedback;
+import com.google.samples.apps.iosched.provider.ScheduleContract.HashtagColumns;
+import com.google.samples.apps.iosched.provider.ScheduleContract.Hashtags;
+import com.google.samples.apps.iosched.provider.ScheduleContract.MapMarkers;
+import com.google.samples.apps.iosched.provider.ScheduleContract.MapTiles;
+import com.google.samples.apps.iosched.provider.ScheduleContract.MySchedule;
+import com.google.samples.apps.iosched.provider.ScheduleContract.Partners;
+import com.google.samples.apps.iosched.provider.ScheduleContract.PeopleIveMet;
+import com.google.samples.apps.iosched.provider.ScheduleContract.Rooms;
+import com.google.samples.apps.iosched.provider.ScheduleContract.SearchSuggest;
+import com.google.samples.apps.iosched.provider.ScheduleContract.Sessions;
+import com.google.samples.apps.iosched.provider.ScheduleContract.Speakers;
+import com.google.samples.apps.iosched.provider.ScheduleContract.Tags;
+import com.google.samples.apps.iosched.provider.ScheduleContract.VideoColumns;
+import com.google.samples.apps.iosched.provider.ScheduleContract.Videos;
 import com.google.samples.apps.iosched.provider.ScheduleDatabase.SessionsSearchColumns;
 import com.google.samples.apps.iosched.provider.ScheduleDatabase.SessionsSpeakers;
 import com.google.samples.apps.iosched.provider.ScheduleDatabase.Tables;
@@ -59,7 +64,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import static com.google.samples.apps.iosched.util.LogUtils.LOGD;
 import static com.google.samples.apps.iosched.util.LogUtils.LOGV;
 import static com.google.samples.apps.iosched.util.LogUtils.makeLogTag;
 

@@ -20,8 +20,9 @@ import android.app.Activity;
 import android.os.Bundle;
 import android.view.View;
 
-import co.touchlab.droidconnyc.R;
 import com.google.samples.apps.iosched.util.PrefUtils;
+
+import co.touchlab.droidconnyc.R;
 
 /**
  * An activity handling the display of the BLE legal agreement.

@@ -15,13 +15,17 @@
  */
 package com.google.samples.apps.iosched.gcm;
 
-import com.google.samples.apps.iosched.Config;
-import com.google.samples.apps.iosched.gcm.command.*;
-import com.google.android.gcm.GCMBaseIntentService;
-import com.google.samples.apps.iosched.util.AccountUtils;
-
 import android.content.Context;
 import android.content.Intent;
+
+import com.google.android.gcm.GCMBaseIntentService;
+import com.google.samples.apps.iosched.Config;
+import com.google.samples.apps.iosched.gcm.command.AnnouncementCommand;
+import com.google.samples.apps.iosched.gcm.command.NotificationCommand;
+import com.google.samples.apps.iosched.gcm.command.SyncCommand;
+import com.google.samples.apps.iosched.gcm.command.SyncUserCommand;
+import com.google.samples.apps.iosched.gcm.command.TestCommand;
+import com.google.samples.apps.iosched.util.AccountUtils;
 
 import java.util.Collections;
 import java.util.HashMap;

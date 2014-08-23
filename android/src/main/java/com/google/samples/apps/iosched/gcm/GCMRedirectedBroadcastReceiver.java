@@ -17,9 +17,9 @@
 
 package com.google.samples.apps.iosched.gcm;
 
-import com.google.android.gcm.GCMBroadcastReceiver;
-
 import android.content.Context;
+
+import com.google.android.gcm.GCMBroadcastReceiver;
 
 /**
  * @author trevorjohns@google.com (Trevor Johns)

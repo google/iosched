@@ -16,8 +16,6 @@
 
 package com.google.samples.apps.iosched.ui.widget;
 
-import co.touchlab.droidconnyc.R;
-
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Bitmap;
@@ -33,6 +31,8 @@ import android.graphics.drawable.Drawable;
 import android.support.v4.view.ViewCompat;
 import android.util.AttributeSet;
 import android.widget.ImageView;
+
+import co.touchlab.droidconnyc.R;
 
 /**
  * An {@link android.widget.ImageView} that draws its contents inside a mask and draws a border

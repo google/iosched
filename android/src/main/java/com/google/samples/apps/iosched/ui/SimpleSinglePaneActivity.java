@@ -16,11 +16,11 @@
 
 package com.google.samples.apps.iosched.ui;
 
-import co.touchlab.droidconnyc.R;
-
+import android.app.Fragment;
 import android.content.Intent;
 import android.os.Bundle;
-import android.app.Fragment;
+
+import co.touchlab.droidconnyc.R;
 
 /**
  * A {@link BaseActivity} that simply contains a single fragment. The intent used to invoke this

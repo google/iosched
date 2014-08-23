@@ -17,7 +17,11 @@
 package com.google.samples.apps.iosched.sync;
 
 import android.accounts.Account;
-import android.content.*;
+import android.content.ContentResolver;
+import android.content.ContentValues;
+import android.content.Context;
+import android.content.Intent;
+import android.content.SyncResult;
 import android.net.ConnectivityManager;
 import android.os.Bundle;
 
@@ -33,7 +37,11 @@ import com.google.samples.apps.iosched.util.UIUtils;
 
 import java.io.IOException;
 
-import static com.google.samples.apps.iosched.util.LogUtils.*;
+import static com.google.samples.apps.iosched.util.LogUtils.LOGD;
+import static com.google.samples.apps.iosched.util.LogUtils.LOGE;
+import static com.google.samples.apps.iosched.util.LogUtils.LOGI;
+import static com.google.samples.apps.iosched.util.LogUtils.LOGW;
+import static com.google.samples.apps.iosched.util.LogUtils.makeLogTag;
 
 /**
  * A helper class for dealing with conference data synchronization.

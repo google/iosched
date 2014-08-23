@@ -18,14 +18,14 @@ package com.google.samples.apps.iosched.util;
 
 import android.content.Context;
 
-import co.touchlab.droidconnyc.BuildConfig;
-import co.touchlab.droidconnyc.R;
 import com.google.android.gms.analytics.GoogleAnalytics;
 import com.google.android.gms.analytics.HitBuilders;
 import com.google.android.gms.analytics.Tracker;
 
+import co.touchlab.droidconnyc.BuildConfig;
+import co.touchlab.droidconnyc.R;
+
 import static com.google.samples.apps.iosched.util.LogUtils.LOGD;
-import static com.google.samples.apps.iosched.util.LogUtils.LOGI;
 
 public class AnalyticsManager {
     private static Context sAppContext = null;

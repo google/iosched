@@ -16,28 +16,25 @@
 
 package com.google.samples.apps.iosched.util;
 
-import android.annotation.TargetApi;
 import android.app.Activity;
 import android.content.AsyncQueryHandler;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
-import android.os.Build;
 import android.support.v4.app.ShareCompat;
 import android.view.MenuItem;
 
-import co.touchlab.android.superbus.appsupport.CommandBusHelper;
-import co.touchlab.droidconnyc.R;
 import com.google.samples.apps.iosched.appwidget.ScheduleWidgetProvider;
-import com.google.samples.apps.iosched.gcm.ServerUtilities;
 import com.google.samples.apps.iosched.port.superbus.AddRsvpCommand;
 import com.google.samples.apps.iosched.port.superbus.RemoveRsvpCommand;
 import com.google.samples.apps.iosched.provider.ScheduleContract;
 import com.google.samples.apps.iosched.sync.SyncHelper;
-import com.google.samples.apps.iosched.sync.TriggerSyncReceiver;
 import com.google.samples.apps.iosched.ui.MapFragment;
 import com.google.samples.apps.iosched.ui.phone.MapActivity;
+
+import co.touchlab.android.superbus.appsupport.CommandBusHelper;
+import co.touchlab.droidconnyc.R;
 
 import static com.google.samples.apps.iosched.util.LogUtils.LOGD;
 import static com.google.samples.apps.iosched.util.LogUtils.makeLogTag;

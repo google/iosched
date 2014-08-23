@@ -18,11 +18,21 @@ package com.google.samples.apps.iosched.ui;
 
 import android.accounts.Account;
 import android.accounts.AccountManager;
-import android.animation.*;
+import android.animation.Animator;
+import android.animation.AnimatorListenerAdapter;
+import android.animation.AnimatorSet;
+import android.animation.ArgbEvaluator;
+import android.animation.ObjectAnimator;
+import android.animation.TypeEvaluator;
 import android.app.ActionBar;
 import android.app.Activity;
 import android.app.AlertDialog;
-import android.content.*;
+import android.content.ContentResolver;
+import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.content.SharedPreferences;
+import android.content.SyncStatusObserver;
 import android.content.pm.PackageManager;
 import android.content.res.Configuration;
 import android.graphics.Color;
@@ -30,25 +40,32 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.AsyncTask;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.preference.PreferenceManager;
 import android.provider.Settings;
 import android.support.v4.widget.DrawerLayout;
 import android.text.TextUtils;
-import android.view.*;
+import android.view.Gravity;
+import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuItem;
+import android.view.View;
+import android.view.ViewGroup;
 import android.view.animation.DecelerateInterpolator;
-import android.widget.*;
+import android.widget.AbsListView;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.ListView;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.gcm.GCMRegistrar;
 import com.google.android.gms.auth.GoogleAuthUtil;
 import com.google.samples.apps.iosched.Config;
-
-import co.touchlab.droidconnyc.BuildConfig;
-import co.touchlab.droidconnyc.R;
 import com.google.samples.apps.iosched.gcm.ServerUtilities;
 import com.google.samples.apps.iosched.io.JSONHandler;
+import com.google.samples.apps.iosched.port.FindUserActivity;
 import com.google.samples.apps.iosched.port.tasks.AppPrefs;
 import com.google.samples.apps.iosched.provider.ScheduleContract;
 import com.google.samples.apps.iosched.sync.ConferenceDataHandler;
@@ -56,14 +73,31 @@ import com.google.samples.apps.iosched.sync.SyncHelper;
 import com.google.samples.apps.iosched.ui.debug.DebugActionRunnerActivity;
 import com.google.samples.apps.iosched.ui.widget.MultiSwipeRefreshLayout;
 import com.google.samples.apps.iosched.ui.widget.SwipeRefreshLayout;
-import com.google.samples.apps.iosched.util.*;
+import com.google.samples.apps.iosched.util.AccountUtils;
+import com.google.samples.apps.iosched.util.AnalyticsManager;
+import com.google.samples.apps.iosched.util.HelpUtils;
+import com.google.samples.apps.iosched.util.ImageLoader;
+import com.google.samples.apps.iosched.util.LPreviewUtils;
+import com.google.samples.apps.iosched.util.LPreviewUtilsBase;
+import com.google.samples.apps.iosched.util.LoginAndAuthHelper;
+import com.google.samples.apps.iosched.util.PlayServicesUtils;
+import com.google.samples.apps.iosched.util.PrefUtils;
+import com.google.samples.apps.iosched.util.UIUtils;
+import com.google.samples.apps.iosched.util.WiFiUtils;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import static com.google.samples.apps.iosched.util.LogUtils.*;
+import co.touchlab.droidconnyc.BuildConfig;
+import co.touchlab.droidconnyc.R;
+
+import static com.google.samples.apps.iosched.util.LogUtils.LOGD;
+import static com.google.samples.apps.iosched.util.LogUtils.LOGE;
+import static com.google.samples.apps.iosched.util.LogUtils.LOGI;
+import static com.google.samples.apps.iosched.util.LogUtils.LOGW;
+import static com.google.samples.apps.iosched.util.LogUtils.makeLogTag;
 
 /**
  * A base activity that handles common functionality in the app. This includes the
@@ -783,7 +817,8 @@ public abstract class BaseActivity extends Activity implements
                 finish();
                 break;
             case NAVDRAWER_ITEM_PEOPLE_IVE_MET:
-                intent = new Intent(this, PeopleIveMetActivity.class);
+//                intent = new Intent(this, PeopleIveMetActivity.class);
+                intent = new Intent(this, FindUserActivity.class);
                 startActivity(intent);
                 finish();
                 break;

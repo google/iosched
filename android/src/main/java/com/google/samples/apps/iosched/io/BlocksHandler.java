@@ -16,15 +16,15 @@
 
 package com.google.samples.apps.iosched.io;
 
-import com.google.samples.apps.iosched.io.model.Block;
-import com.google.samples.apps.iosched.provider.ScheduleContract;
-import com.google.samples.apps.iosched.util.ParserUtils;
-import com.google.gson.Gson;
-import com.google.gson.JsonElement;
-
 import android.content.ContentProviderOperation;
 import android.content.Context;
 import android.net.Uri;
+
+import com.google.gson.Gson;
+import com.google.gson.JsonElement;
+import com.google.samples.apps.iosched.io.model.Block;
+import com.google.samples.apps.iosched.provider.ScheduleContract;
+import com.google.samples.apps.iosched.util.ParserUtils;
 
 import java.util.ArrayList;
 

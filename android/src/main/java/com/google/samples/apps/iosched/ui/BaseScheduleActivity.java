@@ -46,7 +46,6 @@ import android.widget.ScrollView;
 import android.widget.TextView;
 
 import com.google.samples.apps.iosched.Config;
-import com.google.samples.apps.iosched.model.AllScheduleHelper;
 import com.google.samples.apps.iosched.model.BaseScheduleHelper;
 import com.google.samples.apps.iosched.provider.ScheduleContract;
 import com.google.samples.apps.iosched.ui.widget.MyScheduleView;

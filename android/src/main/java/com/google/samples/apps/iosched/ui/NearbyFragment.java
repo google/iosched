@@ -27,9 +27,10 @@ import android.widget.FrameLayout;
 import android.widget.ListView;
 import android.widget.Toast;
 
-import co.touchlab.droidconnyc.R;
 import com.google.samples.apps.iosched.nearby.NearbyDevice;
 import com.google.samples.apps.iosched.nearby.NearbyDeviceManager;
+
+import co.touchlab.droidconnyc.R;
 
 /**
  * ListFragment for displaying BLE devices.

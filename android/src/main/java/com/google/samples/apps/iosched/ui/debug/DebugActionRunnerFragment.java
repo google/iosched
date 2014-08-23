@@ -16,7 +16,7 @@
 
 package com.google.samples.apps.iosched.ui.debug;
 
-import android.app.*;
+import android.app.Fragment;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -25,8 +25,17 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.google.samples.apps.iosched.ui.debug.actions.ForceAppDataSyncNowAction;
+import com.google.samples.apps.iosched.ui.debug.actions.ForceSyncNowAction;
+import com.google.samples.apps.iosched.ui.debug.actions.ListStarredSessionsDebugAction;
+import com.google.samples.apps.iosched.ui.debug.actions.ScheduleStarredSessionAlarmsAction;
+import com.google.samples.apps.iosched.ui.debug.actions.ShowAllDriveFilesDebugAction;
+import com.google.samples.apps.iosched.ui.debug.actions.ShowFeedbackNotificationAction;
+import com.google.samples.apps.iosched.ui.debug.actions.ShowSessionNotificationDebugAction;
+import com.google.samples.apps.iosched.ui.debug.actions.SimulateBadgeScannedAction;
+import com.google.samples.apps.iosched.ui.debug.actions.TestScheduleHelperAction;
+
 import co.touchlab.droidconnyc.R;
-import com.google.samples.apps.iosched.ui.debug.actions.*;
 
 import static com.google.samples.apps.iosched.util.LogUtils.makeLogTag;
 

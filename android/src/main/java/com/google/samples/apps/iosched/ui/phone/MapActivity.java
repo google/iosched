@@ -25,12 +25,13 @@ import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.view.MenuItem;
 
-import co.touchlab.droidconnyc.R;
 import com.google.samples.apps.iosched.ui.MapFragment;
 import com.google.samples.apps.iosched.ui.NearbyActivity;
 import com.google.samples.apps.iosched.ui.NearbyFragment;
 import com.google.samples.apps.iosched.ui.PartnersFragment;
 import com.google.samples.apps.iosched.util.AnalyticsManager;
+
+import co.touchlab.droidconnyc.R;
 
 import static com.google.samples.apps.iosched.util.LogUtils.LOGD;
 import static com.google.samples.apps.iosched.util.LogUtils.makeLogTag;

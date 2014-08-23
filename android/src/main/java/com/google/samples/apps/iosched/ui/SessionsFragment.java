@@ -20,7 +20,11 @@ import android.app.Activity;
 import android.app.Fragment;
 import android.app.ListFragment;
 import android.app.LoaderManager;
-import android.content.*;
+import android.content.Context;
+import android.content.CursorLoader;
+import android.content.Intent;
+import android.content.Loader;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
@@ -32,7 +36,6 @@ import android.provider.BaseColumns;
 import android.support.v4.view.ViewCompat;
 import android.text.Spannable;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -42,14 +45,20 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.GenericRequestBuilder;
+import com.bumptech.glide.ListPreloader;
 import com.google.samples.apps.iosched.Config;
-import co.touchlab.droidconnyc.R;
 import com.google.samples.apps.iosched.model.TagMetadata;
 import com.google.samples.apps.iosched.provider.ScheduleContract;
 import com.google.samples.apps.iosched.ui.widget.CollectionView;
 import com.google.samples.apps.iosched.ui.widget.CollectionViewCallbacks;
 import com.google.samples.apps.iosched.ui.widget.MessageCardView;
-import com.google.samples.apps.iosched.util.*;
+import com.google.samples.apps.iosched.util.ImageLoader;
+import com.google.samples.apps.iosched.util.PrefUtils;
+import com.google.samples.apps.iosched.util.ThrottledContentObserver;
+import com.google.samples.apps.iosched.util.TimeUtils;
+import com.google.samples.apps.iosched.util.UIUtils;
+import com.google.samples.apps.iosched.util.WiFiUtils;
 
 import java.text.DateFormat;
 import java.util.ArrayList;
@@ -57,10 +66,13 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.TimeZone;
 
-import com.bumptech.glide.GenericRequestBuilder;
-import com.bumptech.glide.ListPreloader;
+import co.touchlab.droidconnyc.R;
 
-import static com.google.samples.apps.iosched.util.LogUtils.*;
+import static com.google.samples.apps.iosched.util.LogUtils.LOGD;
+import static com.google.samples.apps.iosched.util.LogUtils.LOGE;
+import static com.google.samples.apps.iosched.util.LogUtils.LOGV;
+import static com.google.samples.apps.iosched.util.LogUtils.LOGW;
+import static com.google.samples.apps.iosched.util.LogUtils.makeLogTag;
 import static com.google.samples.apps.iosched.util.UIUtils.buildStyledSnippet;
 
 /**

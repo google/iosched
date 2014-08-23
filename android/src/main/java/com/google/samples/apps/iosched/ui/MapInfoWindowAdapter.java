@@ -18,18 +18,17 @@ package com.google.samples.apps.iosched.ui;
 
 import android.content.res.Resources;
 import android.text.Html;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewParent;
 import android.widget.TextView;
 
-import co.touchlab.droidconnyc.R;
-import com.google.samples.apps.iosched.ui.MapFragment.MarkerModel;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.model.Marker;
+import com.google.samples.apps.iosched.ui.MapFragment.MarkerModel;
 
 import java.util.HashMap;
+
+import co.touchlab.droidconnyc.R;
 
 class MapInfoWindowAdapter implements GoogleMap.InfoWindowAdapter {
 

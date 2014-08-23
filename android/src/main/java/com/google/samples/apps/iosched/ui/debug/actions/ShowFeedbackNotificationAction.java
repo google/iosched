@@ -17,14 +17,10 @@ package com.google.samples.apps.iosched.ui.debug.actions;
 
 import android.content.Context;
 import android.content.Intent;
-import android.net.Uri;
 import android.widget.Toast;
 
-import com.google.samples.apps.iosched.Config;
 import com.google.samples.apps.iosched.service.SessionAlarmService;
-import com.google.samples.apps.iosched.ui.NfcBadgeActivity;
 import com.google.samples.apps.iosched.ui.debug.DebugAction;
-import com.google.samples.apps.iosched.util.UIUtils;
 
 /**
  * Forces the display of a session feedback notification.

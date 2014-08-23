@@ -16,6 +16,7 @@
 package com.google.samples.apps.iosched.gcm.command;
 
 import android.content.Context;
+
 import com.google.samples.apps.iosched.gcm.GCMCommand;
 
 import static com.google.samples.apps.iosched.util.LogUtils.LOGI;

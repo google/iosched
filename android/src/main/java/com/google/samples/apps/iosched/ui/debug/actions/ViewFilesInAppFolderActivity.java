@@ -18,10 +18,15 @@ package com.google.samples.apps.iosched.ui.debug.actions;
 import android.os.Bundle;
 import android.widget.TextView;
 
+import com.google.android.gms.drive.Contents;
+import com.google.android.gms.drive.Drive;
+import com.google.android.gms.drive.DriveFile;
+import com.google.android.gms.drive.DriveId;
+import com.google.android.gms.drive.Metadata;
+import com.google.android.gms.drive.MetadataBuffer;
+import com.google.api.client.util.Charsets;
 import com.google.samples.apps.iosched.sync.userdata.gms.ApiClientAsyncTask;
 import com.google.samples.apps.iosched.ui.BaseActivity;
-import com.google.android.gms.drive.*;
-import com.google.api.client.util.Charsets;
 
 import java.io.BufferedReader;
 import java.io.FileInputStream;

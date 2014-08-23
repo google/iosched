@@ -19,6 +19,7 @@ package com.google.samples.apps.iosched.util;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
+
 import com.google.samples.apps.iosched.Config;
 
 import java.util.TimeZone;

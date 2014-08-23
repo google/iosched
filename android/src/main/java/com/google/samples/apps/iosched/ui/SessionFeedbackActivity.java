@@ -16,14 +16,15 @@
 
 package com.google.samples.apps.iosched.ui;
 
+import android.app.Fragment;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.app.Fragment;
 
-import co.touchlab.droidconnyc.R;
 import com.google.samples.apps.iosched.provider.ScheduleContract;
 import com.google.samples.apps.iosched.util.BeamUtils;
+
+import co.touchlab.droidconnyc.R;
 
 public class SessionFeedbackActivity extends SimpleSinglePaneActivity  {
 
