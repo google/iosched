@@ -217,7 +217,8 @@ public class HomeListenerService extends WearableListenerService
                 .setDeleteIntent(deleteIntent)
                 .setContentText(sessionName)
                 .extend(new NotificationCompat.WearableExtender()
-                        .setDisplayIntent(showCardIntent))
+                        .setDisplayIntent(showCardIntent)
+                        .setCustomSizePreset(NotificationCompat.WearableExtender.SIZE_LARGE))
                 .addAction(R.drawable.ic_action_ratesession, getString(R.string.rate_this_session),
                         actionIntent);
 
