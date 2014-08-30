@@ -294,7 +294,7 @@
     <string name="experts_directory_all_countries">All countries</string>
 
     <!-- Text that appears next to a person's name to indicate that they are attending Droidcon NYC in person. Alternate translations might be: "present in person", "present at the event", "present onsite", etc. -->
-    <string name="experts_directory_attending">attending I/O</string>
+    <string name="experts_directory_attending">attending Droidcon</string>
 
     <!-- Description of the Google Developer Expert program that appears in the Google Developer Expert directory screen, giving an introduction about what the term means. -->
     <string name="experts_directory_header_body">The Google Developer Experts (GDE) title recognizes the outstanding developers who exhibit great expertise in one or more Google technologies and share it with the developer community. GDEs are gurus, mentors and evangelists; they create tutorials, code samples, and write books and blogs; they publish videos, drive community projects, and present at events large and small. These independent developers bring their real-world experience and knowledge working with Google technologies to developer communities worldwide.</string>
@@ -306,10 +306,10 @@
     <string name="experts_directory_header_title">Who are the Google Developers Experts?</string>
 
     <!-- Message that appears as feedback when the user has indicated that they are attending I/O in person. -->
-    <string name="explore_attending_in_person_toast">Attending I/O in person (you can change this in Settings)</string>
+    <string name="explore_attending_in_person_toast">Attending Droidcon in person (you can change this in Settings)</string>
 
     <!-- Message that appears as feedback when the user has indicated that they are attending I/O remotely. -->
-    <string name="explore_attending_remotely_toast">Attending I/O remotely (you can change this in Settings)</string>
+    <string name="explore_attending_remotely_toast">Attending Droidcon remotely (you can change this in Settings)</string>
 
     <!--
     Label for a button to answer the question "Would you like to send feedback
@@ -473,13 +473,13 @@
     Text indicator that appears below the user's name, showing that they are
     attending the conference in person in San Francisco.
     -->
-    <string name="navdrawer_status_attending_in_person">Attending I/O in person</string>
+    <string name="navdrawer_status_attending_in_person">Attending Droidcon in person</string>
 
     <!--
     Text indicator that appears below the user's name, showing that they are
     attending the conference remotely via live streaming.
     -->
-    <string name="navdrawer_status_attending_remotely">Attending I/O remotely</string>
+    <string name="navdrawer_status_attending_remotely">Attending Droidcon remotely</string>
 
     <!-- Header text for the Nearby EULA fragment -->
     <string name="nearby_eula_header">PhysicalWeb Experiment</string>
@@ -653,7 +653,7 @@
     Text of a card shown in the session explorer that asks the user if he will be attending I/O
     in person or remotely. "Remotely" and "In person" are the buttons shown in the card
     -->
-    <string name="question_local_or_remote">Are you attending I/O remotely or in person in San Francisco?</string>
+    <string name="question_local_or_remote">Are you attending Droidcon remotely or in person in New York?</string>
 
     <!--
     Text of a card shown in the session explorer after I/O has started that asks the user if

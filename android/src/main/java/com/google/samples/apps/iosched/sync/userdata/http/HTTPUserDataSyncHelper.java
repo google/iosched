@@ -20,22 +20,31 @@ import android.content.Context;
 import android.text.TextUtils;
 import android.util.Log;
 
-import com.google.api.client.extensions.android.http.AndroidHttp;
+
 import com.google.api.client.googleapis.extensions.android.gms.auth.GoogleAccountCredential;
 import com.google.api.client.googleapis.extensions.android.gms.auth.UserRecoverableAuthIOException;
-import com.google.api.client.json.gson.GsonFactory;
-import com.google.api.services.drive.Drive;
-import com.google.api.services.drive.DriveScopes;
+import com.google.samples.apps.iosched.port.superbus.SyncAllRsvpsCommand;
+import com.google.samples.apps.iosched.port.tasks.AllRsvpsRequest;
+import com.google.samples.apps.iosched.port.tasks.AppPrefs;
+import com.google.samples.apps.iosched.port.tasks.DataHelper;
 import com.google.samples.apps.iosched.sync.SyncHelper;
 import com.google.samples.apps.iosched.sync.userdata.AbstractUserDataSyncHelper;
 import com.google.samples.apps.iosched.sync.userdata.UserAction;
 import com.google.samples.apps.iosched.sync.userdata.util.UserDataHelper;
 import com.google.samples.apps.iosched.util.AccountUtils;
 
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+
+import co.touchlab.android.superbus.appsupport.CommandBusHelper;
+import co.touchlab.android.superbus.errorcontrol.PermanentException;
+import co.touchlab.android.superbus.errorcontrol.TransientException;
+import retrofit.RestAdapter;
+import retrofit.client.Response;
 
 import static com.google.samples.apps.iosched.util.LogUtils.LOGD;
 import static com.google.samples.apps.iosched.util.LogUtils.makeLogTag;
@@ -46,74 +55,28 @@ import static com.google.samples.apps.iosched.util.LogUtils.makeLogTag;
  *
  * Based on https://github.com/googledrive/appdatapreferences-android
  */
-public class HTTPUserDataSyncHelper extends AbstractUserDataSyncHelper {
+public class HTTPUserDataSyncHelper extends AbstractUserDataSyncHelper
+{
+
     private static final String GCM_KEY_PREFIX = "GCM:";
 
-    private GoogleAccountCredential mCredentials;
-
-    /**
-     * Private {@code HTTPUserDataSyncHelper} constructor.
-     * @param context Context of the application
-     */
     public HTTPUserDataSyncHelper(Context context, String accountName) {
         super(context, accountName);
-        mCredentials = GoogleAccountCredential.usingOAuth2(mContext, 
-                java.util.Arrays.asList(DriveScopes.DRIVE_APPDATA));
-        mCredentials.setSelectedAccountName(mAccountName);
     }
 
-    private String extractGcmKey(Set<String> remote) {
-        String remoteGcmKey = null;
-        Set<String> toRemove = new HashSet<String>();
-        for (String s : remote) {
-            if (s.startsWith(GCM_KEY_PREFIX)) {
-                toRemove.add(s);
-                remoteGcmKey = s.substring(GCM_KEY_PREFIX.length());
-                LOGD(TAG, "Remote data came with GCM key: "
-                        + AccountUtils.sanitizeGcmKey(remoteGcmKey));
-            }
-        }
-        for (String s : toRemove) {
-            remote.remove(s);
-        }
-        return remoteGcmKey;
-    }
-
-    /**
-     * Syncs the preferences file with an appdata preferences file.
-     *
-     * Synchronization steps:
-     * 1. If there are local changes, sync the latest local version with remote
-     *    and ignore merge conflicts. The last write wins.
-     * 2. If there are no local changes, fetch the latest remote version. If
-     *    it includes changes, notify that preferences have changed.
-     */
-    protected boolean syncImpl(List<UserAction> actions, boolean hasPendingLocalData) {
-        try {
+    protected boolean syncImpl(List<UserAction> actions, boolean hasPendingLocalData)
+    {
+        if(AppPrefs.getInstance(mContext).isLoggedIn())
+            CommandBusHelper.submitCommandSync(mContext, new SyncAllRsvpsCommand(mAccountName));
+        return false;
+        /*try {
             LOGD(TAG, "Now syncing user data.");
             Set<String> remote = UserDataHelper.fromString(fetchRemote());
             Set<String> local = UserDataHelper.getSessionIDs(actions);
 
-            String remoteGcmKey = extractGcmKey(remote);
-            String localGcmKey = AccountUtils.getGcmKey(mContext, mAccountName);
-            LOGD(TAG, "Local GCM key: " + AccountUtils.sanitizeGcmKey(localGcmKey));
-            LOGD(TAG, "Remote GCM key: " + (remoteGcmKey == null ? "(null)"
-                    : AccountUtils.sanitizeGcmKey(remoteGcmKey)));
-
-            // if the remote data came with a GCM key, it should override ours
-            if (!TextUtils.isEmpty(remoteGcmKey)) {
-                if (remoteGcmKey.equals(localGcmKey)) {
-                    LOGD(TAG, "Remote GCM key is the same as local, so no action necessary.");
-                } else {
-                    LOGD(TAG, "Remote GCM key is different from local. OVERRIDING local.");
-                    localGcmKey = remoteGcmKey;
-                    AccountUtils.setGcmKey(mContext, mAccountName, localGcmKey);
-                }
-            }
-
             // If remote data is the same as local, and the remote end already has a GCM key,
             // there is nothing we need to do.
-            if (remote.equals(local) && !TextUtils.isEmpty(remoteGcmKey)) {
+            if (remote.equals(local)) {
                 LOGD(TAG, "Update is not needed (local is same as remote, and remote has key)");
                 return false;
             }
@@ -144,27 +107,9 @@ public class HTTPUserDataSyncHelper extends AbstractUserDataSyncHelper {
         } catch (IOException e) {
             handleException(e);
         }
-        return false;
+        return false;*/
     }
 
-    /**
-     * Constructs a Drive service in the current context and with the
-     * credentials use to initiate AppdataPreferences instance.
-     * @return Drive service instance.
-     */
-    public Drive getDriveService() {
-        Drive service = new Drive.Builder(
-                AndroidHttp.newCompatibleTransport(),
-                new GsonFactory(), mCredentials)
-                .setApplicationName(mContext.getApplicationInfo().name)
-                .build();
-        return service;
-    }
-
-    /**
-     * Updates the remote preferences file with the given JSON content.
-     * @throws IOException
-     */
     private Set<String> mergeDirtyActions(List<UserAction> actions, Set<String> starredSessions)
             throws IOException {
         // apply "dirty" actions:
@@ -180,22 +125,9 @@ public class HTTPUserDataSyncHelper extends AbstractUserDataSyncHelper {
         return starredSessions;
     }
 
-    /**
-     * Fetches the remote file.
-     * @throws IOException
-     */
-    private String fetchRemote() throws IOException {
-        String json = new GetOrCreateFIleDriveTask(getDriveService()).execute();
-        Log.v(TAG, "Got this content from remote myschedule: ["+json+"]");
-        return json;
-    }
 
 
-    /**
-     * Handles API exceptions and notifies OnExceptionListener
-     * if given exception is a UserRecoverableAuthIOException.
-     * @param exception Exception to handle
-     */
+
     private void handleException(Exception exception) {
         Log.e(TAG, "Could not sync myschedule", exception);
         if (exception != null && exception instanceof UserRecoverableAuthIOException) {

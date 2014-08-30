@@ -16,8 +16,6 @@
 
 package com.google.samples.apps.iosched.sync.userdata.http;
 
-import com.google.api.services.drive.Drive;
-import com.google.api.services.drive.model.File;
 
 import java.io.IOException;
 
@@ -27,19 +25,19 @@ import java.io.IOException;
  */
 public class GetOrCreateFIleDriveTask extends DriveTask {
 
-    /**
+  /*  *//**
      * Constructs a new get or create task.
      * @param driveService A drive service.
-     */
+     *//*
     public GetOrCreateFIleDriveTask(Drive driveService) {
         super(driveService);
     }
 
-    /**
+    *//**
      * Executes the request..
      * @return Remote file's content.
      * @throws IOException
-     */
+     *//*
     public String execute() throws IOException {
         File file = getOrCreateFile();
         if (file.getDownloadUrl() != null) {
@@ -48,5 +46,5 @@ public class GetOrCreateFIleDriveTask extends DriveTask {
         }
         return null;
     }
-
+*/
 }

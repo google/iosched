@@ -16,8 +16,6 @@
 
 package com.google.samples.apps.iosched.sync.userdata.http;
 
-import com.google.api.services.drive.Drive;
-import com.google.api.services.drive.model.File;
 
 import java.io.IOException;
 
@@ -27,24 +25,24 @@ import java.io.IOException;
  */
 public class UpdateFileDriveTask extends DriveTask {
 
-    /**
+   /* *//**
      * Constructs a new task.
      * @param driveService A drive service.
-     */
+     *//*
     public UpdateFileDriveTask(Drive driveService) {
         super(driveService);
     }
 
-    /**
+    *//**
      * Executes the request.
      * @param content The new file content.
      * @throws IOException
-     */
+     *//*
     public void execute(String content) throws IOException {
         // updates the existing preferences file with
         // the preferences
         File preferences = getOrCreateFile();
         updatePreferencesFile(preferences, content);
-    }
+    }*/
 
 }

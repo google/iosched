@@ -96,7 +96,7 @@ android {
 
 dependencies {
     wearApp project(':Wearable')
-    compile 'com.google.android.gms:play-services:5+' 
+    compile 'com.google.android.gms:play-services:5.0.89'
     compile 'com.android.support:support-v13:20.+'
     compile 'com.android.support:support-v4:20.+'
     compile 'com.google.android.apps.dashclock:dashclock-api:+'
@@ -125,8 +125,8 @@ dependencies {
     /* The two dependencies below are only required while we are using http
        Drive appdata. When we start using AppData through GMS,
        they should be removed. */
-    compile 'com.google.http-client:google-http-client-gson:+'
-    compile 'com.google.apis:google-api-services-drive:+'
+//    compile 'com.google.http-client:google-http-client-gson:+'
+//    compile 'com.google.apis:google-api-services-drive:+'
 
     compile "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
 }
