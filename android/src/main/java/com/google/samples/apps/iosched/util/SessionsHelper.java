@@ -150,9 +150,5 @@ public final class SessionsHelper {
         // Because change listener is set to null during initialization, these
         // won't fire on pageview.
         mActivity.sendBroadcast(ScheduleWidgetProvider.getRefreshBroadcastIntent(mActivity, false));
-
-        // Request an immediate user data sync to reflect the starred user sessions in the cloud
-        SyncHelper.requestManualSync(AccountUtils.getActiveAccount(mActivity), true);
-
     }
 }

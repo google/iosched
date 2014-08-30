@@ -82,7 +82,6 @@ public class SyncAllRsvpsCommand extends CheckedCommand
 
             String json = new String(bos.toByteArray());
 
-//        String json = new GetOrCreateFIleDriveTask(getDriveService()).execute();
             Log.v(SyncAllRsvpsCommand.class.getSimpleName(), "Got this content from remote myschedule: [" + json + "]");
             return json;
         }
