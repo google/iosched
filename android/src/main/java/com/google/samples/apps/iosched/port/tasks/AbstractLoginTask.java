@@ -21,11 +21,5 @@ public class AbstractLoginTask extends TaskQueue.Task
 
     boolean firstLogin;
 
-    void handleLoginResult(Context context, LoginResult loginResult)
-    {
-        UserAuthHelper.processLoginResonse(context, loginResult);
-//        firstLogin = StringUtils.isEmpty(userAccount.profile) && StringUtils.isEmpty(userAccount.company)
-//
-//        CommandBusHelper.submitCommandSync(context, RefreshScheduleDataKot())
-    }
+
 }

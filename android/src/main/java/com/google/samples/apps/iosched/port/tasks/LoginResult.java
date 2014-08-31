@@ -6,6 +6,7 @@ package com.google.samples.apps.iosched.port.tasks;
 public class LoginResult {
     String uuid;
     Long userId;
+    String gcmKey;
 //    UserAccount user;
     //var speaking: Array<EventInfo>, var attending: Array<EventInfo>
 }

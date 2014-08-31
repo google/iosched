@@ -2,6 +2,8 @@ package com.google.samples.apps.iosched.port.tasks;
 
 import android.content.Context;
 
+import com.google.samples.apps.iosched.util.AccountUtils;
+
 /**
  * Created by kgalligan on 8/17/14.
  */
@@ -13,9 +15,7 @@ public class UserAuthHelper {
 //        DatabaseHelper.getInstance(c).getUserAccountDao().createOrUpdate(newDbUser)
 
         //Save db first, then these.
-        AppPrefs appPrefs = AppPrefs.getInstance(c);
-        appPrefs.setUserUuid(loginResult.uuid);
-        appPrefs.setUserId(loginResult.userId);
+
 
 //        CommandBusHelper.submitCommandSync(c, RefreshScheduleDataKot())
 //
