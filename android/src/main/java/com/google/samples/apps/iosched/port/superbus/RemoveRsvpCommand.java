@@ -3,6 +3,7 @@ package com.google.samples.apps.iosched.port.superbus;
 import android.content.Context;
 import android.util.Log;
 
+import com.google.samples.apps.iosched.gcm.ServerUtilities;
 import com.google.samples.apps.iosched.port.tasks.BasicIdResult;
 import com.google.samples.apps.iosched.port.tasks.DataHelper;
 import com.google.samples.apps.iosched.port.tasks.RemoveRsvpRequest;
@@ -60,5 +61,7 @@ public class RemoveRsvpCommand extends CheckedCommand
         {
             throw new PermanentException("Some value is null: "+ eventId);
         }
+
+        ServerUtilities.notifyUserDataChanged(context);
     }
 }

@@ -1,10 +1,14 @@
 package com.google.samples.apps.iosched.port.superbus;
 
+import android.content.ContentResolver;
 import android.content.Context;
+import android.net.Uri;
 import android.util.Log;
 
+import com.google.samples.apps.iosched.appwidget.ScheduleWidgetProvider;
 import com.google.samples.apps.iosched.port.tasks.AllRsvpsRequest;
 import com.google.samples.apps.iosched.port.tasks.DataHelper;
+import com.google.samples.apps.iosched.provider.ScheduleContract;
 import com.google.samples.apps.iosched.sync.userdata.util.UserDataHelper;
 
 import org.jetbrains.annotations.NotNull;
@@ -20,6 +24,8 @@ import co.touchlab.android.superbus.errorcontrol.PermanentException;
 import co.touchlab.android.superbus.errorcontrol.TransientException;
 import retrofit.RestAdapter;
 import retrofit.client.Response;
+
+import static com.google.samples.apps.iosched.util.LogUtils.LOGD;
 
 /**
  * Created by kgalligan on 8/30/14.
@@ -60,6 +66,7 @@ public class SyncAllRsvpsCommand extends CheckedCommand
     {
         Set<String> remote = UserDataHelper.fromString(fetchRemote(context));
         UserDataHelper.setLocalStarredSessions(context, remote, accountName);
+        notifyContent(context);
     }
 
     private String fetchRemote(Context context) throws PermanentException, TransientException
@@ -89,5 +96,16 @@ public class SyncAllRsvpsCommand extends CheckedCommand
         {
             throw new TransientException(e);
         }
+    }
+
+    private void notifyContent(Context context)
+    {
+        LOGD(SyncAllRsvpsCommand.class.getSimpleName(), "Notifying changes on paths related to user data on Content Resolver.");
+        ContentResolver resolver = context.getContentResolver();
+        for (String path : ScheduleContract.USER_DATA_RELATED_PATHS) {
+            Uri uri = ScheduleContract.BASE_CONTENT_URI.buildUpon().appendPath(path).build();
+            resolver.notifyChange(uri, null);
+        }
+        context.sendBroadcast(ScheduleWidgetProvider.getRefreshBroadcastIntent(context, false));
     }
 }

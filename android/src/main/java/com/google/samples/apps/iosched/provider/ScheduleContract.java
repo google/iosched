@@ -103,6 +103,7 @@ public class ScheduleContract {
          * sync them with the cloud */
         String MY_SCHEDULE_IN_SCHEDULE = "in_schedule";
         /** Flag to indicate if the corresponding in_my_schedule item needs to be synced */
+        //KPG: This is pointless now, but I don't really feel like removing.
         String MY_SCHEDULE_DIRTY_FLAG = "dirty";
     }
 

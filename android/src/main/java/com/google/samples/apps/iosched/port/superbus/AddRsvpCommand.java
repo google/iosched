@@ -3,6 +3,7 @@ package com.google.samples.apps.iosched.port.superbus;
 import android.content.Context;
 import android.util.Log;
 
+import com.google.samples.apps.iosched.gcm.ServerUtilities;
 import com.google.samples.apps.iosched.port.tasks.AddRsvpRequest;
 import com.google.samples.apps.iosched.port.tasks.BasicIdResult;
 import com.google.samples.apps.iosched.port.tasks.DataHelper;
@@ -67,6 +68,8 @@ public class AddRsvpCommand extends CheckedCommand
         {
             throw new PermanentException("Some value is null: "+ eventId);
         }
+
+        ServerUtilities.notifyUserDataChanged(context);
     }
 
     public String getErrorCode()

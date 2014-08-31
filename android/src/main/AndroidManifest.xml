@@ -279,11 +279,6 @@
             android:name="com.google.samples.apps.iosched.ui.ExpertsDirectoryActivity"
             android:label="@string/title_experts_directory"
             android:theme="@style/Theme.IOSched.ExpertsDirectory" />
-        <activity
-            android:name="com.google.samples.apps.iosched.ui.debug.actions.ViewFilesInAppFolderActivity"
-            android:label="list files in appdata folder"
-            android:parentActivityName=".ui.debug.DebugActionRunnerActivity" >
-        </activity>
 
         <!-- People I've Met -->
         <activity

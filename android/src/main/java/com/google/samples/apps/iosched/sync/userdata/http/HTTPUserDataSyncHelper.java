@@ -57,84 +57,16 @@ import static com.google.samples.apps.iosched.util.LogUtils.makeLogTag;
  */
 public class HTTPUserDataSyncHelper extends AbstractUserDataSyncHelper
 {
-
-    private static final String GCM_KEY_PREFIX = "GCM:";
-
     public HTTPUserDataSyncHelper(Context context, String accountName) {
         super(context, accountName);
     }
 
-    protected boolean syncImpl(List<UserAction> actions, boolean hasPendingLocalData)
+    protected boolean syncImpl()
     {
         if(AppPrefs.getInstance(mContext).isLoggedIn())
             CommandBusHelper.submitCommandSync(mContext, new SyncAllRsvpsCommand(mAccountName));
         return false;
-        /*try {
-            LOGD(TAG, "Now syncing user data.");
-            Set<String> remote = UserDataHelper.fromString(fetchRemote());
-            Set<String> local = UserDataHelper.getSessionIDs(actions);
-
-            // If remote data is the same as local, and the remote end already has a GCM key,
-            // there is nothing we need to do.
-            if (remote.equals(local)) {
-                LOGD(TAG, "Update is not needed (local is same as remote, and remote has key)");
-                return false;
-            }
-
-            Set<String> merged;
-            if (hasPendingLocalData || TextUtils.isEmpty(remoteGcmKey)) {
-                // merge local dirty actions into remote content
-                if (hasPendingLocalData) {
-                    LOGD(TAG, "Has pending local data, merging.");
-                    merged = mergeDirtyActions(actions, remote);
-                } else {
-                    LOGD(TAG, "No pending local data, just updating remote GCM key.");
-                    merged = remote;
-                }
-                // add the GCM key special item
-                merged.add(GCM_KEY_PREFIX + localGcmKey);
-                // save to remote
-                LOGD(TAG, "Sending user data to Drive, gcm key "
-                        + AccountUtils.sanitizeGcmKey(localGcmKey));
-                new UpdateFileDriveTask(getDriveService()).execute(
-                        UserDataHelper.toSessionsString(merged));
-            } else {
-                merged = remote;
-            }
-
-            UserDataHelper.setLocalStarredSessions(mContext, merged, mAccountName);
-            return true;
-        } catch (IOException e) {
-            handleException(e);
-        }
-        return false;*/
-    }
-
-    private Set<String> mergeDirtyActions(List<UserAction> actions, Set<String> starredSessions)
-            throws IOException {
-        // apply "dirty" actions:
-        for (UserAction action: actions) {
-            if (action.requiresSync) {
-                if (UserAction.TYPE.ADD_STAR.equals(action.type)) {
-                    starredSessions.add(action.sessionId);
-                } else {
-                    starredSessions.remove(action.sessionId);
-                }
-            }
-        }
-        return starredSessions;
-    }
-
-
-
-
-    private void handleException(Exception exception) {
-        Log.e(TAG, "Could not sync myschedule", exception);
-        if (exception != null && exception instanceof UserRecoverableAuthIOException) {
-            throw new SyncHelper.AuthException();
-        }
     }
 
     private static final String TAG = makeLogTag(HTTPUserDataSyncHelper.class);
-
 }

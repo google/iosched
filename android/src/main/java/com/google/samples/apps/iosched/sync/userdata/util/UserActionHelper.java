@@ -74,43 +74,4 @@ public class UserActionHelper {
                     .build();
         }
     }
-
-    public static String serializeUserActions(List<UserAction> actions) {
-        JsonArray array = new JsonArray();
-        for (UserAction action: actions) {
-            JsonObject obj = new JsonObject();
-            obj.add("type", new JsonPrimitive(action.type.name()));
-            obj.add("id", new JsonPrimitive(action.sessionId));
-            array.add(obj);
-        }
-        return array.toString();
-    }
-
-    public static List<UserAction> deserializeUserActions(String str) {
-        try {
-            ArrayList<UserAction> actions = new ArrayList<UserAction>();
-            JsonReader reader = new JsonReader(new StringReader(str));
-            reader.beginArray();
-            while (reader.hasNext()) {
-                reader.beginObject();
-                UserAction action = new UserAction();
-                while (reader.hasNext()) {
-                    String key = reader.nextName();
-                    if ("type".equals(key)) {
-                        action.type = UserAction.TYPE.valueOf(reader.nextString());
-                    } else if ("id".equals(key)) {
-                        action.sessionId = reader.nextString();
-                    } else {
-                        throw new RuntimeException("Invalid key "+key+" in serialized UserAction: "+str);
-                    }
-                }
-                reader.endObject();
-                actions.add(action);
-            }
-            reader.endArray();
-            return actions;
-        } catch (IOException ex) {
-            throw new RuntimeException("Error deserializing UserActions: "+str, ex);
-        }
-    }
 }

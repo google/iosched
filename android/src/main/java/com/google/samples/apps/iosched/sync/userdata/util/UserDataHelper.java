@@ -62,7 +62,6 @@ public class UserDataHelper {
         return toSessionsString(sessionIds).getBytes(Charsets.UTF_8);
     }
 
-
     static public Set<String> fromString(String str) {
         TreeSet<String> result = new TreeSet<String>();
         if (str == null || str.isEmpty()) {
@@ -92,18 +91,6 @@ public class UserDataHelper {
         return result;
     }
 
-    static public SortedSet<String> getSessionIDs(List<UserAction> actions) {
-        TreeSet<String> starredSessions = new TreeSet<String>();
-        if (actions != null) {
-            for (UserAction action : actions) {
-                if (action.type == UserAction.TYPE.ADD_STAR) {
-                    starredSessions.add(action.sessionId);
-                }
-            }
-        }
-        return starredSessions;
-    }
-
     static public Set<String> getLocalStarredSessionIDs(Context context) {
         Cursor sessionsCursor = context.getContentResolver().query(
                 ScheduleContract.MySchedule.CONTENT_URI,
@@ -131,30 +118,4 @@ public class UserDataHelper {
         }
         UserActionHelper.updateContentProvider(context, actions, accountName);
     }
-
-
-    /**
-     * Reads an input stream line by line and converts it into String.
-     * @param inputStream
-     * @throws IOException
-     */
-    public static String fromStreamToString(InputStream inputStream)
-            throws IOException {
-        BufferedReader bufferedReader = null;
-        StringBuilder stringBuilder = new StringBuilder();
-        try {
-            String line;
-            bufferedReader = new BufferedReader(new InputStreamReader(inputStream, Charsets.UTF_8));
-            while ((line = bufferedReader.readLine()) != null) {
-                stringBuilder.append(line);
-            }
-        } finally {
-            if (bufferedReader != null) {
-                bufferedReader.close();
-            }
-        }
-        return stringBuilder.toString();
-    }
-
-
 }
