@@ -6,12 +6,20 @@ import android.text.TextUtils;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
+import org.apache.commons.io.IOUtils;
+
+import java.io.IOException;
+
+import co.touchlab.android.superbus.errorcontrol.PermanentException;
+import co.touchlab.android.superbus.errorcontrol.TransientException;
 import co.touchlab.android.superbus.http.RetrofitBusErrorHandler;
 import co.touchlab.droidconnyc.R;
 import retrofit.ErrorHandler;
 import retrofit.RequestInterceptor;
 import retrofit.RestAdapter;
+import retrofit.RetrofitError;
 import retrofit.android.AndroidLog;
+import retrofit.client.Response;
 import retrofit.converter.GsonConverter;
 
 /**
@@ -28,7 +36,7 @@ public class DataHelper
 
     public static RestAdapter.Builder makeRequestAdapterBuilder(Context context)
     {
-        return makeRequestAdapterBuilder(context, new RetrofitBusErrorHandler());
+        return makeRequestAdapterBuilder(context, new AppBusErrorHandler());
     }
 
     public static RestAdapter.Builder makeRequestAdapterBuilder(Context context, ErrorHandler errorHandler)
@@ -59,5 +67,84 @@ public class DataHelper
             builder.setErrorHandler(errorHandler);
 
         return builder;
+    }
+
+    public static class AppBusErrorHandler implements ErrorHandler
+    {
+        @Override
+        public Throwable handleError(RetrofitError cause)
+        {
+            if(cause.isNetworkError())
+            {
+                return new TransientException(cause.getCause());
+            }
+
+            return handleErrorCustom(cause);
+        }
+
+        protected Throwable handleErrorCustom(RetrofitError cause)
+        {
+            AppPermanentException appPermanentException = new AppPermanentException(cause.getCause());
+            Response response = cause.getResponse();
+            if(response != null)
+            {
+                appPermanentException.setStatus(response.getStatus());
+                try
+                {
+                    String body = IOUtils.toString(response.getBody().in());
+                    appPermanentException.setResponseBody(body);
+                }
+                catch (Exception e)
+                {
+                    //Uhh.... TODO: something
+                }
+            }
+            return appPermanentException;
+        }
+    }
+
+    public static class AppPermanentException extends PermanentException
+    {
+        private String responseBody;
+        private int status;
+
+        public AppPermanentException()
+        {
+        }
+
+        public AppPermanentException(String detailMessage)
+        {
+            super(detailMessage);
+        }
+
+        public AppPermanentException(String detailMessage, Throwable throwable)
+        {
+            super(detailMessage, throwable);
+        }
+
+        public AppPermanentException(Throwable throwable)
+        {
+            super(throwable);
+        }
+
+        public String getResponseBody()
+        {
+            return responseBody;
+        }
+
+        public void setResponseBody(String responseBody)
+        {
+            this.responseBody = responseBody;
+        }
+
+        public int getStatus()
+        {
+            return status;
+        }
+
+        public void setStatus(int status)
+        {
+            this.status = status;
+        }
     }
 }

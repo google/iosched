@@ -45,6 +45,7 @@ import android.view.animation.DecelerateInterpolator;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.request.bitmap.RequestListener;
 import com.bumptech.glide.request.target.Target;
@@ -52,6 +53,7 @@ import com.google.android.gms.plus.PlusOneButton;
 import com.google.android.youtube.player.YouTubeIntents;
 import com.google.samples.apps.iosched.Config;
 import com.google.samples.apps.iosched.model.TagMetadata;
+import com.google.samples.apps.iosched.port.superbus.AddRsvpCommand;
 import com.google.samples.apps.iosched.provider.ScheduleContract;
 import com.google.samples.apps.iosched.service.SessionAlarmService;
 import com.google.samples.apps.iosched.service.SessionCalendarService;
@@ -71,6 +73,7 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 
+import co.touchlab.android.threading.eventbus.EventBusExt;
 import co.touchlab.droidconnyc.R;
 
 import static com.google.samples.apps.iosched.util.LogUtils.LOGD;
@@ -205,6 +208,21 @@ public class SessionDetailFragment extends Fragment implements
         mTagColorDotSize = getResources().getDimensionPixelSize(R.dimen.tag_color_dot_size);
 
         mHandler = new Handler();
+
+        EventBusExt.getDefault().register(this);
+    }
+
+    @Override
+    public void onDestroy()
+    {
+        super.onDestroy();
+        EventBusExt.getDefault().unregister(this);
+    }
+
+    public void onEventMainThread(AddRsvpCommand addRsvpCommand)
+    {
+        if(addRsvpCommand.getErrorCode() != null)
+            Toast.makeText(getActivity(), addRsvpCommand.getErrorCode(), Toast.LENGTH_LONG).show();
     }
 
     @Override

@@ -11,6 +11,7 @@ import co.touchlab.android.superbus.CheckedCommand;
 import co.touchlab.android.superbus.Command;
 import co.touchlab.android.superbus.errorcontrol.PermanentException;
 import co.touchlab.android.superbus.errorcontrol.TransientException;
+import co.touchlab.android.threading.eventbus.EventBusExt;
 import retrofit.RestAdapter;
 
 /**
@@ -19,6 +20,7 @@ import retrofit.RestAdapter;
 public class AddRsvpCommand extends CheckedCommand
 {
     private Long eventId;
+    private String errorCode;
 
     public AddRsvpCommand(Long eventId)
     {
@@ -32,6 +34,11 @@ public class AddRsvpCommand extends CheckedCommand
     @Override
     public boolean handlePermanentError(Context context, PermanentException exception) {
         //TODO: need logging strategy
+        if(exception instanceof DataHelper.AppPermanentException)
+        {
+            errorCode = ((DataHelper.AppPermanentException)exception).getResponseBody();
+            EventBusExt.getDefault().post(this);
+        }
         return true;
     }
 
@@ -60,5 +67,10 @@ public class AddRsvpCommand extends CheckedCommand
         {
             throw new PermanentException("Some value is null: "+ eventId);
         }
+    }
+
+    public String getErrorCode()
+    {
+        return errorCode;
     }
 }
