@@ -10,7 +10,6 @@ import java.io.InputStream;
 import co.touchlab.android.threading.eventbus.EventBusExt;
 import co.touchlab.android.threading.tasks.TaskQueue;
 import co.touchlab.droidconandroid.network.dao.UserFollowResponse;
-import de.greenrobot.event.EventBusException;
 import retrofit.RestAdapter;
 import retrofit.client.Response;
 

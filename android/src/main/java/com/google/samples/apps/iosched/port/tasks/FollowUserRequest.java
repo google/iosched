@@ -3,7 +3,6 @@ package com.google.samples.apps.iosched.port.tasks;
 import co.touchlab.android.superbus.errorcontrol.PermanentException;
 import co.touchlab.android.superbus.errorcontrol.TransientException;
 import co.touchlab.droidconandroid.network.dao.UserFollowResponse;
-import retrofit.client.Response;
 import retrofit.http.Field;
 import retrofit.http.FormUrlEncoded;
 import retrofit.http.GET;

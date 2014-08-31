@@ -6,16 +6,15 @@ import android.net.Uri;
 import android.util.Log;
 
 import com.google.samples.apps.iosched.appwidget.ScheduleWidgetProvider;
-import com.google.samples.apps.iosched.port.tasks.AllRsvpsRequest;
 import com.google.samples.apps.iosched.port.tasks.DataHelper;
+import com.google.samples.apps.iosched.port.tasks.RsvpRequests;
 import com.google.samples.apps.iosched.provider.ScheduleContract;
 import com.google.samples.apps.iosched.sync.userdata.util.UserDataHelper;
 
+import org.apache.commons.io.IOUtils;
 import org.jetbrains.annotations.NotNull;
 
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.util.Set;
 
 import co.touchlab.android.superbus.CheckedCommand;
@@ -28,10 +27,16 @@ import retrofit.client.Response;
 import static com.google.samples.apps.iosched.util.LogUtils.LOGD;
 
 /**
- * Created by kgalligan on 8/30/14.
+ * Just pulls remote data and applies it locally.  If you dump the comments, there's very little logic
+ * here, which is kind of the point.  Pushing data happens as needed.
+ * @see com.google.samples.apps.iosched.port.superbus.AddRsvpCommand
+ * @see com.google.samples.apps.iosched.port.superbus.RemoveRsvpCommand
+ *
+ * Created by kgalligan on 8/17/14.
  */
 public class SyncAllRsvpsCommand extends CheckedCommand
 {
+    public static final String TAG = SyncAllRsvpsCommand.class.getSimpleName();
     private String accountName;
 
     public SyncAllRsvpsCommand(String accountName)
@@ -39,6 +44,9 @@ public class SyncAllRsvpsCommand extends CheckedCommand
         this.accountName = accountName;
     }
 
+    /**
+     * Empty constructor required for possibly inflating later.
+     */
     public SyncAllRsvpsCommand()
     {
     }
@@ -46,7 +54,7 @@ public class SyncAllRsvpsCommand extends CheckedCommand
     @Override
     public boolean handlePermanentError(@NotNull Context context, @NotNull PermanentException exception)
     {
-        return true;//Not true
+        return true;//Not true.  We're absolutely not "handling" this in any way, but we shouldn't crash.
     }
 
     @Override
@@ -55,12 +63,25 @@ public class SyncAllRsvpsCommand extends CheckedCommand
         return "Sync all";
     }
 
+    /**
+     * Don't need (or want) 2 of these.
+     * @param command
+     * @return
+     */
     @Override
     public boolean same(@NotNull Command command)
     {
         return command instanceof SyncAllRsvpsCommand;
     }
 
+    /**
+     * Called by the bus processor.  To sum what's happening, do your things here.  The exceptions are the critical things.
+     * Transient exceptions will leave the command in the queue and sleep.  Permanent will dump the command.
+     *
+     * @param context
+     * @throws TransientException Thrown when something temporary happens.  Almost always this means a network exception.
+     * @throws PermanentException Thrown when broken.  Pretty much anything except a network exception.
+     */
     @Override
     public void callCommand(@NotNull Context context) throws TransientException, PermanentException
     {
@@ -74,30 +95,29 @@ public class SyncAllRsvpsCommand extends CheckedCommand
         try
         {
             RestAdapter build = DataHelper.makeRequestAdapterBuilder(context).build();
-            Response response = build.create(AllRsvpsRequest.class).allRsvps();
+            Response response = build.create(RsvpRequests.class).allRsvps();
 
-            InputStream in = response.getBody().in();
-            ByteArrayOutputStream bos = new ByteArrayOutputStream();
+            String json = IOUtils.toString(response.getBody().in());
 
-            int read;
-            byte[] buf = new byte[1024];
+            Log.v(TAG, "Got this content from remote myschedule: [" + json + "]");
 
-            while ((read = in.read(buf)) > -1)
-            {
-                bos.write(buf, 0, read);
-            }
-
-            String json = new String(bos.toByteArray());
-
-            Log.v(SyncAllRsvpsCommand.class.getSimpleName(), "Got this content from remote myschedule: [" + json + "]");
             return json;
         }
         catch (IOException e)
         {
+            //If you're reading this, I don't know if this is correct.  IOException may be caused by
+            //something less "transient", but we've got to wrap this project up pretty quickly. Cross fingers.
+            //Specifically, does the input actually stream from the network, or is it pre cached?  If
+            //streaming, we may lose connectivity (however short the timeframe may be).  If something else, bad.
+            //However, if the data is already local, IOException should never happen, so a wash I guess?
             throw new TransientException(e);
         }
     }
 
+    /**
+     * Feels complex, yes?  Kind of don't dig ContentProviders for a number of reasons.  Here's one.
+     * @param context
+     */
     private void notifyContent(Context context)
     {
         LOGD(SyncAllRsvpsCommand.class.getSimpleName(), "Notifying changes on paths related to user data on Content Resolver.");

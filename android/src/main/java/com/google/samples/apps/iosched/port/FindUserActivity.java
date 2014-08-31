@@ -5,8 +5,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
@@ -20,11 +18,8 @@ import com.google.samples.apps.iosched.port.tasks.FindAllFollowsTask;
 import com.google.samples.apps.iosched.port.tasks.FindUserByCodeTask;
 import com.google.samples.apps.iosched.port.tasks.FollowUserTask;
 
-import java.util.List;
-
 import co.touchlab.android.threading.eventbus.EventBusExt;
 import co.touchlab.android.threading.tasks.TaskQueue;
-import co.touchlab.android.threading.tasks.TaskQueueActual;
 import co.touchlab.droidconandroid.network.dao.UserAccount;
 import co.touchlab.droidconandroid.network.dao.UserFollowResponse;
 import co.touchlab.droidconandroid.network.dao.UserInfoResponse;

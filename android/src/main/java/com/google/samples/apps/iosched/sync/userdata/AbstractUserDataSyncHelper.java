@@ -16,26 +16,7 @@
 
 package com.google.samples.apps.iosched.sync.userdata;
 
-import android.content.ContentProviderOperation;
-import android.content.ContentProviderResult;
-import android.content.ContentResolver;
 import android.content.Context;
-import android.database.Cursor;
-import android.net.Uri;
-import android.util.Log;
-
-import com.google.samples.apps.iosched.appwidget.ScheduleWidgetProvider;
-import com.google.samples.apps.iosched.gcm.ServerUtilities;
-import com.google.samples.apps.iosched.provider.ScheduleContract;
-import com.google.samples.apps.iosched.provider.ScheduleContract.MySchedule;
-
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-
-import static com.google.samples.apps.iosched.util.LogUtils.LOGD;
-import static com.google.samples.apps.iosched.util.LogUtils.LOGW;
-import static com.google.samples.apps.iosched.util.LogUtils.makeLogTag;
 
 
 /**
@@ -50,15 +31,5 @@ public abstract class AbstractUserDataSyncHelper {
         this.mAccountName = accountName;
     }
 
-    protected abstract boolean syncImpl();
-
-    /**
-     * Create a copy of current pending actions and delegate the
-     * proper sync'ing to the concrete subclass on the method syncImpl.
-     *
-     */
-    public boolean sync()
-    {
-        return syncImpl();
-    }
+    public abstract boolean sync();
 }

@@ -8,11 +8,8 @@ import com.google.gson.GsonBuilder;
 
 import org.apache.commons.io.IOUtils;
 
-import java.io.IOException;
-
 import co.touchlab.android.superbus.errorcontrol.PermanentException;
 import co.touchlab.android.superbus.errorcontrol.TransientException;
-import co.touchlab.android.superbus.http.RetrofitBusErrorHandler;
 import co.touchlab.droidconnyc.R;
 import retrofit.ErrorHandler;
 import retrofit.RequestInterceptor;
