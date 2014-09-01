@@ -32,9 +32,11 @@ import static com.google.samples.apps.iosched.util.LogUtils.LOGI;
 /**
  * Created by kgalligan on 9/1/14.
  */
-public class SyncConferenceDataCommand extends CheckedCommand
+public class SyncConferenceDataCommand extends CancellableCheckedCommand
 {
     public static final String TAG = SyncConferenceDataCommand.class.getSimpleName();
+    transient String[] dataFiles;
+
     @Override
     public boolean handlePermanentError(@NotNull Context context, @NotNull PermanentException exception)
     {
@@ -55,12 +57,11 @@ public class SyncConferenceDataCommand extends CheckedCommand
     }
 
     @Override
-    public void callCommand(@NotNull Context context) throws TransientException, PermanentException
+    protected void setupData(@NotNull Context context) throws TransientException, PermanentException
     {
         RemoteConferenceDataFetcher mRemoteDataFetcher = new RemoteConferenceDataFetcher(context);
         ConferenceDataHandler mConferenceDataHandler = new ConferenceDataHandler(context);
         // Fetch the remote data files via RemoteConferenceDataFetcher
-        String[] dataFiles;
         try
         {
             dataFiles = mRemoteDataFetcher.fetchConferenceDataIfNewer(mConferenceDataHandler.getDataTimestamp());
@@ -69,6 +70,13 @@ public class SyncConferenceDataCommand extends CheckedCommand
         {
             throw new TransientException(e);
         }
+    }
+
+    @Override
+    protected void commitData(@NotNull Context context) throws PermanentException
+    {
+        RemoteConferenceDataFetcher mRemoteDataFetcher = new RemoteConferenceDataFetcher(context);
+        ConferenceDataHandler mConferenceDataHandler = new ConferenceDataHandler(context);
 
         if (dataFiles != null) {
             LOGI(TAG, "Applying remote data.");

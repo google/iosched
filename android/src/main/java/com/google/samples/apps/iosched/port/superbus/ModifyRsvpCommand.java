@@ -29,11 +29,13 @@ public abstract class ModifyRsvpCommand extends CheckedCommand
      */
     protected ModifyRsvpCommand(Long eventId)
     {
+        this();
         this.eventId = eventId;
     }
 
     protected ModifyRsvpCommand()
     {
+        setPriority(HIGHER_PRIORITY);
     }
 
     /**

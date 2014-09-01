@@ -1,9 +1,12 @@
 package com.google.samples.apps.iosched.port.superbus;
 
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
+import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 
 import com.google.samples.apps.iosched.appwidget.ScheduleWidgetProvider;
@@ -12,6 +15,7 @@ import com.google.samples.apps.iosched.port.tasks.RsvpRequests;
 import com.google.samples.apps.iosched.provider.ScheduleContract;
 import com.google.samples.apps.iosched.service.SessionAlarmService;
 import com.google.samples.apps.iosched.sync.userdata.util.UserDataHelper;
+import com.google.samples.apps.iosched.ui.MyScheduleActivity;
 
 import org.apache.commons.io.IOUtils;
 import org.jetbrains.annotations.NotNull;
@@ -23,6 +27,7 @@ import co.touchlab.android.superbus.CheckedCommand;
 import co.touchlab.android.superbus.Command;
 import co.touchlab.android.superbus.errorcontrol.PermanentException;
 import co.touchlab.android.superbus.errorcontrol.TransientException;
+import co.touchlab.droidconnyc.R;
 import retrofit.RestAdapter;
 import retrofit.client.Response;
 
@@ -36,10 +41,12 @@ import static com.google.samples.apps.iosched.util.LogUtils.LOGD;
  *
  * Created by kgalligan on 8/17/14.
  */
-public class SyncAllRsvpsCommand extends CheckedCommand
+public class SyncAllRsvpsCommand extends CancellableCheckedCommand
 {
     public static final String TAG = SyncAllRsvpsCommand.class.getSimpleName();
     private String accountName;
+
+    transient Set<String> remote;
 
     public SyncAllRsvpsCommand(String accountName)
     {
@@ -56,7 +63,8 @@ public class SyncAllRsvpsCommand extends CheckedCommand
     @Override
     public boolean handlePermanentError(@NotNull Context context, @NotNull PermanentException exception)
     {
-        return true;//Not true.  We're absolutely not "handling" this in any way, but we shouldn't crash.
+        showError(context);
+        return true;
     }
 
     @Override
@@ -76,18 +84,15 @@ public class SyncAllRsvpsCommand extends CheckedCommand
         return command instanceof SyncAllRsvpsCommand;
     }
 
-    /**
-     * Called by the bus processor.  To sum what's happening, do your things here.  The exceptions are the critical things.
-     * Transient exceptions will leave the command in the queue and sleep.  Permanent will dump the command.
-     *
-     * @param context
-     * @throws TransientException Thrown when something temporary happens.  Almost always this means a network exception.
-     * @throws PermanentException Thrown when broken.  Pretty much anything except a network exception.
-     */
     @Override
-    public void callCommand(@NotNull Context context) throws TransientException, PermanentException
+    protected void setupData(@NotNull Context context) throws TransientException, PermanentException
     {
-        Set<String> remote = UserDataHelper.fromString(fetchRemote(context));
+        remote = UserDataHelper.fromString(fetchRemote(context));
+    }
+
+    @Override
+    protected void commitData(@NotNull Context context) throws PermanentException
+    {
         UserDataHelper.setLocalStarredSessions(context, remote, accountName);
         //TODO: test updated
         updateAlarm(context, true);
@@ -142,5 +147,30 @@ public class SyncAllRsvpsCommand extends CheckedCommand
             resolver.notifyChange(uri, null);
         }
         context.sendBroadcast(ScheduleWidgetProvider.getRefreshBroadcastIntent(context, false));
+    }
+
+
+    private void showError(Context context)
+    {
+        ((NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE))
+                .notify(0, new NotificationCompat.Builder(context)
+                        .setWhen(System.currentTimeMillis())
+                        .setSmallIcon(R.drawable.ic_stat_notification)
+                        .setTicker("Sync error")
+                        .setContentTitle(context.getString(R.string.app_name))
+                        .setContentText("Couldn't sync rsvp data. Pull to refresh in app")
+                                //.setColor(context.getResources().getColor(R.color.theme_primary))
+                                // Note: setColor() is available in the support lib v21+.
+                                // We commented it out because we want the source to compile
+                                // against support lib v20. If you are using support lib
+                                // v21 or above on Android L, uncomment this line.
+                        .setContentIntent(
+                                PendingIntent.getActivity(context, 0,
+                                        new Intent(context, MyScheduleActivity.class)
+                                                .setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP |
+                                                        Intent.FLAG_ACTIVITY_SINGLE_TOP),
+                                        0))
+                        .setAutoCancel(true)
+                        .build());
     }
 }

@@ -1,8 +1,10 @@
 package com.google.samples.apps.iosched.port.tasks;
 
+import android.accounts.Account;
 import android.content.Context;
 
 import com.google.android.gms.auth.GoogleAuthUtil;
+import com.google.samples.apps.iosched.sync.SyncHelper;
 import com.google.samples.apps.iosched.util.AccountUtils;
 
 import co.touchlab.android.threading.eventbus.EventBusExt;
@@ -64,5 +66,9 @@ public class GoogleLoginTask extends TaskQueue.Task
         AccountUtils.setGcmKey(context, accountName, loginResult.gcmKey);
 
         UserAuthHelper.processLoginResonse(context, loginResult);
+
+        Account activeAccount = AccountUtils.getActiveAccount(context);
+        if(activeAccount != null)
+            SyncHelper.requestManualSync(activeAccount);
     }
 }

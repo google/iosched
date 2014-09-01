@@ -27,6 +27,7 @@ import android.view.MenuItem;
 
 import com.google.samples.apps.iosched.appwidget.ScheduleWidgetProvider;
 import com.google.samples.apps.iosched.port.superbus.AddRsvpCommand;
+import com.google.samples.apps.iosched.port.superbus.CancellableCheckedCommand;
 import com.google.samples.apps.iosched.port.superbus.RemoveRsvpCommand;
 import com.google.samples.apps.iosched.provider.ScheduleContract;
 import com.google.samples.apps.iosched.sync.SyncHelper;
@@ -118,11 +119,14 @@ public final class SessionsHelper {
         AsyncQueryHandler handler =
                 new AsyncQueryHandler(mActivity.getContentResolver()) {
                 };
+
+        //Cancel global load, if happening.  Not 100% great, due to async content updates, but should be OK.
+        CancellableCheckedCommand.cancelGlobalUpdates(mActivity);
+
         final ContentValues values = new ContentValues();
         values.put(ScheduleContract.MySchedule.SESSION_ID, sessionId);
         values.put(ScheduleContract.MySchedule.MY_SCHEDULE_IN_SCHEDULE, starred?1:0);
         handler.startInsert(-1, null, myScheduleUri, values);
-
 
         try
         {

@@ -24,6 +24,7 @@ import android.content.Intent;
 import android.content.SyncResult;
 import android.net.ConnectivityManager;
 import android.os.Bundle;
+import android.util.Log;
 
 import com.google.samples.apps.iosched.Config;
 import com.google.samples.apps.iosched.port.superbus.SyncAllRsvpsCommand;
@@ -203,6 +204,13 @@ public class SyncHelper {
     private void doUserScheduleSync(String accountName)
     {
         if(AppPrefs.getInstance(mContext).isLoggedIn())
+        {
+            Log.w(TAG, "Starting rsvp sync");
             CommandBusHelper.submitCommandSync(mContext, new SyncAllRsvpsCommand(accountName));
+        }
+        else
+        {
+            Log.w(TAG, "Can't rsvp sync.  Not logged in");
+        }
     }
 }
