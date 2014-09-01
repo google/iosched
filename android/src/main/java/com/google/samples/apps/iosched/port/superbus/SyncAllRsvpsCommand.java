@@ -2,6 +2,7 @@ package com.google.samples.apps.iosched.port.superbus;
 
 import android.content.ContentResolver;
 import android.content.Context;
+import android.content.Intent;
 import android.net.Uri;
 import android.util.Log;
 
@@ -9,6 +10,7 @@ import com.google.samples.apps.iosched.appwidget.ScheduleWidgetProvider;
 import com.google.samples.apps.iosched.port.tasks.DataHelper;
 import com.google.samples.apps.iosched.port.tasks.RsvpRequests;
 import com.google.samples.apps.iosched.provider.ScheduleContract;
+import com.google.samples.apps.iosched.service.SessionAlarmService;
 import com.google.samples.apps.iosched.sync.userdata.util.UserDataHelper;
 
 import org.apache.commons.io.IOUtils;
@@ -87,7 +89,20 @@ public class SyncAllRsvpsCommand extends CheckedCommand
     {
         Set<String> remote = UserDataHelper.fromString(fetchRemote(context));
         UserDataHelper.setLocalStarredSessions(context, remote, accountName);
+        //TODO: test updated
+        updateAlarm(context, true);
         notifyContent(context);
+    }
+
+    private void updateAlarm(Context context, boolean modified)
+    {
+        if (modified) {
+            // schedule notifications for the starred sessions
+            Intent scheduleIntent = new Intent(
+                    SessionAlarmService.ACTION_SCHEDULE_ALL_STARRED_BLOCKS,
+                    null, context, SessionAlarmService.class);
+            context.startService(scheduleIntent);
+        }
     }
 
     private String fetchRemote(Context context) throws PermanentException, TransientException

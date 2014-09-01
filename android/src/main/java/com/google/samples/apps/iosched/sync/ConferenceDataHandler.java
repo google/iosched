@@ -140,11 +140,9 @@ public class ConferenceDataHandler {
      *
      * @param dataBodies The collection of JSON objects to parse and import.
      * @param dataTimestamp The timestamp of the data. This should be in RFC1123 format.
-     * @param downloadsAllowed Whether or not we are supposed to download data from the internet if needed.
      * @throws IOException If there is a problem parsing the data.
      */
-    public void applyConferenceData(String[] dataBodies, String dataTimestamp,
-            boolean downloadsAllowed) throws IOException {
+    public void applyConferenceData(String[] dataBodies, String dataTimestamp) throws IOException {
         LOGD(TAG, "Applying data from " + dataBodies.length + " files, timestamp " + dataTimestamp);
 
         // create handlers for each data type
@@ -183,8 +181,9 @@ public class ConferenceDataHandler {
         LOGD(TAG, "Total content provider operations: " + batch.size());
 
         // download or process local map tile overlay files (SVG files)
-        LOGD(TAG, "Processing map overlay files");
-        processMapOverlayFiles(mMapPropertyHandler.getTileOverlays(), downloadsAllowed);
+        // We don't have any map overlays, and we should do local and remote data separate
+//        LOGD(TAG, "Processing map overlay files");
+//        processMapOverlayFiles(mMapPropertyHandler.getTileOverlays(), downloadsAllowed);
 
         // finally, push the changes into the Content Provider
         LOGD(TAG, "Applying " + batch.size() + " content provider operations.");

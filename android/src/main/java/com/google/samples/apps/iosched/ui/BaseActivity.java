@@ -66,6 +66,7 @@ import com.google.android.gms.auth.GoogleAuthUtil;
 import com.google.samples.apps.iosched.Config;
 import com.google.samples.apps.iosched.io.JSONHandler;
 import com.google.samples.apps.iosched.port.FindUserActivity;
+import com.google.samples.apps.iosched.port.superbus.SyncConferenceDataCommand;
 import com.google.samples.apps.iosched.port.tasks.AppPrefs;
 import com.google.samples.apps.iosched.port.tasks.GcmRegistrationTask;
 import com.google.samples.apps.iosched.provider.ScheduleContract;
@@ -981,8 +982,7 @@ public abstract class BaseActivity extends Activity implements
 
                     // Apply the data we read to the database with the help of the ConferenceDataHandler
                     ConferenceDataHandler dataHandler = new ConferenceDataHandler(appContext);
-                    dataHandler.applyConferenceData(new String[]{bootstrapJson},
-                            Config.BOOTSTRAP_DATA_TIMESTAMP, false);
+                    dataHandler.applyConferenceData(new String[]{bootstrapJson}, Config.BOOTSTRAP_DATA_TIMESTAMP);
                     SyncHelper.performPostSyncChores(appContext);
                     LOGI(TAG, "End of bootstrap -- successful. Marking boostrap as done.");
                     PrefUtils.markSyncSucceededNow(appContext);
@@ -1144,7 +1144,7 @@ public abstract class BaseActivity extends Activity implements
 
         if (newlyAuthenticated) {
             LOGD(TAG, "Enabling auto sync on content provider for account " + accountName);
-            SyncHelper.updateSyncInterval(this, account);
+            SyncConferenceDataCommand.updateSyncInterval(this, account);
             SyncHelper.requestManualSync(account);
         }
 
