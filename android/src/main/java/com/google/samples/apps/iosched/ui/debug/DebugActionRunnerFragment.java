@@ -29,7 +29,6 @@ import com.google.samples.apps.iosched.ui.debug.actions.ForceAppDataSyncNowActio
 import com.google.samples.apps.iosched.ui.debug.actions.ForceSyncNowAction;
 import com.google.samples.apps.iosched.ui.debug.actions.ListStarredSessionsDebugAction;
 import com.google.samples.apps.iosched.ui.debug.actions.ScheduleStarredSessionAlarmsAction;
-import com.google.samples.apps.iosched.ui.debug.actions.ShowFeedbackNotificationAction;
 import com.google.samples.apps.iosched.ui.debug.actions.ShowSessionNotificationDebugAction;
 import com.google.samples.apps.iosched.ui.debug.actions.SimulateBadgeScannedAction;
 import com.google.samples.apps.iosched.ui.debug.actions.TestScheduleHelperAction;
@@ -57,7 +56,7 @@ public class DebugActionRunnerFragment extends Fragment {
         tests.addView(createTestAction(new TestScheduleHelperAction()));
         tests.addView(createTestAction(new ScheduleStarredSessionAlarmsAction()));
         tests.addView(createTestAction(new SimulateBadgeScannedAction()));
-        tests.addView(createTestAction(new ShowFeedbackNotificationAction()));
+
         tests.addView(createTestAction(new ShowSessionNotificationDebugAction()
         ));
         return rootView;

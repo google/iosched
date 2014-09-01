@@ -170,6 +170,8 @@ public static final long[][] CONFERENCE_DAYS = new long[][] {
     // Session details page.
     public static final long HINT_TIME_BEFORE_SESSION = 30 * MINUTE_MILLIS; // 60 min
 
+    public static final boolean FEEDBACK_ENABLED = false;
+
     // how long before the end of a session the user can give feedback
     public static final long FEEDBACK_MILLIS_BEFORE_SESSION_END = 15 * MINUTE_MILLIS; // 15min
 

@@ -39,6 +39,7 @@ import com.google.android.gms.wearable.DataApi;
 import com.google.android.gms.wearable.PutDataMapRequest;
 import com.google.android.gms.wearable.PutDataRequest;
 import com.google.android.gms.wearable.Wearable;
+import com.google.samples.apps.iosched.Config;
 import com.google.samples.apps.iosched.provider.ScheduleContract;
 import com.google.samples.apps.iosched.ui.BrowseSessionsActivity;
 import com.google.samples.apps.iosched.ui.MapFragment;
@@ -143,7 +144,8 @@ public class SessionAlarmService extends IntentService
         if (ACTION_SCHEDULE_ALL_STARRED_BLOCKS.equals(action)) {
             LOGD(TAG, "Scheduling all starred blocks.");
             scheduleAllStarredBlocks();
-            scheduleAllStarredSessionFeedbacks();
+            if(Config.FEEDBACK_ENABLED)
+                scheduleAllStarredSessionFeedbacks();
             return;
         }
 

@@ -28,7 +28,6 @@ import android.widget.SearchView;
 
 import com.google.samples.apps.iosched.model.TagMetadata;
 import com.google.samples.apps.iosched.provider.ScheduleContract;
-import com.google.samples.apps.iosched.ui.debug.actions.ShowFeedbackNotificationAction;
 import com.google.samples.apps.iosched.util.AnalyticsManager;
 
 import co.touchlab.droidconnyc.R;
@@ -136,9 +135,7 @@ public class SearchActivity extends BaseActivity implements SessionsFragment.Cal
                     @Override
                     public boolean onQueryTextSubmit(String s) {
                         view.clearFocus();
-                        if ("zzznotif".equals(s)) {
-                            (new ShowFeedbackNotificationAction()).run(SearchActivity.this, null);
-                        }
+
                         return true;
                     }
 

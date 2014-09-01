@@ -482,7 +482,7 @@ public class SessionDetailFragment extends Fragment implements
         }
 
         // Schedule feedback notification
-        if (UIUtils.getCurrentTime(context) < mSessionEnd) {
+        if (Config.FEEDBACK_ENABLED && UIUtils.getCurrentTime(context) < mSessionEnd) {
             LOGD(TAG, "Scheduling notification about session feedback.");
             scheduleIntent = new Intent(
                     SessionAlarmService.ACTION_SCHEDULE_FEEDBACK_NOTIFICATION,
