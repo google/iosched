@@ -46,7 +46,7 @@ public class RegisterServlet extends BaseServlet {
       throws IOException, ServletException {
 
     // Let's see what this user is authorized to do
-    AuthInfo authInfo = AuthHelper.processAuthorization(req);
+    AuthInfo authInfo = AuthHelper.processAuthorization(req, getServletConfig());
 
     if (authInfo == null || !authInfo.permRegister) {
       send(resp, 403, "Not authorized");

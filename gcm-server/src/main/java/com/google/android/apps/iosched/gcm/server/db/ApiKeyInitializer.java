@@ -40,10 +40,12 @@ public class ApiKeyInitializer implements ServletContextListener {
     public static final String API_KEY = "<ENTER_YOUR_KEY>";
 
     public static final String ATTRIBUTE_ACCESS_KEY = "apiKey";
+    public static final String ATTRIBUTE_ADMIN_AUTH = "adminAuth";
 
     private static final String ENTITY_KIND = "Settings";
     private static final String ENTITY_KEY = "MyKey";
     private static final String ACCESS_KEY_FIELD = "ApiKey";
+    private static final String ADMIN_AUTH_FIELD = "AdminAuth";
 
     private final Logger mLogger = Logger.getLogger(getClass().getName());
 
@@ -60,16 +62,17 @@ public class ApiKeyInitializer implements ServletContextListener {
             // NOTE: it's not possible to change entities in the local server, so
             // it will be necessary to hardcode the API key below if you are running
             // it locally.
-            entity.setProperty(ACCESS_KEY_FIELD,
-              API_KEY);
+            entity.setProperty(ACCESS_KEY_FIELD, API_KEY);
+            entity.setProperty(ADMIN_AUTH_FIELD, API_KEY);
+
             datastore.put(entity);
             mLogger.severe("Created fake key. Please go to App Engine admin "
                     + "console, change its value to your API Key (the entity "
                     + "type is '" + ENTITY_KIND + "' and its field to be changed is '"
                     + ACCESS_KEY_FIELD + "'), then restart the server!");
         }
-        String accessKey = (String) entity.getProperty(ACCESS_KEY_FIELD);
-        event.getServletContext().setAttribute(ATTRIBUTE_ACCESS_KEY, accessKey);
+        event.getServletContext().setAttribute(ATTRIBUTE_ACCESS_KEY, entity.getProperty(ACCESS_KEY_FIELD));
+        event.getServletContext().setAttribute(ATTRIBUTE_ADMIN_AUTH, entity.getProperty(ADMIN_AUTH_FIELD));
     }
 
     /**

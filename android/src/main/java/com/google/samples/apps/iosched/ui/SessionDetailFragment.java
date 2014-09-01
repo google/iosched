@@ -273,6 +273,8 @@ public class SessionDetailFragment extends Fragment implements
                  */
                 AnalyticsManager.sendEvent(
                         "Session", starred ? "Starred" : "Unstarred", mTitleString, 0L);
+
+                getActivity().finish();
             }
         });
 

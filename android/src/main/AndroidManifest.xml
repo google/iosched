@@ -412,6 +412,12 @@
             android:name="com.google.samples.apps.iosched.port.FindUserActivity"
             android:label="@string/title_activity_find_user" >
         </activity>
+
+        <receiver android:name="co.touchlab.android.superbus.network.ConnectionChangeReceiver" >
+            <intent-filter>
+                <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
+            </intent-filter>
+        </receiver>
     </application>
 
 </manifest>

@@ -75,8 +75,7 @@ public abstract class ModifyRsvpCommand extends CheckedCommand
         {
             RestAdapter restAdapter = DataHelper.makeRequestAdapter(context);
             RsvpRequests rsvpRequests = restAdapter.create(RsvpRequests.class);
-            BasicIdResult basicIdResult = runCommand(rsvpRequests);
-            Log.w("asdf", "Result id: " + basicIdResult.id);
+            runCommand(rsvpRequests);
         }
         else
         {

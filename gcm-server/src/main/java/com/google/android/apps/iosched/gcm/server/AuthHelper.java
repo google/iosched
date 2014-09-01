@@ -15,6 +15,9 @@
  */
 package com.google.android.apps.iosched.gcm.server;
 
+import com.google.android.apps.iosched.gcm.server.db.ApiKeyInitializer;
+
+import javax.servlet.ServletConfig;
 import javax.servlet.http.HttpServletRequest;
 
 public class AuthHelper {
@@ -24,19 +27,16 @@ public class AuthHelper {
     {"REG-madeinny", "Android app registration key"},
   };
 
-  /** Keys that can be used to request full admin privileges. */
-  private static final String[][] ADMIN_KEYS = {
-    // {"ADM-your-key-here", "Command line tool admin key"},
-    {"ADM-barrymanilow", "Updater AppEngine app"}
-  };
+
 
   /**
    * Extract authorization info from the HTTP request header or query param.
    * @param req
+   * @param servletConfig
    * @return null if no authorization found. An AuthInfo with admin set to true if a valid admin key
    * is used, or set to false if any non-admin key is present.
    */
-  public static AuthInfo processAuthorization(HttpServletRequest req) {
+  public static AuthInfo processAuthorization(HttpServletRequest req, ServletConfig servletConfig) {
     // Authenticate request
     // Auth key defaults to the 'key' query parameter
     String authKey = req.getParameter("key");
@@ -53,14 +53,21 @@ public class AuthHelper {
       return null;
     }
 
-    for (String[] candidateKey : ADMIN_KEYS) {
+      String configedAdminKey = (String) servletConfig.getServletContext().getAttribute(ApiKeyInitializer.ATTRIBUTE_ADMIN_AUTH);
+      if(configedAdminKey.equals(authKey))
+      {
+          AuthInfo info = new AuthInfo(configedAdminKey, "Updater AppEngine app");
+          info.permAdmin = true;
+          return info;
+      }
+     /* for (String[] candidateKey : ADMIN_KEYS) {
         if (candidateKey[0].equals(authKey)) {
             // caller is an admin
             AuthInfo info = new AuthInfo(candidateKey[0], candidateKey[1]);
             info.permAdmin = true;
             return info;
         }
-    }
+    }*/
 
     for (String[] candidateKey : REGISTRATION_KEYS) {
       if (candidateKey[0].equals(authKey)) {

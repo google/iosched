@@ -70,7 +70,7 @@ public class SendMessageServlet extends BaseServlet {
         String action = components[2];
 
         // Let's see what this user is authorized to do
-        AuthInfo authInfo = AuthHelper.processAuthorization(req);
+        AuthInfo authInfo = AuthHelper.processAuthorization(req, getServletConfig());
 
         // If no auth info or non-admin trying to run non-whitelisted actions, no access.
         if (authInfo == null || action == null ||
