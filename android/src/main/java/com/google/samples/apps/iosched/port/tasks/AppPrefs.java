@@ -11,6 +11,12 @@ public class AppPrefs
 {
     public static final String USER_UUID = "USER_UUID";
     public static final String USER_ID = "USER_ID";
+    public static final String GCM_REGISTRATION_KEY = "GCM_REGISTRATION_KEY";
+    public static final String GCM_REGISTRATION_ID = "GCM_REGISTRATION_ID";
+    public static final String GCM_APP_VERSION = "GCM_APP_VERSION";
+    public static final String GCM_REGISTRATION_TS = "GCM_REGISTRATION_TS";
+    public static final int NO_VALUE = -1;
+
     private static AppPrefs instance;
 
     private SharedPreferences prefs;
@@ -50,5 +56,39 @@ public class AppPrefs
     public void setUserId(Long id)
     {
         prefs.edit().putLong(USER_ID, id).apply();
+    }
+
+    public String getGcmRegistrationKey()
+    {
+        return prefs.getString(GCM_REGISTRATION_KEY, "");
+    }
+    public String getGcmRegistrationId()
+    {
+        return prefs.getString(GCM_REGISTRATION_ID, "");
+    }
+
+    public void setGcmRegistrationId(String regId, String gcmKey, int appVersion, long regTs)
+    {
+        SharedPreferences.Editor edit = prefs.edit();
+        edit.putString(GCM_REGISTRATION_ID, regId);
+        edit.putString(GCM_REGISTRATION_KEY, gcmKey);
+        edit.putInt(GCM_APP_VERSION, appVersion);
+        edit.putLong(GCM_REGISTRATION_TS, regTs);
+        edit.apply();
+    }
+
+    public void clearGcmRegistrationId()
+    {
+        prefs.edit().remove(GCM_REGISTRATION_ID).apply();
+    }
+
+    public long getGcmRegistrationTs()
+    {
+        return prefs.getLong(GCM_REGISTRATION_TS, 0);
+    }
+
+    public int getGcmAppVersion()
+    {
+        return prefs.getInt(GCM_APP_VERSION, NO_VALUE);
     }
 }

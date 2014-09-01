@@ -16,7 +16,7 @@
 
 apply plugin: 'java'
 apply plugin: 'gae'
-apply plugin: 'eclipse'
+apply plugin: 'idea'
 
 buildscript {
     repositories {

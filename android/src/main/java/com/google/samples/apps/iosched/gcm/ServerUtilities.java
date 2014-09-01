@@ -21,6 +21,7 @@ import android.content.SharedPreferences.Editor;
 import android.text.TextUtils;
 
 import com.google.samples.apps.iosched.Config;
+import com.google.samples.apps.iosched.port.tasks.AppPrefs;
 import com.google.samples.apps.iosched.util.AccountUtils;
 
 import java.io.IOException;
@@ -48,10 +49,10 @@ import static com.google.samples.apps.iosched.util.LogUtils.makeLogTag;
 public final class ServerUtilities {
     private static final String TAG = makeLogTag("GCMs");
 
-    private static final String PREFERENCES = "com.google.samples.apps.iosched.gcm";
-    private static final String PROPERTY_REGISTERED_TS = "registered_ts";
-    private static final String PROPERTY_REG_ID = "reg_id";
-    private static final String PROPERTY_GCM_KEY = "gcm_key";
+//    private static final String PREFERENCES = "com.google.samples.apps.iosched.gcm";
+//    private static final String PROPERTY_REGISTERED_TS = "registered_ts";
+//    private static final String PROPERTY_REG_ID = "reg_id";
+//    private static final String PROPERTY_GCM_KEY = "gcm_key";
     private static final int MAX_ATTEMPTS = 5;
     private static final int BACKOFF_MILLI_SECONDS = 2000;
 
@@ -79,7 +80,7 @@ public final class ServerUtilities {
      * @param gcmKey  The GCM key with which to register.
      * @return whether the registration succeeded or not.
      */
-    public static boolean register(final Context context, final String gcmId, final String gcmKey) {
+    public static boolean registerFromTask(final Context context, final String gcmId, final String gcmKey, int appVersion) {
         if (!checkGcmEnabled()) {
             return false;
         }
@@ -99,7 +100,7 @@ public final class ServerUtilities {
             LOGV(TAG, "Attempt #" + i + " to register");
             try {
                 post(serverUrl, params, Config.GCM_API_KEY);
-                setRegisteredOnServer(context, true, gcmId, gcmKey);
+                AppPrefs.getInstance(context).setGcmRegistrationId(gcmId, gcmKey, appVersion, System.currentTimeMillis());
                 return true;
             } catch (IOException e) {
                 // Here we are simplifying and retrying on any error; in a real
@@ -142,7 +143,6 @@ public final class ServerUtilities {
         params.put("gcm_id", gcmId);
         try {
             post(serverUrl, params, Config.GCM_API_KEY);
-            setRegisteredOnServer(context, false, gcmId, null);
         } catch (IOException e) {
             // At this point the device is unregistered from GCM, but still
             // registered in the server.
@@ -152,7 +152,7 @@ public final class ServerUtilities {
             LOGD(TAG, "Unable to unregister from application server", e);
         } finally {
             // Regardless of server success, clear local preferences
-            setRegisteredOnServer(context, false, null, null);
+            AppPrefs.getInstance(context).clearGcmRegistrationId();
         }
     }
 
@@ -185,7 +185,7 @@ public final class ServerUtilities {
      * @param flag    True if registration was successful, false otherwise
      * @param gcmId    True if registration was successful, false otherwise
      */
-    private static void setRegisteredOnServer(Context context, boolean flag, String gcmId, String gcmKey) {
+    /*private static void setRegisteredOnServer(Context context, boolean flag, String gcmId, String gcmKey) {
         final SharedPreferences prefs = context.getSharedPreferences(
                 PREFERENCES, Context.MODE_PRIVATE);
         LOGD(TAG, "Setting registered on server status as: " + flag + ", gcmKey="
@@ -199,7 +199,7 @@ public final class ServerUtilities {
             editor.remove(PROPERTY_REG_ID);
         }
         editor.commit();
-    }
+    }*/
 
     /**
      * Checks whether the device was successfully registered in the server side.
@@ -208,20 +208,19 @@ public final class ServerUtilities {
      * @return True if registration was successful, false otherwise
      */
     public static boolean isRegisteredOnServer(Context context, String gcmKey) {
-        final SharedPreferences prefs = context.getSharedPreferences(
-                PREFERENCES, Context.MODE_PRIVATE);
         // Find registration threshold
+        AppPrefs appPrefs = AppPrefs.getInstance(context);
         Calendar cal = Calendar.getInstance();
         cal.add(Calendar.DATE, -1);
         long yesterdayTS = cal.getTimeInMillis();
-        long regTS = prefs.getLong(PROPERTY_REGISTERED_TS, 0);
+        long regTS = appPrefs.getGcmRegistrationTs();
 
         gcmKey = gcmKey == null ? "" : gcmKey;
 
         if (regTS > yesterdayTS) {
             LOGV(TAG, "GCM registration current. regTS=" + regTS + " yesterdayTS=" + yesterdayTS);
 
-            final String registeredGcmKey = prefs.getString(PROPERTY_GCM_KEY, "");
+            final String registeredGcmKey = appPrefs.getGcmRegistrationKey();
             if (registeredGcmKey.equals(gcmKey)) {
                 LOGD(TAG, "GCM registration is valid and for the correct gcm key: "
                         + AccountUtils.sanitizeGcmKey(registeredGcmKey));
@@ -238,8 +237,7 @@ public final class ServerUtilities {
     }
 
     public static String getGcmId(Context context) {
-        final SharedPreferences prefs = context.getSharedPreferences(PREFERENCES, Context.MODE_PRIVATE);
-        return prefs.getString(PROPERTY_REG_ID, null);
+        return AppPrefs.getInstance(context).getGcmRegistrationId();
     }
 
     /**

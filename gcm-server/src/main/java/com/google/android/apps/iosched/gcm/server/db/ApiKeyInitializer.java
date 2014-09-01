@@ -35,6 +35,8 @@ import com.google.appengine.api.datastore.DatastoreService;
  */
 public class ApiKeyInitializer implements ServletContextListener {
 
+    //OK. Here's the deal. You don't enter this here.  Deploy the app, then go into the admin console, and set this from the
+    //Datastore viewer.  Must be set to public server key from api admin panel.
     public static final String API_KEY = "<ENTER_YOUR_KEY>";
 
     public static final String ATTRIBUTE_ACCESS_KEY = "apiKey";

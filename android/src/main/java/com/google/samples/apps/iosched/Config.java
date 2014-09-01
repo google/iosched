@@ -119,6 +119,7 @@ public static final long[][] CONFERENCE_DAYS = new long[][] {
     // the GCM sender ID is the ID of the app in Google Cloud Console
 //    public static final String GCM_SENDER_ID = "droidconnyc";
     public static final String GCM_SENDER_ID = "654878069390";
+//    public static final String GCM_SENDER_ID = "205847568564";
 
     // The registration api KEY in the gcm server (configured in the GCM
     // server's AuthHelper.java file)

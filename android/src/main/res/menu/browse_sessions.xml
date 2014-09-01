@@ -31,12 +31,6 @@
         android:orderInCategory="98"
         android:showAsAction="never" />
 
-    <item android:id="@+id/menu_i_o_hunt"
-          android:title="@string/description_i_o_hunt"
-          android:orderInCategory="99"
-        android:visible="false"
-          android:showAsAction="never" />
-
     <item android:id="@+id/menu_io_extended"
         android:visible="false"
         android:title="@string/description_i_o_extended"

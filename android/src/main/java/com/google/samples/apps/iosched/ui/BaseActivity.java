@@ -46,6 +46,7 @@ import android.preference.PreferenceManager;
 import android.provider.Settings;
 import android.support.v4.widget.DrawerLayout;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -63,10 +64,10 @@ import android.widget.Toast;
 import com.google.android.gcm.GCMRegistrar;
 import com.google.android.gms.auth.GoogleAuthUtil;
 import com.google.samples.apps.iosched.Config;
-import com.google.samples.apps.iosched.gcm.ServerUtilities;
 import com.google.samples.apps.iosched.io.JSONHandler;
 import com.google.samples.apps.iosched.port.FindUserActivity;
 import com.google.samples.apps.iosched.port.tasks.AppPrefs;
+import com.google.samples.apps.iosched.port.tasks.GcmRegistrationTask;
 import com.google.samples.apps.iosched.provider.ScheduleContract;
 import com.google.samples.apps.iosched.sync.ConferenceDataHandler;
 import com.google.samples.apps.iosched.sync.SyncHelper;
@@ -90,6 +91,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import co.touchlab.android.threading.tasks.TaskQueue;
 import co.touchlab.droidconnyc.BuildConfig;
 import co.touchlab.droidconnyc.R;
 
@@ -725,10 +727,6 @@ public abstract class BaseActivity extends Activity implements
                 WiFiUtils.showWiFiDialog(this);
                 return true;
 
-            case R.id.menu_i_o_hunt:
-                launchIoHunt();
-                return true;
-
             case R.id.menu_debug:
                 if (BuildConfig.DEBUG) {
                     startActivity(new Intent(this, DebugActionRunnerActivity.class));
@@ -750,25 +748,6 @@ public abstract class BaseActivity extends Activity implements
                 break;
         }
         return super.onOptionsItemSelected(item);
-    }
-
-    private void launchIoHunt() {
-        if (!TextUtils.isEmpty(Config.IO_HUNT_PACKAGE_NAME)) {
-            LOGD(TAG, "Attempting to launch I/O hunt.");
-            PackageManager pm = getPackageManager();
-            Intent launchIntent = pm.getLaunchIntentForPackage(Config.IO_HUNT_PACKAGE_NAME);
-            if (launchIntent != null) {
-                // start I/O Hunt
-                LOGD(TAG, "I/O hunt intent found, launching.");
-                startActivity(launchIntent);
-            } else {
-                // send user to the Play Store to download it
-                LOGD(TAG, "I/O hunt intent NOT found, going to Play Store.");
-                Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(
-                        Config.PLAY_STORE_URL_PREFIX + Config.IO_HUNT_PACKAGE_NAME));
-                startActivity(intent);
-            }
-        }
     }
 
     protected void requestDataRefresh() {
@@ -903,11 +882,6 @@ public abstract class BaseActivity extends Activity implements
         final MenuItem mapItem = menu.findItem(R.id.menu_map);
         if (mapItem != null) {
             mapItem.setVisible(isRemote);
-        }
-
-        MenuItem ioHuntItem = menu.findItem(R.id.menu_i_o_hunt);
-        if (ioHuntItem != null) {
-            ioHuntItem.setVisible(false);
         }
     }
 
@@ -1106,7 +1080,7 @@ public abstract class BaseActivity extends Activity implements
         }
 
         String accountName = AccountUtils.getActiveAccountName(this);
-        LOGD(TAG, "Chosen account: " + AccountUtils.getActiveAccountName(this));
+        LOGD(TAG, "Chosen account: " + accountName);
 
         if (mLoginAndAuthHelper != null && mLoginAndAuthHelper.getAccountName().equals(accountName)) {
             LOGD(TAG, "Helper already set up; simply starting it.");
@@ -1339,70 +1313,7 @@ public abstract class BaseActivity extends Activity implements
     private void registerGCMClient() {
         if(AppPrefs.getInstance(this).isLoggedIn())
         {
-            GCMRegistrar.checkDevice(this);
-            GCMRegistrar.checkManifest(this);
-
-            final String regId = GCMRegistrar.getRegistrationId(this);
-
-            if (TextUtils.isEmpty(regId))
-            {
-                // Automatically registers application on startup.
-                GCMRegistrar.register(this, Config.GCM_SENDER_ID);
-            }
-            else
-            {
-                // Get the correct GCM key for the user. GCM key is a somewhat non-standard
-                // approach we use in this app. For more about this, check GCM.TXT.
-                final String gcmKey = AccountUtils.hasActiveAccount(this) ?
-                        AccountUtils.getGcmKey(this, AccountUtils.getActiveAccountName(this)) : null;
-                // Device is already registered on GCM, needs to check if it is
-                // registered on our server as well.
-                if (ServerUtilities.isRegisteredOnServer(this, gcmKey))
-                {
-                    // Skips registration.
-                    LOGI(TAG, "Already registered on the GCM server with right GCM key.");
-                }
-                else
-                {
-                    // Try to register again, but not in the UI thread.
-                    // It's also necessary to cancel the thread onDestroy(),
-                    // hence the use of AsyncTask instead of a raw thread.
-                    mGCMRegisterTask = new AsyncTask<Void, Void, Void>()
-                    {
-                        @Override
-                        protected Void doInBackground(Void... params)
-                        {
-                            LOGI(TAG, "Registering on the GCM server with GCM key: "
-                                    + AccountUtils.sanitizeGcmKey(gcmKey));
-                            boolean registered = ServerUtilities.register(BaseActivity.this,
-                                    regId, gcmKey);
-                            // At this point all attempts to register with the app
-                            // server failed, so we need to unregister the device
-                            // from GCM - the app will try to register again when
-                            // it is restarted. Note that GCM will send an
-                            // unregistered callback upon completion, but
-                            // GCMIntentService.onUnregistered() will ignore it.
-                            if (!registered)
-                            {
-                                LOGI(TAG, "GCM registration failed.");
-                                GCMRegistrar.unregister(BaseActivity.this);
-                            }
-                            else
-                            {
-                                LOGI(TAG, "GCM registration successful.");
-                            }
-                            return null;
-                        }
-
-                        @Override
-                        protected void onPostExecute(Void result)
-                        {
-                            mGCMRegisterTask = null;
-                        }
-                    };
-                    mGCMRegisterTask.execute(null, null, null);
-                }
-            }
+            TaskQueue.execute(this, new GcmRegistrationTask());
         }
     }
 

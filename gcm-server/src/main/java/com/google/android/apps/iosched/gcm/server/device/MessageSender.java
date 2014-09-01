@@ -53,6 +53,7 @@ public class MessageSender {
     public MessageSender(ServletConfig config) {
         mApiKey = (String) config.getServletContext().getAttribute(
                 ApiKeyInitializer.ATTRIBUTE_ACCESS_KEY);
+        mLogger.info("Init gcm with "+ mApiKey);
         mGcmService = new Sender(mApiKey);
     }
 

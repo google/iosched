@@ -25,6 +25,7 @@ import com.google.samples.apps.iosched.gcm.command.NotificationCommand;
 import com.google.samples.apps.iosched.gcm.command.SyncCommand;
 import com.google.samples.apps.iosched.gcm.command.SyncUserCommand;
 import com.google.samples.apps.iosched.gcm.command.TestCommand;
+import com.google.samples.apps.iosched.port.tasks.GcmRegistrationTask;
 import com.google.samples.apps.iosched.util.AccountUtils;
 
 import java.util.Collections;
@@ -63,7 +64,9 @@ public class GCMIntentService extends GCMBaseIntentService {
     @Override
     protected void onRegistered(Context context, String regId) {
         LOGI(TAG, "Device registered: regId=" + regId);
-        ServerUtilities.register(context, regId, AccountUtils.getPlusProfileId(this));
+        //TODO: Do something useful here
+//        throw new UnsupportedOperationException("heyo");
+        ServerUtilities.registerFromTask(context, regId, AccountUtils.getGcmKey(context, AccountUtils.getActiveAccountName(context)), GcmRegistrationTask.getAppVersion(context));
     }
 
     @Override
