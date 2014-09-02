@@ -27,6 +27,8 @@
             android:layout_height="fill_parent">
 
             <TextView
+                android:paddingLeft="8dp"
+                android:paddingRight="0dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:id="@+id/socialDisplayName"
@@ -55,6 +57,40 @@
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:id="@+id/textVal"/>
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/gpActivityRow"
+            android:orientation="horizontal">
+            <ImageView
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:id="@+id/socialTypeImage"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/gpReplies"
+                android:paddingLeft="8dp"
+                android:paddingRight="0dp"
+
+                />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/gpPluses"
+                android:paddingLeft="8dp"
+                android:paddingRight="0dp"
+
+                />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/gpShares"
+                android:paddingLeft="8dp"
+                android:paddingRight="0dp"
+
+                />
+        </LinearLayout>
     </LinearLayout>
 
 </LinearLayout>

@@ -61,7 +61,7 @@ public class SocialFeed extends BaseActivity
                 public void onItemClick(AdapterView<?> parent, View view, int position, long id)
                 {
                     SocialEntry entry = ((SocialFeedAdapter) socialList.getAdapter()).getItem(position);
-                    Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("http://twitter.com/" + entry.username + "/status/" + entry.sourceId));
+                    Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(entry.entryUrl));
                     startActivity(browserIntent);
                 }
             });
@@ -94,17 +94,34 @@ public class SocialFeed extends BaseActivity
             }
 
             ImageView profileImage = (ImageView) convertView.findViewById(R.id.profileImage);
+            ImageView socialTypeImage = (ImageView) convertView.findViewById(R.id.socialTypeImage);
             TextView socialDisplayName = (TextView) convertView.findViewById(R.id.socialDisplayName);
             TextView socialUsername = (TextView) convertView.findViewById(R.id.socialUsername);
             TextView socialTime = (TextView) convertView.findViewById(R.id.socialTime);
             TextView textVal = (TextView) convertView.findViewById(R.id.textVal);
+            TextView gpReplies = (TextView) convertView.findViewById(R.id.gpReplies);
+            TextView gpPluses = (TextView) convertView.findViewById(R.id.gpPluses);
+            TextView gpShares = (TextView) convertView.findViewById(R.id.gpShares);
 
             SocialEntry socialEntry = getItem(position);
             Picasso.with(SocialFeed.this).load(socialEntry.profileImage).into(profileImage);
+            socialTypeImage.setImageResource(
+                    socialEntry.socialType == SocialEntry.SocialType.Google ?
+                            R.drawable.list_social_gp :
+                            R.drawable.list_social_twitter
+            );
             socialDisplayName.setText(socialEntry.screenName);
             socialUsername.setText("@"+ socialEntry.username);
             socialTime.setText(timeSince(socialEntry.createdAt));
             textVal.setText(socialEntry.textVal);
+
+            boolean fromGoogle = socialEntry.socialType == SocialEntry.SocialType.Google;
+
+            gpReplies.setText("R: "+ socialEntry.replies);
+            gpPluses.setText("P: "+ socialEntry.plusOnes);
+            gpShares.setText("S: "+ socialEntry.shares);
+
+            gpReplies.setVisibility(fromGoogle ? View.VISIBLE : View.GONE);
 
             return convertView;
         }

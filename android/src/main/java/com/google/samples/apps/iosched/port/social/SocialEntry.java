@@ -18,9 +18,13 @@ public class SocialEntry
     public String screenName;
     public String username;
     public String profileImage;
+    public String entryUrl;
+    public int replies = 0;
+    public int plusOnes = 0;
+    public int shares = 0;
 
     public enum SocialType
     {
-        Twitter
+        Twitter, Google
     }
 }
