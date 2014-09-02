@@ -121,6 +121,7 @@ dependencies {
 
     compile 'de.greenrobot:eventbus:2.2.1'
     compile 'com.squareup.retrofit:retrofit:1.6.1'
+    compile 'com.squareup.picasso:picasso:2.3.3'
     compile 'commons-io:commons-io:2.4'
 
     /* The two dependencies below are only required while we are using http

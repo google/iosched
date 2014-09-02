@@ -23,6 +23,9 @@ import android.content.Context;
 import android.content.CursorLoader;
 import android.content.Intent;
 import android.content.Loader;
+import android.content.pm.ActivityInfo;
+import android.content.pm.PackageManager;
+import android.content.pm.ResolveInfo;
 import android.database.Cursor;
 import android.graphics.Paint;
 import android.graphics.drawable.ShapeDrawable;
@@ -31,6 +34,7 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.v4.app.ShareCompat;
 import android.text.TextUtils;
 import android.util.Pair;
 import android.view.LayoutInflater;
@@ -54,6 +58,7 @@ import com.google.android.youtube.player.YouTubeIntents;
 import com.google.samples.apps.iosched.Config;
 import com.google.samples.apps.iosched.model.TagMetadata;
 import com.google.samples.apps.iosched.port.superbus.AddRsvpCommand;
+import com.google.samples.apps.iosched.port.utils.PackageHelper;
 import com.google.samples.apps.iosched.provider.ScheduleContract;
 import com.google.samples.apps.iosched.service.SessionAlarmService;
 import com.google.samples.apps.iosched.service.SessionCalendarService;
@@ -1134,6 +1139,9 @@ public class SessionDetailFragment extends Fragment implements
         inflater.inflate(R.menu.session_detail, menu);
         mSocialStreamMenuItem = menu.findItem(R.id.menu_social_stream);
         mShareMenuItem = menu.findItem(R.id.menu_share);
+        MenuItem twitterShare = menu.findItem(R.id.menu_twitter);
+        twitterShare.setVisible(PackageHelper.twitterInstalled(getActivity()));
+
         tryExecuteDeferredUiOperations();
     }
 
@@ -1151,6 +1159,10 @@ public class SessionDetailFragment extends Fragment implements
                  */
                 AnalyticsManager.sendEvent("Session", "Map", mTitleString, 0L);
                 helper.startMapActivity(mRoomId);
+                return true;
+
+            case R.id.menu_twitter:
+                shareOnTwitter();
                 return true;
 
             case R.id.menu_share:
@@ -1175,6 +1187,24 @@ public class SessionDetailFragment extends Fragment implements
                 return true;
         }
         return false;
+    }
+
+    private void shareOnTwitter()
+    {
+        ShareCompat.IntentBuilder builder = ShareCompat.IntentBuilder.from(getActivity())
+                .setType("text/plain")
+                .setText(getString(
+                                R.string.share_template,
+                                mTitleString,
+                                UIUtils.getSessionHashtagsString(mHashTag), " " + mUrl)
+                );
+
+        Intent intent = builder.getIntent();
+
+        ActivityInfo twitterPackage = PackageHelper.findTwitterPackage(getActivity());
+
+        intent.setClassName(twitterPackage.packageName, twitterPackage.name);
+        startActivity(intent);
     }
 
     @Override

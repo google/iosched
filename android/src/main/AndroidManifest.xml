@@ -418,6 +418,11 @@
                 <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
             </intent-filter>
         </receiver>
+
+        <activity
+            android:name="com.google.samples.apps.iosched.port.social.SocialFeed"
+            android:label="@string/title_activity_social_feed" >
+        </activity>
     </application>
 
 </manifest>

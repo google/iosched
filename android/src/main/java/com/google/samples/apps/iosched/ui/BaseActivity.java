@@ -66,6 +66,7 @@ import com.google.android.gms.auth.GoogleAuthUtil;
 import com.google.samples.apps.iosched.Config;
 import com.google.samples.apps.iosched.io.JSONHandler;
 import com.google.samples.apps.iosched.port.FindUserActivity;
+import com.google.samples.apps.iosched.port.social.SocialFeed;
 import com.google.samples.apps.iosched.port.superbus.SyncConferenceDataCommand;
 import com.google.samples.apps.iosched.port.tasks.AppPrefs;
 import com.google.samples.apps.iosched.port.tasks.GcmRegistrationTask;
@@ -787,8 +788,9 @@ public abstract class BaseActivity extends Activity implements
                 finish();
                 break;
             case NAVDRAWER_ITEM_SOCIAL:
-                intent = new Intent(this, SocialActivity.class);
-                startActivity(intent);
+//                intent = new Intent(this, SocialActivity.class);
+//                startActivity(intent);
+                SocialFeed.callMe(this);
                 finish();
                 break;
             case NAVDRAWER_ITEM_EXPERTS_DIRECTORY:

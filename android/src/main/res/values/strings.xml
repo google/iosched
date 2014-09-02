@@ -240,6 +240,7 @@
     by email, social networks, etc.
     -->
     <string name="description_share">Share</string>
+    <string name="description_twitter">Twitter</string>
 
     <!--
     Menu item that allows the user to view the Google+ stream about a particular topic. This
@@ -948,6 +949,7 @@
     <string name="title_activity_find_user">FindUserActivity</string>
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
-
     <string name="error.rsvpLimitReached">Too many rsvps :(</string>
+    <string name="title_activity_social_feed">SocialFeed</string>
+
 </resources>
