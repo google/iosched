@@ -36,6 +36,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.ShareCompat;
 import android.text.TextUtils;
+import android.text.format.DateUtils;
 import android.util.Pair;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -668,7 +669,7 @@ public class SessionDetailFragment extends Fragment implements
             mUrl = "";
         }
 
-        mHashTag = cursor.getString(SessionsQuery.HASHTAG);
+        mHashTag = "#droidconnyc #dcnyc"+ mServerId;//;cursor.getString(SessionsQuery.HASHTAG);
         if (!TextUtils.isEmpty(mHashTag)) {
             enableSocialStreamMenuItemDeferred();
         }
@@ -1191,13 +1192,17 @@ public class SessionDetailFragment extends Fragment implements
 
     private void shareOnTwitter()
     {
+        String shareString =
+                isSessionLive() ?
+                        (mHashTag + " ") :
+                getString(
+                R.string.share_template,
+                mTitleString,
+                UIUtils.getSessionHashtagsString(mHashTag), " " + mUrl);
+
         ShareCompat.IntentBuilder builder = ShareCompat.IntentBuilder.from(getActivity())
                 .setType("text/plain")
-                .setText(getString(
-                                R.string.share_template,
-                                mTitleString,
-                                UIUtils.getSessionHashtagsString(mHashTag), " " + mUrl)
-                );
+                .setText(shareString);
 
         Intent intent = builder.getIntent();
 
@@ -1205,6 +1210,15 @@ public class SessionDetailFragment extends Fragment implements
 
         intent.setClassName(twitterPackage.packageName, twitterPackage.name);
         startActivity(intent);
+    }
+
+    private boolean isSessionLive()
+    {
+        long currentTimeMillis = UIUtils.getCurrentTime(getActivity());
+        long startEndDrift = DateUtils.MINUTE_IN_MILLIS * 10;
+        long driftStart = mSessionStart - startEndDrift;
+        long driftEnd = mSessionEnd - startEndDrift;
+        return currentTimeMillis > driftStart && currentTimeMillis < driftEnd;
     }
 
     @Override
