@@ -33,6 +33,7 @@ import android.widget.BaseAdapter;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import com.crashlytics.android.Crashlytics;
 import com.google.samples.apps.iosched.Config;
 import com.google.samples.apps.iosched.model.TagMetadata;
 import com.google.samples.apps.iosched.provider.ScheduleContract;
@@ -90,6 +91,7 @@ public class BrowseSessionsActivity extends BaseActivity implements SessionsFrag
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
 
         setContentView(R.layout.activity_browse_sessions);
         getLPreviewUtils().trySetActionBar();

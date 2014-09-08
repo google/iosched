@@ -18,8 +18,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="co.touchlab.droidconnyc"
     android:installLocation="auto"
-    android:versionCode="304"
-    android:versionName="3.0.4" >
+    android:versionCode="306"
+    android:versionName="3.0.6" >
 
     <!-- targetSdkVersion set to 19 from build.gradle on non-L-preview builds -->
     <uses-sdk
@@ -423,6 +423,7 @@
             android:name="com.google.samples.apps.iosched.port.social.SocialFeed"
             android:label="@string/title_activity_social_feed" >
         </activity>
+        <meta-data android:name="com.crashlytics.ApiKey" android:value="90b5b9675372e1f2aff36d43ea5d6869040d37f3"/>
     </application>
 
 </manifest>

@@ -17,12 +17,12 @@
 buildscript {
     ext.kotlin_version = '0.8.11'
     repositories {
-//        maven { url 'http://download.crashlytics.com/maven' }
+        maven { url 'http://download.crashlytics.com/maven' }
         mavenCentral()
     }
 
     dependencies {
-//        classpath 'com.crashlytics.tools.gradle:crashlytics-gradle:1.+'
+        classpath 'com.crashlytics.tools.gradle:crashlytics-gradle:1.+'
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
     }
 }
@@ -30,6 +30,7 @@ buildscript {
 lpreview = hasProperty('lpreview')
 
 apply plugin: 'android'
+apply plugin: 'crashlytics'
 apply plugin: 'kotlin-android'
 
 repositories {
@@ -37,6 +38,7 @@ repositories {
     flatDir {
         dirs 'libs'
     }
+    maven { url 'http://download.crashlytics.com/maven' }
 }
 
 android {
@@ -63,9 +65,9 @@ android {
         }
         release {
             storeFile file("../android/release.jks")
-            storePassword ""
+            storePassword prodPassword
             keyAlias "android"
-            keyPassword ""
+            keyPassword prodPassword
         }
     }
 
@@ -131,4 +133,5 @@ dependencies {
 //    compile 'com.google.apis:google-api-services-drive:+'
 
     compile "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
+    compile 'com.crashlytics.android:crashlytics:1.+'
 }
