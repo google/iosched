@@ -46,7 +46,7 @@ public class Config {
     public static final String BOOTSTRAP_DATA_TIMESTAMP = "Thu, 10 Apr 2014 00:01:03 GMT";
 
     // Conference hashtag
-    public static final String CONFERENCE_HASHTAG = "#droidconnyc";
+    public static final String CONFERENCE_HASHTAG = "#androidnyc";
 
     // Patterns that, when absent from a hashtag, will trigger the addition of the
     // CONFERENCE_HASHTAG on sharing snippets. Ex: "#Android" will be shared as "#io14 #Android",

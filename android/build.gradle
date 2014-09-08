@@ -65,9 +65,13 @@ android {
         }
         release {
             storeFile file("../android/release.jks")
-            storePassword prodPassword
             keyAlias "android"
+
+            storePassword prodPassword
             keyPassword prodPassword
+
+//            storePassword ""
+//            keyPassword ""
         }
     }
 

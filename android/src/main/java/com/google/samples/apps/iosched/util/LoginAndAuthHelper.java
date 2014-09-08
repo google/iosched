@@ -235,6 +235,7 @@ public class LoginAndAuthHelper implements GoogleApiClient.ConnectionCallbacks, 
 
     private void sendServerLogin(boolean firstLogin)
     {
+        //TODO: We should figure out multi-account, or disable.  This is a mess.
         if(!AppPrefs.getInstance(mAppContext).isLoggedIn()) {
             String accountName = Plus.AccountApi.getAccountName(mGoogleApiClient);
             Person person = Plus.PeopleApi.getCurrentPerson(mGoogleApiClient);
