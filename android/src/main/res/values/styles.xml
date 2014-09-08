@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
 <!--
   Copyright 2014 Google Inc. All rights reserved.
 
@@ -12,26 +13,37 @@
   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
   See the License for the specific language governing permissions and
   limitations under the License.
-  -->
-
+-->
 <resources>
+
     <!-- Root styles that vary by API level -->
     <!-- Disable RTL support on older devices -->
     <!-- Prevents crash on certain devices to namespace conflict -->
     <style name="FrameworkRoot.Theme" parent="android:Theme.Holo.Light.DarkActionBar" />
+
     <style name="FrameworkRoot.ActionBar" parent="android:Widget.Holo.ActionBar" />
+
     <style name="FrameworkRoot.ActionBar.TitleText" parent="android:TextAppearance.Holo.Widget.ActionBar.Title" />
+
     <style name="FrameworkRoot.ActionBar.TabBar" parent="android:Widget.Holo.ActionBar.TabBar" />
+
     <style name="FrameworkRoot.EditText" parent="android:Widget.Holo.Light.EditText" />
+
     <style name="FrameworkRoot.Widget" parent="android:Theme.Holo" />
+
     <style name="FrameworkRoot.Widget.ActionButton.Overflow" parent="android:Widget.Holo.ActionButton.Overflow" />
+
     <style name="FrameworkRoot.Widget.Spinner" parent="android:Widget.Holo.Light.Spinner" />
+
     <style name="FrameworkRoot.Widget.ListView.DropDown" parent="android:Widget.Holo.Light.ListView.DropDown" />
+
     <style name="FrameworkRoot.Widget.PopupMenu" parent="android:Widget.Holo.Light.PopupMenu" />
+
     <style name="FrameworkRoot.TextAppearance.Widget.PopupMenu.Large" parent="android:TextAppearance.Holo.Widget.PopupMenu.Large" />
 
     <!-- Immediate parent theme to specify base values for custom attributes -->
     <style name="Theme" parent="FrameworkRoot.Theme">
+
         <!-- Only needed for pre-L -->
         <item name="android:actionOverflowButtonStyle">@style/ActionButton.Overflow</item>
         <item name="android:editTextBackground">@drawable/edit_text</item>
@@ -47,12 +59,10 @@
         <item name="selectableItemBackgroundBorderless">?android:selectableItemBackground</item>
         <item name="popupItemBackground">?android:selectableItemBackground</item>
         <item name="photoItemForeground">?android:selectableItemBackground</item>
-
         <item name="android:windowContentOverlay">@null</item>
         <item name="android:windowBackground">@android:color/white</item>
         <item name="android:actionBarStyle">@style/ActionBar</item>
         <item name="android:homeAsUpIndicator">@drawable/ic_up</item>
-
         <item name="android:popupMenuStyle">@style/Widget.IOSched.PopupMenu</item>
         <item name="android:listPopupWindowStyle">@style/Widget.IOSched.PopupMenu</item>
         <item name="android:dropDownListViewStyle">@style/Widget.IOSched.ListView.DropDown</item>
@@ -371,5 +381,22 @@
         <item name="android:maxHeight">48dp</item>
         <item name="android:max">5</item>
     </style>
+
+    <style name="FullscreenTheme" parent="android:Theme.NoTitleBar">
+        <item name="android:windowContentOverlay">@null</item>
+        <item name="android:windowBackground">@null</item>
+        <item name="metaButtonBarStyle">@style/ButtonBar</item>
+        <item name="metaButtonBarButtonStyle">@style/ButtonBarButton</item>
+    </style>
+
+    <style name="ButtonBar">
+        <item name="android:paddingLeft">2dp</item>
+        <item name="android:paddingTop">5dp</item>
+        <item name="android:paddingRight">2dp</item>
+        <item name="android:paddingBottom">0dp</item>
+        <item name="android:background">@android:drawable/bottom_bar</item>
+    </style>
+
+    <style name="ButtonBarButton" />
 
 </resources>

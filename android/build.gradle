@@ -45,7 +45,7 @@ android {
     compileSdkVersion lpreview ? "android-L" : 19
     buildToolsVersion "19.1.0"
 
-    productFlavors { lpreview ? lpreview{} : classic{} }
+    productFlavors { lpreview ? lpreview {} : classic {} }
 
     defaultConfig lpreview ? {
 //        applicationId "co.touchlab.droidconnyc"
@@ -67,11 +67,11 @@ android {
             storeFile file("../android/release.jks")
             keyAlias "android"
 
-            storePassword prodPassword
-            keyPassword prodPassword
+//            storePassword prodPassword
+//            keyPassword prodPassword
 
-//            storePassword ""
-//            keyPassword ""
+            storePassword ""
+            keyPassword ""
         }
     }
 

@@ -5,8 +5,7 @@ import android.text.TextUtils;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-
-import org.apache.commons.io.IOUtils;
+import com.google.samples.apps.iosched.util.IOUtils;
 
 import co.touchlab.android.superbus.errorcontrol.PermanentException;
 import co.touchlab.android.superbus.errorcontrol.TransientException;

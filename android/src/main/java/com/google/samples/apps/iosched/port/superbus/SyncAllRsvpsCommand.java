@@ -16,8 +16,8 @@ import com.google.samples.apps.iosched.provider.ScheduleContract;
 import com.google.samples.apps.iosched.service.SessionAlarmService;
 import com.google.samples.apps.iosched.sync.userdata.util.UserDataHelper;
 import com.google.samples.apps.iosched.ui.MyScheduleActivity;
+import com.google.samples.apps.iosched.util.IOUtils;
 
-import org.apache.commons.io.IOUtils;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.IOException;

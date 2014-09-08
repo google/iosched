@@ -900,6 +900,25 @@ public abstract class BaseActivity extends Activity implements
         final int mask = ContentResolver.SYNC_OBSERVER_TYPE_PENDING |
                 ContentResolver.SYNC_OBSERVER_TYPE_ACTIVE;
         mSyncObserverHandle = ContentResolver.addStatusChangeListener(mask, mSyncStatusObserver);
+
+        new Handler().post(new Runnable()
+        {
+            @Override
+            public void run()
+            {
+                checkShowOffer();
+            }
+        });
+    }
+
+    private void checkShowOffer()
+    {
+        AppPrefs instance = AppPrefs.getInstance(this);
+        if(!instance.isUserRegistered() && !instance.isOfferShown())
+        {
+            instance.setOfferShown(true);
+            TicketOfferActivity.callMe(this);
+        }
     }
 
     @Override

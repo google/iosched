@@ -62,6 +62,7 @@ public class GoogleLoginTask extends TaskQueue.Task
         AppPrefs appPrefs = AppPrefs.getInstance(context);
         appPrefs.setUserUuid(loginResult.uuid);
         appPrefs.setUserId(loginResult.userId);
+        appPrefs.setUserRegistered(loginResult.registered);
 
         AccountUtils.setGcmKey(context, accountName, loginResult.gcmKey);
 

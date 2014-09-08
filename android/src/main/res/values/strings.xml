@@ -951,5 +951,10 @@
     <string name="action_settings">Settings</string>
     <string name="error.rsvpLimitReached">Too many rsvps :(</string>
     <string name="title_activity_social_feed">SocialFeed</string>
+    <string name="title_activity_ticket_offer">TicketOfferActivity</string>
+    <string name="popup_register_now">Register Now</string>
+    <string name="popup_email_code">Email Code</string>
+    <string name="popup_message">Come to Droidcon!\n50% off with code \'app\'</string>
+    <string name="popup_sub_message">(Bugging you just this once...)</string>
 
 </resources>

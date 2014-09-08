@@ -4,6 +4,8 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.text.TextUtils;
 
+import java.net.URI;
+
 /**
  * Created by kgalligan on 8/17/14.
  */
@@ -11,6 +13,8 @@ public class AppPrefs
 {
     public static final String USER_UUID = "USER_UUID";
     public static final String USER_ID = "USER_ID";
+    public static final String USER_REGISTERED = "USER_REGISTERED";
+    public static final String OFFER_SHOWN = "OFFER_SHOWN";
     public static final String GCM_REGISTRATION_KEY = "GCM_REGISTRATION_KEY";
     public static final String GCM_REGISTRATION_ID = "GCM_REGISTRATION_ID";
     public static final String GCM_APP_VERSION = "GCM_APP_VERSION";
@@ -45,6 +49,26 @@ public class AppPrefs
     public void setUserUuid(String uuid)
     {
         prefs.edit().putString(USER_UUID, uuid).apply();
+    }
+
+    public boolean isUserRegistered()
+    {
+        return prefs.getBoolean(USER_REGISTERED, false);
+    }
+
+    public void setUserRegistered(boolean registered)
+    {
+        prefs.edit().putBoolean(USER_REGISTERED, registered).apply();
+    }
+
+    public boolean isOfferShown()
+    {
+        return prefs.getBoolean(OFFER_SHOWN, false);
+    }
+
+    public void setOfferShown(boolean registered)
+    {
+        prefs.edit().putBoolean(OFFER_SHOWN, registered).apply();
     }
 
     public Long getUserId()

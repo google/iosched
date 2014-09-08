@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
 <!--
   Copyright 2014 Google Inc. All rights reserved.
 
@@ -12,7 +13,7 @@
   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
   See the License for the specific language governing permissions and
   limitations under the License.
-  -->
+-->
 <resources>
 
     <declare-styleable name="BaseTheme">
@@ -23,27 +24,22 @@
         <attr name="popupItemBackground" format="dimension" />
         <attr name="photoItemForeground" format="dimension" />
     </declare-styleable>
-
     <declare-styleable name="MultiSwipeRefreshLayout">
         <attr name="foreground" format="reference" />
     </declare-styleable>
-
     <declare-styleable name="DrawShadowFrameLayout">
         <attr name="shadowDrawable" format="reference" />
         <attr name="shadowVisible" format="boolean" />
     </declare-styleable>
-
     <declare-styleable name="BezelImageView">
         <attr name="maskDrawable" format="reference" />
         <attr name="borderDrawable" format="reference" />
         <attr name="desaturateOnPress" format="boolean" />
     </declare-styleable>
-
     <declare-styleable name="CollectionView">
         <attr name="internalPadding" format="dimension" />
         <attr name="contentTopClearance" format="dimension" />
     </declare-styleable>
-
     <declare-styleable name="MessageCard">
         <attr name="messageTitle" format="string" />
         <attr name="messageText" format="string" />
@@ -55,8 +51,12 @@
         <attr name="button2emphasis" format="boolean" />
         <attr name="emphasisColor" format="color" />
     </declare-styleable>
-
     <declare-styleable name="ThemeIOSched">
         <attr name="isFloatingWindow" format="boolean" />
     </declare-styleable>
+    <declare-styleable name="ButtonBarContainerTheme">
+        <attr name="metaButtonBarStyle" format="reference" />
+        <attr name="metaButtonBarButtonStyle" format="reference" />
+    </declare-styleable>
+
 </resources>
