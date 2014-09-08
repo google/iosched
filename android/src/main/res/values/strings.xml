@@ -954,6 +954,7 @@
     <string name="title_activity_ticket_offer">TicketOfferActivity</string>
     <string name="popup_register_now">Register Now</string>
     <string name="popup_email_code">Email Code</string>
+    <string name="popup_close">Close</string>
     <string name="popup_message">Come to Droidcon!\n50% off with code \'app\'</string>
     <string name="popup_sub_message">(Bugging you just this once...)</string>
 

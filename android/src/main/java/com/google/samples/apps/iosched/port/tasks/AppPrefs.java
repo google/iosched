@@ -15,11 +15,13 @@ public class AppPrefs
     public static final String USER_ID = "USER_ID";
     public static final String USER_REGISTERED = "USER_REGISTERED";
     public static final String OFFER_SHOWN = "OFFER_SHOWN";
+    public static final String OFFER_COUNTDOWN = "OFFER_COUNTDOWN";
     public static final String GCM_REGISTRATION_KEY = "GCM_REGISTRATION_KEY";
     public static final String GCM_REGISTRATION_ID = "GCM_REGISTRATION_ID";
     public static final String GCM_APP_VERSION = "GCM_APP_VERSION";
     public static final String GCM_REGISTRATION_TS = "GCM_REGISTRATION_TS";
     public static final int NO_VALUE = -1;
+    public static final int DEFAULT_OFFER_COUNTDOWN = 5;
 
     private static AppPrefs instance;
 
@@ -49,6 +51,30 @@ public class AppPrefs
     public void setUserUuid(String uuid)
     {
         prefs.edit().putString(USER_UUID, uuid).apply();
+    }
+
+    public int getOfferCountdown()
+    {
+        int countdown = prefs.getInt(OFFER_COUNTDOWN, -1);
+        if(countdown == -1)
+        {
+            resetOfferCountdown();
+            countdown = DEFAULT_OFFER_COUNTDOWN;
+        }
+        return countdown;
+    }
+
+    public void resetOfferCountdown()
+    {
+        prefs.edit().putInt(OFFER_COUNTDOWN, DEFAULT_OFFER_COUNTDOWN).apply();
+    }
+
+    public void minusOfferCountdown()
+    {
+        if(!isLoggedIn())
+            return;
+        int offerCountdown = getOfferCountdown();
+        prefs.edit().putInt(OFFER_COUNTDOWN, offerCountdown - 1).apply();
     }
 
     public boolean isUserRegistered()

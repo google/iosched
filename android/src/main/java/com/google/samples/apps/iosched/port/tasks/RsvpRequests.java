@@ -15,6 +15,9 @@ public interface RsvpRequests
     @POST("/dataTest/rsvpEvent/{eventId}")
     BasicIdResult addRsvp(@Path("eventId") Long eventId) throws TransientException, PermanentException;
 
+    @POST("/dataTest/sendDiscountEmail")
+    Response sendDiscountEmail() throws TransientException, PermanentException;
+
     @POST("/dataTest/unRsvpEvent/{eventId}")
     BasicIdResult removeRsvp(@Path("eventId") Long eventId) throws TransientException, PermanentException;
 

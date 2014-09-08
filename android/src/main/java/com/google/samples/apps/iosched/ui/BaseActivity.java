@@ -229,6 +229,7 @@ public abstract class BaseActivity extends Activity implements
     private int mProgressBarTopWhenActionBarShown;
     private static final TypeEvaluator ARGB_EVALUATOR = new ArgbEvaluator();
     private ImageLoader mImageLoader;
+    private boolean showOffer = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -267,6 +268,13 @@ public abstract class BaseActivity extends Activity implements
 
         mLPreviewUtils = LPreviewUtils.getInstance(this);
         mThemedStatusBarColor = getResources().getColor(R.color.theme_primary_dark);
+
+        AppPrefs appPrefs = AppPrefs.getInstance(this);
+
+        if(appPrefs.getOfferCountdown() > 0)
+            appPrefs.minusOfferCountdown();
+        else
+            showOffer = true;
     }
 
     private void trySetupSwipeRefresh() {
@@ -914,8 +922,9 @@ public abstract class BaseActivity extends Activity implements
     private void checkShowOffer()
     {
         AppPrefs instance = AppPrefs.getInstance(this);
-        if(!instance.isUserRegistered() && !instance.isOfferShown())
+        if(showOffer && !instance.isUserRegistered() && !instance.isOfferShown())
         {
+            showOffer = false;
             instance.setOfferShown(true);
             TicketOfferActivity.callMe(this);
         }
