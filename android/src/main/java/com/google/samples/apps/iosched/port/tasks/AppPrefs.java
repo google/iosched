@@ -4,6 +4,8 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.text.TextUtils;
 
+import com.google.gson.Gson;
+
 import java.net.URI;
 
 /**
@@ -20,6 +22,9 @@ public class AppPrefs
     public static final String GCM_REGISTRATION_ID = "GCM_REGISTRATION_ID";
     public static final String GCM_APP_VERSION = "GCM_APP_VERSION";
     public static final String GCM_REGISTRATION_TS = "GCM_REGISTRATION_TS";
+
+    public static final String TICKET_STATUS = "TICKET_STATUS";
+
     public static final int NO_VALUE = -1;
     public static final int DEFAULT_OFFER_COUNTDOWN = 5;
 
@@ -95,6 +100,27 @@ public class AppPrefs
     public void setOfferShown(boolean registered)
     {
         prefs.edit().putBoolean(OFFER_SHOWN, registered).apply();
+    }
+
+    public String getTicketStatus()
+    {
+        return prefs.getString(OFFER_SHOWN, null);
+    }
+
+    public void setTicketStatus(String ticketJson)
+    {
+        prefs.edit().putString(TICKET_STATUS, ticketJson).apply();
+    }
+
+    public Ticket getTicket()
+    {
+        String ticketStatus = getTicketStatus();
+        return getTicket(ticketStatus);
+    }
+
+    public static Ticket getTicket(String ticketStatus)
+    {
+        return new Gson().fromJson(ticketStatus, Ticket.class);
     }
 
     public Long getUserId()

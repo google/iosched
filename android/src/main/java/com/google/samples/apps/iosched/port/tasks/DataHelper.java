@@ -37,14 +37,15 @@ public class DataHelper
 
     public static RestAdapter.Builder makeRequestAdapterBuilder(Context context, ErrorHandler errorHandler)
     {
-        AppPrefs appPrefs = AppPrefs.getInstance(context);
-        final String userUuid = appPrefs.getUserUuid();
-
+        final Context applicationContext = context.getApplicationContext();
         RequestInterceptor requestInterceptor = new RequestInterceptor()
         {
             @Override
             public void intercept(RequestFacade request)
             {
+                AppPrefs appPrefs = AppPrefs.getInstance(applicationContext);
+                final String userUuid = appPrefs.getUserUuid();
+
                 request.addHeader("Accept", "application/json");
                 if (!TextUtils.isEmpty(userUuid))
                     request.addHeader("uuid", userUuid);

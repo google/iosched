@@ -930,7 +930,7 @@
     <string name="watch_now">Watch Now!</string>
 
     <!-- Medium-length welcome text indicating the subsequent text is important legal information -->
-    <string name="welcome_text">Before we begin, here is some important legal information regarding your use of this app. This will only take a minute!</string>
+    <string name="welcome_text">We at Touch Lab are really excited to bring you the very first Droidcon in the United States. Use this app to set up your schedule prior to getting to the conference and on the day of, there\'ll be some goodies that will happen here too.</string>
 
     <!-- Short text welcoming the user to the application -->
     <string name="welcome_to_google_i_o_app">Welcome to the Droidcon NYC app!</string>

@@ -32,10 +32,13 @@ import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.crashlytics.android.Crashlytics;
 import com.google.samples.apps.iosched.Config;
 import com.google.samples.apps.iosched.model.TagMetadata;
+import com.google.samples.apps.iosched.port.tasks.CheckTicketTask;
+import com.google.samples.apps.iosched.port.tasks.GoogleLoginTask;
 import com.google.samples.apps.iosched.provider.ScheduleContract;
 import com.google.samples.apps.iosched.ui.widget.CollectionView;
 import com.google.samples.apps.iosched.ui.widget.DrawShadowFrameLayout;
@@ -46,6 +49,8 @@ import com.google.samples.apps.iosched.util.UIUtils;
 import java.util.ArrayList;
 import java.util.List;
 
+import co.touchlab.android.threading.eventbus.EventBusExt;
+import co.touchlab.android.threading.tasks.TaskQueue;
 import co.touchlab.droidconnyc.R;
 
 import static com.google.samples.apps.iosched.util.LogUtils.LOGD;
@@ -138,6 +143,25 @@ public class BrowseSessionsActivity extends BaseActivity implements SessionsFrag
         mButterBar = findViewById(R.id.butter_bar);
         mDrawShadowFrameLayout = (DrawShadowFrameLayout) findViewById(R.id.main_content);
         registerHideableHeaderView(mButterBar);
+
+        EventBusExt.getDefault().register(this);
+    }
+
+    @Override
+    protected void onDestroy()
+    {
+        super.onDestroy();
+        EventBusExt.getDefault().unregister(this);
+    }
+
+    public void onEventMainThread(GoogleLoginTask task)
+    {
+        TaskQueue.execute(this, new CheckTicketTask());
+    }
+
+    public void onEventMainThread(CheckTicketTask task)
+    {
+        Toast.makeText(this, "its a ticket! "+ task.ticketStatus, Toast.LENGTH_LONG).show();
     }
 
     @Override
