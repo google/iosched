@@ -69,7 +69,9 @@ import com.google.samples.apps.iosched.port.FindUserActivity;
 import com.google.samples.apps.iosched.port.social.SocialFeed;
 import com.google.samples.apps.iosched.port.superbus.SyncConferenceDataCommand;
 import com.google.samples.apps.iosched.port.tasks.AppPrefs;
+import com.google.samples.apps.iosched.port.tasks.CheckTicketTask;
 import com.google.samples.apps.iosched.port.tasks.GcmRegistrationTask;
+import com.google.samples.apps.iosched.port.tasks.GoogleLoginTask;
 import com.google.samples.apps.iosched.provider.ScheduleContract;
 import com.google.samples.apps.iosched.sync.ConferenceDataHandler;
 import com.google.samples.apps.iosched.sync.SyncHelper;
@@ -154,6 +156,7 @@ public abstract class BaseActivity extends Activity implements
     protected static final int NAVDRAWER_ITEM_SETTINGS = 7;
     protected static final int NAVDRAWER_ITEM_EXPERTS_DIRECTORY = 8;
     protected static final int NAVDRAWER_ITEM_PEOPLE_IVE_MET = 9;
+    protected static final int NAVDRAWER_ITEM_GOLDEN_TICKET = 10;
     protected static final int NAVDRAWER_ITEM_INVALID = -1;
     protected static final int NAVDRAWER_ITEM_SEPARATOR = -2;
     protected static final int NAVDRAWER_ITEM_SEPARATOR_SPECIAL = -3;
@@ -169,7 +172,8 @@ public abstract class BaseActivity extends Activity implements
             R.string.navdrawer_item_sign_in,
             R.string.navdrawer_item_settings,
             R.string.navdrawer_item_experts_directory,
-            R.string.navdrawer_item_people_ive_met
+            R.string.navdrawer_item_people_ive_met,
+            R.string.navdrawer_item_golden_ticket
     };
 
     // icons for navdrawer items (indices must correspond to above array)
@@ -184,6 +188,7 @@ public abstract class BaseActivity extends Activity implements
             R.drawable.ic_drawer_settings,
             R.drawable.ic_drawer_experts,
             R.drawable.ic_drawer_people_met,
+            0,
     };
 
     // delay to launch nav drawer item, to allow close animation to play
@@ -461,6 +466,12 @@ public abstract class BaseActivity extends Activity implements
         mNavDrawerItems.add(NAVDRAWER_ITEM_SEPARATOR_SPECIAL);
         mNavDrawerItems.add(NAVDRAWER_ITEM_SETTINGS);
 
+        if(BuildConfig.DEBUG && AppPrefs.getInstance(this).isTicketLoaded())
+        {
+            mNavDrawerItems.add(NAVDRAWER_ITEM_SEPARATOR_SPECIAL);
+            mNavDrawerItems.add(NAVDRAWER_ITEM_GOLDEN_TICKET);
+        }
+
         createNavDrawerItems();
     }
 
@@ -520,6 +531,21 @@ public abstract class BaseActivity extends Activity implements
         } else {
             LOGW(TAG, "No view with ID main_content to fade in.");
         }
+    }
+
+    @SuppressWarnings("UnusedDeclaration")
+    public void onEventMainThread(GoogleLoginTask task)
+    {
+        if(BuildConfig.DEBUG && !AppPrefs.getInstance(this).isTicketLoaded())
+            TaskQueue.execute(this, new CheckTicketTask());
+    }
+
+    @SuppressWarnings("UnusedDeclaration")
+    public void onEventMainThread(CheckTicketTask task)
+    {
+        boolean hasTicket = AppPrefs.getInstance(this).isTicketLoaded();
+        if(task.newRequest && hasTicket)
+            populateNavDrawer();
     }
 
     /**
@@ -823,6 +849,9 @@ public abstract class BaseActivity extends Activity implements
                 intent = new Intent(this, VideoLibraryActivity.class);
                 startActivity(intent);
                 finish();
+                break;
+            case NAVDRAWER_ITEM_GOLDEN_TICKET:
+                GoldenTicketActivity.callMe(this);
                 break;
         }
     }

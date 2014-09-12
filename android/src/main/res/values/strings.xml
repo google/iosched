@@ -452,6 +452,8 @@
     <!-- Menu item to open the People I've Met screen [CHAR_LIMIT=20] -->
     <string name="navdrawer_item_people_ive_met">People I\'ve Met</string>
 
+    <string name="navdrawer_item_golden_ticket">Check Golden Ticket</string>
+
     <!-- Accessibility description of item to open the People I've Met screen -->
     <string name="navdrawer_item_people_ive_met_a11y">People I\'ve Met</string>
 
@@ -944,7 +946,7 @@
     <!-- Toast failure message if the user's wifi couldn't be updated -->
     <string name="wifi_install_error_message">Sorry, unable to update WiFi configuration</string>
     <string name="description_i_o_hunt">I/O Hunt</string>
-    <string name="base_url">http://droidcon-server.herokuapp.com/</string>
+    <string name="base_url">https://droidcon-server.herokuapp.com/</string>
     <!-- <string name="base_url">http://192.168.1.7:9000/</string> -->
     <string name="title_activity_find_user">FindUserActivity</string>
     <string name="hello_world">Hello world!</string>
@@ -957,5 +959,6 @@
     <string name="popup_close">Close</string>
     <string name="popup_message">Come to Droidcon!\n50% off with code \'app\'</string>
     <string name="popup_sub_message">(Bugging you just this once...)</string>
+    <string name="title_activity_golden_ticket">GoldenTicketActivity</string>
 
 </resources>

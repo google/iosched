@@ -37,6 +37,7 @@ import android.widget.Toast;
 import com.crashlytics.android.Crashlytics;
 import com.google.samples.apps.iosched.Config;
 import com.google.samples.apps.iosched.model.TagMetadata;
+import com.google.samples.apps.iosched.port.tasks.AppPrefs;
 import com.google.samples.apps.iosched.port.tasks.CheckTicketTask;
 import com.google.samples.apps.iosched.port.tasks.GoogleLoginTask;
 import com.google.samples.apps.iosched.provider.ScheduleContract;
@@ -152,16 +153,6 @@ public class BrowseSessionsActivity extends BaseActivity implements SessionsFrag
     {
         super.onDestroy();
         EventBusExt.getDefault().unregister(this);
-    }
-
-    public void onEventMainThread(GoogleLoginTask task)
-    {
-        TaskQueue.execute(this, new CheckTicketTask());
-    }
-
-    public void onEventMainThread(CheckTicketTask task)
-    {
-        Toast.makeText(this, "its a ticket! "+ task.ticketStatus, Toast.LENGTH_LONG).show();
     }
 
     @Override

@@ -102,9 +102,14 @@ public class AppPrefs
         prefs.edit().putBoolean(OFFER_SHOWN, registered).apply();
     }
 
+    public boolean isTicketLoaded()
+    {
+        return getTicketStatus() != null;
+    }
+
     public String getTicketStatus()
     {
-        return prefs.getString(OFFER_SHOWN, null);
+        return prefs.getString(TICKET_STATUS, null);
     }
 
     public void setTicketStatus(String ticketJson)

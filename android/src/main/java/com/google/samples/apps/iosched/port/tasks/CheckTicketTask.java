@@ -1,8 +1,14 @@
 package com.google.samples.apps.iosched.port.tasks;
 
 import android.content.Context;
+import android.content.res.AssetManager;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 
 import com.google.samples.apps.iosched.util.IOUtils;
+
+import java.io.IOException;
+import java.io.InputStream;
 
 import co.touchlab.android.threading.eventbus.EventBusExt;
 import co.touchlab.android.threading.tasks.TaskQueue;
@@ -45,4 +51,6 @@ public class CheckTicketTask extends TaskQueue.Task
         //time is short...
         return true;
     }
+
+
 }

@@ -95,4 +95,6 @@
     <color name="my_schedule_conflict">#db4437</color>
     <color name="black_overlay">#66000000</color>
 
+    <color name="ticket_gold">#cccc33</color>
+    <color name="ticket_silver">#aaaaaa</color>
 </resources>

@@ -434,6 +434,11 @@
             android:label="@string/title_activity_ticket_offer"
             android:theme="@style/FullscreenTheme" >
         </activity>
+        <activity
+            android:name="com.google.samples.apps.iosched.ui.GoldenTicketActivity"
+            android:label="@string/title_activity_golden_ticket"
+            android:screenOrientation="portrait">
+        </activity>
     </application>
 
 </manifest>
