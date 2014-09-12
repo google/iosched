@@ -27,7 +27,6 @@ public class GoldenTicketActivity extends Activity {
     private TextView ticketMessage;
     private ImageView ticketImage;
     private TextView ticketShareMessage;
-    private ImageView ticketShare;
 
     public static void callMe(Activity a)
     {
@@ -45,7 +44,6 @@ public class GoldenTicketActivity extends Activity {
         ticketMessage = (TextView) findViewById(R.id.ticketMessage);
         ticketImage = (ImageView) findViewById(R.id.ticketImage);
         ticketShareMessage = (TextView) findViewById(R.id.ticketShareMessage);
-        ticketShare = (ImageView) findViewById(R.id.ticketShare);
 
         showTicket();
     }
@@ -54,14 +52,16 @@ public class GoldenTicketActivity extends Activity {
     {
         AppPrefs appPrefs = AppPrefs.getInstance(this);
         Ticket ticket = appPrefs.getTicket();
+        boolean gold = ticket.ticketType == Ticket.Type.Gold;
 
         ticketType.setText(ticket.ticketType.name());
         ticketMessage.setText(ticket.message);
 
         try
         {
+
             // get input stream
-            InputStream ims = getAssets().open("kid.png");
+            InputStream ims = getAssets().open(gold ? "kid.png" : "cat.jpg");
             // load image as Drawable
             Drawable d = Drawable.createFromStream(ims, null);
             // set image to ImageView
@@ -71,10 +71,11 @@ public class GoldenTicketActivity extends Activity {
         {
             //Nope
         }
-        findViewById(R.id.mainViewGroup).setBackgroundColor(getResources().getColor(ticket.ticketType == Ticket.Type.Gold ? R.color.ticket_gold : R.color.ticket_silver));
 
-        ticketShareMessage.setText("Share code '"+ ticket.ticketCode +"' to get your Pass!");
-        ticketShare.setOnClickListener(new View.OnClickListener()
+        findViewById(R.id.mainViewGroup).setBackgroundColor(getResources().getColor(gold ? R.color.ticket_gold : R.color.ticket_silver));
+
+        ticketShareMessage.setText("Share code '"+ ticket.ticketCode +"' to get your "+ (gold ? "free Pass" : "Discount") +"!");
+        ticketShareMessage.setOnClickListener(new View.OnClickListener()
         {
             @Override
             public void onClick(View v)
@@ -94,7 +95,7 @@ public class GoldenTicketActivity extends Activity {
         intent.setType("text/plain");
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_WHEN_TASK_RESET);
 
-        intent.putExtra(Intent.EXTRA_SUBJECT, "Droidcon NYC "+ ticketTypeString +" Ticket!");
+        intent.putExtra(Intent.EXTRA_SUBJECT, "Droidcon NYC!");
         intent.putExtra(Intent.EXTRA_TEXT, shareMessage);
 
         startActivity(Intent.createChooser(intent, "Go!"));
