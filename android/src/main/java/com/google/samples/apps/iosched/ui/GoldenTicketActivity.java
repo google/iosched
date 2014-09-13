@@ -6,7 +6,11 @@ import android.content.res.AssetManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.Drawable;
+import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Environment;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -16,6 +20,9 @@ import android.widget.TextView;
 import com.google.samples.apps.iosched.port.tasks.AppPrefs;
 import com.google.samples.apps.iosched.port.tasks.Ticket;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 
@@ -46,6 +53,33 @@ public class GoldenTicketActivity extends Activity {
         ticketShareMessage = (TextView) findViewById(R.id.ticketShareMessage);
 
         showTicket();
+    }
+
+    public Bitmap takeScreenshot() {
+        View rootView = findViewById(R.id.mainViewGroup);
+        rootView.setDrawingCacheEnabled(true);
+        Bitmap drawingCache = rootView.getDrawingCache();
+        int width = drawingCache.getWidth();
+        return width > 480 ? Bitmap.createScaledBitmap(drawingCache, width /2, drawingCache.getHeight()/2, false) : drawingCache;
+    }
+
+    public File saveBitmap(Bitmap bitmap)
+    {
+        File imagePath = new File(Environment.getExternalStorageDirectory() + "/screenshot_"+ System.currentTimeMillis() +".jpg");
+        FileOutputStream fos;
+        try
+        {
+            fos = new FileOutputStream(imagePath);
+            bitmap.compress(Bitmap.CompressFormat.JPEG, 80, fos);
+            fos.flush();
+            fos.close();
+        }
+        catch (IOException e)
+        {
+            Log.e("GREC", e.getMessage(), e);
+        }
+
+        return imagePath;
     }
 
     private void showTicket()
@@ -80,23 +114,41 @@ public class GoldenTicketActivity extends Activity {
             @Override
             public void onClick(View v)
             {
-                shareTicket();
+                Bitmap screenshot = takeScreenshot();
+                new ShareScreenshotTask().execute(screenshot);
             }
         });
     }
 
-    private void shareTicket()
+    //Ugh.  Wouldn't normally use the AsyncTask, but this is pretty hacky.
+    class ShareScreenshotTask extends AsyncTask<Bitmap, Void, File>
+    {
+        @Override
+        protected File doInBackground(Bitmap... params)
+        {
+            return saveBitmap(params[0]);
+        }
+
+        @Override
+        protected void onPostExecute(File file)
+        {
+            shareTicket(file);
+        }
+    }
+
+    private void shareTicket(File imageFile)
     {
         Ticket ticket = AppPrefs.getInstance(this).getTicket();
         String ticketTypeString = ticket.ticketType == Ticket.Type.Gold ? "Golden" : "Silver";
         String shareMessage = "Hey @droidconnyc, I have a " + ticketTypeString + " ticket! My code '" + ticket.ticketCode + "'. #androidnyc";
 
         Intent intent=new Intent(android.content.Intent.ACTION_SEND);
-        intent.setType("text/plain");
-        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_WHEN_TASK_RESET);
+        Uri uri = Uri.fromFile(imageFile);
+        intent.setType("*/*");
 
         intent.putExtra(Intent.EXTRA_SUBJECT, "Droidcon NYC!");
         intent.putExtra(Intent.EXTRA_TEXT, shareMessage);
+        intent.putExtra(Intent.EXTRA_STREAM, uri);
 
         startActivity(Intent.createChooser(intent, "Go!"));
     }
