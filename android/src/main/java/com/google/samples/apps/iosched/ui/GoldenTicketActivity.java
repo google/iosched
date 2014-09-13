@@ -46,6 +46,7 @@ public class GoldenTicketActivity extends Activity {
         getActionBar().hide();
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_golden_ticket);
+        findViewById(R.id.mainViewGroup).setDrawingCacheEnabled(true);
 
         ticketType = (TextView) findViewById(R.id.ticketType);
         ticketMessage = (TextView) findViewById(R.id.ticketMessage);
@@ -57,7 +58,6 @@ public class GoldenTicketActivity extends Activity {
 
     public Bitmap takeScreenshot() {
         View rootView = findViewById(R.id.mainViewGroup);
-        rootView.setDrawingCacheEnabled(true);
         Bitmap drawingCache = rootView.getDrawingCache();
         int width = drawingCache.getWidth();
         return width > 480 ? Bitmap.createScaledBitmap(drawingCache, width /2, drawingCache.getHeight()/2, false) : drawingCache;
