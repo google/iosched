@@ -793,7 +793,7 @@ public class ScheduleContract {
         public static final String DEFAULT_SORT = MapTileColumns.TILE_FLOOR + " ASC";
 
 
-        /** Build {@link Uri} for all overlay zoom entries */
+        /** Build {@link Uri} for all overlay zoom entries. */
         public static Uri buildUri() {
             return CONTENT_URI;
         }
