@@ -52,7 +52,6 @@ gae {
     downloadSdk = true
 
     appcfg {
-        email = 'mangini@google.com'
         passIn = true
         oauth2 = true
 
