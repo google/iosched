@@ -17,7 +17,7 @@ language: android
 android:
   components:
     - build-tools-20.0.0
-    - andorid-19
+    - android-19
     - android-20
     - extra-google-m2repository
     - extra-android-m2repository
