@@ -77,7 +77,7 @@ Means that this image can be fetched at any of the following URLs:
 
 URL | Image size
 --- | ----------
-myserver.com/images/**__w-200-400-600-800-1000__**/session1.jpg | original
+myserver.com/images/**\_\_w-200-400-600-800-1000\_\_**/session1.jpg | original
 myserver.com/images/w200/session1.jpg | 200px wide
 myserver.com/images/w400/session1.jpg | 400px wide
 myserver.com/images/w600/session1.jpg | 600px wide
