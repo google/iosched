@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-lpreview = hasProperty('lpreview')
+lpreview = hasProperty('lpreview') ? lpreview.toBoolean() : false;
 
 apply plugin: 'com.android.application'
 
