@@ -160,7 +160,7 @@ public abstract class BaseActivity extends Activity implements
     // SwipeRefreshLayout allows the user to swipe the screen down to trigger a manual refresh
     private SwipeRefreshLayout mSwipeRefreshLayout;
 
-    // asynctask that performs GCM registration in the backgorund
+    // asynctask that performs GCM registration in the background
     private AsyncTask<Void, Void, Void> mGCMRegisterTask;
 
     // handle to our sync observer (that notifies us about changes in our sync state)
