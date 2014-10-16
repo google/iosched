@@ -16,5 +16,5 @@
 
 <resources>
     <!-- Replace with your own API key -->
-    <string name="maps_api_key" translatable="false">ReplaceWithYourApiKey</string>
+    <string name="maps_api_key" translatable="false">AIzaSyDQsYDFRg-NXkRNIT3uqnzgOeX9Vi4RjZk</string>
 </resources>
