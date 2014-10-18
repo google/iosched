@@ -20,9 +20,11 @@ import android.content.Context;
 import android.content.res.Resources;
 import android.content.res.TypedArray;
 import android.graphics.Canvas;
+import android.support.v4.view.MotionEventCompat;
 import android.support.v4.view.ViewCompat;
 import android.util.AttributeSet;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewConfiguration;
@@ -56,23 +58,24 @@ import android.widget.AbsListView;
  * refresh of the content wherever this gesture is used.</p>
  */
 public class SwipeRefreshLayout extends ViewGroup {
+    private static final String LOG_TAG = SwipeRefreshLayout.class.getSimpleName();
+
     private static final long RETURN_TO_ORIGINAL_POSITION_TIMEOUT = 300;
     private static final float ACCELERATE_INTERPOLATION_FACTOR = 1.5f;
     private static final float DECELERATE_INTERPOLATION_FACTOR = 2f;
     private static final float PROGRESS_BAR_HEIGHT = 4;
     private static final float MAX_SWIPE_DISTANCE_FACTOR = .6f;
     private static final int REFRESH_TRIGGER_DISTANCE = 120;
+    private static final int INVALID_POINTER = -1;
 
     private SwipeProgressBar mProgressBar; //the thing that shows progress is going
     private View mTarget; //the content that gets pulled down
     private int mOriginalOffsetTop;
     private OnRefreshListener mListener;
-    private MotionEvent mDownEvent;
     private int mFrom;
     private boolean mRefreshing = false;
     private int mTouchSlop;
     private float mDistanceToTriggerSync = -1;
-    private float mPrevY;
     private int mMediumAnimationDuration;
     private float mFromPercentage = 0;
     private float mCurrPercentage = 0;
@@ -80,13 +83,18 @@ public class SwipeRefreshLayout extends ViewGroup {
     private int mCurrentTargetOffsetTop;
     private int mProgressBarTop;
 
+    private float mInitialMotionY;
+    private float mLastMotionY;
+    private boolean mIsBeingDragged;
+    private int mActivePointerId = INVALID_POINTER;
+
     // Target is returning to its start offset because it was cancelled or a
     // refresh was triggered.
     private boolean mReturningToStart;
     private final DecelerateInterpolator mDecelerateInterpolator;
     private final AccelerateInterpolator mAccelerateInterpolator;
     private static final int[] LAYOUT_ATTRS = new int[] {
-        android.R.attr.enabled
+            android.R.attr.enabled
     };
 
     private final Animation mAnimateToStartPosition = new Animation() {
@@ -257,23 +265,33 @@ public class SwipeRefreshLayout extends ViewGroup {
     }
 
     /**
+     * @deprecated Use {@link #setColorSchemeResources(int, int, int, int)}
+     */
+    @Deprecated
+    public void setColorScheme(int colorRes1, int colorRes2, int colorRes3, int colorRes4) {
+        setColorSchemeResources(colorRes1, colorRes2, colorRes3, colorRes4);
+    }
+
+    /**
+     * Set the four colors used in the progress animation from color resources.
+     * The first color will also be the color of the bar that grows in response
+     * to a user swipe gesture.
+     */
+    public void setColorSchemeResources(int colorRes1, int colorRes2, int colorRes3,
+                                        int colorRes4) {
+        final Resources res = getResources();
+        setColorSchemeColors(res.getColor(colorRes1), res.getColor(colorRes2),
+                res.getColor(colorRes3), res.getColor(colorRes4));
+    }
+
+    /**
      * Set the four colors used in the progress animation. The first color will
      * also be the color of the bar that grows in response to a user swipe
      * gesture.
-     *
-     * @param colorRes1 Color resource.
-     * @param colorRes2 Color resource.
-     * @param colorRes3 Color resource.
-     * @param colorRes4 Color resource.
      */
-    public void setColorScheme(int colorRes1, int colorRes2, int colorRes3, int colorRes4) {
+    public void setColorSchemeColors(int color1, int color2, int color3, int color4) {
         ensureTarget();
-        final Resources res = getResources();
-        final int color1 = res.getColor(colorRes1);
-        final int color2 = res.getColor(colorRes2);
-        final int color3 = res.getColor(colorRes3);
-        final int color4 = res.getColor(colorRes4);
-        mProgressBar.setColorScheme(color1, color2, color3,color4);
+        mProgressBar.setColorScheme(color1, color2, color3, color4);
     }
 
     /**
@@ -299,7 +317,7 @@ public class SwipeRefreshLayout extends ViewGroup {
                 final DisplayMetrics metrics = getResources().getDisplayMetrics();
                 mDistanceToTriggerSync = (int) Math.min(
                         ((View) getParent()) .getHeight() * MAX_SWIPE_DISTANCE_FACTOR,
-                                REFRESH_TRIGGER_DISTANCE * metrics.density);
+                        REFRESH_TRIGGER_DISTANCE * metrics.density);
             }
         }
     }
@@ -358,7 +376,7 @@ public class SwipeRefreshLayout extends ViewGroup {
                 final AbsListView absListView = (AbsListView) mTarget;
                 return absListView.getChildCount() > 0
                         && (absListView.getFirstVisiblePosition() > 0 || absListView.getChildAt(0)
-                                .getTop() < absListView.getPaddingTop());
+                        .getTop() < absListView.getPaddingTop());
             } else {
                 return mTarget.getScrollY() > 0;
             }
@@ -370,14 +388,59 @@ public class SwipeRefreshLayout extends ViewGroup {
     @Override
     public boolean onInterceptTouchEvent(MotionEvent ev) {
         ensureTarget();
-        boolean handled = false;
-        if (mReturningToStart && ev.getAction() == MotionEvent.ACTION_DOWN) {
+
+        final int action = MotionEventCompat.getActionMasked(ev);
+
+        if (mReturningToStart && action == MotionEvent.ACTION_DOWN) {
             mReturningToStart = false;
         }
-        if (isEnabled() && !mReturningToStart && !canChildScrollUp()) {
-            handled = onTouchEvent(ev);
+
+        if (!isEnabled() || mReturningToStart || canChildScrollUp()) {
+            // Fail fast if we're not in a state where a swipe is possible
+            return false;
         }
-        return !handled ? super.onInterceptTouchEvent(ev) : handled;
+
+        switch (action) {
+            case MotionEvent.ACTION_DOWN:
+                mLastMotionY = mInitialMotionY = ev.getY();
+                mActivePointerId = MotionEventCompat.getPointerId(ev, 0);
+                mIsBeingDragged = false;
+                mCurrPercentage = 0;
+                break;
+
+            case MotionEvent.ACTION_MOVE:
+                if (mActivePointerId == INVALID_POINTER) {
+                    Log.e(LOG_TAG, "Got ACTION_MOVE event but don't have an active pointer id.");
+                    return false;
+                }
+
+                final int pointerIndex = MotionEventCompat.findPointerIndex(ev, mActivePointerId);
+                if (pointerIndex < 0) {
+                    Log.e(LOG_TAG, "Got ACTION_MOVE event but have an invalid active pointer id.");
+                    return false;
+                }
+
+                final float y = MotionEventCompat.getY(ev, pointerIndex);
+                final float yDiff = y - mInitialMotionY;
+                if (yDiff > mTouchSlop) {
+                    mLastMotionY = y;
+                    mIsBeingDragged = true;
+                }
+                break;
+
+            case MotionEventCompat.ACTION_POINTER_UP:
+                onSecondaryPointerUp(ev);
+                break;
+
+            case MotionEvent.ACTION_UP:
+            case MotionEvent.ACTION_CANCEL:
+                mIsBeingDragged = false;
+                mCurrPercentage = 0;
+                mActivePointerId = INVALID_POINTER;
+                break;
+        }
+
+        return mIsBeingDragged;
     }
 
     @Override
@@ -386,59 +449,84 @@ public class SwipeRefreshLayout extends ViewGroup {
     }
 
     @Override
-    public boolean onTouchEvent(MotionEvent event) {
-        final int action = event.getAction();
-        boolean handled = false;
+    public boolean onTouchEvent(MotionEvent ev) {
+        final int action = MotionEventCompat.getActionMasked(ev);
+
+        if (mReturningToStart && action == MotionEvent.ACTION_DOWN) {
+            mReturningToStart = false;
+        }
+
+        if (!isEnabled() || mReturningToStart || canChildScrollUp()) {
+            // Fail fast if we're not in a state where a swipe is possible
+            return false;
+        }
+
         switch (action) {
             case MotionEvent.ACTION_DOWN:
+                mLastMotionY = mInitialMotionY = ev.getY();
+                mActivePointerId = MotionEventCompat.getPointerId(ev, 0);
+                mIsBeingDragged = false;
                 mCurrPercentage = 0;
-                mDownEvent = MotionEvent.obtain(event);
-                mPrevY = mDownEvent.getY();
                 break;
+
             case MotionEvent.ACTION_MOVE:
-                if (mDownEvent != null && !mReturningToStart) {
-                    final float eventY = event.getY();
-                    float yDiff = eventY - mDownEvent.getY();
-                    if (yDiff > mTouchSlop) {
-                        // User velocity passed min velocity; trigger a refresh
-                        if (yDiff > mDistanceToTriggerSync) {
-                            // User movement passed distance; trigger a refresh
-                            startRefresh();
-                            handled = true;
-                            break;
+                final int pointerIndex = MotionEventCompat.findPointerIndex(ev, mActivePointerId);
+                if (pointerIndex < 0) {
+                    Log.e(LOG_TAG, "Got ACTION_MOVE event but have an invalid active pointer id.");
+                    return false;
+                }
+
+                final float y = MotionEventCompat.getY(ev, pointerIndex);
+                final float yDiff = y - mInitialMotionY;
+
+                if (!mIsBeingDragged && yDiff > mTouchSlop) {
+                    mIsBeingDragged = true;
+                }
+
+                if (mIsBeingDragged) {
+                    // User velocity passed min velocity; trigger a refresh
+                    if (yDiff > mDistanceToTriggerSync) {
+                        // User movement passed distance; trigger a refresh
+                        startRefresh();
+                    } else {
+                        // Just track the user's movement
+                        setTriggerPercentage(
+                                mAccelerateInterpolator.getInterpolation(
+                                        yDiff / mDistanceToTriggerSync));
+                        updateContentOffsetTop((int) (yDiff));
+                        if (mLastMotionY > y && mTarget.getTop() == getPaddingTop()) {
+                            // If the user puts the view back at the top, we
+                            // don't need to. This shouldn't be considered
+                            // cancelling the gesture as the user can restart from the top.
+                            removeCallbacks(mCancel);
                         } else {
-                            // Just track the user's movement
-                            setTriggerPercentage(
-                                    mAccelerateInterpolator.getInterpolation(
-                                            yDiff / mDistanceToTriggerSync));
-                            float offsetTop = yDiff;
-                            if (mPrevY > eventY) {
-                                offsetTop = yDiff - mTouchSlop;
-                            }
-                            updateContentOffsetTop((int) (offsetTop));
-                            if (mPrevY > eventY && (mTarget.getTop() < mTouchSlop)) {
-                                // If the user puts the view back at the top, we
-                                // don't need to. This shouldn't be considered
-                                // cancelling the gesture as the user can restart from the top.
-                                removeCallbacks(mCancel);
-                            } else {
-                                updatePositionTimeout();
-                            }
-                            mPrevY = event.getY();
-                            handled = true;
+                            updatePositionTimeout();
                         }
                     }
+                    mLastMotionY = y;
                 }
                 break;
+
+            case MotionEventCompat.ACTION_POINTER_DOWN: {
+                final int index = MotionEventCompat.getActionIndex(ev);
+                mLastMotionY = MotionEventCompat.getY(ev, index);
+                mActivePointerId = MotionEventCompat.getPointerId(ev, index);
+                break;
+            }
+
+            case MotionEventCompat.ACTION_POINTER_UP:
+                onSecondaryPointerUp(ev);
+                break;
+
             case MotionEvent.ACTION_UP:
             case MotionEvent.ACTION_CANCEL:
-                if (mDownEvent != null) {
-                    mDownEvent.recycle();
-                    mDownEvent = null;
-                }
-                break;
+                mIsBeingDragged = false;
+                mCurrPercentage = 0;
+                mActivePointerId = INVALID_POINTER;
+                return false;
         }
-        return handled;
+
+        return true;
     }
 
     private void startRefresh() {
@@ -466,6 +554,18 @@ public class SwipeRefreshLayout extends ViewGroup {
     private void updatePositionTimeout() {
         removeCallbacks(mCancel);
         postDelayed(mCancel, RETURN_TO_ORIGINAL_POSITION_TIMEOUT);
+    }
+
+    private void onSecondaryPointerUp(MotionEvent ev) {
+        final int pointerIndex = MotionEventCompat.getActionIndex(ev);
+        final int pointerId = MotionEventCompat.getPointerId(ev, pointerIndex);
+        if (pointerId == mActivePointerId) {
+            // This was our active pointer going up. Choose a new
+            // active pointer and adjust accordingly.
+            final int newPointerIndex = pointerIndex == 0 ? 1 : 0;
+            mLastMotionY = MotionEventCompat.getY(ev, newPointerIndex);
+            mActivePointerId = MotionEventCompat.getPointerId(ev, newPointerIndex);
+        }
     }
 
     /**

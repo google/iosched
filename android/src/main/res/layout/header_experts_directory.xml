@@ -33,5 +33,6 @@
         iosched:messageTitle="@string/experts_directory_header_title"
         iosched:messageText="@string/experts_directory_header_body"
         iosched:button1text="@string/experts_directory_header_dismiss"
-        iosched:button1emphasis="true" />
+        iosched:button1emphasis="true"
+        iosched:cardBackgroundColor="#fff" />
 </FrameLayout>

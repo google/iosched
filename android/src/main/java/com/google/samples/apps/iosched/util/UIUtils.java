@@ -26,11 +26,12 @@ import android.content.pm.ActivityInfo;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
-import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.content.res.TypedArray;
-import android.graphics.*;
-import android.graphics.drawable.Drawable;
+import android.graphics.Color;
+import android.graphics.ColorFilter;
+import android.graphics.ColorMatrixColorFilter;
+import android.graphics.Typeface;
 import android.net.Uri;
 import android.os.Build;
 import android.preference.PreferenceManager;
@@ -74,9 +75,10 @@ public class UIUtils {
      * Factor applied to session color to derive the background color on panels and when
      * a session photo could not be downloaded (or while it is being downloaded)
      */
-    public static final float SESSION_BG_COLOR_SCALE_FACTOR = 0.65f;
-    public static final float SESSION_PHOTO_SCRIM_ALPHA = 0.75f;
+    public static final float SESSION_BG_COLOR_SCALE_FACTOR = 0.75f;
 
+    private static final float SESSION_PHOTO_SCRIM_ALPHA = 0.25f; // 0=invisible, 1=visible image
+    private static final float SESSION_PHOTO_SCRIM_SATURATION = 0.2f; // 0=gray, 1=color image
 
     public static final String TARGET_FORM_FACTOR_ACTIVITY_METADATA =
             "com.google.samples.apps.iosched.meta.TARGET_FORM_FACTOR";
@@ -294,9 +296,7 @@ public class UIUtils {
     }
 
     public static boolean isTablet(Context context) {
-        return (context.getResources().getConfiguration().screenLayout
-                & Configuration.SCREENLAYOUT_SIZE_MASK)
-                >= Configuration.SCREENLAYOUT_SIZE_LARGE;
+        return context.getResources().getConfiguration().smallestScreenWidthDp >= 600;
     }
 
     // Whether a feedback notification was fired for a particular session. In the event that a
@@ -429,7 +429,7 @@ public class UIUtils {
         }
     }
 
-    private static final int[] RES_IDS_ACTION_BAR_SIZE = { android.R.attr.actionBarSize };
+    private static final int[] RES_IDS_ACTION_BAR_SIZE = { R.attr.actionBarSize };
 
     /** Calculates the Action Bar height in pixels. */
     public static int calculateActionBarSize(Context context) {
@@ -465,10 +465,6 @@ public class UIUtils {
 
     public static int scaleSessionColorToDefaultBG(int color) {
         return scaleColor(color, SESSION_BG_COLOR_SCALE_FACTOR, false);
-    }
-
-    public static boolean hasActionBar(Activity activity) {
-        return activity.getActionBar() != null;
     }
 
     public static void showHashtagStream(final Context context, String hashTag) {
@@ -536,5 +532,17 @@ public class UIUtils {
         }
 
         return (value - min) / (float) (max - min);
+    }
+
+    // Desaturates and color-scrims the image
+    public static ColorFilter makeSessionImageScrimColorFilter(int sessionColor) {
+        float a = SESSION_PHOTO_SCRIM_ALPHA;
+        float sat = SESSION_PHOTO_SCRIM_SATURATION; // saturation (0=gray, 1=color)
+        return new ColorMatrixColorFilter(new float[]{
+                ((1 - 0.213f) * sat + 0.213f) * a, ((0 - 0.715f) * sat + 0.715f) * a, ((0 - 0.072f) * sat + 0.072f) * a, 0, Color.red(sessionColor) * (1 - a),
+                ((0 - 0.213f) * sat + 0.213f) * a, ((1 - 0.715f) * sat + 0.715f) * a, ((0 - 0.072f) * sat + 0.072f) * a, 0, Color.green(sessionColor) * (1 - a),
+                ((0 - 0.213f) * sat + 0.213f) * a, ((0 - 0.715f) * sat + 0.715f) * a, ((1 - 0.072f) * sat + 0.072f) * a, 0, Color.blue(sessionColor) * (1 - a),
+                0, 0, 0, 0, 255
+        });
     }
 }

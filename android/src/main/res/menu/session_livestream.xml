@@ -13,26 +13,27 @@
   See the License for the specific language governing permissions and
   limitations under the License.
   -->
-<menu xmlns:android="http://schemas.android.com/apk/res/android">
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:iosched="http://schemas.android.com/apk/res-auto">
 
     <item android:id="@+id/menu_presentation"
           android:icon="@drawable/ic_media_route_off_holo_light"
           android:title="@string/description_presentation"
           android:orderInCategory="1"
           android:visible="false"
-          android:showAsAction="ifRoom" />
+        iosched:showAsAction="ifRoom" />
 
     <item android:id="@+id/menu_captions"
           android:icon="@drawable/ic_action_captions"
           android:title="@string/description_captions"
           android:orderInCategory="1"
           android:visible="false"
-          android:showAsAction="ifRoom" />
+        iosched:showAsAction="ifRoom" />
 
     <item android:id="@+id/menu_share"
         android:icon="@drawable/ic_action_share"
         android:title="@string/description_share"
         android:orderInCategory="1"
-        android:showAsAction="ifRoom" />
+        iosched:showAsAction="ifRoom" />
 
 </menu>

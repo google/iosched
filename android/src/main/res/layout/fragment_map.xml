@@ -17,6 +17,4 @@
     android:id="@+id/map_container"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/theme_primary" >
-
-</FrameLayout>
+    android:background="@color/theme_primary" />

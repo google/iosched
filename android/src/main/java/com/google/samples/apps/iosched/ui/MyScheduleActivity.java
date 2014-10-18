@@ -16,7 +16,6 @@
 
 package com.google.samples.apps.iosched.ui;
 
-import android.app.ActionBar;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.ListFragment;
@@ -127,7 +126,6 @@ public class MyScheduleActivity extends BaseActivity implements MyScheduleFragme
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_my_schedule);
-        getLPreviewUtils().trySetActionBar();
 
         /* [ANALYTICS:SCREEN]
          * TRIGGER:   View the My Schedule screen.
@@ -142,7 +140,7 @@ public class MyScheduleActivity extends BaseActivity implements MyScheduleFragme
 
         int i;
         for (i = 0; i < Config.CONFERENCE_DAYS.length; i++) {
-            mScheduleAdapters[i] = new MyScheduleAdapter(this, getLPreviewUtils());
+            mScheduleAdapters[i] = new MyScheduleAdapter(this, getLUtils());
         }
 
         mViewPagerAdapter = new OurViewPagerAdapter(getFragmentManager());
@@ -222,21 +220,6 @@ public class MyScheduleActivity extends BaseActivity implements MyScheduleFragme
         setProgressBarTopWhenActionBarShown((int)
                 TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 2,
                         getResources().getDisplayMetrics()));
-    }
-
-    private void updateActionBarNavigation() {
-        boolean show = !isNavDrawerOpen();
-        if (getLPreviewUtils().shouldChangeActionBarForDrawer()) {
-            ActionBar ab = getActionBar();
-            ab.setDisplayShowTitleEnabled(show);
-            ab.setDisplayUseLogoEnabled(!show);
-        }
-    }
-
-    @Override
-    protected void onNavDrawerStateChanged(boolean isOpen, boolean isAnimating) {
-        super.onNavDrawerStateChanged(isOpen, isAnimating);
-        updateActionBarNavigation();
     }
 
     @Override
@@ -431,12 +414,6 @@ public class MyScheduleActivity extends BaseActivity implements MyScheduleFragme
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         super.onCreateOptionsMenu(menu);
-
-        if (getLPreviewUtils().shouldChangeActionBarForDrawer() && isNavDrawerOpen()) {
-            // nothing to show if nav drawer is open or animating
-            return true;
-        }
-
         getMenuInflater().inflate(R.menu.my_schedule, menu);
         configureStandardMenuItems(menu);
         return true;

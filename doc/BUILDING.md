@@ -105,8 +105,7 @@ To install on your test device, use:
 
     ./gradlew -Plpreview installLpreviewDebug
 
-You will need a device flashed with the Android L preview system image, or
-you can use the emulator.
+You will need a device flashed with the Android L preview system image.
 
 # Server-side setup
 

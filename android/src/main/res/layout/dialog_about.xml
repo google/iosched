@@ -18,7 +18,5 @@
     android:id="@android:id/text1"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="16dp"
-    android:textSize="@dimen/text_size_medium"
-    android:background="@android:color/white"
-    android:textColor="@android:color/black" />
+    android:padding="24dp"
+    android:textSize="@dimen/text_size_medium" />

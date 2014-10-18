@@ -21,8 +21,6 @@
     <dimen name="add_to_schedule_button_height">72dp</dimen> <!-- including padding -->
     <dimen name="add_to_schedule_button_height_no_padding">56dp</dimen>
 
-    <dimen name="navdrawer_chosen_account_height">140dp</dimen>
-
     <dimen name="filter_spinner_width">200dp</dimen>
     <integer name="filter_spinner_weight">0</integer>
 

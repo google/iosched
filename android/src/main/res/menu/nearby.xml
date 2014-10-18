@@ -1,5 +1,3 @@
-<?xml version="1.0" encoding="utf-8"?>
-
 <!--
   Copyright 2014 Google Inc. All rights reserved.
 
@@ -16,10 +14,11 @@
   limitations under the License.
   -->
 
-<menu xmlns:android="http://schemas.android.com/apk/res/android">
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:iosched="http://schemas.android.com/apk/res-auto">
     <item android:id="@+id/menu_nearby"
         android:title="@string/map_nearby_button"
         android:orderInCategory="1"
-        android:showAsAction="ifRoom"
-        android:actionLayout="@layout/nearby_button" />
+        iosched:showAsAction="ifRoom"
+        iosched:actionLayout="@layout/nearby_button" />
 </menu>

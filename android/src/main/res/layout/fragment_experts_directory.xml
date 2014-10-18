@@ -20,7 +20,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:iosched="http://schemas.android.com/apk/res-auto"
-    android:padding="@dimen/half_explore_grid_padding"
+    android:padding="@dimen/explore_grid_padding_half"
     android:clipToPadding="false"
     android:scrollbarStyle="outsideOverlay"
     iosched:internalPadding="@dimen/explore_grid_padding" />

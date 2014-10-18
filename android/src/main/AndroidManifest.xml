@@ -22,10 +22,9 @@
     android:versionName="2.2.3"
     android:installLocation="auto">
 
-    <!-- targetSdkVersion set to 19 from build.gradle on non-L-preview builds -->
     <uses-sdk
         android:minSdkVersion="14"
-        android:targetSdkVersion="L" />
+        android:targetSdkVersion="21" />
 
     <permission
         android:name="com.google.samples.apps.iosched.permission.WRITE_SCHEDULE"
@@ -80,7 +79,7 @@
 
     <application
         android:label="@string/app_name"
-        android:icon="@drawable/ic_launcher"
+        android:icon="@mipmap/ic_launcher"
         android:logo="@drawable/actionbar_logo"
         android:theme="@style/Theme.IOSched"
         android:hardwareAccelerated="true"
@@ -124,7 +123,6 @@
         <activity
             android:name=".ui.SettingsActivity"
             android:label="@string/title_settings"
-            android:theme="@style/Theme.IOSched.WithElevatedHeader"
             android:parentActivityName=".ui.MyScheduleActivity" />
 
         <activity
@@ -170,8 +168,7 @@
         </activity>
 
         <activity android:name=".ui.SessionFeedbackActivity"
-            android:label="@string/title_session_feedback"
-            android:theme="@style/Theme.IOSched.WithElevatedHeader">
+            android:label="@string/title_session_feedback">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
                 <category android:name="android.intent.category.DEFAULT" />
@@ -262,7 +259,7 @@
 
         <!-- People I've Met -->
         <activity android:name=".ui.PeopleIveMetActivity"
-            android:label="@string/app_name"
+            android:label="@string/title_people_ive_met"
             android:theme="@style/Theme.IOSched.PeopleIveMet"/>
 
 	    <!-- Session alarm/calendar integrating components. -->
@@ -366,9 +363,6 @@
         <service android:name=".service.FeedbackListenerService" >
             <intent-filter>
                 <action android:name="com.google.android.gms.wearable.BIND_LISTENER" />
-            </intent-filter>
-            <intent-filter>
-                <action android:name="com.google.sample.apps.iosched.ACTION_NOTIFICATION_DISMISSAL"/>
             </intent-filter>
         </service>
 

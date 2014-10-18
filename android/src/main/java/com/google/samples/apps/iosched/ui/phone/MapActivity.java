@@ -16,18 +16,16 @@
 
 package com.google.samples.apps.iosched.ui.phone;
 
-import android.app.ActionBar;
-import android.app.Fragment;
 import android.app.FragmentManager;
-import android.content.res.Resources;
-import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
+import android.graphics.Rect;
 import android.os.Bundle;
-import android.view.MenuItem;
+import android.view.View;
+import android.view.ViewGroup;
+import android.view.animation.DecelerateInterpolator;
 
 import com.google.samples.apps.iosched.R;
+import com.google.samples.apps.iosched.ui.BaseMapActivity;
 import com.google.samples.apps.iosched.ui.MapFragment;
-import com.google.samples.apps.iosched.ui.NearbyActivity;
 import com.google.samples.apps.iosched.ui.NearbyFragment;
 import com.google.samples.apps.iosched.ui.PartnersFragment;
 import com.google.samples.apps.iosched.util.AnalyticsManager;
@@ -35,19 +33,16 @@ import com.google.samples.apps.iosched.util.AnalyticsManager;
 import static com.google.samples.apps.iosched.util.LogUtils.LOGD;
 import static com.google.samples.apps.iosched.util.LogUtils.makeLogTag;
 
-public class MapActivity extends NearbyActivity implements MapFragment.Callbacks {
+public class MapActivity extends BaseMapActivity implements MapFragment.Callbacks {
 
     private static final String TAG = makeLogTag(MapActivity.class);
-    public static final String EXTRA_DETACHED_MODE
-            = "com.google.samples.apps.iosched.EXTRA_DETACHED_MODE";
 
     private static final String SCREEN_LABEL = "Map";
     private static final String PARTNERS_FRAGMENT_TAG = "partners";
 
-    private int mActionBarOnColor;
-    private int mActionBarOffColor;
-    private ColorDrawable mActionBarBgDrawable;
     private boolean mPopupVisible = false; // Nearby or Partners
+    private boolean mFirstPopupAnimate = true;
+    private View mPopupContainerView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,16 +53,7 @@ public class MapActivity extends NearbyActivity implements MapFragment.Callbacks
         }
 
         setContentView(R.layout.activity_map);
-        getLPreviewUtils().trySetActionBar();
-
-        if (null == savedInstanceState) {
-            // Pass arguments to MapFragment
-            MapFragment fragment = MapFragment.newInstance();
-            fragment.setArguments(intentToFragmentArguments(getIntent()));
-            getFragmentManager().beginTransaction()
-                    .replace(R.id.main_content, fragment)
-                    .commit();
-        }
+        mPopupContainerView = findViewById(R.id.fragment_container_popup);
 
         /* [ANALYTICS:SCREEN]
          * TRIGGER:   View the Map screen on a phone.
@@ -79,69 +65,52 @@ public class MapActivity extends NearbyActivity implements MapFragment.Callbacks
 
         overridePendingTransition(0, 0);
 
-        final Resources res = getResources();
-        mActionBarOffColor = res.getColor(R.color.translucent_actionbar_background);
-        mActionBarOnColor = res.getColor(R.color.theme_primary);
-
-        // Initialise and set background drawable here explicitly to ensure the background
-        // is drawn  when the background color is changed on JellyBean
-        mActionBarBgDrawable = new ColorDrawable(mActionBarOffColor);
-        getActionBar().setBackgroundDrawable(mActionBarBgDrawable);
-
         getFragmentManager().addOnBackStackChangedListener(
                 new FragmentManager.OnBackStackChangedListener() {
                     @Override
                     public void onBackStackChanged() {
                         mPopupVisible = (getFragmentManager().getBackStackEntryCount() == 1);
-                        updateActionBarNavigation();
+                        updatePopup();
                     }
                 }
         );
 
-        updateActionBarNavigation();
+        updatePopup();
     }
 
-    @Override
-    protected void onPostCreate(Bundle savedInstanceState) {
-        super.onPostCreate(savedInstanceState);
-        Fragment nearbyFragment = getFragmentManager().findFragmentByTag(NEARBY_FRAGMENT_TAG);
-        Fragment partnersFragment = getFragmentManager().findFragmentByTag(PARTNERS_FRAGMENT_TAG);
-        mPopupVisible = nearbyFragment != null || partnersFragment != null;
-        updateActionBarNavigation();
-    }
-
-    private void updateActionBarNavigation() {
-        boolean show = !isNavDrawerOpen();
-        ActionBar ab = getActionBar();
-        if (getLPreviewUtils().shouldChangeActionBarForDrawer()) {
-            ab.setDisplayShowTitleEnabled(show);
-            ab.setDisplayUseLogoEnabled(!show);
+    private void updatePopup() {
+        View mapContainerView = findViewById(R.id.fragment_container_map);
+        if (mFirstPopupAnimate) {
+            if (mPopupVisible) {
+                mPopupContainerView.setTranslationY(mapContainerView.getHeight());
+                mPopupContainerView.setVisibility(View.VISIBLE);
+                mFirstPopupAnimate = false;
+            } else {
+                return;
+            }
         }
+        mPopupContainerView.animate()
+                .translationY(mPopupVisible ? 0 : mapContainerView.getHeight())
+                .setInterpolator(new DecelerateInterpolator())
+                .setDuration(250);
+    }
 
-        if (mPopupVisible) {
-            ab.hide();
-        } else {
-            ab.show();
+    @Override
+    public void onInsetsChanged(Rect insets) {
+        super.onInsetsChanged(insets);
+        ViewGroup.MarginLayoutParams lp = (ViewGroup.MarginLayoutParams)
+                mPopupContainerView.getLayoutParams();
+        lp.topMargin= insets.top;
+        mPopupContainerView.setLayoutParams(lp);
+    }
+
+    @Override
+    public void onBackPressed() {
+        // Force checking the native fragment manager for a backstack rather than
+        // the support lib fragment manager.
+        if (!getFragmentManager().popBackStackImmediate()) {
+            super.onBackPressed();
         }
-    }
-
-    @Override
-    protected void onNavDrawerStateChanged(boolean isOpen, boolean isAnimating) {
-        super.onNavDrawerStateChanged(isOpen, isAnimating);
-        updateActionBarNavigation();
-    }
-
-    @Override
-    protected void onNavDrawerSlide(float offset) {
-        super.onNavDrawerSlide(offset);
-        // Make Action Bar gradually fade into the theme color
-        mActionBarBgDrawable.setColor(Color.argb(
-                Color.alpha(mActionBarOffColor) + (int) (offset * (Color.alpha(mActionBarOnColor) - Color.alpha(mActionBarOffColor))),
-                Color.red(mActionBarOffColor) + (int) (offset * (Color.red(mActionBarOnColor) - Color.red(mActionBarOffColor))),
-                Color.green(mActionBarOffColor) + (int) (offset * (Color.green(mActionBarOnColor) - Color.green(mActionBarOffColor))),
-                Color.blue(mActionBarOffColor) + (int) (offset * (Color.blue(mActionBarOnColor) - Color.blue(mActionBarOffColor)))
-        ));
-        getActionBar().setBackgroundDrawable(mActionBarBgDrawable);
     }
 
     @Override
@@ -152,36 +121,17 @@ public class MapActivity extends NearbyActivity implements MapFragment.Callbacks
     @Override
     public void onShowPartners() {
         getFragmentManager().beginTransaction()
-                .replace(R.id.main_content, PartnersFragment.newInstance(true),
+                .add(R.id.fragment_container_popup, PartnersFragment.newInstance(true),
                         PARTNERS_FRAGMENT_TAG)
                 .addToBackStack(null)
                 .commit();
-    }
-
-    @Override
-    protected int getSelfNavDrawerItem() {
-        if (getIntent().getBooleanExtra(EXTRA_DETACHED_MODE, false)) {
-            // in detached mode, we don't have a nav drawer
-            return NAVDRAWER_ITEM_INVALID;
-        } else {
-            return NAVDRAWER_ITEM_MAP;
-        }
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        if (getIntent().getBooleanExtra(EXTRA_DETACHED_MODE, false)
-                && item.getItemId() == android.R.id.home) {
-            finish();
-        }
-        return super.onOptionsItemSelected(item);
     }
 
     // Show whichever Fragment has been provided by NearbyActivity.
     @Override
     protected void showNearbyFragment(String tag) {
         getFragmentManager().beginTransaction()
-                .replace(R.id.main_content, NearbyFragment.newInstance(true), tag)
+                .add(R.id.fragment_container_popup, NearbyFragment.newInstance(true), tag)
                 .addToBackStack(null)
                 .commit();
     }

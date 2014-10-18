@@ -23,6 +23,7 @@
 
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:iosched="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:animateLayoutChanges="true"
@@ -99,6 +100,7 @@
         android:layout_marginBottom="8dp"
         android:layout_marginLeft="4dp"
         android:layout_marginRight="4dp"
+        iosched:cardBackgroundColor="#fff"
         android:visibility="visible"
         android:layout_height="wrap_content"
         />

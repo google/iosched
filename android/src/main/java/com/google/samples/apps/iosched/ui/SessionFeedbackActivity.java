@@ -16,10 +16,12 @@
 
 package com.google.samples.apps.iosched.ui;
 
+import android.app.Fragment;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.app.Fragment;
+import android.support.v7.widget.Toolbar;
+import android.view.View;
 
 import com.google.samples.apps.iosched.R;
 import com.google.samples.apps.iosched.provider.ScheduleContract;
@@ -39,11 +41,23 @@ public class SessionFeedbackActivity extends SimpleSinglePaneActivity  {
         }
 
         mSessionId = ScheduleContract.Sessions.getSessionId(getIntent().getData());
+
+        Toolbar toolbar = getActionBarToolbar();
+        toolbar.setTitle(R.string.title_session_feedback);
+        toolbar.setNavigationIcon(R.drawable.ic_up);
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                navigateUpToFromChild(SessionFeedbackActivity.this,
+                        new Intent(Intent.ACTION_VIEW,
+                                ScheduleContract.Sessions.buildSessionUri(mSessionId)));
+            }
+        });
     }
 
     @Override
     protected int getContentViewResId() {
-        return R.layout.activity_letterboxed_when_large;
+        return R.layout.activity_feedback;
     }
 
     @Override

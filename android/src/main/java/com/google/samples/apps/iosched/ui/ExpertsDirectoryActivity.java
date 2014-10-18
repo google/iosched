@@ -73,7 +73,6 @@ public class ExpertsDirectoryActivity extends BaseActivity implements LoaderMana
         }
 
         setContentView(R.layout.activity_experts_directory);
-        getLPreviewUtils().trySetActionBar();
         AnalyticsManager.sendScreenView(SCREEN_LABEL);
 
         mDrawShadowFrameLayout = (DrawShadowFrameLayout) findViewById(R.id.main_content);
@@ -107,25 +106,10 @@ public class ExpertsDirectoryActivity extends BaseActivity implements LoaderMana
         }
     }
 
-    private void updateActionBarNavigation() {
-        boolean show = !isNavDrawerOpen();
-        if (getLPreviewUtils().shouldChangeActionBarForDrawer()) {
-            ActionBar ab = getActionBar();
-            ab.setDisplayShowTitleEnabled(show);
-            ab.setDisplayUseLogoEnabled(!show);
-        }
-    }
-
     @Override
     protected void onActionBarAutoShowOrHide(boolean shown) {
         super.onActionBarAutoShowOrHide(shown);
         mDrawShadowFrameLayout.setShadowVisible(shown, shown);
-    }
-
-    @Override
-    protected void onNavDrawerStateChanged(boolean isOpen, boolean isAnimating) {
-        super.onNavDrawerStateChanged(isOpen, isAnimating);
-        updateActionBarNavigation();
     }
 
     @Override

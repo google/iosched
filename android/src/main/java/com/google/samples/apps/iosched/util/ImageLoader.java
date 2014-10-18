@@ -26,7 +26,7 @@ import com.google.samples.apps.iosched.R;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import com.bumptech.glide.DrawableRequestBuilder;
+import com.bumptech.glide.BitmapRequestBuilder;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.ModelRequest;
 import com.bumptech.glide.load.Transformation;
@@ -103,7 +103,7 @@ public class ImageLoader {
      */
     public void loadImage(String url, ImageView imageView, RequestListener<String> requestListener,
                 Drawable placeholderOverride, boolean crop) {
-        DrawableRequestBuilder<String> request = beginImageLoad(url, requestListener, crop)
+        BitmapRequestBuilder request = beginImageLoad(url, requestListener, crop)
                 .animate(R.anim.image_fade_in);
         if (placeholderOverride != null) {
             request.placeholder(placeholderOverride);
@@ -113,11 +113,12 @@ public class ImageLoader {
         request.into(imageView);
     }
 
-    public DrawableRequestBuilder<String> beginImageLoad(String url,
+    public BitmapRequestBuilder beginImageLoad(String url,
             RequestListener<String> requestListener, boolean crop) {
         return mGlideModelRequest.load(url)
+                .asBitmap() // don't allow animated GIFs
                 .listener(requestListener)
-                .bitmapTransform(crop ? mCenterCrop : mNone);
+                .transform(crop ? mCenterCrop : mNone);
     }
 
     /**

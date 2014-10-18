@@ -18,7 +18,6 @@ package com.google.samples.apps.iosched.ui;
 
 import android.app.Fragment;
 import android.app.LoaderManager;
-import android.content.ContentValues;
 import android.content.CursorLoader;
 import android.content.Intent;
 import android.content.Loader;
@@ -30,7 +29,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.RatingBar;
-import android.widget.SeekBar;
 import android.widget.TextView;
 
 import com.google.android.gms.common.ConnectionResult;
@@ -54,7 +52,7 @@ public class SessionFeedbackFragment extends Fragment implements
         GooglePlayServicesClient.ConnectionCallbacks,
         GooglePlayServicesClient.OnConnectionFailedListener {
 
-    private static final String TAG = makeLogTag(SessionDetailFragment.class);
+    private static final String TAG = makeLogTag(SessionDetailActivity.class);
 
     // Set this boolean extra to true to show a variable height header
     public static final String EXTRA_VARIABLE_HEIGHT_HEADER =

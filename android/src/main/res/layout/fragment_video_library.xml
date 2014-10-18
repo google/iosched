@@ -25,9 +25,9 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:clipToPadding="false"
-        android:paddingLeft="@dimen/explore_grid_padding"
-        android:paddingRight="@dimen/explore_grid_padding"
-        android:paddingBottom="@dimen/explore_grid_padding"
+        android:paddingTop="@dimen/explore_grid_padding"
+        android:paddingLeft="@dimen/explore_grid_padding_half"
+        android:paddingRight="@dimen/explore_grid_padding_half"
         iosched:internalPadding="@dimen/explore_grid_padding" />
 
     <!-- Empty view -->
@@ -40,7 +40,7 @@
         android:textSize="@dimen/text_size_medium"
         android:textColor="@color/body_text_2"
         android:text="@string/no_matching_videos"
-        android:paddingTop="?android:actionBarSize" />
+        android:paddingTop="?actionBarSize" />
 
 </FrameLayout>
 

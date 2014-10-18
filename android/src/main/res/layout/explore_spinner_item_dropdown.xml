@@ -39,7 +39,7 @@
         android:textColor="@color/body_text_3" />
 
     <TextView
-        android:id="@+id/normal_text"
+        android:id="@android:id/text1"
         android:layout_height="@dimen/explore_dropdown_item_height"
         android:layout_width="match_parent"
         android:paddingLeft="16dp"

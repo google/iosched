@@ -14,6 +14,13 @@
   limitations under the License.
   -->
 
-<merge xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="0dp"
-    android:layout_height="0dp" />
+<android.support.v7.widget.Toolbar xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:iosched="http://schemas.android.com/apk/res-auto"
+    iosched:theme="@style/ActionBarThemeOverlay"
+    iosched:popupTheme="@style/ActionBarPopupThemeOverlay"
+    android:id="@+id/toolbar_actionbar"
+    android:background="@null"
+    iosched:titleTextAppearance="@style/ActionBar.TitleText"
+    iosched:contentInsetStart="?actionBarInsetStart"
+    android:layout_width="match_parent"
+    android:layout_height="?actionBarSize" />
