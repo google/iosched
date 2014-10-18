@@ -75,7 +75,7 @@ public class ScheduleContract {
          * is (codelab, office hours, etc) might belong to the "TYPE" category.
          */
         String TAG_CATEGORY = "tag_category";
-        /** Tag name. For example, "Android" */
+        /** Tag name. For example, "Android". */
         String TAG_NAME = "tag_name";
         /** Tag's order in its category (for sorting). */
         String TAG_ORDER_IN_CATEGORY = "tag_order_in_category";
@@ -151,7 +151,7 @@ public class ScheduleContract {
         String SESSION_IMPORT_HASHCODE = "session_import_hashcode";
         /** The session's main tag. */
         String SESSION_MAIN_TAG = "session_main_tag";
-        /** The session's branding color */
+        /** The session's branding color. */
         String SESSION_COLOR = "session_color";
         /** The session's captions URL (for livestreamed sessions). */
         String SESSION_CAPTIONS_URL = "session_captions_url";
@@ -266,24 +266,24 @@ public class ScheduleContract {
     interface HashtagColumns {
         /** Hashtags */
         String HASHTAG_NAME = "hashtag_name";
-        /** Description about this hashtag */
+        /** Description about this hashtag. */
         String HASHTAG_DESCRIPTION = "hashtag_description";
-        /** Text color for this hashtag */
+        /** Text color for this hashtag. */
         String HASHTAG_COLOR = "hashtag_color";
-        /** Ordering of this hashtag */
+        /** Ordering of this hashtag. */
         String HASHTAG_ORDER = "hashtag_order";
     }
 
     interface PeopleIveMetColumns {
-        /** Google+ ID of the person */
+        /** Google+ ID of the person. */
         String PERSON_ID = "person_id";
-        /** Time when the badge of this person was scanned */
+        /** Time when the badge of this person was scanned. */
         String PERSON_TIMESTAMP = "person_timestamp";
-        /** Name of the person */
+        /** Name of the person. */
         String PERSON_NAME = "person_name";
-        /** URL of profile icon of this person */
+        /** URL of profile icon of this person. */
         String PERSON_IMAGE_URL = "person_image_url";
-        /** Note about this person */
+        /** Note about this person. */
         String PERSON_NOTE = "person_note";
     }
 
@@ -304,7 +304,7 @@ public class ScheduleContract {
         String VIDEO_SPEAKERS = "video_speakers";
         /** Thumbnail url. */
         String VIDEO_THUMBNAIL_URL = "video_thumbnail_url";
-        /** Import hashcode */
+        /** Import hashcode. */
         String VIDEO_IMPORT_HASHCODE = "video_import_hashcode";
     }
 
@@ -793,7 +793,7 @@ public class ScheduleContract {
         public static final String DEFAULT_SORT = MapTileColumns.TILE_FLOOR + " ASC";
 
 
-        /** Build {@link Uri} for all overlay zoom entries */
+        /** Build {@link Uri} for all overlay zoom entries. */
         public static Uri buildUri() {
             return CONTENT_URI;
         }
@@ -829,7 +829,7 @@ public class ScheduleContract {
             return CONTENT_URI.buildUpon().appendPath(markerId).build();
         }
 
-        /** Build {@link Uri} for all markers */
+        /** Build {@link Uri} for all markers. */
         public static Uri buildMarkerUri() {
             return CONTENT_URI;
         }
@@ -887,12 +887,12 @@ public class ScheduleContract {
         public static final String DEFAULT_SORT = VideoColumns.VIDEO_YEAR + " DESC, "
                 + VideoColumns.VIDEO_TOPIC + " ASC, " + VideoColumns.VIDEO_TITLE + " ASC";
 
-        /** Build {@link Uri} for given video */
+        /** Build {@link Uri} for given video. */
         public static Uri buildVideoUri(String videoId) {
             return CONTENT_URI.buildUpon().appendPath(videoId).build();
         }
 
-        /** Return video ID given URI */
+        /** Return video ID given URI. */
         public static String getVideoId(Uri uri) {
             return uri.getPathSegments().get(1);
         }
