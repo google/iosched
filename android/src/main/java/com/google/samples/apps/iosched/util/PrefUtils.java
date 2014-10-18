@@ -161,7 +161,7 @@ public class PrefUtils  {
 
     public static void markUserRefusedSignIn(final Context context, final boolean refused) {
         SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(context);
-        sp.edit().putBoolean(PREF_USER_REFUSED_SIGN_IN, refused).apply();
+        sp.edit().putBoolean(PREF_USER_REFUSED_SIGN_IN, refused).commit();
     }
 
     public static boolean hasUserRefusedSignIn(final Context context) {
@@ -313,8 +313,8 @@ public class PrefUtils  {
         sp.registerOnSharedPreferenceChangeListener(listener);
     }
 
-    public static void unrgisterOnSharedPreferenceChangeListener(final Context context,
-            SharedPreferences.OnSharedPreferenceChangeListener listener) {
+    public static void unregisterOnSharedPreferenceChangeListener(final Context context,
+                                                                  SharedPreferences.OnSharedPreferenceChangeListener listener) {
         SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(context);
         sp.unregisterOnSharedPreferenceChangeListener(listener);
     }

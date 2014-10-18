@@ -16,19 +16,12 @@
 
 package com.google.samples.apps.iosched.ui.tablet;
 
-import android.app.ActionBar;
-import android.app.Fragment;
 import android.app.FragmentBreadCrumbs;
 import android.app.FragmentManager;
 import android.content.Intent;
 import android.content.res.Configuration;
-import android.content.res.Resources;
-import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
-import android.net.Uri;
 import android.os.Bundle;
 import android.view.Gravity;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
@@ -36,8 +29,12 @@ import android.widget.LinearLayout;
 import com.google.samples.apps.iosched.R;
 import com.google.samples.apps.iosched.model.TagMetadata;
 import com.google.samples.apps.iosched.provider.ScheduleContract;
-import com.google.samples.apps.iosched.ui.*;
-import com.google.samples.apps.iosched.ui.phone.MapActivity;
+import com.google.samples.apps.iosched.ui.BaseMapActivity;
+import com.google.samples.apps.iosched.ui.MapFragment;
+import com.google.samples.apps.iosched.ui.NearbyFragment;
+import com.google.samples.apps.iosched.ui.PartnersFragment;
+import com.google.samples.apps.iosched.ui.SessionDetailActivity;
+import com.google.samples.apps.iosched.ui.SessionsFragment;
 import com.google.samples.apps.iosched.util.AnalyticsManager;
 import com.google.samples.apps.iosched.util.UIUtils;
 
@@ -45,11 +42,10 @@ import static com.google.samples.apps.iosched.util.LogUtils.LOGD;
 
 /**
  * A multi-pane activity, where the primary navigation pane is a
- * {@link MapFragment}, that shows {@link SessionsFragment},
- * {@link SessionDetailFragment} as popups. This activity requires API level 11
- * or greater because of its use of {@link FragmentBreadCrumbs}.
+ * {@link MapFragment}, that shows {@link NearbyFragment},
+ * {@link PartnersFragment} as popups.
  */
-public class MapMultiPaneActivity extends NearbyActivity implements
+public class MapMultiPaneActivity extends BaseMapActivity implements
         FragmentManager.OnBackStackChangedListener,
         MapFragment.Callbacks,
         SessionsFragment.Callbacks {
@@ -61,33 +57,16 @@ public class MapMultiPaneActivity extends NearbyActivity implements
     private FragmentBreadCrumbs mFragmentBreadCrumbs;
     private String mSelectedRoomName;
 
-    private MapFragment mMapFragment;
-
-    private int mActionBarOnColor;
-    private int mActionBarOffColor;
-    private ColorDrawable mActionBarBgDrawable;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_map);
-        getLPreviewUtils().trySetActionBar();
 
         FragmentManager fm = getFragmentManager();
         fm.addOnBackStackChangedListener(this);
 
         mFragmentBreadCrumbs = (FragmentBreadCrumbs) findViewById(R.id.breadcrumbs);
         mFragmentBreadCrumbs.setActivity(this);
-
-        mMapFragment = (MapFragment) fm.findFragmentByTag("map");
-        if (mMapFragment == null) {
-            mMapFragment = MapFragment.newInstance();
-            mMapFragment.setArguments(intentToFragmentArguments(getIntent()));
-
-            fm.beginTransaction()
-                    .add(R.id.fragment_container_map, mMapFragment, "map")
-                    .commit();
-        }
 
         findViewById(R.id.close_button).setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) {
@@ -107,53 +86,6 @@ public class MapMultiPaneActivity extends NearbyActivity implements
         LOGD("Tracker", SCREEN_LABEL);
 
         overridePendingTransition(0, 0);
-
-        final Resources res = getResources();
-        mActionBarOffColor = res.getColor(R.color.translucent_actionbar_background);
-        mActionBarOnColor = res.getColor(R.color.theme_primary);
-
-        // Initialise and set background drawable here explicitly to ensure the background
-        // is drawn  when the background color is changed on JellyBean
-        mActionBarBgDrawable = new ColorDrawable(mActionBarOffColor);
-        getActionBar().setBackgroundDrawable(mActionBarBgDrawable);
-    }
-
-    private void updateActionBarNavigation() {
-        boolean show = !isNavDrawerOpen();
-        if (getLPreviewUtils().shouldChangeActionBarForDrawer()) {
-            ActionBar ab = getActionBar();
-            ab.setDisplayShowTitleEnabled(show);
-            ab.setDisplayUseLogoEnabled(!show);
-        }
-    }
-
-    @Override
-    protected void onNavDrawerStateChanged(boolean isOpen, boolean isAnimating) {
-        super.onNavDrawerStateChanged(isOpen, isAnimating);
-        updateActionBarNavigation();
-    }
-
-    @Override
-    protected void onNavDrawerSlide(float offset) {
-        super.onNavDrawerSlide(offset);
-        // Make Action Bar gradually fade into the theme color
-        mActionBarBgDrawable.setColor(Color.argb(
-                Color.alpha(mActionBarOffColor) + (int) (offset * (Color.alpha(mActionBarOnColor) - Color.alpha(mActionBarOffColor))),
-                Color.red(mActionBarOffColor) + (int) (offset * (Color.red(mActionBarOnColor) - Color.red(mActionBarOffColor))),
-                Color.green(mActionBarOffColor) + (int) (offset * (Color.green(mActionBarOnColor) - Color.green(mActionBarOffColor))),
-                Color.blue(mActionBarOffColor) + (int) (offset * (Color.blue(mActionBarOnColor) - Color.blue(mActionBarOffColor)))
-        ));
-        getActionBar().setBackgroundDrawable(mActionBarBgDrawable);
-    }
-
-    @Override
-    protected int getSelfNavDrawerItem() {
-        if (getIntent().getBooleanExtra(MapActivity.EXTRA_DETACHED_MODE, false)) {
-            // in detached mode, we don't have a nav drawer
-            return NAVDRAWER_ITEM_INVALID;
-        } else {
-            return NAVDRAWER_ITEM_MAP;
-        }
     }
 
     @Override
@@ -222,10 +154,11 @@ public class MapMultiPaneActivity extends NearbyActivity implements
         boolean landscape = getResources().getConfiguration().orientation
                 == Configuration.ORIENTATION_LANDSCAPE;
         boolean detailShown = findViewById(R.id.map_detail_spacer).getVisibility() == View.VISIBLE;
-
-        mMapFragment.setCenterPadding(
-                landscape ? (detailShown ? 0.25f : 0f) : 0,
-                landscape ? 0 : (detailShown ? 0.25f : 0));
+        if (mMapFragment != null) {
+            mMapFragment.setCenterPadding(
+                    landscape ? (detailShown ? 0.25f : 0f) : 0,
+                    landscape ? 0 : (detailShown ? 0.25f : 0));
+        }
     }
 
     void updateBreadCrumbs() {
@@ -260,45 +193,16 @@ public class MapMultiPaneActivity extends NearbyActivity implements
          * [/ANALYTICS]
          */
         AnalyticsManager.sendEvent(SCREEN_LABEL, "selectsession", sessionId);
-        getLPreviewUtils().startActivityWithTransition(
+        getLUtils().startActivityWithTransition(
                 new Intent(Intent.ACTION_VIEW,
                         ScheduleContract.Sessions.buildSessionUri(sessionId)),
                 clickedView,
-                SessionDetailFragment.VIEW_NAME_PHOTO
+                SessionDetailActivity.TRANSITION_NAME_PHOTO
         );
     }
 
     @Override
     public void onTagMetadataLoaded(TagMetadata metadata) {}
-
-    private void showList(Fragment fragment, Uri uri){
-        // Show the sessions in the room
-        clearBackStack(true);
-        showDetailPane(true);
-        fragment.setArguments(BaseActivity.intentToFragmentArguments(
-                new Intent(Intent.ACTION_VIEW,
-                        uri
-                )));
-        getFragmentManager().beginTransaction()
-                .replace(R.id.fragment_container_detail, fragment)
-                .addToBackStack(null)
-                .commit();
-        updateBreadCrumbs();
-    }
-
-    private void showDetails(Fragment fragment, Uri uri){
-        // Show the session details
-        showDetailPane(true);
-        Intent intent = new Intent(Intent.ACTION_VIEW,uri);
-        //intent.putExtra(SessionDetailFragment.EXTRA_VARIABLE_HEIGHT_HEADER, true);
-        fragment.setArguments(BaseActivity.intentToFragmentArguments(intent));
-        getFragmentManager().beginTransaction()
-                .replace(R.id.fragment_container_detail, fragment)
-                .addToBackStack(null)
-                .commit();
-        updateBreadCrumbs();
-    }
-
 
     // TODO: This should also update the breadcrumbs, which will likely involve a major
     // refactoring of the way breadcrumbs are handled. Perhaps we can store breadcrumb titles in
@@ -312,14 +216,5 @@ public class MapMultiPaneActivity extends NearbyActivity implements
                 .setBreadCrumbShortTitle(R.string.map_nearby_button)
                 .addToBackStack(null)
                 .commit();
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        if (getIntent().getBooleanExtra(MapActivity.EXTRA_DETACHED_MODE, false)
-                && item.getItemId() == android.R.id.home) {
-            finish();
-        }
-        return super.onOptionsItemSelected(item);
     }
 }

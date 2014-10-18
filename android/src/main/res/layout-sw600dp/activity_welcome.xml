@@ -15,6 +15,7 @@
   -->
 
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:iosched="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical"
     android:layout_width="match_parent"
@@ -30,92 +31,98 @@
         android:tint="#7000"
         android:layout_gravity="center|top" />
 
-    <LinearLayout
+    <android.support.v7.widget.CardView
         android:layout_width="500dp"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:background="@drawable/card_bg"
-        android:layout_gravity="center">
+        android:layout_gravity="center"
+        iosched:cardBackgroundColor="#fff"
+        iosched:cardCornerRadius="@dimen/card_corner_radius"
+        iosched:cardElevation="@dimen/card_elevation"
+        iosched:cardPreventCornerOverlap="false">
 
-        <ScrollView
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1">
+            android:layout_height="match_parent"
+            android:orientation="vertical">
 
+            <ScrollView
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:paddingBottom="48dp"
+                    android:paddingLeft="72dp"
+                    android:paddingRight="72dp"
+                    android:paddingTop="48dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@string/font_fontFamily_medium"
+                        android:text="@string/welcome_to_google_i_o_app"
+                        android:textColor="@color/theme_primary"
+                        android:textSize="@dimen/text_size_xlarge"
+                        android:textStyle="@integer/font_textStyle_medium" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="16dp"
+                        android:autoLink="web"
+                        android:text="@string/welcome_text"
+                        android:textColor="@color/body_text_2"
+                        android:textSize="@dimen/text_size_medium" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="16dp"
+                        android:autoLink="web"
+                        android:text="@string/eula_legal_text"
+                        android:textColor="@color/body_text_2"
+                        android:textSize="@dimen/text_size_medium" />
+
+                </LinearLayout>
+            </ScrollView>
+
+            <!-- Button bar -->
             <LinearLayout
                 android:layout_width="match_parent"
-                android:paddingLeft="72dp"
-                android:paddingRight="72dp"
-                android:paddingTop="48dp"
-                android:paddingBottom="48dp"
-                android:orientation="vertical"
-                android:layout_height="wrap_content">
+                android:layout_height="48dp"
+                android:layout_gravity="bottom"
+                android:background="@color/theme_primary">
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textSize="@dimen/text_size_xlarge"
-                    android:textColor="@color/theme_primary"
-                    android:textStyle="@integer/font_textStyle_medium"
+                <Button
+                    android:id="@+id/button_decline"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:background="?photoItemForeground"
                     android:fontFamily="@string/font_fontFamily_medium"
-                    android:text="@string/welcome_to_google_i_o_app" />
-
-                <TextView
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="16dp"
-                    android:layout_width="match_parent"
-                    android:textColor="@color/body_text_2"
-                    android:autoLink="web"
+                    android:text="@string/decline"
+                    android:textAllCaps="true"
+                    android:textColor="#8fff"
                     android:textSize="@dimen/text_size_medium"
-                    android:text="@string/welcome_text" />
+                    android:textStyle="@integer/font_textStyle_medium" />
 
-                <TextView
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="16dp"
-                    android:layout_width="match_parent"
-                    android:textColor="@color/body_text_2"
+                <Button
+                    android:id="@+id/button_accept"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:background="?photoItemForeground"
+                    android:fontFamily="@string/font_fontFamily_medium"
+                    android:text="@string/accept"
+                    android:textAllCaps="true"
+                    android:textColor="#fff"
                     android:textSize="@dimen/text_size_medium"
-                    android:autoLink="web"
-                    android:text="@string/eula_legal_text" />
+                    android:textStyle="@integer/font_textStyle_medium" />
 
             </LinearLayout>
-        </ScrollView>
-
-        <!-- Button bar -->
-        <LinearLayout
-            android:layout_height="48dp"
-            android:background="@color/theme_primary"
-            android:layout_gravity="bottom"
-            android:layout_width="match_parent">
-
-            <Button
-                android:layout_width="0dp"
-                android:layout_weight="1"
-                android:layout_height="match_parent"
-                android:background="?photoItemForeground"
-                android:text="@string/decline"
-                android:textColor="#8fff"
-                android:textSize="@dimen/text_size_medium"
-                android:textStyle="@integer/font_textStyle_medium"
-                android:fontFamily="@string/font_fontFamily_medium"
-                android:textAllCaps="true"
-                android:id="@+id/button_decline" />
-
-            <Button
-                android:id="@+id/button_accept"
-                android:layout_width="0dp"
-                android:layout_weight="1"
-                android:layout_height="match_parent"
-                android:background="?photoItemForeground"
-                android:text="@string/accept"
-                android:textSize="@dimen/text_size_medium"
-                android:textStyle="@integer/font_textStyle_medium"
-                android:fontFamily="@string/font_fontFamily_medium"
-                android:textAllCaps="true"
-                android:textColor="#fff" />
-
         </LinearLayout>
-
-    </LinearLayout>
-
+    </android.support.v7.widget.CardView>
 </FrameLayout>

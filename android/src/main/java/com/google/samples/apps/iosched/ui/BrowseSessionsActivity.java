@@ -16,14 +16,19 @@
 
 package com.google.samples.apps.iosched.ui;
 
-import android.app.ActionBar;
 import android.content.Intent;
 import android.graphics.Paint;
 import android.graphics.drawable.ShapeDrawable;
 import android.graphics.drawable.shapes.OvalShape;
 import android.os.Bundle;
+import android.support.v7.app.ActionBar;
+import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
-import android.view.*;
+import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuItem;
+import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.Spinner;
@@ -78,20 +83,20 @@ public class BrowseSessionsActivity extends BaseActivity implements SessionsFrag
 
     // time when the user last clicked "refresh" from the stale data butter bar
     private long mLastDataStaleUserActionTime = 0L;
+    private int mHeaderColor = 0; // 0 means not customized
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_browse_sessions);
-        getLPreviewUtils().trySetActionBar();
 
-        ActionBar ab = getActionBar();
+        Toolbar toolbar = getActionBarToolbar();
 
         long[] interval = ScheduleContract.Sessions.getInterval(getIntent().getData());
         if (interval != null) {
             String title = UIUtils.formatIntervalTimeString(interval[0], interval[1], null, this);
-            ab.setTitle(title);
+            toolbar.setTitle(title);
             mMode = MODE_TIME_FIT;
             /* [ANALYTICS:SCREEN]
              * TRIGGER:   View the Explore screen to find sessions fitting a time slot
@@ -121,8 +126,7 @@ public class BrowseSessionsActivity extends BaseActivity implements SessionsFrag
         if (mMode == MODE_EXPLORE) {
             // no title (to make more room for navigation and actions)
             // unless Nav Drawer opens
-            ab.setTitle(getString(R.string.app_name));
-            ab.setDisplayShowTitleEnabled(false);
+            toolbar.setTitle(null);
         }
 
         mButterBar = findViewById(R.id.butter_bar);
@@ -201,12 +205,6 @@ public class BrowseSessionsActivity extends BaseActivity implements SessionsFrag
     }
 
     @Override
-    public void onStart() {
-        super.onStart();
-        updateActionBarNavigation();
-    }
-
-    @Override
     public void onTagMetadataLoaded(TagMetadata metadata) {
         mTagMetadata = metadata;
         if (mSpinnerConfigured) {
@@ -221,8 +219,8 @@ public class BrowseSessionsActivity extends BaseActivity implements SessionsFrag
     }
 
     private void trySetUpActionBarSpinner() {
-        ActionBar ab = getActionBar();
-        if (mMode != MODE_EXPLORE || mSpinnerConfigured || mTagMetadata == null || ab == null) {
+        Toolbar toolbar = getActionBarToolbar();
+        if (mMode != MODE_EXPLORE || mSpinnerConfigured || mTagMetadata == null || toolbar == null) {
             // already done it, or not ready yet, or don't need to do
             LOGD(TAG, "Not configuring Action Bar spinner.");
             return;
@@ -246,8 +244,8 @@ public class BrowseSessionsActivity extends BaseActivity implements SessionsFrag
                 mTopLevelSpinnerAdapter.addHeader(categoryTitle);
                 for (TagMetadata.Tag tag : mTagMetadata.getTagsInCategory(category)) {
                     LOGD(TAG, "Adding item to spinner: " + tag.getId() + " --> " + tag.getName());
-                    mTopLevelSpinnerAdapter.addItem(tag.getId(), tag.getName(), true,
-                            Config.Tags.CATEGORY_TOPIC.equals(category) ? tag.getColor() : 0);
+                    int tagColor = Config.Tags.CATEGORY_TOPIC.equals(category) ? tag.getColor() : 0;
+                    mTopLevelSpinnerAdapter.addItem(tag.getId(), tag.getName(), true, tagColor);
                     if (!TextUtils.isEmpty(mFilterTagsToRestore[0]) && tag.getId().equals(mFilterTagsToRestore[0])) {
                         mFilterTagsToRestore[0] = null;
                         itemToSelect = mTopLevelSpinnerAdapter.getCount() - 1;
@@ -259,11 +257,11 @@ public class BrowseSessionsActivity extends BaseActivity implements SessionsFrag
         }
         mFilterTagsToRestore[0] = null;
 
-        View spinnerContainer = LayoutInflater.from(getActionBar().getThemedContext())
-                .inflate(R.layout.actionbar_spinner, null);
+        View spinnerContainer = LayoutInflater.from(this).inflate(R.layout.actionbar_spinner,
+                toolbar, false);
         ActionBar.LayoutParams lp = new ActionBar.LayoutParams(
                 ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
-        ab.setCustomView(spinnerContainer, lp);
+        toolbar.addView(spinnerContainer, lp);
 
         Spinner spinner = (Spinner) spinnerContainer.findViewById(R.id.actionbar_spinner);
         spinner.setAdapter(mTopLevelSpinnerAdapter);
@@ -282,33 +280,28 @@ public class BrowseSessionsActivity extends BaseActivity implements SessionsFrag
             spinner.setSelection(itemToSelect);
         }
 
+        updateHeaderColor();
         showSecondaryFilters();
-        updateActionBarNavigation();
     }
 
-    private void updateActionBarNavigation() {
-        boolean show = mSpinnerConfigured && !isNavDrawerOpen();
-
-        ActionBar ab = getActionBar();
-        if (mMode == MODE_TIME_FIT) {
-            ab.setDisplayShowCustomEnabled(false);
-            ab.setDisplayShowTitleEnabled(true);
-            ab.setDisplayUseLogoEnabled(false);
-        } else if (show) {
-            ab.setDisplayShowCustomEnabled(true);
-            ab.setDisplayShowTitleEnabled(false);
-            ab.setDisplayUseLogoEnabled(false);
-        } else if (getLPreviewUtils().shouldChangeActionBarForDrawer()) {
-            ab.setDisplayShowCustomEnabled(false);
-            ab.setDisplayShowTitleEnabled(false);
-            ab.setDisplayUseLogoEnabled(true);
+    private void updateHeaderColor() {
+        mHeaderColor = 0;
+        for (String tag : mFilterTags) {
+            if (tag != null) {
+                TagMetadata.Tag tagObj = mTagMetadata.getTag(tag);
+                if (tagObj != null && Config.Tags.CATEGORY_TOPIC.equals(tagObj.getCategory())) {
+                    mHeaderColor = tagObj.getColor();
+                }
+            }
         }
-    }
-
-    @Override
-    protected void onNavDrawerStateChanged(boolean isOpen, boolean isAnimating) {
-        super.onNavDrawerStateChanged(isOpen, isAnimating);
-        updateActionBarNavigation();
+        findViewById(R.id.headerbar).setBackgroundColor(
+                mHeaderColor == 0
+                        ? getResources().getColor(R.color.theme_primary)
+                        : mHeaderColor);
+        setNormalStatusBarColor(
+                mHeaderColor == 0
+                        ? getThemedStatusBarColor()
+                        : UIUtils.scaleColor(mHeaderColor, 0.8f, false));
     }
 
     private void onTopLevelTagSelected(String tag) {
@@ -323,6 +316,7 @@ public class BrowseSessionsActivity extends BaseActivity implements SessionsFrag
             // nothing to do
             return;
         }
+
         /* [ANALYTICS:EVENT]
          * TRIGGER:   Select a top-level filter on the Explore screen.
          * CATEGORY:  'Explore'
@@ -339,6 +333,7 @@ public class BrowseSessionsActivity extends BaseActivity implements SessionsFrag
         }
 
         showSecondaryFilters();
+        updateHeaderColor();
         reloadFromFilters();
     }
 
@@ -412,7 +407,7 @@ public class BrowseSessionsActivity extends BaseActivity implements SessionsFrag
         Bundle args = BaseActivity.intentToFragmentArguments(
                 new Intent(Intent.ACTION_VIEW, ScheduleContract.Sessions.buildTagFilterUri(
                         mFilterTags))
-        );
+                        .putExtra(SessionsFragment.EXTRA_NO_TRACK_BRANDING, mHeaderColor != 0));
         frag.reloadFromArguments(args);
 
         frag.animateReload();
@@ -467,6 +462,7 @@ public class BrowseSessionsActivity extends BaseActivity implements SessionsFrag
                      * [/ANALYTICS]
                      */
                     AnalyticsManager.sendEvent(SCREEN_LABEL, "secondaryfilter", tag);
+                    updateHeaderColor();
                     reloadFromFilters();
                 }
             }
@@ -488,11 +484,6 @@ public class BrowseSessionsActivity extends BaseActivity implements SessionsFrag
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         super.onCreateOptionsMenu(menu);
-
-        if (getLPreviewUtils().shouldChangeActionBarForDrawer() && isNavDrawerOpen()) {
-            // nothing to show if nav drawer is open or animating
-            return true;
-        }
 
         getMenuInflater().inflate(R.menu.browse_sessions, menu);
         // remove actions when in time interval mode:
@@ -536,12 +527,10 @@ public class BrowseSessionsActivity extends BaseActivity implements SessionsFrag
          * [/ANALYTICS]
          */
         AnalyticsManager.sendEvent(SCREEN_LABEL, "selectsession", sessionId);
-        getLPreviewUtils().startActivityWithTransition(
-                new Intent(Intent.ACTION_VIEW,
+        getLUtils().startActivityWithTransition(new Intent(Intent.ACTION_VIEW,
                         ScheduleContract.Sessions.buildSessionUri(sessionId)),
                 clickedView,
-                SessionDetailFragment.VIEW_NAME_PHOTO
-        );
+                SessionDetailActivity.TRANSITION_NAME_PHOTO);
     }
 
     @Override
@@ -621,7 +610,7 @@ public class BrowseSessionsActivity extends BaseActivity implements SessionsFrag
 
             TextView headerTextView = (TextView) view.findViewById(R.id.header_text);
             View dividerView = view.findViewById(R.id.divider_view);
-            TextView normalTextView = (TextView) view.findViewById(R.id.normal_text);
+            TextView normalTextView = (TextView) view.findViewById(android.R.id.text1);
 
             if (isHeader(position)) {
                 headerTextView.setText(getTitle(position));

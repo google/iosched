@@ -20,28 +20,28 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <LinearLayout android:id="@+id/headerbar"
+    <FrameLayout android:id="@+id/headerbar"
         android:layout_width="match_parent"
-        android:layout_height="?android:actionBarSize"
-        android:orientation="horizontal"
+        android:layout_height="?actionBarSize"
+        android:elevation="@dimen/headerbar_elevation"
         android:background="#e5e5e5">
 
         <ImageButton android:id="@+id/close_button"
-            android:layout_width="48dp"
+            android:layout_width="56dp"
             android:layout_height="match_parent"
             android:background="?selectableItemBackgroundBorderless"
             android:src="@drawable/ic_pane_close"
             android:contentDescription="@string/close_detail_pane" />
 
-        <TextView android:layout_width="wrap_content"
+        <TextView android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginLeft="4dp"
+            android:layout_marginLeft="@dimen/keyline_2"
             android:textSize="@dimen/text_size_large"
             android:textColor="@color/body_text_1"
             android:gravity="center_vertical"
             android:text="@string/map_nearby_button" />
 
-    </LinearLayout>
+    </FrameLayout>
 
     <FrameLayout android:id="@+id/list_container"
         android:layout_width="match_parent"

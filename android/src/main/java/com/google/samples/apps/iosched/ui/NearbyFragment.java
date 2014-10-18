@@ -51,9 +51,6 @@ public class NearbyFragment extends ListFragment {
         View rootView = inflater.inflate(R.layout.fragment_nearby, container, false);
         if (getArguments() != null && !getArguments().getBoolean(ARG_HAS_HEADER, true)) {
             rootView.findViewById(R.id.headerbar).setVisibility(View.GONE);
-        } else {
-            ((FrameLayout) rootView.findViewById(R.id.list_container))
-                    .setForeground(getResources().getDrawable(R.drawable.bottom_shadow));
         }
 
         Callbacks parentActivity = (Callbacks) getActivity();

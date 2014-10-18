@@ -182,6 +182,12 @@ public class AccountUtils {
                 PREFIX_PREF_PLUS_IMAGE_URL), null) : null;
     }
 
+    public static String getPlusImageUrl(final Context context, final String accountName) {
+        SharedPreferences sp = getSharedPreferences(context);
+        return hasActiveAccount(context) ? sp.getString(makeAccountSpecificPrefKey(accountName,
+                PREFIX_PREF_PLUS_IMAGE_URL), null) : null;
+    }
+
     public static void refreshAuthToken(Context mContext) {
         invalidateAuthToken(mContext);
         tryAuthenticateWithErrorNotification(mContext, ScheduleContract.CONTENT_AUTHORITY);

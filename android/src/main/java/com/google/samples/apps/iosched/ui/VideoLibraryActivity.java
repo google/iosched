@@ -16,7 +16,6 @@
 
 package com.google.samples.apps.iosched.ui;
 
-import android.app.ActionBar;
 import android.app.Fragment;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -35,7 +34,9 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 
-import static com.google.samples.apps.iosched.util.LogUtils.*;
+import static com.google.samples.apps.iosched.util.LogUtils.LOGD;
+import static com.google.samples.apps.iosched.util.LogUtils.LOGE;
+import static com.google.samples.apps.iosched.util.LogUtils.makeLogTag;
 
 public class VideoLibraryActivity extends BaseActivity implements VideoLibraryFragment.Callbacks {
     private static final String TAG = makeLogTag(VideoLibraryActivity.class);
@@ -64,7 +65,7 @@ public class VideoLibraryActivity extends BaseActivity implements VideoLibraryFr
         }
 
         setContentView(R.layout.activity_video_library);
-        getLPreviewUtils().trySetActionBar();
+
         mDrawShadowFrameLayout = (DrawShadowFrameLayout) findViewById(R.id.main_content);
 
         /* [ANALYTICS:SCREEN]
@@ -87,7 +88,7 @@ public class VideoLibraryActivity extends BaseActivity implements VideoLibraryFr
     @Override
     protected void onPostCreate(Bundle savedInstanceState) {
         super.onPostCreate(savedInstanceState);
-        enableActionBarAutoHide((CollectionView)findViewById(R.id.videos_collection_view));
+        enableActionBarAutoHide((CollectionView) findViewById(R.id.videos_collection_view));
     }
 
     @Override
@@ -119,25 +120,10 @@ public class VideoLibraryActivity extends BaseActivity implements VideoLibraryFr
         }
     }
 
-    private void updateActionBarNavigation() {
-        boolean show = !isNavDrawerOpen();
-        if (getLPreviewUtils().shouldChangeActionBarForDrawer()) {
-            ActionBar ab = getActionBar();
-            ab.setDisplayShowTitleEnabled(show);
-            ab.setDisplayUseLogoEnabled(!show);
-        }
-    }
-
     @Override
     protected void onActionBarAutoShowOrHide(boolean shown) {
         super.onActionBarAutoShowOrHide(shown);
         mDrawShadowFrameLayout.setShadowVisible(shown, shown);
-    }
-
-    @Override
-    protected void onNavDrawerStateChanged(boolean isOpen, boolean isAnimating) {
-        super.onNavDrawerStateChanged(isOpen, isAnimating);
-        updateActionBarNavigation();
     }
 
     private void onYearSelected(int year) {
@@ -292,7 +278,7 @@ public class VideoLibraryActivity extends BaseActivity implements VideoLibraryFr
     private void populateSpinner(Spinner spinner, ArrayList<String> items) {
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, R.layout.explore_spinner_item,
                 android.R.id.text1, items);
-        adapter.setDropDownViewResource(R.layout.explore_spinner_item_dropdown);
+        adapter.setDropDownViewResource(R.layout.video_library_spinner_item_dropdown);
         spinner.setAdapter(adapter);
     }
 }

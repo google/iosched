@@ -22,6 +22,7 @@ import android.content.Intent;
 import android.net.Uri;
 
 import com.google.samples.apps.iosched.provider.ScheduleContract;
+import com.google.samples.apps.iosched.service.FeedbackListenerService;
 import com.google.samples.apps.iosched.service.SessionAlarmService;
 
 import static com.google.samples.apps.iosched.util.LogUtils.LOGD;
@@ -72,7 +73,8 @@ public class FeedbackUtils {
      * should result in removal of the corresponding notifications on both ends.
      */
     public static void dismissFeedbackNotification(Context context, String sessionId) {
-        Intent dismissalIntent = new Intent(SessionAlarmService.ACTION_NOTIFICATION_DISMISSAL);
+        Intent dismissalIntent = new Intent(context, FeedbackListenerService.class);
+        dismissalIntent.setAction(SessionAlarmService.ACTION_NOTIFICATION_DISMISSAL);
         dismissalIntent.putExtra(SessionAlarmService.KEY_SESSION_ID, sessionId);
         context.startService(dismissalIntent);
     }

@@ -17,14 +17,17 @@ package com.google.samples.apps.iosched.ui;
 
 import android.app.FragmentManager;
 import android.app.SearchManager;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.content.IntentCompat;
+import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.SearchView;
+import android.support.v7.widget.SearchView;
 
 import com.google.samples.apps.iosched.R;
 import com.google.samples.apps.iosched.model.TagMetadata;
@@ -48,6 +51,19 @@ public class SearchActivity extends BaseActivity implements SessionsFragment.Cal
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search);
+
+        Toolbar toolbar = getActionBarToolbar();
+        toolbar.setTitle(R.string.title_search);
+        toolbar.setNavigationIcon(R.drawable.ic_up);
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                navigateUpToFromChild(SearchActivity.this,
+                        IntentCompat.makeMainActivity(new ComponentName(SearchActivity.this,
+                                BrowseSessionsActivity.class)));
+            }
+        });
+
         FragmentManager fm = getFragmentManager();
         mSessionsFragment = (SessionsFragment) fm.findFragmentById(R.id.fragment_container);
 
@@ -80,11 +96,11 @@ public class SearchActivity extends BaseActivity implements SessionsFragment.Cal
          * [/ANALYTICS]
          */
         AnalyticsManager.sendEvent(SCREEN_LABEL, "selectsession", sessionId);
-        getLPreviewUtils().startActivityWithTransition(
+        getLUtils().startActivityWithTransition(
                 new Intent(Intent.ACTION_VIEW,
                         ScheduleContract.Sessions.buildSessionUri(sessionId)),
                 clickedView,
-                SessionDetailFragment.VIEW_NAME_PHOTO);
+                SessionDetailActivity.TRANSITION_NAME_PHOTO);
     }
 
     @Override
