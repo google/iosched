@@ -65,8 +65,8 @@ android {
 }
 
 dependencies {
-    compile 'com.android.support:support-v13:+'
+    compile 'com.android.support:support-v13:21.+'
     compile 'com.google.android.support:wearable:+'
-    compile 'com.google.android.gms:play-services-wearable:+'
+    compile 'com.google.android.gms:play-services-wearable:6.1.+'
 } 
 

@@ -28,4 +28,6 @@
         <item name="android:colorBackgroundCacheHint">@null</item>
     </style>
 
+    <style name="Theme.IOSched.SessionDetails" parent="Theme.IOSched.SessionDetails.Base" />
+
 </resources>

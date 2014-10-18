@@ -16,7 +16,11 @@
 
 package com.google.samples.apps.iosched.service;
 
-import android.app.*;
+import android.app.AlarmManager;
+import android.app.IntentService;
+import android.app.Notification;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
@@ -37,11 +41,10 @@ import com.google.android.gms.wearable.PutDataRequest;
 import com.google.android.gms.wearable.Wearable;
 import com.google.samples.apps.iosched.R;
 import com.google.samples.apps.iosched.provider.ScheduleContract;
+import com.google.samples.apps.iosched.ui.BaseMapActivity;
 import com.google.samples.apps.iosched.ui.BrowseSessionsActivity;
-import com.google.samples.apps.iosched.ui.MapFragment;
 import com.google.samples.apps.iosched.ui.MyScheduleActivity;
 import com.google.samples.apps.iosched.ui.SessionFeedbackActivity;
-import com.google.samples.apps.iosched.ui.phone.MapActivity;
 import com.google.samples.apps.iosched.util.FeedbackUtils;
 import com.google.samples.apps.iosched.util.PrefUtils;
 import com.google.samples.apps.iosched.util.UIUtils;
@@ -334,11 +337,7 @@ public class SessionAlarmService extends IntentService
 
         String provideFeedbackTicker = res.getString(R.string.session_feedback_notification_ticker);
         NotificationCompat.Builder notifBuilder = new NotificationCompat.Builder(this)
-                //.setColor(getResources().getColor(R.color.theme_primary))
-                            // Note: setColor() is available in the support lib v21+.
-                            // We commented it out because we want the source to compile 
-                            // against support lib v20. If you are using support lib
-                            // v21 or above on Android L, uncomment this line.
+                .setColor(getResources().getColor(R.color.theme_primary))
                 .setContentText(provideFeedbackTicker)
                 .setTicker(provideFeedbackTicker)
                 .setLights(
@@ -510,11 +509,7 @@ public class SessionAlarmService extends IntentService
         NotificationCompat.Builder notifBuilder = new NotificationCompat.Builder(this)
                 .setContentTitle(starredSessionTitles.get(0))
                 .setContentText(contentText)
-                //.setColor(getResources().getColor(R.color.theme_primary))
-                            // Note: setColor() is available in the support lib v21+.
-                            // We commented it out because we want the source to compile 
-                            // against support lib v20. If you are using support lib
-                            // v21 or above on Android L, uncomment this line.
+                .setColor(getResources().getColor(R.color.theme_primary))
                 .setTicker(res.getQuantityString(R.plurals.session_notification_ticker,
                         starredCount,
                         starredCount))
@@ -576,8 +571,8 @@ public class SessionAlarmService extends IntentService
     private PendingIntent createRoomMapIntent(final String roomId) {
         Intent mapIntent = new Intent(getApplicationContext(),
                 UIUtils.getMapActivityClass(getApplicationContext()));
-        mapIntent.putExtra(MapFragment.EXTRA_ROOM, roomId);
-        mapIntent.putExtra(MapActivity.EXTRA_DETACHED_MODE, true);
+        mapIntent.putExtra(BaseMapActivity.EXTRA_ROOM, roomId);
+        mapIntent.putExtra(BaseMapActivity.EXTRA_DETACHED_MODE, true);
         return TaskStackBuilder
                 .create(getApplicationContext())
                 .addNextIntent(new Intent(this, BrowseSessionsActivity.class))

@@ -16,15 +16,11 @@
 
 package com.google.samples.apps.iosched.ui;
 
-import android.app.ActionBar;
-import android.content.*;
+import android.content.Intent;
 import android.os.Bundle;
 
 import com.google.samples.apps.iosched.R;
 import com.google.samples.apps.iosched.util.PrefUtils;
-
-import static com.google.samples.apps.iosched.util.LogUtils.LOGD;
-import static com.google.samples.apps.iosched.util.LogUtils.makeLogTag;
 
 public class PeopleIveMetActivity extends BaseActivity {
 
@@ -39,7 +35,6 @@ public class PeopleIveMetActivity extends BaseActivity {
         }
 
         setContentView(R.layout.activity_people_ive_met);
-        getLPreviewUtils().trySetActionBar();
 
         if (null == savedInstanceState) {
             getFragmentManager().beginTransaction()
@@ -48,23 +43,7 @@ public class PeopleIveMetActivity extends BaseActivity {
                     .commit();
         }
 
-        setTitle(R.string.title_people_ive_met);
         overridePendingTransition(0, 0);
-    }
-
-    private void updateActionBarNavigation() {
-        boolean show = !isNavDrawerOpen();
-        if (getLPreviewUtils().shouldChangeActionBarForDrawer()) {
-            ActionBar ab = getActionBar();
-            ab.setDisplayShowTitleEnabled(show);
-            ab.setDisplayUseLogoEnabled(!show);
-        }
-    }
-
-    @Override
-    protected void onNavDrawerStateChanged(boolean isOpen, boolean isAnimating) {
-        super.onNavDrawerStateChanged(isOpen, isAnimating);
-        updateActionBarNavigation();
     }
 
     @Override

@@ -1,4 +1,3 @@
-<?xml version="1.0" encoding="utf-8"?>
 <!--
    Copyright 2014 Google Inc. All rights reserved.
 
@@ -15,19 +14,114 @@
    limitations under the License.
 -->
 
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<com.google.samples.apps.iosched.ui.widget.ScrimInsetsScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="@dimen/navdrawer_width"
     android:layout_height="match_parent"
-    android:id="@+id/navdrawer"
     android:layout_gravity="start"
-    android:background="@color/navdrawer_background">
+    android:id="@+id/navdrawer"
+    android:background="@color/navdrawer_background"
+    android:fitsSystemWindows="true"
+    app:insetForeground="#4000">
 
     <LinearLayout android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
-        <include layout="@layout/navdrawer_content" />
+        <FrameLayout
+            android:id="@+id/chosen_account_view"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/navdrawer_chosen_account_height"
+            android:foreground="?photoItemForeground">
 
+            <ImageView android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:scaleType="centerCrop"
+                android:src="@drawable/default_cover"
+                android:tint="@color/session_photo_scrim"
+                android:id="@+id/profile_cover_image" />
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingLeft="@dimen/keyline_1"
+                android:paddingRight="@dimen/keyline_1"
+                android:paddingTop="@dimen/keyline_1"
+                android:id="@+id/chosen_account_content_view">
+
+                <com.google.samples.apps.iosched.ui.widget.BezelImageView
+                    android:id="@+id/profile_image"
+                    android:layout_width="@dimen/navdrawer_profile_image_size"
+                    android:layout_height="@dimen/navdrawer_profile_image_size"
+                    android:src="@drawable/person_image_empty"
+                    android:scaleType="centerCrop"
+                    app:maskDrawable="@drawable/circle_mask" />
+
+                <ImageView
+                    android:id="@+id/expand_account_box_indicator"
+                    android:layout_height="wrap_content"
+                    android:layout_width="wrap_content"
+                    android:visibility="gone"
+                    android:layout_marginLeft="16dp"
+                    android:paddingBottom="16dp"
+                    android:layout_alignParentEnd="true"
+                    android:layout_alignParentBottom="true"
+                    android:scaleType="center"
+                    android:src="@drawable/ic_drawer_accounts_expand" />
+
+                <TextView
+                    android:id="@+id/profile_email_text"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_alignLeft="@id/profile_image"
+                    android:layout_toLeftOf="@id/expand_account_box_indicator"
+                    android:layout_alignParentBottom="true"
+                    android:paddingBottom="16dp"
+                    android:textSize="@dimen/text_size_medium"
+                    android:textColor="@color/body_text_2_inverse"
+                    android:maxLines="1"
+                    android:singleLine="true"
+                    android:ellipsize="end" />
+
+                <TextView
+                    android:id="@+id/profile_name_text"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_above="@id/profile_email_text"
+                    android:layout_alignLeft="@id/profile_image"
+                    android:layout_toLeftOf="@id/expand_account_box_indicator"
+                    android:textSize="@dimen/text_size_large"
+                    android:textColor="@color/body_text_1_inverse"
+                    android:maxLines="1"
+                    android:singleLine="true"
+                    android:ellipsize="end" />
+
+            </RelativeLayout>
+
+        </FrameLayout>
+
+        <FrameLayout android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <!-- Account items -->
+            <LinearLayout
+                android:id="@+id/account_list"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:orientation="vertical"
+                android:visibility="invisible" />
+
+            <!-- Drawer items -->
+            <LinearLayout
+                android:id="@+id/navdrawer_items_list"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="8dp"
+                android:orientation="vertical" />
+        </FrameLayout>
     </LinearLayout>
 
-</ScrollView>
+</com.google.samples.apps.iosched.ui.widget.ScrimInsetsScrollView>

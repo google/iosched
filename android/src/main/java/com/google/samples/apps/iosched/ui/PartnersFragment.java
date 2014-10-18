@@ -75,9 +75,6 @@ public class PartnersFragment extends Fragment implements
         View rootView = inflater.inflate(R.layout.fragment_partners, container, false);
         if (getArguments() != null && !getArguments().getBoolean(ARG_HAS_HEADER, true)) {
             rootView.findViewById(R.id.headerbar).setVisibility(View.GONE);
-        } else {
-            ((FrameLayout) rootView.findViewById(R.id.list_container))
-                    .setForeground(getResources().getDrawable(R.drawable.bottom_shadow));
         }
 
         rootView.findViewById(R.id.close_button).setOnClickListener(new View.OnClickListener() {

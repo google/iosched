@@ -20,8 +20,14 @@ import android.app.Activity;
 import android.app.Fragment;
 import android.app.ListFragment;
 import android.app.LoaderManager;
-import android.content.*;
+import android.content.Context;
+import android.content.CursorLoader;
+import android.content.Intent;
+import android.content.Loader;
+import android.content.SharedPreferences;
 import android.database.Cursor;
+import android.graphics.PorterDuff;
+import android.graphics.PorterDuffColorFilter;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
@@ -41,6 +47,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.GenericRequestBuilder;
+import com.bumptech.glide.ListPreloader;
 import com.google.samples.apps.iosched.Config;
 import com.google.samples.apps.iosched.R;
 import com.google.samples.apps.iosched.model.TagMetadata;
@@ -48,7 +56,12 @@ import com.google.samples.apps.iosched.provider.ScheduleContract;
 import com.google.samples.apps.iosched.ui.widget.CollectionView;
 import com.google.samples.apps.iosched.ui.widget.CollectionViewCallbacks;
 import com.google.samples.apps.iosched.ui.widget.MessageCardView;
-import com.google.samples.apps.iosched.util.*;
+import com.google.samples.apps.iosched.util.ImageLoader;
+import com.google.samples.apps.iosched.util.PrefUtils;
+import com.google.samples.apps.iosched.util.ThrottledContentObserver;
+import com.google.samples.apps.iosched.util.TimeUtils;
+import com.google.samples.apps.iosched.util.UIUtils;
+import com.google.samples.apps.iosched.util.WiFiUtils;
 
 import java.text.DateFormat;
 import java.util.ArrayList;
@@ -56,10 +69,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.TimeZone;
 
-import com.bumptech.glide.GenericRequestBuilder;
-import com.bumptech.glide.ListPreloader;
-
-import static com.google.samples.apps.iosched.util.LogUtils.*;
+import static com.google.samples.apps.iosched.util.LogUtils.LOGD;
+import static com.google.samples.apps.iosched.util.LogUtils.LOGE;
+import static com.google.samples.apps.iosched.util.LogUtils.LOGV;
+import static com.google.samples.apps.iosched.util.LogUtils.LOGW;
+import static com.google.samples.apps.iosched.util.LogUtils.makeLogTag;
 import static com.google.samples.apps.iosched.util.UIUtils.buildStyledSnippet;
 
 /**
@@ -71,6 +85,10 @@ public class SessionsFragment extends Fragment implements
         LoaderManager.LoaderCallbacks<Cursor>, CollectionViewCallbacks {
 
     private static final String TAG = makeLogTag(SessionsFragment.class);
+
+    // Disable track branding
+    public static final String EXTRA_NO_TRACK_BRANDING =
+            "com.google.android.iosched.extra.NO_TRACK_BRANDING";
 
     private static final String STATE_SESSION_QUERY_TOKEN = "session_query_token";
     private static final String STATE_ARGUMENTS = "arguments";
@@ -92,6 +110,7 @@ public class SessionsFragment extends Fragment implements
     private Uri mCurrentUri = ScheduleContract.Sessions.CONTENT_URI;
     private Cursor mCursor;
     private boolean mIsSearchCursor;
+    private boolean mNoTrackBranding;
 
     // this variable is relevant when we start the sessions loader, and indicates the desired
     // behavior when load finishes: if true, this is a full reload (for example, because filters
@@ -231,6 +250,7 @@ public class SessionsFragment extends Fragment implements
             mArguments = savedInstanceState.getParcelable(STATE_ARGUMENTS);
             if (mArguments != null) {
                 mCurrentUri = mArguments.getParcelable("_uri");
+                mNoTrackBranding = mArguments.getBoolean(EXTRA_NO_TRACK_BRANDING);
             }
 
             if (mSessionQueryToken > 0) {
@@ -291,6 +311,8 @@ public class SessionsFragment extends Fragment implements
             arguments.putParcelable("_uri", ScheduleContract.Sessions.CONTENT_URI);
             mCurrentUri = ScheduleContract.Sessions.CONTENT_URI;
         }
+
+        mNoTrackBranding = mArguments.getBoolean(EXTRA_NO_TRACK_BRANDING);
 
         if (ScheduleContract.Sessions.isSearchUri(mCurrentUri)) {
             mSessionQueryToken = SessionsQuery.SEARCH_TOKEN;
@@ -694,6 +716,7 @@ public class SessionsFragment extends Fragment implements
         int sessionColor = mCursor.getInt(SessionsQuery.COLOR);
         sessionColor = sessionColor == 0 ? getResources().getColor(R.color.default_session_color)
                 : sessionColor;
+        int darkSessionColor = 0;
         final String snippet = mIsSearchCursor ? mCursor.getString(SessionsQuery.SNIPPET) : null;
         final Spannable styledSnippet = mIsSearchCursor ? buildStyledSnippet(snippet) : null;
         final boolean starred = mCursor.getInt(SessionsQuery.IN_MY_SCHEDULE) != 0;
@@ -717,14 +740,18 @@ public class SessionsFragment extends Fragment implements
         final TextView snippetView = (TextView) view.findViewById(R.id.session_snippet);
         final TextView abstractView = (TextView) view.findViewById(R.id.session_abstract);
         final TextView categoryView = (TextView) view.findViewById(R.id.session_category);
-        final View boxView = view.findViewById(R.id.info_box);
         final View sessionTargetView = view.findViewById(R.id.session_target);
 
         if (sessionColor == 0) {
             // use default
             sessionColor = mDefaultSessionColor;
         }
-        sessionColor = UIUtils.scaleSessionColorToDefaultBG(sessionColor);
+
+        if (mNoTrackBranding) {
+            sessionColor = getResources().getColor(R.color.no_track_branding_session_color);
+        }
+
+        darkSessionColor = UIUtils.scaleSessionColorToDefaultBG(sessionColor);
 
         ImageView photoView = (ImageView) view.findViewById(R.id.session_photo_colored);
         if (photoView != null) {
@@ -738,23 +765,23 @@ public class SessionsFragment extends Fragment implements
                 });
             }
             // colored
-            photoView.setColorFilter(UIUtils.setColorAlpha(sessionColor,
-                    UIUtils.SESSION_PHOTO_SCRIM_ALPHA));
+            photoView.setColorFilter(mNoTrackBranding
+                    ? new PorterDuffColorFilter(
+                    getResources().getColor(R.color.no_track_branding_session_tile_overlay),
+                    PorterDuff.Mode.SRC_ATOP)
+                    : UIUtils.makeSessionImageScrimColorFilter(darkSessionColor));
         } else {
             photoView = (ImageView) view.findViewById(R.id.session_photo);
         }
-        ((BaseActivity) getActivity()).getLPreviewUtils().setViewName(photoView,
-                "photo_" + sessionId);
-
-
+        ViewCompat.setTransitionName(photoView, "photo_" + sessionId);
 
         // when we load a photo, it will fade in from transparent so the
         // background of the container must be the session color to avoid a white flash
         ViewParent parent = photoView.getParent();
         if (parent != null && parent instanceof View) {
-            ((View) parent).setBackgroundColor(sessionColor);
+            ((View) parent).setBackgroundColor(darkSessionColor);
         } else {
-            photoView.setBackgroundColor(sessionColor);
+            photoView.setBackgroundColor(darkSessionColor);
         }
 
         String photo = mCursor.getString(SessionsQuery.PHOTO_URL);
@@ -818,11 +845,6 @@ public class SessionsFragment extends Fragment implements
             abstractView.setText(mBuffer.toString());
         }
 
-        // in expanded mode, the box background color follows the session color
-        if (useExpandedMode()) {
-            boxView.setBackgroundColor(sessionColor);
-        }
-
         // show or hide the "in my schedule" indicator
         view.findViewById(R.id.indicator_in_schedule).setVisibility(starred ? View.VISIBLE
                 : View.INVISIBLE);
@@ -840,7 +862,7 @@ public class SessionsFragment extends Fragment implements
             if (cardContainer != null && abstractContainer != null) {
                 cardContainer.setVisibility(cardShown ? View.VISIBLE : View.GONE);
                 abstractContainer.setVisibility(cardShown ? View.GONE : View.VISIBLE);
-                abstractContainer.setBackgroundColor(sessionColor);
+                abstractContainer.setBackgroundColor(darkSessionColor);
             }
         }
 
@@ -891,7 +913,6 @@ public class SessionsFragment extends Fragment implements
     }
 
     private void setupLocalOrRemoteCard(final MessageCardView card) {
-        card.overrideBackground(R.drawable.card_bg);
         card.setText(getString(R.string.question_local_or_remote));
         card.setButton(0, getString(R.string.attending_remotely), CARD_ANSWER_ATTENDING_REMOTELY,
                 false, 0);
@@ -924,7 +945,6 @@ public class SessionsFragment extends Fragment implements
     }
 
     private void setupWifiOfferCard(final MessageCardView card) {
-        card.overrideBackground(R.drawable.card_bg);
         card.setText(getString(TimeUtils.hasConferenceStarted(getActivity()) ?
                 R.string.question_setup_wifi_after_i_o_start :
                 R.string.question_setup_wifi_before_i_o_start));
@@ -955,13 +975,11 @@ public class SessionsFragment extends Fragment implements
     }
 
     private void setupIOExtendedCard(final MessageCardView card) {
-        card.overrideBackground(R.drawable.card_bg);
         card.setText(getString(R.string.question_i_o_extended));
         card.setButton(0, getString(R.string.no_thanks), CARD_ANSWER_NO,
                 false, 0);
         card.setButton(1, getString(R.string.browse_events), CARD_ANSWER_YES,
                 true, 0);
-        final Context context = getActivity().getApplicationContext();
         card.setListener(new MessageCardView.OnMessageCardButtonClicked() {
             @Override
             public void onMessageCardButtonClicked(final String tag) {

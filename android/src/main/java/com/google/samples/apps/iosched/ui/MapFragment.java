@@ -16,26 +16,24 @@
 
 package com.google.samples.apps.iosched.ui;
 
-import static com.google.samples.apps.iosched.util.LogUtils.LOGD;
-import static com.google.samples.apps.iosched.util.LogUtils.LOGE;
-import static com.google.samples.apps.iosched.util.LogUtils.makeLogTag;
-
 import android.annotation.SuppressLint;
 import android.app.Activity;
-import android.app.DialogFragment;
-import android.content.*;
+import android.app.LoaderManager;
+import android.app.LoaderManager.LoaderCallbacks;
+import android.content.AsyncQueryHandler;
+import android.content.ContentResolver;
+import android.content.CursorLoader;
+import android.content.Loader;
+import android.content.SharedPreferences;
 import android.database.ContentObserver;
 import android.database.Cursor;
 import android.graphics.Point;
+import android.graphics.Rect;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.preference.PreferenceManager;
-import android.app.LoaderManager;
-import android.app.LoaderManager.LoaderCallbacks;
-import android.content.CursorLoader;
-import android.content.Loader;
 import android.text.format.DateUtils;
 import android.util.SparseArray;
 import android.view.LayoutInflater;
@@ -45,15 +43,25 @@ import android.view.ViewTreeObserver;
 import android.widget.FrameLayout;
 
 import com.google.android.gms.maps.CameraUpdate;
-import com.google.samples.apps.iosched.R;
-import com.google.samples.apps.iosched.provider.ScheduleContract;
-import com.google.samples.apps.iosched.util.*;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.Projection;
-import com.google.android.gms.maps.model.*;
+import com.google.android.gms.maps.model.CameraPosition;
+import com.google.android.gms.maps.model.IndoorBuilding;
+import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
+import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.maps.model.TileOverlay;
+import com.google.android.gms.maps.model.TileOverlayOptions;
+import com.google.android.gms.maps.model.TileProvider;
 import com.google.maps.android.ui.IconGenerator;
+import com.google.samples.apps.iosched.R;
+import com.google.samples.apps.iosched.provider.ScheduleContract;
+import com.google.samples.apps.iosched.util.AnalyticsManager;
+import com.google.samples.apps.iosched.util.MapUtils;
+import com.google.samples.apps.iosched.util.PrefUtils;
+import com.google.samples.apps.iosched.util.UIUtils;
+import com.jakewharton.disklrucache.DiskLruCache;
 
 import java.io.File;
 import java.io.IOException;
@@ -62,7 +70,8 @@ import java.util.Formatter;
 import java.util.HashMap;
 import java.util.Locale;
 
-import com.jakewharton.disklrucache.DiskLruCache;
+import static com.google.samples.apps.iosched.util.LogUtils.LOGD;
+import static com.google.samples.apps.iosched.util.LogUtils.makeLogTag;
 
 /**
  * Shows a map of the conference venue.
@@ -86,12 +95,6 @@ public class MapFragment extends com.google.android.gms.maps.MapFragment impleme
 
     // Default level (index of level in IndoorBuilding object for Moscone)
     private static final int MOSCONE_DEFAULT_LEVEL_INDEX = 1;
-
-
-    /**
-     * When specified, will automatically point the map to the requested room.
-     */
-    public static final String EXTRA_ROOM = "com.google.android.iosched.extra.ROOM";
 
     private static final String TAG = makeLogTag(MapFragment.class);
 
@@ -144,6 +147,7 @@ public class MapFragment extends com.google.android.gms.maps.MapFragment impleme
     private Marker mMosconeMaker = null;
 
     private GoogleMap mMap;
+    private Rect mMapInsets = new Rect();
 
     private MapInfoWindowAdapter mInfoAdapter;
 
@@ -243,8 +247,7 @@ public class MapFragment extends com.google.android.gms.maps.MapFragment impleme
             setupMap(true);
         }
 
-
-        mMap.setPadding(0, UIUtils.calculateActionBarSize(getActivity()), 0, 0);
+        setMapInsets(mMapInsets);
 
         // load all markers
         LoaderManager lm = getLoaderManager();
@@ -254,6 +257,13 @@ public class MapFragment extends com.google.android.gms.maps.MapFragment impleme
         lm.initLoader(OverlayQuery._TOKEN, null, this);
 
         return v;
+    }
+
+    public void setMapInsets(Rect insets) {
+        mMapInsets.set(insets);
+        if (mMap != null) {
+            mMap.setPadding(mMapInsets.left, mMapInsets.top, mMapInsets.right, mMapInsets.bottom);
+        }
     }
 
     @Override
@@ -319,8 +329,8 @@ public class MapFragment extends com.google.android.gms.maps.MapFragment impleme
         mMap.setMyLocationEnabled(false);
 
         Bundle data = getArguments();
-        if (data != null && data.containsKey(EXTRA_ROOM)) {
-            mHighlightedRoom = data.getString(EXTRA_ROOM);
+        if (data != null && data.containsKey(BaseMapActivity.EXTRA_ROOM)) {
+            mHighlightedRoom = data.getString(BaseMapActivity.EXTRA_ROOM);
         }
 
         LOGD(TAG, "Map setup complete.");

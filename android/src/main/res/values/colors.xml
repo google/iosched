@@ -50,7 +50,7 @@
     <color name="navdrawer_background">#ffffffff</color>
     <color name="navdrawer_text_color">@color/body_text_1</color>
     <color name="navdrawer_text_color_selected">@color/theme_primary</color>
-    <color name="navdrawer_icon_tint">#808080</color>
+    <color name="navdrawer_icon_tint">#888</color>
     <color name="navdrawer_icon_tint_selected">@color/theme_primary</color>
 
     <color name="refresh_progress_1">@color/theme_accent_2</color>
@@ -66,6 +66,8 @@
     <color name="session_photo_scrim">#6000</color>
 
     <color name="default_session_color">@color/theme_primary</color>
+    <color name="no_track_branding_session_tile_overlay">#8333</color>
+    <color name="no_track_branding_session_color">#333</color>
 
     <color name="nearby_header_color">#00c</color>
     <color name="nearby_url_color">#0a0</color>
@@ -76,6 +78,7 @@
     <color name="butter_bar_light">#eee0e0e0</color>
 
     <color name="translucent_actionbar_background">#cc3f51b5</color>
+    <color name="translucent_statusbar_background">#cc3f51b5</color>
 
     <color name="tab_background">@color/theme_primary</color>
     <color name="tab_selected_strip">@color/theme_accent_1</color>

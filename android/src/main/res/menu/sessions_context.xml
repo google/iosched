@@ -13,25 +13,26 @@
   See the License for the specific language governing permissions and
   limitations under the License.
   -->
-<menu xmlns:android="http://schemas.android.com/apk/res/android">
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:iosched="http://schemas.android.com/apk/res-auto">
     <item android:id="@+id/menu_star"
         android:icon="@drawable/ic_action_add_schedule"
         android:title="@string/description_add_schedule"
         android:orderInCategory="1"
-        android:showAsAction="ifRoom" />
+        iosched:showAsAction="ifRoom" />
     <item android:id="@+id/menu_map_room"
         android:icon="@drawable/ic_action_map"
         android:title="@string/description_map"
         android:orderInCategory="2"
-        android:showAsAction="ifRoom" />
+        iosched:showAsAction="ifRoom" />
     <item android:id="@+id/menu_share"
         android:icon="@drawable/ic_action_share"
         android:title="@string/description_share"
         android:orderInCategory="3"
-        android:showAsAction="ifRoom" />
+        iosched:showAsAction="ifRoom" />
     <item android:id="@+id/menu_social_stream"
         android:icon="@drawable/ic_action_social_stream"
         android:title="@string/description_social_stream"
         android:orderInCategory="3"
-        android:showAsAction="ifRoom" />
+        iosched:showAsAction="ifRoom" />
 </menu>

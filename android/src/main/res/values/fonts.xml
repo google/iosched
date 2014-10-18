@@ -17,7 +17,4 @@
 <resources>
     <integer name="font_textStyle_medium">1</integer> <!-- bold -->
     <string name="font_fontFamily_medium">sans-serif</string>
-
-    <integer name="font_textStyle_drawer_item">0</integer> <!-- normal -->
-    <string name="font_fontFamily_drawer_item">sans-serif</string>
 </resources>

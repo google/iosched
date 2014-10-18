@@ -21,6 +21,7 @@ import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentSender;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 
@@ -43,7 +44,10 @@ import com.google.android.gms.plus.model.people.PersonBuffer;
 import java.io.IOException;
 import java.lang.ref.WeakReference;
 
-import static com.google.samples.apps.iosched.util.LogUtils.*;
+import static com.google.samples.apps.iosched.util.LogUtils.LOGD;
+import static com.google.samples.apps.iosched.util.LogUtils.LOGE;
+import static com.google.samples.apps.iosched.util.LogUtils.LOGW;
+import static com.google.samples.apps.iosched.util.LogUtils.makeLogTag;
 
 /**
  * This helper handles the UI flow for signing in and authenticating an account. It handles
@@ -303,8 +307,13 @@ public class LoginAndAuthHelper implements GoogleApiClient.ConnectionCallbacks, 
                 // Record profile ID, image URL and name
                 LOGD(TAG, "Saving plus profile ID: " + currentUser.getId());
                 AccountUtils.setPlusProfileId(mAppContext, mAccountName, currentUser.getId());
-                LOGD(TAG, "Saving plus image URL: " + currentUser.getImage().getUrl());
-                AccountUtils.setPlusImageUrl(mAppContext, mAccountName, currentUser.getImage().getUrl());
+                String imageUrl = currentUser.getImage().getUrl();
+                if (imageUrl != null) {
+                    imageUrl = Uri.parse(imageUrl)
+                            .buildUpon().appendQueryParameter("sz", "256").build().toString();
+                }
+                LOGD(TAG, "Saving plus image URL: " + imageUrl);
+                AccountUtils.setPlusImageUrl(mAppContext, mAccountName, imageUrl);
                 LOGD(TAG, "Saving plus display name: " + currentUser.getDisplayName());
                 AccountUtils.setPlusName(mAppContext, mAccountName, currentUser.getDisplayName());
                 Person.Cover cover = currentUser.getCover();

@@ -32,6 +32,7 @@
         android:textStyle="@integer/font_textStyle_medium"
         android:fontFamily="@string/font_fontFamily_medium"
         android:textAllCaps="true"
+        android:stateListAnimator="@null"
         android:background="@drawable/nearby_button_background"
         android:textColor="@color/body_text_1_inverse"/>
 

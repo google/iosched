@@ -16,12 +16,12 @@
 <resources>
 
     <declare-styleable name="BaseTheme">
-        <attr name="actionBarOverlayTopOffset" format="dimension" />
+        <attr name="actionBarIconColor" format="color" />
         <attr name="actionBarInsetStart" format="dimension" />
         <attr name="spinnerBarInsetStart" format="dimension" />
-        <attr name="selectableItemBackgroundBorderless" format="dimension" />
-        <attr name="popupItemBackground" format="dimension" />
-        <attr name="photoItemForeground" format="dimension" />
+        <attr name="popupItemBackground" format="reference" />
+        <attr name="photoItemForeground" format="reference" />
+        <attr name="photoItemForegroundBorderless" format="reference" />
     </declare-styleable>
 
     <declare-styleable name="MultiSwipeRefreshLayout">
@@ -31,6 +31,10 @@
     <declare-styleable name="DrawShadowFrameLayout">
         <attr name="shadowDrawable" format="reference" />
         <attr name="shadowVisible" format="boolean" />
+    </declare-styleable>
+
+    <declare-styleable name="ScrimInsetsView">
+        <attr name="insetForeground" format="reference|color" />
     </declare-styleable>
 
     <declare-styleable name="BezelImageView">
