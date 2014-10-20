@@ -293,15 +293,6 @@
     <string name="my_schedule_page_desc_a11y">
     <xliff:g id="day">%1$s</xliff:g>일 일정을 표시합니다.</string>
 
-    <!-- Accessibility description for navigation drawer -->
-    <string name="navdrawer_description_a11y">내비게이션 서랍. 이 서랍에는 애플리케이션의 다양한 화면을 보관할 수 있는 단추가 있습니다.</string>
-
-    <!-- Menu item to send feedback about the app [CHAR_LIMIT=20] -->
-    <string name="navdrawer_item_app_feedback">앱 피드백</string>
-
-    <!-- Accessibility description for menu item to send feedback about the app -->
-    <string name="navdrawer_item_app_feedback_a11y">앱 피드백</string>
-
     <!-- Menu item to open the Experts screen [CHAR_LIMIT=20] -->
     <string name="navdrawer_item_experts_directory">전문가</string>
 
@@ -693,9 +684,6 @@
 
     <!-- Chooser dialog text when the user is selecting an application with which to share something -->
     <string name="title_share">공유:</string>
-
-    <!-- Label for Social activity -->
-    <string name="title_stream">스트림</string>
 
     <!-- Label for VideoLibrary activity -->
     <string name="title_video_library">비디오 라이브러리</string>

@@ -291,15 +291,6 @@
     <!-- Accessibility announcement to alert user that they are now viewing their schedule of a given day. -->
     <string name="my_schedule_page_desc_a11y">今、あなたの<xliff:g id="day">%1$s</xliff:g>のスケジュールを表示中</string>
 
-    <!-- Accessibility description for navigation drawer -->
-    <string name="navdrawer_description_a11y">ナビゲーション引き出し。この引き出しのボタンで、アプリケーションのさまざまな画面に行くことができます。</string>
-
-    <!-- Menu item to send feedback about the app [CHAR_LIMIT=20] -->
-    <string name="navdrawer_item_app_feedback">アプリのフィードバック</string>
-
-    <!-- Accessibility description for menu item to send feedback about the app -->
-    <string name="navdrawer_item_app_feedback_a11y">アプリのフィードバック</string>
-
     <!-- Menu item to open the Experts screen [CHAR_LIMIT=20] -->
     <string name="navdrawer_item_experts_directory">専門家</string>
 
@@ -686,9 +677,6 @@
 
     <!-- Chooser dialog text when the user is selecting an application with which to share something -->
     <string name="title_share">下記を使用して共有</string>
-
-    <!-- Label for Social activity -->
-    <string name="title_stream">ストリーム</string>
 
     <!-- Label for VideoLibrary activity -->
     <string name="title_video_library">ビデオライブラリ</string>

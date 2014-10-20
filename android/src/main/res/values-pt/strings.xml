@@ -298,15 +298,6 @@
     <string name="my_schedule_page_desc_a11y">Exibindo sua agenda para <xliff:g id="day">%1$s</xliff:g>
   </string>
 
-    <!-- Accessibility description for navigation drawer -->
-    <string name="navdrawer_description_a11y">Gaveta de Navegação. Essa gaveta possui botões que o levam a várias telas do aplicativo.</string>
-
-    <!-- Menu item to send feedback about the app [CHAR_LIMIT=20] -->
-    <string name="navdrawer_item_app_feedback">Avaliação do Aplicativo</string>
-
-    <!-- Accessibility description for menu item to send feedback about the app -->
-    <string name="navdrawer_item_app_feedback_a11y">Avaliação do Aplicativo</string>
-
     <!-- Menu item to open the Experts screen [CHAR_LIMIT=20] -->
     <string name="navdrawer_item_experts_directory">Especialistas</string>
 
@@ -698,9 +689,6 @@
 
     <!-- Chooser dialog text when the user is selecting an application with which to share something -->
     <string name="title_share">Compartilhar usando</string>
-
-    <!-- Label for Social activity -->
-    <string name="title_stream">Transmissão</string>
 
     <!-- Label for VideoLibrary activity -->
     <string name="title_video_library">Biblioteca de Vídeos</string>
