@@ -469,11 +469,6 @@
     <string name="schedule_end_time">bis <xliff:g id="endTime">%1$s</xliff:g>
   </string>
 
-    <!-- -->
-    <string name="schedule_session_subtitle">
-    <xliff:g id="speakers">%1$s</xliff:g>\n<xliff:g id="room">%2$s</xliff:g>
-  </string>
-
     <!-- Hint that the user can search across sessions -->
     <string name="search_hint">Sitzungen suchen</string>
 
