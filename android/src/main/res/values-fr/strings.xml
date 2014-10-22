@@ -299,15 +299,6 @@
     <!-- Accessibility announcement to alert user that they are now viewing their schedule of a given day. -->
     <string name="my_schedule_page_desc_a11y">Votre agenda pour <xliff:g id="day">%1$s</xliff:g> est affiché.</string>
 
-    <!-- Accessibility description for navigation drawer -->
-    <string name="navdrawer_description_a11y">Tiroir de navigation. Ce tiroir comprend des boutons qui vous dirige vers les différents écrans de l\'application.</string>
-
-    <!-- Menu item to send feedback about the app [CHAR_LIMIT=20] -->
-    <string name="navdrawer_item_app_feedback">Avis sur l\'application</string>
-
-    <!-- Accessibility description for menu item to send feedback about the app -->
-    <string name="navdrawer_item_app_feedback_a11y">Avis sur l\'application</string>
-
     <!-- Menu item to open the Experts screen [CHAR_LIMIT=20] -->
     <string name="navdrawer_item_experts_directory">Experts</string>
 
@@ -478,12 +469,6 @@
 
     <!-- Indicates the ending block of a session time. Used in a text fragment like "8:00 AM to 9:00 AM" [CHAR_LIMIT=4 (excluding placeholders)]-->
     <string name="schedule_end_time">à <xliff:g id="endTime">%1$s</xliff:g>
-  </string>
-
-    <!-- -->
-    <string name="schedule_session_subtitle">
-    <xliff:g id="speakers">%1$s</xliff:g>
-    <xliff:g id="room">%2$s</xliff:g>
   </string>
 
     <!-- Hint that the user can search across sessions -->
@@ -700,9 +685,6 @@
 
     <!-- Chooser dialog text when the user is selecting an application with which to share something -->
     <string name="title_share">Partager à l\'aide de</string>
-
-    <!-- Label for Social activity -->
-    <string name="title_stream">Flux</string>
 
     <!-- Label for VideoLibrary activity -->
     <string name="title_video_library">Vidéothèque</string>

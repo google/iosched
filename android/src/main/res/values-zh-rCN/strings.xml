@@ -292,15 +292,6 @@
     <!-- Accessibility announcement to alert user that they are now viewing their schedule of a given day. -->
     <string name="my_schedule_page_desc_a11y">现在显示你的<xliff:g id="day">%1$s</xliff:g>日的程安排</string>
 
-    <!-- Accessibility description for navigation drawer -->
-    <string name="navdrawer_description_a11y">导航视图。这个视图里有一个带你到不同应用程序画面的按钮。</string>
-
-    <!-- Menu item to send feedback about the app [CHAR_LIMIT=20] -->
-    <string name="navdrawer_item_app_feedback">应用程序反馈</string>
-
-    <!-- Accessibility description for menu item to send feedback about the app -->
-    <string name="navdrawer_item_app_feedback_a11y">应用程序反馈</string>
-
     <!-- Menu item to open the Experts screen [CHAR_LIMIT=20] -->
     <string name="navdrawer_item_experts_directory">专家</string>
 
@@ -471,11 +462,6 @@
 
     <!-- Indicates the ending block of a session time. Used in a text fragment like "8:00 AM to 9:00 AM" [CHAR_LIMIT=4 (excluding placeholders)]-->
     <string name="schedule_end_time">至<xliff:g id="endTime">%1$s</xliff:g>
-  </string>
-
-    <!-- -->
-    <string name="schedule_session_subtitle">
-    <xliff:g id="speakers">%1$s</xliff:g>\n<xliff:g id="room">%2$s</xliff:g>
   </string>
 
     <!-- Hint that the user can search across sessions -->
@@ -691,9 +677,6 @@
 
     <!-- Chooser dialog text when the user is selecting an application with which to share something -->
     <string name="title_share">分享正在使用的</string>
-
-    <!-- Label for Social activity -->
-    <string name="title_stream">社交流</string>
 
     <!-- Label for VideoLibrary activity -->
     <string name="title_video_library">视频库</string>
