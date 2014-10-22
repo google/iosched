@@ -55,8 +55,7 @@
 
     <color name="refresh_progress_1">@color/theme_accent_2</color>
     <color name="refresh_progress_2">@color/theme_accent_1</color>
-    <color name="refresh_progress_3">@color/theme_primary_dark</color>
-    <color name="refresh_progress_4">@color/theme_primary_light</color>
+    <color name="refresh_progress_3">@color/theme_primary</color>
 
     <color name="data_item_background_light">#ffffff</color>
     <color name="data_item_lightbg_title">#404040</color>
