@@ -16,19 +16,19 @@ language: android
 
 android:
   components:
-    - build-tools-20.0.0
-    - android-19
+    - build-tools-21.0.2
     - android-20
+    - android-21
     - extra-google-m2repository
     - extra-android-m2repository
-    - sys-img-armeabi-v7a-android-20
+    - sys-img-armeabi-v7a-android-21
 
 notifications:
   email: false
 
 env:
   matrix:
-    - ANDROID_TARGET=android-19  ANDROID_ABI=armeabi-v7a
+    - ANDROID_TARGET=android-21  ANDROID_ABI=armeabi-v7a
 
 before_install:
   - echo no | android create avd --force -n test -t $ANDROID_TARGET --abi $ANDROID_ABI

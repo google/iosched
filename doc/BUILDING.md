@@ -46,13 +46,12 @@ To build the app:
 
 3. In the Android SDK Manager, ensure that the following are installed,
    and are updated to the latest available version:
-       - Tools > Android SDK Platform-tools (rev 20 or above)
-       - Tools > Android SDK Tools (rev 23.0.2 or above)
+       - Tools > Android SDK Platform-tools (rev 21 or above)
+       - Tools > Android SDK Tools (rev 23.0.5 or above)
        - Tools > Android SDK Build-tools version 20
-       - Tools > Android SDK Build-tools version 19.1
-       - Android 4.4 > SDK Platform (API 19)
+       - Tools > Android SDK Build-tools version 21 (rev 21.0.2 or above)
        - Android 4.4W > SDK Platform (API 20)
-       - Android L (API 20, L Preview)
+       - Android 5.0 > SDK Platform (API 21)
        - Extras > Android Support Repository
        - Extras > Android Support Library
        - Extras > Google Play services
@@ -79,7 +78,7 @@ To build the app:
 8. To install on your test device:
 
    ```
-    ./gradlew installClassicDebug
+    ./gradlew installDebug
    ```
 
 
@@ -92,20 +91,6 @@ comment out the following line on android/build.gradle:
 
 Also, remove ':Wearable' from settings.gradle, leaving only ':android'.
 
-
-## Building with Android L Preview SDK
-
-If you wish to build the project with the Android L Preview SDK to see the
-full experience, you need to set the lpreview property when building:
-
-    ./gradlew clean
-    ./gradlew -Plpreview assembleDebug
-
-To install on your test device, use:
-
-    ./gradlew -Plpreview installLpreviewDebug
-
-You will need a device flashed with the Android L preview system image.
 
 # Server-side setup
 

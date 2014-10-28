@@ -45,6 +45,7 @@ import android.preference.PreferenceManager;
 import android.provider.Settings;
 import android.support.v4.view.ViewCompat;
 import android.support.v4.widget.DrawerLayout;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.Toolbar;
@@ -76,7 +77,6 @@ import com.google.samples.apps.iosched.sync.SyncHelper;
 import com.google.samples.apps.iosched.ui.debug.DebugActionRunnerActivity;
 import com.google.samples.apps.iosched.ui.widget.MultiSwipeRefreshLayout;
 import com.google.samples.apps.iosched.ui.widget.ScrimInsetsScrollView;
-import com.google.samples.apps.iosched.ui.widget.SwipeRefreshLayout;
 import com.google.samples.apps.iosched.util.AccountUtils;
 import com.google.samples.apps.iosched.util.AnalyticsManager;
 import com.google.samples.apps.iosched.util.HelpUtils;
@@ -270,11 +270,10 @@ public abstract class BaseActivity extends ActionBarActivity implements
     private void trySetupSwipeRefresh() {
         mSwipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.swipe_refresh_layout);
         if (mSwipeRefreshLayout != null) {
-            mSwipeRefreshLayout.setColorScheme(
+            mSwipeRefreshLayout.setColorSchemeResources(
                     R.color.refresh_progress_1,
                     R.color.refresh_progress_2,
-                    R.color.refresh_progress_3,
-                    R.color.refresh_progress_4);
+                    R.color.refresh_progress_3);
             mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
                 @Override
                 public void onRefresh() {
@@ -299,11 +298,13 @@ public abstract class BaseActivity extends ActionBarActivity implements
             return;
         }
 
-        if (mActionBarShown) {
-            mSwipeRefreshLayout.setProgressBarTop(mProgressBarTopWhenActionBarShown);
-        } else {
-            mSwipeRefreshLayout.setProgressBarTop(0);
-        }
+        int progressBarStartMargin = getResources().getDimensionPixelSize(
+                R.dimen.swipe_refresh_progress_bar_start_margin);
+        int progressBarEndMargin = getResources().getDimensionPixelSize(
+                R.dimen.swipe_refresh_progress_bar_end_margin);
+        int top = mActionBarShown ? mProgressBarTopWhenActionBarShown : 0;
+        mSwipeRefreshLayout.setProgressViewOffset(false,
+                top + progressBarStartMargin, top + progressBarEndMargin);
     }
 
     /**
@@ -435,6 +436,12 @@ public abstract class BaseActivity extends ActionBarActivity implements
         return mDrawerLayout != null && mDrawerLayout.isDrawerOpen(Gravity.START);
     }
 
+    protected void closeNavDrawer() {
+        if (mDrawerLayout != null) {
+            mDrawerLayout.closeDrawer(Gravity.START);
+        }
+    }
+
     /** Populates the navigation drawer with the appropriate items. */
     private void populateNavDrawer() {
         boolean attendeeAtVenue = PrefUtils.isAttendeeAtVenue(this);
@@ -477,6 +484,15 @@ public abstract class BaseActivity extends ActionBarActivity implements
         mNavDrawerItems.add(NAVDRAWER_ITEM_SETTINGS);
 
         createNavDrawerItems();
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (isNavDrawerOpen()) {
+            closeNavDrawer();
+        } else {
+            super.onBackPressed();
+        }
     }
 
     private void createNavDrawerItems() {
