@@ -154,20 +154,22 @@ debug and release certificate fingerprints in the list of accepted certificates.
 Note the API key you created. _(It's a long alphanumeric string that may contain
 digits, letters and underscores.)_
 
-7. Enter the API key from Step 6 into this file:
+7. Enter the API key from Step 6 into this file:  
     ```
     android/src/main/res/values/maps_api_key.xml
     ```
 8. Enter the API key from Step 6, as a value for the `YOUTUBE_API_KEY` constant,
-   into this file:
+   into this file:  
     ```
     android/src/main/java/com/google/samples/apps/iosched/Config.java
     ```
+
 <hr>
 
 Done. IOSched should now work with Google sign in, Google Drive and Maps
 integration. Note that we did NOT include setting up GCM. For more information
 about this, see the [CUSTOM.md] file.
+
 
 [Android Studio]:http://developer.android.com/sdk/installing/studio.html
 [App Signing]:http://developer.android.com/tools/publishing/app-signing.html#studio
