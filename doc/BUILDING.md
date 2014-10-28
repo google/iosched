@@ -27,6 +27,7 @@ This is a Gradle-based project that works best with [Android Studio].
     you can download from http://developer.android.com/wear/. If you NOT wish to
     build with Android Wear support, further details can be found in the
 	[Building without Android Wear] section in this document.  
+	
 <hr> 
 
 ## Build the app
@@ -69,12 +70,12 @@ This is a Gradle-based project that works best with [Android Studio].
 6. Add your debug keystore to the project (save it as android/debug.keystore),
     or modify the build.gradle file to point to your key.
 
-> __NOTE__: In debug mode, you sign your app with a debug certificate generated
-    by the Android SDK. This certificate has a private key and a known password.
-    To sign your app in release mode, you need to generate your own certificate.
-    If you haven't done so, please refer to the [App Signing] guide for further
-    details. If you wish to build with Android Wear support, please refer to the
-    [Packaging Wearable Apps] guide for further details.
+    > __NOTE__: In debug mode, you sign your app with a debug certificate generated
+        by the Android SDK. This certificate has a private key and a known password.
+        To sign your app in release mode, you need to generate your own certificate.
+        If you haven't done so, please refer to the [App Signing] guide for further
+        details. If you wish to build with Android Wear support, please refer to the
+        [Packaging Wearable Apps] guide for further details.
 
 7. Choose Build > Make Project in Android Studio or run the following
     command in the project root directory:  
@@ -90,7 +91,8 @@ This is a Gradle-based project that works best with [Android Studio].
 ## Building without Android Wear
 
 If you do NOT wish to build the Android Wear component, you need to make the two
-changes below.
+changes below.  
+
     1. Open android/build.gradle and remove (or comment out) the following line:  
        ```
          wearApp project(":Wearable")
@@ -140,11 +142,11 @@ certificate fingerprint, run the following command (on Windows, substitute
     keytool -exportcert -alias your-key-name \
         -keystore /path/to/your/release/keystore/file -list -v
     ```
-> __NOTE__: In order to create a Client ID, you might be required to set up the
-    consent screen first! _(The screen that will be shown to users whenever you
-    request access to their private data using your Client ID.)_ To do so, go to
-    "APIs and auth" > "Consent screen", enter a "PRODUCT NAME" and click "Save".
-    Finally, go back to Step 5 to create your Client ID(s).
+    > __NOTE__: In order to create a Client ID, you might be required to set up the
+        consent screen first! _(The screen that will be shown to users whenever you
+        request access to their private data using your Client ID.)_ To do so, go to
+        "APIs and auth" > "Consent screen", enter a "PRODUCT NAME" and click "Save".
+        Finally, go back to Step 5 to create your Client ID(s).
 
 6. Still at the "Credentials" page, create an API Key for Public API access.
 As a key type use _"Key for Android applications"_, and you should add both your
