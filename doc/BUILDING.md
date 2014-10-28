@@ -26,7 +26,7 @@ This is a Gradle-based project that works best with [Android Studio].
 > __NOTE II__: Building the project as-is requires the Android Wear SDK, which 
     you can download from http://developer.android.com/wear/. If you NOT wish to
     build with Android Wear support, further details can be found in the
-	[Building without Android Wear] section in this document.
+	[Building without Android Wear] section in this document.  
 <hr> 
 
 ## Build the app
@@ -58,7 +58,7 @@ This is a Gradle-based project that works best with [Android Studio].
 
 4. Create a file in your working directory called local.properties,
    containing the path to your Android SDK. Use local.properties.example as a
-   model. _(On Windows, use a double-backslash ("\\") as a path separator.)_
+   model. _(On Windows, use a double-backslash (`\\`) as a path separator!)_
 
 5. Import the project in Android Studio:
 
@@ -76,25 +76,25 @@ This is a Gradle-based project that works best with [Android Studio].
     details. If you wish to build with Android Wear support, please refer to the
     [Packaging Wearable Apps] guide for further details.
 
-7.A Choose Build > Make Project in Android Studio or run the following
-    command in the project root directory:
+7. Choose Build > Make Project in Android Studio or run the following
+    command in the project root directory:  
    ```sh
     ./gradlew clean assembleDebug
-   ```
-8. To install on your test device:
+   ```  
 
+8. To install on your test device:  
    ```sh
     ./gradlew installDebug
-   ```
+   ```  
 
 ## Building without Android Wear
 
 If you do NOT wish to build the Android Wear component, you need to make the two
 changes below.
-    1. Open android/build.gradle and remove (or comment out) the following line:
-   ```
-      wearApp project(":Wearable")
-   ```
+    1. Open android/build.gradle and remove (or comment out) the following line:  
+       ```
+         wearApp project(":Wearable")
+       ```  
     2. Open settings.gradle and remove `':Wearable'`, leaving only `':android'`.
 
 # Server-side setup
