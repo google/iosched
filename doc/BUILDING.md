@@ -93,19 +93,19 @@ This is a Gradle-based project that works best with [Android Studio].
 If you do NOT wish to build the Android Wear component, you need to make the two
 changes below.  
 
-    1. Open android/build.gradle and remove (or comment out) the following line:  
-       ```
+  1. Open android/build.gradle and remove (or comment out) the following line:  
+    ```
          wearApp project(":Wearable")
-       ```  
-    2. Open settings.gradle and remove `':Wearable'`, leaving only `':android'`.
+    ```
+  2. Open settings.gradle and remove `':Wearable'`, leaving only `':android'`.
 
 # Server-side setup
 
-These steps are optional, in the sense that IOSched will build and run even if
-you don't set up the server side. However, unless you perform this setup, your
-build won't be able to use any of the Google APIs such as Google sign in, Google
-Drive integration, Google Maps integration, etc. So following the instructions
-in this section is highly recommended.
+> __NOTE__: These steps are optional, in the sense that IOSched will build and run even if
+    you don't set up the server side. However, unless you perform this setup, your
+    build won't be able to use any of the Google APIs such as Google sign in, Google
+    Drive integration, Google Maps integration, etc. So following the instructions
+    in this section is highly recommended.
 
 1. Change the project's package name to your own package name. To do that, you
 can set the "package" attribute of the <manifest> tag in AndroidManifest.xml.
