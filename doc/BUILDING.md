@@ -23,14 +23,13 @@ This is a Gradle-based project that works best with [Android Studio].
     Console (create API keys, etc). These additional steps required to set up, 
     are outlined in the [Server side setup] section in this document.
 
-> __NOTE II__: Building the project as-is requires the Android Wear SDK, which 
-    you can download from http://developer.android.com/wear/. If you NOT wish to
-    build with Android Wear support, further details can be found in the
-	[Building without Android Wear] section in this document.  
+> __NOTE II__: If you NOT wish to build with Android Wear support, further 
+    details can be found in the [Building without Android Wear] section in this 
+    document.  
 	
 <hr> 
 
-## Build the app
+## Building the app
 
 1. Install the following software:
        - Android SDK:
