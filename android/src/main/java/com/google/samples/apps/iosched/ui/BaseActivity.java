@@ -1383,7 +1383,7 @@ public abstract class BaseActivity extends ActionBarActivity implements
 
         } else {
             // Get the correct GCM key for the user. GCM key is a somewhat non-standard
-            // approach we use in this app. For more about this, check GCM.TXT.
+            // approach we use in this app. For more about this, check GCM.MD.
             final String gcmKey = AccountUtils.hasActiveAccount(this) ?
                     AccountUtils.getGcmKey(this, AccountUtils.getActiveAccountName(this)) : null;
             // Device is already registered on GCM, needs to check if it is
