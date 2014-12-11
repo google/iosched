@@ -31,8 +31,10 @@ env:
     - ANDROID_TARGET=android-21  ANDROID_ABI=armeabi-v7a
 
 before_install:
+  - ./gradlew --version
   - echo no | android create avd --force -n test -t $ANDROID_TARGET --abi $ANDROID_ABI
   - emulator -avd test -no-skin -no-audio -no-window &
+  - adb wait-for-device
 
 before_script:
   - ./scripts/wait_for_emulator.sh
