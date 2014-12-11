@@ -16,7 +16,13 @@
 
 package com.google.samples.apps.iosched.util;
 
-import android.app.*;
+import android.app.Activity;
+import android.app.AlertDialog;
+import android.app.Dialog;
+import android.app.DialogFragment;
+import android.app.Fragment;
+import android.app.FragmentManager;
+import android.app.FragmentTransaction;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -32,7 +38,6 @@ import android.util.Log;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.samples.apps.iosched.BuildConfig;
 import com.google.samples.apps.iosched.Config;
 import com.google.samples.apps.iosched.R;
 
@@ -151,17 +156,23 @@ public class WiFiUtils {
             ft.remove(prev);
         }
         ft.addToBackStack(null);
-        new WiFiDialog(isWiFiEnabled(activity)).show(ft, "dialog_wifi");
+        WiFiDialog.newInstance(isWiFiEnabled(activity)).show(ft, "dialog_wifi");
     }
 
     public static class WiFiDialog extends DialogFragment {
+        private static final String ARG_WIFI_ENABLED
+                = "com.google.samples.apps.iosched.ARG_WIFI_ENABLED";
+
         private boolean mWiFiEnabled;
 
-        public WiFiDialog() {}
+        public static WiFiDialog newInstance(boolean wiFiEnabled) {
+            WiFiDialog wiFiDialogFragment = new WiFiDialog();
 
-        public WiFiDialog(boolean wifiEnabled) {
-            super();
-            mWiFiEnabled = wifiEnabled;
+            Bundle args = new Bundle();
+            args.putBoolean(ARG_WIFI_ENABLED, wiFiEnabled);
+            wiFiDialogFragment.setArguments(args);
+
+            return wiFiDialogFragment;
         }
 
         @Override
@@ -171,6 +182,8 @@ public class WiFiUtils {
             final TextView wifiTextView = new TextView(getActivity());
             int dialogCallToActionText;
             int dialogPositiveButtonText;
+
+            mWiFiEnabled = getArguments().getBoolean(ARG_WIFI_ENABLED);
             if (mWiFiEnabled) {
                 dialogCallToActionText = R.string.calltoaction_wifi_configure;
                 dialogPositiveButtonText = R.string.wifi_dialog_button_configure;

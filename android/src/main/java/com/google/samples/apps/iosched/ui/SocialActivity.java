@@ -17,7 +17,6 @@
 package com.google.samples.apps.iosched.ui;
 
 import android.os.Bundle;
-import android.app.ActionBar;
 
 import com.google.samples.apps.iosched.R;
 import com.google.samples.apps.iosched.util.AnalyticsManager;
@@ -38,7 +37,7 @@ public class SocialActivity extends BaseActivity {
         }
 
         setContentView(R.layout.activity_social);
-        getLPreviewUtils().trySetActionBar();
+
         if (null == savedInstanceState) {
             getFragmentManager().beginTransaction()
                     .replace(R.id.container, HashtagsFragment.newInstance())
@@ -54,21 +53,6 @@ public class SocialActivity extends BaseActivity {
         LOGD("Tracker", SCREEN_LABEL);
 
         overridePendingTransition(0, 0);
-    }
-
-    private void updateActionBarNavigation() {
-        boolean show = !isNavDrawerOpen();
-        if (getLPreviewUtils().shouldChangeActionBarForDrawer()) {
-            ActionBar ab = getActionBar();
-            ab.setDisplayShowTitleEnabled(show);
-            ab.setDisplayUseLogoEnabled(!show);
-        }
-    }
-
-    @Override
-    protected void onNavDrawerStateChanged(boolean isOpen, boolean isAnimating) {
-        super.onNavDrawerStateChanged(isOpen, isAnimating);
-        updateActionBarNavigation();
     }
 
     @Override

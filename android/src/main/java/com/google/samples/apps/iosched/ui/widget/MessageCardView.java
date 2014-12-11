@@ -16,27 +16,23 @@
 
 package com.google.samples.apps.iosched.ui.widget;
 
-import android.animation.Animator;
-import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Typeface;
+import android.support.v7.widget.CardView;
 import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
-import android.widget.FrameLayout;
 import android.widget.TextView;
 
 import com.google.samples.apps.iosched.R;
-import com.google.samples.apps.iosched.util.UIUtils;
 
-import static com.google.samples.apps.iosched.util.LogUtils.LOGD;
 import static com.google.samples.apps.iosched.util.LogUtils.LOGW;
 import static com.google.samples.apps.iosched.util.LogUtils.makeLogTag;
 
-public class MessageCardView extends FrameLayout implements View.OnClickListener {
+public class MessageCardView extends CardView implements View.OnClickListener {
     private static final String TAG = makeLogTag("MessageCardView");
     private TextView mTitleView;
     private TextView mMessageView;
@@ -50,16 +46,22 @@ public class MessageCardView extends FrameLayout implements View.OnClickListener
         public void onMessageCardButtonClicked(String tag);
     }
 
-    public MessageCardView(Context context, AttributeSet attrs) {
-        this(context, attrs, 0);
+    public MessageCardView(Context context) {
+        super(context, null, 0);
+        initialize(context, null, 0);
     }
 
-    public MessageCardView(Context context) {
-        this(context, null, 0);
+    public MessageCardView(Context context, AttributeSet attrs) {
+        super(context, attrs, 0);
+        initialize(context, attrs, 0);
     }
 
     public MessageCardView(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
+        initialize(context, attrs, defStyle);
+    }
+
+    private void initialize(Context context, AttributeSet attrs, int defStyle) {
         LayoutInflater inflater = (LayoutInflater) context.getSystemService(
                 Context.LAYOUT_INFLATER_SERVICE);
         mRoot = inflater.inflate(R.layout.message_card, this, true);
@@ -76,7 +78,7 @@ public class MessageCardView extends FrameLayout implements View.OnClickListener
             button.setOnClickListener(this);
         }
 
-        TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.MessageCard, 0, 0);
+        TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.MessageCard, defStyle, 0);
         String title = a.getString(R.styleable.MessageCard_messageTitle);
         setTitle(title);
         String text = a.getString(R.styleable.MessageCard_messageText);
@@ -98,6 +100,10 @@ public class MessageCardView extends FrameLayout implements View.OnClickListener
         if (button2text != null) {
             setButton(1, button2text, button2tag, button2emphasis, emphasisColor);
         }
+
+        setRadius(getResources().getDimensionPixelSize(R.dimen.card_corner_radius));
+        setCardElevation(getResources().getDimensionPixelSize(R.dimen.card_elevation));
+        setPreventCornerOverlap(false);
     }
 
     public void setListener(OnMessageCardButtonClicked listener) {

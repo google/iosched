@@ -16,25 +16,20 @@
 
 package com.google.samples.apps.iosched.util;
 
-import android.annotation.TargetApi;
 import android.app.Activity;
 import android.content.AsyncQueryHandler;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
-import android.os.Build;
 import android.support.v4.app.ShareCompat;
 import android.view.MenuItem;
 
 import com.google.samples.apps.iosched.R;
 import com.google.samples.apps.iosched.appwidget.ScheduleWidgetProvider;
-import com.google.samples.apps.iosched.gcm.ServerUtilities;
 import com.google.samples.apps.iosched.provider.ScheduleContract;
 import com.google.samples.apps.iosched.sync.SyncHelper;
-import com.google.samples.apps.iosched.sync.TriggerSyncReceiver;
-import com.google.samples.apps.iosched.ui.MapFragment;
-import com.google.samples.apps.iosched.ui.phone.MapActivity;
+import com.google.samples.apps.iosched.ui.BaseMapActivity;
 
 import static com.google.samples.apps.iosched.util.LogUtils.LOGD;
 import static com.google.samples.apps.iosched.util.LogUtils.makeLogTag;
@@ -55,8 +50,8 @@ public final class SessionsHelper {
     public void startMapActivity(String roomId) {
         Intent intent = new Intent(mActivity.getApplicationContext(),
                 UIUtils.getMapActivityClass(mActivity));
-        intent.putExtra(MapFragment.EXTRA_ROOM, roomId);
-        intent.putExtra(MapActivity.EXTRA_DETACHED_MODE, true);
+        intent.putExtra(BaseMapActivity.EXTRA_ROOM, roomId);
+        intent.putExtra(BaseMapActivity.EXTRA_DETACHED_MODE, true);
         mActivity.startActivity(intent);
     }
 
@@ -71,27 +66,7 @@ public final class SessionsHelper {
 
     public void tryConfigureShareMenuItem(MenuItem menuItem, int messageTemplateResId,
             final String title, String hashtags, String url) {
-        // Intentionally removed by Roman
-//        if (UIUtils.hasICS()) {
-//            ActionProvider itemProvider = menuItem.getActionProvider();
-//            ShareActionProvider provider;
-//            if (!(itemProvider instanceof ShareActionProvider)) {
-//                provider = new ShareActionProvider(mActivity);
-//            } else {
-//                provider = (ShareActionProvider) itemProvider;
-//            }
-//            provider.setShareIntent(createShareIntent(messageTemplateResId, title, hashtags, url));
-//            provider.setOnShareTargetSelectedListener(
-//                    new ShareActionProvider.OnShareTargetSelectedListener() {
-//                        @Override
-//                        public boolean onShareTargetSelected(ShareActionProvider source, Intent intent) {
-//                            AnalyticsManager.sendEvent("Session", "Shared", title, 0L);
-//                            return false;
-//                        }
-//                    });
-//
-//            menuItem.setActionProvider(provider);
-//        }
+        // TODO: remove
     }
 
     public void shareSession(Context context, int messageTemplateResId, String title,

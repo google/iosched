@@ -9,16 +9,11 @@ This project is the Android app for the conference. The app supports devices
 running Android 4.0+, and is optimized for phones and tablets of all shapes
 and sizes. It also contains an Android Wear integration.
 
-<h2>Android L Developer Preview</h2>
+<h2>Android 5.0 and Material Design</h2>
 
 ![Screenshot](art/hero.png)
 
-We have updated the I/O app with [material design](http://www.google.com/design/spec) and the [Android L Developer Preview](http://developer.android.com/preview/index.html)! For a quick preview of the new tactile surfaces, animated touch feedback, bold use of color, and refreshed iconography by checking out this [teaser video](https://www.youtube.com/watch?v=mCgteBXYxQc) or download the preview APK below.
-
-<a href="../../raw/master/binaries/iosched-lpreview.apk"><b>Download the I/O app APK for Android L Preview</b></a>
-
-To run this APK, you will need a device set up with the Android L Preview system image. For
-more information, please refer to the [Android L Developer Preview page](http://developer.android.com/preview/index.html).
+We have updated the I/O app with [material design](http://www.google.com/design/spec) and the Android 5.0 SDK! For a quick preview of the new tactile surfaces, animated touch feedback, bold use of color, and refreshed iconography, check out this [teaser video](https://www.youtube.com/watch?v=mCgteBXYxQc).
 
 <h2>Source</h2>
 

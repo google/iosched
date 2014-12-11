@@ -21,6 +21,7 @@ import android.content.Intent;
 import android.content.res.Resources;
 import android.database.DataSetObserver;
 import android.graphics.Color;
+import android.graphics.ColorFilter;
 import android.graphics.Typeface;
 import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
@@ -52,7 +53,7 @@ public class MyScheduleAdapter implements ListAdapter, AbsListView.RecyclerListe
     private static final int VIEW_TYPE_PAST_DURING_CONFERENCE = 2;
 
     private final Context mContext;
-    private final LPreviewUtilsBase mLPreviewUtils;
+    private final LUtils mLUtils;
 
     // additional top padding to add to first item of list
     int mContentTopClearance = 0;
@@ -74,9 +75,9 @@ public class MyScheduleAdapter implements ListAdapter, AbsListView.RecyclerListe
     // the data and thus shouldn't be used
     int mDataGeneration = 0;
 
-    public MyScheduleAdapter(Context context, LPreviewUtilsBase lPreviewUtils) {
+    public MyScheduleAdapter(Context context, LUtils lUtils) {
         mContext = context;
-        mLPreviewUtils = lPreviewUtils;
+        mLUtils = lUtils;
 
         mDefaultSessionColor = mContext.getResources().getColor(R.color.default_session_color);
         mDefaultStartTimeColor = mContext.getResources().getColor(R.color.body_text_2);
@@ -333,14 +334,13 @@ public class MyScheduleAdapter implements ListAdapter, AbsListView.RecyclerListe
 
             final ColorDrawable colorDrawable = new ColorDrawable(color);
             bgImageView.setImageDrawable(colorDrawable);
-            bgImageView.setColorFilter(UIUtils.setColorAlpha(color,
-                    UIUtils.SESSION_PHOTO_SCRIM_ALPHA));
+            ColorFilter scrimFilter = UIUtils.makeSessionImageScrimColorFilter(color);
+            bgImageView.setColorFilter(scrimFilter);
 
             if (TextUtils.isEmpty(item.backgroundImageUrl)) {
                 sessionImageView.setVisibility(View.GONE);
             } else {
-                sessionImageView.setColorFilter(UIUtils.setColorAlpha(color,
-                        UIUtils.SESSION_PHOTO_SCRIM_ALPHA));
+                sessionImageView.setColorFilter(scrimFilter);
                 mImageLoader.loadImage(item.backgroundImageUrl, sessionImageView, null,
                         colorDrawable);
             }
@@ -348,7 +348,7 @@ public class MyScheduleAdapter implements ListAdapter, AbsListView.RecyclerListe
             slotTitleView.setTextColor(isBlockNow
                     ? Color.WHITE
                     : res.getColor(R.color.body_text_1_inverse));
-            mLPreviewUtils.setMediumTypeface(slotTitleView);
+            mLUtils.setMediumTypeface(slotTitleView);
             if (slotSubtitleView != null) {
                 slotSubtitleView.setText(item.subtitle);
                 slotSubtitleView.setTextColor(res.getColor(R.color.body_text_2_inverse));

@@ -20,6 +20,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/drawer_layout"
     android:layout_width="match_parent"
+    android:fitsSystemWindows="true"
     tools:context=".ui.ExpertsDirectoryActivity"
     android:layout_height="match_parent">
 
@@ -49,11 +50,9 @@
             <!-- Spinners for additional filters -->
             <LinearLayout
                 android:id="@+id/filters_box"
-                android:layout_marginTop="?actionBarOverlayTopOffset"
                 android:paddingLeft="?spinnerBarInsetStart"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/filterbar_height"
-                android:background="@color/theme_primary"
                 android:orientation="horizontal">
 
                 <Spinner style="@style/Widget.IOSched.HeaderBar.Spinner"
@@ -73,6 +72,6 @@
     </com.google.samples.apps.iosched.ui.widget.DrawShadowFrameLayout>
 
     <!-- Nav drawer -->
-    <include layout="@layout/navdrawer_for_ab_overlay" />
+    <include layout="@layout/navdrawer" />
 
 </android.support.v4.widget.DrawerLayout>

@@ -21,14 +21,15 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <LinearLayout android:id="@+id/headerbar"
+    <FrameLayout android:id="@+id/headerbar"
         android:layout_width="match_parent"
-        android:layout_height="?android:actionBarSize"
+        android:layout_height="?actionBarSize"
+        android:elevation="@dimen/headerbar_elevation"
         android:orientation="horizontal"
         android:background="#e5e5e5">
 
         <ImageButton android:id="@+id/close_button"
-            android:layout_width="48dp"
+            android:layout_width="56dp"
             android:layout_height="match_parent"
             android:background="?selectableItemBackgroundBorderless"
             android:src="@drawable/ic_pane_close"
@@ -36,13 +37,13 @@
 
         <TextView android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:layout_marginLeft="4dp"
+            android:layout_marginLeft="@dimen/keyline_2"
             android:textSize="@dimen/text_size_large"
             android:textColor="@color/body_text_1"
             android:gravity="center_vertical"
             android:text="@string/partners" />
 
-    </LinearLayout>
+    </FrameLayout>
 
     <FrameLayout android:layout_width="match_parent"
         android:layout_height="0dp"
@@ -53,8 +54,8 @@
             android:id="@+id/collection_view"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:paddingLeft="@dimen/half_explore_grid_padding"
-            android:paddingRight="@dimen/half_explore_grid_padding"
+            android:paddingLeft="@dimen/explore_grid_padding_half"
+            android:paddingRight="@dimen/explore_grid_padding_half"
             android:paddingTop="@dimen/explore_grid_padding"
             android:clipToPadding="false"
             android:scrollbarStyle="outsideOverlay"

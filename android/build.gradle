@@ -14,8 +14,6 @@
  * limitations under the License.
  */
 
-lpreview = hasProperty('lpreview')
-
 apply plugin: 'com.android.application'
 
 repositories {
@@ -26,15 +24,12 @@ repositories {
 }
 
 android {
-    compileSdkVersion lpreview ? "android-L" : 19
-    buildToolsVersion "20.0.0"
+    compileSdkVersion 21
+    buildToolsVersion "21.1.1"
 
-    productFlavors { lpreview ? lpreview{} : classic{} }
-
-    defaultConfig lpreview ? {} : {
-        // Non-L-preview configuration
+    defaultConfig {
         minSdkVersion 14
-        targetSdkVersion 19
+        targetSdkVersion 21
     }
 
     signingConfigs {
@@ -58,7 +53,7 @@ android {
             signingConfig signingConfigs.debug
         }
         release {
-            runProguard true
+            minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), file('proguard-project.txt')
             signingConfig signingConfigs.release
         }
@@ -75,10 +70,10 @@ android {
 
 dependencies {
     wearApp project(':Wearable')
-    compile 'com.google.android.gms:play-services:5+' 
-    compile 'com.android.support:support-v13:20.+'
-    compile 'com.android.support:support-v4:20.+'
-    compile 'com.google.android.apps.dashclock:dashclock-api:+'
+    compile 'com.google.android.gms:play-services:6.1.+'
+    compile 'com.android.support:support-v13:21.+'
+    compile 'com.android.support:appcompat-v7:21.+'
+    compile 'com.android.support:cardview-v7:21.+'
     compile 'com.google.code.gson:gson:2.+'
     compile('com.google.api-client:google-api-client:1.+') {
         exclude group: 'xpp3', module: 'shared'

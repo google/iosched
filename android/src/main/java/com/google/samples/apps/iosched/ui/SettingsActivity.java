@@ -16,12 +16,14 @@
 
 package com.google.samples.apps.iosched.ui;
 
-import android.annotation.TargetApi;
+import android.content.ComponentName;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.os.Build;
 import android.os.Bundle;
-import android.preference.PreferenceActivity;
+import android.preference.PreferenceFragment;
+import android.support.v4.content.IntentCompat;
+import android.support.v7.widget.Toolbar;
+import android.view.View;
 
 import com.google.samples.apps.iosched.R;
 import com.google.samples.apps.iosched.service.SessionCalendarService;
@@ -30,50 +32,71 @@ import com.google.samples.apps.iosched.util.PrefUtils;
 /**
  * Activity for customizing app settings.
  */
-public class SettingsActivity extends PreferenceActivity implements SharedPreferences.OnSharedPreferenceChangeListener {
+public class SettingsActivity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        getActionBar().setDisplayHomeAsUpEnabled(true);
-    }
+        setContentView(R.layout.activity_settings);
 
-    @Override
-    protected void onPostCreate(Bundle savedInstanceState) {
-        super.onPostCreate(savedInstanceState);
-        setupSimplePreferencesScreen();
-        PrefUtils.registerOnSharedPreferenceChangeListener(this, this);
-    }
+        Toolbar toolbar = getActionBarToolbar();
+        toolbar.setTitle(R.string.title_settings);
+        toolbar.setNavigationIcon(R.drawable.ic_up);
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                navigateUpToFromChild(SettingsActivity.this,
+                        IntentCompat.makeMainActivity(new ComponentName(SettingsActivity.this,
+                                BrowseSessionsActivity.class)));
+            }
+        });
 
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        PrefUtils.unrgisterOnSharedPreferenceChangeListener(this, this);
-    }
-
-    private void setupSimplePreferencesScreen() {
-        // Add 'general' preferences.
-        addPreferencesFromResource(R.xml.preferences);
-        if (PrefUtils.hasEnabledBle(this)) {
-            addPreferencesFromResource(R.xml.ble_preferences);
+        if (savedInstanceState == null) {
+            getFragmentManager().beginTransaction()
+                    .add(R.id.container, new SettingsFragment())
+                    .commit();
         }
     }
 
-    @Override
-    public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
-        if (PrefUtils.PREF_SYNC_CALENDAR.equals(key)) {
-            boolean shouldSyncCalendar = PrefUtils.shouldSyncCalendar(this);
+    public static class SettingsFragment extends PreferenceFragment implements SharedPreferences.OnSharedPreferenceChangeListener {
+        public SettingsFragment() {
+        }
 
-            Intent intent;
-            if (PrefUtils.shouldSyncCalendar(this)) {
-                // Add all calendar entries
-                intent = new Intent(SessionCalendarService.ACTION_UPDATE_ALL_SESSIONS_CALENDAR);
-            } else {
-                // Remove all calendar entries
-                intent = new Intent(SessionCalendarService.ACTION_CLEAR_ALL_SESSIONS_CALENDAR);
+        @Override
+        public void onCreate(Bundle savedInstanceState) {
+            super.onCreate(savedInstanceState);
+            setupSimplePreferencesScreen();
+            PrefUtils.registerOnSharedPreferenceChangeListener(getActivity(), this);
+        }
+
+        @Override
+        public void onDestroy() {
+            super.onDestroy();
+            PrefUtils.unregisterOnSharedPreferenceChangeListener(getActivity(), this);
+        }
+
+        private void setupSimplePreferencesScreen() {
+            // Add 'general' preferences.
+            addPreferencesFromResource(R.xml.preferences);
+            if (PrefUtils.hasEnabledBle(getActivity())) {
+                addPreferencesFromResource(R.xml.ble_preferences);
             }
+        }
 
-            intent.setClass(this, SessionCalendarService.class);
-            startService(intent);
+        @Override
+        public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
+            if (PrefUtils.PREF_SYNC_CALENDAR.equals(key)) {
+                Intent intent;
+                if (PrefUtils.shouldSyncCalendar(getActivity())) {
+                    // Add all calendar entries
+                    intent = new Intent(SessionCalendarService.ACTION_UPDATE_ALL_SESSIONS_CALENDAR);
+                } else {
+                    // Remove all calendar entries
+                    intent = new Intent(SessionCalendarService.ACTION_CLEAR_ALL_SESSIONS_CALENDAR);
+                }
+
+                intent.setClass(getActivity(), SessionCalendarService.class);
+                getActivity().startService(intent);
+            }
         }
     }
 }

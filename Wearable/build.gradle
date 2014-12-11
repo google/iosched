@@ -36,16 +36,16 @@ android {
     }
     signingConfigs {
         debug {
-            storeFile file("../android/debug.keystore")
-            storePassword "android"
-            keyAlias "androiddebugkey"
-            keyPassword "android"
+            storeFile file(iosched14_android_debugkey_storefile)
+            storePassword iosched14_android_debugkey_storePassword
+            keyAlias iosched14_android_debugkey_keyAlias
+            keyPassword iosched14_android_debugkey_keyPassword
         }
         release {
-            storeFile file("../android/debug.keystore")
-            storePassword "android"
-            keyAlias "androiddebugkey"
-            keyPassword "android"
+            storeFile file(iosched14_android_releasekey_storefile)
+            storePassword iosched14_android_releasekey_storePassword
+            keyAlias iosched14_android_releasekey_keyAlias
+            keyPassword iosched14_android_releasekey_keyPassword
         }
     }
 
@@ -65,8 +65,8 @@ android {
 }
 
 dependencies {
-    compile 'com.android.support:support-v13:+'
+    compile 'com.android.support:support-v13:21.+'
     compile 'com.google.android.support:wearable:+'
-    compile 'com.google.android.gms:play-services-wearable:+'
+    compile 'com.google.android.gms:play-services-wearable:6.1.+'
 } 
 

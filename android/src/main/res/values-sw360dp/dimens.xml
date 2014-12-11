@@ -18,4 +18,8 @@
     <!-- Live Stream -->
     <dimen name="livestream_spinner_width">240dp</dimen>
 
+    <dimen name="navdrawer_chosen_account_height">164dp</dimen>
+    <dimen name="navdrawer_width">304dp</dimen>
+    <dimen name="navdrawer_profile_image_size">64dp</dimen>
+
 </resources>

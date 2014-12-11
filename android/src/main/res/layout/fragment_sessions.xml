@@ -22,7 +22,7 @@
         android:id="@+id/sessions_collection_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:padding="@dimen/half_explore_grid_padding"
+        android:padding="@dimen/explore_grid_padding_half"
         android:clipToPadding="false"
         android:scrollbarStyle="outsideOverlay"
         iosched:internalPadding="@dimen/explore_grid_padding" />
@@ -30,7 +30,7 @@
     <ProgressBar
         android:id="@+id/loading"
         android:visibility="gone"
-        android:paddingTop="?android:actionBarSize"
+        android:paddingTop="?actionBarSize"
         android:layout_gravity="center"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -39,7 +39,7 @@
     <TextView
         android:id="@+id/empty_text"
         android:visibility="gone"
-        android:paddingTop="?android:actionBarSize"
+        android:paddingTop="?actionBarSize"
         android:layout_gravity="center"
         android:gravity="center"
         android:layout_width="match_parent"

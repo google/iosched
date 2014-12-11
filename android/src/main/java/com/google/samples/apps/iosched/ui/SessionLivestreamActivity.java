@@ -765,7 +765,7 @@ public class SessionLivestreamActivity extends BaseActivity implements
     }
 
     private int getActionBarHeightPx() {
-        int[] attrs = new int[] { android.R.attr.actionBarSize };
+        int[] attrs = new int[] { R.attr.actionBarSize };
         return (int) getTheme().obtainStyledAttributes(attrs).getDimension(0, 0f);
     }
 

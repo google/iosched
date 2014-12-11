@@ -18,28 +18,51 @@ package com.google.samples.apps.iosched.ui;
 
 import android.accounts.Account;
 import android.accounts.AccountManager;
-import android.animation.*;
-import android.app.ActionBar;
-import android.app.Activity;
+import android.animation.Animator;
+import android.animation.AnimatorListenerAdapter;
+import android.animation.AnimatorSet;
+import android.animation.ArgbEvaluator;
+import android.animation.ObjectAnimator;
+import android.animation.TypeEvaluator;
+import android.animation.ValueAnimator;
 import android.app.AlertDialog;
-import android.content.*;
+import android.content.ContentResolver;
+import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.content.SharedPreferences;
+import android.content.SyncStatusObserver;
 import android.content.pm.PackageManager;
-import android.content.res.Configuration;
 import android.graphics.Color;
+import android.graphics.Rect;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.AsyncTask;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.preference.PreferenceManager;
 import android.provider.Settings;
+import android.support.v4.view.ViewCompat;
 import android.support.v4.widget.DrawerLayout;
+import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.app.ActionBar;
+import android.support.v7.app.ActionBarActivity;
+import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
-import android.view.*;
+import android.view.Gravity;
+import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuItem;
+import android.view.View;
+import android.view.ViewGroup;
 import android.view.animation.DecelerateInterpolator;
-import android.widget.*;
+import android.widget.AbsListView;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.ListView;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.gcm.GCMRegistrar;
 import com.google.android.gms.auth.GoogleAuthUtil;
@@ -53,21 +76,35 @@ import com.google.samples.apps.iosched.sync.ConferenceDataHandler;
 import com.google.samples.apps.iosched.sync.SyncHelper;
 import com.google.samples.apps.iosched.ui.debug.DebugActionRunnerActivity;
 import com.google.samples.apps.iosched.ui.widget.MultiSwipeRefreshLayout;
-import com.google.samples.apps.iosched.ui.widget.SwipeRefreshLayout;
-import com.google.samples.apps.iosched.util.*;
+import com.google.samples.apps.iosched.ui.widget.ScrimInsetsScrollView;
+import com.google.samples.apps.iosched.util.AccountUtils;
+import com.google.samples.apps.iosched.util.AnalyticsManager;
+import com.google.samples.apps.iosched.util.HelpUtils;
+import com.google.samples.apps.iosched.util.ImageLoader;
+import com.google.samples.apps.iosched.util.LUtils;
+import com.google.samples.apps.iosched.util.LoginAndAuthHelper;
+import com.google.samples.apps.iosched.util.PlayServicesUtils;
+import com.google.samples.apps.iosched.util.PrefUtils;
+import com.google.samples.apps.iosched.util.RecentTasksStyler;
+import com.google.samples.apps.iosched.util.UIUtils;
+import com.google.samples.apps.iosched.util.WiFiUtils;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import static com.google.samples.apps.iosched.util.LogUtils.*;
+import static com.google.samples.apps.iosched.util.LogUtils.LOGD;
+import static com.google.samples.apps.iosched.util.LogUtils.LOGE;
+import static com.google.samples.apps.iosched.util.LogUtils.LOGI;
+import static com.google.samples.apps.iosched.util.LogUtils.LOGW;
+import static com.google.samples.apps.iosched.util.LogUtils.makeLogTag;
 
 /**
  * A base activity that handles common functionality in the app. This includes the
  * navigation drawer, login and authentication, Action Bar tweaks, amongst others.
  */
-public abstract class BaseActivity extends Activity implements
+public abstract class BaseActivity extends ActionBarActivity implements
         LoginAndAuthHelper.Callbacks,
         SharedPreferences.OnSharedPreferenceChangeListener,
         MultiSwipeRefreshLayout.CanChildScrollUpCallback {
@@ -78,11 +115,9 @@ public abstract class BaseActivity extends Activity implements
 
     // Navigation drawer:
     private DrawerLayout mDrawerLayout;
-    private LPreviewUtilsBase.ActionBarDrawerToggleWrapper mDrawerToggle;
 
-    // allows access to L-Preview APIs through an abstract interface so we can compile with
-    // both the L Preview SDK and with the API 19 SDK
-    private LPreviewUtilsBase mLPreviewUtils;
+    // Helper methods for L APIs
+    private LUtils mLUtils;
 
     private ObjectAnimator mStatusBarColorAnimator;
     private LinearLayout mAccountListContainer;
@@ -160,6 +195,9 @@ public abstract class BaseActivity extends Activity implements
     // SwipeRefreshLayout allows the user to swipe the screen down to trigger a manual refresh
     private SwipeRefreshLayout mSwipeRefreshLayout;
 
+    // Primary toolbar and drawer toggle
+    private Toolbar mActionBarToolbar;
+
     // asynctask that performs GCM registration in the backgorund
     private AsyncTask<Void, Void, Void> mGCMRegisterTask;
 
@@ -183,6 +221,7 @@ public abstract class BaseActivity extends Activity implements
     private boolean mManualSyncRequest;
 
     private int mThemedStatusBarColor;
+    private int mNormalStatusBarColor;
     private int mProgressBarTopWhenActionBarShown;
     private static final TypeEvaluator ARGB_EVALUATOR = new ArgbEvaluator();
     private ImageLoader mImageLoader;
@@ -191,6 +230,7 @@ public abstract class BaseActivity extends Activity implements
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         AnalyticsManager.initializeAnalyticsTracker(getApplicationContext());
+        RecentTasksStyler.styleRecentTasksEntry(this);
 
         PrefUtils.init(this);
 
@@ -217,23 +257,23 @@ public abstract class BaseActivity extends Activity implements
         SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(this);
         sp.registerOnSharedPreferenceChangeListener(this);
 
-        ActionBar ab = getActionBar();
+        ActionBar ab = getSupportActionBar();
         if (ab != null) {
             ab.setDisplayHomeAsUpEnabled(true);
         }
 
-        mLPreviewUtils = LPreviewUtils.getInstance(this);
+        mLUtils = LUtils.getInstance(this);
         mThemedStatusBarColor = getResources().getColor(R.color.theme_primary_dark);
+        mNormalStatusBarColor = mThemedStatusBarColor;
     }
 
     private void trySetupSwipeRefresh() {
         mSwipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.swipe_refresh_layout);
         if (mSwipeRefreshLayout != null) {
-            mSwipeRefreshLayout.setColorScheme(
+            mSwipeRefreshLayout.setColorSchemeResources(
                     R.color.refresh_progress_1,
                     R.color.refresh_progress_2,
-                    R.color.refresh_progress_3,
-                    R.color.refresh_progress_4);
+                    R.color.refresh_progress_3);
             mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
                 @Override
                 public void onRefresh() {
@@ -258,11 +298,13 @@ public abstract class BaseActivity extends Activity implements
             return;
         }
 
-        if (mActionBarShown) {
-            mSwipeRefreshLayout.setProgressBarTop(mProgressBarTopWhenActionBarShown);
-        } else {
-            mSwipeRefreshLayout.setProgressBarTop(0);
-        }
+        int progressBarStartMargin = getResources().getDimensionPixelSize(
+                R.dimen.swipe_refresh_progress_bar_start_margin);
+        int progressBarEndMargin = getResources().getDimensionPixelSize(
+                R.dimen.swipe_refresh_progress_bar_end_margin);
+        int top = mActionBarShown ? mProgressBarTopWhenActionBarShown : 0;
+        mSwipeRefreshLayout.setProgressViewOffset(false,
+                top + progressBarStartMargin, top + progressBarEndMargin);
     }
 
     /**
@@ -287,9 +329,12 @@ public abstract class BaseActivity extends Activity implements
         if (mDrawerLayout == null) {
             return;
         }
+        mDrawerLayout.setStatusBarBackgroundColor(
+                getResources().getColor(R.color.theme_primary_dark));
+        ScrimInsetsScrollView navDrawer = (ScrimInsetsScrollView)
+                mDrawerLayout.findViewById(R.id.navdrawer);
         if (selfItem == NAVDRAWER_ITEM_INVALID) {
             // do not show a nav drawer
-            View navDrawer = mDrawerLayout.findViewById(R.id.navdrawer);
             if (navDrawer != null) {
                 ((ViewGroup) navDrawer.getParent()).removeView(navDrawer);
             }
@@ -297,7 +342,37 @@ public abstract class BaseActivity extends Activity implements
             return;
         }
 
-        mDrawerToggle = mLPreviewUtils.setupDrawerToggle(mDrawerLayout, new DrawerLayout.DrawerListener() {
+        if (navDrawer != null) {
+            final View chosenAccountContentView = findViewById(R.id.chosen_account_content_view);
+            final View chosenAccountView = findViewById(R.id.chosen_account_view);
+            final int navDrawerChosenAccountHeight = getResources().getDimensionPixelSize(
+                    R.dimen.navdrawer_chosen_account_height);
+            navDrawer.setOnInsetsCallback(new ScrimInsetsScrollView.OnInsetsCallback() {
+                @Override
+                public void onInsetsChanged(Rect insets) {
+                    ViewGroup.MarginLayoutParams lp = (ViewGroup.MarginLayoutParams)
+                            chosenAccountContentView.getLayoutParams();
+                    lp.topMargin = insets.top;
+                    chosenAccountContentView.setLayoutParams(lp);
+
+                    ViewGroup.LayoutParams lp2 = chosenAccountView.getLayoutParams();
+                    lp2.height = navDrawerChosenAccountHeight + insets.top;
+                    chosenAccountView.setLayoutParams(lp2);
+                }
+            });
+        }
+
+        if (mActionBarToolbar != null) {
+            mActionBarToolbar.setNavigationIcon(R.drawable.ic_drawer);
+            mActionBarToolbar.setNavigationOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    mDrawerLayout.openDrawer(Gravity.START);
+                }
+            });
+        }
+
+        mDrawerLayout.setDrawerListener(new DrawerLayout.DrawerListener() {
             @Override
             public void onDrawerClosed(View drawerView) {
                 // run deferred action, if we have one
@@ -309,39 +384,29 @@ public abstract class BaseActivity extends Activity implements
                     mAccountBoxExpanded = false;
                     setupAccountBoxToggle();
                 }
-                invalidateOptionsMenu(); // creates call to onPrepareOptionsMenu()
-                updateStatusBarForNavDrawerSlide(0f);
                 onNavDrawerStateChanged(false, false);
             }
 
             @Override
             public void onDrawerOpened(View drawerView) {
-                invalidateOptionsMenu(); // creates call to onPrepareOptionsMenu()
-                updateStatusBarForNavDrawerSlide(1f);
                 onNavDrawerStateChanged(true, false);
             }
 
             @Override
             public void onDrawerStateChanged(int newState) {
-                invalidateOptionsMenu();
                 onNavDrawerStateChanged(isNavDrawerOpen(), newState != DrawerLayout.STATE_IDLE);
             }
 
             @Override
             public void onDrawerSlide(View drawerView, float slideOffset) {
-                updateStatusBarForNavDrawerSlide(slideOffset);
                 onNavDrawerSlide(slideOffset);
             }
         });
-        mDrawerLayout.setDrawerShadow(R.drawable.drawer_shadow, Gravity.START);
 
-        getActionBar().setDisplayHomeAsUpEnabled(true);
-        getActionBar().setHomeButtonEnabled(true);
+        mDrawerLayout.setDrawerShadow(R.drawable.drawer_shadow, Gravity.START);
 
         // populate the nav drawer with the correct items
         populateNavDrawer();
-
-        mDrawerToggle.syncState();
 
         // When the user runs the app for the first time, we want to land them with the
         // navigation drawer open. But just the first time.
@@ -350,6 +415,12 @@ public abstract class BaseActivity extends Activity implements
             PrefUtils.markWelcomeDone(this);
             mDrawerLayout.openDrawer(Gravity.START);
         }
+    }
+
+    @Override
+    public void setContentView(int layoutResID) {
+        super.setContentView(layoutResID);
+        getActionBarToolbar();
     }
 
     // Subclasses can override this for custom behavior
@@ -363,6 +434,12 @@ public abstract class BaseActivity extends Activity implements
 
     protected boolean isNavDrawerOpen() {
         return mDrawerLayout != null && mDrawerLayout.isDrawerOpen(Gravity.START);
+    }
+
+    protected void closeNavDrawer() {
+        if (mDrawerLayout != null) {
+            mDrawerLayout.closeDrawer(Gravity.START);
+        }
     }
 
     /** Populates the navigation drawer with the appropriate items. */
@@ -407,6 +484,15 @@ public abstract class BaseActivity extends Activity implements
         mNavDrawerItems.add(NAVDRAWER_ITEM_SETTINGS);
 
         createNavDrawerItems();
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (isNavDrawerOpen()) {
+            closeNavDrawer();
+        } else {
+            super.onBackPressed();
+        }
     }
 
     private void createNavDrawerItems() {
@@ -507,6 +593,7 @@ public abstract class BaseActivity extends Activity implements
         if (name == null) {
             nameTextView.setVisibility(View.GONE);
         } else {
+            nameTextView.setVisibility(View.VISIBLE);
             nameTextView.setText(name);
         }
 
@@ -557,6 +644,11 @@ public abstract class BaseActivity extends Activity implements
             ((TextView) itemView.findViewById(R.id.profile_email_text))
                     .setText(account.name);
             final String accountName = account.name;
+            String imageUrl = AccountUtils.getPlusImageUrl(this, accountName);
+            if (!TextUtils.isEmpty(imageUrl)) {
+                mImageLoader.loadImage(imageUrl,
+                        (ImageView) itemView.findViewById(R.id.profile_image));
+            }
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -654,25 +746,8 @@ public abstract class BaseActivity extends Activity implements
     }
 
     @Override
-    public void onConfigurationChanged(Configuration newConfig) {
-        super.onConfigurationChanged(newConfig);
-        if (mDrawerToggle != null) {
-            mDrawerToggle.onConfigurationChanged(newConfig);
-        }
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        return super.onCreateOptionsMenu(menu);
-    }
-
-    @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
-        if (mDrawerToggle != null && mDrawerToggle.onOptionsItemSelected(item)) {
-            return true;
-        }
-
         switch (id) {
             case R.id.menu_about:
                 HelpUtils.showAbout(this);
@@ -1185,13 +1260,22 @@ public abstract class BaseActivity extends Activity implements
         autoShowOrHideActionBar(shouldShow);
     }
 
+    protected Toolbar getActionBarToolbar() {
+        if (mActionBarToolbar == null) {
+            mActionBarToolbar = (Toolbar) findViewById(R.id.toolbar_actionbar);
+            if (mActionBarToolbar != null) {
+                setSupportActionBar(mActionBarToolbar);
+            }
+        }
+        return mActionBarToolbar;
+    }
+
     protected void autoShowOrHideActionBar(boolean show) {
         if (show == mActionBarShown) {
             return;
         }
 
         mActionBarShown = show;
-        getLPreviewUtils().showHideActionBarIfPartOfDecor(show);
         onActionBarAutoShowOrHide(show);
     }
 
@@ -1299,7 +1383,7 @@ public abstract class BaseActivity extends Activity implements
 
         } else {
             // Get the correct GCM key for the user. GCM key is a somewhat non-standard
-            // approach we use in this app. For more about this, check GCM.TXT.
+            // approach we use in this app. For more about this, check GCM.MD.
             final String gcmKey = AccountUtils.hasActiveAccount(this) ?
                     AccountUtils.getGcmKey(this, AccountUtils.getActiveAccountName(this)) : null;
             // Device is already registered on GCM, needs to check if it is
@@ -1413,30 +1497,39 @@ public abstract class BaseActivity extends Activity implements
         }
     }
 
-    public LPreviewUtilsBase getLPreviewUtils() {
-        return mLPreviewUtils;
+    public LUtils getLUtils() {
+        return mLUtils;
     }
 
-    private void updateStatusBarForNavDrawerSlide(float slideOffset) {
-        if (mStatusBarColorAnimator != null) {
-            mStatusBarColorAnimator.cancel();
-        }
+    public int getThemedStatusBarColor() {
+        return mThemedStatusBarColor;
+    }
 
-        if (!mActionBarShown) {
-            mLPreviewUtils.setStatusBarColor(Color.BLACK);
-            return;
+    public void setNormalStatusBarColor(int color) {
+        mNormalStatusBarColor = color;
+        if (mDrawerLayout != null) {
+            mDrawerLayout.setStatusBarBackgroundColor(mNormalStatusBarColor);
         }
-
-        mLPreviewUtils.setStatusBarColor((Integer) ARGB_EVALUATOR.evaluate(slideOffset,
-                mThemedStatusBarColor, Color.BLACK));
     }
 
     protected void onActionBarAutoShowOrHide(boolean shown) {
         if (mStatusBarColorAnimator != null) {
             mStatusBarColorAnimator.cancel();
         }
-        mStatusBarColorAnimator = ObjectAnimator.ofInt(mLPreviewUtils, "statusBarColor",
-                shown ? mThemedStatusBarColor : Color.BLACK).setDuration(250);
+        mStatusBarColorAnimator = ObjectAnimator.ofInt(
+                (mDrawerLayout != null) ? mDrawerLayout : mLUtils,
+                (mDrawerLayout != null) ? "statusBarBackgroundColor" : "statusBarColor",
+                shown ? Color.BLACK : mNormalStatusBarColor,
+                shown ? mNormalStatusBarColor : Color.BLACK)
+                .setDuration(250);
+        if (mDrawerLayout != null) {
+            mStatusBarColorAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+                @Override
+                public void onAnimationUpdate(ValueAnimator valueAnimator) {
+                    ViewCompat.postInvalidateOnAnimation(mDrawerLayout);
+                }
+            });
+        }
         mStatusBarColorAnimator.setEvaluator(ARGB_EVALUATOR);
         mStatusBarColorAnimator.start();
 

@@ -115,6 +115,5 @@
             android:scaleType="center"
             android:src="@drawable/ic_schedule_feedback"
             android:background="?photoItemForeground" />
-
-    </FrameLayout>
+        </FrameLayout>
 </LinearLayout>

@@ -26,7 +26,7 @@ import android.support.v4.app.TaskStackBuilder;
 
 import com.google.samples.apps.iosched.R;
 import com.google.samples.apps.iosched.provider.ScheduleContract;
-import com.google.samples.apps.iosched.ui.MapFragment;
+import com.google.samples.apps.iosched.ui.BaseMapActivity;
 import com.google.samples.apps.iosched.ui.debug.DebugAction;
 import com.google.samples.apps.iosched.util.UIUtils;
 
@@ -46,7 +46,7 @@ public class ShowSessionNotificationDebugAction implements DebugAction {
                 UIUtils.getMapActivityClass(context));
         mapIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK |
                 Intent.FLAG_ACTIVITY_TASK_ON_HOME);
-        mapIntent.putExtra(MapFragment.EXTRA_ROOM, "keynote");
+        mapIntent.putExtra(BaseMapActivity.EXTRA_ROOM, "keynote");
         PendingIntent piMap = TaskStackBuilder
                 .create(context)
                 .addNextIntent(mapIntent)

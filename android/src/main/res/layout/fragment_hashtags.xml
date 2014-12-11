@@ -23,9 +23,11 @@
     android:id="@+id/social_collection_vew"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="@dimen/social_grid_padding"
+    android:paddingTop="@dimen/explore_grid_padding"
+    android:paddingLeft="@dimen/explore_grid_padding_half"
+    android:paddingRight="@dimen/explore_grid_padding_half"
+    iosched:internalPadding="@dimen/explore_grid_padding"
     android:layout_marginStart="@dimen/social_hz_margin"
     android:layout_marginEnd="@dimen/social_hz_margin"
     android:clipToPadding="false"
-    iosched:internalPadding="@dimen/social_grid_padding"
     tools:context="com.google.samples.apps.iosched.ui.HashtagsFragment" />
