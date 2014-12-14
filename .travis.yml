@@ -25,21 +25,27 @@ matrix:
   include:
     - env: MOBI_TARGET=android-19
     - env: MOBI_TARGET=android-21
+    - env: MOBI_TARGET=android-21 WEAR_TARGET=android-21 WEAR_PKGS=android-21,sys-img-armeabi-v7a-android-wear-21
     - env: MOBI_TARGET='Google Inc.:Google APIs:19' MOBI_PKGS=addon-google_apis-google-19
     - env: MOBI_TARGET='Google Inc.:Google APIs:21' MOBI_TAG=google_apis MOBI_PKGS=addon-google_apis-google-21,sys-img-armeabi-v7a-addon-google_apis-google-21
   allow_failures:
+    - env: MOBI_TARGET=android-21 WEAR_TARGET=android-21 WEAR_PKGS=android-21,sys-img-armeabi-v7a-android-wear-21
     - env: MOBI_TARGET='Google Inc.:Google APIs:19' MOBI_PKGS=addon-google_apis-google-19
     - env: MOBI_TARGET='Google Inc.:Google APIs:21' MOBI_TAG=google_apis MOBI_PKGS=addon-google_apis-google-21,sys-img-armeabi-v7a-addon-google_apis-google-21
   fast_finish: true
 
 before_install:
+  - export ANDROID_SERIAL='emulator-5554'
   - echo y | android update sdk -u -t platform-tool,tool,extra-android-m2repository,extra-google-m2repository
-  - echo y | android update sdk -a -u -t ${BUILD_TOOLS},${MOBI_PKGS:-}
+  - echo y | android update sdk -a -u -t ${BUILD_TOOLS},${MOBI_PKGS:-},${WEAR_PKGS:-}
 
 install:
   - echo n | android create avd -f -n "${MOBI_NAME:-mobi}" -t "${MOBI_TARGET:-android-21}" -b
       "${MOBI_ABI:-armeabi-v7a}" -g "${MOBI_TAG:-default}"
+  - echo n | android create avd -f -n "${WEAR_NAME:-wear}" -t "${WEAR_TARGET:-android-20}" -b
+      "${WEAR_ABI:-armeabi-v7a}" -g "${WEAR_TAG:-android-wear}"
   - emulator -avd "${MOBI_NAME:-mobi}" -no-skin -no-audio -no-window &
+  - emulator -avd "${WEAR_NAME:-wear}" -no-skin -no-audio -no-window &
   - adb wait-for-device get-serialno
   - ./gradlew --version
   - ./gradlew clean
@@ -49,6 +55,12 @@ before_script:
   - ./scripts/wait_for_emulator.sh
   - adb shell input keyevent 82 &
   - adb logcat *:W | tee logcat.log>/dev/null 2>&1 &
+  - ANDROID_SERIAL='emulator-5556'
+  - adb wait-for-device get-serialno
+  - ./scripts/wait_for_emulator.sh
+  - adb shell input keyevent 82 &
+  - ANDROID_SERIAL=''
+  - adb devices -l
 
 script:
   - ./gradlew build connectedCheck
