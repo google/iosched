@@ -104,7 +104,7 @@ public class Utils {
      */
     public static final void LOGD(String TAG, String message) {
         if (Log.isLoggable(TAG, Log.DEBUG)) {
-            LOGD(TAG, message);
+            Log.d(TAG, message);
         }
     }
 
