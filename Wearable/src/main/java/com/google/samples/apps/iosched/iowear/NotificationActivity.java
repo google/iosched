@@ -36,7 +36,6 @@ public class NotificationActivity extends Activity {
     private static final String TAG = makeLogTag("NotificationActivity");
     private TextView mSession;
     private TextView mSpeaker;
-    private View mContent;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,23 +51,8 @@ public class NotificationActivity extends Activity {
             final String sessionRoom = b.getString(HomeListenerService.KEY_SESSION_ROOM);
             final String speakers = getIntent()
                     .getStringExtra(HomeListenerService.KEY_SPEAKER_NAME);
-            final int notificationId = getIntent()
-                    .getIntExtra(HomeListenerService.KEY_NOTIFICATION_ID, 0);
             mSession.setText(sessionName);
             mSpeaker.setText(speakers + " - " + sessionRoom);
-            mContent.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    Intent feedbackIntent = new Intent(NotificationActivity.this,
-                            PagerActivity.class);
-                    feedbackIntent.putExtra(HomeListenerService.KEY_SESSION_ID, sessionId);
-                    feedbackIntent
-                            .putExtra(HomeListenerService.KEY_NOTIFICATION_ID, notificationId);
-                    feedbackIntent.setFlags(
-                            Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                    startActivity(feedbackIntent);
-                }
-            });
         }
     }
 
@@ -76,7 +60,6 @@ public class NotificationActivity extends Activity {
         Typeface typeFace = Typeface.createFromAsset(getAssets(), "RobotoCondensed-Light.ttf");
         mSession = (TextView) findViewById(R.id.session_name);
         mSpeaker = (TextView) findViewById(R.id.speaker_room);
-        mContent = findViewById(R.id.content);
         TextView title = (TextView) findViewById(R.id.title);
         mSession.setTypeface(typeFace);
         mSpeaker.setTypeface(typeFace);

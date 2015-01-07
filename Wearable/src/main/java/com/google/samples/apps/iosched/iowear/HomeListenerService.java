@@ -200,8 +200,16 @@ public class HomeListenerService extends WearableListenerService
         PendingIntent deleteIntent = PendingIntent
                 .getService(this, notificationId, intent, PendingIntent.FLAG_UPDATE_CURRENT);
 
+        // display intent, used to override the default notification view
         PendingIntent showCardIntent = showCardIntent(sessionId, sessionRoom, sessionName,
                 speakers, notificationId);
+
+        // rate session action intent
+        Intent feedbackIntent = new Intent(this, PagerActivity.class);
+        feedbackIntent.putExtra(HomeListenerService.KEY_SESSION_ID, sessionId);
+        feedbackIntent.putExtra(HomeListenerService.KEY_NOTIFICATION_ID, notificationId);
+        feedbackIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        PendingIntent actionIntent = PendingIntent.getActivity(this, 0, feedbackIntent, 0);
 
         NotificationCompat.Builder builder = new NotificationCompat.Builder(this)
                 .setSmallIcon(R.drawable.ic_launcher)
@@ -209,7 +217,10 @@ public class HomeListenerService extends WearableListenerService
                 .setDeleteIntent(deleteIntent)
                 .setContentText(sessionName)
                 .extend(new NotificationCompat.WearableExtender()
-                        .setDisplayIntent(showCardIntent));
+                        .setDisplayIntent(showCardIntent)
+                        .setCustomSizePreset(NotificationCompat.WearableExtender.SIZE_LARGE))
+                .addAction(R.drawable.ic_action_ratesession, getString(R.string.rate_this_session),
+                        actionIntent);
 
         NotificationManagerCompat.from(this)
                 .notify(sessionId, NOTIFICATION_ID, builder.build());
@@ -222,7 +233,6 @@ public class HomeListenerService extends WearableListenerService
         intent.putExtra(KEY_SESSION_ROOM, sessionRoom);
         intent.putExtra(KEY_SESSION_NAME, sessionName);
         intent.putExtra(KEY_SPEAKER_NAME, speakers);
-        intent.putExtra(KEY_NOTIFICATION_ID, notificationId);
         return PendingIntent.getActivity(this, notificationCounter++, intent, 0);
     }
 
