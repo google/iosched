@@ -96,6 +96,6 @@ dependencies {
     /* The two dependencies below are only required while we are using http
        Drive appdata. When we start using AppData through GMS,
        they should be removed. */
-    compile 'com.google.http-client:google-http-client-gson:+'
+    compile 'com.google.http-client:google-http-client-gson:1.+'
     compile 'com.google.apis:google-api-services-drive:+'
 }
