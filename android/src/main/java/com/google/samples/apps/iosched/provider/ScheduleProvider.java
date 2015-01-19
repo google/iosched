@@ -544,7 +544,7 @@ public class ScheduleProvider extends ContentProvider {
     public int delete(Uri uri, String selection, String[] selectionArgs) {
         String accountName = getCurrentAccountName(uri, false);
         LOGV(TAG, "delete(uri=" + uri + ", account=" + accountName + ")");
-        if (uri == ScheduleContract.BASE_CONTENT_URI) {
+        if (uri.equals(ScheduleContract.BASE_CONTENT_URI)) {
             // Handle whole database deletes (e.g. when signing out)
             deleteDatabase();
             notifyChange(uri);

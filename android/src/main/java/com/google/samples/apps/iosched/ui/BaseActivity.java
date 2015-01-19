@@ -1361,6 +1361,10 @@ public abstract class BaseActivity extends ActionBarActivity implements
         ImageView iconView = (ImageView) view.findViewById(R.id.icon);
         TextView titleView = (TextView) view.findViewById(R.id.title);
 
+        if (selected) {
+            view.setBackgroundResource(R.drawable.selected_navdrawer_item_background);
+        }
+
         // configure its appearance according to whether or not it's selected
         titleView.setTextColor(selected ?
                 getResources().getColor(R.color.navdrawer_text_color_selected) :

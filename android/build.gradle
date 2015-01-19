@@ -25,7 +25,7 @@ repositories {
 
 android {
     compileSdkVersion 21
-    buildToolsVersion "21.0.2"
+    buildToolsVersion "21.1.2"
 
     defaultConfig {
         minSdkVersion 14
@@ -53,7 +53,7 @@ android {
             signingConfig signingConfigs.debug
         }
         release {
-            runProguard true
+            minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), file('proguard-project.txt')
             signingConfig signingConfigs.release
         }
@@ -96,6 +96,6 @@ dependencies {
     /* The two dependencies below are only required while we are using http
        Drive appdata. When we start using AppData through GMS,
        they should be removed. */
-    compile 'com.google.http-client:google-http-client-gson:+'
+    compile 'com.google.http-client:google-http-client-gson:1.+'
     compile 'com.google.apis:google-api-services-drive:+'
 }
