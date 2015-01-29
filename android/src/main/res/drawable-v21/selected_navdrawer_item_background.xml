@@ -13,6 +13,11 @@
   See the License for the specific language governing permissions and
   limitations under the License.
   -->
-<shape xmlns:android="http://schemas.android.com/apk/res/android">
-    <solid android:color="#12000000" />
-</shape>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <item>
+        <shape>
+            <solid android:color="#12000000" />
+        </shape>
+    </item>
+    <item android:drawable="?android:selectableItemBackground" />
+</layer-list>
