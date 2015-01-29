@@ -81,7 +81,9 @@ public class FeedbackSyncHelper {
         ContentValues contentValues = new ContentValues();
         contentValues.put(ScheduleContract.Feedback.SYNCED, 1);
         for (String sessionId : updatedSessions) {
-            cr.update(ScheduleContract.Feedback.buildFeedbackUri(sessionId), contentValues, null, null);
+            Uri updateUri = ScheduleContract.addCallerIsSyncAdapterParameter(
+                    ScheduleContract.Feedback.buildFeedbackUri(sessionId));
+            cr.update(updateUri, contentValues, null, null);
         }
 
     }
