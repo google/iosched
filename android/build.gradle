@@ -84,18 +84,16 @@ dependencies {
     compile 'com.google.api-client:google-api-client-android:1.17.+'
     compile 'com.google.apis:google-api-services-plus:+'
     compile 'com.github.japgolly.android:svg-android:2.0.6'
-    compile fileTree(dir: 'libs', include: '*.jar')
+    compile fileTree(include: '*.jar', dir: 'libs')
     compile files('../third_party/glide/library/libs/glide-3.2.0a.jar')
     compile files('../third_party/basic-http-client/libs/basic-http-client-android-0.88.jar')
-
     // Google Maps Android API utility library
     compile('com.google.maps.android:android-maps-utils:0.3+') {
         exclude group: "com.google.android.gms"
     }
-
     /* The two dependencies below are only required while we are using http
-       Drive appdata. When we start using AppData through GMS,
-       they should be removed. */
+           Drive appdata. When we start using AppData through GMS,
+           they should be removed. */
     compile 'com.google.http-client:google-http-client-gson:1.+'
     compile 'com.google.apis:google-api-services-drive:+'
 }
