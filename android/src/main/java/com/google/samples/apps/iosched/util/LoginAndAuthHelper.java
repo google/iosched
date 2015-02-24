@@ -56,7 +56,8 @@ import static com.google.samples.apps.iosched.util.LogUtils.makeLogTag;
  * tied to an Activity. Do not attempt to share it across Activities, as unhappiness will
  * result.
  */
-public class LoginAndAuthHelper implements GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, ResultCallback<People.LoadPeopleResult> {
+public class LoginAndAuthHelper implements GoogleApiClient.ConnectionCallbacks,
+        GoogleApiClient.OnConnectionFailedListener, ResultCallback<People.LoadPeopleResult> {
 
     // Request codes for the UIs that we show
     private static final int REQUEST_AUTHENTICATE = 100;
@@ -65,12 +66,43 @@ public class LoginAndAuthHelper implements GoogleApiClient.ConnectionCallbacks, 
     private static final int REQUEST_PLAY_SERVICES_ERROR_DIALOG = 103;
 
     // Auth scopes we need
-    public static final String AUTH_SCOPES[] = {
+    private static final String[] AUTH_SCOPES = {
             Scopes.PLUS_LOGIN,
             Scopes.DRIVE_APPFOLDER,
             "https://www.googleapis.com/auth/plus.profile.emails.read"};
 
-    static final String AUTH_TOKEN_TYPE;
+    private static final String AUTH_TOKEN_TYPE;
+
+    private static final String TAG = makeLogTag(LoginAndAuthHelper.class);
+
+    private final Context mAppContext;
+
+    // Controls whether or not we can show sign-in UI. Starts as true;
+    // when sign-in *fails*, we will show the UI only once and set this flag to false.
+    // After that, we don't attempt again in order not to annoy the user.
+    private static boolean sCanShowSignInUi = true;
+    private static boolean sCanShowAuthUi = true;
+
+    // The Activity this object is bound to (we use a weak ref to avoid context leaks)
+    private final WeakReference<Activity> mActivityRef;
+
+    // Callbacks interface we invoke to notify the user of this class of useful events
+    private final WeakReference<Callbacks> mCallbacksRef;
+
+    // Name of the account to log in as (e.g. "foo@example.com")
+    private String mAccountName;
+
+    // API client to interact with Google services
+    private GoogleApiClient mGoogleApiClient;
+
+    // Async task that fetches the token
+    private GetTokenTask mTokenTask = null;
+
+    // Are we in the started state? Started state is between onStart and onStop.
+    private boolean mStarted = false;
+
+    // True if we are currently showing UIs to resolve a connection error.
+    private boolean mResolving = false;
 
     static {
         StringBuilder sb = new StringBuilder();
@@ -82,48 +114,19 @@ public class LoginAndAuthHelper implements GoogleApiClient.ConnectionCallbacks, 
         AUTH_TOKEN_TYPE = sb.toString();
     }
 
-    private static final String TAG = makeLogTag(LoginAndAuthHelper.class);
-
-    Context mAppContext;
-
-    // Controls whether or not we can show sign-in UI. Starts as true;
-    // when sign-in *fails*, we will show the UI only once and set this flag to false.
-    // After that, we don't attempt again in order not to annoy the user.
-    private static boolean sCanShowSignInUi = true;
-    private static boolean sCanShowAuthUi = true;
-
-    // The Activity this object is bound to (we use a weak ref to avoid context leaks)
-    WeakReference<Activity> mActivityRef;
-
-    // Callbacks interface we invoke to notify the user of this class of useful events
-    WeakReference<Callbacks> mCallbacksRef;
-
-    // Name of the account to log in as (e.g. "foo@example.com")
-    String mAccountName;
-
-    // API client to interact with Google services
-    private GoogleApiClient mGoogleApiClient;
-
-    // Async task that fetches the token
-    GetTokenTask mTokenTask = null;
-
-    // Are we in the started state? Started state is between onStart and onStop.
-    boolean mStarted = false;
-
-    // True if we are currently showing UIs to resolve a connection error.
-    boolean mResolving = false;
-
 
     public interface Callbacks {
         void onPlusInfoLoaded(String accountName);
+
         void onAuthSuccess(String accountName, boolean newlyAuthenticated);
+
         void onAuthFailure(String accountName);
     }
 
-    public LoginAndAuthHelper(Activity activity, Callbacks callbacks, String accountName) {
+    public LoginAndAuthHelper(final Activity activity, final Callbacks callbacks, final String accountName) {
         LOGD(TAG, "Helper created. Account: " + mAccountName);
-        mActivityRef = new WeakReference<Activity>(activity);
-        mCallbacksRef = new WeakReference<Callbacks>(callbacks);
+        mActivityRef = new WeakReference<>(activity);
+        mCallbacksRef = new WeakReference<>(callbacks);
         mAppContext = activity.getApplicationContext();
         mAccountName = accountName;
         if (PrefUtils.hasUserRefusedSignIn(activity)) {
@@ -136,11 +139,11 @@ public class LoginAndAuthHelper implements GoogleApiClient.ConnectionCallbacks, 
         return mStarted;
     }
 
-    public String getAccountName() {
+    public final String getAccountName() {
         return mAccountName;
     }
 
-    private Activity getActivity(String methodName) {
+    private Activity getActivity(final String methodName) {
         Activity activity = mActivityRef.get();
         if (activity == null) {
             LOGD(TAG, "Helper lost Activity reference, ignoring (" + methodName + ")");
@@ -148,7 +151,7 @@ public class LoginAndAuthHelper implements GoogleApiClient.ConnectionCallbacks, 
         return activity;
     }
 
-    public void retryAuthByUserRequest() {
+    public final void retryAuthByUserRequest() {
         LOGD(TAG, "Retrying sign-in/auth (user-initiated).");
         if (!mGoogleApiClient.isConnected()) {
             sCanShowAuthUi = sCanShowSignInUi = true;
@@ -164,8 +167,10 @@ public class LoginAndAuthHelper implements GoogleApiClient.ConnectionCallbacks, 
         }
     }
 
-    /** Starts the helper. Call this from your Activity's onStart(). */
-    public void start() {
+    /**
+     * Starts the helper. Call this from your Activity's onStart().
+     */
+    public final void start() {
         Activity activity = getActivity("start()");
         if (activity == null) {
             return;
@@ -211,22 +216,22 @@ public class LoginAndAuthHelper implements GoogleApiClient.ConnectionCallbacks, 
         LOGD(TAG, "Helper connected, account " + mAccountName);
 
         // load user's Google+ profile, if we don't have it yet
-        if (!AccountUtils.hasPlusInfo(activity, mAccountName)) {
+        if (AccountUtils.hasPlusInfo(activity, mAccountName)) {
+            LOGD(TAG, "No need for Google+ info, we already have it.");
+        } else {
             LOGD(TAG, "We don't have Google+ info for " + mAccountName + " yet, so loading.");
             PendingResult<People.LoadPeopleResult> result = Plus.PeopleApi.load(mGoogleApiClient, "me");
             result.setResultCallback(this);
-        } else {
-            LOGD(TAG, "No need for Google+ info, we already have it.");
         }
 
         // try to authenticate, if we don't have a token yet
-        if (!AccountUtils.hasToken(activity, mAccountName)) {
+        if (AccountUtils.hasToken(activity, mAccountName)) {
+            LOGD(TAG, "No need for auth token, we already have it.");
+            reportAuthSuccess(false);
+        } else {
             LOGD(TAG, "We don't have auth token for " + mAccountName + " yet, so getting it.");
             mTokenTask = new GetTokenTask();
             mTokenTask.execute();
-        } else {
-            LOGD(TAG, "No need for auth token, we already have it.");
-            reportAuthSuccess(false);
         }
     }
 
@@ -235,7 +240,9 @@ public class LoginAndAuthHelper implements GoogleApiClient.ConnectionCallbacks, 
         LOGD(TAG, "onConnectionSuspended.");
     }
 
-    /** Stop the helper. Call this from your Activity's onStop(). */
+    /**
+     * Stop the helper. Call this from your Activity's onStop().
+     */
     public void stop() {
         if (!mStarted) {
             LOGW(TAG, "Helper already stopped. Ignoring redundant call.");
@@ -335,11 +342,18 @@ public class LoginAndAuthHelper implements GoogleApiClient.ConnectionCallbacks, 
                 LOGE(TAG, "Plus response was empty! Failed to load profile.");
             }
         } else {
-            LOGE(TAG, "Failed to load plus proflie, error " + loadPeopleResult.getStatus().getStatusCode());
+            LOGE(TAG, "Failed to load plus profile, error " + loadPeopleResult.getStatus().getStatusCode());
         }
     }
 
-    /** Handles an Activity result. Call this from your Activity's onActivityResult(). */
+    /**
+     * Handles an Activity result. Call this from your Activity's onActivityResult().
+     *
+     * @param requestCode The request code.
+     * @param resultCode  The result code.
+     * @param data        The data Intent.
+     * @return boolean Value of request result.
+     */
     public boolean onActivityResult(int requestCode, int resultCode, Intent data) {
         Activity activity = getActivity("onActivityResult()");
         if (activity == null) {
@@ -351,16 +365,14 @@ public class LoginAndAuthHelper implements GoogleApiClient.ConnectionCallbacks, 
                 requestCode == REQUEST_PLAY_SERVICES_ERROR_DIALOG) {
 
             LOGD(TAG, "onActivityResult, req=" + requestCode + ", result=" + resultCode);
-            if (requestCode == REQUEST_RECOVER_FROM_PLAY_SERVICES_ERROR) {
-                mResolving = false;
-            }
+            mResolving = false;
 
             if (resultCode == Activity.RESULT_OK) {
-                if (mGoogleApiClient != null) {
+                if (mGoogleApiClient == null) {
+                    LOGD(TAG, "Activity result was RESULT_OK, but we have no client to reconnect.");
+                } else {
                     LOGD(TAG, "Since activity result was RESULT_OK, reconnecting client.");
                     mGoogleApiClient.connect();
-                } else {
-                    LOGD(TAG, "Activity result was RESULT_OK, but we have no client to reconnect.");
                 }
             } else if (resultCode == Activity.RESULT_CANCELED) {
                 LOGD(TAG, "User explicitly cancelled sign-in/auth flow.");
@@ -392,7 +404,7 @@ public class LoginAndAuthHelper implements GoogleApiClient.ConnectionCallbacks, 
         }
     }
 
-    private void showAuthRecoveryFlow(Intent intent) {
+    private void showAuthRecoveryFlow(final Intent intent) {
         Activity activity = getActivity("showAuthRecoveryFlow()");
         if (activity == null) {
             return;
@@ -408,7 +420,7 @@ public class LoginAndAuthHelper implements GoogleApiClient.ConnectionCallbacks, 
         }
     }
 
-    private void reportAuthSuccess(boolean newlyAuthenticated) {
+    private void reportAuthSuccess(final boolean newlyAuthenticated) {
         LOGD(TAG, "Auth success for account " + mAccountName + ", newlyAuthenticated=" + newlyAuthenticated);
         Callbacks callbacks;
         if (null != (callbacks = mCallbacksRef.get())) {
@@ -424,10 +436,10 @@ public class LoginAndAuthHelper implements GoogleApiClient.ConnectionCallbacks, 
         }
     }
 
-    /** Async task that obtains the auth token. */
+    /**
+     * Async task that obtains the auth token.
+     */
     private class GetTokenTask extends AsyncTask<Void, Void, String> {
-        public GetTokenTask() {}
-
         @Override
         protected String doInBackground(Void... params) {
             try {
@@ -440,8 +452,8 @@ public class LoginAndAuthHelper implements GoogleApiClient.ConnectionCallbacks, 
                 final String token = GoogleAuthUtil.getToken(mAppContext, mAccountName, AUTH_TOKEN_TYPE);
 
                 // Save auth token.
-                LOGD(TAG, "Saving token: " + (token == null ? "(null)" : "(length " +
-                        token.length() + ")") + " for account "  + mAccountName);
+                LOGD(TAG, "Saving token: " + (token == null ? "(null)" : "(length "
+                        + token.length() + ")") + " for account " + mAccountName);
                 AccountUtils.setAuthToken(mAppContext, mAccountName, token);
                 return token;
             } catch (GooglePlayServicesAvailabilityException e) {
