@@ -298,7 +298,13 @@ public class SlidingTabLayout extends HorizontalScrollView {
                 scrollToTab(position, 0);
             }
             for (int i = 0; i < mTabStrip.getChildCount(); i++) {
-                mTabStrip.getChildAt(i).setSelected(position == i);
+                View v = mTabStrip.getChildAt(i);
+                if (position == i) {
+                    v.setSelected(true);
+                    invokeTabTextChangeNotify(v, i, true);
+                } else {
+                    invokeTabTextChangeNotify(v, i, false);
+                }
             }
             if (mViewPagerPageChangeListener != null) {
                 mViewPagerPageChangeListener.onPageSelected(position);
@@ -317,6 +323,42 @@ public class SlidingTabLayout extends HorizontalScrollView {
                 }
             }
         }
+    }
+
+    private TabTextChangeListener mTabTextChangeListener;
+
+    private void invokeTabTextChangeNotify(View view, int position, boolean isSelected) {
+        if (mTabTextChangeListener != null) {
+            CharSequence afterText = mTabTextChangeListener.tabTextChange(position, isSelected);
+            if (afterText != null) {
+                ((TextView) view.findViewById(mTabViewTextViewId)).setText(afterText);
+            }
+        }
+    }
+
+    /**
+     * Set the {@link TabTextChangeListener}. When using {@link SlidingTabLayout} you are required
+     * to change Tab Header Text dynamically.
+     * @param listener {@link TabTextChangeListener}
+     */
+    public void setTabTextChangeListener(TabTextChangeListener listener) {
+        mTabTextChangeListener = listener;
+    }
+
+    /**
+     * Allow Tab Header Text change dynamically when Swiped or Tab Clicked
+     * {@link #setTabTextChangeListener}
+     */
+    public interface TabTextChangeListener {
+
+        /**
+         * Set Tab Header Text.
+         * This is callback method when Swiped or Tab Clicked.
+         * @param position selected/unselected position
+         * @param isSelected position's selected/unselected
+         * @return return TabText (null OK. then not Tab Text change)
+         */
+        CharSequence tabTextChange(int position, boolean isSelected);
     }
 
 }
