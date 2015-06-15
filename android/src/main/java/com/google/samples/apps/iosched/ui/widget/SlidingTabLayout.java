@@ -329,7 +329,7 @@ public class SlidingTabLayout extends HorizontalScrollView {
 
     private void invokeTabTextChangeNotify(View view, int position, boolean isSelected) {
         if (mTabTextChangeListener != null) {
-            CharSequence afterText = mTabTextChangeListener.tabTextChange(position, isSelected);
+            CharSequence afterText = mTabTextChangeListener.tabTextChange(view, position, isSelected);
             if (afterText != null) {
                 ((TextView) view.findViewById(mTabViewTextViewId)).setText(afterText);
             }
@@ -339,6 +339,7 @@ public class SlidingTabLayout extends HorizontalScrollView {
     /**
      * Set the {@link TabTextChangeListener}. When using {@link SlidingTabLayout} you are required
      * to change Tab Header Text dynamically.
+     *
      * @param listener {@link TabTextChangeListener}
      */
     public void setTabTextChangeListener(TabTextChangeListener listener) {
@@ -354,11 +355,12 @@ public class SlidingTabLayout extends HorizontalScrollView {
         /**
          * Set Tab Header Text.
          * This is callback method when Swiped or Tab Clicked.
-         * @param position selected/unselected position
+         * @param v Tab Text's view, You may use to View Animation
+         * @param position   selected/unselected position
          * @param isSelected position's selected/unselected
          * @return return TabText (null OK. then not Tab Text change)
          */
-        CharSequence tabTextChange(int position, boolean isSelected);
+        CharSequence tabTextChange(View v, int position, boolean isSelected);
     }
 
 }
