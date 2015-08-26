@@ -18,7 +18,6 @@ package com.google.samples.apps.iosched.ui.widget;
 
 import android.content.Context;
 import android.graphics.Typeface;
-import android.os.Build;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.util.AttributeSet;
@@ -65,12 +64,14 @@ public class SlidingTabLayout extends HorizontalScrollView {
     private static final int TITLE_OFFSET_DIPS = 24;
     private static final int TAB_VIEW_PADDING_DIPS = 16;
     private static final int TAB_VIEW_TEXT_SIZE_SP = 12;
+    private static final int MARGIN_LEFT_FIRST_TAB = 50;
 
     private int mTitleOffset;
 
     private int mTabViewLayoutId;
     private int mTabViewTextViewId;
     private boolean mDistributeEvenly;
+    private boolean mMarginLeftFirstTab;
 
     private ViewPager mViewPager;
     private SparseArray<String> mContentDescriptions = new SparseArray<String>();
@@ -233,7 +234,29 @@ public class SlidingTabLayout extends HorizontalScrollView {
             if (i == mViewPager.getCurrentItem()) {
                 tabView.setSelected(true);
             }
+
+            if (mMarginLeftFirstTab && i == 0)
+                setMargins(tabView, MARGIN_LEFT_FIRST_TAB, 0, 0, 0); // 72dp margin - 24
         }
+    }
+
+    public static void setMargins(View v, int l, int t, int r, int b) {
+        if (v.getLayoutParams() instanceof ViewGroup.MarginLayoutParams) {
+            ViewGroup.MarginLayoutParams p = (ViewGroup.MarginLayoutParams) v.getLayoutParams();
+            p.setMargins(l, t, r, b);
+            v.requestLayout();
+        }
+    }
+
+    public void setMarginLeftFirstTab(boolean marginLeftFirstTab) {
+        this.mMarginLeftFirstTab = marginLeftFirstTab;
+        if (mTabStrip != null && mTabStrip.getChildCount() > 0) {
+            setMargins(mTabStrip.getChildAt(0), this.mMarginLeftFirstTab ? MARGIN_LEFT_FIRST_TAB : 0, 0, 0, 0); // 72dp margin - 24
+        }
+    }
+
+    public boolean isMarginLeftFirstTab() {
+        return mMarginLeftFirstTab;
     }
 
     public void setContentDescription(int i, String desc) {
@@ -263,6 +286,9 @@ public class SlidingTabLayout extends HorizontalScrollView {
                 // If we're not at the first child and are mid-scroll, make sure we obey the offset
                 targetScrollX -= mTitleOffset;
             }
+
+            if (mMarginLeftFirstTab && tabIndex == 0)
+                targetScrollX -= MARGIN_LEFT_FIRST_TAB;
 
             scrollTo(targetScrollX, 0);
         }
