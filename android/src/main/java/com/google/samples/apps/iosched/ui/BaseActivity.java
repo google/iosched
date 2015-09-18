@@ -1361,6 +1361,10 @@ public abstract class BaseActivity extends ActionBarActivity implements
         ImageView iconView = (ImageView) view.findViewById(R.id.icon);
         TextView titleView = (TextView) view.findViewById(R.id.title);
 
+        if (selected) {
+            view.setBackgroundResource(R.drawable.selected_navdrawer_item_background);
+        }
+
         // configure its appearance according to whether or not it's selected
         titleView.setTextColor(selected ?
                 getResources().getColor(R.color.navdrawer_text_color_selected) :
@@ -1383,7 +1387,7 @@ public abstract class BaseActivity extends ActionBarActivity implements
 
         } else {
             // Get the correct GCM key for the user. GCM key is a somewhat non-standard
-            // approach we use in this app. For more about this, check GCM.MD.
+            // approach we use in this app. For more about this, check GCM.TXT.
             final String gcmKey = AccountUtils.hasActiveAccount(this) ?
                     AccountUtils.getGcmKey(this, AccountUtils.getActiveAccountName(this)) : null;
             // Device is already registered on GCM, needs to check if it is

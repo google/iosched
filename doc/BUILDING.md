@@ -48,7 +48,7 @@ This is a Gradle-based project that works best with [Android Studio].
        - Tools > Android SDK Platform-tools (rev 21 or above)
        - Tools > Android SDK Tools (rev 23.0.5 or above)
        - Tools > Android SDK Build-tools version 20
-       - Tools > Android SDK Build-tools version 21 (rev 21.0.2 or above)
+       - Tools > Android SDK Build-tools version 21 (rev 21.1.2 or above)
        - Android 4.4W2 > SDK Platform (API 20)
        - Android 5.0 > SDK Platform (API 21)
        - Extras > Android Support Repository

@@ -25,7 +25,7 @@ repositories {
 
 android {
     compileSdkVersion 20
-    buildToolsVersion "20.0.0"
+    buildToolsVersion "21.1.2"
 
     defaultConfig {
         applicationId "com.google.samples.apps.iosched"
@@ -66,7 +66,7 @@ android {
 
 dependencies {
     compile 'com.android.support:support-v13:21.+'
-    compile 'com.google.android.support:wearable:+'
+    compile 'com.google.android.support:wearable:1.0.+'
     compile 'com.google.android.gms:play-services-wearable:6.1.+'
 } 
 
