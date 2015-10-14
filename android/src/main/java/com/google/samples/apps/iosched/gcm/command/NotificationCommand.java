@@ -20,15 +20,14 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageInfo;
-import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.support.v4.app.NotificationCompat;
 import android.text.TextUtils;
 
 import com.google.samples.apps.iosched.R;
 import com.google.samples.apps.iosched.gcm.GCMCommand;
-import com.google.samples.apps.iosched.ui.MyScheduleActivity;
-import com.google.samples.apps.iosched.util.PrefUtils;
+import com.google.samples.apps.iosched.settings.SettingsUtils;
+import com.google.samples.apps.iosched.myschedule.MyScheduleActivity;
 import com.google.samples.apps.iosched.util.TimeUtils;
 import com.google.samples.apps.iosched.util.UIUtils;
 import com.google.gson.Gson;
@@ -134,14 +133,14 @@ public class NotificationCommand extends GCMCommand {
         // Check if we are the right audience
         LOGD(TAG, "Checking audience: " + command.audience);
         if ("remote".equals(command.audience)) {
-            if (PrefUtils.isAttendeeAtVenue(context)) {
+            if (SettingsUtils.isAttendeeAtVenue(context)) {
                 LOGD(TAG, "Ignoring notification because audience is remote and attendee is on-site");
                 return;
             } else {
                 LOGD(TAG, "Relevant (attendee is remote).");
             }
         } else if ("local".equals(command.audience)) {
-            if (!PrefUtils.isAttendeeAtVenue(context)) {
+            if (!SettingsUtils.isAttendeeAtVenue(context)) {
                 LOGD(TAG, "Ignoring notification because audience is on-site and attendee is remote.");
                 return;
             } else {
@@ -181,7 +180,6 @@ public class NotificationCommand extends GCMCommand {
             intent = new Intent(context, MyScheduleActivity.class).setFlags(
                     Intent.FLAG_ACTIVITY_CLEAR_TOP |
                     Intent.FLAG_ACTIVITY_SINGLE_TOP |
-                    Intent.FLAG_ACTIVITY_NEW_TASK |
                     Intent.FLAG_ACTIVITY_CLEAR_TASK);
             intent.putExtra(MyScheduleActivity.EXTRA_DIALOG_TITLE,
                     command.dialogTitle == null ? "" : command.dialogTitle);

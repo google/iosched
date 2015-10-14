@@ -1,5 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
 <!--
-  Copyright 2014 Google Inc. All rights reserved.
+  Copyright 2015 Google Inc. All rights reserved.
 
   Licensed under the Apache License, Version 2.0 (the "License");
   you may not use this file except in compliance with the License.
@@ -13,9 +14,51 @@
   See the License for the specific language governing permissions and
   limitations under the License.
   -->
+<!-- Colors common among all features in the app. -->
 <resources>
     <color name="transparent">#00000000</color>
+    <color name="background">#f5f5f5</color>
 
+    <!-- App main palette for io15 version. -->
+    <color name="io15_dark_grey">#FF455A64</color>
+    <color name="io15_grey">#FF607D8B</color>
+    <color name="io15_light_grey">#FF90A4AE</color>
+    <color name="io15_aqua_dark">#FF4DD0E1</color>
+    <color name="io15_aqua_light">#FF80DEEA</color>
+    <color name="io15_blue_grey_100">#ffcfd8dc</color>
+    <color name="io15_white">#FFFFFFFF</color>
+    <color name="card">#fff</color>
+    <color name="cyan_a700_plus">#ff006574</color>
+
+    <!-- App Primary View Colors (might be deprecated). -->
+    <color name="app_primary_accent">#FF26C6DA</color>
+    <color name="app_secondary_accent">#1A000000</color>
+    <color name="app_primary_text">#444444</color>
+    <color name="app_secondary_text">#444444</color>
+    <color name="app_white">#FFFEFEFE</color>
+    <color name="app_io_logo_tint">#FF26C6DA</color>
+    <color name="divider">#1f000000</color>
+
+    <!-- App Primary Text Colors (might be deprecated). -->
+    <color name="app_body_text_1">#de000000</color>
+    <color name="app_body_text_2">#8a000000</color>
+    <color name="app_body_text_disabled">#44000000</color>
+    <color name="app_body_text_1_inverse">#deffffff</color>
+    <color name="app_body_text_2_inverse">#8affffff</color>
+    <color name="flat_button_text">#ff008094</color>
+    <color name="text_on_primary">#ff004446</color>
+    <color name="subtitle_on_primary">#de004446</color>
+    <color name="unselected_tab_on_primary">#b3004446</color>
+
+    <!-- Session Detail colors. -->
+    <color name="session_detail_tag_text_color">@color/flat_button_text</color>
+    <color name="section_header_views_color">@color/io15_dark_grey</color>
+    <color name="fab_not_in_schedule">#ffeeff21</color>
+    <color name="fab_in_schedule">@color/io15_white</color>
+    <color name="fab_press_ripple">#1a000000</color>
+    <color name="fab_icon_color">#99000000</color>
+
+    <!-- start deprecated -->
     <color name="body_text_1">#de000000</color>
     <color name="body_text_2">#8a000000</color>
     <color name="body_text_3">#60000000</color>
@@ -23,9 +66,10 @@
 
     <color name="body_text_1_inverse">#deffffff</color>
     <color name="body_text_2_inverse">#8affffff</color>
+    <!-- end deprecated -->
 
-    <color name="theme_primary">#3f51b5</color>
-    <color name="theme_primary_dark">#303f9f</color>
+    <color name="theme_primary">@color/app_primary_accent</color>
+    <color name="theme_primary_dark">#00BCD4</color>
     <color name="theme_primary_light">#7986cb</color>
 
     <color name="theme_accent_1">#00b0ff</color>
@@ -38,24 +82,23 @@
 
     <color name="sliding_pane_content_fade">#cceeeeee</color>
     <color name="sticky_block_background">#ddffffff</color>
+    <color name="light_content_scrim">#0d000000</color>
 
-    <color name="map_info_1">#ff000000</color>
-    <color name="map_info_2">#ff777777</color>
-    <color name="map_floorselect_active">#FF000000</color>
-    <color name="map_floorselect_inactive">#FF333333</color>
+    <color name="map_text_primary">@color/io15_dark_grey</color>
+    <color name="map_text_secondary">@color/io15_light_grey</color>
 
-    <color name="gray_background">#e5e5e5</color>
+    <color name="grey_background">#f5f5f5</color>
     <color name="dark_divider">#32000000</color>
+
+    <color name="more_button_background">#ffcfd8dc</color>
+    <color name="more_button_text">@color/cyan_a700_plus</color>
 
     <color name="navdrawer_background">#ffffffff</color>
     <color name="navdrawer_text_color">@color/body_text_1</color>
-    <color name="navdrawer_text_color_selected">@color/theme_primary</color>
-    <color name="navdrawer_icon_tint">#888</color>
-    <color name="navdrawer_icon_tint_selected">@color/theme_primary</color>
-
-    <color name="refresh_progress_1">@color/theme_accent_2</color>
-    <color name="refresh_progress_2">@color/theme_accent_1</color>
-    <color name="refresh_progress_3">@color/theme_primary</color>
+    <color name="navdrawer_text_color_selected">@color/cyan_a700_plus</color>
+    <color name="navdrawer_icon_tint">#444</color>
+    <color name="navdrawer_icon_tint_selected">@color/cyan_a700_plus</color>
+    <color name="navdrawer_selected_item_background">#1a000000</color>
 
     <color name="data_item_background_light">#ffffff</color>
     <color name="data_item_lightbg_title">#404040</color>
@@ -64,23 +107,58 @@
 
     <color name="session_photo_scrim">#6000</color>
 
+    <!-- Might be deprecated. -->
     <color name="default_session_color">@color/theme_primary</color>
     <color name="no_track_branding_session_tile_overlay">#8333</color>
     <color name="no_track_branding_session_color">#333</color>
 
-    <color name="nearby_header_color">#00c</color>
-    <color name="nearby_url_color">#0a0</color>
-    <color name="nearby_description_color">@color/body_text_2</color>
+
+    <!-- IO15 session detail colors -->
+    <color name="session_livestreamed_color">@color/app_body_text_2</color>
 
     <color name="list_dropdown_foreground_normal">#ff333333</color>
     <color name="list_dropdown_divider_color">#92a3a3a3</color>
     <color name="butter_bar_light">#eee0e0e0</color>
 
-    <color name="translucent_actionbar_background">#cc3f51b5</color>
-    <color name="translucent_statusbar_background">#cc3f51b5</color>
-
     <color name="tab_background">@color/theme_primary</color>
-    <color name="tab_selected_strip">@color/theme_accent_1</color>
+    <color name="tab_selected_strip">@android:color/white</color>
 
-    <color name="my_schedule_conflict">#db4437</color>
+    <color name="my_schedule_conflict">#dd2c00</color>
+    <color name="my_schedule_past_background">@color/grey_background</color>
+    <color name="my_schedule_past">#95a1a6</color>
+    <color name="my_schedule_hour_header_default">#de455a64</color>
+    <color name="my_schedule_hour_header_finished">#b8455a64</color>
+    <color name="my_schedule_icon_default">#ff07434d</color>
+    <color name="my_schedule_icon_finished">#ff49757c</color>
+    <color name="my_schedule_session_title_default">#de07434d</color>
+    <color name="my_schedule_session_title_finished">#b807434d</color>
+
+    <color name="light_grey">#fff0f0f0</color>
+    <color name="lighter_gray">#ddd</color>
+
+    <!-- video lib -->
+    <color name="video_title">#de07434d</color>
+    <color name="filter_text">@color/app_primary_text</color>
+    <color name="video_scrim_watched">#b3f1f1f1</color>
+
+    <!-- Colors used in the Social feature. -->
+    <color name="social_io15">@color/io15_dark_grey</color>
+    <color name="social_twitter_devs">@color/io15_grey</color>
+    <color name="social_gplus_devs">@color/io15_light_grey</color>
+    <color name="social_extended">@color/io15_aqua_dark</color>
+    <color name="social_request">@color/io15_aqua_light</color>
+    <color name="social_logo">@color/cyan_a700_plus</color>
+    <color name="social_logo_background">@color/io15_blue_grey_100</color>
+    <color name="social_text_color">@color/io15_white</color>
+
+    <!-- Colors used in the Video Library or Explore list view -->
+    <color name="item_text_primary_color">#ff275B64</color>
+    <color name="item_text_secondar_color">#ff699B9E</color>
+    <color name="button_dark">#3B5B63</color>
+
+    <!-- Colors used in the Explore Sessions filter drawer -->
+    <color name="explore_sessions_body_color">#444444</color>
+
+    <!-- search -->
+    <color name="dialog_background">#7f000000</color>
 </resources>

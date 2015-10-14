@@ -15,6 +15,7 @@
  */
 package com.google.samples.apps.iosched.gcm;
 
+import com.google.samples.apps.iosched.BuildConfig;
 import com.google.samples.apps.iosched.Config;
 import com.google.samples.apps.iosched.gcm.command.*;
 import com.google.android.gcm.GCMBaseIntentService;
@@ -53,25 +54,18 @@ public class GCMIntentService extends GCMBaseIntentService {
     }
 
     public GCMIntentService() {
-        super(Config.GCM_SENDER_ID);
+        super(BuildConfig.GCM_SENDER_ID);
     }
 
     @Override
     protected void onRegistered(Context context, String regId) {
         LOGI(TAG, "Device registered: regId=" + regId);
-        ServerUtilities.register(context, regId, AccountUtils.getPlusProfileId(this));
     }
 
     @Override
     protected void onUnregistered(Context context, String regId) {
         LOGI(TAG, "Device unregistered");
-        if (ServerUtilities.isRegisteredOnServer(context, AccountUtils.getPlusProfileId(this))) {
-            ServerUtilities.unregister(context, regId);
-        } else {
-            // This callback results from the call to unregister made on
-            // ServerUtilities when the registration to the server failed.
-            LOGD(TAG, "Ignoring unregister callback");
-        }
+        ServerUtilities.unregister(context, regId);
     }
 
     @Override

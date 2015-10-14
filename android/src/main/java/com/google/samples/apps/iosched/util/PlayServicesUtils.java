@@ -27,7 +27,7 @@ import com.google.android.gms.common.GooglePlayServicesUtil;
  */
 public class PlayServicesUtils {
 
-    public static boolean checkGooglePlaySevices(final Activity activity) {
+    public static boolean checkGooglePlayServices(final Activity activity) {
         final int googlePlayServicesCheck = GooglePlayServicesUtil.isGooglePlayServicesAvailable(activity);
         switch (googlePlayServicesCheck) {
             case ConnectionResult.SUCCESS:

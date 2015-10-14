@@ -1,5 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
 <!--
-  Copyright 2014 Google Inc. All rights reserved.
+  Copyright 2015 Google Inc. All rights reserved.
 
   Licensed under the Apache License, Version 2.0 (the "License");
   you may not use this file except in compliance with the License.
@@ -16,4 +17,5 @@
 <resources>
     <dimen name="session_details_floating_width">600dp</dimen>
     <dimen name="session_details_floating_height">600dp</dimen>
+    <dimen name="social_landscape_io_logo_panel_height">336dp</dimen>
 </resources>

@@ -16,6 +16,7 @@
 
 package com.google.samples.apps.iosched.io;
 
+import com.google.common.base.Charsets;
 import com.google.gson.JsonElement;
 
 import android.content.ContentProviderOperation;
@@ -47,7 +48,7 @@ public abstract class JSONHandler {
         Writer writer = new StringWriter();
         char[] buffer = new char[1024];
         try {
-            Reader reader = new BufferedReader(new InputStreamReader(is, "UTF-8"));
+            Reader reader = new BufferedReader(new InputStreamReader(is, Charsets.UTF_8));
             int n;
             while ((n = reader.read(buffer)) != -1) {
                 writer.write(buffer, 0, n);

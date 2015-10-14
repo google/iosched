@@ -1,5 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
 <!--
-   Copyright 2014 Google Inc. All rights reserved.
+   Copyright 2015 Google Inc. All rights reserved.
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -13,19 +14,22 @@
    See the License for the specific language governing permissions and
    limitations under the License.
 -->
-
+<!-- This layout is added to most layouts throughout the app using include directives in Activities'
+     XML layouts. Google Account and Navigation Item lists are populated through BaseActivity code.
+     -->
 <com.google.samples.apps.iosched.ui.widget.ScrimInsetsScrollView
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/navdrawer"
     android:layout_width="@dimen/navdrawer_width"
     android:layout_height="match_parent"
     android:layout_gravity="start"
-    android:id="@+id/navdrawer"
     android:background="@color/navdrawer_background"
     android:fitsSystemWindows="true"
-    app:insetForeground="#4000">
+    app:appInsetForeground="#4000">
 
-    <LinearLayout android:layout_width="match_parent"
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
@@ -35,20 +39,33 @@
             android:layout_height="@dimen/navdrawer_chosen_account_height"
             android:foreground="?photoItemForeground">
 
-            <ImageView android:layout_width="match_parent"
+            <ImageView
+                android:id="@+id/profile_cover_image_placeholder"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:paddingTop="@dimen/navdrawer_logo_vertical_padding"
+                android:paddingBottom="@dimen/navdrawer_logo_vertical_padding"
+                android:paddingRight="@dimen/navdrawer_logo_padding_right"
+                android:scaleType="fitEnd"
+                android:background="?colorPrimary"
+                android:src="@drawable/io_logo"
+                android:contentDescription="@string/navview_header_default_image_content_description" />
+
+            <ImageView
+                android:id="@+id/profile_cover_image"
+                android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:scaleType="centerCrop"
-                android:src="@drawable/default_cover"
-                android:tint="@color/session_photo_scrim"
-                android:id="@+id/profile_cover_image" />
+                android:background="?colorPrimary"
+                android:visibility="gone"/>
 
             <RelativeLayout
+                android:id="@+id/chosen_account_content_view"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:paddingLeft="@dimen/keyline_1"
                 android:paddingRight="@dimen/keyline_1"
-                android:paddingTop="@dimen/keyline_1"
-                android:id="@+id/chosen_account_content_view">
+                android:paddingTop="@dimen/keyline_1">
 
                 <com.google.samples.apps.iosched.ui.widget.BezelImageView
                     android:id="@+id/profile_image"
@@ -63,21 +80,25 @@
                     android:layout_height="wrap_content"
                     android:layout_width="wrap_content"
                     android:visibility="gone"
-                    android:layout_marginLeft="16dp"
-                    android:paddingBottom="16dp"
+                    android:layout_marginStart="@dimen/navview_start_padding"
+                    android:layout_marginLeft="@dimen/navview_start_padding"
+                    android:paddingBottom="@dimen/navview_header_bottom_padding"
+                    android:layout_alignParentRight="true"
                     android:layout_alignParentEnd="true"
                     android:layout_alignParentBottom="true"
                     android:scaleType="center"
-                    android:src="@drawable/ic_drawer_accounts_expand" />
+                    android:src="@drawable/ic_navview_accounts_expand" />
 
                 <TextView
                     android:id="@+id/profile_email_text"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_alignStart="@id/profile_image"
                     android:layout_alignLeft="@id/profile_image"
+                    android:layout_toStartOf="@id/expand_account_box_indicator"
                     android:layout_toLeftOf="@id/expand_account_box_indicator"
                     android:layout_alignParentBottom="true"
-                    android:paddingBottom="16dp"
+                    android:paddingBottom="@dimen/navview_header_bottom_padding"
                     android:textSize="@dimen/text_size_medium"
                     android:textColor="@color/body_text_2_inverse"
                     android:maxLines="1"
@@ -89,7 +110,9 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_above="@id/profile_email_text"
+                    android:layout_alignStart="@id/profile_image"
                     android:layout_alignLeft="@id/profile_image"
+                    android:layout_toStartOf="@id/expand_account_box_indicator"
                     android:layout_toLeftOf="@id/expand_account_box_indicator"
                     android:textSize="@dimen/text_size_large"
                     android:textColor="@color/body_text_1_inverse"
@@ -109,7 +132,7 @@
                 android:id="@+id/account_list"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
+                android:layout_marginTop="@dimen/navview_account_list_top_padding"
                 android:orientation="vertical"
                 android:visibility="invisible" />
 
@@ -118,10 +141,9 @@
                 android:id="@+id/navdrawer_items_list"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:layout_marginBottom="8dp"
+                android:layout_marginTop="@dimen/navview_menu_item_top_bottom_padding"
+                android:layout_marginBottom="@dimen/navview_menu_item_top_bottom_padding"
                 android:orientation="vertical" />
         </FrameLayout>
     </LinearLayout>
-
 </com.google.samples.apps.iosched.ui.widget.ScrimInsetsScrollView>

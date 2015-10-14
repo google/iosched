@@ -1,5 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
 <!--
-  Copyright 2014 Google Inc. All rights reserved.
+  Copyright 2015 Google Inc. All rights reserved.
 
   Licensed under the Apache License, Version 2.0 (the "License");
   you may not use this file except in compliance with the License.
@@ -14,66 +15,201 @@
   limitations under the License.
   -->
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
-    <!-- Shown in the schedule to indicate how many sessions are available on that particular time slot. -->
-    <plurals name="schedule_block_subtitle">
-    <item quantity="one">
-      <xliff:g id="number_of_sessions">%1$d</xliff:g> событие доступно</item>
-    <item quantity="few">
-      <xliff:g id="number_of_sessions">%1$d</xliff:g> события доступно</item>
-    <item quantity="many">
-      <xliff:g id="number_of_sessions">%1$d</xliff:g> событий доступно</item>
-    <item quantity="other">
-      <xliff:g id="number_of_sessions">%1$d</xliff:g> события доступны</item>
-  </plurals>
+  <string name="explore_io_msgcards_ask_opt_in"
+          description="This message is displayed on the Explore I/O screen to ask users whether
+            they would like to opt in to receive messages regarding the conference."><![CDATA[
+        <b>Сообщения Kонференции</b><br/>
+        Хотите , чтобы отказаться в получать сообщения от организаторов конференции Google I / O ? Сообщения могут быть основаны на текущий момент времени и могут включать в себя объявления наших партнерами .]]></string>
 
-    <!-- Shows as a notification on the system bar to alert user that some of their sessions are about to begin. -->
-    <plurals name="session_notification_text">
-    <item quantity="one">и ещё 1 начнётся через <xliff:g id="remaining_time">%1$d</xliff:g> мин.</item>
-    <item quantity="few">и  ещё <xliff:g id="num_sessions">%2$d</xliff:g> начнутся через <xliff:g id="remaining_time">%1$d</xliff:g> мин.</item>
-    <item quantity="many">и ещё <xliff:g id="num_sessions">%2$d</xliff:g> начнутся через <xliff:g id="remaining_time">%1$d</xliff:g> мин.</item>
-    <item quantity="other">и ещё <xliff:g id="num_sessions">%2$d</xliff:g> начнутся через <xliff:g id="remaining_time">%1$d</xliff:g> мин.</item>
-  </plurals>
+  <!-- Short text introducing the code of conduct for attendees coming in person -->
+  <string name="welcome_conduct_title">Код поведения конференции
+    Google I/O</string>
+  <string description="Label of filter option that allow to display all elements" name="all">все
+  </string>
 
-    <!-- Shown as a notification on the system bar to alert user that some of their sessions are about to begin. -->
-    <plurals name="session_notification_ticker">
-    <item quantity="one">1 событие скоро начнётся.</item>
-    <item quantity="few">%d события скоро начнутся.</item>
-    <item quantity="many">%d событий скоро начнутся.</item>
-    <item quantity="other">%d события скоро начнутся.</item>
-  </plurals>
+  <!-- Accessibility description for a button that, when clicked, adds the currently
+  displayed session to the user's schedule. -->
+  <string name="add_to_schedule_desc">Добавить событие к вашему расписанию</string>
 
-    <!-- Title for the notification that alerts the user that some of their sessions are about to begin. -->
-    <plurals name="session_notification_title">
-    <item quantity="one">1 событие начнётся через <xliff:g id="remaining_time">%1$d</xliff:g> мин.</item>
-    <item quantity="few">
-      <xliff:g id="num_sessions">%2$d</xliff:g> события начнутся через <xliff:g id="remaining_time">%1$d</xliff:g> мин.</item>
-    <item quantity="many">
-      <xliff:g id="num_sessions">%2$d</xliff:g> событий начнутся через <xliff:g id="remaining_time">%1$d</xliff:g> мин.</item>
-    <item quantity="other">
-      <xliff:g id="num_sessions">%2$d</xliff:g> события начнутся через <xliff:g id="remaining_time">%1$d</xliff:g> мин.</item>
-  </plurals>
+  <!-- Label on a button that allows the user to browse Google I/O Extended events that they
+  might be interested in attending. -->
+  <string name="browse_events">Просмотреть Мероприятия</string>
 
-    <!-- Shown in the 'About' window of the app. -->
-    <string name="about_body">&lt;b&gt;Конференция Google I/O 2014&lt;/b&gt;&lt;br&gt; Версия %s&lt;br&gt;&lt;br&gt; &lt;a href=http://m.google.com/utos&gt;Условия обслуживания&lt;/a&gt;&lt;br&gt;&lt;br&gt; &lt;a href=http://www.google.com/policies/privacy/&gt;Политика конфиденциальности&lt;/a&gt;</string>
+  <!-- Label on a button that allows the user to cancel an operation before it starts. For
+  example, this may be a button on a dialog that says "This will delete your data." -->
+  <string name="cancel">Отменить</string>
 
-    <!-- Shown as a link in the About screen of the app; user can click to see the EULA. -->
-    <string name="about_eula">Лицензионное соглашение конечного пользователя</string>
+  <!-- Menu item that takes the user to a page that shows a list of Google I/O Extended events. -->
+  <string name="description_i_o_extended">Расширенный Google I/O</string>
 
-    <!-- Shown as a link in the About screen of the app; user can click it to see the licenses. -->
-    <string name="about_licenses">Лицензии с открытым исходным кодом</string>
+  <!-- Error message that shows when the user tries to use the app without a Google account
+  configured on their device. -->
+  <string name="google_account_required_message">Чтобы пользоваться приложением, вы должны иметь хотя бы одну учетную запись Google на вашем устройстве.</string>
 
-    <!-- Label on a button that the user clicks to accept a license agreement. -->
-    <string name="accept">Согласен</string>
+  <!-- Description of the Google+ +1 button for accessibility screen readers -->
+  <string name="plus_one_description_standard">Нажмите, чтобы добавить в Ваши круги.</string>
 
-    <!-- Label on a button that, when clicked, allows user to add an account to the device. -->
-    <string name="add_account">Добавить учётную запись</string>
+  <!-- Title in the Settings screen for the setting that enables sending of anonymous usage
+  statistics to Google. This title will be accompanied by a longer description
+  of the setting, so it does not need to be too verbose. [CHAR_LIMIT=40] -->
+  <string name="pref_analytics_enabled_title">Отправить анонимную статистику использования</string>
+
+  <!-- Title in the Settings screen for the "Show local times" option -->
+  <string name="pref_local_times_title">Показать местное время</string>
+
+  <!-- Title in the Settings screen for the "Notify me when my sessions are about to begin" option -->
+  <string name="pref_notify_starred_sessions_title">Уведомить о моих событий</string>
+
+  <!-- A session feedback section label asking for the session's relevance to the user's projects -->
+  <string name="session_feedback_relevance">Насколько эта сессия былa актуально для Вашей работы?</string>
+
+  <!-- Text indicating additional session links -->
+  <string name="session_links">Ссылки на сессию</string>
+
+
+  <!-- Short text indicating the session's live stream is live -->
+  <string name="session_livestream_block">Прямой Эфир</string>
+
+  <!-- Actionbar title for I/O Live -->
+  <string name="session_livestream_title">GOOGLE I/O в прямом эфире</string>
+
+  <!-- Label for a session section listing the presenters at the session -->
+  <string name="session_speakers">Выступающие</string>
+
+
+  <!-- Text indicating the session is going to start in less than 1 minute -->
+  <string name="time_hint_about_to_start_shortly">Сессия начинается (осталось меньше минуты).</string>
+
+  <!-- Text under play button on session page if a session is currently being livestreamed. -->
+  <string name="session_watch_live">Смотреть трансляцию в прямом эфире</string>
+
+
+  <!-- Label for the button to rate a session -->
+  <string name="my_schedule_rate_this_session">Оценить эту сессию</string>
+
+
+  <!-- Menu item to open the Watch Live screen on the Navigation Drawer. [CHAR_LIMIT=20] -->
+  <string name="navdrawer_item_io_live">В прямом эфире</string>
+
+  <!-- Label on a button that, when clicked, allows user to add an account to the device. -->
+  <string name="add_account">Добавить учётную запись</string>
+
+    <string description="Accessibility description for a control that allows the user to close the current screen          and go back to the previous one." name="close_and_go_back">Закрыть и вернуться</string>
+
+    <string description="Accessibility for the links to the G+ or Twitter pages for speakers. For example: Go to the Twitter page for Sally Sample." name="speaker_social_page">Перейти на страницу %1$s с %2$s</string>
+
+    <string description="Accessibility description for the GPlus icon in the '#io15' box." name="social_io15_gplus_content_description">Перейти к Google Plus с хэштегом \"io15\"</string>
+
+    <string description="Accessibility description for the Twitter icon in the '#io15' box." name="social_io15_twitter_content_description">Перейти к Twitter с хэштегом \"io15\"</string>
+
+    <string description="Accessibility description for link to the 'Google Developers' GPlus page." name="social_gplus_devs_content_description">Перейти к Google Developers на Google Plus</string>
+
+    <string description="Accessibility description for link to the 'Google Developers' Twitter page." name="social_twitter_devs_content_description">Перейти к Google Developers на Twitter</string>
+
+    <string description="Accessibility description for the GPlus icon in the '#io15 extended' box." name="social_extended_gplus_content_description">Перейти к Google Plus с хэштегом \"extended\"</string>
+
+    <string description="Accessibility description for the Twitter icon in the '#io15 extended' box." name="social_extended_twitter_content_description">Перейти к Twitter с хэштегом \"extended\"</string>
+
+    <string descripton="Accessibility description for the GPlus icon in the '#io15 request' box." name="social_request_gplus_content_description">Перейти к Google Plus с хэштегом \"request\"</string>
+
+    <string description="Accessibility description for the Twitter icon in the '#io15 extended' box." name="social_request_twitter_content_description">Перейти к Twitter с хэштегом \"request\"</string>
+
+    <string description="Accessibility description for the IO15 logo that is not a link." name="io15_logo_not_clickable">Логотип IO15 некликабелен</string>
+
+    <string description="Accessibility description for the IO15 extended logo that is not a link." name="io15_extended_logo_not_clickable">Логотип IO15 extended некликабелен</string>
+
+    <string description="Accessibility description for the IO15 request logo that is not a link." name="io15_request_logo_not_clickable">Логотип IO15 request некликабелен</string>
+
+    <string description="Accessibility description for the I/O logo that is not a link." name="io_logo_not_clickable">Логотип IO некликабелен</string>
+
+    <string description="Accessibility description for viewing more sessions/videos." name="more_items_button_desc_a11y">Нажмите, чтобы увидеть больше материалов.</string>
+
+  <string name="explore_io_msgcards_conf_creds_card">&lt;b&gt;Личные данные участника&lt;/b&gt;&lt;br&gt; Каждый участник конференции получит в этом году ндивидуальный NFC-браслет. Ваш бейдж I/O конференции и браслет NFC обеспечат вам доступ к Keynote, сессиям, Sandbox, и на вечеринки. Всегда носите их оба с собой.</string>
+
+  <string description="A message card displayed in the Explore I/O page that asks users to opt into a                          feature." name="explore_io_msgcards_after_hours_card">&lt;b&gt;After Hours&lt;/b&gt;&lt;br&gt;&lt;/br&gt; Эту вечеринку вы не захотите пропустить! Приглашаем вас насладиться едой, напитками, музыкой, играми и многим другим, вечером, 28 мая. Для входа необходимы бейдж I/O конференции и браслет NFC.</string>
+
+    <string descripton="Text of a card shown in the Explore I/O screen that asks the user if they want to configure          the conference WiFi. 'Not now' and 'Yes, please' are options show on the card" name="question_setup_wifi_card_text">&lt;b&gt;Wi-Fi конференции&lt;/b&gt;&lt;br/&gt; Вы хотели бы настроить это устройство для доступа к Wi-Fi конференции?</string>
+
+    <string description="A session feedback section label asking the user to rate the session overall" name="session_rating_label_text">Оценка сессии:</string>
+
+    <string descripton="Session feedback section title" name="session_feedback_content_label_text">На основании описания/моих ожиданий, содержание было:</string>
+
+    <string description="A negative relevance session feedback option" name="session_feedback_not_at_all_relevant">Абсолютно нет</string>
+
+    <string description="A negative relevance session feedback option" name="session_feedback_extremely_relevant">Полностью</string>
+
+    <string description="Text for a button which allows the user to enable the feature" name="welcome_enable">Включить</string>
+
+    <string description="Text for a button which allows the user to reject the feature" name="welcome_no_thanks">Нет, спасибо</string>
+
+    <string description="Medium-length welcome text indicating the subsequent text is important legal information " name="welcome_text">Прежде чем начать, ознакомьтесь с важной юридической информацией, касающейся использования данного приложения. Это займет всего одну минуту!</string>
+
+    <string description="Short text asking if they're interested in what's around them" name="welcome_around">Рядом с Вами</string>
+
+    <string description="Short text asking them to select an account" name="welcome_select_account">Выберите аккаунт</string>
+
+    <string description="Medium text asking to choose an account from a list" name="welcome_select_accoun_text">Выберите используемый аккаунт:</string>
+
+    <string name="explore_sessions_show_day_hour_and_room"
+            description="Sub-title for a session in ExploreSessionsActivity that shows the day, time and room name for a given session. Example: Day 1 / 9:00AM - 11:00AM / Room 1" ><xliff:g example="Day 1" id="day">%1$s</xliff:g> / <xliff:g example="2:00PM" id="start_time">%2$s</xliff:g> - <xliff:g example="3:00PM" id="end_time">%3$s</xliff:g> / <xliff:g id="room">%4$s</xliff:g></string>
+
+    <string
+            description="Show the Day 1 or Day 2 as part of either the ExploreSessionsActivity title or in the session details." name="explore_sessions_show_day_n">День %d</string>
+
+    <string
+            description="Show Day and start time of a session as the title when viewing browsing sessions (ExploreSessionActivity) from MySchedule." name="explore_sessions_time_slot_title">
+    <xliff:g example="Day 1" id="day">%1$s</xliff:g>, <xliff:g example="2:30PM" id="start_time">%2$s</xliff:g>
+  </string>
+
+    <string
+            description="This string is presented to users when they attempt to click something that indicates they can watch a video but it turns out we can't show the video." name="explore_io_video_id_not_valid">Извините. Судя по всему, есть проблема с URL-адресом видео.</string>
+
+    <string
+            description="Generic error message used for errors that should never happen. This explains to the user that we can't execute the request when they click a button or touch a part of the screen that should normally be touchable." name="unknown_error">Упс, мы не cмогли обработать этот запрос.</string>
+
+    <string description="Indicates the item is actionable and the user can tap on it" name="talkback_button">Кнопка %1$S</string>
+
+    <string description="Indicates the item does nothing when tapped" name="talkback_not_clickable">%1$S некликабельна</string>
+
+    <string description="Indicates the item is an image" name="talkback_image">%1$S изображение</string>
+
+    <string description="Indicates the item is a link (and actionable)" name="talkback_link">%1$S ссылка</string>
+
+    <string descripton="Indicates the item is currently selected" name="talkback_selected">%1$S выбран</string>
+
+    <string description="Indicates the item is currently not selected" name="talkback_not_selected">%1$S не выбран</string>
+
+    <string description="Indicates what happens when the user taps on an item" name="talkback_tapfor">нажмите, чтобы %1$S</string>
+
+    <string
+            descripton="This string is the title of a notification shown to the user when Google Play services can't connect." name="app_data_notification_resolution_title">Приложению I/O необходимо разрешение</string>
+
+    <string
+            description="This string is the message of the notification shown to the user when Google Play services can't connect from a background sync." name="app_data_notification_resolution_content">Требуется вмешательство пользователя, чтобы I/O смог завершить фоновую синхронизацию.</string>
+
+    <string description="Shown as the titles of the tabs for the user's schedule" name="day_n">ДЕНЬ %d</string>
+
+    <string description="Session feedback section title" name="session_feedback_content">Содержание было:</string>
+
+    <string description="A positive overall session feedback option" name="session_feedback_great">Отличным</string>
+
+    <string description="A negative overall session feedback option" name="session_feedback_notgreat">Не очень впечатляющим</string>
+
+    <string description="A negative relevance session feedback option" name="session_feedback_notrel">Неактуальным</string>
+
+    <string description="A session feedback section label asking for any other feedback. It indicates the user should not add personal information" name="session_feedback_other">Что-нибудь еще, что нам не помешало бы знать?\n(Пожалуйста, не добавляйте личную информацию к вашим комментариям.)</string>
+
+    <string description="A positive speaker quality session feedback option" name="session_feedback_outstanding">Выдающимся</string>
+
+    <string description="A negative speaker quality session feedback option" name="session_feedback_poor">Слабым</string>
+
+    <string description="A positive relevance session feedback option" name="session_feedback_rel">Актуальным</string>
+
+    <string description="Hint for adding other session feedback" name="session_feedback_tell_us">Расскажите нам!</string>
+
 
     <!-- Label on a button that, when clicked, adds the currently displayed session to their schedule. -->
     <string name="add_to_schedule">Добавить к расписанию</string>
-
-    <!-- Accessibility description for a button that, when clicked, adds the currently
-    displayed session to the user's schedule. -->
-    <string name="add_to_schedule_desc">Добавьте событие к вашему расписанию</string>
 
     <!-- Shown in a drop-down list on the main screen, indicating that all conference sessions
     are being displayed. -->
@@ -98,7 +234,7 @@
     <string name="all_years">Все года</string>
 
     <!-- Name of the application, shown in the application's title bar. -->
-    <string name="app_name">Google I/O 2014</string>
+    <string name="app_name">Google I/O 2015</string>
 
     <!-- Label on a button that is one possible answer to the question "Are you attending the
     conference in person in San Francisco or remotely via livestream?" -->
@@ -107,10 +243,6 @@
     <!-- Label on a button that is one possible answer to the question "Are you attending the
     conference in person in San Francisco or remotely via livestream?" -->
     <string name="attending_remotely">Дистанционно</string>
-
-    <!-- Label on a button that allows the user to browse Google I/O Extended events that they
-    might be interested in attending. -->
-    <string name="browse_events">Мероприятия</string>
 
     <!-- Label on a button that allows the user to see what conference sessions are available
     at a particular time. -->
@@ -124,10 +256,6 @@
 
     <!-- Accessibility description for a button that allows the user to close a session details pane. -->
     <string name="close_detail_pane">Закрыть панель деталей</string>
-
-    <!-- Label on a button that allows the user to cancel an operation before it starts. For
-    example, this may be a button on a dialog that says "This will delete your data." -->
-    <string name="cancel">Отмена</string>
 
     <!-- Text on a warning box that appears to warn the user they are viewing data that hasn't
     been updated by the server recently, so it might be out of date.-->
@@ -165,9 +293,6 @@
 
     <!-- Menu item that allows user to configure the conference WiFi on their device. -->
     <string name="description_configure_wifi">Настройки Wi-Fi</string>
-
-    <!-- Menu item that takes the user to a page that shows a list of Google I/O Extended events. -->
-    <string name="description_i_o_extended">I/O Extended</string>
 
     <!-- Menu item that takes the user to the conference venue map screen -->
     <string name="description_map">Карта</string>
@@ -227,7 +352,7 @@
     <string name="empty_widget_text">Больше нет предстоящих событий.\nУвидимся в следующем году!</string>
 
     <!-- Shown on a widget instructing user how to start using the widget. -->
-    <string name="empty_widget_text_signed_out">Чтобы зарегистрироваться и начать пользоваться приложением, нажмите на логотип Google I/O 2014 вверху.</string>
+    <string name="empty_widget_text_signed_out">Чтобы зарегистрироваться и начать пользоваться приложением, нажмите на логотип Google I/O 2015 вверху.</string>
 
     <!-- Shown as a header on a list of sessions to indicate that the sessions that appear on that
     group have already ended. -->
@@ -237,13 +362,9 @@
     and comments) about a particular session. -->
     <string name="give_feedback">Да</string>
 
-    <!-- Error message that shows when the user tries to use the app without a Google account
-    configured on their device. -->
-    <string name="google_account_required_message">Чтобы пользоваться приложением, вы должны иметь хотя бы одну учетную запись Google на вашем устройстве.</string>
-
     <!-- Title for an error message that appears when the user tries to use the app without
     a Google account configured on their device. -->
-    <string name="google_account_required_title">Необходима учетная запись Google</string>
+    <string name="google_account_required_title">Необходима учетная запись AKKOUNT Google</string>
 
     <!-- List dropdown item on the Video Library screen allowing the user to choose to see
     the videos from a particular year of Google I/O. -->
@@ -289,9 +410,6 @@
      -->
     <string name="map_at">В %1$s:&lt;br&gt;&lt;b&gt;%2$s&lt;/b&gt;</string>
 
-    <!-- Indicator shown when there is no upcoming session in a room -->
-    <string name="map_infowindow_text_empty">-</string>
-
     <!-- Message shown in a map popup to indicate the current session.
       Param %1$s: title of the next session
      -->
@@ -301,28 +419,13 @@
     <string name="map_touch_to_see_session">Нажмите, чтобы просмотреть события</string>
 
     <!-- Text on a button that allows the user to browse more sessions -->
-    <string name="more_sessions">Ещё события</string>
+    <string name="more_sessions">Ещё события BOLSHE SOBUTIY</string>
 
     <!-- Accessibility description for tab that shows the attendee's schedule for a given day. -->
     <string name="my_schedule_tab_desc_a11y">Нажмите, чтобы увидеть своё расписание на <xliff:g id="day">%1$s</xliff:g>.</string>
 
     <!-- Accessibility announcement to alert user that they are now viewing their schedule of a given day. -->
     <string name="my_schedule_page_desc_a11y">Ваше расписание на <xliff:g id="day">%1$s</xliff:g>.</string>
-
-    <!-- Accessibility description for navigation drawer -->
-    <string name="navdrawer_description_a11y">Панель навигации. На этой панели находятся кнопки для перехода к разным окнам приложения.</string>
-
-    <!-- Menu item to send feedback about the app [CHAR_LIMIT=20] -->
-    <string name="navdrawer_item_app_feedback">Отзыв о приложении</string>
-
-    <!-- Accessibility description for menu item to send feedback about the app -->
-    <string name="navdrawer_item_app_feedback_a11y">Отправить отзыв о приложении</string>
-
-    <!-- Menu item to open the Experts screen [CHAR_LIMIT=20] -->
-    <string name="navdrawer_item_experts_directory">Эксперты</string>
-
-    <!-- Accessibility description for menu item to open the Experts screen. -->
-    <string name="navdrawer_item_experts_directory_a11y">Каталог экспертов</string>
 
     <!-- Menu item to open the Explore screen [CHAR_LIMIT=20] -->
     <string name="navdrawer_item_explore">Ознакомиться</string>
@@ -336,12 +439,6 @@
     <!-- Menu item to open the My Schedule screen [CHAR_LIMIT=20] -->
     <string name="navdrawer_item_my_schedule">Моё расписание</string>
 
-    <!-- Menu item to open the People I've Met screen [CHAR_LIMIT=20] -->
-    <string name="navdrawer_item_people_ive_met">Мои знакомые</string>
-
-    <!-- Accessibility description of item to open the People I've Met screen -->
-    <string name="navdrawer_item_people_ive_met_a11y">Список моих знакомых</string>
-
     <!-- Menu item to open the Settings screen [CHAR_LIMIT=20] -->
     <string name="navdrawer_item_settings">Настройки</string>
 
@@ -352,12 +449,9 @@
     open Google+ stream of posts that uses the hashtag [CHAR_LIMIT=20] -->
     <string name="navdrawer_item_social">Обсуждения</string>
 
-    <!-- Menu item to open a list of current and past I/O videos [CHAR_LIMIT=20] -->
-    <string name="navdrawer_item_video_library">Библиотека видео</string>
-
     <!-- Text indicator that appears below the user's name, showing that they are
     attending the conference in person in San Francisco. -->
-    <string name="navdrawer_status_attending_in_person">Посещает I/O лично</string>
+    <string name="navdrawer_status_attending_in_person">Посещает Google I/O лично</string>
 
     <!-- Text indicator that appears below the user's name, showing that they are
     attending the conference remotely via live streaming. -->
@@ -404,7 +498,7 @@
     <string name="number_5">5</string>
 
     <!-- A single button shown on informative popups, like EULA, open source licenses and About -->
-    <string name="ok">Ok</string>
+    <string name="ok">OkOK</string>
 
     <!-- Header for a group of sessions in Session Explorer that don't fit into other tag-based groups -->
     <string name="others">Другое</string>
@@ -413,29 +507,18 @@
     I/O schedule data). Shows on a permissions dialog screen. -->
     <string name="permission_write">Изменить данные расписания Google I/O</string>
 
-    <!-- Description of the Google+ +1 button for accessibility screen readers -->
-    <string name="plus_one_description_standard">Нажмите, чтобы добавить в свои круги.</string>
-
-    <!-- Title in the Settings screen for the setting that enables sending of anonymous usage
-    statistics to Google. This title will be accompanied by a longer description
-    of the setting, so it does not need to be too verbose. [CHAR_LIMIT=40] -->
-    <string name="pref_analytics_enabled_title">Отправлять анонимную статистику использования</string>
-
     <!-- Description in the Settings screen for the setting that enables sending of anonymous usage
     statistics to Google. -->
-    <string name="pref_analytics_enabled_description">Если флажок установлен, анонимная статистика использования будет отправляться в Google.</string>
+    <string name="pref_analytics_enabled_description">Если флажок FLAG установлен, анонимная статистика использования будет отправляться OTPRAVLENA  в Google.</string>
 
     <!-- Summary in the Settings screen for the "I will be at Google I/O" option -->
-    <string name="pref_attendee_at_venue_description">Если флажок установлен, будут показаны все события и локальные мероприятия. В противном случае, будут отображаться только транслируемые в прямом эфире события.</string>
+    <string name="pref_attendee_at_venue_description">Если флажок FLAG установлен, будут показаны все события и локальные мероприятия. В противном случае, будут отображаться только транслируемые в прямом эфире события.</string>
 
     <!-- Title in the Settings screen for the "I will be at Google I/O" option -->
     <string name="pref_attendee_at_venue_title">Я еду на Google I/O!</string>
 
     <!-- Summary in the Settings screen for the "Show local times" option -->
-    <string name="pref_local_times_description">Если флажок установлен, время событий будет соответствовать установленному на вашем устройстве местному времени. Если не установлен, будет отображаться дневное тихоокеанское время (местное время конференции).</string>
-
-    <!-- Title in the Settings screen for the "Show local times" option -->
-    <string name="pref_local_times_title">Показывать местное время</string>
+    <string name="pref_local_times_description">Если флажок FLAG установлен, время событий будет соответствовать установленному на вашем устройстве местному времени. Если не установлен, будет отображаться местное время конференции (дневное тихоокеанское время ).</string>
 
     <!-- Summary in the Settings screen for the "Notify me to send feedback about my sessions" option -->
     <string name="pref_notify_feedback_description">Если флажок установлен, приложение будет показывать уведомления с запросом отправить отзыв о выбранных вами событиях.</string>
@@ -445,9 +528,6 @@
 
     <!-- Summary in the Settings screen for the "Notify me when my sessions are about to begin" option -->
     <string name="pref_notify_starred_sessions_description">Если флажок установлен, приложение будет показывать уведомления о скором начале ваших событий.</string>
-
-    <!-- Title in the Settings screen for the "Notify me when my sessions are about to begin" option -->
-    <string name="pref_notify_starred_sessions_title">Уведомлять о моих событий</string>
 
     <!-- Title in the Settings screen for the "Synchronize my schedule with Google Calendar" option -->
     <string name="pref_sync_with_calendar_description">Если флажок установлен, выбранные вами события будут автоматически синхронизироваться с вашим календарём Google.</string>
@@ -461,15 +541,7 @@
 
     <!-- Text of a card shown in the session explorer that asks the user if he will be attending I/O
     in person or remotely. "Remotely" and "In person" are the buttons shown in the card -->
-    <string name="question_local_or_remote">Вы посещаете конференцию I/O дистанционно или лично в Сан-Франциско?</string>
-
-    <!-- Text of a card shown in the session explorer after I/O has started that asks the user if
-    he wants to configure the WiFi. "Yes!" and "No, thanks" are the buttons shown in the card -->
-    <string name="question_setup_wifi_after_i_o_start">Конференция Google I/O уже началась! Вы хотите настроить доступ к сети Wi-Fi конференции сейчас?</string>
-
-    <!-- Text of a card shown in the session explorer before I/O has started that asks the user if
-    he wants to configure the WiFi. "Yes!" and "No, thanks" are the buttons shown in the card -->
-    <string name="question_setup_wifi_before_i_o_start">Конференция Google I/O скоро начнётся! Вы хотите настроить доступ к сети Wi-Fi конференции сейчас?</string>
+    <string name="question_local_or_remote">Вы посещаете конференцию Google I/O дистанционно или лично в Сан-Франциско?</string>
 
     <!-- Section title for videos related to a particular event session -->
     <string name="related_videos">Похожие видео</string>
@@ -488,11 +560,6 @@
 
     <!-- Indicates the ending block of a session time. Used in a text fragment like "8:00 AM to 9:00 AM" [CHAR_LIMIT=4 (excluding placeholders)]-->
     <string name="schedule_end_time">до <xliff:g id="endTime">%1$s</xliff:g>
-  </string>
-
-    <!-- -->
-    <string name="schedule_session_subtitle">
-    <xliff:g id="speakers">%1$s</xliff:g>\n<xliff:g id="room">%2$s</xliff:g>
   </string>
 
     <!-- Hint that the user can search across sessions -->
@@ -517,47 +584,17 @@
     <!-- A session feedback option indicating the content was too basic -->
     <string name="session_feedback_basic">Слишком простой уровень</string>
 
-    <!-- Session feedback section title -->
-    <string name="session_feedback_content">Содержание было:</string>
-
-    <!-- A positive overall session feedback option -->
-    <string name="session_feedback_great">Потрясающее!</string>
-
-    <!-- A negative overall session feedback option -->
-    <string name="session_feedback_notgreat">Ничего особенного</string>
-
     <!-- Notification text asking the user to provide feedback for a particular session -->
     <string name="session_feedback_notification_text">Оставить отзыв о %1$s</string>
 
     <!-- Notification ticker text asking the user to provide session feedback -->
     <string name="session_feedback_notification_ticker">Оставить отзыв о событии</string>
 
-    <!-- A negative relevance session feedback option -->
-    <string name="session_feedback_notrel">Не актуальное</string>
-
-    <!-- A session feedback section label asking for any other feedback. It indicates the user should not add personal information -->
-    <string name="session_feedback_other">Нам следует знать что-нибудь ещё?\n(Пожалуйста, не добавляйте к комментариям никакой личной информации!)</string>
-
-    <!-- A positive speaker quality session feedback option -->
-    <string name="session_feedback_outstanding">Выдающееся</string>
-
-    <!-- A negative speaker quality session feedback option -->
-    <string name="session_feedback_poor">Плохое</string>
-
-    <!-- A positive relevance session feedback option -->
-    <string name="session_feedback_rel">Актуальное</string>
-
-    <!-- A session feedback section label asking for the session's relevance to the user's projects -->
-    <string name="session_feedback_relevance">Насколько это событие было актуально для ваших проектов?</string>
-
     <!-- A session feedback section label asking for the speaker's quality -->
     <string name="session_feedback_speaker_quality">Речь выступающего:</string>
 
     <!-- Button text for submitting session feedback -->
     <string name="session_feedback_submitlink">Отправить отзыв</string>
-
-    <!-- Hint for adding other session feedback -->
-    <string name="session_feedback_tell_us">Расскажите нам!</string>
 
     <!-- Text indicating the session has ended -->
     <string name="session_finished">Завершено</string>
@@ -580,14 +617,8 @@
     <!-- Link text taking the user to the session's YouTube page -->
     <string name="session_link_youtube">Видео на Youtube</string>
 
-    <!-- Text indicating additional session links -->
-    <string name="session_links">Ещё</string>
-
     <!-- Card text indicating the session is being broadcast right now and is available on live stream -->
     <string name="session_live_now_message">Это событие прямо сейчас транслируется в прямом эфире! Хотите начать просмотр трансляции?</string>
-
-    <!-- Short text indicating the session's live stream is live -->
-    <string name="session_livestream_block">Live!</string>
 
     <!-- Tab text on the session livestream to view captions -->
     <string name="session_livestream_captions">Субтитры</string>
@@ -604,23 +635,14 @@
     <!-- Hint for a play/pause video button -->
     <string name="session_livestream_play_pause">Старт / пауза</string>
 
-    <!-- Actionbar title for I/O Live -->
-    <string name="session_livestream_title">I/O Live</string>
-
     <!-- Notification text that a session is starting in some number of minutes -->
     <string name="session_notification_text_1">начнётся через <xliff:g id="remaining_time">%1$d</xliff:g> мин.</string>
 
     <!-- Short text indicating that the session is currently happening -->
     <string name="session_now">Сейчас</string>
 
-    <!-- A session feedback section label asking the user to rate the session overall -->
-    <string name="session_rating_label">Общее мнение о событии:</string>
-
     <!-- Label for a session section listing the requirements for the session -->
     <string name="session_requirements">Требования</string>
-
-    <!-- Label for a session section listing the presenters at the session -->
-    <string name="session_speakers">Выступающие</string>
 
     <!-- Subtitle of a session indicating time interval and room number -->
     <string name="session_subtitle">
@@ -636,7 +658,7 @@
     <string name="setup_wifi_yes">Да!</string>
 
     <!-- Re-share template text indicating the user is watching I/O Live -->
-    <string name="share_livestream_template">Просмотр I/O Live: \"<xliff:g id="title">%1$s</xliff:g>\" на <xliff:g id="hashtags">%2$s</xliff:g> <xliff:g id="url">%3$s</xliff:g>
+    <string name="share_livestream_template">Просмотр GOOGLE I/O Live: \"<xliff:g id="title">%1$s</xliff:g>\" на <xliff:g id="hashtags">%2$s</xliff:g> <xliff:g id="url">%3$s</xliff:g>
   </string>
 
     <!-- Re-share template text indicating the user is at a particular session -->
@@ -659,9 +681,6 @@
 
     <!-- Text indicating the session is going to start in some number of minutes -->
     <string name="time_hint_about_to_start_min">Событие начнётся через <xliff:g id="minutes">%1$d</xliff:g> мин.</string>
-
-    <!-- Text indicating the session is going to start in less than 1 minute -->
-    <string name="time_hint_about_to_start_shortly">Событие скоро начнётся (осталось меньше минуты).</string>
 
     <!-- Text indicating the session has ended -->
     <string name="time_hint_session_ended">Событие завершено.</string>
@@ -710,12 +729,6 @@
     <!-- Chooser dialog text when the user is selecting an application with which to share something -->
     <string name="title_share">Поделиться через</string>
 
-    <!-- Label for Social activity -->
-    <string name="title_stream">Лента</string>
-
-    <!-- Label for VideoLibrary activity -->
-    <string name="title_video_library">Библиотека видео</string>
-
     <!-- Label for exploration category which groups session topics -->
     <string name="topics">Темы</string>
 
@@ -732,9 +745,6 @@
     <!-- Text for a button which allows the user to watch this particular session on live stream. -->
     <string name="watch_now">Смотреть сейчас!</string>
 
-    <!-- Medium-length welcome text indicating the subsequent text is important legal information -->
-    <string name="welcome_text">Прежде чем мы начнём, ознакомьтесь с важной правовой информацией касательно использования данного приложения. Это займёт всего одну минуту.</string>
-
     <!-- Short text welcoming the user to the application -->
     <string name="welcome_to_google_i_o_app">Добро пожаловать в приложение Google I/O!</string>
 
@@ -747,33 +757,144 @@
     <!-- Toast failure message if the user's wifi couldn't be updated -->
     <string name="wifi_install_error_message">К сожалению, не удаётся обновить настройки Wi-Fi</string>
 
-    <string name="experts_directory_all_cities">Все города</string>
-    <string name="experts_directory_all_countries">Все страны</string>
-    <string name="experts_directory_attending">посещает I/O</string>
-    <string name="experts_directory_header_body">Присвоение звания «Разработчик-эксперт Google» (GDE) является признанием выдающихся достижений разработчиков, которые обладают большим опытом работы с одной или несколькими технологиями Google и делятся им с сообществом разработчиков. GDES являются гуру, наставниками и миссионерами — они создают учебники, примеры кода, а также пишут книги и блоги, публикуют видео, выступают в качестве движущей силы проектов сообщества и присутствуют на крупных и малых мероприятиях. Эти независимые разработчики делятся с сообществами разработчиков по всему миру своим практическим опытом и знаниями, полученными в ходе работы с технологиями Google.</string>
-    <string name="experts_directory_header_dismiss">Понятно</string>
-    <string name="experts_directory_header_title">Кто такие разработчики-эксперты Google?</string>
     <string name="explore_attending_in_person_toast">Посещает I/O лично (вы можете изменить это в настройках)</string>
     <string name="explore_attending_remotely_toast">Посещает I/O удаленно (вы можете изменить это в настройках)</string>
     <string name="go_to_settings">Назад в настройки</string>
-    <string name="map_infowindow_partner_seemore">Нажмите, чтобы увидеть больше подробностей</string>
-    <string name="map_nearby_button">Поблизости</string>
     <string name="more_information">Дополнительные сведения</string>
-    <string name="nearby_eula_header">Эксперимент PhysicalWeb</string>
-    <string name="no_matching_partner">Нет подходящего партнера.</string>
-    <string name="no_nearby_urls">В вашем районе нет маяков PhysicalWeb. Попробуйте еще раз, когда будете находиться рядом с интересующим вас объектом в конференц-центре Moscone во время конференции.</string>
-    <string name="people_ive_met_delete">Удалить</string>
-    <string name="people_ive_met_delete_confirmation">Вы уверены, что хотите удалить этого человека из списка?</string>
-    <string name="people_ive_met_dummy_badge">Этот бэдж не содержит ссылку на профиль Google+</string>
-    <string name="people_ive_met_edit_note_title">Примечания</string>
-    <string name="people_ive_met_empty">Вы пока еще не просканировали чей-либо бэдж. Когда вы захотите обменяться контактной информацией с другим посетителем, удерживайте свое устройство у его бэджа несколько секунд, и его профиль Google+ будет добавлен в этот список (требуется поддержка NFC).</string>
-    <string name="people_ive_met_header">Посетители, чьи бэджи были просканированы:</string>
-    <string name="people_ive_met_note">Примечание</string>
-    <string name="physical_web_bluetooth_off">Для работы этой функции требуется Bluetooth, но Bluetooth вашего устройства выключен. Чтобы использовать эту функцию, включите Bluetooth на экране настроек вашего устройства.</string>
-    <string name="physicalweb_intro_text">Эта вкладка может показывать вам ссылки на содержание, связанное конференц-функциями рядом с вашим текущим местоположением (например, сайты, приложения, демонстрационные ролики и интерактивное содержание партнеров). Для этого приложение выполнит сканирование Bluetooth LE вашего окружения, попытается найти тэги и отправить эту информацию на сервер Google для обработки. После активации оно продолжит работать в течение всего срока проведения мероприятия, пока в устройстве будет включен Bluetooth. Если вы хотите отключить эту функцию, войдите в меню настроек приложения или отключите Bluetooth на устройстве. Имейте в виду, что это всего лишь эксперимент с BLE, а не полнофункциональный продукт, так что у него могут быть некоторые недостатки! Оно может не работать при плохом подключении к сети или его полном отсутствии, а также при слишком большом количестве помех.\n\nХотите включить данную функцию сейчас?</string>
-    <string name="physicalweb_intro_title">Эксперимент PhysicalWeb</string>
-    <string name="pref_nearby_summary">Если здесь проставлена отметка, эксперимент  PhysicalWeb BLE активируется на экране карты и выполняет сканирование, чтобы показать вам тэги PhysicalWeb рядом с вами (требуется Bluetooth).</string>
-    <string name="pref_nearby_title">Включить эксперимент PhysicalWeb</string>
-    <string name="title_experts_directory">Эксперты</string>
-    <string name="title_people_ive_met">Люди, которых я повстречал(-а)</string>
+
+    <!-- Shown on the Session page if a session is being livestreamed. -->
+    <string name="session_live_streamed">Прямая трансляция</string>
+
+    <!-- Text under play button on session page if a session is no longer being livestreamed. -->
+    <string name="session_watch">Смотреть</string>
+
+    <!-- Text under play button on session page if a livestreamed session was previously watched. -->
+    <string name="session_replay">ПовторIT</string>
+
+    <!-- Keynotes group title for the video library -->
+    <string name="keynote_group_title">Ключевые слова</string>
+
+    <!-- Button to view more Videos or sessions from the videos/sessions card view. -->
+    <string name="more_items_button">Еще</string>
+
+    <!-- Label for the button to watch live now -->
+    <string name="my_schedule_watch_live_now">ПРЯМОЙ ЭФИР</string>
+    <!-- Accessibility description for navigation drawer -->
+    <string name="navdrawer_description_a11y">Панель навигации используется для переключения между основными разделами приложения</string>
+
+    <!-- Menu item to open the Explore Screen with the Live I/O card [CHAR_LIMIT=20] -->
+    <string name="navdrawer_item_video_library">Видеотека</string>
+    <!-- Menu item to open the debugging screen on debug builds [CHAR_LIMIT=20] -->
+    <string name="navdrawer_item_debug">Отладка</string>
+
+    <!-- List dropdown item on the Video Library screen allowing the user to choose to see
+    the videos from the last year of Google I/O. -->
+     <string name="new_videos_title">Новое в <xliff:g id="year">%1$d</xliff:g>
+    </string>
+
+    <!-- Title in the Settings screen for the setting that enables display of cards with
+     conference information in the explore screen. -->
+    <string name="pref_conf_message_cards_enabled_title">Показывать cообщения конференции</string>
+
+    <string name="schedule_session_subtitle">
+    <xliff:g id="speakers">%1$s</xliff:g>\n<xliff:g id="room KOMNATA">%2$s</xliff:g>
+    </string>
+    <string name="title_video_library">Видео</string>
+
+    <!-- Short text asking if the user is attending Google I/O in person -->
+    <string name="welcome_attending">Присутствуете лично?</string>
+
+    <!-- Medium-length welcome text asking if the user is attending Google I/O in person -->
+    <string name="welcome_attending_text">Вы присутствуете на I/O дистанционно или лично в Сан-Франциско?</string>
+
+    <!-- Title of the Video library screen when only videos of a given topic are displayed -->
+     <string name="title_topic_filtered_video_library">Видео о <xliff:g id="topic TEMA">%1$s</xliff:g>
+    </string>
+
+    <!-- Title of the Video library screen when only videos of a given year are displayed -->
+     <string name="title_year_filtered_video_library">
+    <xliff:g id="year GOD">%1$d</xliff:g> видео</string>
+
+    <!-- Title of the Video library screen when only videos of a given year and a given topic are displayed -->
+     <string name="title_year_and_topic_filtered_video_library">
+    <xliff:g id="year GOD">%1$d</xliff:g> видео о <xliff:g id="topic">%2$s</xliff:g>
+    </string>
+
+    <!-- Text of the Filter menu icon -->
+    <string name="description_filter">Фильтр</string>
+
+    <!-- Title of the Video library side panel containing all the filters -->
+    <string name="title_video_library_filter">Фильтр</string>
+
+    <!-- Sub-title for the Year filters -->
+    <string name="year_filter_section_label">Год</string>
+
+    <!-- Sub-title for the Topic filters -->
+    <string name="topic_filter_section_label">Тема</string>
+
+    <!-- Label for Social activity -->
+    <string name="title_activity_new_social">Соц сети</string>
+
+    <!-- Title of the Explore Sessions side panel containing all the filters -->
+    <string name="title_explore_sessions_filter">Фильтр</string>
+
+    <!-- BEGIN Explore Message Card User Messages -->
+    <!-- This is used on the Explore I/O message cards to answer yes to a particular message -->
+    <string name="explore_io_msgcards_answer_yes">Конечно, давайте!</string>
+
+    <!-- This is used on the Explore I/O message cards to answer no to a particular message -->
+    <string name="explore_io_msgcards_answer_no">Нет, спасибо.</string>
+
+    <!-- END Explore Message Card User Messages -->
+    
+    <!-- Shown in the schedule to indicate how many sessions are available on that particular time slot. -->
+    <plurals name="schedule_block_subtitle">
+    <item quantity="one">
+      <xliff:g id="number_of_sessions">%1$d</xliff:g> событие доступно</item>
+    <item quantity="few">
+      <xliff:g id="number_of_sessions">%1$d</xliff:g> события доступно</item>
+    <item quantity="many">
+      <xliff:g id="number_of_sessions">%1$d</xliff:g> событий доступно</item>
+    <item quantity="other">
+      <xliff:g id="number_of_sessions">%1$d</xliff:g> события доступны</item>
+    </plurals>
+
+    <!-- Shows as a notification on the system bar to alert user that some of their sessions are about to begin. -->
+    <plurals name="session_notification_text">
+        <item quantity="one">и ещё 1 начнётся через <xliff:g id="remaining_time">%1$d</xliff:g> мин.</item>
+        <item quantity="few">и ещё <xliff:g id="num_sessions">%2$d</xliff:g> начнутся через <xliff:g id="remaining_time">%1$d</xliff:g> мин.</item>
+        <item quantity="many">и ещё <xliff:g id="num_sessions">%2$d</xliff:g> начнутся через <xliff:g id="remaining_time">%1$d</xliff:g> мин.</item>
+        <item quantity="other">и ещё <xliff:g id="num_sessions">%2$d</xliff:g> начнутся через <xliff:g id="remaining_time">%1$d</xliff:g> мин.</item>
+    </plurals>
+
+    <!-- Shown as a notification on the system bar to alert user that some of their sessions are about to begin. -->
+    <plurals name="session_notification_ticker">
+        <item quantity="one">%d событие скоро начнётся.</item>
+        <item quantity="few">%d событияII скоро начнутся.</item>
+        <item quantity="many">%d событий скоро начнутся.</item>
+        <item quantity="other">%d события скоро начнутся.</item>
+    </plurals>
+
+    <!-- Title for the notification that alerts the user that some of their sessions are about to begin. -->
+    <plurals name="session_notification_title">
+        <item quantity="one">1 событие начнётся через <xliff:g id="remaining_time">%1$d</xliff:g> мин.</item>
+    <item quantity="few">
+      <xliff:g id="num_sessions">%2$d</xliff:g> события начнутся через <xliff:g id="remaining_time">%1$d</xliff:g> мин.</item>
+    <item quantity="many">
+      <xliff:g id="num_sessions">%2$d</xliff:g> событий начнутся через <xliff:g id="remaining_time">%1$d</xliff:g> мин.</item>
+    <item quantity="other">
+      <xliff:g id="num_sessions">%2$d</xliff:g> события начнутся через <xliff:g id="remaining_time">%1$d</xliff:g> мин.</item>
+    </plurals>
+
+    <!-- Shown in the 'About' window of the app. -->
+    <string name="about_body">&lt;b&gt;Конференция Google I/O 2015&lt;/b&gt;&lt;br&gt; Версия %s&lt;br&gt;&lt;br&gt; &lt;a href=http://m.google.com/utos&gt;Условия обслуживания&lt;/a&gt;&lt;br&gt;&lt;br&gt; &lt;a href=http://www.google.com/policies/privacy/&gt;Политика конфиденциальности&lt;/a&gt;</string>
+
+    <!-- Shown as a link in the About screen of the app; user can click to see the EULA. -->
+    <string name="about_eula">Лицензионное соглашение конечного пользователя</string>
+
+    <!-- Shown as a link in the About screen of the app; user can click it to see the licenses. -->
+    <string name="about_licenses">Лицензии с открытым исходным кодом</string>
+
+    <!-- Label on a button that the user clicks to accept a license agreement. -->
+    <string name="accept">Согласен</string>
 </resources>

@@ -16,11 +16,9 @@
 
 package com.google.samples.apps.iosched.appwidget;
 
-import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.os.Build;
 import android.text.format.DateUtils;
 import android.util.SparseBooleanArray;
 import android.util.SparseIntArray;
@@ -32,11 +30,11 @@ import com.google.samples.apps.iosched.R;
 import com.google.samples.apps.iosched.model.ScheduleHelper;
 import com.google.samples.apps.iosched.model.ScheduleItem;
 import com.google.samples.apps.iosched.provider.ScheduleContract;
-import com.google.samples.apps.iosched.ui.MyScheduleActivity;
+import com.google.samples.apps.iosched.settings.SettingsUtils;
+import com.google.samples.apps.iosched.myschedule.MyScheduleActivity;
 import com.google.samples.apps.iosched.ui.SimpleSectionedListAdapter;
 import com.google.samples.apps.iosched.ui.TaskStackBuilderProxyActivity;
 import com.google.samples.apps.iosched.util.AccountUtils;
-import com.google.samples.apps.iosched.util.PrefUtils;
 import com.google.samples.apps.iosched.util.TimeUtils;
 import com.google.samples.apps.iosched.util.UIUtils;
 
@@ -69,8 +67,7 @@ public class ScheduleWidgetRemoteViewsService extends RemoteViewsService {
         Formatter mFormatter = new Formatter(mBuffer, Locale.getDefault());
         private ArrayList<ScheduleItem> mScheduleItems;
         private int mDefaultSessionColor;
-        private int mDefaultStartTimeColor;
-        private int mDefaultEndTimeColor;
+        private int mDefaultStartEndTimeColor;
 
         public WidgetRemoteViewsFactory(Context context) {
             mContext = context;
@@ -138,21 +135,14 @@ public class ScheduleWidgetRemoteViewsService extends RemoteViewsService {
                 int itemViewType = getItemViewType(itemPosition);
                 boolean isNowPlaying = false;
                 boolean isPastDuringConference = false;
-                int layoutResId = R.layout.widget_schedule_item;
-                mDefaultStartTimeColor = R.color.body_text_2;
-                mDefaultEndTimeColor = R.color.body_text_3;
+                mDefaultStartEndTimeColor = R.color.body_text_2;
 
                 if (itemViewType == VIEW_TYPE_NOW) {
                     isNowPlaying = true;
-                    layoutResId = R.layout.widget_schedule_item_now;
-                    mDefaultStartTimeColor = mDefaultEndTimeColor = R.color.body_text_1_inverse;
-                } else {
-                    if (item.type == ScheduleItem.BREAK) {
-                        layoutResId = R.layout.widget_schedule_item_break;
-                    }
+                    mDefaultStartEndTimeColor = R.color.body_text_1;
                 }
 
-                rv = new RemoteViews(mContext.getPackageName(), layoutResId);
+                rv = new RemoteViews(mContext.getPackageName(), R.layout.widget_schedule_item);
 
 
                 if (itemPosition < 0 || itemPosition >= mScheduleItems.size()) {
@@ -161,78 +151,48 @@ public class ScheduleWidgetRemoteViewsService extends RemoteViewsService {
                 }
 
                 long now = UIUtils.getCurrentTime(mContext);
-                boolean showEndTime;
-                if (item.startTime <= now) {
-                    // session is happening now!
-                    rv.setTextViewText(R.id.start_time, mContext.getString(R.string.session_now));
-                    showEndTime = nextItem == null || nextItem.startTime != item.endTime;
-                } else {
-                    // session in the future
-                    rv.setTextViewText(R.id.start_time, TimeUtils.formatShortTime(mContext, new Date(item.startTime)));
-                    // do we need and end time view?
-                    showEndTime = nextItem == null || nextItem.startTime != item.endTime;
-                }
-
-                if (showEndTime) {
-                    rv.setViewVisibility(R.id.end_time, View.VISIBLE);
-                    rv.setTextViewText(R.id.end_time, mContext.getString(R.string.schedule_end_time,
-                            TimeUtils.formatShortTime(mContext, new Date(item.endTime))));
-                } else {
-                    // no need to show end time
-                    rv.setViewVisibility(R.id.end_time, View.GONE);
-                }
-
+                rv.setTextViewText(R.id.start_end_time, formatTime(now, item));
 
                 rv.setViewVisibility(R.id.live_now_badge, View.GONE);
 
-                rv.setViewVisibility(R.id.conflict_warning, View.GONE);
-
                 // Set default colors to time indicators, in case they were overridden by conflict warning:
                 if (!isNowPlaying) {
-                    rv.setTextColor(R.id.start_time, mContext.getResources().getColor(mDefaultStartTimeColor));
-                    rv.setTextColor(R.id.end_time, mContext.getResources().getColor(mDefaultEndTimeColor));
-
+                    rv.setTextColor(R.id.start_end_time, mContext.getResources().getColor(mDefaultStartEndTimeColor));
                 }
 
                 if (item.type == ScheduleItem.FREE) {
-
-                    rv.setImageViewResource(R.id.background_image, R.drawable.schedule_item_free);
+                    rv.setImageViewResource(R.id.icon, R.drawable.ic_browse);
 
                     rv.setTextViewText(R.id.slot_title, mContext.getText(R.string.browse_sessions));
-                    rv.setTextColor(R.id.slot_title, mContext.getResources().getColor(R.color.theme_primary));
+                    rv.setTextColor(R.id.slot_title, mContext.getResources().getColor(R.color.flat_button_text));
 
-                    rv.setTextViewText(R.id.slot_subtitle, item.subtitle);
-                    rv.setTextColor(R.id.slot_subtitle, mContext.getResources().getColor(R.color.body_text_2));
+                    rv.setTextViewText(R.id.slot_room, item.subtitle);
+                    rv.setTextColor(R.id.slot_room, mContext.getResources().getColor(R.color.body_text_2));
 
                     Intent fillIntent = TaskStackBuilderProxyActivity.getFillIntent(
                             homeIntent,
                             new Intent(Intent.ACTION_VIEW, ScheduleContract.Sessions.buildUnscheduledSessionsInInterval(
-                        item.startTime, item.endTime))
+                                    item.startTime, item.endTime))
                     );
                     rv.setOnClickFillInIntent(R.id.box, fillIntent);
 
                 } else if (item.type == ScheduleItem.BREAK) {
-                    rv.setImageViewResource(R.id.background_image, R.drawable.schedule_item_break);
+                    rv.setImageViewResource(R.id.icon, UIUtils.getBreakIcon(item.title));
 
                     rv.setTextViewText(R.id.slot_title, item.title);
                     rv.setTextColor(R.id.slot_title, mContext.getResources().getColor(R.color.body_text_1));
 
-                    rv.setTextViewText(R.id.slot_subtitle, item.subtitle);
-                    rv.setTextColor(R.id.slot_subtitle, mContext.getResources().getColor(R.color.body_text_2));
+                    rv.setTextViewText(R.id.slot_room, item.room);
+                    rv.setTextColor(R.id.slot_room, mContext.getResources().getColor(R.color.body_text_2));
 
                 } else if (item.type == ScheduleItem.SESSION) {
-                    final int color = UIUtils.scaleSessionColorToDefaultBG(
-                            item.backgroundColor == 0 ? mDefaultSessionColor : item.backgroundColor);
-
-                    Bitmap image = Bitmap.createBitmap(1, 1, Bitmap.Config.ARGB_8888);
-                    image.eraseColor(color);
-                    rv.setImageViewBitmap(R.id.background_image, image);
+                    rv.setImageViewResource(R.id.icon, UIUtils.getSessionIcon(item.sessionType));
 
                     rv.setTextViewText(R.id.slot_title, item.title);
-                    rv.setTextColor(R.id.slot_title, mContext.getResources().getColor(R.color.body_text_1_inverse));
+                    rv.setTextColor(R.id.slot_title, mContext.getResources().getColor(R.color.body_text_1));
 
-                    rv.setTextViewText(R.id.slot_subtitle, item.subtitle);
-                    rv.setTextColor(R.id.slot_subtitle, mContext.getResources().getColor(R.color.body_text_2_inverse));
+                    rv.setTextViewText(R.id.slot_room, item.room);
+                    rv.setTextColor(R.id.slot_room, mContext.getResources().getColor(R.color.body_text_2));
 
                     // show or hide the "LIVE NOW" badge
                     final boolean showLiveBadge = 0 != (item.flags & ScheduleItem.FLAG_HAS_LIVESTREAM)
@@ -242,11 +202,9 @@ public class ScheduleWidgetRemoteViewsService extends RemoteViewsService {
                     // show or hide the "conflict" warning
                     if (!isPastDuringConference) {
                         final boolean showConflict = 0 != (item.flags & ScheduleItem.FLAG_CONFLICTS_WITH_PREVIOUS);
-                        rv.setViewVisibility(R.id.conflict_warning, (showConflict ? View.VISIBLE : View.GONE));
                         if (showConflict && !isNowPlaying) {
                             int conflictColor = mContext.getResources().getColor(R.color.my_schedule_conflict);
-                            rv.setTextColor(R.id.start_time, conflictColor);
-                            rv.setTextColor(R.id.end_time, conflictColor);
+                            rv.setTextColor(R.id.start_end_time, conflictColor);
                         }
                     }
 
@@ -294,7 +252,7 @@ public class ScheduleWidgetRemoteViewsService extends RemoteViewsService {
             //Fetch all sessions and blocks
             List<ScheduleItem> allScheduleItems = scheduleHelper.getScheduleData(Long.MIN_VALUE, Long.MAX_VALUE);
 
-            String displayTimeZone = PrefUtils.getDisplayTimeZone(mContext).getID();
+            String displayTimeZone = SettingsUtils.getDisplayTimeZone(mContext).getID();
 
             mSections = new ArrayList<SimpleSectionedListAdapter.Section>();
             long previousTime = -1;
@@ -332,7 +290,25 @@ public class ScheduleWidgetRemoteViewsService extends RemoteViewsService {
                 ++position;
                 previousTime = time;
             }
+        }
 
+        private String formatTime(long now, ScheduleItem item) {
+            StringBuilder time = new StringBuilder();
+            if (item.startTime <= now) {
+                // session is happening now!
+                if (0 != (item.flags & ScheduleItem.FLAG_HAS_LIVESTREAM)) {
+                    // session has live stream
+                    time.append(mContext.getString(R.string.watch_now));
+                } else {
+                    time.append(mContext.getString(R.string.session_now));
+                }
+            } else {
+                // session in the future
+                time.append(TimeUtils.formatShortTime(mContext, new Date(item.startTime)));
+            }
+            time.append(" - ");
+            time.append(TimeUtils.formatShortTime(mContext, new Date(item.endTime)));
+            return time.toString();
         }
     }
 }

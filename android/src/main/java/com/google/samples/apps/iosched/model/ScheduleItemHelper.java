@@ -59,6 +59,7 @@ public class ScheduleItemHelper {
                 if (item.type == ScheduleItem.SESSION) {
                     if (intersect(other, item, true)) {
                         other.flags |= ScheduleItem.FLAG_CONFLICTS_WITH_PREVIOUS;
+                        item.flags |= ScheduleItem.FLAG_CONFLICTS_WITH_NEXT;
                     } else {
                         // we assume the list is ordered by starttime
                         break;

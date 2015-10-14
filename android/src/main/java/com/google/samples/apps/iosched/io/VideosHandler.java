@@ -28,6 +28,7 @@ import com.google.samples.apps.iosched.io.model.Video;
 import com.google.samples.apps.iosched.provider.ScheduleContract;
 import com.google.gson.Gson;
 import com.google.gson.JsonElement;
+import com.google.samples.apps.iosched.provider.ScheduleContractHelper;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -57,7 +58,7 @@ public class VideosHandler extends JSONHandler {
 
     @Override
     public void makeContentProviderOperations(ArrayList<ContentProviderOperation> list) {
-        Uri uri = ScheduleContract.addCallerIsSyncAdapterParameter(
+        Uri uri = ScheduleContractHelper.setUriAsCalledFromSyncAdapter(
                 ScheduleContract.Videos.CONTENT_URI);
         HashMap<String, String> videoHashcodes = loadVideoHashcodes();
         HashSet<String> videosToKeep = new HashSet<String>();
@@ -101,9 +102,9 @@ public class VideosHandler extends JSONHandler {
 
     private void buildVideo(boolean isInsert, Video video,
                               ArrayList<ContentProviderOperation> list) {
-        Uri allVideosUri = ScheduleContract.addCallerIsSyncAdapterParameter(
+        Uri allVideosUri = ScheduleContractHelper.setUriAsCalledFromSyncAdapter(
                 ScheduleContract.Videos.CONTENT_URI);
-        Uri thisVideoUri = ScheduleContract.addCallerIsSyncAdapterParameter(
+        Uri thisVideoUri = ScheduleContractHelper.setUriAsCalledFromSyncAdapter(
                 ScheduleContract.Videos.buildVideoUri(video.id));
 
         ContentProviderOperation.Builder builder;
@@ -143,32 +144,40 @@ public class VideosHandler extends JSONHandler {
     }
 
     private void buildDeleteOperation(String videoId, ArrayList<ContentProviderOperation> list) {
-        Uri videoUri = ScheduleContract.addCallerIsSyncAdapterParameter(
+        Uri videoUri = ScheduleContractHelper.setUriAsCalledFromSyncAdapter(
                 ScheduleContract.Videos.buildVideoUri(videoId));
         list.add(ContentProviderOperation.newDelete(videoUri).build());
     }
 
     private HashMap<String, String> loadVideoHashcodes() {
-        Uri uri = ScheduleContract.addCallerIsSyncAdapterParameter(
+        Uri uri = ScheduleContractHelper.setUriAsCalledFromSyncAdapter(
                 ScheduleContract.Videos.CONTENT_URI);
-        Cursor cursor = mContext.getContentResolver().query(uri, VideoHashcodeQuery.PROJECTION,
-                null, null, null);
-        if (cursor == null) {
-            LOGE(TAG, "Error querying video hashcodes (got null cursor)");
-            return null;
+        Cursor cursor = null;
+        try {
+            cursor = mContext.getContentResolver().query(uri, VideoHashcodeQuery.PROJECTION,
+                    null, null, null);
+            if (cursor == null) {
+                LOGE(TAG, "Error querying video hashcodes (got null cursor)");
+                return null;
+            }
+            if (cursor.getCount() < 1) {
+                LOGE(TAG, "Error querying video hashcodes (no records returned)");
+                return null;
+            }
+            HashMap<String, String> result = new HashMap<String, String>();
+            if (cursor.moveToFirst()) {
+                do {
+                    String videoId = cursor.getString(VideoHashcodeQuery.VIDEO_ID);
+                    String hashcode = cursor.getString(VideoHashcodeQuery.VIDEO_IMPORT_HASHCODE);
+                    result.put(videoId, hashcode == null ? "" : hashcode);
+                } while (cursor.moveToNext());
+            }
+            return result;
+        } finally {
+            if (cursor != null) {
+                cursor.close();
+            }
         }
-        if (cursor.getCount() < 1) {
-            LOGE(TAG, "Error querying video hashcodes (no records returned)");
-            return null;
-        }
-        HashMap<String, String> result = new HashMap<String, String>();
-        while (cursor.moveToNext()) {
-            String videoId = cursor.getString(VideoHashcodeQuery.VIDEO_ID);
-            String hashcode = cursor.getString(VideoHashcodeQuery.VIDEO_IMPORT_HASHCODE);
-            result.put(videoId, hashcode == null ? "" : hashcode);
-        }
-        cursor.close();
-        return result;
     }
 
     private interface VideoHashcodeQuery {

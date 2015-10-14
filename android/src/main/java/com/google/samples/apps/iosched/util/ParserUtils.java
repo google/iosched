@@ -30,8 +30,6 @@ public class ParserUtils {
     /** Used to sanitize a string to be {@link Uri} safe. */
     private static final Pattern sSanitizePattern = Pattern.compile("[^a-z0-9-_]");
 
-    private static final Time sTime = new Time();
-
     /**
      * Sanitize the given string to be {@link Uri} safe for building
      * {@link ContentProvider} paths.
@@ -47,9 +45,10 @@ public class ParserUtils {
      * Parse the given string as a RFC 3339 timestamp, returning the value as
      * milliseconds since the epoch.
      */
-    public static long parseTime(String time) {
-        sTime.parse3339(time);
-        return sTime.toMillis(false);
+    public static long parseTime(String timestamp) {
+        final Time time = new Time();
+        time.parse3339(timestamp);
+        return time.toMillis(false);
     }
 
     public static String joinStrings(String connector, ArrayList<String> strings, StringBuilder recycle) {

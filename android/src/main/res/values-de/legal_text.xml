@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
-  Copyright 2014 Google Inc. All rights reserved.
+  Copyright 2015 Google Inc. All rights reserved.
 
   Licensed under the Apache License, Version 2.0 (the "License");
   you may not use this file except in compliance with the License.
@@ -14,7 +14,6 @@
   See the License for the specific language governing permissions and
   limitations under the License.
   -->
-
 <resources>
-    <string name="eula_legal_text">Your EULA text here.</string>
+    <string name="eula_legal_text">Mit der Nutzung dieser Anwendung wird geregelt durch: a) die Nutzungsbedingungen von Google (http://www.google.com/intl/de/policies/terms/); b) die Google-Datenschutzrichtlinie (http://www.google.com/intl/de/policies/privacy/); und c) den geltenden Google-Service-spezifischen Nutzungsbedingungen oder Datenschutzrichtlinien. Nutzungsbedingungen und Datenschutzrichtlinien von Google können von Zeit zu Zeit ohne Vorankündigung geändert werden.\n\nDiese Anwendung speichert bei Verwendung bestimmte Informationen, auch über Google Analytics. Die Datenschutzbestimmungen von Google erklärt, wie Google Ihre Informationen behandelt und Ihre Privatsphäre schützt, wenn Sie die Anwendung nutzen. Durch Verwendung der Anwendung stimmen Sie der Datennutzung in Übereinstimmung mit den Google-Datenschutzbestimmungen zu.</string>
 </resources>

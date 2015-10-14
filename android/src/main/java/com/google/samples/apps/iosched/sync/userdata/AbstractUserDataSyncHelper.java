@@ -22,9 +22,13 @@ import android.net.Uri;
 import android.util.Log;
 
 import com.google.samples.apps.iosched.appwidget.ScheduleWidgetProvider;
+import com.google.samples.apps.iosched.framework.QueryEnum;
 import com.google.samples.apps.iosched.gcm.ServerUtilities;
 import com.google.samples.apps.iosched.provider.ScheduleContract;
 import com.google.samples.apps.iosched.provider.ScheduleContract.MySchedule;
+import com.google.samples.apps.iosched.provider.ScheduleContract.MyFeedbackSubmitted;
+import com.google.samples.apps.iosched.provider.ScheduleContract.MyViewedVideos;
+import com.google.samples.apps.iosched.provider.ScheduleContractHelper;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -36,7 +40,7 @@ import static com.google.samples.apps.iosched.util.LogUtils.makeLogTag;
 
 
 /**
- * Helper class that syncs starred sessions data in a Drive's AppData folder.
+ * Helper class that syncs user data in a Drive's AppData folder.
  *
  * Protocode:
  *
@@ -45,7 +49,7 @@ import static com.google.samples.apps.iosched.util.LogUtils.makeLogTag;
  *   this.updateSession():
  *     send addstar/removestar to contentProvider
  *     send broadcast to update any dependent UI
- *     save user actions as pending in shared preferences
+ *     save user actions as pending in shared settings_prefs
  *
  *   // on sync
  *   syncadapter: call this.sync()
@@ -75,40 +79,86 @@ public abstract class AbstractUserDataSyncHelper {
     /**
      * Create a copy of current pending actions and delegate the
      * proper sync'ing to the concrete subclass on the method syncImpl.
-     *
      */
     public boolean sync() {
-        // get data pending sync:
-        Cursor scheduleData = mContext.getContentResolver().query(
-                MySchedule.buildMyScheduleUri(mContext, mAccountName), MyScheduleQuery.PROJECTION,
-                null, null, null);
-
-        if (scheduleData == null) {
-            return false;
-        }
-
-        // Although we have a dirty flag per item, we need all schedule to sync, because it's all
-        // sync'ed at once to a file on AppData folder. We only use the dirty flag to decide if
-        // the local content was changed or not. If it was, we replace the remote content.
+        // Although we have a dirty flag per item, we need all schedule/viewed videos to sync,
+        // because it's all sync'ed at once to a file on AppData folder. We only use the dirty flag
+        // to decide if the local content was changed or not. If it was, we replace the remote
+        // content.
         boolean hasPendingLocalData = false;
-        ArrayList<UserAction> actions = new ArrayList<UserAction>();
-        while (scheduleData.moveToNext()) {
+        ArrayList<UserAction> actions = new ArrayList<>();
 
-            UserAction userAction = new UserAction();
-            userAction.sessionId = scheduleData.getString(MyScheduleQuery.SESSION_ID);
-            Integer inSchedule = scheduleData.getInt(MyScheduleQuery.IN_SCHEDULE);
-            if (inSchedule == 0) {
-                userAction.type = UserAction.TYPE.REMOVE_STAR;
-            } else {
-                userAction.type = UserAction.TYPE.ADD_STAR;
+        // Get schedule data pending sync.
+        Cursor scheduleData = mContext.getContentResolver().query(
+                MySchedule.buildMyScheduleUri(mAccountName),
+                UserDataQueryEnum.MY_SCHEDULE.getProjection(), null, null, null);
+
+        if (scheduleData != null) {
+            while (scheduleData.moveToNext()) {
+                UserAction userAction = new UserAction();
+                userAction.sessionId = scheduleData.getString(
+                        scheduleData.getColumnIndex(MySchedule.SESSION_ID));
+                Integer inSchedule = scheduleData.getInt(
+                        scheduleData.getColumnIndex(MySchedule.MY_SCHEDULE_IN_SCHEDULE));
+                if (inSchedule == 0) {
+                    userAction.type = UserAction.TYPE.REMOVE_STAR;
+                } else {
+                    userAction.type = UserAction.TYPE.ADD_STAR;
+                }
+                userAction.requiresSync = scheduleData.getInt(
+                        scheduleData.getColumnIndex(MySchedule.MY_SCHEDULE_DIRTY_FLAG)) == 1;
+                actions.add(userAction);
+                if (!hasPendingLocalData && userAction.requiresSync) {
+                    hasPendingLocalData = true;
+                }
             }
-            userAction.requiresSync = scheduleData.getInt(MyScheduleQuery.DIRTY_FLAG) == 1;
-            actions.add(userAction);
-            if (!hasPendingLocalData && userAction.requiresSync) {
-                hasPendingLocalData = true;
-            }
+            scheduleData.close();
         }
-        scheduleData.close();
+
+        // Get video viewed data pending sync.
+        Cursor videoViewed = mContext.getContentResolver().query(
+                ScheduleContract.MyViewedVideos.buildMyViewedVideosUri(mAccountName),
+                UserDataQueryEnum.MY_VIEWED_VIDEO.getProjection(), null, null, null);
+
+        if (videoViewed != null) {
+            while (videoViewed.moveToNext()) {
+                UserAction userAction = new UserAction();
+                userAction.videoId = videoViewed.getString(
+                        videoViewed.getColumnIndex(MyViewedVideos.VIDEO_ID));
+                userAction.type = UserAction.TYPE.VIEW_VIDEO;
+                userAction.requiresSync = videoViewed.getInt(
+                        videoViewed.getColumnIndex(
+                                MyViewedVideos.MY_VIEWED_VIDEOS_DIRTY_FLAG)) == 1;
+                actions.add(userAction);
+                if (!hasPendingLocalData && userAction.requiresSync) {
+                    hasPendingLocalData = true;
+                }
+            }
+            videoViewed.close();
+        }
+
+        // Get feedback submitted data pending sync.
+        Cursor feedbackSubmitted = mContext.getContentResolver().query(
+                MyFeedbackSubmitted.buildMyFeedbackSubmittedUri(mAccountName),
+                UserDataQueryEnum.MY_FEEDBACK_SUBMITTED.getProjection(), null, null, null);
+
+        if (feedbackSubmitted != null) {
+            while (feedbackSubmitted.moveToNext()) {
+                UserAction userAction = new UserAction();
+                userAction.sessionId = feedbackSubmitted.getString(
+                        feedbackSubmitted.getColumnIndex(MyFeedbackSubmitted.SESSION_ID));
+                userAction.type = UserAction.TYPE.VIEW_VIDEO;
+                userAction.requiresSync = feedbackSubmitted.getInt(
+                        feedbackSubmitted.getColumnIndex(
+                                MyFeedbackSubmitted.MY_FEEDBACK_SUBMITTED_DIRTY_FLAG)) == 1;
+                actions.add(userAction);
+                if (!hasPendingLocalData && userAction.requiresSync) {
+                    hasPendingLocalData = true;
+                }
+            }
+            feedbackSubmitted.close();
+        }
+
 
         Log.d(TAG, "Starting Drive AppData sync. hasPendingData = " + hasPendingLocalData);
 
@@ -117,7 +167,7 @@ public abstract class AbstractUserDataSyncHelper {
         if (hasPendingLocalData) {
             resetDirtyFlag(actions);
 
-            // Notify other devices via GCM
+            // Notify other devices via GCM.
             ServerUtilities.notifyUserDataChanged(mContext);
         }
         if (dataChanged) {
@@ -133,16 +183,37 @@ public abstract class AbstractUserDataSyncHelper {
     }
 
     private void resetDirtyFlag(ArrayList<UserAction> actions) {
-        ArrayList<ContentProviderOperation> ops = new ArrayList<ContentProviderOperation>();
-        for (UserAction action: actions) {
+        ArrayList<ContentProviderOperation> ops = new ArrayList<>();
+        for (UserAction action : actions) {
+
+            Uri baseUri;
+            String with;
+            String[] withSelectionValue;
+            String dirtyField;
+
+            if (action.type == UserAction.TYPE.VIEW_VIDEO) {
+                baseUri = MyViewedVideos.buildMyViewedVideosUri(mAccountName);
+                with = MyViewedVideos.VIDEO_ID + "=?";
+                withSelectionValue = new String[]{action.videoId};
+                dirtyField = MyViewedVideos.MY_VIEWED_VIDEOS_DIRTY_FLAG;
+            } else if (action.type == UserAction.TYPE.SUBMIT_FEEDBACK) {
+                baseUri = MyFeedbackSubmitted.buildMyFeedbackSubmittedUri(mAccountName);
+                with = MyFeedbackSubmitted.SESSION_ID + "=?";
+                withSelectionValue = new String[]{action.sessionId};
+                dirtyField = MyFeedbackSubmitted.MY_FEEDBACK_SUBMITTED_DIRTY_FLAG;
+            } else {
+                baseUri = MySchedule.buildMyScheduleUri(mAccountName);
+                with = MySchedule.SESSION_ID + "=? AND "
+                        + MySchedule.MY_SCHEDULE_IN_SCHEDULE + "=?";
+                withSelectionValue = new String[]{action.sessionId,
+                        action.type == UserAction.TYPE.ADD_STAR ? "1" : "0"};
+                dirtyField = MySchedule.MY_SCHEDULE_DIRTY_FLAG;
+            }
+
             ContentProviderOperation op = ContentProviderOperation.newUpdate(
-                    ScheduleContract.addCallerIsSyncAdapterParameter(
-                            MySchedule.buildMyScheduleUri(mContext, mAccountName)))
-                    .withSelection(MySchedule.SESSION_ID + "=? AND " +
-                                    MySchedule.MY_SCHEDULE_IN_SCHEDULE + "=?",
-                            new String[]{action.sessionId,
-                                    action.type == UserAction.TYPE.ADD_STAR ? "1" : "0"})
-                    .withValue(MySchedule.MY_SCHEDULE_DIRTY_FLAG, 0)
+                    ScheduleContractHelper.setUriAsCalledFromSyncAdapter(baseUri))
+                    .withSelection(with, withSelectionValue)
+                    .withValue(dirtyField, 0)
                     .build();
             LOGD(TAG, op.toString());
             ops.add(op);
@@ -156,17 +227,34 @@ public abstract class AbstractUserDataSyncHelper {
         }
     }
 
-    private interface MyScheduleQuery {
+    private enum UserDataQueryEnum implements QueryEnum {
+        MY_SCHEDULE(0, new String[]{MySchedule.SESSION_ID, MySchedule.MY_SCHEDULE_IN_SCHEDULE,
+                MySchedule.MY_SCHEDULE_DIRTY_FLAG}),
 
-        String[] PROJECTION = {
-                MySchedule.SESSION_ID,
-                MySchedule.MY_SCHEDULE_IN_SCHEDULE,
-                MySchedule.MY_SCHEDULE_DIRTY_FLAG,
-        };
+        MY_FEEDBACK_SUBMITTED(0, new String[]{MyFeedbackSubmitted.SESSION_ID,
+                MyFeedbackSubmitted.MY_FEEDBACK_SUBMITTED_DIRTY_FLAG}),
 
-        int SESSION_ID = 0;
-        int IN_SCHEDULE= 1;
-        int DIRTY_FLAG = 2;
+        MY_VIEWED_VIDEO(0, new String[]{MyViewedVideos.VIDEO_ID,
+                MyViewedVideos.MY_VIEWED_VIDEOS_DIRTY_FLAG});
+
+        private int id;
+
+        private String[] projection;
+
+        UserDataQueryEnum(int id, String[] projection) {
+            this.id = id;
+            this.projection = projection;
+        }
+
+        @Override
+        public int getId() {
+            return id;
+        }
+
+        @Override
+        public String[] getProjection() {
+            return projection;
+        }
+
     }
-
 }

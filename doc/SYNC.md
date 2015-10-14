@@ -45,7 +45,6 @@ an example of the manifest file body.
         "blocks_v10.json",
         "map_v11.json",
         "keynote_v10.json",
-        "partners_v2.json",
         "session_data_v2.681.json"
     ]
 }
@@ -471,35 +470,6 @@ Example hashtag:
 }
 ```
 
-### Partners
-
-Partners are companies whose information appears in the list of
-partners in the map.
-
-```JSON
-{
-  "partners": [
-    <partner>,
-    <partner>,
-    <partner>,
-    ...
-  ]
-}
-```
-
-Example partner:
-
-```JSON
-{
-    "id": "PARTNER123", 
-    "name": "Example Corp", 
-    "website": "http://www.example.com/", 
-    "logo": "http://.../example.png",
-    "desc": "Example Corp produces great example material."
-} 
-```
-
-
 ### Videos
 
 Videos are links to Youtube content that appear in the Video Library
@@ -507,7 +477,7 @@ screen.
 
 ```JSON
 {
-  "videos": [
+  "video_library": [
     <video>,
     <video>,
     <video>,
@@ -553,7 +523,7 @@ formatted as follows:
                   "lat": 37.78280631538293, 
                   "lng": -122.40401487797499, 
                   "title": "Room 8", 
-                  "type": "session"
+                  "type": "SESSION"
              }, 
              ....
          ],
@@ -566,15 +536,15 @@ formatted as follows:
      },
      "tiles": {
          "0": {
-             "filename": "floor2-2014-v1.svg", 
+             "filename": "floor2-2015-v1.svg",
              "url": ""
          }, 
          "1": {
-             "filename": "floor1-2014-v1.svg", 
+             "filename": "floor1-2015-v1.svg",
              "url": ""
          }, 
          "2": {
-             "filename": "floor0-2014-v1.svg", 
+             "filename": "floor0-2015-v1.svg",
              "url": ""
          }
      }
@@ -597,12 +567,12 @@ To indicate the location of a room, use this marker format:
      "lat": 37.78280631538293, 
      "lng": -122.40401487797499, 
      "title": "Room 8", 
-     "type": "session"
+     "type": "SESSION"
 }
 ```
 
 To put a label on the map without making it a marker, simply
-set the "type" to "label":
+set the "type" to "LABEL":
 
 ```JSON
 {
@@ -614,18 +584,10 @@ set the "type" to "label":
 }
 ```
 
-To put the partners marker (which will open the list of partners
-when clicked), use the "partnerlabel" type:
-
-```JSON
-{
-    "id": "partnersandboxlabel", 
-    "lat": 37.78325148340904, 
-    "lng": -122.40336142480373, 
-    "title": "Partner\nSandbox", 
-    "type": "partnerlabel"
-}
-```
+Other supported types are "PLAIN" and "MISC", which differ by a special icon in its info display
+(but do not display a list of scheduled sessions).
+"SESSION" rooms include a list of its scheduled sessions (without their icons).
+"SANDBOX" rooms include a list of its scheduled sessions (including their icons).
 
 The "tiles" dictionary indicate what SVG file to use as the map
 overlay for each floor. The optional "url" parameter indicates a

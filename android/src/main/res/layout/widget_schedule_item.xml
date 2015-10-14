@@ -1,5 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
 <!--
-  Copyright 2014 Google Inc. All rights reserved.
+  Copyright 2015 Google Inc. All rights reserved.
 
   Licensed under the Apache License, Version 2.0 (the "License");
   you may not use this file except in compliance with the License.
@@ -14,86 +15,65 @@
   limitations under the License.
   -->
 
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:paddingBottom="8dp"
-    android:paddingLeft="@dimen/keyline_1"
-    android:paddingRight="@dimen/keyline_1"
-    android:orientation="horizontal"
-    android:layout_height="@dimen/widget_item_height"
-    android:layout_width="match_parent">
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/box"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingBottom="@dimen/spacing_normal"
+    android:paddingLeft="@dimen/padding_normal"
+    android:paddingRight="@dimen/padding_normal">
 
-    <!--Start and end times -->-->
+    <ImageView
+        android:id="@+id/icon"
+        android:layout_width="@dimen/social_icon_size"
+        android:layout_height="@dimen/social_icon_size"
+        android:layout_marginEnd="@dimen/padding_normal"
+        android:layout_marginRight="@dimen/padding_normal"
+        android:layout_marginTop="@dimen/spacing_normal"
+        android:contentDescription="@null"
+        android:layout_alignParentLeft="true"
+        android:src="@drawable/ic_navview_my_schedule" />
 
-    <LinearLayout
-        android:orientation="vertical"
-        android:layout_width="@dimen/widget_schedule_time_width"
-        android:layout_height="match_parent">
+    <TextView
+        android:id="@+id/slot_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/spacing_normal"
+        android:layout_toRightOf="@id/icon"
+        android:ellipsize="end"
+        android:textColor="@color/body_text_1"
+        android:textSize="@dimen/text_size_medium"
+        tools:text="@string/placeholder_session_title" />
 
-        <TextView
-            android:id="@+id/start_time"
-            android:layout_width="wrap_content"
-            android:layout_height="36dp"
-            android:gravity="bottom"
-            android:textSize="@dimen/text_size_medium"
-            android:textColor="@color/body_text_2" />
+    <TextView
+        android:id="@+id/start_end_time"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/spacing_micro"
+        android:layout_below="@id/slot_title"
+        android:layout_toRightOf="@id/icon"
+        android:gravity="bottom"
+        android:textSize="@dimen/text_size_small"
+        android:textColor="@color/body_text_2"/>
 
-        <TextView
-            android:id="@+id/end_time"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="@dimen/text_size_small"
-            android:textColor="@color/body_text_3" />
+    <TextView
+        android:id="@+id/slot_room"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/start_end_time"
+        android:layout_toRightOf="@id/icon"
+        android:textSize="@dimen/text_size_small" />
 
-        <TextView
-            android:id="@+id/conflict_warning"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="@dimen/text_size_small"
-            android:textColor="@color/my_schedule_conflict"
-            android:text="@string/schedule_conflict_with_previous"
-            android:visibility="invisible" />
-    </LinearLayout>
+    <!-- "LIVE NOW" indicator -->
+    <include
+        layout="@layout/include_live_now_badge"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/spacing_micro"
+        android:layout_below="@id/slot_room"
+        android:layout_toRightOf="@id/icon"
+        android:visibility="gone" />
 
-    <!-- Background photo, title, subtitle -->
-    <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        android:id="@+id/box"
-        android:layout_width="0dp"
-        android:layout_weight="1"
-        android:layout_height="match_parent">
-
-        <!--Background photo -->
-        <ImageView
-            android:id="@+id/background_image"
-            android:layout_height="match_parent"
-            android:layout_width="match_parent"
-            android:scaleType="fitXY" />
-
-        <!-- Block/slot chip contents -->
-        <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-            android:id="@+id/slot_chip_content"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:paddingLeft="16dp"
-            android:paddingRight="8dp"
-            android:paddingBottom="8dp">
-
-            <TextView
-                android:id="@+id/slot_title"
-                android:layout_width="wrap_content"
-                android:layout_height="36dp"
-                android:gravity="bottom"
-                android:textSize="@dimen/text_size_large"
-                android:ellipsize="end"
-                android:maxLines="1" />
-
-            <TextView
-                android:id="@+id/slot_subtitle"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textSize="@dimen/text_size_small"
-                />
-        </LinearLayout>
-
-    </FrameLayout>
-</LinearLayout>
+</RelativeLayout>

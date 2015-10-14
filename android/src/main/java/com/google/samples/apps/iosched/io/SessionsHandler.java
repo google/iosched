@@ -30,6 +30,7 @@ import com.google.samples.apps.iosched.io.model.Session;
 import com.google.samples.apps.iosched.io.model.Speaker;
 import com.google.samples.apps.iosched.io.model.Tag;
 import com.google.samples.apps.iosched.provider.ScheduleContract;
+import com.google.samples.apps.iosched.provider.ScheduleContractHelper;
 import com.google.samples.apps.iosched.provider.ScheduleDatabase;
 import com.google.samples.apps.iosched.util.TimeUtils;
 import com.google.gson.Gson;
@@ -64,7 +65,7 @@ public class SessionsHandler extends JSONHandler {
 
     @Override
     public void makeContentProviderOperations(ArrayList<ContentProviderOperation> list) {
-        Uri uri = ScheduleContract.addCallerIsSyncAdapterParameter(
+        Uri uri = ScheduleContractHelper.setUriAsCalledFromSyncAdapter(
                 ScheduleContract.Sessions.CONTENT_URI);
 
         // build a map of session to session import hashcode so we know what to update,
@@ -120,33 +121,38 @@ public class SessionsHandler extends JSONHandler {
     }
 
     private void buildDeleteOperation(String sessionId, List<ContentProviderOperation> list) {
-        Uri sessionUri = ScheduleContract.addCallerIsSyncAdapterParameter(
+        Uri sessionUri = ScheduleContractHelper.setUriAsCalledFromSyncAdapter(
                 ScheduleContract.Sessions.buildSessionUri(sessionId));
         list.add(ContentProviderOperation.newDelete(sessionUri).build());
     }
 
     private HashMap<String, String> loadSessionHashCodes() {
-        Uri uri = ScheduleContract.addCallerIsSyncAdapterParameter(
+        Uri uri = ScheduleContractHelper.setUriAsCalledFromSyncAdapter(
                 ScheduleContract.Sessions.CONTENT_URI);
         LOGD(TAG, "Loading session hashcodes for session import optimization.");
-        Cursor cursor = mContext.getContentResolver().query(uri, SessionHashcodeQuery.PROJECTION,
-                null, null, null);
-        if (cursor == null || cursor.getCount() < 1) {
-            LOGW(TAG, "Warning: failed to load session hashcodes. Not optimizing session import.");
+        Cursor cursor = null;
+        try {
+            cursor = mContext.getContentResolver().query(uri, SessionHashcodeQuery.PROJECTION,
+                    null, null, null);
+            if (cursor == null || cursor.getCount() < 1) {
+                LOGW(TAG, "Warning: failed to load session hashcodes. Not optimizing session import.");
+                return null;
+            }
+            HashMap<String, String> hashcodeMap = new HashMap<String, String>();
+            if (cursor.moveToFirst()) {
+                do {
+                    String sessionId = cursor.getString(SessionHashcodeQuery.SESSION_ID);
+                    String hashcode = cursor.getString(SessionHashcodeQuery.SESSION_IMPORT_HASHCODE);
+                    hashcodeMap.put(sessionId, hashcode == null ? "" : hashcode);
+                } while (cursor.moveToNext());
+            }
+            LOGD(TAG, "Session hashcodes loaded for " + hashcodeMap.size() + " sessions.");
+            return hashcodeMap;
+        } finally {
             if (cursor != null) {
                 cursor.close();
             }
-            return null;
         }
-        HashMap<String, String> hashcodeMap = new HashMap<String, String>();
-        while (cursor.moveToNext()) {
-            String sessionId = cursor.getString(SessionHashcodeQuery.SESSION_ID);
-            String hashcode = cursor.getString(SessionHashcodeQuery.SESSION_IMPORT_HASHCODE);
-            hashcodeMap.put(sessionId, hashcode == null ? "" : hashcode);
-        }
-        LOGD(TAG, "Session hashcodes loaded for " + hashcodeMap.size() + " sessions.");
-        cursor.close();
-        return hashcodeMap;
     }
 
     StringBuilder mStringBuilder = new StringBuilder();
@@ -154,10 +160,10 @@ public class SessionsHandler extends JSONHandler {
     private void buildSession(boolean isInsert,
                               Session session, ArrayList<ContentProviderOperation> list) {
         ContentProviderOperation.Builder builder;
-        Uri allSessionsUri = ScheduleContract
-                .addCallerIsSyncAdapterParameter(ScheduleContract.Sessions.CONTENT_URI);
-        Uri thisSessionUri = ScheduleContract
-                .addCallerIsSyncAdapterParameter(ScheduleContract.Sessions.buildSessionUri(
+        Uri allSessionsUri = ScheduleContractHelper
+                .setUriAsCalledFromSyncAdapter(ScheduleContract.Sessions.CONTENT_URI);
+        Uri thisSessionUri = ScheduleContractHelper
+                .setUriAsCalledFromSyncAdapter(ScheduleContract.Sessions.buildSessionUri(
                         session.id));
 
         if (isInsert) {
@@ -192,6 +198,7 @@ public class SessionsHandler extends JSONHandler {
         } catch (IllegalArgumentException ex) {
             LOGD(TAG, "Ignoring invalid formatted session color: "+session.color);
         }
+
         builder.withValue(ScheduleContract.SyncColumns.UPDATED, System.currentTimeMillis())
                 .withValue(ScheduleContract.Sessions.SESSION_ID, session.id)
                 .withValue(ScheduleContract.Sessions.SESSION_LEVEL, null)            // Not available
@@ -213,7 +220,7 @@ public class SessionsHandler extends JSONHandler {
                         // (or another join) for each record.
                 .withValue(ScheduleContract.Sessions.SESSION_KEYWORDS, null)             // Not available
                 .withValue(ScheduleContract.Sessions.SESSION_URL, session.url)
-                .withValue(ScheduleContract.Sessions.SESSION_LIVESTREAM_URL,
+                .withValue(ScheduleContract.Sessions.SESSION_LIVESTREAM_ID,
                         session.isLivestream ? session.youtubeUrl : null)
                 .withValue(ScheduleContract.Sessions.SESSION_MODERATOR_URL, null)    // Not available
                 .withValue(ScheduleContract.Sessions.SESSION_REQUIREMENTS, null)     // Not available
@@ -228,7 +235,8 @@ public class SessionsHandler extends JSONHandler {
                 .withValue(ScheduleContract.Sessions.SESSION_MAIN_TAG, session.mainTag)
                 .withValue(ScheduleContract.Sessions.SESSION_CAPTIONS_URL, session.captionsUrl)
                 .withValue(ScheduleContract.Sessions.SESSION_PHOTO_URL, session.photoUrl)
-                .withValue(ScheduleContract.Sessions.SESSION_RELATED_CONTENT, session.relatedContent)
+                // Disabled since this isn't being used by this app.
+                // .withValue(ScheduleContract.Sessions.SESSION_RELATED_CONTENT, session.relatedContent)
                 .withValue(ScheduleContract.Sessions.SESSION_COLOR, color);
         list.add(builder.build());
     }
@@ -259,7 +267,7 @@ public class SessionsHandler extends JSONHandler {
 
     private void buildSessionSpeakerMapping(Session session,
                                             ArrayList<ContentProviderOperation> list) {
-        final Uri uri = ScheduleContract.addCallerIsSyncAdapterParameter(
+        final Uri uri = ScheduleContractHelper.setUriAsCalledFromSyncAdapter(
                 ScheduleContract.Sessions.buildSpeakersDirUri(session.id));
 
         // delete any existing relationship between this session and speakers
@@ -277,7 +285,7 @@ public class SessionsHandler extends JSONHandler {
     }
 
     private void buildTagsMapping(Session session, ArrayList<ContentProviderOperation> list) {
-        final Uri uri = ScheduleContract.addCallerIsSyncAdapterParameter(
+        final Uri uri = ScheduleContractHelper.setUriAsCalledFromSyncAdapter(
                 ScheduleContract.Sessions.buildTagsDirUri(session.id));
 
         // delete any existing mappings

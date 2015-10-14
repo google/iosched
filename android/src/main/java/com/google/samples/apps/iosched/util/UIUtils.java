@@ -18,12 +18,9 @@ package com.google.samples.apps.iosched.util;
 
 import android.annotation.TargetApi;
 import android.app.Activity;
-import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.content.pm.ActivityInfo;
-import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 import android.content.res.Resources;
@@ -31,10 +28,17 @@ import android.content.res.TypedArray;
 import android.graphics.Color;
 import android.graphics.ColorFilter;
 import android.graphics.ColorMatrixColorFilter;
+import android.graphics.LinearGradient;
+import android.graphics.Shader;
 import android.graphics.Typeface;
+import android.graphics.drawable.Drawable;
+import android.graphics.drawable.PaintDrawable;
+import android.graphics.drawable.ShapeDrawable;
+import android.graphics.drawable.shapes.RectShape;
 import android.net.Uri;
 import android.os.Build;
 import android.preference.PreferenceManager;
+import android.support.annotation.DrawableRes;
 import android.text.Html;
 import android.text.Spannable;
 import android.text.SpannableStringBuilder;
@@ -42,6 +46,7 @@ import android.text.TextUtils;
 import android.text.format.DateUtils;
 import android.text.method.LinkMovementMethod;
 import android.text.style.StyleSpan;
+import android.view.Gravity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -49,10 +54,10 @@ import android.widget.TextView;
 import com.google.samples.apps.iosched.BuildConfig;
 import com.google.samples.apps.iosched.Config;
 import com.google.samples.apps.iosched.R;
+import com.google.samples.apps.iosched.model.ScheduleItem;
 import com.google.samples.apps.iosched.provider.ScheduleContract;
 import com.google.samples.apps.iosched.provider.ScheduleContract.Rooms;
-import com.google.samples.apps.iosched.ui.phone.MapActivity;
-import com.google.samples.apps.iosched.ui.tablet.MapMultiPaneActivity;
+import com.google.samples.apps.iosched.settings.SettingsUtils;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -80,17 +85,11 @@ public class UIUtils {
     private static final float SESSION_PHOTO_SCRIM_ALPHA = 0.25f; // 0=invisible, 1=visible image
     private static final float SESSION_PHOTO_SCRIM_SATURATION = 0.2f; // 0=gray, 1=color image
 
-    public static final String TARGET_FORM_FACTOR_ACTIVITY_METADATA =
-            "com.google.samples.apps.iosched.meta.TARGET_FORM_FACTOR";
-
-    public static final String TARGET_FORM_FACTOR_HANDSET = "handset";
-    public static final String TARGET_FORM_FACTOR_TABLET = "tablet";
-
     /**
      * Flags used with {@link DateUtils#formatDateRange}.
      */
     private static final int TIME_FLAGS = DateUtils.FORMAT_SHOW_TIME
-            | DateUtils.FORMAT_SHOW_WEEKDAY | DateUtils.FORMAT_ABBREV_WEEKDAY;
+            | DateUtils.FORMAT_SHOW_DATE;
 
     /**
      * Regex to search for HTML escape sequences.
@@ -99,19 +98,15 @@ public class UIUtils {
      * semicolon. (Example: &amp;amp;)
      */
     private static final Pattern REGEX_HTML_ESCAPE = Pattern.compile(".*&\\S;.*");
-
-    private static CharSequence sNowPlayingText;
-    private static CharSequence sLivestreamNowText;
-    private static CharSequence sLivestreamAvailableText;
+    public static final String MOCK_DATA_PREFERENCES = "mock_data";
+    public static final String PREFS_MOCK_CURRENT_TIME = "mock_current_time";
 
     public static final String GOOGLE_PLUS_PACKAGE_NAME = "com.google.android.apps.plus";
     public static final String YOUTUBE_PACKAGE_NAME = "com.google.android.youtube";
+    public static final String TWITTER_PACKAGE_NAME = "com.twitter.app";
 
-    public static final int ANIMATION_FADE_IN_TIME = 250;
-    public static final String TRACK_ICONS_TAG = "tracks";
-
-    private static SimpleDateFormat sDayOfWeekFormat = new SimpleDateFormat("E");
-    private static DateFormat sShortTimeFormat = DateFormat.getTimeInstance(DateFormat.SHORT);
+    public static final String GOOGLE_PLUS_COMMON_NAME = "Google Plus";
+    public static final String TWITTER_COMMON_NAME = "Twitter";
 
     public static String formatSessionSubtitle(long intervalStart, long intervalEnd, String roomName, StringBuilder recycle,
             Context context) {
@@ -138,14 +133,18 @@ public class UIUtils {
         }
 
         if (shortFormat) {
+            TimeZone timeZone = SettingsUtils.getDisplayTimeZone(context);
             Date intervalStartDate = new Date(intervalStart);
-            sDayOfWeekFormat.setTimeZone(PrefUtils.getDisplayTimeZone(context));
-            sShortTimeFormat.setTimeZone(PrefUtils.getDisplayTimeZone(context));
-            return sDayOfWeekFormat.format(intervalStartDate) + " "
-                    + sShortTimeFormat.format(intervalStartDate);
+            SimpleDateFormat shortDateFormat = new SimpleDateFormat("MMM dd");
+            DateFormat shortTimeFormat = DateFormat.getTimeInstance(DateFormat.SHORT);
+            shortDateFormat.setTimeZone(timeZone);
+            shortTimeFormat.setTimeZone(timeZone);
+            return shortDateFormat.format(intervalStartDate) + " "
+                    + shortTimeFormat.format(intervalStartDate);
         } else {
-            return context.getString(R.string.session_subtitle,
-                    formatIntervalTimeString(intervalStart, intervalEnd, recycle, context), roomName);
+            String timeInterval = formatIntervalTimeString(intervalStart, intervalEnd, recycle,
+                    context);
+            return context.getString(R.string.session_subtitle, timeInterval, roomName);
         }
     }
 
@@ -180,11 +179,11 @@ public class UIUtils {
         }
         Formatter formatter = new Formatter(recycle);
         return DateUtils.formatDateRange(context, formatter, intervalStart, intervalEnd, TIME_FLAGS,
-                PrefUtils.getDisplayTimeZone(context).getID()).toString();
+                SettingsUtils.getDisplayTimeZone(context).getID()).toString();
     }
 
     public static boolean isSameDayDisplay(long time1, long time2, Context context) {
-        TimeZone displayTimeZone = PrefUtils.getDisplayTimeZone(context);
+        TimeZone displayTimeZone = SettingsUtils.getDisplayTimeZone(context);
         Calendar cal1 = Calendar.getInstance(displayTimeZone);
         Calendar cal2 = Calendar.getInstance(displayTimeZone);
         cal1.setTimeInMillis(time1);
@@ -255,29 +254,20 @@ public class UIUtils {
         return builder;
     }
 
+    /**
+     * This allows the app to specify a {@code packageName} to handle the {@code intent}, if the
+     * {@code packageName} is available on the device and can handle it. An example use is to open
+     * a Google + stream directly using the Google + app.
+     */
     public static void preferPackageForIntent(Context context, Intent intent, String packageName) {
         PackageManager pm = context.getPackageManager();
-        for (ResolveInfo resolveInfo : pm.queryIntentActivities(intent, 0)) {
-            if (resolveInfo.activityInfo.packageName.equals(packageName)) {
-                intent.setPackage(packageName);
-                break;
+        if (pm != null) {
+            for (ResolveInfo resolveInfo : pm.queryIntentActivities(intent, 0)) {
+                if (resolveInfo.activityInfo.packageName.equals(packageName)) {
+                    intent.setPackage(packageName);
+                    break;
+                }
             }
-        }
-    }
-
-    public static String getSessionHashtagsString(String hashtags) {
-        if (!TextUtils.isEmpty(hashtags)) {
-            if (!hashtags.startsWith("#")) {
-                hashtags = "#" + hashtags;
-            }
-
-            if (hashtags.contains(Config.CONFERENCE_HASHTAG_PREFIX)) {
-                return hashtags;
-            }
-
-            return Config.CONFERENCE_HASHTAG + " " + hashtags;
-        } else {
-            return Config.CONFERENCE_HASHTAG;
         }
     }
 
@@ -299,106 +289,46 @@ public class UIUtils {
         return context.getResources().getConfiguration().smallestScreenWidthDp >= 600;
     }
 
-    // Whether a feedback notification was fired for a particular session. In the event that a
-    // feedback notification has not been fired yet, return false and set the bit.
-    public static boolean isFeedbackNotificationFiredForSession(Context context, String sessionId) {
-        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(context);
-        final String key = String.format("feedback_notification_fired_%s", sessionId);
-        boolean fired = sp.getBoolean(key, false);
-        sp.edit().putBoolean(key, true).commit();
-        return fired;
-    }
-
-    // Clear the flag that says a notification was fired for the given session.
-    // Typically used to debug notifications.
-    public static void unmarkFeedbackNotificationFiredForSession(Context context, String sessionId) {
-        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(context);
-        final String key = String.format("feedback_notification_fired_%s", sessionId);
-        sp.edit().putBoolean(key, false).commit();
-    }
     // Shows whether a notification was fired for a particular session time block. In the
     // event that notification has not been fired yet, return false and set the bit.
     public static boolean isNotificationFiredForBlock(Context context, String blockId) {
         SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(context);
         final String key = String.format("notification_fired_%s", blockId);
         boolean fired = sp.getBoolean(key, false);
-        sp.edit().putBoolean(key, true).commit();
+        sp.edit().putBoolean(key, true).apply();
         return fired;
     }
 
     private static final long sAppLoadTime = System.currentTimeMillis();
 
+    /**
+     * Retrieve the current time. If the current build is a debug build the mock time is returned
+     * when set.
+     */
     public static long getCurrentTime(final Context context) {
         if (BuildConfig.DEBUG) {
-            return context.getSharedPreferences("mock_data", Context.MODE_PRIVATE)
-                    .getLong("mock_current_time", System.currentTimeMillis())
+            return context.getSharedPreferences(MOCK_DATA_PREFERENCES, Context.MODE_PRIVATE)
+                    .getLong(PREFS_MOCK_CURRENT_TIME, System.currentTimeMillis())
                     + System.currentTimeMillis() - sAppLoadTime;
-//            return ParserUtils.parseTime("2012-06-27T09:44:45.000-07:00")
-//                    + System.currentTimeMillis() - sAppLoadTime;
         } else {
             return System.currentTimeMillis();
         }
     }
 
-    public static boolean shouldShowLiveSessionsOnly(final Context context) {
-        return !PrefUtils.isAttendeeAtVenue(context)
-                && getCurrentTime(context) < Config.CONFERENCE_END_MILLIS;
-    }
-
     /**
-     * Enables and disables {@linkplain android.app.Activity activities} based on their
-     * {@link #TARGET_FORM_FACTOR_ACTIVITY_METADATA}" meta-data and the current device.
-     * Values should be either "handset", "tablet", or not present (meaning universal).
-     * <p>
-     * <a href="http://stackoverflow.com/questions/13202805">Original code</a> by Dandre Allison.
-     * @param context the current context of the device
-     * @see #isHoneycombTablet(android.content.Context)
+     * Set the current time only when the current build is a debug build.
      */
-    public static void enableDisableActivitiesByFormFactor(Context context) {
-        final PackageManager pm = context.getPackageManager();
-        boolean isTablet = isTablet(context);
-
-        try {
-            PackageInfo pi = pm.getPackageInfo(context.getPackageName(),
-                    PackageManager.GET_ACTIVITIES | PackageManager.GET_META_DATA);
-            if (pi == null) {
-                LOGE(TAG, "No package info found for our own package.");
-                return;
-            }
-
-            final ActivityInfo[] activityInfos = pi.activities;
-            for (ActivityInfo info : activityInfos) {
-                String targetDevice = null;
-                if (info.metaData != null) {
-                    targetDevice = info.metaData.getString(TARGET_FORM_FACTOR_ACTIVITY_METADATA);
-                }
-                boolean tabletActivity = TARGET_FORM_FACTOR_TABLET.equals(targetDevice);
-                boolean handsetActivity = TARGET_FORM_FACTOR_HANDSET.equals(targetDevice);
-
-                boolean enable = !(handsetActivity && isTablet)
-                        && !(tabletActivity && !isTablet);
-
-                String className = info.name;
-                pm.setComponentEnabledSetting(
-                        new ComponentName(context, Class.forName(className)),
-                        enable
-                                ? PackageManager.COMPONENT_ENABLED_STATE_ENABLED
-                                : PackageManager.COMPONENT_ENABLED_STATE_DISABLED,
-                        PackageManager.DONT_KILL_APP);
-            }
-        } catch (PackageManager.NameNotFoundException e) {
-            LOGE(TAG, "No package info found for our own package.", e);
-        } catch (ClassNotFoundException e) {
-            LOGE(TAG, "Activity not found within package.", e);
+    public static void setCurrentTime(Context context, long newTime) {
+        if (BuildConfig.DEBUG) {
+            context.getSharedPreferences(MOCK_DATA_PREFERENCES, Context.MODE_PRIVATE).edit()
+                    .putLong(PREFS_MOCK_CURRENT_TIME, newTime).apply();
         }
     }
 
-    public static Class getMapActivityClass(Context context) {
-        if (UIUtils.isTablet(context)) {
-            return MapMultiPaneActivity.class;
-        }
-
-        return MapActivity.class;
+    @Deprecated
+    public static boolean shouldShowLiveSessionsOnly(final Context context) {
+        return !SettingsUtils.isAttendeeAtVenue(context)
+                && getCurrentTime(context) < Config.CONFERENCE_END_MILLIS;
     }
 
     /**
@@ -416,11 +346,12 @@ public class UIUtils {
             return;
         }
 
-        String prefixPath = Config.SESSION_DETAIL_WEB_URL_PREFIX.getPath();
+        Uri sessionDetailWebUrlPrefix = Uri.parse(Config.SESSION_DETAIL_WEB_URL_PREFIX);
+        String prefixPath = sessionDetailWebUrlPrefix.getPath();
         String path = uri.getPath();
 
-        if (Config.SESSION_DETAIL_WEB_URL_PREFIX.getScheme().equals(uri.getScheme()) &&
-                Config.SESSION_DETAIL_WEB_URL_PREFIX.getHost().equals(uri.getHost()) &&
+        if (sessionDetailWebUrlPrefix.getScheme().equals(uri.getScheme()) &&
+                sessionDetailWebUrlPrefix.getHost().equals(uri.getHost()) &&
                 path.startsWith(prefixPath)) {
             String sessionId = path.substring(prefixPath.length());
             activity.setIntent(new Intent(
@@ -452,9 +383,8 @@ public class UIUtils {
         return (int) size;
     }
 
-    public static int setColorAlpha(int color, float alpha) {
-        int alpha_int = Math.min(Math.max((int)(alpha * 255.0f), 0), 255);
-        return Color.argb(alpha_int, Color.red(color), Color.green(color), Color.blue(color));
+    public static int setColorOpaque(int color){
+        return Color.argb(255, Color.red(color), Color.green(color), Color.blue(color));
     }
 
     public static int scaleColor(int color, float factor, boolean scaleAlpha) {
@@ -467,22 +397,11 @@ public class UIUtils {
         return scaleColor(color, SESSION_BG_COLOR_SCALE_FACTOR, false);
     }
 
-    public static void showHashtagStream(final Context context, String hashTag) {
-        final String hashTagsString = getSessionHashtagsString(hashTag);
-        Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(
-                "https://plus.google.com/s/"
-                        + hashTagsString.replaceAll(" ", "%20").replaceAll("#", "%23")));
-        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_WHEN_TASK_RESET);
-        preferPackageForIntent(context, intent, UIUtils.GOOGLE_PLUS_PACKAGE_NAME);
-        context.startActivity(intent);
-    }
 
-    public static void setStartPadding(final Context context, View view, int padding) {
-        if (isRtl(context)) {
-            view.setPadding(view.getPaddingLeft(), view.getPaddingTop(), padding, view.getPaddingBottom());
-        } else {
-            view.setPadding(padding, view.getPaddingTop(), view.getPaddingRight(), view.getPaddingBottom());
-        }
+    public static void fireSocialIntent(Context context, Uri uri, String packageName) {
+        Intent intent = new Intent(Intent.ACTION_VIEW, uri);
+        UIUtils.preferPackageForIntent(context, intent, packageName);
+        context.startActivity(intent);
     }
 
     @TargetApi(Build.VERSION_CODES.JELLY_BEAN_MR1)
@@ -534,9 +453,88 @@ public class UIUtils {
         return (value - min) / (float) (max - min);
     }
 
+    public static @DrawableRes int getSessionIcon(int sessionType) {
+        switch (sessionType) {
+            case ScheduleItem.SESSION_TYPE_SESSION:
+                return R.drawable.ic_session;
+            case ScheduleItem.SESSION_TYPE_CODELAB:
+                return R.drawable.ic_codelab;
+            case ScheduleItem.SESSION_TYPE_BOXTALK:
+                return R.drawable.ic_sandbox;
+            case ScheduleItem.SESSION_TYPE_MISC:
+            default:
+                return R.drawable.ic_misc;
+        }
+    }
+
+    public static @DrawableRes int getBreakIcon(String breakTitle) {
+        if (!TextUtils.isEmpty(breakTitle)) {
+            if (breakTitle.contains("After")) {
+                return R.drawable.ic_after_hours;
+            } else if (breakTitle.contains("Badge")) {
+                return R.drawable.ic_badge_pickup;
+            } else if (breakTitle.contains("Pre-Keynote")) {
+                return R.drawable.ic_session;
+            }
+        }
+        return R.drawable.ic_food;
+    }
+
+    /**
+     * @param startTime The start time of a session in millis.
+     * @param context The context to be used for getting the display timezone.
+     * @return Formats a given startTime to the specific short time.
+     *         example: 12:00 AM
+     */
+    public static String formatTime(long startTime, Context context) {
+        StringBuilder sb = new StringBuilder();
+        DateUtils.formatDateRange(context, new Formatter(sb), startTime, startTime,
+                DateUtils.FORMAT_SHOW_TIME,
+                SettingsUtils.getDisplayTimeZone(context).getID());
+        return sb.toString();
+    }
+
+    /**
+     * @param startTime The start time of a session.
+     * @return Returns the Day index such as 1 or 2 based on the given start time.
+     */
+    public static int startTimeToDayIndex(long startTime) {
+        if (startTime <= Config.CONFERENCE_DAYS[0][1] &&
+                startTime >= Config.CONFERENCE_DAYS[0][0]) {
+            return 1;
+        } else if (startTime <= Config.CONFERENCE_DAYS[1][1] &&
+                startTime >= Config.CONFERENCE_DAYS[1][0]) {
+            return 2;
+        }
+        return 0;
+    }
+
     // Desaturates and color-scrims the image
     public static ColorFilter makeSessionImageScrimColorFilter(int sessionColor) {
         float a = SESSION_PHOTO_SCRIM_ALPHA;
+//        return new ColorMatrixColorFilter(new float[]{
+//                a, 0, 0, 0, 0,
+//                0, a, 0, 0, 0,
+//                0, 0, a, 0, 0,
+//                0, 0, 0, 0, 255
+//        });
+//        return new ColorMatrixColorFilter(new float[]{
+//                a, 0, 0, 0, Color.red(sessionColor) * (1 - a),
+//                0, a, 0, 0, Color.green(sessionColor) * (1 - a),
+//                0, 0, a, 0, Color.blue(sessionColor) * (1 - a),
+//                0, 0, 0, 0, 255
+//        });
+//        return new ColorMatrixColorFilter(new float[]{
+//                0.213f * a, 0.715f * a, 0.072f * a, 0, Color.red(sessionColor) * (1 - a),
+//                0.213f * a, 0.715f * a, 0.072f * a, 0, Color.green(sessionColor) * (1 - a),
+//                0.213f * a, 0.715f * a, 0.072f * a, 0, Color.blue(sessionColor) * (1 - a),
+//                0, 0, 0, 0, 255
+//        });
+//        ColorMatrix cm = new ColorMatrix();
+//        cm.setSaturation(0f);
+//        cm.postConcat(alphaMatrix(0.5f, Color.WHITE));
+//        cm.postConcat(multiplyBlendMatrix(sessionColor, 0.9f));
+//        return new ColorMatrixColorFilter(cm);
         float sat = SESSION_PHOTO_SCRIM_SATURATION; // saturation (0=gray, 1=color)
         return new ColorMatrixColorFilter(new float[]{
                 ((1 - 0.213f) * sat + 0.213f) * a, ((0 - 0.715f) * sat + 0.715f) * a, ((0 - 0.072f) * sat + 0.072f) * a, 0, Color.red(sessionColor) * (1 - a),
@@ -544,5 +542,112 @@ public class UIUtils {
                 ((0 - 0.213f) * sat + 0.213f) * a, ((0 - 0.715f) * sat + 0.715f) * a, ((1 - 0.072f) * sat + 0.072f) * a, 0, Color.blue(sessionColor) * (1 - a),
                 0, 0, 0, 0, 255
         });
+//        a = 0.2f;
+//        return new ColorMatrixColorFilter(new float[]{
+//                0.213f * a, 0.715f * a, 0.072f * a, 0, Color.red(sessionColor) - 255 * a / 2,
+//                0.213f * a, 0.715f * a, 0.072f * a, 0, Color.green(sessionColor) - 255 * a / 2,
+//                0.213f * a, 0.715f * a, 0.072f * a, 0, Color.blue(sessionColor) - 255 * a / 2,
+//                0, 0, 0, 0, 255
+//        });
+    }
+
+//    private static final float[] mAlphaMatrixValues = {
+//            0, 0, 0, 0, 0,
+//            0, 0, 0, 0, 0,
+//            0, 0, 0, 0, 0,
+//            0, 0, 0, 1, 0
+//    };
+//    private static final ColorMatrix mMultiplyBlendMatrix = new ColorMatrix();
+//    private static final float[] mMultiplyBlendMatrixValues = {
+//            0, 0, 0, 0, 0,
+//            0, 0, 0, 0, 0,
+//            0, 0, 0, 0, 0,
+//            0, 0, 0, 1, 0
+//    };
+//    private static final ColorMatrix mWhitenessColorMatrix = new ColorMatrix();
+//
+//    /**
+//     * Simulates alpha blending an image with {@param color}.
+//     */
+//    private static ColorMatrix alphaMatrix(float alpha, int color) {
+//        mAlphaMatrixValues[0] = 255 * alpha / 255;
+//        mAlphaMatrixValues[6] = Color.green(color) * alpha / 255;
+//        mAlphaMatrixValues[12] = Color.blue(color) * alpha / 255;
+//        mAlphaMatrixValues[4] = 255 * (1 - alpha);
+//        mAlphaMatrixValues[9] = 255 * (1 - alpha);
+//        mAlphaMatrixValues[14] = 255 * (1 - alpha);
+//        mWhitenessColorMatrix.set(mAlphaMatrixValues);
+//        return mWhitenessColorMatrix;
+//    }
+//    /**
+//     * Simulates multiply blending an image with a single {@param color}.
+//     *
+//     * Multiply blending is [Sa * Da, Sc * Dc]. See {@link android.graphics.PorterDuff}.
+//     */
+//    private static ColorMatrix multiplyBlendMatrix(int color, float alpha) {
+//        mMultiplyBlendMatrixValues[0] = multiplyBlend(Color.red(color), alpha);
+//        mMultiplyBlendMatrixValues[6] = multiplyBlend(Color.green(color), alpha);
+//        mMultiplyBlendMatrixValues[12] = multiplyBlend(Color.blue(color), alpha);
+//        mMultiplyBlendMatrix.set(mMultiplyBlendMatrixValues);
+//        return mMultiplyBlendMatrix;
+//    }
+//
+//    private static float multiplyBlend(int color, float alpha) {
+//        return color * alpha / 255.0f + (1 - alpha);
+//    }
+
+    /**
+     * This helper method creates a 'nice' scrim or background protection for layering text over
+     * an image. This non-linear scrim is less noticable than a linear or constant one.
+     *
+     * Borrowed from github.com/romannurik/muzei
+     *
+     * Creates an approximated cubic gradient using a multi-stop linear gradient. See
+     * <a href="https://plus.google.com/+RomanNurik/posts/2QvHVFWrHZf">this post</a> for more
+     * details.
+     */
+    public static Drawable makeCubicGradientScrimDrawable(int baseColor, int numStops, int gravity) {
+        numStops = Math.max(numStops, 2);
+
+        PaintDrawable paintDrawable = new PaintDrawable();
+        paintDrawable.setShape(new RectShape());
+
+        final int[] stopColors = new int[numStops];
+
+        int alpha = Color.alpha(baseColor);
+
+        for (int i = 0; i < numStops; i++) {
+            double x = i * 1f / (numStops - 1);
+            double opacity = Math.max(0, Math.min(1, Math.pow(x, 3)));
+            stopColors[i] = (baseColor & 0x00ffffff) | ((int) (alpha * opacity) << 24);
+        }
+
+        final float x0, x1, y0, y1;
+        switch (gravity & Gravity.HORIZONTAL_GRAVITY_MASK) {
+            case Gravity.LEFT:  x0 = 1; x1 = 0; break;
+            case Gravity.RIGHT: x0 = 0; x1 = 1; break;
+            default:            x0 = 0; x1 = 0; break;
+        }
+        switch (gravity & Gravity.VERTICAL_GRAVITY_MASK) {
+            case Gravity.TOP:    y0 = 1; y1 = 0; break;
+            case Gravity.BOTTOM: y0 = 0; y1 = 1; break;
+            default:             y0 = 0; y1 = 0; break;
+        }
+
+        paintDrawable.setShaderFactory(new ShapeDrawable.ShaderFactory() {
+            @Override
+            public Shader resize(int width, int height) {
+                LinearGradient linearGradient = new LinearGradient(
+                        width * x0,
+                        height * y0,
+                        width * x1,
+                        height * y1,
+                        stopColors, null,
+                        Shader.TileMode.CLAMP);
+                return linearGradient;
+            }
+        });
+
+        return paintDrawable;
     }
 }

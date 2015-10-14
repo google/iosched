@@ -1,5 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
 <!--
-  Copyright 2014 Google Inc. All rights reserved.
+  Copyright 2015 Google Inc. All rights reserved.
 
   Licensed under the Apache License, Version 2.0 (the "License");
   you may not use this file except in compliance with the License.
@@ -15,13 +16,17 @@
   -->
 
 <selector xmlns:android="http://schemas.android.com/apk/res/android">
-    <item android:state_focused="true"
-        android:state_window_focused="true"
-        android:drawable="@drawable/ratingbar_star_on_focused" />
 
-    <item android:state_selected="true"
-        android:state_window_focused="true"
-        android:drawable="@drawable/ratingbar_star_on_focused" />
+    <item
+        android:drawable="@drawable/ratingbar_star_on_focused"
+        android:state_focused="true"
+        android:state_window_focused="true" />
+
+    <item
+        android:drawable="@drawable/ratingbar_star_on_focused"
+        android:state_selected="true"
+        android:state_window_focused="true" />
 
     <item android:drawable="@drawable/ratingbar_star_on_default" />
+
 </selector>

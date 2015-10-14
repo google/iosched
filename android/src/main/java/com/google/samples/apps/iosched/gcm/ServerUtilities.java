@@ -20,7 +20,7 @@ import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.text.TextUtils;
 
-import com.google.samples.apps.iosched.Config;
+import com.google.samples.apps.iosched.BuildConfig;
 import com.google.samples.apps.iosched.util.AccountUtils;
 
 import java.io.IOException;
@@ -28,10 +28,19 @@ import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.*;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Random;
 
-import static com.google.samples.apps.iosched.util.LogUtils.*;
+import static com.google.samples.apps.iosched.util.LogUtils.LOGD;
+import static com.google.samples.apps.iosched.util.LogUtils.LOGE;
+import static com.google.samples.apps.iosched.util.LogUtils.LOGI;
+import static com.google.samples.apps.iosched.util.LogUtils.LOGV;
+import static com.google.samples.apps.iosched.util.LogUtils.makeLogTag;
 
 /**
  * Helper class used to communicate with the demo server.
@@ -49,13 +58,13 @@ public final class ServerUtilities {
     private static final Random sRandom = new Random();
 
     private static boolean checkGcmEnabled() {
-        if (TextUtils.isEmpty(Config.GCM_SERVER_URL)) {
+        if (TextUtils.isEmpty(BuildConfig.GCM_SERVER_URL)) {
             LOGD(TAG, "GCM feature disabled (no URL configured)");
             return false;
-        } else if (TextUtils.isEmpty(Config.GCM_API_KEY)) {
+        } else if (TextUtils.isEmpty(BuildConfig.GCM_API_KEY)) {
             LOGD(TAG, "GCM feature disabled (no API key configured)");
             return false;
-        } else if (TextUtils.isEmpty(Config.GCM_SENDER_ID)) {
+        } else if (TextUtils.isEmpty(BuildConfig.GCM_SENDER_ID)) {
             LOGD(TAG, "GCM feature disabled (no sender ID configured)");
             return false;
         }
@@ -76,7 +85,7 @@ public final class ServerUtilities {
         }
 
         LOGI(TAG, "registering device (gcm_id = " + gcmId + ")");
-        String serverUrl = Config.GCM_SERVER_URL + "/register";
+        String serverUrl = BuildConfig.GCM_SERVER_URL + "/register";
         LOGI(TAG, "registering on GCM with GCM key: " + AccountUtils.sanitizeGcmKey(gcmKey));
 
         Map<String, String> params = new HashMap<String, String>();
@@ -89,7 +98,7 @@ public final class ServerUtilities {
         for (int i = 1; i <= MAX_ATTEMPTS; i++) {
             LOGV(TAG, "Attempt #" + i + " to register");
             try {
-                post(serverUrl, params, Config.GCM_API_KEY);
+                post(serverUrl, params, BuildConfig.GCM_API_KEY);
                 setRegisteredOnServer(context, true, gcmId, gcmKey);
                 return true;
             } catch (IOException e) {
@@ -128,11 +137,11 @@ public final class ServerUtilities {
         }
 
         LOGI(TAG, "unregistering device (gcmId = " + gcmId + ")");
-        String serverUrl = Config.GCM_SERVER_URL + "/unregister";
+        String serverUrl = BuildConfig.GCM_SERVER_URL + "/unregister";
         Map<String, String> params = new HashMap<String, String>();
         params.put("gcm_id", gcmId);
         try {
-            post(serverUrl, params, Config.GCM_API_KEY);
+            post(serverUrl, params, BuildConfig.GCM_API_KEY);
             setRegisteredOnServer(context, false, gcmId, null);
         } catch (IOException e) {
             // At this point the device is unregistered from GCM, but still
@@ -142,7 +151,7 @@ public final class ServerUtilities {
             // a "NotRegistered" error message and should unregister the device.
             LOGD(TAG, "Unable to unregister from application server", e);
         } finally {
-            // Regardless of server success, clear local preferences
+            // Regardless of server success, clear local settings_prefs
             setRegisteredOnServer(context, false, null, null);
         }
     }
@@ -158,7 +167,7 @@ public final class ServerUtilities {
         }
 
         LOGI(TAG, "Notifying GCM that user data changed");
-        String serverUrl = Config.GCM_SERVER_URL + "/send/self/sync_user";
+        String serverUrl = BuildConfig.GCM_SERVER_URL + "/send/self/sync_user";
         try {
             String gcmKey = AccountUtils.getGcmKey(context, AccountUtils.getActiveAccountName(context));
             if (gcmKey != null) {
@@ -189,7 +198,7 @@ public final class ServerUtilities {
         } else {
             editor.remove(PROPERTY_REG_ID);
         }
-        editor.commit();
+        editor.apply();
     }
 
     /**

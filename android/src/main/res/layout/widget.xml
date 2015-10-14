@@ -1,5 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
 <!--
-  Copyright 2014 Google Inc. All rights reserved.
+  Copyright 2015 Google Inc. All rights reserved.
 
   Licensed under the Apache License, Version 2.0 (the "License");
   you may not use this file except in compliance with the License.
@@ -14,11 +15,13 @@
   limitations under the License.
   -->
 
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:layout_margin="@dimen/widget_margin">
+
     <!-- We define separate margins to allow for flexibility in twiddling the margins
          depending on device form factor and target SDK version. -->
     <LinearLayout
@@ -26,21 +29,25 @@
         android:layout_height="48dp"
         android:orientation="horizontal"
         android:baselineAligned="false"
-        android:background="@drawable/actionbar_background">
+        android:background="@color/theme_primary">
+
         <ImageButton
             android:id="@+id/widget_logo"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:paddingLeft="8dp"
-            android:paddingTop="8dp"
-            android:paddingBottom="8dp"
-            android:paddingRight="8dp"
+            android:paddingLeft="@dimen/padding_normal"
+            android:paddingStart="@dimen/padding_normal"
+            android:paddingTop="@dimen/spacing_normal"
+            android:paddingBottom="@dimen/spacing_normal"
+            android:paddingRight="@dimen/spacing_normal"
+            android:paddingEnd="@dimen/spacing_normal"
             android:layout_gravity="center_vertical|start"
             android:scaleType="fitStart"
-            android:src="@drawable/actionbar_logo"
+            android:src="@drawable/actionbar_icon"
             android:background="?android:selectableItemBackground"
             android:contentDescription="@string/app_name" />
+
         <ImageButton
             android:id="@+id/widget_refresh_button"
             android:layout_width="@dimen/action_button_min_width"
@@ -50,34 +57,37 @@
             android:visibility="gone"
             android:contentDescription="@string/description_refresh"
             android:background="?android:selectableItemBackground" />
+
     </LinearLayout>
+
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="1"
-        android:layout_gravity="center"
-        android:paddingBottom="4dp"
-        android:background="@drawable/actionbar_background">
+        android:layout_weight="1">
+
         <ListView
-            android:background="@android:color/white"
-            android:paddingTop="8dp"
-            android:clipToPadding="false"
             android:id="@+id/widget_schedule_list"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:cacheColorHint="@android:color/white"
+            android:background="@color/card"
+            android:paddingTop="@dimen/spacing_normal"
+            android:clipToPadding="false"
+            android:cacheColorHint="@color/card"
             android:divider="@null"
             android:dividerHeight="0dp"
             android:listSelector="@drawable/schedule_item_touchoverlay" />
+
         <TextView
-            android:background="@android:color/white"
             android:id="@android:id/empty"
-            style="@style/EmptyText"
+            android:background="@android:color/white"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:gravity="center"
             android:visibility="gone"
             android:padding="16dp"
-            android:text="@string/empty_widget_text" />
+            android:text="@string/empty_widget_text"
+            style="@style/EmptyText" />
+
     </FrameLayout>
+
 </LinearLayout>

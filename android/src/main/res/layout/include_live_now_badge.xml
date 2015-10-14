@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
-  Copyright 2014 Google Inc. All rights reserved.
+  Copyright 2015 Google Inc. All rights reserved.
 
   Licensed under the Apache License, Version 2.0 (the "License");
   you may not use this file except in compliance with the License.
@@ -15,21 +15,21 @@
   limitations under the License.
   -->
 
-<TextView xmlns:android="http://schemas.android.com/apk/res/android"
+<TextView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/live_now_badge"
-    android:background="@color/theme_accent_2"
-    android:layout_gravity="top|end"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:text="@string/live_now"
-    android:textColor="#fff"
-    android:layout_marginLeft="32dp"
-    android:drawableLeft="@drawable/ic_live_now"
     android:gravity="center"
-    android:drawablePadding="4dp"
-    android:paddingLeft="4dp"
+    android:paddingLeft="6dp"
     android:paddingTop="4dp"
     android:paddingBottom="4dp"
     android:paddingRight="16dp"
-    android:textSize="@dimen/text_size_xsmall"
-    android:visibility="visible" />
+    android:background="@color/theme_primary"
+    android:text="@string/live_now"
+    android:drawableLeft="@drawable/ic_live_now"
+    android:drawablePadding="4dp"
+    android:textAppearance="@style/LiveNowIndicator"
+    android:visibility="visible"
+    tools:showIn="@layout/widget_schedule_item_now" />

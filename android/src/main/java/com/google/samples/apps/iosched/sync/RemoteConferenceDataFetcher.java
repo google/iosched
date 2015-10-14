@@ -16,15 +16,16 @@
 
 package com.google.samples.apps.iosched.sync;
 
+import android.accounts.Account;
 import android.content.Context;
 import android.text.TextUtils;
 
-import com.google.samples.apps.iosched.Config;
 import com.google.gson.Gson;
-import com.google.samples.apps.iosched.R;
+import com.google.samples.apps.iosched.BuildConfig;
 import com.google.samples.apps.iosched.io.model.DataManifest;
-import com.google.samples.apps.iosched.util.FileUtils;
+import com.google.samples.apps.iosched.util.AccountUtils;
 import com.google.samples.apps.iosched.util.HashUtils;
+import com.google.samples.apps.iosched.util.IOUtils;
 import com.google.samples.apps.iosched.util.TimeUtils;
 
 import java.io.File;
@@ -148,13 +149,13 @@ public class RemoteConferenceDataFetcher {
      */
     private String getManifestUrl() {
 
-        String manifestUrl = Config.MANIFEST_URL;
+        String manifestUrl = BuildConfig.SERVER_MANIFEST_ENDPOINT;
 
         // check for an override file
         File urlOverrideFile = new File(mContext.getFilesDir(), URL_OVERRIDE_FILE_NAME);
         if (urlOverrideFile.exists()) {
             try {
-                String overrideUrl = FileUtils.readFileAsString(urlOverrideFile).trim();
+                String overrideUrl = IOUtils.readFileAsString(urlOverrideFile).trim();
                 LOGW(TAG, "Debug URL override active: " + overrideUrl);
                 return overrideUrl;
             } catch (IOException ex) {
@@ -204,10 +205,11 @@ public class RemoteConferenceDataFetcher {
             // proceed anyway to attempt to download it from the network
         }
 
-        // We don't have the file on cache, so download it
-        LOGD(TAG, "Cache miss. Downloading from network: " + sanitizeUrl(url));
         BasicHttpClient client = new BasicHttpClient();
         client.setRequestLogger(mQuietLogger);
+
+        // We don't have the file on cache, so download it
+        LOGD(TAG, "Cache miss. Downloading from network: " + sanitizeUrl(url));
         HttpResponse response = client.get(url, null);
 
         if (response == null) {
@@ -219,7 +221,7 @@ public class RemoteConferenceDataFetcher {
             body = response.getBodyAsString();
             if (TextUtils.isEmpty(body)) {
                 throw new IOException("Got empty response when attempting to fetch " +
-                        sanitizeUrl(url));
+                        sanitizeUrl(url) + url);
             }
             LOGD(TAG, "Successfully downloaded from network: " + sanitizeUrl(url));
             mBytesDownloaded += body.getBytes().length;
@@ -265,7 +267,7 @@ public class RemoteConferenceDataFetcher {
         File cacheFile = getCacheFile(url);
         if (cacheFile.exists()) {
             LOGD(TAG, "Cache hit " + cacheKey + " for " + sanitizeUrl(url));
-            return FileUtils.readFileAsString(cacheFile);
+            return IOUtils.readFileAsString(cacheFile);
         } else {
             LOGD(TAG, "Cache miss " + cacheKey + " for " + sanitizeUrl(url));
             return null;
@@ -282,7 +284,7 @@ public class RemoteConferenceDataFetcher {
         String cacheKey = getCacheKey(url);
         File cacheFile = getCacheFile(url);
         createCacheDir();
-        FileUtils.writeFile(body, cacheFile);
+        IOUtils.writeToFile(body, cacheFile);
         LOGD(TAG, "Wrote to cache " + cacheKey + " --> " + sanitizeUrl(url));
     }
 

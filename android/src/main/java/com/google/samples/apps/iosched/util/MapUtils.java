@@ -15,15 +15,19 @@
  */
 package com.google.samples.apps.iosched.util;
 
-import android.content.Context;
-import android.content.SharedPreferences;
-import android.graphics.BitmapFactory;
-import android.preference.PreferenceManager;
-
-import com.google.samples.apps.iosched.R;
-import com.google.samples.apps.iosched.ui.MapFragment;
-import com.google.android.gms.maps.model.*;
+import com.google.android.gms.maps.model.BitmapDescriptor;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.maps.android.ui.IconGenerator;
+import com.google.samples.apps.iosched.R;
+import com.google.samples.apps.iosched.map.util.MarkerModel;
+
+import com.jakewharton.disklrucache.DiskLruCache;
+
+import android.content.Context;
+import android.support.annotation.DrawableRes;
+import android.text.TextUtils;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -31,8 +35,7 @@ import java.io.FilenameFilter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
-
-import com.jakewharton.disklrucache.DiskLruCache;
+import java.util.Locale;
 
 import static com.google.samples.apps.iosched.util.LogUtils.LOGD;
 import static com.google.samples.apps.iosched.util.LogUtils.LOGE;
@@ -40,36 +43,115 @@ import static com.google.samples.apps.iosched.util.LogUtils.LOGE;
 public class MapUtils {
 
     private static final String TILE_PATH = "maptiles";
-    private static final String PREF_MYLOCATION_ENABLED = "map_mylocation_enabled";
     private static final String TAG = LogUtils.makeLogTag(MapUtils.class);
+
+    /**
+     * Returns the room type for a {@link com.google.samples.apps.iosched.map.util.MarkerModel}
+     * for a given String.
+     */
+    public static int detectMarkerType(String markerType) {
+        if (TextUtils.isEmpty(markerType)) {
+            return MarkerModel.TYPE_INACTIVE;
+        }
+        String tags = markerType.toUpperCase(Locale.US);
+        if (tags.contains("SESSION")) {
+            return MarkerModel.TYPE_SESSION;
+        } else if (tags.contains("PLAIN")) {
+            return MarkerModel.TYPE_PLAIN;
+        } else if (tags.contains("LABEL")) {
+            return MarkerModel.TYPE_LABEL;
+        } else if (tags.contains("CODELAB")) {
+            return MarkerModel.TYPE_CODELAB;
+        } else if (tags.contains("SANDBOX")) {
+            return MarkerModel.TYPE_SANDBOX;
+        } else if (tags.contains("OFFICEHOURS")) {
+            return MarkerModel.TYPE_OFFICEHOURS;
+        } else if (tags.contains("MISC")) {
+            return MarkerModel.TYPE_MISC;
+        } else if (tags.contains("MOSCONE")) {
+            return MarkerModel.TYPE_MOSCONE;
+        } else if (tags.contains("INACTIVE")) {
+            return MarkerModel.TYPE_INACTIVE;
+        }
+        return MarkerModel.TYPE_INACTIVE; // default
+    }
+
+    /**
+     * Returns the drawable Id of icon to use for a room type.
+     */
+    public static
+    @DrawableRes
+    int getRoomIcon(int markerType) {
+        switch (markerType) {
+            case MarkerModel.TYPE_SESSION:
+                return R.drawable.ic_map_session;
+            case MarkerModel.TYPE_PLAIN:
+                return R.drawable.ic_map_pin;
+            case MarkerModel.TYPE_CODELAB:
+                return R.drawable.ic_map_codelab;
+            case MarkerModel.TYPE_SANDBOX:
+                return R.drawable.ic_map_sandbox;
+            case MarkerModel.TYPE_OFFICEHOURS:
+                return R.drawable.ic_map_officehours;
+            case MarkerModel.TYPE_MISC:
+                return R.drawable.ic_map_misc;
+            case MarkerModel.TYPE_MOSCONE:
+                return R.drawable.ic_map_moscone;
+            default:
+                return R.drawable.ic_map_pin;
+        }
+    }
+
+    /**
+     * True if the info details for this room type should only contain a title.
+     */
+    public static boolean hasInfoTitleOnly(int markerType) {
+        return markerType == MarkerModel.TYPE_PLAIN;
+    }
+
+
+    /**
+     * True if the info details for this room type contain a title and a list of sessions.
+     */
+    public static boolean hasInfoSessionList(int markerType) {
+        return markerType != MarkerModel.TYPE_INACTIVE && markerType != MarkerModel.TYPE_LABEL
+                && markerType != MarkerModel.TYPE_CODELAB;
+    }
+
+    /**
+     * True if the info details for this room type contain a title and a list of sessions.
+     */
+    public static boolean hasInfoFirstDescriptionOnly(int markerType) {
+        return markerType == MarkerModel.TYPE_CODELAB;
+    }
+
+
+    public static boolean hasInfoSessionListIcons(int markerType) {
+        return markerType == MarkerModel.TYPE_SANDBOX;
+    }
 
     /**
      * Creates a marker for a session.
      *
-     * @param id       Id to be embedded as the title
-     * @param position
-     * @return
+     * @param id Id to be embedded as the title
      */
-    public static MarkerOptions createSessionMarker(String id, String type, LatLng position) {
+    public static MarkerOptions createPinMarker(String id, LatLng position) {
         final BitmapDescriptor icon =
-                BitmapDescriptorFactory.fromResource(R.drawable.marker_session);
-        return new MarkerOptions().position(position).title(id)
-                .snippet(type).icon(icon).visible(false);
+                BitmapDescriptorFactory.fromResource(R.drawable.map_marker_unselected);
+        return new MarkerOptions().position(position).title(id).icon(icon).anchor(0.5f, 0.85526f)
+                .visible(
+                        false);
     }
 
     /**
-     * Creates a marker for a partner marker.
-     *
-     * @param id       Id to be embedded as the title
-     * @param position
-     * @return
+     * Creates a new IconGenerator for labels on the map.
      */
-    public static MarkerOptions createPartnerMarker(String id, LatLng position) {
-        final String snippet = MapFragment.TYPE_PARTNER;
-        final BitmapDescriptor icon =
-                BitmapDescriptorFactory.fromResource(R.drawable.marker_sandbox);
-        return new MarkerOptions().position(position).title(id)
-                .snippet(snippet).icon(icon).visible(false);
+    public static IconGenerator getLabelIconGenerator(Context c) {
+        IconGenerator iconFactory = new IconGenerator(c);
+        iconFactory.setTextAppearance(R.style.MapLabel);
+        iconFactory.setBackground(null);
+
+        return iconFactory;
     }
 
     /**
@@ -77,43 +159,28 @@ public class MapUtils {
      *
      * @param iconFactory Reusable IconFactory
      * @param id          Id to be embedded as the title
-     * @param position
      * @param label       Text to be shown on the label
-     * @return
      */
-    public static MarkerOptions createLabelMarker(IconGenerator iconFactory, String id, LatLng position, String label) {
-        final String snippet = MapFragment.TYPE_LABEL;
-
-        iconFactory.setTextAppearance(R.style.MapLabel);
-        iconFactory.setBackground(null);
-
+    public static MarkerOptions createLabelMarker(IconGenerator iconFactory, String id,
+            LatLng position, String label) {
         final BitmapDescriptor icon =
                 BitmapDescriptorFactory.fromBitmap(iconFactory.makeIcon(label));
 
-        return new MarkerOptions().position(position).title(id)
-                .snippet(snippet).icon(icon)
-                .anchor(iconFactory.getAnchorU(), iconFactory.getAnchorV())
+        return new MarkerOptions().position(position).title(id).icon(icon)
+                .anchor(0.5f, 0.5f)
                 .visible(false);
     }
 
     /**
      * Creates a marker for Moscone Center.
-     *
-     * @param iconFactory Reusable IconFactory
-     * @param position
-     * @param c
-     * @return
      */
-    public static MarkerOptions createMosconeMarker(IconGenerator iconFactory, LatLng position, Context c) {
-        final String snippet = MapFragment.TYPE_MOSCONE;
-        iconFactory.setStyle(IconGenerator.STYLE_DEFAULT);
+    public static MarkerOptions createMosconeMarker(LatLng position) {
+        final String title = "MOSCONE";
 
         final BitmapDescriptor icon =
-                BitmapDescriptorFactory.fromResource(R.drawable.moscone_marker);
+                BitmapDescriptorFactory.fromResource(R.drawable.map_marker_moscone);
 
-        return new MarkerOptions().position(position).title(snippet)
-                .snippet(snippet).icon(icon)
-                .anchor(iconFactory.getAnchorU(), iconFactory.getAnchorV())
+        return new MarkerOptions().position(position).title(title).icon(icon)
                 .visible(false);
     }
 
@@ -204,17 +271,6 @@ public class MapUtils {
 
     public static boolean hasTile(Context mContext, String filename) {
         return getTileFile(mContext, filename).exists();
-    }
-
-    public static boolean getMyLocationEnabled(final Context context) {
-        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(context);
-        return sp.getBoolean(PREF_MYLOCATION_ENABLED, false);
-    }
-
-    public static void setMyLocationEnabled(final Context context, final boolean enableMyLocation) {
-        LogUtils.LOGD(TAG, "Set my location enabled: " + enableMyLocation);
-        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(context);
-        sp.edit().putBoolean(PREF_MYLOCATION_ENABLED, enableMyLocation).commit();
     }
 
     private static final int MAX_DISK_CACHE_BYTES = 1024 * 1024 * 2; // 2MB

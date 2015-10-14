@@ -19,6 +19,7 @@ package com.google.samples.apps.iosched.io;
 import com.google.samples.apps.iosched.provider.ScheduleContract;
 import com.google.gson.Gson;
 import com.google.gson.JsonElement;
+import com.google.samples.apps.iosched.provider.ScheduleContractHelper;
 
 import android.app.SearchManager;
 import android.content.ContentProviderOperation;
@@ -48,7 +49,7 @@ public class SearchSuggestHandler extends JSONHandler {
 
     @Override
     public void makeContentProviderOperations(ArrayList<ContentProviderOperation> list) {
-        Uri uri = ScheduleContract.addCallerIsSyncAdapterParameter(
+        Uri uri = ScheduleContractHelper.setUriAsCalledFromSyncAdapter(
                 ScheduleContract.SearchSuggest.CONTENT_URI);
 
         list.add(ContentProviderOperation.newDelete(uri).build());

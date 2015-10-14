@@ -19,6 +19,7 @@ package com.google.samples.apps.iosched.util;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
+import android.support.annotation.DrawableRes;
 import android.widget.ImageView;
 
 import com.google.samples.apps.iosched.R;
@@ -28,24 +29,23 @@ import java.util.regex.Pattern;
 
 import com.bumptech.glide.BitmapRequestBuilder;
 import com.bumptech.glide.Glide;
-import com.bumptech.glide.ModelRequest;
-import com.bumptech.glide.load.Transformation;
+import com.bumptech.glide.BitmapTypeRequest;
 import com.bumptech.glide.load.model.GlideUrl;
 import com.bumptech.glide.load.model.ModelCache;
 import com.bumptech.glide.load.model.stream.BaseGlideUrlLoader;
 import com.bumptech.glide.load.resource.bitmap.CenterCrop;
-import com.bumptech.glide.request.bitmap.RequestListener;
+import com.bumptech.glide.request.RequestListener;
 
-import static com.google.samples.apps.iosched.util.LogUtils.LOGD;
+import static com.google.samples.apps.iosched.util.LogUtils.LOGW;
 import static com.google.samples.apps.iosched.util.LogUtils.makeLogTag;
 
 public class ImageLoader {
     private static final String TAG = makeLogTag(ImageLoader.class);
-    private static final ModelCache<GlideUrl> urlCache = new ModelCache<GlideUrl>(150);
+    private static final ModelCache<String, GlideUrl> urlCache =
+            new ModelCache<String, GlideUrl>(150);
 
-    private final ModelRequest.ImageModelRequest<String> mGlideModelRequest;
+    private final BitmapTypeRequest<String> mGlideModelRequest;
     private final CenterCrop mCenterCrop;
-    private final Transformation<Bitmap> mNone;
 
     private int mPlaceHolderResId = -1;
 
@@ -54,9 +54,8 @@ public class ImageLoader {
      */
     public ImageLoader(Context context) {
         VariableWidthImageLoader imageLoader = new VariableWidthImageLoader(context);
-        mGlideModelRequest = Glide.with(context).using(imageLoader);
+        mGlideModelRequest = Glide.with(context).using(imageLoader).from(String.class).asBitmap();
         mCenterCrop = new CenterCrop(Glide.get(context).getBitmapPool());
-        mNone = Transformation.NONE;
     }
 
     /**
@@ -74,7 +73,7 @@ public class ImageLoader {
      * @param imageView The target ImageView to load the image into.
      * @param requestListener A listener to monitor the request result.
      */
-    public void loadImage(String url, ImageView imageView, RequestListener<String> requestListener) {
+    public void loadImage(String url, ImageView imageView, RequestListener<String, Bitmap> requestListener) {
         loadImage(url, imageView, requestListener, null, false);
     }
 
@@ -84,11 +83,11 @@ public class ImageLoader {
      * @param url The web URL of an image.
      * @param imageView The target ImageView to load the image into.
      * @param requestListener A listener to monitor the request result.
-     * @param placholderOverride A placeholder to use in place of the default placholder.
+     * @param placeholderOverride A placeholder to use in place of the default placholder.
      */
-    public void loadImage(String url, ImageView imageView, RequestListener<String> requestListener,
-            Drawable placholderOverride) {
-        loadImage(url, imageView, requestListener, placholderOverride, false /*crop*/);
+    public void loadImage(String url, ImageView imageView, RequestListener<String, Bitmap> requestListener,
+            Drawable placeholderOverride) {
+        loadImage(url, imageView, requestListener, placeholderOverride, false /*crop*/);
     }
 
     /**
@@ -101,7 +100,7 @@ public class ImageLoader {
      *                            If this parameter is present, {@link #mPlaceHolderResId}
      *                            if ignored for this request.
      */
-    public void loadImage(String url, ImageView imageView, RequestListener<String> requestListener,
+    public void loadImage(String url, ImageView imageView, RequestListener<String, Bitmap> requestListener,
                 Drawable placeholderOverride, boolean crop) {
         BitmapRequestBuilder request = beginImageLoad(url, requestListener, crop)
                 .animate(R.anim.image_fade_in);
@@ -114,11 +113,15 @@ public class ImageLoader {
     }
 
     public BitmapRequestBuilder beginImageLoad(String url,
-            RequestListener<String> requestListener, boolean crop) {
-        return mGlideModelRequest.load(url)
-                .asBitmap() // don't allow animated GIFs
-                .listener(requestListener)
-                .transform(crop ? mCenterCrop : mNone);
+            RequestListener<String, Bitmap> requestListener, boolean crop) {
+        if (crop){
+            return mGlideModelRequest.load(url)
+                    .listener(requestListener)
+                    .transform(mCenterCrop);
+        } else {
+            return mGlideModelRequest.load(url)
+                    .listener(requestListener);
+        }
     }
 
     /**
@@ -142,16 +145,15 @@ public class ImageLoader {
         loadImage(url, imageView, null, null, crop);
     }
 
+    public void loadImage(Context context, @DrawableRes int drawableResId, ImageView imageView) {
+        Glide.with(context).load(drawableResId).into(imageView);
+    }
+
     private static class VariableWidthImageLoader extends BaseGlideUrlLoader<String> {
         private static final Pattern PATTERN = Pattern.compile("__w-((?:-?\\d+)+)__");
 
         public VariableWidthImageLoader(Context context) {
             super(context, urlCache);
-        }
-
-        @Override
-        public String getId(String model) {
-            return model;
         }
 
         /**
@@ -175,7 +177,6 @@ public class ImageLoader {
                 }
                 if (bestBucket > 0) {
                     model = m.replaceFirst("w"+bestBucket);
-                    LOGD(TAG, "width="+width+", URL successfully replaced by "+model);
                 }
             }
             return model;

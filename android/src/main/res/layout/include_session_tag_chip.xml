@@ -20,7 +20,7 @@
     android:paddingRight="8dp"
     android:drawablePadding="4dp"
     android:gravity="center"
-    android:textColor="@color/body_text_1"
+    android:textColor="@color/session_detail_tag_text_color"
     android:textSize="@dimen/text_size_medium"
     android:layout_width="match_parent"
     android:layout_height="match_parent"

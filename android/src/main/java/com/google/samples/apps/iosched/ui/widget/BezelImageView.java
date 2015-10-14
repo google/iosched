@@ -16,8 +16,6 @@
 
 package com.google.samples.apps.iosched.ui.widget;
 
-import com.google.samples.apps.iosched.R;
-
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Bitmap;
@@ -33,6 +31,8 @@ import android.graphics.drawable.Drawable;
 import android.support.v4.view.ViewCompat;
 import android.util.AttributeSet;
 import android.widget.ImageView;
+
+import com.google.samples.apps.iosched.R;
 
 /**
  * An {@link android.widget.ImageView} that draws its contents inside a mask and draws a border
@@ -68,7 +68,7 @@ public class BezelImageView extends ImageView {
     public BezelImageView(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
 
-        // Attribute initialization
+        // Attribute initialization.
         final TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.BezelImageView,
                 defStyle, 0);
 
@@ -87,7 +87,7 @@ public class BezelImageView extends ImageView {
 
         a.recycle();
 
-        // Other initialization
+        // Other initialization.
         mBlackPaint = new Paint();
         mBlackPaint.setColor(0xff000000);
         
@@ -139,7 +139,7 @@ public class BezelImageView extends ImageView {
         }
 
         if (!mCacheValid || width != mCachedWidth || height != mCachedHeight) {
-            // Need to redraw the cache
+            // Need to redraw the cache.
             if (width == mCachedWidth && height == mCachedHeight) {
                 // Have a correct-sized bitmap cache already allocated. Just erase it.
                 mCacheBitmap.eraseColor(0);
@@ -179,7 +179,7 @@ public class BezelImageView extends ImageView {
             }
         }
 
-        // Draw from cache
+        // Draw from cache.
         canvas.drawBitmap(mCacheBitmap, mBounds.left, mBounds.top, null);
     }
 

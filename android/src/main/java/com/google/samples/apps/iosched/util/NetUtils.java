@@ -19,20 +19,18 @@ package com.google.samples.apps.iosched.util;
 import android.content.Context;
 import android.content.pm.PackageManager;
 
-import com.google.samples.apps.iosched.Config;
-
 import static com.google.samples.apps.iosched.util.LogUtils.*;
 
 public class NetUtils {
-    private static final String TAG = makeLogTag(AccountUtils.class);
+    private static final String TAG = makeLogTag(NetUtils.class);
     private static String mUserAgent = null;
 
-    public static String getUserAgent(Context mContext) {
+    public static String getUserAgent(String appName, Context context) {
         if (mUserAgent == null) {
-            mUserAgent = Config.APP_NAME;
+            mUserAgent = appName;
             try {
-                String packageName = mContext.getPackageName();
-                String version = mContext.getPackageManager().getPackageInfo(packageName, 0).versionName;
+                String packageName = context.getPackageName();
+                String version = context.getPackageManager().getPackageInfo(packageName, 0).versionName;
                 mUserAgent = mUserAgent + " (" + packageName + "/" + version + ")";
                 LOGD(TAG, "User agent set to: " + mUserAgent);
             } catch (PackageManager.NameNotFoundException e) {

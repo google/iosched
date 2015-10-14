@@ -1,5 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
 <!--
-  Copyright 2014 Google Inc. All rights reserved.
+  Copyright 2015 Google Inc. All rights reserved.
 
   Licensed under the Apache License, Version 2.0 (the "License");
   you may not use this file except in compliance with the License.
@@ -13,23 +14,18 @@
   See the License for the specific language governing permissions and
   limitations under the License.
   -->
-
 <resources>
-
-    <style name="Theme" parent="FrameworkRoot.Theme" /> <!-- doesn't contain the pre-L code from the values/styles.xml -->
-
     <style name="Theme.IOSched" parent="Theme.IOSched.Base">
         <item name="popupItemBackground">@drawable/popup_item_background</item>
         <item name="photoItemForeground">@drawable/photo_item_foreground</item>
         <item name="photoItemForegroundBorderless">@drawable/photo_item_foreground_borderless</item>
-
         <item name="android:navigationBarColor">#000</item>
-        <item name="android:statusBarColor">?colorPrimaryDark</item>
-
         <item name="android:alertDialogTheme">@style/Theme.IOSched.AlertDialog</item>
+        <item name="imageItemBackground">?android:selectableItemBackgroundBorderless</item>
     </style>
 
     <style name="Theme.IOSched.WithNavDrawer" parent="Theme.IOSched">
+        <item name="android:windowDrawsSystemBarBackgrounds">true</item>
         <item name="android:statusBarColor">@android:color/transparent</item>
     </style>
 

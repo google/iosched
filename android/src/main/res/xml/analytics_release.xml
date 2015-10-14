@@ -1,5 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
 <!--
-  Copyright 2014 Google Inc. All rights reserved.
+  Copyright 2015 Google Inc. All rights reserved.
 
   Licensed under the Apache License, Version 2.0 (the "License");
   you may not use this file except in compliance with the License.
@@ -20,9 +21,9 @@
     <bool name="ga_reportUncaughtExceptions">true</bool>
     <integer name="ga_sessionTimeout">300</integer>
 
-    <!-- 1800 seconds is 30 minutes, which is the default.
+    <!-- Set dispatch period of 30 minutes, which is the default.
         Included explicitly for ease of tweaking. -->
-    <integer name="ga_dispatchInterval">1800</integer>
+    <int name="ga_dispatchPeriod">1800</int>
 
     <bool name="ga_debug">false</bool>
 </resources>
