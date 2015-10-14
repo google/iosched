@@ -32,6 +32,7 @@ import android.os.Parcelable;
  * Android Beam helper methods.
  */
 public class BeamUtils {
+
     /**
      * Sets this activity's Android Beam message to one representing the given session.
      */
@@ -45,7 +46,8 @@ public class BeamUtils {
         nfcAdapter.setNdefPushMessage(new NdefMessage(
                 new NdefRecord[]{
                         new NdefRecord(NdefRecord.TNF_MIME_MEDIA,
-                                ScheduleContract.Sessions.CONTENT_ITEM_TYPE.getBytes(),
+                                ScheduleContract.makeContentItemType(
+                                        ScheduleContract.Sessions.CONTENT_TYPE_ID).getBytes(),
                                 new byte[0],
                                 sessionUri.toString().getBytes())
                 }), activity);
@@ -66,7 +68,8 @@ public class BeamUtils {
             // Record 0 contains the MIME type, record 1 is the AAR, if present.
             // In iosched, AARs are not present.
             NdefRecord mimeRecord = msg.getRecords()[0];
-            if (ScheduleContract.Sessions.CONTENT_ITEM_TYPE.equals(
+            if (ScheduleContract.makeContentItemType(
+                    ScheduleContract.Sessions.CONTENT_TYPE_ID).equals(
                     new String(mimeRecord.getType()))) {
                 // Re-set the activity's intent to one that represents session details.
                 Intent sessionDetailIntent = new Intent(Intent.ACTION_VIEW,

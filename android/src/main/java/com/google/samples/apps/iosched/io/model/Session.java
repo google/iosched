@@ -18,6 +18,8 @@ package com.google.samples.apps.iosched.io.model;
 
 import com.google.samples.apps.iosched.util.HashUtils;
 
+import java.util.Random;
+
 public class Session {
     public String id;
     public String url;
@@ -36,11 +38,25 @@ public class Session {
     public boolean isLivestream;
     public String mainTag;
     public String color;
-    public String relatedContent;
+    public RelatedContent[] relatedContent;
     public int groupingOrder;
 
+    public class RelatedContent {
+        public String id;
+        public String name;
+
+        @Override
+        public String toString() {
+            return "RelatedContent{" +
+                    "id='" + id + '\'' +
+                    ", name='" + name + '\'' +
+                    '}';
+        }
+    }
+
     public String getImportHashCode() {
-        StringBuilder sb = new StringBuilder();
+        return (new Random()).nextLong()+"";
+/*        StringBuilder sb = new StringBuilder();
         sb.append("id").append(id == null ? "" : id)
                 .append("description").append(description == null ? "" : description)
                 .append("title").append(title == null ? "" : title)
@@ -65,6 +81,7 @@ public class Session {
             sb.append("speaker").append(speaker);
         }
         return HashUtils.computeWeakHash(sb.toString());
+*/
     }
 
     public String makeTagsList() {
@@ -86,6 +103,7 @@ public class Session {
         }
         return false;
     }
+
 }
 
 

@@ -21,6 +21,7 @@ import android.content.res.TypedArray;
 import android.graphics.Canvas;
 import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
+import android.support.v4.view.ViewCompat;
 import android.util.AttributeSet;
 import android.widget.FrameLayout;
 
@@ -30,6 +31,7 @@ import com.google.samples.apps.iosched.R;
  * A layout that draws something in the insets passed to {@link #fitSystemWindows(Rect)}, i.e. the area above UI chrome
  * (status and navigation bars, overlay action bars).
  */
+@Deprecated
 public class ScrimInsetsFrameLayout extends FrameLayout {
     private Drawable mInsetForeground;
 
@@ -58,7 +60,7 @@ public class ScrimInsetsFrameLayout extends FrameLayout {
         if (a == null) {
             return;
         }
-        mInsetForeground = a.getDrawable(R.styleable.ScrimInsetsView_insetForeground);
+        mInsetForeground = a.getDrawable(R.styleable.ScrimInsetsView_appInsetForeground);
         a.recycle();
 
         setWillNotDraw(true);
@@ -68,7 +70,7 @@ public class ScrimInsetsFrameLayout extends FrameLayout {
     protected boolean fitSystemWindows(Rect insets) {
         mInsets = new Rect(insets);
         setWillNotDraw(mInsetForeground == null);
-        postInvalidateOnAnimation();
+        ViewCompat.postInvalidateOnAnimation(this);
         if (mOnInsetsCallback != null) {
             mOnInsetsCallback.onInsetsChanged(insets);
         }

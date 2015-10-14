@@ -21,6 +21,7 @@ import android.content.res.TypedArray;
 import android.graphics.Canvas;
 import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
+import android.support.v4.view.ViewCompat;
 import android.util.AttributeSet;
 import android.widget.ScrollView;
 
@@ -58,7 +59,7 @@ public class ScrimInsetsScrollView extends ScrollView {
         if (a == null) {
             return;
         }
-        mInsetForeground = a.getDrawable(R.styleable.ScrimInsetsView_insetForeground);
+        mInsetForeground = a.getDrawable(R.styleable.ScrimInsetsView_appInsetForeground);
         a.recycle();
 
         setWillNotDraw(true);
@@ -68,7 +69,7 @@ public class ScrimInsetsScrollView extends ScrollView {
     protected boolean fitSystemWindows(Rect insets) {
         mInsets = new Rect(insets);
         setWillNotDraw(mInsetForeground == null);
-        postInvalidateOnAnimation();
+        ViewCompat.postInvalidateOnAnimation(this);
         if (mOnInsetsCallback != null) {
             mOnInsetsCallback.onInsetsChanged(insets);
         }

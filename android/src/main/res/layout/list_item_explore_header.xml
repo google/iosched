@@ -17,13 +17,15 @@
 
 <!-- 12dp because grid is inset by @dimen/explore_grid_padding -->
 <!-- 44dp also because of grid insets -->
-<TextView xmlns:android="http://schemas.android.com/apk/res/android"
-    android:paddingLeft="12dp"
-    android:paddingRight="12dp"
-    android:paddingBottom="@dimen/explore_grid_padding"
+<TextView
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@android:id/text1"
-    android:layout_height="44dp"
     android:layout_width="match_parent"
+    android:layout_height="?android:listPreferredItemHeightSmall"
+    android:layout_marginStart="@dimen/padding_normal"
+    android:layout_marginEnd="@dimen/padding_normal"
     android:gravity="center_vertical|start"
+    android:maxLines="1"
+    android:ellipsize="end"
     android:textSize="@dimen/text_size_medium"
     android:textColor="@color/body_text_2" />

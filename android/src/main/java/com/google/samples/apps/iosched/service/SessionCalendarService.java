@@ -20,9 +20,9 @@ import android.util.Log;
 import com.google.samples.apps.iosched.Config;
 import com.google.samples.apps.iosched.R;
 import com.google.samples.apps.iosched.provider.ScheduleContract;
+import com.google.samples.apps.iosched.settings.SettingsUtils;
 import com.google.samples.apps.iosched.util.AccountUtils;
 
-import android.annotation.TargetApi;
 import android.app.IntentService;
 import android.content.ContentProviderOperation;
 import android.content.ContentResolver;
@@ -35,7 +35,6 @@ import android.os.Bundle;
 import android.os.RemoteException;
 import android.provider.CalendarContract;
 import android.text.TextUtils;
-import com.google.samples.apps.iosched.util.PrefUtils;
 
 import java.util.ArrayList;
 
@@ -97,7 +96,7 @@ public class SessionCalendarService extends IntentService {
             isAddEvent = false;
 
         } else if (ACTION_UPDATE_ALL_SESSIONS_CALENDAR.equals(action) &&
-                PrefUtils.shouldSyncCalendar(this)) {
+                SettingsUtils.shouldSyncCalendar(this)) {
             try {
                 getContentResolver().applyBatch(CalendarContract.AUTHORITY,
                         processAllSessionsCalendar(resolver, getCalendarId(intent)));
@@ -125,7 +124,7 @@ public class SessionCalendarService extends IntentService {
 
         final Uri uri = intent.getData();
         final Bundle extras = intent.getExtras();
-        if (uri == null || extras == null || !PrefUtils.shouldSyncCalendar(this)) {
+        if (uri == null || extras == null || !SettingsUtils.shouldSyncCalendar(this)) {
             return;
         }
 
@@ -159,7 +158,7 @@ public class SessionCalendarService extends IntentService {
             return INVALID_CALENDAR_ID;
         }
 
-        // TODO: The calendar ID should be stored in shared preferences upon choosing an account.
+        // TODO: The calendar ID should be stored in shared settings_prefs upon choosing an account.
         Cursor calendarsCursor = getContentResolver().query(
                 CalendarContract.Calendars.CONTENT_URI,
                 new String[]{"_id"},

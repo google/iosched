@@ -1,5 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
 <!--
-  Copyright 2014 Google Inc. All rights reserved.
+  Copyright 2015 Google Inc. All rights reserved.
 
   Licensed under the Apache License, Version 2.0 (the "License");
   you may not use this file except in compliance with the License.
@@ -13,12 +14,11 @@
   See the License for the specific language governing permissions and
   limitations under the License.
   -->
-
 <resources>
 
     <!-- Enable RTL support on newer devices -->
     <!-- Prevents crash on certain devices to namespace conflict -->
-    <style name="FrameworkRoot.Theme" parent="Theme.AppCompat.Light">
+    <style name="FrameworkRoot.Theme" parent="Theme.AppCompat.Light.NoActionBar">
         <item name="android:paddingStart">?android:attr/paddingLeft</item>
         <item name="android:paddingEnd">?android:attr/paddingRight</item>
         <item name="android:layout_marginStart">?android:attr/layout_marginLeft</item>
@@ -29,14 +29,6 @@
         <item name="android:layout_alignParentEnd">?android:attr/layout_alignParentRight</item>
         <item name="android:drawableStart">?android:attr/drawableLeft</item>
         <item name="android:drawableEnd">?android:attr/drawableRight</item>
-    </style>
-
-    <style name="FeedbackQuestionGuideText">
-        <item name="android:layout_width">wrap_content</item>
-        <item name="android:layout_height">wrap_content</item>
-        <item name="android:textAlignment">viewStart</item>
-        <item name="android:textSize">@dimen/text_size_small</item>
-        <item name="android:textColor">@color/theme_primary</item>
     </style>
 
 </resources>

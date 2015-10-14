@@ -12,7 +12,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-
 # This is a configuration file for ProGuard.
 # http://proguard.sourceforge.net/index.html#manual/usage.html
 -dontusemixedcaseclassnames
@@ -21,14 +20,15 @@
 # Optimization is turned off by default. Dex does not like code run
 # through the ProGuard optimize and preverify steps (and performs some
 # of these optimizations on its own).
--dontoptimize
+#-dontoptimize
 -dontpreverify
+-dontobfuscate
 
 # If you want to enable optimization, you should include the
 # following:
-# -optimizations !code/simplification/arithmetic,!code/simplification/cast,!field/*,!class/merging/*
-# -optimizationpasses 5
-# -allowaccessmodification
+-optimizations !code/simplification/arithmetic,!code/simplification/cast,!field/*,!class/merging/*
+-optimizationpasses 5
+-allowaccessmodification
 #
 # Note that you cannot just include these flags in your own
 # configuration file; if you are including this file, optimization
@@ -89,7 +89,6 @@
 -keepattributes Signature,RuntimeVisibleAnnotations,AnnotationDefault
 # See https://groups.google.com/forum/#!topic/guava-discuss/YCZzeCiIVoI
 -dontwarn com.google.common.collect.MinMaxPriorityQueue
--dontobfuscate
 # Assume dependency libraries Just Work(TM)
 -dontwarn com.google.android.youtube.**
 -dontwarn com.google.android.analytics.**
@@ -99,25 +98,11 @@
 -keep class com.google.common.cache.LocalCache$ReferenceEntry
 # Make sure that Google Analytics doesn't get removed
 -keep class com.google.analytics.tracking.android.CampaignTrackingReceiver
-## BEGIN -- Google Play Services proguard.txt
--keep class * extends java.util.ListResourceBundle {
-    protected java.lang.Object[][] getContents();
+# Keep the LUtils members that are used by the ObjectAnimator using reflection
+-keep public class com.google.samples.apps.iosched.util.LUtils {
+    public <methods>;
 }
-# Keep SafeParcelable value, needed for reflection. This is required to support backwards
-# compatibility of some classes.
--keep public class com.google.android.gms.common.internal.safeparcel.SafeParcelable {
-    public static final *** NULL;
-}
-# Keep the names of classes/members we need for client functionality.
--keepnames @com.google.android.gms.common.annotation.KeepName class *
--keepclassmembernames class * {
-    @com.google.android.gms.common.annotation.KeepName *;
-}
-# Needed for Parcelable/SafeParcelable Creators to not get stripped
--keepnames class * implements android.os.Parcelable {
-    public static final ** CREATOR;
-}
-## END -- Google Play Services proguard.txt
+
 # Other settings
 -keep class com.android.**
 -keep class com.google.android.**
@@ -126,7 +111,15 @@
 -keep class com.google.api.client.**
 -keep class com.google.maps.android.**
 -keep class libcore.**
+
+-dontwarn com.nineoldandroids.view.animation.** #Required by SlidingUpPanel
 -dontwarn org.junit.**
 -dontwarn org.mockito.**
 -dontwarn org.robolectric.**
 -dontwarn com.bumptech.glide.GlideTest
+-dontwarn com.google.common.cache.**
+-dontwarn com.google.common.primitives.**
+-dontwarn com.google.api.client.googleapis.**
+-dontwarn com.sothree.slidinguppanel.**
+-dontwarn sun.misc.Unsafe
+-dontwarn com.google.common.util.concurrent.RateLimiter

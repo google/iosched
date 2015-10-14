@@ -30,7 +30,7 @@
     <!-- Hero session card -->
     <FrameLayout
         android:layout_width="0dp"
-        android:layout_weight="@integer/explore_wide_layout_hero_weight"
+        android:layout_weight="@integer/deprecated_explore_wide_layout_hero_weight"
         android:layout_height="@dimen/explore_hero_item_height"
         android:id="@+id/session_target"
         android:foreground="?photoItemForeground">

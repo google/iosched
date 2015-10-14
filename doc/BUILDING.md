@@ -1,4 +1,4 @@
-    Copyright 2014 Google Inc. All rights reserved.
+    Copyright 2015 Google Inc. All rights reserved.
 
     Licensed under the Apache License, Version 2.0 (the "License");
     you may not use this file except in compliance with the License.
@@ -24,11 +24,6 @@ need to set up, refer to [Server side setup](#server-side-setup).
 This is a Gradle-based project that works best with
 [Android Studio](http://developer.android.com/sdk/installing/studio.html)
 
-> __NOTE__: Building the project as-is requires the Android Wear SDK, which you
-    can download from http://developer.android.com/wear/. If you wish to build
-    without Android Wear support, please refer to the [Building without Android
-    Wear](#building-without-android-wear) section.
-
 To build the app:
 
 1. Install the following software:
@@ -39,73 +34,46 @@ To build the app:
        - Android Studio:
          http://developer.android.com/sdk/installing/studio.html
 
-2. Run the Android SDK Manager by pressing the SDK Manager toolbar button
+1. Run the Android SDK Manager by pressing the SDK Manager toolbar button
    in Android Studio or by running the 'android' command in a terminal
    window.
 
-
-3. In the Android SDK Manager, ensure that the following are installed,
+1. In the Android SDK Manager, ensure that the following are installed,
    and are updated to the latest available version:
-       - Tools > Android SDK Platform-tools (rev 20 or above)
-       - Tools > Android SDK Tools (rev 23.0.2 or above)
-       - Tools > Android SDK Build-tools version 20
-       - Tools > Android SDK Build-tools version 19.1
-       - Android 4.4 > SDK Platform (API 19)
-       - Android 4.4W > SDK Platform (API 20)
-       - Android L (API 20, L Preview)
+       - Tools > Android SDK Platform-tools
+       - Tools > Android SDK Tools
+       - Tools > Android SDK Build-tools
+       - Tools > Android SDK Build-tools
+       - Android 6.0 > SDK Platform (API 23)
        - Extras > Android Support Repository
        - Extras > Android Support Library
        - Extras > Google Play services
        - Extras > Google Repository
 
-4. Create a file in your working directory called local.properties,
+1. Create a file in your working directory called local.properties,
    containing the path to your Android SDK. Use local.properties.example as a
    model.
 
-5. Import the project in Android Studio:
+1. Import the project in Android Studio:
 
     1. Press File > Import Project
-    2. Navigate to and choose the settings.gradle file in this project
-    3. Press OK
+    1. Navigate to and choose the settings.gradle file in this project
+    1. Press OK
 
-6. Add your debug keystore to the project (save it as android/debug.keystore), 
+1. Add your debug keystore to the project (save it as android/debug.keystore),
     or modify the build.gradle file to point to your key.
 
-7. Choose Build > Make Project in Android Studio or run the following
+1. Choose Build > Make Project in Android Studio or run the following
     command in the project root directory:
    ```
     ./gradlew clean assembleDebug
    ```
-8. To install on your test device:
+1. To install on your test device:
 
    ```
-    ./gradlew installClassicDebug
+    ./gradlew installDebug
    ```
 
-
-## Building without Android Wear
-
-If you do not wish to build the Android Wear component, you can remove or
-comment out the following line on android/build.gradle:
-
-      wearApp project(":Wearable")
-
-Also, remove ':Wearable' from settings.gradle, leaving only ':android'.
-
-
-## Building with Android L Preview SDK
-
-If you wish to build the project with the Android L Preview SDK to see the
-full experience, you need to set the lpreview property when building:
-
-    ./gradlew clean
-    ./gradlew -Plpreview assembleDebug
-
-To install on your test device, use:
-
-    ./gradlew -Plpreview installLpreviewDebug
-
-You will need a device flashed with the Android L preview system image.
 
 # Server-side setup
 

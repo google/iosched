@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-
 <!--
-  Copyright 2014 Google Inc. All rights reserved.
+  Copyright 2015 Google Inc. All rights reserved.
 
   Licensed under the Apache License, Version 2.0 (the "License");
   you may not use this file except in compliance with the License.
@@ -16,12 +15,24 @@
   limitations under the License.
   -->
 
-<TextView xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/widget_schedule_day"
-
-    android:layout_width="wrap_content"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_height="wrap_content"
-    android:paddingLeft="@dimen/keyline_1"
-    android:paddingBottom="16dp"
-    style="@style/MyScheduleDayLabel" />
+    android:layout_width="match_parent"
+    android:orientation="vertical">
 
+    <TextView
+        android:id="@+id/widget_schedule_day"
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/widget_schedule_header_height"
+        android:gravity="center_vertical"
+        android:paddingLeft="@dimen/padding_normal"
+        style="@style/MyScheduleDayLabel" />
+
+    <!-- plain View class is not a @RemoteView so have to use an ImageView here -->
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/divider_height"
+        android:background="@color/divider"/>
+
+</LinearLayout>

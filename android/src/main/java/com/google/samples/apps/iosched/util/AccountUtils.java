@@ -17,19 +17,29 @@
 package com.google.samples.apps.iosched.util;
 
 import android.accounts.Account;
+import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 import android.text.TextUtils;
 
-import com.google.samples.apps.iosched.provider.ScheduleContract;
-import com.google.android.gms.auth.*;
+import com.google.android.gms.auth.GoogleAuthException;
+import com.google.android.gms.auth.GoogleAuthUtil;
+import com.google.android.gms.auth.UserRecoverableNotifiedException;
+import com.google.android.gms.common.AccountPicker;
 import com.google.android.gms.common.Scopes;
+import com.google.samples.apps.iosched.provider.ScheduleContract;
 
 import java.io.IOException;
 import java.util.UUID;
 
-import static com.google.samples.apps.iosched.util.LogUtils.*;
+import static com.google.samples.apps.iosched.util.LogUtils.LOGD;
+import static com.google.samples.apps.iosched.util.LogUtils.LOGE;
+import static com.google.samples.apps.iosched.util.LogUtils.LOGI;
+import static com.google.samples.apps.iosched.util.LogUtils.LOGV;
+import static com.google.samples.apps.iosched.util.LogUtils.LOGW;
+import static com.google.samples.apps.iosched.util.LogUtils.makeLogTag;
 
 /**
  * Account and login utilities. This class manages a local shared preferences object
@@ -71,15 +81,30 @@ public class AccountUtils {
         return PreferenceManager.getDefaultSharedPreferences(context);
     }
 
+    /**
+     * Specify whether the app has an active account set.
+     *
+     * @param context Context used to lookup {@link SharedPreferences} the value is stored with.
+     */
     public static boolean hasActiveAccount(final Context context) {
         return !TextUtils.isEmpty(getActiveAccountName(context));
     }
 
+    /**
+     * Return the accountName the app is using as the active Google Account.
+     *
+     * @param context Context used to lookup {@link SharedPreferences} the value is stored with.
+     */
     public static String getActiveAccountName(final Context context) {
         SharedPreferences sp = getSharedPreferences(context);
         return sp.getString(PREF_ACTIVE_ACCOUNT, null);
     }
 
+    /**
+     * Return the {@code Account} the app is using as the active Google Account.
+     *
+     * @param context Context used to lookup {@link SharedPreferences} the value is stored with.
+     */
     public static Account getActiveAccount(final Context context) {
         String account = getActiveAccountName(context);
         if (account != null) {
@@ -92,7 +117,7 @@ public class AccountUtils {
     public static boolean setActiveAccount(final Context context, final String accountName) {
         LOGD(TAG, "Set active account to: " + accountName);
         SharedPreferences sp = getSharedPreferences(context);
-        sp.edit().putString(PREF_ACTIVE_ACCOUNT, accountName).commit();
+        sp.edit().putString(PREF_ACTIVE_ACCOUNT, accountName).apply();
         return true;
     }
 
@@ -117,7 +142,7 @@ public class AccountUtils {
                 + accountName);
         SharedPreferences sp = getSharedPreferences(context);
         sp.edit().putString(makeAccountSpecificPrefKey(accountName, PREFIX_PREF_AUTH_TOKEN),
-                authToken).commit();
+                authToken).apply();
         LOGV(TAG, "Auth Token: " + authToken);
     }
 
@@ -137,7 +162,7 @@ public class AccountUtils {
     public static void setPlusProfileId(final Context context, final String accountName, final String profileId) {
         SharedPreferences sp = getSharedPreferences(context);
         sp.edit().putString(makeAccountSpecificPrefKey(accountName, PREFIX_PREF_PLUS_PROFILE_ID),
-                profileId).commit();
+                profileId).apply();
     }
 
     public static String getPlusProfileId(final Context context) {
@@ -161,7 +186,7 @@ public class AccountUtils {
     public static void setPlusName(final Context context, final String accountName, final String name) {
         SharedPreferences sp = getSharedPreferences(context);
         sp.edit().putString(makeAccountSpecificPrefKey(accountName, PREFIX_PREF_PLUS_NAME),
-                name).commit();
+                name).apply();
     }
 
     public static String getPlusName(final Context context) {
@@ -173,7 +198,7 @@ public class AccountUtils {
     public static void setPlusImageUrl(final Context context, final String accountName, final String imageUrl) {
         SharedPreferences sp = getSharedPreferences(context);
         sp.edit().putString(makeAccountSpecificPrefKey(accountName, PREFIX_PREF_PLUS_IMAGE_URL),
-                imageUrl).commit();
+                imageUrl).apply();
     }
 
     public static String getPlusImageUrl(final Context context) {
@@ -196,7 +221,7 @@ public class AccountUtils {
     public static void setPlusCoverUrl(final Context context, final String accountName, String coverPhotoUrl) {
         SharedPreferences sp = getSharedPreferences(context);
         sp.edit().putString(makeAccountSpecificPrefKey(accountName, PREFIX_PREF_PLUS_COVER_URL),
-                coverPhotoUrl).commit();
+                coverPhotoUrl).apply();
     }
 
     public static String getPlusCoverUrl(final Context context) {
@@ -231,7 +256,7 @@ public class AccountUtils {
     public static void setGcmKey(final Context context, final String accountName, final String gcmKey) {
         SharedPreferences sp = getSharedPreferences(context);
         sp.edit().putString(makeAccountSpecificPrefKey(accountName, PREFIX_PREF_GCM_KEY),
-                gcmKey).commit();
+                gcmKey).apply();
         LOGD(TAG, "GCM key of account " + accountName + " set to: " + sanitizeGcmKey(gcmKey));
     }
 
@@ -258,6 +283,26 @@ public class AccountUtils {
             return key.substring(0, 4) + "........" + key.substring(key.length() - 4);
         } else {
             return "........";
+        }
+    }
+
+    /**
+     * Enforce an active Google Account by checking to see if an active account is already set. If
+     * it is not set then use the {@link AccountPicker} to have the user select an account.
+     *
+     * @param activity The context to be used for starting an activity.
+     * @param activityResultCode The result to be used to start the {@link AccountPicker}.
+     * @return Returns whether the user already has an active account registered.
+     */
+    public static boolean enforceActiveGoogleAccount(Activity activity, int activityResultCode) {
+        if (hasActiveAccount(activity)) {
+            return true;
+        } else {
+            Intent intent = AccountPicker.newChooseAccountIntent(null, null,
+                    new String[]{GoogleAuthUtil.GOOGLE_ACCOUNT_TYPE},
+                    true, null, null, null, null);
+            activity.startActivityForResult(intent, activityResultCode);
+            return false;
         }
     }
 }

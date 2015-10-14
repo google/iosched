@@ -25,6 +25,7 @@ import com.google.samples.apps.iosched.io.model.Tag;
 import com.google.samples.apps.iosched.provider.ScheduleContract;
 import com.google.gson.Gson;
 import com.google.gson.JsonElement;
+import com.google.samples.apps.iosched.provider.ScheduleContractHelper;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -49,7 +50,7 @@ public class TagsHandler extends JSONHandler {
 
     @Override
     public void makeContentProviderOperations(ArrayList<ContentProviderOperation> list) {
-        Uri uri = ScheduleContract.addCallerIsSyncAdapterParameter(
+        Uri uri = ScheduleContractHelper.setUriAsCalledFromSyncAdapter(
                 ScheduleContract.Tags.CONTENT_URI);
 
         // since the number of tags is very small, for simplicity we delete them all and reinsert

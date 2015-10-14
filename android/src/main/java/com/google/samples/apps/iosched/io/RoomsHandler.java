@@ -20,6 +20,7 @@ import com.google.samples.apps.iosched.io.model.Room;
 import com.google.samples.apps.iosched.provider.ScheduleContract;
 import com.google.gson.Gson;
 import com.google.gson.JsonElement;
+import com.google.samples.apps.iosched.provider.ScheduleContractHelper;
 
 import android.content.ContentProviderOperation;
 import android.content.Context;
@@ -49,7 +50,7 @@ public class RoomsHandler extends JSONHandler {
 
     @Override
     public void makeContentProviderOperations(ArrayList<ContentProviderOperation> list) {
-        Uri uri = ScheduleContract.addCallerIsSyncAdapterParameter(
+        Uri uri = ScheduleContractHelper.setUriAsCalledFromSyncAdapter(
                 ScheduleContract.Rooms.CONTENT_URI);
 
         // The list of rooms is not large, so for simplicity we delete all of them and repopulate

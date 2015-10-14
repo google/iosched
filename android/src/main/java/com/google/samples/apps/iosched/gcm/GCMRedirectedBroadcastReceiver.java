@@ -21,8 +21,6 @@ import com.google.android.gcm.GCMBroadcastReceiver;
 
 import android.content.Context;
 
-/**
- */
 public class GCMRedirectedBroadcastReceiver extends GCMBroadcastReceiver {
 
     /**

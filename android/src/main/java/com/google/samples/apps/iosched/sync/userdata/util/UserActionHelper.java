@@ -22,6 +22,7 @@ import android.os.RemoteException;
 import android.util.Log;
 
 import com.google.samples.apps.iosched.provider.ScheduleContract;
+import com.google.samples.apps.iosched.provider.ScheduleContractHelper;
 import com.google.samples.apps.iosched.sync.userdata.UserAction;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
@@ -35,11 +36,18 @@ import java.util.List;
 
 import static com.google.samples.apps.iosched.util.LogUtils.makeLogTag;
 
+/**
+ * Helper class to handle the format of the User Actions done on the device.
+ */
 public class UserActionHelper {
     private static final String TAG = makeLogTag(UserActionHelper.class);
 
-    static public void updateContentProvider(Context context, List<UserAction> userActions, String account) {
-        ArrayList<ContentProviderOperation> batch = new ArrayList<ContentProviderOperation>();
+    /**
+     * Update content providers as a batch command based on the given list of User Actions.
+     */
+    static public void updateContentProvider(Context context, List<UserAction> userActions,
+            String account) {
+        ArrayList<ContentProviderOperation> batch = new ArrayList<>();
         for (UserAction action: userActions) {
             batch.add(createUpdateOperation(context, action, account));
         }
@@ -52,19 +60,41 @@ public class UserActionHelper {
         }
     }
 
-    static private ContentProviderOperation createUpdateOperation(Context context, UserAction action, String account) {
+    /**
+     * Creates the correct content provider update operation depending on the type of the user
+     * action.
+     */
+    static private ContentProviderOperation createUpdateOperation(Context context,
+            UserAction action, String account) {
         if (action.type == UserAction.TYPE.ADD_STAR) {
             return ContentProviderOperation
                     .newInsert(
-                            ScheduleContract.addOverrideAccountName(
+                            ScheduleContractHelper.addOverrideAccountName(
                                     ScheduleContract.MySchedule.CONTENT_URI, account))
                     .withValue(ScheduleContract.MySchedule.MY_SCHEDULE_DIRTY_FLAG, "0")
                     .withValue(ScheduleContract.MySchedule.SESSION_ID, action.sessionId)
                     .build();
+        } else if (action.type == UserAction.TYPE.SUBMIT_FEEDBACK) {
+            return ContentProviderOperation
+                    .newInsert(
+                            ScheduleContractHelper.addOverrideAccountName(
+                                    ScheduleContract.MyFeedbackSubmitted.CONTENT_URI, account))
+                    .withValue(ScheduleContract.MyFeedbackSubmitted
+                            .MY_FEEDBACK_SUBMITTED_DIRTY_FLAG, "0")
+                    .withValue(ScheduleContract.MyFeedbackSubmitted.SESSION_ID, action.sessionId)
+                    .build();
+        } else if (action.type == UserAction.TYPE.VIEW_VIDEO) {
+            return ContentProviderOperation
+                    .newInsert(
+                            ScheduleContractHelper.addOverrideAccountName(
+                                    ScheduleContract.MyViewedVideos.CONTENT_URI, account))
+                    .withValue(ScheduleContract.MyViewedVideos.MY_VIEWED_VIDEOS_DIRTY_FLAG, "0")
+                    .withValue(ScheduleContract.MyViewedVideos.VIDEO_ID, action.videoId)
+                    .build();
         } else {
             return ContentProviderOperation
                     .newDelete(
-                            ScheduleContract.addOverrideAccountName(
+                            ScheduleContractHelper.addOverrideAccountName(
                                     ScheduleContract.MySchedule.CONTENT_URI, account))
                     .withSelection(
                             ScheduleContract.MySchedule.SESSION_ID + " = ? AND " +
@@ -72,45 +102,6 @@ public class UserActionHelper {
                             new String[]{action.sessionId, account}
                     )
                     .build();
-        }
-    }
-
-    public static String serializeUserActions(List<UserAction> actions) {
-        JsonArray array = new JsonArray();
-        for (UserAction action: actions) {
-            JsonObject obj = new JsonObject();
-            obj.add("type", new JsonPrimitive(action.type.name()));
-            obj.add("id", new JsonPrimitive(action.sessionId));
-            array.add(obj);
-        }
-        return array.toString();
-    }
-
-    public static List<UserAction> deserializeUserActions(String str) {
-        try {
-            ArrayList<UserAction> actions = new ArrayList<UserAction>();
-            JsonReader reader = new JsonReader(new StringReader(str));
-            reader.beginArray();
-            while (reader.hasNext()) {
-                reader.beginObject();
-                UserAction action = new UserAction();
-                while (reader.hasNext()) {
-                    String key = reader.nextName();
-                    if ("type".equals(key)) {
-                        action.type = UserAction.TYPE.valueOf(reader.nextString());
-                    } else if ("id".equals(key)) {
-                        action.sessionId = reader.nextString();
-                    } else {
-                        throw new RuntimeException("Invalid key "+key+" in serialized UserAction: "+str);
-                    }
-                }
-                reader.endObject();
-                actions.add(action);
-            }
-            reader.endArray();
-            return actions;
-        } catch (IOException ex) {
-            throw new RuntimeException("Error deserializing UserActions: "+str, ex);
         }
     }
 }

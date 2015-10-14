@@ -15,15 +15,15 @@
  */
 package com.google.samples.apps.iosched.gcm.command;
 
-import android.app.AlarmManager;
-import android.app.PendingIntent;
-import android.content.Context;
-import android.content.Intent;
-
 import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
 import com.google.samples.apps.iosched.gcm.GCMCommand;
 import com.google.samples.apps.iosched.sync.TriggerSyncReceiver;
+
+import android.app.AlarmManager;
+import android.app.PendingIntent;
+import android.content.Context;
+import android.content.Intent;
 
 import static com.google.samples.apps.iosched.util.LogUtils.LOGI;
 import static com.google.samples.apps.iosched.util.LogUtils.makeLogTag;
@@ -46,7 +46,6 @@ public class SyncUserCommand extends GCMCommand {
             }
         }
 
-        // TODO: Also, use superclass to reduce duplcated code between this and SyncCommand
         if (syncData != null && syncData.sync_jitter != 0) {
             syncJitter = syncData.sync_jitter;
         } else {

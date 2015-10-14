@@ -7,17 +7,11 @@ from developers showcasing their technologies.
 
 This project is the Android app for the conference. The app supports devices
 running Android 4.0+, and is optimized for phones and tablets of all shapes
-and sizes. It also contains an Android Wear integration.
-
-<h2>Android 5.0 and Material Design</h2>
-
-![Screenshot](art/hero.png)
-
-We have updated the I/O app with [material design](http://www.google.com/design/spec) and the Android 5.0 SDK! For a quick preview of the new tactile surfaces, animated touch feedback, bold use of color, and refreshed iconography, check out this [teaser video](https://www.youtube.com/watch?v=mCgteBXYxQc).
+and sizes.
 
 <h2>Source</h2>
 
-The source code in this repository reflects the app as of I/O 2014.
+The source code in this repository reflects the app as of I/O 2015.
 
 <h2>Features</h2>
 
@@ -27,17 +21,12 @@ With the app, you can:
 - Sync your schedule between all of your devices and the I/O website
 - View detailed session, code lab, office hours, and speaker information,
   including speaker bios, photos, and Google+ profiles
-- +1 sessions right from the app
-- Participate in public #io14 conversations on Google+
+- Participate in public #io15 conversations on Google+
 - Guide yourself using the vector-based conference map
 - Get a reminder a few minutes before sessions in your schedule are due to
   start
-- View information about companies in the Developer Sandbox
 - Play "I/O Live" session video streams
-- Beam session details from your NFC-enabled device to another using Android Beam
-- Scan attendee badges on your NFC-enabled device
-- See a list of people whose badges you have scanned, and take notes about your meeting with them
-- Send feedback on sessions, from your phone/tablet, or from your Android Wear device
+- Send feedback on sessions, from your phone/tablet.
 
 <h2>How to Work with the Source</h2>
 

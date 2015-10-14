@@ -22,7 +22,7 @@ import android.content.Intent;
 import android.support.v4.app.NotificationCompat;
 import com.google.samples.apps.iosched.R;
 import com.google.samples.apps.iosched.gcm.GCMCommand;
-import com.google.samples.apps.iosched.ui.MyScheduleActivity;
+import com.google.samples.apps.iosched.myschedule.MyScheduleActivity;
 
 import static com.google.samples.apps.iosched.util.LogUtils.LOGI;
 import static com.google.samples.apps.iosched.util.LogUtils.makeLogTag;

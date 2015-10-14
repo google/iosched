@@ -1,5 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
 <!--
-  Copyright 2014 Google Inc. All rights reserved.
+  Copyright 2015 Google Inc. All rights reserved.
 
   Licensed under the Apache License, Version 2.0 (the "License");
   you may not use this file except in compliance with the License.
@@ -14,6 +15,218 @@
   limitations under the License.
   -->
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+    <string description="Accessibility description for a control that allows the user to close the current screen          and go back to the previous one." name="close_and_go_back">閉じて戻る</string>
+
+    <string description="Accessibility for the links to the G+ or Twitter pages for speakers. For example: Go to the Twitter page for Sally Sample." name="speaker_social_page"> %2$s に関連する %1$s のページへ移動する</string>
+
+    <string description="Accessibility description for the GPlus icon in the '#io15' box." name="social_io15_gplus_content_description"> Google+ で、 io 15 ハッシュタグが付いた投稿へ移動する</string>
+
+    <string description="Accessibility description for the Twitter icon in the '#io15' box." name="social_io15_twitter_content_description">Twitter で、 io 15 ハッシュタグが付いた投稿へ移動する</string>
+
+    <string description="Accessibility description for link to the 'Google Developers' GPlus page." name="social_gplus_devs_content_description"> Google Plus で Google Developers へ移動する</string>
+
+    <string description="Accessibility description for link to the 'Google Developers' Twitter page." name="social_twitter_devs_content_description">Twitter で Google Developers へ移動する</string>
+
+    <string description="Accessibility description for the GPlus icon in the '#io15 extended' box." name="social_extended_gplus_content_description">拡張ハッシュタグで Google+ へ移動する</string>
+
+    <string description="Accessibility description for the Twitter icon in the '#io15 extended' box." name="social_extended_twitter_content_description">拡張ハッシュタグで Twitter へ移動する</string>
+
+    <string descripton="Accessibility description for the GPlus icon in the '#io15 request' box." name="social_request_gplus_content_description">リクエストしたハッシュタグで Google+ へ移動する</string>
+
+    <string description="Accessibility description for the Twitter icon in the '#io15 extended' box." name="social_request_twitter_content_description">リクエストしたハッシュタグで Twitter へ移動する</string>
+
+    <string description="Accessibility description for the IO15 logo that is not a link." name="io15_logo_not_clickable">IO 15 ロゴ (クリックできません)</string>
+
+    <string description="Accessibility description for the IO15 extended logo that is not a link." name="io15_extended_logo_not_clickable">IO 15 Extended ロゴ  (クリックできません)</string>
+
+    <string description="Accessibility description for the IO15 request logo that is not a link." name="io15_request_logo_not_clickable">IO 15 リクエストロゴ (クリックできません)</string>
+
+    <string description="Accessibility description for the I/O logo that is not a link." name="io_logo_not_clickable">IO ロゴ (クリックできません)</string>
+
+    <string description="Accessibility description for viewing more sessions/videos." name="more_items_button_desc_a11y">タップして他のアイテムを表示する</string>
+
+    <string name="pref_conf_message_cards_enabled_description"
+            description="Description in the Settings screen for the setting that enables display of
+            cards with conference information in the explore screen.">関連するカンファレンス情報を探索スクリーンで表示します。これらの表示は時間に応じて行われ、カンファレンスのパートーナーからのプロモーション情報が含まれることもあります。</string>
+
+    <string descripton="Text of a card shown in the Explore I/O screen that asks the user if they want to configure          the conference WiFi. 'Not now' and 'Yes, please' are options show on the card" name="question_setup_wifi_card_text">&lt;b&gt; Wi-Fi 会議&lt;/b&gt;&lt;br/&gt;このデバイスを Wi-Fi 会議アクセスするデバイスとして設定しますか？</string>
+
+    <string description="A session feedback section label asking the user to rate the session overall" name="session_rating_label_text">セッションの評価：</string>
+
+    <string descripton="Session feedback section title" name="session_feedback_content_label_text">概要 / セッション内容の説明文や私のもともとの期待と実際のコンテンツの違い：</string>
+
+    <string description="A negative relevance session feedback option" name="session_feedback_not_at_all_relevant">全く面白くありませんでした</string>
+
+    <string description="A negative relevance session feedback option" name="session_feedback_extremely_relevant">非常に</string>
+
+    <string description="Text for a button which allows the user to enable the feature" name="welcome_enable">有効にします</string>
+
+    <string description="Text for a button which allows the user to reject the feature" name="welcome_no_thanks">結構です</string>
+
+    <string description="Medium-length welcome text indicating the subsequent text is important legal information " name="welcome_text">このアプリをご利用になる前に、必ず利用規約をお読みください。ほんの数分しかかかりません！</string>
+
+    <string description="Short text asking if they're interested in what's around them" name="welcome_around">あなたの周り</string>
+
+    <string description="Short text asking them to select an account" name="welcome_select_account">アカウントを選択する</string>
+
+    <string description="Medium text asking to choose an account from a list" name="welcome_select_accoun_text">使用するアカウントを選択してください：</string>
+
+    <string name="explore_sessions_show_day_hour_and_room"
+            description="Sub-title for a session in ExploreSessionsActivity that shows the day, time and room name for a given session. Example: Day 1 / 9:00AM - 11:00AM / Room 1" ><xliff:g example="Day 1" id="day">%1$s</xliff:g> / <xliff:g example="2:00PM" id="start_time">%2$s</xliff:g>  -  <xliff:g example="3:00PM" id="end_time">%3$s</xliff:g> / <xliff:g id="room">%4$s</xliff:g></string>
+
+    <string description="Show the Day 1 or Day 2 as part of either the ExploreSessionsActivity title or          in the session details." name="explore_sessions_show_day_n">%d 日目</string>
+
+    <string description="Show Day and start time of a session as the title when viewing browsing sessions          (ExploreSessionActivity) from MySchedule." name="explore_sessions_time_slot_title">
+    <xliff:g example="Day 1" id="day">%1$s</xliff:g>、<xliff:g example="2:30PM" id="start_time">%2$s</xliff:g>
+  </string>
+
+
+    <string name="explore_io_msgcards_ask_opt_in"
+            description="This message is displayed on the Explore I/O screen to ask users whether
+            they would like to opt in to receive messages regarding the conference."><![CDATA[<b>カンファレンス・メッセージ</b><br/>Google I/O 主催者からのカンファレンス関連メッセージの受け取りを承諾しますか？ メッセージは時間に応じて配信され、パートナーからのプロモーションを含むことがあります。]]></string>
+
+    <string name="explore_io_msgcards_conf_creds_card">&lt;b&gt;会議参加への資格証明&lt;/b&gt;&lt;br&gt; 今年、譲渡不能な NFC 対応リストバンドが各出席者に配布されます。このリストバンドおよび I/O バッジを持っている事で、基調講演、セッション、サンドボックス、および会議後の懇親会へのアクセスが許可されます。会議参加の際に、これらを忘れることのないよう、お気をつけ下さい。</string>
+
+    <string description="A message card displayed in the Explore I/O page that asks users to opt into a                          feature." name="explore_io_msgcards_after_hours_card">&lt;b&gt;懇親会&lt;/b&gt;&lt;br&gt;&lt;/br&gt; 是非、懇親会に参加しましょう！ ５月２８日の夕方、参加は全員、食べ物や飲み物、音楽やゲームなどを楽しむために懇親会に招待されています。入場の際には、会議バッジと NFC リストバンドが必要となります。</string>
+
+    <string description="This string is presented to users when they attempt to click something that indicates they          can watch a video but it turns out we can't show the video." name="explore_io_video_id_not_valid">申し訳ありませんが、動画のURLに問題があるようです。</string>
+
+    <string description="Generic error message used for errors that should never happen. This explains to the user          that we can't execute the request when they click a button or touch a part of the screen          that should normally be touchable." name="unknown_error">申し訳ありませんが、要求を処理することができませんでした。</string>
+
+    <string description="Label of filter option that allow to display all elements" name="all">すべて</string>
+
+    <string description="Indicates the item is actionable and the user can tap on it" name="talkback_button">%1$S ボタン</string>
+
+    <string description="Indicates the item does nothing when tapped" name="talkback_not_clickable">%1$S はクリックできません</string>
+
+    <string description="Indicates the item is an image" name="talkback_image">%1$S 画像</string>
+
+    <string description="Indicates the item is a link (and actionable)" name="talkback_link">%1$S リンク</string>
+
+    <string descripton="Indicates the item is currently selected" name="talkback_selected">%1$S 選択</string>
+
+    <string description="Indicates the item is currently not selected" name="talkback_not_selected">%1$S は選択されていません</string>
+
+    <string description="Indicates what happens when the user taps on an item" name="talkback_tapfor">%1$S を実行するためにタップする</string>
+
+    <string descripton="This string is the title of a notification shown to the user when Google Play         services can't connect." name="app_data_notification_resolution_title"> I/O アプリの許可が必要です</string>
+
+    <string description="This string is the message of the notification shown to the user when Google Play services          can't connect from a background sync." name="app_data_notification_resolution_content">バックグラウンド同期を完了するために、I/O アプリ実行が必要となります。</string>
+
+    <string description="Shown as the titles of the tabs for the user's schedule" name="day_n">%d 日目</string>
+
+    <string description="Session feedback section title" name="session_feedback_content">コンテンツの内容：</string>
+
+    <string description="A positive overall session feedback option" name="session_feedback_great">素晴らしい</string>
+
+    <string description="A negative overall session feedback option" name="session_feedback_notgreat">まあまあです</string>
+
+    <string description="A negative relevance session feedback option" name="session_feedback_notrel">関連性がありません</string>
+
+    <string description="A session feedback section label asking for any other feedback. It indicates the user should not add personal information" name="session_feedback_other">私たちへのご意見やご要望はありませんか？\n(コメントに個人情報を書き込まないようにして下さい)</string>
+
+    <string description="A positive speaker quality session feedback option" name="session_feedback_outstanding">最高です</string>
+
+    <string description="A negative speaker quality session feedback option" name="session_feedback_poor">内容の乏しいものでした</string>
+
+    <string description="A positive relevance session feedback option" name="session_feedback_rel">適切な内容でした</string>
+
+    <string description="Hint for adding other session feedback" name="session_feedback_tell_us">弊社までご連絡ください！</string>
+
+     <!-- Shown on the Session page if a session is being livestreamed. -->
+     <string name="session_live_streamed">ライブストリーミング</string>
+ 
+     <!-- Text under play button on session page if a session is currently being livestreamed. -->
+     <string name="session_watch_live">ライブを閲覧する</string>
+ 
+     <!-- Text under play button on session page if a session is no longer being livestreamed. -->
+     <string name="session_watch">閲覧する</string>
+ 
+     <!-- Text under play button on session page if a livestreamed session was previously watched. -->
+     <string name="session_replay">リプレイ</string>
+ 
+     <!-- Keynotes group title for the video library -->
+     <string name="keynote_group_title">基調講演</string>
+
+     <!-- Button to view more Videos or sessions from the videos/sessions card view. -->
+     <string name="more_items_button">詳細</string>
+     <!-- Label for the button to rate a session -->
+     <string name="my_schedule_rate_this_session">このセッションを評価する</string>
+ 
+     <!-- Label for the button to watch live now -->
+     <string name="my_schedule_watch_live_now">今すぐライブを閲覧する</string>
+     <!-- Accessibility description for navigation drawer -->
+     <string name="navdrawer_description_a11y">アプリケーションの主な機能を切り替えるために、ナビゲーションドロワーをご利用下さい</string>
+ 
+     <!-- Menu item to open the Explore Screen with the Live I/O card [CHAR_LIMIT=20] -->
+     <!-- Menu item to open the Watch Live screen on the Navigation Drawer. [CHAR_LIMIT=20] -->
+     <string name="navdrawer_item_io_live">I/O ライブ</string>
+     <string name="navdrawer_item_video_library">ビデオライブラリ</string>
+     <!-- Menu item to open the debugging screen on debug builds [CHAR_LIMIT=20] -->
+     <string name="navdrawer_item_debug">デバッグ</string>
+ 
+     <!-- List dropdown item on the Video Library screen allowing the user to choose to see
+     the videos from the last year of Google I/O. -->
+     <string name="new_videos_title">
+    <xliff:g id="year">%1$d</xliff:g> の新規アイテム</string>
+ 
+     <!-- Title in the Settings screen for the setting that enables display of cards with
+      conference information in the explore screen. -->
+     <string name="pref_conf_message_cards_enabled_title">会議通知カードを表示する</string>
+
+     <string name="schedule_session_subtitle">
+    <xliff:g id="speakers">%1$s</xliff:g>\n<xliff:g id="room">%2$s</xliff:g>
+  </string>
+     <string name="title_video_library">ビデオ</string>
+
+     <!-- Short text introducing the code of conduct for attendees coming in person -->
+     <string name="welcome_conduct_title">I/O コミュニティのベスト プラクティス</string>
+ 
+     <!-- Short text asking if the user is attending Google I/O in person -->
+     <string name="welcome_attending">サンフランシスコの会場で参加しますか？</string>
+ 
+     <!-- Medium-length welcome text asking if the user is attending Google I/O in person -->
+     <string name="welcome_attending_text">サンフランシスコで直接参加とリモート参加、どちらで参加しますか？</string>
+ 
+     <!-- Title of the Video library screen when only videos of a given topic are displayed -->
+     <string name="title_topic_filtered_video_library">
+    <xliff:g id="topic">%1$s</xliff:g> についてのビデオ</string>
+ 
+     <!-- Title of the Video library screen when only videos of a given year are displayed -->
+     <string name="title_year_filtered_video_library">
+    <xliff:g id="year">%1$d</xliff:g> のビデオ</string>
+ 
+     <!-- Title of the Video library screen when only videos of a given year and a given topic are displayed -->
+     <string name="title_year_and_topic_filtered_video_library">
+    <xliff:g id="year">%1$d</xliff:g> の <xliff:g id="topic">%2$s</xliff:g> についてのビデオ</string>
+ 
+     <!-- Text of the Filter menu icon -->
+     <string name="description_filter">フィルター</string>
+ 
+     <!-- Title of the Video library side panel containing all the filters -->
+     <string name="title_video_library_filter">フィルター</string>
+ 
+     <!-- Sub-title for the Year filters -->
+     <string name="year_filter_section_label">年</string>
+ 
+     <!-- Sub-title for the Topic filters -->
+     <string name="topic_filter_section_label">トピック</string>
+ 
+     <!-- Label for Social activity -->
+     <string name="title_activity_new_social">ソーシャル</string>
+ 
+     <!-- Title of the Explore Sessions side panel containing all the filters -->
+     <string name="title_explore_sessions_filter">フィルター</string>
+ 
+     <!-- BEGIN Explore Message Card User Messages -->
+     <!-- This is used on the Explore I/O message cards to answer yes to a particular message -->
+     <string name="explore_io_msgcards_answer_yes">はい、承諾します！</string>
+ 
+     <!-- This is used on the Explore I/O message cards to answer no to a particular message -->
+     <string name="explore_io_msgcards_answer_no">いいえ、結構です。</string>
+ 
+     <!-- END Explore Message Card User Messages -->
+
     <!-- Shown in the schedule to indicate how many sessions are available on that particular time slot. -->
     <plurals name="schedule_block_subtitle">
     <item quantity="other">有効なセッション<xliff:g id="number_of_sessions">%1$d</xliff:g>件</item>
@@ -36,7 +249,8 @@
   </plurals>
 
     <!-- Shown in the 'About' window of the app. -->
-    <string name="about_body">&lt;b&gt;Google I/O 2014&lt;/b&gt;&lt;br&gt;バージョン%s&lt;br&gt;&lt;br&gt; &lt;a href=http://m.google.com/utos&gt;サービス規約&lt;/a&gt;&lt;br&gt;&lt;br&gt; &lt;a href=http://www.google.com/policies/privacy/&gt;プライバシーポリシー&lt;/a&gt;</string>
+    <string name="about_body">&lt;b&gt;Google I/O
+        2015&lt;/b&gt;&lt;br&gt;バージョン%s&lt;br&gt;&lt;br&gt; &lt;a href=http://m.google.com/utos&gt;サービス規約&lt;/a&gt;&lt;br&gt;&lt;br&gt; &lt;a href=http://www.google.com/policies/privacy/&gt;プライバシーポリシー&lt;/a&gt;</string>
 
     <!-- Shown as a link in the About screen of the app; user can click to see the EULA. -->
     <string name="about_eula">エンドユーザーライセンス契約</string>
@@ -80,11 +294,11 @@
     <string name="all_years">すべての年度</string>
 
     <!-- Name of the application, shown in the application's title bar. -->
-    <string name="app_name">Google I/O 2014</string>
+    <string name="app_name">Google I/O 2015</string>
 
     <!-- Label on a button that is one possible answer to the question "Are you attending the
     conference in person in San Francisco or remotely via livestream?" -->
-    <string name="attending_in_person">開催地で出席</string>
+    <string name="attending_in_person">本会場に来場</string>
 
     <!-- Label on a button that is one possible answer to the question "Are you attending the
     conference in person in San Francisco or remotely via livestream?" -->
@@ -92,11 +306,11 @@
 
     <!-- Label on a button that allows the user to browse Google I/O Extended events that they
     might be interested in attending. -->
-    <string name="browse_events">イベントをブラウズ</string>
+    <string name="browse_events">イベントを参照</string>
 
     <!-- Label on a button that allows the user to see what conference sessions are available
     at a particular time. -->
-    <string name="browse_sessions">セッションを参照...</string>
+    <string name="browse_sessions">セッションを参照</string>
 
     <!-- Shown on Configure WiFi dialog, instructing user on what button to click. -->
     <string name="calltoaction_wifi_configure">&lt;br&gt;&lt;br&gt;\'Wi-Fiネットワークを追加’をタップして次に進む。</string>
@@ -105,7 +319,7 @@
     <string name="calltoaction_wifi_settings">&lt;br&gt;&lt;br&gt; \'Wi-Fiネットワーク設定\'をタップしてWi-Fiを有効にする。</string>
 
     <!-- Accessibility description for a button that allows the user to close a session details pane. -->
-    <string name="close_detail_pane">詳細ペインを閉じる</string>
+    <string name="close_detail_pane">詳細を閉じる</string>
 
     <!-- Label on a button that allows the user to cancel an operation before it starts. For
     example, this may be a button on a dialog that says "This will delete your data." -->
@@ -143,20 +357,20 @@
     <string name="description_app_feedback_old">フィードバック</string>
 
     <!-- Menu item that, when clicked, shows the captions on a video. -->
-    <string name="description_captions">キャプション</string>
+    <string name="description_captions">字幕</string>
 
     <!-- Menu item that allows user to configure the conference WiFi on their device. -->
-    <string name="description_configure_wifi">Wi-Fi回線を設定する</string>
+    <string name="description_configure_wifi">Wi-Fi を設定する</string>
 
     <!-- Menu item that takes the user to a page that shows a list of Google I/O Extended events. -->
-    <string name="description_i_o_extended">I / Oの拡張</string>
+    <string name="description_i_o_extended">I/O の拡張</string>
 
     <!-- Menu item that takes the user to the conference venue map screen -->
     <string name="description_map">マップ</string>
 
     <!-- Menu item that allows user to turn on or turn off the output of a video to a
     second screen. -->
-    <string name="description_presentation">画面出力をトグルする</string>
+    <string name="description_presentation">画面出力を切り替える</string>
 
     <!-- Menu item that allows user to reload the data in the current screen so they see
     the most up-to-date version from the server. -->
@@ -173,7 +387,7 @@
     <string name="description_settings">設定</string>
 
     <!-- Explanation of wifi setup that appears in the WiFi setup dialog box. -->
-    <string name="description_setup_wifi_body">あなたは直接参加しているので、会議のWi-Fiネットワークにアクセスするように、このデバイスを設定することができます（5Ghzのみ）。今お使いのWi-Fiを設定して頂ければ、ネットワークの混雑を防止するのに役立ちます。</string>
+    <string name="description_setup_wifi_body">会場の Wi-Fi ネットワークへのアクセスを設定することができます（5Ghzのみ）。Wi-Fiを設定して頂ければ、ネットワークの混雑防止に役立ちます。</string>
 
     <!-- Menu item that allows user to share the currently displayed session. Sharing can be done
     by email, social networks, etc. -->
@@ -185,20 +399,20 @@
     <string name="description_social_stream">Google+のストリームを見る</string>
 
     <!-- Accessibility description saying that the app's navigation drawer has been closed -->
-    <string name="drawer_close">ナビゲーション引き出しをクローズしました</string>
+    <string name="drawer_close">ナビゲーション ドロワーを閉じます</string>
 
     <!-- Accessibility description saying that the app's navigation drawer has been opened -->
-    <string name="drawer_open">ナビゲーション引き出しをオープンしました</string>
+    <string name="drawer_open">ナビゲーション ドロワーを開く</string>
 
     <!-- Shown when trying to watch a video of a session, alerting user that no captions are
     available for that video. -->
-    <string name="empty_captions">このセッションにはキャプションがありません。</string>
+    <string name="empty_captions">このセッションには字幕がありません。</string>
 
     <!-- Shown on the Session page, alerting user that no details could be found for that session. -->
-    <string name="empty_session_detail">セッションの詳細はありませんでした。</string>
+    <string name="empty_session_detail">セッションの詳細は見つかりませんでした。</string>
 
     <!-- Shown on the session search page, alerting user that no conference sessions could be found. -->
-    <string name="empty_sessions">セッションはありません。</string>
+    <string name="empty_sessions">セッションが見つかりません。</string>
 
     <!-- Shown on several screens alerting user that no data is being shown because a background
     data synchronization is still in progress. Data will show as soon as the sync ends. -->
@@ -206,10 +420,10 @@
 
     <!-- Shown on a widget that normally displays upcoming sessions. This is shown after the
     conference, when there are no more sessions to show. -->
-    <string name="empty_widget_text">これ以上の今後のセッションはありません。\n来年お会いしましょう​​！</string>
+    <string name="empty_widget_text">今年のセッションはもうありません。\n来年お会いしましょう​​！</string>
 
     <!-- Shown on a widget instructing user how to start using the widget. -->
-    <string name="empty_widget_text_signed_out">上記のGoogle I / O 2014のロゴをタッチして、サインインし、アプリの使用を開始する。</string>
+    <string name="empty_widget_text_signed_out">上の Google I/O 2015 のロゴをタッチするとサインインしてアプリを使いはじめることができます。</string>
 
     <!-- Shown as a header on a list of sessions to indicate that the sessions that appear on that
     group have already ended. -->
@@ -229,8 +443,7 @@
 
     <!-- List dropdown item on the Video Library screen allowing the user to choose to see
     the videos from a particular year of Google I/O. -->
-    <string name="google_i_o_year">I / O <xliff:g id="year">%1$d</xliff:g>
-  </string>
+    <string name="google_i_o_year">I/O <xliff:g id="year">%1$d</xliff:g></string>
 
     <!-- Label on a button that the user can click to dismiss an reminder or information message.
     For example "To scan an attendee's badge, hold your phone close to the badge for a few
@@ -249,10 +462,10 @@
     <string name="live_now">現在生中継</string>
 
     <!-- Message presented while data is loading in Explore view -->
-    <string name="loading">読み込み中...</string>
+    <string name="loading">読み込み中</string>
 
     <!-- Message shown in an error bar when user could not be logged in. [CHAR_LIMIT=75] -->
-    <string name="login_failed_text">認証エラーのため、セッションを同期させることができませんでした。</string>
+    <string name="login_failed_text">エラーのため、セッションを同期させることができませんでした。</string>
 
     <!-- Button to retry a failed login attempt [CHAR_LIMIT=2 lines of 9 characters].
     If using multiple lines, separate them with "\n" ("Tentar\nde novo" for example)
@@ -260,7 +473,7 @@
     <string name="login_failed_text_retry">再試行</string>
 
     <!-- Message shown in a popup to request a mandatory upgrade -->
-    <string name="mandatory_update_error">アプリケーションが古くなっています。それを使用し続けるためには、アップグレードする必要があります。</string>
+    <string name="mandatory_update_error">アプリケーションが古くなっています。使用し続けるためには、アップグレードする必要があります。</string>
 
     <!-- Message shown in a popup to indicate that there is a mandatory upgrade -->
     <string name="update_available">Google Playでこのアプリケーションの新しいバージョンが入手できます。</string>
@@ -270,9 +483,6 @@
       Param %2$s: title of the next session
      -->
     <string name="map_at">%1$sに:&lt;br&gt;&lt;b&gt;%2$s&lt;/b&gt;</string>
-
-    <!-- Indicator shown when there is no upcoming session in a room -->
-    <string name="map_infowindow_text_empty">-</string>
 
     <!-- Message shown in a map popup to indicate the current session.
       Param %1$s: title of the next session
@@ -291,21 +501,6 @@
     <!-- Accessibility announcement to alert user that they are now viewing their schedule of a given day. -->
     <string name="my_schedule_page_desc_a11y">今、あなたの<xliff:g id="day">%1$s</xliff:g>のスケジュールを表示中</string>
 
-    <!-- Accessibility description for navigation drawer -->
-    <string name="navdrawer_description_a11y">ナビゲーション引き出し。この引き出しのボタンで、アプリケーションのさまざまな画面に行くことができます。</string>
-
-    <!-- Menu item to send feedback about the app [CHAR_LIMIT=20] -->
-    <string name="navdrawer_item_app_feedback">アプリのフィードバック</string>
-
-    <!-- Accessibility description for menu item to send feedback about the app -->
-    <string name="navdrawer_item_app_feedback_a11y">アプリのフィードバック</string>
-
-    <!-- Menu item to open the Experts screen [CHAR_LIMIT=20] -->
-    <string name="navdrawer_item_experts_directory">専門家</string>
-
-    <!-- Accessibility description for menu item to open the Experts screen. -->
-    <string name="navdrawer_item_experts_directory_a11y">専門家ディレクトリ</string>
-
     <!-- Menu item to open the Explore screen [CHAR_LIMIT=20] -->
     <string name="navdrawer_item_explore">探索</string>
 
@@ -318,12 +513,6 @@
     <!-- Menu item to open the My Schedule screen [CHAR_LIMIT=20] -->
     <string name="navdrawer_item_my_schedule">私のスケジュール</string>
 
-    <!-- Menu item to open the People I've Met screen [CHAR_LIMIT=20] -->
-    <string name="navdrawer_item_people_ive_met">私が出会った人々</string>
-
-    <!-- Accessibility description of item to open the People I've Met screen -->
-    <string name="navdrawer_item_people_ive_met_a11y">私が出会った人々</string>
-
     <!-- Menu item to open the Settings screen [CHAR_LIMIT=20] -->
     <string name="navdrawer_item_settings">設定</string>
 
@@ -334,16 +523,13 @@
     open Google+ stream of posts that uses the hashtag [CHAR_LIMIT=20] -->
     <string name="navdrawer_item_social">ソーシャル</string>
 
-    <!-- Menu item to open a list of current and past I/O videos [CHAR_LIMIT=20] -->
-    <string name="navdrawer_item_video_library">ビデオライブラリ</string>
-
     <!-- Text indicator that appears below the user's name, showing that they are
     attending the conference in person in San Francisco. -->
     <string name="navdrawer_status_attending_in_person">直接I/Oに出席</string>
 
     <!-- Text indicator that appears below the user's name, showing that they are
     attending the conference remotely via live streaming. -->
-    <string name="navdrawer_status_attending_remotely">リモートでI / Oに参加</string>
+    <string name="navdrawer_status_attending_remotely">リモートで I/O に参加</string>
 
     <!-- Message shown in a toast (popup) when the user clicks to change the active account but
     there is no network connection -->
@@ -396,7 +582,7 @@
     <string name="permission_write">Google I/Oのスケジュールデータを変更する</string>
 
     <!-- Description of the Google+ +1 button for accessibility screen readers -->
-    <string name="plus_one_description_standard">プラス1にタッチする。</string>
+    <string name="plus_one_description_standard">+1 ボタンにタッチする。</string>
 
     <!-- Title in the Settings screen for the setting that enables sending of anonymous usage statistics to Google. -->
     <string name="pref_analytics_enabled_title">匿名の利用統計を送信する</string>
@@ -436,19 +622,11 @@
 
     <!-- Text of a card shown in the session explorer that asks the user if he wants to see I/O
     extended events in his area. "Browse events" and "No, thanks" are the buttons shown in the card -->
-    <string name="question_i_o_extended">あなたがお住まいの地域の近くで開催予定のI / O拡張イベントについての詳細を知りたいですか？</string>
+    <string name="question_i_o_extended">あなたがお住まいの地域の近くで開催予定の I/O Extended イベントについての詳細を知りたいですか？</string>
 
     <!-- Text of a card shown in the session explorer that asks the user if he will be attending I/O
     in person or remotely. "Remotely" and "In person" are the buttons shown in the card -->
-    <string name="question_local_or_remote">あなたは、I / Oリモートで、または、サンフランシスコで直接参加していますか？</string>
-
-    <!-- Text of a card shown in the session explorer after I/O has started that asks the user if
-    he wants to configure the WiFi. "Yes!" and "No, thanks" are the buttons shown in the card -->
-    <string name="question_setup_wifi_after_i_o_start">GoogleのI / Oを開催します！直ぐに、会議のWiFiを設定しますか？</string>
-
-    <!-- Text of a card shown in the session explorer before I/O has started that asks the user if
-    he wants to configure the WiFi. "Yes!" and "No, thanks" are the buttons shown in the card -->
-    <string name="question_setup_wifi_before_i_o_start">GoogleのI / Oが始まります！直ぐに、会議のWiFiを設定しますか？</string>
+    <string name="question_local_or_remote">I/O にリモートで、または、サンフランシスコで直接参加しますか？</string>
 
     <!-- Section title for videos related to a particular event session -->
     <string name="related_videos">関連ビデオ</string>
@@ -469,11 +647,6 @@
     <string name="schedule_end_time">
     <xliff:g id="endTime">%1$s</xliff:g>まで</string>
 
-    <!-- -->
-    <string name="schedule_session_subtitle">
-    <xliff:g id="speakers">%1$s</xliff:g> <xliff:g id="room">%2$s</xliff:g>
-  </string>
-
     <!-- Hint that the user can search across sessions -->
     <string name="search_hint">セッション検索</string>
 
@@ -482,7 +655,7 @@
     <string name="search_label">Google I/O セッション</string>
 
     <!-- A fragment of text appended to a Google calendar event indicating it was added by this application -->
-    <string name="session_calendar_suffix"> -  GoogleのI / OのAndroidアプリで追加</string>
+    <string name="session_calendar_suffix"> -  Google I/O の Android アプリで追加</string>
 
     <!-- Accessibility text announced as a response to pressing a button to add a session to the schedule. -->
     <string name="session_details_a11y_session_added">セッションは、あなたのスケジュールに追加されました</string>
@@ -496,35 +669,11 @@
     <!-- A session feedback option indicating the content was too basic -->
     <string name="session_feedback_basic">あまりにも基本的な</string>
 
-    <!-- Session feedback section title -->
-    <string name="session_feedback_content">内容は:</string>
-
-    <!-- A positive overall session feedback option -->
-    <string name="session_feedback_great">凄い</string>
-
-    <!-- A negative overall session feedback option -->
-    <string name="session_feedback_notgreat">大したことない</string>
-
     <!-- Notification text asking the user to provide feedback for a particular session -->
     <string name="session_feedback_notification_text">%1$sのフィードバックを提供</string>
 
     <!-- Notification ticker text asking the user to provide session feedback -->
     <string name="session_feedback_notification_ticker">セッションフィードバックを提供</string>
-
-    <!-- A negative relevance session feedback option -->
-    <string name="session_feedback_notrel">関係ありません</string>
-
-    <!-- A session feedback section label asking for any other feedback. It indicates the user should not add personal information -->
-    <string name="session_feedback_other"> 他に知っておくべきことは？\n（あなたのコメント欄に個人情報を追加しないでください。）</string>
-
-    <!-- A positive speaker quality session feedback option -->
-    <string name="session_feedback_outstanding">素晴らしい</string>
-
-    <!-- A negative speaker quality session feedback option -->
-    <string name="session_feedback_poor">よくない</string>
-
-    <!-- A positive relevance session feedback option -->
-    <string name="session_feedback_rel">関連する</string>
 
     <!-- A session feedback section label asking for the session's relevance to the user's projects -->
     <string name="session_feedback_relevance"> このセッションは、あなたのプロジェクトにどのように役立ちましたか？</string>
@@ -535,14 +684,11 @@
     <!-- Button text for submitting session feedback -->
     <string name="session_feedback_submitlink">フィードバックの送信</string>
 
-    <!-- Hint for adding other session feedback -->
-    <string name="session_feedback_tell_us">教えてください！</string>
-
     <!-- Text indicating the session has ended -->
     <string name="session_finished">終了</string>
 
     <!-- Card text asking the user to provide session feedback -->
-    <string name="session_give_feedback_message">このセッションはどうでしたか？あなたのフィードバックを送信したいですか？</string>
+    <string name="session_give_feedback_message">このセッションはいかがでしたか？フィードバックを送りますか？</string>
 
     <!-- Link text for the user to watch a live video stream of the session -->
     <string name="session_link_livestream">生中継で見る</string>
@@ -584,7 +730,7 @@
     <string name="session_livestream_play_pause">再生/一時停止</string>
 
     <!-- Actionbar title for I/O Live -->
-    <string name="session_livestream_title">I / Oのライブ</string>
+    <string name="session_livestream_title">I/O のライブ</string>
 
     <!-- Notification text that a session is starting in some number of minutes -->
     <string name="session_notification_text_1">
@@ -592,9 +738,6 @@
 
     <!-- Short text indicating that the session is currently happening -->
     <string name="session_now">セッション中</string>
-
-    <!-- A session feedback section label asking the user to rate the session overall -->
-    <string name="session_rating_label">全体的にこのセッションを評価する：</string>
 
     <!-- Label for a session section listing the requirements for the session -->
     <string name="session_requirements">必要条件</string>
@@ -615,7 +758,7 @@
     <string name="setup_wifi_yes">はい！</string>
 
     <!-- Re-share template text indicating the user is watching I/O Live -->
-    <string name="share_livestream_template">I / Oのライブを​視聴中: <xliff:g id="hashtags">%2$s</xliff:g> <xliff:g id="url">%3$s</xliff:g>の\'<xliff:g id="title">%1$s</xliff:g>\'</string>
+    <string name="share_livestream_template">I/O のライブを​視聴中: <xliff:g id="hashtags">%2$s</xliff:g> <xliff:g id="url">%3$s</xliff:g>の\'<xliff:g id="title">%1$s</xliff:g>\'</string>
 
     <!-- Re-share template text indicating the user is at a particular session -->
     <string name="share_template">
@@ -687,12 +830,6 @@
     <!-- Chooser dialog text when the user is selecting an application with which to share something -->
     <string name="title_share">下記を使用して共有</string>
 
-    <!-- Label for Social activity -->
-    <string name="title_stream">ストリーム</string>
-
-    <!-- Label for VideoLibrary activity -->
-    <string name="title_video_library">ビデオライブラリ</string>
-
     <!-- Label for exploration category which groups session topics -->
     <string name="topics">トピック</string>
 
@@ -709,11 +846,8 @@
     <!-- Text for a button which allows the user to watch this particular session on live stream. -->
     <string name="watch_now">今すぐ見る！</string>
 
-    <!-- Medium-length welcome text indicating the subsequent text is important legal information -->
-    <string name="welcome_text">始める前に、このアプリの使用に関するいくつかの重要な法的情報です。1分ほどお時間をください！</string>
-
     <!-- Short text welcoming the user to the application -->
-    <string name="welcome_to_google_i_o_app">Google I / Oのアプリへようこそ！</string>
+    <string name="welcome_to_google_i_o_app">Google I/O アプリへようこそ！</string>
 
     <!-- Text for a button which will add a wi-fi network -->
     <string name="wifi_dialog_button_configure">WiFiネットワークを追加する</string>
@@ -724,33 +858,12 @@
     <!-- Toast failure message if the user's wifi couldn't be updated -->
     <string name="wifi_install_error_message">申し訳ありませんが、WiFi設定を更新できませんでした</string>
 
-    <string name="experts_directory_all_cities">すべての都市</string>
-    <string name="experts_directory_all_countries">すべての国</string>
-    <string name="experts_directory_attending">I/Oに出席</string>
-    <string name="experts_directory_header_body">Google Developer Expert (GDE) の肩書きは、複数分野のGoogleのテクノロジーに卓越した専門知識を発揮し、デベロッパー コミュニティーでその専門知識を共有する優れたデベロッパーであることの証明です。GDE は、師であり、指導者であり、伝道師です。そして、チュートリアル、コードサンプルを作り、本やブログを書きます。ビデオを公開し、コミュニティー プロジェクトを運営して、大小様々なイベントに出席します。これらインディペンデント デベロッパーが、世界のデベロッパー  コミュニティーに、Googleのテクノロジーで得た体験と知識を届けるのです。</string>
-    <string name="experts_directory_header_dismiss">わかりました</string>
-    <string name="experts_directory_header_title">Google Developers Expert ってどんな人達ですか？</string>
-    <string name="explore_attending_in_person_toast">I/Oに本人が出席 (これは設定で変更できます)</string>
+    <string name="explore_attending_in_person_toast">I/O 本会場で参加 (これは設定で変更できます)</string>
     <string name="explore_attending_remotely_toast">I/Oにリモートで出席 (これは設定で変更できます)</string>
     <string name="go_to_settings">設定へ</string>
-    <string name="map_infowindow_partner_seemore">タッチして詳細を見る</string>
-    <string name="map_nearby_button">近くのBLEデバイス</string>
     <string name="more_information">更に詳しく</string>
-    <string name="nearby_eula_header">PhysicalWeb 実験</string>
-    <string name="no_matching_partner">一致するパートナーはいません</string>
-    <string name="no_nearby_urls">PhysicalWebのビーコンがあなたのエリアにありません。カンファレンス中に、イベント会場の興味がある場所の近くで再試行してください。</string>
-    <string name="people_ive_met_delete">削除</string>
-    <string name="people_ive_met_delete_confirmation">本当にこのこの人をリストから削除しますか？</string>
-    <string name="people_ive_met_dummy_badge">このバッジにはGoogle+ プロフィールへのリンクが含まれていません</string>
-    <string name="people_ive_met_edit_note_title">メモ</string>
-    <string name="people_ive_met_empty">あなたはまだ誰のバッジもスキャンしていません。他の出席者と連絡先を交換したい際には、デバイススクリーンを相手のバッジに数秒かざすと、その方の Google+ プロフィルがこのリストに追加されます (NFC が必要です)。</string>
-    <string name="people_ive_met_header">バッジをスキャンした出席者</string>
-    <string name="people_ive_met_note">メモ</string>
-    <string name="physical_web_bluetooth_off">この機能には Bluetooth が必要ですが、あなたのデバイスの Bluetooth はオフになっています。この機能を使うには、デバイスの設定画面で Bluetooth を有効にしてください。</string>
-    <string name="physicalweb_intro_text">このタブは、あなたの現在位置近辺のカンファレンス内容に関連したコンテンツへのリンクを示します (たとえば、パートナーウェブサイト、アプリ、デモ、およびインタラクティブ コンテンツなど)。コンテンツへリンクするためには、このアプリが Bluetooth LE であなたの周辺をスキャンしてタグを探し、その情報を Google サーバーに送信して処理します。一度アクティベートされると、この機能は、イベント期間中継続して作動し、お使いのデバイスの Bluetooth がオンになっている限り利用できます。オフにしたい場合には、アプリの[設定]メニューにアクセスするか、デバイスの Bluetooth を無効にしてください。これは BLE を使っての実験にしか過ぎないことにご留意ください。完全な製品ではありませんので、粗削りな部分があるかもしれません！ネットワークとの接続が悪いもしくは全くない場合、または干渉が多い場合には動作しないかもしれません。\n\n今すぐこの機能を有効にされますか？</string>
-    <string name="physicalweb_intro_title">PhysicalWeb 実験</string>
-    <string name="pref_nearby_summary">チェックする時には、地図画面でが有効になり、BLE スキャンを行って、あなたの近くの PhysicalWeb タグを表示します (Bluetoothが必要です)。</string>
-    <string name="pref_nearby_title">PhysicalWeb 実験を有効にする</string>
-    <string name="title_experts_directory">Expert</string>
-    <string name="title_people_ive_met">連絡先リスト</string>
+    <string name="about_main"><![CDATA[         <b>Google I/O 2015</b><br>         バージョン %s     ]]></string>
+    <string name="about_privacy_policy">プライバシー </string>
+    <string name="about_terms">サービス規約</string>
+    <string name="more_items_button_desc_with_label_a11y">タップして他の <xliff:g id="itemName">%1$s</xliff:g> のアイテムを表示する</string>
 </resources>

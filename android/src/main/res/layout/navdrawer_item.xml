@@ -1,5 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
 <!--
-  Copyright 2014 Google Inc. All rights reserved.
+  Copyright 2015 Google Inc. All rights reserved.
 
   Licensed under the Apache License, Version 2.0 (the "License");
   you may not use this file except in compliance with the License.
@@ -14,30 +15,15 @@
   limitations under the License.
   -->
 
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="horizontal"
-    android:background="?android:selectableItemBackground"
-    android:gravity="start|center_vertical"
-    android:paddingLeft="@dimen/keyline_1"
-    android:paddingRight="@dimen/keyline_1"
+<com.google.samples.apps.iosched.ui.widget.NavDrawerItemView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="48dp">
-
-    <ImageView
-        android:id="@+id/icon"
-        android:layout_height="24dp"
-        android:layout_width="24dp"
-        android:layout_marginRight="32dp" />
-
-    <TextView
-        android:id="@+id/title"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="start|center_vertical"
-        android:gravity="start|center_vertical"
-        android:fontFamily="@string/font_fontFamily_medium"
-        android:textStyle="@integer/font_textStyle_medium"
-        android:textSize="14sp"
-        android:text="@string/placeholder_lorem_ipsum" />
-
-</LinearLayout>
+    android:layout_height="wrap_content"
+    android:minHeight="?android:listPreferredItemHeightSmall"
+    android:gravity="start|center_vertical"
+    android:paddingLeft="@dimen/padding_normal"
+    android:paddingRight="@dimen/padding_normal"
+    android:background="@drawable/navdrawer_item_background"
+    android:foreground="?android:selectableItemBackground"
+    app:iconTints="@color/navdrawer_item_icon" />

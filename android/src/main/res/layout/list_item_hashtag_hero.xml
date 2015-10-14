@@ -1,5 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
-
 <!--
   Copyright 2014 Google Inc. All rights reserved.
 
@@ -25,7 +24,7 @@
     <ImageView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:src="@drawable/default_cover"
+        android:src="@drawable/deprecated_navdrawer_default_cover"
         android:tint="#40000000"
         android:scaleType="centerCrop"/>
 

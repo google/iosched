@@ -16,6 +16,24 @@
 
 package com.google.samples.apps.iosched.service;
 
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.common.api.ResultCallback;
+import com.google.android.gms.wearable.DataApi;
+import com.google.android.gms.wearable.PutDataMapRequest;
+import com.google.android.gms.wearable.PutDataRequest;
+import com.google.android.gms.wearable.Wearable;
+import com.google.samples.apps.iosched.R;
+import com.google.samples.apps.iosched.explore.ExploreIOActivity;
+import com.google.samples.apps.iosched.feedback.FeedbackHelper;
+import com.google.samples.apps.iosched.feedback.SessionFeedbackActivity;
+import com.google.samples.apps.iosched.map.MapActivity;
+import com.google.samples.apps.iosched.myschedule.MyScheduleActivity;
+import com.google.samples.apps.iosched.provider.ScheduleContract;
+import com.google.samples.apps.iosched.provider.ScheduleContractHelper;
+import com.google.samples.apps.iosched.settings.SettingsUtils;
+import com.google.samples.apps.iosched.util.UIUtils;
+
 import android.app.AlarmManager;
 import android.app.IntentService;
 import android.app.Notification;
@@ -32,23 +50,6 @@ import android.support.v4.app.NotificationCompat;
 import android.support.v4.app.TaskStackBuilder;
 import android.util.Log;
 
-import com.google.android.gms.common.ConnectionResult;
-import com.google.android.gms.common.api.GoogleApiClient;
-import com.google.android.gms.common.api.ResultCallback;
-import com.google.android.gms.wearable.DataApi;
-import com.google.android.gms.wearable.PutDataMapRequest;
-import com.google.android.gms.wearable.PutDataRequest;
-import com.google.android.gms.wearable.Wearable;
-import com.google.samples.apps.iosched.R;
-import com.google.samples.apps.iosched.provider.ScheduleContract;
-import com.google.samples.apps.iosched.ui.BaseMapActivity;
-import com.google.samples.apps.iosched.ui.BrowseSessionsActivity;
-import com.google.samples.apps.iosched.ui.MyScheduleActivity;
-import com.google.samples.apps.iosched.ui.SessionFeedbackActivity;
-import com.google.samples.apps.iosched.util.FeedbackUtils;
-import com.google.samples.apps.iosched.util.PrefUtils;
-import com.google.samples.apps.iosched.util.UIUtils;
-
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -56,11 +57,13 @@ import java.util.concurrent.TimeUnit;
 
 import static com.google.samples.apps.iosched.util.LogUtils.LOGD;
 import static com.google.samples.apps.iosched.util.LogUtils.LOGE;
+import static com.google.samples.apps.iosched.util.LogUtils.LOGW;
 import static com.google.samples.apps.iosched.util.LogUtils.makeLogTag;
 
 /**
  * Background service to handle scheduling of starred session notification via
- * {@link android.app.AlarmManager}.
+ * {@link android.app.AlarmManager}. The service also handles invoking the system notifications to
+ * provide feedback for the starred sessions.
  */
 public class SessionAlarmService extends IntentService
         implements GoogleApiClient.ConnectionCallbacks,
@@ -88,10 +91,6 @@ public class SessionAlarmService extends IntentService
             "com.google.samples.apps.iosched.extra.SESSION_ID";
     public static final String EXTRA_SESSION_TITLE =
             "com.google.samples.apps.iosched.extra.SESSION_TITLE";
-    public static final String EXTRA_SESSION_ROOM =
-            "com.google.samples.apps.iosched.extra.SESSION_ROOM";
-    public static final String EXTRA_SESSION_SPEAKERS =
-            "com.google.samples.apps.iosched.extra.SESSION_SPEAKERS";
 
     public static final int NOTIFICATION_ID = 100;
     public static final int FEEDBACK_NOTIFICATION_ID = 101;
@@ -276,118 +275,128 @@ public class SessionAlarmService extends IntentService
         am.set(AlarmManager.RTC_WAKEUP, alarmTime, pi);
     }
 
-    // A starred session is about to end; notify the user to provide session feedback.
-    // Constructs and triggers a system notification. Does nothing if the session has already
-    // concluded.
+    /**
+     *  A starred session is about to end. Notify the user to provide session feedback.
+     *  Constructs and triggers a system notification. Does nothing if the session has already
+     *  concluded.
+     */
     private void notifySessionFeedback(boolean debug) {
         LOGD(TAG, "Considering firing notification for session feedback.");
 
         if (debug) {
-            LOGD(TAG, "Note: this is a debug notification.");
+            LOGW(TAG, "Note: this is a debug notification.");
         }
 
         // Don't fire notification if this feature is disabled in settings
-        if (!PrefUtils.shouldShowSessionFeedbackReminders(this)) {
+        if (!SettingsUtils.shouldShowSessionFeedbackReminders(this)) {
             LOGD(TAG, "Skipping session feedback notification. Disabled in settings.");
             return;
         }
 
-        final Cursor c = getContentResolver().query(
-                ScheduleContract.Sessions.CONTENT_MY_SCHEDULE_URI,
-                SessionsNeedingFeedbackQuery.PROJECTION,
-                SessionsNeedingFeedbackQuery.WHERE_CLAUSE, null, null);
-        if (c == null) {
-            return;
-        }
-
-        List<String> needFeedbackIds = new ArrayList<String>();
-        List<String> needFeedbackTitles = new ArrayList<String>();
-        while (c.moveToNext()) {
-            String sessionId = c.getString(SessionsNeedingFeedbackQuery.SESSION_ID);
-            String sessionTitle = c.getString(SessionsNeedingFeedbackQuery.SESSION_TITLE);
-
-            // Avoid repeated notifications.
-            if (UIUtils.isFeedbackNotificationFiredForSession(this, sessionId)) {
-                LOGD(TAG, "Skipping repeated session feedback notification for session '"
-                        + sessionTitle + "'");
-                continue;
+        Cursor c = null;
+        try {
+            c = getContentResolver().query(
+                    ScheduleContract.Sessions.CONTENT_MY_SCHEDULE_URI,
+                    SessionsNeedingFeedbackQuery.PROJECTION,
+                    SessionsNeedingFeedbackQuery.WHERE_CLAUSE, null, null);
+            if (c == null) {
+                return;
             }
 
-            needFeedbackIds.add(sessionId);
-            needFeedbackTitles.add(sessionTitle);
-        }
+            FeedbackHelper feedbackHelper = new FeedbackHelper(this);
 
-        if (needFeedbackIds.size() == 0) {
-            // the user has already been notified of all sessions needing feedback
-            return;
-        }
+            List<String> needFeedbackIds = new ArrayList<String>();
+            List<String> needFeedbackTitles = new ArrayList<String>();
+            while (c.moveToNext()) {
+                String sessionId = c.getString(SessionsNeedingFeedbackQuery.SESSION_ID);
+                String sessionTitle = c.getString(SessionsNeedingFeedbackQuery.SESSION_TITLE);
 
-        LOGD(TAG, "Going forward with session feedback notification for "
-                + needFeedbackIds.size() + " session(s).");
+                // Avoid repeated notifications.
+                if (feedbackHelper.isFeedbackNotificationFiredForSession(sessionId)) {
+                    LOGD(TAG, "Skipping repeated session feedback notification for session '"
+                            + sessionTitle + "'");
+                    continue;
+                }
 
-        final Resources res = getResources();
-
-        // this is used to synchronize deletion of notifications on phone and wear
-        Intent dismissalIntent = new Intent(ACTION_NOTIFICATION_DISMISSAL);
-        // TODO: fix Wear dismiss integration
-        //dismissalIntent.putExtra(KEY_SESSION_ID, sessionId);
-        PendingIntent dismissalPendingIntent = PendingIntent
-                .getService(this, (int) new Date().getTime(), dismissalIntent,
-                        PendingIntent.FLAG_UPDATE_CURRENT);
-
-        String provideFeedbackTicker = res.getString(R.string.session_feedback_notification_ticker);
-        NotificationCompat.Builder notifBuilder = new NotificationCompat.Builder(this)
-                .setColor(getResources().getColor(R.color.theme_primary))
-                .setContentText(provideFeedbackTicker)
-                .setTicker(provideFeedbackTicker)
-                .setLights(
-                        SessionAlarmService.NOTIFICATION_ARGB_COLOR,
-                        SessionAlarmService.NOTIFICATION_LED_ON_MS,
-                        SessionAlarmService.NOTIFICATION_LED_OFF_MS)
-                .setSmallIcon(R.drawable.ic_stat_notification)
-                .setPriority(Notification.PRIORITY_LOW)
-                .setLocalOnly(true) // make it local to the phone
-                .setDefaults(Notification.DEFAULT_SOUND | Notification.DEFAULT_VIBRATE)
-                .setDeleteIntent(dismissalPendingIntent)
-                .setAutoCancel(true);
-
-        if (needFeedbackIds.size() == 1) {
-            // Only 1 session needs feedback
-            Uri sessionUri = ScheduleContract.Sessions.buildSessionUri(needFeedbackIds.get(0));
-            PendingIntent pi = TaskStackBuilder.create(this)
-                    .addNextIntent(new Intent(this, MyScheduleActivity.class))
-                    .addNextIntent(new Intent(Intent.ACTION_VIEW, sessionUri, this,
-                            SessionFeedbackActivity.class))
-                    .getPendingIntent(1, PendingIntent.FLAG_CANCEL_CURRENT);
-
-            notifBuilder.setContentTitle(needFeedbackTitles.get(0))
-                    .setContentIntent(pi);
-        } else {
-            // Show information about several sessions that need feedback
-            PendingIntent pi = TaskStackBuilder.create(this)
-                    .addNextIntent(new Intent(this, MyScheduleActivity.class))
-                    .getPendingIntent(1, PendingIntent.FLAG_CANCEL_CURRENT);
-
-            NotificationCompat.InboxStyle inboxStyle = new NotificationCompat.InboxStyle();
-            inboxStyle.setBigContentTitle(provideFeedbackTicker);
-            for (String title : needFeedbackTitles) {
-                inboxStyle.addLine(title);
+                needFeedbackIds.add(sessionId);
+                needFeedbackTitles.add(sessionTitle);
             }
 
-            notifBuilder.setContentTitle(
-                    getResources().getQuantityString(R.plurals.session_plurals,
-                            needFeedbackIds.size(), needFeedbackIds.size()))
-                    .setStyle(inboxStyle)
-                    .setContentIntent(pi);
-        }
+            if (needFeedbackIds.size() == 0) {
+                // the user has already been notified of all sessions needing feedback
+                return;
+            }
 
-        NotificationManager nm = (NotificationManager) getSystemService(
-                Context.NOTIFICATION_SERVICE);
-        LOGD(TAG, "Now showing session feedback notification!");
-        nm.notify(FEEDBACK_NOTIFICATION_ID, notifBuilder.build());
+            LOGD(TAG, "Going forward with session feedback notification for "
+                    + needFeedbackIds.size() + " session(s).");
 
-        for (int i = 0; i < needFeedbackIds.size(); i++) {
-            setupNotificationOnWear(needFeedbackIds.get(i), null, needFeedbackTitles.get(i), null);
+            final Resources res = getResources();
+
+            // this is used to synchronize deletion of notifications on phone and wear
+            Intent dismissalIntent = new Intent(ACTION_NOTIFICATION_DISMISSAL);
+            // TODO: fix Wear dismiss integration
+            //dismissalIntent.putExtra(KEY_SESSION_ID, sessionId);
+            PendingIntent dismissalPendingIntent = PendingIntent
+                    .getService(this, (int) new Date().getTime(), dismissalIntent,
+                            PendingIntent.FLAG_UPDATE_CURRENT);
+
+            String provideFeedbackTicker = res.getString(R.string.session_feedback_notification_ticker);
+            NotificationCompat.Builder notifBuilder = new NotificationCompat.Builder(this)
+                    .setColor(getResources().getColor(R.color.theme_primary))
+                    .setContentText(provideFeedbackTicker)
+                    .setTicker(provideFeedbackTicker)
+                    .setLights(
+                            SessionAlarmService.NOTIFICATION_ARGB_COLOR,
+                            SessionAlarmService.NOTIFICATION_LED_ON_MS,
+                            SessionAlarmService.NOTIFICATION_LED_OFF_MS)
+                    .setSmallIcon(R.drawable.ic_stat_notification)
+                    .setPriority(Notification.PRIORITY_LOW)
+                    .setLocalOnly(true) // make it local to the phone
+                    .setDefaults(Notification.DEFAULT_SOUND | Notification.DEFAULT_VIBRATE)
+                    .setDeleteIntent(dismissalPendingIntent)
+                    .setAutoCancel(true);
+
+            if (needFeedbackIds.size() == 1) {
+                // Only 1 session needs feedback
+                Uri sessionUri = ScheduleContract.Sessions.buildSessionUri(needFeedbackIds.get(0));
+                PendingIntent pi = TaskStackBuilder.create(this)
+                        .addNextIntent(new Intent(this, MyScheduleActivity.class))
+                        .addNextIntent(new Intent(Intent.ACTION_VIEW, sessionUri, this,
+                                SessionFeedbackActivity.class))
+                        .getPendingIntent(1, PendingIntent.FLAG_CANCEL_CURRENT);
+
+                notifBuilder.setContentTitle(needFeedbackTitles.get(0))
+                        .setContentIntent(pi);
+            } else {
+                // Show information about several sessions that need feedback
+                PendingIntent pi = TaskStackBuilder.create(this)
+                        .addNextIntent(new Intent(this, MyScheduleActivity.class))
+                        .getPendingIntent(1, PendingIntent.FLAG_CANCEL_CURRENT);
+
+                NotificationCompat.InboxStyle inboxStyle = new NotificationCompat.InboxStyle();
+                inboxStyle.setBigContentTitle(provideFeedbackTicker);
+                for (String title : needFeedbackTitles) {
+                    inboxStyle.addLine(title);
+                }
+
+                notifBuilder.setContentTitle(
+                        getResources().getQuantityString(R.plurals.session_plurals,
+                                needFeedbackIds.size(), needFeedbackIds.size()))
+                        .setStyle(inboxStyle)
+                        .setContentIntent(pi);
+            }
+
+            NotificationManager nm = (NotificationManager) getSystemService(
+                    Context.NOTIFICATION_SERVICE);
+            LOGD(TAG, "Now showing session feedback notification!");
+            nm.notify(FEEDBACK_NOTIFICATION_ID, notifBuilder.build());
+
+            for (int i = 0; i < needFeedbackIds.size(); i++) {
+                setupNotificationOnWear(needFeedbackIds.get(i), null, needFeedbackTitles.get(i), null);
+                feedbackHelper.setFeedbackNotificationAsFiredForSession(needFeedbackIds.get(i));
+            }
+        } finally {
+            if (c != null) { try { c.close(); } catch (Exception ignored) { } }
         }
     }
 
@@ -404,7 +413,7 @@ public class SessionAlarmService extends IntentService
             return;
         }
         PutDataMapRequest putDataMapRequest = PutDataMapRequest
-                .create(FeedbackUtils.getFeedbackPath(sessionId));
+                .create(FeedbackHelper.getFeedbackDataPathForWear(sessionId));
         putDataMapRequest.getDataMap().putLong("time", new Date().getTime());
         putDataMapRequest.getDataMap().putString(KEY_SESSION_ID, sessionId);
         putDataMapRequest.getDataMap().putString(KEY_SESSION_NAME, sessionName);
@@ -437,7 +446,7 @@ public class SessionAlarmService extends IntentService
             return;
         }
 
-        if (!PrefUtils.shouldShowSessionReminders(this)) {
+        if (!SettingsUtils.shouldShowSessionReminders(this)) {
             // skip if disabled in settings
             LOGD(TAG, "Skipping session notification for sessions. Disabled in settings.");
             return;
@@ -452,107 +461,112 @@ public class SessionAlarmService extends IntentService
 
         final ContentResolver cr = getContentResolver();
 
-        LOGD(TAG, "Looking for sessions in interval "  + sessionStart + " - " + intervalEnd);
-        Cursor c = cr.query(
+        LOGD(TAG, "Looking for sessions in interval " + sessionStart + " - " + intervalEnd);
+        Cursor c = null;
+        try {
+            c = cr.query(
                 ScheduleContract.Sessions.CONTENT_MY_SCHEDULE_URI,
                 SessionDetailQuery.PROJECTION,
                 ScheduleContract.Sessions.STARTING_AT_TIME_INTERVAL_SELECTION,
                 ScheduleContract.Sessions.buildAtTimeIntervalArgs(sessionStart, intervalEnd),
                 null);
-        int starredCount = c.getCount();
-        LOGD(TAG, "# starred sessions in that interval: " + c.getCount());
-        String singleSessionId = null;
-        String singleSessionRoomId = null;
-        ArrayList<String> starredSessionTitles = new ArrayList<String>();
-        while (c.moveToNext()) {
-            singleSessionId = c.getString(SessionDetailQuery.SESSION_ID);
-            singleSessionRoomId = c.getString(SessionDetailQuery.ROOM_ID);
-            starredSessionTitles.add(c.getString(SessionDetailQuery.SESSION_TITLE));
-            LOGD(TAG, "-> Title: " + c.getString(SessionDetailQuery.SESSION_TITLE));
-        }
-        if (starredCount < 1) {
-            return;
-        }
+            int starredCount = c.getCount();
+            LOGD(TAG, "# starred sessions in that interval: " + c.getCount());
+            String singleSessionId = null;
+            String singleSessionRoomId = null;
+            ArrayList<String> starredSessionTitles = new ArrayList<String>();
+            while (c.moveToNext()) {
+                singleSessionId = c.getString(SessionDetailQuery.SESSION_ID);
+                singleSessionRoomId = c.getString(SessionDetailQuery.ROOM_ID);
+                starredSessionTitles.add(c.getString(SessionDetailQuery.SESSION_TITLE));
+                LOGD(TAG, "-> Title: " + c.getString(SessionDetailQuery.SESSION_TITLE));
+            }
+            if (starredCount < 1) {
+                return;
+            }
 
-        // Generates the pending intent which gets fired when the user taps on the notification.
-        // NOTE: Use TaskStackBuilder to comply with Android's design guidelines
-        // related to navigation from notifications.
-        Intent baseIntent = new Intent(this, MyScheduleActivity.class);
-        baseIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-        TaskStackBuilder taskBuilder = TaskStackBuilder.create(this)
-                .addNextIntent(baseIntent);
+            // Generates the pending intent which gets fired when the user taps on the notification.
+            // NOTE: Use TaskStackBuilder to comply with Android's design guidelines
+            // related to navigation from notifications.
+            Intent baseIntent = new Intent(this, MyScheduleActivity.class);
+            baseIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            TaskStackBuilder taskBuilder = TaskStackBuilder.create(this)
+                    .addNextIntent(baseIntent);
 
-        // For a single session, tapping the notification should open the session details (b/15350787)
-        if (starredCount == 1) {
-            taskBuilder.addNextIntent(new Intent(Intent.ACTION_VIEW,
-                    ScheduleContract.Sessions.buildSessionUri(singleSessionId)));
-        }
+            // For a single session, tapping the notification should open the session details (b/15350787)
+            if (starredCount == 1) {
+                taskBuilder.addNextIntent(new Intent(Intent.ACTION_VIEW,
+                        ScheduleContract.Sessions.buildSessionUri(singleSessionId)));
+            }
 
-        PendingIntent pi = taskBuilder.getPendingIntent(0, PendingIntent.FLAG_CANCEL_CURRENT);
+            PendingIntent pi = taskBuilder.getPendingIntent(0, PendingIntent.FLAG_CANCEL_CURRENT);
 
-        final Resources res = getResources();
-        String contentText;
-        int minutesLeft = (int) (sessionStart - currentTime + 59000) / 60000;
-        if (minutesLeft < 1) {
-            minutesLeft = 1;
-        }
+            final Resources res = getResources();
+            String contentText;
+            int minutesLeft = (int) (sessionStart - currentTime + 59000) / 60000;
+            if (minutesLeft < 1) {
+                minutesLeft = 1;
+            }
 
-        if (starredCount == 1) {
-            contentText = res.getString(R.string.session_notification_text_1, minutesLeft);
-        } else {
-            contentText = res.getQuantityString(R.plurals.session_notification_text,
-                    starredCount - 1,
-                    minutesLeft,
-                    starredCount - 1);
-        }
+            if (starredCount == 1) {
+                contentText = res.getString(R.string.session_notification_text_1, minutesLeft);
+            } else {
+                contentText = res.getQuantityString(R.plurals.session_notification_text,
+                        starredCount - 1,
+                        minutesLeft,
+                        starredCount - 1);
+            }
 
-        NotificationCompat.Builder notifBuilder = new NotificationCompat.Builder(this)
-                .setContentTitle(starredSessionTitles.get(0))
-                .setContentText(contentText)
-                .setColor(getResources().getColor(R.color.theme_primary))
-                .setTicker(res.getQuantityString(R.plurals.session_notification_ticker,
+            NotificationCompat.Builder notifBuilder = new NotificationCompat.Builder(this)
+                    .setContentTitle(starredSessionTitles.get(0))
+                    .setContentText(contentText)
+                    .setColor(getResources().getColor(R.color.theme_primary))
+                    .setTicker(res.getQuantityString(R.plurals.session_notification_ticker,
+                            starredCount,
+                            starredCount))
+                    .setDefaults(Notification.DEFAULT_SOUND | Notification.DEFAULT_VIBRATE)
+                    .setLights(
+                            SessionAlarmService.NOTIFICATION_ARGB_COLOR,
+                            SessionAlarmService.NOTIFICATION_LED_ON_MS,
+                            SessionAlarmService.NOTIFICATION_LED_OFF_MS)
+                    .setSmallIcon(R.drawable.ic_stat_notification)
+                    .setContentIntent(pi)
+                    .setPriority(Notification.PRIORITY_MAX)
+                    .setAutoCancel(true);
+            if (minutesLeft > 5) {
+                notifBuilder.addAction(R.drawable.ic_alarm_holo_dark,
+                        String.format(res.getString(R.string.snooze_x_min), 5),
+                        createSnoozeIntent(sessionStart, intervalEnd, 5));
+            }
+            if (starredCount == 1 && SettingsUtils.isAttendeeAtVenue(this)) {
+                notifBuilder.addAction(R.drawable.ic_map_holo_dark,
+                        res.getString(R.string.title_map),
+                        createRoomMapIntent(singleSessionRoomId));
+            }
+            String bigContentTitle;
+            if (starredCount == 1 && starredSessionTitles.size() > 0) {
+                bigContentTitle = starredSessionTitles.get(0);
+            } else {
+                bigContentTitle = res.getQuantityString(R.plurals.session_notification_title,
                         starredCount,
-                        starredCount))
-                .setDefaults(Notification.DEFAULT_SOUND | Notification.DEFAULT_VIBRATE)
-                .setLights(
-                        SessionAlarmService.NOTIFICATION_ARGB_COLOR,
-                        SessionAlarmService.NOTIFICATION_LED_ON_MS,
-                        SessionAlarmService.NOTIFICATION_LED_OFF_MS)
-                .setSmallIcon(R.drawable.ic_stat_notification)
-                .setContentIntent(pi)
-                .setPriority(Notification.PRIORITY_MAX)
-                .setAutoCancel(true);
-        if (minutesLeft > 5) {
-            notifBuilder.addAction(R.drawable.ic_alarm_holo_dark,
-                    String.format(res.getString(R.string.snooze_x_min), 5),
-                    createSnoozeIntent(sessionStart, intervalEnd, 5));
-        }
-        if (starredCount == 1 && PrefUtils.isAttendeeAtVenue(this)) {
-            notifBuilder.addAction(R.drawable.ic_map_holo_dark,
-                    res.getString(R.string.title_map),
-                    createRoomMapIntent(singleSessionRoomId));
-        }
-        String bigContentTitle;
-        if (starredCount == 1 && starredSessionTitles.size() > 0) {
-            bigContentTitle = starredSessionTitles.get(0);
-        } else {
-            bigContentTitle = res.getQuantityString(R.plurals.session_notification_title,
-                    starredCount,
-                    minutesLeft,
-                    starredCount);
-        }
-        NotificationCompat.InboxStyle richNotification = new NotificationCompat.InboxStyle(
-                notifBuilder)
-                .setBigContentTitle(bigContentTitle);
+                        minutesLeft,
+                        starredCount);
+            }
+            NotificationCompat.InboxStyle richNotification = new NotificationCompat.InboxStyle(
+                    notifBuilder)
+                    .setBigContentTitle(bigContentTitle);
 
-        // Adds starred sessions starting at this time block to the notification.
-        for (int i = 0; i < starredCount; i++) {
-            richNotification.addLine(starredSessionTitles.get(i));
+            // Adds starred sessions starting at this time block to the notification.
+            for (int i = 0; i < starredCount; i++) {
+                richNotification.addLine(starredSessionTitles.get(i));
+            }
+            NotificationManager nm = (NotificationManager) getSystemService(
+                    Context.NOTIFICATION_SERVICE);
+            LOGD(TAG, "Now showing notification.");
+            nm.notify(NOTIFICATION_ID, richNotification.build());
+        } finally {
+            if (c != null) { try { c.close(); } catch (Exception ignored) { } }
         }
-        NotificationManager nm = (NotificationManager) getSystemService(
-                Context.NOTIFICATION_SERVICE);
-        LOGD(TAG, "Now showing notification.");
-        nm.notify(NOTIFICATION_ID, richNotification.build());
     }
 
     private PendingIntent createSnoozeIntent(final long sessionStart, final long sessionEnd,
@@ -569,43 +583,50 @@ public class SessionAlarmService extends IntentService
     }
 
     private PendingIntent createRoomMapIntent(final String roomId) {
-        Intent mapIntent = new Intent(getApplicationContext(),
-                UIUtils.getMapActivityClass(getApplicationContext()));
-        mapIntent.putExtra(BaseMapActivity.EXTRA_ROOM, roomId);
-        mapIntent.putExtra(BaseMapActivity.EXTRA_DETACHED_MODE, true);
+        Intent mapIntent = new Intent(getApplicationContext(), MapActivity.class);
+        mapIntent.putExtra(MapActivity.EXTRA_ROOM, roomId);
+        mapIntent.putExtra(MapActivity.EXTRA_DETACHED_MODE, true);
         return TaskStackBuilder
                 .create(getApplicationContext())
-                .addNextIntent(new Intent(this, BrowseSessionsActivity.class))
+                .addNextIntent(new Intent(this, ExploreIOActivity.class))
                 .addNextIntent(mapIntent)
                 .getPendingIntent(0, PendingIntent.FLAG_CANCEL_CURRENT);
     }
 
     private void scheduleAllStarredBlocks() {
         final ContentResolver cr = getContentResolver();
-        final Cursor c = cr.query(ScheduleContract.Sessions.CONTENT_MY_SCHEDULE_URI,
-                new String[]{"distinct " + ScheduleContract.Sessions.SESSION_START,
-                        ScheduleContract.Sessions.SESSION_END,
-                        ScheduleContract.Sessions.SESSION_IN_MY_SCHEDULE},
-                null,
-                null,
-                null
-        );
-        if (c == null) {
-            return;
-        }
+        Cursor c = null;
+        try {
+            c = cr.query(ScheduleContract.Sessions.CONTENT_MY_SCHEDULE_URI,
+                    new String[]{
+                            ScheduleContractHelper.formatQueryDistinctParameter(
+                                    ScheduleContract.Sessions.SESSION_START),
+                            ScheduleContract.Sessions.SESSION_END,
+                            ScheduleContract.Sessions.SESSION_IN_MY_SCHEDULE},
+                    null,
+                    null,
+                    null
+            );
+            if (c == null) {
+                return;
+            }
 
-        while (c.moveToNext()) {
-            final long sessionStart = c.getLong(0);
-            final long sessionEnd = c.getLong(1);
-            scheduleAlarm(sessionStart, sessionEnd, UNDEFINED_ALARM_OFFSET);
+            while (c.moveToNext()) {
+                final long sessionStart = c.getLong(0);
+                final long sessionEnd = c.getLong(1);
+                scheduleAlarm(sessionStart, sessionEnd, UNDEFINED_ALARM_OFFSET);
+            }
+        } finally {
+            if (c != null) { try { c.close(); } catch (Exception ignored) { } }
         }
     }
 
     // Schedules feedback alarms for all starred sessions.
     private void scheduleAllStarredSessionFeedbacks() {
         final ContentResolver cr = getContentResolver();
-        // TODO: Should we also check that SESSION_IN_MY_SCHEDULE is true?
-        final Cursor c = cr.query(ScheduleContract.Sessions.CONTENT_MY_SCHEDULE_URI,
+        Cursor c = null;
+        try {
+            c = cr.query(ScheduleContract.Sessions.CONTENT_MY_SCHEDULE_URI,
                 new String[]{
                         ScheduleContract.Sessions.SESSION_TITLE,
                         ScheduleContract.Sessions.SESSION_END,
@@ -622,6 +643,9 @@ public class SessionAlarmService extends IntentService
             final String sessionTitle = c.getString(0);
             final long sessionEnd = c.getLong(1);
             scheduleFeedbackAlarm(sessionEnd, UNDEFINED_ALARM_OFFSET, sessionTitle);
+        }
+        } finally {
+            if (c != null) { try { c.close(); } catch (Exception ignored) { } }
         }
     }
 

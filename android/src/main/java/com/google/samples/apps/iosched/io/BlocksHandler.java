@@ -18,6 +18,7 @@ package com.google.samples.apps.iosched.io;
 
 import com.google.samples.apps.iosched.io.model.Block;
 import com.google.samples.apps.iosched.provider.ScheduleContract;
+import com.google.samples.apps.iosched.provider.ScheduleContractHelper;
 import com.google.samples.apps.iosched.util.ParserUtils;
 import com.google.gson.Gson;
 import com.google.gson.JsonElement;
@@ -42,7 +43,7 @@ public class BlocksHandler extends JSONHandler {
 
     @Override
     public void makeContentProviderOperations(ArrayList<ContentProviderOperation> list) {
-        Uri uri = ScheduleContract.addCallerIsSyncAdapterParameter(
+        Uri uri = ScheduleContractHelper.setUriAsCalledFromSyncAdapter(
                 ScheduleContract.Blocks.CONTENT_URI);
         list.add(ContentProviderOperation.newDelete(uri).build());
         for (Block block : mBlocks) {
@@ -58,7 +59,7 @@ public class BlocksHandler extends JSONHandler {
     }
 
     private static void outputBlock(Block block, ArrayList<ContentProviderOperation> list) {
-        Uri uri = ScheduleContract.addCallerIsSyncAdapterParameter(
+        Uri uri = ScheduleContractHelper.setUriAsCalledFromSyncAdapter(
                 ScheduleContract.Blocks.CONTENT_URI);
         ContentProviderOperation.Builder builder = ContentProviderOperation.newInsert(uri);
         String title = block.title != null ? block.title : "";

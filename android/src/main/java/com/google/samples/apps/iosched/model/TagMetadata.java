@@ -23,31 +23,41 @@ import android.provider.BaseColumns;
 import android.text.TextUtils;
 
 import com.google.samples.apps.iosched.Config;
+import com.google.samples.apps.iosched.framework.QueryEnum;
 import com.google.samples.apps.iosched.provider.ScheduleContract;
 
 import java.util.*;
 
 public class TagMetadata {
 
-    // list of tags in each category, sorted by the category sort order
-    HashMap<String, ArrayList<Tag>> mTagsInCategory = new HashMap<String, ArrayList<Tag>>();
+    // List of tags in each category, sorted by the category sort order.
+    private HashMap<String, ArrayList<Tag>> mTagsInCategory = new HashMap<String, ArrayList<Tag>>();
 
-    // hash map from tag ID to tag
-    HashMap<String, Tag> mTagsById = new HashMap<String, Tag>();
+    // Hash map from tag ID to tag.
+    private HashMap<String, Tag> mTagsById = new HashMap<String, Tag>();
 
     public static CursorLoader createCursorLoader(Context context) {
-        return new CursorLoader(context, ScheduleContract.Tags.CONTENT_URI, TagsQuery.PROJECTION,
-                null, null, null);
+        return new CursorLoader(context, ScheduleContract.Tags.CONTENT_URI,
+                TagsQueryEnum.TAG.getProjection(), null, null, null);
+    }
+
+    protected TagMetadata(){
     }
 
     public TagMetadata(Cursor cursor) {
-        while (cursor.moveToNext()) {
-            Tag tag = new Tag(cursor.getString(TagsQuery.TAG_ID),
-                    cursor.getString(TagsQuery.TAG_NAME),
-                    cursor.getString(TagsQuery.TAG_CATEGORY),
-                    cursor.getInt(TagsQuery.TAG_ORDER_IN_CATEGORY),
-                    cursor.getString(TagsQuery.TAG_ABSTRACT),
-                    cursor.getInt(TagsQuery.TAG_COLOR));
+        // Not using while(cursor.moveToNext()) because it would lead to issues when writing tests.
+        // Either we would mock cursor.moveToNext() to return true and the test would have infinite
+        // loop, or we would mock cursor.moveToNext() to return false, and the test would be for an
+        // empty cursor.
+        int count = cursor.getCount();
+        for(int i = 0; i < count; i ++){
+            cursor.moveToPosition(i);
+            Tag tag = new Tag(cursor.getString(cursor.getColumnIndex(ScheduleContract.Tags.TAG_ID)),
+                    cursor.getString(cursor.getColumnIndex(ScheduleContract.Tags.TAG_NAME)),
+                    cursor.getString(cursor.getColumnIndex(ScheduleContract.Tags.TAG_CATEGORY)),
+                    cursor.getInt(cursor.getColumnIndex(ScheduleContract.Tags.TAG_ORDER_IN_CATEGORY)),
+                    cursor.getString(cursor.getColumnIndex(ScheduleContract.Tags.TAG_ABSTRACT)),
+                    cursor.getInt(cursor.getColumnIndex(ScheduleContract.Tags.TAG_COLOR)));
             mTagsById.put(tag.getId(), tag);
             if (!mTagsInCategory.containsKey(tag.getCategory())) {
                 mTagsInCategory.put(tag.getCategory(), new ArrayList<Tag>());
@@ -98,10 +108,8 @@ public class TagMetadata {
         }
     };
 
-    private interface TagsQuery {
-        int _TOKEN = 0x1;
-
-        String[] PROJECTION = {
+    public enum TagsQueryEnum implements QueryEnum {
+        TAG(0, new String[] {
                 BaseColumns._ID,
                 ScheduleContract.Tags.TAG_ID,
                 ScheduleContract.Tags.TAG_NAME,
@@ -109,15 +117,26 @@ public class TagMetadata {
                 ScheduleContract.Tags.TAG_ORDER_IN_CATEGORY,
                 ScheduleContract.Tags.TAG_ABSTRACT,
                 ScheduleContract.Tags.TAG_COLOR
-        };
+        });
 
-        int _ID = 0;
-        int TAG_ID = 1;
-        int TAG_NAME = 2;
-        int TAG_CATEGORY = 3;
-        int TAG_ORDER_IN_CATEGORY = 4;
-        int TAG_ABSTRACT = 5;
-        int TAG_COLOR = 6;
+        private int id;
+
+        private String[] projection;
+
+        TagsQueryEnum(int id, String[] projection) {
+            this.id = id;
+            this.projection = projection;
+        }
+
+        @Override
+        public int getId() {
+            return id;
+        }
+
+        @Override
+        public String[] getProjection() {
+            return projection;
+        }
     }
 
     static public class Tag implements Comparable<Tag> {

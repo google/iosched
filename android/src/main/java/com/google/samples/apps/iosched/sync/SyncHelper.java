@@ -20,54 +20,72 @@ import android.accounts.Account;
 import android.content.*;
 import android.net.ConnectivityManager;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 
+import com.google.samples.apps.iosched.BuildConfig;
 import com.google.samples.apps.iosched.Config;
+import com.google.samples.apps.iosched.feedback.FeedbackApiHelper;
+import com.google.samples.apps.iosched.feedback.FeedbackSyncHelper;
 import com.google.samples.apps.iosched.provider.ScheduleContract;
+import com.google.samples.apps.iosched.service.DataBootstrapService;
 import com.google.samples.apps.iosched.service.SessionAlarmService;
 import com.google.samples.apps.iosched.service.SessionCalendarService;
+import com.google.samples.apps.iosched.settings.SettingsUtils;
 import com.google.samples.apps.iosched.sync.userdata.AbstractUserDataSyncHelper;
 import com.google.samples.apps.iosched.sync.userdata.UserDataSyncHelperFactory;
 import com.google.samples.apps.iosched.util.AccountUtils;
-import com.google.samples.apps.iosched.util.PrefUtils;
 import com.google.samples.apps.iosched.util.UIUtils;
+
+import com.turbomanage.httpclient.BasicHttpClient;
 
 import java.io.IOException;
 
 import static com.google.samples.apps.iosched.util.LogUtils.*;
 
 /**
- * A helper class for dealing with conference data synchronization.
- * All operations occur on the thread they're called from, so it's best to wrap
- * calls in an {@link android.os.AsyncTask}, or better yet, a
- * {@link android.app.Service}.
+ * A helper class for dealing with conference data synchronization. All operations occur on the
+ * thread they're called from, so it's best to wrap calls in an {@link android.os.AsyncTask}, or
+ * better yet, a {@link android.app.Service}.
  */
 public class SyncHelper {
-    private static final String TAG = makeLogTag("SyncHelper");
+
+    private static final String TAG = makeLogTag(SyncHelper.class);
 
     private Context mContext;
+
     private ConferenceDataHandler mConferenceDataHandler;
+
     private RemoteConferenceDataFetcher mRemoteDataFetcher;
 
+    private BasicHttpClient mHttpClient;
+
+    /**
+     *
+     * @param context Can be Application, Activity or Service context.
+     */
     public SyncHelper(Context context) {
         mContext = context;
         mConferenceDataHandler = new ConferenceDataHandler(mContext);
         mRemoteDataFetcher = new RemoteConferenceDataFetcher(mContext);
+        mHttpClient = new BasicHttpClient();
     }
 
     public static void requestManualSync(Account mChosenAccount) {
         requestManualSync(mChosenAccount, false);
     }
+
     public static void requestManualSync(Account mChosenAccount, boolean userDataSyncOnly) {
         if (mChosenAccount != null) {
             LOGD(TAG, "Requesting manual sync for account " + mChosenAccount.name
-                    +" userDataSyncOnly="+userDataSyncOnly);
+                    + " userDataSyncOnly=" + userDataSyncOnly);
             Bundle b = new Bundle();
             b.putBoolean(ContentResolver.SYNC_EXTRAS_MANUAL, true);
             b.putBoolean(ContentResolver.SYNC_EXTRAS_EXPEDITED, true);
             if (userDataSyncOnly) {
                 b.putBoolean(SyncAdapter.EXTRA_SYNC_USER_DATA_ONLY, true);
             }
-            ContentResolver.setSyncAutomatically(mChosenAccount, ScheduleContract.CONTENT_AUTHORITY, true);
+            ContentResolver
+                    .setSyncAutomatically(mChosenAccount, ScheduleContract.CONTENT_AUTHORITY, true);
             ContentResolver.setIsSyncable(mChosenAccount, ScheduleContract.CONTENT_AUTHORITY, 1);
 
             boolean pending = ContentResolver.isSyncPending(mChosenAccount,
@@ -94,80 +112,73 @@ public class SyncHelper {
     }
 
     /**
-     * Attempts to perform conference data synchronization. The data comes from the remote URL
-     * configured in {@link com.google.samples.apps.iosched.Config#MANIFEST_URL}. The remote URL
-     * must point to a manifest file that, in turn, can reference other files. For more details
-     * about conference data synchronization, refer to the documentation at
-     * http://code.google.com/p/iosched.
+     * Attempts to perform data synchronization. There are 3 types of data: conference, user
+     * schedule and user feedback.
+     * <p />
+     * The conference data sync is handled by {@link RemoteConferenceDataFetcher}. For more details
+     * about conference data, refer to the documentation at
+     * https://github.com/google/iosched/blob/master/doc/SYNC.md. The user schedule data sync is
+     * handled by {@link AbstractUserDataSyncHelper}. The user feedback sync is handled by
+     * {@link FeedbackSyncHelper}.
      *
-     * @param syncResult (optional) the sync result object to update with statistics.
-     * @param account    the account associated with this sync
-     * @return Whether or not the synchronization made any changes to the data.
+     *
+     * @param syncResult The sync result object to update with statistics.
+     * @param account The account associated with this sync
+     * @param extras Specifies additional information about the sync. This must contain key
+     *               {@code SyncAdapter.EXTRA_SYNC_USER_DATA_ONLY} with boolean value
+     * @return true if the sync changed the data.
      */
-    public boolean performSync(SyncResult syncResult, Account account, Bundle extras) {
+    public boolean performSync(@Nullable SyncResult syncResult, Account account, Bundle extras) {
         boolean dataChanged = false;
 
-        if (!PrefUtils.isDataBootstrapDone(mContext)) {
+        if (!SettingsUtils.isDataBootstrapDone(mContext)) {
             LOGD(TAG, "Sync aborting (data bootstrap not done yet)");
+            // Start the bootstrap process so that the next time sync is called,
+            // it is already bootstrapped.
+            DataBootstrapService.startDataBootstrapIfNecessary(mContext);
             return false;
         }
 
-        long lastAttemptTime = PrefUtils.getLastSyncAttemptedTime(mContext);
-        long now = UIUtils.getCurrentTime(mContext);
-        long timeSinceAttempt = now - lastAttemptTime;
-        final boolean manualSync = extras.getBoolean(ContentResolver.SYNC_EXTRAS_MANUAL, false);
-        final boolean userDataOnly = extras.getBoolean(SyncAdapter.EXTRA_SYNC_USER_DATA_ONLY, false);
-
-        if (!manualSync && timeSinceAttempt >= 0 && timeSinceAttempt < Config.MIN_INTERVAL_BETWEEN_SYNCS) {
-            /*
-            Code removed because it was causing a runaway sync; probably because we are setting
-            syncResult.delayUntil incorrectly.
-
-            Random r = new Random();
-            long toWait = 10000 + r.nextInt(30000) // random jitter between 10 - 40 seconds
-                    + Config.MIN_INTERVAL_BETWEEN_SYNCS - timeSinceAttempt;
-            LOGW(TAG, "Sync throttled!! Another sync was attempted just " + timeSinceAttempt
-                    + "ms ago. Requesting delay of " + toWait + "ms.");
-            syncResult.fullSyncRequested = true;
-            syncResult.delayUntil = (System.currentTimeMillis() + toWait) / 1000L;
-            return false;*/
-        }
+        final boolean userDataScheduleOnly = extras
+                .getBoolean(SyncAdapter.EXTRA_SYNC_USER_DATA_ONLY, false);
 
         LOGI(TAG, "Performing sync for account: " + account);
-        PrefUtils.markSyncAttemptedNow(mContext);
+        SettingsUtils.markSyncAttemptedNow(mContext);
         long opStart;
-        long remoteSyncDuration, choresDuration;
+        long syncDuration, choresDuration;
 
         opStart = System.currentTimeMillis();
 
-        // remote sync consists of these operations, which we try one by one (and tolerate
-        // individual failures on each)
-        final int OP_REMOTE_SYNC = 0;
-        final int OP_USER_SCHEDULE_SYNC = 1;
-        final int OP_USER_FEEDBACK_SYNC = 2;
+        // Sync consists of 1 or more of these operations. We try them one by one and tolerate
+        // individual failures on each.
+        final int OP_CONFERENCE_DATA_SYNC = 0;
+        final int OP_USER_SCHEDULE_DATA_SYNC = 1;
+        final int OP_USER_FEEDBACK_DATA_SYNC = 2;
 
-        int[] opsToPerform = userDataOnly ?
-                new int[] { OP_USER_SCHEDULE_SYNC } :
-                new int[] { OP_REMOTE_SYNC, OP_USER_SCHEDULE_SYNC, OP_USER_FEEDBACK_SYNC};
-
+        int[] opsToPerform = userDataScheduleOnly ?
+                new int[]{OP_USER_SCHEDULE_DATA_SYNC} :
+                new int[]{OP_CONFERENCE_DATA_SYNC, OP_USER_SCHEDULE_DATA_SYNC,
+                        OP_USER_FEEDBACK_DATA_SYNC};
 
         for (int op : opsToPerform) {
             try {
                 switch (op) {
-                    case OP_REMOTE_SYNC:
-                        dataChanged |= doRemoteSync();
+                    case OP_CONFERENCE_DATA_SYNC:
+                        dataChanged |= doConferenceDataSync();
                         break;
-                    case OP_USER_SCHEDULE_SYNC:
-                        dataChanged |= doUserScheduleSync(account.name);
+                    case OP_USER_SCHEDULE_DATA_SYNC:
+                        dataChanged |= doUserDataSync(account.name);
                         break;
-                    case OP_USER_FEEDBACK_SYNC:
-                        doUserFeedbackSync();
+                    case OP_USER_FEEDBACK_DATA_SYNC:
+                        // User feedback data sync is an outgoing sync only so not affecting
+                        // {@code dataChanged} value.
+                        doUserFeedbackDataSync();
                         break;
                 }
             } catch (AuthException ex) {
                 syncResult.stats.numAuthExceptions++;
 
-                // if we have a token, try to refresh it
+                // If we have a token, try to refresh it.
                 if (AccountUtils.hasToken(mContext, account.name)) {
                     AccountUtils.refreshAuthToken(mContext);
                 } else {
@@ -179,9 +190,9 @@ public class SyncHelper {
                 increaseIoExceptions(syncResult);
             }
         }
-        remoteSyncDuration = System.currentTimeMillis() - opStart;
+        syncDuration = System.currentTimeMillis() - opStart;
 
-        // If data has changed, there are a few chores we have to do
+        // If data has changed, there are a few chores we have to do.
         opStart = System.currentTimeMillis();
         if (dataChanged) {
             try {
@@ -191,7 +202,6 @@ public class SyncHelper {
                 LOGE(TAG, "Error performing post sync chores.");
             }
         }
-        clearExpertsIfNecessary();
         choresDuration = System.currentTimeMillis() - opStart;
 
         int operations = mConferenceDataHandler.getContentProviderOperationsDone();
@@ -201,11 +211,11 @@ public class SyncHelper {
         }
 
         if (dataChanged) {
-            long totalDuration = choresDuration + remoteSyncDuration;
+            long totalDuration = choresDuration + syncDuration;
             LOGD(TAG, "SYNC STATS:\n" +
                     " *  Account synced: " + (account == null ? "null" : account.name) + "\n" +
                     " *  Content provider operations: " + operations + "\n" +
-                    " *  Remote sync took: " + remoteSyncDuration + "ms\n" +
+                    " *  Sync took: " + syncDuration + "ms\n" +
                     " *  Post-sync chores took: " + choresDuration + "ms\n" +
                     " *  Total time: " + totalDuration + "ms\n" +
                     " *  Total data read from cache: \n" +
@@ -222,12 +232,12 @@ public class SyncHelper {
     }
 
     public static void performPostSyncChores(final Context context) {
-        // Update search index
+        // Update search index.
         LOGD(TAG, "Updating search index.");
         context.getContentResolver().update(ScheduleContract.SearchIndex.CONTENT_URI,
                 new ContentValues(), null, null);
 
-        // Sync calendars
+        // Sync calendar.
         LOGD(TAG, "Session data changed. Syncing starred sessions with Calendar.");
         syncCalendar(context);
     }
@@ -238,19 +248,20 @@ public class SyncHelper {
         context.startService(intent);
     }
 
-    private void doUserFeedbackSync() {
+    private void doUserFeedbackDataSync() {
         LOGD(TAG, "Syncing feedback");
-        new FeedbackSyncHelper(mContext).sync();
+        new FeedbackSyncHelper(mContext, new FeedbackApiHelper(mHttpClient,
+                BuildConfig.FEEDBACK_API_ENDPOINT)).sync();
     }
 
     /**
-     * Checks if the remote server has new data that we need to import. If so, download
+     * Checks if the remote server has new conference data that we need to import. If so, download
      * the new data and import it into the database.
      *
      * @return Whether or not data was changed.
      * @throws IOException if there is a problem downloading or importing the data.
      */
-    private boolean doRemoteSync() throws IOException {
+    private boolean doConferenceDataSync() throws IOException {
         if (!isOnline()) {
             LOGD(TAG, "Not attempting remote sync because device is OFFLINE");
             return false;
@@ -258,48 +269,47 @@ public class SyncHelper {
 
         LOGD(TAG, "Starting remote sync.");
 
-        // Fetch the remote data files via RemoteConferenceDataFetcher
+        // Fetch the remote data files via RemoteConferenceDataFetcher.
         String[] dataFiles = mRemoteDataFetcher.fetchConferenceDataIfNewer(
                 mConferenceDataHandler.getDataTimestamp());
 
         if (dataFiles != null) {
             LOGI(TAG, "Applying remote data.");
-            // save the remote data to the database
+            // Save the remote data to the database.
             mConferenceDataHandler.applyConferenceData(dataFiles,
                     mRemoteDataFetcher.getServerDataTimestamp(), true);
             LOGI(TAG, "Done applying remote data.");
 
-            // mark that conference data sync succeeded
-            PrefUtils.markSyncSucceededNow(mContext);
+            // Mark that conference data sync has succeeded.
+            SettingsUtils.markSyncSucceededNow(mContext);
             return true;
         } else {
-            // no data to process (everything is up to date)
-
-            // mark that conference data sync succeeded
-            PrefUtils.markSyncSucceededNow(mContext);
+            // No data to process (everything is up to date).
+            // Mark that conference data sync succeeded.
+            SettingsUtils.markSyncSucceededNow(mContext);
             return false;
         }
     }
 
     /**
-     * Checks if there are changes on MySchedule to sync with/from remote AppData folder.
+     * Checks if there are changes on User's Data to sync with/from remote AppData folder.
      *
      * @return Whether or not data was changed.
      * @throws IOException if there is a problem uploading the data.
      */
-    private boolean doUserScheduleSync(String accountName) throws IOException {
+    private boolean doUserDataSync(String accountName) throws IOException {
         if (!isOnline()) {
-            LOGD(TAG, "Not attempting myschedule sync because device is OFFLINE");
+            LOGD(TAG, "Not attempting userdata sync because device is OFFLINE");
             return false;
         }
 
-        LOGD(TAG, "Starting user data (myschedule) sync.");
+        LOGD(TAG, "Starting user data sync.");
 
         AbstractUserDataSyncHelper helper = UserDataSyncHelperFactory.buildSyncHelper(
                 mContext, accountName);
         boolean modified = helper.sync();
         if (modified) {
-            // schedule notifications for the starred sessions
+            // Schedule notifications for the starred sessions.
             Intent scheduleIntent = new Intent(
                     SessionAlarmService.ACTION_SCHEDULE_ALL_STARRED_BLOCKS,
                     null, mContext, SessionAlarmService.class);
@@ -308,7 +318,6 @@ public class SyncHelper {
         return modified;
     }
 
-    // Returns whether we are connected to the internet.
     private boolean isOnline() {
         ConnectivityManager cm = (ConnectivityManager) mContext.getSystemService(
                 Context.CONNECTIVITY_SERVICE);
@@ -322,28 +331,14 @@ public class SyncHelper {
         }
     }
 
-    private void increaseSuccesses(SyncResult syncResult) {
-        if (syncResult != null && syncResult.stats != null) {
-            ++syncResult.stats.numEntries;
-            ++syncResult.stats.numUpdates;
-        }
-    }
-
-    private boolean clearExpertsIfNecessary() {
-        if (Config.hasExpertsDirectoryExpired()) {
-            return 0 < mContext.getContentResolver()
-                    .delete(ScheduleContract.Experts.CONTENT_URI, null, null);
-        }
-        return false;
-    }
-
     public static class AuthException extends RuntimeException {
+
     }
 
-
-    public static long calculateRecommendedSyncInterval(final Context context) {
+   private static long calculateRecommendedSyncInterval(final Context context) {
         long now = UIUtils.getCurrentTime(context);
-        long aroundConferenceStart = Config.CONFERENCE_START_MILLIS - Config.AUTO_SYNC_AROUND_CONFERENCE_THRESH;
+        long aroundConferenceStart = Config.CONFERENCE_START_MILLIS
+                - Config.AUTO_SYNC_AROUND_CONFERENCE_THRESH;
         if (now < aroundConferenceStart) {
             return Config.AUTO_SYNC_INTERVAL_LONG_BEFORE_CONFERENCE;
         } else if (now <= Config.CONFERENCE_END_MILLIS) {
@@ -356,15 +351,21 @@ public class SyncHelper {
     public static void updateSyncInterval(final Context context, final Account account) {
         LOGD(TAG, "Checking sync interval for " + account);
         long recommended = calculateRecommendedSyncInterval(context);
-        long current = PrefUtils.getCurSyncInterval(context);
+        long current = SettingsUtils.getCurSyncInterval(context);
         LOGD(TAG, "Recommended sync interval " + recommended + ", current " + current);
         if (recommended != current) {
-            LOGD(TAG, "Setting up sync for account " + account + ", interval " + recommended + "ms");
+            LOGD(TAG,
+                    "Setting up sync for account " + account + ", interval " + recommended + "ms");
             ContentResolver.setIsSyncable(account, ScheduleContract.CONTENT_AUTHORITY, 1);
             ContentResolver.setSyncAutomatically(account, ScheduleContract.CONTENT_AUTHORITY, true);
-            ContentResolver.addPeriodicSync(account, ScheduleContract.CONTENT_AUTHORITY,
-                    new Bundle(), recommended / 1000L);
-            PrefUtils.setCurSyncInterval(context, recommended);
+            if (recommended <= 0L) { // Disable periodic sync.
+                ContentResolver.removePeriodicSync(account, ScheduleContract.CONTENT_AUTHORITY,
+                        new Bundle());
+            } else {
+                ContentResolver.addPeriodicSync(account, ScheduleContract.CONTENT_AUTHORITY,
+                        new Bundle(), recommended / 1000L);
+            }
+            SettingsUtils.setCurSyncInterval(context, recommended);
         } else {
             LOGD(TAG, "No need to update sync interval.");
         }

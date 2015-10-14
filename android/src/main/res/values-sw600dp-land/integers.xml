@@ -18,15 +18,11 @@
     <integer name="login_pane_width_percent">66</integer>
     <integer name="links_columns">1</integer>
 
-    <integer name="explore_1st_level_grid_columns">3</integer>
+    <integer name="deprecated_explore_1st_level_grid_columns">3</integer>
     <!-- Number of grid columns spanned by the hero on wide layout.
     Recommended: 1 less than explore_1st_level_grid_columns -->
-    <integer name="explore_wide_layout_hero_weight">2</integer>
-
-
-    <integer name="explore_2nd_level_grid_columns">3</integer>
+    <integer name="deprecated_explore_wide_layout_hero_weight">2</integer>
+    <integer name="deprecated_explore_2nd_level_grid_columns">3</integer>
 
     <integer name="video_library_columns">2</integer>
-    <integer name="experts_directory_columns">4</integer>
-    <integer name="partners_columns">2</integer>
 </resources>

@@ -1,0 +1,336 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  Copyright 2015 Google Inc. All rights reserved.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+       http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+  -->
+
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/scroll_view"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fillViewport="true">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/toolbar_actionbar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/spacing_normal"
+            android:minHeight="?actionBarSize"
+            app:contentInsetStart="?actionBarInsetStart"
+            android:background="?colorPrimary"
+            app:popupTheme="@style/ActionBarPopupThemeOverlay"
+            app:theme="@style/ActionBarThemeOverlay">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:paddingEnd="@dimen/spacing_normal"
+                android:paddingRight="@dimen/spacing_normal"
+                android:paddingBottom="@dimen/spacing_normal">
+
+                <TextView
+                    android:id="@+id/feedback_header_rate"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/feedback_rate_padding_top"
+                    android:text="@string/session_feedback_title_rate"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Widget.ActionBar.Subtitle"
+                    android:textAlignment="viewStart" />
+
+                <TextView
+                    android:id="@+id/feedback_header_session_title"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/spacing_micro"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Widget.ActionBar.Title"
+                    android:textAlignment="viewStart" />
+
+                <TextView
+                    android:id="@+id/feedback_header_session_speakers"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/spacing_micro"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Widget.ActionBar.Subtitle"
+                    android:textAlignment="viewStart" />
+
+            </LinearLayout>
+
+        </android.support.v7.widget.Toolbar>
+
+        <!-- Q0 -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingLeft="@dimen/padding_normal"
+            android:paddingStart="@dimen/padding_normal"
+            android:paddingRight="@dimen/padding_normal"
+            android:paddingEnd="@dimen/padding_normal"
+            android:paddingTop="@dimen/spacing_normal"
+            android:paddingBottom="@dimen/spacing_normal"
+            android:minHeight="?android:listPreferredItemHeightSmall"
+            android:gravity="center_vertical"
+            android:text="@string/session_rating_label_text"
+            android:textAlignment="viewStart"
+            style="@style/Body2Text" />
+
+        <!-- todo: width should be match_parent but shows too many stars?! -->
+        <RatingBar
+            android:id="@+id/rating_bar_0"
+            android:layout_width="wrap_content"
+            android:layout_height="?android:listPreferredItemHeightSmall"
+            android:layout_gravity="center"
+            android:layout_marginLeft="@dimen/spacing_normal"
+            android:layout_marginStart="@dimen/spacing_normal"
+            android:layout_marginRight="@dimen/spacing_normal"
+            android:layout_marginEnd="@dimen/spacing_normal"
+            android:paddingTop="@dimen/spacing_normal"
+            android:contentDescription="@string/default_session_feedback_rating_bar_content_description"
+            style="@style/FeedbackRatingBar" />
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingLeft="@dimen/padding_normal"
+            android:paddingStart="@dimen/padding_normal"
+            android:paddingRight="@dimen/padding_normal"
+            android:paddingEnd="@dimen/padding_normal"
+            android:paddingTop="@dimen/spacing_micro"
+            android:paddingBottom="@dimen/padding_normal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="start|left"
+                android:text="@string/session_feedback_not_so_awesome"
+                style="@style/FeedbackQuestionGuideText" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="end|right"
+                android:text="@string/session_feedback_awesome"
+                style="@style/FeedbackQuestionGuideText" />
+
+        </FrameLayout>
+
+        <!-- Q1 -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingLeft="@dimen/padding_normal"
+            android:paddingStart="@dimen/padding_normal"
+            android:paddingRight="@dimen/padding_normal"
+            android:paddingEnd="@dimen/padding_normal"
+            android:paddingTop="@dimen/spacing_normal"
+            android:paddingBottom="@dimen/spacing_normal"
+            android:minHeight="?android:listPreferredItemHeightSmall"
+            android:gravity="center_vertical"
+            android:text="@string/session_feedback_relevance"
+            android:textAlignment="viewStart"
+            style="@style/Body2Text" />
+
+        <com.google.samples.apps.iosched.ui.widget.NumberRatingBar
+            android:id="@+id/session_relevant_feedback_bar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:minHeight="?android:listPreferredItemHeightSmall"
+            android:maxHeight="?android:listPreferredItemHeightSmall"
+            android:layout_marginLeft="@dimen/spacing_normal"
+            android:layout_marginStart="@dimen/spacing_normal"
+            android:layout_marginRight="@dimen/spacing_normal"
+            android:layout_marginEnd="@dimen/spacing_normal"
+            android:paddingTop="@dimen/spacing_normal"
+            style="@style/FeedbackNumberRatingBar" />
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingLeft="@dimen/padding_normal"
+            android:paddingStart="@dimen/padding_normal"
+            android:paddingRight="@dimen/padding_normal"
+            android:paddingEnd="@dimen/padding_normal"
+            android:paddingTop="@dimen/spacing_micro"
+            android:paddingBottom="@dimen/padding_normal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="start|left"
+                android:text="@string/session_feedback_not_at_all_relevant"
+                style="@style/FeedbackQuestionGuideText" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="end|right"
+                android:text="@string/session_feedback_extremely_relevant"
+                style="@style/FeedbackQuestionGuideText" />
+
+        </FrameLayout>
+
+        <!-- Q2 -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingLeft="@dimen/padding_normal"
+            android:paddingStart="@dimen/padding_normal"
+            android:paddingRight="@dimen/padding_normal"
+            android:paddingEnd="@dimen/padding_normal"
+            android:paddingTop="@dimen/spacing_normal"
+            android:paddingBottom="@dimen/spacing_normal"
+            android:minHeight="?android:listPreferredItemHeightSmall"
+            android:gravity="center_vertical"
+            android:text="@string/session_feedback_content_label_text"
+            android:textAlignment="viewStart"
+            style="@style/Body2Text" />
+
+        <com.google.samples.apps.iosched.ui.widget.NumberRatingBar
+            android:id="@+id/content_feedback_bar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:minHeight="?android:listPreferredItemHeightSmall"
+            android:maxHeight="?android:listPreferredItemHeightSmall"
+            android:layout_marginLeft="@dimen/spacing_normal"
+            android:layout_marginStart="@dimen/spacing_normal"
+            android:layout_marginRight="@dimen/spacing_normal"
+            android:layout_marginEnd="@dimen/spacing_normal"
+            android:paddingTop="@dimen/spacing_normal"
+            style="@style/FeedbackNumberRatingBar" />
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingLeft="@dimen/padding_normal"
+            android:paddingStart="@dimen/padding_normal"
+            android:paddingRight="@dimen/padding_normal"
+            android:paddingEnd="@dimen/padding_normal"
+            android:paddingTop="@dimen/spacing_micro"
+            android:paddingBottom="@dimen/padding_normal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="start|left"
+                android:text="@string/session_feedback_basic"
+                style="@style/FeedbackQuestionGuideText" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="end|right"
+                android:text="@string/session_feedback_advanced"
+                style="@style/FeedbackQuestionGuideText" />
+
+        </FrameLayout>
+
+        <!-- Q3 -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingLeft="@dimen/padding_normal"
+            android:paddingStart="@dimen/padding_normal"
+            android:paddingRight="@dimen/padding_normal"
+            android:paddingEnd="@dimen/padding_normal"
+            android:paddingTop="@dimen/spacing_normal"
+            android:paddingBottom="@dimen/spacing_normal"
+            android:minHeight="?android:listPreferredItemHeightSmall"
+            android:gravity="center_vertical"
+            android:text="@string/session_feedback_speaker_quality"
+            android:textAlignment="viewStart"
+            style="@style/Body2Text" />
+
+        <com.google.samples.apps.iosched.ui.widget.NumberRatingBar
+            android:id="@+id/speaker_feedback_bar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:minHeight="?android:listPreferredItemHeightSmall"
+            android:maxHeight="?android:listPreferredItemHeightSmall"
+            android:layout_marginLeft="@dimen/spacing_normal"
+            android:layout_marginStart="@dimen/spacing_normal"
+            android:layout_marginRight="@dimen/spacing_normal"
+            android:layout_marginEnd="@dimen/spacing_normal"
+            android:paddingTop="@dimen/spacing_normal"
+            style="@style/FeedbackNumberRatingBar" />
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingLeft="@dimen/padding_normal"
+            android:paddingStart="@dimen/padding_normal"
+            android:paddingRight="@dimen/padding_normal"
+            android:paddingEnd="@dimen/padding_normal"
+            android:paddingTop="@dimen/spacing_micro"
+            android:paddingBottom="@dimen/padding_normal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="start|left"
+                android:text="@string/session_feedback_poor"
+                style="@style/FeedbackQuestionGuideText" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="end|right"
+                android:text="@string/session_feedback_outstanding"
+                style="@style/FeedbackQuestionGuideText" />
+
+        </FrameLayout>
+
+        <!-- we need this space to anchor the button at the bottom on tall devices -->
+        <android.support.v4.widget.Space
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1" />
+
+        <!-- Submit button -->
+        <FrameLayout
+            android:id="@+id/submit_feedback_button"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="?colorPrimary"
+            android:clickable="true"
+            android:contentDescription="@string/session_feedback_submitlink"
+            android:focusable="true"
+            android:foreground="?android:selectableItemBackground"
+            android:minHeight="?actionBarSize"
+            android:theme="@style/ThemeOverlay.AppCompat.Light">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:drawableLeft="@drawable/ic_submit_feedback"
+                android:drawablePadding="8dp"
+                android:gravity="center_vertical"
+                android:paddingRight="24dp"
+                android:text="@string/session_feedback_submitlink"
+                android:textAllCaps="true"
+                android:textAppearance="@style/TextAppearance.AppCompat.Button"
+                android:textColor="@color/text_on_primary" />
+
+        </FrameLayout>
+
+    </LinearLayout>
+
+</ScrollView>

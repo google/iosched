@@ -19,7 +19,6 @@ package com.google.samples.apps.iosched.io.map.model;
 import java.util.Map;
 
 public class MapData {
-    public MapConfig config;
     public Map<String, Marker[]> markers;
     public Map<String, Tile> tiles;
 }

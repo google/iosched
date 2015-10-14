@@ -23,13 +23,16 @@ import android.animation.ObjectAnimator;
 import android.annotation.TargetApi;
 import android.app.ActivityOptions;
 import android.content.Intent;
+import android.content.res.ColorStateList;
+import android.content.res.Resources;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.graphics.drawable.AnimatedStateListDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Handler;
-import android.support.v7.app.ActionBarActivity;
+import android.support.v7.app.AppCompatActivity;
+import android.support.design.widget.FloatingActionButton;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.ImageView;
@@ -44,14 +47,14 @@ public class LUtils {
 
     private static Typeface sMediumTypeface;
 
-    protected ActionBarActivity mActivity;
+    protected AppCompatActivity mActivity;
     private Handler mHandler = new Handler();
 
-    private LUtils(ActionBarActivity activity) {
+    private LUtils(AppCompatActivity activity) {
         mActivity = activity;
     }
 
-    public static LUtils getInstance(ActionBarActivity activity) {
+    public static LUtils getInstance(AppCompatActivity activity) {
         return new LUtils(activity);
     }
 
@@ -99,33 +102,33 @@ public class LUtils {
         mActivity.getWindow().setStatusBarColor(color);
     }
 
-    public void setOrAnimatePlusCheckIcon(final ImageView imageView, boolean isCheck,
+    public void setOrAnimatePlusCheckIcon(final FloatingActionButton fab, boolean isCheck,
                                           boolean allowAnimate) {
         if (!hasL()) {
-            compatSetOrAnimatePlusCheckIcon(imageView, isCheck, allowAnimate);
+            compatSetOrAnimatePlusCheckIcon(fab, isCheck, allowAnimate);
             return;
         }
 
-        Drawable drawable = imageView.getDrawable();
+        Drawable drawable = fab.getDrawable();
         if (!(drawable instanceof AnimatedStateListDrawable)) {
-            drawable = mActivity.getResources().getDrawable(R.drawable.add_schedule_fab_icon_anim);
-            imageView.setImageDrawable(drawable);
+            Resources res = mActivity.getResources();
+            drawable = res.getDrawable(R.drawable.add_schedule_fab_icon_anim);
+            drawable.setTint(res.getColor(R.color.fab_icon_color));
+            fab.setImageDrawable(drawable);
         }
-        imageView.setColorFilter(isCheck ?
-                mActivity.getResources().getColor(R.color.theme_accent_1) : Color.WHITE);
+
         if (allowAnimate) {
-            imageView.setImageState(isCheck ? STATE_UNCHECKED : STATE_CHECKED, false);
+            drawable.setState(isCheck ? STATE_UNCHECKED : STATE_CHECKED);
             drawable.jumpToCurrentState();
-            imageView.setImageState(isCheck ? STATE_CHECKED : STATE_UNCHECKED, false);
+            drawable.setState(isCheck ? STATE_CHECKED : STATE_UNCHECKED);
         } else {
-            imageView.setImageState(isCheck ? STATE_CHECKED : STATE_UNCHECKED, false);
+            drawable.setState(isCheck ? STATE_CHECKED : STATE_UNCHECKED);
             drawable.jumpToCurrentState();
         }
     }
 
     public void compatSetOrAnimatePlusCheckIcon(final ImageView imageView, boolean isCheck,
                                                 boolean allowAnimate) {
-
         final int imageResId = isCheck
                 ? R.drawable.add_schedule_button_icon_checked
                 : R.drawable.add_schedule_button_icon_unchecked;
@@ -141,7 +144,6 @@ public class LUtils {
         if (allowAnimate && isCheck) {
             int duration = mActivity.getResources().getInteger(
                     android.R.integer.config_shortAnimTime);
-
             Animator outAnimator = ObjectAnimator.ofFloat(imageView, View.ALPHA, 0f);
             outAnimator.setDuration(duration / 2);
             outAnimator.addListener(new AnimatorListenerAdapter() {

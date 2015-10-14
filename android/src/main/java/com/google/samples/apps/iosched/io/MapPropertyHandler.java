@@ -23,11 +23,10 @@ import android.content.Context;
 import android.net.Uri;
 
 import com.google.samples.apps.iosched.io.map.model.MapData;
-import com.google.samples.apps.iosched.io.map.model.MapConfig;
 import com.google.samples.apps.iosched.io.map.model.Marker;
 import com.google.samples.apps.iosched.io.map.model.Tile;
 import com.google.samples.apps.iosched.provider.ScheduleContract;
-import com.google.samples.apps.iosched.util.MapUtils;
+import com.google.samples.apps.iosched.provider.ScheduleContractHelper;
 import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 
@@ -52,9 +51,6 @@ public class MapPropertyHandler extends JSONHandler {
     @Override
     public void process(JsonElement element) {
         for (MapData mapData : new Gson().fromJson(element, MapData[].class)) {
-            if (mapData.config != null) {
-                processConfig(mapData.config);
-            }
             if (mapData.tiles != null) {
                 processTileOverlays(mapData.tiles);
             }
@@ -66,10 +62,6 @@ public class MapPropertyHandler extends JSONHandler {
 
     public Collection<Tile> getTileOverlays() {
         return mTileOverlays.values();
-    }
-
-    private void processConfig(MapConfig mapConfig) {
-        MapUtils.setMyLocationEnabled(mContext, mapConfig.enableMyLocation);
     }
 
     private void processTileOverlays(java.util.Map<String, Tile> mapTiles) {
@@ -96,8 +88,8 @@ public class MapPropertyHandler extends JSONHandler {
     }
 
     private void buildMarkers(ArrayList<ContentProviderOperation> list) {
-        Uri uri = ScheduleContract
-                .addCallerIsSyncAdapterParameter(ScheduleContract.MapMarkers.CONTENT_URI);
+        Uri uri = ScheduleContractHelper
+                .setUriAsCalledFromSyncAdapter(ScheduleContract.MapMarkers.CONTENT_URI);
 
         list.add(ContentProviderOperation.newDelete(uri).build());
 
@@ -116,8 +108,8 @@ public class MapPropertyHandler extends JSONHandler {
     }
 
     private void buildTiles(ArrayList<ContentProviderOperation> list) {
-        Uri uri = ScheduleContract
-                .addCallerIsSyncAdapterParameter(ScheduleContract.MapTiles.CONTENT_URI);
+        Uri uri = ScheduleContractHelper
+                .setUriAsCalledFromSyncAdapter(ScheduleContract.MapTiles.CONTENT_URI);
 
         list.add(ContentProviderOperation.newDelete(uri).build());
 

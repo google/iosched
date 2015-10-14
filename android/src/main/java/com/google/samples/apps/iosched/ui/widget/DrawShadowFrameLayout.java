@@ -1,4 +1,3 @@
-
 /*
  * Copyright 2014 Google Inc. All rights reserved.
  *
@@ -26,7 +25,6 @@ import android.graphics.drawable.NinePatchDrawable;
 import android.support.v4.view.ViewCompat;
 import android.util.AttributeSet;
 import android.util.Property;
-import android.widget.Checkable;
 import android.widget.FrameLayout;
 
 import com.google.samples.apps.iosched.R;

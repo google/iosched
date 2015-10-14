@@ -1,5 +1,5 @@
-<!--
-  Copyright 2014 Google Inc. All rights reserved.
+<?xml version="1.0" encoding="utf-8"?><!--
+  Copyright 2015 Google Inc. All rights reserved.
 
   Licensed under the Apache License, Version 2.0 (the "License");
   you may not use this file except in compliance with the License.
@@ -14,24 +14,26 @@
   limitations under the License.
   -->
 
-<com.google.samples.apps.iosched.ui.widget.CheckableFrameLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/add_schedule_button"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/add_schedule_button_container"
     android:layout_width="@dimen/add_to_schedule_button_height"
     android:layout_height="@dimen/add_to_schedule_button_height"
-    android:layout_marginLeft="@dimen/keyline_1_minus_8dp"
-    android:visibility="invisible"
-    android:clickable="true"
-    android:focusable="true"
-    android:background="@drawable/add_schedule_fab_background"
-    android:contentDescription="@string/add_to_schedule">
+    android:layout_marginLeft="@dimen/keyline_1_minus_8dp">
 
-    <ImageView android:id="@+id/add_schedule_icon"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
+    <com.google.samples.apps.iosched.ui.widget.CheckableFloatingActionButton
+        android:id="@+id/add_schedule_button"
+        android:layout_width="@dimen/add_to_schedule_button_height_no_padding"
+        android:layout_height="@dimen/add_to_schedule_button_height_no_padding"
+        android:layout_gravity="center"
+        android:clickable="true"
+        android:contentDescription="@string/add_to_schedule"
+        android:focusable="true"
         android:scaleType="center"
         android:src="@drawable/add_schedule_button_icon_unchecked"
-        android:contentDescription="@null"
-        android:layout_gravity="center" />
-
-</com.google.samples.apps.iosched.ui.widget.CheckableFrameLayout>
+        android:visibility="invisible"
+        app:backgroundTint="@color/session_details_fab"
+        app:fabSize="mini"
+        app:pressedTranslationZ="@dimen/fab_touch_raise"
+        app:rippleColor="@color/fab_press_ripple" />
+</FrameLayout>

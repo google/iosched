@@ -28,8 +28,7 @@ import android.text.TextUtils;
 import com.google.samples.apps.iosched.io.*;
 import com.google.samples.apps.iosched.io.map.model.Tile;
 import com.google.samples.apps.iosched.provider.ScheduleContract;
-import com.google.samples.apps.iosched.util.FileUtils;
-import com.google.samples.apps.iosched.util.Lists;
+import com.google.samples.apps.iosched.util.IOUtils;
 import com.google.samples.apps.iosched.util.MapUtils;
 import com.google.gson.JsonParser;
 import com.google.gson.stream.JsonReader;
@@ -57,7 +56,7 @@ import static com.google.samples.apps.iosched.util.LogUtils.*;
 public class ConferenceDataHandler {
     private static final String TAG = makeLogTag(SyncHelper.class);
 
-    // Shared preferences key under which we store the timestamp that corresponds to
+    // Shared settings_prefs key under which we store the timestamp that corresponds to
     // the data we currently have in our content provider.
     private static final String SP_KEY_DATA_TIMESTAMP = "data_timestamp";
 
@@ -73,9 +72,7 @@ public class ConferenceDataHandler {
     private static final String DATA_KEY_SEARCH_SUGGESTIONS = "search_suggestions";
     private static final String DATA_KEY_MAP = "map";
     private static final String DATA_KEY_HASHTAGS = "hashtags";
-    private static final String DATA_KEY_EXPERTS = "experts";
     private static final String DATA_KEY_VIDEOS = "video_library";
-    private static final String DATA_KEY_PARTNERS = "partners";
 
     private static final String[] DATA_KEYS_IN_ORDER = {
             DATA_KEY_ROOMS,
@@ -86,9 +83,7 @@ public class ConferenceDataHandler {
             DATA_KEY_SEARCH_SUGGESTIONS,
             DATA_KEY_MAP,
             DATA_KEY_HASHTAGS,
-            DATA_KEY_EXPERTS,
-            DATA_KEY_VIDEOS,
-            DATA_KEY_PARTNERS
+            DATA_KEY_VIDEOS
     };
 
     Context mContext = null;
@@ -101,10 +96,8 @@ public class ConferenceDataHandler {
     SessionsHandler mSessionsHandler = null;
     SearchSuggestHandler mSearchSuggestHandler = null;
     MapPropertyHandler mMapPropertyHandler = null;
-    ExpertsHandler mExpertsHandler = null;
     HashtagsHandler mHashtagsHandler = null;
     VideosHandler mVideosHandler = null;
-    PartnersHandler mPartnersHandler = null;
 
     // Convenience map that maps the key name to its corresponding handler (e.g.
     // "blocks" to mBlocksHandler (to avoid very tedious if-elses)
@@ -139,10 +132,8 @@ public class ConferenceDataHandler {
         mHandlerForKey.put(DATA_KEY_SEARCH_SUGGESTIONS, mSearchSuggestHandler =
                 new SearchSuggestHandler(mContext));
         mHandlerForKey.put(DATA_KEY_MAP, mMapPropertyHandler = new MapPropertyHandler(mContext));
-        mHandlerForKey.put(DATA_KEY_EXPERTS, mExpertsHandler = new ExpertsHandler(mContext));
         mHandlerForKey.put(DATA_KEY_HASHTAGS, mHashtagsHandler = new HashtagsHandler(mContext));
         mHandlerForKey.put(DATA_KEY_VIDEOS, mVideosHandler = new VideosHandler(mContext));
-        mHandlerForKey.put(DATA_KEY_PARTNERS, mPartnersHandler = new PartnersHandler(mContext));
 
         // process the jsons. This will call each of the handlers when appropriate to deal
         // with the objects we see in the data.
@@ -247,7 +238,7 @@ public class ConferenceDataHandler {
         // clear the tile cache on disk if any tiles have been updated
         boolean shouldClearCache = false;
         // keep track of used files, unused files are removed
-        ArrayList<String> usedTiles = Lists.newArrayList();
+        ArrayList<String> usedTiles = new ArrayList<>();
         for (Tile tile : collection) {
             final String filename = tile.filename;
             final String url = tile.url;
@@ -267,7 +258,7 @@ public class ConferenceDataHandler {
                         BasicHttpClient httpClient = new BasicHttpClient();
                         httpClient.setRequestLogger(mQuietLogger);
                         HttpResponse httpResponse = httpClient.get(url, null);
-                        FileUtils.writeFile(httpResponse.getBody(), tileFile);
+                        IOUtils.writeToFile(httpResponse.getBody(), tileFile);
 
                         // ensure the file is valid SVG
                         InputStream is = new FileInputStream(tileFile);

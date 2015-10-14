@@ -20,13 +20,16 @@
     android:layout_height="wrap_content"
     android:layout_marginBottom="16dp">
 
-    <com.google.samples.apps.iosched.ui.widget.BezelImageView android:id="@+id/speaker_image"
+    <com.google.samples.apps.iosched.ui.widget.BezelImageView
+        android:id="@+id/speaker_image"
         android:scaleType="centerCrop"
         android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
         android:layout_width="@dimen/speaker_image_size"
         android:layout_height="@dimen/speaker_image_size"
         android:layout_marginLeft="@dimen/session_detail_speaker_left_offset"
+        android:layout_marginStart="@dimen/session_detail_speaker_left_offset"
         android:layout_marginTop="6dp"
         android:clickable="true"
         android:focusable="true"
@@ -34,25 +37,50 @@
         iosched:borderDrawable="@drawable/circle_border"
         android:src="@drawable/person_image_empty" />
 
-    <TextView android:id="@+id/speaker_header"
-        android:clickable="true"
-        android:focusable="true"
+    <TextView
+        android:id="@+id/speaker_header"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginLeft="@dimen/keyline_2_session_detail"
-        android:layout_marginBottom="4dp"
+        android:layout_marginStart="@dimen/keyline_2_session_detail"
         android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
         android:layout_alignParentRight="true"
-        android:textSize="16sp"
-        android:textColor="@color/body_text_1" />
+        android:layout_alignParentEnd="true"
+        android:clickable="true"
+        android:focusable="true"
+        style="@style/SessionDetailsSpeakerName" />
 
-    <TextView android:id="@+id/speaker_abstract"
-        style="@style/TextBody"
-        android:textColor="@color/body_text_2"
+    <TextView
+        android:id="@+id/speaker_abstract"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/speaker_header"
         android:layout_alignLeft="@id/speaker_header"
-        android:layout_alignRight="@id/speaker_header" />
+        android:layout_alignStart="@id/speaker_header"
+        android:layout_alignRight="@id/speaker_header"
+        android:layout_alignEnd="@id/speaker_header"
+        android:autoLink="web"
+        style="@style/Body1Text" />
+
+    <ImageView
+        android:id="@+id/twitter_icon_box"
+        android:layout_width="@dimen/social_icon_box_size"
+        android:layout_height="@dimen/social_icon_box_size"
+        android:padding="@dimen/social_icon_box_padding"
+        android:layout_below="@id/speaker_abstract"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
+        android:src="@drawable/ic_twitter_blue"
+        android:background="?imageItemBackground" />
+
+    <ImageView
+        android:id="@+id/gplus_icon_box"
+        android:layout_width="@dimen/social_icon_box_size"
+        android:layout_height="@dimen/social_icon_box_size"
+        android:padding="@dimen/social_icon_box_padding"
+        android:src="@drawable/ic_gplus_blue"
+        android:background="?imageItemBackground"/>
 </RelativeLayout>

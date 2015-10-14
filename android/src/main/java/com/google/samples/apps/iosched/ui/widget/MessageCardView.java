@@ -33,7 +33,7 @@ import static com.google.samples.apps.iosched.util.LogUtils.LOGW;
 import static com.google.samples.apps.iosched.util.LogUtils.makeLogTag;
 
 public class MessageCardView extends CardView implements View.OnClickListener {
-    private static final String TAG = makeLogTag("MessageCardView");
+    private static final String TAG = makeLogTag(MessageCardView.class);
     private TextView mTitleView;
     private TextView mMessageView;
     private Button[] mButtons;
@@ -68,8 +68,8 @@ public class MessageCardView extends CardView implements View.OnClickListener {
         mTitleView = (TextView) mRoot.findViewById(R.id.title);
         mMessageView = (TextView) mRoot.findViewById(R.id.text);
         mButtons = new Button[] {
-                (Button) mRoot.findViewById(R.id.button1),
-                (Button) mRoot.findViewById(R.id.button2)
+                (Button) mRoot.findViewById(R.id.buttonEnd),
+                (Button) mRoot.findViewById(R.id.buttonStart)
         };
         mButtonTags = new String[] { "", "" };
 

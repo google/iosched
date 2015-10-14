@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
 <!--
   Copyright 2014 Google Inc. All rights reserved.
 
@@ -14,121 +15,88 @@
   limitations under the License.
   -->
 
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:iosched="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.WelcomeActivity">
+    tools:context=".welcome.WelcomeActivity">
 
     <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
-        android:background="#e5e5e5">
+        android:layout_height="@dimen/welcome_appbar_height"
+        android:paddingBottom="?actionBarSize"
+        android:background="?colorPrimary">
 
         <ImageView
-            android:src="@drawable/io2014_logo"
-            android:layout_width="200dp"
-            android:layout_height="100dp"
-            android:scaleType="fitCenter"
-            android:tint="#7000"
-            android:layout_gravity="center|top" />
-
-        <ScrollView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
-
-            <FrameLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:paddingBottom="16dp"
-                android:paddingLeft="16dp"
-                android:paddingRight="16dp"
-                android:paddingTop="100dp"
-                android:clipToPadding="false">
-
-                <android.support.v7.widget.CardView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    iosched:cardBackgroundColor="#fff"
-                    iosched:cardCornerRadius="@dimen/card_corner_radius"
-                    iosched:cardElevation="@dimen/card_elevation"
-                    iosched:cardPreventCornerOverlap="false">
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:orientation="vertical"
-                        android:padding="24dp">
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:fontFamily="@string/font_fontFamily_medium"
-                            android:text="@string/welcome_to_google_i_o_app"
-                            android:textColor="@color/theme_primary"
-                            android:textSize="@dimen/text_size_xlarge"
-                            android:textStyle="@integer/font_textStyle_medium" />
-
-                        <TextView
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="16dp"
-                            android:autoLink="web"
-                            android:text="@string/welcome_text"
-                            android:textColor="@color/body_text_2"
-                            android:textSize="@dimen/text_size_medium" />
-
-                        <TextView
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="16dp"
-                            android:autoLink="web"
-                            android:text="@string/eula_legal_text"
-                            android:textColor="@color/body_text_2"
-                            android:textSize="@dimen/text_size_medium" />
-
-                    </LinearLayout>
-                </android.support.v7.widget.CardView>
-            </FrameLayout>
-        </ScrollView>
+            android:id="@+id/logo"
+            android:src="@drawable/io_logo"
+            android:layout_width="@dimen/welcome_image_width"
+            android:layout_height="@dimen/welcome_image_height"
+            android:layout_gravity="center"/>
 
     </FrameLayout>
 
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:paddingTop="@dimen/welcome_content_padding_top"
+        android:paddingBottom="@dimen/padding_normal"
+        android:layout_marginBottom="?actionBarSize"
+        android:clipToPadding="false"
+        android:scrollbarStyle="outsideOverlay">
+
+        <android.support.v7.widget.CardView
+            android:id="@+id/welcome_content"
+            android:layout_width="@dimen/welcome_content_width"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginStart="@dimen/padding_normal"
+            android:layout_marginEnd="@dimen/padding_normal"
+            android:paddingTop="@dimen/spacing_normal"
+            iosched:cardBackgroundColor="@color/app_white"
+            iosched:cardCornerRadius="@dimen/card_corner_radius"
+            iosched:cardElevation="@dimen/card_elevation"
+            iosched:cardPreventCornerOverlap="false" />
+
+    </ScrollView>
+
     <!-- Button bar -->
-    <LinearLayout
-        android:layout_height="48dp"
-        android:background="@color/theme_primary"
+    <!-- need two layouts in order to restrict the width on larger devices -->
+    <FrameLayout
+        android:layout_width="@dimen/match_parent"
+        android:layout_height="?actionBarSize"
         android:layout_gravity="bottom"
-        android:layout_width="match_parent">
+        android:background="@color/app_white"
+        android:elevation="@dimen/welcome_button_bar_elevation">
 
-        <Button
-            android:layout_width="0dp"
-            android:layout_weight="1"
+        <LinearLayout
+            android:layout_width="@dimen/welcome_content_width"
             android:layout_height="match_parent"
-            android:background="?photoItemForeground"
-            android:text="@string/decline"
-            android:textColor="#8fff"
-            android:textSize="@dimen/text_size_medium"
-            android:textStyle="@integer/font_textStyle_medium"
-            android:fontFamily="@string/font_fontFamily_medium"
-            android:textAllCaps="true"
-            android:id="@+id/button_decline" />
+            android:layout_gravity="center_horizontal"
+            android:gravity="end">
 
-        <Button
-            android:id="@+id/button_accept"
-            android:layout_width="0dp"
-            android:layout_weight="1"
-            android:layout_height="match_parent"
-            android:background="?photoItemForeground"
-            android:text="@string/accept"
-            android:textSize="@dimen/text_size_medium"
-            android:textStyle="@integer/font_textStyle_medium"
-            android:fontFamily="@string/font_fontFamily_medium"
-            android:textAllCaps="true"
-            android:textColor="#fff" />
+            <Button
+                android:id="@+id/button_decline"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:text="@string/decline"
+                android:textAppearance="@style/TextAppearance.AppCompat.Button"
+                android:textColor="@color/app_body_text_2"
+                style="?android:borderlessButtonStyle" />
 
-    </LinearLayout>
-</LinearLayout>
+            <Button
+                android:id="@+id/button_accept"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:text="@string/accept"
+                android:textAppearance="@style/TextAppearance.AppCompat.Button"
+                android:textColor="@drawable/button_color"
+                style="?android:borderlessButtonStyle" />
+
+        </LinearLayout>
+
+    </FrameLayout>
+
+</FrameLayout>

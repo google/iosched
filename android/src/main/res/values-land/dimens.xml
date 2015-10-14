@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
 <!--
   Copyright 2014 Google Inc. All rights reserved.
 
@@ -16,4 +17,9 @@
 <resources>
     <dimen name="session_details_floating_width">600dp</dimen>
     <dimen name="session_details_floating_height">450dp</dimen>
+
+    <!-- Welcome Activity -->
+    <dimen name="welcome_appbar_height">192dp</dimen> <!-- 4 * ?actionBarSize -->
+    <dimen name="welcome_content_padding_top">144dp</dimen> <!-- 3 * ?actionBarSize -->
+
 </resources>

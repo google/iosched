@@ -33,16 +33,31 @@
         <LinearLayout style="@style/HeaderBar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:theme="@style/ActionBarThemeOverlay">
 
-            <include layout="@layout/toolbar_actionbar" />
+            <include layout="@layout/toolbar_actionbar_keyline_insets" />
 
-            <com.google.samples.apps.iosched.ui.widget.SlidingTabLayout
-                android:background="@color/tab_background"
+            <android.support.design.widget.TabLayout
                 android:id="@+id/sliding_tabs"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:background="@color/tab_background"
+                app:tabContentStart="?actionBarInsetStart"
+                app:tabIndicatorColor="@color/tab_selected_strip"
+                app:tabTextAppearance="@style/MyScheduleTabTextAppearancce"
+                app:tabSelectedTextColor="@color/text_on_primary"
+                app:tabMode="scrollable"
+                app:tabGravity="center" />
+
         </LinearLayout>
+
+        <!-- Dummy view that prevents the following ViewPager to capture focus -->
+        <View
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:focusable="true"
+            android:focusableInTouchMode="true"/>
 
         <com.google.samples.apps.iosched.ui.widget.MultiSwipeRefreshLayout
             android:id="@+id/swipe_refresh_layout"
@@ -59,7 +74,7 @@
 
         </com.google.samples.apps.iosched.ui.widget.MultiSwipeRefreshLayout>
 
-        <include layout="@layout/include_butter_bar" />
+        <include layout="@layout/deprecated_include_butter_bar" />
     </LinearLayout>
 
     <!-- Nav drawer -->

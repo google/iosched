@@ -17,7 +17,7 @@ package com.google.samples.apps.iosched.sync.userdata;
 
 public class UserAction {
     public enum TYPE {
-        ADD_STAR, REMOVE_STAR;
+        ADD_STAR, REMOVE_STAR, VIEW_VIDEO, SUBMIT_FEEDBACK;
     };
 
     public UserAction() {
@@ -30,6 +30,7 @@ public class UserAction {
 
     public TYPE type;
     public String sessionId;
+    public String videoId;
     public String accountName;
     public boolean requiresSync;
 

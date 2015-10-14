@@ -26,6 +26,8 @@ import com.google.samples.apps.iosched.io.model.Speaker;
 import com.google.samples.apps.iosched.provider.ScheduleContract;
 import com.google.gson.Gson;
 import com.google.gson.JsonElement;
+import com.google.samples.apps.iosched.provider.ScheduleContractHelper;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -49,7 +51,7 @@ public class SpeakersHandler extends JSONHandler {
 
     @Override
     public void makeContentProviderOperations(ArrayList<ContentProviderOperation> list) {
-        Uri uri = ScheduleContract.addCallerIsSyncAdapterParameter(
+        Uri uri = ScheduleContractHelper.setUriAsCalledFromSyncAdapter(
                 ScheduleContract.Speakers.CONTENT_URI);
         HashMap<String, String> speakerHashcodes = loadSpeakerHashcodes();
         HashSet<String> speakersToKeep = new HashSet<String>();
@@ -93,9 +95,9 @@ public class SpeakersHandler extends JSONHandler {
 
     private void buildSpeaker(boolean isInsert, Speaker speaker,
                               ArrayList<ContentProviderOperation> list) {
-        Uri allSpeakersUri = ScheduleContract.addCallerIsSyncAdapterParameter(
+        Uri allSpeakersUri = ScheduleContractHelper.setUriAsCalledFromSyncAdapter(
                 ScheduleContract.Speakers.CONTENT_URI);
-        Uri thisSpeakerUri = ScheduleContract.addCallerIsSyncAdapterParameter(
+        Uri thisSpeakerUri = ScheduleContractHelper.setUriAsCalledFromSyncAdapter(
                 ScheduleContract.Speakers.buildSpeakerUri(speaker.id));
 
         ContentProviderOperation.Builder builder;
@@ -111,39 +113,48 @@ public class SpeakersHandler extends JSONHandler {
                 .withValue(ScheduleContract.Speakers.SPEAKER_ABSTRACT, speaker.bio)
                 .withValue(ScheduleContract.Speakers.SPEAKER_COMPANY, speaker.company)
                 .withValue(ScheduleContract.Speakers.SPEAKER_IMAGE_URL, speaker.thumbnailUrl)
-                .withValue(ScheduleContract.Speakers.SPEAKER_URL, speaker.plusoneUrl)
+                .withValue(ScheduleContract.Speakers.SPEAKER_PLUSONE_URL, speaker.plusoneUrl)
+                .withValue(ScheduleContract.Speakers.SPEAKER_TWITTER_URL, speaker.twitterUrl)
                 .withValue(ScheduleContract.Speakers.SPEAKER_IMPORT_HASHCODE,
                         speaker.getImportHashcode())
                 .build());
     }
 
     private void buildDeleteOperation(String speakerId, ArrayList<ContentProviderOperation> list) {
-        Uri speakerUri = ScheduleContract.addCallerIsSyncAdapterParameter(
+        Uri speakerUri = ScheduleContractHelper.setUriAsCalledFromSyncAdapter(
                 ScheduleContract.Speakers.buildSpeakerUri(speakerId));
         list.add(ContentProviderOperation.newDelete(speakerUri).build());
     }
 
     private HashMap<String, String> loadSpeakerHashcodes() {
-        Uri uri = ScheduleContract.addCallerIsSyncAdapterParameter(
+        Uri uri = ScheduleContractHelper.setUriAsCalledFromSyncAdapter(
                 ScheduleContract.Speakers.CONTENT_URI);
-        Cursor cursor = mContext.getContentResolver().query(uri, SpeakerHashcodeQuery.PROJECTION,
-                null, null, null);
-        if (cursor == null) {
-            LOGE(TAG, "Error querying speaker hashcodes (got null cursor)");
-            return null;
+        Cursor cursor = null;
+        try {
+            cursor = mContext.getContentResolver().query(uri, SpeakerHashcodeQuery.PROJECTION,
+                    null, null, null);
+            if (cursor == null) {
+                LOGE(TAG, "Error querying speaker hashcodes (got null cursor)");
+                return null;
+            }
+            if (cursor.getCount() < 1) {
+                LOGE(TAG, "Error querying speaker hashcodes (no records returned)");
+                return null;
+            }
+            HashMap<String, String> result = new HashMap<String, String>();
+            if (cursor.moveToFirst()) {
+                do {
+                    String speakerId = cursor.getString(SpeakerHashcodeQuery.SPEAKER_ID);
+                    String hashcode = cursor.getString(SpeakerHashcodeQuery.SPEAKER_IMPORT_HASHCODE);
+                    result.put(speakerId, hashcode == null ? "" : hashcode);
+                } while (cursor.moveToNext());
+            }
+            return result;
+        } finally {
+            if (cursor != null) {
+                cursor.close();
+            }
         }
-        if (cursor.getCount() < 1) {
-            LOGE(TAG, "Error querying speaker hashcodes (no records returned)");
-            return null;
-        }
-        HashMap<String, String> result = new HashMap<String, String>();
-        while (cursor.moveToNext()) {
-            String speakerId = cursor.getString(SpeakerHashcodeQuery.SPEAKER_ID);
-            String hashcode = cursor.getString(SpeakerHashcodeQuery.SPEAKER_IMPORT_HASHCODE);
-            result.put(speakerId, hashcode == null ? "" : hashcode);
-        }
-        cursor.close();
-        return result;
     }
 
     public HashMap<String, Speaker> getSpeakerMap() {
