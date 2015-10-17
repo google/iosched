@@ -21,9 +21,7 @@ import android.animation.AnimatorListenerAdapter;
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
 import android.annotation.TargetApi;
-import android.app.ActivityOptions;
 import android.content.Intent;
-import android.content.res.ColorStateList;
 import android.content.res.Resources;
 import android.graphics.Color;
 import android.graphics.Typeface;
@@ -33,7 +31,6 @@ import android.os.Build;
 import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.support.design.widget.FloatingActionButton;
-import android.text.TextUtils;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -64,9 +61,7 @@ public class LUtils {
 
     public void startActivityWithTransition(Intent intent, final View clickedView,
                                             final String transitionName) {
-        ActivityOptions options = null;
-
-        mActivity.startActivity(intent, (options != null) ? options.toBundle() : null);
+        mActivity.startActivity(intent, null);
     }
 
     public void setMediumTypeface(TextView textView) {
@@ -80,24 +75,7 @@ public class LUtils {
             textView.setTypeface(Typeface.SANS_SERIF, Typeface.BOLD);
         }
     }
-
-    public int getStatusBarColor() {
-        if (!hasL()) {
-            // On pre-L devices, you can have any status bar color so long as it's black.
-            return Color.BLACK;
-        }
-
-        return mActivity.getWindow().getStatusBarColor();
-    }
-
-    public void setStatusBarColor(int color) {
-        if (!hasL()) {
-            return;
-        }
-
-        mActivity.getWindow().setStatusBarColor(color);
-    }
-
+    
     public void setOrAnimatePlusCheckIcon(final FloatingActionButton fab, boolean isCheck,
                                           boolean allowAnimate) {
         if (!hasL()) {
