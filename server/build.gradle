@@ -25,7 +25,7 @@ buildscript {
     }
 
     dependencies {
-        classpath 'com.google.appengine:gradle-appengine-plugin:1.9.18'
+        classpath 'com.google.appengine:gradle-appengine-plugin:1.9.19'
     }
 }
 
