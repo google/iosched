@@ -102,9 +102,7 @@ public class SessionCalendarService extends IntentService {
                         processAllSessionsCalendar(resolver, getCalendarId(intent)));
                 sendBroadcast(new Intent(
                         SessionCalendarService.ACTION_UPDATE_ALL_SESSIONS_CALENDAR_COMPLETED));
-            } catch (RemoteException e) {
-                LOGE(TAG, "Error adding all sessions to Google Calendar", e);
-            } catch (OperationApplicationException e) {
+            } catch (Exception e) {
                 LOGE(TAG, "Error adding all sessions to Google Calendar", e);
             }
 
@@ -112,12 +110,9 @@ public class SessionCalendarService extends IntentService {
             try {
                 getContentResolver().applyBatch(CalendarContract.AUTHORITY,
                         processClearAllSessions(resolver, getCalendarId(intent)));
-            } catch (RemoteException e) {
-                LOGE(TAG, "Error clearing all sessions from Google Calendar", e);
-            } catch (OperationApplicationException e) {
+            } catch (Exception e) {
                 LOGE(TAG, "Error clearing all sessions from Google Calendar", e);
             }
-
         } else {
             return;
         }
@@ -135,9 +130,7 @@ public class SessionCalendarService extends IntentService {
                             extras.getLong(EXTRA_SESSION_END),
                             extras.getString(EXTRA_SESSION_TITLE),
                             extras.getString(EXTRA_SESSION_ROOM)));
-        } catch (RemoteException e) {
-            LOGE(TAG, "Error adding session to Google Calendar", e);
-        } catch (OperationApplicationException e) {
+        } catch (Exception e) {
             LOGE(TAG, "Error adding session to Google Calendar", e);
         }
     }

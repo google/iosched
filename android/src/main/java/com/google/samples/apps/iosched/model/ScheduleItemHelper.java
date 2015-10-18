@@ -70,10 +70,7 @@ public class ScheduleItemHelper {
     }
 
     static protected void moveMutables(ArrayList<ScheduleItem> mutableItems, ArrayList<ScheduleItem> immutableItems) {
-        Iterator<ScheduleItem> immutableIt = immutableItems.iterator();
-
-        while (immutableIt.hasNext()) {
-            ScheduleItem immutableItem = immutableIt.next();
+        for (ScheduleItem immutableItem : immutableItems) {
             if (immutableItem.type == ScheduleItem.BREAK) {
                 // Breaks (lunch, after hours, etc) should not make free blocks to move
                 continue;

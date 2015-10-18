@@ -61,11 +61,7 @@ public class SessionData {
         }
         Calendar now = java.util.Calendar.getInstance();
         now.setTimeInMillis(UIUtils.getCurrentTime(context));
-        if (mStartDate.before(now.getTime()) && mEndDate.after(now.getTime())) {
-            return true;
-        } else {
-            return false;
-        }
+        return mStartDate.before(now.getTime()) && mEndDate.after(now.getTime());
     }
 
     public boolean isLiveStreamAvailable() {

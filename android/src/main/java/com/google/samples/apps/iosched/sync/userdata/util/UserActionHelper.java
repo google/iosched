@@ -17,8 +17,6 @@ package com.google.samples.apps.iosched.sync.userdata.util;
 
 import android.content.ContentProviderOperation;
 import android.content.Context;
-import android.content.OperationApplicationException;
-import android.os.RemoteException;
 import android.util.Log;
 
 import com.google.samples.apps.iosched.provider.ScheduleContract;
@@ -46,9 +44,7 @@ public class UserActionHelper {
         }
         try {
             context.getContentResolver().applyBatch(ScheduleContract.CONTENT_AUTHORITY, batch);
-        } catch (RemoteException e) {
-            Log.e(TAG, "Could not apply operations", e);
-        } catch (OperationApplicationException e) {
+        } catch (Exception e) {
             Log.e(TAG, "Could not apply operations", e);
         }
     }

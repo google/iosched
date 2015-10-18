@@ -29,7 +29,6 @@ import com.google.common.annotations.VisibleForTesting;
 import com.google.samples.apps.iosched.util.ThrottledContentObserver;
 
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.Map;
 
 import static com.google.common.base.Preconditions.checkState;
@@ -126,10 +125,7 @@ public class PresenterFragmentImpl extends Fragment
 
         // Register content observers with the content resolver.
         if (mContentObservers != null) {
-            Iterator<Map.Entry<Uri, ThrottledContentObserver>> observers =
-                    mContentObservers.entrySet().iterator();
-            while (observers.hasNext()) {
-                Map.Entry<Uri, ThrottledContentObserver> entry = observers.next();
+            for(Map.Entry<Uri, ThrottledContentObserver> entry : mContentObservers.entrySet()) {
                 activity.getContentResolver().registerContentObserver(
                         entry.getKey(), true, entry.getValue());
             }
@@ -148,9 +144,8 @@ public class PresenterFragmentImpl extends Fragment
         mUpdatableView = null;
         mModel = null;
         if (mContentObservers != null) {
-            Iterator<ThrottledContentObserver> observers = mContentObservers.values().iterator();
-            while (observers.hasNext()) {
-                getActivity().getContentResolver().unregisterContentObserver(observers.next());
+            for (ThrottledContentObserver observer : mContentObservers.values()) {
+                getActivity().getContentResolver().unregisterContentObserver(observer);
             }
         }
     }
@@ -165,8 +160,8 @@ public class PresenterFragmentImpl extends Fragment
         // Load data queries if any.
         if (mInitialQueriesToLoad != null && mInitialQueriesToLoad.length > 0) {
             LoaderManager manager = getLoaderManager();
-            for (int i = 0; i < mInitialQueriesToLoad.length; i++) {
-                manager.initLoader(mInitialQueriesToLoad[i].getId(), null, this);
+            for (QueryEnum query : mInitialQueriesToLoad) {
+                manager.initLoader(query.getId(), null, this);
             }
         } else {
             // No data query to load, update the view.
@@ -236,8 +231,8 @@ public class PresenterFragmentImpl extends Fragment
     public void onUserAction(UserActionEnum action, @Nullable Bundle args) {
         boolean isValid = false;
         if (mValidUserActions != null && mValidUserActions.length > 0 && action != null) {
-            for (int i = 0; i < mValidUserActions.length; i++) {
-                if (mValidUserActions[i].getId() == action.getId()) {
+            for (UserActionEnum userAction : mValidUserActions) {
+                if(userAction.getId() == action.getId()) {
                     isValid = true;
                 }
             }
@@ -302,8 +297,8 @@ public class PresenterFragmentImpl extends Fragment
     }
 
     private void onObservedContentChanged(QueryEnum[] queriesToRun) {
-        for (int i = 0; i < queriesToRun.length; i++) {
-            getLoaderManager().initLoader(queriesToRun[i].getId(), null, this);
+        for (QueryEnum query : queriesToRun) {
+            getLoaderManager().initLoader(query.getId(), null, this);
         }
     }
 

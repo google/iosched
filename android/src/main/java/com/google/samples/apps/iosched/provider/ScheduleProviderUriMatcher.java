@@ -20,8 +20,6 @@ import android.content.UriMatcher;
 import android.net.Uri;
 import android.util.SparseArray;
 
-import java.util.HashMap;
-
 /**
  * Provides methods to match a {@link android.net.Uri} to a {@link ScheduleUriEnum}.
  * <p />
@@ -47,19 +45,16 @@ public class ScheduleProviderUriMatcher {
 
     private void buildUriMatcher() {
         final String authority = ScheduleContract.CONTENT_AUTHORITY;
-
-        ScheduleUriEnum[] uris = ScheduleUriEnum.values();
-        for (int i = 0; i < uris.length; i++) {
-            mUriMatcher.addURI(authority, uris[i].path, uris[i].code);
+        for (ScheduleUriEnum uri : ScheduleUriEnum.values()) {
+            mUriMatcher.addURI(authority, uri.path, uri.code);
         }
 
         buildEnumsMap();
     }
 
     private void buildEnumsMap() {
-        ScheduleUriEnum[] uris = ScheduleUriEnum.values();
-        for (int i = 0; i < uris.length; i++) {
-            mEnumsMap.put(uris[i].code, uris[i]);
+        for (ScheduleUriEnum uri : ScheduleUriEnum.values()) {
+            mEnumsMap.put(uri.code, uri);
         }
     }
 
