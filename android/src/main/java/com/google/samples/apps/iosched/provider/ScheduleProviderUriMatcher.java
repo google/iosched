@@ -18,7 +18,6 @@ package com.google.samples.apps.iosched.provider;
 
 import android.content.UriMatcher;
 import android.net.Uri;
-import android.util.Log;
 import android.util.SparseArray;
 
 import java.util.HashMap;

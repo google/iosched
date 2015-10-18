@@ -21,11 +21,8 @@ import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 
 import com.google.samples.apps.iosched.Config;
-import com.google.samples.apps.iosched.util.TimeUtils;
 import com.google.samples.apps.iosched.util.UIUtils;
 import com.google.samples.apps.iosched.welcome.WelcomeActivity;
-
-import java.util.HashMap;
 import java.util.TimeZone;
 
 import static com.google.samples.apps.iosched.util.LogUtils.makeLogTag;
