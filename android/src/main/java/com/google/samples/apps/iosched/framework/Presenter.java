@@ -31,34 +31,34 @@ public interface Presenter {
     /**
      * Sets the {@code model} this Presenter controls.
      */
-    public void setModel(Model model);
+    void setModel(Model model);
 
     /**
      * Sets the {@code view} this Presenter controls.
      */
-    public void setUpdatableView(UpdatableView view);
+    void setUpdatableView(UpdatableView view);
 
 
     /**
      * Sets the {@code queries} to load when the {@link android.app.Activity} using this Presenter
      * is created.
      */
-    public void setInitialQueriesToLoad(QueryEnum[] queries);
+    void setInitialQueriesToLoad(QueryEnum[] queries);
 
     /**
      * Sets the user {@code actions} allowed by this Presenter.
      */
-    public void setValidUserActions(UserActionEnum[] actions);
+    void setValidUserActions(UserActionEnum[] actions);
 
     /**
      * Cleans up all references to objects containing an {@link android.view.View} or
      * {@link android.content.Context} in order to help with garbage collection and
      * avoid memory leaks.
      */
-    public void cleanUp();
+    void cleanUp();
 
     /**
      * @return the {@link android.content.Context} to which this Presenter is attached.
      */
-    public Context getContext();
+    Context getContext();
 }

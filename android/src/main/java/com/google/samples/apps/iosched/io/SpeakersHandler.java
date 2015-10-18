@@ -167,8 +167,8 @@ public class SpeakersHandler extends JSONHandler {
                 ScheduleContract.Speakers.SPEAKER_ID,
                 ScheduleContract.Speakers.SPEAKER_IMPORT_HASHCODE
         };
-        final int _ID = 0;
-        final int SPEAKER_ID = 1;
-        final int SPEAKER_IMPORT_HASHCODE = 2;
+        int _ID = 0;
+        int SPEAKER_ID = 1;
+        int SPEAKER_IMPORT_HASHCODE = 2;
     }
 }

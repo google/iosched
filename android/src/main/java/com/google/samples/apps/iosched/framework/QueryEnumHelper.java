@@ -31,9 +31,9 @@ public class QueryEnumHelper {
      * @return the {@link QueryEnum} with the given id or null if none found.
      */
     public static QueryEnum getQueryForId(int id, QueryEnum[] enums) {
-        for (int i = 0; i < enums.length; i++) {
-            if (id == enums[i].getId()) {
-                return enums[i];
+        for (QueryEnum query : enums) {
+            if (id == query.getId()) {
+                return query;
             }
         }
         return null;

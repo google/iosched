@@ -315,5 +315,5 @@ public class SessionsHandler extends JSONHandler {
         int _ID = 0;
         int SESSION_ID = 1;
         int SESSION_IMPORT_HASHCODE = 2;
-    };
+    }
 }

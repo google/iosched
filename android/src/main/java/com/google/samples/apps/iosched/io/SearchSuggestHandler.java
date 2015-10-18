@@ -29,7 +29,6 @@ import android.net.Uri;
 import java.util.ArrayList;
 import java.util.HashSet;
 
-import static com.google.samples.apps.iosched.util.LogUtils.LOGE;
 import static com.google.samples.apps.iosched.util.LogUtils.makeLogTag;
 
 public class SearchSuggestHandler extends JSONHandler {

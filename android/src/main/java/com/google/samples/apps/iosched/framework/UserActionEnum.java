@@ -21,6 +21,6 @@ package com.google.samples.apps.iosched.framework;
  */
 public interface UserActionEnum {
 
-    public int getId();
+    int getId();
 
 }

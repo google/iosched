@@ -16,14 +16,10 @@
 package com.google.samples.apps.iosched.gcm;
 
 import com.google.samples.apps.iosched.BuildConfig;
-import com.google.samples.apps.iosched.Config;
 import com.google.samples.apps.iosched.gcm.command.*;
 import com.google.android.gcm.GCMBaseIntentService;
-import com.google.samples.apps.iosched.util.AccountUtils;
-
 import android.content.Context;
 import android.content.Intent;
-
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;

@@ -127,7 +127,7 @@ public class ScheduleDatabase extends SQLiteOpenHelper {
             DeprecatedTables(String tableName) {
                 this.tableName = tableName;
             }
-        };
+        }
     }
 
     private interface Triggers {
@@ -141,7 +141,7 @@ public class ScheduleDatabase extends SQLiteOpenHelper {
         // on database upgrades).
         interface DeprecatedTriggers {
             String SESSIONS_TRACKS_DELETE = "sessions_tracks_delete";
-        };
+        }
     }
 
     public interface SessionsSpeakers {

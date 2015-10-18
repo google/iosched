@@ -26,9 +26,6 @@ import com.google.samples.apps.iosched.util.AnalyticsHelper;
 import com.google.samples.apps.iosched.videolibrary.VideoLibraryModel.VideoLibraryUserActionEnum;
 import com.google.samples.apps.iosched.videolibrary.VideoLibraryModel.VideoLibraryQueryEnum;
 
-
-import static com.google.samples.apps.iosched.util.LogUtils.LOGD;
-
 /**
  * This Activity displays all the videos of past Google I/O sessions in the form of a card for each
  * topics and a card for new videos of the current year.

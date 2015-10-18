@@ -17,8 +17,8 @@ package com.google.samples.apps.iosched.sync.userdata;
 
 public class UserAction {
     public enum TYPE {
-        ADD_STAR, REMOVE_STAR, VIEW_VIDEO, SUBMIT_FEEDBACK;
-    };
+        ADD_STAR, REMOVE_STAR, VIEW_VIDEO, SUBMIT_FEEDBACK
+    }
 
     public UserAction() {
     }

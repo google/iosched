@@ -40,14 +40,14 @@ public interface Model {
     /**
      * @return an array of {@link QueryEnum} that can be processed by the model
      */
-    public QueryEnum[] getQueries();
+    QueryEnum[] getQueries();
 
     /**
      * Updates the data saved in the model from the {@code cursor} and associated {@code query}.
      *
      * @return true if the data could be read properly from cursor.
      */
-    public boolean readDataFromCursor(Cursor cursor, QueryEnum query);
+    boolean readDataFromCursor(Cursor cursor, QueryEnum query);
 
     /**
      * Creates the cursor loader for the given loader id and data source {@code uri}.
@@ -60,7 +60,7 @@ public interface Model {
      *
      * @return the cursor loader.
      */
-    public Loader<Cursor> createCursorLoader(int loaderId, Uri uri, Bundle args);
+    Loader<Cursor> createCursorLoader(int loaderId, Uri uri, Bundle args);
 
     /**
      * Updates this Model according to a user {@code action} and {@code args}.
@@ -70,5 +70,5 @@ public interface Model {
      *
      * @return true if successful.
      */
-    public boolean requestModelUpdate(UserActionEnum action, @Nullable Bundle args);
+    boolean requestModelUpdate(UserActionEnum action, @Nullable Bundle args);
 }

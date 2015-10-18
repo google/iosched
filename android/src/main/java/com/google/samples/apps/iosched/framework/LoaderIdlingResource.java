@@ -15,8 +15,6 @@
  */
 package com.google.samples.apps.iosched.framework;
 
-import com.bumptech.glide.request.ResourceCallback;
-
 import android.app.LoaderManager;
 import android.content.Loader;
 import android.support.test.espresso.IdlingResource;

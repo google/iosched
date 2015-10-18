@@ -18,7 +18,6 @@ package com.google.samples.apps.iosched.appwidget;
 
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Bitmap;
 import android.text.format.DateUtils;
 import android.util.SparseBooleanArray;
 import android.util.SparseIntArray;
@@ -126,7 +125,6 @@ public class ScheduleWidgetRemoteViewsService extends RemoteViewsService {
                 Intent homeIntent = new Intent(mContext, MyScheduleActivity.class);
 
                 final ScheduleItem item = mScheduleItems.get(itemPosition);
-                ScheduleItem nextItem = (itemPosition < mScheduleItems.size() - 1) ? mScheduleItems.get(itemPosition + 1) : null;
 
                 if (mDefaultSessionColor < 0) {
                     mDefaultSessionColor = mContext.getResources().getColor(R.color.default_session_color);

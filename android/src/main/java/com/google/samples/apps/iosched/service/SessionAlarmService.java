@@ -674,7 +674,7 @@ public class SessionAlarmService extends IntentService
         int SESSION_ID = 0;
         int SESSION_TITLE = 1;
 
-        public static final String WHERE_CLAUSE =
+        String WHERE_CLAUSE =
                 ScheduleContract.Sessions.HAS_GIVEN_FEEDBACK + "=0";
     }
 

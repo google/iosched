@@ -34,9 +34,9 @@ public class MyScheduleFragment extends ListFragment {
     private View mRoot = null;
 
     public interface Listener {
-        public void onFragmentViewCreated(ListFragment fragment);
-        public void onFragmentAttached(MyScheduleFragment fragment);
-        public void onFragmentDetached(MyScheduleFragment fragment);
+        void onFragmentViewCreated(ListFragment fragment);
+        void onFragmentAttached(MyScheduleFragment fragment);
+        void onFragmentDetached(MyScheduleFragment fragment);
     }
 
     @Override

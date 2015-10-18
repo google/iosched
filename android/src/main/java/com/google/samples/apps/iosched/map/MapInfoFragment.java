@@ -319,9 +319,9 @@ public abstract class MapInfoFragment extends Fragment
 
     interface Callback {
 
-        public void onInfoSizeChanged(int left, int top, int right, int bottom);
+        void onInfoSizeChanged(int left, int top, int right, int bottom);
 
-        public void onSessionClicked(String id);
+        void onSessionClicked(String id);
     }
 
 

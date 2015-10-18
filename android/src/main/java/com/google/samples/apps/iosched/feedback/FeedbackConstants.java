@@ -16,7 +16,6 @@
 
 package com.google.samples.apps.iosched.feedback;
 
-import com.google.samples.apps.iosched.Config;
 
 public class FeedbackConstants {
 

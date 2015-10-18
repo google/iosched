@@ -53,7 +53,7 @@ public interface CollectionViewCallbacks {
      * Can be used in place of a {@code CollectionViewCallbacks} to define a custom layout for each
      * groups.
      */
-    public static interface GroupCollectionViewCallbacks extends CollectionViewCallbacks {
+    interface GroupCollectionViewCallbacks extends CollectionViewCallbacks {
 
         /**
          * Returns the custom ViewGroup to be used as a container for each group of the

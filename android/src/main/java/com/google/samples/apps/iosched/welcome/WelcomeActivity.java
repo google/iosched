@@ -187,6 +187,6 @@ public class WelcomeActivity extends AppCompatActivity implements WelcomeFragmen
          * @param context the application context.
          * @return true if the WelcomeActivityContent should be displayed.
          */
-        public boolean shouldDisplay(Context context);
+        boolean shouldDisplay(Context context);
     }
 }

@@ -186,8 +186,8 @@ public class VideosHandler extends JSONHandler {
                 ScheduleContract.Videos.VIDEO_ID,
                 ScheduleContract.Videos.VIDEO_IMPORT_HASHCODE
         };
-        final int _ID = 0;
-        final int VIDEO_ID = 1;
-        final int VIDEO_IMPORT_HASHCODE = 2;
+        int _ID = 0;
+        int VIDEO_ID = 1;
+        int VIDEO_IMPORT_HASHCODE = 2;
     }
 }
