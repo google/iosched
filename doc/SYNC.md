@@ -113,7 +113,7 @@ Here is an example of a file with a room, a session and a speaker:
   ],
   "sessions": [
     {
-        "id": "SESSION1"
+        "id": "SESSION1",
         "description": "A cool session about example data.",
         "title": "Example Data in Action",
         "url": "http://www.example.com",
@@ -123,7 +123,7 @@ Here is an example of a file with a room, a session and a speaker:
             "TOPIC_CHROME",
             "THEME_DEVELOP",
             "THEME_DESIGN"
-        ]
+        ],
         "startTimestamp": "2014-06-26T22:00:00Z",
         "endTimestamp": "2014-06-26T22:30:00Z",
         "youtubeUrl": "dQw4w9WgXcQ",
@@ -267,8 +267,8 @@ Where each `<session>` has this format:
 
 ```JSON
 {
-   "id": "SESSION123"
-   "url": "https://...."
+   "id": "SESSION123",
+   "url": "https://....",
    "title": "Web Components in Action",
    "description": "Web components are cool.",
    "tags": [
@@ -277,10 +277,10 @@ Where each `<session>` has this format:
        "TOPIC_CHROME",
        "THEME_DEVELOP",
        "THEME_DESIGN"
-   ]
+   ],
    "mainTag": "TOPIC_ANDROID",
    "startTimestamp": "2014-06-25T22:10:00Z",
-   "endTimestamp": "2014-06-25T22:55:00Z"
+   "endTimestamp": "2014-06-25T22:55:00Z",
    "photoUrl": "https://...../photo.jpg",
    "youtubeUrl": "https://youtu.be/YCUZ01yFtsM",
    "speakers": [
