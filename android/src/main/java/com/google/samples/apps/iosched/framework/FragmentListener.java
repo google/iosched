@@ -23,5 +23,5 @@ public interface FragmentListener {
     /**
      * Called when the {@link android.app.Fragment} is ready.
      */
-    public void onFragmentReady();
+    void onFragmentReady();
 }

@@ -115,29 +115,29 @@ public class Config {
     public interface Tags {
 
         // tag that indicates a session is a live session
-        public static final String SESSIONS = "TYPE_SESSIONS";
+        String SESSIONS = "TYPE_SESSIONS";
 
         // the tag category that we use to group sessions together when displaying them
-        public static final String SESSION_GROUPING_TAG_CATEGORY = "TYPE";
+        String SESSION_GROUPING_TAG_CATEGORY = "TYPE";
 
         // tag categories
-        public static final String CATEGORY_THEME = "THEME";
-        public static final String CATEGORY_TOPIC = "TOPIC";
-        public static final String CATEGORY_TYPE = "TYPE";
+        String CATEGORY_THEME = "THEME";
+        String CATEGORY_TOPIC = "TOPIC";
+        String CATEGORY_TYPE = "TYPE";
 
-        public static final Map<String, Integer> CATEGORY_DISPLAY_ORDERS
+        Map<String, Integer> CATEGORY_DISPLAY_ORDERS
                 = new HashMap<String, Integer>();
 
-        public static final String SPECIAL_KEYNOTE = "FLAG_KEYNOTE";
+        String SPECIAL_KEYNOTE = "FLAG_KEYNOTE";
 
-        public static final String[] EXPLORE_CATEGORIES =
+        String[] EXPLORE_CATEGORIES =
                 {CATEGORY_THEME, CATEGORY_TOPIC, CATEGORY_TYPE};
 
-        public static final int[] EXPLORE_CATEGORY_ALL_STRING = {
+        int[] EXPLORE_CATEGORY_ALL_STRING = {
                 R.string.all_themes, R.string.all_topics, R.string.all_types
         };
 
-        public static final int[] EXPLORE_CATEGORY_TITLE = {
+        int[] EXPLORE_CATEGORY_TITLE = {
                 R.string.themes, R.string.topics, R.string.types
         };
     }

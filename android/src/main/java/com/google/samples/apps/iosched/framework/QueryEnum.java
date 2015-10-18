@@ -25,12 +25,12 @@ public interface QueryEnum {
      * @return the id of the query, also used an identifier for the corresponding
      * {@link android.app.LoaderManager}
      */
-    public int getId();
+    int getId();
 
     /**
      * @return the projection for the query. The fields in the projection are defined in
      * the {@link com.google.samples.apps.iosched.provider.ScheduleContract}
      */
-    public String[] getProjection();
+    String[] getProjection();
 
 }

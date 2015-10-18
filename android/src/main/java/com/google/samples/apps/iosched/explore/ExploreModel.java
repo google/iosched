@@ -339,7 +339,7 @@ public class ExploreModel implements Model {
     /**
      * Enumeration of the possible queries that can be done by this Model to retrieve data.
      */
-    public static enum ExploreQueryEnum implements QueryEnum {
+    public enum ExploreQueryEnum implements QueryEnum {
 
         /**
          * Query that retrieves a list of sessions.
@@ -393,7 +393,7 @@ public class ExploreModel implements Model {
      * Enumeration of the possible events that a user can trigger that would affect the state of
      * the date of this Model.
      */
-    public static enum ExploreUserActionEnum implements UserActionEnum {
+    public enum ExploreUserActionEnum implements UserActionEnum {
         /**
          * Event that is triggered when a user re-enters the video library this triggers a reload
          * so that we can display another set of randomly selected videos.

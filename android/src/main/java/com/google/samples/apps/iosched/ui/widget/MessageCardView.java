@@ -43,7 +43,7 @@ public class MessageCardView extends CardView implements View.OnClickListener {
     public static final int ANIM_DURATION = 200;
 
     public interface OnMessageCardButtonClicked {
-        public void onMessageCardButtonClicked(String tag);
+        void onMessageCardButtonClicked(String tag);
     }
 
     public MessageCardView(Context context) {

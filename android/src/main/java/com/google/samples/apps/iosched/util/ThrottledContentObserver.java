@@ -34,7 +34,7 @@ public class ThrottledContentObserver extends ContentObserver {
     Callbacks mCallback = null;
 
     public interface Callbacks {
-        public void onThrottledContentObserverFired();
+        void onThrottledContentObserverFired();
     }
 
     public ThrottledContentObserver(Callbacks callback) {

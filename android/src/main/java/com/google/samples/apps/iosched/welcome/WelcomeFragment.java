@@ -190,7 +190,7 @@ public abstract class WelcomeFragment extends Fragment {
      * The receiever for the action to be performed on a button click.
      */
     interface WelcomeFragmentClickAction {
-        public void doAction(Context context);
+        void doAction(Context context);
     }
 
     /**
@@ -203,27 +203,27 @@ public abstract class WelcomeFragment extends Fragment {
          *
          * @return the positive action button.
          */
-        public Button getPositiveButton();
+        Button getPositiveButton();
 
         /**
          * Enable the positive action button in the container.
          *
          * @param enabled true to enable it, false to disable it.
          */
-        public void setPositiveButtonEnabled(Boolean enabled);
+        void setPositiveButtonEnabled(Boolean enabled);
 
         /**
          * Retrieve a negative action button from the container.
          *
          * @return the negative action button.
          */
-        public Button getNegativeButton();
+        Button getNegativeButton();
 
         /**
          * Enable the negative action button in the container.
          *
          * @param enabled true to enable it, false to disable it.
          */
-        public void setNegativeButtonEnabled(Boolean enabled);
+        void setNegativeButtonEnabled(Boolean enabled);
     }
 }

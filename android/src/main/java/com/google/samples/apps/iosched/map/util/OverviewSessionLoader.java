@@ -40,11 +40,11 @@ public class OverviewSessionLoader extends SessionLoader {
      * Query Paramters for the "Sessions in room after" query that returns a list of sessions
      * that are following a given time in a particular room.
      */
-    public static interface Query {
+    public interface Query {
 
-        final String ORDER = ScheduleContract.Sessions.SESSION_START + " ASC";
+        String ORDER = ScheduleContract.Sessions.SESSION_START + " ASC";
 
-        final String[] PROJECTION = {
+        String[] PROJECTION = {
                 ScheduleContract.Sessions._ID,
                 ScheduleContract.Sessions.SESSION_ID,
                 ScheduleContract.Sessions.SESSION_TITLE,

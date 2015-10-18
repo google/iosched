@@ -423,7 +423,7 @@ public class VideoLibraryModel implements Model {
     /**
      * Enumeration of the possible queries that can be done by this Model to retrieve data.
      */
-    public static enum VideoLibraryQueryEnum implements QueryEnum {
+    public enum VideoLibraryQueryEnum implements QueryEnum {
 
         /**
          * Query that retrieves a list of available videos.
@@ -494,7 +494,7 @@ public class VideoLibraryModel implements Model {
      * Enumeration of the possible events that a user can trigger that would affect the state of
      * the date of this Model.
      */
-    public static enum VideoLibraryUserActionEnum implements UserActionEnum {
+    public enum VideoLibraryUserActionEnum implements UserActionEnum {
 
         /**
          * Event that is triggered when a user changes the filters of the Video Library. For

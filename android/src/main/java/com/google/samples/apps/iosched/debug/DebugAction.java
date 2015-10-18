@@ -28,7 +28,7 @@ public interface DebugAction {
     void run(Context context, Callback callback);
     String getLabel();
 
-    public interface Callback {
+    interface Callback {
         void done(boolean success, String message);
     }
 }
