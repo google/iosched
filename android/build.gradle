@@ -38,7 +38,7 @@ android {
         version "${version_code}"
         versionName "${version_name}"
         minSdkVersion 14
-        targetSdkVersion 22
+        targetSdkVersion 23
 
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         buildConfigField("boolean", "ENABLE_DEBUG_TOOLS", "false")
