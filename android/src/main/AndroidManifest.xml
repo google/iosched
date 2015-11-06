@@ -16,7 +16,7 @@
   -->
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    package="com.google.samples.apps.iosched"
+    package="no.java.schedule"
     android:versionCode="333"
     android:versionName="3.3.3"
     android:installLocation="auto">
@@ -78,7 +78,7 @@
         android:maxSdkVersion="18" />
 
     <application
-        android:name=".AppApplication"
+        android:name="com.google.samples.apps.iosched.AppApplication"
         android:allowBackup="false"
         android:hardwareAccelerated="true"
         android:icon="@mipmap/ic_launcher"
@@ -100,7 +100,7 @@
         <!-- Activities -->
 
         <activity
-            android:name=".explore.ExploreIOActivity"
+            android:name="com.google.samples.apps.iosched.explore.ExploreIOActivity"
             android:label="@string/app_name"
             android:theme="@style/Theme.IOSched.Sessions">
             <intent-filter>
@@ -129,15 +129,15 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".myschedule.MyScheduleActivity"
+            android:name="com.google.samples.apps.iosched.myschedule.MyScheduleActivity"
             android:label="@string/title_my_schedule"
-            android:parentActivityName=".explore.ExploreIOActivity"
+            android:parentActivityName="com.google.samples.apps.iosched.explore.ExploreIOActivity"
             android:launchMode="singleTop"
             android:theme="@style/Theme.IOSched.MySchedule"
             android:exported="true">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".explore.ExploreIOActivity" />
+                android:value="com.google.samples.apps.iosched.explore.ExploreIOActivity" />
             <!-- Web URLs -->
             <intent-filter android:label="@string/app_name"
                     android:priority="200">
@@ -198,7 +198,7 @@
         </activity>
  
         <activity
-            android:name=".explore.ExploreSessionsActivity"
+            android:name="com.google.samples.apps.iosched.explore.ExploreSessionsActivity"
             android:label="Explore"
             android:theme="@style/Theme.IOSched.WithNavDrawer"
             android:exported="true">
@@ -212,18 +212,18 @@
         </activity>
 
         <activity
-            android:name=".settings.SettingsActivity"
+            android:name="com.google.samples.apps.iosched.settings.SettingsActivity"
             android:label="@string/title_settings"
-            android:parentActivityName=".explore.ExploreIOActivity"
+            android:parentActivityName="com.google.samples.apps.iosched.explore.ExploreIOActivity"
             android:theme="@style/Theme.IOSched.WithNavDrawer"
             android:exported="false">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".explore.ExploreIOActivity" />
+                android:value="com.google.samples.apps.iosched.explore.ExploreIOActivity" />
         </activity>
 
         <activity
-            android:name=".ui.SearchActivity"
+            android:name="com.google.samples.apps.iosched.ui.SearchActivity"
             android:label="@string/title_search"
             android:theme="@style/Theme.IOSched.Search"
             android:launchMode="singleTop"
@@ -241,14 +241,14 @@
                 android:resource="@xml/searchable" />
         </activity>
         <activity
-            android:name=".feedback.SessionFeedbackActivity"
+            android:name="com.google.samples.apps.iosched.feedback.SessionFeedbackActivity"
             android:label="@string/title_session_feedback"
             android:theme="@style/Theme.IOSched.Feedback"
-            android:parentActivityName=".explore.ExploreIOActivity"
+            android:parentActivityName="com.google.samples.apps.iosched.explore.ExploreIOActivity"
             android:exported="false">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".explore.ExploreIOActivity" />
+                android:value="com.google.samples.apps.iosched.explore.ExploreIOActivity" />
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
 
@@ -259,34 +259,34 @@
         </activity>
 
         <activity
-            android:name=".welcome.WelcomeActivity"
+            android:name="com.google.samples.apps.iosched.welcome.WelcomeActivity"
             android:theme="@style/Theme.IOSched.Welcome"
             android:exported="false" />
 
         <activity
-            android:name=".videolibrary.VideoLibraryActivity"
+            android:name="com.google.samples.apps.iosched.videolibrary.VideoLibraryActivity"
             android:theme="@style/Theme.IOSched.VideoLibrary"
             android:label="@string/title_video_library"
-            android:parentActivityName=".explore.ExploreIOActivity"
+            android:parentActivityName="com.google.samples.apps.iosched.explore.ExploreIOActivity"
             android:exported="false">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".explore.ExploreIOActivity" />
+                android:value="com.google.samples.apps.iosched.explore.ExploreIOActivity" />
         </activity>
 
         <activity
-            android:name=".videolibrary.VideoLibraryFilteredActivity"
+            android:name="com.google.samples.apps.iosched.videolibrary.VideoLibraryFilteredActivity"
             android:theme="@style/Theme.IOSched.VideoLibrary"
             android:label="@string/title_video_library"
-            android:parentActivityName=".videolibrary.VideoLibraryActivity"
+            android:parentActivityName="com.google.samples.apps.iosched.videolibrary.VideoLibraryActivity"
             android:exported="false">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".videolibrary.VideoLibraryActivity" />
+                android:value="com.google.samples.apps.iosched.videolibrary.VideoLibraryActivity" />
         </activity>
 
         <activity
-            android:name=".session.SessionDetailActivity"
+            android:name="com.google.samples.apps.iosched.session.SessionDetailActivity"
             android:label="@string/title_session_detail"
             android:theme="@style/Theme.IOSched.SessionDetails"
             android:exported="true">
@@ -312,62 +312,62 @@
         </activity>
 
         <activity
-            android:name=".map.MapActivity"
+            android:name="com.google.samples.apps.iosched.map.MapActivity"
             android:exported="true"
             android:label="@string/title_map"
-            android:parentActivityName=".explore.ExploreIOActivity"
+            android:parentActivityName="com.google.samples.apps.iosched.explore.ExploreIOActivity"
             android:theme="@style/Theme.IOSched.Map">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".explore.ExploreIOActivity" />
+                android:value="com.google.samples.apps.iosched.explore.ExploreIOActivity" />
         </activity>
 
         <activity
-            android:name=".social.SocialActivity"
+            android:name="com.google.samples.apps.iosched.social.SocialActivity"
             android:label="@string/title_activity_new_social"
-            android:parentActivityName=".explore.ExploreIOActivity"
+            android:parentActivityName="com.google.samples.apps.iosched.explore.ExploreIOActivity"
             android:theme="@style/Theme.IOSched.WithNavDrawer"
             android:exported="false">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".explore.ExploreIOActivity" />
+                android:value="com.google.samples.apps.iosched.explore.ExploreIOActivity" />
         </activity>
 
         <activity
-            android:name=".about.AboutActivity"
+            android:name="com.google.samples.apps.iosched.about.AboutActivity"
             android:label="@string/description_about"
-            android:parentActivityName=".explore.ExploreIOActivity"
+            android:parentActivityName="com.google.samples.apps.iosched.explore.ExploreIOActivity"
             android:theme="@style/Theme.IOSched.WithNavDrawer"
             android:exported="false">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".explore.ExploreIOActivity" />
+                android:value="com.google.samples.apps.iosched.explore.ExploreIOActivity" />
         </activity>
 
         <!-- TaskStackBuilder proxy activity for widgets and notifications. -->
 
         <activity
-            android:name=".ui.TaskStackBuilderProxyActivity"
+            android:name="com.google.samples.apps.iosched.ui.TaskStackBuilderProxyActivity"
             android:theme="@android:style/Theme.NoDisplay"
             android:exported="false" />
         <activity
-            android:name=".debug.DebugActivity"
+            android:name="com.google.samples.apps.iosched.debug.DebugActivity"
             android:label="@string/title_activity_debug_test_runner"
-            android:parentActivityName=".explore.ExploreIOActivity"
+            android:parentActivityName="com.google.samples.apps.iosched.explore.ExploreIOActivity"
             android:theme="@style/Theme.IOSched"
             android:exported="false">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".explore.ExploreIOActivity" />
+                android:value="com.google.samples.apps.iosched.explore.ExploreIOActivity" />
         </activity>
         <activity
-            android:name=".debug.actions.ViewFilesInAppFolderActivity"
+            android:name="com.google.samples.apps.iosched.debug.actions.ViewFilesInAppFolderActivity"
             android:label="list files in appdata folder"
-            android:parentActivityName=".debug.DebugActivity"
+            android:parentActivityName="com.google.samples.apps.iosched.debug.DebugActivity"
             android:exported="false"></activity>
 
         <!-- Session alarm/calendar integrating components. -->
-        <receiver android:name=".receiver.SessionAlarmReceiver">
+        <receiver android:name="com.google.samples.apps.iosched.receiver.SessionAlarmReceiver">
             <intent-filter>
                 <action android:name="android.intent.action.BOOT_COMPLETED" />
                 <action android:name="com.google.samples.apps.iosched.action.UPDATE_CALENDAR_COMPLETED" />
@@ -375,10 +375,10 @@
         </receiver>
 
         <service
-            android:name=".service.SessionAlarmService"
+            android:name="com.google.samples.apps.iosched.service.SessionAlarmService"
             android:exported="false"/>
         <service
-            android:name=".service.SessionCalendarService"
+            android:name="com.google.samples.apps.iosched.service.SessionCalendarService"
             android:exported="false"/>
 
         <!-- BEGIN Google Analytics install referral measurement -->
@@ -410,7 +410,7 @@
           so only GCM services can send data messages for the app.
         -->
         <receiver
-            android:name=".gcm.GCMRedirectedBroadcastReceiver"
+            android:name="com.google.samples.apps.iosched.gcm.GCMRedirectedBroadcastReceiver"
             android:permission="com.google.android.c2dm.permission.SEND">
             <intent-filter>
 
@@ -430,12 +430,12 @@
           By default, it must be named .GCMIntentService, unless the
           application uses a custom BroadcastReceiver that redefines its name.
         -->
-        <service android:name=".gcm.GCMIntentService" />
+        <service android:name="com.google.samples.apps.iosched.gcm.GCMIntentService" />
 
         <!-- Data, sync and schedule editing components -->
 
         <provider
-            android:name=".provider.ScheduleProvider"
+            android:name="com.google.samples.apps.iosched.provider.ScheduleProvider"
             android:authorities="com.google.samples.apps.iosched"
             android:exported="true"
             android:label="@string/app_name"
@@ -443,7 +443,7 @@
             android:writePermission="com.google.samples.apps.iosched.permission.WRITE_SCHEDULE" />
 
         <service
-            android:name=".sync.SyncService"
+            android:name="com.google.samples.apps.iosched.sync.SyncService"
             android:exported="true"
             tools:ignore="ExportedService">
             <intent-filter>
@@ -459,14 +459,14 @@
             data such as session, speakers, etc. This data is used prior to the app's
             first sync to the backend server. -->
         <service
-            android:name=".service.DataBootstrapService"
+            android:name="com.google.samples.apps.iosched.service.DataBootstrapService"
             android:exported="false" />
 
         <!--
              a simple receiver that triggers a sync for any message it receives. used by our
              GCM implementation
         -->
-        <receiver android:name=".sync.TriggerSyncReceiver" />
+        <receiver android:name="com.google.samples.apps.iosched.sync.TriggerSyncReceiver" />
 
         <!-- Other manifest items -->
 
@@ -477,7 +477,7 @@
         <!-- App widget components -->
 
         <receiver
-            android:name=".appwidget.ScheduleWidgetProvider"
+            android:name="com.google.samples.apps.iosched.appwidget.ScheduleWidgetProvider"
             android:enabled="true">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
@@ -491,14 +491,14 @@
         <!-- The service serving the RemoteViews to the collection widget -->
 
         <service
-            android:name=".appwidget.ScheduleWidgetRemoteViewsService"
+            android:name="com.google.samples.apps.iosched.appwidget.ScheduleWidgetRemoteViewsService"
             android:enabled="true"
             android:exported="false"
             android:permission="android.permission.BIND_REMOTEVIEWS" />
 
         <!-- The service listening for incoming messages from the wear device -->
         <service
-            android:name=".feedback.FeedbackWearableListenerService"
+            android:name="com.google.samples.apps.iosched.feedback.FeedbackWearableListenerService"
             android:exported="false">
             <intent-filter>
                 <action android:name="com.google.android.gms.wearable.BIND_LISTENER" />

@@ -16,5 +16,5 @@
   -->
 <resources>
     <!-- TODO: Supply Maps API key for your project -->
-    <string name="maps_api_key" translatable="false">UNDEFINED</string>
+    <string name="maps_api_key" translatable="false">AIzaSyD174d2MW_iEe4CPiRnG9gnhqYBaJrf3ug</string>
 </resources>

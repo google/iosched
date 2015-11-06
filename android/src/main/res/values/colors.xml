@@ -161,4 +161,25 @@
 
     <!-- search -->
     <color name="dialog_background">#7f000000</color>
+
+    <color name="body_text_1_positive">#ff669900</color>
+    <color name="body_text_1_negative">#ffff4444</color>
+
+    <color name="accent_1">#ff4683ec</color>
+
+    <color name="past_background_color">#11000000</color>
+
+    <color name="tabbar_divider">#3f4c1b</color>
+
+    <!-- Google+ -->
+    <color name="stream_name_color">#333</color>
+    <color name="stream_link_color">#ff6f8fc7</color>
+    <color name="stream_content_color">#333</color>
+    <color name="stream_reshare_line_color">#ffcccccc</color>
+    <color name="default_stream_image_background">#eee</color>
+
+    <!-- Session feedback rating colors -->
+    <color name="session_feedback_yellow">#fcaf17</color>
+    <color name="session_feedback_thumbs_down_red">#ff4f4c</color>
+    <color name="session_feedback_thumbs_up_green">#149089</color>
 </resources>
