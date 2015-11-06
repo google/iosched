@@ -16,7 +16,7 @@
 
 package com.google.samples.apps.iosched.feedback;
 
-import com.google.samples.apps.iosched.R;
+import no.java.schedule.R;
 import com.google.samples.apps.iosched.framework.QueryEnum;
 import com.google.samples.apps.iosched.framework.UpdatableView;
 import com.google.samples.apps.iosched.ui.widget.NumberRatingBar;

@@ -31,8 +31,8 @@
     <color name="cyan_a700_plus">#ff006574</color>
 
     <!-- App Primary View Colors (might be deprecated). -->
-    <color name="app_primary_accent">#FF26C6DA</color>
-    <color name="app_secondary_accent">#1A000000</color>
+    <color name="app_primary_accent">#2B2B2B</color>
+    <color name="app_secondary_accent">@android:color/black</color>
     <color name="app_primary_text">#444444</color>
     <color name="app_secondary_text">#444444</color>
     <color name="app_white">#FFFEFEFE</color>
@@ -69,8 +69,8 @@
     <!-- end deprecated -->
 
     <color name="theme_primary">@color/app_primary_accent</color>
-    <color name="theme_primary_dark">#00BCD4</color>
-    <color name="theme_primary_light">#7986cb</color>
+    <color name="theme_primary_dark">@color/app_secondary_accent</color>
+    <color name="theme_primary_light">#99000000</color>
 
     <color name="theme_accent_1">#00b0ff</color>
     <color name="theme_accent_1_light">#8ad4fa</color>
@@ -177,6 +177,8 @@
     <color name="stream_content_color">#333</color>
     <color name="stream_reshare_line_color">#ffcccccc</color>
     <color name="default_stream_image_background">#eee</color>
+
+    <!-- javazone color utils -->
 
     <!-- Session feedback rating colors -->
     <color name="session_feedback_yellow">#fcaf17</color>

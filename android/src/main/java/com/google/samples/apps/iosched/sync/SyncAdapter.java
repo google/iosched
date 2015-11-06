@@ -20,7 +20,7 @@ import android.accounts.Account;
 import android.content.*;
 import android.os.Bundle;
 
-import com.google.samples.apps.iosched.BuildConfig;
+import no.java.schedule.BuildConfig;
 
 import java.util.regex.Pattern;
 

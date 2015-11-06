@@ -42,7 +42,7 @@
         <item name="colorPrimaryDark">@color/theme_primary_dark</item>
         <item name="colorAccent">@color/theme_primary</item>
 
-        <item name="android:textColorLink">@color/flat_button_text</item>
+        <item name="android:textColorLink">@color/app_white</item>
 
         <item name="windowActionBar">false</item>
         <item name="android:windowNoTitle">true</item>
@@ -72,8 +72,8 @@
     </style>
 
     <style name="ActionBarThemeOverlay" parent="ThemeOverlay.AppCompat.ActionBar">
-        <item name="android:textColorPrimary">@color/text_on_primary</item>
-        <item name="android:textColorSecondary">@color/subtitle_on_primary</item>
+        <item name="android:textColorPrimary">@color/app_white</item>
+        <item name="android:textColorSecondary">@color/app_body_text_2_inverse</item>
     </style>
 
     <style name="SearchViewTheme" parent="ThemeOverlay.AppCompat.ActionBar">

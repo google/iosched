@@ -22,7 +22,7 @@ import android.net.ConnectivityManager;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 
-import com.google.samples.apps.iosched.BuildConfig;
+import no.java.schedule.BuildConfig;
 import com.google.samples.apps.iosched.Config;
 import com.google.samples.apps.iosched.feedback.FeedbackApiHelper;
 import com.google.samples.apps.iosched.feedback.FeedbackSyncHelper;

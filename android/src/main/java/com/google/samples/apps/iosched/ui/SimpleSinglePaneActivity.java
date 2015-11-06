@@ -16,7 +16,7 @@
 
 package com.google.samples.apps.iosched.ui;
 
-import com.google.samples.apps.iosched.R;
+import no.java.schedule.R;
 
 import android.content.Intent;
 import android.os.Bundle;

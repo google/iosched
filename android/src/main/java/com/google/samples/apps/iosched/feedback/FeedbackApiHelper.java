@@ -16,7 +16,6 @@
 
 package com.google.samples.apps.iosched.feedback;
 
-import com.google.samples.apps.iosched.BuildConfig;
 import com.turbomanage.httpclient.BasicHttpClient;
 import com.turbomanage.httpclient.HttpResponse;
 import com.turbomanage.httpclient.ParameterMap;

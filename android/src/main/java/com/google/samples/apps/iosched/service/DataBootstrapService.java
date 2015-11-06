@@ -20,8 +20,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 
-import com.google.samples.apps.iosched.BuildConfig;
-import com.google.samples.apps.iosched.R;
+import no.java.schedule.BuildConfig;
+import no.java.schedule.R;
 import com.google.samples.apps.iosched.io.JSONHandler;
 import com.google.samples.apps.iosched.provider.ScheduleContract;
 import com.google.samples.apps.iosched.settings.SettingsUtils;

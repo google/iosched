@@ -20,7 +20,7 @@ import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.text.TextUtils;
 
-import com.google.samples.apps.iosched.BuildConfig;
+import no.java.schedule.BuildConfig;
 import com.google.samples.apps.iosched.util.AccountUtils;
 
 import java.io.IOException;

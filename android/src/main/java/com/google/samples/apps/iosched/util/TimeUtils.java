@@ -22,7 +22,7 @@ import android.text.TextUtils;
 import android.text.format.DateUtils;
 
 import com.google.samples.apps.iosched.Config;
-import com.google.samples.apps.iosched.R;
+import no.java.schedule.R;
 import com.google.samples.apps.iosched.settings.SettingsUtils;
 
 import java.text.DateFormat;

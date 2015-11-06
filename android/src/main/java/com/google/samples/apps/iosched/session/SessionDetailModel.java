@@ -18,7 +18,7 @@ package com.google.samples.apps.iosched.session;
 
 import com.google.common.annotations.VisibleForTesting;
 import com.google.samples.apps.iosched.Config;
-import com.google.samples.apps.iosched.R;
+import no.java.schedule.R;
 import com.google.samples.apps.iosched.feedback.SessionFeedbackActivity;
 import com.google.samples.apps.iosched.framework.Model;
 import com.google.samples.apps.iosched.framework.QueryEnum;

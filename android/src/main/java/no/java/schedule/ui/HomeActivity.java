@@ -3,5 +3,7 @@ package no.java.schedule.ui;
 
 import android.app.Activity;
 
-public class HomeActivity extends Activity {
+import com.google.samples.apps.iosched.explore.ExploreIOActivity;
+
+public class HomeActivity extends ExploreIOActivity {
 }

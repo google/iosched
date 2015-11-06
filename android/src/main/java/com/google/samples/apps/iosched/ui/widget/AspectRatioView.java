@@ -21,7 +21,7 @@ import android.content.res.TypedArray;
 import android.util.AttributeSet;
 import android.widget.FrameLayout;
 
-import com.google.samples.apps.iosched.R;
+import no.java.schedule.R;
 
 /**
  * Extension of FrameLayout that assumes a measured (non-zero) width and sets the

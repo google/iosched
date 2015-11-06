@@ -89,38 +89,25 @@
                     android:scaleType="center"
                     android:src="@drawable/ic_navview_accounts_expand" />
 
-                <TextView
-                    android:id="@+id/profile_email_text"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_alignStart="@id/profile_image"
-                    android:layout_alignLeft="@id/profile_image"
-                    android:layout_toStartOf="@id/expand_account_box_indicator"
-                    android:layout_toLeftOf="@id/expand_account_box_indicator"
-                    android:layout_alignParentBottom="true"
-                    android:paddingBottom="@dimen/navview_header_bottom_padding"
-                    android:textSize="@dimen/text_size_medium"
-                    android:textColor="@color/body_text_2_inverse"
-                    android:maxLines="1"
-                    android:singleLine="true"
-                    android:ellipsize="end" />
-
-                <TextView
-                    android:id="@+id/profile_name_text"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_above="@id/profile_email_text"
-                    android:layout_alignStart="@id/profile_image"
-                    android:layout_alignLeft="@id/profile_image"
-                    android:layout_toStartOf="@id/expand_account_box_indicator"
-                    android:layout_toLeftOf="@id/expand_account_box_indicator"
-                    android:textSize="@dimen/text_size_large"
-                    android:textColor="@color/body_text_1_inverse"
-                    android:maxLines="1"
-                    android:singleLine="true"
-                    android:ellipsize="end" />
-
             </RelativeLayout>
+
+            <TextView
+                android:id="@+id/profile_name_text"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_above="@id/profile_email_text"
+                android:layout_alignStart="@id/profile_image"
+                android:layout_alignLeft="@id/profile_image"
+                android:layout_toStartOf="@id/expand_account_box_indicator"
+                android:layout_toLeftOf="@id/expand_account_box_indicator"
+                android:textSize="@dimen/text_size_large"
+                android:textColor="@color/body_text_1_inverse"
+                android:maxLines="1"
+                android:text="@string/app_name"
+                android:singleLine="true"
+                android:ellipsize="end"
+                android:layout_gravity="center_horizontal|bottom"
+                android:layout_margin="@dimen/navview_start_padding"/>
 
         </FrameLayout>
 

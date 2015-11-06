@@ -72,8 +72,9 @@ import android.widget.Toast;
 import com.google.android.gcm.GCMRegistrar;
 import com.google.android.gms.auth.GoogleAuthUtil;
 import com.google.samples.apps.iosched.AppApplication;
-import com.google.samples.apps.iosched.BuildConfig;
-import com.google.samples.apps.iosched.R;
+
+import no.java.schedule.BuildConfig;
+import no.java.schedule.R;
 import com.google.samples.apps.iosched.about.AboutActivity;
 import com.google.samples.apps.iosched.debug.DebugActivity;
 import com.google.samples.apps.iosched.explore.ExploreIOActivity;
@@ -278,12 +279,13 @@ public abstract class BaseActivity extends AppCompatActivity implements
         RecentTasksStyler.styleRecentTasksEntry(this);
 
         // Check if the EULA has been accepted; if not, show it.
+        /*
         if (WelcomeActivity.shouldDisplay(this)) {
             Intent intent = new Intent(this, WelcomeActivity.class);
             startActivity(intent);
             finish();
             return;
-        }
+        } */
 
         mImageLoader = new ImageLoader(this);
         mHandler = new Handler();
@@ -399,7 +401,6 @@ public abstract class BaseActivity extends AppCompatActivity implements
         }
 
         if (mActionBarToolbar != null) {
-            mActionBarToolbar.setNavigationIcon(R.drawable.ic_ab_drawer);
             mActionBarToolbar.setNavigationOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -622,17 +623,8 @@ public abstract class BaseActivity extends AppCompatActivity implements
         ImageView coverImageView = (ImageView) chosenAccountView
                 .findViewById(R.id.profile_cover_image);
         ImageView profileImageView = (ImageView) chosenAccountView.findViewById(R.id.profile_image);
-        TextView nameTextView = (TextView) chosenAccountView.findViewById(R.id.profile_name_text);
-        TextView email = (TextView) chosenAccountView.findViewById(R.id.profile_email_text);
         mExpandAccountBoxIndicator = (ImageView) findViewById(R.id.expand_account_box_indicator);
 
-        String name = AccountUtils.getPlusName(this);
-        if (name == null) {
-            nameTextView.setVisibility(View.GONE);
-        } else {
-            nameTextView.setVisibility(View.VISIBLE);
-            nameTextView.setText(name);
-        }
 
         String imageUrl = AccountUtils.getPlusImageUrl(this);
         if (imageUrl != null) {
@@ -648,9 +640,7 @@ public abstract class BaseActivity extends AppCompatActivity implements
             mImageLoader.loadImage(coverImageUrl, coverImageView);
             coverImageView.setColorFilter(getResources().getColor(R.color.light_content_scrim));
         }
-
-        email.setText(chosenAccount.name);
-
+        
         if (accounts.isEmpty()) {
             // There's only one account on the device, so no need for a switcher.
             mExpandAccountBoxIndicator.setVisibility(View.GONE);

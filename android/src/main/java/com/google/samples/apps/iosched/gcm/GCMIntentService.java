@@ -15,7 +15,7 @@
  */
 package com.google.samples.apps.iosched.gcm;
 
-import com.google.samples.apps.iosched.BuildConfig;
+import no.java.schedule.BuildConfig;
 import com.google.samples.apps.iosched.Config;
 import com.google.samples.apps.iosched.gcm.command.*;
 import com.google.android.gcm.GCMBaseIntentService;

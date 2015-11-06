@@ -25,7 +25,7 @@ import android.provider.BaseColumns;
 import android.text.TextUtils;
 
 import com.google.samples.apps.iosched.Config;
-import com.google.samples.apps.iosched.R;
+import no.java.schedule.R;
 import com.google.samples.apps.iosched.io.model.Session;
 import com.google.samples.apps.iosched.io.model.Speaker;
 import com.google.samples.apps.iosched.io.model.Tag;

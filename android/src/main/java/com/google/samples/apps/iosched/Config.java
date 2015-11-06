@@ -23,6 +23,9 @@ import java.util.Map;
 import java.util.TimeZone;
 import java.util.concurrent.TimeUnit;
 
+import no.java.schedule.BuildConfig;
+import no.java.schedule.R;
+
 public class Config {
 
     // Warning messages for dogfood build
