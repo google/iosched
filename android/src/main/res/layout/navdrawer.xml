@@ -48,16 +48,7 @@
                 android:paddingRight="@dimen/navdrawer_logo_padding_right"
                 android:scaleType="fitEnd"
                 android:background="?colorPrimary"
-                android:src="@drawable/io_logo"
                 android:contentDescription="@string/navview_header_default_image_content_description" />
-
-            <ImageView
-                android:id="@+id/profile_cover_image"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:scaleType="centerCrop"
-                android:background="?colorPrimary"
-                android:visibility="gone"/>
 
             <RelativeLayout
                 android:id="@+id/chosen_account_content_view"
@@ -71,9 +62,22 @@
                     android:id="@+id/profile_image"
                     android:layout_width="@dimen/navdrawer_profile_image_size"
                     android:layout_height="@dimen/navdrawer_profile_image_size"
-                    android:src="@drawable/person_image_empty"
+                    android:src="@drawable/ic_duke_viking512x512"
                     android:scaleType="centerCrop"
+                    android:layout_centerVertical="true"
                     app:maskDrawable="@drawable/circle_mask" />
+
+                <ImageView
+                    android:id="@+id/profile_cover_image"
+                    android:layout_width="@dimen/logo_image_size"
+                    android:layout_height="@dimen/logo_image_size"
+                    android:scaleType="fitCenter"
+                    android:layout_gravity="right"
+                    android:layout_margin="@dimen/navview_start_padding"
+                    android:background="?colorPrimary"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:src="@drawable/ic_logo"/>
 
                 <ImageView
                     android:id="@+id/expand_account_box_indicator"

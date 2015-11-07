@@ -401,6 +401,7 @@ public abstract class BaseActivity extends AppCompatActivity implements
         }
 
         if (mActionBarToolbar != null) {
+            mActionBarToolbar.setNavigationIcon(R.drawable.ic_ab_drawer);
             mActionBarToolbar.setNavigationOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -625,7 +626,6 @@ public abstract class BaseActivity extends AppCompatActivity implements
         ImageView profileImageView = (ImageView) chosenAccountView.findViewById(R.id.profile_image);
         mExpandAccountBoxIndicator = (ImageView) findViewById(R.id.expand_account_box_indicator);
 
-
         String imageUrl = AccountUtils.getPlusImageUrl(this);
         if (imageUrl != null) {
             mImageLoader.loadImage(imageUrl, profileImageView);
@@ -640,7 +640,7 @@ public abstract class BaseActivity extends AppCompatActivity implements
             mImageLoader.loadImage(coverImageUrl, coverImageView);
             coverImageView.setColorFilter(getResources().getColor(R.color.light_content_scrim));
         }
-        
+
         if (accounts.isEmpty()) {
             // There's only one account on the device, so no need for a switcher.
             mExpandAccountBoxIndicator.setVisibility(View.GONE);

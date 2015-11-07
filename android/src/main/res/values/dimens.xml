@@ -227,5 +227,6 @@
     <dimen name="welcome_button_bar_elevation">6dp</dimen>
     <dimen name="welcome_content_width">@dimen/match_parent</dimen>
     <dimen name="welcome_title_size">20sp</dimen>
+    <dimen name="logo_image_size">72dp</dimen>
 
 </resources>
