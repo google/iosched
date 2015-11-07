@@ -190,7 +190,7 @@
         <item name="android:textSize">@dimen/text_size_large</item>
         <item name="android:textStyle">@integer/font_textStyle_medium</item>
         <item name="android:fontFamily">@string/font_fontFamily_medium</item>
-        <item name="android:textColor">@color/body_text_1</item>
+        <item name="android:textColor">@color/body_text_1_inverse</item>
         <item name="android:ellipsize">end</item>
         <item name="android:textIsSelectable">true</item>
         <item name="android:textAlignment">viewStart</item>
@@ -199,7 +199,7 @@
     <style name="TextHeaderSub">
         <item name="android:textSize">@dimen/text_size_medium</item>
         <item name="android:textStyle">normal</item>
-        <item name="android:textColor">@color/body_text_2</item>
+        <item name="android:textColor">@color/body_text_1_inverse</item>
         <item name="android:textAlignment">viewStart</item>
     </style>
 

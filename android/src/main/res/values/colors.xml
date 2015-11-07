@@ -19,6 +19,13 @@
     <color name="transparent">#00000000</color>
     <color name="background">#f5f5f5</color>
 
+    <!-- Default JavaZone Colors -->
+    <color name="jz_lightred">#ff4f4c</color>
+    <color name="jz_darkred">#a10035</color>
+    <color name="jz_orange">#ff8641</color>
+    <color name="jz_yellow">#fcaf17</color>
+    <color name="jz_green">#ff669900</color>
+
     <!-- App main palette for io15 version. -->
     <color name="io15_dark_grey">#FF455A64</color>
     <color name="io15_grey">#FF607D8B</color>
@@ -45,8 +52,8 @@
     <color name="app_body_text_disabled">#44000000</color>
     <color name="app_body_text_1_inverse">#deffffff</color>
     <color name="app_body_text_2_inverse">#8affffff</color>
-    <color name="flat_button_text">#ff008094</color>
-    <color name="text_on_primary">#ff004446</color>
+    <color name="flat_button_text">@color/jz_darkred</color>
+    <color name="text_on_primary">@color/jz_darkred</color>
     <color name="subtitle_on_primary">#de004446</color>
     <color name="unselected_tab_on_primary">#b3004446</color>
 
@@ -90,14 +97,14 @@
     <color name="grey_background">#f5f5f5</color>
     <color name="dark_divider">#32000000</color>
 
-    <color name="more_button_background">#ffcfd8dc</color>
-    <color name="more_button_text">@color/cyan_a700_plus</color>
+    <color name="more_button_background">@color/jz_yellow</color>
+    <color name="more_button_text">@color/jz_darkred</color>
 
     <color name="navdrawer_background">#ffffffff</color>
     <color name="navdrawer_text_color">@color/body_text_1</color>
-    <color name="navdrawer_text_color_selected">@color/cyan_a700_plus</color>
+    <color name="navdrawer_text_color_selected">@color/jz_darkred</color>
     <color name="navdrawer_icon_tint">#444</color>
-    <color name="navdrawer_icon_tint_selected">@color/cyan_a700_plus</color>
+    <color name="navdrawer_icon_tint_selected">@color/jz_darkred</color>
     <color name="navdrawer_selected_item_background">#1a000000</color>
 
     <color name="data_item_background_light">#ffffff</color>
@@ -113,7 +120,7 @@
     <color name="no_track_branding_session_color">#333</color>
 
 
-    <!-- IO15 session detail colors -->
+    <!-- JavaZone session detail colors -->
     <color name="session_livestreamed_color">@color/app_body_text_2</color>
 
     <color name="list_dropdown_foreground_normal">#ff333333</color>
@@ -121,23 +128,24 @@
     <color name="butter_bar_light">#eee0e0e0</color>
 
     <color name="tab_background">@color/theme_primary</color>
-    <color name="tab_selected_strip">@android:color/white</color>
+    <color name="tab_selected_strip">#ff669900</color>
+
 
     <color name="my_schedule_conflict">#dd2c00</color>
     <color name="my_schedule_past_background">@color/grey_background</color>
     <color name="my_schedule_past">#95a1a6</color>
     <color name="my_schedule_hour_header_default">#de455a64</color>
     <color name="my_schedule_hour_header_finished">#b8455a64</color>
-    <color name="my_schedule_icon_default">#ff07434d</color>
-    <color name="my_schedule_icon_finished">#ff49757c</color>
-    <color name="my_schedule_session_title_default">#de07434d</color>
-    <color name="my_schedule_session_title_finished">#b807434d</color>
+    <color name="my_schedule_icon_default">@color/jz_green</color>
+    <color name="my_schedule_icon_finished">@color/jz_darkred</color>
+    <color name="my_schedule_session_title_default">@color/jz_yellow</color>
+    <color name="my_schedule_session_title_finished">@color/jz_darkred</color>
 
     <color name="light_grey">#fff0f0f0</color>
     <color name="lighter_gray">#ddd</color>
 
     <!-- video lib -->
-    <color name="video_title">#de07434d</color>
+    <color name="video_title">@color/body_text_1</color>
     <color name="filter_text">@color/app_primary_text</color>
     <color name="video_scrim_watched">#b3f1f1f1</color>
 
@@ -152,9 +160,9 @@
     <color name="social_text_color">@color/io15_white</color>
 
     <!-- Colors used in the Video Library or Explore list view -->
-    <color name="item_text_primary_color">#ff275B64</color>
-    <color name="item_text_secondar_color">#ff699B9E</color>
-    <color name="button_dark">#3B5B63</color>
+    <color name="item_text_primary_color">@color/body_text_1</color>
+    <color name="item_text_secondar_color">@color/body_text_1</color>
+    <color name="button_dark">#444444</color>
 
     <!-- Colors used in the Explore Sessions filter drawer -->
     <color name="explore_sessions_body_color">#444444</color>

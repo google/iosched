@@ -316,6 +316,7 @@ public class MyScheduleActivity extends BaseActivity implements MyScheduleFragme
             TextView view = (TextView) inflater.inflate(R.layout.tab_my_schedule, mTabLayout, false);
             view.setId(baseTabViewId + i);
             view.setText(tab.getText());
+            view.setTextColor(getResources().getColor(R.color.app_white));
             if (i == 0) {
                 view.setContentDescription(
                         getString(R.string.talkback_selected,
