@@ -16,7 +16,7 @@ language: android
 
 android:
   components:
-    - build-tools-21.1.2
+    - build-tools-23.0.2
     - android-21
     - addon-google_apis-google-21
     - extra-google-m2repository
