@@ -22,6 +22,7 @@ local.properties
 .project
 
 # Windows thumbnail db
+/android/debug.keystore
 .DS_Store
 
 # IDEA/Android Studio project files, because
