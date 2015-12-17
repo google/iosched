@@ -262,7 +262,6 @@ public class MyScheduleActivity extends BaseActivity implements MyScheduleFragme
                     // Do nothing
                 }
             });
-
             setTabLayoutContentDescriptions();
         }
 
