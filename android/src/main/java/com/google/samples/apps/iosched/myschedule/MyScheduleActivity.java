@@ -245,7 +245,23 @@ public class MyScheduleActivity extends BaseActivity implements MyScheduleFragme
             mViewPager.setPageMargin(getResources()
                     .getDimensionPixelSize(R.dimen.my_schedule_page_margin));
             mViewPager.setPageMarginDrawable(R.drawable.page_margin);
+            mViewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+                @Override
+                public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+                    // Do nothing
+                }
 
+                @Override
+                public void onPageSelected(int position) {
+                    TabLayout.Tab tab = mTabLayout.getTabAt(position);
+                    tab.select();
+                }
+
+                @Override
+                public void onPageScrollStateChanged(int state) {
+                    // Do nothing
+                }
+            });
             setTabLayoutContentDescriptions();
         }
 
