@@ -26,15 +26,11 @@ local.properties
 
 # IDEA/Android Studio project files, because
 # the project can be imported from settings.gradle
-.idea
 *.iml
-
-# Old-style IDEA project files
-*.ipr
-*.iws
-
-# Local IDEA workspace
-.idea/workspace.xml
+.idea/*
+# Forcibly including certain files we want propagated.
+!\.idea/codeStyleSettings.xml
+!\.idea/copyright
 
 # Gradle cache
 .gradle
