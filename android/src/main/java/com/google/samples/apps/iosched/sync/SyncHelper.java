@@ -250,8 +250,7 @@ public class SyncHelper {
 
     private void doUserFeedbackDataSync() {
         LOGD(TAG, "Syncing feedback");
-        new FeedbackSyncHelper(mContext, new FeedbackApiHelper(mHttpClient,
-                BuildConfig.FEEDBACK_API_ENDPOINT)).sync();
+        new FeedbackSyncHelper(mContext, new FeedbackApiHelper()).sync();
     }
 
     /**
