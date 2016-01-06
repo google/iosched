@@ -34,15 +34,6 @@ import static com.google.samples.apps.iosched.util.LogUtils.*;
 public class FeedbackApiHelper {
 
     private static final String TAG = makeLogTag(FeedbackApiHelper.class);
-    
-    private final String mUrl;
-
-    private BasicHttpClient mHttpClient;
-
-    public FeedbackApiHelper(BasicHttpClient httpClient, String url) {
-        mHttpClient = httpClient;
-        mUrl = url;
-    }
 
     /**
      * Posts session feedback to the server. This method does network I/O and should run on
