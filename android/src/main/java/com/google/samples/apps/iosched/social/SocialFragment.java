@@ -30,6 +30,7 @@ import android.widget.TextView;
 import com.google.samples.apps.iosched.Config;
 import com.google.samples.apps.iosched.R;
 import com.google.samples.apps.iosched.ui.widget.DrawShadowFrameLayout;
+import com.google.samples.apps.iosched.util.TimeUtils;
 import com.google.samples.apps.iosched.util.UIUtils;
 
 import com.google.samples.apps.iosched.social.SocialModel.SocialLinksEnum;
@@ -90,7 +91,7 @@ public class SocialFragment extends Fragment {
 
         ViewGroup requestPanel = (ViewGroup) getActivity().findViewById(R.id.request_panel);
         // Make the "Request" panel visible only a few days before I/O.
-        if (UIUtils.getCurrentTime(getActivity()) < Config.SHOW_IO15_REQUEST_SOCIAL_PANEL_TIME) {
+        if (TimeUtils.getCurrentTime(getActivity()) < Config.SHOW_IO15_REQUEST_SOCIAL_PANEL_TIME) {
             requestPanel.setVisibility(View.GONE);
         } else {
             setUpSocialIcons(requestPanel, SocialLinksEnum.GPLUS_REQUEST,

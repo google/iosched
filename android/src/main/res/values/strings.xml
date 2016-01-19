@@ -451,6 +451,12 @@
     <!-- Accessibility description for tab that shows the attendee's schedule for a given day. -->
     <string name="my_schedule_tab_desc_a11y">Tap to show your schedule for <xliff:g id="day">%1$s</xliff:g>.</string>
 
+    <!-- Text for the title of an extra schedule item on the pre conference day -->
+    <string name="my_schedule_badgepickup">Badge Pick-Up</string>
+
+    <!-- Text for the description of an extra schedule item on the pre conference day -->
+    <string name="my_schedule_badgepickup_description">Registration Desk</string>
+
     <!-- Accessibility description for buttons -->
     <string name="a11y_button">%s button</string>
 

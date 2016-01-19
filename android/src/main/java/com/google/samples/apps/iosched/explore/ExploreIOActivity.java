@@ -30,7 +30,7 @@ import com.google.samples.apps.iosched.ui.SearchActivity;
 import com.google.samples.apps.iosched.ui.widget.CollectionView;
 import com.google.samples.apps.iosched.ui.widget.DrawShadowFrameLayout;
 import com.google.samples.apps.iosched.util.AnalyticsHelper;
-import com.google.samples.apps.iosched.util.UIUtils;
+import com.google.samples.apps.iosched.util.TimeUtils;
 
 import android.content.Intent;
 import android.net.Uri;
@@ -146,7 +146,7 @@ public class ExploreIOActivity extends BaseActivity implements Toolbar.OnMenuIte
         Object tag = moreButton != null ? moreButton.getTag() : null;
         Intent intent = new Intent(getApplicationContext(), ExploreSessionsActivity.class);
         if (tag instanceof LiveStreamData) {
-            intent.setData(ScheduleContract.Sessions.buildSessionsAfterUri(UIUtils.getCurrentTime(this)));
+            intent.setData(ScheduleContract.Sessions.buildSessionsAfterUri(TimeUtils.getCurrentTime(this)));
             intent.putExtra(ExploreSessionsActivity.EXTRA_SHOW_LIVE_STREAM_SESSIONS, true);
         } else if (tag instanceof ItemGroup) {
             intent.putExtra(ExploreSessionsActivity.EXTRA_FILTER_TAG, ((ItemGroup)tag).getId());

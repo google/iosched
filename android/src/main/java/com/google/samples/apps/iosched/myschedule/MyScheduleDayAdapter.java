@@ -56,8 +56,8 @@ import static com.google.samples.apps.iosched.util.LogUtils.makeLogTag;
 /**
  * Adapter that produces views to render (one day of) the "My Schedule" screen.
  */
-public class MyScheduleAdapter implements ListAdapter, AbsListView.RecyclerListener {
-    private static final String TAG = makeLogTag("MyScheduleAdapter");
+public class MyScheduleDayAdapter implements ListAdapter, AbsListView.RecyclerListener {
+    private static final String TAG = makeLogTag("MyScheduleDayAdapter");
 
     private final Context mContext;
     private final LUtils mLUtils;
@@ -83,7 +83,7 @@ public class MyScheduleAdapter implements ListAdapter, AbsListView.RecyclerListe
     private final int mSelectableItemBackground;
     private final boolean mIsRtl;
 
-    public MyScheduleAdapter(Context context, LUtils lUtils) {
+    public MyScheduleDayAdapter(Context context, LUtils lUtils) {
         mContext = context;
         mLUtils = lUtils;
         Resources resources = context.getResources();
@@ -242,13 +242,13 @@ public class MyScheduleAdapter implements ListAdapter, AbsListView.RecyclerListe
         }
 
         if (position < 0 || position >= mItems.size()) {
-            LOGE(TAG, "Invalid view position passed to MyScheduleAdapter: " + position);
+            LOGE(TAG, "Invalid view position passed to MyScheduleDayAdapter: " + position);
             return view;
         }
         final ScheduleItem item = mItems.get(position);
         ScheduleItem nextItem = position < mItems.size() - 1 ? mItems.get(position + 1) : null;
 
-        long now = UIUtils.getCurrentTime(view.getContext());
+        long now = TimeUtils.getCurrentTime(view.getContext());
         boolean isNowPlaying = item.startTime <= now && now <= item.endTime && item.type == ScheduleItem.SESSION;
         boolean isPastDuringConference = item.endTime <= now && now < Config.CONFERENCE_END_MILLIS;
 
@@ -341,7 +341,7 @@ public class MyScheduleAdapter implements ListAdapter, AbsListView.RecyclerListe
             }
             holder.description.setText(formatDescription(item));
         } else {
-            LOGE(TAG, "Invalid item type in MyScheduleAdapter: " + item.type);
+            LOGE(TAG, "Invalid item type in MyScheduleDayAdapter: " + item.type);
         }
 
         holder.separator.setVisibility(nextItem == null ||

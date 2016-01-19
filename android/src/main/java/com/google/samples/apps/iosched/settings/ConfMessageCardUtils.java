@@ -17,7 +17,6 @@
 package com.google.samples.apps.iosched.settings;
 
 import com.google.samples.apps.iosched.util.TimeUtils;
-import com.google.samples.apps.iosched.util.UIUtils;
 
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -295,7 +294,7 @@ public class ConfMessageCardUtils {
      * @param context Context to be used to lookup the {@link android.content.SharedPreferences}.
      */
     public static void enableActiveCards(final Context context) {
-        long currentTime = UIUtils.getCurrentTime(context);
+        long currentTime = TimeUtils.getCurrentTime(context);
         for (ConfMessageCard card : ConfMessageCard.values()) {
             if (card.isActive(currentTime)) {
                 markShouldShowConfMessageCard(context, card, true);

@@ -24,6 +24,7 @@ import com.google.samples.apps.iosched.map.util.SessionLoader;
 import com.google.samples.apps.iosched.model.ScheduleHelper;
 import com.google.samples.apps.iosched.provider.ScheduleContract;
 import com.google.samples.apps.iosched.util.MapUtils;
+import com.google.samples.apps.iosched.util.TimeUtils;
 import com.google.samples.apps.iosched.util.UIUtils;
 
 import android.app.Activity;
@@ -131,7 +132,7 @@ public abstract class MapInfoFragment extends Fragment
             return null;
         }
 
-        final long time = UIUtils.getCurrentTime(getActivity());
+        final long time = TimeUtils.getCurrentTime(getActivity());
         final String roomId = args.getString(QUERY_ARG_ROOMID);
         final String roomTitle = args.getString(QUERY_ARG_ROOMTITLE);
         final int roomType = args.getInt(QUERY_ARG_ROOMTYPE);

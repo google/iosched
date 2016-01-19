@@ -16,7 +16,18 @@
 
 package com.google.samples.apps.iosched.debug;
 
-import com.google.samples.apps.iosched.Config;
+import android.app.Fragment;
+import android.content.Context;
+import android.content.Intent;
+import android.os.Bundle;
+import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.TextView;
+import android.widget.Toast;
+
 import com.google.samples.apps.iosched.R;
 import com.google.samples.apps.iosched.debug.actions.DisplayUserDataDebugAction;
 import com.google.samples.apps.iosched.debug.actions.ForceAppDataSyncNowAction;
@@ -35,18 +46,6 @@ import com.google.samples.apps.iosched.util.TimeUtils;
 import com.google.samples.apps.iosched.util.UIUtils;
 import com.google.samples.apps.iosched.util.WiFiUtils;
 import com.google.samples.apps.iosched.welcome.WelcomeActivity;
-
-import android.app.Fragment;
-import android.content.Context;
-import android.content.Intent;
-import android.os.Bundle;
-import android.util.Log;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.TextView;
-import android.widget.Toast;
 
 import static com.google.samples.apps.iosched.util.LogUtils.LOGW;
 import static com.google.samples.apps.iosched.util.LogUtils.makeLogTag;
@@ -160,11 +159,7 @@ public class DebugFragment extends Fragment {
         tests.addView(createTestAction(new DebugAction() {
             @Override
             public void run(Context context, Callback callback) {
-                java.util.Date currentTime = new java.util.Date(UIUtils.getCurrentTime(context));
-                java.util.Date newTime = new java.util.Date(Config.CONFERENCE_START_MILLIS -
-                        TimeUtils.HOUR * 3);
-                LOGW(TAG, "Setting time from " + currentTime + " to " + newTime);
-                UIUtils.setCurrentTime(context, newTime.getTime());
+                TimeUtils.setCurrentTimeRelativeToStartOfConference(context, -TimeUtils.HOUR * 3);
             }
 
             @Override
@@ -175,11 +170,7 @@ public class DebugFragment extends Fragment {
         tests.addView(createTestAction(new DebugAction() {
             @Override
             public void run(Context context, Callback callback) {
-                java.util.Date currentTime = new java.util.Date(UIUtils.getCurrentTime(context));
-                java.util.Date newTime = new java.util.Date(Config.CONFERENCE_START_MILLIS -
-                        TimeUtils.DAY);
-                LOGW(TAG, "Setting time from " + currentTime + " to " + newTime);
-                UIUtils.setCurrentTime(context, newTime.getTime());
+                TimeUtils.setCurrentTimeRelativeToStartOfConference(context, -TimeUtils.DAY);
             }
 
             @Override
@@ -191,12 +182,8 @@ public class DebugFragment extends Fragment {
         tests.addView(createTestAction(new DebugAction() {
             @Override
             public void run(Context context, Callback callback) {
-                java.util.Date currentTime = new java.util.Date(UIUtils.getCurrentTime(context));
-                java.util.Date newTime = new java.util.Date(Config.CONFERENCE_START_MILLIS +
-                        TimeUtils.HOUR * 3);
-                LOGW(TAG, "Setting time from " + currentTime +
-                        " to " + newTime);
-                UIUtils.setCurrentTime(context, newTime.getTime());
+                TimeUtils.setCurrentTimeRelativeToStartOfConference(context, TimeUtils.HOUR * 3);
+
                 LOGW(TAG, "Unsetting all Explore I/O card answers and settings.");
                 ConfMessageCardUtils.markAnsweredConfMessageCardsPrompt(context, null);
                 ConfMessageCardUtils.setConfMessageCardsEnabled(context, null);
@@ -212,11 +199,8 @@ public class DebugFragment extends Fragment {
         tests.addView(createTestAction(new DebugAction() {
             @Override
             public void run(Context context, Callback callback) {
-                java.util.Date currentTime = new java.util.Date(UIUtils.getCurrentTime(context));
-                java.util.Date newTime = new java.util.Date(Config.CONFERENCE_DAYS[1][0] +
+                TimeUtils.setCurrentTimeRelativeToStartOfSecondDayOfConference(context,
                         TimeUtils.HOUR * 3);
-                LOGW(TAG, "Setting time from " + currentTime + " to " + newTime);
-                UIUtils.setCurrentTime(context, newTime.getTime());
             }
 
             @Override
@@ -227,11 +211,7 @@ public class DebugFragment extends Fragment {
         tests.addView(createTestAction(new DebugAction() {
             @Override
             public void run(Context context, Callback callback) {
-                java.util.Date currentTime = new java.util.Date(UIUtils.getCurrentTime(context));
-                java.util.Date newTime = new java.util.Date(Config.CONFERENCE_END_MILLIS +
-                        TimeUtils.HOUR * 3);
-                LOGW(TAG, "Setting time from " + currentTime + " to " + newTime);
-                UIUtils.setCurrentTime(context, newTime.getTime());
+                TimeUtils.setCurrentTimeRelativeToEndOfConference(context, TimeUtils.HOUR * 3);
             }
 
             @Override

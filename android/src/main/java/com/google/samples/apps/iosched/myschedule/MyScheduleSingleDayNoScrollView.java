@@ -26,32 +26,32 @@ import static com.google.samples.apps.iosched.util.LogUtils.LOGD;
 import static com.google.samples.apps.iosched.util.LogUtils.makeLogTag;
 
 /**
- * My Schedule view. This view is a linear layout showing all schedule items from an adapter.
- * This is different from the MyScheduleFragment, which is a ListFragment based on the adapter.
- * The fundamental difference is that while the ListFragment has built-in scrolling, this
- * view does NOT scroll, it resizes to fit all items. It is suitable for use as part of a
- * larger view where you want the larger view to scroll as one, with this list inside it.
+ * This view is a linear layout showing all schedule items from an {@link MyScheduleDayAdapter}.
+ * This is used by {@link MyScheduleAllDaysFragment}. This is different from a
+ * {@link android.widget.ListView}, in that this view does NOT scroll, it resizes to fit all items.
+ * It is suitable for use as part of a larger view where you want the larger view to scroll as one,
+ * with this list of items inside it.
  */
-public class MyScheduleView extends LinearLayout {
-    private static final String TAG = makeLogTag("MyScheduleView");
+public class MyScheduleSingleDayNoScrollView extends LinearLayout {
+    private static final String TAG = makeLogTag(MyScheduleSingleDayNoScrollView.class);
 
-    MyScheduleAdapter mAdapter = null;
+    MyScheduleDayAdapter mAdapter = null;
     DataSetObserver mObserver = null;
 
-    public MyScheduleView(Context context) {
+    public MyScheduleSingleDayNoScrollView(Context context) {
         this(context, null, 0);
     }
 
-    public MyScheduleView(Context context, AttributeSet attrs) {
+    public MyScheduleSingleDayNoScrollView(Context context, AttributeSet attrs) {
         this(context, attrs, 0);
     }
 
-    public MyScheduleView(Context context, AttributeSet attrs, int defStyle) {
+    public MyScheduleSingleDayNoScrollView(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
         setOrientation(LinearLayout.VERTICAL);
     }
 
-    public void setAdapter(MyScheduleAdapter adapter) {
+    public void setAdapter(MyScheduleDayAdapter adapter) {
         if (mAdapter != null && mObserver != null) {
             mAdapter.unregisterDataSetObserver(mObserver);
             mObserver = null;
@@ -86,7 +86,7 @@ public class MyScheduleView extends LinearLayout {
     }
 
     public void rebuild() {
-        LOGD(TAG, "Rebuilding MyScheduleView.");
+        LOGD(TAG, "Rebuilding");
         int i;
         int count = (mAdapter == null) ? 0 : mAdapter.getCount();
         LOGD(TAG, "Adapter has " + count + " items.");

@@ -22,10 +22,8 @@ import android.preference.PreferenceManager;
 
 import com.google.samples.apps.iosched.Config;
 import com.google.samples.apps.iosched.util.TimeUtils;
-import com.google.samples.apps.iosched.util.UIUtils;
 import com.google.samples.apps.iosched.welcome.WelcomeActivity;
 
-import java.util.HashMap;
 import java.util.TimeZone;
 
 import static com.google.samples.apps.iosched.util.LogUtils.makeLogTag;
@@ -377,7 +375,7 @@ public class SettingsUtils {
      */
     public static void markSyncAttemptedNow(final Context context) {
         SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(context);
-        sp.edit().putLong(PREF_LAST_SYNC_ATTEMPTED, UIUtils.getCurrentTime(context)).apply();
+        sp.edit().putLong(PREF_LAST_SYNC_ATTEMPTED, TimeUtils.getCurrentTime(context)).apply();
     }
 
     /**
@@ -397,7 +395,7 @@ public class SettingsUtils {
      */
     public static void markSyncSucceededNow(final Context context) {
         SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(context);
-        sp.edit().putLong(PREF_LAST_SYNC_SUCCEEDED, UIUtils.getCurrentTime(context)).apply();
+        sp.edit().putLong(PREF_LAST_SYNC_SUCCEEDED, TimeUtils.getCurrentTime(context)).apply();
     }
 
     /**
@@ -418,6 +416,15 @@ public class SettingsUtils {
     public static boolean shouldShowSessionReminders(final Context context) {
         SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(context);
         return sp.getBoolean(PREF_SHOW_SESSION_REMINDERS, true);
+    }
+
+    /**
+     * @param context  Context to be used to edit the {@link android.content.SharedPreferences}.
+     * @param show Whether app should show session reminders
+     */
+    public static void setShowSessionReminders(final Context context, boolean show) {
+        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(context);
+        sp.edit().putBoolean(PREF_SHOW_SESSION_REMINDERS, show).apply();
     }
 
     /**

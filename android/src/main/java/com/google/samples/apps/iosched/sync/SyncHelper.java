@@ -34,7 +34,7 @@ import com.google.samples.apps.iosched.settings.SettingsUtils;
 import com.google.samples.apps.iosched.sync.userdata.AbstractUserDataSyncHelper;
 import com.google.samples.apps.iosched.sync.userdata.UserDataSyncHelperFactory;
 import com.google.samples.apps.iosched.util.AccountUtils;
-import com.google.samples.apps.iosched.util.UIUtils;
+import com.google.samples.apps.iosched.util.TimeUtils;
 
 import com.turbomanage.httpclient.BasicHttpClient;
 
@@ -336,7 +336,7 @@ public class SyncHelper {
     }
 
    private static long calculateRecommendedSyncInterval(final Context context) {
-        long now = UIUtils.getCurrentTime(context);
+        long now = TimeUtils.getCurrentTime(context);
         long aroundConferenceStart = Config.CONFERENCE_START_MILLIS
                 - Config.AUTO_SYNC_AROUND_CONFERENCE_THRESH;
         if (now < aroundConferenceStart) {

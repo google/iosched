@@ -30,7 +30,6 @@ import com.google.samples.apps.iosched.framework.UserActionEnum;
 import com.google.samples.apps.iosched.provider.ScheduleContract;
 import com.google.samples.apps.iosched.settings.SettingsUtils;
 import com.google.samples.apps.iosched.util.TimeUtils;
-import com.google.samples.apps.iosched.util.UIUtils;
 
 import android.content.Context;
 import android.content.CursorLoader;
@@ -248,7 +247,7 @@ public class ExploreModel implements Model {
 
     private void rewriteKeynoteDetails(SessionData keynoteData) {
         long startTime, endTime, currentTime;
-        currentTime = UIUtils.getCurrentTime(mContext);
+        currentTime = TimeUtils.getCurrentTime(mContext);
         if (keynoteData.getStartDate() != null) {
             startTime = keynoteData.getStartDate().getTime();
         } else {

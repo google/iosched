@@ -30,6 +30,7 @@ import com.google.samples.apps.iosched.service.SessionCalendarService;
 import com.google.samples.apps.iosched.util.AccountUtils;
 import com.google.samples.apps.iosched.util.AnalyticsHelper;
 import com.google.samples.apps.iosched.util.SessionsHelper;
+import com.google.samples.apps.iosched.util.TimeUtils;
 import com.google.samples.apps.iosched.util.UIUtils;
 
 import android.content.Context;
@@ -188,17 +189,17 @@ public class SessionDetailModel implements Model {
     }
 
     public boolean isSessionOngoing() {
-        long currentTimeMillis = UIUtils.getCurrentTime(mContext);
+        long currentTimeMillis = TimeUtils.getCurrentTime(mContext);
         return currentTimeMillis > mSessionStart && currentTimeMillis <= mSessionEnd;
     }
 
     public boolean hasSessionStarted() {
-        long currentTimeMillis = UIUtils.getCurrentTime(mContext);
+        long currentTimeMillis = TimeUtils.getCurrentTime(mContext);
         return currentTimeMillis > mSessionStart;
     }
 
     public boolean hasSessionEnded() {
-        long currentTimeMillis = UIUtils.getCurrentTime(mContext);
+        long currentTimeMillis = TimeUtils.getCurrentTime(mContext);
         return currentTimeMillis > mSessionEnd;
     }
 
@@ -210,7 +211,7 @@ public class SessionDetailModel implements Model {
         if (!hasSessionStarted()) {
             return 0l;
         } else {
-            long currentTimeMillis = UIUtils.getCurrentTime(mContext);
+            long currentTimeMillis = TimeUtils.getCurrentTime(mContext);
             // Rounded down number of minutes.
             return (currentTimeMillis - mSessionStart) / 60000;
         }
@@ -223,14 +224,14 @@ public class SessionDetailModel implements Model {
         if (hasSessionStarted()) {
             return 0l;
         } else {
-            long currentTimeMillis = UIUtils.getCurrentTime(mContext);
+            long currentTimeMillis = TimeUtils.getCurrentTime(mContext);
             // Rounded up number of minutes.
             return (mSessionStart - currentTimeMillis) / 60000 + 1;
         }
     }
 
     public boolean isSessionReadyForFeedback() {
-        long currentTimeMillis = UIUtils.getCurrentTime(mContext);
+        long currentTimeMillis = TimeUtils.getCurrentTime(mContext);
         return currentTimeMillis
                 > mSessionEnd - SessionDetailConstants.FEEDBACK_MILLIS_BEFORE_SESSION_END_MS;
     }

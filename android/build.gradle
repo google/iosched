@@ -54,6 +54,8 @@ android {
         buildConfigField("String", "CONFERENCE_HASHTAG", "\"${conference_hashtag}\"")
         buildConfigField("String", "CONFERENCE_HASHTAG_PREFIX", "\"${conference_hashtag_prefix}\"")
         buildConfigField("String", "BOOTSTRAP_DATA_TIMESTAMP", "\"${bootstrap_data_timestamp}\"")
+        buildConfigField("String", "PRECONFERENCE_DAY_START", "\"${preconference_day_start}\"")
+        buildConfigField("String", "PRECONFERENCE_DAY_END", "\"${preconference_day_end}\"")
         buildConfigField("String", "CONFERENCE_DAY1_START", "\"${conference_day1_start}\"")
         buildConfigField("String", "CONFERENCE_DAY1_END", "\"${conference_day1_end}\"")
         buildConfigField("String", "CONFERENCE_DAY2_START", "\"${conference_day2_start}\"")

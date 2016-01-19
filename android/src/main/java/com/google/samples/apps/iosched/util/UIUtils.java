@@ -51,7 +51,6 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
-import com.google.samples.apps.iosched.BuildConfig;
 import com.google.samples.apps.iosched.Config;
 import com.google.samples.apps.iosched.R;
 import com.google.samples.apps.iosched.model.ScheduleItem;
@@ -121,7 +120,7 @@ public class UIUtils {
             Context context, boolean shortFormat) {
 
         // Determine if the session is in the past
-        long currentTimeMillis = UIUtils.getCurrentTime(context);
+        long currentTimeMillis = TimeUtils.getCurrentTime(context);
         boolean conferenceEnded = currentTimeMillis > Config.CONFERENCE_END_MILLIS;
         boolean sessionEnded = currentTimeMillis > intervalEnd;
         if (sessionEnded && !conferenceEnded) {
@@ -211,7 +210,7 @@ public class UIUtils {
     }
 
     public static String getLiveBadgeText(final Context context, long start, long end) {
-        long now = getCurrentTime(context);
+        long now = TimeUtils.getCurrentTime(context);
 
         if (now < start) {
             // Will be live later
@@ -299,36 +298,10 @@ public class UIUtils {
         return fired;
     }
 
-    private static final long sAppLoadTime = System.currentTimeMillis();
-
-    /**
-     * Retrieve the current time. If the current build is a debug build the mock time is returned
-     * when set.
-     */
-    public static long getCurrentTime(final Context context) {
-        if (BuildConfig.DEBUG) {
-            return context.getSharedPreferences(MOCK_DATA_PREFERENCES, Context.MODE_PRIVATE)
-                    .getLong(PREFS_MOCK_CURRENT_TIME, System.currentTimeMillis())
-                    + System.currentTimeMillis() - sAppLoadTime;
-        } else {
-            return System.currentTimeMillis();
-        }
-    }
-
-    /**
-     * Set the current time only when the current build is a debug build.
-     */
-    public static void setCurrentTime(Context context, long newTime) {
-        if (BuildConfig.DEBUG) {
-            context.getSharedPreferences(MOCK_DATA_PREFERENCES, Context.MODE_PRIVATE).edit()
-                    .putLong(PREFS_MOCK_CURRENT_TIME, newTime).apply();
-        }
-    }
-
     @Deprecated
     public static boolean shouldShowLiveSessionsOnly(final Context context) {
         return !SettingsUtils.isAttendeeAtVenue(context)
-                && getCurrentTime(context) < Config.CONFERENCE_END_MILLIS;
+                && TimeUtils.getCurrentTime(context) < Config.CONFERENCE_END_MILLIS;
     }
 
     /**
