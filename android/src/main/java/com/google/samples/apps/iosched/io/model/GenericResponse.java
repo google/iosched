@@ -1,5 +1,5 @@
 /*
- * Copyright 2014 Google Inc. All rights reserved.
+ * Copyright 2012 Google Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,4 +14,10 @@
  * limitations under the License.
  */
 
-include ':android'
+package com.google.samples.apps.iosched.io.model;
+
+import com.google.gson.JsonElement;
+
+public class GenericResponse {
+    public JsonElement error;
+}

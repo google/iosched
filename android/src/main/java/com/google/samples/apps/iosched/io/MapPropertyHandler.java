@@ -30,6 +30,7 @@ import com.google.samples.apps.iosched.provider.ScheduleContractHelper;
 import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -85,6 +86,11 @@ public class MapPropertyHandler extends JSONHandler {
     public void makeContentProviderOperations(ArrayList<ContentProviderOperation> list) {
         buildMarkers(list);
         buildTiles(list);
+    }
+
+    @Override
+    public ArrayList<ContentProviderOperation> parse(String json) throws IOException {
+        return null;
     }
 
     private void buildMarkers(ArrayList<ContentProviderOperation> list) {

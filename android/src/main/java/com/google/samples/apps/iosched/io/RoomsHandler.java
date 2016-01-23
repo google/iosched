@@ -26,6 +26,7 @@ import android.content.ContentProviderOperation;
 import android.content.Context;
 import android.net.Uri;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -62,5 +63,10 @@ public class RoomsHandler extends JSONHandler {
             builder.withValue(ScheduleContract.Rooms.ROOM_FLOOR, room.floor);
             list.add(builder.build());
         }
+    }
+
+    @Override
+    public ArrayList<ContentProviderOperation> parse(String json) throws IOException {
+        return null;
     }
 }

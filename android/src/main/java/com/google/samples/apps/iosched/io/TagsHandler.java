@@ -27,6 +27,7 @@ import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 import com.google.samples.apps.iosched.provider.ScheduleContractHelper;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -66,6 +67,11 @@ public class TagsHandler extends JSONHandler {
                     Color.LTGRAY : Color.parseColor(tag.color));
             list.add(builder.build());
         }
+    }
+
+    @Override
+    public ArrayList<ContentProviderOperation> parse(String json) throws IOException {
+        return null;
     }
 
     public HashMap<String, Tag> getTagMap() {

@@ -23,6 +23,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
+import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.content.res.TypedArray;
 import android.graphics.Color;
@@ -51,9 +52,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
-import no.java.schedule.BuildConfig;
 import com.google.samples.apps.iosched.Config;
-import no.java.schedule.R;
 import com.google.samples.apps.iosched.model.ScheduleItem;
 import com.google.samples.apps.iosched.provider.ScheduleContract;
 import com.google.samples.apps.iosched.provider.ScheduleContract.Rooms;
@@ -66,6 +65,9 @@ import java.util.Date;
 import java.util.Formatter;
 import java.util.TimeZone;
 import java.util.regex.Pattern;
+
+import no.java.schedule.BuildConfig;
+import no.java.schedule.R;
 
 import static com.google.samples.apps.iosched.util.LogUtils.LOGE;
 import static com.google.samples.apps.iosched.util.LogUtils.makeLogTag;
@@ -93,7 +95,7 @@ public class UIUtils {
 
     /**
      * Regex to search for HTML escape sequences.
-     *
+     * <p/>
      * <p></p>Searches for any continuous string of characters starting with an ampersand and ending with a
      * semicolon. (Example: &amp;amp;)
      */
@@ -109,7 +111,7 @@ public class UIUtils {
     public static final String TWITTER_COMMON_NAME = "Twitter";
 
     public static String formatSessionSubtitle(long intervalStart, long intervalEnd, String roomName, StringBuilder recycle,
-            Context context) {
+                                               Context context) {
         return formatSessionSubtitle(intervalStart, intervalEnd, roomName, recycle, context, false);
     }
 
@@ -118,7 +120,7 @@ public class UIUtils {
      * {@link Config#CONFERENCE_TIMEZONE}.
      */
     public static String formatSessionSubtitle(long intervalStart, long intervalEnd, String roomName, StringBuilder recycle,
-            Context context, boolean shortFormat) {
+                                               Context context, boolean shortFormat) {
 
         // Determine if the session is in the past
         long currentTimeMillis = UIUtils.getCurrentTime(context);
@@ -152,7 +154,7 @@ public class UIUtils {
      * Format and return the given session speakers and {@link Rooms} values.
      */
     public static String formatSessionSubtitle(String roomName, String speakerNames,
-            Context context) {
+                                               Context context) {
 
         // Determine if the session is in the past
         if (roomName == null) {
@@ -171,7 +173,7 @@ public class UIUtils {
      * (unless local time was explicitly requested by the user).
      */
     public static String formatIntervalTimeString(long intervalStart, long intervalEnd,
-            StringBuilder recycle, Context context) {
+                                                  StringBuilder recycle, Context context) {
         if (recycle == null) {
             recycle = new StringBuilder();
         } else {
@@ -360,9 +362,11 @@ public class UIUtils {
         }
     }
 
-    private static final int[] RES_IDS_ACTION_BAR_SIZE = { R.attr.actionBarSize };
+    private static final int[] RES_IDS_ACTION_BAR_SIZE = {R.attr.actionBarSize};
 
-    /** Calculates the Action Bar height in pixels. */
+    /**
+     * Calculates the Action Bar height in pixels.
+     */
     public static int calculateActionBarSize(Context context) {
         if (context == null) {
             return 0;
@@ -383,7 +387,7 @@ public class UIUtils {
         return (int) size;
     }
 
-    public static int setColorOpaque(int color){
+    public static int setColorOpaque(int color) {
         return Color.argb(255, Color.red(color), Color.green(color), Color.blue(color));
     }
 
@@ -424,7 +428,7 @@ public class UIUtils {
     }
 
     public static void setUpButterBar(View butterBar, String messageText, String actionText,
-            View.OnClickListener listener) {
+                                      View.OnClickListener listener) {
         if (butterBar == null) {
             LOGE(TAG, "Failed to set up butter bar: it's null.");
             return;
@@ -453,7 +457,9 @@ public class UIUtils {
         return (value - min) / (float) (max - min);
     }
 
-    public static @DrawableRes int getSessionIcon(int sessionType) {
+    public static
+    @DrawableRes
+    int getSessionIcon(int sessionType) {
         switch (sessionType) {
             case ScheduleItem.SESSION_TYPE_SESSION:
                 return R.drawable.ic_session;
@@ -467,7 +473,9 @@ public class UIUtils {
         }
     }
 
-    public static @DrawableRes int getBreakIcon(String breakTitle) {
+    public static
+    @DrawableRes
+    int getBreakIcon(String breakTitle) {
         if (!TextUtils.isEmpty(breakTitle)) {
             if (breakTitle.contains("After")) {
                 return R.drawable.ic_after_hours;
@@ -482,9 +490,9 @@ public class UIUtils {
 
     /**
      * @param startTime The start time of a session in millis.
-     * @param context The context to be used for getting the display timezone.
+     * @param context   The context to be used for getting the display timezone.
      * @return Formats a given startTime to the specific short time.
-     *         example: 12:00 AM
+     * example: 12:00 AM
      */
     public static String formatTime(long startTime, Context context) {
         StringBuilder sb = new StringBuilder();
@@ -599,9 +607,9 @@ public class UIUtils {
     /**
      * This helper method creates a 'nice' scrim or background protection for layering text over
      * an image. This non-linear scrim is less noticable than a linear or constant one.
-     *
+     * <p/>
      * Borrowed from github.com/romannurik/muzei
-     *
+     * <p/>
      * Creates an approximated cubic gradient using a multi-stop linear gradient. See
      * <a href="https://plus.google.com/+RomanNurik/posts/2QvHVFWrHZf">this post</a> for more
      * details.
@@ -624,14 +632,32 @@ public class UIUtils {
 
         final float x0, x1, y0, y1;
         switch (gravity & Gravity.HORIZONTAL_GRAVITY_MASK) {
-            case Gravity.LEFT:  x0 = 1; x1 = 0; break;
-            case Gravity.RIGHT: x0 = 0; x1 = 1; break;
-            default:            x0 = 0; x1 = 0; break;
+            case Gravity.LEFT:
+                x0 = 1;
+                x1 = 0;
+                break;
+            case Gravity.RIGHT:
+                x0 = 0;
+                x1 = 1;
+                break;
+            default:
+                x0 = 0;
+                x1 = 0;
+                break;
         }
         switch (gravity & Gravity.VERTICAL_GRAVITY_MASK) {
-            case Gravity.TOP:    y0 = 1; y1 = 0; break;
-            case Gravity.BOTTOM: y0 = 0; y1 = 1; break;
-            default:             y0 = 0; y1 = 0; break;
+            case Gravity.TOP:
+                y0 = 1;
+                y1 = 0;
+                break;
+            case Gravity.BOTTOM:
+                y0 = 0;
+                y1 = 1;
+                break;
+            default:
+                y0 = 0;
+                y1 = 0;
+                break;
         }
 
         paintDrawable.setShaderFactory(new ShapeDrawable.ShaderFactory() {
@@ -649,5 +675,35 @@ public class UIUtils {
         });
 
         return paintDrawable;
+    }
+
+    public static boolean hasFroyo() {
+        // Can use static final constants like FROYO, declared in later versions
+        // of the OS since they are inlined at compile time. This is guaranteed behavior.
+        return Build.VERSION.SDK_INT >= Build.VERSION_CODES.FROYO;
+    }
+
+    public static boolean hasGingerbread() {
+        return Build.VERSION.SDK_INT >= Build.VERSION_CODES.GINGERBREAD;
+    }
+
+    public static boolean hasHoneycomb() {
+        return Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB;
+    }
+
+    public static boolean hasHoneycombMR1() {
+        return Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB_MR1;
+    }
+
+    public static boolean hasICS() {
+        return Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH;
+    }
+
+    public static boolean hasJellyBean() {
+        return Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN;
+    }
+
+    public static boolean hasLollipop() {
+        return Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP;
     }
 }
