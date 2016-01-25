@@ -17,7 +17,14 @@
 package com.google.samples.apps.iosched.sync;
 
 import android.accounts.Account;
-import android.content.*;
+import android.content.ContentProviderOperation;
+import android.content.ContentResolver;
+import android.content.ContentValues;
+import android.content.Context;
+import android.content.Intent;
+import android.content.OperationApplicationException;
+import android.content.SharedPreferences;
+import android.content.SyncResult;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
@@ -26,8 +33,6 @@ import android.os.Bundle;
 import android.os.RemoteException;
 import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
-
-import no.java.schedule.BuildConfig;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
@@ -50,7 +55,6 @@ import com.google.samples.apps.iosched.sync.userdata.UserDataSyncHelperFactory;
 import com.google.samples.apps.iosched.tracking.android.EasyTracker;
 import com.google.samples.apps.iosched.util.AccountUtils;
 import com.google.samples.apps.iosched.util.UIUtils;
-
 import com.turbomanage.httpclient.BasicHttpClient;
 
 import java.io.BufferedReader;
@@ -62,7 +66,14 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.Scanner;
 
-import static com.google.samples.apps.iosched.util.LogUtils.*;
+import no.java.schedule.BuildConfig;
+
+import static com.google.samples.apps.iosched.util.LogUtils.LOGD;
+import static com.google.samples.apps.iosched.util.LogUtils.LOGE;
+import static com.google.samples.apps.iosched.util.LogUtils.LOGI;
+import static com.google.samples.apps.iosched.util.LogUtils.LOGV;
+import static com.google.samples.apps.iosched.util.LogUtils.LOGW;
+import static com.google.samples.apps.iosched.util.LogUtils.makeLogTag;
 
 /**
  * A helper class for dealing with conference data synchronization. All operations occur on the
@@ -82,7 +93,6 @@ public class SyncHelper {
     private BasicHttpClient mHttpClient;
 
     /**
-     *
      * @param context Can be Application, Activity or Service context.
      */
     public SyncHelper(Context context) {
@@ -103,9 +113,6 @@ public class SyncHelper {
      */
     public void performSync(SyncResult syncResult) throws IOException {
 
-
-        // Bulk of sync work, performed by executing several fetches from
-        // local and online sources.
         final ContentResolver resolver = mContext.getContentResolver();
         ArrayList<ContentProviderOperation> batch = new ArrayList<ContentProviderOperation>();
 
@@ -117,9 +124,9 @@ public class SyncHelper {
             LOGI(TAG, "Syncing rooms");
             batch.addAll(fetchResource(Config.EMS_ROOMS, new RoomsHandler(mContext)));
             LOGI(TAG, "Syncing sessions");
-            batch.addAll(fetchResource( Config.GET_ALL_SESSIONS_URL, new SessionsHandler(mContext, false, false)));
+            batch.addAll(fetchResource(Config.GET_ALL_SESSIONS_URL, new SessionsHandler(mContext, false, false)));
             LOGI(TAG, "Syncing tracks");
-            batch.addAll(fetchResource( Config.GET_ALL_SESSIONS_URL, new TracksHandler(mContext)));
+            batch.addAll(fetchResource(Config.GET_ALL_SESSIONS_URL, new TracksHandler(mContext)));
 
             //TODO Enable announcements for JavaZone
             //LOGI(TAG, "Remote syncing announcements");
@@ -150,7 +157,7 @@ public class SyncHelper {
 
             // Delete empty blocks
             Cursor emptyBlocksCursor = resolver.query(ScheduleContract.Blocks.CONTENT_URI,
-                    new String[]{ScheduleContract.Blocks.BLOCK_ID,ScheduleContract.Blocks.SESSIONS_COUNT},
+                    new String[]{ScheduleContract.Blocks.BLOCK_ID, ScheduleContract.Blocks.SESSIONS_COUNT},
                     ScheduleContract.Blocks.EMPTY_SESSIONS_SELECTION, null, null);
             batch = new ArrayList<ContentProviderOperation>();
             int numDeletedEmptyBlocks = 0;
@@ -286,18 +293,17 @@ public class SyncHelper {
     /**
      * Attempts to perform data synchronization. There are 3 types of data: conference, user
      * schedule and user feedback.
-     * <p />
+     * <p/>
      * The conference data sync is handled by {@link RemoteConferenceDataFetcher}. For more details
      * about conference data, refer to the documentation at
      * https://github.com/google/iosched/blob/master/doc/SYNC.md. The user schedule data sync is
      * handled by {@link AbstractUserDataSyncHelper}. The user feedback sync is handled by
      * {@link FeedbackSyncHelper}.
      *
-     *
      * @param syncResult The sync result object to update with statistics.
-     * @param account The account associated with this sync
-     * @param extras Specifies additional information about the sync. This must contain key
-     *               {@code SyncAdapter.EXTRA_SYNC_USER_DATA_ONLY} with boolean value
+     * @param account    The account associated with this sync
+     * @param extras     Specifies additional information about the sync. This must contain key
+     *                   {@code SyncAdapter.EXTRA_SYNC_USER_DATA_ONLY} with boolean value
      * @return true if the sync changed the data.
      */
     public boolean performSync(@Nullable SyncResult syncResult, Account account, Bundle extras) {
@@ -507,7 +513,7 @@ public class SyncHelper {
 
     }
 
-   private static long calculateRecommendedSyncInterval(final Context context) {
+    private static long calculateRecommendedSyncInterval(final Context context) {
         long now = UIUtils.getCurrentTime(context);
         long aroundConferenceStart = Config.CONFERENCE_START_MILLIS
                 - Config.AUTO_SYNC_AROUND_CONFERENCE_THRESH;
@@ -546,14 +552,14 @@ public class SyncHelper {
     public ArrayList<ContentProviderOperation> fetchResource(String urlString, JSONHandler handler) throws IOException {
 
         String response = null;
-
-        if (isFirstRun()) {
-            response = getLocalResource(mContext, urlString);
-        } else if (isOnline(mContext)) {
-            response = getHttpResource(urlString);
+        response = getLocalResource(mContext, urlString);
+        if (isOnline(mContext)) {
+            if (isFirstRun()) {
+                response = getHttpResource(urlString);
+            }
         }
 
-        if (response!=null && !response.trim().equals("")){
+        if (response != null && !response.trim().equals("")) {
             return handler.parse(response);
         } else {
             return new ArrayList<ContentProviderOperation>();
@@ -561,7 +567,7 @@ public class SyncHelper {
     }
 
 
-    private boolean isFirstRun(){
+    private boolean isFirstRun() {
         return isFirstRun(mContext);
     }
 
@@ -570,28 +576,25 @@ public class SyncHelper {
         return prefs.getBoolean("first_run", true);
     }
 
-    public static String getLocalResource(Context pContext,String pUrlString) {
+    public static String getLocalResource(Context pContext, String pUrlString) {
 
         pUrlString = pUrlString.replaceFirst("http://", "");
 
         //fix file/directory clashes....
         if (pUrlString.endsWith("/sessions")) {
-            pUrlString=pUrlString+".json";
+            pUrlString = pUrlString + ".json";
         }
 
         LOGD("LocalResourceUrls", pUrlString);
 
         try {
             InputStream asset = pContext.getAssets().open(pUrlString);
-
-
-            LOGD("LocalResourceUrls Found",pUrlString);
+            LOGD("LocalResourceUrls Found", pUrlString);
             return convertStreamToString(asset);
 
-        }
-        catch (IOException e) {
-            LOGE("LocalResourceUrls NotFound",pUrlString);
-            LOGE(makeLogTag(SyncHelper.class),"Exception reading asset",e);
+        } catch (IOException e) {
+            LOGE("LocalResourceUrls NotFound", pUrlString);
+            LOGE(makeLogTag(SyncHelper.class), "Exception reading asset", e);
             return null;
         }
 
@@ -608,7 +611,7 @@ public class SyncHelper {
         HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
         urlConnection.setRequestProperty("User-Agent", "Androidito JZ15");
 
-        urlConnection.setRequestProperty("Accept","application/json");
+        urlConnection.setRequestProperty("Accept", "application/json");
 
         urlConnection.connect();
         throwErrors(urlConnection);

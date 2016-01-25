@@ -18,6 +18,7 @@ package com.google.samples.apps.iosched.service;
 import android.app.IntentService;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SyncResult;
 import android.net.Uri;
 
 import no.java.schedule.BuildConfig;
@@ -45,6 +46,7 @@ import static com.google.samples.apps.iosched.util.LogUtils.LOGW;
 public class DataBootstrapService extends IntentService {
 
     private static final String TAG = LogUtils.makeLogTag(DataBootstrapService.class);
+    private static Context mContext;
 
     /**
      * Start the {@link DataBootstrapService} if the bootstrap is either not done or complete yet.
@@ -56,6 +58,7 @@ public class DataBootstrapService extends IntentService {
         if (!SettingsUtils.isDataBootstrapDone(context)) {
             LOGW(TAG, "One-time data bootstrap not done yet. Doing now.");
             context.startService(new Intent(context, DataBootstrapService.class));
+            mContext = context;
         }
     }
 
@@ -77,6 +80,7 @@ public class DataBootstrapService extends IntentService {
         try {
             LOGD(TAG, "Starting data bootstrap process.");
             // Load data from bootstrap raw resource.
+            /*
             String bootstrapJson = JSONHandler
                     .parseResource(appContext, R.raw.bootstrap_data);
 
@@ -85,8 +89,9 @@ public class DataBootstrapService extends IntentService {
             dataHandler.applyConferenceData(new String[]{bootstrapJson},
                     BuildConfig.BOOTSTRAP_DATA_TIMESTAMP, false);
 
+            SyncHelper.performPostSyncChores(appContext); */
+            new SyncHelper(mContext).performSync(new SyncResult());
             SyncHelper.performPostSyncChores(appContext);
-
             LOGI(TAG, "End of bootstrap -- successful. Marking bootstrap as done.");
             SettingsUtils.markSyncSucceededNow(appContext);
             SettingsUtils.markDataBootstrapDone(appContext);
