@@ -18,27 +18,45 @@ package com.google.samples.apps.iosched.myschedule;
 
 import android.app.Activity;
 import android.app.ListFragment;
+import android.content.Context;
 import android.content.res.TypedArray;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.google.samples.apps.iosched.R;
+import com.google.samples.apps.iosched.archframework.UpdatableView;
+import com.google.samples.apps.iosched.myschedule.MyScheduleModel.MyScheduleQueryEnum;
+import com.google.samples.apps.iosched.myschedule.MyScheduleModel.MyScheduleUserActionEnum;
+
 
 /**
- * This is used by the {@link android.support.v4.view.ViewPager} used by the narrow layout in
- * {@link MyScheduleActivity}. It is a {@link ListFragment} that shows schedule items for a day,
- * using {@link MyScheduleDayAdapter} as its data source.
+ * This is used by the {@link android.support.v4.view.ViewPager} used by the narrow layout in {@link
+ * MyScheduleActivity}. It is a {@link ListFragment} that shows schedule items for a day, using
+ * {@link MyScheduleDayAdapter} as its data source.
  */
-public class MyScheduleSingleDayFragment extends ListFragment {
+public class MyScheduleSingleDayFragment extends ListFragment
+        implements UpdatableView<MyScheduleModel, MyScheduleQueryEnum, MyScheduleUserActionEnum> {
 
     private String mContentDescription = null;
 
     private View mRoot = null;
 
+    /**
+     * This is 1 for the first day of the conference, 2 for the second, and so on, and {@link
+     * MyScheduleModel#PRE_CONFERENCE_DAY_ID} for the preconference day
+     */
+    private int mDayId = 1;
+
+    private MyScheduleDayAdapter mViewAdapter;
+
+    private UserActionListener mListener;
+
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+            Bundle savedInstanceState) {
         mRoot = inflater.inflate(R.layout.my_schedule_singleday_frag, container, false);
         if (mContentDescription != null) {
             mRoot.setContentDescription(mContentDescription);
@@ -54,29 +72,30 @@ public class MyScheduleSingleDayFragment extends ListFragment {
     }
 
     @Override
-    public void onActivityCreated(Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-        MyScheduleActivity activity = (MyScheduleActivity) getActivity();
-        setData(activity.getConferenceData(), activity.getPreConferenceData());
+    public void onResume() {
+        super.onResume();
+        mListener.onUserAction(MyScheduleModel.MyScheduleUserActionEnum.RELOAD_DATA, null);
     }
 
-    private void setData(MyScheduleDayAdapter[] conferenceData, MyScheduleDayAdapter preConferenceData) {
+    @Override
+    public void onActivityCreated(Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        initViews();
+    }
+
+    private void initViews() {
         getListView().addHeaderView(getActivity().getLayoutInflater()
-                .inflate(R.layout.reserve_action_bar_space_header_view, null));
-        int dayIndex = getArguments().getInt(MyScheduleActivity.ARG_CONFERENCE_DAY_INDEX, 0);
+                                                 .inflate(
+                                                         R.layout.reserve_action_bar_space_header_view,
+                                                         null));
+
+        mDayId = getArguments().getInt(MyScheduleActivity.ARG_CONFERENCE_DAY_INDEX, 0);
 
         // Set id to list view, so it can be referred to from tests
         TypedArray ids = getResources().obtainTypedArray(R.array.myschedule_listview_ids);
-        int listViewId = ids.getResourceId(dayIndex+1,0);
+        int listViewId = ids.getResourceId(mDayId, 0);
         getListView().setId(listViewId);
 
-        if (dayIndex < 0) {
-            setListAdapter(preConferenceData);
-            getListView().setRecyclerListener(preConferenceData);
-        } else {
-            setListAdapter(conferenceData[dayIndex]);
-            getListView().setRecyclerListener(conferenceData[dayIndex]);
-        }
     }
 
     @Override
@@ -89,6 +108,74 @@ public class MyScheduleSingleDayFragment extends ListFragment {
     public void onDetach() {
         super.onDetach();
         ((Listener) getActivity()).onSingleDayFragmentDetached(this);
+    }
+
+    @Override
+    public void displayData(MyScheduleModel model, MyScheduleQueryEnum query) {
+        switch (query) {
+            case SCHEDULE:
+                updateSchedule(model);
+                break;
+            default:
+                break;
+        }
+    }
+
+    @Override
+    public void displayErrorMessage(MyScheduleQueryEnum query) {
+        // Not showing any error
+    }
+
+    @Override
+    public void displayUserActionResult(MyScheduleModel model
+            , MyScheduleUserActionEnum userAction,
+            boolean success) {
+        switch (userAction) {
+            case RELOAD_DATA:
+                updateSchedule(model);
+                break;
+            case SESSION_SLOT:
+                break;
+            case FEEDBACK:
+                break;
+            default:
+                break;
+        }
+    }
+
+    private void updateSchedule(MyScheduleModel model) {
+        if (isVisible()) {
+            if (mViewAdapter == null) {
+                mViewAdapter = new MyScheduleDayAdapter(getContext(),
+                        ((MyScheduleActivity) getActivity()).getLUtils(), mListener);
+            }
+            mViewAdapter.updateItems(model.getConferenceDataForDay(mDayId));
+            if (getListAdapter() == null) {
+                setListAdapter(mViewAdapter);
+                getListView().setRecyclerListener(mViewAdapter);
+            }
+        } else {
+            /**
+             * Ignore the updated model. The data will be request when the Fragment becomes visible
+             * again (in {@link #onResume()}.
+             */
+        }
+    }
+
+    @Override
+    public Uri getDataUri(MyScheduleQueryEnum query) {
+        // Not used by the model
+        return null;
+    }
+
+    @Override
+    public void addListener(UserActionListener listener) {
+        mListener = listener;
+    }
+
+    @Override
+    public Context getContext() {
+        return getActivity();
     }
 
     interface Listener {

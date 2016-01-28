@@ -17,6 +17,8 @@
 package com.google.samples.apps.iosched.myschedule;
 
 import android.app.Fragment;
+import android.content.Context;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -24,24 +26,34 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.google.samples.apps.iosched.R;
+import com.google.samples.apps.iosched.archframework.UpdatableView;
+import com.google.samples.apps.iosched.myschedule.MyScheduleModel.MyScheduleQueryEnum;
+import com.google.samples.apps.iosched.myschedule.MyScheduleModel.MyScheduleUserActionEnum;
 import com.google.samples.apps.iosched.util.TimeUtils;
 
 /**
- * This is used by the wide layout in {@link MyScheduleActivity}. It uses a
- * {@link MyScheduleSingleDayNoScrollView} for each day of the conference.
+ * This is used by the wide layout in {@link MyScheduleActivity}. It uses a {@link
+ * MyScheduleSingleDayNoScrollView} for each day of the conference.
  */
-public class MyScheduleAllDaysFragment extends Fragment {
+public class MyScheduleAllDaysFragment extends Fragment
+        implements UpdatableView<MyScheduleModel, MyScheduleQueryEnum, MyScheduleUserActionEnum> {
 
-    private MyScheduleSingleDayNoScrollView[] mMyScheduleSingleDayNoScrollViewWide
+    private MyScheduleSingleDayNoScrollView mPreConferenceDayView;
+
+    // TODO - this layout assumes the conference lasts exactly 2 days, amend UI to work with a
+    // conference of 3 days
+    private MyScheduleSingleDayNoScrollView[] mMyScheduleSingleDayViews
             = new MyScheduleSingleDayNoScrollView[2];
+
+    private UserActionListener mListener;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+            Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.my_schedule_alldays_frag, container, false);
-        mMyScheduleSingleDayNoScrollViewWide[0] = (MyScheduleSingleDayNoScrollView) root
+        mMyScheduleSingleDayViews[0] = (MyScheduleSingleDayNoScrollView) root
                 .findViewById(R.id.my_schedule_first_day);
-        mMyScheduleSingleDayNoScrollViewWide[1] = (MyScheduleSingleDayNoScrollView) root
+        mMyScheduleSingleDayViews[1] = (MyScheduleSingleDayNoScrollView) root
                 .findViewById(R.id.my_schedule_second_day);
         return root;
     }
@@ -49,14 +61,10 @@ public class MyScheduleAllDaysFragment extends Fragment {
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        MyScheduleActivity activity = (MyScheduleActivity) getActivity();
-        setData(activity.getConferenceData(), activity.getPreConferenceData());
+        initViews();
     }
 
-    private void setData(MyScheduleDayAdapter[] conferenceData, MyScheduleDayAdapter preConferenceData) {
-        mMyScheduleSingleDayNoScrollViewWide[0].setAdapter(conferenceData[0]);
-        mMyScheduleSingleDayNoScrollViewWide[1].setAdapter(conferenceData[1]);
-
+    private void initViews() {
         TextView firstDayHeaderView = (TextView) getActivity()
                 .findViewById(R.id.day_label_first_day);
         TextView secondDayHeaderView = (TextView) getActivity()
@@ -68,18 +76,86 @@ public class MyScheduleAllDaysFragment extends Fragment {
             secondDayHeaderView.setText(TimeUtils.getDayName(getContext(), 1));
         }
 
+        mPreConferenceDayView = (MyScheduleSingleDayNoScrollView)
+                getActivity().findViewById(R.id.my_schedule_zeroth_day);
         TextView zerothDayHeaderView = (TextView) getActivity()
                 .findViewById(R.id.day_label_zeroth_day);
-        MyScheduleSingleDayNoScrollView dayZeroView = (MyScheduleSingleDayNoScrollView)
-                getActivity().findViewById(R.id.my_schedule_zeroth_day);
-        if (preConferenceData != null) {
-            dayZeroView.setAdapter(preConferenceData);
-            dayZeroView.setVisibility(View.VISIBLE);
+        if (MyScheduleModel.showPreConferenceData(getContext())) {
+            mPreConferenceDayView.setVisibility(View.VISIBLE);
             zerothDayHeaderView.setText(TimeUtils.getDayName(getContext(), -1));
             zerothDayHeaderView.setVisibility(View.VISIBLE);
         } else {
-            dayZeroView.setVisibility(View.GONE);
+            mPreConferenceDayView.setVisibility(View.GONE);
             zerothDayHeaderView.setVisibility(View.GONE);
         }
+    }
+
+    @Override
+    public void displayData(MyScheduleModel model, MyScheduleQueryEnum query) {
+        switch (query) {
+            case SCHEDULE:
+                updateSchedule(model);
+                break;
+            default:
+                break;
+        }
+    }
+
+    @Override
+    public void displayErrorMessage(MyScheduleQueryEnum query) {
+        // Not showing any error
+    }
+
+    @Override
+    public void displayUserActionResult(MyScheduleModel model
+            , MyScheduleUserActionEnum userAction,
+            boolean success) {
+        switch (userAction) {
+            case RELOAD_DATA:
+                updateSchedule(model);
+                break;
+            case SESSION_SLOT:
+                break;
+            case FEEDBACK:
+                break;
+            default:
+                break;
+        }
+    }
+
+    private void updateSchedule(MyScheduleModel model) {
+        if (MyScheduleModel.showPreConferenceData(getContext())) {
+            if (mPreConferenceDayView.getAdapter() == null) {
+                mPreConferenceDayView.setAdapter(new MyScheduleDayAdapter(getContext(),
+                        ((MyScheduleActivity) getActivity()).getLUtils(), mListener));
+            }
+            mPreConferenceDayView.getAdapter().updateItems(model.getConferenceDataForDay(
+                    MyScheduleModel.PRE_CONFERENCE_DAY_ID));
+        }
+        for (int i = 0; i < mMyScheduleSingleDayViews.length; i++) {
+            if (mMyScheduleSingleDayViews[i].getAdapter() == null) {
+                mMyScheduleSingleDayViews[i].setAdapter(new MyScheduleDayAdapter(getContext(),
+                        ((MyScheduleActivity) getActivity()).getLUtils(), mListener));
+
+            }
+            mMyScheduleSingleDayViews[i].getAdapter().updateItems(model.getConferenceDataForDay(
+                            i + 1)
+            ); // Day 1 of conference has id 1
+        }
+    }
+
+    @Override
+    public Uri getDataUri(MyScheduleQueryEnum query) {
+        return null;
+    }
+
+    @Override
+    public void addListener(UserActionListener listener) {
+        mListener = listener;
+    }
+
+    @Override
+    public Context getContext() {
+        return getActivity();
     }
 }

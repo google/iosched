@@ -18,11 +18,11 @@ package com.google.samples.apps.iosched.myschedule;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
-import android.content.Intent;
 import android.content.res.Resources;
 import android.content.res.TypedArray;
 import android.database.DataSetObserver;
 import android.net.Uri;
+import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -36,10 +36,10 @@ import android.widget.TextView;
 
 import com.google.samples.apps.iosched.Config;
 import com.google.samples.apps.iosched.R;
-import com.google.samples.apps.iosched.feedback.SessionFeedbackActivity;
+import com.google.samples.apps.iosched.archframework.UpdatableView.UserActionListener;
 import com.google.samples.apps.iosched.model.ScheduleItem;
+import com.google.samples.apps.iosched.myschedule.MyScheduleModel.MyScheduleUserActionEnum;
 import com.google.samples.apps.iosched.provider.ScheduleContract;
-import com.google.samples.apps.iosched.util.AnalyticsHelper;
 import com.google.samples.apps.iosched.util.ImageLoader;
 import com.google.samples.apps.iosched.util.LUtils;
 import com.google.samples.apps.iosched.util.TimeUtils;
@@ -83,9 +83,13 @@ public class MyScheduleDayAdapter implements ListAdapter, AbsListView.RecyclerLi
     private final int mSelectableItemBackground;
     private final boolean mIsRtl;
 
-    public MyScheduleDayAdapter(Context context, LUtils lUtils) {
+    private UserActionListener<MyScheduleUserActionEnum> mListener;
+
+    public MyScheduleDayAdapter(Context context, LUtils lUtils,
+            UserActionListener<MyScheduleUserActionEnum> listener) {
         mContext = context;
         mLUtils = lUtils;
+        mListener = listener;
         Resources resources = context.getResources();
         mHourColorDefault = resources.getColor(R.color.my_schedule_hour_header_default);
         mHourColorPast = resources.getColor(R.color.my_schedule_hour_header_finished);
@@ -167,10 +171,9 @@ public class MyScheduleDayAdapter implements ListAdapter, AbsListView.RecyclerLi
             Object tag = v.getTag(R.id.myschedule_uri_tagkey);
             if (tag != null && tag instanceof Uri) {
                 Uri uri = (Uri) tag;
-                // ANALYTICS EVENT: Select a slot on My Agenda
-                // Contains: URI indicating session ID or time interval of slot
-                AnalyticsHelper.sendEvent("My Schedule", "selectslot", uri.toString());
-                mContext.startActivity(new Intent(Intent.ACTION_VIEW, uri));
+                Bundle bundle = new Bundle();
+                bundle.putString(MyScheduleModel.SESSION_URL_KEY, uri.toString());
+                mListener.onUserAction(MyScheduleUserActionEnum.SESSION_SLOT, bundle);
             }
         }
     };
@@ -249,7 +252,8 @@ public class MyScheduleDayAdapter implements ListAdapter, AbsListView.RecyclerLi
         ScheduleItem nextItem = position < mItems.size() - 1 ? mItems.get(position + 1) : null;
 
         long now = TimeUtils.getCurrentTime(view.getContext());
-        boolean isNowPlaying = item.startTime <= now && now <= item.endTime && item.type == ScheduleItem.SESSION;
+        boolean isNowPlaying =
+                item.startTime <= now && now <= item.endTime && item.type == ScheduleItem.SESSION;
         boolean isPastDuringConference = item.endTime <= now && now < Config.CONFERENCE_END_MILLIS;
 
         if (isPastDuringConference) {
@@ -305,13 +309,10 @@ public class MyScheduleDayAdapter implements ListAdapter, AbsListView.RecyclerLi
                 holder.feedback.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        // ANALYTICS EVENT: Click on the "Send Feedback" action from Schedule page.
-                        // Contains: The session title.
-                        AnalyticsHelper.sendEvent("My Schedule", "Feedback", item.title);
-                        Intent feedbackIntent = new Intent(Intent.ACTION_VIEW,
-                                ScheduleContract.Sessions.buildSessionUri(item.sessionId),
-                                mContext, SessionFeedbackActivity.class);
-                        mContext.startActivity(feedbackIntent);
+                        Bundle bundle = new Bundle();
+                        bundle.putString(MyScheduleModel.SESSION_ID_KEY, item.sessionId);
+                        bundle.putString(MyScheduleModel.SESSION_TITLE_KEY, item.title);
+                        mListener.onUserAction(MyScheduleUserActionEnum.FEEDBACK, bundle);
                     }
                 });
             }
@@ -330,7 +331,8 @@ public class MyScheduleDayAdapter implements ListAdapter, AbsListView.RecyclerLi
                 setUriClickable(holder.startTime,
                         ScheduleContract.Sessions.buildUnscheduledSessionsInInterval(
                                 item.startTime, item.endTime));
-                // Padding fix needed for KitKat 4.4. (padding gets removed by setting the background)
+                // Padding fix needed for KitKat 4.4. (padding gets removed by setting the
+                // background)
                 holder.startTime.setPadding(
                         (int) mContext.getResources().getDimension(R.dimen.keyline_2), 0,
                         (int) mContext.getResources().getDimension(R.dimen.keyline_2), 0);
@@ -345,7 +347,8 @@ public class MyScheduleDayAdapter implements ListAdapter, AbsListView.RecyclerLi
         }
 
         holder.separator.setVisibility(nextItem == null ||
-                0 != (item.flags & ScheduleItem.FLAG_CONFLICTS_WITH_NEXT) ? View.GONE : View.VISIBLE);
+                0 != (item.flags & ScheduleItem.FLAG_CONFLICTS_WITH_NEXT) ? View.GONE :
+                View.VISIBLE);
 
         if (position == 0) { // First item
             view.setPadding(0, mListSpacing, 0, 0);

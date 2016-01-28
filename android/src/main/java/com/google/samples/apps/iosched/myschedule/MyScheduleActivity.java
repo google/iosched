@@ -19,13 +19,10 @@ package com.google.samples.apps.iosched.myschedule;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.SharedPreferences;
-import android.database.ContentObserver;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
-import android.preference.PreferenceManager;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewCompat;
 import android.support.v4.view.ViewPager;
@@ -40,22 +37,19 @@ import android.view.View;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
-import com.google.samples.apps.iosched.BuildConfig;
 import com.google.samples.apps.iosched.Config;
 import com.google.samples.apps.iosched.R;
+import com.google.samples.apps.iosched.archframework.PresenterImpl;
+import com.google.samples.apps.iosched.archframework.UpdatableView;
+import com.google.samples.apps.iosched.injection.ModelProvider;
 import com.google.samples.apps.iosched.model.ScheduleHelper;
-import com.google.samples.apps.iosched.model.ScheduleItem;
 import com.google.samples.apps.iosched.provider.ScheduleContract;
 import com.google.samples.apps.iosched.session.SessionDetailActivity;
-import com.google.samples.apps.iosched.settings.SettingsUtils;
 import com.google.samples.apps.iosched.ui.BaseActivity;
 import com.google.samples.apps.iosched.util.AnalyticsHelper;
-import com.google.samples.apps.iosched.util.ParserUtils;
-import com.google.samples.apps.iosched.util.ThrottledContentObserver;
 import com.google.samples.apps.iosched.util.TimeUtils;
 import com.google.samples.apps.iosched.util.UIUtils;
 
-import java.util.Arrays;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
@@ -67,92 +61,20 @@ import static com.google.samples.apps.iosched.util.LogUtils.makeLogTag;
 /**
  * This shows the schedule of the logged in user, organised per day.
  * <p/>
- * Depending on the device, this Activity uses either a {@link ViewPager} with a
- * {@link MyScheduleSingleDayFragment} for its page (the "narrow" layout) or a
- * {@link MyScheduleAllDaysFragment}, which uses a {@link MyScheduleSingleDayNoScrollView} for each
- * day. Each day data is backed by a {@link MyScheduleDayAdapter} (the "wide" layout).
+ * Depending on the device, this Activity uses either a {@link ViewPager} with a {@link
+ * MyScheduleSingleDayFragment} for its page (the "narrow" layout) or a {@link
+ * MyScheduleAllDaysFragment}, which uses a {@link MyScheduleSingleDayNoScrollView} for each day.
+ * Each day data is backed by a {@link MyScheduleDayAdapter} (the "wide" layout).
+ * <p/>
+ * If the user attends the conference, all time slots that have sessions are shown, with a button to
+ * allow the user to see all sessions in that slot.
  */
 public class MyScheduleActivity extends BaseActivity implements
         MyScheduleSingleDayFragment.Listener {
-
     /**
-     * Interval that a timer will redraw the UI during the conference, so that time sensitive
-     * widgets, like the "Now" and "Ended" indicators can be properly updated.
+     * This is used in the narrow mode, to pass in the day index to the {@link
+     * MyScheduleSingleDayFragment}.
      */
-    private static final long INTERVAL_TO_REDRAW_UI = 1 * TimeUtils.MINUTE;
-
-    private static final String SCREEN_LABEL = "My Schedule";
-
-    private static final String TAG = makeLogTag(MyScheduleActivity.class);
-
-    private static int BASE_TAB_VIEW_ID = 12345;
-
-    /**
-     * If true, we are in the wide (tablet landscape) mode where we show conference days side by
-     * side; if false, we are in narrow (non tablet landscape) mode where we use a ViewPager and
-     * show one conference day per page.
-     */
-    private boolean mWideMode = false;
-
-    // If in wide mode, we have MyScheduleView widgets showing each day
-
-    // The adapters that serves as the source of data for the UI, indicating the available
-    // items. We have one adapter per day of the conference. When we push new data into these
-    // adapters, the corresponding UIs update automatically.
-    private MyScheduleDayAdapter[] mScheduleAdapters = new MyScheduleDayAdapter[
-            Config.CONFERENCE_DAYS.length];
-
-    /**
-     * For users attending the conference, an extra day, prior to the conference, is added, for
-     * picking up the badge.
-     */
-    private MyScheduleDayAdapter mPreConferenceDayAdapter;
-
-    // The ScheduleHelper is responsible for feeding data in a format suitable to the Adapter.
-    private ScheduleHelper mDataHelper;
-
-    /**
-     * This is used for narrow mode only, to switch between days, it is null in wide mode
-     */
-    private ViewPager mViewPager;
-
-    /**
-     * This is used for narrow mode only, it is empty in wide mode
-     */
-    private Set<MyScheduleSingleDayFragment> mMyScheduleSingleDayFragments = new HashSet<MyScheduleSingleDayFragment>();
-
-    /**
-     * This is used for narrow mode only, it is null in wide mode. Each page in the
-     * {@link #mViewPager} is an {@link MyScheduleSingleDayFragment}.
-     */
-    private MyScheduleDayViewPagerAdapter mViewPagerAdapter;
-
-    /**
-     * This is used for narrow mode only, to display the conference days, it is null in wide mode
-     */
-    private TabLayout mTabLayout;
-
-    /**
-     * This is used in wide mode only, it is null otherwise
-     */
-    private ScrollView mScrollViewWide;
-
-    // Login failed butter bar
-    private View mButterBar;
-
-    /**
-     * During the conference, this is set to the index of the current day in the
-     * {@link #mScheduleAdapters}. Outside of conference period, this is set to 0.
-     */
-    private int mToday;
-
-    /**
-     * True during the conference or pre conference, false otherwise
-     */
-    private boolean mConferenceInProgress;
-
-    private boolean mDestroyed = false;
-
     public static final String ARG_CONFERENCE_DAY_INDEX
             = "com.google.samples.apps.iosched.ARG_CONFERENCE_DAY_INDEX";
 
@@ -167,9 +89,75 @@ public class MyScheduleActivity extends BaseActivity implements
     public static final String EXTRA_DIALOG_URL
             = "com.google.samples.apps.iosched.EXTRA_DIALOG_URL";
 
+    /**
+     * Interval that a timer will redraw the UI during the conference, so that time sensitive
+     * widgets, like the "Now" and "Ended" indicators can be properly updated.
+     */
+    private static final long INTERVAL_TO_REDRAW_UI = 1 * TimeUtils.MINUTE;
+
+    private static final String SCREEN_LABEL = "My Schedule";
+
+    private static final String TAG = makeLogTag(MyScheduleActivity.class);
+
+    public static int BASE_TAB_VIEW_ID = 12345;
+
+    /**
+     * If true, we are in the wide (tablet landscape) mode where we show conference days side by
+     * side; if false, we are in narrow (non tablet landscape) mode where we use a ViewPager and
+     * show one conference day per page.
+     */
+    private boolean mWideMode = false;
+
+    /**
+     * This is used for narrow mode only, to switch between days, it is null in wide mode
+     */
+    private ViewPager mViewPager;
+
+    /**
+     * This is used for narrow mode only, it is empty in wide mode
+     */
+    private Set<MyScheduleSingleDayFragment> mMyScheduleSingleDayFragments
+            = new HashSet<MyScheduleSingleDayFragment>();
+
+    /**
+     * This is used for narrow mode only, it is null in wide mode. Each page in the {@link
+     * #mViewPager} is a {@link MyScheduleSingleDayFragment}.
+     */
+    private MyScheduleDayViewPagerAdapter mViewPagerAdapter;
+
+    /**
+     * This is used for narrow mode only, to display the conference days, it is null in wide mode
+     */
+    private TabLayout mTabLayout;
+
+    /**
+     * This is used in wide mode only, it is null in narrow mode
+     */
+    private ScrollView mScrollViewWide;
+
+    /**
+     * This is a view displayed when login has failed
+     */
+    private View mFailedLoginView;
+
+    /**
+     * During the conference, this is set to the current day, eg 1 for the first day, 2 for the
+     * second etc Outside of conference period, this is set to 1.
+     */
+    private int mToday;
+
+    /**
+     * True during the conference or pre conference, false otherwise
+     */
+    private boolean mConferenceInProgress;
+
+    private boolean mDestroyed = false;
+
     private boolean mShowedAnnouncementDialog = false;
 
     private int mViewPagerScrollState = ViewPager.SCROLL_STATE_IDLE;
+
+    private PresenterImpl mPresenter;
 
     @Override
     protected int getSelfNavDrawerItem() {
@@ -187,12 +175,10 @@ public class MyScheduleActivity extends BaseActivity implements
         // Contains: Nothing (Page name is a constant)
         AnalyticsHelper.sendScreenView(SCREEN_LABEL);
 
-        mDataHelper = new ScheduleHelper(this);
-
         initViews();
+        initPresenter();
 
         overridePendingTransition(0, 0);
-        addDataObservers();
     }
 
     @Override
@@ -204,10 +190,6 @@ public class MyScheduleActivity extends BaseActivity implements
             scheduleNextUIUpdate();
         }
 
-        updateData();
-
-        // TODO - test this doesn't create a weird loop (dialog will trigger onResume() when
-        // dismissed?)
         showAnnouncementDialogIfNeeded(getIntent());
     }
 
@@ -215,14 +197,15 @@ public class MyScheduleActivity extends BaseActivity implements
     protected void onDestroy() {
         super.onDestroy();
         mDestroyed = true;
-        removeDataObservers();
+
+        mPresenter.cleanUp();
     }
 
     /**
      * Pre-process the {@code intent} received to open this activity to determine if it was a deep
      * link to a SessionDetail. Typically you wouldn't use this type of logic, but we need to
-     * because of the path of session details page on the website is only /schedule and session
-     * ids are part of the query parameters ("sid").
+     * because of the path of session details page on the website is only /schedule and session ids
+     * are part of the query parameters ("sid").
      */
     private void launchSessionDetailIfRequiredByIntent(Intent intent) {
         if (intent != null && !TextUtils.isEmpty(intent.getDataString())) {
@@ -252,17 +235,8 @@ public class MyScheduleActivity extends BaseActivity implements
 
     private void initViews() {
         // Set up view to show login failure
-        mButterBar = findViewById(R.id.butter_bar);
+        mFailedLoginView = findViewById(R.id.butter_bar);
         hideLoginFailureView();
-
-        // Prepare data adapters
-        if (SettingsUtils.isAttendeeAtVenue(this)) {
-            mPreConferenceDayAdapter = new MyScheduleDayAdapter(this, getLUtils());
-            preparePreConferenceDayAdapter();
-        }
-        for (int i = 0; i < Config.CONFERENCE_DAYS.length; i++) {
-            mScheduleAdapters[i] = new MyScheduleDayAdapter(this, getLUtils());
-        }
 
         // Set up correct view mode
         detectNarrowOrWideMode();
@@ -272,6 +246,27 @@ public class MyScheduleActivity extends BaseActivity implements
             setUpViewPagerForNarrowMode();
         }
     }
+
+    private void initPresenter() {
+        MyScheduleModel model = ModelProvider.provideMyScheduleModel(new ScheduleHelper(this), this);
+        if (mWideMode) {
+            mPresenter = new PresenterImpl(model,
+                    (UpdatableView) getFragmentManager().findFragmentById(R.id.myScheduleWideFrag),
+                    MyScheduleModel.MyScheduleUserActionEnum.values(),
+                    MyScheduleModel.MyScheduleQueryEnum.values());
+        } else {
+            // Each fragment in the pager adapter is an updatable view that the presenter must know
+            int fragmentsCount = mViewPagerAdapter.getCount();
+            UpdatableView[] views = new UpdatableView[fragmentsCount];
+            for (int i = 0; i < fragmentsCount; i++) {
+                views[i] = mViewPagerAdapter.getItem(i);
+            }
+            mPresenter = new PresenterImpl(model, views,
+                    MyScheduleModel.MyScheduleUserActionEnum.values(),
+                    MyScheduleModel.MyScheduleQueryEnum.values());
+        }
+    }
+
 
     private void detectNarrowOrWideMode() {
         mWideMode = getFragmentManager().findFragmentById(R.id.myScheduleWideFrag) != null;
@@ -287,7 +282,7 @@ public class MyScheduleActivity extends BaseActivity implements
     private void setUpViewPagerForNarrowMode() {
         mViewPager = (ViewPager) findViewById(R.id.view_pager);
         mViewPagerAdapter = new MyScheduleDayViewPagerAdapter(this, getFragmentManager(),
-                showPreConferenceData());
+                MyScheduleModel.showPreConferenceData(this));
         mViewPager.setAdapter(mViewPagerAdapter);
 
         mTabLayout = (TabLayout) findViewById(R.id.sliding_tabs);
@@ -323,21 +318,6 @@ public class MyScheduleActivity extends BaseActivity implements
         setTabLayoutContentDescriptionsForNarrowLayout();
     }
 
-    /**
-     * This method is an ad-hoc implementation of the pre conference day, which contains an item
-     * to pick up the badge at registration desk
-     */
-    private void preparePreConferenceDayAdapter() {
-        ScheduleItem item = new ScheduleItem();
-        item.title = getString(R.string.my_schedule_badgepickup);
-        item.startTime = ParserUtils.parseTime(BuildConfig.PRECONFERENCE_DAY_START);
-        item.endTime = ParserUtils.parseTime(BuildConfig.PRECONFERENCE_DAY_END);
-        item.type = ScheduleItem.BREAK;
-        item.room = item.subtitle = getString(R.string.my_schedule_badgepickup_description);
-        item.sessionType = ScheduleItem.SESSION_TYPE_MISC;
-        mPreConferenceDayAdapter.updateItems(Arrays.asList(item));
-    }
-
     @Override
     protected void onPostCreate(Bundle savedInstanceState) {
         super.onPostCreate(savedInstanceState);
@@ -356,21 +336,25 @@ public class MyScheduleActivity extends BaseActivity implements
         long now = TimeUtils.getCurrentTime(this);
 
         // If we are before or after the conference, the first day is considered the current day
-        mToday = 0;
+        mToday = 1;
         mConferenceInProgress = false;
 
         for (int i = 0; i < Config.CONFERENCE_DAYS.length; i++) {
             if (now >= Config.CONFERENCE_DAYS[i][0] && now <= Config.CONFERENCE_DAYS[i][1]) {
-                mToday = i;
+                // mToday is set to 1 for the first day, 2 for the second etc
+                mToday = i + 1;
                 mConferenceInProgress = true;
                 break;
             }
         }
     }
 
+    /**
+     * @param day Pass in 1 for the first day, 2 for the second etc
+     */
     private void showDay(int day) {
-        int preConferenceDays = showPreConferenceData() ? 1 : 0;
-        mViewPager.setCurrentItem(day + preConferenceDays);
+        int preConferenceDays = MyScheduleModel.showPreConferenceData(this) ? 1 : 0;
+        mViewPager.setCurrentItem(day - 1 + preConferenceDays);
     }
 
     @Override
@@ -385,10 +369,11 @@ public class MyScheduleActivity extends BaseActivity implements
 
     private void setTabLayoutContentDescriptionsForNarrowLayout() {
         LayoutInflater inflater = getLayoutInflater();
-        int gap = mPreConferenceDayAdapter == null ? 0 : 1;
+        int gap = MyScheduleModel.showPreConferenceData(this) ? 1 : 0;
         for (int i = 0, count = mTabLayout.getTabCount(); i < count; i++) {
             TabLayout.Tab tab = mTabLayout.getTabAt(i);
-            TextView view = (TextView) inflater.inflate(R.layout.tab_my_schedule, mTabLayout, false);
+            TextView view =
+                    (TextView) inflater.inflate(R.layout.tab_my_schedule, mTabLayout, false);
             view.setId(BASE_TAB_VIEW_ID + i);
             view.setText(tab.getText());
             if (i == 0) {
@@ -409,14 +394,14 @@ public class MyScheduleActivity extends BaseActivity implements
     }
 
     private void hideLoginFailureView() {
-        mButterBar.setVisibility(View.GONE);
-        deregisterHideableHeaderView(mButterBar);
+        mFailedLoginView.setVisibility(View.GONE);
+        deregisterHideableHeaderView(mFailedLoginView);
     }
 
     @Override
     public void onAuthFailure(String accountName) {
         super.onAuthFailure(accountName);
-        UIUtils.setUpButterBar(mButterBar, getString(R.string.login_failed_text),
+        UIUtils.setUpButterBar(mFailedLoginView, getString(R.string.login_failed_text),
                 getString(R.string.login_failed_text_retry), new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -509,25 +494,6 @@ public class MyScheduleActivity extends BaseActivity implements
         }
     }
 
-    private void updateData() {
-        for (int i = 0; i < Config.CONFERENCE_DAYS.length; i++) {
-            mDataHelper.getScheduleDataAsync(mScheduleAdapters[i],
-                    Config.CONFERENCE_DAYS[i][0], Config.CONFERENCE_DAYS[i][1]);
-        }
-    }
-
-    public MyScheduleDayAdapter[] getConferenceData() {
-        return mScheduleAdapters;
-    }
-
-    public MyScheduleDayAdapter getPreConferenceData() {
-        return mPreConferenceDayAdapter;
-    }
-
-    private boolean showPreConferenceData() {
-        return mPreConferenceDayAdapter != null;
-    }
-
     @Override
     public void onSingleDayFragmentAttached(MyScheduleSingleDayFragment fragment) {
         mMyScheduleSingleDayFragments.add(fragment);
@@ -545,46 +511,9 @@ public class MyScheduleActivity extends BaseActivity implements
         return true;
     }
 
-    protected void addDataObservers() {
-        getContentResolver().registerContentObserver(
-                ScheduleContract.BASE_CONTENT_URI, true, mObserver);
-
-        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(this);
-        sp.registerOnSharedPreferenceChangeListener(mPrefChangeListener);
-    }
-
-    public void removeDataObservers() {
-        getContentResolver().unregisterContentObserver(mObserver);
-
-        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(this);
-        sp.unregisterOnSharedPreferenceChangeListener(mPrefChangeListener);
-    }
-
-    private final SharedPreferences.OnSharedPreferenceChangeListener mPrefChangeListener =
-            new SharedPreferences.OnSharedPreferenceChangeListener() {
-                @Override
-                public void onSharedPreferenceChanged(SharedPreferences sp, String key) {
-                    LOGD(TAG, "sharedpreferences key " + key + " changed, maybe reloading data.");
-                    for (MyScheduleDayAdapter adapter : mScheduleAdapters) {
-                        if (SettingsUtils.PREF_LOCAL_TIMES.equals(key)) {
-                            adapter.forceUpdate();
-                        } else if (SettingsUtils.PREF_ATTENDEE_AT_VENUE.equals(key)) {
-                            updateData();
-                        }
-                    }
-                }
-            };
-
-    private final ContentObserver mObserver = new ThrottledContentObserver(
-            new ThrottledContentObserver.Callbacks() {
-                @Override
-                public void onThrottledContentObserverFired() {
-                    LOGD(TAG, "content may be changed, reloading data");
-                    updateData();
-                }
-            });
 
     private Runnable mUpdateUIRunnable = new Runnable() {
+
         @Override
         public void run() {
             MyScheduleActivity activity = MyScheduleActivity.this;
@@ -596,16 +525,10 @@ public class MyScheduleActivity extends BaseActivity implements
             LOGD(TAG, "Running MySchedule UI updater (now=" +
                     new Date(TimeUtils.getCurrentTime(activity)) + ")");
 
-            if (activity.mScheduleAdapters != null
-                    && activity.mScheduleAdapters.length > mToday
-                    && activity.mScheduleAdapters[mToday] != null) {
-                try {
-                    activity.mScheduleAdapters[mToday].forceUpdate();
-                } finally {
-                    if (mConferenceInProgress) {
-                        scheduleNextUIUpdate();
-                    }
-                }
+            mPresenter.onUserAction(MyScheduleModel.MyScheduleUserActionEnum.REDRAW_UI, null);
+
+            if (mConferenceInProgress) {
+                scheduleNextUIUpdate();
             }
         }
     };
@@ -613,7 +536,6 @@ public class MyScheduleActivity extends BaseActivity implements
     private Handler mUpdateUIHandler = new Handler();
 
     private void scheduleNextUIUpdate() {
-        // TODO -test setup
         // Remove existing UI update runnable, if any
         mUpdateUIHandler.removeCallbacks(mUpdateUIRunnable);
 

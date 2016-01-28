@@ -127,7 +127,7 @@ public class ExploreSessionsFragment extends Fragment implements
                     .getBoolean(STATE_SHOW_LIVESTREAMED_SESSIONS);
             if (mSessionQueryToken > 0) {
                 // Only if this is a config change should we initLoader(), to reconnect with an
-                // existing loader. Otherwise, the loader will be init'd when reloadFromArguments
+                // existing loader. Otherwise, the loader will be initStaticDataAndObservers'd when reloadFromArguments
                 // is called.
                 getLoaderManager().initLoader(mSessionQueryToken, null, this);
             }

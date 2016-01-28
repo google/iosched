@@ -27,10 +27,10 @@ import static com.google.samples.apps.iosched.util.LogUtils.makeLogTag;
 
 /**
  * This view is a linear layout showing all schedule items from an {@link MyScheduleDayAdapter}.
- * This is used by {@link MyScheduleAllDaysFragment}. This is different from a
- * {@link android.widget.ListView}, in that this view does NOT scroll, it resizes to fit all items.
- * It is suitable for use as part of a larger view where you want the larger view to scroll as one,
- * with this list of items inside it.
+ * This is used by {@link MyScheduleAllDaysFragment}. This is different from a {@link
+ * android.widget.ListView}, in that this view does NOT scroll, it resizes to fit all items. It is
+ * suitable for use as part of a larger view where you want the larger view to scroll as one, with
+ * this list of items inside it.
  */
 public class MyScheduleSingleDayNoScrollView extends LinearLayout {
     private static final String TAG = makeLogTag(MyScheduleSingleDayNoScrollView.class);
@@ -49,6 +49,10 @@ public class MyScheduleSingleDayNoScrollView extends LinearLayout {
     public MyScheduleSingleDayNoScrollView(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
         setOrientation(LinearLayout.VERTICAL);
+    }
+
+    public MyScheduleDayAdapter getAdapter() {
+        return mAdapter;
     }
 
     public void setAdapter(MyScheduleDayAdapter adapter) {

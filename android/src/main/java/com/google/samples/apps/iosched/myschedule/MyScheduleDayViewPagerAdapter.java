@@ -16,7 +16,6 @@
 
 package com.google.samples.apps.iosched.myschedule;
 
-import android.app.Fragment;
 import android.app.FragmentManager;
 import android.content.Context;
 import android.os.Bundle;
@@ -40,22 +39,37 @@ public class MyScheduleDayViewPagerAdapter extends FragmentPagerAdapter {
 
     private boolean mShowPreConferenceDay;
 
-    public MyScheduleDayViewPagerAdapter(Context context, FragmentManager fm, boolean showPreConferenceDay) {
+    private MyScheduleSingleDayFragment[] mFragments;
+
+    public MyScheduleDayViewPagerAdapter(Context context, FragmentManager fm,
+            boolean showPreConferenceDay) {
         super(fm);
         mShowPreConferenceDay = showPreConferenceDay;
         mContext = context;
     }
 
     @Override
-    public Fragment getItem(int position) {
+    public MyScheduleSingleDayFragment getItem(int position) {
         LOGD(TAG, "Creating fragment #" + position);
-        if (mShowPreConferenceDay) {
-            position--;
+
+        // Reuse cached fragment if present
+        if (mFragments != null && mFragments.length > position && mFragments[position] != null) {
+            return mFragments[position];
         }
+
         MyScheduleSingleDayFragment frag = new MyScheduleSingleDayFragment();
         Bundle args = new Bundle();
-        args.putInt(MyScheduleActivity.ARG_CONFERENCE_DAY_INDEX, position);
+
+        // 1 for the first day of the conference, 2 for the second etc and 0 for the pre conference
+        // day if any
+        args.putInt(MyScheduleActivity.ARG_CONFERENCE_DAY_INDEX,
+                mShowPreConferenceDay ? position : position + 1);
+
         frag.setArguments(args);
+        if (mFragments == null) {
+            mFragments = new MyScheduleSingleDayFragment[getCount()];
+        }
+        mFragments[position] = frag;
         return frag;
     }
 

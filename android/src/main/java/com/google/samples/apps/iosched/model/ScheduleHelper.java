@@ -23,7 +23,7 @@ import android.util.Log;
 
 import com.google.samples.apps.iosched.BuildConfig;
 import com.google.samples.apps.iosched.R;
-import com.google.samples.apps.iosched.myschedule.MyScheduleDayAdapter;
+import com.google.samples.apps.iosched.myschedule.MyScheduleModel;
 import com.google.samples.apps.iosched.provider.ScheduleContract;
 import com.google.samples.apps.iosched.provider.ScheduleContract.Blocks;
 import com.google.samples.apps.iosched.provider.ScheduleContract.Sessions;
@@ -138,7 +138,7 @@ public class ScheduleHelper {
         }
     }
 
-    public void getScheduleDataAsync(final MyScheduleDayAdapter adapter,
+    public void getScheduleDataAsync(final MyScheduleModel.LoadScheduleDataListener callback,
             long start, long end) {
         AsyncTask<Long, Void, ArrayList<ScheduleItem>> task
                 = new AsyncTask<Long, Void, ArrayList<ScheduleItem>>() {
@@ -151,7 +151,7 @@ public class ScheduleHelper {
 
             @Override
             protected void onPostExecute(ArrayList<ScheduleItem> scheduleItems) {
-                adapter.updateItems(scheduleItems);
+                callback.onDataLoaded(scheduleItems);
             }
         };
         // On honeycomb and above, AsyncTasks are by default executed one by one. We are using a

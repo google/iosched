@@ -15,6 +15,7 @@
  */
 package com.google.samples.apps.iosched.model;
 
+import com.google.common.annotations.VisibleForTesting;
 import com.google.samples.apps.iosched.provider.ScheduleContract;
 
 public class ScheduleItem implements Cloneable, Comparable<ScheduleItem> {
@@ -75,6 +76,16 @@ public class ScheduleItem implements Cloneable, Comparable<ScheduleItem> {
             type = BREAK;
         }
     }
+
+    /**
+     * Public fields cannot be mocked, so in order to being able to write unit tests, this getter
+     * is provided.
+     */
+    @VisibleForTesting
+    public String getTitle() {
+        return title;
+    }
+
 
     @Override
     public Object clone()  {

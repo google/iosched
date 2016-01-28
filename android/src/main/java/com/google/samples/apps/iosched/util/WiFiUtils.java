@@ -88,10 +88,12 @@ public class WiFiUtils {
         WifiManager wifiManager = (WifiManager) context.getSystemService(Context.WIFI_SERVICE);
 
         List<WifiConfiguration> configuredNetworks = wifiManager.getConfiguredNetworks();
-        for (WifiConfiguration wifiConfig: configuredNetworks) {
-            if (wifiConfig.SSID.equals(conferenceConfig.SSID)) {
-                LOGW(TAG, "Removing network: " + wifiConfig.networkId);
-                wifiManager.removeNetwork(wifiConfig.networkId);
+        if (configuredNetworks != null) {
+            for (WifiConfiguration wifiConfig: configuredNetworks) {
+                if (wifiConfig.SSID.equals(conferenceConfig.SSID)) {
+                    LOGW(TAG, "Removing network: " + wifiConfig.networkId);
+                    wifiManager.removeNetwork(wifiConfig.networkId);
+                }
             }
         }
     }

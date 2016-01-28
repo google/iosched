@@ -27,8 +27,7 @@ import java.util.ArrayList;
  * This has methods to create stub {@link ScheduleItem}s. To generate different mock {@link
  * ScheduleItem}, log the output of {@link OutputMockData#generateScheduleItemCode(ArrayList)} in
  * {@link com.google.samples.apps.iosched.archframework.ModelWithLoaderManager#onLoadFinished
- * (QueryEnum,
- * Cursor)} and copy the logged string into a method that returns a {@link
+ * (QueryEnum, Cursor)} and copy the logged string into a method that returns a {@link
  * ArrayList<ScheduleItem>}.
  */
 

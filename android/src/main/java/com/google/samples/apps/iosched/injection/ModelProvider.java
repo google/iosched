@@ -4,6 +4,8 @@ import android.app.LoaderManager;
 import android.content.Context;
 import android.net.Uri;
 
+import com.google.samples.apps.iosched.model.ScheduleHelper;
+import com.google.samples.apps.iosched.myschedule.MyScheduleModel;
 import com.google.samples.apps.iosched.session.SessionDetailModel;
 import com.google.samples.apps.iosched.util.SessionsHelper;
 
@@ -13,6 +15,8 @@ import com.google.samples.apps.iosched.util.SessionsHelper;
 public class ModelProvider {
 
     private static SessionDetailModel stubSessionDetailModel = null;
+
+    private static MyScheduleModel stubMyScheduleModel = null;
 
     public static void setStubSessionDetailModel(SessionDetailModel model) {
         stubSessionDetailModel = model;
@@ -25,6 +29,19 @@ public class ModelProvider {
             return stubSessionDetailModel;
         } else {
             return new SessionDetailModel(sessionUri, context, sessionsHelper, loaderManager);
+        }
+    }
+
+    public static void setStubMyScheduleModel(MyScheduleModel model) {
+        stubMyScheduleModel = model;
+    }
+
+    public static MyScheduleModel provideMyScheduleModel(ScheduleHelper scheduleHelper,
+            Context context) {
+        if (stubMyScheduleModel != null) {
+            return stubMyScheduleModel;
+        } else {
+            return new MyScheduleModel(scheduleHelper, context).initStaticDataAndObservers();
         }
     }
 
