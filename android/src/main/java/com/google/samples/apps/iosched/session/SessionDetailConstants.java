@@ -25,7 +25,8 @@ public class SessionDetailConstants {
 
     /**
      * Every 10 seconds, the time sensitive views of {@link SessionDetailFragment} are updated.
-     * Those are related to live streaming, feedback, and information about how soon the session starts.
+     * Those are related to live streaming, feedback, and information about how soon the session
+     * starts.
      */
     public static final int TIME_HINT_UPDATE_INTERVAL = 10000;
 

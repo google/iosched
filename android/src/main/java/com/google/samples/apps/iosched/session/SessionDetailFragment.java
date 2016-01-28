@@ -16,30 +16,6 @@
 
 package com.google.samples.apps.iosched.session;
 
-import com.google.samples.apps.iosched.Config;
-import com.google.samples.apps.iosched.R;
-import com.google.samples.apps.iosched.explore.ExploreSessionsActivity;
-import com.google.samples.apps.iosched.framework.QueryEnum;
-import com.google.samples.apps.iosched.framework.UpdatableView;
-import com.google.samples.apps.iosched.framework.UserActionEnum;
-import com.google.samples.apps.iosched.model.TagMetadata;
-import com.google.samples.apps.iosched.session.SessionDetailModel.SessionDetailQueryEnum;
-import com.google.samples.apps.iosched.session.SessionDetailModel.SessionDetailUserActionEnum;
-import com.google.samples.apps.iosched.ui.widget.CheckableFloatingActionButton;
-import com.google.samples.apps.iosched.ui.widget.MessageCardView;
-import com.google.samples.apps.iosched.ui.widget.ObservableScrollView;
-import com.google.samples.apps.iosched.util.AccountUtils;
-import com.google.samples.apps.iosched.util.AnalyticsHelper;
-import com.google.samples.apps.iosched.util.ImageLoader;
-import com.google.samples.apps.iosched.util.LUtils;
-import com.google.samples.apps.iosched.util.LogUtils;
-import com.google.samples.apps.iosched.util.TimeUtils;
-import com.google.samples.apps.iosched.util.UIUtils;
-
-import com.bumptech.glide.request.RequestListener;
-import com.bumptech.glide.request.target.Target;
-import com.google.samples.apps.iosched.util.YouTubeUtils;
-
 import android.app.Fragment;
 import android.content.Context;
 import android.content.Intent;
@@ -63,6 +39,31 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.bumptech.glide.request.RequestListener;
+import com.bumptech.glide.request.target.Target;
+import com.google.samples.apps.iosched.Config;
+import com.google.samples.apps.iosched.R;
+import com.google.samples.apps.iosched.archframework.PresenterImpl;
+import com.google.samples.apps.iosched.archframework.UpdatableView;
+import com.google.samples.apps.iosched.archframework.UserActionEnum;
+import com.google.samples.apps.iosched.explore.ExploreSessionsActivity;
+import com.google.samples.apps.iosched.injection.ModelProvider;
+import com.google.samples.apps.iosched.model.TagMetadata;
+import com.google.samples.apps.iosched.session.SessionDetailModel.SessionDetailQueryEnum;
+import com.google.samples.apps.iosched.session.SessionDetailModel.SessionDetailUserActionEnum;
+import com.google.samples.apps.iosched.ui.widget.CheckableFloatingActionButton;
+import com.google.samples.apps.iosched.ui.widget.MessageCardView;
+import com.google.samples.apps.iosched.ui.widget.ObservableScrollView;
+import com.google.samples.apps.iosched.util.AccountUtils;
+import com.google.samples.apps.iosched.util.AnalyticsHelper;
+import com.google.samples.apps.iosched.util.ImageLoader;
+import com.google.samples.apps.iosched.util.LUtils;
+import com.google.samples.apps.iosched.util.LogUtils;
+import com.google.samples.apps.iosched.util.SessionsHelper;
+import com.google.samples.apps.iosched.util.TimeUtils;
+import com.google.samples.apps.iosched.util.UIUtils;
+import com.google.samples.apps.iosched.util.YouTubeUtils;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
@@ -76,14 +77,15 @@ import static com.google.samples.apps.iosched.util.LogUtils.LOGD;
  * submit feedback.
  */
 public class SessionDetailFragment extends Fragment
-        implements ObservableScrollView.Callbacks, UpdatableView<SessionDetailModel> {
+        implements ObservableScrollView.Callbacks, UpdatableView<SessionDetailModel,
+        SessionDetailQueryEnum, SessionDetailUserActionEnum> {
 
     private static final String TAG = LogUtils.makeLogTag(SessionDetailFragment.class);
 
     /**
      * Stores the session IDs for which the user has dismissed the "give feedback" card. This
-     * information is kept for the duration of the app's execution so that if they say "No,
-     * thanks", we don't show the card again for that session while the app is still executing.
+     * information is kept for the duration of the app's execution so that if they say "No, thanks",
+     * we don't show the card again for that session while the app is still executing.
      */
     private static HashSet<String> sDismissedFeedbackCard = new HashSet<>();
 
@@ -103,10 +105,6 @@ public class SessionDetailFragment extends Fragment
     private ObservableScrollView mScrollView;
 
     private TextView mAbstract;
-
-    private ImageView mPlusOneIcon;
-
-    private ImageView mTwitterIcon;
 
     private TextView mLiveStreamVideocamIconAndText;
 
@@ -148,11 +146,11 @@ public class SessionDetailFragment extends Fragment
 
     private boolean mAnalyticsScreenViewHasFired;
 
-    List<UserActionListener> mListeners = new ArrayList<>();
+    private UserActionListener mListener;
 
     @Override
-    public void addListener(UserActionListener toAdd) {
-        mListeners.add(toAdd);
+    public void addListener(UserActionListener listener) {
+        mListener = listener;
     }
 
     @Override
@@ -164,7 +162,7 @@ public class SessionDetailFragment extends Fragment
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+            Bundle savedInstanceState) {
         return inflater.inflate(R.layout.session_detail_frag, container, false);
     }
 
@@ -173,6 +171,7 @@ public class SessionDetailFragment extends Fragment
         super.onActivityCreated(savedInstanceState);
         mLUtils = LUtils.getInstance((AppCompatActivity) getActivity());
         mHandler = new Handler();
+        initPresenter();
         initViews();
         initViewListeners();
     }
@@ -228,9 +227,16 @@ public class SessionDetailFragment extends Fragment
     }
 
     private void sendUserAction(UserActionEnum action, Bundle args) {
-        for (UserActionListener l : mListeners) {
-            l.onUserAction(action, args);
-        }
+        mListener.onUserAction(action, args);
+    }
+
+    private void initPresenter() {
+        SessionDetailModel model = ModelProvider.provideSessionDetailModel(
+                ((SessionDetailActivity) getActivity()).getSessionUri(), getContext(),
+                new SessionsHelper(getActivity()), getLoaderManager());
+        PresenterImpl presenter = new PresenterImpl(model, this,
+                SessionDetailUserActionEnum.values(), SessionDetailQueryEnum.values());
+        presenter.loadInitialQueries();
     }
 
     private void initViews() {
@@ -257,14 +263,12 @@ public class SessionDetailFragment extends Fragment
 
         mAbstract = (TextView) getActivity().findViewById(R.id.session_abstract);
 
-        mPlusOneIcon = (ImageView) getActivity().findViewById(R.id.gplus_icon_box);
-        mTwitterIcon = (ImageView) getActivity().findViewById(R.id.twitter_icon_box);
-
         //Find view that shows a Videocam icon if the session is being live streamed.
         mLiveStreamVideocamIconAndText = (TextView) getActivity().findViewById(
                 R.id.live_stream_videocam_icon_and_text);
 
-        // Find view that shows a play button and some text for the user to watch the session live stream.
+        // Find view that shows a play button and some text for the user to watch the session
+        // live stream.
         mLiveStreamPlayIconAndText = (TextView) getActivity().findViewById(
                 R.id.live_stream_play_icon_and_text);
 
@@ -319,15 +323,22 @@ public class SessionDetailFragment extends Fragment
     }
 
     @Override
-    public void displayData(SessionDetailModel data, QueryEnum query) {
-        if (SessionDetailQueryEnum.SESSIONS == query) {
-            displaySessionData(data);
-        } else if (SessionDetailQueryEnum.FEEDBACK == query) {
-            displayFeedbackData(data);
-        } else if (SessionDetailQueryEnum.SPEAKERS == query) {
-            displaySpeakersData(data);
-        } else if (SessionDetailQueryEnum.TAG_METADATA == query) {
-            displayTags(data);
+    public void displayData(SessionDetailModel data, SessionDetailQueryEnum query) {
+        switch (query) {
+            case SESSIONS:
+                displaySessionData(data);
+                break;
+            case FEEDBACK:
+                displayFeedbackData(data);
+                break;
+            case SPEAKERS:
+                displaySpeakersData(data);
+                break;
+            case TAG_METADATA:
+                displayTags(data);
+                break;
+            default:
+                break;
         }
     }
 
@@ -363,15 +374,24 @@ public class SessionDetailFragment extends Fragment
     }
 
     @Override
-    public void displayErrorMessage(QueryEnum query) {
+    public void displayErrorMessage(SessionDetailQueryEnum query) {
+        // Not showing any error
     }
 
     @Override
-    public Uri getDataUri(QueryEnum query) {
-        if (SessionDetailQueryEnum.SESSIONS == query) {
-            return ((SessionDetailActivity) getActivity()).getSessionUri();
-        } else {
-            return null;
+    public void displayUserActionResult(SessionDetailModel data,
+            SessionDetailUserActionEnum userAction,
+            boolean success) {
+        // User actions all handled in model
+    }
+
+    @Override
+    public Uri getDataUri(SessionDetailQueryEnum query) {
+        switch (query) {
+            case SESSIONS:
+                return ((SessionDetailActivity) getActivity()).getSessionUri();
+            default:
+                return null;
         }
     }
 
@@ -418,23 +438,25 @@ public class SessionDetailFragment extends Fragment
 
         if (data.hasPhotoUrl()) {
             mHasPhoto = true;
-            mNoPlaceholderImageLoader.loadImage(data.getPhotoUrl(), mPhotoView, new RequestListener<String, Bitmap>() {
-                @Override
-                public boolean onException(Exception e, String model, Target<Bitmap> target,
-                                           boolean isFirstResource) {
-                    mHasPhoto = false;
-                    recomputePhotoAndScrollingMetrics();
-                    return false;
-                }
+            mNoPlaceholderImageLoader.loadImage(data.getPhotoUrl(), mPhotoView,
+                    new RequestListener<String, Bitmap>() {
+                        @Override
+                        public boolean onException(Exception e, String model, Target<Bitmap> target,
+                                boolean isFirstResource) {
+                            mHasPhoto = false;
+                            recomputePhotoAndScrollingMetrics();
+                            return false;
+                        }
 
-                @Override
-                public boolean onResourceReady(Bitmap resource, String model, Target<Bitmap> target,
-                                               boolean isFromMemoryCache, boolean isFirstResource) {
-                    // Trigger image transition
-                    recomputePhotoAndScrollingMetrics();
-                    return false;
-                }
-            });
+                        @Override
+                        public boolean onResourceReady(Bitmap resource, String model,
+                                Target<Bitmap> target,
+                                boolean isFromMemoryCache, boolean isFirstResource) {
+                            // Trigger image transition
+                            recomputePhotoAndScrollingMetrics();
+                            return false;
+                        }
+                    });
             recomputePhotoAndScrollingMetrics();
         } else {
             mHasPhoto = false;
@@ -525,9 +547,8 @@ public class SessionDetailFragment extends Fragment
     }
 
     /**
-     * Sends a screen view to Google Analytics, if a screenview hasn't already been sent
-     * since the fragment was loaded.  This prevents background syncs from causing superflous
-     * screen views.
+     * Sends a screen view to Google Analytics, if a screenview hasn't already been sent since the
+     * fragment was loaded.  This prevents background syncs from causing superflous screen views.
      *
      * @param sessionTitle The name of the session being tracked.
      */
@@ -639,8 +660,8 @@ public class SessionDetailFragment extends Fragment
      * for the icon.
      */
     private void setUpSpeakerSocialIcon(final SessionDetailModel.Speaker speaker,
-                                        ImageView socialIcon, final String socialUrl,
-                                        String socialNetworkName, final String packageName) {
+            ImageView socialIcon, final String socialUrl,
+            String socialNetworkName, final String packageName) {
         if (socialUrl == null || socialUrl.isEmpty()) {
             socialIcon.setVisibility(View.GONE);
         } else {
@@ -696,8 +717,9 @@ public class SessionDetailFragment extends Fragment
 
     private void updateTimeBasedUi(SessionDetailModel data) {
         // Show "Live streamed" for all live-streamed sessions that aren't currently going on.
-        mLiveStreamVideocamIconAndText.setVisibility(data.hasLiveStream() && !data.isSessionOngoing() ?
-                View.VISIBLE : View.GONE);
+        mLiveStreamVideocamIconAndText
+                .setVisibility(data.hasLiveStream() && !data.isSessionOngoing() ?
+                        View.VISIBLE : View.GONE);
 
         if (data.hasLiveStream() && data.hasSessionStarted()) {
             // Show the play button and text only once the session starts.

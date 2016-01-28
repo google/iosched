@@ -94,6 +94,12 @@ public class TagMetadata {
         return bestTag;
     }
 
+    @Override
+    public String toString() {
+        return "Tag Metadata has " + mTagsById.size() + " tags in " + mTagsInCategory.size()
+                + " categories";
+    }
+
     public static Comparator<Tag> TAG_DISPLAY_ORDER_COMPARATOR = new Comparator<Tag>() {
         @Override
         public int compare(Tag tag, Tag tag2) {

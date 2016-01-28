@@ -16,23 +16,7 @@
 
 package com.google.samples.apps.iosched.session;
 
-import com.google.common.annotations.VisibleForTesting;
-import com.google.samples.apps.iosched.Config;
-import com.google.samples.apps.iosched.R;
-import com.google.samples.apps.iosched.feedback.SessionFeedbackActivity;
-import com.google.samples.apps.iosched.framework.Model;
-import com.google.samples.apps.iosched.framework.QueryEnum;
-import com.google.samples.apps.iosched.framework.UserActionEnum;
-import com.google.samples.apps.iosched.model.TagMetadata;
-import com.google.samples.apps.iosched.provider.ScheduleContract;
-import com.google.samples.apps.iosched.service.SessionAlarmService;
-import com.google.samples.apps.iosched.service.SessionCalendarService;
-import com.google.samples.apps.iosched.util.AccountUtils;
-import com.google.samples.apps.iosched.util.AnalyticsHelper;
-import com.google.samples.apps.iosched.util.SessionsHelper;
-import com.google.samples.apps.iosched.util.TimeUtils;
-import com.google.samples.apps.iosched.util.UIUtils;
-
+import android.app.LoaderManager;
 import android.content.Context;
 import android.content.CursorLoader;
 import android.content.Intent;
@@ -44,16 +28,33 @@ import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Pair;
 
+import com.google.common.annotations.VisibleForTesting;
+import com.google.samples.apps.iosched.Config;
+import com.google.samples.apps.iosched.R;
+import com.google.samples.apps.iosched.archframework.ModelWithLoaderManager;
+import com.google.samples.apps.iosched.archframework.QueryEnum;
+import com.google.samples.apps.iosched.archframework.UserActionEnum;
+import com.google.samples.apps.iosched.feedback.SessionFeedbackActivity;
+import com.google.samples.apps.iosched.model.TagMetadata;
+import com.google.samples.apps.iosched.provider.ScheduleContract;
+import com.google.samples.apps.iosched.service.SessionAlarmService;
+import com.google.samples.apps.iosched.service.SessionCalendarService;
+import com.google.samples.apps.iosched.util.AccountUtils;
+import com.google.samples.apps.iosched.util.AnalyticsHelper;
+import com.google.samples.apps.iosched.util.SessionsHelper;
+import com.google.samples.apps.iosched.util.TimeUtils;
+import com.google.samples.apps.iosched.util.UIUtils;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
-import javax.annotation.Nullable;
-
 import static com.google.samples.apps.iosched.util.LogUtils.LOGD;
 import static com.google.samples.apps.iosched.util.LogUtils.makeLogTag;
 
-public class SessionDetailModel implements Model {
+public class SessionDetailModel
+        extends ModelWithLoaderManager<SessionDetailModel.SessionDetailQueryEnum,
+        SessionDetailModel.SessionDetailUserActionEnum> {
 
     protected final static String TAG = makeLogTag(SessionDetailModel.class);
 
@@ -146,7 +147,9 @@ public class SessionDetailModel implements Model {
 
     private StringBuilder mBuffer = new StringBuilder();
 
-    public SessionDetailModel(Uri sessionUri, Context context, SessionsHelper sessionsHelper) {
+    public SessionDetailModel(Uri sessionUri, Context context, SessionsHelper sessionsHelper,
+            LoaderManager loaderManager) {
+        super(SessionDetailQueryEnum.values(), SessionDetailUserActionEnum.values(), loaderManager);
         mContext = context;
         mSessionsHelper = sessionsHelper;
         mSessionUri = sessionUri;
@@ -237,7 +240,7 @@ public class SessionDetailModel implements Model {
     }
 
     public boolean hasLiveStream() {
-        return mHasLiveStream || !TextUtils.isEmpty(mYouTubeUrl);
+        return mHasLiveStream || (!TextUtils.isEmpty(mYouTubeUrl) && !mYouTubeUrl.equals("null"));
     }
 
     public boolean isInSchedule() {
@@ -293,15 +296,11 @@ public class SessionDetailModel implements Model {
     }
 
     @Override
-    public QueryEnum[] getQueries() {
-        return SessionDetailQueryEnum.values();
-    }
-
-    @Override
-    public boolean readDataFromCursor(Cursor cursor, QueryEnum query) {
+    public boolean readDataFromCursor(Cursor cursor, SessionDetailQueryEnum query) {
         boolean success = false;
 
         if (cursor != null && cursor.moveToFirst()) {
+
             if (SessionDetailQueryEnum.SESSIONS == query) {
                 readDataFromSessionCursor(cursor);
                 mSessionLoaded = true;
@@ -493,38 +492,44 @@ public class SessionDetailModel implements Model {
     }
 
     @Override
-    public Loader<Cursor> createCursorLoader(int loaderId, Uri uri, Bundle args) {
+    public Loader<Cursor> createCursorLoader(SessionDetailQueryEnum query, Bundle args) {
         CursorLoader loader = null;
-
-        if (loaderId == SessionDetailQueryEnum.SESSIONS.getId()) {
-            mSessionUri = uri;
-            mSessionId = getSessionId(uri);
-            loader = getCursorLoaderInstance(mContext, uri,
-                    SessionDetailQueryEnum.SESSIONS.getProjection(), null, null, null);
-        } else if (loaderId == SessionDetailQueryEnum.SPEAKERS.getId() && mSessionUri != null) {
-            Uri speakersUri = getSpeakersDirUri(mSessionId);
-            loader = getCursorLoaderInstance(mContext, speakersUri,
-                    SessionDetailQueryEnum.SPEAKERS.getProjection(), null, null,
-                    ScheduleContract.Speakers.DEFAULT_SORT);
-        } else if (loaderId == SessionDetailQueryEnum.FEEDBACK.getId()) {
-            Uri feedbackUri = getFeedbackUri(mSessionId);
-            loader = getCursorLoaderInstance(mContext, feedbackUri,
-                    SessionDetailQueryEnum.FEEDBACK.getProjection(), null, null, null);
-        } else if (loaderId == SessionDetailQueryEnum.TAG_METADATA.getId()) {
-            loader = getTagMetadataLoader();
-        } else if (loaderId == SessionDetailQueryEnum.MY_VIEWED_VIDEOS.getId()) {
-            LOGD(TAG, "Starting My Viewed Videos query");
-            Uri myPlayedVideoUri = ScheduleContract.MyViewedVideos.buildMyViewedVideosUri(
-                    AccountUtils.getActiveAccountName(mContext));
-            loader = getCursorLoaderInstance(mContext, myPlayedVideoUri,
-                    SessionDetailQueryEnum.MY_VIEWED_VIDEOS.getProjection(), null, null, null);
+        if (query == null) {
+            return loader;
+        }
+        switch (query) {
+            case SESSIONS:
+                mSessionId = getSessionId(mSessionUri);
+                loader = getCursorLoaderInstance(mContext, mSessionUri,
+                        SessionDetailQueryEnum.SESSIONS.getProjection(), null, null, null);
+                break;
+            case SPEAKERS:
+                Uri speakersUri = getSpeakersDirUri(mSessionId);
+                loader = getCursorLoaderInstance(mContext, speakersUri,
+                        SessionDetailQueryEnum.SPEAKERS.getProjection(), null, null,
+                        ScheduleContract.Speakers.DEFAULT_SORT);
+                break;
+            case FEEDBACK:
+                Uri feedbackUri = getFeedbackUri(mSessionId);
+                loader = getCursorLoaderInstance(mContext, feedbackUri,
+                        SessionDetailQueryEnum.FEEDBACK.getProjection(), null, null, null);
+                break;
+            case TAG_METADATA:
+                loader = getTagMetadataLoader();
+                break;
+            case MY_VIEWED_VIDEOS:
+                Uri myPlayedVideoUri = ScheduleContract.MyViewedVideos.buildMyViewedVideosUri(
+                        AccountUtils.getActiveAccountName(mContext));
+                loader = getCursorLoaderInstance(mContext, myPlayedVideoUri,
+                        SessionDetailQueryEnum.MY_VIEWED_VIDEOS.getProjection(), null, null, null);
+                break;
         }
         return loader;
     }
 
     @VisibleForTesting
     public CursorLoader getCursorLoaderInstance(Context context, Uri uri, String[] projection,
-                                                String selection, String[] selectionArgs, String sortOrder) {
+            String selection, String[] selectionArgs, String sortOrder) {
         return new CursorLoader(context, uri, projection, selection, selectionArgs, sortOrder);
     }
 
@@ -549,34 +554,39 @@ public class SessionDetailModel implements Model {
     }
 
     @Override
-    public boolean requestModelUpdate(UserActionEnum action, @Nullable Bundle args) {
-        boolean success = false;
-        if (action == SessionDetailUserActionEnum.STAR) {
-            mInSchedule = true;
-            mSessionsHelper.setSessionStarred(mSessionUri, true, null);
-            amendCalendarAndSetUpNotificationIfRequired();
-            success = true;
-            sendAnalyticsEventForStarUnstarSession(true);
-        } else if (action == SessionDetailUserActionEnum.UNSTAR) {
-            mInSchedule = false;
-            mSessionsHelper.setSessionStarred(mSessionUri, false, null);
-            amendCalendarAndSetUpNotificationIfRequired();
-            success = true;
-            sendAnalyticsEventForStarUnstarSession(false);
-        } else if (action == SessionDetailUserActionEnum.SHOW_MAP) {
-            // ANALYTICS EVENT: Click on Map action in Session Details page.
-            // Contains: Session title/subtitle
-            sendAnalyticsEvent("Session", "Map", mTitle);
-            mSessionsHelper.startMapActivity(mRoomId);
-            success = true;
-        } else if (action == SessionDetailUserActionEnum.SHOW_SHARE) {
-            // On ICS+ devices, we normally won't reach this as ShareActionProvider will handle
-            // sharing.
-            mSessionsHelper.shareSession(mContext, R.string.share_template, mTitle,
-                    mHashTag, mUrl);
-            success = true;
+    public void processUserAction(SessionDetailUserActionEnum action,
+            @android.support.annotation.Nullable Bundle args,
+            UserActionCallback callback) {
+        switch (action) {
+            case STAR:
+                mInSchedule = true;
+                mSessionsHelper.setSessionStarred(mSessionUri, true, null);
+                amendCalendarAndSetUpNotificationIfRequired();
+                sendAnalyticsEventForStarUnstarSession(true);
+                callback.onModelUpdated(this, action);
+                break;
+            case UNSTAR:
+                mInSchedule = false;
+                mSessionsHelper.setSessionStarred(mSessionUri, false, null);
+                amendCalendarAndSetUpNotificationIfRequired();
+                sendAnalyticsEventForStarUnstarSession(false);
+                callback.onModelUpdated(this, action);
+                break;
+            case SHOW_MAP:
+                // ANALYTICS EVENT: Click on Map action in Session Details page.
+                // Contains: Session title/subtitle
+                sendAnalyticsEvent("Session", "Map", mTitle);
+                mSessionsHelper.startMapActivity(mRoomId);
+                callback.onModelUpdated(this, action);
+                break;
+            case SHOW_SHARE:
+                mSessionsHelper.shareSession(mContext, R.string.share_template, mTitle,
+                        mHashTag, mUrl);
+                callback.onModelUpdated(this, action);
+                break;
+            default:
+                callback.onError(action);
         }
-        return success;
     }
 
     private void amendCalendarAndSetUpNotificationIfRequired() {
@@ -652,6 +662,11 @@ public class SessionDetailModel implements Model {
         sendAnalyticsEvent("Session", starred ? "Starred" : "Unstarred", mTitle);
     }
 
+    @Override
+    public void cleanUp() {
+        // Nothing to clean up
+    }
+
     public static class Speaker {
 
         private String mName;
@@ -669,7 +684,7 @@ public class SessionDetailModel implements Model {
         private String mAbstract;
 
         public Speaker(String name, String imageUrl, String company, String url, String plusoneUrl,
-                       String twitterUrl, String anAbstract) {
+                String twitterUrl, String anAbstract) {
             mName = name;
             mImageUrl = imageUrl;
             mCompany = company;
