@@ -1,5 +1,6 @@
 package com.google.samples.apps.iosched.injection;
 
+import android.app.Activity;
 import android.app.LoaderManager;
 import android.content.Context;
 import android.net.Uri;
@@ -10,6 +11,7 @@ import com.google.samples.apps.iosched.model.ScheduleHelper;
 import com.google.samples.apps.iosched.myschedule.MyScheduleModel;
 import com.google.samples.apps.iosched.session.SessionDetailModel;
 import com.google.samples.apps.iosched.util.SessionsHelper;
+import com.google.samples.apps.iosched.videolibrary.VideoLibraryModel;
 
 /**
  * Provides a way to inject stub classes when running integration tests.
@@ -21,6 +23,8 @@ public class ModelProvider {
     private static MyScheduleModel stubMyScheduleModel = null;
 
     private static SessionFeedbackModel stubSessionFeedbackModel = null;
+
+    private static VideoLibraryModel stubVideoLibraryModel = null;
 
     public static void setStubSessionDetailModel(SessionDetailModel model) {
         stubSessionDetailModel = model;
@@ -58,6 +62,20 @@ public class ModelProvider {
             return stubSessionFeedbackModel;
         } else {
             return new SessionFeedbackModel(loaderManager, sessionUri, context, feedbackHelper);
+        }
+    }
+
+    public static void setStubVideoLibraryModel(VideoLibraryModel model) {
+        stubVideoLibraryModel = model;
+    }
+
+    public static VideoLibraryModel provideVideoLibraryModel(Uri videoUri, Uri myVideosUri,
+            Uri filterUri, Activity activity, LoaderManager loaderManager) {
+
+        if (stubVideoLibraryModel != null) {
+            return stubVideoLibraryModel;
+        } else {
+            return new VideoLibraryModel(activity, loaderManager, videoUri, myVideosUri, filterUri);
         }
     }
 

@@ -23,11 +23,6 @@ import com.google.samples.apps.iosched.ui.BaseActivity;
 import com.google.samples.apps.iosched.ui.widget.CollectionView;
 import com.google.samples.apps.iosched.ui.widget.DrawShadowFrameLayout;
 import com.google.samples.apps.iosched.util.AnalyticsHelper;
-import com.google.samples.apps.iosched.videolibrary.VideoLibraryModel.VideoLibraryUserActionEnum;
-import com.google.samples.apps.iosched.videolibrary.VideoLibraryModel.VideoLibraryQueryEnum;
-
-
-import static com.google.samples.apps.iosched.util.LogUtils.LOGD;
 
 /**
  * This Activity displays all the videos of past Google I/O sessions in the form of a card for each
@@ -42,13 +37,6 @@ public class VideoLibraryActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.video_library_act);
-
-        addPresenterFragment(R.id.video_library_frag,
-                new VideoLibraryModel(getApplicationContext(), this),
-                new VideoLibraryQueryEnum[]{VideoLibraryQueryEnum.VIDEOS,
-                        VideoLibraryQueryEnum.MY_VIEWED_VIDEOS},
-                new VideoLibraryUserActionEnum[]{VideoLibraryUserActionEnum.RELOAD,
-                        VideoLibraryUserActionEnum.VIDEO_PLAYED});
 
         // ANALYTICS SCREEN: View the video library screen
         // Contains: Nothing (Page name is a constant)

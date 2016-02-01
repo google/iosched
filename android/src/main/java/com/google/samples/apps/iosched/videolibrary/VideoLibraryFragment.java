@@ -16,11 +16,11 @@
 
 package com.google.samples.apps.iosched.videolibrary;
 
+import android.app.Fragment;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.app.Fragment;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -30,9 +30,9 @@ import android.widget.TextView;
 
 import com.google.samples.apps.iosched.Config;
 import com.google.samples.apps.iosched.R;
-import com.google.samples.apps.iosched.framework.PresenterFragmentImpl;
-import com.google.samples.apps.iosched.framework.QueryEnum;
-import com.google.samples.apps.iosched.framework.UpdatableView;
+import com.google.samples.apps.iosched.archframework.PresenterImpl;
+import com.google.samples.apps.iosched.archframework.UpdatableView;
+import com.google.samples.apps.iosched.injection.ModelProvider;
 import com.google.samples.apps.iosched.provider.ScheduleContract;
 import com.google.samples.apps.iosched.ui.widget.CollectionView;
 import com.google.samples.apps.iosched.ui.widget.CollectionViewCallbacks;
@@ -40,11 +40,13 @@ import com.google.samples.apps.iosched.ui.widget.DrawShadowFrameLayout;
 import com.google.samples.apps.iosched.util.AnalyticsHelper;
 import com.google.samples.apps.iosched.util.ImageLoader;
 import com.google.samples.apps.iosched.util.UIUtils;
+import com.google.samples.apps.iosched.videolibrary.VideoLibraryModel.VideoLibraryQueryEnum;
+import com.google.samples.apps.iosched.videolibrary.VideoLibraryModel.VideoLibraryUserActionEnum;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
 import java.util.List;
-import java.util.ArrayList;
 import java.util.Locale;
 
 import static com.google.samples.apps.iosched.util.LogUtils.LOGD;
@@ -55,8 +57,9 @@ import static com.google.samples.apps.iosched.util.LogUtils.makeLogTag;
  * This Fragment displays all the videos of past Google I/O sessions in the form of a card for each
  * topics and a card for new videos of the current year.
  */
-public class VideoLibraryFragment extends Fragment implements UpdatableView<VideoLibraryModel>,
-        CollectionViewCallbacks.GroupCollectionViewCallbacks {
+public class VideoLibraryFragment extends Fragment
+        implements UpdatableView<VideoLibraryModel, VideoLibraryQueryEnum,
+        VideoLibraryUserActionEnum>, CollectionViewCallbacks.GroupCollectionViewCallbacks {
 
     private static final String TAG = makeLogTag(VideoLibraryFragment.class);
 
@@ -77,7 +80,8 @@ public class VideoLibraryFragment extends Fragment implements UpdatableView<Vide
     private List<UserActionListener> mListeners = new ArrayList<>();
 
     @Override
-    public void displayData(VideoLibraryModel model, QueryEnum query) {
+    public void displayData(final VideoLibraryModel model,
+            final VideoLibraryQueryEnum query) {
         if ((VideoLibraryModel.VideoLibraryQueryEnum.VIDEOS == query
                 || VideoLibraryModel.VideoLibraryQueryEnum.MY_VIEWED_VIDEOS == query)
                 && model.getVideos() != null) {
@@ -86,7 +90,26 @@ public class VideoLibraryFragment extends Fragment implements UpdatableView<Vide
     }
 
     @Override
-    public void displayErrorMessage(QueryEnum query) {
+    public void displayErrorMessage(final VideoLibraryQueryEnum query) {
+        // No UI changes upon query error
+    }
+
+    @Override
+    public void displayUserActionResult(final VideoLibraryModel model,
+            final VideoLibraryUserActionEnum userAction, final boolean success) {
+        // All user actions handled in model
+    }
+
+    @Override
+    public Uri getDataUri(final VideoLibraryQueryEnum query) {
+        switch (query) {
+            case VIDEOS:
+                return ScheduleContract.Videos.CONTENT_URI;
+            case MY_VIEWED_VIDEOS:
+                return ScheduleContract.MyViewedVideos.CONTENT_URI;
+            default:
+                return Uri.EMPTY;
+        }
     }
 
     @Override
@@ -107,9 +130,6 @@ public class VideoLibraryFragment extends Fragment implements UpdatableView<Vide
         mEmptyView = root.findViewById(android.R.id.empty);
         getActivity().overridePendingTransition(0, 0);
 
-        // Reload the content so that new random Videos are shown.
-        fireReloadEvent();
-
         return root;
     }
 
@@ -117,6 +137,21 @@ public class VideoLibraryFragment extends Fragment implements UpdatableView<Vide
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         mImageLoader = new ImageLoader(getActivity(), android.R.color.transparent);
+        initPresenter();
+    }
+
+    private void initPresenter() {
+        VideoLibraryModel model = ModelProvider
+                .provideVideoLibraryModel(getDataUri(VideoLibraryQueryEnum.VIDEOS),
+                        getDataUri(VideoLibraryQueryEnum.MY_VIEWED_VIDEOS),
+                        getDataUri(VideoLibraryQueryEnum.FILTERS), getActivity(),
+                        getLoaderManager());
+        PresenterImpl presenter =
+                new PresenterImpl(model, this, VideoLibraryUserActionEnum.values(),
+                        VideoLibraryQueryEnum.values());
+        presenter.loadInitialQueries();
+
+        addListener(presenter);
     }
 
     private void setContentTopClearance(int clearance) {
@@ -237,7 +272,7 @@ public class VideoLibraryFragment extends Fragment implements UpdatableView<Vide
             }
 
             // Skip some potentially problematic videos that have null topics.
-            if(curTopic == null) {
+            if (curTopic == null) {
                 LOGW(TAG, "Video with title '" + video.getTitle() + "' has a null topic so it "
                         + "won't be displayed in the video library.");
                 continue;
@@ -263,7 +298,7 @@ public class VideoLibraryFragment extends Fragment implements UpdatableView<Vide
 
     @Override
     public ViewGroup newCollectionGroupView(Context context, int groupId,
-                                            CollectionView.InventoryGroup group, ViewGroup parent) {
+            CollectionView.InventoryGroup group, ViewGroup parent) {
         LayoutInflater inflater = (LayoutInflater) context.getSystemService(
                 Context.LAYOUT_INFLATER_SERVICE);
         return (ViewGroup) inflater.inflate(R.layout.video_lib_card_container, parent, false);
@@ -278,7 +313,7 @@ public class VideoLibraryFragment extends Fragment implements UpdatableView<Vide
 
     @Override
     public void bindCollectionHeaderView(Context context, View view, final int groupId,
-                                         final String headerLabel, Object headerTag) {
+            final String headerLabel, Object headerTag) {
         ((TextView) view.findViewById(android.R.id.title)).setText(headerLabel);
         view.setContentDescription(getString(R.string.more_items_button_desc_with_label_a11y,
                 headerLabel));
@@ -403,19 +438,6 @@ public class VideoLibraryFragment extends Fragment implements UpdatableView<Vide
     }
 
     /**
-     * Let all UserActionListener know that the video list has been reloaded and that therefore we
-     * need to display another random set of videos.
-     */
-    private void fireReloadEvent() {
-        for (UserActionListener h1 : mListeners) {
-            Bundle args = new Bundle();
-            args.putInt(PresenterFragmentImpl.KEY_RUN_QUERY_ID,
-                    VideoLibraryModel.VideoLibraryQueryEnum.VIDEOS.getId());
-            h1.onUserAction(VideoLibraryModel.VideoLibraryUserActionEnum.RELOAD, args);
-        }
-    }
-
-    /**
      * Let all UserActionListener know that the given Video has been played.
      */
     private void fireVideoPlayedEvent(VideoLibraryModel.Video video) {
@@ -426,13 +448,4 @@ public class VideoLibraryFragment extends Fragment implements UpdatableView<Vide
         }
     }
 
-    @Override
-    public Uri getDataUri(QueryEnum query) {
-        if (query == VideoLibraryModel.VideoLibraryQueryEnum.VIDEOS) {
-            return ScheduleContract.Videos.CONTENT_URI;
-        } else if (query == VideoLibraryModel.VideoLibraryQueryEnum.MY_VIEWED_VIDEOS) {
-            return ScheduleContract.MyViewedVideos.CONTENT_URI;
-        }
-        return Uri.EMPTY;
-    }
 }

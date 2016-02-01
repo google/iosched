@@ -16,8 +16,16 @@
 
 package com.google.samples.apps.iosched.videolibrary;
 
-import com.google.samples.apps.iosched.InvalidEnum;
+import android.app.LoaderManager;
+import android.content.Context;
+import android.content.CursorLoader;
+import android.database.Cursor;
+import android.net.Uri;
+import android.os.Bundle;
+import android.test.suitebuilder.annotation.SmallTest;
+
 import com.google.samples.apps.iosched.provider.ScheduleContract;
+import com.google.samples.apps.iosched.util.LogUtils;
 
 import org.hamcrest.BaseMatcher;
 import org.hamcrest.Description;
@@ -33,17 +41,8 @@ import org.mockito.invocation.InvocationOnMock;
 import org.mockito.runners.MockitoJUnitRunner;
 import org.mockito.stubbing.Answer;
 
-import android.content.Context;
-import android.content.CursorLoader;
-import android.content.Loader;
-import android.database.Cursor;
-import android.net.Uri;
-import android.os.Bundle;
-import android.test.suitebuilder.annotation.SmallTest;
-
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.hasItems;
-import static org.hamcrest.CoreMatchers.nullValue;
 import static org.hamcrest.CoreMatchers.sameInstance;
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertThat;
@@ -55,10 +54,14 @@ import static org.mockito.Mockito.when;
 @SmallTest
 public class VideoLibraryModelTest {
 
-    /** Cursor position in the {@link #FAKE_VIDEO_CURSOR_DATA} table. */
+    /**
+     * Cursor position in the {@link #FAKE_VIDEO_CURSOR_DATA} table.
+     */
     private int mCursorIndex = -1;
 
-    /** Fake data to be used for the mocked cursor. */
+    /**
+     * Fake data to be used for the mocked cursor.
+     */
     private static final Object[][] FAKE_VIDEO_CURSOR_DATA = {
             new String[]{"ID1", "ID2", "ID3"},
             new Integer[]{2012, 2013, 2012},
@@ -69,7 +72,9 @@ public class VideoLibraryModelTest {
             new String[]{"Speaker Name 1", "Speaker Name 2", "Speaker Name 3"},
             new String[]{"http://url.com/1", "http://url.com/2", "http://url.com/3"}};
 
-    /** Indexes of the "column" for each video attribute in the {@link #FAKE_VIDEO_CURSOR_DATA}. */
+    /**
+     * Indexes of the "column" for each video attribute in the {@link #FAKE_VIDEO_CURSOR_DATA}.
+     */
     private static final int VIDEO_ID_COLUMN_INDEX = 0;
     private static final int VIDEO_YEAR_COLUMN_INDEX = 1;
     private static final int VIDEO_TOPIC_COLUMN_INDEX = 2;
@@ -91,8 +96,13 @@ public class VideoLibraryModelTest {
     @Mock
     private CursorLoader mMockCursorLoader;
 
+    @Mock
+    private LoaderManager mMockLoaderManager;
+
     @Spy
-    private VideoLibraryModel mSpyModel = new VideoLibraryModel(mMockContext, null);
+    private VideoLibraryModel mSpyModel =
+            new VideoLibraryModel(mMockContext, mMockLoaderManager, Uri.EMPTY, Uri.EMPTY,
+                    Uri.EMPTY);
 
     @Captor
     private ArgumentCaptor<Integer> mGetCursorValueCaptor;
@@ -105,8 +115,13 @@ public class VideoLibraryModelTest {
         initWithStubbedCursor();
         initWithStubbedCursorLoaderAndSpyModel();
 
+        // Disable logging
+        LogUtils.LOGGING_ENABLED = false;
+
         // Create an instance of the model.
-        mVideoLibraryModel = new VideoLibraryModel(mMockContext, null);
+        mVideoLibraryModel =
+                new VideoLibraryModel(mMockContext, mMockLoaderManager, Uri.EMPTY, Uri.EMPTY,
+                        Uri.EMPTY);
     }
 
     @Test
@@ -138,16 +153,7 @@ public class VideoLibraryModelTest {
         assertThat(mVideoLibraryModel.getTopics(),
                 hasItems((String[]) FAKE_VIDEO_CURSOR_DATA[VIDEO_TOPIC_COLUMN_INDEX]));
         assertThat(mVideoLibraryModel.getYears(),
-                hasItems((Integer[])FAKE_VIDEO_CURSOR_DATA[VIDEO_YEAR_COLUMN_INDEX]));
-    }
-
-    @Test
-    public void readDataFromCursor_UnsupportedQuery_Unsuccessful() {
-        // When ran with an invalid query
-        boolean result = mVideoLibraryModel.readDataFromCursor(mMockCursor, InvalidEnum.INVALID);
-
-        // Then the request model update fails
-        assertThat(result, is(false));
+                hasItems((Integer[]) FAKE_VIDEO_CURSOR_DATA[VIDEO_YEAR_COLUMN_INDEX]));
     }
 
     @Test
@@ -162,17 +168,17 @@ public class VideoLibraryModelTest {
         // Then the request model update succeeds.
         assertThat(result, is(true));
         // And the list of videos is empty.
-        assertThat(mVideoLibraryModel.getVideos().size(),  is(equalTo(0)));
+        assertThat(mVideoLibraryModel.getVideos().size(), is(equalTo(0)));
     }
 
     @Test
     public void createCursorLoader_VideosQuery_Success() {
         // Given a mock cursor loader set up for a video query
-        int videosLoaderId = VideoLibraryModel.VideoLibraryQueryEnum.VIDEOS.getId();
 
         // When ran with the video query
         CursorLoader createdCursorLoader =
-                (CursorLoader) mSpyModel.createCursorLoader(videosLoaderId, Uri.EMPTY, null);
+                (CursorLoader) mSpyModel
+                        .createCursorLoader(VideoLibraryModel.VideoLibraryQueryEnum.VIDEOS, null);
 
         // Then the returned cursor loader is the same as the mock one
         assertThat(createdCursorLoader, sameInstance(mMockCursorLoader));
@@ -181,8 +187,6 @@ public class VideoLibraryModelTest {
     @Test
     public void createCursorLoader_FilteredVideosQuery_Success() {
         // Given a mock cursor loader set up for a video query
-        int videosLoaderId = VideoLibraryModel.VideoLibraryQueryEnum.VIDEOS.getId();
-
         when(mMockBundle.containsKey(VideoLibraryModel.KEY_TOPIC)).thenReturn(true);
         when(mMockBundle.containsKey(VideoLibraryModel.KEY_YEAR)).thenReturn(true);
         when(mMockBundle.getString(VideoLibraryModel.KEY_TOPIC)).thenReturn("Android");
@@ -190,7 +194,9 @@ public class VideoLibraryModelTest {
 
         // When ran with the video query
         CursorLoader createdCursorLoader =
-                (CursorLoader) mSpyModel.createCursorLoader(videosLoaderId, Uri.EMPTY, mMockBundle);
+                (CursorLoader) mSpyModel
+                        .createCursorLoader(VideoLibraryModel.VideoLibraryQueryEnum.VIDEOS,
+                                mMockBundle);
 
         // Then the returned cursor loader is the same as the mock one
         assertThat(createdCursorLoader, sameInstance(mMockCursorLoader));
@@ -199,24 +205,14 @@ public class VideoLibraryModelTest {
     @Test
     public void createCursorLoader_FiltersQuery_Success() {
         // Given a mock cursor loader set up for a video query
-        int videosLoaderId = VideoLibraryModel.VideoLibraryQueryEnum.FILTERS.getId();
 
         // When ran with the video query
         CursorLoader createdCursorLoader =
-                (CursorLoader) mSpyModel.createCursorLoader(videosLoaderId, Uri.EMPTY, null);
+                (CursorLoader) mSpyModel
+                        .createCursorLoader(VideoLibraryModel.VideoLibraryQueryEnum.FILTERS, null);
 
         // Then the returned cursor loader is the same as the mock one
         assertThat(createdCursorLoader, sameInstance(mMockCursorLoader));
-    }
-
-    @Test
-    public void createCursorLoader_UnknownLoaderId_CreatesNullCursorLoader() {
-        // When ran with an invalid query
-        Loader<Cursor> cursorLoader = mVideoLibraryModel
-                .createCursorLoader(InvalidEnum.INVALID.getId(), null, null);
-
-        // Then the returned cursor is null
-        assertThat(cursorLoader, nullValue());
     }
 
     private void initWithStubbedCursorLoaderAndSpyModel() {
@@ -226,8 +222,8 @@ public class VideoLibraryModelTest {
     }
 
     /**
-     *  Initializes the {@code mMockCursor} so that it returns data from the
-     *  {@link #FAKE_VIDEO_CURSOR_DATA} table.
+     * Initializes the {@code mMockCursor} so that it returns data from the {@link
+     * #FAKE_VIDEO_CURSOR_DATA} table.
      */
     private void initWithStubbedCursor() {
         // Mock movements of the cursor position. Cursor position in the array is tracked using
@@ -301,14 +297,15 @@ public class VideoLibraryModelTest {
                         && video.getDesc().equals(cursorTable[VIDEO_DESC_COLUMN_INDEX][index])
                         && video.getVid().equals(cursorTable[VIDEO_VID_COLUMN_INDEX][index])
                         && video.getSpeakers().equals(
-                            cursorTable[VIDEO_SPEAKER_COLUMN_INDEX][index])
+                        cursorTable[VIDEO_SPEAKER_COLUMN_INDEX][index])
                         && video.getThumbnailUrl().equals(
-                            cursorTable[VIDEO_THUMBNAIL_URL_COLUMN_INDEX][index]);
+                        cursorTable[VIDEO_THUMBNAIL_URL_COLUMN_INDEX][index]);
             }
+
             @Override
             public void describeTo(final Description description) {
                 description.appendText("The Video does not match the data in table ")
-                        .appendValue(cursorTable).appendText(" at index ").appendValue(index);
+                           .appendValue(cursorTable).appendText(" at index ").appendValue(index);
             }
         };
     }

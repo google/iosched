@@ -63,7 +63,7 @@ public abstract class ModelWithLoaderManager<Q extends QueryEnum, UA extends Use
      * on the callback after the data is read from the cursor.
      */
     @VisibleForTesting
-    public HashMap<Q, DataQueryCallback> mDataQueryCallbacks = new HashMap<Q, DataQueryCallback>();
+    protected HashMap<Q, DataQueryCallback> mDataQueryCallbacks = new HashMap<Q, DataQueryCallback>();
 
     /**
      * Map of callbacks, using the id of the user action as key. This is required because some user
@@ -74,8 +74,14 @@ public abstract class ModelWithLoaderManager<Q extends QueryEnum, UA extends Use
      * provide us with an Integer id. Therefore, we link an Integer id to a callback, and use a
      * separate map to link the Integer id to a user action {}see {@link
      * #mUserActionsLaunchingQueries}.
+     * <p/>
+     * This is @VisibleForTesting because for integration testing, a fake model is used to allow
+     * bypassing the {@link LoaderManager} and pass a mock {@link Cursor} directly to {@link
+     * #onLoadFinished(QueryEnum, Cursor)} and adding the callback so events can be fired normally
+     * on the callback after the data is read from the cursor.
      */
-    private HashMap<Integer, UserActionCallback> mDataUpdateCallbacks =
+    @VisibleForTesting
+    protected HashMap<Integer, UserActionCallback> mDataUpdateCallbacks =
             new HashMap<Integer, UserActionCallback>();
 
     /**
@@ -83,8 +89,14 @@ public abstract class ModelWithLoaderManager<Q extends QueryEnum, UA extends Use
      * conjunction with {@link #mDataUpdateCallbacks}, so once the {@link
      * android.app.LoaderManager.LoaderCallbacks#onLoadFinished(Loader, Object)} has fired, the
      * {@link UserActionCallback} that launched that query can be fired.
+     * <p/>
+     * This is @VisibleForTesting because for integration testing, a fake model is used to allow
+     * bypassing the {@link LoaderManager} and pass a mock {@link Cursor} directly to {@link
+     * #onLoadFinished(QueryEnum, Cursor)} and adding the callback so events can be fired normally
+     * on the callback after the data is read from the cursor.
      */
-    private HashMap<Integer, UA> mUserActionsLaunchingQueries = new HashMap<Integer, UA>();
+    @VisibleForTesting
+    protected HashMap<Integer, UA> mUserActionsLaunchingQueries = new HashMap<Integer, UA>();
 
     public ModelWithLoaderManager(Q[] queries, UA[] userActions, LoaderManager loaderManager) {
         mQueries = queries;

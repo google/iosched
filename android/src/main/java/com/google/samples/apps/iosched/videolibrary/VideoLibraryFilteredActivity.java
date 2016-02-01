@@ -29,8 +29,6 @@ import com.google.samples.apps.iosched.ui.BaseActivity;
 import com.google.samples.apps.iosched.ui.widget.CollectionView;
 import com.google.samples.apps.iosched.ui.widget.DrawShadowFrameLayout;
 import com.google.samples.apps.iosched.util.AnalyticsHelper;
-import com.google.samples.apps.iosched.videolibrary.VideoLibraryModel.VideoLibraryQueryEnum;
-import com.google.samples.apps.iosched.videolibrary.VideoLibraryModel.VideoLibraryUserActionEnum;
 
 import static com.google.samples.apps.iosched.util.LogUtils.LOGD;
 import static com.google.samples.apps.iosched.util.LogUtils.makeLogTag;
@@ -61,24 +59,9 @@ public class VideoLibraryFilteredActivity extends BaseActivity implements
         super.onCreate(savedInstanceState);
 
         // Get the initial filter values from the intent call.
-        Bundle extras = getIntent().getExtras();
         setTitle(R.string.title_video_library);
-        String topicFilter = VideoLibraryModel.ALL_TOPICS;
-        int yearFilter = VideoLibraryModel.ALL_YEARS;
-        if (extras != null) {
-            topicFilter = extras.getString(KEY_FILTER_TOPIC, VideoLibraryModel.ALL_TOPICS);
-            yearFilter = extras.getInt(KEY_FILTER_YEAR, VideoLibraryModel.ALL_YEARS);
-        }
-
-        // Instantiate a new model with initial filter values from the intent call.
-        VideoLibraryModel model = new VideoLibraryModel(getApplicationContext(), this);
-        model.setSelectedTopic(topicFilter);
-        model.setSelectedYear(yearFilter);
 
         setContentView(R.layout.video_library_filtered_act);
-
-        addPresenterFragment(R.id.video_library_frag, model, VideoLibraryQueryEnum.values(),
-                VideoLibraryUserActionEnum.values());
 
         // ANALYTICS EVENT: View the Filtered Video Library screen
         // Contains: Nothing (Page name is a constant)

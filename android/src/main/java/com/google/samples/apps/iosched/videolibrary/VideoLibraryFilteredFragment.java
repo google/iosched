@@ -16,19 +16,6 @@
 
 package com.google.samples.apps.iosched.videolibrary;
 
-import com.google.samples.apps.iosched.Config;
-import com.google.samples.apps.iosched.R;
-import com.google.samples.apps.iosched.framework.PresenterFragmentImpl;
-import com.google.samples.apps.iosched.framework.QueryEnum;
-import com.google.samples.apps.iosched.framework.UpdatableView;
-import com.google.samples.apps.iosched.provider.ScheduleContract;
-import com.google.samples.apps.iosched.ui.widget.CollectionView;
-import com.google.samples.apps.iosched.ui.widget.CollectionViewCallbacks;
-import com.google.samples.apps.iosched.ui.widget.DrawShadowFrameLayout;
-import com.google.samples.apps.iosched.util.AnalyticsHelper;
-import com.google.samples.apps.iosched.util.ImageLoader;
-import com.google.samples.apps.iosched.util.UIUtils;
-
 import android.annotation.TargetApi;
 import android.app.Fragment;
 import android.content.Context;
@@ -38,7 +25,6 @@ import android.os.Bundle;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.text.TextUtils;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -46,6 +32,22 @@ import android.widget.ImageView;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
+
+import com.google.samples.apps.iosched.Config;
+import com.google.samples.apps.iosched.R;
+import com.google.samples.apps.iosched.archframework.ModelWithLoaderManager;
+import com.google.samples.apps.iosched.archframework.PresenterImpl;
+import com.google.samples.apps.iosched.archframework.UpdatableView;
+import com.google.samples.apps.iosched.injection.ModelProvider;
+import com.google.samples.apps.iosched.provider.ScheduleContract;
+import com.google.samples.apps.iosched.ui.widget.CollectionView;
+import com.google.samples.apps.iosched.ui.widget.CollectionViewCallbacks;
+import com.google.samples.apps.iosched.ui.widget.DrawShadowFrameLayout;
+import com.google.samples.apps.iosched.util.AnalyticsHelper;
+import com.google.samples.apps.iosched.util.ImageLoader;
+import com.google.samples.apps.iosched.util.UIUtils;
+import com.google.samples.apps.iosched.videolibrary.VideoLibraryModel.VideoLibraryQueryEnum;
+import com.google.samples.apps.iosched.videolibrary.VideoLibraryModel.VideoLibraryUserActionEnum;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -62,7 +64,8 @@ import static com.google.samples.apps.iosched.util.LogUtils.makeLogTag;
  * This Fragment displays all the videos of past Google I/O sessions. You can also filter them per
  * year and/or topics.
  */
-public class VideoLibraryFilteredFragment extends Fragment implements UpdatableView<VideoLibraryModel>,
+public class VideoLibraryFilteredFragment extends Fragment implements
+        UpdatableView<VideoLibraryModel, VideoLibraryQueryEnum, VideoLibraryUserActionEnum>,
         CollectionViewCallbacks {
 
     private static final String TAG = makeLogTag(VideoLibraryFilteredFragment.class);
@@ -83,29 +86,6 @@ public class VideoLibraryFilteredFragment extends Fragment implements UpdatableV
     private DrawerLayout mDrawerLayout = null;
 
     private List<UserActionListener> mListeners = new ArrayList<>();
-
-    @Override
-    public void displayData(VideoLibraryModel model, QueryEnum query) {
-        if ((VideoLibraryModel.VideoLibraryQueryEnum.VIDEOS == query
-                || VideoLibraryModel.VideoLibraryQueryEnum.MY_VIEWED_VIDEOS == query)
-                && model.getVideos() != null) {
-            updateCollectionView(model.getVideos());
-            setActivityTitle(model.getSelectedYear(), model.getSelectedTopic());
-        } if (VideoLibraryModel.VideoLibraryQueryEnum.FILTERS == query) {
-            Map<Integer, String> specialYearEntries = new HashMap<>();
-            specialYearEntries.put(VideoLibraryModel.ALL_YEARS, getString(R.string.all));
-            updateRadioGroup(mYearsFilterRadioGroup, model.getYears(), model.getSelectedYear(),
-                    specialYearEntries);
-            Map<String, String> specialTopicEntries = new HashMap<>();
-            specialTopicEntries.put(VideoLibraryModel.ALL_TOPICS, getString(R.string.all));
-            specialTopicEntries.put(VideoLibraryModel.KEYNOTES_TOPIC,
-                    VideoLibraryModel.KEYNOTES_TOPIC);
-            List<String> topics = model.getTopics();
-            topics.remove(VideoLibraryModel.KEYNOTES_TOPIC);
-            updateRadioGroup(mTopicsFilterRadioGroup, model.getTopics(), model.getSelectedTopic(),
-                    specialTopicEntries);
-        }
-    }
 
     /**
      * Sets the title of the activity depending on the year and topic filters.
@@ -130,10 +110,10 @@ public class VideoLibraryFilteredFragment extends Fragment implements UpdatableV
     }
 
     /**
-     * Generates RadioButton for each item of the {@code values} list and adds them to the
-     * {@code radioGroup}. The item equals to {@code selectedValue} will be checked initially. Items
-     * with special Labels can be added using {@code specialValues}. They will be added on top and
-     * in uppercase characters.
+     * Generates RadioButton for each item of the {@code values} list and adds them to the {@code
+     * radioGroup}. The item equals to {@code selectedValue} will be checked initially. Items with
+     * special Labels can be added using {@code specialValues}. They will be added on top and in
+     * uppercase characters.
      */
     private <T extends Comparable> void updateRadioGroup(final RadioGroup radioGroup,
             List<T> values, T selectedValue, Map<T, String> specialValues) {
@@ -200,7 +180,7 @@ public class VideoLibraryFilteredFragment extends Fragment implements UpdatableV
     private void onVideoFilterChanged(Object filter) {
         for (UserActionListener listener : mListeners) {
             Bundle args = new Bundle();
-            args.putInt(PresenterFragmentImpl.KEY_RUN_QUERY_ID,
+            args.putInt(ModelWithLoaderManager.KEY_RUN_QUERY_ID,
                     VideoLibraryModel.VideoLibraryQueryEnum.VIDEOS.getId());
             if (filter instanceof Integer) {
                 args.putInt(VideoLibraryModel.KEY_YEAR, (Integer) filter);
@@ -213,7 +193,60 @@ public class VideoLibraryFilteredFragment extends Fragment implements UpdatableV
     }
 
     @Override
-    public void displayErrorMessage(QueryEnum query) {
+    public void displayData(final VideoLibraryModel model,
+            final VideoLibraryQueryEnum query) {
+        if ((VideoLibraryModel.VideoLibraryQueryEnum.VIDEOS == query
+                || VideoLibraryModel.VideoLibraryQueryEnum.MY_VIEWED_VIDEOS == query)
+                && model.getVideos() != null) {
+            displayVideos(model);
+        }
+        if (VideoLibraryModel.VideoLibraryQueryEnum.FILTERS == query) {
+            Map<Integer, String> specialYearEntries = new HashMap<>();
+            specialYearEntries.put(VideoLibraryModel.ALL_YEARS, getString(R.string.all));
+            updateRadioGroup(mYearsFilterRadioGroup, model.getYears(), model.getSelectedYear(),
+                    specialYearEntries);
+            Map<String, String> specialTopicEntries = new HashMap<>();
+            specialTopicEntries.put(VideoLibraryModel.ALL_TOPICS, getString(R.string.all));
+            specialTopicEntries.put(VideoLibraryModel.KEYNOTES_TOPIC,
+                    VideoLibraryModel.KEYNOTES_TOPIC);
+            List<String> topics = model.getTopics();
+            topics.remove(VideoLibraryModel.KEYNOTES_TOPIC);
+            updateRadioGroup(mTopicsFilterRadioGroup, model.getTopics(), model.getSelectedTopic(),
+                    specialTopicEntries);
+        }
+    }
+
+    @Override
+    public void displayErrorMessage(final VideoLibraryQueryEnum query) {
+        // No UI changes upon query error
+    }
+
+    @Override
+    public void displayUserActionResult(final VideoLibraryModel model,
+            final VideoLibraryUserActionEnum userAction, final boolean success) {
+        switch (userAction) {
+            case CHANGE_FILTER:
+                displayVideos(model);
+                break;
+        }
+    }
+
+    private void displayVideos(VideoLibraryModel model) {
+        updateCollectionView(model.getVideos());
+        setActivityTitle(model.getSelectedYear(), model.getSelectedTopic());
+    }
+
+    @Override
+    public Uri getDataUri(final VideoLibraryQueryEnum query) {
+        switch (query) {
+            case VIDEOS:
+            case FILTERS:
+                return ScheduleContract.Videos.CONTENT_URI;
+            case MY_VIEWED_VIDEOS:
+                return ScheduleContract.MyViewedVideos.CONTENT_URI;
+            default:
+                return Uri.EMPTY;
+        }
     }
 
     @Override
@@ -245,6 +278,33 @@ public class VideoLibraryFilteredFragment extends Fragment implements UpdatableV
         mTopicsFilterRadioGroup = (RadioGroup) getActivity().findViewById(R.id.topics_radio_group);
         mDrawerLayout = (DrawerLayout) getActivity().findViewById(R.id.drawer_layout);
         mDrawerLayout.setDrawerShadow(R.drawable.drawer_shadow_flipped, GravityCompat.END);
+        initPresenter();
+    }
+
+    private void initPresenter() {
+        VideoLibraryModel model = ModelProvider
+                .provideVideoLibraryModel(getDataUri(VideoLibraryQueryEnum.VIDEOS),
+                        getDataUri(VideoLibraryQueryEnum.MY_VIEWED_VIDEOS),
+                        getDataUri(VideoLibraryQueryEnum.FILTERS), getActivity(),
+                        getLoaderManager());
+
+        // Instantiate a new model with initial filter values from the intent call.
+        String topicFilter = VideoLibraryModel.ALL_TOPICS;
+        int yearFilter = VideoLibraryModel.ALL_YEARS;
+        Bundle extras = getActivity().getIntent().getExtras();
+        if (extras != null) {
+            topicFilter = extras.getString(VideoLibraryFilteredActivity.KEY_FILTER_TOPIC,
+                    VideoLibraryModel.ALL_TOPICS);
+            yearFilter = extras.getInt(VideoLibraryFilteredActivity.KEY_FILTER_YEAR,
+                    VideoLibraryModel.ALL_YEARS);
+        }
+        model.setSelectedTopic(topicFilter);
+        model.setSelectedYear(yearFilter);
+
+        PresenterImpl presenter =
+                new PresenterImpl(model, this, VideoLibraryUserActionEnum.values(),
+                        VideoLibraryQueryEnum.values());
+        presenter.loadInitialQueries();
     }
 
     private void setContentTopClearance(int clearance) {
@@ -281,9 +341,9 @@ public class VideoLibraryFilteredFragment extends Fragment implements UpdatableV
         // Go through all videos and organize them into groups for each topic. We assume they are
         // already ordered by topics.
         CollectionView.InventoryGroup curGroup = new CollectionView.InventoryGroup(0)
-                        .setDataIndexStart(0)
-                        .setShowHeader(false)
-                        .setDisplayCols(normalColumns);
+                .setDataIndexStart(0)
+                .setShowHeader(false)
+                .setDisplayCols(normalColumns);
         for (int dataIndex = 0; dataIndex < videos.size(); ++dataIndex) {
             curGroup.addItemWithTag(videos.get(dataIndex));
         }
@@ -307,7 +367,7 @@ public class VideoLibraryFilteredFragment extends Fragment implements UpdatableV
 
     @Override
     public void bindCollectionHeaderView(Context context, View view, int groupId,
-                                         String headerLabel, Object headerTag) {
+            String headerLabel, Object headerTag) {
         ((TextView) view.findViewById(android.R.id.text1)).setText(headerLabel);
     }
 
@@ -320,7 +380,7 @@ public class VideoLibraryFilteredFragment extends Fragment implements UpdatableV
 
     @Override
     public void bindCollectionItemView(Context context, View view, int groupId,
-                int indexInGroup, int dataIndex, Object tag) {
+            int indexInGroup, int dataIndex, Object tag) {
         final VideoLibraryModel.Video video = (VideoLibraryModel.Video) tag;
         if (video == null) {
             return;
@@ -353,7 +413,7 @@ public class VideoLibraryFilteredFragment extends Fragment implements UpdatableV
         final String videoId = video.getId();
         final String youtubeLink = TextUtils.isEmpty(videoId) ? "" :
                 videoId.contains("://") ? videoId :
-                String.format(Locale.US, Config.VIDEO_LIBRARY_URL_FMT, videoId);
+                        String.format(Locale.US, Config.VIDEO_LIBRARY_URL_FMT, videoId);
 
         view.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -400,14 +460,4 @@ public class VideoLibraryFilteredFragment extends Fragment implements UpdatableV
         }
     }
 
-    @Override
-    public Uri getDataUri(QueryEnum query) {
-        if (query == VideoLibraryModel.VideoLibraryQueryEnum.VIDEOS
-                || query == VideoLibraryModel.VideoLibraryQueryEnum.FILTERS) {
-            return ScheduleContract.Videos.CONTENT_URI;
-        } else if (query == VideoLibraryModel.VideoLibraryQueryEnum.MY_VIEWED_VIDEOS) {
-            return ScheduleContract.MyViewedVideos.CONTENT_URI;
-        }
-        return Uri.EMPTY;
-    }
 }
