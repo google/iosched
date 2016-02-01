@@ -50,6 +50,14 @@ public class SessionsMockCursor {
         return getCursorForSession(false, false, false);
     }
 
+    public static Cursor getCursorForSessionFeedback() {
+        String[] data = {FAKE_TITLE,""};
+        String[] columns = {"session_title","session_speaker_names"};
+        MatrixCursor matrixCursor = new MatrixCursor(columns);
+        matrixCursor.addRow(data);
+        return matrixCursor;
+    }
+
     private static Cursor getCursorForSession(boolean keynote, boolean inSchedule,
             boolean hasLiveStream) {
         String[] data = {"" + START_SESSION, "" + END_SESSION, "null",

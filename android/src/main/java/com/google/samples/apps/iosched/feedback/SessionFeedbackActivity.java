@@ -16,18 +16,16 @@
 
 package com.google.samples.apps.iosched.feedback;
 
-import android.annotation.TargetApi;
 import android.content.Intent;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.NavUtils;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 
 import com.google.samples.apps.iosched.R;
-import com.google.samples.apps.iosched.ui.BaseActivity;
 import com.google.samples.apps.iosched.myschedule.MyScheduleActivity;
+import com.google.samples.apps.iosched.ui.BaseActivity;
 import com.google.samples.apps.iosched.util.BeamUtils;
 
 import static com.google.samples.apps.iosched.util.LogUtils.LOGE;
@@ -35,8 +33,8 @@ import static com.google.samples.apps.iosched.util.LogUtils.makeLogTag;
 
 /**
  * Displays the questions and rating bars, as well as a comment box, for the user to provide
- * feedback on a session. The {@code mSessionUri} should be passed with the
- * {@link android.content.Intent} starting this Activity.
+ * feedback on a session. The {@code mSessionUri} should be passed with the {@link
+ * android.content.Intent} starting this Activity.
  */
 public class SessionFeedbackActivity extends BaseActivity {
 
@@ -56,17 +54,10 @@ public class SessionFeedbackActivity extends BaseActivity {
 
         mSessionUri = getIntent().getData();
 
-        if (mSessionUri == null){
+        if (mSessionUri == null) {
             LOGE(TAG, "SessionFeedbackActivity started with null data URI!");
             finish();
         }
-
-        addPresenterFragment(R.id.session_feedback_frag,
-                new SessionFeedbackModel(mSessionUri, getApplicationContext(),
-                        new FeedbackHelper(this)),
-                SessionFeedbackModel.SessionFeedbackQueryEnum.values(),
-                SessionFeedbackModel.SessionFeedbackUserActionEnum.values());
-
 
         Toolbar toolbar = getActionBarToolbar();
         toolbar.setNavigationIcon(R.drawable.ic_up);
@@ -90,7 +81,7 @@ public class SessionFeedbackActivity extends BaseActivity {
         }
     }
 
-    public Uri getSessionUri(){
+    public Uri getSessionUri() {
         return mSessionUri;
     }
 }
