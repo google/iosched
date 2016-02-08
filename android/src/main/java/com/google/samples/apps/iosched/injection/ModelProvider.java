@@ -5,6 +5,7 @@ import android.app.LoaderManager;
 import android.content.Context;
 import android.net.Uri;
 
+import com.google.samples.apps.iosched.explore.ExploreIOModel;
 import com.google.samples.apps.iosched.feedback.FeedbackHelper;
 import com.google.samples.apps.iosched.feedback.SessionFeedbackModel;
 import com.google.samples.apps.iosched.model.ScheduleHelper;
@@ -25,6 +26,8 @@ public class ModelProvider {
     private static SessionFeedbackModel stubSessionFeedbackModel = null;
 
     private static VideoLibraryModel stubVideoLibraryModel = null;
+
+    private static ExploreIOModel stubExploreIOModel = null;
 
     public static void setStubSessionDetailModel(SessionDetailModel model) {
         stubSessionDetailModel = model;
@@ -71,11 +74,23 @@ public class ModelProvider {
 
     public static VideoLibraryModel provideVideoLibraryModel(Uri videoUri, Uri myVideosUri,
             Uri filterUri, Activity activity, LoaderManager loaderManager) {
-
         if (stubVideoLibraryModel != null) {
             return stubVideoLibraryModel;
         } else {
             return new VideoLibraryModel(activity, loaderManager, videoUri, myVideosUri, filterUri);
+        }
+    }
+
+    public static void setStubExploreIOModel(ExploreIOModel model) {
+        stubExploreIOModel = model;
+    }
+
+    public static ExploreIOModel provideExploreIOModel(Uri sessionsUri, Context context,
+            LoaderManager loaderManager) {
+        if (stubExploreIOModel != null) {
+            return stubExploreIOModel;
+        } else {
+            return new ExploreIOModel(context, sessionsUri, loaderManager);
         }
     }
 

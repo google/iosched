@@ -171,8 +171,12 @@ dependencies {
 
     // Dependencies for unit tests which reside in the "tests" src folder.
     testCompile 'junit:junit:4.12'
-    testCompile 'org.mockito:mockito-core:1.10.8'
     testCompile 'org.hamcrest:hamcrest-core:1.3'
+    testCompile 'org.mockito:mockito-core:1.10.8'
+    testCompile 'org.powermock:powermock-api-mockito:1.6.4'
+    testCompile 'org.powermock:powermock-module-junit4-rule-agent:1.6.4'
+    testCompile 'org.powermock:powermock-module-junit4-rule:1.6.4'
+    testCompile 'org.powermock:powermock-module-junit4:1.6.4'
     testCompile 'org.json:json:20090211'
 
     // Added to resolve conflicts between the app build and the test build. The app build resolves

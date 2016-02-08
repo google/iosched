@@ -16,22 +16,6 @@
 
 package com.google.samples.apps.iosched.explore;
 
-import com.google.samples.apps.iosched.R;
-import com.google.samples.apps.iosched.explore.ExploreModel.ExploreQueryEnum;
-import com.google.samples.apps.iosched.explore.ExploreModel.ExploreUserActionEnum;
-import com.google.samples.apps.iosched.explore.data.ItemGroup;
-import com.google.samples.apps.iosched.explore.data.LiveStreamData;
-import com.google.samples.apps.iosched.explore.data.SessionData;
-import com.google.samples.apps.iosched.framework.QueryEnum;
-import com.google.samples.apps.iosched.provider.ScheduleContract;
-import com.google.samples.apps.iosched.session.SessionDetailActivity;
-import com.google.samples.apps.iosched.ui.BaseActivity;
-import com.google.samples.apps.iosched.ui.SearchActivity;
-import com.google.samples.apps.iosched.ui.widget.CollectionView;
-import com.google.samples.apps.iosched.ui.widget.DrawShadowFrameLayout;
-import com.google.samples.apps.iosched.util.AnalyticsHelper;
-import com.google.samples.apps.iosched.util.TimeUtils;
-
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -41,6 +25,19 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
+
+import com.google.samples.apps.iosched.R;
+import com.google.samples.apps.iosched.explore.data.ItemGroup;
+import com.google.samples.apps.iosched.explore.data.LiveStreamData;
+import com.google.samples.apps.iosched.explore.data.SessionData;
+import com.google.samples.apps.iosched.provider.ScheduleContract;
+import com.google.samples.apps.iosched.session.SessionDetailActivity;
+import com.google.samples.apps.iosched.ui.BaseActivity;
+import com.google.samples.apps.iosched.ui.SearchActivity;
+import com.google.samples.apps.iosched.ui.widget.CollectionView;
+import com.google.samples.apps.iosched.ui.widget.DrawShadowFrameLayout;
+import com.google.samples.apps.iosched.util.AnalyticsHelper;
+import com.google.samples.apps.iosched.util.TimeUtils;
 
 import static com.google.samples.apps.iosched.util.LogUtils.LOGD;
 import static com.google.samples.apps.iosched.util.LogUtils.LOGE;
@@ -61,15 +58,6 @@ public class ExploreIOActivity extends BaseActivity implements Toolbar.OnMenuIte
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.explore_io_act);
-        addPresenterFragment(
-                R.id.explore_library_frag,
-                new ExploreModel(
-                        getApplicationContext()),
-                new QueryEnum[]{
-                        ExploreQueryEnum.SESSIONS,
-                        ExploreQueryEnum.TAGS},
-                new ExploreUserActionEnum[]{
-                        ExploreUserActionEnum.RELOAD});
 
         // ANALYTICS SCREEN: View the Explore I/O screen
         // Contains: Nothing (Page name is a constant)

@@ -111,4 +111,51 @@ public class MatchersHelper {
         });
         return stringHolder[0];
     }
+
+    /**
+     * This returns the number of descendants of the {@code parentViewWithMultipleChildren} that
+     * have an id of {@code idOfDescendantViewToGetTextFor}}. The parent view is expected to be a
+     * {@link ViewGroup}. This is used when there is a certain randomness in the elements shown in a
+     * collection view, even with mock data, but we want to check the number of elements inside the
+     * parent view.
+     *
+     * @see com.google.samples.apps.iosched.explore.ExploreIOActivityTest
+     */
+    public static int getNumberOfDescendantsForViewGroupDescendant(
+            final Matcher<View> parentViewWithMultipleChildren,
+            final int idOfDescendantViewToGetTextFor) {
+        /**
+         * We cannot use a int directly as we need to make it final to access it inside the
+         * inner method but we cannot reassign a value to a final int.
+         */
+        final int[] intHolder = {0};
+
+        onView(parentViewWithMultipleChildren).perform(new ViewAction() {
+            @Override
+            public Matcher<View> getConstraints() {
+                return isAssignableFrom(ViewGroup.class);
+            }
+
+            @Override
+            public String getDescription() {
+                return "getting text from a TextView with a known id and that is a descendant of " +
+                        "the nth child of a viewgroup";
+            }
+
+            @Override
+            public void perform(UiController uiController, View view) {
+                ViewGroup vg = (ViewGroup) view;
+                int descendants = vg.getChildCount();
+                for(int i = 0; i < descendants; i++) {
+                    View ithDescendant = vg.getChildAt(i);
+                    View matchedView =
+                            ithDescendant.findViewById(idOfDescendantViewToGetTextFor);
+                    if (matchedView != null) {
+                        intHolder[0] +=1;
+                    }
+                }
+            }
+        });
+        return intHolder[0];
+    }
 }

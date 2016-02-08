@@ -16,27 +16,6 @@
 
 package com.google.samples.apps.iosched.explore;
 
-import com.google.samples.apps.iosched.R;
-import com.google.samples.apps.iosched.explore.data.ItemGroup;
-import com.google.samples.apps.iosched.explore.data.LiveStreamData;
-import com.google.samples.apps.iosched.explore.data.MessageData;
-import com.google.samples.apps.iosched.explore.data.SessionData;
-import com.google.samples.apps.iosched.explore.data.ThemeGroup;
-import com.google.samples.apps.iosched.explore.data.TopicGroup;
-import com.google.samples.apps.iosched.framework.PresenterFragmentImpl;
-import com.google.samples.apps.iosched.framework.QueryEnum;
-import com.google.samples.apps.iosched.framework.UpdatableView;
-import com.google.samples.apps.iosched.provider.ScheduleContract;
-import com.google.samples.apps.iosched.settings.ConfMessageCardUtils;
-import com.google.samples.apps.iosched.settings.SettingsUtils;
-import com.google.samples.apps.iosched.ui.widget.CollectionView;
-import com.google.samples.apps.iosched.ui.widget.CollectionViewCallbacks;
-import com.google.samples.apps.iosched.ui.widget.DrawShadowFrameLayout;
-import com.google.samples.apps.iosched.util.ImageLoader;
-import com.google.samples.apps.iosched.util.ThrottledContentObserver;
-import com.google.samples.apps.iosched.util.UIUtils;
-import com.google.samples.apps.iosched.util.WiFiUtils;
-
 import android.app.Activity;
 import android.app.Fragment;
 import android.content.Context;
@@ -53,29 +32,52 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.google.samples.apps.iosched.R;
+import com.google.samples.apps.iosched.archframework.ModelWithLoaderManager;
+import com.google.samples.apps.iosched.archframework.PresenterImpl;
+import com.google.samples.apps.iosched.archframework.UpdatableView;
+import com.google.samples.apps.iosched.explore.ExploreIOModel.ExploreIOQueryEnum;
+import com.google.samples.apps.iosched.explore.ExploreIOModel.ExploreIOUserActionEnum;
+import com.google.samples.apps.iosched.explore.data.ItemGroup;
+import com.google.samples.apps.iosched.explore.data.LiveStreamData;
+import com.google.samples.apps.iosched.explore.data.MessageData;
+import com.google.samples.apps.iosched.explore.data.SessionData;
+import com.google.samples.apps.iosched.explore.data.ThemeGroup;
+import com.google.samples.apps.iosched.explore.data.TopicGroup;
+import com.google.samples.apps.iosched.injection.ModelProvider;
+import com.google.samples.apps.iosched.provider.ScheduleContract;
+import com.google.samples.apps.iosched.settings.ConfMessageCardUtils;
+import com.google.samples.apps.iosched.settings.SettingsUtils;
+import com.google.samples.apps.iosched.ui.widget.CollectionView;
+import com.google.samples.apps.iosched.ui.widget.CollectionViewCallbacks;
+import com.google.samples.apps.iosched.ui.widget.DrawShadowFrameLayout;
+import com.google.samples.apps.iosched.util.ImageLoader;
+import com.google.samples.apps.iosched.util.ThrottledContentObserver;
+import com.google.samples.apps.iosched.util.UIUtils;
+import com.google.samples.apps.iosched.util.WiFiUtils;
+
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
 import static android.content.SharedPreferences.OnSharedPreferenceChangeListener;
-import static com.google.samples.apps.iosched.settings.ConfMessageCardUtils.ConferencePrefChangeListener;
+import static com.google.samples.apps.iosched.settings.ConfMessageCardUtils
+        .ConferencePrefChangeListener;
 import static com.google.samples.apps.iosched.util.LogUtils.LOGD;
 import static com.google.samples.apps.iosched.util.LogUtils.makeLogTag;
 
 /**
- * Display the Explore I/O cards. There are three styles of cards, which are
- * referred to as Groups by the {@link CollectionView} implementation.
+ * Display the Explore I/O cards. There are three styles of cards, which are referred to as Groups
+ * by the {@link CollectionView} implementation.
  * <p/>
- * <ul>
- *     <li>The live-streaming session card.</li>
- *     <li>Time sensitive message cards.</li>
- *     <li>Session topic cards.</li>
- * </ul>
+ * <ul> <li>The live-streaming session card.</li> <li>Time sensitive message cards.</li> <li>Session
+ * topic cards.</li> </ul>
  * <p/>
- * Only the final group of cards is dynamically loaded from a
- * {@link android.content.ContentProvider}.
+ * Only the final group of cards is dynamically loaded from a {@link
+ * android.content.ContentProvider}.
  */
-public class ExploreIOFragment extends Fragment implements UpdatableView<ExploreModel>,
+public class ExploreIOFragment extends Fragment
+        implements UpdatableView<ExploreIOModel, ExploreIOQueryEnum, ExploreIOUserActionEnum>,
         CollectionViewCallbacks {
 
     private static final String TAG = makeLogTag(ExploreIOFragment.class);
@@ -111,24 +113,25 @@ public class ExploreIOFragment extends Fragment implements UpdatableView<Explore
 
     private ConferencePrefChangeListener mConfMessagesAnswerChangeListener =
             new ConferencePrefChangeListener() {
-        @Override
-        protected void onPrefChanged(String key, boolean value) {
-            fireReloadEvent();
-        }
-    };
+                @Override
+                protected void onPrefChanged(String key, boolean value) {
+                    fireReloadEvent();
+                }
+            };
 
     private OnSharedPreferenceChangeListener mSettingsChangeListener =
             new OnSharedPreferenceChangeListener() {
-        @Override
-        public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
-            if (SettingsUtils.PREF_DECLINED_WIFI_SETUP.equals(key)) {
-                fireReloadEvent();
-            }
-        }
-    };
+                @Override
+                public void onSharedPreferenceChanged(SharedPreferences sharedPreferences,
+                        String key) {
+                    if (SettingsUtils.PREF_DECLINED_WIFI_SETUP.equals(key)) {
+                        fireReloadEvent();
+                    }
+                }
+            };
 
     @Override
-    public void displayData(ExploreModel model, QueryEnum query) {
+    public void displayData(final ExploreIOModel model, final ExploreIOQueryEnum query) {
         // Only display data when the tag metadata is available.
         if (model.getTagTitles() != null) {
             updateCollectionView(model);
@@ -136,7 +139,24 @@ public class ExploreIOFragment extends Fragment implements UpdatableView<Explore
     }
 
     @Override
-    public void displayErrorMessage(QueryEnum query) {
+    public void displayErrorMessage(final ExploreIOQueryEnum query) {
+        // No UI changes when error with query
+    }
+
+    @Override
+    public void displayUserActionResult(final ExploreIOModel model,
+            final ExploreIOUserActionEnum userAction, final boolean success) {
+        // All user actions handled in model
+    }
+
+    @Override
+    public Uri getDataUri(final ExploreIOQueryEnum query) {
+        switch (query) {
+            case SESSIONS:
+                return ScheduleContract.Sessions.CONTENT_URI;
+            default:
+                return Uri.EMPTY;
+        }
     }
 
     @Override
@@ -164,6 +184,16 @@ public class ExploreIOFragment extends Fragment implements UpdatableView<Explore
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         mImageLoader = new ImageLoader(getActivity(), R.drawable.io_logo);
+        initPresenter();
+    }
+
+    private void initPresenter() {
+        ExploreIOModel model = ModelProvider.provideExploreIOModel(
+                getDataUri(ExploreIOQueryEnum.SESSIONS), getContext(),
+                getLoaderManager());
+        PresenterImpl presenter = new PresenterImpl(model, this,
+                ExploreIOUserActionEnum.values(), ExploreIOQueryEnum.values());
+        presenter.loadInitialQueries();
     }
 
     private void setContentTopClearance(int clearance) {
@@ -232,7 +262,7 @@ public class ExploreIOFragment extends Fragment implements UpdatableView<Explore
     /**
      * Update the CollectionView with a new {@link CollectionView.Inventory} of cards to display.
      */
-    private void updateCollectionView(ExploreModel model) {
+    private void updateCollectionView(ExploreIOModel model) {
         LOGD(TAG, "Updating collection view.");
 
         CollectionView.Inventory inventory = new CollectionView.Inventory();
@@ -385,7 +415,7 @@ public class ExploreIOFragment extends Fragment implements UpdatableView<Explore
         mEmptyView.setVisibility(inventory.getGroupCount() < 1 ? View.VISIBLE : View.GONE);
     }
 
-    private String getTranslatedTitle(String title, ExploreModel model) {
+    private String getTranslatedTitle(String title, ExploreIOModel model) {
         if (model.getTagTitles().get(title) != null) {
             return model.getTagTitles().get(title);
         } else {
@@ -396,12 +426,12 @@ public class ExploreIOFragment extends Fragment implements UpdatableView<Explore
     @Override
     public View newCollectionHeaderView(Context context, int groupId, ViewGroup parent) {
         return LayoutInflater.from(context)
-                .inflate(R.layout.explore_io_card_header_with_button, parent, false);
+                             .inflate(R.layout.explore_io_card_header_with_button, parent, false);
     }
 
     @Override
     public void bindCollectionHeaderView(Context context, View view, final int groupId,
-                                         final String headerLabel, Object headerTag) {
+            final String headerLabel, Object headerTag) {
     }
 
     @Override
@@ -420,12 +450,12 @@ public class ExploreIOFragment extends Fragment implements UpdatableView<Explore
                 containerLayoutId = R.layout.explore_io_card_container;
                 break;
         }
-        ViewGroup containerView = (ViewGroup)inflater.inflate(containerLayoutId, parent, false);
+        ViewGroup containerView = (ViewGroup) inflater.inflate(containerLayoutId, parent, false);
         // Explicitly tell Accessibility to ignore the entire containerView since we add specific
         // individual content descriptions on child Views.
         UIUtils.setAccessibilityIgnore(containerView);
 
-        ViewGroup containerContents = (ViewGroup)containerView.findViewById(
+        ViewGroup containerContents = (ViewGroup) containerView.findViewById(
                 R.id.explore_io_card_container_contents);
 
         // Now inflate the header within the container cards.
@@ -452,11 +482,11 @@ public class ExploreIOFragment extends Fragment implements UpdatableView<Explore
                 break;
             case GROUP_ID_THEME_CARDS:
                 itemLayoutId = R.layout.explore_io_topic_theme_livestream_item;
-                numItems = ExploreModel.getThemeSessionLimit(getContext());
+                numItems = ExploreIOModel.getThemeSessionLimit(getContext());
                 break;
             case GROUP_ID_TOPIC_CARDS:
                 itemLayoutId = R.layout.explore_io_topic_theme_livestream_item;
-                numItems = ExploreModel.getTopicSessionLimit(getContext());
+                numItems = ExploreIOModel.getTopicSessionLimit(getContext());
                 break;
             case GROUP_ID_LIVE_STREAM_CARD:
                 itemLayoutId = R.layout.explore_io_topic_theme_livestream_item;
@@ -491,7 +521,7 @@ public class ExploreIOFragment extends Fragment implements UpdatableView<Explore
             }
         } else {
             // These group ids have children who are child items.
-            ViewGroup viewWithChildrenSubItems = (ViewGroup)(view.findViewById(
+            ViewGroup viewWithChildrenSubItems = (ViewGroup) (view.findViewById(
                     R.id.explore_io_card_container_contents));
             ItemGroup itemGroup = (ItemGroup) tag;
 
@@ -515,7 +545,8 @@ public class ExploreIOFragment extends Fragment implements UpdatableView<Explore
             }
 
             // Skipping first child b/c it is a header view.
-            for (int viewChildIndex = 1; viewChildIndex < viewWithChildrenSubItems.getChildCount(); viewChildIndex++) {
+            for (int viewChildIndex = 1; viewChildIndex < viewWithChildrenSubItems.getChildCount();
+                    viewChildIndex++) {
                 View childView = viewWithChildrenSubItems.getChildAt(viewChildIndex);
 
                 int sessionIndex = viewChildIndex - 1;
@@ -544,7 +575,7 @@ public class ExploreIOFragment extends Fragment implements UpdatableView<Explore
 
         // Load item elements common to THEME and TOPIC group cards.
         if (tag instanceof SessionData) {
-            SessionData sessionData = (SessionData)tag;
+            SessionData sessionData = (SessionData) tag;
             titleView.setText(sessionData.getSessionName());
             if (!TextUtils.isEmpty(sessionData.getImageUrl())) {
                 ImageView imageView = (ImageView) view.findViewById(R.id.thumbnail);
@@ -563,7 +594,7 @@ public class ExploreIOFragment extends Fragment implements UpdatableView<Explore
 
         // Bind message data if this item is meant to be bound as a message card.
         if (GROUP_ID_MESSAGE_CARDS == groupId) {
-            MessageData messageData = (MessageData)tag;
+            MessageData messageData = (MessageData) tag;
             descriptionView.setText(messageData.getMessageString(context));
             if (messageData.getEndButtonStringResourceId() != -1) {
                 endButton.setText(messageData.getEndButtonStringResourceId());
@@ -600,9 +631,9 @@ public class ExploreIOFragment extends Fragment implements UpdatableView<Explore
         }
         for (UserActionListener h1 : mListeners) {
             Bundle args = new Bundle();
-            args.putInt(PresenterFragmentImpl.KEY_RUN_QUERY_ID,
-                    ExploreModel.ExploreQueryEnum.SESSIONS.getId());
-            h1.onUserAction(ExploreModel.ExploreUserActionEnum.RELOAD, args);
+            args.putInt(ModelWithLoaderManager.KEY_RUN_QUERY_ID,
+                    ExploreIOModel.ExploreIOQueryEnum.SESSIONS.getId());
+            h1.onUserAction(ExploreIOModel.ExploreIOUserActionEnum.RELOAD, args);
         }
     }
 
@@ -612,18 +643,10 @@ public class ExploreIOFragment extends Fragment implements UpdatableView<Explore
         }
         for (UserActionListener h1 : mListeners) {
             Bundle args = new Bundle();
-            args.putInt(PresenterFragmentImpl.KEY_RUN_QUERY_ID,
-                    ExploreModel.ExploreQueryEnum.TAGS.getId());
-            h1.onUserAction(ExploreModel.ExploreUserActionEnum.RELOAD, args);
+            args.putInt(ModelWithLoaderManager.KEY_RUN_QUERY_ID,
+                    ExploreIOModel.ExploreIOQueryEnum.TAGS.getId());
+            h1.onUserAction(ExploreIOModel.ExploreIOUserActionEnum.RELOAD, args);
         }
-    }
-
-    @Override
-    public Uri getDataUri(QueryEnum query) {
-        if (query == ExploreModel.ExploreQueryEnum.SESSIONS) {
-            return ScheduleContract.Sessions.CONTENT_URI;
-        }
-        return Uri.EMPTY;
     }
 
     private boolean shouldShowCard(ConfMessageCardUtils.ConfMessageCard card) {
@@ -631,6 +654,6 @@ public class ExploreIOFragment extends Fragment implements UpdatableView<Explore
         boolean shouldShow = ConfMessageCardUtils.shouldShowConfMessageCard(getContext(), card);
         boolean hasDismissed = ConfMessageCardUtils.hasDismissedConfMessageCard(getContext(),
                 card);
-        return  (shouldShow && !hasDismissed);
+        return (shouldShow && !hasDismissed);
     }
 }
