@@ -50,10 +50,12 @@ import static com.google.samples.apps.iosched.util.LogUtils.makeLogTag;
 public class AccountUtils {
     private static final String TAG = makeLogTag(AccountUtils.class);
 
-    private static final String PREF_ACTIVE_ACCOUNT = "chosen_account";
+    public static final String DEFAULT_OAUTH_PROVIDER = "google";
 
-    // these names are are prefixes; the account is appended to them
-    private static final String PREFIX_PREF_AUTH_TOKEN = "auth_token_";
+    public static final String PREF_ACTIVE_ACCOUNT = "chosen_account";
+
+    // These names are are prefixes; the account is appended to them.
+    public static final String PREFIX_PREF_AUTH_TOKEN = "auth_token_";
     private static final String PREFIX_PREF_PLUS_PROFILE_ID = "plus_profile_id_";
     private static final String PREFIX_PREF_PLUS_NAME = "plus_name_";
     private static final String PREFIX_PREF_PLUS_IMAGE_URL = "plus_image_url_";
@@ -77,10 +79,6 @@ public class AccountUtils {
         AUTH_TOKEN_TYPE = sb.toString();
     }
 
-    private static SharedPreferences getSharedPreferences(final Context context) {
-        return PreferenceManager.getDefaultSharedPreferences(context);
-    }
-
     /**
      * Specify whether the app has an active account set.
      *
@@ -96,7 +94,7 @@ public class AccountUtils {
      * @param context Context used to lookup {@link SharedPreferences} the value is stored with.
      */
     public static String getActiveAccountName(final Context context) {
-        SharedPreferences sp = getSharedPreferences(context);
+        SharedPreferences sp = CommonUtils.getSharedPreferences(context);
         return sp.getString(PREF_ACTIVE_ACCOUNT, null);
     }
 
@@ -104,7 +102,7 @@ public class AccountUtils {
      * Return the {@code Account} the app is using as the active Google Account.
      *
      * @param context Context used to lookup {@link SharedPreferences} the value is stored with.
-     */
+    */
     public static Account getActiveAccount(final Context context) {
         String account = getActiveAccountName(context);
         if (account != null) {
@@ -116,22 +114,22 @@ public class AccountUtils {
 
     public static boolean setActiveAccount(final Context context, final String accountName) {
         LOGD(TAG, "Set active account to: " + accountName);
-        SharedPreferences sp = getSharedPreferences(context);
+        SharedPreferences sp = CommonUtils.getSharedPreferences(context);
         sp.edit().putString(PREF_ACTIVE_ACCOUNT, accountName).apply();
         return true;
     }
 
-    private static String makeAccountSpecificPrefKey(Context ctx, String prefix) {
+    protected static String makeAccountSpecificPrefKey(Context ctx, String prefix) {
         return hasActiveAccount(ctx) ? makeAccountSpecificPrefKey(getActiveAccountName(ctx),
                 prefix) : null;
     }
 
-    private static String makeAccountSpecificPrefKey(String accountName, String prefix) {
+    protected static String makeAccountSpecificPrefKey(String accountName, String prefix) {
         return prefix + accountName;
     }
 
     public static String getAuthToken(final Context context) {
-        SharedPreferences sp = getSharedPreferences(context);
+        SharedPreferences sp = CommonUtils.getSharedPreferences(context);
         return hasActiveAccount(context) ?
                 sp.getString(makeAccountSpecificPrefKey(context, PREFIX_PREF_AUTH_TOKEN), null) : null;
     }
@@ -140,7 +138,7 @@ public class AccountUtils {
         LOGI(TAG, "Auth token of length "
                 + (TextUtils.isEmpty(authToken) ? 0 : authToken.length()) + " for "
                 + accountName);
-        SharedPreferences sp = getSharedPreferences(context);
+        SharedPreferences sp = CommonUtils.getSharedPreferences(context);
         sp.edit().putString(makeAccountSpecificPrefKey(accountName, PREFIX_PREF_AUTH_TOKEN),
                 authToken).apply();
         LOGV(TAG, "Auth Token: " + authToken);
@@ -159,56 +157,57 @@ public class AccountUtils {
         setAuthToken(context, null);
     }
 
-    public static void setPlusProfileId(final Context context, final String accountName, final String profileId) {
-        SharedPreferences sp = getSharedPreferences(context);
+    public static void setPlusProfileId(final Context context, final String accountName,
+            final String profileId) {
+        SharedPreferences sp = CommonUtils.getSharedPreferences(context);
         sp.edit().putString(makeAccountSpecificPrefKey(accountName, PREFIX_PREF_PLUS_PROFILE_ID),
                 profileId).apply();
     }
 
     public static String getPlusProfileId(final Context context) {
-        SharedPreferences sp = getSharedPreferences(context);
+        SharedPreferences sp = CommonUtils.getSharedPreferences(context);
         return hasActiveAccount(context) ? sp.getString(makeAccountSpecificPrefKey(context,
                 PREFIX_PREF_PLUS_PROFILE_ID), null) : null;
     }
 
     public static boolean hasPlusInfo(final Context context, final String accountName) {
-        SharedPreferences sp = getSharedPreferences(context);
+        SharedPreferences sp = CommonUtils.getSharedPreferences(context);
         return !TextUtils.isEmpty(sp.getString(makeAccountSpecificPrefKey(accountName,
                 PREFIX_PREF_PLUS_PROFILE_ID), null));
     }
 
     public static boolean hasToken(final Context context, final String accountName) {
-        SharedPreferences sp = getSharedPreferences(context);
+        SharedPreferences sp = CommonUtils.getSharedPreferences(context);
         return !TextUtils.isEmpty(sp.getString(makeAccountSpecificPrefKey(accountName,
                 PREFIX_PREF_AUTH_TOKEN), null));
     }
 
     public static void setPlusName(final Context context, final String accountName, final String name) {
-        SharedPreferences sp = getSharedPreferences(context);
+        SharedPreferences sp = CommonUtils.getSharedPreferences(context);
         sp.edit().putString(makeAccountSpecificPrefKey(accountName, PREFIX_PREF_PLUS_NAME),
                 name).apply();
     }
 
     public static String getPlusName(final Context context) {
-        SharedPreferences sp = getSharedPreferences(context);
+        SharedPreferences sp = CommonUtils.getSharedPreferences(context);
         return hasActiveAccount(context) ? sp.getString(makeAccountSpecificPrefKey(context,
                 PREFIX_PREF_PLUS_NAME), null) : null;
     }
 
     public static void setPlusImageUrl(final Context context, final String accountName, final String imageUrl) {
-        SharedPreferences sp = getSharedPreferences(context);
+        SharedPreferences sp = CommonUtils.getSharedPreferences(context);
         sp.edit().putString(makeAccountSpecificPrefKey(accountName, PREFIX_PREF_PLUS_IMAGE_URL),
                 imageUrl).apply();
     }
 
     public static String getPlusImageUrl(final Context context) {
-        SharedPreferences sp = getSharedPreferences(context);
+        SharedPreferences sp = CommonUtils.getSharedPreferences(context);
         return hasActiveAccount(context) ? sp.getString(makeAccountSpecificPrefKey(context,
                 PREFIX_PREF_PLUS_IMAGE_URL), null) : null;
     }
 
     public static String getPlusImageUrl(final Context context, final String accountName) {
-        SharedPreferences sp = getSharedPreferences(context);
+        SharedPreferences sp = CommonUtils.getSharedPreferences(context);
         return hasActiveAccount(context) ? sp.getString(makeAccountSpecificPrefKey(accountName,
                 PREFIX_PREF_PLUS_IMAGE_URL), null) : null;
     }
@@ -219,13 +218,13 @@ public class AccountUtils {
     }
 
     public static void setPlusCoverUrl(final Context context, final String accountName, String coverPhotoUrl) {
-        SharedPreferences sp = getSharedPreferences(context);
+        SharedPreferences sp = CommonUtils.getSharedPreferences(context);
         sp.edit().putString(makeAccountSpecificPrefKey(accountName, PREFIX_PREF_PLUS_COVER_URL),
                 coverPhotoUrl).apply();
     }
 
     public static String getPlusCoverUrl(final Context context) {
-        SharedPreferences sp = getSharedPreferences(context);
+        SharedPreferences sp = CommonUtils.getSharedPreferences(context);
         return hasActiveAccount(context) ? sp.getString(makeAccountSpecificPrefKey(context,
                 PREFIX_PREF_PLUS_COVER_URL), null) : null;
     }
@@ -254,14 +253,14 @@ public class AccountUtils {
     }
 
     public static void setGcmKey(final Context context, final String accountName, final String gcmKey) {
-        SharedPreferences sp = getSharedPreferences(context);
+        SharedPreferences sp = CommonUtils.getSharedPreferences(context);
         sp.edit().putString(makeAccountSpecificPrefKey(accountName, PREFIX_PREF_GCM_KEY),
                 gcmKey).apply();
         LOGD(TAG, "GCM key of account " + accountName + " set to: " + sanitizeGcmKey(gcmKey));
     }
 
     public static String getGcmKey(final Context context, final String accountName) {
-        SharedPreferences sp = getSharedPreferences(context);
+        SharedPreferences sp = CommonUtils.getSharedPreferences(context);
         String gcmKey = sp.getString(makeAccountSpecificPrefKey(accountName,
                 PREFIX_PREF_GCM_KEY), null);
 
@@ -290,7 +289,7 @@ public class AccountUtils {
      * Enforce an active Google Account by checking to see if an active account is already set. If
      * it is not set then use the {@link AccountPicker} to have the user select an account.
      *
-     * @param activity The context to be used for starting an activity.
+     * @param activity           The context to be used for starting an activity.
      * @param activityResultCode The result to be used to start the {@link AccountPicker}.
      * @return Returns whether the user already has an active account registered.
      */
