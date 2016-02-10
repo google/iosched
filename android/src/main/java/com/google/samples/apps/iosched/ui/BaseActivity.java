@@ -55,6 +55,7 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
+import android.util.Log;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
@@ -69,6 +70,9 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.firebase.client.AuthData;
+import com.firebase.client.Firebase;
+import com.firebase.client.FirebaseError;
 import com.google.android.gcm.GCMRegistrar;
 import com.google.android.gms.auth.GoogleAuthUtil;
 import com.google.samples.apps.iosched.AppApplication;
@@ -95,6 +99,7 @@ import com.google.samples.apps.iosched.ui.widget.MultiSwipeRefreshLayout;
 import com.google.samples.apps.iosched.ui.widget.NavDrawerItemView;
 import com.google.samples.apps.iosched.ui.widget.ScrimInsetsScrollView;
 import com.google.samples.apps.iosched.util.AccountUtils;
+import com.google.samples.apps.iosched.util.FirebaseUtils;
 import com.google.samples.apps.iosched.util.ImageLoader;
 import com.google.samples.apps.iosched.util.LUtils;
 import com.google.samples.apps.iosched.util.LoginAndAuthHelper;
@@ -151,6 +156,10 @@ public abstract class BaseActivity extends AppCompatActivity implements
     private ImageView mExpandAccountBoxIndicator;
 
     private boolean mAccountBoxExpanded = false;
+
+    private Firebase mFirebaseRef;
+
+    private Firebase.AuthStateListener mAuthStateListener;
 
     // When set, these components will be shown/hidden in sync with the action bar
     // to implement the "quick recall" effect (the Action Bar and the header views disappear
@@ -843,6 +852,7 @@ public abstract class BaseActivity extends AppCompatActivity implements
     /**
      * Enables back navigation for activities that are launched from the NavBar. See
      * {@code AndroidManifest.xml} to find out the parent activity names for each activity.
+     *
      * @param intent
      */
     private void createBackStack(Intent intent) {
@@ -864,11 +874,11 @@ public abstract class BaseActivity extends AppCompatActivity implements
      * activity then don't define one and this method will use back button functionality. If "Up"
      * functionality is still desired for activities without parents then use
      * {@code syntheticParentActivity} to define one dynamically.
-     *
+     * <p/>
      * Note: Up navigation intents are represented by a back arrow in the top left of the Toolbar
      *       in Material Design guidelines.
      *
-     * @param currentActivity Activity in use when navigate Up action occurred.
+     * @param currentActivity         Activity in use when navigate Up action occurred.
      * @param syntheticParentActivity Parent activity to use when one is not already configured.
      */
     public static void navigateUpOrBack(Activity currentActivity,
@@ -957,7 +967,14 @@ public abstract class BaseActivity extends AppCompatActivity implements
     @Override
     protected void onResume() {
         super.onResume();
-
+        mAuthStateListener = new Firebase.AuthStateListener() {
+            @Override
+            public void onAuthStateChanged(AuthData authData) {
+                if (authData != null) {
+                    LOGI(TAG, "Logged into Firebase.");
+                }
+            }
+        };
         // Perform one-time bootstrap setup, if needed
         DataBootstrapService.startDataBootstrapIfNecessary(this);
 
@@ -1152,11 +1169,10 @@ public abstract class BaseActivity extends AppCompatActivity implements
      *                           If false, it's a returning user.
      */
     @Override
-    public void onAuthSuccess(String accountName, boolean newlyAuthenticated) {
+    public void onAuthSuccess(final String accountName, boolean newlyAuthenticated) {
         Account account = new Account(accountName, GoogleAuthUtil.GOOGLE_ACCOUNT_TYPE);
         LOGD(TAG, "onAuthSuccess, account " + accountName + ", newlyAuthenticated="
                 + newlyAuthenticated);
-
         refreshAccountDependantData();
 
         if (newlyAuthenticated) {
@@ -1168,6 +1184,7 @@ public abstract class BaseActivity extends AppCompatActivity implements
         setupAccountBox();
         populateNavDrawer();
         registerGCMClient();
+        setUpFirebase(accountName);
     }
 
     @Override
@@ -1392,6 +1409,28 @@ public abstract class BaseActivity extends AppCompatActivity implements
                 mGCMRegisterTask.execute(null, null, null);
             }
         }
+    }
+
+    private void setUpFirebase(final String accountName) {
+        mFirebaseRef = new Firebase(FirebaseUtils.getFirebaseUrl(this, accountName));
+        LOGI(TAG, "mFirebaseRef = " + mFirebaseRef);
+        if (mFirebaseRef == null) {
+            LOGW(TAG, "Firebase not set up.");
+            return;
+        }
+        mFirebaseRef.authWithOAuthToken(AccountUtils.DEFAULT_OAUTH_PROVIDER,
+                AccountUtils.getAuthToken(this), new Firebase.AuthResultHandler() {
+                    @Override
+                    public void onAuthenticated(AuthData authData) {
+                        FirebaseUtils.setFirebaseUid(BaseActivity.this, accountName,
+                                authData.getUid());
+                    }
+
+                    @Override
+                    public void onAuthenticationError(FirebaseError firebaseError) {
+                        Log.e(TAG, "Firebase Error:" + firebaseError);
+                    }
+                });
     }
 
     @Override
