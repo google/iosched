@@ -122,8 +122,8 @@ import static com.google.samples.apps.iosched.util.LogUtils.LOGW;
 import static com.google.samples.apps.iosched.util.LogUtils.makeLogTag;
 
 /**
- * A base activity that handles common functionality in the app. This includes the
- * navigation drawer, login and authentication, Action Bar tweaks, amongst others.
+ * A base activity that handles common functionality in the app. This includes the navigation
+ * drawer, login and authentication, Action Bar tweaks, amongst others.
  */
 public abstract class BaseActivity extends AppCompatActivity implements
         LoginAndAuthHelper.Callbacks,
@@ -353,18 +353,18 @@ public abstract class BaseActivity extends AppCompatActivity implements
     }
 
     /**
-     * Returns the navigation drawer item that corresponds to this Activity. Subclasses
-     * of BaseActivity override this to indicate what nav drawer item corresponds to them
-     * Return NAVDRAWER_ITEM_INVALID to mean that this Activity should not have a Nav Drawer.
+     * Returns the navigation drawer item that corresponds to this Activity. Subclasses of
+     * BaseActivity override this to indicate what nav drawer item corresponds to them Return
+     * NAVDRAWER_ITEM_INVALID to mean that this Activity should not have a Nav Drawer.
      */
     protected int getSelfNavDrawerItem() {
         return NAVDRAWER_ITEM_INVALID;
     }
 
     /**
-     * Sets up the navigation drawer as appropriate. Note that the nav drawer will be
-     * different depending on whether the attendee indicated that they are attending the
-     * event on-site vs. attending remotely.
+     * Sets up the navigation drawer as appropriate. Note that the nav drawer will be different
+     * depending on whether the attendee indicated that they are attending the event on-site vs.
+     * attending remotely.
      */
     private void setupNavDrawer() {
         // What nav drawer item should be selected?
@@ -557,8 +557,8 @@ public abstract class BaseActivity extends AppCompatActivity implements
     }
 
     /**
-     * Sets up the given navdrawer item's appearance to the selected state. Note: this could
-     * also be accomplished (perhaps more cleanly) with state-based layouts.
+     * Sets up the given navdrawer item's appearance to the selected state. Note: this could also be
+     * accomplished (perhaps more cleanly) with state-based layouts.
      */
     private void setSelectedNavDrawerItem(int itemId) {
         if (mNavDrawerItemViews != null) {
@@ -599,9 +599,9 @@ public abstract class BaseActivity extends AppCompatActivity implements
     }
 
     /**
-     * Sets up the account box. The account box is the area at the top of the nav drawer that
-     * shows which account the user is logged in as, and lets them switch accounts. It also
-     * shows the user's Google+ cover photo as background.
+     * Sets up the account box. The account box is the area at the top of the nav drawer that shows
+     * which account the user is logged in as, and lets them switch accounts. It also shows the
+     * user's Google+ cover photo as background.
      */
     private void setupAccountBox() {
         mAccountListContainer = (LinearLayout) findViewById(R.id.account_list);
@@ -726,7 +726,8 @@ public abstract class BaseActivity extends AppCompatActivity implements
     }
 
     protected void onAccountChangeRequested() {
-        // override if you want to be notified when another account has been selected account has changed
+        // override if you want to be notified when another account has been selected account has
+        // changed
     }
 
     private void setupAccountBoxToggle() {
@@ -766,12 +767,12 @@ public abstract class BaseActivity extends AppCompatActivity implements
             AnimatorSet subSet = new AnimatorSet();
             subSet.playTogether(
                     ObjectAnimator.ofFloat(mAccountListContainer, View.ALPHA, 1)
-                            .setDuration(ACCOUNT_BOX_EXPAND_ANIM_DURATION),
+                                  .setDuration(ACCOUNT_BOX_EXPAND_ANIM_DURATION),
                     ObjectAnimator.ofFloat(mAccountListContainer, View.TRANSLATION_Y, 0)
-                            .setDuration(ACCOUNT_BOX_EXPAND_ANIM_DURATION));
+                                  .setDuration(ACCOUNT_BOX_EXPAND_ANIM_DURATION));
             set.playSequentially(
                     ObjectAnimator.ofFloat(mDrawerItemsListContainer, View.ALPHA, 0)
-                            .setDuration(ACCOUNT_BOX_EXPAND_ANIM_DURATION),
+                                  .setDuration(ACCOUNT_BOX_EXPAND_ANIM_DURATION),
                     subSet);
             set.start();
         } else {
@@ -779,14 +780,14 @@ public abstract class BaseActivity extends AppCompatActivity implements
             AnimatorSet subSet = new AnimatorSet();
             subSet.playTogether(
                     ObjectAnimator.ofFloat(mAccountListContainer, View.ALPHA, 0)
-                            .setDuration(ACCOUNT_BOX_EXPAND_ANIM_DURATION),
+                                  .setDuration(ACCOUNT_BOX_EXPAND_ANIM_DURATION),
                     ObjectAnimator.ofFloat(mAccountListContainer, View.TRANSLATION_Y,
                             hideTranslateY)
-                            .setDuration(ACCOUNT_BOX_EXPAND_ANIM_DURATION));
+                                  .setDuration(ACCOUNT_BOX_EXPAND_ANIM_DURATION));
             set.playSequentially(
                     subSet,
                     ObjectAnimator.ofFloat(mDrawerItemsListContainer, View.ALPHA, 1)
-                            .setDuration(ACCOUNT_BOX_EXPAND_ANIM_DURATION));
+                                  .setDuration(ACCOUNT_BOX_EXPAND_ANIM_DURATION));
             set.start();
         }
 
@@ -850,8 +851,8 @@ public abstract class BaseActivity extends AppCompatActivity implements
     }
 
     /**
-     * Enables back navigation for activities that are launched from the NavBar. See
-     * {@code AndroidManifest.xml} to find out the parent activity names for each activity.
+     * Enables back navigation for activities that are launched from the NavBar. See {@code
+     * AndroidManifest.xml} to find out the parent activity names for each activity.
      *
      * @param intent
      */
@@ -872,17 +873,17 @@ public abstract class BaseActivity extends AppCompatActivity implements
      * native parentActivity as well as the AppCompat one when supporting API levels less than 16.
      * when the activity has a single parent activity. If the activity doesn't have a single parent
      * activity then don't define one and this method will use back button functionality. If "Up"
-     * functionality is still desired for activities without parents then use
-     * {@code syntheticParentActivity} to define one dynamically.
+     * functionality is still desired for activities without parents then use {@code
+     * syntheticParentActivity} to define one dynamically.
      * <p/>
-     * Note: Up navigation intents are represented by a back arrow in the top left of the Toolbar
-     *       in Material Design guidelines.
+     * Note: Up navigation intents are represented by a back arrow in the top left of the Toolbar in
+     * Material Design guidelines.
      *
      * @param currentActivity         Activity in use when navigate Up action occurred.
      * @param syntheticParentActivity Parent activity to use when one is not already configured.
      */
     public static void navigateUpOrBack(Activity currentActivity,
-                                        Class<? extends Activity> syntheticParentActivity) {
+            Class<? extends Activity> syntheticParentActivity) {
         // Retrieve parent activity from AndroidManifest.
         Intent intent = NavUtils.getParentActivityIntent(currentActivity);
 
@@ -1027,7 +1028,8 @@ public abstract class BaseActivity extends AppCompatActivity implements
     }
 
     /**
-     * Converts an intent and a {@link Bundle} into a {@link Bundle} suitable for use as fragment arguments.
+     * Converts an intent and a {@link Bundle} into a {@link Bundle} suitable for use as fragment
+     * arguments.
      */
     public static Bundle intentToFragmentArguments(Intent intent, Bundle extras) {
         Bundle arguments = new Bundle();
@@ -1098,7 +1100,7 @@ public abstract class BaseActivity extends AppCompatActivity implements
         LOGD(TAG, "Chosen account: " + AccountUtils.getActiveAccountName(this));
 
         if (mLoginAndAuthHelper != null && mLoginAndAuthHelper.getAccountName()
-                .equals(accountName)) {
+                                                              .equals(accountName)) {
             LOGD(TAG, "Helper already set up; simply starting it.");
             mLoginAndAuthHelper.start();
             return;
@@ -1161,12 +1163,12 @@ public abstract class BaseActivity extends AppCompatActivity implements
 
     /**
      * Called when authentication succeeds. This may either happen because the user just
-     * authenticated for the first time (and went through the sign in flow), or because it's
-     * a returning user.
+     * authenticated for the first time (and went through the sign in flow), or because it's a
+     * returning user.
      *
      * @param accountName        name of the account that just authenticated successfully.
-     * @param newlyAuthenticated If true, this user just authenticated for the first time.
-     *                           If false, it's a returning user.
+     * @param newlyAuthenticated If true, this user just authenticated for the first time. If false,
+     *                           it's a returning user.
      */
     @Override
     public void onAuthSuccess(final String accountName, boolean newlyAuthenticated) {
@@ -1218,12 +1220,12 @@ public abstract class BaseActivity extends AppCompatActivity implements
     }
 
     /**
-     * Indicates that the main content has scrolled (for the purposes of showing/hiding
-     * the action bar for the "action bar auto hide" effect). currentY and deltaY may be exact
-     * (if the underlying view supports it) or may be approximate indications:
-     * deltaY may be INT_MAX to mean "scrolled forward indeterminately" and INT_MIN to mean
-     * "scrolled backward indeterminately".  currentY may be 0 to mean "somewhere close to the
-     * start of the list" and INT_MAX to mean "we don't know, but not at the start of the list"
+     * Indicates that the main content has scrolled (for the purposes of showing/hiding the action
+     * bar for the "action bar auto hide" effect). currentY and deltaY may be exact (if the
+     * underlying view supports it) or may be approximate indications: deltaY may be INT_MAX to mean
+     * "scrolled forward indeterminately" and INT_MIN to mean "scrolled backward indeterminately".
+     * currentY may be 0 to mean "somewhere close to the start of the list" and INT_MAX to mean "we
+     * don't know, but not at the start of the list"
      */
     private void onMainContentScrolled(int currentY, int deltaY) {
         if (deltaY > mActionBarAutoHideSensivity) {
@@ -1249,7 +1251,8 @@ public abstract class BaseActivity extends AppCompatActivity implements
         if (mActionBarToolbar == null) {
             mActionBarToolbar = (Toolbar) findViewById(R.id.toolbar_actionbar);
             if (mActionBarToolbar != null) {
-                // Depending on which version of Android you are on the Toolbar or the ActionBar may be
+                // Depending on which version of Android you are on the Toolbar or the ActionBar
+                // may be
                 // active so the a11y description is set here.
                 mActionBarToolbar.setNavigationContentDescription(getResources().getString(R.string
                         .navdrawer_description_a11y));
@@ -1282,7 +1285,7 @@ public abstract class BaseActivity extends AppCompatActivity implements
 
             @Override
             public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount,
-                                 int totalItemCount) {
+                    int totalItemCount) {
 
                 // Get the first visible item's view.
                 View firstVisibleItemView = view.getChildAt(0);
@@ -1349,11 +1352,11 @@ public abstract class BaseActivity extends AppCompatActivity implements
     /**
      * Registers device on the GCM server, if necessary.
      * <p/>
-     * This check is done in BaseActivity (as opposed to {@link AppApplication}) in order to make sure
-     * that this is always run after a user switch.
+     * This check is done in BaseActivity (as opposed to {@link AppApplication}) in order to make
+     * sure that this is always run after a user switch.
      * <p/>
-     * As a future improvement, this code could be manually invoked by the app after a user
-     * switch occurs, which would allow moving this code to {@link AppApplication}.
+     * As a future improvement, this code could be manually invoked by the app after a user switch
+     * occurs, which would allow moving this code to {@link AppApplication}.
      */
     private void registerGCMClient() {
         GCMRegistrar.checkDevice(this);
@@ -1527,7 +1530,7 @@ public abstract class BaseActivity extends AppCompatActivity implements
                 (mDrawerLayout != null) ? "statusBarBackgroundColor" : "statusBarColor",
                 shown ? Color.BLACK : mNormalStatusBarColor,
                 shown ? mNormalStatusBarColor : Color.BLACK)
-                .setDuration(250);
+                                                .setDuration(250);
         if (mDrawerLayout != null) {
             mStatusBarColorAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
                 @Override
@@ -1544,21 +1547,23 @@ public abstract class BaseActivity extends AppCompatActivity implements
         for (final View view : mHideableHeaderViews) {
             if (shown) {
                 ViewCompat.animate(view)
-                        .translationY(0)
-                        .alpha(1)
-                        .setDuration(HEADER_HIDE_ANIM_DURATION)
+                          .translationY(0)
+                          .alpha(1)
+                          .setDuration(HEADER_HIDE_ANIM_DURATION)
                         .setInterpolator(new DecelerateInterpolator())
-                        // Setting Alpha animations should be done using the
-                        // layer_type set to layer_type_hardware for the duration of the animation.
+                                // Setting Alpha animations should be done using the
+                                // layer_type set to layer_type_hardware for the duration of the
+                                // animation.
                         .withLayer();
             } else {
                 ViewCompat.animate(view)
-                        .translationY(-view.getBottom())
-                        .alpha(0)
-                        .setDuration(HEADER_HIDE_ANIM_DURATION)
+                          .translationY(-view.getBottom())
+                          .alpha(0)
+                          .setDuration(HEADER_HIDE_ANIM_DURATION)
                         .setInterpolator(new DecelerateInterpolator())
-                        // Setting Alpha animations should be done using the
-                        // layer_type set to layer_type_hardware for the duration of the animation.
+                                // Setting Alpha animations should be done using the
+                                // layer_type set to layer_type_hardware for the duration of the
+                                // animation.
                         .withLayer();
             }
         }
@@ -1571,14 +1576,15 @@ public abstract class BaseActivity extends AppCompatActivity implements
 
     /**
      * Adds a {@link com.google.samples.apps.iosched.framework.PresenterFragmentImpl} to the
-     * Activity if required, and sets it up with the {@code model}, {@code queries},
-     * {@code actions} and the {@link com.google.samples.apps.iosched.framework.UpdatableView}
-     * corresponding to the {@code updatableViewResId}.
+     * Activity if required, and sets it up with the {@code model}, {@code queries}, {@code actions}
+     * and the {@link com.google.samples.apps.iosched.framework.UpdatableView} corresponding to the
+     * {@code updatableViewResId}.
      *
      * @return the {@link com.google.samples.apps.iosched.framework.PresenterFragmentImpl},
      */
-    public PresenterFragmentImpl addPresenterFragment(int updatableViewResId, Model model, QueryEnum[] queries,
-                                                      UserActionEnum[] actions) {
+    public PresenterFragmentImpl addPresenterFragment(int updatableViewResId, Model model,
+            QueryEnum[] queries,
+            UserActionEnum[] actions) {
         FragmentManager fragmentManager = getFragmentManager();
 
         //Check if the presenter fragment is already present (ie if the activity is recreated due
@@ -1600,9 +1606,10 @@ public abstract class BaseActivity extends AppCompatActivity implements
     }
 
     /**
-     * Registers the {@code presenter} as a
-     * {@link com.google.samples.apps.iosched.util.ThrottledContentObserver} for the given
-     * {@code uri}. When the content is changed, the specified {@code queries} are run.
+     * Registers the {@code presenter} as a {@link com.google.samples.apps.iosched.util
+     * .ThrottledContentObserver}
+     * for the given {@code uri}. When the content is changed, the specified {@code queries} are
+     * run.
      */
     public void registerPresenterFragmentAsContentObserverForUri
     (PresenterFragmentImpl presenter, Uri uri, QueryEnum[] queries) {
@@ -1616,8 +1623,8 @@ public abstract class BaseActivity extends AppCompatActivity implements
     }
 
     private void setUpPresenter(PresenterFragmentImpl presenter, FragmentManager fragmentManager,
-                                int updatableViewResId, Model model, QueryEnum[] queries,
-                                UserActionEnum[] actions) {
+            int updatableViewResId, Model model, QueryEnum[] queries,
+            UserActionEnum[] actions) {
         UpdatableView ui = (UpdatableView) fragmentManager.findFragmentById(
                 updatableViewResId);
         presenter.setModel(model);

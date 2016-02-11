@@ -42,10 +42,9 @@ import static com.google.samples.apps.iosched.util.LogUtils.LOGW;
 import static com.google.samples.apps.iosched.util.LogUtils.makeLogTag;
 
 /**
- * Account and login utilities. This class manages a local shared preferences object
- * that stores which account is currently active, and can store associated information
- * such as Google+ profile info (name, image URL, cover URL) and also the auth token
- * associated with the account.
+ * Account and login utilities. This class manages a local shared preferences object that stores
+ * which account is currently active, and can store associated information such as Google+ profile
+ * info (name, image URL, cover URL) and also the auth token associated with the account.
  */
 public class AccountUtils {
     private static final String TAG = makeLogTag(AccountUtils.class);
@@ -102,7 +101,7 @@ public class AccountUtils {
      * Return the {@code Account} the app is using as the active Google Account.
      *
      * @param context Context used to lookup {@link SharedPreferences} the value is stored with.
-    */
+     */
     public static Account getActiveAccount(final Context context) {
         String account = getActiveAccountName(context);
         if (account != null) {
@@ -131,10 +130,12 @@ public class AccountUtils {
     public static String getAuthToken(final Context context) {
         SharedPreferences sp = CommonUtils.getSharedPreferences(context);
         return hasActiveAccount(context) ?
-                sp.getString(makeAccountSpecificPrefKey(context, PREFIX_PREF_AUTH_TOKEN), null) : null;
+                sp.getString(makeAccountSpecificPrefKey(context, PREFIX_PREF_AUTH_TOKEN), null) :
+                null;
     }
 
-    public static void setAuthToken(final Context context, final String accountName, final String authToken) {
+    public static void setAuthToken(final Context context, final String accountName,
+            final String authToken) {
         LOGI(TAG, "Auth token of length "
                 + (TextUtils.isEmpty(authToken) ? 0 : authToken.length()) + " for "
                 + accountName);
@@ -182,7 +183,8 @@ public class AccountUtils {
                 PREFIX_PREF_AUTH_TOKEN), null));
     }
 
-    public static void setPlusName(final Context context, final String accountName, final String name) {
+    public static void setPlusName(final Context context, final String accountName,
+            final String name) {
         SharedPreferences sp = CommonUtils.getSharedPreferences(context);
         sp.edit().putString(makeAccountSpecificPrefKey(accountName, PREFIX_PREF_PLUS_NAME),
                 name).apply();
@@ -194,7 +196,8 @@ public class AccountUtils {
                 PREFIX_PREF_PLUS_NAME), null) : null;
     }
 
-    public static void setPlusImageUrl(final Context context, final String accountName, final String imageUrl) {
+    public static void setPlusImageUrl(final Context context, final String accountName,
+            final String imageUrl) {
         SharedPreferences sp = CommonUtils.getSharedPreferences(context);
         sp.edit().putString(makeAccountSpecificPrefKey(accountName, PREFIX_PREF_PLUS_IMAGE_URL),
                 imageUrl).apply();
@@ -217,7 +220,8 @@ public class AccountUtils {
         tryAuthenticateWithErrorNotification(mContext, ScheduleContract.CONTENT_AUTHORITY);
     }
 
-    public static void setPlusCoverUrl(final Context context, final String accountName, String coverPhotoUrl) {
+    public static void setPlusCoverUrl(final Context context, final String accountName,
+            String coverPhotoUrl) {
         SharedPreferences sp = CommonUtils.getSharedPreferences(context);
         sp.edit().putString(makeAccountSpecificPrefKey(accountName, PREFIX_PREF_PLUS_COVER_URL),
                 coverPhotoUrl).apply();
@@ -234,8 +238,9 @@ public class AccountUtils {
             String accountName = getActiveAccountName(context);
             if (accountName != null) {
                 LOGI(TAG, "Requesting new auth token (with notification)");
-                final String token = GoogleAuthUtil.getTokenWithNotification(context, accountName, AUTH_TOKEN_TYPE,
-                        null, syncAuthority, null);
+                final String token = GoogleAuthUtil
+                        .getTokenWithNotification(context, accountName, AUTH_TOKEN_TYPE,
+                                null, syncAuthority, null);
                 setAuthToken(context, token);
             } else {
                 LOGE(TAG, "Can't try authentication because no account is chosen.");
@@ -252,7 +257,8 @@ public class AccountUtils {
         }
     }
 
-    public static void setGcmKey(final Context context, final String accountName, final String gcmKey) {
+    public static void setGcmKey(final Context context, final String accountName,
+            final String gcmKey) {
         SharedPreferences sp = CommonUtils.getSharedPreferences(context);
         sp.edit().putString(makeAccountSpecificPrefKey(accountName, PREFIX_PREF_GCM_KEY),
                 gcmKey).apply();

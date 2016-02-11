@@ -29,10 +29,10 @@ import static com.google.samples.apps.iosched.util.LogUtils.LOGW;
 import static com.google.samples.apps.iosched.util.LogUtils.makeLogTag;
 
 /**
- * {@link android.app.Application} used to initialize Analytics. Code initialized in
- * Application classes is rare since this code will be run any time a ContentProvider, Activity,
- * or Service is used by the user or system. Analytics, dependency injection, and multi-dex
- * frameworks are in this very small set of use cases.
+ * {@link android.app.Application} used to initialize Analytics. Code initialized in Application
+ * classes is rare since this code will be run any time a ContentProvider, Activity, or Service is
+ * used by the user or system. Analytics, dependency injection, and multi-dex frameworks are in this
+ * very small set of use cases.
  */
 public class AppApplication extends Application {
 
