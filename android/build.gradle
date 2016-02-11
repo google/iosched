@@ -149,7 +149,6 @@ dependencies {
     compile "com.android.support:design:${android_support_lib_version}"
     compile "com.android.support:support-v13:${android_support_lib_version}"
 
-
     // JSON utility library.
     compile 'com.google.code.gson:gson:2.3'
 
@@ -160,10 +159,10 @@ dependencies {
     compile files('../third_party/volley/libs/volley.jar')
     compile files('../third_party/basic-http-client/libs/basic-http-client-android-0.88.jar')
     // SVG processor for the Conference Map overlay.
-    compile (name:'svg-android-2.0.7-20150515.214425-1', ext:'jar')
+    compile(name: 'svg-android-2.0.7-20150515.214425-1', ext: 'jar')
     // Android Sliding Up Panel library. Compiled from third_party/AndroidSlidingUpPanel.
     // Version number denotes original checked out commit, see README.google in library directory.
-    compile (name:'android-sliding-up-panel-master-8129831576', ext:'aar')
+    compile(name: 'android-sliding-up-panel-master-8129831576', ext: 'aar')
 
     // Google Maps Android API utility library
     compile('com.google.maps.android:android-maps-utils:0.3.4') {
