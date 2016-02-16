@@ -23,7 +23,7 @@ import android.provider.BaseColumns;
 import android.text.TextUtils;
 
 import com.google.samples.apps.iosched.Config;
-import com.google.samples.apps.iosched.framework.QueryEnum;
+import com.google.samples.apps.iosched.archframework.QueryEnum;
 import com.google.samples.apps.iosched.provider.ScheduleContract;
 
 import java.util.*;
