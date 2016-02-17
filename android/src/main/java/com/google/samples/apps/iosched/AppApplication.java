@@ -16,7 +16,7 @@
 
 package com.google.samples.apps.iosched;
 
-import com.firebase.client.Firebase;
+import com.google.android.gms.common.GooglePlayServicesUtil;
 import com.google.android.gms.security.ProviderInstaller;
 import com.google.samples.apps.iosched.settings.SettingsUtils;
 import com.google.samples.apps.iosched.util.AnalyticsHelper;
@@ -41,10 +41,6 @@ public class AppApplication extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
-
-        // Initialize the Firebase library with an Android context.
-        Firebase.setAndroidContext(this);
-
         AnalyticsHelper.prepareAnalytics(getApplicationContext());
         SettingsUtils.markDeclinedWifiSetup(getApplicationContext(), false);
 

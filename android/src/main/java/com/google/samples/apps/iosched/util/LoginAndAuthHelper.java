@@ -24,9 +24,7 @@ import android.content.IntentSender;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.util.Log;
 
-import com.firebase.client.Firebase;
 import com.google.android.gms.auth.GoogleAuthException;
 import com.google.android.gms.auth.GoogleAuthUtil;
 import com.google.android.gms.auth.GooglePlayServicesAvailabilityException;
@@ -52,7 +50,6 @@ import java.util.List;
 
 import static com.google.samples.apps.iosched.util.LogUtils.LOGD;
 import static com.google.samples.apps.iosched.util.LogUtils.LOGE;
-import static com.google.samples.apps.iosched.util.LogUtils.LOGI;
 import static com.google.samples.apps.iosched.util.LogUtils.LOGW;
 import static com.google.samples.apps.iosched.util.LogUtils.makeLogTag;
 
@@ -75,7 +72,7 @@ public class LoginAndAuthHelper
     // Auth scopes we need
     private static final List<String> AUTH_SCOPES = new ArrayList<>(Arrays.asList(
             Scopes.PLUS_LOGIN,
-            Scopes.DRIVE_APPFOLDER, // TODO: remove when done.
+            Scopes.DRIVE_APPFOLDER,
             "https://www.googleapis.com/auth/plus.profile.emails.read"));
 
     public static final String AUTH_TOKEN_TYPE;
@@ -446,16 +443,12 @@ public class LoginAndAuthHelper
         }
     }
 
-
-    /**
-     * Async task that fetches the auth token and the account ID associated with the chosen account
-     * and saves those values to {@link android.content.SharedPreferences}.
-     */
-    private class GetTokenTask extends AsyncTask<Void, Void, Void> {
+    /** Async task that obtains the auth token. */
+    private class GetTokenTask extends AsyncTask<Void, Void, String> {
         public GetTokenTask() {}
 
         @Override
-        protected Void doInBackground(Void... params) {
+        protected String doInBackground(Void... params) {
             try {
                 if (isCancelled()) {
                     LOGD(TAG, "doInBackground: task cancelled, so giving up on auth.");
@@ -465,14 +458,12 @@ public class LoginAndAuthHelper
                 LOGD(TAG, "Starting background auth for " + mAccountName);
                 final String token = GoogleAuthUtil
                         .getToken(mAppContext, mAccountName, AUTH_TOKEN_TYPE);
-                final String accountId = GoogleAuthUtil.getAccountId(mAppContext, mAccountName);
+
                 // Save auth token.
                 LOGD(TAG, "Saving token: " + (token == null ? "(null)" : "(length " +
-                        token.length() + ")") + " for account " + mAccountName);
+                        token.length() + ")") + " for account "  + mAccountName);
                 AccountUtils.setAuthToken(mAppContext, mAccountName, token);
-                // Set the Firebase shard that is going to be used.
-                FirebaseUtils.setFirebaseUrl(mAppContext, accountId);
-
+                return token;
             } catch (GooglePlayServicesAvailabilityException e) {
                 postShowRecoveryDialog(e.getConnectionStatusCode());
             } catch (UserRecoverableAuthException e) {
@@ -488,8 +479,8 @@ public class LoginAndAuthHelper
         }
 
         @Override
-        protected void onPostExecute(Void nothing) {
-            super.onPostExecute(nothing);
+        protected void onPostExecute(String token) {
+            super.onPostExecute(token);
 
             if (isCancelled()) {
                 LOGD(TAG, "Task cancelled, so not reporting auth success.");
