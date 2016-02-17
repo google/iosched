@@ -208,7 +208,6 @@ public class ExploreSessionsActivity extends BaseActivity
     @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        outState.putParcelable(STATE_FILTER_TAGS, mTagFilterHolder);
         outState.putParcelable(STATE_CURRENT_URI, mCurrentUri);
     }
 
