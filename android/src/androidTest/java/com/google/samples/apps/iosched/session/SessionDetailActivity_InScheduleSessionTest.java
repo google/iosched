@@ -47,16 +47,16 @@ import static android.support.test.espresso.assertion.ViewAssertions.matches;
 import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
-import static org.hamcrest.CoreMatchers.allOf;
-import static org.hamcrest.core.IsNot.not;
+import static org.hamcrest.Matchers.allOf;
 
 /**
  * Tests for {@link SessionDetailActivity} when showing a session that is not the keynote and that
- * is not in user schedule.
+ * is in user schedule, and that is ready for feedback submission.
  */
 @RunWith(AndroidJUnit4.class)
 @LargeTest
-public class SessionDetailActivityTestSessionNotInScheduleTest {
+public class SessionDetailActivity_InScheduleSessionTest {
+
     public static final String SESSION_ID = "5b7836c8-82bf-e311-b297-00155d5066d7";
 
     private Uri mSessionUri;
@@ -69,10 +69,10 @@ public class SessionDetailActivityTestSessionNotInScheduleTest {
                     // Make sure the EULA screen is not shown.
                     SettingsUtils.markTosAccepted(InstrumentationRegistry.getTargetContext(), true);
 
-                    // Create a stub model to simulate a session not in schedule
+                    // Create a stub model to simulate a session in schedule
                     ModelProvider.setStubSessionDetailModel(new StubSessionDetailModel(
                             InstrumentationRegistry.getTargetContext(),
-                            SessionsMockCursor.getCursorForSessionNotInSchedule(),
+                            SessionsMockCursor.getCursorForSessionInSchedule(),
                             SpeakersMockCursor.getCursorForSingleSpeaker(),
                             TagMetadataMockCursor.getCursorForSingleTagMetadata()));
 
@@ -107,13 +107,18 @@ public class SessionDetailActivityTestSessionNotInScheduleTest {
 
     @Test
     public void tagSection_IsVisible() {
-        onView(withId(R.id.session_tags_container)).perform(scrollTo())
-                                                   .check(matches(isDisplayed()));
+        onView(withId(R.id.session_tags_container)).perform(scrollTo()).
+                check(matches(isDisplayed()));
     }
 
     @Test
-    public void feedbackCard_IsNotVisible() {
-        onView(withId(R.id.give_feedback_card)).check(matches(not(isDisplayed())));
+    public void feedbackCard_IsVisible() {
+        onView(withId(R.id.give_feedback_card)).check(matches(isDisplayed()));
+    }
+
+    @Test
+    @Ignore("Will be written with Intento")
+    public void submitFeedback_WhenClicked_IntentFired() {
     }
 
     @Test
@@ -136,6 +141,12 @@ public class SessionDetailActivityTestSessionNotInScheduleTest {
     @Test
     @Ignore("Will be written with Intento")
     public void youTubeVideo_WhenClicked_IntentFired() {
+    }
+
+    @Test
+    @Ignore("Will be written with Intento")
+    public void feedbackCard_OnClick_IntentFired() {
+        onView(withId(R.id.give_feedback_card)).perform(click());
     }
 
 }

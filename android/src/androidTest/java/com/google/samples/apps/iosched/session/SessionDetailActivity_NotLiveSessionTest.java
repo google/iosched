@@ -32,7 +32,7 @@ import static org.hamcrest.core.IsNot.not;
 /**
  * Tests for {@link SessionDetailActivity} when showing a session that is not live.
  */
-public class SessionDetailActivityTestNotLiveSessionTest {
+public class SessionDetailActivity_NotLiveSessionTest {
     public static final String SESSION_ID = "5b7836c8-82bf-e311-b297-00155d5066d7";
 
     private Uri mSessionUri;
