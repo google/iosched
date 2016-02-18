@@ -49,7 +49,7 @@ import static org.hamcrest.CoreMatchers.not;
 
 /**
  * UI tests for {@link MyScheduleActivity} interacting with other activities (adding/removing
- * session from schedule), when the user as attending the conference and the conference starts in 3
+ * session from schedule), when the user is attending the conference and the conference starts in 3
  * hours.
  * <p/>
  * This should be run on devices with a narrow layout only (phones all orientation, tablets in
@@ -57,7 +57,7 @@ import static org.hamcrest.CoreMatchers.not;
  */
 @RunWith(AndroidJUnit4.class)
 @LargeTest
-public class MyScheduleActivityInteractionsTest {
+public class MyScheduleActivity_InteractionsTest {
 
     /**
      * A JUnit {@link Rule @Rule} to launch your activity under test. This is a replacement for

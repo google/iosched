@@ -13,6 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package com.google.samples.apps.iosched.session;
 
 import android.content.Intent;
@@ -22,7 +23,6 @@ import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
 import android.test.suitebuilder.annotation.LargeTest;
 
-import com.google.samples.apps.iosched.Config;
 import com.google.samples.apps.iosched.R;
 import com.google.samples.apps.iosched.injection.ModelProvider;
 import com.google.samples.apps.iosched.mockdata.SessionsMockCursor;
@@ -30,9 +30,7 @@ import com.google.samples.apps.iosched.mockdata.SpeakersMockCursor;
 import com.google.samples.apps.iosched.mockdata.TagMetadataMockCursor;
 import com.google.samples.apps.iosched.provider.ScheduleContract;
 import com.google.samples.apps.iosched.settings.SettingsUtils;
-import com.google.samples.apps.iosched.util.TimeUtils;
 
-import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Rule;
 import org.junit.Test;
@@ -40,8 +38,6 @@ import org.junit.runner.RunWith;
 
 import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.action.ViewActions.click;
-import static android.support.test.espresso.action.ViewActions.scrollTo;
-import static android.support.test.espresso.action.ViewActions.swipeUp;
 import static android.support.test.espresso.assertion.ViewAssertions.matches;
 import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
@@ -50,12 +46,13 @@ import static org.hamcrest.CoreMatchers.allOf;
 import static org.hamcrest.core.IsNot.not;
 
 /**
- * Tests for {@link SessionDetailActivity} when showing a session that is live.
+ * Tests for {@link SessionDetailActivity} when showing a keynote session.
  */
 @RunWith(AndroidJUnit4.class)
 @LargeTest
-public class SessionDetailActivityTestLiveSessionTest {
-    public static final String SESSION_ID = "5b7836c8-82bf-e311-b297-00155d5066d7";
+public class SessionDetailActivity_KeynoteSessionTest {
+
+    public static final String SESSION_ID = "__keynote__";
 
     private Uri mSessionUri;
 
@@ -67,11 +64,11 @@ public class SessionDetailActivityTestLiveSessionTest {
                     // Make sure the EULA screen is not shown.
                     SettingsUtils.markTosAccepted(InstrumentationRegistry.getTargetContext(), true);
 
-                    // Create a stub model to simulate a session with live stream
+                    // Create a stub model to simulate a keynote session
                     ModelProvider.setStubSessionDetailModel(new StubSessionDetailModel(
                             InstrumentationRegistry.getTargetContext(),
-                            SessionsMockCursor.getCursorForSessionWithLiveStream(),
-                            SpeakersMockCursor.getCursorForSingleSpeaker(),
+                            SessionsMockCursor.getCursorForKeynoteSession(),
+                            SpeakersMockCursor.getCursorForNoSpeaker(),
                             TagMetadataMockCursor.getCursorForSingleTagMetadata()));
 
                     // Create intent to load the keynote session.
@@ -82,41 +79,25 @@ public class SessionDetailActivityTestLiveSessionTest {
                 }
             };
 
-    @Before
-    public void setTime() {
-        // Set up time to 5 minutes after start of session
-        long timeDiff = SessionsMockCursor.START_SESSION - Config.CONFERENCE_START_MILLIS
-                + 5 * TimeUtils.MINUTE;
-        TimeUtils.setCurrentTimeRelativeToStartOfConference(
-                InstrumentationRegistry.getTargetContext(), timeDiff);
-    }
-
     @Test
     public void sessionTitle_ShowsCorrectTitle() {
         onView(withId(R.id.session_title)).check(matches(
-                allOf(withText(SessionsMockCursor.FAKE_TITLE), isDisplayed())));
+                allOf(withText(SessionsMockCursor.FAKE_TITLE_KEYNOTE), isDisplayed())));
     }
 
     @Test
-    public void liveStreamText_IsVisible() {
-        onView(withId(R.id.live_stream_play_icon_and_text)).check(matches(isDisplayed()));
+    public void speakersSection_IsNotVisible() {
+        onView(withId(R.id.session_speakers_block)).check(matches(not(isDisplayed())));
     }
 
     @Test
-    public void speakersSection_IsVisible() {
-        onView(withId(R.id.session_detail_frag)).perform(swipeUp());
-        onView(withId(R.id.session_speakers_block)).check(matches(isDisplayed()));
+    public void tagSection_IsNotVisible() {
+        onView(withId(R.id.session_tags_container)).check(matches(not(isDisplayed())));
     }
 
     @Test
-    public void tagSection_IsVisible() {
-        onView(withId(R.id.session_tags_container)).perform(scrollTo()).check(
-                matches(isDisplayed()));
-    }
-
-    @Test
-    public void feedbackCard_IsNotVisible() {
-        onView(withId(R.id.give_feedback_card)).check(matches(not(isDisplayed())));
+    @Ignore("Will be written with Intento")
+    public void submitFeedback_WhenClicked_IntentFired() {
     }
 
     @Test
@@ -133,16 +114,7 @@ public class SessionDetailActivityTestLiveSessionTest {
 
     @Test
     @Ignore("Will be written with Intento")
-    public void tag_OnClick_IntentFired() {
-    }
-
-    @Test
-    @Ignore("Will be written with Intento")
     public void youTubeVideo_WhenClicked_IntentFired() {
     }
 
-    @Test
-    @Ignore("Will be written with Intento")
-    public void speakerImage_WhenClicked_IntentFired() {
-    }
 }

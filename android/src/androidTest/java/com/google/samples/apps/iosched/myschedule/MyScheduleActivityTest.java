@@ -55,7 +55,7 @@ import static org.hamcrest.CoreMatchers.allOf;
 import static org.hamcrest.core.IsEqual.equalTo;
 
 /**
- * UI tests for {@link MyScheduleActivity} for when the user as attending the conference and the
+ * UI tests for {@link MyScheduleActivity} for when the user is attending the conference and the
  * second day of the conference starts in 3 hours.
  * <p/>
  * This should be run on devices with a narrow layout only (phones all orientation, tablets in
