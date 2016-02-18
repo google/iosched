@@ -18,6 +18,7 @@ package com.google.samples.apps.iosched.myschedule;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.Intent;
 import android.content.res.Resources;
 import android.content.res.TypedArray;
 import android.database.DataSetObserver;
@@ -37,6 +38,7 @@ import android.widget.TextView;
 import com.google.samples.apps.iosched.Config;
 import com.google.samples.apps.iosched.R;
 import com.google.samples.apps.iosched.archframework.UpdatableView.UserActionListener;
+import com.google.samples.apps.iosched.feedback.SessionFeedbackActivity;
 import com.google.samples.apps.iosched.model.ScheduleItem;
 import com.google.samples.apps.iosched.myschedule.MyScheduleModel.MyScheduleUserActionEnum;
 import com.google.samples.apps.iosched.provider.ScheduleContract;
@@ -174,6 +176,8 @@ public class MyScheduleDayAdapter implements ListAdapter, AbsListView.RecyclerLi
                 Bundle bundle = new Bundle();
                 bundle.putString(MyScheduleModel.SESSION_URL_KEY, uri.toString());
                 mListener.onUserAction(MyScheduleUserActionEnum.SESSION_SLOT, bundle);
+
+                mContext.startActivity(new Intent(Intent.ACTION_VIEW, uri));
             }
         }
     };
@@ -313,6 +317,12 @@ public class MyScheduleDayAdapter implements ListAdapter, AbsListView.RecyclerLi
                         bundle.putString(MyScheduleModel.SESSION_ID_KEY, item.sessionId);
                         bundle.putString(MyScheduleModel.SESSION_TITLE_KEY, item.title);
                         mListener.onUserAction(MyScheduleUserActionEnum.FEEDBACK, bundle);
+
+                        Intent feedbackIntent = new Intent(Intent.ACTION_VIEW,
+                                ScheduleContract.Sessions.buildSessionUri(item.sessionId),
+                                mContext, SessionFeedbackActivity.class);
+                        mContext.startActivity(feedbackIntent);
+
                     }
                 });
             }

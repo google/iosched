@@ -20,7 +20,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.ContentObserver;
-import android.net.Uri;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
@@ -221,8 +220,6 @@ public class MyScheduleModel implements Model<MyScheduleModel.MyScheduleQueryEnu
                     // Contains: URI indicating session ID or time interval of slot
                     AnalyticsHelper.sendEvent("My Schedule", "selectslot", uriStr);
 
-                    mContext.startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(uriStr)));
-
                     // No need to notify presenter, nothing to do
                 }
                 break;
@@ -237,11 +234,6 @@ public class MyScheduleModel implements Model<MyScheduleModel.MyScheduleQueryEnu
                     // ANALYTICS EVENT: Click on the "Send Feedback" action from Schedule page.
                     // Contains: The session title.
                     AnalyticsHelper.sendEvent("My Schedule", "Feedback", title);
-
-                    Intent feedbackIntent = new Intent(Intent.ACTION_VIEW,
-                            ScheduleContract.Sessions.buildSessionUri(id),
-                            mContext, SessionFeedbackActivity.class);
-                    mContext.startActivity(feedbackIntent);
 
                     // No need to notify presenter, nothing to do
                 }

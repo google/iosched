@@ -126,7 +126,7 @@ public class MyScheduleAllDaysFragment extends Fragment
     private void updateSchedule(MyScheduleModel model) {
         if (MyScheduleModel.showPreConferenceData(getContext())) {
             if (mPreConferenceDayView.getAdapter() == null) {
-                mPreConferenceDayView.setAdapter(new MyScheduleDayAdapter(getContext(),
+                mPreConferenceDayView.setAdapter(new MyScheduleDayAdapter(getActivity(),
                         ((MyScheduleActivity) getActivity()).getLUtils(), mListener));
             }
             mPreConferenceDayView.getAdapter().updateItems(model.getConferenceDataForDay(
@@ -134,7 +134,7 @@ public class MyScheduleAllDaysFragment extends Fragment
         }
         for (int i = 0; i < mMyScheduleSingleDayViews.length; i++) {
             if (mMyScheduleSingleDayViews[i].getAdapter() == null) {
-                mMyScheduleSingleDayViews[i].setAdapter(new MyScheduleDayAdapter(getContext(),
+                mMyScheduleSingleDayViews[i].setAdapter(new MyScheduleDayAdapter(getActivity(),
                         ((MyScheduleActivity) getActivity()).getLUtils(), mListener));
 
             }
