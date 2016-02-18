@@ -31,13 +31,11 @@ import com.google.samples.apps.iosched.mockdata.TagMetadataMockCursor;
 import com.google.samples.apps.iosched.provider.ScheduleContract;
 import com.google.samples.apps.iosched.settings.SettingsUtils;
 
-import org.junit.Ignore;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import static android.support.test.espresso.Espresso.onView;
-import static android.support.test.espresso.action.ViewActions.click;
 import static android.support.test.espresso.assertion.ViewAssertions.matches;
 import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
@@ -64,17 +62,18 @@ public class SessionDetailActivity_KeynoteSessionTest {
                     // Make sure the EULA screen is not shown.
                     SettingsUtils.markTosAccepted(InstrumentationRegistry.getTargetContext(), true);
 
+                    // Create session uri
+                    mSessionUri = ScheduleContract.Sessions.buildSessionUri(SESSION_ID);
+
                     // Create a stub model to simulate a keynote session
-                    ModelProvider.setStubSessionDetailModel(new StubSessionDetailModel(
+                    ModelProvider.setStubSessionDetailModel(new StubSessionDetailModel(mSessionUri,
                             InstrumentationRegistry.getTargetContext(),
                             SessionsMockCursor.getCursorForKeynoteSession(),
                             SpeakersMockCursor.getCursorForNoSpeaker(),
                             TagMetadataMockCursor.getCursorForSingleTagMetadata()));
 
                     // Create intent to load the keynote session.
-                    mSessionUri = ScheduleContract.Sessions.buildSessionUri(SESSION_ID);
                     Intent intent = new Intent(Intent.ACTION_VIEW, mSessionUri);
-
                     return intent;
                 }
             };
@@ -93,28 +92,6 @@ public class SessionDetailActivity_KeynoteSessionTest {
     @Test
     public void tagSection_IsNotVisible() {
         onView(withId(R.id.session_tags_container)).check(matches(not(isDisplayed())));
-    }
-
-    @Test
-    @Ignore("Will be written with Intento")
-    public void submitFeedback_WhenClicked_IntentFired() {
-    }
-
-    @Test
-    @Ignore("Will be written with Intento")
-    public void showMap_WhenClicked_IntentFired() {
-        onView(withId(R.id.menu_map_room)).perform(click());
-    }
-
-    @Test
-    @Ignore("Will be written with Intento")
-    public void showShare_WhenClicked_IntentFired() {
-        onView(withId(R.id.menu_share)).perform(click());
-    }
-
-    @Test
-    @Ignore("Will be written with Intento")
-    public void youTubeVideo_WhenClicked_IntentFired() {
     }
 
 }

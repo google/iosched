@@ -2,6 +2,7 @@ package com.google.samples.apps.iosched.session;
 
 import android.content.Context;
 import android.database.Cursor;
+import android.net.Uri;
 import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.test.runner.AndroidJUnit4;
@@ -12,10 +13,10 @@ import org.junit.runner.RunWith;
 
 /**
  * A stub {@link SessionDetailModel}, to be injected using {@link com.google.samples.apps.iosched
- * .injection.ModelProvider}.
- * It overrides {@link #requestData(QueryEnum, DataQueryCallback)} to bypass the loader
- * manager mechanism. Use the classes in {@link com.google.samples.apps.iosched.mockdata} to provide
- * the stub cursors.
+ * .injection.ModelProvider}. It overrides {@link #requestData(QueryEnum, DataQueryCallback)} to
+ * bypass the loader manager mechanism. Use the classes in {@link com.google.samples.apps.iosched
+ * .mockdata}
+ * to provide the stub cursors.
  */
 @RunWith(AndroidJUnit4.class)
 public class StubSessionDetailModel extends SessionDetailModel {
@@ -26,9 +27,9 @@ public class StubSessionDetailModel extends SessionDetailModel {
 
     private Cursor mTagMetadataCursor;
 
-    public StubSessionDetailModel(Context context, Cursor sessionCursor, Cursor speakersCursor,
-            Cursor tagMetadataCursor) {
-        super(null, context, null, null);
+    public StubSessionDetailModel(Uri sessionUri, Context context, Cursor sessionCursor,
+            Cursor speakersCursor, Cursor tagMetadataCursor) {
+        super(sessionUri, context, null, null);
         mSessionCursor = sessionCursor;
         mSpeakersCursor = speakersCursor;
         mTagMetadataCursor = tagMetadataCursor;

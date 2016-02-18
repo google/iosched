@@ -19,15 +19,9 @@ package com.google.samples.apps.iosched.util;
 import android.app.Activity;
 import android.content.AsyncQueryHandler;
 import android.content.ContentValues;
-import android.content.Context;
-import android.content.Intent;
 import android.net.Uri;
-import android.support.v4.app.ShareCompat;
 
-import com.google.samples.apps.iosched.BuildConfig;
-import com.google.samples.apps.iosched.R;
 import com.google.samples.apps.iosched.appwidget.ScheduleWidgetProvider;
-import com.google.samples.apps.iosched.map.MapActivity;
 import com.google.samples.apps.iosched.provider.ScheduleContract;
 import com.google.samples.apps.iosched.sync.SyncHelper;
 
@@ -45,34 +39,6 @@ public class SessionsHelper {
 
     public SessionsHelper(Activity activity) {
         mActivity = activity;
-    }
-
-    public void startMapActivity(String roomId) {
-        Intent intent = new Intent(mActivity.getApplicationContext(), MapActivity.class);
-        intent.putExtra(MapActivity.EXTRA_ROOM, roomId);
-        intent.putExtra(MapActivity.EXTRA_DETACHED_MODE, true);
-        mActivity.startActivity(intent);
-    }
-
-    public Intent createShareIntent(int messageTemplateResId, String title, String hashtags,
-            String url) {
-        ShareCompat.IntentBuilder builder = ShareCompat.IntentBuilder.from(mActivity)
-                .setType("text/plain")
-                .setText(mActivity.getString(messageTemplateResId,
-                        title, BuildConfig.CONFERENCE_HASHTAG, " " + url));
-        return builder.getIntent();
-    }
-
-    public void shareSession(Context context, int messageTemplateResId, String title,
-            String hashtags, String url) {
-        // ANALYTICS EVENT: Share a session.
-        // Contains: Session title.
-        AnalyticsHelper.sendEvent("Session", "Shared", title);
-        Intent intent = Intent.createChooser(
-                createShareIntent(messageTemplateResId, title, hashtags, url),
-                context.getString(R.string.title_share));
-        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        context.startActivity(intent);
     }
 
     public void setSessionStarred(Uri sessionUri, boolean starred, String title) {

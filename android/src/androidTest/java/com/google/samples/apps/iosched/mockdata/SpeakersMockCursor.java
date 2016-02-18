@@ -16,6 +16,8 @@ public class SpeakersMockCursor {
 
     public static final String FAKE_SPEAKER = "Satyajeet Salgar";
 
+    public static final String FAKE_SPEAKER_URL = "http://www.google.com/fakespeaker";
+
     public static MatrixCursor getCursorForSingleSpeaker() {
         String[] data = {FAKE_SPEAKER,
                 "https://storage.googleapis.com/io2015-data.appspot.com/images/speakers/__w-200-" +
@@ -26,7 +28,7 @@ public class SpeakersMockCursor {
                         "interesting features based on this knowledge in Search, Now and across " +
                         "Google. He's previously held product management and partnerships roles " +
                         "on " +
-                        "YouTube, Games, Ads and Payments. ", "null",
+                        "YouTube, Games, Ads and Payments. ", FAKE_SPEAKER_URL,
                 "https://plus.google.com/+SatyajeetSalgar", "http://www.twitter.com/salgar"};
         String[] columns =
                 {"speaker_name", "speaker_image_url", "speaker_company", "speaker_abstract",

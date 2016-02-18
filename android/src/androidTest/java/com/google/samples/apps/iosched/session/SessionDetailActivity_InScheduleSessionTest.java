@@ -19,13 +19,16 @@ package com.google.samples.apps.iosched.session;
 import android.content.Intent;
 import android.net.Uri;
 import android.support.test.InstrumentationRegistry;
-import android.support.test.rule.ActivityTestRule;
+import android.support.test.espresso.intent.rule.IntentsTestRule;
 import android.support.test.runner.AndroidJUnit4;
 import android.test.suitebuilder.annotation.LargeTest;
 
 import com.google.samples.apps.iosched.Config;
 import com.google.samples.apps.iosched.R;
+import com.google.samples.apps.iosched.explore.ExploreSessionsActivity;
+import com.google.samples.apps.iosched.feedback.SessionFeedbackActivity;
 import com.google.samples.apps.iosched.injection.ModelProvider;
+import com.google.samples.apps.iosched.map.MapActivity;
 import com.google.samples.apps.iosched.mockdata.SessionsMockCursor;
 import com.google.samples.apps.iosched.mockdata.SpeakersMockCursor;
 import com.google.samples.apps.iosched.mockdata.TagMetadataMockCursor;
@@ -33,20 +36,30 @@ import com.google.samples.apps.iosched.provider.ScheduleContract;
 import com.google.samples.apps.iosched.settings.SettingsUtils;
 import com.google.samples.apps.iosched.util.TimeUtils;
 
+import org.hamcrest.CoreMatchers;
+import org.hamcrest.core.IsEqual;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+
+import java.util.Locale;
 
 import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.action.ViewActions.click;
 import static android.support.test.espresso.action.ViewActions.scrollTo;
 import static android.support.test.espresso.action.ViewActions.swipeUp;
 import static android.support.test.espresso.assertion.ViewAssertions.matches;
+import static android.support.test.espresso.intent.Intents.intended;
+import static android.support.test.espresso.intent.matcher.IntentMatchers.hasAction;
+import static android.support.test.espresso.intent.matcher.IntentMatchers.hasComponent;
+import static android.support.test.espresso.intent.matcher.IntentMatchers.hasData;
+import static android.support.test.espresso.intent.matcher.IntentMatchers.hasExtra;
+import static android.support.test.espresso.matcher.ViewMatchers.isDescendantOfA;
 import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
+import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.Matchers.allOf;
 
 /**
@@ -62,22 +75,24 @@ public class SessionDetailActivity_InScheduleSessionTest {
     private Uri mSessionUri;
 
     @Rule
-    public ActivityTestRule<SessionDetailActivity> mActivityRule =
-            new ActivityTestRule<SessionDetailActivity>(SessionDetailActivity.class) {
+    public IntentsTestRule<SessionDetailActivity> mActivityRule =
+            new IntentsTestRule<SessionDetailActivity>(SessionDetailActivity.class) {
                 @Override
                 protected Intent getActivityIntent() {
                     // Make sure the EULA screen is not shown.
                     SettingsUtils.markTosAccepted(InstrumentationRegistry.getTargetContext(), true);
 
+                    // Create session uri
+                    mSessionUri = ScheduleContract.Sessions.buildSessionUri(SESSION_ID);
+
                     // Create a stub model to simulate a session in schedule
-                    ModelProvider.setStubSessionDetailModel(new StubSessionDetailModel(
+                    ModelProvider.setStubSessionDetailModel(new StubSessionDetailModel(mSessionUri,
                             InstrumentationRegistry.getTargetContext(),
                             SessionsMockCursor.getCursorForSessionInSchedule(),
                             SpeakersMockCursor.getCursorForSingleSpeaker(),
                             TagMetadataMockCursor.getCursorForSingleTagMetadata()));
 
                     // Create intent to load the keynote session.
-                    mSessionUri = ScheduleContract.Sessions.buildSessionUri(SESSION_ID);
                     Intent intent = new Intent(Intent.ACTION_VIEW, mSessionUri);
 
                     return intent;
@@ -117,36 +132,76 @@ public class SessionDetailActivity_InScheduleSessionTest {
     }
 
     @Test
-    @Ignore("Will be written with Intento")
     public void submitFeedback_WhenClicked_IntentFired() {
+        // When clicking on the submit feedback button
+        onView(allOf(withText(R.string.give_feedback),
+                isDescendantOfA(withId(R.id.give_feedback_card)))).perform(click());
+
+        // Then the intent to open the feedback activity for that session is fired
+        intended(CoreMatchers.allOf(
+                hasComponent(SessionFeedbackActivity.class.getName()),
+                hasAction(equalTo(Intent.ACTION_VIEW)),
+                hasData(mSessionUri)));
     }
 
     @Test
-    @Ignore("Will be written with Intento")
     public void showMap_WhenClicked_IntentFired() {
+        // When clicking on the room button
         onView(withId(R.id.menu_map_room)).perform(click());
+
+        // Then the intent to open the map activity for that room is fired
+        intended(CoreMatchers.allOf(
+                hasComponent(MapActivity.class.getName()),
+                hasExtra(MapActivity.EXTRA_ROOM, SessionsMockCursor.FAKE_ROOM_ID)));
     }
 
     @Test
-    @Ignore("Will be written with Intento")
     public void showShare_WhenClicked_IntentFired() {
+        // When clicking on the room button
         onView(withId(R.id.menu_share)).perform(click());
+
+        // Then the intent to open the share intent chooser for that session is fired
+        intended(hasAction(equalTo(Intent.ACTION_CHOOSER)));
     }
 
     @Test
-    @Ignore("Will be written with Intento")
     public void tag_OnClick_IntentFired() {
+        // When clicking on tag
+        onView(withText(SessionsMockCursor.FAKE_TAG)).perform(scrollTo());
+        onView(withText(SessionsMockCursor.FAKE_TAG)).perform(click());
+
+        // Then the intent to show the explore sessions for the tag is shown
+        intended(CoreMatchers.allOf(
+                hasComponent(ExploreSessionsActivity.class.getName()),
+                hasExtra(ExploreSessionsActivity.EXTRA_FILTER_TAG,
+                        TagMetadataMockCursor.TAG_ID_NAME)));
     }
 
     @Test
-    @Ignore("Will be written with Intento")
     public void youTubeVideo_WhenClicked_IntentFired() {
+        // When clicking on video
+        onView(withId(R.id.live_stream_play_icon_and_text)).perform(click());
+
+        // Then the intent to play the video is fired
+        Uri expectedVideoUri = Uri.parse(String.format(Locale.US, Config.VIDEO_LIBRARY_URL_FMT,
+                SessionsMockCursor.FAKE_YOUTUBE_URL));
+        intended(CoreMatchers.allOf(
+                hasAction(IsEqual.equalTo(Intent.ACTION_VIEW)),
+                hasData(expectedVideoUri)));
     }
 
     @Test
-    @Ignore("Will be written with Intento")
-    public void feedbackCard_OnClick_IntentFired() {
-        onView(withId(R.id.give_feedback_card)).perform(click());
+    public void speakerImage_WhenClicked_IntentFired() {
+        // When clicking on speaker image
+        onView(withId(R.id.speaker_image)).perform(scrollTo());
+        onView(withId(R.id.speaker_image)).perform(click());
+
+        // Then the intent to display the speaker url is fired
+        Uri expectedSpeakerUri = Uri.parse(SpeakersMockCursor.FAKE_SPEAKER_URL);
+        intended(CoreMatchers.allOf(
+                hasAction(IsEqual.equalTo(Intent.ACTION_VIEW)),
+                hasData(expectedSpeakerUri)));
     }
+
 
 }

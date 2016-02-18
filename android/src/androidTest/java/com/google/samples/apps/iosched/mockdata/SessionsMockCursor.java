@@ -24,18 +24,24 @@ public class SessionsMockCursor {
 
     private static final String FALSE = "0";
 
+    public static final String FAKE_TAG = TagMetadataMockCursor.TAG_NAME;
+
     public static final String FAKE_LIVESTREAM_ID = "123456";
+
+    public static final String FAKE_YOUTUBE_URL = "1gaewgtatwte456";
 
     public static final long START_SESSION = 1432936800000L;
 
     public static final long END_SESSION = 1432938600000L;
+
+    public static final String FAKE_ROOM_ID = "fewsgtewtw";
 
     public static Cursor getCursorForKeynoteSession() {
         return getCursorForSession(true, false, true);
     }
 
     public static Cursor getCursorForSessionInSchedule() {
-        return getCursorForSession(false, true, false);
+        return getCursorForSession(false, true, true);
     }
 
     public static Cursor getCursorForSessionNotInSchedule() {
@@ -51,8 +57,8 @@ public class SessionsMockCursor {
     }
 
     public static Cursor getCursorForSessionFeedback() {
-        String[] data = {FAKE_TITLE,""};
-        String[] columns = {"session_title","session_speaker_names"};
+        String[] data = {FAKE_TITLE, ""};
+        String[] columns = {"session_title", "session_speaker_names"};
         MatrixCursor matrixCursor = new MatrixCursor(columns);
         matrixCursor.addRow(data);
         return matrixCursor;
@@ -69,15 +75,14 @@ public class SessionsMockCursor {
                 inSchedule ? TRUE : FALSE,
                 keynote ? "keynote" : "tools&apis",
                 "https://events.google.com/io2015/schedule#/b7e49d26-86e4-e411-b87f-00155d5066d7",
-                "null", "null", "null", hasLiveStream ? FAKE_LIVESTREAM_ID : EMPTY, "null",
-                keynote ? "keynote" : "9ef51a8f-ace3-e411-b87f-00155d5066d7",
-                "Earn & Engage Talk (L2)",
-                "-14235942",
+                hasLiveStream ? FAKE_YOUTUBE_URL : EMPTY, "null", "null",
+                hasLiveStream ? FAKE_LIVESTREAM_ID : EMPTY, "null", FAKE_ROOM_ID,
+                "Earn & Engage Talk (L2)", "-14235942",
                 "https://storage.googleapis.com/io2015-data.appspot.com/images/sessions/"
                         + "__w-200-400-600-800-1000__/b7e49d26-86e4-e411-b87f-00155d5066d7.jpg",
                 "null",
                 keynote ? "FLAG_KEYNOTE" :
-                        "THEME_ENGAGE&EARN,TOPIC_TOOLS&APIS,TOPIC_AUDIENCEGROWTH," +
+                        FAKE_TAG + ",TOPIC_TOOLS&APIS,TOPIC_AUDIENCEGROWTH," +
                                 "TOPIC_SEARCH,TYPE_SANDBOXTALKS",
                 keynote ? EMPTY : SpeakersMockCursor.FAKE_SPEAKER};
         String[] columns = {"session_start", "session_end", "session_level", "session_title",

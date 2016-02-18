@@ -25,7 +25,6 @@ import android.net.Uri;
 import android.test.suitebuilder.annotation.SmallTest;
 
 import com.google.samples.apps.iosched.BuildConfig;
-import com.google.samples.apps.iosched.R;
 import com.google.samples.apps.iosched.archframework.Model;
 import com.google.samples.apps.iosched.model.TagMetadataTest;
 import com.google.samples.apps.iosched.provider.ScheduleContract;
@@ -42,7 +41,6 @@ import static org.hamcrest.CoreMatchers.nullValue;
 import static org.hamcrest.core.Is.is;
 import static org.hamcrest.core.IsSame.sameInstance;
 import static org.junit.Assert.assertThat;
-import static org.junit.Assert.assertTrue;
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.anyLong;
 import static org.mockito.Matchers.anyString;
@@ -134,6 +132,9 @@ public class SessionDetailModelTest {
 
     @Mock
     private LoaderManager mMockLoaderManager;
+
+    @Mock
+    private Model.UserActionCallback mMockUserActionCallback;
 
     private SessionDetailModel mSessionDetailModel;
 
@@ -393,26 +394,16 @@ public class SessionDetailModelTest {
                 any(String.class), any(String.class), any(String.class));
 
         // When ran with star user action
-        spyModel.deliverUserAction(
-                SessionDetailModel.SessionDetailUserActionEnum.STAR, null,
-                new Model.UserActionCallback<SessionDetailModel,
-                        SessionDetailModel.SessionDetailUserActionEnum>() {
-                    @Override
-                    public void onModelUpdated(SessionDetailModel model,
-                            SessionDetailModel.SessionDetailUserActionEnum userAction) {
-                        // Then the session is in user schedule and set session starred is called
-                        // with true
-                        verify(mMockSessionsHelper)
-                                .setSessionStarred(eq(mMockUri), eq(true), anyString());
-                        assertThat(model.isInSchedule(), is(true));
-                    }
+        spyModel.deliverUserAction(SessionDetailModel.SessionDetailUserActionEnum.STAR, null,
+                mMockUserActionCallback);
 
-                    @Override
-                    public void onError(SessionDetailModel.SessionDetailUserActionEnum userAction) {
-                        assertTrue(false);
-                    }
-
-                });
+        // Then verify the callback was called successfully
+        verify(mMockUserActionCallback).onModelUpdated(spyModel,
+                SessionDetailModel.SessionDetailUserActionEnum.STAR);
+        // And the session is in user schedule and set session starred is called with true
+        verify(mMockSessionsHelper)
+                .setSessionStarred(eq(mMockUri), eq(true), anyString());
+        assertThat(spyModel.isInSchedule(), is(true));
     }
 
     @Test
@@ -426,26 +417,16 @@ public class SessionDetailModelTest {
                 any(String.class), any(String.class), any(String.class));
 
         // When ran with unstar user action
-        spyModel.deliverUserAction(
-                SessionDetailModel.SessionDetailUserActionEnum.UNSTAR, null,
-                new Model.UserActionCallback<SessionDetailModel,
-                        SessionDetailModel.SessionDetailUserActionEnum>() {
-                    @Override
-                    public void onModelUpdated(SessionDetailModel model,
-                            SessionDetailModel.SessionDetailUserActionEnum userAction) {
-                        // Then the session is not in user schedule and set session starred is
-                        // called with false
-                        verify(mMockSessionsHelper)
-                                .setSessionStarred(eq(mMockUri), eq(false), anyString());
-                        assertThat(model.isInSchedule(), is(false));
-                    }
+        spyModel.deliverUserAction(SessionDetailModel.SessionDetailUserActionEnum.UNSTAR, null,
+                mMockUserActionCallback);
 
-                    @Override
-                    public void onError(SessionDetailModel.SessionDetailUserActionEnum userAction) {
-                        assertTrue(false);
-                    }
-
-                });
+        // Then verify the callback was called successfully
+        verify(mMockUserActionCallback).onModelUpdated(spyModel,
+                SessionDetailModel.SessionDetailUserActionEnum.UNSTAR);
+        // And the session is not in user schedule and set session starred is called with false
+        verify(mMockSessionsHelper)
+                .setSessionStarred(eq(mMockUri), eq(false), anyString());
+        assertThat(spyModel.isInSchedule(), is(false));
     }
 
     @Test
@@ -459,23 +440,12 @@ public class SessionDetailModelTest {
                 any(String.class), any(String.class), any(String.class));
 
         // When ran with show map user action
-        spyModel.deliverUserAction(
-                SessionDetailModel.SessionDetailUserActionEnum.SHOW_MAP, null,
-                new Model.UserActionCallback<SessionDetailModel,
-                        SessionDetailModel.SessionDetailUserActionEnum>() {
-                    @Override
-                    public void onModelUpdated(SessionDetailModel model,
-                            SessionDetailModel.SessionDetailUserActionEnum userAction) {
-                        // Then start map activity is called with the fake room id
-                        verify(mMockSessionsHelper).startMapActivity(eq(FAKE_ROOM_ID));
-                    }
+        spyModel.deliverUserAction(SessionDetailModel.SessionDetailUserActionEnum.SHOW_MAP, null,
+                mMockUserActionCallback);
 
-                    @Override
-                    public void onError(SessionDetailModel.SessionDetailUserActionEnum userAction) {
-                        assertTrue(false);
-                    }
-
-                });
+        // Then verify the callback was called successfully
+        verify(mMockUserActionCallback).onModelUpdated(spyModel,
+                SessionDetailModel.SessionDetailUserActionEnum.SHOW_MAP);
     }
 
     @Test
@@ -487,25 +457,12 @@ public class SessionDetailModelTest {
                 SessionDetailModel.SessionDetailQueryEnum.SESSIONS);
 
         // When ran with show share user action
-        spyModel.deliverUserAction(
-                SessionDetailModel.SessionDetailUserActionEnum.SHOW_SHARE, null,
-                new Model.UserActionCallback<SessionDetailModel,
-                        SessionDetailModel.SessionDetailUserActionEnum>() {
-                    @Override
-                    public void onModelUpdated(SessionDetailModel model,
-                            SessionDetailModel.SessionDetailUserActionEnum userAction) {
-                        // Then share session is called with the fake title
-                        verify(mMockSessionsHelper)
-                                .shareSession(any(Context.class), eq(R.string.share_template),
-                                        eq(FAKE_TITLE), anyString(), anyString());
-                    }
+        spyModel.deliverUserAction(SessionDetailModel.SessionDetailUserActionEnum.SHOW_SHARE, null,
+                mMockUserActionCallback);
 
-                    @Override
-                    public void onError(SessionDetailModel.SessionDetailUserActionEnum userAction) {
-                        assertTrue(false);
-                    }
-
-                });
+        // Then verify the callback was called successfully
+        verify(mMockUserActionCallback).onModelUpdated(spyModel,
+                SessionDetailModel.SessionDetailUserActionEnum.SHOW_SHARE);
     }
 
     @Test

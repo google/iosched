@@ -171,6 +171,10 @@ public class SessionDetailModel
         return mUrl;
     }
 
+    public String getRoomId() {
+        return mRoomId;
+    }
+
     public String getLiveStreamId() {
         return mLiveStreamId;
     }
@@ -576,12 +580,18 @@ public class SessionDetailModel
                 // ANALYTICS EVENT: Click on Map action in Session Details page.
                 // Contains: Session title/subtitle
                 sendAnalyticsEvent("Session", "Map", mTitle);
-                mSessionsHelper.startMapActivity(mRoomId);
                 callback.onModelUpdated(this, action);
                 break;
             case SHOW_SHARE:
-                mSessionsHelper.shareSession(mContext, R.string.share_template, mTitle,
-                        mHashTag, mUrl);
+                // ANALYTICS EVENT: Share a session.
+                // Contains: Session title.
+                sendAnalyticsEvent("Session", "Shared", mTitle);
+                callback.onModelUpdated(this, action);
+                break;
+            case GIVE_FEEDBACK:
+                // ANALYTICS EVENT: Click on the "send feedback" action in Session Details.
+                // Contains: The session title.
+                sendAnalyticsEvent("Session", "Feedback", getSessionTitle());
                 callback.onModelUpdated(this, action);
                 break;
             default:
@@ -781,7 +791,8 @@ public class SessionDetailModel
         STAR(1),
         UNSTAR(2),
         SHOW_MAP(3),
-        SHOW_SHARE(4);
+        SHOW_SHARE(4),
+        GIVE_FEEDBACK(5);
 
         private int id;
 

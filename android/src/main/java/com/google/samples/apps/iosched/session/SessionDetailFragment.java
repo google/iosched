@@ -24,6 +24,7 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.v4.app.ShareCompat;
 import android.support.v4.view.ViewCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
@@ -41,6 +42,7 @@ import android.widget.TextView;
 
 import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.target.Target;
+import com.google.samples.apps.iosched.BuildConfig;
 import com.google.samples.apps.iosched.Config;
 import com.google.samples.apps.iosched.R;
 import com.google.samples.apps.iosched.archframework.PresenterImpl;
@@ -48,6 +50,7 @@ import com.google.samples.apps.iosched.archframework.UpdatableView;
 import com.google.samples.apps.iosched.archframework.UserActionEnum;
 import com.google.samples.apps.iosched.explore.ExploreSessionsActivity;
 import com.google.samples.apps.iosched.injection.ModelProvider;
+import com.google.samples.apps.iosched.map.MapActivity;
 import com.google.samples.apps.iosched.model.TagMetadata;
 import com.google.samples.apps.iosched.session.SessionDetailModel.SessionDetailQueryEnum;
 import com.google.samples.apps.iosched.session.SessionDetailModel.SessionDetailUserActionEnum;
@@ -382,7 +385,31 @@ public class SessionDetailFragment extends Fragment
     public void displayUserActionResult(SessionDetailModel data,
             SessionDetailUserActionEnum userAction,
             boolean success) {
-        // User actions all handled in model
+        switch (userAction) {
+            case SHOW_MAP:
+                Intent intentShowMap =
+                        new Intent(getActivity().getApplicationContext(), MapActivity.class);
+                intentShowMap.putExtra(MapActivity.EXTRA_ROOM, data.getRoomId());
+                intentShowMap.putExtra(MapActivity.EXTRA_DETACHED_MODE, true);
+                getActivity().startActivity(intentShowMap);
+                break;
+            case SHOW_SHARE:
+                ShareCompat.IntentBuilder builder =
+                        ShareCompat.IntentBuilder.from(getActivity()).setType(
+                                "text/plain").setText(getActivity()
+                                .getString(R.string.share_template, data.getSessionTitle(),
+                                        BuildConfig.CONFERENCE_HASHTAG, data.getSessionUrl()));
+                Intent intentShare = Intent.createChooser(
+                        builder.getIntent(),
+                        getString(R.string.title_share));
+                intentShare.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                getActivity().startActivity(intentShare);
+
+                break;
+            default:
+                // Other user actions are completely handled in model
+                break;
+        }
     }
 
     @Override
@@ -638,7 +665,7 @@ public class SessionDetailFragment extends Fragment
                         UIUtils.preferPackageForIntent(getActivity(),
                                 speakerProfileIntent,
                                 UIUtils.GOOGLE_PLUS_PACKAGE_NAME);
-                        startActivity(speakerProfileIntent);
+                        getActivity().startActivity(speakerProfileIntent);
                     }
                 });
             } else {
@@ -829,7 +856,7 @@ public class SessionDetailFragment extends Fragment
                         Intent intent = new Intent(getContext(), ExploreSessionsActivity.class)
                                 .putExtra(ExploreSessionsActivity.EXTRA_FILTER_TAG, tag.getId())
                                 .addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                        startActivity(intent);
+                        getActivity().startActivity(intent);
                     }
                 });
 
@@ -845,12 +872,10 @@ public class SessionDetailFragment extends Fragment
         messageCardView.setListener(new MessageCardView.OnMessageCardButtonClicked() {
             @Override
             public void onMessageCardButtonClicked(String tag) {
-                if ("GIVE_FEEDBACK".equals(tag)) {
-                    // ANALYTICS EVENT: Click on the "send feedback" action in Session Details.
-                    // Contains: The session title.
-                    AnalyticsHelper.sendEvent("Session", "Feedback", data.getSessionTitle());
+                if (getResources().getString(R.string.tag_give_feedback).equals(tag)) {
+                    sendUserAction(SessionDetailUserActionEnum.GIVE_FEEDBACK, null);
                     Intent intent = data.getFeedbackIntent();
-                    startActivity(intent);
+                    getActivity().startActivity(intent);
                 } else {
                     sDismissedFeedbackCard.add(data.getSessionId());
                     messageCardView.dismiss();

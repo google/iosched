@@ -45,17 +45,18 @@ public class SessionDetailActivity_NotLiveSessionTest {
                     // Make sure the EULA screen is not shown.
                     SettingsUtils.markTosAccepted(InstrumentationRegistry.getTargetContext(), true);
 
+                    // Create session uri
+                    mSessionUri = ScheduleContract.Sessions.buildSessionUri(SESSION_ID);
+
                     // Create a stub model to simulate a session without live stream
-                    ModelProvider.setStubSessionDetailModel(new StubSessionDetailModel(
+                    ModelProvider.setStubSessionDetailModel(new StubSessionDetailModel(mSessionUri,
                             InstrumentationRegistry.getTargetContext(),
                             SessionsMockCursor.getCursorForSessionWithoutLiveStream(),
                             SpeakersMockCursor.getCursorForSingleSpeaker(),
                             TagMetadataMockCursor.getCursorForSingleTagMetadata()));
 
                     // Create intent to load the keynote session.
-                    mSessionUri = ScheduleContract.Sessions.buildSessionUri(SESSION_ID);
                     Intent intent = new Intent(Intent.ACTION_VIEW, mSessionUri);
-
                     return intent;
                 }
             };
@@ -96,32 +97,5 @@ public class SessionDetailActivity_NotLiveSessionTest {
     public void feedbackCard_IsNotVisible() {
         onView(withId(R.id.give_feedback_card)).check(matches(not(isDisplayed())));
     }
-/**
- @Test
- @Ignore("Will be written with Intento")
- public void showMap_WhenClicked_IntentFired() {
- onView(withId(R.id.menu_map_room)).perform(click());
- }
 
- @Test
- @Ignore("Will be written with Intento")
- public void showShare_WhenClicked_IntentFired() {
- onView(withId(R.id.menu_share)).perform(click());
- }
-
- @Test
- @Ignore("Will be written with Intento")
- public void tag_OnClick_IntentFired() {
- }
-
- @Test
- @Ignore("Will be written with Intento")
- public void youTubeVideo_WhenClicked_IntentFired() {
- }
-
- @Test
- @Ignore("Will be written with Intento")
- public void speakerImage_WhenClicked_IntentFired() {
- }
- **/
 }

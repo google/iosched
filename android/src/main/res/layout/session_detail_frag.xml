@@ -80,7 +80,7 @@
                     iosched:messageText="@string/session_give_feedback_message"
                     iosched:button1text="@string/no_thanks"
                     iosched:button2text="@string/give_feedback"
-                    iosched:button2tag="GIVE_FEEDBACK"
+                    iosched:button2tag="@string/tag_give_feedback"
                     iosched:button2emphasis="true"
                     iosched:cardBackgroundColor="@color/background"
                     android:layout_marginLeft="@dimen/keyline_2_session_detail"
