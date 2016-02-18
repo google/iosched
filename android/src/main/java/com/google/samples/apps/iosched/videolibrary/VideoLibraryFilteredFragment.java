@@ -429,7 +429,7 @@ public class VideoLibraryFilteredFragment extends Fragment implements
                     UIUtils.preferPackageForIntent(getActivity(), i,
                             UIUtils.YOUTUBE_PACKAGE_NAME);
                     i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_WHEN_TASK_RESET);
-                    startActivity(i);
+                    getActivity().startActivity(i);
                     // Mark the video as played.
                     fireVideoPlayedEvent(video);
                     // Display the overlay for videos that has already been played.
