@@ -118,8 +118,6 @@ public abstract class BaseActivity extends AppCompatActivity implements
         SharedPreferences.OnSharedPreferenceChangeListener,
         MultiSwipeRefreshLayout.CanChildScrollUpCallback {
 
-    public final static String PRESENTER_TAG = "Presenter";
-
     private static final String TAG = makeLogTag(BaseActivity.class);
 
     private static final int SELECT_GOOGLE_ACCOUNT_RESULT = 9999;
