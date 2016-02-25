@@ -18,6 +18,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 
+import com.firebase.client.Firebase;
 import com.google.samples.apps.iosched.BuildConfig;
 
 import java.util.zip.CRC32;
@@ -36,6 +37,9 @@ public class FirebaseUtils {
     // These names are are prefixes; the account is appended to them.
     public static final String PREFIX_PREF_FIREBASE_UID = "firebase_uid_";
     public static final String PREFIX_PREF_FIREBASE_URL = "firebase_url_";
+
+    public static final String FIREBASE_NODE_USERS = "users";
+    public static final String FIREBASE_NODE_GCM_KEY = "gcm_key";
 
     /**
      * @param context Context used to lookup {@link SharedPreferences}.
@@ -60,7 +64,6 @@ public class FirebaseUtils {
         sp.edit().putString(
                 AccountUtils.makeAccountSpecificPrefKey(context, PREFIX_PREF_FIREBASE_UID),
                 uid).apply();
-        // TODO: call setFirebaseUrl here.
     }
 
     /**
@@ -95,5 +98,16 @@ public class FirebaseUtils {
         sp.edit().putString(
                 AccountUtils.makeAccountSpecificPrefKey(context, PREFIX_PREF_FIREBASE_URL),
                 firebaseUrls[index]).apply();
+    }
+
+    /**
+     * Builds and returns the Firebase reference for storing the current user's data.
+     *
+     * @param baseRef The base Firebase reference.
+     * @param uid     The unique UID associated with the current user account.
+     * @return The user data Firebase reference.
+     */
+    public static Firebase getUserDataRef(Firebase baseRef, String uid) {
+        return baseRef.child(FirebaseUtils.FIREBASE_NODE_USERS).child(uid);
     }
 }
