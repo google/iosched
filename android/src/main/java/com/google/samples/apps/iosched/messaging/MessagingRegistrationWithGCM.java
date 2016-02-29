@@ -15,17 +15,15 @@
 package com.google.samples.apps.iosched.messaging;
 
 import android.app.Activity;
-import android.os.AsyncTask;
-import android.text.TextUtils;
+import android.content.Intent;
 
-import com.google.android.gcm.GCMRegistrar;
-import com.google.samples.apps.iosched.BuildConfig;
-import com.google.samples.apps.iosched.gcm.ServerUtilities;
-import com.google.samples.apps.iosched.util.AccountUtils;
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.GoogleApiAvailability;
+import com.google.samples.apps.iosched.gcm.GCMRegistrationIntentService;
+import com.google.samples.apps.iosched.gcm.GCMUnregisterIntentService;
 
-import static com.google.samples.apps.iosched.util.LogUtils.LOGD;
+import static com.google.samples.apps.iosched.util.LogUtils.LOGE;
 import static com.google.samples.apps.iosched.util.LogUtils.LOGI;
-import static com.google.samples.apps.iosched.util.LogUtils.LOGW;
 import static com.google.samples.apps.iosched.util.LogUtils.makeLogTag;
 
 /**
@@ -33,10 +31,8 @@ import static com.google.samples.apps.iosched.util.LogUtils.makeLogTag;
  */
 public class MessagingRegistrationWithGCM implements MessagingRegistration {
 
+    private static final int PLAY_SERVICES_RESOLUTION_REQUEST = 1000;
     private static final String TAG = makeLogTag(MessagingRegistrationWithGCM.class);
-
-    // Asynctask that performs GCM registration in the background
-    private AsyncTask<Void, Void, Void> mGCMRegisterTask;
 
     private Activity mActivity;
 
@@ -46,80 +42,49 @@ public class MessagingRegistrationWithGCM implements MessagingRegistration {
 
     @Override
     public void registerDevice() {
-        GCMRegistrar.checkDevice(mActivity);
-        GCMRegistrar.checkManifest(mActivity);
-
-        final String regId = GCMRegistrar.getRegistrationId(mActivity);
-
-        if (TextUtils.isEmpty(regId)) {
-            // Automatically registers application on startup.
-            GCMRegistrar.register(mActivity, BuildConfig.GCM_SENDER_ID);
-
-        } else {
-            // Get the correct GCM key for the user. GCM key is a somewhat non-standard
-            // approach we use in this app. For more about this, check GCM.TXT.
-            final String gcmKey = AccountUtils.hasActiveAccount(mActivity) ?
-                    AccountUtils
-                            .getGcmKey(mActivity, AccountUtils.getActiveAccountName(mActivity)) :
-                    null;
-            // Device is already registered on GCM, needs to check if it is
-            // registered on our server as well.
-            if (ServerUtilities.isRegisteredOnServer(mActivity, gcmKey)) {
-                // Skips registration.
-                LOGI(TAG, "Already registered on the GCM server with right GCM key.");
-            } else {
-                // Try to register again, but not in the UI thread.
-                // It's also necessary to cancel the thread onDestroy(),
-                // hence the use of AsyncTask instead of a raw thread.
-                mGCMRegisterTask = getGCMRegisterTask(gcmKey, regId);
-                mGCMRegisterTask.execute(null, null, null);
-            }
+        if (!checkPlayServices()) {
+            LOGE(TAG, "GCM skipped. This device does not have Google Play Services which is " +
+                    "required for GCM.");
+            return;
         }
+
+        Intent intent = new Intent(mActivity, GCMRegistrationIntentService.class);
+        mActivity.startService(intent);
     }
 
-    protected AsyncTask<Void, Void, Void> getGCMRegisterTask(final String gcmKey,
-            final String regId) {
-        return new AsyncTask<Void, Void, Void>() {
-            @Override
-            protected Void doInBackground(Void... params) {
-                LOGI(TAG, "Registering on the GCM server with GCM key: "
-                        + AccountUtils.sanitizeGcmKey(gcmKey));
-                boolean registered = ServerUtilities.register(mActivity,
-                        regId, gcmKey);
-                // At this point all attempts to register with the app
-                // server failed, so we need to unregister the device
-                // from GCM - the app will try to register again when
-                // it is restarted. Note that GCM will send an
-                // unregistered callback upon completion, but
-                // GCMIntentService.onUnregistered() will ignore it.
-                if (!registered) {
-                    LOGI(TAG, "GCM registration failed.");
-                    GCMRegistrar.unregister(mActivity);
-                } else {
-                    LOGI(TAG, "GCM registration successful.");
-                }
-                return null;
-            }
-
-            @Override
-            protected void onPostExecute(Void result) {
-                mGCMRegisterTask = null;
-            }
-        };
+    @Override
+    public void unregisterDevice() {
+        Intent intent = new Intent(mActivity, GCMUnregisterIntentService.class);
+        mActivity.startService(intent);
     }
 
     @Override
     public void destroy() {
-        if (mGCMRegisterTask != null) {
-            LOGD(TAG, "Cancelling GCM registration task.");
-            mGCMRegisterTask.cancel(true);
-        }
+        // No operation needed here since GCMRegistrationIntentService and
+        // GCMUnregisterIntentService are IntentServices they will stop themselves once their
+        // onHandleIntent methods complete. If you are instead using a Service you should include
+        // code here that stops the Service.
+    }
 
-        try {
-            GCMRegistrar.onDestroy(mActivity);
-        } catch (Exception e) {
-            LOGW(TAG, "GCM unregistration error", e);
+    /**
+     * Check the device to make sure it has the Google Play Services APK. If it doesn't, display a
+     * dialog that allows users to download the APK from the Google Play Store or enable it in the
+     * device's system settings.
+     */
+    private boolean checkPlayServices() {
+        GoogleApiAvailability apiAvailability = GoogleApiAvailability.getInstance();
+        int resultCode = apiAvailability.isGooglePlayServicesAvailable(mActivity);
+        if (resultCode != ConnectionResult.SUCCESS) {
+            if (apiAvailability.isUserResolvableError(resultCode)) {
+                apiAvailability
+                        .getErrorDialog(mActivity, resultCode, PLAY_SERVICES_RESOLUTION_REQUEST)
+                        .show();
+            } else {
+                LOGI(TAG, "Google Play Services is not available on this device.");
+            }
+            return false;
         }
+        return true;
     }
 
 }

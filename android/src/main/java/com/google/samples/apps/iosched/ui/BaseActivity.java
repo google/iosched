@@ -445,6 +445,8 @@ public abstract class BaseActivity extends AppCompatActivity implements
         if (mLoginAndAuthProvider != null) {
             LOGD(TAG, "Tearing down old Helper, was " + mLoginAndAuthProvider.getAccountName());
             if (mLoginAndAuthProvider.isStarted()) {
+                LOGD(TAG, "Unregister device from GCM");
+                mMessagingRegistration.unregisterDevice();
                 LOGD(TAG, "Stopping old Helper");
                 mLoginAndAuthProvider.stop();
             }

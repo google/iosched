@@ -31,6 +31,11 @@ public interface MessagingRegistration {
     void registerDevice();
 
     /**
+     * Implements un-registering the current user with the device.
+     */
+    void unregisterDevice();
+
+    /**
      * Implements to canceling any operation in progress.
      */
     void destroy();

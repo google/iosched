@@ -77,9 +77,6 @@
         android:name="android.permission.READ_EXTERNAL_STORAGE"
         android:maxSdkVersion="18" />
 
-    <!-- Get permission for reliable local dispatching. -->
-    <uses-permission android:name="android.permission.WAKE_LOCK" />
-
     <application
         android:name=".AppApplication"
         android:allowBackup="false"
@@ -422,34 +419,53 @@
 
 
         <!--
-          BroadcastReceiver that will receive the C2DM messages from GCM
-          services and handle them to the custom IntentService.
+          This is a receiver provided by Google Play Services. It handles receiving
+          messages and passes them to GcmListenerService which offers a callback
+          that we will override to take action based on the content of the message received.
 
           The com.google.android.c2dm.permission.SEND permission is necessary
           so only GCM services can send data messages for the app.
         -->
         <receiver
-            android:name=".gcm.GCMRedirectedBroadcastReceiver"
+            android:name="com.google.android.gms.gcm.GcmReceiver"
+            android:exported="true"
             android:permission="com.google.android.c2dm.permission.SEND">
             <intent-filter>
 
                 <!-- Receives the actual messages. -->
                 <action android:name="com.google.android.c2dm.intent.RECEIVE" />
-                <!-- Receives the registration id. -->
-                <action android:name="com.google.android.c2dm.intent.REGISTRATION" />
 
                 <category android:name="com.google.samples.apps.iosched" />
             </intent-filter>
         </receiver>
 
         <!--
-          Application-specific subclass of GCMBaseIntentService that will
-          handle received messages.
-
-          By default, it must be named .GCMIntentService, unless the
-          application uses a custom BroadcastReceiver that redefines its name.
+          GCMMessageListenerService is the extension of the GcmListenerService,
+          where we handle received GCM messages.
         -->
-        <service android:name=".gcm.GCMIntentService" />
+        <service
+            android:name=".gcm.GCMMessageListenerService"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="com.google.android.c2dm.intent.RECEIVE" />
+            </intent-filter>
+        </service>
+
+        <service
+            android:name=".gcm.GCMInstanceIDListenerService"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="com.google.android.gms.iid.InstanceID" />
+            </intent-filter>
+        </service>
+
+        <service
+            android:name=".gcm.GCMRegistrationIntentService"
+            android:exported="false" />
+
+        <service
+            android:name=".gcm.GCMUnregisterIntentService"
+            android:exported="false" />
 
         <!-- Data, sync and schedule editing components -->
 
