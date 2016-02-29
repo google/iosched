@@ -30,6 +30,7 @@ import com.google.samples.apps.iosched.R;
 import com.google.samples.apps.iosched.explore.data.ItemGroup;
 import com.google.samples.apps.iosched.explore.data.LiveStreamData;
 import com.google.samples.apps.iosched.explore.data.SessionData;
+import com.google.samples.apps.iosched.navigation.NavigationModel;
 import com.google.samples.apps.iosched.provider.ScheduleContract;
 import com.google.samples.apps.iosched.session.SessionDetailActivity;
 import com.google.samples.apps.iosched.ui.BaseActivity;
@@ -74,8 +75,8 @@ public class ExploreIOActivity extends BaseActivity implements Toolbar.OnMenuIte
     }
 
     @Override
-    protected int getSelfNavDrawerItem() {
-        return NAVDRAWER_ITEM_EXPLORE;
+    protected NavigationModel.NavigationItemEnum getSelfNavDrawerItem() {
+        return NavigationModel.NavigationItemEnum.EXPLORE;
     }
 
     @Override
