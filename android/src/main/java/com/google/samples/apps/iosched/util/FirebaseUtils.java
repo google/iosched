@@ -29,6 +29,7 @@ import static com.google.samples.apps.iosched.util.LogUtils.makeLogTag;
 /**
  * Utility methods for setting up and interacting with a Firebase account associated with a user
  * account.
+ * TODO (shailen): instead of passing Context, pass SharedPreferences to methods.
  */
 public class FirebaseUtils {
 
@@ -40,6 +41,7 @@ public class FirebaseUtils {
 
     public static final String FIREBASE_NODE_USERS = "users";
     public static final String FIREBASE_NODE_GCM_KEY = "gcm_key";
+    public static final String FIREBASE_NODE_VIEWED_VIDEOS = "viewed_videos";
 
     /**
      * @param context Context used to lookup {@link SharedPreferences}.
@@ -101,13 +103,33 @@ public class FirebaseUtils {
     }
 
     /**
-     * Builds and returns the Firebase reference for storing the current user's data.
+     * Builds and returns the Firebase reference for storing the user data with the currently chosen
+     * account.
+     * TODO (shailen): a factory method should not be in a utils file. Remove from here.
      *
-     * @param baseRef The base Firebase reference.
-     * @param uid     The unique UID associated with the current user account.
      * @return The user data Firebase reference.
      */
-    public static Firebase getUserDataRef(Firebase baseRef, String uid) {
-        return baseRef.child(FirebaseUtils.FIREBASE_NODE_USERS).child(uid);
+    public static Firebase getUserDataRef(Context context, String accountName) {
+        return new Firebase(getFirebaseUrl(context, accountName))
+                .child(FIREBASE_NODE_USERS)
+                .child(FirebaseUtils.getFirebaseUid(context));
+    }
+
+    /**
+     * Returns the Firebase child path (relative to the user data ref) where a user's viewed videos
+     * are stored.
+     */
+    public static String getViewedVideosChildPath() {
+        return FIREBASE_NODE_VIEWED_VIDEOS + "/";
+    }
+
+    /**
+     * Returns the Firebase child path (relative the user data ref) where data for a specific viewed
+     * video is stored.
+     *
+     * @param videoId The ID of the video that the user watched.
+     */
+    public static String getViewedVideoChildPath(String videoId) {
+        return getViewedVideosChildPath() + videoId + "/";
     }
 }

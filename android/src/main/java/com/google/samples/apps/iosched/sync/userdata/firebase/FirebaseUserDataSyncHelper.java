@@ -17,21 +17,18 @@ package com.google.samples.apps.iosched.sync.userdata.firebase;
 import android.content.Context;
 import android.text.TextUtils;
 
-import com.firebase.client.AuthData;
 import com.firebase.client.DataSnapshot;
 import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
-import com.firebase.client.FirebaseException;
 import com.firebase.client.ValueEventListener;
 import com.google.samples.apps.iosched.sync.userdata.AbstractUserDataSyncHelper;
 import com.google.samples.apps.iosched.sync.userdata.UserAction;
-import com.google.samples.apps.iosched.ui.BaseActivity;
-import com.google.samples.apps.iosched.util.AccountUtils;
 import com.google.samples.apps.iosched.util.FirebaseUtils;
 
 import java.util.List;
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.TimeUnit;
 
-import static com.google.samples.apps.iosched.util.LogUtils.LOGD;
 import static com.google.samples.apps.iosched.util.LogUtils.LOGI;
 import static com.google.samples.apps.iosched.util.LogUtils.LOGW;
 import static com.google.samples.apps.iosched.util.LogUtils.makeLogTag;
@@ -42,111 +39,120 @@ import static com.google.samples.apps.iosched.util.LogUtils.makeLogTag;
  * Firebase#keepSynced(boolean)} functionality in order to have more control over conflict
  * resolution for different types of data being stored.
  */
-public class FirebaseUserDataSyncHelper extends AbstractUserDataSyncHelper {
+public class FirebaseUserDataSyncHelper extends AbstractUserDataSyncHelper
+        implements FirebaseAuthCallbacks {
     private static final String TAG = makeLogTag(FirebaseUserDataSyncHelper.class);
 
     /**
-     * The Firebase reference used to sync data.
+     * Wait time for the Firebase sync to complete before we exit from {@code syncImpl()}.
      */
-    private Firebase mFirebaseRef;
+    public static final int AWAIT_TIMEOUT_IN_MILLISECONDS = 10000; // 10 seconds.
 
     /**
-     * Tracks if the sync process changes local data.
+     * Tracks if the sync process changed local data.
      */
     private boolean mDataChanged = false;
 
+    /**
+     * Lock used to prevent {@code syncImpl()} from exiting before we're done syncing with
+     * Firebase.
+     */
+    private CountDownLatch mCountDownLatch;
+
+    /**
+     * A list of {@link UserAction}s that are involved in the data sync.
+     */
+    private List<UserAction> mActions;
+
+    /**
+     * Constructor.
+     *
+     * @param context     The {@link Context}.
+     * @param accountName The name associated with the currently chosen account.
+     */
     public FirebaseUserDataSyncHelper(Context context, String accountName) {
         super(context, accountName);
     }
 
     @Override
     protected boolean syncImpl(final List<UserAction> actions, final boolean hasPendingLocalData) {
+        mActions = actions;
+        mCountDownLatch = new CountDownLatch(1);
+
         // The Firebase shard where data is synced.
         String firebaseUrl = FirebaseUtils.getFirebaseUrl(mContext, mAccountName);
-
         if (TextUtils.isEmpty(firebaseUrl)) {
             LOGW(TAG, "Cannot proceed with user data sync: Firebase url is not known.");
             return mDataChanged;
         }
 
-        mFirebaseRef = new Firebase(firebaseUrl);
-        if (!TextUtils.isEmpty(FirebaseUtils.getFirebaseUid(mContext))) {
-            LOGI(TAG, "Already authenticated with Firebase.");
-            performFirebaseSync(actions, hasPendingLocalData);
-        } else {
-            try {
-                LOGI(TAG, "Attempting Firebase auth.");
-                mFirebaseRef.authWithOAuthToken(AccountUtils.DEFAULT_OAUTH_PROVIDER,
-                        AccountUtils.getAuthToken(mContext),
-                        new Firebase.AuthResultHandler() {
-                            @Override
-                            public void onAuthenticated(AuthData authData) {
-                                String uid = authData.getUid();
-                                LOGI(TAG, "Firebase auth succeeded");
-                                FirebaseUtils.setFirebaseUid(mContext, mAccountName, uid);
-                                performFirebaseSync(actions, hasPendingLocalData);
-                            }
+        // The Firebase reference used to sync data.
+        final Firebase firebaseRef = new Firebase(firebaseUrl);
+        boolean authenticated = !TextUtils.isEmpty(FirebaseUtils.getFirebaseUid(mContext));
 
-                            @Override
-                            public void onAuthenticationError(FirebaseError firebaseError) {
-                                LOGW(TAG, "Firebase auth error: " + firebaseError);
-                            }
-                        });
-            } catch (FirebaseException e) {
-                LOGW(TAG, "Firebase auth error", e);
-            } catch (IllegalArgumentException e) {
-                LOGW(TAG, "OAuth token is null", e);
-            } catch (IllegalStateException e) {
-                LOGW(TAG, "Illegal state", e);
-            }
+        if (authenticated) {
+            LOGI(TAG, "Already authenticated with Firebase.");
+            performSync(actions);
+        } else {
+            // Authenticate and wait for onAuthSucceeded() to fire before performing sync.
+            new FirebaseAuthHelper(mContext, firebaseRef, this).authenticate();
         }
+
+        try {
+            // Make the current thread wait until we've heard back from Firebase.
+            LOGI(TAG, "Waiting until the latch has counted down to zero");
+            mCountDownLatch.await(AWAIT_TIMEOUT_IN_MILLISECONDS, TimeUnit.MILLISECONDS);
+        } catch (InterruptedException exception) {
+            LOGW(TAG, "Waiting thread awakened prematurely", exception);
+            // TODO(shailen): if sync fails, throw a typed exception.
+        }
+        LOGI(TAG, "local data changed after sync = " + mDataChanged);
         return mDataChanged;
     }
 
     /**
-     * Syncs local data with remote data in Firebase. Checks if there is a remote GCM key, and if it
-     * exists, overrides the local GCM key stored in {@link android.content.SharedPreferences}. See
-     * {@link BaseActivity#registerGCMClient()} for how the GCM key is generated and what function
-     * it serves.
+     * Syncs local data with remote data in Firebase. Assumes Firebase authentication has
+     * successfully completed. See {@link FirebaseDataReconciler} for details on how remote and
+     * local data is merged.
      *
      * @param actions The user actions that triggered the sync.
      */
-    private void performFirebaseSync(final List<UserAction> actions,
-            final boolean hasPendingLocalData) {
+    private void performSync(final List<UserAction> actions) {
+        // Do a one-time read of Firebase data (equivalent to an asynchronous query call).
+        FirebaseUtils.getUserDataRef(mContext, mAccountName).addListenerForSingleValueEvent(
+                new ValueEventListener() {
+                    @Override
+                    public void onDataChange(final DataSnapshot dataSnapshot) {
+                        FirebaseDataReconciler firebaseDataReconciler =
+                                new FirebaseDataReconciler(mContext, mAccountName, actions,
+                                        dataSnapshot);
+                        firebaseDataReconciler.buildRemoteDataObject()
+                                              .buildLocalDataObject()
+                                              .merge()
+                                              .updateRemote()
+                                              .updateLocal();
+                        FirebaseUserDataSyncHelper.this.mDataChanged =
+                                firebaseDataReconciler.localDataChanged();
+                        LOGI(TAG, "Done syncing with Firebase. Decrementing latch count.");
+                        mCountDownLatch.countDown();
+                    }
 
-        final String uid = FirebaseUtils.getFirebaseUid(mContext);
-        final Firebase userDataRef = FirebaseUtils.getUserDataRef(mFirebaseRef, uid);
+                    @Override
+                    public void onCancelled(final FirebaseError firebaseError) {
+                        LOGW(TAG, "firebaseError = " + firebaseError);
+                        mCountDownLatch.countDown();
+                    }
+                });
+    }
 
-        // Do a one-time read of Firebase data (equivalent to an asynchronously query call).
-        userDataRef.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(final DataSnapshot dataSnapshot) {
-                String remoteGcmKey = (String) dataSnapshot.child(
-                        FirebaseUtils.FIREBASE_NODE_GCM_KEY).getValue();
-                String localGcmKey =
-                        AccountUtils.getGcmKey(mContext, mAccountName);
-                LOGD(TAG, "Local GCM key: " +
-                        AccountUtils.sanitizeGcmKey(localGcmKey));
-                LOGD(TAG, "Remote GCM key: " + (remoteGcmKey == null ? "(null)"
-                        : AccountUtils.sanitizeGcmKey(remoteGcmKey)));
+    @Override
+    public void onAuthSucceeded(final String uid) {
+        FirebaseUtils.setFirebaseUid(mContext, mAccountName, uid);
+        performSync(mActions);
+    }
 
-                if (TextUtils.isEmpty(remoteGcmKey)) {
-                    // Write local GCM key to Firebase.
-                    userDataRef.child(FirebaseUtils.FIREBASE_NODE_GCM_KEY).setValue(localGcmKey);
-                } else if (remoteGcmKey.equals(localGcmKey)) {
-                    LOGI(TAG, "Remote GCM key is the same as local, so no action necessary.");
-                } else {
-                    LOGI(TAG, "Remote GCM key is different from local. OVERRIDING local.");
-                    localGcmKey = remoteGcmKey;
-                    AccountUtils.setGcmKey(mContext, mAccountName, localGcmKey);
-                    FirebaseUserDataSyncHelper.this.mDataChanged = true;
-                }
-            }
-
-            @Override
-            public void onCancelled(final FirebaseError firebaseError) {
-                LOGW(TAG, "firebaseError = " + firebaseError);
-            }
-        });
+    @Override
+    public void onAuthFailed() {
+        mCountDownLatch.countDown();
     }
 }

@@ -29,20 +29,21 @@ import java.util.*;
 
 /**
  * Helper class to handle the format of the User Data that is stored into AppData.
+ * TODO (shailen): Refactor. Class mixes util methods, Pojos and business logic.
  */
 public class UserDataHelper {
 
     /** JSON Attribute name of the starred sessions values. */
-    static final String JSON_ATTRIBUTE_STARRED_SESSIONS = "starred_sessions";
+    public static final String JSON_ATTRIBUTE_STARRED_SESSIONS = "starred_sessions";
 
     /** JSON Attribute name of the GCM Key value. */
-    static final String JSON_ATTRIBUTE_GCM_KEY = "gcm_key";
+    public static final String JSON_ATTRIBUTE_GCM_KEY = "gcm_key";
 
     /** JSON Attribute name of the feedback submitted for sessions values. */
-    static final String JSON_ATTRIBUTE_FEEDBACK_SUBMITTED_SESSIONS = "feedback_submitted_sessions";
+    public static final String JSON_ATTRIBUTE_FEEDBACK_SUBMITTED_SESSIONS = "feedback_submitted_sessions";
 
     /** JSON Attribute name of the viewed videos values. */
-    static final String JSON_ATTRIBUTE_VIEWED_VIDEOS = "viewed_videos";
+    public static final String JSON_ATTRIBUTE_VIEWED_VIDEOS = "viewed_videos";
 
     /**
      * Returns a JSON string representation of the given UserData object.
@@ -60,6 +61,7 @@ public class UserDataHelper {
 
     /**
      * Deserializes the UserData given as a JSON string into a {@link UserData} object.
+     * TODO(shailen): put this in UserData.
      */
     static public UserData fromString(String str) {
         if (str == null || str.isEmpty()) {
@@ -77,6 +79,7 @@ public class UserDataHelper {
             for (UserAction action : actions) {
                 if (action.type == UserAction.TYPE.ADD_STAR) {
                     if(userData.getStarredSessionIds() == null) {
+                        // TODO (shailen): Make this part of setter. Create lazily.
                         userData.setStarredSessionIds(new HashSet<String>());
                     }
                     userData.getStarredSessionIds().add(action.sessionId);
@@ -146,6 +149,7 @@ public class UserDataHelper {
      * Writes the given user data into the device's local DB.
      */
     static public void setLocalUserData(Context context, UserData userData, String accountName) {
+        // TODO (shailen): throw if null. Callers should ensure the data is not null.
         if (userData == null) {
             return;
         }
@@ -201,6 +205,7 @@ public class UserDataHelper {
 
     /**
      * Represents all User specific data that can be synchronized on Google Drive App Data.
+     * TODO (shailen): should not be part of a utility class.
      */
     public static class UserData {
 
@@ -246,6 +251,46 @@ public class UserDataHelper {
 
         public void setGcmKey(String gcmKey) {
             this.gcmKey = gcmKey;
+        }
+
+        public void addVideoId(String videoId) {
+            getViewedVideoIds().add(videoId);
+        }
+
+        public void updateVideoIds(UserData other) {
+            getViewedVideoIds().addAll(other.getViewedVideoIds());
+        }
+
+        @Override
+        public boolean equals(final Object obj) {
+            if (!(obj instanceof UserData)) {
+                return false;
+            }
+            if (obj == this) {
+                return true;
+            }
+
+            final UserData other = (UserData) obj;
+            return this.getGcmKey().equals(other.getGcmKey()) &&
+                    this.getStarredSessionIds().equals(other.getStarredSessionIds()) &&
+                    this.getViewedVideoIds().equals(other.getViewedVideoIds()) &&
+                    this.getFeedbackSubmittedSessionIds().equals(
+                            other.getFeedbackSubmittedSessionIds());
+        }
+
+        @Override
+        public int hashCode() {
+            int result = 17;
+            int prime = 37;
+            result = prime * result + ((this.starredSessionIds != null) ?
+                    this.starredSessionIds.hashCode() : 0);
+            result = prime * result + ((this.feedbackSubmittedSessionIds != null) ?
+                    this.feedbackSubmittedSessionIds.hashCode() : 0);
+            result = prime * result + ((this.viewedVideoIds != null) ?
+                    this.viewedVideoIds.hashCode() : 0);
+            result = prime * result + ((this.gcmKey != null) ?
+                    this.gcmKey.hashCode() : 0);
+            return result;
         }
     }
 }
