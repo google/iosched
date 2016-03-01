@@ -18,10 +18,6 @@ package com.google.samples.apps.iosched.ui;
 
 import android.accounts.Account;
 import android.accounts.AccountManager;
-import android.animation.ArgbEvaluator;
-import android.animation.ObjectAnimator;
-import android.animation.TypeEvaluator;
-import android.animation.ValueAnimator;
 import android.app.Activity;
 import android.content.ContentResolver;
 import android.content.Intent;
@@ -29,7 +25,6 @@ import android.content.SharedPreferences;
 import android.content.SyncStatusObserver;
 import android.content.pm.PackageManager;
 import android.content.res.Resources;
-import android.graphics.Color;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -37,8 +32,6 @@ import android.preference.PreferenceManager;
 import android.provider.Settings;
 import android.support.v4.app.NavUtils;
 import android.support.v4.app.TaskStackBuilder;
-import android.support.v4.view.ViewCompat;
-import android.support.v4.widget.DrawerLayout;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
@@ -48,8 +41,6 @@ import android.util.TypedValue;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
-import android.view.animation.DecelerateInterpolator;
-import android.widget.AbsListView;
 import android.widget.ListView;
 
 import com.google.android.gcm.GCMRegistrar;
@@ -65,6 +56,8 @@ import com.google.samples.apps.iosched.provider.ScheduleContract;
 import com.google.samples.apps.iosched.service.DataBootstrapService;
 import com.google.samples.apps.iosched.settings.SettingsUtils;
 import com.google.samples.apps.iosched.sync.SyncHelper;
+import com.google.samples.apps.iosched.ui.widget.HeaderView;
+import com.google.samples.apps.iosched.ui.widget.HeaderViewImpl;
 import com.google.samples.apps.iosched.ui.widget.MultiSwipeRefreshLayout;
 import com.google.samples.apps.iosched.util.AccountUtils;
 import com.google.samples.apps.iosched.util.ImageLoader;
@@ -72,10 +65,6 @@ import com.google.samples.apps.iosched.util.LUtils;
 import com.google.samples.apps.iosched.util.LoginAndAuthHelper;
 import com.google.samples.apps.iosched.util.RecentTasksStyler;
 import com.google.samples.apps.iosched.welcome.WelcomeActivity;
-
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
 
 import static com.google.samples.apps.iosched.util.LogUtils.LOGD;
 import static com.google.samples.apps.iosched.util.LogUtils.LOGE;
@@ -91,7 +80,8 @@ public abstract class BaseActivity extends AppCompatActivity implements
         LoginAndAuthHelper.Callbacks,
         SharedPreferences.OnSharedPreferenceChangeListener,
         MultiSwipeRefreshLayout.CanChildScrollUpCallback, LoginStateListener,
-        AppNavigationViewAsDrawerImpl.NavigationDrawerStateListener {
+        AppNavigationViewAsDrawerImpl.NavigationDrawerStateListener,
+        HeaderView {
 
     private static final String TAG = makeLogTag(BaseActivity.class);
 
@@ -103,26 +93,16 @@ public abstract class BaseActivity extends AppCompatActivity implements
     // Navigation drawer
     private AppNavigationViewAsDrawerImpl mAppNavigationViewAsDrawer;
 
+    // Header view
+    private HeaderViewImpl mHeaderViewImpl;
+
     // Helper methods for L APIs
     private LUtils mLUtils;
-
-    private ObjectAnimator mStatusBarColorAnimator;
-
-    // When set, these components will be shown/hidden in sync with the action bar
-    // to implement the "quick recall" effect (the Action Bar and the header views disappear
-    // when you scroll down a list, and reappear quickly when you scroll up).
-    private ArrayList<View> mHideableHeaderViews = new ArrayList<View>();
-
-    // Durations for certain animations we use:
-    private static final int HEADER_HIDE_ANIM_DURATION = 300;
 
     private static final int MAIN_CONTENT_FADEIN_DURATION = 250;
 
     // SwipeRefreshLayout allows the user to swipe the screen down to trigger a manual refresh
     private SwipeRefreshLayout mSwipeRefreshLayout;
-
-    // Primary toolbar and drawer toggle
-    private Toolbar mActionBarToolbar;
 
     // asynctask that performs GCM registration in the backgorund
     private AsyncTask<Void, Void, Void> mGCMRegisterTask;
@@ -130,26 +110,7 @@ public abstract class BaseActivity extends AppCompatActivity implements
     // handle to our sync observer (that notifies us about changes in our sync state)
     private Object mSyncObserverHandle;
 
-    // variables that control the Action Bar auto hide behavior (aka "quick recall")
-    private boolean mActionBarAutoHideEnabled = false;
-
-    private int mActionBarAutoHideSensivity = 0;
-
-    private int mActionBarAutoHideMinY = 0;
-
-    private int mActionBarAutoHideSignal = 0;
-
-    private boolean mActionBarShown = true;
-
     private boolean mManualSyncRequest;
-
-    private int mThemedStatusBarColor;
-
-    private int mNormalStatusBarColor;
-
-    private int mProgressBarTopWhenActionBarShown;
-
-    private static final TypeEvaluator ARGB_EVALUATOR = new ArgbEvaluator();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -177,8 +138,7 @@ public abstract class BaseActivity extends AppCompatActivity implements
         }
 
         mLUtils = LUtils.getInstance(this);
-        mThemedStatusBarColor = getResources().getColor(R.color.theme_primary_dark);
-        mNormalStatusBarColor = mThemedStatusBarColor;
+        mHeaderViewImpl = new HeaderViewImpl(this, mLUtils);
     }
 
     private void trySetupSwipeRefresh() {
@@ -200,8 +160,9 @@ public abstract class BaseActivity extends AppCompatActivity implements
         }
     }
 
-    protected void setProgressBarTopWhenActionBarShown(int progressBarTopWhenActionBarShown) {
-        mProgressBarTopWhenActionBarShown = progressBarTopWhenActionBarShown;
+    @Override
+    public void setProgressBarTopWhenActionBarShown(int progressBarTopWhenActionBarShown) {
+        mHeaderViewImpl.setProgressBarTopWhenActionBarShown(progressBarTopWhenActionBarShown);
         updateSwipeRefreshProgressBarTop();
     }
 
@@ -214,7 +175,9 @@ public abstract class BaseActivity extends AppCompatActivity implements
                 R.dimen.swipe_refresh_progress_bar_start_margin);
         int progressBarEndMargin = getResources().getDimensionPixelSize(
                 R.dimen.swipe_refresh_progress_bar_end_margin);
-        int top = mActionBarShown ? mProgressBarTopWhenActionBarShown : 0;
+        int top =
+                mHeaderViewImpl.isActionBarShown() ? mHeaderViewImpl.getProgressBarTopWhenActionBarShown() :
+                        0;
         mSwipeRefreshLayout.setProgressViewOffset(false,
                 top + progressBarStartMargin, top + progressBarEndMargin);
     }
@@ -236,8 +199,8 @@ public abstract class BaseActivity extends AppCompatActivity implements
 
     @Override
     public void onNavDrawerStateChanged(boolean isOpen, boolean isAnimating) {
-        if (mActionBarAutoHideEnabled && isOpen) {
-            autoShowOrHideActionBar(true);
+        if (mHeaderViewImpl.isAutoHideEnabled() && isOpen) {
+            mHeaderViewImpl.autoShowOrHideActionBar(true);
         }
     }
 
@@ -268,15 +231,10 @@ public abstract class BaseActivity extends AppCompatActivity implements
         super.onPostCreate(savedInstanceState);
         mAppNavigationViewAsDrawer = new AppNavigationViewAsDrawerImpl(new ImageLoader(this), this);
         mAppNavigationViewAsDrawer.activityReady(this, this, getSelfNavDrawerItem());
+        mHeaderViewImpl.setNavigationView(mAppNavigationViewAsDrawer);
 
-        if (mActionBarToolbar != null && getSelfNavDrawerItem() != NavigationItemEnum.INVALID) {
-            mActionBarToolbar.setNavigationIcon(R.drawable.ic_ab_drawer);
-            mActionBarToolbar.setNavigationOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    mAppNavigationViewAsDrawer.showNavigation();
-                }
-            });
+        if (getSelfNavDrawerItem() != NavigationItemEnum.INVALID) {
+            mHeaderViewImpl.setToolbarForNavigation();
         }
 
         trySetupSwipeRefresh();
@@ -629,108 +587,14 @@ public abstract class BaseActivity extends AppCompatActivity implements
         mLoginAndAuthHelper.retryAuthByUserRequest();
     }
 
-    /**
-     * Initializes the Action Bar auto-hide (aka Quick Recall) effect.
-     */
-    private void initActionBarAutoHide() {
-        mActionBarAutoHideEnabled = true;
-        mActionBarAutoHideMinY = getResources().getDimensionPixelSize(
-                R.dimen.action_bar_auto_hide_min_y);
-        mActionBarAutoHideSensivity = getResources().getDimensionPixelSize(
-                R.dimen.action_bar_auto_hide_sensivity);
+    @Override
+    public Toolbar getActionBarToolbar() {
+        return mHeaderViewImpl.getActionBarToolbar();
     }
 
-    /**
-     * Indicates that the main content has scrolled (for the purposes of showing/hiding the action
-     * bar for the "action bar auto hide" effect). currentY and deltaY may be exact (if the
-     * underlying view supports it) or may be approximate indications: deltaY may be INT_MAX to mean
-     * "scrolled forward indeterminately" and INT_MIN to mean "scrolled backward indeterminately".
-     * currentY may be 0 to mean "somewhere close to the start of the list" and INT_MAX to mean "we
-     * don't know, but not at the start of the list"
-     */
-    private void onMainContentScrolled(int currentY, int deltaY) {
-        if (deltaY > mActionBarAutoHideSensivity) {
-            deltaY = mActionBarAutoHideSensivity;
-        } else if (deltaY < -mActionBarAutoHideSensivity) {
-            deltaY = -mActionBarAutoHideSensivity;
-        }
-
-        if (Math.signum(deltaY) * Math.signum(mActionBarAutoHideSignal) < 0) {
-            // deltaY is a motion opposite to the accumulated signal, so reset signal
-            mActionBarAutoHideSignal = deltaY;
-        } else {
-            // add to accumulated signal
-            mActionBarAutoHideSignal += deltaY;
-        }
-
-        boolean shouldShow = currentY < mActionBarAutoHideMinY ||
-                (mActionBarAutoHideSignal <= -mActionBarAutoHideSensivity);
-        autoShowOrHideActionBar(shouldShow);
-    }
-
-    protected Toolbar getActionBarToolbar() {
-        if (mActionBarToolbar == null) {
-            mActionBarToolbar = (Toolbar) findViewById(R.id.toolbar_actionbar);
-            if (mActionBarToolbar != null) {
-                // Depending on which version of Android you are on the Toolbar or the ActionBar
-                // may be
-                // active so the a11y description is set here.
-                mActionBarToolbar.setNavigationContentDescription(getResources().getString(R.string
-                        .navdrawer_description_a11y));
-                setSupportActionBar(mActionBarToolbar);
-            }
-        }
-        return mActionBarToolbar;
-    }
-
-    protected void autoShowOrHideActionBar(boolean show) {
-        if (show == mActionBarShown) {
-            return;
-        }
-
-        mActionBarShown = show;
-        onActionBarAutoShowOrHide(show);
-    }
-
-    protected void enableActionBarAutoHide(final ListView listView) {
-        initActionBarAutoHide();
-        listView.setOnScrollListener(new AbsListView.OnScrollListener() {
-
-            /** The heights of all items. */
-            private Map<Integer, Integer> heights = new HashMap<>();
-            private int lastCurrentScrollY = 0;
-
-            @Override
-            public void onScrollStateChanged(AbsListView view, int scrollState) {
-            }
-
-            @Override
-            public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount,
-                    int totalItemCount) {
-
-                // Get the first visible item's view.
-                View firstVisibleItemView = view.getChildAt(0);
-                if (firstVisibleItemView == null) {
-                    return;
-                }
-
-                // Save the height of the visible item.
-                heights.put(firstVisibleItem, firstVisibleItemView.getHeight());
-
-                // Calculate the height of all previous (hidden) items.
-                int previousItemsHeight = 0;
-                for (int i = 0; i < firstVisibleItem; i++) {
-                    previousItemsHeight += heights.get(i) != null ? heights.get(i) : 0;
-                }
-
-                int currentScrollY = previousItemsHeight - firstVisibleItemView.getTop()
-                        + view.getPaddingTop();
-
-                onMainContentScrolled(currentScrollY, currentScrollY - lastCurrentScrollY);
-
-                lastCurrentScrollY = currentScrollY;
-            }
-        });
+    @Override
+    public void enableActionBarAutoHide(final ListView listView) {
+        mHeaderViewImpl.enableActionBarAutoHide(listView);
     }
 
     /**
@@ -850,79 +714,18 @@ public abstract class BaseActivity extends AppCompatActivity implements
         }
     }
 
-    protected void enableDisableSwipeRefresh(boolean enable) {
-        if (mSwipeRefreshLayout != null) {
-            mSwipeRefreshLayout.setEnabled(enable);
-        }
+    @Override
+    public void registerHideableHeaderView(View hideableHeaderView) {
+        mHeaderViewImpl.registerHideableHeaderView(hideableHeaderView);
     }
 
-    protected void registerHideableHeaderView(View hideableHeaderView) {
-        if (!mHideableHeaderViews.contains(hideableHeaderView)) {
-            mHideableHeaderViews.add(hideableHeaderView);
-        }
-    }
-
-    protected void deregisterHideableHeaderView(View hideableHeaderView) {
-        if (mHideableHeaderViews.contains(hideableHeaderView)) {
-            mHideableHeaderViews.remove(hideableHeaderView);
-        }
+    @Override
+    public void deregisterHideableHeaderView(View hideableHeaderView) {
+        mHeaderViewImpl.deregisterHideableHeaderView(hideableHeaderView);
     }
 
     public LUtils getLUtils() {
         return mLUtils;
-    }
-
-    public int getThemedStatusBarColor() {
-        return mThemedStatusBarColor;
-    }
-
-    protected void onActionBarAutoShowOrHide(boolean shown) {
-        if (mStatusBarColorAnimator != null) {
-            mStatusBarColorAnimator.cancel();
-        }
-        final DrawerLayout drawerLayout = mAppNavigationViewAsDrawer.getDrawerLayout();
-        mStatusBarColorAnimator = ObjectAnimator.ofInt(
-                (drawerLayout != null) ? drawerLayout : mLUtils,
-                (drawerLayout != null) ? "statusBarBackgroundColor" : "statusBarColor",
-                shown ? Color.BLACK : mNormalStatusBarColor,
-                shown ? mNormalStatusBarColor : Color.BLACK)
-                                                .setDuration(250);
-        if (drawerLayout != null) {
-            mStatusBarColorAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
-                @Override
-                public void onAnimationUpdate(ValueAnimator valueAnimator) {
-                    ViewCompat.postInvalidateOnAnimation(drawerLayout);
-                }
-            });
-        }
-        mStatusBarColorAnimator.setEvaluator(ARGB_EVALUATOR);
-        mStatusBarColorAnimator.start();
-
-        updateSwipeRefreshProgressBarTop();
-
-        for (final View view : mHideableHeaderViews) {
-            if (shown) {
-                ViewCompat.animate(view)
-                          .translationY(0)
-                          .alpha(1)
-                          .setDuration(HEADER_HIDE_ANIM_DURATION)
-                        .setInterpolator(new DecelerateInterpolator())
-                                // Setting Alpha animations should be done using the
-                                // layer_type set to layer_type_hardware for the duration of the
-                                // animation.
-                        .withLayer();
-            } else {
-                ViewCompat.animate(view)
-                          .translationY(-view.getBottom())
-                          .alpha(0)
-                          .setDuration(HEADER_HIDE_ANIM_DURATION)
-                        .setInterpolator(new DecelerateInterpolator())
-                                // Setting Alpha animations should be done using the
-                                // layer_type set to layer_type_hardware for the duration of the
-                                // animation.
-                        .withLayer();
-            }
-        }
     }
 
     @Override
@@ -959,4 +762,5 @@ public abstract class BaseActivity extends AppCompatActivity implements
 
         return (floatingWindowFlag.data != 0);
     }
+
 }

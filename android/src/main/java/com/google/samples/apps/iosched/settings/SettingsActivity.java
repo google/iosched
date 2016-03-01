@@ -44,13 +44,6 @@ public class SettingsActivity extends BaseActivity {
         return NavigationModel.NavigationItemEnum.SETTINGS;
     }
 
-    @Override
-    protected void onActionBarAutoShowOrHide(boolean shown) {
-        super.onActionBarAutoShowOrHide(shown);
-        DrawShadowFrameLayout frame = (DrawShadowFrameLayout) findViewById(R.id.main_content);
-        frame.setShadowVisible(shown, shown);
-    }
-
     /**
      * The Fragment is added via the R.layout.settings_act layout xml.
      */

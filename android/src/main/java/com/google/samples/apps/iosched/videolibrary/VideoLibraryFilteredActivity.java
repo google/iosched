@@ -27,7 +27,6 @@ import android.view.View;
 import com.google.samples.apps.iosched.R;
 import com.google.samples.apps.iosched.ui.BaseActivity;
 import com.google.samples.apps.iosched.ui.widget.CollectionView;
-import com.google.samples.apps.iosched.ui.widget.DrawShadowFrameLayout;
 import com.google.samples.apps.iosched.util.AnalyticsHelper;
 
 import static com.google.samples.apps.iosched.util.LogUtils.LOGD;
@@ -111,13 +110,6 @@ public class VideoLibraryFilteredActivity extends BaseActivity implements
     protected void onPostCreate(Bundle savedInstanceState) {
         super.onPostCreate(savedInstanceState);
         enableActionBarAutoHide((CollectionView) findViewById(R.id.videos_collection_view));
-    }
-
-    @Override
-    protected void onActionBarAutoShowOrHide(boolean shown) {
-        super.onActionBarAutoShowOrHide(shown);
-        DrawShadowFrameLayout frame = (DrawShadowFrameLayout) findViewById(R.id.main_content);
-        frame.setShadowVisible(shown, shown);
     }
 
     @Override
