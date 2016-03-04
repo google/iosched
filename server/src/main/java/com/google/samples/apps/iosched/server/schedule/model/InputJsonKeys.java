@@ -31,26 +31,27 @@ public class InputJsonKeys {
     }
 
     static public enum Rooms {
-      id, name;
+      Id, Name;
     }
 
     static public enum Categories {
-      id, name, parentid, description;
+      Id, Name, ParentId, Description;
     }
 
     static public enum Speakers {
-      id, name, bio, photo, info, companyname;
+      Id, Name, Bio, Photo, Info, CompanyName;
 
       public static String INFO_PUBLIC_PLUS_ID="Google+ Profile";
       public static String INFO_PUBLIC_TWITTER ="Twitter Profile";
     }
 
     static public enum SpeakersInfo {
-      name, value, publicPlusId, plusoneUrl;
+      // TODO(arthurthompson): Check if publicPlusId and plusoneUrl are needed. Not used in test data.
+      Name, Value; // publicPlusId, plusoneUrl;
     }
 
     static public enum Topics {
-      id, title, description, start, finish, categoryids, speakerids, sessions, documents, info, related;
+      Id, Title, Description, Start, Finish, CategoryIds, SpeakerIds, Sessions, Documents, Info, Related;
 
       public static String INFO_VIDEO_URL="Video URL";
       public static String INFO_FEATURED_SESSION="Featured Session";
@@ -62,11 +63,11 @@ public class InputJsonKeys {
     }
 
     static public enum RelatedTopics {
-      id, title;
+      Id, Title;
     }
 
     static public enum Sessions {
-      roomid;
+      RoomId;
     }
   }
 
@@ -78,7 +79,7 @@ public class InputJsonKeys {
 
       private String key;
       private MainTypes() {
-        this("id");
+        this("Id");
       }
       private MainTypes(String key) {
         this.key = key;
