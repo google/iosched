@@ -589,7 +589,11 @@ public abstract class BaseActivity extends AppCompatActivity implements
 
     @Override
     public Toolbar getActionBarToolbar() {
-        return mHeaderViewImpl.getActionBarToolbar();
+        if (mHeaderViewImpl != null) {
+            return mHeaderViewImpl.getActionBarToolbar();
+        } else {
+            return null;
+        }
     }
 
     @Override
@@ -716,12 +720,16 @@ public abstract class BaseActivity extends AppCompatActivity implements
 
     @Override
     public void registerHideableHeaderView(View hideableHeaderView) {
-        mHeaderViewImpl.registerHideableHeaderView(hideableHeaderView);
+        if (mHeaderViewImpl != null) {
+            mHeaderViewImpl.registerHideableHeaderView(hideableHeaderView);
+        }
     }
 
     @Override
     public void deregisterHideableHeaderView(View hideableHeaderView) {
-        mHeaderViewImpl.deregisterHideableHeaderView(hideableHeaderView);
+        if (mHeaderViewImpl != null) {
+            mHeaderViewImpl.deregisterHideableHeaderView(hideableHeaderView);
+        }
     }
 
     public LUtils getLUtils() {
