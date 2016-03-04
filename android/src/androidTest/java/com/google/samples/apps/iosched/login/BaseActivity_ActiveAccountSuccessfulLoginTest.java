@@ -12,7 +12,7 @@
  * the License.
  */
 
-package com.google.samples.apps.iosched.navigation;
+package com.google.samples.apps.iosched.login;
 
 import android.support.test.InstrumentationRegistry;
 import android.support.test.rule.ActivityTestRule;
@@ -21,7 +21,9 @@ import android.test.suitebuilder.annotation.LargeTest;
 
 import com.google.samples.apps.iosched.R;
 import com.google.samples.apps.iosched.explore.ExploreIOActivity;
+import com.google.samples.apps.iosched.injection.LoginAndAuthProvider;
 import com.google.samples.apps.iosched.settings.SettingsUtils;
+import com.google.samples.apps.iosched.testutils.NavigationUtils;
 import com.google.samples.apps.iosched.util.AccountUtils;
 
 import org.junit.Rule;
@@ -34,11 +36,17 @@ import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
 
 /**
- * UI tests for {@link AppNavigationViewAsDrawerImpl} when the user is logged out.
+ * UI tests for {@link com.google.samples.apps.iosched.ui.BaseActivity} with an active account and
+ * the user successfully logs in.
  */
 @RunWith(AndroidJUnit4.class)
 @LargeTest
-public class AppNavigationViewAsDrawerImpl_LoggedOut {
+public class BaseActivity_ActiveAccountSuccessfulLoginTest {
+
+    private static final String ACCOUNT_NAME = "geswjop";
+
+    private StubLoginAndAuth mStubLoginAndAuth;
+
     @Rule
     public ActivityTestRule<ExploreIOActivity> mActivityRule =
             new ActivityTestRule<ExploreIOActivity>(ExploreIOActivity.class) {
@@ -48,14 +56,36 @@ public class AppNavigationViewAsDrawerImpl_LoggedOut {
                     // Make sure the EULA screen is not shown.
                     SettingsUtils.markTosAccepted(InstrumentationRegistry.getTargetContext(), true);
 
-                    // Set user as logged out
+                    // Set active account
                     AccountUtils
-                            .setActiveAccount(InstrumentationRegistry.getTargetContext(), null);
+                            .setActiveAccount(InstrumentationRegistry.getTargetContext(),
+                                    ACCOUNT_NAME);
+
+                    // Set stub login and auth as successful
+                    mStubLoginAndAuth =
+                            new StubLoginAndAuth(ACCOUNT_NAME, true, true);
+                    LoginAndAuthProvider.setStubLoginAndAuth(mStubLoginAndAuth);
+                }
+
+                @Override
+                protected void afterActivityLaunched() {
+                    // Set up the activity as a listener of the stub login and auth
+                    mStubLoginAndAuth.setListener(mActivityRule.getActivity());
+
                 }
             };
 
     @Test
-    public void welcomeActivityForAccount_IsDisplayed() {
-        onView(withText(R.string.welcome_select_accoun_text)).check(matches(isDisplayed()));
+    public void accountName_IsDisplayed() {
+        // Given navigation menu
+        NavigationUtils.showNavigation();
+
+        // Then the account name is shown
+        onView(withText(ACCOUNT_NAME)).check(matches(isDisplayed()));
+    }
+
+    @Test
+    public void mySchedule_IsDisplayed() {
+        NavigationUtils.checkNavigationItemIsDisplayed(R.string.navdrawer_item_my_schedule);
     }
 }

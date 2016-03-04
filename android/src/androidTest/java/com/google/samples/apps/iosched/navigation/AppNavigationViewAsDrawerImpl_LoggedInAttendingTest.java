@@ -31,7 +31,6 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import static android.support.test.espresso.Espresso.onView;
-import static android.support.test.espresso.assertion.ViewAssertions.doesNotExist;
 import static android.support.test.espresso.assertion.ViewAssertions.matches;
 import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
@@ -131,10 +130,6 @@ public class AppNavigationViewAsDrawerImpl_LoggedInAttendingTest {
 
     @Test
     public void ioLive_NotDisplayed() {
-        // Given navigation menu
-        NavigationUtils.showNavigation();
-
-        // Then "iolive" isn't displayed
-        onView(withText(R.string.navdrawer_item_io_live)).check(doesNotExist());
+        NavigationUtils.checkNavigationItemIsNotDisplayed(R.string.navdrawer_item_io_live);
     }
 }

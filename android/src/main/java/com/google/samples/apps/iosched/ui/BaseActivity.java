@@ -49,6 +49,9 @@ import com.google.samples.apps.iosched.AppApplication;
 import com.google.samples.apps.iosched.BuildConfig;
 import com.google.samples.apps.iosched.R;
 import com.google.samples.apps.iosched.gcm.ServerUtilities;
+import com.google.samples.apps.iosched.injection.LoginAndAuthProvider;
+import com.google.samples.apps.iosched.login.LoginAndAuth;
+import com.google.samples.apps.iosched.login.LoginAndAuthListener;
 import com.google.samples.apps.iosched.login.LoginStateListener;
 import com.google.samples.apps.iosched.navigation.AppNavigationViewAsDrawerImpl;
 import com.google.samples.apps.iosched.navigation.NavigationModel.NavigationItemEnum;
@@ -62,7 +65,6 @@ import com.google.samples.apps.iosched.ui.widget.MultiSwipeRefreshLayout;
 import com.google.samples.apps.iosched.util.AccountUtils;
 import com.google.samples.apps.iosched.util.ImageLoader;
 import com.google.samples.apps.iosched.util.LUtils;
-import com.google.samples.apps.iosched.util.LoginAndAuthHelper;
 import com.google.samples.apps.iosched.util.RecentTasksStyler;
 import com.google.samples.apps.iosched.welcome.WelcomeActivity;
 
@@ -77,7 +79,7 @@ import static com.google.samples.apps.iosched.util.LogUtils.makeLogTag;
  * drawer, login and authentication, Action Bar tweaks, amongst others.
  */
 public abstract class BaseActivity extends AppCompatActivity implements
-        LoginAndAuthHelper.Callbacks,
+        LoginAndAuthListener,
         SharedPreferences.OnSharedPreferenceChangeListener,
         MultiSwipeRefreshLayout.CanChildScrollUpCallback, LoginStateListener,
         AppNavigationViewAsDrawerImpl.NavigationDrawerStateListener,
@@ -88,7 +90,7 @@ public abstract class BaseActivity extends AppCompatActivity implements
     private static final int SELECT_GOOGLE_ACCOUNT_RESULT = 9999;
 
     // the LoginAndAuthHelper handles signing in to Google Play Services and OAuth
-    private LoginAndAuthHelper mLoginAndAuthHelper;
+    private LoginAndAuth mLoginAndAuthProvider;
 
     // Navigation drawer
     private AppNavigationViewAsDrawerImpl mAppNavigationViewAsDrawer;
@@ -176,7 +178,8 @@ public abstract class BaseActivity extends AppCompatActivity implements
         int progressBarEndMargin = getResources().getDimensionPixelSize(
                 R.dimen.swipe_refresh_progress_bar_end_margin);
         int top =
-                mHeaderViewImpl.isActionBarShown() ? mHeaderViewImpl.getProgressBarTopWhenActionBarShown() :
+                mHeaderViewImpl.isActionBarShown() ?
+                        mHeaderViewImpl.getProgressBarTopWhenActionBarShown() :
                         0;
         mSwipeRefreshLayout.setProgressViewOffset(false,
                 top + progressBarStartMargin, top + progressBarEndMargin);
@@ -480,27 +483,28 @@ public abstract class BaseActivity extends AppCompatActivity implements
         String accountName = AccountUtils.getActiveAccountName(this);
         LOGD(TAG, "Chosen account: " + AccountUtils.getActiveAccountName(this));
 
-        if (mLoginAndAuthHelper != null && mLoginAndAuthHelper.getAccountName()
-                                                              .equals(accountName)) {
+        if (mLoginAndAuthProvider != null && mLoginAndAuthProvider.getAccountName()
+                                                                  .equals(accountName)) {
             LOGD(TAG, "Helper already set up; simply starting it.");
-            mLoginAndAuthHelper.start();
+            mLoginAndAuthProvider.start();
             return;
         }
 
         LOGD(TAG, "Starting login process with account " + accountName);
 
-        if (mLoginAndAuthHelper != null) {
-            LOGD(TAG, "Tearing down old Helper, was " + mLoginAndAuthHelper.getAccountName());
-            if (mLoginAndAuthHelper.isStarted()) {
+        if (mLoginAndAuthProvider != null) {
+            LOGD(TAG, "Tearing down old Helper, was " + mLoginAndAuthProvider.getAccountName());
+            if (mLoginAndAuthProvider.isStarted()) {
                 LOGD(TAG, "Stopping old Helper");
-                mLoginAndAuthHelper.stop();
+                mLoginAndAuthProvider.stop();
             }
-            mLoginAndAuthHelper = null;
+            mLoginAndAuthProvider = null;
         }
 
         LOGD(TAG, "Creating and starting new Helper with account: " + accountName);
-        mLoginAndAuthHelper = new LoginAndAuthHelper(this, this, accountName);
-        mLoginAndAuthHelper.start();
+        mLoginAndAuthProvider =
+                LoginAndAuthProvider.provideLoginAndAuth(this, this, accountName);
+        mLoginAndAuthProvider.start();
     }
 
     @Override
@@ -521,7 +525,7 @@ public abstract class BaseActivity extends AppCompatActivity implements
             return;
         }
 
-        if (mLoginAndAuthHelper == null || !mLoginAndAuthHelper.onActivityResult(requestCode,
+        if (mLoginAndAuthProvider == null || !mLoginAndAuthProvider.onActivityResult(requestCode,
                 resultCode, data)) {
             super.onActivityResult(requestCode, resultCode, data);
         }
@@ -531,8 +535,8 @@ public abstract class BaseActivity extends AppCompatActivity implements
     public void onStop() {
         LOGD(TAG, "onStop");
         super.onStop();
-        if (mLoginAndAuthHelper != null) {
-            mLoginAndAuthHelper.stop();
+        if (mLoginAndAuthProvider != null) {
+            mLoginAndAuthProvider.stop();
         }
     }
 
@@ -584,7 +588,7 @@ public abstract class BaseActivity extends AppCompatActivity implements
     }
 
     protected void retryAuth() {
-        mLoginAndAuthHelper.retryAuthByUserRequest();
+        mLoginAndAuthProvider.retryAuthByUserRequest();
     }
 
     @Override

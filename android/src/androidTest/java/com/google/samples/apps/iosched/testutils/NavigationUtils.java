@@ -20,6 +20,7 @@ import com.google.samples.apps.iosched.R;
 
 import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.action.ViewActions.click;
+import static android.support.test.espresso.assertion.ViewAssertions.doesNotExist;
 import static android.support.test.espresso.assertion.ViewAssertions.matches;
 import static android.support.test.espresso.contrib.DrawerActions.open;
 import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
@@ -52,6 +53,22 @@ public class NavigationUtils {
 
         // Then screen is showing
         NavigationUtils.checkScreenTitleIsDisplayed(expectedTitleResource);
+    }
+
+    public static void checkNavigationItemIsDisplayed(int navigationItemStringResource) {
+        // Given navigation menu
+        NavigationUtils.showNavigation();
+
+        // Check selecting item is displayed
+        onView(withText(navigationItemStringResource)).check(matches(isDisplayed()));
+    }
+
+    public static void checkNavigationItemIsNotDisplayed(int navigationItemStringResource) {
+        // Given navigation menu
+        NavigationUtils.showNavigation();
+
+        // Check selecting item does not exist
+        onView(withText(navigationItemStringResource)).check(doesNotExist());
     }
 
     public static void cleanUpActivityStack(ActivityTestRule rule) {
