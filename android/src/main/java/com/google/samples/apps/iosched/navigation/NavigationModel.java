@@ -114,7 +114,8 @@ public class NavigationModel implements Model<NavigationQueryEnum, NavigationUse
         if (debug) {
             items = NavigationConfig.appendItem(items, NavigationItemEnum.DEBUG);
         }
-        mItems = items;
+
+        mItems = NavigationConfig.filterOutItemsDisabledInBuildConfig(items);
     }
 
     @Override

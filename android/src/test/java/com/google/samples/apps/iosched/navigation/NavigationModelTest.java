@@ -61,17 +61,17 @@ public class NavigationModelTest {
         // Given a user attending the conference and logged out
         setUpMockForAttendance(true);
         setUpMockForLoginStatus(false);
+        NavigationItemEnum[] expectedItems = NavigationConfig.filterOutItemsDisabledInBuildConfig(
+                appendDebugIfRequired(
+                        NavigationConfig.NAVIGATION_ITEMS_LOGGEDOUT_ATTENDING));
 
         // When the navigation items are requested
         mNavigationModel.requestData(NavigationModel.NavigationQueryEnum.LOAD_ITEMS,
                 mMockDataQueryCallback);
 
         // Then the expected items are loaded into the model
-        assertEquals(mNavigationModel.getItems().length,
-                appendDebugIfRequired(
-                        NavigationConfig.NAVIGATION_ITEMS_LOGGEDOUT_ATTENDING).length);
-        assertEquals(mNavigationModel.getItems()[0],
-                appendDebugIfRequired(NavigationConfig.NAVIGATION_ITEMS_LOGGEDOUT_ATTENDING)[0]);
+        assertEquals(mNavigationModel.getItems().length,expectedItems.length);
+        assertEquals(mNavigationModel.getItems()[0], expectedItems[0]);
     }
 
     @Test
@@ -79,16 +79,17 @@ public class NavigationModelTest {
         // Given a user not attending the conference and logged out
         setUpMockForAttendance(false);
         setUpMockForLoginStatus(false);
+        NavigationItemEnum[] expectedItems = NavigationConfig.filterOutItemsDisabledInBuildConfig(
+                appendDebugIfRequired(
+                        NavigationConfig.NAVIGATION_ITEMS_LOGGEDOUT_REMOTE));
 
         // When the navigation items are requested
         mNavigationModel.requestData(NavigationModel.NavigationQueryEnum.LOAD_ITEMS,
                 mMockDataQueryCallback);
 
         // Then the expected items are loaded into the model
-        assertEquals(mNavigationModel.getItems().length,
-                appendDebugIfRequired(NavigationConfig.NAVIGATION_ITEMS_LOGGEDOUT_REMOTE).length);
-        assertEquals(mNavigationModel.getItems()[0],
-                appendDebugIfRequired(NavigationConfig.NAVIGATION_ITEMS_LOGGEDOUT_REMOTE)[0]);
+        assertEquals(mNavigationModel.getItems().length,expectedItems.length);
+        assertEquals(mNavigationModel.getItems()[0], expectedItems[0]);
     }
 
     @Test
@@ -96,16 +97,17 @@ public class NavigationModelTest {
         // Given a user not attending the conference and logged in
         setUpMockForAttendance(false);
         setUpMockForLoginStatus(true);
+        NavigationItemEnum[] expectedItems = NavigationConfig.filterOutItemsDisabledInBuildConfig(
+                appendDebugIfRequired(
+                        NavigationConfig.NAVIGATION_ITEMS_LOGGEDIN_REMOTE));
 
         // When the navigation items are requested
         mNavigationModel.requestData(NavigationModel.NavigationQueryEnum.LOAD_ITEMS,
                 mMockDataQueryCallback);
 
         // Then the expected items are loaded into the model
-        assertEquals(mNavigationModel.getItems().length,
-                appendDebugIfRequired(NavigationConfig.NAVIGATION_ITEMS_LOGGEDIN_REMOTE).length);
-        assertEquals(mNavigationModel.getItems()[0],
-                appendDebugIfRequired(NavigationConfig.NAVIGATION_ITEMS_LOGGEDIN_REMOTE)[0]);
+        assertEquals(mNavigationModel.getItems().length,expectedItems.length);
+        assertEquals(mNavigationModel.getItems()[0], expectedItems[0]);
     }
 
     @Test
@@ -113,16 +115,17 @@ public class NavigationModelTest {
         // Given a user attending the conference and logged in
         setUpMockForAttendance(true);
         setUpMockForLoginStatus(true);
+        NavigationItemEnum[] expectedItems = NavigationConfig.filterOutItemsDisabledInBuildConfig(
+                appendDebugIfRequired(
+                        NavigationConfig.NAVIGATION_ITEMS_LOGGEDIN_ATTENDING));
 
         // When the navigation items are requested
         mNavigationModel.requestData(NavigationModel.NavigationQueryEnum.LOAD_ITEMS,
                 mMockDataQueryCallback);
 
         // Then the expected items are loaded into the model
-        assertEquals(mNavigationModel.getItems().length,
-                appendDebugIfRequired(NavigationConfig.NAVIGATION_ITEMS_LOGGEDIN_ATTENDING).length);
-        assertEquals(mNavigationModel.getItems()[0],
-                appendDebugIfRequired(NavigationConfig.NAVIGATION_ITEMS_LOGGEDIN_ATTENDING)[0]);
+        assertEquals(mNavigationModel.getItems().length,expectedItems.length);
+        assertEquals(mNavigationModel.getItems()[0], expectedItems[0]);
     }
 
     @Test
@@ -137,6 +140,9 @@ public class NavigationModelTest {
 
         // And a change in user attendance
         setUpMockForAttendance(false);
+        NavigationItemEnum[] expectedItems = NavigationConfig.filterOutItemsDisabledInBuildConfig(
+                appendDebugIfRequired(
+                        NavigationConfig.NAVIGATION_ITEMS_LOGGEDIN_REMOTE));
 
         // When requesting to reload the items
         mNavigationModel
@@ -144,10 +150,8 @@ public class NavigationModelTest {
                         mMockUserActionCallback);
 
         // Then the expected items are loaded into the model
-        assertEquals(mNavigationModel.getItems().length,
-                appendDebugIfRequired(NavigationConfig.NAVIGATION_ITEMS_LOGGEDIN_REMOTE).length);
-        assertEquals(mNavigationModel.getItems()[0],
-                appendDebugIfRequired(NavigationConfig.NAVIGATION_ITEMS_LOGGEDIN_REMOTE)[0]);
+        assertEquals(mNavigationModel.getItems().length,expectedItems.length);
+        assertEquals(mNavigationModel.getItems()[0], expectedItems[0]);
     }
 
     @Test
@@ -162,6 +166,9 @@ public class NavigationModelTest {
 
         // And a change in logged in status
         setUpMockForLoginStatus(false);
+        NavigationItemEnum[] expectedItems = NavigationConfig.filterOutItemsDisabledInBuildConfig(
+                appendDebugIfRequired(
+                        NavigationConfig.NAVIGATION_ITEMS_LOGGEDOUT_ATTENDING));
 
         // When requesting to reload the items
         mNavigationModel
@@ -169,10 +176,8 @@ public class NavigationModelTest {
                         mMockUserActionCallback);
 
         // Then the expected items are loaded into the model
-        assertEquals(mNavigationModel.getItems().length,
-                appendDebugIfRequired(NavigationConfig.NAVIGATION_ITEMS_LOGGEDOUT_ATTENDING).length);
-        assertEquals(mNavigationModel.getItems()[0],
-                appendDebugIfRequired(NavigationConfig.NAVIGATION_ITEMS_LOGGEDOUT_ATTENDING)[0]);
+        assertEquals(mNavigationModel.getItems().length,expectedItems.length);
+        assertEquals(mNavigationModel.getItems()[0], expectedItems[0]);
     }
 
     private void setUpMockForAttendance(boolean attending) {

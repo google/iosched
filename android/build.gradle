@@ -63,6 +63,15 @@ android {
         buildConfigField("String", "INPERSON_TIMEZONE", "\"${inperson_timezone}\"")
         buildConfigField("String", "SHOW_IO15_REQUEST_SOCIAL_PANEL_TIME",
                 "\"${show_io15_request_social_panel_time}\"")
+        buildConfigField("boolean", "ENABLE_MYSCHEDULE_IN_NAVIGATION", "true")
+        buildConfigField("boolean", "ENABLE_IOLIVE_IN_NAVIGATION", "false")
+        buildConfigField("boolean", "ENABLE_EXPLORE_IN_NAVIGATION", "true")
+        buildConfigField("boolean", "ENABLE_MAP_IN_NAVIGATION", "true")
+        buildConfigField("boolean", "ENABLE_SOCIAL_IN_NAVIGATION", "true")
+        buildConfigField("boolean", "ENABLE_VIDEOLIB_IN_NAVIGATION", "true")
+        buildConfigField("boolean", "ENABLE_SIGNIN_IN_NAVIGATION", "true")
+        buildConfigField("boolean", "ENABLE_SETTINGS_IN_NAVIGATION", "true")
+        buildConfigField("boolean", "ENABLE_ABOUT_IN_NAVIGATION", "true")
     }
 
     signingConfigs {
