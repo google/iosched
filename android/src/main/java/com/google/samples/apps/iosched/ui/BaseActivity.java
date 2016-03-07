@@ -26,7 +26,6 @@ import android.content.SyncStatusObserver;
 import android.content.pm.PackageManager;
 import android.content.res.Resources;
 import android.net.Uri;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.provider.Settings;
@@ -43,16 +42,14 @@ import android.view.View;
 import android.view.WindowManager;
 import android.widget.ListView;
 
-import com.google.android.gcm.GCMRegistrar;
 import com.google.android.gms.auth.GoogleAuthUtil;
-import com.google.samples.apps.iosched.AppApplication;
-import com.google.samples.apps.iosched.BuildConfig;
 import com.google.samples.apps.iosched.R;
-import com.google.samples.apps.iosched.gcm.ServerUtilities;
 import com.google.samples.apps.iosched.injection.LoginAndAuthProvider;
+import com.google.samples.apps.iosched.injection.MessagingRegistrationProvider;
 import com.google.samples.apps.iosched.login.LoginAndAuth;
 import com.google.samples.apps.iosched.login.LoginAndAuthListener;
 import com.google.samples.apps.iosched.login.LoginStateListener;
+import com.google.samples.apps.iosched.messaging.MessagingRegistration;
 import com.google.samples.apps.iosched.navigation.AppNavigationViewAsDrawerImpl;
 import com.google.samples.apps.iosched.navigation.NavigationModel.NavigationItemEnum;
 import com.google.samples.apps.iosched.provider.ScheduleContract;
@@ -70,7 +67,6 @@ import com.google.samples.apps.iosched.welcome.WelcomeActivity;
 
 import static com.google.samples.apps.iosched.util.LogUtils.LOGD;
 import static com.google.samples.apps.iosched.util.LogUtils.LOGE;
-import static com.google.samples.apps.iosched.util.LogUtils.LOGI;
 import static com.google.samples.apps.iosched.util.LogUtils.LOGW;
 import static com.google.samples.apps.iosched.util.LogUtils.makeLogTag;
 
@@ -106,8 +102,8 @@ public abstract class BaseActivity extends AppCompatActivity implements
     // SwipeRefreshLayout allows the user to swipe the screen down to trigger a manual refresh
     private SwipeRefreshLayout mSwipeRefreshLayout;
 
-    // asynctask that performs GCM registration in the backgorund
-    private AsyncTask<Void, Void, Void> mGCMRegisterTask;
+    // Registration with GCM for notifications
+    private MessagingRegistration mMessagingRegistration;
 
     // handle to our sync observer (that notifies us about changes in our sync state)
     private Object mSyncObserverHandle;
@@ -127,8 +123,10 @@ public abstract class BaseActivity extends AppCompatActivity implements
             return;
         }
 
+        mMessagingRegistration = MessagingRegistrationProvider.provideMessagingRegistration(this);
+
         if (savedInstanceState == null) {
-            registerGCMClient();
+            mMessagingRegistration.registerDevice();
         }
 
         SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(this);
@@ -569,7 +567,7 @@ public abstract class BaseActivity extends AppCompatActivity implements
         }
 
         mAppNavigationViewAsDrawer.updateNavigationItems();
-        registerGCMClient();
+        mMessagingRegistration.registerDevice();
     }
 
     @Override
@@ -605,84 +603,12 @@ public abstract class BaseActivity extends AppCompatActivity implements
         mHeaderViewImpl.enableActionBarAutoHide(listView);
     }
 
-    /**
-     * Registers device on the GCM server, if necessary.
-     * <p/>
-     * This check is done in BaseActivity (as opposed to {@link AppApplication}) in order to make
-     * sure that this is always run after a user switch.
-     * <p/>
-     * As a future improvement, this code could be manually invoked by the app after a user switch
-     * occurs, which would allow moving this code to {@link AppApplication}.
-     */
-    private void registerGCMClient() {
-        GCMRegistrar.checkDevice(this);
-        GCMRegistrar.checkManifest(this);
-
-        final String regId = GCMRegistrar.getRegistrationId(this);
-
-        if (TextUtils.isEmpty(regId)) {
-            // Automatically registers application on startup.
-            GCMRegistrar.register(this, BuildConfig.GCM_SENDER_ID);
-
-        } else {
-            // Get the correct GCM key for the user. GCM key is a somewhat non-standard
-            // approach we use in this app. For more about this, check GCM.TXT.
-            final String gcmKey = AccountUtils.hasActiveAccount(this) ?
-                    AccountUtils.getGcmKey(this, AccountUtils.getActiveAccountName(this)) : null;
-            // Device is already registered on GCM, needs to check if it is
-            // registered on our server as well.
-            if (ServerUtilities.isRegisteredOnServer(this, gcmKey)) {
-                // Skips registration.
-                LOGI(TAG, "Already registered on the GCM server with right GCM key.");
-            } else {
-                // Try to register again, but not in the UI thread.
-                // It's also necessary to cancel the thread onDestroy(),
-                // hence the use of AsyncTask instead of a raw thread.
-                mGCMRegisterTask = new AsyncTask<Void, Void, Void>() {
-                    @Override
-                    protected Void doInBackground(Void... params) {
-                        LOGI(TAG, "Registering on the GCM server with GCM key: "
-                                + AccountUtils.sanitizeGcmKey(gcmKey));
-                        boolean registered = ServerUtilities.register(BaseActivity.this,
-                                regId, gcmKey);
-                        // At this point all attempts to register with the app
-                        // server failed, so we need to unregister the device
-                        // from GCM - the app will try to register again when
-                        // it is restarted. Note that GCM will send an
-                        // unregistered callback upon completion, but
-                        // GCMIntentService.onUnregistered() will ignore it.
-                        if (!registered) {
-                            LOGI(TAG, "GCM registration failed.");
-                            GCMRegistrar.unregister(BaseActivity.this);
-                        } else {
-                            LOGI(TAG, "GCM registration successful.");
-                        }
-                        return null;
-                    }
-
-                    @Override
-                    protected void onPostExecute(Void result) {
-                        mGCMRegisterTask = null;
-                    }
-                };
-                mGCMRegisterTask.execute(null, null, null);
-            }
-        }
-    }
-
     @Override
     protected void onDestroy() {
         super.onDestroy();
 
-        if (mGCMRegisterTask != null) {
-            LOGD(TAG, "Cancelling GCM registration task.");
-            mGCMRegisterTask.cancel(true);
-        }
-
-        try {
-            GCMRegistrar.onDestroy(this);
-        } catch (Exception e) {
-            LOGW(TAG, "C2DM unregistration error", e);
+        if (mMessagingRegistration != null) {
+            mMessagingRegistration.destroy();
         }
 
         SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(this);
