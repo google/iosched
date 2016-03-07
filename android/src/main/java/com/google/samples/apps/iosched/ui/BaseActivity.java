@@ -404,54 +404,6 @@ public abstract class BaseActivity extends AppCompatActivity implements
         return arguments;
     }
 
-    /**
-     * Converts an intent and a {@link Bundle} into a {@link Bundle} suitable for use as fragment
-     * arguments.
-     */
-    public static Bundle intentToFragmentArguments(Intent intent, Bundle extras) {
-        Bundle arguments = new Bundle();
-        if (intent == null) {
-            return arguments;
-        }
-
-        final Uri data = intent.getData();
-        if (data != null) {
-            arguments.putParcelable("_uri", data);
-        }
-
-        if (extras != null) {
-            arguments.putAll(intent.getExtras());
-        }
-
-        return arguments;
-    }
-
-    /**
-     * Converts a fragment arguments bundle into an intent.
-     */
-    public static Intent fragmentArgumentsToIntent(Bundle arguments) {
-        Intent intent = new Intent();
-        if (arguments == null) {
-            return intent;
-        }
-
-        final Uri data = arguments.getParcelable("_uri");
-        if (data != null) {
-            intent.setData(data);
-        }
-
-        intent.putExtras(arguments);
-        intent.removeExtra("_uri");
-        return intent;
-    }
-
-    private void promptAddAccount() {
-        Intent intent = new Intent(Settings.ACTION_ADD_ACCOUNT);
-        intent.putExtra(Settings.EXTRA_ACCOUNT_TYPES, new String[]{"com.google"});
-        startActivity(intent);
-        finish();
-    }
-
     @Override
     public void onStartLoginProcessRequested() {
         startLoginProcess();
