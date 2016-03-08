@@ -63,7 +63,7 @@ public class VideoLibraryFilteredActivity extends BaseActivity implements
 
         setContentView(R.layout.video_library_filtered_act);
 
-        // ANALYTICS EVENT: View the Filtered Video Library screen
+        // ANALYTICS SCREEN: View the Filtered Video Library screen
         // Contains: Nothing (Page name is a constant)
         AnalyticsHelper.sendScreenView(SCREEN_LABEL);
         LOGD("Tracker", SCREEN_LABEL);

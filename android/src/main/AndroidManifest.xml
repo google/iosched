@@ -77,6 +77,9 @@
         android:name="android.permission.READ_EXTERNAL_STORAGE"
         android:maxSdkVersion="18" />
 
+    <!-- Get permission for reliable local dispatching. -->
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+
     <application
         android:name=".AppApplication"
         android:allowBackup="false"
@@ -242,6 +245,7 @@
                 android:name="android.app.searchable"
                 android:resource="@xml/searchable" />
         </activity>
+
         <activity
             android:name=".feedback.SessionFeedbackActivity"
             android:exported="false"
@@ -403,6 +407,19 @@
         <!-- For more information on Google Analytics install referral measurement see
              https://goo.gl/RWn9xv -->
         <!-- END Google Analytics install referral measurement -->
+
+        <!-- Register AnalyticsReceiver and AnalyticsService to support background
+             dispatching on non-Google Play devices. -->
+        <receiver android:name="com.google.android.gms.analytics.AnalyticsReceiver"
+                  android:enabled="true">
+            <intent-filter>
+                <action android:name="com.google.android.gms.analytics.ANALYTICS_DISPATCH" />
+            </intent-filter>
+        </receiver>
+        <service android:name="com.google.android.gms.analytics.AnalyticsService"
+                 android:enabled="true"
+                 android:exported="false"/>
+
 
         <!--
           BroadcastReceiver that will receive the C2DM messages from GCM

@@ -27,7 +27,6 @@ import com.google.samples.apps.iosched.settings.SettingsUtils;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
-import android.util.Log;
 
 import static com.google.samples.apps.iosched.util.LogUtils.LOGD;
 
