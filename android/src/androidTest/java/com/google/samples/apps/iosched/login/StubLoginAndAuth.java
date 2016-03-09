@@ -73,7 +73,7 @@ public class StubLoginAndAuth implements LoginAndAuth {
             }
         };
 
-        h.postDelayed(r, 50);
+        h.postDelayed(r, 0);
     }
 
     @Override
