@@ -17,13 +17,11 @@ package com.google.samples.apps.iosched.feedback;
 import android.content.Intent;
 import android.net.Uri;
 import android.support.test.InstrumentationRegistry;
-import android.support.test.rule.ActivityTestRule;
 
 import com.google.samples.apps.iosched.R;
-import com.google.samples.apps.iosched.injection.ModelProvider;
 import com.google.samples.apps.iosched.mockdata.SessionsMockCursor;
 import com.google.samples.apps.iosched.provider.ScheduleContract;
-import com.google.samples.apps.iosched.settings.SettingsUtils;
+import com.google.samples.apps.iosched.testutils.BaseActivityTestRule;
 
 import org.junit.Rule;
 import org.junit.Test;
@@ -45,30 +43,19 @@ public class SessionFeedbackActivityTest {
 
     public static final String SESSION_ID = "5b7836c8-82bf-e311-b297-00155d5066d7";
 
-    private Uri mSessionUri;
-
-    private FeedbackHelper mFeedbackHelper;
+    private Uri mSessionUri = ScheduleContract.Sessions.buildSessionUri(SESSION_ID);
 
     @Rule
-    public ActivityTestRule<SessionFeedbackActivity> mActivityRule =
-            new ActivityTestRule<SessionFeedbackActivity>(SessionFeedbackActivity.class) {
-                @Override
-                protected Intent getActivityIntent() {
-                    // Make sure the EULA screen is not shown.
-                    SettingsUtils.markTosAccepted(InstrumentationRegistry.getTargetContext(), true);
-
-                    // Create intent to load the session.
-                    mSessionUri = ScheduleContract.Sessions.buildSessionUri(SESSION_ID);
-                    Intent intent = new Intent(Intent.ACTION_VIEW, mSessionUri);
-
-                    // Create a stub model to simulate a session
-                    ModelProvider.setStubSessionFeedbackModel(new StubSessionFeedbackModel(mSessionUri,
+    public BaseActivityTestRule<SessionFeedbackActivity> mActivityRule =
+            new BaseActivityTestRule<SessionFeedbackActivity>(SessionFeedbackActivity.class,
+                    new StubSessionFeedbackModel(mSessionUri,
                             InstrumentationRegistry.getTargetContext(),
                             SessionsMockCursor.getCursorForSessionFeedback(),
-                            new FeedbackHelper(InstrumentationRegistry.getTargetContext())));
-
-
-                    return intent;
+                            new FeedbackHelper(InstrumentationRegistry.getTargetContext())), true) {
+                @Override
+                protected Intent getActivityIntent() {
+                    // Create intent to load the session.
+                    return new Intent(Intent.ACTION_VIEW, mSessionUri);
                 }
             };
 

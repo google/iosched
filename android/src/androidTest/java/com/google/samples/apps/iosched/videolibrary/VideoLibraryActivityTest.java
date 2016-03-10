@@ -20,16 +20,14 @@ import android.content.Intent;
 import android.net.Uri;
 import android.support.test.InstrumentationRegistry;
 import android.support.test.espresso.ViewInteraction;
-import android.support.test.espresso.intent.rule.IntentsTestRule;
 import android.support.test.runner.AndroidJUnit4;
 import android.test.suitebuilder.annotation.LargeTest;
 import android.view.View;
 
 import com.google.samples.apps.iosched.Config;
 import com.google.samples.apps.iosched.R;
-import com.google.samples.apps.iosched.injection.ModelProvider;
 import com.google.samples.apps.iosched.mockdata.VideosMockCursor;
-import com.google.samples.apps.iosched.settings.SettingsUtils;
+import com.google.samples.apps.iosched.testutils.BaseActivityTestRule;
 import com.google.samples.apps.iosched.testutils.MatchersHelper;
 
 import org.hamcrest.Matcher;
@@ -67,20 +65,12 @@ import static org.junit.Assert.assertTrue;
 public class VideoLibraryActivityTest {
 
     @Rule
-    public IntentsTestRule<VideoLibraryActivity> mActivityRule =
-            new IntentsTestRule<VideoLibraryActivity>(VideoLibraryActivity.class) {
-                @Override
-                protected void beforeActivityLaunched() {
-                    // Make sure the EULA screen is not shown.
-                    SettingsUtils.markTosAccepted(InstrumentationRegistry.getTargetContext(), true);
-
-                    // Create a stub model to simulate a keynote session
-                    ModelProvider.setStubVideoLibraryModel(new StubVideoLibraryModel(
+    public BaseActivityTestRule<VideoLibraryActivity> mActivityRule =
+            new BaseActivityTestRule<VideoLibraryActivity>(VideoLibraryActivity.class,
+                    new StubVideoLibraryModel(
                             InstrumentationRegistry.getTargetContext(),
                             VideosMockCursor.getCursorForVideos(),
-                            VideosMockCursor.getCursorForFilter()));
-                }
-            };
+                            VideosMockCursor.getCursorForFilter()), true);
 
     @Test
     public void videosList_TopicViewMoreClicked_IntentFired() {

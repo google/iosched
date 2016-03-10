@@ -3,13 +3,15 @@ package com.google.samples.apps.iosched.session;
 import android.content.Context;
 import android.database.Cursor;
 import android.net.Uri;
-import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.test.runner.AndroidJUnit4;
 
 import com.google.samples.apps.iosched.archframework.QueryEnum;
+import com.google.samples.apps.iosched.testutils.StubModelHelper;
 
 import org.junit.runner.RunWith;
+
+import java.util.HashMap;
 
 /**
  * A stub {@link SessionDetailModel}, to be injected using {@link com.google.samples.apps.iosched
@@ -21,18 +23,14 @@ import org.junit.runner.RunWith;
 @RunWith(AndroidJUnit4.class)
 public class StubSessionDetailModel extends SessionDetailModel {
 
-    private Cursor mSessionCursor;
-
-    private Cursor mSpeakersCursor;
-
-    private Cursor mTagMetadataCursor;
+    private HashMap<QueryEnum, Cursor> mFakeData = new HashMap<QueryEnum, Cursor>();
 
     public StubSessionDetailModel(Uri sessionUri, Context context, Cursor sessionCursor,
             Cursor speakersCursor, Cursor tagMetadataCursor) {
         super(sessionUri, context, null, null);
-        mSessionCursor = sessionCursor;
-        mSpeakersCursor = speakersCursor;
-        mTagMetadataCursor = tagMetadataCursor;
+        mFakeData.put(SessionDetailQueryEnum.SESSIONS, sessionCursor);
+        mFakeData.put(SessionDetailQueryEnum.SPEAKERS, speakersCursor);
+        mFakeData.put(SessionDetailQueryEnum.TAG_METADATA, tagMetadataCursor);
     }
 
     /**
@@ -42,35 +40,7 @@ public class StubSessionDetailModel extends SessionDetailModel {
     @Override
     public void requestData(final @NonNull SessionDetailQueryEnum query,
             final @NonNull DataQueryCallback callback) {
-        // Add the callback so it gets fired properly
-        mDataQueryCallbacks.put(query, callback);
-
-        Handler h = new Handler();
-        Runnable r = new Runnable() {
-            @Override
-            public void run() {
-                // Call onLoadFinished with stub cursor and query
-                switch (query) {
-                    case SESSIONS:
-                        onLoadFinished(query, mSessionCursor);
-                        break;
-                    case FEEDBACK:
-                        break;
-                    case SPEAKERS:
-                        onLoadFinished(query, mSpeakersCursor);
-                        break;
-                    case TAG_METADATA:
-                        onLoadFinished(query, mTagMetadataCursor);
-                        break;
-                    case MY_VIEWED_VIDEOS:
-                        break;
-                }
-            }
-        };
-
-        // Delayed to ensure the UI is ready, because it will fire the callback to update the view
-        // very quickly
-        // TODO - look into possibility of using IdlingResource instead of this 5ms delay
-        h.postDelayed(r, 5);
+        new StubModelHelper<SessionDetailModel.SessionDetailQueryEnum>()
+                .overrideLoaderManager(query, callback, mFakeData, mDataQueryCallbacks, this);
     }
 }
