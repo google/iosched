@@ -30,7 +30,6 @@ import org.mockito.runners.MockitoJUnitRunner;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.HashSet;
 import java.util.List;
 
 import static org.hamcrest.CoreMatchers.equalTo;
@@ -56,10 +55,10 @@ public class MergeHelperTest {
      * @param requiresSync Indicates whether the action requires a data sync or not.
      * @return THe {@link UserAction} for a viewed video.
      */
-    private static UserAction createViewedVideoAction(boolean requiresSync) {
+    private static UserAction createViewedVideoAction(String videoId, boolean requiresSync) {
         UserAction action = new UserAction();
         action.type = UserAction.TYPE.VIEW_VIDEO;
-        action.videoId = LOCAL_VIDEO_ID;
+        action.videoId = videoId;
         action.requiresSync = requiresSync;
         return action;
     }
@@ -93,41 +92,34 @@ public class MergeHelperTest {
     }
 
     @Test
-    public void mergeDirtyActions_localViewedVideosOnly() {
+    public void mergeUnsyncedActions_localViewedVideosOnly() {
         mHelper.mergeUnsyncedActions(withViewedVideoLocalActions());
-        assertThatMergedUserDataHas(LOCAL_VIDEO_ID);
+        assertThatMergedViewedVideosHas(LOCAL_VIDEO_ID);
     }
 
     @Test
-    public void mergeDirtyActions_localViewedVideosOnly_withoutRequiresSync() {
+    public void mergeUnsyncedActions_localViewedVideosOnly_withoutRequiresSync() {
         mHelper.mergeUnsyncedActions(withViewedVideoLocalActionsNoSync());
         assertThatMergedUserDataHasNoVideoIds();
     }
 
     @Test
-    public void mergeDirtyActions_remoteViewedVideosOnly() {
+    public void mergeUnsyncedActions_remoteViewedVideosOnly() {
+        withRemoteViewedVideo();
+        mHelper.mergeUnsyncedActions(withNoLocalUserActions());
+        assertThatMergedViewedVideosHas(REMOTE_VIDEO_ID);
+    }
+
+    @Test
+    public void mergeUnsyncedActions_localAndRemoteViewedVideos() {
         withRemoteViewedVideo();
         mHelper.mergeUnsyncedActions(withViewedVideoLocalActions());
-        assertThatMergedUserDataHas(REMOTE_VIDEO_ID);
+        assertThatMergedViewedVideosHas(LOCAL_VIDEO_ID);
+        assertThatMergedViewedVideosHas(REMOTE_VIDEO_ID);
     }
 
     @Test
-    public void mergeDirtyActions_localAndRemoteViewedVideos() {
-        withRemoteViewedVideo();
-        mHelper.mergeUnsyncedActions(withViewedVideoLocalActions());
-        assertThatMergedUserDataHas(LOCAL_VIDEO_ID);
-        assertThatMergedUserDataHas(REMOTE_VIDEO_ID);
-    }
-
-    @Test
-    public void buildPendingUpdatesMap() {
-        mHelper.getMergedUserData().setGcmKey(LOCAL_GCM_KEY);
-        mHelper.getMergedUserData().setViewedVideoIds(new HashSet<String>(
-        ));
-    }
-
-    @Test
-    public void buildPendingFirebaseUpdatesMap_storesMergedGcmKey() {
+    public void getPendingFirebaseUpdatesMap_storesMergedGcmKey() {
         withMergedGCMKey();
         assertThat(mHelper.getPendingFirebaseUpatesMap().values(),
                 hasItem(REMOTE_GCM_KEY));
@@ -155,12 +147,19 @@ public class MergeHelperTest {
     }
 
     /**
+     * Returns a list with no {@link UserAction} objects.
+     */
+    private List<UserAction> withNoLocalUserActions() {
+        return new ArrayList<>();
+    }
+
+    /**
      * Creates and returns a {@link UserAction} list which contains a single viewed video action
      * that requires sync.
      */
     private List<UserAction> withViewedVideoLocalActions() {
         return new ArrayList<UserAction>() {{
-            add(createViewedVideoAction(true));
+            add(createViewedVideoAction(LOCAL_VIDEO_ID, true));
         }};
     }
 
@@ -170,7 +169,7 @@ public class MergeHelperTest {
      */
     private List<UserAction> withViewedVideoLocalActionsNoSync() {
         return new ArrayList<UserAction>() {{
-            add(createViewedVideoAction(false));
+            add(createViewedVideoAction(LOCAL_VIDEO_ID, false));
         }};
     }
 
@@ -203,9 +202,11 @@ public class MergeHelperTest {
     }
 
     /**
-     * Asserts that {@code videoId} is stored in merged user data.
+     * Asserts that {@code videoId} is stored in merged viewed videos user data.
+     *
+     * @param videoId The Id of the viewed video.
      */
-    private void assertThatMergedUserDataHas(String videoId) {
+    private void assertThatMergedViewedVideosHas(String videoId) {
         assertThat(mHelper.getMergedUserData().getViewedVideoIds(), hasItem(videoId));
     }
 
@@ -213,6 +214,7 @@ public class MergeHelperTest {
      * Asserts that no video ID was stored in merged user data.
      */
     private void assertThatMergedUserDataHasNoVideoIds() {
-        assertThat(mHelper.getMergedUserData().getViewedVideoIds(), is(Collections.<String>emptySet()));
+        assertThat(mHelper.getMergedUserData().getViewedVideoIds(),
+                is(Collections.<String>emptySet()));
     }
 }
