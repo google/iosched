@@ -30,6 +30,7 @@ import org.mockito.runners.MockitoJUnitRunner;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
 
 import static org.hamcrest.CoreMatchers.equalTo;
@@ -49,16 +50,36 @@ public class MergeHelperTest {
 
     public static final String REMOTE_VIDEO_ID = "REMOTE VIDEO ID";
 
+    public static final String LOCAL_SESSION_ID = "LOCAL SESSION ID";
+
+    public static final String REMOTE_SESSION_ID = "REMOTE SESSION ID";
+
     /**
      * Creates a {@link UserAction} for a viewed video.
      *
      * @param requiresSync Indicates whether the action requires a data sync or not.
-     * @return THe {@link UserAction} for a viewed video.
+     * @return The {@link UserAction} for a viewed video.
      */
     private static UserAction createViewedVideoAction(String videoId, boolean requiresSync) {
         UserAction action = new UserAction();
         action.type = UserAction.TYPE.VIEW_VIDEO;
         action.videoId = videoId;
+        action.requiresSync = requiresSync;
+        return action;
+    }
+
+    /**
+     * Creates a {@link UserAction} for a session for which feedback was submitted.
+     *
+     * @param sessionId The ID of the session for which feedback was submitted.
+     * @param requiresSync  Indicates whether the action requires a data sync or not.
+     * @return The {@link UserAction} for a feedback submitted session.
+     */
+    private static UserAction createFeedbackSubmittedSessionAction(String sessionId,
+            boolean requiresSync) {
+        UserAction action = new UserAction();
+        action.type = UserAction.TYPE.SUBMIT_FEEDBACK;
+        action.sessionId = sessionId;
         action.requiresSync = requiresSync;
         return action;
     }
@@ -119,6 +140,27 @@ public class MergeHelperTest {
     }
 
     @Test
+    public void mergeUnsyncedActions_localFeedbackSubmittedSessionsOnly() {
+        mHelper.mergeUnsyncedActions(withLocalFeedbackSubmittedActions());
+        assertThatMergeFeedbackSubmittedSessionsHas(LOCAL_SESSION_ID);
+    }
+
+    @Test
+    public void mergeUnsyncedActions_remoteFeedbackSubmittedSessionsOnly() {
+        withRemoteFeedbackSubmittedSession();
+        mHelper.mergeUnsyncedActions(withNoLocalUserActions());
+        assertThatMergeFeedbackSubmittedSessionsHas(REMOTE_SESSION_ID);
+    }
+
+    @Test
+    public void mergeUnsyncedActions_localAndRemoteFeedbackSubmittedSessions() {
+        withRemoteFeedbackSubmittedSession();
+        mHelper.mergeUnsyncedActions(withLocalFeedbackSubmittedActions());
+        assertThatMergeFeedbackSubmittedSessionsHas(REMOTE_SESSION_ID);
+        assertThatMergeFeedbackSubmittedSessionsHas(LOCAL_SESSION_ID);
+    }
+
+    @Test
     public void getPendingFirebaseUpdatesMap_storesMergedGcmKey() {
         withMergedGCMKey();
         assertThat(mHelper.getPendingFirebaseUpatesMap().values(),
@@ -126,10 +168,20 @@ public class MergeHelperTest {
     }
 
     @Test
-    public void buildPendingFirebaseUpdatesMap_storesMergedViewedVideo() {
-        withMergedViewedVideo();
+    public void getPendingFirebaseUpdatesMap_storesMergedViewedVideo() {
+        withMergedViewedVideos();
         assertThat(mHelper.getPendingFirebaseUpatesMap().keySet(),
                 hasItem(FirebaseUtils.getViewedVideoChildPath(REMOTE_VIDEO_ID)));
+    }
+
+    @Test
+    public void getPendingFirebaseUpdatesMap_storesMergedFeedbackSubmittedSessions() {
+        withMergedFeedbackSubmittedSessions();
+
+        assertThat(mHelper.getPendingFirebaseUpatesMap().keySet(),
+                hasItem(FirebaseUtils.getFeedbackSubmittedSessionChildPath(LOCAL_SESSION_ID)));
+        assertThat(mHelper.getPendingFirebaseUpatesMap().keySet(),
+                hasItem(FirebaseUtils.getFeedbackSubmittedSessionChildPath(REMOTE_SESSION_ID)));
     }
 
     /**
@@ -146,9 +198,6 @@ public class MergeHelperTest {
         mHelper.getRemoteUserData().setGcmKey(REMOTE_GCM_KEY);
     }
 
-    /**
-     * Returns a list with no {@link UserAction} objects.
-     */
     private List<UserAction> withNoLocalUserActions() {
         return new ArrayList<>();
     }
@@ -181,6 +230,23 @@ public class MergeHelperTest {
     }
 
     /**
+     * Adds a remote feedback submitted session.
+     */
+    private void withRemoteFeedbackSubmittedSession() {
+        mHelper.getRemoteUserData().getFeedbackSubmittedSessionIds().add(REMOTE_SESSION_ID);
+    }
+
+    /**
+     * Creates and returns a {@link UserAction} list which contains a single feedback submitted
+     * session that requires sync.
+     */
+    private List<UserAction> withLocalFeedbackSubmittedActions() {
+        return new ArrayList<UserAction>() {{
+            add(createFeedbackSubmittedSessionAction(LOCAL_SESSION_ID, true));
+        }};
+    }
+
+    /**
      * Adds a GCM Key to the merged user data.
      */
     private void withMergedGCMKey() {
@@ -190,8 +256,16 @@ public class MergeHelperTest {
     /**
      * Adds viewed video IDs to merged user data.
      */
-    private void withMergedViewedVideo() {
+    private void withMergedViewedVideos() {
         mHelper.getMergedUserData().getViewedVideoIds().add(REMOTE_VIDEO_ID);
+    }
+
+    /**
+     * Adds feedback submitted session IDs to merged user data.
+     */
+    private void withMergedFeedbackSubmittedSessions() {
+        mHelper.getMergedUserData().getFeedbackSubmittedSessionIds().add(LOCAL_SESSION_ID);
+        mHelper.getMergedUserData().getFeedbackSubmittedSessionIds().add(REMOTE_SESSION_ID);
     }
 
     /**
@@ -216,5 +290,15 @@ public class MergeHelperTest {
     private void assertThatMergedUserDataHasNoVideoIds() {
         assertThat(mHelper.getMergedUserData().getViewedVideoIds(),
                 is(Collections.<String>emptySet()));
+    }
+
+    /**
+     * Asserts that {@code sessionId} is stored in merged feedback submitted sessions user data.
+     *
+     * @param sessionId The ID of the feedback submitted session.
+     */
+    private void assertThatMergeFeedbackSubmittedSessionsHas(String sessionId) {
+        assertThat(mHelper.getMergedUserData().getFeedbackSubmittedSessionIds(),
+                hasItem(sessionId));
     }
 }

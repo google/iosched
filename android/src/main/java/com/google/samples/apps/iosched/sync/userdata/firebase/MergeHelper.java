@@ -88,10 +88,14 @@ public class MergeHelper {
      */
     public void mergeUnsyncedActions(final List<UserAction> actions) {
         mMergedUserData.updateVideoIds(mRemoteUserData);
+        mMergedUserData.updateFeedbackSubmittedSessionIds(mRemoteUserData);
+
         for (final UserAction action : actions) {
             if (action.requiresSync) {
                 if (UserAction.TYPE.VIEW_VIDEO.equals(action.type)) {
                     mMergedUserData.addVideoId(action.videoId);
+                } else if (UserAction.TYPE.SUBMIT_FEEDBACK.equals(action.type)) {
+                    mMergedUserData.addFeedbackSubmittedSessionId(action.sessionId);
                 }
             }
         }
@@ -101,8 +105,8 @@ public class MergeHelper {
      * Builds and returns a Map that can be used when calling {@link com.firebase.client
      * .Firebase#updateChildren(Map)} to update Firebase with a single write.
      *
-     * @return A Map where the keys are String paths relative to Firebase root, and the
-     * values are the data that is written to those paths.
+     * @return A Map where the keys are String paths relative to Firebase root, and the values are
+     * the data that is written to those paths.
      */
     public Map<String, Object> getPendingFirebaseUpatesMap() {
         Map<String, Object> pendingFirebaseUpdatesMap = new HashMap<>();
@@ -112,12 +116,18 @@ public class MergeHelper {
         for (String videoID : mMergedUserData.getViewedVideoIds()) {
             pendingFirebaseUpdatesMap.put(FirebaseUtils.getViewedVideoChildPath(videoID), true);
         }
+
+        for (String sessionID : mMergedUserData.getFeedbackSubmittedSessionIds()) {
+            pendingFirebaseUpdatesMap
+                    .put(FirebaseUtils.getFeedbackSubmittedSessionChildPath(sessionID), true);
+        }
         return pendingFirebaseUpdatesMap;
     }
 
     /**
      * Throws an exception if {@code userData} is null. Otherwise returns {@code userData}.
-     * @param userData  The {@link UserDataHelper.UserData} object that holds the user data.
+     *
+     * @param userData The {@link UserDataHelper.UserData} object that holds the user data.
      */
     private UserDataHelper.UserData checkNotNull(UserDataHelper.UserData userData) {
         if (userData != null) {

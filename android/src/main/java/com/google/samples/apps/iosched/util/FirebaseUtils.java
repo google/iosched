@@ -42,6 +42,8 @@ public class FirebaseUtils {
     public static final String FIREBASE_NODE_USERS = "users";
     public static final String FIREBASE_NODE_GCM_KEY = "gcm_key";
     public static final String FIREBASE_NODE_VIEWED_VIDEOS = "viewed_videos";
+    public static final String FIREBASE_NODE_FEEDBACK_SUBMITTED_SESSIONS =
+            "feedback_submitted_sessions";
 
     /**
      * @param context Context used to lookup {@link SharedPreferences}.
@@ -124,12 +126,30 @@ public class FirebaseUtils {
     }
 
     /**
-     * Returns the Firebase child path (relative the user data ref) where data for a specific viewed
-     * video is stored.
+     * Returns the Firebase child path (relative the user data ref) where data where a specific
+     * viewed video is stored.
      *
      * @param videoId The ID of the video that the user watched.
      */
     public static String getViewedVideoChildPath(String videoId) {
         return getViewedVideosChildPath() + videoId + "/";
+    }
+
+    /**
+     * Returns the Firebase child path (relative to the user data ref) where a user's feedback
+     * submitted sessions are stored.
+     */
+    public static String getFeedbackSubmittedSessionsChildPath() {
+        return FIREBASE_NODE_FEEDBACK_SUBMITTED_SESSIONS + "/";
+    }
+
+    /**
+     * Returns the Firebase child path (relative the user data ref) where data where a specific
+     * feedback submitted session is stored.
+     *
+     * @param sessionId The ID of the session for which feedback was provided.
+     */
+    public static String getFeedbackSubmittedSessionChildPath(String sessionId) {
+        return getFeedbackSubmittedSessionsChildPath() + sessionId + "/";
     }
 }
