@@ -17,6 +17,7 @@
 package com.google.samples.apps.iosched.debug;
 
 import android.database.Cursor;
+import android.database.MatrixCursor;
 import android.text.TextUtils;
 
 import com.google.samples.apps.iosched.model.ScheduleItem;
@@ -40,7 +41,11 @@ public class OutputMockData {
     /**
      * This generates code, as a String, to create a {@link android.database.MatrixCursor} with a
      * row with the same data as the current row of the {@code cursor}. This can be used to easily
-     * create cursor with mock data in integration tests (in mockdata package).
+     * create cursor with mock data in integration tests (in mockdata package), by logging the
+     * output of this method in {@link com.google.samples.apps.iosched.archframework
+     * .ModelWithLoaderManager#onLoadFinished(QueryEnum, Cursor)} and copying the logged string into
+     * a method that returns a {@link MatrixCursor} in a class in {@link
+     * com.google.samples.apps.iosched.mockdata}.
      */
     public static String generateMatrixCursorCodeForCurrentRow(Cursor cursor) {
         String output = "";
@@ -80,7 +85,11 @@ public class OutputMockData {
     /**
      * This generates code, as a String, to create an {@link ArrayList} of {@link ScheduleItem}s
      * with the same data as {@code items}. This can be used to easily create schedule items with
-     * mock data in integration tests (in mockdata package).
+     * mock data in integration tests (in mockdata package), by logging the output of this method in
+     * {@link com.google.samples.apps.iosched.myschedule.MyScheduleModel
+     * .LoadScheduleDataListener#onDataLoaded(ArrayList)}
+     * and copying the logged string into a method that returns a {@link ArrayList<ScheduleItem>} in
+     * a class in {@link com.google.samples.apps.iosched.mockdata}.
      */
     public static String generateScheduleItemCode(ArrayList<ScheduleItem> items) {
         String output = "";
