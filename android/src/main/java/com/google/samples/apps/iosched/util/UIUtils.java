@@ -99,6 +99,7 @@ public class UIUtils {
     private static final Pattern REGEX_HTML_ESCAPE = Pattern.compile(".*&\\S;.*");
     public static final String MOCK_DATA_PREFERENCES = "mock_data";
     public static final String PREFS_MOCK_CURRENT_TIME = "mock_current_time";
+    public static final String PREFS_MOCK_APP_START_TIME = "mock_app_start_time";
 
     public static final String GOOGLE_PLUS_PACKAGE_NAME = "com.google.android.apps.plus";
     public static final String YOUTUBE_PACKAGE_NAME = "com.google.android.youtube";
