@@ -38,7 +38,7 @@ import static com.google.samples.apps.iosched.util.LogUtils.makeLogTag;
  * Background task that queries the content provider and prepares a list of
  * {@link com.google.android.gms.maps.model.TileOverlay}s
  * for addition to the map.
- * A tile overlay is always tied to a floor in Moscone and is loaded directly from an SVG file.
+ * A tile overlay is always tied to a floor in the venue and is loaded directly from an SVG file.
  * A {@link DiskLruCache} is used to create a {@link CachedTileProvider} for each overlay.
  * <p>Note: The CachedTileProvider <b>must</b> be closed when the encapsulating map is stopped.
  * (See

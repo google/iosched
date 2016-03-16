@@ -96,6 +96,7 @@ android {
             buildConfigField("String", "SERVER_MANIFEST_ENDPOINT", "\"${staging_api_manifest_endpoint}\"")
             buildConfigField("String", "GCM_SERVER_URL", "\"${production_gcm_server_endpoint}\"")
             resValue("string", "website_host_name", "${production_website_host_name}")
+            resValue("string", "maps_api_key", "${maps_api_key_debugstore}")
         }
         qualityassurance {
             debuggable true
@@ -106,6 +107,7 @@ android {
             buildConfigField("String", "SERVER_MANIFEST_ENDPOINT", "\"${production_api_manifest_endpoint}\"")
             buildConfigField("String", "GCM_SERVER_URL", "\"${production_gcm_server_endpoint}\"")
             resValue("string", "website_host_name", "${production_website_host_name}")
+            resValue("string", "maps_api_key", "${maps_api_key_debugstore}")
         }
         release {
             debuggable false
@@ -115,6 +117,7 @@ android {
             buildConfigField("String", "SERVER_MANIFEST_ENDPOINT", "\"${production_api_manifest_endpoint}\"")
             buildConfigField("String", "GCM_SERVER_URL", "\"${production_gcm_server_endpoint}\"")
             resValue("string", "website_host_name", "${production_website_host_name}")
+            resValue("string", "maps_api_key", "${maps_api_key_releasestore}")
         }
     }
 

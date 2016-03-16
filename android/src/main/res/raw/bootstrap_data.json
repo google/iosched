@@ -167,266 +167,95 @@
             "markers": {
                 "0": [
                     {
-                        "id": "presswork",
-                        "lat": 37.782865,
-                        "lng": -122.403759,
-                        "title": "Press\nWorkooms",
-                        "type": "LABEL"
-                    },
-                    {
-                        "id": "presslounge",
-                        "lat": 37.783007,
-                        "lng": -122.403506,
-                        "title": "Press\nLounge",
-                        "type": "LABEL"
-                    },
-                    {
-                        "id": "keynote",
-                        "lat": 37.782975,
-                        "lng": -122.404101,
-                        "title": "Keynote",
-                        "type": "LABEL"
-                    },
-                    {
-                        "id": "warehouse",
-                        "lat": 37.783369,
-                        "lng": -122.40366399999999,
-                        "title": "Warehouse",
-                        "type": "PLAIN"
-                    },
-                    {
-                        "id": "home",
-                        "lat": 37.783632,
-                        "lng": -122.40378,
-                        "title": "Home",
-                        "type": "PLAIN"
-                    },
-                    {
-                        "id": "work",
-                        "lat": 37.783704,
-                        "lng": -122.403942,
-                        "title": "Work",
-                        "type": "PLAIN"
-                    },
-                    {
-                        "id": "wear",
-                        "lat": 37.783276,
-                        "lng": -122.40338399999999,
-                        "title": "Wear",
-                        "type": "PLAIN"
-                    },
-                    {
-                        "id": "auto",
-                        "lat": 37.783277999999996,
-                        "lng": -122.40319199999999,
-                        "title": "Auto",
-                        "type": "PLAIN"
-                    },
-                    {
-                        "id": "cardboard",
-                        "lat": 37.783170999999996,
-                        "lng": -122.40325899999999,
-                        "title": "Cardboard",
-                        "type": "PLAIN"
-                    },
-                    {
-                        "id": "a6f51a8f-ace3-e411-b87f-00155d5066d7",
-                        "lat": 37.783345,
-                        "lng": -122.40347899999999,
-                        "title": "Showcase Talk",
-                        "type": "SANDBOX"
-                    }
-                ],
-                "1": [
-                    {
                         "id": "room1",
-                        "lat": 37.783387683090886,
-                        "lng": -122.40415100008249,
+                        "lat": 37.426041,
+                        "lng": -122.079488,
                         "title": "Session 1",
                         "type": "SESSION"
                     },
                     {
                         "id": "room2",
-                        "lat": 37.783062,
-                        "lng": -122.40458799999999,
+                        "lat": 37.426045,
+                        "lng": -122.079000,
                         "title": "Session 2",
                         "type": "SESSION"
                     },
                     {
                         "id": "room3",
-                        "lat": 37.782806,
-                        "lng": -122.404248,
+                        "lat": 37.426207,
+                        "lng": -122.078437,
                         "title": "Session 3",
                         "type": "SESSION"
                     },
                     {
-                        "id": "f4ab1f84-c8e3-e411-b87f-00155d5066d7",
-                        "lat": 37.782607999999996,
-                        "lng": -122.403887,
-                        "title": "Alcove 3",
-                        "type": "SANDBOX"
-                    },
-                    {
-                        "id": "f2ab1f84-c8e3-e411-b87f-00155d5066d7",
-                        "lat": 37.782786,
-                        "lng": -122.40367099999999,
-                        "title": "Alcove 2",
-                        "type": "SANDBOX"
-                    },
-                    {
-                        "id": "f0ab1f84-c8e3-e411-b87f-00155d5066d7",
-                        "lat": 37.782965,
-                        "lng": -122.40344599999999,
-                        "title": "Alcove 1",
-                        "type": "SANDBOX"
-                    },
-                    {
                         "id": "e32adaab-37e5-e411-b87f-00155d5066d7",
-                        "lat": 37.782996,
-                        "lng": -122.404032,
+                        "lat": 37.426450,
+                        "lng": -122.079300,
                         "title": "Codelabs",
                         "type": "CODELAB"
                     },
                     {
-                        "id": "a4f51a8f-ace3-e411-b87f-00155d5066d7",
-                        "lat": 37.782838,
-                        "lng": -122.403905,
-                        "title": "Develop Talk 3",
-                        "type": "SANDBOX"
-                    },
-                    {
-                        "id": "a2f51a8f-ace3-e411-b87f-00155d5066d7",
-                        "lat": 37.783339,
-                        "lng": -122.403891,
-                        "title": "Develop Talk 1",
-                        "type": "SANDBOX"
-                    },
-                    {
-                        "id": "design",
-                        "lat": 37.783651,
-                        "lng": -122.403746,
-                        "title": "Design",
-                        "type": "LABEL"
-                    },
-                    {
                         "id": "9cf51a8f-ace3-e411-b87f-00155d5066d7",
-                        "lat": 37.783702,
-                        "lng": -122.403955,
+                        "lat": 37.427689,
+                        "lng": -122.078758,
+
                         "title": "Design Talk",
                         "type": "SANDBOX"
                     },
                     {
                         "id": "earnengage",
-                        "lat": 37.783367999999996,
-                        "lng": -122.403482,
+                        "lat": 37.427519,
+                        "lng": -122.079155,
                         "title": "Earn +\nEngage",
                         "type": "LABEL"
                     },
                     {
                         "id": "9ef51a8f-ace3-e411-b87f-00155d5066d7",
-                        "lat": 37.783249,
-                        "lng": -122.403385,
+                        "lat": 37.426249,
+                        "lng": -122.081478,
+
                         "title": "Earn + Engage Talk",
                         "type": "SANDBOX"
                     },
                     {
                         "id": "sandbox",
-                        "lat": 37.783282,
-                        "lng": -122.40314799999999,
+                        "lat": 37.427016,
+                        "lng": -122.081586,
                         "title": "Lounge Talk",
                         "type": "SANDBOX"
                     },
                     {
                         "id": "a0f51a8f-ace3-e411-b87f-00155d5066d7",
-                        "lat": 37.783152,
-                        "lng": -122.403652,
+                        "lat": 37.425419,
+                        "lng": -122.078903,
                         "title": "Develop Talk 2",
                         "type": "SANDBOX"
                     },
                     {
-                        "id": "upstairslounge1",
-                        "lat": 37.783155,
-                        "lng": -122.40327099999999,
-                        "title": "Lounge",
-                        "type": "LABEL"
-                    },
-                    {
-                        "id": "upstairslounge2",
-                        "lat": 37.783094,
-                        "lng": -122.403894,
+                        "id": "lounge1",
+                        "lat": 37.427084,
+                        "lng": -122.078761,
                         "title": "Lounge",
                         "type": "LABEL"
                     },
                     {
                         "id": "iolive",
-                        "lat": 37.783075,
-                        "lng": -122.40358599999999,
+                        "lat": 37.427796,
+                        "lng": -122.080448,
                         "title": "I/O\nLive",
                         "type": "LABEL"
                     },
                     {
                         "id": "microkitchen",
-                        "lat": 37.783293,
-                        "lng": -122.403764,
+                        "lat": 37.426650,
+                        "lng": -122.079019,
                         "title": "Micro\nKitchen",
                         "type": "LABEL"
-                    }
-                ],
-                "2": [
-                    {
-                        "id": "playground",
-                        "lat": 37.78291495782711,
-                        "lng": -122.40424688905476,
-                        "title": "Playground",
-                        "type": "LABEL"
-                    },
-                    {
-                        "id": "store",
-                        "lat": 37.783699999999996,
-                        "lng": -122.403953,
-                        "title": "Store",
-                        "type": "LABEL"
-                    },
-                    {
-                        "id": "registration",
-                        "lat": 37.783362,
-                        "lng": -122.403472,
-                        "title": "Registration",
-                        "type": "LABEL"
-                    },
-                    {
-                        "id": "info",
-                        "lat": 37.783269,
-                        "lng": -122.40316899999999,
-                        "title": "Info",
-                        "type": "LABEL"
-                    },
-                    {
-                        "id": "bagcheck",
-                        "lat": 37.783356,
-                        "lng": -122.403712,
-                        "title": "Coat/Bag Check &\nMothers Room",
-                        "type": "label"
-                    },
-                    {
-                        "id": "bikeparking",
-                        "lat": 37.78346,
-                        "lng": -122.403324,
-                        "title": "Bike Parking",
-                        "type": "label"
                     }
                 ]
             },
             "tiles": {
                 "0": {
-                    "filename": "floor2-2015-v1.svg",
-                    "url": ""
-                },
-                "1": {
-                    "filename": "floor1-2015-v1.svg",
-                    "url": ""
-                },
-                "2": {
                     "filename": "floor0-2015-v1.svg",
                     "url": ""
                 }

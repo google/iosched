@@ -217,9 +217,9 @@ public class MapActivity extends BaseActivity
     }
 
     @Override
-    public void onInfoShowMoscone() {
+    public void onInfoShowVenue() {
         if (mInfoFragment != null) {
-            mInfoFragment.showMoscone();
+            mInfoFragment.showVenue();
         }
         setTabletInfoVisibility(View.VISIBLE);
 

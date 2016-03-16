@@ -58,6 +58,8 @@ public class SVGTileProvider implements TileProvider {
         mSvgPicture = svg.getPicture();
         RectF limits = svg.getLimits();
 
+        // These values map the SVG file to world coordinates.
+        // See: http://stackoverflow.com/questions/21167584/google-io-2013-app-mystery-values
         mBaseMatrix = new Matrix();
         mBaseMatrix.setPolyToPoly(
                 new float[]{
@@ -66,9 +68,15 @@ public class SVGTileProvider implements TileProvider {
                         limits.width(), limits.height()
                 }, 0,
                 new float[]{
-                        40.95635986328125f, 98.94217824936158f,
+                        41.185661155555536f, 99.26042152524433f,
+                        41.1888504888889f, 99.2603301865061f,
+                        41.1888504888889f, 99.26474027274617f
+
+                        // TODO(b/27989561): Update these values to match the new floor plan.
+                       /* 40.95635986328125f, 98.94217824936158f,
                         40.95730018615723f, 98.94123077396628f,
                         40.95791244506836f, 98.94186019897214f
+                        */
                 }, 0, 3
         );
     }
