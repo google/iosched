@@ -44,13 +44,6 @@ public class TimeUtils {
 
     private static final String TAG = makeLogTag(TimeUtils.class);
 
-    /**
-     * This is the "current time" used by the app. This allows us to override the current time in
-     * tests.
-     */
-    // TODO - we should have a clean non static solution
-    private static final long sAppLoadTime = System.currentTimeMillis();
-
     private static final SimpleDateFormat[] ACCEPTED_TIMESTAMP_FORMATS = {
             new SimpleDateFormat("EEE, dd MMM yyyy HH:mm:ss Z", Locale.US),
             new SimpleDateFormat("EEE MMM dd HH:mm:ss yyyy", Locale.US),
@@ -156,9 +149,9 @@ public class TimeUtils {
     }
 
     /**
-     * @return the name of the day at the given {@code position} in the
-     * {@link Config#CONFERENCE_DAYS}. It is assumed that all days in {@link Config#CONFERENCE_DAYS}
-     * are consecutive.
+     * @return the name of the day at the given {@code position} in the {@link
+     * Config#CONFERENCE_DAYS}. It is assumed that all days in {@link Config#CONFERENCE_DAYS} are
+     * consecutive.
      */
     public static String getDayName(Context context, int position) {
         long day1Start = Config.CONFERENCE_DAYS[0][0];
@@ -168,14 +161,15 @@ public class TimeUtils {
 
 
     /**
-     * Retrieve the current time. If the current build is a debug build the mock time is returned
-     * when set.
+     * Retrieve the current time. If the current build is a debug build, the mock time is returned
+     * when set, taking into account the passage of time by adding the difference between the
+     * current system time and the system time when the application was created.
      */
     public static long getCurrentTime(final Context context) {
         if (BuildConfig.DEBUG) {
             return context.getSharedPreferences(UIUtils.MOCK_DATA_PREFERENCES, Context.MODE_PRIVATE)
-                    .getLong(UIUtils.PREFS_MOCK_CURRENT_TIME, System.currentTimeMillis())
-                    + System.currentTimeMillis() - sAppLoadTime;
+                          .getLong(UIUtils.PREFS_MOCK_CURRENT_TIME, System.currentTimeMillis())
+                    + System.currentTimeMillis() - getAppStartTime(context);
         } else {
             return System.currentTimeMillis();
         }
@@ -189,42 +183,66 @@ public class TimeUtils {
             java.util.Date currentTime = new java.util.Date(TimeUtils.getCurrentTime(context));
             LOGW(TAG, "Setting time from " + currentTime + " to " + newTime);
             context.getSharedPreferences(UIUtils.MOCK_DATA_PREFERENCES, Context.MODE_PRIVATE).edit()
-                    .putLong(UIUtils.PREFS_MOCK_CURRENT_TIME, newTime).apply();
+                   .putLong(UIUtils.PREFS_MOCK_CURRENT_TIME, newTime).apply();
         }
     }
 
     /**
-     * Sets the current time to a time relative to the start of the conference. If
-     * {@code timeDifference} is positive, it is set to {@code timeDifference} ms after the start
-     * of the conference, if it is negative, it is set to {@code timeDifference} ms before the start
-     * of the conference. This should only be called from code in debug package or in tests.
+     * Retrieve the app start time,set when the application was created. This is used to calculate
+     * the current time, in debug mode only.
      */
-    public static void setCurrentTimeRelativeToStartOfConference(Context context, long timeDifference) {
-        java.util.Date newTime = new java.util.Date(Config.CONFERENCE_START_MILLIS + timeDifference);
+    private static long getAppStartTime(final Context context) {
+        return context.getSharedPreferences(UIUtils.MOCK_DATA_PREFERENCES, Context.MODE_PRIVATE)
+                      .getLong(UIUtils.PREFS_MOCK_APP_START_TIME, System.currentTimeMillis());
+    }
+
+    /**
+     * Set the app start time only when the current build is a debug build.
+     */
+    public static void setAppStartTime(Context context, long newTime) {
+        if (BuildConfig.DEBUG) {
+            java.util.Date previousAppStartTime = new java.util.Date(TimeUtils.getAppStartTime(
+                    context));
+            LOGW(TAG, "Setting app startTime from " + previousAppStartTime + " to " + newTime);
+            context.getSharedPreferences(UIUtils.MOCK_DATA_PREFERENCES, Context.MODE_PRIVATE).edit()
+                   .putLong(UIUtils.PREFS_MOCK_APP_START_TIME, newTime).apply();
+        }
+    }
+
+    /**
+     * Sets the current time to a time relative to the start of the conference. If {@code
+     * timeDifference} is positive, it is set to {@code timeDifference} ms after the start of the
+     * conference, if it is negative, it is set to {@code timeDifference} ms before the start of the
+     * conference. This should only be called from code in debug package or in tests.
+     */
+    public static void setCurrentTimeRelativeToStartOfConference(Context context,
+            long timeDifference) {
+        java.util.Date newTime =
+                new java.util.Date(Config.CONFERENCE_START_MILLIS + timeDifference);
         TimeUtils.setCurrentTime(context, newTime.getTime());
     }
 
     /**
      * Sets the current time to a time relative to the start of the second day of the conference. If
-     * {@code timeDifference} is positive, it is set to {@code timeDifference} ms after the start
-     * of the second day of the conference, if it is negative, it is set to
-     * {@code timeDifference} ms before the start of the second day of the conference. This should
-     * only be called from code in debug package or in tests.
+     * {@code timeDifference} is positive, it is set to {@code timeDifference} ms after the start of
+     * the second day of the conference, if it is negative, it is set to {@code timeDifference} ms
+     * before the start of the second day of the conference. This should only be called from code in
+     * debug package or in tests.
      */
     public static void setCurrentTimeRelativeToStartOfSecondDayOfConference(Context context,
-                                                                            long timeDifference) {
+            long timeDifference) {
         java.util.Date newTime = new java.util.Date(Config.CONFERENCE_DAYS[1][0] + timeDifference);
         TimeUtils.setCurrentTime(context, newTime.getTime());
     }
 
     /**
-     * Sets the current time to a time relative to the end of the conference. If
-     * {@code timeDifference} is positive, it is set to {@code timeDifference} ms after the end of
-     * the conference, if it is negative, it is set to {@code timeDifference} ms before the end of
-     * the conference. This should only be called from code in debug package or in tests.
+     * Sets the current time to a time relative to the end of the conference. If {@code
+     * timeDifference} is positive, it is set to {@code timeDifference} ms after the end of the
+     * conference, if it is negative, it is set to {@code timeDifference} ms before the end of the
+     * conference. This should only be called from code in debug package or in tests.
      */
     public static void setCurrentTimeRelativeToEndOfConference(Context context,
-                                                                            long timeDifference) {
+            long timeDifference) {
         java.util.Date newTime = new java.util.Date(Config.CONFERENCE_END_MILLIS + timeDifference);
         TimeUtils.setCurrentTime(context, newTime.getTime());
     }
