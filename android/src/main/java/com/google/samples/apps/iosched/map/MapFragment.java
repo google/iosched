@@ -23,6 +23,7 @@ import android.content.Loader;
 import android.database.ContentObserver;
 import android.database.Cursor;
 import android.graphics.Rect;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.SparseArray;
@@ -121,9 +122,9 @@ public class MapFragment extends com.google.android.gms.maps.MapFragment impleme
 
 
     // Markers stored by id
-    private HashMap<String, MarkerModel> mMarkers = new HashMap<>();
+    protected HashMap<String, MarkerModel> mMarkers = new HashMap<>();
     // Markers stored by floor
-    private SparseArray<ArrayList<Marker>> mMarkersFloor =
+    protected SparseArray<ArrayList<Marker>> mMarkersFloor =
             new SparseArray<>(INITIAL_FLOOR_COUNT);
 
     // Screen DPI
@@ -145,7 +146,7 @@ public class MapFragment extends com.google.android.gms.maps.MapFragment impleme
 
     private Marker mVenueMaker = null;
 
-    private GoogleMap mMap;
+    protected GoogleMap mMap;
     private Rect mMapInsets = new Rect();
 
     private String mHighlightedRoomId = null;
@@ -689,8 +690,14 @@ public class MapFragment extends com.google.android.gms.maps.MapFragment impleme
     }
 
     private final ContentObserver mObserver = new ContentObserver(new Handler()) {
+
         @Override
         public void onChange(boolean selfChange) {
+            onChange(selfChange, null);
+        }
+
+        @Override
+        public void onChange(final boolean selfChange, final Uri uri) {
             if (!isAdded()) {
                 return;
             }
@@ -699,19 +706,10 @@ public class MapFragment extends com.google.android.gms.maps.MapFragment impleme
             clearMap();
             addVenueMarker();
 
-            // reload data from loaders
+            // Reload data from loaders. Initialise the loaders first if they are not active yet.
             LoaderManager lm = getActivity().getLoaderManager();
-
-            Loader<Cursor> loader =
-                    lm.getLoader(TOKEN_LOADER_MARKERS);
-            if (loader != null) {
-                loader.forceLoad();
-            }
-
-            loader = lm.getLoader(TOKEN_LOADER_TILES);
-            if (loader != null) {
-                loader.forceLoad();
-            }
+            lm.initLoader(TOKEN_LOADER_MARKERS, null, mMarkerLoader).forceLoad();
+            lm.initLoader(TOKEN_LOADER_TILES, null, mTileLoader).forceLoad();
         }
     };
 

@@ -71,7 +71,7 @@ public class MapActivity extends BaseActivity
 
     private boolean mDetachedMode;
 
-    private MapFragment mMapFragment;
+    protected MapFragment mMapFragment;
 
     private MapInfoFragment mInfoFragment;
 

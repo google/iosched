@@ -147,6 +147,14 @@ android {
             buildConfigField("boolean", "SUPPRESS_DOGFOOD_WARNING", "false")
             targetSdkVersion 23
         }
+
+        mapEditor {
+            // Disable remote data updates for this flavor. All map data is reloaded from
+            // external storage at launch.
+            buildConfigField("String", "SERVER_MANIFEST_ENDPOINT", "\"\"")
+            buildConfigField("boolean", "SUPPRESS_DOGFOOD_WARNING", "true")
+            targetSdkVersion 22
+        }
     }
 
     buildTypes {
