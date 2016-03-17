@@ -17,15 +17,17 @@ package com.google.samples.apps.iosched.videolibrary;
 import android.content.Context;
 import android.database.Cursor;
 import android.os.Bundle;
-import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.test.runner.AndroidJUnit4;
 
 import com.google.samples.apps.iosched.archframework.QueryEnum;
 import com.google.samples.apps.iosched.archframework.QueryEnumHelper;
+import com.google.samples.apps.iosched.testutils.StubModelHelper;
 
 import org.junit.runner.RunWith;
+
+import java.util.HashMap;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
@@ -38,14 +40,12 @@ import static com.google.common.base.Preconditions.checkNotNull;
 @RunWith(AndroidJUnit4.class)
 public class StubVideoLibraryModel extends VideoLibraryModel {
 
-    private Cursor mVideosCursor;
+    private HashMap<QueryEnum, Cursor> mFakeData = new HashMap<QueryEnum, Cursor>();
 
-    private Cursor mFilterCursor;
-
-    public StubVideoLibraryModel(Context context, Cursor videosCursor1, Cursor filterCursor) {
+    public StubVideoLibraryModel(Context context, Cursor videosCursor, Cursor filterCursor) {
         super(context, null, null, null, null);
-        mVideosCursor = videosCursor1;
-        mFilterCursor = filterCursor;
+        mFakeData.put(VideoLibraryQueryEnum.VIDEOS, videosCursor);
+        mFakeData.put(VideoLibraryQueryEnum.FILTERS, filterCursor);
     }
 
     /**
@@ -55,31 +55,8 @@ public class StubVideoLibraryModel extends VideoLibraryModel {
     @Override
     public void requestData(final @NonNull VideoLibraryQueryEnum query,
             final @NonNull DataQueryCallback callback) {
-        // Add the callback so it gets fired properly
-        mDataQueryCallbacks.put(query, callback);
-
-        Handler h = new Handler();
-        Runnable r = new Runnable() {
-            @Override
-            public void run() {
-                // Call onLoadFinished with stub cursor and query
-                switch (query) {
-                    case VIDEOS:
-                        onLoadFinished(query, mVideosCursor);
-                        break;
-                    case MY_VIEWED_VIDEOS:
-                        // Not currently used in tests
-                        break;
-                    case FILTERS:
-                        onLoadFinished(query, mFilterCursor);
-                        break;
-                }
-            }
-        };
-
-        // Delayed to ensure the UI is ready, because it will fire the callback to update the view
-        // very quickly
-        h.postDelayed(r, 5);
+        new StubModelHelper<VideoLibraryModel.VideoLibraryQueryEnum>()
+                .overrideLoaderManager(query, callback, mFakeData, mDataQueryCallbacks, this);
     }
 
     /**
@@ -99,7 +76,7 @@ public class StubVideoLibraryModel extends VideoLibraryModel {
                 onLoadFinished((VideoLibraryQueryEnum) QueryEnumHelper
                                 .getQueryForId((Integer) args.get(KEY_RUN_QUERY_ID),
                                         VideoLibraryQueryEnum.values()),
-                        mVideosCursor);
+                        mFakeData.get(VideoLibraryQueryEnum.VIDEOS));
                 break;
             default:
                 processUserAction(action, args, callback);

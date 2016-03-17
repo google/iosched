@@ -17,17 +17,15 @@ package com.google.samples.apps.iosched.explore;
 import android.net.Uri;
 import android.support.test.InstrumentationRegistry;
 import android.support.test.espresso.ViewInteraction;
-import android.support.test.espresso.intent.rule.IntentsTestRule;
 import android.support.test.runner.AndroidJUnit4;
 import android.test.suitebuilder.annotation.LargeTest;
 import android.view.View;
 
 import com.google.samples.apps.iosched.R;
-import com.google.samples.apps.iosched.injection.ModelProvider;
 import com.google.samples.apps.iosched.mockdata.ExploreMockCursor;
 import com.google.samples.apps.iosched.provider.ScheduleContract;
 import com.google.samples.apps.iosched.session.SessionDetailActivity;
-import com.google.samples.apps.iosched.settings.SettingsUtils;
+import com.google.samples.apps.iosched.testutils.BaseActivityTestRule;
 import com.google.samples.apps.iosched.testutils.MatchersHelper;
 import com.google.samples.apps.iosched.ui.SearchActivity;
 
@@ -60,20 +58,12 @@ import static org.hamcrest.core.Is.is;
 public class ExploreIOActivityTest {
 
     @Rule
-    public IntentsTestRule<ExploreIOActivity> mActivityRule =
-            new IntentsTestRule<ExploreIOActivity>(ExploreIOActivity.class) {
-                @Override
-                protected void beforeActivityLaunched() {
-                    // Make sure the EULA screen is not shown.
-                    SettingsUtils.markTosAccepted(InstrumentationRegistry.getTargetContext(), true);
-
-                    // Create a stub model to simulate a list of sessions
-                    ModelProvider.setStubExploreIOModel(new StubExploreIOModel(
+    public BaseActivityTestRule<ExploreIOActivity> mActivityRule =
+            new BaseActivityTestRule<ExploreIOActivity>(ExploreIOActivity.class,
+                    new StubExploreIOModel(
                             InstrumentationRegistry.getTargetContext(),
                             ExploreMockCursor.getCursorForExplore(),
-                            ExploreMockCursor.getCursorForTags()));
-                }
-            };
+                            ExploreMockCursor.getCursorForTags()), true);
 
     @Test
     public void Keynote_IsVisibleWithoutScrolling() {
