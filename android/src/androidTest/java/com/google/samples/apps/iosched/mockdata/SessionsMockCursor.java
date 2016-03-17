@@ -3,14 +3,10 @@ package com.google.samples.apps.iosched.mockdata;
 import android.database.Cursor;
 import android.database.MatrixCursor;
 
-import com.google.samples.apps.iosched.archframework.QueryEnum;
-import com.google.samples.apps.iosched.debug.OutputMockData;
-
 /**
- * This has methods to create stub cursors for sessions. To generate different mock cursors, log the
- * output of {@link OutputMockData#generateMatrixCursorCodeForCurrentRow(Cursor)} in {@link
- * com.google.samples.apps.iosched.archframework.ModelWithLoaderManager#onLoadFinished(QueryEnum,
- * Cursor)} and copy the logged string into a method that returns a {@link MatrixCursor}.
+ * This has methods to create stub cursors for sessions. To generate different mock cursors, refer
+ * to {@link com.google.samples.apps.iosched.debug
+ * .OutputMockData#generateMatrixCursorCodeForCurrentRow(Cursor)}.
  */
 public class SessionsMockCursor {
 
