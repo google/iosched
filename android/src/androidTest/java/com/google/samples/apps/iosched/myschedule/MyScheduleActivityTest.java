@@ -29,9 +29,11 @@ import com.google.samples.apps.iosched.feedback.SessionFeedbackActivity;
 import com.google.samples.apps.iosched.injection.ModelProvider;
 import com.google.samples.apps.iosched.mockdata.MyScheduleMockItems;
 import com.google.samples.apps.iosched.mockdata.StubActivityContext;
+import com.google.samples.apps.iosched.navigation.NavigationModel;
 import com.google.samples.apps.iosched.provider.ScheduleContract;
 import com.google.samples.apps.iosched.settings.SettingsUtils;
 import com.google.samples.apps.iosched.testutils.BaseActivityTestRule;
+import com.google.samples.apps.iosched.testutils.NavigationUtils;
 import com.google.samples.apps.iosched.util.TimeUtils;
 
 import org.junit.Before;
@@ -216,6 +218,22 @@ public class MyScheduleActivityTest {
 
         // Then the session in the second day is displayed
         onView(withText(MyScheduleMockItems.SESSION_TITLE_BEFORE)).check(matches(isDisplayed()));
+    }
+
+    @Test
+    public void navigationIcon_DisplaysAsMenu() {
+        NavigationUtils.checkNavigationIconIsMenu();
+    }
+
+    @Test
+    public void navigationIcon_OnClick_NavigationDisplayed() {
+        NavigationUtils.checkNavigationIsDisplayedWhenClickingMenuIcon();
+    }
+
+    @Test
+    public void navigation_WhenShown_CorrectItemIsSelected() {
+        NavigationUtils
+                .checkNavigationItemIsSelected(NavigationModel.NavigationItemEnum.MY_SCHEDULE);
     }
 
     private void showDay1() {

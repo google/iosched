@@ -17,11 +17,13 @@ package com.google.samples.apps.iosched.feedback;
 import android.content.Intent;
 import android.net.Uri;
 import android.support.test.InstrumentationRegistry;
+import android.support.test.filters.FlakyTest;
 
 import com.google.samples.apps.iosched.R;
 import com.google.samples.apps.iosched.mockdata.SessionsMockCursor;
 import com.google.samples.apps.iosched.provider.ScheduleContract;
 import com.google.samples.apps.iosched.testutils.BaseActivityTestRule;
+import com.google.samples.apps.iosched.testutils.NavigationUtils;
 
 import org.junit.Rule;
 import org.junit.Test;
@@ -87,12 +89,18 @@ public class SessionFeedbackActivityTest {
     }
 
     @Test
+    @FlakyTest // Checking activity has been destroyed doesn't always work
     public void clickOnSubmit_ActivityCloses() {
         // Whether we have feedback data or not, the activity closes upon submitting
         onView(withText(R.string.session_feedback_submitlink)).perform(scrollTo());
         onView(withText(R.string.session_feedback_submitlink)).check(matches(isDisplayed()));
         onView(withText(R.string.session_feedback_submitlink)).perform(click());
         assertTrue(mActivityRule.getActivity().isDestroyed());
+    }
+
+    @Test
+    public void navigationIcon_DisplaysAsUp() {
+        NavigationUtils.checkNavigationIconIsUp();
     }
 
 }

@@ -19,13 +19,10 @@ import android.database.Cursor;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.test.runner.AndroidJUnit4;
 
 import com.google.samples.apps.iosched.archframework.QueryEnum;
 import com.google.samples.apps.iosched.archframework.QueryEnumHelper;
 import com.google.samples.apps.iosched.testutils.StubModelHelper;
-
-import org.junit.runner.RunWith;
 
 import java.util.HashMap;
 
@@ -37,7 +34,6 @@ import static com.google.common.base.Preconditions.checkNotNull;
  * the loader manager mechanism. Use the classes in {@link com.google.samples.apps.iosched.mockdata}
  * to provide the stub cursors.
  */
-@RunWith(AndroidJUnit4.class)
 public class StubVideoLibraryModel extends VideoLibraryModel {
 
     private HashMap<QueryEnum, Cursor> mFakeData = new HashMap<QueryEnum, Cursor>();

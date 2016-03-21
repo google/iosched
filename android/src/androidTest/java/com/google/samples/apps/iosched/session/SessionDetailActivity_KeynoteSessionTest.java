@@ -28,6 +28,7 @@ import com.google.samples.apps.iosched.mockdata.SpeakersMockCursor;
 import com.google.samples.apps.iosched.mockdata.TagMetadataMockCursor;
 import com.google.samples.apps.iosched.provider.ScheduleContract;
 import com.google.samples.apps.iosched.testutils.BaseActivityTestRule;
+import com.google.samples.apps.iosched.testutils.NavigationUtils;
 
 import org.junit.Rule;
 import org.junit.Test;
@@ -84,4 +85,8 @@ public class SessionDetailActivity_KeynoteSessionTest {
         onView(withId(R.id.session_tags_container)).check(matches(not(isDisplayed())));
     }
 
+    @Test
+    public void navigationIcon_DisplaysAsUp() {
+        NavigationUtils.checkNavigationIconIsUp();
+    }
 }

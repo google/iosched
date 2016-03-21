@@ -63,6 +63,6 @@ of the map.-->
     </LinearLayout>
 
     <!-- Nav drawer -->
-    <include layout="@layout/navdrawer"/>
+    <include layout="@layout/navigation_view"/>
 
 </android.support.v4.widget.DrawerLayout>

@@ -30,7 +30,7 @@
         android:layout_height="match_parent"/>
 
     <!-- Nav drawer -->
-    <include layout="@layout/navdrawer"/>
+    <include layout="@layout/navigation_view"/>
 
     <!-- Inactive and invisible ViewPager. This must exist here because a corresponding
     ViewPager exists on my_schedule_narrow_act, and some device form factors switch
