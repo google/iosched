@@ -31,11 +31,8 @@ public class SocialActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.social_act);
 
-        /* [ANALYTICS:SCREEN]
-         * TRIGGER:   View the Social screen
-         * LABEL:     'Social'
-         * [/ANALYTICS]
-         */
+        // ANALYTICS SCREEN: View the Social screen
+        // Contains: Nothing (Page name is a constant)
         AnalyticsHelper.sendScreenView(SCREEN_LABEL);
 
         overridePendingTransition(0, 0);
