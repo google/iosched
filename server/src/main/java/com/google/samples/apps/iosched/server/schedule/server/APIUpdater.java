@@ -33,6 +33,7 @@ import com.google.samples.apps.iosched.server.schedule.model.DataCheck;
 import com.google.samples.apps.iosched.server.schedule.model.DataCheck.CheckFailure;
 import com.google.samples.apps.iosched.server.schedule.model.DataCheck.CheckResult;
 import com.google.samples.apps.iosched.server.schedule.model.DataExtractor;
+import com.google.samples.apps.iosched.server.schedule.model.JsonDataSource;
 import com.google.samples.apps.iosched.server.schedule.model.JsonDataSources;
 import com.google.samples.apps.iosched.server.schedule.server.cloudstorage.CloudFileManager;
 import com.google.samples.apps.iosched.server.schedule.server.input.ExtraInput;
@@ -76,12 +77,13 @@ public class APIUpdater {
     UpdateRunLogger logger = new UpdateRunLogger();
     CloudFileManager fileManager = new CloudFileManager();
 
-    logger.startTimer();
-    JsonDataSources sources = new ExtraInput().fetchAllDataSources();
-    logger.stopTimer("fetchExtraAPI");
+    // TODO(arthurthompson): Confirm if extra data is needed, current test data does not have any.
+//    logger.startTimer();
+//    JsonDataSources sources = new ExtraInput().fetchAllDataSources();
+//    logger.stopTimer("fetchExtraAPI");
 
     logger.startTimer();
-    sources.putAll(new VendorStaticInput().fetchAllDataSources());
+    JsonDataSources sources = new VendorStaticInput().fetchAllDataSources();
     logger.stopTimer("fetchVendorStaticAPI");
 
     logger.startTimer();
@@ -201,7 +203,8 @@ public class APIUpdater {
                 "\n\n--- MESSAGE TRUNCATED, " + truncatedChars + " CHARS REMAINING (CHECK LOG) ---";
       }
       message.setTextBody(errorMessageStr);
-      MailServiceFactory.getMailService().sendToAdmins(message);
+      // TODO(arthurthompson): Reimplement mailing, it currently fails due to invalid sender.
+      //MailServiceFactory.getMailService().sendToAdmins(message);
     } else {
       // dump errors to optionalOutput
       optionalOutput.write(errorMessage.toString().getBytes());

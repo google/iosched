@@ -94,10 +94,10 @@ public class DataExtractor {
     if (source != null) {
       for (JsonObject origin: source) {
         JsonObject dest = new JsonObject();
-        JsonElement originalId = get(origin, InputJsonKeys.VendorAPISource.Rooms.id);
+        JsonElement originalId = get(origin, InputJsonKeys.VendorAPISource.Rooms.Id);
         String id = Config.ROOM_MAPPING.getRoomId(originalId.getAsString());
         if (!ids.contains(id)) {
-          String title = Config.ROOM_MAPPING.getTitle(id, get(origin, InputJsonKeys.VendorAPISource.Rooms.name).getAsString());
+          String title = Config.ROOM_MAPPING.getTitle(id, get(origin, InputJsonKeys.VendorAPISource.Rooms.Name).getAsString());
           set(new JsonPrimitive(id), dest, OutputJsonKeys.Rooms.id);
           set(originalId, dest, OutputJsonKeys.Rooms.original_id);
           set(new JsonPrimitive(title), dest, OutputJsonKeys.Rooms.name);
@@ -129,7 +129,7 @@ public class DataExtractor {
         JsonObject dest = new JsonObject();
 
         // set tag category, looking for parentid in the tag_category_mapping data source
-        JsonElement parentId = get(origin, InputJsonKeys.VendorAPISource.Categories.parentid);
+        JsonElement parentId = get(origin, InputJsonKeys.VendorAPISource.Categories.ParentId);
 
         // Ignore categories with null parents, because they are roots (tag categories).
         if (parentId != null && !parentId.getAsString().equals("")) {
@@ -152,7 +152,7 @@ public class DataExtractor {
           }
 
           // Tag name is by convention: "TAGCATEGORY_TAGNAME"
-          JsonElement name = get(origin, InputJsonKeys.VendorAPISource.Categories.name);
+          JsonElement name = get(origin, InputJsonKeys.VendorAPISource.Categories.Name);
           JsonElement tagName = new JsonPrimitive(category.getAsString() + "_" +
               Converters.TAG_NAME.convert(name).getAsString());
           JsonElement originalTagName = tagName;
@@ -165,8 +165,8 @@ public class DataExtractor {
 
           set(tagName, dest, OutputJsonKeys.Tags.tag);
           set(name, dest, OutputJsonKeys.Tags.name);
-          set(origin, InputJsonKeys.VendorAPISource.Categories.id, dest, OutputJsonKeys.Tags.original_id);
-          set(origin, InputJsonKeys.VendorAPISource.Categories.description, dest, OutputJsonKeys.Tags._abstract, obfuscate ? Converters.OBFUSCATE : null);
+          set(origin, InputJsonKeys.VendorAPISource.Categories.Id, dest, OutputJsonKeys.Tags.original_id);
+          set(origin, InputJsonKeys.VendorAPISource.Categories.Description, dest, OutputJsonKeys.Tags._abstract, obfuscate ? Converters.OBFUSCATE : null);
 
           if (tagsConfSource != null) {
             JsonObject tagConf = tagsConfSource.getElementById(originalTagName.getAsString());
@@ -177,7 +177,7 @@ public class DataExtractor {
             }
           }
 
-          categoryToTagMap.put(get(origin, InputJsonKeys.VendorAPISource.Categories.id).getAsString(), dest);
+          categoryToTagMap.put(get(origin, InputJsonKeys.VendorAPISource.Categories.Id).getAsString(), dest);
           if (originalTagNames.add(originalTagName.getAsString())) {
             result.add(dest);
           }
@@ -197,19 +197,19 @@ public class DataExtractor {
     if (source != null) {
       for (JsonObject origin: source) {
         JsonObject dest = new JsonObject();
-        JsonElement id = get(origin, InputJsonKeys.VendorAPISource.Speakers.id);
+        JsonElement id = get(origin, InputJsonKeys.VendorAPISource.Speakers.Id);
         set(id, dest, OutputJsonKeys.Speakers.id);
-        set(origin, InputJsonKeys.VendorAPISource.Speakers.name, dest, OutputJsonKeys.Speakers.name, obfuscate?Converters.OBFUSCATE:null);
-        set(origin, InputJsonKeys.VendorAPISource.Speakers.bio, dest, OutputJsonKeys.Speakers.bio, obfuscate?Converters.OBFUSCATE:null);
-        set(origin, InputJsonKeys.VendorAPISource.Speakers.companyname, dest, OutputJsonKeys.Speakers.company, obfuscate?Converters.OBFUSCATE:null);
-        JsonElement originalPhoto = get(origin, InputJsonKeys.VendorAPISource.Speakers.photo);
+        set(origin, InputJsonKeys.VendorAPISource.Speakers.Name, dest, OutputJsonKeys.Speakers.name, obfuscate?Converters.OBFUSCATE:null);
+        set(origin, InputJsonKeys.VendorAPISource.Speakers.Bio, dest, OutputJsonKeys.Speakers.bio, obfuscate?Converters.OBFUSCATE:null);
+        set(origin, InputJsonKeys.VendorAPISource.Speakers.CompanyName, dest, OutputJsonKeys.Speakers.company, obfuscate?Converters.OBFUSCATE:null);
+        JsonElement originalPhoto = get(origin, InputJsonKeys.VendorAPISource.Speakers.Photo);
         if (originalPhoto != null && !"".equals(originalPhoto.getAsString())) {
           // Note that the input for SPEAKER_PHOTO_ID converter is the entity ID. We simply ignore the original
           // photo URL, because that will be processed by an offline cron script, resizing the
           // photos and saving them to a known location with the entity ID as its base name.
-          set(origin, InputJsonKeys.VendorAPISource.Speakers.id, dest, OutputJsonKeys.Speakers.thumbnailUrl, Converters.SPEAKER_PHOTO_URL);
+          set(origin, InputJsonKeys.VendorAPISource.Speakers.Id, dest, OutputJsonKeys.Speakers.thumbnailUrl, Converters.SPEAKER_PHOTO_URL);
         }
-        JsonElement info = origin.get(InputJsonKeys.VendorAPISource.Speakers.info.name());
+        JsonElement info = origin.get(InputJsonKeys.VendorAPISource.Speakers.Info.name());
         JsonPrimitive plusUrl = getMapValue(info, InputJsonKeys.VendorAPISource.Speakers.INFO_PUBLIC_PLUS_ID, Converters.GPLUS_URL, null);
         if (plusUrl != null) {
           set(plusUrl, dest, OutputJsonKeys.Speakers.plusoneUrl);
@@ -245,7 +245,7 @@ public class DataExtractor {
           // Sessions with a "Hidden from schedule" flag should be ignored
           continue;
         }
-        JsonElement title = get(origin, InputJsonKeys.VendorAPISource.Topics.title);
+        JsonElement title = get(origin, InputJsonKeys.VendorAPISource.Topics.Title);
         // Since the CMS returns an empty keynote as a session, we need to ignore it
         if (title != null && title.isJsonPrimitive() && "keynote".equalsIgnoreCase(title.getAsString())) {
           continue;
@@ -256,21 +256,21 @@ public class DataExtractor {
         if (title != null && title.isJsonPrimitive() && "after hours".equalsIgnoreCase(title.getAsString())) {
           set(new JsonPrimitive("__afterhours__"), dest, OutputJsonKeys.Sessions.id);
         } else {
-          set(origin, InputJsonKeys.VendorAPISource.Topics.id, dest, OutputJsonKeys.Sessions.id);
+          set(origin, InputJsonKeys.VendorAPISource.Topics.Id, dest, OutputJsonKeys.Sessions.id);
         }
-        set(origin, InputJsonKeys.VendorAPISource.Topics.id, dest, OutputJsonKeys.Sessions.url, Converters.SESSION_URL);
-        set(origin, InputJsonKeys.VendorAPISource.Topics.title, dest, OutputJsonKeys.Sessions.title, obfuscate?Converters.OBFUSCATE:null);
-        set(origin, InputJsonKeys.VendorAPISource.Topics.description, dest, OutputJsonKeys.Sessions.description, obfuscate?Converters.OBFUSCATE:null);
-        set(origin, InputJsonKeys.VendorAPISource.Topics.start, dest, OutputJsonKeys.Sessions.startTimestamp, Converters.DATETIME);
-        set(origin, InputJsonKeys.VendorAPISource.Topics.finish, dest, OutputJsonKeys.Sessions.endTimestamp, Converters.DATETIME);
+        set(origin, InputJsonKeys.VendorAPISource.Topics.Id, dest, OutputJsonKeys.Sessions.url, Converters.SESSION_URL);
+        set(origin, InputJsonKeys.VendorAPISource.Topics.Title, dest, OutputJsonKeys.Sessions.title, obfuscate?Converters.OBFUSCATE:null);
+        set(origin, InputJsonKeys.VendorAPISource.Topics.Description, dest, OutputJsonKeys.Sessions.description, obfuscate?Converters.OBFUSCATE:null);
+        set(origin, InputJsonKeys.VendorAPISource.Topics.Start, dest, OutputJsonKeys.Sessions.startTimestamp, Converters.DATETIME);
+        set(origin, InputJsonKeys.VendorAPISource.Topics.Finish, dest, OutputJsonKeys.Sessions.endTimestamp, Converters.DATETIME);
         set(new JsonPrimitive(isFeatured(origin)), dest, OutputJsonKeys.Sessions.isFeatured);
 
-        JsonElement documents = get(origin, InputJsonKeys.VendorAPISource.Topics.documents);
+        JsonElement documents = get(origin, InputJsonKeys.VendorAPISource.Topics.Documents);
         if (documents != null && documents.isJsonArray() && documents.getAsJsonArray().size()>0) {
           // Note that the input for SessionPhotoURL is the entity ID. We simply ignore the original
           // photo URL, because that will be processed by an offline cron script, resizing the
           // photos and saving them to a known location with the entity ID as its base name.
-          set(origin, InputJsonKeys.VendorAPISource.Topics.id, dest, OutputJsonKeys.Sessions.photoUrl, Converters.SESSION_PHOTO_URL);
+          set(origin, InputJsonKeys.VendorAPISource.Topics.Id, dest, OutputJsonKeys.Sessions.photoUrl, Converters.SESSION_PHOTO_URL);
         }
 
         setVideoPropertiesInSession(origin, dest);
@@ -279,7 +279,7 @@ public class DataExtractor {
         JsonElement mainTag = null;
         JsonElement hashtag = null;
         JsonElement mainTagColor = null;
-        JsonArray categories= origin.getAsJsonArray(InputJsonKeys.VendorAPISource.Topics.categoryids.name());
+        JsonArray categories= origin.getAsJsonArray(InputJsonKeys.VendorAPISource.Topics.CategoryIds.name());
         JsonArray tags = new JsonArray();
         for (JsonElement category: categories) {
           JsonObject tag = categoryToTagMap.get(category.getAsString());
@@ -318,16 +318,16 @@ public class DataExtractor {
           set(hashtag, dest, OutputJsonKeys.Sessions.hashtag);
         }
 
-        JsonArray speakers = getAsArray(origin, InputJsonKeys.VendorAPISource.Topics.speakerids);
+        JsonArray speakers = getAsArray(origin, InputJsonKeys.VendorAPISource.Topics.SpeakerIds);
         if (speakers != null) for (JsonElement speaker: speakers) {
             String speakerId = speaker.getAsString();
             usedSpeakers.add(speakerId);
         }
         set(speakers, dest, OutputJsonKeys.Sessions.speakers);
 
-        JsonArray sessions= origin.getAsJsonArray(InputJsonKeys.VendorAPISource.Topics.sessions.name());
+        JsonArray sessions= origin.getAsJsonArray(InputJsonKeys.VendorAPISource.Topics.Sessions.name());
         if (sessions != null && sessions.size()>0) {
-          String roomId = get(sessions.get(0).getAsJsonObject(), InputJsonKeys.VendorAPISource.Sessions.roomid).getAsString();
+          String roomId = get(sessions.get(0).getAsJsonObject(), InputJsonKeys.VendorAPISource.Sessions.RoomId).getAsString();
           roomId = Config.ROOM_MAPPING.getRoomId(roomId);
           set(new JsonPrimitive(roomId), dest, OutputJsonKeys.Sessions.room);
 
@@ -373,16 +373,16 @@ public class DataExtractor {
 
         JsonPrimitive vid = setVideoForVideoSession(origin, dest);
 
-        JsonElement id = get(origin, InputJsonKeys.VendorAPISource.Topics.id);
+        JsonElement id = get(origin, InputJsonKeys.VendorAPISource.Topics.Id);
         // video library id must be the Youtube video id
         set(vid, dest, OutputJsonKeys.VideoLibrary.id);
-        set(origin, InputJsonKeys.VendorAPISource.Topics.title, dest, OutputJsonKeys.VideoLibrary.title, obfuscate?Converters.OBFUSCATE:null);
-        set(origin, InputJsonKeys.VendorAPISource.Topics.description, dest, OutputJsonKeys.VideoLibrary.desc, obfuscate?Converters.OBFUSCATE:null);
+        set(origin, InputJsonKeys.VendorAPISource.Topics.Title, dest, OutputJsonKeys.VideoLibrary.title, obfuscate?Converters.OBFUSCATE:null);
+        set(origin, InputJsonKeys.VendorAPISource.Topics.Description, dest, OutputJsonKeys.VideoLibrary.desc, obfuscate?Converters.OBFUSCATE:null);
         set(new JsonPrimitive(Config.CONFERENCE_YEAR), dest, OutputJsonKeys.VideoLibrary.year);
 
 
         JsonElement videoTopic = null;
-        JsonArray categories= origin.getAsJsonArray(InputJsonKeys.VendorAPISource.Topics.categoryids.name());
+        JsonArray categories= origin.getAsJsonArray(InputJsonKeys.VendorAPISource.Topics.CategoryIds.name());
         for (JsonElement category: categories) {
           JsonObject tag = categoryToTagMap.get(category.getAsString());
           if (tag != null) {
@@ -398,7 +398,7 @@ public class DataExtractor {
         }
 
         // Concatenate speakers:
-        JsonArray speakers = getAsArray(origin, InputJsonKeys.VendorAPISource.Topics.speakerids);
+        JsonArray speakers = getAsArray(origin, InputJsonKeys.VendorAPISource.Topics.SpeakerIds);
         StringBuilder sb = new StringBuilder();
         if (speakers != null) for (int i=0; i<speakers.size(); i++) {
           String speakerId = speakers.get(i).getAsString();
@@ -418,7 +418,7 @@ public class DataExtractor {
   }
 
   private boolean isVideoSession(JsonObject sessionObj) {
-    JsonArray tags= sessionObj.getAsJsonArray(InputJsonKeys.VendorAPISource.Topics.categoryids.name());
+    JsonArray tags= sessionObj.getAsJsonArray(InputJsonKeys.VendorAPISource.Topics.CategoryIds.name());
     for (JsonElement category: tags) {
       if (Config.VIDEO_CATEGORY.equals(category.getAsString())) {
         return true;
@@ -429,7 +429,7 @@ public class DataExtractor {
 
   private boolean isHiddenSession(JsonObject sessionObj) {
     JsonPrimitive hide = getMapValue(
-            get(sessionObj, InputJsonKeys.VendorAPISource.Topics.info),
+            get(sessionObj, InputJsonKeys.VendorAPISource.Topics.Info),
             InputJsonKeys.VendorAPISource.Topics.INFO_HIDDEN_SESSION,
             Converters.BOOLEAN, null);
     if (hide != null && hide.isBoolean() && hide.getAsBoolean()) {
@@ -445,7 +445,7 @@ public class DataExtractor {
       return false;
     }
     JsonPrimitive livestream = getMapValue(
-        get(sessionObj, InputJsonKeys.VendorAPISource.Topics.info),
+        get(sessionObj, InputJsonKeys.VendorAPISource.Topics.Info),
         InputJsonKeys.VendorAPISource.Topics.INFO_IS_LIVE_STREAM,
         null, null);
     return livestream != null && "true".equalsIgnoreCase(livestream.getAsString());
@@ -459,7 +459,7 @@ public class DataExtractor {
   private boolean isFeatured(JsonObject sessionObj) {
     // Extract "Featured Session" flag from EventPoint "info" block.
     JsonPrimitive featured = getMapValue(
-            get(sessionObj, InputJsonKeys.VendorAPISource.Topics.info),
+            get(sessionObj, InputJsonKeys.VendorAPISource.Topics.Info),
             InputJsonKeys.VendorAPISource.Topics.INFO_FEATURED_SESSION,
             Converters.BOOLEAN, null);
     if (featured != null && featured.isBoolean() && featured.getAsBoolean()) {
@@ -479,7 +479,7 @@ public class DataExtractor {
           Config.VIDEO_LIVESTREAMURL_FOR_EMPTY);
     } else {
       vid = getMapValue(
-          get(origin, InputJsonKeys.VendorAPISource.Topics.info), InputJsonKeys.VendorAPISource.Topics.INFO_VIDEO_URL,
+          get(origin, InputJsonKeys.VendorAPISource.Topics.Info), InputJsonKeys.VendorAPISource.Topics.INFO_VIDEO_URL,
           Converters.YOUTUBE_URL, null);
     }
     if (vid != null && !vid.getAsString().isEmpty()) {
@@ -492,7 +492,7 @@ public class DataExtractor {
 
     if (!obfuscate) {
       JsonPrimitive vid = getMapValue(
-          get(origin, InputJsonKeys.VendorAPISource.Topics.info), sourceInfoKey, null, defaultVideoUrl);
+          get(origin, InputJsonKeys.VendorAPISource.Topics.Info), sourceInfoKey, null, defaultVideoUrl);
       if (vid != null && !vid.getAsString().isEmpty()) {
         result = vid;
       }
@@ -513,7 +513,7 @@ public class DataExtractor {
 
   @Deprecated
   private void setRelatedVideos(JsonObject origin, JsonObject dest) {
-    JsonArray related = getAsArray(origin, InputJsonKeys.VendorAPISource.Topics.related);
+    JsonArray related = getAsArray(origin, InputJsonKeys.VendorAPISource.Topics.Related);
     if (related == null) {
       return;
     }
@@ -556,7 +556,7 @@ public class DataExtractor {
   }
 
   private void setRelatedContent(JsonObject origin, JsonObject dest) {
-    JsonArray related = getAsArray(origin, InputJsonKeys.VendorAPISource.Topics.related);
+    JsonArray related = getAsArray(origin, InputJsonKeys.VendorAPISource.Topics.Related);
     JsonArray outputArray = new JsonArray();
 
     if (related == null) {
@@ -588,8 +588,8 @@ public class DataExtractor {
 
           JsonObject topicObj = topic.getAsJsonObject();
 
-          String id = get(topicObj, InputJsonKeys.VendorAPISource.RelatedTopics.id).getAsString();
-          String title = get(topicObj, InputJsonKeys.VendorAPISource.RelatedTopics.title).getAsString();
+          String id = get(topicObj, InputJsonKeys.VendorAPISource.RelatedTopics.Id).getAsString();
+          String title = get(topicObj, InputJsonKeys.VendorAPISource.RelatedTopics.Title).getAsString();
 
           if (id != null && title != null) {
             JsonObject outputObj = new JsonObject();

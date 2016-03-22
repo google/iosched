@@ -40,7 +40,7 @@ public class VendorAPIEntityFetcher implements EntityFetcher {
   static Logger LOG = Logger.getLogger(VendorAPIEntityFetcher.class.getName());
 
   // TODO: Hook up to your backend data source
-  public static final String BASE_URL = "https://example.com/api/";
+  public static final String BASE_URL = "UNDEFINED";
 
   @Override
   public JsonElement fetch(Enum<?> entityType, Map<String, String> params)
