@@ -136,7 +136,8 @@ public class CMSUpdateServlet extends HttpServlet {
               + "PS: you are receiving this either because you are an admin of the IOSched project or "
               + "because you are in a hard-coded list of I/O organizers. If you don't want to "
               + "receive it anymore, pay me a beer and ask kindly.");
-      MailServiceFactory.getMailService().sendToAdmins(message);
+      // TODO(arthurthompson): Reimplement mailing, it currently fails due to invalid sender.
+      //MailServiceFactory.getMailService().sendToAdmins(message);
 
       resp.sendRedirect("/admin/schedule/updateok.html");
     }

@@ -110,34 +110,36 @@ public class DataCheck {
           }
         });
 
+    // TODO(arthurthompson): Ensure that blocks are no longer needed. Keep or remove accordingly
     // Check if blocks start and end timestamps are valid
-    JsonArray newBlocks = getAsArray(newData, OutputJsonKeys.MainTypes.blocks);
-    if (newBlocks == null ) {
-      StringBuilder sb= new StringBuilder();
-      for (Map.Entry<String, JsonElement> entry: newData.entrySet()) {
-        sb.append(entry.getKey()).append(", ");
-      }
-      throw new IllegalArgumentException("Could not find the blocks entities. Entities in newData are: "+sb);
-    }
-    for (JsonElement el: newBlocks) {
-      JsonObject block = el.getAsJsonObject();
-      try {
-        Date start = blockDateFormat.parse(get(block, OutputJsonKeys.Blocks.start).getAsString());
-        Date end = blockDateFormat.parse(get(block, OutputJsonKeys.Blocks.end).getAsString());
-        if ( start.getTime() >= end.getTime() ||  // check for invalid start/end combinations
-            start.getTime() < Config.CONFERENCE_DAYS[0][0] || // check for block starting before the conference
-            end.getTime() > Config.CONFERENCE_DAYS[1][1]) {  // check for block ending after the conference
-          result.failures.add(
-              new CheckFailure(OutputJsonKeys.MainTypes.blocks.name(), null,
-                  "Invalid block start or end date. Block=" + block));
-        }
-      } catch (ParseException ex) {
-        result.failures.add(
-            new CheckFailure(OutputJsonKeys.MainTypes.blocks.name(), null,
-                "Could not parse block start or end date. Exception="+ex.getMessage()
-                +". Block=" + block));
-      }
-    }
+//    JsonArray newBlocks = getAsArray(newData, OutputJsonKeys.MainTypes.blocks);
+//    LOG.info(newData.toString());
+//    if (newBlocks == null ) {
+//      StringBuilder sb= new StringBuilder();
+//      for (Map.Entry<String, JsonElement> entry: newData.entrySet()) {
+//        sb.append(entry.getKey()).append(", ");
+//      }
+//      throw new IllegalArgumentException("Could not find the blocks entities. Entities in newData are: "+sb);
+//    }
+//    for (JsonElement el: newBlocks) {
+//      JsonObject block = el.getAsJsonObject();
+//      try {
+//        Date start = blockDateFormat.parse(get(block, OutputJsonKeys.Blocks.start).getAsString());
+//        Date end = blockDateFormat.parse(get(block, OutputJsonKeys.Blocks.end).getAsString());
+//        if ( start.getTime() >= end.getTime() ||  // check for invalid start/end combinations
+//            start.getTime() < Config.CONFERENCE_DAYS[0][0] || // check for block starting before the conference
+//            end.getTime() > Config.CONFERENCE_DAYS[1][1]) {  // check for block ending after the conference
+//          result.failures.add(
+//              new CheckFailure(OutputJsonKeys.MainTypes.blocks.name(), null,
+//                  "Invalid block start or end date. Block=" + block));
+//        }
+//      } catch (ParseException ex) {
+//        result.failures.add(
+//            new CheckFailure(OutputJsonKeys.MainTypes.blocks.name(), null,
+//                "Could not parse block start or end date. Exception="+ex.getMessage()
+//                +". Block=" + block));
+//      }
+//    }
 
 
     // Check if sessions start and end timestamps are valid
@@ -161,27 +163,28 @@ public class DataCheck {
               new CheckFailure(OutputJsonKeys.MainTypes.sessions.name(), get(session, OutputJsonKeys.Sessions.id).getAsString(),
                   "Session starts before or ends after the days of the conference. Session=" + session));
         } else {
-          // Check if all sessions are covered by at least one free block (except the keynote):
-          boolean valid = false;
-          if (!get(session, OutputJsonKeys.Sessions.id).getAsString().equals("__keynote__")) {
-            for (JsonElement bl: newBlocks) {
-              JsonObject block = bl.getAsJsonObject();
-              Date blockStart= blockDateFormat.parse(get(block, OutputJsonKeys.Blocks.start).getAsString());
-              Date blockEnd = blockDateFormat.parse(get(block, OutputJsonKeys.Blocks.end).getAsString());
-              String blockType = get(block, OutputJsonKeys.Blocks.type).getAsString();
-              if ("free".equals(blockType) &&
-                  start.compareTo(blockStart) >= 0 &&
-                  start.compareTo(blockEnd) < 0) {
-                valid = true;
-                break;
-              }
-            }
-            if (!valid) {
-              result.failures.add(
-                  new CheckFailure(OutputJsonKeys.MainTypes.sessions.name(), get(session, OutputJsonKeys.Sessions.id).getAsString(),
-                      "There is no FREE block where this session start date lies on. Session=" + session));
-            }
-          }
+          // TODO(arthurthompson): Check that blocks are needed or not.
+//          // Check if all sessions are covered by at least one free block (except the keynote):
+//          boolean valid = false;
+//          if (!get(session, OutputJsonKeys.Sessions.id).getAsString().equals("__keynote__")) {
+//            for (JsonElement bl: newBlocks) {
+//              JsonObject block = bl.getAsJsonObject();
+//              Date blockStart= blockDateFormat.parse(get(block, OutputJsonKeys.Blocks.start).getAsString());
+//              Date blockEnd = blockDateFormat.parse(get(block, OutputJsonKeys.Blocks.end).getAsString());
+//              String blockType = get(block, OutputJsonKeys.Blocks.type).getAsString();
+//              if ("free".equals(blockType) &&
+//                  start.compareTo(blockStart) >= 0 &&
+//                  start.compareTo(blockEnd) < 0) {
+//                valid = true;
+//                break;
+//              }
+//            }
+//            if (!valid) {
+//              result.failures.add(
+//                  new CheckFailure(OutputJsonKeys.MainTypes.sessions.name(), get(session, OutputJsonKeys.Sessions.id).getAsString(),
+//                      "There is no FREE block where this session start date lies on. Session=" + session));
+//            }
+//          }
         }
       } catch (ParseException ex) {
         result.failures.add(
