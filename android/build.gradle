@@ -39,6 +39,7 @@ android {
         versionName "${version_name}"
         minSdkVersion 14
         targetSdkVersion 22
+        multiDexEnabled true
 
 
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
@@ -206,5 +207,6 @@ dependencies {
     compile 'com.android.support.test.espresso:espresso-idling-resource:2.0'
 
     compile 'com.google.guava:guava:18.0'
+    compile 'com.android.support:multidex:1.0.1'
     compile 'com.firebase:firebase-client-android:2.5.0'
 }

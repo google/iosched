@@ -23,6 +23,7 @@ import com.google.samples.apps.iosched.util.AnalyticsHelper;
 
 import android.app.Application;
 import android.content.Intent;
+import android.support.multidex.MultiDex;
 
 import static com.google.samples.apps.iosched.util.LogUtils.LOGE;
 import static com.google.samples.apps.iosched.util.LogUtils.LOGW;
@@ -41,6 +42,7 @@ public class AppApplication extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
+        MultiDex.install(this);
 
         // Initialize the Firebase library with an Android context.
         Firebase.setAndroidContext(this);
