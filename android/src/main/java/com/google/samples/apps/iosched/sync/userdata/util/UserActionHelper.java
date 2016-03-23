@@ -73,6 +73,8 @@ public class UserActionHelper {
                                     ScheduleContract.MySchedule.CONTENT_URI, account))
                     .withValue(ScheduleContract.MySchedule.MY_SCHEDULE_DIRTY_FLAG, "0")
                     .withValue(ScheduleContract.MySchedule.SESSION_ID, action.sessionId)
+                    .withValue(ScheduleContract.MySchedule.MY_SCHEDULE_TIMESTAMP,
+                            action.timestamp)
                     .build();
         } else if (action.type == UserAction.TYPE.SUBMIT_FEEDBACK) {
             return ContentProviderOperation

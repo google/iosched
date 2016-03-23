@@ -29,7 +29,7 @@ import java.util.*;
 
 /**
  * Helper class to handle the format of the User Data that is stored into AppData.
- * TODO (shailen): Refactor. Class mixes util methods, Pojos and business logic.
+ * TODO: Refactor. Class mixes util methods, Pojos and business logic. See b/27809362.
  */
 public class UserDataHelper {
 
@@ -61,7 +61,7 @@ public class UserDataHelper {
 
     /**
      * Deserializes the UserData given as a JSON string into a {@link UserData} object.
-     * TODO(shailen): put this in UserData.
+     * TODO: put this in UserData.
      */
     static public UserData fromString(String str) {
         if (str == null || str.isEmpty()) {
@@ -78,11 +78,12 @@ public class UserDataHelper {
         if (actions != null) {
             for (UserAction action : actions) {
                 if (action.type == UserAction.TYPE.ADD_STAR) {
-                    if(userData.getStarredSessionIds() == null) {
-                        // TODO (shailen): Make this part of setter. Create lazily.
-                        userData.setStarredSessionIds(new HashSet<String>());
+                    if(userData.getStarredSessions() == null) {
+                        // TODO: Make this part of setter. Create lazily.
+                        userData.setStarredSessions(new HashMap<String, Long>());
                     }
-                    userData.getStarredSessionIds().add(action.sessionId);
+                    userData.getStarredSessions().put(action.sessionId,
+                            action.timestamp);
                 } else if (action.type == UserAction.TYPE.VIEW_VIDEO) {
                     if(userData.getViewedVideoIds() == null) {
                         userData.setViewedVideoIds(new HashSet<String>());
@@ -123,14 +124,38 @@ public class UserDataHelper {
     }
 
     /**
+     * Reads the data from columns of the content's {@code queryUri} and returns it as a Map.
+     */
+    static private Map<String, Long> getColumnContentAsMap(Context context, Uri queryUri,
+            String column1, String column2) {
+        Cursor cursor = context.getContentResolver().query(queryUri,
+                new String[]{column1, column2}, null, null, null);
+        Map<String, Long> columnValues = new HashMap<>();
+        try {
+            if (cursor != null && cursor.moveToFirst()) {
+                do {
+                    columnValues.put(cursor.getString(cursor.getColumnIndex(column1)),
+                            cursor.getLong(cursor.getColumnIndex(column2)));
+                } while (cursor.moveToNext());
+            }
+
+        } finally {
+            if (cursor != null) {
+                cursor.close();
+            }
+        }
+        return columnValues;
+    }
+
+    /**
      * Returns the User Data that's on the device's local DB.
      */
     static public UserData getLocalUserData(Context context) {
         UserData userData = new UserData();
 
-        // Get Starred Sessions.
-        userData.setStarredSessionIds(getColumnContentAsArray(context,
-                ScheduleContract.MySchedule.CONTENT_URI, ScheduleContract.MySchedule.SESSION_ID));
+        userData.setStarredSessions(getColumnContentAsMap(context,
+                ScheduleContract.MySchedule.CONTENT_URI, ScheduleContract.MySchedule.SESSION_ID,
+                ScheduleContract.MySchedule.MY_SCHEDULE_TIMESTAMP));
 
         // Get Viewed Videos.
         userData.setViewedVideoIds(getColumnContentAsArray(context,
@@ -149,7 +174,7 @@ public class UserDataHelper {
      * Writes the given user data into the device's local DB.
      */
     static public void setLocalUserData(Context context, UserData userData, String accountName) {
-        // TODO (shailen): throw if null. Callers should ensure the data is not null.
+        // TODO: throw if null. Callers should ensure the data is not null. See b/27809502.
         if (userData == null) {
             return;
         }
@@ -161,11 +186,12 @@ public class UserDataHelper {
 
         // Now add the ones in sessionIds.
         ArrayList<UserAction> actions = new ArrayList<UserAction>();
-        if (userData.getStarredSessionIds() != null) {
-            for (String sessionId : userData.getStarredSessionIds()) {
+        if (userData.getStarredSessions() != null) {
+            for (Map.Entry<String, Long> entry : userData.getStarredSessions().entrySet()) {
                 UserAction action = new UserAction();
                 action.type = UserAction.TYPE.ADD_STAR;
-                action.sessionId = sessionId;
+                action.sessionId = entry.getKey();
+                action.timestamp = entry.getValue();
                 actions.add(action);
             }
         }
@@ -205,12 +231,12 @@ public class UserDataHelper {
 
     /**
      * Represents all User specific data that can be synchronized on Google Drive App Data.
-     * TODO (shailen): should not be part of a utility class.
+     * TODO: Pojo should not be part of a utility class.
      */
     public static class UserData {
 
         @SerializedName(JSON_ATTRIBUTE_STARRED_SESSIONS)
-        private Set<String> starredSessionIds = new HashSet<String>();
+        private Map<String, Long> starredSessions = new HashMap<>();
 
         @SerializedName(JSON_ATTRIBUTE_FEEDBACK_SUBMITTED_SESSIONS)
         private Set<String> feedbackSubmittedSessionIds = new HashSet<String>();
@@ -221,12 +247,12 @@ public class UserDataHelper {
         @SerializedName(JSON_ATTRIBUTE_GCM_KEY)
         private String gcmKey;
 
-        public Set<String> getStarredSessionIds() {
-            return starredSessionIds;
+        public Map<String, Long> getStarredSessions() {
+            return starredSessions;
         }
 
-        public void setStarredSessionIds(Set<String> starredSessionIds) {
-            this.starredSessionIds = starredSessionIds;
+        public void setStarredSessions(Map<String, Long> starredSessions) {
+            this.starredSessions = starredSessions;
         }
 
         public Set<String> getFeedbackSubmittedSessionIds() {
@@ -269,7 +295,9 @@ public class UserDataHelper {
             getFeedbackSubmittedSessionIds().addAll(other.getFeedbackSubmittedSessionIds());
         }
 
-        // Auto-generated by Intellij.
+        /**
+         * Indicates whether this is equal to another object. Auto-generated by Intellij.
+         */
         @Override
         public boolean equals(final Object o) {
             if (this == o) {
@@ -281,8 +309,8 @@ public class UserDataHelper {
 
             final UserData userData = (UserData) o;
 
-            if (starredSessionIds != null ? !starredSessionIds.equals(userData.starredSessionIds) :
-                    userData.starredSessionIds != null) {
+            if (starredSessions != null ? !starredSessions.equals(userData.starredSessions) :
+                    userData.starredSessions != null) {
                 return false;
             }
             if (feedbackSubmittedSessionIds != null ?
@@ -298,10 +326,12 @@ public class UserDataHelper {
 
         }
 
-        // Auto-generated by Intellij.
+        /**
+         * Returns a hash code value for this object. Auto-generated by Intellij.
+         */
         @Override
         public int hashCode() {
-            int result = starredSessionIds != null ? starredSessionIds.hashCode() : 0;
+            int result = starredSessions != null ? starredSessions.hashCode() : 0;
             result = 31 * result +
                     (feedbackSubmittedSessionIds != null ? feedbackSubmittedSessionIds.hashCode() :
                             0);

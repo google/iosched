@@ -48,7 +48,17 @@ public class MergeHelperTest {
 
     public static final String LOCAL_VIDEO_ID = "LOCAL VIDEO ID";
 
+    public static final String SESSION_ONE_ID = "SESSION ONE ID";
+
+    public static final String SESSION_TWO_ID = "SESSION TWO ID";
+
     public static final String REMOTE_VIDEO_ID = "REMOTE VIDEO ID";
+
+    public static final Long CURRENT_TIMESTAMP = 1457928631L;
+
+    public static final Long TIMESTAMP = CURRENT_TIMESTAMP;
+
+    public static final Long STALE_TIMESTAMP = CURRENT_TIMESTAMP - (60 * 60 * 1000);
 
     public static final String LOCAL_SESSION_ID = "LOCAL SESSION ID";
 
@@ -57,6 +67,7 @@ public class MergeHelperTest {
     /**
      * Creates a {@link UserAction} for a viewed video.
      *
+     * @param videoId      The ID of the viewed video.
      * @param requiresSync Indicates whether the action requires a data sync or not.
      * @return The {@link UserAction} for a viewed video.
      */
@@ -65,6 +76,40 @@ public class MergeHelperTest {
         action.type = UserAction.TYPE.VIEW_VIDEO;
         action.videoId = videoId;
         action.requiresSync = requiresSync;
+        return action;
+    }
+
+    /**
+     * Create a {@link UserAction} for a starred session.
+     *
+     * @param sessionId    The ID of the starred session.
+     * @param requiresSync Indicates whether the action requires a data sync or not.
+     * @return The {@link UserAction} for a starred session.
+     */
+    private static UserAction createAddStarAction(String sessionId, Long timestamp,
+            boolean requiresSync) {
+        UserAction action = new UserAction();
+        action.type = UserAction.TYPE.ADD_STAR;
+        action.sessionId = sessionId;
+        action.requiresSync = requiresSync;
+        action.timestamp = timestamp;
+        return action;
+    }
+
+    /**
+     * Create a {@link UserAction} for a starred session.
+     *
+     * @param sessionId    The ID of the starred session.
+     * @param requiresSync Indicates whether the action requires a data sync or not.
+     * @return The {@link UserAction} for a starred session.
+     */
+    private static UserAction createRemoveStarAction(String sessionId, Long timestamp,
+            boolean requiresSync) {
+        UserAction action = new UserAction();
+        action.type = UserAction.TYPE.REMOVE_STAR;
+        action.sessionId = sessionId;
+        action.requiresSync = requiresSync;
+        action.timestamp = timestamp;
         return action;
     }
 
@@ -110,6 +155,45 @@ public class MergeHelperTest {
         withRemoteGCMKey();
         mHelper.mergeGCMKeys();
         assertThatMergedGCMKeyIs(REMOTE_GCM_KEY);
+    }
+
+    @Test
+    public void mergeUnsyncedActions_localSessionOnly_requiresSync() {
+        mHelper.mergeUnsyncedActions(withLocalStarredSessionActions(LOCAL_SESSION_ID));
+        assertThatMergedStarSessionsHas(LOCAL_SESSION_ID);
+    }
+
+    @Test
+    public void mergeUnsyncedActions_localSessionOnly_noSync() {
+        mHelper.mergeUnsyncedActions(withLocalStarredSessionActionsNoSync());
+        assertThatMergedStarSessionsHasNoSessions();
+    }
+
+    @Test
+    public void mergeUnsyncedActions_remoteSessionOnly() {
+        withRemoteStarredSession(REMOTE_SESSION_ID);
+        mHelper.mergeUnsyncedActions(withNoLocalUserActions());
+        assertThatMergedStarSessionsHas(REMOTE_SESSION_ID);
+    }
+
+    @Test
+    public void mergeUnsyncedActions_localAndRemoteSessions_differentSessionIDs() {
+        withRemoteStarredSession(REMOTE_SESSION_ID);
+        mHelper.mergeUnsyncedActions(withLocalStarredSessionActions(LOCAL_SESSION_ID));
+        assertThatMergedStarSessionsHas(LOCAL_SESSION_ID);
+        assertThatMergedStarSessionsHas(REMOTE_SESSION_ID);
+    }
+
+    @Test
+    public void mergeUnsyncedActions_localRemoveStar_remoteAddStar_remoteStale() {
+        mHelper.mergeUnsyncedActions(withLocalRemoveRemoteAddRemoteStale());
+        assertThatMergedStarSessionsHasNoSessions();
+    }
+
+    @Test
+    public void mergeUnsyncedActions_localRemoveStar_remoteAddStar_localStale() {
+        mHelper.mergeUnsyncedActions(withLocalRemoveRemoteAddLocalStale());
+        assertThatMergedStarSessionsHas(SESSION_ONE_ID);
     }
 
     @Test
@@ -163,24 +247,46 @@ public class MergeHelperTest {
     @Test
     public void getPendingFirebaseUpdatesMap_storesMergedGcmKey() {
         withMergedGCMKey();
-        assertThat(mHelper.getPendingFirebaseUpatesMap().values(),
+        assertThat(mHelper.getPendingFirebaseUpdatesMap().values(),
                 hasItem(REMOTE_GCM_KEY));
+    }
+
+    @Test
+    public void getPendingFirebaseUpdatesMap_MergedDataHasSession() {
+        withMergedStarredSession(SESSION_ONE_ID);
+        assertThatSessionIsInSchedule(SESSION_ONE_ID, true);
+        assertThatTimestampIsStored(SESSION_ONE_ID);
+    }
+
+    @Test
+    public void getPendingFirebaseUpdatesMap_mergedDataHasSession_remoteDataHasSameSession() {
+        withMergedStarredSession(SESSION_ONE_ID);
+        withRemoteStarredSession(SESSION_ONE_ID);
+        assertThatTimestampIsStored(SESSION_ONE_ID);
+        assertThatSessionIsInSchedule(SESSION_ONE_ID, true);
+    }
+
+    @Test
+    public void getPendingFirebaseUpdatesMap_mergedDataHasSession_remoteDataHasDifferentSession() {
+        withMergedStarredSession(SESSION_ONE_ID);
+        withRemoteStarredSession(SESSION_TWO_ID);
+        assertThatSessionIsInSchedule(SESSION_ONE_ID, true);
+        assertThatSessionIsInSchedule(SESSION_TWO_ID, false);
     }
 
     @Test
     public void getPendingFirebaseUpdatesMap_storesMergedViewedVideo() {
         withMergedViewedVideos();
-        assertThat(mHelper.getPendingFirebaseUpatesMap().keySet(),
+        assertThat(mHelper.getPendingFirebaseUpdatesMap().keySet(),
                 hasItem(FirebaseUtils.getViewedVideoChildPath(REMOTE_VIDEO_ID)));
     }
 
     @Test
     public void getPendingFirebaseUpdatesMap_storesMergedFeedbackSubmittedSessions() {
         withMergedFeedbackSubmittedSessions();
-
-        assertThat(mHelper.getPendingFirebaseUpatesMap().keySet(),
+        assertThat(mHelper.getPendingFirebaseUpdatesMap().keySet(),
                 hasItem(FirebaseUtils.getFeedbackSubmittedSessionChildPath(LOCAL_SESSION_ID)));
-        assertThat(mHelper.getPendingFirebaseUpatesMap().keySet(),
+        assertThat(mHelper.getPendingFirebaseUpdatesMap().keySet(),
                 hasItem(FirebaseUtils.getFeedbackSubmittedSessionChildPath(REMOTE_SESSION_ID)));
     }
 
@@ -198,6 +304,62 @@ public class MergeHelperTest {
         mHelper.getRemoteUserData().setGcmKey(REMOTE_GCM_KEY);
     }
 
+    /**
+     * Adds a starred session to the remote user data.
+     */
+    private void withRemoteStarredSession(String sessionId) {
+        mHelper.getRemoteUserData().getStarredSessions().put(sessionId, TIMESTAMP);
+    }
+
+    /**
+     * Creates and returns a {@link UserAction} list with a single local starred session action that
+     * requires sync.
+     *
+     * @param sessionId THe ID of the starred session.
+     */
+    private List<UserAction> withLocalStarredSessionActions(final String sessionId) {
+        return new ArrayList<UserAction>() {{
+            add(createAddStarAction(sessionId, TIMESTAMP, true));
+        }};
+    }
+
+    /**
+     * Creates and returns a {@link UserAction} list with a single local starred session action that
+     * does not require sync.
+     */
+    private List<UserAction> withLocalStarredSessionActionsNoSync() {
+        return new ArrayList<UserAction>() {{
+            add(createAddStarAction(LOCAL_SESSION_ID, TIMESTAMP, false));
+        }};
+    }
+
+    /**
+     * Adds a single starred session to remote user data and creates and returns a {@link
+     * UserAction} list with the same starred session. Ensures that the timestamp of the local
+     * action is greater than the timestamp of the remote starred session.
+     */
+    private List<UserAction> withLocalRemoveRemoteAddRemoteStale() {
+        mHelper.getRemoteUserData().getStarredSessions().put(SESSION_ONE_ID, STALE_TIMESTAMP);
+        return new ArrayList<UserAction>() {{
+            add(createRemoveStarAction(SESSION_ONE_ID, CURRENT_TIMESTAMP, true));
+        }};
+    }
+
+    /**
+     * Adds a single starred session to remote user data and creates and returns a {@link
+     * UserAction} list with the same starred session. Ensures that the timestamp of the remote
+     * starred session is greater than the timestamp of the local action.
+     */
+    private List<UserAction> withLocalRemoveRemoteAddLocalStale() {
+        mHelper.getRemoteUserData().getStarredSessions().put(SESSION_ONE_ID, CURRENT_TIMESTAMP);
+        return new ArrayList<UserAction>() {{
+            add(createRemoveStarAction(SESSION_ONE_ID, STALE_TIMESTAMP, true));
+        }};
+    }
+
+    /**
+     * Returns a list with no {@link UserAction} objects.
+     */
     private List<UserAction> withNoLocalUserActions() {
         return new ArrayList<>();
     }
@@ -220,6 +382,15 @@ public class MergeHelperTest {
         return new ArrayList<UserAction>() {{
             add(createViewedVideoAction(LOCAL_VIDEO_ID, false));
         }};
+    }
+
+    /**
+     * Adds a starred session to merged user data.
+     *
+     * @param sessionId The Id of the starred session.
+     */
+    private void withMergedStarredSession(String sessionId) {
+        mHelper.getMergedUserData().getStarredSessions().put(sessionId, CURRENT_TIMESTAMP);
     }
 
     /**
@@ -273,6 +444,47 @@ public class MergeHelperTest {
      */
     private void assertThatMergedGCMKeyIs(String gcmKey) {
         assertThat(gcmKey, is(equalTo(mHelper.getMergedUserData().getGcmKey())));
+    }
+
+    /**
+     * Asserts that {@code sessionId} is stored in merged user data.
+     *
+     * @param sessionId The ID of themerged session.
+     */
+    private void assertThatMergedStarSessionsHas(String sessionId) {
+        assertThat(mHelper.getMergedUserData().getStarredSessions().keySet(),
+                hasItem(sessionId));
+    }
+
+    /**
+     * Asserts that no session IDs are stored in merged user data.
+     */
+    private void assertThatMergedStarSessionsHasNoSessions() {
+        assertThat(mHelper.getMergedUserData().getStarredSessions().keySet(),
+                is(Collections.<String>emptySet()));
+    }
+
+    /**
+     * Asserts whether {@code sessionId} is in schedule or not in merged user data.
+     *
+     * @param sessionId  The ID of the starred session.
+     * @param inSchedule Tracks whether a session is in schedule or not.
+     */
+    private void assertThatSessionIsInSchedule(String sessionId, boolean inSchedule) {
+        String mergedInScheduleKey =
+                FirebaseUtils.getStarredSessionInScheduleChildPath(sessionId);
+        assertThat((boolean) mHelper.getPendingFirebaseUpdatesMap().get(mergedInScheduleKey),
+                is(inSchedule));
+    }
+
+    /**
+     * Asserts that the timestamp for {@code sessionId} is stored.
+     *
+     * @param sessionId The ID of the starred session.
+     */
+    private void assertThatTimestampIsStored(String sessionId) {
+        String timestampKey = FirebaseUtils.getStarredSessionTimestampChildPath(sessionId);
+        assertThat(mHelper.getPendingFirebaseUpdatesMap().keySet(), hasItem(timestampKey));
     }
 
     /**

@@ -104,7 +104,7 @@ public class FirebaseUserDataSyncHelper extends AbstractUserDataSyncHelper
             mCountDownLatch.await(AWAIT_TIMEOUT_IN_MILLISECONDS, TimeUnit.MILLISECONDS);
         } catch (InterruptedException exception) {
             LOGW(TAG, "Waiting thread awakened prematurely", exception);
-            // TODO(shailen): if sync fails, throw a typed exception.
+            // TODO: if sync fails, throw a typed exception. See b/27808839.
         }
         LOGI(TAG, "local data changed after sync = " + mDataChanged);
         return mDataChanged;

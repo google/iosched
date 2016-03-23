@@ -28,8 +28,7 @@ import static com.google.samples.apps.iosched.util.LogUtils.makeLogTag;
 
 /**
  * Utility methods for setting up and interacting with a Firebase account associated with a user
- * account.
- * TODO (shailen): instead of passing Context, pass SharedPreferences to methods.
+ * account. TODO: instead of passing Context, pass SharedPreferences to methods. See b/27809306.
  */
 public class FirebaseUtils {
 
@@ -42,6 +41,9 @@ public class FirebaseUtils {
     public static final String FIREBASE_NODE_USERS = "users";
     public static final String FIREBASE_NODE_GCM_KEY = "gcm_key";
     public static final String FIREBASE_NODE_VIEWED_VIDEOS = "viewed_videos";
+    public static final String FIREBASE_NODE_STARRED_SESSIONS = "starred_sessions";
+    public static final String FIREBASE_NODE_IN_SCHEDULE = "in_schedule";
+    public static final String FIREBASE_NODE_TIMESTAMP = "timestamp";
     public static final String FIREBASE_NODE_FEEDBACK_SUBMITTED_SESSIONS =
             "feedback_submitted_sessions";
 
@@ -106,8 +108,7 @@ public class FirebaseUtils {
 
     /**
      * Builds and returns the Firebase reference for storing the user data with the currently chosen
-     * account.
-     * TODO (shailen): a factory method should not be in a utils file. Remove from here.
+     * account. TODO: a factory method should not be in a utils file. Remove. See b/27809307.
      *
      * @return The user data Firebase reference.
      */
@@ -126,13 +127,52 @@ public class FirebaseUtils {
     }
 
     /**
-     * Returns the Firebase child path (relative the user data ref) where data where a specific
+     * Returns the Firebase child path (relative to the user data ref) where data for a specific
      * viewed video is stored.
      *
      * @param videoId The ID of the video that the user watched.
      */
     public static String getViewedVideoChildPath(String videoId) {
         return getViewedVideosChildPath() + videoId + "/";
+    }
+
+    /**
+     * Returns the Firebase child path (relative to the user data ref) where a user's starred
+     * sessions are stored.
+     */
+    public static String getStarredSessionsChildPath() {
+        return FIREBASE_NODE_STARRED_SESSIONS + "/";
+    }
+
+    /**
+     * Returns the Firebase child path (relative to the user data ref) where data for a specific
+     * starred session is stored.
+     *
+     * @param sessionId The ID of the session that was starred.
+     */
+    public static String getStarredSessionChildPath(String sessionId) {
+        return getStarredSessionsChildPath() + sessionId + "/";
+    }
+
+    /**
+     * Returns the Firebase child path (relative to the user data ref) where the in-schedule status
+     * for a specific starred session is stored.
+     *
+     * @param sessionId The ID of the session that was starred.
+     */
+    public static String getStarredSessionInScheduleChildPath(String sessionId) {
+        return getStarredSessionChildPath(sessionId) + FIREBASE_NODE_IN_SCHEDULE + "/";
+    }
+
+    /**
+     * Returns the Firebase child path (relative to the user data ref) where the timestamp for a
+     * specific starred session is stored.
+     *
+     * @param sessionId The ID of the session that was starred.
+     */
+    public static String getStarredSessionTimestampChildPath(String sessionId) {
+        return getStarredSessionChildPath(sessionId) + FIREBASE_NODE_TIMESTAMP + "/";
+
     }
 
     /**

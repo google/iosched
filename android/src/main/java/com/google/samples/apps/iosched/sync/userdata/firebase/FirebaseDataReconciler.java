@@ -24,8 +24,10 @@ import com.google.samples.apps.iosched.sync.userdata.util.UserDataHelper;
 import com.google.samples.apps.iosched.util.AccountUtils;
 import com.google.samples.apps.iosched.util.FirebaseUtils;
 
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import static com.google.samples.apps.iosched.util.LogUtils.LOGI;
@@ -105,11 +107,42 @@ public class FirebaseDataReconciler {
      */
     protected FirebaseDataReconciler buildRemoteDataObject() {
         mRemoteUserData = new UserDataHelper.UserData();
-        mRemoteUserData.setViewedVideoIds(setRemoteUserDataItem(mRemoteDataSnapshot,
-                UserDataHelper.JSON_ATTRIBUTE_VIEWED_VIDEOS));
         mRemoteUserData.setGcmKey((String) mRemoteDataSnapshot.child(
                 UserDataHelper.JSON_ATTRIBUTE_GCM_KEY).getValue());
+        mRemoteUserData.setStarredSessions(getRemoteStarredSessionsMap());
+        mRemoteUserData.setViewedVideoIds(setRemoteUserDataItem(mRemoteDataSnapshot,
+                UserDataHelper.JSON_ATTRIBUTE_VIEWED_VIDEOS));
+
         return this;
+    }
+
+    /**
+     * Extracts the starred sessions data from a {@link DataSnapshot} and returns the result as a
+     * map where the keys are session IDs and the values are the timestamp when the session was
+     * starred.
+     */
+
+    private Map<String, Long> getRemoteStarredSessionsMap() {
+        // Store each starred session and the associated timestamp in a Map.
+        Map<String, Long> starredSessionsMap = new HashMap<>();
+
+        // Get snapshot of starred sessions stored at /<uid>/starred_sessions/.
+        DataSnapshot starredSessionsDataSnapshot = mRemoteDataSnapshot.child(
+                FirebaseUtils.FIREBASE_NODE_STARRED_SESSIONS);
+
+        // Get snapshot of each starred session data stored at /<uid>/starred_sessions/<session_id>
+        // and save only the starred sessions.
+        for (DataSnapshot singleSessionDataSnapshot : starredSessionsDataSnapshot.getChildren()) {
+            DataSnapshot inScheduleSnapshot = singleSessionDataSnapshot.child(
+                    FirebaseUtils.FIREBASE_NODE_IN_SCHEDULE);
+            if (inScheduleSnapshot.getValue() != null && inScheduleSnapshot.getValue().equals(
+                    true)) {
+                starredSessionsMap.put(singleSessionDataSnapshot.getKey(),
+                        (Long) singleSessionDataSnapshot
+                                .child(FirebaseUtils.FIREBASE_NODE_TIMESTAMP).getValue());
+            }
+        }
+        return starredSessionsMap;
     }
 
     /**
@@ -122,7 +155,6 @@ public class FirebaseDataReconciler {
         mLocalUserData.setGcmKey(AccountUtils.getGcmKey(mContext, mAccountName));
         return this;
     }
-
 
     /**
      * Merges user data from the local DB with remote data from Firebase.
@@ -150,7 +182,7 @@ public class FirebaseDataReconciler {
     public FirebaseDataReconciler updateRemote() {
         if (remoteDataChanged()) {
             FirebaseUtils.getUserDataRef(mContext, mAccountName).updateChildren(
-                    mMergeHelper.getPendingFirebaseUpatesMap(), new Firebase.CompletionListener() {
+                    mMergeHelper.getPendingFirebaseUpdatesMap(), new Firebase.CompletionListener() {
                         @Override
                         public void onComplete(final FirebaseError firebaseError,
                                 final Firebase firebase) {
