@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.google.samples.apps.iosched.util;
+package com.google.samples.apps.iosched.login;
 
 import android.app.Activity;
 import android.app.Dialog;
@@ -41,6 +41,8 @@ import com.google.android.gms.plus.Plus;
 import com.google.android.gms.plus.model.people.Person;
 import com.google.android.gms.plus.model.people.PersonBuffer;
 import com.google.samples.apps.iosched.settings.SettingsUtils;
+import com.google.samples.apps.iosched.util.AccountUtils;
+import com.google.samples.apps.iosched.util.FirebaseUtils;
 
 import java.io.IOException;
 import java.lang.ref.WeakReference;
@@ -59,9 +61,9 @@ import static com.google.samples.apps.iosched.util.LogUtils.makeLogTag;
  * auth token for the necessary scopes. The life of this object is tied to an Activity. Do not
  * attempt to share it across Activities, as unhappiness will result.
  */
-public class LoginAndAuthHelper
-        implements GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener,
-        ResultCallback<People.LoadPeopleResult> {
+public class LoginAndAuthWithGoogleApi
+        implements LoginAndAuth, GoogleApiClient.ConnectionCallbacks,
+        GoogleApiClient.OnConnectionFailedListener, ResultCallback<People.LoadPeopleResult> {
 
     // Request codes for the UIs that we show
     private static final int REQUEST_AUTHENTICATE = 100;
@@ -88,7 +90,7 @@ public class LoginAndAuthHelper
         AUTH_TOKEN_TYPE = sb.toString().trim();
     }
 
-    private static final String TAG = makeLogTag(LoginAndAuthHelper.class);
+    private static final String TAG = makeLogTag(LoginAndAuthWithGoogleApi.class);
 
     Context mAppContext;
 
@@ -102,7 +104,7 @@ public class LoginAndAuthHelper
     WeakReference<Activity> mActivityRef;
 
     // Callbacks interface we invoke to notify the user of this class of useful events
-    WeakReference<Callbacks> mCallbacksRef;
+    WeakReference<LoginAndAuthListener> mCallbacksRef;
 
     // Name of the account to log in as (e.g. "foo@example.com")
     String mAccountName;
@@ -119,19 +121,11 @@ public class LoginAndAuthHelper
     // True if we are currently showing UIs to resolve a connection error.
     boolean mResolving = false;
 
-
-    public interface Callbacks {
-        void onPlusInfoLoaded(String accountName);
-
-        void onAuthSuccess(String accountName, boolean newlyAuthenticated);
-
-        void onAuthFailure(String accountName);
-    }
-
-    public LoginAndAuthHelper(Activity activity, Callbacks callbacks, String accountName) {
+    public LoginAndAuthWithGoogleApi(Activity activity, LoginAndAuthListener callback,
+            String accountName) {
         LOGD(TAG, "Helper created. Account: " + mAccountName);
         mActivityRef = new WeakReference<Activity>(activity);
-        mCallbacksRef = new WeakReference<Callbacks>(callbacks);
+        mCallbacksRef = new WeakReference<LoginAndAuthListener>(callback);
         mAppContext = activity.getApplicationContext();
         mAccountName = accountName;
         if (SettingsUtils.hasUserRefusedSignIn(activity)) {
@@ -140,10 +134,12 @@ public class LoginAndAuthHelper
         }
     }
 
+    @Override
     public boolean isStarted() {
         return mStarted;
     }
 
+    @Override
     public String getAccountName() {
         return mAccountName;
     }
@@ -156,6 +152,7 @@ public class LoginAndAuthHelper
         return activity;
     }
 
+    @Override
     public void retryAuthByUserRequest() {
         LOGD(TAG, "Retrying sign-in/auth (user-initiated).");
         if (!mGoogleApiClient.isConnected()) {
@@ -176,6 +173,7 @@ public class LoginAndAuthHelper
     /**
      * Starts the helper. Call this from your Activity's onStart().
      */
+    @Override
     public void start() {
         Activity activity = getActivity("start()");
         if (activity == null) {
@@ -250,6 +248,7 @@ public class LoginAndAuthHelper
     /**
      * Stop the helper. Call this from your Activity's onStop().
      */
+    @Override
     public void stop() {
         if (!mStarted) {
             LOGW(TAG, "Helper already stopped. Ignoring redundant call.");
@@ -342,7 +341,7 @@ public class LoginAndAuthHelper
                     LOGD(TAG, "Profile has no cover.");
                 }
 
-                Callbacks callbacks;
+                LoginAndAuthListener callbacks;
                 if (null != (callbacks = mCallbacksRef.get())) {
                     callbacks.onPlusInfoLoaded(mAccountName);
                 }
@@ -358,6 +357,7 @@ public class LoginAndAuthHelper
     /**
      * Handles an Activity result. Call this from your Activity's onActivityResult().
      */
+    @Override
     public boolean onActivityResult(int requestCode, int resultCode, Intent data) {
         Activity activity = getActivity("onActivityResult()");
         if (activity == null) {
@@ -429,22 +429,25 @@ public class LoginAndAuthHelper
     private void reportAuthSuccess(boolean newlyAuthenticated) {
         LOGD(TAG, "Auth success for account " + mAccountName + ", newlyAuthenticated=" +
                 newlyAuthenticated);
-        Callbacks callbacks;
-        if (null != (callbacks = mCallbacksRef.get())) {
-            callbacks.onAuthSuccess(mAccountName, newlyAuthenticated);
+        LoginAndAuthListener callback;
+        if (null != (callback = mCallbacksRef.get())) {
+            callback.onAuthSuccess(mAccountName, newlyAuthenticated);
         }
     }
 
     private void reportAuthFailure() {
         LOGD(TAG, "Auth FAILURE for account " + mAccountName);
-        Callbacks callbacks;
-        if (null != (callbacks = mCallbacksRef.get())) {
-            callbacks.onAuthFailure(mAccountName);
+        LoginAndAuthListener callback;
+        if (null != (callback = mCallbacksRef.get())) {
+            callback.onAuthFailure(mAccountName);
         }
     }
 
-    /** Async task that obtains the auth token. */
+    /**
+     * Async task that obtains the auth token.
+     */
     private class GetTokenTask extends AsyncTask<Void, Void, Void> {
+
         public GetTokenTask() {}
 
         @Override
@@ -462,7 +465,7 @@ public class LoginAndAuthHelper
 
                 // Save auth token.
                 LOGD(TAG, "Saving token: " + (token == null ? "(null)" : "(length " +
-                        token.length() + ")") + " for account "  + mAccountName);
+                        token.length() + ")") + " for account " + mAccountName);
                 AccountUtils.setAuthToken(mAppContext, mAccountName, token);
                 // Set the Firebase shard associated with the chosen account.
                 FirebaseUtils.setFirebaseUrl(mAppContext, accountId);

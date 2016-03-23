@@ -19,6 +19,7 @@ package com.google.samples.apps.iosched.social;
 import android.os.Bundle;
 
 import com.google.samples.apps.iosched.R;
+import com.google.samples.apps.iosched.navigation.NavigationModel;
 import com.google.samples.apps.iosched.ui.BaseActivity;
 import com.google.samples.apps.iosched.util.AnalyticsHelper;
 
@@ -41,8 +42,8 @@ public class SocialActivity extends BaseActivity {
     }
 
     @Override
-    protected int getSelfNavDrawerItem() {
-        return NAVDRAWER_ITEM_SOCIAL;
+    protected NavigationModel.NavigationItemEnum getSelfNavDrawerItem() {
+        return NavigationModel.NavigationItemEnum.SOCIAL;
     }
 
     @Override

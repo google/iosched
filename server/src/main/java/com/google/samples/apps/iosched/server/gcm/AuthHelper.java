@@ -22,7 +22,7 @@ public class AuthHelper {
   /** Keys that can be used to request GCM registration */
   private static final String[][] REGISTRATION_KEYS = {
     // TODO: Change keys for your project
-    {"20e5477b-e4cd-48d4-a108-234ca800d94b", "Android app registration key"},
+    {"AIzaSyBndbXpESxV6MjIGBW7ArDA6PQmVFiQ4o4", "Android app registration key"},
   };
 
   /** Keys that can be used to request full admin privileges. */

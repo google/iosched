@@ -15,37 +15,43 @@
 package com.google.samples.apps.iosched.testutils;
 
 import android.content.Context;
-import android.content.SharedPreferences;
-import android.preference.PreferenceManager;
 
 import com.google.samples.apps.iosched.settings.SettingsUtils;
+import com.google.samples.apps.iosched.util.AccountUtils;
 import com.google.samples.apps.iosched.util.TimeUtils;
 
 import org.mockito.BDDMockito;
 import org.powermock.api.mockito.PowerMockito;
 
-import static org.mockito.Mockito.when;
-
 public class SettingsMockContext {
 
     /**
      * Test classes calling this must use {@code @RunWith(PowerMockRunner.class)} and {@code
-     * @PrepareForTest(PreferenceManager.class)}.
+     *
+     * @PrepareForTest(SettingsUtils.class)}.
      */
-    public static void initMockContextForAttendingVenueSetting(boolean attending, Context context,
-            SharedPreferences prefs) {
-        PowerMockito.mockStatic(PreferenceManager.class);
-        BDDMockito.given(PreferenceManager.getDefaultSharedPreferences(context)).willReturn(prefs);
-        when(context.getPackageName()).thenReturn("NAME");
-        when(prefs.getBoolean(SettingsUtils.PREF_ATTENDEE_AT_VENUE, true)).thenReturn(attending);
+    public static void initMockContextForAttendingVenueSetting(boolean attending, Context context) {
+        PowerMockito.mockStatic(SettingsUtils.class);
+        BDDMockito.given(SettingsUtils.isAttendeeAtVenue(context)).willReturn(attending);
     }
 
     /**
      * Test classes calling this must use {@code @RunWith(PowerMockRunner.class)} and {@code
+     *
      * @PrepareForTest(TimeUtils.class)}.
      */
     public static void initMockContextForCurrentTime(Long currentTime, Context context) {
         PowerMockito.mockStatic(TimeUtils.class);
         BDDMockito.given(TimeUtils.getCurrentTime(context)).willReturn(currentTime);
+    }
+
+    /**
+     * Test classes calling this must use {@code @RunWith(PowerMockRunner.class)} and {@code
+     *
+     * @PrepareForTest(AccountUtils.class)}.
+     */
+    public static void initMockContextForLoggedInStatus(boolean loggedIn, Context context) {
+        PowerMockito.mockStatic(AccountUtils.class);
+        BDDMockito.given(AccountUtils.hasActiveAccount(context)).willReturn(loggedIn);
     }
 }

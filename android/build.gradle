@@ -40,6 +40,7 @@ android {
         minSdkVersion 14
         targetSdkVersion 22
 
+
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         buildConfigField("boolean", "ENABLE_DEBUG_TOOLS", "false")
         buildConfigField("String", "GCM_API_KEY", "\"${gcm_api_key}\"")
@@ -65,6 +66,15 @@ android {
                 "\"${show_io15_request_social_panel_time}\"")
         buildConfigField("String[]", "FIREBASE_URLS", "{\"${iosched_firebase_debug_db1}\"," +
                 "\"${iosched_firebase_debug_db2}\",\"${iosched_firebase_debug_db3}\"}")
+        buildConfigField("boolean", "ENABLE_MYSCHEDULE_IN_NAVIGATION", "true")
+        buildConfigField("boolean", "ENABLE_IOLIVE_IN_NAVIGATION", "false")
+        buildConfigField("boolean", "ENABLE_EXPLORE_IN_NAVIGATION", "true")
+        buildConfigField("boolean", "ENABLE_MAP_IN_NAVIGATION", "true")
+        buildConfigField("boolean", "ENABLE_SOCIAL_IN_NAVIGATION", "true")
+        buildConfigField("boolean", "ENABLE_VIDEOLIB_IN_NAVIGATION", "true")
+        buildConfigField("boolean", "ENABLE_SIGNIN_IN_NAVIGATION", "true")
+        buildConfigField("boolean", "ENABLE_SETTINGS_IN_NAVIGATION", "true")
+        buildConfigField("boolean", "ENABLE_ABOUT_IN_NAVIGATION", "true")
     }
 
     signingConfigs {
@@ -139,6 +149,7 @@ dependencies {
     // Google Play services split client libs.
     compile "com.google.android.gms:play-services-analytics:${google_play_services_client_library_version}"
     compile "com.google.android.gms:play-services-drive:${google_play_services_client_library_version}"
+    compile "com.google.android.gms:play-services-gcm:${google_play_services_client_library_version}"
     compile "com.google.android.gms:play-services-maps:${google_play_services_client_library_version}"
     compile "com.google.android.gms:play-services-plus:${google_play_services_client_library_version}"
     compile "com.google.android.gms:play-services-wearable:${google_play_services_client_library_version}"
@@ -173,6 +184,7 @@ dependencies {
     androidTestCompile 'com.android.support.test:runner:0.4.1'
     androidTestCompile 'com.android.support.test.espresso:espresso-core:2.2.1'
     androidTestCompile 'com.android.support.test.espresso:espresso-intents:2.2.1'
+    androidTestCompile 'com.android.support.test.espresso:espresso-contrib:2.2.1'
 
     // Dependencies for unit tests which reside in the "tests" src folder.
     testCompile 'junit:junit:4.12'

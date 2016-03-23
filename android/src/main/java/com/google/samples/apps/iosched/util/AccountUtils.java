@@ -115,11 +115,10 @@ public class AccountUtils {
         }
     }
 
-    public static boolean setActiveAccount(final Context context, final String accountName) {
+    public static void setActiveAccount(final Context context, final String accountName) {
         LOGD(TAG, "Set active account to: " + accountName);
         SharedPreferences sp = getSharedPreferences(context);
         sp.edit().putString(PREF_ACTIVE_ACCOUNT, accountName).apply();
-        return true;
     }
 
     protected static String makeAccountSpecificPrefKey(Context ctx, String prefix) {

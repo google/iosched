@@ -21,7 +21,6 @@ import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.database.Cursor;
 import android.net.Uri;
-import android.preference.PreferenceManager;
 import android.test.suitebuilder.annotation.SmallTest;
 
 import com.google.samples.apps.iosched.Config;
@@ -29,6 +28,7 @@ import com.google.samples.apps.iosched.R;
 import com.google.samples.apps.iosched.explore.data.ThemeGroup;
 import com.google.samples.apps.iosched.explore.data.TopicGroup;
 import com.google.samples.apps.iosched.provider.ScheduleContract;
+import com.google.samples.apps.iosched.settings.SettingsUtils;
 import com.google.samples.apps.iosched.testutils.SettingsMockContext;
 import com.google.samples.apps.iosched.util.LogUtils;
 import com.google.samples.apps.iosched.util.SessionsHelper;
@@ -52,7 +52,7 @@ import static org.junit.Assert.assertThat;
 import static org.mockito.Mockito.when;
 
 @RunWith(PowerMockRunner.class)
-@PrepareForTest({PreferenceManager.class, TimeUtils.class})
+@PrepareForTest({SettingsUtils.class, TimeUtils.class})
 @SmallTest
 public class ExploreIOModelTest {
 
@@ -219,8 +219,7 @@ public class ExploreIOModelTest {
 
         // Init mocks
         SettingsMockContext
-                .initMockContextForAttendingVenueSetting(true, mMockContext,
-                        mMockSharedPreferences);
+                .initMockContextForAttendingVenueSetting(true, mMockContext);
         SettingsMockContext
                 .initMockContextForCurrentTime(Config.CONFERENCE_START_MILLIS + TimeUtils.MINUTE,
                         mMockContext);

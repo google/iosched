@@ -1,9 +1,9 @@
 package com.google.samples.apps.iosched.explore.data;
 
-import com.google.samples.apps.iosched.util.TimeUtils;
-
 import android.content.Context;
 import android.text.TextUtils;
+
+import com.google.samples.apps.iosched.util.TimeUtils;
 
 import java.util.Calendar;
 import java.util.Date;
@@ -61,11 +61,7 @@ public class SessionData {
         }
         Calendar now = java.util.Calendar.getInstance();
         now.setTimeInMillis(TimeUtils.getCurrentTime(context));
-        if (mStartDate.before(now.getTime()) && mEndDate.after(now.getTime())) {
-            return true;
-        } else {
-            return false;
-        }
+        return mStartDate.before(now.getTime()) && mEndDate.after(now.getTime());
     }
 
     public boolean isLiveStreamAvailable() {

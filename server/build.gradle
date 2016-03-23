@@ -43,6 +43,7 @@ dependencies {
     compile "javax.servlet:servlet-api:2.5"
     compile "com.google.code.gson:gson:2.2.4"
     compile "com.google.appengine.tools:appengine-gcs-client:0.3.8"
+    compile "com.google.gcm:gcm-server:1.0.0"
     compile "com.googlecode.objectify:objectify:5.1.5"
     compile "com.googlecode.json-simple:json-simple:1.1.1"
     compile "javax.persistence:persistence-api:1.0"
@@ -66,7 +67,7 @@ appengine {
         }
 
         app {
-            id = 'io2015-staging'
+            id = 'io2016-dev'
         }
     }
 }

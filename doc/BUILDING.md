@@ -57,8 +57,8 @@ To build the app:
 1. Import the project in Android Studio:
 
     1. Press File > Import Project
-    1. Navigate to and choose the settings.gradle file in this project
-    1. Press OK
+    2. Navigate to and choose the settings.gradle file in this project
+    3. Press OK
 
 1. Add your debug keystore to the project (save it as android/debug.keystore),
     or modify the build.gradle file to point to your key.
@@ -73,7 +73,7 @@ To build the app:
    ```
     ./gradlew installDebug
    ```
-
+1. [Refer to 'Navigating the Android app' doc] (NAVIGATING_CODE.md).
 
 # Server-side setup
 

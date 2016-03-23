@@ -54,9 +54,6 @@ import static com.google.samples.apps.iosched.util.LogUtils.makeLogTag;
 /**
  * This is an implementation of a {@link Model} that queries the sessions at Google I/O and extracts
  * the data needed to present the Explore I/O user interface.
- * <p/>
- * The process of loading and reading the data is typically done in the lifecycle of a {@link
- * com.google.samples.apps.iosched.framework.PresenterFragmentImpl}.
  */
 public class ExploreIOModel extends ModelWithLoaderManager<ExploreIOModel.ExploreIOQueryEnum,
         ExploreIOModel.ExploreIOUserActionEnum> {
