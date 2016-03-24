@@ -87,4 +87,24 @@ public class MessageData {
     public void setStartButtonClickListener(View.OnClickListener clickListener) {
         this.mStartButtonClickListener = clickListener;
     }
+
+    @Override
+    public boolean equals(final Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+
+        final MessageData that = (MessageData) o;
+
+        return mMessageStringResourceId == that.mMessageStringResourceId;
+
+    }
+
+    @Override
+    public int hashCode() {
+        return mMessageStringResourceId;
+    }
 }

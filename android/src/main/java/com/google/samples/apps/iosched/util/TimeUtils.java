@@ -113,6 +113,15 @@ public class TimeUtils {
         return format.format(time);
     }
 
+    public static String formatShortDateTime(Context context, Date date) {
+        StringBuilder sb = new StringBuilder();
+        Formatter formatter = new Formatter(sb);
+        return DateUtils.formatDateRange(context, formatter, date.getTime(), date.getTime(),
+                DateUtils.FORMAT_ABBREV_ALL | DateUtils.FORMAT_SHOW_WEEKDAY
+                        | DateUtils.FORMAT_SHOW_TIME,
+                SettingsUtils.getDisplayTimeZone(context).getID()).toString().toUpperCase();
+    }
+
     public static boolean hasConferenceEnded(final Context context) {
         long now = getCurrentTime(context);
         return now > Config.CONFERENCE_END_MILLIS;

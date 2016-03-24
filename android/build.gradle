@@ -160,6 +160,7 @@ dependencies {
     compile "com.android.support:cardview-v7:${android_support_lib_version}"
     compile "com.android.support:design:${android_support_lib_version}"
     compile "com.android.support:support-v13:${android_support_lib_version}"
+    compile "com.android.support:recyclerview-v7:${android_support_lib_version}"
 
     // JSON utility library.
     compile 'com.google.code.gson:gson:2.3'
@@ -186,6 +187,9 @@ dependencies {
     androidTestCompile 'com.android.support.test.espresso:espresso-core:2.2.1'
     androidTestCompile 'com.android.support.test.espresso:espresso-intents:2.2.1'
     androidTestCompile 'com.android.support.test.espresso:espresso-contrib:2.2.1'
+    // Resolve conflicts between main and test APK:
+    androidTestCompile "com.android.support:support-annotations:${android_support_lib_version}"
+    androidTestCompile "com.android.support:recyclerview-v7:${android_support_lib_version}"
 
     // Dependencies for unit tests which reside in the "tests" src folder.
     testCompile 'junit:junit:4.12'

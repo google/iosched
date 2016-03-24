@@ -21,7 +21,6 @@ import android.os.Bundle;
 import com.google.samples.apps.iosched.R;
 import com.google.samples.apps.iosched.navigation.NavigationModel;
 import com.google.samples.apps.iosched.ui.BaseActivity;
-import com.google.samples.apps.iosched.ui.widget.CollectionView;
 import com.google.samples.apps.iosched.util.AnalyticsHelper;
 
 /**
@@ -48,7 +47,8 @@ public class VideoLibraryActivity extends BaseActivity {
     @Override
     protected void onPostCreate(Bundle savedInstanceState) {
         super.onPostCreate(savedInstanceState);
-        enableActionBarAutoHide((CollectionView) findViewById(R.id.videos_collection_view));
+        // TODO fix app bar auto hiding
+        //enableActionBarAutoHide((CollectionView) findViewById(R.id.videos_card_list));
     }
 
     @Override

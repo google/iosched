@@ -134,7 +134,7 @@ public class MyScheduleActivity_InteractionsTest {
      * @return the title of the session that was added
      */
     private String addFirstAvailableSession() {
-        onData(is(instanceOf(Integer.class))).inAdapterView(withId(R.id.collection_view))
+        onData(is(instanceOf(Integer.class))).inAdapterView(withId(R.id.sessions_list))
                                              .atPosition(0).perform(click());
 
         // Session details screen
