@@ -290,6 +290,12 @@ public class MergeHelperTest {
                 hasItem(FirebaseUtils.getFeedbackSubmittedSessionChildPath(REMOTE_SESSION_ID)));
     }
 
+    @Test
+    public void buildPendingFirebaseUpdatesMap_storesLastActivityTimestamp() {
+        assertThat(mHelper.getPendingFirebaseUpdatesMap().keySet(),
+                hasItem(FirebaseUtils.LAST_ACTIVITY_TIMESTAMP));
+    }
+
     /**
      * Adds a GCM key to the local user data.
      */

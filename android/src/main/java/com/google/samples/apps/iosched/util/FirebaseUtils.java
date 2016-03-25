@@ -46,6 +46,7 @@ public class FirebaseUtils {
     public static final String FIREBASE_NODE_TIMESTAMP = "timestamp";
     public static final String FIREBASE_NODE_FEEDBACK_SUBMITTED_SESSIONS =
             "feedback_submitted_sessions";
+    public static final String LAST_ACTIVITY_TIMESTAMP = "last_activity_timestamp";
 
     /**
      * @param context Context used to lookup {@link SharedPreferences}.

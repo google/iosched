@@ -152,6 +152,10 @@ public class MergeHelper {
             pendingFirebaseUpdatesMap
                     .put(FirebaseUtils.getFeedbackSubmittedSessionChildPath(sessionID), true);
         }
+
+        pendingFirebaseUpdatesMap.put(FirebaseUtils.LAST_ACTIVITY_TIMESTAMP,
+                System.currentTimeMillis());
+
         return pendingFirebaseUpdatesMap;
     }
 
