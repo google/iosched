@@ -23,9 +23,9 @@ public class TagMetadataMockCursor {
     public static final String TAG_CATEGORY = "TYPE";
 
     public static MatrixCursor getCursorForSingleTagMetadata() {
-        String[] data = {TAG_ID, TAG_ID_NAME, TAG_NAME, TAG_CATEGORY, "2", "", "-3355444"};
+        String[] data = {TAG_ID, TAG_ID_NAME, TAG_NAME, TAG_CATEGORY, "2", "", "-3355444",""};
         String[] columns = {"_id", "tag_id", "tag_name", "tag_category", "tag_order_in_category",
-                "tag_abstract", "tag_color"};
+                "tag_abstract", "tag_color", "tag_photo_url"};
         MatrixCursor matrixCursor = new MatrixCursor(columns);
         matrixCursor.addRow(data);
         return matrixCursor;

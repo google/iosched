@@ -5,6 +5,7 @@ import java.util.ArrayList;
 public class ItemGroup {
     private String mTitle;
     private String mId;
+    private String mPhotoUrl;
     private ArrayList<SessionData> sessions = new ArrayList<SessionData>();
 
     public void addSessionData(SessionData session) {
@@ -12,8 +13,8 @@ public class ItemGroup {
     }
 
     /**
-     * Trim the session data to {@code sessionLimit} using the
-     * {@code random Random Number Generator}.
+     * Trim the session data to {@code sessionLimit} using the {@code random Random Number
+     * Generator}.
      */
     public void trimSessionData(int sessionLimit) {
         while (sessions.size() > sessionLimit) {
@@ -22,8 +23,20 @@ public class ItemGroup {
     }
 
     public String getTitle() { return mTitle; }
+
     public void setTitle(String title) { mTitle = title; }
+
     public String getId() { return mId; }
+
     public void setId(String id) { mId = id; }
+
+    public String getPhotoUrl() {
+        return mPhotoUrl;
+    }
+
+    public void setPhotoUrl(String photoUrl) {
+        mPhotoUrl = photoUrl;
+    }
+
     public ArrayList<SessionData> getSessions() { return sessions; }
 }

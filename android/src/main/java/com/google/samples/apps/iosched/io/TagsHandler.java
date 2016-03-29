@@ -64,6 +64,7 @@ public class TagsHandler extends JSONHandler {
             builder.withValue(ScheduleContract.Tags.TAG_ABSTRACT, tag._abstract);
             builder.withValue(ScheduleContract.Tags.TAG_COLOR, tag.color==null ?
                     Color.LTGRAY : Color.parseColor(tag.color));
+            builder.withValue(ScheduleContract.Tags.TAG_PHOTO_URL, tag.photoUrl);
             list.add(builder.build());
         }
     }

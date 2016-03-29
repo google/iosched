@@ -38,6 +38,7 @@ import com.google.samples.apps.iosched.explore.data.LiveStreamData;
 import com.google.samples.apps.iosched.explore.data.SessionData;
 import com.google.samples.apps.iosched.explore.data.ThemeGroup;
 import com.google.samples.apps.iosched.explore.data.TopicGroup;
+import com.google.samples.apps.iosched.model.TagMetadata;
 import com.google.samples.apps.iosched.provider.ScheduleContract;
 import com.google.samples.apps.iosched.settings.SettingsUtils;
 import com.google.samples.apps.iosched.util.TimeUtils;
@@ -79,6 +80,8 @@ public class ExploreIOModel extends ModelWithLoaderManager<ExploreIOModel.Explor
     private LiveStreamData mLiveStreamData;
 
     private Uri mSessionsUri;
+
+    private TagMetadata mTagMetadata;
 
     public ExploreIOModel(Context context, Uri sessionsUri, LoaderManager loaderManager) {
         super(ExploreIOQueryEnum.values(), ExploreIOUserActionEnum.values(), loaderManager);
@@ -135,8 +138,7 @@ public class ExploreIOModel extends ModelWithLoaderManager<ExploreIOModel.Explor
                 break;
             case TAGS:
                 LOGW(TAG, "Starting sessions tag query");
-                loader = new CursorLoader(mContext, ScheduleContract.Tags.CONTENT_URI,
-                        ExploreIOQueryEnum.TAGS.getProjection(), null, null, null);
+                loader = TagMetadata.createCursorLoader(mContext);
         }
 
         return loader;
@@ -214,6 +216,9 @@ public class ExploreIOModel extends ModelWithLoaderManager<ExploreIOModel.Explor
                                 topicGroup = new TopicGroup();
                                 topicGroup.setTitle(rawTag);
                                 topicGroup.setId(rawTag);
+                                if (mTagMetadata != null && mTagMetadata.getTag(rawTag) != null) {
+                                    topicGroup.setPhotoUrl(mTagMetadata.getTag(rawTag).getPhotoUrl());
+                                }
                                 topicGroups.put(rawTag, topicGroup);
                             }
                             topicGroup.addSessionData(session);
@@ -224,6 +229,9 @@ public class ExploreIOModel extends ModelWithLoaderManager<ExploreIOModel.Explor
                                 themeGroup = new ThemeGroup();
                                 themeGroup.setTitle(rawTag);
                                 themeGroup.setId(rawTag);
+                                if (mTagMetadata != null && mTagMetadata.getTag(rawTag) != null) {
+                                    themeGroup.setPhotoUrl(mTagMetadata.getTag(rawTag).getPhotoUrl());
+                                }
                                 themeGroups.put(rawTag, themeGroup);
                             }
                             themeGroup.addSessionData(session);
@@ -258,8 +266,10 @@ public class ExploreIOModel extends ModelWithLoaderManager<ExploreIOModel.Explor
 
     private void readDataFromTagsCursor(Cursor cursor) {
         LOGW(TAG, "TAGS query loaded");
-        Map<String, String> newTagTitles = new HashMap<>();
         if (cursor != null && cursor.moveToFirst()) {
+            mTagMetadata = new TagMetadata(cursor);
+            cursor.moveToFirst();
+            Map<String, String> newTagTitles = new HashMap<>();
             do {
                 String tagId = cursor.getString(cursor.getColumnIndex(
                         ScheduleContract.Tags.TAG_ID));
@@ -268,6 +278,25 @@ public class ExploreIOModel extends ModelWithLoaderManager<ExploreIOModel.Explor
                 newTagTitles.put(tagId, tagName);
             } while (cursor.moveToNext());
             mTagTitles = newTagTitles;
+        }
+
+        addPhotoUrlToTopicsAndThemes();
+    }
+
+    private void addPhotoUrlToTopicsAndThemes() {
+        if (mTopics != null) {
+            for (TopicGroup topic : mTopics.values()) {
+                if (mTagMetadata != null && mTagMetadata.getTag(topic.getTitle()) != null) {
+                    topic.setPhotoUrl(mTagMetadata.getTag(topic.getTitle()).getPhotoUrl());
+                }
+            }
+        }
+        if (mThemes != null) {
+            for (ThemeGroup theme : mThemes.values()) {
+                if (mTagMetadata != null && mTagMetadata.getTag(theme.getTitle()) != null) {
+                    theme.setPhotoUrl(mTagMetadata.getTag(theme.getTitle()).getPhotoUrl());
+                }
+            }
         }
     }
 

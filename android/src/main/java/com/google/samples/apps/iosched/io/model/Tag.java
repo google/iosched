@@ -26,4 +26,5 @@ public class Tag {
     @SerializedName("abstract")
     public String _abstract;
     public int order_in_category;
+    public String photoUrl;
 }

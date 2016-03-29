@@ -47,7 +47,8 @@ public class ScheduleDatabase extends SQLiteOpenHelper {
     private static final int VER_2014_RELEASE_C = 207; // app version 2.1.x
     private static final int VER_2015_RELEASE_A = 208;
     private static final int VER_2015_RELEASE_B = 210;
-    private static final int CUR_DATABASE_VERSION = VER_2015_RELEASE_B;
+    private static final int VER_2016_RELEASE_A = 211;
+    private static final int CUR_DATABASE_VERSION = VER_2016_RELEASE_A;
 
     private final Context mContext;
 
@@ -213,6 +214,7 @@ public class ScheduleDatabase extends SQLiteOpenHelper {
                 + TagsColumns.TAG_ORDER_IN_CATEGORY + " INTEGER,"
                 + TagsColumns.TAG_COLOR + " TEXT NOT NULL,"
                 + TagsColumns.TAG_ABSTRACT + " TEXT NOT NULL,"
+                + TagsColumns.TAG_PHOTO_URL + " TEXT,"
                 + "UNIQUE (" + TagsColumns.TAG_ID + ") ON CONFLICT REPLACE)");
 
         db.execSQL("CREATE TABLE " + Tables.ROOMS + " ("
@@ -414,6 +416,12 @@ public class ScheduleDatabase extends SQLiteOpenHelper {
                 + " ADD COLUMN " + SpeakersColumns.SPEAKER_TWITTER_URL + " TEXT");
     }
 
+    private void upgradeFrom2015Bto2016A(SQLiteDatabase db) {
+        // Note: Adding photoUrl to tags
+        db.execSQL("ALTER TABLE " + Tables.TAGS
+                + " ADD COLUMN " + TagsColumns.TAG_PHOTO_URL + " TEXT");
+    }
+
     /**
      * Updates the session search index. This should be done sparingly, as the queries are rather
      * complex.
@@ -486,6 +494,12 @@ public class ScheduleDatabase extends SQLiteOpenHelper {
         // Drop tables that have been deprecated.
         for (Tables.DeprecatedTables deprecatedTable : Tables.DeprecatedTables.values()) {
             db.execSQL(("DROP TABLE IF EXISTS " + deprecatedTable.tableName));
+        }
+
+        if (version == VER_2015_RELEASE_B) {
+            LOGD(TAG, "Upgrading database from 2015 release B to 2016 release A.");
+            upgradeFrom2015Bto2016A(db);
+            version = VER_2016_RELEASE_A;
         }
 
         // At this point, we ran out of upgrade logic, so if we are still at the wrong

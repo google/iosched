@@ -89,7 +89,7 @@ android {
             minifyEnabled false
             signingConfig signingConfigs.debug
             buildConfigField("boolean", "ENABLE_DEBUG_TOOLS", "true")
-            buildConfigField("String", "SERVER_MANIFEST_ENDPOINT", "\"${production_api_manifest_endpoint}\"")
+            buildConfigField("String", "SERVER_MANIFEST_ENDPOINT", "\"${staging_api_manifest_endpoint}\"")
             buildConfigField("String", "GCM_SERVER_URL", "\"${production_gcm_server_endpoint}\"")
             resValue("string", "website_host_name", "${production_website_host_name}")
         }

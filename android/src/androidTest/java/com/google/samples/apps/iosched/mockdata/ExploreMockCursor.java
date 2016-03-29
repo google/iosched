@@ -54,34 +54,51 @@ public class ExploreMockCursor {
 
     public static final String THEME_EARN = "THEME_EARN";
 
+    public static final String TAG_CATEGORY = "TYPE";
+
     private static final String SEP = ",";
 
     /**
      * @return a list of tags, including {@link #THEME_EARN}. {@link #THEME_DESIGN}, {@link
-     * #TOPIC_ANDROID}, {@link #TOPIC_CHROME}, {@link #TOPIC_TOOLS} and {@link {@link #TOPIC_EARN}.
+     * #TOPIC_ANDROID}, {@link #TOPIC_CHROME}, {@link #TOPIC_TOOLS} and {@link #TOPIC_EARN}.
      */
     public static MatrixCursor getCursorForTags() {
-        String[] columns = {"tag_id", "tag_name"};
+        String[] columns = {"_id", "tag_id", "tag_name", "tag_category", "tag_order_in_category",
+                "tag_abstract", "tag_color", "tag_photo_url"};
         MatrixCursor matrixCursor = new MatrixCursor(columns);
-        String[] data1 = {"TYPE_CODELABS", "Code labs"};
+        String[] data1 =
+                {"TYPE_CODELABS", "TYPE_CODELABS", "Code labs", TAG_CATEGORY, "2", "", "-3355444",
+                        ""};
         matrixCursor.addRow(data1);
-        String[] data2 = {"TOPIC_AUDIENCEGROWTH", "Audience Growth"};
+        String[] data2 =
+                {"TOPIC_AUDIENCEGROWTH", "TOPIC_AUDIENCEGROWTH", "Audience Growth", TAG_CATEGORY,
+                        "2", "", "-3355444", ""};
         matrixCursor.addRow(data2);
-        String[] data3 = {THEME_DESIGN, THEME_DESIGN};
+        String[] data3 =
+                {THEME_DESIGN, THEME_DESIGN, THEME_DESIGN, TAG_CATEGORY, "2", "", "-3355444", ""};
         matrixCursor.addRow(data3);
-        String[] data4 = {TYPE_SESSION, TYPE_SESSION};
+        String[] data4 =
+                {TYPE_SESSION, TYPE_SESSION, TYPE_SESSION, TAG_CATEGORY, "2", "", "-3355444", ""};
         matrixCursor.addRow(data4);
-        String[] data5 = {"TYPE_SANDBOXTALKS", "Sandbox talks"};
+        String[] data5 =
+                {"TYPE_SANDBOXTALKS", "TYPE_SANDBOXTALKS", "Sandbox talks", TAG_CATEGORY, "2", "",
+                        "-3355444", ""};
         matrixCursor.addRow(data5);
-        String[] data6 = {TOPIC_TOOLS, TOPIC_TOOLS};
+        String[] data6 =
+                {TOPIC_TOOLS, TOPIC_TOOLS, TOPIC_TOOLS, TAG_CATEGORY, "2", "", "-3355444", ""};
         matrixCursor.addRow(data6);
-        String[] data7 = {"TOPIC_AUTO", "Auto"};
+        String[] data7 =
+                {"TOPIC_AUTO", "TOPIC_AUTO", "Auto", TAG_CATEGORY, "2", "", "-3355444", ""};
         matrixCursor.addRow(data7);
-        String[] data8 = {TOPIC_ANDROID, TOPIC_ANDROID};
+        String[] data8 =
+                {TOPIC_ANDROID, TOPIC_ANDROID, TOPIC_ANDROID, TAG_CATEGORY, "2", "", "-3355444",
+                        ""};
         matrixCursor.addRow(data8);
-        String[] data9 = {TOPIC_CHROME, TOPIC_CHROME};
+        String[] data9 =
+                {TOPIC_ANDROID, TOPIC_ANDROID, TOPIC_CHROME, TAG_CATEGORY, "2", "", "-3355444", ""};
         matrixCursor.addRow(data9);
-        String[] data10 = {THEME_EARN, THEME_EARN};
+        String[] data10 =
+                {THEME_EARN, THEME_EARN, THEME_EARN, TAG_CATEGORY, "2", "", "-3355444", ""};
         matrixCursor.addRow(data10);
         return matrixCursor;
     }
