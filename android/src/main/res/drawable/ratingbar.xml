@@ -16,7 +16,7 @@
   -->
 
 <layer-list xmlns:android="http://schemas.android.com/apk/res/android">
-    <item android:id="@android:id/background" android:drawable="@drawable/ratingbar_star_empty" />
-    <item android:id="@android:id/secondaryProgress" android:drawable="@drawable/ratingbar_star_empty" />
+    <item android:id="@android:id/background" android:drawable="@drawable/ratingbar_star_unfilled" />
+    <item android:id="@android:id/secondaryProgress" android:drawable="@drawable/ratingbar_star_unfilled" />
     <item android:id="@android:id/progress" android:drawable="@drawable/ratingbar_star_filled" />
 </layer-list>

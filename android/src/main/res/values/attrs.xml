@@ -76,4 +76,9 @@
         <attr name="playedTint" format="color" />
     </declare-styleable>
 
+    <declare-styleable name="CustomRatingBar">
+        <attr name="maxRating" format="integer" />
+        <attr name="filledDrawable" format="integer" />
+        <attr name="unfilledDrawable" format="integer" />
+    </declare-styleable>
 </resources>

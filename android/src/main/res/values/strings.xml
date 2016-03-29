@@ -463,6 +463,12 @@
     <!-- Accessibility announcement to alert user that they are now viewing their schedule of a given day. -->
     <string name="my_schedule_page_desc_a11y">Now showing your schedule for <xliff:g id="day">%1$s</xliff:g></string>
 
+    <!-- Accessibility announcement to confirm the feedback rating made for a session by the user. -->
+    <string name="feedback_rating_confirmation">Your rating: %1$d out of %2$d stars"</string>
+
+    <!-- Accessibility announcement for an item in the custom feedback rating view. For example, "one star".  -->
+    <string name="feedback_rating_value">%1$d star</string>
+
     <!-- Label for the button to rate a session -->
     <string name="my_schedule_rate_this_session">RATE THIS SESSION</string>
 

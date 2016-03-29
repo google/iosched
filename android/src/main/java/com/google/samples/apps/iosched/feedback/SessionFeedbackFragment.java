@@ -34,7 +34,7 @@ import com.google.samples.apps.iosched.archframework.UpdatableView;
 import com.google.samples.apps.iosched.feedback.SessionFeedbackModel.SessionFeedbackQueryEnum;
 import com.google.samples.apps.iosched.feedback.SessionFeedbackModel.SessionFeedbackUserActionEnum;
 import com.google.samples.apps.iosched.injection.ModelProvider;
-import com.google.samples.apps.iosched.ui.widget.NumberRatingBar;
+import com.google.samples.apps.iosched.ui.widget.CustomRatingBar;
 import com.google.samples.apps.iosched.util.AnalyticsHelper;
 
 import java.util.ArrayList;
@@ -52,15 +52,15 @@ public class SessionFeedbackFragment extends Fragment
 
     private TextView mSpeakers;
 
-    private RatingBar mOverallFeedbackBar;
+    private CustomRatingBar mOverallFeedbackBar;
 
-    private NumberRatingBar mSessionRelevantFeedbackBar;
+    private CustomRatingBar mSessionRelevantFeedbackBar;
 
-    private NumberRatingBar mContentFeedbackBar;
+    private CustomRatingBar mContentFeedbackBar;
 
-    private NumberRatingBar mSpeakerFeedbackBar;
+    private CustomRatingBar mSpeakerFeedbackBar;
 
-    private List<UserActionListener> listeners = new ArrayList<UserActionListener>();
+    private List<UserActionListener> listeners = new ArrayList<>();
 
     public SessionFeedbackFragment() {
     }
@@ -79,11 +79,11 @@ public class SessionFeedbackFragment extends Fragment
 
         mTitle = (TextView) rootView.findViewById(R.id.feedback_header_session_title);
         mSpeakers = (TextView) rootView.findViewById(R.id.feedback_header_session_speakers);
-        mOverallFeedbackBar = (RatingBar) rootView.findViewById(R.id.rating_bar_0);
-        mSessionRelevantFeedbackBar = (NumberRatingBar) rootView.findViewById(
+        mOverallFeedbackBar = (CustomRatingBar) rootView.findViewById(R.id.rating_bar_0);
+        mSessionRelevantFeedbackBar = (CustomRatingBar) rootView.findViewById(
                 R.id.session_relevant_feedback_bar);
-        mContentFeedbackBar = (NumberRatingBar) rootView.findViewById(R.id.content_feedback_bar);
-        mSpeakerFeedbackBar = (NumberRatingBar) rootView.findViewById(R.id.speaker_feedback_bar);
+        mContentFeedbackBar = (CustomRatingBar) rootView.findViewById(R.id.content_feedback_bar);
+        mSpeakerFeedbackBar = (CustomRatingBar) rootView.findViewById(R.id.speaker_feedback_bar);
 
         if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
             // Helps accessibility services determine the importance of this view.
@@ -94,17 +94,6 @@ public class SessionFeedbackFragment extends Fragment
             mOverallFeedbackBar
                     .setAccessibilityLiveRegion(View.ACCESSIBILITY_LIVE_REGION_ASSERTIVE);
         }
-
-        // When the rating changes, update the content description. In TalkBack mode, this
-        // informs the user about the selected rating.
-        mOverallFeedbackBar.setOnRatingBarChangeListener(new RatingBar.OnRatingBarChangeListener() {
-            @Override
-            public void onRatingChanged(RatingBar ratingBar, float rating, boolean fromUser) {
-                ratingBar.setContentDescription(
-                        getString(R.string.updated_session_feedback_rating_bar_content_description,
-                                (int) rating));
-            }
-        });
 
         rootView.findViewById(R.id.submit_feedback_button).setOnClickListener(
                 new View.OnClickListener() {
@@ -134,10 +123,10 @@ public class SessionFeedbackFragment extends Fragment
     }
 
     private void submitFeedback() {
-        int overallAnswer = (int) mOverallFeedbackBar.getRating();
-        int sessionRelevantAnswer = mSessionRelevantFeedbackBar.getProgress();
-        int contentAnswer = mContentFeedbackBar.getProgress();
-        int speakerAnswer = mSpeakerFeedbackBar.getProgress();
+        int overallAnswer = mOverallFeedbackBar.getRating();
+        int sessionRelevantAnswer = mSessionRelevantFeedbackBar.getRating();
+        int contentAnswer = mContentFeedbackBar.getRating();
+        int speakerAnswer = mSpeakerFeedbackBar.getRating();
         String comments = "";
 
         Bundle args = new Bundle();
