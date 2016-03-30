@@ -33,5 +33,5 @@ public class UserAction {
     public String videoId;
     public String accountName;
     public boolean requiresSync;
-
+    public Long timestamp;
 }

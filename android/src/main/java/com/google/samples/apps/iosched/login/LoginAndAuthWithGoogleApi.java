@@ -42,6 +42,7 @@ import com.google.android.gms.plus.model.people.Person;
 import com.google.android.gms.plus.model.people.PersonBuffer;
 import com.google.samples.apps.iosched.settings.SettingsUtils;
 import com.google.samples.apps.iosched.util.AccountUtils;
+import com.google.samples.apps.iosched.util.FirebaseUtils;
 
 import java.io.IOException;
 import java.lang.ref.WeakReference;
@@ -445,11 +446,12 @@ public class LoginAndAuthWithGoogleApi
     /**
      * Async task that obtains the auth token.
      */
-    private class GetTokenTask extends AsyncTask<Void, Void, String> {
+    private class GetTokenTask extends AsyncTask<Void, Void, Void> {
+
         public GetTokenTask() {}
 
         @Override
-        protected String doInBackground(Void... params) {
+        protected Void doInBackground(Void... params) {
             try {
                 if (isCancelled()) {
                     LOGD(TAG, "doInBackground: task cancelled, so giving up on auth.");
@@ -459,12 +461,14 @@ public class LoginAndAuthWithGoogleApi
                 LOGD(TAG, "Starting background auth for " + mAccountName);
                 final String token = GoogleAuthUtil
                         .getToken(mAppContext, mAccountName, AUTH_TOKEN_TYPE);
+                final String accountId = GoogleAuthUtil.getAccountId(mAppContext, mAccountName);
 
                 // Save auth token.
                 LOGD(TAG, "Saving token: " + (token == null ? "(null)" : "(length " +
                         token.length() + ")") + " for account " + mAccountName);
                 AccountUtils.setAuthToken(mAppContext, mAccountName, token);
-                return token;
+                // Set the Firebase shard associated with the chosen account.
+                FirebaseUtils.setFirebaseUrl(mAppContext, accountId);
             } catch (GooglePlayServicesAvailabilityException e) {
                 postShowRecoveryDialog(e.getConnectionStatusCode());
             } catch (UserRecoverableAuthException e) {
@@ -480,8 +484,8 @@ public class LoginAndAuthWithGoogleApi
         }
 
         @Override
-        protected void onPostExecute(String token) {
-            super.onPostExecute(token);
+        protected void onPostExecute(Void nothing) {
+            super.onPostExecute(nothing);
 
             if (isCancelled()) {
                 LOGD(TAG, "Task cancelled, so not reporting auth success.");

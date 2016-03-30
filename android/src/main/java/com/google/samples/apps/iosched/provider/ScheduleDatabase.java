@@ -47,7 +47,8 @@ public class ScheduleDatabase extends SQLiteOpenHelper {
     private static final int VER_2014_RELEASE_C = 207; // app version 2.1.x
     private static final int VER_2015_RELEASE_A = 208;
     private static final int VER_2015_RELEASE_B = 210;
-    private static final int CUR_DATABASE_VERSION = VER_2015_RELEASE_B;
+    private static final int VER_2016_RELEASE_A = 211;
+    private static final int CUR_DATABASE_VERSION = VER_2016_RELEASE_A;
 
     private final Context mContext;
 
@@ -385,6 +386,7 @@ public class ScheduleDatabase extends SQLiteOpenHelper {
 
         upgradeFrom2014Cto2015A(db);
         upgradeFrom2015Ato2015B(db);
+        upgradeFrom2015Bto2016a(db);
     }
 
     private void upgradeFrom2014Cto2015A(SQLiteDatabase db) {
@@ -413,6 +415,14 @@ public class ScheduleDatabase extends SQLiteOpenHelper {
         db.execSQL("ALTER TABLE " + Tables.SPEAKERS
                 + " ADD COLUMN " + SpeakersColumns.SPEAKER_TWITTER_URL + " TEXT");
     }
+
+    private void upgradeFrom2015Bto2016a(SQLiteDatabase db) {
+        // Adds a timestamp value to my schedule. Used when syncing and merging local and remote
+        // data with the version having the more recent timestamp assuming precedence.
+        db.execSQL("ALTER TABLE " + Tables.MY_SCHEDULE
+                + " ADD COLUMN " + MyScheduleColumns.MY_SCHEDULE_TIMESTAMP + " DATETIME");
+    }
+
 
     /**
      * Updates the session search index. This should be done sparingly, as the queries are rather
@@ -479,6 +489,13 @@ public class ScheduleDatabase extends SQLiteOpenHelper {
             LOGD(TAG, "Upgrading database from 2015 release A to 2015 release B.");
             upgradeFrom2015Ato2015B(db);
             version = VER_2015_RELEASE_B;
+        }
+
+        // Check if we can upgrade from release 2015 B to release 2015 C.
+        if (version == VER_2015_RELEASE_B) {
+            LOGD(TAG, "Upgrading database from 2015 release B to 2016 release A.");
+            upgradeFrom2015Bto2016a(db);
+            version = VER_2016_RELEASE_A;
         }
 
         LOGD(TAG, "After upgrade logic, at version " + version);
