@@ -19,6 +19,7 @@ package com.google.samples.apps.iosched.session;
 import android.content.Intent;
 import android.net.Uri;
 import android.support.test.InstrumentationRegistry;
+import android.support.test.filters.FlakyTest;
 import android.support.test.runner.AndroidJUnit4;
 import android.test.suitebuilder.annotation.LargeTest;
 
@@ -121,6 +122,7 @@ public class SessionDetailActivity_InScheduleSessionTest {
     }
 
     @Test
+    @FlakyTest // due to intent checking
     public void submitFeedback_WhenClicked_IntentFired() {
         // When clicking on the submit feedback button
         onView(allOf(withText(R.string.give_feedback),
@@ -134,6 +136,7 @@ public class SessionDetailActivity_InScheduleSessionTest {
     }
 
     @Test
+    @FlakyTest
     public void showMap_WhenClicked_IntentFired() {
         // When clicking on the room button
         onView(withId(R.id.menu_map_room)).perform(click());

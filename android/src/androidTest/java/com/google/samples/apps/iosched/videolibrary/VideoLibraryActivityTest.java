@@ -27,8 +27,10 @@ import android.view.View;
 import com.google.samples.apps.iosched.Config;
 import com.google.samples.apps.iosched.R;
 import com.google.samples.apps.iosched.mockdata.VideosMockCursor;
+import com.google.samples.apps.iosched.navigation.NavigationModel;
 import com.google.samples.apps.iosched.testutils.BaseActivityTestRule;
 import com.google.samples.apps.iosched.testutils.MatchersHelper;
+import com.google.samples.apps.iosched.testutils.NavigationUtils;
 
 import org.hamcrest.Matcher;
 import org.junit.Rule;
@@ -169,5 +171,21 @@ public class VideoLibraryActivityTest {
 
         // Check if the header bar is hidden.
         view.check(matches(not(isDisplayed())));
+    }
+
+    @Test
+    public void navigationIcon_DisplaysAsMenu() {
+        NavigationUtils.checkNavigationIconIsMenu();
+    }
+
+    @Test
+    public void navigationIcon_OnClick_NavigationDisplayed() {
+        NavigationUtils.checkNavigationIsDisplayedWhenClickingMenuIcon();
+    }
+
+    @Test
+    public void navigation_WhenShown_CorrectItemIsSelected() {
+        NavigationUtils
+                .checkNavigationItemIsSelected(NavigationModel.NavigationItemEnum.VIDEO_LIBRARY);
     }
 }

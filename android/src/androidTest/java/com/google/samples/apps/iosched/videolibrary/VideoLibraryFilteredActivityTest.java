@@ -24,6 +24,7 @@ import android.test.suitebuilder.annotation.LargeTest;
 import com.google.samples.apps.iosched.R;
 import com.google.samples.apps.iosched.mockdata.VideosMockCursor;
 import com.google.samples.apps.iosched.testutils.BaseActivityTestRule;
+import com.google.samples.apps.iosched.testutils.NavigationUtils;
 
 import org.junit.Rule;
 import org.junit.Test;
@@ -100,5 +101,10 @@ public class VideoLibraryFilteredActivityTest {
 
         // Check if the header bar is hidden.
         view.check(matches(not(isDisplayed())));
+    }
+
+    @Test
+    public void navigationIcon_DisplaysAsUp() {
+        NavigationUtils.checkNavigationIconIsUp();
     }
 }
