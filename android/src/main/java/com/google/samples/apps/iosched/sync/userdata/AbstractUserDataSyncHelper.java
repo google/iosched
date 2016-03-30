@@ -107,6 +107,8 @@ public abstract class AbstractUserDataSyncHelper {
                 }
                 userAction.requiresSync = scheduleData.getInt(
                         scheduleData.getColumnIndex(MySchedule.MY_SCHEDULE_DIRTY_FLAG)) == 1;
+                userAction.timestamp = scheduleData.getLong(
+                        scheduleData.getColumnIndex(MySchedule.MY_SCHEDULE_TIMESTAMP));
                 actions.add(userAction);
                 if (!hasPendingLocalData && userAction.requiresSync) {
                     hasPendingLocalData = true;
@@ -229,7 +231,7 @@ public abstract class AbstractUserDataSyncHelper {
 
     private enum UserDataQueryEnum implements QueryEnum {
         MY_SCHEDULE(0, new String[]{MySchedule.SESSION_ID, MySchedule.MY_SCHEDULE_IN_SCHEDULE,
-                MySchedule.MY_SCHEDULE_DIRTY_FLAG}),
+                MySchedule.MY_SCHEDULE_DIRTY_FLAG, MySchedule.MY_SCHEDULE_TIMESTAMP}),
 
         MY_FEEDBACK_SUBMITTED(0, new String[]{MyFeedbackSubmitted.SESSION_ID,
                 MyFeedbackSubmitted.MY_FEEDBACK_SUBMITTED_DIRTY_FLAG}),
