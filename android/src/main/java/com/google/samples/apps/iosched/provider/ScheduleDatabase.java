@@ -386,7 +386,7 @@ public class ScheduleDatabase extends SQLiteOpenHelper {
 
         upgradeFrom2014Cto2015A(db);
         upgradeFrom2015Ato2015B(db);
-        upgradeFrom2015Bto2016a(db);
+        upgradeFrom2015Bto2016A(db);
     }
 
     private void upgradeFrom2014Cto2015A(SQLiteDatabase db) {
@@ -416,7 +416,7 @@ public class ScheduleDatabase extends SQLiteOpenHelper {
                 + " ADD COLUMN " + SpeakersColumns.SPEAKER_TWITTER_URL + " TEXT");
     }
 
-    private void upgradeFrom2015Bto2016a(SQLiteDatabase db) {
+    private void upgradeFrom2015Bto2016A(SQLiteDatabase db) {
         // Adds a timestamp value to my schedule. Used when syncing and merging local and remote
         // data with the version having the more recent timestamp assuming precedence.
         db.execSQL("ALTER TABLE " + Tables.MY_SCHEDULE
@@ -491,10 +491,10 @@ public class ScheduleDatabase extends SQLiteOpenHelper {
             version = VER_2015_RELEASE_B;
         }
 
-        // Check if we can upgrade from release 2015 B to release 2015 C.
+        // Check if we can upgrade from release 2015 B to release 2016 A.
         if (version == VER_2015_RELEASE_B) {
             LOGD(TAG, "Upgrading database from 2015 release B to 2016 release A.");
-            upgradeFrom2015Bto2016a(db);
+            upgradeFrom2015Bto2016A(db);
             version = VER_2016_RELEASE_A;
         }
 
