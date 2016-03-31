@@ -18,7 +18,9 @@ package com.google.samples.apps.iosched;
 
 import android.app.Application;
 import android.content.Intent;
+import android.support.multidex.MultiDex;
 
+import com.firebase.client.Firebase;
 import com.google.android.gms.security.ProviderInstaller;
 import com.google.samples.apps.iosched.settings.SettingsUtils;
 import com.google.samples.apps.iosched.util.AnalyticsHelper;
@@ -42,6 +44,11 @@ public class AppApplication extends Application {
     public void onCreate() {
         super.onCreate();
         TimeUtils.setAppStartTime(getApplicationContext(), System.currentTimeMillis());
+        MultiDex.install(this);
+
+        // Initialize the Firebase library with an Android context.
+        Firebase.setAndroidContext(this);
+
         AnalyticsHelper.prepareAnalytics(getApplicationContext());
         SettingsUtils.markDeclinedWifiSetup(getApplicationContext(), false);
 
