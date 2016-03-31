@@ -19,7 +19,6 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Looper;
 import android.support.test.InstrumentationRegistry;
-import android.support.test.espresso.intent.rule.IntentsTestRule;
 import android.support.test.runner.AndroidJUnit4;
 import android.test.suitebuilder.annotation.LargeTest;
 import android.util.Log;
@@ -30,8 +29,11 @@ import com.google.samples.apps.iosched.feedback.SessionFeedbackActivity;
 import com.google.samples.apps.iosched.injection.ModelProvider;
 import com.google.samples.apps.iosched.mockdata.MyScheduleMockItems;
 import com.google.samples.apps.iosched.mockdata.StubActivityContext;
+import com.google.samples.apps.iosched.navigation.NavigationModel;
 import com.google.samples.apps.iosched.provider.ScheduleContract;
 import com.google.samples.apps.iosched.settings.SettingsUtils;
+import com.google.samples.apps.iosched.testutils.BaseActivityTestRule;
+import com.google.samples.apps.iosched.testutils.NavigationUtils;
 import com.google.samples.apps.iosched.util.TimeUtils;
 
 import org.junit.Before;
@@ -75,13 +77,12 @@ public class MyScheduleActivityTest {
     private StubActivityContext mActivityStubContext;
 
     @Rule
-    public IntentsTestRule<MyScheduleActivity> mActivityRule =
-            new IntentsTestRule<MyScheduleActivity>(MyScheduleActivity.class) {
+    public BaseActivityTestRule<MyScheduleActivity> mActivityRule =
+            new BaseActivityTestRule<MyScheduleActivity>(MyScheduleActivity.class) {
 
                 @Override
                 protected void beforeActivityLaunched() {
-                    // Make sure the EULA screen is not shown.
-                    SettingsUtils.markTosAccepted(InstrumentationRegistry.getTargetContext(), true);
+                    prepareActivityForInPersonAttendee();
 
 
                     // Create a stub model to simulate a user attending conference, during the
@@ -101,7 +102,7 @@ public class MyScheduleActivityTest {
                         runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
-                                ModelProvider.setStubMyScheduleModel(new StubMyScheduleModel(
+                                ModelProvider.setStubModel(new StubMyScheduleModel(
                                         mActivityStubContext,
                                         MyScheduleMockItems.getItemsForAttendeeAfter(1, false),
                                         MyScheduleMockItems.getItemsForAttendeeBefore(2)));
@@ -217,6 +218,22 @@ public class MyScheduleActivityTest {
 
         // Then the session in the second day is displayed
         onView(withText(MyScheduleMockItems.SESSION_TITLE_BEFORE)).check(matches(isDisplayed()));
+    }
+
+    @Test
+    public void navigationIcon_DisplaysAsMenu() {
+        NavigationUtils.checkNavigationIconIsMenu();
+    }
+
+    @Test
+    public void navigationIcon_OnClick_NavigationDisplayed() {
+        NavigationUtils.checkNavigationIsDisplayedWhenClickingMenuIcon();
+    }
+
+    @Test
+    public void navigation_WhenShown_CorrectItemIsSelected() {
+        NavigationUtils
+                .checkNavigationItemIsSelected(NavigationModel.NavigationItemEnum.MY_SCHEDULE);
     }
 
     private void showDay1() {

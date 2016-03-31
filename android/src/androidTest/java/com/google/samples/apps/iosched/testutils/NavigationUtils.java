@@ -14,20 +14,27 @@
 
 package com.google.samples.apps.iosched.testutils;
 
+import android.support.design.internal.NavigationMenuItemView;
+import android.support.test.espresso.NoMatchingViewException;
 import android.support.test.rule.ActivityTestRule;
 
 import com.google.samples.apps.iosched.R;
+import com.google.samples.apps.iosched.navigation.NavigationModel;
 
 import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.action.ViewActions.click;
 import static android.support.test.espresso.assertion.ViewAssertions.doesNotExist;
 import static android.support.test.espresso.assertion.ViewAssertions.matches;
 import static android.support.test.espresso.contrib.DrawerActions.open;
+import static android.support.test.espresso.matcher.ViewMatchers.isAssignableFrom;
 import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
+import static android.support.test.espresso.matcher.ViewMatchers.withContentDescription;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static android.support.test.espresso.matcher.ViewMatchers.withParent;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
 import static org.hamcrest.CoreMatchers.allOf;
+import static org.hamcrest.CoreMatchers.not;
+import static org.junit.Assert.assertTrue;
 
 /**
  * Methods to help with navigation testing
@@ -79,4 +86,62 @@ public class NavigationUtils {
         rule.getActivity().finish();
     }
 
+    public static void checkNavigationIsDisplayedWhenClickingMenuIcon() {
+        checkNavigationItemIsDisplayed(R.string.navdrawer_item_explore);
+    }
+
+    public static void checkNavigationIconIsUp() {
+        onView(withContentDescription("Close and go back")).check(matches(isDisplayed()));
+    }
+
+    public static void checkNavigationIconIsMenu() {
+        onView(withContentDescription(
+                "Navigation Drawer used to switch between major features of the application"))
+                .check(matches(isDisplayed()));
+
+    }
+
+    /**
+     * Checks that the {@code expectedSelectedItem} is checked in the navigation drawer, and that
+     * no other items in the drawer are checked.
+     */
+    public static void checkNavigationItemIsSelected(
+            NavigationModel.NavigationItemEnum expectedSelectedItem) {
+        // Given navigation menu
+        NavigationUtils.showNavigation();
+
+        boolean selectedFound = false;
+
+        for (int i = 0; i < NavigationModel.NavigationItemEnum.values().length; i++) {
+            NavigationModel.NavigationItemEnum item =
+                    NavigationModel.NavigationItemEnum.values()[i];
+            try {
+                // Check item is displayed
+                onView(allOf(isAssignableFrom(NavigationMenuItemView.class),
+                        withText(item.getTitleResource()))).check(matches(isDisplayed()));
+
+                // If item is shown, check item is not activated, unless it is the requested one
+                if (NavigationModel.NavigationItemEnum.values()[i].getId() ==
+                        expectedSelectedItem.getId()) {
+                    onView(allOf(isAssignableFrom(NavigationMenuItemView.class), withText(
+                            item.getTitleResource())))
+                            .check(matches(MatchersHelper.isNavigationMenuItemViewChecked()));
+                    selectedFound = true;
+                } else {
+                    onView(allOf(isAssignableFrom(NavigationMenuItemView.class), withText(
+                            item.getTitleResource())))
+                            .check(matches(not(MatchersHelper.isNavigationMenuItemViewChecked())));
+                }
+
+            } catch (NoMatchingViewException e) {
+                // Not all navigation items in the enum are shown. This test doesn't aim to
+                // check that the correct items are shown, but that only the selected one among
+                // those shown is shown as selected. Tests in the navigation package check
+                // correct items are shown.
+            }
+        }
+
+        // Sanity check to ensure the tests in the try/catch block weren't all skipped
+        assertTrue(selectedFound);
+    }
 }

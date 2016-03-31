@@ -5,6 +5,7 @@ import android.app.LoaderManager;
 import android.content.Context;
 import android.net.Uri;
 
+import com.google.samples.apps.iosched.archframework.Model;
 import com.google.samples.apps.iosched.explore.ExploreIOModel;
 import com.google.samples.apps.iosched.feedback.FeedbackHelper;
 import com.google.samples.apps.iosched.feedback.SessionFeedbackModel;
@@ -29,10 +30,6 @@ public class ModelProvider {
 
     private static ExploreIOModel stubExploreIOModel = null;
 
-    public static void setStubSessionDetailModel(SessionDetailModel model) {
-        stubSessionDetailModel = model;
-    }
-
     public static SessionDetailModel provideSessionDetailModel(Uri sessionUri, Context context,
             SessionsHelper sessionsHelper, LoaderManager loaderManager) {
         if (stubSessionDetailModel != null) {
@@ -40,10 +37,6 @@ public class ModelProvider {
         } else {
             return new SessionDetailModel(sessionUri, context, sessionsHelper, loaderManager);
         }
-    }
-
-    public static void setStubMyScheduleModel(MyScheduleModel model) {
-        stubMyScheduleModel = model;
     }
 
     public static MyScheduleModel provideMyScheduleModel(ScheduleHelper scheduleHelper,
@@ -55,10 +48,6 @@ public class ModelProvider {
         }
     }
 
-    public static void setStubSessionFeedbackModel(SessionFeedbackModel model) {
-        stubSessionFeedbackModel = model;
-    }
-
     public static SessionFeedbackModel provideSessionFeedbackModel(Uri sessionUri, Context context,
             FeedbackHelper feedbackHelper, LoaderManager loaderManager) {
         if (stubSessionFeedbackModel != null) {
@@ -66,10 +55,6 @@ public class ModelProvider {
         } else {
             return new SessionFeedbackModel(loaderManager, sessionUri, context, feedbackHelper);
         }
-    }
-
-    public static void setStubVideoLibraryModel(VideoLibraryModel model) {
-        stubVideoLibraryModel = model;
     }
 
     public static VideoLibraryModel provideVideoLibraryModel(Uri videoUri, Uri myVideosUri,
@@ -81,16 +66,26 @@ public class ModelProvider {
         }
     }
 
-    public static void setStubExploreIOModel(ExploreIOModel model) {
-        stubExploreIOModel = model;
-    }
-
     public static ExploreIOModel provideExploreIOModel(Uri sessionsUri, Context context,
             LoaderManager loaderManager) {
         if (stubExploreIOModel != null) {
             return stubExploreIOModel;
         } else {
             return new ExploreIOModel(context, sessionsUri, loaderManager);
+        }
+    }
+
+    public static void setStubModel(Model model) {
+        if (model instanceof  ExploreIOModel) {
+            stubExploreIOModel = (ExploreIOModel) model;
+        } else if (model instanceof  VideoLibraryModel) {
+            stubVideoLibraryModel = (VideoLibraryModel) model;
+        } else if (model instanceof SessionFeedbackModel) {
+            stubSessionFeedbackModel = (SessionFeedbackModel) model;
+        } else if (model instanceof SessionDetailModel) {
+            stubSessionDetailModel = (SessionDetailModel) model;
+        } if (model instanceof MyScheduleModel) {
+            stubMyScheduleModel = (MyScheduleModel) model;
         }
     }
 
