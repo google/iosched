@@ -16,14 +16,13 @@ package com.google.samples.apps.iosched.explore;
 
 import android.content.Context;
 import android.database.Cursor;
-import android.os.Handler;
 import android.support.annotation.NonNull;
-import android.support.test.runner.AndroidJUnit4;
 
 import com.google.samples.apps.iosched.archframework.Model;
 import com.google.samples.apps.iosched.archframework.QueryEnum;
+import com.google.samples.apps.iosched.testutils.StubModelHelper;
 
-import org.junit.runner.RunWith;
+import java.util.HashMap;
 
 /**
  * A stub {@link ExploreIOModel}, to be injected using {@link com.google.samples.apps.iosched
@@ -31,17 +30,14 @@ import org.junit.runner.RunWith;
  * bypass the loader manager mechanism. Use the classes in {@link com.google.samples.apps.iosched
  * .mockdata} to provide the stub cursors.
  */
-@RunWith(AndroidJUnit4.class)
 public class StubExploreIOModel extends ExploreIOModel {
 
-    private Cursor mSessionsCursor;
-
-    private Cursor mTagsCursor;
+    private HashMap<QueryEnum, Cursor> mFakeData = new HashMap<QueryEnum, Cursor>();
 
     public StubExploreIOModel(Context context, Cursor sessionsCursor, Cursor tagsCursor) {
         super(context, null, null);
-        mSessionsCursor = sessionsCursor;
-        mTagsCursor = tagsCursor;
+        mFakeData.put(ExploreIOQueryEnum.SESSIONS, sessionsCursor);
+        mFakeData.put(ExploreIOQueryEnum.TAGS, tagsCursor);
     }
 
     /**
@@ -51,27 +47,7 @@ public class StubExploreIOModel extends ExploreIOModel {
     @Override
     public void requestData(final @NonNull ExploreIOModel.ExploreIOQueryEnum query,
             final @NonNull DataQueryCallback callback) {
-        // Add the callback so it gets fired properly
-        mDataQueryCallbacks.put(query, callback);
-
-        Handler h = new Handler();
-        Runnable r = new Runnable() {
-            @Override
-            public void run() {
-                // Call onLoadFinished with stub cursor and query
-                switch (query) {
-                    case SESSIONS:
-                        onLoadFinished(query, mSessionsCursor);
-                        break;
-                    case TAGS:
-                        onLoadFinished(query, mTagsCursor);
-                        break;
-                }
-            }
-        };
-
-        // Delayed to ensure the UI is ready, because it will fire the callback to update the view
-        // very quickly
-        h.postDelayed(r, 5);
+        new StubModelHelper<ExploreIOQueryEnum>()
+                .overrideLoaderManager(query, callback, mFakeData, mDataQueryCallbacks, this);
     }
 }

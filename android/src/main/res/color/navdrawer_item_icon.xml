@@ -17,7 +17,7 @@
 <selector
     xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <item android:state_activated="true" android:color="@color/navdrawer_icon_tint_selected" />
+    <item android:color="@color/navdrawer_icon_tint_selected" android:state_checked="true" />
     <item android:color="@color/navdrawer_icon_tint" />
 
 </selector>

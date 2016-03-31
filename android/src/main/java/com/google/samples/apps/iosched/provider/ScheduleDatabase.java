@@ -387,6 +387,7 @@ public class ScheduleDatabase extends SQLiteOpenHelper {
 
         upgradeFrom2014Cto2015A(db);
         upgradeFrom2015Ato2015B(db);
+        upgradeFrom2015Bto2016A(db);
     }
 
     private void upgradeFrom2014Cto2015A(SQLiteDatabase db) {
@@ -420,6 +421,11 @@ public class ScheduleDatabase extends SQLiteOpenHelper {
         // Note: Adding photoUrl to tags
         db.execSQL("ALTER TABLE " + Tables.TAGS
                 + " ADD COLUMN " + TagsColumns.TAG_PHOTO_URL + " TEXT");
+
+        // Adds a timestamp value to my schedule. Used when syncing and merging local and remote
+        // data with the version having the more recent timestamp assuming precedence.
+        db.execSQL("ALTER TABLE " + Tables.MY_SCHEDULE
+                + " ADD COLUMN " + MyScheduleColumns.MY_SCHEDULE_TIMESTAMP + " DATETIME");
     }
 
     /**
@@ -489,17 +495,18 @@ public class ScheduleDatabase extends SQLiteOpenHelper {
             version = VER_2015_RELEASE_B;
         }
 
+        // Check if we can upgrade from release 2015 B to release 2016 A.
+        if (version == VER_2015_RELEASE_B) {
+            LOGD(TAG, "Upgrading database from 2015 release B to 2016 release A.");
+            upgradeFrom2015Bto2016A(db);
+            version = VER_2016_RELEASE_A;
+        }
+
         LOGD(TAG, "After upgrade logic, at version " + version);
 
         // Drop tables that have been deprecated.
         for (Tables.DeprecatedTables deprecatedTable : Tables.DeprecatedTables.values()) {
             db.execSQL(("DROP TABLE IF EXISTS " + deprecatedTable.tableName));
-        }
-
-        if (version == VER_2015_RELEASE_B) {
-            LOGD(TAG, "Upgrading database from 2015 release B to 2016 release A.");
-            upgradeFrom2015Bto2016A(db);
-            version = VER_2016_RELEASE_A;
         }
 
         // At this point, we ran out of upgrade logic, so if we are still at the wrong

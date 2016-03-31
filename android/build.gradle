@@ -39,6 +39,8 @@ android {
         versionName "${version_name}"
         minSdkVersion 14
         targetSdkVersion 22
+        multiDexEnabled true
+
 
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         buildConfigField("boolean", "ENABLE_DEBUG_TOOLS", "false")
@@ -63,6 +65,8 @@ android {
         buildConfigField("String", "INPERSON_TIMEZONE", "\"${inperson_timezone}\"")
         buildConfigField("String", "SHOW_IO15_REQUEST_SOCIAL_PANEL_TIME",
                 "\"${show_io15_request_social_panel_time}\"")
+        buildConfigField("String[]", "FIREBASE_URLS", "{\"${iosched_firebase_debug_db1}\"," +
+                "\"${iosched_firebase_debug_db2}\",\"${iosched_firebase_debug_db3}\"}")
         buildConfigField("boolean", "ENABLE_MYSCHEDULE_IN_NAVIGATION", "true")
         buildConfigField("boolean", "ENABLE_IOLIVE_IN_NAVIGATION", "false")
         buildConfigField("boolean", "ENABLE_EXPLORE_IN_NAVIGATION", "true")
@@ -125,6 +129,9 @@ android {
     packagingOptions {
         // Exclude files to avoid packaging collisions (same file name in multiple dependencies).
         exclude 'LICENSE.txt'
+        exclude 'META-INF/LICENSE'
+        exclude 'META-INF/LICENSE-FIREBASE.txt'
+        exclude 'META-INF/NOTICE'
     }
 
     // Test Android jar comes with unimplemented methods that throw exceptions by default. This
@@ -200,4 +207,6 @@ dependencies {
     compile 'com.android.support.test.espresso:espresso-idling-resource:2.0'
 
     compile 'com.google.guava:guava:18.0'
+    compile 'com.android.support:multidex:1.0.1'
+    compile 'com.firebase:firebase-client-android:2.5.0'
 }

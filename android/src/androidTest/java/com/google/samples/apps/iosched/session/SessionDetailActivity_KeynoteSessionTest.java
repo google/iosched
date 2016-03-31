@@ -19,17 +19,16 @@ package com.google.samples.apps.iosched.session;
 import android.content.Intent;
 import android.net.Uri;
 import android.support.test.InstrumentationRegistry;
-import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
 import android.test.suitebuilder.annotation.LargeTest;
 
 import com.google.samples.apps.iosched.R;
-import com.google.samples.apps.iosched.injection.ModelProvider;
 import com.google.samples.apps.iosched.mockdata.SessionsMockCursor;
 import com.google.samples.apps.iosched.mockdata.SpeakersMockCursor;
 import com.google.samples.apps.iosched.mockdata.TagMetadataMockCursor;
 import com.google.samples.apps.iosched.provider.ScheduleContract;
-import com.google.samples.apps.iosched.settings.SettingsUtils;
+import com.google.samples.apps.iosched.testutils.BaseActivityTestRule;
+import com.google.samples.apps.iosched.testutils.NavigationUtils;
 
 import org.junit.Rule;
 import org.junit.Test;
@@ -52,31 +51,23 @@ public class SessionDetailActivity_KeynoteSessionTest {
 
     public static final String SESSION_ID = "__keynote__";
 
-    private Uri mSessionUri;
+    private Uri mSessionUri = ScheduleContract.Sessions.buildSessionUri(SESSION_ID);
 
     @Rule
-    public ActivityTestRule<SessionDetailActivity> mActivityRule =
-            new ActivityTestRule<SessionDetailActivity>(SessionDetailActivity.class) {
-                @Override
-                protected Intent getActivityIntent() {
-                    // Make sure the EULA screen is not shown.
-                    SettingsUtils.markTosAccepted(InstrumentationRegistry.getTargetContext(), true);
-
-                    // Create session uri
-                    mSessionUri = ScheduleContract.Sessions.buildSessionUri(SESSION_ID);
-
+    public BaseActivityTestRule<SessionDetailActivity> mActivityRule =
+            new BaseActivityTestRule<SessionDetailActivity>(SessionDetailActivity.class,
                     // Create a stub model to simulate a keynote session
-                    ModelProvider.setStubSessionDetailModel(new StubSessionDetailModel(mSessionUri,
+                    new StubSessionDetailModel(mSessionUri,
                             InstrumentationRegistry.getTargetContext(),
                             SessionsMockCursor.getCursorForKeynoteSession(),
                             SpeakersMockCursor.getCursorForNoSpeaker(),
-                            TagMetadataMockCursor.getCursorForSingleTagMetadata()));
-
-                    // Create intent to load the keynote session.
-                    Intent intent = new Intent(Intent.ACTION_VIEW, mSessionUri);
-                    return intent;
-                }
-            };
+                            TagMetadataMockCursor.getCursorForSingleTagMetadata()), true) {
+                        @Override
+                        protected Intent getActivityIntent() {
+                            // Create intent to load the session.
+                            return new Intent(Intent.ACTION_VIEW, mSessionUri);
+                        }
+                    };
 
     @Test
     public void sessionTitle_ShowsCorrectTitle() {
@@ -94,4 +85,8 @@ public class SessionDetailActivity_KeynoteSessionTest {
         onView(withId(R.id.session_tags_container)).check(matches(not(isDisplayed())));
     }
 
+    @Test
+    public void navigationIcon_DisplaysAsUp() {
+        NavigationUtils.checkNavigationIconIsUp();
+    }
 }

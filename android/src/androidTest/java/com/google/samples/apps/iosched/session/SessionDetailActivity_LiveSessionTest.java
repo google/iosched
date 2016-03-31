@@ -18,18 +18,16 @@ package com.google.samples.apps.iosched.session;
 import android.content.Intent;
 import android.net.Uri;
 import android.support.test.InstrumentationRegistry;
-import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
 import android.test.suitebuilder.annotation.LargeTest;
 
 import com.google.samples.apps.iosched.Config;
 import com.google.samples.apps.iosched.R;
-import com.google.samples.apps.iosched.injection.ModelProvider;
 import com.google.samples.apps.iosched.mockdata.SessionsMockCursor;
 import com.google.samples.apps.iosched.mockdata.SpeakersMockCursor;
 import com.google.samples.apps.iosched.mockdata.TagMetadataMockCursor;
 import com.google.samples.apps.iosched.provider.ScheduleContract;
-import com.google.samples.apps.iosched.settings.SettingsUtils;
+import com.google.samples.apps.iosched.testutils.BaseActivityTestRule;
 import com.google.samples.apps.iosched.util.TimeUtils;
 
 import org.junit.Before;
@@ -55,29 +53,21 @@ import static org.hamcrest.core.IsNot.not;
 public class SessionDetailActivity_LiveSessionTest {
     public static final String SESSION_ID = "5b7836c8-82bf-e311-b297-00155d5066d7";
 
-    private Uri mSessionUri;
+    private Uri mSessionUri = ScheduleContract.Sessions.buildSessionUri(SESSION_ID);
 
     @Rule
-    public ActivityTestRule<SessionDetailActivity> mActivityRule =
-            new ActivityTestRule<SessionDetailActivity>(SessionDetailActivity.class) {
-                @Override
-                protected Intent getActivityIntent() {
-                    // Make sure the EULA screen is not shown.
-                    SettingsUtils.markTosAccepted(InstrumentationRegistry.getTargetContext(), true);
-
-                    // Create session uri
-                    mSessionUri = ScheduleContract.Sessions.buildSessionUri(SESSION_ID);
-
-                    // Create a stub model to simulate a session with live stream
-                    ModelProvider.setStubSessionDetailModel(new StubSessionDetailModel(mSessionUri,
+    public BaseActivityTestRule<SessionDetailActivity> mActivityRule =
+            new BaseActivityTestRule<SessionDetailActivity>(SessionDetailActivity.class,
+                    // Create a stub model to simulate a live session
+                    new StubSessionDetailModel(mSessionUri,
                             InstrumentationRegistry.getTargetContext(),
                             SessionsMockCursor.getCursorForSessionWithLiveStream(),
                             SpeakersMockCursor.getCursorForSingleSpeaker(),
-                            TagMetadataMockCursor.getCursorForSingleTagMetadata()));
-
-                    // Create intent to load the keynote session.
-                    Intent intent = new Intent(Intent.ACTION_VIEW, mSessionUri);
-                    return intent;
+                            TagMetadataMockCursor.getCursorForSingleTagMetadata()), true) {
+                @Override
+                protected Intent getActivityIntent() {
+                    // Create intent to load the session.
+                    return new Intent(Intent.ACTION_VIEW, mSessionUri);
                 }
             };
 

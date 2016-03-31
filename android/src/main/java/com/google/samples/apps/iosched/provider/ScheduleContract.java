@@ -113,6 +113,7 @@ public final class ScheduleContract {
         String MY_SCHEDULE_IN_SCHEDULE = "in_schedule";
         /** Flag to indicate if the corresponding in_my_schedule item needs to be synced */
         String MY_SCHEDULE_DIRTY_FLAG = "dirty";
+        String MY_SCHEDULE_TIMESTAMP = "timestamp";
     }
 
     interface MyFeedbackSubmittedColumns {
