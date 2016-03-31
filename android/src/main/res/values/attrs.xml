@@ -75,8 +75,4 @@
         <attr name="android:foregroundGravity" />
     </declare-styleable>
 
-    <declare-styleable name="NavDrawerItemView">
-        <attr name="iconTints" format="color" />
-    </declare-styleable>
-
 </resources>

@@ -17,13 +17,12 @@ package com.google.samples.apps.iosched.feedback;
 import android.content.Context;
 import android.database.Cursor;
 import android.net.Uri;
-import android.os.Handler;
 import android.support.annotation.NonNull;
-import android.support.test.runner.AndroidJUnit4;
 
 import com.google.samples.apps.iosched.archframework.QueryEnum;
+import com.google.samples.apps.iosched.testutils.StubModelHelper;
 
-import org.junit.runner.RunWith;
+import java.util.HashMap;
 
 /**
  * A stub {@link SessionFeedbackModel}, to be injected using {@link com.google.samples.apps.iosched
@@ -31,15 +30,14 @@ import org.junit.runner.RunWith;
  * the loader manager mechanism. Use the classes in {@link com.google.samples.apps.iosched.mockdata}
  * to provide the stub cursors.
  */
-@RunWith(AndroidJUnit4.class)
 public class StubSessionFeedbackModel extends SessionFeedbackModel {
 
-    private Cursor mSessionCursor;
+    private HashMap<QueryEnum, Cursor> mFakeData = new HashMap<QueryEnum, Cursor>();
 
     public StubSessionFeedbackModel(Uri uri, Context context, Cursor sessionCursor,
             FeedbackHelper feedbackHelper) {
         super(null, uri, context, feedbackHelper);
-        mSessionCursor = sessionCursor;
+        mFakeData.put(SessionFeedbackQueryEnum.SESSION, sessionCursor);
     }
 
     /**
@@ -49,25 +47,8 @@ public class StubSessionFeedbackModel extends SessionFeedbackModel {
     @Override
     public void requestData(final @NonNull SessionFeedbackQueryEnum query,
             final @NonNull DataQueryCallback callback) {
-        // Add the callback so it gets fired properly
-        mDataQueryCallbacks.put(query, callback);
-
-        Handler h = new Handler();
-        Runnable r = new Runnable() {
-            @Override
-            public void run() {
-                // Call onLoadFinished with stub cursor and query
-                switch (query) {
-                    case SESSION:
-                        onLoadFinished(query, mSessionCursor);
-                        break;
-                }
-            }
-        };
-
-        // Delayed to ensure the UI is ready, because it will fire the callback to update the view
-        // very quickly
-        h.postDelayed(r, 5);
+        new StubModelHelper<SessionFeedbackQueryEnum>()
+                .overrideLoaderManager(query, callback, mFakeData, mDataQueryCallbacks, this);
     }
 
 

@@ -71,13 +71,13 @@ public abstract class AppNavigationViewAbstractImpl implements
         mLoginStateListener = loginStateListener;
         mSelfItem = self;
 
+        setUpView();
+
         NavigationModel model = new NavigationModel(getContext());
         PresenterImpl presenter = new PresenterImpl(model, this,
                 NavigationUserActionEnum.values(), NavigationQueryEnum.values());
         presenter.loadInitialQueries();
         addListener(presenter);
-
-        setUpView();
     }
 
     @Override

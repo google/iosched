@@ -26,11 +26,10 @@ import java.util.List;
  */
 public class NavigationConfig {
 
-    private final static NavigationItemEnum[] COMMON_ITEMS_AFTER_CUSTOM = new NavigationItemEnum[]{
-            NavigationItemEnum.SEPARATOR, NavigationItemEnum.SOCIAL,
-            NavigationItemEnum.VIDEO_LIBRARY, NavigationItemEnum.SEPARATOR_SPECIAL,
-            NavigationItemEnum.SETTINGS, NavigationItemEnum.ABOUT
-    };
+    private final static NavigationItemEnum[] COMMON_ITEMS_AFTER_CUSTOM =
+            new NavigationItemEnum[]{NavigationItemEnum.SOCIAL, NavigationItemEnum.VIDEO_LIBRARY,
+                    NavigationItemEnum.SETTINGS, NavigationItemEnum.ABOUT
+            };
 
     public final static NavigationItemEnum[] NAVIGATION_ITEMS_LOGGEDIN_ATTENDING =
             concatenateItems(new NavigationItemEnum[]{NavigationItemEnum.MY_SCHEDULE,

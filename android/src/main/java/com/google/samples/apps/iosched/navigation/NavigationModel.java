@@ -127,25 +127,23 @@ public class NavigationModel implements Model<NavigationQueryEnum, NavigationUse
      * List of all possible navigation items.
      */
     public enum NavigationItemEnum {
-        MY_SCHEDULE(0, R.string.navdrawer_item_my_schedule, R.drawable.ic_navview_my_schedule,
-                MyScheduleActivity.class),
-        IO_LIVE(1, R.string.navdrawer_item_io_live, R.drawable.ic_navview_play_circle_fill,
+        MY_SCHEDULE(R.id.myschedule_nav_item, R.string.navdrawer_item_my_schedule,
+                R.drawable.ic_navview_my_schedule, MyScheduleActivity.class),
+        IO_LIVE(R.id.iolive_nav_item, R.string.navdrawer_item_io_live, R.drawable.ic_navview_play_circle_fill,
                 null),
-        EXPLORE(2, R.string.navdrawer_item_explore, R.drawable.ic_navview_explore,
-                ExploreIOActivity.class, true),
-        MAP(3, R.string.navdrawer_item_map, R.drawable.ic_navview_map, MapActivity.class),
-        SOCIAL(4, R.string.navdrawer_item_social, R.drawable.ic_navview_social,
+        EXPLORE(R.id.explore_nav_item, R.string.navdrawer_item_explore,
+                R.drawable.ic_navview_explore, ExploreIOActivity.class, true),
+        MAP(R.id.map_nav_item, R.string.navdrawer_item_map, R.drawable.ic_navview_map, MapActivity.class),
+        SOCIAL(R.id.social_nav_item, R.string.navdrawer_item_social, R.drawable.ic_navview_social,
                 SocialActivity.class),
-        VIDEO_LIBRARY(5, R.string.navdrawer_item_video_library,
+        VIDEO_LIBRARY(R.id.videos_nav_item, R.string.navdrawer_item_video_library,
                 R.drawable.ic_navview_video_library, VideoLibraryActivity.class),
-        SIGN_IN(6, R.string.navdrawer_item_sign_in, 0, null),
-        SETTINGS(7, R.string.navdrawer_item_settings, R.drawable.ic_navview_settings,
+        SIGN_IN(R.id.signin_nav_item, R.string.navdrawer_item_sign_in, 0, null),
+        SETTINGS(R.id.settings_nav_item, R.string.navdrawer_item_settings, R.drawable.ic_navview_settings,
                 SettingsActivity.class),
-        ABOUT(8, R.string.description_about, R.drawable.ic_info_outline, AboutActivity.class),
-        DEBUG(9, R.string.navdrawer_item_debug, R.drawable.ic_navview_settings,
+        ABOUT(R.id.about_nav_item, R.string.description_about, R.drawable.ic_info_outline, AboutActivity.class),
+        DEBUG(R.id.debug_nav_item, R.string.navdrawer_item_debug, R.drawable.ic_navview_settings,
                 DebugActivity.class),
-        SEPARATOR(10, 0, 0, null),
-        SEPARATOR_SPECIAL(11, 0, 0, null),
         INVALID(12, 0, 0, null);
 
         private int id;
@@ -191,6 +189,15 @@ public class NavigationModel implements Model<NavigationQueryEnum, NavigationUse
             return finishCurrentActivity;
         }
 
+        public static NavigationItemEnum getById(int id) {
+            NavigationItemEnum[] values = NavigationItemEnum.values();
+            for (int i = 0; i < values.length; i++) {
+                if (values[i].getId() == id) {
+                return values[i];
+                }
+            }
+            return INVALID;
+        }
 
     }
 

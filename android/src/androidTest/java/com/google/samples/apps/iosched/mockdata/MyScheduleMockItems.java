@@ -17,18 +17,15 @@
 package com.google.samples.apps.iosched.mockdata;
 
 import com.google.samples.apps.iosched.Config;
-import com.google.samples.apps.iosched.debug.OutputMockData;
 import com.google.samples.apps.iosched.model.ScheduleItem;
 import com.google.samples.apps.iosched.util.TimeUtils;
 
 import java.util.ArrayList;
 
 /**
- * This has methods to create stub {@link ScheduleItem}s. To generate different mock {@link
- * ScheduleItem}, log the output of {@link OutputMockData#generateScheduleItemCode(ArrayList)} in
- * {@link com.google.samples.apps.iosched.archframework.ModelWithLoaderManager#onLoadFinished
- * (QueryEnum, Cursor)} and copy the logged string into a method that returns a {@link
- * ArrayList<ScheduleItem>}.
+ * This has methods to create stub {@link ScheduleItem}s. To generate different mock cursors, refer
+ * to {@link com.google.samples.apps.iosched.debug.OutputMockData#generateScheduleItemCode
+ * (ArrayList)}.
  */
 
 public class MyScheduleMockItems {

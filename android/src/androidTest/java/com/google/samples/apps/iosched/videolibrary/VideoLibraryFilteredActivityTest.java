@@ -18,14 +18,13 @@ package com.google.samples.apps.iosched.videolibrary;
 
 import android.support.test.InstrumentationRegistry;
 import android.support.test.espresso.ViewInteraction;
-import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
 import android.test.suitebuilder.annotation.LargeTest;
 
 import com.google.samples.apps.iosched.R;
-import com.google.samples.apps.iosched.injection.ModelProvider;
 import com.google.samples.apps.iosched.mockdata.VideosMockCursor;
-import com.google.samples.apps.iosched.settings.SettingsUtils;
+import com.google.samples.apps.iosched.testutils.BaseActivityTestRule;
+import com.google.samples.apps.iosched.testutils.NavigationUtils;
 
 import org.junit.Rule;
 import org.junit.Test;
@@ -50,20 +49,13 @@ import static org.hamcrest.Matchers.not;
 public class VideoLibraryFilteredActivityTest {
 
     @Rule
-    public ActivityTestRule<VideoLibraryFilteredActivity> mActivityRule =
-            new ActivityTestRule<VideoLibraryFilteredActivity>(VideoLibraryFilteredActivity.class) {
-                @Override
-                protected void beforeActivityLaunched() {
-                    // Make sure the EULA screen is not shown.
-                    SettingsUtils.markTosAccepted(InstrumentationRegistry.getTargetContext(), true);
-
-                    // Create a stub model to simulate a keynote session
-                    ModelProvider.setStubVideoLibraryModel(new StubVideoLibraryModel(
+    public BaseActivityTestRule<VideoLibraryFilteredActivity> mActivityRule =
+            new BaseActivityTestRule<VideoLibraryFilteredActivity>(
+                    VideoLibraryFilteredActivity.class,
+                    new StubVideoLibraryModel(
                             InstrumentationRegistry.getTargetContext(),
                             VideosMockCursor.getCursorForVideos(),
-                            VideosMockCursor.getCursorForFilter()));
-                }
-            };
+                            VideosMockCursor.getCursorForFilter()), true);
 
     @Test
     public void yearsSelector_HasYears() {
@@ -109,5 +101,10 @@ public class VideoLibraryFilteredActivityTest {
 
         // Check if the header bar is hidden.
         view.check(matches(not(isDisplayed())));
+    }
+
+    @Test
+    public void navigationIcon_DisplaysAsUp() {
+        NavigationUtils.checkNavigationIconIsUp();
     }
 }

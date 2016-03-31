@@ -16,14 +16,15 @@
 
 package com.google.samples.apps.iosched;
 
+import android.app.Application;
+import android.content.Intent;
+import android.support.multidex.MultiDex;
+
 import com.firebase.client.Firebase;
 import com.google.android.gms.security.ProviderInstaller;
 import com.google.samples.apps.iosched.settings.SettingsUtils;
 import com.google.samples.apps.iosched.util.AnalyticsHelper;
-
-import android.app.Application;
-import android.content.Intent;
-import android.support.multidex.MultiDex;
+import com.google.samples.apps.iosched.util.TimeUtils;
 
 import static com.google.samples.apps.iosched.util.LogUtils.LOGE;
 import static com.google.samples.apps.iosched.util.LogUtils.LOGW;
@@ -42,6 +43,7 @@ public class AppApplication extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
+        TimeUtils.setAppStartTime(getApplicationContext(), System.currentTimeMillis());
         MultiDex.install(this);
 
         // Initialize the Firebase library with an Android context.
