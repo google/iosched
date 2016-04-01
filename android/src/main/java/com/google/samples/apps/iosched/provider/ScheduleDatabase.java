@@ -214,7 +214,6 @@ public class ScheduleDatabase extends SQLiteOpenHelper {
                 + TagsColumns.TAG_ORDER_IN_CATEGORY + " INTEGER,"
                 + TagsColumns.TAG_COLOR + " TEXT NOT NULL,"
                 + TagsColumns.TAG_ABSTRACT + " TEXT NOT NULL,"
-                + TagsColumns.TAG_PHOTO_URL + " TEXT,"
                 + "UNIQUE (" + TagsColumns.TAG_ID + ") ON CONFLICT REPLACE)");
 
         db.execSQL("CREATE TABLE " + Tables.ROOMS + " ("
