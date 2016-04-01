@@ -71,4 +71,7 @@
     <dimen name="welcome_content_padding">64dp</dimen>
     <dimen name="welcome_title_size">24sp</dimen>
 
+    <!-- explore + videos -->
+    <dimen name="compact_list_tile">224dp</dimen>
+
 </resources>

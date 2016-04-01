@@ -17,6 +17,8 @@ package com.google.samples.apps.iosched.explore;
 import android.net.Uri;
 import android.support.test.InstrumentationRegistry;
 import android.support.test.espresso.ViewInteraction;
+import android.support.test.espresso.contrib.RecyclerViewActions;
+import android.support.test.espresso.intent.rule.IntentsTestRule;
 import android.support.test.runner.AndroidJUnit4;
 import android.test.suitebuilder.annotation.LargeTest;
 import android.view.View;
@@ -44,6 +46,7 @@ import static android.support.test.espresso.intent.Intents.intended;
 import static android.support.test.espresso.intent.matcher.IntentMatchers.hasComponent;
 import static android.support.test.espresso.intent.matcher.IntentMatchers.hasData;
 import static android.support.test.espresso.intent.matcher.IntentMatchers.hasExtra;
+import static android.support.test.espresso.matcher.ViewMatchers.hasDescendant;
 import static android.support.test.espresso.matcher.ViewMatchers.hasSibling;
 import static android.support.test.espresso.matcher.ViewMatchers.isCompletelyDisplayed;
 import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
@@ -82,8 +85,8 @@ public class ExploreIOActivityTest {
         ViewInteraction view = onView(withId(R.id.headerbar));
 
         // Swiping up should hide the header bar.
-        onView(withId(R.id.explore_collection_view)).perform(swipeUp());
-        onView(withId(R.id.explore_collection_view)).perform(swipeUp());
+        onView(withId(R.id.explore_card_list)).perform(swipeUp());
+        onView(withId(R.id.explore_card_list)).perform(swipeUp());
 
         // Check if the header bar is hidden.
         view.check(matches(not(isDisplayed())));
@@ -108,18 +111,20 @@ public class ExploreIOActivityTest {
     @Test
     public void MoreClicked_IntentFired() {
         // Given a visible topic
-        onView(withText(ExploreMockCursor.TOPIC_TOOLS)).check(matches(isDisplayed()));
+        onView(withId(R.id.explore_card_list))
+                .perform(RecyclerViewActions.scrollTo(
+                        hasDescendant(withText(ExploreMockCursor.TOPIC_TOOLS))));
 
         // When clicking on the "More" button
         onView(allOf(withText(R.string.more_items_button),
-                hasSibling(withText(ExploreMockCursor.TOPIC_TOOLS)))).perform(click());
+                hasSibling(withText(ExploreMockCursor.TOPIC_TOOLS))
+        )).perform(click());
 
         // Then the intent to open the explore sessions activity for that topic is fired
         intended(allOf(
                 hasComponent(ExploreSessionsActivity.class.getName()),
                 hasExtra(ExploreSessionsActivity.EXTRA_FILTER_TAG,
                         ExploreMockCursor.TOPIC_TOOLS)));
-
     }
 
     @Test

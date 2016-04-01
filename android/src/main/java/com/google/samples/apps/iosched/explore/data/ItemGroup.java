@@ -1,8 +1,25 @@
+/*
+ * Copyright 2016 Google Inc. All rights reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package com.google.samples.apps.iosched.explore.data;
 
 import java.util.ArrayList;
 
 public class ItemGroup {
+
     private String mTitle;
     private String mId;
     private String mPhotoUrl;
@@ -10,16 +27,6 @@ public class ItemGroup {
 
     public void addSessionData(SessionData session) {
         sessions.add(session);
-    }
-
-    /**
-     * Trim the session data to {@code sessionLimit} using the {@code random Random Number
-     * Generator}.
-     */
-    public void trimSessionData(int sessionLimit) {
-        while (sessions.size() > sessionLimit) {
-            sessions.remove(0);
-        }
     }
 
     public String getTitle() { return mTitle; }
@@ -39,4 +46,25 @@ public class ItemGroup {
     }
 
     public ArrayList<SessionData> getSessions() { return sessions; }
+
+    @Override
+    public boolean equals(final Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (!(o instanceof ItemGroup)) {
+            return false;
+        }
+
+        final ItemGroup itemGroup = (ItemGroup) o;
+
+        return mId != null ? mId.equals(itemGroup.mId) : itemGroup.mId == null;
+
+    }
+
+    @Override
+    public int hashCode() {
+        return mId != null ? mId.hashCode() : 0;
+    }
+
 }

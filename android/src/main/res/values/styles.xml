@@ -115,7 +115,9 @@
         <item name="android:textCursorDrawable">@null</item>
     </style>
 
-    <style name="Theme.IOSched.VideoLibrary" parent="Theme.IOSched.WithNavDrawer" />
+    <style name="Theme.IOSched.VideoLibrary" parent="Theme.IOSched.WithNavDrawer">
+        <item name="videoThumbnailStyle">@style/VideoThumbnail</item>
+    </style>
 
     <style name="Theme.IOSched.Feedback" parent="Theme.IOSched">
         <item name="colorAccent">@color/flat_button_text</item>
@@ -372,9 +374,9 @@
 
     <style name="MoreButton">
         <item name="android:textAppearance">@style/TextAppearance.AppCompat.Button</item>
-        <item name="android:textColor">@color/more_button_text</item>
         <item name="android:textSize">@dimen/app_text_size_small</item>
         <item name="android:background">@drawable/more_button_background</item>
+        <item name="android:letterSpacing">0.1</item>
     </style>
 
     <style name="LiveNowIndicator">
@@ -428,6 +430,10 @@
     <style name="WelcomeAccounts">
         <item name="android:paddingTop">@dimen/padding_normal</item>
         <item name="android:paddingBottom">@dimen/spacing_normal</item>
+    </style>
+
+    <style name="VideoThumbnail">
+        <item name="playIcon">@drawable/ic_play_shadowed</item>
     </style>
 
 </resources>

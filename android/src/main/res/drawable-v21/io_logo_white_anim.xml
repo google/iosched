@@ -23,6 +23,6 @@
 
     <target
         android:name="15"
-        android:animation="@anim/io_logo_anim" />
+        android:animation="@animator/io_logo_anim" />
 
 </animated-vector>
