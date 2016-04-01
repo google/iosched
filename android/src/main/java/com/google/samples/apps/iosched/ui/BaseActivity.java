@@ -528,6 +528,7 @@ public abstract class BaseActivity extends AppCompatActivity implements
     public void onAuthFailure(String accountName) {
         LOGD(TAG, "Auth failed for account " + accountName);
         refreshAccountDependantData();
+        mAppNavigationViewAsDrawer.updateNavigationItems();
     }
 
     protected void refreshAccountDependantData() {
