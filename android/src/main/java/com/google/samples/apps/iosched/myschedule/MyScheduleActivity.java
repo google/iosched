@@ -156,8 +156,6 @@ public class MyScheduleActivity extends BaseActivity implements
 
     private boolean mShowedAnnouncementDialog = false;
 
-    private int mViewPagerScrollState = ViewPager.SCROLL_STATE_IDLE;
-
     private PresenterImpl mPresenter;
 
     @Override
@@ -425,11 +423,6 @@ public class MyScheduleActivity extends BaseActivity implements
     public boolean canSwipeRefreshChildScrollUp() {
         if (mWideMode) {
             return ViewCompat.canScrollVertically(mScrollViewWide, -1);
-        }
-
-        // Prevent the swipe refresh by returning true here
-        if (mViewPagerScrollState == ViewPager.SCROLL_STATE_DRAGGING) {
-            return true;
         }
 
         for (MyScheduleSingleDayFragment fragment : mMyScheduleSingleDayFragments) {
