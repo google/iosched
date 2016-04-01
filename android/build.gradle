@@ -203,9 +203,6 @@ dependencies {
     // greater is used for both app and test builds.
     compile 'com.google.code.findbugs:jsr305:2.0.1'
 
-    // Needed to implement the IdlingResource interface on certain async models.
-    compile 'com.android.support.test.espresso:espresso-idling-resource:2.0'
-
     compile 'com.google.guava:guava:18.0'
     compile 'com.android.support:multidex:1.0.1'
     compile 'com.firebase:firebase-client-android:2.5.0'
