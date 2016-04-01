@@ -21,6 +21,7 @@ import android.app.Fragment;
 import android.graphics.drawable.AnimatedVectorDrawable;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.graphics.drawable.AnimatedVectorDrawableCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -98,7 +99,11 @@ public class SocialFragment extends Fragment {
                     SocialLinksEnum.TWITTER_REQUEST);
             requestPanel.setVisibility(View.VISIBLE);
         }
-        setupLogoAnim();
+        final ImageView iv = (ImageView) getActivity().findViewById(R.id.io_logo);
+        final AnimatedVectorDrawableCompat logo =
+                AnimatedVectorDrawableCompat.create(getActivity(), R.drawable.avd_hash_io_16);
+        iv.setImageDrawable(logo);
+        logo.start();
     }
 
     /**
@@ -158,23 +163,5 @@ public class SocialFragment extends Fragment {
             drawShadowFrameLayout.setShadowTopOffset(actionBarSize);
         }
         setContentTopClearance(actionBarSize);
-    }
-
-    @TargetApi(21)
-    private void setupLogoAnim() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            final ImageView iv = (ImageView) getActivity().findViewById(R.id.io_logo);
-            final AnimatedVectorDrawable logoAnim =
-                    (AnimatedVectorDrawable) getActivity().getDrawable(
-                            R.drawable.io_logo_social_anim);
-            iv.setImageDrawable(logoAnim);
-            logoAnim.start();
-            iv.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    logoAnim.start();
-                }
-            });
-        }
     }
 }

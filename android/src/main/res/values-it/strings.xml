@@ -183,11 +183,8 @@
      <!-- Short text introducing the code of conduct for attendees coming in person -->
      <string name="welcome_conduct_title">Pratiche consigliate dalla comunità I/O</string>
  
-     <!-- Short text asking if the user is attending Google I/O in person -->
-     <string name="welcome_attending">Stai partecipando di persona?</string>
- 
      <!-- Medium-length welcome text asking if the user is attending Google I/O in person -->
-     <string name="welcome_attending_text">Stai partecipando a Google I/O da remoto o di persona a San Francisco?</string>
+     <string name="welcome_attending_text">Stai partecipando a Google I/O da remoto o di persona a Mountain View?</string>
  
      <!-- Title of the Video library screen when only videos of a given topic are displayed -->
      <string name="title_topic_filtered_video_library">Video su <xliff:g id="topic">%1$s</xliff:g>

@@ -19,9 +19,10 @@ import android.app.AlertDialog;
 import android.app.Fragment;
 import android.app.FragmentTransaction;
 import android.content.Context;
-import android.graphics.drawable.AnimatedVectorDrawable;
 import android.os.Build;
 import android.os.Bundle;
+import android.provider.Settings;
+import android.support.graphics.drawable.AnimatedVectorDrawableCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -30,20 +31,24 @@ import com.google.samples.apps.iosched.BuildConfig;
 import com.google.samples.apps.iosched.Config;
 import com.google.samples.apps.iosched.R;
 import com.google.samples.apps.iosched.settings.SettingsUtils;
+import com.google.samples.apps.iosched.util.UIUtils;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
 import static com.google.samples.apps.iosched.util.LogUtils.LOGD;
+import static com.google.samples.apps.iosched.util.LogUtils.LOGE;
 import static com.google.samples.apps.iosched.util.LogUtils.makeLogTag;
 
 /**
- * Terms of Service activity activated via
- * {@link com.google.samples.apps.iosched.core.activities.BaseActivity} functionality.
+ * Terms of Service activity activated via {@link BaseActivity} functionality.
  */
-public class WelcomeActivity extends AppCompatActivity implements WelcomeFragment.WelcomeFragmentContainer {
+public class WelcomeActivity extends AppCompatActivity
+        implements WelcomeFragment.WelcomeFragmentContainer {
+
     private static final String TAG = makeLogTag(WelcomeActivity.class);
+
     WelcomeActivityContent mContentFragment;
 
     @Override
@@ -66,15 +71,13 @@ public class WelcomeActivity extends AppCompatActivity implements WelcomeFragmen
 
         LOGD(TAG, "Inside Create View.");
 
-        setupAnimation();
-    }
+        final ImageView iv = (ImageView) findViewById(R.id.logo);
+        final AnimatedVectorDrawableCompat logo =
+                AnimatedVectorDrawableCompat.create(this, R.drawable.avd_hash_io_16);
+        iv.setImageDrawable(logo);
 
-    private void setupAnimation() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            ImageView iv = (ImageView) findViewById(R.id.logo);
-            AnimatedVectorDrawable logoAnim = (AnimatedVectorDrawable) getDrawable(R.drawable.io_logo_white_anim);
-            iv.setImageDrawable(logoAnim);
-            logoAnim.start();
+        if (UIUtils.animationEnabled(getContentResolver())) {
+            logo.start();
         }
     }
 
@@ -101,7 +104,7 @@ public class WelcomeActivity extends AppCompatActivity implements WelcomeFragmen
 
     /**
      * Get the current fragment to display.
-     *
+     * <p/>
      * This is the first fragment in the list that WelcomeActivityContent.shouldDisplay().
      *
      * @param context the application context.
@@ -121,7 +124,7 @@ public class WelcomeActivity extends AppCompatActivity implements WelcomeFragmen
 
     /**
      * Whether to display the WelcomeActivity.
-     *
+     * <p/>
      * Decided whether any of the fragments need to be displayed.
      *
      * @param context the application context.
@@ -142,10 +145,10 @@ public class WelcomeActivity extends AppCompatActivity implements WelcomeFragmen
      */
     private static List<WelcomeActivityContent> getWelcomeFragments() {
         return new ArrayList<WelcomeActivityContent>(Arrays.asList(
-            new TosFragment(),
-            new ConductFragment(),
-            new AttendingFragment(),
-            new AccountFragment()
+                new TosFragment(),
+                new ConductFragment(),
+                new AttendingFragment(),
+                new AccountFragment()
         ));
     }
 

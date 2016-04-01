@@ -182,11 +182,8 @@
      <!-- Short text introducing the code of conduct for attendees coming in person -->
      <string name="welcome_conduct_title">I/O-Community Verhaltenskodex</string>
  
-     <!-- Short text asking if the user is attending Google I/O in person -->
-     <string name="welcome_attending">Nehmen Sie persönlich teil?</string>
- 
      <!-- Medium-length welcome text asking if the user is attending Google I/O in person -->
-     <string name="welcome_attending_text">Nehmen Sie an der I/O aus der Ferne oder persönlich in San Francisco teil?</string>
+     <string name="welcome_attending_text">Nehmen Sie an der I/O aus der Ferne oder persönlich in Mountain View teil?</string>
  
      <!-- Title of the Video library screen when only videos of a given topic are displayed -->
      <string name="title_topic_filtered_video_library">Videos zum Thema <xliff:g id="topic">%1$s</xliff:g>

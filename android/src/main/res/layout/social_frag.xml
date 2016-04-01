@@ -199,7 +199,6 @@
                 android:layout_height="match_parent"
                 android:adjustViewBounds="true"
                 android:scaleType="centerInside"
-                android:src="@drawable/io_mark_social"
                 android:contentDescription="@string/io_logo_not_clickable"
                 android:clickable="false"
                 android:focusable="false" />
