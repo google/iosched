@@ -218,30 +218,6 @@ public class VideoTrackAdapter extends UpdatableAdapter<List<Video>, RecyclerVie
         final VideoViewHolder holder = new VideoViewHolder(
                 mInflater.inflate(mCompactMode ? R.layout.video_item_list_tile
                         : R.layout.video_item_grid_tile, parent, false));
-        holder.itemView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(final View v) {
-                final Video  video = (Video) mItems.get(holder.getAdapterPosition());
-                final String videoId = video.getId();
-                final String youtubeLink = TextUtils.isEmpty(videoId) ? "" :
-                        videoId.contains("://") ? videoId :
-                                String.format(Locale.US, Config.VIDEO_LIBRARY_URL_FMT, videoId);
-                if (!TextUtils.isEmpty(youtubeLink)) {
-                    // ANALYTICS EVENT: Click on a video on the Video Library screen
-                    // Contains: video's YouTube URL, http://www.youtube.com/...
-                    AnalyticsHelper.sendEvent(VIDEO_LIBRARY_ANALYTICS_CATEGORY, "selectvideo",
-                            youtubeLink);
-                    // Start playing the video on Youtube.
-                    Intent i = new Intent(Intent.ACTION_VIEW, Uri.parse(youtubeLink));
-                    UIUtils.preferPackageForIntent(mHost, i,
-                            UIUtils.YOUTUBE_PACKAGE_NAME);
-                    i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_WHEN_TASK_RESET);
-                    mHost.startActivity(i);
-                    // Mark the video as played.
-                    fireVideoPlayedEvent(video);
-                }
-            }
-        });
         if (mCompactMode) {
             ViewCompat.setImportantForAccessibility(holder.itemView,
                     ViewCompat.IMPORTANT_FOR_ACCESSIBILITY_NO);
@@ -261,10 +237,40 @@ public class VideoTrackAdapter extends UpdatableAdapter<List<Video>, RecyclerVie
             final int position) {
         holder.itemView.setBackgroundDrawable(
                 mBackgroundColors[position % mBackgroundColors.length]);
+        holder.itemView.setOnClickListener(mVideoClick);
         mImageLoader.loadImage(video.getThumbnailUrl(), holder.thumbnail);
         holder.title.setText(video.getTitle());
         holder.thumbnail.setPlayed(video.getAlreadyPlayed());
     }
+
+    private final View.OnClickListener mVideoClick = new View.OnClickListener() {
+        @Override
+        public void onClick(final View v) {
+            final ViewGroup.LayoutParams lp = v.getLayoutParams();
+            if (!(lp instanceof RecyclerView.LayoutParams)) return;
+            final int position = ((RecyclerView.LayoutParams) lp).getViewAdapterPosition();
+            if (position == RecyclerView.NO_POSITION) return;
+            final Video  video = (Video) mItems.get(position);
+            final String videoId = video.getId();
+            final String youtubeLink = TextUtils.isEmpty(videoId) ? "" :
+                    videoId.contains("://") ? videoId :
+                            String.format(Locale.US, Config.VIDEO_LIBRARY_URL_FMT, videoId);
+            if (!TextUtils.isEmpty(youtubeLink)) {
+                // ANALYTICS EVENT: Click on a video on the Video Library screen
+                // Contains: video's YouTube URL, http://www.youtube.com/...
+                AnalyticsHelper.sendEvent(VIDEO_LIBRARY_ANALYTICS_CATEGORY, "selectvideo",
+                        youtubeLink);
+                // Start playing the video on Youtube.
+                Intent i = new Intent(Intent.ACTION_VIEW, Uri.parse(youtubeLink));
+                UIUtils.preferPackageForIntent(mHost, i,
+                        UIUtils.YOUTUBE_PACKAGE_NAME);
+                i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_WHEN_TASK_RESET);
+                mHost.startActivity(i);
+                // Mark the video as played.
+                fireVideoPlayedEvent(video);
+            }
+        }
+    };
 
     private void bindYearHeaderViewHolder(final HeaderViewHolder holder,
             final YearHeader yearHeader) {
