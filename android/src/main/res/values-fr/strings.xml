@@ -262,7 +262,7 @@
   </plurals>
 
     <!-- Shown in the 'About' window of the app. -->
-    <string name="about_body">&lt;b&gt;Google I/O 2015&lt;/b&gt;&lt;br&gt; Version %s
+    <string name="about_body">&lt;b&gt;Google I/O 2016&lt;/b&gt;&lt;br&gt; Version %s
         &lt;br&gt;&lt;br&gt; &lt;a href=http://m.google.com/utos&gt;Conditions d\'utilisation&lt;/a&gt;&lt;br&gt;&lt;br&gt; &lt;a href=http://www.google.com/policies/privacy/&gt;Règles de confidentialité&lt;/a&gt;</string>
 
     <!-- Shown as a link in the About screen of the app; user can click to see the EULA. -->
@@ -307,7 +307,7 @@
     <string name="all_years">Toutes les années</string>
 
     <!-- Name of the application, shown in the application's title bar. -->
-    <string name="app_name">Google I/O 2015</string>
+    <string name="app_name">Google I/O 2016</string>
 
     <!-- Label on a button that is one possible answer to the question "Are you attending the
     conference in person in San Francisco or remotely via livestream?" -->
@@ -436,7 +436,7 @@
     <string name="empty_widget_text">Plus de sessions à venir.\nRendez-vous l\'année prochaine !</string>
 
     <!-- Shown on a widget instructing user how to start using the widget. -->
-    <string name="empty_widget_text_signed_out">Appuyez sur le logo Google I/O 2015 ci-dessus pou
+    <string name="empty_widget_text_signed_out">Appuyez sur le logo Google I/O 2016 ci-dessus pou
         r vous connecter et commencer à utiliser l\'application.</string>
 
     <!-- Shown as a header on a list of sessions to indicate that the sessions that appear on that
