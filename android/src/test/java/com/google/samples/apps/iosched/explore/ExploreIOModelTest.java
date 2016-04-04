@@ -245,7 +245,7 @@ public class ExploreIOModelTest {
         assertThat(mExploreIOModel.getLiveStreamData().getSessions().get(0).getSessionName(),
                 is(FAKE_SESSION_TITLE_1));
         assertThat(mExploreIOModel.getThemes().size(), is(2));
-        assertThat(mExploreIOModel.getTopics().size(), is(1));
+        assertThat(mExploreIOModel.getTracks().size(), is(1));
         Iterator<ThemeGroup> themeGroupIterator = mExploreIOModel.getThemes().iterator();
         ThemeGroup themeGroup1 = themeGroupIterator.next();
         ThemeGroup themeGroup2 = themeGroupIterator.next();
@@ -264,7 +264,7 @@ public class ExploreIOModelTest {
             assertThat(themeGroup2.getSessions().get(1).getSessionName(),
                     is(FAKE_SESSION_TITLE_2_KEYNOTE));
         }
-        TopicGroup topicGroup = mExploreIOModel.getTopics().iterator().next();
+        TopicGroup topicGroup = mExploreIOModel.getTracks().iterator().next();
         assertThat(topicGroup.getSessions().size(), is(1));
         assertThat(topicGroup.getSessions().get(0).getSessionName(), is(FAKE_SESSION_TITLE_4));
     }

@@ -90,7 +90,7 @@
     <color name="grey_background">#f5f5f5</color>
     <color name="dark_divider">#32000000</color>
 
-    <color name="more_button_background">#ffcfd8dc</color>
+    <color name="more_button_background">#40000000</color>
     <color name="more_button_text">@color/cyan_a700_plus</color>
 
     <color name="navdrawer_background">#ffffffff</color>
@@ -133,7 +133,7 @@
     <color name="my_schedule_session_title_default">#de07434d</color>
     <color name="my_schedule_session_title_finished">#b807434d</color>
 
-    <color name="light_grey">#fff0f0f0</color>
+    <color name="light_grey">#ffeeeeee</color>
     <color name="lighter_gray">#ddd</color>
 
     <!-- video lib -->
@@ -158,6 +158,12 @@
 
     <!-- Colors used in the Explore Sessions filter drawer -->
     <color name="explore_sessions_body_color">#444444</color>
+    <color name="card_header_tint">#20ffffff</color> <!-- background protection for overlaid text -->
+    <array name="session_tile_backgrounds">
+        <item>#ffeceff1</item>
+        <item>#fffafbfc</item>
+        <item>#fff4f5f7</item>
+    </array>
 
     <!-- search -->
     <color name="dialog_background">#7f000000</color>

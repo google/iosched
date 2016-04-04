@@ -105,4 +105,68 @@ public class SessionData {
     public String getTags() { return mTags; }
 
     public boolean isInSchedule() { return mInSchedule; }
+
+    @Override
+    public boolean equals(final Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+
+        final SessionData that = (SessionData) o;
+
+        if (mInSchedule != that.mInSchedule) {
+            return false;
+        }
+        if (mSessionName != null ? !mSessionName.equals(that.mSessionName) :
+                that.mSessionName != null) {
+            return false;
+        }
+        if (mDetails != null ? !mDetails.equals(that.mDetails) : that.mDetails != null) {
+            return false;
+        }
+        if (mSessionId != null ? !mSessionId.equals(that.mSessionId) : that.mSessionId != null) {
+            return false;
+        }
+        if (mImageUrl != null ? !mImageUrl.equals(that.mImageUrl) : that.mImageUrl != null) {
+            return false;
+        }
+        if (mMainTag != null ? !mMainTag.equals(that.mMainTag) : that.mMainTag != null) {
+            return false;
+        }
+        if (mStartDate != null ? !mStartDate.equals(that.mStartDate) : that.mStartDate != null) {
+            return false;
+        }
+        if (mEndDate != null ? !mEndDate.equals(that.mEndDate) : that.mEndDate != null) {
+            return false;
+        }
+        if (mLiveStreamId != null ? !mLiveStreamId.equals(that.mLiveStreamId) :
+                that.mLiveStreamId != null) {
+            return false;
+        }
+        if (mYouTubeUrl != null ? !mYouTubeUrl.equals(that.mYouTubeUrl) :
+                that.mYouTubeUrl != null) {
+            return false;
+        }
+        return mTags != null ? mTags.equals(that.mTags) : that.mTags == null;
+
+    }
+
+    @Override
+    public int hashCode() {
+        int result = mSessionName != null ? mSessionName.hashCode() : 0;
+        result = 31 * result + (mDetails != null ? mDetails.hashCode() : 0);
+        result = 31 * result + (mSessionId != null ? mSessionId.hashCode() : 0);
+        result = 31 * result + (mImageUrl != null ? mImageUrl.hashCode() : 0);
+        result = 31 * result + (mMainTag != null ? mMainTag.hashCode() : 0);
+        result = 31 * result + (mStartDate != null ? mStartDate.hashCode() : 0);
+        result = 31 * result + (mEndDate != null ? mEndDate.hashCode() : 0);
+        result = 31 * result + (mLiveStreamId != null ? mLiveStreamId.hashCode() : 0);
+        result = 31 * result + (mYouTubeUrl != null ? mYouTubeUrl.hashCode() : 0);
+        result = 31 * result + (mTags != null ? mTags.hashCode() : 0);
+        result = 31 * result + (mInSchedule ? 1 : 0);
+        return result;
+    }
 }

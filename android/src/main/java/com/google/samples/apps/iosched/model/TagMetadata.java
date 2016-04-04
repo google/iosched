@@ -57,7 +57,8 @@ public class TagMetadata {
                     cursor.getString(cursor.getColumnIndex(ScheduleContract.Tags.TAG_CATEGORY)),
                     cursor.getInt(cursor.getColumnIndex(ScheduleContract.Tags.TAG_ORDER_IN_CATEGORY)),
                     cursor.getString(cursor.getColumnIndex(ScheduleContract.Tags.TAG_ABSTRACT)),
-                    cursor.getInt(cursor.getColumnIndex(ScheduleContract.Tags.TAG_COLOR)));
+                    cursor.getInt(cursor.getColumnIndex(ScheduleContract.Tags.TAG_COLOR)),
+                    cursor.getString(cursor.getColumnIndex(ScheduleContract.Tags.TAG_PHOTO_URL)));
             mTagsById.put(tag.getId(), tag);
             if (!mTagsInCategory.containsKey(tag.getCategory())) {
                 mTagsInCategory.put(tag.getCategory(), new ArrayList<Tag>());
@@ -122,7 +123,8 @@ public class TagMetadata {
                 ScheduleContract.Tags.TAG_CATEGORY,
                 ScheduleContract.Tags.TAG_ORDER_IN_CATEGORY,
                 ScheduleContract.Tags.TAG_ABSTRACT,
-                ScheduleContract.Tags.TAG_COLOR
+                ScheduleContract.Tags.TAG_COLOR,
+                ScheduleContract.Tags.TAG_PHOTO_URL
         });
 
         private int id;
@@ -152,15 +154,17 @@ public class TagMetadata {
         private int mOrderInCategory;
         private String mAbstract;
         private int mColor;
+        private String mPhotoUrl;
 
         public Tag(String id, String name, String category, int orderInCategory, String _abstract,
-                int color) {
+                int color, String photoUrl) {
             mId = id;
             mName = name;
             mCategory = category;
             mOrderInCategory = orderInCategory;
             mAbstract = _abstract;
             mColor = color;
+            mPhotoUrl = photoUrl;
         }
 
         public String getId() {
@@ -185,6 +189,10 @@ public class TagMetadata {
 
         public int getColor() {
             return mColor;
+        }
+
+        public String getPhotoUrl() {
+            return mPhotoUrl;
         }
 
         @Override

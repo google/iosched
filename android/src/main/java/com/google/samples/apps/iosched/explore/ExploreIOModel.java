@@ -35,15 +35,19 @@ import com.google.samples.apps.iosched.archframework.QueryEnum;
 import com.google.samples.apps.iosched.archframework.UserActionEnum;
 import com.google.samples.apps.iosched.explore.data.ItemGroup;
 import com.google.samples.apps.iosched.explore.data.LiveStreamData;
+import com.google.samples.apps.iosched.explore.data.MessageData;
 import com.google.samples.apps.iosched.explore.data.SessionData;
-import com.google.samples.apps.iosched.explore.data.ThemeGroup;
-import com.google.samples.apps.iosched.explore.data.TopicGroup;
+import com.google.samples.apps.iosched.model.TagMetadata;
 import com.google.samples.apps.iosched.provider.ScheduleContract;
+import com.google.samples.apps.iosched.settings.ConfMessageCardUtils;
 import com.google.samples.apps.iosched.settings.SettingsUtils;
 import com.google.samples.apps.iosched.util.TimeUtils;
+import com.google.samples.apps.iosched.util.WiFiUtils;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.StringTokenizer;
 
@@ -65,12 +69,12 @@ public class ExploreIOModel extends ModelWithLoaderManager<ExploreIOModel.Explor
     /**
      * Topic groups loaded from the database pre-randomly filtered and stored by topic name.
      */
-    private Map<String, TopicGroup> mTopics = new HashMap<>();
+    private Map<String, ItemGroup> mTracks = new HashMap<>();
 
     /**
      * Theme groups loaded from the database pre-randomly filtered and stored by topic name.
      */
-    private Map<String, ThemeGroup> mThemes = new HashMap<>();
+    private Map<String, ItemGroup> mThemes = new HashMap<>();
 
     private Map<String, String> mTagTitles;
 
@@ -80,17 +84,19 @@ public class ExploreIOModel extends ModelWithLoaderManager<ExploreIOModel.Explor
 
     private Uri mSessionsUri;
 
+    private TagMetadata mTagMetadata;
+
     public ExploreIOModel(Context context, Uri sessionsUri, LoaderManager loaderManager) {
         super(ExploreIOQueryEnum.values(), ExploreIOUserActionEnum.values(), loaderManager);
         mContext = context;
         mSessionsUri = sessionsUri;
     }
 
-    public Collection<TopicGroup> getTopics() {
-        return mTopics.values();
+    public Collection<ItemGroup> getTracks() {
+        return mTracks.values();
     }
 
-    public Collection<ThemeGroup> getThemes() {
+    public Collection<ItemGroup> getThemes() {
         return mThemes.values();
     }
 
@@ -105,8 +111,8 @@ public class ExploreIOModel extends ModelWithLoaderManager<ExploreIOModel.Explor
     public void cleanUp() {
         mThemes.clear();
         mThemes = null;
-        mTopics.clear();
-        mTopics = null;
+        mTracks.clear();
+        mTracks = null;
         mTagTitles.clear();
         mTagTitles = null;
         mKeynoteData = null;
@@ -135,8 +141,7 @@ public class ExploreIOModel extends ModelWithLoaderManager<ExploreIOModel.Explor
                 break;
             case TAGS:
                 LOGW(TAG, "Starting sessions tag query");
-                loader = new CursorLoader(mContext, ScheduleContract.Tags.CONTENT_URI,
-                        ExploreIOQueryEnum.TAGS.getProjection(), null, null, null);
+                loader = TagMetadata.createCursorLoader(mContext);
         }
 
         return loader;
@@ -156,6 +161,65 @@ public class ExploreIOModel extends ModelWithLoaderManager<ExploreIOModel.Explor
     }
 
     /**
+     * Get the list of {@link MessageData} to be displayed to the user,
+     * based upon time, location etc.
+     *
+     * @return messages to be displayed.
+     */
+    public List<MessageData> getMessages() {
+        final List<MessageData> messages = new ArrayList<>();
+        if (SettingsUtils.isAttendeeAtVenue(mContext)) {
+            // Users are required to opt in or out of whether they want conference message cards
+            if (!ConfMessageCardUtils.hasAnsweredConfMessageCardsPrompt(mContext)) {
+                // User has not answered whether they want to opt in.
+                // Build a opt-in/out card.
+                messages.add(MessageCardHelper.getConferenceOptInMessageData(mContext));
+            } else if (ConfMessageCardUtils.isConfMessageCardsEnabled(mContext)) {
+                ConfMessageCardUtils.enableActiveCards(mContext);
+
+                // Note that for these special cards, we'll never show more than one at a time
+                // to prevent overloading the user with messages.
+                // We want each new message to be notable.
+                if (shouldShowCard(
+                        ConfMessageCardUtils.ConfMessageCard.CONFERENCE_CREDENTIALS)) {
+                    messages.add(
+                            MessageCardHelper.getConferenceCredentialsMessageData(mContext));
+                } else if (shouldShowCard(
+                        ConfMessageCardUtils.ConfMessageCard.KEYNOTE_ACCESS)) {
+                    messages.add(MessageCardHelper.getKeynoteAccessMessageData(mContext));
+                } else if (shouldShowCard(ConfMessageCardUtils.ConfMessageCard.AFTER_HOURS)) {
+                    messages.add(MessageCardHelper.getAfterHoursMessageData(mContext));
+                } else if (shouldShowCard(
+                        ConfMessageCardUtils.ConfMessageCard.WIFI_FEEDBACK)) {
+                    if (WiFiUtils.isWiFiEnabled(mContext) &&
+                            WiFiUtils.isWiFiApConfigured(mContext)) {
+                        messages.add(MessageCardHelper.getWifiFeedbackMessageData(mContext));
+                    }
+                }
+            }
+            // Check whether a wifi setup card should be offered.
+            if (WiFiUtils.shouldOfferToSetupWifi(mContext, true)) {
+                // Build card asking users whether they want to enable wifi.
+                messages.add(MessageCardHelper.getWifiSetupMessageData(mContext));
+            }
+        }
+        return messages;
+    }
+
+    /**
+     * Check if this card should be shown and hasn't previously been dismissed.
+     *
+     * @return {@code true} if the given message card should be displayed.
+     */
+    private boolean shouldShowCard(ConfMessageCardUtils.ConfMessageCard card) {
+        final boolean shouldShow = ConfMessageCardUtils.shouldShowConfMessageCard(mContext, card);
+        if (!shouldShow) {
+            return shouldShow;
+        }
+        return !ConfMessageCardUtils.hasDismissedConfMessageCard(mContext, card);
+    }
+
+    /**
      * As we go through the session query results we will be collecting X numbers of session data
      * per Topic and Y numbers of sessions per Theme. When new topics or themes are seen a group
      * will be created.
@@ -168,12 +232,9 @@ public class ExploreIOModel extends ModelWithLoaderManager<ExploreIOModel.Explor
 
         boolean atVenue = SettingsUtils.isAttendeeAtVenue(mContext);
 
-        int themeSessionLimit = getThemeSessionLimit(mContext);
-        int topicSessionLimit = getTopicSessionLimit(mContext);
-
         LiveStreamData liveStreamData = new LiveStreamData();
-        Map<String, TopicGroup> topicGroups = new HashMap<>();
-        Map<String, ThemeGroup> themeGroups = new HashMap<>();
+        Map<String, ItemGroup> trackGroups = new HashMap<>();
+        Map<String, ItemGroup> themeGroups = new HashMap<>();
 
         if (cursor != null && cursor.moveToFirst()) {
             do {
@@ -209,21 +270,27 @@ public class ExploreIOModel extends ModelWithLoaderManager<ExploreIOModel.Explor
                     while (tagsTokenizer.hasMoreTokens()) {
                         String rawTag = tagsTokenizer.nextToken();
                         if (rawTag.startsWith("TOPIC_")) {
-                            TopicGroup topicGroup = topicGroups.get(rawTag);
-                            if (topicGroup == null) {
-                                topicGroup = new TopicGroup();
-                                topicGroup.setTitle(rawTag);
-                                topicGroup.setId(rawTag);
-                                topicGroups.put(rawTag, topicGroup);
+                            ItemGroup trackGroup = trackGroups.get(rawTag);
+                            if (trackGroup == null) {
+                                trackGroup = new ItemGroup();
+                                trackGroup.setTitle(rawTag);
+                                trackGroup.setId(rawTag);
+                                if (mTagMetadata != null && mTagMetadata.getTag(rawTag) != null) {
+                                    trackGroup.setPhotoUrl(mTagMetadata.getTag(rawTag).getPhotoUrl());
+                                }
+                                trackGroups.put(rawTag, trackGroup);
                             }
-                            topicGroup.addSessionData(session);
+                            trackGroup.addSessionData(session);
 
                         } else if (rawTag.startsWith("THEME_")) {
-                            ThemeGroup themeGroup = themeGroups.get(rawTag);
+                            ItemGroup themeGroup = themeGroups.get(rawTag);
                             if (themeGroup == null) {
-                                themeGroup = new ThemeGroup();
+                                themeGroup = new ItemGroup();
                                 themeGroup.setTitle(rawTag);
                                 themeGroup.setId(rawTag);
+                                if (mTagMetadata != null && mTagMetadata.getTag(rawTag) != null) {
+                                    themeGroup.setPhotoUrl(mTagMetadata.getTag(rawTag).getPhotoUrl());
+                                }
                                 themeGroups.put(rawTag, themeGroup);
                             }
                             themeGroup.addSessionData(session);
@@ -233,17 +300,11 @@ public class ExploreIOModel extends ModelWithLoaderManager<ExploreIOModel.Explor
             } while (cursor.moveToNext());
         }
 
-        for (ItemGroup group : themeGroups.values()) {
-            group.trimSessionData(themeSessionLimit);
-        }
-        for (ItemGroup group : topicGroups.values()) {
-            group.trimSessionData(topicSessionLimit);
-        }
         if (liveStreamData.getSessions().size() > 0) {
             mLiveStreamData = liveStreamData;
         }
         mThemes = themeGroups;
-        mTopics = topicGroups;
+        mTracks = trackGroups;
     }
 
     /**
@@ -258,8 +319,10 @@ public class ExploreIOModel extends ModelWithLoaderManager<ExploreIOModel.Explor
 
     private void readDataFromTagsCursor(Cursor cursor) {
         LOGW(TAG, "TAGS query loaded");
-        Map<String, String> newTagTitles = new HashMap<>();
         if (cursor != null && cursor.moveToFirst()) {
+            mTagMetadata = new TagMetadata(cursor);
+            cursor.moveToFirst();
+            Map<String, String> newTagTitles = new HashMap<>();
             do {
                 String tagId = cursor.getString(cursor.getColumnIndex(
                         ScheduleContract.Tags.TAG_ID));
@@ -269,32 +332,25 @@ public class ExploreIOModel extends ModelWithLoaderManager<ExploreIOModel.Explor
             } while (cursor.moveToNext());
             mTagTitles = newTagTitles;
         }
+
+        addPhotoUrlToTopicsAndThemes();
     }
 
-
-    public static int getTopicSessionLimit(Context context) {
-        boolean atVenue = SettingsUtils.isAttendeeAtVenue(context);
-        int topicSessionLimit;
-        if (atVenue) {
-            topicSessionLimit = context.getResources().getInteger(R.integer
-                    .explore_topic_theme_onsite_max_item_count);
-        } else {
-            topicSessionLimit = 0;
+    private void addPhotoUrlToTopicsAndThemes() {
+        if (mTracks != null) {
+            for (ItemGroup topic : mTracks.values()) {
+                if (mTagMetadata != null && mTagMetadata.getTag(topic.getTitle()) != null) {
+                    topic.setPhotoUrl(mTagMetadata.getTag(topic.getTitle()).getPhotoUrl());
+                }
+            }
         }
-        return topicSessionLimit;
-    }
-
-    public static int getThemeSessionLimit(Context context) {
-        boolean atVenue = SettingsUtils.isAttendeeAtVenue(context);
-        int themeSessionLimit;
-        if (atVenue) {
-            themeSessionLimit = context.getResources().getInteger(R.integer
-                    .explore_topic_theme_onsite_max_item_count);
-        } else {
-            themeSessionLimit = context.getResources().getInteger(R.integer
-                    .explore_theme_max_item_count_offsite);
+        if (mThemes != null) {
+            for (ItemGroup theme : mThemes.values()) {
+                if (mTagMetadata != null && mTagMetadata.getTag(theme.getTitle()) != null) {
+                    theme.setPhotoUrl(mTagMetadata.getTag(theme.getTitle()).getPhotoUrl());
+                }
+            }
         }
-        return themeSessionLimit;
     }
 
     private void rewriteKeynoteDetails(SessionData keynoteData) {
@@ -318,14 +374,8 @@ public class ExploreIOModel extends ModelWithLoaderManager<ExploreIOModel.Explor
             stringBuilder.append(mContext.getString(R.string
                     .live_now));
         } else {
-            String shortDate = TimeUtils.formatShortDate(mContext, keynoteData.getStartDate());
-            stringBuilder.append(shortDate);
-
-            if (startTime > 0) {
-                stringBuilder.append(" / ");
-                stringBuilder.append(TimeUtils.formatShortTime(mContext,
-                        new java.util.Date(startTime)));
-            }
+            stringBuilder.append(
+                    TimeUtils.formatShortDateTime(mContext, keynoteData.getStartDate()));
         }
         keynoteData.setDetails(stringBuilder.toString());
     }
@@ -371,7 +421,7 @@ public class ExploreIOModel extends ModelWithLoaderManager<ExploreIOModel.Explor
          * Query that retrieves a list of sessions.
          * <p/>
          * Once the data has been loaded it can be retrieved using {@code getThemes()} and {@code
-         * getTopics()}.
+         * getTracks()}.
          */
         SESSIONS(0x1, new String[]{
                 ScheduleContract.Sessions.SESSION_ID,

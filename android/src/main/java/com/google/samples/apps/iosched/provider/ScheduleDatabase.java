@@ -417,12 +417,15 @@ public class ScheduleDatabase extends SQLiteOpenHelper {
     }
 
     private void upgradeFrom2015Bto2016A(SQLiteDatabase db) {
+        // Note: Adding photoUrl to tags
+        db.execSQL("ALTER TABLE " + Tables.TAGS
+                + " ADD COLUMN " + TagsColumns.TAG_PHOTO_URL + " TEXT");
+
         // Adds a timestamp value to my schedule. Used when syncing and merging local and remote
         // data with the version having the more recent timestamp assuming precedence.
         db.execSQL("ALTER TABLE " + Tables.MY_SCHEDULE
                 + " ADD COLUMN " + MyScheduleColumns.MY_SCHEDULE_TIMESTAMP + " DATETIME");
     }
-
 
     /**
      * Updates the session search index. This should be done sparingly, as the queries are rather

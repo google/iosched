@@ -86,6 +86,8 @@ public final class ScheduleContract {
         String TAG_COLOR = "tag_color";
         /** Tag abstract. Short summary describing tag. */
         String TAG_ABSTRACT = "tag_abstract";
+        /** The tag's photo Url. */
+        String TAG_PHOTO_URL = "tag_photo_url";
     }
 
     interface RoomsColumns {

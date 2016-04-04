@@ -19,31 +19,26 @@ package com.google.samples.apps.iosched.videolibrary;
 import android.annotation.TargetApi;
 import android.app.Fragment;
 import android.content.Context;
-import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
-import android.text.TextUtils;
+import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 
-import com.google.samples.apps.iosched.Config;
 import com.google.samples.apps.iosched.R;
 import com.google.samples.apps.iosched.archframework.ModelWithLoaderManager;
 import com.google.samples.apps.iosched.archframework.PresenterImpl;
 import com.google.samples.apps.iosched.archframework.UpdatableView;
 import com.google.samples.apps.iosched.injection.ModelProvider;
 import com.google.samples.apps.iosched.provider.ScheduleContract;
-import com.google.samples.apps.iosched.ui.widget.CollectionView;
-import com.google.samples.apps.iosched.ui.widget.CollectionViewCallbacks;
 import com.google.samples.apps.iosched.ui.widget.DrawShadowFrameLayout;
-import com.google.samples.apps.iosched.util.AnalyticsHelper;
 import com.google.samples.apps.iosched.util.ImageLoader;
 import com.google.samples.apps.iosched.util.UIUtils;
 import com.google.samples.apps.iosched.videolibrary.VideoLibraryModel.VideoLibraryQueryEnum;
@@ -53,10 +48,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Locale;
 import java.util.Map;
 
-import static com.google.samples.apps.iosched.util.LogUtils.LOGD;
 import static com.google.samples.apps.iosched.util.LogUtils.makeLogTag;
 
 
@@ -65,17 +58,13 @@ import static com.google.samples.apps.iosched.util.LogUtils.makeLogTag;
  * year and/or topics.
  */
 public class VideoLibraryFilteredFragment extends Fragment implements
-        UpdatableView<VideoLibraryModel, VideoLibraryQueryEnum, VideoLibraryUserActionEnum>,
-        CollectionViewCallbacks {
+        UpdatableView<VideoLibraryModel, VideoLibraryQueryEnum, VideoLibraryUserActionEnum> {
 
     private static final String TAG = makeLogTag(VideoLibraryFilteredFragment.class);
 
-    private static final String FILTERED_VIDEO_LIBRARY_ANALYTICS_CATEGORY =
-            "Filtered Video Library";
-
     private ImageLoader mImageLoader;
 
-    private CollectionView mCollectionView = null;
+    private RecyclerView mVideoList = null;
 
     private View mEmptyView = null;
 
@@ -86,6 +75,16 @@ public class VideoLibraryFilteredFragment extends Fragment implements
     private DrawerLayout mDrawerLayout = null;
 
     private List<UserActionListener> mListeners = new ArrayList<>();
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+            Bundle savedInstanceState) {
+        final View root = inflater.inflate(R.layout.video_library_filtered_frag, container, false);
+        mVideoList = (RecyclerView) root.findViewById(R.id.videos_list);
+        mEmptyView = root.findViewById(android.R.id.empty);
+        getActivity().overridePendingTransition(0, 0);
+        return root;
+    }
 
     /**
      * Sets the title of the activity depending on the year and topic filters.
@@ -232,8 +231,24 @@ public class VideoLibraryFilteredFragment extends Fragment implements
     }
 
     private void displayVideos(VideoLibraryModel model) {
-        updateCollectionView(model.getVideos());
+        if (!model.hasVideos()) {
+            mEmptyView.setVisibility(View.VISIBLE);
+            return;
+        }
+
+        final GridLayoutManager glm = (GridLayoutManager) mVideoList.getLayoutManager();
+        final VideoTrackAdapter adapter =
+                VideoTrackAdapter.createVerticalGrid(getActivity(), model.getAllVideos(),
+                        mImageLoader, mListeners, glm.getSpanCount());
+        mVideoList.setAdapter(adapter);
+        glm.setSpanSizeLookup(new GridLayoutManager.SpanSizeLookup() {
+            @Override
+            public int getSpanSize(final int position) {
+                return adapter.getSpanCount(position);
+            }
+        });
         setActivityTitle(model.getSelectedYear(), model.getSelectedTopic());
+        mEmptyView.setVisibility(View.GONE);
     }
 
     @Override
@@ -257,17 +272,6 @@ public class VideoLibraryFilteredFragment extends Fragment implements
     @Override
     public void addListener(UserActionListener toAdd) {
         mListeners.add(toAdd);
-    }
-
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-            Bundle savedInstanceState) {
-        View root = inflater.inflate(R.layout.video_library_frag, container, false);
-        mCollectionView = (CollectionView) root.findViewById(R.id.videos_collection_view);
-        mEmptyView = root.findViewById(android.R.id.empty);
-        getActivity().overridePendingTransition(0, 0);
-
-        return root;
     }
 
     @Override
@@ -308,8 +312,9 @@ public class VideoLibraryFilteredFragment extends Fragment implements
     }
 
     private void setContentTopClearance(int clearance) {
-        if (mCollectionView != null) {
-            mCollectionView.setContentTopClearance(clearance);
+        if (mVideoList != null) {
+            mVideoList.setPadding(mVideoList.getPaddingLeft(), clearance,
+                    mVideoList.getPaddingRight(), mVideoList.getPaddingBottom());
         }
     }
 
@@ -328,136 +333,6 @@ public class VideoLibraryFilteredFragment extends Fragment implements
         }
         setContentTopClearance(actionBarSize
                 + getResources().getDimensionPixelSize(R.dimen.explore_grid_padding));
-    }
-
-    /**
-     * Updates the CollectionView with the given list of {@code videos}.
-     */
-    private void updateCollectionView(List<VideoLibraryModel.Video> videos) {
-        LOGD(TAG, "Updating filtered video library collection view.");
-        CollectionView.Inventory inventory = new CollectionView.Inventory();
-        int normalColumns = getResources().getInteger(R.integer.video_library_columns);
-
-        // Go through all videos and organize them into groups for each topic. We assume they are
-        // already ordered by topics.
-        CollectionView.InventoryGroup curGroup = new CollectionView.InventoryGroup(0)
-                .setDataIndexStart(0)
-                .setShowHeader(false)
-                .setDisplayCols(normalColumns);
-        for (int dataIndex = 0; dataIndex < videos.size(); ++dataIndex) {
-            curGroup.addItemWithTag(videos.get(dataIndex));
-        }
-
-        if (curGroup.getRowCount() > 0) {
-            inventory.addGroup(curGroup);
-        }
-
-        mCollectionView.setCollectionAdapter(this);
-        mCollectionView.updateInventory(inventory);
-
-        mEmptyView.setVisibility(videos.isEmpty() ? View.VISIBLE : View.GONE);
-    }
-
-    @Override
-    public View newCollectionHeaderView(Context context, int groupId, ViewGroup parent) {
-        LayoutInflater inflater = (LayoutInflater) context.getSystemService(
-                Context.LAYOUT_INFLATER_SERVICE);
-        return inflater.inflate(R.layout.list_item_explore_header, parent, false);
-    }
-
-    @Override
-    public void bindCollectionHeaderView(Context context, View view, int groupId,
-            String headerLabel, Object headerTag) {
-        ((TextView) view.findViewById(android.R.id.text1)).setText(headerLabel);
-    }
-
-    @Override
-    public View newCollectionItemView(Context context, int groupId, ViewGroup parent) {
-        LayoutInflater inflater = (LayoutInflater) context.getSystemService(
-                Context.LAYOUT_INFLATER_SERVICE);
-        return inflater.inflate(R.layout.video_library_item, parent, false);
-    }
-
-    @Override
-    public void bindCollectionItemView(Context context, View view, int groupId,
-            int indexInGroup, int dataIndex, Object tag) {
-        final VideoLibraryModel.Video video = (VideoLibraryModel.Video) tag;
-        if (video == null) {
-            return;
-        }
-        ImageView thumbnailView = (ImageView) view.findViewById(R.id.thumbnail);
-        TextView titleView = (TextView) view.findViewById(R.id.title);
-        TextView speakersView = (TextView) view.findViewById(R.id.speakers);
-        TextView descriptionView = (TextView) view.findViewById(R.id.description);
-        titleView.setText(video.getTitle());
-        speakersView.setText(video.getSpeakers());
-        speakersView.setVisibility(
-                TextUtils.isEmpty(video.getSpeakers()) ? View.GONE : View.VISIBLE);
-        descriptionView.setText(video.getDesc());
-        descriptionView.setVisibility(
-                TextUtils.isEmpty(video.getDesc()) || video.getTitle().equals(video.getDesc()) ?
-                        View.GONE : View.VISIBLE);
-
-        String thumbUrl = video.getThumbnailUrl();
-        if (TextUtils.isEmpty(thumbUrl)) {
-            thumbnailView.setImageResource(android.R.color.transparent);
-        } else {
-            mImageLoader.loadImage(thumbUrl, thumbnailView);
-        }
-
-        // Display the overlay if the video has already been played.
-        if (video.getAlreadyPlayed()) {
-            styleVideoAsViewed(view);
-        }
-
-        final String videoId = video.getId();
-        final String youtubeLink = TextUtils.isEmpty(videoId) ? "" :
-                videoId.contains("://") ? videoId :
-                        String.format(Locale.US, Config.VIDEO_LIBRARY_URL_FMT, videoId);
-
-        view.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (!TextUtils.isEmpty(youtubeLink)) {
-                    LOGD(TAG, "Launching Youtube video: " + youtubeLink);
-
-                    // ANALYTICS EVENT: Click on a video on the Filtered Video Library screen
-                    // Contains: video's YouTube URL, http://www.youtube.com/...
-                    AnalyticsHelper.sendEvent(FILTERED_VIDEO_LIBRARY_ANALYTICS_CATEGORY,
-                            "selectvideo", youtubeLink);
-                    Intent i = new Intent(Intent.ACTION_VIEW, Uri.parse(youtubeLink));
-                    UIUtils.preferPackageForIntent(getActivity(), i,
-                            UIUtils.YOUTUBE_PACKAGE_NAME);
-                    i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_WHEN_TASK_RESET);
-                    getActivity().startActivity(i);
-                    // Mark the video as played.
-                    fireVideoPlayedEvent(video);
-                    // Display the overlay for videos that has already been played.
-                    styleVideoAsViewed(view);
-                }
-            }
-        });
-    }
-
-    /**
-     * Show the video as Viewed. We display a semi-transparent grey overlay over the video
-     * thumbnail.
-     */
-    private void styleVideoAsViewed(View videoItemView) {
-        ImageView thumbnailView = (ImageView) videoItemView.findViewById(R.id.thumbnail);
-        thumbnailView.setColorFilter(getContext().getResources().getColor(
-                R.color.video_scrim_watched));
-    }
-
-    /**
-     * Let all UserActionListener know that the given Video has been played.
-     */
-    private void fireVideoPlayedEvent(VideoLibraryModel.Video video) {
-        for (UserActionListener h1 : mListeners) {
-            Bundle args = new Bundle();
-            args.putString(VideoLibraryModel.KEY_VIDEO_ID, video.getId());
-            h1.onUserAction(VideoLibraryModel.VideoLibraryUserActionEnum.VIDEO_PLAYED, args);
-        }
     }
 
 }
