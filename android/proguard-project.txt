@@ -126,5 +126,17 @@
 -dontwarn com.sothree.slidinguppanel.**
 -dontwarn sun.misc.Unsafe
 -dontwarn com.google.common.util.concurrent.RateLimiter
--dontwarn org.w3c.dom.bootstrap.DOMImplementationRegistry
 -dontwarn com.larvalabs.svgandroid.**
+
+# Firebase
+# See: http://stackoverflow.com/questions/26273929/what-proguard-configuration-do-i-need-for-firebase-on-android
+-keepnames class com.google.samples.apps.iosched.sync.userdata.** { *; }
+-keep class com.firebase.** { *; }
+-keep class org.apache.** { *; }
+-keepnames class com.fasterxml.jackson.** { *; }
+-keepnames class javax.servlet.** { *; }
+-keepnames class org.ietf.jgss.** { *; }
+-dontwarn org.w3c.dom.**
+-dontwarn org.joda.time.**
+-dontwarn org.shaded.apache.**
+-dontwarn org.ietf.jgss.**
