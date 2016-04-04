@@ -28,13 +28,18 @@ import com.google.samples.apps.iosched.BuildConfig;
 import com.google.samples.apps.iosched.archframework.Model;
 import com.google.samples.apps.iosched.model.TagMetadataTest;
 import com.google.samples.apps.iosched.provider.ScheduleContract;
+import com.google.samples.apps.iosched.settings.SettingsUtils;
+import com.google.samples.apps.iosched.testutils.SettingsMockContext;
+import com.google.samples.apps.iosched.util.LogUtils;
 import com.google.samples.apps.iosched.util.SessionsHelper;
+import com.google.samples.apps.iosched.util.TimeUtils;
 
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
-import org.mockito.runners.MockitoJUnitRunner;
+import org.powermock.core.classloader.annotations.PrepareForTest;
+import org.powermock.modules.junit4.PowerMockRunner;
 
 import static org.hamcrest.CoreMatchers.not;
 import static org.hamcrest.CoreMatchers.nullValue;
@@ -42,7 +47,6 @@ import static org.hamcrest.core.Is.is;
 import static org.hamcrest.core.IsSame.sameInstance;
 import static org.junit.Assert.assertThat;
 import static org.mockito.Matchers.any;
-import static org.mockito.Matchers.anyLong;
 import static org.mockito.Matchers.anyString;
 import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.doNothing;
@@ -51,7 +55,8 @@ import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-@RunWith(MockitoJUnitRunner.class)
+@RunWith(PowerMockRunner.class)
+@PrepareForTest({SettingsUtils.class, TimeUtils.class})
 @SmallTest
 public class SessionDetailModelTest {
 
@@ -143,6 +148,8 @@ public class SessionDetailModelTest {
         // Init mocks
         initMockCursors();
         initMockContextWithFakeCurrentTime();
+
+        LogUtils.LOGGING_ENABLED = false;
 
         // Create an instance of the model.
         mSessionDetailModel = new SessionDetailModel(mMockUri, mMockContext,
@@ -778,10 +785,7 @@ public class SessionDetailModelTest {
     }
 
     private void initMockContextWithFakeCurrentTime() {
-        when(mMockContext.getSharedPreferences("mock_data", Context.MODE_PRIVATE))
-                .thenReturn(mMockSharedPreferences);
-        when(mMockSharedPreferences.getLong("mock_current_time", eq(anyLong())))
-                .thenReturn(FAKE_CURRENT_TIME_OFFSET);
+        SettingsMockContext.initMockContextForCurrentTime(FAKE_CURRENT_TIME_OFFSET, mMockContext);
     }
 
     private void initMockCursorWithTitle(Cursor cursor) {

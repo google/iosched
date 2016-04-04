@@ -25,8 +25,7 @@ import android.test.suitebuilder.annotation.SmallTest;
 
 import com.google.samples.apps.iosched.Config;
 import com.google.samples.apps.iosched.R;
-import com.google.samples.apps.iosched.explore.data.ThemeGroup;
-import com.google.samples.apps.iosched.explore.data.TopicGroup;
+import com.google.samples.apps.iosched.explore.data.ItemGroup;
 import com.google.samples.apps.iosched.provider.ScheduleContract;
 import com.google.samples.apps.iosched.settings.SettingsUtils;
 import com.google.samples.apps.iosched.testutils.SettingsMockContext;
@@ -246,9 +245,9 @@ public class ExploreIOModelTest {
                 is(FAKE_SESSION_TITLE_1));
         assertThat(mExploreIOModel.getThemes().size(), is(2));
         assertThat(mExploreIOModel.getTracks().size(), is(1));
-        Iterator<ThemeGroup> themeGroupIterator = mExploreIOModel.getThemes().iterator();
-        ThemeGroup themeGroup1 = themeGroupIterator.next();
-        ThemeGroup themeGroup2 = themeGroupIterator.next();
+        Iterator<ItemGroup> themeGroupIterator = mExploreIOModel.getThemes().iterator();
+        ItemGroup themeGroup1 = themeGroupIterator.next();
+        ItemGroup themeGroup2 = themeGroupIterator.next();
         if (themeGroup1.getTitle().equals(FAKE_SESSION_TAGS_1)) {
             assertThat(themeGroup1.getSessions().size(), is(2));
             assertThat(themeGroup1.getSessions().get(0).getSessionName(), is(FAKE_SESSION_TITLE_1));
@@ -264,7 +263,7 @@ public class ExploreIOModelTest {
             assertThat(themeGroup2.getSessions().get(1).getSessionName(),
                     is(FAKE_SESSION_TITLE_2_KEYNOTE));
         }
-        TopicGroup topicGroup = mExploreIOModel.getTracks().iterator().next();
+        ItemGroup topicGroup = mExploreIOModel.getTracks().iterator().next();
         assertThat(topicGroup.getSessions().size(), is(1));
         assertThat(topicGroup.getSessions().get(0).getSessionName(), is(FAKE_SESSION_TITLE_4));
     }

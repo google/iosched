@@ -26,6 +26,8 @@ import android.test.suitebuilder.annotation.SmallTest;
 
 import com.google.samples.apps.iosched.provider.ScheduleContract;
 import com.google.samples.apps.iosched.util.LogUtils;
+import com.google.samples.apps.iosched.videolibrary.data.Video;
+import com.google.samples.apps.iosched.videolibrary.data.VideoTrack;
 
 import org.hamcrest.BaseMatcher;
 import org.hamcrest.Description;
@@ -41,10 +43,10 @@ import org.mockito.invocation.InvocationOnMock;
 import org.mockito.runners.MockitoJUnitRunner;
 import org.mockito.stubbing.Answer;
 
-import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.hasItems;
 import static org.hamcrest.CoreMatchers.sameInstance;
 import static org.hamcrest.core.Is.is;
+import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertThat;
 import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.doReturn;
@@ -65,7 +67,7 @@ public class VideoLibraryModelTest {
     private static final Object[][] FAKE_VIDEO_CURSOR_DATA = {
             new String[]{"ID1", "ID2", "ID3"},
             new Integer[]{2012, 2013, 2012},
-            new String[]{"Android", "APIs", "Android"},
+            new String[]{"Android", "Android", "APIs"},
             new String[]{"Title 1", "Title 2", "Title 3"},
             new String[]{"Desc 1", "Desc 2", "Desc 3"},
             new String[]{"VID1", "VID2", "VID3"},
@@ -134,10 +136,15 @@ public class VideoLibraryModelTest {
         assertThat(success, is(true));
 
         // Check that all Videos have been filled properly.
-        assertThat(mVideoLibraryModel.getVideos().size(), is(FAKE_VIDEO_CURSOR_DATA[0].length));
-        for (int i = 0; i < FAKE_VIDEO_CURSOR_DATA[0].length; i++) {
-            VideoLibraryModel.Video video = mVideoLibraryModel.getVideos().get(i);
-            assertThat(video, is(equalsVideoDataInCursor(FAKE_VIDEO_CURSOR_DATA, i)));
+        assertThat(mVideoLibraryModel.getVideos().size(), is(2));
+        int indexInFakeCursor = 0;
+        for (int i = 0; i < mVideoLibraryModel.getVideos().size(); i++) {
+            VideoTrack videoTrack = mVideoLibraryModel.getVideos().get(i);
+            for (int j = 0; j < videoTrack.getVideos().size(); j++) {
+                assertThat(videoTrack,
+                        is(equalsVideoDataInCursor(FAKE_VIDEO_CURSOR_DATA, j, indexInFakeCursor)));
+                indexInFakeCursor += 1;
+            }
         }
     }
 
@@ -168,7 +175,7 @@ public class VideoLibraryModelTest {
         // Then the request model update succeeds.
         assertThat(result, is(true));
         // And the list of videos is empty.
-        assertThat(mVideoLibraryModel.getVideos().size(), is(equalTo(0)));
+        assertNull(mVideoLibraryModel.getVideos());
     }
 
     @Test
@@ -284,28 +291,36 @@ public class VideoLibraryModelTest {
      * Checks that the given {@code VideoLibraryModel.Video} is equal to the video data in the given
      * cursor table at the given {@code index}.
      */
-    private Matcher<VideoLibraryModel.Video> equalsVideoDataInCursor(final Object[][] cursorTable,
-            final int index) {
-        return new BaseMatcher<VideoLibraryModel.Video>() {
+    private Matcher<VideoTrack> equalsVideoDataInCursor(final Object[][] cursorTable,
+            final int indexInTrack, final int indexInCursorTable) {
+        return new BaseMatcher<VideoTrack>() {
             @Override
             public boolean matches(final Object item) {
-                final VideoLibraryModel.Video video = (VideoLibraryModel.Video) item;
-                return video.getId().equals(cursorTable[VIDEO_ID_COLUMN_INDEX][index])
-                        && video.getYear() == (Integer) cursorTable[VIDEO_YEAR_COLUMN_INDEX][index]
-                        && video.getTopic().equals(cursorTable[VIDEO_TOPIC_COLUMN_INDEX][index])
-                        && video.getTitle().equals(cursorTable[VIDEO_TITLE_COLUMN_INDEX][index])
-                        && video.getDesc().equals(cursorTable[VIDEO_DESC_COLUMN_INDEX][index])
-                        && video.getVid().equals(cursorTable[VIDEO_VID_COLUMN_INDEX][index])
+                final Video video = ((VideoTrack) item).getVideos().get(indexInTrack);
+                return video.getId().equals(cursorTable[VIDEO_ID_COLUMN_INDEX][indexInCursorTable])
+                        && video.getYear() ==
+                        (Integer) cursorTable[VIDEO_YEAR_COLUMN_INDEX][indexInCursorTable]
+                        && video.getTopic()
+                                .equals(cursorTable[VIDEO_TOPIC_COLUMN_INDEX][indexInCursorTable])
+                        && video.getTitle()
+                                .equals(cursorTable[VIDEO_TITLE_COLUMN_INDEX][indexInCursorTable])
+                        && video.getDesc()
+                                .equals(cursorTable[VIDEO_DESC_COLUMN_INDEX][indexInCursorTable])
+                        && video.getVid()
+                                .equals(cursorTable[VIDEO_VID_COLUMN_INDEX][indexInCursorTable])
                         && video.getSpeakers().equals(
-                        cursorTable[VIDEO_SPEAKER_COLUMN_INDEX][index])
+                        cursorTable[VIDEO_SPEAKER_COLUMN_INDEX][indexInCursorTable])
                         && video.getThumbnailUrl().equals(
-                        cursorTable[VIDEO_THUMBNAIL_URL_COLUMN_INDEX][index]);
+                        cursorTable[VIDEO_THUMBNAIL_URL_COLUMN_INDEX][indexInCursorTable]);
             }
 
             @Override
             public void describeTo(final Description description) {
                 description.appendText("The Video does not match the data in table ")
-                           .appendValue(cursorTable).appendText(" at index ").appendValue(index);
+                           .appendValue(cursorTable).appendText(" at index in track ")
+                           .appendValue(indexInTrack)
+                           .appendValue(cursorTable).appendText(" at index in table ")
+                           .appendValue(indexInCursorTable);
             }
         };
     }
