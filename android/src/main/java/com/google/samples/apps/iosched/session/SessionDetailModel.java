@@ -232,8 +232,9 @@ public class SessionDetailModel
             return 0l;
         } else {
             long currentTimeMillis = TimeUtils.getCurrentTime(mContext);
+            int minutes = (int) ((mSessionStart - currentTimeMillis) / 60000);
             // Rounded up number of minutes.
-            return (mSessionStart - currentTimeMillis) / 60000 + 1;
+            return  minutes * 60000 < (mSessionStart - currentTimeMillis)? minutes + 1: minutes;
         }
     }
 
