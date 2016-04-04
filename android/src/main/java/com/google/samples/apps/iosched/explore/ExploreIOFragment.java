@@ -132,6 +132,7 @@ public class ExploreIOFragment extends Fragment
             Bundle savedInstanceState) {
         final View root = inflater.inflate(R.layout.explore_io_frag, container, false);
         mCardList = (RecyclerView) root.findViewById(R.id.explore_card_list);
+        mCardList.setHasFixedSize(true);
         final int cardVerticalMargin = getResources().getDimensionPixelSize(R.dimen.spacing_normal);
         mCardList.addItemDecoration(new ItemMarginDecoration(0, cardVerticalMargin,
                 0, cardVerticalMargin));
@@ -317,6 +318,8 @@ public class ExploreIOFragment extends Fragment
 
         private final ImageLoader mImageLoader;
 
+        private final RecyclerView.RecycledViewPool mRecycledViewPool;
+
         // State
         private List mItems;
 
@@ -334,6 +337,7 @@ public class ExploreIOFragment extends Fragment
             mTitles = model.getTagTitles();
             mImageLoader = imageLoader;
             mInflater = LayoutInflater.from(activity);
+            mRecycledViewPool = new RecyclerView.RecycledViewPool();
             mItems = processModel(model);
             setupSessionAdapters(model);
         }
@@ -424,10 +428,11 @@ public class ExploreIOFragment extends Fragment
                 // Cache the scroll position of the session list so that we can restore it in onBind
                 final TrackViewHolder trackHolder = (TrackViewHolder) holder;
                 final int position = trackHolder.getAdapterPosition();
-                if (position == RecyclerView.NO_POSITION) return;
-                final int trackId = getTrackId((ItemGroup) mItems.get(position));
-                mTrackSessionsState.put(trackId,
-                        trackHolder.sessions.getLayoutManager().onSaveInstanceState());
+                if (position != RecyclerView.NO_POSITION) {
+                    final int trackId = getTrackId((ItemGroup) mItems.get(position));
+                    mTrackSessionsState.put(trackId,
+                            trackHolder.sessions.getLayoutManager().onSaveInstanceState());
+                }
             }
             super.onViewRecycled(holder);
         }
@@ -440,12 +445,16 @@ public class ExploreIOFragment extends Fragment
         private @NonNull TrackViewHolder createTrackViewHolder(final ViewGroup parent) {
             final TrackViewHolder holder = new TrackViewHolder(
                     mInflater.inflate(R.layout.explore_io_track_card, parent, false));
+            holder.sessions.setHasFixedSize(true);
+            holder.sessions.setRecycledViewPool(mRecycledViewPool);
             ViewCompat.setImportantForAccessibility(
                     holder.sessions, ViewCompat.IMPORTANT_FOR_ACCESSIBILITY_NO_HIDE_DESCENDANTS);
             holder.header.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(final View v) {
-                    final ItemGroup track = (ItemGroup) mItems.get(holder.getAdapterPosition());
+                    final int position = holder.getAdapterPosition();
+                    if (position == RecyclerView.NO_POSITION) return;
+                    final ItemGroup track = (ItemGroup) mItems.get(position);
                     final Intent intent = new Intent(mHost, ExploreSessionsActivity.class);
                     intent.putExtra(ExploreSessionsActivity.EXTRA_FILTER_TAG, track.getId());
                     ActivityCompat.startActivity(mHost, intent, null);
@@ -465,6 +474,7 @@ public class ExploreIOFragment extends Fragment
                 @Override
                 public void onClick(final View v) {
                     final int position = holder.getAdapterPosition();
+                    if (position == RecyclerView.NO_POSITION) return;
                     final MessageData message = (MessageData) mItems.get(position);
                     message.getStartButtonClickListener().onClick(holder.buttonStart);
                     mItems.remove(position);
@@ -475,6 +485,7 @@ public class ExploreIOFragment extends Fragment
                 @Override
                 public void onClick(final View v) {
                     final int position = holder.getAdapterPosition();
+                    if (position == RecyclerView.NO_POSITION) return;
                     final MessageData message = (MessageData) mItems.get(position);
                     message.getEndButtonClickListener().onClick(holder.buttonEnd);
                     mItems.remove(position);
@@ -490,8 +501,9 @@ public class ExploreIOFragment extends Fragment
             holder.clickableItem.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(final View v) {
-                    final SessionData keynote =
-                            (SessionData) mItems.get(holder.getAdapterPosition());
+                    final int position = holder.getAdapterPosition();
+                    if (position == RecyclerView.NO_POSITION) return;
+                    final SessionData keynote = (SessionData) mItems.get(position);
                     final Intent intent = new Intent(mHost, SessionDetailActivity.class);
                     intent.setData(
                             ScheduleContract.Sessions.buildSessionUri(keynote.getSessionId()));

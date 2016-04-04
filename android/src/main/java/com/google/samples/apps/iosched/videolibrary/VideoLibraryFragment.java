@@ -80,6 +80,7 @@ public class VideoLibraryFragment extends Fragment
             Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.video_library_frag, container, false);
         mCardList = (RecyclerView) root.findViewById(R.id.videos_card_list);
+        mCardList.setHasFixedSize(true);
         final int cardVerticalMargin = getResources().getDimensionPixelSize(R.dimen.spacing_normal);
         mCardList.addItemDecoration(new ItemMarginDecoration(0, cardVerticalMargin,
                 0, cardVerticalMargin));
@@ -202,6 +203,8 @@ public class VideoLibraryFragment extends Fragment
 
         private final List<UserActionListener> mListeners;
 
+        private final RecyclerView.RecycledViewPool mRecycledViewPool;
+
         // State
         private List<VideoTrack> mVideoTracks;
 
@@ -217,6 +220,7 @@ public class VideoLibraryFragment extends Fragment
             mInflater = LayoutInflater.from(activity);
             mImageLoader = imageLoader;
             mListeners = listeners;
+            mRecycledViewPool = new RecyclerView.RecycledViewPool();
             mVideoTracks = processVideos(model);
             setupVideoTrackAdapters();
         }
@@ -225,12 +229,16 @@ public class VideoLibraryFragment extends Fragment
         public VideoTrackViewHolder onCreateViewHolder(final ViewGroup parent, final int viewType) {
             final VideoTrackViewHolder holder = new VideoTrackViewHolder(
                     mInflater.inflate(R.layout.explore_io_track_card, parent, false));
+            holder.videos.setHasFixedSize(true);
+            holder.videos.setRecycledViewPool(mRecycledViewPool);
             ViewCompat.setImportantForAccessibility(
                     holder.videos, ViewCompat.IMPORTANT_FOR_ACCESSIBILITY_NO_HIDE_DESCENDANTS);
             holder.header.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(final View v) {
-                    final VideoTrack videoTrack = mVideoTracks.get(holder.getAdapterPosition());
+                    final int position = holder.getAdapterPosition();
+                    if (position == RecyclerView.NO_POSITION) return;
+                    final VideoTrack videoTrack = mVideoTracks.get(position);
                     // ANALYTICS EVENT: Click on the "More" button of a card in the Video Library
                     // Contains: The clicked header's label
                     AnalyticsHelper.sendEvent(VIDEO_LIBRARY_ANALYTICS_CATEGORY, "morebutton",
@@ -258,6 +266,8 @@ public class VideoLibraryFragment extends Fragment
             final VideoTrack videoTrack = mVideoTracks.get(position);
             holder.title.setText(videoTrack.getTrack());
             holder.header.setContentDescription(videoTrack.getTrack());
+            // TODO once model has been updated with video track image url
+            //mImageLoader.loadImage(videoTrack.getPhotoUrl(), holder.header);
             holder.videos.setAdapter(mTrackVideosAdapters.get(videoTrack.getTrackId()));
             holder.videos.getLayoutManager().onRestoreInstanceState(
                     mTrackVideosState.get(videoTrack.getTrackId()));
@@ -266,9 +276,12 @@ public class VideoLibraryFragment extends Fragment
         @Override
         public void onViewRecycled(final VideoTrackViewHolder holder) {
             // Cache the scroll position of the video list so that we can restore it in onBind
-            final VideoTrack videoTrack = mVideoTracks.get(holder.getAdapterPosition());
-            mTrackVideosState.put(videoTrack.getTrackId(),
-                    holder.videos.getLayoutManager().onSaveInstanceState());
+            final int position = holder.getAdapterPosition();
+            if (position != RecyclerView.NO_POSITION) {
+                final VideoTrack videoTrack = mVideoTracks.get(position);
+                mTrackVideosState.put(videoTrack.getTrackId(),
+                        holder.videos.getLayoutManager().onSaveInstanceState());
+            }
             super.onViewRecycled(holder);
         }
 
