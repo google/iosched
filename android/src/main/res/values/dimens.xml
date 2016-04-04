@@ -21,6 +21,8 @@
     <dimen name="spacing_normal">8dp</dimen>
     <dimen name="spacing_micro">4dp</dimen>
     <dimen name="padding_normal">16dp</dimen>
+    <dimen name="spacing_large">32dp</dimen>
+    <dimen name="touch_raise">6dp</dimen>
 
     <!-- App Primary Text Sizes -->
     <dimen name="app_text_size_xsmall">11sp</dimen>
@@ -65,6 +67,7 @@
     <dimen name="widget_schedule_time_width">72dp</dimen>
     <dimen name="widget_schedule_header_height">40dp</dimen>
     <dimen name="drawer_width">@dimen/match_parent</dimen>
+    <dimen name="horizontal_scrollbar_height">4dp</dimen>
 
     <dimen name="divider_height">1dp</dimen>
     <dimen name="divider_height_inc_padding">16dp</dimen>
@@ -103,6 +106,9 @@
     <item name="aspect_16_9" format="float" type="dimen">1.7778</item>
     <item name="aspect_4_3" format="float" type="dimen">1.3333</item>
     <item name="aspect_phi" format="float" type="dimen">1.618</item>
+    <dimen name="explore_topic_card_header_height">112dp</dimen>
+    <dimen name="compact_list_tile">168dp</dimen>
+    <dimen name="explore_empty_state_padding">112dp</dimen>
 
     <!-- body content -->
     <dimen name="element_spacing_normal">8dp</dimen>

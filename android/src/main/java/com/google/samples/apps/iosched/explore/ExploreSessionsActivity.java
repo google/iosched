@@ -17,7 +17,6 @@
 package com.google.samples.apps.iosched.explore;
 
 import android.app.LoaderManager;
-import android.content.Context;
 import android.content.Intent;
 import android.content.Loader;
 import android.database.Cursor;
@@ -25,6 +24,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
@@ -43,17 +43,14 @@ import com.google.samples.apps.iosched.provider.ScheduleContract;
 import com.google.samples.apps.iosched.settings.SettingsUtils;
 import com.google.samples.apps.iosched.ui.BaseActivity;
 import com.google.samples.apps.iosched.ui.SearchActivity;
-import com.google.samples.apps.iosched.ui.widget.CollectionView;
-import com.google.samples.apps.iosched.ui.widget.CollectionViewCallbacks;
 import com.google.samples.apps.iosched.util.AnalyticsHelper;
 import com.google.samples.apps.iosched.util.UIUtils;
 
+import java.util.ArrayList;
 import java.util.List;
 
-import static com.google.samples.apps.iosched.ui.widget.CollectionView.Inventory;
-import static com.google.samples.apps.iosched.ui.widget.CollectionView.InventoryGroup;
-import static com.google.samples.apps.iosched.ui.widget.CollectionView.OnClickListener;
 import static com.google.samples.apps.iosched.util.LogUtils.LOGD;
+import static com.google.samples.apps.iosched.util.LogUtils.LOGE;
 import static com.google.samples.apps.iosched.util.LogUtils.makeLogTag;
 
 /**
@@ -79,15 +76,13 @@ public class ExploreSessionsActivity extends BaseActivity
     private static final String SCREEN_LABEL = "ExploreSessions";
 
     private static final String TAG = makeLogTag(ExploreSessionsActivity.class);
-    private static final int TAG_METADATA_TOKEN = 0x8;
 
-    private static final int GROUP_TOPIC_TYPE_OR_THEME = 0;
-    private static final int GROUP_LIVE_STREAM = 1;
+    private static final int TAG_METADATA_TOKEN = 0x8;
 
     private static final int MODE_TIME_FIT = 1;
     private static final int MODE_EXPLORE = 2;
 
-    private CollectionView mDrawerCollectionView;
+    private RecyclerView mFiltersList;
     private DrawerLayout mDrawerLayout;
 
     private TagMetadata mTagMetadata;
@@ -96,23 +91,6 @@ public class ExploreSessionsActivity extends BaseActivity
     // dismisses a particular timeslot. At that point, the Activity switches the mode
     // as well as the Uri used.
     private Uri mCurrentUri;
-
-    // The OnClickListener for the Switch widgets on the navigation filter.
-    private final View.OnClickListener mDrawerItemCheckBoxClickListener =
-            new View.OnClickListener() {
-        @Override
-        public void onClick(View v) {
-            boolean isChecked = ((CheckBox)v).isChecked();
-            TagMetadata.Tag theTag = (TagMetadata.Tag)v.getTag();
-            LOGD(TAG, "Checkbox with tag: " + theTag.getName() + " isChecked => " + isChecked);
-            if (isChecked) {
-                mTagFilterHolder.add(theTag.getId(), theTag.getCategory());
-            } else {
-                mTagFilterHolder.remove(theTag.getId(), theTag.getCategory());
-            }
-            reloadFragment();
-        }
-    };
     private ExploreSessionsFragment mFragment;
     private int mMode;
     private View mTimeSlotLayout;
@@ -124,7 +102,7 @@ public class ExploreSessionsActivity extends BaseActivity
         setContentView(R.layout.explore_sessions_act);
 
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
-        mDrawerCollectionView = (CollectionView) findViewById(R.id.drawer_collection_view);
+        mFiltersList = (RecyclerView) findViewById(R.id.filters);
         mTimeSlotLayout = findViewById(R.id.timeslot_view);
         mTimeSlotDivider = findViewById(R.id.timeslot_divider);
         TextView timeSlotTextView = (TextView) findViewById(R.id.timeslot);
@@ -159,7 +137,7 @@ public class ExploreSessionsActivity extends BaseActivity
             mTimeSlotLayout.setVisibility(View.VISIBLE);
             mTimeSlotDivider.setVisibility(View.VISIBLE);
             timeSlotTextView.setText(title);
-            dismissTimeSlotButton.setOnClickListener(new OnClickListener() {
+            dismissTimeSlotButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     mTimeSlotLayout.setVisibility(View.GONE);
@@ -230,7 +208,8 @@ public class ExploreSessionsActivity extends BaseActivity
     @Override
     protected void onPostCreate(Bundle savedInstanceState) {
         super.onPostCreate(savedInstanceState);
-        enableActionBarAutoHide((CollectionView) findViewById(R.id.collection_view));
+        // todo fix app bar hiding
+        //enableActionBarAutoHide((CollectionView) findViewById(R.id.collection_view));
     }
 
     @Override
@@ -300,9 +279,7 @@ public class ExploreSessionsActivity extends BaseActivity
             }
         }
         reloadFragment();
-        TagAdapter tagAdapter = new TagAdapter();
-        mDrawerCollectionView.setCollectionAdapter(tagAdapter);
-        mDrawerCollectionView.updateInventory(tagAdapter.getInventory());
+        mFiltersList.setAdapter(new FilterAdapter(mTagMetadata));
     }
 
     /**
@@ -355,133 +332,199 @@ public class ExploreSessionsActivity extends BaseActivity
         mFragment.reloadFromArguments(intentToFragmentArguments(intent));
     }
 
+    private void updateFilters(final TagMetadata.Tag filter, final boolean enable) {
+        if (enable) {
+            mTagFilterHolder.add(filter.getId(), filter.getCategory());
+        } else {
+            mTagFilterHolder.remove(filter.getId(), filter.getCategory());
+        }
+        reloadFragment();
+    }
+
     @Override
     public void onLoaderReset(Loader<Cursor> loader) {
 
     }
 
     /**
-     * Adapter responsible for showing the alt_nav with the tags from
-     * {@link com.google.samples.apps.iosched.model.TagMetadata}
+     * Adapter for the list of filters that can be applied to this screen i.e. Theme, Session Type,
+     * Live Streamed and Track.
      */
-    private class TagAdapter implements CollectionViewCallbacks {
+    private class FilterAdapter extends RecyclerView.Adapter {
+
+        private static final int TYPE_FILTER = 0;
+
+        private static final int TYPE_LIVE_STREAM_FILTER = 1;
+
+        private static final int TYPE_DIVIDER = 2;
+
+        private final List mItems;
+
+        private final LayoutInflater mInflater;
+
+        FilterAdapter(TagMetadata filters) {
+            mInflater = LayoutInflater.from(ExploreSessionsActivity.this);
+            mItems = new ArrayList();
+            processFilters(filters);
+        }
+
+        @Override
+        public RecyclerView.ViewHolder onCreateViewHolder(final ViewGroup parent,
+                                                          final int viewType) {
+            switch (viewType) {
+                case TYPE_FILTER:
+                    return createFilterViewHolder(parent);
+                case TYPE_LIVE_STREAM_FILTER:
+                    return createLiveStreamFilterViewHolder(parent);
+                case TYPE_DIVIDER:
+                    return createDividerViewHolder(parent);
+                default:
+                    LOGE(TAG, "Unknown view type");
+                    throw new IllegalArgumentException("Unknown view type");
+            }
+        }
+
+        @Override
+        public void onBindViewHolder(final RecyclerView.ViewHolder holder, final int position) {
+            switch (getItemViewType(position)) {
+                case TYPE_FILTER:
+                    bindFilter((FilterViewHolder) holder, (TagMetadata.Tag) mItems.get(position));
+                    break;
+                case TYPE_LIVE_STREAM_FILTER:
+                    bindLiveStreamFilter((FilterViewHolder) holder);
+                    break;
+            }
+        }
+
+        @Override
+        public int getItemCount() {
+            return mItems.size();
+        }
+
+        @Override
+        public int getItemViewType(final int position) {
+            Object item = mItems.get(position);
+            if (item instanceof LiveStream) {
+                return TYPE_LIVE_STREAM_FILTER;
+            } else if (item instanceof Divider) {
+                return TYPE_DIVIDER;
+            }
+            return TYPE_FILTER;
+        }
 
         /**
-         * Returns a new instance of {@link Inventory}. It always contains three
-         * {@link InventoryGroup} groups.
-         * <ul>
-         *     <li>Themes group containing themes such as Develop, Distribute etc.</li>
-         *     <li>Types group containing tags for all types of sessions, codelabs etc.</li>
-         *     <li>Topics group containing tags for specific topics such as Android, Cloud etc.</li>
-         * </ul>
-         *
-         * @return A new instance of {@link Inventory}.
+         * We transform the provided data into a structure suitable for the RecyclerView
+         * i.e. we build up {@link #mItems}, adding 'marker' items for dividers & live stream.
          */
-        public Inventory getInventory() {
+        private void processFilters(TagMetadata tagMetadata) {
             List<TagMetadata.Tag> themes =
-                    mTagMetadata.getTagsInCategory(Config.Tags.CATEGORY_THEME);
-            Inventory inventory = new Inventory();
-
-            InventoryGroup themeGroup = new InventoryGroup(GROUP_TOPIC_TYPE_OR_THEME)
-                    .setDisplayCols(1)
-                    .setDataIndexStart(0)
-                    .setShowHeader(false);
-
-            if (themes != null && themes.size() > 0) {
-                for (TagMetadata.Tag type : themes) {
-                    themeGroup.addItemWithTag(type);
+                    tagMetadata.getTagsInCategory(Config.Tags.CATEGORY_THEME);
+            if (themes != null && !themes.isEmpty()) {
+                for (TagMetadata.Tag theme : themes) {
+                    mItems.add(theme);
                 }
-                inventory.addGroup(themeGroup);
             }
+            mItems.add(new Divider());
 
-            InventoryGroup typesGroup = new InventoryGroup(GROUP_TOPIC_TYPE_OR_THEME)
-                    .setDataIndexStart(0)
-                    .setShowHeader(true);
-            List<TagMetadata.Tag> data = mTagMetadata.getTagsInCategory(Config.Tags.CATEGORY_TYPE);
-
-            if (data != null && data.size() > 0) {
-                for (TagMetadata.Tag tag : data) {
-                    typesGroup.addItemWithTag(tag);
+           List<TagMetadata.Tag> sessionTypes =
+                   tagMetadata.getTagsInCategory(Config.Tags.CATEGORY_TYPE);
+            if (sessionTypes != null && !sessionTypes.isEmpty()) {
+                for (TagMetadata.Tag type : sessionTypes) {
+                    mItems.add(type);
                 }
-                inventory.addGroup(typesGroup);
             }
+            mItems.add(new Divider());
 
-            // We need to add the Live streamed section after the Type category
-            InventoryGroup liveStreamGroup = new InventoryGroup(GROUP_LIVE_STREAM)
-                    .setDataIndexStart(0)
-                    .setShowHeader(true)
-                    .addItemWithTag("Livestreamed");
-            inventory.addGroup(liveStreamGroup);
-
-            InventoryGroup topicsGroup = new InventoryGroup(GROUP_TOPIC_TYPE_OR_THEME)
-                    .setDataIndexStart(0)
-                    .setShowHeader(true);
+            mItems.add(new LiveStream());
+            mItems.add(new Divider());
 
             List<TagMetadata.Tag> topics =
-                    mTagMetadata.getTagsInCategory(Config.Tags.CATEGORY_TOPIC);
-            if (topics != null && topics.size() > 0) {
+                    tagMetadata.getTagsInCategory(Config.Tags.CATEGORY_TOPIC);
+            if (topics != null && !topics.isEmpty()) {
                 for (TagMetadata.Tag topic : topics) {
-                    topicsGroup.addItemWithTag(topic);
-                }
-                inventory.addGroup(topicsGroup);
-            }
-
-            return inventory;
-        }
-
-        @Override
-        public View newCollectionHeaderView(Context context, int groupId, ViewGroup parent) {
-            View view = LayoutInflater.from(context)
-                    .inflate(R.layout.explore_sessions_list_item_alt_header, parent, false);
-            // We do not want the divider/header to be read out by TalkBack, so
-            // inform the view that this is not important for accessibility.
-            UIUtils.setAccessibilityIgnore(view);
-            return view;
-        }
-
-        @Override
-        public void bindCollectionHeaderView(Context context, View view, int groupId,
-                                             String headerLabel, Object headerTag) {
-        }
-
-        @Override
-        public View newCollectionItemView(Context context, int groupId, ViewGroup parent) {
-            return LayoutInflater.from(context).inflate(groupId == GROUP_LIVE_STREAM ?
-                    R.layout.explore_sessions_list_item_livestream_alt_drawer :
-                    R.layout.explore_sessions_list_item_alt_drawer, parent, false);
-        }
-
-        @Override
-        public void bindCollectionItemView(Context context, View view, int groupId,
-                                           int indexInGroup, int dataIndex, Object tag) {
-            final CheckBox checkBox = (CheckBox) view.findViewById(R.id.filter_checkbox);
-            if (groupId == GROUP_LIVE_STREAM) {
-                checkBox.setChecked(mTagFilterHolder.isShowLiveStreamedSessions());
-                checkBox.setOnClickListener(new OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        mTagFilterHolder.setShowLiveStreamedSessions(checkBox.isChecked());
-                        // update the fragment to reflect the changes.
-                        reloadFragment();
-                    }
-                });
-
-            } else {
-                TagMetadata.Tag theTag = (TagMetadata.Tag) tag;
-                if (theTag != null) {
-                    ((TextView) view.findViewById(R.id.text_view)).setText(theTag.getName());
-                    // set the original checked state by looking up our tags.
-                    checkBox.setChecked(mTagFilterHolder.contains(theTag.getId()));
-                    checkBox.setTag(theTag);
-                    checkBox.setOnClickListener(mDrawerItemCheckBoxClickListener);
+                    mItems.add(topic);
                 }
             }
-            view.setOnClickListener(new OnClickListener() {
+        }
+
+        private FilterViewHolder createFilterViewHolder(final ViewGroup parent) {
+            final FilterViewHolder holder = new FilterViewHolder(mInflater.inflate(
+                    R.layout.explore_sessions_list_item_alt_drawer, parent, false));
+            holder.checkbox.setOnClickListener(new View.OnClickListener() {
                 @Override
-                public void onClick(View v) {
-                    checkBox.performClick();
+                public void onClick(final View v) {
+                    final TagMetadata.Tag filter =
+                            (TagMetadata.Tag) mItems.get(holder.getAdapterPosition());
+                    updateFilters(filter, holder.checkbox.isChecked());
                 }
             });
+            holder.itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(final View v) {
+                    holder.checkbox.performClick();
+                }
+            });
+            return holder;
+        }
+
+        private FilterViewHolder createLiveStreamFilterViewHolder(final ViewGroup parent) {
+            final FilterViewHolder holder = new FilterViewHolder(mInflater.inflate(
+                    R.layout.explore_sessions_list_item_livestream_alt_drawer, parent, false));
+            holder.checkbox.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(final View v) {
+                    mTagFilterHolder.setShowLiveStreamedSessions(holder.checkbox.isChecked());
+                    reloadFragment();
+                }
+            });
+            holder.itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(final View v) {
+                    holder.checkbox.performClick();
+                }
+            });
+            return holder;
+        }
+
+        private DividerViewHolder createDividerViewHolder(final ViewGroup parent) {
+            // TODO we should use an ItemDecoration rather than a view
+            return new DividerViewHolder(mInflater.inflate(
+                    R.layout.explore_sessions_list_item_alt_header, parent, false));
+        }
+
+        private void bindFilter(final FilterViewHolder holder,
+                                final TagMetadata.Tag filter) {
+            holder.label.setText(filter.getName());
+            holder.checkbox.setChecked(mTagFilterHolder.contains(filter.getId()));
+        }
+
+        private void bindLiveStreamFilter(final FilterViewHolder holder) {
+            holder.checkbox.setChecked(mTagFilterHolder.isShowLiveStreamedSessions());
+        }
+
+    }
+
+    private static class Divider { }
+
+    private static class LiveStream { }
+
+    private static class FilterViewHolder extends RecyclerView.ViewHolder {
+
+        final TextView label;
+        final CheckBox checkbox;
+
+        public FilterViewHolder(final View itemView) {
+            super(itemView);
+            label = (TextView) itemView.findViewById(R.id.text_view);
+            checkbox = (CheckBox) itemView.findViewById(R.id.filter_checkbox);
         }
     }
+
+    private static class DividerViewHolder extends RecyclerView.ViewHolder {
+
+        public DividerViewHolder(final View itemView) {
+            super(itemView);
+        }
+    }
+
 }

@@ -83,7 +83,7 @@ public class VideoLibraryFilteredActivityTest {
 
     @Test
     public void videosList_InitiallyHasClickableVideos() {
-        onView(withId(R.id.videos_collection_view)).check(matches(hasDescendant(isClickable())));
+        onView(withId(R.id.videos_list)).check(matches(hasDescendant(isClickable())));
     }
 
     @Test
@@ -96,8 +96,8 @@ public class VideoLibraryFilteredActivityTest {
         ViewInteraction view = onView(withId(R.id.headerbar));
 
         // Swiping up should hide the header bar.
-        onView(withId(R.id.videos_collection_view)).perform(swipeUp());
-        onView(withId(R.id.videos_collection_view)).perform(swipeUp());
+        onView(withId(R.id.videos_list)).perform(swipeUp());
+        onView(withId(R.id.videos_list)).perform(swipeUp());
 
         // Check if the header bar is hidden.
         view.check(matches(not(isDisplayed())));

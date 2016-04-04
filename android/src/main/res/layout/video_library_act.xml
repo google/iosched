@@ -28,8 +28,8 @@
     <com.google.samples.apps.iosched.ui.widget.DrawShadowFrameLayout
             android:id="@+id/main_content"
             android:layout_width="match_parent"
-            android:background="@color/light_grey"
             android:layout_height="match_parent"
+            android:background="@color/light_grey"
             app:shadowDrawable="@drawable/header_shadow">
 
         <fragment android:name="com.google.samples.apps.iosched.videolibrary.VideoLibraryFragment"

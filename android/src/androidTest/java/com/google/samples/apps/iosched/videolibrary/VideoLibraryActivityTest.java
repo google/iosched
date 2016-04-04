@@ -166,8 +166,8 @@ public class VideoLibraryActivityTest {
         ViewInteraction view = onView(withId(R.id.headerbar));
 
         // Swiping up should hide the header bar.
-        onView(withId(R.id.videos_collection_view)).perform(swipeUp());
-        onView(withId(R.id.videos_collection_view)).perform(swipeUp());
+        onView(withId(R.id.videos_card_list)).perform(swipeUp());
+        onView(withId(R.id.videos_card_list)).perform(swipeUp());
 
         // Check if the header bar is hidden.
         view.check(matches(not(isDisplayed())));

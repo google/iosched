@@ -87,7 +87,7 @@
             android:layout_gravity="top|end"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/indicator_in_schedule"
+            android:src="@drawable/ic_bookmark_tick"
             android:contentDescription="@null" />
 
     </FrameLayout>
