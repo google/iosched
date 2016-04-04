@@ -70,4 +70,9 @@ public class VideoTrack {
     public int hashCode() {
         return mTrackId;
     }
+
+    @Override
+    public String toString() {
+        return "VideoTrack " + mTrack + "/ " + mTrackId + " with " + mVideos.size() + " videos";
+    }
 }
