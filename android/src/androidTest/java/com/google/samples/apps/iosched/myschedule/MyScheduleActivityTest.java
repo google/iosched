@@ -19,6 +19,7 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Looper;
 import android.support.test.InstrumentationRegistry;
+import android.support.test.filters.FlakyTest;
 import android.support.test.runner.AndroidJUnit4;
 import android.test.suitebuilder.annotation.LargeTest;
 import android.util.Log;
@@ -34,6 +35,7 @@ import com.google.samples.apps.iosched.provider.ScheduleContract;
 import com.google.samples.apps.iosched.settings.SettingsUtils;
 import com.google.samples.apps.iosched.testutils.BaseActivityTestRule;
 import com.google.samples.apps.iosched.testutils.NavigationUtils;
+import com.google.samples.apps.iosched.testutils.OrientationHelper;
 import com.google.samples.apps.iosched.util.TimeUtils;
 
 import org.junit.Before;
@@ -170,7 +172,7 @@ public class MyScheduleActivityTest {
         mActivityStubContext.setActivityContext(mActivityRule.getActivity());
 
         // Given day 1 visible
-        showDay1();
+        showDay(1);
 
         // When clicking on rate session
         onView(allOf(withText(R.string.my_schedule_rate_this_session), isDisplayed()))
@@ -206,7 +208,7 @@ public class MyScheduleActivityTest {
     @Test
     public void viewDay1_sessionVisible() {
         // Given day 1 visible
-        showDay1();
+        showDay(1);
 
         // Then the session in the first day is displayed
         onView(withText(MyScheduleMockItems.SESSION_TITLE_AFTER)).check(matches(isDisplayed()));
@@ -236,7 +238,44 @@ public class MyScheduleActivityTest {
                 .checkNavigationItemIsSelected(NavigationModel.NavigationItemEnum.MY_SCHEDULE);
     }
 
-    private void showDay1() {
-        onView(withId(MyScheduleActivity.BASE_TAB_VIEW_ID + 1)).perform(click());
+    /**
+     * This test works only on phones, where the layout is the same for both orientations (ie tabs)
+     */
+    @FlakyTest
+    @Test
+    public void orientationChange_RetainsDataAndCurrentTab() {
+        // Given day 2 visible
+        showDay(2);
+        onView(withText(MyScheduleMockItems.SESSION_TITLE_BEFORE)).check(matches(isDisplayed()));
+
+        // When changing orientation
+        OrientationHelper.rotateOrientation(mActivityRule);
+
+        // Then day 2 is visible
+        onView(withText(MyScheduleMockItems.SESSION_TITLE_BEFORE)).check(matches(isDisplayed()));
+        // And day 0 is selectable and visible
+        showDay(0);
+        onView(withText(R.string.my_schedule_badgepickup)).check(matches(isDisplayed()));
+        // And day 1 is selectable and visible
+        showDay(1);
+        onView(withText(MyScheduleMockItems.SESSION_TITLE_AFTER)).check(matches(isDisplayed()));
+
+        // When changing orientation again
+        OrientationHelper.rotateOrientation(mActivityRule);
+
+        // Then day 1 is visible
+        onView(withText(MyScheduleMockItems.SESSION_TITLE_AFTER)).check(matches(isDisplayed()));
+        // And day 0 is selectable and visible
+        showDay(0);
+        onView(withText(R.string.my_schedule_badgepickup)).check(matches(isDisplayed()));
+        // And day 2 is selectable and visible
+        showDay(2);
+        onView(withText(MyScheduleMockItems.SESSION_TITLE_BEFORE)).check(matches(isDisplayed()));
     }
+
+    private void showDay(int day) {
+        onView(withId(MyScheduleActivity.BASE_TAB_VIEW_ID + day)).perform(click());
+    }
+
+
 }
