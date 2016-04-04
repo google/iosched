@@ -35,7 +35,7 @@
 
     <!-- Description of the default image in the navigation drawer for the accessibility text. -->
     <string name="navview_header_default_image_content_description">Cyan background image with
-        "I/O" superimposed to represent the 2015 Google I/O logo</string>
+        "I/O" superimposed to represent the 2016 Google I/O logo</string>
     <!-- Description of the image in the navigation drawer for the accessibility text when the user
          specific image has been loaded. -->
     <string name="navview_header_user_image_content_description">User-defined Google
