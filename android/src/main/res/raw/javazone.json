@@ -1,0 +1,103 @@
+{
+    "blurb": "JavaZone 2012 will be held in Oslo Spektrum September 12th and 13th with over 2000 participants. This is the eleventh annual JavaZone, and the sixth at this location.",
+    "calendarHtmlUrl": "http://javazone.no/incogito10/events/JavaZone%202012/calendar",
+    "htmlUrl": "http://javazone.no/incogito10/events/JavaZone%202012",
+    "id": "4c18f45a-054a-4699-a2bc-6a59a9dd8382",
+    "labels": [
+        {
+            "displayName": "Alternative Languages",
+            "iconUrl": "http://javazone.no/incogito10/rest/events/JavaZone%202012/icons/labels/alternative-languages.png",
+            "id": "alternative-languages"
+        },
+        {
+            "displayName": "Architecture in Practice",
+            "iconUrl": "http://javazone.no/incogito10/rest/events/JavaZone%202012/icons/labels/architecture-in-practice.png",
+            "id": "architecture-in-practice"
+        },
+        {
+            "displayName": "Big data and NoSQL",
+            "iconUrl": "http://javazone.no/incogito10/rest/events/JavaZone%202012/icons/labels/big-data-nosql.png",
+            "id": "big-data-nosql"
+        },
+        {
+            "displayName": "Continuous Delivery",
+            "iconUrl": "http://javazone.no/incogito10/rest/events/JavaZone%202012/icons/labels/continous-delivery.png",
+            "id": "continous-delivery"
+        },
+        {
+            "displayName": "Core Java",
+            "iconUrl": "http://javazone.no/incogito10/rest/events/JavaZone%202012/icons/labels/core-java.png",
+            "id": "core-java"
+        },
+        {
+            "displayName": "Distributed Systems and Cloud",
+            "iconUrl": "http://javazone.no/incogito10/rest/events/JavaZone%202012/icons/labels/distributed-systems-cloud.png",
+            "id": "distributed-systems-cloud"
+        },
+        {
+            "displayName": "Enterprise",
+            "iconUrl": "http://javazone.no/incogito10/rest/events/JavaZone%202012/icons/labels/enterprise.png",
+            "id": "enterprise"
+        },
+        {
+            "displayName": "Experience Report",
+            "iconUrl": "http://javazone.no/incogito10/rest/events/JavaZone%202012/icons/labels/experience-report.png",
+            "id": "experience-report"
+        },
+        {
+            "displayName": "Frontend",
+            "iconUrl": "http://javazone.no/incogito10/rest/events/JavaZone%202012/icons/labels/frontend.png",
+            "id": "frontend"
+        },
+        {
+            "displayName": "Innovation and Startups",
+            "iconUrl": "http://javazone.no/incogito10/rest/events/JavaZone%202012/icons/labels/innovation-startup.png",
+            "id": "innovation-startup"
+        },
+        {
+            "displayName": "Mobile",
+            "iconUrl": "http://javazone.no/incogito10/rest/events/JavaZone%202012/icons/labels/mobile.png",
+            "id": "mobile"
+        },
+        {
+            "displayName": "Research and Trends",
+            "iconUrl": "http://javazone.no/incogito10/rest/events/JavaZone%202012/icons/labels/research-trends.png",
+            "id": "research-trends"
+        },
+        {
+            "displayName": "Security",
+            "iconUrl": "http://javazone.no/incogito10/rest/events/JavaZone%202012/icons/labels/security.png",
+            "id": "security"
+        },
+        {
+            "displayName": "Software Craftsmanship and Tools",
+            "iconUrl": "http://javazone.no/incogito10/rest/events/JavaZone%202012/icons/labels/software-craftmanship-tools.png",
+            "id": "software-craftmanship-tools"
+        }
+    ],
+    "levels": [
+        {
+            "displayName": "Introductory",
+            "iconUrl": "http://javazone.no/incogito10/rest/events/JavaZone%202012/icons/levels/Introductory.png",
+            "id": "Introductory"
+        },
+        {
+            "displayName": "Advanced",
+            "iconUrl": "http://javazone.no/incogito10/rest/events/JavaZone%202012/icons/levels/Intermediate_Advanced.png",
+            "id": "Intermediate_Advanced"
+        },
+        {
+            "displayName": "Intermediate",
+            "iconUrl": "http://javazone.no/incogito10/rest/events/JavaZone%202012/icons/levels/Intermediate.png",
+            "id": "Intermediate"
+        },
+        {
+            "displayName": "Hardcore",
+            "iconUrl": "http://javazone.no/incogito10/rest/events/JavaZone%202012/icons/levels/Advanced.png",
+            "id": "Advanced"
+        }
+    ],
+    "name": "JavaZone 2012",
+    "selfUrl": "http://javazone.no/incogito10/rest/events/JavaZone%202012",
+    "sessionHtmlUrl": "http://javazone.no/incogito10/events/JavaZone%202012/sessions"
+}
