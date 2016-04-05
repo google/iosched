@@ -36,6 +36,7 @@ import com.google.samples.apps.iosched.archframework.Model;
 import com.google.samples.apps.iosched.archframework.ModelWithLoaderManager;
 import com.google.samples.apps.iosched.archframework.QueryEnum;
 import com.google.samples.apps.iosched.archframework.UserActionEnum;
+import com.google.samples.apps.iosched.model.TagMetadata;
 import com.google.samples.apps.iosched.provider.ScheduleContract;
 import com.google.samples.apps.iosched.sync.SyncHelper;
 import com.google.samples.apps.iosched.util.AccountUtils;
@@ -122,6 +123,8 @@ public class VideoLibraryModel
 
     private Uri mFilterUri;
 
+    private TagMetadata mTagMetadata;
+
     public VideoLibraryModel(Context context, LoaderManager loaderManager, Uri videoUri,
             Uri myVideosUri, Uri filterUri) {
         super(VideoLibraryQueryEnum.values(), VideoLibraryUserActionEnum.values(), loaderManager);
@@ -158,8 +161,8 @@ public class VideoLibraryModel
 
     /**
      * Returns the {@link VideoTrack} listing any videos released this year, as retrieved by the
-     * last run of a {@link VideoLibraryModel.VideoLibraryQueryEnum#VIDEOS} query or {@code null}
-     * if no VIDEOS queries have been ran before.
+     * last run of a {@link VideoLibraryModel.VideoLibraryQueryEnum#VIDEOS} query or {@code null} if
+     * no VIDEOS queries have been ran before.
      */
     public VideoTrack getCurrentYearVideos() {
         return mCurrentYearVideos;
@@ -176,8 +179,9 @@ public class VideoLibraryModel
 
     /**
      * Convenience method for retrieving a flat list of <b>all</b> videos retrieved by the last run
-     * of a {@link VideoLibraryModel.VideoLibraryQueryEnum#VIDEOS} query or an empty {@code List}
-     * if no VIDEOS queries have been ran before.
+     * of a {@link VideoLibraryModel.VideoLibraryQueryEnum#VIDEOS} query or an empty {@code List} if
+     * no VIDEOS queries have been ran before.
+     *
      * @return
      */
     public List<Video> getAllVideos() {
@@ -315,6 +319,8 @@ public class VideoLibraryModel
                 loader = getCursorLoaderInstance(mContext, mMyVideosUri,
                         VideoLibraryQueryEnum.MY_VIEWED_VIDEOS.getProjection(), null, null, null);
                 break;
+            case TAGS:
+                loader = TagMetadata.createCursorLoader(mContext);
         }
 
         return loader;
@@ -380,15 +386,36 @@ public class VideoLibraryModel
                 });
                 Collections.sort(mTopics);
                 return true;
+            case TAGS:
+                mTagMetadata = new TagMetadata(cursor);
+                addImageUrlToVideoTracksIfAvailable();
+                return true;
             default:
                 return false;
         }
     }
 
+    private void addImageUrlToVideoTracksIfAvailable() {
+        if (mTagMetadata != null) {
+            if (mKeynoteVideos != null) {
+                mKeynoteVideos.setTrackImageUrlIfAvailable(mTagMetadata);
+            }
+            if (mCurrentYearVideos != null) {
+                mCurrentYearVideos.setTrackImageUrlIfAvailable(mTagMetadata);
+            }
+            if (mVideos != null) {
+                for (VideoTrack track : mVideos) {
+                    track.setTrackImageUrlIfAvailable(mTagMetadata);
+                }
+            }
+        }
+    }
+
     /**
      * Populate the model objects (mKeynoteVideos, mCurrentYearVideos & mVideos) from the given
-     * cursor. Note we assume that the data is already sorted by
-     * track (per {@link ScheduleContract.Videos#DEFAULT_SORT}).
+     * cursor. Note we assume that the data is already sorted by track (per {@link
+     * ScheduleContract.Videos#DEFAULT_SORT}).
+     *
      * @param cursor The cursor to read data from.
      */
     private void processVideos(final Cursor cursor) {
@@ -402,7 +429,9 @@ public class VideoLibraryModel
         do {
             final Video video = readVideo(cursor);
             final String track = video.getTopic();
-            if (track == null) continue;
+            if (track == null) {
+                continue;
+            }
 
             // Special handling for keynotes & videos from this year
             if (KEYNOTES_TOPIC.equals(track)) {
@@ -442,12 +471,16 @@ public class VideoLibraryModel
         if (!keynoteVideos.isEmpty()) {
             mKeynoteVideos = new VideoTrack(KEYNOTES_TOPIC, TRACK_ID_KEYNOTES, keynoteVideos);
         }
+
+        addImageUrlToVideoTracksIfAvailable();
     }
 
     /**
      * Create a single {@link Video} object form the given cursor.
      */
-    private @NonNull Video readVideo(final Cursor cursor) {
+    private
+    @NonNull
+    Video readVideo(final Cursor cursor) {
         return new Video(
                 cursor.getString(cursor.getColumnIndex(
                         ScheduleContract.Videos.VIDEO_ID)),
@@ -548,7 +581,12 @@ public class VideoLibraryModel
         FILTERS(0x3, new String[]{
                 ScheduleContract.Videos.VIDEO_YEAR,
                 ScheduleContract.Videos.VIDEO_TOPIC
-        });
+        }),
+
+        /**
+         * Query that retrieves all the possible tags
+         */
+        TAGS(0x4, null);
 
         private int id;
 

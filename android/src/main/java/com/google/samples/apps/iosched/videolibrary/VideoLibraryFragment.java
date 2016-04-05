@@ -30,6 +30,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.google.samples.apps.iosched.R;
@@ -266,8 +267,7 @@ public class VideoLibraryFragment extends Fragment
             final VideoTrack videoTrack = mVideoTracks.get(position);
             holder.title.setText(videoTrack.getTrack());
             holder.header.setContentDescription(videoTrack.getTrack());
-            // TODO once model has been updated with video track image url
-            //mImageLoader.loadImage(videoTrack.getPhotoUrl(), holder.header);
+            mImageLoader.loadImage(videoTrack.getTrackImageUrl(), holder.headerImage);
             holder.videos.setAdapter(mTrackVideosAdapters.get(videoTrack.getTrackId()));
             holder.videos.getLayoutManager().onRestoreInstanceState(
                     mTrackVideosState.get(videoTrack.getTrackId()));
@@ -365,12 +365,14 @@ public class VideoLibraryFragment extends Fragment
         final ViewGroup header;
         final TextView title;
         final RecyclerView videos;
+        final ImageView headerImage;
 
         public VideoTrackViewHolder(final View itemView) {
             super(itemView);
             header = (ViewGroup) itemView.findViewById(R.id.header);
             title = (TextView) itemView.findViewById(R.id.title);
             videos = (RecyclerView) itemView.findViewById(R.id.sessions);
+            headerImage = (ImageView) itemView.findViewById(R.id.header_image);
         }
     }
 

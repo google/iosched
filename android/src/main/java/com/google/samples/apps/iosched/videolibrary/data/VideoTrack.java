@@ -14,6 +14,10 @@
 
 package com.google.samples.apps.iosched.videolibrary.data;
 
+import android.support.annotation.NonNull;
+
+import com.google.samples.apps.iosched.model.TagMetadata;
+
 import java.util.List;
 
 /**
@@ -24,6 +28,8 @@ public class VideoTrack {
     private final String mTrack;
 
     private final int mTrackId;
+
+    private String mTrackImageUrl;
 
     private final List<Video> mVideos;
 
@@ -45,6 +51,17 @@ public class VideoTrack {
 
     public List<Video> getVideos() {
         return mVideos;
+    }
+
+    public String getTrackImageUrl() {
+        return mTrackImageUrl;
+    }
+
+    public void setTrackImageUrlIfAvailable(@NonNull TagMetadata tags) {
+        TagMetadata.Tag tag = tags.getTag(mTrack);
+        if (tag != null) {
+            mTrackImageUrl = tag.getPhotoUrl();
+        }
     }
 
     public boolean hasVideos() {
