@@ -58,6 +58,7 @@
 
     <declare-styleable name="ThemeIOSched">
         <attr name="isFloatingWindow" format="boolean" />
+        <attr name="videoThumbnailStyle" format="reference" />
     </declare-styleable>
 
     <declare-styleable name="AspectRatioView">
@@ -73,7 +74,6 @@
     <declare-styleable name="VideoThumbnail">
         <attr name="playIcon" format="reference" />
         <attr name="state_played" format="boolean" />
-        <attr name="videoThumbnailStyle" format="reference" />
     </declare-styleable>
 
 </resources>
