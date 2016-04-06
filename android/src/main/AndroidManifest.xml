@@ -458,8 +458,6 @@
              a simple receiver that triggers a sync for any message it receives. used by our
              GCM implementation
         -->
-        <receiver android:name="com.google.samples.apps.iosched.sync.TriggerSyncReceiver" />
-
         <!-- Other manifest items -->
 
         <meta-data

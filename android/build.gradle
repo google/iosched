@@ -32,7 +32,7 @@ repositories {
 
 android {
     compileSdkVersion 23
-    buildToolsVersion "23.0.2"
+    buildToolsVersion "23.0.3"
 
     defaultConfig {
         applicationId "no.java.schedule"
@@ -117,6 +117,7 @@ android {
     packagingOptions {
         // Exclude files to avoid packaging collisions (same file name in multiple dependencies).
         exclude 'LICENSE.txt'
+        exclude 'META-INF/services/javax.annotation.processing.Processor'
     }
 
     // Test Android jar comes with unimplemented methods that throw exceptions by default. This
@@ -184,4 +185,5 @@ dependencies {
     compile 'com.android.support.test.espresso:espresso-idling-resource:2.0'
 
     compile 'com.google.guava:guava:18.0'
-}
+    compile 'com.jakewharton:butterknife:7.0.1'
+    compile 'com.squareup.retrofit2:retrofit:2.0.1'}
