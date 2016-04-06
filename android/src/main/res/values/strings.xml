@@ -479,6 +479,9 @@
     <string name="navdrawer_description_a11y">Navigation Drawer used to switch between major
         features of the application</string>
 
+    <!-- Accessibility description for the spinner used to change account. -->
+    <string name="switch_account_spinner_description_a11y">Switch account</string>
+
     <!-- Menu item to open the Explore screen [CHAR_LIMIT=20] -->
     <string name="navdrawer_item_explore">Explore</string>
 
