@@ -231,6 +231,7 @@ public abstract class BaseActivity extends AppCompatActivity implements
     protected void onPostCreate(Bundle savedInstanceState) {
         super.onPostCreate(savedInstanceState);
         mAppNavigationViewAsDrawer = new AppNavigationViewAsDrawerImpl(new ImageLoader(this), this);
+        mAppNavigationViewAsDrawer.onRestoreInstanceState(savedInstanceState);
         mAppNavigationViewAsDrawer.activityReady(this, this, getSelfNavDrawerItem());
         mHeaderViewImpl.setNavigationView(mAppNavigationViewAsDrawer);
 
@@ -248,6 +249,14 @@ public abstract class BaseActivity extends AppCompatActivity implements
         } else {
             LOGW(TAG, "No view with ID main_content to fade in.");
         }
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        if (mAppNavigationViewAsDrawer != null) {
+            mAppNavigationViewAsDrawer.onSaveInstanceState(outState);
+        }
+        super.onSaveInstanceState(outState);
     }
 
     @Override
@@ -600,6 +609,20 @@ public abstract class BaseActivity extends AppCompatActivity implements
     protected void onRefreshingStateChanged(boolean refreshing) {
         if (mSwipeRefreshLayout != null) {
             mSwipeRefreshLayout.setRefreshing(refreshing);
+        }
+    }
+
+    @Override
+    public void onWindowFocusChanged(boolean hasFocus) {
+        super.onWindowFocusChanged(hasFocus);
+
+        // There is no way to know when a Spinner has been dismissed by a means other than selecting
+        // an item (eg tapping elsewhere on screen), but if the activity has regained focus, it
+        // means the spinner is currently not showing (Note: other UI elements may  have caused the
+        // Activity to lose focus, but that doesn't matter, marking the spinner as not showing
+        // the drop down view is correct)
+        if (mAppNavigationViewAsDrawer != null && hasFocus) {
+            mAppNavigationViewAsDrawer.markAccountSpinnerAsNotShowingDropDownView();
         }
     }
 
