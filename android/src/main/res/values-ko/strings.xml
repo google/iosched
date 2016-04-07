@@ -490,6 +490,9 @@
      -->
     <string name="map_now_playing">재생 중:&lt;br&gt;&lt;b&gt;%1$s&lt;/b&gt;</string>
 
+    <!-- Message displayed when the location permission was denied -->
+    <string name="map_permission_denied">앱 권한이 거부되었습니다.</string>
+
     <!-- Clickable text in the map popup that leads to sessions in a room -->
     <string name="map_touch_to_see_session">세션을 보려면 누릅니다.</string>
 

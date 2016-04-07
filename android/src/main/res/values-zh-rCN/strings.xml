@@ -493,6 +493,9 @@
      -->
     <string name="map_now_playing">现在播放：&lt;br&gt;&lt;b&gt;%1$s&lt;/b&gt;</string>
 
+    <!-- Message displayed when the location permission was denied -->
+    <string name="map_permission_denied">应用权限被拒绝。</string>
+
     <!-- Clickable text in the map popup that leads to sessions in a room -->
     <string name="map_touch_to_see_session">点击屏幕即可看到会议</string>
 

@@ -489,6 +489,9 @@
      -->
     <string name="map_now_playing">再生中：&lt;br&gt;&lt;b&gt; %1$s&lt;/b&gt;</string>
 
+    <!-- Message displayed when the location permission was denied -->
+    <string name="map_permission_denied">アクセスが拒否されました。</string>
+
     <!-- Clickable text in the map popup that leads to sessions in a room -->
     <string name="map_touch_to_see_session">タッチしてセッションを見る</string>
 

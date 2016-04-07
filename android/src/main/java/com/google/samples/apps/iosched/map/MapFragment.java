@@ -114,6 +114,7 @@ public class MapFragment extends com.google.android.gms.maps.MapFragment impleme
     private static final int VENUE_DEFAULT_LEVEL_INDEX = 0;
 
     private static final String TAG = makeLogTag(MapFragment.class);
+    private boolean mMyLocationEnabled = false;
 
     // Tile Providers
     private SparseArray<CachedTileProvider> mTileProviders =
@@ -152,6 +153,7 @@ public class MapFragment extends com.google.android.gms.maps.MapFragment impleme
     private static final int TOKEN_LOADER_TILES = 0x2;
     //For Analytics tracking
     public static final String SCREEN_LABEL = "Map";
+
 
     public interface Callbacks {
 
@@ -278,6 +280,22 @@ public class MapFragment extends com.google.android.gms.maps.MapFragment impleme
         }
     }
 
+    /**
+     * Toggles the 'my location' button. Note that the location permission <b>must</b> have already
+     * been granted when this call is made.
+     *
+     * @param setEnabled
+     */
+    public void setMyLocationEnabled(final boolean setEnabled) {
+        mMyLocationEnabled = setEnabled;
+
+        if (mMap == null) {
+            return;
+        }
+        //noinspection MissingPermission
+        mMap.setMyLocationEnabled(mMyLocationEnabled);
+    }
+
     @Override
     public void onStop() {
         super.onStop();
@@ -324,14 +342,16 @@ public class MapFragment extends com.google.android.gms.maps.MapFragment impleme
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
         mMap.setIndoorEnabled(false);
-        // TODO(b/27660106): Add support for runtime permissions to request location permission
-        // mMap.setMyLocationEnabled(false);
         mMap.setOnMarkerClickListener(this);
         mMap.setOnMapClickListener(this);
         mMap.setOnCameraChangeListener(this);
         UiSettings mapUiSettings = mMap.getUiSettings();
         mapUiSettings.setZoomControlsEnabled(false);
         mapUiSettings.setMapToolbarEnabled(false);
+
+        // This state is set via 'setMyLocationLayerEnabled.
+        //noinspection MissingPermission
+        mMap.setMyLocationEnabled(mMyLocationEnabled);
 
         // load all markers
         LoaderManager lm = getLoaderManager();
@@ -342,6 +362,7 @@ public class MapFragment extends com.google.android.gms.maps.MapFragment impleme
 
         setupMap(true);
     }
+
 
     private void setupMap(boolean resetCamera) {
 
