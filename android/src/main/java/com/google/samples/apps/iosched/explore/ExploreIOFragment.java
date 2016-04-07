@@ -202,27 +202,17 @@ public class ExploreIOFragment extends Fragment
         presenter.loadInitialQueries();
     }
 
-    private void setContentTopClearance(int clearance) {
-        if (mCardList != null) {
-            mCardList.setPadding(mCardList.getPaddingLeft(), clearance,
-                    mCardList.getPaddingRight(), mCardList.getPaddingBottom());
-        }
-    }
-
     @Override
     public void onResume() {
         super.onResume();
         getActivity().invalidateOptionsMenu();
 
-        // configure fragment's top clearance to take our overlaid controls (Action Bar
-        // and spinner box) into account.
-        int actionBarSize = UIUtils.calculateActionBarSize(getActivity());
-        DrawShadowFrameLayout drawShadowFrameLayout =
+        final DrawShadowFrameLayout drawShadowFrameLayout =
                 (DrawShadowFrameLayout) getActivity().findViewById(R.id.main_content);
         if (drawShadowFrameLayout != null) {
-            drawShadowFrameLayout.setShadowTopOffset(actionBarSize);
+            // configure fragment's top clearance to take our overlaid Toolbar into account.
+            drawShadowFrameLayout.setShadowTopOffset(UIUtils.calculateActionBarSize(getActivity()));
         }
-        setContentTopClearance(actionBarSize);
     }
 
     @Override
@@ -268,7 +258,7 @@ public class ExploreIOFragment extends Fragment
 
     /**
      * Let all UserActionListener know that the video list has been reloaded and that therefore we
-     * need to display another random set of sessions.
+     * need to update the display of sessions.
      */
     private void fireReloadEvent() {
         if (!isAdded()) {

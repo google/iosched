@@ -21,7 +21,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <include layout="@layout/toolbar_actionbar_with_headerbar"/>
+    <include layout="@layout/toolbar_with_headerbar"/>
 
     <com.google.samples.apps.iosched.ui.widget.MultiSwipeRefreshLayout
         android:id="@+id/swipe_refresh_layout"

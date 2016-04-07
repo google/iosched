@@ -107,7 +107,6 @@ public class ExploreSessionsActivity extends BaseActivity
         mTimeSlotDivider = findViewById(R.id.timeslot_divider);
         TextView timeSlotTextView = (TextView) findViewById(R.id.timeslot);
         ImageButton dismissTimeSlotButton = (ImageButton) findViewById(R.id.close_timeslot);
-        registerHideableHeaderView(findViewById(R.id.headerbar));
 
         mDrawerLayout.setDrawerShadow(R.drawable.drawer_shadow_flipped, GravityCompat.END);
 
@@ -152,7 +151,7 @@ public class ExploreSessionsActivity extends BaseActivity
         }
 
         // Add the back button to the toolbar.
-        Toolbar toolbar = getActionBarToolbar();
+        Toolbar toolbar = getToolbar();
         toolbar.setNavigationIcon(R.drawable.ic_up);
         toolbar.setNavigationContentDescription(R.string.close_and_go_back);
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
@@ -176,7 +175,7 @@ public class ExploreSessionsActivity extends BaseActivity
         super.onCreateOptionsMenu(menu);
 
         // Add the filter & search buttons to the toolbar.
-        Toolbar toolbar = getActionBarToolbar();
+        Toolbar toolbar = getToolbar();
         toolbar.inflateMenu(R.menu.explore_sessions_filtered);
         toolbar.setOnMenuItemClickListener(this);
         return true;
@@ -203,13 +202,6 @@ public class ExploreSessionsActivity extends BaseActivity
                 return true;
         }
         return false;
-    }
-
-    @Override
-    protected void onPostCreate(Bundle savedInstanceState) {
-        super.onPostCreate(savedInstanceState);
-        // todo fix app bar hiding
-        //enableActionBarAutoHide((CollectionView) findViewById(R.id.collection_view));
     }
 
     @Override

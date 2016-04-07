@@ -40,7 +40,6 @@ import android.util.TypedValue;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
-import android.widget.ListView;
 
 import com.google.android.gms.auth.GoogleAuthUtil;
 import com.google.samples.apps.iosched.R;
@@ -56,8 +55,6 @@ import com.google.samples.apps.iosched.provider.ScheduleContract;
 import com.google.samples.apps.iosched.service.DataBootstrapService;
 import com.google.samples.apps.iosched.settings.SettingsUtils;
 import com.google.samples.apps.iosched.sync.SyncHelper;
-import com.google.samples.apps.iosched.ui.widget.HeaderView;
-import com.google.samples.apps.iosched.ui.widget.HeaderViewImpl;
 import com.google.samples.apps.iosched.ui.widget.MultiSwipeRefreshLayout;
 import com.google.samples.apps.iosched.util.AccountUtils;
 import com.google.samples.apps.iosched.util.ImageLoader;
@@ -78,8 +75,7 @@ public abstract class BaseActivity extends AppCompatActivity implements
         LoginAndAuthListener,
         SharedPreferences.OnSharedPreferenceChangeListener,
         MultiSwipeRefreshLayout.CanChildScrollUpCallback, LoginStateListener,
-        AppNavigationViewAsDrawerImpl.NavigationDrawerStateListener,
-        HeaderView {
+        AppNavigationViewAsDrawerImpl.NavigationDrawerStateListener {
 
     private static final String TAG = makeLogTag(BaseActivity.class);
 
@@ -91,8 +87,8 @@ public abstract class BaseActivity extends AppCompatActivity implements
     // Navigation drawer
     private AppNavigationViewAsDrawerImpl mAppNavigationViewAsDrawer;
 
-    // Header view
-    private HeaderViewImpl mHeaderViewImpl;
+    // Toolbar
+    private Toolbar mToolbar;
 
     // Helper methods for L APIs
     private LUtils mLUtils;
@@ -138,7 +134,6 @@ public abstract class BaseActivity extends AppCompatActivity implements
         }
 
         mLUtils = LUtils.getInstance(this);
-        mHeaderViewImpl = new HeaderViewImpl(this, mLUtils);
     }
 
     private void trySetupSwipeRefresh() {
@@ -160,29 +155,6 @@ public abstract class BaseActivity extends AppCompatActivity implements
         }
     }
 
-    @Override
-    public void setProgressBarTopWhenActionBarShown(int progressBarTopWhenActionBarShown) {
-        mHeaderViewImpl.setProgressBarTopWhenActionBarShown(progressBarTopWhenActionBarShown);
-        updateSwipeRefreshProgressBarTop();
-    }
-
-    private void updateSwipeRefreshProgressBarTop() {
-        if (mSwipeRefreshLayout == null) {
-            return;
-        }
-
-        int progressBarStartMargin = getResources().getDimensionPixelSize(
-                R.dimen.swipe_refresh_progress_bar_start_margin);
-        int progressBarEndMargin = getResources().getDimensionPixelSize(
-                R.dimen.swipe_refresh_progress_bar_end_margin);
-        int top =
-                mHeaderViewImpl.isActionBarShown() ?
-                        mHeaderViewImpl.getProgressBarTopWhenActionBarShown() :
-                        0;
-        mSwipeRefreshLayout.setProgressViewOffset(false,
-                top + progressBarStartMargin, top + progressBarEndMargin);
-    }
-
     /**
      * Returns the navigation drawer item that corresponds to this Activity. Subclasses of
      * BaseActivity override this to indicate what nav drawer item corresponds to them Return
@@ -195,14 +167,12 @@ public abstract class BaseActivity extends AppCompatActivity implements
     @Override
     public void setContentView(int layoutResID) {
         super.setContentView(layoutResID);
-        getActionBarToolbar();
+        getToolbar();
     }
 
     @Override
     public void onNavDrawerStateChanged(boolean isOpen, boolean isAnimating) {
-        if (mHeaderViewImpl.isAutoHideEnabled() && isOpen) {
-            mHeaderViewImpl.autoShowOrHideActionBar(true);
-        }
+        // Nothing to do
     }
 
     @Override
@@ -233,14 +203,12 @@ public abstract class BaseActivity extends AppCompatActivity implements
         mAppNavigationViewAsDrawer = new AppNavigationViewAsDrawerImpl(new ImageLoader(this), this);
         mAppNavigationViewAsDrawer.onRestoreInstanceState(savedInstanceState);
         mAppNavigationViewAsDrawer.activityReady(this, this, getSelfNavDrawerItem());
-        mHeaderViewImpl.setNavigationView(mAppNavigationViewAsDrawer);
 
         if (getSelfNavDrawerItem() != NavigationItemEnum.INVALID) {
-            mHeaderViewImpl.setToolbarForNavigation();
+            setToolbarForNavigation();
         }
 
         trySetupSwipeRefresh();
-        updateSwipeRefreshProgressBarTop();
 
         View mainContent = findViewById(R.id.main_content);
         if (mainContent != null) {
@@ -553,18 +521,28 @@ public abstract class BaseActivity extends AppCompatActivity implements
         mLoginAndAuthProvider.retryAuthByUserRequest();
     }
 
-    @Override
-    public Toolbar getActionBarToolbar() {
-        if (mHeaderViewImpl != null) {
-            return mHeaderViewImpl.getActionBarToolbar();
-        } else {
-            return null;
+    public Toolbar getToolbar() {
+        if (mToolbar == null) {
+            mToolbar = (Toolbar) findViewById(R.id.toolbar);
+            if (mToolbar != null) {
+                mToolbar.setNavigationContentDescription(getResources().getString(R.string
+                        .navdrawer_description_a11y));
+                setSupportActionBar(mToolbar);
+            }
         }
+        return mToolbar;
     }
 
-    @Override
-    public void enableActionBarAutoHide(final ListView listView) {
-        mHeaderViewImpl.enableActionBarAutoHide(listView);
+    private void setToolbarForNavigation() {
+        if (mToolbar != null) {
+            mToolbar.setNavigationIcon(R.drawable.ic_ab_drawer);
+            mToolbar.setNavigationOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    mAppNavigationViewAsDrawer.showNavigation();
+                }
+            });
+        }
     }
 
     @Override
@@ -623,20 +601,6 @@ public abstract class BaseActivity extends AppCompatActivity implements
         // the drop down view is correct)
         if (mAppNavigationViewAsDrawer != null && hasFocus) {
             mAppNavigationViewAsDrawer.markAccountSpinnerAsNotShowingDropDownView();
-        }
-    }
-
-    @Override
-    public void registerHideableHeaderView(View hideableHeaderView) {
-        if (mHeaderViewImpl != null) {
-            mHeaderViewImpl.registerHideableHeaderView(hideableHeaderView);
-        }
-    }
-
-    @Override
-    public void deregisterHideableHeaderView(View hideableHeaderView) {
-        if (mHeaderViewImpl != null) {
-            mHeaderViewImpl.deregisterHideableHeaderView(hideableHeaderView);
         }
     }
 

@@ -18,6 +18,7 @@ package com.google.samples.apps.iosched.explore;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -50,14 +51,6 @@ public class ExploreIOActivity extends BaseActivity implements Toolbar.OnMenuIte
         // Contains: Nothing (Page name is a constant)
         AnalyticsHelper.sendScreenView(SCREEN_LABEL);
 
-        registerHideableHeaderView(findViewById(R.id.headerbar));
-    }
-
-    @Override
-    protected void onPostCreate(Bundle savedInstanceState) {
-        super.onPostCreate(savedInstanceState);
-        // todo fix app bar hiding
-        //enableActionBarAutoHide((CollectionView) findViewById(R.id.explore_collection_view));
     }
 
     @Override
@@ -70,7 +63,7 @@ public class ExploreIOActivity extends BaseActivity implements Toolbar.OnMenuIte
         super.onCreateOptionsMenu(menu);
 
         // Add the search button to the toolbar.
-        Toolbar toolbar = getActionBarToolbar();
+        Toolbar toolbar = getToolbar();
         toolbar.inflateMenu(R.menu.explore_io_menu);
         toolbar.setOnMenuItemClickListener(this);
         return true;

@@ -132,29 +132,17 @@ public class ExploreSessionsFragment extends Fragment implements
         outState.putBoolean(STATE_SHOW_LIVESTREAMED_SESSIONS, mShowLiveStreamedSessions);
     }
 
-    private void setContentTopClearance(int clearance) {
-        if (mSessionList != null) {
-            mSessionList.setPadding(mSessionList.getPaddingLeft(),
-                                    clearance,
-                                    mSessionList.getPaddingRight(),
-                                    mSessionList.getPaddingBottom());
-        }
-    }
-
     @Override
     public void onResume() {
         super.onResume();
         getActivity().invalidateOptionsMenu();
-        // configure session fragment's top clearance to take our overlaid controls (Action Bar
-        // and spinner box) into account.
-        int actionBarSize = UIUtils.calculateActionBarSize(getActivity());
-        DrawShadowFrameLayout drawShadowFrameLayout =
+
+        final DrawShadowFrameLayout drawShadowFrameLayout =
                 (DrawShadowFrameLayout) getActivity().findViewById(R.id.main_content);
         if (drawShadowFrameLayout != null) {
-            drawShadowFrameLayout.setShadowTopOffset(actionBarSize);
+            // configure session fragment's top clearance to take our overlaid Toolbar into account.
+            drawShadowFrameLayout.setShadowTopOffset(UIUtils.calculateActionBarSize(getActivity()));
         }
-        setContentTopClearance(actionBarSize
-                + getResources().getDimensionPixelSize(R.dimen.explore_grid_padding));
     }
 
     @Override

@@ -77,7 +77,7 @@ public class SearchActivity extends BaseActivity implements
                 new int[]{R.id.search_result}, 0);
         mSearchResults.setAdapter(mResultsAdapter);
         mSearchResults.setOnItemClickListener(this);
-        Toolbar toolbar = getActionBarToolbar();
+        Toolbar toolbar = getToolbar();
 
         Drawable up = DrawableCompat.wrap(ContextCompat.getDrawable(this, R.drawable.ic_up));
         DrawableCompat.setTint(up, getResources().getColor(R.color.app_body_text_2));

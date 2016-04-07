@@ -26,10 +26,10 @@
         android:id="@+id/videos_card_list"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:paddingBottom="@dimen/spacing_normal"
         android:clipToPadding="false"
-        android:scrollbars="vertical"
+        android:paddingBottom="@dimen/spacing_normal"
         android:scrollbarStyle="insideOverlay"
+        android:scrollbars="vertical"
         app:layoutManager="android.support.v7.widget.LinearLayoutManager" />
 
     <!-- Empty state -->

@@ -311,28 +311,17 @@ public class VideoLibraryFilteredFragment extends Fragment implements
         presenter.loadInitialQueries();
     }
 
-    private void setContentTopClearance(int clearance) {
-        if (mVideoList != null) {
-            mVideoList.setPadding(mVideoList.getPaddingLeft(), clearance,
-                    mVideoList.getPaddingRight(), mVideoList.getPaddingBottom());
-        }
-    }
-
     @Override
     public void onResume() {
         super.onResume();
         getActivity().invalidateOptionsMenu();
 
-        // configure video fragment's top clearance to take our overlaid controls (Action Bar
-        // and spinner box) into account.
-        int actionBarSize = UIUtils.calculateActionBarSize(getActivity());
-        DrawShadowFrameLayout drawShadowFrameLayout =
+        final DrawShadowFrameLayout drawShadowFrameLayout =
                 (DrawShadowFrameLayout) getActivity().findViewById(R.id.main_content);
         if (drawShadowFrameLayout != null) {
-            drawShadowFrameLayout.setShadowTopOffset(actionBarSize);
+            // configure video fragment's top clearance to take our overlaid Toolbar into account.
+            drawShadowFrameLayout.setShadowTopOffset(UIUtils.calculateActionBarSize(getActivity()));
         }
-        setContentTopClearance(actionBarSize
-                + getResources().getDimensionPixelSize(R.dimen.explore_grid_padding));
     }
 
 }

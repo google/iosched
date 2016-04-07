@@ -47,7 +47,7 @@ public class NavigationUtils {
     }
 
     public static void checkScreenTitleIsDisplayed(int stringResource) {
-        onView(allOf(withParent(withId(R.id.toolbar_actionbar)),
+        onView(allOf(withParent(withId(R.id.toolbar)),
                 withText(stringResource))).check(matches(isDisplayed()));
     }
 

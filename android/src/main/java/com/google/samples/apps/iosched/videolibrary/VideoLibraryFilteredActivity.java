@@ -19,6 +19,7 @@ package com.google.samples.apps.iosched.videolibrary;
 import android.os.Bundle;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -66,10 +67,8 @@ public class VideoLibraryFilteredActivity extends BaseActivity implements
         AnalyticsHelper.sendScreenView(SCREEN_LABEL);
         LOGD("Tracker", SCREEN_LABEL);
 
-        registerHideableHeaderView(findViewById(R.id.headerbar));
-
         // Add the back button to the toolbar.
-        Toolbar toolbar = getActionBarToolbar();
+        Toolbar toolbar = getToolbar();
         toolbar.setNavigationIcon(R.drawable.ic_up);
         toolbar.setNavigationContentDescription(R.string.close_and_go_back);
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
@@ -86,7 +85,7 @@ public class VideoLibraryFilteredActivity extends BaseActivity implements
         super.onCreateOptionsMenu(menu);
 
         // Add the filter button to the toolbar.
-        Toolbar toolbar = getActionBarToolbar();
+        Toolbar toolbar = getToolbar();
         toolbar.inflateMenu(R.menu.video_library_filtered);
         toolbar.setOnMenuItemClickListener(this);
         return true;
@@ -103,13 +102,6 @@ public class VideoLibraryFilteredActivity extends BaseActivity implements
         }
 
         return false;
-    }
-
-    @Override
-    protected void onPostCreate(Bundle savedInstanceState) {
-        super.onPostCreate(savedInstanceState);
-        // todo fix app bar hiding
-        //enableActionBarAutoHide((CollectionView) findViewById(R.id.videos_card_list));
     }
 
     @Override

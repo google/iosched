@@ -18,10 +18,9 @@
 <android.support.v7.widget.Toolbar
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:iosched="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/toolbar_actionbar"
+    android:id="@+id/toolbar"
     android:layout_width="match_parent"
     android:layout_height="?actionBarSize"
     iosched:contentInsetStart="?actionBarInsetStart"
     iosched:popupTheme="@style/ActionBarPopupThemeOverlay"
-    iosched:theme="@style/ActionBarThemeOverlay"
-    style="@style/HeaderBar" />
+    iosched:theme="@style/ActionBarThemeOverlay" />

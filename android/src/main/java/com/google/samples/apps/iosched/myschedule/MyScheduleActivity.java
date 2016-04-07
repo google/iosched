@@ -30,7 +30,6 @@ import android.text.SpannableString;
 import android.text.TextUtils;
 import android.text.method.LinkMovementMethod;
 import android.text.util.Linkify;
-import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.View;
@@ -326,9 +325,6 @@ public class MyScheduleActivity extends BaseActivity implements
             showDay(mToday);
         }
 
-        setProgressBarTopWhenActionBarShown((int)
-                TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 2,
-                        getResources().getDisplayMetrics()));
     }
 
     private void calculateCurrentDay() {
@@ -394,7 +390,6 @@ public class MyScheduleActivity extends BaseActivity implements
 
     private void hideLoginFailureView() {
         mFailedLoginView.setVisibility(View.GONE);
-        deregisterHideableHeaderView(mFailedLoginView);
     }
 
     @Override
@@ -410,7 +405,6 @@ public class MyScheduleActivity extends BaseActivity implements
                     }
                 }
         );
-        registerHideableHeaderView(findViewById(R.id.butter_bar));
     }
 
     @Override

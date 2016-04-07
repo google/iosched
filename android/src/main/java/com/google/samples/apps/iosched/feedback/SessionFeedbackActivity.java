@@ -59,7 +59,7 @@ public class SessionFeedbackActivity extends BaseActivity {
             finish();
         }
 
-        Toolbar toolbar = getActionBarToolbar();
+        Toolbar toolbar = getToolbar();
         toolbar.setNavigationIcon(R.drawable.ic_up);
         toolbar.setNavigationContentDescription(R.string.close_and_go_back);
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
