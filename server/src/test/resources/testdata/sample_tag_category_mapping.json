@@ -1,0 +1,5 @@
+[ 
+    {"category_id": "07e12eae-a487-e311-84db-00155d5066d7", "tag_name": "TYPE", "is_default": false},
+    {"category_id": "96c69569-3688-e311-84db-00155d5066d7", "tag_name": "TOPIC", "is_default": true},
+    {"category_id": "0ce12eae-a487-e311-84db-00155d5066d7", "tag_name": "THEME", "is_default": false}
+  ]
