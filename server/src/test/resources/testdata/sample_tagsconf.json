@@ -1,0 +1,21 @@
+{ "tag_category_mapping": [ 
+    {"category_id": "07e12eae-a487-e311-84db-00155d5066d7", "tag_name": "TYPE", "is_default": false},
+    {"category_id": "96c69569-3688-e311-84db-00155d5066d7", "tag_name": "TOPIC", "is_default": true},
+    {"category_id": "0ce12eae-a487-e311-84db-00155d5066d7", "tag_name": "THEME", "is_default": false}
+  ],
+  "tag_conf": [
+    {"tag": "TOPIC_ANDROID", "order_in_category": 1, "color": "#0f9d58"},
+    {"tag": "TOPIC_CHROME_WEB", "order_in_category": 2, "color": "#db4437"},
+    {"tag": "TOPIC_CLOUDSERVICES", "order_in_category": 3, "color": "#4285f4"},
+    {"tag": "TOPIC_GAMES", "order_in_category": 4, "color": "#333333"},
+    {"tag": "TOPIC_GROWTH", "order_in_category": 5, "color": "#333333"},
+    {"tag": "TOPIC_LOCATION", "order_in_category": 6, "color": "#9c27b0"},
+    {"tag": "TOPIC_MEDIA", "order_in_category": 7, "color": "#db4437"},
+    {"tag": "TOPIC_MONETIZATION", "order_in_category": 8, "color": "#009688"},
+    {"tag": "TOPIC_PERFORMANCE", "order_in_category": 9, "color": "#333333"},
+    {"tag": "TOPIC_POLYMER", "order_in_category": 10, "color": "#db4437"},
+    {"tag": "TOPIC_TOOLS", "order_in_category": 11, "color": "#333333"},
+    {"tag": "TOPIC_UX", "order_in_category": 12, "color": "#333333"},
+    {"tag": "TOPIC_WEARABLES", "order_in_category": 13, "color": "#333333"}
+  ]
+}
