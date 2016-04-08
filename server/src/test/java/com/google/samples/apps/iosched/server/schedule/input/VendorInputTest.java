@@ -23,6 +23,7 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonParser;
 import com.google.gson.stream.JsonReader;
 import com.google.samples.apps.iosched.server.schedule.input.fetcher.EntityFetcher;
+import com.google.samples.apps.iosched.server.schedule.input.fetcher.VendorAPIEntityFetcher;
 import com.google.samples.apps.iosched.server.schedule.model.InputJsonKeys.VendorAPISource.MainTypes;
 import com.google.samples.apps.iosched.server.schedule.server.input.VendorDynamicInput;
 import com.google.iosched.test.TestHelper;
@@ -80,20 +81,23 @@ public class VendorInputTest {
   /**
    *
    * This is the real remote fetch. Doesn't fit well as a unit test, though, but it's here to
-   * help quickly identifying issues in the remote API.
+   * help quickly identifying issues in the remote API. This test is only run if the vender
+   * base url is set.
    *
    * @throws IOException
    */
   @Test
   public void testRemoteFetch() throws IOException {
-    VendorDynamicInput api = new VendorDynamicInput();
-    JsonArray categories = api.fetch(MainTypes.categories);
-    JsonArray rooms = api.fetch(MainTypes.rooms);
-    JsonArray speakers = api.fetch(MainTypes.speakers);
-    JsonArray topics = api.fetch(MainTypes.topics);
-    assertNotNull(categories);
-    assertNotNull(rooms);
-    assertNotNull(speakers);
-    assertNotNull(topics);
+    if (!VendorAPIEntityFetcher.BASE_URL.equals("UNDEFINED")) {
+      VendorDynamicInput api = new VendorDynamicInput();
+      JsonArray categories = api.fetch(MainTypes.categories);
+      JsonArray rooms = api.fetch(MainTypes.rooms);
+      JsonArray speakers = api.fetch(MainTypes.speakers);
+      JsonArray topics = api.fetch(MainTypes.topics);
+      assertNotNull(categories);
+      assertNotNull(rooms);
+      assertNotNull(speakers);
+      assertNotNull(topics);
+    }
   }
 }

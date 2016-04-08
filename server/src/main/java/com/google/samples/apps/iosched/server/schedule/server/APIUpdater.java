@@ -76,14 +76,13 @@ public class APIUpdater {
 
     UpdateRunLogger logger = new UpdateRunLogger();
     CloudFileManager fileManager = new CloudFileManager();
-
-    // TODO(arthurthompson): Confirm if extra data is needed, current test data does not have any.
-//    logger.startTimer();
-//    JsonDataSources sources = new ExtraInput().fetchAllDataSources();
-//    logger.stopTimer("fetchExtraAPI");
+    
+    logger.startTimer();
+    JsonDataSources sources = new ExtraInput().fetchAllDataSources();
+    logger.stopTimer("fetchExtraAPI");
 
     logger.startTimer();
-    JsonDataSources sources = new VendorStaticInput().fetchAllDataSources();
+    sources.putAll(new VendorStaticInput().fetchAllDataSources());
     logger.stopTimer("fetchVendorStaticAPI");
 
     logger.startTimer();
