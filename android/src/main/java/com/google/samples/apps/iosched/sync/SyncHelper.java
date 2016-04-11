@@ -111,6 +111,7 @@ public class SyncHelper {
      * @param syncResult Optional {@link SyncResult} object to populate.
      * @throws IOException
      */
+    /*
     public void performSync(SyncResult syncResult) throws IOException {
 
         final ContentResolver resolver = mContext.getContentResolver();
@@ -182,7 +183,7 @@ public class SyncHelper {
                     + "session with Calendar.");
             syncCalendar();
         }
-    }
+    }*/
 
     private void syncCalendar() {
         //Intent intent = new Intent(SessionCalendarService.ACTION_UPDATE_ALL_SESSIONS_CALENDAR);
@@ -356,7 +357,6 @@ public class SyncHelper {
             } catch (AuthException ex) {
                 syncResult.stats.numAuthExceptions++;
 
-                // If we have a token, try to refresh it.
                 if (AccountUtils.hasToken(mContext, account.name)) {
                     AccountUtils.refreshAuthToken(mContext);
                 } else {
@@ -370,7 +370,6 @@ public class SyncHelper {
         }
         syncDuration = System.currentTimeMillis() - opStart;
 
-        // If data has changed, there are a few chores we have to do.
         opStart = System.currentTimeMillis();
         if (dataChanged) {
             try {
@@ -410,12 +409,10 @@ public class SyncHelper {
     }
 
     public static void performPostSyncChores(final Context context) {
-        // Update search index.
         LOGD(TAG, "Updating search index.");
         context.getContentResolver().update(ScheduleContract.SearchIndex.CONTENT_URI,
                 new ContentValues(), null, null);
 
-        // Sync calendar.
         LOGD(TAG, "Session data changed. Syncing starred sessions with Calendar.");
         syncCalendar(context);
     }
