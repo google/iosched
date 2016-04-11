@@ -71,7 +71,7 @@ android {
         buildConfigField("boolean", "ENABLE_IOLIVE_IN_NAVIGATION", "false")
         buildConfigField("boolean", "ENABLE_EXPLORE_IN_NAVIGATION", "true")
         buildConfigField("boolean", "ENABLE_MAP_IN_NAVIGATION", "true")
-        buildConfigField("boolean", "ENABLE_SOCIAL_IN_NAVIGATION", "true")
+        buildConfigField("boolean", "ENABLE_SOCIAL_IN_NAVIGATION", "false")
         buildConfigField("boolean", "ENABLE_VIDEOLIB_IN_NAVIGATION", "true")
         buildConfigField("boolean", "ENABLE_SIGNIN_IN_NAVIGATION", "true")
         buildConfigField("boolean", "ENABLE_SETTINGS_IN_NAVIGATION", "true")
