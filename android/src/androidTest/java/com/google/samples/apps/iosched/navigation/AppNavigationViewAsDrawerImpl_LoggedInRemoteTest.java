@@ -94,10 +94,8 @@ public class AppNavigationViewAsDrawerImpl_LoggedInRemoteTest {
     }
 
     @Test
-    public void social_WhenClicked_ActivityDisplayed() {
-        NavigationUtils.clickOnNavigationItemAndCheckActivityIsDisplayed(
-                R.string.navdrawer_item_social,
-                R.string.title_activity_new_social);
+    public void social_NotDisplayed() {
+        NavigationUtils.checkNavigationItemIsNotDisplayed(R.string.navdrawer_item_social);
     }
 
     @Test
