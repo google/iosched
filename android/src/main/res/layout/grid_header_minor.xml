@@ -17,8 +17,9 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:focusable="true"
+    android:paddingEnd="@dimen/padding_normal"
     android:paddingStart="@dimen/padding_normal"
     android:paddingTop="@dimen/spacing_large"
-    android:paddingEnd="@dimen/padding_normal"
     android:textAppearance="@style/TextAppearance.AppCompat.Body2"
     android:textColor="?android:textColorSecondary" />
