@@ -16,9 +16,10 @@
 
 package com.google.samples.apps.iosched;
 
-import android.app.Application;
+import android.content.Context;
 import android.content.Intent;
 import android.support.multidex.MultiDex;
+import android.support.multidex.MultiDexApplication;
 
 import com.firebase.client.Firebase;
 import com.google.android.gms.security.ProviderInstaller;
@@ -36,7 +37,7 @@ import static com.google.samples.apps.iosched.util.LogUtils.makeLogTag;
  * used by the user or system. Analytics, dependency injection, and multi-dex frameworks are in this
  * very small set of use cases.
  */
-public class AppApplication extends Application {
+public class AppApplication extends MultiDexApplication {
 
     private static final String TAG = makeLogTag(AppApplication.class);
 
@@ -44,7 +45,6 @@ public class AppApplication extends Application {
     public void onCreate() {
         super.onCreate();
         TimeUtils.setAppStartTime(getApplicationContext(), System.currentTimeMillis());
-        MultiDex.install(this);
 
         // Initialize the Firebase library with an Android context.
         Firebase.setAndroidContext(this);
@@ -71,5 +71,11 @@ public class AppApplication extends Application {
         } catch (Exception ignorable) {
             LOGE(TAG, "Unknown issue trying to install a new security provider.", ignorable);
         }
+    }
+
+    @Override
+    protected void attachBaseContext(Context base) {
+        super.attachBaseContext(base);
+        MultiDex.install(this);
     }
 }
