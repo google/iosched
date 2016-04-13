@@ -175,15 +175,15 @@ public abstract class BaseActivity extends AppCompatActivity implements
 
     protected static final int NAVDRAWER_ITEM_SOCIAL = 4;
 
-    protected static final int NAVDRAWER_ITEM_VIDEO_LIBRARY = 5;
+    protected static final int NAVDRAWER_ITEM_VIDEO_LIBRARY = 4;
 
-    protected static final int NAVDRAWER_ITEM_SIGN_IN = 6;
+    protected static final int NAVDRAWER_ITEM_SIGN_IN = 5;
 
-    protected static final int NAVDRAWER_ITEM_SETTINGS = 7;
+    protected static final int NAVDRAWER_ITEM_SETTINGS = 6;
 
-    protected static final int NAVDRAWER_ITEM_ABOUT = 8;
+    protected static final int NAVDRAWER_ITEM_ABOUT = 7;
 
-    protected static final int NAVDRAWER_ITEM_DEBUG = 9;
+    protected static final int NAVDRAWER_ITEM_DEBUG = 8;
 
     protected static final int NAVDRAWER_ITEM_INVALID = -1;
 
@@ -197,7 +197,6 @@ public abstract class BaseActivity extends AppCompatActivity implements
             R.string.navdrawer_item_io_live,
             R.string.navdrawer_item_explore,
             R.string.navdrawer_item_map,
-            R.string.navdrawer_item_social,
             R.string.navdrawer_item_video_library,
             R.string.navdrawer_item_sign_in,
             R.string.navdrawer_item_settings,
@@ -211,7 +210,6 @@ public abstract class BaseActivity extends AppCompatActivity implements
             R.drawable.ic_navview_play_circle_fill, // I/O Live
             R.drawable.ic_navview_explore,  // Explore
             R.drawable.ic_navview_map, // Map
-            R.drawable.ic_navview_social, // Social
             R.drawable.ic_navview_video_library, // Video Library
             0, // Sign in
             R.drawable.ic_navview_settings, // Settings.
@@ -484,9 +482,6 @@ public abstract class BaseActivity extends AppCompatActivity implements
         if (attendeeAtVenue) {
             mNavDrawerItems.add(NAVDRAWER_ITEM_MAP);
         }
-        mNavDrawerItems.add(NAVDRAWER_ITEM_SEPARATOR);
-
-        mNavDrawerItems.add(NAVDRAWER_ITEM_SOCIAL);
         mNavDrawerItems.add(NAVDRAWER_ITEM_VIDEO_LIBRARY);
         mNavDrawerItems.add(NAVDRAWER_ITEM_SEPARATOR_SPECIAL);
         mNavDrawerItems.add(NAVDRAWER_ITEM_SETTINGS);
@@ -604,9 +599,10 @@ public abstract class BaseActivity extends AppCompatActivity implements
             case NAVDRAWER_ITEM_MAP:
                 createBackStack(new Intent(this, MapActivity.class));
                 break;
+            /*
             case NAVDRAWER_ITEM_SOCIAL:
                 createBackStack(new Intent(this, SocialActivity.class));
-                break;
+                break; */
             case NAVDRAWER_ITEM_VIDEO_LIBRARY:
                 createBackStack(new Intent(this, VideoLibraryActivity.class));
                 break;

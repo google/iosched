@@ -220,6 +220,7 @@ public class MyScheduleActivity extends BaseActivity implements MyScheduleFragme
 
             mTabLayout.setTabsFromPagerAdapter(mViewPagerAdapter);
 
+
             mTabLayout.setOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
                 @Override
                 public void onTabSelected(TabLayout.Tab tab) {
