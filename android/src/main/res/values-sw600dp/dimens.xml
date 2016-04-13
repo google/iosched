@@ -66,8 +66,6 @@
 
 
     <!-- Welcome Activity -->
-    <dimen name="welcome_appbar_height">256dp</dimen> <!-- 4 * ?actionBarSize -->
-    <dimen name="welcome_content_padding_top">192dp</dimen> <!-- 3 * ?actionBarSize -->
     <dimen name="welcome_content_padding">64dp</dimen>
     <dimen name="welcome_title_size">24sp</dimen>
 

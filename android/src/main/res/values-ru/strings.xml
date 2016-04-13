@@ -801,9 +801,6 @@
     </string>
     <string name="title_video_library">Видео</string>
 
-    <!-- Short text asking if the user is attending Google I/O in person -->
-    <string name="welcome_attending">Присутствуете лично?</string>
-
     <!-- Medium-length welcome text asking if the user is attending Google I/O in person -->
     <string name="welcome_attending_text">Вы присутствуете на I/O дистанционно или лично в Сан-Франциско?</string>
 

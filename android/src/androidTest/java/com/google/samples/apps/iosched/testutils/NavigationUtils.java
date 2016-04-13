@@ -14,9 +14,9 @@
 
 package com.google.samples.apps.iosched.testutils;
 
-import android.support.design.internal.NavigationMenuItemView;
 import android.support.test.espresso.NoMatchingViewException;
 import android.support.test.rule.ActivityTestRule;
+import android.support.v7.widget.AppCompatCheckedTextView;
 
 import com.google.samples.apps.iosched.R;
 import com.google.samples.apps.iosched.navigation.NavigationModel;
@@ -27,6 +27,7 @@ import static android.support.test.espresso.assertion.ViewAssertions.doesNotExis
 import static android.support.test.espresso.assertion.ViewAssertions.matches;
 import static android.support.test.espresso.contrib.DrawerActions.open;
 import static android.support.test.espresso.matcher.ViewMatchers.isAssignableFrom;
+import static android.support.test.espresso.matcher.ViewMatchers.isChecked;
 import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static android.support.test.espresso.matcher.ViewMatchers.withContentDescription;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
@@ -46,7 +47,7 @@ public class NavigationUtils {
     }
 
     public static void checkScreenTitleIsDisplayed(int stringResource) {
-        onView(allOf(withParent(withId(R.id.toolbar_actionbar)),
+        onView(allOf(withParent(withId(R.id.toolbar)),
                 withText(stringResource))).check(matches(isDisplayed()));
     }
 
@@ -117,20 +118,20 @@ public class NavigationUtils {
                     NavigationModel.NavigationItemEnum.values()[i];
             try {
                 // Check item is displayed
-                onView(allOf(isAssignableFrom(NavigationMenuItemView.class),
+                onView(allOf(isAssignableFrom(AppCompatCheckedTextView.class),
                         withText(item.getTitleResource()))).check(matches(isDisplayed()));
 
                 // If item is shown, check item is not activated, unless it is the requested one
                 if (NavigationModel.NavigationItemEnum.values()[i].getId() ==
                         expectedSelectedItem.getId()) {
-                    onView(allOf(isAssignableFrom(NavigationMenuItemView.class), withText(
+                    onView(allOf(isAssignableFrom(AppCompatCheckedTextView.class), withText(
                             item.getTitleResource())))
-                            .check(matches(MatchersHelper.isNavigationMenuItemViewChecked()));
+                            .check(matches(isChecked()));
                     selectedFound = true;
                 } else {
-                    onView(allOf(isAssignableFrom(NavigationMenuItemView.class), withText(
+                    onView(allOf(isAssignableFrom(AppCompatCheckedTextView.class), withText(
                             item.getTitleResource())))
-                            .check(matches(not(MatchersHelper.isNavigationMenuItemViewChecked())));
+                            .check(matches(not(isChecked())));
                 }
 
             } catch (NoMatchingViewException e) {

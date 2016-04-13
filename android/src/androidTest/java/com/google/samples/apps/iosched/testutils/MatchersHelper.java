@@ -15,16 +15,13 @@
  */
 package com.google.samples.apps.iosched.testutils;
 
-import android.support.design.internal.NavigationMenuItemView;
 import android.support.test.espresso.UiController;
 import android.support.test.espresso.ViewAction;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import org.hamcrest.Description;
 import org.hamcrest.Matcher;
-import org.hamcrest.TypeSafeMatcher;
 
 import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.matcher.ViewMatchers.isAssignableFrom;
@@ -162,21 +159,4 @@ public class MatchersHelper {
         return intHolder[0];
     }
 
-    /**
-     * Returns a matcher that matches {@link NavigationMenuItemView}s that are checked.
-     */
-    public static Matcher<View> isNavigationMenuItemViewChecked() {
-        return new TypeSafeMatcher<View>() {
-            @Override
-            public void describeTo(Description description) {
-                description.appendText("is NavigationMenuItemView checked");
-            }
-
-            @Override
-            public boolean matchesSafely(View view) {
-                return view instanceof NavigationMenuItemView &&
-                        ((NavigationMenuItemView) view).getItemData().isChecked();
-            }
-        };
-    }
 }

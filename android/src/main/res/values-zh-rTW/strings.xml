@@ -188,9 +188,6 @@
      <!-- Short text introducing the code of conduct for attendees coming in person -->
      <string name="welcome_conduct_title">I/O社區最佳實踐</string>
  
-     <!-- Short text asking if the user is attending Google I/O in person -->
-     <string name="welcome_attending">親臨現場？</string>
- 
      <!-- Medium-length welcome text asking if the user is attending Google I/O in person -->
      <string name="welcome_attending_text">你是遠端參與I/O還是親臨三藩市大會現場？</string>
  

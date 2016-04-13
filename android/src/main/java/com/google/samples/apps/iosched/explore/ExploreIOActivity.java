@@ -43,21 +43,11 @@ public class ExploreIOActivity extends BaseActivity implements Toolbar.OnMenuIte
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         setContentView(R.layout.explore_io_act);
 
         // ANALYTICS SCREEN: View the Explore I/O screen
         // Contains: Nothing (Page name is a constant)
         AnalyticsHelper.sendScreenView(SCREEN_LABEL);
-
-        registerHideableHeaderView(findViewById(R.id.headerbar));
-    }
-
-    @Override
-    protected void onPostCreate(Bundle savedInstanceState) {
-        super.onPostCreate(savedInstanceState);
-        // todo fix app bar hiding
-        //enableActionBarAutoHide((CollectionView) findViewById(R.id.explore_collection_view));
     }
 
     @Override
@@ -70,7 +60,7 @@ public class ExploreIOActivity extends BaseActivity implements Toolbar.OnMenuIte
         super.onCreateOptionsMenu(menu);
 
         // Add the search button to the toolbar.
-        Toolbar toolbar = getActionBarToolbar();
+        Toolbar toolbar = getToolbar();
         toolbar.inflateMenu(R.menu.explore_io_menu);
         toolbar.setOnMenuItemClickListener(this);
         return true;

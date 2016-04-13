@@ -103,7 +103,7 @@ public class MapActivity extends BaseActivity
     protected void onPostCreate(Bundle savedInstanceState) {
         super.onPostCreate(savedInstanceState);
         if (mDetachedMode) {
-            final Toolbar toolbar = getActionBarToolbar();
+            final Toolbar toolbar = getToolbar();
             toolbar.setNavigationIcon(R.drawable.ic_up);
             toolbar.setNavigationOnClickListener(new View.OnClickListener() {
                 @Override

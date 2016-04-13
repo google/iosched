@@ -32,9 +32,9 @@
             android:id="@+id/header_image"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:tint="@color/card_header_tint"
-            android:scaleType="centerCrop"
-            android:src="@color/io15_light_grey" />
+            android:background="@color/io16_light_grey"
+            android:tint="@color/track_header_tint"
+            android:scaleType="centerCrop" />
 
         <TextView
             android:id="@+id/more"

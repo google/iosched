@@ -27,6 +27,8 @@ import android.os.Parcelable;
 import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
+import android.support.v4.app.ActivityOptionsCompat;
+import android.support.v4.util.Pair;
 import android.support.v4.util.SparseArrayCompat;
 import android.support.v4.view.ViewCompat;
 import android.support.v7.widget.CardView;
@@ -132,6 +134,7 @@ public class ExploreIOFragment extends Fragment
             Bundle savedInstanceState) {
         final View root = inflater.inflate(R.layout.explore_io_frag, container, false);
         mCardList = (RecyclerView) root.findViewById(R.id.explore_card_list);
+        mCardList.setHasFixedSize(true);
         final int cardVerticalMargin = getResources().getDimensionPixelSize(R.dimen.spacing_normal);
         mCardList.addItemDecoration(new ItemMarginDecoration(0, cardVerticalMargin,
                 0, cardVerticalMargin));
@@ -201,27 +204,17 @@ public class ExploreIOFragment extends Fragment
         presenter.loadInitialQueries();
     }
 
-    private void setContentTopClearance(int clearance) {
-        if (mCardList != null) {
-            mCardList.setPadding(mCardList.getPaddingLeft(), clearance,
-                    mCardList.getPaddingRight(), mCardList.getPaddingBottom());
-        }
-    }
-
     @Override
     public void onResume() {
         super.onResume();
         getActivity().invalidateOptionsMenu();
 
-        // configure fragment's top clearance to take our overlaid controls (Action Bar
-        // and spinner box) into account.
-        int actionBarSize = UIUtils.calculateActionBarSize(getActivity());
-        DrawShadowFrameLayout drawShadowFrameLayout =
+        final DrawShadowFrameLayout drawShadowFrameLayout =
                 (DrawShadowFrameLayout) getActivity().findViewById(R.id.main_content);
         if (drawShadowFrameLayout != null) {
-            drawShadowFrameLayout.setShadowTopOffset(actionBarSize);
+            // configure fragment's top clearance to take our overlaid Toolbar into account.
+            drawShadowFrameLayout.setShadowTopOffset(UIUtils.calculateActionBarSize(getActivity()));
         }
-        setContentTopClearance(actionBarSize);
     }
 
     @Override
@@ -267,7 +260,7 @@ public class ExploreIOFragment extends Fragment
 
     /**
      * Let all UserActionListener know that the video list has been reloaded and that therefore we
-     * need to display another random set of sessions.
+     * need to update the display of sessions.
      */
     private void fireReloadEvent() {
         if (!isAdded()) {
@@ -317,6 +310,8 @@ public class ExploreIOFragment extends Fragment
 
         private final ImageLoader mImageLoader;
 
+        private final RecyclerView.RecycledViewPool mRecycledViewPool;
+
         // State
         private List mItems;
 
@@ -334,6 +329,7 @@ public class ExploreIOFragment extends Fragment
             mTitles = model.getTagTitles();
             mImageLoader = imageLoader;
             mInflater = LayoutInflater.from(activity);
+            mRecycledViewPool = new RecyclerView.RecycledViewPool();
             mItems = processModel(model);
             setupSessionAdapters(model);
         }
@@ -424,10 +420,11 @@ public class ExploreIOFragment extends Fragment
                 // Cache the scroll position of the session list so that we can restore it in onBind
                 final TrackViewHolder trackHolder = (TrackViewHolder) holder;
                 final int position = trackHolder.getAdapterPosition();
-                if (position == RecyclerView.NO_POSITION) return;
-                final int trackId = getTrackId((ItemGroup) mItems.get(position));
-                mTrackSessionsState.put(trackId,
-                        trackHolder.sessions.getLayoutManager().onSaveInstanceState());
+                if (position != RecyclerView.NO_POSITION) {
+                    final int trackId = getTrackId((ItemGroup) mItems.get(position));
+                    mTrackSessionsState.put(trackId,
+                            trackHolder.sessions.getLayoutManager().onSaveInstanceState());
+                }
             }
             super.onViewRecycled(holder);
         }
@@ -440,15 +437,28 @@ public class ExploreIOFragment extends Fragment
         private @NonNull TrackViewHolder createTrackViewHolder(final ViewGroup parent) {
             final TrackViewHolder holder = new TrackViewHolder(
                     mInflater.inflate(R.layout.explore_io_track_card, parent, false));
+            holder.sessions.setHasFixedSize(true);
+            holder.sessions.setRecycledViewPool(mRecycledViewPool);
             ViewCompat.setImportantForAccessibility(
                     holder.sessions, ViewCompat.IMPORTANT_FOR_ACCESSIBILITY_NO_HIDE_DESCENDANTS);
             holder.header.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(final View v) {
-                    final ItemGroup track = (ItemGroup) mItems.get(holder.getAdapterPosition());
+                    final int position = holder.getAdapterPosition();
+                    if (position == RecyclerView.NO_POSITION) return;
+                    final ItemGroup track = (ItemGroup) mItems.get(position);
                     final Intent intent = new Intent(mHost, ExploreSessionsActivity.class);
                     intent.putExtra(ExploreSessionsActivity.EXTRA_FILTER_TAG, track.getId());
-                    ActivityCompat.startActivity(mHost, intent, null);
+
+                    final ActivityOptionsCompat options =
+                            ActivityOptionsCompat.makeSceneTransitionAnimation(mHost,
+                                    Pair.create((View) holder.headerImage, mHost.getString(
+                                            R.string.transition_explore_sessions_header)),
+                                    Pair.create((View) holder.title, mHost.getString(
+                                            R.string.transition_explore_sessions_title)),
+                                    Pair.create(holder.itemView, mHost.getString(
+                                            R.string.transition_explore_sessions_background)));
+                    ActivityCompat.startActivity(mHost, intent, options.toBundle());
                 }
             });
             return holder;
@@ -465,6 +475,7 @@ public class ExploreIOFragment extends Fragment
                 @Override
                 public void onClick(final View v) {
                     final int position = holder.getAdapterPosition();
+                    if (position == RecyclerView.NO_POSITION) return;
                     final MessageData message = (MessageData) mItems.get(position);
                     message.getStartButtonClickListener().onClick(holder.buttonStart);
                     mItems.remove(position);
@@ -475,6 +486,7 @@ public class ExploreIOFragment extends Fragment
                 @Override
                 public void onClick(final View v) {
                     final int position = holder.getAdapterPosition();
+                    if (position == RecyclerView.NO_POSITION) return;
                     final MessageData message = (MessageData) mItems.get(position);
                     message.getEndButtonClickListener().onClick(holder.buttonEnd);
                     mItems.remove(position);
@@ -490,8 +502,9 @@ public class ExploreIOFragment extends Fragment
             holder.clickableItem.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(final View v) {
-                    final SessionData keynote =
-                            (SessionData) mItems.get(holder.getAdapterPosition());
+                    final int position = holder.getAdapterPosition();
+                    if (position == RecyclerView.NO_POSITION) return;
+                    final SessionData keynote = (SessionData) mItems.get(position);
                     final Intent intent = new Intent(mHost, SessionDetailActivity.class);
                     intent.setData(
                             ScheduleContract.Sessions.buildSessionUri(keynote.getSessionId()));
@@ -563,7 +576,14 @@ public class ExploreIOFragment extends Fragment
                 final String title) {
             holder.title.setText(title);
             holder.header.setContentDescription(title);
-            mImageLoader.loadImage(track.getPhotoUrl(), holder.headerImage);
+            if (track.getPhotoUrl() != null) {
+                holder.headerImage.setScaleType(ImageView.ScaleType.CENTER_CROP);
+                mImageLoader.loadImage(track.getPhotoUrl(), holder.headerImage);
+            } else {
+                holder.headerImage.setScaleType(ImageView.ScaleType.FIT_CENTER);
+                holder.headerImage.setImageResource(R.drawable.ic_hash_io_16_monochrome);
+
+            }
             final int trackId = getTrackId(track);
             holder.sessions.setAdapter(mTrackSessionsAdapters.get(trackId));
             holder.sessions.getLayoutManager().onRestoreInstanceState(

@@ -58,7 +58,7 @@ public class SessionDetailActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.session_detail_act);
 
-        final Toolbar toolbar = getActionBarToolbar();
+        final Toolbar toolbar = getToolbar();
         toolbar.setNavigationIcon(shouldBeFloatingWindow
                 ? R.drawable.ic_ab_close : R.drawable.ic_up);
         toolbar.setNavigationContentDescription(R.string.close_and_go_back);

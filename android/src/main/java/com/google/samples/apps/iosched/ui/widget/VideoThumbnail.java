@@ -36,10 +36,14 @@ public class VideoThumbnail extends ImageView {
     private boolean mIsPlayed = false;
 
     public VideoThumbnail(final Context context, final AttributeSet attrs) {
-        super(context, attrs, R.attr.videoThumbnailStyle);
+        this(context, attrs, R.attr.videoThumbnailStyle);
+    }
+
+    public VideoThumbnail(final Context context, final AttributeSet attrs, final int defStyleAttr) {
+        super(context, attrs, defStyleAttr);
 
         final TypedArray a = getContext().obtainStyledAttributes(
-                attrs, R.styleable.VideoThumbnail, R.attr.videoThumbnailStyle, 0);
+                attrs, R.styleable.VideoThumbnail, defStyleAttr, 0);
         mPlayIcon = a.getDrawable(R.styleable.VideoThumbnail_playIcon);
         a.recycle();
         setScaleType(ScaleType.CENTER_CROP);

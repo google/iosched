@@ -30,6 +30,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.google.samples.apps.iosched.R;
@@ -80,6 +81,7 @@ public class VideoLibraryFragment extends Fragment
             Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.video_library_frag, container, false);
         mCardList = (RecyclerView) root.findViewById(R.id.videos_card_list);
+        mCardList.setHasFixedSize(true);
         final int cardVerticalMargin = getResources().getDimensionPixelSize(R.dimen.spacing_normal);
         mCardList.addItemDecoration(new ItemMarginDecoration(0, cardVerticalMargin,
                 0, cardVerticalMargin));
@@ -162,27 +164,17 @@ public class VideoLibraryFragment extends Fragment
         addListener(presenter);
     }
 
-    private void setContentTopClearance(int clearance) {
-        if (mCardList != null) {
-            mCardList.setPadding(mCardList.getPaddingLeft(), clearance,
-                    mCardList.getPaddingRight(), mCardList.getPaddingBottom());
-        }
-    }
-
     @Override
     public void onResume() {
         super.onResume();
         getActivity().invalidateOptionsMenu();
 
-        // Configure video fragment's top clearance to take our overlaid controls (Action Bar
-        // and spinner box) into account.
-        int actionBarSize = UIUtils.calculateActionBarSize(getActivity());
-        DrawShadowFrameLayout drawShadowFrameLayout =
+        final DrawShadowFrameLayout drawShadowFrameLayout =
                 (DrawShadowFrameLayout) getActivity().findViewById(R.id.main_content);
         if (drawShadowFrameLayout != null) {
-            drawShadowFrameLayout.setShadowTopOffset(actionBarSize);
+            // Configure video fragment's top clearance to take our overlaid Toolbar into account.
+            drawShadowFrameLayout.setShadowTopOffset(UIUtils.calculateActionBarSize(getActivity()));
         }
-        setContentTopClearance(actionBarSize);
     }
 
     /**
@@ -202,6 +194,8 @@ public class VideoLibraryFragment extends Fragment
 
         private final List<UserActionListener> mListeners;
 
+        private final RecyclerView.RecycledViewPool mRecycledViewPool;
+
         // State
         private List<VideoTrack> mVideoTracks;
 
@@ -217,6 +211,7 @@ public class VideoLibraryFragment extends Fragment
             mInflater = LayoutInflater.from(activity);
             mImageLoader = imageLoader;
             mListeners = listeners;
+            mRecycledViewPool = new RecyclerView.RecycledViewPool();
             mVideoTracks = processVideos(model);
             setupVideoTrackAdapters();
         }
@@ -225,12 +220,16 @@ public class VideoLibraryFragment extends Fragment
         public VideoTrackViewHolder onCreateViewHolder(final ViewGroup parent, final int viewType) {
             final VideoTrackViewHolder holder = new VideoTrackViewHolder(
                     mInflater.inflate(R.layout.explore_io_track_card, parent, false));
+            holder.videos.setHasFixedSize(true);
+            holder.videos.setRecycledViewPool(mRecycledViewPool);
             ViewCompat.setImportantForAccessibility(
                     holder.videos, ViewCompat.IMPORTANT_FOR_ACCESSIBILITY_NO_HIDE_DESCENDANTS);
             holder.header.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(final View v) {
-                    final VideoTrack videoTrack = mVideoTracks.get(holder.getAdapterPosition());
+                    final int position = holder.getAdapterPosition();
+                    if (position == RecyclerView.NO_POSITION) return;
+                    final VideoTrack videoTrack = mVideoTracks.get(position);
                     // ANALYTICS EVENT: Click on the "More" button of a card in the Video Library
                     // Contains: The clicked header's label
                     AnalyticsHelper.sendEvent(VIDEO_LIBRARY_ANALYTICS_CATEGORY, "morebutton",
@@ -258,6 +257,7 @@ public class VideoLibraryFragment extends Fragment
             final VideoTrack videoTrack = mVideoTracks.get(position);
             holder.title.setText(videoTrack.getTrack());
             holder.header.setContentDescription(videoTrack.getTrack());
+            mImageLoader.loadImage(videoTrack.getTrackImageUrl(), holder.headerImage);
             holder.videos.setAdapter(mTrackVideosAdapters.get(videoTrack.getTrackId()));
             holder.videos.getLayoutManager().onRestoreInstanceState(
                     mTrackVideosState.get(videoTrack.getTrackId()));
@@ -266,9 +266,12 @@ public class VideoLibraryFragment extends Fragment
         @Override
         public void onViewRecycled(final VideoTrackViewHolder holder) {
             // Cache the scroll position of the video list so that we can restore it in onBind
-            final VideoTrack videoTrack = mVideoTracks.get(holder.getAdapterPosition());
-            mTrackVideosState.put(videoTrack.getTrackId(),
-                    holder.videos.getLayoutManager().onSaveInstanceState());
+            final int position = holder.getAdapterPosition();
+            if (position != RecyclerView.NO_POSITION) {
+                final VideoTrack videoTrack = mVideoTracks.get(position);
+                mTrackVideosState.put(videoTrack.getTrackId(),
+                        holder.videos.getLayoutManager().onSaveInstanceState());
+            }
             super.onViewRecycled(holder);
         }
 
@@ -352,12 +355,14 @@ public class VideoLibraryFragment extends Fragment
         final ViewGroup header;
         final TextView title;
         final RecyclerView videos;
+        final ImageView headerImage;
 
         public VideoTrackViewHolder(final View itemView) {
             super(itemView);
             header = (ViewGroup) itemView.findViewById(R.id.header);
             title = (TextView) itemView.findViewById(R.id.title);
             videos = (RecyclerView) itemView.findViewById(R.id.sessions);
+            headerImage = (ImageView) itemView.findViewById(R.id.header_image);
         }
     }
 

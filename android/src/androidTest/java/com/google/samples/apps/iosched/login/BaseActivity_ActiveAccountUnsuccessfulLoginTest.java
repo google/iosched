@@ -15,6 +15,7 @@
 package com.google.samples.apps.iosched.login;
 
 import android.support.test.InstrumentationRegistry;
+import android.support.test.filters.FlakyTest;
 import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
 import android.test.suitebuilder.annotation.LargeTest;
@@ -23,8 +24,8 @@ import com.google.samples.apps.iosched.R;
 import com.google.samples.apps.iosched.explore.ExploreIOActivity;
 import com.google.samples.apps.iosched.injection.LoginAndAuthProvider;
 import com.google.samples.apps.iosched.settings.SettingsUtils;
+import com.google.samples.apps.iosched.testutils.LoginUtils;
 import com.google.samples.apps.iosched.testutils.NavigationUtils;
-import com.google.samples.apps.iosched.util.AccountUtils;
 
 import org.junit.Rule;
 import org.junit.Test;
@@ -43,7 +44,7 @@ import static android.support.test.espresso.matcher.ViewMatchers.withText;
 @LargeTest
 public class BaseActivity_ActiveAccountUnsuccessfulLoginTest {
 
-    private static final String ACCOUNT_NAME = "geswjop";
+    private String mAccountName;
 
     private StubLoginAndAuth mStubLoginAndAuth;
 
@@ -56,14 +57,11 @@ public class BaseActivity_ActiveAccountUnsuccessfulLoginTest {
                     // Make sure the EULA screen is not shown.
                     SettingsUtils.markTosAccepted(InstrumentationRegistry.getTargetContext(), true);
 
-                    // Set active account
-                    AccountUtils
-                            .setActiveAccount(InstrumentationRegistry.getTargetContext(),
-                                    ACCOUNT_NAME);
+                    mAccountName = LoginUtils.setFirstAvailableAccountAsActive(
+                            InstrumentationRegistry.getTargetContext());
 
-                    // Set stub login and auth as unsuccessful
                     mStubLoginAndAuth =
-                            new StubLoginAndAuth(ACCOUNT_NAME, false, true);
+                            new StubLoginAndAuth(mAccountName, false, true);
                     LoginAndAuthProvider.setStubLoginAndAuth(mStubLoginAndAuth);
                 }
 
@@ -75,13 +73,17 @@ public class BaseActivity_ActiveAccountUnsuccessfulLoginTest {
                 }
             };
 
+    /**
+     * This will fail if there is no available account on the device
+     */
+    @FlakyTest
     @Test
     public void accountName_IsDisplayed() {
         // Given navigation menu
         NavigationUtils.showNavigation();
 
         // Then the account name is shown
-        onView(withText(ACCOUNT_NAME)).check(matches(isDisplayed()));
+        onView(withText(mAccountName)).check(matches(isDisplayed()));
     }
 
     @Test

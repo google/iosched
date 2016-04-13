@@ -69,8 +69,6 @@ public class ExploreSessionsFragment extends Fragment implements
     /** The delay before actual re-querying in milli seconds. */
     private static final long QUERY_UPDATE_DELAY_MILLIS = 100;
 
-    private ImageLoader mImageLoader;
-
     private RecyclerView mSessionList;
 
     private View mEmptyView;
@@ -107,7 +105,6 @@ public class ExploreSessionsFragment extends Fragment implements
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mImageLoader = new ImageLoader(getActivity(), R.drawable.io_logo);
         getLoaderManager().initLoader(TAG_METADATA_TOKEN, null, this);
         // Setup the tag filters
         if (savedInstanceState != null) {
@@ -132,29 +129,17 @@ public class ExploreSessionsFragment extends Fragment implements
         outState.putBoolean(STATE_SHOW_LIVESTREAMED_SESSIONS, mShowLiveStreamedSessions);
     }
 
-    private void setContentTopClearance(int clearance) {
-        if (mSessionList != null) {
-            mSessionList.setPadding(mSessionList.getPaddingLeft(),
-                                    clearance,
-                                    mSessionList.getPaddingRight(),
-                                    mSessionList.getPaddingBottom());
-        }
-    }
-
     @Override
     public void onResume() {
         super.onResume();
         getActivity().invalidateOptionsMenu();
-        // configure session fragment's top clearance to take our overlaid controls (Action Bar
-        // and spinner box) into account.
-        int actionBarSize = UIUtils.calculateActionBarSize(getActivity());
-        DrawShadowFrameLayout drawShadowFrameLayout =
+
+        final DrawShadowFrameLayout drawShadowFrameLayout =
                 (DrawShadowFrameLayout) getActivity().findViewById(R.id.main_content);
         if (drawShadowFrameLayout != null) {
-            drawShadowFrameLayout.setShadowTopOffset(actionBarSize);
+            // configure session fragment's top clearance to take our overlaid Toolbar into account.
+            drawShadowFrameLayout.setShadowTopOffset(UIUtils.calculateActionBarSize(getActivity()));
         }
-        setContentTopClearance(actionBarSize
-                + getResources().getDimensionPixelSize(R.dimen.explore_grid_padding));
     }
 
     @Override

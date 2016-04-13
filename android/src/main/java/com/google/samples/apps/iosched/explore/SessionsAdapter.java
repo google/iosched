@@ -229,17 +229,6 @@ public class SessionsAdapter extends UpdatableAdapter<List<SessionData>, Recycle
                 mInflater.inflate(R.layout.explore_io_session_list_tile, parent, false)) :
                 new DetailSessionViewHolder(mInflater.inflate(
                         R.layout.explore_sessions_session_grid_tile, parent, false));
-        holder.itemView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(final View v) {
-                final SessionData sessionData =
-                        (SessionData) mItems.get(holder.getAdapterPosition());
-                final Intent intent = new Intent(mHost, SessionDetailActivity.class);
-                intent.setData(
-                        ScheduleContract.Sessions.buildSessionUri(sessionData.getSessionId()));
-                ActivityCompat.startActivity(mHost, intent, null);
-            }
-        });
         if (mCompactMode) {
             ViewCompat.setImportantForAccessibility(holder.itemView,
                     ViewCompat.IMPORTANT_FOR_ACCESSIBILITY_NO);
@@ -261,6 +250,7 @@ public class SessionsAdapter extends UpdatableAdapter<List<SessionData>, Recycle
                              final int position) {
         holder.itemView.setBackgroundDrawable(
                 mBackgroundColors[position % mBackgroundColors.length]);
+        holder.itemView.setOnClickListener(mSessionClick);
         holder.title.setText(session.getSessionName());
         holder.inSchedule.setVisibility(session.isInSchedule() ? View.VISIBLE : View.INVISIBLE);
         if (mCompactMode) {
@@ -269,6 +259,20 @@ public class SessionsAdapter extends UpdatableAdapter<List<SessionData>, Recycle
             bindDetailSession((DetailSessionViewHolder) holder, session);
         }
     }
+
+    private final View.OnClickListener mSessionClick = new View.OnClickListener() {
+        @Override
+        public void onClick(final View v) {
+            final ViewGroup.LayoutParams lp = v.getLayoutParams();
+            if (!(lp instanceof RecyclerView.LayoutParams)) return;
+            final int position = ((RecyclerView.LayoutParams) lp).getViewAdapterPosition();
+            if (position == RecyclerView.NO_POSITION) return;
+            final SessionData sessionData = (SessionData) mItems.get(position);
+            final Intent intent = new Intent(mHost, SessionDetailActivity.class);
+            intent.setData(ScheduleContract.Sessions.buildSessionUri(sessionData.getSessionId()));
+            ActivityCompat.startActivity(mHost, intent, null);
+        }
+    };
 
     private void bindCompactSession(CompactSessionViewHolder holder, final SessionData session) {
         holder.footer.setText(TimeUtils.formatShortDateTime(mHost, session.getStartDate()));

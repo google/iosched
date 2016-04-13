@@ -35,7 +35,7 @@
             android:orientation="vertical"
             android:theme="@style/ActionBarThemeOverlay">
 
-            <include layout="@layout/toolbar_actionbar_keyline_insets" />
+            <include layout="@layout/toolbar_keyline_insets" />
 
             <android.support.design.widget.TabLayout
                 android:id="@+id/sliding_tabs"

@@ -17,7 +17,6 @@ package com.google.samples.apps.iosched.social;
 import android.support.test.runner.AndroidJUnit4;
 import android.test.suitebuilder.annotation.LargeTest;
 
-import com.google.samples.apps.iosched.navigation.NavigationModel;
 import com.google.samples.apps.iosched.testutils.BaseActivityTestRule;
 import com.google.samples.apps.iosched.testutils.NavigationUtils;
 
@@ -43,8 +42,4 @@ public class SocialActivityTest {
         NavigationUtils.checkNavigationIsDisplayedWhenClickingMenuIcon();
     }
 
-    @Test
-    public void navigation_WhenShown_CorrectItemIsSelected() {
-        NavigationUtils.checkNavigationItemIsSelected(NavigationModel.NavigationItemEnum.SOCIAL);
-    }
 }
