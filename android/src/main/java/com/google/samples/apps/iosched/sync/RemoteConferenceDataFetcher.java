@@ -45,6 +45,8 @@ import static com.google.samples.apps.iosched.util.LogUtils.*;
  * Helper class that fetches conference data from the remote server.
  */
 public class RemoteConferenceDataFetcher {
+    private static final String AUTHORIZATION_HEADER = "Authorization";
+    private static final String BEARER_PREFIX = "Bearer ";
     private static final String TAG = makeLogTag(SyncHelper.class);
 
     // The directory under which we cache our downloaded files
@@ -92,6 +94,8 @@ public class RemoteConferenceDataFetcher {
         }
 
         BasicHttpClient httpClient = new BasicHttpClient();
+        httpClient.addHeader(AUTHORIZATION_HEADER, BEARER_PREFIX +
+                AccountUtils.getAuthToken(mContext));
         httpClient.setRequestLogger(mQuietLogger);
 
         // Only download if data is newer than refTimestamp
@@ -206,6 +210,7 @@ public class RemoteConferenceDataFetcher {
         }
 
         BasicHttpClient client = new BasicHttpClient();
+        client.addHeader(AUTHORIZATION_HEADER, BEARER_PREFIX + AccountUtils.getAuthToken(mContext));
         client.setRequestLogger(mQuietLogger);
 
         // We don't have the file on cache, so download it
