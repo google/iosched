@@ -39,7 +39,7 @@ public class OutputJsonKeys {
   }
 
   static public enum Tags {
-    tag, category, name, order_in_category, color, _abstract, original_id, hashtag;
+    tag, category, name, order_in_category, color, _abstract, original_id, hashtag, photoUrl;
   }
 
   static public enum Speakers {
