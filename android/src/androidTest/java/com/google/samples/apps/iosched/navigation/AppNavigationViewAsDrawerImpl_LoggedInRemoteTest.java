@@ -22,8 +22,8 @@ import android.test.suitebuilder.annotation.LargeTest;
 import com.google.samples.apps.iosched.R;
 import com.google.samples.apps.iosched.explore.ExploreIOActivity;
 import com.google.samples.apps.iosched.settings.SettingsUtils;
+import com.google.samples.apps.iosched.testutils.LoginUtils;
 import com.google.samples.apps.iosched.testutils.NavigationUtils;
-import com.google.samples.apps.iosched.util.AccountUtils;
 
 import org.junit.After;
 import org.junit.Rule;
@@ -42,7 +42,7 @@ import static android.support.test.espresso.matcher.ViewMatchers.withText;
 @LargeTest
 public class AppNavigationViewAsDrawerImpl_LoggedInRemoteTest {
 
-    private static final String ACCOUNT_NAME = "NAME";
+    private String mAccountName;
 
     @Rule
     public ActivityTestRule<ExploreIOActivity> mActivityRule =
@@ -56,9 +56,8 @@ public class AppNavigationViewAsDrawerImpl_LoggedInRemoteTest {
                     // Set user as logged in and remote
                     SettingsUtils
                             .setAttendeeAtVenue(InstrumentationRegistry.getTargetContext(), false);
-                    AccountUtils
-                            .setActiveAccount(InstrumentationRegistry.getTargetContext(),
-                                    ACCOUNT_NAME);
+                    mAccountName = LoginUtils.setFirstAvailableAccountAsActive(
+                            InstrumentationRegistry.getTargetContext());
                 }
             };
 
@@ -73,7 +72,7 @@ public class AppNavigationViewAsDrawerImpl_LoggedInRemoteTest {
         NavigationUtils.showNavigation();
 
         // Then the account name is shown
-        onView(withText(ACCOUNT_NAME)).check(matches(isDisplayed()));
+        onView(withText(mAccountName)).check(matches(isDisplayed()));
     }
 
     @Test
@@ -95,10 +94,8 @@ public class AppNavigationViewAsDrawerImpl_LoggedInRemoteTest {
     }
 
     @Test
-    public void social_WhenClicked_ActivityDisplayed() {
-        NavigationUtils.clickOnNavigationItemAndCheckActivityIsDisplayed(
-                R.string.navdrawer_item_social,
-                R.string.title_activity_new_social);
+    public void social_NotDisplayed() {
+        NavigationUtils.checkNavigationItemIsNotDisplayed(R.string.navdrawer_item_social);
     }
 
     @Test

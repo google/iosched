@@ -17,6 +17,7 @@
 package com.google.samples.apps.iosched.videolibrary;
 
 import android.os.Bundle;
+import android.support.v7.widget.RecyclerView;
 
 import com.google.samples.apps.iosched.R;
 import com.google.samples.apps.iosched.navigation.NavigationModel;
@@ -41,14 +42,6 @@ public class VideoLibraryActivity extends BaseActivity {
         // Contains: Nothing (Page name is a constant)
         AnalyticsHelper.sendScreenView(SCREEN_LABEL);
 
-        registerHideableHeaderView(findViewById(R.id.headerbar));
-    }
-
-    @Override
-    protected void onPostCreate(Bundle savedInstanceState) {
-        super.onPostCreate(savedInstanceState);
-        // TODO fix app bar auto hiding
-        //enableActionBarAutoHide((CollectionView) findViewById(R.id.videos_card_list));
     }
 
     @Override

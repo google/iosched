@@ -48,7 +48,7 @@
         <item name="android:windowNoTitle">true</item>
 
         <item name="android:windowContentOverlay">@null</item>
-        <item name="android:windowBackground">@android:color/white</item>
+        <item name="android:windowBackground">@color/background</item>
         <item name="android:homeAsUpIndicator">@drawable/ic_up</item>
 
         <item name="android:popupMenuStyle">@style/Widget.IOSched.PopupMenu</item>
@@ -84,15 +84,15 @@
 
     <style name="ActionBarPopupThemeOverlay" parent="ThemeOverlay.AppCompat.Light" />
 
-    <style name="Theme.IOSched.Welcome" parent="Theme.IOSched">
+    <style name="Theme.IOSched.Welcome.Base" parent="Theme.IOSched">
         <item name="android:windowBackground">@color/background</item>
     </style>
 
-    <style name="Theme.IOSched.Sessions" parent="Theme.IOSched.WithNavDrawer">
-        <item name="actionBarInsetStart">@dimen/keyline_2_minus_16dp</item>
-        <item name="spinnerBarInsetStart">@dimen/keyline_2_minus_16dp</item>
-        <item name="android:windowBackground">@color/grey_background</item>
-    </style>
+    <style name="Theme.IOSched.Welcome" parent="Theme.IOSched.Welcome.Base" />
+
+    <style name="Theme.IOSched.Explore" parent="Theme.IOSched.WithNavDrawer" />
+
+    <style name="Theme.IOSched.Explore.Sessions" />
 
     <style name="Theme.IOSched.Search" parent="Theme.IOSched">
         <item name="android:windowBackground">@android:color/transparent</item>
@@ -405,6 +405,11 @@
     <style name="Body1Text">
         <item name="android:textAppearance">@style/TextAppearance.Body1</item>
         <item name="android:lineSpacingMultiplier">@dimen/body_1_spacing</item>
+    </style>
+
+    <style name="SessionTitle">
+        <item name="android:textAppearance">@style/TextAppearance.AppCompat.Subhead</item>
+        <item name="android:lineSpacingMultiplier">@dimen/h3_spacing</item>
     </style>
 
     <style name="Body2Text">

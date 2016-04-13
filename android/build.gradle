@@ -40,7 +40,7 @@ android {
         minSdkVersion 14
         targetSdkVersion 22
         multiDexEnabled true
-
+        vectorDrawables.useSupportLibrary = true
 
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         buildConfigField("boolean", "ENABLE_DEBUG_TOOLS", "false")
@@ -71,7 +71,7 @@ android {
         buildConfigField("boolean", "ENABLE_IOLIVE_IN_NAVIGATION", "false")
         buildConfigField("boolean", "ENABLE_EXPLORE_IN_NAVIGATION", "true")
         buildConfigField("boolean", "ENABLE_MAP_IN_NAVIGATION", "true")
-        buildConfigField("boolean", "ENABLE_SOCIAL_IN_NAVIGATION", "true")
+        buildConfigField("boolean", "ENABLE_SOCIAL_IN_NAVIGATION", "false")
         buildConfigField("boolean", "ENABLE_VIDEOLIB_IN_NAVIGATION", "true")
         buildConfigField("boolean", "ENABLE_SIGNIN_IN_NAVIGATION", "true")
         buildConfigField("boolean", "ENABLE_SETTINGS_IN_NAVIGATION", "true")

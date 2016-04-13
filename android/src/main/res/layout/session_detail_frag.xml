@@ -237,7 +237,7 @@
                 android:background="?colorPrimary"
                 android:theme="@style/ActionBarThemeOverlay">
 
-                <include layout="@layout/toolbar_actionbar" />
+                <include layout="@layout/toolbar" />
 
                 <TextView
                     android:id="@+id/session_title"

@@ -62,8 +62,8 @@ public class AccountFragment extends WelcomeFragment
         super.onAttach(activity);
 
         mAccountManager = AccountManager.get(activity);
-        mAccounts = new ArrayList<Account>(
-                Arrays.asList(mAccountManager.getAccountsByType(GoogleAuthUtil.GOOGLE_ACCOUNT_TYPE)));
+        mAccounts = new ArrayList<>(Arrays.asList(
+                mAccountManager.getAccountsByType(GoogleAuthUtil.GOOGLE_ACCOUNT_TYPE)));
     }
 
     @Override
@@ -144,9 +144,10 @@ public class AccountFragment extends WelcomeFragment
         // Create the child views
         for (Account account : mAccounts) {
             LOGD(TAG, "Account: " + account.name);
-            RadioButton button = new RadioButton(mActivity);
-            button.setText(account.name);
-            accountsContainer.addView(button);
+            final RadioButton accountRadio = (RadioButton) inflater.inflate(
+                    R.layout.welcome_account_radio, accountsContainer, false);
+            accountRadio.setText(account.name);
+            accountsContainer.addView(accountRadio);
         }
 
         return layout;

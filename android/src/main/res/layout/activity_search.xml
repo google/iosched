@@ -48,7 +48,7 @@
             android:orientation="vertical">
 
             <android.support.v7.widget.Toolbar
-                android:id="@+id/toolbar_actionbar"
+                android:id="@+id/toolbar"
                 android:layout_width="match_parent"
                 android:layout_height="?actionBarSize"
                 android:gravity="center_vertical"

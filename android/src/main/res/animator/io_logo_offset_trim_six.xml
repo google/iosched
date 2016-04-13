@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
-  Copyright 2015 Google Inc. All rights reserved.
+  Copyright 2016 Google Inc.
 
   Licensed under the Apache License, Version 2.0 (the "License");
   you may not use this file except in compliance with the License.
@@ -15,13 +15,14 @@
   limitations under the License.
   -->
 
-<android.support.v7.widget.Toolbar
+<!-- we use separate anims for the 1/6 to allow different durations (as the path lengths are
+     different, using the same duration produces different speeds). -->
+<objectAnimator
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:iosched="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/toolbar_actionbar"
-    android:layout_width="match_parent"
-    android:layout_height="?actionBarSize"
-    iosched:contentInsetStart="?actionBarInsetStart"
-    iosched:popupTheme="@style/ActionBarPopupThemeOverlay"
-    iosched:theme="@style/ActionBarThemeOverlay"
-    style="@style/HeaderBar" />
+    android:propertyName="trimPathOffset"
+    android:valueFrom="0"
+    android:valueTo="1"
+    android:duration="5000"
+    android:interpolator="@android:interpolator/linear"
+    android:repeatCount="infinite"
+    android:repeatMode="restart" />

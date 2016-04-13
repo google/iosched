@@ -14,12 +14,8 @@
   See the License for the specific language governing permissions and
   limitations under the License.
   -->
-
-<android.support.v7.widget.Toolbar
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:iosched="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/toolbar_actionbar"
-    android:layout_width="match_parent"
-    android:layout_height="?actionBarSize"
-    iosched:popupTheme="@style/ActionBarPopupThemeOverlay"
-    iosched:theme="@style/ActionBarThemeOverlay" />
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- disabled state -->
+    <item android:state_enabled="false" android:color="@color/flat_button_text" />
+    <item android:color="@color/preferred_action" />
+</selector>

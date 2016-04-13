@@ -42,10 +42,6 @@
             android:checkable="true"
             android:title=""
             android:visible="false" />
-    </group>
-    <group
-        android:id="@+id/grp2"
-        android:checkableBehavior="single">
         <item
             android:id="@+id/social_nav_item"
             android:checkable="true"
@@ -58,7 +54,7 @@
             android:visible="false" />
     </group>
     <group
-        android:id="@+id/grp3"
+        android:id="@+id/grp2"
         android:checkableBehavior="single">
         <item
             android:id="@+id/settings_nav_item"

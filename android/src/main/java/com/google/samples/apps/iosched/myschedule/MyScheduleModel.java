@@ -17,7 +17,6 @@
 package com.google.samples.apps.iosched.myschedule;
 
 import android.content.Context;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.ContentObserver;
 import android.os.Bundle;
@@ -31,7 +30,6 @@ import com.google.samples.apps.iosched.R;
 import com.google.samples.apps.iosched.archframework.Model;
 import com.google.samples.apps.iosched.archframework.QueryEnum;
 import com.google.samples.apps.iosched.archframework.UserActionEnum;
-import com.google.samples.apps.iosched.feedback.SessionFeedbackActivity;
 import com.google.samples.apps.iosched.model.ScheduleHelper;
 import com.google.samples.apps.iosched.model.ScheduleItem;
 import com.google.samples.apps.iosched.provider.ScheduleContract;
@@ -46,6 +44,7 @@ import java.util.HashMap;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 import static com.google.samples.apps.iosched.util.LogUtils.LOGD;
+import static com.google.samples.apps.iosched.util.LogUtils.LOGE;
 import static com.google.samples.apps.iosched.util.LogUtils.makeLogTag;
 
 public class MyScheduleModel implements Model<MyScheduleModel.MyScheduleQueryEnum,
@@ -132,8 +131,19 @@ public class MyScheduleModel implements Model<MyScheduleModel.MyScheduleQueryEnu
                 public void onSharedPreferenceChanged(SharedPreferences sp, String key) {
                     LOGD(TAG, "sharedpreferences key " + key + " changed, maybe reloading data.");
                     if (SettingsUtils.PREF_LOCAL_TIMES.equals(key)) {
-                        mScheduleDataQueryCallback.onModelUpdated(MyScheduleModel.this,
-                                MyScheduleQueryEnum.SCHEDULE);
+                        // mPrefChangeListener is observing as soon as the model is created but
+                        // mScheduleDataQueryCallback is only created when the view has requested
+                        // some data. There is a tiny amount of time when mPrefChangeListener is
+                        // active but mScheduleDataQueryCallback is null. This was observed when
+                        // going to MySchedule screen straight after the welcome flow.
+                        if (mScheduleDataQueryCallback != null) {
+                            mScheduleDataQueryCallback.onModelUpdated(MyScheduleModel.this,
+                                    MyScheduleQueryEnum.SCHEDULE);
+                        } else {
+                            LOGE(TAG, "sharedpreferences key " + key +
+                                    " changed, but null schedule data query callback, cannot " +
+                                    "inform model is updated");
+                        }
                     } else if (SettingsUtils.PREF_ATTENDEE_AT_VENUE.equals(key)) {
                         updateData(mScheduleDataQueryCallback);
                     }

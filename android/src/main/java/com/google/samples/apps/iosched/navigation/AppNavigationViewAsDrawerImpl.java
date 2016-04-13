@@ -20,12 +20,15 @@ import android.app.Activity;
 import android.graphics.PorterDuff;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.os.Bundle;
 import android.os.Handler;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
+import android.util.TypedValue;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ImageView;
@@ -63,6 +66,13 @@ public class AppNavigationViewAsDrawerImpl extends AppNavigationViewAbstractImpl
     // different Activities of the app through the Nav Drawer
     private static final int MAIN_CONTENT_FADEOUT_DURATION = 150;
 
+    /**
+     * Key to track whether the {@link #mAccountSpinner} drop down view is visible when saving the
+     * state of this view.
+     */
+    private static final String ACCOUNT_SPINNER_DROP_DOWN_VISIBLE =
+            "account_spinner_drop_down_visible";
+
     private DrawerLayout mDrawerLayout;
 
     // A Runnable that we should execute when the navigation drawer finishes its closing animation
@@ -71,6 +81,14 @@ public class AppNavigationViewAsDrawerImpl extends AppNavigationViewAbstractImpl
     private NavigationView mNavigationView;
 
     private Spinner mAccountSpinner;
+
+    private boolean mAccountSpinnerDropDownViewVisible;
+
+    /**
+     * True if the {@link #mAccountSpinner} should be shown in drop down mode when this view is
+     * first loaded.
+     */
+    private boolean mSetAccountSpinnerInDropViewModeWhenFirstShown;
 
     private AccountSpinnerAdapter mAccountSpinnerAdapter;
 
@@ -108,8 +126,11 @@ public class AppNavigationViewAsDrawerImpl extends AppNavigationViewAbstractImpl
         if (mDrawerLayout == null) {
             return;
         }
-        mDrawerLayout.setStatusBarBackgroundColor(
-                mActivity.getResources().getColor(R.color.theme_primary_dark));
+
+        // setup the status bar color to be colorPrimaryDark from the theme
+        final TypedValue tv = new TypedValue();
+        mActivity.getTheme().resolveAttribute(R.attr.colorPrimaryDark, tv, true);
+        mDrawerLayout.setStatusBarBackgroundColor(tv.data);
 
         mNavigationView = (NavigationView) mActivity.findViewById(R.id.nav_view);
 
@@ -245,7 +266,8 @@ public class AppNavigationViewAsDrawerImpl extends AppNavigationViewAbstractImpl
             coverImageView
                     .setColorFilter(mActivity.getResources().getColor(R.color.light_content_scrim));
         } else {
-            mActivity.findViewById(R.id.profile_cover_image_placeholder).setVisibility(View.VISIBLE);
+            mActivity.findViewById(R.id.profile_cover_image_placeholder)
+                     .setVisibility(View.VISIBLE);
             coverImageView.setVisibility(View.GONE);
         }
 
@@ -266,6 +288,15 @@ public class AppNavigationViewAsDrawerImpl extends AppNavigationViewAbstractImpl
         mAccountSpinner.setAdapter(mAccountSpinnerAdapter);
         mAccountSpinner.setSelection(0);
 
+        mAccountSpinner.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(final View v, final MotionEvent event) {
+                if (event.getAction() == MotionEvent.ACTION_DOWN) {
+                    mAccountSpinnerDropDownViewVisible = true;
+                }
+                return false;
+            }
+        });
         if (accounts.size() > 1) {
             mAccountSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                 @Override
@@ -282,7 +313,8 @@ public class AppNavigationViewAsDrawerImpl extends AppNavigationViewAbstractImpl
                             mDrawerLayout.closeDrawer(GravityCompat.START);
                         } else {
                             LOGD(TAG,
-                                    "User requested switch to account: " + accounts.get(position).name);
+                                    "User requested switch to account: " +
+                                            accounts.get(position).name);
                             AccountUtils.setActiveAccount(mActivity, accounts.get(position).name);
                             mLoginStateListener.onAccountChangeRequested();
                             mLoginStateListener.onStartLoginProcessRequested();
@@ -290,11 +322,19 @@ public class AppNavigationViewAsDrawerImpl extends AppNavigationViewAbstractImpl
                             setupAccountBox();
                         }
                     }
+
+                    mAccountSpinnerDropDownViewVisible = false;
+
+                    if (mSetAccountSpinnerInDropViewModeWhenFirstShown) {
+                        mAccountSpinnerDropDownViewVisible = true;
+                        mAccountSpinner.performClick();
+                        mSetAccountSpinnerInDropViewModeWhenFirstShown = false;
+                    }
                 }
 
                 @Override
                 public void onNothingSelected(final AdapterView<?> parent) {
-
+                    mAccountSpinnerDropDownViewVisible = false;
                 }
 
             });
@@ -303,7 +343,6 @@ public class AppNavigationViewAsDrawerImpl extends AppNavigationViewAbstractImpl
         } else {
             mAccountSpinner.setEnabled(false);
         }
-
 
     }
 
@@ -352,6 +391,26 @@ public class AppNavigationViewAsDrawerImpl extends AppNavigationViewAbstractImpl
 
     private boolean isSpecialItem(NavigationItemEnum item) {
         return item == NavigationItemEnum.SETTINGS;
+    }
+
+    public void markAccountSpinnerAsNotShowingDropDownView() {
+        mAccountSpinnerDropDownViewVisible = false;
+    }
+
+    public void onSaveInstanceState(Bundle outState) {
+        if (mAccountSpinnerAdapter != null) {
+            outState.putBoolean(ACCOUNT_SPINNER_DROP_DOWN_VISIBLE,
+                    mAccountSpinnerDropDownViewVisible);
+        }
+    }
+
+    public void onRestoreInstanceState(Bundle savedInstanceState) {
+        if (savedInstanceState != null &&
+                savedInstanceState.containsKey(ACCOUNT_SPINNER_DROP_DOWN_VISIBLE)) {
+            mSetAccountSpinnerInDropViewModeWhenFirstShown =
+                    savedInstanceState.getBoolean(ACCOUNT_SPINNER_DROP_DOWN_VISIBLE);
+
+        }
     }
 
     public interface NavigationDrawerStateListener {

@@ -44,7 +44,7 @@
                       android:clickable="true"
                       android:orientation="vertical">
 
-            <include layout="@layout/toolbar_actionbar"/>
+            <include layout="@layout/toolbar"/>
             <!-- placeholder, empty except on L -->
 
         </LinearLayout>

@@ -15,14 +15,13 @@
   limitations under the License.
   -->
 
-<!-- an animated-vector: this ties together a drawable and animation resource -->
-
-<animated-vector
+<android.support.v7.widget.Toolbar
     xmlns:android="http://schemas.android.com/apk/res/android"
-    android:drawable="@drawable/io_logo_social_animated">
-
-    <target
-        android:name="15"
-        android:animation="@animator/io_logo_anim" />
-
-</animated-vector>
+    xmlns:iosched="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/toolbar"
+    android:layout_width="match_parent"
+    android:layout_height="?actionBarSize"
+    iosched:contentInsetStart="?actionBarInsetStart"
+    iosched:popupTheme="@style/ActionBarPopupThemeOverlay"
+    iosched:theme="@style/ActionBarThemeOverlay"
+    style="@style/HeaderBar" />

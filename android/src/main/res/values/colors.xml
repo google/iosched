@@ -17,7 +17,23 @@
 <!-- Colors common among all features in the app. -->
 <resources>
     <color name="transparent">#00000000</color>
-    <color name="background">#f5f5f5</color>
+    <color name="background">#fff7f9f9</color>
+
+    <!-- 2016 palette -->
+    <color name="io16_primary_cyan">#ff25c5d9</color>
+    <color name="io16_primary_purple">#ff5d6abf</color>
+    <color name="io16_primary_blue_grey">#ff445963</color>
+    <color name="io16_grey">#ffafbdc4</color>
+    <color name="io16_light_grey">#ffebeef0</color>
+    <color name="io16_accent_red">#ffff5151</color>
+    <color name="io16_accent_cyan">#ff4ccfe0</color>
+    <color name="io16_accent_light_cyan">#ff8cedea</color>
+    <color name="io16_accent_green">#ff7bb241</color>
+    <color name="io16_accent_yellow">#ffffc927</color>
+    <color name="io16_accent_purple">#ff7885ca</color>
+    <color name="dark_status_bar">#ff949595</color>
+    <color name="light_status_bar">#ffeceff1</color>
+    <!-- todo cleanup old colors -->
 
     <!-- App main palette for io15 version. -->
     <color name="io15_dark_grey">#FF455A64</color>
@@ -49,6 +65,7 @@
     <color name="text_on_primary">#ff004446</color>
     <color name="subtitle_on_primary">#de004446</color>
     <color name="unselected_tab_on_primary">#b3004446</color>
+    <color name="preferred_action">#b3000000</color>
 
     <!-- Session Detail colors. -->
     <color name="session_detail_tag_text_color">@color/flat_button_text</color>
@@ -158,13 +175,19 @@
 
     <!-- Colors used in the Explore Sessions filter drawer -->
     <color name="explore_sessions_body_color">#444444</color>
-    <color name="card_header_tint">#20ffffff</color> <!-- background protection for overlaid text -->
+    <color name="track_header_tint">#20ffffff</color> <!-- background protection for overlaid text -->
     <array name="session_tile_backgrounds">
         <item>#ffeceff1</item>
         <item>#fffafbfc</item>
         <item>#fff4f5f7</item>
     </array>
+    <color name="hash_io_monochrome">#15000000</color> <!-- 8% black -->
 
     <!-- search -->
     <color name="dialog_background">#7f000000</color>
+
+    <!-- welcome -->
+    <color name="welcome_nav_bar">#ff296e78</color>
+    <color name="welcome_attending_in_person_background">#fffff6de</color>
+
 </resources>
