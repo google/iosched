@@ -18,7 +18,6 @@ package com.google.samples.apps.iosched.explore;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -44,13 +43,11 @@ public class ExploreIOActivity extends BaseActivity implements Toolbar.OnMenuIte
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         setContentView(R.layout.explore_io_act);
 
         // ANALYTICS SCREEN: View the Explore I/O screen
         // Contains: Nothing (Page name is a constant)
         AnalyticsHelper.sendScreenView(SCREEN_LABEL);
-
     }
 
     @Override

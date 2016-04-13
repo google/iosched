@@ -21,7 +21,9 @@ import android.content.Intent;
 import android.content.Loader;
 import android.database.Cursor;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
+import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.widget.RecyclerView;
@@ -34,6 +36,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.google.samples.apps.iosched.Config;
@@ -44,6 +47,7 @@ import com.google.samples.apps.iosched.settings.SettingsUtils;
 import com.google.samples.apps.iosched.ui.BaseActivity;
 import com.google.samples.apps.iosched.ui.SearchActivity;
 import com.google.samples.apps.iosched.util.AnalyticsHelper;
+import com.google.samples.apps.iosched.util.ImageLoader;
 import com.google.samples.apps.iosched.util.UIUtils;
 
 import java.util.ArrayList;
@@ -80,28 +84,48 @@ public class ExploreSessionsActivity extends BaseActivity
     private static final int TAG_METADATA_TOKEN = 0x8;
 
     private static final int MODE_TIME_FIT = 1;
+
     private static final int MODE_EXPLORE = 2;
 
-    private RecyclerView mFiltersList;
-    private DrawerLayout mDrawerLayout;
-
     private TagMetadata mTagMetadata;
+
     private TagFilterHolder mTagFilterHolder;
+
     // Keep track of the current URI. This can diverge from Intent.getData() if the user
     // dismisses a particular timeslot. At that point, the Activity switches the mode
     // as well as the Uri used.
     private Uri mCurrentUri;
+
     private ExploreSessionsFragment mFragment;
+
     private int mMode;
+
+    private RecyclerView mFiltersList;
+
+    private DrawerLayout mDrawerLayout;
+
+    private CollapsingToolbarLayout mCollapsingToolbarLayout;
+
+    private ImageView mHeaderImage;
+
+    private TextView mTitle;
+
     private View mTimeSlotLayout;
+
     private View mTimeSlotDivider;
+
+    private ImageLoader mImageLoader;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.explore_sessions_act);
 
+        mImageLoader = new ImageLoader(this);
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
+        mCollapsingToolbarLayout = (CollapsingToolbarLayout) findViewById(R.id.collapsingToolbar);
+        mHeaderImage = (ImageView) mCollapsingToolbarLayout.findViewById(R.id.header_image);
+        mTitle = (TextView) mCollapsingToolbarLayout.findViewById(R.id.title);
         mFiltersList = (RecyclerView) findViewById(R.id.filters);
         mTimeSlotLayout = findViewById(R.id.timeslot_view);
         mTimeSlotDivider = findViewById(R.id.timeslot_divider);
@@ -160,6 +184,7 @@ public class ExploreSessionsActivity extends BaseActivity
                 navigateUpOrBack(ExploreSessionsActivity.this, null);
             }
         });
+        getSupportActionBar().setDisplayShowTitleEnabled(false);
 
         // Start loading the tag metadata. This will in turn call the fragment with the
         // correct arguments.
@@ -275,26 +300,44 @@ public class ExploreSessionsActivity extends BaseActivity
     }
 
     /**
-     * Set the activity title to be that of the selected tag name.
-     * If the user chosen tag's category is present in the filter and there is a single tag
-     * with that category then set the title to the specific tag name else
-     * set the title to R.string.explore.
+     * Set the activity title & header image.
+     * <p>
+     * If the user is browsing a single track then it's name is shown as the title and a relevant
+     * header image; otherwise a generic title and image is shown.
      */
-    private void setActivityTitle() {
+    private void setHeader() {
         if (mMode == MODE_EXPLORE && mTagMetadata != null) {
             String tag = getIntent().getStringExtra(EXTRA_FILTER_TAG);
             TagMetadata.Tag titleTag = tag == null ? null : mTagMetadata.getTag(tag);
             String title = null;
+            String headerImage = null;
+            int trackColor = 0;
             if (titleTag != null &&
                     mTagFilterHolder.getCountByCategory(titleTag.getCategory()) == 1) {
                 for (String tagId : mTagFilterHolder.getSelectedFilters()) {
                     TagMetadata.Tag theTag = mTagMetadata.getTag(tagId);
                     if (TextUtils.equals(titleTag.getCategory(), theTag.getCategory())) {
                         title = theTag.getName();
+                        headerImage = theTag.getPhotoUrl();
+                        trackColor = theTag.getColor();
+                        break;
                     }
                 }
             }
-            setTitle(title == null ? getString(R.string.title_explore) : title);
+            if (title == null) {
+                title = getString(R.string.title_explore);
+            }
+            mTitle.setText(title);
+            if (headerImage != null) {
+                mHeaderImage.setScaleType(ImageView.ScaleType.CENTER_CROP);
+                mImageLoader.loadImage(headerImage, mHeaderImage);
+            } else {
+                mHeaderImage.setScaleType(ImageView.ScaleType.FIT_CENTER);
+                mHeaderImage.setImageResource(R.drawable.ic_hash_io_16_monochrome);
+            }
+            if (trackColor != 0 && Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                getWindow().setStatusBarColor(UIUtils.adjustColorForStatusBar(trackColor));
+            }
         }
     }
 
@@ -312,7 +355,7 @@ public class ExploreSessionsActivity extends BaseActivity
                     mTagFilterHolder.toStringArray(),
                     mTagFilterHolder.getCategoryCount());
         }
-        setActivityTitle();
+        setHeader();
         Intent intent = new Intent(Intent.ACTION_VIEW, uri);
         intent.putExtra(ExploreSessionsFragment.EXTRA_SHOW_LIVESTREAMED_SESSIONS,
                 mTagFilterHolder.isShowLiveStreamedSessions());

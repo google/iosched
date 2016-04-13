@@ -13,7 +13,7 @@
   the License.
   -->
 
-<!-- an animated-vector: this ties together a drawable and animation resource -->
+<!-- An animated-vector: ties together a drawable and animation resources -->
 
 <animated-vector
     xmlns:android="http://schemas.android.com/apk/res/android"

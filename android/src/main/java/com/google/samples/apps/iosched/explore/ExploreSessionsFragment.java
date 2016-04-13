@@ -69,8 +69,6 @@ public class ExploreSessionsFragment extends Fragment implements
     /** The delay before actual re-querying in milli seconds. */
     private static final long QUERY_UPDATE_DELAY_MILLIS = 100;
 
-    private ImageLoader mImageLoader;
-
     private RecyclerView mSessionList;
 
     private View mEmptyView;
@@ -107,7 +105,6 @@ public class ExploreSessionsFragment extends Fragment implements
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mImageLoader = new ImageLoader(getActivity(), R.drawable.io_logo);
         getLoaderManager().initLoader(TAG_METADATA_TOKEN, null, this);
         // Setup the tag filters
         if (savedInstanceState != null) {

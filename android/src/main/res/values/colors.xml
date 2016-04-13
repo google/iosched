@@ -31,6 +31,8 @@
     <color name="io16_accent_green">#ff7bb241</color>
     <color name="io16_accent_yellow">#ffffc927</color>
     <color name="io16_accent_purple">#ff7885ca</color>
+    <color name="dark_status_bar">#ff949595</color>
+    <color name="light_status_bar">#ffeceff1</color>
     <!-- todo cleanup old colors -->
 
     <!-- App main palette for io15 version. -->
@@ -173,20 +175,19 @@
 
     <!-- Colors used in the Explore Sessions filter drawer -->
     <color name="explore_sessions_body_color">#444444</color>
-    <color name="card_header_tint">#20ffffff</color> <!-- background protection for overlaid text -->
+    <color name="track_header_tint">#20ffffff</color> <!-- background protection for overlaid text -->
     <array name="session_tile_backgrounds">
         <item>#ffeceff1</item>
         <item>#fffafbfc</item>
         <item>#fff4f5f7</item>
     </array>
+    <color name="hash_io_monochrome">#15000000</color> <!-- 8% black -->
 
     <!-- search -->
     <color name="dialog_background">#7f000000</color>
 
     <!-- welcome -->
     <color name="welcome_nav_bar">#ff296e78</color>
-    <color name="welcome_dark_status_background">#ff949595</color>
-    <color name="welcome_light_status_background">#ffeceff1</color>
     <color name="welcome_attending_in_person_background">#fffff6de</color>
 
 </resources>
