@@ -38,6 +38,7 @@ import java.util.Iterator;
  */
 public class DataExtractor {
 
+  public static final String TRACK = "TRACK";
   private HashMap<String, JsonObject> videoSessionsById;
   private HashMap<String, JsonObject> speakersById;
   private HashMap<String, JsonObject> categoryToTagMap;
@@ -174,6 +175,17 @@ public class DataExtractor {
               set(tagConf, InputJsonKeys.ExtraSource.TagConf.order_in_category, dest, OutputJsonKeys.Tags.order_in_category);
               set(tagConf, InputJsonKeys.ExtraSource.TagConf.color, dest, OutputJsonKeys.Tags.color);
               set(tagConf, InputJsonKeys.ExtraSource.TagConf.hashtag, dest, OutputJsonKeys.Tags.hashtag);
+            }
+          }
+
+          // Extract photo urls from topics for TRACK tags.
+          if (tagName.getAsString().startsWith(TRACK)) {
+            String objectId = extractTrackPhotoObjectId(sources,
+                    dest.get(OutputJsonKeys.Tags.original_id.name()).getAsString());
+            if (!objectId.isEmpty()) {
+              dest.addProperty(OutputJsonKeys.Tags.photoUrl.name(),
+                      Converters.SESSION_PHOTO_URL.convert(new JsonPrimitive(objectId))
+                                                  .getAsString());
             }
           }
 
@@ -603,5 +615,30 @@ public class DataExtractor {
     }
   }
 
+  /**
+   * Extract the ObjectId (used to generate the photo url of the track) from the first topic that
+   * contains the given trackId.
+   *
+   * @param sources The full JSON object retrieved from the CMS.
+   * @param trackId Track id used to filter the topics, so the correct artwork can be retrieved.
+   * @return ObjectId of the topic that contains the trackId.
+   */
+  private String extractTrackPhotoObjectId(JsonDataSources sources, String trackId) {
+    JsonDataSource source = sources.getSource(InputJsonKeys.VendorAPISource.MainTypes.topics.name());
+    for (JsonObject topic : source) {
+
+      JsonElement documents = get(topic, InputJsonKeys.VendorAPISource.Topics.Documents);
+      JsonArray categories = topic.getAsJsonArray(InputJsonKeys.VendorAPISource.Topics.CategoryIds.name());
+      for (int i = 0; i < categories.size(); i++) {
+        String categoryId = categories.get(i).getAsString();
+        if (categoryId.equals(trackId)) {
+          return documents.getAsJsonArray().get(0).getAsJsonObject().get("ObjectId").getAsString();
+        }
+      }
+    }
+    // If no topic is found to have this trackId contained in its categories array then an empty
+    // String is returned.
+    return "";
+  }
 
 }
