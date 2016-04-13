@@ -27,31 +27,31 @@
 
     <path
         android:name="hash"
-        android:pathData="M39,45L39,80 M57,45L57,80 M66,54L31,54 M66,71L31,71"
+        android:pathData="@string/io_logo_path_hash"
         android:strokeColor="@color/io16_primary_purple"
         android:strokeLineCap="round"
         android:strokeWidth="@dimen/io_logo_stroke_width" />
 
     <path
         android:name="i_body"
-        android:pathData="M83,82L107,82A2,2 0,0 1,109 84L109,155A2,2 0,0 1,107 157L83,157A2,2 0,0 1,81 155L81,84A2,2 0,0 1,83 82z"
+        android:pathData="@string/io_logo_path_i_body"
         android:strokeColor="@color/io16_primary_purple"
         android:strokeWidth="@dimen/io_logo_stroke_width" />
 
     <path
         android:name="i_dot"
-        android:pathData="M94,59m-14,0a14,14 0,1 1,28 0a14,14 0,1 1,-28 0"
+        android:pathData="@string/io_logo_path_i_dot"
         android:strokeColor="@color/io16_primary_purple"
         android:strokeWidth="@dimen/io_logo_stroke_width" />
 
     <path
         android:name="o"
-        android:pathData="M159.5,119.5m-37.5,0a37.5,37.5 0,1 1,75 0a37.5,37.5 0,1 1,-75 0"
+        android:pathData="@string/io_logo_path_o"
         android:strokeColor="@color/io16_primary_purple"
         android:strokeWidth="@dimen/io_logo_stroke_width" />
 
-    <!-- Here's the trick, we place four copies of the path for the number one on top of each other.
-         We then set different trim values to show only a quarter of each path. We can then animate
+    <!-- Here's the trick: place four copies of the path for the number one on top of each other.
+         Set different trim values to show only a quarter of each path. Then animate
          the trimPathOffset property to make the shown segment describe the whole path. -->
     <path
         android:name="one_1"
@@ -85,7 +85,7 @@
         android:trimPathStart="0.75"
         android:trimPathEnd="1" />
 
-    <!-- We do the same for the number six. -->
+    <!-- Same for the number six. -->
     <path
         android:name="six_1"
         android:pathData="@string/io_logo_path_six"

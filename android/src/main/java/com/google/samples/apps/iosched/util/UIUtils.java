@@ -40,7 +40,9 @@ import android.net.Uri;
 import android.os.Build;
 import android.preference.PreferenceManager;
 import android.provider.Settings;
+import android.support.annotation.ColorInt;
 import android.support.annotation.DrawableRes;
+import android.support.v4.graphics.ColorUtils;
 import android.text.Html;
 import android.text.Spannable;
 import android.text.SpannableStringBuilder;
@@ -674,4 +676,28 @@ public class UIUtils {
 
         return paintDrawable;
     }
+
+    /**
+     * Calculate a variant of the given color to make it suitable for setting behind the status
+     * bar. That is create a darker variant on API < 23 and a lighter variant on API23+
+     * (where light status bar is used).
+     *
+     * @param color the color to adjust
+     * @return the adjusted color
+     */
+    public static @ColorInt int adjustColorForStatusBar(@ColorInt int color) {
+        float[] hsl = new float[3];
+        ColorUtils.colorToHSL(color, hsl);
+
+        float lightnessMultiplier;
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
+            lightnessMultiplier = 0.925f; // darken the color
+        } else {
+            lightnessMultiplier = 1.075f; // lighten the color
+        }
+        // constrain the lightness between [0–1]
+        hsl[2] = Math.max(0f, Math.min(1f, hsl[2] * lightnessMultiplier));
+        return ColorUtils.HSLToColor(hsl);
+    }
+
 }

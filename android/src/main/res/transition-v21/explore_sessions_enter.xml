@@ -13,10 +13,12 @@
   the License.
   -->
 
-<android.support.v7.widget.Toolbar
+<fade
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/toolbar"
-    android:layout_width="match_parent"
-    android:layout_height="?actionBarSize"
-    app:layout_scrollFlags="scroll|enterAlways|snap" />
+    android:duration="300"
+    android:interpolator="@android:interpolator/linear_out_slow_in">
+    <targets>
+        <target android:targetId="@android:id/navigationBarBackground" />
+        <target android:targetId="@android:id/statusBarBackground" />
+    </targets>
+</fade>

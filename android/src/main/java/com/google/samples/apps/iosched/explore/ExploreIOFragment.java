@@ -27,6 +27,8 @@ import android.os.Parcelable;
 import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
+import android.support.v4.app.ActivityOptionsCompat;
+import android.support.v4.util.Pair;
 import android.support.v4.util.SparseArrayCompat;
 import android.support.v4.view.ViewCompat;
 import android.support.v7.widget.CardView;
@@ -447,7 +449,16 @@ public class ExploreIOFragment extends Fragment
                     final ItemGroup track = (ItemGroup) mItems.get(position);
                     final Intent intent = new Intent(mHost, ExploreSessionsActivity.class);
                     intent.putExtra(ExploreSessionsActivity.EXTRA_FILTER_TAG, track.getId());
-                    ActivityCompat.startActivity(mHost, intent, null);
+
+                    final ActivityOptionsCompat options =
+                            ActivityOptionsCompat.makeSceneTransitionAnimation(mHost,
+                                    Pair.create((View) holder.headerImage, mHost.getString(
+                                            R.string.transition_explore_sessions_header)),
+                                    Pair.create((View) holder.title, mHost.getString(
+                                            R.string.transition_explore_sessions_title)),
+                                    Pair.create(holder.itemView, mHost.getString(
+                                            R.string.transition_explore_sessions_background)));
+                    ActivityCompat.startActivity(mHost, intent, options.toBundle());
                 }
             });
             return holder;
@@ -565,7 +576,14 @@ public class ExploreIOFragment extends Fragment
                 final String title) {
             holder.title.setText(title);
             holder.header.setContentDescription(title);
-            mImageLoader.loadImage(track.getPhotoUrl(), holder.headerImage);
+            if (track.getPhotoUrl() != null) {
+                holder.headerImage.setScaleType(ImageView.ScaleType.CENTER_CROP);
+                mImageLoader.loadImage(track.getPhotoUrl(), holder.headerImage);
+            } else {
+                holder.headerImage.setScaleType(ImageView.ScaleType.FIT_CENTER);
+                holder.headerImage.setImageResource(R.drawable.ic_hash_io_16_monochrome);
+
+            }
             final int trackId = getTrackId(track);
             holder.sessions.setAdapter(mTrackSessionsAdapters.get(trackId));
             holder.sessions.getLayoutManager().onRestoreInstanceState(

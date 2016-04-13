@@ -25,6 +25,7 @@ import android.os.Handler;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
+import android.util.TypedValue;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
@@ -125,8 +126,11 @@ public class AppNavigationViewAsDrawerImpl extends AppNavigationViewAbstractImpl
         if (mDrawerLayout == null) {
             return;
         }
-        mDrawerLayout.setStatusBarBackgroundColor(
-                mActivity.getResources().getColor(R.color.theme_primary_dark));
+
+        // setup the status bar color to be colorPrimaryDark from the theme
+        final TypedValue tv = new TypedValue();
+        mActivity.getTheme().resolveAttribute(R.attr.colorPrimaryDark, tv, true);
+        mDrawerLayout.setStatusBarBackgroundColor(tv.data);
 
         mNavigationView = (NavigationView) mActivity.findViewById(R.id.nav_view);
 

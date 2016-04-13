@@ -23,19 +23,19 @@
         android:id="@+id/drawer_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".explore.ExploreIOActivity"
-        android:fitsSystemWindows="true">
+        android:fitsSystemWindows="true"
+        tools:context=".explore.ExploreIOActivity">
 
     <android.support.design.widget.CoordinatorLayout
         android:id="@+id/coordinatorLayout"
         android:layout_height="match_parent"
         android:layout_width="match_parent">
 
-
         <android.support.design.widget.AppBarLayout
             android:id="@+id/appbar"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:background="@color/background">
 
             <include layout="@layout/toolbar_autohide" />
 
