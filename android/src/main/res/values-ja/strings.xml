@@ -182,9 +182,6 @@
      <!-- Short text introducing the code of conduct for attendees coming in person -->
      <string name="welcome_conduct_title">I/O コミュニティのベスト プラクティス</string>
  
-     <!-- Short text asking if the user is attending Google I/O in person -->
-     <string name="welcome_attending">サンフランシスコの会場で参加しますか？</string>
- 
      <!-- Medium-length welcome text asking if the user is attending Google I/O in person -->
      <string name="welcome_attending_text">サンフランシスコで直接参加とリモート参加、どちらで参加しますか？</string>
  

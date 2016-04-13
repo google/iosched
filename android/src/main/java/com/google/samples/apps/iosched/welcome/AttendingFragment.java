@@ -31,7 +31,12 @@ import static com.google.samples.apps.iosched.util.LogUtils.makeLogTag;
  * The attending in person fragment in the welcome screen.
  */
 public class AttendingFragment extends WelcomeFragment implements WelcomeActivity.WelcomeActivityContent {
+
     private static final String TAG = makeLogTag(AttendingFragment.class);
+
+    private WelcomeFragmentOnClickListener mPositiveClickListener;
+
+    private WelcomeFragmentOnClickListener mNegativeClickListener;
 
     @Override
     public boolean shouldDisplay(Context context) {
@@ -41,29 +46,12 @@ public class AttendingFragment extends WelcomeFragment implements WelcomeActivit
 
     @Override
     protected View.OnClickListener getPositiveListener() {
-        return new WelcomeFragmentOnClickListener(mActivity) {
-            @Override
-            public void onClick(View v) {
-                // Ensure we don't run this fragment again
-                LOGD(TAG, "Marking attending flag.");
-                SettingsUtils.setAttendeeAtVenue(mActivity, true);
-                SettingsUtils.markAnsweredLocalOrRemote(mActivity, true);
-                doNext();
-            }
-        };
+        return mPositiveClickListener;
     }
 
     @Override
     protected View.OnClickListener getNegativeListener() {
-        return new WelcomeFragmentOnClickListener(mActivity) {
-            @Override
-            public void onClick(View v) {
-                LOGD(TAG, "Marking not attending flag.");
-                SettingsUtils.setAttendeeAtVenue(mActivity, false);
-                SettingsUtils.markAnsweredLocalOrRemote(mActivity, true);
-                doNext();
-            }
-        };
+        return mNegativeClickListener;
     }
 
     @Override
@@ -79,9 +67,33 @@ public class AttendingFragment extends WelcomeFragment implements WelcomeActivit
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        mPositiveClickListener = new WelcomeFragmentOnClickListener(mActivity) {
+            @Override
+            public void onClick(View v) {
+                // Ensure we don't run this fragment again
+                LOGD(TAG, "Marking attending flag.");
+                SettingsUtils.setAttendeeAtVenue(mActivity, true);
+                SettingsUtils.markAnsweredLocalOrRemote(mActivity, true);
+                doNext();
+            }
+        };
+        mNegativeClickListener = new WelcomeFragmentOnClickListener(mActivity) {
+            @Override
+            public void onClick(View v) {
+                LOGD(TAG, "Marking not attending flag.");
+                SettingsUtils.setAttendeeAtVenue(mActivity, false);
+                SettingsUtils.markAnsweredLocalOrRemote(mActivity, true);
+                doNext();
+            }
+        };
         super.onCreateView(inflater, container, savedInstanceState);
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.welcome_attending_fragment, container, false);
+        final View view = inflater.inflate(R.layout.welcome_attending_fragment, container, false);
+
+        view.findViewById(R.id.attending_in_person).setOnClickListener(mPositiveClickListener);
+        view.findViewById(R.id.attending_remotely).setOnClickListener(mNegativeClickListener);
+
+        return view;
     }
 
 }

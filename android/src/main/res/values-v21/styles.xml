@@ -29,6 +29,11 @@
         <item name="android:statusBarColor">@android:color/transparent</item>
     </style>
 
+    <style name="Theme.IOSched.Welcome" parent="Theme.IOSched.Welcome.Base">
+        <item name="android:statusBarColor">@color/welcome_dark_status_background</item>
+        <item name="android:navigationBarColor">@color/welcome_nav_bar</item>
+    </style>
+
     <style name="Theme.IOSched.AlertDialog" parent="android:Theme.Material.Light.Dialog.Alert">
         <item name="android:colorPrimary">@color/theme_primary</item>
         <item name="android:colorPrimaryDark">@color/theme_primary_dark</item>
@@ -42,4 +47,5 @@
     <style name="TabIndicator">
         <item name="android:theme">@style/ActionBarThemeOverlay</item>
     </style>
+
 </resources>

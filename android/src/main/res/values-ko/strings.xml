@@ -180,9 +180,6 @@
      <!-- Short text introducing the code of conduct for attendees coming in person -->
      <string name="welcome_conduct_title">I/O 커뮤니티 모범 사례</string>
  
-     <!-- Short text asking if the user is attending Google I/O in person -->
-     <string name="welcome_attending">직접 참석하십니까?</string>
- 
      <!-- Medium-length welcome text asking if the user is attending Google I/O in person -->
      <string name="welcome_attending_text">I/O에 원격으로 참여하십니까 아니면 샌프란시스코에서 직접 참석하십니까?</string>
  

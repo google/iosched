@@ -937,11 +937,8 @@ user updates the rating. -->
     <!-- Short text introducing the code of conduct for attendees coming in person -->
     <string name="welcome_conduct_title">I/O Community Best Practices</string>
 
-    <!-- Short text asking if the user is attending Google I/O in person -->
-    <string name="welcome_attending">Attending in Person?</string>
-
     <!-- Medium-length welcome text asking if the user is attending Google I/O in person -->
-    <string name="welcome_attending_text">Are you attending I/O remotely or in person in San Francisco?</string>
+    <string name="welcome_attending_text">Are you attending I/O remotely or in person in Mountain View?</string>
 
     <!-- Short text asking if they're interested in what's around them -->
     <string name="welcome_around">Around you</string>

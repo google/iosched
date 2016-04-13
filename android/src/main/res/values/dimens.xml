@@ -220,10 +220,9 @@
     <item name="match_parent" format="integer" type="dimen">-1</item>
 
     <!-- Welcome Activity -->
-    <dimen name="welcome_appbar_height">224dp</dimen> <!-- 4 * ?actionBarSize -->
-    <dimen name="welcome_image_width">200dp</dimen>
-    <dimen name="welcome_image_height">80dp</dimen>
-    <dimen name="welcome_content_padding_top">168dp</dimen> <!-- 3 * ?actionBarSize -->
+    <dimen name="welcome_logo_top_spacing">48dp</dimen>
+    <dimen name="welcome_logo_height">72dp</dimen>
+    <dimen name="welcome_content_padding_top">160dp</dimen> <!-- welcome_logo_top_spacing + welcome_logo_height + 40dp (logo bottom spacing) -->
     <dimen name="welcome_content_padding">@dimen/padding_normal</dimen>
     <dimen name="welcome_button_bar_elevation">6dp</dimen>
     <dimen name="welcome_content_width">@dimen/match_parent</dimen>
