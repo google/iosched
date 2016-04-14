@@ -28,9 +28,10 @@ import static com.google.samples.apps.iosched.util.LogUtils.LOGD;
 import static com.google.samples.apps.iosched.util.LogUtils.makeLogTag;
 
 /**
- * The attending in person fragment in the welcome screen.
+ * Asks whether the user is attending the conference in person or remotely.
  */
-public class AttendingFragment extends WelcomeFragment implements WelcomeActivity.WelcomeActivityContent {
+public class AttendingFragment extends WelcomeFragment
+        implements WelcomeActivity.WelcomeActivityContent {
 
     private static final String TAG = makeLogTag(AttendingFragment.class);
 
@@ -45,22 +46,22 @@ public class AttendingFragment extends WelcomeFragment implements WelcomeActivit
 
 
     @Override
-    protected View.OnClickListener getPositiveListener() {
+    protected View.OnClickListener getPrimaryButtonListener() {
         return mPositiveClickListener;
     }
 
     @Override
-    protected View.OnClickListener getNegativeListener() {
+    protected View.OnClickListener getSecondaryButtonListener() {
         return mNegativeClickListener;
     }
 
     @Override
-    protected String getPositiveText() {
+    protected String getPrimaryButtonText() {
         return getResourceString(R.string.attending_in_person);
     }
 
     @Override
-    protected String getNegativeText() {
+    protected String getSecondaryButtonText() {
         return getResourceString(R.string.attending_remotely);
     }
 
@@ -77,6 +78,7 @@ public class AttendingFragment extends WelcomeFragment implements WelcomeActivit
                 doNext();
             }
         };
+
         mNegativeClickListener = new WelcomeFragmentOnClickListener(mActivity) {
             @Override
             public void onClick(View v) {
@@ -86,14 +88,11 @@ public class AttendingFragment extends WelcomeFragment implements WelcomeActivit
                 doNext();
             }
         };
-        super.onCreateView(inflater, container, savedInstanceState);
-        // Inflate the layout for this fragment
-        final View view = inflater.inflate(R.layout.welcome_attending_fragment, container, false);
 
+        super.onCreateView(inflater, container, savedInstanceState);
+        final View view = inflater.inflate(R.layout.welcome_attending_fragment, container, false);
         view.findViewById(R.id.attending_in_person).setOnClickListener(mPositiveClickListener);
         view.findViewById(R.id.attending_remotely).setOnClickListener(mNegativeClickListener);
-
         return view;
     }
-
 }

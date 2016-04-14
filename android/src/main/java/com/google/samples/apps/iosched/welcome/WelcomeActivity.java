@@ -19,9 +19,7 @@ import android.app.AlertDialog;
 import android.app.Fragment;
 import android.app.FragmentTransaction;
 import android.content.Context;
-import android.os.Build;
 import android.os.Bundle;
-import android.provider.Settings;
 import android.support.graphics.drawable.AnimatedVectorDrawableCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.Button;
@@ -37,17 +35,14 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import static com.google.samples.apps.iosched.util.LogUtils.LOGD;
-import static com.google.samples.apps.iosched.util.LogUtils.LOGE;
 import static com.google.samples.apps.iosched.util.LogUtils.makeLogTag;
 
 /**
- * Terms of Service activity activated via {@link BaseActivity} functionality.
+ * Responsible for presenting a series of fragments to the user who has just installed the app as
+ * part of the welcome/onboarding experience.
  */
 public class WelcomeActivity extends AppCompatActivity
         implements WelcomeFragment.WelcomeFragmentContainer {
-
-    private static final String TAG = makeLogTag(WelcomeActivity.class);
 
     WelcomeActivityContent mContentFragment;
 
@@ -59,25 +54,25 @@ public class WelcomeActivity extends AppCompatActivity
 
         mContentFragment = getCurrentFragment(this);
 
-        // If there's no fragment to use, we're done here.
+        // If there's no fragment to use, we're done.
         if (mContentFragment == null) {
             finish();
         }
 
-        // Wire up the fragment
+        // Wire up the fragment.
         FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
         fragmentTransaction.add(R.id.welcome_content, (Fragment) mContentFragment);
         fragmentTransaction.commit();
 
-        LOGD(TAG, "Inside Create View.");
-
         final ImageView iv = (ImageView) findViewById(R.id.logo);
         final AnimatedVectorDrawableCompat logo =
                 AnimatedVectorDrawableCompat.create(this, R.drawable.avd_hash_io_16);
-        iv.setImageDrawable(logo);
+        if (iv != null && logo != null) {
+            iv.setImageDrawable(logo);
 
-        if (UIUtils.animationEnabled(getContentResolver())) {
-            logo.start();
+            if (UIUtils.animationEnabled(getContentResolver())) {
+                logo.start();
+            }
         }
     }
 
@@ -92,7 +87,7 @@ public class WelcomeActivity extends AppCompatActivity
     }
 
     /**
-     * Display dogfood build warning and mark that it was shown.
+     * Displays dogfood build warning and marks that the warning was shown.
      */
     private void displayDogfoodWarningDialog() {
         new AlertDialog.Builder(this)
@@ -103,12 +98,10 @@ public class WelcomeActivity extends AppCompatActivity
     }
 
     /**
-     * Get the current fragment to display.
-     * <p/>
-     * This is the first fragment in the list that WelcomeActivityContent.shouldDisplay().
+     * Gets the current fragment to display.
      *
      * @param context the application context.
-     * @return the WelcomeActivityContent to display or null if there's none.
+     * @return the fragment to display, or null if there is no fragment.
      */
     private static WelcomeActivityContent getCurrentFragment(Context context) {
         List<WelcomeActivityContent> welcomeActivityContents = getWelcomeFragments();
@@ -123,61 +116,41 @@ public class WelcomeActivity extends AppCompatActivity
     }
 
     /**
-     * Whether to display the WelcomeActivity.
-     * <p/>
-     * Decided whether any of the fragments need to be displayed.
+     * Tracks whether to display this activity.
      *
      * @param context the application context.
-     * @return true if the activity should be displayed.
+     * @return true if the activity should be displayed, otherwise false.
      */
     public static boolean shouldDisplay(Context context) {
         WelcomeActivityContent fragment = getCurrentFragment(context);
-        if (fragment == null) {
-            return false;
-        }
-        return true;
+        return fragment != null;
     }
 
     /**
-     * Get all WelcomeFragments for the WelcomeActivity.
-     *
-     * @return the List of WelcomeFragments.
+     * Returns all fragments displayed by {@link WelcomeActivity}.
      */
     private static List<WelcomeActivityContent> getWelcomeFragments() {
         return new ArrayList<WelcomeActivityContent>(Arrays.asList(
                 new TosFragment(),
                 new ConductFragment(),
-                new AttendingFragment(),
-                new AccountFragment()
+                new AccountFragment(),
+                new AttendingFragment()
         ));
     }
 
     @Override
-    public Button getPositiveButton() {
+    public Button getPrimaryButton() {
         return (Button) findViewById(R.id.button_accept);
     }
 
     @Override
-    public void setPositiveButtonEnabled(Boolean enabled) {
-        try {
-            getPositiveButton().setEnabled(enabled);
-        } catch (NullPointerException e) {
-            LOGD(TAG, "Positive welcome button doesn't exist to set enabled.");
-        }
+    public void setPrimaryButtonEnabled(Boolean enabled) {
+        getPrimaryButton().setEnabled(enabled);
     }
 
     @Override
-    public Button getNegativeButton() {
+    public Button getSecondaryButton() {
         return (Button) findViewById(R.id.button_decline);
-    }
-
-    @Override
-    public void setNegativeButtonEnabled(Boolean enabled) {
-        try {
-            getNegativeButton().setEnabled(enabled);
-        } catch (NullPointerException e) {
-            LOGD(TAG, "Negative welcome button doesn't exist to set enabled.");
-        }
     }
 
     /**
@@ -185,11 +158,11 @@ public class WelcomeActivity extends AppCompatActivity
      */
     interface WelcomeActivityContent {
         /**
-         * Whether the fragment should be displayed.
+         * Tracks whether the fragment should be displayed.
          *
          * @param context the application context.
-         * @return true if the WelcomeActivityContent should be displayed.
+         * @return true if the fragment should be displayed, otherwise false.
          */
-        public boolean shouldDisplay(Context context);
+        boolean shouldDisplay(Context context);
     }
 }
