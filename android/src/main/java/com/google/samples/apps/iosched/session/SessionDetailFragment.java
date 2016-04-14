@@ -213,6 +213,10 @@ public class SessionDetailFragment extends Fragment
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
         inflater.inflate(R.menu.session_detail, menu);
+        if (!BuildConfig.ENABLE_MAP_IN_NAVIGATION) {
+            MenuItem map = menu.findItem(R.id.menu_map_room);
+            map.setVisible(false);
+        }
         tryExecuteDeferredUiOperations();
     }
 
