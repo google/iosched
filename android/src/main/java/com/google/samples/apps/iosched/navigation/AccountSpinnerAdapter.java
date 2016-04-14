@@ -16,6 +16,7 @@ package com.google.samples.apps.iosched.navigation;
 
 import android.accounts.Account;
 import android.content.Context;
+import android.content.res.Resources;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -83,7 +84,13 @@ public class AccountSpinnerAdapter extends ArrayAdapter<Account> {
         } else {
             holder.image.setImageResource(R.drawable.person_image_empty);
         }
-        holder.email.setText(getItem(position).name);
+        String email = getItem(position).name;
+        holder.email.setText(email);
+        String chosenAccount = AccountUtils.getActiveAccountName(getContext());
+        Resources res = getContext().getResources();
+        holder.email.setContentDescription(email.equals(chosenAccount) ?
+                res.getString(R.string.talkback_selected, email) :
+                res.getString(R.string.talkback_not_selected, email));
 
         return convertView;
     }

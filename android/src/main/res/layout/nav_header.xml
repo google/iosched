@@ -26,7 +26,6 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="?colorPrimary"
-        android:contentDescription="@string/navview_header_default_image_content_description"
         android:paddingBottom="@dimen/navdrawer_logo_vertical_padding"
         android:paddingRight="@dimen/navdrawer_logo_padding_right"
         android:paddingTop="@dimen/navdrawer_logo_vertical_padding"
@@ -63,7 +62,8 @@
         <Spinner
             android:id="@+id/account_spinner"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:contentDescription="@string/switch_account_spinner_description_a11y"/>
 
     </LinearLayout>
 
