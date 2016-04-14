@@ -135,6 +135,13 @@ public class MapFragment extends com.google.android.gms.maps.MapFragment impleme
     // currently displayed floor
     private int mFloor = INVALID_FLOOR;
 
+    /**
+     * Indicates if the venue is active and its markers and floor plan is being displayed. Set to
+     * false by default, as the venue marker is shown first.
+     */
+    private boolean mVenueIsActive = false;
+
+
     private Marker mActiveMarker = null;
     private BitmapDescriptor ICON_ACTIVE;
     private BitmapDescriptor ICON_NORMAL;
@@ -403,10 +410,15 @@ public class MapFragment extends com.google.android.gms.maps.MapFragment impleme
 
     @Override
     public void onCameraChange(final CameraPosition cameraPosition) {
-        if (cameraPosition.zoom < MAX_RENDERED_ZOOMLEVEL || !isAtVenue()) {
-            onDefocusVenue();
-        } else {
+        boolean isVenueInFocus = cameraPosition.zoom >= MAX_RENDERED_ZOOMLEVEL && isVenueVisible();
+
+        // Check if the camera is focused on the venue. Trigger a callback if the state has changed.
+        if (isVenueInFocus && !mVenueIsActive) {
             onFocusVenue();
+            mVenueIsActive = true;
+        } else if (!isVenueInFocus && mVenueIsActive) {
+            onDefocusVenue();
+            mVenueIsActive = false;
         }
     }
 
@@ -483,10 +495,10 @@ public class MapFragment extends com.google.android.gms.maps.MapFragment impleme
      * Display map features if at the venue. This explicitly enables all elements that should be
      * displayed at the default floor.
      *
-     * @see #isAtVenue()
+     * @see #isVenueVisible()
      */
     private void enableMapElements() {
-        if (isAtVenue()) {
+        if (isVenueVisible()) {
             showFloorElementsIndex(VENUE_DEFAULT_LEVEL_INDEX);
         }
     }
@@ -514,7 +526,7 @@ public class MapFragment extends com.google.android.gms.maps.MapFragment impleme
         mInitialFloor = VENUE_DEFAULT_LEVEL_INDEX;
     }
 
-    public boolean isAtVenue() {
+    public boolean isVenueVisible() {
         if (mMap == null) {
             return false;
         }
