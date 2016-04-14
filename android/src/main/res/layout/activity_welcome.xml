@@ -78,6 +78,7 @@
                 android:text="@string/decline"
                 android:textAppearance="@style/TextAppearance.AppCompat.Button"
                 android:textColor="@color/app_body_text_2"
+                android:visibility="invisible"
                 style="?android:borderlessButtonStyle" />
 
             <Button

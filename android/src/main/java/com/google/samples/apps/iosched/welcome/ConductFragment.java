@@ -28,7 +28,8 @@ import static com.google.samples.apps.iosched.util.LogUtils.LOGD;
 import static com.google.samples.apps.iosched.util.LogUtils.makeLogTag;
 
 /**
- * The code of conduct fragment in the welcome screen.
+ * Presents the code of conduct for the conference. The user must complete this step before being
+ * able to use the app.
  */
 public class ConductFragment extends WelcomeFragment implements WelcomeActivity.WelcomeActivityContent {
     private static final String TAG = makeLogTag(ConductFragment.class);
@@ -39,11 +40,11 @@ public class ConductFragment extends WelcomeFragment implements WelcomeActivity.
     }
 
     @Override
-    protected View.OnClickListener getPositiveListener() {
+    protected View.OnClickListener getPrimaryButtonListener() {
         return new WelcomeFragmentOnClickListener(mActivity) {
             @Override
             public void onClick(View v) {
-                // Ensure we don't run this fragment again
+                // Ensure we don't run this fragment again.
                 LOGD(TAG, "Marking code of conduct flag.");
                 SettingsUtils.markConductAccepted(mActivity, true);
                 doNext();
@@ -52,32 +53,24 @@ public class ConductFragment extends WelcomeFragment implements WelcomeActivity.
     }
 
     @Override
-    protected View.OnClickListener getNegativeListener() {
-        return new WelcomeFragmentOnClickListener(mActivity) {
-            @Override
-            public void onClick(View v) {
-                // Nothing to do here
-                LOGD(TAG, "Need to accept Code of Conduct.");
-                doFinish();
-            }
-        };
+    protected View.OnClickListener getSecondaryButtonListener() {
+        return null;
     }
 
     @Override
-    protected String getPositiveText() {
+    protected String getPrimaryButtonText() {
         return getResourceString(R.string.accept);
     }
 
     @Override
-    protected String getNegativeText() {
-        return getResourceString(R.string.decline);
+    protected String getSecondaryButtonText() {
+        return null;
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
-        // Inflate the layout for this fragment
         return inflater.inflate(R.layout.welcome_conduct_fragment, container, false);
     }
 }

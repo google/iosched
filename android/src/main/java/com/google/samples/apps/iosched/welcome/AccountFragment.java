@@ -51,10 +51,7 @@ public class AccountFragment extends WelcomeFragment
     @Override
     public boolean shouldDisplay(Context context) {
         Account account = AccountUtils.getActiveAccount(context);
-        if (account == null) {
-            return true;
-        }
-        return false;
+        return account == null;
     }
 
     @Override
@@ -75,28 +72,21 @@ public class AccountFragment extends WelcomeFragment
     }
 
     @Override
-    protected View.OnClickListener getPositiveListener() {
+    protected View.OnClickListener getPrimaryButtonListener() {
         return new WelcomeFragmentOnClickListener(mActivity) {
             @Override
             public void onClick(View v) {
                 // Ensure we don't run this fragment again
                 LOGD(TAG, "Marking attending flag.");
-                AccountUtils.setActiveAccount(mActivity, mSelectedAccount.toString());
+                AccountUtils.setActiveAccount(mActivity, mSelectedAccount);
                 doNext();
             }
         };
     }
 
     @Override
-    protected View.OnClickListener getNegativeListener() {
-        return new WelcomeFragmentOnClickListener(mActivity) {
-            @Override
-            public void onClick(View v) {
-                // Nothing to do here
-                LOGD(TAG, "User needs to select an account.");
-                doFinish();
-            }
-        };
+    protected View.OnClickListener getSecondaryButtonListener() {
+        return null;
     }
 
     @Override
@@ -106,18 +96,18 @@ public class AccountFragment extends WelcomeFragment
         LOGD(TAG, "Checked: " + mSelectedAccount);
 
         if (mActivity instanceof WelcomeFragmentContainer) {
-            ((WelcomeFragmentContainer) mActivity).setPositiveButtonEnabled(true);
+            ((WelcomeFragmentContainer) mActivity).setPrimaryButtonEnabled(true);
         }
     }
 
     @Override
-    protected String getPositiveText() {
+    protected String getPrimaryButtonText() {
         return getResourceString(R.string.ok);
     }
 
     @Override
-    protected String getNegativeText() {
-        return getResourceString(R.string.cancel);
+    protected String getSecondaryButtonText() {
+        return null;
     }
 
     @Override
@@ -133,15 +123,13 @@ public class AccountFragment extends WelcomeFragment
         }
 
         if (mActivity instanceof WelcomeFragmentContainer) {
-            ((WelcomeFragmentContainer) mActivity).setPositiveButtonEnabled(false);
+            ((WelcomeFragmentContainer) mActivity).setPrimaryButtonEnabled(false);
         }
 
-        // Find the view
         RadioGroup accountsContainer = (RadioGroup) layout.findViewById(R.id.welcome_account_list);
         accountsContainer.removeAllViews();
         accountsContainer.setOnCheckedChangeListener(this);
 
-        // Create the child views
         for (Account account : mAccounts) {
             LOGD(TAG, "Account: " + account.name);
             final RadioButton accountRadio = (RadioButton) inflater.inflate(
