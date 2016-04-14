@@ -532,7 +532,7 @@ public abstract class BaseActivity extends AppCompatActivity implements
 
     private void setToolbarForNavigation() {
         if (mToolbar != null) {
-            mToolbar.setNavigationIcon(R.drawable.ic_ab_drawer);
+            mToolbar.setNavigationIcon(R.drawable.ic_hamburger);
             mToolbar.setNavigationOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {

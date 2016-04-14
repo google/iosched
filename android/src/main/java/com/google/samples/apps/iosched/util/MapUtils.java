@@ -80,9 +80,7 @@ public class MapUtils {
     /**
      * Returns the drawable Id of icon to use for a room type.
      */
-    public static
-    @DrawableRes
-    int getRoomIcon(int markerType) {
+    public static @DrawableRes int getRoomIcon(int markerType) {
         switch (markerType) {
             case MarkerModel.TYPE_SESSION:
                 return R.drawable.ic_map_session;

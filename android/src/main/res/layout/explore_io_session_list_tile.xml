@@ -15,6 +15,7 @@
 
 <FrameLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/session"
     android:layout_width="@dimen/compact_list_tile"
     android:layout_height="@dimen/compact_list_tile"
@@ -26,8 +27,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="top|end|right"
-        android:src="@drawable/ic_bookmark_tick"
-        android:visibility="invisible" />
+        android:visibility="invisible"
+        app:srcCompat="@drawable/ic_in_schedule" />
 
     <LinearLayout
         android:layout_width="match_parent"

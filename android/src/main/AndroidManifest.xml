@@ -82,7 +82,6 @@
         android:hardwareAccelerated="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
-        android:logo="@drawable/actionbar_logo"
         android:supportsRtl="true"
         android:theme="@style/Theme.IOSched">
 

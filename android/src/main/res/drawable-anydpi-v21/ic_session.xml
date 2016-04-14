@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  Copyright (c) 2016 Google Inc.
+
+  Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except
+  in compliance with the License. You may obtain a copy of the License at
+
+  http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software distributed under the License
+  is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express
+  or implied. See the License for the specific language governing permissions and limitations under
+  the License.
+  -->
+
+<vector
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="24dp"
+    android:height="24dp"
+    android:viewportWidth="24"
+    android:viewportHeight="24">
+
+    <path
+        android:pathData="M8.25,12C6.875,12 5.75,13.125 5.75,14.5C5.75,15.875 6.875,17 8.25,17C9.625,17 10.75,15.875 10.75,14.5C10.75,13.125 9.625,12 8.25,12L8.25,12ZM14.5,8.25C14.5,6.875 13.375,5.75 12,5.75C10.625,5.75 9.5,6.875 9.5,8.25C9.5,9.625 10.625,10.75 12,10.75C13.375,10.75 14.5,9.625 14.5,8.25L14.5,8.25ZM12,22C6.475,22 2,17.525 2,12C2,6.475 6.475,2 12,2C17.525,2 22,6.475 22,12C22,17.525 17.525,22 12,22L12,22ZM15.75,12C14.375,12 13.25,13.125 13.25,14.5C13.25,15.875 14.375,17 15.75,17C17.125,17 18.25,15.875 18.25,14.5C18.25,13.125 17.125,12 15.75,12L15.75,12Z"
+        android:fillColor="@color/dark_icon" />
+
+</vector>

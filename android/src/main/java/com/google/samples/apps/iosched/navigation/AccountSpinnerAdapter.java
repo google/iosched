@@ -82,7 +82,7 @@ public class AccountSpinnerAdapter extends ArrayAdapter<Account> {
             mImageLoader.loadImage(AccountUtils.getPlusImageUrl(getContext(), getItem(position).name),
                     holder.image);
         } else {
-            holder.image.setImageResource(R.drawable.person_image_empty);
+            holder.image.setImageResource(R.drawable.ic_default_avatar);
         }
         String email = getItem(position).name;
         holder.email.setText(email);

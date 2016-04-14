@@ -60,7 +60,7 @@ public class SessionDetailActivity extends BaseActivity {
 
         final Toolbar toolbar = getToolbar();
         toolbar.setNavigationIcon(shouldBeFloatingWindow
-                ? R.drawable.ic_ab_close : R.drawable.ic_up);
+                ? R.drawable.ic_close : R.drawable.ic_up);
         toolbar.setNavigationContentDescription(R.string.close_and_go_back);
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override

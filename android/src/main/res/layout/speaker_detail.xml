@@ -38,7 +38,7 @@
         android:focusable="true"
         app:maskDrawable="@drawable/circle_mask"
         app:borderDrawable="@drawable/circle_border"
-        android:src="@drawable/person_image_empty" />
+        app:srcCompat="@drawable/ic_default_avatar" />
 
     <TextView
         android:id="@+id/speaker_header"

@@ -34,6 +34,10 @@
     <color name="dark_status_bar">#ff949595</color>
     <color name="light_status_bar_against_toolbar">#ffe8eaea</color>
     <color name="light_status_bar_against_header_img">#ffe0e1e3</color>
+    <color name="dark_icon">#99000000</color>
+    <color name="large_dark_icon">#66000000</color>
+    <color name="map_icon">#ffb4b4b4</color>
+    <color name="navview_icon">#ff444444</color>
     <!-- todo cleanup old colors -->
 
     <!-- App main palette for io15 version. -->
@@ -74,7 +78,7 @@
     <color name="fab_not_in_schedule">#ffeeff21</color>
     <color name="fab_in_schedule">@color/io15_white</color>
     <color name="fab_press_ripple">#1a000000</color>
-    <color name="fab_icon_color">#99000000</color>
+    <color name="fab_icon_color">@color/dark_icon</color>
     <color name="session_tag_stroke">#80546e7a</color>
     <color name="speaker_social_link">@color/session_detail_interactive_element</color>
     <color name="session_detail_interactive_element">#ff546e7a</color>

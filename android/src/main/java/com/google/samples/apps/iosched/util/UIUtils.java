@@ -462,9 +462,7 @@ public class UIUtils {
         return (value - min) / (float) (max - min);
     }
 
-    public static
-    @DrawableRes
-    int getSessionIcon(int sessionType) {
+    public static @DrawableRes int getSessionIcon(int sessionType) {
         switch (sessionType) {
             case ScheduleItem.SESSION_TYPE_SESSION:
                 return R.drawable.ic_session;
@@ -478,9 +476,7 @@ public class UIUtils {
         }
     }
 
-    public static
-    @DrawableRes
-    int getBreakIcon(String breakTitle) {
+    public static @DrawableRes int getBreakIcon(String breakTitle) {
         if (!TextUtils.isEmpty(breakTitle)) {
             if (breakTitle.contains("After")) {
                 return R.drawable.ic_after_hours;

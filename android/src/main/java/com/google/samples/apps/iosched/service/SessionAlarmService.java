@@ -535,12 +535,12 @@ public class SessionAlarmService extends IntentService
                     .setPriority(Notification.PRIORITY_MAX)
                     .setAutoCancel(true);
             if (minutesLeft > 5) {
-                notifBuilder.addAction(R.drawable.ic_alarm_holo_dark,
+                notifBuilder.addAction(R.drawable.ic_stat_alarm,
                         String.format(res.getString(R.string.snooze_x_min), 5),
                         createSnoozeIntent(sessionStart, intervalEnd, 5));
             }
             if (starredCount == 1 && SettingsUtils.isAttendeeAtVenue(this)) {
-                notifBuilder.addAction(R.drawable.ic_map_holo_dark,
+                notifBuilder.addAction(R.drawable.ic_stat_map,
                         res.getString(R.string.title_map),
                         createRoomMapIntent(singleSessionRoomId));
             }

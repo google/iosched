@@ -58,9 +58,9 @@ limitations under the License.
             android:id="@+id/timeslot"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_weight="1"
             android:layout_marginLeft="@dimen/padding_normal"
             android:layout_marginStart="@dimen/padding_normal"
-            android:layout_weight="1"
             android:ellipsize="end"
             android:maxLines="1"
             android:textAppearance="@style/TextAppearance.Filter" />
@@ -72,8 +72,8 @@ limitations under the License.
             android:layout_marginEnd="@dimen/padding_normal"
             android:layout_marginStart="@dimen/padding_normal"
             android:background="?imageItemBackground"
-            android:src="@drawable/ic_pane_close"
-            android:contentDescription="@string/cancel"/>
+            android:contentDescription="@string/cancel"
+            app:srcCompat="@drawable/ic_clear_timeslot_filter" />
 
     </LinearLayout>
 

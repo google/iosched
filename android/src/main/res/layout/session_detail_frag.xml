@@ -57,7 +57,7 @@
                     android:layout_gravity="center"
                     android:textAppearance="@style/TextAppearance.Title"
                     android:textColor="@color/io15_white"
-                    android:drawableTop="@drawable/ic_play_circle_fill_white_48dp"
+                    android:drawableTop="@drawable/ic_play"
                     android:drawablePadding="@dimen/spacing_normal"
                     android:paddingLeft="@dimen/padding_normal"
                     android:paddingRight="@dimen/padding_normal"

@@ -147,7 +147,7 @@ public class SessionDetailFragment extends Fragment
 
     private float mFABElevation;
 
-    private ImageLoader mSpeakersImageLoader, mNoPlaceholderImageLoader;
+    private ImageLoader mImageLoader;
 
     private Runnable mTimeHintUpdaterRunnable = null;
 
@@ -300,8 +300,7 @@ public class SessionDetailFragment extends Fragment
         mAddScheduleButton = (CheckableFloatingActionButton) getActivity()
                 .findViewById(R.id.add_schedule_button);
 
-        mNoPlaceholderImageLoader = new ImageLoader(getContext());
-        mSpeakersImageLoader = new ImageLoader(getContext(), R.drawable.person_image_empty);
+        mImageLoader = new ImageLoader(getContext());
     }
 
     private ViewTreeObserver.OnGlobalLayoutListener mGlobalLayoutListener
@@ -491,7 +490,7 @@ public class SessionDetailFragment extends Fragment
 
         if (data.shouldShowHeaderImage()) {
             mHasPhoto = true;
-            mNoPlaceholderImageLoader.loadImage(data.getPhotoUrl(), mPhotoView,
+            mImageLoader.loadImage(data.getPhotoUrl(), mPhotoView,
                     new RequestListener<String, Bitmap>() {
                         @Override
                         public boolean onException(Exception e, String model, Target<Bitmap> target,
@@ -738,8 +737,8 @@ public class SessionDetailFragment extends Fragment
             // icon to its left. If only a single icon is displayed, align it to the right.
             determineSocialIconPlacement(plusOneIcon, twitterIcon);
 
-            if (!TextUtils.isEmpty(speaker.getImageUrl()) && mSpeakersImageLoader != null) {
-                mSpeakersImageLoader.loadImage(speaker.getImageUrl(), speakerImageView);
+            if (!TextUtils.isEmpty(speaker.getImageUrl()) && mImageLoader != null) {
+                mImageLoader.loadImage(speaker.getImageUrl(), speakerImageView);
             }
 
             speakerHeaderView.setText(speakerHeader);

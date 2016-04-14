@@ -56,7 +56,7 @@
             android:layout_marginBottom="@dimen/keyline_1"
             android:layout_marginTop="@dimen/navdrawer_header_icon_margin_top"
             android:scaleType="centerCrop"
-            android:src="@drawable/person_image_empty"
+            app:srcCompat="@drawable/ic_default_avatar"
             app:maskDrawable="@drawable/circle_mask" />
 
         <Spinner

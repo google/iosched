@@ -28,7 +28,7 @@
         android:layout_height="@dimen/navdrawer_item_icon_size"
         android:layout_gravity="center_vertical"
         android:scaleType="centerCrop"
-        android:src="@drawable/person_image_empty"
+        app:srcCompat="@drawable/ic_default_avatar"
         app:maskDrawable="@drawable/circle_mask" />
 
     <TextView

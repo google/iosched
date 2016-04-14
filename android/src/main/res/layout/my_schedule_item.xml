@@ -14,11 +14,13 @@
   limitations under the License.
 -->
 
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              xmlns:tools="http://schemas.android.com/tools"
-              android:layout_width="match_parent"
-              android:layout_height="wrap_content"
-              android:orientation="vertical">
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
 
     <FrameLayout
         android:layout_width="match_parent"
@@ -39,7 +41,6 @@
 
         <TextView
             android:id="@+id/more"
-            style="@style/MoreButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical|end|right"
@@ -52,7 +53,8 @@
             android:paddingRight="@dimen/spacing_normal"
             android:paddingStart="@dimen/spacing_normal"
             android:paddingTop="@dimen/spacing_micro"
-            android:text="@string/more_items_button" />
+            android:text="@string/more_items_button"
+            style="@style/MoreButton" />
 
     </FrameLayout>
 
@@ -71,7 +73,7 @@
             android:layout_marginRight="@dimen/my_schedule_icon_horizontal_padding"
             android:layout_marginTop="8dp"
             android:contentDescription="@null"
-            android:src="@drawable/ic_navview_my_schedule" />
+            app:srcCompat="@drawable/ic_navview_schedule" />
 
         <LinearLayout
             android:layout_width="0dp"
@@ -94,14 +96,14 @@
 
             <TextView
                 android:id="@+id/slot_description"
-                style="@style/Body1Text"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="8dp"
                 android:layout_marginRight="8dp"
                 android:layout_marginTop="4dp"
                 android:textSize="@dimen/text_size_medium"
-                tools:text="9:00 AM - 11:30 AM / Room 1" />
+                tools:text="9:00 AM - 11:30 AM / Room 1"
+                style="@style/Body1Text" />
 
             <TextView
                 android:id="@+id/browse_sessions"
@@ -116,7 +118,6 @@
 
             <Button
                 android:id="@+id/give_feedback_button"
-                style="?android:borderlessButtonStyle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="end"
@@ -125,7 +126,8 @@
                 android:paddingLeft="8dp"
                 android:paddingRight="8dp"
                 android:text="@string/my_schedule_rate_this_session"
-                android:textColor="@color/flat_button_text" />
+                android:textColor="@color/flat_button_text"
+                style="?android:borderlessButtonStyle" />
 
             <!-- "LIVE NOW" indicator -->
             <include

@@ -15,7 +15,7 @@
 
 <selector xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <item android:state_checked="true" android:drawable="@drawable/ic_in_schedule" />
+    <item android:state_checked="true" android:drawable="@drawable/ic_fab_in_schedule" />
     <item android:drawable="@drawable/ic_add_to_schedule" />
 
 </selector>

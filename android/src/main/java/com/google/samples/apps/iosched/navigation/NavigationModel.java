@@ -128,8 +128,8 @@ public class NavigationModel implements Model<NavigationQueryEnum, NavigationUse
      */
     public enum NavigationItemEnum {
         MY_SCHEDULE(R.id.myschedule_nav_item, R.string.navdrawer_item_my_schedule,
-                R.drawable.ic_navview_my_schedule, MyScheduleActivity.class),
-        IO_LIVE(R.id.iolive_nav_item, R.string.navdrawer_item_io_live, R.drawable.ic_navview_play_circle_fill,
+                R.drawable.ic_navview_schedule, MyScheduleActivity.class),
+        IO_LIVE(R.id.iolive_nav_item, R.string.navdrawer_item_io_live, R.drawable.ic_navview_live,
                 null),
         EXPLORE(R.id.explore_nav_item, R.string.navdrawer_item_explore,
                 R.drawable.ic_navview_explore, ExploreIOActivity.class, true),
@@ -141,7 +141,8 @@ public class NavigationModel implements Model<NavigationQueryEnum, NavigationUse
         SIGN_IN(R.id.signin_nav_item, R.string.navdrawer_item_sign_in, 0, null),
         SETTINGS(R.id.settings_nav_item, R.string.navdrawer_item_settings, R.drawable.ic_navview_settings,
                 SettingsActivity.class),
-        ABOUT(R.id.about_nav_item, R.string.description_about, R.drawable.ic_info_outline, AboutActivity.class),
+        ABOUT(R.id.about_nav_item, R.string.description_about, R.drawable.ic_about,
+                AboutActivity.class),
         DEBUG(R.id.debug_nav_item, R.string.navdrawer_item_debug, R.drawable.ic_navview_settings,
                 DebugActivity.class),
         INVALID(12, 0, 0, null);
