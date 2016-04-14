@@ -211,7 +211,7 @@ public class AppNavigationViewAsDrawerImpl extends AppNavigationViewAbstractImpl
      * accomplished (perhaps more cleanly) with state-based layouts.
      */
     private void setSelectedNavDrawerItem(NavigationItemEnum item) {
-        if (mNavigationView != null) {
+        if (mNavigationView != null && item != NavigationItemEnum.INVALID) {
             mNavigationView.getMenu().findItem(item.getId()).setChecked(true);
         }
     }
