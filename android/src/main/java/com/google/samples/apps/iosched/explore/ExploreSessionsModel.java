@@ -14,6 +14,7 @@
 
 package com.google.samples.apps.iosched.explore;
 
+import android.content.Context;
 import android.database.Cursor;
 import android.provider.BaseColumns;
 
@@ -31,7 +32,10 @@ public class ExploreSessionsModel {
 
     private final List<SessionData> mSessionData;
 
-    public ExploreSessionsModel(Cursor cursor) {
+    private Context mContext;
+
+    public ExploreSessionsModel(Cursor cursor, Context context) {
+        mContext = context;
         if (cursor != null && cursor.moveToFirst()) {
             mSessionData = new ArrayList<>(cursor.getCount());
             do {
@@ -47,7 +51,7 @@ public class ExploreSessionsModel {
     }
 
     private SessionData createSessionData(Cursor cursor) {
-        return new SessionData(
+        return new SessionData(mContext,
                 cursor.getString(ExploreSessionsQuery.TITLE),
                 cursor.getString(ExploreSessionsQuery.ABSTRACT),
                 cursor.getString(ExploreSessionsQuery.SESSION_ID),
