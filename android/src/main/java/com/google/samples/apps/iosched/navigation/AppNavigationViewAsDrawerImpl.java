@@ -25,7 +25,6 @@ import android.os.Handler;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
-import android.util.TypedValue;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
@@ -41,6 +40,7 @@ import com.google.samples.apps.iosched.navigation.NavigationModel.NavigationItem
 import com.google.samples.apps.iosched.settings.SettingsUtils;
 import com.google.samples.apps.iosched.util.AccountUtils;
 import com.google.samples.apps.iosched.util.ImageLoader;
+import com.google.samples.apps.iosched.util.UIUtils;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -128,9 +128,9 @@ public class AppNavigationViewAsDrawerImpl extends AppNavigationViewAbstractImpl
         }
 
         // setup the status bar color to be colorPrimaryDark from the theme
-        final TypedValue tv = new TypedValue();
-        mActivity.getTheme().resolveAttribute(R.attr.colorPrimaryDark, tv, true);
-        mDrawerLayout.setStatusBarBackgroundColor(tv.data);
+        mDrawerLayout.setStatusBarBackgroundColor(
+                UIUtils.getThemeColor(mActivity, R.attr.colorPrimaryDark,
+                        R.color.theme_primary_dark));
 
         mNavigationView = (NavigationView) mActivity.findViewById(R.id.nav_view);
 

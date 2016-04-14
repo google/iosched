@@ -30,7 +30,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/background"
-        android:transitionName="@string/transition_explore_sessions_background">
+        android:transitionName="@string/transition_track_background">
 
         <android.support.design.widget.AppBarLayout
             android:id="@+id/appbar"
@@ -51,12 +51,12 @@
                 <ImageView
                     android:id="@+id/header_image"
                     android:layout_width="match_parent"
-                    android:layout_height="@dimen/explore_sessions_header_height"
+                    android:layout_height="@dimen/track_header_detail_height"
                     app:layout_collapseMode="parallax"
                     android:scaleType="centerCrop"
                     android:tint="@color/track_header_tint"
                     android:background="@color/io16_light_grey"
-                    android:transitionName="@string/transition_explore_sessions_header"/>
+                    android:transitionName="@string/transition_track_header"/>
 
                 <android.support.v7.widget.Toolbar
                     android:id="@+id/toolbar"
@@ -67,11 +67,13 @@
                     <TextView
                         android:id="@+id/title"
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                        android:layout_height="match_parent"
+                        android:gravity="center_vertical|start|left"
                         android:textAppearance="@style/TextAppearance.Widget.AppCompat.Toolbar.Title"
                         android:textColor="?android:textColorSecondary"
                         android:text="@string/title_explore"
-                        android:transitionName="@string/transition_explore_sessions_title" />
+                        android:ellipsize="end"
+                        android:transitionName="@string/transition_track_title" />
 
                 </android.support.v7.widget.Toolbar>
 

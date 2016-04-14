@@ -32,7 +32,8 @@
     <color name="io16_accent_yellow">#ffffc927</color>
     <color name="io16_accent_purple">#ff7885ca</color>
     <color name="dark_status_bar">#ff949595</color>
-    <color name="light_status_bar">#ffeceff1</color>
+    <color name="light_status_bar_against_toolbar">#ffe8eaea</color>
+    <color name="light_status_bar_against_header_img">#ffe0e1e3</color>
     <!-- todo cleanup old colors -->
 
     <!-- App main palette for io15 version. -->

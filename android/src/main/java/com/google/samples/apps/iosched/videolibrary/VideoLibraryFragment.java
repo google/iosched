@@ -24,6 +24,9 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.support.annotation.NonNull;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.app.ActivityOptionsCompat;
+import android.support.v4.util.Pair;
 import android.support.v4.util.SparseArrayCompat;
 import android.support.v4.view.ViewCompat;
 import android.support.v7.widget.RecyclerView;
@@ -234,7 +237,7 @@ public class VideoLibraryFragment extends Fragment
                     AnalyticsHelper.sendEvent(VIDEO_LIBRARY_ANALYTICS_CATEGORY, "morebutton",
                             videoTrack.getTrack());
                     // Start the Filtered Video Library intent.
-                    Intent filtered = new Intent(mHost, VideoLibraryFilteredActivity.class);
+                    final Intent filtered = new Intent(mHost, VideoLibraryFilteredActivity.class);
                     if (videoTrack.getTrackId() == VideoLibraryModel.TRACK_ID_KEYNOTES) {
                         filtered.putExtra(VideoLibraryFilteredActivity.KEY_FILTER_TOPIC,
                                 VideoLibraryModel.KEYNOTES_TOPIC);
@@ -245,7 +248,13 @@ public class VideoLibraryFragment extends Fragment
                         filtered.putExtra(VideoLibraryFilteredActivity.KEY_FILTER_TOPIC,
                                 videoTrack.getTrack());
                     }
-                    mHost.startActivity(filtered);
+                    final ActivityOptionsCompat options =
+                            ActivityOptionsCompat.makeSceneTransitionAnimation(mHost,
+                                    Pair.create((View) holder.headerImage, mHost.getString(
+                                            R.string.transition_track_header)),
+                                    Pair.create(holder.itemView, mHost.getString(
+                                            R.string.transition_track_background)));
+                    ActivityCompat.startActivity(mHost, filtered, options.toBundle());
                 }
             });
             return holder;
@@ -256,7 +265,13 @@ public class VideoLibraryFragment extends Fragment
             final VideoTrack videoTrack = mVideoTracks.get(position);
             holder.title.setText(videoTrack.getTrack());
             holder.header.setContentDescription(videoTrack.getTrack());
-            mImageLoader.loadImage(videoTrack.getTrackImageUrl(), holder.headerImage);
+            if (videoTrack.getTrackImageUrl() != null) {
+                holder.headerImage.setScaleType(ImageView.ScaleType.CENTER_CROP);
+                mImageLoader.loadImage(videoTrack.getTrackImageUrl(), holder.headerImage);
+            } else {
+                holder.headerImage.setScaleType(ImageView.ScaleType.FIT_CENTER);
+                holder.headerImage.setImageResource(R.drawable.ic_hash_io_16_monochrome);
+            }
             holder.videos.setAdapter(mTrackVideosAdapters.get(videoTrack.getTrackId()));
             holder.videos.getLayoutManager().onRestoreInstanceState(
                     mTrackVideosState.get(videoTrack.getTrackId()));

@@ -40,8 +40,12 @@ import android.net.Uri;
 import android.os.Build;
 import android.preference.PreferenceManager;
 import android.provider.Settings;
+import android.support.annotation.AttrRes;
 import android.support.annotation.ColorInt;
+import android.support.annotation.ColorRes;
 import android.support.annotation.DrawableRes;
+import android.support.annotation.NonNull;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.graphics.ColorUtils;
 import android.text.Html;
 import android.text.Spannable;
@@ -50,6 +54,7 @@ import android.text.TextUtils;
 import android.text.format.DateUtils;
 import android.text.method.LinkMovementMethod;
 import android.text.style.StyleSpan;
+import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.Button;
@@ -678,26 +683,62 @@ public class UIUtils {
     }
 
     /**
-     * Calculate a variant of the given color to make it suitable for setting behind the status
-     * bar. That is create a darker variant on API < 23 and a lighter variant on API23+
-     * (where light status bar is used).
+     * Calculate a variant of the given color to make it suitable for setting as the status
+     * bar background. That is create a darker variant of the color or a lighter variant if
+     * light status bar is used (on API 23+).
      *
-     * @param color the color to adjust
-     * @return the adjusted color
+     * @param context the context holding the current theme.
+     * @param color the color to adjust.
+     * @return the adjusted color.
      */
-    public static @ColorInt int adjustColorForStatusBar(@ColorInt int color) {
+    public static @ColorInt int adjustColorForStatusBar(@NonNull Context context,
+            @ColorInt int color) {
         float[] hsl = new float[3];
         ColorUtils.colorToHSL(color, hsl);
 
         float lightnessMultiplier;
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
-            lightnessMultiplier = 0.925f; // darken the color
+        if (isLightStatusBar(context)) {
+            lightnessMultiplier = 1.075f; // lighten the color 7.5%
         } else {
-            lightnessMultiplier = 1.075f; // lighten the color
+            lightnessMultiplier = 0.925f; // darken the color 7.5%
         }
         // constrain the lightness between [0–1]
         hsl[2] = Math.max(0f, Math.min(1f, hsl[2] * lightnessMultiplier));
         return ColorUtils.HSLToColor(hsl);
+    }
+
+    /**
+     * Queries the theme of the given {@code context} for a theme color.
+     *
+     * @param context the context holding the current theme.
+     * @param attrResId the theme color attribute to resolve.
+     * @param fallbackColorResId a color resource id tto fallback to if the theme color cannot be
+     *                           resolved.
+     * @return the theme color or the fallback color.
+     */
+    public static @ColorInt int getThemeColor(@NonNull Context context, @AttrRes int attrResId,
+            @ColorRes int fallbackColorResId) {
+        final TypedValue tv = new TypedValue();
+        if (context.getTheme().resolveAttribute(attrResId, tv, true)) {
+            return tv.data;
+        }
+        return ContextCompat.getColor(context, fallbackColorResId);
+    }
+
+    /**
+     * Check if the theme in the given {@code context} has light status bar set.
+     *
+     * @param context the context holding the current theme.
+     * @return
+     */
+    public static boolean isLightStatusBar(@NonNull Context context) {
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
+            return false;
+        }
+
+        final TypedValue tv = new TypedValue();
+        context.getTheme().resolveAttribute(android.R.attr.windowLightStatusBar, tv, true);
+        return tv.data != 0;
     }
 
 }

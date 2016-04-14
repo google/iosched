@@ -17,10 +17,14 @@
 package com.google.samples.apps.iosched.videolibrary;
 
 import android.annotation.TargetApi;
+import android.app.Activity;
 import android.app.Fragment;
 import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.ColorInt;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.widget.GridLayoutManager;
@@ -61,20 +65,95 @@ public class VideoLibraryFilteredFragment extends Fragment implements
         UpdatableView<VideoLibraryModel, VideoLibraryQueryEnum, VideoLibraryUserActionEnum> {
 
     private static final String TAG = makeLogTag(VideoLibraryFilteredFragment.class);
-
-    private ImageLoader mImageLoader;
-
-    private RecyclerView mVideoList = null;
-
+    private DrawerLayout mDrawerLayout = null;
     private View mEmptyView = null;
-
+    private ImageLoader mImageLoader;
+    private List<UserActionListener> mListeners = new ArrayList<>();
+    private VideoLibraryFilteredContainer mParent;
+    private RadioGroup mTopicsFilterRadioGroup = null;
+    private RecyclerView mVideoList = null;
     private RadioGroup mYearsFilterRadioGroup = null;
 
-    private RadioGroup mTopicsFilterRadioGroup = null;
+    @Override
+    public void addListener(UserActionListener toAdd) {
+        mListeners.add(toAdd);
+    }
 
-    private DrawerLayout mDrawerLayout = null;
+    @Override
+    public void displayData(final VideoLibraryModel model,
+            final VideoLibraryQueryEnum query) {
+        if ((VideoLibraryModel.VideoLibraryQueryEnum.VIDEOS == query
+                || VideoLibraryModel.VideoLibraryQueryEnum.MY_VIEWED_VIDEOS == query)
+                && model.getVideos() != null) {
+            displayVideos(model);
+        }
+        if (VideoLibraryModel.VideoLibraryQueryEnum.FILTERS == query) {
+            Map<Integer, String> specialYearEntries = new HashMap<>();
+            specialYearEntries.put(VideoLibraryModel.ALL_YEARS, getString(R.string.all));
+            updateRadioGroup(mYearsFilterRadioGroup, model.getYears(), model.getSelectedYear(),
+                    specialYearEntries);
+            Map<String, String> specialTopicEntries = new HashMap<>();
+            specialTopicEntries.put(VideoLibraryModel.ALL_TOPICS, getString(R.string.all));
+            specialTopicEntries.put(VideoLibraryModel.KEYNOTES_TOPIC,
+                    VideoLibraryModel.KEYNOTES_TOPIC);
+            List<String> topics = model.getTopics();
+            topics.remove(VideoLibraryModel.KEYNOTES_TOPIC);
+            updateRadioGroup(mTopicsFilterRadioGroup, model.getTopics(), model.getSelectedTopic(),
+                    specialTopicEntries);
+        }
+    }
 
-    private List<UserActionListener> mListeners = new ArrayList<>();
+    @Override
+    public void displayErrorMessage(final VideoLibraryQueryEnum query) {
+        // No UI changes upon query error
+    }
+
+    @Override
+    public void displayUserActionResult(final VideoLibraryModel model,
+            final VideoLibraryUserActionEnum userAction, final boolean success) {
+        switch (userAction) {
+            case CHANGE_FILTER:
+                displayVideos(model);
+                break;
+        }
+    }
+
+    @Override
+    public Context getContext() {
+        return getActivity();
+    }
+
+    @Override
+    public Uri getDataUri(final VideoLibraryQueryEnum query) {
+        switch (query) {
+            case VIDEOS:
+            case FILTERS:
+                return ScheduleContract.Videos.CONTENT_URI;
+            case MY_VIEWED_VIDEOS:
+                return ScheduleContract.MyViewedVideos.CONTENT_URI;
+            default:
+                return Uri.EMPTY;
+        }
+    }
+
+    @Override
+    public void onActivityCreated(Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        mImageLoader = new ImageLoader(getActivity(), android.R.color.transparent);
+        mYearsFilterRadioGroup = (RadioGroup) getActivity().findViewById(R.id.years_radio_group);
+        mTopicsFilterRadioGroup = (RadioGroup) getActivity().findViewById(R.id.topics_radio_group);
+        mDrawerLayout = (DrawerLayout) getActivity().findViewById(R.id.drawer_layout);
+        mDrawerLayout.setDrawerShadow(R.drawable.drawer_shadow_flipped, GravityCompat.END);
+        initPresenter();
+    }
+
+    @Override
+    public void onAttach(final Activity activity) {
+        super.onAttach(activity);
+        if (activity instanceof VideoLibraryFilteredContainer) {
+            mParent = (VideoLibraryFilteredContainer) activity;
+        }
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -86,25 +165,113 @@ public class VideoLibraryFilteredFragment extends Fragment implements
         return root;
     }
 
+    @Override
+    public void onDetach() {
+        mParent = null;
+        super.onDetach();
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        getActivity().invalidateOptionsMenu();
+
+        final DrawShadowFrameLayout drawShadowFrameLayout =
+                (DrawShadowFrameLayout) getActivity().findViewById(R.id.main_content);
+        if (drawShadowFrameLayout != null) {
+            // configure video fragment's top clearance to take our overlaid Toolbar into account.
+            drawShadowFrameLayout.setShadowTopOffset(UIUtils.calculateActionBarSize(getActivity()));
+        }
+    }
+
+    private void displayVideos(VideoLibraryModel model) {
+        if (!model.hasVideos()) {
+            mEmptyView.setVisibility(View.VISIBLE);
+            return;
+        }
+
+        final GridLayoutManager glm = (GridLayoutManager) mVideoList.getLayoutManager();
+        final VideoTrackAdapter adapter =
+                VideoTrackAdapter.createVerticalGrid(getActivity(), model.getAllVideos(),
+                        mImageLoader, mListeners, glm.getSpanCount());
+        mVideoList.setAdapter(adapter);
+        glm.setSpanSizeLookup(new GridLayoutManager.SpanSizeLookup() {
+            @Override
+            public int getSpanSize(final int position) {
+                return adapter.getSpanCount(position);
+            }
+        });
+        updateParent(model.getSelectedTopic(), model.getSelectedTopicImageUrl(),
+                model.getSelectedTopicColor(), model.getSelectedYear());
+        mEmptyView.setVisibility(View.GONE);
+    }
+
+    private void initPresenter() {
+        VideoLibraryModel model = ModelProvider
+                .provideVideoLibraryModel(getDataUri(VideoLibraryQueryEnum.VIDEOS),
+                        getDataUri(VideoLibraryQueryEnum.MY_VIEWED_VIDEOS),
+                        getDataUri(VideoLibraryQueryEnum.FILTERS), getActivity(),
+                        getLoaderManager());
+
+        // Instantiate a new model with initial filter values from the intent call.
+        String topicIdFilter = VideoLibraryModel.ALL_TOPICS;
+        int yearFilter = VideoLibraryModel.ALL_YEARS;
+        Bundle extras = getActivity().getIntent().getExtras();
+        if (extras != null) {
+            topicIdFilter = extras.getString(VideoLibraryFilteredActivity.KEY_FILTER_TOPIC,
+                    VideoLibraryModel.ALL_TOPICS);
+            yearFilter = extras.getInt(VideoLibraryFilteredActivity.KEY_FILTER_YEAR,
+                    VideoLibraryModel.ALL_YEARS);
+        }
+        model.setSelectedTopic(topicIdFilter);
+        model.setSelectedYear(yearFilter);
+
+        PresenterImpl presenter =
+                new PresenterImpl(model, this, VideoLibraryUserActionEnum.values(),
+                        VideoLibraryQueryEnum.values());
+        presenter.loadInitialQueries();
+    }
+
+    /**
+     * Called when the user has selected a new filter for videos.
+     */
+    private void onVideoFilterChanged(Object filter) {
+        for (UserActionListener listener : mListeners) {
+            Bundle args = new Bundle();
+            args.putInt(ModelWithLoaderManager.KEY_RUN_QUERY_ID,
+                    VideoLibraryModel.VideoLibraryQueryEnum.VIDEOS.getId());
+            if (filter instanceof Integer) {
+                args.putInt(VideoLibraryModel.KEY_YEAR, (Integer) filter);
+            } else if (filter instanceof String) {
+                args.putString(VideoLibraryModel.KEY_TOPIC, (String) filter);
+            }
+            listener.onUserAction(VideoLibraryModel.VideoLibraryUserActionEnum.CHANGE_FILTER, args);
+        }
+        mDrawerLayout.closeDrawer(GravityCompat.END);
+    }
+
     /**
      * Sets the title of the activity depending on the year and topic filters.
      */
-    private void setActivityTitle(int yearFilter, String topicFilter) {
-        if (!topicFilter.equals(VideoLibraryModel.ALL_TOPICS)
-                && yearFilter != VideoLibraryModel.ALL_YEARS) {
-            getActivity().setTitle(getString(R.string.title_year_and_topic_filtered_video_library,
-                    yearFilter, topicFilter));
-        } else if (!topicFilter.equals(VideoLibraryModel.ALL_TOPICS)
-                && topicFilter.equals(VideoLibraryModel.KEYNOTES_TOPIC)) {
-            getActivity().setTitle(R.string.keynote_group_title);
-        } else if (!topicFilter.equals(VideoLibraryModel.ALL_TOPICS)) {
-            getActivity().setTitle(getString(R.string.title_topic_filtered_video_library,
-                    topicFilter));
-        } else if (yearFilter != VideoLibraryModel.ALL_YEARS) {
-            getActivity().setTitle(getString(R.string.title_year_filtered_video_library,
-                    yearFilter));
-        } else {
-            getActivity().setTitle(R.string.title_video_library);
+    private void updateParent(@Nullable String trackName,
+            @Nullable String trackImageUrl, @ColorInt int trackColor, int year) {
+        if (mParent != null) {
+            String title;
+            if (!trackName.equals(VideoLibraryModel.ALL_TOPICS)
+                    && year != VideoLibraryModel.ALL_YEARS) {
+                title = getString(R.string.title_year_and_topic_filtered_video_library, year,
+                        trackName);
+            } else if (!trackName.equals(VideoLibraryModel.ALL_TOPICS)
+                    && trackName.equals(VideoLibraryModel.KEYNOTES_TOPIC)) {
+                title = getString(R.string.keynote_group_title);
+            } else if (!trackName.equals(VideoLibraryModel.ALL_TOPICS)) {
+                title = getString(R.string.title_topic_filtered_video_library, trackName);
+            } else if (year != VideoLibraryModel.ALL_YEARS) {
+                title = getString(R.string.title_year_filtered_video_library, year);
+            } else {
+                title = getString(R.string.title_video_library);
+            }
+            mParent.filtersUpdated(title, trackImageUrl, trackColor);
         }
     }
 
@@ -174,155 +341,9 @@ public class VideoLibraryFilteredFragment extends Fragment implements
         }
     }
 
-    /**
-     * Called when the user has selected a new filter for videos.
-     */
-    private void onVideoFilterChanged(Object filter) {
-        for (UserActionListener listener : mListeners) {
-            Bundle args = new Bundle();
-            args.putInt(ModelWithLoaderManager.KEY_RUN_QUERY_ID,
-                    VideoLibraryModel.VideoLibraryQueryEnum.VIDEOS.getId());
-            if (filter instanceof Integer) {
-                args.putInt(VideoLibraryModel.KEY_YEAR, (Integer) filter);
-            } else if (filter instanceof String) {
-                args.putString(VideoLibraryModel.KEY_TOPIC, (String) filter);
-            }
-            listener.onUserAction(VideoLibraryModel.VideoLibraryUserActionEnum.CHANGE_FILTER, args);
-        }
-        mDrawerLayout.closeDrawer(GravityCompat.END);
-    }
-
-    @Override
-    public void displayData(final VideoLibraryModel model,
-            final VideoLibraryQueryEnum query) {
-        if ((VideoLibraryModel.VideoLibraryQueryEnum.VIDEOS == query
-                || VideoLibraryModel.VideoLibraryQueryEnum.MY_VIEWED_VIDEOS == query)
-                && model.getVideos() != null) {
-            displayVideos(model);
-        }
-        if (VideoLibraryModel.VideoLibraryQueryEnum.FILTERS == query) {
-            Map<Integer, String> specialYearEntries = new HashMap<>();
-            specialYearEntries.put(VideoLibraryModel.ALL_YEARS, getString(R.string.all));
-            updateRadioGroup(mYearsFilterRadioGroup, model.getYears(), model.getSelectedYear(),
-                    specialYearEntries);
-            Map<String, String> specialTopicEntries = new HashMap<>();
-            specialTopicEntries.put(VideoLibraryModel.ALL_TOPICS, getString(R.string.all));
-            specialTopicEntries.put(VideoLibraryModel.KEYNOTES_TOPIC,
-                    VideoLibraryModel.KEYNOTES_TOPIC);
-            List<String> topics = model.getTopics();
-            topics.remove(VideoLibraryModel.KEYNOTES_TOPIC);
-            updateRadioGroup(mTopicsFilterRadioGroup, model.getTopics(), model.getSelectedTopic(),
-                    specialTopicEntries);
-        }
-    }
-
-    @Override
-    public void displayErrorMessage(final VideoLibraryQueryEnum query) {
-        // No UI changes upon query error
-    }
-
-    @Override
-    public void displayUserActionResult(final VideoLibraryModel model,
-            final VideoLibraryUserActionEnum userAction, final boolean success) {
-        switch (userAction) {
-            case CHANGE_FILTER:
-                displayVideos(model);
-                break;
-        }
-    }
-
-    private void displayVideos(VideoLibraryModel model) {
-        if (!model.hasVideos()) {
-            mEmptyView.setVisibility(View.VISIBLE);
-            return;
-        }
-
-        final GridLayoutManager glm = (GridLayoutManager) mVideoList.getLayoutManager();
-        final VideoTrackAdapter adapter =
-                VideoTrackAdapter.createVerticalGrid(getActivity(), model.getAllVideos(),
-                        mImageLoader, mListeners, glm.getSpanCount());
-        mVideoList.setAdapter(adapter);
-        glm.setSpanSizeLookup(new GridLayoutManager.SpanSizeLookup() {
-            @Override
-            public int getSpanSize(final int position) {
-                return adapter.getSpanCount(position);
-            }
-        });
-        setActivityTitle(model.getSelectedYear(), model.getSelectedTopic());
-        mEmptyView.setVisibility(View.GONE);
-    }
-
-    @Override
-    public Uri getDataUri(final VideoLibraryQueryEnum query) {
-        switch (query) {
-            case VIDEOS:
-            case FILTERS:
-                return ScheduleContract.Videos.CONTENT_URI;
-            case MY_VIEWED_VIDEOS:
-                return ScheduleContract.MyViewedVideos.CONTENT_URI;
-            default:
-                return Uri.EMPTY;
-        }
-    }
-
-    @Override
-    public Context getContext() {
-        return getActivity();
-    }
-
-    @Override
-    public void addListener(UserActionListener toAdd) {
-        mListeners.add(toAdd);
-    }
-
-    @Override
-    public void onActivityCreated(Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-        mImageLoader = new ImageLoader(getActivity(), android.R.color.transparent);
-        mYearsFilterRadioGroup = (RadioGroup) getActivity().findViewById(R.id.years_radio_group);
-        mTopicsFilterRadioGroup = (RadioGroup) getActivity().findViewById(R.id.topics_radio_group);
-        mDrawerLayout = (DrawerLayout) getActivity().findViewById(R.id.drawer_layout);
-        mDrawerLayout.setDrawerShadow(R.drawable.drawer_shadow_flipped, GravityCompat.END);
-        initPresenter();
-    }
-
-    private void initPresenter() {
-        VideoLibraryModel model = ModelProvider
-                .provideVideoLibraryModel(getDataUri(VideoLibraryQueryEnum.VIDEOS),
-                        getDataUri(VideoLibraryQueryEnum.MY_VIEWED_VIDEOS),
-                        getDataUri(VideoLibraryQueryEnum.FILTERS), getActivity(),
-                        getLoaderManager());
-
-        // Instantiate a new model with initial filter values from the intent call.
-        String topicFilter = VideoLibraryModel.ALL_TOPICS;
-        int yearFilter = VideoLibraryModel.ALL_YEARS;
-        Bundle extras = getActivity().getIntent().getExtras();
-        if (extras != null) {
-            topicFilter = extras.getString(VideoLibraryFilteredActivity.KEY_FILTER_TOPIC,
-                    VideoLibraryModel.ALL_TOPICS);
-            yearFilter = extras.getInt(VideoLibraryFilteredActivity.KEY_FILTER_YEAR,
-                    VideoLibraryModel.ALL_YEARS);
-        }
-        model.setSelectedTopic(topicFilter);
-        model.setSelectedYear(yearFilter);
-
-        PresenterImpl presenter =
-                new PresenterImpl(model, this, VideoLibraryUserActionEnum.values(),
-                        VideoLibraryQueryEnum.values());
-        presenter.loadInitialQueries();
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-        getActivity().invalidateOptionsMenu();
-
-        final DrawShadowFrameLayout drawShadowFrameLayout =
-                (DrawShadowFrameLayout) getActivity().findViewById(R.id.main_content);
-        if (drawShadowFrameLayout != null) {
-            // configure video fragment's top clearance to take our overlaid Toolbar into account.
-            drawShadowFrameLayout.setShadowTopOffset(UIUtils.calculateActionBarSize(getActivity()));
-        }
+    public interface VideoLibraryFilteredContainer {
+        void filtersUpdated(@NonNull String title, @Nullable String selectionImage,
+                @ColorInt int trackColor);
     }
 
 }

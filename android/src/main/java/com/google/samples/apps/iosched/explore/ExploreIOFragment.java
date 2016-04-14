@@ -453,11 +453,11 @@ public class ExploreIOFragment extends Fragment
                     final ActivityOptionsCompat options =
                             ActivityOptionsCompat.makeSceneTransitionAnimation(mHost,
                                     Pair.create((View) holder.headerImage, mHost.getString(
-                                            R.string.transition_explore_sessions_header)),
+                                            R.string.transition_track_header)),
                                     Pair.create((View) holder.title, mHost.getString(
-                                            R.string.transition_explore_sessions_title)),
+                                            R.string.transition_track_title)),
                                     Pair.create(holder.itemView, mHost.getString(
-                                            R.string.transition_explore_sessions_background)));
+                                            R.string.transition_track_background)));
                     ActivityCompat.startActivity(mHost, intent, options.toBundle());
                 }
             });

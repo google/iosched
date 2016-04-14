@@ -1097,10 +1097,10 @@ user updates the rating. -->
     <!--Indicates what happens when the user taps on an item-->
     <string name="talkback_tapfor">tap for %1$s</string>
 
-    <string name="transition_explore_sessions_header" translatable="false">transition_explore_sessions_header</string>
+    <string name="transition_track_header" translatable="false">transition_track_header</string>
 
-    <string name="transition_explore_sessions_title" translatable="false">transition_explore_sessions_title</string>
+    <string name="transition_track_title" translatable="false">transition_track_title</string>
 
-    <string name="transition_explore_sessions_background" translatable="false">transition_explore_sessions_background</string>
+    <string name="transition_track_background" translatable="false">transition_track_background</string>
 
 </resources>

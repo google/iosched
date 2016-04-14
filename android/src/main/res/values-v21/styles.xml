@@ -29,12 +29,16 @@
         <item name="android:statusBarColor">@android:color/transparent</item>
     </style>
 
-    <style name="Theme.IOSched.Explore" parent="Theme.IOSched.WithNavDrawer">
+    <style name="Theme.IOSched.Light" parent="Theme.IOSched.WithNavDrawer">
         <item name="colorPrimaryDark">@color/dark_status_bar</item>
     </style>
 
-    <style name="Theme.IOSched.Explore.Sessions">
-        <item name="android:windowEnterTransition">@transition/explore_sessions_enter</item>
+    <style name="Theme.IOSched.ExploreSessions" parent="Theme.IOSched.Light">
+        <item name="android:windowEnterTransition">@transition/fade_system_chrome</item>
+    </style>
+
+    <style name="Theme.IOSched.VideoLibrary.Filtered">
+        <item name="android:windowEnterTransition">@transition/fade_system_chrome</item>
     </style>
 
     <style name="Theme.IOSched.Welcome" parent="Theme.IOSched.Welcome.Base">
