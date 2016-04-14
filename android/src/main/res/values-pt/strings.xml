@@ -440,6 +440,9 @@ a
      -->
     <string name="map_now_playing">Reproduzindo: &lt;br&gt;&lt;b&gt;%1$s&lt;/b&gt;</string>
 
+    <!-- Message displayed when the location permission was denied -->
+    <string name="map_permission_denied">Autorização recusada para a aplicação.</string>
+
     <!-- Clickable text in the map popup that leads to sessions in a room -->
     <string name="map_touch_to_see_session">Toque para ver os Eventos</string>
 
