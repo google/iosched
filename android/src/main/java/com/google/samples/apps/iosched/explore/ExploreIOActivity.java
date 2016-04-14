@@ -44,6 +44,7 @@ public class ExploreIOActivity extends BaseActivity implements Toolbar.OnMenuIte
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.explore_io_act);
+        setTitle(R.string.title_explore);
 
         // ANALYTICS SCREEN: View the Explore I/O screen
         // Contains: Nothing (Page name is a constant)
