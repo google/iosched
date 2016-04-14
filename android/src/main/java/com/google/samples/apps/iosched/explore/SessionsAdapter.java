@@ -37,6 +37,7 @@ import com.google.samples.apps.iosched.ui.widget.recyclerview.UpdatableAdapter;
 import com.google.samples.apps.iosched.util.TimeUtils;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
@@ -45,16 +46,15 @@ import static com.google.samples.apps.iosched.util.LogUtils.LOGE;
 import static com.google.samples.apps.iosched.util.LogUtils.makeLogTag;
 
 /**
- * A {@link RecyclerView.Adapter} for a collection of {@link SessionData}. This adapter
- * runs in two <i>modes</i>: compact and detail.
- * <p>
- * Compact mode is created via the {@link #createHorizontal(Activity, List)} factory method &
- * shows a smaller representation of a session (title + time). It is used
- * by {@link ExploreIOFragment}.
- * <p>
+ * A {@link RecyclerView.Adapter} for a collection of {@link SessionData}. This adapter runs in two
+ * <i>modes</i>: compact and detail.
+ * <p/>
+ * Compact mode is created via the {@link #createHorizontal(Activity, List)} factory method & shows
+ * a smaller representation of a session (title + time). It is used by {@link ExploreIOFragment}.
+ * <p/>
  * The detail mode is created via the {@link #createVerticalGrid(Activity, List, int)} factory
- * method and adds headers for day/time blocks and shows a larger representation of
- * a session (title + description). It is used by {@link ExploreSessionsFragment}.
+ * method and adds headers for day/time blocks and shows a larger representation of a session (title
+ * + description). It is used by {@link ExploreSessionsFragment}.
  */
 public class SessionsAdapter extends UpdatableAdapter<List<SessionData>, RecyclerView.ViewHolder> {
 
@@ -83,9 +83,9 @@ public class SessionsAdapter extends UpdatableAdapter<List<SessionData>, Recycle
 
     // Private constructor, see the more meaningful static factory methods
     private SessionsAdapter(@NonNull Activity activity,
-                            @NonNull final List<SessionData> sessions,
-                            boolean compact,
-                            int columns) {
+            @NonNull final List<SessionData> sessions,
+            boolean compact,
+            int columns) {
         mHost = activity;
         mInflater = LayoutInflater.from(activity);
         mCompactMode = compact;
@@ -101,13 +101,13 @@ public class SessionsAdapter extends UpdatableAdapter<List<SessionData>, Recycle
     }
 
     public static SessionsAdapter createHorizontal(@NonNull Activity activity,
-                                                   @NonNull final List<SessionData> sessions) {
+            @NonNull final List<SessionData> sessions) {
         return new SessionsAdapter(activity, sessions, true, -1);
     }
 
     public static SessionsAdapter createVerticalGrid(@NonNull Activity activity,
-                                                     @NonNull final List<SessionData> sessions,
-                                                     int columns) {
+            @NonNull final List<SessionData> sessions,
+            int columns) {
         return new SessionsAdapter(activity, sessions, false, columns);
     }
 
@@ -207,16 +207,16 @@ public class SessionsAdapter extends UpdatableAdapter<List<SessionData>, Recycle
             // loop over the sessions inserting headings at each day, hour boundary
             int day = -1, time = -1;
             for (SessionData session : sessions) {
-                if (session.getStartDate().getDate() > day) {
-                    day = session.getStartDate().getDate();
+                if (session.getStartDate().get(Calendar.DAY_OF_YEAR) > day) {
+                    day = session.getStartDate().get(Calendar.DAY_OF_YEAR);
                     data.add(new DayHeader(
-                            TimeUtils.formatShortDate(mHost, session.getStartDate())));
+                            TimeUtils.formatShortDate(mHost, session.getStartDate().getTime())));
                     time = -1;
                 }
-                if (session.getStartDate().getHours() > time) {
-                    time = session.getStartDate().getHours();
+                if (session.getStartDate().get(Calendar.HOUR_OF_DAY) > time) {
+                    time = session.getStartDate().get(Calendar.HOUR_OF_DAY);
                     data.add(new TimeHeader(
-                            TimeUtils.formatShortTime(mHost, session.getStartDate())));
+                            TimeUtils.formatShortTime(mHost, session.getStartDate().getTime())));
                 }
                 data.add(session);
             }
@@ -224,7 +224,9 @@ public class SessionsAdapter extends UpdatableAdapter<List<SessionData>, Recycle
         return data;
     }
 
-    private @NonNull SessionViewHolder createSessionViewHolder(final ViewGroup parent) {
+    private
+    @NonNull
+    SessionViewHolder createSessionViewHolder(final ViewGroup parent) {
         final SessionViewHolder holder = mCompactMode ? new CompactSessionViewHolder(
                 mInflater.inflate(R.layout.explore_io_session_list_tile, parent, false)) :
                 new DetailSessionViewHolder(mInflater.inflate(
@@ -241,13 +243,13 @@ public class SessionsAdapter extends UpdatableAdapter<List<SessionData>, Recycle
     }
 
     private HeaderViewHolder createHeaderViewHolder(ViewGroup parent,
-                                                    @LayoutRes int headerLayoutRedId) {
+            @LayoutRes int headerLayoutRedId) {
         return new HeaderViewHolder(mInflater.inflate(headerLayoutRedId, parent, false));
     }
 
     private void bindSession(SessionViewHolder holder,
-                             final SessionData session,
-                             final int position) {
+            final SessionData session,
+            final int position) {
         holder.itemView.setBackgroundDrawable(
                 mBackgroundColors[position % mBackgroundColors.length]);
         holder.itemView.setOnClickListener(mSessionClick);
@@ -264,9 +266,13 @@ public class SessionsAdapter extends UpdatableAdapter<List<SessionData>, Recycle
         @Override
         public void onClick(final View v) {
             final ViewGroup.LayoutParams lp = v.getLayoutParams();
-            if (!(lp instanceof RecyclerView.LayoutParams)) return;
+            if (!(lp instanceof RecyclerView.LayoutParams)) {
+                return;
+            }
             final int position = ((RecyclerView.LayoutParams) lp).getViewAdapterPosition();
-            if (position == RecyclerView.NO_POSITION) return;
+            if (position == RecyclerView.NO_POSITION) {
+                return;
+            }
             final SessionData sessionData = (SessionData) mItems.get(position);
             final Intent intent = new Intent(mHost, SessionDetailActivity.class);
             intent.setData(ScheduleContract.Sessions.buildSessionUri(sessionData.getSessionId()));
@@ -275,7 +281,8 @@ public class SessionsAdapter extends UpdatableAdapter<List<SessionData>, Recycle
     };
 
     private void bindCompactSession(CompactSessionViewHolder holder, final SessionData session) {
-        holder.footer.setText(TimeUtils.formatShortDateTime(mHost, session.getStartDate()));
+        holder.footer
+                .setText(TimeUtils.formatShortDateTime(mHost, session.getStartDate().getTime()));
     }
 
     private void bindDetailSession(DetailSessionViewHolder holder, final SessionData session) {
