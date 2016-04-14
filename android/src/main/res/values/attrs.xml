@@ -73,7 +73,7 @@
 
     <declare-styleable name="VideoThumbnail">
         <attr name="playIcon" format="reference" />
-        <attr name="state_played" format="boolean" />
+        <attr name="playedTint" format="color" />
     </declare-styleable>
 
 </resources>

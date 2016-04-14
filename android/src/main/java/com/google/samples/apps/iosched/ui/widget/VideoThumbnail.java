@@ -17,6 +17,7 @@ package com.google.samples.apps.iosched.ui.widget;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Canvas;
+import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.util.AttributeSet;
 import android.widget.ImageView;
@@ -24,15 +25,15 @@ import android.widget.ImageView;
 import com.google.samples.apps.iosched.R;
 
 /**
- * An extension to {@link ImageView} that draws a play button over the main image and exposes
- * a played state for treating the thumbnail image's presentation.
+ * An extension to {@link ImageView} that draws a play button over the main image applies a tint
+ * to the image when it is marked as played.
  */
 public class VideoThumbnail extends ImageView {
 
-    // Custom state, used to change the tint attribute
-    private static final int[] STATE_PLAYED = { R.attr.state_played };
-
     private Drawable mPlayIcon;
+
+    private int mPlayedTint;
+
     private boolean mIsPlayed = false;
 
     public VideoThumbnail(final Context context, final AttributeSet attrs) {
@@ -45,6 +46,7 @@ public class VideoThumbnail extends ImageView {
         final TypedArray a = getContext().obtainStyledAttributes(
                 attrs, R.styleable.VideoThumbnail, defStyleAttr, 0);
         mPlayIcon = a.getDrawable(R.styleable.VideoThumbnail_playIcon);
+        mPlayedTint = a.getColor(R.styleable.VideoThumbnail_playedTint, Color.TRANSPARENT);
         a.recycle();
         setScaleType(ScaleType.CENTER_CROP);
     }
@@ -56,7 +58,11 @@ public class VideoThumbnail extends ImageView {
     public void setPlayed(final boolean played) {
         if (mIsPlayed != played) {
             mIsPlayed = played;
-            refreshDrawableState();
+            if (played) {
+                setColorFilter(mPlayedTint);
+            } else {
+                clearColorFilter();
+            }
             invalidate();
         }
     }
@@ -76,15 +82,6 @@ public class VideoThumbnail extends ImageView {
                     playLeft + mPlayIcon.getIntrinsicWidth(),
                     playTop + mPlayIcon.getIntrinsicHeight());
         }
-    }
-
-    @Override
-    public int[] onCreateDrawableState(int extraSpace) {
-        final int[] drawableState = super.onCreateDrawableState(extraSpace + 1);
-        if (mIsPlayed) {
-            mergeDrawableStates(drawableState, STATE_PLAYED);
-        }
-        return drawableState;
     }
 
     @Override
