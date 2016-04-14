@@ -95,6 +95,19 @@ public class MyScheduleActivity extends BaseActivity implements
      */
     private static final long INTERVAL_TO_REDRAW_UI = 1 * TimeUtils.MINUTE;
 
+    /**
+     * The key used to save the tags for {@link MyScheduleSingleDayFragment}s so the automatically
+     * recreated fragments can be reused by {@link #mViewPagerAdapter}.
+     */
+    private static final String SINGLE_DAY_FRAGMENTS_TAGS = "single_day_fragments_tags";
+
+    /**
+     * The key used to save the position in the {@link #mViewPagerAdapter} for the current {@link
+     * MyScheduleSingleDayFragment}s.
+     */
+    private static final String CURRENT_SINGLE_DAY_FRAGMENT_POSITION =
+            "current_single_day_fragments_position";
+
     private static final String SCREEN_LABEL = "My Schedule";
 
     private static final String TAG = makeLogTag(MyScheduleActivity.class);
@@ -173,7 +186,20 @@ public class MyScheduleActivity extends BaseActivity implements
         // Contains: Nothing (Page name is a constant)
         AnalyticsHelper.sendScreenView(SCREEN_LABEL);
 
-        initViews();
+        String[] singleDayFragmentsTags = null;
+        int currentSingleDayFragment = 0;
+
+        if (savedInstanceState != null &&
+                savedInstanceState.containsKey(SINGLE_DAY_FRAGMENTS_TAGS)) {
+            singleDayFragmentsTags = savedInstanceState.getStringArray(SINGLE_DAY_FRAGMENTS_TAGS);
+        }
+        if (savedInstanceState != null &&
+                savedInstanceState.containsKey(CURRENT_SINGLE_DAY_FRAGMENT_POSITION)) {
+            currentSingleDayFragment =
+                    savedInstanceState.getInt(CURRENT_SINGLE_DAY_FRAGMENT_POSITION);
+        }
+
+        initViews(singleDayFragmentsTags, currentSingleDayFragment);
         initPresenter();
 
         overridePendingTransition(0, 0);
@@ -190,6 +216,21 @@ public class MyScheduleActivity extends BaseActivity implements
 
         showAnnouncementDialogIfNeeded(getIntent());
     }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        if (mViewPagerAdapter != null && mViewPagerAdapter.getFragments() != null) {
+            MyScheduleSingleDayFragment[] singleDayFragments = mViewPagerAdapter.getFragments();
+            String[] tags = new String[singleDayFragments.length];
+            for (int i = 0; i < tags.length; i++) {
+                tags[i] = singleDayFragments[i].getTag();
+            }
+            outState.putStringArray(SINGLE_DAY_FRAGMENTS_TAGS, tags);
+            outState.putInt(CURRENT_SINGLE_DAY_FRAGMENT_POSITION, mViewPager.getCurrentItem());
+        }
+    }
+
 
     @Override
     protected void onDestroy() {
@@ -231,7 +272,13 @@ public class MyScheduleActivity extends BaseActivity implements
         }
     }
 
-    private void initViews() {
+    /**
+     * @param singleDayFragmentsTags   The tags of the recreated fragments, if this is an Activity
+     *                                 recreation, or null
+     * @param currentSingleDayFragment The position of the current single day fragment (ie the
+     *                                 position of the current tab)
+     */
+    private void initViews(String[] singleDayFragmentsTags, int currentSingleDayFragment) {
         // Set up view to show login failure
         mFailedLoginView = findViewById(R.id.butter_bar);
         hideLoginFailureView();
@@ -241,12 +288,13 @@ public class MyScheduleActivity extends BaseActivity implements
         if (mWideMode) {
             setUpViewForWideMode();
         } else {
-            setUpViewPagerForNarrowMode();
+            setUpViewPagerForNarrowMode(singleDayFragmentsTags, currentSingleDayFragment);
         }
     }
 
     private void initPresenter() {
-        MyScheduleModel model = ModelProvider.provideMyScheduleModel(new ScheduleHelper(this), this);
+        MyScheduleModel model =
+                ModelProvider.provideMyScheduleModel(new ScheduleHelper(this), this);
         if (mWideMode) {
             mPresenter = new PresenterImpl(model,
                     (UpdatableView) getFragmentManager().findFragmentById(R.id.myScheduleWideFrag),
@@ -254,10 +302,10 @@ public class MyScheduleActivity extends BaseActivity implements
                     MyScheduleModel.MyScheduleQueryEnum.values());
         } else {
             // Each fragment in the pager adapter is an updatable view that the presenter must know
-            int fragmentsCount = mViewPagerAdapter.getCount();
-            UpdatableView[] views = new UpdatableView[fragmentsCount];
-            for (int i = 0; i < fragmentsCount; i++) {
-                views[i] = mViewPagerAdapter.getItem(i);
+            MyScheduleSingleDayFragment[] fragments = mViewPagerAdapter.getFragments();
+            UpdatableView[] views = new UpdatableView[fragments.length];
+            for (int i = 0; i < fragments.length; i++) {
+                views[i] = fragments[i];
             }
             mPresenter = new PresenterImpl(model, views,
                     MyScheduleModel.MyScheduleUserActionEnum.values(),
@@ -277,11 +325,20 @@ public class MyScheduleActivity extends BaseActivity implements
         // itself up
     }
 
-    private void setUpViewPagerForNarrowMode() {
+    /**
+     * @param singleDayFragmentsTags   The tags of the recreated fragments, if this is an Activity
+     *                                 recreation, or null
+     * @param currentSingleDayFragment The position of the current single day fragment (ie the
+     *                                 position of the current tab)
+     */
+    private void setUpViewPagerForNarrowMode(String[] singleDayFragmentsTags,
+            int currentSingleDayFragment) {
         mViewPager = (ViewPager) findViewById(R.id.view_pager);
         mViewPagerAdapter = new MyScheduleDayViewPagerAdapter(this, getFragmentManager(),
                 MyScheduleModel.showPreConferenceData(this));
+        mViewPagerAdapter.setRetainedFragmentsTags(singleDayFragmentsTags);
         mViewPager.setAdapter(mViewPagerAdapter);
+        mViewPager.setCurrentItem(currentSingleDayFragment);
 
         mTabLayout = (TabLayout) findViewById(R.id.sliding_tabs);
 

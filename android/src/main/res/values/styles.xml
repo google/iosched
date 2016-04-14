@@ -439,6 +439,7 @@
 
     <style name="VideoThumbnail">
         <item name="playIcon">@drawable/ic_play_shadowed</item>
+        <item name="playedTint">@color/played_video_tint</item>
     </style>
 
 </resources>

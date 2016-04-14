@@ -531,7 +531,7 @@ public class SessionDetailFragment extends Fragment
 
         if (data.getLiveStreamVideoWatched()) {
             mPhotoView.setColorFilter(getContext().getResources().getColor(
-                    R.color.video_scrim_watched));
+                    R.color.played_video_tint));
             mLiveStreamPlayIconAndText.setText(getString(R.string.session_replay));
         }
 
