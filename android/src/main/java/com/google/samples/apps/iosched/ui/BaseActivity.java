@@ -104,8 +104,6 @@ public abstract class BaseActivity extends AppCompatActivity implements
     // handle to our sync observer (that notifies us about changes in our sync state)
     private Object mSyncObserverHandle;
 
-    private boolean mManualSyncRequest;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -251,7 +249,6 @@ public abstract class BaseActivity extends AppCompatActivity implements
             LOGD(TAG, "Ignoring manual sync request because a sync is already in progress.");
             return;
         }
-        mManualSyncRequest = true;
         LOGD(TAG, "Requesting manual data refresh.");
         SyncHelper.requestManualSync(activeAccount);
     }
@@ -566,19 +563,13 @@ public abstract class BaseActivity extends AppCompatActivity implements
                     String accountName = AccountUtils.getActiveAccountName(BaseActivity.this);
                     if (TextUtils.isEmpty(accountName)) {
                         onRefreshingStateChanged(false);
-                        mManualSyncRequest = false;
                         return;
                     }
 
                     Account account = new Account(accountName, GoogleAuthUtil.GOOGLE_ACCOUNT_TYPE);
                     boolean syncActive = ContentResolver.isSyncActive(
                             account, ScheduleContract.CONTENT_AUTHORITY);
-                    boolean syncPending = ContentResolver.isSyncPending(
-                            account, ScheduleContract.CONTENT_AUTHORITY);
-                    if (!syncActive && !syncPending) {
-                        mManualSyncRequest = false;
-                    }
-                    onRefreshingStateChanged(syncActive || mManualSyncRequest);
+                    onRefreshingStateChanged(syncActive);
                 }
             });
         }
