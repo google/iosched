@@ -161,8 +161,8 @@ public class ExploreIOModel extends ModelWithLoaderManager<ExploreIOModel.Explor
     }
 
     /**
-     * Get the list of {@link MessageData} to be displayed to the user,
-     * based upon time, location etc.
+     * Get the list of {@link MessageData} to be displayed to the user, based upon time, location
+     * etc.
      *
      * @return messages to be displayed.
      */
@@ -276,7 +276,8 @@ public class ExploreIOModel extends ModelWithLoaderManager<ExploreIOModel.Explor
                                 trackGroup.setTitle(rawTag);
                                 trackGroup.setId(rawTag);
                                 if (mTagMetadata != null && mTagMetadata.getTag(rawTag) != null) {
-                                    trackGroup.setPhotoUrl(mTagMetadata.getTag(rawTag).getPhotoUrl());
+                                    trackGroup
+                                            .setPhotoUrl(mTagMetadata.getTag(rawTag).getPhotoUrl());
                                 }
                                 trackGroups.put(rawTag, trackGroup);
                             }
@@ -289,7 +290,8 @@ public class ExploreIOModel extends ModelWithLoaderManager<ExploreIOModel.Explor
                                 themeGroup.setTitle(rawTag);
                                 themeGroup.setId(rawTag);
                                 if (mTagMetadata != null && mTagMetadata.getTag(rawTag) != null) {
-                                    themeGroup.setPhotoUrl(mTagMetadata.getTag(rawTag).getPhotoUrl());
+                                    themeGroup
+                                            .setPhotoUrl(mTagMetadata.getTag(rawTag).getPhotoUrl());
                                 }
                                 themeGroups.put(rawTag, themeGroup);
                             }
@@ -357,13 +359,13 @@ public class ExploreIOModel extends ModelWithLoaderManager<ExploreIOModel.Explor
         long startTime, endTime, currentTime;
         currentTime = TimeUtils.getCurrentTime(mContext);
         if (keynoteData.getStartDate() != null) {
-            startTime = keynoteData.getStartDate().getTime();
+            startTime = keynoteData.getStartDate().getTimeInMillis();
         } else {
             LOGD(TAG, "Keynote start time wasn't set");
             startTime = 0;
         }
         if (keynoteData.getEndDate() != null) {
-            endTime = keynoteData.getEndDate().getTime();
+            endTime = keynoteData.getEndDate().getTimeInMillis();
         } else {
             LOGD(TAG, "Keynote end time wasn't set");
             endTime = Long.MAX_VALUE;
@@ -375,13 +377,13 @@ public class ExploreIOModel extends ModelWithLoaderManager<ExploreIOModel.Explor
                     .live_now));
         } else {
             stringBuilder.append(
-                    TimeUtils.formatShortDateTime(mContext, keynoteData.getStartDate()));
+                    TimeUtils.formatShortDateTime(mContext, keynoteData.getStartDate().getTime()));
         }
         keynoteData.setDetails(stringBuilder.toString());
     }
 
     private void populateSessionFromCursorRow(SessionData session, Cursor cursor) {
-        session.updateData(
+        session.updateData(mContext,
                 cursor.getString(cursor.getColumnIndex(
                         ScheduleContract.Sessions.SESSION_TITLE)),
                 cursor.getString(cursor.getColumnIndex(

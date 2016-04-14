@@ -3,10 +3,11 @@ package com.google.samples.apps.iosched.explore.data;
 import android.content.Context;
 import android.text.TextUtils;
 
+import com.google.samples.apps.iosched.settings.SettingsUtils;
 import com.google.samples.apps.iosched.util.TimeUtils;
 
 import java.util.Calendar;
-import java.util.Date;
+import java.util.TimeZone;
 
 /**
  * This represent a Session that is pulled from the schedule.
@@ -17,8 +18,8 @@ public class SessionData {
     private String mSessionId;
     private String mImageUrl;
     private String mMainTag;
-    private Date mStartDate;
-    private Date mEndDate;
+    private Calendar mStartDate;
+    private Calendar mEndDate;
     private String mLiveStreamId;
     private String mYouTubeUrl;
     private String mTags;
@@ -26,23 +27,28 @@ public class SessionData {
 
     public SessionData() { }
 
-    public SessionData(String sessionName, String details, String sessionId, String imageUrl,
-                       String mainTag, long startTime, long endTime, String liveStreamId,
-                       String youTubeUrl, String tags, boolean inSchedule) {
-        updateData(sessionName, details, sessionId, imageUrl, mainTag, startTime, endTime,
+    public SessionData(Context context, String sessionName, String details, String sessionId,
+            String imageUrl, String mainTag, long startTime, long endTime, String liveStreamId,
+            String youTubeUrl, String tags, boolean inSchedule) {
+        updateData(context, sessionName, details, sessionId, imageUrl, mainTag, startTime, endTime,
                 liveStreamId, youTubeUrl, tags, inSchedule);
     }
 
-    public void updateData(String sessionName, String details, String sessionId, String imageUrl,
-                           String mainTag, long startTime, long endTime, String liveStreamId,
-                           String youTubeUrl, String tags, boolean inSchedule) {
+    public void updateData(Context context, String sessionName, String details, String sessionId,
+            String imageUrl, String mainTag, long startTime, long endTime, String liveStreamId,
+            String youTubeUrl, String tags, boolean inSchedule) {
         mSessionName = sessionName;
         mDetails = details;
         mSessionId = sessionId;
         mImageUrl = imageUrl;
         mMainTag = mainTag;
-        try { mStartDate = new java.util.Date(startTime); } catch (Exception ignored) { }
-        try { mEndDate = new java.util.Date(endTime); } catch (Exception ignored) { }
+        TimeZone timeZone = SettingsUtils.getDisplayTimeZone(context);
+        mStartDate = Calendar.getInstance();
+        mStartDate.setTimeInMillis(startTime);
+        mStartDate.setTimeZone(timeZone);
+        mEndDate = Calendar.getInstance();
+        mEndDate.setTimeInMillis(endTime);
+        mEndDate.setTimeZone(timeZone);
         mLiveStreamId = liveStreamId;
         mYouTubeUrl = youTubeUrl;
         mTags = tags;
@@ -94,9 +100,9 @@ public class SessionData {
 
     public void setDetails(String details) { mDetails = details; }
 
-    public Date getStartDate() { return mStartDate; }
+    public Calendar getStartDate() { return mStartDate; }
 
-    public Date getEndDate() { return mEndDate; }
+    public Calendar getEndDate() { return mEndDate; }
 
     public String getLiveStreamId() { return mLiveStreamId; }
 

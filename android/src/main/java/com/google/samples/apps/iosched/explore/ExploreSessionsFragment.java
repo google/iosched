@@ -37,15 +37,14 @@ import com.google.samples.apps.iosched.model.TagMetadata;
 import com.google.samples.apps.iosched.provider.ScheduleContract;
 import com.google.samples.apps.iosched.ui.BaseActivity;
 import com.google.samples.apps.iosched.ui.widget.DrawShadowFrameLayout;
-import com.google.samples.apps.iosched.util.ImageLoader;
 import com.google.samples.apps.iosched.util.LogUtils;
 import com.google.samples.apps.iosched.util.UIUtils;
 
 import java.lang.ref.WeakReference;
 
 /**
- * A fragment that shows the sessions based on the specific {@code Uri} that is
- * part of the arguments.
+ * A fragment that shows the sessions based on the specific {@code Uri} that is part of the
+ * arguments.
  */
 public class ExploreSessionsFragment extends Fragment implements
         LoaderManager.LoaderCallbacks<Cursor> {
@@ -66,7 +65,9 @@ public class ExploreSessionsFragment extends Fragment implements
     public static final String EXTRA_SHOW_LIVESTREAMED_SESSIONS =
             "com.google.samples.apps.iosched.explore.EXTRA_SHOW_LIVESTREAMED_SESSIONS";
 
-    /** The delay before actual re-querying in milli seconds. */
+    /**
+     * The delay before actual re-querying in milli seconds.
+     */
     private static final long QUERY_UPDATE_DELAY_MILLIS = 100;
 
     private RecyclerView mSessionList;
@@ -88,13 +89,13 @@ public class ExploreSessionsFragment extends Fragment implements
      */
     private boolean mShowLiveStreamedSessions;
     /**
-     * Boolean that indicates whether the collectionView data is being fully reloaded in the
-     * case of filters and other query arguments changing VS just a data refresh.
+     * Boolean that indicates whether the collectionView data is being fully reloaded in the case of
+     * filters and other query arguments changing VS just a data refresh.
      */
     private boolean mFullReload = true;
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+            Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.explore_sessions_frag, container, false);
         mSessionList = (RecyclerView) rootView.findViewById(R.id.sessions_list);
         mEmptyView = rootView.findViewById(android.R.id.empty);
@@ -114,7 +115,8 @@ public class ExploreSessionsFragment extends Fragment implements
                     .getBoolean(STATE_SHOW_LIVESTREAMED_SESSIONS);
             if (mSessionQueryToken > 0) {
                 // Only if this is a config change should we initLoader(), to reconnect with an
-                // existing loader. Otherwise, the loader will be initStaticDataAndObservers'd when reloadFromArguments
+                // existing loader. Otherwise, the loader will be initStaticDataAndObservers'd
+                // when reloadFromArguments
                 // is called.
                 getLoaderManager().initLoader(mSessionQueryToken, null, this);
             }
@@ -149,14 +151,16 @@ public class ExploreSessionsFragment extends Fragment implements
                 return new CursorLoader(getActivity(),
                         mCurrentUri, ExploreSessionsModel.ExploreSessionsQuery.NORMAL_PROJECTION,
                         mShowLiveStreamedSessions ?
-                                ScheduleContract.Sessions.LIVESTREAM_OR_YOUTUBE_URL_SELECTION : null,
+                                ScheduleContract.Sessions.LIVESTREAM_OR_YOUTUBE_URL_SELECTION :
+                                null,
                         null,
                         ScheduleContract.Sessions.SORT_BY_TYPE_THEN_TIME);
             case ExploreSessionsModel.ExploreSessionsQuery.SEARCH_TOKEN:
                 return new CursorLoader(getActivity(),
                         mCurrentUri, ExploreSessionsModel.ExploreSessionsQuery.SEARCH_PROJECTION,
                         mShowLiveStreamedSessions ?
-                                ScheduleContract.Sessions.LIVESTREAM_OR_YOUTUBE_URL_SELECTION : null,
+                                ScheduleContract.Sessions.LIVESTREAM_OR_YOUTUBE_URL_SELECTION :
+                                null,
                         null,
                         ScheduleContract.Sessions.SORT_BY_TYPE_THEN_TIME);
             case TAG_METADATA_TOKEN:
@@ -184,7 +188,7 @@ public class ExploreSessionsFragment extends Fragment implements
     private void reloadSessionData(Cursor cursor) {
         mSessionList.setAdapter(null);
         mSessionsAdapter = null;
-        final ExploreSessionsModel model = new ExploreSessionsModel(cursor);
+        final ExploreSessionsModel model = new ExploreSessionsModel(cursor, getActivity());
         if (model.getSessionData() == null || model.getSessionData().isEmpty()) {
             mEmptyView.setVisibility(View.VISIBLE);
             return;
@@ -234,7 +238,7 @@ public class ExploreSessionsFragment extends Fragment implements
     public void requestQueryUpdate(String query) {
         mSearchHandler.removeMessages(SearchHandler.MESSAGE_QUERY_UPDATE);
         mSearchHandler.sendMessageDelayed(Message.obtain(mSearchHandler,
-                        SearchHandler.MESSAGE_QUERY_UPDATE, query), QUERY_UPDATE_DELAY_MILLIS);
+                SearchHandler.MESSAGE_QUERY_UPDATE, query), QUERY_UPDATE_DELAY_MILLIS);
     }
 
     /**
@@ -252,7 +256,7 @@ public class ExploreSessionsFragment extends Fragment implements
 
         @Override
         public void handleMessage(Message msg) {
-            switch(msg.what) {
+            switch (msg.what) {
                 case MESSAGE_QUERY_UPDATE:
                     String query = (String) msg.obj;
                     ExploreSessionsFragment instance = mFragmentReference.get();
