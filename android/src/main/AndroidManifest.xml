@@ -101,7 +101,7 @@
 
         <activity
             android:name=".explore.ExploreIOActivity"
-            android:label="@string/title_explore"
+            android:label="@string/app_name"
             android:theme="@style/Theme.IOSched.Explore">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -202,7 +202,7 @@
         <activity
             android:name=".explore.ExploreSessionsActivity"
             android:exported="true"
-            android:label="Explore"
+            android:label="@string/title_explore"
             android:theme="@style/Theme.IOSched.Explore.Sessions">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
