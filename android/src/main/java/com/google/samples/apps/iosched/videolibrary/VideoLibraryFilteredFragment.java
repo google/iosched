@@ -132,6 +132,7 @@ public class VideoLibraryFilteredFragment extends Fragment implements
         }
 
         radioGroup.removeAllViews();
+        radioGroup.clearCheck();
         int idCounter = 0;
         for (final T value : values) {
             View buttonLayout = inflater.inflate(
