@@ -24,9 +24,7 @@
     <com.google.samples.apps.iosched.ui.widget.VideoThumbnail
         android:id="@+id/thumbnail"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:tint="@color/video_thumbnail_scrim"
-        android:tintMode="src_over" />
+        android:layout_height="0dp" />
 
     <TextView
         android:id="@+id/title"

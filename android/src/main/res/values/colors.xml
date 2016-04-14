@@ -156,7 +156,7 @@
     <!-- video lib -->
     <color name="video_title">#de07434d</color>
     <color name="filter_text">@color/app_primary_text</color>
-    <color name="video_scrim_watched">#b3f1f1f1</color>
+    <color name="played_video_tint">#b3f1f1f1</color>
 
     <!-- Colors used in the Social feature. -->
     <color name="social_io15">@color/io15_dark_grey</color>

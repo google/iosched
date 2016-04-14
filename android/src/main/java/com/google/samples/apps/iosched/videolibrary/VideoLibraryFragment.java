@@ -104,10 +104,9 @@ public class VideoLibraryFragment extends Fragment
             } else {
                 mAdapter.update(model);
             }
-            mEmptyView.setVisibility(View.GONE);
-        } else {
-            mEmptyView.setVisibility(View.VISIBLE);
         }
+        mEmptyView.setVisibility(
+                (mAdapter != null && mAdapter.getItemCount() > 0) ? View.GONE : View.VISIBLE);
     }
 
     @Override
