@@ -61,6 +61,7 @@ public class MyScheduleSingleDayFragment extends ListFragment
         if (mContentDescription != null) {
             mRoot.setContentDescription(mContentDescription);
         }
+        setRetainInstance(true);
         return mRoot;
     }
 

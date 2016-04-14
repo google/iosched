@@ -42,7 +42,7 @@ public class ModelProvider {
     public static MyScheduleModel provideMyScheduleModel(ScheduleHelper scheduleHelper,
             Context context) {
         if (stubMyScheduleModel != null) {
-            return stubMyScheduleModel;
+            return stubMyScheduleModel.initStaticDataAndObservers();
         } else {
             return new MyScheduleModel(scheduleHelper, context).initStaticDataAndObservers();
         }
