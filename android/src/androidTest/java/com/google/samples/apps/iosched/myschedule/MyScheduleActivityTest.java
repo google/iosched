@@ -233,7 +233,6 @@ public class MyScheduleActivityTest {
     }
 
     @Test
-    @FlakyTest
     public void navigation_WhenShown_CorrectItemIsSelected() {
         NavigationUtils
                 .checkNavigationItemIsSelected(NavigationModel.NavigationItemEnum.MY_SCHEDULE);
@@ -244,7 +243,7 @@ public class MyScheduleActivityTest {
      */
     @FlakyTest
     @Test
-    public void orientationChange_RetainsDataAndCurrentTab() {
+    public void orientationChange_RetainsDataAndCurrentTab_Flaky() {
         // Given day 2 visible
         showDay(2);
         onView(withText(MyScheduleMockItems.SESSION_TITLE_BEFORE)).check(matches(isDisplayed()));

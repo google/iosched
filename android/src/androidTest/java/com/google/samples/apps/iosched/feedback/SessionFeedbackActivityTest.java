@@ -90,7 +90,7 @@ public class SessionFeedbackActivityTest {
 
     @Test
     @FlakyTest // Checking activity has been destroyed doesn't always work
-    public void clickOnSubmit_ActivityCloses() {
+    public void clickOnSubmit_ActivityCloses_Flaky() {
         // Whether we have feedback data or not, the activity closes upon submitting
         onView(withText(R.string.session_feedback_submitlink)).perform(scrollTo());
         onView(withText(R.string.session_feedback_submitlink)).check(matches(isDisplayed()));

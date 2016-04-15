@@ -123,7 +123,7 @@ public class SessionDetailActivity_InScheduleSessionTest {
 
     @Test
     @FlakyTest // due to intent checking
-    public void submitFeedback_WhenClicked_IntentFired() {
+    public void submitFeedback_WhenClicked_IntentFired_Flaky() {
         // When clicking on the submit feedback button
         onView(allOf(withText(R.string.give_feedback),
                 isDescendantOfA(withId(R.id.give_feedback_card)))).perform(click());
@@ -137,7 +137,7 @@ public class SessionDetailActivity_InScheduleSessionTest {
 
     @Test
     @FlakyTest
-    public void showMap_WhenClicked_IntentFired() {
+    public void showMap_WhenClicked_IntentFired_Flaky() {
         // When clicking on the room button
         onView(withId(R.id.menu_map_room)).perform(click());
 

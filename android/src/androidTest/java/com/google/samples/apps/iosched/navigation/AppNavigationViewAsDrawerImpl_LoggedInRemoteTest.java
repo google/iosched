@@ -90,7 +90,7 @@ public class AppNavigationViewAsDrawerImpl_LoggedInRemoteTest {
 
         NavigationUtils.clickOnNavigationItemAndCheckActivityIsDisplayed(
                 R.string.navdrawer_item_explore,
-                R.string.app_name);
+                R.string.title_explore);
     }
 
     @Test

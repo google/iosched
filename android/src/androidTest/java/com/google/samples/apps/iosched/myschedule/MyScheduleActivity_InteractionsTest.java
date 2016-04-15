@@ -79,7 +79,7 @@ public class MyScheduleActivity_InteractionsTest {
      */
     @FlakyTest
     @Test
-    public void addEventToMySchedule() {
+    public void addEventToMySchedule_Flaky() {
         // Given a free slot with available sessions
         findFreeSlotWithAvailableSessions();
 
@@ -100,7 +100,7 @@ public class MyScheduleActivity_InteractionsTest {
      */
     @FlakyTest
     @Test
-    public void removeEventToMySchedule() {
+    public void removeEventToMySchedule_Flaky() {
         // Given a session in the schedule
         findFreeSlotWithAvailableSessions();
         String title = addFirstAvailableSession();

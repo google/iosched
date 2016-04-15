@@ -24,8 +24,10 @@ import android.test.suitebuilder.annotation.LargeTest;
 import com.google.samples.apps.iosched.R;
 import com.google.samples.apps.iosched.explore.ExploreIOActivity;
 import com.google.samples.apps.iosched.settings.SettingsUtils;
+import com.google.samples.apps.iosched.testutils.LoginUtils;
 import com.google.samples.apps.iosched.util.AccountUtils;
 
+import org.junit.After;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -62,13 +64,18 @@ public class BaseActivity_InactiveAccountTest {
                 }
             };
 
+    @After
+    public void cleanUpInactiveAccount() {
+        LoginUtils.setFirstAvailableAccountAsActive(InstrumentationRegistry.getTargetContext());
+    }
+
     /**
      * The test will fail on API < 17, due to the looping animation in {@link
      * com.google.samples.apps.iosched.welcome.WelcomeActivity}. On API 17+, the activity checks the
      * settings for {@link Settings.Global#ANIMATOR_DURATION_SCALE} and doesn't run the animation if
      * it is turned off.
      */
-    @SdkSuppress(minSdkVersion=17)
+    @SdkSuppress(minSdkVersion = 17)
     @Test
     public void welcomeActivityForAccount_IsDisplayed() {
         onView(withText(R.string.welcome_select_accoun_text)).check(matches(isDisplayed()));

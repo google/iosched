@@ -16,9 +16,7 @@ package com.google.samples.apps.iosched.explore;
 
 import android.net.Uri;
 import android.support.test.InstrumentationRegistry;
-import android.support.test.espresso.ViewInteraction;
 import android.support.test.espresso.contrib.RecyclerViewActions;
-import android.support.test.espresso.intent.rule.IntentsTestRule;
 import android.support.test.runner.AndroidJUnit4;
 import android.test.suitebuilder.annotation.LargeTest;
 import android.view.View;
@@ -31,6 +29,7 @@ import com.google.samples.apps.iosched.session.SessionDetailActivity;
 import com.google.samples.apps.iosched.testutils.BaseActivityTestRule;
 import com.google.samples.apps.iosched.testutils.MatchersHelper;
 import com.google.samples.apps.iosched.testutils.NavigationUtils;
+import com.google.samples.apps.iosched.testutils.ToolbarUtils;
 import com.google.samples.apps.iosched.ui.SearchActivity;
 
 import org.hamcrest.Matcher;
@@ -40,7 +39,6 @@ import org.junit.runner.RunWith;
 
 import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.action.ViewActions.click;
-import static android.support.test.espresso.action.ViewActions.swipeUp;
 import static android.support.test.espresso.assertion.ViewAssertions.matches;
 import static android.support.test.espresso.intent.Intents.intended;
 import static android.support.test.espresso.intent.matcher.IntentMatchers.hasComponent;
@@ -48,14 +46,12 @@ import static android.support.test.espresso.intent.matcher.IntentMatchers.hasDat
 import static android.support.test.espresso.intent.matcher.IntentMatchers.hasExtra;
 import static android.support.test.espresso.matcher.ViewMatchers.hasDescendant;
 import static android.support.test.espresso.matcher.ViewMatchers.hasSibling;
-import static android.support.test.espresso.matcher.ViewMatchers.isCompletelyDisplayed;
 import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static android.support.test.espresso.matcher.ViewMatchers.withChild;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
 import static org.hamcrest.CoreMatchers.allOf;
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.not;
 import static org.hamcrest.core.Is.is;
 
 @RunWith(AndroidJUnit4.class)
@@ -76,20 +72,14 @@ public class ExploreIOActivityTest {
     }
 
     @Test
-    public void HeaderBar_InitiallyDisplayed() {
-        onView(withId(R.id.headerbar)).check(matches(isCompletelyDisplayed()));
+    public void Toolbar_InitiallyDisplayed() {
+        ToolbarUtils.checkToolbarIsCompletelyDisplayed();
     }
 
     @Test
-    public void headerBar_HidesAfterSwipeUp() {
-        ViewInteraction view = onView(withId(R.id.headerbar));
+    public void Toolbar_HidesAfterSwipeUp() {
+        ToolbarUtils.checkToolbarHidesAfterSwipingRecyclerViewUp(R.id.explore_card_list);
 
-        // Swiping up should hide the header bar.
-        onView(withId(R.id.explore_card_list)).perform(swipeUp());
-        onView(withId(R.id.explore_card_list)).perform(swipeUp());
-
-        // Check if the header bar is hidden.
-        view.check(matches(not(isDisplayed())));
     }
 
     @Test

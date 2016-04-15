@@ -19,8 +19,8 @@ package com.google.samples.apps.iosched.videolibrary;
 import android.content.Intent;
 import android.net.Uri;
 import android.support.test.InstrumentationRegistry;
-import android.support.test.espresso.ViewInteraction;
 import android.support.test.runner.AndroidJUnit4;
+import android.test.FlakyTest;
 import android.test.suitebuilder.annotation.LargeTest;
 import android.view.View;
 
@@ -31,6 +31,7 @@ import com.google.samples.apps.iosched.navigation.NavigationModel;
 import com.google.samples.apps.iosched.testutils.BaseActivityTestRule;
 import com.google.samples.apps.iosched.testutils.MatchersHelper;
 import com.google.samples.apps.iosched.testutils.NavigationUtils;
+import com.google.samples.apps.iosched.testutils.ToolbarUtils;
 
 import org.hamcrest.Matcher;
 import org.junit.Rule;
@@ -41,7 +42,6 @@ import java.util.Locale;
 
 import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.action.ViewActions.click;
-import static android.support.test.espresso.action.ViewActions.swipeUp;
 import static android.support.test.espresso.assertion.ViewAssertions.doesNotExist;
 import static android.support.test.espresso.assertion.ViewAssertions.matches;
 import static android.support.test.espresso.intent.Intents.intended;
@@ -50,14 +50,11 @@ import static android.support.test.espresso.intent.matcher.IntentMatchers.hasCom
 import static android.support.test.espresso.intent.matcher.IntentMatchers.hasData;
 import static android.support.test.espresso.intent.matcher.IntentMatchers.hasExtra;
 import static android.support.test.espresso.matcher.ViewMatchers.hasSibling;
-import static android.support.test.espresso.matcher.ViewMatchers.isCompletelyDisplayed;
 import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static android.support.test.espresso.matcher.ViewMatchers.withChild;
 import static android.support.test.espresso.matcher.ViewMatchers.withContentDescription;
-import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
 import static org.hamcrest.CoreMatchers.allOf;
-import static org.hamcrest.Matchers.not;
 import static org.hamcrest.core.IsEqual.equalTo;
 import static org.junit.Assert.assertTrue;
 
@@ -107,7 +104,8 @@ public class VideoLibraryActivityTest {
     }
 
     @Test
-    public void videosList_DifferentVideosOnSecondTime() {
+    @FlakyTest // Getting memory errors sometimes with vector drawable allocation
+    public void videosList_DifferentVideosOnSecondTime_Flaky() {
         // Given a list of videos shown for topic 2
         // The first child of the LinearLayout is used to show the topic title and the more
         // button, so the child view corresponding to the first video is at index 1
@@ -157,20 +155,14 @@ public class VideoLibraryActivityTest {
     }
 
     @Test
-    public void headerBar_IsInitiallyDisplayed() {
-        onView(withId(R.id.headerbar)).check(matches(isCompletelyDisplayed()));
+    public void toolbar_IsInitiallyDisplayed() {
+        ToolbarUtils.checkToolbarIsCompletelyDisplayed();
     }
 
     @Test
-    public void headerBar_HidesAfterSwipeUp() {
-        ViewInteraction view = onView(withId(R.id.headerbar));
-
-        // Swiping up should hide the header bar.
-        onView(withId(R.id.videos_card_list)).perform(swipeUp());
-        onView(withId(R.id.videos_card_list)).perform(swipeUp());
-
-        // Check if the header bar is hidden.
-        view.check(matches(not(isDisplayed())));
+    @FlakyTest
+    public void toolbar_HidesAfterSwipeUp_Flaky() {
+        ToolbarUtils.checkToolbarHidesAfterSwipingRecyclerViewUp(R.id.videos_card_list);
     }
 
     @Test
