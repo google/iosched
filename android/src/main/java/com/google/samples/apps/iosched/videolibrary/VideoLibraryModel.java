@@ -25,6 +25,7 @@ import android.content.Loader;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.ColorInt;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.text.TextUtils;
@@ -85,8 +86,6 @@ public class VideoLibraryModel
 
     public static final int TRACK_ID_KEYNOTES = 1;
 
-    private static final String TAG = makeLogTag(VideoLibraryModel.class);
-
     protected static final String KEY_YEAR = "com.google.samples.apps.iosched.KEY_YEAR";
 
     protected static final String KEY_TOPIC = "com.google.samples.apps.iosched.KEY_TOPIC";
@@ -98,6 +97,8 @@ public class VideoLibraryModel
     protected static final String ALL_TOPICS = "__";
 
     protected static final String KEYNOTES_TOPIC = "Keynote";
+
+    private static final String TAG = makeLogTag(VideoLibraryModel.class);
 
     private List<Integer> mYears;
 
@@ -134,8 +135,8 @@ public class VideoLibraryModel
         mFilterUri = filterUri;
     }
 
-    public void setSelectedYear(int selectedYear) {
-        mSelectedYear = selectedYear;
+    public String getSelectedTopic() {
+        return mSelectedTopic;
     }
 
     public void setSelectedTopic(String selectedTopic) {
@@ -146,8 +147,28 @@ public class VideoLibraryModel
         return mSelectedYear;
     }
 
-    public String getSelectedTopic() {
-        return mSelectedTopic;
+    public void setSelectedYear(int selectedYear) {
+        mSelectedYear = selectedYear;
+    }
+
+    public @Nullable String getSelectedTopicImageUrl() {
+        if (mSelectedTopic != null && mTagMetadata != null) {
+            final TagMetadata.Tag tag = mTagMetadata.getTag(mSelectedTopic);
+            if (tag != null) {
+                return tag.getPhotoUrl();
+            }
+        }
+        return null;
+    }
+
+    public @ColorInt int getSelectedTopicColor() {
+        if (mSelectedTopic != null && mTagMetadata != null) {
+            final TagMetadata.Tag tag = mTagMetadata.getTag(mSelectedTopic);
+            if (tag != null) {
+                return tag.getColor();
+            }
+        }
+        return 0;
     }
 
     /**

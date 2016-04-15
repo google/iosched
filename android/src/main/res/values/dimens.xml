@@ -107,7 +107,7 @@
     <item name="aspect_4_3" format="float" type="dimen">1.3333</item>
     <item name="aspect_phi" format="float" type="dimen">1.618</item>
     <dimen name="explore_topic_card_header_height">112dp</dimen>
-    <dimen name="explore_sessions_header_height">168dp</dimen>
+    <dimen name="track_header_detail_height">168dp</dimen>
     <dimen name="compact_list_tile">168dp</dimen>
     <dimen name="explore_empty_state_padding">112dp</dimen>
 

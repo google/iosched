@@ -21,9 +21,7 @@ import android.content.Intent;
 import android.content.Loader;
 import android.database.Cursor;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
-import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.widget.RecyclerView;
@@ -104,8 +102,6 @@ public class ExploreSessionsActivity extends BaseActivity
 
     private DrawerLayout mDrawerLayout;
 
-    private CollapsingToolbarLayout mCollapsingToolbarLayout;
-
     private ImageView mHeaderImage;
 
     private TextView mTitle;
@@ -123,9 +119,8 @@ public class ExploreSessionsActivity extends BaseActivity
 
         mImageLoader = new ImageLoader(this);
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
-        mCollapsingToolbarLayout = (CollapsingToolbarLayout) findViewById(R.id.collapsingToolbar);
-        mHeaderImage = (ImageView) mCollapsingToolbarLayout.findViewById(R.id.header_image);
-        mTitle = (TextView) mCollapsingToolbarLayout.findViewById(R.id.title);
+        mHeaderImage = (ImageView) findViewById(R.id.header_image);
+        mTitle = (TextView) findViewById(R.id.title);
         mFiltersList = (RecyclerView) findViewById(R.id.filters);
         mTimeSlotLayout = findViewById(R.id.timeslot_view);
         mTimeSlotDivider = findViewById(R.id.timeslot_divider);
@@ -335,9 +330,12 @@ public class ExploreSessionsActivity extends BaseActivity
                 mHeaderImage.setScaleType(ImageView.ScaleType.FIT_CENTER);
                 mHeaderImage.setImageResource(R.drawable.ic_hash_io_16_monochrome);
             }
-            if (trackColor != 0 && Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                getWindow().setStatusBarColor(UIUtils.adjustColorForStatusBar(trackColor));
-            }
+
+            final int statusBarColor =
+                    trackColor != 0 ? UIUtils.adjustColorForStatusBar(this, trackColor) :
+                            UIUtils.getThemeColor(this, R.attr.colorPrimaryDark,
+                                    R.color.theme_primary_dark);
+            mDrawerLayout.setStatusBarBackgroundColor(statusBarColor);
         }
     }
 
