@@ -431,10 +431,10 @@
     <string name="map_touch_to_see_session">Touch to see Sessions</string>
 
     <!-- Label of info screen title for Moscone Center at a lower zoom level -->
-    <string name="map_venue_name" translatable="false">Moscone Center</string>
+    <string name="map_venue_name" translatable="false">Shoreline Amphitheatre</string>
 
     <!-- Address of Moscone Center. Shown together with its name. -->
-    <string name="map_venue_address" translatable="false">747 Howard St,\nSan Francisco,\nCA 94103</string>
+    <string name="map_venue_address" translatable="false">1 Amphitheatre Pkwy\nMountain View,\nCA 94043</string>
 
     <!-- Button to view more Videos or sessions from the videos/sessions card view. -->
     <string name="more_items_button">More</string>
