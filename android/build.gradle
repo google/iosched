@@ -35,7 +35,6 @@ android {
     buildToolsVersion "23.0.3"
 
     defaultConfig {
-        version "${version_code}"
         versionName "${version_name}"
         minSdkVersion 16
         targetSdkVersion 22
@@ -76,6 +75,7 @@ android {
         buildConfigField("boolean", "ENABLE_SIGNIN_IN_NAVIGATION", "true")
         buildConfigField("boolean", "ENABLE_SETTINGS_IN_NAVIGATION", "true")
         buildConfigField("boolean", "ENABLE_ABOUT_IN_NAVIGATION", "true")
+        resValue "integer", "versionCode", "${version_code}"
     }
 
     signingConfigs {
