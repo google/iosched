@@ -24,6 +24,7 @@ public class PresenterImpl implements Presenter, UpdatableView.UserActionListene
     /**
      * The UI that this Presenter controls.
      */
+    @Nullable
     private UpdatableView[] mUpdatableViews;
 
     /**
@@ -53,12 +54,14 @@ public class PresenterImpl implements Presenter, UpdatableView.UserActionListene
     /**
      * Use this constructor if this Presenter controls more than one view.
      */
-    public PresenterImpl(Model model, UpdatableView[] views, UserActionEnum[] validUserActions,
+    public PresenterImpl(Model model, @Nullable UpdatableView[] views, UserActionEnum[] validUserActions,
             QueryEnum[] initialQueries) {
         mModel = model;
-        mUpdatableViews = views;
-        for (int i = 0; i < mUpdatableViews.length; i++) {
-            mUpdatableViews[i].addListener(this);
+        if (views != null) {
+            mUpdatableViews = views;
+            for (int i = 0; i < mUpdatableViews.length; i++) {
+                mUpdatableViews[i].addListener(this);
+            }
         }
         mValidUserActions = validUserActions;
         mInitialQueriesToLoad = initialQueries;
@@ -72,15 +75,19 @@ public class PresenterImpl implements Presenter, UpdatableView.UserActionListene
                 mModel.requestData(mInitialQueriesToLoad[i], new Model.DataQueryCallback() {
                     @Override
                     public void onModelUpdated(Model model, QueryEnum query) {
-                        for (int i = 0; i < mUpdatableViews.length; i++) {
-                            mUpdatableViews[i].displayData(model, query);
+                        if (mUpdatableViews != null) {
+                            for (int i = 0; i < mUpdatableViews.length; i++) {
+                                mUpdatableViews[i].displayData(model, query);
+                            }
                         }
                     }
 
                     @Override
                     public void onError(QueryEnum query) {
-                        for (int i = 0; i < mUpdatableViews.length; i++) {
-                            mUpdatableViews[i].displayErrorMessage(query);
+                        if (mUpdatableViews != null) {
+                            for (int i = 0; i < mUpdatableViews.length; i++) {
+                                mUpdatableViews[i].displayErrorMessage(query);
+                            }
                         }
                     }
 
@@ -88,8 +95,10 @@ public class PresenterImpl implements Presenter, UpdatableView.UserActionListene
             }
         } else {
             // No data query to load, update the view.
-            for (int i = 0; i < mUpdatableViews.length; i++) {
-                mUpdatableViews[i].displayData(mModel, null);
+            if (mUpdatableViews != null) {
+                for (int i = 0; i < mUpdatableViews.length; i++) {
+                    mUpdatableViews[i].displayData(mModel, null);
+                }
             }
         }
     }
@@ -128,33 +137,42 @@ public class PresenterImpl implements Presenter, UpdatableView.UserActionListene
 
                 @Override
                 public void onModelUpdated(Model model, UserActionEnum userAction) {
-                    for (int i = 0; i < mUpdatableViews.length; i++) {
-                        mUpdatableViews[i].displayUserActionResult(model, userAction, true);
+                    if (mUpdatableViews != null) {
+                        for (int i = 0; i < mUpdatableViews.length; i++) {
+                            mUpdatableViews[i].displayUserActionResult(model, userAction, true);
+                        }
                     }
                 }
 
                 @Override
                 public void onError(UserActionEnum userAction) {
-                    for (int i = 0; i < mUpdatableViews.length; i++) {
-                        mUpdatableViews[i].displayUserActionResult(null, userAction, false);
+                    if (mUpdatableViews != null) {
+                        for (int i = 0; i < mUpdatableViews.length; i++) {
+                            mUpdatableViews[i].displayUserActionResult(null, userAction, false);
+                        }
+                        // User action not understood by model, even though the presenter understands
+
+                        // it.
+                        LOGE(TAG, "Model doesn't implement user action " + userAction.getId() +
+                                ". Have you forgotten to implement this UserActionEnum in your " +
+                                "model," +
+                                " or have you called setValidUserActions on your presenter with a " +
+                                "UserActionEnum that it shouldn't support?");
                     }
-                    // User action not understood by model, even though the presenter understands
-                    // it.
-                    LOGE(TAG, "Model doesn't implement user action " + userAction.getId() +
-                            ". Have you forgotten to implement this UserActionEnum in your model," +
-                            " or have you called setValidUserActions on your presenter with a " +
-                            "UserActionEnum that it shouldn't support?");
                 }
             });
         } else {
-            for (int i = 0; i < mUpdatableViews.length; i++) {
-                mUpdatableViews[i].displayUserActionResult(null, action, false);
+            if (mUpdatableViews != null) {
+                for (int i = 0; i < mUpdatableViews.length; i++) {
+                    mUpdatableViews[i].displayUserActionResult(null, action, false);
+                }
+                // User action not understood.
+                throw new RuntimeException(
+                        "Invalid user action " + (action != null ? action.getId() : null) +
+                                ". Have you called setValidUserActions on your presenter, with all " +
+
+                                "the UserActionEnum you want to support?");
             }
-            // User action not understood.
-            throw new RuntimeException(
-                    "Invalid user action " + action.getId() +
-                            ". Have you called setValidUserActions on your presenter, with all " +
-                            "the UserActionEnum you want to support?");
         }
     }
 }

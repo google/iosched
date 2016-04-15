@@ -233,6 +233,7 @@ public class MyScheduleActivityTest {
     }
 
     @Test
+    @FlakyTest
     public void navigation_WhenShown_CorrectItemIsSelected() {
         NavigationUtils
                 .checkNavigationItemIsSelected(NavigationModel.NavigationItemEnum.MY_SCHEDULE);
