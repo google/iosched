@@ -167,96 +167,55 @@
             "markers": {
                 "0": [
                     {
-                        "id": "room1",
-                        "lat": 37.426041,
-                        "lng": -122.079488,
+                        "id": "Stage1",
+                        "lat": 37.425635,
+                        "lng": -122.07970,
                         "title": "Session 1",
                         "type": "SESSION"
                     },
                     {
-                        "id": "room2",
-                        "lat": 37.426045,
-                        "lng": -122.079000,
+                        "id": "Stage2",
+                        "lat": 37.425053,
+                        "lng": -122.080294,
                         "title": "Session 2",
                         "type": "SESSION"
                     },
                     {
-                        "id": "room3",
-                        "lat": 37.426207,
-                        "lng": -122.078437,
+                        "id": "Stage3",
+                        "lat": 37.424488,
+                        "lng": -122.079946,
                         "title": "Session 3",
                         "type": "SESSION"
+
                     },
                     {
                         "id": "e32adaab-37e5-e411-b87f-00155d5066d7",
-                        "lat": 37.426450,
-                        "lng": -122.079300,
+                        "lat": 37.426393,
+                        "lng": -122.080020,
                         "title": "Codelabs",
                         "type": "CODELAB"
                     },
                     {
-                        "id": "9cf51a8f-ace3-e411-b87f-00155d5066d7",
-                        "lat": 37.427689,
-                        "lng": -122.078758,
-
-                        "title": "Design Talk",
-                        "type": "SANDBOX"
-                    },
-                    {
-                        "id": "earnengage",
-                        "lat": 37.427519,
-                        "lng": -122.079155,
-                        "title": "Earn +\nEngage",
+                        "id": "Registration",
+                        "lat": 37.426176,
+                        "lng": -122.079566,
+                        "title": "Registration",
                         "type": "LABEL"
+
                     },
                     {
                         "id": "9ef51a8f-ace3-e411-b87f-00155d5066d7",
-                        "lat": 37.426249,
-                        "lng": -122.081478,
+                        "lat": 37.425131,
+                        "lng": -122.0796379,
+                        "title": "Accessibility",
+                        "type": "SANDBOX"
 
-                        "title": "Earn + Engage Talk",
-                        "type": "SANDBOX"
-                    },
-                    {
-                        "id": "sandbox",
-                        "lat": 37.427016,
-                        "lng": -122.081586,
-                        "title": "Lounge Talk",
-                        "type": "SANDBOX"
-                    },
-                    {
-                        "id": "a0f51a8f-ace3-e411-b87f-00155d5066d7",
-                        "lat": 37.425419,
-                        "lng": -122.078903,
-                        "title": "Develop Talk 2",
-                        "type": "SANDBOX"
-                    },
-                    {
-                        "id": "lounge1",
-                        "lat": 37.427084,
-                        "lng": -122.078761,
-                        "title": "Lounge",
-                        "type": "LABEL"
-                    },
-                    {
-                        "id": "iolive",
-                        "lat": 37.427796,
-                        "lng": -122.080448,
-                        "title": "I/O\nLive",
-                        "type": "LABEL"
-                    },
-                    {
-                        "id": "microkitchen",
-                        "lat": 37.426650,
-                        "lng": -122.079019,
-                        "title": "Micro\nKitchen",
-                        "type": "LABEL"
                     }
                 ]
             },
             "tiles": {
                 "0": {
-                    "filename": "floor0-2015-v1.svg",
+                    "filename": "floor0-2016-draft3.svg",
                     "url": ""
                 }
             }
@@ -284,12 +243,12 @@
             "original_id": "e32adaab-37e5-e411-b87f-00155d5066d7"
         },
         {
-            "id": "room1",
+            "id": "Stage1",
             "name": "Room 1 (L2)",
             "original_id": "cbce21ff-2cbe-e411-b87f-00155d5066d7"
         },
         {
-            "id": "room2",
+            "id": "Stage2",
             "name": "Room 2 (L2)",
             "original_id": "3c9c1a44-d4e2-e411-b87f-00155d5066d7"
         },
@@ -344,7 +303,7 @@
             "original_id": "a6f51a8f-ace3-e411-b87f-00155d5066d7"
         },
         {
-            "id": "room3",
+            "id": "Stage3",
             "name": "Room 3 (L2)",
             "original_id": "82588250-d4e2-e411-b87f-00155d5066d7"
         },
