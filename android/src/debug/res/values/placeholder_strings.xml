@@ -28,7 +28,7 @@
         abstract\nLorem ipsum dolor sit amet, consectetur adipiscing elit. Integer nec eleifend arcu, eu convallis nisi. Etiam bibendum, tellus nec ultricies suscipit, metus justo fringilla urna, non mollis tortor libero non enim. Mauris sit amet venenatis risus, at ullamcorper ligula. Maecenas adipiscing non odio ut hendrerit. Phasellus pharetra id sapien laoreet sagittis. Etiam mattis bibendum elit. Vestibulum rutrum a libero eget facilisis. Duis tempor quam velit, at viverra tellus faucibus ut. Mauris venenatis odio sed lorem dignissim, vitae tristique arcu sagittis.</string>
     <string name="placeholder_session_blurb" translatable="false">Room 10</string>
     <string name="placeholder_map_title" translatable="false">Design, Develop Distribute</string>
-    <string name="placeholder_map_subtitle" translatable="false">@string/map_moscone_address</string>
+    <string name="placeholder_map_subtitle" translatable="false">@string/map_venue_address</string>
     <string name="placeholder_lorem_ipsum" translatable="false">Lorem ipsum dolor sit amet, consectetur adipiscing
         elit. Integer nec eleifend arcu, eu convallis nisi. Etiam bibendum, tellus nec ultricies suscipit, metus justo fringilla urna, non mollis tortor libero non enim. Mauris sit amet venenatis risus, at ullamcorper ligula. Maecenas adipiscing non odio ut hendrerit. Phasellus pharetra id sapien laoreet sagittis. Etiam mattis bibendum elit. Vestibulum rutrum a libero eget facilisis. Duis tempor quam velit, at viverra tellus faucibus ut. Mauris venenatis odio sed lorem dignissim, vitae tristique arcu sagittis.</string>
     <string name="placeholder_button_label_1" translatable="false">No, thanks</string>

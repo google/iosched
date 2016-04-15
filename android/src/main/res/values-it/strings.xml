@@ -502,6 +502,9 @@
      -->
     <string name="map_now_playing">In svolgimento:&lt;br&gt;&lt;b&gt;%1$s&lt;/b&gt;</string>
 
+    <!-- Message displayed when the location permission was denied -->
+    <string name="map_permission_denied">Autorizzazione app negata.</string>
+
     <!-- Clickable text in the map popup that leads to sessions in a room -->
     <string name="map_touch_to_see_session">Tocca per vedere le Sessioni</string>
 

@@ -52,7 +52,7 @@ public class SlideableInfoFragment extends MapInfoFragment {
 
 
     private int mHeightTitleOnly;
-    private int mHeightMoscone;
+    private int mHeightVenue;
     private int mHeightSession;
 
     /**
@@ -73,8 +73,8 @@ public class SlideableInfoFragment extends MapInfoFragment {
         final Resources resources = getResources();
         mHeightTitleOnly = resources
                 .getDimensionPixelOffset(R.dimen.map_slideableinfo_height_titleonly);
-        mHeightMoscone = resources
-                .getDimensionPixelOffset(R.dimen.map_slideableinfo_height_moscone);
+        mHeightVenue = resources
+                .getDimensionPixelOffset(R.dimen.map_slideableinfo_height_venue);
         mHeightSession = resources
                 .getDimensionPixelOffset(R.dimen.map_slideableinfo_height_session);
     }
@@ -129,13 +129,13 @@ public class SlideableInfoFragment extends MapInfoFragment {
         mLayout.setTouchEnabled(false);
     }
 
-    public void showMoscone() {
-        // Set up panel: collapsed with moscone height
-        mLayout.setPanelHeight(mHeightMoscone);
+    public void showVenue() {
+        // Set up panel: collapsed with venue height
+        mLayout.setPanelHeight(mHeightVenue);
         mLayout.setPanelState(SlidingUpPanelLayout.PanelState.COLLAPSED);
         mLayout.setTouchEnabled(false);
 
-        super.showMoscone();
+        super.showVenue();
     }
 
     @Override
@@ -160,8 +160,8 @@ public class SlideableInfoFragment extends MapInfoFragment {
     protected void onRoomSubtitleLoaded(String roomTitle, int roomType, String subTitle) {
         super.onRoomSubtitleLoaded(roomTitle, roomType, subTitle);
 
-        // Set up panel: Same height as Moscone, but collapsible
-        mLayout.setPanelHeight(mHeightMoscone);
+        // Set up panel: Same height as venue, but collapsible
+        mLayout.setPanelHeight(mHeightVenue);
         mLayout.setPanelState(SlidingUpPanelLayout.PanelState.COLLAPSED);
         mLayout.setTouchEnabled(true);
     }
