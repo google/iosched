@@ -1115,4 +1115,6 @@ user updates the rating. -->
 
     <string name="transition_track_background" translatable="false">transition_track_background</string>
 
+    <string name="transition_session_background" translatable="false">transition_session_background</string>
+
 </resources>

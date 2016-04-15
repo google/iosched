@@ -32,6 +32,7 @@ import android.graphics.ColorMatrixColorFilter;
 import android.graphics.LinearGradient;
 import android.graphics.Shader;
 import android.graphics.Typeface;
+import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.PaintDrawable;
 import android.graphics.drawable.ShapeDrawable;
@@ -54,6 +55,7 @@ import android.text.TextUtils;
 import android.text.format.DateUtils;
 import android.text.method.LinkMovementMethod;
 import android.text.style.StyleSpan;
+import android.util.Property;
 import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.View;
@@ -696,14 +698,20 @@ public class UIUtils {
         float[] hsl = new float[3];
         ColorUtils.colorToHSL(color, hsl);
 
-        float lightnessMultiplier;
+        float lightness = hsl[2];
         if (isLightStatusBar(context)) {
-            lightnessMultiplier = 1.075f; // lighten the color 7.5%
+            // lighten the color by 7.5%
+            lightness *= 1.075f;
+            // constrain lightness to be within [0.5–1]
+            lightness = Math.max(0.5f, Math.min(1f, lightness));
         } else {
-            lightnessMultiplier = 0.925f; // darken the color 7.5%
+            // darken the color by 7.5%
+            lightness *= 0.925f;
+            // constrain lightness to be within [0–0.5]
+            lightness = Math.max(0f, Math.min(0.5f, lightness));
         }
         // constrain the lightness between [0–1]
-        hsl[2] = Math.max(0f, Math.min(1f, hsl[2] * lightnessMultiplier));
+        hsl[2] = lightness;
         return ColorUtils.HSLToColor(hsl);
     }
 
@@ -740,5 +748,41 @@ public class UIUtils {
         context.getTheme().resolveAttribute(android.R.attr.windowLightStatusBar, tv, true);
         return tv.data != 0;
     }
+
+    /**
+     * Sets the status bar of the given {@code activity} based on the given {@code color}. Note that
+     * {@code color} will be adjusted per {@link #adjustColorForStatusBar(Context, int)}.
+     *
+     * @param activity The activity to set the status bar color for.
+     * @param color The color to be adjusted and set as the status bar background.
+     */
+    public static void adjustAndSetStatusBarColor(@NonNull Activity activity, @ColorInt int color) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            activity.getWindow().setStatusBarColor(adjustColorForStatusBar(activity, color));
+        }
+    }
+
+
+    /**
+     * A {@link Property} used for more efficiently animating a Views background color i.e. avoiding
+     * using reflection to locate the getters and setters.
+     */
+    public static final Property<View, Integer> BACKGROUND_COLOR
+            = new Property<View, Integer>(Integer.class, "backgroundColor") {
+
+        @Override
+        public void set(View view, Integer value) {
+            view.setBackgroundColor(value);
+        }
+
+        @Override
+        public Integer get(View view) {
+            Drawable d = view.getBackground();
+            if (d instanceof ColorDrawable) {
+                return ((ColorDrawable) d).getColor();
+            }
+            return Color.TRANSPARENT;
+        }
+    };
 
 }

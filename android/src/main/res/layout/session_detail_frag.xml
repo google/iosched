@@ -15,9 +15,9 @@
   limitations under the License.
   -->
 
-<LinearLayout
+<FrameLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:iosched="http://schemas.android.com/apk/res-auto"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
@@ -28,7 +28,8 @@
         android:layout_height="match_parent"
         android:overScrollMode="never"
         android:fillViewport="true"
-        android:background="@color/background">
+        android:background="@color/background"
+        android:transitionName="@string/transition_session_background">
 
         <FrameLayout
             android:id="@+id/scroll_view_child"
@@ -57,7 +58,11 @@
                     android:textAppearance="@style/TextAppearance.Title"
                     android:textColor="@color/io15_white"
                     android:drawableTop="@drawable/ic_play_circle_fill_white_48dp"
-                    android:drawablePadding="@dimen/spacing_normal" />
+                    android:drawablePadding="@dimen/spacing_normal"
+                    android:paddingLeft="@dimen/padding_normal"
+                    android:paddingRight="@dimen/padding_normal"
+                    android:paddingTop="28dp" />
+                <!-- paddingTop offsets the text+drawablePadding to center the image -->
 
             </FrameLayout>
 
@@ -77,12 +82,12 @@
                     android:id="@+id/give_feedback_card"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    iosched:messageText="@string/session_give_feedback_message"
-                    iosched:button1text="@string/no_thanks"
-                    iosched:button2text="@string/give_feedback"
-                    iosched:button2tag="@string/tag_give_feedback"
-                    iosched:button2emphasis="true"
-                    iosched:cardBackgroundColor="@color/background"
+                    app:messageText="@string/session_give_feedback_message"
+                    app:button1text="@string/no_thanks"
+                    app:button2text="@string/give_feedback"
+                    app:button2tag="@string/tag_give_feedback"
+                    app:button2emphasis="true"
+                    app:cardBackgroundColor="@color/background"
                     android:layout_marginLeft="@dimen/keyline_2_session_detail"
                     android:layout_marginStart="@dimen/keyline_2_session_detail"
                     android:layout_marginBottom="@dimen/keyline_1"
@@ -234,7 +239,7 @@
                 android:clipToPadding="false"
                 android:orientation="vertical"
                 android:paddingBottom="@dimen/keyline_1"
-                android:background="?colorPrimary"
+                android:background="@color/background"
                 android:theme="@style/ActionBarThemeOverlay">
 
                 <include layout="@layout/toolbar" />
@@ -275,4 +280,5 @@
         </FrameLayout>
 
     </com.google.samples.apps.iosched.ui.widget.ObservableScrollView>
-</LinearLayout>
+
+</FrameLayout>

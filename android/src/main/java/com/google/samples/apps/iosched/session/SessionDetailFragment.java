@@ -16,10 +16,13 @@
 
 package com.google.samples.apps.iosched.session;
 
+import android.animation.ArgbEvaluator;
+import android.animation.ObjectAnimator;
 import android.app.Fragment;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -334,6 +337,7 @@ public class SessionDetailFragment extends Fragment
         switch (query) {
             case SESSIONS:
                 displaySessionData(data);
+                displayTrackColor(data);
                 break;
             case FEEDBACK:
                 displayFeedbackData(data);
@@ -343,6 +347,7 @@ public class SessionDetailFragment extends Fragment
                 break;
             case TAG_METADATA:
                 displayTags(data);
+                displayTrackColor(data);
                 break;
             default:
                 break;
@@ -575,6 +580,32 @@ public class SessionDetailFragment extends Fragment
         };
         mHandler.postDelayed(mTimeHintUpdaterRunnable,
                 SessionDetailConstants.TIME_HINT_UPDATE_INTERVAL);
+    }
+
+    /**
+     * Requires two queries to have returned.
+     */
+    private void displayTrackColor(SessionDetailModel data) {
+        if (data.isSessionTrackColorAvailable()) {
+            int trackColor = data.getSessionTrackColor();
+            if (trackColor == Color.TRANSPARENT) {
+                trackColor = UIUtils.getThemeColor(getContext(), R.attr.colorPrimary,
+                        R.color.theme_primary);
+            }
+
+            // On Lollipop+ where we use a shared element transition, animate the color change
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                final ObjectAnimator color =
+                        ObjectAnimator.ofInt(mHeaderBox, UIUtils.BACKGROUND_COLOR, trackColor);
+                color.setEvaluator(new ArgbEvaluator());
+                color.setStartDelay(200L);
+                color.setDuration(300L);
+                color.start();
+            } else {
+                mHeaderBox.setBackgroundColor(trackColor);
+            }
+            UIUtils.adjustAndSetStatusBarColor(getActivity(), trackColor);
+        }
     }
 
     /**

@@ -152,13 +152,21 @@
     <!-- My Schedule -->
     <style name="Theme.IOSched.MySchedule" parent="Theme.IOSched.WithNavDrawer" />
 
-    <!-- Intermediary theme for SessionDetails (so we can override it on large screens) -->
-    <style name="Theme.IOSched.SessionDetails.Base" parent="Theme.IOSched">
+    <!-- Styling SessionDetails is complicated; alter the style based on:
+             1. small vs large devices
+             2. Specify activity transition on v21+
+             3. Light status on v23+
+
+    We therefor need 3 points of indirection or 'base' themes to provide this.  -->
+    <style name="Theme.IOSched.SessionDetails.SizeBase" parent="Theme.IOSched">
         <item name="isFloatingWindow">false</item>
     </style>
 
+    <style name="Theme.IOSched.SessionDetails.VersionBase"
+           parent="Theme.IOSched.SessionDetails.SizeBase" />
+
     <!-- Session Details -->
-    <style name="Theme.IOSched.SessionDetails" parent="Theme.IOSched.SessionDetails.Base" />
+    <style name="Theme.IOSched.SessionDetails" parent="Theme.IOSched.SessionDetails.VersionBase" />
 
     <!-- Social -->
     <style name="Theme.IOSched.Social" parent="Theme.IOSched.WithNavDrawer">

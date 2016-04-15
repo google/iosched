@@ -22,6 +22,7 @@ import android.database.Cursor;
 import android.graphics.Color;
 import android.net.Uri;
 import android.provider.BaseColumns;
+import android.support.v4.content.ContextCompat;
 import android.text.TextUtils;
 
 import com.google.samples.apps.iosched.Config;
@@ -53,7 +54,7 @@ public class SessionsHandler extends JSONHandler {
 
     public SessionsHandler(Context context) {
         super(context);
-        mDefaultSessionColor = mContext.getResources().getColor(R.color.default_session_color);
+        mDefaultSessionColor = ContextCompat.getColor(mContext, R.color.default_session_color);
     }
 
     @Override

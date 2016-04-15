@@ -36,4 +36,8 @@
         <item name="android:windowEnterTransition">@transition/fade_system_chrome</item>
     </style>
 
+    <style name="Theme.IOSched.SessionDetails" parent="Theme.IOSched.SessionDetails.VersionBase">
+        <item name="android:windowLightStatusBar">true</item>
+    </style>
+
 </resources>

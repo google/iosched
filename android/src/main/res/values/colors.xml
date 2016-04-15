@@ -69,12 +69,14 @@
     <color name="preferred_action">#b3000000</color>
 
     <!-- Session Detail colors. -->
-    <color name="session_detail_tag_text_color">@color/flat_button_text</color>
-    <color name="section_header_views_color">@color/io15_dark_grey</color>
+    <color name="session_detail_tag_text">@color/session_detail_interactive_element</color>
     <color name="fab_not_in_schedule">#ffeeff21</color>
     <color name="fab_in_schedule">@color/io15_white</color>
     <color name="fab_press_ripple">#1a000000</color>
     <color name="fab_icon_color">#99000000</color>
+    <color name="session_tag_stroke">#80546e7a</color>
+    <color name="speaker_social_link">@color/session_detail_interactive_element</color>
+    <color name="session_detail_interactive_element">#ff546e7a</color>
 
     <!-- start deprecated -->
     <color name="body_text_1">#de000000</color>

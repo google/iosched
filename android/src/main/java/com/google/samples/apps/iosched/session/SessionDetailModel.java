@@ -25,6 +25,7 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.v4.content.ContextCompat;
 import android.text.TextUtils;
 import android.util.Pair;
 
@@ -95,6 +96,8 @@ public class SessionDetailModel
     private String mSubtitle;
 
     private int mSessionColor;
+
+    private String mMainTag;
 
     private boolean mInSchedule;
 
@@ -184,6 +187,21 @@ public class SessionDetailModel
     }
 
     public int getSessionColor() {
+        return mSessionColor;
+    }
+
+    public boolean isSessionTrackColorAvailable() {
+        return mTagMetadata != null && mMainTag != null;
+    }
+
+    public int getSessionTrackColor() {
+        if (isSessionTrackColorAvailable()) {
+            final TagMetadata.Tag tag = mTagMetadata.getTag(mMainTag);
+            if (tag != null) {
+                return tag.getColor();
+            }
+        }
+        // else default to the session color which is defaulted to the theme primary color
         return mSessionColor;
     }
 
@@ -352,10 +370,13 @@ public class SessionDetailModel
         mSessionColor = cursor.getInt(
                 cursor.getColumnIndex(ScheduleContract.Sessions.SESSION_COLOR));
         if (mSessionColor == 0) {
-            mSessionColor = mContext.getResources().getColor(R.color.default_session_color);
+            mSessionColor = ContextCompat.getColor(mContext, R.color.default_session_color);
         } else {
             mSessionColor = UIUtils.setColorOpaque(mSessionColor);
         }
+
+        mMainTag = cursor
+                .getString(cursor.getColumnIndex(ScheduleContract.Sessions.SESSION_MAIN_TAG));
 
         mLiveStreamId = cursor
                 .getString(cursor.getColumnIndex(ScheduleContract.Sessions.SESSION_LIVESTREAM_ID));
@@ -755,7 +776,8 @@ public class SessionDetailModel
                 ScheduleContract.Sessions.SESSION_PHOTO_URL,
                 ScheduleContract.Sessions.SESSION_RELATED_CONTENT,
                 ScheduleContract.Sessions.SESSION_TAGS,
-                ScheduleContract.Sessions.SESSION_SPEAKER_NAMES}),
+                ScheduleContract.Sessions.SESSION_SPEAKER_NAMES,
+                ScheduleContract.Sessions.SESSION_MAIN_TAG}),
         SPEAKERS(1, new String[]{ScheduleContract.Speakers.SPEAKER_NAME,
                 ScheduleContract.Speakers.SPEAKER_IMAGE_URL,
                 ScheduleContract.Speakers.SPEAKER_COMPANY,
