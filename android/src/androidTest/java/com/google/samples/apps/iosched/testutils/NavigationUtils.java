@@ -17,9 +17,12 @@ package com.google.samples.apps.iosched.testutils;
 import android.support.test.espresso.NoMatchingViewException;
 import android.support.test.rule.ActivityTestRule;
 import android.support.v7.widget.AppCompatCheckedTextView;
+import android.view.View;
 
 import com.google.samples.apps.iosched.R;
 import com.google.samples.apps.iosched.navigation.NavigationModel;
+
+import org.hamcrest.Matcher;
 
 import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.action.ViewActions.click;
@@ -57,7 +60,7 @@ public class NavigationUtils {
         NavigationUtils.showNavigation();
 
         // When selecting item
-        onView(withText(navigationItemStringResource)).perform(click());
+        onView(getNavigationItemWithString(navigationItemStringResource)).perform(click());
 
         // Then screen is showing
         NavigationUtils.checkScreenTitleIsDisplayed(expectedTitleResource);
@@ -68,7 +71,8 @@ public class NavigationUtils {
         NavigationUtils.showNavigation();
 
         // Check selecting item is displayed
-        onView(withText(navigationItemStringResource)).check(matches(isDisplayed()));
+        onView(getNavigationItemWithString(navigationItemStringResource)).check(
+                matches(isDisplayed()));
     }
 
     public static void checkNavigationItemIsNotDisplayed(int navigationItemStringResource) {
@@ -76,14 +80,14 @@ public class NavigationUtils {
         NavigationUtils.showNavigation();
 
         // Check selecting item does not exist
-        onView(withText(navigationItemStringResource)).check(doesNotExist());
+        onView(getNavigationItemWithString(navigationItemStringResource)).check(doesNotExist());
     }
 
     public static void cleanUpActivityStack(ActivityTestRule rule) {
         NavigationUtils.showNavigation();
         // Selecting Explore activity will clean up the activity stack, leaving only the explore
         // activity, which can then be finished
-        onView(withText(R.string.navdrawer_item_explore)).perform(click());
+        onView(getNavigationItemWithString(R.string.navdrawer_item_explore)).perform(click());
         rule.getActivity().finish();
     }
 
@@ -103,8 +107,8 @@ public class NavigationUtils {
     }
 
     /**
-     * Checks that the {@code expectedSelectedItem} is checked in the navigation drawer, and that
-     * no other items in the drawer are checked.
+     * Checks that the {@code expectedSelectedItem} is checked in the navigation drawer, and that no
+     * other items in the drawer are checked.
      */
     public static void checkNavigationItemIsSelected(
             NavigationModel.NavigationItemEnum expectedSelectedItem) {
@@ -118,20 +122,18 @@ public class NavigationUtils {
                     NavigationModel.NavigationItemEnum.values()[i];
             try {
                 // Check item is displayed
-                onView(allOf(isAssignableFrom(AppCompatCheckedTextView.class),
-                        withText(item.getTitleResource()))).check(matches(isDisplayed()));
+                onView(getNavigationItemWithString(item.getTitleResource())).check(
+                        matches(isDisplayed()));
 
                 // If item is shown, check item is not activated, unless it is the requested one
                 if (NavigationModel.NavigationItemEnum.values()[i].getId() ==
                         expectedSelectedItem.getId()) {
-                    onView(allOf(isAssignableFrom(AppCompatCheckedTextView.class), withText(
-                            item.getTitleResource())))
-                            .check(matches(isChecked()));
+                    onView(getNavigationItemWithString(item.getTitleResource())).check(
+                            matches(isChecked()));
                     selectedFound = true;
                 } else {
-                    onView(allOf(isAssignableFrom(AppCompatCheckedTextView.class), withText(
-                            item.getTitleResource())))
-                            .check(matches(not(isChecked())));
+                    onView(getNavigationItemWithString(item.getTitleResource())).check(
+                            matches(not(isChecked())));
                 }
 
             } catch (NoMatchingViewException e) {
@@ -144,5 +146,9 @@ public class NavigationUtils {
 
         // Sanity check to ensure the tests in the try/catch block weren't all skipped
         assertTrue(selectedFound);
+    }
+
+    private static Matcher<View> getNavigationItemWithString(int stringResource) {
+        return allOf(isAssignableFrom(AppCompatCheckedTextView.class), withText(stringResource));
     }
 }

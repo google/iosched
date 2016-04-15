@@ -17,7 +17,6 @@
 package com.google.samples.apps.iosched.videolibrary;
 
 import android.support.test.InstrumentationRegistry;
-import android.support.test.espresso.ViewInteraction;
 import android.support.test.runner.AndroidJUnit4;
 import android.test.suitebuilder.annotation.LargeTest;
 
@@ -25,23 +24,21 @@ import com.google.samples.apps.iosched.R;
 import com.google.samples.apps.iosched.mockdata.VideosMockCursor;
 import com.google.samples.apps.iosched.testutils.BaseActivityTestRule;
 import com.google.samples.apps.iosched.testutils.NavigationUtils;
+import com.google.samples.apps.iosched.testutils.ToolbarUtils;
 
+import org.junit.Ignore;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.action.ViewActions.click;
-import static android.support.test.espresso.action.ViewActions.swipeUp;
 import static android.support.test.espresso.assertion.ViewAssertions.matches;
 import static android.support.test.espresso.matcher.ViewMatchers.hasDescendant;
 import static android.support.test.espresso.matcher.ViewMatchers.isClickable;
-import static android.support.test.espresso.matcher.ViewMatchers.isCompletelyDisplayed;
-import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
 import static org.hamcrest.Matchers.containsString;
-import static org.hamcrest.Matchers.not;
 
 
 @RunWith(AndroidJUnit4.class)
@@ -87,20 +84,14 @@ public class VideoLibraryFilteredActivityTest {
     }
 
     @Test
-    public void headerBar_IsInitiallyDisplayed() {
-        onView(withId(R.id.headerbar)).check(matches(isCompletelyDisplayed()));
+    public void toolbar_IsInitiallyDisplayed() {
+        ToolbarUtils.checkToolbarIsCompletelyDisplayed();
     }
 
     @Test
-    public void headerBar_HidesAfterSwipeUp() {
-        ViewInteraction view = onView(withId(R.id.headerbar));
-
-        // Swiping up should hide the header bar.
-        onView(withId(R.id.videos_list)).perform(swipeUp());
-        onView(withId(R.id.videos_list)).perform(swipeUp());
-
-        // Check if the header bar is hidden.
-        view.check(matches(not(isDisplayed())));
+    @Ignore("Not implemented yet")
+    public void toolbar_CollapsesAfterSwipeUp() {
+        ToolbarUtils.checkToolbarCollapsesAfterSwipingRecyclerViewUp(R.id.videos_list);
     }
 
     @Test

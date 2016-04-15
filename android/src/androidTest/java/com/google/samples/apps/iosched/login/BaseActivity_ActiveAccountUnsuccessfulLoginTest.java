@@ -78,7 +78,7 @@ public class BaseActivity_ActiveAccountUnsuccessfulLoginTest {
      */
     @FlakyTest
     @Test
-    public void accountName_IsDisplayed() {
+    public void accountName_IsDisplayed_Flaky() {
         // Given navigation menu
         NavigationUtils.showNavigation();
 
