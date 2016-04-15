@@ -62,6 +62,8 @@ android {
         buildConfigField("String", "CONFERENCE_DAY1_END", "\"${conference_day1_end}\"")
         buildConfigField("String", "CONFERENCE_DAY2_START", "\"${conference_day2_start}\"")
         buildConfigField("String", "CONFERENCE_DAY2_END", "\"${conference_day2_end}\"")
+        buildConfigField("String", "CONFERENCE_DAY3_START", "\"${conference_day3_start}\"")
+        buildConfigField("String", "CONFERENCE_DAY3_END", "\"${conference_day3_end}\"")
         buildConfigField("String", "INPERSON_TIMEZONE", "\"${inperson_timezone}\"")
         buildConfigField("String", "SHOW_IO15_REQUEST_SOCIAL_PANEL_TIME",
                 "\"${show_io15_request_social_panel_time}\"")
