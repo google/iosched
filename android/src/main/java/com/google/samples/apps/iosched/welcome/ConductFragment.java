@@ -31,7 +31,7 @@ import static com.google.samples.apps.iosched.util.LogUtils.makeLogTag;
  * Presents the code of conduct for the conference. The user must complete this step before being
  * able to use the app.
  */
-public class ConductFragment extends WelcomeFragment implements WelcomeActivity.WelcomeActivityContent {
+public class ConductFragment extends WelcomeFragment {
     private static final String TAG = makeLogTag(ConductFragment.class);
 
     @Override
@@ -69,7 +69,7 @@ public class ConductFragment extends WelcomeFragment implements WelcomeActivity.
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+            Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
         return inflater.inflate(R.layout.welcome_conduct_fragment, container, false);
     }

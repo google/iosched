@@ -17,6 +17,7 @@ package com.google.samples.apps.iosched.welcome;
 
 import android.app.Activity;
 import android.app.Fragment;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -56,7 +57,7 @@ public abstract class WelcomeFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+            Bundle savedInstanceState) {
         View view = super.onCreateView(inflater, container, savedInstanceState);
         LOGD(TAG, "Creating View");
 
@@ -77,6 +78,8 @@ public abstract class WelcomeFragment extends Fragment {
         button.setText(getPrimaryButtonText());
         button.setOnClickListener(getPrimaryButtonListener());
     }
+
+    public abstract boolean shouldDisplay(Context context);
 
     /**
      * Attaches to the secondary action button of the WelcomeFragmentContainer.
@@ -101,7 +104,7 @@ public abstract class WelcomeFragment extends Fragment {
      * @return the value of the resource or null.
      */
     protected String getResourceString(int id) {
-        if(mActivity != null) {
+        if (mActivity != null) {
             return mActivity.getResources().getString(id);
         }
         return null;
@@ -128,8 +131,7 @@ public abstract class WelcomeFragment extends Fragment {
     protected abstract View.OnClickListener getSecondaryButtonListener();
 
     /**
-     * A convenience {@link android.view.View.OnClickListener} for the common use case in {@link
-     * WelcomeActivity.WelcomeActivityContent}.
+     * A convenience {@link android.view.View.OnClickListener} for the common use cases.
      */
     protected abstract class WelcomeFragmentOnClickListener implements View.OnClickListener {
         Activity mActivity;
@@ -152,6 +154,13 @@ public abstract class WelcomeFragment extends Fragment {
             startActivity(intent);
             mActivity.finish();
         }
+    }
+
+    /**
+     * The receiver for the action to be performed on a button click.
+     */
+    interface WelcomeFragmentClickAction {
+        public void doAction(Context context);
     }
 
     /**

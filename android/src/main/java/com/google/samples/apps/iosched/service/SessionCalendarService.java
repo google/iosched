@@ -16,65 +16,79 @@
 
 package com.google.samples.apps.iosched.service;
 
-import android.util.Log;
-import com.google.samples.apps.iosched.Config;
-import com.google.samples.apps.iosched.R;
-import com.google.samples.apps.iosched.provider.ScheduleContract;
-import com.google.samples.apps.iosched.settings.SettingsUtils;
-import com.google.samples.apps.iosched.util.AccountUtils;
-
+import android.Manifest;
 import android.app.IntentService;
 import android.content.ContentProviderOperation;
 import android.content.ContentResolver;
 import android.content.ContentValues;
 import android.content.Intent;
 import android.content.OperationApplicationException;
+import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.RemoteException;
 import android.provider.CalendarContract;
+import android.support.v4.content.ContextCompat;
 import android.text.TextUtils;
+import android.util.Log;
+
+import com.google.samples.apps.iosched.Config;
+import com.google.samples.apps.iosched.R;
+import com.google.samples.apps.iosched.provider.ScheduleContract;
+import com.google.samples.apps.iosched.settings.SettingsUtils;
+import com.google.samples.apps.iosched.util.AccountUtils;
 
 import java.util.ArrayList;
 
+import static com.google.samples.apps.iosched.util.LogUtils.LOGD;
 import static com.google.samples.apps.iosched.util.LogUtils.LOGE;
 import static com.google.samples.apps.iosched.util.LogUtils.LOGW;
 import static com.google.samples.apps.iosched.util.LogUtils.makeLogTag;
 
 /**
- * Background {@link android.app.Service} that adds or removes session Calendar events through
- * the {@link CalendarContract} API available in Android 4.0 or above.
+ * Background {@link android.app.Service} that adds or removes session Calendar events through the
+ * {@link CalendarContract} API available in Android 4.0 or above.
+ * <p/>
+ * As of Android M the Calendar data is protected by a permission classified in the dangerous
+ * permissions category. This means the permission needs to be requested as a runtime permission.
+ * Since Calendar sync is an optional feature that is enabled from the settings screen we request
+ * the permission there. Since the code that performs the sync is here and runs asynchronously we
+ * simply no-op when the permission has been revoked. This honors the explicit user decision to
+ * revoke (and possible regrant) the permission. We've chosen not to disable the calendar sync when
+ * this state is detected in case a user comes back to the app wondering why the Calendar entries
+ * still exist. When they disable the feature the permission is requested (to remove any previously
+ * added entries) and if they deny that then they are notified that their Calendar might not have
+ * been cleaned of entries. We've also chosen not to use a notification because the revocation of
+ * the permission isn't critical to the app's functionality and it is typically an explicit decision
+ * by the user. (Technically device admin apps can also responded to permissions request.)
  */
 public class SessionCalendarService extends IntentService {
-    private static final String TAG = makeLogTag(SessionCalendarService.class);
-
     public static final String ACTION_ADD_SESSION_CALENDAR =
             "com.google.samples.apps.iosched.action.ADD_SESSION_CALENDAR";
+    public static final String ACTION_CLEAR_ALL_SESSIONS_CALENDAR =
+            "com.google.samples.apps.iosched.action.CLEAR_ALL_SESSIONS_CALENDAR";
     public static final String ACTION_REMOVE_SESSION_CALENDAR =
             "com.google.samples.apps.iosched.action.REMOVE_SESSION_CALENDAR";
     public static final String ACTION_UPDATE_ALL_SESSIONS_CALENDAR =
             "com.google.samples.apps.iosched.action.UPDATE_ALL_SESSIONS_CALENDAR";
     public static final String ACTION_UPDATE_ALL_SESSIONS_CALENDAR_COMPLETED =
             "com.google.samples.apps.iosched.action.UPDATE_CALENDAR_COMPLETED";
-    public static final String ACTION_CLEAR_ALL_SESSIONS_CALENDAR =
-            "com.google.samples.apps.iosched.action.CLEAR_ALL_SESSIONS_CALENDAR";
     public static final String EXTRA_ACCOUNT_NAME =
             "com.google.samples.apps.iosched.extra.ACCOUNT_NAME";
-    public static final String EXTRA_SESSION_START =
-            "com.google.samples.apps.iosched.extra.SESSION_BLOCK_START";
     public static final String EXTRA_SESSION_END =
             "com.google.samples.apps.iosched.extra.SESSION_BLOCK_END";
-    public static final String EXTRA_SESSION_TITLE =
-            "com.google.samples.apps.iosched.extra.SESSION_TITLE";
     public static final String EXTRA_SESSION_ROOM =
             "com.google.samples.apps.iosched.extra.SESSION_ROOM";
-
-    private static final long INVALID_CALENDAR_ID = -1;
-
+    public static final String EXTRA_SESSION_START =
+            "com.google.samples.apps.iosched.extra.SESSION_BLOCK_START";
+    public static final String EXTRA_SESSION_TITLE =
+            "com.google.samples.apps.iosched.extra.SESSION_TITLE";
     // TODO: localize
     private static final String CALENDAR_CLEAR_SEARCH_LIKE_EXPRESSION =
             "%added by Google I/O Android app%";
+    private static final long INVALID_CALENDAR_ID = -1;
+    private static final String TAG = makeLogTag(SessionCalendarService.class);
 
     public SessionCalendarService() {
         super(TAG);
@@ -82,8 +96,13 @@ public class SessionCalendarService extends IntentService {
 
     @Override
     protected void onHandleIntent(Intent intent) {
+        if (!permissionsAlreadyGranted()) {
+            LOGW(TAG, "Calendar permission not granted.");
+            return;
+        }
+
         final String action = intent.getAction();
-        Log.d(TAG, "Received intent: " + action);
+        LOGD(TAG, "Received intent: " + action);
 
         final ContentResolver resolver = getContentResolver();
 
@@ -102,9 +121,7 @@ public class SessionCalendarService extends IntentService {
                         processAllSessionsCalendar(resolver, getCalendarId(intent)));
                 sendBroadcast(new Intent(
                         SessionCalendarService.ACTION_UPDATE_ALL_SESSIONS_CALENDAR_COMPLETED));
-            } catch (RemoteException e) {
-                LOGE(TAG, "Error adding all sessions to Google Calendar", e);
-            } catch (OperationApplicationException e) {
+            } catch (RemoteException | OperationApplicationException e) {
                 LOGE(TAG, "Error adding all sessions to Google Calendar", e);
             }
 
@@ -112,9 +129,7 @@ public class SessionCalendarService extends IntentService {
             try {
                 getContentResolver().applyBatch(CalendarContract.AUTHORITY,
                         processClearAllSessions(resolver, getCalendarId(intent)));
-            } catch (RemoteException e) {
-                LOGE(TAG, "Error clearing all sessions from Google Calendar", e);
-            } catch (OperationApplicationException e) {
+            } catch (RemoteException | OperationApplicationException e) {
                 LOGE(TAG, "Error clearing all sessions from Google Calendar", e);
             }
 
@@ -135,9 +150,7 @@ public class SessionCalendarService extends IntentService {
                             extras.getLong(EXTRA_SESSION_END),
                             extras.getString(EXTRA_SESSION_TITLE),
                             extras.getString(EXTRA_SESSION_ROOM)));
-        } catch (RemoteException e) {
-            LOGE(TAG, "Error adding session to Google Calendar", e);
-        } catch (OperationApplicationException e) {
+        } catch (RemoteException | OperationApplicationException e) {
             LOGE(TAG, "Error adding session to Google Calendar", e);
         }
     }
@@ -154,12 +167,12 @@ public class SessionCalendarService extends IntentService {
             accountName = AccountUtils.getActiveAccountName(this);
         }
 
-        if (TextUtils.isEmpty(accountName)) {
+        if (TextUtils.isEmpty(accountName) || !permissionsAlreadyGranted()) {
             return INVALID_CALENDAR_ID;
         }
 
         // TODO: The calendar ID should be stored in shared settings_prefs upon choosing an account.
-        Cursor calendarsCursor = getContentResolver().query(
+        @SuppressWarnings("MissingPermission") Cursor calendarsCursor = getContentResolver().query(
                 CalendarContract.Calendars.CONTENT_URI,
                 new String[]{"_id"},
                 // TODO: What if the calendar is not displayed or not sync'd?
@@ -180,11 +193,17 @@ public class SessionCalendarService extends IntentService {
         return sessionTitle + getResources().getString(R.string.session_calendar_suffix);
     }
 
+    private boolean permissionsAlreadyGranted() {
+        return ContextCompat
+                .checkSelfPermission(getApplicationContext(), Manifest.permission.WRITE_CALENDAR) ==
+                PackageManager.PERMISSION_GRANTED;
+    }
+
     /**
      * Processes all sessions in the
-     * {@link com.google.samples.apps.iosched.provider.ScheduleProvider}, adding or removing
-     * calendar events to/from the specified Google Calendar depending on whether a session is
-     * in the user's schedule or not.
+     * {@link com.google.samples.apps.iosched.provider.ScheduleProvider},
+     * adding or removing calendar events to/from the specified Google Calendar depending on whether
+     * a session is in the user's schedule or not.
      */
     private ArrayList<ContentProviderOperation> processAllSessionsCalendar(ContentResolver resolver,
             final long calendarId) {
@@ -224,150 +243,7 @@ public class SessionCalendarService extends IntentService {
     }
 
     /**
-     * Adds or removes a single session to/from the specified Google Calendar.
-     */
-    private ArrayList<ContentProviderOperation> processSessionCalendar(
-            final ContentResolver resolver,
-            final long calendarId, final boolean isAddEvent,
-            final Uri sessionUri, final long sessionBlockStart, final long sessionBlockEnd,
-            final String sessionTitle, final String sessionRoom) {
-        ArrayList<ContentProviderOperation> batch = new ArrayList<ContentProviderOperation>();
-
-        // Unable to find the Calendar associated with the user. Stop here.
-        if (calendarId == INVALID_CALENDAR_ID) {
-            return batch;
-        }
-
-        final String calendarEventTitle = makeCalendarEventTitle(sessionTitle);
-
-        Cursor cursor;
-        ContentValues values = new ContentValues();
-
-        // Add Calendar event.
-        if (isAddEvent) {
-            if (sessionBlockStart == 0L || sessionBlockEnd == 0L || sessionTitle == null) {
-                LOGW(TAG, "Unable to add a Calendar event due to insufficient input parameters.");
-                return batch;
-            }
-
-            // Check if the calendar event exists first.  If it does, we don't want to add a
-            // duplicate one.
-            cursor = resolver.query(
-                    CalendarContract.Events.CONTENT_URI,                       // URI
-                    new String[] {CalendarContract.Events._ID},                // Projection
-                    CalendarContract.Events.CALENDAR_ID + "=? and "            // Selection
-                            + CalendarContract.Events.TITLE + "=? and "
-                            + CalendarContract.Events.DTSTART + ">=? and "
-                            + CalendarContract.Events.DTEND + "<=?",
-                    new String[]{                                              // Selection args
-                            Long.valueOf(calendarId).toString(),
-                            calendarEventTitle,
-                            Long.toString(Config.CONFERENCE_START_MILLIS),
-                            Long.toString(Config.CONFERENCE_END_MILLIS)
-                    },
-                    null);
-
-            long newEventId = -1;
-
-            if (cursor != null && cursor.moveToFirst()) {
-                // Calendar event already exists for this session.
-                newEventId = cursor.getLong(0);
-                cursor.close();
-
-                // Data fix (workaround):
-                batch.add(
-                        ContentProviderOperation.newUpdate(CalendarContract.Events.CONTENT_URI)
-                                .withValue(CalendarContract.Events.EVENT_TIMEZONE,
-                                        Config.CONFERENCE_TIMEZONE.getID())
-                                .withSelection(CalendarContract.Events._ID + "=?",
-                                        new String[]{Long.valueOf(newEventId).toString()})
-                                .build()
-                );
-                // End data fix.
-
-            } else {
-                // Calendar event doesn't exist, create it.
-
-                // NOTE: we can't use batch processing here because we need the result of
-                // the insert.
-                values.clear();
-                values.put(CalendarContract.Events.DTSTART, sessionBlockStart);
-                values.put(CalendarContract.Events.DTEND, sessionBlockEnd);
-                values.put(CalendarContract.Events.EVENT_LOCATION, sessionRoom);
-                values.put(CalendarContract.Events.TITLE, calendarEventTitle);
-                values.put(CalendarContract.Events.CALENDAR_ID, calendarId);
-                values.put(CalendarContract.Events.EVENT_TIMEZONE,
-                        Config.CONFERENCE_TIMEZONE.getID());
-                Uri eventUri = resolver.insert(CalendarContract.Events.CONTENT_URI, values);
-                String eventId = eventUri.getLastPathSegment();
-                if (eventId == null) {
-                    return batch; // Should be empty at this point
-                }
-
-                newEventId = Long.valueOf(eventId);
-                // Since we're adding session reminder to system notification, we're not creating
-                // Calendar event reminders.  If we were to create Calendar event reminders, this
-                // is how we would do it.
-                //values.put(CalendarContract.Reminders.EVENT_ID, Integer.valueOf(eventId));
-                //values.put(CalendarContract.Reminders.MINUTES, 10);
-                //values.put(CalendarContract.Reminders.METHOD,
-                //        CalendarContract.Reminders.METHOD_ALERT); // Or default?
-                //cr.insert(CalendarContract.Reminders.CONTENT_URI, values);
-                //values.clear();
-            }
-
-            // Update the session in our own provider with the newly created calendar event ID.
-            values.clear();
-            values.put(ScheduleContract.Sessions.SESSION_CAL_EVENT_ID, newEventId);
-            resolver.update(sessionUri, values, null, null);
-
-        } else {
-            // Remove Calendar event, if exists.
-
-            // Get the event calendar id.
-            cursor = resolver.query(sessionUri,
-                    new String[] {ScheduleContract.Sessions.SESSION_CAL_EVENT_ID},
-                    null, null, null);
-            long calendarEventId = -1;
-            if (cursor != null && cursor.moveToFirst()) {
-                calendarEventId = cursor.getLong(0);
-                cursor.close();
-            }
-
-            // Try to remove the Calendar Event based on key.  If successful, move on;
-            // otherwise, remove the event based on Event title.
-            int affectedRows = 0;
-            if (calendarEventId != -1) {
-                affectedRows = resolver.delete(
-                        CalendarContract.Events.CONTENT_URI,
-                        CalendarContract.Events._ID + "=?",
-                        new String[]{Long.valueOf(calendarEventId).toString()});
-            }
-
-            if (affectedRows == 0) {
-                resolver.delete(CalendarContract.Events.CONTENT_URI,
-                        String.format("%s=? and %s=? and %s=? and %s=?",
-                                CalendarContract.Events.CALENDAR_ID,
-                                CalendarContract.Events.TITLE,
-                                CalendarContract.Events.DTSTART,
-                                CalendarContract.Events.DTEND),
-                        new String[]{Long.valueOf(calendarId).toString(),
-                                calendarEventTitle,
-                                Long.valueOf(sessionBlockStart).toString(),
-                                Long.valueOf(sessionBlockEnd).toString()});
-            }
-
-            // Remove the session and calendar event association.
-            values.clear();
-            values.put(ScheduleContract.Sessions.SESSION_CAL_EVENT_ID, (Long) null);
-            resolver.update(sessionUri, values, null, null);
-        }
-
-        return batch;
-    }
-
-    /**
-     * Removes all calendar entries associated with Google I/O 2013.
+     * Removes all calendar entries associated with Google I/O.
      */
     private ArrayList<ContentProviderOperation> processClearAllSessions(
             ContentResolver resolver, long calendarId) {
@@ -400,6 +276,154 @@ public class SessionCalendarService extends IntentService {
         return batch;
     }
 
+    /**
+     * Adds or removes a single session to/from the specified Google Calendar.
+     */
+    private ArrayList<ContentProviderOperation> processSessionCalendar(
+            final ContentResolver resolver,
+            final long calendarId, final boolean isAddEvent,
+            final Uri sessionUri, final long sessionBlockStart, final long sessionBlockEnd,
+            final String sessionTitle, final String sessionRoom) {
+        ArrayList<ContentProviderOperation> batch = new ArrayList<ContentProviderOperation>();
+
+        // Unable to find the Calendar associated with the user or permissions were revoked.
+        if (calendarId == INVALID_CALENDAR_ID || !permissionsAlreadyGranted()) {
+            return batch;
+        }
+
+        final String calendarEventTitle = makeCalendarEventTitle(sessionTitle);
+
+        Cursor cursor;
+        ContentValues values = new ContentValues();
+
+        // Add Calendar event.
+        if (isAddEvent) {
+            if (sessionBlockStart == 0L || sessionBlockEnd == 0L || sessionTitle == null) {
+                LOGW(TAG, "Unable to add a Calendar event due to insufficient input parameters.");
+                return batch;
+            }
+
+            // Check if the calendar event exists first.  If it does, we don't want to add a
+            // duplicate one.
+            //noinspection MissingPermission
+            cursor = resolver.query(
+                    CalendarContract.Events.CONTENT_URI,                       // URI
+                    new String[]{CalendarContract.Events._ID},                // Projection
+                    CalendarContract.Events.CALENDAR_ID + "=? and "            // Selection
+                            + CalendarContract.Events.TITLE + "=? and "
+                            + CalendarContract.Events.DTSTART + ">=? and "
+                            + CalendarContract.Events.DTEND + "<=?",
+                    new String[]{                                              // Selection args
+                            Long.valueOf(calendarId).toString(),
+                            calendarEventTitle,
+                            Long.toString(Config.CONFERENCE_START_MILLIS),
+                            Long.toString(Config.CONFERENCE_END_MILLIS)
+                    },
+                    null);
+
+            long newEventId = -1;
+
+            if (cursor != null && cursor.moveToFirst()) {
+                // Calendar event already exists for this session.
+                newEventId = cursor.getLong(0);
+                cursor.close();
+
+                // Data fix (workaround):
+                batch.add(
+                        ContentProviderOperation.newUpdate(CalendarContract.Events.CONTENT_URI)
+                                                .withValue(CalendarContract.Events.EVENT_TIMEZONE,
+                                                        Config.CONFERENCE_TIMEZONE.getID())
+                                                .withSelection(CalendarContract.Events._ID + "=?",
+                                                        new String[]{Long.valueOf(
+                                                                newEventId).toString()})
+                                                .build()
+                );
+                // End data fix.
+
+            } else {
+                // Calendar event doesn't exist, create it.
+
+                // NOTE: we can't use batch processing here because we need the result of
+                // the insert.
+                values.clear();
+                values.put(CalendarContract.Events.DTSTART, sessionBlockStart);
+                values.put(CalendarContract.Events.DTEND, sessionBlockEnd);
+                values.put(CalendarContract.Events.EVENT_LOCATION, sessionRoom);
+                values.put(CalendarContract.Events.TITLE, calendarEventTitle);
+                values.put(CalendarContract.Events.CALENDAR_ID, calendarId);
+                values.put(CalendarContract.Events.EVENT_TIMEZONE,
+                        Config.CONFERENCE_TIMEZONE.getID());
+                @SuppressWarnings("MissingPermission") Uri eventUri =
+                        resolver.insert(CalendarContract.Events.CONTENT_URI, values);
+                String eventId = eventUri.getLastPathSegment();
+                if (eventId == null) {
+                    return batch; // Should be empty at this point
+                }
+
+                newEventId = Long.valueOf(eventId);
+                // Since we're adding session reminder to system notification, we're not creating
+                // Calendar event reminders.  If we were to create Calendar event reminders, this
+                // is how we would do it.
+                //values.put(CalendarContract.Reminders.EVENT_ID, Integer.valueOf(eventId));
+                //values.put(CalendarContract.Reminders.MINUTES, 10);
+                //values.put(CalendarContract.Reminders.METHOD,
+                //        CalendarContract.Reminders.METHOD_ALERT); // Or default?
+                //cr.insert(CalendarContract.Reminders.CONTENT_URI, values);
+                //values.clear();
+            }
+
+            // Update the session in our own provider with the newly created calendar event ID.
+            values.clear();
+            values.put(ScheduleContract.Sessions.SESSION_CAL_EVENT_ID, newEventId);
+            resolver.update(sessionUri, values, null, null);
+
+        } else {
+            // Remove Calendar event, if exists.
+
+            // Get the event calendar id.
+            cursor = resolver.query(sessionUri,
+                    new String[]{ScheduleContract.Sessions.SESSION_CAL_EVENT_ID},
+                    null, null, null);
+            long calendarEventId = -1;
+            if (cursor != null && cursor.moveToFirst()) {
+                calendarEventId = cursor.getLong(0);
+                cursor.close();
+            }
+
+            // Try to remove the Calendar Event based on key.  If successful, move on;
+            // otherwise, remove the event based on Event title.
+            int affectedRows = 0;
+            if (calendarEventId != -1) {
+                //noinspection MissingPermission
+                affectedRows = resolver.delete(
+                        CalendarContract.Events.CONTENT_URI,
+                        CalendarContract.Events._ID + "=?",
+                        new String[]{Long.valueOf(calendarEventId).toString()});
+            }
+
+            if (affectedRows == 0) {
+                //noinspection MissingPermission
+                resolver.delete(CalendarContract.Events.CONTENT_URI,
+                        String.format("%s=? and %s=? and %s=? and %s=?",
+                                CalendarContract.Events.CALENDAR_ID,
+                                CalendarContract.Events.TITLE,
+                                CalendarContract.Events.DTSTART,
+                                CalendarContract.Events.DTEND),
+                        new String[]{Long.valueOf(calendarId).toString(),
+                                calendarEventTitle,
+                                Long.valueOf(sessionBlockStart).toString(),
+                                Long.valueOf(sessionBlockEnd).toString()});
+            }
+
+            // Remove the session and calendar event association.
+            values.clear();
+            values.put(ScheduleContract.Sessions.SESSION_CAL_EVENT_ID, (Long) null);
+            resolver.update(sessionUri, values, null, null);
+        }
+
+        return batch;
+    }
+
     private interface SessionsQuery {
         String[] PROJECTION = {
                 ScheduleContract.Sessions._ID,
@@ -409,12 +433,11 @@ public class SessionCalendarService extends IntentService {
                 ScheduleContract.Sessions.ROOM_NAME,
                 ScheduleContract.Sessions.SESSION_IN_MY_SCHEDULE,
         };
-
-        int _ID = 0;
-        int SESSION_START = 1;
-        int SESSION_END = 2;
-        int SESSION_TITLE = 3;
         int ROOM_NAME = 4;
+        int SESSION_END = 2;
         int SESSION_IN_MY_SCHEDULE = 5;
+        int SESSION_START = 1;
+        int SESSION_TITLE = 3;
+        int _ID = 0;
     }
 }

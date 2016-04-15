@@ -734,6 +734,12 @@ public class UIUtils {
         }
     }
 
+    /**
+     * Retrieves the rootView of the specified {@link Activity}.
+     */
+    public static View getRootView(Activity activity) {
+        return activity.getWindow().getDecorView().findViewById(android.R.id.content);
+    }
 
     /**
      * A {@link Property} used for more efficiently animating a Views background color i.e. avoiding

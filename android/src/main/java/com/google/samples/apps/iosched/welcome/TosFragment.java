@@ -30,8 +30,7 @@ import static com.google.samples.apps.iosched.util.LogUtils.makeLogTag;
 /**
  * The Terms of Service fragment in the welcome screen.
  */
-public class TosFragment extends WelcomeFragment
-        implements WelcomeActivity.WelcomeActivityContent {
+public class TosFragment extends WelcomeFragment {
     private static final String TAG = makeLogTag(TosFragment.class);
 
     @Override
@@ -69,7 +68,7 @@ public class TosFragment extends WelcomeFragment
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+            Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
         return inflater.inflate(R.layout.welcome_tos_fragment, container, false);
     }
