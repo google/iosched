@@ -42,13 +42,14 @@ public class DataBootstrapService extends IntentService {
     private static final String TAG = LogUtils.makeLogTag(DataBootstrapService.class);
     private static Context mContext;
 
+    /*
     public static void startDataBootstrapIfNecessary(Context context) {
         if (!SettingsUtils.isDataBootstrapDone(context)) {
             LOGW(TAG, "One-time data bootstrap not done yet. Doing now.");
             context.startService(new Intent(context, DataBootstrapService.class));
             mContext = context;
         }
-    }
+    } */
 
     public DataBootstrapService() {
         super(TAG);
@@ -65,6 +66,7 @@ public class DataBootstrapService extends IntentService {
         try {
             LOGD(TAG, "Starting data bootstrap process.");
             // Load data from bootstrap raw resource.
+
 
             String bootstrapJson = JSONHandler
                     .parseResource(appContext, R.raw.bootstrap_data);

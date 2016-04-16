@@ -429,6 +429,11 @@ public final class ScheduleContract {
                 ContactsContract.CALLER_IS_SYNCADAPTER, "true").build();
     }
 
+    public static boolean hasCallerIsSyncAdapterParameter(Uri uri) {
+        return TextUtils.equals("true",
+                uri.getQueryParameter(ContactsContract.CALLER_IS_SYNCADAPTER));
+    }
+
     /**
      * Blocks are generic timeslots.
      */

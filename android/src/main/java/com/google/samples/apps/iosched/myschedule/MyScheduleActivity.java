@@ -17,7 +17,9 @@
 package com.google.samples.apps.iosched.myschedule;
 
 import com.google.samples.apps.iosched.Config;
+
 import no.java.schedule.R;
+
 import com.google.samples.apps.iosched.model.ScheduleHelper;
 import com.google.samples.apps.iosched.model.ScheduleItem;
 import com.google.samples.apps.iosched.provider.ScheduleContract;
@@ -176,11 +178,6 @@ public class MyScheduleActivity extends BaseActivity implements MyScheduleFragme
         mScrollViewWide = (ScrollView) findViewById(R.id.main_content_wide);
         mWideMode = findViewById(R.id.my_schedule_first_day) != null;
 
-        if (SettingsUtils.isAttendeeAtVenue(this)) {
-            mDayZeroAdapter = new MyScheduleAdapter(this, getLUtils());
-            prepareDayZeroAdapter();
-        }
-
         for (int i = 0; i < Config.CONFERENCE_DAYS.length; i++) {
             mScheduleAdapters[i] = new MyScheduleAdapter(this, getLUtils());
         }
@@ -205,19 +202,11 @@ public class MyScheduleActivity extends BaseActivity implements MyScheduleFragme
 
             TextView zerothDayHeaderView = (TextView) findViewById(R.id.day_label_zeroth_day);
             MyScheduleView dayZeroView = (MyScheduleView) findViewById(R.id.my_schedule_zeroth_day);
-            if (mDayZeroAdapter != null) {
-                dayZeroView.setAdapter(mDayZeroAdapter);
-                dayZeroView.setVisibility(View.VISIBLE);
-                zerothDayHeaderView.setText(getDayName(-1));
-                zerothDayHeaderView.setVisibility(View.VISIBLE);
-            } else {
-                dayZeroView.setVisibility(View.GONE);
-                zerothDayHeaderView.setVisibility(View.GONE);
-            }
+            dayZeroView.setVisibility(View.GONE);
+            zerothDayHeaderView.setVisibility(View.GONE);
         } else {
             // it's PagerAdapter set.
             mTabLayout = (TabLayout) findViewById(R.id.sliding_tabs);
-
             mTabLayout.setTabsFromPagerAdapter(mViewPagerAdapter);
 
 
@@ -246,6 +235,7 @@ public class MyScheduleActivity extends BaseActivity implements MyScheduleFragme
             mViewPager.setPageMargin(getResources()
                     .getDimensionPixelSize(R.dimen.my_schedule_page_margin));
             mViewPager.setPageMarginDrawable(R.drawable.page_margin);
+            mViewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(mTabLayout));
 
             setTabLayoutContentDescriptions();
         }

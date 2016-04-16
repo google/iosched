@@ -81,7 +81,6 @@ public class TracksHandler extends JSONHandler {
 
     @Override
     public void process(JsonElement element) {
-
     }
 
     private static void parseTrack(JZLabel track, ArrayList<ContentProviderOperation> batch) {

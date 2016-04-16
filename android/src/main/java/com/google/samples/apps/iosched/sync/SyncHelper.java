@@ -58,6 +58,7 @@ import com.google.samples.apps.iosched.util.UIUtils;
 import com.turbomanage.httpclient.BasicHttpClient;
 
 import java.io.BufferedReader;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -92,16 +93,15 @@ public class SyncHelper {
 
     private BasicHttpClient mHttpClient;
 
-    /**
-     * @param context Can be Application, Activity or Service context.
-     */
+    private String mUserAgent;
+
     public SyncHelper(Context context) {
         mContext = context;
         mConferenceDataHandler = new ConferenceDataHandler(mContext);
         mRemoteDataFetcher = new RemoteConferenceDataFetcher(mContext);
         mHttpClient = new BasicHttpClient();
+        mUserAgent = buildUserAgent(context);
     }
-
 
     /**
      * Loads conference information (sessions, rooms, tracks, speakers, etc.)
@@ -111,8 +111,8 @@ public class SyncHelper {
      * @param syncResult Optional {@link SyncResult} object to populate.
      * @throws IOException
      */
-    /*
-    public void performSync(SyncResult syncResult) throws IOException {
+
+    public void performSync(SyncResult syncResult,Account account, Bundle extras) throws IOException {
 
         final ContentResolver resolver = mContext.getContentResolver();
         ArrayList<ContentProviderOperation> batch = new ArrayList<ContentProviderOperation>();
@@ -183,7 +183,7 @@ public class SyncHelper {
                     + "session with Calendar.");
             syncCalendar();
         }
-    }*/
+    }
 
     private void syncCalendar() {
         //Intent intent = new Intent(SessionCalendarService.ACTION_UPDATE_ALL_SESSIONS_CALENDAR);
@@ -307,6 +307,7 @@ public class SyncHelper {
      *                   {@code SyncAdapter.EXTRA_SYNC_USER_DATA_ONLY} with boolean value
      * @return true if the sync changed the data.
      */
+    /*
     public boolean performSync(@Nullable SyncResult syncResult, Account account, Bundle extras) {
         boolean dataChanged = false;
 
@@ -406,7 +407,7 @@ public class SyncHelper {
         updateSyncInterval(mContext, account);
 
         return dataChanged;
-    }
+    } */
 
     public static void performPostSyncChores(final Context context) {
         LOGD(TAG, "Updating search index.");
@@ -573,28 +574,30 @@ public class SyncHelper {
         return prefs.getBoolean("first_run", true);
     }
 
-    public static String getLocalResource(Context pContext, String pUrlString) {
+    public static String getLocalResource(Context pContext,String pUrlString) {
 
         pUrlString = pUrlString.replaceFirst("http://", "");
 
         //fix file/directory clashes....
         if (pUrlString.endsWith("/sessions")) {
-            pUrlString = pUrlString + ".json";
+            pUrlString=pUrlString+".json";
         }
 
         LOGD("LocalResourceUrls", pUrlString);
 
         try {
             InputStream asset = pContext.getAssets().open(pUrlString);
-            LOGD("LocalResourceUrls Found", pUrlString);
+
+
+            LOGD("LocalResourceUrls Found",pUrlString);
             return convertStreamToString(asset);
 
-        } catch (IOException e) {
-            LOGE("LocalResourceUrls NotFound", pUrlString);
-            LOGE(makeLogTag(SyncHelper.class), "Exception reading asset", e);
+        }
+        catch (IOException e) {
+            LOGE("LocalResourceUrls NotFound",pUrlString);
+            LOGE(makeLogTag(SyncHelper.class),"Exception reading asset",e);
             return null;
         }
-
     }
 
     static String convertStreamToString(java.io.InputStream is) {

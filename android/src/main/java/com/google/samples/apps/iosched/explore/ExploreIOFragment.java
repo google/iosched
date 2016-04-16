@@ -238,10 +238,10 @@ public class ExploreIOFragment extends Fragment implements UpdatableView<Explore
         CollectionView.Inventory inventory = new CollectionView.Inventory();
         CollectionView.InventoryGroup inventoryGroup;
 
-        // BEGIN Add Message Cards.
         // Message cards are only used for onsite attendees.
         if (SettingsUtils.isAttendeeAtVenue(getContext())) {
             // Users are required to opt in or out of whether they want conference message cards.
+            /*
             if (!ConfMessageCardUtils.hasAnsweredConfMessageCardsPrompt(getContext())) {
                 // User has not answered whether they want to opt in.
                 // Build a opt-in/out card.
@@ -257,6 +257,7 @@ public class ExploreIOFragment extends Fragment implements UpdatableView<Explore
                 // Note that for these special cards, we'll never show more than one at a time to
                 // prevent overloading the user with messages. We want each new message to be
                 // notable.
+
                 if (shouldShowCard(ConfMessageCardUtils.ConfMessageCard.CONFERENCE_CREDENTIALS)) {
                     inventoryGroup = new CollectionView.InventoryGroup(GROUP_ID_MESSAGE_CARDS);
                     MessageData conferenceMessageOptIn = MessageCardHelper
@@ -264,7 +265,8 @@ public class ExploreIOFragment extends Fragment implements UpdatableView<Explore
                     inventoryGroup.addItemWithTag(conferenceMessageOptIn);
                     inventoryGroup.setDisplayCols(1);
                     inventory.addGroup(inventoryGroup);
-                } else if (shouldShowCard(ConfMessageCardUtils.ConfMessageCard.KEYNOTE_ACCESS)) {
+                } else */
+                if (shouldShowCard(ConfMessageCardUtils.ConfMessageCard.KEYNOTE_ACCESS)) {
                     inventoryGroup = new CollectionView.InventoryGroup(GROUP_ID_MESSAGE_CARDS);
                     MessageData conferenceMessageOptIn = MessageCardHelper
                             .getKeynoteAccessMessageData(getContext());
@@ -300,8 +302,6 @@ public class ExploreIOFragment extends Fragment implements UpdatableView<Explore
                 inventoryGroup.setDisplayCols(1);
                 inventory.addGroup(inventoryGroup);
             }
-        }
-        // END Add Message Cards.
 
 
         // Add Keynote card.
@@ -562,6 +562,7 @@ public class ExploreIOFragment extends Fragment implements UpdatableView<Explore
         }
 
         // Bind message data if this item is meant to be bound as a message card.
+        /*
         if (GROUP_ID_MESSAGE_CARDS == groupId) {
             MessageData messageData = (MessageData)tag;
             descriptionView.setText(messageData.getMessageString(context));
@@ -587,7 +588,7 @@ public class ExploreIOFragment extends Fragment implements UpdatableView<Explore
             if (messageData.getEndButtonClickListener() != null) {
                 endButton.setOnClickListener(messageData.getEndButtonClickListener());
             }
-        }
+        } */
     }
 
     /**

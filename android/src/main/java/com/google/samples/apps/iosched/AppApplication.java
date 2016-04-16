@@ -21,7 +21,10 @@ import com.google.android.gms.security.ProviderInstaller;
 import com.google.samples.apps.iosched.settings.SettingsUtils;
 import com.google.samples.apps.iosched.util.AnalyticsHelper;
 
+import android.accounts.Account;
+import android.accounts.AccountManager;
 import android.app.Application;
+import android.content.ContentResolver;
 import android.content.Intent;
 
 import static com.google.samples.apps.iosched.util.LogUtils.LOGE;
@@ -42,6 +45,16 @@ public class AppApplication extends Application {
     public void onCreate() {
         super.onCreate();
         AnalyticsHelper.prepareAnalytics(getApplicationContext());
+        final String ACCOUNT_NAME = "JavaZone Schedule";
+        final String ACCOUNT_TYPE = "no.java.schedule";
+        final String PROVIDER = "no.java.schedule";
+
+        Account appAccount = new Account(ACCOUNT_NAME, ACCOUNT_TYPE);
+        AccountManager accountManager = AccountManager.get(getApplicationContext());
+        if (accountManager.addAccountExplicitly(appAccount, null, null)) {
+            ContentResolver.setIsSyncable(appAccount, PROVIDER, 1);
+            ContentResolver.setSyncAutomatically(appAccount, PROVIDER, true);
+        }
         SettingsUtils.markDeclinedWifiSetup(getApplicationContext(), false);
 
         // Ensure an updated security provider is installed into the system when a new one is

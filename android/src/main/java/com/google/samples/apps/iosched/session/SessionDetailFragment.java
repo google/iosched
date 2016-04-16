@@ -160,6 +160,7 @@ public class SessionDetailFragment extends Fragment
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
         mAnalyticsScreenViewHasFired = false;
+
     }
 
     @Override

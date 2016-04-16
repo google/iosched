@@ -94,7 +94,7 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
         // Sync from bootstrap and remote data, as needed
         // new SyncHelper(mContext).performSync(syncResult, account, extras);
 
-        //try {
+        try {
             mSyncHelper.performSync(syncResult,account, extras);
 
             final SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(mContext);
@@ -102,12 +102,12 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
             edit.putBoolean("first_run",false);
             edit.commit();
 
-/*
+
 
         } catch (IOException e) {
             ++syncResult.stats.numIoExceptions;
-            LOGE(TAG, "Error syncing data for I/O 2012.", e);
-        } */
+            LOGE(TAG, "Error syncing data for I/O 2016.", e);
+        }
     }
 
 }
