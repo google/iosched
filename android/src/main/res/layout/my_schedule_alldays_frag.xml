@@ -110,6 +110,30 @@
                             android:layout_height="wrap_content"
                             android:orientation="vertical"/>
                     </LinearLayout>
+
+                    <!-- Day Three -->
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_marginLeft="16dp"
+                        android:layout_marginStart="16dp"
+                        android:layout_weight="1"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:id="@+id/day_label_third_day"
+                            style="@style/MyScheduleDayLabel"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="16dp"
+                            android:layout_marginLeft="@dimen/keyline_1"/>
+
+                        <com.google.samples.apps.iosched.myschedule.MyScheduleSingleDayNoScrollView
+                            android:id="@+id/my_schedule_third_day"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical"/>
+                    </LinearLayout>
                 </LinearLayout>
             </LinearLayout>
         </ScrollView>

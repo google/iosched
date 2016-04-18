@@ -236,8 +236,6 @@ public class MyScheduleActivity extends BaseActivity implements
     protected void onDestroy() {
         super.onDestroy();
         mDestroyed = true;
-
-        mPresenter.cleanUp();
     }
 
     /**
@@ -300,6 +298,7 @@ public class MyScheduleActivity extends BaseActivity implements
                     (UpdatableView) getFragmentManager().findFragmentById(R.id.myScheduleWideFrag),
                     MyScheduleModel.MyScheduleUserActionEnum.values(),
                     MyScheduleModel.MyScheduleQueryEnum.values());
+            mPresenter.loadInitialQueries();
         } else {
             // Each fragment in the pager adapter is an updatable view that the presenter must know
             MyScheduleSingleDayFragment[] fragments = mViewPagerAdapter.getFragments();
@@ -315,7 +314,10 @@ public class MyScheduleActivity extends BaseActivity implements
 
 
     private void detectNarrowOrWideMode() {
-        mWideMode = getFragmentManager().findFragmentById(R.id.myScheduleWideFrag) != null;
+        // When changing orientation, if previously in wide mode, the system recreates the wide
+        // fragment, so need to check also that view pager isn't visible
+        mWideMode = getFragmentManager().findFragmentById(R.id.myScheduleWideFrag) != null &&
+                findViewById(R.id.view_pager).getVisibility() == View.GONE;
     }
 
     private void setUpViewForWideMode() {
