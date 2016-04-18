@@ -22,6 +22,7 @@ import android.support.annotation.LayoutRes;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.ActivityOptionsCompat;
+import android.support.v4.util.Pair;
 import android.support.v4.view.ViewCompat;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -278,8 +279,11 @@ public class SessionsAdapter extends UpdatableAdapter<List<SessionData>, Recycle
             final Intent intent = new Intent(mHost, SessionDetailActivity.class);
             intent.setData(ScheduleContract.Sessions.buildSessionUri(sessionData.getSessionId()));
             final ActivityOptionsCompat options = ActivityOptionsCompat
-                    .makeSceneTransitionAnimation(mHost, v,
-                            mHost.getString(R.string.transition_session_background));
+                    .makeSceneTransitionAnimation(mHost,
+                            Pair.create(v,
+                                    mHost.getString(R.string.transition_session_background)),
+                            Pair.create(v.findViewById(R.id.title),
+                                    mHost.getString(R.string.transition_session_title)));
             ActivityCompat.startActivity(mHost, intent, options.toBundle());
         }
     };

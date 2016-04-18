@@ -18,19 +18,24 @@ package com.google.samples.apps.iosched.session;
 
 import android.animation.ArgbEvaluator;
 import android.animation.ObjectAnimator;
+import android.annotation.TargetApi;
 import android.app.Fragment;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.ShareCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
+import android.transition.Transition;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -593,19 +598,60 @@ public class SessionDetailFragment extends Fragment
                         R.color.theme_primary);
             }
 
-            // On Lollipop+ where we use a shared element transition, animate the color change
+            final Drawable background = mHeaderBox.getBackground();
+            if (background instanceof ColorDrawable
+                    && ((ColorDrawable) background).getColor() == trackColor) {
+                return;
+            }
+
+            // Lollipop+ performs a shared element transition to this screen;
+            // animate this color change to make this transition smoother
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                 final ObjectAnimator color =
                         ObjectAnimator.ofInt(mHeaderBox, UIUtils.BACKGROUND_COLOR, trackColor);
                 color.setEvaluator(new ArgbEvaluator());
-                color.setStartDelay(200L);
-                color.setDuration(300L);
+                color.setDuration(400L);
                 color.start();
+                setupSharedElementReturnListener();
             } else {
                 mHeaderBox.setBackgroundColor(trackColor);
             }
             UIUtils.adjustAndSetStatusBarColor(getActivity(), trackColor);
         }
+    }
+
+    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
+    private void setupSharedElementReturnListener() {
+        final Transition returnTransition =
+                getActivity().getWindow().getSharedElementReturnTransition();
+        if (returnTransition == null) {
+            return;
+        }
+
+        returnTransition.addListener(
+                new Transition.TransitionListener() {
+                    @Override
+                    public void onTransitionStart(final Transition transition) {
+                        final ObjectAnimator color = ObjectAnimator
+                                .ofInt(mHeaderBox, UIUtils.BACKGROUND_COLOR,
+                                        ContextCompat.getColor(getContext(), R.color.background));
+                        color.setEvaluator(new ArgbEvaluator());
+                        color.setDuration(300L);
+                        color.start();
+                        mHeaderBox.findViewById(R.id.toolbar).animate()
+                                  .alpha(0f)
+                                  .setDuration(300L)
+                                  .start();
+                    }
+
+                    @Override public void onTransitionEnd(final Transition transition) { }
+
+                    @Override public void onTransitionCancel(final Transition transition) { }
+
+                    @Override public void onTransitionPause(final Transition transition) { }
+
+                    @Override public void onTransitionResume(final Transition transition) { }
+                });
     }
 
     /**

@@ -134,7 +134,7 @@ public class VideoLibraryFilteredActivity extends BaseActivity implements
             mHeaderImage.setImageResource(R.drawable.ic_hash_io_16_monochrome);
         }
         final int statusBarColor =
-                trackColor != 0 ? UIUtils.adjustColorForStatusBar(this, trackColor) :
+                trackColor != 0 ? UIUtils.adjustColorForStatusBar(trackColor) :
                         UIUtils.getThemeColor(this, R.attr.colorPrimaryDark,
                                 R.color.theme_primary_dark);
         mDrawerLayout.setStatusBarBackgroundColor(statusBarColor);

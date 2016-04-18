@@ -685,32 +685,20 @@ public class UIUtils {
     }
 
     /**
-     * Calculate a variant of the given color to make it suitable for setting as the status
-     * bar background. That is create a darker variant of the color or a lighter variant if
-     * light status bar is used (on API 23+).
+     * Calculate a darker variant of the given color to make it suitable for setting as the status
+     * bar background.
      *
-     * @param context the context holding the current theme.
      * @param color the color to adjust.
      * @return the adjusted color.
      */
-    public static @ColorInt int adjustColorForStatusBar(@NonNull Context context,
-            @ColorInt int color) {
+    public static @ColorInt int adjustColorForStatusBar(@ColorInt int color) {
         float[] hsl = new float[3];
         ColorUtils.colorToHSL(color, hsl);
 
-        float lightness = hsl[2];
-        if (isLightStatusBar(context)) {
-            // lighten the color by 7.5%
-            lightness *= 1.075f;
-            // constrain lightness to be within [0.5–1]
-            lightness = Math.max(0.5f, Math.min(1f, lightness));
-        } else {
-            // darken the color by 7.5%
-            lightness *= 0.925f;
-            // constrain lightness to be within [0–0.5]
-            lightness = Math.max(0f, Math.min(0.5f, lightness));
-        }
-        // constrain the lightness between [0–1]
+        // darken the color by 7.5%
+        float lightness = hsl[2] * 0.925f;
+        // constrain lightness to be within [0–1]
+        lightness = Math.max(0f, Math.min(1f, lightness));
         hsl[2] = lightness;
         return ColorUtils.HSLToColor(hsl);
     }
@@ -734,31 +722,15 @@ public class UIUtils {
     }
 
     /**
-     * Check if the theme in the given {@code context} has light status bar set.
-     *
-     * @param context the context holding the current theme.
-     * @return
-     */
-    public static boolean isLightStatusBar(@NonNull Context context) {
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
-            return false;
-        }
-
-        final TypedValue tv = new TypedValue();
-        context.getTheme().resolveAttribute(android.R.attr.windowLightStatusBar, tv, true);
-        return tv.data != 0;
-    }
-
-    /**
      * Sets the status bar of the given {@code activity} based on the given {@code color}. Note that
-     * {@code color} will be adjusted per {@link #adjustColorForStatusBar(Context, int)}.
+     * {@code color} will be adjusted per {@link #adjustColorForStatusBar(int)}.
      *
      * @param activity The activity to set the status bar color for.
      * @param color The color to be adjusted and set as the status bar background.
      */
     public static void adjustAndSetStatusBarColor(@NonNull Activity activity, @ColorInt int color) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            activity.getWindow().setStatusBarColor(adjustColorForStatusBar(activity, color));
+            activity.getWindow().setStatusBarColor(adjustColorForStatusBar(color));
         }
     }
 

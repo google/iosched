@@ -332,7 +332,7 @@ public class ExploreSessionsActivity extends BaseActivity
             }
 
             final int statusBarColor =
-                    trackColor != 0 ? UIUtils.adjustColorForStatusBar(this, trackColor) :
+                    trackColor != 0 ? UIUtils.adjustColorForStatusBar(trackColor) :
                             UIUtils.getThemeColor(this, R.attr.colorPrimaryDark,
                                     R.color.theme_primary_dark);
             mDrawerLayout.setStatusBarBackgroundColor(statusBarColor);

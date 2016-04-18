@@ -256,6 +256,7 @@
                     android:ellipsize="end"
                     android:textAlignment="viewStart"
                     tools:text="@string/placeholder_session_title"
+                    android:transitionName="@string/transition_session_title"
                     style="@style/SessionDetailsTitle" />
 
                 <TextView
