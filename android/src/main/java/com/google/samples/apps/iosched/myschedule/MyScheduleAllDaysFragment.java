@@ -40,10 +40,10 @@ public class MyScheduleAllDaysFragment extends Fragment
 
     private MyScheduleSingleDayNoScrollView mPreConferenceDayView;
 
-    // TODO - this layout assumes the conference lasts exactly 2 days, amend UI to work with a
-    // conference of 3 days
+    // TODO - this layout assumes the conference lasts exactly 3 days, make it more flexible in the
+    // way it is built
     private MyScheduleSingleDayNoScrollView[] mMyScheduleSingleDayViews
-            = new MyScheduleSingleDayNoScrollView[2];
+            = new MyScheduleSingleDayNoScrollView[3];
 
     private UserActionListener mListener;
 
@@ -55,6 +55,9 @@ public class MyScheduleAllDaysFragment extends Fragment
                 .findViewById(R.id.my_schedule_first_day);
         mMyScheduleSingleDayViews[1] = (MyScheduleSingleDayNoScrollView) root
                 .findViewById(R.id.my_schedule_second_day);
+        mMyScheduleSingleDayViews[2] = (MyScheduleSingleDayNoScrollView) root
+                .findViewById(R.id.my_schedule_third_day);
+        setRetainInstance(false);
         return root;
     }
 
@@ -69,11 +72,16 @@ public class MyScheduleAllDaysFragment extends Fragment
                 .findViewById(R.id.day_label_first_day);
         TextView secondDayHeaderView = (TextView) getActivity()
                 .findViewById(R.id.day_label_second_day);
+        TextView thirdDayHeaderView = (TextView) getActivity()
+                .findViewById(R.id.day_label_third_day);
         if (firstDayHeaderView != null) {
             firstDayHeaderView.setText(TimeUtils.getDayName(getContext(), 0));
         }
         if (secondDayHeaderView != null) {
             secondDayHeaderView.setText(TimeUtils.getDayName(getContext(), 1));
+        }
+        if (thirdDayHeaderView != null) {
+            thirdDayHeaderView.setText(TimeUtils.getDayName(getContext(), 2));
         }
 
         mPreConferenceDayView = (MyScheduleSingleDayNoScrollView)
@@ -124,23 +132,25 @@ public class MyScheduleAllDaysFragment extends Fragment
     }
 
     private void updateSchedule(MyScheduleModel model) {
-        if (MyScheduleModel.showPreConferenceData(getContext())) {
-            if (mPreConferenceDayView.getAdapter() == null) {
-                mPreConferenceDayView.setAdapter(new MyScheduleDayAdapter(getActivity(),
-                        ((MyScheduleActivity) getActivity()).getLUtils(), mListener));
+        if (isVisible()) {
+            if (MyScheduleModel.showPreConferenceData(getContext())) {
+                if (mPreConferenceDayView.getAdapter() == null) {
+                    mPreConferenceDayView.setAdapter(new MyScheduleDayAdapter(getActivity(),
+                            ((MyScheduleActivity) getActivity()).getLUtils(), mListener));
+                }
+                mPreConferenceDayView.getAdapter().updateItems(model.getConferenceDataForDay(
+                        MyScheduleModel.PRE_CONFERENCE_DAY_ID));
             }
-            mPreConferenceDayView.getAdapter().updateItems(model.getConferenceDataForDay(
-                    MyScheduleModel.PRE_CONFERENCE_DAY_ID));
-        }
-        for (int i = 0; i < mMyScheduleSingleDayViews.length; i++) {
-            if (mMyScheduleSingleDayViews[i].getAdapter() == null) {
-                mMyScheduleSingleDayViews[i].setAdapter(new MyScheduleDayAdapter(getActivity(),
-                        ((MyScheduleActivity) getActivity()).getLUtils(), mListener));
+            for (int i = 0; i < mMyScheduleSingleDayViews.length; i++) {
+                if (mMyScheduleSingleDayViews[i].getAdapter() == null) {
+                    mMyScheduleSingleDayViews[i].setAdapter(new MyScheduleDayAdapter(getActivity(),
+                            ((MyScheduleActivity) getActivity()).getLUtils(), mListener));
 
+                }
+                mMyScheduleSingleDayViews[i].getAdapter().updateItems(model.getConferenceDataForDay(
+                                i + 1)
+                ); // Day 1 of conference has id 1
             }
-            mMyScheduleSingleDayViews[i].getAdapter().updateItems(model.getConferenceDataForDay(
-                            i + 1)
-            ); // Day 1 of conference has id 1
         }
     }
 
