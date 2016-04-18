@@ -105,8 +105,8 @@ public class TagMetadata {
         @Override
         public int compare(Tag tag, Tag tag2) {
             if (!TextUtils.equals(tag.getCategory(), tag2.getCategory())) {
-                return Config.Tags.CATEGORY_DISPLAY_ORDERS.get(tag.getCategory()) -
-                        Config.Tags.CATEGORY_DISPLAY_ORDERS.get(tag2.getCategory());
+                return Config.getCategoryDisplayOrder(tag.getCategory()) -
+                        Config.getCategoryDisplayOrder(tag2.getCategory());
             } else if (tag.getOrderInCategory() != tag2.getOrderInCategory()) {
                 return tag.getOrderInCategory() - tag2.getOrderInCategory();
             }

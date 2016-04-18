@@ -23,7 +23,12 @@ import java.util.Map;
 import java.util.TimeZone;
 import java.util.concurrent.TimeUnit;
 
+import static com.google.samples.apps.iosched.util.LogUtils.LOGW;
+import static com.google.samples.apps.iosched.util.LogUtils.makeLogTag;
+
 public class Config {
+
+    private static final String TAG = makeLogTag(Config.class);
 
     // Warning messages for dogfood build
     public static final String DOGFOOD_BUILD_WARNING_TITLE = "DOGFOOD BUILD";
@@ -128,9 +133,6 @@ public class Config {
         public static final String CATEGORY_TOPIC = "TOPIC";
         public static final String CATEGORY_TYPE = "TYPE";
 
-        public static final Map<String, Integer> CATEGORY_DISPLAY_ORDERS
-                = new HashMap<String, Integer>();
-
         public static final String SPECIAL_KEYNOTE = "FLAG_KEYNOTE";
 
         public static final String[] EXPLORE_CATEGORIES =
@@ -145,10 +147,24 @@ public class Config {
         };
     }
 
+    private static final Map<String, Integer> CATEGORY_DISPLAY_ORDERS = new HashMap<>();
+
     static {
-        Tags.CATEGORY_DISPLAY_ORDERS.put(Tags.CATEGORY_THEME, 0);
-        Tags.CATEGORY_DISPLAY_ORDERS.put(Tags.CATEGORY_TOPIC, 1);
-        Tags.CATEGORY_DISPLAY_ORDERS.put(Tags.CATEGORY_TYPE, 2);
+        CATEGORY_DISPLAY_ORDERS.put(Tags.CATEGORY_THEME, 0);
+        CATEGORY_DISPLAY_ORDERS.put(Tags.CATEGORY_TOPIC, 1);
+        CATEGORY_DISPLAY_ORDERS.put(Tags.CATEGORY_TYPE, 2);
+    }
+
+    /**
+     * Return a configured display order for the tags or zero for default.
+     */
+    public static int getCategoryDisplayOrder(String category) {
+        LOGW(TAG, "Error, category not found for the display order: " + category);
+        Integer displayOrder = CATEGORY_DISPLAY_ORDERS.get(category);
+        if (displayOrder == null) {
+            return 0;
+        }
+        return displayOrder;
     }
 
     // URL prefix for web links to session pages
