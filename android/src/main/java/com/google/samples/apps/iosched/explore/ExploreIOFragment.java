@@ -266,6 +266,7 @@ public class ExploreIOFragment extends Fragment implements UpdatableView<Explore
                     inventoryGroup.setDisplayCols(1);
                     inventory.addGroup(inventoryGroup);
                 } else */
+            
                 if (shouldShowCard(ConfMessageCardUtils.ConfMessageCard.KEYNOTE_ACCESS)) {
                     inventoryGroup = new CollectionView.InventoryGroup(GROUP_ID_MESSAGE_CARDS);
                     MessageData conferenceMessageOptIn = MessageCardHelper

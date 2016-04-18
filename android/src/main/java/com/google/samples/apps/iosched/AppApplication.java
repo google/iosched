@@ -43,8 +43,7 @@ public class AppApplication extends Application {
 
     @Override
     public void onCreate() {
-        super.onCreate();
-        AnalyticsHelper.prepareAnalytics(getApplicationContext());
+        super.onCreate();        AnalyticsHelper.prepareAnalytics(getApplicationContext());
         final String ACCOUNT_NAME = "JavaZone Schedule";
         final String ACCOUNT_TYPE = "no.java.schedule";
         final String PROVIDER = "no.java.schedule";
