@@ -38,7 +38,6 @@ android {
         versionCode = Integer.valueOf("" + appVersionCode).intValue()
         versionName "${appVersionName}"
         minSdkVersion 16
-        targetSdkVersion 22
         multiDexEnabled true
         vectorDrawables.useSupportLibrary = true
 
@@ -86,6 +85,16 @@ android {
             storePassword "android"
             keyAlias "androiddebugkey"
             keyPassword "android"
+        }
+    }
+
+    productFlavors {
+        // Use this flavor to test without having to worry about granting permissions to the app.
+        targetSdk22 {
+            targetSdkVersion 22
+        }
+        normal {
+            targetSdkVersion 23
         }
     }
 

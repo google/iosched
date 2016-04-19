@@ -44,7 +44,9 @@ import static com.google.samples.apps.iosched.util.LogUtils.makeLogTag;
 public class WelcomeActivity extends AppCompatActivity
         implements WelcomeFragment.WelcomeFragmentContainer {
 
-    WelcomeActivityContent mContentFragment;
+    private static final String TAG = makeLogTag(WelcomeActivity.class);
+
+    WelcomeFragment mContentFragment;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -103,10 +105,10 @@ public class WelcomeActivity extends AppCompatActivity
      * @param context the application context.
      * @return the fragment to display, or null if there is no fragment.
      */
-    private static WelcomeActivityContent getCurrentFragment(Context context) {
-        List<WelcomeActivityContent> welcomeActivityContents = getWelcomeFragments();
+    private static WelcomeFragment getCurrentFragment(Context context) {
+        List<WelcomeFragment> welcomeActivityContents = getWelcomeFragments();
 
-        for (WelcomeActivityContent fragment : welcomeActivityContents) {
+        for (WelcomeFragment fragment : welcomeActivityContents) {
             if (fragment.shouldDisplay(context)) {
                 return fragment;
             }
@@ -122,15 +124,15 @@ public class WelcomeActivity extends AppCompatActivity
      * @return true if the activity should be displayed, otherwise false.
      */
     public static boolean shouldDisplay(Context context) {
-        WelcomeActivityContent fragment = getCurrentFragment(context);
+        WelcomeFragment fragment = getCurrentFragment(context);
         return fragment != null;
     }
 
     /**
      * Returns all fragments displayed by {@link WelcomeActivity}.
      */
-    private static List<WelcomeActivityContent> getWelcomeFragments() {
-        return new ArrayList<WelcomeActivityContent>(Arrays.asList(
+    private static List<WelcomeFragment> getWelcomeFragments() {
+        return new ArrayList<>(Arrays.asList(
                 new TosFragment(),
                 new ConductFragment(),
                 new AccountFragment(),
@@ -151,18 +153,5 @@ public class WelcomeActivity extends AppCompatActivity
     @Override
     public Button getSecondaryButton() {
         return (Button) findViewById(R.id.button_decline);
-    }
-
-    /**
-     * The definition of a Fragment for a use in the WelcomeActivity.
-     */
-    interface WelcomeActivityContent {
-        /**
-         * Tracks whether the fragment should be displayed.
-         *
-         * @param context the application context.
-         * @return true if the fragment should be displayed, otherwise false.
-         */
-        boolean shouldDisplay(Context context);
     }
 }

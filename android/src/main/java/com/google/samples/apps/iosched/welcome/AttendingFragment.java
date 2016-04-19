@@ -30,8 +30,7 @@ import static com.google.samples.apps.iosched.util.LogUtils.makeLogTag;
 /**
  * Asks whether the user is attending the conference in person or remotely.
  */
-public class AttendingFragment extends WelcomeFragment
-        implements WelcomeActivity.WelcomeActivityContent {
+public class AttendingFragment extends WelcomeFragment {
 
     private static final String TAG = makeLogTag(AttendingFragment.class);
 
@@ -67,7 +66,7 @@ public class AttendingFragment extends WelcomeFragment
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+            Bundle savedInstanceState) {
         mPositiveClickListener = new WelcomeFragmentOnClickListener(mActivity) {
             @Override
             public void onClick(View v) {

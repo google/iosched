@@ -636,6 +636,13 @@
     <!-- Summary in the Settings screen for the "Synchronize my schedule with Google Calendar" option -->
     <string name="pref_sync_with_calendar_title">Sync with Google Calendar</string>
 
+    <!-- This message is displayed to the user when they disable the Calendar sync and they have revoked the Calendar permission. We are letting them know we couldn't remove the items from their Calendar. -->
+    <string name="pref_sync_with_calendar_permission_denied_during_disable">Could not remove items from calendar, permission denied.</string>
+
+    <!-- This message is displayed to the user when they enable the Calendar sync and they don't allow the Calendar permission. We are letting them know we can't process the Calendar updates. -->
+    <string name="pref_sync_with_calendar_permission_denied_during_enable">Could not sync the calendar, permission denied.</string>
+
+
     <!-- Text of a card shown in the session explorer that asks the user if he wants to see I/O
     extended events in his area. "Browse events" and "No, thanks" are the buttons shown in the card -->
     <string name="question_i_o_extended">Would you like to know more about I/O Extended events happening near your location?</string>
@@ -960,6 +967,9 @@ user updates the rating. -->
 
     <!-- Medium text asking to choose an account from a list -->
     <string name="welcome_select_accoun_text">Please choose an account to use:</string>
+
+    <!-- This string explains that the Accounts and Storage Android permissions are required in order to sync conference data. The string shows to indicate to users that they need to accept the permissions dialog -->
+    <string name="welcome_permissions_rationale">Accounts and Storage permissions are required to sync conference data</string>
 
     <!-- Text for a button which will add a wi-fi network -->
     <string name="wifi_dialog_button_configure">Add WiFi Network</string>
