@@ -78,7 +78,7 @@ public class ExploreIOModelTest {
     private static final int ID_COLUMN_INDEX = 0;
     private static final int NAME_COLUMN_INDEX = 1;
 
-    private static final String FAKE_SESSION_TITLE_1 = "TITLE1";
+    private static final String FAKE_SESSION_TITLE_1_LIVESTREAM = "TITLE_LIVESTREAM";
 
     private static final String FAKE_SESSION_TITLE_2_KEYNOTE = "Keynote";
 
@@ -134,12 +134,13 @@ public class ExploreIOModelTest {
 
     private static final String FAKE_SESSION_TAGS_3 = "THEME_TAG3";
 
-    private static final String FAKE_SESSION_TAGS_4 = "TOPIC_TAG4";
+    private static final String FAKE_SESSION_TAGS_4 = "TRACK_TAG4";
     /**
      * Fake sessions data to be used for the mocked cursor.
      */
     private static final Object[][] FAKE_SESSIONS_CURSOR_DATA = {
-            new String[]{FAKE_SESSION_TITLE_1, FAKE_SESSION_TITLE_2_KEYNOTE, FAKE_SESSION_TITLE_3,
+            new String[]{FAKE_SESSION_TITLE_1_LIVESTREAM, FAKE_SESSION_TITLE_2_KEYNOTE,
+                    FAKE_SESSION_TITLE_3,
                     FAKE_SESSION_TITLE_4},
             new String[]{FAKE_SESSION_ABSTRACT, FAKE_SESSION_ABSTRACT, FAKE_SESSION_ABSTRACT,
                     FAKE_SESSION_ABSTRACT},
@@ -242,7 +243,7 @@ public class ExploreIOModelTest {
         assertThat(mExploreIOModel.getKeynoteData().getSessionName(),
                 is(FAKE_SESSION_TITLE_2_KEYNOTE));
         assertThat(mExploreIOModel.getLiveStreamData().getSessions().get(0).getSessionName(),
-                is(FAKE_SESSION_TITLE_1));
+                is(FAKE_SESSION_TITLE_1_LIVESTREAM));
         assertThat(mExploreIOModel.getThemes().size(), is(2));
         assertThat(mExploreIOModel.getTracks().size(), is(1));
         Iterator<ItemGroup> themeGroupIterator = mExploreIOModel.getThemes().iterator();
@@ -250,7 +251,8 @@ public class ExploreIOModelTest {
         ItemGroup themeGroup2 = themeGroupIterator.next();
         if (themeGroup1.getTitle().equals(FAKE_SESSION_TAGS_1)) {
             assertThat(themeGroup1.getSessions().size(), is(2));
-            assertThat(themeGroup1.getSessions().get(0).getSessionName(), is(FAKE_SESSION_TITLE_1));
+            assertThat(themeGroup1.getSessions().get(0).getSessionName(),
+                    is(FAKE_SESSION_TITLE_1_LIVESTREAM));
             assertThat(themeGroup1.getSessions().get(1).getSessionName(),
                     is(FAKE_SESSION_TITLE_2_KEYNOTE));
             assertThat(themeGroup2.getSessions().size(), is(1));
@@ -259,7 +261,8 @@ public class ExploreIOModelTest {
             assertThat(themeGroup1.getSessions().size(), is(1));
             assertThat(themeGroup1.getSessions().get(0).getSessionName(), is(FAKE_SESSION_TITLE_3));
             assertThat(themeGroup2.getSessions().size(), is(2));
-            assertThat(themeGroup2.getSessions().get(0).getSessionName(), is(FAKE_SESSION_TITLE_1));
+            assertThat(themeGroup2.getSessions().get(0).getSessionName(),
+                    is(FAKE_SESSION_TITLE_1_LIVESTREAM));
             assertThat(themeGroup2.getSessions().get(1).getSessionName(),
                     is(FAKE_SESSION_TITLE_2_KEYNOTE));
         }
