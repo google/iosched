@@ -67,6 +67,7 @@
     <color name="subtitle_on_primary">#de004446</color>
     <color name="unselected_tab_on_primary">#b3004446</color>
     <color name="preferred_action">#b3000000</color>
+    <color name="about_link">#ff00a7b6</color>
 
     <!-- Session Detail colors. -->
     <color name="session_detail_tag_text">@color/session_detail_interactive_element</color>
