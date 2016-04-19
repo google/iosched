@@ -17,8 +17,7 @@
 <manifest package="com.google.samples.apps.iosched"
           xmlns:android="http://schemas.android.com/apk/res/android"
           xmlns:tools="http://schemas.android.com/tools"
-          android:installLocation="auto"
-          android:versionCode="@integer/versionCode">
+          android:installLocation="auto">
     <!-- versionName and versionCode are specified in build.gradle -->
 
     <!-- min and target sdk are defined in build.gradle -->
