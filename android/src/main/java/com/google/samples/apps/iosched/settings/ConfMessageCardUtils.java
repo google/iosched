@@ -34,13 +34,15 @@ public class ConfMessageCardUtils {
     /**
      * Boolean preference indicating whether to show conference info cards in Explore stream.
      */
-    public static final String PREF_CONF_MESSAGE_CARDS_ENABLED = "pref_conf_message_cards_enabled";
+    public static final String PREF_CONF_MESSAGE_CARDS_ENABLED =
+            "pref_conf_message_cards_enabled_" + SettingsUtils.CONFERENCE_YEAR_PREF_POSTFIX;
 
     /**
      * Boolean preference indicating whether to show conference info cards in Explore stream.
      */
     public static final String PREF_ANSWERED_CONF_MESSAGE_CARDS_PROMPT
-            = "pref_answered_conf_message_cards_prompt";
+            = "pref_answered_conf_message_cards_prompt_" +
+            SettingsUtils.CONFERENCE_YEAR_PREF_POSTFIX;
 
     private static Random random = new Random();
 
@@ -55,6 +57,11 @@ public class ConfMessageCardUtils {
      * For use with hasDismissedConfMessageCard and markDismissedConfMessageCard.
      */
     public enum ConfMessageCard {
+        /**
+         * Card asking users to opt-in to session notifications
+         */
+        SESSION_NOTIFICATIONS("2016-04-01T00:00:00-07:00", "2016-05-23T00:00:00-07:00"),
+
         /**
          * Card showing information about wristbands & badges.
          */
@@ -101,12 +108,15 @@ public class ConfMessageCardUtils {
      */
     private static final HashMap<ConfMessageCard, String> ConfMessageCardsDismissedMap
             = new HashMap<>();
-    private static final String dismiss_prefix = "pref_conf_message_cards_dismissed_";
+
+    private static final String dismiss_prefix = "pref_conf_msg_cards_" +
+            SettingsUtils.CONFERENCE_YEAR_PREF_POSTFIX + "_dismissed_";
 
     private static final HashMap<ConfMessageCard, String> ConfMessageCardsShouldShowMap
             = new HashMap<>();
 
-    private static final String should_show_prefix = "pref_conf_message_cards_should_show_";
+    private static final String should_show_prefix = "pref_conf_msg_cards_ " +
+            SettingsUtils.CONFERENCE_YEAR_PREF_POSTFIX + "_should_show_";
 
     static {
         ConfMessageCardsDismissedMap.put(ConfMessageCard.CONFERENCE_CREDENTIALS, dismiss_prefix
@@ -117,7 +127,8 @@ public class ConfMessageCardUtils {
                 + "after_hours");
         ConfMessageCardsDismissedMap.put(ConfMessageCard.WIFI_FEEDBACK, dismiss_prefix
                 + "wifi_feedback");
-
+        ConfMessageCardsDismissedMap.put(ConfMessageCard.SESSION_NOTIFICATIONS, dismiss_prefix
+                + "session_notifications");
         ConfMessageCardsShouldShowMap.put(ConfMessageCard.CONFERENCE_CREDENTIALS, should_show_prefix
                 + "conference_credentials");
         ConfMessageCardsShouldShowMap.put(ConfMessageCard.KEYNOTE_ACCESS, should_show_prefix
@@ -126,6 +137,8 @@ public class ConfMessageCardUtils {
                 + "after_hours");
         ConfMessageCardsShouldShowMap.put(ConfMessageCard.WIFI_FEEDBACK, should_show_prefix
                 + "wifi_feedback");
+        ConfMessageCardsShouldShowMap.put(ConfMessageCard.SESSION_NOTIFICATIONS, dismiss_prefix
+                + "session_notifications");
     }
 
 
@@ -231,7 +244,7 @@ public class ConfMessageCardUtils {
      */
     public static boolean shouldShowConfMessageCard(final Context context, ConfMessageCard card) {
         SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(context);
-        return sp.getBoolean(ConfMessageCardsShouldShowMap.get(card), false);
+        return sp.getBoolean(ConfMessageCardsShouldShowMap.get(card), true);
     }
 
     /**

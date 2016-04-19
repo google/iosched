@@ -168,6 +168,9 @@ public class ExploreIOModel extends ModelWithLoaderManager<ExploreIOModel.Explor
      */
     public List<MessageData> getMessages() {
         final List<MessageData> messages = new ArrayList<>();
+        if (shouldShowCard(ConfMessageCardUtils.ConfMessageCard.SESSION_NOTIFICATIONS)) {
+            messages.add(MessageCardHelper.getNotificationsOptInMessageData(mContext));
+        }
         if (SettingsUtils.isAttendeeAtVenue(mContext)) {
             // Users are required to opt in or out of whether they want conference message cards
             if (!ConfMessageCardUtils.hasAnsweredConfMessageCardsPrompt(mContext)) {
