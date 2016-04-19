@@ -80,13 +80,13 @@ public class SessionsMockCursor {
                 keynote ? "FLAG_KEYNOTE" :
                         FAKE_TAG + ",TOPIC_TOOLS&APIS,TOPIC_AUDIENCEGROWTH," +
                                 "TOPIC_SEARCH,TYPE_SANDBOXTALKS",
-                keynote ? EMPTY : SpeakersMockCursor.FAKE_SPEAKER};
+                keynote ? EMPTY : SpeakersMockCursor.FAKE_SPEAKER, FAKE_TAG};
         String[] columns = {"session_start", "session_end", "session_level", "session_title",
                 "session_abstract", "session_requirements", "session_in_my_schedule",
                 "session_hashtag", "session_url", "session_youtube_url", "session_pdf_url",
                 "session_notes_url", "session_livestream_url", "session_moderator_url",
                 "room_id", "room_name", "session_color", "session_photo_url",
-                "session_related_content", "session_tags", "session_speaker_names"};
+                "session_related_content", "session_tags", "session_speaker_names", "session_main_tag"};
         MatrixCursor matrixCursor = new MatrixCursor(columns);
         matrixCursor.addRow(data);
         return matrixCursor;

@@ -489,7 +489,7 @@ public class SessionDetailFragment extends Fragment
         mPhotoViewContainer
                 .setBackgroundColor(UIUtils.scaleSessionColorToDefaultBG(data.getSessionColor()));
 
-        if (data.hasPhotoUrl()) {
+        if (data.shouldShowHeaderImage()) {
             mHasPhoto = true;
             mNoPlaceholderImageLoader.loadImage(data.getPhotoUrl(), mPhotoView,
                     new RequestListener<String, Bitmap>() {

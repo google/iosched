@@ -252,7 +252,7 @@ public class SessionDetailModel
             long currentTimeMillis = TimeUtils.getCurrentTime(mContext);
             int minutes = (int) ((mSessionStart - currentTimeMillis) / 60000);
             // Rounded up number of minutes.
-            return  minutes * 60000 < (mSessionStart - currentTimeMillis)? minutes + 1: minutes;
+            return minutes * 60000 < (mSessionStart - currentTimeMillis) ? minutes + 1 : minutes;
         }
     }
 
@@ -264,6 +264,15 @@ public class SessionDetailModel
 
     public boolean hasLiveStream() {
         return mHasLiveStream || (!TextUtils.isEmpty(mYouTubeUrl) && !mYouTubeUrl.equals("null"));
+    }
+
+    /**
+     * Show header image if there is a photo url and either a youTube url or a live stream for an
+     * ongoing session.
+     */
+    public boolean shouldShowHeaderImage() {
+        return hasPhotoUrl() && ((!TextUtils.isEmpty(mYouTubeUrl) && !mYouTubeUrl.equals("null")) ||
+                (mHasLiveStream && isSessionOngoing()));
     }
 
     public boolean isInSchedule() {
