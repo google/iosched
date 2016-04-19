@@ -33,6 +33,7 @@
         android:layout_weight="1"
         android:padding="@dimen/padding_normal"
         android:ellipsize="end"
+        android:maxLines="2"
         style="@style/Body2Text" />
 
 </com.google.samples.apps.iosched.ui.widget.SquareLinearLayout>
