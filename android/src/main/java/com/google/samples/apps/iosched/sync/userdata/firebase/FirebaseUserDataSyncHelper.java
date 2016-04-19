@@ -118,8 +118,9 @@ public class FirebaseUserDataSyncHelper extends AbstractUserDataSyncHelper
      * @param actions The user actions that triggered the sync.
      */
     private void performSync(final List<UserAction> actions) {
-        // Do a one-time read of Firebase data (equivalent to an asynchronous query call).
-        FirebaseUtils.getUserDataRef(mContext, mAccountName).addListenerForSingleValueEvent(
+        // Do a one-time read of Firebase data (equivalent to an asynchronous query call) located
+        // at /<data_path>/<uid>/.
+        FirebaseUtils.getDataUIDRef(mContext, mAccountName).addListenerForSingleValueEvent(
                 new ValueEventListener() {
                     @Override
                     public void onDataChange(final DataSnapshot dataSnapshot) {
