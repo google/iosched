@@ -30,6 +30,7 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.graphics.drawable.AnimatedVectorDrawableCompat;
 import android.support.v4.app.ShareCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewCompat;
@@ -103,6 +104,7 @@ public class SessionDetailFragment extends Fragment
     private static final float PHOTO_ASPECT_RATIO = 1.7777777f;
 
     private View mAddScheduleButtonContainer;
+
     private CheckableFloatingActionButton mAddScheduleButton;
 
     private int mAddScheduleButtonContainerHeightPixels;
@@ -363,16 +365,16 @@ public class SessionDetailFragment extends Fragment
         mAddScheduleButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                boolean starred = !((CheckableFloatingActionButton) view).isChecked();
-                showStarred(starred, true);
-                if (starred) {
+                boolean isInSchedule = !((CheckableFloatingActionButton) view).isChecked();
+                showInSchedule(isInSchedule);
+                if (isInSchedule) {
                     sendUserAction(SessionDetailUserActionEnum.STAR, null);
                 } else {
                     sendUserAction(SessionDetailUserActionEnum.UNSTAR, null);
                 }
 
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
-                    mAddScheduleButton.announceForAccessibility(starred ?
+                    mAddScheduleButton.announceForAccessibility(isInSchedule ?
                             getString(R.string.session_details_a11y_session_added) :
                             getString(R.string.session_details_a11y_session_removed));
                 }
@@ -381,11 +383,21 @@ public class SessionDetailFragment extends Fragment
     }
 
 
-    private void showStarred(boolean starred, boolean allowAnimate) {
-        mAddScheduleButton.setChecked(starred, allowAnimate);
+    private void showInSchedule(boolean isInSchedule) {
+        mAddScheduleButton.setChecked(isInSchedule);
+        if (isInSchedule) {
+            AnimatedVectorDrawableCompat addToSchedule = AnimatedVectorDrawableCompat
+                    .create(getContext(), R.drawable.avd_add_to_schedule);
+            mAddScheduleButton.setImageDrawable(addToSchedule);
+            addToSchedule.start();
+        } else {
+            AnimatedVectorDrawableCompat removeFromSchedule = AnimatedVectorDrawableCompat
+                    .create(getContext(), R.drawable.avd_remove_from_schedule);
+            mAddScheduleButton.setImageDrawable(removeFromSchedule);
+            removeFromSchedule.start();
+        }
 
-        mLUtils.setOrAnimatePlusCheckIcon(mAddScheduleButton, starred, allowAnimate);
-        mAddScheduleButton.setContentDescription(getString(starred
+        mAddScheduleButton.setContentDescription(getString(isInSchedule
                 ? R.string.remove_from_schedule_desc
                 : R.string.add_to_schedule_desc));
     }
@@ -515,7 +527,7 @@ public class SessionDetailFragment extends Fragment
         displayTags(data);
 
         if (!data.isKeynote()) {
-            showStarredDeferred(data.isInSchedule(), false);
+            showInScheduleDeferred(data.isInSchedule());
         }
 
         if (!TextUtils.isEmpty(data.getSessionAbstract())) {
@@ -965,11 +977,12 @@ public class SessionDetailFragment extends Fragment
         });
     }
 
-    private void showStarredDeferred(final boolean starred, final boolean allowAnimate) {
+    private void showInScheduleDeferred(final boolean isInSchedule) {
         mDeferredUiOperations.add(new Runnable() {
             @Override
             public void run() {
-                showStarred(starred, allowAnimate);
+                mAddScheduleButton.setChecked(isInSchedule);
+                mAddScheduleButton.jumpDrawablesToCurrentState();
             }
         });
         tryExecuteDeferredUiOperations();
