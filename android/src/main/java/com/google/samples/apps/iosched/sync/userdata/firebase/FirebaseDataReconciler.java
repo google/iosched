@@ -19,6 +19,7 @@ import android.content.Context;
 import com.firebase.client.DataSnapshot;
 import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
+import com.firebase.client.FirebaseException;
 import com.google.samples.apps.iosched.sync.userdata.UserAction;
 import com.google.samples.apps.iosched.sync.userdata.util.UserDataHelper;
 import com.google.samples.apps.iosched.util.AccountUtils;
@@ -128,7 +129,7 @@ public class FirebaseDataReconciler {
 
         // Get snapshot of starred sessions stored at /<uid>/starred_sessions/.
         DataSnapshot starredSessionsDataSnapshot = mRemoteDataSnapshot.child(
-                FirebaseUtils.FIREBASE_NODE_STARRED_SESSIONS);
+                FirebaseUtils.FIREBASE_NODE_MY_SESSIONS);
 
         // Get snapshot of each starred session data stored at /<uid>/starred_sessions/<session_id>
         // and save only the starred sessions.
@@ -164,7 +165,7 @@ public class FirebaseDataReconciler {
     public FirebaseDataReconciler merge() {
         mMergedUserData = new UserDataHelper.UserData();
         mMergeHelper = new MergeHelper(mLocalUserData, mRemoteUserData,
-                mMergedUserData);
+                mMergedUserData, FirebaseUtils.getFirebaseUid(mContext));
         mMergeHelper.mergeGCMKeys();
         mMergeHelper.mergeUnsyncedActions(mActions);
 
@@ -181,19 +182,27 @@ public class FirebaseDataReconciler {
      */
     public FirebaseDataReconciler updateRemote() {
         if (remoteDataChanged()) {
-            FirebaseUtils.getUserDataRef(mContext, mAccountName).updateChildren(
-                    mMergeHelper.getPendingFirebaseUpdatesMap(), new Firebase.CompletionListener() {
-                        @Override
-                        public void onComplete(final FirebaseError firebaseError,
-                                final Firebase firebase) {
-                            if (firebaseError == null) {
-                                LOGI(TAG, "User data updated in Firebase");
-                            } else {
-                                LOGW(TAG, "User data NOT updated in Firebase: firebaseError = " +
-                                        firebaseError);
+            try {
+                Firebase firebaseRef = new Firebase(FirebaseUtils.getFirebaseUrl(mContext,
+                        mAccountName));
+                firebaseRef.updateChildren(mMergeHelper.getPendingFirebaseUpdatesMap(),
+                        new Firebase.CompletionListener() {
+                            @Override
+                            public void onComplete(final FirebaseError firebaseError,
+                                    final Firebase firebase) {
+                                if (firebaseError == null) {
+                                    LOGI(TAG, "User data updated in Firebase");
+                                } else {
+                                    LOGW(TAG,
+                                            "User data NOT updated in Firebase: firebaseError = " +
+
+                                                    firebaseError);
+                                }
                             }
-                        }
-                    });
+                        });
+            } catch (FirebaseException e) {
+                LOGW(TAG, "Could not update Firebase: " + e);
+            }
         } else {
             LOGI(TAG, "No changes to remote data. Not updating Firebase.");
         }

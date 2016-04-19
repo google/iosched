@@ -30,7 +30,6 @@ import org.mockito.runners.MockitoJUnitRunner;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.HashSet;
 import java.util.List;
 
 import static org.hamcrest.CoreMatchers.equalTo;
@@ -41,6 +40,7 @@ import static org.junit.Assert.assertThat;
 @RunWith(MockitoJUnitRunner.class)
 @SmallTest
 public class MergeHelperTest {
+    public static final String UID = "uid";
 
     public static final String LOCAL_GCM_KEY = "LOCAL GCM KEY";
 
@@ -140,7 +140,7 @@ public class MergeHelperTest {
     @Before
     public void setUp() {
         mHelper = new MergeHelper(new UserDataHelper.UserData(),
-                new UserDataHelper.UserData(), new UserDataHelper.UserData());
+                new UserDataHelper.UserData(), new UserDataHelper.UserData(), UID);
         withLocalGCMKey();
     }
 
@@ -272,28 +272,30 @@ public class MergeHelperTest {
         withRemoteStarredSession(SESSION_TWO_ID);
         assertThatSessionIsInSchedule(SESSION_ONE_ID, true);
         assertThatSessionIsInSchedule(SESSION_TWO_ID, false);
+
     }
 
     @Test
     public void getPendingFirebaseUpdatesMap_storesMergedViewedVideo() {
         withMergedViewedVideos();
         assertThat(mHelper.getPendingFirebaseUpdatesMap().keySet(),
-                hasItem(FirebaseUtils.getViewedVideoChildPath(REMOTE_VIDEO_ID)));
+                hasItem(FirebaseUtils.getViewedVideoChildPath(UID, REMOTE_VIDEO_ID)));
     }
 
     @Test
     public void getPendingFirebaseUpdatesMap_storesMergedFeedbackSubmittedSessions() {
         withMergedFeedbackSubmittedSessions();
         assertThat(mHelper.getPendingFirebaseUpdatesMap().keySet(),
-                hasItem(FirebaseUtils.getFeedbackSubmittedSessionChildPath(LOCAL_SESSION_ID)));
+                hasItem(FirebaseUtils.getFeedbackSubmittedSessionChildPath(UID, LOCAL_SESSION_ID)));
         assertThat(mHelper.getPendingFirebaseUpdatesMap().keySet(),
-                hasItem(FirebaseUtils.getFeedbackSubmittedSessionChildPath(REMOTE_SESSION_ID)));
+                hasItem(FirebaseUtils.getFeedbackSubmittedSessionChildPath(UID,
+                        REMOTE_SESSION_ID)));
     }
 
     @Test
     public void buildPendingFirebaseUpdatesMap_storesLastActivityTimestamp() {
         assertThat(mHelper.getPendingFirebaseUpdatesMap().keySet(),
-                hasItem(FirebaseUtils.LAST_ACTIVITY_TIMESTAMP));
+                hasItem(FirebaseUtils.getLastActivityTimestampChildPath(UID)));
     }
 
     /**
@@ -478,7 +480,7 @@ public class MergeHelperTest {
      */
     private void assertThatSessionIsInSchedule(String sessionId, boolean inSchedule) {
         String mergedInScheduleKey =
-                FirebaseUtils.getStarredSessionInScheduleChildPath(sessionId);
+                FirebaseUtils.getStarredSessionInScheduleChildPath(UID, sessionId);
         assertThat((boolean) mHelper.getPendingFirebaseUpdatesMap().get(mergedInScheduleKey),
                 is(inSchedule));
     }
@@ -489,7 +491,7 @@ public class MergeHelperTest {
      * @param sessionId The ID of the starred session.
      */
     private void assertThatTimestampIsStored(String sessionId) {
-        String timestampKey = FirebaseUtils.getStarredSessionTimestampChildPath(sessionId);
+        String timestampKey = FirebaseUtils.getStarredSessionTimestampChildPath(UID, sessionId);
         assertThat(mHelper.getPendingFirebaseUpdatesMap().keySet(), hasItem(timestampKey));
     }
 

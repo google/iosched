@@ -50,12 +50,19 @@ public class MergeHelper {
      */
     private final UserDataHelper.UserData mMergedUserData;
 
+    /**
+     * The Firebase user ID associated with the currently chosen account.
+     */
+    private String mUid;
+
     public MergeHelper(@NonNull UserDataHelper.UserData localUserData,
             @NonNull UserDataHelper.UserData remoteUserData,
-            @NonNull UserDataHelper.UserData mergedUserData) {
+            @NonNull UserDataHelper.UserData mergedUserData,
+            @NonNull String uid) {
         mLocalUserData = checkNotNull(localUserData);
         mRemoteUserData = checkNotNull(remoteUserData);
         mMergedUserData = checkNotNull(mergedUserData);
+        mUid = uid;
     }
 
     @VisibleForTesting
@@ -138,24 +145,20 @@ public class MergeHelper {
      */
     public Map<String, Object> getPendingFirebaseUpdatesMap() {
         Map<String, Object> pendingFirebaseUpdatesMap = new HashMap<>();
-        pendingFirebaseUpdatesMap.put(FirebaseUtils.FIREBASE_NODE_GCM_KEY,
+        pendingFirebaseUpdatesMap.put(FirebaseUtils.getGcmKeyChildPath(mUid),
                 mMergedUserData.getGcmKey());
-
         for (String videoID : mMergedUserData.getViewedVideoIds()) {
-            pendingFirebaseUpdatesMap.put(FirebaseUtils.getViewedVideoChildPath(videoID), true);
+            pendingFirebaseUpdatesMap.put(FirebaseUtils.getViewedVideoChildPath(mUid, videoID),
+                    true);
         }
-
-        handleStarredSessions(pendingFirebaseUpdatesMap);
-        handleUnstarredSessions(pendingFirebaseUpdatesMap);
-
+        handleStarredSessions(pendingFirebaseUpdatesMap, mUid);
+        handleUnstarredSessions(pendingFirebaseUpdatesMap, mUid);
         for (String sessionID : mMergedUserData.getFeedbackSubmittedSessionIds()) {
             pendingFirebaseUpdatesMap
-                    .put(FirebaseUtils.getFeedbackSubmittedSessionChildPath(sessionID), true);
+                    .put(FirebaseUtils.getFeedbackSubmittedSessionChildPath(mUid, sessionID), true);
         }
-
-        pendingFirebaseUpdatesMap.put(FirebaseUtils.LAST_ACTIVITY_TIMESTAMP,
+        pendingFirebaseUpdatesMap.put(FirebaseUtils.getLastActivityTimestampChildPath(mUid),
                 System.currentTimeMillis());
-
         return pendingFirebaseUpdatesMap;
     }
 
@@ -164,12 +167,13 @@ public class MergeHelper {
      *
      * @param map Map that can be used when calling {@link com.firebase.client
      *            .Firebase#updateChildren(Map)} to update Firebase with a single write.
+     * @param uid The Firebase user id associated with the currently chosen account.
      */
-    private void handleStarredSessions(Map<String, Object> map) {
+    private void handleStarredSessions(Map<String, Object> map, String uid) {
         for (final Map.Entry<String, Long> entry : mMergedUserData.getStarredSessions()
                                                                   .entrySet()) {
-            updateSessionInSchedule(map, entry.getKey(), true);
-            updateSessionTimestamp(map, entry.getKey(), entry.getValue());
+            updateSessionInSchedule(map, uid, entry.getKey(), true);
+            updateSessionTimestamp(map, uid, entry.getKey(), entry.getValue());
         }
     }
 
@@ -181,15 +185,16 @@ public class MergeHelper {
      *
      * @param map Used when calling {@link com.firebase.client.Firebase#updateChildren(Map)} to
      *            update Firebase with a single write.
+     * @param uid The Firebase user id associated with the currently chosen account.
      */
-    private void handleUnstarredSessions(Map<String, Object> map) {
+    private void handleUnstarredSessions(Map<String, Object> map, String uid) {
         for (final Map.Entry<String, Long> entry : mRemoteUserData.getStarredSessions()
                                                                   .entrySet()) {
             // Merged data represents the canonical collection of starred sessions. Sessions found
             // in remote data, but absent in merged data are no longer part of the user schedule.
             // We set their in_schedule value to false.
             if (mMergedUserData.getStarredSessions().get(entry.getKey()) == null) {
-                updateSessionInSchedule(map, entry.getKey(), false);
+                updateSessionInSchedule(map, uid, entry.getKey(), false);
             }
         }
     }
@@ -199,12 +204,14 @@ public class MergeHelper {
      *
      * @param map        Used when calling {@link com.firebase.client.Firebase#updateChildren(Map)}
      *                   to update Firebase with a single write.
+     * @param uid        The Firebase user id associated with the currently chosen account.
      * @param sessionId  The ID of the session that was added or removed from a user's schedule.
      * @param inSchedule Whether session is in schedule (true), or removed from schedule (false).
+     *
      */
-    private void updateSessionInSchedule(Map<String, Object> map, String sessionId,
+    private void updateSessionInSchedule(Map<String, Object> map, String uid, String sessionId,
             boolean inSchedule) {
-        map.put(FirebaseUtils.getStarredSessionInScheduleChildPath(sessionId), inSchedule);
+        map.put(FirebaseUtils.getStarredSessionInScheduleChildPath(uid, sessionId), inSchedule);
     }
 
     /**
@@ -212,12 +219,14 @@ public class MergeHelper {
      *
      * @param map       Used when calling {@link com.firebase.client.Firebase#updateChildren(Map)}
      *                  to update Firebase with a single write.
+     * @param uid       The Firebase user id associated with the currently chosen account.
      * @param sessionId The ID of the session that was added or removed from a user's schedule.
      * @param timestamp The time when the session was starred or unstarred. In milliseconds since
      *                  epoch.
      */
-    private void updateSessionTimestamp(Map<String, Object> map, String sessionId, Long timestamp) {
-        map.put(FirebaseUtils.getStarredSessionTimestampChildPath(sessionId), timestamp);
+    private void updateSessionTimestamp(Map<String, Object> map, String uid, String sessionId,
+            Long timestamp) {
+        map.put(FirebaseUtils.getStarredSessionTimestampChildPath(uid, sessionId), timestamp);
     }
 
     /**
