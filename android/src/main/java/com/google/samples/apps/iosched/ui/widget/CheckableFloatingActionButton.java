@@ -22,8 +22,14 @@ import android.support.design.widget.FloatingActionButton;
 import android.util.AttributeSet;
 import android.widget.Checkable;
 
+/**
+ * An extension of {@link FloatingActionButton} which implements {@link Checkable}.
+ */
 public class CheckableFloatingActionButton extends FloatingActionButton implements Checkable {
-    protected boolean mChecked;
+
+    private boolean mChecked;
+
+    private static final int[] CHECKED_STATE_SET = { android.R.attr.state_checked };
 
     public CheckableFloatingActionButton(Context context) {
         super(context);
@@ -37,10 +43,6 @@ public class CheckableFloatingActionButton extends FloatingActionButton implemen
         super(context, attrs, defStyleAttr);
     }
 
-    private static final int[] CHECKED_STATE_SET = {
-            android.R.attr.state_checked
-    };
-
     @Override
     public boolean isChecked() {
         return mChecked;
@@ -48,10 +50,6 @@ public class CheckableFloatingActionButton extends FloatingActionButton implemen
 
     @Override
     public void setChecked(boolean checked) {
-        setChecked(checked, true);
-    }
-
-    public void setChecked(boolean checked, boolean allowAnimate) {
         mChecked = checked;
         refreshDrawableState();
     }
@@ -69,4 +67,5 @@ public class CheckableFloatingActionButton extends FloatingActionButton implemen
         }
         return drawableState;
     }
+
 }

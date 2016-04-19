@@ -30,10 +30,11 @@
         android:contentDescription="@string/add_to_schedule"
         android:focusable="true"
         android:scaleType="center"
-        android:src="@drawable/add_schedule_button_icon_unchecked"
         android:visibility="invisible"
-        app:backgroundTint="@color/session_details_fab"
         app:fabSize="mini"
+        app:srcCompat="@drawable/ic_session_in_schedule"
+        app:backgroundTint="@color/session_details_fab"
         app:pressedTranslationZ="@dimen/fab_touch_raise"
         app:rippleColor="@color/fab_press_ripple" />
+
 </FrameLayout>
