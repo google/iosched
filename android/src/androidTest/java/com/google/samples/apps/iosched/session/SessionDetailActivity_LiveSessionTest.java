@@ -92,6 +92,11 @@ public class SessionDetailActivity_LiveSessionTest {
     }
 
     @Test
+    public void headerImage_IsVisible() {
+        onView(withId(R.id.session_photo)).check(matches(isDisplayed()));
+    }
+
+    @Test
     public void speakersSection_IsVisible() {
         onView(withId(R.id.session_detail_frag)).perform(swipeUp());
         onView(withId(R.id.session_speakers_block)).check(matches(isDisplayed()));

@@ -72,6 +72,11 @@ public class SessionDetailActivity_NotLiveSessionTest {
     }
 
     @Test
+    public void headerImage_IsNotVisible() {
+        onView(withId(R.id.session_photo)).check(matches(not(isDisplayed())));
+    }
+
+    @Test
     public void speakersSection_IsVisible() {
         onView(withId(R.id.session_detail_frag)).perform(swipeUp());
         onView(withId(R.id.session_speakers_block)).check(matches(isDisplayed()));
