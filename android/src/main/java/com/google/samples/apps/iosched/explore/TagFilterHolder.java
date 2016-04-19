@@ -33,7 +33,7 @@ public class TagFilterHolder implements Parcelable {
 
     public static final int CATEGORY_THEME = 0;
     public static final int CATEGORY_TYPE  = 1;
-    public static final int CATEGORY_TOPIC = 2;
+    public static final int CATEGORY_TRACK = 2;
 
     private final Set<String> mSelectedFilters;
     private final int[] mCategories;
@@ -44,7 +44,7 @@ public class TagFilterHolder implements Parcelable {
         mCategories = new int[3];
         mCategories[CATEGORY_THEME] = 0;
         mCategories[CATEGORY_TYPE] = 0;
-        mCategories[CATEGORY_TOPIC] = 0;
+        mCategories[CATEGORY_TRACK] = 0;
     }
 
     /**
@@ -115,7 +115,7 @@ public class TagFilterHolder implements Parcelable {
         return Math.max(1,
                 (mCategories[CATEGORY_THEME] > 0 ? 1 : 0) +
                         (mCategories[CATEGORY_TYPE] > 0 ? 1 : 0) +
-                        (mCategories[CATEGORY_TOPIC] > 0 ? 1 : 0));
+                        (mCategories[CATEGORY_TRACK] > 0 ? 1 : 0));
     }
 
     /**
@@ -173,8 +173,8 @@ public class TagFilterHolder implements Parcelable {
                 return TagFilterHolder.CATEGORY_THEME;
             case Config.Tags.CATEGORY_TYPE:
                 return TagFilterHolder.CATEGORY_TYPE;
-            case Config.Tags.CATEGORY_TOPIC:
-                return TagFilterHolder.CATEGORY_TOPIC;
+            case Config.Tags.CATEGORY_TRACK:
+                return TagFilterHolder.CATEGORY_TRACK;
             default:
                 throw new IllegalArgumentException("Invalid category " + category);
         }

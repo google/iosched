@@ -269,7 +269,7 @@ public class ExploreIOModel extends ModelWithLoaderManager<ExploreIOModel.Explor
                     StringTokenizer tagsTokenizer = new StringTokenizer(tags, ",");
                     while (tagsTokenizer.hasMoreTokens()) {
                         String rawTag = tagsTokenizer.nextToken();
-                        if (rawTag.startsWith("TOPIC_")) {
+                        if (rawTag.startsWith("TRACK_")) {
                             ItemGroup trackGroup = trackGroups.get(rawTag);
                             if (trackGroup == null) {
                                 trackGroup = new ItemGroup();

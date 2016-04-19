@@ -472,7 +472,7 @@ public class ExploreSessionsActivity extends BaseActivity
             mItems.add(new Divider());
 
             List<TagMetadata.Tag> topics =
-                    tagMetadata.getTagsInCategory(Config.Tags.CATEGORY_TOPIC);
+                    tagMetadata.getTagsInCategory(Config.Tags.CATEGORY_TRACK);
             if (topics != null && !topics.isEmpty()) {
                 for (TagMetadata.Tag topic : topics) {
                     mItems.add(topic);
