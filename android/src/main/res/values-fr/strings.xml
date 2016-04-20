@@ -65,9 +65,6 @@
 
     <string description="Medium text asking to choose an account from a list" name="welcome_select_accoun_text">Veuillez choisir un compte à utiliser :</string>
 
-    <string name="explore_sessions_show_day_hour_and_room"
-            description="Sub-title for a session in ExploreSessionsActivity that shows the day, time and room name for a given session. Example: Day 1 / 9:00AM - 11:00AM / Room 1" ><xliff:g example="Day 1" id="day">%1$s</xliff:g> / <xliff:g example="2:00PM" id="start_time">%2$s</xliff:g> - <xliff:g example="3:00PM" id="end_time">%3$s</xliff:g> / <xliff:g id="room">%4$s</xliff:g></string>
-
     <string description="Show Day and start time of a session as the title when viewing browsing sessions (ExploreSessionActivity) from MySchedule." name="explore_sessions_time_slot_title">
     <xliff:g example="Day 1" id="day">%1$s</xliff:g>, <xliff:g example="2:30PM" id="start_time">%2$s</xliff:g>
   </string>

@@ -589,13 +589,14 @@
     <!-- Description of the Google+ +1 button for accessibility screen readers -->
     <string name="plus_one_description_standard">Touch to plus one.</string>
 
-    <!-- Title in the Settings screen for the setting that enables display of cards with
-     conference information in the explore screen. -->
-    <string name="pref_conf_message_cards_enabled_title">Show conference messages</string>
 
     <string name="pref_conf_message_cards_enabled_description"
             description="Description in the Settings screen for the setting that enables display of
             cards with conference information in the explore screen.">Display cards with conference information on the Explore screen. These are time based and may include promotional messages from partners.</string>
+
+    <!-- Title in the Settings screen for the setting that enables display of cards with
+     conference information in the explore screen. -->
+    <string name="pref_conf_message_cards_enabled_title">Show conference messages</string>
 
     <!-- Title in the Settings screen for the setting that enables sending of anonymous usage
     statistics to Google. -->
@@ -1036,9 +1037,6 @@ user updates the rating. -->
         <b>Conference Messages</b><br/>
         Would you like to receive important messages about the conference? Messages are time based and may include promotional messages from partners.]]></string>
 
-    <string name="explore_io_msgcards_wifi_feedback"
-            decscription="Question presented to users on a card in the Explore I/O screen if they have are using the conference Wifi.">Have connectivity feedback? Share it with us on social channels via the <b>#io15wifi</b> hashtag.</string>
-
     <!-- This is used on the Explore I/O message cards to answer yes to a particular message -->
     <string name="explore_io_msgcards_answer_yes">Sure, let\'s do it!</string>
 
@@ -1048,8 +1046,6 @@ user updates the rating. -->
     <!-- This string is presented to users when they attempt to click something that indicates they
          can watch a video but it turns out we can't show the video. -->
     <string name="explore_io_video_id_not_valid">Sorry, there appears to be a problem with the video url.</string>
-
-    <!-- END Explore Message Card User Messages -->
 
     <!-- This string is the title of a notification shown to the user when Google Play
         services can't connect. -->

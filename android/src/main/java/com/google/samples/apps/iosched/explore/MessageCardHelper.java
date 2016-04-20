@@ -120,57 +120,6 @@ public class MessageCardHelper {
     }
 
     /**
-     * Return card data representing a message to allow attendees to provide wifi feedback.
-     */
-    public static MessageData getWifiFeedbackMessageData() {
-        MessageData messageData = new MessageData();
-        messageData.setMessageStringResourceId(R.string.explore_io_msgcards_wifi_feedback);
-        messageData.setStartButtonStringResourceId(R.string.explore_io_msgcards_answer_no);
-        messageData.setEndButtonStringResourceId(R.string.explore_io_msgcards_answer_yes);
-        messageData.setIconDrawableId(R.drawable.message_card_wifi);
-
-        messageData.setStartButtonClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                LOGD(TAG, "Marking conference credentials card dismissed.");
-                ConfMessageCardUtils.markDismissedConfMessageCard(
-                        view.getContext(),
-                        ConfMessageCardUtils.ConfMessageCard.WIFI_FEEDBACK);
-            }
-        });
-
-        messageData.setEndButtonClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                LOGD(TAG, "Providing feedback");
-                Intent sendIntent = new Intent();
-                sendIntent.setAction(Intent.ACTION_SEND);
-                sendIntent.putExtra(Intent.EXTRA_TEXT, "#io15wifi ");
-                sendIntent.setType("text/plain");
-
-                boolean isGPlusInstalled = isPackageInstalledAndEnabled(view.getContext(),
-                        GPLUS_PACKAGE_NAME);
-                boolean isTwitterInstalled = isPackageInstalledAndEnabled(view.getContext(),
-                        TWITTER_PACKAGE_NAME);
-
-                if (isGPlusInstalled) {
-                    sendIntent.setPackage(GPLUS_PACKAGE_NAME);
-                } else if (isTwitterInstalled) {
-                    sendIntent.setPackage(TWITTER_PACKAGE_NAME);
-                }
-
-                view.getContext().startActivity(sendIntent);
-                // Hide the card for now.
-                ConfMessageCardUtils.markShouldShowConfMessageCard(view.getContext(),
-                        ConfMessageCardUtils.ConfMessageCard.WIFI_FEEDBACK, false);
-            }
-        });
-
-
-        return messageData;
-    }
-
-    /**
      * Return whether a package is installed.
      */
     public static boolean isPackageInstalledAndEnabled(Context context, String packageName) {
