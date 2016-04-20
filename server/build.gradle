@@ -25,7 +25,7 @@ buildscript {
     }
 
     dependencies {
-        classpath 'com.google.appengine:gradle-appengine-plugin:1.9.30'
+        classpath 'com.google.appengine:gradle-appengine-plugin:1.9.34'
     }
 }
 
@@ -36,7 +36,7 @@ repositories {
 }
 
 dependencies {
-    def gaeVersion = '1.9.18'
+    def gaeVersion = '1.9.34'
     appengineSdk "com.google.appengine:appengine-java-sdk:$gaeVersion"
     compile "com.google.appengine:appengine-api-1.0-sdk:$gaeVersion"
     compile "com.google.appengine:appengine-api-labs:$gaeVersion"

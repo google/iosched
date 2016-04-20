@@ -631,7 +631,7 @@ public class DataExtractor {
       JsonArray categories = topic.getAsJsonArray(InputJsonKeys.VendorAPISource.Topics.CategoryIds.name());
       for (int i = 0; i < categories.size(); i++) {
         String categoryId = categories.get(i).getAsString();
-        if (categoryId.equals(trackId)) {
+        if (categoryId.equals(trackId) && documents.getAsJsonArray().size() > 0) {
           return documents.getAsJsonArray().get(0).getAsJsonObject().get("ObjectId").getAsString();
         }
       }
