@@ -199,5 +199,10 @@ public class TagMetadata {
         public int compareTo(Tag another) {
             return mOrderInCategory - another.mOrderInCategory;
         }
+
+        @Override
+        public String toString() {
+            return "TagMetadata.Tag: id = " + mId + " name = " + mName;
+        }
     }
 }
