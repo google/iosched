@@ -60,38 +60,6 @@
      <string name="new_videos_title">Novo em <xliff:g id="year">%1$d</xliff:g>
   </string>
 
-    <!-- BEGIN Explore Message Card User Messages -->
-    <string name="explore_io_msgcards_conf_creds_card"
-        description="Conference Credentials, shown the day before the event giving users general
-         event information."><![CDATA[
-        <b>Credencias da conferência</b><br>
-        Este ano, cada participante receberá uma pulseira NFC intransferível. A pulseira e credencial do I/O dão accesso ao Keynote, Sessões, Sandbox, e Festa (na noite do Dia 1). Lembre-se de os usar em todos os momentos. 
-        
-    ]]>
-    </string>
-
-    <string name="explore_io_msgcards_after_hours_card"
-        description="This text is shown to a user when they are in the Explore I/O screen while at
-        the conference. It gives them information about an afternoon event on the schedule."><![CDATA[
-        <b>After Hours</b><br></br>
-        Esta é uma festa que você não quer perder! Os participantes são convidados a curtir da festa com comida, bebidas, música, jogos e mais durante a noite de 28 de Maio. A pulseira e credencial do I/O são necessárias para entrar na festa.
-    ]]>
-    </string>
-
-    <string name="explore_io_msgcards_keynote_access_card"
-        description="This text is shown to a user when they are in the Explore I/O screen while at
-        the conference. It gives them information about the keynote event on the schedule."><![CDATA[
-        <b>Acesso ao keynote</b><br>
-        A cor da sua pulseira indica o seu nível de acesso ao keynote.<br><br>
-        <b>Pulseira azul = Acesso ao keynote</b><br>
-        A fila começa no exterior do Moscone West na 4th Street e continua pela Minna Street.<br><br>
-        <b>Pulseira cinza = Reserved Keynote Seating</b><br>
-        A fila começa no exterior do Moscone West na 4th Street.<br><br>
-        <b>Pulseira laranja = Playground</b><br>
-        A fila começa no exterior do Moscone West na Howard Street.
-    ]]>
-    </string>
-
   <!-- Title in the Settings screen for the setting that enables display of cards with
    conference information in the explore screen. -->
   <string name="pref_conf_message_cards_enabled_title">Mostrar notificações sobre a conferência</string>

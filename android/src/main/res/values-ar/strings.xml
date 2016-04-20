@@ -916,11 +916,7 @@
         <b>رسائل المؤتمر</b><br/>
         هل تفضل عدم إستقبال أي رسائل مهمة عن المؤتمر ؟ بعض من هذه الرسائل لها أوقات محددة وقد تتضمن رسائل ترويجية من شركائنا.]]></string>
 
-    <string name="explore_io_msgcards_conf_creds_card">&lt;b&gt;أوراق اعتماد المؤتمر&lt;/b&gt;&lt;br&gt; سوف يحصل كل مشارك في المؤتمر على رباط معصم به خاصية NFC غير قابل للنقل. سوف يسمح لك رباط المعصم وشارة I/O بالوصول إلى المتحدثين الرئيسيين، والجلسات، وتأمين الحاسوب (Sandbox)، وحفلة ما بعد العمل. لا تنس ارتدائه طوال الوقت.</string>
-
-    <string name="explore_io_msgcards_after_hours_card">&lt;b&gt;ساعات ما بعد العمل&lt;/b&gt;&lt;br&gt;&lt;/br&gt; هذه حفلة يجب ألا تفوتك! الحضور مدعوون إلى الاستمتاع بالأطعمة والمشروبات والموسيقى والألعاب وغير ذلك في مساء يوم 28 مايو. شارة المؤتمر ورابط المعصم NFC مطلوبان للدخول.</string>
-
-   <!-- This is used on the Explore I/O message cards to answer yes to a particular message -->
+    <!-- This is used on the Explore I/O message cards to answer yes to a particular message -->
     <string name="explore_io_msgcards_answer_yes">بالتأكيد، لنفعل ذلك!</string>
 
     <!-- This is used on the Explore I/O message cards to answer no to a particular message -->

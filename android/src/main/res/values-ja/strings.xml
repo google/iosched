@@ -83,11 +83,7 @@
             description="This message is displayed on the Explore I/O screen to ask users whether
             they would like to opt in to receive messages regarding the conference."><![CDATA[<b>カンファレンス・メッセージ</b><br/>Google I/O 主催者からのカンファレンス関連メッセージの受け取りを承諾しますか？ メッセージは時間に応じて配信され、パートナーからのプロモーションを含むことがあります。]]></string>
 
-    <string name="explore_io_msgcards_conf_creds_card">&lt;b&gt;会議参加への資格証明&lt;/b&gt;&lt;br&gt; 今年、譲渡不能な NFC 対応リストバンドが各出席者に配布されます。このリストバンドおよび I/O バッジを持っている事で、基調講演、セッション、サンドボックス、および会議後の懇親会へのアクセスが許可されます。会議参加の際に、これらを忘れることのないよう、お気をつけ下さい。</string>
-
-    <string description="A message card displayed in the Explore I/O page that asks users to opt into a                          feature." name="explore_io_msgcards_after_hours_card">&lt;b&gt;懇親会&lt;/b&gt;&lt;br&gt;&lt;/br&gt; 是非、懇親会に参加しましょう！ ５月２８日の夕方、参加は全員、食べ物や飲み物、音楽やゲームなどを楽しむために懇親会に招待されています。入場の際には、会議バッジと NFC リストバンドが必要となります。</string>
-
-    <string description="This string is presented to users when they attempt to click something that indicates they          can watch a video but it turns out we can't show the video." name="explore_io_video_id_not_valid">申し訳ありませんが、動画のURLに問題があるようです。</string>
+  <string description="This string is presented to users when they attempt to click something that indicates they          can watch a video but it turns out we can't show the video." name="explore_io_video_id_not_valid">申し訳ありませんが、動画のURLに問題があるようです。</string>
 
     <string description="Generic error message used for errors that should never happen. This explains to the user          that we can't execute the request when they click a button or touch a part of the screen          that should normally be touchable." name="unknown_error">申し訳ありませんが、要求を処理することができませんでした。</string>
 

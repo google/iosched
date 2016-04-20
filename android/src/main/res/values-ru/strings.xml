@@ -124,11 +124,7 @@
 
     <string description="Accessibility description for viewing more sessions/videos." name="more_items_button_desc_a11y">Нажмите, чтобы увидеть больше материалов.</string>
 
-  <string name="explore_io_msgcards_conf_creds_card">&lt;b&gt;Личные данные участника&lt;/b&gt;&lt;br&gt; Каждый участник конференции получит в этом году ндивидуальный NFC-браслет. Ваш бейдж I/O конференции и браслет NFC обеспечат вам доступ к Keynote, сессиям, Sandbox, и на вечеринки. Всегда носите их оба с собой.</string>
-
-  <string description="A message card displayed in the Explore I/O page that asks users to opt into a                          feature." name="explore_io_msgcards_after_hours_card">&lt;b&gt;After Hours&lt;/b&gt;&lt;br&gt;&lt;/br&gt; Эту вечеринку вы не захотите пропустить! Приглашаем вас насладиться едой, напитками, музыкой, играми и многим другим, вечером, 28 мая. Для входа необходимы бейдж I/O конференции и браслет NFC.</string>
-
-    <string descripton="Text of a card shown in the Explore I/O screen that asks the user if they want to configure          the conference WiFi. 'Not now' and 'Yes, please' are options show on the card" name="question_setup_wifi_card_text">&lt;b&gt;Wi-Fi конференции&lt;/b&gt;&lt;br/&gt; Вы хотели бы настроить это устройство для доступа к Wi-Fi конференции?</string>
+  <string descripton="Text of a card shown in the Explore I/O screen that asks the user if they want to configure          the conference WiFi. 'Not now' and 'Yes, please' are options show on the card" name="question_setup_wifi_card_text">&lt;b&gt;Wi-Fi конференции&lt;/b&gt;&lt;br/&gt; Вы хотели бы настроить это устройство для доступа к Wi-Fi конференции?</string>
 
     <string description="A session feedback section label asking the user to rate the session overall" name="session_rating_label_text">Оценка сессии:</string>
 

@@ -224,42 +224,6 @@ public class DebugFragment extends Fragment {
                 return "Set time to 3 hours after Conf end";
             }
         }));
-        tests.addView(createTestAction(new DebugAction() {
-            @Override
-            public void run(Context context, Callback callback) {
-                ConfMessageCardUtils.markShouldShowConfMessageCard(context,
-                        ConfMessageCardUtils.ConfMessageCard.CONFERENCE_CREDENTIALS, true);
-            }
-
-            @Override
-            public String getLabel() {
-                return "Force 'Conference Credentials' message card.";
-            }
-        }));
-        tests.addView(createTestAction(new DebugAction() {
-            @Override
-            public void run(Context context, Callback callback) {
-                ConfMessageCardUtils.markShouldShowConfMessageCard(context,
-                        ConfMessageCardUtils.ConfMessageCard.KEYNOTE_ACCESS, true);
-            }
-
-            @Override
-            public String getLabel() {
-                return "Force 'Keynote Access' message card.";
-            }
-        }));
-        tests.addView(createTestAction(new DebugAction() {
-            @Override
-            public void run(Context context, Callback callback) {
-                ConfMessageCardUtils.markShouldShowConfMessageCard(context,
-                        ConfMessageCardUtils.ConfMessageCard.AFTER_HOURS, true);
-            }
-
-            @Override
-            public String getLabel() {
-                return "Force 'After Hours' message card.";
-            }
-        }));
 
         return rootView;
     }
