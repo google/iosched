@@ -94,7 +94,7 @@ public class SessionDetailActivity_EndedLiveSessionTest {
 
     @Test
     public void watchText_IsVisible() {
-        onView(withId(R.id.live_stream_play_icon_and_text)).check(matches(isDisplayed()));
+        onView(withId(R.id.watch)).check(matches(isDisplayed()));
         onView(withText(R.string.session_watch)).check(matches(isDisplayed()));
     }
 

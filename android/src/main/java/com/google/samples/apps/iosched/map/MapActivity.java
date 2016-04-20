@@ -219,13 +219,8 @@ public class MapActivity extends BaseActivity
         // ANALYTICS EVENT: Click on a session in the Maps screen.
         // Contains: The session ID.
         AnalyticsHelper.sendEvent(SCREEN_LABEL, "selectsession", sessionId);
-
-        getLUtils().startActivityWithTransition(
-                new Intent(Intent.ACTION_VIEW,
-                        ScheduleContract.Sessions.buildSessionUri(sessionId)),
-                null,
-                SessionDetailConstants.TRANSITION_NAME_PHOTO
-        );
+        startActivity(new Intent(Intent.ACTION_VIEW,
+                ScheduleContract.Sessions.buildSessionUri(sessionId)));
     }
 
     @Override

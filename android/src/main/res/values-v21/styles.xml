@@ -51,6 +51,9 @@
         <item name="android:windowSharedElementEnterTransition">@transition/session_details_shared_enter</item>
         <item name="android:windowSharedElementReturnTransition">@transition/session_details_shared_return</item>
         <item name="android:windowEnterTransition">@transition/fade_system_chrome</item>
+
+        <!-- Prevent default status bar backgrounds showing through during transition -->
+        <item name="colorPrimaryDark">@android:color/transparent</item>
     </style>
 
     <style name="Theme.IOSched.AlertDialog" parent="android:Theme.Material.Light.Dialog.Alert">

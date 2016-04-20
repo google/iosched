@@ -506,7 +506,14 @@ public class ExploreIOFragment extends Fragment
                     final Intent intent = new Intent(mHost, SessionDetailActivity.class);
                     intent.setData(
                             ScheduleContract.Sessions.buildSessionUri(keynote.getSessionId()));
-                    ActivityCompat.startActivity(mHost, intent, null);
+                    final ActivityOptionsCompat options = ActivityOptionsCompat
+                            .makeSceneTransitionAnimation(mHost,
+                                    Pair.create(holder.itemView,
+                                            mHost.getString(
+                                                    R.string.transition_session_background)),
+                                    Pair.create((View) holder.thumbnail,
+                                            mHost.getString(R.string.transition_session_image)));
+                    ActivityCompat.startActivity(mHost, intent, options.toBundle());
                 }
             });
             return holder;

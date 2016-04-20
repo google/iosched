@@ -58,6 +58,7 @@ import android.text.TextUtils;
 import android.text.format.DateUtils;
 import android.text.method.LinkMovementMethod;
 import android.text.style.StyleSpan;
+import android.transition.Transition;
 import android.util.Property;
 import android.util.TypedValue;
 import android.view.Gravity;
@@ -772,5 +773,34 @@ public class UIUtils {
             return Color.TRANSPARENT;
         }
     };
+
+    @TargetApi(Build.VERSION_CODES.KITKAT)
+    public static class TransitionListenerAdapter implements Transition.TransitionListener {
+
+        @Override
+        public void onTransitionStart(final Transition transition) {
+
+        }
+
+        @Override
+        public void onTransitionEnd(final Transition transition) {
+
+        }
+
+        @Override
+        public void onTransitionCancel(final Transition transition) {
+
+        }
+
+        @Override
+        public void onTransitionPause(final Transition transition) {
+
+        }
+
+        @Override
+        public void onTransitionResume(final Transition transition) {
+
+        }
+    }
 
 }

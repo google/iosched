@@ -34,8 +34,8 @@
         android:clickable="true"
         android:focusable="true"
         android:foreground="?android:selectableItemBackground"
-        android:onClick="sessionDetailItemClicked"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:baselineAligned="false">
 
         <com.google.samples.apps.iosched.ui.widget.AspectRatioView
             android:layout_width="0dp"

@@ -38,11 +38,6 @@ public class SessionDetailConstants {
     public static final long FEEDBACK_MILLIS_BEFORE_SESSION_END_MS = 15 * 60 * 1000l;
 
     /**
-     * The name of the shared transition shown when loading {@link SessionDetailFragment}.
-     */
-    public static final String TRANSITION_NAME_PHOTO = "photo";
-
-    /**
      * How long before the start of a session should livestream be open.
      */
     public static final long LIVESTREAM_BEFORE_SESSION_START_MS = 10 * TimeUtils.MINUTE;

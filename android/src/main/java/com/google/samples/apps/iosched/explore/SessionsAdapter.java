@@ -279,11 +279,8 @@ public class SessionsAdapter extends UpdatableAdapter<List<SessionData>, Recycle
             final Intent intent = new Intent(mHost, SessionDetailActivity.class);
             intent.setData(ScheduleContract.Sessions.buildSessionUri(sessionData.getSessionId()));
             final ActivityOptionsCompat options = ActivityOptionsCompat
-                    .makeSceneTransitionAnimation(mHost,
-                            Pair.create(v,
-                                    mHost.getString(R.string.transition_session_background)),
-                            Pair.create(v.findViewById(R.id.title),
-                                    mHost.getString(R.string.transition_session_title)));
+                    .makeSceneTransitionAnimation(mHost, v,
+                            mHost.getString(R.string.transition_session_background));
             ActivityCompat.startActivity(mHost, intent, options.toBundle());
         }
     };

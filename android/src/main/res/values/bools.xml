@@ -15,5 +15,11 @@
   limitations under the License.
   -->
 <resources>
+
     <bool name="io_theme_card_2_col">false</bool>
+
+    <!-- On API 23+ draw behind the status bar on session details. Flag indicating if we want to
+         add extra padding to views to compensate for this. -->
+    <bool name="session_details_immersive_status">false</bool>
+
 </resources>

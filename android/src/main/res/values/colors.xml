@@ -31,13 +31,15 @@
     <color name="io16_accent_green">#ff7bb241</color>
     <color name="io16_accent_yellow">#ffffc927</color>
     <color name="io16_accent_purple">#ff7885ca</color>
-    <color name="dark_status_bar">#ff949595</color>
-    <color name="light_status_bar_against_toolbar">#ffe8eaea</color>
-    <color name="light_status_bar_against_header_img">#ffe0e1e3</color>
     <color name="dark_icon">#99000000</color>
     <color name="large_dark_icon">#66000000</color>
     <color name="map_icon">#ffb4b4b4</color>
     <color name="navview_icon">#ff444444</color>
+    <color name="dark_status_bar">#ff949595</color>
+    <color name="light_status_bar_against_toolbar">#ffe8eaea</color>
+    <color name="light_status_bar_against_header_img">#ffe0e1e3</color>
+    <color name="immersive_status_bar">#26000000</color> <!-- 15% black -->
+    <color name="immersive_light_status_bar">#13000000</color> <!-- 7.5% black -->
     <!-- todo cleanup old colors -->
 
     <!-- App main palette for io15 version. -->

@@ -45,17 +45,6 @@ public class LUtils {
         return Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP;
     }
 
-    public void startActivityWithTransition(Intent intent, final View clickedView,
-                                            final String transitionName) {
-        ActivityOptions options = null;
-        if (hasL() && clickedView != null && !TextUtils.isEmpty(transitionName)) {
-//            options = ActivityOptions.makeSceneTransitionAnimation(
-//                    mActivity, clickedView, transitionName);
-        }
-
-        mActivity.startActivity(intent, (options != null) ? options.toBundle() : null);
-    }
-
     public void setMediumTypeface(TextView textView) {
         if (hasL()) {
             if (sMediumTypeface == null) {

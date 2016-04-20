@@ -100,7 +100,7 @@ public class SessionDetailActivity_LiveSessionIn9MinutesTest {
     @Test
     @FlakyTest
     public void watchLiveText_IsVisible_Flaky() {
-        onView(withId(R.id.live_stream_play_icon_and_text)).check(matches(isDisplayed()));
+        onView(withId(R.id.watch)).check(matches(isDisplayed()));
         onView(withText(R.string.session_watch_live)).check(matches(isDisplayed()));
     }
 

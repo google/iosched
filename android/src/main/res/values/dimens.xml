@@ -55,7 +55,6 @@
     <dimen name="data_item_padding">16dp</dimen>
     <dimen name="session_details_floating_width">500dp</dimen>
     <dimen name="session_details_floating_height">650dp</dimen>
-    <dimen name="session_details_extra_space_bottom">48dp</dimen>
     <dimen name="my_schedule_item_height">136dp</dimen>
     <dimen name="my_schedule_item_height_break">80dp</dimen>
     <dimen name="my_schedule_item_height_past">60dp</dimen>

@@ -1091,6 +1091,6 @@ user updates the rating. -->
 
     <string name="transition_session_background" translatable="false">transition_session_background</string>
 
-    <string name="transition_session_title" translatable="false">transition_session_title</string>
+    <string name="transition_session_image" translatable="false">transition_session_image</string>
 
 </resources>

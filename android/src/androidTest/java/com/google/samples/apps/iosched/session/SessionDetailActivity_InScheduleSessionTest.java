@@ -176,7 +176,7 @@ public class SessionDetailActivity_InScheduleSessionTest {
 
     @Test
     public void watchText_IsNotVisible() {
-        onView(withId(R.id.live_stream_play_icon_and_text)).check(matches(not(isDisplayed())));
+        onView(withId(R.id.watch)).check(matches(not(isDisplayed())));
     }
 
     @Test
