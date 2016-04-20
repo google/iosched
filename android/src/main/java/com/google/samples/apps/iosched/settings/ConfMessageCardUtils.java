@@ -63,24 +63,9 @@ public class ConfMessageCardUtils {
         SESSION_NOTIFICATIONS("2016-04-01T00:00:00-07:00", "2016-05-23T00:00:00-07:00"),
 
         /**
-         * Card showing information about wristbands & badges.
-         */
-        CONFERENCE_CREDENTIALS("2015-05-27T09:00:00-07:00", "2015-05-27T18:00:00-07:00"),
-
-        /**
-         * Card showing information about getting into the keynote.
-         */
-        KEYNOTE_ACCESS("2015-05-27T09:00:00-07:00", "2015-05-28T09:30:00-07:00"),
-
-        /**
-         * Card showing information about the after hours party.
-         */
-        AFTER_HOURS("2015-05-28T11:00:00-07:00", "2015-05-28T17:00:00-07:00"),
-
-        /**
          * Card allowing developers to provide feedback for the wifi onsite.
          */
-        WIFI_FEEDBACK("2015-05-28T09:30:00-07:00", "2015-05-29T17:30:00-07:00");
+        WIFI_FEEDBACK("2016-05-18T09:00:00-07:00", "2015-05-20T16:00:00-07:00");
 
         long mStartTime;
         long mEndTime;
@@ -119,22 +104,10 @@ public class ConfMessageCardUtils {
             SettingsUtils.CONFERENCE_YEAR_PREF_POSTFIX + "_should_show_";
 
     static {
-        ConfMessageCardsDismissedMap.put(ConfMessageCard.CONFERENCE_CREDENTIALS, dismiss_prefix
-                + "conference_credentials");
-        ConfMessageCardsDismissedMap.put(ConfMessageCard.KEYNOTE_ACCESS, dismiss_prefix
-                + "keynote_access");
-        ConfMessageCardsDismissedMap.put(ConfMessageCard.AFTER_HOURS, dismiss_prefix
-                + "after_hours");
         ConfMessageCardsDismissedMap.put(ConfMessageCard.WIFI_FEEDBACK, dismiss_prefix
                 + "wifi_feedback");
         ConfMessageCardsDismissedMap.put(ConfMessageCard.SESSION_NOTIFICATIONS, dismiss_prefix
                 + "session_notifications");
-        ConfMessageCardsShouldShowMap.put(ConfMessageCard.CONFERENCE_CREDENTIALS, should_show_prefix
-                + "conference_credentials");
-        ConfMessageCardsShouldShowMap.put(ConfMessageCard.KEYNOTE_ACCESS, should_show_prefix
-                + "keynote_access");
-        ConfMessageCardsShouldShowMap.put(ConfMessageCard.AFTER_HOURS, should_show_prefix
-                + "after_hours");
         ConfMessageCardsShouldShowMap.put(ConfMessageCard.WIFI_FEEDBACK, should_show_prefix
                 + "wifi_feedback");
         ConfMessageCardsShouldShowMap.put(ConfMessageCard.SESSION_NOTIFICATIONS, dismiss_prefix

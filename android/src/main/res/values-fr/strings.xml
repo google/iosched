@@ -78,10 +78,6 @@
         <b>Cartes de notification relatives à la conférence</b><br/>
         Souhaiteriez-vous vous abonner aux cartes de notification relatives à la conférence? Celles-ci apparaîtront au fur et à mesure, et peuvent inclure des messages promotionnels de nos partenaires.]]></string>
 
-    <string name="explore_io_msgcards_after_hours_card">&lt;B&gt; After Hours &lt;/ b&gt; &lt;br&gt; &lt;/ br&gt; Il s\'agit d\'une fête que vous ne voulez pas manquer ! Les participants sont invités à profiter de la nourriture, des boissons, de la musique, des jeux et plus au cours de la soirée du 28 mai. Le badge de la conférence et le bracelet NFC sont obligatoires pour entrer.</string>
-
-    <string description="A message card displayed in the Explore I/O page that tells users" name="explore_io_msgcards_keynote_access_card">&lt;B&gt; Acces au keynote &lt;/ b&gt; &lt;br&gt; La couleur de votre bracelete indique votre accès principal &lt;br&gt; &lt;b&gt; Bracelet bleu &lt;/ b&gt; &lt;br&gt; Acces au keynote: la ligne commence à l\'extérieur de Moscone West sur la 4th Street &lt;br&gt; &lt;b&gt; Bracelet gris&lt;/ b&gt; &lt;br&gt; Coin keynote réservé: la ligne débute à l\'extérieur de Moscone West sur la 4th Street.&lt;br&gt; &lt;b&gt; Bracelet orange&lt;/ b&gt; &lt;br&gt; Playground: la ligne débute à l\'extérieur de Moscone West sur Howard Street.</string>
-
     <string description="This string is presented to users when they attempt to click something that indicates they can watch a video but it turns out we can't show the video." name="explore_io_video_id_not_valid">Désolé, il semble y avoir un problème avec l\'URL de la vidéo.</string>
 
     <string description="Generic error message used for errors that should never happen. This explains to the user that we can't execute the request when they click a button or touch a part of the screen that should normally be touchable." name="unknown_error">Oups, nous ne pouvons pas traiter cette demande.</string>

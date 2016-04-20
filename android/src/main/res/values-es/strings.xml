@@ -87,13 +87,7 @@
         <b>Mensajes de la conferencia</b><br/>
         Le gustaría recibir mensajes importantes sobre la conferencia? Estos están basados en el horario y pueden incluir mensajes promocionales de socios.]]></string>
 
-    <string name="explore_io_msgcards_conf_creds_card">&lt;b&gt;Identificación en la conferencia&lt;/b&gt;&lt;br&gt; Este año cada asistente recibirá una pulsera no transferible habilitada con NFC. Tu pulsera y tarjeta de identificación I/O te permitirán tener acceso a las presentaciones, sesiones, entorno de pruebas y fiesta. Recuerda llevarla puesta todo el tiempo.</string>
-
-    <string description="A message card displayed in the Explore I/O page that asks users to opt into a                          feature." name="explore_io_msgcards_after_hours_card">&lt;b&gt;After Hours&lt;/b&gt;&lt;br&gt;&lt;/br&gt; ¡Esta es  una fiesta que no te querrás perder! La noche del 28 de mayo, los asistentes están invitados a disfrutar de comida, bebidas, música, juegos y mucho más. Para entrar se requiere la tarjeta de identificación de la conferencia y la pulsera NFC.</string>
-
-    <string description="A message card displayed in the Explore I/O page that tells users" name="explore_io_msgcards_keynote_access_card">&lt;b&gt;Acceso al keynote&lt;/b&gt;&lt;br&gt; El color de tu pulsera indica tu acceso al keynote.&lt;br&gt;&lt;br&gt; &lt;b&gt;Pulsera azul&lt;/b&gt;&lt;br&gt; Acceso al keynote: la fila comienza en Moscone West en 4th Street.&lt;br&gt;&lt;br&gt; &lt;b&gt;Pulsera gris&lt;/b&gt;&lt;br&gt; Asientos reservados para el keynote: la fila comienza en Moscone West en 4th Street.&lt;br&gt;&lt;br&gt; &lt;b&gt;Pulsera naranja&lt;/b&gt;&lt;br&gt; Playground: la fila comienza en Moscone West en Howard Street.</string>
-
-    <string description="This string is presented to users when they attempt to click something that indicates they          can watch a video but it turns out we can't show the video." name="explore_io_video_id_not_valid">Lo sentimos, parece que hay un problema con el URL del vídeo.</string>
+  <string description="This string is presented to users when they attempt to click something that indicates they          can watch a video but it turns out we can't show the video." name="explore_io_video_id_not_valid">Lo sentimos, parece que hay un problema con el URL del vídeo.</string>
 
     <string description="Generic error message used for errors that should never happen. This explains to the user          that we can't execute the request when they click a button or touch a part of the screen          that should normally be touchable." name="unknown_error">Vaya, no pudimos procesar la solicitud.</string>
 

@@ -82,10 +82,6 @@
             description="This message is displayed on the Explore I/O screen to ask users whether
             they would like to opt in to receive messages regarding the conference."><![CDATA[<b>행사 메시지</b><br/>Google I/O에서 제공되는 행사 관련 메시지들을 수신하시겠습니까? 현재 시간 기준이며 파트너사들로부터 제공되는 프로모션이 포함될 수 있습니다.]]></string>
 
-    <string name="explore_io_msgcards_conf_creds_card">&lt;b&gt; 컨퍼런스 자격 &lt;/ b&gt;각 참석자는 올 해 타인에게 양도할 수 없는 NFC 가능 손목밴드를 받게 됩니다. 이 손목밴드와 I/O 배지로 기조 연설, 세션, 샌드 박스에 액세스하고, 애프터 아워 파티에 참가할 수 있습니다. 항상 착용해야 합니다.</string>
-
-    <string description="A message card displayed in the Explore I/O page that asks users to opt into a                          feature." name="explore_io_msgcards_after_hours_card">&lt;b&gt;After Hours&lt;/b&gt;&lt;br&gt;&lt;/br&gt; 절대 놓치고 싶지 않은 파티입니다! 참석자는 5월 28일 저녁에 모든 음식, 음료, 음악, 게임 등을 즐길 수 있습니다. 컨퍼런스 배지와 NFC 손목밴드가 있어야 입장이 가능합니다.</string>
-
     <string description="This string is presented to users when they attempt to click something that indicates they          can watch a video but it turns out we can't show the video." name="explore_io_video_id_not_valid">죄송합니다, 동영상 URL에 문제가 있는 것 같습니다.</string>
 
     <string description="Generic error message used for errors that should never happen. This explains to the user          that we can't execute the request when they click a button or touch a part of the screen          that should normally be touchable." name="unknown_error">죄송합니다, 해당 요청을 처리할 수 없었습니다.</string>

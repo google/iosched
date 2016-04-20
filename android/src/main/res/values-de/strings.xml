@@ -81,12 +81,6 @@
             description="This message is displayed on the Explore I/O screen to ask users whether
             they would like to opt in to receive messages regarding the conference."><![CDATA[<b>Konferenzbenachrichtigungen</b><br/>Möchten Sie Benachrichtigungen der Google I/O Organisatoren erhalten? Nachrichten sind zeitkritisch und enthalten ggf. Werbemitteilungen von unseren Partnern.]]></string>
 
-    <string name="explore_io_msgcards_conf_creds_card">&lt;b&gt;Konferenzausweis&lt;/b&gt;&lt;br&gt; Jeder Teilnehmer erhält in diesem Jahr ein nicht übertragbares NFC-Armband. Mit Ihrem Armband und Ihrem I/O-Ausweis können Sie an der Keynote, den Sessions, der Sandbox und der After Hours Party teilnehmen. Tragen Sie beides immer bei sich.</string>
-
-    <string description="A message card displayed in the Explore I/O page that asks users to opt into a feature." name="explore_io_msgcards_after_hours_card">&lt;b&gt;After Hours&lt;/b&gt;&lt;br&gt;&lt;/br&gt; Diese Party wollen Sie sicher nicht verpassen! Die Teilnehmer können am 28. Mai essen, trinken, Musik hören, Spiele spielen und vieles mehr. Für den Eintritt ist der Konferenzausweis und das NFC-Armband erforderlich.</string>
-
-    <string description="A message card displayed in the Explore I/O page that tells users" name="explore_io_msgcards_keynote_access_card">&lt;b&gt;Keynote Zugang&lt;/b&gt;&lt;br&gt; Ihre Armband Farbe bestimmt Ihren Keynote-Zugang.&lt;br&gt;&lt;br&gt; &lt;b&gt;Blaues Armband&lt;/b&gt;&lt;br&gt; Genereller Keynote Eintritt: Zugang außerhalb des Moscone West an der 4th Street und bis hin zur Minna Street.&lt;br&gt;&lt;br&gt; &lt;b&gt;Graues Armband&lt;/b&gt;&lt;br&gt; Reservierte Keynote Sitzplaetze: Zugang außerhalb des Moscone West an der 4th Street.&lt;br&gt;&lt;br&gt; &lt;b&gt;Oranges Armband&lt;/b&gt;&lt;br&gt; Playground: Zugang außerhalb Moscone West an der Howard Street.</string>
-
     <string description="This string is presented to users when they attempt to click something that indicates they can watch a video but it turns out we can't show the video." name="explore_io_video_id_not_valid">Leider gibt es ein Problem mit der Video-URL.</string>
 
     <string description="Generic error message used for errors that should never happen. This explains to the user that we can't execute the request when they click a button or touch a part of the screen that should normally be touchable." name="unknown_error">Hoppla, wir konnten diese Anfrage nicht verarbeiten.</string>

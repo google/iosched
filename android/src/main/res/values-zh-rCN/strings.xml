@@ -83,11 +83,6 @@
         <b>会议提示消息</b><br/>
         您是否愿意收到有关会议的重要提示消息？此消息即时推送，并可能包含来自合作伙伴的商业推广。]]></string>
 
-    <string name="explore_io_msgcards_conf_creds_card">&lt;b&gt;大会证件&lt;/b&gt;
-        &lt;br&gt;今年，每名与会者将收到一条不可转让的NFC功能腕带。您凭借腕带和I/O徽章即可参加主题演讲、会议、沙盒和会后聚会。请记住，请随时佩戴。</string>
-
-    <string description="A message card displayed in the Explore I/O page that asks users to opt into a                          feature." name="explore_io_msgcards_after_hours_card">&lt;b&gt;会后聚会&lt;/b&gt;&lt;br&gt;&lt;/br&gt;这是你不想错过的一次聚会！欢迎与会者在5月28日晚上前往享受美食、饮品、音乐游戏以及其他更多内容。与会者需佩戴大会徽章和NFC腕带方可进入。</string>
-
     <string description="This string is presented to users when they attempt to click something that indicates they          can watch a video but it turns out we can't show the video." name="explore_io_video_id_not_valid">很抱歉，视频网址似乎有问题。</string>
 
     <string description="Generic error message used for errors that should never happen. This explains to the user          that we can't execute the request when they click a button or touch a part of the screen          that should normally be touchable." name="unknown_error">哎呦，我们无法处理该请求。</string>

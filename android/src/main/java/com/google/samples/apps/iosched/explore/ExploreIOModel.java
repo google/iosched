@@ -169,14 +169,14 @@ public class ExploreIOModel extends ModelWithLoaderManager<ExploreIOModel.Explor
     public List<MessageData> getMessages() {
         final List<MessageData> messages = new ArrayList<>();
         if (shouldShowCard(ConfMessageCardUtils.ConfMessageCard.SESSION_NOTIFICATIONS)) {
-            messages.add(MessageCardHelper.getNotificationsOptInMessageData(mContext));
+            messages.add(MessageCardHelper.getNotificationsOptInMessageData());
         }
         if (SettingsUtils.isAttendeeAtVenue(mContext)) {
             // Users are required to opt in or out of whether they want conference message cards
             if (!ConfMessageCardUtils.hasAnsweredConfMessageCardsPrompt(mContext)) {
                 // User has not answered whether they want to opt in.
                 // Build a opt-in/out card.
-                messages.add(MessageCardHelper.getConferenceOptInMessageData(mContext));
+                messages.add(MessageCardHelper.getConferenceOptInMessageData());
             } else if (ConfMessageCardUtils.isConfMessageCardsEnabled(mContext)) {
                 ConfMessageCardUtils.enableActiveCards(mContext);
 
@@ -184,26 +184,21 @@ public class ExploreIOModel extends ModelWithLoaderManager<ExploreIOModel.Explor
                 // to prevent overloading the user with messages.
                 // We want each new message to be notable.
                 if (shouldShowCard(
-                        ConfMessageCardUtils.ConfMessageCard.CONFERENCE_CREDENTIALS)) {
-                    messages.add(
-                            MessageCardHelper.getConferenceCredentialsMessageData(mContext));
-                } else if (shouldShowCard(
-                        ConfMessageCardUtils.ConfMessageCard.KEYNOTE_ACCESS)) {
-                    messages.add(MessageCardHelper.getKeynoteAccessMessageData(mContext));
-                } else if (shouldShowCard(ConfMessageCardUtils.ConfMessageCard.AFTER_HOURS)) {
-                    messages.add(MessageCardHelper.getAfterHoursMessageData(mContext));
-                } else if (shouldShowCard(
                         ConfMessageCardUtils.ConfMessageCard.WIFI_FEEDBACK)) {
+                    // Check whether a wifi setup card should be offered.
+                    if (WiFiUtils.shouldOfferToSetupWifi(mContext, true)) {
+                        // Build card asking users whether they want to enable wifi.
+                        messages.add(MessageCardHelper.getWifiSetupMessageData());
+                        return messages;
+                    }
+                    /* Disabled for now.
                     if (WiFiUtils.isWiFiEnabled(mContext) &&
                             WiFiUtils.isWiFiApConfigured(mContext)) {
-                        messages.add(MessageCardHelper.getWifiFeedbackMessageData(mContext));
+                        messages.add(MessageCardHelper.getWifiFeedbackMessageData());
+                        return messages;
                     }
+                    */
                 }
-            }
-            // Check whether a wifi setup card should be offered.
-            if (WiFiUtils.shouldOfferToSetupWifi(mContext, true)) {
-                // Build card asking users whether they want to enable wifi.
-                messages.add(MessageCardHelper.getWifiSetupMessageData(mContext));
             }
         }
         return messages;
