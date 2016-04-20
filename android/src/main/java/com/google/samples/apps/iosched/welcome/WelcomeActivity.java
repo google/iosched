@@ -22,6 +22,8 @@ import android.content.Context;
 import android.os.Bundle;
 import android.support.graphics.drawable.AnimatedVectorDrawableCompat;
 import android.support.v7.app.AppCompatActivity;
+import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 
@@ -154,5 +156,14 @@ public class WelcomeActivity extends AppCompatActivity
     @Override
     public Button getSecondaryButton() {
         return (Button) findViewById(R.id.button_decline);
+    }
+
+    @Override
+    public void setButtonBarVisibility(boolean isVisible) {
+        findViewById(R.id.welcome_button_bar).setVisibility(isVisible ? View.VISIBLE : View.GONE);
+        if (!isVisible) {
+            ((ViewGroup.MarginLayoutParams) findViewById(R.id.welcome_scrolling_content)
+                    .getLayoutParams()).bottomMargin = 0;
+        }
     }
 }
