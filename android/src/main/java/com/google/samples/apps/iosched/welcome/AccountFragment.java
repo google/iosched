@@ -144,10 +144,7 @@ public class AccountFragment extends WelcomeFragment implements RadioGroup.OnChe
                 grantResults[0] == PackageManager.PERMISSION_GRANTED &&
                 grantResults[1] == PackageManager.PERMISSION_GRANTED) {
             // If permission granted then refresh account list so user can select an account.
-            Snackbar snackbar;
-            if ((snackbar = mSnackbar.get()) != null && snackbar.isShown()) {
-                snackbar.dismiss();
-            }
+            clearSnackbar();
             reloadAccounts();
             refreshAccountListUI();
         } else {
@@ -158,9 +155,21 @@ public class AccountFragment extends WelcomeFragment implements RadioGroup.OnChe
         }
     }
 
+    public void clearSnackbar() {
+        final Snackbar snackbar;
+        if (mSnackbar != null && (snackbar = mSnackbar.get()) != null && snackbar.isShown()) {
+            snackbar.dismiss();
+            mSnackbar.clear();
+            mSnackbar = null;
+        }
+    }
+
     @Override
     public void onResume() {
         super.onResume();
+
+        // Clear any existing Snackbar if it exists.
+        clearSnackbar();
 
         // Display a passive permissions request (Snackbar) any time the activity is resumed, but
         // permission aren't granted.
