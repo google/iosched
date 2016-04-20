@@ -46,6 +46,7 @@ import com.google.samples.apps.iosched.ui.BaseActivity;
 import com.google.samples.apps.iosched.ui.SearchActivity;
 import com.google.samples.apps.iosched.util.AnalyticsHelper;
 import com.google.samples.apps.iosched.util.ImageLoader;
+import com.google.samples.apps.iosched.util.TimeUtils;
 import com.google.samples.apps.iosched.util.UIUtils;
 
 import java.util.ArrayList;
@@ -58,8 +59,8 @@ import static com.google.samples.apps.iosched.util.LogUtils.makeLogTag;
 /**
  * This activity displays all sessions based on the selected filters.
  * <p/>
- * It can either be invoked with specific filters or the user can choose the filters
- * to use from the alt_nav_bar.
+ * It can either be invoked with specific filters or the user can choose the filters to use from the
+ * alt_nav_bar.
  */
 public class ExploreSessionsActivity extends BaseActivity
         implements Toolbar.OnMenuItemClickListener, LoaderManager.LoaderCallbacks<Cursor> {
@@ -147,10 +148,12 @@ public class ExploreSessionsActivity extends BaseActivity
             mMode = MODE_TIME_FIT;
 
             String title = getString(R.string.explore_sessions_time_slot_title,
-                    getString(R.string.explore_sessions_show_day_n,
+                    TimeUtils.getDayName(this,
                             UIUtils.startTimeToDayIndex(interval[0])),
                     UIUtils.formatTime(interval[0], this));
-            setTitle(title);
+            mTitle.setText(title);
+            mHeaderImage.setScaleType(ImageView.ScaleType.FIT_CENTER);
+            mHeaderImage.setImageResource(R.drawable.ic_hash_io_16_monochrome);
 
             mTimeSlotLayout.setVisibility(View.VISIBLE);
             mTimeSlotDivider.setVisibility(View.VISIBLE);
@@ -296,33 +299,37 @@ public class ExploreSessionsActivity extends BaseActivity
 
     /**
      * Set the activity title & header image.
-     * <p>
+     * <p/>
      * If the user is browsing a single track then it's name is shown as the title and a relevant
      * header image; otherwise a generic title and image is shown.
      */
     private void setHeader() {
         if (mMode == MODE_EXPLORE && mTagMetadata != null) {
-            String tag = getIntent().getStringExtra(EXTRA_FILTER_TAG);
-            TagMetadata.Tag titleTag = tag == null ? null : mTagMetadata.getTag(tag);
             String title = null;
             String headerImage = null;
             int trackColor = 0;
-            if (titleTag != null &&
-                    mTagFilterHolder.getCountByCategory(titleTag.getCategory()) == 1) {
+
+            // If exactly one theme or one track is selected, show its title and image.
+            int selectedTracks = mTagFilterHolder.getCountByCategory(Config.Tags.CATEGORY_TRACK);
+            int selectedThemes = mTagFilterHolder.getCountByCategory(Config.Tags.CATEGORY_THEME);
+            if (selectedThemes + selectedTracks == 1) {
                 for (String tagId : mTagFilterHolder.getSelectedFilters()) {
-                    TagMetadata.Tag theTag = mTagMetadata.getTag(tagId);
-                    if (TextUtils.equals(titleTag.getCategory(), theTag.getCategory())) {
-                        title = theTag.getName();
-                        headerImage = theTag.getPhotoUrl();
-                        trackColor = theTag.getColor();
+                    if (tagId.contains(Config.Tags.CATEGORY_TRACK) ||
+                            tagId.contains(Config.Tags.CATEGORY_THEME)) {
+                        TagMetadata.Tag selectedTag = mTagMetadata.getTag(tagId);
+                        title = selectedTag.getName();
+                        headerImage = selectedTag.getPhotoUrl();
+                        trackColor = selectedTag.getColor();
                         break;
                     }
                 }
             }
+
             if (title == null) {
                 title = getString(R.string.title_explore);
             }
             mTitle.setText(title);
+
             if (headerImage != null) {
                 mHeaderImage.setScaleType(ImageView.ScaleType.CENTER_CROP);
                 mImageLoader.loadImage(headerImage, mHeaderImage);
@@ -403,7 +410,7 @@ public class ExploreSessionsActivity extends BaseActivity
 
         @Override
         public RecyclerView.ViewHolder onCreateViewHolder(final ViewGroup parent,
-                                                          final int viewType) {
+                final int viewType) {
             switch (viewType) {
                 case TYPE_FILTER:
                     return createFilterViewHolder(parent);
@@ -446,8 +453,8 @@ public class ExploreSessionsActivity extends BaseActivity
         }
 
         /**
-         * We transform the provided data into a structure suitable for the RecyclerView
-         * i.e. we build up {@link #mItems}, adding 'marker' items for dividers & live stream.
+         * We transform the provided data into a structure suitable for the RecyclerView i.e. we
+         * build up {@link #mItems}, adding 'marker' items for dividers & live stream.
          */
         private void processFilters(TagMetadata tagMetadata) {
             List<TagMetadata.Tag> themes =
@@ -459,8 +466,8 @@ public class ExploreSessionsActivity extends BaseActivity
             }
             mItems.add(new Divider());
 
-           List<TagMetadata.Tag> sessionTypes =
-                   tagMetadata.getTagsInCategory(Config.Tags.CATEGORY_TYPE);
+            List<TagMetadata.Tag> sessionTypes =
+                    tagMetadata.getTagsInCategory(Config.Tags.CATEGORY_TYPE);
             if (sessionTypes != null && !sessionTypes.isEmpty()) {
                 for (TagMetadata.Tag type : sessionTypes) {
                     mItems.add(type);
@@ -526,7 +533,7 @@ public class ExploreSessionsActivity extends BaseActivity
         }
 
         private void bindFilter(final FilterViewHolder holder,
-                                final TagMetadata.Tag filter) {
+                final TagMetadata.Tag filter) {
             holder.label.setText(filter.getName());
             holder.checkbox.setChecked(mTagFilterHolder.contains(filter.getId()));
         }
@@ -537,9 +544,9 @@ public class ExploreSessionsActivity extends BaseActivity
 
     }
 
-    private static class Divider { }
+    private static class Divider {}
 
-    private static class LiveStream { }
+    private static class LiveStream {}
 
     private static class FilterViewHolder extends RecyclerView.ViewHolder {
 
