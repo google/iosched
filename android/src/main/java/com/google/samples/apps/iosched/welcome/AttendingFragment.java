@@ -65,6 +65,11 @@ public class AttendingFragment extends WelcomeFragment {
     }
 
     @Override
+    protected boolean shouldShowButtonBar() {
+        return false;
+    }
+
+    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState) {
         mPositiveClickListener = new WelcomeFragmentOnClickListener(mActivity) {

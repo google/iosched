@@ -62,7 +62,7 @@
     <color name="app_body_text_disabled">#44000000</color>
     <color name="app_body_text_1_inverse">#deffffff</color>
     <color name="app_body_text_2_inverse">#8affffff</color>
-    <color name="flat_button_text">#ff008094</color>
+    <color name="flat_button_text">#ff0097a7</color>
     <color name="text_on_primary">#ff004446</color>
     <color name="subtitle_on_primary">#de004446</color>
     <color name="unselected_tab_on_primary">#b3004446</color>

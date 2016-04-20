@@ -33,6 +33,7 @@
         android:src="@drawable/io_logo" />
 
     <ScrollView
+        android:id="@+id/welcome_scrolling_content"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:paddingTop="@dimen/welcome_content_padding_top"
@@ -59,6 +60,7 @@
     <!-- Button bar -->
     <!-- need two layouts in order to restrict the width on larger devices -->
     <FrameLayout
+        android:id="@+id/welcome_button_bar"
         android:layout_width="@dimen/match_parent"
         android:layout_height="?actionBarSize"
         android:layout_gravity="bottom"

@@ -65,6 +65,7 @@ public abstract class WelcomeFragment extends Fragment {
             WelcomeFragmentContainer activity = (WelcomeFragmentContainer) mActivity;
             attachToPrimaryButton(activity.getPrimaryButton());
             attachToSecondaryButton(activity.getSecondaryButton());
+            activity.setButtonBarVisibility(shouldShowButtonBar());
         }
         return view;
     }
@@ -131,6 +132,13 @@ public abstract class WelcomeFragment extends Fragment {
     protected abstract View.OnClickListener getSecondaryButtonListener();
 
     /**
+     * Returns whether the button bar should be displayed.
+     */
+    protected boolean shouldShowButtonBar() {
+        return true;
+    }
+
+    /**
      * A convenience {@link android.view.View.OnClickListener} for the common use cases.
      */
     protected abstract class WelcomeFragmentOnClickListener implements View.OnClickListener {
@@ -184,5 +192,7 @@ public abstract class WelcomeFragment extends Fragment {
          * Returns the secondary action button from the container.
          */
         Button getSecondaryButton();
+
+        void setButtonBarVisibility(boolean isVisible);
     }
 }
