@@ -39,6 +39,7 @@ import com.google.android.gms.maps.model.BitmapDescriptor;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.TileOverlay;
 import com.google.android.gms.maps.model.TileOverlayOptions;
@@ -70,6 +71,13 @@ public class MapFragment extends com.google.android.gms.maps.MapFragment impleme
      * Location of the venue. The large venue marker is displayed at this location.
      */
     private static final LatLng VENUE = new LatLng(37.426360f, -122.079552f);
+
+    /**
+     * Area covered by the venue. Determines if the venue is currently visible on screen.
+     */
+    private static final LatLngBounds VENUE_AREA =
+            new LatLngBounds(new LatLng(37.423205, -122.081757),
+                    new LatLng(37.428479, -122.078109));
     /**
      * Tiles and markers are rendered below this zoom level only
      */
@@ -531,7 +539,9 @@ public class MapFragment extends com.google.android.gms.maps.MapFragment impleme
             return false;
         }
 
-        return mMap.getProjection().getVisibleRegion().latLngBounds.contains(VENUE);
+        LatLngBounds visibleBounds = mMap.getProjection().getVisibleRegion().latLngBounds;
+
+        return MapUtils.boundsIntersect(visibleBounds, VENUE_AREA);
     }
 
     /**

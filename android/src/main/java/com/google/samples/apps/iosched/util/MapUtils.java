@@ -18,6 +18,7 @@ package com.google.samples.apps.iosched.util;
 import com.google.android.gms.maps.model.BitmapDescriptor;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.maps.android.ui.IconGenerator;
 import com.google.samples.apps.iosched.R;
@@ -297,5 +298,28 @@ public class MapUtils {
                 // ignore
             }
         }
+    }
+
+    /**
+     * Checks whether two LatLngBounds intersect.
+     *
+     * @return true if the given bounds intersect.
+     */
+    public static boolean boundsIntersect(LatLngBounds first, LatLngBounds second){
+        // First check if the latitudes are not intersecting.
+        if(first.northeast.latitude < second.southwest.latitude ||
+                first.southwest.latitude > second.northeast.latitude){
+            return false;
+        }
+
+        // Next, check if the longitudes are not intersecting.
+        if(first.northeast.longitude < second.southwest.longitude ||
+                first.southwest.longitude > second.northeast.longitude){
+            return false;
+        }
+
+        // Both latitude and longitude are intersecting.
+        return true;
+
     }
 }
