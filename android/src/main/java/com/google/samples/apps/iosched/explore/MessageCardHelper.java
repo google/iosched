@@ -56,6 +56,36 @@ public class MessageCardHelper {
     }
 
     /**
+     * Return the notifications messages opt-in data.
+     */
+    public static MessageData getNotificationsOptInMessageData(Context context) {
+        MessageData messageData = new MessageData();
+        messageData.setStartButtonStringResourceId(R.string.explore_io_msgcards_answer_no);
+        messageData.setMessageStringResourceId(R.string.explore_io_notifications_ask_opt_in);
+        messageData.setEndButtonStringResourceId(R.string.explore_io_msgcards_answer_yes);
+
+        messageData.setStartButtonClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                LOGD(TAG, "Marking notifications question answered with decline.");
+                ConfMessageCardUtils.markAnsweredConfMessageCardsPrompt(view.getContext(), true);
+                ConfMessageCardUtils.setConfMessageCardsEnabled(view.getContext(), false);
+
+            }
+        });
+        messageData.setEndButtonClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                LOGD(TAG, "Marking notificaitons messages question answered with affirmation.");
+                ConfMessageCardUtils.markAnsweredConfMessageCardsPrompt(view.getContext(), true);
+                ConfMessageCardUtils.setConfMessageCardsEnabled(view.getContext(), true);
+            }
+        });
+
+        return messageData;
+    }
+
+    /**
      * Return the wifi setup card data.
      */
     public static MessageData getWifiSetupMessageData(Context context) {

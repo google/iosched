@@ -39,7 +39,7 @@ public class SettingsUtils {
      * This is changed each year to effectively reset certain preferences that should be re-asked
      * each year. Note, res/xml/settings_prefs.xml must be updated when this value is updated.
      */
-    private static final String CONFERENCE_YEAR_PREF_POSTFIX = "_2016";
+    public static final String CONFERENCE_YEAR_PREF_POSTFIX = "_2016";
 
     /**
      * Boolean preference indicating the user would like to see times in their local timezone
@@ -415,7 +415,7 @@ public class SettingsUtils {
      */
     public static boolean shouldShowSessionReminders(final Context context) {
         SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(context);
-        return sp.getBoolean(PREF_SHOW_SESSION_REMINDERS, true);
+        return sp.getBoolean(PREF_SHOW_SESSION_REMINDERS, false);
     }
 
     /**
@@ -434,7 +434,7 @@ public class SettingsUtils {
      */
     public static boolean shouldShowSessionFeedbackReminders(final Context context) {
         SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(context);
-        return sp.getBoolean(PREF_SHOW_SESSION_FEEDBACK_REMINDERS, true);
+        return sp.getBoolean(PREF_SHOW_SESSION_FEEDBACK_REMINDERS, false);
     }
 
     /**

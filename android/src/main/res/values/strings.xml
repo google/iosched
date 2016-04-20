@@ -1024,11 +1024,17 @@ user updates the rating. -->
     </string>
 
     <!-- BEGIN Explore Message Card User Messages -->
+    <string name="explore_io_notifications_ask_opt_in"
+            description="This message is displayed on the Explore I/O screen to ask users whether
+        they would like to opt in to receive notifications for the sessions the have added to their schedule."><![CDATA[
+        <b>Session Notifications</b><br/>
+        Would you like to receive notifications for sessions on your schedule?]]></string>
+
     <string name="explore_io_msgcards_ask_opt_in"
             description="This message is displayed on the Explore I/O screen to ask users whether
             they would like to opt in to receive messages regarding the conference."><![CDATA[
         <b>Conference Messages</b><br/>
-       Would you like to opt-in to receive important messages about the conference? Messages are time based and may include promotional messages from partners.]]></string>
+        Would you like to receive important messages about the conference? Messages are time based and may include promotional messages from partners.]]></string>
 
     <string name="explore_io_msgcards_conf_creds_card"
         description="Conference Credentials, shown the day before the event giving users general
