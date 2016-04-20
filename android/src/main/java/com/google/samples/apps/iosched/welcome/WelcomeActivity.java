@@ -59,23 +59,24 @@ public class WelcomeActivity extends AppCompatActivity
         // If there's no fragment to use, we're done.
         if (mContentFragment == null) {
             finish();
-        }
+        } else {
+            // Wire up the fragment.
+            FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
+            fragmentTransaction.add(R.id.welcome_content, (Fragment) mContentFragment);
+            fragmentTransaction.commit();
 
-        // Wire up the fragment.
-        FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
-        fragmentTransaction.add(R.id.welcome_content, (Fragment) mContentFragment);
-        fragmentTransaction.commit();
+            final ImageView iv = (ImageView) findViewById(R.id.logo);
+            final AnimatedVectorDrawableCompat logo =
+                    AnimatedVectorDrawableCompat.create(this, R.drawable.avd_hash_io_16);
+            if (iv != null && logo != null) {
+                iv.setImageDrawable(logo);
 
-        final ImageView iv = (ImageView) findViewById(R.id.logo);
-        final AnimatedVectorDrawableCompat logo =
-                AnimatedVectorDrawableCompat.create(this, R.drawable.avd_hash_io_16);
-        if (iv != null && logo != null) {
-            iv.setImageDrawable(logo);
-
-            if (UIUtils.animationEnabled(getContentResolver())) {
-                logo.start();
+                if (UIUtils.animationEnabled(getContentResolver())) {
+                    logo.start();
+                }
             }
         }
+
     }
 
     @Override
