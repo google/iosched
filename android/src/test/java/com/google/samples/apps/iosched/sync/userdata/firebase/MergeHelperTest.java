@@ -19,6 +19,7 @@ import android.content.SharedPreferences;
 import android.test.suitebuilder.annotation.SmallTest;
 
 import com.google.samples.apps.iosched.sync.userdata.UserAction;
+import com.google.samples.apps.iosched.sync.userdata.util.UserData;
 import com.google.samples.apps.iosched.sync.userdata.util.UserDataHelper;
 import com.google.samples.apps.iosched.util.FirebaseUtils;
 
@@ -139,8 +140,8 @@ public class MergeHelperTest {
 
     @Before
     public void setUp() {
-        mHelper = new MergeHelper(new UserDataHelper.UserData(),
-                new UserDataHelper.UserData(), new UserDataHelper.UserData(), UID);
+        mHelper = new MergeHelper(new UserData(),
+                new UserData(), new UserData(), UID);
         withLocalGCMKey();
     }
 
