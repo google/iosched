@@ -42,8 +42,6 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
-import java.util.Locale;
-
 import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.action.ViewActions.click;
 import static android.support.test.espresso.action.ViewActions.scrollTo;
@@ -60,10 +58,12 @@ import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.Matchers.allOf;
+import static org.hamcrest.core.IsNot.not;
 
 /**
  * Tests for {@link SessionDetailActivity} when showing a session that is not the keynote and that
- * is in user schedule, and that is ready for feedback submission.
+ * is in user schedule, and that is ready for feedback submission. The session has no you tube url
+ * and no livestream.
  */
 @RunWith(AndroidJUnit4.class)
 @LargeTest
@@ -170,16 +170,18 @@ public class SessionDetailActivity_InScheduleSessionTest {
     }
 
     @Test
-    public void youTubeVideo_WhenClicked_IntentFired() {
-        // When clicking on video
-        onView(withId(R.id.live_stream_play_icon_and_text)).perform(click());
+    public void liveStreamedText_IsNotVisible() {
+        onView(withText(R.string.session_live_streamed)).check(matches(not(isDisplayed())));
+    }
 
-        // Then the intent to play the video is fired
-        Uri expectedVideoUri = Uri.parse(String.format(Locale.US, Config.VIDEO_LIBRARY_URL_FMT,
-                SessionsMockCursor.FAKE_YOUTUBE_URL));
-        intended(CoreMatchers.allOf(
-                hasAction(IsEqual.equalTo(Intent.ACTION_VIEW)),
-                hasData(expectedVideoUri)));
+    @Test
+    public void watchText_IsNotVisible() {
+        onView(withId(R.id.live_stream_play_icon_and_text)).check(matches(not(isDisplayed())));
+    }
+
+    @Test
+    public void headerImage_IsNotVisible() {
+        onView(withId(R.id.session_photo)).check(matches(not(isDisplayed())));
     }
 
     @Test

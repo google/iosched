@@ -37,7 +37,7 @@ public class SessionsMockCursor {
     }
 
     public static Cursor getCursorForSessionInSchedule() {
-        return getCursorForSession(false, true, true);
+        return getCursorForSession(false, true, false);
     }
 
     public static Cursor getCursorForSessionNotInSchedule() {
