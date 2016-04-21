@@ -107,6 +107,8 @@ android {
             buildConfigField("String", "SERVER_MANIFEST_ENDPOINT", "\"${staging_api_manifest_endpoint}\"")
             buildConfigField("String", "GCM_SERVER_URL", "\"${production_gcm_server_endpoint}\"")
             resValue("string", "website_host_name", "${production_website_host_name}")
+            buildConfigField("String[]", "FIREBASE_URLS", "{\"${iosched_firebase_debug_db1}\"," +
+                    "\"${iosched_firebase_debug_db2}\",\"${iosched_firebase_debug_db3}\"}")
             resValue("string", "maps_api_key", "${maps_api_key_debugstore}")
         }
         qualityassurance {
@@ -117,6 +119,8 @@ android {
             buildConfigField("boolean", "ENABLE_DEBUG_TOOLS", "true")
             buildConfigField("String", "SERVER_MANIFEST_ENDPOINT", "\"${production_api_manifest_endpoint}\"")
             buildConfigField("String", "GCM_SERVER_URL", "\"${production_gcm_server_endpoint}\"")
+            buildConfigField("String[]", "FIREBASE_URLS", "{\"${iosched_firebase_debug_db1}\"," +
+                    "\"${iosched_firebase_debug_db2}\",\"${iosched_firebase_debug_db3}\"}")
             resValue("string", "website_host_name", "${production_website_host_name}")
             resValue("string", "maps_api_key", "${maps_api_key_debugstore}")
         }
@@ -127,6 +131,16 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), file('proguard-project.txt')
             buildConfigField("String", "SERVER_MANIFEST_ENDPOINT", "\"${production_api_manifest_endpoint}\"")
             buildConfigField("String", "GCM_SERVER_URL", "\"${production_gcm_server_endpoint}\"")
+            buildConfigField("String[]", "FIREBASE_URLS", "{\"${iosched_firebase_prod_db1}\"," +
+                    "\"${iosched_firebase_prod_db2}\"," +
+                    "\"${iosched_firebase_prod_db3}\"," +
+                    "\"${iosched_firebase_prod_db4}\"," +
+                    "\"${iosched_firebase_prod_db5}\"," +
+                    "\"${iosched_firebase_prod_db6}\"," +
+                    "\"${iosched_firebase_prod_db7}\"," +
+                    "\"${iosched_firebase_prod_db8}\"," +
+                    "\"${iosched_firebase_prod_db9}\"," +
+                    "\"${iosched_firebase_prod_db10}\"}")
             resValue("string", "website_host_name", "${production_website_host_name}")
             resValue("string", "maps_api_key", "${maps_api_key_releasestore}")
         }
