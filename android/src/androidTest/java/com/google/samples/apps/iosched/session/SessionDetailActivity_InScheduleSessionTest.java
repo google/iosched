@@ -167,16 +167,6 @@ public class SessionDetailActivity_InScheduleSessionTest {
                 hasComponent(ExploreSessionsActivity.class.getName()),
                 hasExtra(ExploreSessionsActivity.EXTRA_FILTER_TAG,
                         TagMetadataMockCursor.TAG_ID_NAME)));
-    }public void tag_OnClick_IntentFired() {
-        // When clicking on tag
-        onView(withText(SessionsMockCursor.FAKE_TAG)).perform(scrollTo());
-        onView(withText(SessionsMockCursor.FAKE_TAG)).perform(click());
-
-        // Then the intent to show the explore sessions for the tag is shown
-        intended(CoreMatchers.allOf(
-                hasComponent(ExploreSessionsActivity.class.getName()),
-                hasExtra(ExploreSessionsActivity.EXTRA_FILTER_TAG,
-                        TagMetadataMockCursor.TAG_ID_NAME)));
     }
 
     @Test
