@@ -43,6 +43,8 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
+import java.util.Date;
+
 import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.action.ViewActions.click;
 import static android.support.test.espresso.assertion.ViewAssertions.matches;
@@ -50,11 +52,13 @@ import static android.support.test.espresso.intent.Intents.intended;
 import static android.support.test.espresso.intent.matcher.IntentMatchers.hasAction;
 import static android.support.test.espresso.intent.matcher.IntentMatchers.hasComponent;
 import static android.support.test.espresso.intent.matcher.IntentMatchers.hasData;
+import static android.support.test.espresso.matcher.ViewMatchers.hasSibling;
 import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
 import static org.hamcrest.CoreMatchers.allOf;
 import static org.hamcrest.core.IsEqual.equalTo;
+import static org.hamcrest.core.IsNot.not;
 
 /**
  * UI tests for {@link MyScheduleActivity} for when the user is attending the conference and the
@@ -203,6 +207,72 @@ public class MyScheduleActivityTest {
         intended(allOf(
                 hasAction(equalTo(Intent.ACTION_VIEW)),
                 hasData(expectedTimeIntervalUri)));
+    }
+
+    @Test
+    public void viewDay2_clickOnTimeSlot_opensSessionsListScreen() {
+        mActivityStubContext.setActivityContext(mActivityRule.getActivity());
+
+        // When clicking on the time of a time slot
+        long slotStart = Config.CONFERENCE_START_MILLIS + 1 * TimeUtils.DAY;
+        onView(allOf(isDisplayed(), withId(R.id.start_time),
+                withText(TimeUtils.formatShortTime(mActivityStubContext, new Date(slotStart)))))
+                .perform(click());
+
+        // Then the intent for the sessions list screen is fired
+        Uri expectedTimeIntervalUri =
+                ScheduleContract.Sessions.buildUnscheduledSessionsInInterval(slotStart,
+                        slotStart + MyScheduleMockItems.SESSION_AVAILABLE_SLOT_TIME_DURATION);
+        intended(allOf(
+                hasAction(equalTo(Intent.ACTION_VIEW)),
+                hasData(expectedTimeIntervalUri)));
+    }
+
+    @Test
+    public void viewDay2_clickOnMoreButton_opensSessionsListScreen() {
+        mActivityStubContext.setActivityContext(mActivityRule.getActivity());
+
+        // When clicking on the time of the more button next to a time slot
+        long slotStart = Config.CONFERENCE_START_MILLIS + 1 * TimeUtils.DAY;
+        onView(allOf(isDisplayed(), withId(R.id.more), hasSibling(
+                withText(TimeUtils.formatShortTime(mActivityStubContext, new Date(slotStart))))))
+                .perform(click());
+
+        // Then the intent for the sessions list screen is fired
+        Uri expectedTimeIntervalUri =
+                ScheduleContract.Sessions.buildUnscheduledSessionsInInterval(slotStart,
+                        slotStart + MyScheduleMockItems.SESSION_AVAILABLE_SLOT_TIME_DURATION);
+        intended(allOf(
+                hasAction(equalTo(Intent.ACTION_VIEW)),
+                hasData(expectedTimeIntervalUri)));
+    }
+
+    @Test
+    public void timeSlotWithNoSessionInSchedule_MoreButton_IsNotVisible() {
+        mActivityStubContext.setActivityContext(mActivityRule.getActivity());
+
+        // More button is not visible for a time slow with no sessions in schedule
+        long slotStartWithAvailableSessionsButNoneInSchedule =
+                Config.CONFERENCE_START_MILLIS + 1 * TimeUtils.DAY +
+                        MyScheduleMockItems.SESSION_AVAILABLE_SLOT_TIME_OFFSET;
+        onView(allOf(withId(R.id.more), hasSibling(
+                withText(TimeUtils.formatShortTime(mActivityStubContext,
+                        new Date(slotStartWithAvailableSessionsButNoneInSchedule))))))
+                .check(matches(not(isDisplayed())));
+    }
+
+    @Test
+    public void timeSlotWithOneSessionInSchedule_MoreButton_IsVisible() {
+        mActivityStubContext.setActivityContext(mActivityRule.getActivity());
+
+        // More button is visible for a time slow with 1 session in schedule
+        long slotStartWithOneSessionInSchedule =
+                Config.CONFERENCE_START_MILLIS +
+                        MyScheduleMockItems.SESSION_TITLE_AFTER_START_OFFSET;
+        onView(allOf(isDisplayed(), withId(R.id.more), hasSibling(
+                withText(TimeUtils.formatShortTime(mActivityStubContext,
+                        new Date(slotStartWithOneSessionInSchedule))))))
+                .check(matches(isDisplayed()));
     }
 
     @Test
