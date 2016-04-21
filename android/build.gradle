@@ -64,8 +64,8 @@ android {
         buildConfigField("String", "CONFERENCE_DAY3_START", "\"${conference_day3_start}\"")
         buildConfigField("String", "CONFERENCE_DAY3_END", "\"${conference_day3_end}\"")
         buildConfigField("String", "INPERSON_TIMEZONE", "\"${inperson_timezone}\"")
-        buildConfigField("String", "SHOW_IO15_REQUEST_SOCIAL_PANEL_TIME",
-                "\"${show_io15_request_social_panel_time}\"")
+        buildConfigField("String", "SHOW_IO_REQUEST_SOCIAL_PANEL_TIME",
+                "\"${show_io_request_social_panel_time}\"")
         buildConfigField("String[]", "FIREBASE_URLS", "{\"${iosched_firebase_debug_db1}\"," +
                 "\"${iosched_firebase_debug_db2}\",\"${iosched_firebase_debug_db3}\"}")
         buildConfigField("boolean", "ENABLE_MYSCHEDULE_IN_NAVIGATION", "true")

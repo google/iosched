@@ -57,7 +57,7 @@ public class Config {
     public static final long CONFERENCE_END_MILLIS = CONFERENCE_DAYS[CONFERENCE_DAYS.length - 1][1];
 
     public static final long SHOW_IO15_REQUEST_SOCIAL_PANEL_TIME = ParserUtils.parseTime(
-            BuildConfig.SHOW_IO15_REQUEST_SOCIAL_PANEL_TIME);
+            BuildConfig.SHOW_IO_REQUEST_SOCIAL_PANEL_TIME);
 
     // YouTube share URL
     public static final String YOUTUBE_SHARE_URL_PREFIX = "http://youtu.be/";
