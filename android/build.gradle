@@ -188,6 +188,7 @@ dependencies {
     compile "com.android.support:design:${android_support_lib_version}"
     compile "com.android.support:support-v13:${android_support_lib_version}"
     compile "com.android.support:recyclerview-v7:${android_support_lib_version}"
+    compile "com.android.support:preference-v7:${android_support_lib_version}"
 
     // JSON utility library.
     compile 'com.google.code.gson:gson:2.3'
