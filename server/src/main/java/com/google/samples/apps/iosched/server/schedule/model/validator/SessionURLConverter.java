@@ -19,7 +19,7 @@ import com.google.gson.JsonPrimitive;
 
 public class SessionURLConverter extends Converter {
 
-  private static final String SESSION_BASE_URL = "https://events.google.com/io2015/schedule?sid=";
+  private static final String SESSION_BASE_URL = "https://events.google.com/io2016/schedule?sid=";
 
   public SessionURLConverter() {
   }
