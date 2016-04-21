@@ -39,6 +39,40 @@ import java.util.Iterator;
 public class DataExtractor {
 
   public static final String TRACK = "TRACK";
+  public static final String ANDROID_TRACK = "ANDROID";
+  public static final String ANDROID_TRACK_COLOR = "#AED581";
+  public static final String MOBILEWEB_TRACK = "MOBILEWEB";
+  public static final String MOBILEWEB_TRACK_COLOR = "#FFF176";
+  public static final String CLOUD_TRACK = "CLOUD";
+  public static final String DESIGN_TRACK = "DESIGN";
+  public static final String FIREBASE_TRACK = "FIREBASE";
+  public static final String GAMES_TRACK = "GAMES";
+  public static final String IOT_TRACK = "IOT";
+  public static final String LOCATION_AND_MAPS_TRACK = "LOCATION&MAPS";
+  public static final String PLAY_TRACK = "PLAY";
+  public static final String SEARCH_TRACK = "SEARCH";
+  public static final String TV_AND_LIVINGROOM_TRACK = "TV&LIVINGROOM";
+  public static final String VR_TRACK = "VR";
+  public static final String MISC_TRACK = "MISC";
+  public static final String ANDROIDSTUDIO_TRACK = "ANDROIDSTUDIO";
+  public static final String AUTO_TRACK = "AUTO";
+  public static final String MONETIZATION_TRACK = "MONETIZATION";
+  public static final String WEAR_TRACK = "WEAR";
+  public static final String CLOUD_TRACK_COLOR = "#80CBC4";
+  public static final String DESIGN_TRACK_COLOR = "#F8BBD0";
+  public static final String FIREBASE_TRACK_COLOR = "#FFD54F";
+  public static final String GAMES_TRACK_COLOR = "#DCE775";
+  public static final String IOT_TRACK_COLOR = "#BCAAA4";
+  public static final String LOCATION_AND_MAPS_TRACK_COLOR = "#EF9A9A";
+  public static final String PLAY_TRACK_COLOR = "#CE93D8";
+  public static final String SEARCH_TRACK_COLOR = "#90CAF9";
+  public static final String TV_AND_LIVINGROOM_TRACK_COLOR = "#B3E5FC";
+  public static final String VR_TRACK_COLOR = "#FF8A65";
+  public static final String MISC_TRACK_COLOR = "#B5EBF7";
+  public static final String ANDROIDSTUDIO_TRACK_COLOR = "#C4E2A2";
+  public static final String AUTO_TRACK_COLOR = "#CFD8DC";
+  public static final String MONETIZATION_TRACK_COLOR = "#A4D7A5";
+  public static final String WEAR_TRACK_COLOR = "#FFCD7A";
   private HashMap<String, JsonObject> videoSessionsById;
   private HashMap<String, JsonObject> speakersById;
   private HashMap<String, JsonObject> categoryToTagMap;
@@ -178,14 +212,20 @@ public class DataExtractor {
             }
           }
 
-          // Extract photo urls from topics for TRACK tags.
           if (tagName.getAsString().startsWith(TRACK)) {
+            // Extract photo urls from topics for TRACK tags.
             String objectId = extractTrackPhotoObjectId(sources,
                     dest.get(OutputJsonKeys.Tags.original_id.name()).getAsString());
             if (!objectId.isEmpty()) {
               dest.addProperty(OutputJsonKeys.Tags.photoUrl.name(),
                       Converters.SESSION_PHOTO_URL.convert(new JsonPrimitive(objectId))
                                                   .getAsString());
+            }
+
+            // Add background colors for TRACK tags.
+            String trackColor = getTrackColor(tagName.getAsString().substring(6));
+            if (!trackColor.isEmpty()) {
+              dest.addProperty(OutputJsonKeys.Tags.color.name(), trackColor);
             }
           }
 
@@ -639,6 +679,56 @@ public class DataExtractor {
     // If no topic is found to have this trackId contained in its categories array then an empty
     // String is returned.
     return "";
+  }
+
+  /**
+   * Provides the appropriate color given the track name.
+   *
+   * @param trackName Name of the track requiring a color.
+   * @return Color associated with track name.
+   */
+  private String getTrackColor(String trackName) {
+    switch (trackName) {
+      // Known tracks
+      case ANDROID_TRACK:
+        return ANDROID_TRACK_COLOR;
+      case MOBILEWEB_TRACK:
+        return MOBILEWEB_TRACK_COLOR;
+      case CLOUD_TRACK:
+        return CLOUD_TRACK_COLOR;
+      case DESIGN_TRACK:
+        return DESIGN_TRACK_COLOR;
+      case FIREBASE_TRACK:
+        return FIREBASE_TRACK_COLOR;
+      case GAMES_TRACK:
+        return GAMES_TRACK_COLOR;
+      case IOT_TRACK:
+        return IOT_TRACK_COLOR;
+      case LOCATION_AND_MAPS_TRACK:
+        return LOCATION_AND_MAPS_TRACK_COLOR;
+      case PLAY_TRACK:
+        return PLAY_TRACK_COLOR;
+      case SEARCH_TRACK:
+        return SEARCH_TRACK_COLOR;
+      case TV_AND_LIVINGROOM_TRACK:
+        return TV_AND_LIVINGROOM_TRACK_COLOR;
+      case VR_TRACK:
+        return VR_TRACK_COLOR;
+      case MISC_TRACK:
+        return MISC_TRACK_COLOR;
+
+      // other tracks
+      case ANDROIDSTUDIO_TRACK:
+        return ANDROIDSTUDIO_TRACK_COLOR;
+      case AUTO_TRACK:
+        return AUTO_TRACK_COLOR;
+      case MONETIZATION_TRACK:
+        return MONETIZATION_TRACK_COLOR;
+      case WEAR_TRACK:
+        return WEAR_TRACK_COLOR;
+      default:
+        return "";
+    }
   }
 
 }
