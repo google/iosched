@@ -1,0 +1,51 @@
+#  Copyright 2015 Google Inc. All rights reserved.
+#
+#  Licensed under the Apache License, Version 2.0 (the "License");
+#  you may not use this file except in compliance with the License.
+#  You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+#  Unless required by applicable law or agreed to in writing, software
+#  distributed under the License is distributed on an "AS IS" BASIS,
+#  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+#  See the License for the specific language governing permissions and
+#  limitations under the License.
+
+******************** Title in locale <es-ES> ********************
+Google I/O 2016
+******************** Short description in locale <en> ********************
+Your co-pilot to navigate I/O, whether you’re attending in-person or remotely.
+******************** Full description in locale <es> ********************
+The official Google I/O 2016 app was built to be your co-pilot to navigate the conference, whether you’re attending in-person or remotely. 
+-- Explore the conference agenda, with details on themes, topics and speakers 
+-- Add events to a personalized schedule
+-- Get reminders before events in your schedule start 
+-- Watch the keynote and sessions live stream 
+-- Sync your schedule between all of your devices and the I/O website
+-- Guide yourself using the vector-based conference map
+-- Follow public social I/O related conversations
+-- See I/O content from previous years in the Videos
+
+*Exclusive for In person attendees:*
+-- Take advantage of facilitated pre-event WiFi configuration
+
+This app is optimized for phones and tablets of all shapes and sizes.
+Source code for the app will be available soon after I/O.
+
+******************** Updates ********************
+v 4.0: Updated for Google I/O 2016
+
+******************** Keywords ********************
+Google 
+I/O
+io
+i-o
+Conference
+Developers
+Develop
+Designers
+Design
+Live stream
+Android
+Chrome
