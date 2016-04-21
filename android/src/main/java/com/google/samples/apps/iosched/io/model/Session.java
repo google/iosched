@@ -86,7 +86,7 @@ public class Session {
 
     public String makeTagsList() {
         int i;
-        if (tags.length == 0) return "";
+        if (tags == null || tags.length == 0) return "";
         StringBuilder sb = new StringBuilder();
         sb.append(tags[0]);
         for (i = 1; i < tags.length; i++) {

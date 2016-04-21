@@ -53,6 +53,7 @@ import android.content.Context;
 import android.content.OperationApplicationException;
 import android.database.Cursor;
 import android.database.MatrixCursor;
+import android.database.sqlite.SQLiteConstraintException;
 import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
 import android.os.ParcelFileDescriptor;
@@ -324,8 +325,14 @@ public class ScheduleProvider extends ContentProvider {
         final SQLiteDatabase db = mOpenHelper.getWritableDatabase();
         ScheduleUriEnum matchingUriEnum = mUriMatcher.matchUri(uri);
         if (matchingUriEnum.table != null) {
-            db.insertOrThrow(matchingUriEnum.table, null, values);
-            notifyChange(uri);
+            try {
+                db.insertOrThrow(matchingUriEnum.table, null, values);
+                notifyChange(uri);
+            } catch (SQLiteConstraintException exception) {
+                // Leaving this here as it's handy to to breakpoint on this throw when debugging a
+                // bootstrap file issue.
+                throw exception;
+            }
         }
 
         switch (matchingUriEnum) {
