@@ -38,7 +38,7 @@ import java.util.List;
  */
 public final class ScheduleContract {
 
-    public static final String CONTENT_TYPE_APP_BASE = "iosched2015.";
+    public static final String CONTENT_TYPE_APP_BASE = "iosched2016.";
 
     public static final String CONTENT_TYPE_BASE = "vnd.android.cursor.dir/vnd."
             + CONTENT_TYPE_APP_BASE;

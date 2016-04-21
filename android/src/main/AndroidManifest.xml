@@ -114,16 +114,16 @@
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
 
-                <!-- These catch /io2015 as well as /io2015//// because of pathPattern.
+                <!-- These catch /io2016 as well as /io2016//// because of pathPattern.
                      Dev testing easily done with adb commands:
-                     adb shell am start -a android.intent.action.VIEW -d http://events.google.com/io2015 -->
+                     adb shell am start -a android.intent.action.VIEW -d http://events.google.com/io2016 -->
                 <data
                     android:host="@string/website_host_name"
-                    android:pathPattern="/io2015/*"
+                    android:pathPattern="/io2016/*"
                     android:scheme="http" />
                 <data
                     android:host="@string/website_host_name"
-                    android:pathPattern="/io2015/*"
+                    android:pathPattern="/io2016/*"
                     android:scheme="https" />
             </intent-filter>
         </activity>
@@ -146,7 +146,7 @@
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
 
-                <!-- This catches /io2015/schedule//// but not /io2015/schedule
+                <!-- This catches /io2016/schedule//// but not /io2016/schedule
                      Note: Query parameters are not part of the path and when ?sid=UUID is appended
                            to this path it indicates a session on the website and there is therefore
                            code in MySchedule.onCreate that invokes SessionDetailActivity if the sid
@@ -154,22 +154,22 @@
                      See above for testing notes. -->
                 <data
                     android:host="@string/website_host_name"
-                    android:pathPattern="/io2015/schedule/*"
+                    android:pathPattern="/io2016/schedule/*"
                     android:scheme="http" />
                 <data
                     android:host="@string/website_host_name"
-                    android:pathPattern="/io2015/schedule/*"
+                    android:pathPattern="/io2016/schedule/*"
                     android:scheme="https" />
 
-                <!-- This catches /io2015/schedule but not /io2015/schedule//////
+                <!-- This catches /io2016/schedule but not /io2016/schedule//////
                      See above for testing notes. -->
                 <data
                     android:host="@string/website_host_name"
-                    android:path="/io2015/schedule"
+                    android:path="/io2016/schedule"
                     android:scheme="http" />
                 <data
                     android:host="@string/website_host_name"
-                    android:path="/io2015/schedule"
+                    android:path="/io2016/schedule"
                     android:scheme="https" />
 
                 <!-- Replicating the above data elements for www.google.com -->
@@ -181,7 +181,7 @@
                     android:scheme="http" />
                 <data
                     android:host="www.google.com"
-                    android:pathPattern="/io2015/schedule/*"
+                    android:pathPattern="/io2016/schedule/*"
                     android:scheme="https" />
 
                 <!-- This catches /events/io/schedule but not /events/io/schedule//////
@@ -207,7 +207,7 @@
 
                 <category android:name="android.intent.category.DEFAULT" />
 
-                <data android:mimeType="vnd.android.cursor.dir/vnd.iosched2015.session" />
+                <data android:mimeType="vnd.android.cursor.dir/vnd.iosched2016.session" />
             </intent-filter>
         </activity>
 
@@ -255,7 +255,7 @@
 
                 <category android:name="android.intent.category.DEFAULT" />
 
-                <data android:mimeType="vnd.android.cursor.item/vnd.iosched2015.session_feedback" />
+                <data android:mimeType="vnd.android.cursor.item/vnd.iosched2016.session_feedback" />
             </intent-filter>
         </activity>
 
@@ -296,7 +296,7 @@
 
                 <category android:name="android.intent.category.DEFAULT" />
 
-                <data android:mimeType="vnd.android.cursor.item/vnd.iosched2015.session" />
+                <data android:mimeType="vnd.android.cursor.item/vnd.iosched2016.session" />
             </intent-filter>
             <!-- Android Beam for session details -->
             <intent-filter>
@@ -304,11 +304,11 @@
 
                 <category android:name="android.intent.category.DEFAULT" />
 
-                <data android:mimeType="vnd.android.cursor.item/vnd.iosched2015.session" />
+                <data android:mimeType="vnd.android.cursor.item/vnd.iosched2016.session" />
             </intent-filter>
             <!-- Web URLs -->
             <!-- URLs are indexed in search engines in the form:
-                 https://events.google.com/io2015/schedule?sid=<session_id>
+                 https://events.google.com/io2016/schedule?sid=<session_id>
                  so direct session links are captured in MySchedule. -->
         </activity>
 
