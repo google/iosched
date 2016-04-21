@@ -495,7 +495,7 @@
     <string name="navdrawer_item_map">Map</string>
 
     <!-- Menu item to open the My Schedule screen [CHAR_LIMIT=20] -->
-    <string name="navdrawer_item_my_schedule">My Schedule</string>
+    <string name="navdrawer_item_my_schedule">Schedule</string>
 
     <!-- Menu item to open the Explore Screen with the Live I/O card [CHAR_LIMIT=20] -->
     <string name="navdrawer_item_io_live">I/O Live</string>
@@ -900,7 +900,7 @@ user updates the rating. -->
     <string name="title_map">Map</string>
 
     <!-- Navigation bar text for viewing the user's schedule -->
-    <string name="title_my_schedule">My Schedule</string>
+    <string name="title_my_schedule">Schedule</string>
 
     <!-- Navigation bar text for viewing Office Hours -->
     <string name="title_office_hours">Office Hours</string>
