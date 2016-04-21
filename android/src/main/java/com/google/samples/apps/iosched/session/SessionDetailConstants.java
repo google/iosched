@@ -16,6 +16,8 @@
 
 package com.google.samples.apps.iosched.session;
 
+import com.google.samples.apps.iosched.util.TimeUtils;
+
 public class SessionDetailConstants {
 
     /**
@@ -39,5 +41,10 @@ public class SessionDetailConstants {
      * The name of the shared transition shown when loading {@link SessionDetailFragment}.
      */
     public static final String TRANSITION_NAME_PHOTO = "photo";
+
+    /**
+     * How long before the start of a session should livestream be open.
+     */
+    public static final long LIVESTREAM_BEFORE_SESSION_START_MS = 10 * TimeUtils.MINUTE;
 
 }

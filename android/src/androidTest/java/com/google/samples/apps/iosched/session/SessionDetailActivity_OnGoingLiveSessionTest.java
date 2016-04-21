@@ -13,7 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package com.google.samples.apps.iosched.session;
 
 import android.content.Intent;
@@ -47,12 +46,11 @@ import static org.hamcrest.CoreMatchers.allOf;
 import static org.hamcrest.core.IsNot.not;
 
 /**
- * Tests for {@link SessionDetailActivity} when showing a session that is not the keynote and is not
- * in user schedule.
+ * Tests for {@link SessionDetailActivity} when showing am ongoing session with a livestream.
  */
 @RunWith(AndroidJUnit4.class)
 @LargeTest
-public class SessionDetailActivity_NotInScheduleSessionTest {
+public class SessionDetailActivity_OnGoingLiveSessionTest {
     public static final String SESSION_ID = "5b7836c8-82bf-e311-b297-00155d5066d7";
 
     private Uri mSessionUri = ScheduleContract.Sessions.buildSessionUri(SESSION_ID);
@@ -60,10 +58,10 @@ public class SessionDetailActivity_NotInScheduleSessionTest {
     @Rule
     public BaseActivityTestRule<SessionDetailActivity> mActivityRule =
             new BaseActivityTestRule<SessionDetailActivity>(SessionDetailActivity.class,
-                    // Create a stub model to simulate a session not in schedule
+                    // Create a stub model to simulate a live session
                     new StubSessionDetailModel(mSessionUri,
                             InstrumentationRegistry.getTargetContext(),
-                            SessionsMockCursor.getCursorForSessionNotInSchedule(),
+                            SessionsMockCursor.getCursorForSessionWithLiveStream(),
                             SpeakersMockCursor.getCursorForSingleSpeaker(),
                             TagMetadataMockCursor.getCursorForSingleTagMetadata()), true) {
                 @Override
@@ -75,8 +73,8 @@ public class SessionDetailActivity_NotInScheduleSessionTest {
 
     @Before
     public void setTime() {
-        // Set up time to 5 minutes after end of session
-        long timeDiff = SessionsMockCursor.END_SESSION - Config.CONFERENCE_START_MILLIS
+        // Set up time to 5 minutes after start of session
+        long timeDiff = SessionsMockCursor.START_SESSION - Config.CONFERENCE_START_MILLIS
                 + 5 * TimeUtils.MINUTE;
         TimeUtils.setCurrentTimeRelativeToStartOfConference(
                 InstrumentationRegistry.getTargetContext(), timeDiff);
@@ -89,6 +87,22 @@ public class SessionDetailActivity_NotInScheduleSessionTest {
     }
 
     @Test
+    public void liveStreamedText_IsNotVisible() {
+        onView(withText(R.string.session_live_streamed)).check(matches(not(isDisplayed())));
+    }
+
+    @Test
+    public void watchLiveText_IsVisible() {
+        onView(withId(R.id.live_stream_play_icon_and_text)).check(matches(isDisplayed()));
+        onView(withText(R.string.session_watch_live)).check(matches(isDisplayed()));
+    }
+
+    @Test
+    public void headerImage_IsVisible() {
+        onView(withId(R.id.session_photo)).check(matches(isDisplayed()));
+    }
+
+    @Test
     public void speakersSection_IsVisible() {
         onView(withId(R.id.session_detail_frag)).perform(swipeUp());
         onView(withId(R.id.session_speakers_block)).check(matches(isDisplayed()));
@@ -96,8 +110,8 @@ public class SessionDetailActivity_NotInScheduleSessionTest {
 
     @Test
     public void tagSection_IsVisible() {
-        onView(withId(R.id.session_tags_container)).perform(scrollTo())
-                                                   .check(matches(isDisplayed()));
+        onView(withId(R.id.session_tags_container)).perform(scrollTo()).check(
+                matches(isDisplayed()));
     }
 
     @Test

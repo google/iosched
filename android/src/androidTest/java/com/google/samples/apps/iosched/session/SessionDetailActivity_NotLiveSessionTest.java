@@ -67,7 +67,12 @@ public class SessionDetailActivity_NotLiveSessionTest {
     }
 
     @Test
-    public void liveStreamText_IsNotVisible() {
+    public void liveStreamedText_IsNotVisible() {
+        onView(withText(R.string.session_live_streamed)).check(matches(not(isDisplayed())));
+    }
+
+    @Test
+    public void watchText_IsNotVisible() {
         onView(withId(R.id.live_stream_play_icon_and_text)).check(matches(not(isDisplayed())));
     }
 

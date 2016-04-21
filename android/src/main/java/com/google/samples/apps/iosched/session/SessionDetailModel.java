@@ -218,6 +218,19 @@ public class SessionDetailModel
         return currentTimeMillis > mSessionStart && currentTimeMillis <= mSessionEnd;
     }
 
+    /**
+     * Live stream should be shown if url is available and the session will start in no more than 10
+     * minutes, or is ongoing or has ended.
+     */
+    public boolean showLiveStream() {
+        if (!hasLiveStream()) {
+            return false;
+        }
+        long currentTimeMillis = TimeUtils.getCurrentTime(mContext);
+        return currentTimeMillis >
+                mSessionStart - SessionDetailConstants.LIVESTREAM_BEFORE_SESSION_START_MS;
+    }
+
     public boolean hasSessionStarted() {
         long currentTimeMillis = TimeUtils.getCurrentTime(mContext);
         return currentTimeMillis > mSessionStart;
@@ -267,12 +280,12 @@ public class SessionDetailModel
     }
 
     /**
-     * Show header image if there is a photo url and either a youTube url or a live stream for an
-     * ongoing session.
+     * Show header image if it has a photo url and it is keynote session, or has a youTube
+     * url or has a live stream for a session that is about to start, is ongoing, or has ended.
      */
     public boolean shouldShowHeaderImage() {
-        return hasPhotoUrl() && ((!TextUtils.isEmpty(mYouTubeUrl) && !mYouTubeUrl.equals("null")) ||
-                (mHasLiveStream && isSessionOngoing()));
+        boolean hasYouTubeUrl = !TextUtils.isEmpty(mYouTubeUrl) && !mYouTubeUrl.equals("null");
+        return hasPhotoUrl() && (isKeynote() || hasYouTubeUrl || showLiveStream());
     }
 
     public boolean isInSchedule() {

@@ -119,7 +119,7 @@ public class SessionDetailFragment extends Fragment
 
     private TextView mAbstract;
 
-    private TextView mLiveStreamVideocamIconAndText;
+    private TextView mLiveStreamedVideocamIconAndText;
 
     private TextView mLiveStreamPlayIconAndText;
 
@@ -280,9 +280,9 @@ public class SessionDetailFragment extends Fragment
 
         mAbstract = (TextView) getActivity().findViewById(R.id.session_abstract);
 
-        //Find view that shows a Videocam icon if the session is being live streamed.
-        mLiveStreamVideocamIconAndText = (TextView) getActivity().findViewById(
-                R.id.live_stream_videocam_icon_and_text);
+        //Find view that shows a Videocam icon if the session has been live streamed.
+        mLiveStreamedVideocamIconAndText = (TextView) getActivity().findViewById(
+                R.id.live_streamed_videocam_icon_and_text);
 
         // Find view that shows a play button and some text for the user to watch the session
         // live stream.
@@ -836,20 +836,20 @@ public class SessionDetailFragment extends Fragment
 
 
     private void updateTimeBasedUi(SessionDetailModel data) {
-        // Show "Live streamed" for all live-streamed sessions that aren't currently going on.
-        mLiveStreamVideocamIconAndText
-                .setVisibility(data.hasLiveStream() && !data.isSessionOngoing() ?
+        // Show "Live streamed" for all live-streamed sessions that have ended.
+        mLiveStreamedVideocamIconAndText
+                .setVisibility(data.hasLiveStream() && data.hasSessionEnded() ?
                         View.VISIBLE : View.GONE);
 
-        if (data.hasLiveStream() && data.hasSessionStarted()) {
-            // Show the play button and text only once the session starts.
-            mLiveStreamVideocamIconAndText.setVisibility(View.VISIBLE);
+        if (data.showLiveStream()) {
+            // Show the play button and text only once the session is about to start.
+            mLiveStreamPlayIconAndText.setVisibility(View.VISIBLE);
 
-            if (data.isSessionOngoing()) {
-                mLiveStreamPlayIconAndText.setText(getString(R.string.session_watch_live));
-            } else {
+            if (data.hasSessionEnded()) {
                 mLiveStreamPlayIconAndText.setText(getString(R.string.session_watch));
                 // TODO: implement Replay.
+            } else {
+                mLiveStreamPlayIconAndText.setText(getString(R.string.session_watch_live));
             }
         } else {
             mLiveStreamPlayIconAndText.setVisibility(View.GONE);

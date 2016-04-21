@@ -46,11 +46,12 @@ import static org.hamcrest.CoreMatchers.allOf;
 import static org.hamcrest.core.IsNot.not;
 
 /**
- * Tests for {@link SessionDetailActivity} when showing a session that is live.
+ * Tests for {@link SessionDetailActivity} when showing a session with a livestream but the session
+ * has ended.
  */
 @RunWith(AndroidJUnit4.class)
 @LargeTest
-public class SessionDetailActivity_LiveSessionTest {
+public class SessionDetailActivity_EndedLiveSessionTest {
     public static final String SESSION_ID = "5b7836c8-82bf-e311-b297-00155d5066d7";
 
     private Uri mSessionUri = ScheduleContract.Sessions.buildSessionUri(SESSION_ID);
@@ -73,8 +74,8 @@ public class SessionDetailActivity_LiveSessionTest {
 
     @Before
     public void setTime() {
-        // Set up time to 5 minutes after start of session
-        long timeDiff = SessionsMockCursor.START_SESSION - Config.CONFERENCE_START_MILLIS
+        // Set up time to 5 minutes after end of session
+        long timeDiff = SessionsMockCursor.END_SESSION - Config.CONFERENCE_START_MILLIS
                 + 5 * TimeUtils.MINUTE;
         TimeUtils.setCurrentTimeRelativeToStartOfConference(
                 InstrumentationRegistry.getTargetContext(), timeDiff);
@@ -87,8 +88,14 @@ public class SessionDetailActivity_LiveSessionTest {
     }
 
     @Test
-    public void liveStreamText_IsVisible() {
+    public void liveStreamedText_IsVisible() {
+        onView(withText(R.string.session_live_streamed)).check(matches(isDisplayed()));
+    }
+
+    @Test
+    public void watchText_IsVisible() {
         onView(withId(R.id.live_stream_play_icon_and_text)).check(matches(isDisplayed()));
+        onView(withText(R.string.session_watch)).check(matches(isDisplayed()));
     }
 
     @Test

@@ -113,7 +113,7 @@
                     style="@style/Body1Text" />
 
                 <TextView
-                    android:id="@+id/live_stream_videocam_icon_and_text"
+                    android:id="@+id/live_streamed_videocam_icon_and_text"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textColor="@color/session_livestreamed_color"

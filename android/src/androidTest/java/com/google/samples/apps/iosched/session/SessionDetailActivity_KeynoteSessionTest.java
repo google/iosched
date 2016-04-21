@@ -76,6 +76,11 @@ public class SessionDetailActivity_KeynoteSessionTest {
     }
 
     @Test
+    public void headerImage_IsVisible() {
+        onView(withId(R.id.session_photo)).check(matches(isDisplayed()));
+    }
+
+    @Test
     public void speakersSection_IsNotVisible() {
         onView(withId(R.id.session_speakers_block)).check(matches(not(isDisplayed())));
     }
