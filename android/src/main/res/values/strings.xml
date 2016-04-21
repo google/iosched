@@ -719,10 +719,10 @@
     <string name="session_feedback_basic">Too basic</string>
 
     <!-- A positive overall session feedback option -->
-    <string name="session_feedback_great">Toll</string>
+    <string name="session_feedback_great">Great</string>
 
     <!-- A negative overall session feedback option -->
-    <string name="session_feedback_notgreat">Nicht so toll</string>
+    <string name="session_feedback_notgreat">Not great</string>
 
     <!-- Session feedback section title -->
     <string name="session_feedback_content_label_text">Based on the description/my expectations, the content was:</string>
