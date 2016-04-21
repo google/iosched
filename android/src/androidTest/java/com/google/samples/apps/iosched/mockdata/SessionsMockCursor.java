@@ -69,7 +69,7 @@ public class SessionsMockCursor {
                         " (Note: This Sandbox talk will be offered twice throughout the event." +
                         " Check the schedule to confirm timings.)", "null",
                 inSchedule ? TRUE : FALSE,
-                keynote ? "keynote" : "tools&apis",
+                keynote ? "keynote" : "cloud",
                 "https://events.google.com/io2015/schedule#/b7e49d26-86e4-e411-b87f-00155d5066d7",
                 hasLiveStream ? FAKE_YOUTUBE_URL : EMPTY, "null", "null",
                 hasLiveStream ? FAKE_LIVESTREAM_ID : EMPTY, "null", FAKE_ROOM_ID,
@@ -78,8 +78,8 @@ public class SessionsMockCursor {
                         + "__w-200-400-600-800-1000__/b7e49d26-86e4-e411-b87f-00155d5066d7.jpg",
                 "null",
                 keynote ? "FLAG_KEYNOTE" :
-                        FAKE_TAG + ",TOPIC_TOOLS&APIS,TOPIC_AUDIENCEGROWTH," +
-                                "TOPIC_SEARCH,TYPE_SANDBOXTALKS",
+                        FAKE_TAG + ",TRACK_CLOUD,TRACK_ANDROID," +
+                                "TRACK_SEARCH,TYPE_SANDBOXTALKS",
                 keynote ? EMPTY : SpeakersMockCursor.FAKE_SPEAKER, FAKE_TAG};
         String[] columns = {"session_start", "session_end", "session_level", "session_title",
                 "session_abstract", "session_requirements", "session_in_my_schedule",

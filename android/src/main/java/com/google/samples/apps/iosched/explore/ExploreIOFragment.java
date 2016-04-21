@@ -326,7 +326,6 @@ public class ExploreIOFragment extends Fragment
                        @NonNull ExploreIOModel model,
                        @NonNull ImageLoader imageLoader) {
             mHost = activity;
-            mTitles = model.getTagTitles();
             mImageLoader = imageLoader;
             mInflater = LayoutInflater.from(activity);
             mRecycledViewPool = new RecyclerView.RecycledViewPool();
@@ -623,6 +622,9 @@ public class ExploreIOFragment extends Fragment
             exploreCards.addAll(model.getThemes());
 
             /* TODO sort out theme/topic order; right now we list themes, then topics. */
+
+            // Store the title mapping
+            mTitles = model.getTagTitles();
 
             return exploreCards;
         }

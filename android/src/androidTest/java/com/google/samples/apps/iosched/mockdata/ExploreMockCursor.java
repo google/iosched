@@ -25,37 +25,37 @@ public class ExploreMockCursor {
 
     public static final String TITLE_KEYNOTE = "KEYNOTE";
 
-    public static final String TOPIC_TOOLS_TITLE1 = "TOPIC_TOOLS_TITLE1";
+    public static final String TRACK_TOOLS_TITLE1 = "TRACK_TOOLS_TITLE1";
 
-    public static final String TOPIC_TOOLS_TITLE2 = "TOPIC_TOOLS_TITLE2";
+    public static final String TRACK_TOOLS_TITLE2 = "TRACK_TOOLS_TITLE2";
 
-    public static final String TOPIC_TOOLS_TITLE3 = "TOPIC_TOOLS_TITLE3";
+    public static final String TRACK_TOOLS_TITLE3 = "TRACK_TOOLS_TITLE3";
 
-    public static final String TOPIC_TOOLS_TITLE4 = "TOPIC_TOOLS_TITLE4";
+    public static final String TRACK_TOOLS_TITLE4 = "TRACK_TOOLS_TITLE4";
 
     public static final String KEYNOTE_ID = "__keynote__";
 
-    public static final String TOPIC_ANDROID = "TOPIC_ANDROID";
+    public static final String TRACK_ANDROID = "TRACK_ANDROID";
 
-    public static final String TOPIC_CHROME = "TOPIC_CHROME";
+    public static final String TRACK_MOBILEWEB = "TRACK_MOBILEWEB";
 
-    public static final String TOPIC_TOOLS = "TOPIC_TOOLS";
+    public static final String TRACK_CLOUD = "TRACK_CLOUD";
 
-    public static final String TOPIC_EARN = "TOPIC_EARN";
+    public static final String TRACK_SEARCH = "TRACK_SEARCH";
 
     public static final String TYPE_SESSION = "TYPE_SESSION";
 
-    public static final String THEME_DESIGN = "THEME_DESIGN";
+    public static final String THEME_WHATSNEXT = "THEME_WHATSNEXT";
 
-    public static final String THEME_EARN = "THEME_EARN";
+    public static final String THEME_GROW_EARN = "THEME_GROW&EARN";
 
     public static final String TAG_CATEGORY = "TYPE";
 
     private static final String SEP = ",";
 
     /**
-     * @return a list of tags, including {@link #THEME_EARN}. {@link #THEME_DESIGN}, {@link
-     * #TOPIC_ANDROID}, {@link #TOPIC_CHROME}, {@link #TOPIC_TOOLS} and {@link #TOPIC_EARN}.
+     * @return a list of tags, including {@link #THEME_GROW_EARN}. {@link #THEME_WHATSNEXT}, {@link
+     * #TRACK_ANDROID}, {@link #TRACK_MOBILEWEB}, {@link #TRACK_CLOUD} and {@link #TRACK_SEARCH}.
      */
     public static MatrixCursor getCursorForTags() {
         String[] columns = {"_id", "tag_id", "tag_name", "tag_category", "tag_order_in_category",
@@ -66,11 +66,11 @@ public class ExploreMockCursor {
                         ""};
         matrixCursor.addRow(data1);
         String[] data2 =
-                {"TOPIC_AUDIENCEGROWTH", "TOPIC_AUDIENCEGROWTH", "Audience Growth", TAG_CATEGORY,
+                {"TRACK_AUDIENCEGROWTH", "TRACK_AUDIENCEGROWTH", "Audience Growth", TAG_CATEGORY,
                         "2", "", "-3355444", ""};
         matrixCursor.addRow(data2);
         String[] data3 =
-                {THEME_DESIGN, THEME_DESIGN, THEME_DESIGN, TAG_CATEGORY, "2", "", "-3355444", ""};
+                {THEME_WHATSNEXT, THEME_WHATSNEXT, THEME_WHATSNEXT, TAG_CATEGORY, "2", "", "-3355444", ""};
         matrixCursor.addRow(data3);
         String[] data4 =
                 {TYPE_SESSION, TYPE_SESSION, TYPE_SESSION, TAG_CATEGORY, "2", "", "-3355444", ""};
@@ -80,29 +80,29 @@ public class ExploreMockCursor {
                         "-3355444", ""};
         matrixCursor.addRow(data5);
         String[] data6 =
-                {TOPIC_TOOLS, TOPIC_TOOLS, TOPIC_TOOLS, TAG_CATEGORY, "2", "", "-3355444", ""};
+                {TRACK_CLOUD, TRACK_CLOUD, TRACK_CLOUD, TAG_CATEGORY, "2", "", "-3355444", ""};
         matrixCursor.addRow(data6);
         String[] data7 =
-                {"TOPIC_AUTO", "TOPIC_AUTO", "Auto", TAG_CATEGORY, "2", "", "-3355444", ""};
+                {"TRACK_AUTO", "TRACK_AUTO", "Auto", TAG_CATEGORY, "2", "", "-3355444", ""};
         matrixCursor.addRow(data7);
         String[] data8 =
-                {TOPIC_ANDROID, TOPIC_ANDROID, TOPIC_ANDROID, TAG_CATEGORY, "2", "", "-3355444",
+                {TRACK_ANDROID, TRACK_ANDROID, TRACK_ANDROID, TAG_CATEGORY, "2", "", "-3355444",
                         ""};
         matrixCursor.addRow(data8);
         String[] data9 =
-                {TOPIC_ANDROID, TOPIC_ANDROID, TOPIC_CHROME, TAG_CATEGORY, "2", "", "-3355444", ""};
+                {TRACK_ANDROID, TRACK_ANDROID, TRACK_MOBILEWEB, TAG_CATEGORY, "2", "", "-3355444", ""};
         matrixCursor.addRow(data9);
         String[] data10 =
-                {THEME_EARN, THEME_EARN, THEME_EARN, TAG_CATEGORY, "2", "", "-3355444", ""};
+                {THEME_GROW_EARN, THEME_GROW_EARN, THEME_GROW_EARN, TAG_CATEGORY, "2", "", "-3355444", ""};
         matrixCursor.addRow(data10);
         return matrixCursor;
     }
 
     /**
      * @return a cursor that contains 8 sessions, including a keynote session, 4 sessions with
-     * {@link #THEME_DESIGN}, 4 sessions with {@link #THEME_EARN}, 4 sessions with main {@link
-     * #TOPIC_TOOLS}, 2 sessions with main {@link #TOPIC_ANDROID}, and 2 sessions with main {@link
-     * #TOPIC_CHROME}.
+     * {@link #THEME_WHATSNEXT}, 4 sessions with {@link #THEME_GROW_EARN}, 4 sessions with main {@link
+     * #TRACK_CLOUD}, 2 sessions with main {@link #TRACK_ANDROID}, and 2 sessions with main {@link
+     * #TRACK_MOBILEWEB}.
      */
     public static MatrixCursor getCursorForExplore() {
         String[] columns = {"session_id", "session_title", "session_abstract", "session_tags",
@@ -119,10 +119,10 @@ public class ExploreMockCursor {
                         "-00155d5066d7.jpg",
                 "1432830600000", "1432837800000", "wtLJPvx7-ys", "null", "0"};
         matrixCursor.addRow(data1);
-        String[] data2 = {"74718f8b-b6d4-e411-b87f-00155d5066d7", TOPIC_TOOLS_TITLE1,
+        String[] data2 = {"74718f8b-b6d4-e411-b87f-00155d5066d7", TRACK_TOOLS_TITLE1,
                 "The next big things from Google Cloud Messaging (GCM), simplifying your mobile " +
                         "messaging and notifications solution.",
-                TYPE_SESSION + SEP + THEME_DESIGN + SEP + TOPIC_TOOLS, TOPIC_TOOLS,
+                TYPE_SESSION + SEP + THEME_WHATSNEXT + SEP + TRACK_CLOUD, TRACK_CLOUD,
                 "https://storage.googleapis.com/io2015-data.appspot" +
                         ".com/images/sessions/__w-200-400-600-800-1000__/74718f8b-b6d4-e411-b87f" +
                         "-00155d5066d7.jpg",
@@ -131,15 +131,15 @@ public class ExploreMockCursor {
         String[] data3 = {"ea96312e-e3d3-e411-b87f-00155d5066d7", "What's new in Android",
                 "This session will highlight the most exciting new developer features of the " +
                         "Android platform.",
-                TYPE_SESSION + SEP + THEME_DESIGN + SEP + TOPIC_ANDROID + SEP + TOPIC_TOOLS,
-                TOPIC_ANDROID,
+                TYPE_SESSION + SEP + THEME_WHATSNEXT + SEP + TRACK_ANDROID + SEP + TRACK_CLOUD,
+                TRACK_ANDROID,
                 "https://storage.googleapis.com/io2015-data.appspot" +
                         ".com/images/sessions/__w-200-400-600-800-1000__/ea96312e-e3d3-e411-b87f" +
                         "-00155d5066d7.jpg",
                 "1432843200000", "1432846800000", "5WI_lCmBKE8", "null", "0"};
         matrixCursor.addRow(data3);
         String[] data4 = {"881a8930-f0e2-e411-b87f-00155d5066d7",
-                TOPIC_TOOLS_TITLE2,
+                TRACK_TOOLS_TITLE2,
                 "Mobile development is growing more and more complex. To make things easier for " +
                         "publishers, we have created a smart mobile ads platform that goes beyond" +
                         " the traditional ad server. Come listen to Jonathan Alferness talk about" +
@@ -149,8 +149,8 @@ public class ExploreMockCursor {
                         "Google Analytics for list building and targeting. In this talk, we will " +
                         "also be unveiling some new features that will help make things simpler " +
                         "for developers.",
-                TYPE_SESSION + SEP + THEME_EARN + SEP + TOPIC_EARN + SEP + TOPIC_TOOLS,
-                TOPIC_TOOLS,
+                TYPE_SESSION + SEP + THEME_GROW_EARN + SEP + TRACK_SEARCH + SEP + TRACK_CLOUD,
+                TRACK_CLOUD,
                 "https://storage.googleapis.com/io2015-data.appspot" +
                         ".com/images/sessions/__w-200-400-600-800-1000__/881a8930-f0e2-e411-b87f" +
                         "-00155d5066d7.jpg",
@@ -161,8 +161,8 @@ public class ExploreMockCursor {
                         "In this session we will provide an in depth tour of the Android " +
                                 "development tools and take a closer look at everything new - " +
                                 "along with tips and tricks for getting the most out of them!",
-                        TYPE_SESSION + SEP + THEME_DESIGN + SEP + TOPIC_ANDROID + SEP + TOPIC_TOOLS,
-                        TOPIC_ANDROID,
+                        TYPE_SESSION + SEP + THEME_WHATSNEXT + SEP + TRACK_ANDROID + SEP + TRACK_CLOUD,
+                        TRACK_ANDROID,
                         "https://storage.googleapis.com/io2015-data.appspot" +
                                 ".com/images/sessions/__w-200-400-600-800-1000__/0c718f8b-b6d4" +
                                 "-e411-b87f-00155d5066d7.jpg",
@@ -174,8 +174,8 @@ public class ExploreMockCursor {
                         "tablet games, there are emerging fields including virtual reality and " +
                         "mobile games in the living room. This talk covers how Google is helping " +
                         "developers across this broad range of platforms.",
-                TYPE_SESSION + SEP + THEME_DESIGN + SEP + TOPIC_CHROME + SEP + TOPIC_TOOLS,
-                TOPIC_CHROME,
+                TYPE_SESSION + SEP + THEME_WHATSNEXT + SEP + TRACK_MOBILEWEB + SEP + TRACK_CLOUD,
+                TRACK_MOBILEWEB,
                 "https://storage.googleapis.com/io2015-data.appspot" +
                         ".com/images/sessions/__w-200-400-600-800-1000__/3a718f8b-b6d4-e411-b87f" +
                         "-00155d5066d7.jpg",
@@ -191,15 +191,15 @@ public class ExploreMockCursor {
                         " old and new tools Google has created to help, share our lessons " +
                         "building experiences like the Now “Where did I park my car?” card, and " +
                         "predict what the future may hold for context-aware computing.",
-                TYPE_SESSION + SEP + THEME_EARN + SEP + TOPIC_CHROME + SEP + TOPIC_TOOLS,
-                TOPIC_CHROME,
+                TYPE_SESSION + SEP + THEME_GROW_EARN + SEP + TRACK_MOBILEWEB + SEP + TRACK_CLOUD,
+                TRACK_MOBILEWEB,
                 "https://storage.googleapis.com/io2015-data.appspot" +
                         ".com/images/sessions/__w-200-400-600-800-1000__/e096312e-e3d3-e411-b87f" +
                         "-00155d5066d7.jpg",
                 "1432854000000", "1432857600000", "5WI_lCmBKE8", "null", "0"};
         matrixCursor.addRow(data7);
         String[] data8 = {"21718f8b-b6d4-e411-b87f-00155d5066d7",
-                TOPIC_TOOLS_TITLE3,
+                TRACK_TOOLS_TITLE3,
                 "The latest version of Polymer is fast and lean. With new elements and tools, " +
                         "Polymer 1.0 is ready for production. Learn how teams at Google have " +
                         "successfully launched on google.com using Polymer and the latest " +
@@ -207,15 +207,15 @@ public class ExploreMockCursor {
                         "notifications, and material design. Last but not least, we’ll show you " +
                         "how to leverage the same tools as Google to be successful using Polymer " +
                         "Starter Kit - a new toolkit for building mobile-first apps.",
-                TYPE_SESSION + SEP + THEME_EARN + SEP + TOPIC_CHROME + SEP + TOPIC_TOOLS,
-                TOPIC_TOOLS,
+                TYPE_SESSION + SEP + THEME_GROW_EARN + SEP + TRACK_MOBILEWEB + SEP + TRACK_CLOUD,
+                TRACK_CLOUD,
                 "https://storage.googleapis.com/io2015-data.appspot" +
                         ".com/images/sessions/__w-200-400-600-800-1000__/21718f8b-b6d4-e411-b87f" +
                         "-00155d5066d7.jpg",
                 "1432915200000", "1432918800000", "5WI_lCmBKE8", "null", "0"};
         matrixCursor.addRow(data8);
         String[] data9 = {"60718f8b-b6d4-e411-b87f-00155d5066d7",
-                TOPIC_TOOLS_TITLE4,
+                TRACK_TOOLS_TITLE4,
                 "How does an engineer, developer or computer scientist harness his or her skills " +
                         "to address humanity’s biggest challenges? Listen to technologists -- " +
                         "from Charity:water, Code for America, NexLeaf and HandUp -- who are " +
@@ -226,8 +226,8 @@ public class ExploreMockCursor {
                         " of people around the world facing some form of disability. You might be" +
                         " inspired to harness your own skills and talents toward creating a " +
                         "better world faster.",
-                TYPE_SESSION + SEP + THEME_EARN + SEP + TOPIC_TOOLS,
-                TOPIC_TOOLS,
+                TYPE_SESSION + SEP + THEME_GROW_EARN + SEP + TRACK_CLOUD,
+                TRACK_CLOUD,
                 "https://storage.googleapis.com/io2015-data.appspot" +
                         ".com/images/sessions/__w-200-400-600-800-1000__/60718f8b-b6d4-e411-b87f" +
                         "-00155d5066d7.jpg",

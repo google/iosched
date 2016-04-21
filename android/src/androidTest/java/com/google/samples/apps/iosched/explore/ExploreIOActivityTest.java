@@ -33,6 +33,7 @@ import com.google.samples.apps.iosched.testutils.ToolbarUtils;
 import com.google.samples.apps.iosched.ui.SearchActivity;
 
 import org.hamcrest.Matcher;
+import org.junit.Ignore;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -79,7 +80,6 @@ public class ExploreIOActivityTest {
     @Test
     public void Toolbar_HidesAfterSwipeUp() {
         ToolbarUtils.checkToolbarHidesAfterSwipingRecyclerViewUp(R.id.explore_card_list);
-
     }
 
     @Test
@@ -103,18 +103,18 @@ public class ExploreIOActivityTest {
         // Given a visible topic
         onView(withId(R.id.explore_card_list))
                 .perform(RecyclerViewActions.scrollTo(
-                        hasDescendant(withText(ExploreMockCursor.TOPIC_TOOLS))));
+                        hasDescendant(withText(ExploreMockCursor.TRACK_CLOUD))));
 
         // When clicking on the "More" button
         onView(allOf(withText(R.string.more_items_button),
-                hasSibling(withText(ExploreMockCursor.TOPIC_TOOLS))
+                hasSibling(withText(ExploreMockCursor.TRACK_CLOUD))
         )).perform(click());
 
         // Then the intent to open the explore sessions activity for that topic is fired
         intended(allOf(
                 hasComponent(ExploreSessionsActivity.class.getName()),
                 hasExtra(ExploreSessionsActivity.EXTRA_FILTER_TAG,
-                        ExploreMockCursor.TOPIC_TOOLS)));
+                        ExploreMockCursor.TRACK_CLOUD)));
     }
 
     @Test
@@ -126,14 +126,9 @@ public class ExploreIOActivityTest {
         intended(hasComponent(SearchActivity.class.getName()));
     }
 
-    @Test
-    public void SeveralSessionsAvailableForTopic_TwoShown() {
-        // There are 4 sessions with main topic tools, only 2 in the section topic tools should
-        // be visible
-        Matcher<View> parentViewMatcher = withChild(
-                withChild(withText(ExploreMockCursor.TOPIC_TOOLS)));
-        assertThat(MatchersHelper.getNumberOfDescendantsForViewGroupDescendant(
-                parentViewMatcher, R.id.title), is(2));
+    @Ignore("Not implemented")
+    public void trackScrolledHorizontally_SessionsShown() {
+
     }
 
     @Test
