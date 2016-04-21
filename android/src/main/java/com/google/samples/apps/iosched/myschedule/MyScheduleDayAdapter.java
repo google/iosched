@@ -224,6 +224,7 @@ public class MyScheduleDayAdapter implements ListAdapter, AbsListView.RecyclerLi
             view = LayoutInflater.from(mContext).inflate(R.layout.my_schedule_item, parent, false);
             holder = new ViewHolder();
             holder.startTime = (TextView) view.findViewById(R.id.start_time);
+            holder.more = (TextView) view.findViewById(R.id.more);
             holder.icon = (ImageView) view.findViewById(R.id.icon);
             holder.title = (TextView) view.findViewById(R.id.slot_title);
             holder.description = (TextView) view.findViewById(R.id.slot_description);
@@ -283,6 +284,7 @@ public class MyScheduleDayAdapter implements ListAdapter, AbsListView.RecyclerLi
         holder.touchArea.setTag(R.id.myschedule_uri_tagkey, null);
         if (item.type == ScheduleItem.FREE) {
             holder.startTime.setVisibility(View.VISIBLE);
+            holder.more.setVisibility(View.GONE);
             holder.icon.setImageResource(R.drawable.ic_browse);
             holder.feedback.setVisibility(View.GONE);
             holder.title.setVisibility(View.GONE);
@@ -292,6 +294,7 @@ public class MyScheduleDayAdapter implements ListAdapter, AbsListView.RecyclerLi
             holder.description.setVisibility(View.GONE);
         } else if (item.type == ScheduleItem.BREAK) {
             holder.startTime.setVisibility(View.VISIBLE);
+            holder.more.setVisibility(View.GONE);
             holder.feedback.setVisibility(View.GONE);
             holder.title.setVisibility(View.VISIBLE);
             holder.title.setText(item.title);
@@ -328,6 +331,7 @@ public class MyScheduleDayAdapter implements ListAdapter, AbsListView.RecyclerLi
             }
             holder.title.setVisibility(View.VISIBLE);
             holder.title.setText(item.title);
+            holder.more.setVisibility(View.VISIBLE);
             holder.browse.setVisibility(View.GONE);
             holder.icon.setImageResource(UIUtils.getSessionIcon(item.sessionType));
 
@@ -338,9 +342,10 @@ public class MyScheduleDayAdapter implements ListAdapter, AbsListView.RecyclerLi
                 setUriClickable(holder.touchArea, sessionUri);
             } else {
                 holder.startTime.setVisibility(View.VISIBLE);
-                setUriClickable(holder.startTime,
-                        ScheduleContract.Sessions.buildUnscheduledSessionsInInterval(
-                                item.startTime, item.endTime));
+                Uri intervalUri = ScheduleContract.Sessions.buildUnscheduledSessionsInInterval(
+                        item.startTime, item.endTime);
+                setUriClickable(holder.startTime, intervalUri);
+                setUriClickable(holder.more, intervalUri);
                 // Padding fix needed for KitKat 4.4. (padding gets removed by setting the
                 // background)
                 holder.startTime.setPadding(
@@ -418,6 +423,7 @@ public class MyScheduleDayAdapter implements ListAdapter, AbsListView.RecyclerLi
 
     private static class ViewHolder {
         public TextView startTime;
+        public TextView more;
         public ImageView icon;
         public TextView title;
         public TextView description;

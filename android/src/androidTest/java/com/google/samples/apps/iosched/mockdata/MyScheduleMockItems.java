@@ -32,6 +32,8 @@ public class MyScheduleMockItems {
 
     public final static String SESSION_TITLE_AFTER = "Session in schedule in past";
 
+    public final static int SESSION_TITLE_AFTER_START_OFFSET = TimeUtils.HOUR;
+
     public final static String SESSION_TITLE_BEFORE = "Session in schedule not yet";
 
     public final static String SESSION_ID = "156fes4f5se";
@@ -131,8 +133,8 @@ public class MyScheduleMockItems {
         ScheduleItem newItem2 = new ScheduleItem();
         newItem2.type = 1;
         newItem2.sessionType = 2;
-        newItem2.startTime = timeBase + TimeUtils.HOUR;
-        newItem2.endTime = timeBase + 2 * TimeUtils.HOUR;
+        newItem2.startTime = timeBase + SESSION_TITLE_AFTER_START_OFFSET;
+        newItem2.endTime = timeBase + SESSION_TITLE_AFTER_START_OFFSET + 1 * TimeUtils.HOUR;
         newItem2.sessionId = SESSION_ID;
         newItem2.title = SESSION_TITLE_AFTER;
         newItem2.subtitle = "Develop Sandbox (L2)";
