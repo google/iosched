@@ -101,11 +101,13 @@ public class MergeHelper {
      */
     public void mergeUnsyncedActions(final List<UserAction> actions) {
         mMergedUserData.updateVideoIds(mRemoteUserData);
-        for (Map.Entry<String, Long> entry : mRemoteUserData.getStarredSessions().entrySet()) {
+        for (Map.Entry<String, UserData.StarredSession> entry :
+                mRemoteUserData.getStarredSessions().entrySet()) {
             mMergedUserData.getStarredSessions().put(entry.getKey(), entry.getValue());
         }
         mMergedUserData.updateFeedbackSubmittedSessionIds(mRemoteUserData);
 
+        // Update merged data with local data.
         for (final UserAction action : actions) {
             if (action.requiresSync) {
                 if (UserAction.TYPE.ADD_STAR.equals(action.type) ||
@@ -113,19 +115,16 @@ public class MergeHelper {
 
                     // The merged user data so far reflects remote. Override remote wherever local
                     // data is more recent.
-                    Long mergedItemTimestamp = mMergedUserData.getStarredSessions().get(
+                    UserData.StarredSession session = mMergedUserData.getStarredSessions().get(
                             action.sessionId);
 
                     // Either remote doesn't have this session, or local is more recent than
                     // remote.
-                    if (mergedItemTimestamp == null || mergedItemTimestamp < action.timestamp) {
-
-                        if (UserAction.TYPE.ADD_STAR.equals(action.type)) {
-                            mMergedUserData.getStarredSessions()
-                                           .put(action.sessionId, action.timestamp);
-                        } else {
-                            mMergedUserData.getStarredSessions().remove(action.sessionId);
-                        }
+                    if (session == null || session.getTimestamp() < action.timestamp) {
+                        mMergedUserData.getStarredSessions().put(action.sessionId,
+                                new UserData.StarredSession(
+                                        UserAction.TYPE.ADD_STAR.equals(action.type),
+                                        action.timestamp));
                     }
                 } else if (UserAction.TYPE.VIEW_VIDEO.equals(action.type)) {
                     mMergedUserData.addVideoId(action.videoId);
@@ -151,8 +150,15 @@ public class MergeHelper {
             pendingFirebaseUpdatesMap.put(FirebaseUtils.getViewedVideoChildPath(mUid, videoID),
                     true);
         }
-        handleStarredSessions(pendingFirebaseUpdatesMap, mUid);
-        handleUnstarredSessions(pendingFirebaseUpdatesMap, mUid);
+
+        for (final Map.Entry<String, UserData.StarredSession> entry :
+                getPendingFirebaseSessionUpdates().entrySet()) {
+            updateSessionInSchedule(pendingFirebaseUpdatesMap, mUid, entry.getKey(),
+                    entry.getValue().isInSchedule());
+            updateSessionTimestamp(pendingFirebaseUpdatesMap, mUid, entry.getKey(),
+                    entry.getValue().getTimestamp());
+        }
+
         for (String sessionID : mMergedUserData.getFeedbackSubmittedSessionIds()) {
             pendingFirebaseUpdatesMap
                     .put(FirebaseUtils.getFeedbackSubmittedSessionChildPath(mUid, sessionID), true);
@@ -163,40 +169,34 @@ public class MergeHelper {
     }
 
     /**
-     * Updates {@code map} with sessions added to a user's schedule and updates the timestamp.
-     *
-     * @param map Map that can be used when calling {@link com.firebase.client
-     *            .Firebase#updateChildren(Map)} to update Firebase with a single write.
-     * @param uid The Firebase user id associated with the currently chosen account.
+     * Returns sessions whose data must be written to Firebase.
      */
-    private void handleStarredSessions(Map<String, Object> map, String uid) {
-        for (final Map.Entry<String, Long> entry : mMergedUserData.getStarredSessions()
-                                                                  .entrySet()) {
-            updateSessionInSchedule(map, uid, entry.getKey(), true);
-            updateSessionTimestamp(map, uid, entry.getKey(), entry.getValue());
+    private Map<String, UserData.StarredSession> getPendingFirebaseSessionUpdates() {
+        Map<String, UserData.StarredSession> sessions = new HashMap<>();
+        for (final Map.Entry<String, UserData.StarredSession> entry :
+                mMergedUserData.getStarredSessions().entrySet()) {
+            String sessionId = entry.getKey();
+            UserData.StarredSession starredSession = entry.getValue();
+            if (writeSessionDataToFirebase(sessionId, starredSession)) {
+                sessions.put(sessionId, starredSession);
+            }
         }
+        return sessions;
     }
 
     /**
-     * Updates {@code map} with sessions removed from a user's schedule and updates the timestamp.
-     * Note that once a session is added to a user's schedule, it is never removed from Firebase:
-     * if it stays in the user schedule, the in_schedule value in Firebase is set to true, and if it
-     * is removed from the user schedule, the in_schedule value is set to false.
+     * Returns whether a session's data must be written to Firebase or not.
      *
-     * @param map Used when calling {@link com.firebase.client.Firebase#updateChildren(Map)} to
-     *            update Firebase with a single write.
-     * @param uid The Firebase user id associated with the currently chosen account.
+     * @param sessionId The ID of the session that has been added to or removed from a user's
+     *                  schedule.
+     * @param starredSession The data associated with {@code sessionID}.
      */
-    private void handleUnstarredSessions(Map<String, Object> map, String uid) {
-        for (final Map.Entry<String, Long> entry : mRemoteUserData.getStarredSessions()
-                                                                  .entrySet()) {
-            // Merged data represents the canonical collection of starred sessions. Sessions found
-            // in remote data, but absent in merged data are no longer part of the user schedule.
-            // We set their in_schedule value to false.
-            if (mMergedUserData.getStarredSessions().get(entry.getKey()) == null) {
-                updateSessionInSchedule(map, uid, entry.getKey(), false);
-            }
-        }
+    private boolean writeSessionDataToFirebase(String sessionId, UserData.StarredSession
+            starredSession) {
+        Map<String, UserData.StarredSession> remoteStarredSessions =
+                mRemoteUserData.getStarredSessions();
+        return (!remoteStarredSessions.containsKey(sessionId) ||
+                remoteStarredSessions.get(sessionId) != starredSession);
     }
 
     /**

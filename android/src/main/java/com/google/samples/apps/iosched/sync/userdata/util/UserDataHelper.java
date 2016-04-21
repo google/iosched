@@ -21,7 +21,6 @@ import android.net.Uri;
 
 import com.google.common.base.Charsets;
 import com.google.gson.Gson;
-import com.google.gson.annotations.SerializedName;
 import com.google.samples.apps.iosched.provider.ScheduleContract;
 import com.google.samples.apps.iosched.sync.userdata.UserAction;
 
@@ -67,10 +66,10 @@ public class UserDataHelper {
                 if (action.type == UserAction.TYPE.ADD_STAR) {
                     if(userData.getStarredSessions() == null) {
                         // TODO: Make this part of setter. Create lazily.
-                        userData.setStarredSessions(new HashMap<String, Long>());
+                        userData.setStarredSessions(new HashMap<String, UserData.StarredSession>());
                     }
                     userData.getStarredSessions().put(action.sessionId,
-                            action.timestamp);
+                            new UserData.StarredSession(true, action.timestamp));
                 } else if (action.type == UserAction.TYPE.VIEW_VIDEO) {
                     if(userData.getViewedVideoIds() == null) {
                         userData.setViewedVideoIds(new HashSet<String>());
@@ -81,6 +80,9 @@ public class UserDataHelper {
                         userData.setFeedbackSubmittedSessionIds(new HashSet<String>());
                     }
                     userData.getFeedbackSubmittedSessionIds().add(action.sessionId);
+                } else if (action.type == UserAction.TYPE.REMOVE_STAR) {
+                    userData.getStarredSessions().put(action.sessionId,
+                            new UserData.StarredSession(false, action.timestamp));
                 }
             }
         }
@@ -113,16 +115,18 @@ public class UserDataHelper {
     /**
      * Reads the data from columns of the content's {@code queryUri} and returns it as a Map.
      */
-    static private Map<String, Long> getColumnContentAsMap(Context context, Uri queryUri,
-            String column1, String column2) {
+    static private Map<String, UserData.StarredSession> getColumnContentAsMap(Context context,
+            Uri queryUri,
+            String sessionIdColumn, String inScheduleColumn, String timestampColumn) {
         Cursor cursor = context.getContentResolver().query(queryUri,
-                new String[]{column1, column2}, null, null, null);
-        Map<String, Long> columnValues = new HashMap<>();
+                new String[]{sessionIdColumn, inScheduleColumn, timestampColumn}, null, null, null);
+        Map<String, UserData.StarredSession> sessionValues = new HashMap<>();
         try {
             if (cursor != null && cursor.moveToFirst()) {
                 do {
-                    columnValues.put(cursor.getString(cursor.getColumnIndex(column1)),
-                            cursor.getLong(cursor.getColumnIndex(column2)));
+                    sessionValues.put(cursor.getString(cursor.getColumnIndex(sessionIdColumn)),
+                            new UserData.StarredSession(true,
+                                    cursor.getLong(cursor.getColumnIndex(timestampColumn))));
                 } while (cursor.moveToNext());
             }
 
@@ -131,7 +135,7 @@ public class UserDataHelper {
                 cursor.close();
             }
         }
-        return columnValues;
+        return sessionValues;
     }
 
     /**
@@ -141,7 +145,9 @@ public class UserDataHelper {
         UserData userData = new UserData();
 
         userData.setStarredSessions(getColumnContentAsMap(context,
-                ScheduleContract.MySchedule.CONTENT_URI, ScheduleContract.MySchedule.SESSION_ID,
+                ScheduleContract.MySchedule.CONTENT_URI,
+                ScheduleContract.MySchedule.SESSION_ID,
+                ScheduleContract.MySchedule.MY_SCHEDULE_IN_SCHEDULE,
                 ScheduleContract.MySchedule.MY_SCHEDULE_TIMESTAMP));
 
         // Get Viewed Videos.
@@ -172,13 +178,14 @@ public class UserDataHelper {
                 new String[]{accountName});
 
         // Now add the ones in sessionIds.
-        ArrayList<UserAction> actions = new ArrayList<UserAction>();
+        ArrayList<UserAction> actions = new ArrayList<>();
         if (userData.getStarredSessions() != null) {
-            for (Map.Entry<String, Long> entry : userData.getStarredSessions().entrySet()) {
+            for (Map.Entry<String, UserData.StarredSession> entry : userData.getStarredSessions().entrySet()) {
                 UserAction action = new UserAction();
-                action.type = UserAction.TYPE.ADD_STAR;
+                action.type = entry.getValue().isInSchedule() ? UserAction.TYPE.ADD_STAR:
+                        UserAction.TYPE.REMOVE_STAR;
                 action.sessionId = entry.getKey();
-                action.timestamp = entry.getValue();
+                action.timestamp = entry.getValue().getTimestamp();
                 actions.add(action);
             }
         }

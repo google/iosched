@@ -41,6 +41,8 @@ import static org.junit.Assert.assertThat;
 @RunWith(MockitoJUnitRunner.class)
 @SmallTest
 public class MergeHelperTest {
+
+    // TODO: expand tests to cover all sync scenarios. See b/28324707.
     public static final String UID = "uid";
 
     public static final String LOCAL_GCM_KEY = "LOCAL GCM KEY";
@@ -186,12 +188,6 @@ public class MergeHelperTest {
     }
 
     @Test
-    public void mergeUnsyncedActions_localRemoveStar_remoteAddStar_remoteStale() {
-        mHelper.mergeUnsyncedActions(withLocalRemoveRemoteAddRemoteStale());
-        assertThatMergedStarSessionsHasNoSessions();
-    }
-
-    @Test
     public void mergeUnsyncedActions_localRemoveStar_remoteAddStar_localStale() {
         mHelper.mergeUnsyncedActions(withLocalRemoveRemoteAddLocalStale());
         assertThatMergedStarSessionsHas(SESSION_ONE_ID);
@@ -268,15 +264,6 @@ public class MergeHelperTest {
     }
 
     @Test
-    public void getPendingFirebaseUpdatesMap_mergedDataHasSession_remoteDataHasDifferentSession() {
-        withMergedStarredSession(SESSION_ONE_ID);
-        withRemoteStarredSession(SESSION_TWO_ID);
-        assertThatSessionIsInSchedule(SESSION_ONE_ID, true);
-        assertThatSessionIsInSchedule(SESSION_TWO_ID, false);
-
-    }
-
-    @Test
     public void getPendingFirebaseUpdatesMap_storesMergedViewedVideo() {
         withMergedViewedVideos();
         assertThat(mHelper.getPendingFirebaseUpdatesMap().keySet(),
@@ -317,7 +304,8 @@ public class MergeHelperTest {
      * Adds a starred session to the remote user data.
      */
     private void withRemoteStarredSession(String sessionId) {
-        mHelper.getRemoteUserData().getStarredSessions().put(sessionId, TIMESTAMP);
+        mHelper.getRemoteUserData().getStarredSessions().put(sessionId,
+                new UserData.StarredSession(true,TIMESTAMP));
     }
 
     /**
@@ -348,7 +336,8 @@ public class MergeHelperTest {
      * action is greater than the timestamp of the remote starred session.
      */
     private List<UserAction> withLocalRemoveRemoteAddRemoteStale() {
-        mHelper.getRemoteUserData().getStarredSessions().put(SESSION_ONE_ID, STALE_TIMESTAMP);
+        mHelper.getRemoteUserData().getStarredSessions().put(SESSION_ONE_ID,
+                new UserData.StarredSession(true, STALE_TIMESTAMP));
         return new ArrayList<UserAction>() {{
             add(createRemoveStarAction(SESSION_ONE_ID, CURRENT_TIMESTAMP, true));
         }};
@@ -360,7 +349,8 @@ public class MergeHelperTest {
      * starred session is greater than the timestamp of the local action.
      */
     private List<UserAction> withLocalRemoveRemoteAddLocalStale() {
-        mHelper.getRemoteUserData().getStarredSessions().put(SESSION_ONE_ID, CURRENT_TIMESTAMP);
+        mHelper.getRemoteUserData().getStarredSessions().put(SESSION_ONE_ID,
+                new UserData.StarredSession(true, CURRENT_TIMESTAMP));
         return new ArrayList<UserAction>() {{
             add(createRemoveStarAction(SESSION_ONE_ID, STALE_TIMESTAMP, true));
         }};
@@ -399,7 +389,8 @@ public class MergeHelperTest {
      * @param sessionId The Id of the starred session.
      */
     private void withMergedStarredSession(String sessionId) {
-        mHelper.getMergedUserData().getStarredSessions().put(sessionId, CURRENT_TIMESTAMP);
+        mHelper.getMergedUserData().getStarredSessions().put(sessionId,
+                new UserData.StarredSession(true, CURRENT_TIMESTAMP));
     }
 
     /**
