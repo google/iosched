@@ -18,12 +18,14 @@ package com.google.samples.apps.iosched.util;
 
 import android.util.Log;
 
+import com.google.samples.apps.iosched.BuildConfig;
+
 public class LogUtils {
     private static final String LOG_PREFIX = "iosched_";
     private static final int LOG_PREFIX_LENGTH = LOG_PREFIX.length();
     private static final int MAX_LOG_TAG_LENGTH = 23;
 
-    public static boolean LOGGING_ENABLED = true;
+    public static boolean LOGGING_ENABLED = !BuildConfig.BUILD_TYPE.equalsIgnoreCase("release");
 
     public static String makeLogTag(String str) {
         if (str.length() > MAX_LOG_TAG_LENGTH - LOG_PREFIX_LENGTH) {
@@ -85,27 +87,19 @@ public class LogUtils {
     }
 
     public static void LOGW(final String tag, String message) {
-        if (LOGGING_ENABLED) {
-            Log.w(tag, message);
-        }
+        Log.w(tag, message);
     }
 
     public static void LOGW(final String tag, String message, Throwable cause) {
-        if (LOGGING_ENABLED) {
-            Log.w(tag, message, cause);
-        }
+        Log.w(tag, message, cause);
     }
 
     public static void LOGE(final String tag, String message) {
-        if (LOGGING_ENABLED){
-            Log.e(tag, message);
-        }
+        Log.e(tag, message);
     }
 
     public static void LOGE(final String tag, String message, Throwable cause) {
-        if (LOGGING_ENABLED) {
-            Log.e(tag, message, cause);
-        }
+        Log.e(tag, message, cause);
     }
 
     private LogUtils() {
