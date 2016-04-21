@@ -361,11 +361,6 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".explore.ExploreIOActivity" />
         </activity>
-        <activity
-            android:name=".debug.actions.ViewFilesInAppFolderActivity"
-            android:exported="false"
-            android:label="list files in appdata folder"
-            android:parentActivityName=".debug.DebugActivity"></activity>
 
         <!-- Session alarm/calendar integrating components. -->
         <receiver android:name=".receiver.SessionAlarmReceiver">

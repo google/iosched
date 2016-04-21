@@ -33,7 +33,6 @@ import com.google.samples.apps.iosched.debug.actions.DisplayUserDataDebugAction;
 import com.google.samples.apps.iosched.debug.actions.ForceAppDataSyncNowAction;
 import com.google.samples.apps.iosched.debug.actions.ForceSyncNowAction;
 import com.google.samples.apps.iosched.debug.actions.ScheduleStarredSessionAlarmsAction;
-import com.google.samples.apps.iosched.debug.actions.ShowAllDriveFilesDebugAction;
 import com.google.samples.apps.iosched.debug.actions.ShowSessionNotificationDebugAction;
 import com.google.samples.apps.iosched.debug.actions.TestScheduleHelperAction;
 import com.google.samples.apps.iosched.explore.ExploreSessionsActivity;
@@ -73,7 +72,6 @@ public class DebugFragment extends Fragment {
         ViewGroup tests = (ViewGroup) rootView.findViewById(R.id.debug_action_list);
         tests.addView(createTestAction(new ForceSyncNowAction()));
         tests.addView(createTestAction(new DisplayUserDataDebugAction()));
-        tests.addView(createTestAction(new ShowAllDriveFilesDebugAction()));
         tests.addView(createTestAction(new ForceAppDataSyncNowAction()));
         tests.addView(createTestAction(new TestScheduleHelperAction()));
         tests.addView(createTestAction(new ScheduleStarredSessionAlarmsAction()));
