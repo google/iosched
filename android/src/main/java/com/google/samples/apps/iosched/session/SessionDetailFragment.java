@@ -835,10 +835,9 @@ public class SessionDetailFragment extends Fragment
 
 
     private void updateTimeBasedUi(SessionDetailModel data) {
-        // Show "Live streamed" for all live-streamed sessions that have ended.
-        mLiveStreamedVideocamIconAndText
-                .setVisibility(data.hasLiveStream() && data.hasSessionEnded() ?
-                        View.VISIBLE : View.GONE);
+        // Show "Live streamed" label for all live-streamed sessions unless it has ended
+        mLiveStreamedVideocamIconAndText.setVisibility(
+                (data.hasLiveStream() && !data.hasSessionEnded()) ? View.VISIBLE : View.GONE);
 
         if (data.showLiveStream()) {
             // Show the play button and text only once the session is about to start.

@@ -89,8 +89,8 @@ public class SessionDetailActivity_LiveSessionIn9MinutesTest {
     }
 
     @Test
-    public void liveStreamedText_IsNotVisible() {
-        onView(withText(R.string.session_live_streamed)).check(matches(not(isDisplayed())));
+    public void liveStreamedText_IsVisible() {
+        onView(withText(R.string.session_live_streamed)).check(matches(isDisplayed()));
     }
 
     /**
