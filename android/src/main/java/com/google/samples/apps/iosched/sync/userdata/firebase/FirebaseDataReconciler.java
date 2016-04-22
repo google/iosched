@@ -120,28 +120,27 @@ public class FirebaseDataReconciler {
 
     /**
      * Extracts the starred sessions data from a {@link DataSnapshot} and returns the result as a
-     * map where the keys are session IDs and the values are the timestamp when the session was
-     * starred.
+     * map where the keys are session IDs and the values are {@link UserData.StarredSession}
+     * objects.
      */
+    private Map<String, UserData.StarredSession> getRemoteStarredSessionsMap() {
+        // Store each starred session and the associated StarredSession data in a map.
+        Map<String, UserData.StarredSession> starredSessionsMap = new HashMap<>();
 
-    private Map<String, Long> getRemoteStarredSessionsMap() {
-        // Store each starred session and the associated timestamp in a Map.
-        Map<String, Long> starredSessionsMap = new HashMap<>();
-
-        // Get snapshot of starred sessions stored at /<uid>/starred_sessions/.
+        // Get starred sessions snapshot.
         DataSnapshot starredSessionsDataSnapshot = mRemoteDataSnapshot.child(
                 FirebaseUtils.FIREBASE_NODE_MY_SESSIONS);
 
-        // Get snapshot of each starred session data stored at /<uid>/starred_sessions/<session_id>
-        // and save only the starred sessions.
+        // Get snapshot of each starred session.
         for (DataSnapshot singleSessionDataSnapshot : starredSessionsDataSnapshot.getChildren()) {
             DataSnapshot inScheduleSnapshot = singleSessionDataSnapshot.child(
                     FirebaseUtils.FIREBASE_NODE_IN_SCHEDULE);
-            if (inScheduleSnapshot.getValue() != null && inScheduleSnapshot.getValue().equals(
-                    true)) {
-                starredSessionsMap.put(singleSessionDataSnapshot.getKey(),
-                        (Long) singleSessionDataSnapshot
-                                .child(FirebaseUtils.FIREBASE_NODE_TIMESTAMP).getValue());
+            if (inScheduleSnapshot.getValue() != null) {
+                UserData.StarredSession starredSession = new UserData.StarredSession(
+                        (boolean) inScheduleSnapshot.getValue(),
+                        (Long) singleSessionDataSnapshot.child
+                                (FirebaseUtils.FIREBASE_NODE_TIMESTAMP).getValue());
+                starredSessionsMap.put(singleSessionDataSnapshot.getKey(), starredSession);
             }
         }
         return starredSessionsMap;
@@ -217,7 +216,7 @@ public class FirebaseDataReconciler {
      */
     public FirebaseDataReconciler updateLocal() {
         if (localDataChanged()) {
-            LOGI(TAG, "Updating local user data.");
+            LOGI(TAG, "Updating local user data after merge.");
             UserDataHelper.setLocalUserData(mContext, mMergedUserData, mAccountName);
         } else {
             LOGI(TAG, "No changes to local data. Not updating ContentProvider.");
