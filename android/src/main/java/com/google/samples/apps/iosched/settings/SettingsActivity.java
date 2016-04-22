@@ -22,10 +22,9 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
-import android.preference.PreferenceFragment;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
-import android.support.v4.content.ContextCompat;
+import android.support.v7.preference.PreferenceFragmentCompat;
 
 import com.google.samples.apps.iosched.R;
 import com.google.samples.apps.iosched.navigation.NavigationModel;
@@ -97,7 +96,7 @@ public class SettingsActivity extends BaseActivity {
     /**
      * The Fragment is added via the R.layout.settings_act layout xml.
      */
-    public static class SettingsFragment extends PreferenceFragment
+    public static class SettingsFragment extends PreferenceFragmentCompat
             implements SharedPreferences.OnSharedPreferenceChangeListener {
         public SettingsFragment() {
         }
@@ -105,9 +104,12 @@ public class SettingsActivity extends BaseActivity {
         @Override
         public void onCreate(Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
-            addPreferencesFromResource(R.xml.settings_prefs);
-
             SettingsUtils.registerOnSharedPreferenceChangeListener(getActivity(), this);
+        }
+
+        @Override
+        public void onCreatePreferences(Bundle bundle, String s) {
+            addPreferencesFromResource(R.xml.settings_prefs);
         }
 
         @Override

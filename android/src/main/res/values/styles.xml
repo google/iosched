@@ -58,6 +58,8 @@
 
         <item name="imageItemBackground">?android:selectableItemBackground</item>
         <item name="android:borderlessButtonStyle">@style/Widget.AppCompat.Button.Borderless</item>
+
+        <item name="preferenceTheme">@style/SettingsPreferenceThemeOverlay</item>
     </style>
 
     <style name="Theme.IOSched" parent="Theme.IOSched.Base" />
@@ -446,6 +448,14 @@
     <style name="VideoThumbnail">
         <item name="playIcon">@drawable/ic_play_shadowed</item>
         <item name="playedTint">@color/played_video_tint</item>
+    </style>
+
+    <style name="SettingsPreferenceThemeOverlay" parent="PreferenceThemeOverlay">
+        <item name="switchPreferenceCompatStyle">@style/SettingsSwitchPreference</item>
+    </style>
+
+    <style name="SettingsSwitchPreference" parent="Preference.SwitchPreferenceCompat">
+        <item name="android:layout">@layout/iosched_preference</item>
     </style>
 
 </resources>
