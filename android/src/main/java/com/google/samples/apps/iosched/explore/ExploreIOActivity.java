@@ -42,6 +42,11 @@ public class ExploreIOActivity extends BaseActivity implements Toolbar.OnMenuIte
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        Intent launchIntent = getIntent();
+        if (launchIntent != null && (!Intent.ACTION_MAIN.equals(launchIntent.getAction())
+                || !launchIntent.hasCategory(Intent.CATEGORY_LAUNCHER))) {
+            overridePendingTransition(0, 0);
+        }
         super.onCreate(savedInstanceState);
         setContentView(R.layout.explore_io_act);
         setTitle(R.string.title_explore);

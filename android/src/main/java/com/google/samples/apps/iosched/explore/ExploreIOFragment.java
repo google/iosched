@@ -139,7 +139,6 @@ public class ExploreIOFragment extends Fragment
         mCardList.addItemDecoration(new ItemMarginDecoration(0, cardVerticalMargin,
                 0, cardVerticalMargin));
         mEmptyView = root.findViewById(android.R.id.empty);
-        getActivity().overridePendingTransition(0, 0);
         return root;
     }
 
