@@ -96,13 +96,14 @@ public class MapFragment extends com.google.android.gms.maps.MapFragment impleme
      * Default zoom level for programmatic camera updates when the camera is moved to a specific
      * room.
      */
-    private static final float VENUE_CAMERA_ZOOM = 16.35f;
+    private static final float VENUE_CAMERA_ZOOM = 17.7f;
+
     /**
      * Default position of the camera that shows the venue.
      */
     private static final CameraPosition VENUE_CAMERA =
-            new CameraPosition.Builder().bearing(234.2f)
-                                        .target(new LatLng(37.426360f, -122.079552f))
+            new CameraPosition.Builder().bearing(334.04f)
+                                        .target(new LatLng(37.42574957397063f, -122.0797488838434f))
                                         .zoom(VENUE_CAMERA_ZOOM).tilt(0f).build();
 
     /**
