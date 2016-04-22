@@ -335,33 +335,235 @@
             "markers": {
                 "0": [
                     {
-                        "id": "Stage1",
+                        "id": "19b9264a-35c9-e511-ab0e-00155d5066d7",
                         "lat": 37.425635,
                         "lng": -122.07970,
-                        "title": "Session 1",
+                        "title": "Stage 1",
                         "type": "SESSION"
                     },
                     {
-                        "id": "Stage2",
+                        "id": "Stage 1 label",
+                        "lat": 37.425635,
+                        "lng": -122.07970,
+                        "title": "Stage 1",
+                        "type": "LABEL"
+                    },
+                    {
+                        "id": "a8f18b8f-7dcb-e511-ab0e-00155d5066d7",
                         "lat": 37.425053,
                         "lng": -122.080294,
-                        "title": "Session 2",
+                        "title": "Stage 2",
                         "type": "SESSION"
                     },
                     {
-                        "id": "Stage3",
+                        "id": "Stage 2 label",
+                        "lat": 37.425053,
+                        "lng": -122.080294,
+                        "title": "Stage 2",
+                        "type": "LABEL"
+                    },
+                    {
+                        "id": "84a30586-09fd-e511-a517-00155d5066d7",
                         "lat": 37.424488,
                         "lng": -122.079946,
-                        "title": "Session 3",
+                        "title": "Stage 3",
                         "type": "SESSION"
-
                     },
                     {
-                        "id": "e32adaab-37e5-e411-b87f-00155d5066d7",
-                        "lat": 37.426393,
-                        "lng": -122.080020,
-                        "title": "Codelabs",
-                        "type": "CODELAB"
+                        "id": "Stage 3 label",
+                        "lat": 37.424488,
+                        "lng": -122.079946,
+                        "title": "Stage 3",
+                        "type": "LABEL"
+                    },
+                    {
+                        "id": "1a17939d-09fd-e511-a517-00155d5066d7",
+                        "lat": 37.424219,
+                        "lng": -122.079648,
+                        "title": "Stage 4",
+                        "type": "SESSION"
+                    },
+                    {
+                        "id": "Stage 4 label",
+                        "lat": 37.424219,
+                        "lng": -122.079648,
+                        "title": "Stage 4",
+                        "type": "LABEL"
+                    },
+                    {
+                        "id": "d81361d2-09fd-e511-a517-00155d5066d7",
+                        "lat": 37.423983,
+                        "lng": -122.078921,
+                        "title": "Stage 5",
+                        "type": "SESSION"
+                    },
+                    {
+                        "id": "Stage 5 label",
+                        "lat": 37.423983,
+                        "lng": -122.078921,
+                        "title": "Stage 5",
+                        "type": "LABEL"
+                    },
+                    {
+                        "id": "a4eedfa7-09fd-e511-a517-00155d5066d7",
+                        "lat": 37.424178,
+                        "lng": -122.079201,
+                        "title": "Stage 6",
+                        "type": "SESSION"
+                    },
+                    {
+                        "id": "Stage 6 label",
+                        "lat": 37.424178,
+                        "lng": -122.079201,
+                        "title": "Stage 6",
+                        "type": "LABEL"
+                    },
+                    {
+                        "id": "07f1b8dd-09fd-e511-a517-00155d5066d7",
+                        "lat": 37.424465,
+                        "lng": -122.078835,
+                        "title": "Stage 7",
+                        "type": "SESSION"
+                    },
+                    {
+                        "id": "Stage 7 label",
+                        "lat": 37.424465,
+                        "lng": -122.078835,
+                        "title": "Stage 7",
+                        "type": "LABEL"
+                    },
+                    {
+                        "id": "e2b5f2e7-09fd-e511-a517-00155d5066d7",
+                        "lat": 37.42491,
+                        "lng": -122.078791,
+                        "title": "Stage 8",
+                        "type": "SESSION"
+                    },
+                    {
+                        "id": "Stage 8 label",
+                        "lat": 37.42491,
+                        "lng": -122.078791,
+                        "title": "Stage 8",
+                        "type": "LABEL"
+                    },
+                    {
+                        "id": "d1df0515-0afd-e511-a517-00155d5066d7",
+                        "lat": 37.425236,
+                        "lng": -122.079201,
+                        "title": "Stage 9",
+                        "type": "SESSION"
+                    },
+                    {
+                        "id": "Stage 9 label",
+                        "lat": 37.425236,
+                        "lng": -122.079201,
+                        "title": "Stage 9",
+                        "type": "LABEL"
+                    },
+                    {
+                        "id": "c675afbb-4702-e611-a517-00155d5066d7",
+                        "lat": 37.42544,
+                        "lng": -122.078857,
+                        "title": "Stage 10",
+                        "type": "SESSION"
+                    },
+                    {
+                        "id": "Stage 10 label",
+                        "lat": 37.42544,
+                        "lng": -122.078857,
+                        "title": "Stage 10",
+                        "type": "LABEL"
+                    },
+                    {
+                        "id": "SandboxA",
+                        "lat": 37.425474,
+                        "lng": -122.080378,
+                        "title": "Demo Zone",
+                        "type": "SANDBOX"
+                    },
+                    {
+                        "id": "SandboxB",
+                        "lat": 37.425379,
+                        "lng": -122.079684,
+                        "title": "Demo Zone",
+                        "type": "SANDBOX"
+                    },
+                    {
+                        "id": "SandboxC",
+                        "lat": 37.425135,
+                        "lng": -122.079669,
+                        "title": "Demo Zone",
+                        "type": "SANDBOX"
+                    },
+                    {
+                        "id": "SandboxD",
+                        "lat": 37.425049,
+                        "lng": -122.079927,
+                        "title": "Demo Zone",
+                        "type": "SANDBOX"
+                    },
+                    {
+                        "id": "SandboxE",
+                        "lat": 37.424568,
+                        "lng": -122.079729,
+                        "title": "Demo Zone",
+                        "type": "SANDBOX"
+                    },
+                    {
+                        "id": "SandboxF",
+                        "lat": 37.424261,
+                        "lng": -122.079928,
+                        "title": "Demo Zone",
+                        "type": "SANDBOX"
+                    },
+                    {
+                        "id": "SandboxG",
+                        "lat": 37.424383,
+                        "lng": -122.079275,
+                        "title": "Demo Zone",
+                        "type": "SANDBOX"
+                    },
+                    {
+                        "id": "SandboxH",
+                        "lat": 37.424593,
+                        "lng": -122.079241,
+                        "title": "Demo Zone",
+                        "type": "SANDBOX"
+                    },
+                    {
+                        "id": "SandboxI",
+                        "lat": 37.424578,
+                        "lng": -122.079045,
+                        "title": "Demo Zone",
+                        "type": "SANDBOX"
+                    },
+                    {
+                        "id": "SandboxJ",
+                        "lat": 37.42496,
+                        "lng": -122.079298,
+                        "title": "Demo Zone",
+                        "type": "SANDBOX"
+                    },
+                    {
+                        "id": "SandboxK",
+                        "lat": 37.425018,
+                        "lng": -122.079005,
+                        "title": "Demo Zone",
+                        "type": "SANDBOX"
+                    },
+                    {
+                        "id": "SandboxL",
+                        "lat": 37.425452,
+                        "lng": -122.07906,
+                        "title": "Demo Zone",
+                        "type": "SANDBOX"
+                    },
+                    {
+                        "id": "SandboxM",
+                        "lat": 37.425943,
+                        "lng": -122.081036,
+                        "title": "Demo Zone",
+                        "type": "SANDBOX"
                     },
                     {
                         "id": "Registration",
@@ -369,21 +571,40 @@
                         "lng": -122.079566,
                         "title": "Registration",
                         "type": "LABEL"
-
                     },
                     {
-                        "id": "9ef51a8f-ace3-e411-b87f-00155d5066d7",
-                        "lat": 37.425131,
-                        "lng": -122.0796379,
-                        "title": "Accessibility",
-                        "type": "SANDBOX"
-
+                        "id": "0d370d14-9902-e611-a517-00155d5066d7",
+                        "lat": 37.426367,
+                        "lng": -122.079996,
+                        "title": "Codelabs",
+                        "type": "CODELAB"
+                    },
+                    {
+                        "id": "Code labs",
+                        "lat": 37.426367,
+                        "lng": -122.079996,
+                        "title": "Codelabs",
+                        "type": "LABEL"
+                    },
+                    {
+                        "id": "34b13834-0afd-e511-a517-00155d5066d7",
+                        "lat": 37.427008,
+                        "lng": -122.081116,
+                        "title": "Keynote & Concert area",
+                        "type": "SESSION"
+                    },
+                    {
+                        "id": "Keynote Label",
+                        "lat": 37.427008,
+                        "lng": -122.081116,
+                        "title": "Keynote & Concert area",
+                        "type": "LABEL"
                     }
                 ]
             },
             "tiles": {
                 "0": {
-                    "filename": "floor0-2016-draft3.svg",
+                    "filename": "floor0-2016-1.svg",
                     "url": ""
                 }
             }
