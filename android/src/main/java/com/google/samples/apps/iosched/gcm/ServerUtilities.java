@@ -50,7 +50,7 @@ public final class ServerUtilities {
 
     private static final String PREFERENCES = "com.google.samples.apps.iosched.gcm";
     private static final String PROPERTY_REGISTERED_TS = "registered_ts";
-    private static final String PROPERTY_REG_ID = "reg_id";
+    private static final String PROPERTY_REG_ID = "gcm_id";
     private static final String PROPERTY_GCM_KEY = "gcm_key";
     private static final int MAX_ATTEMPTS = 5;
     private static final int BACKOFF_MILLI_SECONDS = 2000;
