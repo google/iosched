@@ -16,6 +16,7 @@
 package com.google.samples.apps.iosched.model;
 
 import com.google.common.annotations.VisibleForTesting;
+import com.google.samples.apps.iosched.Config;
 import com.google.samples.apps.iosched.provider.ScheduleContract;
 
 public class ScheduleItem implements Cloneable, Comparable<ScheduleItem> {
@@ -75,6 +76,10 @@ public class ScheduleItem implements Cloneable, Comparable<ScheduleItem> {
         } else {
             type = BREAK;
         }
+    }
+
+    public boolean isKeynote() {
+        return mainTag != null && Config.Tags.SPECIAL_KEYNOTE.equals(mainTag);
     }
 
     /**

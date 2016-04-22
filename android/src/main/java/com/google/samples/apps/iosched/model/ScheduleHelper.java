@@ -222,6 +222,7 @@ public class ScheduleHelper {
                     Blocks.BLOCK_START);
 
             if (cursor.moveToFirst()) {
+                final boolean attendeeAtVenue = SettingsUtils.isAttendeeAtVenue(mContext);
                 do {
                     ScheduleItem item = new ScheduleItem();
                     item.setTypeFromBlockType(cursor.getString(BlocksQuery.BLOCK_TYPE));
@@ -231,7 +232,7 @@ public class ScheduleHelper {
                     item.endTime = cursor.getLong(BlocksQuery.BLOCK_END);
 
                     // Hide BREAK blocks to remote attendees (b/14666391):
-                    if (item.type == ScheduleItem.BREAK && !SettingsUtils.isAttendeeAtVenue(mContext)) {
+                    if (item.type == ScheduleItem.BREAK && !attendeeAtVenue) {
                         continue;
                     }
                     // Currently, only type=FREE is mutable
