@@ -331,23 +331,21 @@ public class MyScheduleDayAdapter implements ListAdapter, AbsListView.RecyclerLi
             }
             holder.title.setVisibility(View.VISIBLE);
             holder.title.setText(item.title);
-            holder.more.setVisibility(View.VISIBLE);
+            holder.more.setVisibility(item.isKeynote() ? View.GONE : View.VISIBLE);
             holder.browse.setVisibility(View.GONE);
             holder.icon.setImageResource(UIUtils.getSessionIcon(item.sessionType));
 
-            Uri sessionUri = ScheduleContract.Sessions.buildSessionUri(item.sessionId);
+            final Uri sessionUri = ScheduleContract.Sessions.buildSessionUri(item.sessionId);
             if (0 != (item.flags & ScheduleItem.FLAG_CONFLICTS_WITH_PREVIOUS)) {
                 holder.startTime.setVisibility(View.GONE);
                 holder.description.setTextColor(mColorConflict);
                 setUriClickable(holder.touchArea, sessionUri);
             } else {
                 holder.startTime.setVisibility(View.VISIBLE);
-                Uri intervalUri = ScheduleContract.Sessions.buildUnscheduledSessionsInInterval(
-                        item.startTime, item.endTime);
-                setUriClickable(holder.startTime, intervalUri);
-                setUriClickable(holder.more, intervalUri);
-                // Padding fix needed for KitKat 4.4. (padding gets removed by setting the
-                // background)
+                setUriClickable(holder.startTime, ScheduleContract.Sessions
+                        .buildUnscheduledSessionsInInterval(item.startTime, item.endTime));
+
+                // Padding fix needed for KitKat (padding gets removed by setting the background)
                 holder.startTime.setPadding(
                         (int) mContext.getResources().getDimension(R.dimen.keyline_2), 0,
                         (int) mContext.getResources().getDimension(R.dimen.keyline_2), 0);

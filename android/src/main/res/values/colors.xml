@@ -115,8 +115,7 @@
     <color name="grey_background">#f5f5f5</color>
     <color name="dark_divider">#32000000</color>
 
-    <color name="more_button_background">#40000000</color>
-    <color name="more_button_text">@color/cyan_a700_plus</color>
+    <color name="more_button_background">#40707070</color>
 
     <color name="navdrawer_background">#ffffffff</color>
     <color name="navdrawer_text_color">@color/body_text_1</color>
