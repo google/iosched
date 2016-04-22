@@ -26,6 +26,8 @@ import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 import android.content.res.Resources;
 import android.content.res.TypedArray;
+import android.graphics.Bitmap;
+import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.ColorFilter;
 import android.graphics.ColorMatrixColorFilter;
@@ -46,6 +48,7 @@ import android.support.annotation.ColorInt;
 import android.support.annotation.ColorRes;
 import android.support.annotation.DrawableRes;
 import android.support.annotation.NonNull;
+import android.support.graphics.drawable.VectorDrawableCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.graphics.ColorUtils;
 import android.text.Html;
@@ -735,6 +738,17 @@ public class UIUtils {
      */
     public static View getRootView(Activity activity) {
         return activity.getWindow().getDecorView().findViewById(android.R.id.content);
+    }
+
+    public static Bitmap vectorToBitmap(@NonNull Context context, @DrawableRes int drawableResId) {
+        VectorDrawableCompat vector = VectorDrawableCompat.create(context.getResources(), drawableResId, context.getTheme());
+        final Bitmap bitmap = Bitmap.createBitmap(vector.getIntrinsicWidth(),
+                vector.getIntrinsicHeight(),
+                Bitmap.Config.ARGB_8888);
+        final Canvas canvas = new Canvas(bitmap);
+        vector.setBounds(0, 0, canvas.getWidth(), canvas.getHeight());
+        vector.draw(canvas);
+        return bitmap;
     }
 
     /**
