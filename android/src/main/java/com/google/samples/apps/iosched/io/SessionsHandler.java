@@ -371,7 +371,7 @@ public class SessionsHandler extends JSONHandler {
         if (retainLocallyStarredSessions) {
             // Collect the list of current starred sessions
             Cursor starredSessionsCursor = mContext.getContentResolver().query(
-                    Uri.parse(ScheduleContract.Sessions.SESSION_IN_MY_SCHEDULE),
+                    ScheduleContract.Sessions.CONTENT_MY_SCHEDULE_URI,
                     new String[]{ScheduleContract.Sessions.SESSION_ID},
                     null, null, null);
             while (starredSessionsCursor.moveToNext()) {

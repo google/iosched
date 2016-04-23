@@ -16,11 +16,13 @@
 
 package com.google.samples.apps.iosched.io;
 
+import com.google.common.collect.Lists;
 import com.google.samples.apps.iosched.io.model.Room;
 import com.google.samples.apps.iosched.provider.ScheduleContract;
 import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 import com.google.samples.apps.iosched.provider.ScheduleContractHelper;
+import com.google.samples.apps.iosched.util.ParserUtils;
 
 import android.content.ContentProviderOperation;
 import android.content.Context;
@@ -29,6 +31,8 @@ import android.net.Uri;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
+
+import no.java.schedule.io.model.EMSItem;
 
 import static com.google.samples.apps.iosched.util.LogUtils.makeLogTag;
 
@@ -67,6 +71,25 @@ public class RoomsHandler extends JSONHandler {
 
     @Override
     public ArrayList<ContentProviderOperation> parse(String json) throws IOException {
-        return null;
+        JZRoomsResponse response = new Gson().fromJson(json, JZRoomsResponse.class);
+
+
+        final ArrayList<ContentProviderOperation> batch = Lists.newArrayList();
+
+        for (EMSItem room : response.collection.items) {
+            parseRoom(room, batch);
+        }
+
+        return batch;
+    }
+
+    private static void parseRoom(EMSItem room, ArrayList<ContentProviderOperation> batch) {
+        ContentProviderOperation.Builder builder = ContentProviderOperation
+                .newInsert(ScheduleContract.addCallerIsSyncAdapterParameter(
+                        ScheduleContract.Rooms.CONTENT_URI));
+        builder.withValue(ScheduleContract.Rooms.ROOM_ID, ParserUtils.sanitizeId(room.href.toString()));
+        builder.withValue(ScheduleContract.Rooms.ROOM_NAME, room.getValue("name"));
+        builder.withValue(ScheduleContract.Rooms.ROOM_FLOOR, "");
+        batch.add(builder.build());
     }
 }
