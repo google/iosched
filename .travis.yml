@@ -27,6 +27,7 @@ notifications:
   email: false
 
 before_install:
+  - android list targets
   - echo no | android create avd --force -n test -t "Google Inc.:Google APIs:23" --abi google_apis/armeabi-v7a
   - emulator -avd test -no-skin -no-audio -no-window &
 
