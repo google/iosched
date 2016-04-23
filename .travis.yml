@@ -31,6 +31,6 @@ notifications:
 #  - echo no | android create avd --force -n test -t "Google Inc.:Google APIs:21" --abi google_apis/armeabi-v7a
 #  - emulator -avd test -no-skin -no-audio -no-window &
 
-before_script:
-  - ./scripts/wait_for_emulator.sh
-  - adb shell input keyevent 82 &
+#before_script:
+#  - ./scripts/wait_for_emulator.sh
+#  - adb shell input keyevent 82 &
