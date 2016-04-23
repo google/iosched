@@ -21,6 +21,7 @@ android:
     - extra-google-m2repository
     - android-23
     - build-tools-23.0.2
+    - build-tools-23.0.2
     - addon-google_apis-google-23
 
 notifications:
