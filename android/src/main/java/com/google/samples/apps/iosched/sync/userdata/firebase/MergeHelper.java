@@ -16,6 +16,7 @@ package com.google.samples.apps.iosched.sync.userdata.firebase;
 
 import android.support.annotation.NonNull;
 import android.support.annotation.VisibleForTesting;
+import android.text.TextUtils;
 
 import com.google.samples.apps.iosched.sync.userdata.UserAction;
 import com.google.samples.apps.iosched.sync.userdata.util.UserData;
@@ -227,6 +228,15 @@ public class MergeHelper {
     private void updateSessionTimestamp(Map<String, Object> map, String uid, String sessionId,
             Long timestamp) {
         map.put(FirebaseUtils.getStarredSessionTimestampChildPath(uid, sessionId), timestamp);
+    }
+
+    /**
+     * Tracks whether the local gcm key should be updated.
+     *
+     * @return True if the local gcm key should be updated, otherwise false.
+     */
+    protected boolean isLocalGcmKeyUpdateNeeded() {
+        return !TextUtils.equals(mMergedUserData.getGcmKey(), mLocalUserData.getGcmKey());
     }
 
     /**
