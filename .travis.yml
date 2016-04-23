@@ -21,14 +21,14 @@ android:
     - addon-google_apis-google-23
     - extra-google-m2repository
     - extra-android-m2repository
-    - sys-img-armeabi-v7a-android-23
+    - sys-img-armeabi-v7a-addon-google_apis-google-23
 
 notifications:
   email: false
 
 before_install:
   - android list targets
-  - echo no | android create avd --force -n test -t "Google Inc.:Google APIs:23" --abi google_apis/armeabi-v7a-23
+  - echo no | android create avd --force -n test -t "Google Inc.:Google APIs:21" --abi google_apis/armeabi-v7a
   - emulator -avd test -no-skin -no-audio -no-window &
 
 before_script:
