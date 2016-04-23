@@ -210,11 +210,13 @@ public class FirebaseDataReconciler {
     }
 
     /**
-     * Updates the local DB if the local data has become stale.
+     * Updates the local DB if the local data has become stale. Updates gcm key in
+     * {@link android.content.SharedPreferences}.
      *
      * @return this (for method chaining).
      */
     public FirebaseDataReconciler updateLocal() {
+        AccountUtils.setGcmKey(mContext,mAccountName, mMergedUserData.getGcmKey());
         if (localDataChanged()) {
             LOGI(TAG, "Updating local user data after merge.");
             UserDataHelper.setLocalUserData(mContext, mMergedUserData, mAccountName);
