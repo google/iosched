@@ -26,9 +26,9 @@ import android.support.v7.app.AppCompatActivity;
 import android.widget.Button;
 import android.widget.ImageView;
 
-import com.google.samples.apps.iosched.BuildConfig;
+import no.java.schedule.BuildConfig;
 import com.google.samples.apps.iosched.Config;
-import com.google.samples.apps.iosched.R;
+import no.java.schedule.R;
 import com.google.samples.apps.iosched.settings.SettingsUtils;
 
 import java.util.ArrayList;

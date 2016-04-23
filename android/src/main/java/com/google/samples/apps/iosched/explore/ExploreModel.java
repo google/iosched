@@ -18,7 +18,7 @@ package com.google.samples.apps.iosched.explore;
 
 import com.google.common.annotations.VisibleForTesting;
 import com.google.samples.apps.iosched.Config;
-import com.google.samples.apps.iosched.R;
+import no.java.schedule.R;
 import com.google.samples.apps.iosched.explore.data.ItemGroup;
 import com.google.samples.apps.iosched.explore.data.LiveStreamData;
 import com.google.samples.apps.iosched.explore.data.SessionData;

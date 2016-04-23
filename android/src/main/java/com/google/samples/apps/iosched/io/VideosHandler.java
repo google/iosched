@@ -30,6 +30,7 @@ import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 import com.google.samples.apps.iosched.provider.ScheduleContractHelper;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -98,6 +99,11 @@ public class VideosHandler extends JSONHandler {
         LOGD(TAG, "Videos: " + (isIncrementalUpdate ? "INCREMENTAL" : "FULL") + " update. " +
                 updatedVideos + " to update, " + deletedVideos + " to delete. New total: " +
                 mVideos.size());
+    }
+
+    @Override
+    public ArrayList<ContentProviderOperation> parse(String json) throws IOException {
+        return null;
     }
 
     private void buildVideo(boolean isInsert, Video video,

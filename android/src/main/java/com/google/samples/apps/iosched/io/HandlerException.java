@@ -45,4 +45,30 @@ public class HandlerException extends IOException {
             return getLocalizedMessage();
         }
     }
+
+    public static class UnauthorizedException extends HandlerException {
+        public UnauthorizedException() {
+        }
+
+        public UnauthorizedException(String message) {
+            super(message);
+        }
+
+        public UnauthorizedException(String message, Throwable cause) {
+            super(message, cause);
+        }
+    }
+
+    public static class NoDevsiteProfileException extends HandlerException {
+        public NoDevsiteProfileException() {
+        }
+
+        public NoDevsiteProfileException(String message) {
+            super(message);
+        }
+
+        public NoDevsiteProfileException(String message, Throwable cause) {
+            super(message, cause);
+        }
+    }
 }

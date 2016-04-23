@@ -19,8 +19,9 @@ package com.google.samples.apps.iosched.util;
 import com.google.android.gms.analytics.GoogleAnalytics;
 import com.google.android.gms.analytics.HitBuilders;
 import com.google.android.gms.analytics.Tracker;
-import com.google.samples.apps.iosched.BuildConfig;
-import com.google.samples.apps.iosched.R;
+import no.java.schedule.BuildConfig;
+import no.java.schedule.R;
+
 import com.google.samples.apps.iosched.settings.ConfMessageCardUtils;
 import com.google.samples.apps.iosched.settings.SettingsUtils;
 

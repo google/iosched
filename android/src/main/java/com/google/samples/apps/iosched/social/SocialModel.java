@@ -20,7 +20,7 @@ package com.google.samples.apps.iosched.social;
 import android.content.Context;
 import android.net.Uri;
 
-import com.google.samples.apps.iosched.R;
+import no.java.schedule.R;
 
 /**
  * The data source for {@link com.google.samples.apps.iosched.social.SocialFragment}. The data

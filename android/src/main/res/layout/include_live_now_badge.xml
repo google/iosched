@@ -26,7 +26,7 @@
     android:paddingTop="4dp"
     android:paddingBottom="4dp"
     android:paddingRight="16dp"
-    android:background="@color/theme_primary"
+    android:background="@color/jz_yellow"
     android:text="@string/live_now"
     android:drawableLeft="@drawable/ic_live_now"
     android:drawablePadding="4dp"

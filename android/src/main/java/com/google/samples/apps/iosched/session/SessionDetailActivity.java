@@ -23,7 +23,7 @@ import android.os.Handler;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 
-import com.google.samples.apps.iosched.R;
+import no.java.schedule.R;
 import com.google.samples.apps.iosched.session.SessionDetailModel.SessionDetailQueryEnum;
 import com.google.samples.apps.iosched.session.SessionDetailModel.SessionDetailUserActionEnum;
 import com.google.samples.apps.iosched.ui.BaseActivity;

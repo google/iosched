@@ -112,6 +112,12 @@
 -keep class com.google.maps.android.**
 -keep class libcore.**
 
+-dontwarn retrofit2.**
+-keep class retrofit2.** { *; }
+-keepattributes Signature
+-keepattributes Exceptions
+
+
 -dontwarn com.nineoldandroids.view.animation.** #Required by SlidingUpPanel
 -dontwarn org.junit.**
 -dontwarn org.mockito.**

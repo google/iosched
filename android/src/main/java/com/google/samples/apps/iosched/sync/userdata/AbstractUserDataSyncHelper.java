@@ -23,7 +23,6 @@ import android.util.Log;
 
 import com.google.samples.apps.iosched.appwidget.ScheduleWidgetProvider;
 import com.google.samples.apps.iosched.framework.QueryEnum;
-import com.google.samples.apps.iosched.gcm.ServerUtilities;
 import com.google.samples.apps.iosched.provider.ScheduleContract;
 import com.google.samples.apps.iosched.provider.ScheduleContract.MySchedule;
 import com.google.samples.apps.iosched.provider.ScheduleContract.MyFeedbackSubmitted;
@@ -166,9 +165,6 @@ public abstract class AbstractUserDataSyncHelper {
 
         if (hasPendingLocalData) {
             resetDirtyFlag(actions);
-
-            // Notify other devices via GCM.
-            ServerUtilities.notifyUserDataChanged(mContext);
         }
         if (dataChanged) {
             LOGD(TAG, "Notifying changes on paths related to user data on Content Resolver.");

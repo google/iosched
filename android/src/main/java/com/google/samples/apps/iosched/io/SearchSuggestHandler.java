@@ -26,6 +26,7 @@ import android.content.ContentProviderOperation;
 import android.content.Context;
 import android.net.Uri;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashSet;
 
@@ -58,5 +59,10 @@ public class SearchSuggestHandler extends JSONHandler {
                 .withValue(SearchManager.SUGGEST_COLUMN_TEXT_1, word)
                 .build());
         }
+    }
+
+    @Override
+    public ArrayList<ContentProviderOperation> parse(String json) throws IOException {
+        return null;
     }
 }

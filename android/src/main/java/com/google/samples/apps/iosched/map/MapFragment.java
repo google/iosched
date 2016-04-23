@@ -29,7 +29,7 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.TileOverlay;
 import com.google.android.gms.maps.model.TileOverlayOptions;
-import com.google.samples.apps.iosched.R;
+import no.java.schedule.R;
 import com.google.samples.apps.iosched.map.util.CachedTileProvider;
 import com.google.samples.apps.iosched.map.util.MarkerLoadingTask;
 import com.google.samples.apps.iosched.map.util.MarkerModel;

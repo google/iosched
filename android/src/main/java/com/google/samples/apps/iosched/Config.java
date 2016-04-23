@@ -23,10 +23,40 @@ import java.util.Map;
 import java.util.TimeZone;
 import java.util.concurrent.TimeUnit;
 
+import no.java.schedule.BuildConfig;
+import no.java.schedule.R;
+
 public class Config {
 
     // Warning messages for dogfood build
     public static final String DOGFOOD_BUILD_WARNING_TITLE = "DOGFOOD BUILD";
+    public static final String CLIENT_ID = "0000000000000.apps.googleusercontent.com"; // from the APIs console
+    public static final String EMS_SLOTS = "http://javazone.no/ems/server/events/0e6d98e9-5b06-42e7-b275-6abadb498c81/slots";
+    public static final String EMS_ROOMS = "http://javazone.no/ems/server/events/0e6d98e9-5b06-42e7-b275-6abadb498c81/rooms";
+
+
+    private static final String BASE_URL = "http://javazone.no/ems/server/events/0e6d98e9-5b06-42e7-b275-6abadb498c81";
+
+    //TODO slots
+    public static final String GET_ALL_BLOCKS =  BASE_URL + "/slots";
+    public static final String GET_ALL_SESSIONS_URL      = BASE_URL + "/sessions";
+
+    // Static file host for the sandbox data
+    public static final String GET_SANDBOX_URL = "https://javazone.no";
+
+
+    // YouTube API config
+    public static final String YOUTUBE_API_KEY = "API_KEY";
+    // YouTube share URL
+    // Livestream captions config
+    public static final String PRIMARY_LIVESTREAM_CAPTIONS_URL = "TODO";
+    public static final String SECONDARY_LIVESTREAM_CAPTIONS_URL = "TODO";
+    public static final String PRIMARY_LIVESTREAM_TRACK = "android";
+    public static final String SECONDARY_LIVESTREAM_TRACK = "chrome";
+
+    // Social network integration
+    public static final String HASHTAG = "?q=javazone";
+    public static final String TWITTER_SEARCH_URL = "http://search.twitter.com/search.json";
 
     public static final String DOGFOOD_BUILD_WARNING_TEXT = "Shhh! This is a pre-release build "
             + "of the I/O app. Don't show it around.";

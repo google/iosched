@@ -102,7 +102,6 @@
                 android:textColor="@color/flat_button_text"
                 style="?android:borderlessButtonStyle" />
 
-            <!-- "LIVE NOW" indicator -->
             <include
                 layout="@layout/include_live_now_badge"
                 android:layout_width="wrap_content"

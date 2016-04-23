@@ -23,7 +23,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.google.samples.apps.iosched.R;
+import no.java.schedule.R;
 
 /**
  * A list fragment that shows items from MySchedule.

@@ -24,8 +24,8 @@ import android.content.Intent;
 import android.net.Uri;
 import android.support.v4.app.ShareCompat;
 
-import com.google.samples.apps.iosched.BuildConfig;
-import com.google.samples.apps.iosched.R;
+import no.java.schedule.BuildConfig;
+import no.java.schedule.R;
 import com.google.samples.apps.iosched.appwidget.ScheduleWidgetProvider;
 import com.google.samples.apps.iosched.map.MapActivity;
 import com.google.samples.apps.iosched.provider.ScheduleContract;

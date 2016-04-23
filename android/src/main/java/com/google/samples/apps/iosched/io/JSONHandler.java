@@ -41,6 +41,8 @@ public abstract class JSONHandler {
 
     public abstract void makeContentProviderOperations(ArrayList<ContentProviderOperation> list);
 
+    public abstract ArrayList<ContentProviderOperation> parse(String json) throws IOException;
+
     public abstract void process(JsonElement element);
 
     public static String parseResource(Context context, int resource) throws IOException {

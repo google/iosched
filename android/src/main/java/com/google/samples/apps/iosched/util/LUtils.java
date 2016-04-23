@@ -38,7 +38,7 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.google.samples.apps.iosched.R;
+import no.java.schedule.R;
 
 @TargetApi(Build.VERSION_CODES.LOLLIPOP)
 public class LUtils {

@@ -16,7 +16,8 @@
   -->
 <!-- The attributes in this XML file provide configuration information for the SyncAdapter. -->
 <sync-adapter xmlns:android="http://schemas.android.com/apk/res/android"
-    android:contentAuthority="com.google.samples.apps.iosched"
-    android:accountType="com.google"
+    android:contentAuthority="no.java.schedule"
+    android:accountType="no.java.schedule"
     android:supportsUploading="false"
-    android:userVisible="true" />
+    android:userVisible="true"
+    />

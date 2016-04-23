@@ -20,7 +20,7 @@ import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.maps.android.ui.IconGenerator;
-import com.google.samples.apps.iosched.R;
+import no.java.schedule.R;
 import com.google.samples.apps.iosched.map.util.MarkerModel;
 
 import com.jakewharton.disklrucache.DiskLruCache;

@@ -16,7 +16,7 @@
   -->
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
     <!-- Shown in the 'About' window of the app. -->
-    <string name="about_body">&lt;b&gt;Google I/O 2015&lt;/b&gt;&lt;br&gt; Version
+    <string name="about_body">&lt;b&gt;JavaZone 2016&lt;/b&gt;&lt;br&gt; Version
         %s&lt;br&gt;&lt;br&gt; &lt;a href=http://m.google.com/utos&gt; Terms of Service
         &lt;/a&gt;&lt;br&gt;&lt;br&gt; &lt;a href=http://www.google.com/policies/privacy/&gt;
         Privacy Policy
@@ -54,7 +54,7 @@
 
     <!-- Shown in the 'About' window of the app. -->
     <string name="about_main"><![CDATA[
-        <b>Google I/O 2015</b><br>
+        <b>JavaZone 2016</b><br>
         Version %s
     ]]></string>
 
@@ -108,7 +108,7 @@
     <string name="all_years">All Years</string>
 
     <!-- Name of the application, shown in the application's title bar. -->
-    <string name="app_name">Google I/O 2015</string>
+    <string name="app_name">JavaZone 2016</string>
 
     <!-- Label on a button that is one possible answer to the question "Are you attending the
     conference in person in San Francisco or remotely via livestream?" -->
@@ -332,7 +332,7 @@
     <string name="empty_widget_text">No more upcoming sessions.\nSee you next year!</string>
 
     <!-- Shown on a widget instructing user how to start using the widget. -->
-    <string name="empty_widget_text_signed_out">Touch the Google I/O 2015 logo above to sign in
+    <string name="empty_widget_text_signed_out">Touch the JavaZone 2016 logo above to sign in
         and begin using the app.</string>
 
     <!-- Shown as a header on a list of sessions to indicate that the sessions that appear on that
@@ -471,7 +471,7 @@
     <string name="navdrawer_item_explore">Explore</string>
 
     <!-- Accessibility description for menu item to open the Explore screen. -->
-    <string name="navdrawer_item_explore_a11y">Explore Google I/O</string>
+    <string name="navdrawer_item_explore_a11y">Explore JavaZone</string>
 
     <!-- Menu item to open the Map screen [CHAR_LIMIT=20] -->
     <string name="navdrawer_item_map">Map</string>
@@ -566,7 +566,7 @@
 
     <!-- An application permission (this permission allows the application to modify the Google
     I/O schedule data). Shows on a permissions dialog screen. -->
-    <string name="permission_write">Modify Google I/O schedule data</string>
+    <string name="permission_write">Modify JavaZone schedule data</string>
 
     <!-- Description of the Google+ +1 button for accessibility screen readers -->
     <string name="plus_one_description_standard">Touch to plus one.</string>
@@ -592,7 +592,7 @@
     <string name="pref_attendee_at_venue_description">Display all sessions and on-site events. If unchecked, only live-streamed sessions will be shown.</string>
 
     <!-- Title in the Settings screen for the "I will be at Google I/O" option -->
-    <string name="pref_attendee_at_venue_title">I\'ll be at Google I/O!</string>
+    <string name="pref_attendee_at_venue_title">I\'ll be at JavaZone!</string>
 
     <!-- Summary in the Settings screen for the "Show local times" option -->
     <string name="pref_local_times_description">Use your local time instead of the conference’s local time.</string>
@@ -661,10 +661,10 @@
 
     <!-- Search label that shows the type of data being searched for when the user clicks the
     Search button. -->
-    <string name="search_label">Google I/O sessions</string>
+    <string name="search_label">JavaZone sessions</string>
 
     <!-- A fragment of text appended to a Google calendar event indicating it was added by this application -->
-    <string name="session_calendar_suffix">- added by Google I/O Android app</string>
+    <string name="session_calendar_suffix">- added by JavaZone Android app</string>
 
     <!-- Accessibility text announced as a response to pressing a button to add a session to the schedule. -->
     <string name="session_details_a11y_session_added">Session added to your schedule</string>
@@ -923,7 +923,7 @@ user updates the rating. -->
     <string name="welcome_no_thanks">No Thanks</string>
 
     <!-- Short text welcoming the user to the application -->
-    <string name="welcome_to_google_i_o_app">Welcome to the Google I/O app!</string>
+    <string name="welcome_to_google_i_o_app">Welcome to the JavaZone app!</string>
 
     <!-- Medium-length welcome text indicating the subsequent text is important legal information -->
     <string name="welcome_text">Before we begin, here is some important legal information regarding your use of this app. This will only take a minute!</string>
@@ -1095,6 +1095,10 @@ user updates the rating. -->
 
     <!--Indicates what happens when the user taps on an item-->
     <string name="talkback_tapfor">tap for %1$s</string>
+
+    <string name="schedule_block_title_sessions">Sessions</string>
+    <string name="schedule_block_title_code_labs">Code Labs</string>
+    <string name="schedule_block_title_keynote">Keynote</string>
 
 
 </resources>

@@ -72,8 +72,10 @@ import android.widget.Toast;
 import com.google.android.gcm.GCMRegistrar;
 import com.google.android.gms.auth.GoogleAuthUtil;
 import com.google.samples.apps.iosched.AppApplication;
-import com.google.samples.apps.iosched.BuildConfig;
-import com.google.samples.apps.iosched.R;
+
+import no.java.schedule.BuildConfig;
+import no.java.schedule.R;
+
 import com.google.samples.apps.iosched.about.AboutActivity;
 import com.google.samples.apps.iosched.debug.DebugActivity;
 import com.google.samples.apps.iosched.explore.ExploreIOActivity;
@@ -82,7 +84,6 @@ import com.google.samples.apps.iosched.framework.PresenterFragmentImpl;
 import com.google.samples.apps.iosched.framework.QueryEnum;
 import com.google.samples.apps.iosched.framework.UpdatableView;
 import com.google.samples.apps.iosched.framework.UserActionEnum;
-import com.google.samples.apps.iosched.gcm.ServerUtilities;
 import com.google.samples.apps.iosched.map.MapActivity;
 import com.google.samples.apps.iosched.myschedule.MyScheduleActivity;
 import com.google.samples.apps.iosched.provider.ScheduleContract;
@@ -150,7 +151,6 @@ public abstract class BaseActivity extends AppCompatActivity implements
 
     private ImageView mExpandAccountBoxIndicator;
 
-    private boolean mAccountBoxExpanded = false;
 
     // When set, these components will be shown/hidden in sync with the action bar
     // to implement the "quick recall" effect (the Action Bar and the header views disappear
@@ -175,15 +175,15 @@ public abstract class BaseActivity extends AppCompatActivity implements
 
     protected static final int NAVDRAWER_ITEM_SOCIAL = 4;
 
-    protected static final int NAVDRAWER_ITEM_VIDEO_LIBRARY = 5;
+    protected static final int NAVDRAWER_ITEM_VIDEO_LIBRARY = 4;
 
-    protected static final int NAVDRAWER_ITEM_SIGN_IN = 6;
+    protected static final int NAVDRAWER_ITEM_SIGN_IN = 5;
 
-    protected static final int NAVDRAWER_ITEM_SETTINGS = 7;
+    protected static final int NAVDRAWER_ITEM_SETTINGS = 6;
 
-    protected static final int NAVDRAWER_ITEM_ABOUT = 8;
+    protected static final int NAVDRAWER_ITEM_ABOUT = 7;
 
-    protected static final int NAVDRAWER_ITEM_DEBUG = 9;
+    protected static final int NAVDRAWER_ITEM_DEBUG = 8;
 
     protected static final int NAVDRAWER_ITEM_INVALID = -1;
 
@@ -197,7 +197,6 @@ public abstract class BaseActivity extends AppCompatActivity implements
             R.string.navdrawer_item_io_live,
             R.string.navdrawer_item_explore,
             R.string.navdrawer_item_map,
-            R.string.navdrawer_item_social,
             R.string.navdrawer_item_video_library,
             R.string.navdrawer_item_sign_in,
             R.string.navdrawer_item_settings,
@@ -211,7 +210,6 @@ public abstract class BaseActivity extends AppCompatActivity implements
             R.drawable.ic_navview_play_circle_fill, // I/O Live
             R.drawable.ic_navview_explore,  // Explore
             R.drawable.ic_navview_map, // Map
-            R.drawable.ic_navview_social, // Social
             R.drawable.ic_navview_video_library, // Video Library
             0, // Sign in
             R.drawable.ic_navview_settings, // Settings.
@@ -239,9 +237,6 @@ public abstract class BaseActivity extends AppCompatActivity implements
 
     // Primary toolbar and drawer toggle
     private Toolbar mActionBarToolbar;
-
-    // asynctask that performs GCM registration in the backgorund
-    private AsyncTask<Void, Void, Void> mGCMRegisterTask;
 
     // handle to our sync observer (that notifies us about changes in our sync state)
     private Object mSyncObserverHandle;
@@ -272,26 +267,26 @@ public abstract class BaseActivity extends AppCompatActivity implements
 
     private ImageLoader mImageLoader;
 
+    private AsyncTask<Void, Void, Void> mGCMRegisterTask;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         RecentTasksStyler.styleRecentTasksEntry(this);
+        AccountUtils.setActiveAccount(this);
 
         // Check if the EULA has been accepted; if not, show it.
+        /*
         if (WelcomeActivity.shouldDisplay(this)) {
             Intent intent = new Intent(this, WelcomeActivity.class);
             startActivity(intent);
             finish();
             return;
-        }
+        } */
 
         mImageLoader = new ImageLoader(this);
         mHandler = new Handler();
-
-        if (savedInstanceState == null) {
-            registerGCMClient();
-        }
-
         SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(this);
         sp.registerOnSharedPreferenceChangeListener(this);
 
@@ -309,7 +304,7 @@ public abstract class BaseActivity extends AppCompatActivity implements
         mSwipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.swipe_refresh_layout);
         if (mSwipeRefreshLayout != null) {
             mSwipeRefreshLayout.setColorSchemeResources(
-                    R.color.flat_button_text);
+                    R.color.jz_darkred);
             mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
                 @Override
                 public void onRefresh() {
@@ -416,10 +411,7 @@ public abstract class BaseActivity extends AppCompatActivity implements
                     mDeferredOnDrawerClosedRunnable.run();
                     mDeferredOnDrawerClosedRunnable = null;
                 }
-                if (mAccountBoxExpanded) {
-                    mAccountBoxExpanded = false;
-                    setupAccountBoxToggle();
-                }
+
                 onNavDrawerStateChanged(false, false);
             }
 
@@ -447,7 +439,6 @@ public abstract class BaseActivity extends AppCompatActivity implements
         // When the user runs the app for the first time, we want to land them with the
         // navigation drawer open. But just the first time.
         if (!SettingsUtils.isFirstRunProcessComplete(this)) {
-            // first run of the app starts with the nav drawer open
             SettingsUtils.markFirstRunProcessesDone(this, true);
             mDrawerLayout.openDrawer(GravityCompat.START);
         }
@@ -459,7 +450,6 @@ public abstract class BaseActivity extends AppCompatActivity implements
         getActionBarToolbar();
     }
 
-    // Subclasses can override this for custom behavior
     protected void onNavDrawerStateChanged(boolean isOpen, boolean isAnimating) {
         if (mActionBarAutoHideEnabled && isOpen) {
             autoShowOrHideActionBar(true);
@@ -479,24 +469,11 @@ public abstract class BaseActivity extends AppCompatActivity implements
         }
     }
 
-    /**
-     * Defines the Navigation Drawer items to display by updating {@code mNavDrawerItems} then
-     * forces the Navigation Drawer to redraw itself.
-     */
     private void populateNavDrawer() {
         boolean attendeeAtVenue = SettingsUtils.isAttendeeAtVenue(this);
         boolean conferenceInProgress = TimeUtils.isConferenceInProgress(this);
         mNavDrawerItems.clear();
-
-        // decide which items will appear in the nav drawer
-        if (AccountUtils.hasActiveAccount(this)) {
-            // Only logged-in users can save sessions, so if there is no active account,
-            // there is no My Schedule
-            mNavDrawerItems.add(NAVDRAWER_ITEM_MY_SCHEDULE);
-        } else {
-            // If no active account, show Sign In
-            mNavDrawerItems.add(NAVDRAWER_ITEM_SIGN_IN);
-        }
+        mNavDrawerItems.add(NAVDRAWER_ITEM_MY_SCHEDULE);
 
         // Explore is always shown.
         mNavDrawerItems.add(NAVDRAWER_ITEM_EXPLORE);
@@ -505,16 +482,11 @@ public abstract class BaseActivity extends AppCompatActivity implements
         if (attendeeAtVenue) {
             mNavDrawerItems.add(NAVDRAWER_ITEM_MAP);
         }
-        mNavDrawerItems.add(NAVDRAWER_ITEM_SEPARATOR);
-
-        // Other items that are always in the nav drawer.
-        mNavDrawerItems.add(NAVDRAWER_ITEM_SOCIAL);
         mNavDrawerItems.add(NAVDRAWER_ITEM_VIDEO_LIBRARY);
         mNavDrawerItems.add(NAVDRAWER_ITEM_SEPARATOR_SPECIAL);
         mNavDrawerItems.add(NAVDRAWER_ITEM_SETTINGS);
         mNavDrawerItems.add(NAVDRAWER_ITEM_ABOUT);
 
-        // Debug menu only on debug builds.
         if (BuildConfig.DEBUG) {
             mNavDrawerItems.add(NAVDRAWER_ITEM_DEBUG);
         }
@@ -575,7 +547,6 @@ public abstract class BaseActivity extends AppCompatActivity implements
     protected void onPostCreate(Bundle savedInstanceState) {
         super.onPostCreate(savedInstanceState);
         setupNavDrawer();
-        setupAccountBox();
 
         trySetupSwipeRefresh();
         updateSwipeRefreshProgressBarTop();
@@ -589,199 +560,8 @@ public abstract class BaseActivity extends AppCompatActivity implements
         }
     }
 
-    /**
-     * Sets up the account box. The account box is the area at the top of the nav drawer that
-     * shows which account the user is logged in as, and lets them switch accounts. It also
-     * shows the user's Google+ cover photo as background.
-     */
-    private void setupAccountBox() {
-        mAccountListContainer = (LinearLayout) findViewById(R.id.account_list);
-
-        if (mAccountListContainer == null) {
-            //This activity does not have an account box
-            return;
-        }
-
-        final View chosenAccountView = findViewById(R.id.chosen_account_view);
-        Account chosenAccount = AccountUtils.getActiveAccount(this);
-        if (chosenAccount == null) {
-            // No account logged in; hide account box
-            chosenAccountView.setVisibility(View.GONE);
-            mAccountListContainer.setVisibility(View.GONE);
-            return;
-        } else {
-            chosenAccountView.setVisibility(View.VISIBLE);
-            mAccountListContainer.setVisibility(View.INVISIBLE);
-        }
-
-        AccountManager am = AccountManager.get(this);
-        Account[] accountArray = am.getAccountsByType(GoogleAuthUtil.GOOGLE_ACCOUNT_TYPE);
-        List<Account> accounts = new ArrayList<Account>(Arrays.asList(accountArray));
-        accounts.remove(chosenAccount);
-
-        ImageView coverImageView = (ImageView) chosenAccountView
-                .findViewById(R.id.profile_cover_image);
-        ImageView profileImageView = (ImageView) chosenAccountView.findViewById(R.id.profile_image);
-        TextView nameTextView = (TextView) chosenAccountView.findViewById(R.id.profile_name_text);
-        TextView email = (TextView) chosenAccountView.findViewById(R.id.profile_email_text);
-        mExpandAccountBoxIndicator = (ImageView) findViewById(R.id.expand_account_box_indicator);
-
-        String name = AccountUtils.getPlusName(this);
-        if (name == null) {
-            nameTextView.setVisibility(View.GONE);
-        } else {
-            nameTextView.setVisibility(View.VISIBLE);
-            nameTextView.setText(name);
-        }
-
-        String imageUrl = AccountUtils.getPlusImageUrl(this);
-        if (imageUrl != null) {
-            mImageLoader.loadImage(imageUrl, profileImageView);
-        }
-
-        String coverImageUrl = AccountUtils.getPlusCoverUrl(this);
-        if (coverImageUrl != null) {
-            findViewById(R.id.profile_cover_image_placeholder).setVisibility(View.GONE);
-            coverImageView.setVisibility(View.VISIBLE);
-            coverImageView.setContentDescription(getResources().getString(
-                    R.string.navview_header_user_image_content_description));
-            mImageLoader.loadImage(coverImageUrl, coverImageView);
-            coverImageView.setColorFilter(getResources().getColor(R.color.light_content_scrim));
-        }
-
-        email.setText(chosenAccount.name);
-
-        if (accounts.isEmpty()) {
-            // There's only one account on the device, so no need for a switcher.
-            mExpandAccountBoxIndicator.setVisibility(View.GONE);
-            mAccountListContainer.setVisibility(View.GONE);
-            chosenAccountView.setEnabled(false);
-            return;
-        }
-
-        chosenAccountView.setEnabled(true);
-
-        mExpandAccountBoxIndicator.setVisibility(View.VISIBLE);
-        chosenAccountView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                mAccountBoxExpanded = !mAccountBoxExpanded;
-                setupAccountBoxToggle();
-            }
-        });
-        setupAccountBoxToggle();
-
-        populateAccountList(accounts);
-    }
-
-    private void populateAccountList(List<Account> accounts) {
-        mAccountListContainer.removeAllViews();
-
-        LayoutInflater layoutInflater = LayoutInflater.from(this);
-        for (Account account : accounts) {
-            View itemView = layoutInflater.inflate(R.layout.list_item_account,
-                    mAccountListContainer, false);
-            ((TextView) itemView.findViewById(R.id.profile_email_text))
-                    .setText(account.name);
-            final String accountName = account.name;
-            String imageUrl = AccountUtils.getPlusImageUrl(this, accountName);
-            if (!TextUtils.isEmpty(imageUrl)) {
-                mImageLoader.loadImage(imageUrl,
-                        (ImageView) itemView.findViewById(R.id.profile_image));
-            }
-            itemView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    ConnectivityManager cm = (ConnectivityManager)
-                            getSystemService(CONNECTIVITY_SERVICE);
-                    NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
-                    if (activeNetwork == null || !activeNetwork.isConnected()) {
-                        // if there's no network, don't try to change the selected account
-                        Toast.makeText(BaseActivity.this, R.string.no_connection_cant_login,
-                                Toast.LENGTH_SHORT).show();
-                        mDrawerLayout.closeDrawer(GravityCompat.START);
-                    } else {
-                        LOGD(TAG, "User requested switch to account: " + accountName);
-                        AccountUtils.setActiveAccount(BaseActivity.this, accountName);
-                        onAccountChangeRequested();
-                        startLoginProcess();
-                        mAccountBoxExpanded = false;
-                        setupAccountBoxToggle();
-                        mDrawerLayout.closeDrawer(GravityCompat.START);
-                        setupAccountBox();
-                    }
-                }
-            });
-            mAccountListContainer.addView(itemView);
-        }
-    }
-
     protected void onAccountChangeRequested() {
         // override if you want to be notified when another account has been selected account has changed
-    }
-
-    private void setupAccountBoxToggle() {
-        int selfItem = getSelfNavDrawerItem();
-        if (mDrawerLayout == null || selfItem == NAVDRAWER_ITEM_INVALID) {
-            // this Activity does not have a nav drawer
-            return;
-        }
-        mExpandAccountBoxIndicator.setImageResource(mAccountBoxExpanded
-                ? R.drawable.ic_navview_accounts_collapse
-                : R.drawable.ic_navview_accounts_expand);
-        int hideTranslateY = -mAccountListContainer.getHeight() / 4; // last 25% of animation
-        if (mAccountBoxExpanded && mAccountListContainer.getTranslationY() == 0) {
-            // initial setup
-            mAccountListContainer.setAlpha(0);
-            mAccountListContainer.setTranslationY(hideTranslateY);
-        }
-
-        AnimatorSet set = new AnimatorSet();
-        set.addListener(new AnimatorListenerAdapter() {
-            @Override
-            public void onAnimationEnd(Animator animation) {
-                mDrawerItemsListContainer.setVisibility(mAccountBoxExpanded
-                        ? View.INVISIBLE : View.VISIBLE);
-                mAccountListContainer.setVisibility(mAccountBoxExpanded
-                        ? View.VISIBLE : View.INVISIBLE);
-            }
-
-            @Override
-            public void onAnimationCancel(Animator animation) {
-                onAnimationEnd(animation);
-            }
-        });
-
-        if (mAccountBoxExpanded) {
-            mAccountListContainer.setVisibility(View.VISIBLE);
-            AnimatorSet subSet = new AnimatorSet();
-            subSet.playTogether(
-                    ObjectAnimator.ofFloat(mAccountListContainer, View.ALPHA, 1)
-                            .setDuration(ACCOUNT_BOX_EXPAND_ANIM_DURATION),
-                    ObjectAnimator.ofFloat(mAccountListContainer, View.TRANSLATION_Y, 0)
-                            .setDuration(ACCOUNT_BOX_EXPAND_ANIM_DURATION));
-            set.playSequentially(
-                    ObjectAnimator.ofFloat(mDrawerItemsListContainer, View.ALPHA, 0)
-                            .setDuration(ACCOUNT_BOX_EXPAND_ANIM_DURATION),
-                    subSet);
-            set.start();
-        } else {
-            mDrawerItemsListContainer.setVisibility(View.VISIBLE);
-            AnimatorSet subSet = new AnimatorSet();
-            subSet.playTogether(
-                    ObjectAnimator.ofFloat(mAccountListContainer, View.ALPHA, 0)
-                            .setDuration(ACCOUNT_BOX_EXPAND_ANIM_DURATION),
-                    ObjectAnimator.ofFloat(mAccountListContainer, View.TRANSLATION_Y,
-                            hideTranslateY)
-                            .setDuration(ACCOUNT_BOX_EXPAND_ANIM_DURATION));
-            set.playSequentially(
-                    subSet,
-                    ObjectAnimator.ofFloat(mDrawerItemsListContainer, View.ALPHA, 1)
-                            .setDuration(ACCOUNT_BOX_EXPAND_ANIM_DURATION));
-            set.start();
-        }
-
-        set.start();
     }
 
     @Override
@@ -798,7 +578,7 @@ public abstract class BaseActivity extends AppCompatActivity implements
     protected void requestDataRefresh() {
         Account activeAccount = AccountUtils.getActiveAccount(this);
         ContentResolver contentResolver = getContentResolver();
-        if (contentResolver.isSyncActive(activeAccount, ScheduleContract.CONTENT_AUTHORITY)) {
+        if (ContentResolver.isSyncActive(activeAccount, ScheduleContract.CONTENT_AUTHORITY)) {
             LOGD(TAG, "Ignoring manual sync request because a sync is already in progress.");
             return;
         }
@@ -819,9 +599,10 @@ public abstract class BaseActivity extends AppCompatActivity implements
             case NAVDRAWER_ITEM_MAP:
                 createBackStack(new Intent(this, MapActivity.class));
                 break;
+            /*
             case NAVDRAWER_ITEM_SOCIAL:
                 createBackStack(new Intent(this, SocialActivity.class));
-                break;
+                break; */
             case NAVDRAWER_ITEM_VIDEO_LIBRARY:
                 createBackStack(new Intent(this, VideoLibraryActivity.class));
                 break;
@@ -843,6 +624,7 @@ public abstract class BaseActivity extends AppCompatActivity implements
     /**
      * Enables back navigation for activities that are launched from the NavBar. See
      * {@code AndroidManifest.xml} to find out the parent activity names for each activity.
+     *
      * @param intent
      */
     private void createBackStack(Intent intent) {
@@ -864,11 +646,11 @@ public abstract class BaseActivity extends AppCompatActivity implements
      * activity then don't define one and this method will use back button functionality. If "Up"
      * functionality is still desired for activities without parents then use
      * {@code syntheticParentActivity} to define one dynamically.
-     *
+     * <p/>
      * Note: Up navigation intents are represented by a back arrow in the top left of the Toolbar
-     *       in Material Design guidelines.
+     * in Material Design guidelines.
      *
-     * @param currentActivity Activity in use when navigate Up action occurred.
+     * @param currentActivity         Activity in use when navigate Up action occurred.
      * @param syntheticParentActivity Parent activity to use when one is not already configured.
      */
     public static void navigateUpOrBack(Activity currentActivity,
@@ -886,23 +668,13 @@ public abstract class BaseActivity extends AppCompatActivity implements
         }
 
         if (intent == null) {
-            // No parent defined in manifest. This indicates the activity may be used by
-            // in multiple flows throughout the app and doesn't have a strict parent. In
-            // this case the navigation up button should act in the same manner as the
-            // back button. This will result in users being forwarded back to other
-            // applications if currentActivity was invoked from another application.
             currentActivity.onBackPressed();
         } else {
             if (NavUtils.shouldUpRecreateTask(currentActivity, intent)) {
-                // Need to synthesize a backstack since currentActivity was probably invoked by a
-                // different app. The preserves the "Up" functionality within the app according to
-                // the activity hierarchy defined in AndroidManifest.xml via parentActivity
-                // attributes.
                 TaskStackBuilder builder = TaskStackBuilder.create(currentActivity);
                 builder.addNextIntentWithParentStack(intent);
                 builder.startActivities();
             } else {
-                // Navigate normally to the manifest defined "Up" activity.
                 NavUtils.navigateUpTo(currentActivity, intent);
             }
         }
@@ -910,19 +682,9 @@ public abstract class BaseActivity extends AppCompatActivity implements
 
     private void signInOrCreateAnAccount() {
         //Get list of accounts on device.
-        AccountManager am = AccountManager.get(BaseActivity.this);
-        Account[] accountArray = am.getAccountsByType(GoogleAuthUtil.GOOGLE_ACCOUNT_TYPE);
-        if (accountArray.length == 0) {
-            //Send the user to the "Add Account" page.
-            Intent intent = new Intent(Settings.ACTION_ADD_ACCOUNT);
-            intent.putExtra(Settings.EXTRA_ACCOUNT_TYPES,
-                    new String[]{GoogleAuthUtil.GOOGLE_ACCOUNT_TYPE});
-            startActivity(intent);
-        } else {
-            //Try to log the user in with the first account on the device.
-            startLoginProcess();
-            mDrawerLayout.closeDrawer(GravityCompat.START);
-        }
+        //Try to log the user in with the first account on the device.
+        startLoginProcess();
+        mDrawerLayout.closeDrawer(GravityCompat.START);
     }
 
     private void onNavDrawerItemClicked(final int itemId) {
@@ -959,7 +721,7 @@ public abstract class BaseActivity extends AppCompatActivity implements
         super.onResume();
 
         // Perform one-time bootstrap setup, if needed
-        DataBootstrapService.startDataBootstrapIfNecessary(this);
+       //  DataBootstrapService.startDataBootstrapIfNecessary(this);
 
         // Check to ensure a Google Account is active for the app. Placing the check here ensures
         // it is run again in the case where a Google Account wasn't present on the device and a
@@ -1063,7 +825,6 @@ public abstract class BaseActivity extends AppCompatActivity implements
             String defaultAccount = AccountUtils.getActiveAccountName(this);
             if (defaultAccount == null) {
                 LOGE(TAG, "Failed to pick default account (no accounts). Failing.");
-                //complainMustHaveGoogleAccount();
                 return;
             }
             LOGD(TAG, "Default to: " + defaultAccount);
@@ -1138,7 +899,6 @@ public abstract class BaseActivity extends AppCompatActivity implements
 
     @Override
     public void onPlusInfoLoaded(String accountName) {
-        setupAccountBox();
         populateNavDrawer();
     }
 
@@ -1165,9 +925,7 @@ public abstract class BaseActivity extends AppCompatActivity implements
             SyncHelper.requestManualSync(account);
         }
 
-        setupAccountBox();
         populateNavDrawer();
-        registerGCMClient();
     }
 
     @Override
@@ -1329,71 +1087,6 @@ public abstract class BaseActivity extends AppCompatActivity implements
         return itemId == NAVDRAWER_ITEM_SEPARATOR || itemId == NAVDRAWER_ITEM_SEPARATOR_SPECIAL;
     }
 
-    /**
-     * Registers device on the GCM server, if necessary.
-     * <p/>
-     * This check is done in BaseActivity (as opposed to {@link AppApplication}) in order to make sure
-     * that this is always run after a user switch.
-     * <p/>
-     * As a future improvement, this code could be manually invoked by the app after a user
-     * switch occurs, which would allow moving this code to {@link AppApplication}.
-     */
-    private void registerGCMClient() {
-        GCMRegistrar.checkDevice(this);
-        GCMRegistrar.checkManifest(this);
-
-        final String regId = GCMRegistrar.getRegistrationId(this);
-
-        if (TextUtils.isEmpty(regId)) {
-            // Automatically registers application on startup.
-            GCMRegistrar.register(this, BuildConfig.GCM_SENDER_ID);
-
-        } else {
-            // Get the correct GCM key for the user. GCM key is a somewhat non-standard
-            // approach we use in this app. For more about this, check GCM.TXT.
-            final String gcmKey = AccountUtils.hasActiveAccount(this) ?
-                    AccountUtils.getGcmKey(this, AccountUtils.getActiveAccountName(this)) : null;
-            // Device is already registered on GCM, needs to check if it is
-            // registered on our server as well.
-            if (ServerUtilities.isRegisteredOnServer(this, gcmKey)) {
-                // Skips registration.
-                LOGI(TAG, "Already registered on the GCM server with right GCM key.");
-            } else {
-                // Try to register again, but not in the UI thread.
-                // It's also necessary to cancel the thread onDestroy(),
-                // hence the use of AsyncTask instead of a raw thread.
-                mGCMRegisterTask = new AsyncTask<Void, Void, Void>() {
-                    @Override
-                    protected Void doInBackground(Void... params) {
-                        LOGI(TAG, "Registering on the GCM server with GCM key: "
-                                + AccountUtils.sanitizeGcmKey(gcmKey));
-                        boolean registered = ServerUtilities.register(BaseActivity.this,
-                                regId, gcmKey);
-                        // At this point all attempts to register with the app
-                        // server failed, so we need to unregister the device
-                        // from GCM - the app will try to register again when
-                        // it is restarted. Note that GCM will send an
-                        // unregistered callback upon completion, but
-                        // GCMIntentService.onUnregistered() will ignore it.
-                        if (!registered) {
-                            LOGI(TAG, "GCM registration failed.");
-                            GCMRegistrar.unregister(BaseActivity.this);
-                        } else {
-                            LOGI(TAG, "GCM registration successful.");
-                        }
-                        return null;
-                    }
-
-                    @Override
-                    protected void onPostExecute(Void result) {
-                        mGCMRegisterTask = null;
-                    }
-                };
-                mGCMRegisterTask.execute(null, null, null);
-            }
-        }
-    }
-
     @Override
     protected void onDestroy() {
         super.onDestroy();
@@ -1509,8 +1202,6 @@ public abstract class BaseActivity extends AppCompatActivity implements
                         .alpha(1)
                         .setDuration(HEADER_HIDE_ANIM_DURATION)
                         .setInterpolator(new DecelerateInterpolator())
-                        // Setting Alpha animations should be done using the
-                        // layer_type set to layer_type_hardware for the duration of the animation.
                         .withLayer();
             } else {
                 ViewCompat.animate(view)
@@ -1518,8 +1209,6 @@ public abstract class BaseActivity extends AppCompatActivity implements
                         .alpha(0)
                         .setDuration(HEADER_HIDE_ANIM_DURATION)
                         .setInterpolator(new DecelerateInterpolator())
-                        // Setting Alpha animations should be done using the
-                        // layer_type set to layer_type_hardware for the duration of the animation.
                         .withLayer();
             }
         }
@@ -1530,14 +1219,6 @@ public abstract class BaseActivity extends AppCompatActivity implements
         return false;
     }
 
-    /**
-     * Adds a {@link com.google.samples.apps.iosched.framework.PresenterFragmentImpl} to the
-     * Activity if required, and sets it up with the {@code model}, {@code queries},
-     * {@code actions} and the {@link com.google.samples.apps.iosched.framework.UpdatableView}
-     * corresponding to the {@code updatableViewResId}.
-     *
-     * @return the {@link com.google.samples.apps.iosched.framework.PresenterFragmentImpl},
-     */
     public PresenterFragmentImpl addPresenterFragment(int updatableViewResId, Model model, QueryEnum[] queries,
                                                       UserActionEnum[] actions) {
         FragmentManager fragmentManager = getFragmentManager();

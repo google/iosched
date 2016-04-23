@@ -17,7 +17,7 @@
 package com.google.samples.apps.iosched.videolibrary;
 
 import com.google.samples.apps.iosched.Config;
-import com.google.samples.apps.iosched.R;
+import no.java.schedule.R;
 import com.google.samples.apps.iosched.framework.PresenterFragmentImpl;
 import com.google.samples.apps.iosched.framework.QueryEnum;
 import com.google.samples.apps.iosched.framework.UpdatableView;

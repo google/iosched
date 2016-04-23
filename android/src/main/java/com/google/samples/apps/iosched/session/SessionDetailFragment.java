@@ -17,7 +17,7 @@
 package com.google.samples.apps.iosched.session;
 
 import com.google.samples.apps.iosched.Config;
-import com.google.samples.apps.iosched.R;
+import no.java.schedule.R;
 import com.google.samples.apps.iosched.explore.ExploreSessionsActivity;
 import com.google.samples.apps.iosched.framework.QueryEnum;
 import com.google.samples.apps.iosched.framework.UpdatableView;
@@ -160,6 +160,7 @@ public class SessionDetailFragment extends Fragment
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
         mAnalyticsScreenViewHasFired = false;
+
     }
 
     @Override

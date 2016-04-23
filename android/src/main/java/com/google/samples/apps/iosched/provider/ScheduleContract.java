@@ -17,8 +17,10 @@
 package com.google.samples.apps.iosched.provider;
 
 import android.app.SearchManager;
+import android.graphics.Color;
 import android.net.Uri;
 import android.provider.BaseColumns;
+import android.provider.ContactsContract;
 import android.text.TextUtils;
 import android.text.format.DateUtils;
 
@@ -38,7 +40,7 @@ import java.util.List;
  */
 public final class ScheduleContract {
 
-    public static final String CONTENT_TYPE_APP_BASE = "iosched2015.";
+    public static final String CONTENT_TYPE_APP_BASE = "androidito-iosched.";
 
     public static final String CONTENT_TYPE_BASE = "vnd.android.cursor.dir/vnd."
             + CONTENT_TYPE_APP_BASE;
@@ -86,6 +88,17 @@ public final class ScheduleContract {
         String TAG_COLOR = "tag_color";
         /** Tag abstract. Short summary describing tag. */
         String TAG_ABSTRACT = "tag_abstract";
+    }
+
+    interface TracksColumns {
+        /** Unique string identifying this track. */
+        String TRACK_ID = "track_id";
+        /** Name describing this track. */
+        String TRACK_NAME = "track_name";
+        /** Color used to identify this track, in {@link Color#argb} format. */
+        String TRACK_COLOR = "track_color";
+        /** Body of text explaining this track in detail. */
+        String TRACK_ABSTRACT = "track_abstract";
     }
 
     interface RoomsColumns {
@@ -211,6 +224,25 @@ public final class ScheduleContract {
         String SPEAKER_IMPORT_HASHCODE = "speaker_import_hashcode";
     }
 
+    interface VendorsColumns {
+        /** Unique string identifying this vendor. */
+        String VENDOR_ID = "vendor_id";
+        /** Name of this vendor. */
+        String VENDOR_NAME = "vendor_name";
+        /** Location or city this vendor is based in. */
+        String VENDOR_LOCATION = "vendor_location";
+        /** Body of text describing this vendor. */
+        String VENDOR_DESC = "vendor_desc";
+        /** Link to vendor online. */
+        String VENDOR_URL = "vendor_url";
+        /** Body of text describing the product of this vendor. */
+        String VENDOR_PRODUCT_DESC = "vendor_product_desc";
+        /** Link to vendor logo. */
+        String VENDOR_LOGO_URL = "vendor_logo_url";
+        /** User-specific flag indicating starred status. */
+        String VENDOR_STARRED = "vendor_starred";
+    }
+
     interface AnnouncementsColumns {
 
         /** Unique string identifying this announcment. */
@@ -296,9 +328,16 @@ public final class ScheduleContract {
         String VIDEO_IMPORT_HASHCODE = "video_import_hashcode";
     }
 
-    public static final String CONTENT_AUTHORITY = "com.google.samples.apps.iosched";
+    public static final String CONTENT_AUTHORITY = "no.java.schedule";
 
     public static final Uri BASE_CONTENT_URI = Uri.parse("content://" + CONTENT_AUTHORITY);
+
+    private static final String PATH_AT = "at";
+    private static final String PATH_BETWEEN = "between";
+    private static final String PATH_TRACKS = "tracks";
+    private static final String PATH_WITH_TRACK = "with_track";
+    private static final String PATH_STARRED = "starred";
+    private static final String PATH_VENDORS = "vendors";
 
     private static final String PATH_BLOCKS = "blocks";
 
@@ -385,6 +424,16 @@ public final class ScheduleContract {
         }
     }
 
+    public static Uri addCallerIsSyncAdapterParameter(Uri uri) {
+        return uri.buildUpon().appendQueryParameter(
+                ContactsContract.CALLER_IS_SYNCADAPTER, "true").build();
+    }
+
+    public static boolean hasCallerIsSyncAdapterParameter(Uri uri) {
+        return TextUtils.equals("true",
+                uri.getQueryParameter(ContactsContract.CALLER_IS_SYNCADAPTER));
+    }
+
     /**
      * Blocks are generic timeslots.
      */
@@ -403,6 +452,14 @@ public final class ScheduleContract {
 
         public static final Uri CONTENT_URI =
                 BASE_CONTENT_URI.buildUpon().appendPath(PATH_BLOCKS).build();
+
+        public static final String CONTENT_TYPE =
+                "vnd.android.cursor.dir/vnd.androidito-iosched.block";
+        public static final String CONTENT_ITEM_TYPE =
+                "vnd.android.cursor.item/vnd.androidito-iosched.block";
+
+        /** Count of {@link Sessions} inside given block. */
+        public static final String SESSIONS_COUNT = "sessions_count";
 
         public static final String CONTENT_TYPE_ID = "block";
 
@@ -428,6 +485,11 @@ public final class ScheduleContract {
             endTime /= DateUtils.SECOND_IN_MILLIS;
             return ParserUtils.sanitizeId(startTime + "-" + endTime);
         }
+
+        public static final String EMPTY_SESSIONS_SELECTION = "(" + BLOCK_TYPE
+                + " = '" + ParserUtils.BLOCK_TYPE_SESSION + "' OR " + BLOCK_TYPE
+                + " = '" + ParserUtils.BLOCK_TYPE_CODE_LAB + "') AND "
+                + SESSIONS_COUNT + " = 0";
     }
 
     /**
@@ -516,6 +578,69 @@ public final class ScheduleContract {
 
     }
 
+
+    /**
+     * Tracks are overall categories for {@link Sessions} and {@link Vendors},
+     * such as "Android" or "Enterprise."
+     */
+    public static class Tracks implements TracksColumns, BaseColumns {
+        public static final Uri CONTENT_URI =
+                BASE_CONTENT_URI.buildUpon().appendPath(PATH_TRACKS).build();
+
+        public static final String CONTENT_TYPE =
+                "vnd.android.cursor.dir/vnd.androidito-iosched.track";
+        public static final String CONTENT_ITEM_TYPE =
+                "vnd.android.cursor.item/vnd.androidito-iosched.track";
+
+        /** "All tracks" ID. */
+        public static final String ALL_TRACK_ID = "all";
+        public static final String CODELABS_TRACK_ID = generateTrackId("Code Labs");
+        public static final String TECH_TALK_TRACK_ID = generateTrackId("Tech Talk");
+
+        /** Count of {@link Sessions} inside given track. */
+        public static final String SESSIONS_COUNT = "sessions_count";
+        /** Count of {@link Vendors} inside given track. */
+        public static final String VENDORS_COUNT = "vendors_count";
+
+        /** Default "ORDER BY" clause. */
+        public static final String DEFAULT_SORT = TracksColumns.TRACK_NAME + " ASC";
+
+        /** Build {@link Uri} for requested {@link #TRACK_ID}. */
+        public static Uri buildTrackUri(String trackId) {
+            return CONTENT_URI.buildUpon().appendPath(trackId).build();
+        }
+
+        /**
+         * Build {@link Uri} that references any {@link Sessions} associated
+         * with the requested {@link #TRACK_ID}.
+         */
+        public static Uri buildSessionsUri(String trackId) {
+            return CONTENT_URI.buildUpon().appendPath(trackId).appendPath(PATH_SESSIONS).build();
+        }
+
+        /**
+         * Build {@link Uri} that references any {@link Vendors} associated with
+         * the requested {@link #TRACK_ID}.
+         */
+        public static Uri buildVendorsUri(String trackId) {
+            return CONTENT_URI.buildUpon().appendPath(trackId).appendPath(PATH_VENDORS).build();
+        }
+
+        /** Read {@link #TRACK_ID} from {@link Tracks} {@link Uri}. */
+        public static String getTrackId(Uri uri) {
+            return uri.getPathSegments().get(1);
+        }
+
+        /**
+         * Generate a {@link #TRACK_ID} that will always match the requested
+         * {@link Tracks} details.
+         */
+        public static String generateTrackId(String name) {
+            return ParserUtils.sanitizeId(name);
+        }
+    }
+
+
     /**
      * Rooms are physical locations at the conference venue.
      */
@@ -580,7 +705,7 @@ public final class ScheduleContract {
                 CONTENT_URI.buildUpon().appendPath(PATH_MY_SCHEDULE).build();
 
         public static final String CONTENT_TYPE_ID = "session";
-
+        public static final String BLOCK_ID = "block_id";
         public static final String ROOM_ID = "room_id";
 
         public static final String SEARCH_SNIPPET = "search_snippet";
@@ -610,6 +735,10 @@ public final class ScheduleContract {
         // Builds selectionArgs for {@link STARTING_AT_TIME_INTERVAL_SELECTION}
         public static String[] buildAtTimeIntervalArgs(long intervalStart, long intervalEnd) {
             return new String[]{String.valueOf(intervalStart), String.valueOf(intervalEnd)};
+        }
+
+        public static Uri buildTracksDirUri(String sessionId) {
+            return CONTENT_URI.buildUpon().appendPath(sessionId).appendPath(PATH_TRACKS).build();
         }
 
         // Builds selectionArgs for {@link AT_TIME_SELECTION}
@@ -823,6 +952,61 @@ public final class ScheduleContract {
             return uri.getPathSegments().get(1);
         }
     }
+
+    /**
+     * Each vendor is a company appearing at the conference that may be
+     * associated with a specific {@link Tracks}.
+     */
+    public static class Vendors implements VendorsColumns, SyncColumns, BaseColumns {
+        public static final Uri CONTENT_URI =
+                BASE_CONTENT_URI.buildUpon().appendPath(PATH_VENDORS).build();
+
+        public static final String CONTENT_TYPE =
+                "vnd.android.cursor.dir/vnd.androidito-iosched.vendor";
+        public static final String CONTENT_ITEM_TYPE =
+                "vnd.android.cursor.item/vnd.androidito-iosched.vendor";
+
+        /** {@link Tracks#TRACK_ID} that this vendor belongs to. */
+        public static final String TRACK_ID = "track_id";
+
+        public static final String SEARCH_SNIPPET = "search_snippet";
+
+        /** Default "ORDER BY" clause. */
+        public static final String DEFAULT_SORT = VendorsColumns.VENDOR_NAME
+                + " COLLATE NOCASE ASC";
+
+        /** Build {@link Uri} for requested {@link #VENDOR_ID}. */
+        public static Uri buildVendorUri(String vendorId) {
+            return CONTENT_URI.buildUpon().appendPath(vendorId).build();
+        }
+
+        public static Uri buildSearchUri(String query) {
+            return CONTENT_URI.buildUpon().appendPath(PATH_SEARCH).appendPath(query).build();
+        }
+
+        public static boolean isSearchUri(Uri uri) {
+            List<String> pathSegments = uri.getPathSegments();
+            return pathSegments.size() >= 2 && PATH_SEARCH.equals(pathSegments.get(1));
+        }
+
+        /** Read {@link #VENDOR_ID} from {@link Vendors} {@link Uri}. */
+        public static String getVendorId(Uri uri) {
+            return uri.getPathSegments().get(1);
+        }
+
+        public static String getSearchQuery(Uri uri) {
+            return uri.getPathSegments().get(2);
+        }
+
+        /**
+         * Generate a {@link #VENDOR_ID} that will always match the requested
+         * {@link Vendors} details.
+         */
+        public static String generateVendorId(String companyName) {
+            return ParserUtils.sanitizeId(companyName);
+        }
+    }
+
 
     /**
      * Announcements of breaking news

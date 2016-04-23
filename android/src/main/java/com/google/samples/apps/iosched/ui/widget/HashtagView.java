@@ -22,7 +22,7 @@ import android.graphics.Paint;
 import android.util.AttributeSet;
 import android.widget.FrameLayout;
 
-import com.google.samples.apps.iosched.R;
+import no.java.schedule.R;
 
 /**
  * A view that draws fancy horizontal lines to frame it's content

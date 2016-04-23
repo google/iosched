@@ -29,7 +29,7 @@ import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.Status;
 import com.google.android.gms.drive.Drive;
 import com.google.android.gms.drive.DriveId;
-import com.google.samples.apps.iosched.R;
+import no.java.schedule.R;
 import com.google.samples.apps.iosched.sync.userdata.AbstractUserDataSyncHelper;
 import com.google.samples.apps.iosched.sync.userdata.UserAction;
 import com.google.samples.apps.iosched.sync.userdata.util.UserDataHelper;

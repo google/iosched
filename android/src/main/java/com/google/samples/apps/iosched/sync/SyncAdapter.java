@@ -19,9 +19,11 @@ package com.google.samples.apps.iosched.sync;
 import android.accounts.Account;
 import android.content.*;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 
-import com.google.samples.apps.iosched.BuildConfig;
+import no.java.schedule.BuildConfig;
 
+import java.io.IOException;
 import java.util.regex.Pattern;
 
 import static com.google.samples.apps.iosched.util.LogUtils.*;
@@ -35,6 +37,7 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
     private static final Pattern sSanitizeAccountNamePattern = Pattern.compile("(.).*?(.?)@");
     public static final String EXTRA_SYNC_USER_DATA_ONLY =
             "com.google.samples.apps.iosched.EXTRA_SYNC_USER_DATA_ONLY";
+    private SyncHelper mSyncHelper;
 
     private final Context mContext;
 
@@ -79,8 +82,32 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
                 " userScheduleDataOnly =" + userScheduleDataOnly +
                 " initialize=" + initialize);
 
+        if (initialize) {
+            boolean isChosenAccount = "JavaZone Schedule".equals(account.name) && "no.java.schedule".equals(account.type);
+            ContentResolver.setIsSyncable(account, authority, isChosenAccount ? 1 : 0);
+        }
+
+        // Perform a sync using SyncHelper
+        if (mSyncHelper == null) {
+            mSyncHelper = new SyncHelper(mContext);
+        }
         // Sync from bootstrap and remote data, as needed
-        new SyncHelper(mContext).performSync(syncResult, account, extras);
+        // new SyncHelper(mContext).performSync(syncResult, account, extras);
+
+        try {
+            mSyncHelper.performSync(syncResult,account, extras);
+
+            final SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(mContext);
+            SharedPreferences.Editor edit = prefs.edit();
+            edit.putBoolean("first_run",false);
+            edit.commit();
+
+
+
+        } catch (IOException e) {
+            ++syncResult.stats.numIoExceptions;
+            LOGE(TAG, "Error syncing data for I/O 2016.", e);
+        }
     }
 
 }

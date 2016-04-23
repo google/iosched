@@ -159,6 +159,11 @@ public class ScheduleDatabase extends SQLiteOpenHelper {
         String BODY = "body";
     }
 
+    public interface SessionsTracks {
+        String SESSION_ID = "session_id";
+        String TRACK_ID = "track_id";
+    }
+
     /** Fully-qualified field names. */
     private interface Qualified {
         String SESSIONS_SEARCH = Tables.SESSIONS_SEARCH + "(" + SessionsSearchColumns.SESSION_ID

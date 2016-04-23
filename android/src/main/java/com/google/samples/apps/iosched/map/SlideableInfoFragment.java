@@ -16,7 +16,7 @@
 
 package com.google.samples.apps.iosched.map;
 
-import com.google.samples.apps.iosched.R;
+import no.java.schedule.R;
 
 import com.sothree.slidinguppanel.SlidingUpPanelLayout;
 

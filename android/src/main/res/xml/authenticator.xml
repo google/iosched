@@ -1,0 +1,6 @@
+<account-authenticator xmlns:android="http://schemas.android.com/apk/res/android"
+    android:accountType="no.java.schedule"
+    android:icon="@mipmap/ic_launcher"
+    android:smallIcon="@mipmap/ic_launcher"
+    android:label="JZ16 Schedule sync"
+    android:accountPreferences="@xml/account_preferences" />

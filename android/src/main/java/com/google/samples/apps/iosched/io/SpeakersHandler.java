@@ -28,6 +28,7 @@ import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 import com.google.samples.apps.iosched.provider.ScheduleContractHelper;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -91,6 +92,11 @@ public class SpeakersHandler extends JSONHandler {
         LOGD(TAG, "Speakers: " + (isIncrementalUpdate ? "INCREMENTAL" : "FULL") + " update. " +
                 updatedSpeakers + " to update, " + deletedSpeakers + " to delete. New total: " +
                 mSpeakers.size());
+    }
+
+    @Override
+    public ArrayList<ContentProviderOperation> parse(String json) throws IOException {
+        return null;
     }
 
     private void buildSpeaker(boolean isInsert, Speaker speaker,

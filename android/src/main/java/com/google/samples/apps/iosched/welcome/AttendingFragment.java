@@ -21,7 +21,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.google.samples.apps.iosched.R;
+import no.java.schedule.R;
 import com.google.samples.apps.iosched.settings.SettingsUtils;
 
 import static com.google.samples.apps.iosched.util.LogUtils.LOGD;

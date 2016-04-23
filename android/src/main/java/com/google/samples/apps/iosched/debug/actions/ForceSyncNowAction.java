@@ -27,6 +27,8 @@ import com.google.samples.apps.iosched.sync.SyncHelper;
 import com.google.samples.apps.iosched.debug.DebugAction;
 import com.google.samples.apps.iosched.util.AccountUtils;
 
+import java.io.IOException;
+
 /**
  * A DebugAction that runs an immediate full sync.
  */
@@ -43,8 +45,12 @@ public class ForceSyncNowAction implements DebugAction {
                 if (account == null) {
                     callback.done(false, "Cannot sync if there is no active account.");
                 } else {
-                    new SyncHelper(contexts[0]).performSync(new SyncResult(),
-                      AccountUtils.getActiveAccount(context), bundle);
+                    try {
+                        new SyncHelper(contexts[0]).performSync(new SyncResult(),
+                          AccountUtils.getActiveAccount(context), bundle);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
                 }
               return null;
             }
