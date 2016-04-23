@@ -68,6 +68,7 @@ public abstract class AbstractUserDataSyncHelper {
 
     protected Context mContext;
     protected String mAccountName;
+    protected int mIoExceptions = 0;
 
     public AbstractUserDataSyncHelper(Context context, String accountName) {
         this.mContext = context;
@@ -227,6 +228,14 @@ public abstract class AbstractUserDataSyncHelper {
         } catch (Exception ex) {
             LOGW(TAG, "Could not update dirty flags. Ignoring.", ex);
         }
+    }
+
+    public void incrementIoExceptions() {
+        mIoExceptions++;
+    }
+
+    public int getIoExcpetions() {
+        return mIoExceptions;
     }
 
     private enum UserDataQueryEnum implements QueryEnum {

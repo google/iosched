@@ -22,6 +22,7 @@ import android.net.ConnectivityManager;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 
+import com.firebase.client.FirebaseException;
 import com.google.samples.apps.iosched.BuildConfig;
 import com.google.samples.apps.iosched.Config;
 import com.google.samples.apps.iosched.feedback.FeedbackApiHelper;
@@ -167,7 +168,7 @@ public class SyncHelper {
                         dataChanged |= doConferenceDataSync();
                         break;
                     case OP_USER_SCHEDULE_DATA_SYNC:
-                        dataChanged |= doUserDataSync(account.name);
+                        dataChanged |= doUserDataSync(syncResult, account.name);
                         break;
                     case OP_USER_FEEDBACK_DATA_SYNC:
                         // User feedback data sync is an outgoing sync only so not affecting
@@ -297,7 +298,7 @@ public class SyncHelper {
      * @return Whether or not data was changed.
      * @throws IOException if there is a problem uploading the data.
      */
-    private boolean doUserDataSync(String accountName) throws IOException {
+    private boolean doUserDataSync(SyncResult syncResult, String accountName) throws IOException {
         if (!isOnline()) {
             LOGD(TAG, "Not attempting userdata sync because device is OFFLINE");
             return false;
@@ -308,6 +309,7 @@ public class SyncHelper {
         AbstractUserDataSyncHelper helper = UserDataSyncHelperFactory.buildSyncHelper(
                 mContext, accountName);
         boolean modified = helper.sync();
+
         if (modified) {
             // Schedule notifications for the starred sessions.
             Intent scheduleIntent = new Intent(
@@ -315,6 +317,7 @@ public class SyncHelper {
                     null, mContext, SessionAlarmService.class);
             mContext.startService(scheduleIntent);
         }
+        syncResult.stats.numIoExceptions += helper.getIoExcpetions();
         return modified;
     }
 
