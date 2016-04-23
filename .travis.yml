@@ -16,20 +16,20 @@ language: android
 
 android:
   components:
-    - build-tools-23.0.3
-    - android-23
-    - addon-google_apis-google-23
-    - extra-google-m2repository
+    - tools
     - extra-android-m2repository
-    - sys-img-armeabi-v7a-addon-google_apis-google-23
+    - extra-google-m2repository
+    - android-23
+    - build-tools-23.0.2
+    - addon-google_apis-google-23
 
 notifications:
   email: false
 
-before_install:
-  - android list targets
-  - echo no | android create avd --force -n test -t "Google Inc.:Google APIs:21" --abi google_apis/armeabi-v7a
-  - emulator -avd test -no-skin -no-audio -no-window &
+#before_install:
+#  - android list targets
+#  - echo no | android create avd --force -n test -t "Google Inc.:Google APIs:21" --abi google_apis/armeabi-v7a
+#  - emulator -avd test -no-skin -no-audio -no-window &
 
 before_script:
   - ./scripts/wait_for_emulator.sh
