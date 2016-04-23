@@ -17,6 +17,6 @@
 <!-- Strings used for view tags. This file doesn't need to be translated as it is used to find a
 view in the code by tag, it isn't a string shown to the user. -->
 <resources>
-    <string name="tag_give_feedback">GIVE_FEEDBACK</string>
+    <string name="tag_give_feedback" translatable="false">GIVE_FEEDBACK</string>
 </resources>
 

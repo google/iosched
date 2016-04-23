@@ -1,6 +1,6 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <!--
-  Copyright 2015 Google Inc. All rights reserved.
+  Copyright 2016 Google Inc. All rights reserved.
 
   Licensed under the Apache License, Version 2.0 (the "License");
   you may not use this file except in compliance with the License.
@@ -15,6 +15,9 @@
   limitations under the License.
   -->
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+    <!-- Shown in the 'About' window of the app. -->
+    <string name="about_body">&lt;b&gt;Google I/O 2016&lt;/b&gt;&lt;br&gt; الإصدار%s &lt;br&gt;&lt;br&gt; &lt;a href=http://m.google.com/utos&gt;شروط الخدمة&lt;/a&gt;&lt;br&gt;&lt;br&gt; &lt;a href=http://www.google.com/policies/privacy/&gt; سياسة الخصوصية&lt;/a&gt;</string>
+
     <plurals description="Shown in the schedule to indicate how many sessions are available on that particular time slot." name="schedule_block_subtitle">
     <item quantity="zero">
       <xliff:g id="number_of_sessions">%1$d</xliff:g> جلسة متاحة</item>
@@ -28,40 +31,40 @@
       <xliff:g id="number_of_sessions">%1$d</xliff:g> جلسات متاحة</item>
     <item quantity="other">
       <xliff:g id="number_of_sessions">%1$d</xliff:g> جلسات متاحة</item>
-    </plurals>
+  </plurals>
 
     <plurals description="Shows as a notification on the system bar to alert user that some of their sessions are about to begin." name="session_notification_text">
-        <item quantity="zero">و <xliff:g id="num_sessions">%2$d</xliff:g> أخرى تبدأ في غضون <xliff:g id="remaining_time">%1$d</xliff:g> دقيقة</item>
-        <item quantity="one">وواحدة أخرى تبدأ في غضون <xliff:g id="remaining_time">%1$d</xliff:g> دقيقة</item>
-        <item quantity="two">و <xliff:g id="num_sessions">%2$d</xliff:g> أخرى تبدآن في غضون <xliff:g id="remaining_time">%1$d</xliff:g> دقائق</item>
-        <item quantity="few">و <xliff:g id="num_sessions">%2$d</xliff:g> أخرى تبدأ في غضون <xliff:g id="remaining_time">%1$d</xliff:g> دقائق</item>
-        <item quantity="many">و <xliff:g id="num_sessions">%2$d</xliff:g> أخرى تبدأ في غضون <xliff:g id="remaining_time">%1$d</xliff:g> دقائق</item>
-        <item quantity="other">و <xliff:g id="num_sessions">%2$d</xliff:g> أخرى تبدأ في غضون <xliff:g id="remaining_time">%1$d</xliff:g> دقائق</item>
-    </plurals>
+    <item quantity="zero">و <xliff:g id="num_sessions">%2$d</xliff:g> أخرى تبدأ في غضون <xliff:g id="remaining_time">%1$d</xliff:g> دقيقة</item>
+    <item quantity="one">وواحدة أخرى تبدأ في غضون <xliff:g id="remaining_time">%1$d</xliff:g> دقيقة</item>
+    <item quantity="two">و <xliff:g id="num_sessions">%2$d</xliff:g> أخرى تبدآن في غضون <xliff:g id="remaining_time">%1$d</xliff:g> دقائق</item>
+    <item quantity="few">و <xliff:g id="num_sessions">%2$d</xliff:g> أخرى تبدأ في غضون <xliff:g id="remaining_time">%1$d</xliff:g> دقائق</item>
+    <item quantity="many">و <xliff:g id="num_sessions">%2$d</xliff:g> أخرى تبدأ في غضون <xliff:g id="remaining_time">%1$d</xliff:g> دقائق</item>
+    <item quantity="other">و <xliff:g id="num_sessions">%2$d</xliff:g> أخرى تبدأ في غضون <xliff:g id="remaining_time">%1$d</xliff:g> دقائق</item>
+  </plurals>
 
     <plurals description="Shown as a notification on the system bar to alert user that some of their sessions are about to begin." name="session_notification_ticker">
-        <item quantity="zero">%d جلسة على وشك البدء.</item>
-        <item quantity="one">%d جلسة على وشك البدء.</item>
-        <item quantity="two">%d جلسة على وشك البدء.</item>
-        <item quantity="few">%d جلسات على وشك البدء.</item>
-        <item quantity="many">%d جلسات على وشك البدء.</item>
-        <item quantity="other">%d جلسات على وشك البدء.</item>
-    </plurals>
+    <item quantity="zero">%d جلسة على وشك البدء.</item>
+    <item quantity="one">هناك جلسة واحدة على وشك البدء.</item>
+    <item quantity="two">%d جلسة على وشك البدء.</item>
+    <item quantity="few">%d جلسات على وشك البدء.</item>
+    <item quantity="many">%d جلسات على وشك البدء.</item>
+    <item quantity="other">%d جلسات على وشك البدء.</item>
+  </plurals>
 
     <plurals description="Indicates a certain number of sessions." name="session_plurals">
-        <item quantity="zero">%1$d جلسة</item>
-        <item quantity="one">جلسة واحدة</item>
-        <item quantity="two">%1$d جلسة</item>
-        <item quantity="few">%1$d جلسات</item>
-        <item quantity="many">%1$d جلسات</item>
-        <item quantity="other">%1$d جلسات</item>
-    </plurals>
+    <item quantity="zero">%1$d جلسة</item>
+    <item quantity="one">جلسة واحدة</item>
+    <item quantity="two">%1$d جلسة</item>
+    <item quantity="few">%1$d جلسات</item>
+    <item quantity="many">%1$d جلسات</item>
+    <item quantity="other">%1$d جلسات</item>
+  </plurals>
 
     <!-- Title for the notification that alerts the user that some of their sessions are about to begin. -->
     <plurals name="session_notification_title">
     <item quantity="zero">
       <xliff:g id="num_sessions">%2$d</xliff:g> جلسات تبدأ في غضون <xliff:g id="remaining_time">%1$d</xliff:g> دقيقة</item>
-        <item quantity="one">تبدأ جلسة واحدة في غضون <xliff:g id="remaining_time">%1$d</xliff:g> دقيقة</item>
+    <item quantity="one">تبدأ جلسة واحدة في غضون <xliff:g id="remaining_time">%1$d</xliff:g> دقيقة</item>
     <item quantity="two">
       <xliff:g id="num_sessions">%2$d</xliff:g> جلسات تبدأ في غضون <xliff:g id="remaining_time">%1$d</xliff:g> دقيقة</item>
     <item quantity="few">
@@ -70,10 +73,16 @@
       <xliff:g id="num_sessions">%2$d</xliff:g> جلسات تبدأ في غضون <xliff:g id="remaining_time">%1$d</xliff:g> دقائق</item>
     <item quantity="other">
       <xliff:g id="num_sessions">%2$d</xliff:g> جلسات تبدأ في غضون <xliff:g id="remaining_time">%1$d</xliff:g> دقائق</item>
-    </plurals>
+  </plurals>
 
     <!-- Shown in the 'About' window of the app. -->
-    <string name="about_body">&lt;b&gt;إصدار I/O 2016&lt;/b&gt;&lt;br&gt; جوجل %s&lt;br&gt;&lt;br&gt; &lt;a href=http://m.google.com/utos&gt;شروط الخدمة&lt;/a&gt;&lt;br&gt;&lt;br&gt; &lt;a href=http://www.google.com/policies/privacy/&gt;سياسة الخصوصية&lt;/a&gt;</string>
+    <string name="about_main">&lt;b&gt;Google I/O 2016&lt;/b&gt;&lt;br&gt; إصدار %s</string>
+
+    <!-- Shown as a link in the About screen of the app; user can click to see the Terms of Services. -->
+    <string name="about_terms">شروط الخدمة</string>
+
+    <!-- Shown as a link in the About screen of the app; user can click to see the Privacy Policy. -->
+    <string name="about_privacy_policy">سياسة الخصوصية</string>
 
     <!-- Shown as a link in the About screen of the app; user can click to see the EULA. -->
     <string name="about_eula">اتفاقية ترخيص المستخدم النهائي</string>
@@ -107,6 +116,8 @@
     are being displayed. Topics are major categories for sessions (example topics are: Android,
     Chrome, Google APIs, Wearables, etc). -->
     <string name="all_topics">جميع المواضيع</string>
+
+    <string description="Hint for adding other session feedback" name="session_feedback_tell_us">تعليقات الجلسات الأخرى؟</string>
 
     <!-- Shown in a drop-down list on the main screen, indicating that all session types
     are being displayed. Some examples of session types are: session, office hours, code lab. -->
@@ -245,10 +256,10 @@
     <string name="social_twitter_devs_content_description">انتقل إلى Google Developers على Twitter</string>
 
     <!-- Accessibility description for the GPlus icon in the "#io15 extended" box. -->
-    <string name="social_extended_gplus_content_description">انتقل إلى Google Plus مع وسم موسَّع</string>
+    <string name="social_extended_gplus_content_description">انتقل إلى Google Plus مع وسم موسَّع</string>
 
     <!-- Accessibility description for the Twitter icon in the "#io15 extended" box. -->
-    <string name="social_extended_twitter_content_description">انتقل إلى Twitter  مع وسم موسَّع</string>
+    <string name="social_extended_twitter_content_description">انتقل إلى Twitter  مع وسم موسَّع</string>
 
     <!-- Accessibility description for the GPlus icon in the "#io15 request" box. -->
     <string name="social_request_gplus_content_description">انتقل إلى Google Plus مع وسم الطلب</string>
@@ -305,7 +316,7 @@
     <string name="empty_widget_text">لا يوجد المزيد من الجلسات المقبلة.\nنراك العام القادم!</string>
 
     <!-- Shown on a widget instructing user how to start using the widget. -->
-    <string name="empty_widget_text_signed_out">المس شعار Google I/O 2016 أعلاه لتسجيل الدخول والبدء في استخدام التطبيق.</string>
+    <string name="empty_widget_text_signed_out">المس شعار Google I/O 2016 بالأعلى لتسجيل الدخول وابدأ استخدام التطبيق.</string>
 
     <!-- Shown as a header on a list of sessions to indicate that the sessions that appear on that
     group have already ended. -->
@@ -368,9 +379,9 @@
     If using multiple lines, separate them with "\n" ("Tentar\nde novo" for example)
     -->
     <string name="login_failed_text_retry">إعادة المحاولة</string>
-    
+
     <!-- Message shown in a popup to request a mandatory upgrade -->
-    <string name="mandatory_update_error">طلب التقديم الخاص بك غير محدَّث. يجب عليك تحديثه للاستمرار في استخدامه.</string>
+    <string name="mandatory_update_error">طلب التقديم الخاص بك غير محدَّث. يجب عليك تحديثه للاستمرار في استخدامه.</string>
 
     <!-- Message shown in a popup to indicate that there is a mandatory upgrade -->
     <string name="update_available">هناك نسخة أحدث من هذا التطبيق متاحة على Google Play.</string>
@@ -398,6 +409,9 @@
     <!-- Accessibility description for viewing more sessions/videos. -->
     <string name="more_items_button_desc_a11y">اضغط لعرض المزيد من العناصر.</string>
 
+    <!-- Accessibility description for viewing more sessions/videos including the topic/theme . -->
+    <string name="more_items_button_desc_with_label_a11y">اضغط لإظهار <xliff:g id="itemName">%1$s</xliff:g> عناصر إضافية.</string>
+
     <!-- Accessibility content description on a button that will show more information about something. -->
     <string name="more_information">المزيد من المعلومات</string>
 
@@ -407,18 +421,36 @@
     <!-- Accessibility description for tab that shows the attendee's schedule for a given day. -->
     <string name="my_schedule_tab_desc_a11y">انقر لعرض الجدول الزمني الخاص بك ليوم <xliff:g id="day">%1$s</xliff:g>.</string>
 
+    <!-- Text for the title of an extra schedule item on the pre conference day -->
+    <string name="my_schedule_badgepickup">التقاط الشارة</string>
+
+    <!-- Text for the description of an extra schedule item on the pre conference day -->
+    <string name="my_schedule_badgepickup_description">مكتب التسجيل</string>
+
+    <!-- Accessibility description for buttons -->
+    <string name="a11y_button">زر %s</string>
+
     <!-- Accessibility announcement to alert user that they are now viewing their schedule of a given day. -->
     <string name="my_schedule_page_desc_a11y">يعرض حاليًا الجدول الزمني الخاص بك ليوم <xliff:g id="day">%1$s</xliff:g>
   </string>
 
+    <!-- Accessibility announcement to confirm the feedback rating made for a session by the user. -->
+    <string name="feedback_rating_confirmation">تقييمك: %1$d من %2$d نجوم</string>
+
+    <!-- Accessibility announcement for an item in the custom feedback rating view. For example, "one star".  -->
+    <string name="feedback_rating_value">%1$d نجوم</string>
+
     <!-- Label for the button to rate a session -->
-    <string name="my_schedule_rate_this_session">قيِّم هذه الجلسة</string>
+    <string name="my_schedule_rate_this_session">قيِّم هذه الجلسة</string>
 
     <!-- Label for the button to watch live now -->
     <string name="my_schedule_watch_live_now">شاهد بث مباشر الآن</string>
 
     <!-- Accessibility description for navigation drawer -->
     <string name="navdrawer_description_a11y">يُستخدم Navigation Drawer للتبديل بين المزايا الرئيسية للتطبيق</string>
+
+    <!-- Accessibility description for the spinner used to change account. -->
+    <string name="switch_account_spinner_description_a11y">بدل الحساب</string>
 
     <!-- Menu item to open the Explore screen [CHAR_LIMIT=20] -->
     <string name="navdrawer_item_explore">استكشاف</string>
@@ -458,6 +490,14 @@
     <!-- Text indicator that appears below the user's name, showing that they are
     attending the conference remotely via live streaming. -->
     <string name="navdrawer_status_attending_remotely">أحضر I/O عن بعد</string>
+
+    <!-- String used to wrap navigation item descriptions for a11y users to indicate the user
+         interface element is a menu item. -->
+    <string name="navdrawer_menu_item_a11y_wrapper">%1$s عناصر القائمة</string>
+
+    <!-- String used to wrap navigation item descriptions for a11y users to indicate the user
+         interface element is a menu item. This string indicates a selected menu item -->
+    <string name="navdrawer_selected_menu_item_a11y_wrapper">%1$s عنصر القائمة المحدد</string>
 
     <!-- List dropdown item on the Video Library screen allowing the user to choose to see
     the videos from the last year of Google I/O. -->
@@ -517,13 +557,12 @@
     <!-- Description of the Google+ +1 button for accessibility screen readers -->
     <string name="plus_one_description_standard">المس لزائد واحد.</string>
 
+
+    <string description="Description in the Settings screen for the setting that enables display of             cards with conference information in the explore screen." name="pref_conf_message_cards_enabled_description">بطاقات عرض تحتوي على معلومات المؤتمر في شاشة الاستكشاف.\nتعتمد على الوقت وقد تتضمن رسائل ترويجية من الشركاء.</string>
+
     <!-- Title in the Settings screen for the setting that enables display of cards with
      conference information in the explore screen. -->
-    <string name="pref_conf_message_cards_enabled_title">شاهد الرسائل من المؤتمر</string>
-
-    <string name="pref_conf_message_cards_enabled_description"
-            description="Description in the Settings screen for the setting that enables display of
-            cards with conference information in the explore screen.">إعرض بطاقات المعلومات الخاصة بالمؤتمر على شاشة التصفح. بعض من هذه البطاقات  لها أوقات محددة وقد تتضمن رسائل ترويجية من شركائنا.</string>
+    <string name="pref_conf_message_cards_enabled_title">أعرض رسائل المؤتمر</string>
 
     <!-- Title in the Settings screen for the setting that enables sending of anonymous usage
     statistics to Google. -->
@@ -563,6 +602,13 @@
     <!-- Summary in the Settings screen for the "Synchronize my schedule with Google Calendar" option -->
     <string name="pref_sync_with_calendar_title">مزامنة مع تقويم Google</string>
 
+    <!-- This message is displayed to the user when they disable the Calendar sync and they have revoked the Calendar permission. We are letting them know we couldn't remove the items from their Calendar. -->
+    <string name="pref_sync_with_calendar_permission_denied_during_disable">لم نتمكن من إزالة العناصر من التقويم، تم رفض الإذن.</string>
+
+    <!-- This message is displayed to the user when they enable the Calendar sync and they don't allow the Calendar permission. We are letting them know we can't process the Calendar updates. -->
+    <string name="pref_sync_with_calendar_permission_denied_during_enable">لم نتمكن من مزامنة التقويم، تم رفض الإذن.</string>
+
+
     <!-- Text of a card shown in the session explorer that asks the user if he wants to see I/O
     extended events in his area. "Browse events" and "No, thanks" are the buttons shown in the card -->
     <string name="question_i_o_extended">هل تريد معرفة المزيد عن أحداث I/O الموسعة التي تحدث بالقرب من موقعك؟</string>
@@ -573,7 +619,7 @@
 
     <!-- Text of a card shown in the Explore I/O screen that asks the user if they want to configure
          the conference WiFi. "Not now" and "Yes, please" are options show on the card -->
-    <string name="question_setup_wifi_card_text">&lt;b&gt;واي فاي المؤتمر&lt;/b&gt;&lt;br/&gt; هل تود إعداد هذا الجهاز بحيث يتصل بشبكة الواي فاي الخاصة بالمؤتمر؟</string>
+    <string name="question_setup_wifi_card_text">&lt;b&gt;واي فاي المؤتمر&lt;/b&gt;&lt;br/&gt; هل ترغب في إعداد هذا الجهاز ليتصل بالواي الفاي الخاصة بالمؤتمر ذات سرعة 5 جيجاهرتز؟</string>
 
     <!-- Section title for videos related to a particular event session -->
     <string name="related_videos">مقاطع الفيديو ذات الصلة</string>
@@ -582,7 +628,7 @@
     <string name="remove_from_schedule">في الجدول</string>
 
     <!-- Accessibility content description for button used to remove the session from the user's schedule -->
-    <string name="remove_from_schedule_desc">زر لإزالة الجلسة من الجدول الزمني الخاص بك.</string>
+    <string name="remove_from_schedule_desc">زر إزالة الجلسة من الجدول الزمني الخاص بك.</string>
 
     <!-- Button label allowing users to retry a failed operation -->
     <string name="retry">إعادة المحاولة</string>
@@ -615,6 +661,14 @@
     <!-- Accessibility text announced as a response to pressing a button to remove a session from the schedule. -->
     <string name="session_details_a11y_session_removed">أزيلت الجلسة من جدولك الزمني</string>
 
+
+    <string description="Session feedback section title" name="session_feedback_content">المحتوى:</string>
+    <string description="A positive relevance session feedback option" name="session_feedback_rel">وثيق الصلة</string>
+    <string description="A negative relevance session feedback option" name="session_feedback_notrel">غير ذي صلة</string>
+
+    <!-- A session feedback title asking you to rate a given session -->
+    <string name="session_feedback_title_rate">التقييم</string>
+
     <!-- A session feedback section label asking the user to rate the session overall -->
     <string name="session_rating_label_text">تقييم الجلسة:</string>
 
@@ -639,14 +693,23 @@
     <!-- Notification ticker text asking the user to provide session feedback -->
     <string name="session_feedback_notification_ticker">أعطِ تعقيبًا للجلسة</string>
 
+    <!-- A negative overall session reating -->
+    <string name="session_feedback_not_so_awesome">ليس رائعا جدا</string>
+
+    <!-- A positive overall session reating -->
+    <string name="session_feedback_awesome">رائعا</string>
+
     <!-- A negative relevance session feedback option -->
     <string name="session_feedback_not_at_all_relevant">لا، على الإطلاق</string>
 
     <!-- A negative relevance session feedback option -->
     <string name="session_feedback_extremely_relevant">جدًا</string>
 
-    <!-- A session feedback section label asking for any other feedback. It indicates the user should not add personal information -->
-    <string name="session_feedback_other"> أي شيء آخر يجب أن نعرفه؟\n(يرجى عدم إضافة أية معلومات شخصية في تعليقاتك.)</string>
+    <!-- A session feedback section label asking for any other feedback -->
+    <string name="session_feedback_other">هل ترغب في إعلامنا بشيء آخر؟</string>
+
+    <!-- Note that the user should not add personal information when providing additional comments-->
+    <string name="session_feedback_additional_comments_no_personal_info">يرجى عدم إضافة أية بيانات شخصية بتعليقاتك</string>
 
     <!-- A positive speaker quality session feedback option -->
     <string name="session_feedback_outstanding">متميزة</string>
@@ -668,6 +731,16 @@
 
     <!-- Card text asking the user to provide session feedback -->
     <string name="session_give_feedback_message">كيف كانت هذه الدورة؟ هل ترغب في إرسال تعقيب؟</string>
+
+    <!-- Default text for the content description for the RatingBar widget used to rate a session. -->
+    <string name="default_session_feedback_rating_bar_content_description">شريط تصنيف الجلسات بحد أدنى نجمة واحدة وحد أقصى خمس نجوم</string>
+
+    <!-- Text for the content description for the RatingBar widget used to rate a session when the
+user updates the rating. -->
+    <string name="updated_session_feedback_rating_bar_content_description">تقييم الجلسة %1$d النجوم</string>
+
+    <!-- Content description for overlay marker showing if a session is in the user's schedule  -->
+    <string name="session_in_schedule_indicator_a11y">الجلسة في جدولك الزمني</string>
 
     <!-- Link text for the user to watch a live video stream of the session -->
     <string name="session_link_livestream">مشاهدة بث مباشر</string>
@@ -847,7 +920,7 @@
     <string name="welcome_conduct_title">أفضل ممارسات مجتمع I/O</string>
 
     <!-- Medium-length welcome text asking if the user is attending Google I/O in person -->
-    <string name="welcome_attending_text">هل أنت حاضر I/O عن بعد أو بنفسك في سان فرانسيسكو؟</string>
+    <string name="welcome_attending_text">هل ستحضر I/O عن بعد أم شخصيا في ماونتن فيو؟</string>
 
     <!-- Short text asking if they're interested in what's around them -->
     <string name="welcome_around">حولك</string>
@@ -857,6 +930,9 @@
 
     <!-- Medium text asking to choose an account from a list -->
     <string name="welcome_select_accoun_text">يرجى اختيار حساب لاستخدامه:</string>
+
+    <!-- This string explains that the Accounts and Storage Android permissions are required in order to sync conference data. The string shows to indicate to users that they need to accept the permissions dialog -->
+    <string name="welcome_permissions_rationale">الحسابات وأذون التخزين مطلوبة لمزامنة بيانات المؤتمر</string>
 
     <!-- Text for a button which will add a wi-fi network -->
     <string name="wifi_dialog_button_configure">إضافة شبكة واي فاي</string>
@@ -900,18 +976,23 @@
     <!-- Title of the Explore Sessions side panel containing all the filters -->
     <string name="title_explore_sessions_filter">تصفية</string>
 
+    <!-- Sub-title for a session in ExploreSessionsActivity that shows the day and start time
+        for a given session.
+        Example: WEDS 9AM -->
+    <string name="explore_sessions_show_day_time">
+    <xliff:g example="WEDS" id="day">%1$s</xliff:g> <xliff:g example="9AM" id="start_time">%2$s</xliff:g>
+  </string>
+
     <!-- Show Day and start time of a session as the title when viewing browsing sessions
          (ExploreSessionActivity) from MySchedule. -->
     <string name="explore_sessions_time_slot_title">
-    <xliff:g example="Day 1" id="day">%1$s</xliff:g>، <xliff:g example="2:30PM" id="start_time">%2$s</xliff:g>
+    <xliff:g example="May 18" id="day">%1$s</xliff:g>، <xliff:g example="2:30PM" id="start_time">%2$s</xliff:g>
   </string>
 
     <!-- BEGIN Explore Message Card User Messages -->
-    <string name="explore_io_msgcards_ask_opt_in"
-            description="This message is displayed on the Explore I/O screen to ask users whether
-            they would like to opt in to receive messages regarding the conference."><![CDATA[
-        <b>رسائل المؤتمر</b><br/>
-        هل تفضل عدم إستقبال أي رسائل مهمة عن المؤتمر ؟ بعض من هذه الرسائل لها أوقات محددة وقد تتضمن رسائل ترويجية من شركائنا.]]></string>
+    <string description="This message is displayed on the Explore I/O screen to ask users whether         they would like to opt in to receive notifications for the sessions the have added to their schedule." name="explore_io_notifications_ask_opt_in">&lt;b&gt;إخطارات الجلسة&lt;/b&gt;&lt;br/&gt; هل تود استلام إخطارات للجلسات بجدولك الزمني؟</string>
+
+    <string description="This message is displayed on the Explore I/O screen to ask users whether             they would like to opt in to receive messages regarding the conference." name="explore_io_msgcards_ask_opt_in">&lt;b&gt;رسائل المؤتمر&lt;/b&gt;&lt;br/&gt; هل تود استلام الرسائل الهامة المتعلقة بالمؤتمر؟ تعتمد الرسائل على الوقت وقد تتضمن رسائل ترويجية من الشركاء.</string>
 
     <!-- This is used on the Explore I/O message cards to answer yes to a particular message -->
     <string name="explore_io_msgcards_answer_yes">بالتأكيد، لنفعل ذلك!</string>
@@ -922,8 +1003,6 @@
     <!-- This string is presented to users when they attempt to click something that indicates they
          can watch a video but it turns out we can't show the video. -->
     <string name="explore_io_video_id_not_valid">عذرا، يبدو أن هناك مشكلة في رابط الفيديو.</string>
-
-    <!-- END Explore Message Card User Messages -->
 
     <!-- This string is the title of a notification shown to the user when Google Play
         services can't connect. -->
@@ -936,4 +1015,28 @@
          that we can't execute the request when they click a button or touch a part of the screen
          that should normally be touchable. -->
     <string name="unknown_error">للأسف، لم نتمكن من معالجة هذا الطلب.</string>
+
+
+    <!--Generic strings to be translated & used in talk back labels-->
+
+    <!--Indicates the item is actionable and the user can tap on it-->
+    <string name="talkback_button">زر %1$s</string>
+
+    <!--Indicates the item does nothing when tapped-->
+    <string name="talkback_not_clickable">%1$s غير قابل للنقر</string>
+
+    <!--Indicates the item is an image-->
+    <string name="talkback_image">%1$s صورة</string>
+
+    <!--Indicates the item is a link (and actionable)-->
+    <string name="talkback_link">%1$s رابط</string>
+
+    <!--Indicates the item is currently selected-->
+    <string name="talkback_selected">%1$s محدد</string>
+
+    <!--Indicates the item is currently not selected-->
+    <string name="talkback_not_selected">%1$s غير محدد</string>
+
+    <!--Indicates what happens when the user taps on an item-->
+    <string name="talkback_tapfor">اضغط لـ %1$s</string>
 </resources>

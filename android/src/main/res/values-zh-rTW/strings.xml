@@ -1,4 +1,20 @@
-<?xml version="1.0" encoding="UTF-8"?><resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  Copyright 2016 Google Inc. All rights reserved.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+       http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+  -->
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
     <!-- Shown in the 'About' window of the app. -->
     <string name="about_body">&lt;b&gt;Google I/O 2016&lt;/b&gt;&lt;br&gt;%s版&lt;br&gt;&lt;br&gt; &lt;a\nhref=http://m.google.com/utos&gt;服務條款&lt;/a&gt;&lt;br&gt;&lt;br&gt;\n&lt;a href=http://www.google.com/policies/privacy/&gt;隱私原則&lt;/a&gt;</string>
 

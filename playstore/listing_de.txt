@@ -1,0 +1,23 @@
+Your store listing text is now localized. To make this available on Google Play store, you will need to submit this content on Google Developer Console.
+******************** Short description in locale <de> ********************
+Ihr Co-Pilot zur I/O, ob Sie nun persönlich oder per Fernzugriff dabei sind.
+******************** Title in locale <de> ********************
+Google I/O 2016
+******************** Full description in locale <de> ********************
+Die offizielle Google I/O 2016-App ist als Co-Pilot für Ihre Navigation konzipiert, unabhängig davon, ob Sie persönlich oder mit Fernzugriff teilnehmen.
+– Erforschen Sie die Konferenz-Agenda mit Details über Themen, Themenbereichen und Referenten 
+– Fügen Sie Ereignisse einem persönlichen Zeitplan zu
+– Erhalten Sie Erinnerungen, bevor die Ereignisse in Ihrem Zeitplan beginnen
+– Sehen Sie sich die Keynotes und Sitzungen im Live-Stream an
+– Synchronisieren Sie Ihren Zeitplan zwischen allen Geräten und der I/O-Website
+– Lotsen Sie sich selbst mit Hilfe der vektoren-basierten Konferenzkarte
+– Folgen Sie den I/O-relevanten Gesprächen in den öffentlichen sozialen Medien  
+– Schauen Sie sich I/O-Inhalte aus den Vorjahren in den Videos an
+
+* Exklusiv für in Person anwesende Teilnehmer: *
+Nutzen Sie die einfachere Pre-Event-Wi-Fi-Konfiguration
+
+Diese App wurde für Handys und Tablets aller Größen und Formen optimiert.
+Der Quellcode der App wird nach Abschluss der I/O zur Verfügung gestellt.
+
+v4.0: Aktualisiert für Google I/O 2016
