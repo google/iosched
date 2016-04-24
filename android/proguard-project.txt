@@ -140,3 +140,8 @@
 -dontwarn org.joda.time.**
 -dontwarn org.shaded.apache.**
 -dontwarn org.ietf.jgss.**
+
+# Rick-rolls (b/28358606): Delete this after launch of Phase1
+-keep class com.google.samples.apps.iosched.welcome.AnnouncementFragment {
+    public static *;
+}
