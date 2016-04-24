@@ -155,6 +155,8 @@ public class FirebaseUserDataSyncHelper extends AbstractUserDataSyncHelper
 
     @Override
     public void onAuthFailed() {
+        // Clear out the <uid> previously obtained from Firebase.
+        FirebaseUtils.setFirebaseUid(mContext, mAccountName, "");
         mCountDownLatch.countDown();
         incrementIoExceptions();
     }
