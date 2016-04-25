@@ -17,7 +17,6 @@ package com.google.samples.apps.iosched.sync.userdata.firebase;
 import android.content.Context;
 import android.text.TextUtils;
 
-import com.firebase.client.AuthData;
 import com.firebase.client.DataSnapshot;
 import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
@@ -89,43 +88,24 @@ public class FirebaseUserDataSyncHelper extends AbstractUserDataSyncHelper
 
         // The Firebase reference used to sync data.
         final Firebase firebaseRef = new Firebase(firebaseUrl);
-        // Add an auth state listener that will drive the sync process to ensure the Firebase
-        // authentication hasn't gone stale. The onAuthStateChanged callback will be called with
-        // the current auth state if auth has already been performed.
-        firebaseRef.addAuthStateListener(new Firebase.AuthStateListener() {
-            // Prevent a potential continuous loop if auth never succeeds.
-            boolean authAlreadyAttempted = false;
-            @Override
-            public void onAuthStateChanged(final AuthData authData) {
-                if (authData != null) {
-                    LOGI(TAG, "Already authenticated with Firebase.");
-                    FirebaseUtils.setFirebaseUid(mContext, mAccountName, authData.getUid());
-                    performSync(actions);
-                } else {
-                    LOGI(TAG, "Not authenticated with Firebase.");
-                    if (authAlreadyAttempted) {
-                        mCountDownLatch.countDown();
-                        return;
-                    }
-                    authAlreadyAttempted = true;
-                    FirebaseUtils.setFirebaseUid(mContext, mAccountName, "");
-                    new FirebaseAuthHelper(mContext, firebaseRef,
-                            FirebaseUserDataSyncHelper.this).authenticate();
-                    // Sync will be performed when onAuthStateChanged is called again after the
-                    // authentication request completes.
-                }
-            }
-        });
+        boolean authenticated = !TextUtils.isEmpty(FirebaseUtils.getFirebaseUid(mContext));
+
+        if (authenticated) {
+            LOGI(TAG, "Already authenticated with Firebase.");
+            performSync(actions);
+        } else {
+            // Authenticate and wait for onAuthSucceeded() to fire before performing sync.
+            new FirebaseAuthHelper(mContext, firebaseRef, this).authenticate();
+        }
 
         try {
-            // Make the current thread wait until we've heard back from Firebase. When we're done
-            // with syncing with Firebase, or if there is an error (an authentication error, for
-            // example), we decrement the latch count.
+            // Make the current thread wait until we've heard back from Firebase.
             LOGI(TAG, "Waiting until the latch has counted down to zero");
             mCountDownLatch.await(AWAIT_TIMEOUT_IN_MILLISECONDS, TimeUnit.MILLISECONDS);
         } catch (InterruptedException exception) {
             LOGW(TAG, "Waiting thread awakened prematurely", exception);
             incrementIoExceptions();
+            // TODO: if sync fails, throw a typed exception. See b/27808839.
         }
         LOGI(TAG, "local data changed after sync = " + mDataChanged);
         return mDataChanged;
@@ -168,7 +148,8 @@ public class FirebaseUserDataSyncHelper extends AbstractUserDataSyncHelper
     }
 
     @Override
-    public void onAuthSucceeded() {
+    public void onAuthSucceeded(final String uid) {
+        FirebaseUtils.setFirebaseUid(mContext, mAccountName, uid);
         performSync(mActions);
     }
 

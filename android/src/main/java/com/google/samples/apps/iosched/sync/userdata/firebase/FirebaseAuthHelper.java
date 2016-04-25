@@ -57,7 +57,7 @@ public class FirebaseAuthHelper {
                         @Override
                         public void onAuthenticated(AuthData authData) {
                             LOGI(TAG, "Firebase auth succeeded");
-                            mFirebaseAuthCallbacks.onAuthSucceeded();
+                            mFirebaseAuthCallbacks.onAuthSucceeded(authData.getUid());
                         }
 
                         @Override
