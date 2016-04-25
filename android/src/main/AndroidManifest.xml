@@ -524,14 +524,6 @@
             android:exported="false"
             android:permission="android.permission.BIND_REMOTEVIEWS" />
 
-        <!-- The service listening for incoming messages from the wear device -->
-        <service
-            android:name=".feedback.FeedbackWearableListenerService"
-            android:exported="false">
-            <intent-filter>
-                <action android:name="com.google.android.gms.wearable.BIND_LISTENER" />
-            </intent-filter>
-        </service>
     </application>
 
 </manifest>

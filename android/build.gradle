@@ -193,7 +193,6 @@ dependencies {
     compile "com.google.android.gms:play-services-gcm:${google_play_services_client_library_version}"
     compile "com.google.android.gms:play-services-maps:${google_play_services_client_library_version}"
     compile "com.google.android.gms:play-services-plus:${google_play_services_client_library_version}"
-    compile "com.google.android.gms:play-services-wearable:${google_play_services_client_library_version}"
 
     // Android support libraries.
     compile "com.android.support:appcompat-v7:${android_support_lib_version}"

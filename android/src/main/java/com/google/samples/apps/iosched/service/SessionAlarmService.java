@@ -16,13 +16,20 @@
 
 package com.google.samples.apps.iosched.service;
 
-import com.google.android.gms.common.ConnectionResult;
-import com.google.android.gms.common.api.GoogleApiClient;
-import com.google.android.gms.common.api.ResultCallback;
-import com.google.android.gms.wearable.DataApi;
-import com.google.android.gms.wearable.PutDataMapRequest;
-import com.google.android.gms.wearable.PutDataRequest;
-import com.google.android.gms.wearable.Wearable;
+import android.app.AlarmManager;
+import android.app.IntentService;
+import android.app.Notification;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
+import android.content.ContentResolver;
+import android.content.Context;
+import android.content.Intent;
+import android.content.res.Resources;
+import android.database.Cursor;
+import android.net.Uri;
+import android.support.v4.app.NotificationCompat;
+import android.support.v4.app.TaskStackBuilder;
+
 import com.google.samples.apps.iosched.R;
 import com.google.samples.apps.iosched.explore.ExploreIOActivity;
 import com.google.samples.apps.iosched.feedback.FeedbackHelper;
@@ -35,26 +42,9 @@ import com.google.samples.apps.iosched.settings.SettingsUtils;
 import com.google.samples.apps.iosched.util.TimeUtils;
 import com.google.samples.apps.iosched.util.UIUtils;
 
-import android.app.AlarmManager;
-import android.app.IntentService;
-import android.app.Notification;
-import android.app.NotificationManager;
-import android.app.PendingIntent;
-import android.content.ContentResolver;
-import android.content.Context;
-import android.content.Intent;
-import android.content.res.Resources;
-import android.database.Cursor;
-import android.net.Uri;
-import android.os.Bundle;
-import android.support.v4.app.NotificationCompat;
-import android.support.v4.app.TaskStackBuilder;
-import android.util.Log;
-
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.concurrent.TimeUnit;
 
 import static com.google.samples.apps.iosched.util.LogUtils.LOGD;
 import static com.google.samples.apps.iosched.util.LogUtils.LOGE;
@@ -66,9 +56,7 @@ import static com.google.samples.apps.iosched.util.LogUtils.makeLogTag;
  * {@link android.app.AlarmManager}. The service also handles invoking the system notifications to
  * provide feedback for the starred sessions.
  */
-public class SessionAlarmService extends IntentService
-        implements GoogleApiClient.ConnectionCallbacks,
-        GoogleApiClient.OnConnectionFailedListener {
+public class SessionAlarmService extends IntentService {
 
     private static final String TAG = makeLogTag(SessionAlarmService.class);
 
@@ -109,7 +97,6 @@ public class SessionAlarmService extends IntentService
     private static final long UNDEFINED_VALUE = -1;
     public static final String ACTION_NOTIFICATION_DISMISSAL
             = "com.google.sample.apps.iosched.ACTION_NOTIFICATION_DISMISSAL";
-    private GoogleApiClient mGoogleApiClient;
     public static final String KEY_SESSION_ID = "session-id";
     private static final String KEY_SESSION_NAME = "session-name";
     private static final String KEY_SPEAKER_NAME = "speaker-name";
@@ -124,18 +111,7 @@ public class SessionAlarmService extends IntentService
     }
 
     @Override
-    public void onCreate() {
-        super.onCreate();
-        mGoogleApiClient = new GoogleApiClient.Builder(this)
-                .addApi(Wearable.API)
-                .addConnectionCallbacks(this)
-                .addOnConnectionFailedListener(this)
-                .build();
-    }
-
-    @Override
     protected void onHandleIntent(Intent intent) {
-        mGoogleApiClient.blockingConnect(2000, TimeUnit.MILLISECONDS);
         final String action = intent.getAction();
 
         LOGD(TAG, "SessionAlarmService handling " + action);
@@ -393,45 +369,11 @@ public class SessionAlarmService extends IntentService
             nm.notify(FEEDBACK_NOTIFICATION_ID, notifBuilder.build());
 
             for (int i = 0; i < needFeedbackIds.size(); i++) {
-                setupNotificationOnWear(needFeedbackIds.get(i), null, needFeedbackTitles.get(i), null);
                 feedbackHelper.setFeedbackNotificationAsFiredForSession(needFeedbackIds.get(i));
             }
         } finally {
             if (c != null) { try { c.close(); } catch (Exception ignored) { } }
         }
-    }
-
-    /**
-     * Builds corresponding notification for the Wear device that is paired to this handset. This
-     * is done by adding a Data Item to teh Data Store; the Wear device will be notified to build a
-     * local notification.
-     */
-    private void setupNotificationOnWear(String sessionId, String sessionRoom, String sessionName,
-            String speaker) {
-        if (!mGoogleApiClient.isConnected()) {
-            Log.e(TAG, "setupNotificationOnWear(): Failed to send data item since there was no "
-                    + "connectivity to Google API Client");
-            return;
-        }
-        PutDataMapRequest putDataMapRequest = PutDataMapRequest
-                .create(FeedbackHelper.getFeedbackDataPathForWear(sessionId));
-        putDataMapRequest.getDataMap().putLong("time", new Date().getTime());
-        putDataMapRequest.getDataMap().putString(KEY_SESSION_ID, sessionId);
-        putDataMapRequest.getDataMap().putString(KEY_SESSION_NAME, sessionName);
-        putDataMapRequest.getDataMap().putString(KEY_SPEAKER_NAME, speaker);
-        putDataMapRequest.getDataMap().putString(KEY_SESSION_ROOM, sessionRoom);
-
-        PutDataRequest request = putDataMapRequest.asPutDataRequest();
-
-        Wearable.DataApi.putDataItem(mGoogleApiClient, request)
-                .setResultCallback(new ResultCallback<DataApi.DataItemResult>() {
-                    @Override
-                    public void onResult(DataApi.DataItemResult dataItemResult) {
-                        LOGD(TAG, "setupNotificationOnWear(): Sending notification result success:"
-                                        + dataItemResult.getStatus().isSuccess()
-                        );
-                    }
-                });
     }
 
     // Starred sessions are about to begin.  Constructs and triggers system notification.
@@ -677,25 +619,6 @@ public class SessionAlarmService extends IntentService
 
         public static final String WHERE_CLAUSE =
                 ScheduleContract.Sessions.HAS_GIVEN_FEEDBACK + "=0";
-    }
-
-    @Override
-    public void onConnected(Bundle connectionHint) {
-        if (Log.isLoggable(TAG, Log.DEBUG)) {
-            Log.d(TAG, "Connected to Google Api Service");
-        }
-    }
-
-    @Override
-    public void onConnectionSuspended(int cause) {
-        // Ignore
-    }
-
-    @Override
-    public void onConnectionFailed(ConnectionResult result) {
-        if (Log.isLoggable(TAG, Log.DEBUG)) {
-            Log.d(TAG, "Disconnected from Google Api Service");
-        }
     }
 
 }
