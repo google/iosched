@@ -170,4 +170,8 @@ public class Config {
     // URL prefix for web links to session pages
     public static final String SESSION_DETAIL_WEB_URL_PREFIX
             = "https://www.google.com/events/io/schedule/session/";
+
+    public static final String HTTPS = "https";
+
+    public static final String SESSION_ID_URL_QUERY_KEY = "sid";
 }

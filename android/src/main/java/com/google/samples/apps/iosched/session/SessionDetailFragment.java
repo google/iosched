@@ -51,6 +51,10 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.google.android.gms.appindexing.Action;
+import com.google.android.gms.appindexing.AppIndex;
+import com.google.android.gms.appindexing.Thing;
+import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.samples.apps.iosched.BuildConfig;
 import com.google.samples.apps.iosched.Config;
 import com.google.samples.apps.iosched.R;
@@ -144,6 +148,8 @@ public class SessionDetailFragment extends Fragment implements
 
     private boolean mHasEnterTransition = false;
 
+    private GoogleApiClient mClient;
+
     @Override
     public void addListener(UserActionListener listener) {
         mListener = listener;
@@ -154,6 +160,10 @@ public class SessionDetailFragment extends Fragment implements
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
         mAnalyticsScreenViewHasFired = false;
+        mClient = new GoogleApiClient.Builder(getActivity())
+                .addApi(AppIndex.API)
+                .enableAutoManage((SessionDetailActivity) getActivity(), null)
+                .build();
     }
 
     @Override
@@ -395,6 +405,11 @@ public class SessionDetailFragment extends Fragment implements
     private void displaySessionData(final SessionDetailModel data) {
         mTitle.setText(data.getSessionTitle());
         mSubtitle.setText(data.getSessionSubtitle());
+        try {
+            AppIndex.AppIndexApi.start(mClient, getActionForTitle(data.getSessionTitle()));
+        } catch (Throwable e) {
+            // Nothing to do if indexing fails.
+        }
 
         if (data.shouldShowHeaderImage()) {
             mImageLoader.loadImage(data.getPhotoUrl(), mPhotoView);
@@ -898,5 +913,29 @@ public class SessionDetailFragment extends Fragment implements
         // ANALYTICS EVENT:  Click on a link in the Session Details page.
         // Contains: The link's name and the session title.
         AnalyticsHelper.sendEvent("Session", getString(actionId), data.getSessionTitle());
+    }
+
+    private Action getActionForTitle(String title) {
+        Uri sessionUri = ((SessionDetailActivity) getActivity()).getSessionUri();
+        String uuid = sessionUri.toString().substring(sessionUri.toString().lastIndexOf("/") + 1);
+        Uri uri = new Uri.Builder()
+                .scheme(Config.HTTPS)
+                .authority(BuildConfig.PRODUCTION_WEBSITE_HOST_NAME)
+                .path(BuildConfig.WEB_URL_SCHEDULE_PATH)
+                .appendQueryParameter(Config.SESSION_ID_URL_QUERY_KEY, uuid)
+                .build();
+        // Build a schema.org Thing that represents the session details currently displayed. Its
+        // name is the session's title, and its URL is a deep link back to this
+        // SessionDetailFragment.
+        Thing session = new Thing.Builder()
+                .setName(title)
+                .setUrl(uri)
+                .build();
+        // Build a schema.org Action that represents a user viewing this session screen. This Action
+        // is then ready to be passed to the App Indexing API. Read more about the API here:
+        // https://developers.google.com/app-indexing/introduction#android.
+        return new Action.Builder(Action.TYPE_VIEW)
+                .setObject(session)
+                .build();
     }
 }
