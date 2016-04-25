@@ -743,6 +743,7 @@ public class SessionDetailFragment extends Fragment implements
             } else {
                 mWatchVideo.setText(getString(R.string.session_watch_live));
             }
+        } else {
             mWatchVideo.setVisibility(View.GONE);
         }
 
