@@ -59,6 +59,7 @@ import com.google.samples.apps.iosched.settings.SettingsUtils;
 import com.google.samples.apps.iosched.ui.widget.DrawShadowFrameLayout;
 import com.google.samples.apps.iosched.ui.widget.recyclerview.ItemMarginDecoration;
 import com.google.samples.apps.iosched.ui.widget.recyclerview.UpdatableAdapter;
+import com.google.samples.apps.iosched.util.AccountUtils;
 import com.google.samples.apps.iosched.util.ImageLoader;
 import com.google.samples.apps.iosched.util.ThrottledContentObserver;
 import com.google.samples.apps.iosched.util.TimeUtils;
@@ -69,8 +70,7 @@ import java.util.List;
 import java.util.Map;
 
 import static android.content.SharedPreferences.OnSharedPreferenceChangeListener;
-import static com.google.samples.apps.iosched.settings.ConfMessageCardUtils
-        .ConferencePrefChangeListener;
+import static com.google.samples.apps.iosched.settings.ConfMessageCardUtils.ConferencePrefChangeListener;
 
 /**
  * Display the Explore I/O cards. There are three styles of cards, which are referred to as Groups
@@ -124,7 +124,10 @@ public class ExploreIOFragment extends Fragment
                         String key) {
                     if (SettingsUtils.PREF_DECLINED_WIFI_SETUP.equals(key)) {
                         fireReloadEvent();
+                    } else if (AccountUtils.PREF_ACTIVE_ACCOUNT.equals(key)) {
+                        fireReloadEvent();
                     }
+
                 }
             };
 
@@ -171,7 +174,11 @@ public class ExploreIOFragment extends Fragment
     @Override
     public void displayUserActionResult(final ExploreIOModel model,
             final ExploreIOUserActionEnum userAction, final boolean success) {
-        // All user actions handled in model
+        switch (userAction) {
+            case RELOAD:
+                displayData(model, ExploreIOQueryEnum.SESSIONS);
+                break;
+        }
     }
 
     @Override
