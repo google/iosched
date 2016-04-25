@@ -26,7 +26,11 @@ import com.google.samples.apps.iosched.Config;
 import com.google.samples.apps.iosched.archframework.QueryEnum;
 import com.google.samples.apps.iosched.provider.ScheduleContract;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.HashMap;
+import java.util.List;
 
 public class TagMetadata {
 
@@ -36,12 +40,15 @@ public class TagMetadata {
     // Hash map from tag ID to tag.
     private HashMap<String, Tag> mTagsById = new HashMap<String, Tag>();
 
+    // Hash map from tag name to tag id.
+    private HashMap<String, String> mTagsByName = new HashMap<String, String>();
+
     public static CursorLoader createCursorLoader(Context context) {
         return new CursorLoader(context, ScheduleContract.Tags.CONTENT_URI,
                 TagsQueryEnum.TAG.getProjection(), null, null, null);
     }
 
-    protected TagMetadata(){
+    protected TagMetadata() {
     }
 
     public TagMetadata(Cursor cursor) {
@@ -50,16 +57,18 @@ public class TagMetadata {
         // loop, or we would mock cursor.moveToNext() to return false, and the test would be for an
         // empty cursor.
         int count = cursor.getCount();
-        for(int i = 0; i < count; i ++){
+        for (int i = 0; i < count; i++) {
             cursor.moveToPosition(i);
             Tag tag = new Tag(cursor.getString(cursor.getColumnIndex(ScheduleContract.Tags.TAG_ID)),
                     cursor.getString(cursor.getColumnIndex(ScheduleContract.Tags.TAG_NAME)),
                     cursor.getString(cursor.getColumnIndex(ScheduleContract.Tags.TAG_CATEGORY)),
-                    cursor.getInt(cursor.getColumnIndex(ScheduleContract.Tags.TAG_ORDER_IN_CATEGORY)),
+                    cursor.getInt(
+                            cursor.getColumnIndex(ScheduleContract.Tags.TAG_ORDER_IN_CATEGORY)),
                     cursor.getString(cursor.getColumnIndex(ScheduleContract.Tags.TAG_ABSTRACT)),
                     cursor.getInt(cursor.getColumnIndex(ScheduleContract.Tags.TAG_COLOR)),
                     cursor.getString(cursor.getColumnIndex(ScheduleContract.Tags.TAG_PHOTO_URL)));
             mTagsById.put(tag.getId(), tag);
+            mTagsByName.put(tag.getName(), tag.getId());
             if (!mTagsInCategory.containsKey(tag.getCategory())) {
                 mTagsInCategory.put(tag.getCategory(), new ArrayList<Tag>());
             }
@@ -71,8 +80,32 @@ public class TagMetadata {
         }
     }
 
-    public Tag getTag(String tagId) {
+    /**
+     * @return the tag with the {@code tagId}, if found.
+     */
+    public Tag getTagById(String tagId) {
         return mTagsById.containsKey(tagId) ? mTagsById.get(tagId) : null;
+    }
+
+    /**
+     * @return the tag with the {@code tagName} if found.
+     */
+    private Tag getTagByName(String tagName) {
+        String tagId = mTagsByName.containsKey(tagName) ? mTagsByName.get(tagName) : null;
+        return tagId != null ? getTagById(tagId) : null;
+    }
+
+    /**
+     * @return the tag with the id matching the {@code searchString}, if found; if not found,
+     * returns the tag with the name matching the {@code searchString}, if found.
+     */
+    public Tag getTag(String searchString) {
+        Tag tagById = getTagById(searchString);
+        if (tagById != null) {
+            return tagById;
+        } else {
+            return getTagByName(searchString);
+        }
     }
 
     public List<Tag> getTagsInCategory(String category) {
@@ -80,14 +113,17 @@ public class TagMetadata {
                 Collections.unmodifiableList(mTagsInCategory.get(category)) : null;
     }
 
-    /** Given the set of tags on a session, returns its group label. */
+    /**
+     * Given the set of tags on a session, returns its group label.
+     */
     public Tag getSessionGroupTag(String[] sessionTags) {
         int bestOrder = Integer.MAX_VALUE;
         Tag bestTag = null;
         for (String tagId : sessionTags) {
-            Tag tag = getTag(tagId);
-            if (tag != null && Config.Tags.SESSION_GROUPING_TAG_CATEGORY.equals(tag.getCategory()) &&
-                        tag.getOrderInCategory() < bestOrder) {
+            Tag tag = getTagById(tagId);
+            if (tag != null &&
+                    Config.Tags.SESSION_GROUPING_TAG_CATEGORY.equals(tag.getCategory()) &&
+                    tag.getOrderInCategory() < bestOrder) {
                 bestOrder = tag.getOrderInCategory();
                 bestTag = tag;
             }
@@ -116,7 +152,7 @@ public class TagMetadata {
     };
 
     public enum TagsQueryEnum implements QueryEnum {
-        TAG(0, new String[] {
+        TAG(0, new String[]{
                 BaseColumns._ID,
                 ScheduleContract.Tags.TAG_ID,
                 ScheduleContract.Tags.TAG_NAME,
