@@ -144,7 +144,7 @@ public class MyScheduleModel implements Model<MyScheduleModel.MyScheduleQueryEnu
                                     " changed, but null schedule data query callback, cannot " +
                                     "inform model is updated");
                         }
-                    } else if (SettingsUtils.PREF_ATTENDEE_AT_VENUE.equals(key)) {
+                    } else if (BuildConfig.PREF_ATTENDEE_AT_VENUE.equals(key)) {
                         updateData(mScheduleDataQueryCallback);
                     }
                 }

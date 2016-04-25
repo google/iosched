@@ -23,13 +23,13 @@
         android:defaultValue="false" />
 
     <SwitchPreferenceCompat
-        android:key="pref_attendee_at_venue_2016"
+        android:key="@string/pref_attendee_at_venue"
         android:title="@string/pref_attendee_at_venue_title"
         android:summary="@string/pref_attendee_at_venue_description"
         android:defaultValue="true" />
 
     <SwitchPreferenceCompat
-        android:key="pref_conf_message_cards_enabled"
+        android:key="@string/pref_conf_messages_enabled"
         android:title="@string/pref_conf_message_cards_enabled_title"
         android:summary="@string/pref_conf_message_cards_enabled_description"
         android:defaultValue="false" />
@@ -47,15 +47,15 @@
         android:defaultValue="false" />
 
     <SwitchPreferenceCompat
-        android:key="pref_show_session_reminders_2016"
+        android:key="@string/pref_session_reminders_enabled"
         android:title="@string/pref_notify_starred_sessions_title"
         android:summary="@string/pref_notify_starred_sessions_description"
-        android:defaultValue="true" />
+        android:defaultValue="false" />
 
     <SwitchPreferenceCompat
-        android:key="pref_show_session_feedback_reminders_2016"
+        android:key="@string/pref_session_feedback_reminders_enabled"
         android:title="@string/pref_notify_feedback_title"
         android:summary="@string/pref_notify_feedback_description"
-        android:defaultValue="true" />
+        android:defaultValue="false" />
 
 </PreferenceScreen>

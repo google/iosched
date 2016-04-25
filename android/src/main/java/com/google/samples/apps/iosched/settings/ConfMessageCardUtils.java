@@ -16,6 +16,7 @@
 
 package com.google.samples.apps.iosched.settings;
 
+import com.google.samples.apps.iosched.BuildConfig;
 import com.google.samples.apps.iosched.util.TimeUtils;
 
 import android.content.Context;
@@ -30,12 +31,6 @@ import java.util.Random;
  * Utilities and constants to deal with enabling & showing conference message cards.
  */
 public class ConfMessageCardUtils {
-
-    /**
-     * Boolean preference indicating whether to show conference info cards in Explore stream.
-     */
-    public static final String PREF_CONF_MESSAGE_CARDS_ENABLED =
-            "pref_conf_message_cards_enabled_" + SettingsUtils.CONFERENCE_YEAR_PREF_POSTFIX;
 
     /**
      * Boolean preference indicating whether to show conference info cards in Explore stream.
@@ -122,7 +117,7 @@ public class ConfMessageCardUtils {
      */
     public static boolean isConfMessageCardsEnabled(final Context context) {
         SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(context);
-        return sp.getBoolean(PREF_CONF_MESSAGE_CARDS_ENABLED, false);
+        return sp.getBoolean(BuildConfig.PREF_CONF_MESSAGES_ENABLED, false);
     }
 
     /**
@@ -135,9 +130,9 @@ public class ConfMessageCardUtils {
                                                   @Nullable Boolean newValue) {
         SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(context);
         if (newValue == null) {
-            sp.edit().remove(PREF_CONF_MESSAGE_CARDS_ENABLED).apply();
+            sp.edit().remove(BuildConfig.PREF_CONF_MESSAGES_ENABLED).apply();
         } else {
-            sp.edit().putBoolean(PREF_CONF_MESSAGE_CARDS_ENABLED, newValue).apply();
+            sp.edit().putBoolean(BuildConfig.PREF_CONF_MESSAGES_ENABLED, newValue).apply();
         }
     }
 
@@ -299,9 +294,9 @@ public class ConfMessageCardUtils {
             if (PREF_ANSWERED_CONF_MESSAGE_CARDS_PROMPT.equals(key)) {
                 onPrefChanged(PREF_ANSWERED_CONF_MESSAGE_CARDS_PROMPT,
                         sp.getBoolean(PREF_ANSWERED_CONF_MESSAGE_CARDS_PROMPT, true));
-            } else if (PREF_CONF_MESSAGE_CARDS_ENABLED.equals(key)) {
-                onPrefChanged(PREF_CONF_MESSAGE_CARDS_ENABLED,
-                        sp.getBoolean(PREF_CONF_MESSAGE_CARDS_ENABLED, false));
+            } else if (BuildConfig.PREF_CONF_MESSAGES_ENABLED.equals(key)) {
+                onPrefChanged(BuildConfig.PREF_CONF_MESSAGES_ENABLED,
+                        sp.getBoolean(BuildConfig.PREF_CONF_MESSAGES_ENABLED, false));
             } else if (key != null && key.startsWith(dismiss_prefix)) {
                 onPrefChanged(key, sp.getBoolean(key, false));
             } else if (key != null && key.startsWith(should_show_prefix)) {
