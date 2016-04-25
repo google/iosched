@@ -195,7 +195,7 @@
   <string name="description_settings">設定</string>
 
   <!-- Explanation of wifi setup that appears in the WiFi setup dialog box. -->
-  <string name="description_setup_wifi_body">直接会議に出席しているため、このデバイスを設定して会議のWiFiネットワーク(5Ghzのみ)にアクセスしていただけます。今Wi-Fiを設定する事で、ネットワークの混雑を回避していただけます。</string>
+  <string name="description_setup_wifi_body">直接会議に出席されていますので、このデバイスから会議のWiFiネットワーク(5Ghzのみ)にアクセスしていただけます。今Wi-Fiを設定する事で、ネットワークの混雑を回避していただけます。</string>
 
   <!-- Menu item that allows user to share the currently displayed session. Sharing can be done
   by email, social networks, etc. -->
@@ -365,7 +365,7 @@
   <string name="map_now_playing">会議中：&lt;br&gt;&lt;b&gt;%1$s&lt;/b&gt;</string>
 
   <!-- Message displayed when the location permission was denied -->
-  <string name="map_permission_denied">アプリの権限が拒否されました。</string>
+  <string name="map_permission_denied">アプリ用の権限が拒否されました。</string>
 
   <!-- Clickable text in the map popup that leads to sessions in a room -->
   <string name="map_touch_to_see_session">タッチしてセッションを閲覧する</string>
@@ -402,10 +402,10 @@
     <xliff:g id="day">%1$s</xliff:g>日のあなたのスケジュールを表示しています</string>
 
   <!-- Accessibility announcement to confirm the feedback rating made for a session by the user. -->
-  <string name="feedback_rating_confirmation">あなたの評価：%2$dつ星中%1$dつ星</string>
+  <string name="feedback_rating_confirmation">入力した評価：%2$dつ星中%1$dつ星</string>
 
   <!-- Accessibility announcement for an item in the custom feedback rating view. For example, "one star".  -->
-  <string name="feedback_rating_value">%1$dつ星</string>
+  <string name="feedback_rating_value">星%1$dつ</string>
 
   <!-- Label for the button to rate a session -->
   <string name="my_schedule_rate_this_session">このセッションを評価する</string>
@@ -469,7 +469,7 @@
   <!-- List dropdown item on the Video Library screen allowing the user to choose to see
   the videos from the last year of Google I/O. -->
     <string name="new_videos_title">
-    <xliff:g id="year">%1$d</xliff:g> の新規アイテム</string>
+    <xliff:g id="year">%1$d</xliff:g>年の新規アイテム</string>
 
   <!-- Message shown in a toast (popup) when the user clicks to change the active account but
   there is no network connection -->
@@ -578,7 +578,7 @@
 
   <!-- Text of a card shown in the session explorer that asks the user if he wants to see I/O
   extended events in his area. "Browse events" and "No, thanks" are the buttons shown in the card -->
-  <string name="question_i_o_extended">近所で開催されているI/O Extendedに関して、さらに詳細を確認したいと思いませんか？</string>
+  <string name="question_i_o_extended">近隣で開催されているI/O Extendedに関して、さらに詳細を確認したいと思いませんか？</string>
 
   <!-- Text of a card shown in the session explorer that asks the user if he will be attending I/O
   in person or remotely. "Remotely" and "In person" are the buttons shown in the card -->
@@ -586,7 +586,7 @@
 
   <!-- Text of a card shown in the Explore I/O screen that asks the user if they want to configure
        the conference WiFi. "Not now" and "Yes, please" are options show on the card -->
-  <string name="question_setup_wifi_card_text">&lt;b&gt;会議 Wi-Fi&lt;/b&gt;&lt;br/&gt;5Ghz 会議 Wi-Fiへアクセスするためにデバイスを設定しますか？</string>
+  <string name="question_setup_wifi_card_text">&lt;b&gt;会場用 Wi-Fi&lt;/b&gt;&lt;br/&gt;5Ghz 会場用 Wi-Fiへアクセスするためにデバイスを設定しますか？</string>
 
   <!-- Section title for videos related to a particular event session -->
   <string name="related_videos">関連ビデオ</string>
@@ -620,7 +620,7 @@
   <string name="search_label">Google I/O セッション</string>
 
   <!-- A fragment of text appended to a Google calendar event indicating it was added by this application -->
-  <string name="session_calendar_suffix">- Google I/O Androidアプリより追加されました</string>
+  <string name="session_calendar_suffix">- Google I/O Androidアプリにより追加されました</string>
 
   <!-- Accessibility text announced as a response to pressing a button to add a session to the schedule. -->
   <string name="session_details_a11y_session_added">セッションがスケジュールに追加されました</string>
@@ -655,7 +655,7 @@
   <string name="session_feedback_content_label_text">概要/私の予想に基づいたコンテンツの説明：</string>
 
   <!-- Notification text asking the user to provide feedback for a particular session -->
-  <string name="session_feedback_notification_text">%1$sへフィードバックを送信する</string>
+  <string name="session_feedback_notification_text">%1$s 用のフィードバックを送信する</string>
 
   <!-- Notification ticker text asking the user to provide session feedback -->
   <string name="session_feedback_notification_ticker">セッションのフィードバックを送信する</string>
@@ -861,7 +861,7 @@ user updates the rating. -->
   <string name="types">タイプ</string>
 
   <!-- Text for a session subtitle indicating it does not have a room specified -->
-  <string name="unknown_room">(未指定のルーム)</string>
+  <string name="unknown_room">(部屋は未定)</string>
 
   <!-- Label on a button that, when clicked, will let the user update the application to
   a newer version. -->
@@ -959,7 +959,7 @@ user updates the rating. -->
   <!-- BEGIN Explore Message Card User Messages -->
   <string description="This message is displayed on the Explore I/O screen to ask users whether         they would like to opt in to receive notifications for the sessions the have added to their schedule." name="explore_io_notifications_ask_opt_in">&lt;B&gt;セッションの通知&lt;/ b&gt;の&lt;BR/&gt;スケジュールに追加されたセッションの通知を受け取りますか？</string>
 
-  <string description="This message is displayed on the Explore I/O screen to ask users whether             they would like to opt in to receive messages regarding the conference." name="explore_io_msgcards_ask_opt_in">&lt;B&gt;会議メッセージ&lt;/ b&gt;の&lt;BR/&gt;会議に関する重要なメッセージを受信しますか？メッセージは時系列で表示されます。また、パートナーか​​らのプロモーション メッセージを含んでいる場合もございます。</string>
+  <string description="This message is displayed on the Explore I/O screen to ask users whether             they would like to opt in to receive messages regarding the conference." name="explore_io_msgcards_ask_opt_in">&lt;B&gt;会議メッセージ&lt;/ b&gt;&lt;BR/&gt;会議に関する重要なメッセージを受信しますか？メッセージは時系列で表示されます。また、パートナーからのプロモーション メッセージを含んでいる場合もございます。</string>
 
   <!-- This is used on the Explore I/O message cards to answer yes to a particular message -->
   <string name="explore_io_msgcards_answer_yes">はい、承諾します！</string>
@@ -973,7 +973,7 @@ user updates the rating. -->
 
   <!-- This string is the title of a notification shown to the user when Google Play
       services can't connect. -->
-  <string name="app_data_notification_resolution_title"> I/O アプリの権限が必要です</string>
+  <string name="app_data_notification_resolution_title"> I/O アプリ用の権限が必要です</string>
   <!-- This string is the message of the notification shown to the user when Google Play services
        can't connect from a background sync. -->
   <string name="app_data_notification_resolution_content">バックグラウンドで同期を完了するためには、I/Oアプリ側で手続きを実行する必要があります。</string>
