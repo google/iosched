@@ -216,10 +216,10 @@
   <string name="speaker_social_page">Ir a la página de %1$s para %2$s</string>
 
   <!-- Accessibility description for the GPlus icon in the "#io15" box. -->
-  <string name="social_io15_gplus_content_description">Ir a Google Plus con el hashtag io15</string>
+  <string name="social_io15_gplus_content_description">Ir a Google Plus con el hashtag io16</string>
 
   <!-- Accessibility description for the Twitter icon in the "#io15" box. -->
-  <string name="social_io15_twitter_content_description">Ir a Twitter con el hashtag io15</string>
+  <string name="social_io15_twitter_content_description">Ir a Twitter con el hashtag io16</string>
 
   <!-- Accessibility description for link to the "Google Developers" GPlus page. -->
   <string name="social_gplus_devs_content_description">Ir a Google Developers en Google Plus</string>
@@ -240,13 +240,13 @@
   <string name="social_request_twitter_content_description">Vaya a Twitter con el hashtag request</string>
 
   <!-- Accessibility description for the IO15 logo that is not a link. -->
-  <string name="io15_logo_not_clickable">No se puede hacer clic en el logo de IO15</string>
+  <string name="io15_logo_not_clickable">No se puede hacer clic en el logo de IO16</string>
 
   <!-- Accessibility description for the IO15 extended logo that is not a link. -->
-  <string name="io15_extended_logo_not_clickable">No se puede hacer clic en el logo de IO15 extended</string>
+  <string name="io15_extended_logo_not_clickable">No se puede hacer clic en el logo de IO16 extended</string>
 
   <!-- Accessibility description for the IO15 request logo that is not a link. -->
-  <string name="io15_request_logo_not_clickable">No se puede hacer clic en el logo de IO15 request</string>
+  <string name="io15_request_logo_not_clickable">No se puede hacer clic en el logo de IO16 request</string>
 
   <!-- Accessibility description for the I/O logo that is not a link. -->
   <string name="io_logo_not_clickable">No se puede hacer clic en el logo de IO</string>
