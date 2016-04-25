@@ -16,6 +16,9 @@
 
 package com.google.samples.apps.iosched.model;
 
+import android.database.Cursor;
+import android.test.suitebuilder.annotation.SmallTest;
+
 import com.google.samples.apps.iosched.provider.ScheduleContract;
 
 import org.junit.Rule;
@@ -25,11 +28,9 @@ import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
-import android.database.Cursor;
-import android.test.suitebuilder.annotation.SmallTest;
-
 import static org.hamcrest.CoreMatchers.nullValue;
 import static org.hamcrest.core.Is.is;
+import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertThat;
 import static org.mockito.Mockito.when;
 
@@ -73,7 +74,7 @@ public class TagMetadataTest {
 
 
     @Test
-    public void constructor_WithNullCursor_ThrowsNPE(){
+    public void constructor_WithNullCursor_ThrowsNPE() {
         // Expected
         mThrown.expect(NullPointerException.class);
 
@@ -84,7 +85,7 @@ public class TagMetadataTest {
     }
 
     @Test
-    public void constructor_WithEmptyCursor_Returns(){
+    public void constructor_WithEmptyCursor_Returns() {
         // Given an empty mock cursor
         when(mMockCursor.getCount()).thenReturn(0);
 
@@ -95,7 +96,7 @@ public class TagMetadataTest {
     }
 
     @Test
-    public void constructor_WithOneTag_TagCorrectlyLoaded(){
+    public void constructor_WithOneTag_TagCorrectlyLoaded() {
         // Given a mock cursor with a fake tag
         initMockCursorWithOneTag(mMockCursor);
 
@@ -115,7 +116,27 @@ public class TagMetadataTest {
     }
 
     @Test
-    public void constructor_WithTwoTags_TagsCorrectlyLoaded(){
+    public void getTagByTagName_ReturnsCorrectTag() {
+        // Given a TagMetadata initialised with  mock cursor
+        initMockCursorWithOneTag(mMockCursor);
+        mTagMetadata = new TagMetadata(mMockCursor);
+
+        // When tag is searched by name
+        TagMetadata.Tag tag = mTagMetadata.getTag(FAKE_TAG_NAME);
+
+        // Then tag is returned with correct data
+        assertNotNull(tag);
+        assertThat(tag.getAbstract(), is(FAKE_TAG_ABSTRACT));
+        assertThat(tag.getCategory(), is(FAKE_TAG_CATEGORY));
+        assertThat(tag.getId(), is(FAKE_TAG_ID));
+        assertThat(tag.getName(), is(FAKE_TAG_NAME));
+        assertThat(tag.getColor(), is(FAKE_TAG_COLOR));
+        assertThat(tag.getOrderInCategory(),
+                is(FAKE_TAG_ORDER_IN_CATEGORY));
+    }
+
+    @Test
+    public void constructor_WithTwoTags_TagsCorrectlyLoaded() {
         // Given a mock cursor with two fake tags
         initMockCursorWithTwoTags(mMockCursor);
 
@@ -130,7 +151,7 @@ public class TagMetadataTest {
         assertThat(mTagMetadata.getTagsInCategory(FAKE_TAG_UNUSED_CATEGORY), nullValue());
     }
 
-    public static void initMockCursorWithOneTag(Cursor cursor){
+    public static void initMockCursorWithOneTag(Cursor cursor) {
         // Return a count of 1
         when(cursor.getCount()).thenReturn(1);
         when(cursor.moveToPosition(0)).thenReturn(true);
@@ -157,7 +178,7 @@ public class TagMetadataTest {
         when(cursor.getInt(TAG_COLOR_COLUMN_INDEX)).thenReturn(FAKE_TAG_COLOR);
     }
 
-    private void initMockCursorWithTwoTags(Cursor cursor){
+    private void initMockCursorWithTwoTags(Cursor cursor) {
         // Return a count of 2
         when(cursor.getCount()).thenReturn(2);
         when(cursor.moveToPosition(0)).thenReturn(true);
