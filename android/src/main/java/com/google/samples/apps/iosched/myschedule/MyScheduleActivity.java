@@ -470,6 +470,13 @@ public class MyScheduleActivity extends BaseActivity implements
     public void onAccountChangeRequested() {
         super.onAccountChangeRequested();
         hideLoginFailureView();
+        reloadData();
+    }
+
+    private void reloadData() {
+        if (mPresenter != null) {
+            mPresenter.onUserAction(MyScheduleModel.MyScheduleUserActionEnum.RELOAD_DATA, null);
+        }
     }
 
     @Override
