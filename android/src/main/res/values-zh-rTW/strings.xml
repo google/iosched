@@ -210,10 +210,10 @@
     <string name="speaker_social_page">轉至%2$s的%1$s頁面</string>
 
     <!-- Accessibility description for the GPlus icon in the "#io15" box. -->
-    <string name="social_io15_gplus_content_description">轉到含有io15井號標籤的Google Plus頁面</string>
+    <string name="social_io15_gplus_content_description">轉到含有io16井號標籤的Google Plus頁面</string>
 
     <!-- Accessibility description for the Twitter icon in the "#io15" box. -->
-    <string name="social_io15_twitter_content_description">轉到含有io15井號標籤的Twitter頁面</string>
+    <string name="social_io15_twitter_content_description">轉到含有io16井號標籤的Twitter頁面</string>
 
     <!-- Accessibility description for link to the "Google Developers" GPlus page. -->
     <string name="social_gplus_devs_content_description">轉到Google Developers的Google Plus頁面</string>
@@ -234,13 +234,13 @@
     <string name="social_request_twitter_content_description">轉到含有請求伸井號標籤的Twitter頁面</string>
 
     <!-- Accessibility description for the IO15 logo that is not a link. -->
-    <string name="io15_logo_not_clickable">IO15徽標不可點擊</string>
+    <string name="io15_logo_not_clickable">IO16徽標不可點擊</string>
 
     <!-- Accessibility description for the IO15 extended logo that is not a link. -->
-    <string name="io15_extended_logo_not_clickable">IO15遠端徽標不可點擊</string>
+    <string name="io15_extended_logo_not_clickable">IO16遠端徽標不可點擊</string>
 
     <!-- Accessibility description for the IO15 request logo that is not a link. -->
-    <string name="io15_request_logo_not_clickable">IO15請求徽標不可點擊</string>
+    <string name="io15_request_logo_not_clickable">IO16請求徽標不可點擊</string>
 
     <!-- Accessibility description for the I/O logo that is not a link. -->
     <string name="io_logo_not_clickable">IO徽標不可點擊</string>
