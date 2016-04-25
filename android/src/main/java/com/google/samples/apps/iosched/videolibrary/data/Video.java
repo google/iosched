@@ -15,7 +15,8 @@
 package com.google.samples.apps.iosched.videolibrary.data;
 
 /**
- * This represent a Video that is pulled from the Video Library.
+ * This represent a Video that is pulled from the Video Library. The model has one mutable field,
+ * that is {@link #mAlreadyPlayed}.
  */
 public class Video {
 
@@ -36,6 +37,8 @@ public class Video {
     private final String mThumbnailUrl;
 
     private boolean mAlreadyPlayed = false;
+
+    private boolean mDataUpdated = false;
 
     public Video(String id, int year, String topic, String title, String desc, String vid,
             String speakers, String thumbnailUrl) {
@@ -86,7 +89,17 @@ public class Video {
     }
 
     public void setAlreadyPlayed(boolean alreadyPlayed) {
+        if (mAlreadyPlayed != alreadyPlayed) {
+            mDataUpdated = true;
+        }
         mAlreadyPlayed = alreadyPlayed;
+    }
+
+    /**
+     * @return true if the data has been updated
+     */
+    public boolean dataUpdated() {
+        return mDataUpdated;
     }
 
     @Override

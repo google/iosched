@@ -361,20 +361,17 @@ public class VideoLibraryModel
 
             case MY_VIEWED_VIDEOS:
                 LOGD(TAG, "Reading my viewed videos Data from cursor.");
+                mViewedVideosIds.clear();
                 if (cursor.moveToFirst()) {
-                    Set<String> viewedVideoIds = new HashSet<>();
                     do {
-                        viewedVideoIds.add(cursor.getString(cursor.getColumnIndex(
+                        mViewedVideosIds.add(cursor.getString(cursor.getColumnIndex(
                                 ScheduleContract.MyViewedVideos.VIDEO_ID)));
                     } while (cursor.moveToNext());
 
-                    if (!mViewedVideosIds.containsAll(viewedVideoIds)) {
-                        mViewedVideosIds = viewedVideoIds;
-                        markVideosAsViewed();
-                        return true;
-                    }
+                    markVideosAsViewed();
+                    return true;
                 }
-                return false;
+                return true;
             case FILTERS:
 
                 // Read all the Years and Topics from the Cursor.
@@ -645,7 +642,12 @@ public class VideoLibraryModel
          * Event that is triggered when a user clicks on a video to play it. We save that
          * information because we grey out videos that have been played already.
          */
-        VIDEO_PLAYED(2);
+        VIDEO_PLAYED(2),
+
+        /**
+         * Event that is triggered when a user changes the account.
+         */
+        RELOAD_USER_VIDEOS(3);
 
         private int id;
 

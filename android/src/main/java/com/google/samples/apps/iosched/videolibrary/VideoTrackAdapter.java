@@ -131,7 +131,10 @@ public class VideoTrackAdapter extends UpdatableAdapter<List<Video>, RecyclerVie
         for (int i = 0; i < newItems.size(); i++) {
             final Object oldItem = mItems.get(i);
             final Object newItem = newItems.get(i);
-            if (!oldItem.equals(newItem)) {
+            // Because we update the Video object directly from the model, we need to check if it
+            // has been updated rather than using equals
+            if (!oldItem.equals(newItem) ||
+                    (newItem instanceof Video && ((Video) newItem).dataUpdated())) {
                 mItems.set(i, newItem);
                 notifyItemChanged(i);
             }
@@ -192,9 +195,9 @@ public class VideoTrackAdapter extends UpdatableAdapter<List<Video>, RecyclerVie
     }
 
     /**
-     * Process the given {@code vidoe} to create the list of items to be displayed by
-     * the {@link RecyclerView}. In detail mode, this means inserting date header objects to
-     * separate videos by year.
+     * Process the given {@code vidoe} to create the list of items to be displayed by the {@link
+     * RecyclerView}. In detail mode, this means inserting date header objects to separate videos by
+     * year.
      */
     private List processData(final List<Video> videos) {
         List data = new ArrayList(videos.size());
@@ -214,7 +217,9 @@ public class VideoTrackAdapter extends UpdatableAdapter<List<Video>, RecyclerVie
         return data;
     }
 
-    private @NonNull RecyclerView.ViewHolder createVideoViewHolder(final ViewGroup parent) {
+    private
+    @NonNull
+    RecyclerView.ViewHolder createVideoViewHolder(final ViewGroup parent) {
         final VideoViewHolder holder = new VideoViewHolder(
                 mInflater.inflate(mCompactMode ? R.layout.video_item_list_tile
                         : R.layout.video_item_grid_tile, parent, false));
@@ -227,7 +232,9 @@ public class VideoTrackAdapter extends UpdatableAdapter<List<Video>, RecyclerVie
         return holder;
     }
 
-    private @NonNull RecyclerView.ViewHolder createYearHeaderViewHolder(final ViewGroup parent) {
+    private
+    @NonNull
+    RecyclerView.ViewHolder createYearHeaderViewHolder(final ViewGroup parent) {
         return new HeaderViewHolder(mInflater.inflate(
                 R.layout.grid_header_major, parent, false));
     }
@@ -247,10 +254,14 @@ public class VideoTrackAdapter extends UpdatableAdapter<List<Video>, RecyclerVie
         @Override
         public void onClick(final View v) {
             final ViewGroup.LayoutParams lp = v.getLayoutParams();
-            if (!(lp instanceof RecyclerView.LayoutParams)) return;
+            if (!(lp instanceof RecyclerView.LayoutParams)) {
+                return;
+            }
             final int position = ((RecyclerView.LayoutParams) lp).getViewAdapterPosition();
-            if (position == RecyclerView.NO_POSITION) return;
-            final Video  video = (Video) mItems.get(position);
+            if (position == RecyclerView.NO_POSITION) {
+                return;
+            }
+            final Video video = (Video) mItems.get(position);
             final String videoId = video.getId();
             final String youtubeLink = TextUtils.isEmpty(videoId) ? "" :
                     videoId.contains("://") ? videoId :

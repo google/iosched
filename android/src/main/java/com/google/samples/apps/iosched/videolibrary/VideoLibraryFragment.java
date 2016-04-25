@@ -20,9 +20,11 @@ import android.app.Activity;
 import android.app.Fragment;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Parcelable;
+import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.ActivityOptionsCompat;
@@ -30,6 +32,7 @@ import android.support.v4.util.Pair;
 import android.support.v4.util.SparseArrayCompat;
 import android.support.v4.view.ViewCompat;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -37,6 +40,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.google.samples.apps.iosched.R;
+import com.google.samples.apps.iosched.archframework.ModelWithLoaderManager;
 import com.google.samples.apps.iosched.archframework.PresenterImpl;
 import com.google.samples.apps.iosched.archframework.UpdatableView;
 import com.google.samples.apps.iosched.injection.ModelProvider;
@@ -44,6 +48,7 @@ import com.google.samples.apps.iosched.provider.ScheduleContract;
 import com.google.samples.apps.iosched.ui.widget.DrawShadowFrameLayout;
 import com.google.samples.apps.iosched.ui.widget.recyclerview.ItemMarginDecoration;
 import com.google.samples.apps.iosched.ui.widget.recyclerview.UpdatableAdapter;
+import com.google.samples.apps.iosched.util.AccountUtils;
 import com.google.samples.apps.iosched.util.AnalyticsHelper;
 import com.google.samples.apps.iosched.util.ImageLoader;
 import com.google.samples.apps.iosched.util.UIUtils;
@@ -78,6 +83,17 @@ public class VideoLibraryFragment extends Fragment
     private View mEmptyView = null;
 
     private List<UserActionListener> mListeners = new ArrayList<>();
+
+    private SharedPreferences.OnSharedPreferenceChangeListener mSettingsChangeListener =
+            new SharedPreferences.OnSharedPreferenceChangeListener() {
+                @Override
+                public void onSharedPreferenceChanged(SharedPreferences sharedPreferences,
+                        String key) {
+                    if (AccountUtils.PREF_ACTIVE_ACCOUNT.equals(key)) {
+                        fireReloadUserVideosEvent();
+                    }
+                }
+            };
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -120,7 +136,12 @@ public class VideoLibraryFragment extends Fragment
     @Override
     public void displayUserActionResult(final VideoLibraryModel model,
             final VideoLibraryUserActionEnum userAction, final boolean success) {
-        // All user actions handled in model
+        switch (userAction) {
+            case VIDEO_PLAYED:
+            case RELOAD_USER_VIDEOS:
+                displayData(model, VideoLibraryQueryEnum.MY_VIEWED_VIDEOS);
+                break;
+        }
     }
 
     @Override
@@ -162,8 +183,6 @@ public class VideoLibraryFragment extends Fragment
                 new PresenterImpl(model, this, VideoLibraryUserActionEnum.values(),
                         VideoLibraryQueryEnum.values());
         presenter.loadInitialQueries();
-
-        addListener(presenter);
     }
 
     @Override
@@ -176,6 +195,38 @@ public class VideoLibraryFragment extends Fragment
         if (drawShadowFrameLayout != null) {
             // Configure video fragment's top clearance to take our overlaid Toolbar into account.
             drawShadowFrameLayout.setShadowTopOffset(UIUtils.calculateActionBarSize(getActivity()));
+        }
+    }
+
+    @Override
+    public void onAttach(Activity activity) {
+        super.onAttach(activity);
+        // Register preference change listeners
+        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(getContext());
+        sp.registerOnSharedPreferenceChangeListener(mSettingsChangeListener);
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        if (mSettingsChangeListener != null) {
+            SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(getContext());
+            sp.unregisterOnSharedPreferenceChangeListener(mSettingsChangeListener);
+        }
+    }
+
+    /**
+     * Let all UserActionListener know that the user has changed.
+     */
+    private void fireReloadUserVideosEvent() {
+        if (!isAdded()) {
+            return;
+        }
+        for (UserActionListener h1 : mListeners) {
+            Bundle args = new Bundle();
+            args.putInt(ModelWithLoaderManager.KEY_RUN_QUERY_ID,
+                    VideoLibraryQueryEnum.MY_VIEWED_VIDEOS.getId());
+            h1.onUserAction(VideoLibraryUserActionEnum.RELOAD_USER_VIDEOS, args);
         }
     }
 
