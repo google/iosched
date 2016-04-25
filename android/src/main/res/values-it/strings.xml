@@ -216,10 +216,10 @@
   <string name="speaker_social_page">Vai alla pagina %1$s per %2$s</string>
 
   <!-- Accessibility description for the GPlus icon in the "#io16" box. -->
-  <string name="social_io15_gplus_content_description">Vai a Google Plus con l'hashtag di io16</string>
+  <string name="social_io15_gplus_content_description">Vai a Google Plus con l\'hashtag di io16</string>
 
   <!-- Accessibility description for the Twitter icon in the "#io16" box. -->
-  <string name="social_io15_twitter_content_description">Vai su Twitter con l'hashtag di io16</string>
+  <string name="social_io15_twitter_content_description">Vai su Twitter con l\'hashtag di io16</string>
 
   <!-- Accessibility description for link to the "Google Developers" GPlus page. -->
   <string name="social_gplus_devs_content_description">Vai alla pagina Google Developers su Google Plus</string>
@@ -228,10 +228,10 @@
   <string name="social_twitter_devs_content_description">Vai alla pagina Google Developers su Twitter</string>
 
   <!-- Accessibility description for the GPlus icon in the "#io16 extended" box. -->
-  <string name="social_extended_gplus_content_description">Vai su Google Plus con l'hashtag extended</string>
+  <string name="social_extended_gplus_content_description">Vai su Google Plus con l\'hashtag extended</string>
 
   <!-- Accessibility description for the Twitter icon in the "#io16 extended" box. -->
-  <string name="social_extended_twitter_content_description">Vai su Twitter con l'hashtag extended</string>
+  <string name="social_extended_twitter_content_description">Vai su Twitter con l\'hashtag extended</string>
 
   <!-- Accessibility description for the GPlus icon in the "#io16 request" box. -->
   <string name="social_request_gplus_content_description">Vai su Google Plus con la richiesta di hashtag</string>
