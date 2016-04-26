@@ -79,7 +79,7 @@ public class SessionsMockCursor {
                 "null",
                 keynote ? "FLAG_KEYNOTE" :
                         FAKE_TAG + ",TRACK_CLOUD,TRACK_ANDROID," +
-                                "TRACK_SEARCH,TYPE_SANDBOXTALKS",
+                                "TRACK_SEARCH",
                 keynote ? EMPTY : SpeakersMockCursor.FAKE_SPEAKER, FAKE_TAG};
         String[] columns = {"session_start", "session_end", "session_level", "session_title",
                 "session_abstract", "session_requirements", "session_in_my_schedule",

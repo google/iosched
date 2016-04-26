@@ -18,6 +18,7 @@ package com.google.samples.apps.iosched.session;
 import android.content.Intent;
 import android.net.Uri;
 import android.support.test.InstrumentationRegistry;
+import android.support.test.espresso.matcher.ViewMatchers;
 import android.support.test.runner.AndroidJUnit4;
 import android.test.FlakyTest;
 import android.test.suitebuilder.annotation.LargeTest;
@@ -37,10 +38,10 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import static android.support.test.espresso.Espresso.onView;
-import static android.support.test.espresso.action.ViewActions.scrollTo;
 import static android.support.test.espresso.action.ViewActions.swipeUp;
 import static android.support.test.espresso.assertion.ViewAssertions.matches;
 import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
+import static android.support.test.espresso.matcher.ViewMatchers.withEffectiveVisibility;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
 import static org.hamcrest.CoreMatchers.allOf;
@@ -117,8 +118,8 @@ public class SessionDetailActivity_LiveSessionIn9MinutesTest {
 
     @Test
     public void tagSection_IsVisible() {
-        onView(withId(R.id.session_tags_container)).perform(scrollTo()).check(
-                matches(isDisplayed()));
+        onView(withId(R.id.session_tags_container)).check(matches(withEffectiveVisibility(
+                ViewMatchers.Visibility.VISIBLE)));
     }
 
     @Test

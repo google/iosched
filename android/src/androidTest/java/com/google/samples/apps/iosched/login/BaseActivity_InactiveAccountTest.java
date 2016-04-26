@@ -23,7 +23,6 @@ import android.test.suitebuilder.annotation.LargeTest;
 
 import com.google.samples.apps.iosched.R;
 import com.google.samples.apps.iosched.explore.ExploreIOActivity;
-import com.google.samples.apps.iosched.settings.SettingsUtils;
 import com.google.samples.apps.iosched.testutils.LoginUtils;
 import com.google.samples.apps.iosched.util.AccountUtils;
 
@@ -53,8 +52,7 @@ public class BaseActivity_InactiveAccountTest {
 
                 @Override
                 protected void beforeActivityLaunched() {
-                    // Make sure the EULA screen is not shown.
-                    SettingsUtils.markTosAccepted(InstrumentationRegistry.getTargetContext(), true);
+                    super.beforeActivityLaunched();
 
                     // Set inactive account
                     AccountUtils
