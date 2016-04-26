@@ -301,7 +301,7 @@
         android:id="@+id/add_schedule_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_margin="@dimen/padding_normal"
+        android:layout_margin="@dimen/fab_padding"
         app:layout_anchor="@id/header_session"
         app:layout_anchorGravity="bottom|start|left"
         app:fabSize="mini"
@@ -312,6 +312,7 @@
         app:srcCompat="@drawable/ic_session_in_schedule"
         app:backgroundTint="@color/session_details_fab"
         app:pressedTranslationZ="@dimen/fab_touch_raise"
-        app:rippleColor="@color/fab_press_ripple" />
+        app:rippleColor="@color/fab_press_ripple"
+        app:useCompatPadding="true" />
 
 </android.support.design.widget.CoordinatorLayout>

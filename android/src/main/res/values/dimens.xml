@@ -51,6 +51,7 @@
     <dimen name="add_to_schedule_button_height">56dp</dimen> <!-- including padding -->
     <dimen name="add_to_schedule_button_height_no_padding">40dp</dimen>
     <dimen name="fab_touch_raise">6dp</dimen>
+    <dimen name="fab_padding">4dp</dimen>
     <dimen name="indeterminate_progress_size">16dp</dimen>
     <dimen name="data_item_padding">16dp</dimen>
     <dimen name="session_details_floating_width">500dp</dimen>

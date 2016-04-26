@@ -26,6 +26,7 @@
     <dimen name="action_button_min_width">64dp</dimen>
     <dimen name="add_to_schedule_button_height">72dp</dimen> <!-- including padding -->
     <dimen name="add_to_schedule_button_height_no_padding">56dp</dimen>
+    <dimen name="fab_padding">20dp</dimen>
 
     <dimen name="filter_spinner_width">200dp</dimen>
     <integer name="filter_spinner_weight">0</integer>
