@@ -48,6 +48,7 @@ public class RemoteConferenceDataFetcher {
     private static final String AUTHORIZATION_HEADER = "Authorization";
     private static final String BEARER_PREFIX = "Bearer ";
     private static final String TAG = makeLogTag(SyncHelper.class);
+    private static final boolean AUTHORIZATION_TO_BACKEND_REQUIRED = false;
 
     // The directory under which we cache our downloaded files
     private static String CACHE_DIR = "data_cache";
@@ -94,9 +95,13 @@ public class RemoteConferenceDataFetcher {
         }
 
         BasicHttpClient httpClient = new BasicHttpClient();
-        httpClient.addHeader(AUTHORIZATION_HEADER, BEARER_PREFIX +
-                AccountUtils.getAuthToken(mContext));
         httpClient.setRequestLogger(mQuietLogger);
+
+        if (AUTHORIZATION_TO_BACKEND_REQUIRED) {
+            // Allows pre-release builds to use a Google Cloud storage bucket with non-public data.
+            httpClient.addHeader(AUTHORIZATION_HEADER, BEARER_PREFIX +
+                    AccountUtils.getAuthToken(mContext));
+        }
 
         // Only download if data is newer than refTimestamp
         // Cloud Storage is very picky with the If-Modified-Since format. If it's in a wrong
@@ -136,7 +141,7 @@ public class RemoteConferenceDataFetcher {
             LOGD(TAG, "HTTP_NOT_MODIFIED: data has not changed since " + refTimestamp);
             return null;
         } else {
-            LOGE(TAG, "Error fetching conference data: HTTP status " + status);
+            LOGE(TAG, "Error fetching conference data: HTTP status " + status + " and manifest " + mManifestUrl);
             throw new IOException("Error fetching conference data: HTTP status " + status);
         }
     }
