@@ -22,7 +22,6 @@ import android.net.ConnectivityManager;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 
-import com.firebase.client.FirebaseException;
 import com.google.samples.apps.iosched.BuildConfig;
 import com.google.samples.apps.iosched.Config;
 import com.google.samples.apps.iosched.feedback.FeedbackApiHelper;
@@ -38,8 +37,12 @@ import com.google.samples.apps.iosched.util.AccountUtils;
 import com.google.samples.apps.iosched.util.TimeUtils;
 
 import com.turbomanage.httpclient.BasicHttpClient;
+import com.turbomanage.httpclient.HttpResponse;
+import com.turbomanage.httpclient.RequestLogger;
 
 import java.io.IOException;
+import java.net.HttpURLConnection;
+import java.net.URL;
 
 import static com.google.samples.apps.iosched.util.LogUtils.*;
 
@@ -69,6 +72,9 @@ public class SyncHelper {
         mConferenceDataHandler = new ConferenceDataHandler(mContext);
         mRemoteDataFetcher = new RemoteConferenceDataFetcher(mContext);
         mHttpClient = new BasicHttpClient();
+        if (!BuildConfig.DEBUG) {
+            mHttpClient.setRequestLogger(new MinimalRequestLogger());
+        }
     }
 
     public static void requestManualSync(Account mChosenAccount) {
@@ -371,6 +377,39 @@ public class SyncHelper {
             SettingsUtils.setCurSyncInterval(context, recommended);
         } else {
             LOGD(TAG, "No need to update sync interval.");
+        }
+    }
+
+    public static class MinimalRequestLogger implements RequestLogger {
+
+        @Override
+        public boolean isLoggingEnabled() {
+            return true;
+        }
+
+        @Override
+        public void log(final String s) { }
+
+        @Override
+        public void logRequest(final HttpURLConnection urlConnection, final Object o)
+                throws IOException {
+            try {
+                URL url = urlConnection.getURL();
+                LOGW(TAG, "HTTPRequest to " + url.getHost());
+            } catch (Throwable e) {
+                LOGI(TAG, "Exception while logging http request.");
+            }
+
+        }
+
+        @Override
+        public void logResponse(final HttpResponse httpResponse) {
+            try {
+                URL url = new URL(httpResponse.getUrl());
+                LOGW(TAG, "HTTPResponse from " + url.getHost() + " had return status " + httpResponse.getStatus());
+            } catch (Throwable e) {
+                LOGI(TAG, "Exception while logging http response.");
+            }
         }
     }
 }
