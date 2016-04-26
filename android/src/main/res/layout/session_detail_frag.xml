@@ -309,7 +309,7 @@
         android:clickable="true"
         android:focusable="true"
         android:contentDescription="@string/add_to_schedule"
-        app:srcCompat="@drawable/ic_session_in_schedule"
+        app:srcCompat="@drawable/ic_add_to_schedule"
         app:backgroundTint="@color/session_details_fab"
         app:pressedTranslationZ="@dimen/fab_touch_raise"
         app:rippleColor="@color/fab_press_ripple"
