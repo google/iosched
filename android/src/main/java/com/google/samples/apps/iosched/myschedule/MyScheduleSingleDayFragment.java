@@ -85,11 +85,6 @@ public class MyScheduleSingleDayFragment extends ListFragment
     }
 
     private void initViews() {
-        getListView().addHeaderView(getActivity().getLayoutInflater()
-                                                 .inflate(
-                                                         R.layout.reserve_action_bar_space_header_view,
-                                                         null));
-
         mDayId = getArguments().getInt(MyScheduleActivity.ARG_CONFERENCE_DAY_INDEX, 0);
 
         // Set id to list view, so it can be referred to from tests
