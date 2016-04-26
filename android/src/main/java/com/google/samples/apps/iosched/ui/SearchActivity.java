@@ -27,6 +27,7 @@ import android.database.Cursor;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.graphics.drawable.VectorDrawableCompat;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.graphics.drawable.DrawableCompat;
@@ -79,7 +80,8 @@ public class SearchActivity extends BaseActivity implements
         mSearchResults.setOnItemClickListener(this);
         Toolbar toolbar = getToolbar();
 
-        Drawable up = DrawableCompat.wrap(ContextCompat.getDrawable(this, R.drawable.ic_up));
+        Drawable up = DrawableCompat.wrap(
+                VectorDrawableCompat.create(getResources(), R.drawable.ic_up, getTheme()));
         DrawableCompat.setTint(up, getResources().getColor(R.color.app_body_text_2));
         toolbar.setNavigationIcon(up);
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
