@@ -63,7 +63,8 @@ public abstract class ModelWithLoaderManager<Q extends QueryEnum, UA extends Use
      * on the callback after the data is read from the cursor.
      */
     @VisibleForTesting
-    protected HashMap<Q, DataQueryCallback> mDataQueryCallbacks = new HashMap<Q, DataQueryCallback>();
+    protected HashMap<Q, DataQueryCallback> mDataQueryCallbacks =
+            new HashMap<Q, DataQueryCallback>();
 
     /**
      * Map of callbacks, using the id of the user action as key. This is required because some user
@@ -132,10 +133,17 @@ public abstract class ModelWithLoaderManager<Q extends QueryEnum, UA extends Use
         if (args != null && args.containsKey(KEY_RUN_QUERY_ID)) {
             Object queryId = args.get(KEY_RUN_QUERY_ID);
             if (queryId instanceof Integer) {
-                if (isQueryValid((Integer) queryId)) {
+                if (isQueryValid((Integer) queryId) && mLoaderManager != null) {
                     mLoaderManager.restartLoader((Integer) queryId, args, this);
                     mDataUpdateCallbacks.put((Integer) queryId, callback);
                     mUserActionsLaunchingQueries.put((Integer) queryId, action);
+                } else if (isQueryValid((Integer) queryId) && mLoaderManager == null) {
+                    // The loader manager hasn't been initialised because initial queries haven't
+                    // been run yet. This happens when a user action is triggered by a change in
+                    // shared preferences before the initial queries are loaded. Unlikely to happen
+                    // often, but it is a possible race condition and it was triggered in UI
+                    // tests. Nothing to do in that case because presenter will run all queries
+                    // when it will go through loadInitialQueries.
                 } else {
                     callback.onError(action);
                     // Query id should be valid!

@@ -19,6 +19,7 @@ package com.google.samples.apps.iosched.session;
 import android.content.Intent;
 import android.net.Uri;
 import android.support.test.InstrumentationRegistry;
+import android.support.test.espresso.matcher.ViewMatchers;
 import android.support.test.filters.FlakyTest;
 import android.support.test.runner.AndroidJUnit4;
 import android.test.suitebuilder.annotation.LargeTest;
@@ -54,6 +55,7 @@ import static android.support.test.espresso.intent.matcher.IntentMatchers.hasDat
 import static android.support.test.espresso.intent.matcher.IntentMatchers.hasExtra;
 import static android.support.test.espresso.matcher.ViewMatchers.isDescendantOfA;
 import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
+import static android.support.test.espresso.matcher.ViewMatchers.withEffectiveVisibility;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
 import static org.hamcrest.CoreMatchers.equalTo;
@@ -112,8 +114,8 @@ public class SessionDetailActivity_InScheduleSessionTest {
 
     @Test
     public void tagSection_IsVisible() {
-        onView(withId(R.id.session_tags_container)).perform(scrollTo()).
-                check(matches(isDisplayed()));
+        onView(withId(R.id.session_tags_container)).check(matches(withEffectiveVisibility(
+                ViewMatchers.Visibility.VISIBLE)));
     }
 
     @Test
@@ -187,7 +189,7 @@ public class SessionDetailActivity_InScheduleSessionTest {
     @Test
     public void speakerImage_WhenClicked_IntentFired() {
         // When clicking on speaker image
-        onView(withId(R.id.speaker_image)).perform(scrollTo());
+        onView(withId(R.id.session_detail_frag)).perform(swipeUp());
         onView(withId(R.id.speaker_image)).perform(click());
 
         // Then the intent to display the speaker url is fired
