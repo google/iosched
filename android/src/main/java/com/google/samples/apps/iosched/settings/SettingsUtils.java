@@ -22,7 +22,6 @@ import android.preference.PreferenceManager;
 
 import com.google.samples.apps.iosched.BuildConfig;
 import com.google.samples.apps.iosched.Config;
-import com.google.samples.apps.iosched.R;
 import com.google.samples.apps.iosched.ui.BaseActivity;
 import com.google.samples.apps.iosched.util.TimeUtils;
 import com.google.samples.apps.iosched.welcome.WelcomeActivity;
@@ -49,13 +48,6 @@ public class SettingsUtils {
      * throughout the app.
      */
     public static final String PREF_LOCAL_TIMES = "pref_local_times";
-
-    /**
-     * Boolean preference indicating whether the app has
-     * {@code com.google.samples.apps.iosched.ui.BaseActivity.performDataBootstrap installed} the
-     * {@code R.raw.bootstrap_data bootstrap data}.
-     */
-    public static final String PREF_DATA_BOOTSTRAP_DONE = "pref_data_bootstrap_done";
 
     /**
      * Boolean indicating whether the app should attempt to sign in on startup (default true).
@@ -165,7 +157,7 @@ public class SettingsUtils {
      */
     public static void markDataBootstrapDone(final Context context) {
         SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(context);
-        sp.edit().putBoolean(PREF_DATA_BOOTSTRAP_DONE, true).apply();
+        sp.edit().putBoolean(BuildConfig.PREF_DATA_BOOTSTRAP_DONE, true).apply();
     }
 
     /**
@@ -175,7 +167,7 @@ public class SettingsUtils {
      */
     public static boolean isDataBootstrapDone(final Context context) {
         SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(context);
-        return sp.getBoolean(PREF_DATA_BOOTSTRAP_DONE, false);
+        return sp.getBoolean(BuildConfig.PREF_DATA_BOOTSTRAP_DONE, false);
     }
 
     /**
