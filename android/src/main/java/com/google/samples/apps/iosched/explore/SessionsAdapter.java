@@ -18,6 +18,8 @@ package com.google.samples.apps.iosched.explore;
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.drawable.ColorDrawable;
+import android.os.Build;
+import android.os.Bundle;
 import android.support.annotation.LayoutRes;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
@@ -278,10 +280,16 @@ public class SessionsAdapter extends UpdatableAdapter<List<SessionData>, Recycle
             final SessionData sessionData = (SessionData) mItems.get(position);
             final Intent intent = new Intent(mHost, SessionDetailActivity.class);
             intent.setData(ScheduleContract.Sessions.buildSessionUri(sessionData.getSessionId()));
-            final ActivityOptionsCompat options = ActivityOptionsCompat
-                    .makeSceneTransitionAnimation(mHost, v,
-                            mHost.getString(R.string.transition_session_background));
-            ActivityCompat.startActivity(mHost, intent, options.toBundle());
+            final Bundle options;
+            if (Build.VERSION.SDK_INT == 21 || Build.VERSION.SDK_INT == 22) { // Lollipop
+                options = null;
+            } else {
+                options = ActivityOptionsCompat
+                        .makeSceneTransitionAnimation(mHost, v,
+                                mHost.getString(R.string.transition_session_background))
+                        .toBundle();
+            }
+            ActivityCompat.startActivity(mHost, intent, options);
         }
     };
 
