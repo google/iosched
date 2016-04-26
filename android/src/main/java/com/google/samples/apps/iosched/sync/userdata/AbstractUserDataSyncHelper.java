@@ -163,7 +163,7 @@ public abstract class AbstractUserDataSyncHelper {
         }
 
 
-        Log.d(TAG, "Starting Drive AppData sync. hasPendingData = " + hasPendingLocalData);
+        Log.d(TAG, "Starting User Data sync. hasPendingData = " + hasPendingLocalData);
 
         boolean dataChanged = syncImpl(actions, hasPendingLocalData);
 
