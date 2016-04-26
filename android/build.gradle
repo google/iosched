@@ -92,6 +92,7 @@ android {
         buildConfigField("String", "PREF_SESSION_FEEDBACK_REMINDERS_ENABLED", "\"pref_session_feedback_reminders_enabled_${conf_version}\"")
 
         buildConfigField("String", "PREF_DATA_BOOTSTRAP_DONE", "\"pref_bootstrap_done_${conf_version}\"")
+        buildConfigField("String", "KEYNOTE_SESSION_ID", "\"${keynote_session_id}\"")
     }
 
     signingConfigs {
