@@ -40,6 +40,7 @@ import static com.google.samples.apps.iosched.util.LogUtils.LOGD;
 import static com.google.samples.apps.iosched.util.LogUtils.LOGE;
 import static com.google.samples.apps.iosched.util.LogUtils.LOGI;
 import static com.google.samples.apps.iosched.util.LogUtils.LOGV;
+import static com.google.samples.apps.iosched.util.LogUtils.LOGW;
 import static com.google.samples.apps.iosched.util.LogUtils.makeLogTag;
 
 /**
@@ -272,7 +273,8 @@ public final class ServerUtilities {
             }
         }
         String body = bodyBuilder.toString();
-        LOGV(TAG, "Posting '" + body + "' to " + url);
+        LOGW(TAG, "Posting to " + url);
+        LOGV(TAG, "Posting '" + body + "'");
         HttpURLConnection conn = null;
         try {
             conn = (HttpURLConnection) url.openConnection();

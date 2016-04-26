@@ -29,6 +29,7 @@ import java.util.List;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 
+import static com.google.samples.apps.iosched.util.LogUtils.LOGD;
 import static com.google.samples.apps.iosched.util.LogUtils.LOGI;
 import static com.google.samples.apps.iosched.util.LogUtils.LOGW;
 import static com.google.samples.apps.iosched.util.LogUtils.makeLogTag;
@@ -91,7 +92,7 @@ public class FirebaseUserDataSyncHelper extends AbstractUserDataSyncHelper
         boolean authenticated = !TextUtils.isEmpty(FirebaseUtils.getFirebaseUid(mContext));
 
         if (authenticated) {
-            LOGI(TAG, "Already authenticated with Firebase.");
+            LOGW(TAG, "Already authenticated with Firebase.");
             performSync(actions);
         } else {
             // Authenticate and wait for onAuthSucceeded() to fire before performing sync.
@@ -100,14 +101,14 @@ public class FirebaseUserDataSyncHelper extends AbstractUserDataSyncHelper
 
         try {
             // Make the current thread wait until we've heard back from Firebase.
-            LOGI(TAG, "Waiting until the latch has counted down to zero");
+            LOGW(TAG, "Waiting until the latch has counted down to zero");
             mCountDownLatch.await(AWAIT_TIMEOUT_IN_MILLISECONDS, TimeUnit.MILLISECONDS);
         } catch (InterruptedException exception) {
             LOGW(TAG, "Waiting thread awakened prematurely", exception);
             incrementIoExceptions();
             // TODO: if sync fails, throw a typed exception. See b/27808839.
         }
-        LOGI(TAG, "local data changed after sync = " + mDataChanged);
+        LOGD(TAG, "local data changed after sync = " + mDataChanged);
         return mDataChanged;
     }
 
@@ -135,7 +136,7 @@ public class FirebaseUserDataSyncHelper extends AbstractUserDataSyncHelper
                                               .updateLocal();
                         FirebaseUserDataSyncHelper.this.mDataChanged =
                                 firebaseDataReconciler.localDataChanged();
-                        LOGI(TAG, "Done syncing with Firebase. Decrementing latch count.");
+                        LOGW(TAG, "Done syncing with Firebase. Decrementing latch count.");
                         mCountDownLatch.countDown();
                     }
 
