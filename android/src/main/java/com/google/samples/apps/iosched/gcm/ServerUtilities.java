@@ -85,7 +85,7 @@ public final class ServerUtilities {
             return false;
         }
 
-        LOGI(TAG, "registering device (reg_id = " + regId + ")");
+        LOGD(TAG, "registering device (reg_id = " + regId + ")");
         String serverUrl = BuildConfig.GCM_SERVER_URL + "/register";
         LOGI(TAG, "registering on GCM with GCM key: " + AccountUtils.sanitizeGcmKey(gcmKey));
 
