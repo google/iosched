@@ -876,6 +876,12 @@ public class SessionDetailFragment extends Fragment implements
             @Override
             public void run() {
                 mAddScheduleFab.setChecked(isInSchedule);
+                if (Build.VERSION.SDK_INT < 21) {
+                    // Lollipop and above use drawable-v21/ic_session_in_schedule.xml
+                    // For older platforms, we need to set the initial state manually
+                    mAddScheduleFab.setImageResource(isInSchedule ? R.drawable.ic_fab_in_schedule :
+                            R.drawable.ic_add_to_schedule);
+                }
                 mAddScheduleFab.jumpDrawablesToCurrentState();
             }
         });
