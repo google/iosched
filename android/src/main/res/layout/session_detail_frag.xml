@@ -308,7 +308,6 @@
         android:clickable="true"
         android:focusable="true"
         android:contentDescription="@string/add_to_schedule"
-        android:visibility="invisible"
         app:srcCompat="@drawable/ic_session_in_schedule"
         app:backgroundTint="@color/session_details_fab"
         app:pressedTranslationZ="@dimen/fab_touch_raise"

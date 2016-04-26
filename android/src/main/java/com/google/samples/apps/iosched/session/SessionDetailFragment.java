@@ -526,6 +526,7 @@ public class SessionDetailFragment extends Fragment implements
     }
 
     private void enterTransitionStarted() {
+        mAddScheduleFab.setVisibility(View.INVISIBLE);
         mToolbar.setAlpha(0f);
     }
 
