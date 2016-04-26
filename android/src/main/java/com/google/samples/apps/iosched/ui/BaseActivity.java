@@ -191,7 +191,9 @@ public abstract class BaseActivity extends AppCompatActivity implements
     public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
         if (key != null && key.equals(BuildConfig.PREF_ATTENDEE_AT_VENUE)) {
             LOGD(TAG, "Attendee at venue preference changed, repopulating nav drawer and menu.");
-            mAppNavigationViewAsDrawer.updateNavigationItems();
+            if (mAppNavigationViewAsDrawer != null) {
+                mAppNavigationViewAsDrawer.updateNavigationItems();
+            }
             invalidateOptionsMenu();
         }
     }
