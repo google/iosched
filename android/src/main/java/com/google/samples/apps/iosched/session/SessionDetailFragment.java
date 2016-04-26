@@ -412,6 +412,7 @@ public class SessionDetailFragment extends Fragment implements
         // Handle Keynote as a special case, where the user cannot remove it
         // from the schedule (it is auto added to schedule on sync)
         mShowFab =  (AccountUtils.hasActiveAccount(getContext()) && !data.isKeynote());
+        mAddScheduleFab.setVisibility(mShowFab ? View.VISIBLE : View.INVISIBLE);
 
         displayTags(data);
 

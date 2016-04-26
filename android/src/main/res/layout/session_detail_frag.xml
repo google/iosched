@@ -305,6 +305,7 @@
         app:layout_anchor="@id/header_session"
         app:layout_anchorGravity="bottom|start|left"
         app:fabSize="mini"
+        android:visibility="invisible"
         android:clickable="true"
         android:focusable="true"
         android:contentDescription="@string/add_to_schedule"
