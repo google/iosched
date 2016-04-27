@@ -44,9 +44,7 @@ public class VideoLibraryActivity extends BaseActivity {
         setContentView(R.layout.video_library_act);
 
         addPresenterFragment(R.id.video_library_frag,
-                new VideoLibraryModel(getApplicationContext(), this),
-                new VideoLibraryQueryEnum[]{VideoLibraryQueryEnum.VIDEOS,
-                        VideoLibraryQueryEnum.MY_VIEWED_VIDEOS},
+                new VideoLibraryModel(getApplicationContext(), this),null,
                 new VideoLibraryUserActionEnum[]{VideoLibraryUserActionEnum.RELOAD,
                         VideoLibraryUserActionEnum.VIDEO_PLAYED});
 

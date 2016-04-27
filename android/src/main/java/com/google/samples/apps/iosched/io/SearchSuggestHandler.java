@@ -25,6 +25,7 @@ import android.app.SearchManager;
 import android.content.ContentProviderOperation;
 import android.content.Context;
 import android.net.Uri;
+import android.text.Html;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -56,7 +57,7 @@ public class SearchSuggestHandler extends JSONHandler {
         list.add(ContentProviderOperation.newDelete(uri).build());
         for (String word : mSuggestions) {
             list.add(ContentProviderOperation.newInsert(uri)
-                .withValue(SearchManager.SUGGEST_COLUMN_TEXT_1, word)
+                .withValue(SearchManager.SUGGEST_COLUMN_TEXT_1, Html.fromHtml(word))
                 .build());
         }
     }

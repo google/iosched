@@ -57,7 +57,6 @@ public enum ScheduleUriEnum {
     VENDORS_ID(703, "vendors/*", ScheduleContract.Vendors.CONTENT_TYPE_ID, true, null),
 
     MY_SCHEDULE(800, "my_schedule", ScheduleContract.MySchedule.CONTENT_TYPE_ID, false, null),
-    MY_VIEWED_VIDEOS(801, "my_viewed_videos", ScheduleContract.MyViewedVideos.CONTENT_TYPE_ID, false, null),
     MY_FEEDBACK_SUBMITTED(802, "my_feedback_submitted", ScheduleContract.MyFeedbackSubmitted.CONTENT_TYPE_ID, false, null),
 
     ANNOUNCEMENTS(900, "announcements", ScheduleContract.Announcements.CONTENT_TYPE_ID, false,

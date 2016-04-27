@@ -100,7 +100,7 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
             final SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(mContext);
             SharedPreferences.Editor edit = prefs.edit();
             edit.putBoolean("first_run",false);
-            edit.commit();
+            edit.apply();
 
 
 

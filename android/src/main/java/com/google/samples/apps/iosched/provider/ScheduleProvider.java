@@ -44,7 +44,6 @@ import com.google.samples.apps.iosched.provider.ScheduleContract.MapTiles;
 import com.google.samples.apps.iosched.provider.ScheduleContract.MyFeedbackSubmitted;
 import com.google.samples.apps.iosched.provider.ScheduleContract.MySchedule;
 import com.google.samples.apps.iosched.provider.ScheduleContract.MyScheduleColumns;
-import com.google.samples.apps.iosched.provider.ScheduleContract.MyViewedVideos;
 import com.google.samples.apps.iosched.provider.ScheduleContract.Rooms;
 import com.google.samples.apps.iosched.provider.ScheduleContract.SearchSuggest;
 import com.google.samples.apps.iosched.provider.ScheduleContract.SearchTopicsSessions;
@@ -171,7 +170,7 @@ public class ScheduleProvider extends ContentProvider {
             return;
         } else if (requiredTags.length == 1) {
             // filtering by only one tag, so a simple WHERE clause suffices
-            builder.where(Tags.TAG_ID + "=?", requiredTags[0]);
+            builder.where(Tags.TAG_NAME + "=?", requiredTags[0]);
         } else {
             // Filtering by multiple tags, so we must add a WHERE clause with an IN operator,
             // and add a HAVING statement to exclude groups that fall short of the number
@@ -187,7 +186,7 @@ public class ScheduleProvider extends ContentProvider {
                 }
             }
             String questionMarkTuple = makeQuestionMarkTuple(requiredTags.length);
-            builder.where(Tags.TAG_ID + " IN " + questionMarkTuple, requiredTags);
+            builder.where(Tags.TAG_NAME + " IN " + questionMarkTuple, requiredTags);
             builder.having(
                     "COUNT(" + Qualified.SESSIONS_SESSION_ID + ") >= " + categories);
         }
@@ -340,7 +339,7 @@ public class ScheduleProvider extends ContentProvider {
                 return Blocks.buildBlockUri(values.getAsString(Blocks.BLOCK_ID));
             }
             case TAGS: {
-                return Tags.buildTagUri(values.getAsString(Tags.TAG_ID));
+                return Tags.buildTagUri(values.getAsString(Tags.TAG_NAME));
             }
             case TRACKS: {
                 return Tracks.buildTrackUri(values.getAsString(ScheduleContract.Tracks.TRACK_ID));
@@ -358,7 +357,7 @@ public class ScheduleProvider extends ContentProvider {
                 return Tracks.buildTrackUri(values.getAsString(SessionsTracks.TRACK_ID));
             }
             case SESSIONS_ID_TAGS: {
-                return Tags.buildTagUri(values.getAsString(Tags.TAG_ID));
+                return Tags.buildTagUri(values.getAsString(Tags.TAG_NAME));
             }
             case MY_SCHEDULE: {
                 values.put(MySchedule.MY_SCHEDULE_ACCOUNT_NAME, getCurrentAccountName(uri, false));
@@ -368,16 +367,6 @@ public class ScheduleProvider extends ContentProvider {
                         values.getAsString(MyScheduleColumns.SESSION_ID));
                 notifyChange(sessionUri);
                 return sessionUri;
-            }
-            case MY_VIEWED_VIDEOS: {
-                values.put(MyViewedVideos.MY_VIEWED_VIDEOS_ACCOUNT_NAME,
-                        getCurrentAccountName(uri, false));
-                db.insertOrThrow(Tables.MY_VIEWED_VIDEO, null, values);
-                notifyChange(uri);
-                Uri videoUri = Videos.buildVideoUri(
-                        values.getAsString(MyViewedVideos.VIDEO_ID));
-                notifyChange(videoUri);
-                return videoUri;
             }
             case MY_FEEDBACK_SUBMITTED: {
                 values.put(MyFeedbackSubmitted.MY_FEEDBACK_SUBMITTED_ACCOUNT_NAME,
@@ -445,10 +434,6 @@ public class ScheduleProvider extends ContentProvider {
             values.remove(MySchedule.MY_SCHEDULE_ACCOUNT_NAME);
             builder.where(MySchedule.MY_SCHEDULE_ACCOUNT_NAME + "=?", accountName);
         }
-        if (matchingUriEnum == ScheduleUriEnum.MY_VIEWED_VIDEOS) {
-            values.remove(MyViewedVideos.MY_VIEWED_VIDEOS_ACCOUNT_NAME);
-            builder.where(MyViewedVideos.MY_VIEWED_VIDEOS_ACCOUNT_NAME + "=?", accountName);
-        }
         if (matchingUriEnum == ScheduleUriEnum.MY_FEEDBACK_SUBMITTED) {
             values.remove(MyFeedbackSubmitted.MY_FEEDBACK_SUBMITTED_ACCOUNT_NAME);
             builder.where(MyFeedbackSubmitted.MY_FEEDBACK_SUBMITTED_ACCOUNT_NAME + "=?",
@@ -478,9 +463,6 @@ public class ScheduleProvider extends ContentProvider {
         ScheduleUriEnum matchingUriEnum = mUriMatcher.matchUri(uri);
         if (matchingUriEnum == ScheduleUriEnum.MY_SCHEDULE) {
             builder.where(MySchedule.MY_SCHEDULE_ACCOUNT_NAME + "=?", accountName);
-        }
-        if (matchingUriEnum == ScheduleUriEnum.MY_VIEWED_VIDEOS) {
-            builder.where(MyViewedVideos.MY_VIEWED_VIDEOS_ACCOUNT_NAME + "=?", accountName);
         }
         if (matchingUriEnum == ScheduleUriEnum.MY_FEEDBACK_SUBMITTED) {
             builder.where(
@@ -561,9 +543,9 @@ public class ScheduleProvider extends ContentProvider {
                         .where(Blocks.BLOCK_ID + "=?", blockId);
             }
             case TAGS_ID: {
-                final String tagId = Tags.getTagId(uri);
+                final String tagId = Tags.getTagName(uri);
                 return builder.table(Tables.TAGS)
-                        .where(Tags.TAG_ID + "=?", tagId);
+                        .where(Tags.TAG_NAME + "=?", tagId);
             }
             case ROOMS_ID: {
                 final String roomId = Rooms.getRoomId(uri);
@@ -598,11 +580,6 @@ public class ScheduleProvider extends ContentProvider {
             case MY_SCHEDULE: {
                 return builder.table(Tables.MY_SCHEDULE)
                         .where(MySchedule.MY_SCHEDULE_ACCOUNT_NAME + "=?",
-                                getCurrentAccountName(uri, false));
-            }
-            case MY_VIEWED_VIDEOS: {
-                return builder.table(Tables.MY_VIEWED_VIDEO)
-                        .where(MyViewedVideos.MY_VIEWED_VIDEOS_ACCOUNT_NAME + "=?",
                                 getCurrentAccountName(uri, false));
             }
             case MY_FEEDBACK_SUBMITTED: {
@@ -723,9 +700,9 @@ public class ScheduleProvider extends ContentProvider {
                 return builder.table(Tables.TAGS);
             }
             case TAGS_ID: {
-                final String tagId = Tags.getTagId(uri);
+                final String tagId = Tags.getTagName(uri);
                 return builder.table(Tables.TAGS)
-                        .where(Tags.TAG_ID + "=?", tagId);
+                        .where(Tags.TAG_NAME + "=?", tagId);
             }
             case BLOCKS_ID_SESSIONS: {
                 final String blockId = Blocks.getBlockId(uri);
@@ -898,7 +875,7 @@ public class ScheduleProvider extends ContentProvider {
                 final String sessionId = Sessions.getSessionId(uri);
                 return builder.table(Tables.SESSIONS_TAGS_JOIN_TAGS)
                         .mapToTable(Tags._ID, Tables.TAGS)
-                        .mapToTable(Tags.TAG_ID, Tables.TAGS)
+                        .mapToTable(Tags.TAG_NAME, Tables.TAGS)
                         .where(Qualified.SESSIONS_TAGS_SESSION_ID + "=?", sessionId);
             }
             case SESSIONS_ID_TRACKS: {
@@ -956,15 +933,6 @@ public class ScheduleProvider extends ContentProvider {
                         .where(MyFeedbackSubmitted.MY_FEEDBACK_SUBMITTED_ACCOUNT_NAME + "=?",
                                 getCurrentAccountName(uri, true));
             }
-            case MY_VIEWED_VIDEOS: {
-                // force a where condition to avoid leaking schedule info to another account
-                // Note that, since SelectionBuilder always join multiple where calls using AND,
-                // even if malicious code specifying additional conditions on account_name won't
-                // be able to fetch data from a different account.
-                return builder.table(Tables.MY_VIEWED_VIDEO)
-                        .where(MyViewedVideos.MY_VIEWED_VIDEOS_ACCOUNT_NAME + "=?",
-                                getCurrentAccountName(uri, true));
-            }
             case SPEAKERS_ID: {
                 final String speakerId = Speakers.getSpeakerId(uri);
                 return builder.table(Tables.SPEAKERS)
@@ -972,7 +940,7 @@ public class ScheduleProvider extends ContentProvider {
             }
             case SPEAKERS_ID_SESSIONS: {
                 final String speakerId = Speakers.getSpeakerId(uri);
-                return builder.table(Tables.SESSIONS_SPEAKERS_JOIN_SESSIONS_ROOMS)
+                return builder.table(Tables.SESSIONS_SPEAKERS_JOIN_SESSIONS_BLOCKS_ROOMS)
                         .mapToTable(Sessions._ID, Tables.SESSIONS)
                         .mapToTable(Sessions.SESSION_ID, Tables.SESSIONS)
                         .mapToTable(Sessions.BLOCK_ID, Tables.SESSIONS)

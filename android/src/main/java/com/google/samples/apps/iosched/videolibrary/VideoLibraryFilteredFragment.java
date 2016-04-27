@@ -86,8 +86,7 @@ public class VideoLibraryFilteredFragment extends Fragment implements UpdatableV
 
     @Override
     public void displayData(VideoLibraryModel model, QueryEnum query) {
-        if ((VideoLibraryModel.VideoLibraryQueryEnum.VIDEOS == query
-                || VideoLibraryModel.VideoLibraryQueryEnum.MY_VIEWED_VIDEOS == query)
+        if ((VideoLibraryModel.VideoLibraryQueryEnum.VIDEOS == query)
                 && model.getVideos() != null) {
             updateCollectionView(model.getVideos());
             setActivityTitle(model.getSelectedYear(), model.getSelectedTopic());
@@ -405,8 +404,6 @@ public class VideoLibraryFilteredFragment extends Fragment implements UpdatableV
         if (query == VideoLibraryModel.VideoLibraryQueryEnum.VIDEOS
                 || query == VideoLibraryModel.VideoLibraryQueryEnum.FILTERS) {
             return ScheduleContract.Videos.CONTENT_URI;
-        } else if (query == VideoLibraryModel.VideoLibraryQueryEnum.MY_VIEWED_VIDEOS) {
-            return ScheduleContract.MyViewedVideos.CONTENT_URI;
         }
         return Uri.EMPTY;
     }

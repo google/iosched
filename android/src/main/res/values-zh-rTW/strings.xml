@@ -19,7 +19,7 @@
 
     <string description="Accessibility for the links to the G+ or Twitter pages for speakers. For example: Go to the Twitter page for Sally Sample." name="speaker_social_page">轉至%2$s的%1$s頁面</string>
 
-    <string description="Accessibility description for the GPlus icon in the '#io15' box." name="social_io15_gplus_content_description">轉到含有io15井號標籤的Google Plus頁面</string>
+    <string description="Accessibility description for the GPlus icon in the '#io15' box." name="social_jz_gplus_content_description">轉到含有io15井號標籤的Google Plus頁面</string>
 
     <string description="Accessibility description for the Twitter icon in the '#io15' box." name="social_io15_twitter_content_description">轉到含有io15井號標籤的Twitter頁面</string>
 

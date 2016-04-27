@@ -78,8 +78,7 @@ public class VideoLibraryFragment extends Fragment implements UpdatableView<Vide
 
     @Override
     public void displayData(VideoLibraryModel model, QueryEnum query) {
-        if ((VideoLibraryModel.VideoLibraryQueryEnum.VIDEOS == query
-                || VideoLibraryModel.VideoLibraryQueryEnum.MY_VIEWED_VIDEOS == query)
+        if ((VideoLibraryModel.VideoLibraryQueryEnum.VIDEOS == query)
                 && model.getVideos() != null) {
             updateCollectionView(model.getVideos());
         }
@@ -430,8 +429,6 @@ public class VideoLibraryFragment extends Fragment implements UpdatableView<Vide
     public Uri getDataUri(QueryEnum query) {
         if (query == VideoLibraryModel.VideoLibraryQueryEnum.VIDEOS) {
             return ScheduleContract.Videos.CONTENT_URI;
-        } else if (query == VideoLibraryModel.VideoLibraryQueryEnum.MY_VIEWED_VIDEOS) {
-            return ScheduleContract.MyViewedVideos.CONTENT_URI;
         }
         return Uri.EMPTY;
     }

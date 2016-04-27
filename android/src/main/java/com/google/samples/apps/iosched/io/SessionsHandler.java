@@ -26,16 +26,9 @@ import android.text.TextUtils;
 import android.text.format.Time;
 
 import com.google.common.collect.Lists;
+import com.google.gson.Gson;
+import com.google.gson.JsonElement;
 import com.google.samples.apps.iosched.Config;
-import no.java.schedule.R;
-import no.java.schedule.io.model.Constants;
-import no.java.schedule.io.model.EMSItem;
-import no.java.schedule.io.model.JZDate;
-import no.java.schedule.io.model.JZLabel;
-import no.java.schedule.io.model.JZSessionsResponse;
-import no.java.schedule.io.model.JZSessionsResult;
-import no.java.schedule.io.model.JZSlotsResponse;
-
 import com.google.samples.apps.iosched.io.model.Session;
 import com.google.samples.apps.iosched.io.model.Speaker;
 import com.google.samples.apps.iosched.io.model.Tag;
@@ -45,8 +38,6 @@ import com.google.samples.apps.iosched.provider.ScheduleDatabase;
 import com.google.samples.apps.iosched.sync.SyncHelper;
 import com.google.samples.apps.iosched.util.ParserUtils;
 import com.google.samples.apps.iosched.util.TimeUtils;
-import com.google.gson.Gson;
-import com.google.gson.JsonElement;
 
 import java.io.IOException;
 import java.net.MalformedURLException;
@@ -59,7 +50,20 @@ import java.util.Map;
 import java.util.Set;
 import java.util.regex.Pattern;
 
-import static com.google.samples.apps.iosched.util.LogUtils.*;
+import no.java.schedule.R;
+import no.java.schedule.io.model.Constants;
+import no.java.schedule.io.model.EMSItem;
+import no.java.schedule.io.model.JZDate;
+import no.java.schedule.io.model.JZLabel;
+import no.java.schedule.io.model.JZSessionsResponse;
+import no.java.schedule.io.model.JZSessionsResult;
+import no.java.schedule.io.model.JZSlotsResponse;
+
+import static com.google.samples.apps.iosched.util.LogUtils.LOGD;
+import static com.google.samples.apps.iosched.util.LogUtils.LOGE;
+import static com.google.samples.apps.iosched.util.LogUtils.LOGI;
+import static com.google.samples.apps.iosched.util.LogUtils.LOGW;
+import static com.google.samples.apps.iosched.util.LogUtils.makeLogTag;
 
 public class SessionsHandler extends JSONHandler {
     private static final String TAG = makeLogTag(SessionsHandler.class);
@@ -80,7 +84,7 @@ public class SessionsHandler extends JSONHandler {
 
     private boolean mLocal;
     private boolean mThrowIfNoAuthToken;
-    private Map<String,EMSItem> mBlocks;
+    private Map<String, EMSItem> mBlocks;
     private Map<String, EMSItem> mRooms;
 
     public SessionsHandler(Context context, boolean local, boolean throwIfNoAuthToken) {
@@ -128,7 +132,7 @@ public class SessionsHandler extends JSONHandler {
 
             // add session, if necessary
             if (!incrementalUpdate || !sessionHashCodes.containsKey(session.id) ||
-                        !sessionHashCodes.get(session.id).equals(hashCode)) {
+                    !sessionHashCodes.get(session.id).equals(hashCode)) {
                 ++updatedSessions;
                 boolean isNew = !incrementalUpdate || !sessionHashCodes.containsKey(session.id);
                 buildSession(isNew, session, list);
@@ -230,7 +234,7 @@ public class SessionsHandler extends JSONHandler {
                 color = Color.parseColor(session.color);
             }
         } catch (IllegalArgumentException ex) {
-            LOGD(TAG, "Ignoring invalid formatted session color: "+session.color);
+            LOGD(TAG, "Ignoring invalid formatted session color: " + session.color);
         }
 
         builder.withValue(ScheduleContract.SyncColumns.UPDATED, System.currentTimeMillis())
@@ -323,6 +327,7 @@ public class SessionsHandler extends JSONHandler {
     public void setTagMap(HashMap<String, Tag> tagMap) {
         mTagMap = tagMap;
     }
+
     public void setSpeakerMap(HashMap<String, Speaker> speakerMap) {
         mSpeakerMap = speakerMap;
     }
@@ -336,7 +341,9 @@ public class SessionsHandler extends JSONHandler {
         int _ID = 0;
         int SESSION_ID = 1;
         int SESSION_IMPORT_HASHCODE = 2;
-    };
+    }
+
+    ;
 
     public ArrayList<ContentProviderOperation> parse(String json)
             throws IOException {
@@ -406,7 +413,6 @@ public class SessionsHandler extends JSONHandler {
                 continue;
             }
 
-
             // Session title  - fix special titles
             String sessionTitle = event.title;
 
@@ -417,28 +423,23 @@ public class SessionsHandler extends JSONHandler {
                 inSchedule = (flags & PARSE_FLAG_FORCE_SCHEDULE_ADD) != 0;
             }
 
-
-            // Hashtags
             String hashtags = "";
-            //}
-
-            // Pre-reqs
             String prereqs = "";
 
             String youtubeUrl = null;
 
             populateStartEndTime(event);
-            parseSpeakers(event,batch);
+            parseSpeakers(event, batch);
             //populateRoom(event);
 
-            long sessionStartTime=0;
-            long sessionEndTime=0;      //TODO handle sessions without timeslot
+            long sessionStartTime = 0;
+            long sessionEndTime = 0;      //TODO handle sessions without timeslot
 
-            long originalSessionEndTime=1;
-            long originalSessionStartTime=1;
+            long originalSessionEndTime = 1;
+            long originalSessionStartTime = 1;
 
 
-            if (event.start!=null && event.end!=null){
+            if (event.start != null && event.end != null) {
                 originalSessionStartTime = event.start.millis();
                 originalSessionEndTime = event.end.millis();
 
@@ -446,12 +447,12 @@ public class SessionsHandler extends JSONHandler {
                 sessionEndTime = event.end.millis();//event.end_date, event.end_time);
             }
 
-            if  (Constants.LIGHTNINGTALK.equals(event.format)){
-                sessionStartTime=snapStartTime(sessionStartTime);
-                sessionEndTime=snapEndTime(sessionEndTime);
+            if (Constants.LIGHTNINGTALK.equals(event.format)) {
+                sessionStartTime = snapStartTime(sessionStartTime);
+                sessionEndTime = snapEndTime(sessionEndTime);
 
-                if ((sessionEndTime-sessionStartTime)>1000*60*61){
-                    sessionEndTime=sessionStartTime+1000*60*60;
+                if ((sessionEndTime - sessionStartTime) > 1000 * 60 * 61) {
+                    sessionEndTime = sessionStartTime + 1000 * 60 * 60;
                 }
 
 
@@ -473,7 +474,7 @@ public class SessionsHandler extends JSONHandler {
                         .withValue(ScheduleContract.Sessions.SESSION_START, originalSessionStartTime)
                         .withValue(ScheduleContract.Sessions.SESSION_END, originalSessionEndTime)
                         .withValue(ScheduleContract.Sessions.SESSION_TAGS, event.labelstrings())
-                       // .withValue(ScheduleContract.Sessions.SESSION_SPEAKER_NAMES, speakerNames)
+                        // .withValue(ScheduleContract.Sessions.SESSION_SPEAKER_NAMES, speakerNames)
                         .withValue(ScheduleContract.Sessions.SESSION_KEYWORDS, null)             // Not available
                         .withValue(ScheduleContract.Sessions.SESSION_URL, String.valueOf(event.sessionHtmlUrl))
                         .withValue(ScheduleContract.Sessions.SESSION_LIVESTREAM_ID, "")
@@ -487,7 +488,7 @@ public class SessionsHandler extends JSONHandler {
 
 
                 String blockId = ScheduleContract.Blocks.generateBlockId(sessionStartTime, sessionEndTime);
-                if (blockId !=null && !blockIds.contains(blockId) ) { // TODO add support for fetching blocks and inserting
+                if (blockId != null && !blockIds.contains(blockId)) { // TODO add support for fetching blocks and inserting
                     String blockType;
                     String blockTitle;
                     if (EVENT_TYPE_KEYNOTE.equals(event.format)) {
@@ -543,13 +544,25 @@ public class SessionsHandler extends JSONHandler {
                     }
                 }
 
+                final Uri tagUri = ScheduleContractHelper.setUriAsCalledFromSyncAdapter(
+                        ScheduleContract.Tags.CONTENT_URI);
+                if (event.labelstrings() != null) {
+                    String[] tagIds = event.labelstrings().split(",");
+                    for (String tag : tagIds) {
+                        batch.add(ContentProviderOperation.newInsert(tagUri)
+                                .withValue(ScheduleContract.Tags.TAG_CATEGORY,
+                                        tag.startsWith("topic:") ? "TOPIC" :
+                                                tag.startsWith("type:")? "TYPE"
+                                : "THEME")
+                                .withValue(ScheduleContract.Tags.TAG_NAME, tag).build());
+                    }
+                }
+            }
+        }
+            return batch;
+        }
 
-            }}
-
-        return batch;
-    }
-
-    private void parseSpeakers( final JZSessionsResult pEvent, final ArrayList<ContentProviderOperation> pBatch) {
+    private void parseSpeakers(final JZSessionsResult pEvent, final ArrayList<ContentProviderOperation> pBatch) {
         Map<String, EMSItem> speakers = load(pEvent.speakerItems);
 
         for (EMSItem speaker : speakers.values()) {
@@ -563,36 +576,33 @@ public class SessionsHandler extends JSONHandler {
                     .withValue(ScheduleContract.Speakers.SPEAKER_IMAGE_URL, speaker.getLinkHref("photo"))
                     .withValue(ScheduleContract.Speakers.SPEAKER_URL, "")//TODO
                     .build());
-
         }
 
         pEvent.speakers = speakers.keySet();
-
-
     }
 
     private void populateStartEndTime(final JZSessionsResult pEvent) {
 
-        if (mBlocks==null){
+        if (mBlocks == null) {
             mBlocks = loadBlocks();
         }
 
         EMSItem timeslot = mBlocks.get(pEvent.timeslot);
-        if (timeslot!=null){
+        if (timeslot != null) {
             pEvent.start = new JZDate(timeslot.getValue("start"));
             pEvent.end = new JZDate(timeslot.getValue("end"));
         } else {
-            LOGE(this.getClass().getName(),"unknown block: "+pEvent.timeslot);
+            LOGE(this.getClass().getName(), "unknown block: " + pEvent.timeslot);
         }
 
 
     }
 
     private Map<String, EMSItem> loadBlocks() {
-        return load( Config.EMS_SLOTS);
+        return load(Config.EMS_SLOTS);
     }
 
-    private Map<String, EMSItem> load( String url) {
+    private Map<String, EMSItem> load(String url) {
 
         Map<String, EMSItem> result = new HashMap<String, EMSItem>();
 
@@ -602,36 +612,32 @@ public class SessionsHandler extends JSONHandler {
 
             if (SyncHelper.isFirstRun(mContext)) {
                 json = SyncHelper.getLocalResource(mContext, url);
-            } else if ( SyncHelper.isOnline(mContext)) {
+            } else if (SyncHelper.isOnline(mContext)) {
                 json = SyncHelper.getHttpResource(url);
             } else {
                 return result;
             }
 
-            if (json==null){
+            if (json == null) {
                 return result;
             }
 
             JZSlotsResponse slotResponse = new Gson().fromJson(json, JZSlotsResponse.class);
 
             for (EMSItem slot : slotResponse.collection.items) {
-                result.put(slot.href.toString(),slot);
+                result.put(slot.href.toString(), slot);
             }
 
-        }
-        catch (MalformedURLException e) {
-            LOGE(this.getClass().getName(),e.getMessage());
+        } catch (MalformedURLException e) {
+            LOGE(this.getClass().getName(), e.getMessage());
 
-        }
-        catch (IOException e) {
+        } catch (IOException e) {
             LOGE(this.getClass().getName(), e.getMessage());
         }
 
         return result;
 
     }
-
-
 
 
     static List<JZSessionsResult> toJZSessionResultList(final EMSItem[] pItems) {
@@ -648,10 +654,10 @@ public class SessionsHandler extends JSONHandler {
     private static long snapStartTime(final long pSessionStartTime) {
 
         Date date = new Date(pSessionStartTime);
-        int minutes = (date.getHours()-9)*60+(date.getMinutes()-0);
+        int minutes = (date.getHours() - 9) * 60 + (date.getMinutes() - 0);
 
-        int offset = minutes % (60+20);
-        date.setMinutes(date.getMinutes()-offset);
+        int offset = minutes % (60 + 20);
+        date.setMinutes(date.getMinutes() - offset);
         return date.getTime();
 
 
@@ -660,10 +666,10 @@ public class SessionsHandler extends JSONHandler {
     private static long snapEndTime(final long pSessionEndTime) {
 
         Date date = new Date(pSessionEndTime);
-        int minutes = (date.getHours()-9)*60+(date.getMinutes()+0);
+        int minutes = (date.getHours() - 9) * 60 + (date.getMinutes() + 0);
 
-        int offset = minutes % (60+20);
-        date.setMinutes(date.getMinutes()+60-offset);
+        int offset = minutes % (60 + 20);
+        date.setMinutes(date.getMinutes() + 60 - offset);
         return date.getTime();
 
 

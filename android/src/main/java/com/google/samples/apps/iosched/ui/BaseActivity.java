@@ -938,7 +938,6 @@ public abstract class BaseActivity extends AppCompatActivity implements
         // Force local data refresh for data that depends on the logged user:
         LOGD(TAG, "Refreshing User Data");
         getContentResolver().notifyChange(ScheduleContract.MySchedule.CONTENT_URI, null, false);
-        getContentResolver().notifyChange(ScheduleContract.MyViewedVideos.CONTENT_URI, null, false);
         getContentResolver().notifyChange(
                 ScheduleContract.MyFeedbackSubmitted.CONTENT_URI, null, false);
     }

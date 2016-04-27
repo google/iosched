@@ -233,7 +233,7 @@
     <string name="speaker_social_page">انتقل إلى صفحة %1$s لـ %2$s</string>
 
     <!-- Accessibility description for the GPlus icon in the "#io15" box. -->
-    <string name="social_io15_gplus_content_description">انتقل إلى Google Plus مع وسم io15</string>
+    <string name="social_jz_gplus_content_description">انتقل إلى Google Plus مع وسم io15</string>
 
     <!-- Accessibility description for the Twitter icon in the "#io15" box. -->
     <string name="social_io15_twitter_content_description">انتقل إلى Twitter مع وسم io15</string>

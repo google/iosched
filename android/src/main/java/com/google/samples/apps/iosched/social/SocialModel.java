@@ -80,7 +80,7 @@ public class SocialModel {
         switch (socialValue) {
             case GPLUS_IO15:
                 return mContext.getResources().getString(
-                        R.string.social_io15_gplus_content_description);
+                        R.string.social_jz_gplus_content_description);
             case TWITTER_IO15:
                 return mContext.getResources().getString(
                         R.string.social_io15_twitter_content_description);

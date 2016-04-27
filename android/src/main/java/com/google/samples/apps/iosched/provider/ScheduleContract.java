@@ -66,9 +66,6 @@ public final class ScheduleContract {
     }
 
     interface TagsColumns {
-
-        /** Unique string identifying this tag. For example, "TOPIC_ANDROID", "TYPE_CODELAB" */
-        String TAG_ID = "tag_id";
         /**
          * Tag category. For example, the tags that identify what topic a session pertains
          * to might belong to the "TOPIC" category; the tags that identify what type a session
@@ -120,15 +117,6 @@ public final class ScheduleContract {
         String MY_FEEDBACK_SUBMITTED_ACCOUNT_NAME = "account_name";
         /** Flag to indicate if the corresponding item needs to be synced */
         String MY_FEEDBACK_SUBMITTED_DIRTY_FLAG = "dirty";
-    }
-
-    interface MyViewedVideosColumns {
-
-        String VIDEO_ID = VideoColumns.VIDEO_ID;
-        /** Account name with which the video has been viewed */
-        String MY_VIEWED_VIDEOS_ACCOUNT_NAME = "account_name";
-        /** Flag to indicate if the corresponding item needs to be synced */
-        String MY_VIEWED_VIDEOS_DIRTY_FLAG = "dirty";
     }
 
     interface SessionsColumns {
@@ -328,7 +316,6 @@ public final class ScheduleContract {
     private static final String PATH_SESSIONS = "sessions";
     private static final String PATH_FEEDBACK = "feedback";
     private static final String PATH_MY_SCHEDULE = "my_schedule";
-    private static final String PATH_MY_VIEWED_VIDEOS = "my_viewed_videos";
     private static final String PATH_MY_FEEDBACK_SUBMITTED = "my_feedback_submitted";
     private static final String PATH_SESSIONS_COUNTER = "counter";
     private static final String PATH_SPEAKERS = "speakers";
@@ -491,8 +478,7 @@ public final class ScheduleContract {
             return CONTENT_URI.buildUpon().appendPath(tagId).build();
         }
 
-        /** Read {@link #TAG_ID} from {@link Tags} {@link Uri}. */
-        public static String getTagId(Uri uri) {
+        public static String getTagName(Uri uri) {
             return uri.getPathSegments().get(1);
         }
     }
@@ -531,24 +517,6 @@ public final class ScheduleContract {
         }
 
     }
-
-    /**
-     * MyViewedVideos represent the videos that the user has viewed at least once.
-     * Each row of MyViewedVideos represents one video which has been viewed by one account.
-     */
-    public static class MyViewedVideos implements MyViewedVideosColumns, BaseColumns {
-
-        public static final Uri CONTENT_URI =
-                BASE_CONTENT_URI.buildUpon().appendPath(PATH_MY_VIEWED_VIDEOS).build();
-
-        public static final String CONTENT_TYPE_ID = "myviewedvideos";
-
-        public static Uri buildMyViewedVideosUri(String accountName) {
-            return ScheduleContractHelper.addOverrideAccountName(CONTENT_URI, accountName);
-        }
-
-    }
-
 
     /**
      * Tracks are overall categories for {@link Sessions} and {@link Vendors},
@@ -1165,7 +1133,6 @@ public final class ScheduleContract {
 
         public static final String[] TOPIC_TAG_PROJECTION = {
                 BaseColumns._ID,
-                Tags.TAG_ID,
                 Tags.TAG_NAME,
         };
 

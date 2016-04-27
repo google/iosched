@@ -52,13 +52,12 @@ public class TagMetadata {
         int count = cursor.getCount();
         for(int i = 0; i < count; i ++){
             cursor.moveToPosition(i);
-            Tag tag = new Tag(cursor.getString(cursor.getColumnIndex(ScheduleContract.Tags.TAG_ID)),
-                    cursor.getString(cursor.getColumnIndex(ScheduleContract.Tags.TAG_NAME)),
+            Tag tag = new Tag(cursor.getString(cursor.getColumnIndex(ScheduleContract.Tags.TAG_NAME)),
                     cursor.getString(cursor.getColumnIndex(ScheduleContract.Tags.TAG_CATEGORY)),
                     cursor.getInt(cursor.getColumnIndex(ScheduleContract.Tags.TAG_ORDER_IN_CATEGORY)),
                     cursor.getString(cursor.getColumnIndex(ScheduleContract.Tags.TAG_ABSTRACT)),
                     cursor.getInt(cursor.getColumnIndex(ScheduleContract.Tags.TAG_COLOR)));
-            mTagsById.put(tag.getId(), tag);
+            mTagsById.put(tag.getName(), tag);
             if (!mTagsInCategory.containsKey(tag.getCategory())) {
                 mTagsInCategory.put(tag.getCategory(), new ArrayList<Tag>());
             }
@@ -108,10 +107,16 @@ public class TagMetadata {
         }
     };
 
+    public static Comparator<String> DISPLAY_ORDER_COMPARATOR = new Comparator<String>() {
+        @Override
+        public int compare(String s1, String s2) {
+            return s1.compareTo(s1);
+        }
+    };
+
     public enum TagsQueryEnum implements QueryEnum {
         TAG(0, new String[] {
                 BaseColumns._ID,
-                ScheduleContract.Tags.TAG_ID,
                 ScheduleContract.Tags.TAG_NAME,
                 ScheduleContract.Tags.TAG_CATEGORY,
                 ScheduleContract.Tags.TAG_ORDER_IN_CATEGORY,
@@ -140,25 +145,19 @@ public class TagMetadata {
     }
 
     static public class Tag implements Comparable<Tag> {
-        private String mId;
         private String mName;
         private String mCategory;
         private int mOrderInCategory;
         private String mAbstract;
         private int mColor;
 
-        public Tag(String id, String name, String category, int orderInCategory, String _abstract,
+        public Tag(String name, String category, int orderInCategory, String _abstract,
                 int color) {
-            mId = id;
             mName = name;
             mCategory = category;
             mOrderInCategory = orderInCategory;
             mAbstract = _abstract;
             mColor = color;
-        }
-
-        public String getId() {
-            return mId;
         }
 
         public String getName() {

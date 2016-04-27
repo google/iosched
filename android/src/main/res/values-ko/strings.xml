@@ -19,7 +19,7 @@
 
     <string description="Accessibility for the links to the G+ or Twitter pages for speakers. For example: Go to the Twitter page for Sally Sample." name="speaker_social_page">%2$s 의 %1$s 페이지로 이동</string>
 
-    <string description="Accessibility description for the GPlus icon in the '#io15' box." name="social_io15_gplus_content_description">io15 해시 태그와 함께 Google Plus로 이동</string>
+    <string description="Accessibility description for the GPlus icon in the '#io15' box." name="social_jz_gplus_content_description">io15 해시 태그와 함께 Google Plus로 이동</string>
 
     <string description="Accessibility description for the Twitter icon in the '#io15' box." name="social_io15_twitter_content_description">io15 해시 태그와 함께 Twitter로 이동</string>
 

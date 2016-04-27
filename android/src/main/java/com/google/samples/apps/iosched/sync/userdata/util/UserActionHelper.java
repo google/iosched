@@ -83,14 +83,6 @@ public class UserActionHelper {
                             .MY_FEEDBACK_SUBMITTED_DIRTY_FLAG, "0")
                     .withValue(ScheduleContract.MyFeedbackSubmitted.SESSION_ID, action.sessionId)
                     .build();
-        } else if (action.type == UserAction.TYPE.VIEW_VIDEO) {
-            return ContentProviderOperation
-                    .newInsert(
-                            ScheduleContractHelper.addOverrideAccountName(
-                                    ScheduleContract.MyViewedVideos.CONTENT_URI, account))
-                    .withValue(ScheduleContract.MyViewedVideos.MY_VIEWED_VIDEOS_DIRTY_FLAG, "0")
-                    .withValue(ScheduleContract.MyViewedVideos.VIDEO_ID, action.videoId)
-                    .build();
         } else {
             return ContentProviderOperation
                     .newDelete(

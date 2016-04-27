@@ -98,7 +98,7 @@
 
     <string description="Accessibility for the links to the G+ or Twitter pages for speakers. For example: Go to the Twitter page for Sally Sample." name="speaker_social_page">Перейти на страницу %1$s с %2$s</string>
 
-    <string description="Accessibility description for the GPlus icon in the '#io15' box." name="social_io15_gplus_content_description">Перейти к Google Plus с хэштегом \"io15\"</string>
+    <string description="Accessibility description for the GPlus icon in the '#io15' box." name="social_jz_gplus_content_description">Перейти к Google Plus с хэштегом \"io15\"</string>
 
     <string description="Accessibility description for the Twitter icon in the '#io15' box." name="social_io15_twitter_content_description">Перейти к Twitter с хэштегом \"io15\"</string>
 

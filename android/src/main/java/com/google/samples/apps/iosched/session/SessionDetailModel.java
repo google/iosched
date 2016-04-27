@@ -314,21 +314,10 @@ public class SessionDetailModel implements Model {
             } else if (SessionDetailQueryEnum.SPEAKERS == query) {
                 readDataFromSpeakersCursor(cursor);
                 success = true;
-            } else if (SessionDetailQueryEnum.MY_VIEWED_VIDEOS == query) {
-                readDataFromMyViewedVideosCursor(cursor);
-                success = true;
             }
         }
 
         return success;
-    }
-
-    private void readDataFromMyViewedVideosCursor(Cursor cursor) {
-        String videoID = cursor.getString(cursor.getColumnIndex(
-                ScheduleContract.MyViewedVideos.VIDEO_ID));
-        if (videoID != null && videoID.equals(mLiveStreamId)) {
-            mLiveStreamVideoWatched = true;
-        }
     }
 
     private void readDataFromSessionCursor(Cursor cursor) {
@@ -507,12 +496,6 @@ public class SessionDetailModel implements Model {
                     SessionDetailQueryEnum.FEEDBACK.getProjection(), null, null, null);
         } else if (loaderId == SessionDetailQueryEnum.TAG_METADATA.getId()) {
             loader = getTagMetadataLoader();
-        } else if (loaderId == SessionDetailQueryEnum.MY_VIEWED_VIDEOS.getId()) {
-            LOGD(TAG, "Starting My Viewed Videos query");
-            Uri myPlayedVideoUri = ScheduleContract.MyViewedVideos.buildMyViewedVideosUri(
-                    AccountUtils.getActiveAccountName(mContext));
-            loader = getCursorLoaderInstance(mContext, myPlayedVideoUri,
-                    SessionDetailQueryEnum.MY_VIEWED_VIDEOS.getProjection(), null, null, null);
         }
         return loader;
     }
@@ -728,8 +711,7 @@ public class SessionDetailModel implements Model {
                 ScheduleContract.Speakers.SPEAKER_ABSTRACT,
                 ScheduleContract.Speakers.SPEAKER_URL}),
         FEEDBACK(2, new String[]{ScheduleContract.Feedback.SESSION_ID}),
-        TAG_METADATA(3, null),
-        MY_VIEWED_VIDEOS(4, new String[]{ScheduleContract.MyViewedVideos.VIDEO_ID});
+        TAG_METADATA(3, null);
 
         private int id;
 

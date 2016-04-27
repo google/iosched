@@ -160,8 +160,6 @@ public class SyncHelper {
             }
 
         }
-        // all other IOExceptions are thrown
-
 
         try {
             // Apply all queued up remaining batch operations (only remote content at this point).
@@ -561,20 +559,18 @@ public class SyncHelper {
     public ArrayList<ContentProviderOperation> fetchResource(String urlString, JSONHandler handler) throws IOException {
 
         String response = null;
-        response = getLocalResource(mContext, urlString);
-        if (isOnline(mContext)) {
-            if (isFirstRun()) {
-                response = getHttpResource(urlString);
-            }
+        if (isFirstRun()) {
+            response = getLocalResource(mContext, urlString);
+        } else if (isOnline(mContext)) {
+            response = getHttpResource(urlString);
         }
 
-        if (response != null && !response.trim().equals("")) {
+        if (response!=null && !response.trim().equals("")){
             return handler.parse(response);
         } else {
             return new ArrayList<ContentProviderOperation>();
         }
     }
-
 
     private boolean isFirstRun() {
         return isFirstRun(mContext);

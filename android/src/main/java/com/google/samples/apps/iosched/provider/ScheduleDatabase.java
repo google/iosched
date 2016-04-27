@@ -45,10 +45,6 @@ public class ScheduleDatabase extends SQLiteOpenHelper {
 
     // NOTE: carefully update onUpgrade() when bumping database versions to make
     // sure user data is saved.
-
-    private static final int VER_2014_RELEASE_A = 122; // app version 2.0.0, 2.0.1
-    private static final int VER_2014_RELEASE_C = 207; // app version 2.1.x
-    private static final int VER_2015_RELEASE_A = 208;
     private static final int VER_2015_RELEASE_B = 210;
     private static final int CUR_DATABASE_VERSION = VER_2015_RELEASE_B;
 
@@ -61,7 +57,6 @@ public class ScheduleDatabase extends SQLiteOpenHelper {
         String ROOMS = "rooms";
         String SESSIONS = "sessions";
         String MY_SCHEDULE = "myschedule";
-        String MY_VIEWED_VIDEO = "myviewedvideos";
         String MY_FEEDBACK_SUBMITTED = "myfeedbacksubmitted";
         String SPEAKERS = "speakers";
         String SESSIONS_TAGS = "sessions_tags";
@@ -140,16 +135,10 @@ public class ScheduleDatabase extends SQLiteOpenHelper {
                 + "LEFT OUTER JOIN speakers ON sessions_speakers.speaker_id=speakers.speaker_id";
 
         String SESSIONS_TAGS_JOIN_TAGS = "sessions_tags "
-                + "LEFT OUTER JOIN tags ON sessions_tags.tag_id=tags.tag_id";
+                + "LEFT OUTER JOIN tags ON sessions_tags.tag_name=tags.tag_name";
 
         String SESSIONS_SPEAKERS_JOIN_SESSIONS_ROOMS = "sessions_speakers "
                 + "LEFT OUTER JOIN sessions ON sessions_speakers.session_id=sessions.session_id "
-                + "LEFT OUTER JOIN rooms ON sessions.room_id=rooms.room_id";
-
-        String SESSIONS_SEARCH_JOIN_SESSIONS_ROOMS = "sessions_search "
-                + "LEFT OUTER JOIN sessions ON sessions_search.session_id=sessions.session_id "
-                + "LEFT OUTER JOIN myschedule ON sessions.session_id=myschedule.session_id "
-                + "AND myschedule.account_name=? "
                 + "LEFT OUTER JOIN rooms ON sessions.room_id=rooms.room_id";
     }
 
@@ -173,7 +162,7 @@ public class ScheduleDatabase extends SQLiteOpenHelper {
 
     public interface SessionsTags {
         String SESSION_ID = "session_id";
-        String TAG_ID = "tag_id";
+        String TAG_ID = "tag_name";
     }
 
     interface SessionsSearchColumns {
@@ -219,7 +208,7 @@ public class ScheduleDatabase extends SQLiteOpenHelper {
     private interface References {
         String BLOCK_ID = "REFERENCES " + Tables.BLOCKS + "(" + Blocks.BLOCK_ID + ")";
         String TRACK_ID = "REFERENCES " + Tables.TRACKS + "(" + Tracks.TRACK_ID + ")";
-        String TAG_ID = "REFERENCES " + Tables.TAGS + "(" + Tags.TAG_ID + ")";
+        String TAG_ID = "REFERENCES " + Tables.TAGS + "(" + Tags.TAG_NAME + ")";
         String ROOM_ID = "REFERENCES " + Tables.ROOMS + "(" + Rooms.ROOM_ID + ")";
         String SESSION_ID = "REFERENCES " + Tables.SESSIONS + "(" + Sessions.SESSION_ID + ")";
         String VIDEO_ID = "REFERENCES " + Tables.VIDEOS + "(" + Videos.VIDEO_ID + ")";
@@ -266,13 +255,12 @@ public class ScheduleDatabase extends SQLiteOpenHelper {
 
         db.execSQL("CREATE TABLE " + Tables.TAGS + " ("
                 + BaseColumns._ID + " INTEGER PRIMARY KEY AUTOINCREMENT,"
-                + TagsColumns.TAG_ID + " TEXT NOT NULL,"
-                + TagsColumns.TAG_CATEGORY + " TEXT NOT NULL,"
                 + TagsColumns.TAG_NAME + " TEXT NOT NULL,"
+                + TagsColumns.TAG_CATEGORY + " TEXT NOT NULL,"
                 + TagsColumns.TAG_ORDER_IN_CATEGORY + " INTEGER,"
-                + TagsColumns.TAG_COLOR + " TEXT NOT NULL,"
-                + TagsColumns.TAG_ABSTRACT + " TEXT NOT NULL,"
-                + "UNIQUE (" + TagsColumns.TAG_ID + ") ON CONFLICT REPLACE)");
+                + TagsColumns.TAG_COLOR + " TEXT,"
+                + TagsColumns.TAG_ABSTRACT + " TEXT,"
+                + "UNIQUE (" + TagsColumns.TAG_NAME + ") ON CONFLICT REPLACE)");
 
         db.execSQL("CREATE TABLE " + Tables.ROOMS + " ("
                 + BaseColumns._ID + " INTEGER PRIMARY KEY AUTOINCREMENT,"
@@ -573,7 +561,6 @@ public class ScheduleDatabase extends SQLiteOpenHelper {
             db.execSQL("DROP TABLE IF EXISTS " + Tables.SPEAKERS);
             db.execSQL("DROP TABLE IF EXISTS " + Tables.MY_SCHEDULE);
             db.execSQL("DROP TABLE IF EXISTS " + Tables.MY_FEEDBACK_SUBMITTED);
-            db.execSQL("DROP TABLE IF EXISTS " + Tables.MY_VIEWED_VIDEO);
             db.execSQL("DROP TABLE IF EXISTS " + Tables.SESSIONS_SPEAKERS);
             db.execSQL("DROP TABLE IF EXISTS " + Tables.SESSIONS_TRACKS);
             db.execSQL("DROP TABLE IF EXISTS " + Tables.SESSIONS_TAGS);

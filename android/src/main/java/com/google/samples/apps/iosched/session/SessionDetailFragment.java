@@ -696,24 +696,6 @@ public class SessionDetailFragment extends Fragment
 
 
     private void updateTimeBasedUi(SessionDetailModel data) {
-        // Show "Live streamed" for all live-streamed sessions that aren't currently going on.
-        mLiveStreamVideocamIconAndText.setVisibility(data.hasLiveStream() && !data.isSessionOngoing() ?
-                View.VISIBLE : View.GONE);
-
-        if (data.hasLiveStream() && data.hasSessionStarted()) {
-            // Show the play button and text only once the session starts.
-            mLiveStreamVideocamIconAndText.setVisibility(View.VISIBLE);
-
-            if (data.isSessionOngoing()) {
-                mLiveStreamPlayIconAndText.setText(getString(R.string.session_watch_live));
-            } else {
-                mLiveStreamPlayIconAndText.setText(getString(R.string.session_watch));
-                // TODO: implement Replay.
-            }
-        } else {
-            mLiveStreamPlayIconAndText.setVisibility(View.GONE);
-        }
-
         // If the session is done, hide the FAB, and show the "Give feedback" card.
         if (data.isSessionReadyForFeedback()) {
             mAddScheduleButton.setVisibility(View.INVISIBLE);
@@ -761,7 +743,7 @@ public class SessionDetailFragment extends Fragment
     }
 
     private void displayTags(SessionDetailModel data) {
-        if (data.getTagMetadata() == null || data.getTagsString() == null) {
+        if (data.getTagsString() == null) {
             mTagsContainer.setVisibility(View.GONE);
             return;
         }
@@ -774,19 +756,14 @@ public class SessionDetailFragment extends Fragment
             LayoutInflater inflater = LayoutInflater.from(getContext());
             String[] tagIds = data.getTagsString().split(",");
 
-            List<TagMetadata.Tag> tags = new ArrayList<TagMetadata.Tag>();
+            List<String> tags = new ArrayList<String>();
             for (String tagId : tagIds) {
                 if (Config.Tags.SESSIONS.equals(tagId) ||
                         Config.Tags.SPECIAL_KEYNOTE.equals(tagId)) {
                     continue;
                 }
 
-                TagMetadata.Tag tag = data.getTagMetadata().getTag(tagId);
-                if (tag == null) {
-                    continue;
-                }
-
-                tags.add(tag);
+                tags.add(tagId);
             }
 
             if (tags.size() == 0) {
@@ -794,19 +771,19 @@ public class SessionDetailFragment extends Fragment
                 return;
             }
 
-            Collections.sort(tags, TagMetadata.TAG_DISPLAY_ORDER_COMPARATOR);
+            Collections.sort(tags, TagMetadata.DISPLAY_ORDER_COMPARATOR);
 
-            for (final TagMetadata.Tag tag : tags) {
+            for (final String tag : tags) {
                 TextView chipView = (TextView) inflater.inflate(
                         R.layout.include_session_tag_chip, mTags, false);
-                chipView.setText(tag.getName());
+                chipView.setText(tag);
                 chipView.setContentDescription(
-                        getString(R.string.talkback_button, tag.getName()));
+                        getString(R.string.talkback_button, tag));
                 chipView.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
                         Intent intent = new Intent(getContext(), ExploreSessionsActivity.class)
-                                .putExtra(ExploreSessionsActivity.EXTRA_FILTER_TAG, tag.getId())
+                                .putExtra(ExploreSessionsActivity.EXTRA_FILTER_TAG, tag)
                                 .addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
                         startActivity(intent);
                     }

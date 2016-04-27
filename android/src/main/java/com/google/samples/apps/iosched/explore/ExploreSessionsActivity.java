@@ -107,9 +107,9 @@ public class ExploreSessionsActivity extends BaseActivity
             TagMetadata.Tag theTag = (TagMetadata.Tag)v.getTag();
             LOGD(TAG, "Checkbox with tag: " + theTag.getName() + " isChecked => " + isChecked);
             if (isChecked) {
-                mTagFilterHolder.add(theTag.getId(), theTag.getCategory());
+                mTagFilterHolder.add(theTag.getName(), theTag.getCategory());
             } else {
-                mTagFilterHolder.remove(theTag.getId(), theTag.getCategory());
+                mTagFilterHolder.remove(theTag.getName(), theTag.getCategory());
             }
             reloadFragment();
         }
@@ -295,14 +295,14 @@ public class ExploreSessionsActivity extends BaseActivity
                 // one of the category_type tags.
                 if (tags != null && !TextUtils.equals(userTagCategory, Config.Tags.CATEGORY_TYPE)) {
                     for (TagMetadata.Tag theTag : tags) {
-                        mTagFilterHolder.add(theTag.getId(), theTag.getCategory());
+                        mTagFilterHolder.add(theTag.getName(), theTag.getCategory());
                     }
                 }
             } else {
                 // b) For remote users, default to only showing Sessions that are Live streamed.
                 TagMetadata.Tag theTag = mTagMetadata.getTag(Config.Tags.SESSIONS);
                 if (!TextUtils.equals(theTag.getCategory(), userTagCategory)) {
-                    mTagFilterHolder.add(theTag.getId(), theTag.getCategory());
+                    mTagFilterHolder.add(theTag.getName(), theTag.getCategory());
                 }
                 mTagFilterHolder.setShowLiveStreamedSessions(true);
             }
@@ -479,7 +479,7 @@ public class ExploreSessionsActivity extends BaseActivity
                 if (theTag != null) {
                     ((TextView) view.findViewById(R.id.text_view)).setText(theTag.getName());
                     // set the original checked state by looking up our tags.
-                    checkBox.setChecked(mTagFilterHolder.contains(theTag.getId()));
+                    checkBox.setChecked(mTagFilterHolder.contains(theTag.getName()));
                     checkBox.setTag(theTag);
                     checkBox.setOnClickListener(mDrawerItemCheckBoxClickListener);
                 }

@@ -262,22 +262,6 @@ public class VideoLibraryModel implements Model {
                 markVideosAsViewed();
             }
             return true;
-        } else if (query == VideoLibraryQueryEnum.MY_VIEWED_VIDEOS) {
-            LOGD(TAG, "Reading my viewed videos Data from cursor.");
-            if(cursor.moveToFirst()) {
-                Set<String> viewedVideoIds = new HashSet<>();
-                do {
-                    viewedVideoIds.add(cursor.getString(cursor.getColumnIndex(
-                            ScheduleContract.MyViewedVideos.VIDEO_ID)));
-                } while (cursor.moveToNext());
-
-                if (!mViewedVideosIds.containsAll(viewedVideoIds)) {
-                    mViewedVideosIds = viewedVideoIds;
-                    markVideosAsViewed();
-                    return true;
-                }
-            }
-            return false;
         } else if (query == VideoLibraryQueryEnum.FILTERS) {
 
             // Read all the Years and Topics from the Cursor.
@@ -370,10 +354,6 @@ public class VideoLibraryModel implements Model {
             LOGD(TAG, "Starting Video Filters query");
             loader = getCursorLoaderInstance(mContext, uri,
                     VideoLibraryQueryEnum.FILTERS.getProjection(), null, null, null);
-        } else if (loaderId == VideoLibraryQueryEnum.MY_VIEWED_VIDEOS.getId()) {
-            LOGD(TAG, "Starting My Viewed Videos query");
-            loader = getCursorLoaderInstance(mContext, uri,
-                    VideoLibraryQueryEnum.MY_VIEWED_VIDEOS.getProjection(), null, null, null);
         } else {
             LOGE(TAG, "Invalid query loaderId: " + loaderId);
         }
@@ -395,14 +375,6 @@ public class VideoLibraryModel implements Model {
                 String playedVideoId = args.getString(KEY_VIDEO_ID);
 
                 LOGD(TAG, "setVideoViewed id=" + playedVideoId);
-                Uri myPlayedVideoUri = ScheduleContract.MyViewedVideos.buildMyViewedVideosUri(
-                        AccountUtils.getActiveAccountName(mActivity));
-
-                AsyncQueryHandler handler =
-                        new AsyncQueryHandler(mActivity.getContentResolver()) {};
-                final ContentValues values = new ContentValues();
-                values.put(ScheduleContract.MyViewedVideos.VIDEO_ID, playedVideoId);
-                handler.startInsert(-1, null, myPlayedVideoUri, values);
 
                 // Because change listener is set to null during initialization, these
                 // won't fire on pageview.
@@ -447,15 +419,6 @@ public class VideoLibraryModel implements Model {
                 ScheduleContract.Videos.VIDEO_TOPIC,
                 ScheduleContract.Videos.VIDEO_SPEAKERS,
                 ScheduleContract.Videos.VIDEO_THUMBNAIL_URL,
-        }),
-
-        /**
-         * Query that retrieves a list of already viewed videos.
-         *
-         * Once the data has been loaded it can be retrieved using {@link #getVideos()}.
-         */
-        MY_VIEWED_VIDEOS(0x2, new String[]{
-                ScheduleContract.MyViewedVideos.VIDEO_ID
         }),
 
         /**

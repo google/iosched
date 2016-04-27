@@ -189,10 +189,9 @@
 
     <string name="description_debug" translatable="false">Debug and tests</string>
 
-    <!-- Menu item that takes the user to a page that shows a list of Google I/O Extended events. -->
-    <string name="description_i_o_extended">I/O Extended</string>
+    <string name="description_myschedule"> Mark</string>
 
-    <!-- Menu item that takes the user to the conference venue map screen -->
+    <!-- Menu item that takes the user to th conference venue map screen -->
     <string name="description_map">Map</string>
 
     <!-- Menu item that allows user to turn on or turn off the output of a video to a
@@ -234,7 +233,7 @@
     <string name="speaker_social_page">Go to the %1$s page for %2$s</string>
 
     <!-- Accessibility description for the GPlus icon in the "#io15" box. -->
-    <string name="social_io15_gplus_content_description">
+    <string name="social_jz_gplus_content_description">
         Go to Google Plus with io15 hashtag
     </string>
 

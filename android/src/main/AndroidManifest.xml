@@ -435,16 +435,15 @@
             android:syncable="true"
             android:writePermission="com.google.samples.apps.iosched.permission.WRITE_SCHEDULE" />
 
-        <service
-            android:name="com.google.samples.apps.iosched.sync.SyncService"
+        <service android:name="no.java.schedule.service.ScheduleUpdaterService" />
+
+        <service android:name="no.java.schedule.service.SyncService"
             android:exported="true"
             tools:ignore="ExportedService">
             <intent-filter>
                 <action android:name="android.content.SyncAdapter" />
             </intent-filter>
-
-            <meta-data
-                android:name="android.content.SyncAdapter"
+            <meta-data android:name="android.content.SyncAdapter"
                 android:resource="@xml/syncadapter" />
         </service>
 
