@@ -482,12 +482,16 @@ public class UIUtils {
 
     public static @DrawableRes int getBreakIcon(String breakTitle) {
         if (!TextUtils.isEmpty(breakTitle)) {
-            if (breakTitle.contains("After")) {
+            if (breakTitle.contains("After") || breakTitle.contains("Concert")) {
                 return R.drawable.ic_after_hours;
             } else if (breakTitle.contains("Badge")) {
                 return R.drawable.ic_badge_pickup;
             } else if (breakTitle.contains("Pre-Keynote")) {
                 return R.drawable.ic_session;
+            } else if (breakTitle.contains("Codelabs")) {
+                return R.drawable.ic_codelab;
+            } else if (breakTitle.contains("Sandbox")) {
+                return R.drawable.ic_sandbox;
             }
         }
         return R.drawable.ic_food;
