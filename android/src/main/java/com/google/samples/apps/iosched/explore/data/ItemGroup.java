@@ -16,10 +16,15 @@
 
 package com.google.samples.apps.iosched.explore.data;
 
+import android.support.annotation.Nullable;
+
+import com.google.samples.apps.iosched.model.TagMetadata;
+
 import java.util.ArrayList;
 
 public class ItemGroup {
 
+    private String mTitleId;
     private String mTitle;
     private String mId;
     private String mPhotoUrl;
@@ -29,9 +34,22 @@ public class ItemGroup {
         sessions.add(session);
     }
 
-    public String getTitle() { return mTitle; }
+    @Nullable
+    public String getTitle() {
+        return mTitle;
+    }
 
-    public void setTitle(String title) { mTitle = title; }
+    public void formatTitle(TagMetadata tagMetadata) {
+        if (tagMetadata != null && tagMetadata.getTagById(mTitleId) != null) {
+            mTitle = tagMetadata.getTagById(mTitleId).getName();
+        }
+    }
+
+    public String getTitleId() {
+        return mTitleId;
+    }
+
+    public void setTitleId(String titleId) { mTitleId = titleId; }
 
     public String getId() { return mId; }
 

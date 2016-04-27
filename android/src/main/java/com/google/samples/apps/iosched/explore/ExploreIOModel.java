@@ -46,6 +46,8 @@ import com.google.samples.apps.iosched.util.WiFiUtils;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -76,7 +78,7 @@ public class ExploreIOModel extends ModelWithLoaderManager<ExploreIOModel.Explor
      */
     private Map<String, ItemGroup> mThemes = new HashMap<>();
 
-    private Map<String, String> mTagTitles;
+    private List<ItemGroup> mOrderedTracksAndThemes;
 
     private SessionData mKeynoteData;
 
@@ -92,15 +94,50 @@ public class ExploreIOModel extends ModelWithLoaderManager<ExploreIOModel.Explor
         mSessionsUri = sessionsUri;
     }
 
-    public Collection<ItemGroup> getTracks() {
+    private Collection<ItemGroup> getTracks() {
         return mTracks.values();
     }
 
-    public Collection<ItemGroup> getThemes() {
+    private Collection<ItemGroup> getThemes() {
         return mThemes.values();
     }
 
-    public Map<String, String> getTagTitles() { return mTagTitles; }
+    /**
+     * @return the tracks and themes ordered alphabetically. The ordering can only happen if the
+     * query {@link com.google.samples.apps.iosched.explore.ExploreIOModel.ExploreIOQueryEnum#TAGS}
+     * has returned, which can be checked by calling {@link #getTagMetadata()}.
+     */
+    public Collection<ItemGroup> getOrderedTracksAndThemes() {
+        if (mOrderedTracksAndThemes != null) {
+            return mOrderedTracksAndThemes;
+        }
+        mOrderedTracksAndThemes = new ArrayList<ItemGroup>(getTracks());
+        mOrderedTracksAndThemes.addAll(getThemes());
+        boolean titleMissing = false;
+        for (ItemGroup item : mOrderedTracksAndThemes) {
+            if (item.getTitle() == null) {
+                item.formatTitle(mTagMetadata);
+                if (item.getTitle() == null) {
+                    titleMissing = true;
+                }
+            }
+        }
+
+        // Order the tracks and themes by titles, only if all of them have titles
+        if (!titleMissing) {
+            Collections.sort(mOrderedTracksAndThemes, new Comparator<ItemGroup>() {
+                @Override
+                public int compare(final ItemGroup lhs, final ItemGroup rhs) {
+                    return lhs.getTitle().compareTo(rhs.getTitle());
+                }
+            });
+
+        }
+
+        return mOrderedTracksAndThemes;
+    }
+
+    public TagMetadata getTagMetadata() { return mTagMetadata; }
 
     public SessionData getKeynoteData() { return mKeynoteData; }
 
@@ -113,8 +150,8 @@ public class ExploreIOModel extends ModelWithLoaderManager<ExploreIOModel.Explor
         mThemes = null;
         mTracks.clear();
         mTracks = null;
-        mTagTitles.clear();
-        mTagTitles = null;
+        mOrderedTracksAndThemes.clear();
+        mOrderedTracksAndThemes = null;
         mKeynoteData = null;
         mLiveStreamData = null;
     }
@@ -271,7 +308,7 @@ public class ExploreIOModel extends ModelWithLoaderManager<ExploreIOModel.Explor
                             ItemGroup trackGroup = trackGroups.get(rawTag);
                             if (trackGroup == null) {
                                 trackGroup = new ItemGroup();
-                                trackGroup.setTitle(rawTag);
+                                trackGroup.setTitleId(rawTag);
                                 trackGroup.setId(rawTag);
                                 if (mTagMetadata != null && mTagMetadata.getTag(rawTag) != null) {
                                     trackGroup
@@ -285,7 +322,7 @@ public class ExploreIOModel extends ModelWithLoaderManager<ExploreIOModel.Explor
                             ItemGroup themeGroup = themeGroups.get(rawTag);
                             if (themeGroup == null) {
                                 themeGroup = new ItemGroup();
-                                themeGroup.setTitle(rawTag);
+                                themeGroup.setTitleId(rawTag);
                                 themeGroup.setId(rawTag);
                                 if (mTagMetadata != null && mTagMetadata.getTag(rawTag) != null) {
                                     themeGroup
@@ -305,6 +342,7 @@ public class ExploreIOModel extends ModelWithLoaderManager<ExploreIOModel.Explor
         }
         mThemes = themeGroups;
         mTracks = trackGroups;
+        mOrderedTracksAndThemes = null;
     }
 
     /**
@@ -321,16 +359,6 @@ public class ExploreIOModel extends ModelWithLoaderManager<ExploreIOModel.Explor
         LOGW(TAG, "TAGS query loaded");
         if (cursor != null && cursor.moveToFirst()) {
             mTagMetadata = new TagMetadata(cursor);
-            cursor.moveToFirst();
-            Map<String, String> newTagTitles = new HashMap<>();
-            do {
-                String tagId = cursor.getString(cursor.getColumnIndex(
-                        ScheduleContract.Tags.TAG_ID));
-                String tagName = cursor.getString(cursor.getColumnIndex(
-                        ScheduleContract.Tags.TAG_NAME));
-                newTagTitles.put(tagId, tagName);
-            } while (cursor.moveToNext());
-            mTagTitles = newTagTitles;
         }
 
         addPhotoUrlToTopicsAndThemes();
@@ -339,15 +367,15 @@ public class ExploreIOModel extends ModelWithLoaderManager<ExploreIOModel.Explor
     private void addPhotoUrlToTopicsAndThemes() {
         if (mTracks != null) {
             for (ItemGroup topic : mTracks.values()) {
-                if (mTagMetadata != null && mTagMetadata.getTag(topic.getTitle()) != null) {
-                    topic.setPhotoUrl(mTagMetadata.getTag(topic.getTitle()).getPhotoUrl());
+                if (mTagMetadata != null && mTagMetadata.getTag(topic.getTitleId()) != null) {
+                    topic.setPhotoUrl(mTagMetadata.getTag(topic.getTitleId()).getPhotoUrl());
                 }
             }
         }
         if (mThemes != null) {
             for (ItemGroup theme : mThemes.values()) {
-                if (mTagMetadata != null && mTagMetadata.getTag(theme.getTitle()) != null) {
-                    theme.setPhotoUrl(mTagMetadata.getTag(theme.getTitle()).getPhotoUrl());
+                if (mTagMetadata != null && mTagMetadata.getTag(theme.getTitleId()) != null) {
+                    theme.setPhotoUrl(mTagMetadata.getTag(theme.getTitleId()).getPhotoUrl());
                 }
             }
         }

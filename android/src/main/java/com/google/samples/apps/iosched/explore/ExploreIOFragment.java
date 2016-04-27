@@ -67,7 +67,6 @@ import com.google.samples.apps.iosched.util.UIUtils;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 import static android.content.SharedPreferences.OnSharedPreferenceChangeListener;
 import static com.google.samples.apps.iosched.settings.ConfMessageCardUtils.ConferencePrefChangeListener;
@@ -155,7 +154,7 @@ public class ExploreIOFragment extends Fragment
     @Override
     public void displayData(final ExploreIOModel model, final ExploreIOQueryEnum query) {
         // Only display data when the tag metadata is available.
-        if (model.getTagTitles() != null) {
+        if (model.getTagMetadata() != null) {
             if (mAdapter == null) {
                 mAdapter = new ExploreAdapter(getActivity(), model, mImageLoader);
                 mCardList.setAdapter(mAdapter);
@@ -320,8 +319,6 @@ public class ExploreIOFragment extends Fragment
 
         // State
         private List mItems;
-
-        private Map<String, String> mTitles;
 
         // Maps of state keyed on track id
         private SparseArrayCompat<UpdatableAdapter> mTrackSessionsAdapters;
@@ -545,7 +542,7 @@ public class ExploreIOFragment extends Fragment
         }
 
         private void bindTrack(final TrackViewHolder holder, final ItemGroup track) {
-            bindTrackOrLiveStream(holder, track, mTitles.get(track.getTitle()));
+            bindTrackOrLiveStream(holder, track, track.getTitle());
         }
 
         private void bindMessage(final MessageViewHolder holder, final MessageData message) {
@@ -628,16 +625,8 @@ public class ExploreIOFragment extends Fragment
                 exploreCards.add(liveStream);
             }
 
-            // Add track cards
-            exploreCards.addAll(model.getTracks());
-
-            // Add theme cards
-            exploreCards.addAll(model.getThemes());
-
-            /* TODO sort out theme/topic order; right now we list themes, then topics. */
-
-            // Store the title mapping
-            mTitles = model.getTagTitles();
+            // Add track and themes cards, ordered alphabetically
+            exploreCards.addAll(model.getOrderedTracksAndThemes());
 
             return exploreCards;
         }
@@ -646,7 +635,7 @@ public class ExploreIOFragment extends Fragment
          * Setup adapters for tracks which have child session lists
          */
         private void setupSessionAdapters(final ExploreIOModel model) {
-            final int trackCount = model.getTracks().size() + model.getThemes().size()
+            final int trackCount = model.getOrderedTracksAndThemes().size()
                     + (model.getLiveStreamData() != null ? 1 : 0);
             mTrackSessionsAdapters = new SparseArrayCompat<>(trackCount);
             mTrackSessionsState = new SparseArrayCompat<>(trackCount);
@@ -658,16 +647,11 @@ public class ExploreIOFragment extends Fragment
                                 mImageLoader));
             }
 
-            for (final ItemGroup topicGroup : model.getTracks()) {
-                mTrackSessionsAdapters.put(getTrackId(topicGroup),
-                        SessionsAdapter.createHorizontal(mHost, topicGroup.getSessions()));
+            for (final ItemGroup group : model.getOrderedTracksAndThemes()) {
+                mTrackSessionsAdapters.put(getTrackId(group),
+                        SessionsAdapter.createHorizontal(mHost, group.getSessions()));
             }
 
-            // Add theme cards
-            for (final ItemGroup themeGroup : model.getThemes()) {
-                mTrackSessionsAdapters.put(getTrackId(themeGroup),
-                        SessionsAdapter.createHorizontal(mHost, themeGroup.getSessions()));
-            }
         }
 
 
