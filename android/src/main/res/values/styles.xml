@@ -408,6 +408,9 @@
         <item name="android:textAppearance">@style/TextAppearance.Title</item>
         <item name="android:textColor">@color/flat_button_text</item>
         <item name="android:textSize">@dimen/welcome_title_size</item>
+        <!-- The activity title is set to string used for the welcome title, so to avoid the text
+         being repeated as the user selects the next item, it is removed from accessibility -->
+        <item name="android:importantForAccessibility">no</item>
     </style>
 
     <style name="Body1Text">

@@ -25,8 +25,11 @@ import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.accessibility.AccessibilityEvent;
 import android.widget.Button;
+import android.widget.TextView;
 
+import com.google.samples.apps.iosched.R;
 import com.google.samples.apps.iosched.explore.ExploreIOActivity;
 
 import static com.google.samples.apps.iosched.util.LogUtils.LOGD;
@@ -52,6 +55,20 @@ public abstract class WelcomeFragment extends Fragment {
     public void onDetach() {
         super.onDetach();
         mActivity = null;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        TextView titleTV = (TextView) getActivity().findViewById(R.id.title);
+
+        if (titleTV != null) {
+            // Set activity to fragment title text view and fire accessibility event so the title
+            // gets read by talkback service.
+            mActivity.setTitle(titleTV.getText());
+            mActivity.getWindow().getDecorView()
+                     .sendAccessibilityEvent(AccessibilityEvent.TYPE_WINDOW_STATE_CHANGED);
+        }
     }
 
     @Nullable
