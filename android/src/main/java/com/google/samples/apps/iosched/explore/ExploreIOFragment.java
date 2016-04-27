@@ -45,6 +45,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.preference.PreferenceManager;
+import android.text.Html;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -107,7 +108,7 @@ public class ExploreIOFragment extends Fragment implements UpdatableView<Explore
 
     private List<UserActionListener> mListeners = new ArrayList<>();
 
-    private ThrottledContentObserver mSessionsObserver, mTagsObserver;
+    private ThrottledContentObserver mSessionsObserver, mTracksObserver;
 
     private ConferencePrefChangeListener mConfMessagesAnswerChangeListener =
             new ConferencePrefChangeListener() {
@@ -130,7 +131,7 @@ public class ExploreIOFragment extends Fragment implements UpdatableView<Explore
     @Override
     public void displayData(ExploreModel model, QueryEnum query) {
         // Only display data when the tag metadata is available.
-        if (model.getTagTitles() != null) {
+        if (model.getTrackTitles() != null) {
             updateCollectionView(model);
         }
     }
@@ -202,13 +203,13 @@ public class ExploreIOFragment extends Fragment implements UpdatableView<Explore
             @Override
             public void onThrottledContentObserverFired() {
                 fireReloadEvent();
-                fireReloadTagsEvent();
+                fireReloadTracksEvent();
             }
         });
-        mTagsObserver = new ThrottledContentObserver(new ThrottledContentObserver.Callbacks() {
+        mTracksObserver = new ThrottledContentObserver(new ThrottledContentObserver.Callbacks() {
             @Override
             public void onThrottledContentObserverFired() {
-                fireReloadTagsEvent();
+                fireReloadTracksEvent();
             }
         });
 
@@ -226,7 +227,7 @@ public class ExploreIOFragment extends Fragment implements UpdatableView<Explore
             sp.unregisterOnSharedPreferenceChangeListener(mSettingsChangeListener);
         }
         getActivity().getContentResolver().unregisterContentObserver(mSessionsObserver);
-        getActivity().getContentResolver().unregisterContentObserver(mTagsObserver);
+        getActivity().getContentResolver().unregisterContentObserver(mTracksObserver);
     }
 
     /**
@@ -387,8 +388,8 @@ public class ExploreIOFragment extends Fragment implements UpdatableView<Explore
     }
 
     private String getTranslatedTitle(String title, ExploreModel model) {
-        if (model.getTagTitles().get(title) != null) {
-            return model.getTagTitles().get(title);
+        if (model.getTrackTitles().get(title) != null) {
+            return model.getTrackTitles().get(title);
         } else {
             return title;
         }
@@ -558,7 +559,7 @@ public class ExploreIOFragment extends Fragment implements UpdatableView<Explore
                         sessionData.isInSchedule() ? View.VISIBLE : View.GONE);
             }
             if (!TextUtils.isEmpty(sessionData.getDetails())) {
-                descriptionView.setText(sessionData.getDetails());
+                descriptionView.setText(Html.fromHtml(sessionData.getDetails()));
             }
         }
 
@@ -608,14 +609,14 @@ public class ExploreIOFragment extends Fragment implements UpdatableView<Explore
         }
     }
 
-    private void fireReloadTagsEvent() {
+    private void fireReloadTracksEvent() {
         if (!isAdded()) {
             return;
         }
         for (UserActionListener h1 : mListeners) {
             Bundle args = new Bundle();
             args.putInt(PresenterFragmentImpl.KEY_RUN_QUERY_ID,
-                    ExploreModel.ExploreQueryEnum.TAGS.getId());
+                    ExploreModel.ExploreQueryEnum.TRACKS.getId());
             h1.onUserAction(ExploreModel.ExploreUserActionEnum.RELOAD, args);
         }
     }

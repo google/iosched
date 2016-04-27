@@ -22,13 +22,12 @@ import java.util.Collections;
 import java.util.Set;
 
 public class JZSessionsResult {
-
+  public String id;
   public String bodyHtml;
   public JZDate start;
   public JZDate end;
 
   public String format;
-  public String id;
   public JZLabel [] labels;
 
   public JZLevel level;

@@ -172,10 +172,10 @@ public class MapUtils {
     }
 
     /**
-     * Creates a marker for Moscone Center.
+     * Creates a marker for Oslo Spektrum Center.
      */
-    public static MarkerOptions createMosconeMarker(LatLng position) {
-        final String title = "MOSCONE";
+    public static MarkerOptions createOsloSpektrumMarker(LatLng position) {
+        final String title = "OSLO SPEKTRUM";
 
         final BitmapDescriptor icon =
                 BitmapDescriptorFactory.fromResource(R.drawable.map_marker_moscone);

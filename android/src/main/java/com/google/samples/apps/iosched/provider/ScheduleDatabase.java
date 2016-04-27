@@ -29,7 +29,10 @@ import com.google.samples.apps.iosched.sync.ConferenceDataHandler;
 import com.google.samples.apps.iosched.sync.SyncHelper;
 import com.google.samples.apps.iosched.util.AccountUtils;
 
-import static com.google.samples.apps.iosched.util.LogUtils.*;
+import static com.google.samples.apps.iosched.util.LogUtils.LOGD;
+import static com.google.samples.apps.iosched.util.LogUtils.LOGI;
+import static com.google.samples.apps.iosched.util.LogUtils.LOGW;
+import static com.google.samples.apps.iosched.util.LogUtils.makeLogTag;
 
 /**
  * Helper for managing {@link SQLiteDatabase} that stores data for
@@ -53,6 +56,7 @@ public class ScheduleDatabase extends SQLiteOpenHelper {
 
     interface Tables {
         String BLOCKS = "blocks";
+        String TRACKS = "tracks";
         String TAGS = "tags";
         String ROOMS = "rooms";
         String SESSIONS = "sessions";
@@ -62,6 +66,7 @@ public class ScheduleDatabase extends SQLiteOpenHelper {
         String SPEAKERS = "speakers";
         String SESSIONS_TAGS = "sessions_tags";
         String SESSIONS_SPEAKERS = "sessions_speakers";
+        String SESSIONS_TRACKS = "sessions_tracks";
         String ANNOUNCEMENTS = "announcements";
         String MAPMARKERS = "mapmarkers";
         String MAPTILES = "mapoverlays";
@@ -73,6 +78,41 @@ public class ScheduleDatabase extends SQLiteOpenHelper {
         String SESSIONS_SEARCH = "sessions_search";
 
         String SEARCH_SUGGEST = "search_suggest";
+        String VENDORS = "vendors";
+
+        String SESSIONS_JOIN_BLOCKS_ROOMS = "sessions "
+                + "LEFT OUTER JOIN blocks ON sessions.block_id=blocks.block_id "
+                + "LEFT OUTER JOIN rooms ON sessions.room_id=rooms.room_id";
+
+        String VENDORS_JOIN_TRACKS = "vendors "
+                + "LEFT OUTER JOIN tracks ON vendors.track_id=tracks.track_id";
+
+        String SESSIONS_SPEAKERS_JOIN_SESSIONS_BLOCKS_ROOMS = "sessions_speakers "
+                + "LEFT OUTER JOIN sessions ON sessions_speakers.session_id=sessions.session_id "
+                + "LEFT OUTER JOIN blocks ON sessions.block_id=blocks.block_id "
+                + "LEFT OUTER JOIN rooms ON sessions.room_id=rooms.room_id";
+
+        String SESSIONS_TRACKS_JOIN_TRACKS = "sessions_tracks "
+                + "LEFT OUTER JOIN tracks ON sessions_tracks.track_id=tracks.track_id";
+
+        String SESSIONS_TRACKS_JOIN_SESSIONS_BLOCKS_ROOMS = "sessions_tracks "
+                + "LEFT OUTER JOIN sessions ON sessions_tracks.session_id=sessions.session_id "
+                + "LEFT OUTER JOIN blocks ON sessions.block_id=blocks.block_id "
+                + "LEFT OUTER JOIN rooms ON sessions.room_id=rooms.room_id";
+
+        String SESSIONS_SEARCH_JOIN_SESSIONS_BLOCKS_ROOMS = "sessions_search "
+                + "LEFT OUTER JOIN sessions ON sessions_search.session_id=sessions.session_id "
+                + "LEFT OUTER JOIN blocks ON sessions.block_id=blocks.block_id "
+                + "LEFT OUTER JOIN rooms ON sessions.room_id=rooms.room_id";
+
+        String SESSIONS_JOIN_TRACKS_JOIN_BLOCKS = "sessions "
+                + "LEFT OUTER JOIN sessions_tracks ON "
+                + "sessions_tracks.session_id=sessions.session_id "
+                + "LEFT OUTER JOIN tracks ON tracks.track_id=sessions_tracks.track_id "
+                + "LEFT OUTER JOIN blocks ON sessions.block_id=blocks.block_id";
+
+        String BLOCKS_JOIN_SESSIONS = "blocks "
+                + "LEFT OUTER JOIN sessions ON blocks.block_id=sessions.block_id";
 
         String SESSIONS_JOIN_MYSCHEDULE = "sessions "
                 + "LEFT OUTER JOIN myschedule ON sessions.session_id=myschedule.session_id "
@@ -111,23 +151,6 @@ public class ScheduleDatabase extends SQLiteOpenHelper {
                 + "LEFT OUTER JOIN myschedule ON sessions.session_id=myschedule.session_id "
                 + "AND myschedule.account_name=? "
                 + "LEFT OUTER JOIN rooms ON sessions.room_id=rooms.room_id";
-
-        // When tables get deprecated, add them to this list (so they get correctly deleted
-        // on database upgrades).
-        enum DeprecatedTables {
-            TRACKS("tracks"),
-            SESSIONS_TRACKS("sessions_tracks"),
-            SANDBOX("sandbox"),
-            PEOPLE_IVE_MET("people_ive_met"),
-            EXPERTS("experts"),
-            PARTNERS("partners");
-
-            String tableName;
-
-            DeprecatedTables(String tableName) {
-                this.tableName = tableName;
-            }
-        };
     }
 
     private interface Triggers {
@@ -136,13 +159,12 @@ public class ScheduleDatabase extends SQLiteOpenHelper {
         String SESSIONS_SPEAKERS_DELETE = "sessions_speakers_delete";
         String SESSIONS_MY_SCHEDULE_DELETE = "sessions_myschedule_delete";
         String SESSIONS_FEEDBACK_DELETE = "sessions_feedback_delete";
-
-        // When triggers get deprecated, add them to this list (so they get correctly deleted
-        // on database upgrades).
-        interface DeprecatedTriggers {
-            String SESSIONS_TRACKS_DELETE = "sessions_tracks_delete";
-        };
+        String SESSIONS_SEARCH_INSERT = "sessions_search_insert";
+        String SESSIONS_SEARCH_DELETE = "sessions_search_delete";
+        String SESSIONS_SEARCH_UPDATE = "sessions_search_update";
+        String SESSIONS_TRACKS_DELETE = "sessions_tracks_delete";
     }
+
 
     public interface SessionsSpeakers {
         String SESSION_ID = "session_id";
@@ -164,7 +186,9 @@ public class ScheduleDatabase extends SQLiteOpenHelper {
         String TRACK_ID = "track_id";
     }
 
-    /** Fully-qualified field names. */
+    /**
+     * Fully-qualified field names.
+     */
     private interface Qualified {
         String SESSIONS_SEARCH = Tables.SESSIONS_SEARCH + "(" + SessionsSearchColumns.SESSION_ID
                 + "," + SessionsSearchColumns.BODY + ")";
@@ -181,21 +205,42 @@ public class ScheduleDatabase extends SQLiteOpenHelper {
         String SPEAKERS_SPEAKER_ID = Tables.SPEAKERS + "." + Speakers.SPEAKER_ID;
 
         String FEEDBACK_SESSION_ID = Tables.FEEDBACK + "." + FeedbackColumns.SESSION_ID;
+
+        String SESSIONS_SEARCH_SESSION_ID = Tables.SESSIONS_SEARCH + "."
+                + SessionsSearchColumns.SESSION_ID;
+
+        String SESSIONS_TRACKS_SESSION_ID = Tables.SESSIONS_TRACKS + "."
+                + SessionsTracks.SESSION_ID;
     }
 
-    /** {@code REFERENCES} clauses. */
+    /**
+     * {@code REFERENCES} clauses.
+     */
     private interface References {
         String BLOCK_ID = "REFERENCES " + Tables.BLOCKS + "(" + Blocks.BLOCK_ID + ")";
+        String TRACK_ID = "REFERENCES " + Tables.TRACKS + "(" + Tracks.TRACK_ID + ")";
         String TAG_ID = "REFERENCES " + Tables.TAGS + "(" + Tags.TAG_ID + ")";
         String ROOM_ID = "REFERENCES " + Tables.ROOMS + "(" + Rooms.ROOM_ID + ")";
         String SESSION_ID = "REFERENCES " + Tables.SESSIONS + "(" + Sessions.SESSION_ID + ")";
         String VIDEO_ID = "REFERENCES " + Tables.VIDEOS + "(" + Videos.VIDEO_ID + ")";
         String SPEAKER_ID = "REFERENCES " + Tables.SPEAKERS + "(" + Speakers.SPEAKER_ID + ")";
+        String VENDOR_ID = "REFERENCES " + Tables.VENDORS + "(" + Vendors.VENDOR_ID + ")";
     }
 
     public ScheduleDatabase(Context context) {
         super(context, DATABASE_NAME, null, CUR_DATABASE_VERSION);
         mContext = context;
+    }
+
+    private interface Subquery {
+        /**
+         * Subquery used to build the {@link SessionsSearchColumns#BODY} string
+         * used for indexing {@link Sessions} content.
+         */
+        String SESSIONS_BODY = "(new." + Sessions.SESSION_TITLE
+                + "||'; '||new." + Sessions.SESSION_ABSTRACT
+                + "||'; '||" + "coalesce(new." + Sessions.SESSION_TAGS + ", '')"
+                + ")";
     }
 
     @Override
@@ -208,7 +253,16 @@ public class ScheduleDatabase extends SQLiteOpenHelper {
                 + BlocksColumns.BLOCK_END + " INTEGER NOT NULL,"
                 + BlocksColumns.BLOCK_TYPE + " TEXT,"
                 + BlocksColumns.BLOCK_SUBTITLE + " TEXT,"
+                + BlocksColumns.BLOCK_META + " TEXT,"
                 + "UNIQUE (" + BlocksColumns.BLOCK_ID + ") ON CONFLICT REPLACE)");
+
+        db.execSQL("CREATE TABLE " + Tables.TRACKS + " ("
+                + BaseColumns._ID + " INTEGER PRIMARY KEY AUTOINCREMENT,"
+                + TracksColumns.TRACK_ID + " TEXT NOT NULL,"
+                + TracksColumns.TRACK_NAME + " TEXT,"
+                + TracksColumns.TRACK_COLOR + " INTEGER,"
+                + TracksColumns.TRACK_ABSTRACT + " TEXT,"
+                + "UNIQUE (" + TracksColumns.TRACK_ID + ") ON CONFLICT REPLACE)");
 
         db.execSQL("CREATE TABLE " + Tables.TAGS + " ("
                 + BaseColumns._ID + " INTEGER PRIMARY KEY AUTOINCREMENT,"
@@ -231,13 +285,16 @@ public class ScheduleDatabase extends SQLiteOpenHelper {
                 + BaseColumns._ID + " INTEGER PRIMARY KEY AUTOINCREMENT,"
                 + SyncColumns.UPDATED + " INTEGER NOT NULL,"
                 + SessionsColumns.SESSION_ID + " TEXT NOT NULL,"
+                + Sessions.BLOCK_ID + " TEXT " + References.BLOCK_ID + ","
                 + Sessions.ROOM_ID + " TEXT " + References.ROOM_ID + ","
                 + SessionsColumns.SESSION_START + " INTEGER NOT NULL,"
                 + SessionsColumns.SESSION_END + " INTEGER NOT NULL,"
+                + SessionsColumns.SESSION_TYPE + " TEXT,"
                 + SessionsColumns.SESSION_LEVEL + " TEXT,"
                 + SessionsColumns.SESSION_TITLE + " TEXT,"
                 + SessionsColumns.SESSION_ABSTRACT + " TEXT,"
                 + SessionsColumns.SESSION_REQUIREMENTS + " TEXT,"
+                + SessionsColumns.SESSION_IN_MY_SCHEDULE + " TEXT, "
                 + SessionsColumns.SESSION_KEYWORDS + " TEXT,"
                 + SessionsColumns.SESSION_HASHTAG + " TEXT,"
                 + SessionsColumns.SESSION_URL + " TEXT,"
@@ -245,6 +302,7 @@ public class ScheduleDatabase extends SQLiteOpenHelper {
                 + SessionsColumns.SESSION_MODERATOR_URL + " TEXT,"
                 + SessionsColumns.SESSION_PDF_URL + " TEXT,"
                 + SessionsColumns.SESSION_NOTES_URL + " TEXT,"
+                + SessionsColumns.SESSION_STARRED + " INTEGER NOT NULL DEFAULT 0,"
                 + SessionsColumns.SESSION_CAL_EVENT_ID + " INTEGER,"
                 + SessionsColumns.SESSION_LIVESTREAM_ID + " TEXT,"
                 + SessionsColumns.SESSION_TAGS + " TEXT,"
@@ -267,7 +325,6 @@ public class ScheduleDatabase extends SQLiteOpenHelper {
                 + SpeakersColumns.SPEAKER_COMPANY + " TEXT,"
                 + SpeakersColumns.SPEAKER_ABSTRACT + " TEXT,"
                 + SpeakersColumns.SPEAKER_URL + " TEXT,"
-                + SpeakersColumns.SPEAKER_IMPORT_HASHCODE + " TEXT NOT NULL DEFAULT '',"
                 + "UNIQUE (" + SpeakersColumns.SPEAKER_ID + ") ON CONFLICT REPLACE)");
 
         db.execSQL("CREATE TABLE " + Tables.MY_SCHEDULE + " ("
@@ -293,11 +350,32 @@ public class ScheduleDatabase extends SQLiteOpenHelper {
                 + "UNIQUE (" + SessionsTags.SESSION_ID + ","
                 + SessionsTags.TAG_ID + ") ON CONFLICT REPLACE)");
 
+        db.execSQL("CREATE TABLE " + Tables.SESSIONS_TRACKS + " ("
+                + BaseColumns._ID + " INTEGER PRIMARY KEY AUTOINCREMENT,"
+                + SessionsTracks.SESSION_ID + " TEXT NOT NULL " + References.SESSION_ID + ","
+                + SessionsTracks.TRACK_ID + " TEXT NOT NULL " + References.TRACK_ID
+                + ")");
+
+        db.execSQL("CREATE TABLE " + Tables.VENDORS + " ("
+                + BaseColumns._ID + " INTEGER PRIMARY KEY AUTOINCREMENT,"
+                + SyncColumns.UPDATED + " INTEGER NOT NULL,"
+                + VendorsColumns.VENDOR_ID + " TEXT NOT NULL,"
+                + Vendors.TRACK_ID + " TEXT " + References.TRACK_ID + ","
+                + VendorsColumns.VENDOR_NAME + " TEXT,"
+                + VendorsColumns.VENDOR_LOCATION + " TEXT,"
+                + VendorsColumns.VENDOR_DESC + " TEXT,"
+                + VendorsColumns.VENDOR_URL + " TEXT,"
+                + VendorsColumns.VENDOR_PRODUCT_DESC + " TEXT,"
+                + VendorsColumns.VENDOR_LOGO_URL + " TEXT,"
+                + VendorsColumns.VENDOR_STARRED + " INTEGER,"
+                + "UNIQUE (" + VendorsColumns.VENDOR_ID + ") ON CONFLICT REPLACE)");
+
         db.execSQL("CREATE TABLE " + Tables.ANNOUNCEMENTS + " ("
                 + BaseColumns._ID + " INTEGER PRIMARY KEY AUTOINCREMENT,"
                 + SyncColumns.UPDATED + " INTEGER NOT NULL,"
                 + AnnouncementsColumns.ANNOUNCEMENT_ID + " TEXT,"
                 + AnnouncementsColumns.ANNOUNCEMENT_TITLE + " TEXT NOT NULL,"
+                + AnnouncementsColumns.ANNOUNCEMENT_SUMMARY + " TEXT,"
                 + AnnouncementsColumns.ANNOUNCEMENT_ACTIVITY_JSON + " BLOB,"
                 + AnnouncementsColumns.ANNOUNCEMENT_URL + " TEXT,"
                 + AnnouncementsColumns.ANNOUNCEMENT_DATE + " INTEGER NOT NULL)");
@@ -356,6 +434,16 @@ public class ScheduleDatabase extends SQLiteOpenHelper {
                 + VideoColumns.VIDEO_IMPORT_HASHCODE + " TEXT NOT NULL,"
                 + "UNIQUE (" + VideoColumns.VIDEO_ID + ") ON CONFLICT REPLACE)");
 
+        createSessionsSearch(db);
+        createSessionsDeleteTriggers(db);
+
+        // Search suggestions
+        db.execSQL("CREATE TABLE " + Tables.SEARCH_SUGGEST + " ("
+                + BaseColumns._ID + " INTEGER PRIMARY KEY AUTOINCREMENT,"
+                + SearchManager.SUGGEST_COLUMN_TEXT_1 + " TEXT NOT NULL)");
+    }
+
+    private static void createSessionsSearch(SQLiteDatabase db) {
         // Full-text search index. Update using updateSessionSearchIndex method.
         // Use the porter tokenizer for simple stemming, so that "frustration" matches "frustrated."
         db.execSQL("CREATE VIRTUAL TABLE " + Tables.SESSIONS_SEARCH + " USING fts3("
@@ -366,12 +454,31 @@ public class ScheduleDatabase extends SQLiteOpenHelper {
                 + "UNIQUE (" + SessionsSearchColumns.SESSION_ID + ") ON CONFLICT REPLACE,"
                 + "tokenize=porter)");
 
-        // Search suggestions
-        db.execSQL("CREATE TABLE " + Tables.SEARCH_SUGGEST + " ("
-                + BaseColumns._ID + " INTEGER PRIMARY KEY AUTOINCREMENT,"
-                + SearchManager.SUGGEST_COLUMN_TEXT_1 + " TEXT NOT NULL)");
+        db.execSQL("CREATE TRIGGER " + Triggers.SESSIONS_SEARCH_INSERT + " AFTER INSERT ON "
+                + Tables.SESSIONS + " BEGIN INSERT INTO " + Qualified.SESSIONS_SEARCH + " "
+                + " VALUES(new." + Sessions.SESSION_ID + ", " + Subquery.SESSIONS_BODY + ");"
+                + " END;");
 
+        db.execSQL("CREATE TRIGGER " + Triggers.SESSIONS_SEARCH_DELETE + " AFTER DELETE ON "
+                + Tables.SESSIONS + " BEGIN DELETE FROM " + Tables.SESSIONS_SEARCH + " "
+                + " WHERE " + Qualified.SESSIONS_SEARCH_SESSION_ID + "=old." + Sessions.SESSION_ID
+                + ";" + " END;");
+
+        db.execSQL("CREATE TRIGGER " + Triggers.SESSIONS_SEARCH_UPDATE
+                + " AFTER UPDATE ON " + Tables.SESSIONS
+                + " BEGIN UPDATE sessions_search SET " + SessionsSearchColumns.BODY + " = "
+                + Subquery.SESSIONS_BODY + " WHERE session_id = old.session_id"
+                + "; END;");
+
+    }
+
+    private static void createSessionsDeleteTriggers(SQLiteDatabase db) {
         // Session deletion triggers
+        db.execSQL("CREATE TRIGGER " + Triggers.SESSIONS_TRACKS_DELETE + " AFTER DELETE ON "
+                + Tables.SESSIONS + " BEGIN DELETE FROM " + Tables.SESSIONS_TRACKS + " "
+                + " WHERE " + Qualified.SESSIONS_TRACKS_SESSION_ID + "=old." + Sessions.SESSION_ID
+                + ";" + " END;");
+
         db.execSQL("CREATE TRIGGER " + Triggers.SESSIONS_TAGS_DELETE + " AFTER DELETE ON "
                 + Tables.SESSIONS + " BEGIN DELETE FROM " + Tables.SESSIONS_TAGS + " "
                 + " WHERE " + Qualified.SESSIONS_TAGS_SESSION_ID + "=old." + Sessions.SESSION_ID
@@ -387,36 +494,6 @@ public class ScheduleDatabase extends SQLiteOpenHelper {
                 + " WHERE " + Tables.MY_SCHEDULE + "." + MySchedule.SESSION_ID +
                 "=old." + Sessions.SESSION_ID
                 + ";" + " END;");
-
-        upgradeFrom2014Cto2015A(db);
-        upgradeFrom2015Ato2015B(db);
-    }
-
-    private void upgradeFrom2014Cto2015A(SQLiteDatabase db) {
-        db.execSQL("CREATE TABLE " + Tables.MY_FEEDBACK_SUBMITTED + " ("
-                + BaseColumns._ID + " INTEGER PRIMARY KEY AUTOINCREMENT,"
-                + MyFeedbackSubmitted.SESSION_ID + " TEXT NOT NULL " + References.SESSION_ID + ","
-                + MyFeedbackSubmitted.MY_FEEDBACK_SUBMITTED_ACCOUNT_NAME + " TEXT NOT NULL,"
-                + MyFeedbackSubmitted.MY_FEEDBACK_SUBMITTED_DIRTY_FLAG + " INTEGER NOT NULL DEFAULT 1,"
-                + "UNIQUE (" + MyFeedbackSubmitted.SESSION_ID + ","
-                + MyFeedbackSubmitted.MY_FEEDBACK_SUBMITTED_ACCOUNT_NAME + ") ON CONFLICT REPLACE)");
-
-        db.execSQL("CREATE TABLE " + Tables.MY_VIEWED_VIDEO + " ("
-                + BaseColumns._ID + " INTEGER PRIMARY KEY AUTOINCREMENT,"
-                + MyViewedVideos.VIDEO_ID + " TEXT NOT NULL " + References.VIDEO_ID + ","
-                + MyViewedVideos.MY_VIEWED_VIDEOS_ACCOUNT_NAME + " TEXT NOT NULL,"
-                + MyViewedVideos.MY_VIEWED_VIDEOS_DIRTY_FLAG + " INTEGER NOT NULL DEFAULT 1,"
-                + "UNIQUE (" + MyViewedVideos.VIDEO_ID + ","
-                + MyViewedVideos.MY_VIEWED_VIDEOS_ACCOUNT_NAME + ") ON CONFLICT REPLACE)");
-    }
-
-    private void upgradeFrom2015Ato2015B(SQLiteDatabase db) {
-        // Note: SpeakersColumns.SPEAKER_URL is unused in 2015. The columns added here are used
-        // instead.
-        db.execSQL("ALTER TABLE " + Tables.SPEAKERS
-                + " ADD COLUMN " + SpeakersColumns.SPEAKER_PLUSONE_URL + " TEXT");
-        db.execSQL("ALTER TABLE " + Tables.SPEAKERS
-                + " ADD COLUMN " + SpeakersColumns.SPEAKER_TWITTER_URL + " TEXT");
     }
 
     /**
@@ -472,26 +549,7 @@ public class ScheduleDatabase extends SQLiteOpenHelper {
         // is a trivial DB upgrade, we set this to false.
         boolean dataInvalidated = true;
 
-        // Check if we can upgrade from release 2014 C to release 2015 A.
-        if (version == VER_2014_RELEASE_C) {
-            LOGD(TAG, "Upgrading database from 2014 release C to 2015 release A.");
-            upgradeFrom2014Cto2015A(db);
-            version = VER_2015_RELEASE_A;
-        }
-
-        // Check if we can upgrade from release 2015 A to release 2015 B.
-        if (version == VER_2015_RELEASE_A) {
-            LOGD(TAG, "Upgrading database from 2015 release A to 2015 release B.");
-            upgradeFrom2015Ato2015B(db);
-            version = VER_2015_RELEASE_B;
-        }
-
         LOGD(TAG, "After upgrade logic, at version " + version);
-
-        // Drop tables that have been deprecated.
-        for (Tables.DeprecatedTables deprecatedTable : Tables.DeprecatedTables.values()) {
-            db.execSQL(("DROP TABLE IF EXISTS " + deprecatedTable.tableName));
-        }
 
         // At this point, we ran out of upgrade logic, so if we are still at the wrong
         // version, we have no choice but to delete everything and create everything again.
@@ -502,9 +560,13 @@ public class ScheduleDatabase extends SQLiteOpenHelper {
             db.execSQL("DROP TRIGGER IF EXISTS " + Triggers.SESSIONS_SPEAKERS_DELETE);
             db.execSQL("DROP TRIGGER IF EXISTS " + Triggers.SESSIONS_FEEDBACK_DELETE);
             db.execSQL("DROP TRIGGER IF EXISTS " + Triggers.SESSIONS_MY_SCHEDULE_DELETE);
-            db.execSQL("DROP TRIGGER IF EXISTS " + Triggers.DeprecatedTriggers.SESSIONS_TRACKS_DELETE);
+            db.execSQL("DROP TRIGGER IF EXISTS " + Triggers.SESSIONS_SEARCH_INSERT);
+            db.execSQL("DROP TRIGGER IF EXISTS " + Triggers.SESSIONS_SEARCH_DELETE);
+            db.execSQL("DROP TRIGGER IF EXISTS " + Triggers.SESSIONS_SEARCH_UPDATE);
+            db.execSQL("DROP TRIGGER IF EXISTS " + Triggers.SESSIONS_TRACKS_DELETE);
 
             db.execSQL("DROP TABLE IF EXISTS " + Tables.BLOCKS);
+            db.execSQL("DROP TABLE IF EXISTS " + Tables.TRACKS);
             db.execSQL("DROP TABLE IF EXISTS " + Tables.ROOMS);
             db.execSQL("DROP TABLE IF EXISTS " + Tables.TAGS);
             db.execSQL("DROP TABLE IF EXISTS " + Tables.SESSIONS);
@@ -513,7 +575,9 @@ public class ScheduleDatabase extends SQLiteOpenHelper {
             db.execSQL("DROP TABLE IF EXISTS " + Tables.MY_FEEDBACK_SUBMITTED);
             db.execSQL("DROP TABLE IF EXISTS " + Tables.MY_VIEWED_VIDEO);
             db.execSQL("DROP TABLE IF EXISTS " + Tables.SESSIONS_SPEAKERS);
+            db.execSQL("DROP TABLE IF EXISTS " + Tables.SESSIONS_TRACKS);
             db.execSQL("DROP TABLE IF EXISTS " + Tables.SESSIONS_TAGS);
+            db.execSQL("DROP TABLE IF EXISTS " + Tables.VENDORS);
             db.execSQL("DROP TABLE IF EXISTS " + Tables.ANNOUNCEMENTS);
             db.execSQL("DROP TABLE IF EXISTS " + Tables.FEEDBACK);
             db.execSQL("DROP TABLE IF EXISTS " + Tables.SESSIONS_SEARCH);

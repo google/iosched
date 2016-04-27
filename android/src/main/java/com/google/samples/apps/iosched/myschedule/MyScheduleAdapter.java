@@ -414,5 +414,4 @@ public class MyScheduleAdapter implements ListAdapter, AbsListView.RecyclerListe
         public View separator;
         public View touchArea;
     }
-
 }

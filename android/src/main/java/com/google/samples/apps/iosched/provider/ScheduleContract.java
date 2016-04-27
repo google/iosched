@@ -24,6 +24,7 @@ import android.provider.ContactsContract;
 import android.text.TextUtils;
 import android.text.format.DateUtils;
 
+import com.google.samples.apps.iosched.io.model.Block;
 import com.google.samples.apps.iosched.util.ParserUtils;
 
 import java.util.List;
@@ -40,7 +41,7 @@ import java.util.List;
  */
 public final class ScheduleContract {
 
-    public static final String CONTENT_TYPE_APP_BASE = "androidito-iosched.";
+    public static final String CONTENT_TYPE_APP_BASE = "androidito-jz.";
 
     public static final String CONTENT_TYPE_BASE = "vnd.android.cursor.dir/vnd."
             + CONTENT_TYPE_APP_BASE;
@@ -55,19 +56,13 @@ public final class ScheduleContract {
     }
 
     interface BlocksColumns {
-
-        /** Unique string identifying this block of time. */
         String BLOCK_ID = "block_id";
-        /** Title describing this block of time. */
         String BLOCK_TITLE = "block_title";
-        /** Time when this block starts. */
         String BLOCK_START = "block_start";
-        /** Time when this block ends. */
         String BLOCK_END = "block_end";
-        /** Type describing this block. */
         String BLOCK_TYPE = "block_type";
-        /** Extra subtitle for the block. */
         String BLOCK_SUBTITLE = "block_subtitle";
+        String BLOCK_META = "block_meta";
     }
 
     interface TagsColumns {
@@ -91,23 +86,15 @@ public final class ScheduleContract {
     }
 
     interface TracksColumns {
-        /** Unique string identifying this track. */
         String TRACK_ID = "track_id";
-        /** Name describing this track. */
         String TRACK_NAME = "track_name";
-        /** Color used to identify this track, in {@link Color#argb} format. */
         String TRACK_COLOR = "track_color";
-        /** Body of text explaining this track in detail. */
         String TRACK_ABSTRACT = "track_abstract";
     }
 
     interface RoomsColumns {
-
-        /** Unique string identifying this room. */
         String ROOM_ID = "room_id";
-        /** Name describing this room. */
         String ROOM_NAME = "room_name";
-        /** Building floor this room exists on. */
         String ROOM_FLOOR = "room_floor";
     }
 
@@ -148,6 +135,8 @@ public final class ScheduleContract {
 
         /** Unique string identifying this session. */
         String SESSION_ID = "session_id";
+        /** The type of session (session, keynote, codelab, etc). */
+        String SESSION_TYPE = "session_type";
         /** Difficulty level of the session. */
         String SESSION_LEVEL = "session_level";
         /** Start time of this track. */
@@ -180,6 +169,7 @@ public final class ScheduleContract {
         String SESSION_LIVESTREAM_ID = "session_livestream_url";
         /** The Moderator URL. */
         String SESSION_MODERATOR_URL = "session_moderator_url";
+        String SESSION_TRACKS = "session_tracks";
         /** The set of tags the session has. This is a comma-separated list of tags. */
         String SESSION_TAGS = "session_tags";
         /** The names of the speakers on this session, formatted for display. */
@@ -190,6 +180,8 @@ public final class ScheduleContract {
         String SESSION_IMPORT_HASHCODE = "session_import_hashcode";
         /** The session's main tag. */
         String SESSION_MAIN_TAG = "session_main_tag";
+        /** User-specific flag indicating starred status. */
+        String SESSION_STARRED = "session_starred";
         /** The session's branding color. */
         String SESSION_COLOR = "session_color";
         /** The session's captions URL (for livestreamed sessions). */
@@ -203,7 +195,6 @@ public final class ScheduleContract {
     }
 
     interface SpeakersColumns {
-
         /** Unique string identifying this speaker. */
         String SPEAKER_ID = "speaker_id";
         /** Name of this speaker. */
@@ -214,14 +205,8 @@ public final class ScheduleContract {
         String SPEAKER_COMPANY = "speaker_company";
         /** Body of text describing this speaker in detail. */
         String SPEAKER_ABSTRACT = "speaker_abstract";
-        /** Deprecated. Full URL to the speaker's profile. */
+        /** Full URL to the speaker's profile. */
         String SPEAKER_URL = "speaker_url";
-        /** Full URL to the the speaker's G+ profile. */
-        String SPEAKER_PLUSONE_URL = "plusone_url";
-        /** Full URL to the the speaker's Twitter profile. */
-        String SPEAKER_TWITTER_URL = "twitter_url";
-        /** The hashcode of the data used to create this record. */
-        String SPEAKER_IMPORT_HASHCODE = "speaker_import_hashcode";
     }
 
     interface VendorsColumns {
@@ -244,16 +229,12 @@ public final class ScheduleContract {
     }
 
     interface AnnouncementsColumns {
-
-        /** Unique string identifying this announcment. */
         String ANNOUNCEMENT_ID = "announcement_id";
-        /** Title of the announcement. */
         String ANNOUNCEMENT_TITLE = "announcement_title";
-        /** Google+ activity JSON for the announcement. */
+        String ANNOUNCEMENT_SUMMARY = "announcement_summary";
+        String ANNOUNCEMENT_TRACKS = "announcement_tracks";
         String ANNOUNCEMENT_ACTIVITY_JSON = "announcement_activity_json";
-        /** Full URL for the announcement. */
         String ANNOUNCEMENT_URL = "announcement_url";
-        /** Date of the announcement. */
         String ANNOUNCEMENT_DATE = "announcement_date";
     }
 
@@ -338,62 +319,42 @@ public final class ScheduleContract {
     private static final String PATH_WITH_TRACK = "with_track";
     private static final String PATH_STARRED = "starred";
     private static final String PATH_VENDORS = "vendors";
-
     private static final String PATH_BLOCKS = "blocks";
-
     private static final String PATH_AFTER = "after";
-
     private static final String PATH_TAGS = "tags";
-
     private static final String PATH_ROOM = "room";
-
     private static final String PATH_UNSCHEDULED = "unscheduled";
-
     private static final String PATH_ROOMS = "rooms";
-
     private static final String PATH_SESSIONS = "sessions";
-
     private static final String PATH_FEEDBACK = "feedback";
-
     private static final String PATH_MY_SCHEDULE = "my_schedule";
-
     private static final String PATH_MY_VIEWED_VIDEOS = "my_viewed_videos";
-
     private static final String PATH_MY_FEEDBACK_SUBMITTED = "my_feedback_submitted";
-
     private static final String PATH_SESSIONS_COUNTER = "counter";
-
     private static final String PATH_SPEAKERS = "speakers";
-
     private static final String PATH_ANNOUNCEMENTS = "announcements";
-
     private static final String PATH_MAP_MARKERS = "mapmarkers";
-
     private static final String PATH_MAP_FLOOR = "floor";
-
     private static final String PATH_MAP_TILES = "maptiles";
-
     private static final String PATH_HASHTAGS = "hashtags";
-
     private static final String PATH_VIDEOS = "videos";
-
     private static final String PATH_SEARCH = "search";
-
     private static final String PATH_SEARCH_SUGGEST = "search_suggest_query";
-
     private static final String PATH_SEARCH_INDEX = "search_index";
-
     private static final String PATH_PEOPLE_IVE_MET = "people_ive_met";
 
     public static final String[] TOP_LEVEL_PATHS = {
             PATH_BLOCKS,
             PATH_TAGS,
+            PATH_TRACKS,
             PATH_ROOMS,
             PATH_SESSIONS,
             PATH_FEEDBACK,
+            PATH_STARRED,
             PATH_MY_SCHEDULE,
             PATH_SPEAKERS,
             PATH_ANNOUNCEMENTS,
+            PATH_VENDORS,
             PATH_MAP_MARKERS,
             PATH_MAP_FLOOR,
             PATH_MAP_MARKERS,
@@ -438,34 +399,44 @@ public final class ScheduleContract {
      * Blocks are generic timeslots.
      */
     public static class Blocks implements BlocksColumns, BaseColumns {
-
         public static final String BLOCK_TYPE_FREE = "free";
-
         public static final String BLOCK_TYPE_BREAK = "break";
-
         public static final String BLOCK_TYPE_KEYNOTE = "keynote";
+
+        public static final Uri CONTENT_URI =
+                BASE_CONTENT_URI.buildUpon().appendPath(PATH_BLOCKS).build();
 
         public static final boolean isValidBlockType(String type) {
             return BLOCK_TYPE_FREE.equals(type) || BLOCK_TYPE_BREAK.equals(type)
                     || BLOCK_TYPE_KEYNOTE.equals(type);
         }
 
-        public static final Uri CONTENT_URI =
-                BASE_CONTENT_URI.buildUpon().appendPath(PATH_BLOCKS).build();
-
-        public static final String CONTENT_TYPE =
-                "vnd.android.cursor.dir/vnd.androidito-iosched.block";
-        public static final String CONTENT_ITEM_TYPE =
-                "vnd.android.cursor.item/vnd.androidito-iosched.block";
-
-        /** Count of {@link Sessions} inside given block. */
         public static final String SESSIONS_COUNT = "sessions_count";
-
         public static final String CONTENT_TYPE_ID = "block";
+        public static final String NUM_STARRED_SESSIONS = "num_starred_sessions";
+        public static final String STARRED_SESSION_ID = "starred_session_id";
+        public static final String STARRED_SESSION_TITLE = "starred_session_title";
+        public static final String STARRED_SESSION_LIVESTREAM_URL =
+                "starred_session_livestream_url";
+        public static final String STARRED_SESSION_ROOM_NAME = "starred_session_room_name";
+        public static final String STARRED_SESSION_ROOM_ID = "starred_session_room_id";
+        public static final String STARRED_SESSION_HASHTAGS = "starred_session_hashtags";
+        public static final String STARRED_SESSION_URL = "starred_session_url";
+
+        public static final String DEFAULT_SORT = BlocksColumns.BLOCK_START + " ASC, "
+                + BlocksColumns.BLOCK_END + " ASC";
 
         /** Build {@link Uri} for requested {@link #BLOCK_ID}. */
         public static Uri buildBlockUri(String blockId) {
             return CONTENT_URI.buildUpon().appendPath(blockId).build();
+        }
+        public static Uri buildStarredSessionsUri(String blockId) {
+            return CONTENT_URI.buildUpon().appendPath(blockId).appendPath(PATH_SESSIONS)
+                    .appendPath(PATH_STARRED).build();
+        }
+
+        public static Uri buildSessionsUri(String blockId) {
+            return CONTENT_URI.buildUpon().appendPath(blockId).appendPath(PATH_SESSIONS).build();
         }
 
         /** Read {@link #BLOCK_ID} from {@link Blocks} {@link Uri}. */
@@ -586,23 +557,16 @@ public final class ScheduleContract {
     public static class Tracks implements TracksColumns, BaseColumns {
         public static final Uri CONTENT_URI =
                 BASE_CONTENT_URI.buildUpon().appendPath(PATH_TRACKS).build();
-
-        public static final String CONTENT_TYPE =
-                "vnd.android.cursor.dir/vnd.androidito-iosched.track";
-        public static final String CONTENT_ITEM_TYPE =
-                "vnd.android.cursor.item/vnd.androidito-iosched.track";
+        public static final String CONTENT_TYPE_ID = "track";
 
         /** "All tracks" ID. */
         public static final String ALL_TRACK_ID = "all";
         public static final String CODELABS_TRACK_ID = generateTrackId("Code Labs");
         public static final String TECH_TALK_TRACK_ID = generateTrackId("Tech Talk");
 
-        /** Count of {@link Sessions} inside given track. */
         public static final String SESSIONS_COUNT = "sessions_count";
-        /** Count of {@link Vendors} inside given track. */
         public static final String VENDORS_COUNT = "vendors_count";
 
-        /** Default "ORDER BY" clause. */
         public static final String DEFAULT_SORT = TracksColumns.TRACK_NAME + " ASC";
 
         /** Build {@link Uri} for requested {@link #TRACK_ID}. */
@@ -640,16 +604,14 @@ public final class ScheduleContract {
         }
     }
 
-
-    /**
-     * Rooms are physical locations at the conference venue.
-     */
     public static class Rooms implements RoomsColumns, BaseColumns {
-
         public static final Uri CONTENT_URI =
                 BASE_CONTENT_URI.buildUpon().appendPath(PATH_ROOMS).build();
 
         public static final String CONTENT_TYPE_ID = "room";
+
+        public static final String DEFAULT_SORT = RoomsColumns.ROOM_FLOOR + " ASC, "
+                + RoomsColumns.ROOM_NAME + " COLLATE NOCASE ASC";
 
         /** Build {@link Uri} for requested {@link #ROOM_ID}. */
         public static Uri buildRoomUri(String roomId) {
@@ -686,13 +648,17 @@ public final class ScheduleContract {
         public static String getSessionId(Uri uri) {
             return uri.getPathSegments().get(1);
         }
+        public static String getSearchQuery(Uri uri) {
+            return uri.getPathSegments().get(2);
+        }
+
     }
 
     /**
      * Each session has zero or more {@link Tags}, a {@link Rooms},
      * zero or more {@link Speakers}.
      */
-    public static class Sessions implements SessionsColumns, RoomsColumns,
+    public static class Sessions implements SessionsColumns, RoomsColumns, BlocksColumns,
             SyncColumns, BaseColumns {
 
         public static final String QUERY_PARAMETER_TAG_FILTER = "filter";
@@ -700,6 +666,8 @@ public final class ScheduleContract {
 
         public static final Uri CONTENT_URI =
                 BASE_CONTENT_URI.buildUpon().appendPath(PATH_SESSIONS).build();
+        public static final Uri CONTENT_STARRED_URI =
+                CONTENT_URI.buildUpon().appendPath(PATH_STARRED).build();
 
         public static final Uri CONTENT_MY_SCHEDULE_URI =
                 CONTENT_URI.buildUpon().appendPath(PATH_MY_SCHEDULE).build();
@@ -707,14 +675,22 @@ public final class ScheduleContract {
         public static final String CONTENT_TYPE_ID = "session";
         public static final String BLOCK_ID = "block_id";
         public static final String ROOM_ID = "room_id";
+        public static final String START = "session_start";
+        public static final String END = "session_end";
 
         public static final String SEARCH_SNIPPET = "search_snippet";
-
         public static final String HAS_GIVEN_FEEDBACK = "has_given_feedback";
+
+        public static final String DEFAULT_SORT = BlocksColumns.BLOCK_START + " ASC,"
+                + SessionsColumns.SESSION_TITLE + " COLLATE NOCASE ASC";
+
+        public static final String BLOCK_SESSION_SORT =
+                ROOM_NAME + " ASC,"+
+                        SessionsColumns.SESSION_START + " ASC";
 
         // ORDER BY clauses
         public static final String SORT_BY_TYPE_THEN_TIME = SESSION_GROUPING_ORDER + " ASC,"
-                + SESSION_START + " ASC," + SESSION_TITLE + " COLLATE NOCASE ASC";
+                + BLOCK_START + " ASC," + SESSION_TITLE + " COLLATE NOCASE ASC";
 
         public static final String LIVESTREAM_SELECTION =
                 SESSION_LIVESTREAM_ID + " is not null AND " + SESSION_LIVESTREAM_ID + "!=''";
@@ -725,16 +701,20 @@ public final class ScheduleContract {
                 SESSION_YOUTUBE_URL + " is not null AND " + SESSION_YOUTUBE_URL + " != '')";
 
         // Used to fetch sessions starting within a specific time interval
-        public static final String STARTING_AT_TIME_INTERVAL_SELECTION =
-                SESSION_START + " >= ? and " + SESSION_START + " <= ?";
 
-        // Used to fetch sessions for a particular time
-        public static final String AT_TIME_SELECTION =
-                SESSION_START + " <= ? and " + SESSION_END + " >= ?";
+        public static final String STARTING_AT_TIME_INTERVAL_SELECTION =
+                BLOCK_START + " < ? and " +  BLOCK_END + " " + "> ?";
+
+        // Used to fetch upcoming sessions
+        public static final String UPCOMING_SELECTION =
+                BlocksColumns.BLOCK_START + " = (select min(" +  BlocksColumns.BLOCK_START + ") from " +
+                        ScheduleDatabase.Tables.BLOCKS_JOIN_SESSIONS + " where " + LIVESTREAM_SELECTION +
+                        " and " +  BLOCK_START + " >" + " ?)";
 
         // Builds selectionArgs for {@link STARTING_AT_TIME_INTERVAL_SELECTION}
         public static String[] buildAtTimeIntervalArgs(long intervalStart, long intervalEnd) {
-            return new String[]{String.valueOf(intervalStart), String.valueOf(intervalEnd)};
+            return new String[]{String.valueOf(intervalStart),
+                    String.valueOf(intervalEnd)};
         }
 
         public static Uri buildTracksDirUri(String sessionId) {
@@ -766,6 +746,21 @@ public final class ScheduleContract {
          */
         public static Uri buildSpeakersDirUri(String sessionId) {
             return CONTENT_URI.buildUpon().appendPath(sessionId).appendPath(PATH_SPEAKERS).build();
+        }
+
+        /**
+         * Build {@link Uri} that includes track detail with list of sessions.
+         */
+        public static Uri buildWithTracksUri() {
+            return CONTENT_URI.buildUpon().appendPath(PATH_WITH_TRACK).build();
+        }
+
+        /**
+         * Build {@link Uri} that includes track detail for a specific session.
+         */
+        public static Uri buildWithTracksUri(String sessionId) {
+            return CONTENT_URI.buildUpon().appendPath(sessionId)
+                    .appendPath(PATH_WITH_TRACK).build();
         }
 
         /**
@@ -932,7 +927,6 @@ public final class ScheduleContract {
      * Speakers are individual people that lead {@link Sessions}.
      */
     public static class Speakers implements SpeakersColumns, SyncColumns, BaseColumns {
-
         public static final Uri CONTENT_URI =
                 BASE_CONTENT_URI.buildUpon().appendPath(PATH_SPEAKERS).build();
 
@@ -945,6 +939,13 @@ public final class ScheduleContract {
         /** Build {@link Uri} for requested {@link #SPEAKER_ID}. */
         public static Uri buildSpeakerUri(String speakerId) {
             return CONTENT_URI.buildUpon().appendPath(speakerId).build();
+        }
+        /**
+         * Build {@link Uri} that references any {@link Sessions} associated
+         * with the requested {@link #SPEAKER_ID}.
+         */
+        public static Uri buildSessionsDirUri(String speakerId) {
+            return CONTENT_URI.buildUpon().appendPath(speakerId).appendPath(PATH_SESSIONS).build();
         }
 
         /** Read {@link #SPEAKER_ID} from {@link Speakers} {@link Uri}. */
@@ -960,11 +961,7 @@ public final class ScheduleContract {
     public static class Vendors implements VendorsColumns, SyncColumns, BaseColumns {
         public static final Uri CONTENT_URI =
                 BASE_CONTENT_URI.buildUpon().appendPath(PATH_VENDORS).build();
-
-        public static final String CONTENT_TYPE =
-                "vnd.android.cursor.dir/vnd.androidito-iosched.vendor";
-        public static final String CONTENT_ITEM_TYPE =
-                "vnd.android.cursor.item/vnd.androidito-iosched.vendor";
+        public static final String CONTENT_TYPE_ID = "vendor";
 
         /** {@link Tracks#TRACK_ID} that this vendor belongs to. */
         public static final String TRACK_ID = "track_id";
@@ -1007,16 +1004,14 @@ public final class ScheduleContract {
         }
     }
 
-
-    /**
-     * Announcements of breaking news
-     */
     public static class Announcements implements AnnouncementsColumns, BaseColumns {
-
         public static final Uri CONTENT_URI =
                 BASE_CONTENT_URI.buildUpon().appendPath(PATH_ANNOUNCEMENTS).build();
 
         public static final String CONTENT_TYPE_ID = "announcement";
+
+        public static final String DEFAULT_SORT = AnnouncementsColumns.ANNOUNCEMENT_DATE
+                + " COLLATE NOCASE ASC";
 
         /** Build {@link Uri} for requested {@link #ANNOUNCEMENT_ID}. */
         public static Uri buildAnnouncementUri(String announcementId) {

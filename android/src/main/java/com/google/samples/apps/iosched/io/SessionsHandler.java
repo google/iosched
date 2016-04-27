@@ -371,7 +371,7 @@ public class SessionsHandler extends JSONHandler {
         if (retainLocallyStarredSessions) {
             // Collect the list of current starred sessions
             Cursor starredSessionsCursor = mContext.getContentResolver().query(
-                    ScheduleContract.Sessions.CONTENT_MY_SCHEDULE_URI,
+                    ScheduleContract.Sessions.CONTENT_STARRED_URI,
                     new String[]{ScheduleContract.Sessions.SESSION_ID},
                     null, null, null);
             while (starredSessionsCursor.moveToNext()) {
@@ -546,8 +546,6 @@ public class SessionsHandler extends JSONHandler {
 
             }}
 
-
-
         return batch;
     }
 
@@ -555,11 +553,6 @@ public class SessionsHandler extends JSONHandler {
         Map<String, EMSItem> speakers = load(pEvent.speakerItems);
 
         for (EMSItem speaker : speakers.values()) {
-
-
-            // TODO parse speakers
-
-
             pBatch.add(ContentProviderOperation
                     .newInsert(ScheduleContract
                             .addCallerIsSyncAdapterParameter(ScheduleContract.Speakers.CONTENT_URI))

@@ -234,7 +234,7 @@
 
                 <category android:name="android.intent.category.DEFAULT" />
 
-                <data android:mimeType="vnd.android.cursor.dir/vnd.androidito-iosched.session" />
+                <data android:mimeType="vnd.android.cursor.dir/vnd.androidito-jz.session" />
             </intent-filter>
         </activity>
 
@@ -281,7 +281,7 @@
 
                 <category android:name="android.intent.category.DEFAULT" />
 
-                <data android:mimeType="vnd.android.cursor.item/vnd.androidito-iosched.session_feedback" />
+                <data android:mimeType="vnd.android.cursor.item/vnd.androidito-jz.session_feedback" />
             </intent-filter>
         </activity>
 
@@ -322,7 +322,7 @@
 
                 <category android:name="android.intent.category.DEFAULT" />
 
-                <data android:mimeType="vnd.android.cursor.item/vnd.androidito-iosched.session" />
+                <data android:mimeType="vnd.android.cursor.item/vnd.androidito-jz.session" />
             </intent-filter>
             <!-- Android Beam for session details -->
             <intent-filter>
@@ -330,7 +330,7 @@
 
                 <category android:name="android.intent.category.DEFAULT" />
 
-                <data android:mimeType="vnd.android.cursor.item/vnd.androidito-iosched.session" />
+                <data android:mimeType="vnd.android.cursor.item/vnd.androidito-jz.session" />
             </intent-filter>
             <!-- Web URLs -->
             <!-- URLs are indexed in search engines in the form:

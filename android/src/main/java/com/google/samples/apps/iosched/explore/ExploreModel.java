@@ -74,7 +74,7 @@ public class ExploreModel implements Model {
      */
     private Map<String, ThemeGroup> mThemes = new HashMap<>();
 
-    private Map<String, String> mTagTitles;
+    private Map<String, String> mTrackTitles;
 
     private SessionData mKeynoteData;
 
@@ -92,7 +92,7 @@ public class ExploreModel implements Model {
         return mThemes.values();
     }
 
-    public Map<String, String> getTagTitles() { return mTagTitles; }
+    public Map<String, String> getTrackTitles() { return mTrackTitles; }
 
     public SessionData getKeynoteData() { return mKeynoteData; }
 
@@ -110,15 +110,6 @@ public class ExploreModel implements Model {
         if (query == ExploreQueryEnum.SESSIONS) {
             LOGD(TAG, "Reading session data from cursor.");
 
-            // As we go through the session query results we will be collecting X numbers of session
-            // data per Topic and Y numbers of sessions per Theme. When new topics or themes are
-            // seen a group will be created.
-
-            // As we iterate through the list of sessions we are also watching out for the
-            // keynote and any live sessions streaming right now.
-
-            // The following adjusts the theme and topic limits based on whether the attendee is at
-            // the venue.
             boolean atVenue = SettingsUtils.isAttendeeAtVenue(mContext);
             int themeSessionLimit = getThemeSessionLimit(mContext);
 
@@ -138,8 +129,7 @@ public class ExploreModel implements Model {
                     // Explore screen.
                     if (TextUtils.isEmpty(session.getSessionName()) ||
                             TextUtils.isEmpty(session.getDetails()) ||
-                            TextUtils.isEmpty(session.getSessionId()) ||
-                            TextUtils.isEmpty(session.getImageUrl())) {
+                            TextUtils.isEmpty(session.getSessionId())) {
                         continue;
                     }
 
@@ -166,7 +156,8 @@ public class ExploreModel implements Model {
                         StringTokenizer tagsTokenizer = new StringTokenizer(tags, ",");
                         while (tagsTokenizer.hasMoreTokens()) {
                             String rawTag = tagsTokenizer.nextToken();
-                            if (rawTag.startsWith("TOPIC_")) {
+                            if (rawTag.startsWith("topic:")) {
+                                rawTag = rawTag.replaceAll("topic:","");
                                 TopicGroup topicGroup = topicGroups.get(rawTag);
                                 if (topicGroup == null) {
                                     topicGroup = new TopicGroup();
@@ -203,18 +194,18 @@ public class ExploreModel implements Model {
             mThemes = themeGroups;
             mTopics = topicGroups;
             return true;
-        } else if (query == ExploreQueryEnum.TAGS) {
+        } else if (query == ExploreQueryEnum.TRACKS) {
             LOGW(TAG, "TAGS query loaded");
-            Map<String, String> newTagTitles = new HashMap<>();
+            Map<String, String> newTrackTitles = new HashMap<>();
             if (cursor != null && cursor.moveToFirst()) {
                 do {
-                    String tagId = cursor.getString(cursor.getColumnIndex(
-                            ScheduleContract.Tags.TAG_ID));
-                    String tagName = cursor.getString(cursor.getColumnIndex(
-                            ScheduleContract.Tags.TAG_NAME));
-                    newTagTitles.put(tagId, tagName);
+                    String trackId = cursor.getString(cursor.getColumnIndex(
+                            ScheduleContract.Tracks.TRACK_ID));
+                    String trackName = cursor.getString(cursor.getColumnIndex(
+                            ScheduleContract.Tracks.TRACK_NAME));
+                    newTrackTitles.put(trackId, trackName);
                 } while (cursor.moveToNext());
-                mTagTitles = newTagTitles;
+                mTrackTitles = newTrackTitles;
             }
             return true;
         }
@@ -301,8 +292,8 @@ public class ExploreModel implements Model {
                         ScheduleContract.Sessions.SESSION_YOUTUBE_URL)),
                 cursor.getString(cursor.getColumnIndex(
                         ScheduleContract.Sessions.SESSION_TAGS)),
-                cursor.getLong(cursor.getColumnIndex(
-                        ScheduleContract.Sessions.SESSION_IN_MY_SCHEDULE)) == 1L);
+                cursor.getString(cursor.getColumnIndex(
+                        ScheduleContract.Sessions.SESSION_STARRED)) != null);
     }
 
     @Override
@@ -314,11 +305,11 @@ public class ExploreModel implements Model {
             // Create and return the Loader.
             loader = getCursorLoaderInstance(mContext, uri,
                     ExploreQueryEnum.SESSIONS.getProjection(), null, null,
-                    ScheduleContract.Sessions.SORT_BY_TYPE_THEN_TIME);
-        } else if (loaderId == ExploreQueryEnum.TAGS.getId()) {
+                    null);
+        } else if (loaderId == ExploreQueryEnum.TRACKS.getId()) {
             LOGW(TAG, "Starting sessions tag query");
-            loader =  new CursorLoader(mContext, ScheduleContract.Tags.CONTENT_URI,
-                    ExploreQueryEnum.TAGS.getProjection(), null, null, null);
+            loader =  new CursorLoader(mContext, ScheduleContract.Tracks.CONTENT_URI,
+                    ExploreQueryEnum.TRACKS.getProjection(), null, null, null);
         } else {
             LOGE(TAG, "Invalid query loaderId: " + loaderId);
         }
@@ -348,24 +339,26 @@ public class ExploreModel implements Model {
          * {@code getTopics()}.
          */
         SESSIONS(0x1, new String[]{
+                ScheduleContract.Sessions._ID,
                 ScheduleContract.Sessions.SESSION_ID,
-                ScheduleContract.Sessions.SESSION_TITLE,
-                ScheduleContract.Sessions.SESSION_ABSTRACT,
-                ScheduleContract.Sessions.SESSION_TAGS,
-                ScheduleContract.Sessions.SESSION_MAIN_TAG,
-                ScheduleContract.Sessions.SESSION_PHOTO_URL,
                 ScheduleContract.Sessions.SESSION_START,
+                ScheduleContract.Sessions.SESSION_ABSTRACT,
+                ScheduleContract.Sessions.SESSION_PHOTO_URL,
                 ScheduleContract.Sessions.SESSION_END,
+                ScheduleContract.Sessions.SESSION_MAIN_TAG,
+                ScheduleContract.Sessions.SESSION_TITLE,
+                ScheduleContract.Sessions.ROOM_NAME,
                 ScheduleContract.Sessions.SESSION_LIVESTREAM_ID,
                 ScheduleContract.Sessions.SESSION_YOUTUBE_URL,
-                ScheduleContract.Sessions.SESSION_IN_MY_SCHEDULE,
-                ScheduleContract.Sessions.SESSION_START,
-                ScheduleContract.Sessions.SESSION_END,
+                ScheduleContract.Sessions.SESSION_TAGS,
+                ScheduleContract.Sessions.SESSION_STARRED,
         }),
 
-        TAGS(0x2, new String[] {
-            ScheduleContract.Tags.TAG_ID,
-            ScheduleContract.Tags.TAG_NAME,
+        TRACKS(0x2, new String[] {
+                ScheduleContract.Tracks.TRACK_ID,
+                ScheduleContract.Tracks.TRACK_NAME,
+                ScheduleContract.Tracks.TRACK_ABSTRACT,
+                ScheduleContract.Tracks.TRACK_COLOR,
         });
 
 

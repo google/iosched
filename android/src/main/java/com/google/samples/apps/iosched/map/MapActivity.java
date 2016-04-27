@@ -217,7 +217,7 @@ public class MapActivity extends BaseActivity
     }
 
     @Override
-    public void onInfoShowMoscone() {
+    public void onInfoShowOsloSpektrum() {
         if (mInfoFragment != null) {
             mInfoFragment.showMoscone();
         }

@@ -69,8 +69,7 @@ public class MapFragment extends com.google.android.gms.maps.MapFragment impleme
         GoogleMap.OnMarkerClickListener,
         GoogleMap.OnIndoorStateChangeListener, GoogleMap.OnMapClickListener, OnMapReadyCallback {
 
-    private static final LatLng MOSCONE = new LatLng(37.783107, -122.403789);
-    private static final LatLng MOSCONE_CAMERA = new LatLng(37.78308931536713, -122.40409433841705);
+    private static final LatLng OSOLOSPEKTRUM = new LatLng(59.9130, 10.7547);
 
     private static final String EXTRAS_HIGHLIGHT_ROOM = "EXTRAS_HIGHLIGHT_ROOM";
     private static final String EXTRAS_ACTIVE_FLOOR = "EXTRAS_ACTIVE_FLOOR";
@@ -84,8 +83,8 @@ public class MapFragment extends com.google.android.gms.maps.MapFragment impleme
     // Estimated number of floors used to initialise data structures with appropriate capacity
     private static final int INITIAL_FLOOR_COUNT = 3;
 
-    // Default level (index of level in IndoorBuilding object for Moscone)
-    private static final int MOSCONE_DEFAULT_LEVEL_INDEX = 1;
+    // Default level (index of level in IndoorBuilding object for Oslo Spektrum)
+    private static final int OSLOSPEKTRUM_DEFAULT_LEVEL_INDEX = 1;
 
     private static final String TAG = makeLogTag(MapFragment.class);
 
@@ -106,8 +105,7 @@ public class MapFragment extends com.google.android.gms.maps.MapFragment impleme
     // Screen DPI
     private float mDPI = 0;
 
-    // Indoor maps representation of Moscone Center
-    private IndoorBuilding mMosconeBuilding = null;
+    private IndoorBuilding mOsloSpektrumBuilding = null;
 
     // currently displayed floor
     private int mFloor = INVALID_FLOOR;
@@ -116,8 +114,8 @@ public class MapFragment extends com.google.android.gms.maps.MapFragment impleme
     private BitmapDescriptor ICON_ACTIVE;
     private BitmapDescriptor ICON_NORMAL;
 
-    private boolean mAtMoscone = false;
-    private Marker mMosconeMaker = null;
+    private boolean mAtOsloSpektrum = false;
+    private Marker mOsloSpektrumMarker = null;
 
     private GoogleMap mMap;
     private Rect mMapInsets = new Rect();
@@ -125,7 +123,7 @@ public class MapFragment extends com.google.android.gms.maps.MapFragment impleme
     private String mHighlightedRoomId = null;
     private MarkerModel mHighlightedRoom = null;
 
-    private int mInitialFloor = MOSCONE_DEFAULT_LEVEL_INDEX;
+    private int mInitialFloor = OSLOSPEKTRUM_DEFAULT_LEVEL_INDEX;
 
     private static final int TOKEN_LOADER_MARKERS = 0x1;
     private static final int TOKEN_LOADER_TILES = 0x2;
@@ -136,7 +134,7 @@ public class MapFragment extends com.google.android.gms.maps.MapFragment impleme
 
         void onInfoHide();
 
-        void onInfoShowMoscone();
+        void onInfoShowOsloSpektrum();
 
         void onInfoShowTitle(String label, int roomType);
 
@@ -152,7 +150,7 @@ public class MapFragment extends com.google.android.gms.maps.MapFragment impleme
         }
 
         @Override
-        public void onInfoShowMoscone() {
+        public void onInfoShowOsloSpektrum() {
         }
 
         @Override
@@ -200,8 +198,8 @@ public class MapFragment extends com.google.android.gms.maps.MapFragment impleme
             // A marker is currently selected, restore its selection.
             outState.putString(EXTRAS_HIGHLIGHT_ROOM, mActiveMarker.getTitle());
             outState.putInt(EXTRAS_ACTIVE_FLOOR, INVALID_FLOOR);
-        } else if (mAtMoscone) {
-            // No marker is selected, store the active floor if at Moscone.
+        } else if (mAtOsloSpektrum) {
+            // No marker is selected, store the active floor if at Oslo Spektrum.
             outState.putInt(EXTRAS_ACTIVE_FLOOR, mFloor);
             outState.putString(EXTRAS_HIGHLIGHT_ROOM, null);
         }
@@ -228,7 +226,7 @@ public class MapFragment extends com.google.android.gms.maps.MapFragment impleme
         Bundle data = getArguments();
         if (data != null) {
             mHighlightedRoomId = data.getString(EXTRAS_HIGHLIGHT_ROOM, null);
-            mInitialFloor = data.getInt(EXTRAS_ACTIVE_FLOOR, MOSCONE_DEFAULT_LEVEL_INDEX);
+            mInitialFloor = data.getInt(EXTRAS_ACTIVE_FLOOR, OSLOSPEKTRUM_DEFAULT_LEVEL_INDEX);
         }
 
         getMapAsync(this);
@@ -324,13 +322,13 @@ public class MapFragment extends com.google.android.gms.maps.MapFragment impleme
 
     private void setupMap(boolean resetCamera) {
 
-        // Add a Marker for Moscone
-        mMosconeMaker = mMap
-                .addMarker(MapUtils.createMosconeMarker(MOSCONE).visible(false));
+        // Add a Marker for Oslo Spektrum
+        mOsloSpektrumMarker = mMap
+                .addMarker(MapUtils.createOsloSpektrumMarker(OSOLOSPEKTRUM).visible(false));
 
         if (resetCamera) {
-            // Move camera directly to Moscone
-            centerOnMoscone(false);
+            // Move camera directly to Oslo Spektrum
+            centerOnOsloSpektrum(false);
         }
 
         LOGD(TAG, "Map setup complete.");
@@ -360,14 +358,9 @@ public class MapFragment extends com.google.android.gms.maps.MapFragment impleme
         getActivity().getContentResolver().unregisterContentObserver(mObserver);
     }
 
-    /**
-     * Moves the camera to Moscone Center (as defined in {@link #MOSCONE} and {@link #CAMERA_ZOOM}.
-     *
-     * @param animate Animates the camera if true, otherwise it is moved
-     */
-    private void centerOnMoscone(boolean animate) {
+    private void centerOnOsloSpektrum(boolean animate) {
         CameraUpdate camera = CameraUpdateFactory.newCameraPosition(
-                new CameraPosition.Builder().bearing(CAMERA_BEARING).target(MOSCONE_CAMERA)
+                new CameraPosition.Builder().bearing(CAMERA_BEARING).target(OSOLOSPEKTRUM)
                         .zoom(CAMERA_ZOOM).tilt(0f).build());
         if (animate) {
             mMap.animateCamera(camera);
@@ -387,7 +380,7 @@ public class MapFragment extends com.google.android.gms.maps.MapFragment impleme
      *              to
      *              be defined for it and it has to be a valid index in the
      *              {@link com.google.android.gms.maps.model.IndoorBuilding} object that
-     *              describes Moscone.
+     *              describes Oslo Spektrum.
      */
     private void showFloorElementsIndex(int floor) {
         LOGD(TAG, "Show floor " + floor);
@@ -399,25 +392,25 @@ public class MapFragment extends com.google.android.gms.maps.MapFragment impleme
 
         mFloor = floor;
 
-        if (isValidFloor(mFloor) && mAtMoscone) {
-            // Always hide the Moscone marker if a floor is shown
-            mMosconeMaker.setVisible(false);
+        if (isValidFloor(mFloor) && mAtOsloSpektrum) {
+            // Always hide the Oslo Spektrum marker if a floor is shown
+            mOsloSpektrumMarker.setVisible(false);
             setFloorElementsVisible(mFloor, true);
         } else {
-            // Show Moscone marker if not at Moscone or at an invalid floor
-            mMosconeMaker.setVisible(true);
+            // Show Oslo Spektrum marker if not at Oslo Spektrum or at an invalid floor
+            mOsloSpektrumMarker.setVisible(true);
         }
     }
 
     /**
-     * Change the active floor of Moscone Center
+     * Change the active floor of Oslo Spektrum Center
      * to the given floor index. See {@link #showFloorElementsIndex(int)}.
      *
      * @param floor Index of the floor to show.
      * @see #showFloorElementsIndex(int)
      */
     private void showFloorIndex(int floor) {
-        if (isValidFloor(floor) && mAtMoscone) {
+        if (isValidFloor(floor) && mAtOsloSpektrum) {
 
             if (mMap.getFocusedBuilding().getActiveLevelIndex() == floor) {
                 // This floor is already active, show its elements
@@ -452,31 +445,31 @@ public class MapFragment extends com.google.android.gms.maps.MapFragment impleme
     }
 
     /**
-     * A floor is valid if the Moscone building contains that floor. It is not required for a floor
+     * A floor is valid if the Oslo Spektrum building contains that floor. It is not required for a floor
      * to have a tile overlay and markers.
      */
     private boolean isValidFloor(int floor) {
-        return floor < mMosconeBuilding.getLevels().size();
+        return floor < mOsloSpektrumBuilding.getLevels().size();
     }
 
     /**
-     * Display map features if Moscone is the current building.
+     * Display map features if Oslo Spektrum is the current building.
      * This explicitly  re-enables all elements that should be displayed at the current floor.
      */
     private void enableMapElements() {
-        if (mMosconeBuilding != null && mAtMoscone) {
-            onIndoorLevelActivated(mMosconeBuilding);
+        if (mOsloSpektrumBuilding != null && mAtOsloSpektrum) {
+            onIndoorLevelActivated(mOsloSpektrumBuilding);
         }
     }
 
-    private void onDefocusMoscone() {
+    private void onDefocusOsloSpektrum() {
         // Hide all markers and tile overlays
         deselectActiveMarker();
         showFloorElementsIndex(INVALID_FLOOR);
-        mCallbacks.onInfoShowMoscone();
+        mCallbacks.onInfoShowOsloSpektrum();
     }
 
-    private void onFocusMoscone() {
+    private void onFocusOsloSpektrum() {
         // Highlight a room if argument is set and it exists, otherwise show the default floor
         if (mHighlightedRoomId != null && mMarkers.containsKey(mHighlightedRoomId)) {
             highlightRoom(mHighlightedRoomId);
@@ -484,48 +477,48 @@ public class MapFragment extends com.google.android.gms.maps.MapFragment impleme
             // Reset highlighted room because it has just been displayed.
             mHighlightedRoomId = null;
         } else {
-            // Hide the bottom sheet that is displaying the Moscone details at this point
+            // Hide the bottom sheet that is displaying the Oslo Spektrum details at this point
             mCallbacks.onInfoHide();
-            // Switch to the default level for Moscone and reset its value
+            // Switch to the default level for Oslo Spektrum and reset its value
             showFloorIndex(mInitialFloor);
         }
-        mInitialFloor = MOSCONE_DEFAULT_LEVEL_INDEX;
+        mInitialFloor = OSLOSPEKTRUM_DEFAULT_LEVEL_INDEX;
     }
 
     @Override
     public void onIndoorBuildingFocused() {
         IndoorBuilding building = mMap.getFocusedBuilding();
 
-        if (building != null && mMosconeBuilding == null
-                && mMap.getProjection().getVisibleRegion().latLngBounds.contains(MOSCONE)) {
-            // Store the first active building. This will always be Moscone
-            mMosconeBuilding = building;
+        if (building != null && mOsloSpektrumBuilding == null
+                && mMap.getProjection().getVisibleRegion().latLngBounds.contains(OSOLOSPEKTRUM)) {
+            // Store the first active building. This will always be Oslo Spektrum
+            mOsloSpektrumBuilding = building;
         }
 
-        if (!mAtMoscone && building != null && building.equals(mMosconeBuilding)) {
-            // Map is focused on Moscone Center
-            mAtMoscone = true;
-            onFocusMoscone();
-        } else if (mAtMoscone && mMosconeBuilding != null && !mMosconeBuilding.equals(building)) {
-            // Map is no longer focused on Moscone Center
-            mAtMoscone = false;
-            onDefocusMoscone();
+        if (!mAtOsloSpektrum && building != null && building.equals(mOsloSpektrumBuilding)) {
+            // Map is focused on Oslo Spektrum Center
+            mAtOsloSpektrum = true;
+            onFocusOsloSpektrum();
+        } else if (mAtOsloSpektrum && mOsloSpektrumBuilding != null && !mOsloSpektrumBuilding.equals(building)) {
+            // Map is no longer focused on Oslo Spektrum Center
+            mAtOsloSpektrum = false;
+            onDefocusOsloSpektrum();
         }
         onIndoorLevelActivated(building);
     }
 
     @Override
     public void onIndoorLevelActivated(IndoorBuilding indoorBuilding) {
-        if (indoorBuilding != null && indoorBuilding.equals(mMosconeBuilding)) {
-            onMosconeFloorActivated(indoorBuilding.getActiveLevelIndex());
+        if (indoorBuilding != null && indoorBuilding.equals(mOsloSpektrumBuilding)) {
+            onOsloSpektrumFloorActivated(indoorBuilding.getActiveLevelIndex());
         }
     }
 
     /**
-     * Called when an indoor floor level in the Moscone building has been activated.
+     * Called when an indoor floor level in the Oslo Spektrum building has been activated.
      * If a room is to be highlighted, the map is centered and its marker is activated.
      */
-    private void onMosconeFloorActivated(int activeLevelIndex) {
+    private void onOsloSpektrumFloorActivated(int activeLevelIndex) {
         if (mHighlightedRoom != null && mFloor == mHighlightedRoom.floor) {
             // A room highlight is pending. Highlight the marker and display info details.
             onMarkerClick(mHighlightedRoom.marker);
@@ -579,12 +572,12 @@ public class MapFragment extends com.google.android.gms.maps.MapFragment impleme
 
         deselectActiveMarker();
 
-        // The Moscone marker can be compared directly.
+        // The Oslo Spektrum marker can be compared directly.
         // For all other markers the model needs to be looked up first.
-        if (marker.equals(mMosconeMaker)) {
-            // Return camera to Moscone
-            LOGD(TAG, "Clicked on Moscone marker, return to initial display.");
-            centerOnMoscone(true);
+        if (marker.equals(mOsloSpektrumMarker)) {
+            // Return camera to Oslo Spektrum
+            LOGD(TAG, "Clicked on Oslo Spektrum marker, return to initial display.");
+            centerOnOsloSpektrum(true);
 
         } else if (model != null && MapUtils.hasInfoTitleOnly(model.type)) {
             // Show a basic info window with a title only

@@ -67,7 +67,7 @@ public class ExploreIOActivity extends BaseActivity implements Toolbar.OnMenuIte
                         getApplicationContext()),
                 new QueryEnum[]{
                         ExploreQueryEnum.SESSIONS,
-                        ExploreQueryEnum.TAGS},
+                        ExploreQueryEnum.TRACKS},
                 new ExploreUserActionEnum[]{
                         ExploreUserActionEnum.RELOAD});
 

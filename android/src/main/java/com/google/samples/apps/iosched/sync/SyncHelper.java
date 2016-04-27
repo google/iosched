@@ -39,11 +39,18 @@ import com.google.gson.JsonSyntaxException;
 import com.google.samples.apps.iosched.Config;
 import com.google.samples.apps.iosched.feedback.FeedbackApiHelper;
 import com.google.samples.apps.iosched.feedback.FeedbackSyncHelper;
+import com.google.samples.apps.iosched.io.BlocksHandler;
 import com.google.samples.apps.iosched.io.HandlerException;
+import com.google.samples.apps.iosched.io.HashtagsHandler;
 import com.google.samples.apps.iosched.io.JSONHandler;
+import com.google.samples.apps.iosched.io.MapPropertyHandler;
 import com.google.samples.apps.iosched.io.RoomsHandler;
+import com.google.samples.apps.iosched.io.SearchSuggestHandler;
 import com.google.samples.apps.iosched.io.SessionsHandler;
+import com.google.samples.apps.iosched.io.SpeakersHandler;
+import com.google.samples.apps.iosched.io.TagsHandler;
 import com.google.samples.apps.iosched.io.TracksHandler;
+import com.google.samples.apps.iosched.io.VideosHandler;
 import com.google.samples.apps.iosched.io.model.ErrorResponse;
 import com.google.samples.apps.iosched.provider.ScheduleContract;
 import com.google.samples.apps.iosched.service.DataBootstrapService;
@@ -128,6 +135,10 @@ public class SyncHelper {
             batch.addAll(fetchResource(Config.GET_ALL_SESSIONS_URL, new SessionsHandler(mContext, false, false)));
             LOGI(TAG, "Syncing tracks");
             batch.addAll(fetchResource(Config.GET_ALL_SESSIONS_URL, new TracksHandler(mContext)));
+            //mHandlerForKey.put(DATA_KEY_MAP, mMapPropertyHandler = new MapPropertyHandler(mContext));
+            //mHandlerForKey.put(DATA_KEY_HASHTAGS, mHashtagsHandler = new HashtagsHandler(mContext));
+            // mHandlerForKey.put(DATA_KEY_VIDEOS, mVideosHandler = new VideosHandler(mContext));
+
 
             //TODO Enable announcements for JavaZone
             //LOGI(TAG, "Remote syncing announcements");

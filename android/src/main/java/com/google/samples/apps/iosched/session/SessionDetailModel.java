@@ -479,15 +479,11 @@ public class SessionDetailModel implements Model {
                     cursor.getColumnIndex(ScheduleContract.Speakers.SPEAKER_COMPANY));
             final String speakerUrl = cursor.getString(
                     cursor.getColumnIndex(ScheduleContract.Speakers.SPEAKER_URL));
-            final String speakerPlusoneUrl = cursor.getString(
-                    cursor.getColumnIndex(ScheduleContract.Speakers.SPEAKER_PLUSONE_URL));
-            final String speakerTwitterUrl = cursor.getString(
-                    cursor.getColumnIndex(ScheduleContract.Speakers.SPEAKER_TWITTER_URL));
             final String speakerAbstract = cursor.getString(
                     cursor.getColumnIndex(ScheduleContract.Speakers.SPEAKER_ABSTRACT));
 
             mSpeakers.add(new Speaker(speakerName, speakerImageUrl, speakerCompany, speakerUrl,
-                    speakerPlusoneUrl, speakerTwitterUrl, speakerAbstract));
+                    speakerAbstract));
         }
     }
 
@@ -667,14 +663,11 @@ public class SessionDetailModel implements Model {
 
         private String mAbstract;
 
-        public Speaker(String name, String imageUrl, String company, String url, String plusoneUrl,
-                       String twitterUrl, String anAbstract) {
+        public Speaker(String name, String imageUrl, String company, String url, String anAbstract) {
             mName = name;
             mImageUrl = imageUrl;
             mCompany = company;
             mUrl = url;
-            mPlusoneUrl = plusoneUrl;
-            mTwitterUrl = twitterUrl;
             mAbstract = anAbstract;
         }
 
@@ -733,9 +726,7 @@ public class SessionDetailModel implements Model {
                 ScheduleContract.Speakers.SPEAKER_IMAGE_URL,
                 ScheduleContract.Speakers.SPEAKER_COMPANY,
                 ScheduleContract.Speakers.SPEAKER_ABSTRACT,
-                ScheduleContract.Speakers.SPEAKER_URL,
-                ScheduleContract.Speakers.SPEAKER_PLUSONE_URL,
-                ScheduleContract.Speakers.SPEAKER_TWITTER_URL}),
+                ScheduleContract.Speakers.SPEAKER_URL}),
         FEEDBACK(2, new String[]{ScheduleContract.Feedback.SESSION_ID}),
         TAG_METADATA(3, null),
         MY_VIEWED_VIDEOS(4, new String[]{ScheduleContract.MyViewedVideos.VIDEO_ID});
