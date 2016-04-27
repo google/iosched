@@ -22,6 +22,5 @@
     <integer name="add_to_schedule_stroke_width">2</integer>
     <integer name="add_to_schedule_duration">250</integer>
     <color name="tick_add">#444</color>
-    <drawable name="ic_session_in_schedule">@null</drawable>
 
 </resources>
