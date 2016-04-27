@@ -15,9 +15,12 @@
  */
 package com.google.samples.apps.iosched.gcm;
 
+import com.google.android.gms.gcm.GcmPubSub;
 import com.google.android.gms.gcm.GoogleCloudMessaging;
 import com.google.android.gms.iid.InstanceID;
 import com.google.samples.apps.iosched.BuildConfig;
+import com.google.samples.apps.iosched.settings.ConfMessageCardUtils;
+import com.google.samples.apps.iosched.settings.SettingsUtils;
 import com.google.samples.apps.iosched.util.AccountUtils;
 
 import android.app.IntentService;
@@ -27,6 +30,7 @@ import java.io.IOException;
 
 import static com.google.samples.apps.iosched.util.LogUtils.LOGE;
 import static com.google.samples.apps.iosched.util.LogUtils.LOGI;
+import static com.google.samples.apps.iosched.util.LogUtils.LOGW;
 import static com.google.samples.apps.iosched.util.LogUtils.makeLogTag;
 
 /**
@@ -35,6 +39,9 @@ import static com.google.samples.apps.iosched.util.LogUtils.makeLogTag;
 public class GCMRegistrationIntentService extends IntentService {
 
     private static final String TAG = makeLogTag("GCMRegistrationIntentService");
+
+    private static final String CONFERENCE_MESSAGES_TOPIC_ONSITE  = "/topics/confmessagesonsite";
+    private static final String CONFERENCE_MESSAGES_TOPIC_OFFSITE  = "/topics/confmessagesoffsite";
 
     public GCMRegistrationIntentService() {
         super(TAG);
@@ -59,6 +66,7 @@ public class GCMRegistrationIntentService extends IntentService {
 
                 sendRegistrationToServer(token, gcmKey);
             }
+            subscribeTopics(token);
         } catch (IOException e) {
             LOGE(TAG, "An exception occurred generating InstanceID token: " + e.getMessage());
         }
@@ -87,6 +95,27 @@ public class GCMRegistrationIntentService extends IntentService {
             }
         } else {
             LOGI(TAG, "Already registered on the GCM server with GCM key " + gcmKey);
+        }
+    }
+
+    private void subscribeTopics(String registrationToken) {
+        try {
+            GcmPubSub pubSub = GcmPubSub.getInstance(this);
+            if (ConfMessageCardUtils.isConfMessageCardsEnabled(this)) {
+                if (SettingsUtils.isAttendeeAtVenue(this)) {
+                    pubSub.unsubscribe(registrationToken, CONFERENCE_MESSAGES_TOPIC_OFFSITE);
+                    pubSub.subscribe(registrationToken, CONFERENCE_MESSAGES_TOPIC_ONSITE, null);
+                } else {
+                    pubSub.subscribe(registrationToken, CONFERENCE_MESSAGES_TOPIC_OFFSITE, null);
+                    pubSub.unsubscribe(registrationToken, CONFERENCE_MESSAGES_TOPIC_ONSITE);
+                }
+            } else {
+                pubSub.unsubscribe(registrationToken, CONFERENCE_MESSAGES_TOPIC_ONSITE);
+                pubSub.unsubscribe(registrationToken, CONFERENCE_MESSAGES_TOPIC_OFFSITE);
+            }
+        } catch (Throwable throwable) {
+            // Just in case.
+            LOGE(TAG, "Exception updating conference message cards subscription.", throwable);
         }
     }
 }

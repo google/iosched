@@ -26,7 +26,9 @@ import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.preference.PreferenceFragmentCompat;
 
+import com.google.samples.apps.iosched.BuildConfig;
 import com.google.samples.apps.iosched.R;
+import com.google.samples.apps.iosched.messaging.MessagingRegistrationWithGCM;
 import com.google.samples.apps.iosched.navigation.NavigationModel;
 import com.google.samples.apps.iosched.service.SessionCalendarService;
 import com.google.samples.apps.iosched.ui.BaseActivity;
@@ -137,7 +139,6 @@ public class SettingsActivity extends BaseActivity {
         public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
             // The Calendar Sync requires checking the Calendar permission.
             if (SettingsUtils.PREF_SYNC_CALENDAR.equals(key)) {
-
                 // Request permission when it doesn't exist, saving the information about whether
                 // the request enabled or disabled the sync via the requestCode.
                 if (!PermissionsUtils.permissionsAlreadyGranted(getActivity(), CALENDAR_PERMISSIONS)) {
@@ -148,8 +149,12 @@ public class SettingsActivity extends BaseActivity {
                             CALENDAR_PERMISSIONS, requestCode);
                     return;
                 }
-
                 scheduleCalendarSync(getActivity());
+            } else if (BuildConfig.PREF_CONF_MESSAGES_ENABLED.equals(key) ||
+                    BuildConfig.PREF_ATTENDEE_AT_VENUE.equals(key)) {
+                // This will activate re-registering with the correct GCM topic(s).
+                new MessagingRegistrationWithGCM(getActivity()).registerDevice();
+
             }
         }
 
