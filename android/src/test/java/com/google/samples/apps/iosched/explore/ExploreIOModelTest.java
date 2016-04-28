@@ -47,6 +47,7 @@ import org.powermock.modules.junit4.PowerMockRunner;
 import java.util.Iterator;
 
 import static junit.framework.Assert.assertNotNull;
+import static junit.framework.Assert.assertNull;
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertThat;
 import static org.mockito.Mockito.when;
@@ -58,9 +59,11 @@ public class ExploreIOModelTest {
 
     private static final int SESSION_THEME_LIMIT = 2;
 
-    private static final String FAKE_TAG_ID_1 = "TRACK_1";
+    private static final String FAKE_TAG_TRACK_ID = "TRACK_1";
 
-    private static final String FAKE_TAG_ID_2 = "THEME_2";
+    private static final String FAKE_TAG_THEME_ID = "THEME_2";
+
+    private static final String FAKE_TAG_TRACK_ID_NOT_IN_TAGS_CURSOR = "TRACK_0";
 
     private static final String FAKE_TAG_A = "A";
 
@@ -70,7 +73,7 @@ public class ExploreIOModelTest {
      * Fake tags data to be used for the mocked cursor.
      */
     private static final Object[][] FAKE_TAGS_CURSOR_DATA = {
-            new String[]{FAKE_TAG_ID_1, FAKE_TAG_ID_2},
+            new String[]{FAKE_TAG_TRACK_ID, FAKE_TAG_THEME_ID},
             new String[]{FAKE_TAG_A, FAKE_TAG_B},
             new Integer[]{0, 1},
             new Integer[]{0, 0}};
@@ -137,14 +140,15 @@ public class ExploreIOModelTest {
             new String[]{FAKE_SESSION_ID_1, FAKE_SESSION_ID_2_KEYNOTE, FAKE_SESSION_ID_3,
                     FAKE_SESSION_ID_4},
             new String[]{FAKE_SESSION_URL, FAKE_SESSION_URL, FAKE_SESSION_URL, FAKE_SESSION_URL},
-            new String[]{FAKE_TAG_ID_2, Config.Tags.SPECIAL_KEYNOTE,
-                    FAKE_TAG_ID_1, FAKE_TAG_ID_1},
+            new String[]{FAKE_TAG_THEME_ID, Config.Tags.SPECIAL_KEYNOTE,
+                    FAKE_TAG_TRACK_ID, FAKE_TAG_TRACK_ID_NOT_IN_TAGS_CURSOR},
             new Long[]{FAKE_SESSION_START1, FAKE_SESSION_START2, FAKE_SESSION_START3,
                     FAKE_SESSION_START4},
             new Long[]{FAKE_SESSION_END1, FAKE_SESSION_END2, FAKE_SESSION_END3, FAKE_SESSION_END4},
             new String[]{FAKE_SESSION_LIVESTREAM, null, null, null},
             new String[]{FAKE_SESSION_URL, FAKE_SESSION_URL, FAKE_SESSION_URL, FAKE_SESSION_URL},
-            new String[]{FAKE_TAG_ID_2 + "," + FAKE_TAG_ID_1, "", FAKE_TAG_ID_1, FAKE_TAG_ID_1},
+            new String[]{FAKE_TAG_THEME_ID + "," + FAKE_TAG_TRACK_ID, "", FAKE_TAG_TRACK_ID,
+                    FAKE_TAG_TRACK_ID + "," + FAKE_TAG_TRACK_ID_NOT_IN_TAGS_CURSOR},
             new Long[]{1l, 1l, 0l, 1l}
     };
 
@@ -240,13 +244,35 @@ public class ExploreIOModelTest {
                 is(FAKE_SESSION_TITLE_2_KEYNOTE));
         assertThat(mExploreIOModel.getLiveStreamData().getSessions().get(0).getSessionName(),
                 is(FAKE_SESSION_TITLE_1_LIVESTREAM));
-        assertThat(mExploreIOModel.getOrderedTracksAndThemes().size(), is(2));
-        Iterator<ItemGroup> groupIterator = mExploreIOModel.getOrderedTracksAndThemes().iterator();
+        assertThat(mExploreIOModel.getOrderedTracks().size(), is(2));
+    }
+
+    @Test
+    public void orderedTracks_MissingTitle_MissingTitleTrackIsLast() {
+        // Given a mock cursor with fake sessions and tags data
+        initMockCursorWithSessionsData(mMockSessionCursor);
+        initMockCursorWithTagsData(mMockTagsCursor);
+
+        // When ran with session query
+        boolean success = mExploreIOModel.readDataFromCursor(
+                mMockSessionCursor, ExploreIOModel.ExploreIOQueryEnum.SESSIONS);
+        // And tags data is available
+        mExploreIOModel.readDataFromCursor(
+                mMockTagsCursor, ExploreIOModel.ExploreIOQueryEnum.TAGS);
+
+        // Then the model has correctly ordered session data
+        assertThat(success, is(true));
+        assertThat(mExploreIOModel.getKeynoteData().getSessionName(),
+                is(FAKE_SESSION_TITLE_2_KEYNOTE));
+        assertThat(mExploreIOModel.getLiveStreamData().getSessions().get(0).getSessionName(),
+                is(FAKE_SESSION_TITLE_1_LIVESTREAM));
+        assertThat(mExploreIOModel.getOrderedTracks().size(), is(2));
+        Iterator<ItemGroup> groupIterator = mExploreIOModel.getOrderedTracks().iterator();
         ItemGroup groupA = groupIterator.next();
         ItemGroup groupB = groupIterator.next();
         assertThat(groupA.getTitle(), is(FAKE_TAG_A));
-        assertThat(groupB.getTitle(), is(FAKE_TAG_B));
         assertThat(groupA.getSessions().size(), is(3));
+        assertNull(groupB.getTitle());
         assertThat(groupB.getSessions().size(), is(1));
     }
 
@@ -262,9 +288,9 @@ public class ExploreIOModelTest {
         // Then the model has correct tags data
         assertThat(success, is(true));
         assertNotNull(mExploreIOModel.getTagMetadata());
-        assertThat(mExploreIOModel.getTagMetadata().getTag(FAKE_TAG_ID_1).getName(),
+        assertThat(mExploreIOModel.getTagMetadata().getTag(FAKE_TAG_TRACK_ID).getName(),
                 is(FAKE_TAG_A));
-        assertThat(mExploreIOModel.getTagMetadata().getTag(FAKE_TAG_ID_2).getName(),
+        assertThat(mExploreIOModel.getTagMetadata().getTag(FAKE_TAG_THEME_ID).getName(),
                 is(FAKE_TAG_B));
     }
 
@@ -392,7 +418,6 @@ public class ExploreIOModelTest {
                 .thenReturn(NAME_FAKE_INTEGER_COLUMN_COLUMN);
         when(cursor.getColumnIndex(ScheduleContract.Tags.TAG_PHOTO_URL))
                 .thenReturn(NAME_COLUMN_INDEX);
-
 
 
         // Returning values from the fake data table.
