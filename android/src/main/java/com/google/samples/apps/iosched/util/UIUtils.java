@@ -466,7 +466,9 @@ public class UIUtils {
         return (value - min) / (float) (max - min);
     }
 
-    public static @DrawableRes int getSessionIcon(int sessionType) {
+    public static
+    @DrawableRes
+    int getSessionIcon(int sessionType) {
         switch (sessionType) {
             case ScheduleItem.SESSION_TYPE_SESSION:
                 return R.drawable.ic_session;
@@ -480,7 +482,9 @@ public class UIUtils {
         }
     }
 
-    public static @DrawableRes int getBreakIcon(String breakTitle) {
+    public static
+    @DrawableRes
+    int getBreakIcon(String breakTitle) {
         if (!TextUtils.isEmpty(breakTitle)) {
             if (breakTitle.contains("After") || breakTitle.contains("Concert")) {
                 return R.drawable.ic_after_hours;
@@ -511,16 +515,26 @@ public class UIUtils {
     }
 
     /**
-     * @param startTime The start time of a session.
-     * @return Returns the Day index such as 1 or 2 based on the given start time.
+     * @param startTime The start time of a session. It is expected to be a start time during the
+     *                  conference.
+     * @return the position in the {@link Config#CONFERENCE_DAYS} of the day of the session at
+     * {@code startTime}. Note that to avoid possible crashes, the returned index is always a valid
+     * position in the {@link Config#CONFERENCE_DAYS} array, so if the {@code startTime} is before
+     * the start of the conference, 0 will be returned, and if it is after the end of the
+     * conference, the index of the last day will be returned. If the time is outside of the
+     * start/end times of a conference day, for example at 5am, it returns 0.
      */
     public static int startTimeToDayIndex(long startTime) {
-        if (startTime <= Config.CONFERENCE_DAYS[0][1] &&
-                startTime >= Config.CONFERENCE_DAYS[0][0]) {
-            return 1;
-        } else if (startTime <= Config.CONFERENCE_DAYS[1][1] &&
-                startTime >= Config.CONFERENCE_DAYS[1][0]) {
-            return 2;
+        if (startTime < Config.CONFERENCE_START_MILLIS) {
+            return 0;
+        } else if (startTime > Config.CONFERENCE_END_MILLIS) {
+            return Config.CONFERENCE_DAYS.length - 1;
+        }
+        for (int i = 0; i < Config.CONFERENCE_DAYS.length; i++) {
+            if (startTime >=
+                    Config.CONFERENCE_DAYS[i][0] && startTime <= Config.CONFERENCE_DAYS[i][1]) {
+                return i;
+            }
         }
         return 0;
     }
@@ -695,7 +709,9 @@ public class UIUtils {
      * @param color the color to adjust.
      * @return the adjusted color.
      */
-    public static @ColorInt int adjustColorForStatusBar(@ColorInt int color) {
+    public static
+    @ColorInt
+    int adjustColorForStatusBar(@ColorInt int color) {
         float[] hsl = new float[3];
         ColorUtils.colorToHSL(color, hsl);
 
@@ -710,13 +726,15 @@ public class UIUtils {
     /**
      * Queries the theme of the given {@code context} for a theme color.
      *
-     * @param context the context holding the current theme.
-     * @param attrResId the theme color attribute to resolve.
+     * @param context            the context holding the current theme.
+     * @param attrResId          the theme color attribute to resolve.
      * @param fallbackColorResId a color resource id tto fallback to if the theme color cannot be
      *                           resolved.
      * @return the theme color or the fallback color.
      */
-    public static @ColorInt int getThemeColor(@NonNull Context context, @AttrRes int attrResId,
+    public static
+    @ColorInt
+    int getThemeColor(@NonNull Context context, @AttrRes int attrResId,
             @ColorRes int fallbackColorResId) {
         final TypedValue tv = new TypedValue();
         if (context.getTheme().resolveAttribute(attrResId, tv, true)) {
@@ -730,7 +748,7 @@ public class UIUtils {
      * {@code color} will be adjusted per {@link #adjustColorForStatusBar(int)}.
      *
      * @param activity The activity to set the status bar color for.
-     * @param color The color to be adjusted and set as the status bar background.
+     * @param color    The color to be adjusted and set as the status bar background.
      */
     public static void adjustAndSetStatusBarColor(@NonNull Activity activity, @ColorInt int color) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
@@ -746,7 +764,8 @@ public class UIUtils {
     }
 
     public static Bitmap vectorToBitmap(@NonNull Context context, @DrawableRes int drawableResId) {
-        VectorDrawableCompat vector = VectorDrawableCompat.create(context.getResources(), drawableResId, context.getTheme());
+        VectorDrawableCompat vector = VectorDrawableCompat
+                .create(context.getResources(), drawableResId, context.getTheme());
         final Bitmap bitmap = Bitmap.createBitmap(vector.getIntrinsicWidth(),
                 vector.getIntrinsicHeight(),
                 Bitmap.Config.ARGB_8888);
