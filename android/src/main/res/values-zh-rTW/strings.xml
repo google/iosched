@@ -580,7 +580,7 @@
 
     <!-- Text of a card shown in the session explorer that asks the user if he will be attending I/O
     in person or remotely. "Remotely" and "In person" are the buttons shown in the card -->
-    <string name="question_local_or_remote">您是遠端參與I/O還是親臨三藩市大會現場？</string>
+    <string name="question_local_or_remote">您是遠端參與I/O還是親臨山景城大會現場？</string>
 
     <!-- Text of a card shown in the Explore I/O screen that asks the user if they want to configure
          the conference WiFi. "Not now" and "Yes, please" are options show on the card -->
