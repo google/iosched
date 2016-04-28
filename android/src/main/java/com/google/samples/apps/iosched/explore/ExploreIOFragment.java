@@ -625,8 +625,8 @@ public class ExploreIOFragment extends Fragment
                 exploreCards.add(liveStream);
             }
 
-            // Add track and themes cards, ordered alphabetically
-            exploreCards.addAll(model.getOrderedTracksAndThemes());
+            // Add track cards, ordered alphabetically
+            exploreCards.addAll(model.getOrderedTracks());
 
             return exploreCards;
         }
@@ -635,7 +635,7 @@ public class ExploreIOFragment extends Fragment
          * Setup adapters for tracks which have child session lists
          */
         private void setupSessionAdapters(final ExploreIOModel model) {
-            final int trackCount = model.getOrderedTracksAndThemes().size()
+            final int trackCount = model.getOrderedTracks().size()
                     + (model.getLiveStreamData() != null ? 1 : 0);
             mTrackSessionsAdapters = new SparseArrayCompat<>(trackCount);
             mTrackSessionsState = new SparseArrayCompat<>(trackCount);
@@ -647,7 +647,7 @@ public class ExploreIOFragment extends Fragment
                                 mImageLoader));
             }
 
-            for (final ItemGroup group : model.getOrderedTracksAndThemes()) {
+            for (final ItemGroup group : model.getOrderedTracks()) {
                 mTrackSessionsAdapters.put(getTrackId(group),
                         SessionsAdapter.createHorizontal(mHost, group.getSessions()));
             }

@@ -75,10 +75,11 @@ public class ExploreIOModel extends ModelWithLoaderManager<ExploreIOModel.Explor
 
     /**
      * Theme groups loaded from the database pre-randomly filtered and stored by topic name.
+     * Not shown in current design.
      */
     private Map<String, ItemGroup> mThemes = new HashMap<>();
 
-    private List<ItemGroup> mOrderedTracksAndThemes;
+    private List<ItemGroup> mOrderedTracks;
 
     private SessionData mKeynoteData;
 
@@ -103,38 +104,35 @@ public class ExploreIOModel extends ModelWithLoaderManager<ExploreIOModel.Explor
     }
 
     /**
-     * @return the tracks and themes ordered alphabetically. The ordering can only happen if the
-     * query {@link com.google.samples.apps.iosched.explore.ExploreIOModel.ExploreIOQueryEnum#TAGS}
-     * has returned, which can be checked by calling {@link #getTagMetadata()}.
+     * @return the tracks ordered alphabetically. The ordering can only happen if the query {@link
+     * com.google.samples.apps.iosched.explore.ExploreIOModel.ExploreIOQueryEnum#TAGS} has returned,
+     * which can be checked by calling {@link #getTagMetadata()}.
      */
-    public Collection<ItemGroup> getOrderedTracksAndThemes() {
-        if (mOrderedTracksAndThemes != null) {
-            return mOrderedTracksAndThemes;
+    public Collection<ItemGroup> getOrderedTracks() {
+        if (mOrderedTracks != null) {
+            return mOrderedTracks;
         }
-        mOrderedTracksAndThemes = new ArrayList<ItemGroup>(getTracks());
-        mOrderedTracksAndThemes.addAll(getThemes());
-        boolean titleMissing = false;
-        for (ItemGroup item : mOrderedTracksAndThemes) {
+        mOrderedTracks = new ArrayList<ItemGroup>(getTracks());
+        for (ItemGroup item : mOrderedTracks) {
             if (item.getTitle() == null) {
                 item.formatTitle(mTagMetadata);
-                if (item.getTitle() == null) {
-                    titleMissing = true;
-                }
             }
         }
 
-        // Order the tracks and themes by titles, only if all of them have titles
-        if (!titleMissing) {
-            Collections.sort(mOrderedTracksAndThemes, new Comparator<ItemGroup>() {
-                @Override
-                public int compare(final ItemGroup lhs, final ItemGroup rhs) {
-                    return lhs.getTitle().compareTo(rhs.getTitle());
+        // Order the tracks by title
+        Collections.sort(mOrderedTracks, new Comparator<ItemGroup>() {
+            @Override
+            public int compare(final ItemGroup lhs, final ItemGroup rhs) {
+                if (lhs.getTitle() == null) {
+                    return 1;
+                } else if (rhs.getTitle() == null) {
+                    return -1;
                 }
-            });
+                return lhs.getTitle().compareTo(rhs.getTitle());
+            }
+        });
 
-        }
-
-        return mOrderedTracksAndThemes;
+        return mOrderedTracks;
     }
 
     public TagMetadata getTagMetadata() { return mTagMetadata; }
@@ -150,8 +148,8 @@ public class ExploreIOModel extends ModelWithLoaderManager<ExploreIOModel.Explor
         mThemes = null;
         mTracks.clear();
         mTracks = null;
-        mOrderedTracksAndThemes.clear();
-        mOrderedTracksAndThemes = null;
+        mOrderedTracks.clear();
+        mOrderedTracks = null;
         mKeynoteData = null;
         mLiveStreamData = null;
     }
@@ -342,7 +340,7 @@ public class ExploreIOModel extends ModelWithLoaderManager<ExploreIOModel.Explor
         }
         mThemes = themeGroups;
         mTracks = trackGroups;
-        mOrderedTracksAndThemes = null;
+        mOrderedTracks = null;
     }
 
     /**
