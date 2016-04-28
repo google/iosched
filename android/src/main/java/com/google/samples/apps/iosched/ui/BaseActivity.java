@@ -54,7 +54,6 @@ import com.google.samples.apps.iosched.navigation.AppNavigationViewAsDrawerImpl;
 import com.google.samples.apps.iosched.navigation.NavigationModel.NavigationItemEnum;
 import com.google.samples.apps.iosched.provider.ScheduleContract;
 import com.google.samples.apps.iosched.service.DataBootstrapService;
-import com.google.samples.apps.iosched.settings.SettingsUtils;
 import com.google.samples.apps.iosched.sync.SyncHelper;
 import com.google.samples.apps.iosched.ui.widget.MultiSwipeRefreshLayout;
 import com.google.samples.apps.iosched.util.AccountUtils;
@@ -423,7 +422,7 @@ public abstract class BaseActivity extends AppCompatActivity implements
             LOGD(TAG, "Tearing down old Helper, was " + mLoginAndAuthProvider.getAccountName());
             if (mLoginAndAuthProvider.isStarted()) {
                 LOGD(TAG, "Unregister device from GCM");
-                mMessagingRegistration.unregisterDevice();
+                mMessagingRegistration.unregisterDevice(mLoginAndAuthProvider.getAccountName());
                 LOGD(TAG, "Stopping old Helper");
                 mLoginAndAuthProvider.stop();
             }

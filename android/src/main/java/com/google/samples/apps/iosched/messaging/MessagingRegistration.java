@@ -31,9 +31,9 @@ public interface MessagingRegistration {
     void registerDevice();
 
     /**
-     * Implements un-registering the current user with the device.
+     * Implements un-registering {@code accountName} with the device.
      */
-    void unregisterDevice();
+    void unregisterDevice(String accountName);
 
     /**
      * Implements to canceling any operation in progress.
