@@ -106,6 +106,12 @@
 # Jackson uses reflection, so needs these attributes preserved
 -keepattributes InnerClasses,EnclosingMethod
 
+# Keep app compat vector animation class
+-keep class android.support.graphics.drawable.VectorDrawableCompat
+-keep class android.support.graphics.drawable.VectorDrawableCompat$* {
+    *;
+}
+
 # Other settings
 -keep class com.android.**
 -keep class com.google.android.**
