@@ -661,8 +661,8 @@
     <!-- Section title for videos related to a particular event session -->
     <string name="related_videos">Related Videos</string>
 
-    <!-- Button text indicating the session is in the user's schedule -->
-    <string name="remove_from_schedule">In schedule</string>
+    <!-- Button text indicating the session is in the user's schedule and can be removed -->
+    <string name="remove_from_schedule">Remove from schedule</string>
 
     <!-- Accessibility content description for button used to remove the session from the user's schedule -->
     <string name="remove_from_schedule_desc">Button to remove session from your schedule.</string>
