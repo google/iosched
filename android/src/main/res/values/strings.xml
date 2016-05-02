@@ -479,9 +479,8 @@
     <string name="my_schedule_watch_live_now">WATCH LIVE NOW</string>
 
     <!-- Accessibility description for navigation drawer -->
-    <string name="navdrawer_description_a11y">Navigation Drawer used to switch between major
-        features of the application</string>
-
+    <string name="navdrawer_description_a11y">Navigation Menu</string>
+    
     <!-- Accessibility description for the spinner used to change account. -->
     <string name="switch_account_spinner_description_a11y">Switch account</string>
 
