@@ -337,8 +337,8 @@ public class SessionDetailFragment extends Fragment implements
         }
 
         mAddScheduleFab.setContentDescription(getString(isInSchedule
-                ? R.string.remove_from_schedule_desc
-                : R.string.add_to_schedule_desc));
+                ? R.string.remove_from_schedule
+                : R.string.add_to_schedule));
     }
 
     @Override
