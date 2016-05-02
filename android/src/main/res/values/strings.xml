@@ -201,7 +201,7 @@
 
     <!-- Menu item that allows user to reload the data in the current screen so they see
     the most up-to-date version from the server. -->
-    <string name="description_refresh">Refresh</string>
+    <string name="description_refresh">Refresh data</string>
 
     <!-- Menu item that allows the user to remove the currently session from their schedule. -->
     <string name="description_remove_schedule">Remove from schedule</string>
