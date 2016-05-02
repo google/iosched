@@ -639,8 +639,7 @@ public class SessionDetailFragment extends Fragment implements
             }
 
             speakerHeaderView.setText(speakerHeader);
-            speakerImageView.setContentDescription(
-                    getString(R.string.speaker_googleplus_profile, speakerHeader));
+            speakerImageView.setImportantForAccessibility(View.IMPORTANT_FOR_ACCESSIBILITY_NO);
             UIUtils.setTextMaybeHtml(speakerAbstractView, speaker.getAbstract());
 
             if (!TextUtils.isEmpty(speaker.getUrl())) {
