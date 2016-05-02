@@ -141,6 +141,7 @@
 
     <!-- IO15 session detail colors -->
     <color name="session_livestreamed_color">@color/app_body_text_2</color>
+    <color name="session_extended_color">#546E7A</color>
 
     <color name="list_dropdown_foreground_normal">#ff333333</color>
     <color name="list_dropdown_divider_color">#92a3a3a3</color>

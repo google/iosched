@@ -191,6 +191,17 @@
                 android:layout_marginBottom="@dimen/padding_normal"
                 style="@style/SessionLiveStreamed" />
 
+            <TextView
+                android:id="@+id/extended_session_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:drawablePadding="@dimen/keyline_1_minus_8dp"
+                android:layout_marginLeft="@dimen/keyline_2_session_detail"
+                android:layout_marginStart="@dimen/keyline_2_session_detail"
+                android:layout_marginBottom="@dimen/padding_normal"
+                android:visibility="gone"
+                style="@style/SessionExtendedLink" />
+
             <HorizontalScrollView
                 android:id="@+id/session_tags_container"
                 android:layout_width="match_parent"

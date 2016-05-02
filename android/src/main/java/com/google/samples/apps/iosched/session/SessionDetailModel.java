@@ -42,6 +42,7 @@ import com.google.samples.apps.iosched.service.SessionAlarmService;
 import com.google.samples.apps.iosched.service.SessionCalendarService;
 import com.google.samples.apps.iosched.util.AccountUtils;
 import com.google.samples.apps.iosched.util.AnalyticsHelper;
+import com.google.samples.apps.iosched.util.ExtendedSessionHelper;
 import com.google.samples.apps.iosched.util.SessionsHelper;
 import com.google.samples.apps.iosched.util.TimeUtils;
 import com.google.samples.apps.iosched.util.UIUtils;
@@ -51,6 +52,7 @@ import java.util.List;
 import java.util.Locale;
 
 import static com.google.samples.apps.iosched.util.LogUtils.LOGD;
+
 import static com.google.samples.apps.iosched.util.LogUtils.makeLogTag;
 
 public class SessionDetailModel
@@ -269,6 +271,24 @@ public class SessionDetailModel
         }
     }
 
+    public long minutesUntilSessionEnds() {
+        if(hasSessionEnded()) {
+            // If session has ended, return 0 minutes until end of session.
+            return 0l;
+        } else {
+            long currentTimeMillis = TimeUtils.getCurrentTime(mContext);
+            int minutes = (int) ((mSessionEnd - currentTimeMillis) / 60000);
+            // Rounded up number of minutes.
+            return minutes * 60000 < (mSessionEnd - currentTimeMillis) ? minutes + 1 : minutes;
+        }
+    }
+
+    public boolean shouldShowExtendedSessionLink() {
+        // If display of link is conditional, place conditions here.
+        // For instance if it should only be shown during a session, use isSessionOngoing().
+        return ExtendedSessionHelper.shouldShowExtendedSessionLink();
+    }
+
     public boolean isSessionReadyForFeedback() {
         long currentTimeMillis = TimeUtils.getCurrentTime(mContext);
         return currentTimeMillis
@@ -444,6 +464,11 @@ public class SessionDetailModel
         if (mHasLiveStream) {
             mSubtitle += " " + UIUtils.getLiveBadgeText(mContext, mSessionStart, mSessionEnd);
         }
+    }
+
+    @VisibleForTesting
+    public String getExtendedSessionUrl() {
+        return ExtendedSessionHelper.getExtendedSessionUrl(this);
     }
 
     private void buildLinks(Cursor cursor) {
@@ -638,6 +663,12 @@ public class SessionDetailModel
                 sendAnalyticsEvent("Session", "Feedback", getSessionTitle());
                 callback.onModelUpdated(this, action);
                 break;
+            case EXTENDED:
+                // ANALYTICS EVENT: Click on the extended session link in Session Details.
+                sendAnalyticsEvent("Session", "Extended Session", getSessionTitle());
+                callback.onModelUpdated(this, action);
+                break;
+
             default:
                 callback.onError(action);
         }
@@ -837,7 +868,8 @@ public class SessionDetailModel
         UNSTAR(2),
         SHOW_MAP(3),
         SHOW_SHARE(4),
-        GIVE_FEEDBACK(5);
+        GIVE_FEEDBACK(5),
+        EXTENDED(6);
 
         private int id;
 

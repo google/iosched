@@ -77,6 +77,7 @@ android {
         buildConfigField("boolean", "ENABLE_SIGNIN_IN_NAVIGATION", "true")
         buildConfigField("boolean", "ENABLE_SETTINGS_IN_NAVIGATION", "true")
         buildConfigField("boolean", "ENABLE_ABOUT_IN_NAVIGATION", "true")
+        buildConfigField("boolean", "ENABLE_EXTENDED_SESSION_URL", "true")
         buildConfigField("String", "CONFERENCE_VERSION", "\"${conf_version}\"")
 
         resValue("string", "pref_conf_messages_enabled", "pref_conf_messages_enabled_${conf_version}")
