@@ -224,6 +224,9 @@
     by email, social networks, etc. -->
     <string name="description_share">Share</string>
 
+    <!-- Session Detail label for Extended Session link. -->
+    <string name="description_extended">Extended Session</string>
+
     <!-- Menu item that allows the user to view the Google+ stream about a particular topic. This
     appears as a menu item on a Session screen, and opens the Google+ app to show the Google+
     posts about that session's topic. -->

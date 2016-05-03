@@ -230,6 +230,12 @@
         <item name="android:lineSpacingMultiplier">1.1</item>
     </style>
 
+    <style name="SessionExtendedLink">
+        <item name="android:textSize">@dimen/text_size_medium</item>
+        <item name="android:textColor">@color/session_extended_color</item>
+        <item name="android:lineSpacingMultiplier">1.1</item>
+    </style>
+
     <style name="TextAppearance.Body2" parent="TextAppearance.AppCompat.Body2">
         <item name="android:textSize">14sp</item> <!-- bug in AppCompat, can remove this when it's fixed -->
         <item name="android:fontFamily">sans-serif-medium</item>

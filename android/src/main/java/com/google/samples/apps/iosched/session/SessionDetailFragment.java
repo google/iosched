@@ -118,6 +118,8 @@ public class SessionDetailFragment extends Fragment implements
 
     private LinearLayout mTags;
 
+    private TextView mExtended;
+
     private ViewGroup mTagsContainer;
 
     private TextView mRequirements;
@@ -143,6 +145,8 @@ public class SessionDetailFragment extends Fragment implements
     private boolean mShowFab = false;
 
     private boolean mHasEnterTransition = false;
+
+    private String mExtendedSessionUrl = null;
 
     @Override
     public void addListener(UserActionListener listener) {
@@ -229,6 +233,15 @@ public class SessionDetailFragment extends Fragment implements
         tryExecuteDeferredUiOperations();
     }
 
+
+    public void fireExtendedSessionIntent() {
+        if (mExtendedSessionUrl != null) {
+            Intent extendedSessionIntent = new Intent(Intent.ACTION_VIEW).setData(Uri.parse(
+                    mExtendedSessionUrl));
+            startActivity(extendedSessionIntent);
+        }
+    }
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
@@ -273,6 +286,7 @@ public class SessionDetailFragment extends Fragment implements
                 (TextView) details.findViewById(R.id.live_streamed_indicator);
         mRequirements = (TextView) details.findViewById(R.id.session_requirements);
         mTags = (LinearLayout) details.findViewById(R.id.session_tags);
+        mExtended = (TextView) details.findViewById(R.id.extended_session_button);
         mTagsContainer = (ViewGroup) details.findViewById(R.id.session_tags_container);
         mAddScheduleFab =
                 (CheckableFloatingActionButton) root.findViewById(R.id.add_schedule_button);
@@ -370,6 +384,9 @@ public class SessionDetailFragment extends Fragment implements
                 intentShare.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 getActivity().startActivity(intentShare);
 
+                break;
+            case EXTENDED:
+                fireExtendedSessionIntent();
                 break;
             default:
                 // Other user actions are completely handled in model
@@ -482,6 +499,22 @@ public class SessionDetailFragment extends Fragment implements
         if (!mHasEnterTransition) {
             // No enter transition so update UI manually
             enterTransitionFinished();
+        }
+
+
+        if (BuildConfig.ENABLE_EXTENDED_SESSION_URL && data.shouldShowExtendedSessionLink()) {
+            mExtendedSessionUrl = data.getExtendedSessionUrl();
+            if (!TextUtils.isEmpty(mExtendedSessionUrl)) {
+                mExtended.setVisibility(View.VISIBLE);
+
+                mExtended.setClickable(true);
+                mExtended.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(final View v) {
+                        sendUserAction(SessionDetailUserActionEnum.EXTENDED, null);
+                    }
+                });
+            }
         }
     }
 
