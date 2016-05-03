@@ -45,7 +45,9 @@ Gson library.
 + **myschedule**: the *schedule* feature. This is accessible from the navigation drawer.
 + **provider**: the content provider and contract used for all the data in the app.
 + **session**: the *session details* feature. This is accessible when selecting a session from 
-either *explore* or *schedule* features.
+either *explore* or *schedule* features. Sessions that the user views are indexed using the [App 
+Indexing API] (https://developers.google.com/app-indexing/introduction#android), and will appear as 
+search suggestions in the Google app.
 + **sync**: this contains all the logic to handle the *backend sync* of the data. [Refer to the sync 
 doc] (SYNC.md).
 + **ui**: contains custom Activities which are extended and used by different features, as well as 

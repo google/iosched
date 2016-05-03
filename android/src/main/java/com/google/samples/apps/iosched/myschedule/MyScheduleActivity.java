@@ -414,6 +414,7 @@ public class MyScheduleActivity extends BaseActivity implements
     @Override
     protected void onNewIntent(Intent intent) {
         super.onNewIntent(intent);
+        launchSessionDetailIfRequiredByIntent(intent);
         LOGD(TAG, "onNewIntent, extras " + intent.getExtras());
         if (intent.hasExtra(EXTRA_DIALOG_MESSAGE)) {
             mShowedAnnouncementDialog = false;

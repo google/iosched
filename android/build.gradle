@@ -79,6 +79,8 @@ android {
         buildConfigField("boolean", "ENABLE_ABOUT_IN_NAVIGATION", "true")
         buildConfigField("boolean", "ENABLE_EXTENDED_SESSION_URL", "true")
         buildConfigField("String", "CONFERENCE_VERSION", "\"${conf_version}\"")
+        buildConfigField("String", "PRODUCTION_WEBSITE_HOST_NAME", "\"${production_website_host_name}\"")
+        buildConfigField("String", "WEB_URL_SCHEDULE_PATH", "\"${web_url_schedule_path}\"")
 
         resValue("string", "pref_conf_messages_enabled", "pref_conf_messages_enabled_${conf_version}")
         buildConfigField("String", "PREF_CONF_MESSAGES_ENABLED", "\"pref_conf_messages_enabled_${conf_version}\"")
@@ -194,6 +196,7 @@ dependencies {
 
     // Google Play services split client libs.
     compile "com.google.android.gms:play-services-analytics:${google_play_services_client_library_version}"
+    compile "com.google.android.gms:play-services-appindexing:${google_play_services_client_library_version}"
     compile "com.google.android.gms:play-services-gcm:${google_play_services_client_library_version}"
     compile "com.google.android.gms:play-services-maps:${google_play_services_client_library_version}"
     compile "com.google.android.gms:play-services-plus:${google_play_services_client_library_version}"
