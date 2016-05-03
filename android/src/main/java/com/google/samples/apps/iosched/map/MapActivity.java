@@ -22,18 +22,18 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Toast;
 
 import com.google.samples.apps.iosched.R;
 import com.google.samples.apps.iosched.navigation.NavigationModel;
 import com.google.samples.apps.iosched.provider.ScheduleContract;
-import com.google.samples.apps.iosched.session.SessionDetailConstants;
 import com.google.samples.apps.iosched.ui.BaseActivity;
 import com.google.samples.apps.iosched.util.AnalyticsHelper;
+import com.google.samples.apps.iosched.util.PermissionsUtils;
 
 import static com.google.samples.apps.iosched.util.LogUtils.makeLogTag;
 
@@ -54,7 +54,8 @@ public class MapActivity extends BaseActivity
 
     private static final int REQUEST_LOCATION_PERMISSION = 1;
 
-    public static final String LOCATION_PERMISSION = Manifest.permission.ACCESS_FINE_LOCATION;
+    public static final String[] PERMISSIONS =
+            new String[]{Manifest.permission.ACCESS_FINE_LOCATION};
 
     private static final String SCREEN_LABEL = "Map";
 
@@ -280,7 +281,7 @@ public class MapActivity extends BaseActivity
      */
     public void attemptEnableMyLocation() {
         // Check if the permission has already been granted.
-        if (hasPermission()) {
+        if (PermissionsUtils.permissionsAlreadyGranted(this, PERMISSIONS)) {
             // Permission has been granted.
             if (mMapFragment != null) {
                 mMapFragment.setMyLocationEnabled(true);
@@ -288,15 +289,8 @@ public class MapActivity extends BaseActivity
             }
         }
 
-        // The permission has not been granted yet. Request the permission.
-        ActivityCompat.requestPermissions(this, new String[]{LOCATION_PERMISSION},
-                REQUEST_LOCATION_PERMISSION);
-    }
-
-
-    private boolean hasPermission() {
-        return ActivityCompat.checkSelfPermission(this, LOCATION_PERMISSION) ==
-                PackageManager.PERMISSION_GRANTED;
+        // The permissions have not been granted yet. Request them.
+        ActivityCompat.requestPermissions(this, PERMISSIONS, REQUEST_LOCATION_PERMISSION);
     }
 
     @Override
@@ -308,15 +302,17 @@ public class MapActivity extends BaseActivity
             return;
         }
 
-        if (permissions.length == 1 && LOCATION_PERMISSION.equals(permissions[0]) &&
+        if (permissions.length == PERMISSIONS.length &&
                 grantResults[0] == PackageManager.PERMISSION_GRANTED) {
             // Permission has been granted.
             if (mMapFragment != null) {
                 mMapFragment.setMyLocationEnabled(true);
             }
         } else {
-            // Permission was denied. Display error message.
-            Toast.makeText(this, R.string.map_permission_denied, Toast.LENGTH_SHORT).show();
+            // Permission was denied. Display error message that disappears after a short while.
+             PermissionsUtils.displayConditionalPermissionDenialSnackbar(this,
+                    R.string.map_permission_denied, PERMISSIONS, REQUEST_LOCATION_PERMISSION, false);
+
         }
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
     }
