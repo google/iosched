@@ -165,6 +165,7 @@
                 android:layout_marginLeft="@dimen/keyline_2_session_detail"
                 android:layout_marginStart="@dimen/keyline_2_session_detail"
                 android:layout_marginBottom="@dimen/keyline_1_minus_8dp"
+                android:focusable="true"
                 style="@style/SessionTimeHint" />
 
             <TextView
@@ -174,6 +175,8 @@
                 android:layout_marginLeft="@dimen/keyline_2_session_detail"
                 android:layout_marginStart="@dimen/keyline_2_session_detail"
                 android:layout_marginBottom="@dimen/padding_normal"
+                android:focusable="true"
+                android:importantForAccessibility="yes"
                 style="@style/Body1Text" />
 
             <TextView
@@ -185,6 +188,7 @@
                 android:drawableLeft="@drawable/ic_videocam_grey"
                 android:drawableStart="@drawable/ic_videocam_grey"
                 android:drawablePadding="@dimen/keyline_1_minus_8dp"
+                android:focusable="true"
                 android:gravity="center"
                 android:layout_marginLeft="@dimen/keyline_2_session_detail"
                 android:layout_marginStart="@dimen/keyline_2_session_detail"
