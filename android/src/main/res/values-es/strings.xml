@@ -100,7 +100,7 @@
   <string name="all_years">Todos los años</string>
 
   <!-- Name of the application, shown in the application's title bar. -->
-  <string name="app_name">Google I/O 2016</string>
+  <string name="app_name">Google I/O</string>
 
   <!-- Label on a button that is one possible answer to the question "Are you attending the
   conference in person in San Francisco or remotely via livestream?" -->
