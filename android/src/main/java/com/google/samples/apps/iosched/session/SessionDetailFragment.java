@@ -520,6 +520,7 @@ public class SessionDetailFragment extends Fragment implements
         if (BuildConfig.ENABLE_EXTENDED_SESSION_URL && data.shouldShowExtendedSessionLink()) {
             mExtendedSessionUrl = data.getExtendedSessionUrl();
             if (!TextUtils.isEmpty(mExtendedSessionUrl)) {
+                mExtended.setText(R.string.description_extended);
                 mExtended.setVisibility(View.VISIBLE);
 
                 mExtended.setClickable(true);
