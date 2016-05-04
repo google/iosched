@@ -64,8 +64,8 @@ public class MarkerLoadingTask extends AsyncTaskLoader<List<MarkerLoadingTask.Ma
                 final int floor = cursor.getInt(MarkerQuery.MARKER_FLOOR);
                 final float lat = cursor.getFloat(MarkerQuery.MARKER_LATITUDE);
                 final float lon = cursor.getFloat(MarkerQuery.MARKER_LONGITUDE);
-                final int type =
-                        MapUtils.detectMarkerType(cursor.getString(MarkerQuery.MARKER_TYPE));
+                final String typeString = cursor.getString(MarkerQuery.MARKER_TYPE);
+                final int type = MapUtils.detectMarkerType(typeString);
                 final String label = cursor.getString(MarkerQuery.MARKER_LABEL);
 
                 final LatLng position = new LatLng(lat, lon);
@@ -73,6 +73,9 @@ public class MarkerLoadingTask extends AsyncTaskLoader<List<MarkerLoadingTask.Ma
                 if (type == MarkerModel.TYPE_LABEL) {
                     // Label markers contain the label as its icon
                     marker = MapUtils.createLabelMarker(labelIconGenerator, id, position, label);
+                } else if (type == MarkerModel.TYPE_ICON) {
+                    // An icon marker is mapped to a drawable based on its full type name
+                    marker = MapUtils.createIconMarker(typeString, id, position, getContext());
                 } else if (type != MarkerModel.TYPE_INACTIVE) {
                     // All other markers (that are not inactive) contain a pin icon
                     marker = MapUtils.createPinMarker(id, position);
