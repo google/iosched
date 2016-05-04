@@ -25,6 +25,7 @@
     tools:context="com.google.samples.apps.iosched.welcome.TosFragment">
 
     <TextView
+        android:id="@+id/title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/welcome_to_google_i_o_app"
