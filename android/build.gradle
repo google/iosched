@@ -35,6 +35,7 @@ android {
     buildToolsVersion "23.0.1"
 
     defaultConfig {
+        applicationId "com.google.samples.apps.iosched"
         versionCode = Integer.valueOf("" + appVersionCode).intValue()
         versionName "${appVersionName}"
         minSdkVersion 16
