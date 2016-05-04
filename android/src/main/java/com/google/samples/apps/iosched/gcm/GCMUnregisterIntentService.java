@@ -18,6 +18,7 @@ package com.google.samples.apps.iosched.gcm;
 import android.app.IntentService;
 import android.content.Intent;
 
+import com.google.samples.apps.iosched.messaging.MessagingRegistrationWithGCM;
 import com.google.samples.apps.iosched.util.AccountUtils;
 
 import static com.google.samples.apps.iosched.util.LogUtils.makeLogTag;
@@ -37,10 +38,12 @@ public class GCMUnregisterIntentService extends IntentService {
 
     @Override
     protected void onHandleIntent(Intent intent) {
+        String accountName = intent
+                .getStringExtra(MessagingRegistrationWithGCM.ACTIVE_ACCOUNT_NAME);
         // Get the correct GCM key for the user. GCM key is a somewhat non-standard
         // approach we use in this app. For more about this, check GCM.TXT.
-        final String gcmKey = AccountUtils.hasActiveAccount(this) ?
-                AccountUtils.getGcmKey(this, AccountUtils.getActiveAccountName(this)) : null;
+        final String gcmKey = accountName != null ?
+                AccountUtils.getGcmKey(this, accountName) : null;
 
         // Unregister on server.
         ServerUtilities.unregister(ServerUtilities.getGcmRegId(this), gcmKey);

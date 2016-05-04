@@ -31,6 +31,7 @@ import static com.google.samples.apps.iosched.util.LogUtils.makeLogTag;
  */
 public class MessagingRegistrationWithGCM implements MessagingRegistration {
 
+    public static final String ACTIVE_ACCOUNT_NAME = "activeAccountName";
     private static final int PLAY_SERVICES_RESOLUTION_REQUEST = 1000;
     private static final String TAG = makeLogTag(MessagingRegistrationWithGCM.class);
 
@@ -53,8 +54,9 @@ public class MessagingRegistrationWithGCM implements MessagingRegistration {
     }
 
     @Override
-    public void unregisterDevice() {
+    public void unregisterDevice(String accountName) {
         Intent intent = new Intent(mActivity, GCMUnregisterIntentService.class);
+        intent.putExtra(ACTIVE_ACCOUNT_NAME, accountName);
         mActivity.startService(intent);
     }
 
