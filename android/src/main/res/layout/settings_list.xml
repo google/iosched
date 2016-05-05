@@ -13,11 +13,12 @@
   the License.
   -->
 
-<android.support.v7.widget.Toolbar
+<android.support.v7.widget.RecyclerView
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/toolbar"
     android:layout_width="match_parent"
-    android:layout_height="?actionBarSize"
-    app:layout_scrollFlags="scroll|enterAlways|snap"
-    app:contentInsetStart="?actionBarInsetStart" />
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:scrollbars="vertical"
+    android:scrollbarStyle="insideOverlay"
+    app:layoutManager="android.support.v7.widget.LinearLayoutManager" />

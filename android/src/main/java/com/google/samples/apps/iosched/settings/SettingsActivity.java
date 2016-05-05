@@ -25,6 +25,9 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.preference.PreferenceFragmentCompat;
+import android.support.v7.widget.RecyclerView;
+import android.view.LayoutInflater;
+import android.view.ViewGroup;
 
 import com.google.samples.apps.iosched.BuildConfig;
 import com.google.samples.apps.iosched.R;
@@ -107,6 +110,18 @@ public class SettingsActivity extends BaseActivity {
         public void onCreate(Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
             SettingsUtils.registerOnSharedPreferenceChangeListener(getActivity(), this);
+        }
+
+        @Override
+        public RecyclerView onCreateRecyclerView(final LayoutInflater inflater,
+                final ViewGroup parent,
+                final Bundle savedInstanceState) {
+            // Override the default list which has horizontal padding. Instead place padding on
+            // the preference items for nicer touch feedback.
+            final RecyclerView prefList =
+                    (RecyclerView) inflater.inflate(R.layout.settings_list, parent, false);
+            prefList.setHasFixedSize(true);
+            return prefList;
         }
 
         @Override
