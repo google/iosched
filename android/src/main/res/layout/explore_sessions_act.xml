@@ -26,7 +26,7 @@
     tools:context=".explore.ExploreSessionsActivity">
 
     <android.support.design.widget.CoordinatorLayout
-        android:id="@+id/coordinatorLayout"
+        android:id="@+id/coordinator_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/background"
@@ -41,7 +41,7 @@
                  shared element transition on L+ -->
 
             <android.support.design.widget.CollapsingToolbarLayout
-                android:id="@+id/collapsingToolbar"
+                android:id="@+id/collapsing_toolbar"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:layout_scrollFlags="scroll|exitUntilCollapsed"

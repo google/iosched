@@ -27,7 +27,7 @@
         tools:context=".explore.ExploreIOActivity">
 
     <android.support.design.widget.CoordinatorLayout
-        android:id="@+id/coordinatorLayout"
+        android:id="@+id/coordinator_layout"
         android:layout_height="match_parent"
         android:layout_width="match_parent">
 

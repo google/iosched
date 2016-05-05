@@ -23,6 +23,7 @@ import android.content.Context;
 import android.content.CursorLoader;
 import android.content.Loader;
 import android.database.Cursor;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.ColorInt;
@@ -168,7 +169,7 @@ public class VideoLibraryModel
                 return tag.getColor();
             }
         }
-        return 0;
+        return Color.TRANSPARENT;
     }
 
     /**

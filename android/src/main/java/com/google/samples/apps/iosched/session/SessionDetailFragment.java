@@ -282,7 +282,7 @@ public class SessionDetailFragment extends Fragment implements
         final ViewGroup root = (ViewGroup) getActivity().findViewById(R.id.session_detail_frag);
         mAppBar = (AppBarLayout) root.findViewById(R.id.appbar);
         mCollapsingToolbar =
-                (CollapsingToolbarLayout) mAppBar.findViewById(R.id.collapsingToolbar);
+                (CollapsingToolbarLayout) mAppBar.findViewById(R.id.collapsing_toolbar);
         mHeaderBox = mAppBar.findViewById(R.id.header_session);
         mToolbar = (Toolbar) mHeaderBox.findViewById(R.id.toolbar);
         mTitle = (TextView) mHeaderBox.findViewById(R.id.session_title);
