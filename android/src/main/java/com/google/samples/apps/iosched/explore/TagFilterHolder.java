@@ -186,11 +186,9 @@ public class TagFilterHolder implements Parcelable {
             TagFilterHolder holder = new TagFilterHolder();
 
             String[] filters = in.createStringArray();
-            in.readStringArray(filters);
             Collections.addAll(holder.mSelectedFilters, filters);
 
             int[] categories = in.createIntArray();
-            in.readIntArray(categories);
             System.arraycopy(categories, 0, holder.mCategories, 0, categories.length);
 
             holder.mShowLiveStreamedSessions = in.readInt() == 1;
