@@ -68,11 +68,13 @@ public class DataExtractor {
   public static final String SEARCH_TRACK_COLOR = "#90CAF9";
   public static final String TV_AND_LIVINGROOM_TRACK_COLOR = "#B3E5FC";
   public static final String VR_TRACK_COLOR = "#FF8A65";
-  public static final String MISC_TRACK_COLOR = "#B5EBF7";
+  public static final String MISC_TRACK_COLOR = "#C5C9E9";
   public static final String ANDROIDSTUDIO_TRACK_COLOR = "#C4E2A2";
   public static final String AUTO_TRACK_COLOR = "#CFD8DC";
   public static final String MONETIZATION_TRACK_COLOR = "#A4D7A5";
   public static final String WEAR_TRACK_COLOR = "#FFCD7A";
+  public static final String ADS_TRACK = "ADS";
+  public static final String ADS_TRACK_COLOR = "#B0BEC5";
   private HashMap<String, JsonObject> videoSessionsById;
   private HashMap<String, JsonObject> speakersById;
   private HashMap<String, JsonObject> categoryToTagMap;
@@ -716,6 +718,8 @@ public class DataExtractor {
         return VR_TRACK_COLOR;
       case MISC_TRACK:
         return MISC_TRACK_COLOR;
+      case ADS_TRACK:
+        return ADS_TRACK_COLOR;
 
       // other tracks
       case ANDROIDSTUDIO_TRACK:
