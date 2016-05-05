@@ -59,16 +59,17 @@ public class SessionDetailActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.session_detail_act);
 
-        final Toolbar toolbar = getToolbar();
-        toolbar.setNavigationIcon(shouldBeFloatingWindow
-                ? R.drawable.ic_close : R.drawable.ic_up);
-        toolbar.setNavigationContentDescription(R.string.close_and_go_back);
-        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+        setToolbarAsUp(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 ActivityCompat.finishAfterTransition(SessionDetailActivity.this);
             }
         });
+        final Toolbar toolbar = getToolbar();
+        // Override the icon if shouldBeFloatingWindow
+        if (shouldBeFloatingWindow) {
+            toolbar.setNavigationIcon(R.drawable.ic_close);
+        }
         mHandler.post(new Runnable() {
             @Override
             public void run() {
