@@ -157,7 +157,6 @@ public class ExploreModel implements Model {
                         while (tagsTokenizer.hasMoreTokens()) {
                             String rawTag = tagsTokenizer.nextToken();
                             if (rawTag.startsWith("topic:")) {
-                                rawTag = rawTag.replaceAll("topic:","");
                                 TopicGroup topicGroup = topicGroups.get(rawTag);
                                 if (topicGroup == null) {
                                     topicGroup = new TopicGroup();
@@ -167,7 +166,7 @@ public class ExploreModel implements Model {
                                 }
                                 topicGroup.addSessionData(session);
 
-                            } else if (rawTag.startsWith("THEME_")) {
+                            } else if (rawTag.startsWith("theme:")) {
                                 ThemeGroup themeGroup = themeGroups.get(rawTag);
                                 if (themeGroup == null) {
                                     themeGroup = new ThemeGroup();

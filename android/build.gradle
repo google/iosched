@@ -62,6 +62,8 @@ android {
         buildConfigField("String", "INPERSON_TIMEZONE", "\"${inperson_timezone}\"")
         buildConfigField("String", "SHOW_IO15_REQUEST_SOCIAL_PANEL_TIME",
                 "\"${show_io15_request_social_panel_time}\"")
+        buildConfigField("String", "SESSION_FEEDBACK_WEB_URI_TEST", "\"${session_feedback_web_uri_test}\"")
+        buildConfigField("String", "SESSION_FEEDBACK_WEB_URI", "\"${session_feedback_web_uri}\"")
     }
 
     signingConfigs {
@@ -186,4 +188,4 @@ dependencies {
 
     compile 'com.google.guava:guava:18.0'
     compile 'com.jakewharton:butterknife:7.0.1'
-    compile 'com.squareup.retrofit2:retrofit:2.0.1'}
+    compile 'com.squareup.retrofit2:retrofit:2.0.2'}

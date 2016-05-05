@@ -1134,6 +1134,7 @@ public final class ScheduleContract {
         public static final String[] TOPIC_TAG_PROJECTION = {
                 BaseColumns._ID,
                 Tags.TAG_NAME,
+                Tags.TAG_NAME,
         };
 
         public static final String[] SEARCH_SESSIONS_PROJECTION = {

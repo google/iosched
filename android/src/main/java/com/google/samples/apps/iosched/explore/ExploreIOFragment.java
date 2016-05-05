@@ -338,7 +338,7 @@ public class ExploreIOFragment extends Fragment implements UpdatableView<Explore
             if (topic.getSessions().size() > 0) {
                 inventoryGroup = new CollectionView.InventoryGroup(GROUP_ID_TOPIC_CARDS);
                 inventoryGroup.addItemWithTag(topic);
-                topic.setTitle(getTranslatedTitle(topic.getTitle(), model));
+                topic.setTitle(getTranslatedTitle(topic.getTitle().replace("topic:", ""), model));
                 topicGroups.add(inventoryGroup);
             }
         }
@@ -348,7 +348,7 @@ public class ExploreIOFragment extends Fragment implements UpdatableView<Explore
             if (theme.getSessions().size() > 0) {
                 inventoryGroup = new CollectionView.InventoryGroup(GROUP_ID_THEME_CARDS);
                 inventoryGroup.addItemWithTag(theme);
-                theme.setTitle(getTranslatedTitle(theme.getTitle(), model));
+                theme.setTitle(getTranslatedTitle(theme.getTitle().replace("theme:", ""), model));
                 themeGroups.add(inventoryGroup);
             }
         }

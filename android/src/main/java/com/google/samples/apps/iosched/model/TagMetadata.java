@@ -70,7 +70,7 @@ public class TagMetadata {
     }
 
     public Tag getTag(String tagId) {
-        return mTagsById.containsKey(tagId) ? mTagsById.get(tagId) : null;
+        return mTagsById.containsKey(tagId)  ? mTagsById.get(tagId) : null;
     }
 
     public List<Tag> getTagsInCategory(String category) {

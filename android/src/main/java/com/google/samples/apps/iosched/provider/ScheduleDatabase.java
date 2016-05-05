@@ -79,6 +79,12 @@ public class ScheduleDatabase extends SQLiteOpenHelper {
                 + "LEFT OUTER JOIN blocks ON sessions.block_id=blocks.block_id "
                 + "LEFT OUTER JOIN rooms ON sessions.room_id=rooms.room_id";
 
+        String SESSIONS_JOIN_BLOCKS_ROOMS_FILTER = "sessions "
+                + "LEFT OUTER JOIN tags ON instr(sessions.session_tags, tags.tag_name)"
+                + "LEFT OUTER JOIN blocks ON sessions.block_id=blocks.block_id "
+                + "LEFT OUTER JOIN rooms ON sessions.room_id=rooms.room_id";
+
+
         String VENDORS_JOIN_TRACKS = "vendors "
                 + "LEFT OUTER JOIN tracks ON vendors.track_id=tracks.track_id";
 

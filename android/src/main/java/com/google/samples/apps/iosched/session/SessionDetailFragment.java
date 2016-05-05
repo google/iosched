@@ -261,10 +261,6 @@ public class SessionDetailFragment extends Fragment
         mPlusOneIcon = (ImageView) getActivity().findViewById(R.id.gplus_icon_box);
         mTwitterIcon = (ImageView) getActivity().findViewById(R.id.twitter_icon_box);
 
-        //Find view that shows a Videocam icon if the session is being live streamed.
-        mLiveStreamVideocamIconAndText = (TextView) getActivity().findViewById(
-                R.id.live_stream_videocam_icon_and_text);
-
         // Find view that shows a play button and some text for the user to watch the session live stream.
         mLiveStreamPlayIconAndText = (TextView) getActivity().findViewById(
                 R.id.live_stream_play_icon_and_text);
@@ -699,10 +695,10 @@ public class SessionDetailFragment extends Fragment
         // If the session is done, hide the FAB, and show the "Give feedback" card.
         if (data.isSessionReadyForFeedback()) {
             mAddScheduleButton.setVisibility(View.INVISIBLE);
-            if (!data.hasFeedback() && data.isInScheduleWhenSessionFirstLoaded() &&
-                    !sDismissedFeedbackCard.contains(data.getSessionId())) {
+         //   if (!data.hasFeedback() && data.isInScheduleWhenSessionFirstLoaded() &&
+         //           !sDismissedFeedbackCard.contains(data.getSessionId())) {
                 showGiveFeedbackCard(data);
-            }
+         //   }
         }
 
         String timeHint = "";

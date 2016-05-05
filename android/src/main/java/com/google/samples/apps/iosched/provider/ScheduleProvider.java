@@ -215,10 +215,11 @@ public class ScheduleProvider extends ContentProvider {
         switch (matchingUriEnum) {
             default: {
                 // Most cases are handled with simple SelectionBuilder.
-                final SelectionBuilder builder = buildExpandedSelection(uri, matchingUriEnum.code);
+                SelectionBuilder builder = buildExpandedSelection(uri, matchingUriEnum.code);
 
                 // If a special filter was specified, try to apply it.
                 if (!TextUtils.isEmpty(tagsFilter) && !TextUtils.isEmpty(categories)) {
+                    builder = buildExpandedSelectionWithFilter(uri, matchingUriEnum.code);
                     addTagsFilter(builder, tagsFilter, categories);
                 }
 
@@ -1017,6 +1018,32 @@ public class ScheduleProvider extends ContentProvider {
                 final String videoId = Videos.getVideoId(uri);
                 return builder.table(Tables.VIDEOS)
                         .where(VideoColumns.VIDEO_ID + "=?", videoId);
+            }
+            default: {
+                throw new UnsupportedOperationException("Unknown uri: " + uri);
+            }
+        }
+    }
+
+
+    public SelectionBuilder buildExpandedSelectionWithFilter(Uri uri, int match) {
+        final SelectionBuilder builder = new SelectionBuilder();
+        ScheduleUriEnum matchingUriEnum = mUriMatcher.matchCode(match);
+        if (matchingUriEnum == null) {
+            throw new UnsupportedOperationException("Unknown uri: " + uri);
+        }
+        switch (matchingUriEnum) {
+            case SESSIONS: {
+                // We query sessions on the joined table of sessions with rooms and tags.
+                // Since there may be more than one tag per session, we GROUP BY session ID.
+                // The starred sessions ("my schedule") are associated with a user, so we
+                // use the current user to select them properly
+                return builder.table(Tables.SESSIONS_JOIN_BLOCKS_ROOMS_FILTER)
+                        .mapToTable(Sessions._ID, Tables.SESSIONS)
+                        .mapToTable(Sessions.BLOCK_ID, Tables.SESSIONS)
+                        .mapToTable(Sessions.ROOM_ID, Tables.SESSIONS)
+                        // .map(Sessions.SESSION_IN_MY_SCHEDULE, "IFNULL(in_schedule, 0)")
+                        .groupBy(Qualified.SESSIONS_SESSION_ID);
             }
             default: {
                 throw new UnsupportedOperationException("Unknown uri: " + uri);
