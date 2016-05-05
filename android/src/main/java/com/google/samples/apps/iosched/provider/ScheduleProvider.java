@@ -260,7 +260,7 @@ public class ScheduleProvider extends ContentProvider {
                 Cursor tags = query(Tags.CONTENT_URI, SearchTopicsSessions.TOPIC_TAG_PROJECTION,
                         SearchTopicsSessions.TOPIC_TAG_SELECTION,
                         new String[] {Config.Tags.CATEGORY_TRACK, selectionArg + "%"},
-                        Tags.TAG_ORDER_BY_CATEGORY);
+                        SearchTopicsSessions.TOPIC_TAG_SORT);
                 // Then we query the sessions_search table and get a list of sessions that match
                 // the given keywords.
                 Cursor search = null;

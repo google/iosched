@@ -96,7 +96,7 @@
 
     <style name="Theme.IOSched.ExploreSessions" parent="Theme.IOSched.Light" />
 
-    <style name="Theme.IOSched.Search" parent="Theme.IOSched">
+    <style name="Theme.IOSched.Search" parent="Theme.IOSched.Light">
         <item name="android:windowBackground">@android:color/transparent</item>
         <item name="android:windowIsTranslucent">true</item>
         <item name="autoCompleteTextViewStyle">@style/Widget.IOSched.Search.AutoCompleteTextView</item>
