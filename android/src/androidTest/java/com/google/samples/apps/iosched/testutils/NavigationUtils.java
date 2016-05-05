@@ -96,14 +96,12 @@ public class NavigationUtils {
     }
 
     public static void checkNavigationIconIsUp() {
-        onView(withContentDescription("Close and go back")).check(matches(isDisplayed()));
+        onView(withContentDescription(R.string.close_and_go_back)).check(matches(isDisplayed()));
     }
 
     public static void checkNavigationIconIsMenu() {
-        onView(withContentDescription(
-                "Navigation Drawer used to switch between major features of the application"))
-                .check(matches(isDisplayed()));
-
+        onView(withContentDescription(R.string.navdrawer_description_a11y)).check(
+                matches(isDisplayed()));
     }
 
     /**

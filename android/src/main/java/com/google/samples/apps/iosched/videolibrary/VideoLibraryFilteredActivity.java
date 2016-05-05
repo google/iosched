@@ -80,10 +80,7 @@ public class VideoLibraryFilteredActivity extends BaseActivity implements
         LOGD("Tracker", SCREEN_LABEL);
 
         // Add the back button to the toolbar.
-        Toolbar toolbar = getToolbar();
-        toolbar.setNavigationIcon(R.drawable.ic_up);
-        toolbar.setNavigationContentDescription(R.string.close_and_go_back);
-        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+        setToolbarAsUp(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 navigateUpOrBack(VideoLibraryFilteredActivity.this, null);

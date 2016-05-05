@@ -544,6 +544,19 @@ public abstract class BaseActivity extends AppCompatActivity implements
         }
     }
 
+    /**
+     * @param clickListener The {@link android.view.View.OnClickListener} for the navigation icon of
+     *                      the toolbar.
+     */
+    protected void setToolbarAsUp(View.OnClickListener clickListener) {
+        // Initialise the toolbar
+        getToolbar();
+
+        mToolbar.setNavigationIcon(R.drawable.ic_up);
+        mToolbar.setNavigationContentDescription(R.string.close_and_go_back);
+        mToolbar.setNavigationOnClickListener(clickListener);
+    }
+
     @Override
     protected void onDestroy() {
         super.onDestroy();

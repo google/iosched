@@ -20,7 +20,6 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.NavUtils;
-import android.support.v7.widget.Toolbar;
 import android.view.View;
 
 import com.google.samples.apps.iosched.R;
@@ -59,10 +58,7 @@ public class SessionFeedbackActivity extends BaseActivity {
             finish();
         }
 
-        Toolbar toolbar = getToolbar();
-        toolbar.setNavigationIcon(R.drawable.ic_up);
-        toolbar.setNavigationContentDescription(R.string.close_and_go_back);
-        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+        setToolbarAsUp(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 NavUtils.navigateUpTo(SessionFeedbackActivity.this,
