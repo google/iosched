@@ -130,7 +130,7 @@
     <dimen name="widget_margin">0dp</dimen>
 
     <!-- Map -->
-    <dimen name="map_slideableinfo_height_titleonly">56dp</dimen>
+    <dimen name="map_slideableinfo_height_titleonly">80dp</dimen>
     <dimen name="map_slideableinfo_height_venue">120dp</dimen>
     <dimen name="map_slideableinfo_height_session">100dp</dimen>
     <dimen name="map_info_item_height">72dp</dimen>
