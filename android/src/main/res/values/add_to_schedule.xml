@@ -14,13 +14,17 @@
   -->
 
 <resources>
-    
-    <item name="add_to_schedule_add_line_2_trim_start" type="fraction" format="float">0.03333333333333</item>
-    <item name="add_to_schedule_add_line_2_trim_end" type="fraction" format="float">0.96666666666667</item>
-    <item name="add_to_schedule_done_line_1_trim_start" type="fraction" format="float">0.205</item>
-    <item name="add_to_schedule_done_line_1_trim_end" type="fraction" format="float">0.768</item>
+
+    <item name="add_to_schedule_plus_line_2_trim_start" type="fraction" format="float">0.03333333333333</item>
+    <item name="add_to_schedule_plus_line_2_trim_end" type="fraction" format="float">0.96666666666667</item>
+    <item name="add_to_schedule_tick_line_1_trim_start" type="fraction" format="float">0.205</item>
+    <item name="add_to_schedule_tick_line_1_trim_end" type="fraction" format="float">0.768</item>
     <integer name="add_to_schedule_stroke_width">2</integer>
     <integer name="add_to_schedule_duration">250</integer>
-    <color name="tick_add">#444</color>
+    <color name="tick_plus">#444</color>
+    <integer name="add_to_schedule_viewport_size">24</integer>
+    <integer name="add_to_schedule_viewport_center">12</integer>
+    <string name="add_to_schedule_path_plus" translatable="false">M12,5 L12,19 M5,12 L19,12</string>
+    <string name="add_to_schedule_path_tick" translatable="false">M4.1,12.7 L9.7,18.3 M9.7,16.9 L20.3,6.3</string>
 
 </resources>

@@ -13,10 +13,24 @@
   the License.
   -->
 
-<objectAnimator
+<vector
     xmlns:android="http://schemas.android.com/apk/res/android"
-    android:propertyName="translateX"
-    android:valueFrom="0"
-    android:valueTo="-2.4"
-    android:duration="@integer/add_to_schedule_duration"
-    android:interpolator="@android:interpolator/accelerate_decelerate" />
+    android:width="24dp"
+    android:height="24dp"
+    android:viewportWidth="@integer/add_to_schedule_viewport_size"
+    android:viewportHeight="@integer/add_to_schedule_viewport_size">
+
+    <group
+        android:name="root"
+        android:pivotX="@integer/add_to_schedule_viewport_center"
+        android:pivotY="@integer/add_to_schedule_viewport_center">
+
+        <path
+            android:name="tick_plus"
+            android:pathData="@string/add_to_schedule_path_plus"
+            android:strokeWidth="@integer/add_to_schedule_stroke_width"
+            android:strokeColor="@color/tick_plus" />
+
+    </group>
+
+</vector>

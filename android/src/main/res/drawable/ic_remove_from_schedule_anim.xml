@@ -33,10 +33,10 @@
             <path
                 android:name="line_1"
                 android:pathData="M2.11,10.71L11.98,20.64"
-                android:strokeColor="@color/tick_add"
+                android:strokeColor="@color/tick_plus"
                 android:strokeWidth="@integer/add_to_schedule_stroke_width"
-                android:trimPathStart="@fraction/add_to_schedule_done_line_1_trim_start"
-                android:trimPathEnd="@fraction/add_to_schedule_done_line_1_trim_end" />
+                android:trimPathStart="@fraction/add_to_schedule_tick_line_1_trim_start"
+                android:trimPathEnd="@fraction/add_to_schedule_tick_line_1_trim_end" />
 
         </group>
 
@@ -48,7 +48,7 @@
             <path
                 android:name="line_2"
                 android:pathData="M20.31,6.3L9.7,16.91"
-                android:strokeColor="@color/tick_add"
+                android:strokeColor="@color/tick_plus"
                 android:strokeWidth="@integer/add_to_schedule_stroke_width" />
 
         </group>

@@ -13,10 +13,22 @@
   the License.
   -->
 
-<objectAnimator
+<set
     xmlns:android="http://schemas.android.com/apk/res/android"
-    android:propertyName="trimPathEnd"
-    android:valueFrom="1"
-    android:valueTo="@fraction/add_to_schedule_done_line_1_trim_end"
-    android:duration="@integer/add_to_schedule_duration"
-    android:interpolator="@android:interpolator/accelerate_decelerate" />
+    android:ordering="together">
+
+    <objectAnimator
+        android:propertyName="trimPathStart"
+        android:valueFrom="0"
+        android:valueTo="@fraction/add_to_schedule_plus_line_2_trim_start"
+        android:duration="@integer/add_to_schedule_duration"
+        android:interpolator="@android:interpolator/accelerate_decelerate" />
+
+    <objectAnimator
+        android:propertyName="trimPathEnd"
+        android:valueFrom="1"
+        android:valueTo="@fraction/add_to_schedule_plus_line_2_trim_end"
+        android:duration="@integer/add_to_schedule_duration"
+        android:interpolator="@android:interpolator/accelerate_decelerate" />
+
+</set>

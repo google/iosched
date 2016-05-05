@@ -20,51 +20,24 @@
     <!-- line 1 -->
     <target
         android:name="line_1"
-        android:animation="@animator/remove_from_schedule_line_1_untrim_start" />
-
-    <target
-        android:name="line_1"
-        android:animation="@animator/remove_from_schedule_line_1_untrim_end" />
+        android:animation="@animator/remove_from_schedule_line_1_untrim" />
 
     <target
         android:name="line_1_group"
-        android:animation="@animator/remove_from_schedule_line_1_rotate" />
-
-    <target
-        android:name="line_1_group"
-        android:animation="@animator/remove_from_schedule_line_1_translate_x" />
-
-    <target
-        android:name="line_1_group"
-        android:animation="@animator/remove_from_schedule_line_1_translate_y" />
-
+        android:animation="@animator/remove_from_schedule_line_1_move" />
 
     <!-- line 2 -->
     <target
         android:name="line_2"
-        android:animation="@animator/remove_from_schedule_line_2_trim_start" />
-
-    <target
-        android:name="line_2"
-        android:animation="@animator/remove_from_schedule_line_2_trim_end" />
+        android:animation="@animator/remove_from_schedule_line_2_trim" />
 
     <target
         android:name="line_2_group"
-        android:animation="@animator/remove_from_schedule_line_2_rotate" />
-
-    <target
-        android:name="line_2_group"
-        android:animation="@animator/remove_from_schedule_line_2_translate_x" />
-
-    <target
-        android:name="line_2_group"
-        android:animation="@animator/remove_from_schedule_line_2_translate_y" />
-
+        android:animation="@animator/remove_from_schedule_line_2_move" />
 
     <!-- rotate the whole thing -->
     <target
         android:name="root"
         android:animation="@animator/remove_from_schedule_rotate" />
-
 
 </animated-vector>
