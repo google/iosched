@@ -27,6 +27,7 @@ import com.google.samples.apps.iosched.settings.SettingsUtils;
 import com.google.samples.apps.iosched.testutils.LoginUtils;
 import com.google.samples.apps.iosched.testutils.NavigationUtils;
 
+import org.junit.After;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -72,6 +73,11 @@ public class BaseActivity_ActiveAccountUnsuccessfulLoginTest {
 
                 }
             };
+
+    @After
+    public void cleanUp() {
+        LoginAndAuthProvider.setStubLoginAndAuth(null);
+    }
 
     /**
      * This will fail if there is no available account on the device
