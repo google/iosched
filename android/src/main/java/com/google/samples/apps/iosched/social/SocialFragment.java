@@ -16,10 +16,7 @@
 
 package com.google.samples.apps.iosched.social;
 
-import android.annotation.TargetApi;
 import android.app.Fragment;
-import android.graphics.drawable.AnimatedVectorDrawable;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.graphics.drawable.AnimatedVectorDrawableCompat;
 import android.view.LayoutInflater;
@@ -30,11 +27,10 @@ import android.widget.TextView;
 
 import com.google.samples.apps.iosched.Config;
 import com.google.samples.apps.iosched.R;
+import com.google.samples.apps.iosched.social.SocialModel.SocialLinksEnum;
 import com.google.samples.apps.iosched.ui.widget.DrawShadowFrameLayout;
 import com.google.samples.apps.iosched.util.TimeUtils;
 import com.google.samples.apps.iosched.util.UIUtils;
-
-import com.google.samples.apps.iosched.social.SocialModel.SocialLinksEnum;
 
 /**
  * Displays links for navigating to social media channels.
@@ -103,7 +99,9 @@ public class SocialFragment extends Fragment {
         final AnimatedVectorDrawableCompat logo =
                 AnimatedVectorDrawableCompat.create(getActivity(), R.drawable.avd_hash_io_16);
         iv.setImageDrawable(logo);
-        logo.start();
+        if (UIUtils.animationEnabled(getActivity().getContentResolver())) {
+            logo.start();
+        }
     }
 
     /**

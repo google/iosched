@@ -14,6 +14,8 @@
 
 package com.google.samples.apps.iosched.social;
 
+import android.provider.Settings;
+import android.support.test.filters.SdkSuppress;
 import android.support.test.runner.AndroidJUnit4;
 import android.test.suitebuilder.annotation.LargeTest;
 
@@ -32,11 +34,23 @@ public class SocialActivityTest {
             new BaseActivityTestRule<SocialActivity>(
                     SocialActivity.class, null, true);
 
+    /**
+     * The test will fail on API < 17, due to the looping animation. On API 17+, the activity checks
+     * the settings for {@link Settings.Global#ANIMATOR_DURATION_SCALE} and doesn't run the
+     * animation if it is turned off.
+     */
+    @SdkSuppress(minSdkVersion = 17)
     @Test
     public void navigationIcon_DisplaysAsMenu() {
         NavigationUtils.checkNavigationIconIsMenu();
     }
 
+    /**
+     * The test will fail on API < 17, due to the looping animation. On API 17+, the activity checks
+     * the settings for {@link Settings.Global#ANIMATOR_DURATION_SCALE} and doesn't run the
+     * animation if it is turned off.
+     */
+    @SdkSuppress(minSdkVersion = 17)
     @Test
     public void navigationIcon_OnClick_NavigationDisplayed() {
         NavigationUtils.checkNavigationIsDisplayedWhenClickingMenuIcon();
