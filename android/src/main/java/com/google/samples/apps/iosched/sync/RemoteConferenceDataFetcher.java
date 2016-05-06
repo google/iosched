@@ -46,10 +46,7 @@ import static com.google.samples.apps.iosched.util.LogUtils.makeLogTag;
  * Helper class that fetches conference data from the remote server.
  */
 public class RemoteConferenceDataFetcher {
-    private static final String AUTHORIZATION_HEADER = "Authorization";
-    private static final String BEARER_PREFIX = "Bearer ";
     private static final String TAG = makeLogTag(SyncHelper.class);
-    private static final boolean AUTHORIZATION_TO_BACKEND_REQUIRED = false;
 
     // The directory under which we cache our downloaded files
     private static String CACHE_DIR = "data_cache";
@@ -97,11 +94,7 @@ public class RemoteConferenceDataFetcher {
         BasicHttpClient httpClient = new BasicHttpClient();
         httpClient.setRequestLogger(mQuietLogger);
 
-        if (AUTHORIZATION_TO_BACKEND_REQUIRED) {
-            // Allows pre-release builds to use a Google Cloud storage bucket with non-public data.
-            httpClient.addHeader(AUTHORIZATION_HEADER, BEARER_PREFIX +
-                    AccountUtils.getAuthToken(mContext));
-        }
+        IOUtils.authorizeHttpClient(mContext, httpClient);
 
         // Only download if data is newer than refTimestamp
         // Cloud Storage is very picky with the If-Modified-Since format. If it's in a wrong
@@ -218,11 +211,7 @@ public class RemoteConferenceDataFetcher {
         }
 
         BasicHttpClient client = new BasicHttpClient();
-        if (AUTHORIZATION_TO_BACKEND_REQUIRED) {
-            // Allows pre-release builds to use a Google Cloud storage bucket with non-public data.
-            client.addHeader(AUTHORIZATION_HEADER,
-                    BEARER_PREFIX + AccountUtils.getAuthToken(mContext));
-        }
+        IOUtils.authorizeHttpClient(mContext, client);
         client.setRequestLogger(mQuietLogger);
 
         // We don't have the file on cache, so download it
