@@ -386,7 +386,11 @@ public class AppNavigationViewAsDrawerImpl extends AppNavigationViewAbstractImpl
             }
         }
 
-        mDrawerLayout.closeDrawer(GravityCompat.START);
+        // The navigation menu is accessible from some screens, via swiping, without a drawer
+        // layout, eg MapActivity when accessed from SessionDetailsActivity.
+        if (mDrawerLayout != null) {
+            mDrawerLayout.closeDrawer(GravityCompat.START);
+        }
     }
 
     private boolean isSpecialItem(NavigationItemEnum item) {
