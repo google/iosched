@@ -53,8 +53,7 @@ import static com.google.samples.apps.iosched.util.LogUtils.makeLogTag;
  */
 public class AccountFragment extends WelcomeFragment implements RadioGroup.OnCheckedChangeListener {
     public static final String[] APP_REQUIRED_PERMISSIONS =
-            new String[]{Manifest.permission.GET_ACCOUNTS,
-                    Manifest.permission.WRITE_EXTERNAL_STORAGE};
+            new String[]{Manifest.permission.GET_ACCOUNTS};
     private static final int REQUEST_PERMISSION_REQUEST_CODE = 111;
     private static final String TAG = makeLogTag(AccountFragment.class);
     private AccountManager mAccountManager;
