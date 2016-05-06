@@ -446,9 +446,6 @@ public final class ScheduleContract {
 
         public static final String CONTENT_TYPE_ID = "tag";
 
-        // Used for tag search projection.
-        public static final String TAG_ORDER_BY_CATEGORY = Tags.TAG_ORDER_IN_CATEGORY + " ASC";
-
         /**
          * Build {@link Uri} that references all tags.
          */
@@ -986,6 +983,8 @@ public final class ScheduleContract {
 
         public static final String TOPIC_TAG_SELECTION = Tags.TAG_CATEGORY + "= ? and " +
                 Tags.TAG_NAME + " like ?";
+
+        public static final String TOPIC_TAG_SORT = Tags.TAG_NAME + " ASC";
 
         public static final String[] TOPIC_TAG_PROJECTION = {
                 BaseColumns._ID,
