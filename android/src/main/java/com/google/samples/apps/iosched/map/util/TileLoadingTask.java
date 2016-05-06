@@ -32,6 +32,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static com.google.samples.apps.iosched.util.LogUtils.LOGD;
+import static com.google.samples.apps.iosched.util.LogUtils.LOGE;
 import static com.google.samples.apps.iosched.util.LogUtils.makeLogTag;
 
 /**
@@ -82,6 +83,7 @@ public class TileLoadingTask extends AsyncTaskLoader<List<TileLoadingTask.TileEn
                 File f = MapUtils.getTileFile(getContext().getApplicationContext(), file);
                 if (f == null || !f.exists()) {
                     // Skip the file if it is invalid or does not exist.
+                    LOGE(TAG, "Tile file not found for floor " + floor);
                     break;
                 }
 
