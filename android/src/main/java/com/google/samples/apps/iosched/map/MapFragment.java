@@ -370,28 +370,33 @@ public class MapFragment extends com.google.android.gms.maps.MapFragment impleme
         //noinspection MissingPermission
         mMap.setMyLocationEnabled(mMyLocationEnabled);
 
+        addVenueMarker();
+
+        // Move camera directly to the venue
+        centerOnVenue(false);
+
+        loadMapData();
+
+        LOGD(TAG, "Map setup complete.");
+    }
+
+    /**
+     * Loads markers and tiles from the content provider.
+     *
+     * @see #mMarkerLoader
+     * @see #mTileLoader
+     */
+    private void loadMapData() {
         // load all markers
         LoaderManager lm = getLoaderManager();
         lm.initLoader(TOKEN_LOADER_MARKERS, null, mMarkerLoader).forceLoad();
 
         // load the tile overlays
         lm.initLoader(TOKEN_LOADER_TILES, null, mTileLoader).forceLoad();
-
-        setupMap(true);
     }
 
-
-    private void setupMap(boolean resetCamera) {
-
-        // Add a Marker for venue
+    private void addVenueMarker() {
         mVenueMaker = mMap.addMarker(MapUtils.createVenueMarker(VENUE).visible(false));
-
-        if (resetCamera) {
-            // Move camera directly to the venue
-            centerOnVenue(false);
-        }
-
-        LOGD(TAG, "Map setup complete.");
     }
 
     @Override
@@ -699,9 +704,9 @@ public class MapFragment extends com.google.android.gms.maps.MapFragment impleme
                 return;
             }
 
-            //clear map reload all data
+            // Clear the map, but don't reset the camera.
             clearMap();
-            setupMap(false);
+            addVenueMarker();
 
             // reload data from loaders
             LoaderManager lm = getActivity().getLoaderManager();
