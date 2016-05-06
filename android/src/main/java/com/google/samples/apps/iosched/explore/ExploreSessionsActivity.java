@@ -20,8 +20,11 @@ import android.app.LoaderManager;
 import android.content.Intent;
 import android.content.Loader;
 import android.database.Cursor;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.ColorInt;
+import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.widget.RecyclerView;
@@ -103,6 +106,8 @@ public class ExploreSessionsActivity extends BaseActivity
 
     private DrawerLayout mDrawerLayout;
 
+    private CollapsingToolbarLayout mCollapsingToolbar;
+
     private ImageView mHeaderImage;
 
     private TextView mTitle;
@@ -120,6 +125,7 @@ public class ExploreSessionsActivity extends BaseActivity
 
         mImageLoader = new ImageLoader(this);
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
+        mCollapsingToolbar = (CollapsingToolbarLayout) findViewById(R.id.collapsing_toolbar);
         mHeaderImage = (ImageView) findViewById(R.id.header_image);
         mTitle = (TextView) findViewById(R.id.title);
         mFiltersList = (RecyclerView) findViewById(R.id.filters);
@@ -188,6 +194,14 @@ public class ExploreSessionsActivity extends BaseActivity
         // ANALYTICS SCREEN: View the Explore Sessions screen
         // Contains: Nothing (Page name is a constant)
         AnalyticsHelper.sendScreenView(SCREEN_LABEL);
+    }
+
+    @Override
+    protected void onPostCreate(final Bundle savedInstanceState) {
+        super.onPostCreate(savedInstanceState);
+        // This screen sets a status bar color at runtime. The base activity may overwrite this on
+        // configuration changes so set the header again to ensure the correct result.
+        setHeader();
     }
 
     @Override
@@ -304,7 +318,7 @@ public class ExploreSessionsActivity extends BaseActivity
         if (mMode == MODE_EXPLORE && mTagMetadata != null) {
             String title = null;
             String headerImage = null;
-            int trackColor = 0;
+            @ColorInt int trackColor = Color.TRANSPARENT;
 
             // If exactly one theme or one track is selected, show its title and image.
             int selectedTracks = mTagFilterHolder.getCountByCategory(Config.Tags.CATEGORY_TRACK);
@@ -336,9 +350,10 @@ public class ExploreSessionsActivity extends BaseActivity
             }
 
             final int statusBarColor =
-                    trackColor != 0 ? UIUtils.adjustColorForStatusBar(trackColor) :
+                    trackColor != Color.TRANSPARENT ? UIUtils.adjustColorForStatusBar(trackColor) :
                             UIUtils.getThemeColor(this, R.attr.colorPrimaryDark,
                                     R.color.theme_primary_dark);
+            mCollapsingToolbar.setContentScrimColor(trackColor);
             mDrawerLayout.setStatusBarBackgroundColor(statusBarColor);
         }
     }

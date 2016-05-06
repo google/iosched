@@ -16,10 +16,13 @@
 
 package com.google.samples.apps.iosched.videolibrary;
 
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.ColorInt;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.design.widget.CollapsingToolbarLayout;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.widget.Toolbar;
@@ -60,6 +63,8 @@ public class VideoLibraryFilteredActivity extends BaseActivity implements
 
     private DrawerLayout mDrawerLayout;
 
+    private CollapsingToolbarLayout mCollapsingToolbar;
+
     private ImageView mHeaderImage;
 
     private ImageLoader mImageLoader;
@@ -71,6 +76,7 @@ public class VideoLibraryFilteredActivity extends BaseActivity implements
 
         mImageLoader = new ImageLoader(this);
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
+        mCollapsingToolbar = (CollapsingToolbarLayout) findViewById(R.id.collapsing_toolbar);
         mHeaderImage = (ImageView) findViewById(R.id.header_image);
         setTitle(R.string.title_video_library);
 
@@ -131,9 +137,12 @@ public class VideoLibraryFilteredActivity extends BaseActivity implements
             mHeaderImage.setImageResource(R.drawable.ic_hash_io_16_monochrome);
         }
         final int statusBarColor =
-                trackColor != 0 ? UIUtils.adjustColorForStatusBar(trackColor) :
+                trackColor != Color.TRANSPARENT ? UIUtils.adjustColorForStatusBar(trackColor) :
                         UIUtils.getThemeColor(this, R.attr.colorPrimaryDark,
                                 R.color.theme_primary_dark);
+        final @ColorInt int toolbarScrim = trackColor != Color.TRANSPARENT ? trackColor :
+                ContextCompat.getColor(this, R.color.io16_light_grey);
+        mCollapsingToolbar.setContentScrimColor(toolbarScrim);
         mDrawerLayout.setStatusBarBackgroundColor(statusBarColor);
     }
 }
