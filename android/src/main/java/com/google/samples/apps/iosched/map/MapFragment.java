@@ -258,10 +258,6 @@ public class MapFragment extends com.google.android.gms.maps.MapFragment impleme
         // get DPI
         mDPI = getActivity().getResources().getDisplayMetrics().densityDpi / 160f;
 
-        ICON_ACTIVE = BitmapDescriptorFactory.fromResource(R.drawable.map_marker_selected);
-        ICON_NORMAL =
-                BitmapDescriptorFactory.fromResource(R.drawable.map_marker_unselected);
-
         // Get the arguments and restore the highlighted room or displayed floor.
         Bundle data = getArguments();
         if (data != null) {
@@ -356,6 +352,11 @@ public class MapFragment extends com.google.android.gms.maps.MapFragment impleme
 
     @Override
     public void onMapReady(GoogleMap googleMap) {
+
+        // Initialise marker icons.
+        ICON_ACTIVE = BitmapDescriptorFactory.fromResource(R.drawable.map_marker_selected);
+        ICON_NORMAL = BitmapDescriptorFactory.fromResource(R.drawable.map_marker_unselected);
+
         mMap = googleMap;
         mMap.setIndoorEnabled(false);
         mMap.setOnMarkerClickListener(this);
