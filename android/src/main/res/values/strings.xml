@@ -433,7 +433,7 @@
     <!-- Clickable text in the map popup that leads to sessions in a room -->
     <string name="map_touch_to_see_session">Touch to see Sessions</string>
 
-    <!-- Label of info screen title for Moscone Center at a lower zoom level -->
+    <!-- Label of info screen title for Event Site at a lower zoom level -->
     <string name="map_venue_name" translatable="false">Shoreline Amphitheatre</string>
 
     <!-- Address of Moscone Center. Shown together with its name. -->
@@ -972,7 +972,7 @@ user updates the rating. -->
     <string name="welcome_select_accoun_text">Please choose an account to use:</string>
 
     <!-- This string explains that the Accounts and Storage Android permissions are required in order to sync conference data. The string shows to indicate to users that they need to accept the permissions dialog -->
-    <string name="welcome_permissions_rationale">Accounts and Storage permissions are required to sync conference data</string>
+    <string name="welcome_permissions_rationale">Account/Contact permission required to sync schedule</string>
 
     <!-- Text for a button which will add a wi-fi network -->
     <string name="wifi_dialog_button_configure">Add WiFi Network</string>
