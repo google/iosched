@@ -28,6 +28,7 @@ import android.text.TextUtils;
 import com.google.samples.apps.iosched.io.*;
 import com.google.samples.apps.iosched.io.map.model.Tile;
 import com.google.samples.apps.iosched.provider.ScheduleContract;
+import com.google.samples.apps.iosched.util.AccountUtils;
 import com.google.samples.apps.iosched.util.IOUtils;
 import com.google.samples.apps.iosched.util.MapUtils;
 import com.google.gson.JsonParser;
@@ -257,6 +258,7 @@ public class ConferenceDataHandler {
                         File tileFile = MapUtils.getTileFile(mContext, filename);
                         BasicHttpClient httpClient = new BasicHttpClient();
                         httpClient.setRequestLogger(mQuietLogger);
+                        IOUtils.authorizeHttpClient(mContext, httpClient);
                         HttpResponse httpResponse = httpClient.get(url, null);
                         IOUtils.writeToFile(httpResponse.getBody(), tileFile);
 
