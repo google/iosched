@@ -15,8 +15,9 @@
 
 <objectAnimator
     xmlns:android="http://schemas.android.com/apk/res/android"
-    android:propertyName="translateX"
-    android:valueFrom="0"
-    android:valueTo="6.08"
+    android:propertyName="pathData"
+    android:valueFrom="@string/add_to_schedule_path_tick"
+    android:valueTo="@string/add_to_schedule_path_plus"
     android:duration="@integer/add_to_schedule_duration"
-    android:interpolator="@android:interpolator/accelerate_decelerate" />
+    android:interpolator="@android:interpolator/fast_out_slow_in"
+    android:valueType="pathType" />
