@@ -303,7 +303,9 @@ public class PresenterFragmentImpl extends Fragment
 
     private void onObservedContentChanged(QueryEnum[] queriesToRun) {
         for (int i = 0; i < queriesToRun.length; i++) {
-            getLoaderManager().restartLoader(queriesToRun[i].getId(), null, this);
+
+             getLoaderManager().restartLoader(queriesToRun[i].getId(), null, this);
+            
         }
     }
 
