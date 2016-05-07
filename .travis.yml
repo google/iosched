@@ -27,7 +27,7 @@ notifications:
 
 env:
   matrix:
-    - ANDROID_TARGET=android-23  ANDROID_ABI=armeabi-v7a
+    - ANDROID_TARGET=android-23   ANDROID_ABI=armeabi-v7a
 
 before_script:
   - echo no | android create avd --force -n test -t $ANDROID_TARGET --abi $ANDROID_ABI
