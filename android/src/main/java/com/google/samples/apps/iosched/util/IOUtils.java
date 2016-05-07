@@ -40,7 +40,7 @@ public class IOUtils {
 
     private static final String AUTHORIZATION_HEADER = "Authorization";
     private static final String BEARER_PREFIX = "Bearer ";
-    private static final boolean AUTHORIZATION_TO_BACKEND_REQUIRED = false;
+    private static final boolean AUTHORIZATION_TO_BACKEND_REQUIRED = true;
 
     /**
      * Writes the given string to a {@link File}.
