@@ -13,21 +13,22 @@
 # limitations under the License.
 
 language: android
+jdk: oraclejdk7
 
 android:
   components:
-    - build-tools-23.0.3
-    - android-23
+    - build-tools-21.1.2
+    - android-21
     - extra-google-m2repository
     - extra-android-m2repository
-    - sys-img-armeabi-v7a-android-23
+    - sys-img-armeabi-v7a-android-21
 
 notifications:
   email: false
 
 env:
   matrix:
-    - ANDROID_TARGET=android-23    ANDROID_ABI=armeabi-v7a
+    - ANDROID_TARGET=android-21    ANDROID_ABI=armeabi-v7a
 
 before_script:
   - echo no | android create avd --force -n test -t $ANDROID_TARGET --abi $ANDROID_ABI
