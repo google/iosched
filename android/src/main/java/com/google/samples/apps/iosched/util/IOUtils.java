@@ -20,6 +20,7 @@ import android.content.Context;
 
 import com.google.android.gms.plus.Account;
 import com.google.common.base.Charsets;
+import com.google.samples.apps.iosched.BuildConfig;
 import com.turbomanage.httpclient.BasicHttpClient;
 
 import java.io.BufferedReader;
@@ -40,7 +41,7 @@ public class IOUtils {
 
     private static final String AUTHORIZATION_HEADER = "Authorization";
     private static final String BEARER_PREFIX = "Bearer ";
-    private static final boolean AUTHORIZATION_TO_BACKEND_REQUIRED = true;
+    private static final boolean AUTHORIZATION_TO_BACKEND_REQUIRED = BuildConfig.DEBUG;
 
     /**
      * Writes the given string to a {@link File}.

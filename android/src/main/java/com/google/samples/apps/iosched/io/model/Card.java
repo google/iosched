@@ -20,6 +20,9 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Locale;
 
+import static com.google.samples.apps.iosched.util.LogUtils.LOGI;
+import static com.google.samples.apps.iosched.util.LogUtils.makeLogTag;
+
 /**
  * Object used with Gson library to convert json data for use.
  * <p/>
@@ -27,8 +30,10 @@ import java.util.Locale;
  * application's general logic.
  */
 public class Card {
+    public static final String TAG = makeLogTag(Card.class);
     public static final SimpleDateFormat TIME_FORMAT =
             new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssZ", Locale.US);
+    // TODO: Remove this format once other clients aren't reliant on it.
     public static final SimpleDateFormat ALT_TIME_FORMAT =
             new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'", Locale.US);
 
@@ -50,9 +55,9 @@ public class Card {
     public String mActionColor;
     @SerializedName("action_text")
     public String mActionText;
-    @SerializedName("action_type")
-    public String mActionExtra;
     @SerializedName("action_extra")
+    public String mActionExtra;
+    @SerializedName("action_type")
     public String mActionType;
     @SerializedName("valid_from")
     public String mValidFrom;
@@ -88,6 +93,7 @@ public class Card {
             return TIME_FORMAT.parse(formattedTime).getTime();
         } catch (ParseException exception) {
             try {
+                LOGI(TAG, "Trying alternate time format");
                 return ALT_TIME_FORMAT.parse(formattedTime).getTime();
             } catch (ParseException exception2) {
                 throw new IllegalArgumentException("Invalid time format: " + formattedTime,

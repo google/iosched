@@ -47,6 +47,7 @@ import com.google.samples.apps.iosched.archframework.PresenterImpl;
 import com.google.samples.apps.iosched.archframework.UpdatableView;
 import com.google.samples.apps.iosched.explore.ExploreIOModel.ExploreIOQueryEnum;
 import com.google.samples.apps.iosched.explore.ExploreIOModel.ExploreIOUserActionEnum;
+import com.google.samples.apps.iosched.explore.data.EventData;
 import com.google.samples.apps.iosched.explore.data.ItemGroup;
 import com.google.samples.apps.iosched.explore.data.LiveStreamData;
 import com.google.samples.apps.iosched.explore.data.MessageData;
@@ -75,7 +76,7 @@ import static com.google.samples.apps.iosched.settings.ConfMessageCardUtils.Conf
  * Display the Explore I/O cards. There are three styles of cards, which are referred to as Groups
  * by the CollectionView implementation.
  * <p/>
- * <ul> <li>The live-streaming session card.</li> <li>Time sensitive message cards.</li> <li>Session
+ * <ul> <li>The live-streaming session cards.</li> <li>Time sensitive message cards.</li> <li>Session
  * topic cards.</li> </ul>
  * <p/>
  * Only the final group of cards is dynamically loaded from a {@link
@@ -306,7 +307,11 @@ public class ExploreIOFragment extends Fragment
 
         private static final int TYPE_LIVE_STREAM = 3;
 
+        private static final int TYPE_EVENT_DATA = 4;
+
         private static final int LIVE_STREAM_TRACK_ID = R.string.live_now;
+
+        private static final int EVENT_DATA_TRACK_ID = 999;
 
         // Immutable state
         private final Activity mHost;
@@ -377,6 +382,8 @@ public class ExploreIOFragment extends Fragment
                 return TYPE_MESSAGE;
             } else if (item instanceof SessionData) {
                 return TYPE_KEYNOTE;
+            } else if (item instanceof EventData) {
+                return TYPE_EVENT_DATA;
             }
             throw new IllegalArgumentException("Unknown view type.");
         }
@@ -385,6 +392,8 @@ public class ExploreIOFragment extends Fragment
         public RecyclerView.ViewHolder onCreateViewHolder(final ViewGroup parent,
                 final int viewType) {
             switch (viewType) {
+                case TYPE_EVENT_DATA:
+                    return createEventViewHolder(parent);
                 case TYPE_TRACK:
                     return createTrackViewHolder(parent);
                 case TYPE_MESSAGE:
@@ -413,7 +422,17 @@ public class ExploreIOFragment extends Fragment
                 case TYPE_LIVE_STREAM:
                     bindLiveStream((TrackViewHolder) holder, (LiveStreamData) mItems.get(position));
                     break;
+                case TYPE_EVENT_DATA:
+                    bindEventData((EventDataViewHolder) holder, (EventData) mItems.get(position));
+                    break;
             }
+        }
+
+        private void bindEventData(final EventDataViewHolder holder, final EventData eventData) {
+            int trackId = getTrackId(eventData);
+            holder.cards.setAdapter(mTrackSessionsAdapters.get(trackId));
+            holder.cards.getLayoutManager().onRestoreInstanceState(
+                    mTrackSessionsState.get(trackId));
         }
 
         @Override
@@ -434,6 +453,20 @@ public class ExploreIOFragment extends Fragment
         @Override
         public int getItemCount() {
             return mItems.size();
+        }
+
+        private @NonNull
+        EventDataViewHolder createEventViewHolder(final ViewGroup parent) {
+            final EventDataViewHolder
+                    holder = new EventDataViewHolder(
+                    mInflater.inflate(R.layout.explore_io_event_card, parent, false));
+            holder.cards.setHasFixedSize(true);
+            holder.cards.setRecycledViewPool(mRecycledViewPool);
+            ViewCompat.setImportantForAccessibility(
+                    holder.cards, ViewCompat.IMPORTANT_FOR_ACCESSIBILITY_NO_HIDE_DESCENDANTS);
+            holder.headerImage.setImageResource(R.drawable.explore_io_ontheground_header);
+            holder.title.setText(R.string.explore_io_on_the_ground_title);
+            return holder;
         }
 
         private @NonNull TrackViewHolder createTrackViewHolder(final ViewGroup parent) {
@@ -619,6 +652,14 @@ public class ExploreIOFragment extends Fragment
                 exploreCards.add(keynote);
             }
 
+            // Add Event Cards if onsite.
+            if (SettingsUtils.isAttendeeAtVenue(mHost)) {
+                final EventData eventData = model.getEventData();
+                if (eventData != null && !eventData.getCards().isEmpty()) {
+                    exploreCards.add(eventData);
+                }
+            }
+
             // Add Live Stream card.
             final LiveStreamData liveStream = model.getLiveStreamData();
             if (liveStream != null && liveStream.getSessions().size() > 0) {
@@ -636,7 +677,8 @@ public class ExploreIOFragment extends Fragment
          */
         private void setupSessionAdapters(final ExploreIOModel model) {
             final int trackCount = model.getOrderedTracks().size()
-                    + (model.getLiveStreamData() != null ? 1 : 0);
+                    + (model.getLiveStreamData() != null ? 1 : 0)
+                    + (model.getEventData() != null ? 1 : 0);
             mTrackSessionsAdapters = new SparseArrayCompat<>(trackCount);
             mTrackSessionsState = new SparseArrayCompat<>(trackCount);
 
@@ -645,6 +687,13 @@ public class ExploreIOFragment extends Fragment
                 mTrackSessionsAdapters.put(getTrackId(liveStream),
                         new LiveStreamSessionsAdapter(mHost, liveStream.getSessions(),
                                 mImageLoader));
+            }
+
+            final EventData eventData = model.getEventData();
+            if (eventData != null && eventData.getCards() != null &&
+            eventData.getCards().size() > 0) {
+                mTrackSessionsAdapters.put(getTrackId(eventData),
+                        new EventDataAdapter(mHost, eventData.getCards()));
             }
 
             for (final ItemGroup group : model.getOrderedTracks()) {
@@ -658,12 +707,33 @@ public class ExploreIOFragment extends Fragment
         /**
          * A derived ID for each track; used as a key for some state objects
          */
-        private int getTrackId(ItemGroup track) {
+        private int getTrackId(Object track) {
             if (track instanceof LiveStreamData) {
                 return LIVE_STREAM_TRACK_ID;
-            } else {
-                return track.getId().hashCode();
+            } else if (track instanceof EventData) {
+                return EVENT_DATA_TRACK_ID;
+            } else if (track instanceof ItemGroup) {
+                return ((ItemGroup)track).getId().hashCode();
             }
+            return 0;
+        }
+    }
+
+    private static class EventDataViewHolder extends RecyclerView.ViewHolder {
+
+        final CardView card;
+        final ViewGroup header;
+        final ImageView headerImage;
+        final TextView title;
+        final RecyclerView cards;
+
+        public EventDataViewHolder(View itemView) {
+            super(itemView);
+            card = (CardView) itemView;
+            header = (ViewGroup) card.findViewById(R.id.header);
+            headerImage = (ImageView) card.findViewById(R.id.header_image);
+            title = (TextView) header.findViewById(R.id.title);
+            cards = (RecyclerView) card.findViewById(R.id.cards);
         }
     }
 
