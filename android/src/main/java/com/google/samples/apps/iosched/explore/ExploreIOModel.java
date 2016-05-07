@@ -202,41 +202,51 @@ public class ExploreIOModel extends ModelWithLoaderManager<ExploreIOModel.Explor
      * @return messages to be displayed.
      */
     public List<MessageData> getMessages() {
-        final List<MessageData> messages = new ArrayList<>();
+        final List<MessageData> messagesToDisplay = new ArrayList<>();
+
         if (shouldShowCard(ConfMessageCardUtils.ConfMessageCard.SESSION_NOTIFICATIONS)) {
-            messages.add(MessageCardHelper.getNotificationsOptInMessageData());
+            messagesToDisplay.add(MessageCardHelper.getNotificationsOptInMessageData());
         }
         if (SettingsUtils.isAttendeeAtVenue(mContext)) {
             // Users are required to opt in or out of whether they want conference message cards
             if (!ConfMessageCardUtils.hasAnsweredConfMessageCardsPrompt(mContext)) {
                 // User has not answered whether they want to opt in.
                 // Build a opt-in/out card.
-                messages.add(MessageCardHelper.getConferenceOptInMessageData());
-            } else if (ConfMessageCardUtils.isConfMessageCardsEnabled(mContext)) {
+                messagesToDisplay.add(MessageCardHelper.getConferenceOptInMessageData());
+                return messagesToDisplay;
+            }
+
+            if (ConfMessageCardUtils.isConfMessageCardsEnabled(mContext)) {
+                LOGD(TAG, "Conf cards Enabled");
+                // User has answered they want to opt in AND the message cards are enabled.
                 ConfMessageCardUtils.enableActiveCards(mContext);
 
                 // Note that for these special cards, we'll never show more than one at a time
-                // to prevent overloading the user with messages.
+                // to prevent overloading the user with messagesToDisplay.
                 // We want each new message to be notable.
-                if (shouldShowCard(
-                        ConfMessageCardUtils.ConfMessageCard.WIFI_FEEDBACK)) {
+                if (shouldShowCard(ConfMessageCardUtils.ConfMessageCard.WIFI_PRELOAD)) {
                     // Check whether a wifi setup card should be offered.
                     if (WiFiUtils.shouldOfferToSetupWifi(mContext, true)) {
+
                         // Build card asking users whether they want to enable wifi.
-                        messages.add(MessageCardHelper.getWifiSetupMessageData());
-                        return messages;
+                        messagesToDisplay.add(MessageCardHelper.getWifiSetupMessageData());
+                        return messagesToDisplay;
                     }
-                    /* Disabled for now.
-                    if (WiFiUtils.isWiFiEnabled(mContext) &&
-                            WiFiUtils.isWiFiApConfigured(mContext)) {
-                        messages.add(MessageCardHelper.getWifiFeedbackMessageData());
-                        return messages;
+                }
+
+                if (messagesToDisplay.size() < 1) {
+                    LOGD(TAG, "Simple cards");
+                    List<ConfMessageCardUtils.ConfMessageCard> simpleCards =
+                      ConfMessageCardUtils.ConfMessageCard.getActiveSimpleCards(mContext);
+                    // Only show a single card at a time.
+                    if (simpleCards.size() > 0) {
+                        messagesToDisplay.add(MessageCardHelper.getSimpleMessageCardData(
+                          simpleCards.get(0)));
                     }
-                    */
                 }
             }
         }
-        return messages;
+        return messagesToDisplay;
     }
 
     /**
@@ -245,11 +255,7 @@ public class ExploreIOModel extends ModelWithLoaderManager<ExploreIOModel.Explor
      * @return {@code true} if the given message card should be displayed.
      */
     private boolean shouldShowCard(ConfMessageCardUtils.ConfMessageCard card) {
-        final boolean shouldShow = ConfMessageCardUtils.shouldShowConfMessageCard(mContext, card);
-        if (!shouldShow) {
-            return shouldShow;
-        }
-        return !ConfMessageCardUtils.hasDismissedConfMessageCard(mContext, card);
+        return ConfMessageCardUtils.shouldShowConfMessageCard(mContext, card) && !ConfMessageCardUtils.hasDismissedConfMessageCard(mContext, card);
     }
 
     /**
