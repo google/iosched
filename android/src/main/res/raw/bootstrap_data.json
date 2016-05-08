@@ -476,22 +476,22 @@
                     },
                     {
                         "id": "Restroom1",
-                        "lat": 37.423819,
-                        "lng": -122.079771,
+                        "lat": 37.423868,
+                        "lng": -122.079754,
                         "title": "Restroom",
                         "type": "ICON_RESTROOM"
                     },
                     {
                         "id": "Restroom2",
-                        "lat": 37.423926,
-                        "lng": -122.078656,
+                        "lat": 37.42382,
+                        "lng": -122.078723,
                         "title": "Restroom",
                         "type": "ICON_RESTROOM"
                     },
                     {
                         "id": "Restroom3",
-                        "lat": 37.425637,
-                        "lng": -122.079111,
+                        "lat": 37.425685,
+                        "lng": -122.07909,
                         "title": "Restroom",
                         "type": "ICON_RESTROOM"
                     },
