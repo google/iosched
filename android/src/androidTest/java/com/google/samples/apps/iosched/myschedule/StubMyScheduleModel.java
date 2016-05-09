@@ -52,6 +52,19 @@ public class StubMyScheduleModel extends MyScheduleModel {
         mMockScheduleDataDay2 = mockScheduleDataDay2;
     }
 
+    public void setMockScheduleDataDay1(ArrayList<ScheduleItem> mockScheduleDataDay1) {
+        mMockScheduleDataDay1 = mockScheduleDataDay1;
+    }
+
+    public void setMockScheduleDataDay2(ArrayList<ScheduleItem> mockScheduleDataDay2) {
+        mMockScheduleDataDay2 = mockScheduleDataDay2;
+    }
+
+    public void fireContentObserver() {
+        mObserver.cancelPendingCallback();
+        mObserver.onChange(true);
+     }
+
     /**
      * This bypasses the use of {@link ScheduleHelper} to get the data and sets the data as per the
      * mock data passed in the constructor.

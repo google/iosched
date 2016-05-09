@@ -30,6 +30,10 @@ import java.util.ArrayList;
 
 public class MyScheduleMockItems {
 
+    public final static String SESSION_TITLE_1 = "My session title 1";
+
+    public final static String SESSION_TITLE_2 = "My session title 2";
+
     public final static String SESSION_TITLE_AFTER = "Session in schedule in past";
 
     public final static int SESSION_TITLE_AFTER_START_OFFSET = TimeUtils.HOUR;
@@ -41,6 +45,56 @@ public class MyScheduleMockItems {
     public final static long SESSION_AVAILABLE_SLOT_TIME_OFFSET = 2 * TimeUtils.HOUR;
 
     public final static long SESSION_AVAILABLE_SLOT_TIME_DURATION = 1 * TimeUtils.HOUR;
+
+
+    /**
+     * Generates the schedule items for one day of the conference, including the keynote and 1
+     * session at 12PM with title {@code title}. The user attends the conference and the time is
+     * set to before the conference.
+     *
+     * @param dayId         Pass in 1 for the first day, 2 for the second etc
+     * @param title         The title of the non keynote session
+     * @param feedbackGiven Whether feedback has been given for the session
+     * @return the schedule items
+     */
+    public static ArrayList<ScheduleItem> getItemsForAttendee(int dayId, boolean feedbackGiven,
+            String title) {
+        long timeBase = Config.CONFERENCE_START_MILLIS + (dayId - 1) * TimeUtils.DAY;
+        ArrayList<ScheduleItem> newItems = new ArrayList<ScheduleItem>();
+        ScheduleItem newItem1 = new ScheduleItem();
+        newItem1.type = 1;
+        newItem1.sessionType = 1;
+        newItem1.mainTag = "FLAG_KEYNOTE";
+        newItem1.startTime = timeBase;
+        newItem1.endTime = timeBase + TimeUtils.HOUR;
+        newItem1.sessionId = "__keynote__";
+        newItem1.title = "Keynote";
+        newItem1.subtitle = "Keynote Room (L3)";
+        newItem1.room = "Keynote Room (L3)";
+        newItem1.hasGivenFeedback = true;
+        newItem1.backgroundImageUrl =
+                "https://storage.googleapis.com/io2015-data.appspot.com/images/sessions/__w-200-" +
+                        "400-600-800-1000__/14f5088b-d0e2-e411-b87f-00155d5066d7.jpg";
+        newItem1.backgroundColor = -12627531;
+        newItem1.flags = 1;
+        newItems.add(newItem1);
+        ScheduleItem newItem2 = new ScheduleItem();
+        newItem2.type = 1;
+        newItem2.sessionType = 2;
+        newItem2.startTime = timeBase + SESSION_TITLE_AFTER_START_OFFSET;
+        newItem2.endTime = timeBase + SESSION_TITLE_AFTER_START_OFFSET + 1 * TimeUtils.HOUR;
+        newItem2.sessionId = SESSION_ID;
+        newItem2.title = title;
+        newItem2.subtitle = "Develop Sandbox (L2)";
+        newItem2.room = "Develop Sandbox (L2)";
+        newItem2.hasGivenFeedback = feedbackGiven;
+        newItem2.backgroundImageUrl =
+                "https://storage.googleapis.com/io2015-data.appspot.com/images/sessions/__w-200-" +
+                        "400-600-800-1000__/ac8d5cc7-36e5-e411-b87f-00155d5066d7.jpg";
+        newItem2.backgroundColor = -14235942;
+        newItems.add(newItem2);
+        return newItems;
+    }
 
     /**
      * Generates the schedule items for one day of the conference, including the keynote, 1 session
@@ -111,40 +165,6 @@ public class MyScheduleMockItems {
      */
     public static ArrayList<ScheduleItem> getItemsForAttendeeAfter(int dayId,
             boolean feedbackGiven) {
-        long timeBase = Config.CONFERENCE_START_MILLIS + (dayId - 1) * TimeUtils.DAY;
-        ArrayList<ScheduleItem> newItems = new ArrayList<ScheduleItem>();
-        ScheduleItem newItem1 = new ScheduleItem();
-        newItem1.type = 1;
-        newItem1.sessionType = 1;
-        newItem1.mainTag = "FLAG_KEYNOTE";
-        newItem1.startTime = timeBase;
-        newItem1.endTime = timeBase + TimeUtils.HOUR;
-        newItem1.sessionId = "__keynote__";
-        newItem1.title = "Keynote";
-        newItem1.subtitle = "Keynote Room (L3)";
-        newItem1.room = "Keynote Room (L3)";
-        newItem1.hasGivenFeedback = true;
-        newItem1.backgroundImageUrl =
-                "https://storage.googleapis.com/io2015-data.appspot.com/images/sessions/__w-200-" +
-                        "400-600-800-1000__/14f5088b-d0e2-e411-b87f-00155d5066d7.jpg";
-        newItem1.backgroundColor = -12627531;
-        newItem1.flags = 1;
-        newItems.add(newItem1);
-        ScheduleItem newItem2 = new ScheduleItem();
-        newItem2.type = 1;
-        newItem2.sessionType = 2;
-        newItem2.startTime = timeBase + SESSION_TITLE_AFTER_START_OFFSET;
-        newItem2.endTime = timeBase + SESSION_TITLE_AFTER_START_OFFSET + 1 * TimeUtils.HOUR;
-        newItem2.sessionId = SESSION_ID;
-        newItem2.title = SESSION_TITLE_AFTER;
-        newItem2.subtitle = "Develop Sandbox (L2)";
-        newItem2.room = "Develop Sandbox (L2)";
-        newItem2.hasGivenFeedback = feedbackGiven;
-        newItem2.backgroundImageUrl =
-                "https://storage.googleapis.com/io2015-data.appspot.com/images/sessions/__w-200-" +
-                        "400-600-800-1000__/ac8d5cc7-36e5-e411-b87f-00155d5066d7.jpg";
-        newItem2.backgroundColor = -14235942;
-        newItems.add(newItem2);
-        return newItems;
+        return getItemsForAttendee(dayId, feedbackGiven, SESSION_TITLE_AFTER);
     }
 }

@@ -70,4 +70,8 @@ public class ThrottledContentObserver extends ContentObserver {
     public void onChange(boolean selfChange, Uri uri) {
         onChange(selfChange);
     }
+
+    public static int getThrottleDelay() {
+        return THROTTLE_DELAY;
+    }
 }
