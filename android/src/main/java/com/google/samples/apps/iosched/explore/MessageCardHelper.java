@@ -30,6 +30,20 @@ public class MessageCardHelper {
     private static final String TWITTER_PACKAGE_NAME = "com.twitter.android";
     private static final String GPLUS_PACKAGE_NAME = "com.google.android.apps.plus";
 
+    public static MessageData getSimpleMessageCardData(
+      final ConfMessageCardUtils.ConfMessageCard card) {
+        MessageData messageData = new MessageData();
+        messageData.setEndButtonStringResourceId(R.string.ok);
+        messageData.setMessage(card.getSimpleMessage());
+        messageData.setEndButtonClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(final View v) {
+                ConfMessageCardUtils.markDismissedConfMessageCard(v.getContext(), card);
+            }
+        });
+        return messageData;
+    }
+
     /**
      * Return the conference messages opt-in data.
      */
