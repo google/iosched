@@ -19,6 +19,8 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Looper;
 import android.support.test.InstrumentationRegistry;
+import android.support.test.espresso.Espresso;
+import android.support.test.espresso.IdlingResource;
 import android.support.test.filters.FlakyTest;
 import android.support.test.runner.AndroidJUnit4;
 import android.test.suitebuilder.annotation.LargeTest;
@@ -36,6 +38,7 @@ import com.google.samples.apps.iosched.settings.SettingsUtils;
 import com.google.samples.apps.iosched.testutils.BaseActivityTestRule;
 import com.google.samples.apps.iosched.testutils.NavigationUtils;
 import com.google.samples.apps.iosched.testutils.OrientationHelper;
+import com.google.samples.apps.iosched.testutils.ThrottleContentObserverIdlingResource;
 import com.google.samples.apps.iosched.util.TimeUtils;
 
 import org.junit.Before;
@@ -47,6 +50,7 @@ import java.util.Date;
 
 import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.action.ViewActions.click;
+import static android.support.test.espresso.assertion.ViewAssertions.doesNotExist;
 import static android.support.test.espresso.assertion.ViewAssertions.matches;
 import static android.support.test.espresso.intent.Intents.intended;
 import static android.support.test.espresso.intent.matcher.IntentMatchers.hasAction;
@@ -82,6 +86,8 @@ public class MyScheduleActivityTest {
      */
     private StubActivityContext mActivityStubContext;
 
+    private StubMyScheduleModel mStubMyScheduleModel;
+
     @Rule
     public BaseActivityTestRule<MyScheduleActivity> mActivityRule =
             new BaseActivityTestRule<MyScheduleActivity>(MyScheduleActivity.class) {
@@ -108,10 +114,11 @@ public class MyScheduleActivityTest {
                         runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
-                                ModelProvider.setStubModel(new StubMyScheduleModel(
+                                mStubMyScheduleModel = new StubMyScheduleModel(
                                         mActivityStubContext,
                                         MyScheduleMockItems.getItemsForAttendeeAfter(1, false),
-                                        MyScheduleMockItems.getItemsForAttendeeBefore(2)));
+                                        MyScheduleMockItems.getItemsForAttendeeBefore(2));
+                                ModelProvider.setStubModel(mStubMyScheduleModel);
                             }
                         });
                     } catch (Throwable throwable) {
@@ -341,6 +348,37 @@ public class MyScheduleActivityTest {
         // And day 2 is selectable and visible
         showDay(2);
         onView(withText(MyScheduleMockItems.SESSION_TITLE_BEFORE)).check(matches(isDisplayed()));
+    }
+
+    @Test
+    public void newDataObtained_DataUpdated() {
+        // Given initial data displayed
+        showDay(2);
+        onView(withText(MyScheduleMockItems.SESSION_TITLE_BEFORE)).check(matches(isDisplayed()));
+        onView(withText(MyScheduleMockItems.SESSION_TITLE_2)).check(doesNotExist());
+        showDay(1);
+        onView(withText(MyScheduleMockItems.SESSION_TITLE_AFTER)).check(matches(isDisplayed()));
+        onView(withText(MyScheduleMockItems.SESSION_TITLE_1)).check(doesNotExist());
+
+        // When new data is available
+        mStubMyScheduleModel.setMockScheduleDataDay1(MyScheduleMockItems
+                .getItemsForAttendee(1, false, MyScheduleMockItems.SESSION_TITLE_1));
+        mStubMyScheduleModel.setMockScheduleDataDay2(MyScheduleMockItems
+                .getItemsForAttendee(2, false, MyScheduleMockItems.SESSION_TITLE_2));
+        mStubMyScheduleModel.fireContentObserver();
+        // Wait for the ThrottleContentObserver to process the event
+        IdlingResource idlingResource = new ThrottleContentObserverIdlingResource(
+                InstrumentationRegistry.getTargetContext());
+        Espresso.registerIdlingResources(idlingResource);
+
+        // Then the new data is shown
+        onView(withText(MyScheduleMockItems.SESSION_TITLE_1)).check(matches(isDisplayed()));
+        onView(withText(MyScheduleMockItems.SESSION_TITLE_AFTER))
+                .check(doesNotExist());
+        showDay(2);
+        onView(withText(MyScheduleMockItems.SESSION_TITLE_2)).check(matches(isDisplayed()));
+        onView(withText(MyScheduleMockItems.SESSION_TITLE_BEFORE))
+                .check(doesNotExist());
     }
 
     private void showDay(int day) {

@@ -18,12 +18,12 @@ package com.google.samples.apps.iosched.myschedule;
 
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.database.ContentObserver;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
+import com.google.common.annotations.VisibleForTesting;
 import com.google.samples.apps.iosched.BuildConfig;
 import com.google.samples.apps.iosched.Config;
 import com.google.samples.apps.iosched.R;
@@ -168,7 +168,12 @@ public class MyScheduleModel implements Model<MyScheduleModel.MyScheduleQueryEnu
         sp.unregisterOnSharedPreferenceChangeListener(mPrefChangeListener);
     }
 
-    private final ContentObserver mObserver = new ThrottledContentObserver(
+    /**
+     * Visible for classes extending this model, so UI tests can be written to simulate the system
+     * firing this observer.
+     */
+    @VisibleForTesting
+    protected final ThrottledContentObserver mObserver = new ThrottledContentObserver(
             new ThrottledContentObserver.Callbacks() {
                 @Override
                 public void onThrottledContentObserverFired() {
@@ -208,7 +213,7 @@ public class MyScheduleModel implements Model<MyScheduleModel.MyScheduleQueryEnu
             final UserActionCallback callback) {
         switch (action) {
             case RELOAD_DATA:
-                updateData(new DataQueryCallback() {
+                DataQueryCallback queryCallback = new DataQueryCallback() {
                     @Override
                     public void onModelUpdated(Model model, QueryEnum query) {
                         callback.onModelUpdated(MyScheduleModel.this, action);
@@ -218,7 +223,11 @@ public class MyScheduleModel implements Model<MyScheduleModel.MyScheduleQueryEnu
                     public void onError(QueryEnum query) {
                         callback.onError(action);
                     }
-                });
+                };
+                if (mScheduleDataQueryCallback == null) {
+                    mScheduleDataQueryCallback = queryCallback;
+                }
+                updateData(queryCallback);
                 break;
             case SESSION_SLOT:
                 if (args == null || !args.containsKey(SESSION_URL_KEY)) {
