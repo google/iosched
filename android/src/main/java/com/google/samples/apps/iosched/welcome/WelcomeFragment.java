@@ -34,7 +34,7 @@ import static com.google.samples.apps.iosched.util.LogUtils.makeLogTag;
 /**
  * A Fragment class for use with {@link WelcomeActivity} to embed content into the activity.
  *
- * Contains utitlies for attaching the fragment to the activity and updating UI elements.
+ * Contains utilities for attaching the fragment to the activity and updating UI elements.
  */
 public abstract class WelcomeFragment extends Fragment {
 
@@ -61,7 +61,7 @@ public abstract class WelcomeFragment extends Fragment {
         View view = super.onCreateView(inflater, container, savedInstanceState);
         LOGD(TAG, "Creating View");
 
-        // If the acitivty the fragment has been attached to is a WelcomeFragmentContainer
+        // If the activity the fragment has been attached to is a WelcomeFragmentContainer
         if (mActivity instanceof WelcomeFragmentContainer) {
             WelcomeFragmentContainer activity = (WelcomeFragmentContainer) mActivity;
 
@@ -187,7 +187,7 @@ public abstract class WelcomeFragment extends Fragment {
     }
 
     /**
-     * The receiever for the action to be performed on a button click.
+     * The receiver for the action to be performed on a button click.
      */
     interface WelcomeFragmentClickAction {
         public void doAction(Context context);
@@ -199,7 +199,7 @@ public abstract class WelcomeFragment extends Fragment {
     interface WelcomeFragmentContainer {
 
         /**
-         * Retrieve a posistive action button from the container.
+         * Retrieve a positive action button from the container.
          *
          * @return the positive action button.
          */
