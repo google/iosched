@@ -336,22 +336,22 @@
                 "0": [
                     {
                         "id": "19b9264a-35c9-e511-ab0e-00155d5066d7",
-                        "lat": 37.425635,
-                        "lng": -122.07970,
+                        "lat": 37.42563,
+                        "lng": -122.079707,
                         "title": "Stage 1 - Hercules",
                         "type": "SESSION"
                     },
                     {
                         "id": "Stage 1",
-                        "lat": 37.425635,
-                        "lng": -122.07970,
+                        "lat": 37.425622,
+                        "lng": -122.0796999,
                         "title": "1 - Hercules",
                         "type": "LABEL"
                     },
                     {
                         "id": "a8f18b8f-7dcb-e511-ab0e-00155d5066d7",
-                        "lat": 37.425053,
-                        "lng": -122.080294,
+                        "lat": 37.425041,
+                        "lng": -122.080283999,
                         "title": "Stage 2 - Hydra",
                         "type": "SESSION"
                     },
@@ -371,22 +371,22 @@
                     },
                     {
                         "id": "Stage 3",
-                        "lat": 37.424496,
-                        "lng": -122.079999,
+                        "lat": 37.4244799999,
+                        "lng": -122.0799409999,
                         "title": "3 - Ursa Minor",
                         "type": "LABEL"
                     },
                     {
                         "id": "1a17939d-09fd-e511-a517-00155d5066d7",
                         "lat": 37.424219,
-                        "lng": -122.079607,
+                        "lng": -122.079608999,
                         "title": "Stage 4 - Ursa Major",
                         "type": "SESSION"
                     },
                     {
                         "id": "Stage 4",
-                        "lat": 37.424212,
-                        "lng": -122.079623,
+                        "lat": 37.424205,
+                        "lng": -122.079602999,
                         "title": "4 - Ursa Major",
                         "type": "LABEL"
                     },
@@ -399,50 +399,50 @@
                     },
                     {
                         "id": "Stage 5",
-                        "lat": 37.423983,
-                        "lng": -122.078921,
+                        "lat": 37.423974,
+                        "lng": -122.078909,
                         "title": "5 - Libra",
                         "type": "LABEL"
                     },
                     {
                         "id": "a4eedfa7-09fd-e511-a517-00155d5066d7",
-                        "lat": 37.424178,
-                        "lng": -122.079201,
+                        "lat": 37.424177,
+                        "lng": -122.07918,
                         "title": "Stage 6 - Virgo",
                         "type": "SESSION"
                     },
                     {
                         "id": "Stage 6",
-                        "lat": 37.424178,
-                        "lng": -122.079201,
+                        "lat": 37.42416499999,
+                        "lng": -122.0791709999,
                         "title": "6 - Virgo",
                         "type": "LABEL"
                     },
                     {
                         "id": "07f1b8dd-09fd-e511-a517-00155d5066d7",
-                        "lat": 37.424465,
-                        "lng": -122.078835,
+                        "lat": 37.424473,
+                        "lng": -122.078813,
                         "title": "Stage 7 - Leo",
                         "type": "SESSION"
                     },
                     {
                         "id": "Stage 7",
-                        "lat": 37.424465,
-                        "lng": -122.078835,
+                        "lat": 37.424464,
+                        "lng": -122.078804999,
                         "title": "7 - Leo",
                         "type": "LABEL"
                     },
                     {
                         "id": "e2b5f2e7-09fd-e511-a517-00155d5066d7",
-                        "lat": 37.42491,
-                        "lng": -122.078791,
+                        "lat": 37.424912,
+                        "lng": -122.078817,
                         "title": "Stage 8 - Crater",
                         "type": "SESSION"
                     },
                     {
                         "id": "Stage 8",
-                        "lat": 37.42491,
-                        "lng": -122.078791,
+                        "lat": 37.424903,
+                        "lng": -122.078810999,
                         "title": "8 - Crater",
                         "type": "LABEL"
                     },
@@ -455,22 +455,22 @@
                     },
                     {
                         "id": "Stage 9",
-                        "lat": 37.425236,
-                        "lng": -122.079201,
+                        "lat": 37.425228,
+                        "lng": -122.079195,
                         "title": "9 - Cepheus",
                         "type": "LABEL"
                     },
                     {
                         "id": "c675afbb-4702-e611-a517-00155d5066d7",
-                        "lat": 37.42544,
-                        "lng": -122.078857,
+                        "lat": 37.425447999999996,
+                        "lng": -122.078828,
                         "title": "Stage 10 - Cassiopea",
                         "type": "SESSION"
                     },
                     {
                         "id": "Stage 10",
-                        "lat": 37.42544,
-                        "lng": -122.078857,
+                        "lat": 37.425435,
+                        "lng": -122.078818,
                         "title": "10 - Cassiopea",
                         "type": "LABEL"
                     },
@@ -511,64 +511,64 @@
                     },
                     {
                         "id": "SandboxA",
-                        "lat": 37.425474,
-                        "lng": -122.080378,
+                        "lat": 37.42546499999,
+                        "lng": -122.080362999,
                         "title": "Android Pro Audio/Android for Work/Android Experiments",
                         "type": "SANDBOX"
                     },
                     {
                         "id": "SandboxB",
-                        "lat": 37.425379,
-                        "lng": -122.079684,
+                        "lat": 37.425385,
+                        "lng": -122.07967,
                         "title": "Living Room/Nest/Android Wear",
                         "type": "SANDBOX"
                     },
                     {
                         "id": "SandboxC",
-                        "lat": 37.425135,
-                        "lng": -122.079669,
+                        "lat": 37.425137,
+                        "lng": -122.07963699,
                         "title": "Access & Empathy/Design",
                         "type": "SANDBOX"
                     },
                     {
                         "id": "SandboxD",
-                        "lat": 37.425049,
-                        "lng": -122.079927,
+                        "lat": 37.425046,
+                        "lng": -122.079906,
                         "title": "Play & Studio",
                         "type": "SANDBOX"
                     },
                     {
                         "id": "SandboxE",
-                        "lat": 37.424568,
-                        "lng": -122.079729,
+                        "lat": 37.424571,
+                        "lng": -122.07972699,
                         "title": "Project Tango",
                         "type": "SANDBOX"
                     },
                     {
                         "id": "SandboxF",
-                        "lat": 37.424261,
-                        "lng": -122.079928,
+                        "lat": 37.424256,
+                        "lng": -122.079954,
                         "title": "Android Auto",
                         "type": "SANDBOX"
                     },
                     {
                         "id": "SandboxG",
-                        "lat": 37.424383,
-                        "lng": -122.079275,
+                        "lat": 37.424379,
+                        "lng": -122.079281,
                         "title": "Geo",
                         "type": "SANDBOX"
                     },
                     {
                         "id": "SandboxH",
                         "lat": 37.424593,
-                        "lng": -122.079241,
+                        "lng": -122.079225,
                         "title": "Google Cloud Platform",
                         "type": "SANDBOX"
                     },
                     {
                         "id": "SandboxI",
-                        "lat": 37.424578,
-                        "lng": -122.079045,
+                        "lat": 37.424576,
+                        "lng": -122.079042,
                         "title": "Firebase",
                         "type": "SANDBOX"
                     },
@@ -581,29 +581,29 @@
                     },
                     {
                         "id": "SandboxK",
-                        "lat": 37.425018,
-                        "lng": -122.079005,
+                        "lat": 37.425016,
+                        "lng": -122.078988,
                         "title": "Search/AMP/Mobile Web",
                         "type": "SANDBOX"
                     },
                     {
                         "id": "SandboxL",
-                        "lat": 37.425452,
-                        "lng": -122.07906,
+                        "lat": 37.425202,
+                        "lng": -122.078797,
                         "title": "Developing for Kids",
                         "type": "SANDBOX"
                     },
                     {
                         "id": "SandboxM",
-                        "lat": 37.425943,
-                        "lng": -122.081036,
+                        "lat": 37.426007999,
+                        "lng": -122.080832,
                         "title": "Play Music",
                         "type": "SANDBOX"
                     },
                     {
                         "id": "Registration",
                         "lat": 37.426176,
-                        "lng": -122.079566,
+                        "lng": -122.079623,
                         "title": "Registration",
                         "type": "LABEL"
                     },
@@ -616,8 +616,8 @@
                     },
                     {
                         "id": "Code labs",
-                        "lat": 37.426367,
-                        "lng": -122.079996,
+                        "lat": 37.426361,
+                        "lng": -122.079985,
                         "title": "Codelabs",
                         "type": "LABEL"
                     },
@@ -630,8 +630,8 @@
                     },
                     {
                         "id": "Keynote",
-                        "lat": 37.427008,
-                        "lng": -122.081116,
+                        "lat": 37.42698999,
+                        "lng": -122.0811109999,
                         "title": "Keynote & Concert area",
                         "type": "LABEL"
                     }
