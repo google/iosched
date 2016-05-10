@@ -23,16 +23,19 @@ import android.content.Loader;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.annotation.VisibleForTesting;
 import android.text.TextUtils;
 
-import com.google.common.annotations.VisibleForTesting;
 import com.google.samples.apps.iosched.Config;
 import com.google.samples.apps.iosched.R;
 import com.google.samples.apps.iosched.archframework.Model;
 import com.google.samples.apps.iosched.archframework.ModelWithLoaderManager;
 import com.google.samples.apps.iosched.archframework.QueryEnum;
 import com.google.samples.apps.iosched.archframework.UserActionEnum;
+import com.google.samples.apps.iosched.explore.data.EventCard;
+import com.google.samples.apps.iosched.explore.data.EventData;
 import com.google.samples.apps.iosched.explore.data.ItemGroup;
 import com.google.samples.apps.iosched.explore.data.LiveStreamData;
 import com.google.samples.apps.iosched.explore.data.MessageData;
@@ -54,6 +57,8 @@ import java.util.Map;
 import java.util.StringTokenizer;
 
 import static com.google.samples.apps.iosched.util.LogUtils.LOGD;
+import static com.google.samples.apps.iosched.util.LogUtils.LOGE;
+import static com.google.samples.apps.iosched.util.LogUtils.LOGI;
 import static com.google.samples.apps.iosched.util.LogUtils.LOGW;
 import static com.google.samples.apps.iosched.util.LogUtils.makeLogTag;
 
@@ -89,6 +94,14 @@ public class ExploreIOModel extends ModelWithLoaderManager<ExploreIOModel.Explor
 
     private TagMetadata mTagMetadata;
 
+    @NonNull
+    public EventData getEventData() {
+        return mEventData;
+    }
+
+    @NonNull
+    private EventData mEventData = new EventData();
+
     public ExploreIOModel(Context context, Uri sessionsUri, LoaderManager loaderManager) {
         super(ExploreIOQueryEnum.values(), ExploreIOUserActionEnum.values(), loaderManager);
         mContext = context;
@@ -119,7 +132,7 @@ public class ExploreIOModel extends ModelWithLoaderManager<ExploreIOModel.Explor
             }
         }
 
-        // Order the tracks by title
+        // Order the tracks by title.
         Collections.sort(mOrderedTracks, new Comparator<ItemGroup>() {
             @Override
             public int compare(final ItemGroup lhs, final ItemGroup rhs) {
@@ -175,8 +188,20 @@ public class ExploreIOModel extends ModelWithLoaderManager<ExploreIOModel.Explor
                         ScheduleContract.Sessions.SORT_BY_TYPE_THEN_TIME);
                 break;
             case TAGS:
-                LOGW(TAG, "Starting sessions tag query");
+                LOGI(TAG, "Starting sessions tag query");
                 loader = TagMetadata.createCursorLoader(mContext);
+                break;
+            case CARDS:
+                String currentTime = TimeUtils.getCurrentTime(mContext) + "";
+                LOGI(TAG, "Starting cards query: " + currentTime);
+                loader = getCursorLoaderInstance(mContext, ScheduleContract.Cards.CONTENT_URI,
+                        ExploreIOQueryEnum.CARDS.getProjection(),
+                        " ? > " + ScheduleContract.Cards.DISPLAY_START_DATE + " AND  ? < " +
+                                ScheduleContract.Cards.DISPLAY_END_DATE + " AND " +
+                                ScheduleContract.Cards.ACTION_TYPE + " IN ('LINK', 'MAP')" ,
+                        new String[]{ currentTime, currentTime},
+                        ScheduleContract.Cards.CARD_ID);
+                break;
         }
 
         return loader;
@@ -190,6 +215,9 @@ public class ExploreIOModel extends ModelWithLoaderManager<ExploreIOModel.Explor
                 return true;
             case TAGS:
                 readDataFromTagsCursor(cursor);
+                return true;
+            case CARDS:
+                readDataFromCardsCursor(cursor);
                 return true;
         }
         return false;
@@ -227,7 +255,6 @@ public class ExploreIOModel extends ModelWithLoaderManager<ExploreIOModel.Explor
                 if (shouldShowCard(ConfMessageCardUtils.ConfMessageCard.WIFI_PRELOAD)) {
                     // Check whether a wifi setup card should be offered.
                     if (WiFiUtils.shouldOfferToSetupWifi(mContext, true)) {
-
                         // Build card asking users whether they want to enable wifi.
                         messagesToDisplay.add(MessageCardHelper.getWifiSetupMessageData());
                         return messagesToDisplay;
@@ -287,8 +314,8 @@ public class ExploreIOModel extends ModelWithLoaderManager<ExploreIOModel.Explor
                 if (!atVenue &&
                         (!session.isLiveStreamAvailable()) && !session.isVideoAvailable()) {
                     // Skip the opportunity to present the session for those not on site
-                    // since it
-                    // won't be viewable as there is neither a live stream nor video available.
+                    // since it won't be viewable as there is neither a live stream nor video
+                    // available.
                     continue;
                 }
 
@@ -359,8 +386,21 @@ public class ExploreIOModel extends ModelWithLoaderManager<ExploreIOModel.Explor
                 TextUtils.isEmpty(session.getImageUrl());
     }
 
+    private void readDataFromCardsCursor(Cursor cursor) {
+        LOGD(TAG, "Cards query loaded");
+        mEventData = new EventData();
+        if (cursor != null && cursor.moveToFirst()) {
+            LOGD(TAG, "Read mCardContent data");
+            do {
+                mEventData.addEventCard(EventCard.fromCursorRow(cursor));
+            } while (cursor.moveToNext());
+        } else {
+            LOGE(TAG, "No Cards data");
+        }
+    }
+
     private void readDataFromTagsCursor(Cursor cursor) {
-        LOGW(TAG, "TAGS query loaded");
+        LOGD(TAG, "TAGS query loaded");
         if (cursor != null && cursor.moveToFirst()) {
             mTagMetadata = new TagMetadata(cursor);
         }
@@ -474,6 +514,20 @@ public class ExploreIOModel extends ModelWithLoaderManager<ExploreIOModel.Explor
         TAGS(0x2, new String[]{
                 ScheduleContract.Tags.TAG_ID,
                 ScheduleContract.Tags.TAG_NAME,
+        }),
+
+        CARDS(0x3, new String[] {
+                ScheduleContract.Cards.CARD_ID,
+                ScheduleContract.Cards.TITLE,
+                ScheduleContract.Cards.TEXT_COLOR,
+                ScheduleContract.Cards.MESSAGE,
+                ScheduleContract.Cards.DISPLAY_END_DATE,
+                ScheduleContract.Cards.ACTION_COLOR,
+                ScheduleContract.Cards.ACTION_URL,
+                ScheduleContract.Cards.ACTION_TEXT,
+                ScheduleContract.Cards.BACKGROUND_COLOR,
+                ScheduleContract.Cards.DISPLAY_START_DATE,
+                ScheduleContract.Cards.ACTION_TYPE
         });
 
 
