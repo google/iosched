@@ -2,17 +2,17 @@
     "blocks": [
         {
             "title": "Badge Pick-Up",
-            "subtitle": "",
+            "subtitle": "Registration",
             "type": "break",
             "start": "2016-05-17T14:00:00.000Z",
-            "end": "2016-05-18T00:00:00.000Z"
+            "end": "2016-05-18T02:00:00.000Z"
         },
         {
             "title": "Badge Pick-Up",
-            "subtitle": "",
+            "subtitle": "Registration",
             "type": "break",
             "start": "2016-05-18T14:00:00.000Z",
-            "end": "2016-05-19T00:00:00.000Z"
+            "end": "2016-05-19T02:00:00.000Z"
         },
         {
             "title": "Breakfast",
@@ -29,8 +29,8 @@
             "end": "2016-05-18T21:00:00.000Z"
         },
         {
-            "title": "Code Labs",
-            "subtitle": "",
+            "title": "Codelabs",
+            "subtitle": "Codelabs",
             "type": "break",
             "start": "2016-05-18T19:30:00.000Z",
             "end": "2016-05-19T01:00:00.000Z"
@@ -39,14 +39,14 @@
             "title": "Sandbox",
             "subtitle": "",
             "type": "break",
-            "start": "2016-05-18T19:30:00.000Z",
+            "start": "2016-05-18T19:30:01.000Z",
             "end": "2016-05-19T01:00:00.000Z"
         },
         {
             "title": "Concert",
-            "subtitle": "",
+            "subtitle": "Amphitheatre",
             "type": "break",
-            "start": "2016-05-19T02:00:00.000Z",
+            "start": "2016-05-19T01:00:00.000Z",
             "end": "2016-05-19T05:00:00.000Z"
         },
         {
@@ -123,15 +123,36 @@
             "title": "",
             "type": "free",
             "subtitle": "",
-            "start": "2016-05-18T00:00:00.000Z",
+            "start": "2016-05-19T01:00:00.000Z",
             "end": "2016-05-19T02:00:00.000Z"
         },
         {
-            "title": "Badge Pick-Up",
+            "title": "",
+            "type": "free",
             "subtitle": "",
+            "start": "2016-05-19T02:00:00.000Z",
+            "end": "2016-05-19T03:00:00.000Z"
+        },
+        {
+            "title": "",
+            "type": "free",
+            "subtitle": "",
+            "start": "2016-05-19T03:00:00.000Z",
+            "end": "2016-05-19T04:00:00.000Z"
+        },
+        {
+            "title": "",
+            "type": "free",
+            "subtitle": "",
+            "start": "2016-05-19T04:00:00.000Z",
+            "end": "2016-05-19T05:00:00.000Z"
+        },
+        {
+            "title": "Badge Pick-Up",
+            "subtitle": "Registration",
             "type": "break",
             "start": "2016-05-19T15:00:00.000Z",
-            "end": "2016-05-20T17:02:00.000Z"
+            "end": "2016-05-20T02:00:00.000Z"
         },
         {
             "title": "Breakfast",
@@ -149,24 +170,24 @@
         },
         {
             "title": "Codelabs",
-            "subtitle": "",
-            "type": "break",
-            "start": "2016-05-19T15:30:00.000Z",
-            "end": "2016-05-20T03:00:00.000Z"
-        },
-        {
-            "title": "After Hours",
-            "subtitle": "",
-            "type": "break",
+            "subtitle": "Codelabs",
+            "type": "session",
             "start": "2016-05-19T15:30:00.000Z",
             "end": "2016-05-20T03:00:00.000Z"
         },
         {
             "title": "Sandbox",
             "subtitle": "",
-            "type": "break",
-            "start": "2016-05-19T15:30:00.000Z",
+            "type": "session",
+            "start": "2016-05-19T15:30:01.000Z",
             "end": "2016-05-20T03:00:00.000Z"
+        },
+        {
+            "title": "",
+            "type": "free",
+            "subtitle": "",
+            "start": "2016-05-19T15:00:00.000Z",
+            "end": "2016-05-19T16:00:00.000Z"
         },
         {
             "title": "",
@@ -246,8 +267,22 @@
             "end": "2016-05-20T03:00:00.000Z"
         },
         {
-            "title": "Badge Pick-Up",
+            "title": "",
+            "type": "free",
             "subtitle": "",
+            "start": "2016-05-20T03:00:00.000Z",
+            "end": "2016-05-20T04:00:00.000Z"
+        },
+        {
+            "title": "",
+            "type": "free",
+            "subtitle": "",
+            "start": "2016-05-20T04:00:00.000Z",
+            "end": "2016-05-20T05:00:00.000Z"
+        },
+        {
+            "title": "Badge Pick-Up",
+            "subtitle": "Registration",
             "type": "break",
             "start": "2016-05-20T15:00:00.000Z",
             "end": "2016-05-20T23:00:00.000Z"
@@ -261,7 +296,7 @@
         },
         {
             "title": "Codelabs",
-            "subtitle": "",
+            "subtitle": "Codelabs",
             "type": "break",
             "start": "2016-05-20T15:30:00.000Z",
             "end": "2016-05-20T23:00:00.000Z"
@@ -270,7 +305,7 @@
             "title": "Sandbox",
             "subtitle": "",
             "type": "break",
-            "start": "2016-05-20T15:30:00.000Z",
+            "start": "2016-05-20T15:30:01.000Z",
             "end": "2016-05-20T23:00:00.000Z"
         },
         {
@@ -279,6 +314,13 @@
             "type": "break",
             "start": "2016-05-20T18:30:00.000Z",
             "end": "2016-05-20T20:30:00.000Z"
+        },
+        {
+            "title": "",
+            "type": "free",
+            "subtitle": "",
+            "start": "2016-05-20T15:00:00.000Z",
+            "end": "2016-05-20T16:00:00.000Z"
         },
         {
             "title": "",
