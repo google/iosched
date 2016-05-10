@@ -20,19 +20,20 @@ import java.util.ArrayList;
  * Data describing an Explore Event Card.
  */
 public class EventData {
-  public String getTitle() {
-    return mTitle;
-  }
+    private ArrayList<EventCard> mCards = new ArrayList<>();
+    private String mTitle;
 
-  public ArrayList<EventCard> getCards() {
-    return mCards;
-  }
+    public EventData() {}
 
-  public void addEventCard(EventCard card) {
-    mCards.add(card);
-  }
+    public void addEventCard(EventCard card) {
+        mCards.add(card);
+    }
 
-  private String mTitle;
-  private ArrayList<EventCard> mCards = new ArrayList<>();
-  public EventData() {}
+    public ArrayList<EventCard> getCards() {
+        return mCards;
+    }
+
+    public String getTitle() {
+        return mTitle;
+    }
 }

@@ -59,7 +59,6 @@ import java.util.StringTokenizer;
 import static com.google.samples.apps.iosched.util.LogUtils.LOGD;
 import static com.google.samples.apps.iosched.util.LogUtils.LOGE;
 import static com.google.samples.apps.iosched.util.LogUtils.LOGI;
-import static com.google.samples.apps.iosched.util.LogUtils.LOGW;
 import static com.google.samples.apps.iosched.util.LogUtils.makeLogTag;
 
 /**
@@ -72,88 +71,28 @@ public class ExploreIOModel extends ModelWithLoaderManager<ExploreIOModel.Explor
     private static final String TAG = makeLogTag(ExploreIOModel.class);
 
     private final Context mContext;
-
+    @NonNull
+    private EventData mEventData = new EventData();
+    private SessionData mKeynoteData;
+    private LiveStreamData mLiveStreamData;
+    private List<ItemGroup> mOrderedTracks;
+    private Uri mSessionsUri;
+    private TagMetadata mTagMetadata;
+    /**
+     * Theme groups loaded from the database pre-randomly filtered and stored by topic name. Not
+     * shown in current design.
+     */
+    private Map<String, ItemGroup> mThemes = new HashMap<>();
     /**
      * Topic groups loaded from the database pre-randomly filtered and stored by topic name.
      */
     private Map<String, ItemGroup> mTracks = new HashMap<>();
-
-    /**
-     * Theme groups loaded from the database pre-randomly filtered and stored by topic name.
-     * Not shown in current design.
-     */
-    private Map<String, ItemGroup> mThemes = new HashMap<>();
-
-    private List<ItemGroup> mOrderedTracks;
-
-    private SessionData mKeynoteData;
-
-    private LiveStreamData mLiveStreamData;
-
-    private Uri mSessionsUri;
-
-    private TagMetadata mTagMetadata;
-
-    @NonNull
-    public EventData getEventData() {
-        return mEventData;
-    }
-
-    @NonNull
-    private EventData mEventData = new EventData();
 
     public ExploreIOModel(Context context, Uri sessionsUri, LoaderManager loaderManager) {
         super(ExploreIOQueryEnum.values(), ExploreIOUserActionEnum.values(), loaderManager);
         mContext = context;
         mSessionsUri = sessionsUri;
     }
-
-    private Collection<ItemGroup> getTracks() {
-        return mTracks.values();
-    }
-
-    private Collection<ItemGroup> getThemes() {
-        return mThemes.values();
-    }
-
-    /**
-     * @return the tracks ordered alphabetically. The ordering can only happen if the query {@link
-     * com.google.samples.apps.iosched.explore.ExploreIOModel.ExploreIOQueryEnum#TAGS} has returned,
-     * which can be checked by calling {@link #getTagMetadata()}.
-     */
-    public Collection<ItemGroup> getOrderedTracks() {
-        if (mOrderedTracks != null) {
-            return mOrderedTracks;
-        }
-        mOrderedTracks = new ArrayList<ItemGroup>(getTracks());
-        for (ItemGroup item : mOrderedTracks) {
-            if (item.getTitle() == null) {
-                item.formatTitle(mTagMetadata);
-            }
-        }
-
-        // Order the tracks by title.
-        Collections.sort(mOrderedTracks, new Comparator<ItemGroup>() {
-            @Override
-            public int compare(final ItemGroup lhs, final ItemGroup rhs) {
-                if (lhs.getTitle() == null) {
-                    return 1;
-                } else if (rhs.getTitle() == null) {
-                    return -1;
-                }
-                return lhs.getTitle().compareTo(rhs.getTitle());
-            }
-        });
-
-        return mOrderedTracks;
-    }
-
-    public TagMetadata getTagMetadata() { return mTagMetadata; }
-
-    public SessionData getKeynoteData() { return mKeynoteData; }
-
-    public LiveStreamData getLiveStreamData() { return mLiveStreamData; }
-
 
     @Override
     public void cleanUp() {
@@ -165,15 +104,6 @@ public class ExploreIOModel extends ModelWithLoaderManager<ExploreIOModel.Explor
         mOrderedTracks = null;
         mKeynoteData = null;
         mLiveStreamData = null;
-    }
-
-    @Override
-    public void processUserAction(final ExploreIOUserActionEnum action,
-            @Nullable final Bundle args, final UserActionCallback callback) {
-        /**
-         * The only user action in this model fires off a query (using {@link #KEY_RUN_QUERY_ID},
-         * so this method isn't used.
-         */
     }
 
     @Override
@@ -198,8 +128,11 @@ public class ExploreIOModel extends ModelWithLoaderManager<ExploreIOModel.Explor
                         ExploreIOQueryEnum.CARDS.getProjection(),
                         " ? > " + ScheduleContract.Cards.DISPLAY_START_DATE + " AND  ? < " +
                                 ScheduleContract.Cards.DISPLAY_END_DATE + " AND " +
-                                ScheduleContract.Cards.ACTION_TYPE + " IN ('LINK', 'MAP')" ,
-                        new String[]{ currentTime, currentTime},
+                                ScheduleContract.Cards.ACTION_TYPE + " IN ('" +
+                                EventCard.ACTION_TYPE_LINK + "', '" +
+                                EventCard.ACTION_TYPE_MAP + "', '" +
+                                EventCard.ACTION_TYPE_SESSION + "')",
+                        new String[]{currentTime, currentTime},
                         ScheduleContract.Cards.CARD_ID);
                 break;
         }
@@ -207,21 +140,20 @@ public class ExploreIOModel extends ModelWithLoaderManager<ExploreIOModel.Explor
         return loader;
     }
 
-    @Override
-    public boolean readDataFromCursor(final Cursor cursor, final ExploreIOQueryEnum query) {
-        switch (query) {
-            case SESSIONS:
-                readDataFromSessionsCursor(cursor);
-                return true;
-            case TAGS:
-                readDataFromTagsCursor(cursor);
-                return true;
-            case CARDS:
-                readDataFromCardsCursor(cursor);
-                return true;
-        }
-        return false;
+    @VisibleForTesting
+    public CursorLoader getCursorLoaderInstance(Context context, Uri uri, String[] projection,
+            String selection, String[] selectionArgs, String sortOrder) {
+        return new CursorLoader(context, uri, projection, selection, selectionArgs, sortOrder);
     }
+
+    @NonNull
+    public EventData getEventData() {
+        return mEventData;
+    }
+
+    public SessionData getKeynoteData() { return mKeynoteData; }
+
+    public LiveStreamData getLiveStreamData() { return mLiveStreamData; }
 
     /**
      * Get the list of {@link MessageData} to be displayed to the user, based upon time, location
@@ -264,11 +196,11 @@ public class ExploreIOModel extends ModelWithLoaderManager<ExploreIOModel.Explor
                 if (messagesToDisplay.size() < 1) {
                     LOGD(TAG, "Simple cards");
                     List<ConfMessageCardUtils.ConfMessageCard> simpleCards =
-                      ConfMessageCardUtils.ConfMessageCard.getActiveSimpleCards(mContext);
+                            ConfMessageCardUtils.ConfMessageCard.getActiveSimpleCards(mContext);
                     // Only show a single card at a time.
                     if (simpleCards.size() > 0) {
                         messagesToDisplay.add(MessageCardHelper.getSimpleMessageCardData(
-                          simpleCards.get(0)));
+                                simpleCards.get(0)));
                     }
                 }
             }
@@ -277,12 +209,140 @@ public class ExploreIOModel extends ModelWithLoaderManager<ExploreIOModel.Explor
     }
 
     /**
-     * Check if this card should be shown and hasn't previously been dismissed.
-     *
-     * @return {@code true} if the given message card should be displayed.
+     * @return the tracks ordered alphabetically. The ordering can only happen if the query {@link
+     * com.google.samples.apps.iosched.explore.ExploreIOModel.ExploreIOQueryEnum#TAGS} has returned,
+     * which can be checked by calling {@link #getTagMetadata()}.
      */
-    private boolean shouldShowCard(ConfMessageCardUtils.ConfMessageCard card) {
-        return ConfMessageCardUtils.shouldShowConfMessageCard(mContext, card) && !ConfMessageCardUtils.hasDismissedConfMessageCard(mContext, card);
+    public Collection<ItemGroup> getOrderedTracks() {
+        if (mOrderedTracks != null) {
+            return mOrderedTracks;
+        }
+        mOrderedTracks = new ArrayList<ItemGroup>(getTracks());
+        for (ItemGroup item : mOrderedTracks) {
+            if (item.getTitle() == null) {
+                item.formatTitle(mTagMetadata);
+            }
+        }
+
+        // Order the tracks by title.
+        Collections.sort(mOrderedTracks, new Comparator<ItemGroup>() {
+            @Override
+            public int compare(final ItemGroup lhs, final ItemGroup rhs) {
+                if (lhs.getTitle() == null) {
+                    return 1;
+                } else if (rhs.getTitle() == null) {
+                    return -1;
+                }
+                return lhs.getTitle().compareTo(rhs.getTitle());
+            }
+        });
+
+        return mOrderedTracks;
+    }
+
+    public TagMetadata getTagMetadata() { return mTagMetadata; }
+
+    @Override
+    public void processUserAction(final ExploreIOUserActionEnum action,
+            @Nullable final Bundle args, final UserActionCallback callback) {
+        /**
+         * The only user action in this model fires off a query (using {@link #KEY_RUN_QUERY_ID},
+         * so this method isn't used.
+         */
+    }
+
+    @Override
+    public boolean readDataFromCursor(final Cursor cursor, final ExploreIOQueryEnum query) {
+        switch (query) {
+            case SESSIONS:
+                readDataFromSessionsCursor(cursor);
+                return true;
+            case TAGS:
+                readDataFromTagsCursor(cursor);
+                return true;
+            case CARDS:
+                readDataFromCardsCursor(cursor);
+                return true;
+        }
+        return false;
+    }
+
+    private void addPhotoUrlToTopicsAndThemes() {
+        if (mTracks != null) {
+            for (ItemGroup topic : mTracks.values()) {
+                if (mTagMetadata != null && mTagMetadata.getTag(topic.getTitleId()) != null) {
+                    topic.setPhotoUrl(mTagMetadata.getTag(topic.getTitleId()).getPhotoUrl());
+                }
+            }
+        }
+        if (mThemes != null) {
+            for (ItemGroup theme : mThemes.values()) {
+                if (mTagMetadata != null && mTagMetadata.getTag(theme.getTitleId()) != null) {
+                    theme.setPhotoUrl(mTagMetadata.getTag(theme.getTitleId()).getPhotoUrl());
+                }
+            }
+        }
+    }
+
+    private Collection<ItemGroup> getThemes() {
+        return mThemes.values();
+    }
+
+    private Collection<ItemGroup> getTracks() {
+        return mTracks.values();
+    }
+
+    /**
+     * A session missing title, description, id, or image isn't eligible for the Explore screen.
+     */
+    private boolean isSessionDataInvalid(SessionData session) {
+        return TextUtils.isEmpty(session.getSessionName()) ||
+                TextUtils.isEmpty(session.getDetails()) ||
+                TextUtils.isEmpty(session.getSessionId()) ||
+                TextUtils.isEmpty(session.getImageUrl());
+    }
+
+    private void populateSessionFromCursorRow(SessionData session, Cursor cursor) {
+        session.updateData(mContext,
+                cursor.getString(cursor.getColumnIndex(
+                        ScheduleContract.Sessions.SESSION_TITLE)),
+                cursor.getString(cursor.getColumnIndex(
+                        ScheduleContract.Sessions.SESSION_ABSTRACT)),
+                cursor.getString(cursor.getColumnIndex(
+                        ScheduleContract.Sessions.SESSION_ID)),
+                cursor.getString(cursor.getColumnIndex(
+                        ScheduleContract.Sessions.SESSION_PHOTO_URL)),
+                cursor.getString(cursor.getColumnIndex(
+                        ScheduleContract.Sessions.SESSION_MAIN_TAG)),
+                cursor.getLong(cursor.getColumnIndex(
+                        ScheduleContract.Sessions.SESSION_START)),
+                cursor.getLong(cursor.getColumnIndex(
+                        ScheduleContract.Sessions.SESSION_END)),
+                cursor.getString(cursor.getColumnIndex(
+                        ScheduleContract.Sessions.SESSION_LIVESTREAM_ID)),
+                cursor.getString(cursor.getColumnIndex(
+                        ScheduleContract.Sessions.SESSION_YOUTUBE_URL)),
+                cursor.getString(cursor.getColumnIndex(
+                        ScheduleContract.Sessions.SESSION_TAGS)),
+                cursor.getLong(cursor.getColumnIndex(
+                        ScheduleContract.Sessions.SESSION_IN_MY_SCHEDULE)) == 1L);
+    }
+
+    private void readDataFromCardsCursor(Cursor cursor) {
+        LOGD(TAG, "Cards query loaded");
+        mEventData = new EventData();
+        if (cursor != null && cursor.moveToFirst()) {
+            LOGD(TAG, "Read card data");
+            do {
+                EventCard card = EventCard.fromCursorRow(cursor);
+                if (card != null) {
+                    mEventData.addEventCard(card);
+                }
+            } while (cursor.moveToNext());
+            LOGI(TAG, "Cards loaded: " + mEventData.getCards().size());
+        } else {
+            LOGE(TAG, "No Cards data");
+        }
     }
 
     /**
@@ -376,29 +436,6 @@ public class ExploreIOModel extends ModelWithLoaderManager<ExploreIOModel.Explor
         mOrderedTracks = null;
     }
 
-    /**
-     * A session missing title, description, id, or image isn't eligible for the Explore screen.
-     */
-    private boolean isSessionDataInvalid(SessionData session) {
-        return TextUtils.isEmpty(session.getSessionName()) ||
-                TextUtils.isEmpty(session.getDetails()) ||
-                TextUtils.isEmpty(session.getSessionId()) ||
-                TextUtils.isEmpty(session.getImageUrl());
-    }
-
-    private void readDataFromCardsCursor(Cursor cursor) {
-        LOGD(TAG, "Cards query loaded");
-        mEventData = new EventData();
-        if (cursor != null && cursor.moveToFirst()) {
-            LOGD(TAG, "Read mCardContent data");
-            do {
-                mEventData.addEventCard(EventCard.fromCursorRow(cursor));
-            } while (cursor.moveToNext());
-        } else {
-            LOGE(TAG, "No Cards data");
-        }
-    }
-
     private void readDataFromTagsCursor(Cursor cursor) {
         LOGD(TAG, "TAGS query loaded");
         if (cursor != null && cursor.moveToFirst()) {
@@ -406,23 +443,6 @@ public class ExploreIOModel extends ModelWithLoaderManager<ExploreIOModel.Explor
         }
 
         addPhotoUrlToTopicsAndThemes();
-    }
-
-    private void addPhotoUrlToTopicsAndThemes() {
-        if (mTracks != null) {
-            for (ItemGroup topic : mTracks.values()) {
-                if (mTagMetadata != null && mTagMetadata.getTag(topic.getTitleId()) != null) {
-                    topic.setPhotoUrl(mTagMetadata.getTag(topic.getTitleId()).getPhotoUrl());
-                }
-            }
-        }
-        if (mThemes != null) {
-            for (ItemGroup theme : mThemes.values()) {
-                if (mTagMetadata != null && mTagMetadata.getTag(theme.getTitleId()) != null) {
-                    theme.setPhotoUrl(mTagMetadata.getTag(theme.getTitleId()).getPhotoUrl());
-                }
-            }
-        }
     }
 
     private void rewriteKeynoteDetails(SessionData keynoteData) {
@@ -452,36 +472,14 @@ public class ExploreIOModel extends ModelWithLoaderManager<ExploreIOModel.Explor
         keynoteData.setDetails(stringBuilder.toString());
     }
 
-    private void populateSessionFromCursorRow(SessionData session, Cursor cursor) {
-        session.updateData(mContext,
-                cursor.getString(cursor.getColumnIndex(
-                        ScheduleContract.Sessions.SESSION_TITLE)),
-                cursor.getString(cursor.getColumnIndex(
-                        ScheduleContract.Sessions.SESSION_ABSTRACT)),
-                cursor.getString(cursor.getColumnIndex(
-                        ScheduleContract.Sessions.SESSION_ID)),
-                cursor.getString(cursor.getColumnIndex(
-                        ScheduleContract.Sessions.SESSION_PHOTO_URL)),
-                cursor.getString(cursor.getColumnIndex(
-                        ScheduleContract.Sessions.SESSION_MAIN_TAG)),
-                cursor.getLong(cursor.getColumnIndex(
-                        ScheduleContract.Sessions.SESSION_START)),
-                cursor.getLong(cursor.getColumnIndex(
-                        ScheduleContract.Sessions.SESSION_END)),
-                cursor.getString(cursor.getColumnIndex(
-                        ScheduleContract.Sessions.SESSION_LIVESTREAM_ID)),
-                cursor.getString(cursor.getColumnIndex(
-                        ScheduleContract.Sessions.SESSION_YOUTUBE_URL)),
-                cursor.getString(cursor.getColumnIndex(
-                        ScheduleContract.Sessions.SESSION_TAGS)),
-                cursor.getLong(cursor.getColumnIndex(
-                        ScheduleContract.Sessions.SESSION_IN_MY_SCHEDULE)) == 1L);
-    }
-
-    @VisibleForTesting
-    public CursorLoader getCursorLoaderInstance(Context context, Uri uri, String[] projection,
-            String selection, String[] selectionArgs, String sortOrder) {
-        return new CursorLoader(context, uri, projection, selection, selectionArgs, sortOrder);
+    /**
+     * Check if this card should be shown and hasn't previously been dismissed.
+     *
+     * @return {@code true} if the given message card should be displayed.
+     */
+    private boolean shouldShowCard(ConfMessageCardUtils.ConfMessageCard card) {
+        return ConfMessageCardUtils.shouldShowConfMessageCard(mContext, card) &&
+                !ConfMessageCardUtils.hasDismissedConfMessageCard(mContext, card);
     }
 
     /**
@@ -516,7 +514,7 @@ public class ExploreIOModel extends ModelWithLoaderManager<ExploreIOModel.Explor
                 ScheduleContract.Tags.TAG_NAME,
         }),
 
-        CARDS(0x3, new String[] {
+        CARDS(0x3, new String[]{
                 ScheduleContract.Cards.CARD_ID,
                 ScheduleContract.Cards.TITLE,
                 ScheduleContract.Cards.TEXT_COLOR,
@@ -527,7 +525,8 @@ public class ExploreIOModel extends ModelWithLoaderManager<ExploreIOModel.Explor
                 ScheduleContract.Cards.ACTION_TEXT,
                 ScheduleContract.Cards.BACKGROUND_COLOR,
                 ScheduleContract.Cards.DISPLAY_START_DATE,
-                ScheduleContract.Cards.ACTION_TYPE
+                ScheduleContract.Cards.ACTION_TYPE,
+                ScheduleContract.Cards.ACTION_EXTRA
         });
 
 

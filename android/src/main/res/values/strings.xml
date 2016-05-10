@@ -1049,6 +1049,12 @@ user updates the rating. -->
          can watch a video but it turns out we can't show the video. -->
     <string name="explore_io_video_id_not_valid">Sorry, there appears to be a problem with the video url.</string>
 
+    <string description="This string is presented as a header message on a user interface card
+         element. The card element has sub-cards that explain a few logistical details for
+         attendees. 'On the Ground' is slang in English indicating 'What you need to know when
+         you're in the middle of the conference.'"
+            name="explore_io_on_the_ground_title">On the Ground</string>
+
     <!-- This string is the title of a notification shown to the user when Google Play
         services can't connect. -->
     <string name="app_data_notification_resolution_title">I/O App needs permission</string>
@@ -1060,7 +1066,6 @@ user updates the rating. -->
          that we can't execute the request when they click a button or touch a part of the screen
          that should normally be touchable. -->
     <string name="unknown_error">Whoops, we couldn\'t process that request.</string>
-
 
     <!--Generic strings to be translated & used in talk back labels-->
 
@@ -1094,6 +1099,5 @@ user updates the rating. -->
     <string name="transition_session_background" translatable="false">transition_session_background</string>
 
     <string name="transition_session_image" translatable="false">transition_session_image</string>
-    <string name="explore_io_on_the_ground_title">On the Ground</string>
 
 </resources>

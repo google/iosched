@@ -43,7 +43,6 @@ import com.google.samples.apps.iosched.archframework.UpdatableView;
 import com.google.samples.apps.iosched.injection.ModelProvider;
 import com.google.samples.apps.iosched.model.ScheduleHelper;
 import com.google.samples.apps.iosched.navigation.NavigationModel;
-import com.google.samples.apps.iosched.provider.ScheduleContract;
 import com.google.samples.apps.iosched.session.SessionDetailActivity;
 import com.google.samples.apps.iosched.ui.BaseActivity;
 import com.google.samples.apps.iosched.util.AnalyticsHelper;
@@ -255,11 +254,8 @@ public class MyScheduleActivity extends BaseActivity implements
                 String sessionId = dataUri.getQueryParameter("sid");
                 if (!TextUtils.isEmpty(sessionId)) {
                     LOGD(TAG, "SessionId received from website: " + sessionId);
-                    Uri data = ScheduleContract.Sessions.buildSessionUri(sessionId);
-                    Intent sessionDetailIntent = new Intent(MyScheduleActivity.this,
-                            SessionDetailActivity.class);
-                    sessionDetailIntent.setData(data);
-                    startActivity(sessionDetailIntent);
+                    SessionDetailActivity.startSessionDetailActivity(MyScheduleActivity.this,
+                            sessionId);
                     finish();
                 } else {
                     LOGD(TAG, "No SessionId received from website");

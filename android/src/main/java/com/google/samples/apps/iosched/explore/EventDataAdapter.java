@@ -15,6 +15,7 @@
 package com.google.samples.apps.iosched.explore;
 
 import android.app.Activity;
+import android.app.usage.UsageEvents;
 import android.content.ActivityNotFoundException;
 import android.content.Intent;
 import android.graphics.drawable.ColorDrawable;
@@ -27,10 +28,12 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.common.base.Strings;
 import com.google.samples.apps.iosched.R;
 import com.google.samples.apps.iosched.explore.data.EventCard;
 import com.google.samples.apps.iosched.explore.data.EventData;
 import com.google.samples.apps.iosched.map.MapActivity;
+import com.google.samples.apps.iosched.session.SessionDetailActivity;
 import com.google.samples.apps.iosched.ui.widget.recyclerview.UpdatableAdapter;
 import com.google.samples.apps.iosched.util.ActivityUtils;
 import com.google.samples.apps.iosched.util.MapUtils;
@@ -104,8 +107,8 @@ public class EventDataAdapter
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(final View v) {
-                    if (mCardContent != null) {
-                        if ("LINK".equalsIgnoreCase(mCardContent.getActionType())) {
+                    if (mCardContent != null && mCardContent.isValid()) {
+                        if (EventCard.ACTION_TYPE_LINK.equalsIgnoreCase(mCardContent.getActionType())) {
                             try {
                                 Intent myIntent =
                                         new Intent(Intent.ACTION_VIEW,
@@ -117,11 +120,14 @@ public class EventDataAdapter
                                      .show();
                             }
                         }
-                        if ("MAP".equalsIgnoreCase(mCardContent.getActionType())) {
+                        if (EventCard.ACTION_TYPE_MAP.equalsIgnoreCase(mCardContent.getActionType())) {
                             ActivityUtils.createBackStack(mHost,
                                     new Intent(mHost, MapActivity.class));
                             mHost.finish();
                             return;
+                        }
+                        if (EventCard.ACTION_TYPE_SESSION.equalsIgnoreCase(mCardContent.getActionType())) {
+                            SessionDetailActivity.startSessionDetailActivity(mHost, mCardContent.getActionExtra());
                         }
                     }
                 }

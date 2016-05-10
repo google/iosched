@@ -16,6 +16,7 @@
 
 package com.google.samples.apps.iosched.session;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -26,6 +27,7 @@ import android.view.View;
 
 import com.google.samples.apps.iosched.R;
 import com.google.samples.apps.iosched.myschedule.MyScheduleActivity;
+import com.google.samples.apps.iosched.provider.ScheduleContract;
 import com.google.samples.apps.iosched.ui.BaseActivity;
 import com.google.samples.apps.iosched.util.BeamUtils;
 import com.google.samples.apps.iosched.util.LogUtils;
@@ -92,7 +94,6 @@ public class SessionDetailActivity extends BaseActivity {
         }
     }
 
-
     public Uri getSessionUri() {
         return mSessionUri;
     }
@@ -100,5 +101,15 @@ public class SessionDetailActivity extends BaseActivity {
     @Override
     public Intent getParentActivityIntent() {
         return new Intent(this, MyScheduleActivity.class);
+    }
+
+    public static void startSessionDetailActivity(final Activity activity,
+            final String sessionId) {
+        Uri data = ScheduleContract.Sessions.buildSessionUri
+                (sessionId);
+        Intent sessionDetailIntent = new Intent(activity,
+                SessionDetailActivity.class);
+        sessionDetailIntent.setData(data);
+        activity.startActivity(sessionDetailIntent);
     }
 }
