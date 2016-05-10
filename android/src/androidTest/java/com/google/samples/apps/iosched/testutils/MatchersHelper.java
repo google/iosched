@@ -15,13 +15,20 @@
  */
 package com.google.samples.apps.iosched.testutils;
 
+import android.net.Uri;
 import android.support.test.espresso.UiController;
 import android.support.test.espresso.ViewAction;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.google.samples.apps.iosched.util.TimeUtils;
+
+import org.hamcrest.BaseMatcher;
+import org.hamcrest.Description;
 import org.hamcrest.Matcher;
+
+import java.util.List;
 
 import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.matcher.ViewMatchers.isAssignableFrom;
@@ -157,6 +164,70 @@ public class MatchersHelper {
             }
         });
         return intHolder[0];
+    }
+
+    /**
+     * Some {@link Uri} include specific times, for example all sessions after a given time. Even
+     * though time can be set in tests, {@link com.google.samples.apps.iosched.util.TimeUtils
+     * .getCurrentTime()} takes into account the passage of time so two separate calls to it will
+     * return slightly different values. This matcher applies an approximation of 10 seconds.
+     * <p/>
+     * Note: it assumes the time portion of the {@link Uri} is the last segment.
+     */
+    public static Matcher<Uri> approximateTimeUriMatcher(final Uri expectedUri) {
+        return new BaseMatcher<Uri>() {
+
+            @Override
+            public void describeTo(final Description description) {
+                description.appendText("approximateTimeUriMatcher");
+            }
+
+            @Override
+            public boolean matches(final Object item) {
+                if (item instanceof Uri) {
+                    Uri actualUri = (Uri) item;
+
+                    // Check the last segment is a time
+                    long expectedTime = 0L;
+                    long actualTime = 0L;
+                    try {
+                        expectedTime = Long.parseLong(expectedUri.getLastPathSegment());
+                    } catch (NumberFormatException e) {
+                        return false;
+                    }
+                    try {
+                        actualTime = Long.parseLong(actualUri.getLastPathSegment());
+                    } catch (NumberFormatException e) {
+                        return false;
+                    }
+
+                    // If the times are within 10 seconds of each other, check other segments
+                    if (Math.abs(actualTime - expectedTime) < TimeUtils.SECOND * 10) {
+                        List<String> actualSegments = actualUri.getPathSegments();
+                        List<String> expectedSegments = expectedUri.getPathSegments();
+                        // If same number of segments
+                        if (actualSegments.size() == expectedSegments.size()) {
+                            boolean diffFound = false;
+                            // Check each segment except the last
+                            for (int i = 0; i < actualSegments.size() - 1; i++) {
+                                if (!actualSegments.get(i).equals(expectedSegments.get(i))) {
+                                    diffFound = true;
+                                }
+                            }
+                            // They match only if no differences were found
+                            return !diffFound;
+                        }
+                    }
+                }
+                return false;
+            }
+
+            @Override
+            public void describeMismatch(final Object item, final Description mismatchDescription) {
+                mismatchDescription.appendText("item doesn't match uri " + expectedUri +
+                        " with an approximataion of 10 seconds for the last time segment");
+            }
+        };
     }
 
 }
