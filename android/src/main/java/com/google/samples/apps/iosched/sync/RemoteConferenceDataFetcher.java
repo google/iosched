@@ -195,7 +195,7 @@ public class RemoteConferenceDataFetcher {
         LOGD(TAG, "Attempting to fetch: " + sanitizeUrl(url));
 
         // Check if we have it in our cache first
-        String body = null;
+        String body;
         try {
             body = loadFromCache(url);
             if (!TextUtils.isEmpty(body)) {

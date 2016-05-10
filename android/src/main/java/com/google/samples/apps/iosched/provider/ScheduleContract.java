@@ -216,7 +216,7 @@ public final class ScheduleContract {
 
     interface AnnouncementsColumns {
 
-        /** Unique string identifying this announcment. */
+        /** Unique string identifying this announcement. */
         String ANNOUNCEMENT_ID = "announcement_id";
         /** Title of the announcement. */
         String ANNOUNCEMENT_TITLE = "announcement_title";
@@ -226,6 +226,26 @@ public final class ScheduleContract {
         String ANNOUNCEMENT_URL = "announcement_url";
         /** Date of the announcement. */
         String ANNOUNCEMENT_DATE = "announcement_date";
+    }
+
+    interface CardsColumns {
+        /** Unique id for each card */
+        String CARD_ID = "card_id";
+        String TITLE = "title";
+        /** URL for the action displayed on the card */
+        String ACTION_URL = "action_url";
+        /** Time when the card can start to be displayed */
+        String DISPLAY_START_DATE = "start_date";
+        /** Time when the card should no longer be displayed */
+        String DISPLAY_END_DATE = "end_date";
+        /** Extended message for the card */
+        String MESSAGE = "message";
+        String BACKGROUND_COLOR = "bg_color";
+        String TEXT_COLOR = "text_color";
+        String ACTION_COLOR = "action_color";
+        String ACTION_TEXT = "action_text";
+        String ACTION_TYPE = "action_type";
+        String ACTION_EXTRA = "action_extra";
     }
 
     interface MapMarkerColumns {
@@ -307,6 +327,8 @@ public final class ScheduleContract {
 
     private static final String PATH_AFTER = "after";
 
+    private static final String PATH_CARDS = "cards";
+
     private static final String PATH_TAGS = "tags";
 
     private static final String PATH_ROOM = "room";
@@ -353,6 +375,7 @@ public final class ScheduleContract {
             PATH_BLOCKS,
             PATH_TAGS,
             PATH_ROOMS,
+            PATH_CARDS,
             PATH_SESSIONS,
             PATH_FEEDBACK,
             PATH_MY_SCHEDULE,
@@ -514,6 +537,29 @@ public final class ScheduleContract {
             return ScheduleContractHelper.addOverrideAccountName(CONTENT_URI, accountName);
         }
 
+    }
+
+    /**
+     * Cards are presented on the Explore I/O screen.
+     */
+    public static class Cards implements CardsColumns, BaseColumns {
+
+        public static final Uri CONTENT_URI =
+                BASE_CONTENT_URI.buildUpon().appendPath(PATH_CARDS).build();
+
+        public static final String CONTENT_TYPE_ID = "cards";
+
+        /**
+         * Build {@link Uri} that references any {@link Cards}.
+         */
+        public static Uri buildCardsUri() {
+            return CONTENT_URI.buildUpon().appendPath(PATH_CARDS).build();
+        }
+
+        /** Build {@link Uri} for requested {@link #CARD_ID}. */
+        public static Uri buildCardUri(String cardId) {
+            return CONTENT_URI.buildUpon().appendPath(PATH_CARDS).appendPath(cardId).build();
+        }
     }
 
     /**

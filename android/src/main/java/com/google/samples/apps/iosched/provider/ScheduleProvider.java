@@ -71,6 +71,7 @@ import java.util.List;
 import static com.google.samples.apps.iosched.util.LogUtils.LOGD;
 import static com.google.samples.apps.iosched.util.LogUtils.LOGE;
 import static com.google.samples.apps.iosched.util.LogUtils.LOGV;
+import static com.google.samples.apps.iosched.util.LogUtils.LOGW;
 import static com.google.samples.apps.iosched.util.LogUtils.makeLogTag;
 
 /**
@@ -205,7 +206,7 @@ public class ScheduleProvider extends ContentProvider {
 
         // Avoid the expensive string concatenation below if not loggable.
         if (Log.isLoggable(TAG, Log.VERBOSE)) {
-            Log.v(TAG, "uri=" + uri + " code=" + matchingUriEnum.code + " proj=" +
+            LOGV(TAG, "uri=" + uri + " code=" + matchingUriEnum.code + " proj=" +
                     Arrays.toString(projection) + " selection=" + selection + " args="
                     + Arrays.toString(selectionArgs) + ")");
         }
@@ -338,6 +339,10 @@ public class ScheduleProvider extends ContentProvider {
         switch (matchingUriEnum) {
             case BLOCKS: {
                 return Blocks.buildBlockUri(values.getAsString(Blocks.BLOCK_ID));
+            }
+            case CARDS: {
+                return ScheduleContract.Cards.buildCardUri(values.getAsString(
+                        ScheduleContract.Cards.CARD_ID));
             }
             case TAGS: {
                 return Tags.buildTagUri(values.getAsString(Tags.TAG_ID));
@@ -534,6 +539,7 @@ public class ScheduleProvider extends ContentProvider {
         // criteria so the full table is used. The others apply a selection criteria.
         switch (matchingUriEnum) {
             case BLOCKS:
+            case CARDS:
             case TAGS:
             case ROOMS:
             case SESSIONS:
@@ -682,6 +688,9 @@ public class ScheduleProvider extends ContentProvider {
                 final String blockId = Blocks.getBlockId(uri);
                 return builder.table(Tables.BLOCKS)
                         .where(Blocks.BLOCK_ID + "=?", blockId);
+            }
+            case CARDS: {
+                return builder.table(Tables.CARDS);
             }
             case TAGS: {
                 return builder.table(Tables.TAGS);

@@ -24,6 +24,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.provider.BaseColumns;
 
+import com.google.samples.apps.iosched.io.model.Card;
 import com.google.samples.apps.iosched.provider.ScheduleContract.*;
 import com.google.samples.apps.iosched.sync.ConferenceDataHandler;
 import com.google.samples.apps.iosched.sync.SyncHelper;
@@ -48,12 +49,14 @@ public class ScheduleDatabase extends SQLiteOpenHelper {
     private static final int VER_2015_RELEASE_A = 208;
     private static final int VER_2015_RELEASE_B = 210;
     private static final int VER_2016_RELEASE_A = 211;
-    private static final int CUR_DATABASE_VERSION = VER_2016_RELEASE_A;
+    private static final int VER_2016_RELEASE_B = 212;
+    private static final int CUR_DATABASE_VERSION = VER_2016_RELEASE_B;
 
     private final Context mContext;
 
     interface Tables {
         String BLOCKS = "blocks";
+        String CARDS = "cards";
         String TAGS = "tags";
         String ROOMS = "rooms";
         String SESSIONS = "sessions";
@@ -387,6 +390,7 @@ public class ScheduleDatabase extends SQLiteOpenHelper {
         upgradeFrom2014Cto2015A(db);
         upgradeFrom2015Ato2015B(db);
         upgradeFrom2015Bto2016A(db);
+        upgradeFrom2016Ato2016B(db);
     }
 
     private void upgradeFrom2014Cto2015A(SQLiteDatabase db) {
@@ -425,6 +429,24 @@ public class ScheduleDatabase extends SQLiteOpenHelper {
         // data with the version having the more recent timestamp assuming precedence.
         db.execSQL("ALTER TABLE " + Tables.MY_SCHEDULE
                 + " ADD COLUMN " + MyScheduleColumns.MY_SCHEDULE_TIMESTAMP + " DATETIME");
+    }
+
+    private void upgradeFrom2016Ato2016B(SQLiteDatabase db) {
+        db.execSQL("CREATE TABLE " + Tables.CARDS + " ("
+                + BaseColumns._ID + " INTEGER PRIMARY KEY AUTOINCREMENT,"
+                + Cards.ACTION_COLOR + " TEXT, "
+                + Cards.ACTION_TEXT + " TEXT, "
+                + Cards.ACTION_URL + " TEXT, "
+                + Cards.BACKGROUND_COLOR + " TEXT, "
+                + Cards.CARD_ID + " TEXT, "
+                + Cards.DISPLAY_END_DATE + " INTEGER, "
+                + Cards.DISPLAY_START_DATE + " INTEGER, "
+                + Cards.MESSAGE + " TEXT, "
+                + Cards.TEXT_COLOR + " TEXT, "
+                + Cards.TITLE + " TEXT,  "
+                + Cards.ACTION_TYPE + " TEXT,  "
+                + Cards.ACTION_EXTRA + " TEXT, "
+                + "UNIQUE (" + Cards.CARD_ID + ") ON CONFLICT REPLACE)");
     }
 
     /**
@@ -499,6 +521,13 @@ public class ScheduleDatabase extends SQLiteOpenHelper {
             LOGD(TAG, "Upgrading database from 2015 release B to 2016 release A.");
             upgradeFrom2015Bto2016A(db);
             version = VER_2016_RELEASE_A;
+        }
+
+        // Check if we can upgrade from release 2015 B to release 2016 A.
+        if (version == VER_2016_RELEASE_A) {
+            LOGD(TAG, "Upgrading database from 2016 release A to 2016 release B.");
+            upgradeFrom2016Ato2016B(db);
+            version = VER_2016_RELEASE_B;
         }
 
         LOGD(TAG, "After upgrade logic, at version " + version);
