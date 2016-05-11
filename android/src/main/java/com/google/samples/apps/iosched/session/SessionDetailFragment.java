@@ -108,8 +108,6 @@ public class SessionDetailFragment extends Fragment
 
     private ImageView mTwitterIcon;
 
-    private TextView mLiveStreamVideocamIconAndText;
-
     private TextView mLiveStreamPlayIconAndText;
 
     private LinearLayout mTags;
@@ -260,10 +258,6 @@ public class SessionDetailFragment extends Fragment
 
         mPlusOneIcon = (ImageView) getActivity().findViewById(R.id.gplus_icon_box);
         mTwitterIcon = (ImageView) getActivity().findViewById(R.id.twitter_icon_box);
-
-        // Find view that shows a play button and some text for the user to watch the session live stream.
-        mLiveStreamPlayIconAndText = (TextView) getActivity().findViewById(
-                R.id.live_stream_play_icon_and_text);
 
         mRequirements = (TextView) getActivity().findViewById(R.id.session_requirements);
         mTags = (LinearLayout) getActivity().findViewById(R.id.session_tags);

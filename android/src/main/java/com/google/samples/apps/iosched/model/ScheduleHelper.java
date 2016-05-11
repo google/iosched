@@ -68,7 +68,7 @@ public class ScheduleHelper {
             }
         }
 
-        setSessionCounters(result, start, end);
+        //setSessionCounters(result, start, end);
         return result;
     }
 
@@ -97,8 +97,8 @@ public class ScheduleHelper {
         Cursor cursor = mContext.getContentResolver().query(
                 ScheduleContract.Sessions.buildCounterByIntervalUri(),
                 SessionsCounterQuery.PROJECTION,
-                Sessions.SESSION_START + ">=? AND "+Sessions.SESSION_START + "<=? AND "+
-                Sessions.SESSION_IN_MY_SCHEDULE + " = 0 "+liveStreamedOnlySelection,
+                Sessions.SESSION_START + ">=? AND "+Sessions.SESSION_END + "<=? AND "+
+                Sessions.SESSION_STARRED + " = 0 "+liveStreamedOnlySelection,
                 new String[]{String.valueOf(dayStart), String.valueOf(dayEnd)},
                 null);
 
@@ -320,7 +320,7 @@ public class ScheduleHelper {
                 Sessions.SESSION_START,
                 Sessions.SESSION_END,
                 Sessions.SESSION_INTERVAL_COUNT,
-                Sessions.SESSION_IN_MY_SCHEDULE,
+                Sessions.SESSION_STARRED,
         };
 
         int SESSION_INTERVAL_START = 0;

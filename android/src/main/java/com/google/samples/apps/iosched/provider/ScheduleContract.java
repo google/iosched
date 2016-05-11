@@ -649,7 +649,7 @@ public final class ScheduleContract {
         public static final String SEARCH_SNIPPET = "search_snippet";
         public static final String HAS_GIVEN_FEEDBACK = "has_given_feedback";
 
-        public static final String DEFAULT_SORT = BlocksColumns.BLOCK_START + " ASC,"
+        public static final String DEFAULT_SORT = SessionsColumns.SESSION_START + " ASC,"
                 + SessionsColumns.SESSION_TITLE + " COLLATE NOCASE ASC";
 
         public static final String BLOCK_SESSION_SORT =
@@ -658,7 +658,7 @@ public final class ScheduleContract {
 
         // ORDER BY clauses
         public static final String SORT_BY_TYPE_THEN_TIME = SESSION_GROUPING_ORDER + " ASC,"
-                + BLOCK_START + " ASC," + SESSION_TITLE + " COLLATE NOCASE ASC";
+                + SESSION_START + " ASC," + SESSION_TITLE + " COLLATE NOCASE ASC";
 
         public static final String LIVESTREAM_SELECTION =
                 SESSION_LIVESTREAM_ID + " is not null AND " + SESSION_LIVESTREAM_ID + "!=''";
@@ -671,7 +671,7 @@ public final class ScheduleContract {
         // Used to fetch sessions starting within a specific time interval
 
         public static final String STARTING_AT_TIME_INTERVAL_SELECTION =
-                BLOCK_START + " < ? and " +  BLOCK_END + " " + "> ?";
+                SESSION_START + " < ? and " +  SESSION_END + " " + "> ?";
 
         // Used to fetch upcoming sessions
         public static final String UPCOMING_SELECTION =

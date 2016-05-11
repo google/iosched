@@ -220,6 +220,7 @@ public class ScheduleProvider extends ContentProvider {
                 // If a special filter was specified, try to apply it.
                 if (!TextUtils.isEmpty(tagsFilter) && !TextUtils.isEmpty(categories)) {
                     builder = buildExpandedSelectionWithFilter(uri, matchingUriEnum.code);
+
                     addTagsFilter(builder, tagsFilter, categories);
                 }
 
@@ -811,8 +812,8 @@ public class ScheduleProvider extends ContentProvider {
                 return builder
                         .table(Tables.SESSIONS_JOIN_MYSCHEDULE, getCurrentAccountName(uri, true))
                         .map(Sessions.SESSION_INTERVAL_COUNT, "count(1)")
-                       // .map(Sessions.SESSION_IN_MY_SCHEDULE, "IFNULL(in_schedule, 0)")
-                        .groupBy(Sessions.SESSION_START + ", " + Sessions.SESSION_END);
+                        .map(Sessions.SESSION_STARRED, "IFNULL(session_starred, 0)")
+                        .groupBy(Sessions.SESSION_START+ ", " + Sessions.SESSION_END);
             }
             case SESSIONS_MY_SCHEDULE: {
                 return builder.table(Tables.SESSIONS_JOIN_BLOCKS_ROOMS,
@@ -1043,6 +1044,17 @@ public class ScheduleProvider extends ContentProvider {
                         .mapToTable(Sessions.BLOCK_ID, Tables.SESSIONS)
                         .mapToTable(Sessions.ROOM_ID, Tables.SESSIONS)
                         // .map(Sessions.SESSION_IN_MY_SCHEDULE, "IFNULL(in_schedule, 0)")
+                        .groupBy(Qualified.SESSIONS_SESSION_ID);
+            }
+            case SESSIONS_UNSCHEDULED: {
+                final long[] interval = Sessions.getInterval(uri);
+                return builder.table(Tables.SESSIONS_JOIN_ROOMS_TAGS_FEEDBACK_MYSCHEDULE)
+                        .mapToTable(Sessions._ID, Tables.SESSIONS)
+                        .mapToTable(Sessions.ROOM_ID, Tables.SESSIONS)
+                        .mapToTable(Sessions.SESSION_ID, Tables.SESSIONS)
+                        .where(Sessions.SESSION_STARRED + "=0")
+                        .where(Sessions.SESSION_START + ">=?", String.valueOf(interval[0]))
+                        .where(Sessions.SESSION_END + "<?", String.valueOf(interval[1]))
                         .groupBy(Qualified.SESSIONS_SESSION_ID);
             }
             default: {

@@ -48,17 +48,6 @@
                     android:layout_height="match_parent"
                     android:scaleType="centerCrop" />
 
-                <!-- Livestream play button and text. -->
-                <TextView
-                    android:id="@+id/live_stream_play_icon_and_text"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:textAppearance="@style/TextAppearance.Title"
-                    android:textColor="@color/io15_white"
-                    android:drawableTop="@drawable/ic_play_circle_fill_white_48dp"
-                    android:drawablePadding="@dimen/spacing_normal" />
-
             </FrameLayout>
 
             <LinearLayout

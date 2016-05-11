@@ -24,7 +24,29 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.provider.BaseColumns;
 
-import com.google.samples.apps.iosched.provider.ScheduleContract.*;
+import com.google.samples.apps.iosched.provider.ScheduleContract.AnnouncementsColumns;
+import com.google.samples.apps.iosched.provider.ScheduleContract.Blocks;
+import com.google.samples.apps.iosched.provider.ScheduleContract.BlocksColumns;
+import com.google.samples.apps.iosched.provider.ScheduleContract.FeedbackColumns;
+import com.google.samples.apps.iosched.provider.ScheduleContract.HashtagColumns;
+import com.google.samples.apps.iosched.provider.ScheduleContract.MapMarkerColumns;
+import com.google.samples.apps.iosched.provider.ScheduleContract.MapTileColumns;
+import com.google.samples.apps.iosched.provider.ScheduleContract.MySchedule;
+import com.google.samples.apps.iosched.provider.ScheduleContract.Rooms;
+import com.google.samples.apps.iosched.provider.ScheduleContract.RoomsColumns;
+import com.google.samples.apps.iosched.provider.ScheduleContract.Sessions;
+import com.google.samples.apps.iosched.provider.ScheduleContract.SessionsColumns;
+import com.google.samples.apps.iosched.provider.ScheduleContract.Speakers;
+import com.google.samples.apps.iosched.provider.ScheduleContract.SpeakersColumns;
+import com.google.samples.apps.iosched.provider.ScheduleContract.SyncColumns;
+import com.google.samples.apps.iosched.provider.ScheduleContract.Tags;
+import com.google.samples.apps.iosched.provider.ScheduleContract.TagsColumns;
+import com.google.samples.apps.iosched.provider.ScheduleContract.Tracks;
+import com.google.samples.apps.iosched.provider.ScheduleContract.TracksColumns;
+import com.google.samples.apps.iosched.provider.ScheduleContract.Vendors;
+import com.google.samples.apps.iosched.provider.ScheduleContract.VendorsColumns;
+import com.google.samples.apps.iosched.provider.ScheduleContract.VideoColumns;
+import com.google.samples.apps.iosched.provider.ScheduleContract.Videos;
 import com.google.samples.apps.iosched.sync.ConferenceDataHandler;
 import com.google.samples.apps.iosched.sync.SyncHelper;
 import com.google.samples.apps.iosched.util.AccountUtils;
@@ -116,8 +138,7 @@ public class ScheduleDatabase extends SQLiteOpenHelper {
                 + "LEFT OUTER JOIN sessions ON blocks.block_id=sessions.block_id";
 
         String SESSIONS_JOIN_MYSCHEDULE = "sessions "
-                + "LEFT OUTER JOIN myschedule ON sessions.session_id=myschedule.session_id "
-                + "AND myschedule.account_name=? ";
+                + "LEFT OUTER JOIN blocks ON sessions.block_id=blocks.block_id ";
 
         String SESSIONS_JOIN_ROOMS_TAGS = "sessions "
                 + "LEFT OUTER JOIN myschedule ON sessions.session_id=myschedule.session_id "
@@ -126,11 +147,9 @@ public class ScheduleDatabase extends SQLiteOpenHelper {
                 + "LEFT OUTER JOIN sessions_tags ON sessions.session_id=sessions_tags.session_id";
 
         String SESSIONS_JOIN_ROOMS_TAGS_FEEDBACK_MYSCHEDULE = "sessions "
-                + "LEFT OUTER JOIN myschedule ON sessions.session_id=myschedule.session_id "
-                + "AND myschedule.account_name=? "
                 + "LEFT OUTER JOIN rooms ON sessions.room_id=rooms.room_id "
-                + "LEFT OUTER JOIN sessions_tags ON sessions.session_id=sessions_tags.session_id "
-                + "LEFT OUTER JOIN feedback ON sessions.session_id=feedback.session_id";
+                + "LEFT OUTER JOIN tags ON instr(sessions.session_tags, tags.tag_name)"
+ s                + "LEFT OUTER JOIN feedback ON sessions.session_id=feedback.session_id";
 
         String SESSIONS_JOIN_ROOMS = "sessions "
                 + "LEFT OUTER JOIN myschedule ON sessions.session_id=myschedule.session_id "

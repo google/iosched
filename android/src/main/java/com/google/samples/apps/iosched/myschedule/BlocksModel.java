@@ -38,12 +38,14 @@ public class BlocksModel implements Model {
     private String mStarredSessionUrl;
     private String mStarredSessionLiveStreamUrl;
 
-    public BlocksModel
+    public BlocksModel(Context context) {
+        mContext = context;
+    }
 
 
     @Override
     public QueryEnum[] getQueries() {
-        return new QueryEnum[0];
+        return BlocksQueryEnum.values();
     }
 
     @Override
