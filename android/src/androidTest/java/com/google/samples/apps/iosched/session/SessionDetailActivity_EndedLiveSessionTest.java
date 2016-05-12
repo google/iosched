@@ -29,6 +29,7 @@ import com.google.samples.apps.iosched.mockdata.SpeakersMockCursor;
 import com.google.samples.apps.iosched.mockdata.TagMetadataMockCursor;
 import com.google.samples.apps.iosched.provider.ScheduleContract;
 import com.google.samples.apps.iosched.testutils.BaseActivityTestRule;
+import com.google.samples.apps.iosched.testutils.IntentUtils;
 import com.google.samples.apps.iosched.util.TimeUtils;
 
 import org.junit.Before;
@@ -37,6 +38,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import static android.support.test.espresso.Espresso.onView;
+import static android.support.test.espresso.action.ViewActions.click;
 import static android.support.test.espresso.action.ViewActions.swipeUp;
 import static android.support.test.espresso.assertion.ViewAssertions.matches;
 import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
@@ -97,6 +99,16 @@ public class SessionDetailActivity_EndedLiveSessionTest {
     public void watchText_IsVisible() {
         onView(withId(R.id.watch)).check(matches(isDisplayed()));
         onView(withText(R.string.session_watch)).check(matches(isDisplayed()));
+    }
+
+    @Test
+    public void youTubeVideo_WhenClicked_IntentFired() {
+        // When clicking on video
+        onView(withId(R.id.watch)).perform(click());
+
+        // Then the intent to play the video is fired
+        IntentUtils.checkVideoIntentIsFired(SessionsMockCursor.FAKE_YOUTUBE_URL,
+                mActivityRule.getActivity(), false);
     }
 
     @Test
