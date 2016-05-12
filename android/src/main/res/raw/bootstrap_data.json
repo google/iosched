@@ -576,7 +576,7 @@
                         "id": "SandboxD",
                         "lat": 37.425046,
                         "lng": -122.079906,
-                        "title": "Play & Studio",
+                        "title": "Play & Android Studio",
                         "type": "SANDBOX"
                     },
                     {
@@ -618,7 +618,7 @@
                         "id": "SandboxJ",
                         "lat": 37.42496,
                         "lng": -122.079298,
-                        "title": "Office Hours/Spaces",
+                        "title": "Office Hours/Ask a Dev",
                         "type": "SANDBOX"
                     },
                     {
