@@ -23,6 +23,7 @@
     <item name="tag_person_id" type="id"/>
     <item name="tag_person_name" type="id"/>
     <item name="tag_person_note" type="id"/>
+    <item name="tag_session_id" type="id"/>
 
     <array name="myschedule_listview_ids">
         <item>@id/myschedule_listview_preconferenceday</item>

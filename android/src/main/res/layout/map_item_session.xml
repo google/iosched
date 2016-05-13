@@ -20,6 +20,7 @@
     xmlns:tools="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:background="?attr/selectableItemBackground"
     android:paddingTop="@dimen/map_info_item_vertical_padding"
     android:paddingBottom="@dimen/map_info_item_vertical_padding"
     android:minHeight="@dimen/map_info_item_height"
