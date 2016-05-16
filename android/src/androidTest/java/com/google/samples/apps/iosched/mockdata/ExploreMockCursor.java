@@ -48,17 +48,29 @@ public class ExploreMockCursor {
 
     public static final String TRACK_ANDROID = "TRACK_ANDROID";
 
+    public static final String TRACK_ANDROID_NAME = "ANDROID_NAME";
+
     public static final String TRACK_MOBILEWEB = "TRACK_MOBILEWEB";
 
+    public static final String TRACK_MOBILEWEB_NAME = "MOBILEWEB_NAME";
+
     public static final String TRACK_CLOUD = "TRACK_CLOUD";
+
+    public static final String TRACK_CLOUD_NAME = "CLOUD_NAME";
 
     public static final String TRACK_SEARCH = "TRACK_SEARCH";
 
     public static final String TYPE_SESSION = "TYPE_SESSION";
 
+    public static final String TYPE_SESSION_NAME = "SESSION_NAME";
+
     public static final String THEME_WHATSNEXT = "THEME_WHATSNEXT";
 
+    public static final String THEME_WHATSNEXT_NAME = "WHATSNEXT_NAME";
+
     public static final String THEME_GROW_EARN = "THEME_GROW&EARN";
+
+    public static final String THEME_GROW_EARN_NAME = "GROW&EARN";
 
     public static final String TAG_CATEGORY = "TYPE";
 
@@ -68,7 +80,7 @@ public class ExploreMockCursor {
 
     /**
      * @return a list of tags, including {@link #THEME_GROW_EARN}. {@link #THEME_WHATSNEXT}, {@link
-     * #TRACK_ANDROID}, {@link #TRACK_MOBILEWEB}, {@link #TRACK_CLOUD} and {@link #TRACK_SEARCH}.
+     * #TRACK_ANDROID}, {@link #TRACK_MOBILEWEB}, {@link #TRACK_CLOUD} and {@link #TYPE_SESSION}.
      */
     public static MatrixCursor getCursorForTags() {
         String[] columns = {"_id", "tag_id", "tag_name", "tag_category", "tag_order_in_category",
@@ -83,32 +95,33 @@ public class ExploreMockCursor {
                         "2", "", "-3355444", ""};
         matrixCursor.addRow(data2);
         String[] data3 =
-                {THEME_WHATSNEXT, THEME_WHATSNEXT, THEME_WHATSNEXT, TAG_CATEGORY, "2", "",
+                {THEME_WHATSNEXT, THEME_WHATSNEXT, THEME_WHATSNEXT_NAME, TAG_CATEGORY, "2", "",
                         "-3355444", ""};
         matrixCursor.addRow(data3);
         String[] data4 =
-                {TYPE_SESSION, TYPE_SESSION, TYPE_SESSION, TAG_CATEGORY, "2", "", "-3355444", ""};
+                {TYPE_SESSION, TYPE_SESSION, TYPE_SESSION_NAME, TAG_CATEGORY, "2", "", "-3355444",
+                        ""};
         matrixCursor.addRow(data4);
         String[] data5 =
                 {"TYPE_SANDBOXTALKS", "TYPE_SANDBOXTALKS", "Sandbox talks", TAG_CATEGORY, "2", "",
                         "-3355444", ""};
         matrixCursor.addRow(data5);
         String[] data6 =
-                {TRACK_CLOUD, TRACK_CLOUD, TRACK_CLOUD, TAG_CATEGORY, "2", "", "-3355444", ""};
+                {TRACK_CLOUD, TRACK_CLOUD, TRACK_CLOUD_NAME, TAG_CATEGORY, "2", "", "-3355444", ""};
         matrixCursor.addRow(data6);
         String[] data7 =
                 {"TRACK_AUTO", "TRACK_AUTO", "Auto", TAG_CATEGORY, "2", "", "-3355444", ""};
         matrixCursor.addRow(data7);
         String[] data8 =
-                {TRACK_ANDROID, TRACK_ANDROID, TRACK_ANDROID, TAG_CATEGORY, "2", "", "-3355444",
-                        ""};
+                {TRACK_ANDROID, TRACK_ANDROID, TRACK_ANDROID_NAME, TAG_CATEGORY, "2", "",
+                        "-3355444", ""};
         matrixCursor.addRow(data8);
         String[] data9 =
-                {TRACK_ANDROID, TRACK_ANDROID, TRACK_MOBILEWEB, TAG_CATEGORY, "2", "", "-3355444",
-                        ""};
+                {TRACK_ANDROID, TRACK_ANDROID, TRACK_MOBILEWEB_NAME, TAG_CATEGORY, "2", "",
+                        "-3355444", ""};
         matrixCursor.addRow(data9);
         String[] data10 =
-                {THEME_GROW_EARN, THEME_GROW_EARN, THEME_GROW_EARN, TAG_CATEGORY, "2", "",
+                {THEME_GROW_EARN, THEME_GROW_EARN, THEME_GROW_EARN_NAME, TAG_CATEGORY, "2", "",
                         "-3355444", ""};
         matrixCursor.addRow(data10);
         return matrixCursor;

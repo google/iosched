@@ -98,11 +98,11 @@ public class ExploreIOActivityTest {
         // Given a visible topic
         onView(withId(R.id.explore_card_list))
                 .perform(RecyclerViewActions.scrollTo(
-                        hasDescendant(withText(ExploreMockCursor.TRACK_CLOUD))));
+                        hasDescendant(withText(ExploreMockCursor.TRACK_CLOUD_NAME))));
 
         // When clicking on the "More" button
         onView(allOf(withText(R.string.more_items_button),
-                hasSibling(withText(ExploreMockCursor.TRACK_CLOUD))
+                hasSibling(withText(ExploreMockCursor.TRACK_CLOUD_NAME))
         )).perform(click());
 
         // Then the intent to open the explore sessions activity for that topic is fired
