@@ -149,7 +149,7 @@ public class ScheduleDatabase extends SQLiteOpenHelper {
         String SESSIONS_JOIN_ROOMS_TAGS_FEEDBACK_MYSCHEDULE = "sessions "
                 + "LEFT OUTER JOIN rooms ON sessions.room_id=rooms.room_id "
                 + "LEFT OUTER JOIN tags ON instr(sessions.session_tags, tags.tag_name)"
- s                + "LEFT OUTER JOIN feedback ON sessions.session_id=feedback.session_id";
+                + "LEFT OUTER JOIN feedback ON sessions.session_id=feedback.session_id";
 
         String SESSIONS_JOIN_ROOMS = "sessions "
                 + "LEFT OUTER JOIN myschedule ON sessions.session_id=myschedule.session_id "

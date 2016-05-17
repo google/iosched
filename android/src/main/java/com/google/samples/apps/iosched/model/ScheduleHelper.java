@@ -68,7 +68,7 @@ public class ScheduleHelper {
             }
         }
 
-        //setSessionCounters(result, start, end);
+        setSessionCounters(result, start, end);
         return result;
     }
 
