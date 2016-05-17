@@ -24,7 +24,6 @@ import android.support.annotation.LayoutRes;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.ActivityOptionsCompat;
-import android.support.v4.util.Pair;
 import android.support.v4.view.ViewCompat;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -228,9 +227,8 @@ public class SessionsAdapter extends UpdatableAdapter<List<SessionData>, Recycle
         return data;
     }
 
-    private
     @NonNull
-    SessionViewHolder createSessionViewHolder(final ViewGroup parent) {
+    private SessionViewHolder createSessionViewHolder(final ViewGroup parent) {
         final SessionViewHolder holder = mCompactMode ? new CompactSessionViewHolder(
                 mInflater.inflate(R.layout.explore_io_session_list_tile, parent, false)) :
                 new DetailSessionViewHolder(mInflater.inflate(
