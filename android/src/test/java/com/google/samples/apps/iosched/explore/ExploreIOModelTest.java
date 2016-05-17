@@ -59,11 +59,14 @@ public class ExploreIOModelTest {
 
     private static final int SESSION_THEME_LIMIT = 2;
 
-    private static final String FAKE_TAG_TRACK_ID = "TRACK_1";
+    private static final String FAKE_TAG_TRACK_ID =
+            Config.Tags.CATEGORY_TRACK + Config.Tags.CATEGORY_SEP + "1";
 
-    private static final String FAKE_TAG_THEME_ID = "THEME_2";
+    private static final String FAKE_TAG_THEME_ID =
+            Config.Tags.CATEGORY_THEME + Config.Tags.CATEGORY_SEP + "2";
 
-    private static final String FAKE_TAG_TRACK_ID_NOT_IN_TAGS_CURSOR = "TRACK_0";
+    private static final String FAKE_TAG_TRACK_ID_NOT_IN_TAGS_CURSOR =
+            Config.Tags.CATEGORY_TRACK + Config.Tags.CATEGORY_SEP + "0";
 
     private static final String FAKE_TAG_A = "A";
 

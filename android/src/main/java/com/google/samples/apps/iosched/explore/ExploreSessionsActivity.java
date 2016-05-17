@@ -49,6 +49,7 @@ import com.google.samples.apps.iosched.ui.BaseActivity;
 import com.google.samples.apps.iosched.ui.SearchActivity;
 import com.google.samples.apps.iosched.util.AnalyticsHelper;
 import com.google.samples.apps.iosched.util.ImageLoader;
+import com.google.samples.apps.iosched.util.TagUtils;
 import com.google.samples.apps.iosched.util.TimeUtils;
 import com.google.samples.apps.iosched.util.UIUtils;
 
@@ -325,8 +326,7 @@ public class ExploreSessionsActivity extends BaseActivity
             int selectedThemes = mTagFilterHolder.getCountByCategory(Config.Tags.CATEGORY_THEME);
             if (selectedThemes + selectedTracks == 1) {
                 for (String tagId : mTagFilterHolder.getSelectedFilters()) {
-                    if (tagId.contains(Config.Tags.CATEGORY_TRACK) ||
-                            tagId.contains(Config.Tags.CATEGORY_THEME)) {
+                    if (TagUtils.isTrackTag(tagId) || TagUtils.isThemeTag(tagId)) {
                         TagMetadata.Tag selectedTag = mTagMetadata.getTag(tagId);
                         title = selectedTag.getName();
                         headerImage = selectedTag.getPhotoUrl();
