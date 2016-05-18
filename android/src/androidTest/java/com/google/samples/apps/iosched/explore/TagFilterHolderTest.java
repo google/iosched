@@ -91,6 +91,19 @@ public class TagFilterHolderTest {
                 is(1));// If there is no category data, getCategoryCount returns 1
     }
 
+    @Test
+    public void add_invalidCategory_DoesNotCrash() {
+        // Given an empty TagFilterHolder
+
+        // When adding a tag with an invalid category
+        mTagFilterHolder.add("tag", "invalid category");
+
+        // Then the tag filter holder is still empty and has not crashed
+        assertThat(mTagFilterHolder.getSelectedFilters().size(), is(0));
+        assertThat(mTagFilterHolder.getCategoryCount(),
+                is(1));// If there is no category data, getCategoryCount returns 1
+    }
+
     private void writeTagFilterHolderToParcel() {
         mParcel = Parcel.obtain();
         mTagFilterHolder.writeToParcel(mParcel, 0);
