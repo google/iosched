@@ -19,7 +19,6 @@ import android.support.test.InstrumentationRegistry;
 import android.support.test.espresso.contrib.RecyclerViewActions;
 import android.support.test.runner.AndroidJUnit4;
 import android.test.suitebuilder.annotation.LargeTest;
-import android.view.View;
 
 import com.google.samples.apps.iosched.R;
 import com.google.samples.apps.iosched.mockdata.ExploreMockCursor;
@@ -27,12 +26,10 @@ import com.google.samples.apps.iosched.navigation.NavigationModel;
 import com.google.samples.apps.iosched.provider.ScheduleContract;
 import com.google.samples.apps.iosched.session.SessionDetailActivity;
 import com.google.samples.apps.iosched.testutils.BaseActivityTestRule;
-import com.google.samples.apps.iosched.testutils.MatchersHelper;
 import com.google.samples.apps.iosched.testutils.NavigationUtils;
 import com.google.samples.apps.iosched.testutils.ToolbarUtils;
 import com.google.samples.apps.iosched.ui.SearchActivity;
 
-import org.hamcrest.Matcher;
 import org.junit.Ignore;
 import org.junit.Rule;
 import org.junit.Test;
@@ -40,6 +37,7 @@ import org.junit.runner.RunWith;
 
 import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.action.ViewActions.click;
+import static android.support.test.espresso.assertion.ViewAssertions.doesNotExist;
 import static android.support.test.espresso.assertion.ViewAssertions.matches;
 import static android.support.test.espresso.intent.Intents.intended;
 import static android.support.test.espresso.intent.matcher.IntentMatchers.hasComponent;
@@ -48,12 +46,9 @@ import static android.support.test.espresso.intent.matcher.IntentMatchers.hasExt
 import static android.support.test.espresso.matcher.ViewMatchers.hasDescendant;
 import static android.support.test.espresso.matcher.ViewMatchers.hasSibling;
 import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
-import static android.support.test.espresso.matcher.ViewMatchers.withChild;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
 import static org.hamcrest.CoreMatchers.allOf;
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.core.Is.is;
 
 @RunWith(AndroidJUnit4.class)
 @LargeTest
@@ -144,5 +139,10 @@ public class ExploreIOActivityTest {
     @Test
     public void navigation_WhenShown_CorrectItemIsSelected() {
         NavigationUtils.checkNavigationItemIsSelected(NavigationModel.NavigationItemEnum.EXPLORE);
+    }
+
+    @Test
+    public void livestreamCard_IsNotVisible() {
+        onView(withText(R.string.live_now)).check(doesNotExist());
     }
 }
