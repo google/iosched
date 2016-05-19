@@ -62,6 +62,8 @@ public class PresenterImpl implements Presenter, UpdatableView.UserActionListene
             for (int i = 0; i < mUpdatableViews.length; i++) {
                 mUpdatableViews[i].addListener(this);
             }
+        } else {
+            LOGE(TAG, "Creating a PresenterImpl with null View");
         }
         mValidUserActions = validUserActions;
         mInitialQueriesToLoad = initialQueries;
@@ -79,6 +81,8 @@ public class PresenterImpl implements Presenter, UpdatableView.UserActionListene
                             for (int i = 0; i < mUpdatableViews.length; i++) {
                                 mUpdatableViews[i].displayData(model, query);
                             }
+                        } else {
+                            LOGE(TAG, "loadInitialQueries(), cannot notify a null view!");
                         }
                     }
 
@@ -88,6 +92,8 @@ public class PresenterImpl implements Presenter, UpdatableView.UserActionListene
                             for (int i = 0; i < mUpdatableViews.length; i++) {
                                 mUpdatableViews[i].displayErrorMessage(query);
                             }
+                        } else {
+                            LOGE(TAG, "loadInitialQueries(), cannot notify a null view!");
                         }
                     }
 
@@ -99,15 +105,10 @@ public class PresenterImpl implements Presenter, UpdatableView.UserActionListene
                 for (int i = 0; i < mUpdatableViews.length; i++) {
                     mUpdatableViews[i].displayData(mModel, null);
                 }
+            } else {
+                LOGE(TAG, "loadInitialQueries(), cannot notify a null view!");
             }
         }
-    }
-
-    @Override
-    public void cleanUp() {
-        mModel.cleanUp();
-        mUpdatableViews = null;
-        mModel = null;
     }
 
     /**
@@ -141,6 +142,8 @@ public class PresenterImpl implements Presenter, UpdatableView.UserActionListene
                         for (int i = 0; i < mUpdatableViews.length; i++) {
                             mUpdatableViews[i].displayUserActionResult(model, userAction, true);
                         }
+                    } else {
+                        LOGE(TAG, "onUserAction(), cannot notify a null view!");
                     }
                 }
 
@@ -158,6 +161,8 @@ public class PresenterImpl implements Presenter, UpdatableView.UserActionListene
                                 "model," +
                                 " or have you called setValidUserActions on your presenter with a " +
                                 "UserActionEnum that it shouldn't support?");
+                    } else {
+                        LOGE(TAG, "onUserAction(), cannot notify a null view!");
                     }
                 }
             });
@@ -172,6 +177,8 @@ public class PresenterImpl implements Presenter, UpdatableView.UserActionListene
                                 ". Have you called setValidUserActions on your presenter, with all " +
 
                                 "the UserActionEnum you want to support?");
+            } else {
+                LOGE(TAG, "onUserAction(), cannot notify a null view!");
             }
         }
     }
