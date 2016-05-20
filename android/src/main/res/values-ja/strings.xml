@@ -652,7 +652,7 @@
   <string name="session_feedback_notgreat">あまり良くありません</string>
 
   <!-- Session feedback section title -->
-  <string name="session_feedback_content_label_text">概要/私の予想に基づいたコンテンツの説明：</string>
+  <string name="session_feedback_content_label_text">事前の説明や期待に比べてコンテンツは？：</string>
 
   <!-- Notification text asking the user to provide feedback for a particular session -->
   <string name="session_feedback_notification_text">%1$s 用のフィードバックを送信する</string>
@@ -667,10 +667,10 @@
   <string name="session_feedback_awesome">素晴らしい</string>
 
   <!-- A negative relevance session feedback option -->
-  <string name="session_feedback_not_at_all_relevant">全く面白くありませんでした</string>
+  <string name="session_feedback_not_at_all_relevant">全く関連ありませんでした</string>
 
   <!-- A negative relevance session feedback option -->
-  <string name="session_feedback_extremely_relevant">ひどかったです</string>
+  <string name="session_feedback_extremely_relevant">極めて関連していました</string>
 
   <!-- A session feedback section label asking for any other feedback -->
   <string name="session_feedback_other">他に何かございませんか？</string>
@@ -682,7 +682,7 @@
   <string name="session_feedback_outstanding">最高です</string>
 
   <!-- A negative speaker quality session feedback option -->
-  <string name="session_feedback_poor">内容の乏しいものでした</string>
+  <string name="session_feedback_poor">ひどかったです</string>
 
   <!-- A session feedback section label asking for the session's relevance to the user's projects -->
   <string name="session_feedback_relevance">このセッションとあなたのプロジェクトとで、関連性はありましたか？</string>
