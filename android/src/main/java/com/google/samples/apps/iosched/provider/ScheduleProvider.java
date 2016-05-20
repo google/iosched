@@ -489,8 +489,8 @@ public class ScheduleProvider extends ContentProvider {
     private void notifyChange(Uri uri) {
         if (!ScheduleContractHelper.isUriCalledFromSyncAdapter(uri)) {
             Context context = getContext();
-            context.getContentResolver().notifyChange(uri, null);
-
+            boolean syncToNetwork = !ScheduleContract.hasCallerIsSyncAdapterParameter(uri);
+            getContext().getContentResolver().notifyChange(uri, null, syncToNetwork);
             // Widgets can't register content observers so we refresh widgets separately.
             context.sendBroadcast(ScheduleWidgetProvider.getRefreshBroadcastIntent(context, false));
         }

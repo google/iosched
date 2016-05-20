@@ -78,16 +78,15 @@ public class SessionsHelper {
     public void setSessionStarred(Uri sessionUri, boolean starred, String title) {
         LOGD(TAG, "setSessionStarred uri=" + sessionUri + " starred=" +
                 starred + " title=" + title);
+        sessionUri = ScheduleContract.addCallerIsSyncAdapterParameter(sessionUri);
         String sessionId = ScheduleContract.Sessions.getSessionId(sessionUri);
-        Uri myScheduleUri = ScheduleContract.Sessions.buildSessionUri(sessionId);
-
+        final ContentValues values = new ContentValues();
+        values.put(ScheduleContract.Sessions.SESSION_STARRED, starred?1:0);
         AsyncQueryHandler handler =
                 new AsyncQueryHandler(mActivity.getContentResolver()) {
                 };
-        final ContentValues values = new ContentValues();
-        values.put(ScheduleContract.Sessions.SESSION_ID, sessionId);
-        values.put(ScheduleContract.Sessions.SESSION_STARRED, starred?1:0);
-        handler.startInsert(-1, null, myScheduleUri, values);
+        handler.startUpdate(-1, null, sessionUri, values,null, null);
+
 
         // ANALYTICS EVENT: Add or remove a session from the schedule
         // Contains: Session title, whether it was added or removed (starred or unstarred)

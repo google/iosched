@@ -16,30 +16,6 @@
 
 package com.google.samples.apps.iosched.session;
 
-import com.google.samples.apps.iosched.Config;
-import no.java.schedule.R;
-import com.google.samples.apps.iosched.explore.ExploreSessionsActivity;
-import com.google.samples.apps.iosched.framework.QueryEnum;
-import com.google.samples.apps.iosched.framework.UpdatableView;
-import com.google.samples.apps.iosched.framework.UserActionEnum;
-import com.google.samples.apps.iosched.model.TagMetadata;
-import com.google.samples.apps.iosched.session.SessionDetailModel.SessionDetailQueryEnum;
-import com.google.samples.apps.iosched.session.SessionDetailModel.SessionDetailUserActionEnum;
-import com.google.samples.apps.iosched.ui.widget.CheckableFloatingActionButton;
-import com.google.samples.apps.iosched.ui.widget.MessageCardView;
-import com.google.samples.apps.iosched.ui.widget.ObservableScrollView;
-import com.google.samples.apps.iosched.util.AccountUtils;
-import com.google.samples.apps.iosched.util.AnalyticsHelper;
-import com.google.samples.apps.iosched.util.ImageLoader;
-import com.google.samples.apps.iosched.util.LUtils;
-import com.google.samples.apps.iosched.util.LogUtils;
-import com.google.samples.apps.iosched.util.TimeUtils;
-import com.google.samples.apps.iosched.util.UIUtils;
-
-import com.bumptech.glide.request.RequestListener;
-import com.bumptech.glide.request.target.Target;
-import com.google.samples.apps.iosched.util.YouTubeUtils;
-
 import android.app.Fragment;
 import android.content.Context;
 import android.content.Intent;
@@ -63,10 +39,34 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.bumptech.glide.request.RequestListener;
+import com.bumptech.glide.request.target.Target;
+import com.google.samples.apps.iosched.Config;
+import com.google.samples.apps.iosched.explore.ExploreSessionsActivity;
+import com.google.samples.apps.iosched.framework.QueryEnum;
+import com.google.samples.apps.iosched.framework.UpdatableView;
+import com.google.samples.apps.iosched.framework.UserActionEnum;
+import com.google.samples.apps.iosched.model.TagMetadata;
+import com.google.samples.apps.iosched.session.SessionDetailModel.SessionDetailQueryEnum;
+import com.google.samples.apps.iosched.session.SessionDetailModel.SessionDetailUserActionEnum;
+import com.google.samples.apps.iosched.ui.widget.CheckableFloatingActionButton;
+import com.google.samples.apps.iosched.ui.widget.MessageCardView;
+import com.google.samples.apps.iosched.ui.widget.ObservableScrollView;
+import com.google.samples.apps.iosched.util.AccountUtils;
+import com.google.samples.apps.iosched.util.AnalyticsHelper;
+import com.google.samples.apps.iosched.util.ImageLoader;
+import com.google.samples.apps.iosched.util.LUtils;
+import com.google.samples.apps.iosched.util.LogUtils;
+import com.google.samples.apps.iosched.util.TimeUtils;
+import com.google.samples.apps.iosched.util.UIUtils;
+import com.google.samples.apps.iosched.util.YouTubeUtils;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
+
+import no.java.schedule.R;
 
 import static com.google.samples.apps.iosched.util.LogUtils.LOGD;
 
@@ -442,10 +442,7 @@ public class SessionDetailFragment extends Fragment
 
         displayTags(data);
 
-        if (!data.isKeynote()) {
-            showStarredDeferred(data.isInSchedule(), false);
-        }
-
+        showStarredDeferred(data.isInSchedule(), false);
         if (!TextUtils.isEmpty(data.getSessionAbstract())) {
             UIUtils.setTextMaybeHtml(mAbstract, data.getSessionAbstract());
             mAbstract.setVisibility(View.VISIBLE);
@@ -636,9 +633,9 @@ public class SessionDetailFragment extends Fragment
             socialIcon.setVisibility(View.GONE);
         } else {
             socialIcon.setContentDescription(getString(
-                            R.string.speaker_social_page,
-                            socialNetworkName,
-                            speaker.getName())
+                    R.string.speaker_social_page,
+                    socialNetworkName,
+                    speaker.getName())
             );
             socialIcon.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -689,10 +686,10 @@ public class SessionDetailFragment extends Fragment
         // If the session is done, hide the FAB, and show the "Give feedback" card.
         if (data.isSessionReadyForFeedback()) {
             mAddScheduleButton.setVisibility(View.INVISIBLE);
-         //   if (!data.hasFeedback() && data.isInScheduleWhenSessionFirstLoaded() &&
-         //           !sDismissedFeedbackCard.contains(data.getSessionId())) {
-                showGiveFeedbackCard(data);
-         //   }
+            //   if (!data.hasFeedback() && data.isInScheduleWhenSessionFirstLoaded() &&
+            //           !sDismissedFeedbackCard.contains(data.getSessionId())) {
+            showGiveFeedbackCard(data);
+            //   }
         }
 
         String timeHint = "";

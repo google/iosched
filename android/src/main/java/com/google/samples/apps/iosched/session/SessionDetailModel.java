@@ -325,7 +325,7 @@ public class SessionDetailModel implements Model {
                 ScheduleContract.Sessions.SESSION_TITLE));
 
         mInSchedule = cursor.getInt(cursor.getColumnIndex(
-                ScheduleContract.Sessions.SESSION_IN_MY_SCHEDULE)) != 0;
+                ScheduleContract.Sessions.SESSION_STARRED)) != 0;
         if (!mSessionLoaded) {
             mInScheduleWhenSessionFirstLoaded = mInSchedule;
         }
@@ -690,7 +690,7 @@ public class SessionDetailModel implements Model {
                 ScheduleContract.Sessions.SESSION_TITLE,
                 ScheduleContract.Sessions.SESSION_ABSTRACT,
                 ScheduleContract.Sessions.SESSION_REQUIREMENTS,
-                ScheduleContract.Sessions.SESSION_IN_MY_SCHEDULE,
+                ScheduleContract.Sessions.SESSION_STARRED,
                 ScheduleContract.Sessions.SESSION_HASHTAG,
                 ScheduleContract.Sessions.SESSION_URL,
                 ScheduleContract.Sessions.SESSION_YOUTUBE_URL,
