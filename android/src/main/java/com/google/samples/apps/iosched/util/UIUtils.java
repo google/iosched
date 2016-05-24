@@ -494,7 +494,7 @@ public class UIUtils {
                 return R.drawable.ic_session;
             } else if (breakTitle.contains("Codelabs")) {
                 return R.drawable.ic_codelab;
-            } else if (breakTitle.contains("Sandbox")) {
+            } else if (breakTitle.contains("Sandbox") || breakTitle.contains("Office hours")) {
                 return R.drawable.ic_sandbox;
             }
         }
