@@ -445,6 +445,9 @@ public class ScheduleDatabase extends SQLiteOpenHelper {
                 + VideoColumns.VIDEO_SPEAKERS + " TEXT,"
                 + VideoColumns.VIDEO_THUMBNAIL_URL + " TEXT,"
                 + VideoColumns.VIDEO_IMPORT_HASHCODE + " TEXT NOT NULL,"
+                + VideoColumns.VIDEO_UPLOAD_DATE + " Text,"
+                + VideoColumns.VIDEO_MOBILE_URL + " Text,"
+                + VideoColumns.VIDEO_TAGS + " Text,"
                 + "UNIQUE (" + VideoColumns.VIDEO_ID + ") ON CONFLICT REPLACE)");
 
         createSessionsSearch(db);

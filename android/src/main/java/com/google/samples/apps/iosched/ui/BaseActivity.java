@@ -102,6 +102,7 @@ import com.google.samples.apps.iosched.util.LoginAndAuthHelper;
 import com.google.samples.apps.iosched.util.RecentTasksStyler;
 import com.google.samples.apps.iosched.util.TimeUtils;
 import com.google.samples.apps.iosched.util.UIUtils;
+import com.google.samples.apps.iosched.videolibrary.JzVideoLibraryActivity;
 import com.google.samples.apps.iosched.videolibrary.VideoLibraryActivity;
 import com.google.samples.apps.iosched.welcome.WelcomeActivity;
 
@@ -604,7 +605,7 @@ public abstract class BaseActivity extends AppCompatActivity implements
                 createBackStack(new Intent(this, SocialActivity.class));
                 break; */
             case NAVDRAWER_ITEM_VIDEO_LIBRARY:
-                createBackStack(new Intent(this, VideoLibraryActivity.class));
+                createBackStack(new Intent(this, JzVideoLibraryActivity.class));
                 break;
             case NAVDRAWER_ITEM_SIGN_IN:
                 signInOrCreateAnAccount();

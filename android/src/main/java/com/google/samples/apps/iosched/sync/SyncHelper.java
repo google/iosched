@@ -137,11 +137,9 @@ public class SyncHelper {
             batch.addAll(fetchResource(Config.GET_ALL_SESSIONS_URL, new TracksHandler(mContext)));
             //mHandlerForKey.put(DATA_KEY_MAP, mMapPropertyHandler = new MapPropertyHandler(mContext));
             //mHandlerForKey.put(DATA_KEY_HASHTAGS, mHashtagsHandler = new HashtagsHandler(mContext));
-            // mHandlerForKey.put(DATA_KEY_VIDEOS, mVideosHandler = new VideosHandler(mContext));
-
 
             //TODO Enable announcements for JavaZone
-            //LOGI(TAG, "Remote syncing announcements");
+            //LOGI(TAG, "Ref.mote syncing announcements");
             //batch.addAll(executeGet(Config.GET_ALL_ANNOUNCEMENTS_URL,
             //        new AnnouncementsHandler(mContext, false), auth));
 
@@ -191,6 +189,22 @@ public class SyncHelper {
             LOGD(TAG, "Done with sync'ing conference data. Starting to sync "
                     + "session with Calendar.");
             syncCalendar();
+        }
+    }
+
+    public void syncVideos(int pageNumber)  throws IOException {
+        ArrayList<ContentProviderOperation> batch = new ArrayList<ContentProviderOperation>();
+        LOGI(TAG, "Performing sync");
+        try {
+            final long startRemote = System.currentTimeMillis();
+            LOGI(TAG, "Syncing videos");
+            batch.addAll(fetchVideoResource(Config.GET_ALL_VIDEOS_VIMEO_URL+pageNumber, new VideosHandler(mContext)));
+            LOGD(TAG, "Remote sync took " + (System.currentTimeMillis() - startRemote) + "ms");
+
+            EasyTracker.getTracker().dispatch();
+
+        } catch (HandlerException.UnauthorizedException e) {
+            LOGI(TAG, "Unauthorized; getting a new auth token.", e);
         }
     }
 
@@ -299,124 +313,6 @@ public class SyncHelper {
             LOGD(TAG, "Can't request manual sync -- no chosen account.");
         }
     }
-
-    /**
-     * Attempts to perform data synchronization. There are 3 types of data: conference, user
-     * schedule and user feedback.
-     * <p/>
-     * The conference data sync is handled by {@link RemoteConferenceDataFetcher}. For more details
-     * about conference data, refer to the documentation at
-     * https://github.com/google/iosched/blob/master/doc/SYNC.md. The user schedule data sync is
-     * handled by {@link AbstractUserDataSyncHelper}. The user feedback sync is handled by
-     * {@link FeedbackSyncHelper}.
-     *
-     * @param syncResult The sync result object to update with statistics.
-     * @param account    The account associated with this sync
-     * @param extras     Specifies additional information about the sync. This must contain key
-     *                   {@code SyncAdapter.EXTRA_SYNC_USER_DATA_ONLY} with boolean value
-     * @return true if the sync changed the data.
-     */
-    /*
-    public boolean performSync(@Nullable SyncResult syncResult, Account account, Bundle extras) {
-        boolean dataChanged = false;
-
-        if (!SettingsUtils.isDataBootstrapDone(mContext)) {
-            LOGD(TAG, "Sync aborting (data bootstrap not done yet)");
-            // Start the bootstrap process so that the next time sync is called,
-            // it is already bootstrapped.
-            DataBootstrapService.startDataBootstrapIfNecessary(mContext);
-            return false;
-        }
-
-        final boolean userDataScheduleOnly = extras
-                .getBoolean(SyncAdapter.EXTRA_SYNC_USER_DATA_ONLY, false);
-
-        LOGI(TAG, "Performing sync for account: " + account);
-        SettingsUtils.markSyncAttemptedNow(mContext);
-        long opStart;
-        long syncDuration, choresDuration;
-
-        opStart = System.currentTimeMillis();
-
-        // Sync consists of 1 or more of these operations. We try them one by one and tolerate
-        // individual failures on each.
-        final int OP_CONFERENCE_DATA_SYNC = 0;
-        final int OP_USER_SCHEDULE_DATA_SYNC = 1;
-        final int OP_USER_FEEDBACK_DATA_SYNC = 2;
-
-        int[] opsToPerform = userDataScheduleOnly ?
-                new int[]{OP_USER_SCHEDULE_DATA_SYNC} :
-                new int[]{OP_CONFERENCE_DATA_SYNC, OP_USER_SCHEDULE_DATA_SYNC,
-                        OP_USER_FEEDBACK_DATA_SYNC};
-
-        for (int op : opsToPerform) {
-            try {
-                switch (op) {
-                    case OP_CONFERENCE_DATA_SYNC:
-                        dataChanged |= doConferenceDataSync();
-                        break;
-                    case OP_USER_SCHEDULE_DATA_SYNC:
-                        dataChanged |= doUserDataSync(account.name);
-                        break;
-                    case OP_USER_FEEDBACK_DATA_SYNC:
-                        // User feedback data sync is an outgoing sync only so not affecting
-                        // {@code dataChanged} value.
-                        doUserFeedbackDataSync();
-                        break;
-                }
-            } catch (AuthException ex) {
-                syncResult.stats.numAuthExceptions++;
-
-                if (AccountUtils.hasToken(mContext, account.name)) {
-                    AccountUtils.refreshAuthToken(mContext);
-                } else {
-                    LOGW(TAG, "No auth token yet for this account. Skipping remote sync.");
-                }
-            } catch (Throwable throwable) {
-                throwable.printStackTrace();
-                LOGE(TAG, "Error performing remote sync.");
-                increaseIoExceptions(syncResult);
-            }
-        }
-        syncDuration = System.currentTimeMillis() - opStart;
-
-        opStart = System.currentTimeMillis();
-        if (dataChanged) {
-            try {
-                performPostSyncChores(mContext);
-            } catch (Throwable throwable) {
-                throwable.printStackTrace();
-                LOGE(TAG, "Error performing post sync chores.");
-            }
-        }
-        choresDuration = System.currentTimeMillis() - opStart;
-
-        int operations = mConferenceDataHandler.getContentProviderOperationsDone();
-        if (syncResult != null && syncResult.stats != null) {
-            syncResult.stats.numEntries += operations;
-            syncResult.stats.numUpdates += operations;
-        }
-
-        if (dataChanged) {
-            long totalDuration = choresDuration + syncDuration;
-            LOGD(TAG, "SYNC STATS:\n" +
-                    " *  Account synced: " + (account == null ? "null" : account.name) + "\n" +
-                    " *  Content provider operations: " + operations + "\n" +
-                    " *  Sync took: " + syncDuration + "ms\n" +
-                    " *  Post-sync chores took: " + choresDuration + "ms\n" +
-                    " *  Total time: " + totalDuration + "ms\n" +
-                    " *  Total data read from cache: \n" +
-                    (mRemoteDataFetcher.getTotalBytesReadFromCache() / 1024) + "kB\n" +
-                    " *  Total data downloaded: \n" +
-                    (mRemoteDataFetcher.getTotalBytesDownloaded() / 1024) + "kB");
-        }
-
-        LOGI(TAG, "End of sync (" + (dataChanged ? "data changed" : "no data change") + ")");
-
-        updateSyncInterval(mContext, account);
-
-        return dataChanged;
-    } */
 
     public static void performPostSyncChores(final Context context) {
         LOGD(TAG, "Updating search index.");
@@ -570,6 +466,33 @@ public class SyncHelper {
         } else {
             return new ArrayList<ContentProviderOperation>();
         }
+    }
+
+    public ArrayList<ContentProviderOperation> fetchVideoResource(String urlString, JSONHandler handler) throws IOException {
+        String response = null;
+        if(isOnline(mContext)) {
+            response = getVideoHttpResource(urlString);
+        }
+
+        if (response!=null && !response.trim().equals("")){
+            return handler.parse(response);
+        } else {
+            return new ArrayList<ContentProviderOperation>();
+        }
+    }
+
+    private String getVideoHttpResource(String urlString) throws IOException {
+        LOGD(TAG, "Requesting URL: " + urlString);
+        URL url = new URL(urlString);
+        HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
+        urlConnection.setRequestProperty("Accept", "application/json");
+
+        urlConnection.connect();
+        throwErrors(urlConnection);
+
+        String response = readInputStream(urlConnection.getInputStream());
+        LOGV(TAG, "HTTP response: " + response);
+        return response;
     }
 
     private boolean isFirstRun() {

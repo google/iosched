@@ -23,6 +23,7 @@ import android.net.Uri;
 import android.provider.BaseColumns;
 import android.text.TextUtils;
 
+import com.google.common.collect.Lists;
 import com.google.samples.apps.iosched.Config;
 import com.google.samples.apps.iosched.io.model.Video;
 import com.google.samples.apps.iosched.provider.ScheduleContract;
@@ -35,6 +36,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Locale;
+
+import no.java.schedule.io.model.VimeoVideo;
 
 import static com.google.samples.apps.iosched.util.LogUtils.*;
 
@@ -103,7 +106,33 @@ public class VideosHandler extends JSONHandler {
 
     @Override
     public ArrayList<ContentProviderOperation> parse(String json) throws IOException {
-        return null;
+        final ArrayList<ContentProviderOperation> batch = Lists.newArrayList();
+        try {
+            Gson gson = new Gson();
+            VimeoVideo[] response = gson.fromJson(json, VimeoVideo[].class);
+
+            for (VimeoVideo video : response) {
+                parseSlot(video, batch);
+            }
+        } catch (Throwable e) {
+        }
+
+        return batch;
+    }
+
+    private void parseSlot(VimeoVideo video, ArrayList<ContentProviderOperation> batch) {
+        ContentProviderOperation.Builder builder = ContentProviderOperation
+                .newInsert(ScheduleContract
+                        .addCallerIsSyncAdapterParameter(ScheduleContract.Videos.CONTENT_URI));
+        builder.withValue(ScheduleContract.Videos.VIDEO_ID, video.id);
+        builder.withValue(ScheduleContract.Videos.VIDEO_TITLE, video.title);
+        builder.withValue(ScheduleContract.Videos.VIDEO_DESC, video.description);
+        builder.withValue(ScheduleContract.Videos.VIDEO_TOPIC, video.topic);
+        builder.withValue(ScheduleContract.Videos.VIDEO_THUMBNAIL_URL, video.thumbnail_medium);
+        builder.withValue(ScheduleContract.Videos.VIDEO_UPLOAD_DATE,video.upload_date);
+        builder.withValue(ScheduleContract.Videos.VIDEO_MOBILE_URL, video.mobile_url);
+        builder.withValue(ScheduleContract.Videos.VIDEO_TAGS, video.tags);
+        batch.add(builder.build());
     }
 
     private void buildVideo(boolean isInsert, Video video,
@@ -144,6 +173,9 @@ public class VideosHandler extends JSONHandler {
                 .withValue(ScheduleContract.Videos.VIDEO_TOPIC, video.topic)
                 .withValue(ScheduleContract.Videos.VIDEO_SPEAKERS, video.speakers)
                 .withValue(ScheduleContract.Videos.VIDEO_THUMBNAIL_URL, thumbUrl)
+                .withValue(ScheduleContract.Videos.VIDEO_UPLOAD_DATE, video.uploadDate)
+                .withValue(ScheduleContract.Videos.VIDEO_MOBILE_URL, video.mobileUrl)
+                .withValue(ScheduleContract.Videos.VIDEO_TAGS, video.tags)
                 .withValue(ScheduleContract.Videos.VIDEO_IMPORT_HASHCODE,
                         video.getImportHashcode())
                 .build());

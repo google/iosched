@@ -22,6 +22,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.app.Fragment;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -34,6 +35,8 @@ import com.google.samples.apps.iosched.framework.PresenterFragmentImpl;
 import com.google.samples.apps.iosched.framework.QueryEnum;
 import com.google.samples.apps.iosched.framework.UpdatableView;
 import com.google.samples.apps.iosched.provider.ScheduleContract;
+import com.google.samples.apps.iosched.service.VideoSyncService;
+import com.google.samples.apps.iosched.sync.SyncHelper;
 import com.google.samples.apps.iosched.ui.widget.CollectionView;
 import com.google.samples.apps.iosched.ui.widget.CollectionViewCallbacks;
 import com.google.samples.apps.iosched.ui.widget.DrawShadowFrameLayout;
@@ -41,6 +44,7 @@ import com.google.samples.apps.iosched.util.AnalyticsHelper;
 import com.google.samples.apps.iosched.util.ImageLoader;
 import com.google.samples.apps.iosched.util.UIUtils;
 
+import java.io.IOException;
 import java.util.Calendar;
 import java.util.Collections;
 import java.util.List;
@@ -78,6 +82,9 @@ public class VideoLibraryFragment extends Fragment implements UpdatableView<Vide
 
     @Override
     public void displayData(VideoLibraryModel model, QueryEnum query) {
+        if(model.getVideos() == null) {
+            getContext().startService(new Intent(getContext(), VideoSyncService.class));
+        }
         if ((VideoLibraryModel.VideoLibraryQueryEnum.VIDEOS == query)
                 && model.getVideos() != null) {
             updateCollectionView(model.getVideos());

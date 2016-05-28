@@ -276,25 +276,18 @@ public final class ScheduleContract {
     }
 
     interface VideoColumns {
-
-        /** Unique string identifying this video. */
         String VIDEO_ID = "video_id";
-        /** Year of the video (e.g. 2014, 2013, ...). */
         String VIDEO_YEAR = "video_year";
-        /** Title of the video. */
         String VIDEO_TITLE = "video_title";
-        /** Description of the video. */
         String VIDEO_DESC = "video_desc";
-        /** Youtube video ID (just the alphanumeric string, not the whole URL). */
         String VIDEO_VID = "video_vid";
-        /** Topic (e.g. "Android"). */
         String VIDEO_TOPIC = "video_topic";
-        /** Speaker(s) (e.g. "Lauren Ipsum"). */
         String VIDEO_SPEAKERS = "video_speakers";
-        /** Thumbnail url. */
         String VIDEO_THUMBNAIL_URL = "video_thumbnail_url";
-        /** Import hashcode. */
         String VIDEO_IMPORT_HASHCODE = "video_import_hashcode";
+        String VIDEO_UPLOAD_DATE = "video_upload_date";
+        String VIDEO_MOBILE_URL = "video_mobile_url";
+        String VIDEO_TAGS = "video_tags";
     }
 
     public static final String CONTENT_AUTHORITY = "no.java.schedule";

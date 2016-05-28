@@ -40,6 +40,7 @@ public class Config {
     //TODO slots
     public static final String GET_ALL_BLOCKS =  BASE_URL + "/slots";
     public static final String GET_ALL_SESSIONS_URL      = BASE_URL + "/sessions";
+    public static final String GET_ALL_VIDEOS_VIMEO_URL = "http://vimeo.com/api/v2/javazone/videos.json?page=";
 
     // Static file host for the sandbox data
     public static final String GET_SANDBOX_URL = "https://javazone.no";

@@ -45,6 +45,7 @@
     <uses-permission android:name="android.permission.READ_SYNC_SETTINGS" />
     <uses-permission android:name="android.permission.READ_SYNC_STATS" />
     <uses-permission android:name="android.permission.VIBRATE" />
+    <action android:name="android.net.conn.CONNECTIVITY_CHANGE"/>
     <uses-permission android:name="android.permission.NFC" />
     <!-- required for YouTube -->
     <uses-permission android:name="com.google.android.providers.gsf.permission.READ_GSERVICES" />
@@ -289,7 +290,18 @@
             android:name="com.google.samples.apps.iosched.welcome.WelcomeActivity"
             android:theme="@style/Theme.IOSched.Welcome"
             android:exported="false" />
-
+        <activity
+            android:name="com.google.samples.apps.iosched.videolibrary.JzVideoLibraryActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:theme="@style/Theme.IOSched.VideoLibrary"
+            android:label="@string/title_video_library"
+            android:parentActivityName="com.google.samples.apps.iosched.explore.ExploreIOActivity"
+            android:exported="false">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.google.samples.apps.iosched.explore.ExploreIOActivity" />
+        </activity>
+<!--
         <activity
             android:name="com.google.samples.apps.iosched.videolibrary.VideoLibraryActivity"
             android:theme="@style/Theme.IOSched.VideoLibrary"
@@ -300,7 +312,6 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.google.samples.apps.iosched.explore.ExploreIOActivity" />
         </activity>
-
         <activity
             android:name="com.google.samples.apps.iosched.videolibrary.VideoLibraryFilteredActivity"
             android:theme="@style/Theme.IOSched.VideoLibrary"
@@ -310,7 +321,7 @@
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.google.samples.apps.iosched.videolibrary.VideoLibraryActivity" />
-        </activity>
+        </activity> -->
 
         <activity
             android:name="com.google.samples.apps.iosched.session.SessionDetailActivity"
@@ -404,6 +415,9 @@
         <service
             android:name="com.google.samples.apps.iosched.service.SessionAlarmService"
             android:exported="false"/>
+        <service
+            android:name="com.google.samples.apps.iosched.service.VideoSyncService"
+            android:exported="false" />
         <service
             android:name="com.google.samples.apps.iosched.service.SessionCalendarService"
             android:exported="false"/>
