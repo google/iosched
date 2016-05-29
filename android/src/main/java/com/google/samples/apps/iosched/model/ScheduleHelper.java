@@ -117,6 +117,7 @@ public class ScheduleHelper {
         cursor.close();
 
         // remove free blocks that have no available sessions or that are in the past
+        /*
         long now = UIUtils.getCurrentTime(mContext);
         Iterator<ScheduleItem> it = items.iterator();
         while (it.hasNext()) {
@@ -132,9 +133,8 @@ public class ScheduleHelper {
                     i.subtitle = mContext.getResources().getQuantityString(
                             R.plurals.schedule_block_subtitle, i.numOfSessions, i.numOfSessions);
                 }
-
             }
-        }
+        } */
     }
 
     public void getScheduleDataAsync(final MyScheduleAdapter adapter,
@@ -214,7 +214,7 @@ public class ScheduleHelper {
                     BlocksQuery.PROJECTION,
 
                     // filter sessions on the specified day
-                    Blocks.BLOCK_START + " >= ? and " + Blocks.BLOCK_START + " <= ?",
+                    Blocks.BLOCK_START + " >= ? and " + Blocks.BLOCK_END + " <= ?",
                     new String[]{String.valueOf(start), String.valueOf(end)},
 
                     // order by session start
@@ -223,16 +223,13 @@ public class ScheduleHelper {
             if (cursor.moveToFirst()) {
                 do {
                     ScheduleItem item = new ScheduleItem();
+                    item.blockId = cursor.getString(BlocksQuery.BLOCK_ID);
                     item.setTypeFromBlockType(cursor.getString(BlocksQuery.BLOCK_TYPE));
                     item.title = cursor.getString(BlocksQuery.BLOCK_TITLE);
                     item.room = item.subtitle = cursor.getString(BlocksQuery.BLOCK_SUBTITLE);
                     item.startTime = cursor.getLong(BlocksQuery.BLOCK_START);
                     item.endTime = cursor.getLong(BlocksQuery.BLOCK_END);
 
-                    // Hide BREAK blocks to remote attendees (b/14666391):
-                    if (item.type == ScheduleItem.BREAK && !SettingsUtils.isAttendeeAtVenue(mContext)) {
-                        continue;
-                    }
                     // Currently, only type=FREE is mutable
                     if (item.type == ScheduleItem.FREE) {
                         mutableItems.add(item);
@@ -300,6 +297,7 @@ public class ScheduleHelper {
 
     private interface BlocksQuery {
         String[] PROJECTION = {
+                Blocks.BLOCK_ID,
                 Blocks.BLOCK_TITLE,
                 Blocks.BLOCK_TYPE,
                 Blocks.BLOCK_START,
@@ -307,11 +305,12 @@ public class ScheduleHelper {
                 Blocks.BLOCK_SUBTITLE
         };
 
-        int BLOCK_TITLE = 0;
-        int BLOCK_TYPE= 1;
-        int BLOCK_START = 2;
-        int BLOCK_END = 3;
-        int BLOCK_SUBTITLE = 4;
+        int BLOCK_ID = 0;
+        int BLOCK_TITLE = 1;
+        int BLOCK_TYPE= 2;
+        int BLOCK_START = 3;
+        int BLOCK_END = 4;
+        int BLOCK_SUBTITLE = 5;
     }
 
 

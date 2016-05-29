@@ -269,6 +269,19 @@
                 android:resource="@xml/searchable" />
         </activity>
         <activity
+            android:name="com.google.samples.apps.iosched.ui.SearchVideoActivity"
+            android:label="@string/title_search"
+            android:theme="@style/Theme.IOSched.Search"
+            android:launchMode="singleTop"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="android.intent.action.SEARCH" />
+            </intent-filter>
+            <meta-data
+                android:name="android.app.searchable"
+                android:resource="@xml/searchable" />
+        </activity>
+        <activity
             android:name="com.google.samples.apps.iosched.feedback.SessionFeedbackActivity"
             android:label="@string/title_session_feedback"
             android:theme="@style/Theme.IOSched.Feedback"

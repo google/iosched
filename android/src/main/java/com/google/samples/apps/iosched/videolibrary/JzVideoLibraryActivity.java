@@ -1,10 +1,16 @@
 package com.google.samples.apps.iosched.videolibrary;
 
 import android.app.Fragment;
+import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
 import android.view.KeyEvent;
+import android.view.Menu;
+import android.view.MenuItem;
 
 import com.google.samples.apps.iosched.ui.BaseActivity;
+import com.google.samples.apps.iosched.ui.SearchActivity;
+import com.google.samples.apps.iosched.ui.SearchVideoActivity;
 import com.google.samples.apps.iosched.ui.widget.CollectionView;
 import com.google.samples.apps.iosched.ui.widget.DrawShadowFrameLayout;
 import com.google.samples.apps.iosched.util.AnalyticsHelper;
@@ -17,6 +23,8 @@ import no.java.schedule.R;
 public class JzVideoLibraryActivity extends BaseActivity {
     private static final String SCREEN_LABEL = "JavaZone Video Library";
     private Fragment mFragment;
+    public static final int ACTIVITY_RESULT = 90;
+    public static final String SEARCH_PARAM = "SEARCH_PARAM";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,7 +69,41 @@ public class JzVideoLibraryActivity extends BaseActivity {
         DrawShadowFrameLayout frame = (DrawShadowFrameLayout) findViewById(R.id.main_content);
         frame.setShadowVisible(shown, shown);
     }
+    /*
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        super.onCreateOptionsMenu(menu);
+
+        // Add the search button to the toolbar.
+        Toolbar toolbar = getActionBarToolbar();
+        toolbar.inflateMenu(R.menu.explore_io_menu);
+        toolbar.setOnMenuItemClickListener(this);
+        return true;
+    }
+
+    @Override
+    public boolean onMenuItemClick(MenuItem menuItem) {
+        switch (menuItem.getItemId()) {
+            case R.id.menu_search:
+                startActivityForResult(new Intent(this, SearchVideoActivity.class), ACTIVITY_RESULT);
+                return true;
+        }
+        return false;
+    } */
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        switch (requestCode) {
+            case ACTIVITY_RESULT:
+                if (resultCode == RESULT_OK) {
+                    Bundle res = data.getExtras();
+
+                    ((JzVideoLibraryFragment)mFragment).doWebViewCall(res.getString(SEARCH_PARAM));
+                }
+                break;
+        }
+    }
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         if (keyCode == KeyEvent.KEYCODE_BACK) {

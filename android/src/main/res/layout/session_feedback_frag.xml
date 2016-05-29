@@ -327,7 +327,7 @@
                 android:text="@string/session_feedback_submitlink"
                 android:textAllCaps="true"
                 android:textAppearance="@style/TextAppearance.AppCompat.Button"
-                android:textColor="@color/text_on_primary" />
+                android:textColor="@color/theme_accent_1" />
 
         </FrameLayout>
 

@@ -79,8 +79,8 @@
     <color name="theme_primary_dark">@color/app_secondary_accent</color>
     <color name="theme_primary_light">#99000000</color>
 
-    <color name="theme_accent_1">#00b0ff</color>
-    <color name="theme_accent_1_light">#8ad4fa</color>
+    <color name="theme_accent_1">#fcaf17</color>
+    <color name="theme_accent_1_light">#ff669900</color>
 
     <color name="theme_accent_2">#e91e63</color>
 

@@ -74,11 +74,12 @@
     <style name="ActionBarThemeOverlay" parent="ThemeOverlay.AppCompat.ActionBar">
         <item name="android:textColorPrimary">@color/app_white</item>
         <item name="android:textColorSecondary">@color/app_body_text_2_inverse</item>
+        <item name="colorControlNormal">@color/app_white</item>
     </style>
 
     <style name="SearchViewTheme" parent="ThemeOverlay.AppCompat.ActionBar">
         <item name="android:textColorPrimary">@color/app_body_text_1</item>
-        <item name="colorControlNormal">@color/app_body_text_2</item>
+        <item name="colorControlNormal">@color/app_white</item>
         <item name="colorControlActivated">@color/theme_accent_1</item>
     </style>
 

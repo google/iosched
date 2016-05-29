@@ -37,8 +37,9 @@
         android:id="@android:id/empty"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/app_primary_accent"
+        android:background="@color/app_white"
         android:scaleType="fitCenter"
-        android:src="@drawable/io_logo" />
+        android:adjustViewBounds="true"
+        android:src="@drawable/actionbar_icon" />
 
 </FrameLayout>
