@@ -15,9 +15,6 @@
  */
 package com.google.samples.apps.iosched.archframework;
 
-import android.app.Activity;
-import android.app.Fragment;
-
 /**
  * A Presenter acts as a controller for both the {@link UpdatableView} (typically a fragment) and
  * the {@link Model} for the MVP architectural pattern.
@@ -43,14 +40,5 @@ public interface Presenter<Q extends QueryEnum, UA extends UserActionEnum> {
      * Requests the model to load the initial data.
      */
     public void loadInitialQueries();
-
-    /**
-     * Cleans up all references to objects containing an {@link android.view.View} or {@link
-     * android.content.Context} in order to help with garbage collection and avoid memory leaks.
-     * This should be called when the {@link UpdatableView}(s) go through their stopping cycle (for
-     * example, if it is a Fragment, in {@link Fragment#onDetach()}; if it is an Activity, in
-     * {@link Activity#onDestroy()}).
-     */
-    public void cleanUp();
 
 }

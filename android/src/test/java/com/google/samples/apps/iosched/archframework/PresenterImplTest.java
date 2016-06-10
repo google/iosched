@@ -168,18 +168,6 @@ public class PresenterImplTest {
     }
 
     @Test
-    public void cleanUp_loadInitialQueries_throwsNPE() {
-        // Given a query array with one query
-
-        // When cleaning up presenter
-        mPresenterImpl.cleanUp();
-
-        // Then loading initial queries throws NPE
-        mThrown.expect(NullPointerException.class);
-        mPresenterImpl.loadInitialQueries();
-    }
-
-    @Test
     public void onUserAction_validUserAction_deliveryUserActionSuccessful_ViewIsUpdated() {
         // Given a user action array with 1 action
 
