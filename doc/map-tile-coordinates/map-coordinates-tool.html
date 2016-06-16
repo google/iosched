@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+  <title>iosched map tile coordinate tool</title>
+  <meta name="viewport" content=
+  "initial-scale=1.0, user-scalable=no">
+  <meta charset="utf-8"><!-- 
+This site renders an image overlay into a rectangle on top of a map and displays
+its lat/lng and world coordinates.
+
+You need to set a Google Maps Javascript API key at the bottom of the file.
+Replace the string "YOUR_API_KEY". See https://developers.google.com/maps/documentation/javascript/get-api-key
+-->
+
+  <style type="text/css">
+  html, body {
+        height: 100%;
+        margin: 0;
+        padding: 0;
+      }
+      #map {
+        height: 100%;
+      }
+  </style>
+</head>
+
+<body>
+  <p>This site renders an image overlay into a rectangle on top of
+  a map and displays its lat/lng and world coordinates.<br>
+  You need to set a Google Maps Javascript API key at the bottom of
+  the file. Replace the string "YOUR_API_KEY". See <a href=
+  "https://developers.google.com/maps/documentation/javascript/get-api-key">
+  this page</a>.</p>
+
+  <p><a href=
+  "https://developers.google.com/maps/documentation/javascript/examples/map-coordinates">
+  This page</a> contains more details on world coordinates that are
+  used to map the SVG floor plan tiles to the map.</p>
+
+  <div id="map"></div><script type="text/javascript">
+
+  var rectangle;
+  var map;
+  var infoWindow;
+  var overlay;
+  var TILE_SIZE = 256;
+
+  function initMap() {
+
+  // Initial bounds for the image overlay.
+  var bounds = {
+    north: 37.428485238911186,
+    south: 37.42333895902373,
+    east: -122.07810360978704,
+    west: -122.08234199999998
+  };
+
+  map = new google.maps.Map(document.getElementById('map'), {
+    center: {
+      lat: bounds["north"],
+      lng: bounds["west"]
+    },
+    zoom: 15
+  });
+
+  // Define the rectangle and set its editable property to true.
+  rectangle = new google.maps.Rectangle({
+    bounds: bounds,
+    editable: true,
+    draggable: true
+  });
+
+  rectangle.setMap(map);
+
+  updateOverlay();
+
+  // Add an event listener on the rectangle.
+  rectangle.addListener('bounds_changed', showNewRect);
+
+  // Define an info window on the map.
+  infoWindow = new google.maps.InfoWindow();
+
+  // Display info window when first initialised.
+  showNewRect(null);
+  }
+
+  // Update the overlayed image to render it in the rectangle bounds.
+  function updateOverlay() {
+  if (overlay != null) {
+    overlay.setMap(null);
+  }
+  overlay = new google.maps.GroundOverlay(
+    'map.png',
+    rectangle.getBounds());
+    overlay.setOpacity(0.5);
+  overlay.setMap(map);
+  }
+
+  // Show the new coordinates for the rectangle in an info window.
+  /** @this {google.maps.Rectangle} */
+  function showNewRect(event) {
+    var ne = rectangle.getBounds().getNorthEast();
+    var sw = rectangle.getBounds().getSouthWest();
+    var nw = new google.maps.LatLng(ne.lat(), sw.lng());
+    var se = new google.maps.LatLng(sw.lat(), ne.lng());
+
+    var contentString = 
+      'NE: ' + ne.lat() + ', ' + ne.lng() + '<br>' +
+      'SW: ' + sw.lat() + ', ' + sw.lng() + '<br>' +
+      '<b>World coordinates:<\/b><br>' +
+      'NW: ' + project(nw) + '<br>' +
+      'NE: ' + project(ne) + '<br>' +
+      'SE: ' + project(se) + '<br>';
+
+    // Reload the image overlay into these bounds
+    updateOverlay();
+
+
+    // Set the info window's content and position.
+    infoWindow.setContent(contentString);
+    infoWindow.setPosition(ne);
+
+    infoWindow.open(map);
+  }
+
+
+  // The mapping between latitude, longitude and pixels is defined by the web
+  // mercator projection.
+  // See: https://developers.google.com/maps/documentation/javascript/examples/map-coordinates
+  function project(latLng) {
+    var siny = Math.sin(latLng.lat() * Math.PI / 180);
+
+    // Truncating to 0.9999 effectively limits latitude to 89.189. This is
+    // about a third of a tile past the edge of the world tile.
+    siny = Math.min(Math.max(siny, -0.9999), 0.9999);
+
+    return new google.maps.Point(
+      TILE_SIZE * (0.5 + latLng.lng() / 360),
+      TILE_SIZE * (0.5 - Math.log((1 + siny) / (1 - siny)) / (4 * Math.PI)));
+  }
+  </script>
+  <script async="" defer src=
+  "https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY&callback=initMap"
+  type="text/javascript">
+</script>
+</body>
+</html>
