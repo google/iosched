@@ -25,6 +25,7 @@ import com.google.android.gms.maps.model.TileProvider;
 import java.io.*;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
+import com.google.samples.apps.iosched.BuildConfig;
 import com.larvalabs.svgandroid.SVG;
 import com.larvalabs.svgandroid.SVGBuilder;
 
@@ -63,15 +64,10 @@ public class SVGTileProvider implements TileProvider {
         mBaseMatrix = new Matrix();
         mBaseMatrix.setPolyToPoly(
                 new float[]{
-                        0, 0,
-                        limits.width(), 0,
-                        limits.width(), limits.height()
-                }, 0,
-                new float[]{
-                        41.185890133333345f, 99.26028878054545f, // NW
-                        41.188904099707f,    99.26028878054545f, // NE
-                        41.188904099707f, 99.26489700767203f, // SE
-                }, 0, 3
+                        0, 0, // North-West
+                        limits.width(), 0, // North-East
+                        limits.width(), limits.height() // South-East
+                }, 0, BuildConfig.MAP_FLOORPLAN_MAPPING, 0, 3
         );
     }
 

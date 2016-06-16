@@ -43,6 +43,7 @@ import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.TileOverlay;
 import com.google.android.gms.maps.model.TileOverlayOptions;
+import com.google.samples.apps.iosched.BuildConfig;
 import com.google.samples.apps.iosched.R;
 import com.google.samples.apps.iosched.map.util.CachedTileProvider;
 import com.google.samples.apps.iosched.map.util.MarkerLoadingTask;
@@ -68,21 +69,6 @@ public class MapFragment extends com.google.android.gms.maps.MapFragment impleme
         GoogleMap.OnCameraChangeListener {
 
     /**
-     * Location of the venue. The large venue marker is displayed at this location.
-     */
-    private static final LatLng VENUE = new LatLng(37.426360f, -122.079552f);
-
-    /**
-     * Area covered by the venue. Determines if the venue is currently visible on screen.
-     */
-    private static final LatLngBounds VENUE_AREA =
-            new LatLngBounds(new LatLng(37.423205, -122.081757),
-                    new LatLng(37.428479, -122.078109));
-    /**
-     * Tiles and markers are rendered below this zoom level only
-     */
-    private static final double MAX_RENDERED_ZOOMLEVEL = 16f;
-    /**
      * Extras parameter for highlighting a specific room when the map is loaded.
      */
     private static final String EXTRAS_HIGHLIGHT_ROOM = "EXTRAS_HIGHLIGHT_ROOM";
@@ -93,18 +79,20 @@ public class MapFragment extends com.google.android.gms.maps.MapFragment impleme
     private static final String EXTRAS_ACTIVE_FLOOR = "EXTRAS_ACTIVE_FLOOR";
 
     /**
-     * Default zoom level for programmatic camera updates when the camera is moved to a specific
-     * room.
+     * Area covered by the venue. Determines if the venue is currently visible on screen.
      */
-    private static final float VENUE_CAMERA_ZOOM = 17.7f;
+    private static final LatLngBounds VENUE_AREA =
+            new LatLngBounds(BuildConfig.MAP_AREA_NW, BuildConfig.MAP_AREA_SE);
 
     /**
      * Default position of the camera that shows the venue.
      */
     private static final CameraPosition VENUE_CAMERA =
-            new CameraPosition.Builder().bearing(334.04f)
-                                        .target(new LatLng(37.42574957397063f, -122.0797488838434f))
-                                        .zoom(VENUE_CAMERA_ZOOM).tilt(0f).build();
+            new CameraPosition.Builder().bearing(BuildConfig.MAP_DEFAULTCAMERA_BEARING)
+                                        .target(BuildConfig.MAP_DEFAULTCAMERA_TARGET)
+                                        .zoom(BuildConfig.MAP_DEFAULTCAMERA_ZOOM)
+                                        .tilt(BuildConfig.MAP_DEFAULTCAMERA_TILT)
+                                        .build();
 
     /**
      * Value that denotes an invalid floor.
@@ -396,7 +384,8 @@ public class MapFragment extends com.google.android.gms.maps.MapFragment impleme
     }
 
     private void addVenueMarker() {
-        mVenueMaker = mMap.addMarker(MapUtils.createVenueMarker(VENUE).visible(false));
+        mVenueMaker = mMap.addMarker(
+                MapUtils.createVenueMarker(BuildConfig.MAP_VENUEMARKER).visible(false));
     }
 
     @Override
@@ -425,7 +414,8 @@ public class MapFragment extends com.google.android.gms.maps.MapFragment impleme
 
     @Override
     public void onCameraChange(final CameraPosition cameraPosition) {
-        boolean isVenueInFocus = cameraPosition.zoom >= MAX_RENDERED_ZOOMLEVEL && isVenueVisible();
+        boolean isVenueInFocus = cameraPosition.zoom >= (double) BuildConfig.MAP_MAXRENDERED_ZOOM
+                && isVenueVisible();
 
         // Check if the camera is focused on the venue. Trigger a callback if the state has changed.
         if (isVenueInFocus && !mVenueIsActive) {
@@ -640,7 +630,8 @@ public class MapFragment extends com.google.android.gms.maps.MapFragment impleme
     }
 
     private void centerMap(LatLng position) {
-        mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(position, VENUE_CAMERA_ZOOM));
+        mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(position,
+                BuildConfig.MAP_VENUECAMERA_ZOOM));
     }
 
     private void highlightRoom(String roomId) {
