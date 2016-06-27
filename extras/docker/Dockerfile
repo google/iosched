@@ -1,6 +1,6 @@
 FROM java:jdk
 ENV DEBIAN_FRONTEND noninteractive
-## Dockerfile used for instantiating an Android build/test environment on a CI server
+ENV JAVA_HOME /usr/lib/jvm/java-1.8.0-openjdk-amd64
 # Dependencies
 RUN dpkg --add-architecture i386 && apt-get update && apt-get install -yq libstdc++6:i386 zlib1g:i386 libncurses5:i386 lib32z1 ant maven --no-install-recommends
 ENV GRADLE_URL http://services.gradle.org/distributions/gradle-2.2.1-all.zip
