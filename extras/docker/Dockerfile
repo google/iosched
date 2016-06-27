@@ -1,6 +1,5 @@
 FROM java:jdk
 ENV DEBIAN_FRONTEND noninteractive
-ENV JAVA_HOME /usr/lib/jvm/java-1.8.0-openjdk-amd64
 # Dependencies
 RUN dpkg --add-architecture i386 && apt-get update && apt-get install -yq libstdc++6:i386 zlib1g:i386 libncurses5:i386 lib32z1 ant maven --no-install-recommends
 ENV GRADLE_URL http://services.gradle.org/distributions/gradle-2.2.1-all.zip
@@ -21,4 +20,5 @@ RUN curl ${NDK_URL} -o /tmp/android-ndk-r10d-linux-x86_64.bin && chmod +x /tmp/a
     cd /usr/local && /tmp/android-ndk-r10d-linux-x86_64.bin && rm /tmp/android-ndk-r10d-linux-x86_64.bin
 ENV NDK_HOME /usr/local/android-ndk-r10d
 # Path
+ENV JAVA_HOME /usr/lib/jvm/java-1.8.0-openjdk-amd64
 ENV PATH $PATH:${ANDROID_HOME}/tools:${ANDROID_HOME}/platform-tools:${GRADLE_HOME}/bin:${NDK_HOME}
