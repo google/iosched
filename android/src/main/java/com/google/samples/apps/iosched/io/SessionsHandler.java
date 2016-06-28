@@ -17,10 +17,12 @@
 package com.google.samples.apps.iosched.io;
 
 import android.content.ContentProviderOperation;
+import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.graphics.Color;
 import android.net.Uri;
+import android.os.Build;
 import android.provider.BaseColumns;
 import android.text.TextUtils;
 import android.text.format.Time;
@@ -40,6 +42,7 @@ import com.google.samples.apps.iosched.util.ParserUtils;
 import com.google.samples.apps.iosched.util.TimeUtils;
 
 import java.io.IOException;
+import java.lang.annotation.Target;
 import java.net.MalformedURLException;
 import java.util.ArrayList;
 import java.util.Date;
@@ -95,6 +98,7 @@ public class SessionsHandler extends JSONHandler {
     }
 
     @Override
+
     public void process(JsonElement element) {
         for (Session session : new Gson().fromJson(element, Session[].class)) {
             mSessions.put(session.id, session);
@@ -264,6 +268,7 @@ public class SessionsHandler extends JSONHandler {
                 .withValue(ScheduleContract.Sessions.SESSION_MAIN_TAG, session.mainTag)
                 .withValue(ScheduleContract.Sessions.SESSION_CAPTIONS_URL, session.captionsUrl)
                 .withValue(ScheduleContract.Sessions.SESSION_PHOTO_URL, session.photoUrl)
+                .withValue(ScheduleContract.Sessions.SESSION_STARRED, session.starred)
                 // Disabled since this isn't being used by this app.
                 // .withValue(ScheduleContract.Sessions.SESSION_RELATED_CONTENT, session.relatedContent)
                 .withValue(ScheduleContract.Sessions.SESSION_COLOR, color);
@@ -375,7 +380,6 @@ public class SessionsHandler extends JSONHandler {
         }
 
         Set<String> starredSessionIds = new HashSet<String>();
-        if (retainLocallyStarredSessions) {
             // Collect the list of current starred sessions
             Cursor starredSessionsCursor = mContext.getContentResolver().query(
                     ScheduleContract.Sessions.CONTENT_STARRED_URI,
@@ -383,9 +387,9 @@ public class SessionsHandler extends JSONHandler {
                     null, null, null);
             while (starredSessionsCursor.moveToNext()) {
                 starredSessionIds.add(starredSessionsCursor.getString(0));
+                LOGD(TAG, "session that has been starred was added here!");
             }
             starredSessionsCursor.close();
-        }
 
         // Clear out existing sessions
         batch.add(ContentProviderOperation
@@ -401,6 +405,7 @@ public class SessionsHandler extends JSONHandler {
         for (JZSessionsResult event : sessions) {
 
             int flags = 0;
+            boolean starred = starredSessionIds.contains(event.id);
             if (retainLocallyStarredSessions) {
                 flags = (starredSessionIds.contains(event.id)
                         ? PARSE_FLAG_FORCE_SCHEDULE_ADD
@@ -454,10 +459,7 @@ public class SessionsHandler extends JSONHandler {
                 if ((sessionEndTime - sessionStartTime) > 1000 * 60 * 61) {
                     sessionEndTime = sessionStartTime + 1000 * 60 * 60;
                 }
-
-
             }
-
 
             if (!Constants.WORKSHOP.equals(event.format)) {
                 int color = mDefaultSessionColor;
@@ -483,6 +485,7 @@ public class SessionsHandler extends JSONHandler {
                         .withValue(ScheduleContract.Sessions.SESSION_YOUTUBE_URL, youtubeUrl)
                         .withValue(ScheduleContract.Sessions.SESSION_PDF_URL, null)          // Not available
                         .withValue(ScheduleContract.Sessions.SESSION_NOTES_URL, null)        // Not available
+                        .withValue(ScheduleContract.Sessions.SESSION_STARRED, starred)
                         .withValue(ScheduleContract.Sessions.ROOM_ID, ParserUtils.sanitizeId(event.room))
                         .withValue(ScheduleContract.Sessions.SESSION_COLOR, color);
 
@@ -674,4 +677,10 @@ public class SessionsHandler extends JSONHandler {
 
 
     }
+
+    public static final String[] MYSCHEDULE_PROJECTION = {
+            BaseColumns._ID,
+            ScheduleContract.MySchedule.SESSION_ID,
+            ScheduleContract.MySchedule.MY_SCHEDULE_IN_SCHEDULE,
+    };
 }

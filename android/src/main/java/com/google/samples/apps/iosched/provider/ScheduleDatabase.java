@@ -101,8 +101,13 @@ public class ScheduleDatabase extends SQLiteOpenHelper {
                 + "LEFT OUTER JOIN blocks ON sessions.block_id=blocks.block_id "
                 + "LEFT OUTER JOIN rooms ON sessions.room_id=rooms.room_id";
 
+        String SESSIONS_JOIN_BLOCKS_MY_SCHEDLUE_ROOMS = "sessions "
+                + "LEFT OUTER JOIN blocks ON sessions.block_id=blocks.block_id "
+                + "LEFT OUTER JOIN rooms ON sessions.room_id=rooms.room_id "
+                + "LEFT OUTER JOIN myschedule ON sessions.session_id=myschedule.session_id";
+
         String SESSIONS_JOIN_BLOCKS_ROOMS_FILTER = "sessions "
-                + "LEFT OUTER JOIN tags ON instr(sessions.session_tags, tags.tag_name)"
+                + "LEFT OUTER JOIN tags N instr(sessions.session_tags, tags.tag_name)"
                 + "LEFT OUTER JOIN blocks ON sessions.block_id=blocks.block_id "
                 + "LEFT OUTER JOIN rooms ON sessions.room_id=rooms.room_id";
 
@@ -142,7 +147,6 @@ public class ScheduleDatabase extends SQLiteOpenHelper {
 
         String SESSIONS_JOIN_ROOMS_TAGS = "sessions "
                 + "LEFT OUTER JOIN myschedule ON sessions.session_id=myschedule.session_id "
-                + "AND myschedule.account_name=? "
                 + "LEFT OUTER JOIN rooms ON sessions.room_id=rooms.room_id "
                 + "LEFT OUTER JOIN sessions_tags ON sessions.session_id=sessions_tags.session_id";
 
@@ -153,7 +157,6 @@ public class ScheduleDatabase extends SQLiteOpenHelper {
 
         String SESSIONS_JOIN_ROOMS = "sessions "
                 + "LEFT OUTER JOIN myschedule ON sessions.session_id=myschedule.session_id "
-                + "AND myschedule.account_name=? "
                 + "LEFT OUTER JOIN rooms ON sessions.room_id=rooms.room_id";
 
         String SESSIONS_SPEAKERS_JOIN_SPEAKERS = "sessions_speakers "

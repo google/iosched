@@ -264,9 +264,10 @@ public class ScheduleWidgetRemoteViewsService extends RemoteViewsService {
             int position = 0;
             mScheduleItems = new ArrayList<ScheduleItem>();
             for (ScheduleItem item : allScheduleItems) {
+                /*
                 if (item.endTime <= UIUtils.getCurrentTime(mContext)) {
                     continue;
-                }
+                } */
                 mScheduleItems.add(item);
                 time = item.startTime;
                 if (!UIUtils.isSameDayDisplay(previousTime, time, mContext)) {

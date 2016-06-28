@@ -57,7 +57,7 @@ public enum ScheduleUriEnum {
     VENDORS_SEARCH(702, "vendors/search/*", ScheduleContract.Vendors.CONTENT_TYPE_ID, false, null),
     VENDORS_ID(703, "vendors/*", ScheduleContract.Vendors.CONTENT_TYPE_ID, true, null),
 
-    MY_SCHEDULE(800, "my_schedule", ScheduleContract.MySchedule.CONTENT_TYPE_ID, false, null),
+    MY_SCHEDULE(800, "myschedule", ScheduleContract.MySchedule.CONTENT_TYPE_ID, false, null),
     MY_FEEDBACK_SUBMITTED(802, "my_feedback_submitted", ScheduleContract.MyFeedbackSubmitted.CONTENT_TYPE_ID, false, null),
 
     ANNOUNCEMENTS(900, "announcements", ScheduleContract.Announcements.CONTENT_TYPE_ID, false,

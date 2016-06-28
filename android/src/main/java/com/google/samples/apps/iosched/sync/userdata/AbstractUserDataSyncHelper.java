@@ -88,7 +88,7 @@ public abstract class AbstractUserDataSyncHelper {
 
         // Get schedule data pending sync.
         Cursor scheduleData = mContext.getContentResolver().query(
-                MySchedule.buildMyScheduleUri(mAccountName),
+                MySchedule.buildMyScheduleUri(),
                 UserDataQueryEnum.MY_SCHEDULE.getProjection(), null, null, null);
 
         if (scheduleData != null) {
@@ -115,7 +115,7 @@ public abstract class AbstractUserDataSyncHelper {
 
         // Get feedback submitted data pending sync.
         Cursor feedbackSubmitted = mContext.getContentResolver().query(
-                MyFeedbackSubmitted.buildMyFeedbackSubmittedUri(mAccountName),
+                MyFeedbackSubmitted.buildMyFeedbackSubmittedUri(),
                 UserDataQueryEnum.MY_FEEDBACK_SUBMITTED.getProjection(), null, null, null);
 
         if (feedbackSubmitted != null) {
@@ -165,12 +165,12 @@ public abstract class AbstractUserDataSyncHelper {
             String dirtyField;
 
             if (action.type == UserAction.TYPE.SUBMIT_FEEDBACK) {
-                baseUri = MyFeedbackSubmitted.buildMyFeedbackSubmittedUri(mAccountName);
+                baseUri = MyFeedbackSubmitted.buildMyFeedbackSubmittedUri();
                 with = MyFeedbackSubmitted.SESSION_ID + "=?";
                 withSelectionValue = new String[]{action.sessionId};
                 dirtyField = MyFeedbackSubmitted.MY_FEEDBACK_SUBMITTED_DIRTY_FLAG;
             } else {
-                baseUri = MySchedule.buildMyScheduleUri(mAccountName);
+                baseUri = MySchedule.buildMyScheduleUri();
                 with = MySchedule.SESSION_ID + "=? AND "
                         + MySchedule.MY_SCHEDULE_IN_SCHEDULE + "=?";
                 withSelectionValue = new String[]{action.sessionId,

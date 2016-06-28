@@ -79,7 +79,6 @@ public class ScheduleWidgetProvider extends AppWidgetProvider {
     @Override
     public void onUpdate(Context context, AppWidgetManager appWidgetManager, int[] appWidgetIds) {
         LOGD(TAG, "updating app widget");
-        final boolean isAuthenticated = AccountUtils.hasActiveAccount(context);
         for (int appWidgetId : appWidgetIds) {
             // Specify the service to provide data for the collection widget.  Note that we need to
             // embed the appWidgetId via the data otherwise it will be ignored.
@@ -93,9 +92,8 @@ public class ScheduleWidgetProvider extends AppWidgetProvider {
             // view of the collection view.
             rv.setEmptyView(R.id.widget_schedule_list, android.R.id.empty);
             LOGD(TAG, "setting widget empty view");
-            rv.setTextViewText(android.R.id.empty, context.getResources().getString(isAuthenticated
-                    ? R.string.empty_widget_text
-                    : R.string.empty_widget_text_signed_out));
+            rv.setTextViewText(android.R.id.empty, context.getResources().getString(
+                    R.string.empty_widget_text));
 
             final PendingIntent refreshPendingIntent = PendingIntent.getBroadcast(context, 0,
                     getRefreshBroadcastIntent(context, true), PendingIntent.FLAG_UPDATE_CURRENT);

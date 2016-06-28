@@ -222,9 +222,11 @@ public class MyScheduleActivity extends BaseActivity implements MyScheduleFragme
 
                 @Override
                 public void onTabUnselected(TabLayout.Tab tab) {
-                    TextView view = (TextView) findViewById(baseTabViewId + tab.getPosition());
-                    view.setContentDescription(
-                            getString(R.string.a11y_button, tab.getText()));
+                    if(tab != null) {
+                        TextView view = (TextView) findViewById(baseTabViewId + tab.getPosition());
+                        view.setContentDescription(
+                                getString(R.string.a11y_button, tab.getText()));
+                    }
                 }
 
                 @Override

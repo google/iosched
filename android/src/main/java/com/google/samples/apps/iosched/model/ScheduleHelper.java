@@ -165,9 +165,7 @@ public class ScheduleHelper {
 
         Cursor cursor = null;
         try {
-            cursor = mContext.getContentResolver().query(
-                    ScheduleContractHelper.addOverrideAccountName(Sessions.CONTENT_MY_SCHEDULE_URI,
-                            AccountUtils.getActiveAccountName(mContext)),
+            cursor = mContext.getContentResolver().query(Sessions.CONTENT_STARRED_URI,
                     SessionsQuery.PROJECTION,
                     // filter sessions to the specified day
                     Sessions.STARTING_AT_TIME_INTERVAL_SELECTION,
@@ -175,7 +173,7 @@ public class ScheduleHelper {
                     // order by session start
                     Sessions.SESSION_START);
 
-            if (cursor.moveToFirst()) {
+            if (cursor != null && cursor.moveToFirst()) {
                 do {
                     ScheduleItem item = new ScheduleItem();
                     item.type = ScheduleItem.SESSION;
@@ -192,9 +190,7 @@ public class ScheduleHelper {
                     item.room = cursor.getString(SessionsQuery.ROOM_ROOM_NAME);
                     item.backgroundImageUrl = cursor.getString(SessionsQuery.SESSION_PHOTO_URL);
                     item.backgroundColor = cursor.getInt(SessionsQuery.SESSION_COLOR);
-                    item.hasGivenFeedback = (cursor.getInt(SessionsQuery.HAS_GIVEN_FEEDBACK) > 0);
                     item.sessionType = detectSessionType(cursor.getString(SessionsQuery.SESSION_TAGS));
-                    item.mainTag = cursor.getString(SessionsQuery.SESSION_MAIN_TAG);
                     immutableItems.add(item);
                 } while (cursor.moveToNext());
             }
@@ -276,9 +272,7 @@ public class ScheduleHelper {
                 Sessions.SESSION_SPEAKER_NAMES,
                 Sessions.SESSION_PHOTO_URL,
                 Sessions.SESSION_COLOR,
-                Sessions.HAS_GIVEN_FEEDBACK,
                 Sessions.SESSION_TAGS,
-                Sessions.SESSION_MAIN_TAG,
         };
 
         int SESSION_ID = 0;
@@ -290,9 +284,7 @@ public class ScheduleHelper {
         int SESSION_SPEAKER_NAMES = 7;
         int SESSION_PHOTO_URL = 8;
         int SESSION_COLOR = 9;
-        int HAS_GIVEN_FEEDBACK = 10;
-        int SESSION_TAGS = 11;
-        int SESSION_MAIN_TAG = 12;
+        int SESSION_TAGS = 10;
     }
 
     private interface BlocksQuery {
@@ -325,6 +317,7 @@ public class ScheduleHelper {
         int SESSION_INTERVAL_START = 0;
         int SESSION_INTERVAL_END = 1;
         int SESSION_INTERVAL_COUNT = 2;
+        int SESSION_STARRED = 3;
     }
 
 }

@@ -332,7 +332,7 @@ public class ScheduleProvider extends ContentProvider {
         final SQLiteDatabase db = mOpenHelper.getWritableDatabase();
         ScheduleUriEnum matchingUriEnum = mUriMatcher.matchUri(uri);
         if (matchingUriEnum.table != null) {
-            db.insertOrThrow(matchingUriEnum.table, null, values);
+            db.insert(matchingUriEnum.table, null, values);
             notifyChange(uri);
         }
 
@@ -454,17 +454,11 @@ public class ScheduleProvider extends ContentProvider {
     public int delete(Uri uri, String selection, String[] selectionArgs) {
         String accountName = getCurrentAccountName(uri, false);
         LOGV(TAG, "delete(uri=" + uri + ", account=" + accountName + ")");
-        if (uri == ScheduleContract.BASE_CONTENT_URI) {
-            // Handle whole database deletes (e.g. when signing out)
-            deleteDatabase();
-            notifyChange(uri);
-            return 1;
-        }
         final SQLiteDatabase db = mOpenHelper.getWritableDatabase();
         final SelectionBuilder builder = buildSimpleSelection(uri);
         ScheduleUriEnum matchingUriEnum = mUriMatcher.matchUri(uri);
         if (matchingUriEnum == ScheduleUriEnum.MY_SCHEDULE) {
-            builder.where(MySchedule.MY_SCHEDULE_ACCOUNT_NAME + "=?", accountName);
+            return 1;
         }
         if (matchingUriEnum == ScheduleUriEnum.MY_FEEDBACK_SUBMITTED) {
             builder.where(
@@ -580,9 +574,7 @@ public class ScheduleProvider extends ContentProvider {
                         .where(ScheduleContract.MyScheduleColumns.SESSION_ID + "=?", sessionId);
             }
             case MY_SCHEDULE: {
-                return builder.table(Tables.MY_SCHEDULE)
-                        .where(MySchedule.MY_SCHEDULE_ACCOUNT_NAME + "=?",
-                                getCurrentAccountName(uri, false));
+                return builder.table(Tables.MY_SCHEDULE);
             }
             case MY_FEEDBACK_SUBMITTED: {
                 return builder.table(Tables.MY_FEEDBACK_SUBMITTED)
@@ -816,11 +808,12 @@ public class ScheduleProvider extends ContentProvider {
                         .groupBy(Sessions.SESSION_START+ ", " + Sessions.SESSION_END);
             }
             case SESSIONS_MY_SCHEDULE: {
-                return builder.table(Tables.SESSIONS_JOIN_BLOCKS_ROOMS,
+                return builder.table(Tables.SESSIONS_JOIN_BLOCKS_MY_SCHEDLUE_ROOMS,
                         getCurrentAccountName(uri, true))
                         .mapToTable(Sessions._ID, Tables.SESSIONS)
                         .mapToTable(Sessions.ROOM_ID, Tables.SESSIONS)
                         .mapToTable(Sessions.SESSION_ID, Tables.SESSIONS)
+                        .mapToTable(MySchedule.MY_SCHEDULE_IN_SCHEDULE, Tables.MY_SCHEDULE)
                         .map(Sessions.HAS_GIVEN_FEEDBACK, Subquery.SESSION_HAS_GIVEN_FEEDBACK)
                         .where(Sessions.SESSION_STARRED + "=1")
                         .groupBy(Qualified.SESSIONS_SESSION_ID);
@@ -922,9 +915,7 @@ public class ScheduleProvider extends ContentProvider {
                 // Note that, since SelectionBuilder always join multiple where calls using AND,
                 // even if malicious code specifying additional conditions on account_name won't
                 // be able to fetch data from a different account.
-                return builder.table(Tables.MY_SCHEDULE)
-                        .where(MySchedule.MY_SCHEDULE_ACCOUNT_NAME + "=?",
-                                getCurrentAccountName(uri, true));
+                return builder.table(Tables.MY_SCHEDULE);
             }
             case MY_FEEDBACK_SUBMITTED: {
                 // force a where condition to avoid leaking schedule info to another account

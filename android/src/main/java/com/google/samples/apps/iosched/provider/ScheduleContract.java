@@ -308,7 +308,7 @@ public final class ScheduleContract {
     private static final String PATH_ROOMS = "rooms";
     private static final String PATH_SESSIONS = "sessions";
     private static final String PATH_FEEDBACK = "feedback";
-    private static final String PATH_MY_SCHEDULE = "my_schedule";
+    private static final String PATH_MY_SCHEDULE = "myschedule";
     private static final String PATH_MY_FEEDBACK_SUBMITTED = "my_feedback_submitted";
     private static final String PATH_SESSIONS_COUNTER = "counter";
     private static final String PATH_SPEAKERS = "speakers";
@@ -487,8 +487,8 @@ public final class ScheduleContract {
 
         public static final String CONTENT_TYPE_ID = "myschedule";
 
-        public static Uri buildMyScheduleUri(String accountName) {
-            return ScheduleContractHelper.addOverrideAccountName(CONTENT_URI, accountName);
+        public static Uri buildMyScheduleUri() {
+            return ScheduleContractHelper.addOverrideAccountName(CONTENT_URI);
         }
 
     }
@@ -505,8 +505,8 @@ public final class ScheduleContract {
 
         public static final String CONTENT_TYPE_ID = "myfeedbacksubmitted";
 
-        public static Uri buildMyFeedbackSubmittedUri(String accountName) {
-            return ScheduleContractHelper.addOverrideAccountName(CONTENT_URI, accountName);
+        public static Uri buildMyFeedbackSubmittedUri() {
+            return ScheduleContractHelper.addOverrideAccountName(CONTENT_URI);
         }
 
     }
@@ -664,7 +664,7 @@ public final class ScheduleContract {
         // Used to fetch sessions starting within a specific time interval
 
         public static final String STARTING_AT_TIME_INTERVAL_SELECTION =
-                SESSION_START + " < ? and " +  SESSION_END + " " + "> ?";
+                SESSION_START + " >= ? and " +  SESSION_END + " " + "<= ?";
 
         // Used to fetch upcoming sessions
         public static final String UPCOMING_SELECTION =

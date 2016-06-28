@@ -17,6 +17,7 @@
 package com.google.samples.apps.iosched.session;
 
 import android.app.Fragment;
+import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -47,6 +48,7 @@ import com.google.samples.apps.iosched.framework.QueryEnum;
 import com.google.samples.apps.iosched.framework.UpdatableView;
 import com.google.samples.apps.iosched.framework.UserActionEnum;
 import com.google.samples.apps.iosched.model.TagMetadata;
+import com.google.samples.apps.iosched.provider.ScheduleContract;
 import com.google.samples.apps.iosched.session.SessionDetailModel.SessionDetailQueryEnum;
 import com.google.samples.apps.iosched.session.SessionDetailModel.SessionDetailUserActionEnum;
 import com.google.samples.apps.iosched.ui.widget.CheckableFloatingActionButton;
@@ -145,6 +147,7 @@ public class SessionDetailFragment extends Fragment
     private Handler mHandler;
 
     private boolean mAnalyticsScreenViewHasFired;
+    private String mSessionId;
 
     List<UserActionListener> mListeners = new ArrayList<>();
 
@@ -330,8 +333,20 @@ public class SessionDetailFragment extends Fragment
                 showStarred(starred, true);
                 if (starred) {
                     sendUserAction(SessionDetailUserActionEnum.STAR, null);
+                    ContentValues values = new ContentValues();
+                    values.put(ScheduleContract.MySchedule.SESSION_ID, mSessionId);
+                    values.put(ScheduleContract.MySchedule.MY_SCHEDULE_IN_SCHEDULE, true);
+                    getActivity().getContentResolver().insert(ScheduleContract.MySchedule.CONTENT_URI,
+                            values);
+
+
                 } else {
                     sendUserAction(SessionDetailUserActionEnum.UNSTAR, null);
+                    ContentValues values = new ContentValues();
+                    values.put(ScheduleContract.MySchedule.SESSION_ID, mSessionId);
+                    values.put(ScheduleContract.MySchedule.MY_SCHEDULE_IN_SCHEDULE, false);
+                    getActivity().getContentResolver().insert(ScheduleContract.MySchedule.CONTENT_URI,
+                            values);
                 }
 
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
@@ -401,6 +416,7 @@ public class SessionDetailFragment extends Fragment
     }
 
     private void displaySessionData(final SessionDetailModel data) {
+        mSessionId = data.getSessionId();
         mTitle.setText(data.getSessionTitle());
         mSubtitle.setText(data.getSessionSubtitle());
 
@@ -685,7 +701,7 @@ public class SessionDetailFragment extends Fragment
     private void updateTimeBasedUi(SessionDetailModel data) {
         // If the session is done, hide the FAB, and show the "Give feedback" card.
         if (data.isSessionReadyForFeedback()) {
-            mAddScheduleButton.setVisibility(View.INVISIBLE);
+           // mAddScheduleButton.setVisibility(View.INVISIBLE);
             //   if (!data.hasFeedback() && data.isInScheduleWhenSessionFirstLoaded() &&
             //           !sDismissedFeedbackCard.contains(data.getSessionId())) {
             showGiveFeedbackCard(data);

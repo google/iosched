@@ -40,6 +40,7 @@ public class Session {
     public String color;
     public RelatedContent[] relatedContent;
     public int groupingOrder;
+    public boolean starred;
 
     public class RelatedContent {
         public String id;
