@@ -44,6 +44,7 @@ import com.google.samples.apps.iosched.model.TagMetadata;
 import com.google.samples.apps.iosched.provider.ScheduleContract;
 import com.google.samples.apps.iosched.settings.ConfMessageCardUtils;
 import com.google.samples.apps.iosched.settings.SettingsUtils;
+import com.google.samples.apps.iosched.util.TagUtils;
 import com.google.samples.apps.iosched.util.TimeUtils;
 import com.google.samples.apps.iosched.util.WiFiUtils;
 
@@ -390,12 +391,11 @@ public class ExploreIOModel extends ModelWithLoaderManager<ExploreIOModel.Explor
                     liveStreamData.addSessionData(session);
                 }
 
-                // TODO: Refactor into a system wide way of parsing these tags.
                 if (!TextUtils.isEmpty(tags)) {
                     StringTokenizer tagsTokenizer = new StringTokenizer(tags, ",");
                     while (tagsTokenizer.hasMoreTokens()) {
                         String rawTag = tagsTokenizer.nextToken();
-                        if (rawTag.startsWith("TRACK_")) {
+                        if (TagUtils.isTrackTag(rawTag)) {
                             ItemGroup trackGroup = trackGroups.get(rawTag);
                             if (trackGroup == null) {
                                 trackGroup = new ItemGroup();
@@ -409,7 +409,7 @@ public class ExploreIOModel extends ModelWithLoaderManager<ExploreIOModel.Explor
                             }
                             trackGroup.addSessionData(session);
 
-                        } else if (rawTag.startsWith("THEME_")) {
+                        } else if (TagUtils.isThemeTag(rawTag)) {
                             ItemGroup themeGroup = themeGroups.get(rawTag);
                             if (themeGroup == null) {
                                 themeGroup = new ItemGroup();

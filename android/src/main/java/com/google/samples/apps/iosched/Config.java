@@ -132,6 +132,7 @@ public class Config {
         public static final String CATEGORY_THEME = "THEME";
         public static final String CATEGORY_TRACK = "TRACK";
         public static final String CATEGORY_TYPE = "TYPE";
+        public static final String CATEGORY_SEP = "_";
 
         public static final String SPECIAL_KEYNOTE = "FLAG_KEYNOTE";
 
