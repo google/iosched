@@ -76,6 +76,6 @@ public class BaseActivity_InactiveAccountTest {
     @SdkSuppress(minSdkVersion = 17)
     @Test
     public void welcomeActivityForAccount_IsDisplayed() {
-        onView(withText(R.string.welcome_select_accoun_text)).check(matches(isDisplayed()));
+        onView(withText(R.string.welcome_select_account)).check(matches(isDisplayed()));
     }
 }
