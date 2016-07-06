@@ -16,15 +16,12 @@
 
 package com.google.samples.apps.iosched.videolibrary;
 
-import android.content.Intent;
-import android.net.Uri;
 import android.support.test.InstrumentationRegistry;
 import android.support.test.runner.AndroidJUnit4;
 import android.test.FlakyTest;
 import android.test.suitebuilder.annotation.LargeTest;
 import android.view.View;
 
-import com.google.samples.apps.iosched.Config;
 import com.google.samples.apps.iosched.R;
 import com.google.samples.apps.iosched.mockdata.VideosMockCursor;
 import com.google.samples.apps.iosched.navigation.NavigationModel;
@@ -32,22 +29,19 @@ import com.google.samples.apps.iosched.testutils.BaseActivityTestRule;
 import com.google.samples.apps.iosched.testutils.MatchersHelper;
 import com.google.samples.apps.iosched.testutils.NavigationUtils;
 import com.google.samples.apps.iosched.testutils.ToolbarUtils;
+import com.google.samples.apps.iosched.testutils.IntentUtils;
 
 import org.hamcrest.Matcher;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
-import java.util.Locale;
-
 import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.action.ViewActions.click;
 import static android.support.test.espresso.assertion.ViewAssertions.doesNotExist;
 import static android.support.test.espresso.assertion.ViewAssertions.matches;
 import static android.support.test.espresso.intent.Intents.intended;
-import static android.support.test.espresso.intent.matcher.IntentMatchers.hasAction;
 import static android.support.test.espresso.intent.matcher.IntentMatchers.hasComponent;
-import static android.support.test.espresso.intent.matcher.IntentMatchers.hasData;
 import static android.support.test.espresso.intent.matcher.IntentMatchers.hasExtra;
 import static android.support.test.espresso.matcher.ViewMatchers.hasSibling;
 import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
@@ -55,7 +49,6 @@ import static android.support.test.espresso.matcher.ViewMatchers.withChild;
 import static android.support.test.espresso.matcher.ViewMatchers.withContentDescription;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
 import static org.hamcrest.CoreMatchers.allOf;
-import static org.hamcrest.core.IsEqual.equalTo;
 import static org.junit.Assert.assertTrue;
 
 
@@ -95,12 +88,9 @@ public class VideoLibraryActivityTest {
         // When clicking on the video
         onView(withText(VideosMockCursor.VIDEO_TITLE1)).perform(click());
 
-        // Then the intent to open the filtered activity for that topic is fired
-        Uri expectedVideoUri = Uri.parse(String.format(Locale.US, Config.VIDEO_LIBRARY_URL_FMT,
-                VideosMockCursor.VIDEO_YOUTUBE_LINK));
-        intended(allOf(
-                hasAction(equalTo(Intent.ACTION_VIEW)),
-                hasData(expectedVideoUri)));
+        // Then the intent to open the video is fired
+        IntentUtils.checkVideoIntentIsFired(VideosMockCursor.VIDEO_YOUTUBE_LINK,
+                mActivityRule.getActivity(), true);
     }
 
     @Test
