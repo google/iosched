@@ -214,6 +214,12 @@ public class DataExtractor {
             }
           }
 
+          // TODO: Directly associate Track images with Tags.
+          // Track images were retrieved from session images. This required that sessions on the
+          // same track have the same image. Thus here, we needed to check the Track of each
+          // session even if the corresponding Track was already assigned an image. If all sessions
+          // in the same track are going to have the same image then it would make more sense for
+          // the images to be attached to the Tag/Track rather than the session.
           if (tagName.getAsString().startsWith(TRACK)) {
             // Extract photo urls from topics for TRACK tags.
             String objectId = extractTrackPhotoObjectId(sources,
@@ -683,6 +689,10 @@ public class DataExtractor {
     return "";
   }
 
+  // TODO: improve the association of colors with tracks.
+  // Track and corresponding track colors were hard coded. These values should be defined at best
+  // as part of a config file retrieved from the application server, or at least as a config file
+  // within the application.
   /**
    * Provides the appropriate color given the track name.
    *

@@ -482,6 +482,11 @@ public class UIUtils {
         }
     }
 
+    // TODO: Improve the mapping of icons to breaks.
+    // Initially this was a convenience method and there were few icons to be assigned to
+    // breaks. The current implementation could be improved if the icon - break mapping
+    // was defined via a configuration file and loaded at runtime. This would make the breaks
+    // more flexible.
     public static
     @DrawableRes
     int getBreakIcon(String breakTitle) {
