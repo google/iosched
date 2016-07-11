@@ -20,15 +20,15 @@ the conference data and the user's schedule. For an introduction to GCM,
 see [http://developer.android.com/google/gcm/index.html](http://developer.android.com/google/gcm/index.html)
 
 On startup, the application registers the device with the GCM server (see
-the BaseActivity.registerGCMClient method). This registration sends two
-pieces of data: the device's GCM id and the user's GCM Key. The GCM id is
-a core GCM concept, and essentially consists of a long number that
+the MessagingRegistrationWithGCM.registerDevice method). This registration sends two
+pieces of data: the device's GCM token and the user's GCM Key. The GCM token is
+a core GCM concept, and essentially consists of a long string that
 identifies the device for the purposes of sending GCM messages.  The GCM
 key, however, is something we use only in this app and is not part of the
 normal GCM protocol. More about this soon.
 
 The server can send the client several different types of GCM messages.
-When a GCM message arrives, it is processed by GCMIntentService.onMessage.
+When a GCM message arrives, it is processed by GCMMessageListenerService.onMessageReceived.
 That method will take the appropriate action depending on the content of
 the message. There are several message verbs we recognize:
 
@@ -141,7 +141,7 @@ user's devices, so they can reflect that latest change as soon as possible.
 If you've set up your GCM server and enabled GCM on IOSched, you should
 be able to push GCM messages to all your users. To do so, you have
 to make an HTTP POST request to your GCM server (that is, your
-App Engine app that's running the [gcm-server/](../gcm-server) code).
+App Engine app that's running the [gcm-server/](../server) code).
 
 Here is a sample POST request:
 
