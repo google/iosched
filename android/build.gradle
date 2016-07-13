@@ -122,6 +122,10 @@ android {
             keyAlias "androiddebugkey"
             keyPassword "android"
         }
+        // Notice the production keystore and password are not checked in. Signing resources for
+        // release builds are typically stored somewhere more secure than the source repo.
+        // This typically also means that release builds are signed manually rather than by
+        // Gradle.
     }
 
     productFlavors {
