@@ -129,11 +129,16 @@ android {
     }
 
     productFlavors {
-        // Use this flavor to test without having to worry about granting permissions to the app.
+        // Use this flavor to run automated tests.
         targetSdk22 {
+            // Disables the dogfood warning to prevent issues with tests.
+            buildConfigField("boolean", "SUPPRESS_DOGFOOD_WARNING", "true")
+            // Targeting prevents runtime permission dialogs from being presented.
             targetSdkVersion 22
         }
         normal {
+            // Do no short-circuit the dogfood warning so it might display if appropriate.
+            buildConfigField("boolean", "SUPPRESS_DOGFOOD_WARNING", "false")
             targetSdkVersion 23
         }
     }

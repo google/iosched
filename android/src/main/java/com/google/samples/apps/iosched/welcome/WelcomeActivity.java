@@ -86,7 +86,8 @@ public class WelcomeActivity extends AppCompatActivity
         super.onResume();
 
         // Show the debug warning if debug tools are enabled and it hasn't been shown yet.
-        if (BuildConfig.ENABLE_DEBUG_TOOLS && !SettingsUtils.wasDebugWarningShown(this)) {
+        if (!BuildConfig.SUPPRESS_DOGFOOD_WARNING &&
+                BuildConfig.ENABLE_DEBUG_TOOLS && !SettingsUtils.wasDebugWarningShown(this)) {
             displayDogfoodWarningDialog();
         }
     }
