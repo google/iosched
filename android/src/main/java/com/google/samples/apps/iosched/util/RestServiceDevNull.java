@@ -8,9 +8,11 @@ import com.google.gson.JsonObject;
 
 import no.java.schedule.BuildConfig;
 import no.java.schedule.io.model.JZFeedback;
-import retrofit.Callback;
+import retrofit2.Call;
+import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
 
 /**
  * Created by kkho on 05.05.2016.
@@ -28,8 +30,10 @@ public class RestServiceDevNull {
 
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl(endPoint)
+                .addConverterFactory(GsonConverterFactory.create())
+                .addConverterFactory(new ToStringConverterFactory())
                 .build();
-        RestDevApi service = retrofit.create(RestDevApi.class);
+        restDevApi = retrofit.create(RestDevApi.class);
     }
 
     public void setActivity(Activity activity) {
@@ -45,22 +49,23 @@ public class RestServiceDevNull {
     }
 
     public void submitFeedbackToDevNull(String eventId, String sessionId, String voterId, JZFeedback feedbackBody) {
-        restDevApi.postSessionFeedback(eventId, sessionId, voterId, feedbackBody, retrofitCallBack);
+        restDevApi.postSessionFeedback(eventId, sessionId, voterId, feedbackBody).
+                enqueue(retrofitCallBack);
     }
 
     public Callback retrofitCallBack = new Callback() {
-
         @Override
-        public void onResponse(retrofit.Response response, retrofit.Retrofit retrofit) {
+        public void onResponse(Call call, Response response) {
             Toast.makeText(activity,
                     "Thank you for the feedback!",
                     Toast.LENGTH_SHORT).show();
+            activity.finish();
         }
 
         @Override
-        public void onFailure(Throwable t) {
+        public void onFailure(Call call, Throwable t) {
             Toast.makeText(activity,
-                    "Something went wrong with the connection, please try again!",
+                    "Something went wrong with the connection, please try again later!",
                     Toast.LENGTH_SHORT).show();
         }
     };

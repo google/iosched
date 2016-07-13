@@ -69,6 +69,7 @@ import java.util.HashSet;
 import java.util.List;
 
 import no.java.schedule.R;
+import no.java.schedule.io.model.Constants;
 
 import static com.google.samples.apps.iosched.util.LogUtils.LOGD;
 
@@ -809,6 +810,7 @@ public class SessionDetailFragment extends Fragment
                     // Contains: The session title.
                     AnalyticsHelper.sendEvent("Session", "Feedback", data.getSessionTitle());
                     Intent intent = data.getFeedbackIntent();
+                    intent.putExtra(Constants.SESSION_ID, mSessionId);
                     startActivity(intent);
                 } else {
                     sDismissedFeedbackCard.add(data.getSessionId());

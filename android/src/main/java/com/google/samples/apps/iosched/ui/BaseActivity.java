@@ -1231,6 +1231,7 @@ public abstract class BaseActivity extends AppCompatActivity implements
         if (presenter == null) {
             //Create, set up and add the presenter.
             presenter = new PresenterFragmentImpl();
+            presenter.setArguments(intentToFragmentArguments(this.getIntent()));
             setUpPresenter(presenter, fragmentManager, updatableViewResId, model, queries, actions);
             FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
             fragmentTransaction.add(presenter, PRESENTER_TAG);
