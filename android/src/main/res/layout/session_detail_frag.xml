@@ -240,8 +240,6 @@
                     android:layout_marginStart="@dimen/keyline_2_session_detail"
                     android:minHeight="?android:listPreferredItemHeightSmall"
                     android:gravity="center_vertical"
-                    android:clickable="true"
-                    android:focusable="true"
                     android:text="@string/session_speakers"
                     android:textAppearance="@style/TextAppearance.Subhead" />
 
