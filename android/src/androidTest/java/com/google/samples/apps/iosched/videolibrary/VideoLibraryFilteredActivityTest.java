@@ -89,12 +89,6 @@ public class VideoLibraryFilteredActivityTest {
     }
 
     @Test
-    @Ignore("Not implemented yet")
-    public void toolbar_CollapsesAfterSwipeUp() {
-        ToolbarUtils.checkToolbarCollapsesAfterSwipingRecyclerViewUp(R.id.videos_list);
-    }
-
-    @Test
     public void navigationIcon_DisplaysAsUp() {
         NavigationUtils.checkNavigationIconIsUp();
     }

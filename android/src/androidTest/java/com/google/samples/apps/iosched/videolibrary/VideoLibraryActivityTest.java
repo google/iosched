@@ -32,6 +32,7 @@ import com.google.samples.apps.iosched.testutils.ToolbarUtils;
 import com.google.samples.apps.iosched.testutils.IntentUtils;
 
 import org.hamcrest.Matcher;
+import org.junit.Ignore;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -94,52 +95,6 @@ public class VideoLibraryActivityTest {
     }
 
     @Test
-    @FlakyTest // Getting memory errors sometimes with vector drawable allocation
-    public void videosList_DifferentVideosOnSecondTime_Flaky() {
-        // Given a list of videos shown for topic 2
-        // The first child of the LinearLayout is used to show the topic title and the more
-        // button, so the child view corresponding to the first video is at index 1
-        int indexOffsetForFirstRow = 1;
-
-        Matcher<View> parentViewMatcher =
-                withChild(withChild(withText(VideosMockCursor.VIDEO_TOPIC2)));
-        int resourceIdOfChildTextView = R.id.title;
-
-        String[] titles = new String[5];
-        for (int i = 0; i < titles.length; i++) {
-            titles[i] = MatchersHelper
-                    .getTextForViewGroupDescendant(
-                            parentViewMatcher,
-                            i + indexOffsetForFirstRow, resourceIdOfChildTextView);
-        }
-
-        // When leaving the screen then returning to it
-        onView(withText(VideosMockCursor.VIDEO_TOPIC1)).perform(click());
-        onView(withContentDescription(InstrumentationRegistry.getTargetContext()
-                                                             .getString(
-                                                                     R.string.close_and_go_back)))
-                .perform(click());
-
-        // Then the videos for topic 2 titles are in different order
-        String[] newTitles = new String[5];
-        for (int i = 0; i < newTitles.length; i++) {
-            newTitles[i] = MatchersHelper
-                    .getTextForViewGroupDescendant(
-                            parentViewMatcher,
-                            i + indexOffsetForFirstRow, resourceIdOfChildTextView);
-        }
-
-        boolean atLeastOneTitleIsDifferent = false;
-        for (int i = 0; i < titles.length; i++) {
-            if (!titles[i].equals(newTitles[i])) {
-                atLeastOneTitleIsDifferent = true;
-                break;
-            }
-        }
-        assertTrue(atLeastOneTitleIsDifferent);
-    }
-
-    @Test
     public void videosList_VideoWithNullTopicNotShown() {
         onView(withText(VideosMockCursor.VIDEO_TITLE_NULL_TOPIC)).check(doesNotExist());
     }
@@ -150,8 +105,11 @@ public class VideoLibraryActivityTest {
     }
 
     @Test
-    @FlakyTest
-    public void toolbar_HidesAfterSwipeUp_Flaky() {
+    @Ignore // TODO(b/30123797): Manual testing shows odd behavior when slow-scrolling up. This
+            // needs to be researched, but this scroll hiding functionality is provided by the
+            // coordinator layout so this might be a support lib bug or a nuance in the flags
+            // supplied in toolbar_autohide.xml
+    public void toolbar_HidesAfterSwipeUp() {
         ToolbarUtils.checkToolbarHidesAfterSwipingRecyclerViewUp(R.id.videos_card_list);
     }
 
