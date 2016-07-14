@@ -37,7 +37,7 @@
             android:minHeight="?actionBarSize"
             app:contentInsetStart="?actionBarInsetStart"
             app:popupTheme="@style/ActionBarPopupThemeOverlay"
-            app:theme="@style/ActionBarThemeOverlay">
+            android:theme="@style/ActionBarThemeOverlay">
 
             <LinearLayout
                 android:layout_width="match_parent"
