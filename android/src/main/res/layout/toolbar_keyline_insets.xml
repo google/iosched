@@ -23,4 +23,4 @@
     android:layout_height="?actionBarSize"
     iosched:contentInsetStart="?actionBarInsetStart"
     iosched:popupTheme="@style/ActionBarPopupThemeOverlay"
-    iosched:theme="@style/ActionBarThemeOverlay" />
+    android:theme="@style/ActionBarThemeOverlay" />
