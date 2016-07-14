@@ -221,7 +221,8 @@
                     android:id="@+id/session_tags"
                     android:orientation="horizontal"
                     android:layout_width="wrap_content"
-                    android:layout_height="32dp" />
+                    android:layout_height="@dimen/a11y_min_touch_target_dimen"
+                    android:minHeight="@dimen/a11y_min_touch_target_dimen" />
 
             </HorizontalScrollView>
 

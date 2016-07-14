@@ -884,8 +884,7 @@ public class SessionDetailFragment extends Fragment implements
                 TextView chipView = (TextView) inflater.inflate(
                         R.layout.include_session_tag_chip, mTags, false);
                 chipView.setText(tag.getName());
-                chipView.setContentDescription(
-                        getString(R.string.talkback_button, tag.getName()));
+                chipView.setContentDescription(tag.getName());
                 chipView.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {

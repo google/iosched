@@ -27,4 +27,5 @@
     android:paddingLeft="@dimen/spacing_normal"
     android:paddingRight="@dimen/spacing_normal"
     android:textColor="@color/session_detail_tag_text"
+    android:minWidth="@dimen/a11y_min_touch_target_dimen"
     style="@style/Body2Text" />

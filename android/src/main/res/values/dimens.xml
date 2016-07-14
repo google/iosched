@@ -37,6 +37,7 @@
     <item name="h3_spacing" format="float" type="dimen">1.14285714286</item>
 
     <!-- UI elements -->
+    <dimen name="a11y_min_touch_target_dimen">48dp</dimen>
     <dimen name="whats_on_height">64dp</dimen>
     <dimen name="track_icon_source_size">48dp</dimen>
     <dimen name="track_icon_size">32dp</dimen>
