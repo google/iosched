@@ -323,17 +323,6 @@
         </activity>
 
         <activity
-            android:name=".social.SocialActivity"
-            android:exported="false"
-            android:label="@string/title_activity_new_social"
-            android:parentActivityName=".explore.ExploreIOActivity"
-            android:theme="@style/Theme.IOSched.WithNavDrawer">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value=".explore.ExploreIOActivity" />
-        </activity>
-
-        <activity
             android:name=".about.AboutActivity"
             android:exported="false"
             android:label="@string/description_about"

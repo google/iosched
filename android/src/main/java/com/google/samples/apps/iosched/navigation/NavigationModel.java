@@ -32,7 +32,6 @@ import com.google.samples.apps.iosched.navigation.NavigationModel.NavigationQuer
 import com.google.samples.apps.iosched.navigation.NavigationModel.NavigationUserActionEnum;
 import com.google.samples.apps.iosched.settings.SettingsActivity;
 import com.google.samples.apps.iosched.settings.SettingsUtils;
-import com.google.samples.apps.iosched.social.SocialActivity;
 import com.google.samples.apps.iosched.util.AccountUtils;
 import com.google.samples.apps.iosched.videolibrary.VideoLibraryActivity;
 
@@ -134,8 +133,6 @@ public class NavigationModel implements Model<NavigationQueryEnum, NavigationUse
         EXPLORE(R.id.explore_nav_item, R.string.navdrawer_item_explore,
                 R.drawable.ic_navview_explore, ExploreIOActivity.class, true),
         MAP(R.id.map_nav_item, R.string.navdrawer_item_map, R.drawable.ic_navview_map, MapActivity.class),
-        SOCIAL(R.id.social_nav_item, R.string.navdrawer_item_social, R.drawable.ic_navview_social,
-                SocialActivity.class),
         VIDEO_LIBRARY(R.id.videos_nav_item, R.string.navdrawer_item_video_library,
                 R.drawable.ic_navview_video_library, VideoLibraryActivity.class),
         SIGN_IN(R.id.signin_nav_item, R.string.navdrawer_item_sign_in, 0, null),
