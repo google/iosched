@@ -309,29 +309,24 @@ public class SessionAlarmService extends IntentService {
 
             final Resources res = getResources();
 
-            // this is used to synchronize deletion of notifications on phone and wear
             Intent dismissalIntent = new Intent(ACTION_NOTIFICATION_DISMISSAL);
-            // TODO: fix Wear dismiss integration
-            //dismissalIntent.putExtra(KEY_SESSION_ID, sessionId);
             PendingIntent dismissalPendingIntent = PendingIntent
                     .getService(this, (int) new Date().getTime(), dismissalIntent,
                             PendingIntent.FLAG_UPDATE_CURRENT);
 
             String provideFeedbackTicker = res.getString(R.string.session_feedback_notification_ticker);
-            NotificationCompat.Builder notifBuilder = new NotificationCompat.Builder(this)
-                    .setColor(getResources().getColor(R.color.theme_primary))
-                    .setContentText(provideFeedbackTicker)
+            NotificationCompat.Builder notifBuilder = new NotificationCompat.Builder(this);
+            //noinspection deprecation Ignore getColor deprecation until minSdk = 16
+            notifBuilder.setColor(getResources().getColor(R.color.theme_primary));
+            notifBuilder.setContentText(provideFeedbackTicker)
                     .setTicker(provideFeedbackTicker)
-                    .setLights(
-                            SessionAlarmService.NOTIFICATION_ARGB_COLOR,
-                            SessionAlarmService.NOTIFICATION_LED_ON_MS,
-                            SessionAlarmService.NOTIFICATION_LED_OFF_MS)
                     .setSmallIcon(R.drawable.ic_stat_notification)
                     .setPriority(Notification.PRIORITY_LOW)
                     .setLocalOnly(true) // make it local to the phone
-                    .setDefaults(Notification.DEFAULT_SOUND | Notification.DEFAULT_VIBRATE)
                     .setDeleteIntent(dismissalPendingIntent)
                     .setAutoCancel(true);
+            // Note, this notification doesn't warrant forced vibration or notification lights per
+            //       review.
 
             if (needFeedbackIds.size() == 1) {
                 // Only 1 session needs feedback
