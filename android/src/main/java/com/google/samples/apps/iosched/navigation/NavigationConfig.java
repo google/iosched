@@ -27,7 +27,7 @@ import java.util.List;
 public class NavigationConfig {
 
     private final static NavigationItemEnum[] COMMON_ITEMS_AFTER_CUSTOM =
-            new NavigationItemEnum[]{NavigationItemEnum.SOCIAL, NavigationItemEnum.VIDEO_LIBRARY,
+            new NavigationItemEnum[]{NavigationItemEnum.VIDEO_LIBRARY,
                     NavigationItemEnum.SETTINGS, NavigationItemEnum.ABOUT
             };
 
@@ -88,9 +88,6 @@ public class NavigationConfig {
                     break;
                 case MAP:
                     includeItem = BuildConfig.ENABLE_MAP_IN_NAVIGATION;
-                    break;
-                case SOCIAL:
-                    includeItem = BuildConfig.ENABLE_SOCIAL_IN_NAVIGATION;
                     break;
                 case VIDEO_LIBRARY:
                     includeItem = BuildConfig.ENABLE_VIDEOLIB_IN_NAVIGATION;
