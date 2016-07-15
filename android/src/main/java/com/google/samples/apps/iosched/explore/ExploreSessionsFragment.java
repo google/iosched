@@ -200,6 +200,9 @@ public class ExploreSessionsFragment extends Fragment implements
         glm.setSpanSizeLookup(new GridLayoutManager.SpanSizeLookup() {
             @Override
             public int getSpanSize(final int position) {
+                if (mSessionsAdapter == null) {
+                    return 0;
+                }
                 return mSessionsAdapter.getSpanSize(position);
             }
         });
