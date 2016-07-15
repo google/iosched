@@ -15,12 +15,18 @@
  */
 package com.google.samples.apps.iosched.session;
 
+import android.app.Activity;
+import android.app.Instrumentation;
 import android.content.Intent;
 import android.net.Uri;
+import android.os.Bundle;
 import android.support.test.InstrumentationRegistry;
+import android.support.test.espresso.intent.Intents;
+import android.support.test.espresso.intent.matcher.IntentMatchers;
 import android.support.test.espresso.matcher.ViewMatchers;
+import android.support.test.filters.LargeTest;
+import android.support.test.filters.Suppress;
 import android.support.test.runner.AndroidJUnit4;
-import android.test.suitebuilder.annotation.LargeTest;
 
 import com.google.samples.apps.iosched.Config;
 import com.google.samples.apps.iosched.R;
@@ -32,6 +38,7 @@ import com.google.samples.apps.iosched.testutils.BaseActivityTestRule;
 import com.google.samples.apps.iosched.testutils.IntentUtils;
 import com.google.samples.apps.iosched.util.TimeUtils;
 
+import org.hamcrest.CoreMatchers;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -103,6 +110,13 @@ public class SessionDetailActivity_EndedLiveSessionTest {
 
     @Test
     public void youTubeVideo_WhenClicked_IntentFired() {
+        Intent resultData = new Intent();
+        resultData.putExtras(new Bundle());
+
+        // Create the ActivityResult with the Intent.
+        Intents.intending(CoreMatchers.not(IntentMatchers.isInternal())).respondWith(
+                new Instrumentation.ActivityResult(Activity.RESULT_OK, resultData));
+
         // When clicking on video
         onView(withId(R.id.watch)).perform(click());
 

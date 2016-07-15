@@ -17,16 +17,14 @@
 package com.google.samples.apps.iosched.videolibrary;
 
 import android.support.test.InstrumentationRegistry;
+import android.support.test.filters.LargeTest;
+import android.support.test.filters.Suppress;
 import android.support.test.runner.AndroidJUnit4;
-import android.test.FlakyTest;
-import android.test.suitebuilder.annotation.LargeTest;
-import android.view.View;
 
 import com.google.samples.apps.iosched.R;
 import com.google.samples.apps.iosched.mockdata.VideosMockCursor;
 import com.google.samples.apps.iosched.navigation.NavigationModel;
 import com.google.samples.apps.iosched.testutils.BaseActivityTestRule;
-import com.google.samples.apps.iosched.testutils.MatchersHelper;
 import com.google.samples.apps.iosched.testutils.NavigationUtils;
 import com.google.samples.apps.iosched.testutils.ToolbarUtils;
 import com.google.samples.apps.iosched.testutils.IntentUtils;
@@ -105,7 +103,7 @@ public class VideoLibraryActivityTest {
     }
 
     @Test
-    @Ignore // TODO(b/30123797): Manual testing shows odd behavior when slow-scrolling up. This
+    @Suppress // TODO(b/30123797): Manual testing shows odd behavior when slow-scrolling up. This
             // needs to be researched, but this scroll hiding functionality is provided by the
             // coordinator layout so this might be a support lib bug or a nuance in the flags
             // supplied in toolbar_autohide.xml

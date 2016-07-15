@@ -259,13 +259,14 @@ dependencies {
     }
 
     // Dependencies for android tests which reside in the "androidTest" src folder.
-    androidTestCompile 'com.android.support.test:runner:0.4.1'
-    androidTestCompile 'com.android.support.test.espresso:espresso-core:2.2.1'
-    androidTestCompile 'com.android.support.test.espresso:espresso-intents:2.2.1'
-    androidTestCompile 'com.android.support.test.espresso:espresso-contrib:2.2.1'
+    androidTestCompile 'com.android.support.test:runner:0.5'
+    androidTestCompile 'com.android.support.test.espresso:espresso-core:2.2.2'
+    androidTestCompile 'com.android.support.test.espresso:espresso-intents:2.2.2'
+    androidTestCompile 'com.android.support.test.espresso:espresso-contrib:2.2.2'
     // Resolve conflicts between main and test APK:
     androidTestCompile "com.android.support:support-annotations:${android_support_lib_version}"
     androidTestCompile "com.android.support:recyclerview-v7:${android_support_lib_version}"
+    androidTestCompile "com.android.support:design:${android_support_lib_version}"
 
     // Dependencies for unit tests which reside in the "tests" src folder.
     testCompile 'junit:junit:4.12'

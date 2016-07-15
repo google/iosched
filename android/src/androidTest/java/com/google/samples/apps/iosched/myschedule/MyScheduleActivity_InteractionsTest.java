@@ -21,6 +21,7 @@ import android.support.test.filters.FlakyTest;
 import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
 import android.test.suitebuilder.annotation.LargeTest;
+import android.test.suitebuilder.annotation.Suppress;
 
 import com.google.samples.apps.iosched.R;
 import com.google.samples.apps.iosched.model.ScheduleItem;
@@ -77,8 +78,8 @@ public class MyScheduleActivity_InteractionsTest {
      * with other screens that manipulate the schedule, it cannot be written with the {@link
      * StubMyScheduleModel}, as this model always returns the same schedule items.
      */
-    @FlakyTest
     @Test
+    @Suppress // Test isn't deterministic when run as part of the full test suite.
     public void addEventToMySchedule_Flaky() {
         // Given a free slot with available sessions
         findFreeSlotWithAvailableSessions();
@@ -98,8 +99,8 @@ public class MyScheduleActivity_InteractionsTest {
      * with other screens that manipulate the schedule, it cannot be written with the {@link
      * StubMyScheduleModel}, as this model always returns the same schedule items.
      */
-    @FlakyTest
     @Test
+    @Suppress // Test isn't deterministic when run as part of the full test suite.
     public void removeEventToMySchedule_Flaky() {
         // Given a session in the schedule
         findFreeSlotWithAvailableSessions();

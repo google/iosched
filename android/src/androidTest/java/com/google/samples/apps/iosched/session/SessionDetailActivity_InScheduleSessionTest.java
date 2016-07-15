@@ -16,13 +16,18 @@
 
 package com.google.samples.apps.iosched.session;
 
+import android.app.Activity;
+import android.app.Instrumentation;
 import android.content.Intent;
 import android.net.Uri;
+import android.os.Bundle;
 import android.support.test.InstrumentationRegistry;
+import android.support.test.espresso.intent.Intents;
+import android.support.test.espresso.intent.matcher.IntentMatchers;
 import android.support.test.espresso.matcher.ViewMatchers;
 import android.support.test.filters.FlakyTest;
+import android.support.test.filters.LargeTest;
 import android.support.test.runner.AndroidJUnit4;
-import android.test.suitebuilder.annotation.LargeTest;
 
 import com.google.samples.apps.iosched.Config;
 import com.google.samples.apps.iosched.R;
@@ -188,6 +193,13 @@ public class SessionDetailActivity_InScheduleSessionTest {
 
     @Test
     public void speakerImage_WhenClicked_IntentFired() {
+        Intent resultData = new Intent();
+        resultData.putExtras(new Bundle());
+
+        // Create the ActivityResult with the Intent.
+        Intents.intending(CoreMatchers.not(IntentMatchers.isInternal())).respondWith(
+                new Instrumentation.ActivityResult(Activity.RESULT_OK, resultData));
+
         // When clicking on speaker image
         onView(withId(R.id.session_detail_frag)).perform(swipeUp());
         onView(withId(R.id.speaker_image)).perform(click());
