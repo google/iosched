@@ -21,6 +21,7 @@ import android.content.Intent;
 import android.content.Loader;
 import android.database.Cursor;
 import android.graphics.Color;
+import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.ColorInt;
@@ -40,6 +41,8 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.request.RequestListener;
+import com.bumptech.glide.request.target.Target;
 import com.google.samples.apps.iosched.Config;
 import com.google.samples.apps.iosched.R;
 import com.google.samples.apps.iosched.model.TagMetadata;
@@ -123,6 +126,8 @@ public class ExploreSessionsActivity extends BaseActivity
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.explore_sessions_act);
+        // Transition will be postponed until header image is loaded
+        supportPostponeEnterTransition();
 
         mImageLoader = new ImageLoader(this);
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -343,10 +348,30 @@ public class ExploreSessionsActivity extends BaseActivity
 
             if (headerImage != null) {
                 mHeaderImage.setScaleType(ImageView.ScaleType.CENTER_CROP);
-                mImageLoader.loadImage(headerImage, mHeaderImage);
+                mImageLoader.loadImage(headerImage, mHeaderImage,
+                        new RequestListener<String, Bitmap>() {
+                            @Override
+                            public boolean onException(final Exception e, final String model,
+                                    final Target<Bitmap> target,
+                                    final boolean isFirstResource) {
+                                supportStartPostponedEnterTransition();
+                                return false;
+                            }
+
+                            @Override
+                            public boolean onResourceReady(final Bitmap resource,
+                                    final String model, final Target<Bitmap> target,
+                                    final boolean isFromMemoryCache,
+                                    final boolean isFirstResource) {
+                                target.onResourceReady(resource, null);
+                                supportStartPostponedEnterTransition();
+                                return true;
+                            }
+                        });
             } else {
                 mHeaderImage.setScaleType(ImageView.ScaleType.FIT_CENTER);
                 mHeaderImage.setImageResource(R.drawable.ic_hash_io_16_monochrome);
+                supportStartPostponedEnterTransition();
             }
 
             final int statusBarColor =
