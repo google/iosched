@@ -986,13 +986,6 @@ user updates the rating. -->
        can watch a video but it turns out we can't show the video. -->
   <string name="explore_io_video_id_not_valid">Desculpe, a URL do vídeo não é válida.</string>
 
-  <!-- This string is the title of a notification shown to the user when Google Play
-      services can't connect. -->
-  <string name="app_data_notification_resolution_title">O app do Google I/O precisa de uma permissão</string>
-  <!-- This string is the message of the notification shown to the user when Google Play services
-       can't connect from a background sync. -->
-  <string name="app_data_notification_resolution_content">O app do Google I/O precisa de uma ação sua para continuar a sincronização em segundo plano.</string>
-
   <!-- Generic error message used for errors that should never happen. This explains to the user
        that we can't execute the request when they click a button or touch a part of the screen
        that should normally be touchable. -->

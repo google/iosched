@@ -15,11 +15,8 @@
 package com.google.samples.apps.iosched.navigation;
 
 import android.accounts.Account;
-import android.accounts.AccountManager;
-import android.app.Activity;
+import android.content.Intent;
 import android.graphics.PorterDuff;
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.design.widget.NavigationView;
@@ -29,24 +26,21 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
-import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.Spinner;
-import android.widget.Toast;
 
-import com.google.android.gms.auth.GoogleAuthUtil;
 import com.google.samples.apps.iosched.R;
+import com.google.samples.apps.iosched.login.SwitchUserActivity;
 import com.google.samples.apps.iosched.navigation.NavigationModel.NavigationItemEnum;
 import com.google.samples.apps.iosched.settings.SettingsUtils;
+import com.google.samples.apps.iosched.ui.BaseActivity;
 import com.google.samples.apps.iosched.util.AccountUtils;
 import com.google.samples.apps.iosched.util.ImageLoader;
 import com.google.samples.apps.iosched.util.UIUtils;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import static com.google.samples.apps.iosched.util.LogUtils.LOGD;
 import static com.google.samples.apps.iosched.util.LogUtils.LOGE;
 import static com.google.samples.apps.iosched.util.LogUtils.makeLogTag;
 
@@ -239,14 +233,6 @@ public class AppNavigationViewAsDrawerImpl extends AppNavigationViewAbstractImpl
             chosenAccountView.setVisibility(View.VISIBLE);
         }
 
-        AccountManager am = AccountManager.get(mActivity);
-        Account[] accountArray = am.getAccountsByType(GoogleAuthUtil.GOOGLE_ACCOUNT_TYPE);
-        List<Account> accounts = new ArrayList<Account>(Arrays.asList(accountArray));
-
-        // Put selected account at index 0
-        accounts.remove(chosenAccount);
-        accounts.add(0, chosenAccount);
-
         ImageView coverImageView = (ImageView) chosenAccountView
                 .findViewById(R.id.profile_cover_image);
         ImageView profileImageView = (ImageView) chosenAccountView.findViewById(R.id.profile_image);
@@ -271,6 +257,7 @@ public class AppNavigationViewAsDrawerImpl extends AppNavigationViewAbstractImpl
             coverImageView.setVisibility(View.GONE);
         }
 
+        List<Account> accounts = Arrays.asList(AccountUtils.getActiveAccount(getContext()));
         populateAccountList(accounts);
     }
 
@@ -288,62 +275,19 @@ public class AppNavigationViewAsDrawerImpl extends AppNavigationViewAbstractImpl
         mAccountSpinner.setAdapter(mAccountSpinnerAdapter);
         mAccountSpinner.setSelection(0);
 
+
         mAccountSpinner.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(final View v, final MotionEvent event) {
                 if (event.getAction() == MotionEvent.ACTION_DOWN) {
-                    mAccountSpinnerDropDownViewVisible = true;
+                    Intent switchUser = new Intent(getContext(), SwitchUserActivity.class);
+                    mActivity.startActivityForResult(switchUser, BaseActivity.SWITCH_USER_RESULT);
+                    return true;
                 }
                 return false;
             }
         });
-        if (accounts.size() > 1) {
-            mAccountSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-                @Override
-                public void onItemSelected(final AdapterView<?> parent, final View view,
-                        final int position, final long id) {
-                    if (position > 0) {
-                        ConnectivityManager cm = (ConnectivityManager)
-                                mActivity.getSystemService(Activity.CONNECTIVITY_SERVICE);
-                        NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
-                        if (activeNetwork == null || !activeNetwork.isConnected()) {
-                            // If there's no network, don't try to change the selected account
-                            Toast.makeText(mActivity, R.string.no_connection_cant_login,
-                                    Toast.LENGTH_SHORT).show();
-                            mDrawerLayout.closeDrawer(GravityCompat.START);
-                        } else {
-                            LOGD(TAG,
-                                    "User requested switch to account: " +
-                                            accounts.get(position).name);
-                            AccountUtils.setActiveAccount(mActivity, accounts.get(position).name);
-                            mLoginStateListener.onAccountChangeRequested();
-                            mLoginStateListener.onStartLoginProcessRequested();
-                            mDrawerLayout.closeDrawer(GravityCompat.START);
-                            setupAccountBox();
-                        }
-                    }
-
-                    mAccountSpinnerDropDownViewVisible = false;
-
-                    if (mSetAccountSpinnerInDropViewModeWhenFirstShown) {
-                        mAccountSpinnerDropDownViewVisible = true;
-                        mAccountSpinner.performClick();
-                        mSetAccountSpinnerInDropViewModeWhenFirstShown = false;
-                    }
-                }
-
-                @Override
-                public void onNothingSelected(final AdapterView<?> parent) {
-                    mAccountSpinnerDropDownViewVisible = false;
-                }
-
-            });
-
-            mAccountSpinner.setEnabled(true);
-        } else {
-            mAccountSpinner.setEnabled(false);
-        }
-
+        mAccountSpinner.setEnabled(true);
     }
 
     public boolean isNavDrawerOpen() {

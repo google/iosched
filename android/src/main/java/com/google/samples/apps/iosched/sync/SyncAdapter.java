@@ -80,7 +80,7 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
                 " initialize=" + initialize);
 
         // Sync from bootstrap and remote data, as needed
-        new SyncHelper(mContext).performSync(syncResult, account, extras);
+        new SyncHelper(mContext).performSync(syncResult, extras);
     }
 
 }

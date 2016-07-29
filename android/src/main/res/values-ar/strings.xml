@@ -612,7 +612,7 @@
   <!-- Text of a card shown in the session explorer that asks the user if he wants to see I/O
   extended events in his area. "Browse events" and "No, thanks" are the buttons shown in the card -->
   <string name="question_i_o_extended">هل تريد معرفة المزيد عن أحداث I/O الموسعة التي تحدث بالقرب من موقعك؟</string>
-  
+
   <!-- Text of a card shown in the session explorer that asks the user if he will be attending I/O
   in person or remotely. "Remotely" and "In person" are the buttons shown in the card -->
   <string name="question_local_or_remote">هل ستحضر I/O عن بعد أو بنفسك في ماونتن فيو؟</string>
@@ -1003,13 +1003,6 @@ user updates the rating. -->
   <!-- This string is presented to users when they attempt to click something that indicates they
        can watch a video but it turns out we can't show the video. -->
   <string name="explore_io_video_id_not_valid">عذرا، يبدو أن هناك مشكلة في رابط الفيديو.</string>
-
-  <!-- This string is the title of a notification shown to the user when Google Play
-      services can't connect. -->
-  <string name="app_data_notification_resolution_title">تطبيق I/O يحتاج إلى إذن</string>
-  <!-- This string is the message of the notification shown to the user when Google Play services
-       can't connect from a background sync. -->
-  <string name="app_data_notification_resolution_content">تطبيق I/O يحتاج إلى إجراء لإكمال مزامنة الخلفية</string>
 
   <!-- Generic error message used for errors that should never happen. This explains to the user
        that we can't execute the request when they click a button or touch a part of the screen

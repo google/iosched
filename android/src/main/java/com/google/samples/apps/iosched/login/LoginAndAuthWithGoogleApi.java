@@ -134,6 +134,11 @@ public class LoginAndAuthWithGoogleApi
         }
     }
 
+    /** List of OAuth scopes to be requested from the Google sign-in API */
+    public static List<String> GetAuthScopes() {
+        return AUTH_SCOPES;
+    }
+
     @Override
     public boolean isStarted() {
         return mStarted;

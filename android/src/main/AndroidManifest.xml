@@ -31,7 +31,10 @@
         android:label="@string/permission_write"
         android:protectionLevel="normal" />
 
+    <!-- Legacy permissions, required due to minSdk level.
+         Newer devices will use runtime permisisons. -->
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.AUTHENTICATE_ACCOUNTS" />
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.GET_ACCOUNTS" />
@@ -263,6 +266,10 @@
             android:exported="false"
             android:theme="@style/Theme.IOSched.Welcome" />
 
+        <activity
+            android:name=".login.SwitchUserActivity"
+            android:exported="false"
+            android:theme="@style/Theme.IOSched.Transparent" />
         <activity
             android:name=".videolibrary.VideoLibraryActivity"
             android:exported="false"
@@ -511,6 +518,17 @@
             android:enabled="true"
             android:exported="false"
             android:permission="android.permission.BIND_REMOTEVIEWS" />
+
+        <!-- Account authenticator service for use with sync adapter -->
+        <service
+            android:name="sync.account.AuthenticatorService">
+            <intent-filter>
+                <action android:name="android.accounts.AccountAuthenticator"/>
+            </intent-filter>
+            <meta-data
+                android:name="android.accounts.AccountAuthenticator"
+                android:resource="@xml/authenticator" />
+        </service>
 
     </application>
 

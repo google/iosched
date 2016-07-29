@@ -43,8 +43,7 @@ public class ForceSyncNowAction implements DebugAction {
                 if (account == null) {
                     callback.done(false, "Cannot sync if there is no active account.");
                 } else {
-                    new SyncHelper(contexts[0]).performSync(new SyncResult(),
-                      AccountUtils.getActiveAccount(context), bundle);
+                    new SyncHelper(contexts[0]).performSync(new SyncResult(), bundle);
                 }
               return null;
             }

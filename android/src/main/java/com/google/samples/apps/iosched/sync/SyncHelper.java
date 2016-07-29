@@ -16,7 +16,6 @@
 
 package com.google.samples.apps.iosched.sync;
 
-import android.accounts.Account;
 import android.content.*;
 import android.net.ConnectivityManager;
 import android.os.Bundle;
@@ -31,6 +30,7 @@ import com.google.samples.apps.iosched.service.DataBootstrapService;
 import com.google.samples.apps.iosched.service.SessionAlarmService;
 import com.google.samples.apps.iosched.service.SessionCalendarService;
 import com.google.samples.apps.iosched.settings.SettingsUtils;
+import com.google.samples.apps.iosched.sync.account.Account;
 import com.google.samples.apps.iosched.sync.userdata.AbstractUserDataSyncHelper;
 import com.google.samples.apps.iosched.sync.userdata.UserDataSyncHelperFactory;
 import com.google.samples.apps.iosched.util.AccountUtils;
@@ -77,45 +77,39 @@ public class SyncHelper {
         }
     }
 
-    public static void requestManualSync(Account mChosenAccount) {
-        requestManualSync(mChosenAccount, false);
+    public static void requestManualSync() {
+        requestManualSync(false);
     }
 
-    public static void requestManualSync(Account mChosenAccount, boolean userDataSyncOnly) {
-        if (mChosenAccount != null) {
-            LOGD(TAG, "Requesting manual sync for account " + mChosenAccount.name
-                    + " userDataSyncOnly=" + userDataSyncOnly);
-            Bundle b = new Bundle();
-            b.putBoolean(ContentResolver.SYNC_EXTRAS_MANUAL, true);
-            b.putBoolean(ContentResolver.SYNC_EXTRAS_EXPEDITED, true);
-            if (userDataSyncOnly) {
-                b.putBoolean(SyncAdapter.EXTRA_SYNC_USER_DATA_ONLY, true);
-            }
-            ContentResolver
-                    .setSyncAutomatically(mChosenAccount, ScheduleContract.CONTENT_AUTHORITY, true);
-            ContentResolver.setIsSyncable(mChosenAccount, ScheduleContract.CONTENT_AUTHORITY, 1);
-
-            boolean pending = ContentResolver.isSyncPending(mChosenAccount,
-                    ScheduleContract.CONTENT_AUTHORITY);
-            if (pending) {
-                LOGD(TAG, "Warning: sync is PENDING. Will cancel.");
-            }
-            boolean active = ContentResolver.isSyncActive(mChosenAccount,
-                    ScheduleContract.CONTENT_AUTHORITY);
-            if (active) {
-                LOGD(TAG, "Warning: sync is ACTIVE. Will cancel.");
-            }
-
-            if (pending || active) {
-                LOGD(TAG, "Cancelling previously pending/active sync.");
-                ContentResolver.cancelSync(mChosenAccount, ScheduleContract.CONTENT_AUTHORITY);
-            }
-
-            LOGD(TAG, "Requesting sync now.");
-            ContentResolver.requestSync(mChosenAccount, ScheduleContract.CONTENT_AUTHORITY, b);
-        } else {
-            LOGD(TAG, "Can't request manual sync -- no chosen account.");
+    public static void requestManualSync(boolean userDataSyncOnly) {
+        LOGD(TAG, "Requesting manual sync for account. userDataSyncOnly=" + userDataSyncOnly);
+        android.accounts.Account account = Account.getAccount();
+        Bundle b = new Bundle();
+        b.putBoolean(ContentResolver.SYNC_EXTRAS_MANUAL, true);
+        b.putBoolean(ContentResolver.SYNC_EXTRAS_EXPEDITED, true);
+        if (userDataSyncOnly) {
+            b.putBoolean(SyncAdapter.EXTRA_SYNC_USER_DATA_ONLY, true);
         }
+        ContentResolver
+                .setSyncAutomatically(account, ScheduleContract.CONTENT_AUTHORITY, true);
+        ContentResolver.setIsSyncable(account, ScheduleContract.CONTENT_AUTHORITY, 1);
+
+        boolean pending = ContentResolver.isSyncPending(account, ScheduleContract.CONTENT_AUTHORITY);
+        if (pending) {
+            LOGD(TAG, "Warning: sync is PENDING. Will cancel.");
+        }
+        boolean active = ContentResolver.isSyncActive(account, ScheduleContract.CONTENT_AUTHORITY);
+        if (active) {
+            LOGD(TAG, "Warning: sync is ACTIVE. Will cancel.");
+        }
+
+        if (pending || active) {
+            LOGD(TAG, "Cancelling previously pending/active sync.");
+            ContentResolver.cancelSync(account, ScheduleContract.CONTENT_AUTHORITY);
+        }
+
+        LOGD(TAG, "Requesting sync now.");
+        ContentResolver.requestSync(account, ScheduleContract.CONTENT_AUTHORITY, b);
     }
 
     /**
@@ -130,12 +124,13 @@ public class SyncHelper {
      *
      *
      * @param syncResult The sync result object to update with statistics.
-     * @param account The account associated with this sync
      * @param extras Specifies additional information about the sync. This must contain key
      *               {@code SyncAdapter.EXTRA_SYNC_USER_DATA_ONLY} with boolean value
      * @return true if the sync changed the data.
      */
-    public boolean performSync(@Nullable SyncResult syncResult, Account account, Bundle extras) {
+    public boolean performSync(@Nullable SyncResult syncResult, Bundle extras) {
+        android.accounts.Account account = Account.getAccount();
+
         boolean dataChanged = false;
 
         if (!SettingsUtils.isDataBootstrapDone(mContext)) {
@@ -233,7 +228,7 @@ public class SyncHelper {
 
         LOGI(TAG, "End of sync (" + (dataChanged ? "data changed" : "no data change") + ")");
 
-        updateSyncInterval(mContext, account);
+        updateSyncInterval(mContext);
 
         return dataChanged;
     }
@@ -357,14 +352,15 @@ public class SyncHelper {
         }
     }
 
-    public static void updateSyncInterval(final Context context, final Account account) {
-        LOGD(TAG, "Checking sync interval for " + account);
+    public static void updateSyncInterval(final Context context) {
+        android.accounts.Account account = Account.getAccount();
+        LOGD(TAG, "Checking sync interval");
         long recommended = calculateRecommendedSyncInterval(context);
         long current = SettingsUtils.getCurSyncInterval(context);
         LOGD(TAG, "Recommended sync interval " + recommended + ", current " + current);
         if (recommended != current) {
             LOGD(TAG,
-                    "Setting up sync for account " + account + ", interval " + recommended + "ms");
+                    "Setting up sync for account, interval " + recommended + "ms");
             ContentResolver.setIsSyncable(account, ScheduleContract.CONTENT_AUTHORITY, 1);
             ContentResolver.setSyncAutomatically(account, ScheduleContract.CONTENT_AUTHORITY, true);
             if (recommended <= 0L) { // Disable periodic sync.

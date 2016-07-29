@@ -46,7 +46,7 @@ public class TriggerSyncReceiver extends BroadcastReceiver {
             if (intent.getBooleanExtra(EXTRA_USER_DATA_SYNC_ONLY, false) ) {
                 // this is a request to sync user data only, so do a manual sync right now
                 // with the userDataOnly == true.
-                SyncHelper.requestManualSync(account, true);
+                SyncHelper.requestManualSync(true);
             } else {
                 // this is a request to sync everything
                 ContentResolver.requestSync(account, ScheduleContract.CONTENT_AUTHORITY, new Bundle());

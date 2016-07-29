@@ -16,8 +16,6 @@
 
 package com.google.samples.apps.iosched.ui;
 
-import android.accounts.Account;
-import android.accounts.AccountManager;
 import android.app.Activity;
 import android.content.ContentResolver;
 import android.content.Intent;
@@ -55,6 +53,7 @@ import com.google.samples.apps.iosched.navigation.NavigationModel.NavigationItem
 import com.google.samples.apps.iosched.provider.ScheduleContract;
 import com.google.samples.apps.iosched.service.DataBootstrapService;
 import com.google.samples.apps.iosched.sync.SyncHelper;
+import com.google.samples.apps.iosched.sync.account.Account;
 import com.google.samples.apps.iosched.ui.widget.MultiSwipeRefreshLayout;
 import com.google.samples.apps.iosched.util.AccountUtils;
 import com.google.samples.apps.iosched.util.ImageLoader;
@@ -79,6 +78,7 @@ public abstract class BaseActivity extends AppCompatActivity implements
 
     private static final String TAG = makeLogTag(BaseActivity.class);
 
+    public static final int SWITCH_USER_RESULT = 9998;
     private static final int SELECT_GOOGLE_ACCOUNT_RESULT = 9999;
 
     // the LoginAndAuthHelper handles signing in to Google Play Services and OAuth
@@ -118,6 +118,8 @@ public abstract class BaseActivity extends AppCompatActivity implements
         }
 
         mMessagingRegistration = MessagingRegistrationProvider.provideMessagingRegistration(this);
+
+        Account.createSyncAccount(this);
 
         if (savedInstanceState == null) {
             mMessagingRegistration.registerDevice();
@@ -201,7 +203,6 @@ public abstract class BaseActivity extends AppCompatActivity implements
     protected void onPostCreate(Bundle savedInstanceState) {
         super.onPostCreate(savedInstanceState);
         mAppNavigationViewAsDrawer = new AppNavigationViewAsDrawerImpl(new ImageLoader(this), this);
-        mAppNavigationViewAsDrawer.onRestoreInstanceState(savedInstanceState);
         mAppNavigationViewAsDrawer.activityReady(this, this, getSelfNavDrawerItem());
 
         if (getSelfNavDrawerItem() != NavigationItemEnum.INVALID) {
@@ -219,13 +220,6 @@ public abstract class BaseActivity extends AppCompatActivity implements
         }
     }
 
-    @Override
-    protected void onSaveInstanceState(Bundle outState) {
-        if (mAppNavigationViewAsDrawer != null) {
-            mAppNavigationViewAsDrawer.onSaveInstanceState(outState);
-        }
-        super.onSaveInstanceState(outState);
-    }
 
     @Override
     public void onAccountChangeRequested() {
@@ -245,14 +239,14 @@ public abstract class BaseActivity extends AppCompatActivity implements
     }
 
     protected void requestDataRefresh() {
-        Account activeAccount = AccountUtils.getActiveAccount(this);
+        android.accounts.Account activeAccount = AccountUtils.getActiveAccount(this);
         ContentResolver contentResolver = getContentResolver();
         if (contentResolver.isSyncActive(activeAccount, ScheduleContract.CONTENT_AUTHORITY)) {
             LOGD(TAG, "Ignoring manual sync request because a sync is already in progress.");
             return;
         }
         LOGD(TAG, "Requesting manual data refresh.");
-        SyncHelper.requestManualSync(activeAccount);
+        SyncHelper.requestManualSync();
     }
 
     /**
@@ -310,8 +304,9 @@ public abstract class BaseActivity extends AppCompatActivity implements
     @Override
     public void onSignInOrCreateAccount() {
         //Get list of accounts on device.
-        AccountManager am = AccountManager.get(BaseActivity.this);
-        Account[] accountArray = am.getAccountsByType(GoogleAuthUtil.GOOGLE_ACCOUNT_TYPE);
+        android.accounts.AccountManager am = android.accounts.AccountManager.get(BaseActivity.this);
+        android.accounts.Account[] accountArray =
+                am.getAccountsByType(GoogleAuthUtil.GOOGLE_ACCOUNT_TYPE);
         if (accountArray.length == 0) {
             //Send the user to the "Add Account" page.
             Intent intent = new Intent(Settings.ACTION_ADD_ACCOUNT);
@@ -355,6 +350,10 @@ public abstract class BaseActivity extends AppCompatActivity implements
         if (mSyncObserverHandle != null) {
             ContentResolver.removeStatusChangeListener(mSyncObserverHandle);
             mSyncObserverHandle = null;
+        }
+
+        if (mLoginAndAuthProvider != null) {
+            mLoginAndAuthProvider.stop();
         }
     }
 
@@ -437,12 +436,14 @@ public abstract class BaseActivity extends AppCompatActivity implements
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        // Handle the select {@code startActivityForResult} from
-        // {@code enforceActiveGoogleAccount()} when a Google Account wasn't present on the device.
         if (requestCode == SELECT_GOOGLE_ACCOUNT_RESULT) {
+            // Handle the select {@code startActivityForResult} from
+            // {@code enforceActiveGoogleAccount()} when a Google Account wasn't present on the
+            // device.
             if (resultCode == RESULT_OK) {
                 // Set selected GoogleAccount as active.
-                String accountName = data.getStringExtra(AccountManager.KEY_ACCOUNT_NAME);
+                String accountName =
+                        data.getStringExtra(android.accounts.AccountManager.KEY_ACCOUNT_NAME);
                 AccountUtils.setActiveAccount(this, accountName);
                 onAuthSuccess(accountName, true);
             } else {
@@ -451,20 +452,18 @@ public abstract class BaseActivity extends AppCompatActivity implements
                 finish();
             }
             return;
+        } else if (requestCode == SWITCH_USER_RESULT) {
+            // Handle account change notifications after {@link SwitchUserActivity} has been invoked
+            // (typically by {@link AppNavigationViewAsDrawerImpl}).
+            if (resultCode == RESULT_OK) {
+                onAccountChangeRequested();
+                onStartLoginProcessRequested();
+            }
         }
 
         if (mLoginAndAuthProvider == null || !mLoginAndAuthProvider.onActivityResult(requestCode,
                 resultCode, data)) {
             super.onActivityResult(requestCode, resultCode, data);
-        }
-    }
-
-    @Override
-    public void onStop() {
-        LOGD(TAG, "onStop");
-        super.onStop();
-        if (mLoginAndAuthProvider != null) {
-            mLoginAndAuthProvider.stop();
         }
     }
 
@@ -484,7 +483,8 @@ public abstract class BaseActivity extends AppCompatActivity implements
      */
     @Override
     public void onAuthSuccess(String accountName, boolean newlyAuthenticated) {
-        Account account = new Account(accountName, GoogleAuthUtil.GOOGLE_ACCOUNT_TYPE);
+        android.accounts.Account account =
+                new android.accounts.Account(accountName, GoogleAuthUtil.GOOGLE_ACCOUNT_TYPE);
         LOGD(TAG, "onAuthSuccess, account " + accountName + ", newlyAuthenticated="
                 + newlyAuthenticated);
 
@@ -492,8 +492,8 @@ public abstract class BaseActivity extends AppCompatActivity implements
 
         if (newlyAuthenticated) {
             LOGD(TAG, "Enabling auto sync on content provider for account " + accountName);
-            SyncHelper.updateSyncInterval(this, account);
-            SyncHelper.requestManualSync(account);
+            SyncHelper.updateSyncInterval(this);
+            SyncHelper.requestManualSync();
         }
 
         mAppNavigationViewAsDrawer.updateNavigationItems();
@@ -581,7 +581,8 @@ public abstract class BaseActivity extends AppCompatActivity implements
                         return;
                     }
 
-                    Account account = new Account(accountName, GoogleAuthUtil.GOOGLE_ACCOUNT_TYPE);
+                    android.accounts.Account account = new android.accounts.Account(
+                            accountName, GoogleAuthUtil.GOOGLE_ACCOUNT_TYPE);
                     boolean syncActive = ContentResolver.isSyncActive(
                             account, ScheduleContract.CONTENT_AUTHORITY);
                     onRefreshingStateChanged(syncActive);
@@ -593,20 +594,6 @@ public abstract class BaseActivity extends AppCompatActivity implements
     protected void onRefreshingStateChanged(boolean refreshing) {
         if (mSwipeRefreshLayout != null) {
             mSwipeRefreshLayout.setRefreshing(refreshing);
-        }
-    }
-
-    @Override
-    public void onWindowFocusChanged(boolean hasFocus) {
-        super.onWindowFocusChanged(hasFocus);
-
-        // There is no way to know when a Spinner has been dismissed by a means other than selecting
-        // an item (eg tapping elsewhere on screen), but if the activity has regained focus, it
-        // means the spinner is currently not showing (Note: other UI elements may  have caused the
-        // Activity to lose focus, but that doesn't matter, marking the spinner as not showing
-        // the drop down view is correct)
-        if (mAppNavigationViewAsDrawer != null && hasFocus) {
-            mAppNavigationViewAsDrawer.markAccountSpinnerAsNotShowingDropDownView();
         }
     }
 

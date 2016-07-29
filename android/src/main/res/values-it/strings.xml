@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- 
+<!--
   Copyright 2016 Google Inc. All rights reserved.
 
   Licensed under the Apache License, Version 2.0 (the "License");
@@ -977,13 +977,6 @@ user updates the rating. -->
   <!-- This string is presented to users when they attempt to click something that indicates they
        can watch a video but it turns out we can't show the video. -->
   <string name="explore_io_video_id_not_valid">Spiacenti, sembra esserci un problema con l\'url del video.</string>
-
-  <!-- This string is the title of a notification shown to the user when Google Play
-      services can't connect. -->
-  <string name="app_data_notification_resolution_title">L\'App I/O richiede la tua autorizzazione</string>
-  <!-- This string is the message of the notification shown to the user when Google Play services
-       can't connect from a background sync. -->
-  <string name="app_data_notification_resolution_content">Azione richiesta per completare la sincronizzazione in background dell\'App I/O.</string>
 
   <!-- Generic error message used for errors that should never happen. This explains to the user
        that we can't execute the request when they click a button or touch a part of the screen

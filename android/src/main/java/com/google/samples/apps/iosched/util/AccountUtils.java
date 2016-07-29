@@ -48,7 +48,6 @@ import static com.google.samples.apps.iosched.util.LogUtils.makeLogTag;
 public class AccountUtils {
     private static final String TAG = makeLogTag(AccountUtils.class);
 
-
     public static final String DEFAULT_OAUTH_PROVIDER = "google";
 
     public static final String PREF_ACTIVE_ACCOUNT = "chosen_account";
@@ -121,6 +120,12 @@ public class AccountUtils {
         sp.edit().putString(PREF_ACTIVE_ACCOUNT, accountName).apply();
     }
 
+    public static void clearActiveAccount(final Context context) {
+        LOGD(TAG, "Clearing active account");
+        SharedPreferences sp = getSharedPreferences(context);
+        sp.edit().remove(PREF_ACTIVE_ACCOUNT).apply();
+    }
+
     protected static String makeAccountSpecificPrefKey(Context ctx, String prefix) {
         return hasActiveAccount(ctx) ? makeAccountSpecificPrefKey(getActiveAccountName(ctx),
                 prefix) : null;
@@ -155,7 +160,6 @@ public class AccountUtils {
     }
 
     static void invalidateAuthToken(final Context context) {
-        GoogleAuthUtil.invalidateToken(context, getAuthToken(context));
         setAuthToken(context, null);
     }
 

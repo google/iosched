@@ -969,13 +969,6 @@ user updates the rating. -->
          can watch a video but it turns out we can't show the video. -->
     <string name="explore_io_video_id_not_valid">很抱歉，影片網址似乎有問題。</string>
 
-    <!-- This string is the title of a notification shown to the user when Google Play
-        services can't connect. -->
-    <string name="app_data_notification_resolution_title">I/O應用程式需要權限</string>
-    <!-- This string is the message of the notification shown to the user when Google Play services
-         can't connect from a background sync. -->
-    <string name="app_data_notification_resolution_content">I/O應用程式需要完成後台同步。</string>
-
     <!-- Generic error message used for errors that should never happen. This explains to the user
          that we can't execute the request when they click a button or touch a part of the screen
          that should normally be touchable. -->

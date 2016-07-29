@@ -169,16 +169,16 @@ public abstract class WelcomeFragment extends Fragment {
         public WelcomeFragmentOnClickListener(Activity activity) {
             mActivity = activity;
         }
+    }
 
-        /**
-         * Proceed to the next activity.
-         */
-        void doNext() {
-            LOGD(TAG, "Proceeding to next activity");
-            Intent intent = new Intent(mActivity, ExploreIOActivity.class);
-            startActivity(intent);
-            mActivity.finish();
-        }
+    /**
+     * Proceed to the next activity.
+     */
+    void doNext() {
+        LOGD(TAG, "Proceeding to next activity");
+        Intent intent = new Intent(mActivity, ExploreIOActivity.class);
+        startActivity(intent);
+        mActivity.finish();
     }
 
     /**

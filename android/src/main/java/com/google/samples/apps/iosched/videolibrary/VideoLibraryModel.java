@@ -279,7 +279,7 @@ public class VideoLibraryModel
                                     false));
 
                     // Request an immediate user data sync to reflect the viewed video in the cloud.
-                    SyncHelper.requestManualSync(AccountUtils.getActiveAccount(mContext), true);
+                    SyncHelper.requestManualSync(true);
                 } else {
                     LOGE(TAG,
                             "The VideoLibraryUserActionEnum.VIDEO_VIEWED action was called " +

@@ -483,7 +483,7 @@
 
     <!-- Accessibility description for navigation drawer -->
     <string name="navdrawer_description_a11y">Navigation Menu</string>
-    
+
     <!-- Accessibility description for the spinner used to change account. -->
     <string name="switch_account_spinner_description_a11y">Switch account</string>
 
@@ -1055,12 +1055,9 @@ user updates the rating. -->
          you're in the middle of the conference.'"
             name="explore_io_on_the_ground_title">On the Ground</string>
 
-    <!-- This string is the title of a notification shown to the user when Google Play
-        services can't connect. -->
-    <string name="app_data_notification_resolution_title">I/O App needs permission</string>
-    <!-- This string is the message of the notification shown to the user when Google Play services
-         can't connect from a background sync. -->
-    <string name="app_data_notification_resolution_content">I/O App needs action to complete background sync.</string>
+    <!-- Error message that is displayed when we aren't able to connect to Google Play Services,
+         potentially due to a server error or loss of network connectivity. -->
+    <string name="google_play_services_disconnected">Unable to connect to Google Play Services</string>
 
     <!-- Generic error message used for errors that should never happen. This explains to the user
          that we can't execute the request when they click a button or touch a part of the screen
