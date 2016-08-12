@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--
+<?xml version="1.0" encoding="utf-8"?><!--
   Copyright 2015 Google Inc. All rights reserved.
 
   Licensed under the Apache License, Version 2.0 (the "License");
@@ -15,45 +14,55 @@
   limitations under the License.
   -->
 
-<com.google.samples.apps.iosched.ui.widget.ForegroundLinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+<com.google.samples.apps.iosched.ui.widget.ForegroundLinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:paddingLeft="@dimen/padding_normal"
-    android:paddingTop="@dimen/spacing_normal"
-    android:paddingEnd="@dimen/padding_normal"
-    android:paddingRight="@dimen/padding_normal"
-    android:paddingBottom="@dimen/spacing_normal"
+    android:baselineAligned="false"
     android:foreground="?android:selectableItemBackground"
     android:orientation="horizontal"
-    android:baselineAligned="false">
+    android:paddingBottom="@dimen/spacing_normal"
+    android:paddingEnd="@dimen/padding_normal"
+    android:paddingLeft="@dimen/padding_normal"
+    android:paddingRight="@dimen/padding_normal"
+    android:paddingTop="@dimen/spacing_normal">
 
-    <com.google.samples.apps.iosched.ui.widget.AspectRatioView
-        android:layout_width="@dimen/explore_io_theme_cards_session_image_width"
-        android:layout_height="0dp"
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_marginEnd="@dimen/padding_normal"
         android:layout_marginRight="@dimen/padding_normal"
-        app:aspectRatio="@dimen/aspect_4_3">
+        android:orientation="horizontal">
 
+    <ImageView
+        android:id="@+id/thumbnail"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scaleType="centerCrop"
+        android:visibility="gone"
+        android:layout_gravity="center_horizontal|center_vertical|center"
+        android:src="@drawable/io_logo" />
+
+    <FrameLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
         <ImageView
-            android:id="@+id/thumbnail"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:scaleType="centerCrop"
-            android:src="@drawable/io_logo"/>
+            android:id="@+id/indicator_circle_image"
+            android:layout_width="@dimen/fab_size2"
+            android:layout_height="@dimen/fab_size2"
+            android:background="@drawable/circle"
+            android:layout_gravity="center_horizontal|center_vertical|center" />
 
         <ImageView
             android:id="@+id/indicator_in_schedule"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="start|top"
-            android:src="@drawable/indicator_in_schedule"
-            android:contentDescription="@string/session_in_schedule_indicator_a11y"
-            android:visibility="gone" />
-
-    </com.google.samples.apps.iosched.ui.widget.AspectRatioView>
+            android:layout_gravity="center|center_horizontal|center_vertical"
+            android:src="@drawable/ic_star_white_24dp"
+            android:contentDescription="@string/session_in_schedule_indicator_a11y" />
+    </FrameLayout>
+</LinearLayout>
 
     <LinearLayout
         android:layout_width="0dp"
@@ -65,30 +74,30 @@
             android:id="@+id/title"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textAppearance="@style/TextAppearance.SessionTitle"
-            android:maxLines="3"
             android:ellipsize="end"
+            android:maxLines="3"
+            android:textAppearance="@style/TextAppearance.SessionTitle"
             tools:text="Title" />
 
         <TextView
             android:id="@+id/session_type_text"
+            style="@style/Body1Text"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:maxLines="2"
             android:ellipsize="end"
+            android:maxLines="2"
             android:textStyle="bold"
-            tools:text="Session Type"
-            style="@style/Body1Text" />
+            tools:text="Session Type" />
 
         <TextView
             android:id="@+id/info_view"
+            style="@style/Body1Text"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1"
-            android:maxLines="2"
             android:ellipsize="end"
-            tools:text="Description"
-            style="@style/Body1Text" />
+            android:maxLines="2"
+            tools:text="Description" />
 
     </LinearLayout>
 

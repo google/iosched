@@ -554,8 +554,11 @@ public class ExploreIOFragment extends Fragment implements UpdatableView<Explore
             }
             ImageView inScheduleIndicator =
                     (ImageView) view.findViewById(R.id.indicator_in_schedule);
+            ImageView inScheduleCircleImage = (ImageView) view.findViewById(R.id.indicator_circle_image);
             if (inScheduleIndicator != null) {  // check not keynote
                 inScheduleIndicator.setVisibility(
+                        sessionData.isInSchedule() ? View.VISIBLE : View.GONE);
+                inScheduleCircleImage.setVisibility(
                         sessionData.isInSchedule() ? View.VISIBLE : View.GONE);
             }
             if (!TextUtils.isEmpty(sessionData.getDetails())) {
