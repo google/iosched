@@ -51,6 +51,8 @@ import com.google.samples.apps.iosched.sync.ConferenceDataHandler;
 import com.google.samples.apps.iosched.sync.SyncHelper;
 import com.google.samples.apps.iosched.util.AccountUtils;
 
+import no.java.schedule.BuildConfig;
+
 import static com.google.samples.apps.iosched.util.LogUtils.LOGD;
 import static com.google.samples.apps.iosched.util.LogUtils.LOGI;
 import static com.google.samples.apps.iosched.util.LogUtils.LOGW;
@@ -110,6 +112,20 @@ public class ScheduleDatabase extends SQLiteOpenHelper {
                 + "LEFT OUTER JOIN tags ON instr(sessions.session_tags, tags.tag_name)"
                 + "LEFT OUTER JOIN blocks ON sessions.block_id=blocks.block_id "
                 + "LEFT OUTER JOIN rooms ON sessions.room_id=rooms.room_id";
+
+        String SESSIONS_JOIN_START_SCHEDULE_DAY1_FILTER = "sessions "
+                + "LEFT OUTER JOIN tags ON instr(sessions.session_tags, tags.tag_name)"
+                + "LEFT OUTER JOIN blocks ON sessions.block_id=blocks.block_id "
+                + "LEFT OUTER JOIN rooms ON sessions.room_id=rooms.room_id "
+                + "WHERE sessions.session_start <=" + BuildConfig.CONFERENCE_DAY1_START + " "
+                + "ORDER BY sessions.session_start";
+
+        String SESSIONS_JOIN_START_SCHEDULE_DAY2_FILTER = "sessions "
+                + "LEFT OUTER JOIN tags ON instr(sessions.session_tags, tags.tag_name)"
+                + "LEFT OUTER JOIN blocks ON sessions.block_id=blocks.block_id "
+                + "LEFT OUTER JOIN rooms ON sessions.room_id=rooms.room_id "
+                + "WHERE sessions.session_start <=" + BuildConfig.CONFERENCE_DAY2_START + " "
+                + "ORDER BY sessions.session_start";
 
         String VENDORS_JOIN_TRACKS = "vendors "
                 + "LEFT OUTER JOIN tracks ON vendors.track_id=tracks.track_id";
@@ -200,6 +216,15 @@ public class ScheduleDatabase extends SQLiteOpenHelper {
     public interface SessionsTracks {
         String SESSION_ID = "session_id";
         String TRACK_ID = "track_id";
+    }
+
+    public static String SessionJoinScheduleDay(String scheduleDay) {
+        return "sessions "
+                + "LEFT OUTER JOIN tags ON instr(sessions.session_tags, tags.tag_name)"
+                + "LEFT OUTER JOIN blocks ON sessions.block_id=blocks.block_id "
+                + "LEFT OUTER JOIN rooms ON sessions.room_id=rooms.room_id "
+                + "WHERE sessions.session_start <=" + scheduleDay + " "
+                + "ORDER BY sessions.session_start";
     }
 
     /**
