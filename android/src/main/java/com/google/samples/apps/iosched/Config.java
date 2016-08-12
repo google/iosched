@@ -31,15 +31,17 @@ public class Config {
     // Warning messages for dogfood build
     public static final String DOGFOOD_BUILD_WARNING_TITLE = "DOGFOOD BUILD";
     public static final String CLIENT_ID = "0000000000000.apps.googleusercontent.com"; // from the APIs console
-    public static final String EMS_SLOTS = "http://javazone.no/ems/server/events/0e6d98e9-5b06-42e7-b275-6abadb498c81/slots";
-    public static final String EMS_ROOMS = "http://javazone.no/ems/server/events/0e6d98e9-5b06-42e7-b275-6abadb498c81/rooms";
+    public static final String EMS_SLOTS = "http://javazone.no/ems/server/events/3baa25d3-9cca-459a-90d7-9fc349209289/slots";
+    public static final String EMS_ROOMS = "http://javazone.no/ems/server/events/3baa25d3-9cca-459a-90d7-9fc349209289/rooms";
 
 
-    private static final String BASE_URL = "http://javazone.no/ems/server/events/0e6d98e9-5b06-42e7-b275-6abadb498c81";
-
+    // TODO remember to go to: http://javazone.no/ems/server/events  to get all listed years of JavaZone
+    private static final String BASE_URL = "http://javazone.no/ems/server/events/3baa25d3-9cca-459a-90d7-9fc349209289";
+    private static final String NEW_BASE_URL = "https://javazone.no/javazone-web-api/events/javazone_2016/sessions";
     //TODO slots
     public static final String GET_ALL_BLOCKS =  BASE_URL + "/slots";
     public static final String GET_ALL_SESSIONS_URL      = BASE_URL + "/sessions";
+    public static final String GET_ALL_NEW_JZSESSIONS_URL = NEW_BASE_URL + "/sessions";
     public static final String GET_ALL_VIDEOS_VIMEO_URL = "http://vimeo.com/api/v2/javazone/videos.json?page=";
 
     // Static file host for the sandbox data
