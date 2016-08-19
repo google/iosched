@@ -294,6 +294,8 @@ public class ExploreSessionsFragment extends Fragment implements
             ImageView thumbnailView = (ImageView) view.findViewById(R.id.thumbnail);
             ImageView inScheduleIndicator =
                     (ImageView) view.findViewById(R.id.indicator_in_schedule);
+            ImageView inScheduleCircleImage =
+                    (ImageView) view.findViewById(R.id.indicator_circle_image);
             TextView titleView = (TextView) view.findViewById(R.id.title);
             TextView infoView = (TextView) view.findViewById(R.id.info_view);
             TextView sessionTypeView = (TextView) view.findViewById(R.id.session_type_text);
@@ -339,6 +341,8 @@ public class ExploreSessionsFragment extends Fragment implements
             inScheduleIndicator.setVisibility(
                     cursor.getLong(ExploreSessionsQuery.IN_MY_SCHEDULE) == 1L ? View.VISIBLE
                             : View.GONE);
+            inScheduleCircleImage.setVisibility(inScheduleIndicator.getVisibility());
+
         }
 
         @Override
@@ -397,7 +401,7 @@ public class ExploreSessionsFragment extends Fragment implements
                 ScheduleContract.Sessions.SESSION_URL,
                 ScheduleContract.Sessions.SESSION_TAGS,
                 ScheduleContract.Sessions.SESSION_PHOTO_URL,
-                ScheduleContract.Sessions.SESSION_IN_MY_SCHEDULE,
+                ScheduleContract.Sessions.SESSION_STARRED,
         };
         String[] SEARCH_PROJECTION = {
                 BaseColumns._ID,
@@ -409,7 +413,7 @@ public class ExploreSessionsFragment extends Fragment implements
                 ScheduleContract.Sessions.SESSION_URL,
                 ScheduleContract.Sessions.SESSION_TAGS,
                 ScheduleContract.Sessions.SESSION_PHOTO_URL,
-                ScheduleContract.Sessions.SESSION_IN_MY_SCHEDULE,
+                ScheduleContract.Sessions.SESSION_STARRED,
                 ScheduleContract.Sessions.SEARCH_SNIPPET,
         };
         int _ID = 0;

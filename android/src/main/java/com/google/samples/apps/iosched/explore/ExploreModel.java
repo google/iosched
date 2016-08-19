@@ -360,8 +360,8 @@ public class ExploreModel implements Model {
                         ScheduleContract.Sessions.SESSION_YOUTUBE_URL)),
                 cursor.getString(cursor.getColumnIndex(
                         ScheduleContract.Sessions.SESSION_TAGS)),
-                cursor.getString(cursor.getColumnIndex(
-                        ScheduleContract.Sessions.SESSION_STARRED)) != null);
+                cursor.getLong(cursor.getColumnIndex(
+                        ScheduleContract.Sessions.SESSION_STARRED)) == 1L);
     }
 
     @Override

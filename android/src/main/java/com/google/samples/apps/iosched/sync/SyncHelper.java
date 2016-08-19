@@ -129,6 +129,7 @@ public class SyncHelper {
 
         try {
             final long startRemote = System.currentTimeMillis();
+            // TODO go over to the new JZHandler in the future afdter 2016
             LOGI(TAG, "Syncing rooms");
             batch.addAll(fetchResource(Config.EMS_ROOMS, new RoomsHandler(mContext)));
             LOGI(TAG, "Syncing sessions");

@@ -71,7 +71,7 @@ public class TracksHandler extends JSONHandler {
 
       for (JZLabel label : labels) {
           // Hack due to labels now not only containing topics/tracks but also freeform tags
-          if (label.displayName!=null && label.displayName.startsWith("topic:")) {
+          if (label.displayName!=null) {
               parseTrack(label, batch);
           }
       }
