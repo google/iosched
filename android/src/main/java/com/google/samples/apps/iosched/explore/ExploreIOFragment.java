@@ -332,6 +332,7 @@ public class ExploreIOFragment extends Fragment implements UpdatableView<Explore
 
         ArrayList<CollectionView.InventoryGroup> themeGroups = new ArrayList<>();
         ArrayList<CollectionView.InventoryGroup> topicGroups = new ArrayList<>();
+        ArrayList<CollectionView.InventoryGroup> schedulesessionGroups = new ArrayList<>();
 
         for (TopicGroup topic : model.getTopics()) {
             LOGD(TAG, topic.getTitle() + ": " + topic.getSessions().size());

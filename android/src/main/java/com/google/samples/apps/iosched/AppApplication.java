@@ -27,6 +27,8 @@ import android.app.Application;
 import android.content.ContentResolver;
 import android.content.Intent;
 
+import net.danlew.android.joda.JodaTimeAndroid;
+
 import static com.google.samples.apps.iosched.util.LogUtils.LOGE;
 import static com.google.samples.apps.iosched.util.LogUtils.LOGW;
 import static com.google.samples.apps.iosched.util.LogUtils.makeLogTag;
@@ -43,7 +45,10 @@ public class AppApplication extends Application {
 
     @Override
     public void onCreate() {
-        super.onCreate();        AnalyticsHelper.prepareAnalytics(getApplicationContext());
+        super.onCreate();
+        AnalyticsHelper.prepareAnalytics(getApplicationContext());
+        JodaTimeAndroid.init(this);
+
         final String ACCOUNT_NAME = "JavaZone Schedule";
         final String ACCOUNT_TYPE = "no.java.schedule";
         final String PROVIDER = "no.java.schedule";

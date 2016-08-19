@@ -22,11 +22,13 @@ import no.java.schedule.R;
 import com.google.samples.apps.iosched.explore.data.ItemGroup;
 import com.google.samples.apps.iosched.explore.data.LiveStreamData;
 import com.google.samples.apps.iosched.explore.data.SessionData;
+import com.google.samples.apps.iosched.explore.data.SessionScheduleGroup;
 import com.google.samples.apps.iosched.explore.data.ThemeGroup;
 import com.google.samples.apps.iosched.explore.data.TopicGroup;
 import com.google.samples.apps.iosched.framework.Model;
 import com.google.samples.apps.iosched.framework.QueryEnum;
 import com.google.samples.apps.iosched.framework.UserActionEnum;
+import com.google.samples.apps.iosched.io.model.Session;
 import com.google.samples.apps.iosched.provider.ScheduleContract;
 import com.google.samples.apps.iosched.settings.SettingsUtils;
 import com.google.samples.apps.iosched.util.TimeUtils;
@@ -41,8 +43,18 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.text.TextUtils;
 
+import net.danlew.android.joda.JodaTimeAndroid;
+
+import org.joda.time.DateTime;
+import org.joda.time.LocalTime;
+import org.joda.time.format.DateTimeFormat;
+import org.joda.time.format.DateTimeFormatter;
+import org.joda.time.format.DateTimeFormatterBuilder;
+
+import java.text.SimpleDateFormat;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
 import java.util.StringTokenizer;
 
@@ -73,6 +85,8 @@ public class ExploreModel implements Model {
      * Theme groups loaded from the database pre-randomly filtered and stored by topic name.
      */
     private Map<String, ThemeGroup> mThemes = new HashMap<>();
+
+    private Map<String, SessionScheduleGroup> mSessionScheduleGroup = new HashMap<>();
 
     private Map<String, String> mTrackTitles;
 
@@ -118,6 +132,10 @@ public class ExploreModel implements Model {
             LiveStreamData liveStreamData = new LiveStreamData();
             Map<String, TopicGroup> topicGroups = new HashMap<>();
             Map<String, ThemeGroup> themeGroups = new HashMap<>();
+            Map<String, SessionScheduleGroup> sessionScheduleGroups = new HashMap<>();
+            // TODO format time
+            SimpleDateFormat dateFormat = new SimpleDateFormat("E dd.MMMM", Locale.getDefault());
+
 
             // Iterating through rows in Sessions query.
             if (cursor != null && cursor.moveToFirst()) {
@@ -139,6 +157,39 @@ public class ExploreModel implements Model {
                         // won't be viewable as there is neither a live stream nor video available.
                         continue;
                     }
+
+                    //TODO
+                    String sessionDateTime = dateFormat.format(session.getStartDate());
+
+                    /*
+                    if(!sessionScheduleGroups.isEmpty()) {
+                        //TODO
+                        if(sessionScheduleGroups.containsKey(sessionDateTime))
+                        {
+
+                            sessionScheduleGroups.put(sessionDateTime,
+                                    buildSessionScheduleItemTopic(session));
+                        }
+                        else
+                        {
+                            for(String key: sessionScheduleGroups.keySet()) {
+                                //TODO convert the key to dateTime
+                                LocalTime existingSessionLocalTime = LocalTime.parse(key);
+                                DateTimeFormatter fmt = DateTimeFormat.forPattern("hh:mm");
+                                String dateTimeFormat = fmt.print(existingSessionLocalTime);
+                                if(session.getStartDate().getTime() >=  ) {
+
+                                }
+                        }
+                       }
+                    }
+                    else
+                    {
+                        sessionScheduleGroups.put(sessionDateTime, buildSessionScheduleItemTopic(session));
+                    } */
+
+
+
 
                     String tags = session.getTags();
 
@@ -209,6 +260,24 @@ public class ExploreModel implements Model {
             return true;
         }
         return false;
+    }
+
+    private SessionScheduleGroup buildSessionScheduleItemTopic(SessionData session)
+    {
+        SimpleDateFormat dateFormat = new SimpleDateFormat("hh:mm", Locale.getDefault());
+        String startTimeString = dateFormat.format(session.getStartDate());
+        LocalTime startTime = LocalTime.parse(startTimeString);
+
+        DateTime dt = new DateTime()
+                .withHourOfDay(startTime.getHourOfDay())
+                .withMinuteOfHour(0)
+                .withSecondOfMinute(0);
+        DateTimeFormatter fmt = DateTimeFormat.forPattern("hh:mm");
+        String dateTimeFormat = fmt.print(dt);
+        SessionScheduleGroup sScheduleGroup = new SessionScheduleGroup();
+        sScheduleGroup.setTitle(dateTimeFormat);
+        sScheduleGroup.setId(dateTimeFormat);
+        return sScheduleGroup;
     }
 
     public static int getTopicSessionLimit(Context context) {

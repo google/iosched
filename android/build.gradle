@@ -150,6 +150,8 @@ dependencies {
     compile "com.android.support:design:${android_support_lib_version}"
     compile "com.android.support:support-v13:${android_support_lib_version}"
 
+    compile 'net.danlew:android.joda:2.9.4.1'
+
     // Different Open Source Libraries
     compile ('com.squareup.retrofit2:retrofit:2.1.0') {
         // exclude Retrofit’s OkHttp peer-dependency module and define your own module import
