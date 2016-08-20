@@ -168,23 +168,21 @@ public abstract class BaseActivity extends AppCompatActivity implements
     // it's a list of all possible items.
     protected static final int NAVDRAWER_ITEM_MY_SCHEDULE = 0;
 
-    protected static final int NAVDRAWER_ITEM_IO_LIVE = 1;
+    protected static final int NAVDRAWER_ITEM_EXPLORE = 1;
 
-    protected static final int NAVDRAWER_ITEM_EXPLORE = 2;
-
-    protected static final int NAVDRAWER_ITEM_MAP = 3;
+    protected static final int NAVDRAWER_ITEM_MAP = 2;
 
     protected static final int NAVDRAWER_ITEM_SOCIAL = 4;
 
-    protected static final int NAVDRAWER_ITEM_VIDEO_LIBRARY = 4;
+    protected static final int NAVDRAWER_ITEM_VIDEO_LIBRARY = 3;
 
-    protected static final int NAVDRAWER_ITEM_SIGN_IN = 5;
+    protected static final int NAVDRAWER_ITEM_SIGN_IN = 4;
 
-    protected static final int NAVDRAWER_ITEM_SETTINGS = 6;
+    protected static final int NAVDRAWER_ITEM_SETTINGS = 5;
 
-    protected static final int NAVDRAWER_ITEM_ABOUT = 7;
+    protected static final int NAVDRAWER_ITEM_ABOUT = 6;
 
-    protected static final int NAVDRAWER_ITEM_DEBUG = 8;
+    protected static final int NAVDRAWER_ITEM_DEBUG = 7;
 
     protected static final int NAVDRAWER_ITEM_INVALID = -1;
 
@@ -195,7 +193,6 @@ public abstract class BaseActivity extends AppCompatActivity implements
     // titles for navdrawer items (indices must correspond to the above)
     private static final int[] NAVDRAWER_TITLE_RES_ID = new int[]{
             R.string.navdrawer_item_my_schedule,
-            R.string.navdrawer_item_io_live,
             R.string.navdrawer_item_explore,
             R.string.navdrawer_item_map,
             R.string.navdrawer_item_video_library,
@@ -208,7 +205,6 @@ public abstract class BaseActivity extends AppCompatActivity implements
     // icons for navdrawer items (indices must correspond to above array)
     private static final int[] NAVDRAWER_ICON_RES_ID = new int[]{
             R.drawable.ic_navview_my_schedule,  // My Schedule
-            R.drawable.ic_navview_play_circle_fill, // I/O Live
             R.drawable.ic_navview_explore,  // Explore
             R.drawable.ic_navview_map, // Map
             R.drawable.ic_navview_video_library, // Video Library

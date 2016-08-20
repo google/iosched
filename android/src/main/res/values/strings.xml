@@ -497,6 +497,8 @@
     <!-- Menu item to open the debugging screen on debug builds [CHAR_LIMIT=20] -->
     <string name="navdrawer_item_debug">Debug</string>
 
+    <string name="navdrawer_item_beta">Beta</string>
+
     <!-- Text indicator that appears below the user's name, showing that they are
     attending the conference in person in San Francisco. -->
     <string name="navdrawer_status_attending_in_person">Attending I/O in person</string>
@@ -1099,6 +1101,7 @@ user updates the rating. -->
     <string name="schedule_block_title_code_labs">Code Labs</string>
     <string name="schedule_block_title_keynote">Keynote</string>
     <string name="downloading_sessions_text">Downloading Sessions Please Wait...</string>
+    <string name="navview_menu_item_beta">Beta</string>
 
 
 </resources>

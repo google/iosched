@@ -25,12 +25,6 @@
             android:title="@string/navview_menu_item_myschedule"
             android:titleCondensed="@string/navview_menu_item_myschedule" />
         <item
-            android:id="@+id/nav_view_menu_item_iolive"
-            android:icon="@drawable/ic_navview_play_circle_fill"
-            android:title="@string/navview_menu_item_iolive"
-            android:titleCondensed="@string/navview_menu_item_iolive"
-            android:visible="false"/>
-        <item
             android:id="@+id/nav_view_menu_item_explore"
             android:icon="@drawable/ic_navview_explore"
             android:title="@string/navview_menu_item_explore"
