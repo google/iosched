@@ -787,7 +787,7 @@ public class SessionDetailFragment extends Fragment
                     @Override
                     public void onClick(View view) {
                         Intent intent = new Intent(getContext(), ExploreSessionsActivity.class)
-                                .putExtra(ExploreSessionsActivity.EXTRA_FILTER_TAG, tag)
+                                .putExtra(ExploreSessionsActivity.EXTRA_FILTER_TAGS, tag)
                                 .addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
                         startActivity(intent);
                     }

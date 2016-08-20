@@ -149,7 +149,7 @@ public class ExploreIOActivity extends BaseActivity implements Toolbar.OnMenuIte
             intent.setData(ScheduleContract.Sessions.buildSessionsAfterUri(UIUtils.getCurrentTime(this)));
             intent.putExtra(ExploreSessionsActivity.EXTRA_SHOW_LIVE_STREAM_SESSIONS, true);
         } else if (tag instanceof ItemGroup) {
-            intent.putExtra(ExploreSessionsActivity.EXTRA_FILTER_TAG, ((ItemGroup)tag).getId());
+            intent.putExtra(ExploreSessionsActivity.EXTRA_FILTER_DATE, ((ItemGroup)tag).getTitle());
         }
         startActivity(intent);
     }

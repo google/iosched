@@ -134,7 +134,7 @@ public class DebugFragment extends Fragment {
             @Override
             public void run(Context context, Callback callback) {
                 Intent intent = new Intent(context, ExploreSessionsActivity.class);
-                intent.putExtra(ExploreSessionsActivity.EXTRA_FILTER_TAG, "TOPIC_ANDROID");
+                intent.putExtra(ExploreSessionsActivity.EXTRA_FILTER_TAGS, "TOPIC_ANDROID");
                 context.startActivity(intent);
             }
 

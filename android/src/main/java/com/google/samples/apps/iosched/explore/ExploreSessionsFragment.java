@@ -38,6 +38,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import no.java.schedule.R;
+
 import com.google.samples.apps.iosched.model.TagMetadata;
 import com.google.samples.apps.iosched.provider.ScheduleContract;
 import com.google.samples.apps.iosched.session.SessionDetailActivity;
@@ -49,6 +50,10 @@ import com.google.samples.apps.iosched.util.ImageLoader;
 import com.google.samples.apps.iosched.util.LogUtils;
 import com.google.samples.apps.iosched.util.TimeUtils;
 import com.google.samples.apps.iosched.util.UIUtils;
+
+import org.joda.time.DateTime;
+import org.joda.time.format.DateTimeFormat;
+import org.joda.time.format.DateTimeFormatter;
 
 import java.lang.ref.WeakReference;
 import java.util.Date;
@@ -72,8 +77,12 @@ public class ExploreSessionsFragment extends Fragment implements
 
     public static final String EXTRA_SHOW_LIVESTREAMED_SESSIONS =
             "com.google.samples.apps.iosched.explore.EXTRA_SHOW_LIVESTREAMED_SESSIONS";
+    public static final String EXTRA_DATE_FILTER =
+            "com.google.samples.apps.iosched.explore.EXTRA_DATE_FILTER";
 
-    /** The delay before actual re-querying in milli seconds. */
+    /**
+     * The delay before actual re-querying in milli seconds.
+     */
     private static final long QUERY_UPDATE_DELAY_MILLIS = 100;
 
     private ImageLoader mImageLoader;
@@ -85,11 +94,8 @@ public class ExploreSessionsFragment extends Fragment implements
     private int mSessionQueryToken;
     private TagMetadata mTagMetadata;
     private SearchHandler mSearchHandler = new SearchHandler(this);
-
-    /**
-     * Whether we should limit our selection to live streamed events.
-     */
     private boolean mShowLiveStreamedSessions;
+    private String mSessionDate;
     /**
      * Boolean that indicates whether the collectionView data is being fully reloaded in the
      * case of filters and other query arguments changing VS just a data refresh.
@@ -125,6 +131,7 @@ public class ExploreSessionsFragment extends Fragment implements
             mSessionQueryToken = savedInstanceState.getInt(STATE_SESSION_QUERY_TOKEN);
             mShowLiveStreamedSessions = savedInstanceState
                     .getBoolean(STATE_SHOW_LIVESTREAMED_SESSIONS);
+            mSessionDate = savedInstanceState.getString(EXTRA_DATE_FILTER);
             if (mSessionQueryToken > 0) {
                 // Only if this is a config change should we initLoader(), to reconnect with an
                 // existing loader. Otherwise, the loader will be init'd when reloadFromArguments
@@ -166,42 +173,51 @@ public class ExploreSessionsFragment extends Fragment implements
 
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
-        switch (id) {
-            case ExploreSessionsQuery.NORMAL_TOKEN:
-                return new CursorLoader(getActivity(),
-                        mCurrentUri, ExploreSessionsQuery.NORMAL_PROJECTION,
-                        mShowLiveStreamedSessions ?
-                                ScheduleContract.Sessions.LIVESTREAM_OR_YOUTUBE_URL_SELECTION : null,
-                        null,
-                        ScheduleContract.Sessions.SORT_BY_TYPE_THEN_TIME);
-            case ExploreSessionsQuery.SEARCH_TOKEN:
-                return new CursorLoader(getActivity(),
-                        mCurrentUri, ExploreSessionsQuery.SEARCH_PROJECTION,
-                        mShowLiveStreamedSessions ?
-                                ScheduleContract.Sessions.LIVESTREAM_OR_YOUTUBE_URL_SELECTION : null,
-                        null,
-                        ScheduleContract.Sessions.SORT_BY_TYPE_THEN_TIME);
-            case TAG_METADATA_TOKEN:
-                return TagMetadata.createCursorLoader(getActivity());
-            default:
-                return null;
+        DateTimeFormatter formatter = DateTimeFormat.forPattern("E dd.MMMM yyyy");
+        DateTime dateToUse = null;
+        DateTime startDate = null;
+        DateTime endDate = null;
+        if (mSessionDate != null) {
+            dateToUse = formatter.parseDateTime(mSessionDate);
+            startDate = dateToUse.plusHours(0);
+            endDate = dateToUse.plusHours(23);
         }
-    }
+            switch (id) {
+                case ExploreSessionsQuery.NORMAL_TOKEN:
+                    return new CursorLoader(getActivity(),
+                            mCurrentUri, ExploreSessionsQuery.NORMAL_PROJECTION,
+                            mSessionDate != null ?
+                                    ScheduleContract.Sessions.STARTING_AT_TIME_INTERVAL_SELECTION : null,
+                            mSessionDate != null ? new String[]{startDate.getMillis() + "", endDate.getMillis() + ""} : null,
+                            ScheduleContract.Sessions.SORT_BY_TYPE_THEN_TIME);
+                case ExploreSessionsQuery.SEARCH_TOKEN:
+                    return new CursorLoader(getActivity(),
+                            mCurrentUri, ExploreSessionsQuery.SEARCH_PROJECTION,
+                            mSessionDate != null ?
+                                    ScheduleContract.Sessions.STARTING_AT_TIME_INTERVAL_SELECTION : null,
+                            mSessionDate != null ? new String[]{startDate.getMillis() + "", endDate.getMillis() + ""} : null,
+                            ScheduleContract.Sessions.SORT_BY_TYPE_THEN_TIME);
+                case TAG_METADATA_TOKEN:
+                    return TagMetadata.createCursorLoader(getActivity());
+                default:
+                    return null;
+            }
+        }
 
-    @Override
-    public void onLoadFinished(Loader<Cursor> loader, Cursor cursor) {
-        switch (loader.getId()) {
-            case ExploreSessionsQuery.NORMAL_TOKEN: // fall through
-            case ExploreSessionsQuery.SEARCH_TOKEN:
-                reloadSessionData(cursor);
-                break;
-            case TAG_METADATA_TOKEN:
-                mTagMetadata = new TagMetadata(cursor);
-                break;
-            default:
-                cursor.close();
+        @Override
+        public void onLoadFinished (Loader < Cursor > loader, Cursor cursor){
+            switch (loader.getId()) {
+                case ExploreSessionsQuery.NORMAL_TOKEN: // fall through
+                case ExploreSessionsQuery.SEARCH_TOKEN:
+                    reloadSessionData(cursor);
+                    break;
+                case TAG_METADATA_TOKEN:
+                    mTagMetadata = new TagMetadata(cursor);
+                    break;
+                default:
+                    cursor.close();
+            }
         }
-    }
 
     private void reloadSessionData(Cursor cursor) {
         mEmptyView.setVisibility(cursor.getCount() == 0 ? View.VISIBLE : View.GONE);
@@ -233,7 +249,7 @@ public class ExploreSessionsFragment extends Fragment implements
     public void reloadFromArguments(Bundle bundle) {
         Uri oldUri = mCurrentUri;
         int oldSessionQueryToken = mSessionQueryToken;
-        boolean oldShowLivestreamedSessions = mShowLiveStreamedSessions;
+        String oldSessionDate = mSessionDate;
         mCurrentUri = bundle.getParcelable("_uri");
 
         if (ScheduleContract.Sessions.isSearchUri(mCurrentUri)) {
@@ -241,11 +257,12 @@ public class ExploreSessionsFragment extends Fragment implements
         } else {
             mSessionQueryToken = ExploreSessionsQuery.NORMAL_TOKEN;
         }
-        mShowLiveStreamedSessions = bundle.getBoolean(EXTRA_SHOW_LIVESTREAMED_SESSIONS, false);
+
+        mSessionDate = bundle.getString(EXTRA_DATE_FILTER, null);
 
         if ((oldUri != null && oldUri.equals(mCurrentUri)) &&
                 oldSessionQueryToken == mSessionQueryToken &&
-                oldShowLivestreamedSessions == mShowLiveStreamedSessions) {
+                oldSessionDate == mSessionDate) {
             mFullReload = false;
             getLoaderManager().initLoader(mSessionQueryToken, null, this);
         } else {
@@ -258,7 +275,7 @@ public class ExploreSessionsFragment extends Fragment implements
     public void requestQueryUpdate(String query) {
         mSearchHandler.removeMessages(SearchHandler.MESSAGE_QUERY_UPDATE);
         mSearchHandler.sendMessageDelayed(Message.obtain(mSearchHandler,
-                        SearchHandler.MESSAGE_QUERY_UPDATE, query), QUERY_UPDATE_DELAY_MILLIS);
+                SearchHandler.MESSAGE_QUERY_UPDATE, query), QUERY_UPDATE_DELAY_MILLIS);
     }
 
     private class SessionsAdapter extends CursorAdapter implements CollectionViewCallbacks {
@@ -444,7 +461,7 @@ public class ExploreSessionsFragment extends Fragment implements
 
         @Override
         public void handleMessage(Message msg) {
-            switch(msg.what) {
+            switch (msg.what) {
                 case MESSAGE_QUERY_UPDATE:
                     String query = (String) msg.obj;
                     ExploreSessionsFragment instance = mFragmentReference.get();

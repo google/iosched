@@ -1098,6 +1098,7 @@ user updates the rating. -->
     <string name="schedule_block_title_sessions">Sessions</string>
     <string name="schedule_block_title_code_labs">Code Labs</string>
     <string name="schedule_block_title_keynote">Keynote</string>
+    <string name="downloading_sessions_text">Downloading Sessions Please Wait...</string>
 
 
 </resources>

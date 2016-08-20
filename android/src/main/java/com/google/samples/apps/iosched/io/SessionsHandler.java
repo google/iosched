@@ -461,7 +461,8 @@ public class SessionsHandler extends JSONHandler {
                 }
             }
 
-            if (!Constants.WORKSHOP.equals(event.format)) {
+            if (!Constants.WORKSHOP.equals(event.format)
+                    && event.state.equals(Constants.SESSION_STATE_APPROVED)) {
                 int color = mDefaultSessionColor;
 
                 // Insert session info
@@ -473,6 +474,7 @@ public class SessionsHandler extends JSONHandler {
                         .withValue(ScheduleContract.Sessions.SESSION_LEVEL, null)            // Not available
                         .withValue(ScheduleContract.Sessions.SESSION_TITLE, sessionTitle)
                         .withValue(ScheduleContract.Sessions.SESSION_ABSTRACT, event.bodyHtml)
+                        .withValue(ScheduleContract.Sessions.SESSION_AUDIENCE, event.audience)
                         .withValue(ScheduleContract.Sessions.SESSION_START, originalSessionStartTime)
                         .withValue(ScheduleContract.Sessions.SESSION_END, originalSessionEndTime)
                         .withValue(ScheduleContract.Sessions.SESSION_TAGS, event.labelstrings())

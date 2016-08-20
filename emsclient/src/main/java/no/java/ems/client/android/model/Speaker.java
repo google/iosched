@@ -14,7 +14,6 @@ public class Speaker extends EMSBaseEntity {
         return "Speaker{} " + super.toString();
     }
 
-    // TODO: 07.11.2015 Parse markdown
     public String getBio(){
         return getDataValue("bio","");
     }

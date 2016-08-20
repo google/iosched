@@ -37,7 +37,9 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.google.samples.apps.iosched.Config;
+
 import no.java.schedule.R;
+
 import com.google.samples.apps.iosched.model.TagMetadata;
 import com.google.samples.apps.iosched.provider.ScheduleContract;
 import com.google.samples.apps.iosched.settings.SettingsUtils;
@@ -66,14 +68,18 @@ import static com.google.samples.apps.iosched.util.LogUtils.makeLogTag;
 public class ExploreSessionsActivity extends BaseActivity
         implements Toolbar.OnMenuItemClickListener, LoaderManager.LoaderCallbacks<Cursor> {
 
-    public static final String EXTRA_FILTER_TAG =
-            "com.google.samples.apps.iosched.explore.EXTRA_FILTER_TAG";
+    public static final String EXTRA_FILTER_TAGS =
+            "com.google.samples.apps.iosched.explore.EXTRA_FILTER_TAGS";
+    public static final String EXTRA_FILTER_DATE =
+            "com.google.samples.apps.iosched.explore.EXTRA_FILTER_DATE";
     public static final String EXTRA_SHOW_LIVE_STREAM_SESSIONS =
             "com.google.samples.apps.iosched.explore.EXTRA_SHOW_LIVE_STREAM_SESSIONS";
 
     // The saved instance state filters
     private static final String STATE_FILTER_TAGS =
             "com.google.samples.apps.iosched.explore.STATE_FILTER_TAGS";
+    private static final String STATE_FILTER_DATE =
+            "com.google.samples.apps.iosched.explore.STATE_FILTER_DATE";
     private static final String STATE_CURRENT_URI =
             "com.google.samples.apps.iosched.explore.STATE_CURRENT_URI";
 
@@ -90,6 +96,7 @@ public class ExploreSessionsActivity extends BaseActivity
 
     private CollectionView mDrawerCollectionView;
     private DrawerLayout mDrawerLayout;
+    private String mDateSelected;
 
     private TagMetadata mTagMetadata;
     private TagFilterHolder mTagFilterHolder;
@@ -101,19 +108,19 @@ public class ExploreSessionsActivity extends BaseActivity
     // The OnClickListener for the Switch widgets on the navigation filter.
     private final View.OnClickListener mDrawerItemCheckBoxClickListener =
             new View.OnClickListener() {
-        @Override
-        public void onClick(View v) {
-            boolean isChecked = ((CheckBox)v).isChecked();
-            TagMetadata.Tag theTag = (TagMetadata.Tag)v.getTag();
-            LOGD(TAG, "Checkbox with tag: " + theTag.getName() + " isChecked => " + isChecked);
-            if (isChecked) {
-                mTagFilterHolder.add(theTag.getName(), theTag.getCategory());
-            } else {
-                mTagFilterHolder.remove(theTag.getName(), theTag.getCategory());
-            }
-            reloadFragment();
-        }
-    };
+                @Override
+                public void onClick(View v) {
+                    boolean isChecked = ((CheckBox) v).isChecked();
+                    TagMetadata.Tag theTag = (TagMetadata.Tag) v.getTag();
+                    LOGD(TAG, "Checkbox with tag: " + theTag.getName() + " isChecked => " + isChecked);
+                    if (isChecked) {
+                        mTagFilterHolder.add(theTag.getName(), theTag.getCategory());
+                    } else {
+                        mTagFilterHolder.remove(theTag.getName(), theTag.getCategory());
+                    }
+                    reloadFragment();
+                }
+            };
     private ExploreSessionsFragment mFragment;
     private int mMode;
     private View mTimeSlotLayout;
@@ -275,7 +282,8 @@ public class ExploreSessionsActivity extends BaseActivity
             // Use the Intent Extras to set up the TagFilterHolder
             mTagFilterHolder = new TagFilterHolder();
 
-            String tag = getIntent().getStringExtra(EXTRA_FILTER_TAG);
+            String tag = getIntent().getStringExtra(EXTRA_FILTER_TAGS);
+            mDateSelected = getIntent().getStringExtra(EXTRA_FILTER_DATE);
             TagMetadata.Tag userTag = mTagMetadata.getTag(tag);
             String userTagCategory = userTag == null ? null : userTag.getCategory();
             if (tag != null && userTagCategory != null) {
@@ -288,23 +296,14 @@ public class ExploreSessionsActivity extends BaseActivity
             // update the selected filters using the following logic:
             // a) For onsite attendees, we should default to showing all 'types'
             // (i.e. Sessions, code labs, sandbox, misc).
-            if (SettingsUtils.isAttendeeAtVenue(this)) {
-                List<TagMetadata.Tag> tags =
-                        mTagMetadata.getTagsInCategory(Config.Tags.CATEGORY_TYPE);
-                // Here we only add all 'types' if the user has not explicitly selected
-                // one of the category_type tags.
-                if (tags != null && !TextUtils.equals(userTagCategory, Config.Tags.CATEGORY_TYPE)) {
-                    for (TagMetadata.Tag theTag : tags) {
-                        mTagFilterHolder.add(theTag.getName(), theTag.getCategory());
-                    }
-                }
-            } else {
-                // b) For remote users, default to only showing Sessions that are Live streamed.
-                TagMetadata.Tag theTag = mTagMetadata.getTag(Config.Tags.SESSIONS);
-                if (!TextUtils.equals(theTag.getCategory(), userTagCategory)) {
+            List<TagMetadata.Tag> tags =
+                    mTagMetadata.getTagsInCategory(Config.Tags.CATEGORY_TYPE);
+            // Here we only add all 'types' if the user has not explicitly selected
+            // one of the category_type tags.
+            if (tags != null && !TextUtils.equals(userTagCategory, Config.Tags.CATEGORY_TYPE)) {
+                for (TagMetadata.Tag theTag : tags) {
                     mTagFilterHolder.add(theTag.getName(), theTag.getCategory());
                 }
-                mTagFilterHolder.setShowLiveStreamedSessions(true);
             }
         }
         reloadFragment();
@@ -321,7 +320,7 @@ public class ExploreSessionsActivity extends BaseActivity
      */
     private void setActivityTitle() {
         if (mMode == MODE_EXPLORE && mTagMetadata != null) {
-            String tag = getIntent().getStringExtra(EXTRA_FILTER_TAG);
+            String tag = getIntent().getStringExtra(EXTRA_FILTER_TAGS);
             TagMetadata.Tag titleTag = tag == null ? null : mTagMetadata.getTag(tag);
             String title = null;
             if (titleTag != null &&
@@ -345,16 +344,18 @@ public class ExploreSessionsActivity extends BaseActivity
             uri = ScheduleContract.Sessions.buildCategoryTagFilterUri(
                     ScheduleContract.Sessions.CONTENT_URI,
                     mTagFilterHolder.toStringArray(),
-                    mTagFilterHolder.getCategoryCount());
+                    mTagFilterHolder.getCategoryCount()
+                    );
         } else { // build a uri with the specific filters
             uri = ScheduleContract.Sessions.buildCategoryTagFilterUri(uri,
                     mTagFilterHolder.toStringArray(),
-                    mTagFilterHolder.getCategoryCount());
+                    mTagFilterHolder.getCategoryCount()
+                    );
         }
         setActivityTitle();
         Intent intent = new Intent(Intent.ACTION_VIEW, uri);
-        intent.putExtra(ExploreSessionsFragment.EXTRA_SHOW_LIVESTREAMED_SESSIONS,
-                mTagFilterHolder.isShowLiveStreamedSessions());
+        intent.putExtra(ExploreSessionsFragment.EXTRA_DATE_FILTER,
+                mDateSelected);
 
         LOGD(TAG, "Reloading fragment with categories " + mTagFilterHolder.getCategoryCount() +
                 " uri: " + uri +
@@ -378,9 +379,9 @@ public class ExploreSessionsActivity extends BaseActivity
          * Returns a new instance of {@link Inventory}. It always contains three
          * {@link InventoryGroup} groups.
          * <ul>
-         *     <li>Themes group containing themes such as Develop, Distribute etc.</li>
-         *     <li>Types group containing tags for all types of sessions, codelabs etc.</li>
-         *     <li>Topics group containing tags for specific topics such as Android, Cloud etc.</li>
+         * <li>Themes group containing themes such as Develop, Distribute etc.</li>
+         * <li>Types group containing tags for all types of sessions, codelabs etc.</li>
+         * <li>Topics group containing tags for specific topics such as Android, Cloud etc.</li>
          * </ul>
          *
          * @return A new instance of {@link Inventory}.

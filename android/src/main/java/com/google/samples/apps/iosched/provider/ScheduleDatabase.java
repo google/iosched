@@ -333,6 +333,7 @@ public class ScheduleDatabase extends SQLiteOpenHelper {
                 + SessionsColumns.SESSION_LEVEL + " TEXT,"
                 + SessionsColumns.SESSION_TITLE + " TEXT,"
                 + SessionsColumns.SESSION_ABSTRACT + " TEXT,"
+                + SessionsColumns.SESSION_AUDIENCE + " TEXT,"
                 + SessionsColumns.SESSION_REQUIREMENTS + " TEXT,"
                 + SessionsColumns.SESSION_IN_MY_SCHEDULE + " TEXT, "
                 + SessionsColumns.SESSION_KEYWORDS + " TEXT,"

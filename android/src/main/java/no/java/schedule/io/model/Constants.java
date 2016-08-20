@@ -12,4 +12,6 @@ public class Constants {
     public static final String SESSION_FEEDBACK_WEB_URI_TEST = "http://test.javazone.no/devnull/server";
     public static final String SESSION_FEEDBACK_WEB_URI = "http://javazone.no/devnull/server";
 
+    public static final String SESSION_STATE_APPROVED = "approved";
+    public static final String SESSION_STATE_REJECTED = "rejected";
 }

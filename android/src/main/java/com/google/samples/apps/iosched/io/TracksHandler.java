@@ -95,7 +95,6 @@ public class TracksHandler extends JSONHandler {
         batch.add(builder.build());
     }
 
-    // :-| Ugh..
     private static String santizeTrackName(JZLabel track) {
         String result = track.displayName;
 

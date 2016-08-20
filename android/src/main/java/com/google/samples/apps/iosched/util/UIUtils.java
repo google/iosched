@@ -205,6 +205,7 @@ public class UIUtils {
             return;
         }
         if ((text.contains("<") && text.contains(">")) || REGEX_HTML_ESCAPE.matcher(text).find()) {
+            view.setLinkTextColor(view.getResources().getColor(R.color.theme_accent_1_light));
             view.setText(Html.fromHtml(text));
             view.setMovementMethod(LinkMovementMethod.getInstance());
         } else {

@@ -18,7 +18,9 @@ package com.google.samples.apps.iosched.explore;
 
 import com.google.common.annotations.VisibleForTesting;
 import com.google.samples.apps.iosched.Config;
+
 import no.java.schedule.R;
+
 import com.google.samples.apps.iosched.explore.data.ItemGroup;
 import com.google.samples.apps.iosched.explore.data.LiveStreamData;
 import com.google.samples.apps.iosched.explore.data.SessionData;
@@ -28,7 +30,6 @@ import com.google.samples.apps.iosched.explore.data.TopicGroup;
 import com.google.samples.apps.iosched.framework.Model;
 import com.google.samples.apps.iosched.framework.QueryEnum;
 import com.google.samples.apps.iosched.framework.UserActionEnum;
-import com.google.samples.apps.iosched.io.model.Session;
 import com.google.samples.apps.iosched.provider.ScheduleContract;
 import com.google.samples.apps.iosched.settings.SettingsUtils;
 import com.google.samples.apps.iosched.util.TimeUtils;
@@ -43,20 +44,17 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.text.TextUtils;
 
-import net.danlew.android.joda.JodaTimeAndroid;
-
-import org.joda.time.DateTime;
 import org.joda.time.LocalTime;
-import org.joda.time.format.DateTimeFormat;
-import org.joda.time.format.DateTimeFormatter;
-import org.joda.time.format.DateTimeFormatterBuilder;
 
 import java.text.SimpleDateFormat;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
 import java.util.StringTokenizer;
+import java.util.TreeMap;
+import java.util.concurrent.ConcurrentHashMap;
 
 import static com.google.samples.apps.iosched.util.LogUtils.LOGD;
 import static com.google.samples.apps.iosched.util.LogUtils.LOGE;
@@ -66,7 +64,7 @@ import static com.google.samples.apps.iosched.util.LogUtils.makeLogTag;
 /**
  * This is an implementation of a {@link Model} that queries the sessions at Google I/O and extracts
  * the data needed to present the Explore I/O user interface.
- *
+ * <p/>
  * The process of loading and reading the data is typically done in the lifecycle of a
  * {@link com.google.samples.apps.iosched.framework.PresenterFragmentImpl}.
  */
@@ -86,7 +84,7 @@ public class ExploreModel implements Model {
      */
     private Map<String, ThemeGroup> mThemes = new HashMap<>();
 
-    private Map<String, SessionScheduleGroup> mSessionScheduleGroup = new HashMap<>();
+    private TreeMap<String, SessionScheduleGroup> mScheduleSessionGroups = new TreeMap<>();
 
     private Map<String, String> mTrackTitles;
 
@@ -102,15 +100,25 @@ public class ExploreModel implements Model {
         return mTopics.values();
     }
 
+    public Collection<SessionScheduleGroup> getSessionScheduleGroups() {
+        return mScheduleSessionGroups.values();
+    }
+
     public Collection<ThemeGroup> getThemes() {
         return mThemes.values();
     }
 
-    public Map<String, String> getTrackTitles() { return mTrackTitles; }
+    public Map<String, String> getTrackTitles() {
+        return mTrackTitles;
+    }
 
-    public SessionData getKeynoteData() { return mKeynoteData; }
+    public SessionData getKeynoteData() {
+        return mKeynoteData;
+    }
 
-    public LiveStreamData getLiveStreamData() { return mLiveStreamData; }
+    public LiveStreamData getLiveStreamData() {
+        return mLiveStreamData;
+    }
 
 
     @Override
@@ -132,9 +140,9 @@ public class ExploreModel implements Model {
             LiveStreamData liveStreamData = new LiveStreamData();
             Map<String, TopicGroup> topicGroups = new HashMap<>();
             Map<String, ThemeGroup> themeGroups = new HashMap<>();
-            Map<String, SessionScheduleGroup> sessionScheduleGroups = new HashMap<>();
+            TreeMap<String, SessionScheduleGroup> scheduleSessionGroups = new TreeMap<>();
             // TODO format time
-            SimpleDateFormat dateFormat = new SimpleDateFormat("E dd.MMMM", Locale.getDefault());
+            SimpleDateFormat dateFormat = new SimpleDateFormat("E dd.MMMM yyyy", Locale.getDefault());
 
 
             // Iterating through rows in Sessions query.
@@ -158,38 +166,25 @@ public class ExploreModel implements Model {
                         continue;
                     }
 
-                    //TODO
                     String sessionDateTime = dateFormat.format(session.getStartDate());
 
-                    /*
-                    if(!sessionScheduleGroups.isEmpty()) {
-                        //TODO
-                        if(sessionScheduleGroups.containsKey(sessionDateTime))
-                        {
-
-                            sessionScheduleGroups.put(sessionDateTime,
-                                    buildSessionScheduleItemTopic(session));
+                    if (!scheduleSessionGroups.containsKey(sessionDateTime)) {
+                        scheduleSessionGroups.put(sessionDateTime,
+                                buildSessionScheduleItemTopic(session));
+                    } else {
+                        SimpleDateFormat simpleDateFormatter = new SimpleDateFormat("E dd.MMMM yyyy");
+                        String sessionScheduledDate = simpleDateFormatter.format(session.getStartDate());
+                        SessionScheduleGroup sessionScheduleGroup =
+                                scheduleSessionGroups.get(sessionScheduledDate);
+                        if (sessionScheduleGroup == null) {
+                            sessionScheduleGroup = new SessionScheduleGroup();
+                            sessionScheduleGroup.setTitle(sessionScheduledDate);
+                            sessionScheduleGroup.setId("" + session.getStartDate().getTime());
+                            scheduleSessionGroups.put(sessionScheduledDate, sessionScheduleGroup);
                         }
-                        else
-                        {
-                            for(String key: sessionScheduleGroups.keySet()) {
-                                //TODO convert the key to dateTime
-                                LocalTime existingSessionLocalTime = LocalTime.parse(key);
-                                DateTimeFormatter fmt = DateTimeFormat.forPattern("hh:mm");
-                                String dateTimeFormat = fmt.print(existingSessionLocalTime);
-                                if(session.getStartDate().getTime() >=  ) {
 
-                                }
-                        }
-                       }
+                        sessionScheduleGroup.addSessionData(session);
                     }
-                    else
-                    {
-                        sessionScheduleGroups.put(sessionDateTime, buildSessionScheduleItemTopic(session));
-                    } */
-
-
-
 
                     String tags = session.getTags();
 
@@ -207,17 +202,18 @@ public class ExploreModel implements Model {
                         StringTokenizer tagsTokenizer = new StringTokenizer(tags, ",");
                         while (tagsTokenizer.hasMoreTokens()) {
                             String rawTag = tagsTokenizer.nextToken();
-                            if (rawTag.startsWith("topic:")) {
-                                TopicGroup topicGroup = topicGroups.get(rawTag);
-                                if (topicGroup == null) {
-                                    topicGroup = new TopicGroup();
-                                    topicGroup.setTitle(rawTag);
-                                    topicGroup.setId(rawTag);
-                                    topicGroups.put(rawTag, topicGroup);
-                                }
-                                topicGroup.addSessionData(session);
-
-                            } else if (rawTag.startsWith("theme:")) {
+                            //  if (rawTag.startsWith("topic:")) {
+                            ThemeGroup themeGroup = themeGroups.get(rawTag);
+                            if (themeGroup == null) {
+                                themeGroup = new ThemeGroup();
+                                themeGroup.setTitle(rawTag);
+                                themeGroup.setId(rawTag);
+                                themeGroups.put(rawTag, themeGroup);
+                            }
+                            themeGroup.addSessionData(session);
+/*
+                            }
+                            else if (rawTag.startsWith("theme:")) {
                                 ThemeGroup themeGroup = themeGroups.get(rawTag);
                                 if (themeGroup == null) {
                                     themeGroup = new ThemeGroup();
@@ -226,7 +222,7 @@ public class ExploreModel implements Model {
                                     themeGroups.put(rawTag, themeGroup);
                                 }
                                 themeGroup.addSessionData(session);
-                            }
+                            } */
                         }
                     }
                 } while (cursor.moveToNext());
@@ -243,6 +239,7 @@ public class ExploreModel implements Model {
             }
             mThemes = themeGroups;
             mTopics = topicGroups;
+            mScheduleSessionGroups = scheduleSessionGroups;
             return true;
         } else if (query == ExploreQueryEnum.TRACKS) {
             LOGW(TAG, "TAGS query loaded");
@@ -262,21 +259,19 @@ public class ExploreModel implements Model {
         return false;
     }
 
-    private SessionScheduleGroup buildSessionScheduleItemTopic(SessionData session)
-    {
+    private SessionScheduleGroup buildSessionScheduleItemTopic(SessionData session) {
         SimpleDateFormat dateFormat = new SimpleDateFormat("hh:mm", Locale.getDefault());
         String startTimeString = dateFormat.format(session.getStartDate());
         LocalTime startTime = LocalTime.parse(startTimeString);
+        long scheduleSessionTime = startTime.getMillisOfDay();
 
-        DateTime dt = new DateTime()
-                .withHourOfDay(startTime.getHourOfDay())
-                .withMinuteOfHour(0)
-                .withSecondOfMinute(0);
-        DateTimeFormatter fmt = DateTimeFormat.forPattern("hh:mm");
-        String dateTimeFormat = fmt.print(dt);
         SessionScheduleGroup sScheduleGroup = new SessionScheduleGroup();
-        sScheduleGroup.setTitle(dateTimeFormat);
-        sScheduleGroup.setId(dateTimeFormat);
+        SimpleDateFormat simpleDateFormatter = new SimpleDateFormat("E dd.MMMM yyyy");
+        String date = simpleDateFormatter.format(session.getStartDate());
+        sScheduleGroup.setTitle(date);
+        sScheduleGroup.setId(scheduleSessionTime + "");
+
+
         return sScheduleGroup;
     }
 
@@ -330,7 +325,7 @@ public class ExploreModel implements Model {
             stringBuilder.append(shortDate);
 
             if (startTime > 0) {
-                stringBuilder.append(" / " );
+                stringBuilder.append(" / ");
                 stringBuilder.append(TimeUtils.formatShortTime(mContext,
                         new java.util.Date(startTime)));
             }
@@ -344,6 +339,8 @@ public class ExploreModel implements Model {
                         ScheduleContract.Sessions.SESSION_TITLE)),
                 cursor.getString(cursor.getColumnIndex(
                         ScheduleContract.Sessions.SESSION_ABSTRACT)),
+                cursor.getString(cursor.getColumnIndex(
+                        ScheduleContract.Sessions.SESSION_AUDIENCE)),
                 cursor.getString(cursor.getColumnIndex(
                         ScheduleContract.Sessions.SESSION_ID)),
                 cursor.getString(cursor.getColumnIndex(
@@ -376,7 +373,7 @@ public class ExploreModel implements Model {
                     null);
         } else if (loaderId == ExploreQueryEnum.TRACKS.getId()) {
             LOGW(TAG, "Starting sessions tag query");
-            loader =  new CursorLoader(mContext, ScheduleContract.Tracks.CONTENT_URI,
+            loader = new CursorLoader(mContext, ScheduleContract.Tracks.CONTENT_URI,
                     ExploreQueryEnum.TRACKS.getProjection(), null, null, null);
         } else {
             LOGE(TAG, "Invalid query loaderId: " + loaderId);
@@ -386,7 +383,7 @@ public class ExploreModel implements Model {
 
     @VisibleForTesting
     public CursorLoader getCursorLoaderInstance(Context context, Uri uri, String[] projection,
-            String selection, String[] selectionArgs, String sortOrder) {
+                                                String selection, String[] selectionArgs, String sortOrder) {
         return new CursorLoader(context, uri, projection, selection, selectionArgs, sortOrder);
     }
 
@@ -402,7 +399,7 @@ public class ExploreModel implements Model {
 
         /**
          * Query that retrieves a list of sessions.
-         *
+         * <p/>
          * Once the data has been loaded it can be retrieved using {@code getThemes()} and
          * {@code getTopics()}.
          */
@@ -411,6 +408,7 @@ public class ExploreModel implements Model {
                 ScheduleContract.Sessions.SESSION_ID,
                 ScheduleContract.Sessions.SESSION_START,
                 ScheduleContract.Sessions.SESSION_ABSTRACT,
+                ScheduleContract.Sessions.SESSION_AUDIENCE,
                 ScheduleContract.Sessions.SESSION_PHOTO_URL,
                 ScheduleContract.Sessions.SESSION_END,
                 ScheduleContract.Sessions.SESSION_MAIN_TAG,
@@ -422,7 +420,7 @@ public class ExploreModel implements Model {
                 ScheduleContract.Sessions.SESSION_STARRED,
         }),
 
-        TRACKS(0x2, new String[] {
+        TRACKS(0x2, new String[]{
                 ScheduleContract.Tracks.TRACK_ID,
                 ScheduleContract.Tracks.TRACK_NAME,
                 ScheduleContract.Tracks.TRACK_ABSTRACT,

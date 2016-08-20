@@ -309,7 +309,7 @@ public class SearchActivity extends BaseActivity implements
         String tagOrSessionId = c.getString(SearchTopicsSessionsQuery.TAG_OR_SESSION_ID);
         if (isTopicTag) {
             Intent intent = new Intent(this, ExploreSessionsActivity.class);
-            intent.putExtra(ExploreSessionsActivity.EXTRA_FILTER_TAG, tagOrSessionId);
+            intent.putExtra(ExploreSessionsActivity.EXTRA_FILTER_TAGS, tagOrSessionId);
             startActivity(intent);
         } else if (tagOrSessionId != null) {
             Intent intent = new Intent(this, SessionDetailActivity.class);

@@ -43,6 +43,8 @@ public class JZSessionsResult {
   public String attending;
   public String timeslot;
   public String speakerItems;
+  public String state;
+  public String audience;
 
   public String labelstrings() {
 
@@ -63,7 +65,7 @@ public class JZSessionsResult {
 
     JZSessionsResult session = new JZSessionsResult();
 
-    session.bodyHtml = "<b>"+pItem.getValue("summary")+"</b><p/>" +pItem.getValue("body");
+    session.bodyHtml = pItem.getValue("body");
     // Start / End populated late
     //session.start =
     //session.end =
@@ -71,6 +73,8 @@ public class JZSessionsResult {
     session.format = pItem.getValue("format");
     session.id = pItem.href.toString();
     session.labels = toJZLabels(pItem.getArray("keywords")); // TODO
+    session.audience = pItem.getValue("audience");
+    session.state = pItem.getValue("state");
     session.level = new JZLevel(pItem.getValue("level"));
     session.room = pItem.getLinkHref("room item");
     session.selfUri = pItem.href;

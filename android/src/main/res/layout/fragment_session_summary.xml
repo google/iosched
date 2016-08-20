@@ -39,7 +39,8 @@
             style="@style/TextBody"
             android:textSize="@dimen/livestream_session_summary_text_size"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
+            android:layout_height="wrap_content"
+            android:textColorLink="@color/theme_accent_1_light"/>
 
     </LinearLayout>
 

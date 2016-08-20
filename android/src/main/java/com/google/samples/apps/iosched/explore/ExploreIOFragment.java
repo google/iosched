@@ -17,10 +17,12 @@
 package com.google.samples.apps.iosched.explore;
 
 import no.java.schedule.R;
+
 import com.google.samples.apps.iosched.explore.data.ItemGroup;
 import com.google.samples.apps.iosched.explore.data.LiveStreamData;
 import com.google.samples.apps.iosched.explore.data.MessageData;
 import com.google.samples.apps.iosched.explore.data.SessionData;
+import com.google.samples.apps.iosched.explore.data.SessionScheduleGroup;
 import com.google.samples.apps.iosched.explore.data.ThemeGroup;
 import com.google.samples.apps.iosched.explore.data.TopicGroup;
 import com.google.samples.apps.iosched.framework.PresenterFragmentImpl;
@@ -52,6 +54,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -68,9 +71,9 @@ import static com.google.samples.apps.iosched.util.LogUtils.makeLogTag;
  * referred to as Groups by the {@link CollectionView} implementation.
  * <p/>
  * <ul>
- *     <li>The live-streaming session card.</li>
- *     <li>Time sensitive message cards.</li>
- *     <li>Session topic cards.</li>
+ * <li>The live-streaming session card.</li>
+ * <li>Time sensitive message cards.</li>
+ * <li>Session topic cards.</li>
  * </ul>
  * <p/>
  * Only the final group of cards is dynamically loaded from a
@@ -100,6 +103,7 @@ public class ExploreIOFragment extends Fragment implements UpdatableView<Explore
      * CollectionView representing the cards displayed to the user.
      */
     private CollectionView mCollectionView = null;
+    private LinearLayout mProgressLayout = null;
 
     /**
      * Empty view displayed when {@code mCollectionView} is empty.
@@ -112,21 +116,21 @@ public class ExploreIOFragment extends Fragment implements UpdatableView<Explore
 
     private ConferencePrefChangeListener mConfMessagesAnswerChangeListener =
             new ConferencePrefChangeListener() {
-        @Override
-        protected void onPrefChanged(String key, boolean value) {
-            fireReloadEvent();
-        }
-    };
+                @Override
+                protected void onPrefChanged(String key, boolean value) {
+                    fireReloadEvent();
+                }
+            };
 
     private OnSharedPreferenceChangeListener mSettingsChangeListener =
             new OnSharedPreferenceChangeListener() {
-        @Override
-        public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
-            if (SettingsUtils.PREF_DECLINED_WIFI_SETUP.equals(key)) {
-                fireReloadEvent();
-            }
-        }
-    };
+                @Override
+                public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
+                    if (SettingsUtils.PREF_DECLINED_WIFI_SETUP.equals(key)) {
+                        fireReloadEvent();
+                    }
+                }
+            };
 
     @Override
     public void displayData(ExploreModel model, QueryEnum query) {
@@ -152,10 +156,11 @@ public class ExploreIOFragment extends Fragment implements UpdatableView<Explore
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
-            Bundle savedInstanceState) {
+                             Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.explore_io_frag, container, false);
         mCollectionView = (CollectionView) root.findViewById(R.id.explore_collection_view);
         mEmptyView = root.findViewById(android.R.id.empty);
+        mProgressLayout = (LinearLayout) root.findViewById(R.id.progress_layout);
         getActivity().overridePendingTransition(0, 0);
 
         return root;
@@ -235,6 +240,9 @@ public class ExploreIOFragment extends Fragment implements UpdatableView<Explore
      */
     private void updateCollectionView(ExploreModel model) {
         LOGD(TAG, "Updating collection view.");
+        if (mProgressLayout != null) {
+            mProgressLayout.setVisibility(View.GONE);
+        }
 
         CollectionView.Inventory inventory = new CollectionView.Inventory();
         CollectionView.InventoryGroup inventoryGroup;
@@ -268,42 +276,42 @@ public class ExploreIOFragment extends Fragment implements UpdatableView<Explore
                     inventory.addGroup(inventoryGroup);
                 } else */
 
-                if (shouldShowCard(ConfMessageCardUtils.ConfMessageCard.KEYNOTE_ACCESS)) {
-                    inventoryGroup = new CollectionView.InventoryGroup(GROUP_ID_MESSAGE_CARDS);
-                    MessageData conferenceMessageOptIn = MessageCardHelper
-                            .getKeynoteAccessMessageData(getContext());
-                    inventoryGroup.addItemWithTag(conferenceMessageOptIn);
-                    inventoryGroup.setDisplayCols(1);
-                    inventory.addGroup(inventoryGroup);
-                } else if (shouldShowCard(ConfMessageCardUtils.ConfMessageCard.AFTER_HOURS)) {
-                    inventoryGroup = new CollectionView.InventoryGroup(GROUP_ID_MESSAGE_CARDS);
-                    MessageData conferenceMessageOptIn = MessageCardHelper
-                            .getAfterHoursMessageData(getContext());
-                    inventoryGroup.addItemWithTag(conferenceMessageOptIn);
-                    inventoryGroup.setDisplayCols(1);
-                    inventory.addGroup(inventoryGroup);
-                } else if (shouldShowCard(ConfMessageCardUtils.ConfMessageCard.WIFI_FEEDBACK)) {
-                    if (WiFiUtils.isWiFiEnabled(getContext()) &&
-                            WiFiUtils.isWiFiApConfigured(getContext())) {
-                        inventoryGroup = new CollectionView.InventoryGroup(GROUP_ID_MESSAGE_CARDS);
-                        MessageData conferenceMessageOptIn = MessageCardHelper
-                                .getWifiFeedbackMessageData(getContext());
-                        inventoryGroup.addItemWithTag(conferenceMessageOptIn);
-                        inventoryGroup.setDisplayCols(1);
-                        inventory.addGroup(inventoryGroup);
-                    }
-                }
-            }
-            // Check whether a wifi setup card should be offered.
-            if (WiFiUtils.shouldOfferToSetupWifi(getContext(), true)) {
-                // Build card asking users whether they want to enable wifi.
+            if (shouldShowCard(ConfMessageCardUtils.ConfMessageCard.KEYNOTE_ACCESS)) {
                 inventoryGroup = new CollectionView.InventoryGroup(GROUP_ID_MESSAGE_CARDS);
                 MessageData conferenceMessageOptIn = MessageCardHelper
-                        .getWifiSetupMessageData(getContext());
+                        .getKeynoteAccessMessageData(getContext());
                 inventoryGroup.addItemWithTag(conferenceMessageOptIn);
                 inventoryGroup.setDisplayCols(1);
                 inventory.addGroup(inventoryGroup);
+            } else if (shouldShowCard(ConfMessageCardUtils.ConfMessageCard.AFTER_HOURS)) {
+                inventoryGroup = new CollectionView.InventoryGroup(GROUP_ID_MESSAGE_CARDS);
+                MessageData conferenceMessageOptIn = MessageCardHelper
+                        .getAfterHoursMessageData(getContext());
+                inventoryGroup.addItemWithTag(conferenceMessageOptIn);
+                inventoryGroup.setDisplayCols(1);
+                inventory.addGroup(inventoryGroup);
+            } else if (shouldShowCard(ConfMessageCardUtils.ConfMessageCard.WIFI_FEEDBACK)) {
+                if (WiFiUtils.isWiFiEnabled(getContext()) &&
+                        WiFiUtils.isWiFiApConfigured(getContext())) {
+                    inventoryGroup = new CollectionView.InventoryGroup(GROUP_ID_MESSAGE_CARDS);
+                    MessageData conferenceMessageOptIn = MessageCardHelper
+                            .getWifiFeedbackMessageData(getContext());
+                    inventoryGroup.addItemWithTag(conferenceMessageOptIn);
+                    inventoryGroup.setDisplayCols(1);
+                    inventory.addGroup(inventoryGroup);
+                }
             }
+        }
+        // Check whether a wifi setup card should be offered.
+        if (WiFiUtils.shouldOfferToSetupWifi(getContext(), true)) {
+            // Build card asking users whether they want to enable wifi.
+            inventoryGroup = new CollectionView.InventoryGroup(GROUP_ID_MESSAGE_CARDS);
+            MessageData conferenceMessageOptIn = MessageCardHelper
+                    .getWifiSetupMessageData(getContext());
+            inventoryGroup.addItemWithTag(conferenceMessageOptIn);
+            inventoryGroup.setDisplayCols(1);
+            inventory.addGroup(inventoryGroup);
+        }
 
 
         // Add Keynote card.
@@ -334,47 +342,17 @@ public class ExploreIOFragment extends Fragment implements UpdatableView<Explore
         ArrayList<CollectionView.InventoryGroup> topicGroups = new ArrayList<>();
         ArrayList<CollectionView.InventoryGroup> schedulesessionGroups = new ArrayList<>();
 
-        for (TopicGroup topic : model.getTopics()) {
-            LOGD(TAG, topic.getTitle() + ": " + topic.getSessions().size());
-            if (topic.getSessions().size() > 0) {
+        for (SessionScheduleGroup sessionSchedule : model.getSessionScheduleGroups()) {
+            LOGD(TAG, sessionSchedule.getTitle() + ": " + sessionSchedule.getSessions().size());
+            if (sessionSchedule.getSessions().size() > 0) {
                 inventoryGroup = new CollectionView.InventoryGroup(GROUP_ID_TOPIC_CARDS);
-                inventoryGroup.addItemWithTag(topic);
-                topic.setTitle(getTranslatedTitle(topic.getTitle().replace("topic:", ""), model));
-                topicGroups.add(inventoryGroup);
+                inventoryGroup.addItemWithTag(sessionSchedule);
+                schedulesessionGroups.add(inventoryGroup);
             }
         }
 
-        for (ThemeGroup theme : model.getThemes()) {
-            LOGD(TAG, theme.getTitle() + ": " + theme.getSessions().size());
-            if (theme.getSessions().size() > 0) {
-                inventoryGroup = new CollectionView.InventoryGroup(GROUP_ID_THEME_CARDS);
-                inventoryGroup.addItemWithTag(theme);
-                theme.setTitle(getTranslatedTitle(theme.getTitle().replace("theme:", ""), model));
-                themeGroups.add(inventoryGroup);
-            }
-        }
-
-        // We want to evenly disperse the topics between the themes. So we'll divide the topic count
-        // by theme count to get the number of themes to display between topics.
-        int topicsPerTheme = topicGroups.size();
-        if (themeGroups.size() > 0) {
-            topicsPerTheme = topicGroups.size() / themeGroups.size();
-        }
-        Iterator<CollectionView.InventoryGroup> themeIterator = themeGroups.iterator();
-        int currentTopicNum = 0;
-        for (CollectionView.InventoryGroup topicGroup : topicGroups) {
-            inventory.addGroup(topicGroup);
-            currentTopicNum++;
-            if (currentTopicNum == topicsPerTheme) {
-                if (themeIterator.hasNext()) {
-                    inventory.addGroup(themeIterator.next());
-                }
-                currentTopicNum = 0;
-            }
-        }
-        // Append any leftovers.
-        while (themeIterator.hasNext()) {
-            inventory.addGroup(themeIterator.next());
+        for (CollectionView.InventoryGroup schedulesessionGroup : schedulesessionGroups) {
+            inventory.addGroup(schedulesessionGroup);
         }
 
         Parcelable state = mCollectionView.onSaveInstanceState();
@@ -385,7 +363,9 @@ public class ExploreIOFragment extends Fragment implements UpdatableView<Explore
         }
 
         // Show empty view if there were no Group cards.
-        mEmptyView.setVisibility(inventory.getGroupCount() < 1 ? View.VISIBLE : View.GONE);
+        if (mEmptyView != null) {
+            mEmptyView.setVisibility(inventory.getGroupCount() < 1 ? View.VISIBLE : View.GONE);
+        }
     }
 
     private String getTranslatedTitle(String title, ExploreModel model) {
@@ -423,12 +403,12 @@ public class ExploreIOFragment extends Fragment implements UpdatableView<Explore
                 containerLayoutId = R.layout.explore_io_card_container;
                 break;
         }
-        ViewGroup containerView = (ViewGroup)inflater.inflate(containerLayoutId, parent, false);
+        ViewGroup containerView = (ViewGroup) inflater.inflate(containerLayoutId, parent, false);
         // Explicitly tell Accessibility to ignore the entire containerView since we add specific
         // individual content descriptions on child Views.
         UIUtils.setAccessibilityIgnore(containerView);
 
-        ViewGroup containerContents = (ViewGroup)containerView.findViewById(
+        ViewGroup containerContents = (ViewGroup) containerView.findViewById(
                 R.id.explore_io_card_container_contents);
 
         // Now inflate the header within the container cards.
@@ -454,12 +434,9 @@ public class ExploreIOFragment extends Fragment implements UpdatableView<Explore
                 numItems = 1;
                 break;
             case GROUP_ID_THEME_CARDS:
-                itemLayoutId = R.layout.explore_io_topic_theme_livestream_item;
-                numItems = ExploreModel.getThemeSessionLimit(getContext());
-                break;
             case GROUP_ID_TOPIC_CARDS:
                 itemLayoutId = R.layout.explore_io_topic_theme_livestream_item;
-                numItems = ExploreModel.getTopicSessionLimit(getContext());
+                numItems = 5;
                 break;
             case GROUP_ID_LIVE_STREAM_CARD:
                 itemLayoutId = R.layout.explore_io_topic_theme_livestream_item;
@@ -481,7 +458,7 @@ public class ExploreIOFragment extends Fragment implements UpdatableView<Explore
 
     @Override
     public void bindCollectionItemView(Context context, View view, int groupId,
-            int indexInGroup, int dataIndex, Object tag) {
+                                       int indexInGroup, int dataIndex, Object tag) {
         if (GROUP_ID_KEYNOTE_STREAM_CARD == groupId ||
                 GROUP_ID_MESSAGE_CARDS == groupId) {
             // These two group id types don't have child views.
@@ -494,7 +471,7 @@ public class ExploreIOFragment extends Fragment implements UpdatableView<Explore
             }
         } else {
             // These group ids have children who are child items.
-            ViewGroup viewWithChildrenSubItems = (ViewGroup)(view.findViewById(
+            ViewGroup viewWithChildrenSubItems = (ViewGroup) (view.findViewById(
                     R.id.explore_io_card_container_contents));
             ItemGroup itemGroup = (ItemGroup) tag;
 
@@ -547,7 +524,7 @@ public class ExploreIOFragment extends Fragment implements UpdatableView<Explore
 
         // Load item elements common to THEME and TOPIC group cards.
         if (tag instanceof SessionData) {
-            SessionData sessionData = (SessionData)tag;
+            SessionData sessionData = (SessionData) tag;
             titleView.setText(sessionData.getSessionName());
             if (!TextUtils.isEmpty(sessionData.getImageUrl())) {
                 ImageView imageView = (ImageView) view.findViewById(R.id.thumbnail);
@@ -638,6 +615,6 @@ public class ExploreIOFragment extends Fragment implements UpdatableView<Explore
         boolean shouldShow = ConfMessageCardUtils.shouldShowConfMessageCard(getContext(), card);
         boolean hasDismissed = ConfMessageCardUtils.hasDismissedConfMessageCard(getContext(),
                 card);
-        return  (shouldShow && !hasDismissed);
+        return (shouldShow && !hasDismissed);
     }
 }
