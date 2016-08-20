@@ -158,6 +158,7 @@ public class ExploreSessionsFragment extends Fragment implements
     @Override
     public void onResume() {
         super.onResume();
+        getLoaderManager().restartLoader(mSessionQueryToken, null, this);
         getActivity().invalidateOptionsMenu();
         // configure session fragment's top clearance to take our overlaid controls (Action Bar
         // and spinner box) into account.
