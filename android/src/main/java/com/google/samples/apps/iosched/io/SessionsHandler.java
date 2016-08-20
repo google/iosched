@@ -56,6 +56,7 @@ import java.util.regex.Pattern;
 import no.java.schedule.R;
 import no.java.schedule.io.model.Constants;
 import no.java.schedule.io.model.EMSItem;
+import no.java.schedule.io.model.EMSLink;
 import no.java.schedule.io.model.JZDate;
 import no.java.schedule.io.model.JZLabel;
 import no.java.schedule.io.model.JZSessionsResponse;
@@ -380,16 +381,16 @@ public class SessionsHandler extends JSONHandler {
         }
 
         Set<String> starredSessionIds = new HashSet<String>();
-            // Collect the list of current starred sessions
-            Cursor starredSessionsCursor = mContext.getContentResolver().query(
-                    ScheduleContract.Sessions.CONTENT_STARRED_URI,
-                    new String[]{ScheduleContract.Sessions.SESSION_ID},
-                    null, null, null);
-            while (starredSessionsCursor.moveToNext()) {
-                starredSessionIds.add(starredSessionsCursor.getString(0));
-                LOGD(TAG, "session that has been starred was added here!");
-            }
-            starredSessionsCursor.close();
+        // Collect the list of current starred sessions
+        Cursor starredSessionsCursor = mContext.getContentResolver().query(
+                ScheduleContract.Sessions.CONTENT_STARRED_URI,
+                new String[]{ScheduleContract.Sessions.SESSION_ID},
+                null, null, null);
+        while (starredSessionsCursor.moveToNext()) {
+            starredSessionIds.add(starredSessionsCursor.getString(0));
+            LOGD(TAG, "session that has been starred was added here!");
+        }
+        starredSessionsCursor.close();
 
         // Clear out existing sessions
         batch.add(ContentProviderOperation
@@ -557,33 +558,43 @@ public class SessionsHandler extends JSONHandler {
                         batch.add(ContentProviderOperation.newInsert(tagUri)
                                 .withValue(ScheduleContract.Tags.TAG_CATEGORY,
                                         tag.startsWith("topic:") ? "TOPIC" :
-                                                tag.startsWith("type:")? "TYPE"
-                                : "THEME")
+                                                tag.startsWith("type:") ? "TYPE"
+                                                        : "THEME")
                                 .withValue(ScheduleContract.Tags.TAG_NAME, tag).build());
                     }
                 }
             }
         }
-            return batch;
-        }
+        return batch;
+    }
 
     private void parseSpeakers(final JZSessionsResult pEvent, final ArrayList<ContentProviderOperation> pBatch) {
-        Map<String, EMSItem> speakers = load(pEvent.speakerItems);
+        Map<String, EMSItem> speakers = null;
+        for (EMSLink speakerLink : pEvent.speakerList) {
+            speakers = load(speakerLink.href);
 
-        for (EMSItem speaker : speakers.values()) {
-            pBatch.add(ContentProviderOperation
-                    .newInsert(ScheduleContract
-                            .addCallerIsSyncAdapterParameter(ScheduleContract.Speakers.CONTENT_URI))
-                    .withValue(ScheduleContract.SyncColumns.UPDATED, System.currentTimeMillis())
-                    .withValue(ScheduleContract.Speakers.SPEAKER_ID, speaker.href.toString())
-                    .withValue(ScheduleContract.Speakers.SPEAKER_NAME, speaker.getValue("name"))
-                    .withValue(ScheduleContract.Speakers.SPEAKER_ABSTRACT, speaker.getValue("bio"))
-                    .withValue(ScheduleContract.Speakers.SPEAKER_IMAGE_URL, speaker.getLinkHref("photo"))
-                    .withValue(ScheduleContract.Speakers.SPEAKER_URL, "")//TODO
-                    .build());
+            for (EMSItem speaker : speakers.values()) {
+                pBatch.add(ContentProviderOperation
+                        .newInsert(ScheduleContract
+                                .addCallerIsSyncAdapterParameter(ScheduleContract.Speakers.CONTENT_URI))
+                        .withValue(ScheduleContract.SyncColumns.UPDATED, System.currentTimeMillis())
+                        .withValue(ScheduleContract.Speakers.SPEAKER_ID, speaker.href.toString())
+                        .withValue(ScheduleContract.Speakers.SPEAKER_NAME, speaker.getValue("name"))
+                        .withValue(ScheduleContract.Speakers.SPEAKER_ABSTRACT, speaker.getValue("bio"))
+                        .withValue(ScheduleContract.Speakers.SPEAKER_IMAGE_URL, speaker.getLinkHref("photo"))
+                        .withValue(ScheduleContract.Speakers.SPEAKER_URL, "")//TODO
+                        .build());
+            }
+
+
+            if (speakers != null) {
+                if(pEvent.speakers == null) {
+                    pEvent.speakers = new HashSet<String>();
+                }
+
+                pEvent.speakers.addAll(speakers.keySet());
+            }
         }
-
-        pEvent.speakers = speakers.keySet();
     }
 
     private void populateStartEndTime(final JZSessionsResult pEvent) {

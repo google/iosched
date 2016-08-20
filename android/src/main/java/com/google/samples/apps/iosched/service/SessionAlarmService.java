@@ -298,7 +298,7 @@ public class SessionAlarmService extends IntentService
             c = getContentResolver().query(
                     ScheduleContract.Sessions.CONTENT_MY_SCHEDULE_URI,
                     SessionsNeedingFeedbackQuery.PROJECTION,
-                    SessionsNeedingFeedbackQuery.WHERE_CLAUSE, null, null);
+                    null, null, null);
             if (c == null) {
                 return;
             }
@@ -667,15 +667,11 @@ public class SessionAlarmService extends IntentService
         String[] PROJECTION = {
                 ScheduleContract.Sessions.SESSION_ID,
                 ScheduleContract.Sessions.SESSION_TITLE,
-                ScheduleContract.Sessions.SESSION_IN_MY_SCHEDULE,
-                ScheduleContract.Sessions.HAS_GIVEN_FEEDBACK,
+                ScheduleContract.Sessions.SESSION_IN_MY_SCHEDULE
         };
 
         int SESSION_ID = 0;
         int SESSION_TITLE = 1;
-
-        public static final String WHERE_CLAUSE =
-                ScheduleContract.Sessions.HAS_GIVEN_FEEDBACK + "=0";
     }
 
     @Override

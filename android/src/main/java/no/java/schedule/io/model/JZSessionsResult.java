@@ -42,9 +42,13 @@ public class JZSessionsResult {
 
   public String attending;
   public String timeslot;
-  public String speakerItems;
+  public ArrayList<EMSLink> speakerList;
   public String state;
   public String audience;
+
+  public JZSessionsResult() {
+    speakerList= new ArrayList<>();
+  }
 
   public String labelstrings() {
 
@@ -79,7 +83,7 @@ public class JZSessionsResult {
     session.room = pItem.getLinkHref("room item");
     session.selfUri = pItem.href;
     //session.sessionHtmlUrl // TODO
-    session.speakerItems =  pItem.getLinkHref("speaker item");
+    session.speakerList.addAll(pItem.getLinkHrefList("speaker item"));
     session.title = pItem.getValue("title");
 
     return session;

@@ -38,7 +38,7 @@ public class TagMetadata {
 
     public static CursorLoader createCursorLoader(Context context) {
         return new CursorLoader(context, ScheduleContract.Tags.CONTENT_URI,
-                TagsQueryEnum.TAG.getProjection(), null, null, null);
+                TagsQueryEnum.TAG.getProjection(), null, null, ScheduleContract.Tags.TAG_NAME + " ASC");
     }
 
     protected TagMetadata(){

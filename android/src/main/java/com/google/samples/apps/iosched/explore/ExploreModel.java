@@ -211,18 +211,15 @@ public class ExploreModel implements Model {
                                 themeGroups.put(rawTag, themeGroup);
                             }
                             themeGroup.addSessionData(session);
-/*
+
+                            TopicGroup topicGroup = topicGroups.get(rawTag);
+                            if (topicGroup == null) {
+                                topicGroup = new TopicGroup();
+                                topicGroup.setTitle(rawTag);
+                                topicGroup.setId(rawTag);
+                                topicGroups.put(rawTag, topicGroup);
                             }
-                            else if (rawTag.startsWith("theme:")) {
-                                ThemeGroup themeGroup = themeGroups.get(rawTag);
-                                if (themeGroup == null) {
-                                    themeGroup = new ThemeGroup();
-                                    themeGroup.setTitle(rawTag);
-                                    themeGroup.setId(rawTag);
-                                    themeGroups.put(rawTag, themeGroup);
-                                }
-                                themeGroup.addSessionData(session);
-                            } */
+                            topicGroup.addSessionData(session);
                         }
                     }
                 } while (cursor.moveToNext());

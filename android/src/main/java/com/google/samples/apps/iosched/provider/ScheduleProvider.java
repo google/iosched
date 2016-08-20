@@ -814,7 +814,6 @@ public class ScheduleProvider extends ContentProvider {
                         .mapToTable(Sessions.ROOM_ID, Tables.SESSIONS)
                         .mapToTable(Sessions.SESSION_ID, Tables.SESSIONS)
                         .mapToTable(MySchedule.MY_SCHEDULE_IN_SCHEDULE, Tables.MY_SCHEDULE)
-                        .map(Sessions.HAS_GIVEN_FEEDBACK, Subquery.SESSION_HAS_GIVEN_FEEDBACK)
                         .where(Sessions.SESSION_STARRED + "=1")
                         .groupBy(Qualified.SESSIONS_SESSION_ID);
             }
@@ -1113,9 +1112,6 @@ public class ScheduleProvider extends ContentProvider {
                 + Tables.VENDORS + " WHERE " + Qualified.VENDORS_TRACK_ID + "="
                 + Qualified.TRACKS_TRACK_ID + ")";
 
-        String SESSION_HAS_GIVEN_FEEDBACK = "(SELECT COUNT(1) FROM "
-                + Tables.FEEDBACK + " WHERE " + Qualified.FEEDBACK_SESSION_ID + "="
-                + Qualified.SESSIONS_SESSION_ID + ")";
 
         String SESSIONS_SNIPPET = "snippet(" + Tables.SESSIONS_SEARCH + ",'{','}','\u2026')";
     }

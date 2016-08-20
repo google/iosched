@@ -37,6 +37,7 @@ import java.util.regex.Pattern;
 import no.java.schedule.R;
 import no.java.schedule.io.model.Constants;
 import no.java.schedule.io.model.EMSItem;
+import no.java.schedule.io.model.EMSLink;
 import no.java.schedule.io.model.JZDate;
 import no.java.schedule.io.model.JZLabel;
 import no.java.schedule.io.model.JZSessionsResponse;
@@ -547,22 +548,27 @@ public class JZSessionHandler extends JSONHandler {
     }
 
     private void parseSpeakers(final JZSessionsResult pEvent, final ArrayList<ContentProviderOperation> pBatch) {
-        Map<String, EMSItem> speakers = load(pEvent.speakerItems);
+        Map<String, EMSItem> speakers = null;
+        for(EMSLink speakerLink : pEvent.speakerList) {
+            speakers = load(speakerLink.href);
 
-        for (EMSItem speaker : speakers.values()) {
-            pBatch.add(ContentProviderOperation
-                    .newInsert(ScheduleContract
-                            .addCallerIsSyncAdapterParameter(ScheduleContract.Speakers.CONTENT_URI))
-                    .withValue(ScheduleContract.SyncColumns.UPDATED, System.currentTimeMillis())
-                    .withValue(ScheduleContract.Speakers.SPEAKER_ID, speaker.href.toString())
-                    .withValue(ScheduleContract.Speakers.SPEAKER_NAME, speaker.getValue("name"))
-                    .withValue(ScheduleContract.Speakers.SPEAKER_ABSTRACT, speaker.getValue("bio"))
-                    .withValue(ScheduleContract.Speakers.SPEAKER_IMAGE_URL, speaker.getLinkHref("photo"))
-                    .withValue(ScheduleContract.Speakers.SPEAKER_URL, "")//TODO
-                    .build());
+            for (EMSItem speaker : speakers.values()) {
+                pBatch.add(ContentProviderOperation
+                        .newInsert(ScheduleContract
+                                .addCallerIsSyncAdapterParameter(ScheduleContract.Speakers.CONTENT_URI))
+                        .withValue(ScheduleContract.SyncColumns.UPDATED, System.currentTimeMillis())
+                        .withValue(ScheduleContract.Speakers.SPEAKER_ID, speaker.href.toString())
+                        .withValue(ScheduleContract.Speakers.SPEAKER_NAME, speaker.getValue("name"))
+                        .withValue(ScheduleContract.Speakers.SPEAKER_ABSTRACT, speaker.getValue("bio"))
+                        .withValue(ScheduleContract.Speakers.SPEAKER_IMAGE_URL, speaker.getLinkHref("photo"))
+                        .withValue(ScheduleContract.Speakers.SPEAKER_URL, "")//TODO
+                        .build());
+            }
         }
 
-        pEvent.speakers = speakers.keySet();
+        if(speakers != null) {
+            pEvent.speakers = speakers.keySet();
+        }
     }
 
     private void populateStartEndTime(final JZSessionsResult pEvent) {
