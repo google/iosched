@@ -702,8 +702,8 @@ public class MapFragment extends com.google.android.gms.maps.MapFragment impleme
         }
 
         LatLngBounds osloSpektrumLatLngBounds = new LatLngBounds(
-                new LatLng(59.912447, 10.753805),       // South west corner
-                new LatLng(59.913504, 10.755886));      // North east corner
+                new LatLng(59.91248733954981, 10.753536779098567),       // South west corner
+                new LatLng(59.9135416490492, 10.755773347221407));      // North east corner
 
         GroundOverlayOptions newarkMap = new GroundOverlayOptions()
                 .image(BitmapDescriptorFactory.fromResource(R.drawable.level0))
