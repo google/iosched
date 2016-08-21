@@ -1102,6 +1102,9 @@ user updates the rating. -->
     <string name="schedule_block_title_keynote">Keynote</string>
     <string name="downloading_sessions_text">Downloading Sessions Please Wait...</string>
     <string name="navview_menu_item_beta">Beta</string>
+    <string name="map_floor1_text">Floor 1</string>
+    <string name="map_floor2_text">Floor 2</string>
+    <string name="map_floor3_text">Floor 3</string>
 
 
 </resources>

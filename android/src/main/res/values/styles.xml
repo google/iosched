@@ -371,7 +371,7 @@
         <item name="colorButtonNormal">@color/button_dark</item>
     </style>
 
-    <style name="MoreButton">
+    <style name="GeneralButtonStyle">
         <item name="android:textAppearance">@style/TextAppearance.AppCompat.Button</item>
         <item name="android:textColor">@color/more_button_text</item>
         <item name="android:textSize">@dimen/app_text_size_small</item>

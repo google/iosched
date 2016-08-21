@@ -322,9 +322,9 @@ public class MapFragment extends com.google.android.gms.maps.MapFragment impleme
 
     @Override
     public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
-        if(requestCode == REQUEST_LOCATION) {
-            if(grantResults[0] == PackageManager.PERMISSION_GRANTED &&
-            grantResults[1] == PackageManager.PERMISSION_GRANTED) {
+        if (requestCode == REQUEST_LOCATION) {
+            if (grantResults[0] == PackageManager.PERMISSION_GRANTED &&
+                    grantResults[1] == PackageManager.PERMISSION_GRANTED) {
 
             }
         }
@@ -688,26 +688,28 @@ public class MapFragment extends com.google.android.gms.maps.MapFragment impleme
                 mTileOverlays.put(entry.floor, mMap.addTileOverlay(tileOverlay));
 
             }
+
+            addOverlayBasedOnFloor(0);
         }
-
-        /*
-        North East
-        Latitude: 59.913504 | Longitude: 10.755886
-
-        South west corner
-        Latitude: 59.912447 | Longitude: 10.753805 */
-
-        LatLngBounds newarkBounds = new LatLngBounds(
-                new LatLng(59.912447, 10.753805),       // South west corner
-                new LatLng(59.913504, 10.755886));      // North east corner
-        GroundOverlayOptions newarkMap = new GroundOverlayOptions()
-                .image(BitmapDescriptorFactory.fromResource(R.drawable.ic_duke_viking512x512))
-                .positionFromBounds(newarkBounds);
-        mMap.addGroundOverlay(newarkMap);
 
         enableMapElements();
     }
 
+    public void addOverlayBasedOnFloor(int floorLevel) {
+        if (mMap != null) {
+            mMap.clear();
+
+        }
+
+        LatLngBounds osloSpektrumLatLngBounds = new LatLngBounds(
+                new LatLng(59.912447, 10.753805),       // South west corner
+                new LatLng(59.913504, 10.755886));      // North east corner
+
+        GroundOverlayOptions newarkMap = new GroundOverlayOptions()
+                .image(BitmapDescriptorFactory.fromResource(R.drawable.level0))
+                .positionFromBounds(osloSpektrumLatLngBounds);
+        mMap.addGroundOverlay(newarkMap);
+    }
 
 
     private final ContentObserver mObserver = new ContentObserver(new Handler()) {
@@ -750,7 +752,7 @@ public class MapFragment extends com.google.android.gms.maps.MapFragment impleme
 
         @Override
         public void onLoadFinished(Loader<List<MarkerLoadingTask.MarkerEntry>> loader,
-                List<MarkerLoadingTask.MarkerEntry> data) {
+                                   List<MarkerLoadingTask.MarkerEntry> data) {
             onMarkersLoaded(data);
         }
 
@@ -771,7 +773,7 @@ public class MapFragment extends com.google.android.gms.maps.MapFragment impleme
 
         @Override
         public void onLoadFinished(Loader<List<TileLoadingTask.TileEntry>> loader,
-                List<TileLoadingTask.TileEntry> data) {
+                                   List<TileLoadingTask.TileEntry> data) {
             onTilesLoaded(data);
         }
 
