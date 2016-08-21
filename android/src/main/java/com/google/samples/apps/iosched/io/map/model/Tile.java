@@ -18,6 +18,6 @@
 package com.google.samples.apps.iosched.io.map.model;
 
 public class Tile {
-    public String filename;
-    public String url;
+        public String filename;
+        public String url;
 }

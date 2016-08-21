@@ -26,6 +26,7 @@ import android.accounts.AccountManager;
 import android.app.Application;
 import android.content.ContentResolver;
 import android.content.Intent;
+import android.support.multidex.MultiDexApplication;
 
 import net.danlew.android.joda.JodaTimeAndroid;
 
@@ -39,7 +40,7 @@ import static com.google.samples.apps.iosched.util.LogUtils.makeLogTag;
  * or Service is used by the user or system. Analytics, dependency injection, and multi-dex
  * frameworks are in this very small set of use cases.
  */
-public class AppApplication extends Application {
+public class AppApplication extends MultiDexApplication {
 
     private static final String TAG = makeLogTag(AppApplication.class);
 

@@ -24,12 +24,18 @@ import com.google.android.gms.maps.UiSettings;
 import com.google.android.gms.maps.model.BitmapDescriptor;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.CameraPosition;
+import com.google.android.gms.maps.model.GroundOverlayOptions;
 import com.google.android.gms.maps.model.IndoorBuilding;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.TileOverlay;
 import com.google.android.gms.maps.model.TileOverlayOptions;
+
 import no.java.schedule.R;
+
+import com.google.android.gms.maps.model.TileProvider;
+import com.google.android.gms.maps.model.UrlTileProvider;
 import com.google.samples.apps.iosched.map.util.CachedTileProvider;
 import com.google.samples.apps.iosched.map.util.MarkerLoadingTask;
 import com.google.samples.apps.iosched.map.util.MarkerModel;
@@ -40,21 +46,26 @@ import com.google.samples.apps.iosched.util.MapUtils;
 
 import com.jakewharton.disklrucache.DiskLruCache;
 
+import android.Manifest;
 import android.app.Activity;
 import android.app.LoaderManager;
 import android.app.LoaderManager.LoaderCallbacks;
 import android.content.Loader;
+import android.content.pm.PackageManager;
 import android.database.ContentObserver;
 import android.database.Cursor;
 import android.graphics.Rect;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.v4.app.ActivityCompat;
 import android.util.SparseArray;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import java.io.IOException;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -70,6 +81,7 @@ public class MapFragment extends com.google.android.gms.maps.MapFragment impleme
         GoogleMap.OnIndoorStateChangeListener, GoogleMap.OnMapClickListener, OnMapReadyCallback {
 
     private static final LatLng OSOLOSPEKTRUM = new LatLng(59.9130, 10.7547);
+    private static final int REQUEST_LOCATION = 0;
 
     private static final String EXTRAS_HIGHLIGHT_ROOM = "EXTRAS_HIGHLIGHT_ROOM";
     private static final String EXTRAS_ACTIVE_FLOOR = "EXTRAS_ACTIVE_FLOOR";
@@ -229,12 +241,22 @@ public class MapFragment extends com.google.android.gms.maps.MapFragment impleme
             mInitialFloor = data.getInt(EXTRAS_ACTIVE_FLOOR, OSLOSPEKTRUM_DEFAULT_LEVEL_INDEX);
         }
 
+        if (ActivityCompat.checkSelfPermission(getActivity(),
+                Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
+                && ActivityCompat.checkSelfPermission(getActivity(),
+                Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(getActivity(), new String[]
+                            {Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION},
+                    REQUEST_LOCATION);
+            return;
+        }
+
         getMapAsync(this);
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
-            Bundle savedInstanceState) {
+                             Bundle savedInstanceState) {
         View mapView = super.onCreateView(inflater, container, savedInstanceState);
 
         setMapInsets(mMapInsets);
@@ -296,6 +318,16 @@ public class MapFragment extends com.google.android.gms.maps.MapFragment impleme
         mMarkersFloor.clear();
 
         mFloor = INVALID_FLOOR;
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+        if(requestCode == REQUEST_LOCATION) {
+            if(grantResults[0] == PackageManager.PERMISSION_GRANTED &&
+            grantResults[1] == PackageManager.PERMISSION_GRANTED) {
+
+            }
+        }
     }
 
     @Override
@@ -654,11 +686,29 @@ public class MapFragment extends com.google.android.gms.maps.MapFragment impleme
                 // Store the tile overlay and provider
                 mTileProviders.put(entry.floor, entry.provider);
                 mTileOverlays.put(entry.floor, mMap.addTileOverlay(tileOverlay));
+
             }
         }
 
+        /*
+        North East
+        Latitude: 59.913504 | Longitude: 10.755886
+
+        South west corner
+        Latitude: 59.912447 | Longitude: 10.753805 */
+
+        LatLngBounds newarkBounds = new LatLngBounds(
+                new LatLng(59.912447, 10.753805),       // South west corner
+                new LatLng(59.913504, 10.755886));      // North east corner
+        GroundOverlayOptions newarkMap = new GroundOverlayOptions()
+                .image(BitmapDescriptorFactory.fromResource(R.drawable.ic_duke_viking512x512))
+                .positionFromBounds(newarkBounds);
+        mMap.addGroundOverlay(newarkMap);
+
         enableMapElements();
     }
+
+
 
     private final ContentObserver mObserver = new ContentObserver(new Handler()) {
         @Override
