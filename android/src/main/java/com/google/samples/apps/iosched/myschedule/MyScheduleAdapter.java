@@ -58,7 +58,7 @@ import static com.google.samples.apps.iosched.util.LogUtils.makeLogTag;
  */
 public class MyScheduleAdapter implements ListAdapter, AbsListView.RecyclerListener {
     private static final String TAG = makeLogTag("MyScheduleAdapter");
-
+    private static final long MILLI_FIVE_MINUTES = 300000;
     private final Context mContext;
     private final LUtils mLUtils;
 
@@ -296,7 +296,7 @@ public class MyScheduleAdapter implements ListAdapter, AbsListView.RecyclerListe
                 // Can't use isPastDuringConference because we want to show feedback after the
                 // conference too.
                 if (showFeedbackButton) {
-                    if (item.endTime > now) {
+                    if ((now - MILLI_FIVE_MINUTES) < item.endTime) {
                         // Session hasn't finished yet, don't show button.
                         showFeedbackButton = false;
                     }

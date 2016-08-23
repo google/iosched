@@ -822,6 +822,9 @@ public final class ScheduleContract {
         public static final String STARTING_AT_TIME_INTERVAL_SELECTION =
                 SESSION_START + " >= ? and " + SESSION_END + " " + "<= ?";
 
+        public static final String STARTING_AT_TIME_INTERVAL_SELECTION_ALARM =
+                SESSION_START + " >= ? and " + "? <= " + " " + SESSION_END;
+
         // Used to fetch upcoming sessions
         public static final String UPCOMING_SELECTION =
                 BlocksColumns.BLOCK_START + " = (select min(" + BlocksColumns.BLOCK_START + ") from " +

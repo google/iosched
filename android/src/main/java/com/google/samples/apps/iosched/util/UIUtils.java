@@ -309,13 +309,7 @@ public class UIUtils {
      * when set.
      */
     public static long getCurrentTime(final Context context) {
-        if (BuildConfig.DEBUG) {
-            return context.getSharedPreferences(MOCK_DATA_PREFERENCES, Context.MODE_PRIVATE)
-                    .getLong(PREFS_MOCK_CURRENT_TIME, System.currentTimeMillis())
-                    + System.currentTimeMillis() - sAppLoadTime;
-        } else {
-            return System.currentTimeMillis();
-        }
+        return System.currentTimeMillis();
     }
 
     /**

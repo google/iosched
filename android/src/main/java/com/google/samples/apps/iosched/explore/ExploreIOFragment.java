@@ -362,9 +362,8 @@ public class ExploreIOFragment extends Fragment implements UpdatableView<Explore
             mCollectionView.onRestoreInstanceState(state);
         }
 
-        // Show empty view if there were no Group cards.
         if (mEmptyView != null) {
-            mEmptyView.setVisibility(inventory.getGroupCount() < 1 ? View.VISIBLE : View.GONE);
+            mEmptyView.setVisibility(View.GONE);
         }
     }
 

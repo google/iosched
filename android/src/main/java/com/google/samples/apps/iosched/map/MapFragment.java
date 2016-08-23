@@ -55,6 +55,7 @@ import android.content.pm.PackageManager;
 import android.database.ContentObserver;
 import android.database.Cursor;
 import android.graphics.Rect;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.ActivityCompat;
@@ -81,7 +82,6 @@ public class MapFragment extends com.google.android.gms.maps.MapFragment impleme
         GoogleMap.OnIndoorStateChangeListener, GoogleMap.OnMapClickListener, OnMapReadyCallback {
 
     private static final LatLng OSOLOSPEKTRUM = new LatLng(59.9130, 10.7547);
-    private static final int REQUEST_LOCATION = 0;
 
     private static final String EXTRAS_HIGHLIGHT_ROOM = "EXTRAS_HIGHLIGHT_ROOM";
     private static final String EXTRAS_ACTIVE_FLOOR = "EXTRAS_ACTIVE_FLOOR";
@@ -241,16 +241,6 @@ public class MapFragment extends com.google.android.gms.maps.MapFragment impleme
             mInitialFloor = data.getInt(EXTRAS_ACTIVE_FLOOR, OSLOSPEKTRUM_DEFAULT_LEVEL_INDEX);
         }
 
-        if (ActivityCompat.checkSelfPermission(getActivity(),
-                Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
-                && ActivityCompat.checkSelfPermission(getActivity(),
-                Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(getActivity(), new String[]
-                            {Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION},
-                    REQUEST_LOCATION);
-            return;
-        }
-
         getMapAsync(this);
     }
 
@@ -320,15 +310,6 @@ public class MapFragment extends com.google.android.gms.maps.MapFragment impleme
         mFloor = INVALID_FLOOR;
     }
 
-    @Override
-    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
-        if (requestCode == REQUEST_LOCATION) {
-            if (grantResults[0] == PackageManager.PERMISSION_GRANTED &&
-                    grantResults[1] == PackageManager.PERMISSION_GRANTED) {
-
-            }
-        }
-    }
 
     @Override
     public void onMapReady(GoogleMap googleMap) {
