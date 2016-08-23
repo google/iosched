@@ -30,6 +30,7 @@ import com.google.samples.apps.iosched.explore.data.TopicGroup;
 import com.google.samples.apps.iosched.framework.Model;
 import com.google.samples.apps.iosched.framework.QueryEnum;
 import com.google.samples.apps.iosched.framework.UserActionEnum;
+import com.google.samples.apps.iosched.io.model.Session;
 import com.google.samples.apps.iosched.provider.ScheduleContract;
 import com.google.samples.apps.iosched.settings.SettingsUtils;
 import com.google.samples.apps.iosched.util.TimeUtils;
@@ -46,9 +47,12 @@ import android.text.TextUtils;
 
 import org.joda.time.LocalTime;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.Comparator;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
@@ -84,7 +88,7 @@ public class ExploreModel implements Model {
      */
     private Map<String, ThemeGroup> mThemes = new HashMap<>();
 
-    private TreeMap<String, SessionScheduleGroup> mScheduleSessionGroups = new TreeMap<>();
+    private TreeMap<Date, SessionScheduleGroup> mScheduleSessionGroups = new TreeMap<>();
 
     private Map<String, String> mTrackTitles;
 
@@ -140,7 +144,8 @@ public class ExploreModel implements Model {
             LiveStreamData liveStreamData = new LiveStreamData();
             Map<String, TopicGroup> topicGroups = new HashMap<>();
             Map<String, ThemeGroup> themeGroups = new HashMap<>();
-            TreeMap<String, SessionScheduleGroup> scheduleSessionGroups = new TreeMap<>();
+            TreeMap<Date, SessionScheduleGroup> scheduleSessionGroups =
+                    new TreeMap<Date, SessionScheduleGroup>();
             // TODO format time
             SimpleDateFormat dateFormat = new SimpleDateFormat("E dd.MMMM yyyy", Locale.getDefault());
 
@@ -167,23 +172,26 @@ public class ExploreModel implements Model {
                     }
 
                     String sessionDateTime = dateFormat.format(session.getStartDate());
+                    try {
 
-                    if (!scheduleSessionGroups.containsKey(sessionDateTime)) {
-                        scheduleSessionGroups.put(sessionDateTime,
-                                buildSessionScheduleItemTopic(session));
-                    } else {
-                        SimpleDateFormat simpleDateFormatter = new SimpleDateFormat("E dd.MMMM yyyy");
-                        String sessionScheduledDate = simpleDateFormatter.format(session.getStartDate());
-                        SessionScheduleGroup sessionScheduleGroup =
-                                scheduleSessionGroups.get(sessionScheduledDate);
-                        if (sessionScheduleGroup == null) {
-                            sessionScheduleGroup = new SessionScheduleGroup();
-                            sessionScheduleGroup.setTitle(sessionScheduledDate);
-                            sessionScheduleGroup.setId("" + session.getStartDate().getTime());
-                            scheduleSessionGroups.put(sessionScheduledDate, sessionScheduleGroup);
+                        if (!scheduleSessionGroups.containsKey(dateFormat.parse(sessionDateTime))) {
+                            scheduleSessionGroups.put(dateFormat.parse(sessionDateTime),
+                                    buildSessionScheduleItemTopic(session));
+                        } else {
+                            String sessionScheduledDate = dateFormat.format(session.getStartDate());
+                            SessionScheduleGroup sessionScheduleGroup =
+                                    scheduleSessionGroups.get(dateFormat.parse(sessionScheduledDate));
+                            if (sessionScheduleGroup == null) {
+                                sessionScheduleGroup = new SessionScheduleGroup();
+                                sessionScheduleGroup.setTitle(sessionScheduledDate);
+                                sessionScheduleGroup.setId("" + session.getStartDate().getTime());scheduleSessionGroups.put(dateFormat.parse(sessionDateTime),
+                                        sessionScheduleGroup);
+                            }
+
+                            sessionScheduleGroup.addSessionData(session);
                         }
-
-                        sessionScheduleGroup.addSessionData(session);
+                    } catch (ParseException e) {
+                        e.printStackTrace();
                     }
 
                     String tags = session.getTags();
