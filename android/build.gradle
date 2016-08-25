@@ -38,7 +38,7 @@ android {
         applicationId "no.java.schedule"
         versionCode 54
         versionName "2016.0"
-        minSdkVersion 20
+        minSdkVersion 19
         targetSdkVersion 23
 
         multiDexEnabled true
@@ -143,15 +143,14 @@ dependencies {
     compile "com.google.android.gms:play-services-plus:${google_play_services_client_library_version}"
     compile "com.google.android.gms:play-services-wearable:${google_play_services_client_library_version}"
     compile "com.google.android.gms:play-services-auth:${google_play_services_client_library_version}"
+    compile 'com.estimote:sdk:0.11.0@aar'
 
-    compile 'com.android.support:multidex:1.0.1'
 
     // Android support libraries.
     compile "com.android.support:appcompat-v7:${android_support_lib_version}"
     compile "com.android.support:cardview-v7:${android_support_lib_version}"
     compile "com.android.support:design:${android_support_lib_version}"
     compile "com.android.support:support-v13:${android_support_lib_version}"
-
     compile 'net.danlew:android.joda:2.9.4.1'
 
     // Different Open Source Librariesg

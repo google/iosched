@@ -49,6 +49,8 @@
     <uses-permission android:name="android.permission.VIBRATE" />
     <action android:name="android.net.conn.CONNECTIVITY_CHANGE"/>
     <uses-permission android:name="android.permission.NFC" />
+    <uses-permission android:name="android.permission.BLUETOOTH_ADMIN"/>
+    <uses-permission android:name="android.permission.BLUETOOTH"/>
     <!-- required for YouTube -->
     <uses-permission android:name="com.google.android.providers.gsf.permission.READ_GSERVICES" />
     <!-- required for Calendar API in Android 4.0 or above -->

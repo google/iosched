@@ -36,11 +36,13 @@ import no.java.schedule.R;
 
 import com.google.android.gms.maps.model.TileProvider;
 import com.google.android.gms.maps.model.UrlTileProvider;
+import com.google.samples.apps.iosched.explore.ExploreIOActivity;
 import com.google.samples.apps.iosched.map.util.CachedTileProvider;
 import com.google.samples.apps.iosched.map.util.MarkerLoadingTask;
 import com.google.samples.apps.iosched.map.util.MarkerModel;
 import com.google.samples.apps.iosched.map.util.TileLoadingTask;
 import com.google.samples.apps.iosched.provider.ScheduleContract;
+import com.google.samples.apps.iosched.ui.BaseActivity;
 import com.google.samples.apps.iosched.util.AnalyticsHelper;
 import com.google.samples.apps.iosched.util.MapUtils;
 
@@ -50,6 +52,7 @@ import android.Manifest;
 import android.app.Activity;
 import android.app.LoaderManager;
 import android.app.LoaderManager.LoaderCallbacks;
+import android.content.Intent;
 import android.content.Loader;
 import android.content.pm.PackageManager;
 import android.database.ContentObserver;
@@ -82,6 +85,7 @@ public class MapFragment extends com.google.android.gms.maps.MapFragment impleme
         GoogleMap.OnIndoorStateChangeListener, GoogleMap.OnMapClickListener, OnMapReadyCallback {
 
     private static final LatLng OSOLOSPEKTRUM = new LatLng(59.9130, 10.7547);
+    private static final int REQUEST_LOCATION = 0;
 
     private static final String EXTRAS_HIGHLIGHT_ROOM = "EXTRAS_HIGHLIGHT_ROOM";
     private static final String EXTRAS_ACTIVE_FLOOR = "EXTRAS_ACTIVE_FLOOR";
@@ -223,6 +227,21 @@ public class MapFragment extends com.google.android.gms.maps.MapFragment impleme
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            if (ActivityCompat.checkSelfPermission(getActivity(),
+                    Manifest.permission.ACCESS_FINE_LOCATION)
+                    != PackageManager.PERMISSION_GRANTED
+                    && ActivityCompat.checkSelfPermission(getActivity(),
+                    Manifest.permission.ACCESS_COARSE_LOCATION)
+                    != PackageManager.PERMISSION_GRANTED) {
+                requestPermissions(new String[]
+                                {Manifest.permission.
+                                        ACCESS_FINE_LOCATION,
+                                        Manifest.permission.ACCESS_COARSE_LOCATION},
+                        REQUEST_LOCATION);
+            }
+        }
+
         // ANALYTICS SCREEN: View the Map screen
         // Contains: Nothing (Page name is a constant)
         AnalyticsHelper.sendScreenView(SCREEN_LABEL);
@@ -253,6 +272,20 @@ public class MapFragment extends com.google.android.gms.maps.MapFragment impleme
 
         return mapView;
     }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String[] permissions,
+                                           int[] grantResults) {
+        if (requestCode == REQUEST_LOCATION) {
+            if (grantResults[0] == PackageManager.PERMISSION_GRANTED &&
+                    grantResults[1] == PackageManager.PERMISSION_GRANTED) {
+
+            }
+        } else {
+            super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        }
+    }
+
 
     public void setMapInsets(int left, int top, int right, int bottom) {
         mMapInsets.set(left, top, right, bottom);

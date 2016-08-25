@@ -45,8 +45,6 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.text.TextUtils;
 
-import org.joda.time.LocalTime;
-
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Collection;
@@ -267,8 +265,7 @@ public class ExploreModel implements Model {
     private SessionScheduleGroup buildSessionScheduleItemTopic(SessionData session) {
         SimpleDateFormat dateFormat = new SimpleDateFormat("hh:mm", Locale.getDefault());
         String startTimeString = dateFormat.format(session.getStartDate());
-        LocalTime startTime = LocalTime.parse(startTimeString);
-        long scheduleSessionTime = startTime.getMillisOfDay();
+        long scheduleSessionTime = session.getStartDate().getTime();
 
         SessionScheduleGroup sScheduleGroup = new SessionScheduleGroup();
         SimpleDateFormat simpleDateFormatter = new SimpleDateFormat("E dd.MMMM yyyy");

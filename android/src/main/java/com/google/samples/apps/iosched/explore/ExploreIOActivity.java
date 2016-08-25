@@ -58,7 +58,6 @@ import static com.google.samples.apps.iosched.util.LogUtils.makeLogTag;
 public class ExploreIOActivity extends BaseActivity implements Toolbar.OnMenuItemClickListener {
 
     private static final String TAG = makeLogTag(ExploreIOActivity.class);
-    private static final int REQUEST_LOCATION = 0;
     private static final String SCREEN_LABEL = "Explore Javazone";
 
     @Override
@@ -66,17 +65,6 @@ public class ExploreIOActivity extends BaseActivity implements Toolbar.OnMenuIte
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.explore_io_act);
-
-        if (android.os.Build.VERSION.SDK_INT > Build.VERSION_CODES.M) {
-            if (checkSelfPermission(
-                    Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
-                    && ActivityCompat.checkSelfPermission(this,
-                    Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-                ActivityCompat.requestPermissions(this, new String[]
-                                {Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION},
-                        REQUEST_LOCATION);
-            }
-        }
 
             addPresenterFragment(
                     R.id.explore_library_frag,
@@ -123,18 +111,6 @@ public class ExploreIOActivity extends BaseActivity implements Toolbar.OnMenuIte
             toolbar.inflateMenu(R.menu.explore_io_menu);
             toolbar.setOnMenuItemClickListener(this);
             return true;
-        }
-
-
-        @Override
-        public void onRequestPermissionsResult ( int requestCode, String[] permissions,
-        int[] grantResults){
-            if (requestCode == REQUEST_LOCATION) {
-                if (grantResults[0] == PackageManager.PERMISSION_GRANTED &&
-                        grantResults[1] == PackageManager.PERMISSION_GRANTED) {
-
-                }
-            }
         }
 
         @Override

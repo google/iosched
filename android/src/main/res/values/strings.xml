@@ -473,7 +473,7 @@
     <string name="navdrawer_item_explore_a11y">Explore JavaZone</string>
 
     <!-- Menu item to open the Map screen [CHAR_LIMIT=20] -->
-    <string name="navdrawer_item_map">Map</string>
+    <string name="navdrawer_item_map">Map (beta)</string>
 
     <!-- Menu item to open the My Schedule screen [CHAR_LIMIT=20] -->
     <string name="navdrawer_item_my_schedule">My Schedule</string>
@@ -1105,6 +1105,7 @@ user updates the rating. -->
     <string name="map_floor1_text">Floor 1</string>
     <string name="map_floor2_text">Floor 2</string>
     <string name="map_floor3_text">Floor 3</string>
+    <string name="feedback_comment_text">Any other comments?</string>
 
 
 </resources>

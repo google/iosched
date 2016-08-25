@@ -7,12 +7,14 @@ public class JZFeedback implements Serializable {
     private int relevance;
     private int content;
     private int quality;
+    private String comment;
 
-    public JZFeedback(int overall, int relevance, int content, int quality) {
+    public JZFeedback(int overall, int relevance, int content, int quality, String comment) {
         this.overall = overall;
         this.relevance = relevance;
         this.content = content;
         this.quality = quality;
+        this.comment = comment;
     }
 
     public int getOverall() {
@@ -45,5 +47,11 @@ public class JZFeedback implements Serializable {
 
     public void setQuality(int quality) {
         this.quality = quality;
+    }
+
+    public String getComment() { return comment; }
+
+    public void setComment(String f) {
+        this.comment = f;
     }
 }

@@ -143,7 +143,7 @@ public class ExploreSessionsActivity extends BaseActivity
 
         mFragment = (ExploreSessionsFragment) getFragmentManager()
                 .findFragmentById(R.id.explore_sessions_frag);
-
+        mDateSelected = getIntent().getStringExtra(EXTRA_FILTER_DATE);
         if (savedInstanceState != null) {
 
             mTagFilterHolder = savedInstanceState.getParcelable(STATE_FILTER_TAGS);

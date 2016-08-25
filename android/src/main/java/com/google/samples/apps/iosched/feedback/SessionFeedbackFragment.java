@@ -55,16 +55,12 @@ public class SessionFeedbackFragment extends Fragment
         implements UpdatableView<SessionFeedbackModel> {
 
     private TextView mTitle;
-
     private TextView mSpeakers;
-
     private RatingBar mOverallFeedbackBar;
-
     private NumberRatingBar mSessionRelevantFeedbackBar;
-
     private NumberRatingBar mContentFeedbackBar;
-
     private NumberRatingBar mSpeakerFeedbackBar;
+    private TextView mSessionFeedbackComments;
 
     private List<UserActionListener> listeners = new ArrayList<UserActionListener>();
     private RestServiceDevNull mDevNullService;
@@ -93,6 +89,7 @@ public class SessionFeedbackFragment extends Fragment
                 R.id.session_relevant_feedback_bar);
         mContentFeedbackBar = (NumberRatingBar) rootView.findViewById(R.id.content_feedback_bar);
         mSpeakerFeedbackBar = (NumberRatingBar) rootView.findViewById(R.id.speaker_feedback_bar);
+        mSessionFeedbackComments = (TextView) rootView.findViewById(R.id.feedback_comment_textview);
 
         if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
             // Helps accessibility services determine the importance of this view.
@@ -136,16 +133,17 @@ public class SessionFeedbackFragment extends Fragment
         int sessionRelevantAnswer = mSessionRelevantFeedbackBar.getProgress();
         int contentAnswer = mContentFeedbackBar.getProgress();
         int speakerAnswer = mSpeakerFeedbackBar.getProgress();
+        String feedbackComment = mSessionFeedbackComments.getText() != null ?
+                mSessionFeedbackComments.getText().toString() : "";
         String sessionId = null;
         String eventId = null;
-        String comments = "";
 
         Bundle args = new Bundle();
         args.putInt(SessionFeedbackModel.DATA_RATING_INT, overallAnswer);
         args.putInt(SessionFeedbackModel.DATA_SESSION_RELEVANT_ANSWER_INT, sessionRelevantAnswer);
         args.putInt(SessionFeedbackModel.DATA_CONTENT_ANSWER_INT, contentAnswer);
         args.putInt(SessionFeedbackModel.DATA_SPEAKER_ANSWER_INT, speakerAnswer);
-        args.putString(SessionFeedbackModel.DATA_COMMENT_STRING, comments);
+        args.putString(SessionFeedbackModel.DATA_COMMENT_STRING, feedbackComment);
 
         for (UserActionListener h1 : listeners) {
             h1.onUserAction(SessionFeedbackModel.SessionFeedbackUserActionEnum.SUBMIT, args);
@@ -160,7 +158,7 @@ public class SessionFeedbackFragment extends Fragment
         }
 
         JZFeedback jzFeedback = new JZFeedback(overallAnswer, sessionRelevantAnswer,
-                contentAnswer, speakerAnswer);
+                contentAnswer, speakerAnswer, feedbackComment);
         mDevNullService.submitFeedbackToDevNull(eventId, sessionId, generateUniqueVoterId(),jzFeedback);
     }
 

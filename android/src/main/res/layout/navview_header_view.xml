@@ -28,7 +28,7 @@
                android:layout_height="@dimen/navdrawer_chosen_account_height"
                android:layout_gravity="top"
                android:scaleType="centerCrop"
-               android:src="@drawable/io_logo"
+               android:src="@drawable/ic_logo"
                android:tint="@color/app_io_logo_tint"
                android:tintMode="screen"
                android:id="@+id/profile_cover_image"

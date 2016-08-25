@@ -16,6 +16,7 @@
 
 package com.google.samples.apps.iosched;
 
+import com.estimote.sdk.EstimoteSDK;
 import com.google.android.gms.common.GooglePlayServicesUtil;
 import com.google.android.gms.security.ProviderInstaller;
 import com.google.samples.apps.iosched.settings.SettingsUtils;
@@ -28,7 +29,6 @@ import android.content.ContentResolver;
 import android.content.Intent;
 import android.support.multidex.MultiDexApplication;
 
-import net.danlew.android.joda.JodaTimeAndroid;
 
 import static com.google.samples.apps.iosched.util.LogUtils.LOGE;
 import static com.google.samples.apps.iosched.util.LogUtils.LOGW;
@@ -40,7 +40,7 @@ import static com.google.samples.apps.iosched.util.LogUtils.makeLogTag;
  * or Service is used by the user or system. Analytics, dependency injection, and multi-dex
  * frameworks are in this very small set of use cases.
  */
-public class AppApplication extends MultiDexApplication {
+public class AppApplication extends Application {
 
     private static final String TAG = makeLogTag(AppApplication.class);
 
@@ -48,7 +48,10 @@ public class AppApplication extends MultiDexApplication {
     public void onCreate() {
         super.onCreate();
         AnalyticsHelper.prepareAnalytics(getApplicationContext());
-        JodaTimeAndroid.init(this);
+        EstimoteSDK.initialize(getApplicationContext(),
+                "javazone-app-658"
+                , "f28d4754cecbda0101f6874412552238");
+        EstimoteSDK.enableDebugLogging(true);
 
         final String ACCOUNT_NAME = "JavaZone Schedule";
         final String ACCOUNT_TYPE = "no.java.schedule";
