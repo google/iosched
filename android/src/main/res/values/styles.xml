@@ -406,6 +406,12 @@
         <item name="android:lineSpacingMultiplier">@dimen/body_1_spacing</item>
     </style>
 
+    <style name="Body1TextPrimaryTextColor">
+        <item name="android:textAppearance">@style/TextAppearance.Body1</item>
+        <item name="android:textColor">@color/theme_primary</item>
+        <item name="android:lineSpacingMultiplier">@dimen/body_1_spacing</item>
+    </style>
+
     <style name="Body2Text">
         <item name="android:textAppearance">@style/TextAppearance.Body2</item>
         <item name="android:lineSpacingMultiplier">@dimen/body_1_spacing</item>

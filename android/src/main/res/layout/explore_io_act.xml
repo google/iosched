@@ -26,30 +26,31 @@
         android:fitsSystemWindows="true">
 
     <!-- Main layout -->
-    <com.google.samples.apps.iosched.ui.widget.DrawShadowFrameLayout
+    <RelativeLayout
             android:id="@+id/main_content"
             android:layout_width="match_parent"
             android:background="@color/light_grey"
             android:layout_height="match_parent"
             app:shadowDrawable="@drawable/header_shadow">
-
-        <fragment android:name="com.google.samples.apps.iosched.explore.ExploreIOFragment"
-                  android:id="@+id/explore_library_frag"
-                  android:layout_width="match_parent"
-                  android:layout_height="match_parent" />
-
         <LinearLayout style="@style/HeaderBar"
-                      android:id="@+id/headerbar"
-                      android:layout_width="match_parent"
-                      android:layout_height="wrap_content"
-                      android:clickable="true"
-                      android:orientation="vertical">
+            android:id="@+id/headerbar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:clickable="true"
+            android:orientation="vertical">
 
-            <include layout="@layout/toolbar_actionbar" /> <!-- placeholder, empty except on L -->
-
+            <include
+                android:id="@+id/toolbar_base"
+                layout="@layout/toolbar_actionbar" />
         </LinearLayout>
 
-    </com.google.samples.apps.iosched.ui.widget.DrawShadowFrameLayout>
+        <fragment android:name="com.google.samples.apps.iosched.explore.ExploreIOFragment"
+            android:id="@+id/explore_library_frag"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@+id/headerbar"/>
+
+    </RelativeLayout>
 
     <!-- Nav drawer -->
     <include layout="@layout/navdrawer" />

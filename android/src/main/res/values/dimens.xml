@@ -230,5 +230,7 @@
     <dimen name="logo_image_size">72dp</dimen>
     <dimen name="fab_size">24dp</dimen>
     <dimen name="fab_size2">32dp</dimen>
+    <dimen name="default_margin">16dp</dimen>
+    <dimen name="small_margin">8dp</dimen>
 
 </resources>
