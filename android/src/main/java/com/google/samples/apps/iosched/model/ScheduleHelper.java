@@ -21,20 +21,15 @@ import android.os.AsyncTask;
 import android.text.TextUtils;
 import android.util.Log;
 
-import no.java.schedule.BuildConfig;
-import no.java.schedule.R;
+import no.java.schedule.v2.BuildConfig;
+
 import com.google.samples.apps.iosched.provider.ScheduleContract;
 import com.google.samples.apps.iosched.provider.ScheduleContract.Blocks;
 import com.google.samples.apps.iosched.provider.ScheduleContract.Sessions;
-import com.google.samples.apps.iosched.provider.ScheduleContractHelper;
-import com.google.samples.apps.iosched.settings.SettingsUtils;
 import com.google.samples.apps.iosched.myschedule.MyScheduleAdapter;
-import com.google.samples.apps.iosched.util.AccountUtils;
 import com.google.samples.apps.iosched.util.UIUtils;
 
 import java.util.ArrayList;
-import java.util.Date;
-import java.util.Iterator;
 import java.util.Locale;
 
 import static com.google.samples.apps.iosched.util.LogUtils.LOGD;

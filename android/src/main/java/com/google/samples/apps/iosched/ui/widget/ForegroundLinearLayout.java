@@ -26,7 +26,7 @@ import android.util.AttributeSet;
 import android.view.Gravity;
 import android.widget.LinearLayout;
 
-import no.java.schedule.R;
+import no.java.schedule.v2.R;
 
 /**
  * Extension of LinearLayout that adds a Foreground drawable.

@@ -31,9 +31,9 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 
-import no.java.schedule.io.model.JZLabel;
-import no.java.schedule.io.model.JZSessionsResponse;
-import no.java.schedule.io.model.JZSessionsResult;
+import no.java.schedule.v2.io.model.JZLabel;
+import no.java.schedule.v2.io.model.JZSessionsResponse;
+import no.java.schedule.v2.io.model.JZSessionsResult;
 
 /**
  * Handler that parses track JSON data into a list of content provider operations.

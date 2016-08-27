@@ -31,9 +31,9 @@ import android.net.Uri;
 import java.io.IOException;
 import java.util.ArrayList;
 
-import no.java.schedule.io.model.EMSCollection;
-import no.java.schedule.io.model.EMSItem;
-import no.java.schedule.io.model.JZSlotsResponse;
+import no.java.schedule.v2.io.model.EMSCollection;
+import no.java.schedule.v2.io.model.EMSItem;
+import no.java.schedule.v2.io.model.JZSlotsResponse;
 
 import static com.google.samples.apps.iosched.util.LogUtils.LOGV;
 import static com.google.samples.apps.iosched.util.LogUtils.LOGW;

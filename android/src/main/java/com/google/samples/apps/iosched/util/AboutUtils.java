@@ -30,7 +30,7 @@ import android.text.method.LinkMovementMethod;
 import android.webkit.WebView;
 import android.widget.TextView;
 
-import no.java.schedule.R;
+import no.java.schedule.v2.R;
 
 /**
  * This is a set of helper methods for showing various "about" information in the app.

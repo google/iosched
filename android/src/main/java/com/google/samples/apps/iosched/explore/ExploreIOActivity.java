@@ -16,7 +16,7 @@
 
 package com.google.samples.apps.iosched.explore;
 
-import no.java.schedule.R;
+import no.java.schedule.v2.R;
 import com.google.samples.apps.iosched.explore.ExploreModel.ExploreQueryEnum;
 import com.google.samples.apps.iosched.explore.ExploreModel.ExploreUserActionEnum;
 import com.google.samples.apps.iosched.explore.data.ItemGroup;

@@ -16,7 +16,7 @@
   -->
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    package="no.java.schedule"
+    package="no.java.schedule.v2"
     android:versionCode="333"
     android:versionName="3.3.3"
     android:installLocation="auto">
@@ -28,7 +28,7 @@
         android:targetSdkVersion="21" / -->
 
     <permission
-        android:name="no.java.schedule.permission.WRITE_SCHEDULE"
+        android:name="no.java.schedule.v2.permission.WRITE_SCHEDULE"
         android:description="@string/permission_write"
         android:label="@string/permission_write"
         android:protectionLevel="normal" />
@@ -61,14 +61,14 @@
     <uses-permission android:name="com.google.android.c2dm.permission.RECEIVE" />
 
     <permission
-        android:name="no.java.schedule.permission.C2D_MESSAGE"
+        android:name="no.java.schedule.v2.permission.C2D_MESSAGE"
         android:protectionLevel="signature" />
 
     <uses-permission android:name="no.java.schedule.permission.C2D_MESSAGE" />
 
     <!-- required for MapView v2 -->
     <permission
-        android:name="no.java.schedule.permission.MAPS_RECEIVE"
+        android:name="no.java.schedule.v2.permission.MAPS_RECEIVE"
         android:protectionLevel="signature" />
 
     <uses-permission android:name="no.java.schedule.permission.MAPS_RECEIVE" />
@@ -288,7 +288,8 @@
             android:label="@string/title_session_feedback"
             android:theme="@style/Theme.IOSched.Feedback"
             android:parentActivityName="com.google.samples.apps.iosched.explore.ExploreIOActivity"
-            android:exported="false">
+            android:exported="false"
+            tools:ignore="GoogleAppIndexingUrlError">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.google.samples.apps.iosched.explore.ExploreIOActivity" />
@@ -457,16 +458,16 @@
         <!-- Data, sync and schedule editing components -->
 
         <provider
-            android:name="no.java.schedule.provider.ScheduleProvider"
+            android:name=".provider.ScheduleProvider"
             android:authorities="no.java.schedule.v2"
             android:exported="true"
             android:label="@string/app_name"
             android:syncable="true"
             android:writePermission="com.google.samples.apps.iosched.permission.WRITE_SCHEDULE" />
 
-        <service android:name="no.java.schedule.service.ScheduleUpdaterService" />
+        <service android:name="service.ScheduleUpdaterService" />
 
-        <service android:name="no.java.schedule.service.SyncService"
+        <service android:name="service.SyncService"
             android:exported="true"
             tools:ignore="ExportedService">
             <intent-filter>

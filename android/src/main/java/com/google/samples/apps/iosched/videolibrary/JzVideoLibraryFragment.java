@@ -15,7 +15,7 @@ import android.widget.Toast;
 
 import com.google.samples.apps.iosched.util.NetworkUtils;
 
-import no.java.schedule.R;
+import no.java.schedule.v2.R;
 
 /**
  * Created by kkho on 28.05.2016.
