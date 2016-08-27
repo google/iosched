@@ -35,7 +35,7 @@ android {
     buildToolsVersion "23.0.3"
 
     defaultConfig {
-        applicationId "no.java.schedule"
+        applicationId "no.java.schedule.v2"
         versionCode 54
         versionName "2016.0"
         minSdkVersion 19
