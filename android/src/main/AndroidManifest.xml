@@ -458,7 +458,7 @@
 
         <provider
             android:name="no.java.schedule.provider.ScheduleProvider"
-            android:authorities="no.java.schedule"
+            android:authorities="no.java.schedule.v2"
             android:exported="true"
             android:label="@string/app_name"
             android:syncable="true"
