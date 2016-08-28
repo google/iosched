@@ -3,18 +3,19 @@
     {
       "region": [
         {
-          "name": "region 1",
+          "name": "region1",
+          "description" : "this is region for room 1",
           "coordinates": {
-            "latitude" : 20,
-            "longitude" : 50
+            "latitude" : 59.913259213357584,
+            "longitude" : 10.754440426826477
           },
           "beacons": [
             {
               "beacon": {
                 "name": "beacon11",
-                "UUID": "abc",
-                "major": 1,
-                "minor": 2
+                "UUID": "b9407f30-f5f8-466e-aff9-25556b57fe6d",
+                "major": 14441,
+                "minor": 57772
               },
               "beacon": {
                 "name": "beacon12",
@@ -31,6 +32,7 @@
       "region": [
         {
           "name": "region 2",
+          "description" : "this is region for room 2",
           "coordinates": {
             "latitude" : 20,
             "longitude" : 50
@@ -58,6 +60,7 @@
       "region": [
         {
           "name": "region 3",
+          "description" : "this is region for room 3",
           "coordinates": {
             "latitude" : 20,
             "longitude" : 50
