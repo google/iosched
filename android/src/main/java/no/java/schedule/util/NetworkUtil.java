@@ -10,4 +10,11 @@ public class NetworkUtil {
         BluetoothAdapter bluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
         return bluetoothAdapter != null && bluetoothAdapter.isEnabled();
     }
+
+    public static void enableBluetooth(Context context) {
+        BluetoothAdapter bluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
+        if(!bluetoothAdapter.isEnabled()) {
+            bluetoothAdapter.enable();
+        }
+    }
 }

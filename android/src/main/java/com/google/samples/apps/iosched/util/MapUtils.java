@@ -53,8 +53,8 @@ public class MapUtils {
         if (TextUtils.isEmpty(markerType)) {
             return MarkerModel.TYPE_INACTIVE;
         }
-        String tags = markerType.toUpperCase(Locale.US);
-        if (tags.contains("SESSION")) {
+        String tags = markerType.toLowerCase(Locale.US);
+        if (tags.contains("session")) {
             return MarkerModel.TYPE_SESSION;
         } else if (tags.contains("PLAIN")) {
             return MarkerModel.TYPE_PLAIN;
@@ -72,7 +72,11 @@ public class MapUtils {
             return MarkerModel.TYPE_MOSCONE;
         } else if (tags.contains("INACTIVE")) {
             return MarkerModel.TYPE_INACTIVE;
+        } else if(tags.contains("booth")) {
+            return MarkerModel.TYPE_BOOTH;
         }
+
+
         return MarkerModel.TYPE_INACTIVE; // default
     }
 

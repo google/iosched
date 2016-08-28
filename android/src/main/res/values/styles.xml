@@ -562,8 +562,8 @@
 
     <style name="GeneralButtonStyle" parent="FontMedium">
         <item name="android:textSize">@dimen/text_size_small</item>
-        <item name="android:background">@color/primary</item>
+        <item name="android:background">@color/jz_yellow</item>
         <item name="android:padding">@dimen/micro_margin</item>
-        <item name="android:textColor">@color/text_inverse</item>
+        <item name="android:textColor">@color/jz_darkred</item>
     </style>
 </resources>

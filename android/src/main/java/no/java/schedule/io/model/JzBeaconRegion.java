@@ -7,16 +7,70 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class JzBeaconRegion {
-
-    @SerializedName("beacons")
+    @SerializedName("name")
     @Expose
-    private List<JzBeacon> beacons = new ArrayList<JzBeacon>();
+    private String name;
+    @SerializedName("level")
+    @Expose
+    private int level;
+    @SerializedName("type")
+    @Expose
+    private String type;
+    @SerializedName("description")
+    @Expose
+    private String description;
+    @SerializedName("coordinates")
+    @Expose
+    private Coordinates coordinates;
+    @SerializedName("major")
+    @Expose
+    private int major;
 
-    public List<JzBeacon> getBeacons() {
-        return beacons;
+    public Coordinates getCoordinates() {
+        return coordinates;
     }
 
-    public void setBeacons(List<JzBeacon> beacons) {
-        this.beacons = beacons;
+    public void setCoordinates(Coordinates coordinates) {
+        this.coordinates = coordinates;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
+
+    public int getLevel() {
+        return level;
+    }
+
+    public void setLevel(int level) {
+        this.level = level;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public int getMajor() {
+        return major;
+    }
+
+    public void setMajor(int major) {
+        this.major = major;
     }
 }

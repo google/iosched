@@ -32,6 +32,7 @@ import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.TileOverlay;
 import com.google.android.gms.maps.model.TileOverlayOptions;
 
+import no.java.schedule.util.NetworkUtil;
 import no.java.schedule.v2.R;
 import no.java.schedule.util.EstimoteBeaconManager;
 import no.java.schedule.v2.io.model.Constants;
@@ -54,16 +55,19 @@ import android.Manifest;
 import android.app.Activity;
 import android.app.LoaderManager;
 import android.app.LoaderManager.LoaderCallbacks;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.Loader;
 import android.content.pm.PackageManager;
 import android.database.ContentObserver;
 import android.database.Cursor;
 import android.graphics.Rect;
+import android.net.Network;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.ActivityCompat;
+import android.support.v7.app.AlertDialog;
 import android.util.SparseArray;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -106,14 +110,6 @@ public class MapFragment extends com.google.android.gms.maps.MapFragment impleme
 
     private static final String TAG = makeLogTag(MapFragment.class);
 
-    // Tile Providers
-    private SparseArray<CachedTileProvider> mTileProviders =
-            new SparseArray<>(INITIAL_FLOOR_COUNT);
-    private SparseArray<TileOverlay> mTileOverlays =
-            new SparseArray<>(INITIAL_FLOOR_COUNT);
-
-    private DiskLruCache mTileCache;
-
     // Markers stored by id
     private HashMap<String, MarkerModel> mMarkers = new HashMap<>();
     // Markers stored by floor
@@ -144,7 +140,6 @@ public class MapFragment extends com.google.android.gms.maps.MapFragment impleme
     private int mInitialFloor = OSLOSPEKTRUM_DEFAULT_LEVEL_INDEX;
 
     private static final int TOKEN_LOADER_MARKERS = 0x1;
-    private static final int TOKEN_LOADER_TILES = 0x2;
     //For Analytics tracking
     public static final String SCREEN_LABEL = "Map";
 
@@ -244,6 +239,8 @@ public class MapFragment extends com.google.android.gms.maps.MapFragment impleme
             }
         }
 
+
+
         // ANALYTICS SCREEN: View the Map screen
         // Contains: Nothing (Page name is a constant)
         AnalyticsHelper.sendScreenView(SCREEN_LABEL);
@@ -270,17 +267,7 @@ public class MapFragment extends com.google.android.gms.maps.MapFragment impleme
                              Bundle savedInstanceState) {
         View mapView = super.onCreateView(inflater, container, savedInstanceState);
         mEstimoteBeaconManager = new EstimoteBeaconManager(
-                getActivity(),
-                new String[]{
-                        Constants.REGION_ROOM_1,
-                        Constants.REGION_ROOM_2,
-                        Constants.REGION_ROOM_3,
-                        Constants.REGION_ROOM_4,
-                        Constants.REGION_ROOM_5,
-                        Constants.REGION_ROOM_6,
-                        Constants.REGION_ROOM_7,
-                        Constants.REGION_ROOM_8
-                });
+                getActivity());
         mEstimoteBeaconManager.initializeEstimoteBeaconManager(getActivity());
         setMapInsets(mMapInsets);
 
@@ -296,13 +283,42 @@ public class MapFragment extends com.google.android.gms.maps.MapFragment impleme
     @Override
     public void onResume() {
         super.onResume();
-        mEstimoteBeaconManager.startMonitorEstimoteBeacons(getActivity());
+
+        if(!NetworkUtil.isBluetoothOn(getActivity())) {
+            createAlertDialog().show();
+        }
+        else {
+            mEstimoteBeaconManager.startMonitorEstimoteBeacons(getActivity());
+        }
+    }
+
+    private AlertDialog.Builder createAlertDialog() {
+        AlertDialog.Builder buildAlertDialog = new AlertDialog.Builder(getActivity(),
+                R.style.Dialog_Theme);
+        buildAlertDialog.setTitle("Bluetooth disabled");
+        buildAlertDialog.setMessage("Please turn on Bluetooth to be able to use indoor maps");
+        buildAlertDialog.setPositiveButton("Enable", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                NetworkUtil.enableBluetooth(getActivity());
+                mEstimoteBeaconManager.startMonitorEstimoteBeacons(getActivity());
+            }
+        });
+        buildAlertDialog.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+
+            }
+        });
+
+        return buildAlertDialog;
     }
 
     @Override
     public void onPause() {
         super.onPause();
         mEstimoteBeaconManager.stopRanging();
+        mEstimoteBeaconManager.destroyEstimoteBeaconManager();
     }
 
     @Override
@@ -342,24 +358,10 @@ public class MapFragment extends com.google.android.gms.maps.MapFragment impleme
     @Override
     public void onStop() {
         super.onStop();
-
-        closeTileCache();
         mEstimoteBeaconManager.stopEstimoteBeaconManager();
     }
 
-    /**
-     * Closes the caches of all allocated tile providers.
-     *
-     * @see CachedTileProvider#closeCache()
-     */
-    private void closeTileCache() {
-        for (int i = 0; i < mTileProviders.size(); i++) {
-            try {
-                mTileProviders.valueAt(i).closeCache();
-            } catch (IOException e) {
-            }
-        }
-    }
+
 
     /**
      * Clears the map and initialises all map variables that hold markers and overlays.
@@ -368,13 +370,6 @@ public class MapFragment extends com.google.android.gms.maps.MapFragment impleme
         if (mMap != null) {
             mMap.clear();
         }
-
-        // Close all tile provider caches
-        closeTileCache();
-
-        // Clear all map elements
-        mTileProviders.clear();
-        mTileOverlays.clear();
 
         mMarkers.clear();
         mMarkersFloor.clear();
@@ -399,24 +394,22 @@ public class MapFragment extends com.google.android.gms.maps.MapFragment impleme
         LoaderManager lm = getLoaderManager();
         lm.initLoader(TOKEN_LOADER_MARKERS, null, mMarkerLoader).forceLoad();
 
-        // load the tile overlays
-        lm.initLoader(TOKEN_LOADER_TILES, null, mTileLoader).forceLoad();
 
         setupMap(true);
     }
 
     private void setupMap(boolean resetCamera) {
+        addOverlayBasedOnFloor(0);
 
         // Add a Marker for Oslo Spektrum
         mOsloSpektrumMarker = mMap
-                .addMarker(MapUtils.createOsloSpektrumMarker(OSOLOSPEKTRUM).visible(false));
+                .addMarker(MapUtils.createOsloSpektrumMarker(OSOLOSPEKTRUM).visible(true));
 
         if (resetCamera) {
             // Move camera directly to Oslo Spektrum
             centerOnOsloSpektrum(false);
         }
         LOGD(TAG, "Map setup complete.");
-        addOverlayBasedOnFloor(0);
     }
 
     @Override
@@ -477,7 +470,7 @@ public class MapFragment extends com.google.android.gms.maps.MapFragment impleme
 
         mFloor = floor;
 
-        if (isValidFloor(mFloor) && mAtOsloSpektrum) {
+        if (mAtOsloSpektrum) {
             // Always hide the Oslo Spektrum marker if a floor is shown
             mOsloSpektrumMarker.setVisible(false);
             setFloorElementsVisible(mFloor, true);
@@ -514,33 +507,20 @@ public class MapFragment extends com.google.android.gms.maps.MapFragment impleme
      * Change the visibility of all Markers and TileOverlays for a floor.
      */
     private void setFloorElementsVisible(int floor, boolean visible) {
-        // Overlays
-        final TileOverlay overlay = mTileOverlays.get(floor);
-        if (overlay != null) {
-            overlay.setVisible(visible);
-        }
-
         // Markers
+        /*
         final ArrayList<Marker> markers = mMarkersFloor.get(floor);
         if (markers != null) {
             for (Marker m : markers) {
                 m.setVisible(visible);
             }
-        }
+        } */
     }
 
-    /**
-     * A floor is valid if the Oslo Spektrum building contains that floor. It is not required for a floor
-     * to have a tile overlay and markers.
-     */
     private boolean isValidFloor(int floor) {
         return floor < mOsloSpektrumBuilding.getLevels().size();
     }
 
-    /**
-     * Display map features if Oslo Spektrum is the current building.
-     * This explicitly  re-enables all elements that should be displayed at the current floor.
-     */
     private void enableMapElements() {
         if (mOsloSpektrumBuilding != null && mAtOsloSpektrum) {
             onIndoorLevelActivated(mOsloSpektrumBuilding);
@@ -709,7 +689,7 @@ public class MapFragment extends com.google.android.gms.maps.MapFragment impleme
                 }
 
                 // Add marker to the map
-                Marker m = mMap.addMarker(entry.options);
+                Marker m = mMap.addMarker(entry.options.visible(true));
                 MarkerModel model = entry.model;
                 model.marker = m;
 
@@ -728,25 +708,6 @@ public class MapFragment extends com.google.android.gms.maps.MapFragment impleme
         enableMapElements();
     }
 
-    private void onTilesLoaded(List<TileLoadingTask.TileEntry> list) {
-        if (list != null) {
-            // Display tiles if they have been loaded, skip them otherwise but display the rest of
-            // the map.
-            for (TileLoadingTask.TileEntry entry : list) {
-                TileOverlayOptions tileOverlay = new TileOverlayOptions()
-                        .tileProvider(entry.provider).visible(false);
-
-                // Store the tile overlay and provider
-                mTileProviders.put(entry.floor, entry.provider);
-                mTileOverlays.put(entry.floor, mMap.addTileOverlay(tileOverlay));
-
-            }
-
-            addOverlayBasedOnFloor(0);
-        }
-
-        enableMapElements();
-    }
 
     public void addOverlayBasedOnFloor(int floorLevel) {
         if (mMap != null) {
@@ -763,7 +724,6 @@ public class MapFragment extends com.google.android.gms.maps.MapFragment impleme
                 .positionFromBounds(osloSpektrumLatLngBounds);
         mMap.addGroundOverlay(newarkMap);
     }
-
 
     private final ContentObserver mObserver = new ContentObserver(new Handler()) {
         @Override
@@ -784,11 +744,6 @@ public class MapFragment extends com.google.android.gms.maps.MapFragment impleme
             if (loader != null) {
                 loader.forceLoad();
             }
-
-            loader = lm.getLoader(TOKEN_LOADER_TILES);
-            if (loader != null) {
-                loader.forceLoad();
-            }
         }
     };
 
@@ -803,35 +758,15 @@ public class MapFragment extends com.google.android.gms.maps.MapFragment impleme
             return new MarkerLoadingTask(getActivity());
         }
 
+
         @Override
         public void onLoadFinished(Loader<List<MarkerLoadingTask.MarkerEntry>> loader,
                                    List<MarkerLoadingTask.MarkerEntry> data) {
-           //onMarkersLoaded(data);
+           onMarkersLoaded(data);
         }
 
         @Override
         public void onLoaderReset(Loader<List<MarkerLoadingTask.MarkerEntry>> loader) {
-        }
-    };
-
-    /**
-     * LoaderCallbacks for the {@link TileLoadingTask} that loads all tile overlays for the map.
-     */
-    private LoaderCallbacks<List<TileLoadingTask.TileEntry>> mTileLoader
-            = new LoaderCallbacks<List<TileLoadingTask.TileEntry>>() {
-        @Override
-        public Loader<List<TileLoadingTask.TileEntry>> onCreateLoader(int id, Bundle args) {
-            return new TileLoadingTask(getActivity(), mDPI);
-        }
-
-        @Override
-        public void onLoadFinished(Loader<List<TileLoadingTask.TileEntry>> loader,
-                                   List<TileLoadingTask.TileEntry> data) {
-            onTilesLoaded(data);
-        }
-
-        @Override
-        public void onLoaderReset(Loader<List<TileLoadingTask.TileEntry>> loader) {
         }
     };
 

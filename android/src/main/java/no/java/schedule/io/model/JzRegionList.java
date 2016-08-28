@@ -7,16 +7,26 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class JzRegionList {
-
-    @SerializedName("region")
+    @SerializedName("UUID")
     @Expose
-    private List<JzBeaconRegion> region = new ArrayList<JzBeaconRegion>();
+    private String UUID;
 
-    public List<JzBeaconRegion> getRegion() {
-        return region;
+    @SerializedName("regions")
+    private ArrayList<JzBeaconRegion> regions;
+
+    public ArrayList<JzBeaconRegion> getRegions() {
+        return regions;
     }
 
-    public void setRegion1(List<JzBeaconRegion> region) {
-        this.region = region;
+    public void setRegions(ArrayList<JzBeaconRegion> regions) {
+        this.regions = regions;
+    }
+
+    public String getUUID() {
+        return UUID;
+    }
+
+    public void setUUID(String UUID) {
+        this.UUID = UUID;
     }
 }
