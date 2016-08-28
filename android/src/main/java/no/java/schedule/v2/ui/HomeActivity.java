@@ -34,7 +34,7 @@ public class HomeActivity extends ExploreIOActivity {
         extras.putBoolean(ContentResolver.SYNC_EXTRAS_MANUAL, true);
 
             ContentResolver.requestSync(
-                    new Account("JavaZone Schedule","no.java.schedule"),
+                    new Account("JavaZone Schedule","no.java.schedule.v2"),
                     ScheduleContract.CONTENT_AUTHORITY, extras);
     }
 
@@ -75,7 +75,7 @@ public class HomeActivity extends ExploreIOActivity {
                 @Override
                 public void run() {
 
-                    Account account = new Account("JavaZone Schedule", "no.java.schedule");
+                    Account account = new Account("JavaZone Schedule", "no.java.schedule.v2");
                     boolean syncActive = ContentResolver.isSyncActive(
                             account, ScheduleContract.CONTENT_AUTHORITY);
                     boolean syncPending = ContentResolver.isSyncPending(
