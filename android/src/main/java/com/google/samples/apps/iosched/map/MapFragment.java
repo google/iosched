@@ -33,8 +33,8 @@ import com.google.android.gms.maps.model.TileOverlay;
 import com.google.android.gms.maps.model.TileOverlayOptions;
 
 import no.java.schedule.v2.R;
-import no.java.schedule.io.model.Constants;
 import no.java.schedule.util.EstimoteBeaconManager;
+import no.java.schedule.v2.io.model.Constants;
 
 import com.google.android.gms.maps.model.TileProvider;
 import com.google.android.gms.maps.model.UrlTileProvider;
