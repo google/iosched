@@ -16,8 +16,8 @@
   -->
 <!-- The attributes in this XML file provide configuration information for the SyncAdapter. -->
 <sync-adapter xmlns:android="http://schemas.android.com/apk/res/android"
-    android:contentAuthority="no.java.schedule"
-    android:accountType="no.java.schedule"
+    android:contentAuthority="no.java.schedule.v2"
+    android:accountType="no.java.schedule.v2"
     android:supportsUploading="false"
     android:userVisible="true"
     />

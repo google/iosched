@@ -83,7 +83,7 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
                 " initialize=" + initialize);
 
         if (initialize) {
-            boolean isChosenAccount = "JavaZone Schedule".equals(account.name) && "no.java.schedule".equals(account.type);
+            boolean isChosenAccount = "JavaZone Schedule".equals(account.name) && "no.java.schedule.v2".equals(account.type);
             ContentResolver.setIsSyncable(account, authority, isChosenAccount ? 1 : 0);
         }
 

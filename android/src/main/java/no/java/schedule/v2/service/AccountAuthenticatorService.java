@@ -20,8 +20,8 @@ import static android.accounts.AccountManager.KEY_BOOLEAN_RESULT;
  */
 public class AccountAuthenticatorService extends Service {
 
-    private static final String DUMMY_ACCOUNT_NAME = "no.java.schedule";
-    private static final String DUMMY_ACCOUNT_TYPE = "no.java.schedule";
+    private static final String DUMMY_ACCOUNT_NAME = "no.java.schedule.v2";
+    private static final String DUMMY_ACCOUNT_TYPE = "no.java.schedule.v2";
     private static final String DUMMY_AUTH_TOKEN = "authtoken";
 
 

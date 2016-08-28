@@ -54,8 +54,8 @@ public class AppApplication extends MultiDexApplication {
         EstimoteSDK.enableDebugLogging(true);
 
         final String ACCOUNT_NAME = "JavaZone Schedule";
-        final String ACCOUNT_TYPE = "no.java.schedule";
-        final String PROVIDER = "no.java.schedule";
+        final String ACCOUNT_TYPE = "no.java.schedule.v2";
+        final String PROVIDER = "no.java.schedule.v2";
 
         Account appAccount = new Account(ACCOUNT_NAME, ACCOUNT_TYPE);
         AccountManager accountManager = AccountManager.get(getApplicationContext());
