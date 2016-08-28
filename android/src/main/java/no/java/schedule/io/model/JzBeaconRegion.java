@@ -1,28 +1,22 @@
 package no.java.schedule.io.model;
 
+import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class JzBeaconRegion {
 
     @SerializedName("beacons")
     @Expose
-    private List<Beacon__> beacons = new ArrayList<Beacon__>();
+    private List<JzBeacon> beacons = new ArrayList<JzBeacon>();
 
-    /**
-     *
-     * @return
-     * The beacons
-     */
-    public List<Beacon_> getBeacons() {
+    public List<JzBeacon> getBeacons() {
         return beacons;
     }
 
-    /**
-     *
-     * @param beacons
-     * The beacons
-     */
-    public void setBeacons(List<Beacon> beacons) {
+    public void setBeacons(List<JzBeacon> beacons) {
         this.beacons = beacons;
     }
 }

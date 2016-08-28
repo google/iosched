@@ -51,9 +51,8 @@ public class MarkerLoadingTask extends AsyncTaskLoader<List<MarkerLoadingTask.Ma
                 null, null, null);
 
         // Create a MarkerModel for each entry
-        final int count = cursor.getCount();
         if (cursor != null) {
-
+            final int count = cursor.getCount();
             list = new ArrayList<>(count);
             final IconGenerator labelIconGenerator = MapUtils.getLabelIconGenerator(getContext());
             cursor.moveToFirst();

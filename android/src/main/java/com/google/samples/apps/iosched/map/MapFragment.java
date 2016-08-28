@@ -33,6 +33,8 @@ import com.google.android.gms.maps.model.TileOverlay;
 import com.google.android.gms.maps.model.TileOverlayOptions;
 
 import no.java.schedule.R;
+import no.java.schedule.io.model.Constants;
+import no.java.schedule.util.EstimoteBeaconManager;
 
 import com.google.android.gms.maps.model.TileProvider;
 import com.google.android.gms.maps.model.UrlTileProvider;
@@ -89,6 +91,8 @@ public class MapFragment extends com.google.android.gms.maps.MapFragment impleme
 
     private static final String EXTRAS_HIGHLIGHT_ROOM = "EXTRAS_HIGHLIGHT_ROOM";
     private static final String EXTRAS_ACTIVE_FLOOR = "EXTRAS_ACTIVE_FLOOR";
+
+    private EstimoteBeaconManager mEstimoteBeaconManager;
 
     // Initial camera zoom
     private static final float CAMERA_ZOOM = 18.19f;
@@ -267,10 +271,46 @@ public class MapFragment extends com.google.android.gms.maps.MapFragment impleme
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View mapView = super.onCreateView(inflater, container, savedInstanceState);
-
+        mEstimoteBeaconManager = new EstimoteBeaconManager(
+                getActivity(),
+                new String[]{
+                        Constants.REGION_ROOM_1,
+                        Constants.REGION_ROOM_2,
+                        Constants.REGION_ROOM_3,
+                        Constants.REGION_ROOM_4,
+                        Constants.REGION_ROOM_5,
+                        Constants.REGION_ROOM_6,
+                        Constants.REGION_ROOM_7,
+                        Constants.REGION_ROOM_8
+                });
+        mEstimoteBeaconManager.initializeEstimoteBeaconManager(getActivity());
         setMapInsets(mMapInsets);
 
         return mapView;
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        mEstimoteBeaconManager.startEstimoteBeaconManager();
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        mEstimoteBeaconManager.startMonitorEstimoteBeacons(getActivity());
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        mEstimoteBeaconManager.stopRanging();
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        mEstimoteBeaconManager.destroyEstimoteBeaconManager();
     }
 
     @Override
@@ -279,7 +319,7 @@ public class MapFragment extends com.google.android.gms.maps.MapFragment impleme
         if (requestCode == REQUEST_LOCATION) {
             if (grantResults[0] == PackageManager.PERMISSION_GRANTED &&
                     grantResults[1] == PackageManager.PERMISSION_GRANTED) {
-
+                mMap.setMyLocationEnabled(true);
             }
         } else {
             super.onRequestPermissionsResult(requestCode, permissions, grantResults);
@@ -306,6 +346,7 @@ public class MapFragment extends com.google.android.gms.maps.MapFragment impleme
         super.onStop();
 
         closeTileCache();
+        mEstimoteBeaconManager.stopEstimoteBeaconManager();
     }
 
     /**
@@ -376,8 +417,8 @@ public class MapFragment extends com.google.android.gms.maps.MapFragment impleme
             // Move camera directly to Oslo Spektrum
             centerOnOsloSpektrum(false);
         }
-
         LOGD(TAG, "Map setup complete.");
+        addOverlayBasedOnFloor(0);
     }
 
     @Override
@@ -767,7 +808,7 @@ public class MapFragment extends com.google.android.gms.maps.MapFragment impleme
         @Override
         public void onLoadFinished(Loader<List<MarkerLoadingTask.MarkerEntry>> loader,
                                    List<MarkerLoadingTask.MarkerEntry> data) {
-            onMarkersLoaded(data);
+           //onMarkersLoaded(data);
         }
 
         @Override

@@ -1,6 +1,85 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent">
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/theme_primary"
+    android:orientation="vertical">
 
-</LinearLayout>
+    <TextView
+        android:id="@+id/initial_display_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textColor="@color/body_text_1_inverse"
+        android:text="Some title"
+        android:layout_marginTop="@dimen/default_margin"
+        android:layout_marginBottom="@dimen/default_margin"
+        android:gravity="center"
+        android:padding="@dimen/default_margin"
+        style="@style/ExploreItem.Title"/>
+
+    <ImageView
+        android:id="@+id/initial_image_display"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:scaleType="fitXY"
+        android:adjustViewBounds="true"
+        android:layout_centerInParent="true"
+        android:layout_centerHorizontal="true"
+        android:src="@drawable/ic_duke_viking512x512"
+        android:layout_below="@id/initial_display_title"/>
+
+    <LinearLayout
+        android:id="@+id/initial_text_desc_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/default_margin"
+        android:layout_below="@id/initial_image_display"
+        android:orientation="vertical">
+        <TextView
+            android:id="@+id/initial_title_text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            style="@style/ExploreItem.Title"
+            android:gravity="center"
+            android:text="Title Test"/>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            style="@style/ExploreItem.Subtitle"
+            android:gravity="center"
+            android:text="fdsjlfjøldfadsf
+            adfasdfawrfewrwerwefwejrøawejrløwjerljwe
+            sadfjlkwrjewøljrw"/>
+    </LinearLayout>
+    <RelativeLayout
+        android:id="@+id/initial_button_bottom"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_margin="@dimen/default_margin"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/initial_skip_button"
+            style="@style/TextHeaderSub"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/default_margin"
+            android:layout_weight="1"
+            android:layout_alignParentLeft="true"
+            android:text="Skip" />
+
+        <TextView
+            android:id="@+id/initial_next_button"
+            style="@style/TextHeaderSub"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="@dimen/default_margin"
+            android:layout_weight="1"
+            android:layout_alignParentRight="true"
+            android:text="Next >" />
+
+    </RelativeLayout>
+
+</RelativeLayout>

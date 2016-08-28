@@ -192,4 +192,20 @@
     <color name="session_feedback_yellow">#fcaf17</color>
     <color name="session_feedback_thumbs_down_red">#ff4f4c</color>
     <color name="session_feedback_thumbs_up_green">#149089</color>
+
+    <color name="primary">#E1502C</color>
+    <color name="primaryDark">#BA4224</color>
+    <color name="accent">#E1502C</color>
+    <color name="lightPrimary">#B3E5FC</color>
+    <color name="textIcon">#FFFFFF</color>
+    <color name="primaryText">#212121</color>
+    <color name="secondaryText">#727272</color>
+    <color name="activated_color">#E8E8E8</color>
+    <color name="window_background">#F1F1F1</color>
+    <color name="listViewSelected">#E1502C</color>
+
+    <color name="text_main">#333333</color>
+    <color name="text_secondary">#666666</color>
+    <color name="text_inverse">#ffffff</color>
+    <color name="text_error">#a42023</color>
 </resources>

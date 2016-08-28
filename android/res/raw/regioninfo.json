@@ -1,0 +1,85 @@
+{
+  "regions": [
+    {
+      "region": [
+        {
+          "name": "region 1",
+          "coordinates": {
+            "latitude" : 20,
+            "longitude" : 50
+          },
+          "beacons": [
+            {
+              "beacon": {
+                "name": "beacon11",
+                "UUID": "abc",
+                "major": 1,
+                "minor": 2
+              },
+              "beacon": {
+                "name": "beacon12",
+                "UUID": "abc",
+                "major": 1,
+                "minor": 2
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "region": [
+        {
+          "name": "region 2",
+          "coordinates": {
+            "latitude" : 20,
+            "longitude" : 50
+          },
+          "beacons": [
+            {
+              "beacon": {
+                "name": "beacon21",
+                "UUID": "abc",
+                "major": 1,
+                "minor": 2
+              },
+              "beacon": {
+                "name": "beacon22",
+                "UUID": "abc",
+                "major": 1,
+                "minor": 2
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "region": [
+        {
+          "name": "region 3",
+          "coordinates": {
+            "latitude" : 20,
+            "longitude" : 50
+          },
+          "beacons": [
+            {
+              "beacon": {
+                "name": "beacon31",
+                "UUID": "abc",
+                "major": 1,
+                "minor": 2
+              },
+              "beacon": {
+                "name": "beacon32",
+                "UUID": "abc",
+                "major": 1,
+                "minor": 2
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

@@ -38,8 +38,8 @@ android {
         applicationId "no.java.schedule.v2"
         versionCode 54
         versionName "2016.0"
-        minSdkVersion 19
-        targetSdkVersion 23
+        minSdkVersion 20
+        targetSdkVersion 24
 
         multiDexEnabled true
 
@@ -88,7 +88,6 @@ android {
         }
         qualityassurance {
             debuggable true
-            minifyEnabled true
           //  signingConfig signingConfigs.debug
             proguardFiles getDefaultProguardFile('proguard-android.txt'), file('proguard-project.txt')
             buildConfigField("boolean", "ENABLE_DEBUG_TOOLS", "true")
@@ -98,7 +97,6 @@ android {
         }
         release {
             debuggable false
-            minifyEnabled true
             // No signing config as we do this separately.
             proguardFiles getDefaultProguardFile('proguard-android.txt'), file('proguard-project.txt')
             buildConfigField("String", "SERVER_MANIFEST_ENDPOINT", "\"${production_api_manifest_endpoint}\"")
