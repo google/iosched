@@ -19,7 +19,7 @@ package com.google.samples.apps.iosched.explore;
 import com.google.common.annotations.VisibleForTesting;
 import com.google.samples.apps.iosched.Config;
 
-import no.java.schedule.R;
+import no.java.schedule.v2.R;
 
 import com.google.samples.apps.iosched.explore.data.ItemGroup;
 import com.google.samples.apps.iosched.explore.data.LiveStreamData;
@@ -30,7 +30,6 @@ import com.google.samples.apps.iosched.explore.data.TopicGroup;
 import com.google.samples.apps.iosched.framework.Model;
 import com.google.samples.apps.iosched.framework.QueryEnum;
 import com.google.samples.apps.iosched.framework.UserActionEnum;
-import com.google.samples.apps.iosched.io.model.Session;
 import com.google.samples.apps.iosched.provider.ScheduleContract;
 import com.google.samples.apps.iosched.settings.SettingsUtils;
 import com.google.samples.apps.iosched.util.TimeUtils;
@@ -48,15 +47,12 @@ import android.text.TextUtils;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Collection;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
 import java.util.StringTokenizer;
 import java.util.TreeMap;
-import java.util.concurrent.ConcurrentHashMap;
 
 import static com.google.samples.apps.iosched.util.LogUtils.LOGD;
 import static com.google.samples.apps.iosched.util.LogUtils.LOGE;

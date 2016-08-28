@@ -32,7 +32,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import no.java.schedule.io.model.EMSItem;
+import no.java.schedule.v2.io.model.EMSItem;
 
 import static com.google.samples.apps.iosched.util.LogUtils.makeLogTag;
 

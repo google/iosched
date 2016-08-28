@@ -34,15 +34,15 @@ import java.util.Map;
 import java.util.Set;
 import java.util.regex.Pattern;
 
-import no.java.schedule.R;
-import no.java.schedule.io.model.Constants;
-import no.java.schedule.io.model.EMSItem;
-import no.java.schedule.io.model.EMSLink;
-import no.java.schedule.io.model.JZDate;
-import no.java.schedule.io.model.JZLabel;
-import no.java.schedule.io.model.JZSessionsResponse;
-import no.java.schedule.io.model.JZSessionsResult;
-import no.java.schedule.io.model.JZSlotsResponse;
+import no.java.schedule.v2.R;
+import no.java.schedule.v2.io.model.Constants;
+import no.java.schedule.v2.io.model.EMSItem;
+import no.java.schedule.v2.io.model.EMSLink;
+import no.java.schedule.v2.io.model.JZDate;
+import no.java.schedule.v2.io.model.JZLabel;
+import no.java.schedule.v2.io.model.JZSessionsResponse;
+import no.java.schedule.v2.io.model.JZSessionsResult;
+import no.java.schedule.v2.io.model.JZSlotsResponse;
 
 import static com.google.samples.apps.iosched.util.LogUtils.LOGD;
 import static com.google.samples.apps.iosched.util.LogUtils.LOGE;
@@ -600,7 +600,7 @@ public class JZSessionHandler extends JSONHandler {
 
             String json;
 
-            if (SyncHelper.isFirstRun(mContext)) {
+            if (true || SyncHelper.isFirstRun(mContext)) {
                 json = SyncHelper.getLocalResource(mContext, url);
             } else if (SyncHelper.isOnline(mContext)) {
                 json = SyncHelper.getHttpResource(url);

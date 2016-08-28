@@ -1,6 +1,6 @@
 package com.google.samples.apps.iosched.explore;
 
-import no.java.schedule.R;
+import no.java.schedule.v2.R;
 import com.google.samples.apps.iosched.explore.data.MessageData;
 import com.google.samples.apps.iosched.settings.ConfMessageCardUtils;
 import com.google.samples.apps.iosched.settings.SettingsUtils;

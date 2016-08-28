@@ -16,14 +16,13 @@
 
 package com.google.samples.apps.iosched.feedback;
 
-import no.java.schedule.BuildConfig;
-import no.java.schedule.R;
-import no.java.schedule.io.model.Constants;
-import no.java.schedule.io.model.JZFeedback;
+import no.java.schedule.v2.BuildConfig;
+import no.java.schedule.v2.R;
+import no.java.schedule.v2.io.model.Constants;
+import no.java.schedule.v2.io.model.JZFeedback;
 
 import com.google.samples.apps.iosched.framework.QueryEnum;
 import com.google.samples.apps.iosched.framework.UpdatableView;
-import com.google.samples.apps.iosched.ui.BaseActivity;
 import com.google.samples.apps.iosched.ui.widget.NumberRatingBar;
 import com.google.samples.apps.iosched.util.AnalyticsHelper;
 import com.google.samples.apps.iosched.util.RestServiceDevNull;

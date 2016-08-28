@@ -17,12 +17,10 @@
 package com.google.samples.apps.iosched.io;
 
 import android.content.ContentProviderOperation;
-import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.graphics.Color;
 import android.net.Uri;
-import android.os.Build;
 import android.provider.BaseColumns;
 import android.text.TextUtils;
 import android.text.format.Time;
@@ -42,7 +40,6 @@ import com.google.samples.apps.iosched.util.ParserUtils;
 import com.google.samples.apps.iosched.util.TimeUtils;
 
 import java.io.IOException;
-import java.lang.annotation.Target;
 import java.net.MalformedURLException;
 import java.util.ArrayList;
 import java.util.Date;
@@ -53,15 +50,15 @@ import java.util.Map;
 import java.util.Set;
 import java.util.regex.Pattern;
 
-import no.java.schedule.R;
-import no.java.schedule.io.model.Constants;
-import no.java.schedule.io.model.EMSItem;
-import no.java.schedule.io.model.EMSLink;
-import no.java.schedule.io.model.JZDate;
-import no.java.schedule.io.model.JZLabel;
-import no.java.schedule.io.model.JZSessionsResponse;
-import no.java.schedule.io.model.JZSessionsResult;
-import no.java.schedule.io.model.JZSlotsResponse;
+import no.java.schedule.v2.R;
+import no.java.schedule.v2.io.model.Constants;
+import no.java.schedule.v2.io.model.EMSItem;
+import no.java.schedule.v2.io.model.EMSLink;
+import no.java.schedule.v2.io.model.JZDate;
+import no.java.schedule.v2.io.model.JZLabel;
+import no.java.schedule.v2.io.model.JZSessionsResponse;
+import no.java.schedule.v2.io.model.JZSessionsResult;
+import no.java.schedule.v2.io.model.JZSlotsResponse;
 
 import static com.google.samples.apps.iosched.util.LogUtils.LOGD;
 import static com.google.samples.apps.iosched.util.LogUtils.LOGE;

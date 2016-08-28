@@ -68,8 +68,8 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 
-import no.java.schedule.R;
-import no.java.schedule.io.model.Constants;
+import no.java.schedule.v2.R;
+import no.java.schedule.v2.io.model.Constants;
 
 import static com.google.samples.apps.iosched.util.LogUtils.LOGD;
 

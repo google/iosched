@@ -422,7 +422,7 @@ public final class ScheduleContract {
         String VIDEO_TAGS = "video_tags";
     }
 
-    public static final String CONTENT_AUTHORITY = "no.java.schedule";
+    public static final String CONTENT_AUTHORITY = "no.java.schedule.v2";
 
     public static final Uri BASE_CONTENT_URI = Uri.parse("content://" + CONTENT_AUTHORITY);
 

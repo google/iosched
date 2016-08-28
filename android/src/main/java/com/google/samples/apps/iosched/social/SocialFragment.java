@@ -28,7 +28,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.google.samples.apps.iosched.Config;
-import no.java.schedule.R;
+import no.java.schedule.v2.R;
 import com.google.samples.apps.iosched.ui.widget.DrawShadowFrameLayout;
 import com.google.samples.apps.iosched.util.UIUtils;
 

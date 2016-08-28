@@ -3,19 +3,13 @@ package com.google.samples.apps.iosched.videolibrary;
 import android.app.Fragment;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.widget.Toolbar;
 import android.view.KeyEvent;
-import android.view.Menu;
-import android.view.MenuItem;
 
 import com.google.samples.apps.iosched.ui.BaseActivity;
-import com.google.samples.apps.iosched.ui.SearchActivity;
-import com.google.samples.apps.iosched.ui.SearchVideoActivity;
-import com.google.samples.apps.iosched.ui.widget.CollectionView;
 import com.google.samples.apps.iosched.ui.widget.DrawShadowFrameLayout;
 import com.google.samples.apps.iosched.util.AnalyticsHelper;
 
-import no.java.schedule.R;
+import no.java.schedule.v2.R;
 
 /**
  * Created by kkho on 28.05.2016.

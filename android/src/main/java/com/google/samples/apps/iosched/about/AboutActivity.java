@@ -29,8 +29,8 @@ import android.text.Html;
 import android.view.View;
 import android.widget.TextView;
 
-import no.java.schedule.BuildConfig;
-import no.java.schedule.R;
+import no.java.schedule.v2.BuildConfig;
+import no.java.schedule.v2.R;
 
 public class AboutActivity extends BaseActivity {
 

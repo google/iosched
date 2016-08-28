@@ -21,7 +21,7 @@ import android.content.*;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 
-import no.java.schedule.BuildConfig;
+import no.java.schedule.v2.BuildConfig;
 
 import java.io.IOException;
 import java.util.regex.Pattern;

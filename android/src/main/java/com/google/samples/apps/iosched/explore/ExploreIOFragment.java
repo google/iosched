@@ -16,15 +16,13 @@
 
 package com.google.samples.apps.iosched.explore;
 
-import no.java.schedule.R;
+import no.java.schedule.v2.R;
 
 import com.google.samples.apps.iosched.explore.data.ItemGroup;
 import com.google.samples.apps.iosched.explore.data.LiveStreamData;
 import com.google.samples.apps.iosched.explore.data.MessageData;
 import com.google.samples.apps.iosched.explore.data.SessionData;
 import com.google.samples.apps.iosched.explore.data.SessionScheduleGroup;
-import com.google.samples.apps.iosched.explore.data.ThemeGroup;
-import com.google.samples.apps.iosched.explore.data.TopicGroup;
 import com.google.samples.apps.iosched.framework.PresenterFragmentImpl;
 import com.google.samples.apps.iosched.framework.QueryEnum;
 import com.google.samples.apps.iosched.framework.UpdatableView;
@@ -62,7 +60,6 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 import static android.content.SharedPreferences.OnSharedPreferenceChangeListener;

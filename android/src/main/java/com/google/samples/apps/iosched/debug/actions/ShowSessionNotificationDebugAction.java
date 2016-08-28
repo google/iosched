@@ -24,11 +24,10 @@ import android.content.Intent;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.app.TaskStackBuilder;
 
-import no.java.schedule.R;
+import no.java.schedule.v2.R;
 import com.google.samples.apps.iosched.map.MapActivity;
 import com.google.samples.apps.iosched.provider.ScheduleContract;
 import com.google.samples.apps.iosched.debug.DebugAction;
-import com.google.samples.apps.iosched.util.UIUtils;
 
 /**
 * Show a notification that a session is about to start. Simplified version of the one shown at

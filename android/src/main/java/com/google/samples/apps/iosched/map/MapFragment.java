@@ -32,7 +32,7 @@ import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.TileOverlay;
 import com.google.android.gms.maps.model.TileOverlayOptions;
 
-import no.java.schedule.R;
+import no.java.schedule.v2.R;
 import no.java.schedule.io.model.Constants;
 import no.java.schedule.util.EstimoteBeaconManager;
 
@@ -70,8 +70,6 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import java.io.IOException;
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;

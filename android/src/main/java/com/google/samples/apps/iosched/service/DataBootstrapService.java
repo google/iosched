@@ -18,11 +18,10 @@ package com.google.samples.apps.iosched.service;
 import android.app.IntentService;
 import android.content.Context;
 import android.content.Intent;
-import android.content.SyncResult;
 import android.net.Uri;
 
-import no.java.schedule.BuildConfig;
-import no.java.schedule.R;
+import no.java.schedule.v2.BuildConfig;
+import no.java.schedule.v2.R;
 import com.google.samples.apps.iosched.io.JSONHandler;
 import com.google.samples.apps.iosched.provider.ScheduleContract;
 import com.google.samples.apps.iosched.settings.SettingsUtils;

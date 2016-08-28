@@ -16,7 +16,7 @@
 
 package com.google.samples.apps.iosched.explore;
 
-import no.java.schedule.R;
+import no.java.schedule.v2.R;
 
 import com.google.samples.apps.iosched.explore.ExploreModel.ExploreQueryEnum;
 import com.google.samples.apps.iosched.explore.ExploreModel.ExploreUserActionEnum;
@@ -58,6 +58,7 @@ import static com.google.samples.apps.iosched.util.LogUtils.makeLogTag;
 public class ExploreIOActivity extends BaseActivity implements Toolbar.OnMenuItemClickListener {
 
     private static final String TAG = makeLogTag(ExploreIOActivity.class);
+
     private static final String SCREEN_LABEL = "Explore Javazone";
 
     @Override

@@ -18,7 +18,7 @@ package com.google.samples.apps.iosched.myschedule;
 
 import com.google.samples.apps.iosched.Config;
 
-import no.java.schedule.R;
+import no.java.schedule.v2.R;
 
 import com.google.samples.apps.iosched.model.ScheduleHelper;
 import com.google.samples.apps.iosched.model.ScheduleItem;

@@ -18,13 +18,12 @@ package com.google.samples.apps.iosched.videolibrary;
 
 import android.os.Bundle;
 
-import no.java.schedule.R;
+import no.java.schedule.v2.R;
 import com.google.samples.apps.iosched.ui.BaseActivity;
 import com.google.samples.apps.iosched.ui.widget.CollectionView;
 import com.google.samples.apps.iosched.ui.widget.DrawShadowFrameLayout;
 import com.google.samples.apps.iosched.util.AnalyticsHelper;
 import com.google.samples.apps.iosched.videolibrary.VideoLibraryModel.VideoLibraryUserActionEnum;
-import com.google.samples.apps.iosched.videolibrary.VideoLibraryModel.VideoLibraryQueryEnum;
 
 
 import static com.google.samples.apps.iosched.util.LogUtils.LOGD;

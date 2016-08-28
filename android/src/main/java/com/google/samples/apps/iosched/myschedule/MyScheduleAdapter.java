@@ -35,7 +35,7 @@ import android.widget.ListAdapter;
 import android.widget.TextView;
 
 import com.google.samples.apps.iosched.Config;
-import no.java.schedule.R;
+import no.java.schedule.v2.R;
 import com.google.samples.apps.iosched.feedback.SessionFeedbackActivity;
 import com.google.samples.apps.iosched.model.ScheduleItem;
 import com.google.samples.apps.iosched.provider.ScheduleContract;
