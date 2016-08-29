@@ -63,7 +63,8 @@ To build the app:
     or modify the build.gradle file to point to your key.
    Sample command to generate debug.keystore file:
    ```
-   keytool -genkey -v -keystore debug.keystore -alias androiddebugkey -storepass android -keypass android -keyalg RSA -validity 14000
+   keytool -genkey -v -keystore debug.keystore -alias androiddebugkey \
+   -storepass android -keypass android -keyalg RSA -validity 14000
    ```
 
 1. Choose Build > Make Project in Android Studio or run the following
