@@ -43,7 +43,6 @@ To build the app:
        - Tools > Android SDK Platform-tools
        - Tools > Android SDK Tools
        - Tools > Android SDK Build-tools
-       - Tools > Android SDK Build-tools
        - Android 6.0 > SDK Platform (API 23)
        - Extras > Android Support Repository
        - Extras > Android Support Library
@@ -62,6 +61,10 @@ To build the app:
 
 1. Add your debug keystore to the project (save it as android/debug.keystore),
     or modify the build.gradle file to point to your key.
+   Sample command to generate debug.keystore file:
+   ```
+   keytool -genkey -v -keystore debug.keystore -alias androiddebugkey -storepass android -keypass android -keyalg RSA -validity 14000
+   ```
 
 1. Choose Build > Make Project in Android Studio or run the following
     command in the project root directory:
