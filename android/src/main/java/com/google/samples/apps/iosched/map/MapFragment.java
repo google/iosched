@@ -29,40 +29,28 @@ import com.google.android.gms.maps.model.IndoorBuilding;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.Marker;
-import com.google.android.gms.maps.model.TileOverlay;
-import com.google.android.gms.maps.model.TileOverlayOptions;
 
 import no.java.schedule.util.NetworkUtil;
 import no.java.schedule.v2.R;
 import no.java.schedule.util.EstimoteBeaconManager;
-import no.java.schedule.v2.io.model.Constants;
 
-import com.google.android.gms.maps.model.TileProvider;
-import com.google.android.gms.maps.model.UrlTileProvider;
-import com.google.samples.apps.iosched.explore.ExploreIOActivity;
-import com.google.samples.apps.iosched.map.util.CachedTileProvider;
 import com.google.samples.apps.iosched.map.util.MarkerLoadingTask;
 import com.google.samples.apps.iosched.map.util.MarkerModel;
-import com.google.samples.apps.iosched.map.util.TileLoadingTask;
 import com.google.samples.apps.iosched.provider.ScheduleContract;
-import com.google.samples.apps.iosched.ui.BaseActivity;
 import com.google.samples.apps.iosched.util.AnalyticsHelper;
 import com.google.samples.apps.iosched.util.MapUtils;
 
-import com.jakewharton.disklrucache.DiskLruCache;
 
 import android.Manifest;
 import android.app.Activity;
 import android.app.LoaderManager;
 import android.app.LoaderManager.LoaderCallbacks;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.content.Loader;
 import android.content.pm.PackageManager;
 import android.database.ContentObserver;
 import android.database.Cursor;
 import android.graphics.Rect;
-import android.net.Network;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
@@ -73,7 +61,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -231,14 +218,14 @@ public class MapFragment extends com.google.android.gms.maps.MapFragment impleme
                     && ActivityCompat.checkSelfPermission(getActivity(),
                     Manifest.permission.ACCESS_COARSE_LOCATION)
                     != PackageManager.PERMISSION_GRANTED) {
-                requestPermissions(new String[]
+                ActivityCompat.requestPermissions(getActivity(),
+                        new String[]
                                 {Manifest.permission.
                                         ACCESS_FINE_LOCATION,
                                         Manifest.permission.ACCESS_COARSE_LOCATION},
                         REQUEST_LOCATION);
             }
         }
-
 
 
         // ANALYTICS SCREEN: View the Map screen
@@ -248,9 +235,10 @@ public class MapFragment extends com.google.android.gms.maps.MapFragment impleme
         // get DPI
         mDPI = getActivity().getResources().getDisplayMetrics().densityDpi / 160f;
 
-        ICON_ACTIVE = BitmapDescriptorFactory.fromResource(R.drawable.map_marker_selected);
+        ICON_ACTIVE = BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_ORANGE);
         ICON_NORMAL =
-                BitmapDescriptorFactory.fromResource(R.drawable.map_marker_unselected);
+                BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE);
+
 
         // Get the arguments and restore the highlighted room or displayed floor.
         Bundle data = getArguments();
@@ -284,10 +272,9 @@ public class MapFragment extends com.google.android.gms.maps.MapFragment impleme
     public void onResume() {
         super.onResume();
 
-        if(!NetworkUtil.isBluetoothOn(getActivity())) {
+        if (!NetworkUtil.isBluetoothOn(getActivity())) {
             createAlertDialog().show();
-        }
-        else {
+        } else {
             mEstimoteBeaconManager.startMonitorEstimoteBeacons(getActivity());
         }
     }
@@ -362,7 +349,6 @@ public class MapFragment extends com.google.android.gms.maps.MapFragment impleme
     }
 
 
-
     /**
      * Clears the map and initialises all map variables that hold markers and overlays.
      */
@@ -377,6 +363,10 @@ public class MapFragment extends com.google.android.gms.maps.MapFragment impleme
         mFloor = INVALID_FLOOR;
     }
 
+    private void hideMarkersWhenSwitchingFloors() {
+        setFloorElementsVisible(mFloor, false);
+    }
+
 
     @Override
     public void onMapReady(GoogleMap googleMap) {
@@ -386,6 +376,21 @@ public class MapFragment extends com.google.android.gms.maps.MapFragment impleme
         mMap.setOnMarkerClickListener(this);
         mMap.setOnIndoorStateChangeListener(this);
         mMap.setOnMapClickListener(this);
+
+        mMap.setOnCameraMoveListener(new GoogleMap.OnCameraMoveListener() {
+            @Override
+            public void onCameraMove() {
+                if(mMap.getCameraPosition().zoom <= CAMERA_ZOOM) {
+                    setFloorElementsVisible(mFloor, false);
+                    mOsloSpektrumMarker.setVisible(true);
+                }
+                else {
+                    setFloorElementsVisible(mFloor, true);
+                    mOsloSpektrumMarker.setVisible(false);
+                }
+            }
+        });
+
         UiSettings mapUiSettings = mMap.getUiSettings();
         mapUiSettings.setZoomControlsEnabled(false);
         mapUiSettings.setMapToolbarEnabled(false);
@@ -399,17 +404,22 @@ public class MapFragment extends com.google.android.gms.maps.MapFragment impleme
     }
 
     private void setupMap(boolean resetCamera) {
-        addOverlayBasedOnFloor(0);
-
-        // Add a Marker for Oslo Spektrum
+        switchFloors(1);
         mOsloSpektrumMarker = mMap
-                .addMarker(MapUtils.createOsloSpektrumMarker(OSOLOSPEKTRUM).visible(true));
+                .addMarker(MapUtils.createOsloSpektrumMarker(OSOLOSPEKTRUM).visible(false));
 
         if (resetCamera) {
-            // Move camera directly to Oslo Spektrum
             centerOnOsloSpektrum(false);
         }
-        LOGD(TAG, "Map setup complete.");
+
+        LatLngBounds osloSpektrumLatLngBounds = new LatLngBounds(
+                new LatLng(59.91248733954981, 10.753536779098567),       // South west corner
+                new LatLng(59.9135416490492, 10.755773347221407));      // North east corner
+
+        GroundOverlayOptions newarkMap = new GroundOverlayOptions()
+                .image(BitmapDescriptorFactory.fromResource(R.drawable.level0))
+                .positionFromBounds(osloSpektrumLatLngBounds);
+        mMap.addGroundOverlay(newarkMap);
     }
 
     @Override
@@ -508,13 +518,13 @@ public class MapFragment extends com.google.android.gms.maps.MapFragment impleme
      */
     private void setFloorElementsVisible(int floor, boolean visible) {
         // Markers
-        /*
+
         final ArrayList<Marker> markers = mMarkersFloor.get(floor);
         if (markers != null) {
             for (Marker m : markers) {
                 m.setVisible(visible);
             }
-        } */
+        }
     }
 
     private boolean isValidFloor(int floor) {
@@ -630,9 +640,6 @@ public class MapFragment extends com.google.android.gms.maps.MapFragment impleme
         final String title = marker.getTitle();
         final MarkerModel model = mMarkers.get(title);
 
-        // Log clicks on all markers (regardless of type)
-        // ANALYTICS EVENT: Click on marker on the map.
-        // Contains: Marker ID (for example room UUID)
         AnalyticsHelper.sendEvent("Map", "markerclick", title);
 
         deselectActiveMarker();
@@ -689,7 +696,7 @@ public class MapFragment extends com.google.android.gms.maps.MapFragment impleme
                 }
 
                 // Add marker to the map
-                Marker m = mMap.addMarker(entry.options.visible(true));
+                Marker m = mMap.addMarker(entry.options);
                 MarkerModel model = entry.model;
                 model.marker = m;
 
@@ -703,26 +710,29 @@ public class MapFragment extends com.google.android.gms.maps.MapFragment impleme
                 markerList.add(m);
                 mMarkers.put(model.id, model);
             }
+
+            if (mFloor > INVALID_FLOOR) {
+                setFloorElementsVisible(mFloor, true);
+            }
         }
 
         enableMapElements();
     }
 
 
-    public void addOverlayBasedOnFloor(int floorLevel) {
+    public void switchFloors(int floorLevel) {
+        if (mFloor == floorLevel) {
+            return;
+        }
         if (mMap != null) {
-            mMap.clear();
-
+            hideMarkersWhenSwitchingFloors();
         }
 
-        LatLngBounds osloSpektrumLatLngBounds = new LatLngBounds(
-                new LatLng(59.91248733954981, 10.753536779098567),       // South west corner
-                new LatLng(59.9135416490492, 10.755773347221407));      // North east corner
+        mFloor = floorLevel;
+        deselectActiveMarker();
+        mCallbacks.onInfoHide();
+        setFloorElementsVisible(mFloor, true);
 
-        GroundOverlayOptions newarkMap = new GroundOverlayOptions()
-                .image(BitmapDescriptorFactory.fromResource(R.drawable.level0))
-                .positionFromBounds(osloSpektrumLatLngBounds);
-        mMap.addGroundOverlay(newarkMap);
     }
 
     private final ContentObserver mObserver = new ContentObserver(new Handler()) {
@@ -762,7 +772,7 @@ public class MapFragment extends com.google.android.gms.maps.MapFragment impleme
         @Override
         public void onLoadFinished(Loader<List<MarkerLoadingTask.MarkerEntry>> loader,
                                    List<MarkerLoadingTask.MarkerEntry> data) {
-           onMarkersLoaded(data);
+            onMarkersLoaded(data);
         }
 
         @Override

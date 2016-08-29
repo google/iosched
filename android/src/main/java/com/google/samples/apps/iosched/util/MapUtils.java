@@ -141,7 +141,7 @@ public class MapUtils {
      */
     public static MarkerOptions createPinMarker(String id, LatLng position) {
         final BitmapDescriptor icon =
-                BitmapDescriptorFactory.fromResource(R.drawable.map_marker_unselected);
+                BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE);
         return new MarkerOptions().position(position).title(id).icon(icon).anchor(0.5f, 0.85526f)
                 .visible(
                         false);

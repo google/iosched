@@ -559,6 +559,10 @@
         <item name="android:textSize">@dimen/text_size_xlarge</item>
         <item name="android:textColor">@color/text_inverse</item>
     </style>
+    <style name="TextCardHeaderBlack" parent="FontLight">
+        <item name="android:textSize">@dimen/text_size_xlarge</item>
+        <item name="android:textColor">@color/text_main</item>
+    </style>
 
     <style name="GeneralButtonStyle" parent="FontMedium">
         <item name="android:textSize">@dimen/text_size_small</item>
