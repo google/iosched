@@ -23,7 +23,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import no.java.schedule.R;
+import no.java.schedule.v2.R;
 
 /**
  * A list fragment that shows items from MySchedule.

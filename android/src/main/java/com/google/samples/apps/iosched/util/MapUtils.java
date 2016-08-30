@@ -20,7 +20,7 @@ import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.maps.android.ui.IconGenerator;
-import no.java.schedule.R;
+import no.java.schedule.v2.R;
 import com.google.samples.apps.iosched.map.util.MarkerModel;
 
 import com.jakewharton.disklrucache.DiskLruCache;
@@ -53,8 +53,8 @@ public class MapUtils {
         if (TextUtils.isEmpty(markerType)) {
             return MarkerModel.TYPE_INACTIVE;
         }
-        String tags = markerType.toUpperCase(Locale.US);
-        if (tags.contains("SESSION")) {
+        String tags = markerType.toLowerCase(Locale.US);
+        if (tags.contains("session")) {
             return MarkerModel.TYPE_SESSION;
         } else if (tags.contains("PLAIN")) {
             return MarkerModel.TYPE_PLAIN;
@@ -72,7 +72,11 @@ public class MapUtils {
             return MarkerModel.TYPE_MOSCONE;
         } else if (tags.contains("INACTIVE")) {
             return MarkerModel.TYPE_INACTIVE;
+        } else if(tags.contains("booth")) {
+            return MarkerModel.TYPE_BOOTH;
         }
+
+
         return MarkerModel.TYPE_INACTIVE; // default
     }
 
@@ -137,7 +141,7 @@ public class MapUtils {
      */
     public static MarkerOptions createPinMarker(String id, LatLng position) {
         final BitmapDescriptor icon =
-                BitmapDescriptorFactory.fromResource(R.drawable.map_marker_unselected);
+                BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE);
         return new MarkerOptions().position(position).title(id).icon(icon).anchor(0.5f, 0.85526f)
                 .visible(
                         false);

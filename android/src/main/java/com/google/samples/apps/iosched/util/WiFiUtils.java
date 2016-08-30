@@ -38,9 +38,9 @@ import android.util.Log;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import no.java.schedule.BuildConfig;
+import no.java.schedule.v2.BuildConfig;
 import com.google.samples.apps.iosched.Config;
-import no.java.schedule.R;
+import no.java.schedule.v2.R;
 import com.google.samples.apps.iosched.settings.SettingsUtils;
 
 import java.util.List;

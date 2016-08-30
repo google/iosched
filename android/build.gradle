@@ -35,11 +35,11 @@ android {
     buildToolsVersion "23.0.3"
 
     defaultConfig {
-        applicationId "no.java.schedule"
+        applicationId "no.java.schedule.v2"
         versionCode 54
         versionName "2016.0"
         minSdkVersion 20
-        targetSdkVersion 23
+        targetSdkVersion 24
 
         multiDexEnabled true
 
@@ -88,7 +88,6 @@ android {
         }
         qualityassurance {
             debuggable true
-            minifyEnabled true
           //  signingConfig signingConfigs.debug
             proguardFiles getDefaultProguardFile('proguard-android.txt'), file('proguard-project.txt')
             buildConfigField("boolean", "ENABLE_DEBUG_TOOLS", "true")
@@ -98,7 +97,6 @@ android {
         }
         release {
             debuggable false
-            minifyEnabled true
             // No signing config as we do this separately.
             proguardFiles getDefaultProguardFile('proguard-android.txt'), file('proguard-project.txt')
             buildConfigField("String", "SERVER_MANIFEST_ENDPOINT", "\"${production_api_manifest_endpoint}\"")
@@ -143,15 +141,14 @@ dependencies {
     compile "com.google.android.gms:play-services-plus:${google_play_services_client_library_version}"
     compile "com.google.android.gms:play-services-wearable:${google_play_services_client_library_version}"
     compile "com.google.android.gms:play-services-auth:${google_play_services_client_library_version}"
+    compile 'com.estimote:sdk:0.11.0@aar'
 
-    compile 'com.android.support:multidex:1.0.1'
 
     // Android support libraries.
     compile "com.android.support:appcompat-v7:${android_support_lib_version}"
     compile "com.android.support:cardview-v7:${android_support_lib_version}"
     compile "com.android.support:design:${android_support_lib_version}"
     compile "com.android.support:support-v13:${android_support_lib_version}"
-
     compile 'net.danlew:android.joda:2.9.4.1'
 
     // Different Open Source Librariesg

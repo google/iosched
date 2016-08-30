@@ -23,7 +23,7 @@ import com.google.android.gms.wearable.DataApi;
 import com.google.android.gms.wearable.PutDataMapRequest;
 import com.google.android.gms.wearable.PutDataRequest;
 import com.google.android.gms.wearable.Wearable;
-import no.java.schedule.R;
+import no.java.schedule.v2.R;
 import com.google.samples.apps.iosched.explore.ExploreIOActivity;
 import com.google.samples.apps.iosched.feedback.FeedbackHelper;
 import com.google.samples.apps.iosched.feedback.SessionFeedbackActivity;
@@ -296,7 +296,7 @@ public class SessionAlarmService extends IntentService
         Cursor c = null;
         try {
             c = getContentResolver().query(
-                    ScheduleContract.Sessions.CONTENT_MY_SCHEDULE_URI,
+                    ScheduleContract.Sessions.CONTENT_STARRED_URI,
                     SessionsNeedingFeedbackQuery.PROJECTION,
                     null, null, null);
             if (c == null) {
@@ -465,9 +465,9 @@ public class SessionAlarmService extends IntentService
         Cursor c = null;
         try {
             c = cr.query(
-                ScheduleContract.Sessions.CONTENT_MY_SCHEDULE_URI,
+                ScheduleContract.Sessions.CONTENT_STARRED_URI,
                 SessionDetailQuery.PROJECTION,
-                ScheduleContract.Sessions.STARTING_AT_TIME_INTERVAL_SELECTION,
+                ScheduleContract.Sessions.STARTING_AT_TIME_INTERVAL_SELECTION_ALARM,
                 ScheduleContract.Sessions.buildAtTimeIntervalArgs(sessionStart, intervalEnd),
                 null);
             int starredCount = c.getCount();
@@ -477,7 +477,7 @@ public class SessionAlarmService extends IntentService
             ArrayList<String> starredSessionTitles = new ArrayList<String>();
             while (c.moveToNext()) {
                 singleSessionId = c.getString(SessionDetailQuery.SESSION_ID);
-                singleSessionRoomId = c.getString(SessionDetailQuery.ROOM_ID);
+              //  singleSessionRoomId = c.getString(SessionDetailQuery.ROOM_ID);
                 starredSessionTitles.add(c.getString(SessionDetailQuery.SESSION_TITLE));
                 LOGD(TAG, "-> Title: " + c.getString(SessionDetailQuery.SESSION_TITLE));
             }
@@ -538,11 +538,7 @@ public class SessionAlarmService extends IntentService
                         String.format(res.getString(R.string.snooze_x_min), 5),
                         createSnoozeIntent(sessionStart, intervalEnd, 5));
             }
-            if (starredCount == 1 && SettingsUtils.isAttendeeAtVenue(this)) {
-                notifBuilder.addAction(R.drawable.ic_map_holo_dark,
-                        res.getString(R.string.title_map),
-                        createRoomMapIntent(singleSessionRoomId));
-            }
+
             String bigContentTitle;
             if (starredCount == 1 && starredSessionTitles.size() > 0) {
                 bigContentTitle = starredSessionTitles.get(0);
@@ -597,12 +593,12 @@ public class SessionAlarmService extends IntentService
         final ContentResolver cr = getContentResolver();
         Cursor c = null;
         try {
-            c = cr.query(ScheduleContract.Sessions.CONTENT_MY_SCHEDULE_URI,
+            c = cr.query(ScheduleContract.Sessions.CONTENT_STARRED_URI,
                     new String[]{
                             ScheduleContractHelper.formatQueryDistinctParameter(
                                     ScheduleContract.Sessions.SESSION_START),
                             ScheduleContract.Sessions.SESSION_END,
-                            ScheduleContract.Sessions.SESSION_IN_MY_SCHEDULE},
+                            ScheduleContract.Sessions.SESSION_STARRED},
                     null,
                     null,
                     null
@@ -626,11 +622,11 @@ public class SessionAlarmService extends IntentService
         final ContentResolver cr = getContentResolver();
         Cursor c = null;
         try {
-            c = cr.query(ScheduleContract.Sessions.CONTENT_MY_SCHEDULE_URI,
+            c = cr.query(ScheduleContract.Sessions.CONTENT_STARRED_URI,
                 new String[]{
                         ScheduleContract.Sessions.SESSION_TITLE,
                         ScheduleContract.Sessions.SESSION_END,
-                        ScheduleContract.Sessions.SESSION_IN_MY_SCHEDULE,
+                        ScheduleContract.Sessions.SESSION_STARRED,
                 },
                 null,
                 null,
@@ -650,28 +646,57 @@ public class SessionAlarmService extends IntentService
     }
 
     public interface SessionDetailQuery {
-
         String[] PROJECTION = {
                 ScheduleContract.Sessions.SESSION_ID,
                 ScheduleContract.Sessions.SESSION_TITLE,
-                ScheduleContract.Sessions.ROOM_ID,
-                ScheduleContract.Sessions.SESSION_IN_MY_SCHEDULE
+                ScheduleContract.Sessions.SESSION_START,
+                ScheduleContract.Sessions.SESSION_END,
+                ScheduleContract.Rooms.ROOM_NAME,
+                ScheduleContract.Sessions.SESSION_IN_MY_SCHEDULE,
+                ScheduleContract.Sessions.SESSION_LIVESTREAM_ID,
+                ScheduleContract.Sessions.SESSION_SPEAKER_NAMES,
+                ScheduleContract.Sessions.SESSION_PHOTO_URL,
+                ScheduleContract.Sessions.SESSION_COLOR,
+                ScheduleContract.Sessions.SESSION_TAGS,
         };
 
         int SESSION_ID = 0;
         int SESSION_TITLE = 1;
-        int ROOM_ID = 2;
+        int SESSION_START = 2;
+        int SESSION_END = 3;
+        int ROOM_ROOM_NAME = 4;
+        int SESSION_LIVESTREAM_URL = 6;
+        int SESSION_SPEAKER_NAMES = 7;
+        int SESSION_PHOTO_URL = 8;
+        int SESSION_COLOR = 9;
+        int SESSION_TAGS = 10;
     }
 
     public interface SessionsNeedingFeedbackQuery {
         String[] PROJECTION = {
                 ScheduleContract.Sessions.SESSION_ID,
                 ScheduleContract.Sessions.SESSION_TITLE,
-                ScheduleContract.Sessions.SESSION_IN_MY_SCHEDULE
+                ScheduleContract.Sessions.SESSION_START,
+                ScheduleContract.Sessions.SESSION_END,
+                ScheduleContract.Rooms.ROOM_NAME,
+                ScheduleContract.Sessions.SESSION_IN_MY_SCHEDULE,
+                ScheduleContract.Sessions.SESSION_LIVESTREAM_ID,
+                ScheduleContract.Sessions.SESSION_SPEAKER_NAMES,
+                ScheduleContract.Sessions.SESSION_PHOTO_URL,
+                ScheduleContract.Sessions.SESSION_COLOR,
+                ScheduleContract.Sessions.SESSION_TAGS,
         };
 
         int SESSION_ID = 0;
         int SESSION_TITLE = 1;
+        int SESSION_START = 2;
+        int SESSION_END = 3;
+        int ROOM_ROOM_NAME = 4;
+        int SESSION_LIVESTREAM_URL = 6;
+        int SESSION_SPEAKER_NAMES = 7;
+        int SESSION_PHOTO_URL = 8;
+        int SESSION_COLOR = 9;
+        int SESSION_TAGS = 10;
     }
 
     @Override

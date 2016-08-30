@@ -37,7 +37,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Locale;
 
-import no.java.schedule.io.model.VimeoVideo;
+import no.java.schedule.v2.io.model.VimeoVideo;
 
 import static com.google.samples.apps.iosched.util.LogUtils.*;
 

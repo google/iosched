@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:fillViewport="true"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <android.support.v7.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/small_margin"
+            card_view:contentPadding="@dimen/default_margin">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:adjustViewBounds="true"
+                    android:scaleType="fitXY"
+                    android:src="@drawable/ic_duke_viking512x512" />
+
+                <TextView
+                    android:id="@+id/company_name_text"
+                    style="@style/TextCardHeaderBlack"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    tools:text="Computas"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/company_type_text"
+                    style="@style/TextSmall"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    tools:text="Computas"
+                    android:textColor="@color/text_secondary" />
+
+                <TextView
+                    android:id="@+id/company_description_text"
+                    style="@style/TextNormal"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+
+                    android:layout_marginTop="@dimen/default_margin"
+                    android:textColor="@color/text_secondary"
+                    tools:text="Computas is a bla bla loremLorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam vel porttitor erat. Sed sit amet augue id orci dictum luctus. Donec ultricies quam vel urna ullamcorper pulvinar. Nullam elementum, purus vel faucibus posuere, libero purus vehicula nunc, non lobortis neque quam sed magna. Integer id molestie arcu, in semper nunc. Vestibulum auctor pharetra mauris, id vestibulum enim mattis mattis. Cras suscipit suscipit ante id pellentesque. Etiam mattis mauris non metus convallis, quis consectetur ligula eleifend. Aenean bibendum scelerisque diam, ut vulputate leo pulvinar et. Vestibulum nec cursus leo, ac interdum ante. Aliquam venenatis placerat est, tristique imperdiet nisi lobortis eget. Mauris in molestie massa, id condimentum ipsum. Ut posuere congue arcu eu finibus. In sodales luctus risus id mollis. Ut a nulla at odio dignissim lobortis.
+
+Sed vitae aliquet eros, sit amet auctor diam. Integer sit amet fringilla lorem, ac scelerisque erat. Praesent iaculis eleifend arcu, suscipit lacinia sem pellentesque tristique. Aenean bibendum aliquet orci quis malesuada. Duis rutrum sit amet urna vitae pharetra. Aenean ligula nisl, porta sed gravida at, vehicula ut neque. Proin quis pellentesque est, ac scelerisque libero. Vivamus turpis velit, pulvinar tincidunt lorem ac, ornare venenatis mi. Fusce consequat et orci in volutpat. Quisque sit amet risus molestie, dignissim elit non, ullamcorper nunc. Suspendisse egestas justo et purus pretium ultrices. Integer sodales urna eget ante feugiat, vel rutrum lacus hendrerit. Phasellus orci augue, posuere quis semper sed, porttitor nec magna. Mauris lobortis semper nunc ac venenatis.
+
+Praesent porttitor nunc id sem consequat cursus. Sed sed ornare augue, at consectetur mauris. Morbi eget tempus nisi. Duis malesuada efficitur interdum. Ut aliquet, felis et hendrerit molestie, sem magna feugiat enim, non interdum erat augue ut leo. Nunc gravida porttitor justo vel faucibus. Ut ac cursus ante. Pellentesque aliquet, lectus vel consequat dapibus, augue ante laoreet dolor, porttitor viverra dolor eros sit amet turpis. Quisque interdum euismod porttitor. Nullam sed vehicula ex. Donec tempus odio eu accumsan vulputate.
+
+Aliquam aliquet mauris non iaculis varius. Aliquam eleifend vestibulum lectus ut maximus. Suspendisse potenti. Vestibulum pellentesque, leo quis vehicula ornare, orci libero maximus purus, ac pharetra nibh lacus quis sapien. Proin dapibus neque a erat iaculis, non ultrices purus fringilla. Cras iaculis tempor felis tempus tempor. Maecenas efficitur pulvinar risus ut condimentum. Aliquam et urna vitae lorem congue elementum non ac ex. Ut mollis risus sit amet metus fringilla, eget consequat dui fringilla. Nulla et ipsum tellus. Nulla ligula elit, hendrerit non metus sed, sagittis molestie magna. Etiam finibus eros sed convallis blandit. Curabitur tincidunt, ipsum non malesuada mattis, justo sapien aliquam orci, vel bibendum eros mauris id purus.
+
+In sodales dolor nec dolor dapibus aliquam. Maecenas auctor lacus ut nunc aliquet porttitor. Donec vulputate elit sit amet efficitur semper. Vivamus condimentum sem sed leo fringilla aliquet. Donec vel urna tristique, hendrerit est eget, maximus risus. Vestibulum interdum at nunc scelerisque convallis. Donec mollis ullamcorper rhoncus. Ut id finibus elit. Etiam sit amet ante lorem. Maecenas ac lacus quis turpis gravida fringilla. Integer sit amet est pellentesque, maximus erat id, finibus felis. Nulla cursus, leo sed consequat condimentum, ex massa facilisis massa, et sagittis ligula nisi tempor lacus." />
+            </LinearLayout>
+
+        </android.support.v7.widget.CardView>
+
+        <android.support.v7.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/small_margin">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_margin="@dimen/small_margin"
+                android:orientation="vertical">
+
+                <TextView
+                    style="@style/TextCardHeaderBlack"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/small_margin"
+                    tools:text="Follow"
+                    android:textStyle="bold" />
+                <TextView
+                    style="@style/TextCardHeaderBlack"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/small_margin"
+                    tools:text="Follow"
+                    android:textColorLink="@color/primary"
+                    android:autoLink="web"
+                    android:textStyle="bold" />
+                <TextView
+                    style="@style/TextCardHeaderBlack"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/small_margin"
+                    tools:text="Follow"
+                    android:gravity="center_vertical"
+                    android:drawableLeft="@drawable/ic_twitter_blue"
+                    android:textColorLink="@color/primary"
+                    android:autoLink="web"
+                    android:textStyle="bold" />
+            </LinearLayout>
+
+        </android.support.v7.widget.CardView>
+
+    </LinearLayout>
+</ScrollView>

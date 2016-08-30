@@ -21,7 +21,7 @@ import android.content.*;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 
-import no.java.schedule.BuildConfig;
+import no.java.schedule.v2.BuildConfig;
 
 import java.io.IOException;
 import java.util.regex.Pattern;
@@ -83,7 +83,7 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
                 " initialize=" + initialize);
 
         if (initialize) {
-            boolean isChosenAccount = "JavaZone Schedule".equals(account.name) && "no.java.schedule".equals(account.type);
+            boolean isChosenAccount = "JavaZone Schedule".equals(account.name) && "no.java.schedule.v2".equals(account.type);
             ContentResolver.setIsSyncable(account, authority, isChosenAccount ? 1 : 0);
         }
 

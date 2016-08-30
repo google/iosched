@@ -2,7 +2,7 @@ package com.google.samples.apps.iosched.util;
 
 import com.google.gson.JsonElement;
 
-import no.java.schedule.io.model.JZFeedback;
+import no.java.schedule.v2.io.model.JZFeedback;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.http.Body;

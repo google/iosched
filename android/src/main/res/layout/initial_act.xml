@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/primary"
+    android:orientation="vertical">
+    <android.support.v4.view.ViewPager
+        android:id="@+id/pager"
+        android:layout_width="fill_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1" />
+    <RelativeLayout
+        android:id="@+id/initial_button_bottom"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_margin="@dimen/default_margin"
+        android:orientation="horizontal">
+        <TextView
+            android:id="@+id/initial_skip_button"
+            style="@style/TextButtonBig"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/default_margin"
+            android:layout_weight="1"
+            android:layout_alignParentLeft="true"
+            android:text="@string/Initial_Skip" />
+        <TextView
+            android:id="@+id/indicator"
+            android:padding="10dip"
+            android:layout_height="wrap_content"
+            android:text="example hello"
+            android:gravity="center"
+            android:layout_width="fill_parent"
+            android:layout_toRightOf="@id/initial_skip_button"
+            android:layout_toLeftOf="@+id/initial_next_button" />
+        <TextView
+            android:id="@+id/initial_next_button"
+            style="@style/TextButtonBig"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="@dimen/default_margin"
+            android:layout_weight="1"
+            android:layout_alignParentRight="true"
+            android:text="@string/Initial_Next" />
+    </RelativeLayout>
+</RelativeLayout>

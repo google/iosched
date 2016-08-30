@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v4.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/drawer_layout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fitsSystemWindows="true">
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <FrameLayout
+            android:id="@+id/root_container"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:foreground="?android:windowContentOverlay" />
+        <LinearLayout
+            android:id="@+id/headerbar"
+            style="@style/HeaderBar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:clickable="true"
+            android:orientation="vertical">
+
+            <include layout="@layout/toolbar_actionbar" />
+            <!-- placeholder, empty except on L -->
+
+        </LinearLayout>
+    </FrameLayout>
+    <include layout="@layout/navdrawer" />
+</android.support.v4.widget.DrawerLayout>

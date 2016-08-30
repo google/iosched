@@ -16,7 +16,7 @@
 
 package com.google.samples.apps.iosched.map;
 
-import no.java.schedule.R;
+import no.java.schedule.v2.R;
 import com.google.samples.apps.iosched.provider.ScheduleContract;
 import com.google.samples.apps.iosched.session.SessionDetailConstants;
 import com.google.samples.apps.iosched.ui.BaseActivity;
@@ -94,14 +94,14 @@ public class MapActivity extends BaseActivity
         mFloor1Button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                mMapFragment.addOverlayBasedOnFloor(0);
+                mMapFragment.switchFloors(1);
             }
         });
 
         mFloor2Button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                mMapFragment.addOverlayBasedOnFloor(1);
+                mMapFragment.switchFloors(2);
 
             }
         });
@@ -109,7 +109,7 @@ public class MapActivity extends BaseActivity
         mFloor3Button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                mMapFragment.addOverlayBasedOnFloor(2);
+                mMapFragment.switchFloors(3);
 
             }
         });

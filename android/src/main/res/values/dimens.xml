@@ -30,6 +30,10 @@
     <dimen name="app_text_size_xlarge">20sp</dimen>
     <dimen name="app_text_size_diff_large_small">6sp</dimen>
 
+
+    <!-- Legger til  for å øke størrelsen -->
+    <dimen name="text_size_micro">14sp</dimen>
+
     <!-- line spacing -->
     <item name="body_1_spacing" format="float" type="dimen">1.22448979592</item>
     <item name="h3_spacing" format="float" type="dimen">1.14285714286</item>
@@ -114,7 +118,7 @@
     <dimen name="text_size_body">13sp</dimen>
     <dimen name="text_size_medium">14sp</dimen>
     <dimen name="text_size_large">18sp</dimen>
-    <dimen name="text_size_xlarge">20sp</dimen>
+    <dimen name="text_size_xlarge">19sp</dimen>
     <dimen name="text_size_diff_large_small">6sp</dimen>
     <!-- End Deprecated -->
     <dimen name="speaker_image_size">40dp</dimen>
@@ -230,5 +234,78 @@
     <dimen name="logo_image_size">72dp</dimen>
     <dimen name="fab_size">24dp</dimen>
     <dimen name="fab_size2">32dp</dimen>
+    <dimen name="default_margin">16dp</dimen>
+    <dimen name="small_margin">8dp</dimen>
+
+    <dimen name="extra_large_margin">64dp</dimen>
+    <dimen name="micro_padding">4dp</dimen>
+    <dimen name="large_margin">32dp</dimen>
+    <dimen name="micro_margin">4dp</dimen>
+
+    <dimen name="circle_image_size">63dp</dimen>
+    <dimen name="circle_image_small_size">34dp</dimen>
+
+    <dimen name="stroke_width">4dp</dimen>
+
+    <dimen name="keyline1">16dp</dimen>
+    <dimen name="keyline2">48dp</dimen>
+    <dimen name="keyline3">16dp</dimen>
+
+    <dimen name="fab_margin">16dp</dimen>
+
+    <!-- Layout key lines and padding. -->
+
+    <dimen name="logo_width">234dp</dimen>
+    <dimen name="overflow_width">40dp</dimen>
+
+    <dimen name="card_cornerradius">5dp</dimen>
+
+    <dimen name="image_history_width">100dp</dimen>
+
+    <dimen name="image_gateinout_size">160dp</dimen>
+    <dimen name="image_gallery_height">200dp</dimen>
+    <dimen name="image_damage_size">140dp</dimen>
+    <dimen name="image_damage_width">150dp</dimen>
+    <dimen name="image_damage_summary_height">160dp</dimen>
+    <dimen name="image_damage_summary_width">100dp</dimen>
+    <dimen name="image_damage_history_size">200dp</dimen>
+    <dimen name="image_damage_history_first_image_width">250dp</dimen>
+    <dimen name="image_damage_placement_width">200dp</dimen>
+    <dimen name="image_damage_placement_height">130dp</dimen>
+    <dimen name="image_damage_history_size_item">170dp</dimen>
+    <dimen name="image_damage_containerdamageplacementdetail_size">400dp</dimen>
+
+
+    <!-- Legger til  for å øke størrelsen -->
+    <dimen name="text_size_xxlarge">36sp</dimen>
+
+    <dimen name="info_layout_width">210dp</dimen>
+    <dimen name="category_layout_width">100dp</dimen>
+
+    <!-- crosshair bildestørrelse -->
+    <dimen name="gesture_crosshairimagesize">50dp</dimen>
+
+    <dimen name="register_damage_symbol_size">96dp</dimen>
+    <dimen name="register_damage_symbol_margin">42dp</dimen>
+
+    <!--
+        Material Design Typography Scale
+        Reference from http://www.google.com/design/spec/style/typography.html#typography-standard-styles
+        -->
+    <dimen name="Material.Text.Display4.Size">112sp</dimen>
+    <dimen name="Material.Text.Display3.Size">56dp</dimen>
+    <dimen name="Material.Text.Display2.Size">45sp</dimen>
+    <dimen name="Material.Text.Display1.Size">34sp</dimen>
+    <dimen name="Material.Text.Headline.Size">24sp</dimen>
+    <dimen name="Material.Text.Title.Size">20sp</dimen>
+    <dimen name="Material.Text.Subhead.Size">16sp</dimen>
+    <dimen name="Material.Text.Body2.Size">14sp</dimen>
+    <dimen name="Material.Text.Body1.Size">14sp</dimen>
+    <dimen name="Material.Text.Caption.Size">12sp</dimen>
+    <dimen name="Material.Text.Menu.Size">14sp</dimen>
+    <dimen name="Material.Text.Button.Size">14sp</dimen>
+    <dimen name="extra_button_padding">16dp</dimen>
+    <dimen name= "icon_size">24dp</dimen>
+
 
 </resources>

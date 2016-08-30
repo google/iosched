@@ -51,8 +51,8 @@ public class AccountUtils {
     private static final String TAG = makeLogTag(AccountUtils.class);
 
     private static final String PREF_ACTIVE_ACCOUNT = "chosen_account";
-    private static final String DUMMY_ACCOUNT_NAME = "no.java.schedule";
-    private static final String DUMMY_ACCOUNT_TYPE = "no.java.schedule";
+    private static final String DUMMY_ACCOUNT_NAME = "no.java.schedule.v2";
+    private static final String DUMMY_ACCOUNT_TYPE = "no.java.schedule.v2";
     private static final String DUMMY_AUTH_TOKEN = "authtoken";
 
     // these names are are prefixes; the account is appended to them

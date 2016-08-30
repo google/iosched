@@ -38,11 +38,10 @@ import android.widget.TextView;
 
 import com.google.samples.apps.iosched.Config;
 
-import no.java.schedule.R;
+import no.java.schedule.v2.R;
 
 import com.google.samples.apps.iosched.model.TagMetadata;
 import com.google.samples.apps.iosched.provider.ScheduleContract;
-import com.google.samples.apps.iosched.settings.SettingsUtils;
 import com.google.samples.apps.iosched.ui.BaseActivity;
 import com.google.samples.apps.iosched.ui.SearchActivity;
 import com.google.samples.apps.iosched.ui.widget.CollectionView;
@@ -143,7 +142,7 @@ public class ExploreSessionsActivity extends BaseActivity
 
         mFragment = (ExploreSessionsFragment) getFragmentManager()
                 .findFragmentById(R.id.explore_sessions_frag);
-
+        mDateSelected = getIntent().getStringExtra(EXTRA_FILTER_DATE);
         if (savedInstanceState != null) {
 
             mTagFilterHolder = savedInstanceState.getParcelable(STATE_FILTER_TAGS);

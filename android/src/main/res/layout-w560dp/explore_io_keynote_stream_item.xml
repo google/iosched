@@ -39,7 +39,7 @@
             android:id="@+id/thumbnail"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:src="@drawable/io_logo"
+            android:src="@drawable/ic_logo"
             android:scaleType="centerCrop" />
 
     </com.google.samples.apps.iosched.ui.widget.AspectRatioView>

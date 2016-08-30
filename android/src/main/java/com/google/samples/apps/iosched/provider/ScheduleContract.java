@@ -422,7 +422,7 @@ public final class ScheduleContract {
         String VIDEO_TAGS = "video_tags";
     }
 
-    public static final String CONTENT_AUTHORITY = "no.java.schedule";
+    public static final String CONTENT_AUTHORITY = "no.java.schedule.v2";
 
     public static final Uri BASE_CONTENT_URI = Uri.parse("content://" + CONTENT_AUTHORITY);
 
@@ -821,6 +821,9 @@ public final class ScheduleContract {
 
         public static final String STARTING_AT_TIME_INTERVAL_SELECTION =
                 SESSION_START + " >= ? and " + SESSION_END + " " + "<= ?";
+
+        public static final String STARTING_AT_TIME_INTERVAL_SELECTION_ALARM =
+                SESSION_START + " >= ? and " + "? <= " + " " + SESSION_END;
 
         // Used to fetch upcoming sessions
         public static final String UPCOMING_SELECTION =

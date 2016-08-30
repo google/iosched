@@ -23,7 +23,7 @@ import android.graphics.drawable.Drawable;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.util.AttributeSet;
 
-import no.java.schedule.R;
+import no.java.schedule.v2.R;
 
 public class MultiSwipeRefreshLayout extends SwipeRefreshLayout {
     private CanChildScrollUpCallback mCanChildScrollUpCallback;

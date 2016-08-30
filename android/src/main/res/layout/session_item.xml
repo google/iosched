@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:iosched="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="?android:selectableItemBackground"
+    android:clickable="true"
+    android:focusable="true">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:padding="@dimen/page_margin_width">
+
+        <LinearLayout
+            android:id="@+id/session_schedule_start"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                style="@style/TextAppearance.AppCompat"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="10:20" />
+
+            <TextView
+                style="@style/TextAppearance.AppCompat.Small"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="20:20" />
+        </LinearLayout>
+
+        <com.google.samples.apps.iosched.ui.widget.BezelImageView
+            android:id="@+id/profile_image"
+            android:layout_width="34dp"
+            android:layout_height="34dp"
+            android:layout_gravity="center_vertical"
+            android:layout_marginLeft="@dimen/keyline_1"
+            android:layout_toRightOf="@id/session_schedule_start"
+            android:background="@drawable/circle_mask"
+            android:scaleType="centerCrop"
+            android:src="@drawable/person_image_empty" />
+
+        <LinearLayout
+            android:id="@+id/session_info_layout"
+            android:layout_width="210dp"
+            android:layout_height="wrap_content"
+            android:layout_toEndOf="@+id/profile_image"
+            android:layout_marginLeft="@dimen/small_margin"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/twitter_personname"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="left"
+                android:fontFamily="@string/font_fontFamily_medium"
+                android:foregroundGravity="left"
+                android:maxLines="1"
+                android:singleLine="true"
+                android:textColor="@color/body_text_1"
+                android:textSize="@dimen/text_size_medium"
+                android:textStyle="@integer/font_textStyle_medium"
+                tools:text="Morten Bergfdasfewrfasdffmann" />
+            <TextView
+                android:id="@+id/speaker_text"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="@dimen/text_size_medium"
+                android:ellipsize="end"
+                android:fontFamily="@string/font_fontFamily_medium"
+                android:maxLines="1"
+                android:textStyle="@integer/font_textStyle_medium"
+                android:text="Speakers, Speakers2, Speakers3"/>
+            <TextView
+                android:id="@+id/location_text"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="@dimen/text_size_small"
+                android:textStyle="@integer/font_textStyle_medium"
+                android:text="Storsalen"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/default_margin"
+            android:layout_toRightOf="@id/session_info_layout"
+            android:layout_marginBottom="@dimen/small_margin"
+            android:orientation="vertical"
+            android:id="@+id/linearLayout"></LinearLayout>
+        <LinearLayout
+            android:layout_width="100dp"
+            android:layout_height="wrap_content"
+            android:background="@color/jz_darkred"
+            android:layout_alignParentEnd="true"
+            android:layout_marginTop="@dimen/small_margin"
+            android:layout_below="@+id/profile_image"
+            android:id="@+id/linearLayout2">
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                style="@style/ExploreItem.Title"
+                android:ellipsize="end"
+                android:gravity="center"
+                android:padding="@dimen/small_margin"
+                android:fontFamily="@string/font_fontFamily_medium"
+                android:maxLines="1"
+                android:text="Android"/>
+        </LinearLayout>
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_stat_notification"
+            android:scaleType="fitXY"
+            android:layout_alignParentTop="true"
+            android:layout_alignEnd="@+id/linearLayout2" />
+
+    </RelativeLayout>
+</FrameLayout>

@@ -27,7 +27,7 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 
 import com.google.android.gms.auth.GoogleAuthUtil;
-import no.java.schedule.R;
+import no.java.schedule.v2.R;
 import com.google.samples.apps.iosched.util.AccountUtils;
 
 import java.util.ArrayList;

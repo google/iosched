@@ -37,7 +37,7 @@ import android.widget.CursorAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import no.java.schedule.R;
+import no.java.schedule.v2.R;
 
 import com.google.samples.apps.iosched.model.TagMetadata;
 import com.google.samples.apps.iosched.provider.ScheduleContract;
@@ -183,42 +183,42 @@ public class ExploreSessionsFragment extends Fragment implements
             startDate = dateToUse.plusHours(0);
             endDate = dateToUse.plusHours(23);
         }
-            switch (id) {
-                case ExploreSessionsQuery.NORMAL_TOKEN:
-                    return new CursorLoader(getActivity(),
-                            mCurrentUri, ExploreSessionsQuery.NORMAL_PROJECTION,
-                            mSessionDate != null ?
-                                    ScheduleContract.Sessions.STARTING_AT_TIME_INTERVAL_SELECTION : null,
-                            mSessionDate != null ? new String[]{startDate.getMillis() + "", endDate.getMillis() + ""} : null,
-                            ScheduleContract.Sessions.SORT_BY_TYPE_THEN_TIME);
-                case ExploreSessionsQuery.SEARCH_TOKEN:
-                    return new CursorLoader(getActivity(),
-                            mCurrentUri, ExploreSessionsQuery.SEARCH_PROJECTION,
-                            mSessionDate != null ?
-                                    ScheduleContract.Sessions.STARTING_AT_TIME_INTERVAL_SELECTION : null,
-                            mSessionDate != null ? new String[]{startDate.getMillis() + "", endDate.getMillis() + ""} : null,
-                            ScheduleContract.Sessions.SORT_BY_TYPE_THEN_TIME);
-                case TAG_METADATA_TOKEN:
-                    return TagMetadata.createCursorLoader(getActivity());
-                default:
-                    return null;
-            }
+        switch (id) {
+            case ExploreSessionsQuery.NORMAL_TOKEN:
+                return new CursorLoader(getActivity(),
+                        mCurrentUri, ExploreSessionsQuery.NORMAL_PROJECTION,
+                        mSessionDate != null ?
+                                ScheduleContract.Sessions.STARTING_AT_TIME_INTERVAL_SELECTION : null,
+                        mSessionDate != null ? new String[]{startDate.getMillis() + "", endDate.getMillis() + ""} : null,
+                        ScheduleContract.Sessions.SORT_BY_TYPE_THEN_TIME);
+            case ExploreSessionsQuery.SEARCH_TOKEN:
+                return new CursorLoader(getActivity(),
+                        mCurrentUri, ExploreSessionsQuery.SEARCH_PROJECTION,
+                        mSessionDate != null ?
+                                ScheduleContract.Sessions.STARTING_AT_TIME_INTERVAL_SELECTION : null,
+                        mSessionDate != null ? new String[]{startDate.getMillis() + "", endDate.getMillis() + ""} : null,
+                        ScheduleContract.Sessions.SORT_BY_TYPE_THEN_TIME);
+            case TAG_METADATA_TOKEN:
+                return TagMetadata.createCursorLoader(getActivity());
+            default:
+                return null;
         }
+    }
 
-        @Override
-        public void onLoadFinished (Loader < Cursor > loader, Cursor cursor){
-            switch (loader.getId()) {
-                case ExploreSessionsQuery.NORMAL_TOKEN: // fall through
-                case ExploreSessionsQuery.SEARCH_TOKEN:
-                    reloadSessionData(cursor);
-                    break;
-                case TAG_METADATA_TOKEN:
-                    mTagMetadata = new TagMetadata(cursor);
-                    break;
-                default:
-                    cursor.close();
-            }
+    @Override
+    public void onLoadFinished (Loader < Cursor > loader, Cursor cursor){
+        switch (loader.getId()) {
+            case ExploreSessionsQuery.NORMAL_TOKEN: // fall through
+            case ExploreSessionsQuery.SEARCH_TOKEN:
+                reloadSessionData(cursor);
+                break;
+            case TAG_METADATA_TOKEN:
+                mTagMetadata = new TagMetadata(cursor);
+                break;
+            default:
+                cursor.close();
         }
+    }
 
     private void reloadSessionData(Cursor cursor) {
         mEmptyView.setVisibility(cursor.getCount() == 0 ? View.VISIBLE : View.GONE);

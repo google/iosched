@@ -23,8 +23,8 @@ import java.util.Map;
 import java.util.TimeZone;
 import java.util.concurrent.TimeUnit;
 
-import no.java.schedule.BuildConfig;
-import no.java.schedule.R;
+import no.java.schedule.v2.BuildConfig;
+import no.java.schedule.v2.R;
 
 public class Config {
 

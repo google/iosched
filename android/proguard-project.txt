@@ -130,3 +130,17 @@
 -dontwarn sun.misc.Unsafe
 -dontwarn com.google.common.util.concurrent.RateLimiter
 
+-dontwarn okio.**
+-dontwarn com.viewpagerindicator.**
+
+
+
+-keep class com.estimote.sdk.** { *; }
+-keep interface com.estimote.sdk.** { *; }
+-dontwarn com.estimote.sdk.**
+
+-dontwarn org.joda.convert.**
+-dontwarn org.joda.time.**
+-keep class org.joda.time.** { *; }
+-keep interface org.joda.time.** { *; }
+

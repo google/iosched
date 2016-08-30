@@ -16,15 +16,13 @@
 
 package com.google.samples.apps.iosched.explore;
 
-import no.java.schedule.R;
+import no.java.schedule.v2.R;
 
 import com.google.samples.apps.iosched.explore.data.ItemGroup;
 import com.google.samples.apps.iosched.explore.data.LiveStreamData;
 import com.google.samples.apps.iosched.explore.data.MessageData;
 import com.google.samples.apps.iosched.explore.data.SessionData;
 import com.google.samples.apps.iosched.explore.data.SessionScheduleGroup;
-import com.google.samples.apps.iosched.explore.data.ThemeGroup;
-import com.google.samples.apps.iosched.explore.data.TopicGroup;
 import com.google.samples.apps.iosched.framework.PresenterFragmentImpl;
 import com.google.samples.apps.iosched.framework.QueryEnum;
 import com.google.samples.apps.iosched.framework.UpdatableView;
@@ -39,14 +37,18 @@ import com.google.samples.apps.iosched.util.ThrottledContentObserver;
 import com.google.samples.apps.iosched.util.UIUtils;
 import com.google.samples.apps.iosched.util.WiFiUtils;
 
+import android.Manifest;
 import android.app.Activity;
 import android.app.Fragment;
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.preference.PreferenceManager;
+import android.support.v4.app.ActivityCompat;
 import android.text.Html;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
@@ -58,7 +60,6 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 import static android.content.SharedPreferences.OnSharedPreferenceChangeListener;
@@ -81,6 +82,10 @@ import static com.google.samples.apps.iosched.util.LogUtils.makeLogTag;
  */
 public class ExploreIOFragment extends Fragment implements UpdatableView<ExploreModel>,
         CollectionViewCallbacks {
+    private static final int REQUEST_LOCATION = 0;
+    private static final int REQUEST_CALENDAR = 1;
+    private static final int REQUEST_STORAGE = 2;
+    private static final int REQUEST_CONTACT = 3;
 
     private static final String TAG = makeLogTag(ExploreIOFragment.class);
 
@@ -169,7 +174,7 @@ public class ExploreIOFragment extends Fragment implements UpdatableView<Explore
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        mImageLoader = new ImageLoader(getActivity(), R.drawable.io_logo);
+        mImageLoader = new ImageLoader(getActivity(), R.drawable.ic_logo);
     }
 
     private void setContentTopClearance(int clearance) {
@@ -192,6 +197,58 @@ public class ExploreIOFragment extends Fragment implements UpdatableView<Explore
             drawShadowFrameLayout.setShadowTopOffset(actionBarSize);
         }
         setContentTopClearance(actionBarSize);
+/*
+        if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            if (ActivityCompat.checkSelfPermission(getActivity(),
+                    Manifest.permission.ACCESS_FINE_LOCATION) !=
+                    PackageManager.PERMISSION_GRANTED
+                    && ActivityCompat.checkSelfPermission(getActivity(),
+                    Manifest.permission.ACCESS_COARSE_LOCATION) !=
+                    PackageManager.PERMISSION_GRANTED) {
+                requestPermissions(new String[]
+                                {Manifest.permission.
+                                        ACCESS_FINE_LOCATION,
+                                        Manifest.permission.ACCESS_COARSE_LOCATION},
+                        REQUEST_LOCATION);
+            }
+
+            if (ActivityCompat.checkSelfPermission(getActivity(),
+                    Manifest.permission.READ_CALENDAR) !=
+                    PackageManager.PERMISSION_GRANTED &&
+                    ActivityCompat.checkSelfPermission(getActivity(),
+                            Manifest.permission.WRITE_CALENDAR) !=
+                            PackageManager.PERMISSION_GRANTED) {
+                checkRunTimePermission(new String[]{
+                                Manifest.permission.READ_CALENDAR,
+                                Manifest.permission.WRITE_CALENDAR},
+                        REQUEST_CALENDAR);
+
+            }
+
+            if (ActivityCompat.checkSelfPermission(getActivity(),
+                    Manifest.permission.WRITE_EXTERNAL_STORAGE) !=
+                    PackageManager.PERMISSION_GRANTED &&
+                    ActivityCompat.checkSelfPermission(getActivity(),
+                            Manifest.permission.READ_EXTERNAL_STORAGE) !=
+                            PackageManager.PERMISSION_GRANTED) {
+                checkRunTimePermission(new String[]{
+                                Manifest.permission.WRITE_EXTERNAL_STORAGE,
+                                Manifest.permission.READ_EXTERNAL_STORAGE},
+                        REQUEST_STORAGE);
+            }
+
+            if (ActivityCompat.checkSelfPermission(getActivity(),
+                    Manifest.permission.READ_CONTACTS) !=
+                    PackageManager.PERMISSION_GRANTED) {
+                checkRunTimePermission(new String[]{
+                                Manifest.permission.READ_CONTACTS},
+                        REQUEST_CONTACT);
+            }
+        }*/
+    }
+
+    private void checkRunTimePermission(String[] permissions, int requestPermissionCode) {
+        requestPermissions(permissions, requestPermissionCode);
     }
 
     @Override
@@ -362,9 +419,8 @@ public class ExploreIOFragment extends Fragment implements UpdatableView<Explore
             mCollectionView.onRestoreInstanceState(state);
         }
 
-        // Show empty view if there were no Group cards.
         if (mEmptyView != null) {
-            mEmptyView.setVisibility(inventory.getGroupCount() < 1 ? View.VISIBLE : View.GONE);
+            mEmptyView.setVisibility(View.GONE);
         }
     }
 

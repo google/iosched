@@ -18,7 +18,7 @@ package com.google.samples.apps.iosched.social;
 
 import android.os.Bundle;
 
-import no.java.schedule.R;
+import no.java.schedule.v2.R;
 import com.google.samples.apps.iosched.ui.BaseActivity;
 import com.google.samples.apps.iosched.util.AnalyticsHelper;
 

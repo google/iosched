@@ -29,7 +29,7 @@ import android.widget.BaseAdapter;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 
-import no.java.schedule.R;
+import no.java.schedule.v2.R;
 
 import java.util.ArrayList;
 import java.util.HashSet;

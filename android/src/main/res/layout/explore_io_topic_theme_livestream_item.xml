@@ -48,7 +48,7 @@
             android:scaleType="centerCrop"
             android:visibility="gone"
             android:layout_gravity="center_horizontal|center_vertical|center"
-            android:src="@drawable/io_logo" />
+            android:src="@drawable/ic_logo" />
 
         <FrameLayout
             android:layout_width="wrap_content"
