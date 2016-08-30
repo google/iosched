@@ -26,8 +26,8 @@
                 android:layout_height="@dimen/logo_image_size"
                 android:layout_gravity="center_vertical"
                 android:layout_marginLeft="@dimen/keyline_1"
-                android:scaleType="centerCrop"
-                android:src="@drawable/person_image_empty" />
+                android:scaleType="fitXY"
+                android:src="@drawable/ic_duke_viking512x512" />
 
             <LinearLayout
                 android:layout_width="match_parent"

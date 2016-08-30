@@ -25,11 +25,11 @@
                 android:orientation="vertical">
 
                 <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/logo_image_size"
                     android:layout_gravity="center"
                     android:adjustViewBounds="true"
-                    android:scaleType="fitXY"
+                    android:scaleType="fitCenter"
                     android:src="@drawable/ic_duke_viking512x512" />
 
                 <TextView
@@ -88,25 +88,41 @@ In sodales dolor nec dolor dapibus aliquam. Maecenas auctor lacus ut nunc alique
                     tools:text="Follow"
                     android:textStyle="bold" />
                 <TextView
-                    style="@style/TextCardHeaderBlack"
+                    android:id="@+id/sponsor_web_text"
+                    style="@style/TextSmall"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_margin="@dimen/small_margin"
-                    tools:text="Follow"
+                    tools:text="Web"
+                    android:drawableLeft="@android:drawable/ic_menu_week"
                     android:textColorLink="@color/primary"
                     android:autoLink="web"
-                    android:textStyle="bold" />
+                    android:gravity="center_vertical"
+                    android:textColor="@color/primary"/>
                 <TextView
-                    style="@style/TextCardHeaderBlack"
+                    android:id="@+id/sponsor_linkedin_text"
+                    style="@style/TextSmall"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_margin="@dimen/small_margin"
-                    tools:text="Follow"
+                    tools:text="LinkedIn"
+                    android:gravity="center_vertical"
+                    android:drawableLeft="@android:drawable/ic_menu_week"
+                    android:textColorLink="@color/primary"
+                    android:autoLink="web"
+                    android:textColor="@color/primary" />
+                <TextView
+                    android:id="@+id/sponsor_twitter_text"
+                    style="@style/TextSmall"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/small_margin"
+                    tools:text="Twitter"
                     android:gravity="center_vertical"
                     android:drawableLeft="@drawable/ic_twitter_blue"
                     android:textColorLink="@color/primary"
                     android:autoLink="web"
-                    android:textStyle="bold" />
+                    android:textColor="@color/primary" />
             </LinearLayout>
 
         </android.support.v7.widget.CardView>

@@ -17,10 +17,15 @@ import com.google.samples.apps.iosched.provider.ScheduleContract;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.UUID;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 
+import no.java.schedule.io.model.BeaconQueue;
 import no.java.schedule.io.model.JzBeaconRegion;
 import no.java.schedule.io.model.JzRegionList;
 
@@ -33,17 +38,22 @@ public class EstimoteBeaconManager {
     private String scanId;
     private static final String TAG = "EstimoteBeaconManager";
     private static final String RegionInfoJson = "regioninfo.json";
+    private BeaconQueue mBeaconQueue;
+    private ScheduledExecutorService  mScheduledExecutorService;
 
     public EstimoteBeaconManager(Context context) {
         mContext = context;
         mBeaconManager = new BeaconManager(context);
         initializeRegionAndUUIDs();
+        mBeaconQueue = new BeaconQueue();
+        mScheduledExecutorService = Executors.newScheduledThreadPool(1);
     }
 
     private void initializeRegionAndUUIDs() {
         if (mRegionList == null) {
             mRegionList = new ArrayList<>();
         }
+
 
         if (mRegionBeaconMapping == null) {
             mRegionBeaconMapping = new HashMap<>();
@@ -106,6 +116,18 @@ public class EstimoteBeaconManager {
                 scanId = mBeaconManager.startNearableDiscovery();
             }
         });
+        mScheduledExecutorService.scheduleAtFixedRate(new Runnable() {
+            @Override
+            public void run() {
+                if(!mBeaconQueue.isEmpty()) {
+                    BeaconQueue.BeaconInformationItem item = mBeaconQueue.getHighestRssiBeacon();
+                    Beacon highestRssiBeacon = item.getmBeacon();
+                    JzBeaconRegion regionLocation = item.getmRegion();
+                    mBeaconQueue.clearBeacons();
+
+                }
+            }
+        },0, 15, TimeUnit.SECONDS);
     }
 
     public void stopRanging() {
@@ -116,6 +138,7 @@ public class EstimoteBeaconManager {
     public void stopEstimoteBeaconManager() {
         // Should be invoked in #onStop.
         mBeaconManager.stopNearableDiscovery(scanId);
+        mScheduledExecutorService.shutdown();
     }
 
     public void destroyEstimoteBeaconManager() {
@@ -143,7 +166,6 @@ public class EstimoteBeaconManager {
                     @Override
                     public void onEnteredRegion(Region region, List<Beacon> beacons) {
                         if (!beacons.isEmpty()) {
-                            Beacon nearestBeacon = beacons.get(0);
                         }
                     }
 
@@ -158,11 +180,22 @@ public class EstimoteBeaconManager {
                     @Override
                     public void onBeaconsDiscovered(Region region, List<Beacon> list) {
                         if (!list.isEmpty()) {
-                            Beacon nearestBeacon = list.get(0);
+                            JzBeaconRegion beaconRegion = getRegion(region);
+                            mBeaconQueue.insertBeaconInformation(beaconRegion,list);
                         }
                     }
                 });
             }
         });
+    }
+
+    private JzBeaconRegion getRegion(Region region) {
+        for(JzBeaconRegion beaconRegion : mJzRegionList.getRegions()) {
+            if(beaconRegion.getName().equals(region.getIdentifier())) {
+                return beaconRegion;
+            }
+        }
+
+        return null;
     }
 }

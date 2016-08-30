@@ -297,12 +297,11 @@
 
         </FrameLayout>
 
-        <TextView
+        <EditText
             android:id="@+id/feedback_comment_textview"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/page_margin_width"
-            android:layout_marginBottom="@dimen/page_margin_width"
+            android:layout_margin="@dimen/page_margin_width"
             style="@style/Body2Text"
             android:hint="@string/feedback_comment_text"/>
 

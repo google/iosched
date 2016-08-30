@@ -106,13 +106,19 @@
         <!-- Activities -->
 
         <activity
+            android:name="com.google.samples.apps.iosched.ui.SplashScreenActivity"
+            android:theme="@style/SplashTheme.Base">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
+        <activity
             android:name=".ui.HomeActivity"
             android:label="@string/app_name"
             android:theme="@style/Theme.IOSched.Sessions">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
             <!-- Web URLs -->
             <intent-filter android:label="@string/app_name"
                 android:priority="0">
