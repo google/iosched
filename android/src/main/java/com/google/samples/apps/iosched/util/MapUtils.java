@@ -147,6 +147,14 @@ public class MapUtils {
                         false);
     }
 
+    public static MarkerOptions createCurrentLocationMarker(String id, LatLng position) {
+        final BitmapDescriptor icon =
+                BitmapDescriptorFactory.fromResource(R.drawable.ratingbar_star_on_focused);
+        return new MarkerOptions().position(position).title(id).icon(icon).anchor(0.5f, 0.85526f)
+                .visible(
+                        true);
+    }
+
     /**
      * Creates a new IconGenerator for labels on the map.
      */

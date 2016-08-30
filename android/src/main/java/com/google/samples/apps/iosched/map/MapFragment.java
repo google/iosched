@@ -30,10 +30,12 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.Marker;
 
+import no.java.schedule.io.model.Coordinates;
 import no.java.schedule.util.NetworkUtil;
 import no.java.schedule.v2.R;
 import no.java.schedule.util.EstimoteBeaconManager;
 
+import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.samples.apps.iosched.map.util.MarkerLoadingTask;
 import com.google.samples.apps.iosched.map.util.MarkerModel;
 import com.google.samples.apps.iosched.provider.ScheduleContract;
@@ -86,6 +88,7 @@ public class MapFragment extends com.google.android.gms.maps.MapFragment impleme
     // Initial camera zoom
     private static final float CAMERA_ZOOM = 18.19f;
     private static final float CAMERA_BEARING = 234.2f;
+    private static Marker mCurrentLocationMarker = null;
 
     private static final int INVALID_FLOOR = Integer.MIN_VALUE;
 
@@ -255,7 +258,7 @@ public class MapFragment extends com.google.android.gms.maps.MapFragment impleme
                              Bundle savedInstanceState) {
         View mapView = super.onCreateView(inflater, container, savedInstanceState);
         mEstimoteBeaconManager = new EstimoteBeaconManager(
-                getActivity());
+                getActivity(), this);
         mEstimoteBeaconManager.initializeEstimoteBeaconManager(getActivity());
         setMapInsets(mMapInsets);
 
@@ -277,6 +280,18 @@ public class MapFragment extends com.google.android.gms.maps.MapFragment impleme
         } else {
             mEstimoteBeaconManager.startMonitorEstimoteBeacons(getActivity());
         }
+    }
+
+    public void placeMarkerLocationOnCurrentRegion(Coordinates coordinates) {
+        LatLng beaconRegionLatLng = new LatLng(coordinates.getLatitude(), coordinates.getLongitude());
+        if(mCurrentLocationMarker != null) {
+            mCurrentLocationMarker.remove();
+            mCurrentLocationMarker = null;
+        }
+
+        MarkerOptions markerOptions
+                = MapUtils.createCurrentLocationMarker("Your current location", beaconRegionLatLng);
+        mCurrentLocationMarker = mMap.addMarker(markerOptions);
     }
 
     private AlertDialog.Builder createAlertDialog() {
@@ -398,7 +413,6 @@ public class MapFragment extends com.google.android.gms.maps.MapFragment impleme
         // load all markers
         LoaderManager lm = getLoaderManager();
         lm.initLoader(TOKEN_LOADER_MARKERS, null, mMarkerLoader).forceLoad();
-
 
         setupMap(true);
     }
@@ -643,6 +657,10 @@ public class MapFragment extends com.google.android.gms.maps.MapFragment impleme
         AnalyticsHelper.sendEvent("Map", "markerclick", title);
 
         deselectActiveMarker();
+
+        if(marker.equals(mCurrentLocationMarker)) {
+            mCallbacks.onInfoShowTitle(marker.getTitle(), MarkerModel.TYPE_SESSION);
+        }
 
         // The Oslo Spektrum marker can be compared directly.
         // For all other markers the model needs to be looked up first.

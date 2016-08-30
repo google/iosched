@@ -35,6 +35,7 @@ public class MarkerModel {
     public static final int TYPE_MISC = 7;
     public static final int TYPE_MOSCONE = 8;
     public static final int TYPE_BOOTH = 9;
+    public static final int TYPE_LOCATION = 10;
 
     public String id;
     public int floor;
