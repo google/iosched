@@ -26,6 +26,9 @@
     <color name="jz_yellow">#fcaf17</color>
     <color name="jz_green">#ff669900</color>
 
+    <color name="background_grey">#F3F3F3</color>
+
+
     <!-- App main palette for io15 version. -->
     <color name="io15_dark_grey">#FF455A64</color>
     <color name="io15_grey">#FF607D8B</color>

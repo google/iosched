@@ -544,7 +544,7 @@ public class SessionDetailModel implements Model {
             // ANALYTICS EVENT: Click on Map action in Session Details page.
             // Contains: Session title/subtitle
             sendAnalyticsEvent("Session", "Map", mTitle);
-            mSessionsHelper.startMapActivity(mRoomId);
+            mSessionsHelper.startMapActivity(mRoomName);
             success = true;
         } else if (action == SessionDetailUserActionEnum.SHOW_SHARE) {
             // On ICS+ devices, we normally won't reach this as ShareActionProvider will handle

@@ -275,8 +275,11 @@ public class MapFragment extends com.google.android.gms.maps.MapFragment impleme
     public void onResume() {
         super.onResume();
 
+        if(!NetworkUtil.isGpsOn(getActivity())) {
+            createGpsDialog().show();
+        }
         if (!NetworkUtil.isBluetoothOn(getActivity())) {
-            createAlertDialog().show();
+            createBluetoothDialog().show();
         } else {
             mEstimoteBeaconManager.startMonitorEstimoteBeacons(getActivity());
         }
@@ -294,7 +297,7 @@ public class MapFragment extends com.google.android.gms.maps.MapFragment impleme
         mCurrentLocationMarker = mMap.addMarker(markerOptions);
     }
 
-    private AlertDialog.Builder createAlertDialog() {
+    private AlertDialog.Builder createBluetoothDialog() {
         AlertDialog.Builder buildAlertDialog = new AlertDialog.Builder(getActivity(),
                 R.style.Dialog_Theme);
         buildAlertDialog.setTitle("Bluetooth disabled");
@@ -303,6 +306,28 @@ public class MapFragment extends com.google.android.gms.maps.MapFragment impleme
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
                 NetworkUtil.enableBluetooth(getActivity());
+                mEstimoteBeaconManager.startMonitorEstimoteBeacons(getActivity());
+            }
+        });
+        buildAlertDialog.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+
+            }
+        });
+
+        return buildAlertDialog;
+    }
+
+    private AlertDialog.Builder createGpsDialog() {
+        AlertDialog.Builder buildAlertDialog = new AlertDialog.Builder(getActivity(),
+                R.style.Dialog_Theme);
+        buildAlertDialog.setTitle("Location disabled");
+        buildAlertDialog.setMessage("Please turn on Location to be able to use indoor maps");
+        buildAlertDialog.setPositiveButton("Enable", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                NetworkUtil.enableGPS(getActivity());
                 mEstimoteBeaconManager.startMonitorEstimoteBeacons(getActivity());
             }
         });

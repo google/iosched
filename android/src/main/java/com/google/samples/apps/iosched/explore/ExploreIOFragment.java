@@ -197,54 +197,6 @@ public class ExploreIOFragment extends Fragment implements UpdatableView<Explore
             drawShadowFrameLayout.setShadowTopOffset(actionBarSize);
         }
         setContentTopClearance(actionBarSize);
-/*
-        if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            if (ActivityCompat.checkSelfPermission(getActivity(),
-                    Manifest.permission.ACCESS_FINE_LOCATION) !=
-                    PackageManager.PERMISSION_GRANTED
-                    && ActivityCompat.checkSelfPermission(getActivity(),
-                    Manifest.permission.ACCESS_COARSE_LOCATION) !=
-                    PackageManager.PERMISSION_GRANTED) {
-                requestPermissions(new String[]
-                                {Manifest.permission.
-                                        ACCESS_FINE_LOCATION,
-                                        Manifest.permission.ACCESS_COARSE_LOCATION},
-                        REQUEST_LOCATION);
-            }
-
-            if (ActivityCompat.checkSelfPermission(getActivity(),
-                    Manifest.permission.READ_CALENDAR) !=
-                    PackageManager.PERMISSION_GRANTED &&
-                    ActivityCompat.checkSelfPermission(getActivity(),
-                            Manifest.permission.WRITE_CALENDAR) !=
-                            PackageManager.PERMISSION_GRANTED) {
-                checkRunTimePermission(new String[]{
-                                Manifest.permission.READ_CALENDAR,
-                                Manifest.permission.WRITE_CALENDAR},
-                        REQUEST_CALENDAR);
-
-            }
-
-            if (ActivityCompat.checkSelfPermission(getActivity(),
-                    Manifest.permission.WRITE_EXTERNAL_STORAGE) !=
-                    PackageManager.PERMISSION_GRANTED &&
-                    ActivityCompat.checkSelfPermission(getActivity(),
-                            Manifest.permission.READ_EXTERNAL_STORAGE) !=
-                            PackageManager.PERMISSION_GRANTED) {
-                checkRunTimePermission(new String[]{
-                                Manifest.permission.WRITE_EXTERNAL_STORAGE,
-                                Manifest.permission.READ_EXTERNAL_STORAGE},
-                        REQUEST_STORAGE);
-            }
-
-            if (ActivityCompat.checkSelfPermission(getActivity(),
-                    Manifest.permission.READ_CONTACTS) !=
-                    PackageManager.PERMISSION_GRANTED) {
-                checkRunTimePermission(new String[]{
-                                Manifest.permission.READ_CONTACTS},
-                        REQUEST_CONTACT);
-            }
-        }*/
     }
 
     private void checkRunTimePermission(String[] permissions, int requestPermissionCode) {
@@ -306,33 +258,6 @@ public class ExploreIOFragment extends Fragment implements UpdatableView<Explore
 
         // Message cards are only used for onsite attendees.
         if (SettingsUtils.isAttendeeAtVenue(getContext())) {
-            // Users are required to opt in or out of whether they want conference message cards.
-            /*
-            if (!ConfMessageCardUtils.hasAnsweredConfMessageCardsPrompt(getContext())) {
-                // User has not answered whether they want to opt in.
-                // Build a opt-in/out card.
-                inventoryGroup = new CollectionView.InventoryGroup(GROUP_ID_MESSAGE_CARDS);
-                MessageData conferenceMessageOptIn = MessageCardHelper
-                        .getConferenceOptInMessageData(getContext());
-                inventoryGroup.addItemWithTag(conferenceMessageOptIn);
-                inventoryGroup.setDisplayCols(1);
-                inventory.addGroup(inventoryGroup);
-            } else if (ConfMessageCardUtils.isConfMessageCardsEnabled(getContext())) {
-                ConfMessageCardUtils.enableActiveCards(getContext());
-
-                // Note that for these special cards, we'll never show more than one at a time to
-                // prevent overloading the user with messages. We want each new message to be
-                // notable.
-
-                if (shouldShowCard(ConfMessageCardUtils.ConfMessageCard.CONFERENCE_CREDENTIALS)) {
-                    inventoryGroup = new CollectionView.InventoryGroup(GROUP_ID_MESSAGE_CARDS);
-                    MessageData conferenceMessageOptIn = MessageCardHelper
-                            .getConferenceCredentialsMessageData(getContext());
-                    inventoryGroup.addItemWithTag(conferenceMessageOptIn);
-                    inventoryGroup.setDisplayCols(1);
-                    inventory.addGroup(inventoryGroup);
-                } else */
-
             if (shouldShowCard(ConfMessageCardUtils.ConfMessageCard.KEYNOTE_ACCESS)) {
                 inventoryGroup = new CollectionView.InventoryGroup(GROUP_ID_MESSAGE_CARDS);
                 MessageData conferenceMessageOptIn = MessageCardHelper
@@ -395,8 +320,6 @@ public class ExploreIOFragment extends Fragment implements UpdatableView<Explore
         LOGD(TAG, "Inventory item count:" + inventory.getGroupCount() + " " + inventory
                 .getTotalItemCount());
 
-        ArrayList<CollectionView.InventoryGroup> themeGroups = new ArrayList<>();
-        ArrayList<CollectionView.InventoryGroup> topicGroups = new ArrayList<>();
         ArrayList<CollectionView.InventoryGroup> schedulesessionGroups = new ArrayList<>();
 
         for (SessionScheduleGroup sessionSchedule : model.getSessionScheduleGroups()) {
@@ -460,6 +383,9 @@ public class ExploreIOFragment extends Fragment implements UpdatableView<Explore
                 break;
         }
         ViewGroup containerView = (ViewGroup) inflater.inflate(containerLayoutId, parent, false);
+        if(containerLayoutId == R.layout.explore_io_card_container) {
+            containerView.setVisibility(View.GONE);
+        }
         // Explicitly tell Accessibility to ignore the entire containerView since we add specific
         // individual content descriptions on child Views.
         UIUtils.setAccessibilityIgnore(containerView);
