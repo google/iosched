@@ -2,46 +2,112 @@
   "UUID": "E0B83F9E-4838-E761-B0D7-293A763DEBF2",
   "regions": [
     {
-      "name": "region1",
-      "level" : 1,
+      "name": "region 1",
+      "level" : 0,
       "type" : "session",
-      "description": "this is region for room 1",
+      "description": "Room 1",
       "coordinates": {
-        "latitude": 59.913259213357584,
-        "longitude": 10.754440426826477
+        "latitude": 59.91326728107407,
+        "longitude": 10.754424333572388
       },
       "major": 14441
     },
     {
       "name": "region 2",
-      "level" : 2,
-      "type" : "booth",
-      "description": "this is region for room 2",
+      "level" : 0,
+      "type" : "session",
+      "description": "Room 2",
       "coordinates": {
-        "latitude": 59.912753632546455,
-        "longitude": 10.75409710407257
+        "latitude": 59.912761700385815,
+        "longitude": 10.7541024684906
       },
       "major": 36049
     },
     {
       "name": "region 3",
-      "level" : 1,
+      "level" : 0,
       "type" : "session",
-      "description": "this is region for room 3",
+      "description": "Room 3",
       "coordinates": {
-        "latitude": 59.91310592637187,
-        "longitude": 10.755497217178345
+        "latitude": 59.91310054786828,
+        "longitude": 10.755486488342285
       },
       "major": 61068
     },
     {
-      "name": "region 10",
+      "name": "region 4",
       "level" : 1,
-      "type" : "booth",
-      "description": "this is region for javazone booth",
+      "type" : "session",
+      "description": "Room 4",
       "coordinates": {
-        "latitude": 59.912974152783256,
-        "longitude": 10.754767656326294
+        "latitude": 59.91307365533729,
+        "longitude": 10.755261182785034
+      },
+      "major": 12345
+    },
+    {
+      "name": "region 5",
+      "level" : 1,
+      "type" : "session",
+      "description": "Room 5",
+      "coordinates": {
+        "latitude": 59.91319467155513,
+        "longitude": 10.754209756851196
+      },
+      "major": 12345
+    },
+    {
+      "name": "region 6",
+      "level" : 1,
+      "type" : "session",
+      "description": "Room 6",
+      "coordinates": {
+        "latitude": 59.91282624303009,
+        "longitude": 10.754241943359375
+      },
+      "major": 12345
+    },
+    {
+      "name": "region 7",
+      "level" : 2,
+      "type" : "session",
+      "description": "Room 7",
+      "coordinates": {
+        "latitude": 59.91273211829857,
+        "longitude": 10.754810571670532
+      },
+      "major": 12345
+    },
+    {
+      "name": "region 8",
+      "level" : 2,
+      "type" : "session",
+      "description": "Room 8",
+      "coordinates": {
+        "latitude": 59.91336140428819,
+        "longitude": 10.754343867301941
+      },
+      "major": 12345
+    },
+    {
+      "name": "region 10",
+      "level" : 0,
+      "type" : "booth",
+      "description": "javaBin Stand",
+      "coordinates": {
+        "latitude": 59.91295801720584,
+        "longitude": 10.754751563072205
+      },
+      "major": 12345
+    },
+    {
+      "name": "region 20",
+      "level" : 1,
+      "type" : "misc",
+      "description": "Main Entrance",
+      "coordinates": {
+        "latitude": 59.912963395732504,
+        "longitude": 10.755733251571655
       },
       "major": 12345
     }
