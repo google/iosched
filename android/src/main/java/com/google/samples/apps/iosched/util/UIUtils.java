@@ -145,7 +145,7 @@ public class UIUtils {
         } else {
             String timeInterval = formatIntervalTimeString(intervalStart, intervalEnd, recycle,
                     context);
-            return context.getString(R.string.session_subtitle, roomName, timeInterval);
+            return context.getString(R.string.session_subtitle, timeInterval, roomName);
         }
     }
 

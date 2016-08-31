@@ -94,14 +94,14 @@ public class MapActivity extends BaseActivity
         mFloor1Button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                mMapFragment.switchFloors(1);
+                mMapFragment.switchFloors(0);
             }
         });
 
         mFloor2Button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                mMapFragment.switchFloors(2);
+                mMapFragment.switchFloors(1);
 
             }
         });
@@ -109,7 +109,7 @@ public class MapActivity extends BaseActivity
         mFloor3Button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                mMapFragment.switchFloors(3);
+                mMapFragment.switchFloors(2);
 
             }
         });

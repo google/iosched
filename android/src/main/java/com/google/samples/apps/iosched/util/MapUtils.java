@@ -147,6 +147,28 @@ public class MapUtils {
                         false);
     }
 
+    public static MarkerOptions createFloorMarkers(String id, int floorLevel, LatLng position) {
+        float marker = 0;
+        switch(floorLevel) {
+            case 0:
+                marker = BitmapDescriptorFactory.HUE_AZURE;
+                break;
+            case 1:
+                marker = BitmapDescriptorFactory.HUE_YELLOW;
+                break;
+            case 3:
+                marker = BitmapDescriptorFactory.HUE_ORANGE;
+                break;
+        }
+
+
+        final BitmapDescriptor icon =
+                BitmapDescriptorFactory.defaultMarker(marker);
+        return new MarkerOptions().position(position).title(id).icon(icon).anchor(0.5f, 0.85526f)
+                .visible(
+                        false);
+    }
+
     public static MarkerOptions createCurrentLocationMarker(String id, LatLng position) {
         final BitmapDescriptor icon =
                 BitmapDescriptorFactory.fromResource(R.drawable.ratingbar_star_on_focused);
