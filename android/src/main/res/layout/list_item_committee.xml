@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:iosched="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="?android:listPreferredItemHeightSmall"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:background="?android:selectableItemBackground"
+    android:focusable="true"
+    android:clickable="true">
+
+    <com.google.samples.apps.iosched.ui.widget.BezelImageView
+        android:id="@+id/profile_image"
+        android:layout_marginLeft="@dimen/keyline_1"
+        android:layout_width="@dimen/circle_image_small_size"
+        android:layout_height="@dimen/circle_image_small_size"
+        android:layout_gravity="center_vertical"
+        android:src="@drawable/person_image_empty"
+        android:scaleType="fitXY"
+        iosched:maskDrawable="@drawable/circle_mask" />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/keyline_2"
+        android:layout_gravity="center_vertical"
+        android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/committee_name_text"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="@dimen/text_size_medium"
+        style="@style/TextNormal"
+        android:text="Nard Scheurs"
+        android:maxLines="1"
+        android:singleLine="true"
+        android:ellipsize="end" />
+    <TextView
+        android:id="@+id/committee_title_text"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="@dimen/text_size_medium"
+        style="@style/TextSmall"
+        android:textColor="@color/text_secondary"
+        tools:text="Chief of committee"
+        android:maxLines="1"
+        android:singleLine="true"
+        android:ellipsize="end" />
+    </LinearLayout>
+
+</FrameLayout>

@@ -127,6 +127,7 @@
         android:textColor="#88ffffff"
         android:ellipsize="end"
         android:padding="16dp"
+        android:textColorLink="@color/theme_accent_1_light"
         android:gravity="start|center_vertical" />
 
 </LinearLayout>

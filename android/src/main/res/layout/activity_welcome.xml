@@ -92,7 +92,7 @@
                 android:layout_height="match_parent"
                 android:text="@string/accept"
                 android:textAppearance="@style/TextAppearance.AppCompat.Button"
-                android:textColor="@drawable/button_color"
+                android:textColor="@drawable/circle"
                 style="?android:borderlessButtonStyle" />
 
         </LinearLayout>

@@ -17,7 +17,7 @@
 package com.google.samples.apps.iosched.videolibrary;
 
 import com.google.samples.apps.iosched.Config;
-import com.google.samples.apps.iosched.R;
+import no.java.schedule.v2.R;
 import com.google.samples.apps.iosched.framework.PresenterFragmentImpl;
 import com.google.samples.apps.iosched.framework.QueryEnum;
 import com.google.samples.apps.iosched.framework.UpdatableView;
@@ -38,7 +38,6 @@ import android.os.Bundle;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.text.TextUtils;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -86,8 +85,7 @@ public class VideoLibraryFilteredFragment extends Fragment implements UpdatableV
 
     @Override
     public void displayData(VideoLibraryModel model, QueryEnum query) {
-        if ((VideoLibraryModel.VideoLibraryQueryEnum.VIDEOS == query
-                || VideoLibraryModel.VideoLibraryQueryEnum.MY_VIEWED_VIDEOS == query)
+        if ((VideoLibraryModel.VideoLibraryQueryEnum.VIDEOS == query)
                 && model.getVideos() != null) {
             updateCollectionView(model.getVideos());
             setActivityTitle(model.getSelectedYear(), model.getSelectedTopic());
@@ -405,8 +403,6 @@ public class VideoLibraryFilteredFragment extends Fragment implements UpdatableV
         if (query == VideoLibraryModel.VideoLibraryQueryEnum.VIDEOS
                 || query == VideoLibraryModel.VideoLibraryQueryEnum.FILTERS) {
             return ScheduleContract.Videos.CONTENT_URI;
-        } else if (query == VideoLibraryModel.VideoLibraryQueryEnum.MY_VIEWED_VIDEOS) {
-            return ScheduleContract.MyViewedVideos.CONTENT_URI;
         }
         return Uri.EMPTY;
     }

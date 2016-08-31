@@ -27,7 +27,7 @@ import android.util.AttributeSet;
 import android.util.Property;
 import android.widget.FrameLayout;
 
-import com.google.samples.apps.iosched.R;
+import no.java.schedule.v2.R;
 
 public class DrawShadowFrameLayout extends FrameLayout {
     private Drawable mShadowDrawable;

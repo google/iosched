@@ -29,7 +29,7 @@ import android.view.LayoutInflater;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.google.samples.apps.iosched.R;
+import no.java.schedule.v2.R;
 
 /**
  * A compound view for nav drawer items.  This neatly encapsulates states, tinting text and

@@ -24,8 +24,8 @@ import android.content.Intent;
 import android.net.Uri;
 import android.support.v4.app.ShareCompat;
 
-import com.google.samples.apps.iosched.BuildConfig;
-import com.google.samples.apps.iosched.R;
+import no.java.schedule.v2.BuildConfig;
+import no.java.schedule.v2.R;
 import com.google.samples.apps.iosched.appwidget.ScheduleWidgetProvider;
 import com.google.samples.apps.iosched.map.MapActivity;
 import com.google.samples.apps.iosched.provider.ScheduleContract;
@@ -47,9 +47,9 @@ public class SessionsHelper {
         mActivity = activity;
     }
 
-    public void startMapActivity(String roomId) {
+    public void startMapActivity(String roomName) {
         Intent intent = new Intent(mActivity.getApplicationContext(), MapActivity.class);
-        intent.putExtra(MapActivity.EXTRA_ROOM, roomId);
+        intent.putExtra(MapActivity.EXTRA_ROOM, roomName);
         intent.putExtra(MapActivity.EXTRA_DETACHED_MODE, true);
         mActivity.startActivity(intent);
     }
@@ -78,17 +78,15 @@ public class SessionsHelper {
     public void setSessionStarred(Uri sessionUri, boolean starred, String title) {
         LOGD(TAG, "setSessionStarred uri=" + sessionUri + " starred=" +
                 starred + " title=" + title);
+        sessionUri = ScheduleContract.addCallerIsSyncAdapterParameter(sessionUri);
         String sessionId = ScheduleContract.Sessions.getSessionId(sessionUri);
-        Uri myScheduleUri = ScheduleContract.MySchedule.buildMyScheduleUri(
-                AccountUtils.getActiveAccountName(mActivity));
-
+        final ContentValues values = new ContentValues();
+        values.put(ScheduleContract.Sessions.SESSION_STARRED, starred?1:0);
         AsyncQueryHandler handler =
                 new AsyncQueryHandler(mActivity.getContentResolver()) {
                 };
-        final ContentValues values = new ContentValues();
-        values.put(ScheduleContract.MySchedule.SESSION_ID, sessionId);
-        values.put(ScheduleContract.MySchedule.MY_SCHEDULE_IN_SCHEDULE, starred?1:0);
-        handler.startInsert(-1, null, myScheduleUri, values);
+        handler.startUpdate(-1, null, sessionUri, values,null, null);
+
 
         // ANALYTICS EVENT: Add or remove a session from the schedule
         // Contains: Session title, whether it was added or removed (starred or unstarred)

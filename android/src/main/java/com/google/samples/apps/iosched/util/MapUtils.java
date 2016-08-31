@@ -20,7 +20,7 @@ import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.maps.android.ui.IconGenerator;
-import com.google.samples.apps.iosched.R;
+import no.java.schedule.v2.R;
 import com.google.samples.apps.iosched.map.util.MarkerModel;
 
 import com.jakewharton.disklrucache.DiskLruCache;
@@ -53,8 +53,8 @@ public class MapUtils {
         if (TextUtils.isEmpty(markerType)) {
             return MarkerModel.TYPE_INACTIVE;
         }
-        String tags = markerType.toUpperCase(Locale.US);
-        if (tags.contains("SESSION")) {
+        String tags = markerType.toLowerCase(Locale.US);
+        if (tags.contains("session")) {
             return MarkerModel.TYPE_SESSION;
         } else if (tags.contains("PLAIN")) {
             return MarkerModel.TYPE_PLAIN;
@@ -72,7 +72,11 @@ public class MapUtils {
             return MarkerModel.TYPE_MOSCONE;
         } else if (tags.contains("INACTIVE")) {
             return MarkerModel.TYPE_INACTIVE;
+        } else if(tags.contains("booth")) {
+            return MarkerModel.TYPE_BOOTH;
         }
+
+
         return MarkerModel.TYPE_INACTIVE; // default
     }
 
@@ -137,10 +141,40 @@ public class MapUtils {
      */
     public static MarkerOptions createPinMarker(String id, LatLng position) {
         final BitmapDescriptor icon =
-                BitmapDescriptorFactory.fromResource(R.drawable.map_marker_unselected);
+                BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE);
         return new MarkerOptions().position(position).title(id).icon(icon).anchor(0.5f, 0.85526f)
                 .visible(
                         false);
+    }
+
+    public static MarkerOptions createFloorMarkers(String id, int floorLevel, LatLng position) {
+        float marker = 0;
+        switch(floorLevel) {
+            case 0:
+                marker = BitmapDescriptorFactory.HUE_AZURE;
+                break;
+            case 1:
+                marker = BitmapDescriptorFactory.HUE_YELLOW;
+                break;
+            case 3:
+                marker = BitmapDescriptorFactory.HUE_ORANGE;
+                break;
+        }
+
+
+        final BitmapDescriptor icon =
+                BitmapDescriptorFactory.defaultMarker(marker);
+        return new MarkerOptions().position(position).title(id).icon(icon).anchor(0.5f, 0.85526f)
+                .visible(
+                        false);
+    }
+
+    public static MarkerOptions createCurrentLocationMarker(String id, LatLng position) {
+        final BitmapDescriptor icon =
+                BitmapDescriptorFactory.fromResource(R.drawable.ratingbar_star_on_focused);
+        return new MarkerOptions().position(position).title(id).icon(icon).anchor(0.5f, 0.85526f)
+                .visible(
+                        true);
     }
 
     /**
@@ -172,10 +206,10 @@ public class MapUtils {
     }
 
     /**
-     * Creates a marker for Moscone Center.
+     * Creates a marker for Oslo Spektrum Center.
      */
-    public static MarkerOptions createMosconeMarker(LatLng position) {
-        final String title = "MOSCONE";
+    public static MarkerOptions createOsloSpektrumMarker(LatLng position) {
+        final String title = "OSLO SPEKTRUM";
 
         final BitmapDescriptor icon =
                 BitmapDescriptorFactory.fromResource(R.drawable.map_marker_moscone);

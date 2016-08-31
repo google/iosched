@@ -120,6 +120,8 @@ public class SessionFeedbackModel implements Model {
             // Contains: Session title.  Feedback is NOT included.
             sendAnalyticsEvent("Session", "Feedback", mTitleString);
 
+            //TODO send feedback httpclient
+
             return true;
         } else {
             return false;

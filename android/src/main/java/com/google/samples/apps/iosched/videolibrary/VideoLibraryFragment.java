@@ -29,11 +29,12 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.google.samples.apps.iosched.Config;
-import com.google.samples.apps.iosched.R;
+import no.java.schedule.v2.R;
 import com.google.samples.apps.iosched.framework.PresenterFragmentImpl;
 import com.google.samples.apps.iosched.framework.QueryEnum;
 import com.google.samples.apps.iosched.framework.UpdatableView;
 import com.google.samples.apps.iosched.provider.ScheduleContract;
+import com.google.samples.apps.iosched.service.VideoSyncService;
 import com.google.samples.apps.iosched.ui.widget.CollectionView;
 import com.google.samples.apps.iosched.ui.widget.CollectionViewCallbacks;
 import com.google.samples.apps.iosched.ui.widget.DrawShadowFrameLayout;
@@ -78,8 +79,10 @@ public class VideoLibraryFragment extends Fragment implements UpdatableView<Vide
 
     @Override
     public void displayData(VideoLibraryModel model, QueryEnum query) {
-        if ((VideoLibraryModel.VideoLibraryQueryEnum.VIDEOS == query
-                || VideoLibraryModel.VideoLibraryQueryEnum.MY_VIEWED_VIDEOS == query)
+        if(model.getVideos() == null) {
+            getContext().startService(new Intent(getContext(), VideoSyncService.class));
+        }
+        if ((VideoLibraryModel.VideoLibraryQueryEnum.VIDEOS == query)
                 && model.getVideos() != null) {
             updateCollectionView(model.getVideos());
         }
@@ -430,8 +433,6 @@ public class VideoLibraryFragment extends Fragment implements UpdatableView<Vide
     public Uri getDataUri(QueryEnum query) {
         if (query == VideoLibraryModel.VideoLibraryQueryEnum.VIDEOS) {
             return ScheduleContract.Videos.CONTENT_URI;
-        } else if (query == VideoLibraryModel.VideoLibraryQueryEnum.MY_VIEWED_VIDEOS) {
-            return ScheduleContract.MyViewedVideos.CONTENT_URI;
         }
         return Uri.EMPTY;
     }

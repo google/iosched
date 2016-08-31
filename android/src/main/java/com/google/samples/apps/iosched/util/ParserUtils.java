@@ -28,7 +28,14 @@ import java.util.regex.Pattern;
  */
 public class ParserUtils {
     /** Used to sanitize a string to be {@link Uri} safe. */
+    public static final String BLOCK_TYPE_SESSION = "session";
+    public static final String BLOCK_TYPE_CODE_LAB = "codelab";
+    public static final String BLOCK_TYPE_KEYNOTE = "keynote";
+    public static final String BLOCK_TYPE_WORKSHOP = "workshop";
+
+    /** Used to sanitize a string to be {@link Uri} safe. */
     private static final Pattern sSanitizePattern = Pattern.compile("[^a-z0-9-_]");
+    private static final Time sTime = new Time();
 
     /**
      * Sanitize the given string to be {@link Uri} safe for building

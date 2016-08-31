@@ -16,6 +16,7 @@
 
 package com.google.samples.apps.iosched.io.model;
 
+import com.google.samples.apps.iosched.provider.ScheduleContract;
 import com.google.samples.apps.iosched.util.HashUtils;
 
 public class Video {
@@ -27,6 +28,9 @@ public class Video {
     public String topic;
     public String speakers;
     public String thumbnailUrl;
+    public String uploadDate;
+    public String mobileUrl;
+    public String tags;
 
     public String getImportHashcode() {
         StringBuilder sb = new StringBuilder();
@@ -37,7 +41,10 @@ public class Video {
                 .append("vid").append(vid == null ? "" : vid)
                 .append("topic").append(topic == null ? "" : topic)
                 .append("speakers").append(speakers == null ? "" : speakers)
-                .append("thumbnailUrl").append(thumbnailUrl == null ? "" : thumbnailUrl);
+                .append("thumbnailUrl").append(thumbnailUrl == null ? "" : thumbnailUrl)
+                .append("uploadDate").append(uploadDate == null ? "" : uploadDate)
+                .append("mobileUrl").append(mobileUrl == null ? "" : mobileUrl)
+                .append("tags").append(tags == null ? "" : tags);
         return HashUtils.computeWeakHash(sb.toString());
     }
 }

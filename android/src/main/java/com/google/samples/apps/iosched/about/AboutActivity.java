@@ -17,8 +17,6 @@
 package com.google.samples.apps.iosched.about;
 
 
-import com.google.samples.apps.iosched.BuildConfig;
-import com.google.samples.apps.iosched.R;
 import com.google.samples.apps.iosched.ui.BaseActivity;
 import com.google.samples.apps.iosched.ui.widget.DrawShadowFrameLayout;
 import com.google.samples.apps.iosched.util.AboutUtils;
@@ -30,6 +28,9 @@ import android.os.Bundle;
 import android.text.Html;
 import android.view.View;
 import android.widget.TextView;
+
+import no.java.schedule.v2.BuildConfig;
+import no.java.schedule.v2.R;
 
 public class AboutActivity extends BaseActivity {
 

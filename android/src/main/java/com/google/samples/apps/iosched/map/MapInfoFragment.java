@@ -16,7 +16,7 @@
 
 package com.google.samples.apps.iosched.map;
 
-import com.google.samples.apps.iosched.R;
+import no.java.schedule.v2.R;
 import com.google.samples.apps.iosched.map.util.SingleSessionLoader;
 import com.google.samples.apps.iosched.map.util.OverviewSessionLoader;
 import com.google.samples.apps.iosched.map.util.MarkerModel;

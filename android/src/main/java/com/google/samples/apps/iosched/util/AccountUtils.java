@@ -51,6 +51,9 @@ public class AccountUtils {
     private static final String TAG = makeLogTag(AccountUtils.class);
 
     private static final String PREF_ACTIVE_ACCOUNT = "chosen_account";
+    private static final String DUMMY_ACCOUNT_NAME = "no.java.schedule.v2";
+    private static final String DUMMY_ACCOUNT_TYPE = "no.java.schedule.v2";
+    private static final String DUMMY_AUTH_TOKEN = "authtoken";
 
     // these names are are prefixes; the account is appended to them
     private static final String PREFIX_PREF_AUTH_TOKEN = "auth_token_";
@@ -118,6 +121,12 @@ public class AccountUtils {
         LOGD(TAG, "Set active account to: " + accountName);
         SharedPreferences sp = getSharedPreferences(context);
         sp.edit().putString(PREF_ACTIVE_ACCOUNT, accountName).apply();
+        return true;
+    }
+
+    public static boolean setActiveAccount(final Context context) {
+        SharedPreferences sp = getSharedPreferences(context);
+        sp.edit().putString(PREF_ACTIVE_ACCOUNT, DUMMY_ACCOUNT_NAME).apply();
         return true;
     }
 

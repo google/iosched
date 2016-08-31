@@ -18,7 +18,7 @@ package com.google.samples.apps.iosched.session;
 
 import com.google.common.annotations.VisibleForTesting;
 import com.google.samples.apps.iosched.Config;
-import com.google.samples.apps.iosched.R;
+import no.java.schedule.v2.R;
 import com.google.samples.apps.iosched.feedback.SessionFeedbackActivity;
 import com.google.samples.apps.iosched.framework.Model;
 import com.google.samples.apps.iosched.framework.QueryEnum;
@@ -27,7 +27,6 @@ import com.google.samples.apps.iosched.model.TagMetadata;
 import com.google.samples.apps.iosched.provider.ScheduleContract;
 import com.google.samples.apps.iosched.service.SessionAlarmService;
 import com.google.samples.apps.iosched.service.SessionCalendarService;
-import com.google.samples.apps.iosched.util.AccountUtils;
 import com.google.samples.apps.iosched.util.AnalyticsHelper;
 import com.google.samples.apps.iosched.util.SessionsHelper;
 import com.google.samples.apps.iosched.util.UIUtils;
@@ -314,21 +313,10 @@ public class SessionDetailModel implements Model {
             } else if (SessionDetailQueryEnum.SPEAKERS == query) {
                 readDataFromSpeakersCursor(cursor);
                 success = true;
-            } else if (SessionDetailQueryEnum.MY_VIEWED_VIDEOS == query) {
-                readDataFromMyViewedVideosCursor(cursor);
-                success = true;
             }
         }
 
         return success;
-    }
-
-    private void readDataFromMyViewedVideosCursor(Cursor cursor) {
-        String videoID = cursor.getString(cursor.getColumnIndex(
-                ScheduleContract.MyViewedVideos.VIDEO_ID));
-        if (videoID != null && videoID.equals(mLiveStreamId)) {
-            mLiveStreamVideoWatched = true;
-        }
     }
 
     private void readDataFromSessionCursor(Cursor cursor) {
@@ -336,7 +324,7 @@ public class SessionDetailModel implements Model {
                 ScheduleContract.Sessions.SESSION_TITLE));
 
         mInSchedule = cursor.getInt(cursor.getColumnIndex(
-                ScheduleContract.Sessions.SESSION_IN_MY_SCHEDULE)) != 0;
+                ScheduleContract.Sessions.SESSION_STARRED)) != 0;
         if (!mSessionLoaded) {
             mInScheduleWhenSessionFirstLoaded = mInSchedule;
         }
@@ -479,15 +467,11 @@ public class SessionDetailModel implements Model {
                     cursor.getColumnIndex(ScheduleContract.Speakers.SPEAKER_COMPANY));
             final String speakerUrl = cursor.getString(
                     cursor.getColumnIndex(ScheduleContract.Speakers.SPEAKER_URL));
-            final String speakerPlusoneUrl = cursor.getString(
-                    cursor.getColumnIndex(ScheduleContract.Speakers.SPEAKER_PLUSONE_URL));
-            final String speakerTwitterUrl = cursor.getString(
-                    cursor.getColumnIndex(ScheduleContract.Speakers.SPEAKER_TWITTER_URL));
             final String speakerAbstract = cursor.getString(
                     cursor.getColumnIndex(ScheduleContract.Speakers.SPEAKER_ABSTRACT));
 
             mSpeakers.add(new Speaker(speakerName, speakerImageUrl, speakerCompany, speakerUrl,
-                    speakerPlusoneUrl, speakerTwitterUrl, speakerAbstract));
+                    speakerAbstract));
         }
     }
 
@@ -511,12 +495,6 @@ public class SessionDetailModel implements Model {
                     SessionDetailQueryEnum.FEEDBACK.getProjection(), null, null, null);
         } else if (loaderId == SessionDetailQueryEnum.TAG_METADATA.getId()) {
             loader = getTagMetadataLoader();
-        } else if (loaderId == SessionDetailQueryEnum.MY_VIEWED_VIDEOS.getId()) {
-            LOGD(TAG, "Starting My Viewed Videos query");
-            Uri myPlayedVideoUri = ScheduleContract.MyViewedVideos.buildMyViewedVideosUri(
-                    AccountUtils.getActiveAccountName(mContext));
-            loader = getCursorLoaderInstance(mContext, myPlayedVideoUri,
-                    SessionDetailQueryEnum.MY_VIEWED_VIDEOS.getProjection(), null, null, null);
         }
         return loader;
     }
@@ -566,7 +544,7 @@ public class SessionDetailModel implements Model {
             // ANALYTICS EVENT: Click on Map action in Session Details page.
             // Contains: Session title/subtitle
             sendAnalyticsEvent("Session", "Map", mTitle);
-            mSessionsHelper.startMapActivity(mRoomId);
+            mSessionsHelper.startMapActivity(mRoomName);
             success = true;
         } else if (action == SessionDetailUserActionEnum.SHOW_SHARE) {
             // On ICS+ devices, we normally won't reach this as ShareActionProvider will handle
@@ -667,14 +645,11 @@ public class SessionDetailModel implements Model {
 
         private String mAbstract;
 
-        public Speaker(String name, String imageUrl, String company, String url, String plusoneUrl,
-                       String twitterUrl, String anAbstract) {
+        public Speaker(String name, String imageUrl, String company, String url, String anAbstract) {
             mName = name;
             mImageUrl = imageUrl;
             mCompany = company;
             mUrl = url;
-            mPlusoneUrl = plusoneUrl;
-            mTwitterUrl = twitterUrl;
             mAbstract = anAbstract;
         }
 
@@ -714,7 +689,7 @@ public class SessionDetailModel implements Model {
                 ScheduleContract.Sessions.SESSION_TITLE,
                 ScheduleContract.Sessions.SESSION_ABSTRACT,
                 ScheduleContract.Sessions.SESSION_REQUIREMENTS,
-                ScheduleContract.Sessions.SESSION_IN_MY_SCHEDULE,
+                ScheduleContract.Sessions.SESSION_STARRED,
                 ScheduleContract.Sessions.SESSION_HASHTAG,
                 ScheduleContract.Sessions.SESSION_URL,
                 ScheduleContract.Sessions.SESSION_YOUTUBE_URL,
@@ -733,12 +708,9 @@ public class SessionDetailModel implements Model {
                 ScheduleContract.Speakers.SPEAKER_IMAGE_URL,
                 ScheduleContract.Speakers.SPEAKER_COMPANY,
                 ScheduleContract.Speakers.SPEAKER_ABSTRACT,
-                ScheduleContract.Speakers.SPEAKER_URL,
-                ScheduleContract.Speakers.SPEAKER_PLUSONE_URL,
-                ScheduleContract.Speakers.SPEAKER_TWITTER_URL}),
+                ScheduleContract.Speakers.SPEAKER_URL}),
         FEEDBACK(2, new String[]{ScheduleContract.Feedback.SESSION_ID}),
-        TAG_METADATA(3, null),
-        MY_VIEWED_VIDEOS(4, new String[]{ScheduleContract.MyViewedVideos.VIDEO_ID});
+        TAG_METADATA(3, null);
 
         private int id;
 

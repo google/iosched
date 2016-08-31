@@ -22,7 +22,7 @@ import android.graphics.drawable.Drawable;
 import android.support.annotation.DrawableRes;
 import android.widget.ImageView;
 
-import com.google.samples.apps.iosched.R;
+import no.java.schedule.v2.R;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;

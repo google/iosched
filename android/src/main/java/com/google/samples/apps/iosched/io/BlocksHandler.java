@@ -16,6 +16,7 @@
 
 package com.google.samples.apps.iosched.io;
 
+import com.google.common.collect.Lists;
 import com.google.samples.apps.iosched.io.model.Block;
 import com.google.samples.apps.iosched.provider.ScheduleContract;
 import com.google.samples.apps.iosched.provider.ScheduleContractHelper;
@@ -27,8 +28,14 @@ import android.content.ContentProviderOperation;
 import android.content.Context;
 import android.net.Uri;
 
+import java.io.IOException;
 import java.util.ArrayList;
 
+import no.java.schedule.v2.io.model.EMSCollection;
+import no.java.schedule.v2.io.model.EMSItem;
+import no.java.schedule.v2.io.model.JZSlotsResponse;
+
+import static com.google.samples.apps.iosched.util.LogUtils.LOGV;
 import static com.google.samples.apps.iosched.util.LogUtils.LOGW;
 import static com.google.samples.apps.iosched.util.LogUtils.makeLogTag;
 
@@ -49,6 +56,62 @@ public class BlocksHandler extends JSONHandler {
         for (Block block : mBlocks) {
             outputBlock(block, list);
         }
+    }
+
+    @Override
+    public ArrayList<ContentProviderOperation> parse(String json) throws IOException {
+        final ArrayList<ContentProviderOperation> batch = Lists.newArrayList();
+        try {
+            Gson gson = new Gson();
+            JZSlotsResponse response = gson.fromJson(json, JZSlotsResponse.class);
+            EMSCollection eventSlots = response.collection;
+
+            for (EMSItem slot : eventSlots.items) {
+                parseSlot(slot, batch);
+            }
+        } catch (Throwable e) {
+        }
+
+        return batch;
+    }
+
+
+    private static void parseSlot(EMSItem slot, ArrayList<ContentProviderOperation> batch) {
+        ContentProviderOperation.Builder builder = ContentProviderOperation
+                .newInsert(ScheduleContract.addCallerIsSyncAdapterParameter(ScheduleContract.Blocks.CONTENT_URI));
+        //LOGD(TAG, "Inside parseSlot:" + date + ",  " + slot);
+        String startTime = slot.getValue("start");
+        String endTime = slot.getValue("end");
+
+        String type = "N_D";
+        if (slot.getValue("type") != null) {
+            type = slot.getValue("type");
+        }
+        String title = "N_D";
+        if (slot.getValue("title") != null) {
+            title = slot.getValue("title");
+        }
+
+        String meta = "N_D";
+        if (slot.getValue("meta") != null) {
+            title = slot.getValue("meta");
+        }
+
+        LOGV(TAG, "startTime:" + startTime);
+        long startTimeL = ParserUtils.parseTime(startTime);
+        long endTimeL = ParserUtils.parseTime(endTime);
+        final String blockId = slot.href.toString();//Blocks.generateBlockId(startTimeL, endTimeL);
+
+        LOGV(TAG, "blockId:" + blockId);
+        LOGV(TAG, "title:" + title);
+        LOGV(TAG, "start:" + startTimeL);
+        builder.withValue(ScheduleContract.Blocks.BLOCK_ID, blockId);
+        builder.withValue(ScheduleContract.Blocks.BLOCK_TITLE, title);
+        builder.withValue(ScheduleContract.Blocks.BLOCK_START, startTimeL);
+        builder.withValue(ScheduleContract.Blocks.BLOCK_END, endTimeL);
+        builder.withValue(ScheduleContract.Blocks.BLOCK_TYPE, type);
+        builder.withValue(ScheduleContract.Blocks.BLOCK_SUBTITLE, meta);
+        batch.add(builder.build());
     }
 
     @Override

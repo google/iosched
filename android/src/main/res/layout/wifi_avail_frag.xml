@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/scroll_view"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fillViewport="true">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/grey_background"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/primary"
+            android:orientation="vertical"
+            android:padding="@dimen/default_margin">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:adjustViewBounds="true"
+                android:scaleType="fitXY"
+                android:src="@drawable/ic_info_outline" />
+
+            <TextView
+                style="@style/TextCardHeader"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="Yay, free internet!"
+                android:textColor="@color/text_inverse" />
+
+        </LinearLayout>
+
+        <android.support.v7.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/default_margin"
+            android:layout_marginRight="@dimen/default_margin"
+            android:layout_marginTop="@dimen/default_margin">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+                <TextView
+                    style="@style/TextCardHeaderBlack"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingTop="@dimen/small_margin"
+                    android:layout_marginLeft="@dimen/default_margin"
+                    android:text="Wifi details"
+                    android:textStyle="bold" />
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/divider_height"
+                    android:layout_marginBottom="8dp"
+                    android:layout_marginTop="2dp"
+                    android:background="@color/divider"
+                    android:gravity="start|center_vertical" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="@dimen/default_margin"
+                    android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/wifi_name"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:drawableLeft="@drawable/ic_info_outline"
+                    android:layout_marginLeft="@dimen/default_margin"
+                    android:gravity="center_vertical"
+                    android:drawablePadding="@dimen/small_margin"
+                    android:text="SOmething SOmething"/>
+                <TextView
+                    android:id="@+id/wifi_password"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:drawableLeft="@drawable/ic_badge_pickup"
+                    android:layout_marginLeft="@dimen/default_margin"
+                    android:gravity="center_vertical"
+                    android:drawablePadding="@dimen/small_margin"
+                    android:text="SOmething Password"/>
+                </LinearLayout>
+
+                <Button
+                    android:id="@+id/connect_wifi_button"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    style="@style/GeneralButtonStyle"
+                    android:text="Setup Connection"
+                    android:layout_margin="@dimen/default_margin"/>
+
+
+
+            </LinearLayout>
+
+        </android.support.v7.widget.CardView>
+
+
+    </LinearLayout>
+</ScrollView>

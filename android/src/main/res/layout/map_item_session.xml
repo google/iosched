@@ -16,7 +16,6 @@
   -->
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:paddingTop="@dimen/map_info_item_vertical_padding"
@@ -47,15 +46,13 @@
             android:layout_height="wrap_content"
             android:maxLines="2"
             android:ellipsize="end"
-            android:textAppearance="@style/TextAppearance.SessionTitle"
-            tools:text="@string/placeholder_session_title" />
+            android:textAppearance="@style/TextAppearance.SessionTitle" />
 
         <TextView
             android:id="@+id/map_item_text"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textAppearance="@style/TextAppearance.Body1"
-            tools:text="@string/placeholder_session_block_time" />
+            android:textAppearance="@style/TextAppearance.Body1" />
 
     </LinearLayout>
 

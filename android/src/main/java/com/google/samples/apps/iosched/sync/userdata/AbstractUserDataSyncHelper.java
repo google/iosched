@@ -23,11 +23,9 @@ import android.util.Log;
 
 import com.google.samples.apps.iosched.appwidget.ScheduleWidgetProvider;
 import com.google.samples.apps.iosched.framework.QueryEnum;
-import com.google.samples.apps.iosched.gcm.ServerUtilities;
 import com.google.samples.apps.iosched.provider.ScheduleContract;
 import com.google.samples.apps.iosched.provider.ScheduleContract.MySchedule;
 import com.google.samples.apps.iosched.provider.ScheduleContract.MyFeedbackSubmitted;
-import com.google.samples.apps.iosched.provider.ScheduleContract.MyViewedVideos;
 import com.google.samples.apps.iosched.provider.ScheduleContractHelper;
 
 import java.util.ArrayList;
@@ -90,7 +88,7 @@ public abstract class AbstractUserDataSyncHelper {
 
         // Get schedule data pending sync.
         Cursor scheduleData = mContext.getContentResolver().query(
-                MySchedule.buildMyScheduleUri(mAccountName),
+                MySchedule.buildMyScheduleUri(),
                 UserDataQueryEnum.MY_SCHEDULE.getProjection(), null, null, null);
 
         if (scheduleData != null) {
@@ -115,31 +113,9 @@ public abstract class AbstractUserDataSyncHelper {
             scheduleData.close();
         }
 
-        // Get video viewed data pending sync.
-        Cursor videoViewed = mContext.getContentResolver().query(
-                ScheduleContract.MyViewedVideos.buildMyViewedVideosUri(mAccountName),
-                UserDataQueryEnum.MY_VIEWED_VIDEO.getProjection(), null, null, null);
-
-        if (videoViewed != null) {
-            while (videoViewed.moveToNext()) {
-                UserAction userAction = new UserAction();
-                userAction.videoId = videoViewed.getString(
-                        videoViewed.getColumnIndex(MyViewedVideos.VIDEO_ID));
-                userAction.type = UserAction.TYPE.VIEW_VIDEO;
-                userAction.requiresSync = videoViewed.getInt(
-                        videoViewed.getColumnIndex(
-                                MyViewedVideos.MY_VIEWED_VIDEOS_DIRTY_FLAG)) == 1;
-                actions.add(userAction);
-                if (!hasPendingLocalData && userAction.requiresSync) {
-                    hasPendingLocalData = true;
-                }
-            }
-            videoViewed.close();
-        }
-
         // Get feedback submitted data pending sync.
         Cursor feedbackSubmitted = mContext.getContentResolver().query(
-                MyFeedbackSubmitted.buildMyFeedbackSubmittedUri(mAccountName),
+                MyFeedbackSubmitted.buildMyFeedbackSubmittedUri(),
                 UserDataQueryEnum.MY_FEEDBACK_SUBMITTED.getProjection(), null, null, null);
 
         if (feedbackSubmitted != null) {
@@ -166,9 +142,6 @@ public abstract class AbstractUserDataSyncHelper {
 
         if (hasPendingLocalData) {
             resetDirtyFlag(actions);
-
-            // Notify other devices via GCM.
-            ServerUtilities.notifyUserDataChanged(mContext);
         }
         if (dataChanged) {
             LOGD(TAG, "Notifying changes on paths related to user data on Content Resolver.");
@@ -191,18 +164,13 @@ public abstract class AbstractUserDataSyncHelper {
             String[] withSelectionValue;
             String dirtyField;
 
-            if (action.type == UserAction.TYPE.VIEW_VIDEO) {
-                baseUri = MyViewedVideos.buildMyViewedVideosUri(mAccountName);
-                with = MyViewedVideos.VIDEO_ID + "=?";
-                withSelectionValue = new String[]{action.videoId};
-                dirtyField = MyViewedVideos.MY_VIEWED_VIDEOS_DIRTY_FLAG;
-            } else if (action.type == UserAction.TYPE.SUBMIT_FEEDBACK) {
-                baseUri = MyFeedbackSubmitted.buildMyFeedbackSubmittedUri(mAccountName);
+            if (action.type == UserAction.TYPE.SUBMIT_FEEDBACK) {
+                baseUri = MyFeedbackSubmitted.buildMyFeedbackSubmittedUri();
                 with = MyFeedbackSubmitted.SESSION_ID + "=?";
                 withSelectionValue = new String[]{action.sessionId};
                 dirtyField = MyFeedbackSubmitted.MY_FEEDBACK_SUBMITTED_DIRTY_FLAG;
             } else {
-                baseUri = MySchedule.buildMyScheduleUri(mAccountName);
+                baseUri = MySchedule.buildMyScheduleUri();
                 with = MySchedule.SESSION_ID + "=? AND "
                         + MySchedule.MY_SCHEDULE_IN_SCHEDULE + "=?";
                 withSelectionValue = new String[]{action.sessionId,
@@ -232,10 +200,7 @@ public abstract class AbstractUserDataSyncHelper {
                 MySchedule.MY_SCHEDULE_DIRTY_FLAG}),
 
         MY_FEEDBACK_SUBMITTED(0, new String[]{MyFeedbackSubmitted.SESSION_ID,
-                MyFeedbackSubmitted.MY_FEEDBACK_SUBMITTED_DIRTY_FLAG}),
-
-        MY_VIEWED_VIDEO(0, new String[]{MyViewedVideos.VIDEO_ID,
-                MyViewedVideos.MY_VIEWED_VIDEOS_DIRTY_FLAG});
+                MyFeedbackSubmitted.MY_FEEDBACK_SUBMITTED_DIRTY_FLAG});
 
         private int id;
 

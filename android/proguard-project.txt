@@ -112,6 +112,12 @@
 -keep class com.google.maps.android.**
 -keep class libcore.**
 
+-dontwarn retrofit2.**
+-keep class retrofit2.** { *; }
+-keepattributes Signature
+-keepattributes Exceptions
+
+
 -dontwarn com.nineoldandroids.view.animation.** #Required by SlidingUpPanel
 -dontwarn org.junit.**
 -dontwarn org.mockito.**
@@ -123,3 +129,18 @@
 -dontwarn com.sothree.slidinguppanel.**
 -dontwarn sun.misc.Unsafe
 -dontwarn com.google.common.util.concurrent.RateLimiter
+
+-dontwarn okio.**
+-dontwarn com.viewpagerindicator.**
+
+
+
+-keep class com.estimote.sdk.** { *; }
+-keep interface com.estimote.sdk.** { *; }
+-dontwarn com.estimote.sdk.**
+
+-dontwarn org.joda.convert.**
+-dontwarn org.joda.time.**
+-keep class org.joda.time.** { *; }
+-keep interface org.joda.time.** { *; }
+

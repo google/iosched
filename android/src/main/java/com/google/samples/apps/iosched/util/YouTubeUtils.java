@@ -20,7 +20,7 @@ import com.google.android.youtube.player.YouTubeApiServiceUtil;
 import com.google.android.youtube.player.YouTubeInitializationResult;
 import com.google.android.youtube.player.YouTubeIntents;
 import com.google.android.youtube.player.YouTubeStandalonePlayer;
-import com.google.samples.apps.iosched.R;
+import no.java.schedule.v2.R;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -77,7 +77,7 @@ public class YouTubeUtils {
                 LOGW(TAG, "YouTube service available.");
                 // start the YouTube player
                 liveIntent = YouTubeStandalonePlayer.createVideoIntent(activity,
-                        com.google.samples.apps.iosched.BuildConfig.YOUTUBE_API_KEY, videoId);
+                        no.java.schedule.v2.BuildConfig.YOUTUBE_API_KEY, videoId);
             } else if (YouTubeIntents.canResolvePlayVideoIntent(activity)) {
                 // The YouTube app may not be fully up-to-date but it is installed and can resolve
                 // intents.

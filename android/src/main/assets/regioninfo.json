@@ -1,0 +1,49 @@
+{
+  "UUID": "E0B83F9E-4838-E761-B0D7-293A763DEBF2",
+  "regions": [
+    {
+      "name": "region1",
+      "level" : 1,
+      "type" : "session",
+      "description": "this is region for room 1",
+      "coordinates": {
+        "latitude": 59.913259213357584,
+        "longitude": 10.754440426826477
+      },
+      "major": 14441
+    },
+    {
+      "name": "region 2",
+      "level" : 2,
+      "type" : "booth",
+      "description": "this is region for room 2",
+      "coordinates": {
+        "latitude": 59.912753632546455,
+        "longitude": 10.75409710407257
+      },
+      "major": 36049
+    },
+    {
+      "name": "region 3",
+      "level" : 1,
+      "type" : "session",
+      "description": "this is region for room 3",
+      "coordinates": {
+        "latitude": 59.91310592637187,
+        "longitude": 10.755497217178345
+      },
+      "major": 61068
+    },
+    {
+      "name": "region 10",
+      "level" : 1,
+      "type" : "booth",
+      "description": "this is region for javazone booth",
+      "coordinates": {
+        "latitude": 59.912974152783256,
+        "longitude": 10.754767656326294
+      },
+      "major": 12345
+    }
+  ]
+}

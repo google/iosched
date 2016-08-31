@@ -48,17 +48,6 @@
                     android:layout_height="match_parent"
                     android:scaleType="centerCrop" />
 
-                <!-- Livestream play button and text. -->
-                <TextView
-                    android:id="@+id/live_stream_play_icon_and_text"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:textAppearance="@style/TextAppearance.Title"
-                    android:textColor="@color/io15_white"
-                    android:drawableTop="@drawable/ic_play_circle_fill_white_48dp"
-                    android:drawablePadding="@dimen/spacing_normal" />
-
             </FrameLayout>
 
             <LinearLayout
@@ -106,21 +95,6 @@
                     android:layout_marginStart="@dimen/keyline_2_session_detail"
                     android:layout_marginBottom="@dimen/padding_normal"
                     style="@style/Body1Text" />
-
-                <TextView
-                    android:id="@+id/live_stream_videocam_icon_and_text"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textColor="@color/session_livestreamed_color"
-                    android:text="@string/session_live_streamed"
-                    android:drawableLeft="@drawable/ic_videocam_grey"
-                    android:drawableStart="@drawable/ic_videocam_grey"
-                    android:drawablePadding="@dimen/keyline_1_minus_8dp"
-                    android:gravity="center"
-                    android:layout_marginLeft="@dimen/keyline_2_session_detail"
-                    android:layout_marginStart="@dimen/keyline_2_session_detail"
-                    android:layout_marginBottom="@dimen/keyline_1"
-                    style="@style/SessionLiveStreamed" />
 
                 <HorizontalScrollView
                     android:id="@+id/session_tags_container"

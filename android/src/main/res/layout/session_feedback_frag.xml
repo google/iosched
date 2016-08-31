@@ -297,6 +297,14 @@
 
         </FrameLayout>
 
+        <EditText
+            android:id="@+id/feedback_comment_textview"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/page_margin_width"
+            style="@style/Body2Text"
+            android:hint="@string/feedback_comment_text"/>
+
         <!-- we need this space to anchor the button at the bottom on tall devices -->
         <android.support.v4.widget.Space
             android:layout_width="match_parent"
@@ -327,7 +335,7 @@
                 android:text="@string/session_feedback_submitlink"
                 android:textAllCaps="true"
                 android:textAppearance="@style/TextAppearance.AppCompat.Button"
-                android:textColor="@color/text_on_primary" />
+                android:textColor="@color/theme_accent_1" />
 
         </FrameLayout>
 

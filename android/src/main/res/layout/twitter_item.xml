@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:iosched="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="?android:selectableItemBackground"
+    android:clickable="true"
+    android:focusable="true">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:padding="@dimen/page_margin_width">
+
+        <com.google.samples.apps.iosched.ui.widget.BezelImageView
+            android:id="@+id/profile_image"
+            android:layout_width="34dp"
+            android:layout_height="34dp"
+            android:layout_gravity="center_vertical"
+            android:layout_marginLeft="@dimen/keyline_1"
+            android:background="@drawable/circle_mask"
+            android:scaleType="centerCrop"
+            android:src="@drawable/person_image_empty" />
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/twitter_personname"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/keyline_2"
+                android:ellipsize="end"
+                android:fontFamily="@string/font_fontFamily_medium"
+                android:maxLines="1"
+                android:singleLine="true"
+                android:textColor="@color/body_text_1"
+                android:textSize="@dimen/text_size_medium"
+                android:textStyle="@integer/font_textStyle_medium"
+                tools:text="Morten Bergfdasfewrfasdffmann" />
+
+            <TextView
+                android:id="@+id/twitter_email"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/element_spacing_normal"
+                android:layout_toRightOf="@id/twitter_personname"
+                android:ellipsize="end"
+                android:fontFamily="@string/font_fontFamily_medium"
+                android:maxLines="1"
+                android:singleLine="true"
+                android:textColor="@color/body_text_3"
+                android:textSize="@dimen/text_size_medium"
+                android:textStyle="@integer/font_textStyle_medium"
+                tools:text="\@Morten_B" />
+
+            <TextView
+                android:id="@+id/twitter_feed_message"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/twitter_personname"
+                android:layout_marginLeft="@dimen/keyline_2"
+                android:fontFamily="@string/font_fontFamily_medium"
+                android:textColor="@color/body_text_3"
+                android:textSize="@dimen/text_size_medium"
+                android:textStyle="@integer/font_textStyle_medium"
+                android:textColorLink="@color/theme_accent_1_light"
+                android:autoLink="web"
+                tools:text="Test me and we adsafwarwerwrw
+                werwerwerwre
+                werewrwerwerwerwerwe
+                werwerwerwerwerre writing some info" />
+        </RelativeLayout>
+    </RelativeLayout>
+    <TextView
+        android:id="@+id/twitter_feed_time_updated"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|right"
+        android:layout_marginTop="@dimen/page_margin_width"
+        android:layout_marginRight="@dimen/page_margin_width"
+        android:fontFamily="@string/font_fontFamily_medium"
+        android:textColor="@color/body_text_3"
+        android:textSize="@dimen/text_size_medium"
+        android:textStyle="@integer/font_textStyle_medium"
+        tools:text="1 uke siden" />
+
+</FrameLayout>

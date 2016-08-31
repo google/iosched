@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    xmlns:iosched="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="?android:selectableItemBackground"
+    android:clickable="true"
+    android:focusable="true">
+
+    <android.support.v7.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/default_margin"
+        android:padding="@dimen/default_margin"
+        card_view:contentPadding="@dimen/default_margin">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <ImageView
+                android:id="@+id/sponsor_image"
+                android:layout_width="@dimen/logo_image_size"
+                android:layout_height="@dimen/logo_image_size"
+                android:layout_gravity="center_vertical"
+                android:layout_marginLeft="@dimen/keyline_1"
+                android:scaleType="fitXY"
+                android:src="@drawable/ic_duke_viking512x512" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_toRightOf="@id/sponsor_image"
+                android:layout_marginLeft="@dimen/default_margin"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/sponsor_name_text"
+                    style="@style/TextTitle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:textColor="@color/text_main"
+                    android:gravity="center"
+                    tools:text="Sponsor" />
+
+                <TextView
+                    android:id="@+id/sponsor_type_text"
+                    style="@style/TextSmall"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:gravity="center"
+                    android:textColor="@color/text_secondary"
+                    tools:text="Sponsor Type" />
+            </LinearLayout>
+        </RelativeLayout>
+
+
+    </android.support.v7.widget.CardView>
+
+</FrameLayout>

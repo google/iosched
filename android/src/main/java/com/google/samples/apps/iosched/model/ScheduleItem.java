@@ -47,6 +47,7 @@ public class ScheduleItem implements Cloneable, Comparable<ScheduleItem> {
 
     // session id
     public String sessionId = "";
+    public String blockId = "";
 
     // title and subtitle
     public String title = "";

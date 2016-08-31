@@ -43,7 +43,7 @@ import android.view.animation.AnimationUtils;
 import android.widget.AdapterView;
 import android.widget.ListView;
 
-import com.google.samples.apps.iosched.R;
+import no.java.schedule.v2.R;
 import com.google.samples.apps.iosched.explore.ExploreSessionsActivity;
 import com.google.samples.apps.iosched.provider.ScheduleContract;
 import com.google.samples.apps.iosched.session.SessionDetailActivity;
@@ -309,7 +309,7 @@ public class SearchActivity extends BaseActivity implements
         String tagOrSessionId = c.getString(SearchTopicsSessionsQuery.TAG_OR_SESSION_ID);
         if (isTopicTag) {
             Intent intent = new Intent(this, ExploreSessionsActivity.class);
-            intent.putExtra(ExploreSessionsActivity.EXTRA_FILTER_TAG, tagOrSessionId);
+            intent.putExtra(ExploreSessionsActivity.EXTRA_FILTER_TAGS, tagOrSessionId);
             startActivity(intent);
         } else if (tagOrSessionId != null) {
             Intent intent = new Intent(this, SessionDetailActivity.class);

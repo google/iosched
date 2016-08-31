@@ -16,7 +16,7 @@
 
 package com.google.samples.apps.iosched.map;
 
-import com.google.samples.apps.iosched.R;
+import no.java.schedule.v2.R;
 import com.google.samples.apps.iosched.provider.ScheduleContract;
 import com.google.samples.apps.iosched.session.SessionDetailConstants;
 import com.google.samples.apps.iosched.ui.BaseActivity;
@@ -28,6 +28,7 @@ import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 
 import static com.google.samples.apps.iosched.util.LogUtils.makeLogTag;
 
@@ -64,6 +65,10 @@ public class MapActivity extends BaseActivity
 
     private MapInfoFragment mInfoFragment;
 
+    private Button mFloor1Button;
+    private Button mFloor2Button;
+    private Button mFloor3Button;
+
     private View mInfoContainer;
 
 
@@ -81,6 +86,34 @@ public class MapActivity extends BaseActivity
 
         setContentView(R.layout.map_act);
         mInfoContainer = findViewById(R.id.map_detail_popup);
+        mFloor1Button = (Button)findViewById(R.id.floor1_button);
+        mFloor2Button = (Button)findViewById(R.id.floor2_button);
+        mFloor3Button = (Button) findViewById(R.id.floor3_button);
+
+
+        mFloor1Button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mMapFragment.switchFloors(0);
+            }
+        });
+
+        mFloor2Button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mMapFragment.switchFloors(1);
+
+            }
+        });
+
+        mFloor3Button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mMapFragment.switchFloors(2);
+
+            }
+        });
+
 
         // ANALYTICS SCREEN: View the Map screen on a phone
         // Contains: Nothing (Page name is a constant)
@@ -121,9 +154,9 @@ public class MapActivity extends BaseActivity
                 mMapFragment = MapFragment.newInstance(previousState);
             } else {
                 // Get highlight room id (if specified in intent extras)
-                final String highlightRoomId = getIntent().hasExtra(EXTRA_ROOM) ? getIntent()
+                final String highlightRoomName = getIntent().hasExtra(EXTRA_ROOM) ? getIntent()
                         .getExtras().getString(EXTRA_ROOM) : null;
-                mMapFragment = MapFragment.newInstance(highlightRoomId);
+                mMapFragment = MapFragment.newInstance(highlightRoomName);
             }
             getFragmentManager().beginTransaction()
                     .add(R.id.fragment_container_map, mMapFragment, "map")
@@ -217,7 +250,7 @@ public class MapActivity extends BaseActivity
     }
 
     @Override
-    public void onInfoShowMoscone() {
+    public void onInfoShowOsloSpektrum() {
         if (mInfoFragment != null) {
             mInfoFragment.showMoscone();
         }

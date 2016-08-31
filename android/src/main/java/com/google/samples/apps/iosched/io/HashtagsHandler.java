@@ -27,6 +27,7 @@ import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 import com.google.samples.apps.iosched.provider.ScheduleContractHelper;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -72,6 +73,11 @@ public class HashtagsHandler extends JSONHandler {
             list.add(builder.build());
         }
         LOGD(TAG, "Hashtags: " + mHashtags.size());
+    }
+
+    @Override
+    public ArrayList<ContentProviderOperation> parse(String json) throws IOException {
+        return null;
     }
 
 }

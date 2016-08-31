@@ -24,7 +24,7 @@
         android:title="@string/description_filter"/>
 
     <item android:id="@+id/menu_search"
-        android:icon="@drawable/ic_action_search"
+        android:icon="@drawable/ic_search_jz"
         android:title="@string/description_search"
         android:orderInCategory="2"
         iosched:showAsAction="always" />

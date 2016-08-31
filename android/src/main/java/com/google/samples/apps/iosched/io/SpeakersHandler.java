@@ -28,6 +28,7 @@ import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 import com.google.samples.apps.iosched.provider.ScheduleContractHelper;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -93,6 +94,11 @@ public class SpeakersHandler extends JSONHandler {
                 mSpeakers.size());
     }
 
+    @Override
+    public ArrayList<ContentProviderOperation> parse(String json) throws IOException {
+        return null;
+    }
+
     private void buildSpeaker(boolean isInsert, Speaker speaker,
                               ArrayList<ContentProviderOperation> list) {
         Uri allSpeakersUri = ScheduleContractHelper.setUriAsCalledFromSyncAdapter(
@@ -113,10 +119,6 @@ public class SpeakersHandler extends JSONHandler {
                 .withValue(ScheduleContract.Speakers.SPEAKER_ABSTRACT, speaker.bio)
                 .withValue(ScheduleContract.Speakers.SPEAKER_COMPANY, speaker.company)
                 .withValue(ScheduleContract.Speakers.SPEAKER_IMAGE_URL, speaker.thumbnailUrl)
-                .withValue(ScheduleContract.Speakers.SPEAKER_PLUSONE_URL, speaker.plusoneUrl)
-                .withValue(ScheduleContract.Speakers.SPEAKER_TWITTER_URL, speaker.twitterUrl)
-                .withValue(ScheduleContract.Speakers.SPEAKER_IMPORT_HASHCODE,
-                        speaker.getImportHashcode())
                 .build());
     }
 
@@ -164,9 +166,7 @@ public class SpeakersHandler extends JSONHandler {
     private interface SpeakerHashcodeQuery {
         String[] PROJECTION = {
                 BaseColumns._ID,
-                ScheduleContract.Speakers.SPEAKER_ID,
-                ScheduleContract.Speakers.SPEAKER_IMPORT_HASHCODE
-        };
+                ScheduleContract.Speakers.SPEAKER_ID};
         final int _ID = 0;
         final int SPEAKER_ID = 1;
         final int SPEAKER_IMPORT_HASHCODE = 2;

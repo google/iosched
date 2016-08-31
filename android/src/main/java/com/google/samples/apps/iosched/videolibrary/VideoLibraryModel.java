@@ -108,27 +108,22 @@ public class VideoLibraryModel implements Model {
      * This represent a Video that is pulled from the Video Library.
      */
     public static class Video {
-
         final private String mId;
-
         final private int mYear;
-
         final private String mTopic;
-
         final private String mTitle;
-
         final private String mDesc;
-
         final private String mVid;
-
         final private String mSpeakers;
-
         final private String mThumbnailUrl;
-
+        final private String mVideoUploadDate;
+        final private String mVideMobileUrl;
+        final private String mVideoTags;
         private boolean mAlreadyPlayed = false;
 
         public Video(String id, int year, String topic, String title, String desc, String vid,
-                String speakers, String thumbnailUrl) {
+                String speakers, String thumbnailUrl, String videoUploadDate, String videoMobileUrl,
+                     String videoTags) {
             mId = id;
             mYear = year;
             mTopic = topic;
@@ -137,6 +132,9 @@ public class VideoLibraryModel implements Model {
             mVid = vid;
             mSpeakers = speakers;
             mThumbnailUrl = thumbnailUrl;
+            mVideoUploadDate = videoUploadDate;
+            mVideMobileUrl = videoMobileUrl;
+            mVideoTags = videoTags;
         }
 
         public String getId() {
@@ -173,6 +171,18 @@ public class VideoLibraryModel implements Model {
 
         public boolean getAlreadyPlayed() {
             return mAlreadyPlayed;
+        }
+
+        public String getVideoUploadDate() {
+            return mVideoUploadDate;
+        }
+
+        public String getVideMobileUrl() {
+            return mVideMobileUrl;
+        }
+
+        public String getVideoTags() {
+            return mVideoTags;
         }
 
         public void setAlreadyPlayed(boolean alreadyPlayed) {
@@ -256,28 +266,17 @@ public class VideoLibraryModel implements Model {
                             cursor.getString(cursor.getColumnIndex(
                                     ScheduleContract.Videos.VIDEO_SPEAKERS)),
                             cursor.getString(cursor.getColumnIndex(
-                                    ScheduleContract.Videos.VIDEO_THUMBNAIL_URL)));
+                                    ScheduleContract.Videos.VIDEO_THUMBNAIL_URL)),
+                            cursor.getString(cursor.getColumnIndex(
+                                    ScheduleContract.Videos.VIDEO_UPLOAD_DATE)),
+                            cursor.getString(cursor.getColumnIndex(
+                                    ScheduleContract.Videos.VIDEO_MOBILE_URL)),
+                            cursor.getString(cursor.getColumnIndex(ScheduleContract.Videos.VIDEO_TAGS)));
                     mVideos.add(video);
                 } while (cursor.moveToNext());
                 markVideosAsViewed();
             }
             return true;
-        } else if (query == VideoLibraryQueryEnum.MY_VIEWED_VIDEOS) {
-            LOGD(TAG, "Reading my viewed videos Data from cursor.");
-            if(cursor.moveToFirst()) {
-                Set<String> viewedVideoIds = new HashSet<>();
-                do {
-                    viewedVideoIds.add(cursor.getString(cursor.getColumnIndex(
-                            ScheduleContract.MyViewedVideos.VIDEO_ID)));
-                } while (cursor.moveToNext());
-
-                if (!mViewedVideosIds.containsAll(viewedVideoIds)) {
-                    mViewedVideosIds = viewedVideoIds;
-                    markVideosAsViewed();
-                    return true;
-                }
-            }
-            return false;
         } else if (query == VideoLibraryQueryEnum.FILTERS) {
 
             // Read all the Years and Topics from the Cursor.
@@ -370,10 +369,6 @@ public class VideoLibraryModel implements Model {
             LOGD(TAG, "Starting Video Filters query");
             loader = getCursorLoaderInstance(mContext, uri,
                     VideoLibraryQueryEnum.FILTERS.getProjection(), null, null, null);
-        } else if (loaderId == VideoLibraryQueryEnum.MY_VIEWED_VIDEOS.getId()) {
-            LOGD(TAG, "Starting My Viewed Videos query");
-            loader = getCursorLoaderInstance(mContext, uri,
-                    VideoLibraryQueryEnum.MY_VIEWED_VIDEOS.getProjection(), null, null, null);
         } else {
             LOGE(TAG, "Invalid query loaderId: " + loaderId);
         }
@@ -395,14 +390,6 @@ public class VideoLibraryModel implements Model {
                 String playedVideoId = args.getString(KEY_VIDEO_ID);
 
                 LOGD(TAG, "setVideoViewed id=" + playedVideoId);
-                Uri myPlayedVideoUri = ScheduleContract.MyViewedVideos.buildMyViewedVideosUri(
-                        AccountUtils.getActiveAccountName(mActivity));
-
-                AsyncQueryHandler handler =
-                        new AsyncQueryHandler(mActivity.getContentResolver()) {};
-                final ContentValues values = new ContentValues();
-                values.put(ScheduleContract.MyViewedVideos.VIDEO_ID, playedVideoId);
-                handler.startInsert(-1, null, myPlayedVideoUri, values);
 
                 // Because change listener is set to null during initialization, these
                 // won't fire on pageview.
@@ -447,15 +434,9 @@ public class VideoLibraryModel implements Model {
                 ScheduleContract.Videos.VIDEO_TOPIC,
                 ScheduleContract.Videos.VIDEO_SPEAKERS,
                 ScheduleContract.Videos.VIDEO_THUMBNAIL_URL,
-        }),
-
-        /**
-         * Query that retrieves a list of already viewed videos.
-         *
-         * Once the data has been loaded it can be retrieved using {@link #getVideos()}.
-         */
-        MY_VIEWED_VIDEOS(0x2, new String[]{
-                ScheduleContract.MyViewedVideos.VIDEO_ID
+                ScheduleContract.Videos.VIDEO_UPLOAD_DATE,
+                ScheduleContract.Videos.VIDEO_MOBILE_URL,
+                ScheduleContract.Videos.VIDEO_TAGS
         }),
 
         /**

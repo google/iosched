@@ -17,7 +17,7 @@
 package com.google.samples.apps.iosched.debug;
 
 import com.google.samples.apps.iosched.Config;
-import com.google.samples.apps.iosched.R;
+import no.java.schedule.v2.R;
 import com.google.samples.apps.iosched.debug.actions.DisplayUserDataDebugAction;
 import com.google.samples.apps.iosched.debug.actions.ForceAppDataSyncNowAction;
 import com.google.samples.apps.iosched.debug.actions.ForceSyncNowAction;
@@ -134,7 +134,7 @@ public class DebugFragment extends Fragment {
             @Override
             public void run(Context context, Callback callback) {
                 Intent intent = new Intent(context, ExploreSessionsActivity.class);
-                intent.putExtra(ExploreSessionsActivity.EXTRA_FILTER_TAG, "TOPIC_ANDROID");
+                intent.putExtra(ExploreSessionsActivity.EXTRA_FILTER_TAGS, "TOPIC_ANDROID");
                 context.startActivity(intent);
             }
 

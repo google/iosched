@@ -18,13 +18,12 @@ package com.google.samples.apps.iosched.videolibrary;
 
 import android.os.Bundle;
 
-import com.google.samples.apps.iosched.R;
+import no.java.schedule.v2.R;
 import com.google.samples.apps.iosched.ui.BaseActivity;
 import com.google.samples.apps.iosched.ui.widget.CollectionView;
 import com.google.samples.apps.iosched.ui.widget.DrawShadowFrameLayout;
 import com.google.samples.apps.iosched.util.AnalyticsHelper;
 import com.google.samples.apps.iosched.videolibrary.VideoLibraryModel.VideoLibraryUserActionEnum;
-import com.google.samples.apps.iosched.videolibrary.VideoLibraryModel.VideoLibraryQueryEnum;
 
 
 import static com.google.samples.apps.iosched.util.LogUtils.LOGD;
@@ -44,9 +43,7 @@ public class VideoLibraryActivity extends BaseActivity {
         setContentView(R.layout.video_library_act);
 
         addPresenterFragment(R.id.video_library_frag,
-                new VideoLibraryModel(getApplicationContext(), this),
-                new VideoLibraryQueryEnum[]{VideoLibraryQueryEnum.VIDEOS,
-                        VideoLibraryQueryEnum.MY_VIEWED_VIDEOS},
+                new VideoLibraryModel(getApplicationContext(), this),null,
                 new VideoLibraryUserActionEnum[]{VideoLibraryUserActionEnum.RELOAD,
                         VideoLibraryUserActionEnum.VIDEO_PLAYED});
 

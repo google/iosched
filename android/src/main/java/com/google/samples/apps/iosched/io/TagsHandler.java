@@ -27,6 +27,7 @@ import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 import com.google.samples.apps.iosched.provider.ScheduleContractHelper;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -57,7 +58,6 @@ public class TagsHandler extends JSONHandler {
         list.add(ContentProviderOperation.newDelete(uri).build());
         for (Tag tag : mTags.values()) {
             ContentProviderOperation.Builder builder = ContentProviderOperation.newInsert(uri);
-            builder.withValue(ScheduleContract.Tags.TAG_ID, tag.tag);
             builder.withValue(ScheduleContract.Tags.TAG_CATEGORY, tag.category);
             builder.withValue(ScheduleContract.Tags.TAG_NAME, tag.name);
             builder.withValue(ScheduleContract.Tags.TAG_ORDER_IN_CATEGORY, tag.order_in_category);
@@ -66,6 +66,11 @@ public class TagsHandler extends JSONHandler {
                     Color.LTGRAY : Color.parseColor(tag.color));
             list.add(builder.build());
         }
+    }
+
+    @Override
+    public ArrayList<ContentProviderOperation> parse(String json) throws IOException {
+        return null;
     }
 
     public HashMap<String, Tag> getTagMap() {

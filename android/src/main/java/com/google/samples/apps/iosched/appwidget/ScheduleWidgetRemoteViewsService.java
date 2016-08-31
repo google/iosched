@@ -18,7 +18,6 @@ package com.google.samples.apps.iosched.appwidget;
 
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Bitmap;
 import android.text.format.DateUtils;
 import android.util.SparseBooleanArray;
 import android.util.SparseIntArray;
@@ -26,7 +25,7 @@ import android.view.View;
 import android.widget.RemoteViews;
 import android.widget.RemoteViewsService;
 
-import com.google.samples.apps.iosched.R;
+import no.java.schedule.v2.R;
 import com.google.samples.apps.iosched.model.ScheduleHelper;
 import com.google.samples.apps.iosched.model.ScheduleItem;
 import com.google.samples.apps.iosched.provider.ScheduleContract;
@@ -264,9 +263,10 @@ public class ScheduleWidgetRemoteViewsService extends RemoteViewsService {
             int position = 0;
             mScheduleItems = new ArrayList<ScheduleItem>();
             for (ScheduleItem item : allScheduleItems) {
+                /*
                 if (item.endTime <= UIUtils.getCurrentTime(mContext)) {
                     continue;
-                }
+                } */
                 mScheduleItems.add(item);
                 time = item.startTime;
                 if (!UIUtils.isSameDayDisplay(previousTime, time, mContext)) {

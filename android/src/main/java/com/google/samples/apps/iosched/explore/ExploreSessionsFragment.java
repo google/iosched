@@ -37,7 +37,8 @@ import android.widget.CursorAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.google.samples.apps.iosched.R;
+import no.java.schedule.v2.R;
+
 import com.google.samples.apps.iosched.model.TagMetadata;
 import com.google.samples.apps.iosched.provider.ScheduleContract;
 import com.google.samples.apps.iosched.session.SessionDetailActivity;
@@ -49,6 +50,10 @@ import com.google.samples.apps.iosched.util.ImageLoader;
 import com.google.samples.apps.iosched.util.LogUtils;
 import com.google.samples.apps.iosched.util.TimeUtils;
 import com.google.samples.apps.iosched.util.UIUtils;
+
+import org.joda.time.DateTime;
+import org.joda.time.format.DateTimeFormat;
+import org.joda.time.format.DateTimeFormatter;
 
 import java.lang.ref.WeakReference;
 import java.util.Date;
@@ -72,8 +77,12 @@ public class ExploreSessionsFragment extends Fragment implements
 
     public static final String EXTRA_SHOW_LIVESTREAMED_SESSIONS =
             "com.google.samples.apps.iosched.explore.EXTRA_SHOW_LIVESTREAMED_SESSIONS";
+    public static final String EXTRA_DATE_FILTER =
+            "com.google.samples.apps.iosched.explore.EXTRA_DATE_FILTER";
 
-    /** The delay before actual re-querying in milli seconds. */
+    /**
+     * The delay before actual re-querying in milli seconds.
+     */
     private static final long QUERY_UPDATE_DELAY_MILLIS = 100;
 
     private ImageLoader mImageLoader;
@@ -85,11 +94,8 @@ public class ExploreSessionsFragment extends Fragment implements
     private int mSessionQueryToken;
     private TagMetadata mTagMetadata;
     private SearchHandler mSearchHandler = new SearchHandler(this);
-
-    /**
-     * Whether we should limit our selection to live streamed events.
-     */
     private boolean mShowLiveStreamedSessions;
+    private String mSessionDate;
     /**
      * Boolean that indicates whether the collectionView data is being fully reloaded in the
      * case of filters and other query arguments changing VS just a data refresh.
@@ -125,6 +131,7 @@ public class ExploreSessionsFragment extends Fragment implements
             mSessionQueryToken = savedInstanceState.getInt(STATE_SESSION_QUERY_TOKEN);
             mShowLiveStreamedSessions = savedInstanceState
                     .getBoolean(STATE_SHOW_LIVESTREAMED_SESSIONS);
+            mSessionDate = savedInstanceState.getString(EXTRA_DATE_FILTER);
             if (mSessionQueryToken > 0) {
                 // Only if this is a config change should we initLoader(), to reconnect with an
                 // existing loader. Otherwise, the loader will be init'd when reloadFromArguments
@@ -151,6 +158,7 @@ public class ExploreSessionsFragment extends Fragment implements
     @Override
     public void onResume() {
         super.onResume();
+        getLoaderManager().restartLoader(mSessionQueryToken, null, this);
         getActivity().invalidateOptionsMenu();
         // configure session fragment's top clearance to take our overlaid controls (Action Bar
         // and spinner box) into account.
@@ -166,20 +174,29 @@ public class ExploreSessionsFragment extends Fragment implements
 
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
+        DateTimeFormatter formatter = DateTimeFormat.forPattern("E dd.MMMM yyyy");
+        DateTime dateToUse = null;
+        DateTime startDate = null;
+        DateTime endDate = null;
+        if (mSessionDate != null) {
+            dateToUse = formatter.parseDateTime(mSessionDate);
+            startDate = dateToUse.plusHours(0);
+            endDate = dateToUse.plusHours(23);
+        }
         switch (id) {
             case ExploreSessionsQuery.NORMAL_TOKEN:
                 return new CursorLoader(getActivity(),
                         mCurrentUri, ExploreSessionsQuery.NORMAL_PROJECTION,
-                        mShowLiveStreamedSessions ?
-                                ScheduleContract.Sessions.LIVESTREAM_OR_YOUTUBE_URL_SELECTION : null,
-                        null,
+                        mSessionDate != null ?
+                                ScheduleContract.Sessions.STARTING_AT_TIME_INTERVAL_SELECTION : null,
+                        mSessionDate != null ? new String[]{startDate.getMillis() + "", endDate.getMillis() + ""} : null,
                         ScheduleContract.Sessions.SORT_BY_TYPE_THEN_TIME);
             case ExploreSessionsQuery.SEARCH_TOKEN:
                 return new CursorLoader(getActivity(),
                         mCurrentUri, ExploreSessionsQuery.SEARCH_PROJECTION,
-                        mShowLiveStreamedSessions ?
-                                ScheduleContract.Sessions.LIVESTREAM_OR_YOUTUBE_URL_SELECTION : null,
-                        null,
+                        mSessionDate != null ?
+                                ScheduleContract.Sessions.STARTING_AT_TIME_INTERVAL_SELECTION : null,
+                        mSessionDate != null ? new String[]{startDate.getMillis() + "", endDate.getMillis() + ""} : null,
                         ScheduleContract.Sessions.SORT_BY_TYPE_THEN_TIME);
             case TAG_METADATA_TOKEN:
                 return TagMetadata.createCursorLoader(getActivity());
@@ -189,7 +206,7 @@ public class ExploreSessionsFragment extends Fragment implements
     }
 
     @Override
-    public void onLoadFinished(Loader<Cursor> loader, Cursor cursor) {
+    public void onLoadFinished (Loader < Cursor > loader, Cursor cursor){
         switch (loader.getId()) {
             case ExploreSessionsQuery.NORMAL_TOKEN: // fall through
             case ExploreSessionsQuery.SEARCH_TOKEN:
@@ -233,7 +250,7 @@ public class ExploreSessionsFragment extends Fragment implements
     public void reloadFromArguments(Bundle bundle) {
         Uri oldUri = mCurrentUri;
         int oldSessionQueryToken = mSessionQueryToken;
-        boolean oldShowLivestreamedSessions = mShowLiveStreamedSessions;
+        String oldSessionDate = mSessionDate;
         mCurrentUri = bundle.getParcelable("_uri");
 
         if (ScheduleContract.Sessions.isSearchUri(mCurrentUri)) {
@@ -241,11 +258,12 @@ public class ExploreSessionsFragment extends Fragment implements
         } else {
             mSessionQueryToken = ExploreSessionsQuery.NORMAL_TOKEN;
         }
-        mShowLiveStreamedSessions = bundle.getBoolean(EXTRA_SHOW_LIVESTREAMED_SESSIONS, false);
+
+        mSessionDate = bundle.getString(EXTRA_DATE_FILTER, null);
 
         if ((oldUri != null && oldUri.equals(mCurrentUri)) &&
                 oldSessionQueryToken == mSessionQueryToken &&
-                oldShowLivestreamedSessions == mShowLiveStreamedSessions) {
+                oldSessionDate == mSessionDate) {
             mFullReload = false;
             getLoaderManager().initLoader(mSessionQueryToken, null, this);
         } else {
@@ -258,7 +276,7 @@ public class ExploreSessionsFragment extends Fragment implements
     public void requestQueryUpdate(String query) {
         mSearchHandler.removeMessages(SearchHandler.MESSAGE_QUERY_UPDATE);
         mSearchHandler.sendMessageDelayed(Message.obtain(mSearchHandler,
-                        SearchHandler.MESSAGE_QUERY_UPDATE, query), QUERY_UPDATE_DELAY_MILLIS);
+                SearchHandler.MESSAGE_QUERY_UPDATE, query), QUERY_UPDATE_DELAY_MILLIS);
     }
 
     private class SessionsAdapter extends CursorAdapter implements CollectionViewCallbacks {
@@ -294,6 +312,8 @@ public class ExploreSessionsFragment extends Fragment implements
             ImageView thumbnailView = (ImageView) view.findViewById(R.id.thumbnail);
             ImageView inScheduleIndicator =
                     (ImageView) view.findViewById(R.id.indicator_in_schedule);
+            ImageView inScheduleCircleImage =
+                    (ImageView) view.findViewById(R.id.indicator_circle_image);
             TextView titleView = (TextView) view.findViewById(R.id.title);
             TextView infoView = (TextView) view.findViewById(R.id.info_view);
             TextView sessionTypeView = (TextView) view.findViewById(R.id.session_type_text);
@@ -317,15 +337,17 @@ public class ExploreSessionsFragment extends Fragment implements
                 TagMetadata.Tag groupTag = mTagMetadata.getSessionGroupTag(tags.split(","));
                 sessionTypeView.setText(groupTag == null ? "" : groupTag.getName());
             }
+
+            sessionTypeView.setText(cursor.getString(ExploreSessionsQuery.FORMAT));
             String infoText = "";
             if (day != 0) {
                 final Date startDate = new Date(startTime);
-                infoText = getString(R.string.explore_sessions_show_day_hour_and_room,
-                        TimeUtils.formatShortDate(getActivity(), startDate),
-                        getString(R.string.explore_sessions_show_day_n, day),
+                infoText = String.format("%s-%s in %s, %s, %s",
                         TimeUtils.formatShortTime(getActivity(), startDate),
                         TimeUtils.formatShortTime(getActivity(), new Date(endTime)),
-                        room != null ? room : context.getString(R.string.unknown_room));
+                        room != null ? room : context.getString(R.string.unknown_room),
+                        TimeUtils.formatShortDate(getActivity(), startDate),
+                        getString(R.string.explore_sessions_show_day_n, day));
             }
             infoView.setText(infoText);
 
@@ -339,6 +361,8 @@ public class ExploreSessionsFragment extends Fragment implements
             inScheduleIndicator.setVisibility(
                     cursor.getLong(ExploreSessionsQuery.IN_MY_SCHEDULE) == 1L ? View.VISIBLE
                             : View.GONE);
+            inScheduleCircleImage.setVisibility(inScheduleIndicator.getVisibility());
+
         }
 
         @Override
@@ -394,10 +418,11 @@ public class ExploreSessionsFragment extends Fragment implements
                 ScheduleContract.Sessions.SESSION_START,
                 ScheduleContract.Sessions.SESSION_END,
                 ScheduleContract.Rooms.ROOM_NAME,
+                ScheduleContract.Sessions.SESSION_FORMAT,
                 ScheduleContract.Sessions.SESSION_URL,
                 ScheduleContract.Sessions.SESSION_TAGS,
                 ScheduleContract.Sessions.SESSION_PHOTO_URL,
-                ScheduleContract.Sessions.SESSION_IN_MY_SCHEDULE,
+                ScheduleContract.Sessions.SESSION_STARRED,
         };
         String[] SEARCH_PROJECTION = {
                 BaseColumns._ID,
@@ -406,10 +431,11 @@ public class ExploreSessionsFragment extends Fragment implements
                 ScheduleContract.Sessions.SESSION_START,
                 ScheduleContract.Sessions.SESSION_END,
                 ScheduleContract.Rooms.ROOM_NAME,
+                ScheduleContract.Sessions.SESSION_FORMAT,
                 ScheduleContract.Sessions.SESSION_URL,
                 ScheduleContract.Sessions.SESSION_TAGS,
                 ScheduleContract.Sessions.SESSION_PHOTO_URL,
-                ScheduleContract.Sessions.SESSION_IN_MY_SCHEDULE,
+                ScheduleContract.Sessions.SESSION_STARRED,
                 ScheduleContract.Sessions.SEARCH_SNIPPET,
         };
         int _ID = 0;
@@ -418,11 +444,12 @@ public class ExploreSessionsFragment extends Fragment implements
         int SESSION_START = 3;
         int SESSION_END = 4;
         int ROOM_NAME = 5;
-        int URL = 6;
-        int TAGS = 7;
-        int PHOTO_URL = 8;
-        int IN_MY_SCHEDULE = 9;
-        int SEARCH_SNIPPET = 10;
+        int FORMAT = 6;
+        int URL = 7;
+        int TAGS = 8;
+        int PHOTO_URL = 9;
+        int IN_MY_SCHEDULE = 10;
+        int SEARCH_SNIPPET = 11;
     }
 
     /**
@@ -440,7 +467,7 @@ public class ExploreSessionsFragment extends Fragment implements
 
         @Override
         public void handleMessage(Message msg) {
-            switch(msg.what) {
+            switch (msg.what) {
                 case MESSAGE_QUERY_UPDATE:
                     String query = (String) msg.obj;
                     ExploreSessionsFragment instance = mFragmentReference.get();

@@ -24,7 +24,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Build;
 
-import com.google.samples.apps.iosched.R;
+import no.java.schedule.v2.R;
 
 /**
  * Helper class that applies the proper icon, title and background color to recent tasks list.

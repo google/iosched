@@ -70,7 +70,7 @@ public class UserActionHelper {
             return ContentProviderOperation
                     .newInsert(
                             ScheduleContractHelper.addOverrideAccountName(
-                                    ScheduleContract.MySchedule.CONTENT_URI, account))
+                                    ScheduleContract.MySchedule.CONTENT_URI))
                     .withValue(ScheduleContract.MySchedule.MY_SCHEDULE_DIRTY_FLAG, "0")
                     .withValue(ScheduleContract.MySchedule.SESSION_ID, action.sessionId)
                     .build();
@@ -78,24 +78,16 @@ public class UserActionHelper {
             return ContentProviderOperation
                     .newInsert(
                             ScheduleContractHelper.addOverrideAccountName(
-                                    ScheduleContract.MyFeedbackSubmitted.CONTENT_URI, account))
+                                    ScheduleContract.MyFeedbackSubmitted.CONTENT_URI))
                     .withValue(ScheduleContract.MyFeedbackSubmitted
                             .MY_FEEDBACK_SUBMITTED_DIRTY_FLAG, "0")
                     .withValue(ScheduleContract.MyFeedbackSubmitted.SESSION_ID, action.sessionId)
-                    .build();
-        } else if (action.type == UserAction.TYPE.VIEW_VIDEO) {
-            return ContentProviderOperation
-                    .newInsert(
-                            ScheduleContractHelper.addOverrideAccountName(
-                                    ScheduleContract.MyViewedVideos.CONTENT_URI, account))
-                    .withValue(ScheduleContract.MyViewedVideos.MY_VIEWED_VIDEOS_DIRTY_FLAG, "0")
-                    .withValue(ScheduleContract.MyViewedVideos.VIDEO_ID, action.videoId)
                     .build();
         } else {
             return ContentProviderOperation
                     .newDelete(
                             ScheduleContractHelper.addOverrideAccountName(
-                                    ScheduleContract.MySchedule.CONTENT_URI, account))
+                                    ScheduleContract.MySchedule.CONTENT_URI))
                     .withSelection(
                             ScheduleContract.MySchedule.SESSION_ID + " = ? AND " +
                             ScheduleContract.MySchedule.MY_SCHEDULE_ACCOUNT_NAME + " = ? ",

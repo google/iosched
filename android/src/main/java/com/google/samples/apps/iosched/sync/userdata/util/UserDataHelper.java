@@ -129,11 +129,6 @@ public class UserDataHelper {
         userData.setStarredSessionIds(getColumnContentAsArray(context,
                 ScheduleContract.MySchedule.CONTENT_URI, ScheduleContract.MySchedule.SESSION_ID));
 
-        // Get Viewed Videos.
-        userData.setViewedVideoIds(getColumnContentAsArray(context,
-                ScheduleContract.MyViewedVideos.CONTENT_URI,
-                ScheduleContract.MyViewedVideos.VIDEO_ID));
-
         // Get Feedback Submitted Sessions.
         userData.setFeedbackSubmittedSessionIds(getColumnContentAsArray(context,
                 ScheduleContract.MyFeedbackSubmitted.CONTENT_URI,
@@ -162,21 +157,6 @@ public class UserDataHelper {
                 UserAction action = new UserAction();
                 action.type = UserAction.TYPE.ADD_STAR;
                 action.sessionId = sessionId;
-                actions.add(action);
-            }
-        }
-
-        // first clear all viewed videos.
-        context.getContentResolver().delete(ScheduleContract.MyViewedVideos.CONTENT_URI,
-                ScheduleContract.MyViewedVideos.MY_VIEWED_VIDEOS_ACCOUNT_NAME +" = ?",
-                new String[]{accountName});
-
-        // Now add the viewed videos.
-        if (userData.getViewedVideoIds() != null) {
-            for (String videoId : userData.getViewedVideoIds()) {
-                UserAction action = new UserAction();
-                action.type = UserAction.TYPE.VIEW_VIDEO;
-                action.videoId = videoId;
                 actions.add(action);
             }
         }

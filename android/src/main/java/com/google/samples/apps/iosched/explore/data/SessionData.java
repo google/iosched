@@ -15,6 +15,7 @@ public class SessionData {
     private String mSessionName;
     private String mDetails;
     private String mSessionId;
+    private String mSessionAudience;
     private String mImageUrl;
     private String mMainTag;
     private Date mStartDate;
@@ -26,18 +27,19 @@ public class SessionData {
 
     public SessionData() { }
 
-    public SessionData(String sessionName, String details, String sessionId, String imageUrl,
+    public SessionData(String sessionName, String details, String audience, String sessionId, String imageUrl,
                        String mainTag, long startTime, long endTime, String liveStreamId,
                        String youTubeUrl, String tags, boolean inSchedule) {
-        updateData(sessionName, details, sessionId, imageUrl, mainTag, startTime, endTime,
+        updateData(sessionName, details, audience, sessionId, imageUrl, mainTag, startTime, endTime,
                 liveStreamId, youTubeUrl, tags, inSchedule);
     }
 
-    public void updateData(String sessionName, String details, String sessionId, String imageUrl,
+    public void updateData(String sessionName, String details, String audience, String sessionId, String imageUrl,
                            String mainTag, long startTime, long endTime, String liveStreamId,
                            String youTubeUrl, String tags, boolean inSchedule) {
         mSessionName = sessionName;
         mDetails = details;
+        mSessionAudience = audience;
         mSessionId = sessionId;
         mImageUrl = imageUrl;
         mMainTag = mainTag;
@@ -97,6 +99,14 @@ public class SessionData {
     }
 
     public void setDetails(String details) { mDetails = details; }
+
+    public String getAudience() {
+        return mSessionAudience;
+    }
+
+    public void setAudience(String audience) {
+        mSessionAudience = audience;
+    }
 
     public Date getStartDate() { return mStartDate; }
 

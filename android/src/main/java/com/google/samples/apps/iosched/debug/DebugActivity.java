@@ -16,7 +16,7 @@
 
 package com.google.samples.apps.iosched.debug;
 
-import com.google.samples.apps.iosched.R;
+import no.java.schedule.v2.R;
 import com.google.samples.apps.iosched.ui.BaseActivity;
 
 import android.os.Bundle;

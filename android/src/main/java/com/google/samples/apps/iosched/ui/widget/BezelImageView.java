@@ -32,7 +32,7 @@ import android.support.v4.view.ViewCompat;
 import android.util.AttributeSet;
 import android.widget.ImageView;
 
-import com.google.samples.apps.iosched.R;
+import no.java.schedule.v2.R;
 
 /**
  * An {@link android.widget.ImageView} that draws its contents inside a mask and draws a border

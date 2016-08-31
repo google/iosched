@@ -61,6 +61,7 @@
         android:layout_alignStart="@id/speaker_header"
         android:layout_alignRight="@id/speaker_header"
         android:layout_alignEnd="@id/speaker_header"
+        android:textColorLink="@color/theme_accent_1_light"
         android:autoLink="web"
         style="@style/Body1Text" />
 

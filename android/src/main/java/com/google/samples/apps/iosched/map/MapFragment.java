@@ -24,37 +24,45 @@ import com.google.android.gms.maps.UiSettings;
 import com.google.android.gms.maps.model.BitmapDescriptor;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.CameraPosition;
+import com.google.android.gms.maps.model.GroundOverlayOptions;
 import com.google.android.gms.maps.model.IndoorBuilding;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.Marker;
-import com.google.android.gms.maps.model.TileOverlay;
-import com.google.android.gms.maps.model.TileOverlayOptions;
-import com.google.samples.apps.iosched.R;
-import com.google.samples.apps.iosched.map.util.CachedTileProvider;
+
+import no.java.schedule.io.model.Coordinates;
+import no.java.schedule.util.NetworkUtil;
+import no.java.schedule.v2.R;
+import no.java.schedule.util.EstimoteBeaconManager;
+
+import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.samples.apps.iosched.map.util.MarkerLoadingTask;
 import com.google.samples.apps.iosched.map.util.MarkerModel;
-import com.google.samples.apps.iosched.map.util.TileLoadingTask;
 import com.google.samples.apps.iosched.provider.ScheduleContract;
 import com.google.samples.apps.iosched.util.AnalyticsHelper;
 import com.google.samples.apps.iosched.util.MapUtils;
 
-import com.jakewharton.disklrucache.DiskLruCache;
 
+import android.Manifest;
 import android.app.Activity;
 import android.app.LoaderManager;
 import android.app.LoaderManager.LoaderCallbacks;
+import android.content.DialogInterface;
 import android.content.Loader;
+import android.content.pm.PackageManager;
 import android.database.ContentObserver;
 import android.database.Cursor;
 import android.graphics.Rect;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.v4.app.ActivityCompat;
+import android.support.v7.app.AlertDialog;
 import android.util.SparseArray;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -69,33 +77,28 @@ public class MapFragment extends com.google.android.gms.maps.MapFragment impleme
         GoogleMap.OnMarkerClickListener,
         GoogleMap.OnIndoorStateChangeListener, GoogleMap.OnMapClickListener, OnMapReadyCallback {
 
-    private static final LatLng MOSCONE = new LatLng(37.783107, -122.403789);
-    private static final LatLng MOSCONE_CAMERA = new LatLng(37.78308931536713, -122.40409433841705);
+    private static final LatLng OSOLOSPEKTRUM = new LatLng(59.9130, 10.7547);
+    private static final int REQUEST_LOCATION = 0;
 
     private static final String EXTRAS_HIGHLIGHT_ROOM = "EXTRAS_HIGHLIGHT_ROOM";
     private static final String EXTRAS_ACTIVE_FLOOR = "EXTRAS_ACTIVE_FLOOR";
 
+    private EstimoteBeaconManager mEstimoteBeaconManager;
+
     // Initial camera zoom
     private static final float CAMERA_ZOOM = 18.19f;
     private static final float CAMERA_BEARING = 234.2f;
+    private static Marker mCurrentLocationMarker = null;
 
     private static final int INVALID_FLOOR = Integer.MIN_VALUE;
 
     // Estimated number of floors used to initialise data structures with appropriate capacity
     private static final int INITIAL_FLOOR_COUNT = 3;
 
-    // Default level (index of level in IndoorBuilding object for Moscone)
-    private static final int MOSCONE_DEFAULT_LEVEL_INDEX = 1;
+    // Default level (index of level in IndoorBuilding object for Oslo Spektrum)
+    private static final int OSLOSPEKTRUM_DEFAULT_LEVEL_INDEX = 1;
 
     private static final String TAG = makeLogTag(MapFragment.class);
-
-    // Tile Providers
-    private SparseArray<CachedTileProvider> mTileProviders =
-            new SparseArray<>(INITIAL_FLOOR_COUNT);
-    private SparseArray<TileOverlay> mTileOverlays =
-            new SparseArray<>(INITIAL_FLOOR_COUNT);
-
-    private DiskLruCache mTileCache;
 
     // Markers stored by id
     private HashMap<String, MarkerModel> mMarkers = new HashMap<>();
@@ -106,8 +109,7 @@ public class MapFragment extends com.google.android.gms.maps.MapFragment impleme
     // Screen DPI
     private float mDPI = 0;
 
-    // Indoor maps representation of Moscone Center
-    private IndoorBuilding mMosconeBuilding = null;
+    private IndoorBuilding mOsloSpektrumBuilding = null;
 
     // currently displayed floor
     private int mFloor = INVALID_FLOOR;
@@ -116,19 +118,18 @@ public class MapFragment extends com.google.android.gms.maps.MapFragment impleme
     private BitmapDescriptor ICON_ACTIVE;
     private BitmapDescriptor ICON_NORMAL;
 
-    private boolean mAtMoscone = false;
-    private Marker mMosconeMaker = null;
+    private boolean mAtOsloSpektrum = false;
+    private Marker mOsloSpektrumMarker = null;
 
     private GoogleMap mMap;
     private Rect mMapInsets = new Rect();
 
-    private String mHighlightedRoomId = null;
+    private String mHighlightedRoomName = null;
     private MarkerModel mHighlightedRoom = null;
 
-    private int mInitialFloor = MOSCONE_DEFAULT_LEVEL_INDEX;
+    private int mInitialFloor = OSLOSPEKTRUM_DEFAULT_LEVEL_INDEX;
 
     private static final int TOKEN_LOADER_MARKERS = 0x1;
-    private static final int TOKEN_LOADER_TILES = 0x2;
     //For Analytics tracking
     public static final String SCREEN_LABEL = "Map";
 
@@ -136,7 +137,7 @@ public class MapFragment extends com.google.android.gms.maps.MapFragment impleme
 
         void onInfoHide();
 
-        void onInfoShowMoscone();
+        void onInfoShowOsloSpektrum();
 
         void onInfoShowTitle(String label, int roomType);
 
@@ -152,7 +153,7 @@ public class MapFragment extends com.google.android.gms.maps.MapFragment impleme
         }
 
         @Override
-        public void onInfoShowMoscone() {
+        public void onInfoShowOsloSpektrum() {
         }
 
         @Override
@@ -176,11 +177,11 @@ public class MapFragment extends com.google.android.gms.maps.MapFragment impleme
         return new MapFragment();
     }
 
-    public static MapFragment newInstance(String highlightedRoomId) {
+    public static MapFragment newInstance(String highlightedRoomName) {
         MapFragment fragment = new MapFragment();
 
         Bundle arguments = new Bundle();
-        arguments.putString(EXTRAS_HIGHLIGHT_ROOM, highlightedRoomId);
+        arguments.putString(EXTRAS_HIGHLIGHT_ROOM, highlightedRoomName);
         fragment.setArguments(arguments);
 
         return fragment;
@@ -200,8 +201,8 @@ public class MapFragment extends com.google.android.gms.maps.MapFragment impleme
             // A marker is currently selected, restore its selection.
             outState.putString(EXTRAS_HIGHLIGHT_ROOM, mActiveMarker.getTitle());
             outState.putInt(EXTRAS_ACTIVE_FLOOR, INVALID_FLOOR);
-        } else if (mAtMoscone) {
-            // No marker is selected, store the active floor if at Moscone.
+        } else if (mAtOsloSpektrum) {
+            // No marker is selected, store the active floor if at Oslo Spektrum.
             outState.putInt(EXTRAS_ACTIVE_FLOOR, mFloor);
             outState.putString(EXTRAS_HIGHLIGHT_ROOM, null);
         }
@@ -213,6 +214,23 @@ public class MapFragment extends com.google.android.gms.maps.MapFragment impleme
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            if (ActivityCompat.checkSelfPermission(getActivity(),
+                    Manifest.permission.ACCESS_FINE_LOCATION)
+                    != PackageManager.PERMISSION_GRANTED
+                    && ActivityCompat.checkSelfPermission(getActivity(),
+                    Manifest.permission.ACCESS_COARSE_LOCATION)
+                    != PackageManager.PERMISSION_GRANTED) {
+                ActivityCompat.requestPermissions(getActivity(),
+                        new String[]
+                                {Manifest.permission.
+                                        ACCESS_FINE_LOCATION,
+                                        Manifest.permission.ACCESS_COARSE_LOCATION},
+                        REQUEST_LOCATION);
+            }
+        }
+
+
         // ANALYTICS SCREEN: View the Map screen
         // Contains: Nothing (Page name is a constant)
         AnalyticsHelper.sendScreenView(SCREEN_LABEL);
@@ -220,15 +238,16 @@ public class MapFragment extends com.google.android.gms.maps.MapFragment impleme
         // get DPI
         mDPI = getActivity().getResources().getDisplayMetrics().densityDpi / 160f;
 
-        ICON_ACTIVE = BitmapDescriptorFactory.fromResource(R.drawable.map_marker_selected);
+        ICON_ACTIVE = BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_ORANGE);
         ICON_NORMAL =
-                BitmapDescriptorFactory.fromResource(R.drawable.map_marker_unselected);
+                BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE);
+
 
         // Get the arguments and restore the highlighted room or displayed floor.
         Bundle data = getArguments();
         if (data != null) {
-            mHighlightedRoomId = data.getString(EXTRAS_HIGHLIGHT_ROOM, null);
-            mInitialFloor = data.getInt(EXTRAS_ACTIVE_FLOOR, MOSCONE_DEFAULT_LEVEL_INDEX);
+            mHighlightedRoomName = data.getString(EXTRAS_HIGHLIGHT_ROOM, null);
+            mInitialFloor = data.getInt(EXTRAS_ACTIVE_FLOOR, OSLOSPEKTRUM_DEFAULT_LEVEL_INDEX);
         }
 
         getMapAsync(this);
@@ -236,13 +255,118 @@ public class MapFragment extends com.google.android.gms.maps.MapFragment impleme
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
-            Bundle savedInstanceState) {
+                             Bundle savedInstanceState) {
         View mapView = super.onCreateView(inflater, container, savedInstanceState);
-
+        mEstimoteBeaconManager = new EstimoteBeaconManager(
+                getActivity(), this);
+        mEstimoteBeaconManager.initializeEstimoteBeaconManager(getActivity());
         setMapInsets(mMapInsets);
 
         return mapView;
     }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        mEstimoteBeaconManager.startEstimoteBeaconManager();
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+
+        if(!NetworkUtil.isGpsOn(getActivity())) {
+            createGpsDialog().show();
+        }
+        if (!NetworkUtil.isBluetoothOn(getActivity())) {
+            createBluetoothDialog().show();
+        } else {
+            mEstimoteBeaconManager.startMonitorEstimoteBeacons(getActivity());
+        }
+    }
+
+    public void placeMarkerLocationOnCurrentRegion(Coordinates coordinates) {
+        LatLng beaconRegionLatLng = new LatLng(coordinates.getLatitude(), coordinates.getLongitude());
+        if(mCurrentLocationMarker != null) {
+            mCurrentLocationMarker.remove();
+            mCurrentLocationMarker = null;
+        }
+
+        MarkerOptions markerOptions
+                = MapUtils.createCurrentLocationMarker("Your current location", beaconRegionLatLng);
+        mCurrentLocationMarker = mMap.addMarker(markerOptions);
+    }
+
+    private AlertDialog.Builder createBluetoothDialog() {
+        AlertDialog.Builder buildAlertDialog = new AlertDialog.Builder(getActivity(),
+                R.style.Dialog_Theme);
+        buildAlertDialog.setTitle("Bluetooth disabled");
+        buildAlertDialog.setMessage("Please turn on Bluetooth to be able to use indoor maps");
+        buildAlertDialog.setPositiveButton("Enable", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                NetworkUtil.enableBluetooth(getActivity());
+                mEstimoteBeaconManager.startMonitorEstimoteBeacons(getActivity());
+            }
+        });
+        buildAlertDialog.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+
+            }
+        });
+
+        return buildAlertDialog;
+    }
+
+    private AlertDialog.Builder createGpsDialog() {
+        AlertDialog.Builder buildAlertDialog = new AlertDialog.Builder(getActivity(),
+                R.style.Dialog_Theme);
+        buildAlertDialog.setTitle("Location disabled");
+        buildAlertDialog.setMessage("Please turn on Location to be able to use indoor maps");
+        buildAlertDialog.setPositiveButton("Enable", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                NetworkUtil.enableGPS(getActivity());
+                mEstimoteBeaconManager.startMonitorEstimoteBeacons(getActivity());
+            }
+        });
+        buildAlertDialog.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+
+            }
+        });
+
+        return buildAlertDialog;
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        mEstimoteBeaconManager.stopRanging();
+        mEstimoteBeaconManager.destroyEstimoteBeaconManager();
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        mEstimoteBeaconManager.destroyEstimoteBeaconManager();
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String[] permissions,
+                                           int[] grantResults) {
+        if (requestCode == REQUEST_LOCATION) {
+            if (grantResults[0] == PackageManager.PERMISSION_GRANTED &&
+                    grantResults[1] == PackageManager.PERMISSION_GRANTED) {
+                mMap.setMyLocationEnabled(true);
+            }
+        } else {
+            super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        }
+    }
+
 
     public void setMapInsets(int left, int top, int right, int bottom) {
         mMapInsets.set(left, top, right, bottom);
@@ -261,23 +385,9 @@ public class MapFragment extends com.google.android.gms.maps.MapFragment impleme
     @Override
     public void onStop() {
         super.onStop();
-
-        closeTileCache();
+        mEstimoteBeaconManager.stopEstimoteBeaconManager();
     }
 
-    /**
-     * Closes the caches of all allocated tile providers.
-     *
-     * @see CachedTileProvider#closeCache()
-     */
-    private void closeTileCache() {
-        for (int i = 0; i < mTileProviders.size(); i++) {
-            try {
-                mTileProviders.valueAt(i).closeCache();
-            } catch (IOException e) {
-            }
-        }
-    }
 
     /**
      * Clears the map and initialises all map variables that hold markers and overlays.
@@ -287,18 +397,16 @@ public class MapFragment extends com.google.android.gms.maps.MapFragment impleme
             mMap.clear();
         }
 
-        // Close all tile provider caches
-        closeTileCache();
-
-        // Clear all map elements
-        mTileProviders.clear();
-        mTileOverlays.clear();
-
         mMarkers.clear();
         mMarkersFloor.clear();
 
         mFloor = INVALID_FLOOR;
     }
+
+    private void hideMarkersWhenSwitchingFloors() {
+        setFloorElementsVisible(mFloor, false);
+    }
+
 
     @Override
     public void onMapReady(GoogleMap googleMap) {
@@ -308,6 +416,21 @@ public class MapFragment extends com.google.android.gms.maps.MapFragment impleme
         mMap.setOnMarkerClickListener(this);
         mMap.setOnIndoorStateChangeListener(this);
         mMap.setOnMapClickListener(this);
+
+        mMap.setOnCameraMoveListener(new GoogleMap.OnCameraMoveListener() {
+            @Override
+            public void onCameraMove() {
+                if(mMap.getCameraPosition().zoom <= CAMERA_ZOOM) {
+                    setFloorElementsVisible(mFloor, false);
+                    mOsloSpektrumMarker.setVisible(true);
+                }
+                else {
+                    setFloorElementsVisible(mFloor, true);
+                    mOsloSpektrumMarker.setVisible(false);
+                }
+            }
+        });
+
         UiSettings mapUiSettings = mMap.getUiSettings();
         mapUiSettings.setZoomControlsEnabled(false);
         mapUiSettings.setMapToolbarEnabled(false);
@@ -316,24 +439,26 @@ public class MapFragment extends com.google.android.gms.maps.MapFragment impleme
         LoaderManager lm = getLoaderManager();
         lm.initLoader(TOKEN_LOADER_MARKERS, null, mMarkerLoader).forceLoad();
 
-        // load the tile overlays
-        lm.initLoader(TOKEN_LOADER_TILES, null, mTileLoader).forceLoad();
-
         setupMap(true);
     }
 
     private void setupMap(boolean resetCamera) {
-
-        // Add a Marker for Moscone
-        mMosconeMaker = mMap
-                .addMarker(MapUtils.createMosconeMarker(MOSCONE).visible(false));
+        switchFloors(1);
+        mOsloSpektrumMarker = mMap
+                .addMarker(MapUtils.createOsloSpektrumMarker(OSOLOSPEKTRUM).visible(false));
 
         if (resetCamera) {
-            // Move camera directly to Moscone
-            centerOnMoscone(false);
+            centerOnOsloSpektrum(false);
         }
 
-        LOGD(TAG, "Map setup complete.");
+        LatLngBounds osloSpektrumLatLngBounds = new LatLngBounds(
+                new LatLng(59.91248733954981, 10.753536779098567),       // South west corner
+                new LatLng(59.9135416490492, 10.755773347221407));      // North east corner
+
+        GroundOverlayOptions newarkMap = new GroundOverlayOptions()
+                .image(BitmapDescriptorFactory.fromResource(R.drawable.level0))
+                .positionFromBounds(osloSpektrumLatLngBounds);
+        mMap.addGroundOverlay(newarkMap);
     }
 
     @Override
@@ -360,14 +485,9 @@ public class MapFragment extends com.google.android.gms.maps.MapFragment impleme
         getActivity().getContentResolver().unregisterContentObserver(mObserver);
     }
 
-    /**
-     * Moves the camera to Moscone Center (as defined in {@link #MOSCONE} and {@link #CAMERA_ZOOM}.
-     *
-     * @param animate Animates the camera if true, otherwise it is moved
-     */
-    private void centerOnMoscone(boolean animate) {
+    private void centerOnOsloSpektrum(boolean animate) {
         CameraUpdate camera = CameraUpdateFactory.newCameraPosition(
-                new CameraPosition.Builder().bearing(CAMERA_BEARING).target(MOSCONE_CAMERA)
+                new CameraPosition.Builder().bearing(CAMERA_BEARING).target(OSOLOSPEKTRUM)
                         .zoom(CAMERA_ZOOM).tilt(0f).build());
         if (animate) {
             mMap.animateCamera(camera);
@@ -387,7 +507,7 @@ public class MapFragment extends com.google.android.gms.maps.MapFragment impleme
      *              to
      *              be defined for it and it has to be a valid index in the
      *              {@link com.google.android.gms.maps.model.IndoorBuilding} object that
-     *              describes Moscone.
+     *              describes Oslo Spektrum.
      */
     private void showFloorElementsIndex(int floor) {
         LOGD(TAG, "Show floor " + floor);
@@ -399,25 +519,25 @@ public class MapFragment extends com.google.android.gms.maps.MapFragment impleme
 
         mFloor = floor;
 
-        if (isValidFloor(mFloor) && mAtMoscone) {
-            // Always hide the Moscone marker if a floor is shown
-            mMosconeMaker.setVisible(false);
+        if (mAtOsloSpektrum) {
+            // Always hide the Oslo Spektrum marker if a floor is shown
+            mOsloSpektrumMarker.setVisible(false);
             setFloorElementsVisible(mFloor, true);
         } else {
-            // Show Moscone marker if not at Moscone or at an invalid floor
-            mMosconeMaker.setVisible(true);
+            // Show Oslo Spektrum marker if not at Oslo Spektrum or at an invalid floor
+            mOsloSpektrumMarker.setVisible(true);
         }
     }
 
     /**
-     * Change the active floor of Moscone Center
+     * Change the active floor of Oslo Spektrum Center
      * to the given floor index. See {@link #showFloorElementsIndex(int)}.
      *
      * @param floor Index of the floor to show.
      * @see #showFloorElementsIndex(int)
      */
     private void showFloorIndex(int floor) {
-        if (isValidFloor(floor) && mAtMoscone) {
+        if (isValidFloor(floor) && mAtOsloSpektrum) {
 
             if (mMap.getFocusedBuilding().getActiveLevelIndex() == floor) {
                 // This floor is already active, show its elements
@@ -436,13 +556,8 @@ public class MapFragment extends com.google.android.gms.maps.MapFragment impleme
      * Change the visibility of all Markers and TileOverlays for a floor.
      */
     private void setFloorElementsVisible(int floor, boolean visible) {
-        // Overlays
-        final TileOverlay overlay = mTileOverlays.get(floor);
-        if (overlay != null) {
-            overlay.setVisible(visible);
-        }
-
         // Markers
+
         final ArrayList<Marker> markers = mMarkersFloor.get(floor);
         if (markers != null) {
             for (Marker m : markers) {
@@ -451,81 +566,73 @@ public class MapFragment extends com.google.android.gms.maps.MapFragment impleme
         }
     }
 
-    /**
-     * A floor is valid if the Moscone building contains that floor. It is not required for a floor
-     * to have a tile overlay and markers.
-     */
     private boolean isValidFloor(int floor) {
-        return floor < mMosconeBuilding.getLevels().size();
+        return floor < mOsloSpektrumBuilding.getLevels().size();
     }
 
-    /**
-     * Display map features if Moscone is the current building.
-     * This explicitly  re-enables all elements that should be displayed at the current floor.
-     */
     private void enableMapElements() {
-        if (mMosconeBuilding != null && mAtMoscone) {
-            onIndoorLevelActivated(mMosconeBuilding);
+        if (mOsloSpektrumBuilding != null && mAtOsloSpektrum) {
+            onIndoorLevelActivated(mOsloSpektrumBuilding);
         }
     }
 
-    private void onDefocusMoscone() {
+    private void onDefocusOsloSpektrum() {
         // Hide all markers and tile overlays
         deselectActiveMarker();
         showFloorElementsIndex(INVALID_FLOOR);
-        mCallbacks.onInfoShowMoscone();
+        mCallbacks.onInfoShowOsloSpektrum();
     }
 
-    private void onFocusMoscone() {
+    private void onFocusOsloSpektrum() {
         // Highlight a room if argument is set and it exists, otherwise show the default floor
-        if (mHighlightedRoomId != null && mMarkers.containsKey(mHighlightedRoomId)) {
-            highlightRoom(mHighlightedRoomId);
+        if (mHighlightedRoomName != null && mMarkers.containsKey(mHighlightedRoomName)) {
+            highlightRoom(mHighlightedRoomName);
             showFloorIndex(mHighlightedRoom.floor);
             // Reset highlighted room because it has just been displayed.
-            mHighlightedRoomId = null;
+            mHighlightedRoomName = null;
         } else {
-            // Hide the bottom sheet that is displaying the Moscone details at this point
+            // Hide the bottom sheet that is displaying the Oslo Spektrum details at this point
             mCallbacks.onInfoHide();
-            // Switch to the default level for Moscone and reset its value
+            // Switch to the default level for Oslo Spektrum and reset its value
             showFloorIndex(mInitialFloor);
         }
-        mInitialFloor = MOSCONE_DEFAULT_LEVEL_INDEX;
+        mInitialFloor = OSLOSPEKTRUM_DEFAULT_LEVEL_INDEX;
     }
 
     @Override
     public void onIndoorBuildingFocused() {
         IndoorBuilding building = mMap.getFocusedBuilding();
 
-        if (building != null && mMosconeBuilding == null
-                && mMap.getProjection().getVisibleRegion().latLngBounds.contains(MOSCONE)) {
-            // Store the first active building. This will always be Moscone
-            mMosconeBuilding = building;
+        if (building != null && mOsloSpektrumBuilding == null
+                && mMap.getProjection().getVisibleRegion().latLngBounds.contains(OSOLOSPEKTRUM)) {
+            // Store the first active building. This will always be Oslo Spektrum
+            mOsloSpektrumBuilding = building;
         }
 
-        if (!mAtMoscone && building != null && building.equals(mMosconeBuilding)) {
-            // Map is focused on Moscone Center
-            mAtMoscone = true;
-            onFocusMoscone();
-        } else if (mAtMoscone && mMosconeBuilding != null && !mMosconeBuilding.equals(building)) {
-            // Map is no longer focused on Moscone Center
-            mAtMoscone = false;
-            onDefocusMoscone();
+        if (!mAtOsloSpektrum && building != null && building.equals(mOsloSpektrumBuilding)) {
+            // Map is focused on Oslo Spektrum Center
+            mAtOsloSpektrum = true;
+            onFocusOsloSpektrum();
+        } else if (mAtOsloSpektrum && mOsloSpektrumBuilding != null && !mOsloSpektrumBuilding.equals(building)) {
+            // Map is no longer focused on Oslo Spektrum Center
+            mAtOsloSpektrum = false;
+            onDefocusOsloSpektrum();
         }
         onIndoorLevelActivated(building);
     }
 
     @Override
     public void onIndoorLevelActivated(IndoorBuilding indoorBuilding) {
-        if (indoorBuilding != null && indoorBuilding.equals(mMosconeBuilding)) {
-            onMosconeFloorActivated(indoorBuilding.getActiveLevelIndex());
+        if (indoorBuilding != null && indoorBuilding.equals(mOsloSpektrumBuilding)) {
+            onOsloSpektrumFloorActivated(indoorBuilding.getActiveLevelIndex());
         }
     }
 
     /**
-     * Called when an indoor floor level in the Moscone building has been activated.
+     * Called when an indoor floor level in the Oslo Spektrum building has been activated.
      * If a room is to be highlighted, the map is centered and its marker is activated.
      */
-    private void onMosconeFloorActivated(int activeLevelIndex) {
+    private void onOsloSpektrumFloorActivated(int activeLevelIndex) {
         if (mHighlightedRoom != null && mFloor == mHighlightedRoom.floor) {
             // A room highlight is pending. Highlight the marker and display info details.
             onMarkerClick(mHighlightedRoom.marker);
@@ -533,7 +640,7 @@ public class MapFragment extends com.google.android.gms.maps.MapFragment impleme
 
             // Remove the highlight room flag, because the room has just been highlighted.
             mHighlightedRoom = null;
-            mHighlightedRoomId = null;
+            mHighlightedRoomName = null;
         } else if (mFloor != activeLevelIndex) {
             // Deselect and hide the info details.
             deselectActiveMarker();
@@ -572,19 +679,20 @@ public class MapFragment extends com.google.android.gms.maps.MapFragment impleme
         final String title = marker.getTitle();
         final MarkerModel model = mMarkers.get(title);
 
-        // Log clicks on all markers (regardless of type)
-        // ANALYTICS EVENT: Click on marker on the map.
-        // Contains: Marker ID (for example room UUID)
         AnalyticsHelper.sendEvent("Map", "markerclick", title);
 
         deselectActiveMarker();
 
-        // The Moscone marker can be compared directly.
+        if(marker.equals(mCurrentLocationMarker)) {
+            mCallbacks.onInfoShowTitle(marker.getTitle(), MarkerModel.TYPE_SESSION);
+        }
+
+        // The Oslo Spektrum marker can be compared directly.
         // For all other markers the model needs to be looked up first.
-        if (marker.equals(mMosconeMaker)) {
-            // Return camera to Moscone
-            LOGD(TAG, "Clicked on Moscone marker, return to initial display.");
-            centerOnMoscone(true);
+        if (marker.equals(mOsloSpektrumMarker)) {
+            // Return camera to Oslo Spektrum
+            LOGD(TAG, "Clicked on Oslo Spektrum marker, return to initial display.");
+            centerOnOsloSpektrum(true);
 
         } else if (model != null && MapUtils.hasInfoTitleOnly(model.type)) {
             // Show a basic info window with a title only
@@ -645,26 +753,29 @@ public class MapFragment extends com.google.android.gms.maps.MapFragment impleme
                 markerList.add(m);
                 mMarkers.put(model.id, model);
             }
+
+            if (mFloor > INVALID_FLOOR) {
+                setFloorElementsVisible(mFloor, true);
+            }
         }
 
         enableMapElements();
     }
 
-    private void onTilesLoaded(List<TileLoadingTask.TileEntry> list) {
-        if (list != null) {
-            // Display tiles if they have been loaded, skip them otherwise but display the rest of
-            // the map.
-            for (TileLoadingTask.TileEntry entry : list) {
-                TileOverlayOptions tileOverlay = new TileOverlayOptions()
-                        .tileProvider(entry.provider).visible(false);
 
-                // Store the tile overlay and provider
-                mTileProviders.put(entry.floor, entry.provider);
-                mTileOverlays.put(entry.floor, mMap.addTileOverlay(tileOverlay));
-            }
+    public void switchFloors(int floorLevel) {
+        if (mFloor == floorLevel) {
+            return;
+        }
+        if (mMap != null) {
+            hideMarkersWhenSwitchingFloors();
         }
 
-        enableMapElements();
+        mFloor = floorLevel;
+        deselectActiveMarker();
+        mCallbacks.onInfoHide();
+        setFloorElementsVisible(mFloor, true);
+
     }
 
     private final ContentObserver mObserver = new ContentObserver(new Handler()) {
@@ -686,11 +797,6 @@ public class MapFragment extends com.google.android.gms.maps.MapFragment impleme
             if (loader != null) {
                 loader.forceLoad();
             }
-
-            loader = lm.getLoader(TOKEN_LOADER_TILES);
-            if (loader != null) {
-                loader.forceLoad();
-            }
         }
     };
 
@@ -705,35 +811,15 @@ public class MapFragment extends com.google.android.gms.maps.MapFragment impleme
             return new MarkerLoadingTask(getActivity());
         }
 
+
         @Override
         public void onLoadFinished(Loader<List<MarkerLoadingTask.MarkerEntry>> loader,
-                List<MarkerLoadingTask.MarkerEntry> data) {
+                                   List<MarkerLoadingTask.MarkerEntry> data) {
             onMarkersLoaded(data);
         }
 
         @Override
         public void onLoaderReset(Loader<List<MarkerLoadingTask.MarkerEntry>> loader) {
-        }
-    };
-
-    /**
-     * LoaderCallbacks for the {@link TileLoadingTask} that loads all tile overlays for the map.
-     */
-    private LoaderCallbacks<List<TileLoadingTask.TileEntry>> mTileLoader
-            = new LoaderCallbacks<List<TileLoadingTask.TileEntry>>() {
-        @Override
-        public Loader<List<TileLoadingTask.TileEntry>> onCreateLoader(int id, Bundle args) {
-            return new TileLoadingTask(getActivity(), mDPI);
-        }
-
-        @Override
-        public void onLoadFinished(Loader<List<TileLoadingTask.TileEntry>> loader,
-                List<TileLoadingTask.TileEntry> data) {
-            onTilesLoaded(data);
-        }
-
-        @Override
-        public void onLoaderReset(Loader<List<TileLoadingTask.TileEntry>> loader) {
         }
     };
 

@@ -23,7 +23,6 @@ import android.animation.ObjectAnimator;
 import android.annotation.TargetApi;
 import android.app.ActivityOptions;
 import android.content.Intent;
-import android.content.res.ColorStateList;
 import android.content.res.Resources;
 import android.graphics.Color;
 import android.graphics.Typeface;
@@ -38,7 +37,7 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.google.samples.apps.iosched.R;
+import no.java.schedule.v2.R;
 
 @TargetApi(Build.VERSION_CODES.LOLLIPOP)
 public class LUtils {

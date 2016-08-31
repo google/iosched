@@ -16,17 +16,24 @@
 
 package com.google.samples.apps.iosched.feedback;
 
-import com.google.samples.apps.iosched.R;
+import no.java.schedule.v2.BuildConfig;
+import no.java.schedule.v2.R;
+import no.java.schedule.v2.io.model.Constants;
+import no.java.schedule.v2.io.model.JZFeedback;
+
 import com.google.samples.apps.iosched.framework.QueryEnum;
 import com.google.samples.apps.iosched.framework.UpdatableView;
 import com.google.samples.apps.iosched.ui.widget.NumberRatingBar;
 import com.google.samples.apps.iosched.util.AnalyticsHelper;
+import com.google.samples.apps.iosched.util.RestServiceDevNull;
 
 import android.app.Fragment;
 import android.content.Context;
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -36,6 +43,8 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 
 /**
@@ -45,18 +54,16 @@ public class SessionFeedbackFragment extends Fragment
         implements UpdatableView<SessionFeedbackModel> {
 
     private TextView mTitle;
-
     private TextView mSpeakers;
-
     private RatingBar mOverallFeedbackBar;
-
     private NumberRatingBar mSessionRelevantFeedbackBar;
-
     private NumberRatingBar mContentFeedbackBar;
-
     private NumberRatingBar mSpeakerFeedbackBar;
+    private TextView mSessionFeedbackComments;
 
     private List<UserActionListener> listeners = new ArrayList<UserActionListener>();
+    private RestServiceDevNull mDevNullService;
+    private String mSessionId;
 
     public SessionFeedbackFragment() {
     }
@@ -72,7 +79,8 @@ public class SessionFeedbackFragment extends Fragment
             Bundle savedInstanceState) {
 
         View rootView = inflater.inflate(R.layout.session_feedback_frag, container, false);
-
+        Intent intent = this.getActivity().getIntent();
+        mSessionId = intent.getStringExtra(Constants.SESSION_ID);
         mTitle = (TextView) rootView.findViewById(R.id.feedback_header_session_title);
         mSpeakers = (TextView) rootView.findViewById(R.id.feedback_header_session_speakers);
         mOverallFeedbackBar = (RatingBar) rootView.findViewById(R.id.rating_bar_0);
@@ -80,6 +88,7 @@ public class SessionFeedbackFragment extends Fragment
                 R.id.session_relevant_feedback_bar);
         mContentFeedbackBar = (NumberRatingBar) rootView.findViewById(R.id.content_feedback_bar);
         mSpeakerFeedbackBar = (NumberRatingBar) rootView.findViewById(R.id.speaker_feedback_bar);
+        mSessionFeedbackComments = (TextView) rootView.findViewById(R.id.feedback_comment_textview);
 
         if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
             // Helps accessibility services determine the importance of this view.
@@ -107,6 +116,14 @@ public class SessionFeedbackFragment extends Fragment
                     }
                 }
         );
+
+        String mode = "RELEASE";
+        if(BuildConfig.DEBUG) {
+            mode = "TEST";
+        }
+
+        mDevNullService = RestServiceDevNull.getInstance(mode, getActivity());
+        mDevNullService.setActivity(getActivity());
         return rootView;
     }
 
@@ -115,20 +132,38 @@ public class SessionFeedbackFragment extends Fragment
         int sessionRelevantAnswer = mSessionRelevantFeedbackBar.getProgress();
         int contentAnswer = mContentFeedbackBar.getProgress();
         int speakerAnswer = mSpeakerFeedbackBar.getProgress();
-        String comments = "";
+        String feedbackComment = mSessionFeedbackComments.getText() != null ?
+                mSessionFeedbackComments.getText().toString() : "";
+        String sessionId = null;
+        String eventId = null;
 
         Bundle args = new Bundle();
         args.putInt(SessionFeedbackModel.DATA_RATING_INT, overallAnswer);
         args.putInt(SessionFeedbackModel.DATA_SESSION_RELEVANT_ANSWER_INT, sessionRelevantAnswer);
         args.putInt(SessionFeedbackModel.DATA_CONTENT_ANSWER_INT, contentAnswer);
         args.putInt(SessionFeedbackModel.DATA_SPEAKER_ANSWER_INT, speakerAnswer);
-        args.putString(SessionFeedbackModel.DATA_COMMENT_STRING, comments);
+        args.putString(SessionFeedbackModel.DATA_COMMENT_STRING, feedbackComment);
 
         for (UserActionListener h1 : listeners) {
             h1.onUserAction(SessionFeedbackModel.SessionFeedbackUserActionEnum.SUBMIT, args);
         }
 
-        getActivity().finish();
+        Pattern pattern = Pattern.compile(".*\\/events\\/(.*)\\/sessions\\/(.*)");
+        Matcher matcher = pattern.matcher(mSessionId);
+
+        if (matcher.matches()) {
+            sessionId = matcher.group(1);
+            eventId = matcher.group(2);
+        }
+
+        JZFeedback jzFeedback = new JZFeedback(overallAnswer, sessionRelevantAnswer,
+                contentAnswer, speakerAnswer, feedbackComment);
+        mDevNullService.submitFeedbackToDevNull(eventId, sessionId, generateUniqueVoterId(),jzFeedback);
+    }
+
+    public String generateUniqueVoterId() {
+        return Settings.Secure.getString(getActivity().getContentResolver(),
+                Settings.Secure.ANDROID_ID);
     }
 
     @Override

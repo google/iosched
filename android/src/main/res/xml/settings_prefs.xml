@@ -16,7 +16,7 @@
   -->
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <CheckBoxPreference
+   <!-- <CheckBoxPreference
         android:key="pref_local_times"
         android:title="@string/pref_local_times_title"
         android:summary="@string/pref_local_times_description"
@@ -26,25 +26,7 @@
         android:key="pref_attendee_at_venue_2015"
         android:title="@string/pref_attendee_at_venue_title"
         android:summary="@string/pref_attendee_at_venue_description"
-        android:defaultValue="true" />
-
-    <CheckBoxPreference
-        android:key="pref_conf_message_cards_enabled"
-        android:title="@string/pref_conf_message_cards_enabled_title"
-        android:summary="@string/pref_conf_message_cards_enabled_description"
-        android:defaultValue="false" />
-
-    <CheckBoxPreference
-        android:key="pref_analytics_enabled"
-        android:title="@string/pref_analytics_enabled_title"
-        android:summary="@string/pref_analytics_enabled_description"
-        android:defaultValue="true" />
-
-    <CheckBoxPreference
-        android:key="pref_sync_calendar"
-        android:title="@string/pref_sync_with_calendar_title"
-        android:summary="@string/pref_sync_with_calendar_description"
-        android:defaultValue="false" />
+        android:defaultValue="true" /> -->
 
     <CheckBoxPreference
         android:key="pref_show_session_reminders_2015"

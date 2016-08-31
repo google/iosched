@@ -19,6 +19,16 @@
     <color name="transparent">#00000000</color>
     <color name="background">#f5f5f5</color>
 
+    <!-- Default JavaZone Colors -->
+    <color name="jz_lightred">#ff4f4c</color>
+    <color name="jz_darkred">#a10035</color>
+    <color name="jz_orange">#ff8641</color>
+    <color name="jz_yellow">#fcaf17</color>
+    <color name="jz_green">#ff669900</color>
+
+    <color name="background_grey">#F3F3F3</color>
+
+
     <!-- App main palette for io15 version. -->
     <color name="io15_dark_grey">#FF455A64</color>
     <color name="io15_grey">#FF607D8B</color>
@@ -31,8 +41,8 @@
     <color name="cyan_a700_plus">#ff006574</color>
 
     <!-- App Primary View Colors (might be deprecated). -->
-    <color name="app_primary_accent">#FF26C6DA</color>
-    <color name="app_secondary_accent">#1A000000</color>
+    <color name="app_primary_accent">#2B2B2B</color>
+    <color name="app_secondary_accent">@android:color/black</color>
     <color name="app_primary_text">#444444</color>
     <color name="app_secondary_text">#444444</color>
     <color name="app_white">#FFFEFEFE</color>
@@ -45,8 +55,8 @@
     <color name="app_body_text_disabled">#44000000</color>
     <color name="app_body_text_1_inverse">#deffffff</color>
     <color name="app_body_text_2_inverse">#8affffff</color>
-    <color name="flat_button_text">#ff008094</color>
-    <color name="text_on_primary">#ff004446</color>
+    <color name="flat_button_text">@color/jz_darkred</color>
+    <color name="text_on_primary">@color/jz_darkred</color>
     <color name="subtitle_on_primary">#de004446</color>
     <color name="unselected_tab_on_primary">#b3004446</color>
 
@@ -69,11 +79,11 @@
     <!-- end deprecated -->
 
     <color name="theme_primary">@color/app_primary_accent</color>
-    <color name="theme_primary_dark">#00BCD4</color>
-    <color name="theme_primary_light">#7986cb</color>
+    <color name="theme_primary_dark">@color/app_secondary_accent</color>
+    <color name="theme_primary_light">#99000000</color>
 
-    <color name="theme_accent_1">#00b0ff</color>
-    <color name="theme_accent_1_light">#8ad4fa</color>
+    <color name="theme_accent_1">#fcaf17</color>
+    <color name="theme_accent_1_light">#ff669900</color>
 
     <color name="theme_accent_2">#e91e63</color>
 
@@ -90,14 +100,14 @@
     <color name="grey_background">#f5f5f5</color>
     <color name="dark_divider">#32000000</color>
 
-    <color name="more_button_background">#ffcfd8dc</color>
-    <color name="more_button_text">@color/cyan_a700_plus</color>
+    <color name="more_button_background">@color/jz_yellow</color>
+    <color name="more_button_text">@color/jz_darkred</color>
 
     <color name="navdrawer_background">#ffffffff</color>
     <color name="navdrawer_text_color">@color/body_text_1</color>
-    <color name="navdrawer_text_color_selected">@color/cyan_a700_plus</color>
+    <color name="navdrawer_text_color_selected">@color/jz_darkred</color>
     <color name="navdrawer_icon_tint">#444</color>
-    <color name="navdrawer_icon_tint_selected">@color/cyan_a700_plus</color>
+    <color name="navdrawer_icon_tint_selected">@color/jz_darkred</color>
     <color name="navdrawer_selected_item_background">#1a000000</color>
 
     <color name="data_item_background_light">#ffffff</color>
@@ -113,7 +123,7 @@
     <color name="no_track_branding_session_color">#333</color>
 
 
-    <!-- IO15 session detail colors -->
+    <!-- JavaZone session detail colors -->
     <color name="session_livestreamed_color">@color/app_body_text_2</color>
 
     <color name="list_dropdown_foreground_normal">#ff333333</color>
@@ -121,23 +131,24 @@
     <color name="butter_bar_light">#eee0e0e0</color>
 
     <color name="tab_background">@color/theme_primary</color>
-    <color name="tab_selected_strip">@android:color/white</color>
+    <color name="tab_selected_strip">#ff669900</color>
+
 
     <color name="my_schedule_conflict">#dd2c00</color>
     <color name="my_schedule_past_background">@color/grey_background</color>
     <color name="my_schedule_past">#95a1a6</color>
     <color name="my_schedule_hour_header_default">#de455a64</color>
     <color name="my_schedule_hour_header_finished">#b8455a64</color>
-    <color name="my_schedule_icon_default">#ff07434d</color>
-    <color name="my_schedule_icon_finished">#ff49757c</color>
-    <color name="my_schedule_session_title_default">#de07434d</color>
-    <color name="my_schedule_session_title_finished">#b807434d</color>
+    <color name="my_schedule_icon_default">@color/jz_green</color>
+    <color name="my_schedule_icon_finished">@color/jz_darkred</color>
+    <color name="my_schedule_session_title_default">@color/jz_yellow</color>
+    <color name="my_schedule_session_title_finished">@color/jz_darkred</color>
 
     <color name="light_grey">#fff0f0f0</color>
     <color name="lighter_gray">#ddd</color>
 
     <!-- video lib -->
-    <color name="video_title">#de07434d</color>
+    <color name="video_title">@color/body_text_1</color>
     <color name="filter_text">@color/app_primary_text</color>
     <color name="video_scrim_watched">#b3f1f1f1</color>
 
@@ -152,13 +163,52 @@
     <color name="social_text_color">@color/io15_white</color>
 
     <!-- Colors used in the Video Library or Explore list view -->
-    <color name="item_text_primary_color">#ff275B64</color>
-    <color name="item_text_secondar_color">#ff699B9E</color>
-    <color name="button_dark">#3B5B63</color>
+    <color name="item_text_primary_color">@color/body_text_1</color>
+    <color name="item_text_secondar_color">@color/body_text_1</color>
+    <color name="button_dark">#444444</color>
 
     <!-- Colors used in the Explore Sessions filter drawer -->
     <color name="explore_sessions_body_color">#444444</color>
 
     <!-- search -->
     <color name="dialog_background">#7f000000</color>
+
+    <color name="body_text_1_positive">#ff669900</color>
+    <color name="body_text_1_negative">#ffff4444</color>
+
+    <color name="accent_1">#ff4683ec</color>
+
+    <color name="past_background_color">#11000000</color>
+
+    <color name="tabbar_divider">#3f4c1b</color>
+
+    <!-- Google+ -->
+    <color name="stream_name_color">#333</color>
+    <color name="stream_link_color">#ff6f8fc7</color>
+    <color name="stream_content_color">#333</color>
+    <color name="stream_reshare_line_color">#ffcccccc</color>
+    <color name="default_stream_image_background">#eee</color>
+
+    <!-- javazone color utils -->
+
+    <!-- Session feedback rating colors -->
+    <color name="session_feedback_yellow">#fcaf17</color>
+    <color name="session_feedback_thumbs_down_red">#ff4f4c</color>
+    <color name="session_feedback_thumbs_up_green">#149089</color>
+
+    <color name="primary">#E1502C</color>
+    <color name="primaryDark">#BA4224</color>
+    <color name="accent">#E1502C</color>
+    <color name="lightPrimary">#B3E5FC</color>
+    <color name="textIcon">#FFFFFF</color>
+    <color name="primaryText">#212121</color>
+    <color name="secondaryText">#727272</color>
+    <color name="activated_color">#E8E8E8</color>
+    <color name="window_background">#F1F1F1</color>
+    <color name="listViewSelected">#E1502C</color>
+
+    <color name="text_main">#333333</color>
+    <color name="text_secondary">#666666</color>
+    <color name="text_inverse">#ffffff</color>
+    <color name="text_error">#a42023</color>
 </resources>

@@ -22,6 +22,38 @@
     <style name="FrameworkRoot.Theme" parent="Theme.AppCompat.Light.NoActionBar" />
     <style name="FrameworkRoot.Widget" parent="Theme.AppCompat.NoActionBar" />
 
+    <!--++++++++++++++++++++++++++-->
+    <!--added on API 16 (JB - 4.1)-->
+    <!--++++++++++++++++++++++++++-->
+    <!--the default font-->
+    <string name="fontFamily__roboto_regular">sans-serif</string>
+    <string name="fontFamily__roboto_light">sans-serif-light</string>
+    <string name="fontFamily__roboto_condensed">sans-serif-condensed</string>
+
+    <!--+++++++++++++++++++++++++++++-->
+    <!--added on API 17 (JBMR1 - 4.2)-->
+    <!--+++++++++++++++++++++++++++++-->
+    <string name="fontFamily__roboto_thin">sans-serif-thin</string>
+
+    <!--+++++++++++++++++++++++++++-->
+    <!--added on Lollipop (LL- 5.0)-->
+    <!--+++++++++++++++++++++++++++-->
+    <string name="fontFamily__roboto_medium">sans-serif-medium</string>
+    <string name="fontFamily__roboto_black">sans-serif-black</string>
+    <string name="fontFamily__roboto_condensed_light">sans-serif-condensed-light</string>
+
+    <style name="FontMedium" parent="FontBase">
+        <item name="android:fontFamily">@string/fontFamily__roboto_medium</item>
+    </style>
+
+    <style name="FontLight" parent="FontBase">
+        <item name="android:fontFamily">@string/fontFamily__roboto_light</item>
+    </style>
+
+    <style name="FontCondensed" parent="FontBase">
+        <item name="android:fontFamily">@string/fontFamily__roboto_condensed</item>
+    </style>
+
     <!-- Immediate parent theme to specify base values for custom attributes -->
     <style name="Theme" parent="FrameworkRoot.Theme">
         <!-- Only needed for pre-L -->
@@ -42,7 +74,7 @@
         <item name="colorPrimaryDark">@color/theme_primary_dark</item>
         <item name="colorAccent">@color/theme_primary</item>
 
-        <item name="android:textColorLink">@color/flat_button_text</item>
+        <item name="android:textColorLink">@color/app_white</item>
 
         <item name="windowActionBar">false</item>
         <item name="android:windowNoTitle">true</item>
@@ -72,13 +104,14 @@
     </style>
 
     <style name="ActionBarThemeOverlay" parent="ThemeOverlay.AppCompat.ActionBar">
-        <item name="android:textColorPrimary">@color/text_on_primary</item>
-        <item name="android:textColorSecondary">@color/subtitle_on_primary</item>
+        <item name="android:textColorPrimary">@color/app_white</item>
+        <item name="android:textColorSecondary">@color/app_body_text_2_inverse</item>
+        <item name="colorControlNormal">@color/app_white</item>
     </style>
 
     <style name="SearchViewTheme" parent="ThemeOverlay.AppCompat.ActionBar">
         <item name="android:textColorPrimary">@color/app_body_text_1</item>
-        <item name="colorControlNormal">@color/app_body_text_2</item>
+        <item name="colorControlNormal">@color/app_white</item>
         <item name="colorControlActivated">@color/theme_accent_1</item>
     </style>
 
@@ -113,6 +146,10 @@
         <item name="android:textColorHint">@color/app_body_text_2</item>
         <!-- If set to @null the cursor will be displayed using android:textColor -->
         <item name="android:textCursorDrawable">@null</item>
+    </style>
+
+    <style name="SplashTheme.Base" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="android:windowBackground">@drawable/jzappsplash</item>
     </style>
 
     <style name="Theme.IOSched.VideoLibrary" parent="Theme.IOSched.WithNavDrawer" />
@@ -190,7 +227,7 @@
         <item name="android:textSize">@dimen/text_size_large</item>
         <item name="android:textStyle">@integer/font_textStyle_medium</item>
         <item name="android:fontFamily">@string/font_fontFamily_medium</item>
-        <item name="android:textColor">@color/body_text_1</item>
+        <item name="android:textColor">@color/body_text_1_inverse</item>
         <item name="android:ellipsize">end</item>
         <item name="android:textIsSelectable">true</item>
         <item name="android:textAlignment">viewStart</item>
@@ -199,7 +236,7 @@
     <style name="TextHeaderSub">
         <item name="android:textSize">@dimen/text_size_medium</item>
         <item name="android:textStyle">normal</item>
-        <item name="android:textColor">@color/body_text_2</item>
+        <item name="android:textColor">@color/body_text_1_inverse</item>
         <item name="android:textAlignment">viewStart</item>
     </style>
 
@@ -370,13 +407,6 @@
         <item name="colorButtonNormal">@color/button_dark</item>
     </style>
 
-    <style name="MoreButton">
-        <item name="android:textAppearance">@style/TextAppearance.AppCompat.Button</item>
-        <item name="android:textColor">@color/more_button_text</item>
-        <item name="android:textSize">@dimen/app_text_size_small</item>
-        <item name="android:background">@drawable/more_button_background</item>
-    </style>
-
     <style name="LiveNowIndicator">
         <item name="android:textAppearance">@style/TextAppearance.AppCompat.Button</item>
         <item name="android:textSize">@dimen/app_text_size_small</item>
@@ -405,6 +435,12 @@
         <item name="android:lineSpacingMultiplier">@dimen/body_1_spacing</item>
     </style>
 
+    <style name="Body1TextPrimaryTextColor">
+        <item name="android:textAppearance">@style/TextAppearance.Body1</item>
+        <item name="android:textColor">@color/theme_primary</item>
+        <item name="android:lineSpacingMultiplier">@dimen/body_1_spacing</item>
+    </style>
+
     <style name="Body2Text">
         <item name="android:textAppearance">@style/TextAppearance.Body2</item>
         <item name="android:lineSpacingMultiplier">@dimen/body_1_spacing</item>
@@ -429,5 +465,113 @@
         <item name="android:paddingTop">@dimen/padding_normal</item>
         <item name="android:paddingBottom">@dimen/spacing_normal</item>
     </style>
+    <style name="MyTheme.ActionBar" parent="style/Widget.AppCompat.Light.ActionBar.Solid">
+        <item name="elevation">0dp</item>
+    </style>
 
+    <style name="MyCustomTabText" parent="TextAppearance.Design.Tab">
+        <item name="android:textSize">8sp</item>
+    </style>
+
+
+    <style name="Dialog_Theme" parent="Theme.AppCompat.Light.Dialog">
+        <item name="colorPrimary">@color/primary</item>
+        <item name="colorPrimaryDark">@color/primaryDark</item>
+        <item name="colorAccent">@color/accent</item>
+    </style>
+
+
+
+
+    <style name="TextInputLayout" parent="FontCondensed">
+        <item name="android:textColor">@color/accent</item>
+        <item name="android:textSize">@dimen/text_size_small</item>
+    </style>
+
+    <style name="Widget.TextView.ListSeparator" parent="@android:style/Widget.TextView">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+    </style>
+
+    <style name="PreferenceCategoryHeader" parent="Widget.TextView.ListSeparator">
+        <item name="android:textColor">@color/accent</item>
+        <item name="android:background">@android:color/transparent</item>
+    </style>
+
+    <!-- TextViews -->
+    <style name="FontBase">
+        <item name="android:textColor">@color/text_main</item>
+    </style>
+
+    <style name="TextLabel">
+        <item name="android:textSize">@dimen/text_size_medium</item>
+        <item name="android:textColor">@color/text_secondary</item>
+    </style>
+
+    <style name="TextMicro" parent="FontCondensed">
+        <item name="android:textSize">@dimen/text_size_micro</item>
+    </style>
+
+    <style name="TextSmall" parent="FontCondensed">
+        <item name="android:textSize">@dimen/text_size_small</item>
+    </style>
+
+    <style name="TextNormal" parent="FontCondensed">
+        <item name="android:textSize">@dimen/text_size_medium</item>
+    </style>
+
+    <style name="TextTitle" parent="FontCondensed">
+        <item name="android:textSize">@dimen/text_size_large</item>
+    </style>
+
+    <style name="TextLarge" parent="FontCondensed">
+        <item name="android:textSize">@dimen/text_size_large</item>
+    </style>
+
+    <style name="TextExtraLarge" parent="FontCondensed">
+        <item name="android:textSize">@dimen/text_size_xlarge</item>
+    </style>
+
+    <style name="TextAppearanceButton" parent="FontMedium">
+        <item name="android:textSize">@dimen/text_size_small</item>
+        <item name="textAllCaps">true</item>
+        <item name="android:textAllCaps">true</item>
+    </style>
+
+    <style name="TextButtonExtraBig" parent="FontMedium">
+        <item name="android:textColor">@color/text_inverse</item>
+        <item name="android:textSize">@dimen/text_size_xlarge</item>
+        <item name="android:gravity">center_horizontal</item>
+    </style>
+
+    <style name="TextButtonBig" parent="FontMedium">
+        <item name="android:textColor">@color/text_inverse</item>
+        <item name="android:textSize">@dimen/text_size_large</item>
+    </style>
+
+    <style name="TextButton" parent="FontMedium">
+        <item name="android:textColor">@color/text_inverse</item>
+        <item name="android:textSize">@dimen/text_size_medium</item>
+    </style>
+
+    <style name="TextButtonSmall" parent="FontMedium">
+        <item name="android:textColor">@color/text_inverse</item>
+        <item name="android:textSize">@dimen/text_size_micro</item>
+    </style>
+
+    <style name="TextCardHeader" parent="FontLight">
+        <item name="android:textSize">@dimen/text_size_xlarge</item>
+        <item name="android:textColor">@color/text_inverse</item>
+    </style>
+    <style name="TextCardHeaderBlack" parent="FontLight">
+        <item name="android:textSize">@dimen/text_size_xlarge</item>
+        <item name="android:textColor">@color/text_main</item>
+    </style>
+
+    <style name="GeneralButtonStyle" parent="FontMedium">
+        <item name="android:textSize">@dimen/text_size_small</item>
+        <item name="android:background">@color/jz_yellow</item>
+        <item name="android:padding">@dimen/micro_margin</item>
+        <item name="android:textColor">@color/jz_darkred</item>
+    </style>
 </resources>

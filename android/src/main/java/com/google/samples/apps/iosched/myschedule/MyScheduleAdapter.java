@@ -35,10 +35,11 @@ import android.widget.ListAdapter;
 import android.widget.TextView;
 
 import com.google.samples.apps.iosched.Config;
-import com.google.samples.apps.iosched.R;
+import no.java.schedule.v2.R;
 import com.google.samples.apps.iosched.feedback.SessionFeedbackActivity;
 import com.google.samples.apps.iosched.model.ScheduleItem;
 import com.google.samples.apps.iosched.provider.ScheduleContract;
+import com.google.samples.apps.iosched.session.SessionDetailConstants;
 import com.google.samples.apps.iosched.util.AnalyticsHelper;
 import com.google.samples.apps.iosched.util.ImageLoader;
 import com.google.samples.apps.iosched.util.LUtils;
@@ -58,7 +59,7 @@ import static com.google.samples.apps.iosched.util.LogUtils.makeLogTag;
  */
 public class MyScheduleAdapter implements ListAdapter, AbsListView.RecyclerListener {
     private static final String TAG = makeLogTag("MyScheduleAdapter");
-
+    private static final long MILLI_FIVE_MINUTES = 300000;
     private final Context mContext;
     private final LUtils mLUtils;
 
@@ -296,7 +297,8 @@ public class MyScheduleAdapter implements ListAdapter, AbsListView.RecyclerListe
                 // Can't use isPastDuringConference because we want to show feedback after the
                 // conference too.
                 if (showFeedbackButton) {
-                    if (item.endTime > now) {
+                    if ((now + SessionDetailConstants.FEEDBACK_MILLIS_BEFORE_SESSION_END_MS)
+                            < item.endTime) {
                         // Session hasn't finished yet, don't show button.
                         showFeedbackButton = false;
                     }
@@ -414,5 +416,4 @@ public class MyScheduleAdapter implements ListAdapter, AbsListView.RecyclerListe
         public View separator;
         public View touchArea;
     }
-
 }

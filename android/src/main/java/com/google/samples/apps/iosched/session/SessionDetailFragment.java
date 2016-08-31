@@ -16,31 +16,8 @@
 
 package com.google.samples.apps.iosched.session;
 
-import com.google.samples.apps.iosched.Config;
-import com.google.samples.apps.iosched.R;
-import com.google.samples.apps.iosched.explore.ExploreSessionsActivity;
-import com.google.samples.apps.iosched.framework.QueryEnum;
-import com.google.samples.apps.iosched.framework.UpdatableView;
-import com.google.samples.apps.iosched.framework.UserActionEnum;
-import com.google.samples.apps.iosched.model.TagMetadata;
-import com.google.samples.apps.iosched.session.SessionDetailModel.SessionDetailQueryEnum;
-import com.google.samples.apps.iosched.session.SessionDetailModel.SessionDetailUserActionEnum;
-import com.google.samples.apps.iosched.ui.widget.CheckableFloatingActionButton;
-import com.google.samples.apps.iosched.ui.widget.MessageCardView;
-import com.google.samples.apps.iosched.ui.widget.ObservableScrollView;
-import com.google.samples.apps.iosched.util.AccountUtils;
-import com.google.samples.apps.iosched.util.AnalyticsHelper;
-import com.google.samples.apps.iosched.util.ImageLoader;
-import com.google.samples.apps.iosched.util.LUtils;
-import com.google.samples.apps.iosched.util.LogUtils;
-import com.google.samples.apps.iosched.util.TimeUtils;
-import com.google.samples.apps.iosched.util.UIUtils;
-
-import com.bumptech.glide.request.RequestListener;
-import com.bumptech.glide.request.target.Target;
-import com.google.samples.apps.iosched.util.YouTubeUtils;
-
 import android.app.Fragment;
+import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -63,10 +40,36 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.bumptech.glide.request.RequestListener;
+import com.bumptech.glide.request.target.Target;
+import com.google.samples.apps.iosched.Config;
+import com.google.samples.apps.iosched.explore.ExploreSessionsActivity;
+import com.google.samples.apps.iosched.framework.QueryEnum;
+import com.google.samples.apps.iosched.framework.UpdatableView;
+import com.google.samples.apps.iosched.framework.UserActionEnum;
+import com.google.samples.apps.iosched.model.TagMetadata;
+import com.google.samples.apps.iosched.provider.ScheduleContract;
+import com.google.samples.apps.iosched.session.SessionDetailModel.SessionDetailQueryEnum;
+import com.google.samples.apps.iosched.session.SessionDetailModel.SessionDetailUserActionEnum;
+import com.google.samples.apps.iosched.ui.widget.CheckableFloatingActionButton;
+import com.google.samples.apps.iosched.ui.widget.MessageCardView;
+import com.google.samples.apps.iosched.ui.widget.ObservableScrollView;
+import com.google.samples.apps.iosched.util.AccountUtils;
+import com.google.samples.apps.iosched.util.AnalyticsHelper;
+import com.google.samples.apps.iosched.util.ImageLoader;
+import com.google.samples.apps.iosched.util.LUtils;
+import com.google.samples.apps.iosched.util.LogUtils;
+import com.google.samples.apps.iosched.util.TimeUtils;
+import com.google.samples.apps.iosched.util.UIUtils;
+import com.google.samples.apps.iosched.util.YouTubeUtils;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
+
+import no.java.schedule.v2.R;
+import no.java.schedule.v2.io.model.Constants;
 
 import static com.google.samples.apps.iosched.util.LogUtils.LOGD;
 
@@ -108,8 +111,6 @@ public class SessionDetailFragment extends Fragment
 
     private ImageView mTwitterIcon;
 
-    private TextView mLiveStreamVideocamIconAndText;
-
     private TextView mLiveStreamPlayIconAndText;
 
     private LinearLayout mTags;
@@ -147,6 +148,7 @@ public class SessionDetailFragment extends Fragment
     private Handler mHandler;
 
     private boolean mAnalyticsScreenViewHasFired;
+    private String mSessionId;
 
     List<UserActionListener> mListeners = new ArrayList<>();
 
@@ -160,6 +162,7 @@ public class SessionDetailFragment extends Fragment
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
         mAnalyticsScreenViewHasFired = false;
+
     }
 
     @Override
@@ -260,14 +263,6 @@ public class SessionDetailFragment extends Fragment
         mPlusOneIcon = (ImageView) getActivity().findViewById(R.id.gplus_icon_box);
         mTwitterIcon = (ImageView) getActivity().findViewById(R.id.twitter_icon_box);
 
-        //Find view that shows a Videocam icon if the session is being live streamed.
-        mLiveStreamVideocamIconAndText = (TextView) getActivity().findViewById(
-                R.id.live_stream_videocam_icon_and_text);
-
-        // Find view that shows a play button and some text for the user to watch the session live stream.
-        mLiveStreamPlayIconAndText = (TextView) getActivity().findViewById(
-                R.id.live_stream_play_icon_and_text);
-
         mRequirements = (TextView) getActivity().findViewById(R.id.session_requirements);
         mTags = (LinearLayout) getActivity().findViewById(R.id.session_tags);
         mTagsContainer = (ViewGroup) getActivity().findViewById(R.id.session_tags_container);
@@ -339,8 +334,20 @@ public class SessionDetailFragment extends Fragment
                 showStarred(starred, true);
                 if (starred) {
                     sendUserAction(SessionDetailUserActionEnum.STAR, null);
+                    ContentValues values = new ContentValues();
+                    values.put(ScheduleContract.MySchedule.SESSION_ID, mSessionId);
+                    values.put(ScheduleContract.MySchedule.MY_SCHEDULE_IN_SCHEDULE, true);
+                    getActivity().getContentResolver().insert(ScheduleContract.MySchedule.CONTENT_URI,
+                            values);
+
+
                 } else {
                     sendUserAction(SessionDetailUserActionEnum.UNSTAR, null);
+                    ContentValues values = new ContentValues();
+                    values.put(ScheduleContract.MySchedule.SESSION_ID, mSessionId);
+                    values.put(ScheduleContract.MySchedule.MY_SCHEDULE_IN_SCHEDULE, false);
+                    getActivity().getContentResolver().insert(ScheduleContract.MySchedule.CONTENT_URI,
+                            values);
                 }
 
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
@@ -410,6 +417,7 @@ public class SessionDetailFragment extends Fragment
     }
 
     private void displaySessionData(final SessionDetailModel data) {
+        mSessionId = data.getSessionId();
         mTitle.setText(data.getSessionTitle());
         mSubtitle.setText(data.getSessionSubtitle());
 
@@ -451,10 +459,7 @@ public class SessionDetailFragment extends Fragment
 
         displayTags(data);
 
-        if (!data.isKeynote()) {
-            showStarredDeferred(data.isInSchedule(), false);
-        }
-
+        showStarredDeferred(data.isInSchedule(), false);
         if (!TextUtils.isEmpty(data.getSessionAbstract())) {
             UIUtils.setTextMaybeHtml(mAbstract, data.getSessionAbstract());
             mAbstract.setVisibility(View.VISIBLE);
@@ -645,9 +650,9 @@ public class SessionDetailFragment extends Fragment
             socialIcon.setVisibility(View.GONE);
         } else {
             socialIcon.setContentDescription(getString(
-                            R.string.speaker_social_page,
-                            socialNetworkName,
-                            speaker.getName())
+                    R.string.speaker_social_page,
+                    socialNetworkName,
+                    speaker.getName())
             );
             socialIcon.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -695,31 +700,13 @@ public class SessionDetailFragment extends Fragment
 
 
     private void updateTimeBasedUi(SessionDetailModel data) {
-        // Show "Live streamed" for all live-streamed sessions that aren't currently going on.
-        mLiveStreamVideocamIconAndText.setVisibility(data.hasLiveStream() && !data.isSessionOngoing() ?
-                View.VISIBLE : View.GONE);
-
-        if (data.hasLiveStream() && data.hasSessionStarted()) {
-            // Show the play button and text only once the session starts.
-            mLiveStreamVideocamIconAndText.setVisibility(View.VISIBLE);
-
-            if (data.isSessionOngoing()) {
-                mLiveStreamPlayIconAndText.setText(getString(R.string.session_watch_live));
-            } else {
-                mLiveStreamPlayIconAndText.setText(getString(R.string.session_watch));
-                // TODO: implement Replay.
-            }
-        } else {
-            mLiveStreamPlayIconAndText.setVisibility(View.GONE);
-        }
-
         // If the session is done, hide the FAB, and show the "Give feedback" card.
         if (data.isSessionReadyForFeedback()) {
-            mAddScheduleButton.setVisibility(View.INVISIBLE);
-            if (!data.hasFeedback() && data.isInScheduleWhenSessionFirstLoaded() &&
-                    !sDismissedFeedbackCard.contains(data.getSessionId())) {
-                showGiveFeedbackCard(data);
-            }
+           // mAddScheduleButton.setVisibility(View.INVISIBLE);
+            //   if (!data.hasFeedback() && data.isInScheduleWhenSessionFirstLoaded() &&
+            //           !sDismissedFeedbackCard.contains(data.getSessionId())) {
+            showGiveFeedbackCard(data);
+            //   }
         }
 
         String timeHint = "";
@@ -760,7 +747,7 @@ public class SessionDetailFragment extends Fragment
     }
 
     private void displayTags(SessionDetailModel data) {
-        if (data.getTagMetadata() == null || data.getTagsString() == null) {
+        if (data.getTagsString() == null) {
             mTagsContainer.setVisibility(View.GONE);
             return;
         }
@@ -773,19 +760,14 @@ public class SessionDetailFragment extends Fragment
             LayoutInflater inflater = LayoutInflater.from(getContext());
             String[] tagIds = data.getTagsString().split(",");
 
-            List<TagMetadata.Tag> tags = new ArrayList<TagMetadata.Tag>();
+            List<String> tags = new ArrayList<String>();
             for (String tagId : tagIds) {
                 if (Config.Tags.SESSIONS.equals(tagId) ||
                         Config.Tags.SPECIAL_KEYNOTE.equals(tagId)) {
                     continue;
                 }
 
-                TagMetadata.Tag tag = data.getTagMetadata().getTag(tagId);
-                if (tag == null) {
-                    continue;
-                }
-
-                tags.add(tag);
+                tags.add(tagId);
             }
 
             if (tags.size() == 0) {
@@ -793,19 +775,19 @@ public class SessionDetailFragment extends Fragment
                 return;
             }
 
-            Collections.sort(tags, TagMetadata.TAG_DISPLAY_ORDER_COMPARATOR);
+            Collections.sort(tags, TagMetadata.DISPLAY_ORDER_COMPARATOR);
 
-            for (final TagMetadata.Tag tag : tags) {
+            for (final String tag : tags) {
                 TextView chipView = (TextView) inflater.inflate(
                         R.layout.include_session_tag_chip, mTags, false);
-                chipView.setText(tag.getName());
+                chipView.setText(tag);
                 chipView.setContentDescription(
-                        getString(R.string.talkback_button, tag.getName()));
+                        getString(R.string.talkback_button, tag));
                 chipView.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
                         Intent intent = new Intent(getContext(), ExploreSessionsActivity.class)
-                                .putExtra(ExploreSessionsActivity.EXTRA_FILTER_TAG, tag.getId())
+                                .putExtra(ExploreSessionsActivity.EXTRA_FILTER_TAGS, tag)
                                 .addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
                         startActivity(intent);
                     }
@@ -828,6 +810,7 @@ public class SessionDetailFragment extends Fragment
                     // Contains: The session title.
                     AnalyticsHelper.sendEvent("Session", "Feedback", data.getSessionTitle());
                     Intent intent = data.getFeedbackIntent();
+                    intent.putExtra(Constants.SESSION_ID, mSessionId);
                     startActivity(intent);
                 } else {
                     sDismissedFeedbackCard.add(data.getSessionId());

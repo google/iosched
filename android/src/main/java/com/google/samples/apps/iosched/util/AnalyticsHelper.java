@@ -19,15 +19,15 @@ package com.google.samples.apps.iosched.util;
 import com.google.android.gms.analytics.GoogleAnalytics;
 import com.google.android.gms.analytics.HitBuilders;
 import com.google.android.gms.analytics.Tracker;
-import com.google.samples.apps.iosched.BuildConfig;
-import com.google.samples.apps.iosched.R;
+import no.java.schedule.v2.BuildConfig;
+import no.java.schedule.v2.R;
+
 import com.google.samples.apps.iosched.settings.ConfMessageCardUtils;
 import com.google.samples.apps.iosched.settings.SettingsUtils;
 
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
-import android.util.Log;
 
 import static com.google.samples.apps.iosched.util.LogUtils.LOGD;
 

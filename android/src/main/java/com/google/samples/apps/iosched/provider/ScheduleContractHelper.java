@@ -56,8 +56,7 @@ public class ScheduleContractHelper {
      * Adds an account override parameter to the {@code uri}. This is used by the
      * {@link ScheduleProvider} when fetching account-specific data.
      */
-    public static Uri addOverrideAccountName(Uri uri, String accountName) {
-        return uri.buildUpon().appendQueryParameter(
-                QUERY_PARAMETER_OVERRIDE_ACCOUNT_NAME, accountName).build();
+    public static Uri addOverrideAccountName(Uri uri) {
+        return uri.buildUpon().build();
     }
 }

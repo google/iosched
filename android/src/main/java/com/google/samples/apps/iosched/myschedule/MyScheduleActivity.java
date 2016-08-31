@@ -17,7 +17,9 @@
 package com.google.samples.apps.iosched.myschedule;
 
 import com.google.samples.apps.iosched.Config;
-import com.google.samples.apps.iosched.R;
+
+import no.java.schedule.v2.R;
+
 import com.google.samples.apps.iosched.model.ScheduleHelper;
 import com.google.samples.apps.iosched.model.ScheduleItem;
 import com.google.samples.apps.iosched.provider.ScheduleContract;
@@ -176,11 +178,6 @@ public class MyScheduleActivity extends BaseActivity implements MyScheduleFragme
         mScrollViewWide = (ScrollView) findViewById(R.id.main_content_wide);
         mWideMode = findViewById(R.id.my_schedule_first_day) != null;
 
-        if (SettingsUtils.isAttendeeAtVenue(this)) {
-            mDayZeroAdapter = new MyScheduleAdapter(this, getLUtils());
-            prepareDayZeroAdapter();
-        }
-
         for (int i = 0; i < Config.CONFERENCE_DAYS.length; i++) {
             mScheduleAdapters[i] = new MyScheduleAdapter(this, getLUtils());
         }
@@ -205,20 +202,13 @@ public class MyScheduleActivity extends BaseActivity implements MyScheduleFragme
 
             TextView zerothDayHeaderView = (TextView) findViewById(R.id.day_label_zeroth_day);
             MyScheduleView dayZeroView = (MyScheduleView) findViewById(R.id.my_schedule_zeroth_day);
-            if (mDayZeroAdapter != null) {
-                dayZeroView.setAdapter(mDayZeroAdapter);
-                dayZeroView.setVisibility(View.VISIBLE);
-                zerothDayHeaderView.setText(getDayName(-1));
-                zerothDayHeaderView.setVisibility(View.VISIBLE);
-            } else {
-                dayZeroView.setVisibility(View.GONE);
-                zerothDayHeaderView.setVisibility(View.GONE);
-            }
+            dayZeroView.setVisibility(View.GONE);
+            zerothDayHeaderView.setVisibility(View.GONE);
         } else {
             // it's PagerAdapter set.
             mTabLayout = (TabLayout) findViewById(R.id.sliding_tabs);
-
             mTabLayout.setTabsFromPagerAdapter(mViewPagerAdapter);
+
 
             mTabLayout.setOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
                 @Override
@@ -232,9 +222,11 @@ public class MyScheduleActivity extends BaseActivity implements MyScheduleFragme
 
                 @Override
                 public void onTabUnselected(TabLayout.Tab tab) {
-                    TextView view = (TextView) findViewById(baseTabViewId + tab.getPosition());
-                    view.setContentDescription(
-                            getString(R.string.a11y_button, tab.getText()));
+                    if(tab != null) {
+                        TextView view = (TextView) findViewById(baseTabViewId + tab.getPosition());
+                        view.setContentDescription(
+                                getString(R.string.a11y_button, tab.getText()));
+                    }
                 }
 
                 @Override
@@ -245,6 +237,7 @@ public class MyScheduleActivity extends BaseActivity implements MyScheduleFragme
             mViewPager.setPageMargin(getResources()
                     .getDimensionPixelSize(R.dimen.my_schedule_page_margin));
             mViewPager.setPageMarginDrawable(R.drawable.page_margin);
+            mViewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(mTabLayout));
 
             setTabLayoutContentDescriptions();
         }
@@ -316,6 +309,7 @@ public class MyScheduleActivity extends BaseActivity implements MyScheduleFragme
             TextView view = (TextView) inflater.inflate(R.layout.tab_my_schedule, mTabLayout, false);
             view.setId(baseTabViewId + i);
             view.setText(tab.getText());
+            view.setTextColor(getResources().getColor(R.color.app_white));
             if (i == 0) {
                 view.setContentDescription(
                         getString(R.string.talkback_selected,

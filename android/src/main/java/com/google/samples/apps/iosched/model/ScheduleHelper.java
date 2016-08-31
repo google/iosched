@@ -21,20 +21,15 @@ import android.os.AsyncTask;
 import android.text.TextUtils;
 import android.util.Log;
 
-import com.google.samples.apps.iosched.BuildConfig;
-import com.google.samples.apps.iosched.R;
+import no.java.schedule.v2.BuildConfig;
+
 import com.google.samples.apps.iosched.provider.ScheduleContract;
 import com.google.samples.apps.iosched.provider.ScheduleContract.Blocks;
 import com.google.samples.apps.iosched.provider.ScheduleContract.Sessions;
-import com.google.samples.apps.iosched.provider.ScheduleContractHelper;
-import com.google.samples.apps.iosched.settings.SettingsUtils;
 import com.google.samples.apps.iosched.myschedule.MyScheduleAdapter;
-import com.google.samples.apps.iosched.util.AccountUtils;
 import com.google.samples.apps.iosched.util.UIUtils;
 
 import java.util.ArrayList;
-import java.util.Date;
-import java.util.Iterator;
 import java.util.Locale;
 
 import static com.google.samples.apps.iosched.util.LogUtils.LOGD;
@@ -57,7 +52,7 @@ public class ScheduleHelper {
         addBlocks(start, end, mutableItems, immutableItems);
         addSessions(start, end, mutableItems, immutableItems);
 
-        ArrayList<ScheduleItem> result = ScheduleItemHelper.processItems(mutableItems, immutableItems);
+        ArrayList<ScheduleItem> result = ScheduleItemHelper.processItemsNoFixes(mutableItems, immutableItems);
         if (BuildConfig.DEBUG || Log.isLoggable(TAG, Log.DEBUG)) {
             ScheduleItem previous = null;
             for (ScheduleItem item: result) {
@@ -97,8 +92,8 @@ public class ScheduleHelper {
         Cursor cursor = mContext.getContentResolver().query(
                 ScheduleContract.Sessions.buildCounterByIntervalUri(),
                 SessionsCounterQuery.PROJECTION,
-                Sessions.SESSION_START + ">=? AND "+Sessions.SESSION_START + "<=? AND "+
-                Sessions.SESSION_IN_MY_SCHEDULE + " = 0 "+liveStreamedOnlySelection,
+                Sessions.SESSION_START + ">=? AND "+Sessions.SESSION_END + "<=? AND "+
+                Sessions.SESSION_STARRED + " = 0 "+liveStreamedOnlySelection,
                 new String[]{String.valueOf(dayStart), String.valueOf(dayEnd)},
                 null);
 
@@ -117,6 +112,7 @@ public class ScheduleHelper {
         cursor.close();
 
         // remove free blocks that have no available sessions or that are in the past
+        /*
         long now = UIUtils.getCurrentTime(mContext);
         Iterator<ScheduleItem> it = items.iterator();
         while (it.hasNext()) {
@@ -132,9 +128,8 @@ public class ScheduleHelper {
                     i.subtitle = mContext.getResources().getQuantityString(
                             R.plurals.schedule_block_subtitle, i.numOfSessions, i.numOfSessions);
                 }
-
             }
-        }
+        } */
     }
 
     public void getScheduleDataAsync(final MyScheduleAdapter adapter,
@@ -165,9 +160,7 @@ public class ScheduleHelper {
 
         Cursor cursor = null;
         try {
-            cursor = mContext.getContentResolver().query(
-                    ScheduleContractHelper.addOverrideAccountName(Sessions.CONTENT_MY_SCHEDULE_URI,
-                            AccountUtils.getActiveAccountName(mContext)),
+            cursor = mContext.getContentResolver().query(Sessions.CONTENT_STARRED_URI,
                     SessionsQuery.PROJECTION,
                     // filter sessions to the specified day
                     Sessions.STARTING_AT_TIME_INTERVAL_SELECTION,
@@ -175,7 +168,7 @@ public class ScheduleHelper {
                     // order by session start
                     Sessions.SESSION_START);
 
-            if (cursor.moveToFirst()) {
+            if (cursor != null && cursor.moveToFirst()) {
                 do {
                     ScheduleItem item = new ScheduleItem();
                     item.type = ScheduleItem.SESSION;
@@ -192,9 +185,7 @@ public class ScheduleHelper {
                     item.room = cursor.getString(SessionsQuery.ROOM_ROOM_NAME);
                     item.backgroundImageUrl = cursor.getString(SessionsQuery.SESSION_PHOTO_URL);
                     item.backgroundColor = cursor.getInt(SessionsQuery.SESSION_COLOR);
-                    item.hasGivenFeedback = (cursor.getInt(SessionsQuery.HAS_GIVEN_FEEDBACK) > 0);
                     item.sessionType = detectSessionType(cursor.getString(SessionsQuery.SESSION_TAGS));
-                    item.mainTag = cursor.getString(SessionsQuery.SESSION_MAIN_TAG);
                     immutableItems.add(item);
                 } while (cursor.moveToNext());
             }
@@ -214,7 +205,7 @@ public class ScheduleHelper {
                     BlocksQuery.PROJECTION,
 
                     // filter sessions on the specified day
-                    Blocks.BLOCK_START + " >= ? and " + Blocks.BLOCK_START + " <= ?",
+                    Blocks.BLOCK_START + " >= ? and " + Blocks.BLOCK_END + " <= ?",
                     new String[]{String.valueOf(start), String.valueOf(end)},
 
                     // order by session start
@@ -223,16 +214,13 @@ public class ScheduleHelper {
             if (cursor.moveToFirst()) {
                 do {
                     ScheduleItem item = new ScheduleItem();
+                    item.blockId = cursor.getString(BlocksQuery.BLOCK_ID);
                     item.setTypeFromBlockType(cursor.getString(BlocksQuery.BLOCK_TYPE));
                     item.title = cursor.getString(BlocksQuery.BLOCK_TITLE);
                     item.room = item.subtitle = cursor.getString(BlocksQuery.BLOCK_SUBTITLE);
                     item.startTime = cursor.getLong(BlocksQuery.BLOCK_START);
                     item.endTime = cursor.getLong(BlocksQuery.BLOCK_END);
 
-                    // Hide BREAK blocks to remote attendees (b/14666391):
-                    if (item.type == ScheduleItem.BREAK && !SettingsUtils.isAttendeeAtVenue(mContext)) {
-                        continue;
-                    }
                     // Currently, only type=FREE is mutable
                     if (item.type == ScheduleItem.FREE) {
                         mutableItems.add(item);
@@ -279,9 +267,7 @@ public class ScheduleHelper {
                 Sessions.SESSION_SPEAKER_NAMES,
                 Sessions.SESSION_PHOTO_URL,
                 Sessions.SESSION_COLOR,
-                Sessions.HAS_GIVEN_FEEDBACK,
                 Sessions.SESSION_TAGS,
-                Sessions.SESSION_MAIN_TAG,
         };
 
         int SESSION_ID = 0;
@@ -293,13 +279,12 @@ public class ScheduleHelper {
         int SESSION_SPEAKER_NAMES = 7;
         int SESSION_PHOTO_URL = 8;
         int SESSION_COLOR = 9;
-        int HAS_GIVEN_FEEDBACK = 10;
-        int SESSION_TAGS = 11;
-        int SESSION_MAIN_TAG = 12;
+        int SESSION_TAGS = 10;
     }
 
     private interface BlocksQuery {
         String[] PROJECTION = {
+                Blocks.BLOCK_ID,
                 Blocks.BLOCK_TITLE,
                 Blocks.BLOCK_TYPE,
                 Blocks.BLOCK_START,
@@ -307,11 +292,12 @@ public class ScheduleHelper {
                 Blocks.BLOCK_SUBTITLE
         };
 
-        int BLOCK_TITLE = 0;
-        int BLOCK_TYPE= 1;
-        int BLOCK_START = 2;
-        int BLOCK_END = 3;
-        int BLOCK_SUBTITLE = 4;
+        int BLOCK_ID = 0;
+        int BLOCK_TITLE = 1;
+        int BLOCK_TYPE= 2;
+        int BLOCK_START = 3;
+        int BLOCK_END = 4;
+        int BLOCK_SUBTITLE = 5;
     }
 
 
@@ -320,12 +306,13 @@ public class ScheduleHelper {
                 Sessions.SESSION_START,
                 Sessions.SESSION_END,
                 Sessions.SESSION_INTERVAL_COUNT,
-                Sessions.SESSION_IN_MY_SCHEDULE,
+                Sessions.SESSION_STARRED,
         };
 
         int SESSION_INTERVAL_START = 0;
         int SESSION_INTERVAL_END = 1;
         int SESSION_INTERVAL_COUNT = 2;
+        int SESSION_STARRED = 3;
     }
 
 }

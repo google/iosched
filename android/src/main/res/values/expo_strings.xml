@@ -1,0 +1,205 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="google_app_id">1000825029786</string>
+
+    <!-- General names -->
+
+    <!-- Dialogs -->
+    <string name="Alert_OK">OK</string>
+    <string name="Alert_Cancel">Cancel</string>
+    <string name="Empty_text"></string>
+
+    <string name="PleaseWait" >Please wait</string>
+    <string name="SearchEnabledToolbar_SearchPlaceholder" >Search...</string>
+    <string name="Date_Today_Title" >Today</string>
+    <string name="Date_Tomorrow_Title" >Tomorrow</string>
+    <string name="Date_Yesterday_Title" >Yesterday</string>
+    <string name="General_Search_Title" >Search</string>
+    <string name="General_Refresh_Text" >Refresh</string>
+    <string name="General_Filter_Text" >Filter</string>
+    <string name="General_Navigation_Back_Text" >Back</string>
+    <string name="General_Share_Text" >Share</string>
+    <string name="General_Ok_Text" >OK</string>
+    <string name="General_Settings_Text" >Settings</string>
+    <string name="General_MaybeLater_Text" >Maybe Later</string>
+    <string name="General_Warning" >Warning</string>
+    <string name="General_NoConnection_Message" >No internet connection found.</string>
+
+
+    <string name="openDrawer">Open</string>
+    <string name="closeDrawer">Close</string>
+
+    <!-- Initial -->
+    <string name="Initial_Loading" >Please wait</string>
+
+    <string name="Initial_Alert_NoNetwork_Title">Missing internet</string>
+    <string name="Initial_Alert_NoNetwork_Message">Internet is required the first time you start the app. Press OK to try again.</string>
+    <string name="Initial_Skip">Skip</string>
+    <string name="Initial_Next">Next</string>
+    <string name="Initial_PageOne_Header">SESSIONS &amp; SPEAKER INFO</string>
+    <string name="Initial_PageOne_SubHeader">See what is most interesting to YOU!</string>
+    <string name="Initial_PageOne_Text">Favourite sessions and see sessions relevant for you.</string>
+    <string name="Initial_PageTwo_Header">ENRICH YOUR CONFERENCE EXPERIENCE</string>
+    <string name="Initial_PageTwo_SubHeader">Create a profile and see attendees.</string>
+    <string name="Initial_PageTwo_Text">Make new contacts and keep in touch with colleagues and attendees.</string>
+    <string name="Initial_PageThree_Header">KNOW WHERE YOU\'RE GOING</string>
+    <string name="Initial_PageThree_SubHeader">See where your next session is</string>
+    <string name="Initial_PageThree_Text">Venue map and floor maps show you where to go.</string>
+
+
+    <!-- Navigationnavme -->
+    <string name="Tab_Twitter_Title">Twitter</string>
+    <string name="Tab_Speaker_Title">Speakers</string>
+    <string name="Tab_Sessions_Title">Program</string>
+    <string name="Tab_Profile_Title">Profile</string>
+    <string name="Tab_InfoMenu_Title">Info</string>
+
+    <string name="Tab_About_Title" >About Ehin</string>
+    <string name="Tab_Committee_Title" >Committee</string>
+    <string name="Tab_Sponsors_Title" >Sponsors</string>
+    <string name="Tab_Venue_Map_Title" >Venue map</string>
+    <string name="Tab_Floormap_Title" >Floor map</string>
+    <string name="Tab_Attendees_Title" >Attendees</string>
+
+
+
+    <!-- Twitter -->
+    <string name="Twitter_NoTweetsFound_Message" >No tweets found.</string>
+    <string name="Twitter_Loading" >Loading Twitter feed...</string>
+
+    <!-- Speaker -->
+    <string name="Speaker_Title" >Speakers</string>
+    <string name="Speaker_Header" >Speakers</string>
+    <string name="HasReminderTextConverter_RemoveFromCalendar_Text" >Remove from Calendar</string>
+    <string name="HasReminderTextConverter_AddToCalendar_Text" >Add to Calendar</string>
+    <string name="Speaker_Loading" >Loading...</string>
+    <string name="SpeakerDetailPage_Title" >Speaker</string>
+    <string name="SpeakerDetailPage_Follow" >Follow</string>
+    <string name="SpeakerDetailPage_Web" >Web</string>
+    <string name="SpeakerDetailPage_Twitter" >Follow twitter</string>
+    <string name="SpeakerDetailPage_Biography" >Biography</string>
+    <string name="SpeakerDetail_SessionsAt" >Sessions at</string>
+    <string name="SpeakerDetail_LoadingSessions" >Loasing sessions...</string>
+
+    <!-- Session -->
+    <string name="Calendar_Permission_Title" >Calendar Permission</string>
+    <string name="Calendar_EventCreation_Title" >Event Creation</string>
+    <string name="Calendar_EventDeletion_Title" >Event Deletion</string>
+    <string name="Calendar_NoCalendar_Title" >No Calendar</string>
+    <string name="Calendar_ReminderAdded_Title" >Reminder Added</string>
+    <string name="Calendar_ReminderAdded_Text" >"Reminder has been added. Please check the {0} calendar.</string>
+    <string name="Calendar_EventCreation_Error_Message" >Unable to create calendar event, please check calendar app and try again.</string>
+    <string name="Calendar_Permission_Error_Message" >Unable to set reminders as the Calendar permission was not granted, please check your settings and try again.</string>
+    <string name="Calendar_Permission_Expo_Error_No_Calendar_Message" >We were unable to get or create the EHiN calendar, please check your calendar app and try again.</string>
+    <string name="Calendar_Permission_Expo_Warning_Message" >Unable to set reminders as the Calendar permission was not granted. Please go into Settings and turn on Calendars for EHiN.</string>
+    <string name="Calendar_Permission_Expo_Delete_Error_Message" >Unable to delete calendar event, please check calendar app and try again.</string>
+    <string name="SessionsPage_Favorite" >Favorite</string>
+    <string name="SessionsPage_Loading" >Loading Sessions...</string>
+    <string name="SessionsPage_Title" >Sessions</string>
+    <string name="SessionsPage_Search_Title" >Search</string>
+    <string name="SessionsPage_Favorite_Title" >Favorite Sessions</string>
+    <string name="SessionsPage_Unfavorite" >Unfavorite</string>
+    <string name="SessionCell_AddFavorites" > to Favorites</string>
+    <string name="SessionCell_RemoveFromFavorites" >Remove from Favorites</string>
+    <string name="Session_TBA_Title" >TBA</string>
+    <string name="Session_TBA_Text" >To be announced</string>
+    <string name="Session_NoFavoritesInSessions_Text" >You haven\'t favorited any sessions yet.</string>
+    <string name="Session_NoSessionsFound_Text" >No Sessions Found</string>
+    <string name="SessionDetails_Title" >Session Details</string>
+    <string name="SessionsPage_Filter_Title" >Filter Sessions</string>
+    <string name="SessionsPage_Filter_ToolbarItem_Done_Text" >Done</string>
+    <string name="SessionsPage_Filter_TableItemOne" >Filters</string>
+    <string name="SessionsPage_Filter_TableItem_Two" >Categories</string>
+    <string name="SessionsPage_Filter_ShowPastSessions_Title" >Show Past Sessions</string>
+    <string name="SessionsPage_Filter_ShowFavoritesOnly_Title" >Favorites</string>
+    <string name="SessionsPage_Filter_CategoryForAll_Title" >All</string>
+
+    <!-- Profil -->
+    <string name="Login_Title" >Login</string>
+    <string name="Profile_Title" >Profile</string>
+    <string name="Profile_Info" >To be implemented</string>
+    <string name="Login_Button" >Log in</string>
+    <string name="Logout_Button" >Log out</string>
+    <string name="Login_Email_Info_Text">Please login with the e-mail you have registered with to get access to extra information, attendee-list and more. </string>
+    <string name="Login_Detail_info_Text" >Please enter the password you received by email.</string>
+    <string name="Login_Email_Placeholder_Text" >email address</string>
+    <string name="Login_Password_Text" >password</string>
+    <string name="Login_Sign_Up_Text" >Can\'t login? Send us an email.</string>
+    <string name="Profile_Expired_Text" >User has expired.</string>
+    <string name="Login_Signin_Title" >Sign in Information</string>
+    <string name="Login_Signin_Email_Message_Error" >Please type in your email address.</string>
+    <string name="Login_Signin_Password_Message_Error" >Please type in your password.</string>
+    <string name="Login_Signin_Progress_Text" >Signing in...</string>
+    <string name="Login_Update_Schedule_Text" >Updating schedule...</string>
+    <string name="Login_Error_Signin_Text" >Unable to Sign in</string>
+    <string name="Login_Email_Password_Error_Text" >The email or password provided is incorrect.</string>
+    <string name="Profile_Upload_Image_Button_Text" >Upload Image</string>
+    <string name="Profile_Upload_Image_Failed_Text" >Could not upload image. Please check your internet connection and try again.</string>
+
+    <!-- InfoMenu -->
+    <string name="Info_AboutLinkPrefix" >About</string>
+    <string name="Info_AttendeesLink" >Attendees</string>
+    <string name="Info_CommitteeLink" >Conference commitee</string>
+    <string name="Info_FloorPlanLink" >Floor plan</string>
+    <string name="Info_InfoHeader" >Info</string>
+    <string name="Info_MapVenueLink" >Map - venue</string>
+    <string name="Info_SponsorsLink" >Sponsors</string>
+    <string name="Info_WelcomeHeaderPrefix" >Welcome to</string>
+    <string name="Info_WifiLink" >Wifi</string>
+    <string name="InfoMenu_Loading" >Loading...</string>
+
+    <!-- InfoAbout -->
+    <string name="InfoAbout_Title" >About</string>
+    <string name="InfoAbout_Loading" >Loading...</string>
+
+    <!-- InfoCommittee -->
+    <string name="CommiteePage_Title" >Commitee</string>
+    <string name="InfoCommittee_Loading" >Loading...</string>
+    <string name="CommitteePage_Title" >Committee</string>
+
+    <!-- InfoSponsor -->
+    <string name="SponsorPage_Title" >Sponsors</string>
+    <string name="SponsorDetailPage_Follow" >Follow</string>
+    <string name="SponsorDetailPage_Web" >Web</string>
+    <string name="SponsorDetailPage_Twitter" >Follow twitter</string>
+    <string name="SponsorDetailPage_Title" >Sponsor</string>
+    <string name="SponsorDetailPage_Speakers_Title" >Speakers</string>
+    <string name="SponsorDetailPage_Speakers_Loading_Title" >Loading Speakers...</string>
+    <string name="SponsorDetailPage_Location_Title" >Location</string>
+    <string name="SponsorDetailPage_Description_Title" >Abstract</string>
+    <string name="Sponsor_Loading" >Loading...</string>
+
+    <!-- InfoMapVenue -->
+    <string name="InfoMapVenue_Title" >Map venue</string>
+    <string name="InfoMapVenue_Error_UnableToNavigate_Header" >Unable to Navigate</string>
+    <string name="InfoMapVenue_Error_UnableToNavigate_Message" >Please ensure that you have a map application installed.</string>
+    <string name="InfoMapVenue_GetDirections" >Get directions</string>
+    <string name="InfoMapVenue_More" >More</string>
+
+    <!-- InfoAttendee -->
+    <string name="InfoAttendeeList_Title" >Attendees</string>
+    <string name="InfoAttendeeList_Loading" >Loading Attendees...</string>
+    <string name="InfoAttendeeDetail_Title" >Attendee</string>
+    <string name="InfoAttendeeDetailPage_Web" >Web</string>
+    <string name="InfoAttendeeDetailPage_Twitter" >Follow twitter</string>
+    <string name="InfoAttendeeDetailPage_Biography" >Biography</string>
+    <string name="InfoAttendeeDetailPage_Follow" >Follow</string>
+    <string name="InfoAttendeeDetailPage_Email" >Email</string>
+    <string name="InfoAttendeeDetailPage_Phone" >Cellphone</string>
+    <string name="InfoAttendeeList_NotLoggedIn" >Login to see attendees</string>
+
+    <!-- InfoWiFi -->
+    <string name="InfoWiFi_Title" >WiFi</string>
+    <string name="InfoWiFi_TableHeader" >WiFi details</string>
+    <string name="InfoWiFi_Copy" >Copy</string>
+    <string name="InfoWiFi_SetupConnection" >Setup Connection</string>
+    <string name="InfoWiFi_SetupConnectionDone" >WiFi has been configured</string>
+    <string name="InfoWiFi_SendWifiErrorTitle" >Wi-Fi Configuration</string>
+    <string name="InfoWiFi_SendWifiErrorMessage" >Unable to configure WiFi, you may have to configure manually or try again.</string>
+    <string name="InfoWiFi_PasswordCopied" >Password Copied</string>
+    <string name="InfoFloorPlan_Title" >Floor map</string>
+    <string name="InfoFloorPlan_Empty" >No floorplans found</string>
+
+      <string name="Login_Terms_Condition_Text" >
+    By logging in you agree to the &lt;a href=\&quot;http://www.abc.com\&quot;&gt;terms and conditions&lt;/a></string>
+</resources>

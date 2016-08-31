@@ -45,15 +45,12 @@ public class MarkerLoadingTask extends AsyncTaskLoader<List<MarkerLoadingTask.Ma
     public List<MarkerEntry> loadInBackground() {
         List<MarkerEntry> list = null;
 
-        // Create a URI to get a cursor of all map markers
         final Uri uri = ScheduleContract.MapMarkers.buildMarkerUri();
         Cursor cursor = getContext().getContentResolver().query(uri, MarkerQuery.PROJECTION,
                 null, null, null);
 
-        // Create a MarkerModel for each entry
-        final int count = cursor.getCount();
         if (cursor != null) {
-
+            final int count = cursor.getCount();
             list = new ArrayList<>(count);
             final IconGenerator labelIconGenerator = MapUtils.getLabelIconGenerator(getContext());
             cursor.moveToFirst();
@@ -62,8 +59,8 @@ public class MarkerLoadingTask extends AsyncTaskLoader<List<MarkerLoadingTask.Ma
                 // get data
                 final String id = cursor.getString(MarkerQuery.MARKER_ID);
                 final int floor = cursor.getInt(MarkerQuery.MARKER_FLOOR);
-                final float lat = cursor.getFloat(MarkerQuery.MARKER_LATITUDE);
-                final float lon = cursor.getFloat(MarkerQuery.MARKER_LONGITUDE);
+                final double lat = cursor.getDouble(MarkerQuery.MARKER_LATITUDE);
+                final double lon = cursor.getDouble(MarkerQuery.MARKER_LONGITUDE);
                 final int type =
                         MapUtils.detectMarkerType(cursor.getString(MarkerQuery.MARKER_TYPE));
                 final String label = cursor.getString(MarkerQuery.MARKER_LABEL);
