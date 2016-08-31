@@ -103,7 +103,7 @@
     {
       "name": "region 20",
       "level" : 1,
-      "type" : "misc",
+      "type" : "booth",
       "description": "Main Entrance",
       "coordinates": {
         "latitude": 59.912963395732504,
