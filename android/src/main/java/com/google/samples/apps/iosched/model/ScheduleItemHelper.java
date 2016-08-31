@@ -16,6 +16,8 @@
 
 package com.google.samples.apps.iosched.model;
 
+import android.support.annotation.NonNull;
+
 import java.util.*;
 
 public class ScheduleItemHelper {
@@ -36,6 +38,13 @@ public class ScheduleItemHelper {
         // mark conflicting immutable:
         markConflicting(immutableItems);
 
+        ArrayList<ScheduleItem> result = processItemsNoFixes(mutableItems, immutableItems);
+
+        return result;
+    }
+
+    @NonNull
+    public static ArrayList<ScheduleItem> processItemsNoFixes(ArrayList<ScheduleItem> mutableItems, ArrayList<ScheduleItem> immutableItems) {
         ArrayList<ScheduleItem> result = new ArrayList<ScheduleItem>();
         result.addAll(immutableItems);
         result.addAll(mutableItems);
@@ -43,10 +52,11 @@ public class ScheduleItemHelper {
         Collections.sort(result, new Comparator<ScheduleItem>() {
             @Override
             public int compare(ScheduleItem lhs, ScheduleItem rhs) {
-                return lhs.startTime < rhs.startTime ? -1 : 1;
+                return lhs.startTime < rhs.startTime ||
+                        (lhs.type == ScheduleItem.FREE && lhs.startTime == rhs.startTime )
+                        ? -1 : 1;
             }
         });
-
         return result;
     }
 

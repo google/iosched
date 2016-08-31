@@ -52,7 +52,7 @@ public class ScheduleHelper {
         addBlocks(start, end, mutableItems, immutableItems);
         addSessions(start, end, mutableItems, immutableItems);
 
-        ArrayList<ScheduleItem> result = ScheduleItemHelper.processItems(mutableItems, immutableItems);
+        ArrayList<ScheduleItem> result = ScheduleItemHelper.processItemsNoFixes(mutableItems, immutableItems);
         if (BuildConfig.DEBUG || Log.isLoggable(TAG, Log.DEBUG)) {
             ScheduleItem previous = null;
             for (ScheduleItem item: result) {
