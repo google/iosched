@@ -476,6 +476,7 @@ public class SessionsHandler extends JSONHandler {
                         .withValue(ScheduleContract.Sessions.SESSION_START, originalSessionStartTime)
                         .withValue(ScheduleContract.Sessions.SESSION_END, originalSessionEndTime)
                         .withValue(ScheduleContract.Sessions.SESSION_TAGS, event.labelstrings())
+                        .withValue(ScheduleContract.Sessions.SESSION_FORMAT, event.format)
                         // .withValue(ScheduleContract.Sessions.SESSION_SPEAKER_NAMES, speakerNames)
                         .withValue(ScheduleContract.Sessions.SESSION_KEYWORDS, null)             // Not available
                         .withValue(ScheduleContract.Sessions.SESSION_URL, String.valueOf(event.sessionHtmlUrl))

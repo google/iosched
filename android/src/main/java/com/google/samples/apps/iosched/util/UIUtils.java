@@ -136,7 +136,7 @@ public class UIUtils {
         if (shortFormat) {
             TimeZone timeZone = SettingsUtils.getDisplayTimeZone(context);
             Date intervalStartDate = new Date(intervalStart);
-            SimpleDateFormat shortDateFormat = new SimpleDateFormat("MMM dd");
+            SimpleDateFormat shortDateFormat = new SimpleDateFormat("dd MMM");
             DateFormat shortTimeFormat = DateFormat.getTimeInstance(DateFormat.SHORT);
             shortDateFormat.setTimeZone(timeZone);
             shortTimeFormat.setTimeZone(timeZone);
@@ -145,7 +145,7 @@ public class UIUtils {
         } else {
             String timeInterval = formatIntervalTimeString(intervalStart, intervalEnd, recycle,
                     context);
-            return context.getString(R.string.session_subtitle, timeInterval, roomName);
+            return context.getString(R.string.session_subtitle, roomName, timeInterval);
         }
     }
 

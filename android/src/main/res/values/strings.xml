@@ -814,7 +814,7 @@ user updates the rating. -->
     <string name="session_speakers">Speakers</string>
 
     <!-- Subtitle of a session indicating time interval and room number -->
-    <string name="session_subtitle"><xliff:g id="time">%1$s</xliff:g> in <xliff:g id="room">%2$s</xliff:g></string>
+    <string name="session_subtitle"><xliff:g id="room">%1$s</xliff:g> in <xliff:g id="time">%2$s</xliff:g></string>
 
     <!-- Short subtitle for a session indicating time interval -->
     <string name="session_subtitle_short"><xliff:g id="time">%1$s</xliff:g></string>

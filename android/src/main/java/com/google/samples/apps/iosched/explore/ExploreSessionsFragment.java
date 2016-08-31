@@ -337,15 +337,17 @@ public class ExploreSessionsFragment extends Fragment implements
                 TagMetadata.Tag groupTag = mTagMetadata.getSessionGroupTag(tags.split(","));
                 sessionTypeView.setText(groupTag == null ? "" : groupTag.getName());
             }
+
+            sessionTypeView.setText(cursor.getString(ExploreSessionsQuery.FORMAT));
             String infoText = "";
             if (day != 0) {
                 final Date startDate = new Date(startTime);
-                infoText = getString(R.string.explore_sessions_show_day_hour_and_room,
-                        TimeUtils.formatShortDate(getActivity(), startDate),
-                        getString(R.string.explore_sessions_show_day_n, day),
+                infoText = String.format("%s-%s in %s, %s, %s",
                         TimeUtils.formatShortTime(getActivity(), startDate),
                         TimeUtils.formatShortTime(getActivity(), new Date(endTime)),
-                        room != null ? room : context.getString(R.string.unknown_room));
+                        room != null ? room : context.getString(R.string.unknown_room),
+                        TimeUtils.formatShortDate(getActivity(), startDate),
+                        getString(R.string.explore_sessions_show_day_n, day));
             }
             infoView.setText(infoText);
 
@@ -416,6 +418,7 @@ public class ExploreSessionsFragment extends Fragment implements
                 ScheduleContract.Sessions.SESSION_START,
                 ScheduleContract.Sessions.SESSION_END,
                 ScheduleContract.Rooms.ROOM_NAME,
+                ScheduleContract.Sessions.SESSION_FORMAT,
                 ScheduleContract.Sessions.SESSION_URL,
                 ScheduleContract.Sessions.SESSION_TAGS,
                 ScheduleContract.Sessions.SESSION_PHOTO_URL,
@@ -428,6 +431,7 @@ public class ExploreSessionsFragment extends Fragment implements
                 ScheduleContract.Sessions.SESSION_START,
                 ScheduleContract.Sessions.SESSION_END,
                 ScheduleContract.Rooms.ROOM_NAME,
+                ScheduleContract.Sessions.SESSION_FORMAT,
                 ScheduleContract.Sessions.SESSION_URL,
                 ScheduleContract.Sessions.SESSION_TAGS,
                 ScheduleContract.Sessions.SESSION_PHOTO_URL,
@@ -440,11 +444,12 @@ public class ExploreSessionsFragment extends Fragment implements
         int SESSION_START = 3;
         int SESSION_END = 4;
         int ROOM_NAME = 5;
-        int URL = 6;
-        int TAGS = 7;
-        int PHOTO_URL = 8;
-        int IN_MY_SCHEDULE = 9;
-        int SEARCH_SNIPPET = 10;
+        int FORMAT = 6;
+        int URL = 7;
+        int TAGS = 8;
+        int PHOTO_URL = 9;
+        int IN_MY_SCHEDULE = 10;
+        int SEARCH_SNIPPET = 11;
     }
 
     /**

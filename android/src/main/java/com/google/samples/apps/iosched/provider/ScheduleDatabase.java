@@ -337,6 +337,7 @@ public class ScheduleDatabase extends SQLiteOpenHelper {
                 + SessionsColumns.SESSION_MAIN_TAG + " TEXT,"
                 + SessionsColumns.SESSION_COLOR + " INTEGER,"
                 + SessionsColumns.SESSION_CAPTIONS_URL + " TEXT,"
+                + SessionsColumns.SESSION_FORMAT + " Text,"
                 + SessionsColumns.SESSION_PHOTO_URL + " TEXT,"
                 + SessionsColumns.SESSION_RELATED_CONTENT + " TEXT,"
                 + "UNIQUE (" + SessionsColumns.SESSION_ID + ") ON CONFLICT REPLACE)");

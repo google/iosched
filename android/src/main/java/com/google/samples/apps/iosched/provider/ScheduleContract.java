@@ -246,6 +246,8 @@ public final class ScheduleContract {
          * The session's captions URL (for livestreamed sessions).
          */
         String SESSION_CAPTIONS_URL = "session_captions_url";
+
+        String SESSION_FORMAT = "session_format";
         /**
          * The session interval when using the interval counter query.
          */

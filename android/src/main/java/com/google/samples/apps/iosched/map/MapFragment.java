@@ -124,7 +124,7 @@ public class MapFragment extends com.google.android.gms.maps.MapFragment impleme
     private GoogleMap mMap;
     private Rect mMapInsets = new Rect();
 
-    private String mHighlightedRoomId = null;
+    private String mHighlightedRoomName = null;
     private MarkerModel mHighlightedRoom = null;
 
     private int mInitialFloor = OSLOSPEKTRUM_DEFAULT_LEVEL_INDEX;
@@ -177,11 +177,11 @@ public class MapFragment extends com.google.android.gms.maps.MapFragment impleme
         return new MapFragment();
     }
 
-    public static MapFragment newInstance(String highlightedRoomId) {
+    public static MapFragment newInstance(String highlightedRoomName) {
         MapFragment fragment = new MapFragment();
 
         Bundle arguments = new Bundle();
-        arguments.putString(EXTRAS_HIGHLIGHT_ROOM, highlightedRoomId);
+        arguments.putString(EXTRAS_HIGHLIGHT_ROOM, highlightedRoomName);
         fragment.setArguments(arguments);
 
         return fragment;
@@ -246,7 +246,7 @@ public class MapFragment extends com.google.android.gms.maps.MapFragment impleme
         // Get the arguments and restore the highlighted room or displayed floor.
         Bundle data = getArguments();
         if (data != null) {
-            mHighlightedRoomId = data.getString(EXTRAS_HIGHLIGHT_ROOM, null);
+            mHighlightedRoomName = data.getString(EXTRAS_HIGHLIGHT_ROOM, null);
             mInitialFloor = data.getInt(EXTRAS_ACTIVE_FLOOR, OSLOSPEKTRUM_DEFAULT_LEVEL_INDEX);
         }
 
@@ -585,11 +585,11 @@ public class MapFragment extends com.google.android.gms.maps.MapFragment impleme
 
     private void onFocusOsloSpektrum() {
         // Highlight a room if argument is set and it exists, otherwise show the default floor
-        if (mHighlightedRoomId != null && mMarkers.containsKey(mHighlightedRoomId)) {
-            highlightRoom(mHighlightedRoomId);
+        if (mHighlightedRoomName != null && mMarkers.containsKey(mHighlightedRoomName)) {
+            highlightRoom(mHighlightedRoomName);
             showFloorIndex(mHighlightedRoom.floor);
             // Reset highlighted room because it has just been displayed.
-            mHighlightedRoomId = null;
+            mHighlightedRoomName = null;
         } else {
             // Hide the bottom sheet that is displaying the Oslo Spektrum details at this point
             mCallbacks.onInfoHide();
@@ -640,7 +640,7 @@ public class MapFragment extends com.google.android.gms.maps.MapFragment impleme
 
             // Remove the highlight room flag, because the room has just been highlighted.
             mHighlightedRoom = null;
-            mHighlightedRoomId = null;
+            mHighlightedRoomName = null;
         } else if (mFloor != activeLevelIndex) {
             // Deselect and hide the info details.
             deselectActiveMarker();

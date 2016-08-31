@@ -154,9 +154,9 @@ public class MapActivity extends BaseActivity
                 mMapFragment = MapFragment.newInstance(previousState);
             } else {
                 // Get highlight room id (if specified in intent extras)
-                final String highlightRoomId = getIntent().hasExtra(EXTRA_ROOM) ? getIntent()
+                final String highlightRoomName = getIntent().hasExtra(EXTRA_ROOM) ? getIntent()
                         .getExtras().getString(EXTRA_ROOM) : null;
-                mMapFragment = MapFragment.newInstance(highlightRoomId);
+                mMapFragment = MapFragment.newInstance(highlightRoomName);
             }
             getFragmentManager().beginTransaction()
                     .add(R.id.fragment_container_map, mMapFragment, "map")
