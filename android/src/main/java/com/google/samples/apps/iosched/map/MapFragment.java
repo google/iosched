@@ -86,8 +86,9 @@ public class MapFragment extends com.google.android.gms.maps.MapFragment impleme
     private EstimoteBeaconManager mEstimoteBeaconManager;
 
     // Initial camera zoom
-    private static final float CAMERA_ZOOM = 18.19f;
-    private static final float CAMERA_BEARING = 234.2f;
+    private static final float CAMERA_ZOOM = 18;
+    private static final float DETAILED_MAP_ZOOM_THRESHOLD = 17;
+    private static final float CAMERA_BEARING = -27;
     private static Marker mCurrentLocationMarker = null;
 
     private static final int INVALID_FLOOR = Integer.MIN_VALUE;
@@ -420,7 +421,7 @@ public class MapFragment extends com.google.android.gms.maps.MapFragment impleme
         mMap.setOnCameraMoveListener(new GoogleMap.OnCameraMoveListener() {
             @Override
             public void onCameraMove() {
-                if(mMap.getCameraPosition().zoom <= CAMERA_ZOOM) {
+                if(mMap.getCameraPosition().zoom <= DETAILED_MAP_ZOOM_THRESHOLD) {
                     setFloorElementsVisible(mFloor, false);
                     mOsloSpektrumMarker.setVisible(true);
                 }
