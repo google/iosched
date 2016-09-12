@@ -32,11 +32,12 @@ With the app, you can:
 
 We hope the source code for this app is useful for you as a reference or starting point for creating your own apps. Here is some additional reading to help you better understand and reuse this code.
 
-  * [Build instructions](doc/BUILDING.md): instructions on how to build and run the code.
-  * [Sync protocol and data format](doc/SYNC.md)
-  * [Image loading](doc/IMAGES.md)
-  * [Use of GCM](doc/GCM.md)
-  * [Customization guide](doc/CUSTOM.md)
+
+  * [Build instructions](https://github.com/google/iosched/blob/master/doc/BUILDING.md): instructions on how to build and run the code.
+  * [Sync protocol and data format](https://github.com/google/iosched/blob/master/doc/SYNC.md)
+  * [Image loading](https://github.com/google/iosched/blob/master/doc/IMAGES.md)
+  * [Use of GCM](https://github.com/google/iosched/blob/master/doc/GCM.md)
+  * [Customization guide](https://github.com/google/iosched/blob/master/doc/CUSTOM.md)
 
 <h2>Copyright</h2>
 
