@@ -19,8 +19,6 @@
     <style name="Theme.IOSched.SessionDetails" parent="Theme.IOSched.SessionDetails.Base">
         <item name="android:windowBackground">@android:color/white</item>
         <item name="android:windowFullscreen">true</item>
-
-        <item name="android:windowElevation">16dp</item>
     </style>
 
 </resources>
