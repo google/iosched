@@ -16,11 +16,11 @@
 
 package com.google.samples.apps.iosched.io;
 
-import com.google.common.base.Charsets;
-import com.google.gson.JsonElement;
-
 import android.content.ContentProviderOperation;
 import android.content.Context;
+
+import com.google.gson.JsonElement;
+import com.google.samples.apps.iosched.util.IOUtils;
 
 import java.io.BufferedReader;
 import java.io.FileInputStream;
@@ -103,7 +103,7 @@ public abstract class JSONHandler {
 
         // IO errors are passed up to the calling method and must be caught there.
         try {
-            reader = new BufferedReader(new InputStreamReader(stream, Charsets.UTF_8));
+            reader = new BufferedReader(new InputStreamReader(stream, IOUtils.CHARSET_UTF8));
             int n;
             while ((n = reader.read(buffer)) != -1) {
                 writer.write(buffer, 0, n);

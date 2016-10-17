@@ -19,12 +19,17 @@ import android.content.Context;
 import android.database.Cursor;
 import android.net.Uri;
 
-import com.google.common.base.Charsets;
 import com.google.gson.Gson;
 import com.google.samples.apps.iosched.provider.ScheduleContract;
 import com.google.samples.apps.iosched.sync.userdata.UserAction;
+import com.google.samples.apps.iosched.util.IOUtils;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 /**
  * Helper class to handle the format of the User Data that is stored into AppData.
@@ -42,7 +47,7 @@ public class UserDataHelper {
      * Returns the JSON string representation of the given UserData object as a byte array.
      */
     static public byte[] toByteArray(UserData userData) {
-        return toJsonString(userData).getBytes(Charsets.UTF_8);
+        return toJsonString(userData).getBytes(IOUtils.CHARSET_UTF8);
     }
 
     /**

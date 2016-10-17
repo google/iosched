@@ -26,7 +26,7 @@ import com.google.samples.apps.iosched.testutils.StubModelHelper;
 
 import java.util.HashMap;
 
-import static com.google.common.base.Preconditions.checkNotNull;
+import static com.google.samples.apps.iosched.util.PreconditionUtils.checkNotNull;
 
 /**
  * A stub {@link VideoLibraryModel}, to be injected using {@link com.google.samples.apps.iosched

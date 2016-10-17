@@ -15,13 +15,13 @@
  */
 package com.google.samples.apps.iosched.debug.actions;
 
-import com.google.common.base.Charsets;
+import android.content.Context;
+import android.os.AsyncTask;
+
 import com.google.samples.apps.iosched.debug.DebugAction;
 import com.google.samples.apps.iosched.sync.userdata.util.UserData;
 import com.google.samples.apps.iosched.sync.userdata.util.UserDataHelper;
-
-import android.content.Context;
-import android.os.AsyncTask;
+import com.google.samples.apps.iosched.util.IOUtils;
 
 /**
  * Simple DebugAction that displays the local user data of a current user.
@@ -39,7 +39,7 @@ public class DisplayUserDataDebugAction implements DebugAction {
             @Override
             protected void onPostExecute(UserData userData) {
                 callback.done(true, "Found User Data: " + new String(
-                        UserDataHelper.toByteArray(userData), Charsets.UTF_8));
+                        UserDataHelper.toByteArray(userData), IOUtils.CHARSET_UTF8));
             }
         }.execute(context);
     }

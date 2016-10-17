@@ -15,7 +15,8 @@
  */
 package com.google.samples.apps.iosched.model;
 
-import com.google.common.annotations.VisibleForTesting;
+import android.support.annotation.VisibleForTesting;
+
 import com.google.samples.apps.iosched.Config;
 import com.google.samples.apps.iosched.provider.ScheduleContract;
 

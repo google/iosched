@@ -16,17 +16,13 @@
 
 package com.google.samples.apps.iosched.feedback;
 
-import com.google.samples.apps.iosched.BuildConfig;
 import com.turbomanage.httpclient.BasicHttpClient;
-import com.turbomanage.httpclient.HttpResponse;
-import com.turbomanage.httpclient.ParameterMap;
 
-import java.net.HttpURLConnection;
 import java.util.HashMap;
-import java.util.Map;
 
-import static com.google.common.base.Preconditions.checkState;
-import static com.google.samples.apps.iosched.util.LogUtils.*;
+import static com.google.samples.apps.iosched.util.LogUtils.LOGE;
+import static com.google.samples.apps.iosched.util.LogUtils.makeLogTag;
+import static com.google.samples.apps.iosched.util.PreconditionUtils.checkState;
 
 /**
  * Sends feedback data to the server Feedback API.
@@ -34,7 +30,7 @@ import static com.google.samples.apps.iosched.util.LogUtils.*;
 public class FeedbackApiHelper {
 
     private static final String TAG = makeLogTag(FeedbackApiHelper.class);
-    
+
     private final String mUrl;
 
     private BasicHttpClient mHttpClient;

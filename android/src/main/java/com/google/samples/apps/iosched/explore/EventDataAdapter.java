@@ -15,7 +15,6 @@
 package com.google.samples.apps.iosched.explore;
 
 import android.app.Activity;
-import android.app.usage.UsageEvents;
 import android.content.ActivityNotFoundException;
 import android.content.Intent;
 import android.graphics.drawable.ColorDrawable;
@@ -28,7 +27,6 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.common.base.Strings;
 import com.google.samples.apps.iosched.R;
 import com.google.samples.apps.iosched.explore.data.EventCard;
 import com.google.samples.apps.iosched.explore.data.EventData;
@@ -36,11 +34,8 @@ import com.google.samples.apps.iosched.map.MapActivity;
 import com.google.samples.apps.iosched.session.SessionDetailActivity;
 import com.google.samples.apps.iosched.ui.widget.recyclerview.UpdatableAdapter;
 import com.google.samples.apps.iosched.util.ActivityUtils;
-import com.google.samples.apps.iosched.util.MapUtils;
 
 import java.util.List;
-
-import static com.google.samples.apps.iosched.util.LogUtils.LOGE;
 
 /**
  * A {@link RecyclerView.Adapter} for a list of {@link EventData} cards.
