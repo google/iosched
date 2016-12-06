@@ -13,7 +13,10 @@
 # limitations under the License.
 
 language: android
-
+# Turn off caching to avoid any caching problems
+cache: false
+# Use the Travis Container-Based Infrastructure (see #203)
+sudo: false
 env:
   global:
     - ANDROID_API_LEVEL=21
@@ -22,20 +25,27 @@ env:
 
 android:
   components:
+    - platform-tools
+    - tools
     - build-tools-$ANDROID_BUILD_TOOLS_VERSION
     - android-$ANDROID_API_LEVEL
+    # For Google Maps API v1
     - addon-google_apis-google-$ANDROID_API_LEVEL
+    # Google Play Services
+    - extra-google-google_play_services
+    # Support library
+    - extra-android-support
+    # Latest artifacts in local repository
     - extra-google-m2repository
     - extra-android-m2repository
+    # Specify at least one system image,
     - sys-img-armeabi-v7a-addon-google_apis-google-$ANDROID_API_LEVEL
 
-notifications:
-  email: false
-
-before_install:
+before_script:
+  # Create and start emulator
   - echo no | android create avd --force -n test -t "Google Inc.:Google APIs:"$ANDROID_API_LEVEL --abi $ANDROID_ABI
   - emulator -avd test -no-skin -no-audio -no-window &
 
-before_script:
-  - ./scripts/wait_for_emulator.sh
-  - adb shell input keyevent 82 &
+script:
+  - ./wait_for_emulator
+  - ./gradlew connectedCheck -PdisablePreDex
