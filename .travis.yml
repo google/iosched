@@ -33,7 +33,7 @@ notifications:
   email: false
 
 before_install:
-  - echo no | android create avd --force -n test -t "Google Inc.:Google APIs:21" --abi ANDROID_ABI
+  - echo no | android create avd --force -n test -t "Google Inc.:Google APIs:"$ANDROID_API_LEVEL --abi $ANDROID_ABI
   - emulator -avd test -no-skin -no-audio -no-window &
 
 before_script:
