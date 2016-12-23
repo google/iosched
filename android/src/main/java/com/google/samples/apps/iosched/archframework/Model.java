@@ -60,14 +60,15 @@ public interface Model<Q extends QueryEnum, UA extends UserActionEnum> {
      * Add the constants used to store values in the bundle to the Model implementation class as
      * final static protected strings.
      */
-    public void deliverUserAction(UA action, @Nullable Bundle args, UserActionCallback callback);
+    public void deliverUserAction(UA action, @Nullable Bundle args,
+            UserActionCallback<UA> callback);
 
     /**
      * Requests the Model to load data for the given {@code query}, then notify the data query was
      * completed via the {@code callback}. Typically, this is called to initialise the model with
      * the data needed to display the UI when loading.
      */
-    public void requestData(Q query, DataQueryCallback callback);
+    public void requestData(Q query, DataQueryCallback<Q> callback);
 
     public void cleanUp();
 
@@ -75,9 +76,9 @@ public interface Model<Q extends QueryEnum, UA extends UserActionEnum> {
      * A callback used to notify the {@link Presenter} that the update for a given {@link QueryEnum}
      * has completed, either successfully or with error.
      */
-    public interface DataQueryCallback<M extends Model, Q extends QueryEnum> {
+    public interface DataQueryCallback<Q extends QueryEnum> {
 
-        public void onModelUpdated(M model, Q query);
+        public void onModelUpdated(Model<Q, ?> model, Q query);
 
         public void onError(Q query);
     }
@@ -86,9 +87,9 @@ public interface Model<Q extends QueryEnum, UA extends UserActionEnum> {
      * A callback used to notify the {@link Presenter} that the update for a given {@link
      * UserActionEnum} has completed, either successfully or with error.
      */
-    public interface UserActionCallback<M extends Model, UA extends UserActionEnum> {
+    public interface UserActionCallback<UA extends UserActionEnum> {
 
-        public void onModelUpdated(M model, UA userAction);
+        public void onModelUpdated(Model<?, UA> model, UA userAction);
 
         public void onError(UA userAction);
 

@@ -107,7 +107,7 @@ public class ExploreIOFragment extends Fragment
      */
     private View mEmptyView;
 
-    private List<UserActionListener> mListeners = new ArrayList<>();
+    private List<UserActionListener<ExploreIOUserActionEnum>> mListeners = new ArrayList<>();
 
     private ThrottledContentObserver mSessionsObserver, mTagsObserver;
 
@@ -206,7 +206,7 @@ public class ExploreIOFragment extends Fragment
     }
 
     @Override
-    public void addListener(UserActionListener toAdd) {
+    public void addListener(UserActionListener<ExploreIOUserActionEnum> toAdd) {
         mListeners.add(toAdd);
     }
 
@@ -214,8 +214,9 @@ public class ExploreIOFragment extends Fragment
         ExploreIOModel model = ModelProvider.provideExploreIOModel(
                 getDataUri(ExploreIOQueryEnum.SESSIONS), getContext(),
                 getLoaderManager());
-        PresenterImpl presenter = new PresenterImpl(model, this,
-                ExploreIOUserActionEnum.values(), ExploreIOQueryEnum.values());
+        PresenterImpl<ExploreIOModel, ExploreIOQueryEnum, ExploreIOUserActionEnum> presenter =
+                new PresenterImpl<>(model, this, ExploreIOUserActionEnum.values(),
+                        ExploreIOQueryEnum.values());
         presenter.loadInitialQueries();
     }
 
@@ -281,11 +282,11 @@ public class ExploreIOFragment extends Fragment
         if (!isAdded()) {
             return;
         }
-        for (UserActionListener h1 : mListeners) {
+        for (UserActionListener<ExploreIOUserActionEnum> listener : mListeners) {
             Bundle args = new Bundle();
             args.putInt(ModelWithLoaderManager.KEY_RUN_QUERY_ID,
                     ExploreIOModel.ExploreIOQueryEnum.SESSIONS.getId());
-            h1.onUserAction(ExploreIOModel.ExploreIOUserActionEnum.RELOAD, args);
+            listener.onUserAction(ExploreIOModel.ExploreIOUserActionEnum.RELOAD, args);
         }
     }
 
@@ -293,11 +294,11 @@ public class ExploreIOFragment extends Fragment
         if (!isAdded()) {
             return;
         }
-        for (UserActionListener h1 : mListeners) {
+        for (UserActionListener<ExploreIOUserActionEnum> listener : mListeners) {
             Bundle args = new Bundle();
             args.putInt(ModelWithLoaderManager.KEY_RUN_QUERY_ID,
                     ExploreIOModel.ExploreIOQueryEnum.TAGS.getId());
-            h1.onUserAction(ExploreIOModel.ExploreIOUserActionEnum.RELOAD, args);
+            listener.onUserAction(ExploreIOModel.ExploreIOUserActionEnum.RELOAD, args);
         }
     }
 
@@ -451,7 +452,7 @@ public class ExploreIOFragment extends Fragment
                 final TrackViewHolder trackHolder = (TrackViewHolder) holder;
                 final int position = trackHolder.getAdapterPosition();
                 if (position != RecyclerView.NO_POSITION) {
-                    final int trackId = getTrackId((ItemGroup) mItems.get(position));
+                    final int trackId = getTrackId(mItems.get(position));
                     mTrackSessionsState.put(trackId,
                             trackHolder.sessions.getLayoutManager().onSaveInstanceState());
                 }
@@ -645,9 +646,9 @@ public class ExploreIOFragment extends Fragment
          * Process the given {@link ExploreIOModel} to create the list of items to be displayed by
          * the {@link RecyclerView}.
          */
-        private List processModel(final ExploreIOModel model) {
+        private List<Object> processModel(final ExploreIOModel model) {
 
-            final ArrayList exploreCards = new ArrayList();
+            final List<Object> exploreCards = new ArrayList<>();
 
             // Add any Message cards
             final List<MessageData> messages = model.getMessages();
@@ -700,7 +701,7 @@ public class ExploreIOFragment extends Fragment
 
             final EventData eventData = model.getEventData();
             if (eventData != null && eventData.getCards() != null &&
-            eventData.getCards().size() > 0) {
+                    eventData.getCards().size() > 0) {
                 mTrackSessionsAdapters.put(getTrackId(eventData),
                         new EventDataAdapter(mHost, eventData.getCards()));
             }

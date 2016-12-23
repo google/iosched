@@ -19,7 +19,7 @@ import java.util.HashMap;
  */
 public class StubSessionDetailModel extends SessionDetailModel {
 
-    private HashMap<QueryEnum, Cursor> mFakeData = new HashMap<QueryEnum, Cursor>();
+    private HashMap<SessionDetailQueryEnum, Cursor> mFakeData = new HashMap<>();
 
     public StubSessionDetailModel(Uri sessionUri, Context context, Cursor sessionCursor,
             Cursor speakersCursor, Cursor tagMetadataCursor) {
@@ -35,7 +35,7 @@ public class StubSessionDetailModel extends SessionDetailModel {
      */
     @Override
     public void requestData(final @NonNull SessionDetailQueryEnum query,
-            final @NonNull DataQueryCallback callback) {
+            final @NonNull DataQueryCallback<SessionDetailQueryEnum> callback) {
         new StubModelHelper<SessionDetailModel.SessionDetailQueryEnum>()
                 .overrideLoaderManager(query, callback, mFakeData, mDataQueryCallbacks, this);
     }

@@ -32,7 +32,7 @@ import java.util.HashMap;
  */
 public class StubExploreIOModel extends ExploreIOModel {
 
-    private HashMap<QueryEnum, Cursor> mFakeData = new HashMap<QueryEnum, Cursor>();
+    private HashMap<ExploreIOQueryEnum, Cursor> mFakeData = new HashMap<>();
 
     public StubExploreIOModel(Context context, Cursor sessionsCursor, Cursor tagsCursor) {
         super(context, null, null);
@@ -45,8 +45,8 @@ public class StubExploreIOModel extends ExploreIOModel {
      * Cursor)} with a stub {@link Cursor} as provided in the constructor.
      */
     @Override
-    public void requestData(final @NonNull ExploreIOModel.ExploreIOQueryEnum query,
-            final @NonNull DataQueryCallback callback) {
+    public void requestData(final @NonNull ExploreIOQueryEnum query,
+            final @NonNull DataQueryCallback<ExploreIOQueryEnum> callback) {
         new StubModelHelper<ExploreIOQueryEnum>()
                 .overrideLoaderManager(query, callback, mFakeData, mDataQueryCallbacks, this);
     }

@@ -57,7 +57,8 @@ public class NavigationModel implements Model<NavigationQueryEnum, NavigationUse
 
     @Override
     public void deliverUserAction(final NavigationUserActionEnum action,
-            @Nullable final Bundle args, final UserActionCallback callback) {
+            @Nullable final Bundle args,
+            final UserActionCallback<NavigationUserActionEnum> callback) {
         switch (action) {
             case RELOAD_ITEMS:
                 mItems = null;
@@ -69,7 +70,7 @@ public class NavigationModel implements Model<NavigationQueryEnum, NavigationUse
 
     @Override
     public void requestData(final NavigationQueryEnum query,
-            final DataQueryCallback callback) {
+            final DataQueryCallback<NavigationQueryEnum> callback) {
         switch (query) {
             case LOAD_ITEMS:
                 if (mItems != null) {
@@ -161,10 +162,9 @@ public class NavigationModel implements Model<NavigationQueryEnum, NavigationUse
         }
 
         public static NavigationItemEnum getById(int id) {
-            NavigationItemEnum[] values = NavigationItemEnum.values();
-            for (int i = 0; i < values.length; i++) {
-                if (values[i].getId() == id) {
-                return values[i];
+            for (NavigationItemEnum value : NavigationItemEnum.values()) {
+                if (value.getId() == id) {
+                    return value;
                 }
             }
             return INVALID;

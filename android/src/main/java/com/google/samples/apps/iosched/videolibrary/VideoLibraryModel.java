@@ -254,7 +254,8 @@ public class VideoLibraryModel
 
     @Override
     public void processUserAction(final VideoLibraryUserActionEnum action,
-            @Nullable final Bundle args, final UserActionCallback callback) {
+            @Nullable final Bundle args,
+            final UserActionCallback<VideoLibraryUserActionEnum> callback) {
         switch (action) {
             case VIDEO_PLAYED:
                 // If the action is a VIDEO_VIEWED we save the information that the video has

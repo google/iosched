@@ -37,7 +37,7 @@ public abstract class AppNavigationViewAbstractImpl implements
         UpdatableView<NavigationModel, NavigationQueryEnum, NavigationUserActionEnum>,
         AppNavigationView {
 
-    private UserActionListener mUserActionListener;
+    private UserActionListener<NavigationUserActionEnum> mUserActionListener;
 
     protected LoginStateListener mLoginStateListener;
 
@@ -46,8 +46,7 @@ public abstract class AppNavigationViewAbstractImpl implements
     protected NavigationItemEnum mSelfItem;
 
     @Override
-    public void displayData(final NavigationModel model,
-            final NavigationModel.NavigationQueryEnum query) {
+    public void displayData(final NavigationModel model, final NavigationQueryEnum query) {
         switch (query) {
             case LOAD_ITEMS:
                 displayNavigationItems(model.getItems());
@@ -56,7 +55,7 @@ public abstract class AppNavigationViewAbstractImpl implements
     }
 
     @Override
-    public void displayErrorMessage(final NavigationModel.NavigationQueryEnum query) {
+    public void displayErrorMessage(final NavigationQueryEnum query) {
         switch (query) {
             case LOAD_ITEMS:
                 // No error message displayed
@@ -74,8 +73,9 @@ public abstract class AppNavigationViewAbstractImpl implements
         setUpView();
 
         NavigationModel model = new NavigationModel();
-        PresenterImpl presenter = new PresenterImpl(model, this,
-                NavigationUserActionEnum.values(), NavigationQueryEnum.values());
+        PresenterImpl<NavigationModel, NavigationQueryEnum, NavigationUserActionEnum> presenter
+                = new PresenterImpl<>(model, this, NavigationUserActionEnum.values(),
+                NavigationQueryEnum.values());
         presenter.loadInitialQueries();
         addListener(presenter);
     }
@@ -114,7 +114,7 @@ public abstract class AppNavigationViewAbstractImpl implements
 
     @Override
     public void displayUserActionResult(final NavigationModel model,
-            final NavigationModel.NavigationUserActionEnum userAction, final boolean success) {
+            final NavigationUserActionEnum userAction, final boolean success) {
         switch (userAction) {
             case RELOAD_ITEMS:
                 displayNavigationItems(model.getItems());
@@ -123,7 +123,7 @@ public abstract class AppNavigationViewAbstractImpl implements
     }
 
     @Override
-    public Uri getDataUri(final NavigationModel.NavigationQueryEnum query) {
+    public Uri getDataUri(final NavigationQueryEnum query) {
         // This feature has no Uri
         return null;
     }
@@ -134,7 +134,7 @@ public abstract class AppNavigationViewAbstractImpl implements
     }
 
     @Override
-    public void addListener(final UserActionListener listener) {
+    public void addListener(final UserActionListener<NavigationUserActionEnum> listener) {
         mUserActionListener = listener;
     }
 }

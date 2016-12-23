@@ -70,7 +70,7 @@ public class StubMyScheduleModel extends MyScheduleModel {
      * mock data passed in the constructor.
      */
     @Override
-    protected void updateData(final DataQueryCallback callback) {
+    protected void updateData(final DataQueryCallback<MyScheduleQueryEnum> callback) {
         for (int i = 0; i < Config.CONFERENCE_DAYS.length; i++) {
             /**
              * The key in {@link #mScheduleData} is 1 for the first day, 2 for the second etc

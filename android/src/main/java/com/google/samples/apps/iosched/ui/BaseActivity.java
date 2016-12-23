@@ -439,7 +439,6 @@ public abstract class BaseActivity extends AppCompatActivity implements
             return;
         } else if (requestCode == SWITCH_USER_RESULT) {
             // Handle account change notifications after {@link SwitchUserActivity} has been invoked
-            // (typically by {@link AppNavigationViewAsDrawerImpl}).
             if (resultCode == RESULT_OK) {
                 onAccountChangeRequested();
                 onStartLoginProcessRequested();

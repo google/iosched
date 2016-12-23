@@ -36,7 +36,7 @@ import static com.google.samples.apps.iosched.util.PreconditionUtils.checkNotNul
  */
 public class StubVideoLibraryModel extends VideoLibraryModel {
 
-    private HashMap<QueryEnum, Cursor> mFakeData = new HashMap<QueryEnum, Cursor>();
+    private HashMap<VideoLibraryQueryEnum, Cursor> mFakeData = new HashMap<>();
 
     public StubVideoLibraryModel(Context context, Cursor videosCursor, Cursor filterCursor) {
         super(context, null, null, null, null);
@@ -50,8 +50,8 @@ public class StubVideoLibraryModel extends VideoLibraryModel {
      */
     @Override
     public void requestData(final @NonNull VideoLibraryQueryEnum query,
-            final @NonNull DataQueryCallback callback) {
-        new StubModelHelper<VideoLibraryModel.VideoLibraryQueryEnum>()
+            final @NonNull DataQueryCallback<VideoLibraryQueryEnum> callback) {
+        new StubModelHelper<VideoLibraryQueryEnum>()
                 .overrideLoaderManager(query, callback, mFakeData, mDataQueryCallbacks, this);
     }
 
@@ -62,16 +62,15 @@ public class StubVideoLibraryModel extends VideoLibraryModel {
      */
     @Override
     public void deliverUserAction(@NonNull VideoLibraryUserActionEnum action, @Nullable Bundle args,
-            @NonNull UserActionCallback callback) {
+            @NonNull UserActionCallback<VideoLibraryUserActionEnum> callback) {
         checkNotNull(callback);
         checkNotNull(action);
         switch (action) {
             case CHANGE_FILTER:
-                mDataUpdateCallbacks.put((Integer) args.get(KEY_RUN_QUERY_ID), callback);
-                mUserActionsLaunchingQueries.put((Integer) args.get(KEY_RUN_QUERY_ID), action);
-                onLoadFinished((VideoLibraryQueryEnum) QueryEnumHelper
-                                .getQueryForId((Integer) args.get(KEY_RUN_QUERY_ID),
-                                        VideoLibraryQueryEnum.values()),
+                final int id = args.getInt(KEY_RUN_QUERY_ID);
+                mDataUpdateCallbacks.put(id, callback);
+                mUserActionsLaunchingQueries.put(id, action);
+                onLoadFinished(QueryEnumHelper.getQueryForId(id, VideoLibraryQueryEnum.values()),
                         mFakeData.get(VideoLibraryQueryEnum.VIDEOS));
                 break;
             default:

@@ -52,7 +52,7 @@ public class MyScheduleSingleDayFragment extends ListFragment
 
     private MyScheduleDayAdapter mViewAdapter;
 
-    private UserActionListener mListener;
+    private UserActionListener<MyScheduleUserActionEnum> mListener;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -75,7 +75,7 @@ public class MyScheduleSingleDayFragment extends ListFragment
     @Override
     public void onResume() {
         super.onResume();
-        mListener.onUserAction(MyScheduleModel.MyScheduleUserActionEnum.RELOAD_DATA, null);
+        mListener.onUserAction(MyScheduleUserActionEnum.RELOAD_DATA, null);
     }
 
     @Override
@@ -123,8 +123,7 @@ public class MyScheduleSingleDayFragment extends ListFragment
     }
 
     @Override
-    public void displayUserActionResult(MyScheduleModel model
-            , MyScheduleUserActionEnum userAction,
+    public void displayUserActionResult(MyScheduleModel model, MyScheduleUserActionEnum userAction,
             boolean success) {
         switch (userAction) {
             case RELOAD_DATA:
@@ -165,7 +164,7 @@ public class MyScheduleSingleDayFragment extends ListFragment
     }
 
     @Override
-    public void addListener(UserActionListener listener) {
+    public void addListener(UserActionListener<MyScheduleUserActionEnum> listener) {
         mListener = listener;
     }
 

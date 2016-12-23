@@ -68,20 +68,19 @@ public class VideoLibraryFilteredFragment extends Fragment implements
     private DrawerLayout mDrawerLayout = null;
     private View mEmptyView = null;
     private ImageLoader mImageLoader;
-    private List<UserActionListener> mListeners = new ArrayList<>();
+    private List<UserActionListener<VideoLibraryUserActionEnum>> mListeners = new ArrayList<>();
     private VideoLibraryFilteredContainer mParent;
     private RadioGroup mTopicsFilterRadioGroup = null;
     private RecyclerView mVideoList = null;
     private RadioGroup mYearsFilterRadioGroup = null;
 
     @Override
-    public void addListener(UserActionListener toAdd) {
+    public void addListener(UserActionListener<VideoLibraryUserActionEnum> toAdd) {
         mListeners.add(toAdd);
     }
 
     @Override
-    public void displayData(final VideoLibraryModel model,
-            final VideoLibraryQueryEnum query) {
+    public void displayData(final VideoLibraryModel model, final VideoLibraryQueryEnum query) {
         if ((VideoLibraryModel.VideoLibraryQueryEnum.VIDEOS == query
                 || VideoLibraryModel.VideoLibraryQueryEnum.MY_VIEWED_VIDEOS == query)
                 && model.getVideos() != null) {
@@ -226,8 +225,8 @@ public class VideoLibraryFilteredFragment extends Fragment implements
         model.setSelectedTopic(topicIdFilter);
         model.setSelectedYear(yearFilter);
 
-        PresenterImpl presenter =
-                new PresenterImpl(model, this, VideoLibraryUserActionEnum.values(),
+        PresenterImpl<VideoLibraryModel, VideoLibraryQueryEnum, VideoLibraryUserActionEnum>
+                presenter = new PresenterImpl<>(model, this, VideoLibraryUserActionEnum.values(),
                         VideoLibraryQueryEnum.values());
         presenter.loadInitialQueries();
     }
@@ -236,7 +235,7 @@ public class VideoLibraryFilteredFragment extends Fragment implements
      * Called when the user has selected a new filter for videos.
      */
     private void onVideoFilterChanged(Object filter) {
-        for (UserActionListener listener : mListeners) {
+        for (UserActionListener<VideoLibraryUserActionEnum> listener : mListeners) {
             Bundle args = new Bundle();
             args.putInt(ModelWithLoaderManager.KEY_RUN_QUERY_ID,
                     VideoLibraryModel.VideoLibraryQueryEnum.VIDEOS.getId());

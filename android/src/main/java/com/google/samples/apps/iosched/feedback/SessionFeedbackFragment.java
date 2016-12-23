@@ -60,7 +60,7 @@ public class SessionFeedbackFragment extends Fragment
 
     private CustomRatingBar mSpeakerFeedbackBar;
 
-    private List<UserActionListener> listeners = new ArrayList<>();
+    private List<UserActionListener<SessionFeedbackUserActionEnum>> listeners = new ArrayList<>();
 
     public SessionFeedbackFragment() {
     }
@@ -116,8 +116,8 @@ public class SessionFeedbackFragment extends Fragment
         SessionFeedbackModel model = ModelProvider.provideSessionFeedbackModel(
                 ((SessionFeedbackActivity) getActivity()).getSessionUri(), getContext(),
                 new FeedbackHelper(getContext()), getLoaderManager());
-        PresenterImpl presenter =
-                new PresenterImpl(model, this, SessionFeedbackUserActionEnum.values(),
+        PresenterImpl<SessionFeedbackModel, SessionFeedbackQueryEnum, SessionFeedbackUserActionEnum>
+                presenter = new PresenterImpl<>(model, this, SessionFeedbackUserActionEnum.values(),
                         SessionFeedbackQueryEnum.values());
         presenter.loadInitialQueries();
     }
@@ -136,8 +136,8 @@ public class SessionFeedbackFragment extends Fragment
         args.putInt(SessionFeedbackModel.DATA_SPEAKER_ANSWER_INT, speakerAnswer);
         args.putString(SessionFeedbackModel.DATA_COMMENT_STRING, comments);
 
-        for (UserActionListener h1 : listeners) {
-            h1.onUserAction(SessionFeedbackModel.SessionFeedbackUserActionEnum.SUBMIT, args);
+        for (UserActionListener<SessionFeedbackUserActionEnum> listener : listeners) {
+            listener.onUserAction(SessionFeedbackUserActionEnum.SUBMIT, args);
         }
 
         getActivity().finish();
@@ -191,7 +191,7 @@ public class SessionFeedbackFragment extends Fragment
     }
 
     @Override
-    public void addListener(UserActionListener listener) {
+    public void addListener(UserActionListener<SessionFeedbackUserActionEnum> listener) {
         listeners.add(listener);
     }
 }

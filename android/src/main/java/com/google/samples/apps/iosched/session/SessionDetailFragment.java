@@ -60,7 +60,6 @@ import com.google.samples.apps.iosched.Config;
 import com.google.samples.apps.iosched.R;
 import com.google.samples.apps.iosched.archframework.PresenterImpl;
 import com.google.samples.apps.iosched.archframework.UpdatableView;
-import com.google.samples.apps.iosched.archframework.UserActionEnum;
 import com.google.samples.apps.iosched.explore.ExploreSessionsActivity;
 import com.google.samples.apps.iosched.injection.ModelProvider;
 import com.google.samples.apps.iosched.map.MapActivity;
@@ -144,7 +143,7 @@ public class SessionDetailFragment extends Fragment implements
 
     private boolean mAnalyticsScreenViewHasFired;
 
-    private UserActionListener mListener;
+    private UserActionListener<SessionDetailUserActionEnum> mListener;
 
     private boolean mShowFab = false;
 
@@ -155,7 +154,7 @@ public class SessionDetailFragment extends Fragment implements
     private GoogleApiClient mClient;
 
     @Override
-    public void addListener(UserActionListener listener) {
+    public void addListener(UserActionListener<SessionDetailUserActionEnum> listener) {
         mListener = listener;
     }
 
@@ -265,7 +264,7 @@ public class SessionDetailFragment extends Fragment implements
         return false;
     }
 
-    private void sendUserAction(UserActionEnum action, Bundle args) {
+    private void sendUserAction(SessionDetailUserActionEnum action, Bundle args) {
         mListener.onUserAction(action, args);
     }
 
@@ -273,8 +272,9 @@ public class SessionDetailFragment extends Fragment implements
         SessionDetailModel model = ModelProvider.provideSessionDetailModel(
                 ((SessionDetailActivity) getActivity()).getSessionUri(), getContext(),
                 new SessionsHelper(getActivity()), getLoaderManager());
-        PresenterImpl presenter = new PresenterImpl(model, this,
-                SessionDetailUserActionEnum.values(), SessionDetailQueryEnum.values());
+        PresenterImpl<SessionDetailModel, SessionDetailQueryEnum, SessionDetailUserActionEnum>
+                presenter = new PresenterImpl<>(model, this, SessionDetailUserActionEnum.values(),
+                SessionDetailQueryEnum.values());
         presenter.loadInitialQueries();
     }
 
@@ -858,7 +858,7 @@ public class SessionDetailFragment extends Fragment implements
             LayoutInflater inflater = LayoutInflater.from(getContext());
             String[] tagIds = data.getTagsString().split(",");
 
-            List<TagMetadata.Tag> tags = new ArrayList<TagMetadata.Tag>();
+            List<TagMetadata.Tag> tags = new ArrayList<>();
             for (String tagId : tagIds) {
                 if (Config.Tags.SESSIONS.equals(tagId) ||
                         Config.Tags.SPECIAL_KEYNOTE.equals(tagId)) {

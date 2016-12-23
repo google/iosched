@@ -63,8 +63,7 @@ public abstract class ModelWithLoaderManager<Q extends QueryEnum, UA extends Use
      * on the callback after the data is read from the cursor.
      */
     @VisibleForTesting
-    protected HashMap<Q, DataQueryCallback> mDataQueryCallbacks =
-            new HashMap<Q, DataQueryCallback>();
+    protected HashMap<Q, DataQueryCallback<Q>> mDataQueryCallbacks = new HashMap<>();
 
     /**
      * Map of callbacks, using the id of the user action as key. This is required because some user
@@ -82,8 +81,7 @@ public abstract class ModelWithLoaderManager<Q extends QueryEnum, UA extends Use
      * on the callback after the data is read from the cursor.
      */
     @VisibleForTesting
-    protected HashMap<Integer, UserActionCallback> mDataUpdateCallbacks =
-            new HashMap<Integer, UserActionCallback>();
+    protected HashMap<Integer, UserActionCallback<UA>> mDataUpdateCallbacks = new HashMap<>();
 
     /**
      * Map of user actions that have launched queries, using their id as key. This is used in
@@ -97,7 +95,7 @@ public abstract class ModelWithLoaderManager<Q extends QueryEnum, UA extends Use
      * on the callback after the data is read from the cursor.
      */
     @VisibleForTesting
-    protected HashMap<Integer, UA> mUserActionsLaunchingQueries = new HashMap<Integer, UA>();
+    protected HashMap<Integer, UA> mUserActionsLaunchingQueries = new HashMap<>();
 
     public ModelWithLoaderManager(Q[] queries, UA[] userActions, LoaderManager loaderManager) {
         mQueries = queries;
@@ -127,7 +125,7 @@ public abstract class ModelWithLoaderManager<Q extends QueryEnum, UA extends Use
      */
     @Override
     public void deliverUserAction(@NonNull UA action, @Nullable Bundle args,
-            @NonNull UserActionCallback callback) {
+            @NonNull UserActionCallback<UA> callback) {
         checkNotNull(callback);
         checkNotNull(action);
         if (args != null && args.containsKey(KEY_RUN_QUERY_ID)) {
@@ -168,10 +166,10 @@ public abstract class ModelWithLoaderManager<Q extends QueryEnum, UA extends Use
      * @see SessionDetailModel#processUserAction(UA, @Nullable Bundle, UserActionCallback )
      */
     public abstract void processUserAction(UA action, @Nullable Bundle args,
-            UserActionCallback callback);
+            UserActionCallback<UA> callback);
 
     @Override
-    public void requestData(@NonNull Q query, @NonNull DataQueryCallback callback) {
+    public void requestData(@NonNull Q query, @NonNull DataQueryCallback<Q> callback) {
         checkNotNull(query);
         checkNotNull(callback);
         if (isQueryValid(query)) {
@@ -189,13 +187,13 @@ public abstract class ModelWithLoaderManager<Q extends QueryEnum, UA extends Use
     }
 
     private boolean isQueryValid(int queryId) {
-        Q match = (Q) QueryEnumHelper.getQueryForId(queryId, getQueries());
+        Q match = QueryEnumHelper.getQueryForId(queryId, getQueries());
         return match != null;
     }
 
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
-        return createCursorLoader((Q) QueryEnumHelper.getQueryForId(id, mQueries), args);
+        return createCursorLoader(QueryEnumHelper.getQueryForId(id, mQueries), args);
     }
 
     /**
@@ -213,7 +211,7 @@ public abstract class ModelWithLoaderManager<Q extends QueryEnum, UA extends Use
 
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
-        Q query = (Q) QueryEnumHelper.getQueryForId(loader.getId(), mQueries);
+        Q query = QueryEnumHelper.getQueryForId(loader.getId(), mQueries);
         onLoadFinished(query, data);
     }
 
@@ -226,7 +224,7 @@ public abstract class ModelWithLoaderManager<Q extends QueryEnum, UA extends Use
         boolean success = readDataFromCursor(data, query);
         if (mDataUpdateCallbacks.containsKey(query.getId())
                 && mUserActionsLaunchingQueries.containsKey(query.getId())) {
-            UserActionCallback callback = mDataUpdateCallbacks.get(query.getId());
+            UserActionCallback<UA> callback = mDataUpdateCallbacks.get(query.getId());
             UA userAction = mUserActionsLaunchingQueries.get(query.getId());
             if (success) {
                 callback.onModelUpdated(this, userAction);
@@ -235,7 +233,7 @@ public abstract class ModelWithLoaderManager<Q extends QueryEnum, UA extends Use
             }
         } else if (mDataQueryCallbacks.containsKey(query) &&
                 mDataQueryCallbacks.get(query) != null) {
-            DataQueryCallback callback = mDataQueryCallbacks.get(query);
+            DataQueryCallback<Q> callback = mDataQueryCallbacks.get(query);
             if (success) {
                 callback.onModelUpdated(this, query);
             } else {

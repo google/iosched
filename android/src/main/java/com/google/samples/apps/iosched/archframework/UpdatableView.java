@@ -41,7 +41,8 @@ import android.support.annotation.Nullable;
  * an {@link android.content.Intent} specifying at least one Data URI, used for loading the initial
  * data into the {@link Model}.
  */
-public interface UpdatableView<M, Q extends QueryEnum, UA extends UserActionEnum> {
+public interface UpdatableView<M extends Model<Q, UA>, Q extends QueryEnum, UA extends
+        UserActionEnum> {
 
     /**
      * Updates the view based on data in the model.
@@ -85,7 +86,7 @@ public interface UpdatableView<M, Q extends QueryEnum, UA extends UserActionEnum
 
     public Context getContext();
 
-    public void addListener(UserActionListener listener);
+    public void addListener(UserActionListener<UA> listener);
 
     /**
      * A listener for events fired off by a {@link Model}

@@ -3,6 +3,9 @@ package com.google.samples.apps.iosched.archframework;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 
+import com.google.samples.apps.iosched.archframework.Model.DataQueryCallback;
+import com.google.samples.apps.iosched.archframework.Model.UserActionCallback;
+
 import static com.google.samples.apps.iosched.util.LogUtils.LOGE;
 import static com.google.samples.apps.iosched.util.LogUtils.makeLogTag;
 
@@ -17,7 +20,8 @@ import static com.google.samples.apps.iosched.util.LogUtils.makeLogTag;
  * UpdatableView}(s) and passes the user actions on to the Model, then it updates the {@link
  * UpdatableView}(s) once the Model has completed its data update.
  */
-public class PresenterImpl implements Presenter, UpdatableView.UserActionListener {
+public class PresenterImpl<M extends Model<Q, UA>, Q extends QueryEnum, UA extends UserActionEnum>
+        implements Presenter, UpdatableView.UserActionListener<UA> {
 
     private static final String TAG = makeLogTag(PresenterImpl.class);
 
@@ -25,42 +29,42 @@ public class PresenterImpl implements Presenter, UpdatableView.UserActionListene
      * The UI that this Presenter controls.
      */
     @Nullable
-    private UpdatableView[] mUpdatableViews;
+    private UpdatableView<M, Q, UA>[] mUpdatableViews;
 
     /**
      * The Model that this Presenter controls.
      */
-    private Model mModel;
+    private M mModel;
 
     /**
      * The queries to load when the {@link android.app.Activity} loading this {@link
      * android.support.v4.app.Fragment} is created.
      */
-    private QueryEnum[] mInitialQueriesToLoad;
+    private Q[] mInitialQueriesToLoad;
 
     /**
      * The actions allowed by the presenter.
      */
-    private UserActionEnum[] mValidUserActions;
+    private UA[] mValidUserActions;
 
     /**
      * Use this constructor if this Presenter controls one view only.
      */
-    public PresenterImpl(Model model, UpdatableView view, UserActionEnum[] validUserActions,
-            QueryEnum[] initialQueries) {
+    public PresenterImpl(M model, UpdatableView<M, Q, UA> view, UA[] validUserActions,
+            Q[] initialQueries) {
         this(model, new UpdatableView[]{view}, validUserActions, initialQueries);
     }
 
     /**
      * Use this constructor if this Presenter controls more than one view.
      */
-    public PresenterImpl(Model model, @Nullable UpdatableView[] views, UserActionEnum[] validUserActions,
-            QueryEnum[] initialQueries) {
+    public PresenterImpl(M model, @Nullable UpdatableView<M, Q, UA>[] views, UA[] validUserActions,
+            Q[] initialQueries) {
         mModel = model;
         if (views != null) {
             mUpdatableViews = views;
-            for (int i = 0; i < mUpdatableViews.length; i++) {
-                mUpdatableViews[i].addListener(this);
+            for (UpdatableView<M, Q, UA> view : mUpdatableViews) {
+                view.addListener(this);
             }
         } else {
             LOGE(TAG, "Creating a PresenterImpl with null View");
@@ -73,13 +77,13 @@ public class PresenterImpl implements Presenter, UpdatableView.UserActionListene
     public void loadInitialQueries() {
         // Load data queries if any.
         if (mInitialQueriesToLoad != null && mInitialQueriesToLoad.length > 0) {
-            for (int i = 0; i < mInitialQueriesToLoad.length; i++) {
-                mModel.requestData(mInitialQueriesToLoad[i], new Model.DataQueryCallback() {
+            for (Q query: mInitialQueriesToLoad) {
+                mModel.requestData(query, new DataQueryCallback<Q>() {
                     @Override
-                    public void onModelUpdated(Model model, QueryEnum query) {
+                    public void onModelUpdated(Model<Q, ?> model, Q query) {
                         if (mUpdatableViews != null) {
-                            for (int i = 0; i < mUpdatableViews.length; i++) {
-                                mUpdatableViews[i].displayData(model, query);
+                            for (UpdatableView<M, Q, UA> view : mUpdatableViews) {
+                                view.displayData(mModel, query);
                             }
                         } else {
                             LOGE(TAG, "loadInitialQueries(), cannot notify a null view!");
@@ -87,10 +91,10 @@ public class PresenterImpl implements Presenter, UpdatableView.UserActionListene
                     }
 
                     @Override
-                    public void onError(QueryEnum query) {
+                    public void onError(Q query) {
                         if (mUpdatableViews != null) {
-                            for (int i = 0; i < mUpdatableViews.length; i++) {
-                                mUpdatableViews[i].displayErrorMessage(query);
+                            for (UpdatableView<M, Q, UA> view : mUpdatableViews) {
+                                view.displayErrorMessage(query);
                             }
                         } else {
                             LOGE(TAG, "loadInitialQueries(), cannot notify a null view!");
@@ -102,8 +106,8 @@ public class PresenterImpl implements Presenter, UpdatableView.UserActionListene
         } else {
             // No data query to load, update the view.
             if (mUpdatableViews != null) {
-                for (int i = 0; i < mUpdatableViews.length; i++) {
-                    mUpdatableViews[i].displayData(mModel, null);
+                for (UpdatableView<M, Q, UA> view : mUpdatableViews) {
+                    view.displayData(mModel, null);
                 }
             } else {
                 LOGE(TAG, "loadInitialQueries(), cannot notify a null view!");
@@ -124,23 +128,24 @@ public class PresenterImpl implements Presenter, UpdatableView.UserActionListene
      * for your query.
      */
     @Override
-    public void onUserAction(UserActionEnum action, @Nullable Bundle args) {
+    public void onUserAction(UA action, @Nullable Bundle args) {
         boolean isValid = false;
         if (mValidUserActions != null && action != null) {
-            for (int i = 0; i < mValidUserActions.length; i++) {
-                if (mValidUserActions[i].getId() == action.getId()) {
+            for (UA validAction : mValidUserActions) {
+                if (validAction.getId() == action.getId()) {
                     isValid = true;
+                    break;
                 }
             }
         }
         if (isValid) {
-            mModel.deliverUserAction(action, args, new Model.UserActionCallback() {
+            mModel.deliverUserAction(action, args, new UserActionCallback<UA>() {
 
                 @Override
-                public void onModelUpdated(Model model, UserActionEnum userAction) {
+                public void onModelUpdated(Model<?, UA> model, UA userAction) {
                     if (mUpdatableViews != null) {
-                        for (int i = 0; i < mUpdatableViews.length; i++) {
-                            mUpdatableViews[i].displayUserActionResult(model, userAction, true);
+                        for (UpdatableView<M, Q, UA> view : mUpdatableViews) {
+                            view.displayUserActionResult(mModel, userAction, true);
                         }
                     } else {
                         LOGE(TAG, "onUserAction(), cannot notify a null view!");
@@ -148,19 +153,11 @@ public class PresenterImpl implements Presenter, UpdatableView.UserActionListene
                 }
 
                 @Override
-                public void onError(UserActionEnum userAction) {
+                public void onError(UA userAction) {
                     if (mUpdatableViews != null) {
-                        for (int i = 0; i < mUpdatableViews.length; i++) {
-                            mUpdatableViews[i].displayUserActionResult(null, userAction, false);
+                        for (UpdatableView<M, Q, UA> view : mUpdatableViews) {
+                            view.displayUserActionResult(null, userAction, false);
                         }
-                        // User action not understood by model, even though the presenter understands
-
-                        // it.
-                        LOGE(TAG, "Model doesn't implement user action " + userAction.getId() +
-                                ". Have you forgotten to implement this UserActionEnum in your " +
-                                "model," +
-                                " or have you called setValidUserActions on your presenter with a " +
-                                "UserActionEnum that it shouldn't support?");
                     } else {
                         LOGE(TAG, "onUserAction(), cannot notify a null view!");
                     }
@@ -168,15 +165,14 @@ public class PresenterImpl implements Presenter, UpdatableView.UserActionListene
             });
         } else {
             if (mUpdatableViews != null) {
-                for (int i = 0; i < mUpdatableViews.length; i++) {
-                    mUpdatableViews[i].displayUserActionResult(null, action, false);
+                for (UpdatableView<M, Q, UA> view : mUpdatableViews) {
+                    view.displayUserActionResult(null, action, false);
                 }
                 // User action not understood.
                 throw new RuntimeException(
-                        "Invalid user action " + (action != null ? action.getId() : null) +
-                                ". Have you called setValidUserActions on your presenter, with all " +
-
-                                "the UserActionEnum you want to support?");
+                        "Invalid user action " + (action != null ? action.getId() : null)
+                                + ". Have you called setValidUserActions on your presenter, with "
+                                + "all the UserActionEnum you want to support?");
             } else {
                 LOGE(TAG, "onUserAction(), cannot notify a null view!");
             }

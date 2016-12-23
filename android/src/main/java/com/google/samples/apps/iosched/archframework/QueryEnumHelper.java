@@ -30,15 +30,14 @@ public class QueryEnumHelper {
      * @param enums The list of possible {@link QueryEnum}.
      * @return the {@link QueryEnum} with the given id or null if none found.
      */
-    public static QueryEnum getQueryForId(int id, QueryEnum[] enums) {
-        QueryEnum match = null;
+    public static <Q extends QueryEnum> Q getQueryForId(int id, Q[] enums) {
         if (enums != null) {
-            for (int i = 0; i < enums.length; i++) {
-                if (enums[i] != null && id == enums[i].getId()) {
-                    match = enums[i];
+            for (Q anEnum : enums) {
+                if (anEnum != null && id == anEnum.getId()) {
+                    return anEnum;
                 }
             }
         }
-        return match;
+        return null;
     }
 }

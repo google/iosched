@@ -39,8 +39,9 @@ import com.google.samples.apps.iosched.util.ParserUtils;
 import com.google.samples.apps.iosched.util.ThrottledContentObserver;
 
 import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 
 import static com.google.samples.apps.iosched.util.LogUtils.LOGD;
 import static com.google.samples.apps.iosched.util.LogUtils.LOGE;
@@ -74,15 +75,14 @@ public class MyScheduleModel implements Model<MyScheduleModel.MyScheduleQueryEnu
      * for the first day of the conference, using {@link #PRE_CONFERENCE_DAY_ID} for the
      * preconference day, if any.
      */
-    protected HashMap<Integer, ArrayList<ScheduleItem>> mScheduleData =
-            new HashMap<Integer, ArrayList<ScheduleItem>>();
+    protected HashMap<Integer, List<ScheduleItem>> mScheduleData = new HashMap<>();
 
     // The ScheduleHelper is responsible for feeding data in a format suitable to the Adapter.
     private ScheduleHelper mScheduleHelper;
 
     private Context mContext;
 
-    protected DataQueryCallback mScheduleDataQueryCallback;
+    protected DataQueryCallback<MyScheduleQueryEnum> mScheduleDataQueryCallback;
 
     /**
      * @param scheduleHelper
@@ -122,7 +122,7 @@ public class MyScheduleModel implements Model<MyScheduleModel.MyScheduleQueryEnu
         item.room =
                 item.subtitle = mContext.getString(R.string.my_schedule_badgepickup_description);
         item.sessionType = ScheduleItem.SESSION_TYPE_MISC;
-        mScheduleData.put(PRE_CONFERENCE_DAY_ID, new ArrayList<ScheduleItem>(Arrays.asList(item)));
+        mScheduleData.put(PRE_CONFERENCE_DAY_ID, Collections.singletonList(item));
     }
 
     private final SharedPreferences.OnSharedPreferenceChangeListener mPrefChangeListener =
@@ -196,7 +196,7 @@ public class MyScheduleModel implements Model<MyScheduleModel.MyScheduleQueryEnu
      * @param day The day of the conference, starting at 1 for the first day
      * @return the list of items, or an empty list if the day isn't found
      */
-    public ArrayList<ScheduleItem> getConferenceDataForDay(int day) {
+    public List<ScheduleItem> getConferenceDataForDay(int day) {
         if (mScheduleData.containsKey(day)) {
             return mScheduleData.get(day);
         } else {
@@ -210,20 +210,23 @@ public class MyScheduleModel implements Model<MyScheduleModel.MyScheduleQueryEnu
 
     @Override
     public void deliverUserAction(final MyScheduleUserActionEnum action, @Nullable Bundle args,
-            final UserActionCallback callback) {
+            final UserActionCallback<MyScheduleUserActionEnum> callback) {
         switch (action) {
             case RELOAD_DATA:
-                DataQueryCallback queryCallback = new DataQueryCallback() {
+                DataQueryCallback<MyScheduleQueryEnum> queryCallback =
+                        new DataQueryCallback<MyScheduleQueryEnum>() {
                     @Override
-                    public void onModelUpdated(Model model, QueryEnum query) {
+                    public void onModelUpdated(Model<MyScheduleQueryEnum, ?> model,
+                            MyScheduleQueryEnum query) {
                         callback.onModelUpdated(MyScheduleModel.this, action);
                     }
 
                     @Override
-                    public void onError(QueryEnum query) {
+                    public void onError(MyScheduleQueryEnum query) {
                         callback.onError(action);
                     }
                 };
+
                 if (mScheduleDataQueryCallback == null) {
                     mScheduleDataQueryCallback = queryCallback;
                 }
@@ -268,7 +271,7 @@ public class MyScheduleModel implements Model<MyScheduleModel.MyScheduleQueryEnu
 
     @Override
     public void requestData(@NonNull MyScheduleQueryEnum query,
-            @NonNull DataQueryCallback callback) {
+            @NonNull DataQueryCallback<MyScheduleQueryEnum> callback) {
         checkNotNull(query);
         checkNotNull(callback);
         switch (query) {
@@ -293,7 +296,7 @@ public class MyScheduleModel implements Model<MyScheduleModel.MyScheduleQueryEnu
      * allow us to extend this class and use mock data in UI tests (refer {@code
      * StubMyScheduleModel} in {@code androidTest}).
      */
-    protected void updateData(final DataQueryCallback callback) {
+    protected void updateData(final DataQueryCallback<MyScheduleQueryEnum> callback) {
         for (int i = 0; i < Config.CONFERENCE_DAYS.length; i++) {
             /**
              * The key in {@link #mScheduleData} is 1 for the first day, 2 for the second etc
@@ -308,14 +311,12 @@ public class MyScheduleModel implements Model<MyScheduleModel.MyScheduleQueryEnu
             }
 
             // Update cached data
-            mScheduleHelper.getScheduleDataAsync(
-                    new LoadScheduleDataListener() {
-                        @Override
-                        public void onDataLoaded(ArrayList<ScheduleItem> scheduleItems) {
-                            updateCache(dayId, scheduleItems, callback);
-                        }
-                    },
-                    Config.CONFERENCE_DAYS[i][0], Config.CONFERENCE_DAYS[i][1]);
+            mScheduleHelper.getScheduleDataAsync(new LoadScheduleDataListener() {
+                @Override
+                public void onDataLoaded(ArrayList<ScheduleItem> scheduleItems) {
+                    updateCache(dayId, scheduleItems, callback);
+                }
+            }, Config.CONFERENCE_DAYS[i][0], Config.CONFERENCE_DAYS[i][1]);
         }
     }
 
@@ -325,8 +326,8 @@ public class MyScheduleModel implements Model<MyScheduleModel.MyScheduleQueryEnu
      * this class and use mock data in UI tests (refer {@code StubMyScheduleModel} in {@code
      * androidTest}).
      */
-    protected void updateCache(int dayId, ArrayList<ScheduleItem> scheduleItems,
-            DataQueryCallback callback) {
+    protected void updateCache(int dayId, List<ScheduleItem> scheduleItems,
+            DataQueryCallback<MyScheduleQueryEnum> callback) {
         mScheduleData.put(dayId, scheduleItems);
         if (callback != null) {
             callback.onModelUpdated(MyScheduleModel.this,

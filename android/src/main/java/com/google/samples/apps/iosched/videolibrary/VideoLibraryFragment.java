@@ -81,7 +81,7 @@ public class VideoLibraryFragment extends Fragment
 
     private View mEmptyView = null;
 
-    private List<UserActionListener> mListeners = new ArrayList<>();
+    private List<UserActionListener<VideoLibraryUserActionEnum>> mListeners = new ArrayList<>();
 
     private SharedPreferences.OnSharedPreferenceChangeListener mSettingsChangeListener =
             new SharedPreferences.OnSharedPreferenceChangeListener() {
@@ -110,8 +110,7 @@ public class VideoLibraryFragment extends Fragment
     }
 
     @Override
-    public void displayData(final VideoLibraryModel model,
-            final VideoLibraryQueryEnum query) {
+    public void displayData(final VideoLibraryModel model, final VideoLibraryQueryEnum query) {
         if ((VideoLibraryModel.VideoLibraryQueryEnum.VIDEOS == query
                 || VideoLibraryModel.VideoLibraryQueryEnum.MY_VIEWED_VIDEOS == query)
                 && model.hasVideos()) {
@@ -161,7 +160,7 @@ public class VideoLibraryFragment extends Fragment
     }
 
     @Override
-    public void addListener(UserActionListener toAdd) {
+    public void addListener(UserActionListener<VideoLibraryUserActionEnum> toAdd) {
         mListeners.add(toAdd);
     }
 
@@ -178,8 +177,8 @@ public class VideoLibraryFragment extends Fragment
                         getDataUri(VideoLibraryQueryEnum.MY_VIEWED_VIDEOS),
                         getDataUri(VideoLibraryQueryEnum.FILTERS), getActivity(),
                         getLoaderManager());
-        PresenterImpl presenter =
-                new PresenterImpl(model, this, VideoLibraryUserActionEnum.values(),
+        PresenterImpl<VideoLibraryModel, VideoLibraryQueryEnum, VideoLibraryUserActionEnum>
+                presenter = new PresenterImpl<>(model, this, VideoLibraryUserActionEnum.values(),
                         VideoLibraryQueryEnum.values());
         presenter.loadInitialQueries();
     }
@@ -221,11 +220,11 @@ public class VideoLibraryFragment extends Fragment
         if (!isAdded()) {
             return;
         }
-        for (UserActionListener h1 : mListeners) {
+        for (UserActionListener<VideoLibraryUserActionEnum> listener : mListeners) {
             Bundle args = new Bundle();
             args.putInt(ModelWithLoaderManager.KEY_RUN_QUERY_ID,
                     VideoLibraryQueryEnum.MY_VIEWED_VIDEOS.getId());
-            h1.onUserAction(VideoLibraryUserActionEnum.RELOAD_USER_VIDEOS, args);
+            listener.onUserAction(VideoLibraryUserActionEnum.RELOAD_USER_VIDEOS, args);
         }
     }
 
@@ -244,7 +243,7 @@ public class VideoLibraryFragment extends Fragment
 
         private final ImageLoader mImageLoader;
 
-        private final List<UserActionListener> mListeners;
+        private final List<UserActionListener<VideoLibraryUserActionEnum>> mListeners;
 
         private final RecyclerView.RecycledViewPool mRecycledViewPool;
 
@@ -258,7 +257,7 @@ public class VideoLibraryFragment extends Fragment
         VideosAdapter(@NonNull Activity activity,
                 @NonNull VideoLibraryModel model,
                 @NonNull ImageLoader imageLoader,
-                @NonNull List<UserActionListener> listeners) {
+                @NonNull List<UserActionListener<VideoLibraryUserActionEnum>> listeners) {
             mHost = activity;
             mInflater = LayoutInflater.from(activity);
             mImageLoader = imageLoader;
