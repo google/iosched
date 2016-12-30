@@ -31,5 +31,6 @@ before_install:
   - emulator -avd test -no-skin -no-audio -no-window &
 
 before_script:
-  - ./scripts/wait_for_emulator.sh
+  #- ./scripts/wait_for_emulator.sh  failed: ./scripts/wait_for_emulator.sh: No such file or directory
+  - android-wait-for-emulator
   - adb shell input keyevent 82 &
