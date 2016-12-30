@@ -27,7 +27,7 @@ notifications:
   email: false
 
 before_install:
-  - echo no | android create avd --force -n test -t "android-21" --abi sys-img-armeabi-v7a-google_apis-21
+  - echo no | android create avd --force -n test -t "android-21" --abi default/armeabi-v7a
   - emulator -avd test -no-skin -no-audio -no-window &
 
 before_script:
