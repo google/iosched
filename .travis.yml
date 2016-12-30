@@ -24,7 +24,7 @@ android:
     - extra-android-m2repository
     - sys-img-armeabi-v7a-addon-google_apis-google-21
   licenses:
-    - 'android-sdk-license-.+'
+    - '.+'
 
 notifications:
   email: false
