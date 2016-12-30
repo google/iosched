@@ -16,12 +16,12 @@ language: android
 
 android:
   components:
-    - build-tools-21.1.2
-    - android-21
-    - addon-google_apis-google-21
+    - build-tools-23.0.1
+    - android-23
+    - addon-google_apis-google-23
     - extra-google-m2repository
     - extra-android-m2repository
-    - sys-img-armeabi-v7a-addon-google_apis-google-21
+    - sys-img-armeabi-v7a-addon-google_apis-google-23
 
 notifications:
   email: false
