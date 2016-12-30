@@ -16,14 +16,18 @@ language: android
 
 android:
   components:
-    - android list sdk --no-ui --all --extended
-    - android list targets
+    - build-tools-21.1.2
+    - android-21
+    - addon-google_apis-google-21
+    - extra-google-m2repository
+    - extra-android-m2repository
+    - sys-img-armeabi-v7a-addon-google_apis-google-21
 
 notifications:
   email: false
 
 before_install:
-  - echo no | android create avd --force -n test -t "Google Inc.:Google APIs:21" --abi google_apis/armeabi-v7a
+  - echo no | android create avd --force -n test -t "android-21" --abi sys-img-armeabi-v7a-google_apis-21
   - emulator -avd test -no-skin -no-audio -no-window &
 
 before_script:
