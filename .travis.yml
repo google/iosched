@@ -18,7 +18,9 @@ jdk: oraclejdk8
 android:
   components:
     - build-tools-21.1.2
+    - build-tools-23.0.1
     - android-21
+    - android-23
     - addon-google_apis-google-21
     - extra-google-m2repository
     - extra-android-m2repository
