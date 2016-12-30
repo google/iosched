@@ -16,12 +16,7 @@ language: android
 
 android:
   components:
-    - build-tools-23.0.1
-    - android-23
-    - addon-google_apis-google-23
-    - extra-google-m2repository
-    - extra-android-m2repository
-    - sys-img-armeabi-v7a-addon-google_apis-google-23
+    - android list sdk --no-ui --all --extended
 
 notifications:
   email: false
