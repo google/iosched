@@ -16,6 +16,7 @@
 <android.support.v7.widget.CardView
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     app:cardCornerRadius="@dimen/stream_card_corner_radius"
@@ -33,35 +34,35 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:background="@color/io16_light_grey"
+            android:scaleType="centerCrop"
             android:tint="@color/track_header_tint"
-            android:scaleType="centerCrop" />
+            tools:ignore="ContentDescription" />
 
         <TextView
             android:id="@+id/more"
+            style="@style/MoreButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/padding_normal"
+            android:layout_gravity="top|end"
             android:layout_marginEnd="@dimen/padding_normal"
             android:layout_marginRight="@dimen/padding_normal"
-            android:layout_gravity="top|end|right"
-            android:paddingStart="@dimen/spacing_normal"
-            android:paddingLeft="@dimen/spacing_normal"
-            android:paddingTop="@dimen/spacing_micro"
-            android:paddingEnd="@dimen/spacing_normal"
-            android:paddingRight="@dimen/spacing_normal"
+            android:layout_marginTop="@dimen/padding_normal"
             android:paddingBottom="@dimen/spacing_micro"
-            android:text="@string/more_items_button"
-            style="@style/MoreButton" />
+            android:paddingLeft="@dimen/spacing_normal"
+            android:paddingRight="@dimen/spacing_normal"
+            android:paddingTop="@dimen/spacing_micro"
+            android:text="@string/more_items_button" />
 
         <TextView
             android:id="@+id/title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/padding_normal"
+            android:layout_gravity="top|start"
             android:layout_marginLeft="@dimen/padding_normal"
+            android:layout_marginStart="@dimen/padding_normal"
             android:layout_marginTop="@dimen/padding_normal"
-            android:layout_gravity="top|start|left"
-            android:textAppearance="@style/TextAppearance.AppCompat.Title" />
+            android:textAppearance="@style/TextAppearance.AppCompat.Title"
+            tools:text="Android" />
 
     </FrameLayout>
 
@@ -70,10 +71,11 @@
         android:layout_width="match_parent"
         android:layout_height="@dimen/compact_list_tile"
         android:layout_marginTop="@dimen/explore_topic_card_header_height"
-        android:scrollbars="horizontal"
-        android:scrollbarStyle="insideOverlay"
+        android:orientation="horizontal"
         android:scrollbarSize="@dimen/horizontal_scrollbar_height"
+        android:scrollbarStyle="insideOverlay"
+        android:scrollbars="horizontal"
         app:layoutManager="android.support.v7.widget.LinearLayoutManager"
-        android:orientation="horizontal" />
+        tools:listitem="@layout/explore_io_session_list_tile" />
 
 </android.support.v7.widget.CardView>

@@ -17,11 +17,11 @@
 
 <android.support.v7.widget.Toolbar
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:iosched="http://schemas.android.com/apk/res-auto"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/toolbar"
+    style="@style/HeaderBar"
     android:layout_width="match_parent"
     android:layout_height="?actionBarSize"
-    iosched:contentInsetStart="?actionBarInsetStart"
-    iosched:popupTheme="@style/ActionBarPopupThemeOverlay"
     android:theme="@style/ActionBarThemeOverlay"
-    style="@style/HeaderBar" />
+    app:contentInsetStart="?actionBarInsetStart"
+    app:popupTheme="@style/ActionBarPopupThemeOverlay" />

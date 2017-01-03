@@ -14,10 +14,12 @@
   -->
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              android:layout_width="match_parent"
-              android:layout_height="wrap_content"
-              android:minHeight="?android:listPreferredItemHeightSmall"
-              android:orientation="vertical">
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:minHeight="?android:listPreferredItemHeightSmall"
+    android:orientation="vertical"
+    tools:background="?colorPrimary">
 
     <TextView
         android:id="@+id/profile_name_text"
@@ -26,7 +28,8 @@
         android:ellipsize="end"
         android:maxLines="1"
         android:textColor="@color/body_text_1_inverse"
-        android:textSize="@dimen/text_size_large" />
+        android:textSize="@dimen/text_size_large"
+        tools:text="@string/placeholder_account_name" />
 
     <TextView
         android:id="@+id/profile_email_text"
@@ -36,6 +39,7 @@
         android:maxLines="1"
         android:paddingBottom="@dimen/navview_header_bottom_padding"
         android:textColor="@color/body_text_2_inverse"
-        android:textSize="@dimen/text_size_medium" />
+        android:textSize="@dimen/text_size_medium"
+        tools:text="@string/placeholder_email_address" />
 
 </LinearLayout>

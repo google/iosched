@@ -26,17 +26,17 @@
 
     <TextView
         android:id="@+id/title"
+        style="@style/WelcomeTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/welcome_conduct_title"
-        style="@style/WelcomeTitle" />
+        android:text="@string/welcome_conduct_title" />
 
     <TextView
+        style="@style/Body1Text"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/padding_normal"
         android:autoLink="web"
-        android:text="@string/welcome_conduct_text"
-        style="@style/Body1Text" />
+        android:text="@string/welcome_conduct_text" />
 
 </LinearLayout>

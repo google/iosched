@@ -15,32 +15,34 @@
 -->
 
 <LinearLayout
-        xmlns:android="http://schemas.android.com/apk/res/android"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:minHeight="?android:listPreferredItemHeightSmall"
-        android:gravity="center_vertical"
-        android:orientation="horizontal"
-        android:baselineAligned="false"
-        android:addStatesFromChildren="true"
-        android:background="?android:selectableItemBackground">
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:addStatesFromChildren="true"
+    android:background="?android:selectableItemBackground"
+    android:baselineAligned="false"
+    android:gravity="center_vertical"
+    android:minHeight="?android:listPreferredItemHeightSmall"
+    android:orientation="horizontal">
 
     <TextView
         android:id="@+id/text"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:layout_marginStart="@dimen/padding_normal"
         android:layout_marginLeft="@dimen/padding_normal"
-        android:textAppearance="@style/TextAppearance.Filter"
+        android:layout_marginStart="@dimen/padding_normal"
+        android:layout_weight="1"
         android:ellipsize="end"
-        android:maxLines="1" />
+        android:maxLines="1"
+        android:textAppearance="@style/TextAppearance.Filter"
+        tools:text="Android" />
 
     <RadioButton
         android:id="@+id/button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/padding_normal"
-        android:layout_marginEnd="@dimen/padding_normal" />
+        android:layout_marginEnd="@dimen/padding_normal"
+        android:layout_marginStart="@dimen/padding_normal" />
 
 </LinearLayout>

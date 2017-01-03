@@ -28,7 +28,8 @@
         android:minHeight="?actionBarSize"
         android:gravity="start|center_vertical"
         android:orientation="horizontal"
-        android:baselineAligned="false">
+        android:baselineAligned="false"
+        tools:ignore="UseCompoundDrawables">
 
         <ImageView
             android:id="@+id/map_info_icon"
@@ -36,7 +37,8 @@
             android:layout_height="@dimen/my_schedule_icon_size"
             android:layout_marginLeft="@dimen/my_schedule_icon_horizontal_padding"
             android:layout_marginRight="@dimen/my_schedule_icon_horizontal_padding"
-            tools:src="@drawable/ic_map_pin" />
+            tools:src="@drawable/ic_map_pin"
+            tools:ignore="ContentDescription" />
 
         <TextView
             android:id="@+id/map_info_title"

@@ -26,25 +26,25 @@
 
     <TextView
         android:id="@+id/title"
+        style="@style/WelcomeTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/welcome_to_google_i_o_app"
-        style="@style/WelcomeTitle" />
+        android:text="@string/welcome_to_google_i_o_app" />
 
     <TextView
+        style="@style/Body1Text"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/padding_normal"
         android:autoLink="web"
-        android:text="@string/welcome_text"
-        style="@style/Body1Text" />
+        android:text="@string/welcome_text" />
 
     <TextView
+        style="@style/Body1Text"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/padding_normal"
         android:autoLink="web"
-        android:text="@string/eula_legal_text"
-        style="@style/Body1Text" />
+        android:text="@string/eula_legal_text" />
 
 </LinearLayout>

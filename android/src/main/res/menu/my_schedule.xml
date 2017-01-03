@@ -15,11 +15,12 @@
   limitations under the License.
   -->
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:iosched="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <item android:id="@+id/menu_refresh"
-        android:title="@string/description_refresh"
+    <item
+        android:id="@+id/menu_refresh"
         android:orderInCategory="1"
-        iosched:showAsAction="never" />
+        android:title="@string/description_refresh"
+        app:showAsAction="never" />
 
 </menu>

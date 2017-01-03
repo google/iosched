@@ -375,9 +375,9 @@
     </style>
 
     <style name="FeedbackNumberRatingBar">
-        <item name="android:progressDrawable">@drawable/number_ratingbar</item>
-        <item name="android:indeterminateDrawable">@drawable/number_ratingbar</item>
-        <item name="android:max">5</item>
+        <item name="filledDrawable">@drawable/ratingbar_star_filled</item>
+        <item name="unfilledDrawable">@drawable/ratingbar_star_unfilled</item>
+        <item name="maxRating">5</item>
     </style>
 
     <!-- Buttons -->
@@ -404,6 +404,10 @@
         <item name="android:textSize">@dimen/text_size_medium</item>
         <item name="android:textColor">@color/about_link</item>
         <item name="android:background">?attr/selectableItemBackground</item>
+        <item name="android:minHeight">?android:attr/listPreferredItemHeightSmall</item>
+        <item name="android:gravity">center_vertical</item>
+        <item name="android:paddingLeft">@dimen/padding_normal</item>
+        <item name="android:paddingRight">@dimen/padding_normal</item>
     </style>
 
     <style name="WelcomeTitle">

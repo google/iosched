@@ -15,10 +15,13 @@
 
 <RadioButton
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    style="@style/Body1Text"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:paddingStart="@dimen/spacing_normal"
-    android:paddingLeft="@dimen/spacing_normal"
-    android:minHeight="?android:listPreferredItemHeightSmall"
     android:gravity="center_vertical"
-    style="@style/Body1Text" />
+    android:minHeight="?android:listPreferredItemHeightSmall"
+    android:paddingLeft="@dimen/spacing_normal"
+    android:paddingStart="@dimen/spacing_normal"
+    tools:ignore="RtlSymmetry"
+    tools:text="Android" />

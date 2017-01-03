@@ -82,6 +82,7 @@
     <color name="fab_press_ripple">#1a000000</color>
     <color name="fab_icon_color">@color/dark_icon</color>
     <color name="session_tag_stroke">#80546e7a</color>
+    <color name="session_tag_stroke_focused">#888</color>
     <color name="speaker_social_link">@color/session_detail_interactive_element</color>
     <color name="session_detail_interactive_element">#ff546e7a</color>
 

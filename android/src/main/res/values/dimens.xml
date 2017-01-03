@@ -141,7 +141,7 @@
     <dimen name="navdrawer_item_icon_size">24dp</dimen>
     <dimen name="navdrawer_header_icon_margin_top">25dp</dimen>
     <dimen name="navdrawer_logo_vertical_padding">16dp</dimen>
-    <dimen name="navdrawer_logo_padding_right">16dp</dimen>
+    <dimen name="navdrawer_logo_horizontal_padding">16dp</dimen>
 
     <!-- Action Bar auto-hide-on-scroll behavior parameters -->
     <dimen name="action_bar_auto_hide_min_y">152dp</dimen>

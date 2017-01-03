@@ -18,11 +18,13 @@ limitations under the License.
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="@dimen/drawer_width"
     android:layout_height="match_parent"
     android:layout_gravity="end"
     android:background="@color/navdrawer_background"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    tools:ignore="Overdraw">
 
     <!-- Text View for the heading of the drawer. -->
     <TextView
@@ -52,18 +54,20 @@ limitations under the License.
         android:gravity="center_vertical"
         android:minHeight="?android:listPreferredItemHeightSmall"
         android:orientation="horizontal"
-        android:visibility="gone">
+        android:visibility="gone"
+        tools:visibility="visible">
 
         <TextView
             android:id="@+id/timeslot"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
             android:layout_marginLeft="@dimen/padding_normal"
             android:layout_marginStart="@dimen/padding_normal"
+            android:layout_weight="1"
             android:ellipsize="end"
             android:maxLines="1"
-            android:textAppearance="@style/TextAppearance.Filter" />
+            android:textAppearance="@style/TextAppearance.Filter"
+            tools:text="@string/explore_sessions_time_slot_title" />
 
         <ImageButton
             android:id="@+id/close_timeslot"
@@ -82,17 +86,19 @@ limitations under the License.
         android:layout_width="match_parent"
         android:layout_height="@dimen/divider_height_inc_padding_top_only"
         android:background="@drawable/inset_divider_top_only"
-        android:visibility="gone" />
+        android:visibility="gone"
+        tools:visibility="visible" />
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/filters"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:paddingTop="@dimen/divider_padding_bottom"
-        android:paddingBottom="@dimen/spacing_normal"
         android:clipToPadding="false"
-        android:scrollbars="vertical"
+        android:paddingBottom="@dimen/spacing_normal"
+        android:paddingTop="@dimen/divider_padding_bottom"
         android:scrollbarStyle="insideOverlay"
-        app:layoutManager="android.support.v7.widget.LinearLayoutManager" />
+        android:scrollbars="vertical"
+        app:layoutManager="android.support.v7.widget.LinearLayoutManager"
+        tools:listitem="@layout/explore_sessions_list_item_alt_drawer" />
 
 </LinearLayout>

@@ -16,19 +16,23 @@
 <FrameLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/session"
     android:layout_width="@dimen/compact_list_tile"
     android:layout_height="@dimen/compact_list_tile"
+    android:foreground="?android:selectableItemBackground"
     android:stateListAnimator="@animator/raise"
-    android:foreground="?android:selectableItemBackground">
+    tools:targetApi="lollipop">
 
     <ImageView
         android:id="@+id/indicator_in_schedule"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="top|end|right"
-        android:visibility="invisible"
-        app:srcCompat="@drawable/ic_in_schedule" />
+        android:layout_gravity="top|end"
+        android:visibility="gone"
+        app:srcCompat="@drawable/ic_in_schedule"
+        tools:ignore="ContentDescription"
+        tools:visibility="visible" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -41,13 +45,15 @@
             android:layout_width="wrap_content"
             android:layout_height="0dp"
             android:layout_weight="1"
-            android:textAppearance="@style/TextAppearance.AppCompat.Subhead" />
+            android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
+            tools:text="@string/placeholder_session_title" />
 
         <TextView
             android:id="@+id/footer"
+            style="@style/Body2Text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            style="@style/Body2Text" />
+            tools:text="@string/placeholder_session_start_time" />
 
     </LinearLayout>
 

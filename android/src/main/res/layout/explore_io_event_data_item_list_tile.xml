@@ -15,28 +15,32 @@
 
 <com.google.samples.apps.iosched.ui.widget.ForegroundLinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="@dimen/compact_list_tile"
     android:layout_height="@dimen/compact_list_tile"
-    android:orientation="vertical"
     android:foreground="?android:selectableItemBackground"
-    android:stateListAnimator="@animator/raise">
+    android:orientation="vertical"
+    android:stateListAnimator="@animator/raise"
+    tools:targetApi="lollipop">
 
     <TextView
         android:id="@+id/title_text"
+        style="@style/Body2Text"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="4"
-        android:padding="@dimen/padding_normal"
+        android:layout_weight="1"
         android:ellipsize="end"
-        style="@style/Body2Text" />
+        android:padding="@dimen/padding_normal"
+        tools:text="Fox, it's an ambush! Do a barrel roll!" />
 
     <TextView
         android:id="@+id/action_text"
+        style="@style/Body2Text"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="@dimen/padding_normal"
-        android:gravity="bottom|start|left"
         android:ellipsize="end"
-        style="@style/Body2Text" />
+        android:gravity="bottom|start"
+        android:padding="@dimen/padding_normal"
+        tools:text="Do a barrel roll" />
 
 </com.google.samples.apps.iosched.ui.widget.ForegroundLinearLayout>

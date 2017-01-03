@@ -31,11 +31,11 @@
         android:id="@+id/explore_io_clickable_item"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:baselineAligned="false"
         android:clickable="true"
         android:focusable="true"
         android:foreground="?android:selectableItemBackground"
-        android:orientation="horizontal"
-        android:baselineAligned="false">
+        android:orientation="horizontal">
 
         <com.google.samples.apps.iosched.ui.widget.AspectRatioView
             android:layout_width="0dp"
@@ -47,27 +47,28 @@
                 android:id="@+id/thumbnail"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:src="@drawable/io_logo"
-                android:scaleType="centerCrop" />
+                android:scaleType="centerCrop"
+                app:srcCompat="@drawable/io_logo"
+                tools:ignore="ContentDescription" />
 
         </com.google.samples.apps.iosched.ui.widget.AspectRatioView>
 
         <LinearLayout
             android:layout_width="@dimen/explore_io_keynote_card_min_text_width"
             android:layout_height="wrap_content"
-            android:paddingTop="@dimen/explore_io_keynote_card_padding_top"
+            android:orientation="vertical"
             android:paddingBottom="@dimen/explore_io_keynote_card_padding_bottom"
-            android:orientation="vertical">
+            android:paddingTop="@dimen/explore_io_keynote_card_padding_top">
 
             <TextView
                 android:id="@+id/title"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/explore_io_keynote_card_padding_start"
-                android:layout_marginStart="@dimen/explore_io_keynote_card_padding_start"
-                android:layout_marginEnd="@dimen/explore_io_keynote_card_padding_end"
-                android:layout_marginRight="@dimen/explore_io_keynote_card_padding_end"
                 android:layout_marginBottom="@dimen/explore_io_keynote_card_desc_padding"
+                android:layout_marginEnd="@dimen/explore_io_keynote_card_padding_end"
+                android:layout_marginLeft="@dimen/explore_io_keynote_card_padding_start"
+                android:layout_marginRight="@dimen/explore_io_keynote_card_padding_end"
+                android:layout_marginStart="@dimen/explore_io_keynote_card_padding_start"
                 android:maxLines="2"
                 android:textColor="@color/body_text_1"
                 android:textSize="@dimen/text_size_xlarge"
@@ -75,14 +76,14 @@
 
             <TextView
                 android:id="@+id/description"
+                style="@style/Body2Text"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/explore_io_keynote_card_padding_start"
-                android:layout_marginStart="@dimen/explore_io_keynote_card_padding_start"
                 android:layout_marginEnd="@dimen/explore_io_keynote_card_padding_end"
+                android:layout_marginLeft="@dimen/explore_io_keynote_card_padding_start"
                 android:layout_marginRight="@dimen/explore_io_keynote_card_padding_end"
-                tools:text="@string/lorem_ipsum"
-                style="@style/Body2Text" />
+                android:layout_marginStart="@dimen/explore_io_keynote_card_padding_start"
+                tools:text="@string/lorem_ipsum" />
 
         </LinearLayout>
 

@@ -17,20 +17,21 @@
 
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:background="?android:attr/selectableItemBackground"
+    android:baselineAligned="false"
+    android:focusable="true"
+    android:gravity="center_vertical"
     android:minHeight="?android:attr/listPreferredItemHeight"
     android:orientation="horizontal"
-    android:gravity="center_vertical"
-    android:baselineAligned="false"
-    android:background="?android:attr/selectableItemBackground"
-    android:focusable="true"
-    android:paddingStart="@dimen/padding_normal"
-    android:paddingLeft="@dimen/padding_normal"
-    android:paddingTop="@dimen/spacing_normal"
+    android:paddingBottom="@dimen/spacing_normal"
     android:paddingEnd="@dimen/padding_normal"
+    android:paddingLeft="@dimen/padding_normal"
     android:paddingRight="@dimen/padding_normal"
-    android:paddingBottom="@dimen/spacing_normal">
+    android:paddingStart="@dimen/padding_normal"
+    android:paddingTop="@dimen/spacing_normal">
 
     <FrameLayout
         android:id="@+id/icon_frame"
@@ -40,18 +41,19 @@
         <ImageView
             android:id="@android:id/icon"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            tools:ignore="ContentDescription" />
 
     </FrameLayout>
 
     <LinearLayout
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:layout_marginTop="@dimen/spacing_normal"
+        android:layout_marginBottom="@dimen/spacing_normal"
         android:layout_marginEnd="@dimen/spacing_normal"
         android:layout_marginRight="@dimen/spacing_normal"
-        android:layout_marginBottom="@dimen/spacing_normal"
+        android:layout_marginTop="@dimen/spacing_normal"
+        android:layout_weight="1"
         android:orientation="vertical">
 
         <TextView
@@ -60,15 +62,17 @@
             android:layout_height="wrap_content"
             android:ellipsize="marquee"
             android:fadingEdge="horizontal"
-            android:singleLine="true"
+            android:lines="1"
             android:textAppearance="@style/TextAppearance.AppCompat.Menu"
-            android:textColor="?android:attr/textColorPrimary" />
+            android:textColor="?android:attr/textColorPrimary"
+            tools:text="@string/pref_attendee_at_venue_title" />
 
         <TextView
             android:id="@android:id/summary"
+            style="@style/Body1Text"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            style="@style/Body1Text" />
+            tools:text="@string/pref_attendee_at_venue_description" />
 
     </LinearLayout>
 

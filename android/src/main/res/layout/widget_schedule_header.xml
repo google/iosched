@@ -17,9 +17,11 @@
 
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_height="wrap_content"
     android:layout_width="match_parent"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    tools:ignore="UseCompoundDrawables">
 
     <TextView
         android:id="@+id/widget_schedule_day"
@@ -27,12 +29,15 @@
         android:layout_height="@dimen/widget_schedule_header_height"
         android:gravity="center_vertical"
         android:paddingLeft="@dimen/padding_normal"
-        style="@style/MyScheduleDayLabel" />
+        android:paddingRight="@dimen/padding_normal"
+        style="@style/MyScheduleDayLabel"
+        tools:text="@string/placeholder_session_day"/>
 
     <!-- plain View class is not a @RemoteView so have to use an ImageView here -->
     <ImageView
         android:layout_width="match_parent"
         android:layout_height="@dimen/divider_height"
-        android:background="@color/divider"/>
+        android:background="@color/divider"
+        tools:ignore="ContentDescription" />
 
 </LinearLayout>

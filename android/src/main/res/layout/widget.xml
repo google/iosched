@@ -17,6 +17,7 @@
 
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
@@ -46,7 +47,9 @@
             android:scaleType="fitStart"
             android:src="@drawable/ic_widget_logo"
             android:background="?android:selectableItemBackground"
-            android:contentDescription="@string/app_name" />
+            android:contentDescription="@string/app_name"
+            tools:ignore="VectorDrawableCompat" />
+            <!-- AppWidgets require specific compatible Views, not including AppCompatImageView -->
 
         <ImageButton
             android:id="@+id/widget_refresh_button"

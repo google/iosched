@@ -14,10 +14,12 @@
   limitations under the License.
 -->
 <TextView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_margin="0dp"
     android:ellipsize="end"
     android:gravity="center"
     android:maxLines="2"
-    android:textAppearance="@style/TextAppearance.Design.Tab" />
+    android:textAppearance="@style/TextAppearance.Design.Tab"
+    tools:text="Day 1" />

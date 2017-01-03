@@ -17,7 +17,7 @@
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="?attr/selectableItemBackground"
@@ -33,7 +33,8 @@
         android:layout_height="@dimen/my_schedule_icon_size"
         android:layout_marginLeft="@dimen/my_schedule_icon_horizontal_padding"
         android:layout_marginRight="@dimen/my_schedule_icon_horizontal_padding"
-        app:srcCompat="@drawable/ic_navview_schedule" />
+        app:srcCompat="@drawable/ic_navview_schedule"
+        tools:ignore="ContentDescription" />
 
     <LinearLayout
         android:layout_width="0dp"
@@ -41,7 +42,8 @@
         android:layout_weight="1"
         android:orientation="vertical"
         android:paddingRight="@dimen/padding_normal"
-        android:paddingEnd="@dimen/padding_normal">
+        android:paddingEnd="@dimen/padding_normal"
+        tools:ignore="RtlSymmetry">
 
         <TextView
             android:id="@+id/map_item_title"

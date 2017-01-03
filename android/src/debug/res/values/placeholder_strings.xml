@@ -16,6 +16,7 @@
 -->
 <resources>
     <!-- Override the placeholder strings for display during development in the Layout editor. -->
+    <string name="placeholder_account_name" translatable="false">John Jacob Jingleheimer Schmidt (That\'s My Name, Too)</string>
     <string name="placeholder_email_address" translatable="false">really_long_email_address_string_to_ensure_proper_overflow_formatting@gmail.com</string>
     <string name="placeholder_session_day" translatable="false">6/25</string>
     <string name="placeholder_session_start_time" translatable="false">10:00am</string>

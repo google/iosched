@@ -17,6 +17,7 @@
 <!-- Placeholder strings for dynamic content in the app. This file is empty for production usage,
      but src/main/debug has a file with values to allow layout editor previews to work. -->
 <resources>
+    <string name="placeholder_account_name"></string>
     <string name="placeholder_email_address"></string>
     <string name="placeholder_session_day"></string>
     <string name="placeholder_session_start_time"></string>

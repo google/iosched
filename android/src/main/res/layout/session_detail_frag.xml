@@ -23,8 +23,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="@bool/session_details_immersive_status"
-    android:background="@color/background"
-    android:transitionName="@string/transition_session_background">
+    android:transitionName="@string/transition_session_background"
+    tools:targetApi="lollipop">
 
     <android.support.design.widget.AppBarLayout
         android:id="@+id/appbar"
@@ -37,10 +37,10 @@
             android:id="@+id/collapsing_toolbar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:layout_scrollFlags="scroll"
-            android:minHeight="1px"
-            android:fitsSystemWindows="@bool/session_details_immersive_status"
             android:background="@null"
+            android:fitsSystemWindows="@bool/session_details_immersive_status"
+            android:minHeight="1px"
+            app:layout_scrollFlags="scroll"
             app:titleEnabled="false">
             <!-- minHeight determines the point to fade in the status bar scrim. Ideally it would
                  fade in when the image has completely collapsed but it needs to be > 0. -->
@@ -49,31 +49,34 @@
                 android:id="@+id/session_photo_container"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
+                android:fitsSystemWindows="@bool/session_details_immersive_status"
                 app:aspectRatio="@dimen/aspect_16_9"
-                app:layout_collapseMode="parallax"
-                android:fitsSystemWindows="@bool/session_details_immersive_status">
+                app:layout_collapseMode="parallax">
 
                 <ImageView
                     android:id="@+id/session_photo"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:scaleType="centerCrop"
-                    android:transitionName="@string/transition_session_image" />
+                    android:transitionName="@string/transition_session_image"
+                    tools:ignore="ContentDescription" />
 
                 <Button
                     android:id="@+id/watch"
+                    style="?borderlessButtonStyle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:textAppearance="@style/TextAppearance.Title"
-                    android:textColor="@color/io15_white"
-                    android:drawableTop="@drawable/ic_play"
                     android:drawablePadding="@dimen/spacing_normal"
+                    android:drawableTop="@drawable/ic_play"
                     android:paddingLeft="@dimen/spacing_large"
                     android:paddingRight="@dimen/spacing_large"
                     android:paddingTop="28dp"
+                    android:textAppearance="@style/TextAppearance.Title"
+                    android:textColor="@color/io15_white"
                     android:visibility="gone"
-                    style="?borderlessButtonStyle" />
+                    tools:text="@string/session_watch"
+                    tools:visibility="visible" />
                 <!-- paddingTop offsets the text+drawablePadding to center the image -->
 
             </com.google.samples.apps.iosched.ui.widget.AspectRatioView>
@@ -94,31 +97,33 @@
 
             <TextView
                 android:id="@+id/session_title"
+                style="@style/SessionDetailsTitle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/keyline_2_session_detail"
-                android:layout_marginStart="@dimen/keyline_2_session_detail"
-                android:layout_marginRight="@dimen/padding_normal"
                 android:layout_marginEnd="@dimen/padding_normal"
-                android:maxLines="4"
+                android:layout_marginLeft="@dimen/keyline_2_session_detail"
+                android:layout_marginRight="@dimen/padding_normal"
+                android:layout_marginStart="@dimen/keyline_2_session_detail"
                 android:ellipsize="end"
+                android:gravity="start"
+                android:maxLines="4"
                 android:textAlignment="viewStart"
-                tools:text="@string/placeholder_session_title"
-                style="@style/SessionDetailsTitle" />
+                tools:text="@string/placeholder_session_title" />
 
             <TextView
                 android:id="@+id/session_subtitle"
-                android:layout_height="wrap_content"
+                style="@style/SessionDetailsSubtitle"
                 android:layout_width="match_parent"
-                android:layout_marginLeft="@dimen/keyline_2_session_detail"
-                android:layout_marginStart="@dimen/keyline_2_session_detail"
-                android:layout_marginRight="@dimen/padding_normal"
+                android:layout_height="wrap_content"
                 android:layout_marginEnd="@dimen/padding_normal"
-                android:maxLines="2"
+                android:layout_marginLeft="@dimen/keyline_2_session_detail"
+                android:layout_marginRight="@dimen/padding_normal"
+                android:layout_marginStart="@dimen/keyline_2_session_detail"
                 android:ellipsize="end"
+                android:gravity="start"
+                android:maxLines="2"
                 android:textAlignment="viewStart"
-                tools:text="@string/placeholder_session_subtitle"
-                style="@style/SessionDetailsSubtitle" />
+                tools:text="@string/placeholder_session_subtitle" />
 
         </LinearLayout>
 
@@ -128,101 +133,103 @@
         android:id="@+id/scroll_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior"
-        android:clipToPadding="false">
+        android:clipToPadding="false"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
         <LinearLayout
             android:id="@+id/details_container"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:background="@color/background"
-            android:paddingTop="@dimen/padding_normal"
-            android:paddingRight="@dimen/padding_normal"
+            android:paddingBottom="@dimen/padding_normal"
             android:paddingEnd="@dimen/padding_normal"
-            android:paddingBottom="@dimen/padding_normal">
+            android:paddingRight="@dimen/padding_normal"
+            android:paddingTop="@dimen/padding_normal"
+            tools:ignore="RtlSymmetry">
 
             <com.google.samples.apps.iosched.ui.widget.MessageCardView
                 android:id="@+id/give_feedback_card"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:messageText="@string/session_give_feedback_message"
-                app:button1text="@string/no_thanks"
-                app:button2text="@string/give_feedback"
-                app:button2tag="@string/tag_give_feedback"
-                app:button2emphasis="true"
-                app:cardBackgroundColor="@color/background"
+                android:layout_marginBottom="@dimen/keyline_1"
                 android:layout_marginLeft="@dimen/keyline_2_session_detail"
                 android:layout_marginStart="@dimen/keyline_2_session_detail"
-                android:layout_marginBottom="@dimen/keyline_1"
-                android:visibility="gone" />
+                android:visibility="gone"
+                app:button1text="@string/no_thanks"
+                app:button2emphasis="true"
+                app:button2tag="@string/tag_give_feedback"
+                app:button2text="@string/give_feedback"
+                app:cardBackgroundColor="@color/background"
+                app:messageText="@string/session_give_feedback_message" />
 
             <TextView
                 android:id="@+id/time_hint"
-                android:visibility="gone"
+                style="@style/SessionTimeHint"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/keyline_1_minus_8dp"
                 android:layout_marginLeft="@dimen/keyline_2_session_detail"
                 android:layout_marginStart="@dimen/keyline_2_session_detail"
-                android:layout_marginBottom="@dimen/keyline_1_minus_8dp"
                 android:focusable="true"
-                style="@style/SessionTimeHint" />
+                android:visibility="gone"
+                tools:visibility="visible"
+                tools:text="@string/time_hint_about_to_start_min" />
 
             <TextView
                 android:id="@+id/session_abstract"
+                style="@style/Body1Text"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/padding_normal"
                 android:layout_marginLeft="@dimen/keyline_2_session_detail"
                 android:layout_marginStart="@dimen/keyline_2_session_detail"
-                android:layout_marginBottom="@dimen/padding_normal"
                 android:focusable="true"
-                android:importantForAccessibility="yes"
-                style="@style/Body1Text" />
+                android:importantForAccessibility="yes" />
 
             <TextView
                 android:id="@+id/live_streamed_indicator"
+                style="@style/SessionLiveStreamed"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textColor="@color/session_livestreamed_color"
-                android:text="@string/session_live_streamed"
-                android:drawableLeft="@drawable/ic_videocam_grey"
-                android:drawableStart="@drawable/ic_videocam_grey"
-                android:drawablePadding="@dimen/keyline_1_minus_8dp"
-                android:focusable="true"
-                android:gravity="center"
+                android:layout_marginBottom="@dimen/padding_normal"
                 android:layout_marginLeft="@dimen/keyline_2_session_detail"
                 android:layout_marginStart="@dimen/keyline_2_session_detail"
-                android:layout_marginBottom="@dimen/padding_normal"
-                style="@style/SessionLiveStreamed" />
+                android:drawableLeft="@drawable/ic_videocam_grey"
+                android:drawablePadding="@dimen/keyline_1_minus_8dp"
+                android:drawableStart="@drawable/ic_videocam_grey"
+                android:focusable="true"
+                android:gravity="center"
+                android:text="@string/session_live_streamed"
+                android:textColor="@color/session_livestreamed_color" />
 
             <TextView
                 android:id="@+id/extended_session_button"
+                style="@style/SessionExtendedLink"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:drawablePadding="@dimen/keyline_1_minus_8dp"
+                android:layout_marginBottom="@dimen/padding_normal"
                 android:layout_marginLeft="@dimen/keyline_2_session_detail"
                 android:layout_marginStart="@dimen/keyline_2_session_detail"
-                android:layout_marginBottom="@dimen/padding_normal"
-                android:visibility="gone"
-                style="@style/SessionExtendedLink" />
+                android:drawablePadding="@dimen/keyline_1_minus_8dp"
+                android:visibility="gone" />
 
             <HorizontalScrollView
                 android:id="@+id/session_tags_container"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/padding_normal"
                 android:layout_marginLeft="@dimen/keyline_2_session_detail"
                 android:layout_marginStart="@dimen/keyline_2_session_detail"
-                android:scrollbars="none"
-                android:requiresFadingEdge="horizontal"
                 android:fadingEdgeLength="@dimen/padding_normal"
-                android:layout_marginBottom="@dimen/padding_normal">
+                android:requiresFadingEdge="horizontal"
+                android:scrollbars="none">
 
                 <LinearLayout
                     android:id="@+id/session_tags"
-                    android:orientation="horizontal"
                     android:layout_width="wrap_content"
                     android:layout_height="@dimen/a11y_min_touch_target_dimen"
-                    android:minHeight="@dimen/a11y_min_touch_target_dimen" />
+                    android:minHeight="@dimen/a11y_min_touch_target_dimen"
+                    android:orientation="horizontal" />
 
             </HorizontalScrollView>
 
@@ -239,8 +246,8 @@
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="@dimen/keyline_2_session_detail"
                     android:layout_marginStart="@dimen/keyline_2_session_detail"
-                    android:minHeight="?android:listPreferredItemHeightSmall"
                     android:gravity="center_vertical"
+                    android:minHeight="?android:listPreferredItemHeightSmall"
                     android:text="@string/session_speakers"
                     android:textAppearance="@style/TextAppearance.Subhead" />
 
@@ -250,27 +257,27 @@
                 android:id="@+id/session_requirements_block"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
                 android:layout_marginLeft="@dimen/keyline_2_session_detail"
                 android:layout_marginStart="@dimen/keyline_2_session_detail"
+                android:orientation="vertical"
                 android:visibility="gone">
 
                 <TextView
                     android:id="@+id/session_requirements_header"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:minHeight="?android:listPreferredItemHeightSmall"
                     android:gravity="center_vertical"
+                    android:minHeight="?android:listPreferredItemHeightSmall"
                     android:text="@string/session_requirements"
                     android:textAppearance="@style/TextAppearance.Subhead" />
 
                 <TextView
                     android:id="@+id/session_requirements"
+                    style="@style/Body1Text"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/spacing_normal"
                     android:layout_marginBottom="@dimen/spacing_normal"
-                    style="@style/Body1Text" />
+                    android:layout_marginTop="@dimen/spacing_normal" />
 
             </LinearLayout>
 
@@ -287,8 +294,8 @@
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="@dimen/keyline_2_session_detail"
                     android:layout_marginStart="@dimen/keyline_2_session_detail"
-                    android:minHeight="?android:listPreferredItemHeightSmall"
                     android:gravity="center_vertical"
+                    android:minHeight="?android:listPreferredItemHeightSmall"
                     android:text="@string/related_videos"
                     android:textAppearance="@style/TextAppearance.Subhead" />
 
@@ -296,15 +303,15 @@
 
             <TextView
                 android:id="@android:id/empty"
+                style="@style/EmptyText"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
-                android:layout_weight="1"
                 android:layout_marginLeft="@dimen/keyline_2_session_detail"
                 android:layout_marginStart="@dimen/keyline_2_session_detail"
-                android:text="@string/empty_session_detail"
+                android:layout_weight="1"
                 android:gravity="center"
-                android:visibility="gone"
-                style="@style/EmptyText" />
+                android:text="@string/empty_session_detail"
+                android:visibility="gone" />
 
         </LinearLayout>
 
@@ -316,17 +323,17 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/fab_padding"
-        app:layout_anchor="@id/header_session"
-        app:layout_anchorGravity="bottom|start|left"
-        app:fabSize="mini"
-        android:visibility="invisible"
         android:clickable="true"
-        android:focusable="true"
         android:contentDescription="@string/add_to_schedule"
-        app:srcCompat="@drawable/ic_add_to_schedule"
+        android:focusable="true"
+        android:visibility="invisible"
         app:backgroundTint="@color/session_details_fab"
+        app:fabSize="mini"
+        app:layout_anchor="@id/header_session"
+        app:layout_anchorGravity="bottom|start"
         app:pressedTranslationZ="@dimen/fab_touch_raise"
         app:rippleColor="@color/fab_press_ripple"
+        app:srcCompat="@drawable/ic_add_to_schedule"
         app:useCompatPadding="true" />
 
 </android.support.design.widget.CoordinatorLayout>

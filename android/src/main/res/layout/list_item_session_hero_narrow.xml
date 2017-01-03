@@ -21,10 +21,10 @@
 <!-- This file is the NARROW version of this layout (for phones and for small tablets
      in portrait orientation -->
 
-
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:animateLayoutChanges="true"
@@ -32,9 +32,9 @@
 
     <!-- Hero -->
     <FrameLayout
+        android:id="@+id/session_target"
         android:layout_width="match_parent"
         android:layout_height="@dimen/explore_hero_item_height"
-        android:id="@+id/session_target"
         android:clickable="true"
         android:focusable="true"
         android:foreground="?photoItemForeground">
@@ -45,7 +45,8 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:scaleType="centerCrop"
-            android:tint="@color/session_photo_scrim" />
+            android:tint="@color/session_photo_scrim"
+            tools:ignore="ContentDescription" />
 
         <!-- Live now badge -->
         <include layout="@layout/include_live_now_badge" />
@@ -53,10 +54,11 @@
         <!-- Session category/group if non-default (e.g. "Workshop") -->
         <TextView
             android:id="@+id/session_category"
-            android:padding="16dp"
+            style="@style/ExploreItem.Category"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            style="@style/ExploreItem.Category" />
+            android:padding="16dp"
+            tools:text="Workshop" />
 
         <!-- Info box -->
         <LinearLayout
@@ -65,33 +67,34 @@
             android:layout_height="wrap_content"
             android:layout_gravity="bottom"
             android:gravity="center"
-            android:padding="16dp"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:padding="16dp">
 
             <!-- Session title -->
             <TextView
                 android:id="@+id/session_title"
+                style="@style/ExploreItem.Title.Hero"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:paddingBottom="4dp"
-                android:text="@string/placeholder_session_title"
-                style="@style/ExploreItem.Title.Hero" />
+                tools:text="@string/placeholder_session_title" />
 
             <!-- Subtitle -->
-            <TextView android:id="@+id/session_subtitle"
+            <TextView
+                android:id="@+id/session_subtitle"
+                style="@style/ExploreItem.Subtitle.Hero"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/placeholder_session_subtitle"
-                style="@style/ExploreItem.Subtitle.Hero" />
+                tools:text="@string/placeholder_session_subtitle" />
 
         </LinearLayout>
 
         <!-- "In schedule" indicator -->
         <ImageView
             android:id="@+id/indicator_in_schedule"
-            android:layout_gravity="top|end"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_gravity="top|end"
             android:contentDescription="@null"
             app:srcCompat="@drawable/ic_in_schedule" />
 
@@ -101,12 +104,12 @@
     <com.google.samples.apps.iosched.ui.widget.MessageCardView
         android:id="@+id/message_card"
         android:layout_width="match_parent"
-        android:layout_marginTop="8dp"
+        android:layout_height="wrap_content"
         android:layout_marginBottom="8dp"
         android:layout_marginLeft="4dp"
         android:layout_marginRight="4dp"
-        app:cardBackgroundColor="#fff"
+        android:layout_marginTop="8dp"
         android:visibility="visible"
-        android:layout_height="wrap_content" />
+        app:cardBackgroundColor="#fff" />
 
 </LinearLayout>

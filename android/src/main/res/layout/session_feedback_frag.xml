@@ -16,9 +16,10 @@
   -->
 
 <ScrollView
-    android:id="@+id/scroll_view"
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/scroll_view"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fillViewport="true">
@@ -35,9 +36,9 @@
             android:layout_marginBottom="@dimen/spacing_normal"
             android:background="?colorPrimary"
             android:minHeight="?actionBarSize"
+            android:theme="@style/ActionBarThemeOverlay"
             app:contentInsetStart="?actionBarInsetStart"
-            app:popupTheme="@style/ActionBarPopupThemeOverlay"
-            android:theme="@style/ActionBarThemeOverlay">
+            app:popupTheme="@style/ActionBarPopupThemeOverlay">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -45,7 +46,8 @@
                 android:orientation="vertical"
                 android:paddingBottom="@dimen/spacing_normal"
                 android:paddingEnd="@dimen/spacing_normal"
-                android:paddingRight="@dimen/spacing_normal">
+                android:paddingRight="@dimen/spacing_normal"
+                tools:ignore="RtlSymmetry">
 
                 <TextView
                     android:id="@+id/feedback_header_rate"
@@ -64,7 +66,8 @@
                     android:layout_gravity="start"
                     android:layout_marginTop="@dimen/spacing_micro"
                     android:textAlignment="viewStart"
-                    android:textAppearance="@style/TextAppearance.AppCompat.Widget.ActionBar.Title" />
+                    android:textAppearance="@style/TextAppearance.AppCompat.Widget.ActionBar.Title"
+                    tools:text="@string/placeholder_session_title" />
 
                 <TextView
                     android:id="@+id/feedback_header_session_speakers"
@@ -73,7 +76,8 @@
                     android:layout_gravity="start"
                     android:layout_marginTop="@dimen/spacing_micro"
                     android:textAlignment="viewStart"
-                    android:textAppearance="@style/TextAppearance.AppCompat.Widget.ActionBar.Subtitle" />
+                    android:textAppearance="@style/TextAppearance.AppCompat.Widget.ActionBar.Subtitle"
+                    tools:text="Big Bird, Cookie Monster" />
 
             </LinearLayout>
 
@@ -87,49 +91,43 @@
             android:gravity="center_vertical"
             android:minHeight="?android:listPreferredItemHeightSmall"
             android:paddingBottom="@dimen/spacing_normal"
-            android:paddingEnd="@dimen/padding_normal"
             android:paddingLeft="@dimen/padding_normal"
             android:paddingRight="@dimen/padding_normal"
-            android:paddingStart="@dimen/padding_normal"
             android:paddingTop="@dimen/spacing_normal"
             android:text="@string/session_rating_label_text" />
 
         <com.google.samples.apps.iosched.ui.widget.CustomRatingBar
             android:id="@+id/rating_bar_0"
-            style="@style/FeedbackRatingBar"
+            style="@style/FeedbackNumberRatingBar"
             android:layout_width="wrap_content"
             android:layout_height="?android:listPreferredItemHeightSmall"
             android:layout_gravity="center"
-            android:layout_marginEnd="@dimen/spacing_normal"
             android:layout_marginLeft="@dimen/spacing_normal"
             android:layout_marginRight="@dimen/spacing_normal"
-            android:layout_marginStart="@dimen/spacing_normal"
             android:paddingTop="@dimen/spacing_normal" />
 
         <FrameLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:paddingBottom="@dimen/padding_normal"
-            android:paddingEnd="@dimen/padding_normal"
             android:paddingLeft="@dimen/padding_normal"
             android:paddingRight="@dimen/padding_normal"
-            android:paddingStart="@dimen/padding_normal"
             android:paddingTop="@dimen/spacing_micro">
 
             <TextView
                 style="@style/FeedbackQuestionGuideText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="start|left"
-                android:importantForAccessibility="2"
+                android:layout_gravity="start"
+                android:importantForAccessibility="no"
                 android:text="@string/session_feedback_not_so_awesome" />
 
             <TextView
                 style="@style/FeedbackQuestionGuideText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="end|right"
-                android:importantForAccessibility="2"
+                android:layout_gravity="end"
+                android:importantForAccessibility="no"
                 android:text="@string/session_feedback_awesome" />
 
         </FrameLayout>
@@ -143,10 +141,8 @@
             android:gravity="center_vertical"
             android:minHeight="?android:listPreferredItemHeightSmall"
             android:paddingBottom="@dimen/spacing_normal"
-            android:paddingEnd="@dimen/padding_normal"
             android:paddingLeft="@dimen/padding_normal"
             android:paddingRight="@dimen/padding_normal"
-            android:paddingStart="@dimen/padding_normal"
             android:paddingTop="@dimen/spacing_normal"
             android:text="@string/session_feedback_relevance" />
 
@@ -156,36 +152,32 @@
             android:layout_width="wrap_content"
             android:layout_height="?android:listPreferredItemHeightSmall"
             android:layout_gravity="center"
-            android:layout_marginEnd="@dimen/spacing_normal"
             android:layout_marginLeft="@dimen/spacing_normal"
             android:layout_marginRight="@dimen/spacing_normal"
-            android:layout_marginStart="@dimen/spacing_normal"
             android:paddingTop="@dimen/spacing_normal" />
 
         <FrameLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:paddingBottom="@dimen/padding_normal"
-            android:paddingEnd="@dimen/padding_normal"
             android:paddingLeft="@dimen/padding_normal"
             android:paddingRight="@dimen/padding_normal"
-            android:paddingStart="@dimen/padding_normal"
             android:paddingTop="@dimen/spacing_micro">
 
             <TextView
                 style="@style/FeedbackQuestionGuideText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="start|left"
-                android:importantForAccessibility="2"
+                android:layout_gravity="start"
+                android:importantForAccessibility="no"
                 android:text="@string/session_feedback_not_at_all_relevant" />
 
             <TextView
                 style="@style/FeedbackQuestionGuideText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="end|right"
-                android:importantForAccessibility="2"
+                android:layout_gravity="end"
+                android:importantForAccessibility="no"
                 android:text="@string/session_feedback_extremely_relevant" />
 
         </FrameLayout>
@@ -198,10 +190,8 @@
             android:gravity="center_vertical"
             android:minHeight="?android:listPreferredItemHeightSmall"
             android:paddingBottom="@dimen/spacing_normal"
-            android:paddingEnd="@dimen/padding_normal"
             android:paddingLeft="@dimen/padding_normal"
             android:paddingRight="@dimen/padding_normal"
-            android:paddingStart="@dimen/padding_normal"
             android:paddingTop="@dimen/spacing_normal"
             android:text="@string/session_feedback_content_label_text" />
 
@@ -211,36 +201,32 @@
             android:layout_width="wrap_content"
             android:layout_height="?android:listPreferredItemHeightSmall"
             android:layout_gravity="center"
-            android:layout_marginEnd="@dimen/spacing_normal"
             android:layout_marginLeft="@dimen/spacing_normal"
             android:layout_marginRight="@dimen/spacing_normal"
-            android:layout_marginStart="@dimen/spacing_normal"
             android:paddingTop="@dimen/spacing_normal" />
 
         <FrameLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:paddingBottom="@dimen/padding_normal"
-            android:paddingEnd="@dimen/padding_normal"
             android:paddingLeft="@dimen/padding_normal"
             android:paddingRight="@dimen/padding_normal"
-            android:paddingStart="@dimen/padding_normal"
             android:paddingTop="@dimen/spacing_micro">
 
             <TextView
                 style="@style/FeedbackQuestionGuideText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="start|left"
-                android:importantForAccessibility="2"
+                android:layout_gravity="start"
+                android:importantForAccessibility="no"
                 android:text="@string/session_feedback_basic" />
 
             <TextView
                 style="@style/FeedbackQuestionGuideText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="end|right"
-                android:importantForAccessibility="2"
+                android:layout_gravity="end"
+                android:importantForAccessibility="no"
                 android:text="@string/session_feedback_advanced" />
 
         </FrameLayout>
@@ -253,10 +239,8 @@
             android:gravity="center_vertical"
             android:minHeight="?android:listPreferredItemHeightSmall"
             android:paddingBottom="@dimen/spacing_normal"
-            android:paddingEnd="@dimen/padding_normal"
             android:paddingLeft="@dimen/padding_normal"
             android:paddingRight="@dimen/padding_normal"
-            android:paddingStart="@dimen/padding_normal"
             android:paddingTop="@dimen/spacing_normal"
             android:text="@string/session_feedback_speaker_quality" />
 
@@ -266,36 +250,32 @@
             android:layout_width="wrap_content"
             android:layout_height="?android:listPreferredItemHeightSmall"
             android:layout_gravity="center"
-            android:layout_marginEnd="@dimen/spacing_normal"
             android:layout_marginLeft="@dimen/spacing_normal"
             android:layout_marginRight="@dimen/spacing_normal"
-            android:layout_marginStart="@dimen/spacing_normal"
             android:paddingTop="@dimen/spacing_normal" />
 
         <FrameLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:paddingBottom="@dimen/padding_normal"
-            android:paddingEnd="@dimen/padding_normal"
             android:paddingLeft="@dimen/padding_normal"
             android:paddingRight="@dimen/padding_normal"
-            android:paddingStart="@dimen/padding_normal"
             android:paddingTop="@dimen/spacing_micro">
 
             <TextView
                 style="@style/FeedbackQuestionGuideText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="start|left"
-                android:importantForAccessibility="2"
+                android:layout_gravity="start"
+                android:importantForAccessibility="no"
                 android:text="@string/session_feedback_poor" />
 
             <TextView
                 style="@style/FeedbackQuestionGuideText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="end|right"
-                android:importantForAccessibility="2"
+                android:layout_gravity="end"
+                android:importantForAccessibility="no"
                 android:text="@string/session_feedback_outstanding" />
 
         </FrameLayout>
@@ -324,13 +304,16 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:drawableLeft="@drawable/ic_submit_feedback"
+                android:drawableStart="@drawable/ic_submit_feedback"
                 android:drawablePadding="8dp"
                 android:gravity="center_vertical"
                 android:paddingRight="24dp"
+                android:paddingEnd="24dp"
                 android:text="@string/session_feedback_submitlink"
                 android:textAllCaps="true"
                 android:textAppearance="@style/TextAppearance.AppCompat.Button"
-                android:textColor="@color/text_on_primary" />
+                android:textColor="@color/text_on_primary"
+                tools:ignore="RtlSymmetry" />
 
         </FrameLayout>
 

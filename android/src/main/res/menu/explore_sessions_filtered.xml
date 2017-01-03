@@ -14,19 +14,24 @@
   See the License for the specific language governing permissions and
   limitations under the License.
   -->
-<menu xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:iosched="http://schemas.android.com/apk/res-auto">
+<menu xmlns:tools="http://schemas.android.com/tools"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <item android:id="@+id/menu_filter"
+    <item
+        android:id="@+id/menu_filter"
         android:icon="@drawable/ic_action_filter"
-        iosched:showAsAction="always"
         android:orderInCategory="1"
-        android:title="@string/description_filter"/>
+        android:title="@string/description_filter"
+        app:showAsAction="always"
+        tools:ignore="AlwaysShowAction" />
 
-    <item android:id="@+id/menu_search"
+    <item
+        android:id="@+id/menu_search"
         android:icon="@drawable/ic_action_search"
-        android:title="@string/description_search"
         android:orderInCategory="2"
-        iosched:showAsAction="always" />
+        android:title="@string/description_search"
+        app:showAsAction="always"
+        tools:ignore="AlwaysShowAction" />
 
 </menu>

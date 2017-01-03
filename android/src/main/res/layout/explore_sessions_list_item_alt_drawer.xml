@@ -23,7 +23,8 @@ limitations under the License.
     android:gravity="center_vertical"
     android:orientation="horizontal"
     android:baselineAligned="false"
-    android:background="?android:selectableItemBackground">
+    android:background="?android:selectableItemBackground"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <TextView
         android:id="@+id/text_view"
@@ -34,7 +35,8 @@ limitations under the License.
         android:layout_marginLeft="@dimen/padding_normal"
         android:textAppearance="@style/TextAppearance.Filter"
         android:ellipsize="end"
-        android:maxLines="1" />
+        android:maxLines="1"
+        tools:text="Develop"/>
 
     <CheckBox
         android:id="@+id/filter_checkbox"

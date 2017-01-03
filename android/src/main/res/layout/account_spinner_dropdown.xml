@@ -14,13 +14,14 @@
   -->
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              xmlns:app="http://schemas.android.com/apk/res-auto"
-              android:layout_width="match_parent"
-              android:layout_height="wrap_content"
-              android:minHeight="?android:listPreferredItemHeightSmall"
-              android:orientation="horizontal"
-              android:baselineAligned="false"
-              android:padding="@dimen/action_button_padding">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:baselineAligned="false"
+    android:minHeight="?android:listPreferredItemHeightSmall"
+    android:orientation="horizontal"
+    android:padding="@dimen/action_button_padding">
 
     <com.google.samples.apps.iosched.ui.widget.BezelImageView
         android:id="@+id/profile_image"
@@ -28,8 +29,8 @@
         android:layout_height="@dimen/navdrawer_item_icon_size"
         android:layout_gravity="center_vertical"
         android:scaleType="centerCrop"
-        app:srcCompat="@drawable/ic_default_avatar"
-        app:maskDrawable="@drawable/circle_mask" />
+        app:maskDrawable="@drawable/circle_mask"
+        app:srcCompat="@drawable/ic_default_avatar" />
 
     <TextView
         android:id="@+id/profile_email_text"
@@ -38,8 +39,11 @@
         android:layout_gravity="center_vertical"
         android:ellipsize="end"
         android:maxLines="1"
+        android:paddingStart="@dimen/action_button_padding"
         android:paddingLeft="@dimen/action_button_padding"
         android:textColor="@color/body_text_2"
-        android:textSize="@dimen/text_size_medium" />
+        android:textSize="@dimen/text_size_medium"
+        tools:text="@string/placeholder_email_address"
+        tools:ignore="RtlSymmetry" />
 
 </LinearLayout>
