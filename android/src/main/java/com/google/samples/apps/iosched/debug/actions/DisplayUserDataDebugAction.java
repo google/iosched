@@ -17,6 +17,7 @@ package com.google.samples.apps.iosched.debug.actions;
 
 import com.google.common.base.Charsets;
 import com.google.samples.apps.iosched.debug.DebugAction;
+import com.google.samples.apps.iosched.sync.userdata.util.UserData;
 import com.google.samples.apps.iosched.sync.userdata.util.UserDataHelper;
 
 import android.content.Context;
@@ -29,14 +30,14 @@ public class DisplayUserDataDebugAction implements DebugAction {
 
     @Override
     public void run(Context context, final Callback callback) {
-        new AsyncTask<Context, Void, UserDataHelper.UserData>() {
+        new AsyncTask<Context, Void, UserData>() {
             @Override
-            protected UserDataHelper.UserData doInBackground(Context... contexts) {
+            protected UserData doInBackground(Context... contexts) {
                 return UserDataHelper.getLocalUserData(contexts[0]);
             }
 
             @Override
-            protected void onPostExecute(UserDataHelper.UserData userData) {
+            protected void onPostExecute(UserData userData) {
                 callback.done(true, "Found User Data: " + new String(
                         UserDataHelper.toByteArray(userData), Charsets.UTF_8));
             }

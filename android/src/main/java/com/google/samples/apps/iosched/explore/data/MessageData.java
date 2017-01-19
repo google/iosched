@@ -28,6 +28,8 @@ public class MessageData {
 
     private int mIconDrawableId = -1;
 
+    private String mMessage;
+
     /**
      * The click listener to be attached to the left aligned button. When RTL is active this
      * indicates the button closer to "start."
@@ -45,7 +47,11 @@ public class MessageData {
     }
 
     public Spanned getMessageString(Context context) {
-        return Html.fromHtml(context.getResources().getString(mMessageStringResourceId));
+        if (mMessageStringResourceId > 0) {
+            return Html.fromHtml(context.getResources().getString(mMessageStringResourceId));
+        } else {
+            return Html.fromHtml(mMessage);
+        }
     }
 
     public int getEndButtonStringResourceId() {
@@ -86,5 +92,29 @@ public class MessageData {
 
     public void setStartButtonClickListener(View.OnClickListener clickListener) {
         this.mStartButtonClickListener = clickListener;
+    }
+
+    public void setMessage(String message) {
+        mMessage = message;
+    }
+
+    @Override
+    public boolean equals(final Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+
+        final MessageData that = (MessageData) o;
+
+        return mMessageStringResourceId == that.mMessageStringResourceId;
+
+    }
+
+    @Override
+    public int hashCode() {
+        return mMessageStringResourceId;
     }
 }

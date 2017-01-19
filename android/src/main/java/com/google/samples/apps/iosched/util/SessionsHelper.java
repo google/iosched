@@ -19,17 +19,13 @@ package com.google.samples.apps.iosched.util;
 import android.app.Activity;
 import android.content.AsyncQueryHandler;
 import android.content.ContentValues;
-import android.content.Context;
-import android.content.Intent;
 import android.net.Uri;
-import android.support.v4.app.ShareCompat;
 
-import com.google.samples.apps.iosched.BuildConfig;
-import com.google.samples.apps.iosched.R;
 import com.google.samples.apps.iosched.appwidget.ScheduleWidgetProvider;
-import com.google.samples.apps.iosched.map.MapActivity;
 import com.google.samples.apps.iosched.provider.ScheduleContract;
 import com.google.samples.apps.iosched.sync.SyncHelper;
+
+import java.util.Date;
 
 import static com.google.samples.apps.iosched.util.LogUtils.LOGD;
 import static com.google.samples.apps.iosched.util.LogUtils.makeLogTag;
@@ -47,34 +43,6 @@ public class SessionsHelper {
         mActivity = activity;
     }
 
-    public void startMapActivity(String roomId) {
-        Intent intent = new Intent(mActivity.getApplicationContext(), MapActivity.class);
-        intent.putExtra(MapActivity.EXTRA_ROOM, roomId);
-        intent.putExtra(MapActivity.EXTRA_DETACHED_MODE, true);
-        mActivity.startActivity(intent);
-    }
-
-    public Intent createShareIntent(int messageTemplateResId, String title, String hashtags,
-            String url) {
-        ShareCompat.IntentBuilder builder = ShareCompat.IntentBuilder.from(mActivity)
-                .setType("text/plain")
-                .setText(mActivity.getString(messageTemplateResId,
-                        title, BuildConfig.CONFERENCE_HASHTAG, " " + url));
-        return builder.getIntent();
-    }
-
-    public void shareSession(Context context, int messageTemplateResId, String title,
-            String hashtags, String url) {
-        // ANALYTICS EVENT: Share a session.
-        // Contains: Session title.
-        AnalyticsHelper.sendEvent("Session", "Shared", title);
-        Intent intent = Intent.createChooser(
-                createShareIntent(messageTemplateResId, title, hashtags, url),
-                context.getString(R.string.title_share));
-        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        context.startActivity(intent);
-    }
-
     public void setSessionStarred(Uri sessionUri, boolean starred, String title) {
         LOGD(TAG, "setSessionStarred uri=" + sessionUri + " starred=" +
                 starred + " title=" + title);
@@ -87,7 +55,9 @@ public class SessionsHelper {
                 };
         final ContentValues values = new ContentValues();
         values.put(ScheduleContract.MySchedule.SESSION_ID, sessionId);
-        values.put(ScheduleContract.MySchedule.MY_SCHEDULE_IN_SCHEDULE, starred?1:0);
+        values.put(ScheduleContract.MySchedule.MY_SCHEDULE_IN_SCHEDULE, starred ? 1 : 0);
+        values.put(ScheduleContract.MySchedule.MY_SCHEDULE_TIMESTAMP, new Date().getTime());
+
         handler.startInsert(-1, null, myScheduleUri, values);
 
         // ANALYTICS EVENT: Add or remove a session from the schedule
@@ -100,6 +70,6 @@ public class SessionsHelper {
         mActivity.sendBroadcast(ScheduleWidgetProvider.getRefreshBroadcastIntent(mActivity, false));
 
         // Request an immediate user data sync to reflect the starred user sessions in the cloud
-        SyncHelper.requestManualSync(AccountUtils.getActiveAccount(mActivity), true);
+        SyncHelper.requestManualSync(true);
     }
 }

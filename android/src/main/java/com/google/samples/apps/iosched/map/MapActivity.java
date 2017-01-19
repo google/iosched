@@ -16,35 +16,46 @@
 
 package com.google.samples.apps.iosched.map;
 
-import com.google.samples.apps.iosched.R;
-import com.google.samples.apps.iosched.provider.ScheduleContract;
-import com.google.samples.apps.iosched.session.SessionDetailConstants;
-import com.google.samples.apps.iosched.ui.BaseActivity;
-import com.google.samples.apps.iosched.util.AnalyticsHelper;
-
+import android.Manifest;
 import android.app.FragmentManager;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.design.widget.Snackbar;
+import android.support.v4.app.ActivityCompat;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
+
+import com.google.samples.apps.iosched.R;
+import com.google.samples.apps.iosched.navigation.NavigationModel;
+import com.google.samples.apps.iosched.provider.ScheduleContract;
+import com.google.samples.apps.iosched.ui.BaseActivity;
+import com.google.samples.apps.iosched.util.AnalyticsHelper;
+import com.google.samples.apps.iosched.util.PermissionsUtils;
 
 import static com.google.samples.apps.iosched.util.LogUtils.makeLogTag;
 
 /**
  * Activity that displays a {@link com.google.samples.apps.iosched.map.MapFragment} and a {@link
- * com.google.samples.apps.iosched.map.MapInfoFragment}.
- * Supports 'detached' mode, where the toolbar contains an up navigation option that finishes this
- * Activity. (see {@link #EXTRA_DETACHED_MODE}
+ * com.google.samples.apps.iosched.map.MapInfoFragment}. Supports 'detached' mode, where the toolbar
+ * contains an up navigation option that finishes this Activity. (see {@link #EXTRA_DETACHED_MODE}
  * Optionally a room can be specified via {@link #EXTRA_ROOM} that pans the map to its indicated
  * marker.
  *
  * @see com.google.samples.apps.iosched.map.MapInfoFragment#newInstace(android.content.Context)
  */
 public class MapActivity extends BaseActivity
-        implements SlideableInfoFragment.Callback, MapFragment.Callbacks {
+        implements SlideableInfoFragment.Callback, MapFragment.Callbacks,
+        ActivityCompat.OnRequestPermissionsResultCallback {
 
     private static final String TAG = makeLogTag(MapActivity.class);
+
+    private static final int REQUEST_LOCATION_PERMISSION = 1;
+
+    public static final String[] PERMISSIONS =
+            new String[]{Manifest.permission.ACCESS_FINE_LOCATION};
 
     private static final String SCREEN_LABEL = "Map";
 
@@ -60,7 +71,7 @@ public class MapActivity extends BaseActivity
 
     private boolean mDetachedMode;
 
-    private MapFragment mMapFragment;
+    protected MapFragment mMapFragment;
 
     private MapInfoFragment mInfoFragment;
 
@@ -103,7 +114,7 @@ public class MapActivity extends BaseActivity
     protected void onPostCreate(Bundle savedInstanceState) {
         super.onPostCreate(savedInstanceState);
         if (mDetachedMode) {
-            final Toolbar toolbar = getActionBarToolbar();
+            final Toolbar toolbar = getToolbar();
             toolbar.setNavigationIcon(R.drawable.ic_up);
             toolbar.setNavigationOnClickListener(new View.OnClickListener() {
                 @Override
@@ -126,17 +137,20 @@ public class MapActivity extends BaseActivity
                 mMapFragment = MapFragment.newInstance(highlightRoomId);
             }
             getFragmentManager().beginTransaction()
-                    .add(R.id.fragment_container_map, mMapFragment, "map")
-                    .commit();
+                                .add(R.id.fragment_container_map, mMapFragment, "map")
+                                .commit();
         }
+
         if (mInfoFragment == null) {
             mInfoFragment = MapInfoFragment.newInstace(this);
             getFragmentManager().beginTransaction()
-                    .add(R.id.fragment_container_map_info, mInfoFragment, "mapsheet")
-                    .commit();
+                                .add(R.id.fragment_container_map_info, mInfoFragment, "mapsheet")
+                                .commit();
         }
 
         mDetachedMode = getIntent().getBooleanExtra(EXTRA_DETACHED_MODE, false);
+
+        attemptEnableMyLocation();
     }
 
     @Override
@@ -149,8 +163,9 @@ public class MapActivity extends BaseActivity
     }
 
     @Override
-    protected int getSelfNavDrawerItem() {
-        return mDetachedMode ? NAVDRAWER_ITEM_INVALID : NAVDRAWER_ITEM_MAP;
+    protected NavigationModel.NavigationItemEnum getSelfNavDrawerItem() {
+        return mDetachedMode ? NavigationModel.NavigationItemEnum.INVALID :
+                NavigationModel.NavigationItemEnum.MAP;
     }
 
 
@@ -164,16 +179,14 @@ public class MapActivity extends BaseActivity
     }
 
     /**
-     * Adjust the padding in the map fragment when the info fragment has been resized.
-     * The size is self reported from the fragment and has to be adjusted before it can be
-     * applied to the map.
-     *
-     * For {@link com.google.samples.apps.iosched.map.InlineInfoFragment} (that is only displayed
-     * on the left of the screen), the full extend of its container layout (including padding) is
-     * passed to the map fragment.
-     * For {@link com.google.samples.apps.iosched.map.SlideableInfoFragment} (that is only
-     * displayed
-     * at the bottom of the screen), its actual height is passed through to the map.
+     * Adjust the padding in the map fragment when the info fragment has been resized. The size is
+     * self reported from the fragment and has to be adjusted before it can be applied to the map.
+     * <p/>
+     * For {@link com.google.samples.apps.iosched.map.InlineInfoFragment} (that is only displayed on
+     * the left of the screen), the full extend of its container layout (including padding) is
+     * passed to the map fragment. For {@link com.google.samples.apps.iosched.map
+     * .SlideableInfoFragment} (that is only displayed at the bottom of the screen), its actual
+     * height is passed through to the map.
      */
     @Override
     public void onInfoSizeChanged(int left, int top, int right, int bottom) {
@@ -207,19 +220,14 @@ public class MapActivity extends BaseActivity
         // ANALYTICS EVENT: Click on a session in the Maps screen.
         // Contains: The session ID.
         AnalyticsHelper.sendEvent(SCREEN_LABEL, "selectsession", sessionId);
-
-        getLUtils().startActivityWithTransition(
-                new Intent(Intent.ACTION_VIEW,
-                        ScheduleContract.Sessions.buildSessionUri(sessionId)),
-                null,
-                SessionDetailConstants.TRANSITION_NAME_PHOTO
-        );
+        startActivity(new Intent(Intent.ACTION_VIEW,
+                ScheduleContract.Sessions.buildSessionUri(sessionId)));
     }
 
     @Override
-    public void onInfoShowMoscone() {
+    public void onInfoShowVenue() {
         if (mInfoFragment != null) {
-            mInfoFragment.showMoscone();
+            mInfoFragment.showVenue();
         }
         setTabletInfoVisibility(View.VISIBLE);
 
@@ -265,5 +273,47 @@ public class MapActivity extends BaseActivity
             view.setVisibility(visibility);
 
         }
+    }
+
+    /**
+     * Enables the 'My Location' feature on the map fragment if the location permission has been
+     * granted. If the permission is not available yet, it is requested.
+     */
+    public void attemptEnableMyLocation() {
+        // Check if the permission has already been granted.
+        if (PermissionsUtils.permissionsAlreadyGranted(this, PERMISSIONS)) {
+            // Permission has been granted.
+            if (mMapFragment != null) {
+                mMapFragment.setMyLocationEnabled(true);
+                return;
+            }
+        }
+
+        // The permissions have not been granted yet. Request them.
+        ActivityCompat.requestPermissions(this, PERMISSIONS, REQUEST_LOCATION_PERMISSION);
+    }
+
+    @Override
+    public void onRequestPermissionsResult(final int requestCode,
+            @NonNull final String[] permissions,
+            @NonNull final int[] grantResults) {
+
+        if (requestCode != REQUEST_LOCATION_PERMISSION) {
+            return;
+        }
+
+        if (permissions.length == PERMISSIONS.length &&
+                grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+            // Permission has been granted.
+            if (mMapFragment != null) {
+                mMapFragment.setMyLocationEnabled(true);
+            }
+        } else {
+            // Permission was denied. Display error message that disappears after a short while.
+             PermissionsUtils.displayConditionalPermissionDenialSnackbar(this,
+                    R.string.map_permission_denied, PERMISSIONS, REQUEST_LOCATION_PERMISSION, false);
+
+        }
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
     }
 }

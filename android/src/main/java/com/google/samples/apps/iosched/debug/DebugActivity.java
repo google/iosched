@@ -16,10 +16,11 @@
 
 package com.google.samples.apps.iosched.debug;
 
-import com.google.samples.apps.iosched.R;
-import com.google.samples.apps.iosched.ui.BaseActivity;
-
 import android.os.Bundle;
+
+import com.google.samples.apps.iosched.R;
+import com.google.samples.apps.iosched.navigation.NavigationModel;
+import com.google.samples.apps.iosched.ui.BaseActivity;
 
 /**
  * Activity that implements the debug UI. This UI has buttons and other widgets
@@ -38,7 +39,7 @@ public class DebugActivity extends BaseActivity {
     }
 
     @Override
-    protected int getSelfNavDrawerItem() {
-        return NAVDRAWER_ITEM_DEBUG;
+    protected NavigationModel.NavigationItemEnum getSelfNavDrawerItem() {
+        return NavigationModel.NavigationItemEnum.DEBUG;
     }
 }

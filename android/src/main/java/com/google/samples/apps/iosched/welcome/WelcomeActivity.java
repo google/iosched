@@ -19,10 +19,11 @@ import android.app.AlertDialog;
 import android.app.Fragment;
 import android.app.FragmentTransaction;
 import android.content.Context;
-import android.graphics.drawable.AnimatedVectorDrawable;
-import android.os.Build;
 import android.os.Bundle;
+import android.support.graphics.drawable.AnimatedVectorDrawableCompat;
 import android.support.v7.app.AppCompatActivity;
+import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 
@@ -30,21 +31,24 @@ import com.google.samples.apps.iosched.BuildConfig;
 import com.google.samples.apps.iosched.Config;
 import com.google.samples.apps.iosched.R;
 import com.google.samples.apps.iosched.settings.SettingsUtils;
+import com.google.samples.apps.iosched.util.UIUtils;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import static com.google.samples.apps.iosched.util.LogUtils.LOGD;
 import static com.google.samples.apps.iosched.util.LogUtils.makeLogTag;
 
 /**
- * Terms of Service activity activated via
- * {@link com.google.samples.apps.iosched.core.activities.BaseActivity} functionality.
+ * Responsible for presenting a series of fragments to the user who has just installed the app as
+ * part of the welcome/onboarding experience.
  */
-public class WelcomeActivity extends AppCompatActivity implements WelcomeFragment.WelcomeFragmentContainer {
+public class WelcomeActivity extends AppCompatActivity
+        implements WelcomeFragment.WelcomeFragmentContainer {
+
     private static final String TAG = makeLogTag(WelcomeActivity.class);
-    WelcomeActivityContent mContentFragment;
+
+    WelcomeFragment mContentFragment;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -54,28 +58,27 @@ public class WelcomeActivity extends AppCompatActivity implements WelcomeFragmen
 
         mContentFragment = getCurrentFragment(this);
 
-        // If there's no fragment to use, we're done here.
+        // If there's no fragment to use, we're done.
         if (mContentFragment == null) {
             finish();
+        } else {
+            // Wire up the fragment.
+            FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
+            fragmentTransaction.add(R.id.welcome_content, (Fragment) mContentFragment);
+            fragmentTransaction.commit();
+
+            final ImageView iv = (ImageView) findViewById(R.id.logo);
+            final AnimatedVectorDrawableCompat logo =
+                    AnimatedVectorDrawableCompat.create(this, R.drawable.avd_hash_io_16);
+            if (iv != null && logo != null) {
+                iv.setImageDrawable(logo);
+
+                if (UIUtils.animationEnabled(getContentResolver())) {
+                    logo.start();
+                }
+            }
         }
 
-        // Wire up the fragment
-        FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
-        fragmentTransaction.add(R.id.welcome_content, (Fragment) mContentFragment);
-        fragmentTransaction.commit();
-
-        LOGD(TAG, "Inside Create View.");
-
-        setupAnimation();
-    }
-
-    private void setupAnimation() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            ImageView iv = (ImageView) findViewById(R.id.logo);
-            AnimatedVectorDrawable logoAnim = (AnimatedVectorDrawable) getDrawable(R.drawable.io_logo_white_anim);
-            iv.setImageDrawable(logoAnim);
-            logoAnim.start();
-        }
     }
 
     @Override
@@ -83,13 +86,14 @@ public class WelcomeActivity extends AppCompatActivity implements WelcomeFragmen
         super.onResume();
 
         // Show the debug warning if debug tools are enabled and it hasn't been shown yet.
-        if (BuildConfig.ENABLE_DEBUG_TOOLS && !SettingsUtils.wasDebugWarningShown(this)) {
+        if (!BuildConfig.SUPPRESS_DOGFOOD_WARNING &&
+                BuildConfig.ENABLE_DEBUG_TOOLS && !SettingsUtils.wasDebugWarningShown(this)) {
             displayDogfoodWarningDialog();
         }
     }
 
     /**
-     * Display dogfood build warning and mark that it was shown.
+     * Displays dogfood build warning and marks that the warning was shown.
      */
     private void displayDogfoodWarningDialog() {
         new AlertDialog.Builder(this)
@@ -100,17 +104,15 @@ public class WelcomeActivity extends AppCompatActivity implements WelcomeFragmen
     }
 
     /**
-     * Get the current fragment to display.
-     *
-     * This is the first fragment in the list that WelcomeActivityContent.shouldDisplay().
+     * Gets the current fragment to display.
      *
      * @param context the application context.
-     * @return the WelcomeActivityContent to display or null if there's none.
+     * @return the fragment to display, or null if there is no fragment.
      */
-    private static WelcomeActivityContent getCurrentFragment(Context context) {
-        List<WelcomeActivityContent> welcomeActivityContents = getWelcomeFragments();
+    private static WelcomeFragment getCurrentFragment(Context context) {
+        List<WelcomeFragment> welcomeActivityContents = getWelcomeFragments();
 
-        for (WelcomeActivityContent fragment : welcomeActivityContents) {
+        for (WelcomeFragment fragment : welcomeActivityContents) {
             if (fragment.shouldDisplay(context)) {
                 return fragment;
             }
@@ -120,73 +122,49 @@ public class WelcomeActivity extends AppCompatActivity implements WelcomeFragmen
     }
 
     /**
-     * Whether to display the WelcomeActivity.
-     *
-     * Decided whether any of the fragments need to be displayed.
+     * Tracks whether to display this activity.
      *
      * @param context the application context.
-     * @return true if the activity should be displayed.
+     * @return true if the activity should be displayed, otherwise false.
      */
     public static boolean shouldDisplay(Context context) {
-        WelcomeActivityContent fragment = getCurrentFragment(context);
-        if (fragment == null) {
-            return false;
-        }
-        return true;
+        WelcomeFragment fragment = getCurrentFragment(context);
+        return fragment != null;
     }
 
     /**
-     * Get all WelcomeFragments for the WelcomeActivity.
-     *
-     * @return the List of WelcomeFragments.
+     * Returns all fragments displayed by {@link WelcomeActivity}.
      */
-    private static List<WelcomeActivityContent> getWelcomeFragments() {
-        return new ArrayList<WelcomeActivityContent>(Arrays.asList(
-            new TosFragment(),
-            new ConductFragment(),
-            new AttendingFragment(),
-            new AccountFragment()
+    private static List<WelcomeFragment> getWelcomeFragments() {
+        return new ArrayList<>(Arrays.asList(
+                new TosFragment(),
+                new ConductFragment(),
+                new AccountFragment(),
+                new AttendingFragment()
         ));
     }
 
     @Override
-    public Button getPositiveButton() {
+    public Button getPrimaryButton() {
         return (Button) findViewById(R.id.button_accept);
     }
 
     @Override
-    public void setPositiveButtonEnabled(Boolean enabled) {
-        try {
-            getPositiveButton().setEnabled(enabled);
-        } catch (NullPointerException e) {
-            LOGD(TAG, "Positive welcome button doesn't exist to set enabled.");
-        }
+    public void setPrimaryButtonEnabled(Boolean enabled) {
+        getPrimaryButton().setEnabled(enabled);
     }
 
     @Override
-    public Button getNegativeButton() {
+    public Button getSecondaryButton() {
         return (Button) findViewById(R.id.button_decline);
     }
 
     @Override
-    public void setNegativeButtonEnabled(Boolean enabled) {
-        try {
-            getNegativeButton().setEnabled(enabled);
-        } catch (NullPointerException e) {
-            LOGD(TAG, "Negative welcome button doesn't exist to set enabled.");
+    public void setButtonBarVisibility(boolean isVisible) {
+        findViewById(R.id.welcome_button_bar).setVisibility(isVisible ? View.VISIBLE : View.GONE);
+        if (!isVisible) {
+            ((ViewGroup.MarginLayoutParams) findViewById(R.id.welcome_scrolling_content)
+                    .getLayoutParams()).bottomMargin = 0;
         }
-    }
-
-    /**
-     * The definition of a Fragment for a use in the WelcomeActivity.
-     */
-    interface WelcomeActivityContent {
-        /**
-         * Whether the fragment should be displayed.
-         *
-         * @param context the application context.
-         * @return true if the WelcomeActivityContent should be displayed.
-         */
-        public boolean shouldDisplay(Context context);
     }
 }

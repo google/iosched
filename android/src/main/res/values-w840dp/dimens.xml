@@ -16,4 +16,5 @@
   -->
 <resources>
     <dimen name="explore_io_theme_cards_session_image_width">168dp</dimen>
+    <integer name="explore_session_column_item_count">4</integer>
 </resources>

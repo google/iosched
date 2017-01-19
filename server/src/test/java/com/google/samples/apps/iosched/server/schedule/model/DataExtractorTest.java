@@ -78,7 +78,6 @@ public class DataExtractorTest {
 
     sources = new ExtraInput().fetchAllDataSources();
     sources.putAll(new VendorDynamicInput(fakeFetcher).fetchAllDataSources());
-
   }
 
   /**

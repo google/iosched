@@ -30,7 +30,7 @@ import static com.google.samples.apps.iosched.util.LogUtils.makeLogTag;
 /**
  * The Terms of Service fragment in the welcome screen.
  */
-public class TosFragment extends WelcomeFragment implements WelcomeActivity.WelcomeActivityContent {
+public class TosFragment extends WelcomeFragment {
     private static final String TAG = makeLogTag(TosFragment.class);
 
     @Override
@@ -39,11 +39,11 @@ public class TosFragment extends WelcomeFragment implements WelcomeActivity.Welc
     }
 
     @Override
-    protected View.OnClickListener getPositiveListener() {
+    protected View.OnClickListener getPrimaryButtonListener() {
         return new WelcomeFragmentOnClickListener(mActivity) {
             @Override
             public void onClick(View v) {
-                // Ensure we don't run this fragment again
+                // Ensure we don't run this fragment again.
                 LOGD(TAG, "Marking TOS flag.");
                 SettingsUtils.markTosAccepted(mActivity, true);
                 doNext();
@@ -52,34 +52,24 @@ public class TosFragment extends WelcomeFragment implements WelcomeActivity.Welc
     }
 
     @Override
-    protected View.OnClickListener getNegativeListener() {
-        return new WelcomeFragmentOnClickListener(mActivity) {
-            @Override
-            public void onClick(View v) {
-                // Ensure we don't run this fragment again
-                LOGD(TAG, "Need to accept Tos.");
-                doFinish();
-            }
-        };
+    protected View.OnClickListener getSecondaryButtonListener() {
+        return null;
     }
 
     @Override
-    protected String getPositiveText() {
-        LOGD(TAG, "Getting Accept string.");
+    protected String getPrimaryButtonText() {
         return getResourceString(R.string.accept);
     }
 
     @Override
-    protected String getNegativeText() {
-        LOGD(TAG, "Getting Decline string.");
-        return getResourceString(R.string.decline);
+    protected String getSecondaryButtonText() {
+        return null;
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+            Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
-        // Inflate the layout for this fragment.
         return inflater.inflate(R.layout.welcome_tos_fragment, container, false);
     }
 }

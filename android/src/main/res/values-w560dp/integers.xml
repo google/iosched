@@ -17,5 +17,5 @@
 
 <resources>
   <integer name="explore_topic_theme_onsite_max_item_count">4</integer>
-  <integer name="explore_session_column_item_count">2</integer>
+  <integer name="explore_session_column_item_count">3</integer>
 </resources>

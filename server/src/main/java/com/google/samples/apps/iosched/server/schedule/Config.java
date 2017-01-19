@@ -22,18 +22,21 @@ import java.util.regex.Pattern;
 
 public interface Config {
 
-  public final int CONFERENCE_YEAR = 2015;
+  public final int CONFERENCE_YEAR = 2016;
   public final boolean STAGING = true;
 
   @SuppressWarnings("deprecation")
   public static final long[][] CONFERENCE_DAYS =
       new long[][] {
           // start and end of day 1
-          { new Date(115, Calendar.MAY, 28, 14, 0, 0).getTime(),
-                  new Date(115, Calendar.MAY, 29, 5, 0, 0).getTime() },
+          { new Date(116, Calendar.MAY, 18, 14, 0, 0).getTime(),
+                  new Date(116, Calendar.MAY, 19, 5, 0, 0).getTime() },
           // start and end of day 2
-          { new Date(115, Calendar.MAY, 29, 14, 0, 0).getTime(),
-                  new Date(115, Calendar.MAY, 30, 0, 0, 0).getTime() }
+          { new Date(116, Calendar.MAY, 19, 14, 0, 0).getTime(),
+                  new Date(116, Calendar.MAY, 20, 0, 0, 0).getTime() },
+          // start and end of day 3
+          { new Date(116, Calendar.MAY, 20, 14, 0, 0).getTime(),
+              new Date(116, Calendar.MAY, 21, 0, 0, 0).getTime() },
       };
 
   public final Pattern SESSIONS_PATTERN = Pattern.compile("session_data_v(\\d+)\\.(\\d+)\\.json");
@@ -55,7 +58,7 @@ public interface Config {
   public final long TIME_TRAVEL_SHIFT = 0; //Used for dogfooding: -29 * (24*60*60*1000L);
   public final String VIDEO_CATEGORY = "f04c9884-9dd8-e411-b87f-00155d5066d7";
 
-  public final String CLOUD_STORAGE_BUCKET = "io2015-staging.appspot.com";
+  public final String CLOUD_STORAGE_BUCKET = "io2016-bucket-dev";
   public final String CLOUD_STORAGE_BASE_URL = "https://storage.googleapis.com/"+CLOUD_STORAGE_BUCKET+"/";
 
   // Used when the CMS doesn't have a proper live stream Youtube URL but we still want to
@@ -66,14 +69,16 @@ public interface Config {
   // GCM confs:
   public static final String GCM_SYNC_URL = "/gcm/send/global/sync_schedule";
 
-  public static final String GCM_URL= "https://io2015-data.googleplex.com"+GCM_SYNC_URL;
-  public static final String GCM_API_KEY = "20e5477b-e4cd-48d4-a108-234ca800d94b";
+  public static final String GCM_URL= "https://io2015-dev.appspot.com"+GCM_SYNC_URL;
+  // TODO: Define the API key used to allow GCM device registrations.
+  public static final String GCM_API_KEY = "UNDEFINED";
 
   // Email address used for sending emails. Normally this should be a service account.
   public static final String EMAIL_FROM = "io2015-data.google.com@appspot.gserviceaccount.com";
 
   // API key used for session CMS access
   public static final String CMS_API_KEY = "UNDEFINED";
+  // TODO(arthurthompson): Remove CMS_API_CODE since it is no longer used by vendor API.
   public static final String CMS_API_CODE = "UNDEFINED";
 
   // See context at b/15452185:

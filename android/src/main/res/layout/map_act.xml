@@ -39,7 +39,7 @@ of the map.-->
                 android:orientation="vertical"
                 style="@style/HeaderBar">
 
-            <include layout="@layout/toolbar_actionbar_keyline_insets"/>
+            <include layout="@layout/toolbar_keyline_insets"/>
             <!-- placeholder, empty except on L -->
 
         </LinearLayout>
@@ -63,6 +63,6 @@ of the map.-->
     </LinearLayout>
 
     <!-- Nav drawer -->
-    <include layout="@layout/navdrawer"/>
+    <include layout="@layout/navigation_view"/>
 
 </android.support.v4.widget.DrawerLayout>

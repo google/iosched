@@ -88,11 +88,11 @@ public class DataModelHelper {
         continue;
       }
       JsonObject obj = el.getAsJsonObject();
-      if (!obj.has("name") || !obj.has("value")) {
+      if (!obj.has("Name") || !obj.has("Value")) {
         continue;
       }
-      if (key.equals(obj.getAsJsonPrimitive("name").getAsString())) {
-        JsonElement value = obj.get("value");
+      if (key.equals(obj.getAsJsonPrimitive("Name").getAsString())) {
+        JsonElement value = obj.get("Value");
         if (!value.isJsonPrimitive()) {
           throw new ConverterException(value, converter, "Expected a JsonPrimitive");
         }

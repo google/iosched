@@ -23,13 +23,14 @@ import android.util.Log;
 
 import com.google.samples.apps.iosched.BuildConfig;
 import com.google.samples.apps.iosched.R;
+import com.google.samples.apps.iosched.myschedule.MyScheduleModel;
 import com.google.samples.apps.iosched.provider.ScheduleContract;
 import com.google.samples.apps.iosched.provider.ScheduleContract.Blocks;
 import com.google.samples.apps.iosched.provider.ScheduleContract.Sessions;
 import com.google.samples.apps.iosched.provider.ScheduleContractHelper;
 import com.google.samples.apps.iosched.settings.SettingsUtils;
-import com.google.samples.apps.iosched.myschedule.MyScheduleAdapter;
 import com.google.samples.apps.iosched.util.AccountUtils;
+import com.google.samples.apps.iosched.util.TimeUtils;
 import com.google.samples.apps.iosched.util.UIUtils;
 
 import java.util.ArrayList;
@@ -117,7 +118,7 @@ public class ScheduleHelper {
         cursor.close();
 
         // remove free blocks that have no available sessions or that are in the past
-        long now = UIUtils.getCurrentTime(mContext);
+        long now = TimeUtils.getCurrentTime(mContext);
         Iterator<ScheduleItem> it = items.iterator();
         while (it.hasNext()) {
             ScheduleItem i = it.next();
@@ -137,7 +138,7 @@ public class ScheduleHelper {
         }
     }
 
-    public void getScheduleDataAsync(final MyScheduleAdapter adapter,
+    public void getScheduleDataAsync(final MyScheduleModel.LoadScheduleDataListener callback,
             long start, long end) {
         AsyncTask<Long, Void, ArrayList<ScheduleItem>> task
                 = new AsyncTask<Long, Void, ArrayList<ScheduleItem>>() {
@@ -150,7 +151,7 @@ public class ScheduleHelper {
 
             @Override
             protected void onPostExecute(ArrayList<ScheduleItem> scheduleItems) {
-                adapter.updateItems(scheduleItems);
+                callback.onDataLoaded(scheduleItems);
             }
         };
         // On honeycomb and above, AsyncTasks are by default executed one by one. We are using a
@@ -221,6 +222,7 @@ public class ScheduleHelper {
                     Blocks.BLOCK_START);
 
             if (cursor.moveToFirst()) {
+                final boolean attendeeAtVenue = SettingsUtils.isAttendeeAtVenue(mContext);
                 do {
                     ScheduleItem item = new ScheduleItem();
                     item.setTypeFromBlockType(cursor.getString(BlocksQuery.BLOCK_TYPE));
@@ -230,7 +232,7 @@ public class ScheduleHelper {
                     item.endTime = cursor.getLong(BlocksQuery.BLOCK_END);
 
                     // Hide BREAK blocks to remote attendees (b/14666391):
-                    if (item.type == ScheduleItem.BREAK && !SettingsUtils.isAttendeeAtVenue(mContext)) {
+                    if (item.type == ScheduleItem.BREAK && !attendeeAtVenue) {
                         continue;
                     }
                     // Currently, only type=FREE is mutable

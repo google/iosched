@@ -15,7 +15,7 @@
   -->
 <cronentries>
     <cron>
-        <url>/admin/runupdate</url>
+        <url>/admin/schedule/runupdate</url>
         <description>Update GCS files when data changes</description>
         <schedule>every 5 minutes</schedule>
         <timezone>America/Los_Angeles</timezone>

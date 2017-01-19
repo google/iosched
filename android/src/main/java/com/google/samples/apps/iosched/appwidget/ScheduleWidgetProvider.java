@@ -63,7 +63,7 @@ public class ScheduleWidgetProvider extends AppWidgetProvider {
             // Trigger sync
             Account chosenAccount = AccountUtils.getActiveAccount(context);
             if (shouldSync && chosenAccount != null) {
-                SyncHelper.requestManualSync(chosenAccount);
+                SyncHelper.requestManualSync();
             }
 
             // Notify the widget that the list view needs to be updated.

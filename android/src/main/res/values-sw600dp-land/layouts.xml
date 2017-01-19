@@ -15,6 +15,6 @@
   limitations under the License.
   -->
 <resources>
-    <item name="activity_my_schedule" type="layout">@layout/activity_my_schedule_wide</item>
+    <item name="my_schedule_act" type="layout">@layout/my_schedule_wide_act</item>
     <item name="list_item_session_hero" type="layout">@layout/list_item_session_hero_wide</item>
 </resources>

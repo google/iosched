@@ -44,7 +44,7 @@
             android:paddingEnd="@dimen/spacing_normal"
             android:layout_gravity="center_vertical|start"
             android:scaleType="fitStart"
-            android:src="@drawable/actionbar_icon"
+            android:src="@drawable/ic_widget_logo"
             android:background="?android:selectableItemBackground"
             android:contentDescription="@string/app_name" />
 

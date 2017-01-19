@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
 <!--
   Copyright 2015 Google Inc. All rights reserved.
 
@@ -13,12 +14,15 @@
   See the License for the specific language governing permissions and
   limitations under the License.
   -->
-<menu xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:iosched="http://schemas.android.com/apk/res-auto">
+<menu
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <item android:id="@+id/menu_search"
+    <item
+        android:id="@+id/menu_search"
         android:icon="@drawable/ic_action_search"
         android:orderInCategory="1"
         android:title="@string/description_search"
-        iosched:showAsAction="always" />
+        app:showAsAction="always" />
+
 </menu>

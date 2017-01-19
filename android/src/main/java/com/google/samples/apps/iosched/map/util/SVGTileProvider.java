@@ -25,6 +25,7 @@ import com.google.android.gms.maps.model.TileProvider;
 import java.io.*;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
+import com.google.samples.apps.iosched.BuildConfig;
 import com.larvalabs.svgandroid.SVG;
 import com.larvalabs.svgandroid.SVGBuilder;
 
@@ -58,18 +59,15 @@ public class SVGTileProvider implements TileProvider {
         mSvgPicture = svg.getPicture();
         RectF limits = svg.getLimits();
 
+        // These values map the SVG file to world coordinates.
+        // See: http://stackoverflow.com/questions/21167584/google-io-2013-app-mystery-values
         mBaseMatrix = new Matrix();
         mBaseMatrix.setPolyToPoly(
                 new float[]{
-                        0, 0,
-                        limits.width(), 0,
-                        limits.width(), limits.height()
-                }, 0,
-                new float[]{
-                        40.95635986328125f, 98.94217824936158f,
-                        40.95730018615723f, 98.94123077396628f,
-                        40.95791244506836f, 98.94186019897214f
-                }, 0, 3
+                        0, 0, // North-West
+                        limits.width(), 0, // North-East
+                        limits.width(), limits.height() // South-East
+                }, 0, BuildConfig.MAP_FLOORPLAN_MAPPING, 0, 3
         );
     }
 

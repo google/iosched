@@ -22,6 +22,7 @@ import android.database.Cursor;
 import android.graphics.Color;
 import android.net.Uri;
 import android.provider.BaseColumns;
+import android.support.v4.content.ContextCompat;
 import android.text.TextUtils;
 
 import com.google.samples.apps.iosched.Config;
@@ -53,7 +54,7 @@ public class SessionsHandler extends JSONHandler {
 
     public SessionsHandler(Context context) {
         super(context);
-        mDefaultSessionColor = mContext.getResources().getColor(R.color.default_session_color);
+        mDefaultSessionColor = ContextCompat.getColor(mContext, R.color.default_session_color);
     }
 
     @Override
@@ -176,13 +177,17 @@ public class SessionsHandler extends JSONHandler {
         if (mSpeakerMap != null) {
             // build human-readable list of speakers
             mStringBuilder.setLength(0);
-            for (int i = 0; i < session.speakers.length; ++i) {
-                if (mSpeakerMap.containsKey(session.speakers[i])) {
-                    mStringBuilder
-                            .append(i == 0 ? "" : i == session.speakers.length - 1 ? " and " : ", ")
-                            .append(mSpeakerMap.get(session.speakers[i]).name.trim());
-                } else {
-                    LOGW(TAG, "Unknown speaker ID " + session.speakers[i] + " in session " + session.id);
+            if (session.speakers != null) {
+                for (int i = 0; i < session.speakers.length; ++i) {
+                    if (mSpeakerMap.containsKey(session.speakers[i])) {
+                        mStringBuilder
+                                .append(i == 0 ? "" :
+                                        i == session.speakers.length - 1 ? " and " : ", ")
+                                .append(mSpeakerMap.get(session.speakers[i]).name.trim());
+                    } else {
+                        LOGW(TAG, "Unknown speaker ID " + session.speakers[i] + " in session " +
+                                session.id);
+                    }
                 }
             }
             speakerNames = mStringBuilder.toString();
@@ -251,14 +256,17 @@ public class SessionsHandler extends JSONHandler {
         if (mTagMap == null) {
             throw new IllegalStateException("Attempt to compute type order without tag map.");
         }
-        for (String tagId : session.tags) {
-            if (Config.Tags.SPECIAL_KEYNOTE.equals(tagId)) {
-                return keynoteOrder;
-            }
-            Tag tag = mTagMap.get(tagId);
-            if (tag != null && Config.Tags.SESSION_GROUPING_TAG_CATEGORY.equals(tag.category)) {
-                if (tag.order_in_category < order) {
-                    order = tag.order_in_category;
+
+        if (session.tags != null) {
+            for (String tagId : session.tags) {
+                if (Config.Tags.SPECIAL_KEYNOTE.equals(tagId)) {
+                    return keynoteOrder;
+                }
+                Tag tag = mTagMap.get(tagId);
+                if (tag != null && Config.Tags.SESSION_GROUPING_TAG_CATEGORY.equals(tag.category)) {
+                    if (tag.order_in_category < order) {
+                        order = tag.order_in_category;
+                    }
                 }
             }
         }
@@ -292,10 +300,15 @@ public class SessionsHandler extends JSONHandler {
         list.add(ContentProviderOperation.newDelete(uri).build());
 
         // add a mapping (a session+tag tuple) for each tag in the session
-        for (String tag : session.tags) {
-            list.add(ContentProviderOperation.newInsert(uri)
-                    .withValue(ScheduleDatabase.SessionsTags.SESSION_ID, session.id)
-                    .withValue(ScheduleDatabase.SessionsTags.TAG_ID, tag).build());
+        if (session.tags != null) {
+            for (String tag : session.tags) {
+                list.add(ContentProviderOperation.newInsert(uri)
+                                                 .withValue(
+                                                         ScheduleDatabase.SessionsTags.SESSION_ID,
+                                                         session.id)
+                                                 .withValue(ScheduleDatabase.SessionsTags.TAG_ID,
+                                                         tag).build());
+            }
         }
     }
 

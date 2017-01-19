@@ -28,10 +28,15 @@ import static com.google.samples.apps.iosched.util.LogUtils.LOGD;
 import static com.google.samples.apps.iosched.util.LogUtils.makeLogTag;
 
 /**
- * The attending in person fragment in the welcome screen.
+ * Asks whether the user is attending the conference in person or remotely.
  */
-public class AttendingFragment extends WelcomeFragment implements WelcomeActivity.WelcomeActivityContent {
+public class AttendingFragment extends WelcomeFragment {
+
     private static final String TAG = makeLogTag(AttendingFragment.class);
+
+    private WelcomeFragmentOnClickListener mPositiveClickListener;
+
+    private WelcomeFragmentOnClickListener mNegativeClickListener;
 
     @Override
     public boolean shouldDisplay(Context context) {
@@ -40,8 +45,34 @@ public class AttendingFragment extends WelcomeFragment implements WelcomeActivit
 
 
     @Override
-    protected View.OnClickListener getPositiveListener() {
-        return new WelcomeFragmentOnClickListener(mActivity) {
+    protected View.OnClickListener getPrimaryButtonListener() {
+        return mPositiveClickListener;
+    }
+
+    @Override
+    protected View.OnClickListener getSecondaryButtonListener() {
+        return mNegativeClickListener;
+    }
+
+    @Override
+    protected String getPrimaryButtonText() {
+        return getResourceString(R.string.attending_in_person);
+    }
+
+    @Override
+    protected String getSecondaryButtonText() {
+        return getResourceString(R.string.attending_remotely);
+    }
+
+    @Override
+    protected boolean shouldShowButtonBar() {
+        return false;
+    }
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+            Bundle savedInstanceState) {
+        mPositiveClickListener = new WelcomeFragmentOnClickListener(mActivity) {
             @Override
             public void onClick(View v) {
                 // Ensure we don't run this fragment again
@@ -51,11 +82,8 @@ public class AttendingFragment extends WelcomeFragment implements WelcomeActivit
                 doNext();
             }
         };
-    }
 
-    @Override
-    protected View.OnClickListener getNegativeListener() {
-        return new WelcomeFragmentOnClickListener(mActivity) {
+        mNegativeClickListener = new WelcomeFragmentOnClickListener(mActivity) {
             @Override
             public void onClick(View v) {
                 LOGD(TAG, "Marking not attending flag.");
@@ -64,24 +92,11 @@ public class AttendingFragment extends WelcomeFragment implements WelcomeActivit
                 doNext();
             }
         };
-    }
 
-    @Override
-    protected String getPositiveText() {
-        return getResourceString(R.string.attending_in_person);
-    }
-
-    @Override
-    protected String getNegativeText() {
-        return getResourceString(R.string.attending_remotely);
-    }
-
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.welcome_attending_fragment, container, false);
+        final View view = inflater.inflate(R.layout.welcome_attending_fragment, container, false);
+        view.findViewById(R.id.attending_in_person).setOnClickListener(mPositiveClickListener);
+        view.findViewById(R.id.attending_remotely).setOnClickListener(mNegativeClickListener);
+        return view;
     }
-
 }

@@ -17,28 +17,23 @@
 
 <FrameLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:iosched="http://schemas.android.com/apk/res-auto"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".welcome.WelcomeActivity">
 
-    <FrameLayout
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/welcome_appbar_height"
-        android:paddingBottom="?actionBarSize"
-        android:background="?colorPrimary">
-
-        <ImageView
-            android:id="@+id/logo"
-            android:src="@drawable/io_logo"
-            android:layout_width="@dimen/welcome_image_width"
-            android:layout_height="@dimen/welcome_image_height"
-            android:layout_gravity="center"/>
-
-    </FrameLayout>
+    <ImageView
+        android:id="@+id/logo"
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/welcome_logo_height"
+        android:layout_gravity="top|center_horizontal"
+        android:layout_marginTop="@dimen/welcome_logo_top_spacing"
+        android:adjustViewBounds="true"
+        android:src="@drawable/io_logo" />
 
     <ScrollView
+        android:id="@+id/welcome_scrolling_content"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:paddingTop="@dimen/welcome_content_padding_top"
@@ -55,20 +50,21 @@
             android:layout_marginStart="@dimen/padding_normal"
             android:layout_marginEnd="@dimen/padding_normal"
             android:paddingTop="@dimen/spacing_normal"
-            iosched:cardBackgroundColor="@color/app_white"
-            iosched:cardCornerRadius="@dimen/card_corner_radius"
-            iosched:cardElevation="@dimen/card_elevation"
-            iosched:cardPreventCornerOverlap="false" />
+            app:cardBackgroundColor="@color/app_white"
+            app:cardCornerRadius="@dimen/card_corner_radius"
+            app:cardElevation="@dimen/card_elevation"
+            app:cardPreventCornerOverlap="false" />
 
     </ScrollView>
 
     <!-- Button bar -->
     <!-- need two layouts in order to restrict the width on larger devices -->
     <FrameLayout
+        android:id="@+id/welcome_button_bar"
         android:layout_width="@dimen/match_parent"
         android:layout_height="?actionBarSize"
         android:layout_gravity="bottom"
-        android:background="@color/app_white"
+        android:background="?colorPrimary"
         android:elevation="@dimen/welcome_button_bar_elevation">
 
         <LinearLayout
@@ -84,6 +80,7 @@
                 android:text="@string/decline"
                 android:textAppearance="@style/TextAppearance.AppCompat.Button"
                 android:textColor="@color/app_body_text_2"
+                android:visibility="invisible"
                 style="?android:borderlessButtonStyle" />
 
             <Button
@@ -92,7 +89,7 @@
                 android:layout_height="match_parent"
                 android:text="@string/accept"
                 android:textAppearance="@style/TextAppearance.AppCompat.Button"
-                android:textColor="@drawable/button_color"
+                android:textColor="@color/welcome_preferred_button"
                 style="?android:borderlessButtonStyle" />
 
         </LinearLayout>

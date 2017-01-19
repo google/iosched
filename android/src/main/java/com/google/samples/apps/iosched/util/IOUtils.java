@@ -16,7 +16,13 @@
 
 package com.google.samples.apps.iosched.util;
 
+import android.content.Context;
+
+import com.google.android.gms.plus.Account;
 import com.google.common.base.Charsets;
+import com.google.samples.apps.iosched.BuildConfig;
+import com.turbomanage.httpclient.BasicHttpClient;
+
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
@@ -32,6 +38,10 @@ import java.io.OutputStreamWriter;
  * Utility methods and constants used for writing and reading to from streams and files.
  */
 public class IOUtils {
+
+    private static final String AUTHORIZATION_HEADER = "Authorization";
+    private static final String BEARER_PREFIX = "Bearer ";
+    private static final boolean AUTHORIZATION_TO_BACKEND_REQUIRED = BuildConfig.DEBUG;
 
     /**
      * Writes the given string to a {@link File}.
@@ -122,5 +132,23 @@ public class IOUtils {
             }
         }
         return sb.toString();
+    }
+
+    /**
+     * If {@code AUTHORIZATION_TO_BACKEND_REQUIRED} is true add an authentication header to the
+     * given request. The currently signed in user is used to retrieve the auth token.
+     * Allows pre-release builds to use a Google Cloud storage bucket with non-public data.
+     *
+     * @param context Context used to retrieve auth token from SharedPreferences.
+     * @param basicHttpClient HTTP client to which the authorization header will be added.
+     */
+    public static void authorizeHttpClient(Context context, BasicHttpClient basicHttpClient) {
+        if (basicHttpClient == null || AccountUtils.getAuthToken(context) == null) {
+            return;
+        }
+        if (AUTHORIZATION_TO_BACKEND_REQUIRED) {
+            basicHttpClient.addHeader(AUTHORIZATION_HEADER,
+                    BEARER_PREFIX + AccountUtils.getAuthToken(context));
+        }
     }
 }

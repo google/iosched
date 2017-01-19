@@ -16,133 +16,114 @@
 
 package com.google.samples.apps.iosched.videolibrary;
 
-import com.google.samples.apps.iosched.R;
-import com.google.samples.apps.iosched.framework.PresenterFragmentImpl;
-import com.google.samples.apps.iosched.settings.SettingsUtils;
-import com.google.samples.apps.iosched.ui.BaseActivity;
+import android.support.test.InstrumentationRegistry;
+import android.support.test.filters.LargeTest;
+import android.support.test.filters.Suppress;
+import android.support.test.runner.AndroidJUnit4;
 
-import org.junit.After;
-import org.junit.Before;
+import com.google.samples.apps.iosched.R;
+import com.google.samples.apps.iosched.mockdata.VideosMockCursor;
+import com.google.samples.apps.iosched.navigation.NavigationModel;
+import com.google.samples.apps.iosched.testutils.BaseActivityTestRule;
+import com.google.samples.apps.iosched.testutils.NavigationUtils;
+import com.google.samples.apps.iosched.testutils.ToolbarUtils;
+import com.google.samples.apps.iosched.testutils.IntentUtils;
+
+import org.hamcrest.Matcher;
+import org.junit.Ignore;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
-import android.content.Intent;
-import android.support.test.InstrumentationRegistry;
-import android.support.test.espresso.Espresso;
-import android.support.test.espresso.ViewInteraction;
-import android.support.test.rule.ActivityTestRule;
-import android.support.test.runner.AndroidJUnit4;
-import android.test.suitebuilder.annotation.LargeTest;
-
 import static android.support.test.espresso.Espresso.onView;
-import static android.support.test.espresso.action.ViewActions.swipeUp;
+import static android.support.test.espresso.action.ViewActions.click;
+import static android.support.test.espresso.assertion.ViewAssertions.doesNotExist;
 import static android.support.test.espresso.assertion.ViewAssertions.matches;
-import static android.support.test.espresso.matcher.ViewMatchers.assertThat;
-import static android.support.test.espresso.matcher.ViewMatchers.hasDescendant;
-import static android.support.test.espresso.matcher.ViewMatchers.isClickable;
-import static android.support.test.espresso.matcher.ViewMatchers.isCompletelyDisplayed;
+import static android.support.test.espresso.intent.Intents.intended;
+import static android.support.test.espresso.intent.matcher.IntentMatchers.hasComponent;
+import static android.support.test.espresso.intent.matcher.IntentMatchers.hasExtra;
+import static android.support.test.espresso.matcher.ViewMatchers.hasSibling;
 import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
-import static android.support.test.espresso.matcher.ViewMatchers.withId;
+import static android.support.test.espresso.matcher.ViewMatchers.withChild;
+import static android.support.test.espresso.matcher.ViewMatchers.withContentDescription;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
-import static junit.framework.Assert.assertNotNull;
-import static org.hamcrest.Matchers.anyOf;
-import static org.hamcrest.Matchers.containsString;
-import static org.hamcrest.Matchers.equalTo;
-import static org.hamcrest.Matchers.instanceOf;
-import static org.hamcrest.Matchers.is;
-import static org.hamcrest.Matchers.not;
+import static org.hamcrest.CoreMatchers.allOf;
+import static org.junit.Assert.assertTrue;
 
 
 @RunWith(AndroidJUnit4.class)
 @LargeTest
 public class VideoLibraryActivityTest {
 
-    private static final String YEAR_2013 = "2013";
-
-    private static final String YEAR_2014 = "2014";
-
-    private static final String YEAR_2015 = "2015";
-
-    private static final String TOPIC_KEYNOTES = "Keynotes";
-
-    private PresenterFragmentImpl mPresenter;
-
     @Rule
-    public ActivityTestRule<VideoLibraryActivity> mActivityRule =
-            new ActivityTestRule<VideoLibraryActivity>(VideoLibraryActivity.class) {
-                @Override
-                protected Intent getActivityIntent() {
-                    // Make sure the EULA screen is not shown.
-                    SettingsUtils.markTosAccepted(InstrumentationRegistry.getTargetContext(), true);
+    public BaseActivityTestRule<VideoLibraryActivity> mActivityRule =
+            new BaseActivityTestRule<VideoLibraryActivity>(VideoLibraryActivity.class,
+                    new StubVideoLibraryModel(
+                            InstrumentationRegistry.getTargetContext(),
+                            VideosMockCursor.getCursorForVideos(),
+                            VideosMockCursor.getCursorForFilter()), true);
 
-                    // Create intent to load the video library.
-                    return new Intent(InstrumentationRegistry.getInstrumentation()
-                            .getTargetContext().getApplicationContext(),
-                            VideoLibraryActivity.class);
-                }
-            };
+    @Test
+    public void videosList_TopicViewMoreClicked_IntentFired() {
+        // Given a visible topic
+        onView(withText(VideosMockCursor.VIDEO_TOPIC1)).check(matches(isDisplayed()));
 
-    @Before
-    public void setupMembersAndIdlingResource() {
-        mPresenter = (PresenterFragmentImpl) mActivityRule.getActivity()
-                .getFragmentManager().findFragmentByTag(BaseActivity.PRESENTER_TAG);
-        Espresso.registerIdlingResources(mPresenter.getLoaderIdlingResource());
-    }
+        // When clicking on the "More" button
+        onView(allOf(withText(R.string.more_items_button),
+                hasSibling(withText(VideosMockCursor.VIDEO_TOPIC1)))).perform(click());
 
-    @After
-    public void unregisterIdlingResource() {
-        Espresso.unregisterIdlingResources(mPresenter.getLoaderIdlingResource());
+        // Then the intent to open the filtered activity for that topic is fired
+        intended(allOf(
+                hasComponent(VideoLibraryFilteredActivity.class.getName()),
+                hasExtra(VideoLibraryFilteredActivity.KEY_FILTER_TOPIC,
+                        VideosMockCursor.VIDEO_TOPIC1)));
     }
 
     @Test
-    public void checkPreconditions() {
-        // Check that the presenter exists.
-        assertNotNull(mActivityRule.getActivity().getFragmentManager()
-                .findFragmentByTag(BaseActivity.PRESENTER_TAG));
+    public void videosList_VideoClicked_IntentFired() {
+        // Given a visible video
+        onView(withText(VideosMockCursor.VIDEO_TITLE1)).check(matches(isDisplayed()));
 
-        // Check the model, initial queries and valid user actions of the Presenter
-        // No need to check the UpdatableView because other tests will fail if expected views aren't
-        // present.
-        assertThat("The presenter model should be an instance of VideoLibraryModel",
-                mPresenter.getModel(), instanceOf(VideoLibraryModel.class));
-        assertThat(new VideoLibraryModel.VideoLibraryQueryEnum[]{
-                        VideoLibraryModel.VideoLibraryQueryEnum.VIDEOS,
-                        VideoLibraryModel.VideoLibraryQueryEnum.MY_VIEWED_VIDEOS},
-                is(equalTo(mPresenter.getInitialQueriesToLoad())));
-        assertThat(new VideoLibraryModel.VideoLibraryUserActionEnum[]{
-                        VideoLibraryModel.VideoLibraryUserActionEnum.RELOAD,
-                        VideoLibraryModel.VideoLibraryUserActionEnum.VIDEO_PLAYED},
-                is(equalTo(mPresenter.getValidUserActions())));
+        // When clicking on the video
+        onView(withText(VideosMockCursor.VIDEO_TITLE1)).perform(click());
+
+        // Then the intent to open the video is fired
+        IntentUtils.checkVideoIntentIsFired(VideosMockCursor.VIDEO_YOUTUBE_LINK,
+                mActivityRule.getActivity(), true);
     }
 
     @Test
-    public void videosList_InitiallyHasVideoGroupTitleWithYear() {
-        onView(withId(R.id.videos_collection_view)).check(matches(
-                hasDescendant(withText(anyOf(
-                        containsString(TOPIC_KEYNOTES), containsString(YEAR_2013),
-                        containsString(YEAR_2014), containsString(YEAR_2015))))));
+    public void videosList_VideoWithNullTopicNotShown() {
+        onView(withText(VideosMockCursor.VIDEO_TITLE_NULL_TOPIC)).check(doesNotExist());
     }
 
     @Test
-    public void videosList_InitiallyHasClickableVideos() {
-        onView(withId(R.id.videos_collection_view)).check(matches(hasDescendant(isClickable())));
+    public void toolbar_IsInitiallyDisplayed() {
+        ToolbarUtils.checkToolbarIsCompletelyDisplayed();
     }
 
     @Test
-    public void headerBar_IsInitiallyDisplayed() {
-        onView(withId(R.id.headerbar)).check(matches(isCompletelyDisplayed()));
+    @Suppress // TODO(b/30123797): Manual testing shows odd behavior when slow-scrolling up. This
+            // needs to be researched, but this scroll hiding functionality is provided by the
+            // coordinator layout so this might be a support lib bug or a nuance in the flags
+            // supplied in toolbar_autohide.xml
+    public void toolbar_HidesAfterSwipeUp() {
+        ToolbarUtils.checkToolbarHidesAfterSwipingRecyclerViewUp(R.id.videos_card_list);
     }
 
     @Test
-    public void headerBar_HidesAfterSwipeUp() {
-        ViewInteraction view = onView(withId(R.id.headerbar));
+    public void navigationIcon_DisplaysAsMenu() {
+        NavigationUtils.checkNavigationIconIsMenu();
+    }
 
-        // Swiping up should hide the header bar.
-        onView(withId(R.id.videos_collection_view)).perform(swipeUp());
-        onView(withId(R.id.videos_collection_view)).perform(swipeUp());
+    @Test
+    public void navigationIcon_OnClick_NavigationDisplayed() {
+        NavigationUtils.checkNavigationIsDisplayedWhenClickingMenuIcon();
+    }
 
-        // Check if the header bar is hidden.
-        view.check(matches(not(isDisplayed())));
+    @Test
+    public void navigation_WhenShown_CorrectItemIsSelected() {
+        NavigationUtils
+                .checkNavigationItemIsSelected(NavigationModel.NavigationItemEnum.VIDEO_LIBRARY);
     }
 }

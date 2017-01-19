@@ -1,16 +1,21 @@
 package com.google.samples.apps.iosched.explore;
 
-import com.google.samples.apps.iosched.R;
-import com.google.samples.apps.iosched.explore.data.MessageData;
-import com.google.samples.apps.iosched.settings.ConfMessageCardUtils;
-import com.google.samples.apps.iosched.settings.SettingsUtils;
-import com.google.samples.apps.iosched.util.WiFiUtils;
-
+import android.app.Activity;
 import android.content.Context;
+import android.content.ContextWrapper;
 import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
+import android.support.annotation.Nullable;
 import android.view.View;
+
+import com.google.samples.apps.iosched.R;
+import com.google.samples.apps.iosched.explore.data.MessageData;
+import com.google.samples.apps.iosched.messaging.MessagingRegistration;
+import com.google.samples.apps.iosched.messaging.MessagingRegistrationWithGCM;
+import com.google.samples.apps.iosched.settings.ConfMessageCardUtils;
+import com.google.samples.apps.iosched.settings.SettingsUtils;
+import com.google.samples.apps.iosched.util.WiFiUtils;
 
 import static com.google.samples.apps.iosched.util.LogUtils.LOGD;
 import static com.google.samples.apps.iosched.util.LogUtils.makeLogTag;
@@ -25,10 +30,24 @@ public class MessageCardHelper {
     private static final String TWITTER_PACKAGE_NAME = "com.twitter.android";
     private static final String GPLUS_PACKAGE_NAME = "com.google.android.apps.plus";
 
+    public static MessageData getSimpleMessageCardData(
+      final ConfMessageCardUtils.ConfMessageCard card) {
+        MessageData messageData = new MessageData();
+        messageData.setEndButtonStringResourceId(R.string.ok);
+        messageData.setMessage(card.getSimpleMessage());
+        messageData.setEndButtonClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(final View v) {
+                ConfMessageCardUtils.markDismissedConfMessageCard(v.getContext(), card);
+            }
+        });
+        return messageData;
+    }
+
     /**
      * Return the conference messages opt-in data.
      */
-    public static MessageData getConferenceOptInMessageData(Context context) {
+    public static MessageData getConferenceOptInMessageData() {
         MessageData messageData = new MessageData();
         messageData.setStartButtonStringResourceId(R.string.explore_io_msgcards_answer_no);
         messageData.setMessageStringResourceId(R.string.explore_io_msgcards_ask_opt_in);
@@ -40,7 +59,11 @@ public class MessageCardHelper {
                 LOGD(TAG, "Marking conference messages question answered with decline.");
                 ConfMessageCardUtils.markAnsweredConfMessageCardsPrompt(view.getContext(), true);
                 ConfMessageCardUtils.setConfMessageCardsEnabled(view.getContext(), false);
-
+                Activity activity;
+                if ((activity = getActivity(view)) != null) {
+                    // This will activate re-registering with the correct GCM topic(s).
+                    new MessagingRegistrationWithGCM(activity).registerDevice();
+                }
             }
         });
         messageData.setEndButtonClickListener(new View.OnClickListener() {
@@ -49,6 +72,44 @@ public class MessageCardHelper {
                 LOGD(TAG, "Marking conference messages question answered with affirmation.");
                 ConfMessageCardUtils.markAnsweredConfMessageCardsPrompt(view.getContext(), true);
                 ConfMessageCardUtils.setConfMessageCardsEnabled(view.getContext(), true);
+                Activity activity;
+                if ((activity = getActivity(view)) != null) {
+                    // This will activate re-registering with the correct GCM topic(s).
+                    new MessagingRegistrationWithGCM(activity).registerDevice();
+                }
+            }
+        });
+
+        return messageData;
+    }
+
+    /**
+     * Return the notifications messages opt-in data.
+     */
+    public static MessageData getNotificationsOptInMessageData() {
+        MessageData messageData = new MessageData();
+        messageData.setStartButtonStringResourceId(R.string.explore_io_msgcards_answer_no);
+        messageData.setMessageStringResourceId(R.string.explore_io_notifications_ask_opt_in);
+        messageData.setEndButtonStringResourceId(R.string.explore_io_msgcards_answer_yes);
+
+        messageData.setStartButtonClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                LOGD(TAG, "Marking notifications question answered with decline.");
+                ConfMessageCardUtils.setDismissedConfMessageCard(view.getContext(),
+                        ConfMessageCardUtils.ConfMessageCard.SESSION_NOTIFICATIONS, false);
+                SettingsUtils.setShowSessionReminders(view.getContext(), false);
+                SettingsUtils.setShowSessionFeedbackReminders(view.getContext(), false);
+            }
+        });
+        messageData.setEndButtonClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                LOGD(TAG, "Marking notifications messages question answered with affirmation.");
+                ConfMessageCardUtils.setDismissedConfMessageCard(view.getContext(),
+                        ConfMessageCardUtils.ConfMessageCard.SESSION_NOTIFICATIONS, true);
+                SettingsUtils.setShowSessionReminders(view.getContext(), true);
+                SettingsUtils.setShowSessionFeedbackReminders(view.getContext(), true);
             }
         });
 
@@ -58,7 +119,7 @@ public class MessageCardHelper {
     /**
      * Return the wifi setup card data.
      */
-    public static MessageData getWifiSetupMessageData(Context context) {
+    public static MessageData getWifiSetupMessageData() {
         MessageData messageData = new MessageData();
         messageData.setStartButtonStringResourceId(R.string.explore_io_msgcards_answer_no);
         messageData.setMessageStringResourceId(R.string.question_setup_wifi_card_text);
@@ -90,127 +151,6 @@ public class MessageCardHelper {
         return messageData;
     }
 
-
-    /**
-     * Return card data representing a message to send to users before registering.
-     */
-    public static MessageData getConferenceCredentialsMessageData(Context context) {
-        MessageData messageData = new MessageData();
-        messageData.setMessageStringResourceId(R.string.explore_io_msgcards_conf_creds_card);
-        messageData.setEndButtonStringResourceId(R.string.got_it);
-        messageData.setIconDrawableId(R.drawable.message_card_credentials);
-
-        messageData.setEndButtonClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                LOGD(TAG, "Marking conference credentials card dismissed.");
-
-                ConfMessageCardUtils.markDismissedConfMessageCard(
-                        view.getContext(),
-                        ConfMessageCardUtils.ConfMessageCard.CONFERENCE_CREDENTIALS);
-            }
-        });
-
-        return messageData;
-    }
-
-    /**
-     * Return card data representing a message to allow attendees to provide wifi feedback.
-     */
-    public static MessageData getWifiFeedbackMessageData(Context context) {
-        MessageData messageData = new MessageData();
-        messageData.setMessageStringResourceId(R.string.explore_io_msgcards_wifi_feedback);
-        messageData.setStartButtonStringResourceId(R.string.explore_io_msgcards_answer_no);
-        messageData.setEndButtonStringResourceId(R.string.explore_io_msgcards_answer_yes);
-        messageData.setIconDrawableId(R.drawable.message_card_wifi);
-
-        messageData.setStartButtonClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                LOGD(TAG, "Marking conference credentials card dismissed.");
-                ConfMessageCardUtils.markDismissedConfMessageCard(
-                        view.getContext(),
-                        ConfMessageCardUtils.ConfMessageCard.WIFI_FEEDBACK);
-            }
-        });
-
-        messageData.setEndButtonClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                LOGD(TAG, "Providing feedback");
-                Intent sendIntent = new Intent();
-                sendIntent.setAction(Intent.ACTION_SEND);
-                sendIntent.putExtra(Intent.EXTRA_TEXT, "#io15wifi ");
-                sendIntent.setType("text/plain");
-
-                boolean isGPlusInstalled = isPackageInstalledAndEnabled(view.getContext(),
-                        GPLUS_PACKAGE_NAME);
-                boolean isTwitterInstalled = isPackageInstalledAndEnabled(view.getContext(),
-                        TWITTER_PACKAGE_NAME);
-
-                if (isGPlusInstalled) {
-                    sendIntent.setPackage(GPLUS_PACKAGE_NAME);
-                } else if (isTwitterInstalled) {
-                    sendIntent.setPackage(TWITTER_PACKAGE_NAME);
-                }
-
-                view.getContext().startActivity(sendIntent);
-                // Hide the card for now.
-                ConfMessageCardUtils.markShouldShowConfMessageCard(view.getContext(),
-                        ConfMessageCardUtils.ConfMessageCard.WIFI_FEEDBACK, false);
-            }
-        });
-
-
-        return messageData;
-    }
-
-    /**
-     * Return card data for instructions on where to queue for the Keynote.
-     */
-    public static MessageData getKeynoteAccessMessageData(Context context) {
-        MessageData messageData = new MessageData();
-        messageData.setMessageStringResourceId(R.string.explore_io_msgcards_keynote_access_card);
-        messageData.setEndButtonStringResourceId(R.string.got_it);
-        messageData.setIconDrawableId(R.drawable.message_card_keynote);
-
-        messageData.setEndButtonClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                LOGD(TAG, "Marking keynote access card dismissed.");
-
-                ConfMessageCardUtils.markDismissedConfMessageCard(
-                        view.getContext(),
-                        ConfMessageCardUtils.ConfMessageCard.KEYNOTE_ACCESS);
-            }
-        });
-
-        return messageData;
-    }
-
-    /**
-     * Return card data for information about the After Hours party.
-     */
-    public static MessageData getAfterHoursMessageData(Context context) {
-        MessageData messageData = new MessageData();
-        messageData.setMessageStringResourceId(R.string.explore_io_msgcards_after_hours_card);
-        messageData.setEndButtonStringResourceId(R.string.got_it);
-        messageData.setIconDrawableId(R.drawable.message_card_after_hours);
-
-        messageData.setEndButtonClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                LOGD(TAG, "Marking after hours card dismissed.");
-
-                ConfMessageCardUtils.markDismissedConfMessageCard(
-                        view.getContext(),
-                        ConfMessageCardUtils.ConfMessageCard.AFTER_HOURS);
-            }
-        });
-
-        return messageData;
-    }
-
     /**
      * Return whether a package is installed.
      */
@@ -226,5 +166,17 @@ public class MessageCardHelper {
         return info != null &&
                 info.applicationInfo != null &&
                 info.applicationInfo.enabled;
+    }
+
+    @Nullable()
+    private static Activity getActivity(View view) {
+        Context context = view.getContext();
+        while (context instanceof ContextWrapper) {
+            if (context instanceof Activity) {
+                return (Activity)context;
+            }
+            context = ((ContextWrapper)context).getBaseContext();
+        }
+        return null;
     }
 }

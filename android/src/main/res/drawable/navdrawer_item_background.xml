@@ -17,7 +17,7 @@
 <selector
     xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <item android:state_activated="true" android:drawable="@color/navdrawer_selected_item_background" />
+    <item android:drawable="@color/navdrawer_selected_item_background" android:state_checked="true" />
     <item android:drawable="@android:color/transparent" />
 
 </selector>

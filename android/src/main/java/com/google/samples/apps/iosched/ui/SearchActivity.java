@@ -27,6 +27,7 @@ import android.database.Cursor;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.graphics.drawable.VectorDrawableCompat;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.graphics.drawable.DrawableCompat;
@@ -77,9 +78,10 @@ public class SearchActivity extends BaseActivity implements
                 new int[]{R.id.search_result}, 0);
         mSearchResults.setAdapter(mResultsAdapter);
         mSearchResults.setOnItemClickListener(this);
-        Toolbar toolbar = getActionBarToolbar();
+        Toolbar toolbar = getToolbar();
 
-        Drawable up = DrawableCompat.wrap(ContextCompat.getDrawable(this, R.drawable.ic_up));
+        Drawable up = DrawableCompat.wrap(
+                VectorDrawableCompat.create(getResources(), R.drawable.ic_up, getTheme()));
         DrawableCompat.setTint(up, getResources().getColor(R.color.app_body_text_2));
         toolbar.setNavigationIcon(up);
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
@@ -197,7 +199,9 @@ public class SearchActivity extends BaseActivity implements
                     // As the height will change once the initial suggestions are delivered by the
                     // loader, we can't use the search panels height to calculate the final radius
                     // so we fall back to it's parent to be safe
-                    int revealRadius = ((ViewGroup) searchPanel.getParent()).getHeight();
+                    final ViewGroup searchPanelParent = (ViewGroup) searchPanel.getParent();
+                    final int revealRadius = (int) Math.hypot(
+                            searchPanelParent.getWidth(), searchPanelParent.getHeight());
                     // Center the animation on the top right of the panel i.e. near to the
                     // search button which launched this screen.
                     Animator show = ViewAnimationUtils.createCircularReveal(searchPanel,
@@ -222,8 +226,7 @@ public class SearchActivity extends BaseActivity implements
         // Center the animation on the top right of the panel i.e. near to the search button which
         // launched this screen. The starting radius therefore is the diagonal distance from the top
         // right to the bottom left
-        int revealRadius = (int) Math.sqrt(Math.pow(searchPanel.getWidth(), 2)
-                + Math.pow(searchPanel.getHeight(), 2));
+        final int revealRadius = (int) Math.hypot(searchPanel.getWidth(), searchPanel.getHeight());
         // Animating the radius to 0 produces the contracting effect
         Animator shrink = ViewAnimationUtils.createCircularReveal(searchPanel,
                 searchPanel.getRight(), searchPanel.getTop(), revealRadius, 0f);

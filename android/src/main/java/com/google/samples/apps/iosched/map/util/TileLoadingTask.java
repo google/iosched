@@ -32,13 +32,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static com.google.samples.apps.iosched.util.LogUtils.LOGD;
+import static com.google.samples.apps.iosched.util.LogUtils.LOGE;
 import static com.google.samples.apps.iosched.util.LogUtils.makeLogTag;
 
 /**
  * Background task that queries the content provider and prepares a list of
  * {@link com.google.android.gms.maps.model.TileOverlay}s
  * for addition to the map.
- * A tile overlay is always tied to a floor in Moscone and is loaded directly from an SVG file.
+ * A tile overlay is always tied to a floor in the venue and is loaded directly from an SVG file.
  * A {@link DiskLruCache} is used to create a {@link CachedTileProvider} for each overlay.
  * <p>Note: The CachedTileProvider <b>must</b> be closed when the encapsulating map is stopped.
  * (See
@@ -82,6 +83,7 @@ public class TileLoadingTask extends AsyncTaskLoader<List<TileLoadingTask.TileEn
                 File f = MapUtils.getTileFile(getContext().getApplicationContext(), file);
                 if (f == null || !f.exists()) {
                     // Skip the file if it is invalid or does not exist.
+                    LOGE(TAG, "Tile file not found for floor " + floor);
                     break;
                 }
 

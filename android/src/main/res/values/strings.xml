@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
-  Copyright 2015 Google Inc. All rights reserved.
+  Copyright 2016 Google Inc. All rights reserved.
 
   Licensed under the Apache License, Version 2.0 (the "License");
   you may not use this file except in compliance with the License.
@@ -16,7 +16,7 @@
   -->
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
     <!-- Shown in the 'About' window of the app. -->
-    <string name="about_body">&lt;b&gt;Google I/O 2015&lt;/b&gt;&lt;br&gt; Version
+    <string name="about_body">&lt;b&gt;Google I/O 2016&lt;/b&gt;&lt;br&gt; Version
         %s&lt;br&gt;&lt;br&gt; &lt;a href=http://m.google.com/utos&gt; Terms of Service
         &lt;/a&gt;&lt;br&gt;&lt;br&gt; &lt;a href=http://www.google.com/policies/privacy/&gt;
         Privacy Policy
@@ -54,7 +54,7 @@
 
     <!-- Shown in the 'About' window of the app. -->
     <string name="about_main"><![CDATA[
-        <b>Google I/O 2015</b><br>
+        <b>Google I/O 2016</b><br>
         Version %s
     ]]></string>
 
@@ -108,7 +108,7 @@
     <string name="all_years">All Years</string>
 
     <!-- Name of the application, shown in the application's title bar. -->
-    <string name="app_name">Google I/O 2015</string>
+    <string name="app_name">Google I/O</string>
 
     <!-- Label on a button that is one possible answer to the question "Are you attending the
     conference in person in San Francisco or remotely via livestream?" -->
@@ -201,7 +201,7 @@
 
     <!-- Menu item that allows user to reload the data in the current screen so they see
     the most up-to-date version from the server. -->
-    <string name="description_refresh">Refresh</string>
+    <string name="description_refresh">Refresh data</string>
 
     <!-- Menu item that allows the user to remove the currently session from their schedule. -->
     <string name="description_remove_schedule">Remove from schedule</string>
@@ -224,6 +224,9 @@
     by email, social networks, etc. -->
     <string name="description_share">Share</string>
 
+    <!-- Session Detail label for Extended Session link. -->
+    <string name="description_extended">Extended Session</string>
+
     <!-- Menu item that allows the user to view the Google+ stream about a particular topic. This
     appears as a menu item on a Session screen, and opens the Google+ app to show the Google+
     posts about that session's topic. -->
@@ -233,14 +236,14 @@
     For example: "Go to the Twitter page for Sally Sample. -->
     <string name="speaker_social_page">Go to the %1$s page for %2$s</string>
 
-    <!-- Accessibility description for the GPlus icon in the "#io15" box. -->
+    <!-- Accessibility description for the GPlus icon in the "#io16" box. -->
     <string name="social_io15_gplus_content_description">
-        Go to Google Plus with io15 hashtag
+        Go to Google Plus with io16 hashtag
     </string>
 
-    <!-- Accessibility description for the Twitter icon in the "#io15" box. -->
+    <!-- Accessibility description for the Twitter icon in the "#io16" box. -->
     <string name="social_io15_twitter_content_description">
-        Go to Twitter with io15 hashtag
+        Go to Twitter with io16 hashtag
     </string>
 
     <!-- Label for view that allows user to launch Google+ with the enclosed hashtag. -->
@@ -259,12 +262,12 @@
     hashtag. -->
     <string name="social_extended" translatable="false">extended</string>
 
-    <!-- Accessibility description for the GPlus icon in the "#io15 extended" box. -->
+    <!-- Accessibility description for the GPlus icon in the "#io16 extended" box. -->
     <string name="social_extended_gplus_content_description">
         Go to Google Plus with extended hashtag
     </string>
 
-    <!-- Accessibility description for the Twitter icon in the "#io15 extended" box. -->
+    <!-- Accessibility description for the Twitter icon in the "#io16 extended" box. -->
     <string name="social_extended_twitter_content_description">
         Go to Twitter with extended hashtag
     </string>
@@ -273,24 +276,24 @@
     hashtag. -->
     <string name="social_request" translatable="false">request</string>
 
-    <!-- Accessibility description for the GPlus icon in the "#io15 request" box. -->
+    <!-- Accessibility description for the GPlus icon in the "#io16 request" box. -->
     <string name="social_request_gplus_content_description">
         Go to Google Plus with request hashtag
     </string>
 
-    <!-- Accessibility description for the Twitter icon in the "#io15 extended" box. -->
+    <!-- Accessibility description for the Twitter icon in the "#io16 extended" box. -->
     <string name="social_request_twitter_content_description">
         Go to Twitter with request hashtag
     </string>
 
-    <!-- Accessibility description for the IO15 logo that is not a link. -->
-    <string name="io15_logo_not_clickable">IO15 logo not clickable</string>
+    <!-- Accessibility description for the IO16 logo that is not a link. -->
+    <string name="io15_logo_not_clickable">IO16 logo not clickable</string>
 
-    <!-- Accessibility description for the IO15 extended logo that is not a link. -->
-    <string name="io15_extended_logo_not_clickable">IO15 extended logo not clickable</string>
+    <!-- Accessibility description for the IO16 extended logo that is not a link. -->
+    <string name="io15_extended_logo_not_clickable">IO16 extended logo not clickable</string>
 
-    <!-- Accessibility description for the IO15 request logo that is not a link. -->
-    <string name="io15_request_logo_not_clickable">IO15 request logo not clickable</string>
+    <!-- Accessibility description for the IO16 request logo that is not a link. -->
+    <string name="io15_request_logo_not_clickable">IO16 request logo not clickable</string>
 
     <!-- Accessibility description for the I/O logo that is not a link. -->
     <string name="io_logo_not_clickable">IO logo not clickable</string>
@@ -332,7 +335,7 @@
     <string name="empty_widget_text">No more upcoming sessions.\nSee you next year!</string>
 
     <!-- Shown on a widget instructing user how to start using the widget. -->
-    <string name="empty_widget_text_signed_out">Touch the Google I/O 2015 logo above to sign in
+    <string name="empty_widget_text_signed_out">Touch the Google I/O 2016 logo above to sign in
         and begin using the app.</string>
 
     <!-- Shown as a header on a list of sessions to indicate that the sessions that appear on that
@@ -424,14 +427,17 @@
      -->
     <string name="map_now_playing">Now playing:<![CDATA[<br><b>%1$s</b>]]></string>
 
+    <!-- Message displayed when the location permission was denied -->
+    <string name="map_permission_denied">App permission denied.</string>
+
     <!-- Clickable text in the map popup that leads to sessions in a room -->
     <string name="map_touch_to_see_session">Touch to see Sessions</string>
 
-    <!-- Label of info screen title for Moscone Center at a lower zoom level -->
-    <string name="map_moscone" translatable="false">Moscone Center</string>
+    <!-- Label of info screen title for Event Site at a lower zoom level -->
+    <string name="map_venue_name" translatable="false">Shoreline Amphitheatre</string>
 
     <!-- Address of Moscone Center. Shown together with its name. -->
-    <string name="map_moscone_address" translatable="false">747 Howard St,\nSan Francisco,\nCA 94103</string>
+    <string name="map_venue_address" translatable="false">1 Amphitheatre Pkwy\nMountain View,\nCA 94043</string>
 
     <!-- Button to view more Videos or sessions from the videos/sessions card view. -->
     <string name="more_items_button">More</string>
@@ -451,11 +457,23 @@
     <!-- Accessibility description for tab that shows the attendee's schedule for a given day. -->
     <string name="my_schedule_tab_desc_a11y">Tap to show your schedule for <xliff:g id="day">%1$s</xliff:g>.</string>
 
+    <!-- Text for the title of an extra schedule item on the pre conference day -->
+    <string name="my_schedule_badgepickup">Badge Pick-Up</string>
+
+    <!-- Text for the description of an extra schedule item on the pre conference day -->
+    <string name="my_schedule_badgepickup_description">Registration Desk</string>
+
     <!-- Accessibility description for buttons -->
     <string name="a11y_button">%s button</string>
 
     <!-- Accessibility announcement to alert user that they are now viewing their schedule of a given day. -->
     <string name="my_schedule_page_desc_a11y">Now showing your schedule for <xliff:g id="day">%1$s</xliff:g></string>
+
+    <!-- Accessibility announcement to confirm the feedback rating made for a session by the user. -->
+    <string name="feedback_rating_confirmation">Your rating: %1$d out of %2$d stars"</string>
+
+    <!-- Accessibility announcement for an item in the custom feedback rating view. For example, "one star".  -->
+    <string name="feedback_rating_value">%1$d star</string>
 
     <!-- Label for the button to rate a session -->
     <string name="my_schedule_rate_this_session">RATE THIS SESSION</string>
@@ -464,8 +482,10 @@
     <string name="my_schedule_watch_live_now">WATCH LIVE NOW</string>
 
     <!-- Accessibility description for navigation drawer -->
-    <string name="navdrawer_description_a11y">Navigation Drawer used to switch between major
-        features of the application</string>
+    <string name="navdrawer_description_a11y">Navigation Menu</string>
+
+    <!-- Accessibility description for the spinner used to change account. -->
+    <string name="switch_account_spinner_description_a11y">Switch account</string>
 
     <!-- Menu item to open the Explore screen [CHAR_LIMIT=20] -->
     <string name="navdrawer_item_explore">Explore</string>
@@ -477,7 +497,7 @@
     <string name="navdrawer_item_map">Map</string>
 
     <!-- Menu item to open the My Schedule screen [CHAR_LIMIT=20] -->
-    <string name="navdrawer_item_my_schedule">My Schedule</string>
+    <string name="navdrawer_item_my_schedule">Schedule</string>
 
     <!-- Menu item to open the Explore Screen with the Live I/O card [CHAR_LIMIT=20] -->
     <string name="navdrawer_item_io_live">I/O Live</string>
@@ -571,13 +591,14 @@
     <!-- Description of the Google+ +1 button for accessibility screen readers -->
     <string name="plus_one_description_standard">Touch to plus one.</string>
 
-    <!-- Title in the Settings screen for the setting that enables display of cards with
-     conference information in the explore screen. -->
-    <string name="pref_conf_message_cards_enabled_title">Show conference messages</string>
 
     <string name="pref_conf_message_cards_enabled_description"
             description="Description in the Settings screen for the setting that enables display of
-            cards with conference information in the explore screen.">Display cards with relevant conference information on the Explore screen. These are time based and may include promotional messages from partners.</string>
+            cards with conference information in the explore screen.">Display cards with conference information on the Explore screen. These are time based and may include promotional messages from partners.</string>
+
+    <!-- Title in the Settings screen for the setting that enables display of cards with
+     conference information in the explore screen. -->
+    <string name="pref_conf_message_cards_enabled_title">Show conference messages</string>
 
     <!-- Title in the Settings screen for the setting that enables sending of anonymous usage
     statistics to Google. -->
@@ -618,13 +639,20 @@
     <!-- Summary in the Settings screen for the "Synchronize my schedule with Google Calendar" option -->
     <string name="pref_sync_with_calendar_title">Sync with Google Calendar</string>
 
+    <!-- This message is displayed to the user when they disable the Calendar sync and they have revoked the Calendar permission. We are letting them know we couldn't remove the items from their Calendar. -->
+    <string name="pref_sync_with_calendar_permission_denied_during_disable">Could not remove items from calendar, permission denied.</string>
+
+    <!-- This message is displayed to the user when they enable the Calendar sync and they don't allow the Calendar permission. We are letting them know we can't process the Calendar updates. -->
+    <string name="pref_sync_with_calendar_permission_denied_during_enable">Could not sync the calendar, permission denied.</string>
+
+
     <!-- Text of a card shown in the session explorer that asks the user if he wants to see I/O
     extended events in his area. "Browse events" and "No, thanks" are the buttons shown in the card -->
     <string name="question_i_o_extended">Would you like to know more about I/O Extended events happening near your location?</string>
 
     <!-- Text of a card shown in the session explorer that asks the user if he will be attending I/O
     in person or remotely. "Remotely" and "In person" are the buttons shown in the card -->
-    <string name="question_local_or_remote">Are you attending I/O remotely or in person in San Francisco?</string>
+    <string name="question_local_or_remote">Are you attending I/O remotely or in person in Mountain View?</string>
 
     <!-- Text of a card shown in the Explore I/O screen that asks the user if they want to configure
          the conference WiFi. "Not now" and "Yes, please" are options show on the card -->
@@ -636,8 +664,8 @@
     <!-- Section title for videos related to a particular event session -->
     <string name="related_videos">Related Videos</string>
 
-    <!-- Button text indicating the session is in the user's schedule -->
-    <string name="remove_from_schedule">In schedule</string>
+    <!-- Button text indicating the session is in the user's schedule and can be removed -->
+    <string name="remove_from_schedule">Remove from schedule</string>
 
     <!-- Accessibility content description for button used to remove the session from the user's schedule -->
     <string name="remove_from_schedule_desc">Button to remove session from your schedule.</string>
@@ -693,10 +721,10 @@
     <string name="session_feedback_basic">Too basic</string>
 
     <!-- A positive overall session feedback option -->
-    <string name="session_feedback_great">Toll</string>
+    <string name="session_feedback_great">Great</string>
 
     <!-- A negative overall session feedback option -->
-    <string name="session_feedback_notgreat">Nicht so toll</string>
+    <string name="session_feedback_notgreat">Not great</string>
 
     <!-- Session feedback section title -->
     <string name="session_feedback_content_label_text">Based on the description/my expectations, the content was:</string>
@@ -874,7 +902,7 @@ user updates the rating. -->
     <string name="title_map">Map</string>
 
     <!-- Navigation bar text for viewing the user's schedule -->
-    <string name="title_my_schedule">My Schedule</string>
+    <string name="title_my_schedule">Schedule</string>
 
     <!-- Navigation bar text for viewing Office Hours -->
     <string name="title_office_hours">Office Hours</string>
@@ -931,11 +959,8 @@ user updates the rating. -->
     <!-- Short text introducing the code of conduct for attendees coming in person -->
     <string name="welcome_conduct_title">I/O Community Best Practices</string>
 
-    <!-- Short text asking if the user is attending Google I/O in person -->
-    <string name="welcome_attending">Attending in Person?</string>
-
     <!-- Medium-length welcome text asking if the user is attending Google I/O in person -->
-    <string name="welcome_attending_text">Are you attending I/O remotely or in person in San Francisco?</string>
+    <string name="welcome_attending_text">Are you attending I/O remotely or in person in Mountain View?</string>
 
     <!-- Short text asking if they're interested in what's around them -->
     <string name="welcome_around">Around you</string>
@@ -945,6 +970,9 @@ user updates the rating. -->
 
     <!-- Medium text asking to choose an account from a list -->
     <string name="welcome_select_accoun_text">Please choose an account to use:</string>
+
+    <!-- This string explains that the Accounts and Storage Android permissions are required in order to sync conference data. The string shows to indicate to users that they need to accept the permissions dialog -->
+    <string name="welcome_permissions_rationale">Account/Contact permission required to sync schedule</string>
 
     <!-- Text for a button which will add a wi-fi network -->
     <string name="wifi_dialog_button_configure">Add WiFi Network</string>
@@ -985,68 +1013,31 @@ user updates the rating. -->
     <!-- Title of the Explore Sessions side panel containing all the filters -->
     <string name="title_explore_sessions_filter">Filter</string>
 
-    <!-- Sub-title for a session in ExploreSessionsActivity that shows the day, time and room name
+    <!-- Sub-title for a session in ExploreSessionsActivity that shows the day and start time
         for a given session.
-        Example: Day 1 / 9:00AM - 11:00AM / Room 1 -->
-    <string name="explore_sessions_show_day_hour_and_room">
-        <xliff:g example="Day 1" id="day">%1$s</xliff:g> /
-        <xliff:g example="2:00PM" id="start_time">%2$s</xliff:g> -
-        <xliff:g example="3:00PM" id="end_time">%3$s</xliff:g> /
-        <xliff:g id="room">%4$s</xliff:g></string>
-
-    <!-- Show the Day 1 or Day 2 as part of either the ExploreSessionsActivity title or
-         in the session details. -->
-    <string name="explore_sessions_show_day_n">Day %d</string>
+        Example: WEDS 9AM -->
+    <string name="explore_sessions_show_day_time">
+        <xliff:g example="WEDS" id="day">%1$s</xliff:g>
+        <xliff:g example="9AM" id="start_time">%2$s</xliff:g></string>
 
     <!-- Show Day and start time of a session as the title when viewing browsing sessions
          (ExploreSessionActivity) from MySchedule. -->
     <string name="explore_sessions_time_slot_title">
-        <xliff:g example="Day 1" id="day">%1$s</xliff:g>, <xliff:g example="2:30PM" id="start_time">%2$s</xliff:g>
+        <xliff:g example="May 18" id="day">%1$s</xliff:g>, <xliff:g example="2:30PM" id="start_time">%2$s</xliff:g>
     </string>
 
     <!-- BEGIN Explore Message Card User Messages -->
+    <string name="explore_io_notifications_ask_opt_in"
+            description="This message is displayed on the Explore I/O screen to ask users whether
+        they would like to opt in to receive notifications for the sessions the have added to their schedule."><![CDATA[
+        <b>Session Notifications</b><br/>
+        Would you like to receive notifications for sessions on your schedule?]]></string>
+
     <string name="explore_io_msgcards_ask_opt_in"
             description="This message is displayed on the Explore I/O screen to ask users whether
             they would like to opt in to receive messages regarding the conference."><![CDATA[
         <b>Conference Messages</b><br/>
-       Would you like to opt-in to receive important messages about the conference? Messages are time based and may include promotional messages from partners.]]></string>
-
-    <string name="explore_io_msgcards_conf_creds_card"
-        description="Conference Credentials, shown the day before the event giving users general
-         event information."><![CDATA[
-        <b>Conference Credentials</b><br>
-        Each attendee will receive a non-transferable NFC enabled wristband this year. Your
-        wristband & I/O badge will allow you access to Keynote, Sessions, Sandbox, and After
-        Hours party. Remember to wear it at all times.
-    ]]>
-    </string>
-
-    <string name="explore_io_msgcards_after_hours_card"
-        description="This text is shown to a user when they are in the Explore I/O screen while at
-        the conference. It gives them information about an afternoon event on the schedule."><![CDATA[
-        <b>After Hours</b><br></br>
-        This is a party you don\'t want to miss! Attendees are invited to enjoy food, drinks,
-        music, games, and more during the evening of May 28. The conference badge and NFC wristband
-        are required for entrance.
-    ]]>
-    </string>
-
-    <string name="explore_io_msgcards_keynote_access_card"
-        description="This text is shown to a user when they are in the Explore I/O screen while at
-        the conference. It gives them information about the keynote event on the schedule."><![CDATA[
-        <b>Keynote Access</b><br>
-        Your wristband color denotes your keynote access.<br><br>
-        <b>Blue wristband = Keynote Access</b><br>
-        Line starts outside Moscone West on 4th Street and wraps around Minna Street. .<br><br>
-        <b>Gray wristband = Reserved Keynote Seating</b><br>
-        Line starts outside Moscone West on 4th Street.<br><br>
-        <b>Orange wristband = Playground</b><br>
-        Line starts outside Moscone West on Howard Street.
-    ]]>
-    </string>
-
-    <string name="explore_io_msgcards_wifi_feedback"
-            decscription="Question presented to users on a card in the Explore I/O screen if they have are using the conference Wifi.">Have connectivity feedback? Share it with us on social channels via the <b>#io15wifi</b> hashtag.</string>
+        Would you like to receive important messages about the conference? Messages are time based and may include promotional messages from partners.]]></string>
 
     <!-- This is used on the Explore I/O message cards to answer yes to a particular message -->
     <string name="explore_io_msgcards_answer_yes">Sure, let\'s do it!</string>
@@ -1058,20 +1049,20 @@ user updates the rating. -->
          can watch a video but it turns out we can't show the video. -->
     <string name="explore_io_video_id_not_valid">Sorry, there appears to be a problem with the video url.</string>
 
-    <!-- END Explore Message Card User Messages -->
+    <string description="This string is presented as a header message on a user interface card
+         element. The card element has sub-cards that explain a few logistical details for
+         attendees. 'On the Ground' is slang in English indicating 'What you need to know when
+         you're in the middle of the conference.'"
+            name="explore_io_on_the_ground_title">On the Ground</string>
 
-    <!-- This string is the title of a notification shown to the user when Google Play
-        services can't connect. -->
-    <string name="app_data_notification_resolution_title">I/O App needs permission</string>
-    <!-- This string is the message of the notification shown to the user when Google Play services
-         can't connect from a background sync. -->
-    <string name="app_data_notification_resolution_content">I/O App needs action to complete background sync.</string>
+    <!-- Error message that is displayed when we aren't able to connect to Google Play Services,
+         potentially due to a server error or loss of network connectivity. -->
+    <string name="google_play_services_disconnected">Unable to connect to Google Play Services</string>
 
     <!-- Generic error message used for errors that should never happen. This explains to the user
          that we can't execute the request when they click a button or touch a part of the screen
          that should normally be touchable. -->
     <string name="unknown_error">Whoops, we couldn\'t process that request.</string>
-
 
     <!--Generic strings to be translated & used in talk back labels-->
 
@@ -1096,5 +1087,14 @@ user updates the rating. -->
     <!--Indicates what happens when the user taps on an item-->
     <string name="talkback_tapfor">tap for %1$s</string>
 
+    <string name="transition_track_header" translatable="false">transition_track_header</string>
+
+    <string name="transition_track_title" translatable="false">transition_track_title</string>
+
+    <string name="transition_track_background" translatable="false">transition_track_background</string>
+
+    <string name="transition_session_background" translatable="false">transition_session_background</string>
+
+    <string name="transition_session_image" translatable="false">transition_session_image</string>
 
 </resources>

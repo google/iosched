@@ -21,20 +21,23 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.accessibility.AccessibilityEvent;
 import android.widget.Button;
+import android.widget.TextView;
 
+import com.google.samples.apps.iosched.R;
 import com.google.samples.apps.iosched.explore.ExploreIOActivity;
 
 import static com.google.samples.apps.iosched.util.LogUtils.LOGD;
 import static com.google.samples.apps.iosched.util.LogUtils.makeLogTag;
 
 /**
- * A Fragment class for use with {@link WelcomeActivity} to embed content into the activity.
- *
- * Contains utitlies for attaching the fragment to the activity and updating UI elements.
+ * Class for use with {@link WelcomeActivity} to embed content into the activity. Contains utilities
+ * for attaching the fragment to the activity and updating UI elements.
  */
 public abstract class WelcomeFragment extends Fragment {
 
@@ -54,176 +57,159 @@ public abstract class WelcomeFragment extends Fragment {
         mActivity = null;
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        TextView titleTV = (TextView) getActivity().findViewById(R.id.title);
+
+        if (titleTV != null) {
+            // Set activity to fragment title text view and fire accessibility event so the title
+            // gets read by talkback service.
+            mActivity.setTitle(titleTV.getText());
+            mActivity.getWindow().getDecorView()
+                     .sendAccessibilityEvent(AccessibilityEvent.TYPE_WINDOW_STATE_CHANGED);
+        }
+    }
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+            Bundle savedInstanceState) {
         View view = super.onCreateView(inflater, container, savedInstanceState);
         LOGD(TAG, "Creating View");
 
-        // If the acitivty the fragment has been attached to is a WelcomeFragmentContainer
         if (mActivity instanceof WelcomeFragmentContainer) {
             WelcomeFragmentContainer activity = (WelcomeFragmentContainer) mActivity;
-
-            // Attach to the UI elements
-            attachToPositiveButton(activity.getPositiveButton());
-            attachToNegativeButton(activity.getNegativeButton());
+            attachToPrimaryButton(activity.getPrimaryButton());
+            attachToSecondaryButton(activity.getSecondaryButton());
+            activity.setButtonBarVisibility(shouldShowButtonBar());
         }
         return view;
     }
 
     /**
-     * Attach to the positive action button of the WelcomeFragmentContainer.
+     * Attaches to the primary action button of {@link WelcomeFragmentContainer}.
      *
      * @param button the ui element to attach to.
      */
-    protected void attachToPositiveButton(Button button) {
-        // Set the button text
-        button.setText(getPositiveText());
-
-        // Set the click listener
-        button.setOnClickListener(getPositiveListener());
+    protected void attachToPrimaryButton(Button button) {
+        button.setText(getPrimaryButtonText());
+        button.setOnClickListener(getPrimaryButtonListener());
     }
 
+    public abstract boolean shouldDisplay(Context context);
+
     /**
-     * Attach to the negative action button of the WelcomeFragmentContainer.
+     * Attaches to the secondary action button of the WelcomeFragmentContainer.
      *
      * @param button the ui element to attach to.
      */
-    protected void attachToNegativeButton(Button button) {
-        // Set the button text
-        button.setText(getNegativeText());
-
-        // Set the click listener
-        button.setOnClickListener(getNegativeListener());
+    protected void attachToSecondaryButton(Button button) {
+        String secondaryButtonText = getSecondaryButtonText();
+        View.OnClickListener secondaryButtonClickListener = getSecondaryButtonListener();
+        if (!TextUtils.isEmpty(secondaryButtonText) && secondaryButtonClickListener != null) {
+            button.setVisibility(View.VISIBLE);
+            button.setText(secondaryButtonText);
+            button.setOnClickListener(secondaryButtonClickListener);
+        }
     }
 
 
     /**
-     * Get a resource string.
+     * Gets a resource string.
      *
      * @param id the id of the string resource.
      * @return the value of the resource or null.
      */
     protected String getResourceString(int id) {
-        if(mActivity != null) {
+        if (mActivity != null) {
             return mActivity.getResources().getString(id);
         }
         return null;
     }
 
     /**
-     * Get the text for the positive action button.
-     *
-     * E.g. Accept
-     *
-     * @return the text for the button.
+     * Returns the text for the primary action button. Example: "Accept".
      */
-    protected abstract String getPositiveText();
+    protected abstract String getPrimaryButtonText();
 
     /**
-     * Get the text for the negative action button.
-     *
-     * E.g. Decline
-     *
-     * @return the text for the negative action button.
+     * Returns the text for the secondary action button. Example: "Cancel".
      */
-    protected abstract String getNegativeText();
+    protected abstract String getSecondaryButtonText();
 
     /**
-     * Get the {@link android.view.View.OnClickListener} for the positive action click event.
-     *
-     * @return the click listener.
+     * Returns the {@link android.view.View.OnClickListener} for the primary action click event.
      */
-    protected abstract View.OnClickListener getPositiveListener();
+    protected abstract View.OnClickListener getPrimaryButtonListener();
 
     /**
-     * Get the {@link android.view.View.OnClickListener} for the negative action click event.
-     *
-     * @return the click listener.
+     * Returns the {@link android.view.View.OnClickListener} for the secondary action click event.
      */
-    protected abstract View.OnClickListener getNegativeListener();
+    protected abstract View.OnClickListener getSecondaryButtonListener();
 
     /**
-     * A convience {@link android.view.View.OnClickListener} for the common use case in the
-     * WelcomeActivityContent.
+     * Returns whether the button bar should be displayed.
+     */
+    protected boolean shouldShowButtonBar() {
+        return true;
+    }
+
+    /**
+     * A convenience {@link android.view.View.OnClickListener} for the common use cases.
      */
     protected abstract class WelcomeFragmentOnClickListener implements View.OnClickListener {
-        /**
-         * The action to perform on click, before proceeding to the next activity or exiting the
-         * app.
-         */
         Activity mActivity;
 
         /**
-         * Construct a listener that will handle the transition to the next activity or exit after
-         * completing.
+         * Construct a listener that handles the transition to the next activity.
          *
          * @param activity the Activity to interact with.
          */
         public WelcomeFragmentOnClickListener(Activity activity) {
             mActivity = activity;
         }
-
-        /**
-         * Proceed to the next activity.
-         */
-        void doNext() {
-            LOGD(TAG, "Proceeding to next activity");
-            Intent intent = new Intent(mActivity, ExploreIOActivity.class);
-            startActivity(intent);
-            mActivity.finish();
-        }
-
-        /**
-         * Finish the activity.
-         *
-         * We're done here.
-         */
-        void doFinish() {
-            LOGD(TAG, "Closing app");
-            mActivity.finish();
-        }
     }
 
     /**
-     * The receiever for the action to be performed on a button click.
+     * Proceed to the next activity.
+     */
+    void doNext() {
+        LOGD(TAG, "Proceeding to next activity");
+        Intent intent = new Intent(mActivity, ExploreIOActivity.class);
+        startActivity(intent);
+        mActivity.finish();
+    }
+
+    /**
+     * The receiver for the action to be performed on a button click.
      */
     interface WelcomeFragmentClickAction {
         public void doAction(Context context);
     }
 
     /**
-     * The Container for the WelcomeActivityContent.
+     * The Container for the welcome fragments.
      */
     interface WelcomeFragmentContainer {
 
         /**
-         * Retrieve a posistive action button from the container.
-         *
-         * @return the positive action button.
+         * Returns the primary action button from the container.
          */
-        public Button getPositiveButton();
+        Button getPrimaryButton();
 
         /**
-         * Enable the positive action button in the container.
+         * Enables the primary action button in the container.
          *
-         * @param enabled true to enable it, false to disable it.
+         * @param enabled enabled true to enable button, false to disable it.
          */
-        public void setPositiveButtonEnabled(Boolean enabled);
+        void setPrimaryButtonEnabled(Boolean enabled);
 
         /**
-         * Retrieve a negative action button from the container.
-         *
-         * @return the negative action button.
+         * Returns the secondary action button from the container.
          */
-        public Button getNegativeButton();
+        Button getSecondaryButton();
 
-        /**
-         * Enable the negative action button in the container.
-         *
-         * @param enabled true to enable it, false to disable it.
-         */
-        public void setNegativeButtonEnabled(Boolean enabled);
+        void setButtonBarVisibility(boolean isVisible);
     }
 }

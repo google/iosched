@@ -15,30 +15,34 @@
   limitations under the License.
   -->
 
-<!-- Fragment showing a list of cards of videos -->
 <FrameLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <com.google.samples.apps.iosched.ui.widget.CollectionView
-        android:id="@+id/collection_view"
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/sessions_list"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:paddingTop="@dimen/spacing_normal"
+        android:clipToPadding="false"
         android:paddingBottom="@dimen/spacing_normal"
-        android:clipToPadding="false"/>
+        android:paddingTop="@dimen/spacing_normal"
+        android:scrollbarStyle="insideOverlay"
+        android:scrollbars="vertical"
+        app:layoutManager="android.support.v7.widget.GridLayoutManager"
+        app:spanCount="@integer/explore_session_column_item_count" />
 
-    <!-- Empty Collection view -->
+    <!-- Empty state -->
     <TextView
         android:id="@android:id/empty"
-        android:visibility="gone"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:gravity="center"
-        android:textSize="@dimen/text_size_medium"
-        android:textColor="@color/body_text_2"
+        android:paddingTop="?actionBarSize"
         android:text="@string/no_matching_sessions"
-        android:paddingTop="?actionBarSize" />
+        android:textColor="@color/body_text_2"
+        android:textSize="@dimen/text_size_medium"
+        android:visibility="gone" />
 
 </FrameLayout>

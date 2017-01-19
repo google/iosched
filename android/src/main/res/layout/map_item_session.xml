@@ -16,9 +16,11 @@
   -->
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:background="?attr/selectableItemBackground"
     android:paddingTop="@dimen/map_info_item_vertical_padding"
     android:paddingBottom="@dimen/map_info_item_vertical_padding"
     android:minHeight="@dimen/map_info_item_height"
@@ -31,7 +33,7 @@
         android:layout_height="@dimen/my_schedule_icon_size"
         android:layout_marginLeft="@dimen/my_schedule_icon_horizontal_padding"
         android:layout_marginRight="@dimen/my_schedule_icon_horizontal_padding"
-        android:src="@drawable/ic_navview_my_schedule" />
+        app:srcCompat="@drawable/ic_navview_schedule" />
 
     <LinearLayout
         android:layout_width="0dp"

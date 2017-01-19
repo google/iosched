@@ -34,7 +34,7 @@
         android:layout_marginTop="@dimen/spacing_normal"
         android:contentDescription="@null"
         android:layout_alignParentLeft="true"
-        android:src="@drawable/ic_navview_my_schedule" />
+        android:src="@drawable/ic_navview_schedule" />
 
     <TextView
         android:id="@+id/slot_title"

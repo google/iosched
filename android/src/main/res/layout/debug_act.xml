@@ -44,7 +44,7 @@
                       android:clickable="true"
                       android:orientation="vertical">
 
-            <include layout="@layout/toolbar_actionbar"/>
+            <include layout="@layout/toolbar"/>
             <!-- placeholder, empty except on L -->
 
         </LinearLayout>
@@ -52,6 +52,6 @@
     </com.google.samples.apps.iosched.ui.widget.DrawShadowFrameLayout>
 
     <!-- Nav drawer -->
-    <include layout="@layout/navdrawer"/>
+    <include layout="@layout/navigation_view"/>
 
 </android.support.v4.widget.DrawerLayout>

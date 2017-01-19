@@ -22,10 +22,18 @@ import android.graphics.Canvas;
 import android.graphics.drawable.Drawable;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.util.AttributeSet;
+import android.view.MotionEvent;
 
 import com.google.samples.apps.iosched.R;
 
 public class MultiSwipeRefreshLayout extends SwipeRefreshLayout {
+
+    private float mStartGestureX;
+
+    private float mStartGestureY;
+
+    private boolean mHorizontalScrollDetected;
+
     private CanChildScrollUpCallback mCanChildScrollUpCallback;
 
     private Drawable mForegroundDrawable;
@@ -62,6 +70,30 @@ public class MultiSwipeRefreshLayout extends SwipeRefreshLayout {
         if (mForegroundDrawable != null) {
             mForegroundDrawable.draw(canvas);
         }
+    }
+
+    /**
+     * @return false if the scrolled horizontal distance is bigger than the vertical one
+     */
+    @Override
+    public boolean onInterceptTouchEvent(MotionEvent event) {
+        switch (event.getAction()) {
+            case MotionEvent.ACTION_DOWN:
+                mStartGestureX = event.getX();
+                mStartGestureY = event.getY();
+                mHorizontalScrollDetected = false;
+                break;
+
+            case MotionEvent.ACTION_MOVE:
+                mHorizontalScrollDetected = Math.abs(event.getX() - mStartGestureX) >
+                        Math.abs(event.getY() - mStartGestureY);
+                if (mHorizontalScrollDetected) {
+                    return false;
+                }
+                break;
+        }
+
+        return super.onInterceptTouchEvent(event);
     }
 
     public void setCanChildScrollUpCallback(CanChildScrollUpCallback canChildScrollUpCallback) {

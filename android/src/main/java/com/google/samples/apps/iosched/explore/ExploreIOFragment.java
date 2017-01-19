@@ -16,35 +16,23 @@
 
 package com.google.samples.apps.iosched.explore;
 
-import com.google.samples.apps.iosched.R;
-import com.google.samples.apps.iosched.explore.data.ItemGroup;
-import com.google.samples.apps.iosched.explore.data.LiveStreamData;
-import com.google.samples.apps.iosched.explore.data.MessageData;
-import com.google.samples.apps.iosched.explore.data.SessionData;
-import com.google.samples.apps.iosched.explore.data.ThemeGroup;
-import com.google.samples.apps.iosched.explore.data.TopicGroup;
-import com.google.samples.apps.iosched.framework.PresenterFragmentImpl;
-import com.google.samples.apps.iosched.framework.QueryEnum;
-import com.google.samples.apps.iosched.framework.UpdatableView;
-import com.google.samples.apps.iosched.provider.ScheduleContract;
-import com.google.samples.apps.iosched.settings.ConfMessageCardUtils;
-import com.google.samples.apps.iosched.settings.SettingsUtils;
-import com.google.samples.apps.iosched.ui.widget.CollectionView;
-import com.google.samples.apps.iosched.ui.widget.CollectionViewCallbacks;
-import com.google.samples.apps.iosched.ui.widget.DrawShadowFrameLayout;
-import com.google.samples.apps.iosched.util.ImageLoader;
-import com.google.samples.apps.iosched.util.ThrottledContentObserver;
-import com.google.samples.apps.iosched.util.UIUtils;
-import com.google.samples.apps.iosched.util.WiFiUtils;
-
 import android.app.Activity;
 import android.app.Fragment;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.preference.PreferenceManager;
+import android.support.annotation.NonNull;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.app.ActivityOptionsCompat;
+import android.support.v4.util.Pair;
+import android.support.v4.util.SparseArrayCompat;
+import android.support.v4.view.ViewCompat;
+import android.support.v7.widget.CardView;
+import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -53,42 +41,49 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.google.samples.apps.iosched.R;
+import com.google.samples.apps.iosched.archframework.ModelWithLoaderManager;
+import com.google.samples.apps.iosched.archframework.PresenterImpl;
+import com.google.samples.apps.iosched.archframework.UpdatableView;
+import com.google.samples.apps.iosched.explore.ExploreIOModel.ExploreIOQueryEnum;
+import com.google.samples.apps.iosched.explore.ExploreIOModel.ExploreIOUserActionEnum;
+import com.google.samples.apps.iosched.explore.data.EventData;
+import com.google.samples.apps.iosched.explore.data.ItemGroup;
+import com.google.samples.apps.iosched.explore.data.LiveStreamData;
+import com.google.samples.apps.iosched.explore.data.MessageData;
+import com.google.samples.apps.iosched.explore.data.SessionData;
+import com.google.samples.apps.iosched.injection.ModelProvider;
+import com.google.samples.apps.iosched.provider.ScheduleContract;
+import com.google.samples.apps.iosched.session.SessionDetailActivity;
+import com.google.samples.apps.iosched.settings.ConfMessageCardUtils;
+import com.google.samples.apps.iosched.settings.SettingsUtils;
+import com.google.samples.apps.iosched.ui.widget.DrawShadowFrameLayout;
+import com.google.samples.apps.iosched.ui.widget.recyclerview.ItemMarginDecoration;
+import com.google.samples.apps.iosched.ui.widget.recyclerview.UpdatableAdapter;
+import com.google.samples.apps.iosched.util.AccountUtils;
+import com.google.samples.apps.iosched.util.ImageLoader;
+import com.google.samples.apps.iosched.util.ThrottledContentObserver;
+import com.google.samples.apps.iosched.util.TimeUtils;
+import com.google.samples.apps.iosched.util.UIUtils;
+
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 import static android.content.SharedPreferences.OnSharedPreferenceChangeListener;
 import static com.google.samples.apps.iosched.settings.ConfMessageCardUtils.ConferencePrefChangeListener;
-import static com.google.samples.apps.iosched.util.LogUtils.LOGD;
-import static com.google.samples.apps.iosched.util.LogUtils.makeLogTag;
 
 /**
- * Display the Explore I/O cards. There are three styles of cards, which are
- * referred to as Groups by the {@link CollectionView} implementation.
+ * Display the Explore I/O cards. There are three styles of cards, which are referred to as Groups
+ * by the CollectionView implementation.
  * <p/>
- * <ul>
- *     <li>The live-streaming session card.</li>
- *     <li>Time sensitive message cards.</li>
- *     <li>Session topic cards.</li>
- * </ul>
+ * <ul> <li>The live-streaming session cards.</li> <li>Time sensitive message cards.</li> <li>Session
+ * topic cards.</li> </ul>
  * <p/>
- * Only the final group of cards is dynamically loaded from a
- * {@link android.content.ContentProvider}.
+ * Only the final group of cards is dynamically loaded from a {@link
+ * android.content.ContentProvider}.
  */
-public class ExploreIOFragment extends Fragment implements UpdatableView<ExploreModel>,
-        CollectionViewCallbacks {
-
-    private static final String TAG = makeLogTag(ExploreIOFragment.class);
-
-    private static final int GROUP_ID_KEYNOTE_STREAM_CARD = 10;
-
-    private static final int GROUP_ID_LIVE_STREAM_CARD = 15;
-
-    private static final int GROUP_ID_MESSAGE_CARDS = 20;
-
-    private static final int GROUP_ID_TOPIC_CARDS = 30;
-
-    private static final int GROUP_ID_THEME_CARDS = 40;
+public class ExploreIOFragment extends Fragment
+        implements UpdatableView<ExploreIOModel, ExploreIOQueryEnum, ExploreIOUserActionEnum> {
 
     /**
      * Used to load images asynchronously on a background thread.
@@ -96,12 +91,17 @@ public class ExploreIOFragment extends Fragment implements UpdatableView<Explore
     private ImageLoader mImageLoader;
 
     /**
-     * CollectionView representing the cards displayed to the user.
+     * RecyclerView containing a stream of cards to display to the user.
      */
-    private CollectionView mCollectionView = null;
+    private RecyclerView mCardList = null;
 
     /**
-     * Empty view displayed when {@code mCollectionView} is empty.
+     * Adapter for providing data for the stream of cards.
+     */
+    private ExploreAdapter mAdapter;
+
+    /**
+     * Empty view displayed when {@code mCardList} is empty.
      */
     private View mEmptyView;
 
@@ -111,32 +111,84 @@ public class ExploreIOFragment extends Fragment implements UpdatableView<Explore
 
     private ConferencePrefChangeListener mConfMessagesAnswerChangeListener =
             new ConferencePrefChangeListener() {
-        @Override
-        protected void onPrefChanged(String key, boolean value) {
-            fireReloadEvent();
-        }
-    };
+                @Override
+                protected void onPrefChanged(String key, boolean value) {
+                    fireReloadEvent();
+                }
+            };
 
     private OnSharedPreferenceChangeListener mSettingsChangeListener =
             new OnSharedPreferenceChangeListener() {
-        @Override
-        public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
-            if (SettingsUtils.PREF_DECLINED_WIFI_SETUP.equals(key)) {
-                fireReloadEvent();
-            }
-        }
-    };
+                @Override
+                public void onSharedPreferenceChanged(SharedPreferences sharedPreferences,
+                        String key) {
+                    if (SettingsUtils.PREF_DECLINED_WIFI_SETUP.equals(key)) {
+                        fireReloadEvent();
+                    } else if (AccountUtils.PREF_ACTIVE_ACCOUNT.equals(key)) {
+                        fireReloadEvent();
+                    }
+
+                }
+            };
 
     @Override
-    public void displayData(ExploreModel model, QueryEnum query) {
+    public View onCreateView(LayoutInflater inflater,
+            ViewGroup container,
+            Bundle savedInstanceState) {
+        final View root = inflater.inflate(R.layout.explore_io_frag, container, false);
+        mCardList = (RecyclerView) root.findViewById(R.id.explore_card_list);
+        mCardList.setHasFixedSize(true);
+        final int cardVerticalMargin = getResources().getDimensionPixelSize(R.dimen.spacing_normal);
+        mCardList.addItemDecoration(new ItemMarginDecoration(0, cardVerticalMargin,
+                0, cardVerticalMargin));
+        mEmptyView = root.findViewById(android.R.id.empty);
+        return root;
+    }
+
+    @Override
+    public void onActivityCreated(Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        mImageLoader = new ImageLoader(getActivity(), R.drawable.io_logo);
+        initPresenter();
+    }
+
+    @Override
+    public void displayData(final ExploreIOModel model, final ExploreIOQueryEnum query) {
         // Only display data when the tag metadata is available.
-        if (model.getTagTitles() != null) {
-            updateCollectionView(model);
+        if (model.getTagMetadata() != null) {
+            if (mAdapter == null) {
+                mAdapter = new ExploreAdapter(getActivity(), model, mImageLoader);
+                mCardList.setAdapter(mAdapter);
+            } else {
+                mAdapter.update(model);
+            }
+            mEmptyView.setVisibility(mAdapter.getItemCount() > 0 ? View.GONE : View.VISIBLE);
         }
     }
 
     @Override
-    public void displayErrorMessage(QueryEnum query) {
+    public void displayErrorMessage(final ExploreIOQueryEnum query) {
+        // No UI changes when error with query
+    }
+
+    @Override
+    public void displayUserActionResult(final ExploreIOModel model,
+            final ExploreIOUserActionEnum userAction, final boolean success) {
+        switch (userAction) {
+            case RELOAD:
+                displayData(model, ExploreIOQueryEnum.SESSIONS);
+                break;
+        }
+    }
+
+    @Override
+    public Uri getDataUri(final ExploreIOQueryEnum query) {
+        switch (query) {
+            case SESSIONS:
+                return ScheduleContract.Sessions.CONTENT_URI;
+            default:
+                return Uri.EMPTY;
+        }
     }
 
     @Override
@@ -149,27 +201,13 @@ public class ExploreIOFragment extends Fragment implements UpdatableView<Explore
         mListeners.add(toAdd);
     }
 
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-            Bundle savedInstanceState) {
-        View root = inflater.inflate(R.layout.explore_io_frag, container, false);
-        mCollectionView = (CollectionView) root.findViewById(R.id.explore_collection_view);
-        mEmptyView = root.findViewById(android.R.id.empty);
-        getActivity().overridePendingTransition(0, 0);
-
-        return root;
-    }
-
-    @Override
-    public void onActivityCreated(Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-        mImageLoader = new ImageLoader(getActivity(), R.drawable.io_logo);
-    }
-
-    private void setContentTopClearance(int clearance) {
-        if (mCollectionView != null) {
-            mCollectionView.setContentTopClearance(clearance);
-        }
+    private void initPresenter() {
+        ExploreIOModel model = ModelProvider.provideExploreIOModel(
+                getDataUri(ExploreIOQueryEnum.SESSIONS), getContext(),
+                getLoaderManager());
+        PresenterImpl presenter = new PresenterImpl(model, this,
+                ExploreIOUserActionEnum.values(), ExploreIOQueryEnum.values());
+        presenter.loadInitialQueries();
     }
 
     @Override
@@ -177,15 +215,12 @@ public class ExploreIOFragment extends Fragment implements UpdatableView<Explore
         super.onResume();
         getActivity().invalidateOptionsMenu();
 
-        // configure fragment's top clearance to take our overlaid controls (Action Bar
-        // and spinner box) into account.
-        int actionBarSize = UIUtils.calculateActionBarSize(getActivity());
-        DrawShadowFrameLayout drawShadowFrameLayout =
+        final DrawShadowFrameLayout drawShadowFrameLayout =
                 (DrawShadowFrameLayout) getActivity().findViewById(R.id.main_content);
         if (drawShadowFrameLayout != null) {
-            drawShadowFrameLayout.setShadowTopOffset(actionBarSize);
+            // configure fragment's top clearance to take our overlaid Toolbar into account.
+            drawShadowFrameLayout.setShadowTopOffset(UIUtils.calculateActionBarSize(getActivity()));
         }
-        setContentTopClearance(actionBarSize);
     }
 
     @Override
@@ -230,369 +265,8 @@ public class ExploreIOFragment extends Fragment implements UpdatableView<Explore
     }
 
     /**
-     * Update the CollectionView with a new {@link CollectionView.Inventory} of cards to display.
-     */
-    private void updateCollectionView(ExploreModel model) {
-        LOGD(TAG, "Updating collection view.");
-
-        CollectionView.Inventory inventory = new CollectionView.Inventory();
-        CollectionView.InventoryGroup inventoryGroup;
-
-        // BEGIN Add Message Cards.
-        // Message cards are only used for onsite attendees.
-        if (SettingsUtils.isAttendeeAtVenue(getContext())) {
-            // Users are required to opt in or out of whether they want conference message cards.
-            if (!ConfMessageCardUtils.hasAnsweredConfMessageCardsPrompt(getContext())) {
-                // User has not answered whether they want to opt in.
-                // Build a opt-in/out card.
-                inventoryGroup = new CollectionView.InventoryGroup(GROUP_ID_MESSAGE_CARDS);
-                MessageData conferenceMessageOptIn = MessageCardHelper
-                        .getConferenceOptInMessageData(getContext());
-                inventoryGroup.addItemWithTag(conferenceMessageOptIn);
-                inventoryGroup.setDisplayCols(1);
-                inventory.addGroup(inventoryGroup);
-            } else if (ConfMessageCardUtils.isConfMessageCardsEnabled(getContext())) {
-                ConfMessageCardUtils.enableActiveCards(getContext());
-
-                // Note that for these special cards, we'll never show more than one at a time to
-                // prevent overloading the user with messages. We want each new message to be
-                // notable.
-                if (shouldShowCard(ConfMessageCardUtils.ConfMessageCard.CONFERENCE_CREDENTIALS)) {
-                    inventoryGroup = new CollectionView.InventoryGroup(GROUP_ID_MESSAGE_CARDS);
-                    MessageData conferenceMessageOptIn = MessageCardHelper
-                            .getConferenceCredentialsMessageData(getContext());
-                    inventoryGroup.addItemWithTag(conferenceMessageOptIn);
-                    inventoryGroup.setDisplayCols(1);
-                    inventory.addGroup(inventoryGroup);
-                } else if (shouldShowCard(ConfMessageCardUtils.ConfMessageCard.KEYNOTE_ACCESS)) {
-                    inventoryGroup = new CollectionView.InventoryGroup(GROUP_ID_MESSAGE_CARDS);
-                    MessageData conferenceMessageOptIn = MessageCardHelper
-                            .getKeynoteAccessMessageData(getContext());
-                    inventoryGroup.addItemWithTag(conferenceMessageOptIn);
-                    inventoryGroup.setDisplayCols(1);
-                    inventory.addGroup(inventoryGroup);
-                } else if (shouldShowCard(ConfMessageCardUtils.ConfMessageCard.AFTER_HOURS)) {
-                    inventoryGroup = new CollectionView.InventoryGroup(GROUP_ID_MESSAGE_CARDS);
-                    MessageData conferenceMessageOptIn = MessageCardHelper
-                            .getAfterHoursMessageData(getContext());
-                    inventoryGroup.addItemWithTag(conferenceMessageOptIn);
-                    inventoryGroup.setDisplayCols(1);
-                    inventory.addGroup(inventoryGroup);
-                } else if (shouldShowCard(ConfMessageCardUtils.ConfMessageCard.WIFI_FEEDBACK)) {
-                    if (WiFiUtils.isWiFiEnabled(getContext()) &&
-                            WiFiUtils.isWiFiApConfigured(getContext())) {
-                        inventoryGroup = new CollectionView.InventoryGroup(GROUP_ID_MESSAGE_CARDS);
-                        MessageData conferenceMessageOptIn = MessageCardHelper
-                                .getWifiFeedbackMessageData(getContext());
-                        inventoryGroup.addItemWithTag(conferenceMessageOptIn);
-                        inventoryGroup.setDisplayCols(1);
-                        inventory.addGroup(inventoryGroup);
-                    }
-                }
-            }
-            // Check whether a wifi setup card should be offered.
-            if (WiFiUtils.shouldOfferToSetupWifi(getContext(), true)) {
-                // Build card asking users whether they want to enable wifi.
-                inventoryGroup = new CollectionView.InventoryGroup(GROUP_ID_MESSAGE_CARDS);
-                MessageData conferenceMessageOptIn = MessageCardHelper
-                        .getWifiSetupMessageData(getContext());
-                inventoryGroup.addItemWithTag(conferenceMessageOptIn);
-                inventoryGroup.setDisplayCols(1);
-                inventory.addGroup(inventoryGroup);
-            }
-        }
-        // END Add Message Cards.
-
-
-        // Add Keynote card.
-        SessionData keynoteData = model.getKeynoteData();
-        if (keynoteData != null) {
-            LOGD(TAG, "Keynote Live stream data found: " + model.getKeynoteData());
-            inventoryGroup = new CollectionView.InventoryGroup
-                    (GROUP_ID_KEYNOTE_STREAM_CARD);
-            inventoryGroup.addItemWithTag(keynoteData);
-            inventory.addGroup(inventoryGroup);
-        }
-
-        // Add Live Stream card.
-        LiveStreamData liveStreamData = model.getLiveStreamData();
-        if (liveStreamData != null && liveStreamData.getSessions().size() > 0) {
-            LOGD(TAG, "Live session data found: " + liveStreamData);
-            inventoryGroup = new CollectionView.InventoryGroup
-                    (GROUP_ID_LIVE_STREAM_CARD);
-            liveStreamData.setTitle(getResources().getString(R.string.live_now));
-            inventoryGroup.addItemWithTag(liveStreamData);
-            inventory.addGroup(inventoryGroup);
-        }
-
-        LOGD(TAG, "Inventory item count:" + inventory.getGroupCount() + " " + inventory
-                .getTotalItemCount());
-
-        ArrayList<CollectionView.InventoryGroup> themeGroups = new ArrayList<>();
-        ArrayList<CollectionView.InventoryGroup> topicGroups = new ArrayList<>();
-
-        for (TopicGroup topic : model.getTopics()) {
-            LOGD(TAG, topic.getTitle() + ": " + topic.getSessions().size());
-            if (topic.getSessions().size() > 0) {
-                inventoryGroup = new CollectionView.InventoryGroup(GROUP_ID_TOPIC_CARDS);
-                inventoryGroup.addItemWithTag(topic);
-                topic.setTitle(getTranslatedTitle(topic.getTitle(), model));
-                topicGroups.add(inventoryGroup);
-            }
-        }
-
-        for (ThemeGroup theme : model.getThemes()) {
-            LOGD(TAG, theme.getTitle() + ": " + theme.getSessions().size());
-            if (theme.getSessions().size() > 0) {
-                inventoryGroup = new CollectionView.InventoryGroup(GROUP_ID_THEME_CARDS);
-                inventoryGroup.addItemWithTag(theme);
-                theme.setTitle(getTranslatedTitle(theme.getTitle(), model));
-                themeGroups.add(inventoryGroup);
-            }
-        }
-
-        // We want to evenly disperse the topics between the themes. So we'll divide the topic count
-        // by theme count to get the number of themes to display between topics.
-        int topicsPerTheme = topicGroups.size();
-        if (themeGroups.size() > 0) {
-            topicsPerTheme = topicGroups.size() / themeGroups.size();
-        }
-        Iterator<CollectionView.InventoryGroup> themeIterator = themeGroups.iterator();
-        int currentTopicNum = 0;
-        for (CollectionView.InventoryGroup topicGroup : topicGroups) {
-            inventory.addGroup(topicGroup);
-            currentTopicNum++;
-            if (currentTopicNum == topicsPerTheme) {
-                if (themeIterator.hasNext()) {
-                    inventory.addGroup(themeIterator.next());
-                }
-                currentTopicNum = 0;
-            }
-        }
-        // Append any leftovers.
-        while (themeIterator.hasNext()) {
-            inventory.addGroup(themeIterator.next());
-        }
-
-        Parcelable state = mCollectionView.onSaveInstanceState();
-        mCollectionView.setCollectionAdapter(this);
-        mCollectionView.updateInventory(inventory, false);
-        if (state != null) {
-            mCollectionView.onRestoreInstanceState(state);
-        }
-
-        // Show empty view if there were no Group cards.
-        mEmptyView.setVisibility(inventory.getGroupCount() < 1 ? View.VISIBLE : View.GONE);
-    }
-
-    private String getTranslatedTitle(String title, ExploreModel model) {
-        if (model.getTagTitles().get(title) != null) {
-            return model.getTagTitles().get(title);
-        } else {
-            return title;
-        }
-    }
-
-    @Override
-    public View newCollectionHeaderView(Context context, int groupId, ViewGroup parent) {
-        return LayoutInflater.from(context)
-                .inflate(R.layout.explore_io_card_header_with_button, parent, false);
-    }
-
-    @Override
-    public void bindCollectionHeaderView(Context context, View view, final int groupId,
-                                         final String headerLabel, Object headerTag) {
-    }
-
-    @Override
-    public View newCollectionItemView(Context context, int groupId, ViewGroup parent) {
-        LayoutInflater inflater = LayoutInflater.from(context);
-
-        // First inflate the card container.
-        int containerLayoutId;
-        switch (groupId) {
-            case GROUP_ID_TOPIC_CARDS:
-            case GROUP_ID_THEME_CARDS:
-            case GROUP_ID_LIVE_STREAM_CARD:
-                containerLayoutId = R.layout.explore_io_topic_theme_livestream_card_container;
-                break;
-            default:
-                containerLayoutId = R.layout.explore_io_card_container;
-                break;
-        }
-        ViewGroup containerView = (ViewGroup)inflater.inflate(containerLayoutId, parent, false);
-        // Explicitly tell Accessibility to ignore the entire containerView since we add specific
-        // individual content descriptions on child Views.
-        UIUtils.setAccessibilityIgnore(containerView);
-
-        ViewGroup containerContents = (ViewGroup)containerView.findViewById(
-                R.id.explore_io_card_container_contents);
-
-        // Now inflate the header within the container cards.
-        int headerLayoutId = -1;
-        switch (groupId) {
-            case GROUP_ID_THEME_CARDS:
-            case GROUP_ID_TOPIC_CARDS:
-            case GROUP_ID_LIVE_STREAM_CARD:
-                headerLayoutId = R.layout.explore_io_card_header_with_button;
-                break;
-        }
-        // Inflate the specified number of items.
-        if (headerLayoutId > -1) {
-            inflater.inflate(headerLayoutId, containerContents, true);
-        }
-
-        // Now inflate the items within the container cards.
-        int itemLayoutId = -1;
-        int numItems = 1;
-        switch (groupId) {
-            case GROUP_ID_KEYNOTE_STREAM_CARD:
-                itemLayoutId = R.layout.explore_io_keynote_stream_item;
-                numItems = 1;
-                break;
-            case GROUP_ID_THEME_CARDS:
-                itemLayoutId = R.layout.explore_io_topic_theme_livestream_item;
-                numItems = ExploreModel.getThemeSessionLimit(getContext());
-                break;
-            case GROUP_ID_TOPIC_CARDS:
-                itemLayoutId = R.layout.explore_io_topic_theme_livestream_item;
-                numItems = ExploreModel.getTopicSessionLimit(getContext());
-                break;
-            case GROUP_ID_LIVE_STREAM_CARD:
-                itemLayoutId = R.layout.explore_io_topic_theme_livestream_item;
-                numItems = 3;
-                break;
-            case GROUP_ID_MESSAGE_CARDS:
-                itemLayoutId = R.layout.explore_io_message_card_item;
-                numItems = 1;
-                break;
-        }
-        // Inflate the specified number of items.
-        if (itemLayoutId > -1) {
-            for (int itemIndex = 0; itemIndex < numItems; itemIndex++) {
-                inflater.inflate(itemLayoutId, containerContents, true);
-            }
-        }
-        return containerView;
-    }
-
-    @Override
-    public void bindCollectionItemView(Context context, View view, int groupId,
-            int indexInGroup, int dataIndex, Object tag) {
-        if (GROUP_ID_KEYNOTE_STREAM_CARD == groupId ||
-                GROUP_ID_MESSAGE_CARDS == groupId) {
-            // These two group id types don't have child views.
-            populateSubItemInfo(context, view, groupId, tag);
-            // Set the object's data into the view's tag so that the click listener on the view can
-            // extract it and use the data to handle a click.
-            View clickableView = view.findViewById(R.id.explore_io_clickable_item);
-            if (clickableView != null) {
-                clickableView.setTag(tag);
-            }
-        } else {
-            // These group ids have children who are child items.
-            ViewGroup viewWithChildrenSubItems = (ViewGroup)(view.findViewById(
-                    R.id.explore_io_card_container_contents));
-            ItemGroup itemGroup = (ItemGroup) tag;
-
-            // Set Header tag and title.
-            viewWithChildrenSubItems.getChildAt(0).setTag(tag);
-            TextView titleTextView = ((TextView) view.findViewById(android.R.id.title));
-            View headerView = view.findViewById(R.id.explore_io_card_header_layout);
-            if (headerView != null) {
-                headerView.setContentDescription(
-                        getString(R.string.more_items_button_desc_with_label_a11y,
-                                itemGroup.getTitle()));
-            }
-
-            // Set the tag on the moreButton so it can be accessed by the click listener.
-            View moreButton = view.findViewById(android.R.id.button1);
-            if (moreButton != null) {
-                moreButton.setTag(tag);
-            }
-            if (titleTextView != null) {
-                titleTextView.setText(itemGroup.getTitle());
-            }
-
-            // Skipping first child b/c it is a header view.
-            for (int viewChildIndex = 1; viewChildIndex < viewWithChildrenSubItems.getChildCount(); viewChildIndex++) {
-                View childView = viewWithChildrenSubItems.getChildAt(viewChildIndex);
-
-                int sessionIndex = viewChildIndex - 1;
-                int sessionSize = itemGroup.getSessions().size();
-                if (childView != null && sessionIndex < sessionSize) {
-                    childView.setVisibility(View.VISIBLE);
-                    SessionData sessionData = itemGroup.getSessions().get(sessionIndex);
-                    childView.setTag(sessionData);
-                    populateSubItemInfo(context, childView, groupId, sessionData);
-                } else if (childView != null) {
-                    childView.setVisibility(View.GONE);
-                }
-            }
-        }
-
-    }
-
-    private void populateSubItemInfo(Context context, View view, int groupId, Object tag) {
-        // Locate the views that may be used to configure the item being bound to this view.
-        // Not all elements are used in all views so some will be null.
-        TextView titleView = (TextView) view.findViewById(R.id.title);
-        TextView descriptionView = (TextView) view.findViewById(R.id.description);
-        Button startButton = (Button) view.findViewById(R.id.buttonStart);
-        Button endButton = (Button) view.findViewById(R.id.buttonEnd);
-        ImageView iconView = (ImageView) view.findViewById(R.id.icon);
-
-        // Load item elements common to THEME and TOPIC group cards.
-        if (tag instanceof SessionData) {
-            SessionData sessionData = (SessionData)tag;
-            titleView.setText(sessionData.getSessionName());
-            if (!TextUtils.isEmpty(sessionData.getImageUrl())) {
-                ImageView imageView = (ImageView) view.findViewById(R.id.thumbnail);
-                mImageLoader.loadImage(sessionData.getImageUrl(), imageView);
-            }
-            ImageView inScheduleIndicator =
-                    (ImageView) view.findViewById(R.id.indicator_in_schedule);
-            if (inScheduleIndicator != null) {  // check not keynote
-                inScheduleIndicator.setVisibility(
-                        sessionData.isInSchedule() ? View.VISIBLE : View.GONE);
-            }
-            if (!TextUtils.isEmpty(sessionData.getDetails())) {
-                descriptionView.setText(sessionData.getDetails());
-            }
-        }
-
-        // Bind message data if this item is meant to be bound as a message card.
-        if (GROUP_ID_MESSAGE_CARDS == groupId) {
-            MessageData messageData = (MessageData)tag;
-            descriptionView.setText(messageData.getMessageString(context));
-            if (messageData.getEndButtonStringResourceId() != -1) {
-                endButton.setText(messageData.getEndButtonStringResourceId());
-            } else {
-                endButton.setVisibility(View.GONE);
-            }
-            if (messageData.getStartButtonStringResourceId() != -1) {
-                startButton.setText(messageData.getStartButtonStringResourceId());
-            } else {
-                startButton.setVisibility(View.GONE);
-            }
-            if (messageData.getIconDrawableId() > 0) {
-                iconView.setVisibility(View.VISIBLE);
-                iconView.setImageResource(messageData.getIconDrawableId());
-            } else {
-                iconView.setVisibility(View.GONE);
-            }
-            if (messageData.getStartButtonClickListener() != null) {
-                startButton.setOnClickListener(messageData.getStartButtonClickListener());
-            }
-            if (messageData.getEndButtonClickListener() != null) {
-                endButton.setOnClickListener(messageData.getEndButtonClickListener());
-            }
-        }
-    }
-
-    /**
      * Let all UserActionListener know that the video list has been reloaded and that therefore we
-     * need to display another random set of sessions.
+     * need to update the display of sessions.
      */
     private void fireReloadEvent() {
         if (!isAdded()) {
@@ -600,9 +274,9 @@ public class ExploreIOFragment extends Fragment implements UpdatableView<Explore
         }
         for (UserActionListener h1 : mListeners) {
             Bundle args = new Bundle();
-            args.putInt(PresenterFragmentImpl.KEY_RUN_QUERY_ID,
-                    ExploreModel.ExploreQueryEnum.SESSIONS.getId());
-            h1.onUserAction(ExploreModel.ExploreUserActionEnum.RELOAD, args);
+            args.putInt(ModelWithLoaderManager.KEY_RUN_QUERY_ID,
+                    ExploreIOModel.ExploreIOQueryEnum.SESSIONS.getId());
+            h1.onUserAction(ExploreIOModel.ExploreIOUserActionEnum.RELOAD, args);
         }
     }
 
@@ -612,25 +286,504 @@ public class ExploreIOFragment extends Fragment implements UpdatableView<Explore
         }
         for (UserActionListener h1 : mListeners) {
             Bundle args = new Bundle();
-            args.putInt(PresenterFragmentImpl.KEY_RUN_QUERY_ID,
-                    ExploreModel.ExploreQueryEnum.TAGS.getId());
-            h1.onUserAction(ExploreModel.ExploreUserActionEnum.RELOAD, args);
+            args.putInt(ModelWithLoaderManager.KEY_RUN_QUERY_ID,
+                    ExploreIOModel.ExploreIOQueryEnum.TAGS.getId());
+            h1.onUserAction(ExploreIOModel.ExploreIOUserActionEnum.RELOAD, args);
         }
     }
 
-    @Override
-    public Uri getDataUri(QueryEnum query) {
-        if (query == ExploreModel.ExploreQueryEnum.SESSIONS) {
-            return ScheduleContract.Sessions.CONTENT_URI;
+    /**
+     * Adapter for providing cards (Messages, Keynote, Live Stream and conference Tracks)
+     * for the Explore fragment.
+     */
+    private static class ExploreAdapter
+            extends UpdatableAdapter<ExploreIOModel, RecyclerView.ViewHolder> {
+
+        private static final int TYPE_TRACK = 0;
+
+        private static final int TYPE_MESSAGE = 1;
+
+        private static final int TYPE_KEYNOTE = 2;
+
+        private static final int TYPE_LIVE_STREAM = 3;
+
+        private static final int TYPE_EVENT_DATA = 4;
+
+        private static final int LIVE_STREAM_TRACK_ID = R.string.live_now;
+
+        private static final int EVENT_DATA_TRACK_ID = 999;
+
+        // Immutable state
+        private final Activity mHost;
+
+        private final LayoutInflater mInflater;
+
+        private final ImageLoader mImageLoader;
+
+        private final RecyclerView.RecycledViewPool mRecycledViewPool;
+
+        // State
+        private List mItems;
+
+        // Maps of state keyed on track id
+        private SparseArrayCompat<UpdatableAdapter> mTrackSessionsAdapters;
+
+        private SparseArrayCompat<Parcelable> mTrackSessionsState;
+
+        ExploreAdapter(@NonNull Activity activity,
+                       @NonNull ExploreIOModel model,
+                       @NonNull ImageLoader imageLoader) {
+            mHost = activity;
+            mImageLoader = imageLoader;
+            mInflater = LayoutInflater.from(activity);
+            mRecycledViewPool = new RecyclerView.RecycledViewPool();
+            mItems = processModel(model);
+            setupSessionAdapters(model);
         }
-        return Uri.EMPTY;
+
+        public void update(@NonNull ExploreIOModel model) {
+            // Attempt to update our data in-place so as not to lose scroll position etc.
+            final List newItems = processModel(model);
+            boolean changed = false;
+            if (newItems.size() != mItems.size()) {
+                changed = true;
+            } else {
+                for (int i = 0; i < newItems.size(); i++) {
+                    final Object newCard = newItems.get(i);
+                    final Object oldCard = mItems.get(i);
+                    if (newCard.equals(oldCard)) {
+                        if (newCard instanceof ItemGroup) {
+                            final ItemGroup newTrack = (ItemGroup) newCard;
+                            mTrackSessionsAdapters.get(getTrackId(newTrack))
+                                                  .update(newTrack.getSessions());
+                        }
+                    } else {
+                        changed = true;
+                        break;
+                    }
+                }
+            }
+            if (changed) {
+                // Couldn't update existing model, do a full refresh
+                mItems = newItems;
+                setupSessionAdapters(model);
+                notifyDataSetChanged();
+            }
+        }
+
+        @Override
+        public int getItemViewType(final int position) {
+            final Object item = mItems.get(position);
+            if (item instanceof LiveStreamData) {
+                return TYPE_LIVE_STREAM;
+            } else if (item instanceof ItemGroup) {
+                return TYPE_TRACK;
+            } else if (item instanceof MessageData) {
+                return TYPE_MESSAGE;
+            } else if (item instanceof SessionData) {
+                return TYPE_KEYNOTE;
+            } else if (item instanceof EventData) {
+                return TYPE_EVENT_DATA;
+            }
+            throw new IllegalArgumentException("Unknown view type.");
+        }
+
+        @Override
+        public RecyclerView.ViewHolder onCreateViewHolder(final ViewGroup parent,
+                final int viewType) {
+            switch (viewType) {
+                case TYPE_EVENT_DATA:
+                    return createEventViewHolder(parent);
+                case TYPE_TRACK:
+                    return createTrackViewHolder(parent);
+                case TYPE_MESSAGE:
+                    return createMessageViewHolder(parent);
+                case TYPE_KEYNOTE:
+                    return createKeynoteViewHolder(parent);
+                case TYPE_LIVE_STREAM:
+                    return createLiveStreamViewHolder(parent);
+                default:
+                    throw new IllegalArgumentException("Unknown view type.");
+            }
+        }
+
+        @Override
+        public void onBindViewHolder(final RecyclerView.ViewHolder holder, final int position) {
+            switch (getItemViewType(position)) {
+                case TYPE_TRACK:
+                    bindTrack((TrackViewHolder) holder, (ItemGroup) mItems.get(position));
+                    break;
+                case TYPE_MESSAGE:
+                    bindMessage((MessageViewHolder) holder, (MessageData) mItems.get(position));
+                    break;
+                case TYPE_KEYNOTE:
+                    bindKeynote((KeynoteViewHolder) holder, (SessionData) mItems.get(position));
+                    break;
+                case TYPE_LIVE_STREAM:
+                    bindLiveStream((TrackViewHolder) holder, (LiveStreamData) mItems.get(position));
+                    break;
+                case TYPE_EVENT_DATA:
+                    bindEventData((EventDataViewHolder) holder, (EventData) mItems.get(position));
+                    break;
+            }
+        }
+
+        private void bindEventData(final EventDataViewHolder holder, final EventData eventData) {
+            int trackId = getTrackId(eventData);
+            holder.cards.setAdapter(mTrackSessionsAdapters.get(trackId));
+            holder.cards.getLayoutManager().onRestoreInstanceState(
+                    mTrackSessionsState.get(trackId));
+        }
+
+        @Override
+        public void onViewRecycled(final RecyclerView.ViewHolder holder) {
+            if (holder instanceof TrackViewHolder) {
+                // Cache the scroll position of the session list so that we can restore it in onBind
+                final TrackViewHolder trackHolder = (TrackViewHolder) holder;
+                final int position = trackHolder.getAdapterPosition();
+                if (position != RecyclerView.NO_POSITION) {
+                    final int trackId = getTrackId((ItemGroup) mItems.get(position));
+                    mTrackSessionsState.put(trackId,
+                            trackHolder.sessions.getLayoutManager().onSaveInstanceState());
+                }
+            }
+            super.onViewRecycled(holder);
+        }
+
+        @Override
+        public int getItemCount() {
+            return mItems.size();
+        }
+
+        private @NonNull
+        EventDataViewHolder createEventViewHolder(final ViewGroup parent) {
+            final EventDataViewHolder
+                    holder = new EventDataViewHolder(
+                    mInflater.inflate(R.layout.explore_io_event_card, parent, false));
+            holder.cards.setHasFixedSize(true);
+            holder.cards.setRecycledViewPool(mRecycledViewPool);
+            ViewCompat.setImportantForAccessibility(
+                    holder.cards, ViewCompat.IMPORTANT_FOR_ACCESSIBILITY_NO_HIDE_DESCENDANTS);
+            holder.headerImage.setImageResource(R.drawable.explore_io_ontheground_header);
+            holder.title.setText(R.string.explore_io_on_the_ground_title);
+            return holder;
+        }
+
+        private @NonNull TrackViewHolder createTrackViewHolder(final ViewGroup parent) {
+            final TrackViewHolder holder = new TrackViewHolder(
+                    mInflater.inflate(R.layout.explore_io_track_card, parent, false));
+            holder.sessions.setHasFixedSize(true);
+            holder.sessions.setRecycledViewPool(mRecycledViewPool);
+            ViewCompat.setImportantForAccessibility(
+                    holder.sessions, ViewCompat.IMPORTANT_FOR_ACCESSIBILITY_NO_HIDE_DESCENDANTS);
+            holder.header.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(final View v) {
+                    final int position = holder.getAdapterPosition();
+                    if (position == RecyclerView.NO_POSITION) return;
+                    final ItemGroup track = (ItemGroup) mItems.get(position);
+                    final Intent intent = new Intent(mHost, ExploreSessionsActivity.class);
+                    intent.putExtra(ExploreSessionsActivity.EXTRA_FILTER_TAG, track.getId());
+
+                    final ActivityOptionsCompat options =
+                            ActivityOptionsCompat.makeSceneTransitionAnimation(mHost,
+                                    Pair.create((View) holder.headerImage, mHost.getString(
+                                            R.string.transition_track_header)),
+                                    Pair.create((View) holder.title, mHost.getString(
+                                            R.string.transition_track_title)),
+                                    Pair.create(holder.itemView, mHost.getString(
+                                            R.string.transition_track_background)));
+                    ActivityCompat.startActivity(mHost, intent, options.toBundle());
+                }
+            });
+            return holder;
+        }
+
+        private @NonNull MessageViewHolder createMessageViewHolder(final ViewGroup parent) {
+            final MessageViewHolder holder = new MessageViewHolder(
+                    mInflater.inflate(R.layout.explore_io_message_card, parent, false));
+            // Work with pre-existing infrastructure which supplied a click listener and relied on
+            // a shared pref listener & a reload to dismiss message cards.
+            // By setting our own click listener and manually calling onClick we can remove the
+            // item in the adapter directly.
+            holder.buttonStart.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(final View v) {
+                    final int position = holder.getAdapterPosition();
+                    if (position == RecyclerView.NO_POSITION) return;
+                    final MessageData message = (MessageData) mItems.get(position);
+                    message.getStartButtonClickListener().onClick(holder.buttonStart);
+                    mItems.remove(position);
+                    notifyItemRemoved(position);
+                }
+            });
+            holder.buttonEnd.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(final View v) {
+                    final int position = holder.getAdapterPosition();
+                    if (position == RecyclerView.NO_POSITION) return;
+                    final MessageData message = (MessageData) mItems.get(position);
+                    message.getEndButtonClickListener().onClick(holder.buttonEnd);
+                    mItems.remove(position);
+                    notifyItemRemoved(position);
+                }
+            });
+            return holder;
+        }
+
+        private @NonNull KeynoteViewHolder createKeynoteViewHolder(final ViewGroup parent) {
+            final KeynoteViewHolder holder = new KeynoteViewHolder(
+                    mInflater.inflate(R.layout.explore_io_keynote_card, parent, false));
+            holder.clickableItem.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(final View v) {
+                    final int position = holder.getAdapterPosition();
+                    if (position == RecyclerView.NO_POSITION) return;
+                    final SessionData keynote = (SessionData) mItems.get(position);
+                    final Intent intent = new Intent(mHost, SessionDetailActivity.class);
+                    intent.setData(
+                            ScheduleContract.Sessions.buildSessionUri(keynote.getSessionId()));
+                    final ActivityOptionsCompat options = ActivityOptionsCompat
+                            .makeSceneTransitionAnimation(mHost,
+                                    Pair.create(holder.itemView,
+                                            mHost.getString(
+                                                    R.string.transition_session_background)),
+                                    Pair.create((View) holder.thumbnail,
+                                            mHost.getString(R.string.transition_session_image)));
+                    ActivityCompat.startActivity(mHost, intent, options.toBundle());
+                }
+            });
+            return holder;
+        }
+
+        private @NonNull TrackViewHolder createLiveStreamViewHolder(final ViewGroup parent) {
+            final TrackViewHolder holder = new TrackViewHolder(
+                    mInflater.inflate(R.layout.explore_io_track_card, parent, false));
+            ViewCompat.setImportantForAccessibility(
+                    holder.sessions, ViewCompat.IMPORTANT_FOR_ACCESSIBILITY_NO_HIDE_DESCENDANTS);
+            holder.header.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(final View v) {
+                    final Intent intent = new Intent(mHost, ExploreSessionsActivity.class);
+                    intent.setData(ScheduleContract.Sessions
+                            .buildSessionsAfterUri(TimeUtils.getCurrentTime(mHost)));
+                    intent.putExtra(ExploreSessionsActivity.EXTRA_SHOW_LIVE_STREAM_SESSIONS, true);
+                    ActivityCompat.startActivity(mHost, intent, null);
+                }
+            });
+            return holder;
+        }
+
+        private void bindTrack(final TrackViewHolder holder, final ItemGroup track) {
+            bindTrackOrLiveStream(holder, track, track.getTitle());
+        }
+
+        private void bindMessage(final MessageViewHolder holder, final MessageData message) {
+            holder.description.setText(message.getMessageString(mHost));
+            if (message.getIconDrawableId() > 0) {
+                holder.icon.setVisibility(View.VISIBLE);
+                holder.icon.setImageResource(message.getIconDrawableId());
+            } else {
+                holder.icon.setVisibility(View.GONE);
+            }
+            if (message.getStartButtonStringResourceId() != -1) {
+                holder.buttonEnd.setVisibility(View.VISIBLE);
+                holder.buttonStart.setText(message.getStartButtonStringResourceId());
+            } else {
+                holder.buttonStart.setVisibility(View.GONE);
+            }
+            if (message.getEndButtonStringResourceId() != -1) {
+                holder.buttonEnd.setVisibility(View.VISIBLE);
+                holder.buttonEnd.setText(message.getEndButtonStringResourceId());
+            } else {
+                holder.buttonEnd.setVisibility(View.GONE);
+            }
+        }
+
+        private void bindKeynote(final KeynoteViewHolder holder, final SessionData keynote) {
+            holder.title.setText(keynote.getSessionName());
+            if (!TextUtils.isEmpty(keynote.getImageUrl())) {
+                mImageLoader.loadImage(keynote.getImageUrl(), holder.thumbnail);
+            }
+            if (!TextUtils.isEmpty(keynote.getDetails())) {
+                holder.description.setText(keynote.getDetails());
+            }
+        }
+
+        private void bindLiveStream(final TrackViewHolder holder, final LiveStreamData data) {
+            bindTrackOrLiveStream(holder, data, mHost.getString(R.string.live_now));
+        }
+
+        private void bindTrackOrLiveStream(final TrackViewHolder holder, final ItemGroup track,
+                final String title) {
+            holder.title.setText(title);
+            holder.header.setContentDescription(title);
+            if (track.getPhotoUrl() != null) {
+                holder.headerImage.setScaleType(ImageView.ScaleType.CENTER_CROP);
+                mImageLoader.loadImage(track.getPhotoUrl(), holder.headerImage);
+            } else {
+                holder.headerImage.setScaleType(ImageView.ScaleType.FIT_CENTER);
+                holder.headerImage.setImageResource(R.drawable.ic_hash_io_16_monochrome);
+
+            }
+            final int trackId = getTrackId(track);
+            holder.sessions.setAdapter(mTrackSessionsAdapters.get(trackId));
+            holder.sessions.getLayoutManager().onRestoreInstanceState(
+                    mTrackSessionsState.get(trackId));
+        }
+
+        /**
+         * Process the given {@link ExploreIOModel} to create the list of items to be displayed by
+         * the {@link RecyclerView}.
+         */
+        private List processModel(final ExploreIOModel model) {
+
+            final ArrayList exploreCards = new ArrayList();
+
+            // Add any Message cards
+            final List<MessageData> messages = model.getMessages();
+            if (messages != null && !messages.isEmpty()) {
+                exploreCards.addAll(messages);
+            }
+
+            // Add Keynote card.
+            final SessionData keynote = model.getKeynoteData();
+            if (keynote != null) {
+                exploreCards.add(keynote);
+            }
+
+            // Add Event Cards if onsite.
+            if (SettingsUtils.isAttendeeAtVenue(mHost)) {
+                final EventData eventData = model.getEventData();
+                if (eventData != null && !eventData.getCards().isEmpty()) {
+                    exploreCards.add(eventData);
+                }
+            }
+
+            // Add Live Stream card.
+            final LiveStreamData liveStream = model.getLiveStreamData();
+            if (liveStream != null && liveStream.getSessions().size() > 0) {
+                exploreCards.add(liveStream);
+            }
+
+            // Add track cards, ordered alphabetically
+            exploreCards.addAll(model.getOrderedTracks());
+
+            return exploreCards;
+        }
+
+        /**
+         * Setup adapters for tracks which have child session lists
+         */
+        private void setupSessionAdapters(final ExploreIOModel model) {
+            final int trackCount = model.getOrderedTracks().size()
+                    + (model.getLiveStreamData() != null ? 1 : 0)
+                    + (model.getEventData() != null ? 1 : 0);
+            mTrackSessionsAdapters = new SparseArrayCompat<>(trackCount);
+            mTrackSessionsState = new SparseArrayCompat<>(trackCount);
+
+            final LiveStreamData liveStream = model.getLiveStreamData();
+            if (liveStream != null && liveStream.getSessions().size() > 0) {
+                mTrackSessionsAdapters.put(getTrackId(liveStream),
+                        new LiveStreamSessionsAdapter(mHost, liveStream.getSessions(),
+                                mImageLoader));
+            }
+
+            final EventData eventData = model.getEventData();
+            if (eventData != null && eventData.getCards() != null &&
+            eventData.getCards().size() > 0) {
+                mTrackSessionsAdapters.put(getTrackId(eventData),
+                        new EventDataAdapter(mHost, eventData.getCards()));
+            }
+
+            for (final ItemGroup group : model.getOrderedTracks()) {
+                mTrackSessionsAdapters.put(getTrackId(group),
+                        SessionsAdapter.createHorizontal(mHost, group.getSessions()));
+            }
+
+        }
+
+
+        /**
+         * A derived ID for each track; used as a key for some state objects
+         */
+        private int getTrackId(Object track) {
+            if (track instanceof LiveStreamData) {
+                return LIVE_STREAM_TRACK_ID;
+            } else if (track instanceof EventData) {
+                return EVENT_DATA_TRACK_ID;
+            } else if (track instanceof ItemGroup) {
+                return ((ItemGroup)track).getId().hashCode();
+            }
+            return 0;
+        }
     }
 
-    private boolean shouldShowCard(ConfMessageCardUtils.ConfMessageCard card) {
+    private static class EventDataViewHolder extends RecyclerView.ViewHolder {
 
-        boolean shouldShow = ConfMessageCardUtils.shouldShowConfMessageCard(getContext(), card);
-        boolean hasDismissed = ConfMessageCardUtils.hasDismissedConfMessageCard(getContext(),
-                card);
-        return  (shouldShow && !hasDismissed);
+        final CardView card;
+        final ViewGroup header;
+        final ImageView headerImage;
+        final TextView title;
+        final RecyclerView cards;
+
+        public EventDataViewHolder(View itemView) {
+            super(itemView);
+            card = (CardView) itemView;
+            header = (ViewGroup) card.findViewById(R.id.header);
+            headerImage = (ImageView) card.findViewById(R.id.header_image);
+            title = (TextView) header.findViewById(R.id.title);
+            cards = (RecyclerView) card.findViewById(R.id.cards);
+        }
+    }
+
+    private static class TrackViewHolder extends RecyclerView.ViewHolder {
+
+        final CardView card;
+        final ViewGroup header;
+        final ImageView headerImage;
+        final TextView title;
+        final RecyclerView sessions;
+
+        public TrackViewHolder(View itemView) {
+            super(itemView);
+            card = (CardView) itemView;
+            header = (ViewGroup) card.findViewById(R.id.header);
+            headerImage = (ImageView) card.findViewById(R.id.header_image);
+            title = (TextView) header.findViewById(R.id.title);
+            sessions = (RecyclerView) card.findViewById(R.id.sessions);
+        }
+    }
+
+    private static class MessageViewHolder extends RecyclerView.ViewHolder {
+
+        final ImageView icon;
+        final TextView description;
+        final Button buttonStart;
+        final Button buttonEnd;
+
+        public MessageViewHolder(final View itemView) {
+            super(itemView);
+            icon = (ImageView) itemView.findViewById(R.id.icon);
+            description = (TextView) itemView.findViewById(R.id.description);
+            buttonStart = (Button) itemView.findViewById(R.id.buttonStart);
+            buttonEnd = (Button) itemView.findViewById(R.id.buttonEnd);
+        }
+    }
+
+    private static class KeynoteViewHolder extends RecyclerView.ViewHolder {
+
+        final ImageView thumbnail;
+        final TextView title;
+        final TextView description;
+        final ViewGroup clickableItem;
+
+        public KeynoteViewHolder(final View itemView) {
+            super(itemView);
+            thumbnail = (ImageView) itemView.findViewById(R.id.thumbnail);
+            title = (TextView) itemView.findViewById(R.id.title);
+            description = (TextView) itemView.findViewById(R.id.description);
+            clickableItem = (ViewGroup) itemView.findViewById(R.id.explore_io_clickable_item);
+        }
     }
 }

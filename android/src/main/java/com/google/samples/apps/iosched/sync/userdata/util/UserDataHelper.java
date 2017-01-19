@@ -21,7 +21,6 @@ import android.net.Uri;
 
 import com.google.common.base.Charsets;
 import com.google.gson.Gson;
-import com.google.gson.annotations.SerializedName;
 import com.google.samples.apps.iosched.provider.ScheduleContract;
 import com.google.samples.apps.iosched.sync.userdata.UserAction;
 
@@ -29,21 +28,9 @@ import java.util.*;
 
 /**
  * Helper class to handle the format of the User Data that is stored into AppData.
+ * TODO: Refactor. Class mixes util methods, Pojos and business logic. See b/27809362.
  */
 public class UserDataHelper {
-
-    /** JSON Attribute name of the starred sessions values. */
-    static final String JSON_ATTRIBUTE_STARRED_SESSIONS = "starred_sessions";
-
-    /** JSON Attribute name of the GCM Key value. */
-    static final String JSON_ATTRIBUTE_GCM_KEY = "gcm_key";
-
-    /** JSON Attribute name of the feedback submitted for sessions values. */
-    static final String JSON_ATTRIBUTE_FEEDBACK_SUBMITTED_SESSIONS = "feedback_submitted_sessions";
-
-    /** JSON Attribute name of the viewed videos values. */
-    static final String JSON_ATTRIBUTE_VIEWED_VIDEOS = "viewed_videos";
-
     /**
      * Returns a JSON string representation of the given UserData object.
      */
@@ -60,6 +47,7 @@ public class UserDataHelper {
 
     /**
      * Deserializes the UserData given as a JSON string into a {@link UserData} object.
+     * TODO: put this in UserData.
      */
     static public UserData fromString(String str) {
         if (str == null || str.isEmpty()) {
@@ -76,10 +64,12 @@ public class UserDataHelper {
         if (actions != null) {
             for (UserAction action : actions) {
                 if (action.type == UserAction.TYPE.ADD_STAR) {
-                    if(userData.getStarredSessionIds() == null) {
-                        userData.setStarredSessionIds(new HashSet<String>());
+                    if(userData.getStarredSessions() == null) {
+                        // TODO: Make this part of setter. Create lazily.
+                        userData.setStarredSessions(new HashMap<String, UserData.StarredSession>());
                     }
-                    userData.getStarredSessionIds().add(action.sessionId);
+                    userData.getStarredSessions().put(action.sessionId,
+                            new UserData.StarredSession(true, action.timestamp));
                 } else if (action.type == UserAction.TYPE.VIEW_VIDEO) {
                     if(userData.getViewedVideoIds() == null) {
                         userData.setViewedVideoIds(new HashSet<String>());
@@ -90,6 +80,9 @@ public class UserDataHelper {
                         userData.setFeedbackSubmittedSessionIds(new HashSet<String>());
                     }
                     userData.getFeedbackSubmittedSessionIds().add(action.sessionId);
+                } else if (action.type == UserAction.TYPE.REMOVE_STAR) {
+                    userData.getStarredSessions().put(action.sessionId,
+                            new UserData.StarredSession(false, action.timestamp));
                 }
             }
         }
@@ -120,14 +113,42 @@ public class UserDataHelper {
     }
 
     /**
+     * Reads the data from columns of the content's {@code queryUri} and returns it as a Map.
+     */
+    static private Map<String, UserData.StarredSession> getColumnContentAsMap(Context context,
+            Uri queryUri,
+            String sessionIdColumn, String inScheduleColumn, String timestampColumn) {
+        Cursor cursor = context.getContentResolver().query(queryUri,
+                new String[]{sessionIdColumn, inScheduleColumn, timestampColumn}, null, null, null);
+        Map<String, UserData.StarredSession> sessionValues = new HashMap<>();
+        try {
+            if (cursor != null && cursor.moveToFirst()) {
+                do {
+                    sessionValues.put(cursor.getString(cursor.getColumnIndex(sessionIdColumn)),
+                            new UserData.StarredSession(true,
+                                    cursor.getLong(cursor.getColumnIndex(timestampColumn))));
+                } while (cursor.moveToNext());
+            }
+
+        } finally {
+            if (cursor != null) {
+                cursor.close();
+            }
+        }
+        return sessionValues;
+    }
+
+    /**
      * Returns the User Data that's on the device's local DB.
      */
     static public UserData getLocalUserData(Context context) {
         UserData userData = new UserData();
 
-        // Get Starred Sessions.
-        userData.setStarredSessionIds(getColumnContentAsArray(context,
-                ScheduleContract.MySchedule.CONTENT_URI, ScheduleContract.MySchedule.SESSION_ID));
+        userData.setStarredSessions(getColumnContentAsMap(context,
+                ScheduleContract.MySchedule.CONTENT_URI,
+                ScheduleContract.MySchedule.SESSION_ID,
+                ScheduleContract.MySchedule.MY_SCHEDULE_IN_SCHEDULE,
+                ScheduleContract.MySchedule.MY_SCHEDULE_TIMESTAMP));
 
         // Get Viewed Videos.
         userData.setViewedVideoIds(getColumnContentAsArray(context,
@@ -146,6 +167,7 @@ public class UserDataHelper {
      * Writes the given user data into the device's local DB.
      */
     static public void setLocalUserData(Context context, UserData userData, String accountName) {
+        // TODO: throw if null. Callers should ensure the data is not null. See b/27809502.
         if (userData == null) {
             return;
         }
@@ -156,12 +178,14 @@ public class UserDataHelper {
                 new String[]{accountName});
 
         // Now add the ones in sessionIds.
-        ArrayList<UserAction> actions = new ArrayList<UserAction>();
-        if (userData.getStarredSessionIds() != null) {
-            for (String sessionId : userData.getStarredSessionIds()) {
+        ArrayList<UserAction> actions = new ArrayList<>();
+        if (userData.getStarredSessions() != null) {
+            for (Map.Entry<String, UserData.StarredSession> entry : userData.getStarredSessions().entrySet()) {
                 UserAction action = new UserAction();
-                action.type = UserAction.TYPE.ADD_STAR;
-                action.sessionId = sessionId;
+                action.type = entry.getValue().isInSchedule() ? UserAction.TYPE.ADD_STAR:
+                        UserAction.TYPE.REMOVE_STAR;
+                action.sessionId = entry.getKey();
+                action.timestamp = entry.getValue().getTimestamp();
                 actions.add(action);
             }
         }
@@ -197,55 +221,5 @@ public class UserDataHelper {
         }
 
         UserActionHelper.updateContentProvider(context, actions, accountName);
-    }
-
-    /**
-     * Represents all User specific data that can be synchronized on Google Drive App Data.
-     */
-    public static class UserData {
-
-        @SerializedName(JSON_ATTRIBUTE_STARRED_SESSIONS)
-        private Set<String> starredSessionIds = new HashSet<String>();
-
-        @SerializedName(JSON_ATTRIBUTE_FEEDBACK_SUBMITTED_SESSIONS)
-        private Set<String> feedbackSubmittedSessionIds = new HashSet<String>();
-
-        @SerializedName(JSON_ATTRIBUTE_VIEWED_VIDEOS)
-        private Set<String> viewedVideoIds = new HashSet<String>();
-
-        @SerializedName(JSON_ATTRIBUTE_GCM_KEY)
-        private String gcmKey;
-
-        public Set<String> getStarredSessionIds() {
-            return starredSessionIds;
-        }
-
-        public void setStarredSessionIds(Set<String> starredSessionIds) {
-            this.starredSessionIds = starredSessionIds;
-        }
-
-        public Set<String> getFeedbackSubmittedSessionIds() {
-            return feedbackSubmittedSessionIds;
-        }
-
-        public void setFeedbackSubmittedSessionIds(Set<String> feedbackSubmittedSessionIds) {
-            this.feedbackSubmittedSessionIds = feedbackSubmittedSessionIds;
-        }
-
-        public Set<String> getViewedVideoIds() {
-            return viewedVideoIds;
-        }
-
-        public void setViewedVideoIds(Set<String> viewedVideoIds) {
-            this.viewedVideoIds = viewedVideoIds;
-        }
-
-        public String getGcmKey() {
-            return gcmKey;
-        }
-
-        public void setGcmKey(String gcmKey) {
-            this.gcmKey = gcmKey;
-        }
     }
 }

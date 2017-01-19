@@ -1,0 +1,25 @@
+<component name="CopyrightManager">
+  <settings default="Google, Inc Apache2.0">
+    <LanguageOptions name="Groovy">
+      <option name="fileTypeOverride" value="3" />
+    </LanguageOptions>
+    <LanguageOptions name="HTML">
+      <option name="fileTypeOverride" value="3" />
+      <option name="prefixLines" value="false" />
+    </LanguageOptions>
+    <LanguageOptions name="JAVA">
+      <option name="fileTypeOverride" value="3" />
+    </LanguageOptions>
+    <LanguageOptions name="Properties">
+      <option name="fileTypeOverride" value="3" />
+    </LanguageOptions>
+    <LanguageOptions name="SPI">
+      <option name="fileTypeOverride" value="3" />
+    </LanguageOptions>
+    <LanguageOptions name="XML">
+      <option name="fileTypeOverride" value="3" />
+      <option name="fileLocation" value="2" />
+      <option name="prefixLines" value="false" />
+    </LanguageOptions>
+  </settings>
+</component>

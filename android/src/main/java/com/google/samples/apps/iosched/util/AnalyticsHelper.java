@@ -27,7 +27,6 @@ import com.google.samples.apps.iosched.settings.SettingsUtils;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
-import android.util.Log;
 
 import static com.google.samples.apps.iosched.util.LogUtils.LOGD;
 
@@ -205,7 +204,7 @@ public class AnalyticsHelper {
                         // ANALYTICS EVENT:  Updated "Show Local Times" setting.
                         // Contains: The checkbox state of this setting.
                         sendEvent(category, getAction(prefs, key), label);
-                    } else if (key.equals(SettingsUtils.PREF_ATTENDEE_AT_VENUE)) {
+                    } else if (key.equals(BuildConfig.PREF_ATTENDEE_AT_VENUE)) {
                         // Toggle the "Attending in person" custom dimension so we can track
                         // how venue attendee behavior contrasts with remote attendee behavior.
                         boolean attending = prefs.getBoolean(key, true);
@@ -217,7 +216,7 @@ public class AnalyticsHelper {
                         sendEventWithCustomDimension(category, getAction(prefs, key), label,
                                 SLOT_ATTENDING_DIMENSION,
                                 attendeeType);
-                    } else if (key.equals(ConfMessageCardUtils.PREF_CONF_MESSAGE_CARDS_ENABLED)) {
+                    } else if (key.equals(BuildConfig.PREF_CONF_MESSAGES_ENABLED)) {
                         String label = "Conference Notification Cards";
                         // ANALYTICS EVENT:  Updated "Conference Notification Cards" setting.
                         // Contains: The checkbox state of this setting.
@@ -227,12 +226,12 @@ public class AnalyticsHelper {
                         // ANALYTICS EVENT:  Updated "Sync with Google Calendar" setting.
                         // Contains: The checkbox state of this setting.
                         sendEvent(category, getAction(prefs, key), label);
-                    } else if (key.equals(SettingsUtils.PREF_SHOW_SESSION_REMINDERS)) {
+                    } else if (key.equals(BuildConfig.PREF_SESSION_REMINDERS_ENABLED)) {
                         String label = "Session Reminders";
                         // ANALYTICS EVENT:  Updated "Session Reminders" setting.
                         // Contains: The checkbox state of this setting.
                         sendEvent(category, getAction(prefs, key), label);
-                    } else if (key.equals(SettingsUtils.PREF_SHOW_SESSION_FEEDBACK_REMINDERS)) {
+                    } else if (key.equals(BuildConfig.PREF_SESSION_FEEDBACK_REMINDERS_ENABLED)) {
                         String label = "Feedback Reminders";
                         // ANALYTICS EVENT:  Updated "Feedback Reminders" setting.
                         // Contains: The checkbox state of this setting.

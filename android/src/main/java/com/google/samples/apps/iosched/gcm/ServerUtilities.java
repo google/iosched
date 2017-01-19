@@ -40,6 +40,7 @@ import static com.google.samples.apps.iosched.util.LogUtils.LOGD;
 import static com.google.samples.apps.iosched.util.LogUtils.LOGE;
 import static com.google.samples.apps.iosched.util.LogUtils.LOGI;
 import static com.google.samples.apps.iosched.util.LogUtils.LOGV;
+import static com.google.samples.apps.iosched.util.LogUtils.LOGW;
 import static com.google.samples.apps.iosched.util.LogUtils.makeLogTag;
 
 /**
@@ -50,7 +51,7 @@ public final class ServerUtilities {
 
     private static final String PREFERENCES = "com.google.samples.apps.iosched.gcm";
     private static final String PROPERTY_REGISTERED_TS = "registered_ts";
-    private static final String PROPERTY_REG_ID = "reg_id";
+    private static final String PROPERTY_REG_ID = "gcm_id";
     private static final String PROPERTY_GCM_KEY = "gcm_key";
     private static final int MAX_ATTEMPTS = 5;
     private static final int BACKOFF_MILLI_SECONDS = 2000;
@@ -75,22 +76,22 @@ public final class ServerUtilities {
      * Register this account/device pair within the server.
      *
      * @param context Current context
-     * @param gcmId   The GCM registration ID for this device
+     * @param regId   The GCM registration ID for this device
      * @param gcmKey  The GCM key with which to register.
      * @return whether the registration succeeded or not.
      */
-    public static boolean register(final Context context, final String gcmId, final String gcmKey) {
+    public static boolean register(final Context context, final String regId, final String gcmKey) {
         if (!checkGcmEnabled()) {
             return false;
         }
 
-        LOGI(TAG, "registering device (gcm_id = " + gcmId + ")");
+        LOGD(TAG, "registering device (reg_id = " + regId + ")");
         String serverUrl = BuildConfig.GCM_SERVER_URL + "/register";
         LOGI(TAG, "registering on GCM with GCM key: " + AccountUtils.sanitizeGcmKey(gcmKey));
 
         Map<String, String> params = new HashMap<String, String>();
-        params.put("gcm_id", gcmId);
-        params.put("gcm_key", gcmKey);
+        params.put(PROPERTY_REG_ID, regId);
+        params.put(PROPERTY_GCM_KEY, gcmKey);
         long backoff = BACKOFF_MILLI_SECONDS + sRandom.nextInt(1000);
         // Once GCM returns a registration id, we need to register it in the
         // demo server. As the server might be down, we will retry it a couple
@@ -99,7 +100,7 @@ public final class ServerUtilities {
             LOGV(TAG, "Attempt #" + i + " to register");
             try {
                 post(serverUrl, params, BuildConfig.GCM_API_KEY);
-                setRegisteredOnServer(context, true, gcmId, gcmKey);
+                setRegisteredOnServer(context, true, regId, gcmKey);
                 return true;
             } catch (IOException e) {
                 // Here we are simplifying and retrying on any error; in a real
@@ -128,31 +129,28 @@ public final class ServerUtilities {
     /**
      * Unregister this account/device pair within the server.
      *
-     * @param context Current context
-     * @param gcmId   The GCM registration ID for this device
+     * @param regId  The InstanceID token for this application instance.
+     * @param gcmKey The user identifier used to pair a user with an InstanceID token.
      */
-    static void unregister(final Context context, final String gcmId) {
+    static void unregister(final String regId, final String gcmKey) {
         if (!checkGcmEnabled()) {
             return;
         }
 
-        LOGI(TAG, "unregistering device (gcmId = " + gcmId + ")");
+        LOGI(TAG, "unregistering device (regId = " + regId + ")");
         String serverUrl = BuildConfig.GCM_SERVER_URL + "/unregister";
         Map<String, String> params = new HashMap<String, String>();
-        params.put("gcm_id", gcmId);
+        params.put(PROPERTY_GCM_KEY, gcmKey);
+        params.put(PROPERTY_REG_ID, regId);
         try {
             post(serverUrl, params, BuildConfig.GCM_API_KEY);
-            setRegisteredOnServer(context, false, gcmId, null);
         } catch (IOException e) {
             // At this point the device is unregistered from GCM, but still
-            // registered in the server.
+            // registered on the server.
             // We could try to unregister again, but it is not necessary:
             // if the server tries to send a message to the device, it will get
             // a "NotRegistered" error message and should unregister the device.
             LOGD(TAG, "Unable to unregister from application server", e);
-        } finally {
-            // Regardless of server success, clear local settings_prefs
-            setRegisteredOnServer(context, false, null, null);
         }
     }
 
@@ -169,7 +167,8 @@ public final class ServerUtilities {
         LOGI(TAG, "Notifying GCM that user data changed");
         String serverUrl = BuildConfig.GCM_SERVER_URL + "/send/self/sync_user";
         try {
-            String gcmKey = AccountUtils.getGcmKey(context, AccountUtils.getActiveAccountName(context));
+            String gcmKey =
+                    AccountUtils.getGcmKey(context, AccountUtils.getActiveAccountName(context));
             if (gcmKey != null) {
                 post(serverUrl, new HashMap<String, String>(), gcmKey);
             }
@@ -183,9 +182,12 @@ public final class ServerUtilities {
      *
      * @param context Current context
      * @param flag    True if registration was successful, false otherwise
-     * @param gcmId    True if registration was successful, false otherwise
+     * @param regId   InstanceID token generated to represent the current instance of the
+     *                Application.
+     * @param gcmKey  User identifier paired with regId on server
      */
-    private static void setRegisteredOnServer(Context context, boolean flag, String gcmId, String gcmKey) {
+    protected static void setRegisteredOnServer(Context context, boolean flag, String regId,
+            String gcmKey) {
         final SharedPreferences prefs = context.getSharedPreferences(
                 PREFERENCES, Context.MODE_PRIVATE);
         LOGD(TAG, "Setting registered on server status as: " + flag + ", gcmKey="
@@ -194,7 +196,7 @@ public final class ServerUtilities {
         if (flag) {
             editor.putLong(PROPERTY_REGISTERED_TS, new Date().getTime());
             editor.putString(PROPERTY_GCM_KEY, gcmKey == null ? "" : gcmKey);
-            editor.putString(PROPERTY_REG_ID, gcmId);
+            editor.putString(PROPERTY_REG_ID, regId);
         } else {
             editor.remove(PROPERTY_REG_ID);
         }
@@ -237,21 +239,10 @@ public final class ServerUtilities {
         }
     }
 
-    public static String getGcmId(Context context) {
-        final SharedPreferences prefs = context.getSharedPreferences(PREFERENCES, Context.MODE_PRIVATE);
+    public static String getGcmRegId(Context context) {
+        final SharedPreferences prefs =
+                context.getSharedPreferences(PREFERENCES, Context.MODE_PRIVATE);
         return prefs.getString(PROPERTY_REG_ID, null);
-    }
-
-    /**
-     *  Unregister the current GCM ID when we sign-out
-     *
-     * @param context Current context
-     */
-    public static void onSignOut(Context context) {
-        String gcmId = getGcmId(context);
-        if (gcmId != null) {
-            unregister(context, gcmId);
-        }
     }
 
     /**
@@ -276,13 +267,14 @@ public final class ServerUtilities {
         while (iterator.hasNext()) {
             Entry<String, String> param = iterator.next();
             bodyBuilder.append(param.getKey()).append('=')
-                    .append(param.getValue());
+                       .append(param.getValue());
             if (iterator.hasNext()) {
                 bodyBuilder.append('&');
             }
         }
         String body = bodyBuilder.toString();
-        LOGV(TAG, "Posting '" + body + "' to " + url);
+        LOGW(TAG, "Posting to " + url);
+        LOGV(TAG, "Posting '" + body + "'");
         HttpURLConnection conn = null;
         try {
             conn = (HttpURLConnection) url.openConnection();

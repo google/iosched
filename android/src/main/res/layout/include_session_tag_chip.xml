@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
 <!--
   Copyright 2014 Google Inc. All rights reserved.
 
@@ -14,14 +15,17 @@
   limitations under the License.
   -->
 
-<TextView xmlns:android="http://schemas.android.com/apk/res/android"
-    android:background="@drawable/session_tag_chip"
-    android:paddingLeft="8dp"
-    android:paddingRight="8dp"
-    android:drawablePadding="4dp"
-    android:gravity="center"
-    android:textColor="@color/session_detail_tag_text_color"
-    android:textSize="@dimen/text_size_medium"
+<TextView
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_marginRight="2dp" />
+    android:layout_marginEnd="@dimen/spacing_micro"
+    android:layout_marginRight="@dimen/spacing_micro"
+    android:background="@drawable/session_tag_chip"
+    android:drawablePadding="@dimen/spacing_micro"
+    android:gravity="center"
+    android:paddingLeft="@dimen/spacing_normal"
+    android:paddingRight="@dimen/spacing_normal"
+    android:textColor="@color/session_detail_tag_text"
+    android:minWidth="@dimen/a11y_min_touch_target_dimen"
+    style="@style/Body2Text" />

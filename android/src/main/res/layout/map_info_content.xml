@@ -63,12 +63,10 @@
         tools:visibility="visible"
         style="@style/Body1Text" />
 
-    <ListView
+    <android.support.v7.widget.RecyclerView
         android:id="@+id/map_info_list"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:divider="@color/divider"
-        android:dividerHeight="@dimen/divider_height"
         tools:listitem="@layout/map_item_session" />
 
 </LinearLayout>

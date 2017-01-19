@@ -60,8 +60,7 @@ public class CloudFileManager {
   private final GcsFilename stagingManifestFile;
 
   public CloudFileManager() {
-    AppIdentityService appIdentityService = AppIdentityServiceFactory.getAppIdentityService();
-    defaultBucket = appIdentityService.getDefaultGcsBucketName();
+    defaultBucket = Config.CLOUD_STORAGE_BUCKET;
     productionManifestFile = new GcsFilename(defaultBucket, Config.MANIFEST_NAME);
     stagingManifestFile = new GcsFilename(defaultBucket, Config.MANIFEST_NAME_STAGING);
   }

@@ -23,5 +23,16 @@
     <item name="tag_person_id" type="id"/>
     <item name="tag_person_name" type="id"/>
     <item name="tag_person_note" type="id"/>
+    <item name="tag_session_id" type="id"/>
+
+    <array name="myschedule_listview_ids">
+        <item>@id/myschedule_listview_preconferenceday</item>
+        <item>@id/myschedule_listview_day1</item>
+        <item>@id/myschedule_listview_day2</item>
+    </array>
+
+    <item name="myschedule_listview_preconferenceday" type="id"/>
+    <item name="myschedule_listview_day1" type="id"/>
+    <item name="myschedule_listview_day2" type="id"/>
 
 </resources>
