@@ -16,12 +16,12 @@
 
 package com.google.samples.apps.iosched.session;
 
-import android.app.LoaderManager;
 import android.content.Context;
-import android.content.CursorLoader;
 import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.net.Uri;
+import android.support.v4.app.LoaderManager;
+import android.support.v4.content.CursorLoader;
 import android.test.suitebuilder.annotation.SmallTest;
 
 import com.google.samples.apps.iosched.BuildConfig;

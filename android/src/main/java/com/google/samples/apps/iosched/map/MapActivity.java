@@ -17,13 +17,12 @@
 package com.google.samples.apps.iosched.map;
 
 import android.Manifest;
-import android.app.FragmentManager;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
+import android.support.v4.app.FragmentManager;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
@@ -81,7 +80,7 @@ public class MapActivity extends BaseActivity
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        FragmentManager fm = getFragmentManager();
+        FragmentManager fm = getSupportFragmentManager();
         mMapFragment = (MapFragment) fm.findFragmentByTag("map");
 
         mDetachedMode = getIntent().getBooleanExtra(EXTRA_DETACHED_MODE, false);
@@ -136,14 +135,14 @@ public class MapActivity extends BaseActivity
                         .getExtras().getString(EXTRA_ROOM) : null;
                 mMapFragment = MapFragment.newInstance(highlightRoomId);
             }
-            getFragmentManager().beginTransaction()
+            getSupportFragmentManager().beginTransaction()
                                 .add(R.id.fragment_container_map, mMapFragment, "map")
                                 .commit();
         }
 
         if (mInfoFragment == null) {
             mInfoFragment = MapInfoFragment.newInstace(this);
-            getFragmentManager().beginTransaction()
+            getSupportFragmentManager().beginTransaction()
                                 .add(R.id.fragment_container_map_info, mInfoFragment, "mapsheet")
                                 .commit();
         }

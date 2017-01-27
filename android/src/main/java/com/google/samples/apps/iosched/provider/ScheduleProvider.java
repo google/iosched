@@ -16,6 +16,23 @@
 
 package com.google.samples.apps.iosched.provider;
 
+import android.app.SearchManager;
+import android.content.ContentProvider;
+import android.content.ContentProviderOperation;
+import android.content.ContentProviderResult;
+import android.content.ContentValues;
+import android.content.Context;
+import android.content.OperationApplicationException;
+import android.database.Cursor;
+import android.database.MatrixCursor;
+import android.database.sqlite.SQLiteConstraintException;
+import android.database.sqlite.SQLiteDatabase;
+import android.net.Uri;
+import android.os.ParcelFileDescriptor;
+import android.provider.BaseColumns;
+import android.text.TextUtils;
+import android.util.Log;
+
 import com.google.samples.apps.iosched.Config;
 import com.google.samples.apps.iosched.appwidget.ScheduleWidgetProvider;
 import com.google.samples.apps.iosched.provider.ScheduleContract.Announcements;
@@ -44,23 +61,6 @@ import com.google.samples.apps.iosched.settings.SettingsUtils;
 import com.google.samples.apps.iosched.util.AccountUtils;
 import com.google.samples.apps.iosched.util.SelectionBuilder;
 
-import android.app.SearchManager;
-import android.content.ContentProvider;
-import android.content.ContentProviderOperation;
-import android.content.ContentProviderResult;
-import android.content.ContentValues;
-import android.content.Context;
-import android.content.OperationApplicationException;
-import android.database.Cursor;
-import android.database.MatrixCursor;
-import android.database.sqlite.SQLiteConstraintException;
-import android.database.sqlite.SQLiteDatabase;
-import android.net.Uri;
-import android.os.ParcelFileDescriptor;
-import android.provider.BaseColumns;
-import android.text.TextUtils;
-import android.util.Log;
-
 import java.io.FileDescriptor;
 import java.io.FileNotFoundException;
 import java.io.PrintWriter;
@@ -71,13 +71,12 @@ import java.util.List;
 import static com.google.samples.apps.iosched.util.LogUtils.LOGD;
 import static com.google.samples.apps.iosched.util.LogUtils.LOGE;
 import static com.google.samples.apps.iosched.util.LogUtils.LOGV;
-import static com.google.samples.apps.iosched.util.LogUtils.LOGW;
 import static com.google.samples.apps.iosched.util.LogUtils.makeLogTag;
 
 /**
  * {@link android.content.ContentProvider} that stores {@link ScheduleContract} data. Data is
  * usually inserted by {@link com.google.samples.apps.iosched.sync.SyncHelper}, and queried using
- * {@link android.app.LoaderManager} pattern.
+ * {@link android.support.v4.app.LoaderManager} pattern.
  */
 public class ScheduleProvider extends ContentProvider {
 

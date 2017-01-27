@@ -17,7 +17,6 @@
 package com.google.samples.apps.iosched.explore;
 
 import android.app.Activity;
-import android.app.Fragment;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -28,6 +27,7 @@ import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.ActivityOptionsCompat;
+import android.support.v4.app.Fragment;
 import android.support.v4.util.Pair;
 import android.support.v4.util.SparseArrayCompat;
 import android.support.v4.view.ViewCompat;
@@ -57,6 +57,7 @@ import com.google.samples.apps.iosched.provider.ScheduleContract;
 import com.google.samples.apps.iosched.session.SessionDetailActivity;
 import com.google.samples.apps.iosched.settings.ConfMessageCardUtils;
 import com.google.samples.apps.iosched.settings.SettingsUtils;
+import com.google.samples.apps.iosched.ui.BaseActivity;
 import com.google.samples.apps.iosched.ui.widget.DrawShadowFrameLayout;
 import com.google.samples.apps.iosched.ui.widget.recyclerview.ItemMarginDecoration;
 import com.google.samples.apps.iosched.ui.widget.recyclerview.UpdatableAdapter;
@@ -70,7 +71,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static android.content.SharedPreferences.OnSharedPreferenceChangeListener;
-import static com.google.samples.apps.iosched.settings.ConfMessageCardUtils.ConferencePrefChangeListener;
+import static com.google.samples.apps.iosched.settings.ConfMessageCardUtils
+        .ConferencePrefChangeListener;
 
 /**
  * Display the Explore I/O cards. There are three styles of cards, which are referred to as Groups
@@ -148,8 +150,15 @@ public class ExploreIOFragment extends Fragment
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        mImageLoader = new ImageLoader(getActivity(), R.drawable.io_logo);
-        initPresenter();
+        // This is gross, but there seems to be a bug in FragmentManager in 25.1.0 in that an
+        // fragment which is finish()-ed in its onCreate() continues to go through the whole
+        // fragment lifecycle even though the Activity is destroyed. Glide throws an exception
+        // when it is given a destroyed Activity.
+        // TODO Investigate whether this is needed in 25.1.1 or newer
+        if (!((BaseActivity) getActivity()).isDestroyed()) {
+            mImageLoader = new ImageLoader(getActivity(), R.drawable.io_logo);
+            initPresenter();
+        }
     }
 
     @Override

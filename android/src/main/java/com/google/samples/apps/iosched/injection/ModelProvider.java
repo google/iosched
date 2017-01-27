@@ -1,9 +1,9 @@
 package com.google.samples.apps.iosched.injection;
 
 import android.app.Activity;
-import android.app.LoaderManager;
 import android.content.Context;
 import android.net.Uri;
+import android.support.v4.app.LoaderManager;
 
 import com.google.samples.apps.iosched.archframework.Model;
 import com.google.samples.apps.iosched.explore.ExploreIOModel;

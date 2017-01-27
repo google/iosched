@@ -17,9 +17,9 @@
 package com.google.samples.apps.iosched.model;
 
 import android.content.Context;
-import android.content.CursorLoader;
 import android.database.Cursor;
 import android.provider.BaseColumns;
+import android.support.v4.content.CursorLoader;
 import android.text.TextUtils;
 
 import com.google.samples.apps.iosched.Config;

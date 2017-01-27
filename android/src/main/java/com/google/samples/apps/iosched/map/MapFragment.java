@@ -17,15 +17,14 @@
 package com.google.samples.apps.iosched.map;
 
 import android.app.Activity;
-import android.app.LoaderManager;
-import android.app.LoaderManager.LoaderCallbacks;
-import android.content.Loader;
 import android.database.ContentObserver;
-import android.database.Cursor;
 import android.graphics.Rect;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.v4.app.LoaderManager;
+import android.support.v4.app.LoaderManager.LoaderCallbacks;
+import android.support.v4.content.Loader;
 import android.util.SparseArray;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -65,7 +64,7 @@ import static com.google.samples.apps.iosched.util.LogUtils.makeLogTag;
 /**
  * Shows a map of the conference venue.
  */
-public class MapFragment extends com.google.android.gms.maps.MapFragment implements
+public class MapFragment extends com.google.android.gms.maps.SupportMapFragment implements
         GoogleMap.OnMarkerClickListener, GoogleMap.OnMapClickListener, OnMapReadyCallback,
         GoogleMap.OnCameraChangeListener {
 
@@ -707,7 +706,7 @@ public class MapFragment extends com.google.android.gms.maps.MapFragment impleme
             addVenueMarker();
 
             // Reload data from loaders. Initialise the loaders first if they are not active yet.
-            LoaderManager lm = getActivity().getLoaderManager();
+            LoaderManager lm = getLoaderManager();
             lm.initLoader(TOKEN_LOADER_MARKERS, null, mMarkerLoader).forceLoad();
             lm.initLoader(TOKEN_LOADER_TILES, null, mTileLoader).forceLoad();
         }

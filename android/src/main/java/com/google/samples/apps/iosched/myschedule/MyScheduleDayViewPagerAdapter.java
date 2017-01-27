@@ -16,10 +16,10 @@
 
 package com.google.samples.apps.iosched.myschedule;
 
-import android.app.FragmentManager;
 import android.content.Context;
 import android.os.Bundle;
-import android.support.v13.app.FragmentPagerAdapter;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentPagerAdapter;
 
 import com.google.samples.apps.iosched.Config;
 import com.google.samples.apps.iosched.util.TimeUtils;

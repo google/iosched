@@ -14,14 +14,14 @@
 
 package com.google.samples.apps.iosched.map;
 
-import com.google.samples.apps.iosched.R;
-import com.google.samples.apps.iosched.service.LocalRefreshingBootstrapService;
-
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.TextView;
+
+import com.google.samples.apps.iosched.R;
+import com.google.samples.apps.iosched.service.LocalRefreshingBootstrapService;
 
 import static com.google.samples.apps.iosched.util.LogUtils.LOGW;
 import static com.google.samples.apps.iosched.util.LogUtils.makeLogTag;
@@ -53,7 +53,7 @@ public class MapEditorActivity extends AppCompatActivity implements EditorMapFra
         // Add the map.
         if (mMapFragment == null) {
             mMapFragment = EditorMapFragment.newInstance();
-            getFragmentManager().beginTransaction()
+            getSupportFragmentManager().beginTransaction()
                     .add(R.id.fragment_container_map_editor, mMapFragment, "map")
                     .commit();
         }

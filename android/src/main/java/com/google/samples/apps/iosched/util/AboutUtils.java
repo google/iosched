@@ -16,15 +16,15 @@
 
 package com.google.samples.apps.iosched.util;
 
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
-import android.app.DialogFragment;
-import android.app.Fragment;
-import android.app.FragmentManager;
-import android.app.FragmentTransaction;
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.support.v4.app.DialogFragment;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.text.Html;
 import android.text.method.LinkMovementMethod;
 import android.webkit.WebView;
@@ -37,8 +37,8 @@ import com.google.samples.apps.iosched.R;
  */
 public class AboutUtils {
 
-    public static void showOpenSourceLicenses(Activity activity) {
-        FragmentManager fm = activity.getFragmentManager();
+    public static void showOpenSourceLicenses(FragmentActivity activity) {
+        FragmentManager fm = activity.getSupportFragmentManager();
         FragmentTransaction ft = fm.beginTransaction();
         Fragment prev = fm.findFragmentByTag("dialog_licenses");
         if (prev != null) {
@@ -73,8 +73,8 @@ public class AboutUtils {
         }
     }
 
-    public static void showEula(Activity activity) {
-        FragmentManager fm = activity.getFragmentManager();
+    public static void showEula(FragmentActivity activity) {
+        FragmentManager fm = activity.getSupportFragmentManager();
         FragmentTransaction ft = fm.beginTransaction();
         Fragment prev = fm.findFragmentByTag("dialog_eula");
         if (prev != null) {

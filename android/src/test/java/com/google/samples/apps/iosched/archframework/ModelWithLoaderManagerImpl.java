@@ -14,11 +14,11 @@
 
 package com.google.samples.apps.iosched.archframework;
 
-import android.app.LoaderManager;
-import android.content.Loader;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.app.LoaderManager;
+import android.support.v4.content.Loader;
 
 /**
  * A stub implementation of abstract class {@link ModelWithLoaderManager}, used for testing concrete

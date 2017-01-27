@@ -14,12 +14,12 @@
 
 package com.google.samples.apps.iosched.archframework;
 
-import android.app.LoaderManager;
-import android.content.Loader;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v4.app.LoaderManager;
+import android.support.v4.content.Loader;
 
 import com.google.common.annotations.VisibleForTesting;
 import com.google.samples.apps.iosched.session.SessionDetailModel;
@@ -88,7 +88,7 @@ public abstract class ModelWithLoaderManager<Q extends QueryEnum, UA extends Use
     /**
      * Map of user actions that have launched queries, using their id as key. This is used in
      * conjunction with {@link #mDataUpdateCallbacks}, so once the {@link
-     * android.app.LoaderManager.LoaderCallbacks#onLoadFinished(Loader, Object)} has fired, the
+     * android.support.v4.app.LoaderManager.LoaderCallbacks#onLoadFinished(Loader, Object)} has fired, the
      * {@link UserActionCallback} that launched that query can be fired.
      * <p/>
      * This is @VisibleForTesting because for integration testing, a fake model is used to allow

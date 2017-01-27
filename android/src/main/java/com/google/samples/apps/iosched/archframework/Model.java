@@ -31,7 +31,7 @@ import android.support.annotation.Nullable;
  * least once when created, to load the initial data into the Model. This interface doesn't define
  * how the Model gets its data, but an implementation class {@link ModelWithLoaderManager} is
  * provided, obtaining the data from the {@link com.google.samples.apps.iosched.provider
- * .ScheduleProvider} by creating a {@link android.content.CursorLoader} and then parsing the
+ * .ScheduleProvider} by creating a {@link android.support.v4.content.CursorLoader} and then parsing the
  * received {@link android.database.Cursor}. Not all features use this way of loading the data, but
  * a lot of them do.
  * <p/>

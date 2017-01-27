@@ -16,11 +16,10 @@
 package com.google.samples.apps.iosched.welcome;
 
 import android.app.AlertDialog;
-import android.app.Fragment;
-import android.app.FragmentTransaction;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.graphics.drawable.AnimatedVectorDrawableCompat;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.view.ViewGroup;
@@ -63,8 +62,8 @@ public class WelcomeActivity extends AppCompatActivity
             finish();
         } else {
             // Wire up the fragment.
-            FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
-            fragmentTransaction.add(R.id.welcome_content, (Fragment) mContentFragment);
+            FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
+            fragmentTransaction.add(R.id.welcome_content, mContentFragment);
             fragmentTransaction.commit();
 
             final ImageView iv = (ImageView) findViewById(R.id.logo);

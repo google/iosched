@@ -24,6 +24,7 @@ import android.content.SyncStatusObserver;
 import android.content.pm.PackageManager;
 import android.content.res.Resources;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.provider.Settings;
@@ -103,6 +104,8 @@ public abstract class BaseActivity extends AppCompatActivity implements
 
     // handle to our sync observer (that notifies us about changes in our sync state)
     private Object mSyncObserverHandle;
+
+    private boolean mDestroyed;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -558,7 +561,16 @@ public abstract class BaseActivity extends AppCompatActivity implements
     }
 
     @Override
+    public boolean isDestroyed() {
+        if (Build.VERSION.SDK_INT == 16) {
+            return mDestroyed;
+        }
+        return super.isDestroyed();
+    }
+
+    @Override
     protected void onDestroy() {
+        mDestroyed = true;
         super.onDestroy();
 
         if (mMessagingRegistration != null) {

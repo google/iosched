@@ -18,18 +18,17 @@ package com.google.samples.apps.iosched.ui;
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
-import android.app.LoaderManager;
 import android.app.SearchManager;
-import android.content.CursorLoader;
 import android.content.Intent;
-import android.content.Loader;
 import android.database.Cursor;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.graphics.drawable.VectorDrawableCompat;
 import android.support.v4.app.ActivityCompat;
-import android.support.v4.content.ContextCompat;
+import android.support.v4.app.LoaderManager;
+import android.support.v4.content.CursorLoader;
+import android.support.v4.content.Loader;
 import android.support.v4.graphics.drawable.DrawableCompat;
 import android.support.v4.widget.SimpleCursorAdapter;
 import android.support.v7.widget.SearchView;
@@ -262,9 +261,9 @@ public class SearchActivity extends BaseActivity implements
         }
         args.putString(ARG_QUERY, query);
         if (TextUtils.equals(query, mQuery)) {
-            getLoaderManager().initLoader(SearchTopicsSessionsQuery.TOKEN, args, this);
+            getSupportLoaderManager().initLoader(SearchTopicsSessionsQuery.TOKEN, args, this);
         } else {
-            getLoaderManager().restartLoader(SearchTopicsSessionsQuery.TOKEN, args, this);
+            getSupportLoaderManager().restartLoader(SearchTopicsSessionsQuery.TOKEN, args, this);
         }
         mQuery = query;
     }

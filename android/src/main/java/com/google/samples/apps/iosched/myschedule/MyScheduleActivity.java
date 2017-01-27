@@ -291,7 +291,7 @@ public class MyScheduleActivity extends BaseActivity implements
                 ModelProvider.provideMyScheduleModel(new ScheduleHelper(this), this);
         if (mWideMode) {
             mPresenter = new PresenterImpl(model,
-                    (UpdatableView) getFragmentManager().findFragmentById(R.id.myScheduleWideFrag),
+                    (UpdatableView) getSupportFragmentManager().findFragmentById(R.id.myScheduleWideFrag),
                     MyScheduleModel.MyScheduleUserActionEnum.values(),
                     MyScheduleModel.MyScheduleQueryEnum.values());
             mPresenter.loadInitialQueries();
@@ -312,7 +312,7 @@ public class MyScheduleActivity extends BaseActivity implements
     private void detectNarrowOrWideMode() {
         // When changing orientation, if previously in wide mode, the system recreates the wide
         // fragment, so need to check also that view pager isn't visible
-        mWideMode = getFragmentManager().findFragmentById(R.id.myScheduleWideFrag) != null &&
+        mWideMode = getSupportFragmentManager().findFragmentById(R.id.myScheduleWideFrag) != null &&
                 findViewById(R.id.view_pager).getVisibility() == View.GONE;
     }
 
@@ -332,7 +332,7 @@ public class MyScheduleActivity extends BaseActivity implements
     private void setUpViewPagerForNarrowMode(String[] singleDayFragmentsTags,
             int currentSingleDayFragment) {
         mViewPager = (ViewPager) findViewById(R.id.view_pager);
-        mViewPagerAdapter = new MyScheduleDayViewPagerAdapter(this, getFragmentManager(),
+        mViewPagerAdapter = new MyScheduleDayViewPagerAdapter(this, getSupportFragmentManager(),
                 MyScheduleModel.showPreConferenceData(this));
         mViewPagerAdapter.setRetainedFragmentsTags(singleDayFragmentsTags);
         mViewPager.setAdapter(mViewPagerAdapter);

@@ -10,7 +10,7 @@ import static com.google.samples.apps.iosched.util.LogUtils.makeLogTag;
  * This implements the {@link Presenter} interface. This Presenter can interact with more than one
  * {@link UpdatableView}, based on the constructor used to create it. The most common use case for
  * have multiple {@link UpdatableView} controlled by the same presenter is an Activity with tabs,
- * where each view in the tab (typically a {@link android.app.Fragment}) is an {@link
+ * where each view in the tab (typically a {@link android.support.v4.app.Fragment}) is an {@link
  * UpdatableView}.
  * <p/>
  * It requests the model to load its initial data, it listens to events from the {@link
@@ -34,7 +34,7 @@ public class PresenterImpl implements Presenter, UpdatableView.UserActionListene
 
     /**
      * The queries to load when the {@link android.app.Activity} loading this {@link
-     * android.app.Fragment} is created.
+     * android.support.v4.app.Fragment} is created.
      */
     private QueryEnum[] mInitialQueriesToLoad;
 

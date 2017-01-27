@@ -16,11 +16,11 @@
 
 package com.google.samples.apps.iosched.ui;
 
-import com.google.samples.apps.iosched.R;
-
 import android.content.Intent;
 import android.os.Bundle;
-import android.app.Fragment;
+import android.support.v4.app.Fragment;
+
+import com.google.samples.apps.iosched.R;
 
 /**
  * A {@link BaseActivity} that simply contains a single fragment. The intent used to invoke this
@@ -45,11 +45,11 @@ public abstract class SimpleSinglePaneActivity extends BaseActivity {
         if (savedInstanceState == null) {
             mFragment = onCreatePane();
             mFragment.setArguments(intentToFragmentArguments(getIntent()));
-            getFragmentManager().beginTransaction()
+            getSupportFragmentManager().beginTransaction()
                     .add(R.id.root_container, mFragment, "single_pane")
                     .commit();
         } else {
-            mFragment = getFragmentManager().findFragmentByTag("single_pane");
+            mFragment = getSupportFragmentManager().findFragmentByTag("single_pane");
         }
     }
 

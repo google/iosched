@@ -16,16 +16,16 @@
 
 package com.google.samples.apps.iosched.explore;
 
-import android.app.LoaderManager;
 import android.content.Intent;
-import android.content.Loader;
 import android.database.Cursor;
-import android.graphics.Color;
 import android.graphics.Bitmap;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.ColorInt;
 import android.support.design.widget.CollapsingToolbarLayout;
+import android.support.v4.app.LoaderManager;
+import android.support.v4.content.Loader;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.widget.RecyclerView;
@@ -142,7 +142,7 @@ public class ExploreSessionsActivity extends BaseActivity
 
         mDrawerLayout.setDrawerShadow(R.drawable.drawer_shadow_flipped, GravityCompat.END);
 
-        mFragment = (ExploreSessionsFragment) getFragmentManager()
+        mFragment = (ExploreSessionsFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.explore_sessions_frag);
 
         if (savedInstanceState != null) {
@@ -195,7 +195,7 @@ public class ExploreSessionsActivity extends BaseActivity
 
         // Start loading the tag metadata. This will in turn call the fragment with the
         // correct arguments.
-        getLoaderManager().initLoader(TAG_METADATA_TOKEN, null, this);
+        getSupportLoaderManager().initLoader(TAG_METADATA_TOKEN, null, this);
 
         // ANALYTICS SCREEN: View the Explore Sessions screen
         // Contains: Nothing (Page name is a constant)

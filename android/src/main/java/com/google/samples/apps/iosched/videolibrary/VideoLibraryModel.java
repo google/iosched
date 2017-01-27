@@ -16,12 +16,9 @@
 
 package com.google.samples.apps.iosched.videolibrary;
 
-import android.app.LoaderManager;
 import android.content.AsyncQueryHandler;
 import android.content.ContentValues;
 import android.content.Context;
-import android.content.CursorLoader;
-import android.content.Loader;
 import android.database.Cursor;
 import android.graphics.Color;
 import android.net.Uri;
@@ -29,6 +26,9 @@ import android.os.Bundle;
 import android.support.annotation.ColorInt;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v4.app.LoaderManager;
+import android.support.v4.content.CursorLoader;
+import android.support.v4.content.Loader;
 import android.text.TextUtils;
 
 import com.google.common.annotations.VisibleForTesting;

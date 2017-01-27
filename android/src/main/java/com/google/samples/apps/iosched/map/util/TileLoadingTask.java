@@ -16,15 +16,14 @@
 
 package com.google.samples.apps.iosched.map.util;
 
-import com.google.samples.apps.iosched.provider.ScheduleContract;
-import com.google.samples.apps.iosched.util.MapUtils;
-
-import com.jakewharton.disklrucache.DiskLruCache;
-
-import android.content.AsyncTaskLoader;
 import android.content.Context;
 import android.database.Cursor;
 import android.net.Uri;
+import android.support.v4.content.AsyncTaskLoader;
+
+import com.google.samples.apps.iosched.provider.ScheduleContract;
+import com.google.samples.apps.iosched.util.MapUtils;
+import com.jakewharton.disklrucache.DiskLruCache;
 
 import java.io.File;
 import java.io.IOException;

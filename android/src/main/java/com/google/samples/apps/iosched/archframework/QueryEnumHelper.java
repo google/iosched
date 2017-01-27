@@ -24,7 +24,7 @@ public class QueryEnumHelper {
      * Converts an integer id to the corresponding {@link QueryEnum}.
      * <p/>
      * Typically, used to convert the loaderId, as provided by the {@link
-     * android.app.LoaderManager}.
+     * android.support.v4.app.LoaderManager}.
      *
      * @param id    The id of the query.
      * @param enums The list of possible {@link QueryEnum}.

@@ -16,16 +16,16 @@
 
 package com.google.samples.apps.iosched.map.util;
 
+import android.content.Context;
+import android.database.Cursor;
+import android.net.Uri;
+import android.support.v4.content.AsyncTaskLoader;
+
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.maps.android.ui.IconGenerator;
 import com.google.samples.apps.iosched.provider.ScheduleContract;
 import com.google.samples.apps.iosched.util.MapUtils;
-
-import android.content.AsyncTaskLoader;
-import android.content.Context;
-import android.database.Cursor;
-import android.net.Uri;
 
 import java.util.ArrayList;
 import java.util.List;

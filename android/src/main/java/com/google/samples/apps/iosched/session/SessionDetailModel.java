@@ -16,16 +16,16 @@
 
 package com.google.samples.apps.iosched.session;
 
-import android.app.LoaderManager;
 import android.content.Context;
-import android.content.CursorLoader;
 import android.content.Intent;
-import android.content.Loader;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.v4.app.LoaderManager;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.content.CursorLoader;
+import android.support.v4.content.Loader;
 import android.text.TextUtils;
 import android.util.Pair;
 
@@ -52,7 +52,6 @@ import java.util.List;
 import java.util.Locale;
 
 import static com.google.samples.apps.iosched.util.LogUtils.LOGD;
-
 import static com.google.samples.apps.iosched.util.LogUtils.makeLogTag;
 
 public class SessionDetailModel

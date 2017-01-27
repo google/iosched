@@ -21,7 +21,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 
 /**
- * An UpdatableView is a UI class, often a {@link android.app.Fragment}, that provides a {@link
+ * An UpdatableView is a UI class, often a {@link android.support.v4.app.Fragment}, that provides a {@link
  * Presenter} an interface through which to control it  (MVP architectural pattern). It is
  * parametrised by the {@link Model} class, the {@link QueryEnum} (the list of queries it needs to
  * run to display its initial state) and the {@link UserActionEnum} (the list of user actions it
