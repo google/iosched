@@ -26,33 +26,10 @@ import java.util.List;
  */
 public class NavigationConfig {
 
-    private final static NavigationItemEnum[] COMMON_ITEMS_AFTER_CUSTOM =
-            new NavigationItemEnum[]{NavigationItemEnum.VIDEO_LIBRARY,
-                    NavigationItemEnum.SETTINGS, NavigationItemEnum.ABOUT
+    public final static NavigationItemEnum[] ITEMS = new NavigationItemEnum[]{
+                    NavigationItemEnum.MY_SCHEDULE, NavigationItemEnum.EXPLORE,
+                    NavigationItemEnum.MAP, NavigationItemEnum.ABOUT
             };
-
-    public final static NavigationItemEnum[] NAVIGATION_ITEMS_LOGGEDIN_ATTENDING =
-            concatenateItems(new NavigationItemEnum[]{NavigationItemEnum.MY_SCHEDULE,
-                            NavigationItemEnum.IO_LIVE, NavigationItemEnum.EXPLORE,
-                            NavigationItemEnum.MAP},
-                    COMMON_ITEMS_AFTER_CUSTOM);
-
-    public final static NavigationItemEnum[] NAVIGATION_ITEMS_LOGGEDIN_REMOTE =
-            concatenateItems(new NavigationItemEnum[]{NavigationItemEnum.MY_SCHEDULE,
-                            NavigationItemEnum.IO_LIVE, NavigationItemEnum.EXPLORE},
-                    COMMON_ITEMS_AFTER_CUSTOM);
-
-
-    public final static NavigationItemEnum[] NAVIGATION_ITEMS_LOGGEDOUT_ATTENDING =
-            concatenateItems(new NavigationItemEnum[]{NavigationItemEnum.SIGN_IN,
-                    NavigationItemEnum.IO_LIVE, NavigationItemEnum.EXPLORE,
-                    NavigationItemEnum.MAP}, COMMON_ITEMS_AFTER_CUSTOM);
-
-
-    public final static NavigationItemEnum[] NAVIGATION_ITEMS_LOGGEDOUT_REMOTE =
-            concatenateItems(new NavigationItemEnum[]{NavigationItemEnum.SIGN_IN,
-                            NavigationItemEnum.IO_LIVE, NavigationItemEnum.EXPLORE},
-                    COMMON_ITEMS_AFTER_CUSTOM);
 
     private static NavigationItemEnum[] concatenateItems(NavigationItemEnum[] first,
             NavigationItemEnum[] second) {

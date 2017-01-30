@@ -112,18 +112,9 @@ public class VideoLibraryActivityTest {
     }
 
     @Test
-    public void navigationIcon_DisplaysAsMenu() {
-        NavigationUtils.checkNavigationIconIsMenu();
-    }
-
-    @Test
-    public void navigationIcon_OnClick_NavigationDisplayed() {
-        NavigationUtils.checkNavigationIsDisplayedWhenClickingMenuIcon();
-    }
-
-    @Test
+    @Suppress // We don't currently show the bottom nav here
     public void navigation_WhenShown_CorrectItemIsSelected() {
-        NavigationUtils
-                .checkNavigationItemIsSelected(NavigationModel.NavigationItemEnum.VIDEO_LIBRARY);
+        NavigationUtils.checkNavigationItemIsSelected(
+                NavigationModel.NavigationItemEnum.VIDEO_LIBRARY);
     }
 }

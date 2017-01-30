@@ -24,12 +24,7 @@
         <item name="imageItemBackground">?android:selectableItemBackgroundBorderless</item>
     </style>
 
-    <style name="Theme.IOSched.WithNavDrawer" parent="Theme.IOSched">
-        <item name="android:windowDrawsSystemBarBackgrounds">true</item>
-        <item name="android:statusBarColor">@android:color/transparent</item>
-    </style>
-
-    <style name="Theme.IOSched.Light" parent="Theme.IOSched.WithNavDrawer">
+    <style name="Theme.IOSched.Light" parent="Theme.IOSched">
         <item name="colorPrimaryDark">@color/dark_status_bar</item>
     </style>
 

@@ -14,6 +14,7 @@
 
 package com.google.samples.apps.iosched.settings;
 
+import android.support.test.filters.Suppress;
 import android.support.test.runner.AndroidJUnit4;
 import android.test.suitebuilder.annotation.LargeTest;
 
@@ -27,23 +28,14 @@ import org.junit.runner.RunWith;
 
 @RunWith(AndroidJUnit4.class)
 @LargeTest
+@Suppress
 public class SettingsActivityTest {
     @Rule
     public BaseActivityTestRule<SettingsActivity> mActivityRule =
-            new BaseActivityTestRule<SettingsActivity>(
-                    SettingsActivity.class, null, true);
+            new BaseActivityTestRule<>(SettingsActivity.class, null, true);
 
     @Test
-    public void navigationIcon_DisplaysAsMenu() {
-        NavigationUtils.checkNavigationIconIsMenu();
-    }
-
-    @Test
-    public void navigationIcon_OnClick_NavigationDisplayed() {
-        NavigationUtils.checkNavigationIsDisplayedWhenClickingMenuIcon();
-    }
-
-    @Test
+    @Suppress // We don't currently show the bottom nav here
     public void navigation_WhenShown_CorrectItemIsSelected() {
         NavigationUtils.checkNavigationItemIsSelected(NavigationModel.NavigationItemEnum.SETTINGS);
     }

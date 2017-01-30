@@ -87,9 +87,4 @@ public class VideoLibraryFilteredActivityTest {
     public void toolbar_IsInitiallyDisplayed() {
         ToolbarUtils.checkToolbarIsCompletelyDisplayed();
     }
-
-    @Test
-    public void navigationIcon_DisplaysAsUp() {
-        NavigationUtils.checkNavigationIconIsUp();
-    }
 }

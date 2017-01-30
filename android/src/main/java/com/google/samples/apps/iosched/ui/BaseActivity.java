@@ -16,6 +16,11 @@
 
 package com.google.samples.apps.iosched.ui;
 
+import static com.google.samples.apps.iosched.util.LogUtils.LOGD;
+import static com.google.samples.apps.iosched.util.LogUtils.LOGE;
+import static com.google.samples.apps.iosched.util.LogUtils.LOGW;
+import static com.google.samples.apps.iosched.util.LogUtils.makeLogTag;
+
 import android.app.Activity;
 import android.content.ContentResolver;
 import android.content.Intent;
@@ -28,6 +33,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.provider.Settings;
+import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.NavUtils;
 import android.support.v4.app.TaskStackBuilder;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -49,7 +55,8 @@ import com.google.samples.apps.iosched.login.LoginAndAuth;
 import com.google.samples.apps.iosched.login.LoginAndAuthListener;
 import com.google.samples.apps.iosched.login.LoginStateListener;
 import com.google.samples.apps.iosched.messaging.MessagingRegistration;
-import com.google.samples.apps.iosched.navigation.AppNavigationViewAsDrawerImpl;
+import com.google.samples.apps.iosched.navigation.AppNavigationView;
+import com.google.samples.apps.iosched.navigation.AppNavigationViewAsBottomNavImpl;
 import com.google.samples.apps.iosched.navigation.NavigationModel.NavigationItemEnum;
 import com.google.samples.apps.iosched.provider.ScheduleContract;
 import com.google.samples.apps.iosched.service.DataBootstrapService;
@@ -57,15 +64,9 @@ import com.google.samples.apps.iosched.sync.SyncHelper;
 import com.google.samples.apps.iosched.sync.account.Account;
 import com.google.samples.apps.iosched.ui.widget.MultiSwipeRefreshLayout;
 import com.google.samples.apps.iosched.util.AccountUtils;
-import com.google.samples.apps.iosched.util.ImageLoader;
 import com.google.samples.apps.iosched.util.LUtils;
 import com.google.samples.apps.iosched.util.RecentTasksStyler;
 import com.google.samples.apps.iosched.welcome.WelcomeActivity;
-
-import static com.google.samples.apps.iosched.util.LogUtils.LOGD;
-import static com.google.samples.apps.iosched.util.LogUtils.LOGE;
-import static com.google.samples.apps.iosched.util.LogUtils.LOGW;
-import static com.google.samples.apps.iosched.util.LogUtils.makeLogTag;
 
 /**
  * A base activity that handles common functionality in the app. This includes the navigation
@@ -74,8 +75,7 @@ import static com.google.samples.apps.iosched.util.LogUtils.makeLogTag;
 public abstract class BaseActivity extends AppCompatActivity implements
         LoginAndAuthListener,
         SharedPreferences.OnSharedPreferenceChangeListener,
-        MultiSwipeRefreshLayout.CanChildScrollUpCallback, LoginStateListener,
-        AppNavigationViewAsDrawerImpl.NavigationDrawerStateListener {
+        MultiSwipeRefreshLayout.CanChildScrollUpCallback, LoginStateListener {
 
     private static final String TAG = makeLogTag(BaseActivity.class);
 
@@ -86,7 +86,7 @@ public abstract class BaseActivity extends AppCompatActivity implements
     private LoginAndAuth mLoginAndAuthProvider;
 
     // Navigation drawer
-    private AppNavigationViewAsDrawerImpl mAppNavigationViewAsDrawer;
+    private AppNavigationView mAppNavigationView;
 
     // Toolbar
     private Toolbar mToolbar;
@@ -174,29 +174,11 @@ public abstract class BaseActivity extends AppCompatActivity implements
     }
 
     @Override
-    public void onNavDrawerStateChanged(boolean isOpen, boolean isAnimating) {
-        // Nothing to do
-    }
-
-    @Override
-    public void onNavDrawerSlide(float offset) {
-    }
-
-    @Override
-    public void onBackPressed() {
-        if (mAppNavigationViewAsDrawer.isNavDrawerOpen()) {
-            mAppNavigationViewAsDrawer.closeNavDrawer();
-        } else {
-            super.onBackPressed();
-        }
-    }
-
-    @Override
     public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
         if (key != null && key.equals(BuildConfig.PREF_ATTENDEE_AT_VENUE)) {
             LOGD(TAG, "Attendee at venue preference changed, repopulating nav drawer and menu.");
-            if (mAppNavigationViewAsDrawer != null) {
-                mAppNavigationViewAsDrawer.updateNavigationItems();
+            if (mAppNavigationView != null) {
+                mAppNavigationView.updateNavigationItems();
             }
             invalidateOptionsMenu();
         }
@@ -205,11 +187,12 @@ public abstract class BaseActivity extends AppCompatActivity implements
     @Override
     protected void onPostCreate(Bundle savedInstanceState) {
         super.onPostCreate(savedInstanceState);
-        mAppNavigationViewAsDrawer = new AppNavigationViewAsDrawerImpl(new ImageLoader(this), this);
-        mAppNavigationViewAsDrawer.activityReady(this, this, getSelfNavDrawerItem());
 
-        if (getSelfNavDrawerItem() != NavigationItemEnum.INVALID) {
-            setToolbarForNavigation();
+        final BottomNavigationView bottomNav = (BottomNavigationView)
+                findViewById(R.id.bottom_navigation);
+        if (bottomNav != null) {
+            mAppNavigationView = new AppNavigationViewAsBottomNavImpl(bottomNav);
+            mAppNavigationView.activityReady(this, this, getSelfNavDrawerItem());
         }
 
         trySetupSwipeRefresh();
@@ -317,9 +300,8 @@ public abstract class BaseActivity extends AppCompatActivity implements
                     new String[]{GoogleAuthUtil.GOOGLE_ACCOUNT_TYPE});
             startActivity(intent);
         } else {
-            //Try to log the user in with the first account on the device.
+            // Try to log the user in with the first account on the device.
             startLoginProcess();
-            mAppNavigationViewAsDrawer.closeNavDrawer();
         }
     }
 
@@ -472,7 +454,9 @@ public abstract class BaseActivity extends AppCompatActivity implements
 
     @Override
     public void onPlusInfoLoaded(String accountName) {
-        mAppNavigationViewAsDrawer.updateNavigationItems();
+        if (mAppNavigationView != null) {
+            mAppNavigationView.updateNavigationItems();
+        }
     }
 
     /**
@@ -498,8 +482,9 @@ public abstract class BaseActivity extends AppCompatActivity implements
             SyncHelper.updateSyncInterval(this);
             SyncHelper.requestManualSync();
         }
-
-        mAppNavigationViewAsDrawer.updateNavigationItems();
+        if (mAppNavigationView != null) {
+            mAppNavigationView.updateNavigationItems();
+        }
         mMessagingRegistration.registerDevice();
     }
 
@@ -507,7 +492,9 @@ public abstract class BaseActivity extends AppCompatActivity implements
     public void onAuthFailure(String accountName) {
         LOGD(TAG, "Auth failed for account " + accountName);
         refreshAccountDependantData();
-        mAppNavigationViewAsDrawer.updateNavigationItems();
+        if (mAppNavigationView != null) {
+            mAppNavigationView.updateNavigationItems();
+        }
     }
 
     protected void refreshAccountDependantData() {
@@ -533,18 +520,6 @@ public abstract class BaseActivity extends AppCompatActivity implements
             }
         }
         return mToolbar;
-    }
-
-    private void setToolbarForNavigation() {
-        if (mToolbar != null) {
-            mToolbar.setNavigationIcon(R.drawable.ic_hamburger);
-            mToolbar.setNavigationOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    mAppNavigationViewAsDrawer.showNavigation();
-                }
-            });
-        }
     }
 
     /**

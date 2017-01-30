@@ -30,18 +30,13 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
-import static android.support.test.espresso.Espresso.onView;
-import static android.support.test.espresso.assertion.ViewAssertions.matches;
-import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
-import static android.support.test.espresso.matcher.ViewMatchers.withText;
-
 /**
- * UI tests for {@link AppNavigationViewAsDrawerImpl} when the user is logged in and attending the
+ * UI tests for {@link AppNavigationView} when the user is logged in and attending the
  * conference.
  */
 @RunWith(AndroidJUnit4.class)
 @LargeTest
-public class AppNavigationViewAsDrawerImpl_LoggedInAttendingTest {
+public class AppNavigationViewTest {
     private String mAccountName;
 
     @Rule
@@ -67,66 +62,35 @@ public class AppNavigationViewAsDrawerImpl_LoggedInAttendingTest {
     }
 
     @Test
-    public void accountName_IsDisplayed() {
-        // Given navigation menu
-        NavigationUtils.showNavigation();
-
-        // Then the account name is shown
-        onView(withText(mAccountName)).check(matches(isDisplayed()));
-    }
-
-    @Test
     public void mySchedule_WhenClicked_ActivityDisplayed() {
         NavigationUtils.clickOnNavigationItemAndCheckActivityIsDisplayed(
-                R.string.navdrawer_item_my_schedule,
+                R.id.myschedule_nav_item,
                 R.string.title_my_schedule);
     }
 
     @Test
     public void explore_WhenClicked_ActivityDisplayed() {
         // Move to a different screen first
-        NavigationUtils.clickOnNavigationItemAndCheckActivityIsDisplayed(R.string.description_about,
+        NavigationUtils.clickOnNavigationItemAndCheckActivityIsDisplayed(
+                R.id.about_nav_item,
                 R.string.title_about);
 
         NavigationUtils.clickOnNavigationItemAndCheckActivityIsDisplayed(
-                R.string.navdrawer_item_explore,
+                R.id.explore_nav_item,
                 R.string.title_explore);
     }
 
     @Test
-    public void social_NotDisplayed() {
-        NavigationUtils.checkNavigationItemIsNotDisplayed(R.string.navdrawer_item_social);
-    }
-
-    @Test
     public void about_WhenClicked_ActivityDisplayed() {
-        NavigationUtils.clickOnNavigationItemAndCheckActivityIsDisplayed(R.string.description_about,
+        NavigationUtils.clickOnNavigationItemAndCheckActivityIsDisplayed(
+                R.id.about_nav_item,
                 R.string.title_about);
-    }
-
-    @Test
-    public void videoLibrary_WhenClicked_ActivityDisplayed() {
-        NavigationUtils.clickOnNavigationItemAndCheckActivityIsDisplayed(
-                R.string.navdrawer_item_video_library,
-                R.string.title_video_library);
-    }
-
-    @Test
-    public void settings_WhenClicked_ActivityDisplayed() {
-        NavigationUtils.clickOnNavigationItemAndCheckActivityIsDisplayed(
-                R.string.navdrawer_item_settings,
-                R.string.title_settings);
     }
 
     @Test
     public void map_WhenClicked_ActivityDisplayed() {
         NavigationUtils.clickOnNavigationItemAndCheckActivityIsDisplayed(
-                R.string.navdrawer_item_map,
+                R.id.map_nav_item,
                 R.string.title_map);
-    }
-
-    @Test
-    public void ioLive_NotDisplayed() {
-        NavigationUtils.checkNavigationItemIsNotDisplayed(R.string.navdrawer_item_io_live);
     }
 }

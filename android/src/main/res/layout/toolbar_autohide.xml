@@ -19,5 +19,4 @@
     android:id="@+id/toolbar"
     android:layout_width="match_parent"
     android:layout_height="?actionBarSize"
-    app:layout_scrollFlags="scroll|enterAlways|snap"
-    app:contentInsetStart="?actionBarInsetStart" />
+    app:layout_scrollFlags="scroll|enterAlways|snap" />

@@ -101,8 +101,7 @@
 
         <activity
             android:name=".explore.ExploreIOActivity"
-            android:label="@string/app_name"
-            android:theme="@style/Theme.IOSched.Light">
+            android:label="@string/app_name">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
@@ -218,7 +217,7 @@
             android:exported="false"
             android:label="@string/title_settings"
             android:parentActivityName=".explore.ExploreIOActivity"
-            android:theme="@style/Theme.IOSched.WithNavDrawer">
+            >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".explore.ExploreIOActivity" />
@@ -334,7 +333,7 @@
             android:exported="false"
             android:label="@string/description_about"
             android:parentActivityName=".explore.ExploreIOActivity"
-            android:theme="@style/Theme.IOSched.WithNavDrawer">
+            >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".explore.ExploreIOActivity" />
@@ -350,8 +349,7 @@
             android:name=".debug.DebugActivity"
             android:exported="false"
             android:label="@string/title_activity_debug_test_runner"
-            android:parentActivityName=".explore.ExploreIOActivity"
-            android:theme="@style/Theme.IOSched">
+            android:parentActivityName=".explore.ExploreIOActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".explore.ExploreIOActivity" />

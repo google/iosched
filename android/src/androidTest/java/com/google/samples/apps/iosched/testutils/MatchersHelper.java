@@ -18,6 +18,7 @@ package com.google.samples.apps.iosched.testutils;
 import android.net.Uri;
 import android.support.test.espresso.UiController;
 import android.support.test.espresso.ViewAction;
+import android.support.v4.view.ViewPager;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
@@ -27,11 +28,13 @@ import com.google.samples.apps.iosched.util.TimeUtils;
 import org.hamcrest.BaseMatcher;
 import org.hamcrest.Description;
 import org.hamcrest.Matcher;
+import org.hamcrest.TypeSafeMatcher;
 
 import java.util.List;
 
 import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.matcher.ViewMatchers.isAssignableFrom;
+import static android.support.test.espresso.matcher.ViewMatchers.isDisplayingAtLeast;
 
 /**
  * Provides helper method to get the text from a matched view.
@@ -226,6 +229,33 @@ public class MatchersHelper {
             public void describeMismatch(final Object item, final Description mismatchDescription) {
                 mismatchDescription.appendText("item doesn't match uri " + expectedUri +
                         " with an approximataion of 10 seconds for the last time segment");
+            }
+        };
+    }
+
+    /**
+     * Moves <code>ViewPager</code> to specific page.
+     */
+    public static ViewAction moveViewPagerToPage(final int page) {
+        return new ViewAction() {
+            @Override
+            public Matcher<View> getConstraints() {
+                return isDisplayingAtLeast(90);
+            }
+
+            @Override
+            public String getDescription() {
+                return "ViewPager move to a specific page";
+            }
+
+            @Override
+            public void perform(UiController uiController, View view) {
+                uiController.loopMainThreadUntilIdle();
+
+                ViewPager viewPager = (ViewPager) view;
+                viewPager.setCurrentItem(page, false);
+
+                uiController.loopMainThreadUntilIdle();
             }
         };
     }

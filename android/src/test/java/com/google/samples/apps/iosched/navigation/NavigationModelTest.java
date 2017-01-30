@@ -53,130 +53,23 @@ public class NavigationModelTest {
     public void setUp() {
 
         // Create an instance of the model.
-        mNavigationModel = new NavigationModel(mMockContext);
+        mNavigationModel = new NavigationModel();
     }
 
     @Test
-    public void requestData_LoadItemsForLoggedOutAttendingUser_ItemsLoaded() {
-        // Given a user attending the conference and logged out
-        setUpMockForAttendance(true);
-        setUpMockForLoginStatus(false);
-        NavigationItemEnum[] expectedItems = NavigationConfig.filterOutItemsDisabledInBuildConfig(
-                appendDebugIfRequired(
-                        NavigationConfig.NAVIGATION_ITEMS_LOGGEDOUT_ATTENDING));
-
-        // When the navigation items are requested
-        mNavigationModel.requestData(NavigationModel.NavigationQueryEnum.LOAD_ITEMS,
-                mMockDataQueryCallback);
-
-        // Then the expected items are loaded into the model
-        assertEquals(mNavigationModel.getItems().length,expectedItems.length);
-        assertEquals(mNavigationModel.getItems()[0], expectedItems[0]);
-    }
-
-    @Test
-    public void requestData_LoadItemsForLoggedOutRemoteUser_ItemsLoaded() {
-        // Given a user not attending the conference and logged out
-        setUpMockForAttendance(false);
-        setUpMockForLoginStatus(false);
-        NavigationItemEnum[] expectedItems = NavigationConfig.filterOutItemsDisabledInBuildConfig(
-                appendDebugIfRequired(
-                        NavigationConfig.NAVIGATION_ITEMS_LOGGEDOUT_REMOTE));
-
-        // When the navigation items are requested
-        mNavigationModel.requestData(NavigationModel.NavigationQueryEnum.LOAD_ITEMS,
-                mMockDataQueryCallback);
-
-        // Then the expected items are loaded into the model
-        assertEquals(mNavigationModel.getItems().length,expectedItems.length);
-        assertEquals(mNavigationModel.getItems()[0], expectedItems[0]);
-    }
-
-    @Test
-    public void requestData_LoadItemsForLoggedInRemoteUser_ItemsLoaded() {
-        // Given a user not attending the conference and logged in
-        setUpMockForAttendance(false);
-        setUpMockForLoginStatus(true);
-        NavigationItemEnum[] expectedItems = NavigationConfig.filterOutItemsDisabledInBuildConfig(
-                appendDebugIfRequired(
-                        NavigationConfig.NAVIGATION_ITEMS_LOGGEDIN_REMOTE));
-
-        // When the navigation items are requested
-        mNavigationModel.requestData(NavigationModel.NavigationQueryEnum.LOAD_ITEMS,
-                mMockDataQueryCallback);
-
-        // Then the expected items are loaded into the model
-        assertEquals(mNavigationModel.getItems().length,expectedItems.length);
-        assertEquals(mNavigationModel.getItems()[0], expectedItems[0]);
-    }
-
-    @Test
-    public void requestData_LoadItemsForLoggedInAttendingUser_ItemsLoaded() {
+    public void requestData_LoadItemsForUser_ItemsLoaded() {
         // Given a user attending the conference and logged in
         setUpMockForAttendance(true);
         setUpMockForLoginStatus(true);
         NavigationItemEnum[] expectedItems = NavigationConfig.filterOutItemsDisabledInBuildConfig(
-                appendDebugIfRequired(
-                        NavigationConfig.NAVIGATION_ITEMS_LOGGEDIN_ATTENDING));
+                NavigationConfig.ITEMS);
 
         // When the navigation items are requested
         mNavigationModel.requestData(NavigationModel.NavigationQueryEnum.LOAD_ITEMS,
                 mMockDataQueryCallback);
 
         // Then the expected items are loaded into the model
-        assertEquals(mNavigationModel.getItems().length,expectedItems.length);
-        assertEquals(mNavigationModel.getItems()[0], expectedItems[0]);
-    }
-
-    @Test
-    public void deliverUserAction_ReloadItemsForUserWithAttendanceChange_ItemsLoaded() {
-        // Given a user attending the conference and logged in
-        setUpMockForAttendance(true);
-        setUpMockForLoginStatus(true);
-
-        // And navigation items loaded
-        mNavigationModel.requestData(NavigationModel.NavigationQueryEnum.LOAD_ITEMS,
-                mMockDataQueryCallback);
-
-        // And a change in user attendance
-        setUpMockForAttendance(false);
-        NavigationItemEnum[] expectedItems = NavigationConfig.filterOutItemsDisabledInBuildConfig(
-                appendDebugIfRequired(
-                        NavigationConfig.NAVIGATION_ITEMS_LOGGEDIN_REMOTE));
-
-        // When requesting to reload the items
-        mNavigationModel
-                .deliverUserAction(NavigationModel.NavigationUserActionEnum.RELOAD_ITEMS, null,
-                        mMockUserActionCallback);
-
-        // Then the expected items are loaded into the model
-        assertEquals(mNavigationModel.getItems().length,expectedItems.length);
-        assertEquals(mNavigationModel.getItems()[0], expectedItems[0]);
-    }
-
-    @Test
-    public void deliverUserAction_ReloadItemsForUserWithLoginStatusChange_ItemsLoaded() {
-        // Given a user attending the conference and logged in
-        setUpMockForAttendance(true);
-        setUpMockForLoginStatus(true);
-
-        // And navigation items loaded
-        mNavigationModel.requestData(NavigationModel.NavigationQueryEnum.LOAD_ITEMS,
-                mMockDataQueryCallback);
-
-        // And a change in logged in status
-        setUpMockForLoginStatus(false);
-        NavigationItemEnum[] expectedItems = NavigationConfig.filterOutItemsDisabledInBuildConfig(
-                appendDebugIfRequired(
-                        NavigationConfig.NAVIGATION_ITEMS_LOGGEDOUT_ATTENDING));
-
-        // When requesting to reload the items
-        mNavigationModel
-                .deliverUserAction(NavigationModel.NavigationUserActionEnum.RELOAD_ITEMS, null,
-                        mMockUserActionCallback);
-
-        // Then the expected items are loaded into the model
-        assertEquals(mNavigationModel.getItems().length,expectedItems.length);
+        assertEquals(mNavigationModel.getItems().length, expectedItems.length);
         assertEquals(mNavigationModel.getItems()[0], expectedItems[0]);
     }
 

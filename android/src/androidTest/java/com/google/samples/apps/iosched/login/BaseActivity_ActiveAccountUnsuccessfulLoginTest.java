@@ -16,6 +16,7 @@ package com.google.samples.apps.iosched.login;
 
 import android.support.test.InstrumentationRegistry;
 import android.support.test.filters.FlakyTest;
+import android.support.test.filters.Suppress;
 import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
 import android.test.suitebuilder.annotation.LargeTest;
@@ -79,21 +80,10 @@ public class BaseActivity_ActiveAccountUnsuccessfulLoginTest {
         LoginAndAuthProvider.setStubLoginAndAuth(null);
     }
 
-    /**
-     * This will fail if there is no available account on the device
-     */
-    @FlakyTest
     @Test
+    @Suppress // Needs updating when we show the account somewhere else
     public void accountName_IsDisplayed_Flaky() {
-        // Given navigation menu
-        NavigationUtils.showNavigation();
-
         // Then the account name is shown
         onView(withText(mAccountName)).check(matches(isDisplayed()));
-    }
-
-    @Test
-    public void mySchedule_IsDisplayed() {
-        NavigationUtils.checkNavigationItemIsDisplayed(R.string.navdrawer_item_my_schedule);
     }
 }

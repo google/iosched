@@ -30,18 +30,7 @@ import org.junit.runner.RunWith;
 public class MapActivityTest {
     @Rule
     public BaseActivityTestRule<MapActivity> mActivityRule =
-            new BaseActivityTestRule<MapActivity>(
-                    MapActivity.class, null, true);
-
-    @Test
-    public void navigationIcon_DisplaysAsMenu() {
-        NavigationUtils.checkNavigationIconIsMenu();
-    }
-
-    @Test
-    public void navigationIcon_OnClick_NavigationDisplayed() {
-        NavigationUtils.checkNavigationIsDisplayedWhenClickingMenuIcon();
-    }
+            new BaseActivityTestRule<>(MapActivity.class, null, true);
 
     @Test
     public void navigation_WhenShown_CorrectItemIsSelected() {

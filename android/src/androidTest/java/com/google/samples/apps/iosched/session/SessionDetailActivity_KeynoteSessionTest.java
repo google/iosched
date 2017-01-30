@@ -92,9 +92,4 @@ public class SessionDetailActivity_KeynoteSessionTest {
         onView(withId(R.id.session_tags_container)).check(matches(not(withEffectiveVisibility(
                 ViewMatchers.Visibility.VISIBLE))));
     }
-
-    @Test
-    public void navigationIcon_DisplaysAsUp() {
-        NavigationUtils.checkNavigationIconIsUp();
-    }
 }

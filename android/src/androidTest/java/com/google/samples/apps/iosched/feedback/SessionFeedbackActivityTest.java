@@ -103,10 +103,4 @@ public class SessionFeedbackActivityTest {
         onView(withText(R.string.session_feedback_submitlink)).perform(click());
         assertTrue(mActivityRule.getActivity().isDestroyed());
     }
-
-    @Test
-    public void navigationIcon_DisplaysAsUp() {
-        NavigationUtils.checkNavigationIconIsUp();
-    }
-
 }

@@ -15,7 +15,7 @@
 
 <resources>
 
-    <style name="Theme.IOSched.Light" parent="Theme.IOSched.WithNavDrawer">
+    <style name="Theme.IOSched.Light" parent="Theme.IOSched">
         <item name="colorPrimaryDark">@color/light_status_bar_against_toolbar</item>
         <item name="android:windowLightStatusBar">true</item>
     </style>

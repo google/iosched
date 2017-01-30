@@ -111,8 +111,6 @@ public class MyScheduleActivity extends BaseActivity implements
 
     private static final String TAG = makeLogTag(MyScheduleActivity.class);
 
-    public static int BASE_TAB_VIEW_ID = 12345;
-
     /**
      * If true, we are in the wide (tablet landscape) mode where we show conference days side by
      * side; if false, we are in narrow (non tablet landscape) mode where we use a ViewPager and
@@ -308,7 +306,6 @@ public class MyScheduleActivity extends BaseActivity implements
         }
     }
 
-
     private void detectNarrowOrWideMode() {
         // When changing orientation, if previously in wide mode, the system recreates the wide
         // fragment, so need to check also that view pager isn't visible
@@ -339,36 +336,11 @@ public class MyScheduleActivity extends BaseActivity implements
         mViewPager.setCurrentItem(currentSingleDayFragment);
 
         mTabLayout = (TabLayout) findViewById(R.id.sliding_tabs);
-
         mTabLayout.setupWithViewPager(mViewPager);
 
-        mTabLayout.setOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
-            @Override
-            public void onTabSelected(TabLayout.Tab tab) {
-                mViewPager.setCurrentItem(tab.getPosition(), true);
-                TextView view = (TextView) findViewById(BASE_TAB_VIEW_ID + tab.getPosition());
-                view.setContentDescription(
-                        getString(R.string.talkback_selected,
-                                getString(R.string.a11y_button, tab.getText())));
-            }
-
-            @Override
-            public void onTabUnselected(TabLayout.Tab tab) {
-                TextView view = (TextView) findViewById(BASE_TAB_VIEW_ID + tab.getPosition());
-                view.setContentDescription(
-                        getString(R.string.a11y_button, tab.getText()));
-            }
-
-            @Override
-            public void onTabReselected(TabLayout.Tab tab) {
-                // Do nothing
-            }
-        });
         mViewPager.setPageMargin(getResources()
                 .getDimensionPixelSize(R.dimen.my_schedule_page_margin));
         mViewPager.setPageMarginDrawable(R.drawable.page_margin);
-
-        setTabLayoutContentDescriptionsForNarrowLayout();
     }
 
     @Override
@@ -415,32 +387,6 @@ public class MyScheduleActivity extends BaseActivity implements
         if (intent.hasExtra(EXTRA_DIALOG_MESSAGE)) {
             mShowedAnnouncementDialog = false;
             showAnnouncementDialogIfNeeded(intent);
-        }
-    }
-
-    private void setTabLayoutContentDescriptionsForNarrowLayout() {
-        LayoutInflater inflater = getLayoutInflater();
-        int gap = MyScheduleModel.showPreConferenceData(this) ? 1 : 0;
-        for (int i = 0, count = mTabLayout.getTabCount(); i < count; i++) {
-            TabLayout.Tab tab = mTabLayout.getTabAt(i);
-            TextView view =
-                    (TextView) inflater.inflate(R.layout.tab_my_schedule, mTabLayout, false);
-            view.setId(BASE_TAB_VIEW_ID + i);
-            view.setText(tab.getText());
-            if (i == 0) {
-                view.setContentDescription(
-                        getString(R.string.talkback_selected,
-                                getString(R.string.a11y_button, tab.getText())));
-            } else {
-                view.setContentDescription(
-                        getString(R.string.a11y_button, tab.getText()));
-            }
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
-                view.announceForAccessibility(
-                        getString(R.string.my_schedule_tab_desc_a11y,
-                                TimeUtils.getDayName(this, i - gap)));
-            }
-            tab.setCustomView(view);
         }
     }
 

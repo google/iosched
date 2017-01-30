@@ -30,18 +30,7 @@ import org.junit.runner.RunWith;
 public class AboutActivityTest {
     @Rule
     public BaseActivityTestRule<AboutActivity> mActivityRule =
-            new BaseActivityTestRule<AboutActivity>(
-                    AboutActivity.class, null, true);
-
-    @Test
-    public void navigationIcon_DisplaysAsMenu() {
-        NavigationUtils.checkNavigationIconIsMenu();
-    }
-
-    @Test
-    public void navigationIcon_OnClick_NavigationDisplayed() {
-        NavigationUtils.checkNavigationIsDisplayedWhenClickingMenuIcon();
-    }
+            new BaseActivityTestRule<>(AboutActivity.class, null, true);
 
     @Test
     public void navigation_WhenShown_CorrectItemIsSelected() {

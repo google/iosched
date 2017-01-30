@@ -73,7 +73,7 @@ public abstract class AppNavigationViewAbstractImpl implements
 
         setUpView();
 
-        NavigationModel model = new NavigationModel(getContext());
+        NavigationModel model = new NavigationModel();
         PresenterImpl presenter = new PresenterImpl(model, this,
                 NavigationUserActionEnum.values(), NavigationQueryEnum.values());
         presenter.loadInitialQueries();
@@ -102,8 +102,8 @@ public abstract class AppNavigationViewAbstractImpl implements
                 break;
             default:
                 if (item.getClassToLaunch() != null) {
-                    ActivityUtils.createBackStack(mActivity,
-                            new Intent(mActivity, item.getClassToLaunch()));
+                    mActivity.startActivity(new Intent(mActivity, item.getClassToLaunch()));
+                    mActivity.overridePendingTransition(0, 0);
                     if (item.finishCurrentActivity()) {
                         mActivity.finish();
                     }

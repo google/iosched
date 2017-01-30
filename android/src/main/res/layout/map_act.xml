@@ -17,52 +17,53 @@
 
 <!-- Default layout for MapActivity. It contains space for the SlideableInfoFragment on the bottom
 of the map.-->
-<android.support.v4.widget.DrawerLayout
-        android:id="@+id/drawer_layout"
-        xmlns:android="http://schemas.android.com/apk/res/android"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:fitsSystemWindows="true">
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/drawer_layout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fitsSystemWindows="true"
+    android:orientation="vertical">
 
+    <!-- Header bar on top of map -->
     <LinearLayout
-            android:id="@+id/main_content"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical">
+        android:id="@+id/headerbar"
+        style="@style/HeaderBar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
 
-        <!-- Header bar on top of map -->
-        <LinearLayout
-                android:id="@+id/headerbar"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:clickable="true"
-                android:orientation="vertical"
-                style="@style/HeaderBar">
+        <include layout="@layout/toolbar" />
 
-            <include layout="@layout/toolbar_keyline_insets"/>
-            <!-- placeholder, empty except on L -->
-
-        </LinearLayout>
-        <!-- Content of screen. Contains a map and optional info bottom sheet. -->
-        <FrameLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent">
-            <!-- Main layout -->
-            <FrameLayout
-                    android:id="@+id/fragment_container_map"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"/>
-
-            <FrameLayout
-                    android:id="@+id/fragment_container_map_info"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"/>
-
-        </FrameLayout>
+        <!-- placeholder, empty except on L -->
 
     </LinearLayout>
 
-    <!-- Nav drawer -->
-    <include layout="@layout/navigation_view"/>
+    <!-- Content of screen. Contains a map and optional info bottom sheet. -->
+    <FrameLayout
+        android:id="@+id/main_content"
+        android:layout_width="match_parent"
+        android:layout_height="0px"
+        android:layout_weight="1">
+        <!-- Main layout -->
+        <FrameLayout
+            android:id="@+id/fragment_container_map"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
 
-</android.support.v4.widget.DrawerLayout>
+        <FrameLayout
+            android:id="@+id/fragment_container_map_info"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+    </FrameLayout>
+
+    <android.support.design.widget.BottomNavigationView
+        android:id="@+id/bottom_navigation"
+        style="@style/Widget.IOSched.BottomNavigationView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:menu="@menu/bottom_nav_items" />
+
+</LinearLayout>

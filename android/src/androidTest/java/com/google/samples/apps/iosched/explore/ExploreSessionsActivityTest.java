@@ -14,6 +14,7 @@
 
 package com.google.samples.apps.iosched.explore;
 
+import android.support.test.filters.Suppress;
 import android.support.test.runner.AndroidJUnit4;
 import android.test.suitebuilder.annotation.LargeTest;
 
@@ -26,15 +27,9 @@ import org.junit.runner.RunWith;
 
 @RunWith(AndroidJUnit4.class)
 @LargeTest
+@Suppress // Currently empty
 public class ExploreSessionsActivityTest {
-
     @Rule
     public BaseActivityTestRule<ExploreSessionsActivity> mActivityRule =
-            new BaseActivityTestRule<ExploreSessionsActivity>(
-                    ExploreSessionsActivity.class, null, true);
-
-    @Test
-    public void navigationIcon_DisplaysAsUp() {
-        NavigationUtils.checkNavigationIconIsUp();
-    }
+            new BaseActivityTestRule<>(ExploreSessionsActivity.class, null, true);
 }

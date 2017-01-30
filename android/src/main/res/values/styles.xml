@@ -64,8 +64,6 @@
 
     <style name="Theme.IOSched" parent="Theme.IOSched.Base" />
 
-    <style name="Theme.IOSched.WithNavDrawer" parent="Theme.IOSched" />
-
     <style name="Theme.IOSched.Widget" parent="FrameworkRoot.Widget">
         <item name="android:popupMenuStyle">@style/Widget.IOSched.PopupMenu</item>
         <item name="android:listPopupWindowStyle">@style/Widget.IOSched.PopupMenu</item>
@@ -73,9 +71,7 @@
         <item name="android:textAppearanceLargePopupMenu">@style/TextAppearance.LargePopupMenu</item>
     </style>
 
-    <style name="ActionBarThemeOverlay" parent="ThemeOverlay.AppCompat.ActionBar">
-        <item name="android:textColorPrimary">@color/text_on_primary</item>
-        <item name="android:textColorSecondary">@color/subtitle_on_primary</item>
+    <style name="ActionBarThemeOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar">
     </style>
 
     <style name="SearchViewTheme" parent="ThemeOverlay.AppCompat.ActionBar">
@@ -91,10 +87,6 @@
     </style>
 
     <style name="Theme.IOSched.Welcome" parent="Theme.IOSched.Welcome.Base" />
-
-    <style name="Theme.IOSched.Light" parent="Theme.IOSched.WithNavDrawer" />
-
-    <style name="Theme.IOSched.ExploreSessions" parent="Theme.IOSched.Light" />
 
     <style name="Theme.IOSched.Search" parent="Theme.IOSched.Light">
         <item name="android:windowBackground">@android:color/transparent</item>
@@ -161,7 +153,7 @@
     </style>
 
     <!-- My Schedule -->
-    <style name="Theme.IOSched.MySchedule" parent="Theme.IOSched.WithNavDrawer" />
+    <style name="Theme.IOSched.MySchedule" />
 
     <!-- Styling SessionDetails is complicated; alter the style based on:
              1. small vs large devices
@@ -180,12 +172,12 @@
     <style name="Theme.IOSched.SessionDetails" parent="Theme.IOSched.SessionDetails.VersionBase" />
 
     <!-- Social -->
-    <style name="Theme.IOSched.Social" parent="Theme.IOSched.WithNavDrawer">
+    <style name="Theme.IOSched.Social">
         <item name="android:windowBackground">@color/grey_background</item>
     </style>
 
     <!-- Account chooser -->
-    <style name="Theme.IOSched.Accounts" parent="Theme.IOSched">
+    <style name="Theme.IOSched.Accounts">
         <item name="android:actionBarStyle">@style/ActionBar.Accounts</item>
     </style>
 
@@ -325,7 +317,7 @@
     </style>
 
     <!-- Map -->
-    <style name="Theme.IOSched.Map" parent="Theme.IOSched.WithNavDrawer" />
+    <style name="Theme.IOSched.Map" parent="Theme.IOSched" />
 
 
     <style name="MapRoomTitle">
@@ -343,10 +335,6 @@
         <item name="android:shadowDx">1</item>
         <item name="android:shadowDy">1</item>
         <item name="android:shadowRadius">3</item>
-    </style>
-
-    <style name="MyScheduleTabTextAppearancce" parent="TextAppearance.Design.Tab">
-        <item name="android:textColor">@color/unselected_tab_on_primary</item>
     </style>
 
     <style name="Widget.IOSched.EditText" parent="Widget.AppCompat.EditText">
@@ -473,6 +461,11 @@
 
     <style name="SettingsSwitchPreference" parent="Preference.SwitchPreferenceCompat">
         <item name="android:layout">@layout/iosched_preference</item>
+    </style>
+
+    <style name="Widget.IOSched.BottomNavigationView" parent="Widget.Design.BottomNavigationView">
+        <item name="android:background">?android:attr/colorBackground</item>
+        <item name="android:elevation">@dimen/bottom_nav_elevation</item>
     </style>
 
 </resources>
