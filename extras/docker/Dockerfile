@@ -13,7 +13,7 @@ ENV ANDROID_HOME /usr/local/android-sdk-linux
 RUN chmod -R +w $ANDROID_HOME
 # Install Android SDK components
 ENV ANDROID_SDK_DATE 20170131
-ENV ANDROID_SDK_COMPONENTS platform-tools,build-tools-23.0.3,build-tools-23.0.2,build-tools-23.0.1,build-tools-22.0.1,build-tools-21.1.2,build-tools-21.1.1,android-23,android-22,android-21,extra-android-m2repository,extra-google-m2repository
+ENV ANDROID_SDK_COMPONENTS platform-tools,build-tools-25.0.2,build-tools-23.0.3,build-tools-23.0.2,build-tools-23.0.1,build-tools-22.0.1,build-tools-21.1.2,build-tools-21.1.1,android-25,android-23,android-22,android-21,extra-android-m2repository,extra-google-m2repository
 ADD android-accept-licenses.sh /opt/tools/android-accept-licenses.sh
 RUN chmod +x /opt/tools/android-accept-licenses.sh
 RUN mkdir ${ANDROID_HOME}/licenses && echo 8933bad161af4178b1185d1a37fbf41ea5269c55 > ${ANDROID_HOME}/licenses/android-sdk-license
