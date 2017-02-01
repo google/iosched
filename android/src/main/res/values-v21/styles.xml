@@ -56,13 +56,4 @@
         <item name="android:colorPrimaryDark">@color/theme_primary_dark</item>
         <item name="android:colorAccent">@color/theme_accent_2</item>
     </style>
-
-    <style name="Widget.IOSched.HeaderBar.Spinner" parent="Widget.IOSched.HeaderBar.Spinner.Base">
-        <item name="android:theme">@style/ActionBarThemeOverlay</item>
-    </style>
-
-    <style name="TabIndicator">
-        <item name="android:theme">@style/ActionBarThemeOverlay</item>
-    </style>
-
 </resources>

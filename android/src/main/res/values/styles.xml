@@ -14,13 +14,11 @@
   See the License for the specific language governing permissions and
   limitations under the License.
   -->
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
     <!-- Root styles that vary by API level -->
 
-    <!-- Disable RTL support on older devices -->
     <!-- Prevents crash on certain devices to namespace conflict -->
     <style name="FrameworkRoot.Theme" parent="Theme.AppCompat.Light.NoActionBar" />
-    <style name="FrameworkRoot.Widget" parent="Theme.AppCompat.NoActionBar" />
 
     <!-- Immediate parent theme to specify base values for custom attributes -->
     <style name="Theme" parent="FrameworkRoot.Theme">
@@ -33,7 +31,6 @@
         <item name="actionBarIconColor">#fff</item>
         <item name="actionBarInsetStart">@dimen/keyline_2</item>
         <item name="homeAsUpIndicator">@drawable/ic_up</item>
-        <item name="spinnerBarInsetStart">@dimen/keyline_2_minus_16dp</item>
         <item name="popupItemBackground">?android:selectableItemBackground</item>
         <item name="photoItemForeground">?android:selectableItemBackground</item>
         <item name="photoItemForegroundBorderless">?android:selectableItemBackground</item>
@@ -64,15 +61,7 @@
 
     <style name="Theme.IOSched" parent="Theme.IOSched.Base" />
 
-    <style name="Theme.IOSched.Widget" parent="FrameworkRoot.Widget">
-        <item name="android:popupMenuStyle">@style/Widget.IOSched.PopupMenu</item>
-        <item name="android:listPopupWindowStyle">@style/Widget.IOSched.PopupMenu</item>
-        <item name="android:dropDownListViewStyle">@style/Widget.IOSched.ListView.DropDown</item>
-        <item name="android:textAppearanceLargePopupMenu">@style/TextAppearance.LargePopupMenu</item>
-    </style>
-
-    <style name="ActionBarThemeOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar">
-    </style>
+    <style name="ActionBarThemeOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
 
     <style name="SearchViewTheme" parent="ThemeOverlay.AppCompat.ActionBar">
         <item name="android:textColorPrimary">@color/app_body_text_1</item>
@@ -128,16 +117,6 @@
         <item name="colorAccent">@color/flat_button_text</item>
     </style>
 
-    <style name="Widget.IOSched.HeaderBar.Spinner.Base" parent="Widget.AppCompat.Light.Spinner.DropDown.ActionBar">
-        <item name="android:background">?android:selectableItemBackground</item>
-        <item name="android:dropDownSelector">?android:selectableItemBackground</item>
-        <item name="android:divider">@null</item>
-        <item name="android:dividerHeight">0dp</item>
-        <item name="android:overlapAnchor">true</item>
-    </style>
-
-    <style name="Widget.IOSched.HeaderBar.Spinner" parent="Widget.IOSched.HeaderBar.Spinner.Base" />
-
     <style name="Widget.IOSched.PopupMenu" parent="Widget.AppCompat.Light.PopupMenu">
         <item name="android:dropDownSelector">?popupItemBackground</item>
     </style>
@@ -171,29 +150,6 @@
     <!-- Session Details -->
     <style name="Theme.IOSched.SessionDetails" parent="Theme.IOSched.SessionDetails.VersionBase" />
 
-    <!-- Social -->
-    <style name="Theme.IOSched.Social">
-        <item name="android:windowBackground">@color/grey_background</item>
-    </style>
-
-    <!-- Account chooser -->
-    <style name="Theme.IOSched.Accounts">
-        <item name="android:actionBarStyle">@style/ActionBar.Accounts</item>
-    </style>
-
-    <style name="ActionBar.Accounts" parent="">
-        <item name="android:displayOptions">showHome|useLogo</item>
-    </style>
-
-    <!-- Misc -->
-    <style name="TabIndicator" />
-
-    <!-- Live stream -->
-    <style name="Theme.IOSched.Livestream" parent="Theme.IOSched">
-        <item name="android:windowBackground">@color/grey_background</item>
-        <item name="actionBarInsetStart">@dimen/keyline_2_minus_16dp</item>
-    </style>
-
     <!-- Empty views -->
     <style name="EmptyText">
         <item name="android:textSize">@dimen/text_size_medium</item>
@@ -201,30 +157,6 @@
     </style>
 
     <!-- Body content -->
-    <style name="TextHeader">
-        <item name="android:textSize">@dimen/text_size_large</item>
-        <item name="android:textStyle">@integer/font_textStyle_medium</item>
-        <item name="android:fontFamily">@string/font_fontFamily_medium</item>
-        <item name="android:textColor">@color/body_text_1</item>
-        <item name="android:ellipsize">end</item>
-        <item name="android:textIsSelectable">true</item>
-        <item name="android:textAlignment">viewStart</item>
-    </style>
-
-    <style name="TextHeaderSub">
-        <item name="android:textSize">@dimen/text_size_medium</item>
-        <item name="android:textStyle">normal</item>
-        <item name="android:textColor">@color/body_text_2</item>
-        <item name="android:textAlignment">viewStart</item>
-    </style>
-
-    <style name="TextBody">
-        <item name="android:textSize">@dimen/text_size_medium</item>
-        <item name="android:textColor">@color/body_text_1</item>
-        <item name="android:lineSpacingMultiplier">1.1</item>
-        <item name="android:textAlignment">textStart</item>
-    </style>
-
     <style name="SessionLiveStreamed">
         <item name="android:textSize">@dimen/text_size_medium</item>
         <item name="android:textColor">@color/session_livestreamed_color</item>
@@ -268,57 +200,16 @@
         <item name="android:textColor">@color/item_text_primary_color</item>
     </style>
 
-    <style name="SessionTimeHint" parent="TextBody">
-        <item name="android:textStyle">italic</item>
+    <style name="SessionTimeHint">
         <item name="android:textColor">@color/body_text_2</item>
-    </style>
-
-    <!-- Explore item text appearances -->
-    <style name="ExploreItem.Title" parent="">
-        <item name="android:textColor">#fff</item> <!-- a bit brighter than body_text_1_inverse to stand out more -->
-        <item name="android:textSize">@dimen/text_size_medium</item>
-        <item name="android:maxLines">2</item>
-        <item name="android:ellipsize">end</item>
-    </style>
-
-    <style name="ExploreItem.Title.Hero">
-        <item name="android:textSize">@dimen/text_size_xlarge</item>
-        <item name="android:maxLines">3</item>
-    </style>
-
-    <style name="ExploreItem.Subtitle" parent="">
-        <item name="android:textColor">@color/body_text_2_inverse</item>
-        <item name="android:textSize">@dimen/text_size_small</item>
-        <item name="android:maxLines">1</item>
-        <item name="android:ellipsize">end</item>
-    </style>
-
-    <style name="ExploreItem.Subtitle.Hero" />
-
-    <style name="ExploreItem.Snippet" parent="">
-        <item name="android:textColor">@color/body_text_2_inverse</item>
-        <item name="android:textSize">@dimen/text_size_small</item>
-        <item name="android:maxLines">2</item>
-        <item name="android:ellipsize">end</item>
-    </style>
-
-    <style name="ExploreItem.Category" parent="">
-        <item name="android:textColor">@color/body_text_2_inverse</item>
-        <item name="android:textSize">@dimen/text_size_small</item>
-    </style>
-
-    <!-- Login stuff -->
-
-    <style name="LoginHelpText">
+        <item name="android:textStyle">italic</item>
         <item name="android:textSize">@dimen/text_size_medium</item>
         <item name="android:lineSpacingMultiplier">1.1</item>
-        <item name="android:textColor">@color/body_text_1</item>
-        <item name="android:fontFamily">sans-serif-light</item>
+        <item name="android:textAlignment" tools:targetApi="jelly_bean_mr1">textStart</item>
     </style>
 
     <!-- Map -->
     <style name="Theme.IOSched.Map" parent="Theme.IOSched" />
-
 
     <style name="MapRoomTitle">
         <item name="android:textSize">@dimen/text_size_xlarge</item>
@@ -341,14 +232,6 @@
         <item name="android:background">@drawable/edit_text</item>
     </style>
 
-    <style name="SessionDetailPlusOne">
-        <item name="android:layout_alignParentRight">true</item>
-        <item name="android:layout_alignParentTop">true</item>
-        <item name="android:layout_marginLeft">@dimen/content_padding_normal</item>
-        <item name="android:layout_width">wrap_content</item>
-        <item name="android:layout_height">wrap_content</item>
-    </style>
-
     <style name="MyScheduleDayLabel">
         <item name="android:textSize">@dimen/text_size_large</item>
         <item name="android:textColor">@color/flat_button_text</item>
@@ -356,7 +239,7 @@
 
     <style name="HeaderBar">
         <item name="android:background">?colorPrimary</item>
-        <item name="android:elevation">@dimen/headerbar_elevation</item>
+        <item name="android:elevation" tools:targetApi="lollipop">@dimen/headerbar_elevation</item>
     </style>
 
     <!-- Session feedback -->
@@ -366,14 +249,6 @@
         <item name="android:textColor">@color/flat_button_text</item>
     </style>
 
-    <style name="FeedbackRatingBar">
-        <item name="android:progressDrawable">@drawable/ratingbar</item>
-        <item name="android:indeterminateDrawable">@drawable/ratingbar</item>
-        <item name="android:numStars">5</item>
-        <item name="android:rating">0</item>
-        <item name="android:stepSize">1</item>
-    </style>
-
     <style name="FeedbackNumberRatingBar">
         <item name="filledDrawable">@drawable/ratingbar_star_filled</item>
         <item name="unfilledDrawable">@drawable/ratingbar_star_unfilled</item>
@@ -381,16 +256,11 @@
     </style>
 
     <!-- Buttons -->
-    <style name="Theme.IOSched.CardView.Button" parent="ThemeOverlay.AppCompat.Light">
-        <item name="android:textColor">@color/theme_primary</item>
-        <item name="colorButtonNormal">@color/button_dark</item>
-    </style>
-
     <style name="MoreButton">
         <item name="android:textAppearance">@style/TextAppearance.AppCompat.Button</item>
         <item name="android:textSize">@dimen/app_text_size_small</item>
         <item name="android:background">@drawable/more_button_background</item>
-        <item name="android:letterSpacing">0.1</item>
+        <item name="android:letterSpacing" tools:targetApi="lollipop">0.1</item>
     </style>
 
     <style name="LiveNowIndicator">
@@ -449,11 +319,6 @@
         <item name="android:textStyle">bold</item>
     </style>
 
-    <style name="WelcomeAccounts">
-        <item name="android:paddingTop">@dimen/padding_normal</item>
-        <item name="android:paddingBottom">@dimen/spacing_normal</item>
-    </style>
-
     <style name="VideoThumbnail">
         <item name="playIcon">@drawable/ic_play_shadowed</item>
         <item name="playedTint">@color/played_video_tint</item>
@@ -469,7 +334,7 @@
 
     <style name="Widget.IOSched.BottomNavigationView" parent="Widget.Design.BottomNavigationView">
         <item name="android:background">?android:attr/colorBackground</item>
-        <item name="android:elevation">@dimen/bottom_nav_elevation</item>
+        <item name="android:elevation" tools:targetApi="lollipop">@dimen/bottom_nav_elevation</item>
     </style>
 
 </resources>

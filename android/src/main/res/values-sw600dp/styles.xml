@@ -14,7 +14,7 @@
   See the License for the specific language governing permissions and
   limitations under the License.
   -->
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
 
     <!-- Intermediary theme for SessionDetails, making it a floating dialog -->
     <style name="Theme.IOSched.SessionDetails.SizeBase" parent="Theme.IOSched">
@@ -26,7 +26,7 @@
         <item name="android:windowCloseOnTouchOutside">true</item>
         <item name="android:windowFrame">@null</item>
         <item name="android:colorBackgroundCacheHint">@null</item>
-        <item name="android:windowElevation">16dp</item>
+        <item name="android:windowElevation" tools:targetApi="lollipop">16dp</item>
         <item name="android:windowBackground">@android:color/transparent</item>
     </style>
 
