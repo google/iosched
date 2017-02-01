@@ -22,8 +22,8 @@ import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.annotation.VisibleForTesting;
 
-import com.google.common.annotations.VisibleForTesting;
 import com.google.samples.apps.iosched.BuildConfig;
 import com.google.samples.apps.iosched.Config;
 import com.google.samples.apps.iosched.R;
@@ -42,10 +42,10 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 
-import static com.google.common.base.Preconditions.checkNotNull;
 import static com.google.samples.apps.iosched.util.LogUtils.LOGD;
 import static com.google.samples.apps.iosched.util.LogUtils.LOGE;
 import static com.google.samples.apps.iosched.util.LogUtils.makeLogTag;
+import static com.google.samples.apps.iosched.util.PreconditionUtils.checkNotNull;
 
 public class MyScheduleModel implements Model<MyScheduleModel.MyScheduleQueryEnum,
         MyScheduleModel.MyScheduleUserActionEnum> {

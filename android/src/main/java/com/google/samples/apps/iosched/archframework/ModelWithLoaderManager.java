@@ -18,17 +18,17 @@ import android.database.Cursor;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.annotation.VisibleForTesting;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.Loader;
 
-import com.google.common.annotations.VisibleForTesting;
 import com.google.samples.apps.iosched.session.SessionDetailModel;
 
 import java.util.HashMap;
 
-import static com.google.common.base.Preconditions.checkNotNull;
 import static com.google.samples.apps.iosched.util.LogUtils.LOGE;
 import static com.google.samples.apps.iosched.util.LogUtils.makeLogTag;
+import static com.google.samples.apps.iosched.util.PreconditionUtils.checkNotNull;
 
 /**
  * Implementation class for {@link Model}, using the {@link LoaderManager} callbacks to query the

@@ -18,8 +18,6 @@ package com.google.samples.apps.iosched.util;
 
 import android.content.Context;
 
-import com.google.android.gms.plus.Account;
-import com.google.common.base.Charsets;
 import com.google.samples.apps.iosched.BuildConfig;
 import com.turbomanage.httpclient.BasicHttpClient;
 
@@ -33,11 +31,14 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
+import java.nio.charset.Charset;
 
 /**
  * Utility methods and constants used for writing and reading to from streams and files.
  */
 public class IOUtils {
+
+    public static final Charset CHARSET_UTF8 = Charset.forName("UTF-8");
 
     private static final String AUTHORIZATION_HEADER = "Authorization";
     private static final String BEARER_PREFIX = "Bearer ";
@@ -51,7 +52,7 @@ public class IOUtils {
      * @throws IOException
      */
     public static void writeToFile(String data, File file) throws IOException {
-        writeToFile(data.getBytes(Charsets.UTF_8), file);
+        writeToFile(data.getBytes(CHARSET_UTF8), file);
     }
 
     /**
@@ -88,7 +89,7 @@ public class IOUtils {
     public static void writeToStream(String content, OutputStream os) throws IOException {
         BufferedWriter writer = null;
         try {
-            writer = new BufferedWriter(new OutputStreamWriter(os, Charsets.UTF_8));
+            writer = new BufferedWriter(new OutputStreamWriter(os, CHARSET_UTF8));
             writer.write(content);
         } finally {
             if (writer != null) {
@@ -122,7 +123,7 @@ public class IOUtils {
         StringBuilder sb = new StringBuilder();
         try {
             String line;
-            reader = new BufferedReader(new InputStreamReader(is, Charsets.UTF_8));
+            reader = new BufferedReader(new InputStreamReader(is, CHARSET_UTF8));
             while ((line = reader.readLine()) != null) {
                 sb.append(line);
             }

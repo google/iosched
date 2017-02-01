@@ -16,8 +16,8 @@ package com.google.samples.apps.iosched.explore.data;
 
 import android.database.Cursor;
 import android.support.annotation.Nullable;
+import android.text.TextUtils;
 
-import com.google.common.base.Strings;
 import com.google.samples.apps.iosched.provider.ScheduleContract;
 
 import java.util.HashSet;
@@ -111,7 +111,7 @@ public class EventCard {
 
     public static boolean isValid(final EventCard card) {
         if (ACTION_TYPE_SESSION.equalsIgnoreCase(card.getActionType()) &&
-                Strings.isNullOrEmpty(card.getActionExtra())) {
+                TextUtils.isEmpty(card.getActionExtra())) {
             return false;
         }
         if (!VALID_ACTION_TYPES.contains(card.getActionType())) {

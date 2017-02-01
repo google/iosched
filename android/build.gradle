@@ -13,7 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 apply plugin: 'com.android.application'
 apply plugin: 'jacoco'
 
@@ -40,12 +39,6 @@ android {
         versionName "${appVersionName}"
         minSdkVersion 16
 
-        // Multidex is used since dev build types don't use minification (for faster builds). The
-        // release builds do use minificaton and only have a single dex file. If the release builds
-        // start using 2+ dex files we would need to look for opportunities to fix that for an app
-        // of this size. Multidex doesn't incur the long app startup time when more dex files
-        // doesn't exist in the APK.
-        multiDexEnabled true
         vectorDrawables.useSupportLibrary = true
 
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
@@ -293,7 +286,5 @@ dependencies {
     // greater is used for both app and test builds.
     compile 'com.google.code.findbugs:jsr305:2.0.1'
 
-    compile 'com.google.guava:guava:18.0'
-    compile 'com.android.support:multidex:1.0.1'
     compile 'com.firebase:firebase-client-android:2.5.0'
 }
