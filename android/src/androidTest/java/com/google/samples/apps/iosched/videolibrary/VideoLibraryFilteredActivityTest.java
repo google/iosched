@@ -47,7 +47,7 @@ public class VideoLibraryFilteredActivityTest {
 
     @Rule
     public BaseActivityTestRule<VideoLibraryFilteredActivity> mActivityRule =
-            new BaseActivityTestRule<VideoLibraryFilteredActivity>(
+            new BaseActivityTestRule<>(
                     VideoLibraryFilteredActivity.class,
                     new StubVideoLibraryModel(
                             InstrumentationRegistry.getTargetContext(),

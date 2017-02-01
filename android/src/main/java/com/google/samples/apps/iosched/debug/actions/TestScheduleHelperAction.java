@@ -59,8 +59,8 @@ public class TestScheduleHelperAction implements DebugAction {
 
     public Boolean startTest() {
         boolean success = true;
-        ArrayList<ScheduleItem> mut = new ArrayList<ScheduleItem>();
-        ArrayList<ScheduleItem> immut = new ArrayList<ScheduleItem>();
+        ArrayList<ScheduleItem> mut = new ArrayList<>();
+        ArrayList<ScheduleItem> immut = new ArrayList<>();
 
         mut.add(item("14:00", "14:30", "m1"));
         immut.add(item("14:25", "14:50", "i1"));

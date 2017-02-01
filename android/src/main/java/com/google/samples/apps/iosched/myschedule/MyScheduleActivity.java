@@ -30,7 +30,6 @@ import android.text.SpannableString;
 import android.text.TextUtils;
 import android.text.method.LinkMovementMethod;
 import android.text.util.Linkify;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.View;
 import android.widget.ScrollView;
@@ -127,8 +126,7 @@ public class MyScheduleActivity extends BaseActivity implements
     /**
      * This is used for narrow mode only, it is empty in wide mode
      */
-    private Set<MyScheduleSingleDayFragment> mMyScheduleSingleDayFragments
-            = new HashSet<MyScheduleSingleDayFragment>();
+    private Set<MyScheduleSingleDayFragment> mMyScheduleSingleDayFragments = new HashSet<>();
 
     /**
      * This is used for narrow mode only, it is null in wide mode. Each page in the {@link

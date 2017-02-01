@@ -36,7 +36,7 @@ import static com.google.samples.apps.iosched.util.LogUtils.*;
 
 public class SpeakersHandler extends JSONHandler {
     private static final String TAG = makeLogTag(SpeakersHandler.class);
-    private HashMap<String, Speaker> mSpeakers = new HashMap<String, Speaker>();
+    private HashMap<String, Speaker> mSpeakers = new HashMap<>();
 
     public SpeakersHandler(Context context) {
         super(context);
@@ -54,7 +54,7 @@ public class SpeakersHandler extends JSONHandler {
         Uri uri = ScheduleContractHelper.setUriAsCalledFromSyncAdapter(
                 ScheduleContract.Speakers.CONTENT_URI);
         HashMap<String, String> speakerHashcodes = loadSpeakerHashcodes();
-        HashSet<String> speakersToKeep = new HashSet<String>();
+        HashSet<String> speakersToKeep = new HashSet<>();
         boolean isIncrementalUpdate = speakerHashcodes != null && speakerHashcodes.size() > 0;
 
         if (isIncrementalUpdate) {
@@ -141,7 +141,7 @@ public class SpeakersHandler extends JSONHandler {
                 LOGE(TAG, "Error querying speaker hashcodes (no records returned)");
                 return null;
             }
-            HashMap<String, String> result = new HashMap<String, String>();
+            HashMap<String, String> result = new HashMap<>();
             if (cursor.moveToFirst()) {
                 do {
                     String speakerId = cursor.getString(SpeakerHashcodeQuery.SPEAKER_ID);

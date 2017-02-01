@@ -100,10 +100,10 @@ public class UserData {
     private Map<String, StarredSession> starredSessions = new HashMap<>();
 
     @SerializedName(JSON_ATTRIBUTE_FEEDBACK_SUBMITTED_SESSIONS)
-    private Set<String> feedbackSubmittedSessionIds = new HashSet<String>();
+    private Set<String> feedbackSubmittedSessionIds = new HashSet<>();
 
     @SerializedName(JSON_ATTRIBUTE_VIEWED_VIDEOS)
-    private Set<String> viewedVideoIds = new HashSet<String>();
+    private Set<String> viewedVideoIds = new HashSet<>();
 
     @SerializedName(JSON_ATTRIBUTE_GCM_KEY)
     private String gcmKey;

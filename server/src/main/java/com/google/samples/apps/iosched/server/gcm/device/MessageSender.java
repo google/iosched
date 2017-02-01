@@ -63,7 +63,7 @@ public class MessageSender {
         // GCM limits maximum devices per multicast request. AppEngine also limits the size of
         // lists stored in the datastore.
         int total = devices.size();
-        List<String> partialDevices = new ArrayList<String>(total);
+        List<String> partialDevices = new ArrayList<>(total);
         int counter = 0;
         for (Device device : devices) {
             counter ++;
@@ -130,7 +130,7 @@ public class MessageSender {
         if (multicastResult.getFailure() != 0) {
             // there were failures, check if any could be retried
             List<Result> results = multicastResult.getResults();
-            List<String> retriableRegIds = new ArrayList<String>();
+            List<String> retriableRegIds = new ArrayList<>();
             for (int i = 0; i < results.size(); i++) {
                 String error = results.get(i).getErrorCodeName();
                 if (error != null) {

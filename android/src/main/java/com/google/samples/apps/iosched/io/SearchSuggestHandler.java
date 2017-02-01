@@ -34,7 +34,7 @@ import static com.google.samples.apps.iosched.util.LogUtils.makeLogTag;
 
 public class SearchSuggestHandler extends JSONHandler {
     private static final String TAG = makeLogTag(SpeakersHandler.class);
-    HashSet<String> mSuggestions = new HashSet<String>();
+    HashSet<String> mSuggestions = new HashSet<>();
 
     public SearchSuggestHandler(Context context) {
         super(context);

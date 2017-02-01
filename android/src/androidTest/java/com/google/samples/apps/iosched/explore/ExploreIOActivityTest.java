@@ -56,7 +56,7 @@ public class ExploreIOActivityTest {
 
     @Rule
     public BaseActivityTestRule<ExploreIOActivity> mActivityRule =
-            new BaseActivityTestRule<ExploreIOActivity>(ExploreIOActivity.class,
+            new BaseActivityTestRule<>(ExploreIOActivity.class,
                     new StubExploreIOModel(
                             InstrumentationRegistry.getTargetContext(),
                             ExploreMockCursor.getCursorForExplore(),

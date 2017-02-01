@@ -79,7 +79,7 @@ public class FeedbackApiHelperTest {
     @Test
     public void sendSessionToServer_SuccessfulConnection_ReturnsTrue() {
         // Given a list of questions and successful http connection
-        HashMap<String, String> questions = new HashMap<String, String>();
+        HashMap<String, String> questions = new HashMap<>();
         questions.put("Q10", "b2ce21ff-2cbe-e411-b87f-00155d5066d7");
         questions.put("Q20", "9fce21ff-2cbe-e411-b87f-00155d5066d7");
         questions.put("Q30", "a5ce21ff-2cbe-e411-b87f-00155d5066d7");

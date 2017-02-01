@@ -124,8 +124,8 @@ public class LoginAndAuthWithGoogleApi
     public LoginAndAuthWithGoogleApi(Activity activity, LoginAndAuthListener callback,
             String accountName) {
         LOGD(TAG, "Helper created. Account: " + mAccountName);
-        mActivityRef = new WeakReference<Activity>(activity);
-        mCallbacksRef = new WeakReference<LoginAndAuthListener>(callback);
+        mActivityRef = new WeakReference<>(activity);
+        mCallbacksRef = new WeakReference<>(callback);
         mAppContext = activity.getApplicationContext();
         mAccountName = accountName;
         if (SettingsUtils.hasUserRefusedSignIn(activity)) {

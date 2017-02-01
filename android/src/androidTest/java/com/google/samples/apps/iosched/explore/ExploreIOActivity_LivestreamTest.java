@@ -56,7 +56,7 @@ public class ExploreIOActivity_LivestreamTest {
 
     @Rule
     public BaseActivityTestRule<ExploreIOActivity> mActivityRule =
-            new BaseActivityTestRule<ExploreIOActivity>(ExploreIOActivity.class,
+            new BaseActivityTestRule<>(ExploreIOActivity.class,
                     new StubExploreIOModel(
                             InstrumentationRegistry.getTargetContext(),
                             ExploreMockCursor.getCursorForLivestreamSessions(mNow),

@@ -46,7 +46,7 @@ import static com.google.samples.apps.iosched.util.LogUtils.*;
 
 public class SessionsHandler extends JSONHandler {
     private static final String TAG = makeLogTag(SessionsHandler.class);
-    private HashMap<String, Session> mSessions = new HashMap<String, Session>();
+    private HashMap<String, Session> mSessions = new HashMap<>();
     private HashMap<String, Tag> mTagMap = null;
     private HashMap<String, Speaker> mSpeakerMap = null;
     private int mDefaultSessionColor;
@@ -75,7 +75,7 @@ public class SessionsHandler extends JSONHandler {
         boolean incrementalUpdate = (sessionHashCodes != null) && (sessionHashCodes.size() > 0);
 
         // set of sessions that we want to keep after the sync
-        HashSet<String> sessionsToKeep = new HashSet<String>();
+        HashSet<String> sessionsToKeep = new HashSet<>();
 
         if (incrementalUpdate) {
             LOGD(TAG, "Doing incremental update for sessions.");
@@ -139,7 +139,7 @@ public class SessionsHandler extends JSONHandler {
                 LOGW(TAG, "Warning: failed to load session hashcodes. Not optimizing session import.");
                 return null;
             }
-            HashMap<String, String> hashcodeMap = new HashMap<String, String>();
+            HashMap<String, String> hashcodeMap = new HashMap<>();
             if (cursor.moveToFirst()) {
                 do {
                     String sessionId = cursor.getString(SessionHashcodeQuery.SESSION_ID);

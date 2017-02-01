@@ -53,8 +53,8 @@ public class ScheduleHelper {
 
     public ArrayList<ScheduleItem> getScheduleData(long start, long end) {
         // get sessions in my schedule and blocks, starting anytime in the conference day
-        ArrayList<ScheduleItem> mutableItems = new ArrayList<ScheduleItem>();
-        ArrayList<ScheduleItem> immutableItems = new ArrayList<ScheduleItem>();
+        ArrayList<ScheduleItem> mutableItems = new ArrayList<>();
+        ArrayList<ScheduleItem> immutableItems = new ArrayList<>();
         addBlocks(start, end, mutableItems, immutableItems);
         addSessions(start, end, mutableItems, immutableItems);
 
@@ -77,7 +77,7 @@ public class ScheduleHelper {
      * Fill the number of sessions for FREE blocks:
      */
     protected void setSessionCounters(ArrayList<ScheduleItem> items, long dayStart, long dayEnd) {
-        ArrayList<ScheduleItem> free = new ArrayList<ScheduleItem>();
+        ArrayList<ScheduleItem> free = new ArrayList<>();
 
         for (ScheduleItem item: items) {
             if (item.type == ScheduleItem.FREE) {

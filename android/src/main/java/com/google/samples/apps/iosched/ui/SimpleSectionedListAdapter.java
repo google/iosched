@@ -35,7 +35,7 @@ public class SimpleSectionedListAdapter extends BaseAdapter {
     private int mSectionResourceId;
     private LayoutInflater mLayoutInflater;
     private ListAdapter mBaseAdapter;
-    private SparseArray<Section> mSections = new SparseArray<Section>();
+    private SparseArray<Section> mSections = new SparseArray<>();
 
     public static class Section {
         int firstPosition;

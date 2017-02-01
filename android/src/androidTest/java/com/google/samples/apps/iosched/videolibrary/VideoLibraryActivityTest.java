@@ -57,7 +57,7 @@ public class VideoLibraryActivityTest {
 
     @Rule
     public BaseActivityTestRule<VideoLibraryActivity> mActivityRule =
-            new BaseActivityTestRule<VideoLibraryActivity>(VideoLibraryActivity.class,
+            new BaseActivityTestRule<>(VideoLibraryActivity.class,
                     new StubVideoLibraryModel(
                             InstrumentationRegistry.getTargetContext(),
                             VideosMockCursor.getCursorForVideos(),

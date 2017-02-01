@@ -38,7 +38,7 @@ import static com.google.samples.apps.iosched.util.LogUtils.*;
 public class FeedbackSyncHelper {
     private static final String TAG = makeLogTag(FeedbackSyncHelper.class);
 
-    private static final HashMap<String, String> QUESTION_KEYS = new HashMap<String, String>();
+    private static final HashMap<String, String> QUESTION_KEYS = new HashMap<>();
     static {
         QUESTION_KEYS.put(ScheduleContract.Feedback.SESSION_RATING, "Q10");
         QUESTION_KEYS.put(ScheduleContract.Feedback.ANSWER_RELEVANCE, "Q20");
@@ -47,7 +47,7 @@ public class FeedbackSyncHelper {
         QUESTION_KEYS.put(ScheduleContract.Feedback.COMMENTS, "Q50");
     }
 
-    private static final HashMap<String, String> RATING_ANSWERS = new HashMap<String, String>();
+    private static final HashMap<String, String> RATING_ANSWERS = new HashMap<>();
     static {
         RATING_ANSWERS.put("1", "aece21ff-2cbe-e411-b87f-00155d5066d7");
         RATING_ANSWERS.put("2", "afce21ff-2cbe-e411-b87f-00155d5066d7");
@@ -56,7 +56,7 @@ public class FeedbackSyncHelper {
         RATING_ANSWERS.put("5", "b2ce21ff-2cbe-e411-b87f-00155d5066d7");
     }
 
-    private static final HashMap<String, String> RELEVANCE_ANSWERS = new HashMap<String, String>();
+    private static final HashMap<String, String> RELEVANCE_ANSWERS = new HashMap<>();
     static {
         RELEVANCE_ANSWERS.put("1", "9bce21ff-2cbe-e411-b87f-00155d5066d7");
         RELEVANCE_ANSWERS.put("2", "9cce21ff-2cbe-e411-b87f-00155d5066d7");
@@ -65,7 +65,7 @@ public class FeedbackSyncHelper {
         RELEVANCE_ANSWERS.put("5", "9fce21ff-2cbe-e411-b87f-00155d5066d7");
     }
 
-    private static final HashMap<String, String> CONTENT_ANSWERS = new HashMap<String, String>();
+    private static final HashMap<String, String> CONTENT_ANSWERS = new HashMap<>();
     static {
         CONTENT_ANSWERS.put("1", "a1ce21ff-2cbe-e411-b87f-00155d5066d7");
         CONTENT_ANSWERS.put("2", "a2ce21ff-2cbe-e411-b87f-00155d5066d7");
@@ -74,7 +74,7 @@ public class FeedbackSyncHelper {
         CONTENT_ANSWERS.put("5", "a5ce21ff-2cbe-e411-b87f-00155d5066d7");
     }
 
-    private static final HashMap<String, String> SPEAKER_ANSWERS = new HashMap<String, String>();
+    private static final HashMap<String, String> SPEAKER_ANSWERS = new HashMap<>();
     static {
         SPEAKER_ANSWERS.put("1", "a8ce21ff-2cbe-e411-b87f-00155d5066d7");
         SPEAKER_ANSWERS.put("2", "a9ce21ff-2cbe-e411-b87f-00155d5066d7");
@@ -101,8 +101,8 @@ public class FeedbackSyncHelper {
                 null,
                 null);
         LOGD(TAG, "Number of unsynced feedbacks: " + c.getCount());
-        HashMap<String, String> questions = new HashMap<String, String>();
-        List<String> updatedSessions = new ArrayList<String>();
+        HashMap<String, String> questions = new HashMap<>();
+        List<String> updatedSessions = new ArrayList<>();
 
         try {
             while (c.moveToNext()) {

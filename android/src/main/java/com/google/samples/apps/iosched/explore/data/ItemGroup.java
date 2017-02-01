@@ -28,7 +28,7 @@ public class ItemGroup {
     private String mTitle;
     private String mId;
     private String mPhotoUrl;
-    private ArrayList<SessionData> sessions = new ArrayList<SessionData>();
+    private ArrayList<SessionData> sessions = new ArrayList<>();
 
     public void addSessionData(SessionData session) {
         sessions.add(session);

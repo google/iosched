@@ -208,7 +208,7 @@ public class SessionCalendarService extends IntentService {
     private ArrayList<ContentProviderOperation> processAllSessionsCalendar(ContentResolver resolver,
             final long calendarId) {
 
-        ArrayList<ContentProviderOperation> batch = new ArrayList<ContentProviderOperation>();
+        ArrayList<ContentProviderOperation> batch = new ArrayList<>();
 
         // Unable to find the Calendar associated with the user. Stop here.
         if (calendarId == INVALID_CALENDAR_ID) {
@@ -248,7 +248,7 @@ public class SessionCalendarService extends IntentService {
     private ArrayList<ContentProviderOperation> processClearAllSessions(
             ContentResolver resolver, long calendarId) {
 
-        ArrayList<ContentProviderOperation> batch = new ArrayList<ContentProviderOperation>();
+        ArrayList<ContentProviderOperation> batch = new ArrayList<>();
 
         // Unable to find the Calendar associated with the user. Stop here.
         if (calendarId == INVALID_CALENDAR_ID) {
@@ -284,7 +284,7 @@ public class SessionCalendarService extends IntentService {
             final long calendarId, final boolean isAddEvent,
             final Uri sessionUri, final long sessionBlockStart, final long sessionBlockEnd,
             final String sessionTitle, final String sessionRoom) {
-        ArrayList<ContentProviderOperation> batch = new ArrayList<ContentProviderOperation>();
+        ArrayList<ContentProviderOperation> batch = new ArrayList<>();
 
         // Unable to find the Calendar associated with the user or permissions were revoked.
         if (calendarId == INVALID_CALENDAR_ID || !permissionsAlreadyGranted()) {

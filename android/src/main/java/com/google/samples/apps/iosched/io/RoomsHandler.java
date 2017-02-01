@@ -35,7 +35,7 @@ public class RoomsHandler extends JSONHandler {
     private static final String TAG = makeLogTag(RoomsHandler.class);
 
     // map from room ID to Room model object
-    private HashMap<String, Room> mRooms = new HashMap<String, Room>();
+    private HashMap<String, Room> mRooms = new HashMap<>();
 
     public RoomsHandler(Context context) {
         super(context);

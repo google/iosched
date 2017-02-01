@@ -39,10 +39,10 @@ public class MapPropertyHandler extends JSONHandler {
     private static final String TAG = makeLogTag(MapPropertyHandler.class);
 
     // maps floor# to tile overlay for that floor
-    private HashMap<String, Tile> mTileOverlays = new HashMap<String, Tile>();
+    private HashMap<String, Tile> mTileOverlays = new HashMap<>();
 
     // maps floor# to a list of markers on that floor
-    private HashMap<String, ArrayList<Marker>> mMarkers = new HashMap<String, ArrayList<Marker>>();
+    private HashMap<String, ArrayList<Marker>> mMarkers = new HashMap<>();
 
     public MapPropertyHandler(Context context) {
         super(context);

@@ -147,9 +147,9 @@ public class SessionDetailModel extends ModelWithLoaderManager<SessionDetailQuer
      * id for the string describing the link, the second is the {@code Intent} to launch when
      * selecting the link.
      */
-    private List<Pair<Integer, Intent>> mLinks = new ArrayList<Pair<Integer, Intent>>();
+    private List<Pair<Integer, Intent>> mLinks = new ArrayList<>();
 
-    private List<Speaker> mSpeakers = new ArrayList<Speaker>();
+    private List<Speaker> mSpeakers = new ArrayList<>();
 
     private StringBuilder mBuffer = new StringBuilder();
 

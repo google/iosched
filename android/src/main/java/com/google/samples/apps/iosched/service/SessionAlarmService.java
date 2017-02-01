@@ -282,8 +282,8 @@ public class SessionAlarmService extends IntentService {
 
             FeedbackHelper feedbackHelper = new FeedbackHelper(this);
 
-            List<String> needFeedbackIds = new ArrayList<String>();
-            List<String> needFeedbackTitles = new ArrayList<String>();
+            List<String> needFeedbackIds = new ArrayList<>();
+            List<String> needFeedbackTitles = new ArrayList<>();
             while (c.moveToNext()) {
                 String sessionId = c.getString(SessionsNeedingFeedbackQuery.SESSION_ID);
                 String sessionTitle = c.getString(SessionsNeedingFeedbackQuery.SESSION_TITLE);
@@ -412,7 +412,7 @@ public class SessionAlarmService extends IntentService {
             LOGD(TAG, "# starred sessions in that interval: " + c.getCount());
             String singleSessionId = null;
             String singleSessionRoomId = null;
-            ArrayList<String> starredSessionTitles = new ArrayList<String>();
+            ArrayList<String> starredSessionTitles = new ArrayList<>();
             while (c.moveToNext()) {
                 singleSessionId = c.getString(SessionDetailQuery.SESSION_ID);
                 singleSessionRoomId = c.getString(SessionDetailQuery.ROOM_ID);

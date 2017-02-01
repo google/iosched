@@ -62,7 +62,7 @@ public class VendorDynamicInput extends DataSourceInput<InputJsonKeys.VendorAPIS
     HashMap<String, String> params = null;
 
     if (entityType.equals(InputJsonKeys.VendorAPISource.MainTypes.topics) || entityType.equals(InputJsonKeys.VendorAPISource.MainTypes.speakers)) {
-      params = new HashMap<String, String>();
+      params = new HashMap<>();
 
       // Topics and speakers require param "includeinfo=true" to bring extra data
       params.put("includeinfo", "true");
@@ -78,7 +78,7 @@ public class VendorDynamicInput extends DataSourceInput<InputJsonKeys.VendorAPIS
       page = 1;
     } else if (page > 1) {
       if (params == null) {
-        params = new HashMap<String, String>();
+        params = new HashMap<>();
       }
       params.put("page", Integer.toString(page));
     }

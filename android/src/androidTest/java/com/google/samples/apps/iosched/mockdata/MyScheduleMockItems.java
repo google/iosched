@@ -60,7 +60,7 @@ public class MyScheduleMockItems {
     public static ArrayList<ScheduleItem> getItemsForAttendee(int dayId, boolean feedbackGiven,
             String title) {
         long timeBase = Config.CONFERENCE_START_MILLIS + (dayId - 1) * TimeUtils.DAY;
-        ArrayList<ScheduleItem> newItems = new ArrayList<ScheduleItem>();
+        ArrayList<ScheduleItem> newItems = new ArrayList<>();
         ScheduleItem newItem1 = new ScheduleItem();
         newItem1.type = 1;
         newItem1.sessionType = 1;
@@ -106,7 +106,7 @@ public class MyScheduleMockItems {
      */
     public static ArrayList<ScheduleItem> getItemsForAttendeeBefore(int dayId) {
         long timeBase = Config.CONFERENCE_START_MILLIS + (dayId - 1) * TimeUtils.DAY;
-        ArrayList<ScheduleItem> newItems = new ArrayList<ScheduleItem>();
+        ArrayList<ScheduleItem> newItems = new ArrayList<>();
         ScheduleItem newItem1 = new ScheduleItem();
         newItem1.type = 1;
         newItem1.sessionType = 1;

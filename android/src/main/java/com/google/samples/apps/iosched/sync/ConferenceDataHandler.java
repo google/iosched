@@ -105,7 +105,7 @@ public class ConferenceDataHandler {
 
     // Convenience map that maps the key name to its corresponding handler (e.g.
     // "blocks" to mBlocksHandler (to avoid very tedious if-elses)
-    HashMap<String, JSONHandler> mHandlerForKey = new HashMap<String, JSONHandler>();
+    HashMap<String, JSONHandler> mHandlerForKey = new HashMap<>();
 
     // Tally of total content provider operations we carried out (for statistical purposes)
     private int mContentProviderOperationsDone = 0;
@@ -153,7 +153,7 @@ public class ConferenceDataHandler {
         mSessionsHandler.setSpeakerMap(mSpeakersHandler.getSpeakerMap());
 
         // produce the necessary content provider operations
-        ArrayList<ContentProviderOperation> batch = new ArrayList<ContentProviderOperation>();
+        ArrayList<ContentProviderOperation> batch = new ArrayList<>();
         for (String key : DATA_KEYS_IN_ORDER) {
             LOGI(TAG, "Building content provider operations for: " + key);
             mHandlerForKey.get(key).makeContentProviderOperations(batch);

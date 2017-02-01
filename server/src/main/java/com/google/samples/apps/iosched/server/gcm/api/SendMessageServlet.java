@@ -40,8 +40,8 @@ public class SendMessageServlet extends BaseServlet {
 
 
     /** Actions that can be executed by non admins. */
-    private static final HashSet<String> UNPRIVILEGED_ACTIONS = new HashSet<String>(
-        Arrays.asList(new String[]{"sync_schedule", "test", "sync_user"}));
+    private static final HashSet<String> UNPRIVILEGED_ACTIONS = new HashSet<>(
+            Arrays.asList(new String[]{"sync_schedule", "test", "sync_user"}));
 
     @Override
     protected void doOptions(HttpServletRequest req, HttpServletResponse resp) throws IOException {

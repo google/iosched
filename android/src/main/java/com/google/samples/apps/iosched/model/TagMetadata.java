@@ -35,13 +35,13 @@ import java.util.List;
 public class TagMetadata {
 
     // List of tags in each category, sorted by the category sort order.
-    private HashMap<String, ArrayList<Tag>> mTagsInCategory = new HashMap<String, ArrayList<Tag>>();
+    private HashMap<String, ArrayList<Tag>> mTagsInCategory = new HashMap<>();
 
     // Hash map from tag ID to tag.
-    private HashMap<String, Tag> mTagsById = new HashMap<String, Tag>();
+    private HashMap<String, Tag> mTagsById = new HashMap<>();
 
     // Hash map from tag name to tag id.
-    private HashMap<String, String> mTagsByName = new HashMap<String, String>();
+    private HashMap<String, String> mTagsByName = new HashMap<>();
 
     public static CursorLoader createCursorLoader(Context context) {
         return new CursorLoader(context, ScheduleContract.Tags.CONTENT_URI,

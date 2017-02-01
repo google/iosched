@@ -63,7 +63,7 @@ public class RemoteConferenceDataFetcher {
     private String mServerTimestamp = null;
 
     // the set of cache files we have used -- we use this for cache cleanup.
-    private HashSet<String> mCacheFilesToKeep = new HashSet<String>();
+    private HashSet<String> mCacheFilesToKeep = new HashSet<>();
 
     // total # of bytes downloaded (approximate)
     private long mBytesDownloaded = 0;

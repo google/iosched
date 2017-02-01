@@ -50,7 +50,7 @@ public class NavigationConfig {
 
     public static NavigationItemEnum[] filterOutItemsDisabledInBuildConfig(
             NavigationItemEnum[] items) {
-        List<NavigationItemEnum> enabledItems = new ArrayList<NavigationItemEnum>();
+        List<NavigationItemEnum> enabledItems = new ArrayList<>();
         for (int i = 0; i < items.length; i++) {
             boolean includeItem = true;
             switch (items[i]) {

@@ -87,8 +87,8 @@ public class DataExtractor {
   }
 
   public JsonObject extractFromDataSources(JsonDataSources sources) {
-    usedTags = new HashSet<String>();
-    usedSpeakers = new HashSet<String>();
+    usedTags = new HashSet<>();
+    usedSpeakers = new HashSet<>();
 
     JsonObject result = new JsonObject();
     result.add(OutputJsonKeys.MainTypes.rooms.name(), extractRooms(sources));
@@ -125,7 +125,7 @@ public class DataExtractor {
   }
 
   public JsonArray extractRooms(JsonDataSources sources) {
-    HashSet<String> ids = new HashSet<String>();
+    HashSet<String> ids = new HashSet<>();
     JsonArray result = new JsonArray();
     JsonDataSource source = sources.getSource(InputJsonKeys.VendorAPISource.MainTypes.rooms.name());
     if (source != null) {
@@ -156,10 +156,10 @@ public class DataExtractor {
         .tag_category_mapping.name());
     JsonDataSource tagsConfSource = sources.getSource(InputJsonKeys.ExtraSource.MainTypes.tag_conf.name());
 
-    categoryToTagMap = new HashMap<String, JsonObject>();
+    categoryToTagMap = new HashMap<>();
 
     // Only for checking duplicates.
-    HashSet<String> originalTagNames = new HashSet<String>();
+    HashSet<String> originalTagNames = new HashSet<>();
 
     if (source != null) {
       for (JsonObject origin: source) {
@@ -251,7 +251,7 @@ public class DataExtractor {
   }
 
   public JsonArray extractSpeakers(JsonDataSources sources) {
-    speakersById = new HashMap<String, JsonObject>();
+    speakersById = new HashMap<>();
     JsonArray result = new JsonArray();
     JsonDataSource source = sources.getSource(InputJsonKeys.VendorAPISource.MainTypes.speakers.name());
     if (source != null) {
@@ -408,7 +408,7 @@ public class DataExtractor {
   }
 
   public JsonArray extractVideoSessions(JsonDataSources sources) {
-    videoSessionsById = new HashMap<String, JsonObject>();
+    videoSessionsById = new HashMap<>();
     if (categoryToTagMap == null) {
       throw new IllegalStateException("You need to extract tags before attempting to extract video sessions");
     }

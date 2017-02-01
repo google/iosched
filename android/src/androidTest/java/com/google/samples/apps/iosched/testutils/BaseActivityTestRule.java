@@ -90,7 +90,7 @@ public class BaseActivityTestRule<T extends Activity> extends IntentsTestRule<T>
     }
 
     private void selectFirstAccount() {
-        List<Account> availableAccounts = new ArrayList<Account>(
+        List<Account> availableAccounts = new ArrayList<>(
                 Arrays.asList(AccountManager.get(InstrumentationRegistry.getTargetContext())
                                             .getAccountsByType(
                                                     GoogleAuthUtil.GOOGLE_ACCOUNT_TYPE)));

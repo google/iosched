@@ -16,10 +16,8 @@ package com.google.samples.apps.iosched;
 
 import android.os.Build;
 import android.provider.Settings;
-import android.support.test.InstrumentationRegistry;
 import android.support.test.runner.AndroidJUnit4;
 import android.test.suitebuilder.annotation.LargeTest;
-import android.util.Log;
 
 import com.google.samples.apps.iosched.about.AboutActivity;
 import com.google.samples.apps.iosched.testutils.BaseActivityTestRule;
@@ -30,7 +28,6 @@ import org.junit.runner.RunWith;
 
 import static com.google.samples.apps.iosched.util.LogUtils.makeLogTag;
 import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
 
 /**
  * Tests to ensure the device is setup properly to run the tests. Before making changes to a test
@@ -43,8 +40,7 @@ public class DeviceStateTest {
 
     @Rule
     public BaseActivityTestRule<AboutActivity> mActivityRule =
-            new BaseActivityTestRule<AboutActivity>(
-                    AboutActivity.class, null, true);
+            new BaseActivityTestRule<>(AboutActivity.class, null, true);
 
     @Test
     public void animator_areDisabled() {

@@ -84,9 +84,9 @@ public interface Config {
   // See context at b/15452185:
   public static final RoomMapping ROOM_MAPPING = new RoomMapping();
   static class RoomMapping {
-    private HashMap<String, String> idMapping = new HashMap<String, String>();
-    private HashMap<String, String> titleMapping = new HashMap<String, String>();
-    private HashMap<String, String> captionsMapping = new HashMap<String, String>();
+    private HashMap<String, String> idMapping = new HashMap<>();
+    private HashMap<String, String> titleMapping = new HashMap<>();
+    private HashMap<String, String> captionsMapping = new HashMap<>();
     public RoomMapping() {
       idMapping.put("e9f3b25f-d4e2-e411-b87f-00155d5066d7", "keynote");
       idMapping.put("6822c256-d4e2-e411-b87f-00155d5066d7", "sandbox");

@@ -36,7 +36,7 @@ import static com.google.samples.apps.iosched.util.LogUtils.makeLogTag;
 public class HashtagsHandler extends JSONHandler {
 
     private static final String TAG = makeLogTag(HashtagsHandler.class);
-    private HashMap<String, Hashtag> mHashtags = new HashMap<String, Hashtag>();
+    private HashMap<String, Hashtag> mHashtags = new HashMap<>();
 
     public HashtagsHandler(Context context) {
         super(context);

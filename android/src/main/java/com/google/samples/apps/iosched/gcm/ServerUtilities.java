@@ -89,7 +89,7 @@ public final class ServerUtilities {
         String serverUrl = BuildConfig.GCM_SERVER_URL + "/register";
         LOGI(TAG, "registering on GCM with GCM key: " + AccountUtils.sanitizeGcmKey(gcmKey));
 
-        Map<String, String> params = new HashMap<String, String>();
+        Map<String, String> params = new HashMap<>();
         params.put(PROPERTY_REG_ID, regId);
         params.put(PROPERTY_GCM_KEY, gcmKey);
         long backoff = BACKOFF_MILLI_SECONDS + sRandom.nextInt(1000);
@@ -139,7 +139,7 @@ public final class ServerUtilities {
 
         LOGI(TAG, "unregistering device (regId = " + regId + ")");
         String serverUrl = BuildConfig.GCM_SERVER_URL + "/unregister";
-        Map<String, String> params = new HashMap<String, String>();
+        Map<String, String> params = new HashMap<>();
         params.put(PROPERTY_GCM_KEY, gcmKey);
         params.put(PROPERTY_REG_ID, regId);
         try {

@@ -253,7 +253,7 @@ public class ScheduleWidgetRemoteViewsService extends RemoteViewsService {
 
             String displayTimeZone = SettingsUtils.getDisplayTimeZone(mContext).getID();
 
-            mSections = new ArrayList<SimpleSectionedListAdapter.Section>();
+            mSections = new ArrayList<>();
             long previousTime = -1;
             long time;
             mPMap = new SparseIntArray();
@@ -261,7 +261,7 @@ public class ScheduleWidgetRemoteViewsService extends RemoteViewsService {
             int offset = 0;
             int globalPosition = 0;
             int position = 0;
-            mScheduleItems = new ArrayList<ScheduleItem>();
+            mScheduleItems = new ArrayList<>();
             for (ScheduleItem item : allScheduleItems) {
                 if (item.endTime <= TimeUtils.getCurrentTime(mContext)) {
                     continue;

@@ -80,7 +80,7 @@ public class SVGTileProvider implements TileProvider {
     }
 
     private class TileGeneratorPool {
-        private final ConcurrentLinkedQueue<TileGenerator> mPool = new ConcurrentLinkedQueue<TileGenerator>();
+        private final ConcurrentLinkedQueue<TileGenerator> mPool = new ConcurrentLinkedQueue<>();
         private final int mMaxSize;
 
         private TileGeneratorPool(int maxSize) {

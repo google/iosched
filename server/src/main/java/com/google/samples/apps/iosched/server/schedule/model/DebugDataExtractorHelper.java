@@ -82,7 +82,7 @@ public class DebugDataExtractorHelper {
   }
 
   public static final void changeCategories(HashMap<String, JsonObject> categoryToTagMap, JsonArray allTags) {
-    topicTags = new ArrayList<JsonObject>();
+    topicTags = new ArrayList<>();
     Iterator<Map.Entry<String, JsonObject>> it = categoryToTagMap.entrySet().iterator();
     while (it.hasNext()) {
       JsonObject tag = it.next().getValue();

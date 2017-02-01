@@ -39,7 +39,7 @@ import static com.google.samples.apps.iosched.util.LogUtils.*;
 
 public class VideosHandler extends JSONHandler {
     private static final String TAG = makeLogTag(VideosHandler.class);
-    private HashMap<String, Video> mVideos = new HashMap<String, Video>();
+    private HashMap<String, Video> mVideos = new HashMap<>();
 
     public VideosHandler(Context context) {
         super(context);
@@ -61,7 +61,7 @@ public class VideosHandler extends JSONHandler {
         Uri uri = ScheduleContractHelper.setUriAsCalledFromSyncAdapter(
                 ScheduleContract.Videos.CONTENT_URI);
         HashMap<String, String> videoHashcodes = loadVideoHashcodes();
-        HashSet<String> videosToKeep = new HashSet<String>();
+        HashSet<String> videosToKeep = new HashSet<>();
         boolean isIncrementalUpdate = videoHashcodes != null && videoHashcodes.size() > 0;
 
         if (isIncrementalUpdate) {
@@ -164,7 +164,7 @@ public class VideosHandler extends JSONHandler {
                 LOGE(TAG, "Error querying video hashcodes (no records returned)");
                 return null;
             }
-            HashMap<String, String> result = new HashMap<String, String>();
+            HashMap<String, String> result = new HashMap<>();
             if (cursor.moveToFirst()) {
                 do {
                     String videoId = cursor.getString(VideoHashcodeQuery.VIDEO_ID);

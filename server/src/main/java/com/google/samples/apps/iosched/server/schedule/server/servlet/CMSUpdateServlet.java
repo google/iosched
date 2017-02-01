@@ -47,7 +47,7 @@ import javax.servlet.http.HttpServletResponse;
  */
 public class CMSUpdateServlet extends HttpServlet {
 
-  private static final HashSet<String> nonAdminUsers = new HashSet<String>();
+  private static final HashSet<String> nonAdminUsers = new HashSet<>();
   static {
     nonAdminUsers.add("ldale@google.com");
   }

@@ -22,27 +22,24 @@ import android.graphics.drawable.Drawable;
 import android.support.annotation.DrawableRes;
 import android.widget.ImageView;
 
-import com.google.samples.apps.iosched.R;
-
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
 import com.bumptech.glide.BitmapRequestBuilder;
-import com.bumptech.glide.Glide;
 import com.bumptech.glide.BitmapTypeRequest;
+import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.model.GlideUrl;
 import com.bumptech.glide.load.model.ModelCache;
 import com.bumptech.glide.load.model.stream.BaseGlideUrlLoader;
 import com.bumptech.glide.load.resource.bitmap.CenterCrop;
 import com.bumptech.glide.request.RequestListener;
+import com.google.samples.apps.iosched.R;
 
-import static com.google.samples.apps.iosched.util.LogUtils.LOGW;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 import static com.google.samples.apps.iosched.util.LogUtils.makeLogTag;
 
 public class ImageLoader {
     private static final String TAG = makeLogTag(ImageLoader.class);
-    private static final ModelCache<String, GlideUrl> urlCache =
-            new ModelCache<String, GlideUrl>(150);
+    private static final ModelCache<String, GlideUrl> urlCache = new ModelCache<>(150);
 
     private final BitmapTypeRequest<String> mGlideModelRequest;
     private final CenterCrop mCenterCrop;

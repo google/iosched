@@ -44,7 +44,7 @@ public class GCMMessageListenerService extends GcmListenerService {
 
     static {
         // Known messages and their GCM message receivers
-        Map<String, GCMCommand> receivers = new HashMap<String, GCMCommand>();
+        Map<String, GCMCommand> receivers = new HashMap<>();
         receivers.put("test", new TestCommand());
         receivers.put("announcement", new AnnouncementCommand());
         receivers.put("sync_schedule", new SyncCommand());

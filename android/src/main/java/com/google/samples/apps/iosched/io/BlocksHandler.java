@@ -35,7 +35,7 @@ import static com.google.samples.apps.iosched.util.LogUtils.makeLogTag;
 
 public class BlocksHandler extends JSONHandler {
     private static final String TAG = makeLogTag(BlocksHandler.class);
-    private ArrayList<Block> mBlocks = new ArrayList<Block>();
+    private ArrayList<Block> mBlocks = new ArrayList<>();
 
     public BlocksHandler(Context context) {
         super(context);

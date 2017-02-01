@@ -36,7 +36,7 @@ public class ScheduleItemHelper {
         // mark conflicting immutable:
         markConflicting(immutableItems);
 
-        ArrayList<ScheduleItem> result = new ArrayList<ScheduleItem>();
+        ArrayList<ScheduleItem> result = new ArrayList<>();
         result.addAll(immutableItems);
         result.addAll(mutableItems);
 
