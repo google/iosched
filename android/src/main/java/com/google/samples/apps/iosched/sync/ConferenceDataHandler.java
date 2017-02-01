@@ -25,21 +25,23 @@ import android.os.RemoteException;
 import android.preference.PreferenceManager;
 import android.text.TextUtils;
 
-import com.google.samples.apps.iosched.io.*;
-import com.google.samples.apps.iosched.io.map.model.Tile;
-import com.google.samples.apps.iosched.provider.ScheduleContract;
-import com.google.samples.apps.iosched.util.AccountUtils;
-import com.google.samples.apps.iosched.util.IOUtils;
-import com.google.samples.apps.iosched.util.MapUtils;
 import com.google.gson.JsonParser;
 import com.google.gson.stream.JsonReader;
-
-import java.io.*;
-import java.net.HttpURLConnection;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
-
+import com.google.samples.apps.iosched.io.BlocksHandler;
+import com.google.samples.apps.iosched.io.CardHandler;
+import com.google.samples.apps.iosched.io.HashtagsHandler;
+import com.google.samples.apps.iosched.io.JSONHandler;
+import com.google.samples.apps.iosched.io.MapPropertyHandler;
+import com.google.samples.apps.iosched.io.RoomsHandler;
+import com.google.samples.apps.iosched.io.SearchSuggestHandler;
+import com.google.samples.apps.iosched.io.SessionsHandler;
+import com.google.samples.apps.iosched.io.SpeakersHandler;
+import com.google.samples.apps.iosched.io.TagsHandler;
+import com.google.samples.apps.iosched.io.VideosHandler;
+import com.google.samples.apps.iosched.io.map.model.Tile;
+import com.google.samples.apps.iosched.provider.ScheduleContract;
+import com.google.samples.apps.iosched.util.IOUtils;
+import com.google.samples.apps.iosched.util.MapUtils;
 import com.larvalabs.svgandroid.SVG;
 import com.larvalabs.svgandroid.SVGBuilder;
 import com.larvalabs.svgandroid.SVGParseException;
@@ -48,7 +50,21 @@ import com.turbomanage.httpclient.ConsoleRequestLogger;
 import com.turbomanage.httpclient.HttpResponse;
 import com.turbomanage.httpclient.RequestLogger;
 
-import static com.google.samples.apps.iosched.util.LogUtils.*;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.StringReader;
+import java.net.HttpURLConnection;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
+
+import static com.google.samples.apps.iosched.util.LogUtils.LOGD;
+import static com.google.samples.apps.iosched.util.LogUtils.LOGE;
+import static com.google.samples.apps.iosched.util.LogUtils.LOGI;
+import static com.google.samples.apps.iosched.util.LogUtils.LOGW;
+import static com.google.samples.apps.iosched.util.LogUtils.makeLogTag;
 
 /**
  * Helper class that parses conference data and imports them into the app's
@@ -302,14 +318,14 @@ public class ConferenceDataHandler {
     public void setDataTimestamp(String timestamp) {
         LOGD(TAG, "Setting data timestamp to: " + timestamp);
         PreferenceManager.getDefaultSharedPreferences(mContext).edit().putString(
-                SP_KEY_DATA_TIMESTAMP, timestamp).commit();
+                SP_KEY_DATA_TIMESTAMP, timestamp).apply();
     }
 
     // Reset the timestamp of the data we have in the content provider
     public static void resetDataTimestamp(final Context context) {
         LOGD(TAG, "Resetting data timestamp to default (to invalidate our synced data)");
         PreferenceManager.getDefaultSharedPreferences(context).edit().remove(
-                SP_KEY_DATA_TIMESTAMP).commit();
+                SP_KEY_DATA_TIMESTAMP).apply();
     }
 
     /**

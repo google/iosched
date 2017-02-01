@@ -17,19 +17,19 @@
 <!-- Placeholder strings for dynamic content in the app. This file is empty for production usage,
      but src/main/debug has a file with values to allow layout editor previews to work. -->
 <resources>
-    <string name="placeholder_account_name"></string>
-    <string name="placeholder_email_address"></string>
-    <string name="placeholder_session_day"></string>
-    <string name="placeholder_session_start_time"></string>
-    <string name="placeholder_session_end_time"></string>
-    <string name="placeholder_session_block_time"></string>
-    <string name="placeholder_session_title"></string>
-    <string name="placeholder_session_subtitle"></string>
-    <string name="placeholder_session_subtitle_and_abstract"></string>
-    <string name="placeholder_session_blurb"></string>
-    <string name="placeholder_map_title"></string>
-    <string name="placeholder_lorem_ipsum"></string>
-    <string name="placeholder_button_label_1"></string>
-    <string name="placeholder_button_label_2"></string>
+    <string name="placeholder_account_name" translatable="false" />
+    <string name="placeholder_email_address" translatable="false" />
+    <string name="placeholder_session_day" translatable="false" />
+    <string name="placeholder_session_start_time" translatable="false" />
+    <string name="placeholder_session_end_time" translatable="false" />
+    <string name="placeholder_session_block_time" translatable="false" />
+    <string name="placeholder_session_title" translatable="false" />
+    <string name="placeholder_session_subtitle" translatable="false" />
+    <string name="placeholder_session_subtitle_and_abstract" translatable="false" />
+    <string name="placeholder_session_blurb" translatable="false" />
+    <string name="placeholder_map_title" translatable="false" />
+    <string name="placeholder_lorem_ipsum" translatable="false" />
+    <string name="placeholder_button_label_1" translatable="false" />
+    <string name="placeholder_button_label_2" translatable="false" />
 </resources>
 

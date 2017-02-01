@@ -16,6 +16,8 @@
 
 package com.google.samples.apps.iosched.session;
 
+import static com.google.samples.apps.iosched.util.LogUtils.LOGD;
+
 import android.animation.ArgbEvaluator;
 import android.animation.ObjectAnimator;
 import android.app.Activity;
@@ -81,8 +83,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
-
-import static com.google.samples.apps.iosched.util.LogUtils.LOGD;
 
 /**
  * Displays the details about a session. The user can add/remove a session from the schedule, watch
@@ -828,8 +828,7 @@ public class SessionDetailFragment extends Fragment implements
                 if (minutesUntilStart > 1) {
                     timeHint = getString(R.string.time_hint_about_to_start_min, minutesUntilStart);
                 } else {
-                    timeHint = getString(R.string.time_hint_about_to_start_shortly,
-                            minutesUntilStart);
+                    timeHint = getString(R.string.time_hint_about_to_start_shortly);
                 }
             }
         }

@@ -281,7 +281,7 @@
 
   <!-- Shown on several screens alerting user that no data is being shown because a background
   data synchronization is still in progress. Data will show as soon as the sync ends. -->
-  <string name="empty_waiting_for_sync">Auf Sync warten ...</string>
+  <string name="empty_waiting_for_sync">Auf Sync warten …</string>
 
   <!-- Shown on a widget that normally displays upcoming sessions. This is shown after the
   conference, when there are no more sessions to show. -->

@@ -281,7 +281,7 @@
 
   <!-- Shown on several screens alerting user that no data is being shown because a background
   data synchronization is still in progress. Data will show as soon as the sync ends. -->
-  <string name="empty_waiting_for_sync">Esperando sincronización...</string>
+  <string name="empty_waiting_for_sync">Esperando sincronización…</string>
 
   <!-- Shown on a widget that normally displays upcoming sessions. This is shown after the
   conference, when there are no more sessions to show. -->
@@ -341,7 +341,7 @@
   <string name="live_now">EN VIVO</string>
 
   <!-- Message presented while data is loading in Explore view -->
-  <string name="loading">Cargando...</string>
+  <string name="loading">Cargando…</string>
 
   <!-- Message shown in an error bar when there is a problem synchronizing the user's sessions
   to their account. Can be summarized as "Synchronization failed." if too long [CHAR_LIMIT=50] -->

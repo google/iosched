@@ -65,9 +65,9 @@ public class DebugFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, final ViewGroup container,
-                             Bundle savedInstanceState) {
+            Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        ViewGroup rootView = (ViewGroup) inflater.inflate(R.layout.debug_frag, null);
+        ViewGroup rootView = (ViewGroup) inflater.inflate(R.layout.debug_frag, container, false);
         mLogArea = (TextView) rootView.findViewById(R.id.logArea);
         ViewGroup tests = (ViewGroup) rootView.findViewById(R.id.debug_action_list);
         tests.addView(createTestAction(new ForceSyncNowAction()));

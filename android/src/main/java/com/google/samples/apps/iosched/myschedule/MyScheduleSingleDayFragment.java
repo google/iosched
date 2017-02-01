@@ -90,6 +90,7 @@ public class MyScheduleSingleDayFragment extends ListFragment
         // Set id to list view, so it can be referred to from tests
         TypedArray ids = getResources().obtainTypedArray(R.array.myschedule_listview_ids);
         int listViewId = ids.getResourceId(mDayId, 0);
+        ids.recycle();
         getListView().setId(listViewId);
 
     }

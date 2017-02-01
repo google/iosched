@@ -15,9 +15,22 @@
  */
 package com.google.samples.apps.iosched.myschedule;
 
+import static android.support.test.espresso.Espresso.onData;
+import static android.support.test.espresso.Espresso.onView;
+import static android.support.test.espresso.action.ViewActions.click;
+import static android.support.test.espresso.assertion.ViewAssertions.matches;
+import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
+import static android.support.test.espresso.matcher.ViewMatchers.withContentDescription;
+import static android.support.test.espresso.matcher.ViewMatchers.withId;
+import static android.support.test.espresso.matcher.ViewMatchers.withText;
+
+import static org.hamcrest.CoreMatchers.allOf;
+import static org.hamcrest.CoreMatchers.instanceOf;
+import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.CoreMatchers.not;
+
 import android.content.res.TypedArray;
 import android.support.test.InstrumentationRegistry;
-import android.support.test.filters.FlakyTest;
 import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
 import android.test.suitebuilder.annotation.LargeTest;
@@ -33,19 +46,6 @@ import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-
-import static android.support.test.espresso.Espresso.onData;
-import static android.support.test.espresso.Espresso.onView;
-import static android.support.test.espresso.action.ViewActions.click;
-import static android.support.test.espresso.assertion.ViewAssertions.matches;
-import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
-import static android.support.test.espresso.matcher.ViewMatchers.withContentDescription;
-import static android.support.test.espresso.matcher.ViewMatchers.withId;
-import static android.support.test.espresso.matcher.ViewMatchers.withText;
-import static org.hamcrest.CoreMatchers.allOf;
-import static org.hamcrest.CoreMatchers.instanceOf;
-import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.CoreMatchers.not;
 
 /**
  * UI tests for {@link MyScheduleActivity} interacting with other activities (adding/removing
@@ -120,8 +120,10 @@ public class MyScheduleActivity_InteractionsTest {
      */
     private void findFreeSlotWithAvailableSessions() {
         TypedArray ids = InstrumentationRegistry.getTargetContext().getResources()
-                                                .obtainTypedArray(R.array.myschedule_listview_ids);
+                .obtainTypedArray(R.array.myschedule_listview_ids);
+        //noinspection ResourceType
         int listViewId = ids.getResourceId(1, 0);
+        ids.recycle();
         onData(allOf(is(instanceOf(ScheduleItem.class)),
                 new FirstFreeSlotWithAvailableSessionsMatcher()))
                 .inAdapterView(withId(listViewId)).onChildView(withId(R.id.browse_sessions))

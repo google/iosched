@@ -43,7 +43,7 @@ public class MessageCardView extends CardView implements View.OnClickListener {
     public static final int ANIM_DURATION = 200;
 
     public interface OnMessageCardButtonClicked {
-        public void onMessageCardButtonClicked(String tag);
+        void onMessageCardButtonClicked(String tag);
     }
 
     public MessageCardView(Context context) {
@@ -93,6 +93,7 @@ public class MessageCardView extends CardView implements View.OnClickListener {
         String button2tag = a.getString(R.styleable.MessageCard_button2tag);
         int emphasisColor = a.getColor(R.styleable.MessageCard_emphasisColor,
                 getResources().getColor(R.color.theme_primary));
+        a.recycle();
 
         if (button1text != null) {
             setButton(0, button1text, button1tag, button1emphasis, 0);
