@@ -20,8 +20,6 @@
         <attr name="actionBarInsetStart" format="dimension" />
         <attr name="spinnerBarInsetStart" format="dimension" />
         <attr name="popupItemBackground" format="reference" />
-        <attr name="photoItemForeground" format="reference" />
-        <attr name="photoItemForegroundBorderless" format="reference" />
         <attr name="imageItemBackground" format="reference"/>
     </declare-styleable>
 

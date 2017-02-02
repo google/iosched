@@ -20,20 +20,10 @@
     <!-- Prevents crash on certain devices to namespace conflict -->
     <style name="FrameworkRoot.Theme" parent="Theme.AppCompat.Light.NoActionBar" />
 
-    <!-- Immediate parent theme to specify base values for custom attributes -->
-    <style name="Theme" parent="FrameworkRoot.Theme">
-        <!-- Only needed for pre-L -->
-        <item name="android:editTextBackground">@drawable/edit_text</item>
-        <item name="android:editTextStyle">@style/Widget.IOSched.EditText</item>
-    </style>
-
-    <style name="Theme.IOSched.Base" parent="Theme">
-        <item name="actionBarIconColor">#fff</item>
+    <style name="Theme.IOSched.Base" parent="FrameworkRoot.Theme">
         <item name="actionBarInsetStart">@dimen/keyline_2</item>
         <item name="homeAsUpIndicator">@drawable/ic_up</item>
         <item name="popupItemBackground">?android:selectableItemBackground</item>
-        <item name="photoItemForeground">?android:selectableItemBackground</item>
-        <item name="photoItemForegroundBorderless">?android:selectableItemBackground</item>
 
         <item name="colorPrimary">@color/theme_primary</item>
         <item name="colorPrimaryDark">@color/theme_primary_dark</item>
@@ -226,10 +216,6 @@
         <item name="android:shadowDx">1</item>
         <item name="android:shadowDy">1</item>
         <item name="android:shadowRadius">3</item>
-    </style>
-
-    <style name="Widget.IOSched.EditText" parent="Widget.AppCompat.EditText">
-        <item name="android:background">@drawable/edit_text</item>
     </style>
 
     <style name="MyScheduleDayLabel">
