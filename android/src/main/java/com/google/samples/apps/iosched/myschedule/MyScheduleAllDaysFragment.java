@@ -45,7 +45,7 @@ public class MyScheduleAllDaysFragment extends Fragment
     private MyScheduleSingleDayNoScrollView[] mMyScheduleSingleDayViews
             = new MyScheduleSingleDayNoScrollView[3];
 
-    private UserActionListener mListener;
+    private UserActionListener<MyScheduleUserActionEnum> mListener;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -115,8 +115,7 @@ public class MyScheduleAllDaysFragment extends Fragment
     }
 
     @Override
-    public void displayUserActionResult(MyScheduleModel model
-            , MyScheduleUserActionEnum userAction,
+    public void displayUserActionResult(MyScheduleModel model, MyScheduleUserActionEnum userAction,
             boolean success) {
         switch (userAction) {
             case RELOAD_DATA:
@@ -160,7 +159,7 @@ public class MyScheduleAllDaysFragment extends Fragment
     }
 
     @Override
-    public void addListener(UserActionListener listener) {
+    public void addListener(UserActionListener<MyScheduleUserActionEnum> listener) {
         mListener = listener;
     }
 

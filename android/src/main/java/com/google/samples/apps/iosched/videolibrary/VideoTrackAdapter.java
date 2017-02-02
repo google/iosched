@@ -30,12 +30,13 @@ import android.widget.TextView;
 
 import com.google.samples.apps.iosched.Config;
 import com.google.samples.apps.iosched.R;
-import com.google.samples.apps.iosched.archframework.UpdatableView;
+import com.google.samples.apps.iosched.archframework.UpdatableView.UserActionListener;
 import com.google.samples.apps.iosched.ui.widget.VideoThumbnail;
 import com.google.samples.apps.iosched.ui.widget.recyclerview.UpdatableAdapter;
 import com.google.samples.apps.iosched.util.AnalyticsHelper;
 import com.google.samples.apps.iosched.util.ImageLoader;
 import com.google.samples.apps.iosched.util.UIUtils;
+import com.google.samples.apps.iosched.videolibrary.VideoLibraryModel.VideoLibraryUserActionEnum;
 import com.google.samples.apps.iosched.videolibrary.data.Video;
 
 import java.util.ArrayList;
@@ -70,7 +71,7 @@ public class VideoTrackAdapter extends UpdatableAdapter<List<Video>, RecyclerVie
 
     private final ImageLoader mImageLoader;
 
-    private final List<UpdatableView.UserActionListener> mListeners;
+    private final List<UserActionListener<VideoLibraryUserActionEnum>> mListeners;
 
     private final boolean mCompactMode;
 
@@ -79,13 +80,13 @@ public class VideoTrackAdapter extends UpdatableAdapter<List<Video>, RecyclerVie
     private final ColorDrawable[] mBackgroundColors;
 
     // State
-    private List mItems;
+    private List<Object> mItems;
 
     // private constructor, see the more meaningful static factory methods
     private VideoTrackAdapter(@NonNull Activity activity,
             @NonNull List<Video> videos,
             @NonNull ImageLoader imageLoader,
-            @NonNull List<UpdatableView.UserActionListener> listeners,
+            @NonNull List<UserActionListener<VideoLibraryUserActionEnum>> listeners,
             boolean compactMode,
             int columns) {
         mHost = activity;
@@ -106,14 +107,14 @@ public class VideoTrackAdapter extends UpdatableAdapter<List<Video>, RecyclerVie
     public static VideoTrackAdapter createHorizontal(@NonNull Activity activity,
             @NonNull List<Video> videos,
             @NonNull ImageLoader imageLoader,
-            @NonNull List<UpdatableView.UserActionListener> listeners) {
+            @NonNull List<UserActionListener<VideoLibraryUserActionEnum>> listeners) {
         return new VideoTrackAdapter(activity, videos, imageLoader, listeners, true, -1);
     }
 
     public static VideoTrackAdapter createVerticalGrid(@NonNull Activity activity,
             @NonNull List<Video> videos,
             @NonNull ImageLoader imageLoader,
-            @NonNull List<UpdatableView.UserActionListener> listeners,
+            @NonNull List<UserActionListener<VideoLibraryUserActionEnum>> listeners,
             int columns) {
         return new VideoTrackAdapter(activity, videos, imageLoader, listeners, false, columns);
     }
@@ -122,7 +123,7 @@ public class VideoTrackAdapter extends UpdatableAdapter<List<Video>, RecyclerVie
     public void update(@NonNull final List<Video> updatedData) {
         // Attempt to update data in place i.e. only if it has changed so as not to lose scroll
         // position etc when an item updates e.g. when a video is marked as watched
-        final List newItems = processData(updatedData);
+        final List<Object> newItems = processData(updatedData);
         if (newItems.size() != mItems.size()) {
             mItems = newItems;
             notifyDataSetChanged();
@@ -199,8 +200,8 @@ public class VideoTrackAdapter extends UpdatableAdapter<List<Video>, RecyclerVie
      * RecyclerView}. In detail mode, this means inserting date header objects to separate videos by
      * year.
      */
-    private List processData(final List<Video> videos) {
-        List data = new ArrayList(videos.size());
+    private List<Object> processData(final List<Video> videos) {
+        List<Object> data = new ArrayList<>(videos.size());
 
         if (mCompactMode) {
             data.addAll(videos);
@@ -292,10 +293,10 @@ public class VideoTrackAdapter extends UpdatableAdapter<List<Video>, RecyclerVie
      * Let all UserActionListener know that the given Video has been played.
      */
     private void fireVideoPlayedEvent(Video video) {
-        for (UpdatableView.UserActionListener h1 : mListeners) {
+        for (UserActionListener<VideoLibraryUserActionEnum> listener : mListeners) {
             Bundle args = new Bundle();
             args.putString(VideoLibraryModel.KEY_VIDEO_ID, video.getId());
-            h1.onUserAction(VideoLibraryModel.VideoLibraryUserActionEnum.VIDEO_PLAYED, args);
+            listener.onUserAction(VideoLibraryUserActionEnum.VIDEO_PLAYED, args);
         }
     }
 

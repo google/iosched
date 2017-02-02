@@ -32,7 +32,7 @@ import java.util.HashMap;
  */
 public class StubSessionFeedbackModel extends SessionFeedbackModel {
 
-    private HashMap<QueryEnum, Cursor> mFakeData = new HashMap<QueryEnum, Cursor>();
+    private HashMap<SessionFeedbackQueryEnum, Cursor> mFakeData = new HashMap<>();
 
     public StubSessionFeedbackModel(Uri uri, Context context, Cursor sessionCursor,
             FeedbackHelper feedbackHelper) {
@@ -46,10 +46,8 @@ public class StubSessionFeedbackModel extends SessionFeedbackModel {
      */
     @Override
     public void requestData(final @NonNull SessionFeedbackQueryEnum query,
-            final @NonNull DataQueryCallback callback) {
+            final @NonNull DataQueryCallback<SessionFeedbackQueryEnum> callback) {
         new StubModelHelper<SessionFeedbackQueryEnum>()
                 .overrideLoaderManager(query, callback, mFakeData, mDataQueryCallbacks, this);
     }
-
-
 }

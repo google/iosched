@@ -39,9 +39,10 @@ import android.widget.TextView;
 import com.google.samples.apps.iosched.Config;
 import com.google.samples.apps.iosched.R;
 import com.google.samples.apps.iosched.archframework.PresenterImpl;
-import com.google.samples.apps.iosched.archframework.UpdatableView;
 import com.google.samples.apps.iosched.injection.ModelProvider;
 import com.google.samples.apps.iosched.model.ScheduleHelper;
+import com.google.samples.apps.iosched.myschedule.MyScheduleModel.MyScheduleQueryEnum;
+import com.google.samples.apps.iosched.myschedule.MyScheduleModel.MyScheduleUserActionEnum;
 import com.google.samples.apps.iosched.navigation.NavigationModel;
 import com.google.samples.apps.iosched.session.SessionDetailActivity;
 import com.google.samples.apps.iosched.ui.BaseActivity;
@@ -165,7 +166,8 @@ public class MyScheduleActivity extends BaseActivity implements
 
     private boolean mShowedAnnouncementDialog = false;
 
-    private PresenterImpl mPresenter;
+    private PresenterImpl<MyScheduleModel, MyScheduleQueryEnum, MyScheduleUserActionEnum>
+            mPresenter;
 
     @Override
     protected NavigationModel.NavigationItemEnum getSelfNavDrawerItem() {
@@ -288,19 +290,17 @@ public class MyScheduleActivity extends BaseActivity implements
         MyScheduleModel model =
                 ModelProvider.provideMyScheduleModel(new ScheduleHelper(this), this);
         if (mWideMode) {
-            mPresenter = new PresenterImpl(model,
-                    (UpdatableView) getSupportFragmentManager().findFragmentById(R.id.myScheduleWideFrag),
+            MyScheduleAllDaysFragment fragment = (MyScheduleAllDaysFragment)
+                    getSupportFragmentManager().findFragmentById(R.id.myScheduleWideFrag);
+            mPresenter = new PresenterImpl<>(model,
+                    fragment,
                     MyScheduleModel.MyScheduleUserActionEnum.values(),
                     MyScheduleModel.MyScheduleQueryEnum.values());
             mPresenter.loadInitialQueries();
         } else {
             // Each fragment in the pager adapter is an updatable view that the presenter must know
             MyScheduleSingleDayFragment[] fragments = mViewPagerAdapter.getFragments();
-            UpdatableView[] views = new UpdatableView[fragments.length];
-            for (int i = 0; i < fragments.length; i++) {
-                views[i] = fragments[i];
-            }
-            mPresenter = new PresenterImpl(model, views,
+            mPresenter = new PresenterImpl<>(model, fragments,
                     MyScheduleModel.MyScheduleUserActionEnum.values(),
                     MyScheduleModel.MyScheduleQueryEnum.values());
         }

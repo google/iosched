@@ -34,6 +34,8 @@ import com.google.samples.apps.iosched.archframework.Model;
 import com.google.samples.apps.iosched.archframework.ModelWithLoaderManager;
 import com.google.samples.apps.iosched.archframework.QueryEnum;
 import com.google.samples.apps.iosched.archframework.UserActionEnum;
+import com.google.samples.apps.iosched.explore.ExploreIOModel.ExploreIOQueryEnum;
+import com.google.samples.apps.iosched.explore.ExploreIOModel.ExploreIOUserActionEnum;
 import com.google.samples.apps.iosched.explore.data.EventCard;
 import com.google.samples.apps.iosched.explore.data.EventData;
 import com.google.samples.apps.iosched.explore.data.ItemGroup;
@@ -66,8 +68,8 @@ import static com.google.samples.apps.iosched.util.LogUtils.makeLogTag;
  * This is an implementation of a {@link Model} that queries the sessions at Google I/O and extracts
  * the data needed to present the Explore I/O user interface.
  */
-public class ExploreIOModel extends ModelWithLoaderManager<ExploreIOModel.ExploreIOQueryEnum,
-        ExploreIOModel.ExploreIOUserActionEnum> {
+public class ExploreIOModel extends ModelWithLoaderManager<ExploreIOQueryEnum,
+        ExploreIOUserActionEnum> {
 
     private static final String TAG = makeLogTag(ExploreIOModel.class);
 
@@ -218,7 +220,7 @@ public class ExploreIOModel extends ModelWithLoaderManager<ExploreIOModel.Explor
         if (mOrderedTracks != null) {
             return mOrderedTracks;
         }
-        mOrderedTracks = new ArrayList<ItemGroup>(getTracks());
+        mOrderedTracks = new ArrayList<>(getTracks());
         for (ItemGroup item : mOrderedTracks) {
             if (item.getTitle() == null) {
                 item.formatTitle(mTagMetadata);
@@ -245,7 +247,8 @@ public class ExploreIOModel extends ModelWithLoaderManager<ExploreIOModel.Explor
 
     @Override
     public void processUserAction(final ExploreIOUserActionEnum action,
-            @Nullable final Bundle args, final UserActionCallback callback) {
+            @Nullable final Bundle args,
+            final UserActionCallback<ExploreIOUserActionEnum> callback) {
         /**
          * The only user action in this model fires off a query (using {@link #KEY_RUN_QUERY_ID},
          * so this method isn't used.

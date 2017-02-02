@@ -83,7 +83,8 @@ public class SessionFeedbackModel extends
 
     @Override
     public void processUserAction(final SessionFeedbackUserActionEnum action,
-            @Nullable final Bundle args, final UserActionCallback callback) {
+            @Nullable final Bundle args,
+            final UserActionCallback<SessionFeedbackUserActionEnum> callback) {
         switch (action) {
             case SUBMIT:
                 mFeedbackHelper

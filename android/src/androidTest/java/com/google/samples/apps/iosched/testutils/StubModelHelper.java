@@ -40,10 +40,10 @@ public class StubModelHelper<Q extends QueryEnum> {
      * @param model     The model instance in which to  override the loader manager
      */
     public void overrideLoaderManager(@NonNull final Q query,
-            @NonNull final Model.DataQueryCallback callback,
-            final HashMap<QueryEnum, Cursor> fakeData,
-            HashMap<Q, Model.DataQueryCallback> callbacks,
-            final ModelWithLoaderManager model) {
+            @NonNull final Model.DataQueryCallback<Q> callback,
+            final HashMap<Q, Cursor> fakeData,
+            HashMap<Q, Model.DataQueryCallback<Q>> callbacks,
+            final ModelWithLoaderManager<Q, ?> model) {
 
         // Add the callback so it gets fired properly
         callbacks.put(query, callback);

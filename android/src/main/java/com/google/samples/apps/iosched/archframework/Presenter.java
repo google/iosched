@@ -34,7 +34,7 @@ package com.google.samples.apps.iosched.archframework;
  * com.google.samples.apps.iosched .archframework.Model.UserActionCallback} and then asks the {@link
  * UpdatableView} to update itself.
  */
-public interface Presenter<Q extends QueryEnum, UA extends UserActionEnum> {
+public interface Presenter {
 
     /**
      * Requests the model to load the initial data.

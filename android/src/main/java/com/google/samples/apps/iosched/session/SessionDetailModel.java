@@ -22,6 +22,7 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.annotation.VisibleForTesting;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.ContextCompat;
@@ -40,6 +41,8 @@ import com.google.samples.apps.iosched.model.TagMetadata;
 import com.google.samples.apps.iosched.provider.ScheduleContract;
 import com.google.samples.apps.iosched.service.SessionAlarmService;
 import com.google.samples.apps.iosched.service.SessionCalendarService;
+import com.google.samples.apps.iosched.session.SessionDetailModel.SessionDetailQueryEnum;
+import com.google.samples.apps.iosched.session.SessionDetailModel.SessionDetailUserActionEnum;
 import com.google.samples.apps.iosched.util.AccountUtils;
 import com.google.samples.apps.iosched.util.AnalyticsHelper;
 import com.google.samples.apps.iosched.util.ExtendedSessionHelper;
@@ -54,9 +57,8 @@ import java.util.Locale;
 import static com.google.samples.apps.iosched.util.LogUtils.LOGD;
 import static com.google.samples.apps.iosched.util.LogUtils.makeLogTag;
 
-public class SessionDetailModel
-        extends ModelWithLoaderManager<SessionDetailModel.SessionDetailQueryEnum,
-        SessionDetailModel.SessionDetailUserActionEnum> {
+public class SessionDetailModel extends ModelWithLoaderManager<SessionDetailQueryEnum,
+        SessionDetailUserActionEnum> {
 
     protected final static String TAG = makeLogTag(SessionDetailModel.class);
 
@@ -474,13 +476,13 @@ public class SessionDetailModel
         mLinks.clear();
 
         if (hasLiveStream() && isSessionOngoing()) {
-            mLinks.add(new Pair<Integer, Intent>(
+            mLinks.add(new Pair<>(
                     R.string.session_link_livestream,
                     getWatchLiveIntent()));
         }
 
         if (!hasFeedback() && isSessionReadyForFeedback()) {
-            mLinks.add(new Pair<Integer, Intent>(
+            mLinks.add(new Pair<>(
                     R.string.session_feedback_submitlink,
                     getFeedbackIntent()
             ));
@@ -492,7 +494,7 @@ public class SessionDetailModel
                 continue;
             }
 
-            mLinks.add(new Pair<Integer, Intent>(
+            mLinks.add(new Pair<>(
                     LINKS_DESCRIPTION_RESOURCE_IDS[i],
                     new Intent(Intent.ACTION_VIEW, Uri.parse(linkUrl))
                             .addFlags(getFlagForUrlLink())
@@ -626,9 +628,8 @@ public class SessionDetailModel
     }
 
     @Override
-    public void processUserAction(SessionDetailUserActionEnum action,
-            @android.support.annotation.Nullable Bundle args,
-            UserActionCallback callback) {
+    public void processUserAction(SessionDetailUserActionEnum action, @Nullable Bundle args,
+            UserActionCallback<SessionDetailUserActionEnum> callback) {
         switch (action) {
             case STAR:
                 mInSchedule = true;
