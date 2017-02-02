@@ -43,7 +43,6 @@ import com.google.samples.apps.iosched.model.ScheduleItem;
 import com.google.samples.apps.iosched.myschedule.MyScheduleModel.MyScheduleUserActionEnum;
 import com.google.samples.apps.iosched.provider.ScheduleContract;
 import com.google.samples.apps.iosched.util.ImageLoader;
-import com.google.samples.apps.iosched.util.LUtils;
 import com.google.samples.apps.iosched.util.TimeUtils;
 import com.google.samples.apps.iosched.util.UIUtils;
 
@@ -62,7 +61,6 @@ public class MyScheduleDayAdapter implements ListAdapter, AbsListView.RecyclerLi
     private static final String TAG = makeLogTag("MyScheduleDayAdapter");
 
     private final Context mContext;
-    private final LUtils mLUtils;
 
     // list of items served by this adapter
     ArrayList<ScheduleItem> mItems = new ArrayList<>();
@@ -87,10 +85,9 @@ public class MyScheduleDayAdapter implements ListAdapter, AbsListView.RecyclerLi
 
     private UserActionListener<MyScheduleUserActionEnum> mListener;
 
-    public MyScheduleDayAdapter(Context context, LUtils lUtils,
+    public MyScheduleDayAdapter(Context context,
             UserActionListener<MyScheduleUserActionEnum> listener) {
         mContext = context;
-        mLUtils = lUtils;
         mListener = listener;
         Resources resources = context.getResources();
         mHourColorDefault = resources.getColor(R.color.my_schedule_hour_header_default);
@@ -171,7 +168,7 @@ public class MyScheduleDayAdapter implements ListAdapter, AbsListView.RecyclerLi
         @Override
         public void onClick(View v) {
             Object tag = v.getTag(R.id.myschedule_uri_tagkey);
-            if (tag != null && tag instanceof Uri) {
+            if (tag instanceof Uri) {
                 Uri uri = (Uri) tag;
                 Bundle bundle = new Bundle();
                 bundle.putString(MyScheduleModel.SESSION_URL_KEY, uri.toString());
@@ -208,7 +205,7 @@ public class MyScheduleDayAdapter implements ListAdapter, AbsListView.RecyclerLi
             holder.title.setGravity(Gravity.RIGHT);
             holder.description.setGravity(Gravity.RIGHT);
             holder.browse.setGravity(Gravity.RIGHT);
-            android.util.Log.d(TAG, "Gravity right");
+            LOGD(TAG, "Gravity right");
         }
     }
 
@@ -234,10 +231,6 @@ public class MyScheduleDayAdapter implements ListAdapter, AbsListView.RecyclerLi
             holder.touchArea = view.findViewById(R.id.touch_area);
             holder.live = view.findViewById(R.id.live_now_badge);
             view.setTag(holder);
-            // Typeface
-            mLUtils.setMediumTypeface(holder.startTime);
-            mLUtils.setMediumTypeface(holder.browse);
-            mLUtils.setMediumTypeface(holder.title);
             adjustForRtl(holder);
         } else {
             holder = (ViewHolder) view.getTag();

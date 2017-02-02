@@ -32,15 +32,18 @@
             android:id="@+id/start_time"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:fontFamily="@string/font_fontFamily_medium"
             android:gravity="center_vertical"
             android:paddingLeft="@dimen/keyline_2"
             android:paddingRight="@dimen/keyline_2"
             android:textColor="@color/body_text_1"
             android:textSize="@dimen/text_size_large"
+            android:textStyle="@integer/font_textStyle_medium"
             tools:text="@string/placeholder_session_start_time" />
 
         <TextView
             android:id="@+id/more"
+            style="@style/MoreButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical|end"
@@ -53,8 +56,7 @@
             android:paddingRight="@dimen/spacing_normal"
             android:paddingStart="@dimen/spacing_normal"
             android:paddingTop="@dimen/spacing_micro"
-            android:text="@string/more_items_button"
-            style="@style/MoreButton" />
+            android:text="@string/more_items_button" />
 
     </FrameLayout>
 
@@ -90,20 +92,22 @@
                 android:layout_marginRight="24dp"
                 android:layout_marginTop="8dp"
                 android:ellipsize="end"
+                android:fontFamily="@string/font_fontFamily_medium"
                 android:textColor="@color/body_text_1"
                 android:textSize="@dimen/text_size_medium"
+                android:textStyle="@integer/font_textStyle_medium"
                 tools:text="@string/placeholder_session_title" />
 
             <TextView
                 android:id="@+id/slot_description"
+                style="@style/Body1Text"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="8dp"
                 android:layout_marginRight="8dp"
                 android:layout_marginTop="4dp"
                 android:textSize="@dimen/text_size_medium"
-                tools:text="9:00 AM - 11:30 AM / Room 1"
-                style="@style/Body1Text" />
+                tools:text="9:00 AM - 11:30 AM / Room 1" />
 
             <TextView
                 android:id="@+id/browse_sessions"
@@ -111,13 +115,16 @@
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="8dp"
                 android:layout_marginTop="10dp"
+                android:fontFamily="@string/font_fontFamily_medium"
                 android:text="@string/browse_sessions"
                 android:textColor="@color/flat_button_text"
+                android:textStyle="@integer/font_textStyle_medium"
                 android:visibility="gone"
                 tools:visibility="visible" />
 
             <Button
                 android:id="@+id/give_feedback_button"
+                style="?android:borderlessButtonStyle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="end"
@@ -126,8 +133,7 @@
                 android:paddingLeft="8dp"
                 android:paddingRight="8dp"
                 android:text="@string/my_schedule_rate_this_session"
-                android:textColor="@color/flat_button_text"
-                style="?android:borderlessButtonStyle" />
+                android:textColor="@color/flat_button_text" />
 
             <!-- "LIVE NOW" indicator -->
             <include

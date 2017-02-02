@@ -16,11 +16,6 @@
 
 package com.google.samples.apps.iosched.ui;
 
-import static com.google.samples.apps.iosched.util.LogUtils.LOGD;
-import static com.google.samples.apps.iosched.util.LogUtils.LOGE;
-import static com.google.samples.apps.iosched.util.LogUtils.LOGW;
-import static com.google.samples.apps.iosched.util.LogUtils.makeLogTag;
-
 import android.app.Activity;
 import android.content.ContentResolver;
 import android.content.Intent;
@@ -64,9 +59,13 @@ import com.google.samples.apps.iosched.sync.SyncHelper;
 import com.google.samples.apps.iosched.sync.account.Account;
 import com.google.samples.apps.iosched.ui.widget.MultiSwipeRefreshLayout;
 import com.google.samples.apps.iosched.util.AccountUtils;
-import com.google.samples.apps.iosched.util.LUtils;
 import com.google.samples.apps.iosched.util.RecentTasksStyler;
 import com.google.samples.apps.iosched.welcome.WelcomeActivity;
+
+import static com.google.samples.apps.iosched.util.LogUtils.LOGD;
+import static com.google.samples.apps.iosched.util.LogUtils.LOGE;
+import static com.google.samples.apps.iosched.util.LogUtils.LOGW;
+import static com.google.samples.apps.iosched.util.LogUtils.makeLogTag;
 
 /**
  * A base activity that handles common functionality in the app. This includes the navigation
@@ -90,9 +89,6 @@ public abstract class BaseActivity extends AppCompatActivity implements
 
     // Toolbar
     private Toolbar mToolbar;
-
-    // Helper methods for L APIs
-    private LUtils mLUtils;
 
     private static final int MAIN_CONTENT_FADEIN_DURATION = 250;
 
@@ -135,8 +131,6 @@ public abstract class BaseActivity extends AppCompatActivity implements
         if (ab != null) {
             ab.setDisplayHomeAsUpEnabled(true);
         }
-
-        mLUtils = LUtils.getInstance(this);
     }
 
     private void trySetupSwipeRefresh() {
@@ -581,10 +575,6 @@ public abstract class BaseActivity extends AppCompatActivity implements
         if (mSwipeRefreshLayout != null) {
             mSwipeRefreshLayout.setRefreshing(refreshing);
         }
-    }
-
-    public LUtils getLUtils() {
-        return mLUtils;
     }
 
     @Override
