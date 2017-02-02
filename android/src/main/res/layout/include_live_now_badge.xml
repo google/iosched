@@ -32,4 +32,5 @@
     android:drawablePadding="4dp"
     android:textAppearance="@style/LiveNowIndicator"
     android:visibility="visible"
-    tools:showIn="@layout/widget_schedule_item_now" />
+    tools:ignore="RtlHardcoded,Overdraw" />
+<!-- TODO should this support RTL? -->

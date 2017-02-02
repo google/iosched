@@ -15,8 +15,6 @@
    limitations under the License.
 -->
 
-<!-- 12dp because grid is inset by @dimen/explore_grid_padding -->
-<!-- 44dp also because of grid insets -->
 <TextView
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@android:id/text1"
@@ -28,4 +26,6 @@
     android:maxLines="1"
     android:ellipsize="end"
     android:textSize="@dimen/text_size_medium"
-    android:textColor="@color/body_text_2" />
+    android:textColor="@color/body_text_2"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:text="Android" />

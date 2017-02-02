@@ -21,11 +21,13 @@
     android:layout_height="?android:listPreferredItemHeightSmall"
     android:background="?android:selectableItemBackground"
     android:focusable="true"
-    android:clickable="true">
+    android:clickable="true"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <com.google.samples.apps.iosched.ui.widget.BezelImageView
         android:id="@+id/profile_image"
         android:layout_marginLeft="@dimen/keyline_1"
+        android:layout_marginStart="@dimen/keyline_1"
         android:layout_width="34dp"
         android:layout_height="34dp"
         android:layout_gravity="center_vertical"
@@ -38,13 +40,14 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginLeft="@dimen/keyline_2"
+        android:layout_marginStart="@dimen/keyline_2"
         android:layout_gravity="center_vertical"
         android:textSize="@dimen/text_size_medium"
         android:textStyle="@integer/font_textStyle_medium"
         android:fontFamily="@string/font_fontFamily_medium"
         android:textColor="@color/body_text_1"
-        android:maxLines="1"
-        android:singleLine="true"
-        android:ellipsize="end" />
+        android:lines="1"
+        android:ellipsize="end"
+        tools:text="@string/placeholder_email_address" />
 
 </FrameLayout>

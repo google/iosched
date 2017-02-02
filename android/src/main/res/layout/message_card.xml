@@ -16,98 +16,102 @@
 -->
 <!-- Layout used to display data from a MessageCardData object. -->
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/card_root"
-    android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
 
     <TextView
         android:id="@+id/title"
-        android:visibility="gone"
         android:layout_width="match_parent"
-        android:layout_marginStart="16dp"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="16dp"
         android:layout_marginLeft="16dp"
         android:layout_marginRight="16dp"
-        android:layout_marginEnd="16dp"
+        android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
-        android:layout_height="wrap_content"
+        android:textColor="@color/theme_primary"
         android:textSize="@dimen/text_size_xlarge"
-        android:textColor="@color/theme_primary" />
+        android:visibility="gone"
+        tools:text="The cheese stands alone"
+        tools:visibility="visible" />
 
-    <LinearLayout android:layout_width="match_parent"
-                  android:layout_height="wrap_content">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        tools:ignore="UseCompoundDrawables">
 
         <ImageView
-                android:id="@+id/icon"
-                android:visibility="gone"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
-                android:layout_marginLeft="16dp"
-                android:layout_marginRight="16dp"
-                android:layout_marginEnd="16dp"
-                android:layout_marginTop="16dp" />
+            android:id="@+id/icon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="16dp"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="16dp"
+            android:visibility="gone"
+            tools:ignore="ContentDescription"
+            tools:src="@drawable/ic_session"
+            tools:visibility="visible" />
+
         <TextView
-                android:id="@+id/text"
-                android:layout_width="match_parent"
-                android:layout_margin="16dp"
-                android:layout_height="wrap_content"
-                android:text="@string/placeholder_lorem_ipsum"
-                android:textSize="@dimen/text_size_medium"
-                android:textColor="@color/body_text_2" />
+            android:id="@+id/text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="16dp"
+            android:text="@string/placeholder_lorem_ipsum"
+            android:textColor="@color/body_text_2"
+            android:textSize="@dimen/text_size_medium" />
     </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:baselineAligned="false"
-        android:layout_marginStart="16dp"
+        android:layout_marginBottom="12dp"
+        android:layout_marginEnd="16dp"
         android:layout_marginLeft="16dp"
         android:layout_marginRight="16dp"
-        android:layout_marginEnd="16dp"
-        android:layout_marginBottom="12dp"
-        android:splitMotionEvents="false"
-        android:gravity="end">
+        android:layout_marginStart="16dp"
+        android:baselineAligned="false"
+        android:gravity="end"
+        android:orientation="horizontal"
+        android:splitMotionEvents="false">
 
         <Button
             android:id="@+id/buttonEnd"
-            android:minWidth="48dp"
+            style="?android:borderlessButtonStyle"
             android:layout_width="wrap_content"
             android:layout_height="36dp"
+            android:background="?android:selectableItemBackground"
+            android:fontFamily="@string/font_fontFamily_medium"
+            android:gravity="center_vertical"
+            android:minWidth="48dp"
+            android:paddingLeft="16dp"
+            android:paddingRight="16dp"
             android:text="@string/placeholder_button_label_1"
-            android:textAllCaps="true"
+            android:textColor="#80000000"
             android:textSize="@dimen/text_size_medium"
             android:textStyle="@integer/font_textStyle_medium"
-            android:fontFamily="@string/font_fontFamily_medium"
-            android:background="?android:selectableItemBackground"
-            android:gravity="center_vertical"
-            android:paddingLeft="16dp"
-            android:paddingStart="16dp"
-            android:paddingRight="16dp"
-            android:paddingEnd="16dp"
-            android:textColor="#80000000"
             />
 
         <Button
             android:id="@+id/buttonStart"
-            android:minWidth="48dp"
+            style="?android:borderlessButtonStyle"
             android:layout_width="wrap_content"
             android:layout_height="36dp"
-            android:text="@string/placeholder_button_label_2"
-            android:textAllCaps="true"
-            android:textSize="@dimen/text_size_medium"
-            android:textStyle="@integer/font_textStyle_medium"
             android:fontFamily="@string/font_fontFamily_medium"
-            android:background="?android:selectableItemBackground"
             android:gravity="center_vertical"
+            android:minWidth="48dp"
             android:paddingLeft="16dp"
             android:paddingRight="16dp"
+            android:text="@string/placeholder_button_label_2"
             android:textColor="#80000000"
+            android:textSize="@dimen/text_size_medium"
+            android:textStyle="@integer/font_textStyle_medium"
             />
 
-
     </LinearLayout>
-
 
 </LinearLayout>

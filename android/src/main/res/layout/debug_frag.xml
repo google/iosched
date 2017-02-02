@@ -15,31 +15,29 @@
   limitations under the License.
   -->
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:fitsSystemWindows="true"
-    tools:context="com.google.samples.apps.iosched.debug.DebugActivity$PlaceholderFragment">
+    android:fitsSystemWindows="true">
+
     <LinearLayout
-        android:layout_width="fill_parent"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical">
+
         <LinearLayout
             android:id="@+id/debug_action_list"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="vertical" />
-        <EditText
+
+        <TextView
+            android:id="@+id/logArea"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:inputType="textMultiLine"
-            android:ems="10"
-            android:textSize="@dimen/text_size_small"
-            android:editable="false"
             android:focusable="false"
-            android:id="@+id/logArea"
-            android:typeface="monospace"
             android:gravity="top"
-            android:lines="30"/>
+            android:lines="30"
+            android:textSize="@dimen/text_size_small"
+            android:typeface="monospace" />
     </LinearLayout>
 </ScrollView>

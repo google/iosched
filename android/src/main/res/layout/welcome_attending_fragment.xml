@@ -26,11 +26,11 @@
 
     <TextView
         android:id="@+id/title"
+        style="@style/WelcomeTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/welcome_attending_text"
         android:padding="@dimen/welcome_content_padding"
-        style="@style/WelcomeTitle" />
+        android:text="@string/welcome_attending_text" />
 
     <FrameLayout
         android:id="@+id/attending_remotely"
@@ -43,15 +43,16 @@
             android:layout_height="wrap_content"
             android:adjustViewBounds="true"
             android:scaleType="centerInside"
-            app:srcCompat="@drawable/illo_attending_remotely" />
+            app:srcCompat="@drawable/illo_attending_remotely"
+            tools:ignore="ContentDescription" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="bottom|end|right"
+            android:layout_gravity="bottom|end"
+            android:layout_marginBottom="@dimen/padding_normal"
             android:layout_marginEnd="@dimen/padding_normal"
             android:layout_marginRight="@dimen/padding_normal"
-            android:layout_marginBottom="@dimen/padding_normal"
             android:text="@string/attending_remotely"
             android:textAppearance="@style/TextAppearance.AppCompat.Title"
             android:textColor="@color/app_body_text_1" />
@@ -68,16 +69,17 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:adjustViewBounds="true"
+            android:scaleType="centerInside"
             android:src="@drawable/illo_attending_in_person"
-            android:scaleType="centerInside" />
+            tools:ignore="ContentDescription" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="bottom|end|right"
+            android:layout_gravity="bottom|end"
+            android:layout_marginBottom="@dimen/padding_normal"
             android:layout_marginEnd="@dimen/padding_normal"
             android:layout_marginRight="@dimen/padding_normal"
-            android:layout_marginBottom="@dimen/padding_normal"
             android:text="@string/attending_in_person"
             android:textAppearance="@style/TextAppearance.AppCompat.Title"
             android:textColor="@color/app_body_text_1" />

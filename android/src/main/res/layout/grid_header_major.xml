@@ -15,9 +15,11 @@
 
 <TextView
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:focusable="true"
     android:padding="@dimen/padding_normal"
     android:textAppearance="@style/TextAppearance.AppCompat.Headline"
-    android:textColor="?android:textColorSecondary" />
+    android:textColor="?android:textColorSecondary"
+    tools:text="Android" />

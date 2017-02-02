@@ -17,17 +17,18 @@
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <include layout="@layout/toolbar_with_headerbar"/>
+    <include layout="@layout/toolbar_with_headerbar" />
 
     <com.google.samples.apps.iosched.ui.widget.MultiSwipeRefreshLayout
         android:id="@+id/swipe_refresh_layout"
-        app:foreground="@drawable/header_shadow"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        app:foreground="@drawable/header_shadow">
 
         <ScrollView
             android:id="@+id/main_content_wide"
@@ -40,11 +41,12 @@
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
 
-                <include layout="@layout/deprecated_include_butter_bar"/>
+                <include layout="@layout/deprecated_include_butter_bar" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:baselineAligned="false"
                     android:orientation="horizontal"
                     android:padding="32dp">
 
@@ -63,14 +65,16 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginBottom="16dp"
-                            android:layout_marginLeft="@dimen/keyline_1"/>
+                            android:layout_marginLeft="@dimen/keyline_1"
+                            android:layout_marginStart="@dimen/keyline_1"
+                            tools:text="Day 0" />
 
                         <com.google.samples.apps.iosched.myschedule.MyScheduleSingleDayNoScrollView
                             android:id="@+id/my_schedule_zeroth_day"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginBottom="24dp"
-                            android:orientation="vertical"/>
+                            android:orientation="vertical" />
 
                         <TextView
                             android:id="@+id/day_label_first_day"
@@ -78,13 +82,15 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginBottom="16dp"
-                            android:layout_marginLeft="@dimen/keyline_1"/>
+                            android:layout_marginLeft="@dimen/keyline_1"
+                            android:layout_marginStart="@dimen/keyline_1"
+                            tools:text="Day 1" />
 
                         <com.google.samples.apps.iosched.myschedule.MyScheduleSingleDayNoScrollView
                             android:id="@+id/my_schedule_first_day"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:orientation="vertical"/>
+                            android:orientation="vertical" />
                     </LinearLayout>
 
                     <!-- Day Two -->
@@ -102,13 +108,15 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginBottom="16dp"
-                            android:layout_marginLeft="@dimen/keyline_1"/>
+                            android:layout_marginLeft="@dimen/keyline_1"
+                            android:layout_marginStart="@dimen/keyline_1"
+                            tools:text="Day 2" />
 
                         <com.google.samples.apps.iosched.myschedule.MyScheduleSingleDayNoScrollView
                             android:id="@+id/my_schedule_second_day"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:orientation="vertical"/>
+                            android:orientation="vertical" />
                     </LinearLayout>
 
                     <!-- Day Three -->
@@ -126,13 +134,15 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginBottom="16dp"
-                            android:layout_marginLeft="@dimen/keyline_1"/>
+                            android:layout_marginLeft="@dimen/keyline_1"
+                            android:layout_marginStart="@dimen/keyline_1"
+                            tools:text="Day 3" />
 
                         <com.google.samples.apps.iosched.myschedule.MyScheduleSingleDayNoScrollView
                             android:id="@+id/my_schedule_third_day"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:orientation="vertical"/>
+                            android:orientation="vertical" />
                     </LinearLayout>
                 </LinearLayout>
             </LinearLayout>

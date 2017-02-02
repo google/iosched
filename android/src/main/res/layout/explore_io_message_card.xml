@@ -32,7 +32,8 @@
         android:orientation="vertical"
         android:paddingLeft="@dimen/padding_normal"
         android:paddingStart="@dimen/padding_normal"
-        android:paddingTop="@dimen/padding_normal">
+        android:paddingTop="@dimen/padding_normal"
+        tools:ignore="RtlSymmetry">
 
         <ImageView
             android:id="@+id/icon"
@@ -43,7 +44,9 @@
             android:layout_alignParentTop="true"
             android:layout_marginEnd="@dimen/padding_normal"
             android:layout_marginRight="@dimen/padding_normal"
-            android:scaleType="centerInside" />
+            android:scaleType="centerInside"
+            tools:src="@drawable/ic_session"
+            tools:ignore="ContentDescription" />
 
         <TextView
             android:id="@+id/description"
@@ -71,11 +74,8 @@
             android:layout_marginStart="@dimen/spacing_micro"
             android:fontFamily="@string/font_fontFamily_medium"
             android:minWidth="@dimen/explore_io_message_card_min_button_width"
-            android:paddingEnd="@dimen/spacing_normal"
             android:paddingLeft="@dimen/spacing_normal"
             android:paddingRight="@dimen/spacing_normal"
-            android:paddingStart="@dimen/spacing_normal"
-            android:textAllCaps="true"
             android:textColor="@color/flat_button_text"
             android:textSize="@dimen/text_size_medium"
             android:textStyle="@integer/font_textStyle_medium"
@@ -91,11 +91,8 @@
             android:layout_toStartOf="@+id/buttonEnd"
             android:fontFamily="@string/font_fontFamily_medium"
             android:minWidth="@dimen/explore_io_message_card_min_button_width"
-            android:paddingEnd="@dimen/spacing_normal"
             android:paddingLeft="@dimen/spacing_normal"
             android:paddingRight="@dimen/spacing_normal"
-            android:paddingStart="@dimen/spacing_normal"
-            android:textAllCaps="true"
             android:textColor="@color/flat_button_text"
             android:textSize="@dimen/text_size_medium"
             android:textStyle="@integer/font_textStyle_medium"

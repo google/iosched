@@ -19,26 +19,29 @@
 <FrameLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-        <!-- Empty state -->
-        <ImageView
-            android:id="@android:id/empty"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="@color/light_grey"
-            android:scaleType="centerInside"
-            android:src="@drawable/io_logo"
-            android:visibility="gone" />
+    <!-- Empty state -->
+    <ImageView
+        android:id="@android:id/empty"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/light_grey"
+        android:scaleType="centerInside"
+        app:srcCompat="@drawable/io_logo"
+        android:visibility="gone"
+        tools:ignore="ContentDescription" />
 
-        <!-- Explore card stream -->
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/explore_card_list"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:scrollbarStyle="insideOverlay"
-            android:scrollbars="vertical"
-            app:layoutManager="android.support.v7.widget.LinearLayoutManager" />
+    <!-- Explore card stream -->
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/explore_card_list"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scrollbarStyle="insideOverlay"
+        android:scrollbars="vertical"
+        app:layoutManager="android.support.v7.widget.LinearLayoutManager"
+        tools:listitem="@layout/explore_io_track_card" />
 
 </FrameLayout>

@@ -16,11 +16,11 @@
   -->
 <android.support.v7.widget.CardView
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginTop="@dimen/padding_normal"
-    card_view:cardBackgroundColor="@color/card"
-    card_view:cardCornerRadius="@dimen/stream_card_corner_radius"
-    card_view:cardElevation="@dimen/card_elevation"
-    card_view:contentPaddingBottom="@dimen/spacing_normal" />
+    app:cardBackgroundColor="@color/card"
+    app:cardCornerRadius="@dimen/stream_card_corner_radius"
+    app:cardElevation="@dimen/card_elevation"
+    app:contentPaddingBottom="@dimen/spacing_normal" />

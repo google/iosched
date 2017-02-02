@@ -21,7 +21,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:onClick="dismiss"
-    tools:context=".ui.SearchActivity">
+    tools:context=".ui.SearchActivity"
+    tools:ignore="MergeRootFrame">
 
     <!-- we use this scrim view rather than a semi-opaque window background so that we can
          overlap it's enter/exit animation with content animations i.e. circular reveal/hide
@@ -75,7 +76,8 @@
                 android:paddingBottom="@dimen/spacing_normal"
                 android:clipToPadding="false"
                 android:divider="@null"
-                android:visibility="gone" />
+                android:visibility="gone"
+                tools:visibility="visible" />
 
         </LinearLayout>
 

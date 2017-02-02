@@ -14,6 +14,7 @@
   -->
 
 <FrameLayout
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/chosen_account_view"
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -27,10 +28,12 @@
         android:layout_height="match_parent"
         android:background="?colorPrimary"
         android:paddingBottom="@dimen/navdrawer_logo_vertical_padding"
-        android:paddingRight="@dimen/navdrawer_logo_padding_right"
+        android:paddingRight="@dimen/navdrawer_logo_horizontal_padding"
+        android:paddingLeft="@dimen/navdrawer_logo_horizontal_padding"
         android:paddingTop="@dimen/navdrawer_logo_vertical_padding"
         android:scaleType="fitEnd"
-        android:src="@drawable/io_logo" />
+        app:srcCompat="@drawable/io_logo"
+        tools:ignore="ContentDescription" />
 
     <ImageView
         android:id="@+id/profile_cover_image"
@@ -38,7 +41,8 @@
         android:layout_height="match_parent"
         android:background="?colorPrimary"
         android:scaleType="centerCrop"
-        android:visibility="gone" />
+        android:visibility="gone"
+        tools:ignore="ContentDescription" />
 
     <LinearLayout
         android:id="@+id/chosen_account_content_view"

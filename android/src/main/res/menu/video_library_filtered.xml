@@ -14,11 +14,12 @@
   limitations under the License.
   -->
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
-      xmlns:iosched="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <item android:id="@+id/menu_filter"
+    <item
+        android:id="@+id/menu_filter"
         android:icon="@drawable/ic_action_filter"
-        iosched:showAsAction="always"
         android:orderInCategory="1"
-        android:title="@string/description_filter"/>
+        android:title="@string/description_filter"
+        app:showAsAction="always" />
 </menu>

@@ -16,16 +16,18 @@
   -->
 <com.google.samples.apps.iosched.ui.widget.SearchSnippet
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/search_result"
+    style="@style/Body1Text"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:minHeight="?android:listPreferredItemHeightSmall"
     android:gravity="start|center_vertical"
-    android:paddingTop="@dimen/spacing_normal"
+    android:minHeight="?android:listPreferredItemHeightSmall"
     android:paddingBottom="@dimen/spacing_normal"
-    android:paddingLeft="@dimen/keyline_2"
-    android:paddingStart="@dimen/keyline_2"
-    android:paddingRight="@dimen/padding_normal"
     android:paddingEnd="@dimen/padding_normal"
+    android:paddingLeft="@dimen/keyline_2"
+    android:paddingRight="@dimen/padding_normal"
+    android:paddingStart="@dimen/keyline_2"
+    android:paddingTop="@dimen/spacing_normal"
     android:textAlignment="viewStart"
-    style="@style/Body1Text" />
+    tools:text="@string/placeholder_session_title" />

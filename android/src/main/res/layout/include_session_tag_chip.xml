@@ -17,15 +17,18 @@
 
 <TextView
     xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
+    style="@style/Body2Text"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
     android:layout_marginEnd="@dimen/spacing_micro"
     android:layout_marginRight="@dimen/spacing_micro"
     android:background="@drawable/session_tag_chip"
     android:drawablePadding="@dimen/spacing_micro"
     android:gravity="center"
+    android:minHeight="@dimen/a11y_min_touch_target_dimen"
+    android:minWidth="@dimen/a11y_min_touch_target_dimen"
     android:paddingLeft="@dimen/spacing_normal"
     android:paddingRight="@dimen/spacing_normal"
     android:textColor="@color/session_detail_tag_text"
-    android:minWidth="@dimen/a11y_min_touch_target_dimen"
-    style="@style/Body2Text" />
+    tools:text="Develop" />

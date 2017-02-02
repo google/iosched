@@ -23,6 +23,7 @@
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:animateLayoutChanges="true"
@@ -30,10 +31,10 @@
 
     <!-- Hero session card -->
     <FrameLayout
-        android:layout_width="0dp"
-        android:layout_weight="@integer/deprecated_explore_wide_layout_hero_weight"
-        android:layout_height="@dimen/explore_hero_item_height"
         android:id="@+id/session_target"
+        android:layout_width="0dp"
+        android:layout_height="@dimen/explore_hero_item_height"
+        android:layout_weight="@integer/deprecated_explore_wide_layout_hero_weight"
         android:foreground="?photoItemForeground">
 
         <!-- Session image -->
@@ -42,7 +43,8 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:scaleType="centerCrop"
-            android:tint="@color/session_photo_scrim" />
+            android:tint="@color/session_photo_scrim"
+            tools:ignore="ContentDescription" />
 
         <!-- Live Now badge -->
         <include layout="@layout/include_live_now_badge" />
@@ -50,10 +52,11 @@
         <!-- Session category/group if non-default (e.g. "Workshop") -->
         <TextView
             android:id="@+id/session_category"
-            android:padding="16dp"
+            style="@style/ExploreItem.Category"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            style="@style/ExploreItem.Category" />
+            android:padding="16dp"
+            tools:text="Workshop" />
 
         <!-- Info box -->
         <LinearLayout
@@ -62,33 +65,34 @@
             android:layout_height="wrap_content"
             android:layout_gravity="bottom"
             android:gravity="center"
-            android:padding="16dp"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:padding="16dp">
 
             <!-- Session title -->
             <TextView
                 android:id="@+id/session_title"
+                style="@style/ExploreItem.Title.Hero"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:paddingBottom="4dp"
-                android:text="@string/placeholder_session_title"
-                style="@style/ExploreItem.Title.Hero" />
+                tools:text="@string/placeholder_session_title" />
 
             <!-- Subtitle -->
-            <TextView android:id="@+id/session_subtitle"
+            <TextView
+                android:id="@+id/session_subtitle"
+                style="@style/ExploreItem.Subtitle.Hero"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/placeholder_session_subtitle"
-                style="@style/ExploreItem.Subtitle.Hero" />
+                tools:text="@string/placeholder_session_subtitle" />
 
         </LinearLayout>
 
         <!-- "In schedule" indicator -->
         <ImageView
             android:id="@+id/indicator_in_schedule"
-            android:layout_gravity="top|end"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_gravity="top|end"
             android:contentDescription="@null"
             app:srcCompat="@drawable/ic_in_schedule" />
 
@@ -98,42 +102,36 @@
     <FrameLayout
         android:id="@+id/message_card_container_wide"
         android:layout_width="0dp"
-        android:layout_weight="1"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:layout_marginLeft="@dimen/explore_grid_padding"
+        android:layout_marginStart="@dimen/explore_grid_padding"
+        android:layout_weight="1">
 
-        <!-- Background "cell" where card lives -->
-        <FrameLayout
+        <!-- Message card -->
+        <com.google.samples.apps.iosched.ui.widget.MessageCardView
+            android:id="@+id/message_card"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginLeft="@dimen/explore_grid_padding">
-
-            <!-- Message card -->
-            <com.google.samples.apps.iosched.ui.widget.MessageCardView
-                android:id="@+id/message_card"
-                android:layout_width="match_parent"
-                android:layout_margin="8dp"
-                android:layout_gravity="center"
-                android:visibility="visible"
-                android:layout_height="wrap_content"
-                android:clickable="true"
-                android:focusable="true"
-                app:cardBackgroundColor="#fff" />
-
-        </FrameLayout>
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_margin="8dp"
+            android:clickable="true"
+            android:focusable="true"
+            android:visibility="visible"
+            app:cardBackgroundColor="#fff" />
 
     </FrameLayout>
 
     <!-- Session abstract -->
     <TextView
         android:id="@+id/session_abstract"
-        android:visibility="gone"
         android:layout_width="0dp"
-        android:layout_weight="1"
         android:layout_height="match_parent"
-        android:textSize="@dimen/text_size_medium"
-        android:textColor="#88ffffff"
+        android:layout_weight="1"
         android:ellipsize="end"
+        android:gravity="start|center_vertical"
         android:padding="16dp"
-        android:gravity="start|center_vertical" />
+        android:textColor="#88ffffff"
+        android:textSize="@dimen/text_size_medium"
+        android:visibility="gone" />
 
 </LinearLayout>

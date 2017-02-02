@@ -15,25 +15,30 @@
 
 <com.google.samples.apps.iosched.ui.widget.SquareLinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="0dp"
-    android:orientation="vertical"
     android:foreground="?android:selectableItemBackground"
-    android:stateListAnimator="@animator/raise">
+    android:orientation="vertical"
+    android:stateListAnimator="@animator/raise"
+    tools:layout_width="224dp"
+    tools:targetApi="lollipop">
 
     <com.google.samples.apps.iosched.ui.widget.VideoThumbnail
         android:id="@+id/thumbnail"
         android:layout_width="match_parent"
-        android:layout_height="0dp" />
+        android:layout_height="0dp"
+        tools:src="?colorPrimary" />
 
     <TextView
         android:id="@+id/title"
+        style="@style/Body2Text"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
-        android:padding="@dimen/padding_normal"
         android:ellipsize="end"
         android:maxLines="2"
-        style="@style/Body2Text" />
+        android:padding="@dimen/padding_normal"
+        tools:text="@string/placeholder_session_title" />
 
 </com.google.samples.apps.iosched.ui.widget.SquareLinearLayout>

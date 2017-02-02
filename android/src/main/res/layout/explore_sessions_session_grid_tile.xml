@@ -16,19 +16,24 @@
 <com.google.samples.apps.iosched.ui.widget.SquareFrameLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/session"
     android:layout_width="match_parent"
+    tools:layout_width="224dp"
     android:layout_height="0dp"
+    android:foreground="?android:selectableItemBackground"
     android:stateListAnimator="@animator/raise"
-    android:foreground="?android:selectableItemBackground">
+    tools:targetApi="lollipop">
 
     <ImageView
         android:id="@+id/indicator_in_schedule"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="top|end|right"
-        android:visibility="invisible"
-        app:srcCompat="@drawable/ic_in_schedule" />
+        android:layout_gravity="top|end"
+        android:visibility="gone"
+        tools:visibility="visible"
+        app:srcCompat="@drawable/ic_in_schedule"
+        tools:ignore="ContentDescription" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -38,18 +43,20 @@
 
         <TextView
             android:id="@+id/title"
+            style="@style/SessionTitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            style="@style/SessionTitle" />
+            tools:text="@string/placeholder_session_title" />
 
         <TextView
             android:id="@+id/description"
+            style="@style/Body1Text"
             android:layout_width="wrap_content"
             android:layout_height="0dp"
             android:layout_weight="1"
-            android:paddingTop="@dimen/spacing_normal"
             android:ellipsize="end"
-            style="@style/Body1Text" />
+            android:paddingTop="@dimen/spacing_normal"
+            tools:text="@string/placeholder_session_subtitle_and_abstract" />
 
     </LinearLayout>
 

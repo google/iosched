@@ -16,6 +16,7 @@
 <android.support.v7.widget.CardView
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     app:cardCornerRadius="@dimen/stream_card_corner_radius"
@@ -34,7 +35,8 @@
             android:layout_height="match_parent"
             android:background="@color/io16_light_grey"
             android:tint="@color/track_header_tint"
-            android:scaleType="centerCrop" />
+            android:scaleType="centerCrop"
+            tools:ignore="ContentDescription" />
 
         <TextView
             android:id="@+id/title"
@@ -43,8 +45,9 @@
             android:layout_marginStart="@dimen/padding_normal"
             android:layout_marginLeft="@dimen/padding_normal"
             android:layout_marginTop="@dimen/padding_normal"
-            android:layout_gravity="top|start|left"
-            android:textAppearance="@style/TextAppearance.AppCompat.Title" />
+            android:layout_gravity="top|start"
+            android:textAppearance="@style/TextAppearance.AppCompat.Title"
+            tools:text="Android"/>
 
     </FrameLayout>
 
@@ -57,6 +60,7 @@
         android:scrollbarStyle="insideOverlay"
         android:scrollbarSize="@dimen/horizontal_scrollbar_height"
         app:layoutManager="android.support.v7.widget.LinearLayoutManager"
-        android:orientation="horizontal" />
+        android:orientation="horizontal"
+        tools:listitem="@layout/explore_io_event_data_item_list_tile" />
 
 </android.support.v7.widget.CardView>

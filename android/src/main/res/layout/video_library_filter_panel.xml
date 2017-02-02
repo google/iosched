@@ -19,22 +19,17 @@
     android:layout_width="@dimen/drawer_width"
     android:layout_height="match_parent"
     android:layout_gravity="end"
-    android:orientation="vertical"
-    android:background="@color/navdrawer_background">
+    android:background="@color/navdrawer_background"
+    android:orientation="vertical">
 
     <TextView
         android:layout_width="match_parent"
         android:layout_height="?actionBarSize"
-        android:layout_marginLeft="@dimen/padding_normal"
-        android:layout_marginStart="@dimen/padding_normal"
         android:gravity="center_vertical|start"
+        android:paddingLeft="@dimen/padding_normal"
+        android:paddingRight="@dimen/padding_normal"
         android:text="@string/title_video_library_filter"
         android:textAppearance="@style/TextAppearance.Title" />
-
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/divider_height"
-        android:background="@color/divider" />
 
     <ScrollView
         android:layout_width="match_parent"
@@ -49,9 +44,9 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="?android:listPreferredItemHeightSmall"
-                android:layout_marginLeft="@dimen/padding_normal"
-                android:layout_marginStart="@dimen/padding_normal"
                 android:gravity="center_vertical|start"
+                android:paddingLeft="@dimen/padding_normal"
+                android:paddingRight="@dimen/padding_normal"
                 android:text="@string/year_filter_section_label"
                 android:textAppearance="@style/TextAppearance.Subhead" />
 
@@ -70,9 +65,9 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="?android:listPreferredItemHeightSmall"
-                android:layout_marginLeft="@dimen/padding_normal"
-                android:layout_marginStart="@dimen/padding_normal"
                 android:gravity="center_vertical|start"
+                android:paddingLeft="@dimen/padding_normal"
+                android:paddingRight="@dimen/padding_normal"
                 android:text="@string/topic_filter_section_label"
                 android:textAppearance="@style/TextAppearance.Subhead" />
 
@@ -85,5 +80,10 @@
         </LinearLayout>
 
     </ScrollView>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/divider_height"
+        android:background="@color/divider" />
 
 </LinearLayout>
