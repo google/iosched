@@ -244,14 +244,14 @@
     <!-- Buttons -->
     <style name="MoreButton">
         <item name="android:textAppearance">@style/TextAppearance.AppCompat.Button</item>
-        <item name="android:textSize">@dimen/app_text_size_small</item>
+        <item name="android:textSize">@dimen/text_size_small</item>
         <item name="android:background">@drawable/more_button_background</item>
         <item name="android:letterSpacing" tools:targetApi="lollipop">0.1</item>
     </style>
 
     <style name="LiveNowIndicator">
         <item name="android:textAppearance">@style/TextAppearance.AppCompat.Button</item>
-        <item name="android:textSize">@dimen/app_text_size_small</item>
+        <item name="android:textSize">@dimen/text_size_small</item>
         <item name="android:fontFamily">sans-serif-medium</item>
         <item name="android:textColor">@color/text_on_primary</item>
     </style>
