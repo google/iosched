@@ -47,8 +47,8 @@ public class AppApplication extends Application {
         // Initialize the Firebase library with an Android context.
         Firebase.setAndroidContext(this);
 
-        AnalyticsHelper.prepareAnalytics(getApplicationContext());
-        SettingsUtils.markDeclinedWifiSetup(getApplicationContext(), false);
+        AnalyticsHelper.prepareAnalytics(this);
+        SettingsUtils.markDeclinedWifiSetup(this, false);
 
         // Ensure an updated security provider is installed into the system when a new one is
         // available via Google Play services.

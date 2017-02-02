@@ -16,17 +16,17 @@
 
 package com.google.samples.apps.iosched.util;
 
+import android.annotation.SuppressLint;
+import android.content.Context;
+import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
+
 import com.google.android.gms.analytics.GoogleAnalytics;
 import com.google.android.gms.analytics.HitBuilders;
 import com.google.android.gms.analytics.Tracker;
 import com.google.samples.apps.iosched.BuildConfig;
 import com.google.samples.apps.iosched.R;
-import com.google.samples.apps.iosched.settings.ConfMessageCardUtils;
 import com.google.samples.apps.iosched.settings.SettingsUtils;
-
-import android.content.Context;
-import android.content.SharedPreferences;
-import android.preference.PreferenceManager;
 
 import static com.google.samples.apps.iosched.util.LogUtils.LOGD;
 
@@ -46,6 +46,8 @@ public class AnalyticsHelper {
 
     private final static String TAG = LogUtils.makeLogTag(AnalyticsHelper.class);
 
+    // Always the application context
+    @SuppressLint("StaticFieldLeak")
     private static Context sAppContext = null;
 
     private static Tracker mTracker;
@@ -123,14 +125,12 @@ public class AnalyticsHelper {
 
     /**
      * Sets up Analytics to be initialized when the user agrees to TOS.  If the user has already
-     * done so (all runs of the app except the first run), initialize analytics Immediately. Note
-     * that {@applicationContext} must be the Application level {@link Context} or this class will
-     * leak the context.
+     * done so (all runs of the app except the first run), initialize analytics Immediately.
      *
-     * @param applicationContext  The context that will later be used to initialize Analytics.
+     * @param context  The context that will later be used to initialize Analytics.
      */
-    public static void prepareAnalytics(Context applicationContext) {
-        sAppContext = applicationContext;
+    public static void prepareAnalytics(Context context) {
+        sAppContext = context.getApplicationContext();
 
         // The listener will initialize Analytics when the TOS is signed, or enable/disable
         // Analytics based on the "anonymous data collection" setting.
@@ -138,17 +138,15 @@ public class AnalyticsHelper {
 
         // If TOS hasn't been signed yet, it's the first run.  Exit.
         if (SettingsUtils.isTosAccepted(sAppContext)) {
-            initializeAnalyticsTracker(sAppContext);
+            initializeAnalyticsTracker();
         }
     }
 
     /**
      * Initialize the analytics tracker in use by the application. This should only be called
-     * once, when the TOS is signed. The {@code applicationContext} parameter MUST be the
-     * application context or an object leak could occur.
+     * once, when the TOS is signed.
      */
-    private static synchronized void initializeAnalyticsTracker(Context applicationContext) {
-        sAppContext = applicationContext;
+    private static synchronized void initializeAnalyticsTracker() {
         if (mTracker == null) {
             int useProfile;
             if (BuildConfig.DEBUG) {
@@ -159,7 +157,7 @@ public class AnalyticsHelper {
             }
 
             try {
-                mTracker = GoogleAnalytics.getInstance(applicationContext).newTracker(useProfile);
+                mTracker = GoogleAnalytics.getInstance(sAppContext).newTracker(useProfile);
             } catch (Exception e) {
                 // If anything goes wrong, force an opt-out of tracking. It's better to accidentally
                 // protect privacy than accidentally collect data.
@@ -192,7 +190,7 @@ public class AnalyticsHelper {
                         if (key.equals(SettingsUtils.PREF_TOS_ACCEPTED)
                                 && prefs.getBoolean(key, false)
                                 && mTracker == null) {
-                            initializeAnalyticsTracker(sAppContext);
+                            initializeAnalyticsTracker();
                         }
 
                         // Technically it's possible to just look up the values in the pref

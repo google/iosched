@@ -16,6 +16,7 @@
 
 package com.google.samples.apps.iosched.util;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.AsyncQueryHandler;
 import android.content.ContentValues;
@@ -50,9 +51,8 @@ public class SessionsHelper {
         Uri myScheduleUri = ScheduleContract.MySchedule.buildMyScheduleUri(
                 AccountUtils.getActiveAccountName(mActivity));
 
-        AsyncQueryHandler handler =
-                new AsyncQueryHandler(mActivity.getContentResolver()) {
-                };
+        @SuppressLint("HandlerLeak") // this is short-lived
+        AsyncQueryHandler handler = new AsyncQueryHandler(mActivity.getContentResolver()) {};
         final ContentValues values = new ContentValues();
         values.put(ScheduleContract.MySchedule.SESSION_ID, sessionId);
         values.put(ScheduleContract.MySchedule.MY_SCHEDULE_IN_SCHEDULE, starred ? 1 : 0);

@@ -34,7 +34,7 @@ import java.util.ArrayList;
 
 public abstract class JSONHandler {
 
-    protected static Context mContext;
+    protected Context mContext;
 
     public JSONHandler(Context context) {
         mContext = context;
