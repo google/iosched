@@ -16,6 +16,8 @@
 
 package com.google.samples.apps.iosched.session;
 
+import static com.google.samples.apps.iosched.util.LogUtils.LOGE;
+
 import android.app.Activity;
 import android.content.Intent;
 import android.net.Uri;
@@ -32,8 +34,6 @@ import com.google.samples.apps.iosched.ui.BaseActivity;
 import com.google.samples.apps.iosched.util.BeamUtils;
 import com.google.samples.apps.iosched.util.LogUtils;
 import com.google.samples.apps.iosched.util.UIUtils;
-
-import static com.google.samples.apps.iosched.util.LogUtils.LOGE;
 
 /**
  * Displays the details about a session. This Activity is launched via an {@code Intent} with {@link
@@ -52,15 +52,26 @@ public class SessionDetailActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         UIUtils.tryTranslateHttpIntent(this);
         BeamUtils.tryUpdateIntentFromBeam(this);
-        boolean shouldBeFloatingWindow = shouldBeFloatingWindow();
-        if (shouldBeFloatingWindow) {
+
+        if (shouldBeFloatingWindow()) {
             setupFloatingWindow(R.dimen.session_details_floating_width,
                     R.dimen.session_details_floating_height, 1, 0.4f);
         }
 
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.session_detail_act);
 
+        mSessionUri = getIntent().getData();
+        if (mSessionUri == null) {
+            LOGE(TAG, "SessionDetailActivity started with null session Uri!");
+            finish();
+            return;
+        }
+
+        if (savedInstanceState == null) {
+            BeamUtils.setBeamSessionUri(this, mSessionUri);
+        }
+
+        setContentView(R.layout.session_detail_act);
         setToolbarAsUp(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -69,7 +80,7 @@ public class SessionDetailActivity extends BaseActivity {
         });
         final Toolbar toolbar = getToolbar();
         // Override the icon if shouldBeFloatingWindow
-        if (shouldBeFloatingWindow) {
+        if (shouldBeFloatingWindow()) {
             toolbar.setNavigationIcon(R.drawable.ic_close);
         }
         mHandler.post(new Runnable() {
@@ -79,19 +90,6 @@ public class SessionDetailActivity extends BaseActivity {
                 toolbar.setTitle("");
             }
         });
-
-        if (savedInstanceState == null) {
-            Uri sessionUri = getIntent().getData();
-            BeamUtils.setBeamSessionUri(this, sessionUri);
-        }
-
-        mSessionUri = getIntent().getData();
-
-        if (mSessionUri == null) {
-            LOGE(TAG, "SessionDetailActivity started with null session Uri!");
-            finish();
-            return;
-        }
     }
 
     public Uri getSessionUri() {

@@ -16,6 +16,11 @@
 
 package com.google.samples.apps.iosched.ui;
 
+import static com.google.samples.apps.iosched.util.LogUtils.LOGD;
+import static com.google.samples.apps.iosched.util.LogUtils.LOGE;
+import static com.google.samples.apps.iosched.util.LogUtils.LOGW;
+import static com.google.samples.apps.iosched.util.LogUtils.makeLogTag;
+
 import android.app.Activity;
 import android.content.ContentResolver;
 import android.content.Intent;
@@ -62,11 +67,6 @@ import com.google.samples.apps.iosched.util.AccountUtils;
 import com.google.samples.apps.iosched.util.RecentTasksStyler;
 import com.google.samples.apps.iosched.welcome.WelcomeActivity;
 
-import static com.google.samples.apps.iosched.util.LogUtils.LOGD;
-import static com.google.samples.apps.iosched.util.LogUtils.LOGE;
-import static com.google.samples.apps.iosched.util.LogUtils.LOGW;
-import static com.google.samples.apps.iosched.util.LogUtils.makeLogTag;
-
 /**
  * A base activity that handles common functionality in the app. This includes the navigation
  * drawer, login and authentication, Action Bar tweaks, amongst others.
@@ -102,6 +102,10 @@ public abstract class BaseActivity extends AppCompatActivity implements
     private Object mSyncObserverHandle;
 
     private boolean mDestroyed;
+
+    // note: not saved during configuration changes
+    private boolean mIsFloatingWindow;
+    private boolean mIsFloatingWindowSet = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -599,17 +603,19 @@ public abstract class BaseActivity extends AppCompatActivity implements
     /**
      * Returns true if the theme sets the {@code R.attr.isFloatingWindow} flag to true.
      */
-    protected boolean shouldBeFloatingWindow() {
-        Resources.Theme theme = getTheme();
-        TypedValue floatingWindowFlag = new TypedValue();
+    public boolean shouldBeFloatingWindow() {
+        if (!mIsFloatingWindowSet) {
+            Resources.Theme theme = getTheme();
+            TypedValue floatingWindowFlag = new TypedValue();
 
-        // Check isFloatingWindow flag is defined in theme.
-        if (theme == null || !theme
-                .resolveAttribute(R.attr.isFloatingWindow, floatingWindowFlag, true)) {
-            return false;
+            // Check isFloatingWindow flag is defined in theme.
+            mIsFloatingWindow = theme != null
+                    && theme.resolveAttribute(R.attr.isFloatingWindow, floatingWindowFlag, true)
+                    && floatingWindowFlag.data != 0;
+            mIsFloatingWindowSet = true;
         }
 
-        return (floatingWindowFlag.data != 0);
+        return mIsFloatingWindow;
     }
 
 }

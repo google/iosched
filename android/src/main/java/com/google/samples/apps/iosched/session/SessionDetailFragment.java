@@ -68,6 +68,7 @@ import com.google.samples.apps.iosched.map.MapActivity;
 import com.google.samples.apps.iosched.model.TagMetadata;
 import com.google.samples.apps.iosched.session.SessionDetailModel.SessionDetailQueryEnum;
 import com.google.samples.apps.iosched.session.SessionDetailModel.SessionDetailUserActionEnum;
+import com.google.samples.apps.iosched.ui.BaseActivity;
 import com.google.samples.apps.iosched.ui.widget.CheckableFloatingActionButton;
 import com.google.samples.apps.iosched.ui.widget.MessageCardView;
 import com.google.samples.apps.iosched.util.AccountUtils;
@@ -153,6 +154,8 @@ public class SessionDetailFragment extends Fragment implements
 
     private GoogleApiClient mClient;
 
+    private boolean mIsFloatingWindow;
+
     @Override
     public void addListener(UserActionListener<SessionDetailUserActionEnum> listener) {
         mListener = listener;
@@ -165,14 +168,19 @@ public class SessionDetailFragment extends Fragment implements
         mAnalyticsScreenViewHasFired = false;
         mClient = new GoogleApiClient.Builder(getActivity())
                 .addApi(AppIndex.API)
-                .enableAutoManage((SessionDetailActivity) getActivity(), null)
+                .enableAutoManage(getActivity(), null)
                 .build();
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.session_detail_frag, container, false);
+        View root = inflater.inflate(R.layout.session_detail_frag, container, false);
+        if (mIsFloatingWindow) {
+            // Window background is transparent, so set the background of the root view
+            root.setBackgroundColor(ContextCompat.getColor(root.getContext(), R.color.background));
+        }
+        return root;
     }
 
     @Override
@@ -187,7 +195,11 @@ public class SessionDetailFragment extends Fragment implements
     @Override
     public void onAttach(final Activity activity) {
         super.onAttach(activity);
-        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.LOLLIPOP) {
+        if (activity instanceof BaseActivity) {
+            mIsFloatingWindow = ((BaseActivity) activity).shouldBeFloatingWindow();
+        }
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             final Transition sharedElementEnterTransition =
                     activity.getWindow().getSharedElementEnterTransition();
             if (sharedElementEnterTransition != null) {

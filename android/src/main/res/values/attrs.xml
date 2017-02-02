@@ -19,6 +19,8 @@
         <attr name="actionBarInsetStart" format="dimension" />
         <attr name="popupItemBackground" format="reference" />
         <attr name="imageItemBackground" format="reference" />
+        <attr name="isFloatingWindow" format="boolean" />
+        <attr name="videoThumbnailStyle" format="reference" />
     </declare-styleable>
 
     <declare-styleable name="MultiSwipeRefreshLayout">
@@ -46,11 +48,6 @@
         <attr name="button2tag" format="string" />
         <attr name="button2emphasis" format="boolean" />
         <attr name="emphasisColor" format="color" />
-    </declare-styleable>
-
-    <declare-styleable name="ThemeIOSched">
-        <attr name="isFloatingWindow" format="boolean" />
-        <attr name="videoThumbnailStyle" format="reference" />
     </declare-styleable>
 
     <declare-styleable name="AspectRatioView">
