@@ -54,8 +54,8 @@
     <style name="ActionBarThemeOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
 
     <style name="SearchViewTheme" parent="ThemeOverlay.AppCompat.ActionBar">
-        <item name="android:textColorPrimary">@color/app_body_text_1</item>
-        <item name="colorControlNormal">@color/app_body_text_2</item>
+        <item name="android:textColorPrimary">@color/body_text_1</item>
+        <item name="colorControlNormal">@color/body_text_2</item>
         <item name="colorControlActivated">@color/theme_accent_1</item>
     </style>
 
@@ -72,7 +72,7 @@
         <item name="android:windowIsTranslucent">true</item>
         <item name="autoCompleteTextViewStyle">@style/Widget.IOSched.Search.AutoCompleteTextView</item>
         <item name="searchViewStyle">@style/Widget.IOSched.SearchView</item>
-        <item name="colorControlNormal">@color/app_body_text_2</item>
+        <item name="colorControlNormal">@color/body_text_2</item>
         <item name="colorControlActivated">@color/theme_accent_1</item>
     </style>
 
@@ -83,7 +83,7 @@
     </style>
 
     <style name="Widget.IOSched.Search.AutoCompleteTextView" parent="Widget.AppCompat.Light.AutoCompleteTextView">
-        <item name="android:textColorHint">@color/app_body_text_2</item>
+        <item name="android:textColorHint">@color/body_text_2</item>
         <!-- If set to @null the cursor will be displayed using android:textColor -->
         <item name="android:textCursorDrawable">@null</item>
     </style>

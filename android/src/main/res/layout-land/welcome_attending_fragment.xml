@@ -59,7 +59,7 @@
                 android:layout_marginRight="@dimen/padding_normal"
                 android:text="@string/attending_remotely"
                 android:textAppearance="@style/TextAppearance.AppCompat.Title"
-                android:textColor="@color/app_body_text_1" />
+                android:textColor="@color/body_text_1" />
 
         </FrameLayout>
 
@@ -87,7 +87,7 @@
                 android:layout_marginRight="@dimen/padding_normal"
                 android:text="@string/attending_in_person"
                 android:textAppearance="@style/TextAppearance.AppCompat.Title"
-                android:textColor="@color/app_body_text_1" />
+                android:textColor="@color/body_text_1" />
 
         </FrameLayout>
 

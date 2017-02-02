@@ -81,7 +81,7 @@ public class SearchActivity extends BaseActivity implements
 
         Drawable up = DrawableCompat.wrap(
                 VectorDrawableCompat.create(getResources(), R.drawable.ic_up, getTheme()));
-        DrawableCompat.setTint(up, getResources().getColor(R.color.app_body_text_2));
+        DrawableCompat.setTint(up, getResources().getColor(R.color.body_text_2));
         toolbar.setNavigationIcon(up);
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
