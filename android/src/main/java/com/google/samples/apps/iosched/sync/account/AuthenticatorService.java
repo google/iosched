@@ -14,6 +14,7 @@
 
 package com.google.samples.apps.iosched.sync.account;
 
+import android.annotation.SuppressLint;
 import android.app.Service;
 import android.content.Intent;
 import android.os.IBinder;
@@ -21,6 +22,7 @@ import android.os.IBinder;
 /**
  * A bound Service that instantiates the authenticator when started.
  */
+@SuppressLint("Registered") // Lint thinks this is missing from AndroidManifest, but it's there
 public class AuthenticatorService extends Service {
     private Authenticator mAuthenticator;
 

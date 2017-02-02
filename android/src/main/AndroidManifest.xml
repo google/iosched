@@ -382,7 +382,8 @@
              launch rather than after install. -->
         <receiver
             android:name="com.google.android.gms.analytics.CampaignTrackingReceiver"
-            android:exported="true">
+            android:exported="true"
+            tools:ignore="ExportedReceiver">
             <intent-filter>
                 <action android:name="com.android.vending.INSTALL_REFERRER" />
             </intent-filter>
@@ -393,16 +394,18 @@
 
         <!-- Register AnalyticsReceiver and AnalyticsService to support background
              dispatching on non-Google Play devices. -->
-        <receiver android:name="com.google.android.gms.analytics.AnalyticsReceiver"
-                  android:enabled="true">
+        <receiver
+            android:name="com.google.android.gms.analytics.AnalyticsReceiver"
+            android:enabled="true"
+            tools:ignore="ExportedReceiver">
             <intent-filter>
                 <action android:name="com.google.android.gms.analytics.ANALYTICS_DISPATCH" />
             </intent-filter>
         </receiver>
-        <service android:name="com.google.android.gms.analytics.AnalyticsService"
-                 android:enabled="true"
-                 android:exported="false"/>
-
+        <service
+            android:name="com.google.android.gms.analytics.AnalyticsService"
+            android:enabled="true"
+            android:exported="false" />
 
         <!--
           This is a receiver provided by Google Play Services. It handles receiving
@@ -519,7 +522,8 @@
 
         <!-- Account authenticator service for use with sync adapter -->
         <service
-            android:name="sync.account.AuthenticatorService">
+            android:name="sync.account.AuthenticatorService"
+            tools:ignore="ExportedService">
             <intent-filter>
                 <action android:name="android.accounts.AccountAuthenticator"/>
             </intent-filter>
