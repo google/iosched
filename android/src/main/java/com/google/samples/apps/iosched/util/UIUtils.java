@@ -16,6 +16,9 @@
 
 package com.google.samples.apps.iosched.util;
 
+import static com.google.samples.apps.iosched.util.LogUtils.LOGE;
+import static com.google.samples.apps.iosched.util.LogUtils.makeLogTag;
+
 import android.annotation.TargetApi;
 import android.app.Activity;
 import android.content.ContentResolver;
@@ -78,11 +81,9 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Formatter;
+import java.util.Locale;
 import java.util.TimeZone;
 import java.util.regex.Pattern;
-
-import static com.google.samples.apps.iosched.util.LogUtils.LOGE;
-import static com.google.samples.apps.iosched.util.LogUtils.makeLogTag;
 
 /**
  * An assortment of UI helpers.
@@ -150,7 +151,7 @@ public class UIUtils {
         if (shortFormat) {
             TimeZone timeZone = SettingsUtils.getDisplayTimeZone(context);
             Date intervalStartDate = new Date(intervalStart);
-            SimpleDateFormat shortDateFormat = new SimpleDateFormat("MMM dd");
+            SimpleDateFormat shortDateFormat = new SimpleDateFormat("MMM dd", Locale.getDefault());
             DateFormat shortTimeFormat = DateFormat.getTimeInstance(DateFormat.SHORT);
             shortDateFormat.setTimeZone(timeZone);
             shortTimeFormat.setTimeZone(timeZone);
@@ -662,10 +663,12 @@ public class UIUtils {
 
         final float x0, x1, y0, y1;
         switch (gravity & Gravity.HORIZONTAL_GRAVITY_MASK) {
+            //noinspection RtlHardcoded
             case Gravity.LEFT:
                 x0 = 1;
                 x1 = 0;
                 break;
+            //noinspection RtlHardcoded
             case Gravity.RIGHT:
                 x0 = 0;
                 x1 = 1;

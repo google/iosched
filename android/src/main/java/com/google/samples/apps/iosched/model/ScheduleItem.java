@@ -20,6 +20,8 @@ import android.support.annotation.VisibleForTesting;
 import com.google.samples.apps.iosched.Config;
 import com.google.samples.apps.iosched.provider.ScheduleContract;
 
+import java.util.Locale;
+
 public class ScheduleItem implements Cloneable, Comparable<ScheduleItem> {
     // types:
     public static final int FREE = 0;  // a free chunk of time
@@ -123,7 +125,8 @@ public class ScheduleItem implements Cloneable, Comparable<ScheduleItem> {
 
     @Override
     public String toString() {
-        return String.format("[item type=%d, startTime=%d, endTime=%d, title=%s, subtitle=%s, flags=%d]",
+        return String.format(Locale.US,
+                "[item type=%d, startTime=%d, endTime=%d, title=%s, subtitle=%s, flags=%d]",
                 type, startTime, endTime, title, subtitle, flags);
     }
 }

@@ -15,6 +15,13 @@
  */
 package com.google.samples.apps.iosched.util;
 
+import static com.google.samples.apps.iosched.util.LogUtils.LOGD;
+import static com.google.samples.apps.iosched.util.LogUtils.LOGE;
+
+import android.content.Context;
+import android.support.annotation.DrawableRes;
+import android.text.TextUtils;
+
 import com.google.android.gms.maps.model.BitmapDescriptor;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
@@ -23,12 +30,7 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.maps.android.ui.IconGenerator;
 import com.google.samples.apps.iosched.R;
 import com.google.samples.apps.iosched.map.util.MarkerModel;
-
 import com.jakewharton.disklrucache.DiskLruCache;
-
-import android.content.Context;
-import android.support.annotation.DrawableRes;
-import android.text.TextUtils;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -37,9 +39,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Locale;
-
-import static com.google.samples.apps.iosched.util.LogUtils.LOGD;
-import static com.google.samples.apps.iosched.util.LogUtils.LOGE;
 
 public class MapUtils {
 
@@ -207,6 +206,7 @@ public class MapUtils {
 
         // Return the ID of the resource that matches the iconType name.
         // If no resources matches this name, returns 0.
+        //noinspection DefaultLocale
         return context.getResources()
                       .getIdentifier(ICON_RESOURCE_PREFIX + iconType.toLowerCase(), "drawable",
                               context.getPackageName());

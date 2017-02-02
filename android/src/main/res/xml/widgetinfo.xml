@@ -16,6 +16,7 @@
   -->
 
 <appwidget-provider xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:minWidth="250dp"
     android:minHeight="180dp"
     android:updatePeriodMillis="1800000"
@@ -24,4 +25,5 @@
     android:widgetCategory="keyguard|home_screen"
     android:minResizeWidth="250dp"
     android:minResizeHeight="110dp"
-    android:previewImage="@drawable/widget_preview" />
+    android:previewImage="@drawable/widget_preview"
+    tools:targetApi="jelly_bean_mr1" />

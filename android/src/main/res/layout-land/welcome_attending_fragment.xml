@@ -23,6 +23,7 @@
     tools:context="com.google.samples.apps.iosched.welcome.AttendingFragment">
 
     <TextView
+        android:id="@+id/title"
         style="@style/WelcomeTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

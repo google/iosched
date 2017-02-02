@@ -16,6 +16,12 @@
 
 package com.google.samples.apps.iosched.explore;
 
+import static android.content.SharedPreferences.OnSharedPreferenceChangeListener;
+
+import static com.google.samples.apps.iosched.settings.ConfMessageCardUtils
+        .ConferencePrefChangeListener;
+
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
@@ -69,10 +75,6 @@ import com.google.samples.apps.iosched.util.UIUtils;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import static android.content.SharedPreferences.OnSharedPreferenceChangeListener;
-import static com.google.samples.apps.iosched.settings.ConfMessageCardUtils
-        .ConferencePrefChangeListener;
 
 /**
  * Display the Explore I/O cards. There are three styles of cards, which are referred to as Groups
@@ -147,6 +149,7 @@ public class ExploreIOFragment extends Fragment
         return root;
     }
 
+    @SuppressLint("NewApi") // Lint warns about isDestroyed(), but BaseActivity does api check
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);

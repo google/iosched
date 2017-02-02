@@ -21,6 +21,7 @@ import static com.google.samples.apps.iosched.util.LogUtils.LOGE;
 import static com.google.samples.apps.iosched.util.LogUtils.LOGW;
 import static com.google.samples.apps.iosched.util.LogUtils.makeLogTag;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.ContentResolver;
 import android.content.Intent;
@@ -285,6 +286,7 @@ public abstract class BaseActivity extends AppCompatActivity implements
         }
     }
 
+    @SuppressLint("InlinedApi")
     @Override
     public void onSignInOrCreateAccount() {
         //Get list of accounts on device.

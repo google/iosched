@@ -13,6 +13,9 @@
  */
 package com.google.samples.apps.iosched.gcm;
 
+import static com.google.samples.apps.iosched.util.LogUtils.LOGD;
+import static com.google.samples.apps.iosched.util.LogUtils.LOGE;
+
 import android.os.Bundle;
 
 import com.google.android.gms.gcm.GcmListenerService;
@@ -26,9 +29,6 @@ import com.google.samples.apps.iosched.util.LogUtils;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
-
-import static com.google.samples.apps.iosched.util.LogUtils.LOGD;
-import static com.google.samples.apps.iosched.util.LogUtils.LOGE;
 
 /**
  * Receive downstream GCM messages, examine the payload and determine what action
@@ -72,6 +72,7 @@ public class GCMMessageListenerService extends GcmListenerService {
             LOGE(TAG, "Message received without command action");
             return;
         }
+        //noinspection DefaultLocale
         action = action.toLowerCase();
         GCMCommand command = MESSAGE_RECEIVERS.get(action);
         if (command == null) {

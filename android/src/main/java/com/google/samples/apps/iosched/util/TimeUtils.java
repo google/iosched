@@ -16,6 +16,9 @@
 
 package com.google.samples.apps.iosched.util;
 
+import static com.google.samples.apps.iosched.util.LogUtils.LOGW;
+import static com.google.samples.apps.iosched.util.LogUtils.makeLogTag;
+
 import android.content.Context;
 import android.text.TextUtils;
 import android.text.format.DateUtils;
@@ -33,9 +36,6 @@ import java.util.Formatter;
 import java.util.Locale;
 import java.util.TimeZone;
 
-import static com.google.samples.apps.iosched.util.LogUtils.LOGW;
-import static com.google.samples.apps.iosched.util.LogUtils.makeLogTag;
-
 public class TimeUtils {
     public static final int SECOND = 1000;
     public static final int MINUTE = 60 * SECOND;
@@ -43,6 +43,9 @@ public class TimeUtils {
     public static final int DAY = 24 * HOUR;
 
     private static final String TAG = makeLogTag(TimeUtils.class);
+
+    private static final int FORMAT_SHORT_DATETIME_FLAGS = DateUtils.FORMAT_ABBREV_ALL
+            | DateUtils.FORMAT_SHOW_WEEKDAY | DateUtils.FORMAT_SHOW_TIME;
 
     private static final SimpleDateFormat[] ACCEPTED_TIMESTAMP_FORMATS = {
             new SimpleDateFormat("EEE, dd MMM yyyy HH:mm:ss Z", Locale.US),
@@ -116,10 +119,9 @@ public class TimeUtils {
     public static String formatShortDateTime(Context context, Date date) {
         StringBuilder sb = new StringBuilder();
         Formatter formatter = new Formatter(sb);
+        String timezone = SettingsUtils.getDisplayTimeZone(context).getID();
         return DateUtils.formatDateRange(context, formatter, date.getTime(), date.getTime(),
-                DateUtils.FORMAT_ABBREV_ALL | DateUtils.FORMAT_SHOW_WEEKDAY
-                        | DateUtils.FORMAT_SHOW_TIME,
-                SettingsUtils.getDisplayTimeZone(context).getID()).toString().toUpperCase();
+                FORMAT_SHORT_DATETIME_FLAGS, timezone).toString().toUpperCase(Locale.getDefault());
     }
 
     public static boolean hasConferenceEnded(final Context context) {

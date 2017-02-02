@@ -38,6 +38,7 @@ public class ParserUtils {
         if (input == null) {
             return null;
         }
+        //noinspection DefaultLocale
         return sSanitizePattern.matcher(input.replace("+", "plus").toLowerCase()).replaceAll("");
     }
 

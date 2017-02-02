@@ -22,6 +22,7 @@
     android:id="@+id/drawer_layout"
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
@@ -43,6 +44,7 @@
 
     <!-- Content of screen. Contains a map and optional info and detail cards. -->
     <FrameLayout
+        android:id="@+id/main_content"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1">
@@ -67,7 +69,8 @@
             app:cardBackgroundColor="@color/card"
             app:cardCornerRadius="@dimen/card_corner_radius"
             app:cardElevation="@dimen/card_elevation"
-            app:cardPreventCornerOverlap="false">
+            app:cardPreventCornerOverlap="false"
+            tools:ignore="InconsistentLayout">
 
             <FrameLayout
                 android:id="@+id/fragment_container_map_info"

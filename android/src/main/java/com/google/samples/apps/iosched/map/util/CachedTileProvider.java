@@ -15,9 +15,13 @@
  */
 package com.google.samples.apps.iosched.map.util;
 
+import static com.google.samples.apps.iosched.util.LogUtils.LOGD;
+import static com.google.samples.apps.iosched.util.LogUtils.makeLogTag;
+
+import android.annotation.SuppressLint;
+
 import com.google.android.gms.maps.model.Tile;
 import com.google.android.gms.maps.model.TileProvider;
-
 import com.jakewharton.disklrucache.DiskLruCache;
 
 import java.io.ByteArrayOutputStream;
@@ -26,9 +30,6 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-
-import static com.google.samples.apps.iosched.util.LogUtils.LOGD;
-import static com.google.samples.apps.iosched.util.LogUtils.makeLogTag;
 
 /**
  * Wrapper that provides a disk-based LRU cache for a TileProvider.
@@ -149,6 +150,7 @@ public class CachedTileProvider implements TileProvider {
     }
 
 
+    @SuppressLint("DefaultLocale")
     private static String generateKey(int x, int y, int zoom, String tag) {
         return String.format(KEY_FORMAT, x, y, zoom, tag);
     }

@@ -15,7 +15,9 @@
 
 <animated-vector
     xmlns:android="http://schemas.android.com/apk/res/android"
-    android:drawable="@drawable/ic_add_to_schedule_anim">
+    xmlns:tools="http://schemas.android.com/tools"
+    android:drawable="@drawable/ic_add_to_schedule_anim"
+    tools:targetApi="lollipop">
 
     <!-- line 1 -->
     <target
