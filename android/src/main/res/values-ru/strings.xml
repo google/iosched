@@ -27,6 +27,7 @@
       <xliff:g id="number_of_sessions">%1$d</xliff:g> доступных сессий</item>
   </plurals>
 
+  <!-- TODO "one" case needs correction, applies to values other than 1 (e.g. 21, 101) -->
     <plurals description="Shows as a notification on the system bar to alert user that some of their sessions are about to begin." name="session_notification_text">
     <item quantity="one">и еще одна, начинающаяся через <xliff:g id="remaining_time">%1$d</xliff:g> мин.</item>
     <item quantity="few">и <xliff:g id="num_sessions">%2$d</xliff:g> других, начинающихся через <xliff:g id="remaining_time">%1$d</xliff:g> мин.</item>
@@ -35,14 +36,14 @@
   </plurals>
 
     <plurals description="Shown as a notification on the system bar to alert user that some of their sessions are about to begin." name="session_notification_ticker">
-    <item quantity="one">1 сессия скоро начнется.</item>
-    <item quantity="few">%d сессии скоро начнутся.</item>
-    <item quantity="many">%d сессий скоро начнутся.</item>
-    <item quantity="other">%d сессий скоро начнутся.</item>
+    <item quantity="one">%1$d сессия скоро начнется.</item>
+    <item quantity="few">%1$d сессии скоро начнутся.</item>
+    <item quantity="many">%1$d сессий скоро начнутся.</item>
+    <item quantity="other">%1$d сессий скоро начнутся.</item>
   </plurals>
 
     <plurals description="Indicates a certain number of sessions." name="session_plurals">
-    <item quantity="one">1 сессия</item>
+    <item quantity="one">%1$d сессия</item>
     <item quantity="few">%1$d сессии</item>
     <item quantity="many">%1$d сессий</item>
     <item quantity="other">%1$d сессий</item>
@@ -50,7 +51,7 @@
 
     <!-- Title for the notification that alerts the user that some of their sessions are about to begin. -->
     <plurals name="session_notification_title">
-    <item quantity="one">1 сессия начинается через <xliff:g id="remaining_time">%1$d</xliff:g> мин.</item>
+    <item quantity="one"><xliff:g id="num_sessions">%2$d</xliff:g> сессия начинается через <xliff:g id="remaining_time">%1$d</xliff:g> мин.</item>
     <item quantity="few">
       <xliff:g id="num_sessions">%2$d</xliff:g> сессия начинается через <xliff:g id="remaining_time">%1$d</xliff:g> мин.</item>
     <item quantity="many">

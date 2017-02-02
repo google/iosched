@@ -14,7 +14,7 @@
   See the License for the specific language governing permissions and
   limitations under the License.
   -->
-<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2" xmlns:tools="http://schemas.android.com/tools">
 
     <plurals name="schedule_block_subtitle"
              description="Shown in the schedule to indicate how many sessions are available on that particular time slot.">
@@ -24,25 +24,25 @@
 
     <plurals name="session_notification_text"
              description="Shows as a notification on the system bar to alert user that some of their sessions are about to begin.">
-        <item quantity="one">and 1 other starting in <xliff:g id="remaining_time">%1$d</xliff:g> min.</item>
+        <item quantity="one">and <xliff:g id="num_sessions">%2$d</xliff:g> other starting in <xliff:g id="remaining_time">%1$d</xliff:g> min.</item>
         <item quantity="other">and <xliff:g id="num_sessions">%2$d</xliff:g> others starting in <xliff:g id="remaining_time">%1$d</xliff:g> min.</item>
     </plurals>
 
     <plurals name="session_notification_ticker"
              description="Shown as a notification on the system bar to alert user that some of their sessions are about to begin.">
-        <item quantity="one">1 session is about to start.</item>
-        <item quantity="other">%d sessions are about to start.</item>
+        <item quantity="one">%1$d session is about to start.</item>
+        <item quantity="other">%1$d sessions are about to start.</item>
     </plurals>
 
     <plurals name="session_plurals"
              description="Indicates a certain number of sessions.">
-        <item quantity="one">1 session</item>
+        <item quantity="one">%1$d session</item>
         <item quantity="other">%1$d sessions</item>
     </plurals>
 
     <!-- Title for the notification that alerts the user that some of their sessions are about to begin. -->
     <plurals name="session_notification_title">
-        <item quantity="one">1 session is starting in <xliff:g id="remaining_time">%1$d</xliff:g> min.</item>
+        <item quantity="one"><xliff:g id="num_sessions">%2$d</xliff:g> session is starting in <xliff:g id="remaining_time">%1$d</xliff:g> min.</item>
         <item quantity="other"><xliff:g id="num_sessions">%2$d</xliff:g> sessions are starting in <xliff:g id="remaining_time">%1$d</xliff:g> min.</item>
     </plurals>
 
@@ -559,10 +559,10 @@
     <string name="title_topic_filtered_video_library">Videos about <xliff:g id="topic">%1$s</xliff:g></string>
 
     <!-- Title of the Video library screen when only videos of a given year are displayed -->
-    <string name="title_year_filtered_video_library"><xliff:g id="year">%1$d</xliff:g> videos</string>
+    <string name="title_year_filtered_video_library" tools:ignore="PluralsCandidate"><xliff:g id="year">%1$d</xliff:g> videos</string>
 
     <!-- Title of the Video library screen when only videos of a given year and a given topic are displayed -->
-    <string name="title_year_and_topic_filtered_video_library"><xliff:g id="year">%1$d</xliff:g> videos about <xliff:g id="topic">%2$s</xliff:g></string>
+    <string name="title_year_and_topic_filtered_video_library" tools:ignore="PluralsCandidate"><xliff:g id="year">%1$d</xliff:g> videos about <xliff:g id="topic">%2$s</xliff:g></string>
 
     <!-- Text of the Filter menu icon -->
     <string name="description_filter">Filter</string>

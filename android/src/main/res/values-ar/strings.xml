@@ -41,12 +41,12 @@
   </plurals>
 
   <plurals description="Shown as a notification on the system bar to alert user that some of their sessions are about to begin." name="session_notification_ticker">
-    <item quantity="zero">%d جلسة على وشك البدء.</item>
+    <item quantity="zero">%1$d جلسة على وشك البدء.</item>
     <item quantity="one">هناك جلسة واحدة على وشك البدء.</item>
-    <item quantity="two">%d جلسة على وشك البدء.</item>
-    <item quantity="few">%d جلسات على وشك البدء.</item>
-    <item quantity="many">%d جلسات على وشك البدء.</item>
-    <item quantity="other">%d جلسات على وشك البدء.</item>
+    <item quantity="two">%1$d جلسة على وشك البدء.</item>
+    <item quantity="few">%1$d جلسات على وشك البدء.</item>
+    <item quantity="many">%1$d جلسات على وشك البدء.</item>
+    <item quantity="other">%1$d جلسات على وشك البدء.</item>
   </plurals>
 
   <plurals description="Indicates a certain number of sessions." name="session_plurals">

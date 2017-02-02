@@ -26,7 +26,7 @@
   </plurals>
 
     <plurals description="Shown as a notification on the system bar to alert user that some of their sessions are about to begin." name="session_notification_ticker">
-    <item quantity="other">%d場活動即將開始。</item>
+    <item quantity="other">%1$d場活動即將開始。</item>
   </plurals>
 
     <plurals description="Indicates a certain number of sessions." name="session_plurals">

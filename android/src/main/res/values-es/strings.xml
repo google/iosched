@@ -24,23 +24,23 @@
   </plurals>
 
   <plurals description="Shows as a notification on the system bar to alert user that some of their sessions are about to begin." name="session_notification_text">
-    <item quantity="one">y 1 otra comenzando en <xliff:g id="remaining_time">%1$d</xliff:g> min</item>
+    <item quantity="one">y <xliff:g id="num_sessions">%2$d</xliff:g> otra comenzando en <xliff:g id="remaining_time">%1$d</xliff:g> min</item>
     <item quantity="other">y <xliff:g id="num_sessions">%2$d</xliff:g> otras comenzando en <xliff:g id="remaining_time">%1$d</xliff:g> min</item>
   </plurals>
 
   <plurals description="Shown as a notification on the system bar to alert user that some of their sessions are about to begin." name="session_notification_ticker">
-    <item quantity="one">1 sesión está por comenzar</item>
-    <item quantity="other">%d sesiones están por comenzar</item>
+    <item quantity="one">%1$d sesión está por comenzar</item>
+    <item quantity="other">%1$d sesiones están por comenzar</item>
   </plurals>
 
   <plurals description="Indicates a certain number of sessions." name="session_plurals">
-    <item quantity="one">1 sesión</item>
+    <item quantity="one">%1$d sesión</item>
     <item quantity="other">%1$d sesiones</item>
   </plurals>
 
   <!-- Title for the notification that alerts the user that some of their sessions are about to begin. -->
   <plurals name="session_notification_title">
-    <item quantity="one">1 sesión comenzará en <xliff:g id="remaining_time">%1$d</xliff:g> min</item>
+    <item quantity="one"><xliff:g id="num_sessions">%2$d</xliff:g> sesión comenzará en <xliff:g id="remaining_time">%1$d</xliff:g> min</item>
     <item quantity="other">
       <xliff:g id="num_sessions">%2$d</xliff:g> sesiones comenzarán en <xliff:g id="remaining_time">%1$d</xliff:g> min</item>
   </plurals>
