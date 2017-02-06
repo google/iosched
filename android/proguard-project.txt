@@ -98,10 +98,6 @@
 -keep class com.google.common.cache.LocalCache$ReferenceEntry
 # Make sure that Google Analytics doesn't get removed
 -keep class com.google.analytics.tracking.android.CampaignTrackingReceiver
-# Keep the LUtils members that are used by the ObjectAnimator using reflection
--keep public class com.google.samples.apps.iosched.util.LUtils {
-    public <methods>;
-}
 
 # Jackson uses reflection, so needs these attributes preserved
 -keepattributes InnerClasses,EnclosingMethod

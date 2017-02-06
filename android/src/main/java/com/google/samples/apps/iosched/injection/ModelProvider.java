@@ -1,5 +1,6 @@
 package com.google.samples.apps.iosched.injection;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.net.Uri;
@@ -20,14 +21,20 @@ import com.google.samples.apps.iosched.videolibrary.VideoLibraryModel;
  */
 public class ModelProvider {
 
+    // These are all only used for instrumented tests
+    @SuppressLint("StaticFieldLeak")
     private static SessionDetailModel stubSessionDetailModel = null;
 
+    @SuppressLint("StaticFieldLeak")
     private static MyScheduleModel stubMyScheduleModel = null;
 
+    @SuppressLint("StaticFieldLeak")
     private static SessionFeedbackModel stubSessionFeedbackModel = null;
 
+    @SuppressLint("StaticFieldLeak")
     private static VideoLibraryModel stubVideoLibraryModel = null;
 
+    @SuppressLint("StaticFieldLeak")
     private static ExploreIOModel stubExploreIOModel = null;
 
     public static SessionDetailModel provideSessionDetailModel(Uri sessionUri, Context context,

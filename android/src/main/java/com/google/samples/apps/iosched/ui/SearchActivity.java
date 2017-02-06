@@ -29,6 +29,7 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.graphics.drawable.DrawableCompat;
 import android.support.v4.widget.SimpleCursorAdapter;
 import android.support.v7.widget.SearchView;
@@ -81,7 +82,7 @@ public class SearchActivity extends BaseActivity implements
 
         Drawable up = DrawableCompat.wrap(
                 VectorDrawableCompat.create(getResources(), R.drawable.ic_up, getTheme()));
-        DrawableCompat.setTint(up, getResources().getColor(R.color.app_body_text_2));
+        DrawableCompat.setTint(up, getResources().getColor(R.color.body_text_2));
         toolbar.setNavigationIcon(up);
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override

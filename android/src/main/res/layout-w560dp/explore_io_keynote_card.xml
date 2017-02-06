@@ -72,7 +72,7 @@
                 android:maxLines="2"
                 android:textColor="@color/body_text_1"
                 android:textSize="@dimen/text_size_xlarge"
-                tools:text="@string/lorem_ipsum" />
+                tools:text="@string/placeholder_session_title" />
 
             <TextView
                 android:id="@+id/description"
@@ -83,7 +83,7 @@
                 android:layout_marginLeft="@dimen/explore_io_keynote_card_padding_start"
                 android:layout_marginRight="@dimen/explore_io_keynote_card_padding_end"
                 android:layout_marginStart="@dimen/explore_io_keynote_card_padding_start"
-                tools:text="@string/lorem_ipsum" />
+                tools:text="@string/placeholder_session_subtitle_and_abstract" />
 
         </LinearLayout>
 

@@ -64,7 +64,6 @@ import com.google.samples.apps.iosched.sync.SyncHelper;
 import com.google.samples.apps.iosched.sync.account.Account;
 import com.google.samples.apps.iosched.ui.widget.MultiSwipeRefreshLayout;
 import com.google.samples.apps.iosched.util.AccountUtils;
-import com.google.samples.apps.iosched.util.LUtils;
 import com.google.samples.apps.iosched.util.RecentTasksStyler;
 import com.google.samples.apps.iosched.welcome.WelcomeActivity;
 
@@ -91,9 +90,6 @@ public abstract class BaseActivity extends AppCompatActivity implements
     // Toolbar
     private Toolbar mToolbar;
 
-    // Helper methods for L APIs
-    private LUtils mLUtils;
-
     private static final int MAIN_CONTENT_FADEIN_DURATION = 250;
 
     // SwipeRefreshLayout allows the user to swipe the screen down to trigger a manual refresh
@@ -106,6 +102,10 @@ public abstract class BaseActivity extends AppCompatActivity implements
     private Object mSyncObserverHandle;
 
     private boolean mDestroyed;
+
+    // note: not saved during configuration changes
+    private boolean mIsFloatingWindow;
+    private boolean mIsFloatingWindowSet = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -135,8 +135,6 @@ public abstract class BaseActivity extends AppCompatActivity implements
         if (ab != null) {
             ab.setDisplayHomeAsUpEnabled(true);
         }
-
-        mLUtils = LUtils.getInstance(this);
     }
 
     private void trySetupSwipeRefresh() {
@@ -583,10 +581,6 @@ public abstract class BaseActivity extends AppCompatActivity implements
         }
     }
 
-    public LUtils getLUtils() {
-        return mLUtils;
-    }
-
     @Override
     public boolean canSwipeRefreshChildScrollUp() {
         return false;
@@ -609,17 +603,19 @@ public abstract class BaseActivity extends AppCompatActivity implements
     /**
      * Returns true if the theme sets the {@code R.attr.isFloatingWindow} flag to true.
      */
-    protected boolean shouldBeFloatingWindow() {
-        Resources.Theme theme = getTheme();
-        TypedValue floatingWindowFlag = new TypedValue();
+    public boolean shouldBeFloatingWindow() {
+        if (!mIsFloatingWindowSet) {
+            Resources.Theme theme = getTheme();
+            TypedValue floatingWindowFlag = new TypedValue();
 
-        // Check isFloatingWindow flag is defined in theme.
-        if (theme == null || !theme
-                .resolveAttribute(R.attr.isFloatingWindow, floatingWindowFlag, true)) {
-            return false;
+            // Check isFloatingWindow flag is defined in theme.
+            mIsFloatingWindow = theme != null
+                    && theme.resolveAttribute(R.attr.isFloatingWindow, floatingWindowFlag, true)
+                    && floatingWindowFlag.data != 0;
+            mIsFloatingWindowSet = true;
         }
 
-        return (floatingWindowFlag.data != 0);
+        return mIsFloatingWindow;
     }
 
 }

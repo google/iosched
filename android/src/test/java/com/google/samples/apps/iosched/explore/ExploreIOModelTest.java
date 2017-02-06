@@ -24,7 +24,6 @@ import android.support.v4.content.CursorLoader;
 import android.test.suitebuilder.annotation.SmallTest;
 
 import com.google.samples.apps.iosched.Config;
-import com.google.samples.apps.iosched.R;
 import com.google.samples.apps.iosched.explore.data.ItemGroup;
 import com.google.samples.apps.iosched.provider.ScheduleContract;
 import com.google.samples.apps.iosched.settings.SettingsUtils;
@@ -222,7 +221,6 @@ public class ExploreIOModelTest {
         SettingsMockContext
                 .initMockContextForCurrentTime(Config.CONFERENCE_START_MILLIS + TimeUtils.MINUTE,
                         mMockContext);
-        initMockThemesLimit(mMockContext, mMockResources);
 
         // Create an instance of the model.
         mExploreIOModel = new ExploreIOModel(mMockContext, mMockUri, mMockLoaderManager);
@@ -427,11 +425,5 @@ public class ExploreIOModelTest {
         when(cursor.getString(mGetCursorValueCaptor.capture())).then(getCursorValue);
         when(cursor.getInt(mGetCursorValueCaptor.capture())).then(getCursorValue);
         when(cursor.getCount()).thenReturn(FAKE_TAGS_CURSOR_DATA.length);
-    }
-
-    private void initMockThemesLimit(Context context, Resources resources) {
-        when(context.getResources()).thenReturn(resources);
-        when(resources.getInteger(R.integer
-                .explore_topic_theme_onsite_max_item_count)).thenReturn(SESSION_THEME_LIMIT);
     }
 }

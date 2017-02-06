@@ -16,6 +16,7 @@
 
 package com.google.samples.apps.iosched.videolibrary;
 
+import android.annotation.SuppressLint;
 import android.content.AsyncQueryHandler;
 import android.content.ContentValues;
 import android.content.Context;
@@ -267,6 +268,7 @@ public class VideoLibraryModel
                     Uri myPlayedVideoUri = ScheduleContract.MyViewedVideos.buildMyViewedVideosUri(
                             AccountUtils.getActiveAccountName(mContext));
 
+                    @SuppressLint("HandlerLeak") // this is short-lived
                     AsyncQueryHandler handler =
                             new AsyncQueryHandler(mContext.getContentResolver()) {};
                     final ContentValues values = new ContentValues();

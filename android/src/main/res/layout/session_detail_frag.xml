@@ -73,7 +73,7 @@
                     android:paddingRight="@dimen/spacing_large"
                     android:paddingTop="28dp"
                     android:textAppearance="@style/TextAppearance.Title"
-                    android:textColor="@color/io15_white"
+                    android:textColor="@android:color/white"
                     android:visibility="gone"
                     tools:text="@string/session_watch"
                     tools:visibility="visible" />

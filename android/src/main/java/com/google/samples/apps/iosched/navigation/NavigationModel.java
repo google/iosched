@@ -14,7 +14,6 @@
 
 package com.google.samples.apps.iosched.navigation;
 
-import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 
@@ -30,8 +29,6 @@ import com.google.samples.apps.iosched.myschedule.MyScheduleActivity;
 import com.google.samples.apps.iosched.navigation.NavigationModel.NavigationQueryEnum;
 import com.google.samples.apps.iosched.navigation.NavigationModel.NavigationUserActionEnum;
 import com.google.samples.apps.iosched.settings.SettingsActivity;
-import com.google.samples.apps.iosched.settings.SettingsUtils;
-import com.google.samples.apps.iosched.util.AccountUtils;
 import com.google.samples.apps.iosched.videolibrary.VideoLibraryActivity;
 
 /**
@@ -108,8 +105,6 @@ public class NavigationModel implements Model<NavigationQueryEnum, NavigationUse
         INVALID(12, 0, 0, null),
 
         // Deprecated?
-        IO_LIVE(R.id.iolive_nav_item, R.string.navdrawer_item_io_live, R.drawable.ic_navview_live,
-                null),
         SIGN_IN(R.id.signin_nav_item, R.string.navdrawer_item_sign_in, 0, null),
         VIDEO_LIBRARY(R.id.videos_nav_item, R.string.navdrawer_item_video_library,
                 R.drawable.ic_navview_video_library, VideoLibraryActivity.class),

@@ -35,7 +35,7 @@
         android:layout_marginRight="@dimen/padding_normal"
         android:layout_marginTop="@dimen/spacing_normal"
         android:contentDescription="@null"
-        android:src="@drawable/ic_navview_schedule"
+        tools:src="@drawable/ic_session"
         tools:ignore="VectorDrawableCompat" />
 
     <TextView

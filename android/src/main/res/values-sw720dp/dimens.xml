@@ -15,11 +15,6 @@
   limitations under the License.
   -->
 <resources>
-    <dimen name="sliding_pane_width">384dp</dimen>
-
-    <dimen name="multipane_half_padding">16dp</dimen>
-    <dimen name="multipane_padding">32dp</dimen>
-
     <dimen name="session_details_floating_width">600dp</dimen>
     <dimen name="session_details_floating_height">750dp</dimen>
 </resources>

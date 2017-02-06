@@ -142,8 +142,7 @@ public class MyScheduleSingleDayFragment extends ListFragment
     private void updateSchedule(MyScheduleModel model) {
         if (isVisible()) {
             if (mViewAdapter == null) {
-                mViewAdapter = new MyScheduleDayAdapter(getActivity(),
-                        ((MyScheduleActivity) getActivity()).getLUtils(), mListener);
+                mViewAdapter = new MyScheduleDayAdapter(getActivity(), mListener);
             }
             mViewAdapter.updateItems(model.getConferenceDataForDay(mDayId));
             if (getListAdapter() == null) {

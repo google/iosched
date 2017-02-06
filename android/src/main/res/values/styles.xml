@@ -20,20 +20,10 @@
     <!-- Prevents crash on certain devices to namespace conflict -->
     <style name="FrameworkRoot.Theme" parent="Theme.AppCompat.Light.NoActionBar" />
 
-    <!-- Immediate parent theme to specify base values for custom attributes -->
-    <style name="Theme" parent="FrameworkRoot.Theme">
-        <!-- Only needed for pre-L -->
-        <item name="android:editTextBackground">@drawable/edit_text</item>
-        <item name="android:editTextStyle">@style/Widget.IOSched.EditText</item>
-    </style>
-
-    <style name="Theme.IOSched.Base" parent="Theme">
-        <item name="actionBarIconColor">#fff</item>
+    <style name="Theme.IOSched.Base" parent="FrameworkRoot.Theme">
         <item name="actionBarInsetStart">@dimen/keyline_2</item>
         <item name="homeAsUpIndicator">@drawable/ic_up</item>
         <item name="popupItemBackground">?android:selectableItemBackground</item>
-        <item name="photoItemForeground">?android:selectableItemBackground</item>
-        <item name="photoItemForegroundBorderless">?android:selectableItemBackground</item>
 
         <item name="colorPrimary">@color/theme_primary</item>
         <item name="colorPrimaryDark">@color/theme_primary_dark</item>
@@ -64,8 +54,8 @@
     <style name="ActionBarThemeOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
 
     <style name="SearchViewTheme" parent="ThemeOverlay.AppCompat.ActionBar">
-        <item name="android:textColorPrimary">@color/app_body_text_1</item>
-        <item name="colorControlNormal">@color/app_body_text_2</item>
+        <item name="android:textColorPrimary">@color/body_text_1</item>
+        <item name="colorControlNormal">@color/body_text_2</item>
         <item name="colorControlActivated">@color/theme_accent_1</item>
     </style>
 
@@ -82,7 +72,7 @@
         <item name="android:windowIsTranslucent">true</item>
         <item name="autoCompleteTextViewStyle">@style/Widget.IOSched.Search.AutoCompleteTextView</item>
         <item name="searchViewStyle">@style/Widget.IOSched.SearchView</item>
-        <item name="colorControlNormal">@color/app_body_text_2</item>
+        <item name="colorControlNormal">@color/body_text_2</item>
         <item name="colorControlActivated">@color/theme_accent_1</item>
     </style>
 
@@ -93,7 +83,7 @@
     </style>
 
     <style name="Widget.IOSched.Search.AutoCompleteTextView" parent="Widget.AppCompat.Light.AutoCompleteTextView">
-        <item name="android:textColorHint">@color/app_body_text_2</item>
+        <item name="android:textColorHint">@color/body_text_2</item>
         <!-- If set to @null the cursor will be displayed using android:textColor -->
         <item name="android:textCursorDrawable">@null</item>
     </style>
@@ -228,10 +218,6 @@
         <item name="android:shadowRadius">3</item>
     </style>
 
-    <style name="Widget.IOSched.EditText" parent="Widget.AppCompat.EditText">
-        <item name="android:background">@drawable/edit_text</item>
-    </style>
-
     <style name="MyScheduleDayLabel">
         <item name="android:textSize">@dimen/text_size_large</item>
         <item name="android:textColor">@color/flat_button_text</item>
@@ -258,14 +244,14 @@
     <!-- Buttons -->
     <style name="MoreButton">
         <item name="android:textAppearance">@style/TextAppearance.AppCompat.Button</item>
-        <item name="android:textSize">@dimen/app_text_size_small</item>
+        <item name="android:textSize">@dimen/text_size_small</item>
         <item name="android:background">@drawable/more_button_background</item>
         <item name="android:letterSpacing" tools:targetApi="lollipop">0.1</item>
     </style>
 
     <style name="LiveNowIndicator">
         <item name="android:textAppearance">@style/TextAppearance.AppCompat.Button</item>
-        <item name="android:textSize">@dimen/app_text_size_small</item>
+        <item name="android:textSize">@dimen/text_size_small</item>
         <item name="android:fontFamily">sans-serif-medium</item>
         <item name="android:textColor">@color/text_on_primary</item>
     </style>

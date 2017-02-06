@@ -16,6 +16,7 @@
 
 package com.google.samples.apps.iosched.sync;
 
+import android.annotation.SuppressLint;
 import android.app.Service;
 import android.content.Intent;
 import android.os.IBinder;
@@ -24,8 +25,12 @@ import android.os.IBinder;
  * Service that handles sync. It simply instantiates a SyncAdapter and returns its IBinder.
  */
 public class SyncService extends Service {
-    private static final Object sSyncAdapterLock = new Object();
+
+    // This is how the Sync Adapter guide suggests creating the SyncAdapter.
+    // https://developer.android.com/training/sync-adapters/creating-sync-adapter.html
+    @SuppressLint("StaticFieldLeak")
     private static SyncAdapter sSyncAdapter = null;
+    private static final Object sSyncAdapterLock = new Object();
 
     @Override
     public void onCreate() {

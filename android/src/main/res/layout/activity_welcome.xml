@@ -84,7 +84,7 @@
                 android:layout_height="match_parent"
                 android:text="@string/decline"
                 android:textAppearance="@style/TextAppearance.AppCompat.Button"
-                android:textColor="@color/app_body_text_2"
+                android:textColor="@color/body_text_2"
                 android:visibility="invisible" />
 
             <Button

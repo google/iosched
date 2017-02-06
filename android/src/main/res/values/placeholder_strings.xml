@@ -28,6 +28,7 @@
     <string name="placeholder_session_subtitle_and_abstract" translatable="false" />
     <string name="placeholder_session_blurb" translatable="false" />
     <string name="placeholder_map_title" translatable="false" />
+    <string name="placeholder_map_subtitle" translatable="false" />
     <string name="placeholder_lorem_ipsum" translatable="false" />
     <string name="placeholder_button_label_1" translatable="false" />
     <string name="placeholder_button_label_2" translatable="false" />
