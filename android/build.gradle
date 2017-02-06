@@ -287,4 +287,7 @@ dependencies {
     compile 'com.google.code.findbugs:jsr305:2.0.1'
 
     compile 'com.firebase:firebase-client-android:2.5.0'
+
+    debugCompile 'com.squareup.leakcanary:leakcanary-android:1.5'
+    releaseCompile 'com.squareup.leakcanary:leakcanary-android-no-op:1.5'
 }
