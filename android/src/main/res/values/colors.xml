@@ -87,7 +87,7 @@
     <color name="session_livestreamed_color">@color/body_text_2</color>
     <color name="session_extended_color">#546E7A</color>
 
-    <color name="list_dropdown_divider_color">#92a3a3a3</color>
+    <color name="list_dropdown_divider_color">#289e9e9e</color>
     <color name="butter_bar_light">#eee0e0e0</color>
 
     <color name="tab_selected_strip">@android:color/white</color>

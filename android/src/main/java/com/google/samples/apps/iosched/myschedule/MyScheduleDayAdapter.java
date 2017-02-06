@@ -24,14 +24,13 @@ import android.content.res.TypedArray;
 import android.database.DataSetObserver;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.v4.content.ContextCompat;
 import android.text.TextUtils;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AbsListView;
 import android.widget.Button;
-import android.widget.ImageView;
 import android.widget.ListAdapter;
 import android.widget.TextView;
 
@@ -51,7 +50,6 @@ import java.util.Date;
 import java.util.List;
 
 import static com.google.samples.apps.iosched.util.LogUtils.LOGD;
-import static com.google.samples.apps.iosched.util.LogUtils.LOGE;
 import static com.google.samples.apps.iosched.util.LogUtils.makeLogTag;
 
 /**
@@ -63,10 +61,10 @@ public class MyScheduleDayAdapter implements ListAdapter, AbsListView.RecyclerLi
     private final Context mContext;
 
     // list of items served by this adapter
-    ArrayList<ScheduleItem> mItems = new ArrayList<>();
+    final ArrayList<ScheduleItem> mItems = new ArrayList<>();
 
     // observers to notify about changes in the data
-    ArrayList<DataSetObserver> mObservers = new ArrayList<>();
+    final ArrayList<DataSetObserver> mObservers = new ArrayList<>();
 
     ImageLoader mImageLoader;
 
@@ -90,19 +88,25 @@ public class MyScheduleDayAdapter implements ListAdapter, AbsListView.RecyclerLi
         mContext = context;
         mListener = listener;
         Resources resources = context.getResources();
-        mHourColorDefault = resources.getColor(R.color.my_schedule_hour_header_default);
-        mHourColorPast = resources.getColor(R.color.my_schedule_hour_header_finished);
-        mTitleColorDefault = resources.getColor(R.color.my_schedule_session_title_default);
-        mTitleColorPast = resources.getColor(R.color.my_schedule_session_title_finished);
-        mIconColorDefault = resources.getColor(R.color.my_schedule_icon_default);
-        mIconColorPast = resources.getColor(R.color.my_schedule_icon_finished);
-        mColorConflict = resources.getColor(R.color.my_schedule_conflict);
-        mColorBackgroundDefault = resources.getColor(android.R.color.white);
-        mColorBackgroundPast = resources.getColor(R.color.my_schedule_past_background);
+        mHourColorDefault = ContextCompat.getColor(context,
+                R.color.my_schedule_hour_header_default);
+        mHourColorPast = ContextCompat.getColor(context,
+                R.color.my_schedule_hour_header_finished);
+        mTitleColorDefault = ContextCompat.getColor(context,
+                R.color.my_schedule_session_title_default);
+        mTitleColorPast = ContextCompat.getColor(context,
+                R.color.my_schedule_session_title_finished);
+        mIconColorDefault = ContextCompat.getColor(context, R.color.my_schedule_icon_default);
+        mIconColorPast = ContextCompat.getColor(context, R.color.my_schedule_icon_finished);
+        mColorConflict = ContextCompat.getColor(context, R.color.my_schedule_conflict);
+        mColorBackgroundDefault = ContextCompat.getColor(context, android.R.color.white);
+        mColorBackgroundPast = ContextCompat.getColor(context, R.color.my_schedule_past_background);
         mListSpacing = resources.getDimensionPixelOffset(R.dimen.element_spacing_normal);
+
         TypedArray a = context.obtainStyledAttributes(new int[]{R.attr.selectableItemBackground});
         mSelectableItemBackground = a.getResourceId(0, 0);
         a.recycle();
+
         mIsRtl = UIUtils.isRtl(context);
     }
 
@@ -136,7 +140,7 @@ public class MyScheduleDayAdapter implements ListAdapter, AbsListView.RecyclerLi
     }
 
     @Override
-    public Object getItem(int position) {
+    public ScheduleItem getItem(int position) {
         return position >= 0 && position < mItems.size() ? mItems.get(position) : null;
     }
 
@@ -164,7 +168,7 @@ public class MyScheduleDayAdapter implements ListAdapter, AbsListView.RecyclerLi
         return description.toString();
     }
 
-    private View.OnClickListener mUriOnClickListener = new View.OnClickListener() {
+    private final View.OnClickListener mUriOnClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
             Object tag = v.getTag(R.id.myschedule_uri_tagkey);
@@ -179,15 +183,16 @@ public class MyScheduleDayAdapter implements ListAdapter, AbsListView.RecyclerLi
         }
     };
 
-    private void setUriClickable(View view, Uri uri) {
+    private void setUriClickable(View view, Uri uri, boolean setBackground) {
         view.setTag(R.id.myschedule_uri_tagkey, uri);
         view.setOnClickListener(mUriOnClickListener);
-        view.setBackgroundResource(mSelectableItemBackground);
+        if (setBackground) {
+            view.setBackgroundResource(mSelectableItemBackground);
+        }
     }
 
     private static void clearClickable(View view) {
         view.setOnClickListener(null);
-        view.setBackgroundResource(0);
         view.setClickable(false);
     }
 
@@ -196,15 +201,16 @@ public class MyScheduleDayAdapter implements ListAdapter, AbsListView.RecyclerLi
      * all the data is localized in the targeted RTL language, but as we will not be able to
      * localize the conference data, we hack it.
      *
-     * @param holder The {@link ViewHolder} of the list item.
+     * @param holder The {@link ItemViewHolder} of the list item.
      */
     @SuppressLint("RtlHardcoded")
-    private void adjustForRtl(ViewHolder holder) {
+    private void adjustForRtl(ItemViewHolder holder) {
         if (mIsRtl) {
-            holder.startTime.setGravity(Gravity.CENTER_VERTICAL | Gravity.RIGHT);
-            holder.title.setGravity(Gravity.RIGHT);
-            holder.description.setGravity(Gravity.RIGHT);
-            holder.browse.setGravity(Gravity.RIGHT);
+          // TODO check if this is needed
+//            startTime.setGravity(Gravity.CENTER_VERTICAL | Gravity.RIGHT);
+//            title.setGravity(Gravity.RIGHT);
+//            description.setGravity(Gravity.RIGHT);
+//            browse.setGravity(Gravity.RIGHT);
             LOGD(TAG, "Gravity right");
         }
     }
@@ -215,167 +221,41 @@ public class MyScheduleDayAdapter implements ListAdapter, AbsListView.RecyclerLi
             mImageLoader = new ImageLoader(mContext);
         }
 
-        ViewHolder holder;
+        ListViewHolder holder = null;
         // Create a new view if it is not ready yet.
         if (view == null) {
-            view = LayoutInflater.from(mContext).inflate(R.layout.my_schedule_item, parent, false);
-            holder = new ViewHolder();
-            holder.startTime = (TextView) view.findViewById(R.id.start_time);
-            holder.more = (TextView) view.findViewById(R.id.more);
-            holder.icon = (ImageView) view.findViewById(R.id.icon);
-            holder.title = (TextView) view.findViewById(R.id.slot_title);
-            holder.description = (TextView) view.findViewById(R.id.slot_description);
-            holder.browse = (TextView) view.findViewById(R.id.browse_sessions);
-            holder.feedback = (Button) view.findViewById(R.id.give_feedback_button);
-            holder.separator = view.findViewById(R.id.separator);
-            holder.touchArea = view.findViewById(R.id.touch_area);
-            holder.live = view.findViewById(R.id.live_now_badge);
-            view.setTag(holder);
-            adjustForRtl(holder);
-        } else {
-            holder = (ViewHolder) view.getTag();
-            // Clear event listeners
-            clearClickable(view);
-            clearClickable(holder.startTime);
-            clearClickable(holder.touchArea);
-            //Make sure it doesn't retain conflict coloring
-            holder.description.setTextColor(mHourColorDefault);
-        }
-
-        if (position < 0 || position >= mItems.size()) {
-            LOGE(TAG, "Invalid view position passed to MyScheduleDayAdapter: " + position);
-            return view;
-        }
-        final ScheduleItem item = mItems.get(position);
-        ScheduleItem nextItem = position < mItems.size() - 1 ? mItems.get(position + 1) : null;
-
-        long now = TimeUtils.getCurrentTime(view.getContext());
-        boolean isNowPlaying =
-                item.startTime <= now && now <= item.endTime && item.type == ScheduleItem.SESSION;
-        boolean isPastDuringConference = item.endTime <= now && now < Config.CONFERENCE_END_MILLIS;
-
-        if (isPastDuringConference) {
-            view.setBackgroundColor(mColorBackgroundPast);
-            holder.startTime.setTextColor(mHourColorPast);
-            holder.title.setTextColor(mTitleColorPast);
-            holder.description.setVisibility(View.GONE);
-            holder.icon.setColorFilter(mIconColorPast);
-        } else {
-            view.setBackgroundColor(mColorBackgroundDefault);
-            holder.startTime.setTextColor(mHourColorDefault);
-            holder.title.setTextColor(mTitleColorDefault);
-            holder.description.setVisibility(View.VISIBLE);
-            holder.icon.setColorFilter(mIconColorDefault);
-        }
-
-        holder.startTime.setText(TimeUtils.formatShortTime(mContext, new Date(item.startTime)));
-
-        // show or hide the "LIVE NOW" badge
-        holder.live.setVisibility(0 != (item.flags & ScheduleItem.FLAG_HAS_LIVESTREAM)
-                && isNowPlaying ? View.VISIBLE : View.GONE);
-
-        holder.touchArea.setTag(R.id.myschedule_uri_tagkey, null);
-        if (item.type == ScheduleItem.FREE) {
-            holder.startTime.setVisibility(View.VISIBLE);
-            holder.more.setVisibility(View.GONE);
-            holder.icon.setImageResource(R.drawable.ic_browse);
-            holder.feedback.setVisibility(View.GONE);
-            holder.title.setVisibility(View.GONE);
-            holder.browse.setVisibility(View.VISIBLE);
-            setUriClickable(view, ScheduleContract.Sessions.buildUnscheduledSessionsInInterval(
-                    item.startTime, item.endTime));
-            holder.description.setVisibility(View.GONE);
-        } else if (item.type == ScheduleItem.BREAK) {
-            holder.startTime.setVisibility(View.VISIBLE);
-            holder.more.setVisibility(View.GONE);
-            holder.feedback.setVisibility(View.GONE);
-            holder.title.setVisibility(View.VISIBLE);
-            holder.title.setText(item.title);
-            holder.icon.setImageResource(UIUtils.getBreakIcon(item.title));
-            holder.browse.setVisibility(View.GONE);
-            holder.description.setText(formatDescription(item));
-        } else if (item.type == ScheduleItem.SESSION) {
-            if (holder.feedback != null) {
-                boolean showFeedbackButton = !item.hasGivenFeedback;
-                // Can't use isPastDuringConference because we want to show feedback after the
-                // conference too.
-                if (showFeedbackButton) {
-                    if (item.endTime > now) {
-                        // Session hasn't finished yet, don't show button.
-                        showFeedbackButton = false;
-                    }
-                }
-                holder.feedback.setVisibility(showFeedbackButton ? View.VISIBLE : View.GONE);
-                holder.feedback.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        Bundle bundle = new Bundle();
-                        bundle.putString(MyScheduleModel.SESSION_ID_KEY, item.sessionId);
-                        bundle.putString(MyScheduleModel.SESSION_TITLE_KEY, item.title);
-                        mListener.onUserAction(MyScheduleUserActionEnum.FEEDBACK, bundle);
-
-                        Intent feedbackIntent = new Intent(Intent.ACTION_VIEW,
-                                ScheduleContract.Sessions.buildSessionUri(item.sessionId),
-                                mContext, SessionFeedbackActivity.class);
-                        mContext.startActivity(feedbackIntent);
-
-                    }
-                });
+            final LayoutInflater li = LayoutInflater.from(mContext);
+            switch (getItemViewType(position)) {
+                case 0:
+                    holder = new ItemViewHolder(
+                            li.inflate(R.layout.my_schedule_item, parent, false));
+                    break;
+                case 1:
+                    holder = new TimeSeperatorViewHolder(
+                            li.inflate(R.layout.my_schedule_time_separator_item, parent, false));
+                    break;
             }
-            holder.title.setVisibility(View.VISIBLE);
-            holder.title.setText(item.title);
-            holder.more.setVisibility(item.isKeynote() ? View.GONE : View.VISIBLE);
-            holder.browse.setVisibility(View.GONE);
-            holder.icon.setImageResource(UIUtils.getSessionIcon(item.sessionType));
-
-            final Uri sessionUri = ScheduleContract.Sessions.buildSessionUri(item.sessionId);
-            if (0 != (item.flags & ScheduleItem.FLAG_CONFLICTS_WITH_PREVIOUS)) {
-                holder.startTime.setVisibility(View.GONE);
-                holder.description.setTextColor(mColorConflict);
-                setUriClickable(holder.touchArea, sessionUri);
-            } else {
-                holder.startTime.setVisibility(View.VISIBLE);
-                setUriClickable(holder.startTime, ScheduleContract.Sessions
-                        .buildUnscheduledSessionsInInterval(item.startTime, item.endTime));
-
-                // Padding fix needed for KitKat (padding gets removed by setting the background)
-                holder.startTime.setPadding(
-                        (int) mContext.getResources().getDimension(R.dimen.keyline_2), 0,
-                        (int) mContext.getResources().getDimension(R.dimen.keyline_2), 0);
-                setUriClickable(holder.touchArea, sessionUri);
-                if (0 != (item.flags & ScheduleItem.FLAG_CONFLICTS_WITH_NEXT)) {
-                    holder.description.setTextColor(mColorConflict);
-                }
-            }
-            holder.description.setText(formatDescription(item));
         } else {
-            LOGE(TAG, "Invalid item type in MyScheduleDayAdapter: " + item.type);
+            holder = (ListViewHolder) view.getTag();
         }
 
-        holder.separator.setVisibility(nextItem == null ||
-                0 != (item.flags & ScheduleItem.FLAG_CONFLICTS_WITH_NEXT) ? View.GONE :
-                View.VISIBLE);
+        holder.onBind(position);
 
-        if (position == 0) { // First item
-            view.setPadding(0, mListSpacing, 0, 0);
-        } else if (nextItem == null) { // Last item
-            view.setPadding(0, 0, 0, mListSpacing);
-        } else {
-            view.setPadding(0, 0, 0, 0);
-        }
-
-        return view;
+        return holder.view;
     }
 
     @Override
     public int getItemViewType(int position) {
+        ScheduleItem item = getItem(position);
+        if (item instanceof TimeSeperatorItem) {
+            return 1;
+        }
         return 0;
     }
 
-
     @Override
     public int getViewTypeCount() {
-        return 1;
+        return 2;
     }
 
     @Override
@@ -397,12 +277,21 @@ public class MyScheduleDayAdapter implements ListAdapter, AbsListView.RecyclerLi
         notifyObservers();
     }
 
-    public void updateItems(List<ScheduleItem> items) {
+    public void updateItems(final List<ScheduleItem> items) {
         mItems.clear();
         if (items != null) {
-            for (ScheduleItem item : items) {
+            for (int i = 0, size = items.size(); i < size; i++) {
+                final ScheduleItem prev = i > 0 ? items.get(i - 1) : null;
+                final ScheduleItem item = items.get(i);
+
+                if (prev == null || prev.startTime != item.startTime) {
+                    LOGD(TAG, "Adding time seperator item: " + item + " start="
+                            + new Date(item.startTime));
+                    mItems.add(new TimeSeperatorItem(item));
+                }
+
                 LOGD(TAG, "Adding schedule item: " + item + " start=" + new Date(item.startTime));
-                mItems.add((ScheduleItem) item.clone());
+                mItems.add(item);
             }
         }
         notifyObservers();
@@ -412,17 +301,162 @@ public class MyScheduleDayAdapter implements ListAdapter, AbsListView.RecyclerLi
     public void onMovedToScrapHeap(View view) {
     }
 
-    private static class ViewHolder {
-        public TextView startTime;
-        public TextView more;
-        public ImageView icon;
+    class ItemViewHolder extends ListViewHolder {
         public TextView title;
         public TextView description;
         public Button feedback;
-        public TextView browse;
         public View live;
         public View separator;
-        public View touchArea;
+
+        ItemViewHolder(final View view) {
+            super(view);
+            title = (TextView) view.findViewById(R.id.slot_title);
+            description = (TextView) view.findViewById(R.id.slot_description);
+            feedback = (Button) view.findViewById(R.id.give_feedback_button);
+            separator = view.findViewById(R.id.separator);
+            live = view.findViewById(R.id.live_now_badge);
+            adjustForRtl(this);
+        }
+
+        @Override
+        void onBind(int position) {
+            clearClickable(view);
+
+            description.setTextColor(mHourColorDefault);
+
+            final ScheduleItem item = mItems.get(position);
+            final ScheduleItem nextItem = position < mItems.size() - 1
+                    ? mItems.get(position + 1)
+                    : null;
+
+            long now = TimeUtils.getCurrentTime(view.getContext());
+            boolean isNowPlaying = item.startTime <= now && now <= item.endTime
+                    && item.type == ScheduleItem.SESSION;
+            boolean isPastDuringConference = item.endTime <= now
+                    && now < Config.CONFERENCE_END_MILLIS;
+
+            if (isPastDuringConference) {
+                view.setBackgroundColor(mColorBackgroundPast);
+                title.setTextColor(mTitleColorPast);
+                description.setVisibility(View.GONE);
+            } else {
+                view.setBackgroundColor(mColorBackgroundDefault);
+                title.setTextColor(mTitleColorDefault);
+                description.setVisibility(View.VISIBLE);
+            }
+
+            // show or hide the "LIVE NOW" badge
+            live.setVisibility((item.flags & ScheduleItem.FLAG_HAS_LIVESTREAM) != 0
+                    && isNowPlaying ? View.VISIBLE : View.GONE);
+
+            view.setTag(R.id.myschedule_uri_tagkey, null);
+            if (item.type == ScheduleItem.BREAK) {
+                feedback.setVisibility(View.GONE);
+                title.setVisibility(View.VISIBLE);
+                title.setText(item.title);
+                description.setText(formatDescription(item));
+            } else if (item.type == ScheduleItem.SESSION) {
+                if (feedback != null) {
+                    boolean showFeedbackButton = !item.hasGivenFeedback;
+                    // Can't use isPastDuringConference because we want to show feedback after the
+                    // conference too.
+                    if (showFeedbackButton) {
+                        if (item.endTime > now) {
+                            // Session hasn't finished yet, don't show button.
+                            showFeedbackButton = false;
+                        }
+                    }
+                    feedback.setVisibility(showFeedbackButton ? View.VISIBLE : View.GONE);
+                    feedback.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            Bundle bundle = new Bundle();
+                            bundle.putString(MyScheduleModel.SESSION_ID_KEY, item.sessionId);
+                            bundle.putString(MyScheduleModel.SESSION_TITLE_KEY, item.title);
+                            mListener.onUserAction(MyScheduleUserActionEnum.FEEDBACK, bundle);
+
+                            Intent feedbackIntent = new Intent(Intent.ACTION_VIEW,
+                                    ScheduleContract.Sessions.buildSessionUri(item.sessionId),
+                                    mContext, SessionFeedbackActivity.class);
+                            mContext.startActivity(feedbackIntent);
+
+                        }
+                    });
+                }
+
+                title.setVisibility(View.VISIBLE);
+                title.setText(item.title);
+
+                final Uri sessionUri = ScheduleContract.Sessions.buildSessionUri(item.sessionId);
+                setUriClickable(view, sessionUri, true);
+
+                if ((item.flags & ScheduleItem.FLAG_CONFLICTS_WITH_PREVIOUS) != 0) {
+                    // TODO show conflicts?
+                    // description.setTextColor(mColorConflict);
+                }
+                if ((item.flags & ScheduleItem.FLAG_CONFLICTS_WITH_NEXT) != 0) {
+                    // TODO show conflicts?
+                    // description.setTextColor(mColorConflict);
+                }
+
+                description.setText(formatDescription(item));
+            }
+
+            if (position == 0) { // First item
+                view.setPadding(0, mListSpacing, 0, 0);
+            } else if (nextItem == null) { // Last item
+                view.setPadding(0, 0, 0, mListSpacing);
+            } else {
+                view.setPadding(0, 0, 0, 0);
+            }
+        }
+    }
+
+    class TimeSeperatorViewHolder extends ListViewHolder {
+        public TextView startTime;
+
+        TimeSeperatorViewHolder(final View view) {
+            super(view);
+            startTime = (TextView) view.findViewById(R.id.start_time);
+        }
+
+        @Override
+        void onBind(int position) {
+            clearClickable(startTime);
+
+            final ScheduleItem item = mItems.get(position);
+
+            final long now = TimeUtils.getCurrentTime(view.getContext());
+            boolean isPastDuringConference = item.endTime <= now
+                    && now < Config.CONFERENCE_END_MILLIS;
+
+            if (isPastDuringConference) {
+                startTime.setTextColor(mHourColorPast);
+            } else {
+                startTime.setTextColor(mHourColorDefault);
+            }
+
+            startTime.setText(TimeUtils.formatShortTime(mContext, new Date(item.startTime)));
+            setUriClickable(view, ScheduleContract.Sessions
+                    .buildUnscheduledSessionsInInterval(item.startTime, item.endTime), false);
+        }
+    }
+
+    abstract static class ListViewHolder {
+        final View view;
+
+        ListViewHolder(View view) {
+            this.view = view;
+            view.setTag(this);
+        }
+
+        abstract void onBind(int position);
+    }
+
+    static class TimeSeperatorItem extends ScheduleItem {
+        TimeSeperatorItem(ScheduleItem item) {
+            this.startTime = item.startTime;
+        }
     }
 
 }

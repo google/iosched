@@ -58,6 +58,9 @@ public class ScheduleItem implements Cloneable, Comparable<ScheduleItem> {
     public String subtitle = "";
     public String room;
 
+    // is the item in the user's schedule
+    public boolean inSchedule;
+
     // has feedback been given on this session?
     public boolean hasGivenFeedback;
 
@@ -73,11 +76,11 @@ public class ScheduleItem implements Cloneable, Comparable<ScheduleItem> {
     public static final int FLAG_CONFLICTS_WITH_NEXT = 0x08;
 
     public void setTypeFromBlockType(String blockType) {
-        if (!ScheduleContract.Blocks.isValidBlockType(blockType) ||
-                ScheduleContract.Blocks.BLOCK_TYPE_FREE.equals(blockType)) {
-            type = FREE;
-        } else {
+        if (ScheduleContract.Blocks.isValidBlockType(blockType) &&
+                ScheduleContract.Blocks.BLOCK_TYPE_BREAK.equals(blockType)) {
             type = BREAK;
+        } else {
+            type = FREE;
         }
     }
 

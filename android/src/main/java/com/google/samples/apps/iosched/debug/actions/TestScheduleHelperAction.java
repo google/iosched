@@ -19,9 +19,9 @@ package com.google.samples.apps.iosched.debug.actions;
 import android.content.Context;
 import android.os.AsyncTask;
 
+import com.google.samples.apps.iosched.debug.DebugAction;
 import com.google.samples.apps.iosched.model.ScheduleItem;
 import com.google.samples.apps.iosched.model.ScheduleItemHelper;
-import com.google.samples.apps.iosched.debug.DebugAction;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -33,9 +33,9 @@ import java.util.Locale;
  * A DebugAction that tests a few cases of schedule conflicts.
  */
 public class TestScheduleHelperAction implements DebugAction {
-    
+
     StringBuilder out = new StringBuilder();
-    
+
     @Override
     public void run(final Context context, final Callback callback) {
         new AsyncTask<Context, Void, Boolean>() {
@@ -56,164 +56,49 @@ public class TestScheduleHelperAction implements DebugAction {
         return "Test scheduler conflict handling";
     }
 
-
     public Boolean startTest() {
         boolean success = true;
-        ArrayList<ScheduleItem> mut = new ArrayList<>();
-        ArrayList<ScheduleItem> immut = new ArrayList<>();
+        ArrayList<ScheduleItem> items = new ArrayList<>();
 
-        mut.add(item("14:00", "14:30", "m1"));
-        immut.add(item("14:25", "14:50", "i1"));
+        items.add(item(false, "14:00", "14:30", "m1"));
+        items.add(item(true, "14:25", "14:50", "i1"));
         success &= check("no intersection - within range",
-                ScheduleItemHelper.processItems(mut, immut),
-                new ScheduleItem[]{item("14:00", "14:30", "m1"), item("14:25", "14:50", "i1")});
-
-        mut.clear(); immut.clear();
-        mut.add(item("14:00", "16:00", "m1"));
-        immut.add(item("15:00", "16:00", "i1"));
-        success &= check("Simple intersection1",
-                ScheduleItemHelper.processItems(mut, immut),
-                new ScheduleItem[]{item("14:00", "15:00", "m1"), item("15:00", "16:00", "i1")});
-
-        mut.clear(); immut.clear();
-        mut.add(item("14:00", "16:00", "m1"));
-        immut.add(item("13:00", "15:00", "i1"));
-        success &= check("Simple intersection2",
-                ScheduleItemHelper.processItems(mut, immut),
-                new ScheduleItem[]{item("13:00", "15:00", "i1"), item("15:00", "16:00", "m1")});
-
-        mut.clear(); immut.clear();
-        mut.add(item("14:00", "16:00", "m1"));
-        immut.add(item("14:00", "16:00", "i1"));
-        success &= check("same time",
-                ScheduleItemHelper.processItems(mut, immut),
-                new ScheduleItem[]{item("14:00", "16:00", "i1")});
-
-        mut.clear(); immut.clear();
-        mut.add(item("14:00", "16:09", "m1"));
-        immut.add(item("14:05", "16:00", "i1"));
-        success &= check("no split, remaining not big enough",
-                ScheduleItemHelper.processItems(mut, immut),
-                new ScheduleItem[]{item("14:05", "16:00", "i1")});
-
-        mut.clear(); immut.clear();
-        mut.add(item("14:00", "16:10", "m1"));
-        immut.add(item("14:00", "16:00", "i1"));
-        success &= check("split",
-                ScheduleItemHelper.processItems(mut, immut),
-                new ScheduleItem[]{item("14:00", "16:00", "i1"), item("16:00", "16:10", "m1")});
-
-        mut.clear(); immut.clear();
-        mut.add(item("14:00", "17:00", "m1"));
-        immut.add(item("14:30", "15:00", "i1"));
-        immut.add(item("15:30", "16:00", "i2"));
-        success &= check("2 splits",
-                ScheduleItemHelper.processItems(mut, immut),
+                ScheduleItemHelper.processItems(items),
                 new ScheduleItem[]{
-                        item("14:00", "14:30", "m1"),
-                        item("14:30", "15:00", "i1"),
-                        item("15:00", "15:30", "m1"),
-                        item("15:30", "16:00", "i2"),
-                        item("16:00", "17:00", "m1"),
-                });
+                        item(false, "14:00", "14:30", "m1"),
+                        item(true, "14:25", "14:50", "i1")});
 
-        mut.clear(); immut.clear();
-        mut.add(item("14:00", "17:00", "m1"));
-        immut.add(item("14:30", "15:00", "i1"));
-        immut.add(item("16:30", "16:51", "i2"));
-        success &= check("2 splits with no remaining",
-                ScheduleItemHelper.processItems(mut, immut),
-                new ScheduleItem[]{
-                        item("14:00", "14:30", "m1"),
-                        item("14:30", "15:00", "i1"),
-                        item("15:00", "16:30", "m1"),
-                        item("16:30", "16:51", "i2"),
-                });
-
-        mut.clear(); immut.clear();
-        mut.add(item("12:00", "15:00", "m1"));
-        mut.add(item("15:00", "17:00", "m2"));
-        mut.add(item("17:00", "17:40", "m3"));
-        immut.add(item("14:30", "15:00", "i1"));
-        immut.add(item("16:30", "16:51", "i2"));
-        success &= check("2 splits, 3 free blocks, no remaining",
-                ScheduleItemHelper.processItems(mut, immut),
-                new ScheduleItem[]{
-                        item("12:00", "14:30", "m1"),
-                        item("14:30", "15:00", "i1"),
-                        item("15:00", "16:30", "m2"),
-                        item("16:30", "16:51", "i2"),
-                        item("17:00", "17:40", "m3"),
-                });
-
-        mut.clear(); immut.clear();
-        mut.add(item("12:00", "15:00", "m1"));
-        mut.add(item("15:00", "17:00", "m2"));
-        mut.add(item("17:00", "17:40", "m3"));
-        immut.add(item("14:30", "15:00", "i1"));
-        immut.add(item("16:30", "16:51", "i2"));
-        immut.add(item("16:30", "16:40", "i3"));
-        success &= check("conflicting sessions, 2 splits, 3 free blocks, no remaining",
-                ScheduleItemHelper.processItems(mut, immut),
-                new ScheduleItem[]{
-                        item("12:00", "14:30", "m1"),
-                        item("14:30", "15:00", "i1"),
-                        item("15:00", "16:30", "m2"),
-                        item("16:30", "16:51", "i2"),
-                        item("16:30", "16:40", "i3", true),
-                        item("17:00", "17:40", "m3"),
-                });
-
-
-        mut.clear(); immut.clear();
-        mut.add(item("12:00", "15:00", "m1"));
-        mut.add(item("15:00", "17:00", "m2"));
-        mut.add(item("17:00", "17:40", "m3"));
-        immut.add(item("14:30", "15:00", "i1"));
-        immut.add(item("16:30", "16:51", "i2"));
-        immut.add(item("16:50", "17:00", "i3"));
-        success &= check("borderline conflicting sessions, 2 splits, 3 free blocks, no remaining",
-                ScheduleItemHelper.processItems(mut, immut),
-                new ScheduleItem[]{
-                        item("12:00", "14:30", "m1"),
-                        item("14:30", "15:00", "i1"),
-                        item("15:00", "16:30", "m2"),
-                        item("16:30", "16:51", "i2"),
-                        item("16:50", "17:00", "i3"),
-                        item("17:00", "17:40", "m3"),
-                });
-
-
-        mut.clear(); immut.clear();
-        immut.add(item("14:30", "15:00", "i1"));
-        immut.add(item("16:30", "19:00", "i2"));
-        immut.add(item("16:30", "17:00", "i3"));
-        immut.add(item("18:00", "18:30", "i4"));
+        items.clear();
+        items.add(item(true, "14:30", "15:00", "i1"));
+        items.add(item(true, "16:30", "19:00", "i2"));
+        items.add(item(true, "16:30", "17:00", "i3"));
+        items.add(item(true, "18:00", "18:30", "i4"));
         success &= check("conflicting sessions",
-                ScheduleItemHelper.processItems(mut, immut),
+                ScheduleItemHelper.processItems(items),
                 new ScheduleItem[]{
-                        item("14:30", "15:00", "i1"),
-                        item("16:30", "19:00", "i2"),
-                        item("16:30", "17:00", "i3", true),
-                        item("18:00", "18:30", "i4", true),
+                        item(true, "14:30", "15:00", "i1"),
+                        item(true, "16:30", "19:00", "i2"),
+                        item(true, "16:30", "17:00", "i3", true),
+                        item(true, "18:00", "18:30", "i4", true),
                 });
 
         return success;
     }
 
-    private boolean check(String testDescription, ArrayList<ScheduleItem> actual, ScheduleItem[] expected) {
+    private boolean check(String testDescription, ArrayList<ScheduleItem> actual,
+            ScheduleItem[] expected) {
         out.append("testing " + testDescription + "...");
         boolean equal = true;
-        if (actual.size() != expected.length ) {
+        if (actual.size() != expected.length) {
             equal = false;
         } else {
-            int i=0;
-            for (ScheduleItem item: actual) {
+            int i = 0;
+            for (ScheduleItem item : actual) {
                 if (!item.title.equals(expected[i].title) ||
                         item.startTime != expected[i].startTime ||
                         item.endTime != expected[i].endTime ||
-                        ( item.flags&ScheduleItem.FLAG_CONFLICTS_WITH_PREVIOUS) !=
-                                (expected[i].flags&ScheduleItem.FLAG_CONFLICTS_WITH_PREVIOUS)) {
+                        (item.flags & ScheduleItem.FLAG_CONFLICTS_WITH_PREVIOUS) !=
+                                (expected[i].flags & ScheduleItem.FLAG_CONFLICTS_WITH_PREVIOUS)) {
                     equal = false;
                     break;
                 }
@@ -223,11 +108,11 @@ public class TestScheduleHelperAction implements DebugAction {
         if (!equal) {
             out.append("ERROR!:\n");
             out.append("       expected\n");
-            for (ScheduleItem item: expected) {
+            for (ScheduleItem item : expected) {
                 out.append("  " + format(item) + "\n");
             }
             out.append("       actual\n");
-            for (ScheduleItem item: actual) {
+            for (ScheduleItem item : actual) {
                 out.append("  " + format(item) + "\n");
             }
         } else {
@@ -240,12 +125,12 @@ public class TestScheduleHelperAction implements DebugAction {
 
     private String format(ScheduleItem item) {
         return item.title + "  " + timeStr(item.startTime) + "-" + timeStr(item.endTime) +
-                ((item.flags&ScheduleItem.FLAG_CONFLICTS_WITH_PREVIOUS ) > 0 ? "  conflict":"");
+                ((item.flags & ScheduleItem.FLAG_CONFLICTS_WITH_PREVIOUS) > 0 ? "  conflict" : "");
     }
 
     private String timeStr(long time) {
         Date d = new Date(time);
-        return d.getHours()+":"+d.getMinutes();
+        return d.getHours() + ":" + d.getMinutes();
     }
 
     private long date(String hourMinute) {
@@ -255,24 +140,31 @@ public class TestScheduleHelperAction implements DebugAction {
             throw new RuntimeException(ex);
         }
     }
-    private ScheduleItem item(String start, String end, String id) {
-        return item(start, end, id, false);
+
+    private ScheduleItem item(boolean inSchedule, String start, String end, String id) {
+        return item(inSchedule, start, end, id, false);
     }
 
-    private ScheduleItem item(String start, String end, String id, int type) {
-        return item(start, end, id, false, type);
+    private ScheduleItem item(boolean inSchedule, String start, String end, String id, int type) {
+        return item(inSchedule, start, end, id, false, type);
     }
 
-    private ScheduleItem item(String start, String end, String id, boolean conflict) {
-        return item(start, end, id, conflict, ScheduleItem.SESSION);
+    private ScheduleItem item(boolean inSchedule, String start, String end, String id,
+            boolean conflict) {
+        return item(inSchedule, start, end, id, conflict, ScheduleItem.SESSION);
     }
-    private ScheduleItem item(String start, String end, String id, boolean conflict, int type) {
+
+    private ScheduleItem item(boolean inSchedule, String start, String end, String id,
+            boolean conflict, int type) {
         ScheduleItem i = new ScheduleItem();
         i.title = id;
         i.startTime = date(start);
         i.endTime = date(end);
         i.type = type;
-        if (conflict) i.flags = ScheduleItem.FLAG_CONFLICTS_WITH_PREVIOUS;
+        i.inSchedule = inSchedule;
+        if (conflict) {
+            i.flags = ScheduleItem.FLAG_CONFLICTS_WITH_PREVIOUS;
+        }
         return i;
     }
 
