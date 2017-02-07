@@ -21,107 +21,90 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.support.v4.content.AsyncTaskLoader;
 
+import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.maps.android.geojson.GeoJsonFeature;
+import com.google.maps.android.geojson.GeoJsonLayer;
+import com.google.maps.android.geojson.GeoJsonPoint;
+import com.google.maps.android.geojson.GeoJsonPointStyle;
 import com.google.maps.android.ui.IconGenerator;
 import com.google.samples.apps.iosched.provider.ScheduleContract;
 import com.google.samples.apps.iosched.util.MapUtils;
 
-import java.util.ArrayList;
-import java.util.List;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 /**
- * Background task that queries the content provider and prepares a list of {@link MarkerModel}s
- * wrapped in a {@link com.google.samples.apps.iosched.map.util.MarkerLoadingTask.MarkerEntry}
- * that can be used to create Markers.
+ * Background task that queries the content provider and prepares a {@link GeoJsonLayer} that can be
+ * used to create Markers.
  */
-public class MarkerLoadingTask extends AsyncTaskLoader<List<MarkerLoadingTask.MarkerEntry>> {
+public class MarkerLoadingTask extends AsyncTaskLoader<GeoJsonLayer> {
 
-    public MarkerLoadingTask(Context context) {
+    private GoogleMap mMap;
+    private Context mContext;
+
+    public MarkerLoadingTask(GoogleMap map, Context context) {
         super(context);
+        mContext = context;
+        mMap = map;
     }
 
     @Override
-    public List<MarkerEntry> loadInBackground() {
-        List<MarkerEntry> list = null;
+    public GeoJsonLayer loadInBackground() {
+        try {
+            final Uri uri = ScheduleContract.MapGeoJson.buildGeoJsonUri();
+            Cursor cursor = getContext().getContentResolver().query(uri, MarkerQuery.PROJECTION,
+                    null, null, null);
 
-        // Create a URI to get a cursor of all map markers
-        final Uri uri = ScheduleContract.MapMarkers.buildMarkerUri();
-        Cursor cursor = getContext().getContentResolver().query(uri, MarkerQuery.PROJECTION,
-                null, null, null);
-
-        // Create a MarkerModel for each entry
-        final int count = cursor.getCount();
-        if (cursor != null) {
-
-            list = new ArrayList<>(count);
+            GeoJsonLayer layer = null;
+            if (cursor != null) {
+                if (cursor.moveToFirst()) {
+                    final String id = cursor.getString(MarkerQuery.GEOJSON);
+                    JSONObject j = new JSONObject(id);
+                    //GeoJsonLayer stores a map, which is only modified when addLayerToMap is called
+                    layer = new GeoJsonLayer(mMap, j);
+                } else {
+                    return null;
+                }
+                cursor.close();
+            }
+            Iterable<GeoJsonFeature> features = layer.getFeatures();
             final IconGenerator labelIconGenerator = MapUtils.getLabelIconGenerator(getContext());
-            cursor.moveToFirst();
-
-            while (!cursor.isAfterLast()) {
+            for (GeoJsonFeature feature : features) {
                 // get data
-                final String id = cursor.getString(MarkerQuery.MARKER_ID);
-                final int floor = cursor.getInt(MarkerQuery.MARKER_FLOOR);
-                final float lat = cursor.getFloat(MarkerQuery.MARKER_LATITUDE);
-                final float lon = cursor.getFloat(MarkerQuery.MARKER_LONGITUDE);
-                final String typeString = cursor.getString(MarkerQuery.MARKER_TYPE);
+                final String id = feature.getProperty("id");
+                GeoJsonPoint point = (GeoJsonPoint) feature.getGeometry();
+                final LatLng position = point.getCoordinates();
+                final String typeString = feature.getProperty("type");
                 final int type = MapUtils.detectMarkerType(typeString);
-                final String label = cursor.getString(MarkerQuery.MARKER_LABEL);
+                final String label = feature.getProperty("title");
 
-                final LatLng position = new LatLng(lat, lon);
-                MarkerOptions marker = null;
+                GeoJsonPointStyle pointStyle = new GeoJsonPointStyle();
                 if (type == MarkerModel.TYPE_LABEL) {
                     // Label markers contain the label as its icon
-                    marker = MapUtils.createLabelMarker(labelIconGenerator, id, position, label);
+                    pointStyle = MapUtils.createLabelMarker(labelIconGenerator, id, label);
                 } else if (type == MarkerModel.TYPE_ICON) {
                     // An icon marker is mapped to a drawable based on its full type name
-                    marker = MapUtils.createIconMarker(typeString, id, position, getContext());
+                    pointStyle = MapUtils.createIconMarker(typeString, id, getContext());
                 } else if (type != MarkerModel.TYPE_INACTIVE) {
                     // All other markers (that are not inactive) contain a pin icon
-                    marker = MapUtils.createPinMarker(id, position);
+                    pointStyle = MapUtils.createPinMarker(id);
                 }
-
-                MarkerModel model = new MarkerModel(id, floor, type, label, null);
-                MarkerEntry entry = new MarkerEntry(model, marker);
-
-                list.add(entry);
-
-                cursor.moveToNext();
+                feature.setPointStyle(pointStyle);
             }
-            cursor.close();
+            return layer;
+        } catch (JSONException e) {
+            e.printStackTrace();
         }
-
-        return list;
+        return null;
     }
-
 
     private interface MarkerQuery {
-
         String[] PROJECTION = {
-                ScheduleContract.MapMarkers.MARKER_ID,
-                ScheduleContract.MapMarkers.MARKER_FLOOR,
-                ScheduleContract.MapMarkers.MARKER_LATITUDE,
-                ScheduleContract.MapMarkers.MARKER_LONGITUDE,
-                ScheduleContract.MapMarkers.MARKER_TYPE,
-                ScheduleContract.MapMarkers.MARKER_LABEL
+                ScheduleContract.MapGeoJson.GEOJSON
         };
 
-        int MARKER_ID = 0;
-        int MARKER_FLOOR = 1;
-        int MARKER_LATITUDE = 2;
-        int MARKER_LONGITUDE = 3;
-        int MARKER_TYPE = 4;
-        int MARKER_LABEL = 5;
+        int GEOJSON = 0;
     }
 
-    public class MarkerEntry {
-
-        public MarkerModel model;
-        public MarkerOptions options;
-
-        public MarkerEntry(MarkerModel model, MarkerOptions options) {
-            this.model = model;
-            this.options = options;
-        }
-    }
 }

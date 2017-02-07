@@ -27,6 +27,7 @@ import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.maps.android.geojson.GeoJsonPointStyle;
 import com.google.maps.android.ui.IconGenerator;
 import com.google.samples.apps.iosched.lib.R;
 import com.google.samples.apps.iosched.map.util.MarkerModel;
@@ -132,17 +133,21 @@ public class MapUtils {
         return markerType == MarkerModel.TYPE_SANDBOX;
     }
 
+
     /**
-     * Creates a marker for a session.
+     * Creates a GeoJsonPointStyle for a session.
      *
      * @param id Id to be embedded as the title
      */
-    public static MarkerOptions createPinMarker(String id, LatLng position) {
+    public static GeoJsonPointStyle createPinMarker(String id) {
         final BitmapDescriptor icon =
                 BitmapDescriptorFactory.fromResource(R.drawable.map_marker_unselected);
-        return new MarkerOptions().position(position).title(id).icon(icon).anchor(0.5f, 0.85526f)
-                                  .visible(
-                                          false);
+        GeoJsonPointStyle pointStyle = new GeoJsonPointStyle();
+        pointStyle.setTitle(id);
+        pointStyle.setIcon(icon);
+        pointStyle.setVisible(false);
+        pointStyle.setAnchor(0.5f, 0.85526f);
+        return pointStyle;
     }
 
     /**
@@ -157,28 +162,31 @@ public class MapUtils {
     }
 
     /**
-     * Creates a marker for a label.
+     * Creates a GeoJsonPointStyle for a label.
      *
      * @param iconFactory Reusable IconFactory
      * @param id          Id to be embedded as the title
      * @param label       Text to be shown on the label
      */
-    public static MarkerOptions createLabelMarker(IconGenerator iconFactory, String id,
-            LatLng position, String label) {
+    public static GeoJsonPointStyle createLabelMarker(IconGenerator iconFactory, String id,
+            String label) {
         final BitmapDescriptor icon =
                 BitmapDescriptorFactory.fromBitmap(iconFactory.makeIcon(label));
-
-        return new MarkerOptions().position(position).title(id).icon(icon)
-                                  .anchor(0.5f, 0.5f)
-                                  .visible(false);
+        GeoJsonPointStyle pointStyle = new GeoJsonPointStyle();
+        pointStyle.setAnchor(0.5f, 0.5f);
+        pointStyle.setTitle(id);
+        pointStyle.setIcon(icon);
+        pointStyle.setVisible(false);
+        return pointStyle;
     }
 
     /**
-     * Creates a marker for an icon. The icon is selected in {@link #getDrawableForIconType(Context,
-     * String)} and anchored at the bottom center for the location.
+     * Creates a GeoJsonPointStyle for an icon. The icon is selected
+     * in {@link #getDrawableForIconType(Context, String)} and anchored
+     * at the bottom center for the location.
      */
-    public static MarkerOptions createIconMarker(final String iconType, final String id,
-            LatLng position, Context context) {
+    public static GeoJsonPointStyle createIconMarker(final String iconType, final String id,
+            Context context) {
 
         final int iconResource = getDrawableForIconType(context, iconType);
 
@@ -188,10 +196,12 @@ public class MapUtils {
         }
 
         final BitmapDescriptor icon = BitmapDescriptorFactory.fromResource(iconResource);
-
-        return new MarkerOptions().position(position).title(id).icon(icon)
-                                  .anchor(0.5f, 1f)
-                                  .visible(false);
+        GeoJsonPointStyle pointStyle = new GeoJsonPointStyle();
+        pointStyle.setTitle(id);
+        pointStyle.setVisible(false);
+        pointStyle.setIcon(icon);
+        pointStyle.setAnchor(0.5f, 1f);
+        return pointStyle;
     }
 
     /**
