@@ -88,6 +88,14 @@ public class ScheduleItem implements Cloneable, Comparable<ScheduleItem> {
         return mainTag != null && Config.Tags.SPECIAL_KEYNOTE.equals(mainTag);
     }
 
+    public boolean isFoodBreak() {
+        return type == BREAK && (title.contains("Breakfast") || title.contains("Lunch"));
+    }
+
+    public boolean isConcert() {
+        return type == BREAK && title.contains("Concert");
+    }
+
     /**
      * Public fields cannot be mocked, so in order to being able to write unit tests, this getter
      * is provided.

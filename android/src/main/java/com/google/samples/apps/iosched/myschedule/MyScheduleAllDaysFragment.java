@@ -17,9 +17,13 @@
 package com.google.samples.apps.iosched.myschedule;
 
 import android.content.Context;
+import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.LoaderManager;
+import android.support.v4.content.Loader;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -27,6 +31,7 @@ import android.widget.TextView;
 
 import com.google.samples.apps.iosched.R;
 import com.google.samples.apps.iosched.archframework.UpdatableView;
+import com.google.samples.apps.iosched.model.TagMetadata;
 import com.google.samples.apps.iosched.myschedule.MyScheduleModel.MyScheduleQueryEnum;
 import com.google.samples.apps.iosched.myschedule.MyScheduleModel.MyScheduleUserActionEnum;
 import com.google.samples.apps.iosched.util.TimeUtils;
@@ -36,7 +41,10 @@ import com.google.samples.apps.iosched.util.TimeUtils;
  * MyScheduleSingleDayNoScrollView} for each day of the conference.
  */
 public class MyScheduleAllDaysFragment extends Fragment
-        implements UpdatableView<MyScheduleModel, MyScheduleQueryEnum, MyScheduleUserActionEnum> {
+        implements UpdatableView<MyScheduleModel, MyScheduleQueryEnum, MyScheduleUserActionEnum>,
+        LoaderManager.LoaderCallbacks<Cursor> {
+
+    private static final int TAG_METADATA_TOKEN = 0x8;
 
     private MyScheduleSingleDayNoScrollView mPreConferenceDayView;
 
@@ -46,6 +54,14 @@ public class MyScheduleAllDaysFragment extends Fragment
             = new MyScheduleSingleDayNoScrollView[3];
 
     private UserActionListener<MyScheduleUserActionEnum> mListener;
+
+    private TagMetadata mTagMetadata;
+
+    @Override
+    public void onCreate(@Nullable final Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        getLoaderManager().initLoader(TAG_METADATA_TOKEN, null, this);
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -135,7 +151,7 @@ public class MyScheduleAllDaysFragment extends Fragment
             if (MyScheduleModel.showPreConferenceData(getContext())) {
                 if (mPreConferenceDayView.getAdapter() == null) {
                     mPreConferenceDayView.setAdapter(new MyScheduleDayAdapter(getActivity(),
-                            mListener));
+                            mListener, mTagMetadata));
                 }
                 mPreConferenceDayView.getAdapter().updateItems(model.getConferenceDataForDay(
                         MyScheduleModel.PRE_CONFERENCE_DAY_ID));
@@ -143,7 +159,7 @@ public class MyScheduleAllDaysFragment extends Fragment
             for (int i = 0; i < mMyScheduleSingleDayViews.length; i++) {
                 if (mMyScheduleSingleDayViews[i].getAdapter() == null) {
                     mMyScheduleSingleDayViews[i].setAdapter(new MyScheduleDayAdapter(getActivity(),
-                            mListener));
+                            mListener, mTagMetadata));
 
                 }
                 mMyScheduleSingleDayViews[i].getAdapter().updateItems(model.getConferenceDataForDay(
@@ -164,7 +180,31 @@ public class MyScheduleAllDaysFragment extends Fragment
     }
 
     @Override
-    public Context getContext() {
-        return getActivity();
+    public Loader<Cursor> onCreateLoader(int id, Bundle args) {
+        switch (id) {
+            case TAG_METADATA_TOKEN:
+                return TagMetadata.createCursorLoader(getActivity());
+            default:
+                return null;
+        }
+    }
+
+    @Override
+    public void onLoadFinished(Loader<Cursor> loader, Cursor cursor) {
+        switch (loader.getId()) {
+            case TAG_METADATA_TOKEN:
+                mTagMetadata = new TagMetadata(cursor);
+                for (int i = 0; i < mMyScheduleSingleDayViews.length; i++) {
+                    MyScheduleDayAdapter adapter = mMyScheduleSingleDayViews[i].getAdapter();
+                    if (adapter != null) {
+                        adapter.setTagMetadata(mTagMetadata);
+                    }
+                }
+                break;
+        }
+    }
+
+    @Override
+    public void onLoaderReset(final Loader<Cursor> loader) {
     }
 }
