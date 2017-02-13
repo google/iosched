@@ -12,21 +12,13 @@
   the License.
   -->
 
-<FrameLayout
+<TextView
+    android:id="@+id/start_time"
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:foreground="?android:selectableItemBackground"
-    android:importantForAccessibility="yes">
+    android:padding="@dimen/keyline_1"
+    android:textAppearance="@style/TextAppearance.AppCompat.Title"
+    tools:text="@string/placeholder_session_start_time" />
 
-    <TextView
-        android:id="@+id/start_time"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center_vertical"
-        android:padding="@dimen/keyline_1"
-        android:textAppearance="@style/TextAppearance.AppCompat.Headline"
-        tools:text="@string/placeholder_session_start_time" />
-
-</FrameLayout>

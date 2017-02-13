@@ -112,12 +112,12 @@ public class MyScheduleDayAdapter implements ListAdapter, AbsListView.RecyclerLi
 
     @Override
     public boolean areAllItemsEnabled() {
-        return true;
+        return false;
     }
 
     @Override
     public boolean isEnabled(int position) {
-        return true;
+        return false;
     }
 
     @Override
@@ -422,23 +422,8 @@ public class MyScheduleDayAdapter implements ListAdapter, AbsListView.RecyclerLi
 
         @Override
         void onBind(int position) {
-            clearClickable(startTime);
-
             final ScheduleItem item = mItems.get(position);
-
-            final long now = TimeUtils.getCurrentTime(view.getContext());
-            boolean isPastDuringConference = item.endTime <= now
-                    && now < Config.CONFERENCE_END_MILLIS;
-
-            if (isPastDuringConference) {
-                startTime.setTextColor(mHourColorPast);
-            } else {
-                startTime.setTextColor(mHourColorDefault);
-            }
-
             startTime.setText(TimeUtils.formatShortTime(mContext, new Date(item.startTime)));
-            setUriClickable(view, ScheduleContract.Sessions
-                    .buildUnscheduledSessionsInInterval(item.startTime, item.endTime), false);
         }
     }
 
