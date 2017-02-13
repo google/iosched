@@ -17,6 +17,7 @@
 package com.google.samples.apps.iosched;
 
 import android.app.Application;
+import android.content.Context;
 import android.content.Intent;
 
 import com.firebase.client.Firebase;
@@ -24,6 +25,8 @@ import com.google.android.gms.security.ProviderInstaller;
 import com.google.samples.apps.iosched.settings.SettingsUtils;
 import com.google.samples.apps.iosched.util.AnalyticsHelper;
 import com.google.samples.apps.iosched.util.TimeUtils;
+import com.squareup.leakcanary.LeakCanary;
+import com.squareup.leakcanary.RefWatcher;
 
 import static com.google.samples.apps.iosched.util.LogUtils.LOGE;
 import static com.google.samples.apps.iosched.util.LogUtils.LOGW;
@@ -39,9 +42,23 @@ public class AppApplication extends Application {
 
     private static final String TAG = makeLogTag(AppApplication.class);
 
+    private RefWatcher mRefWatcher;
+
+    public static RefWatcher getRefWatcher(Context context) {
+        AppApplication application = (AppApplication) context.getApplicationContext();
+        return application.mRefWatcher;
+    }
+
     @Override
     public void onCreate() {
         super.onCreate();
+        if (LeakCanary.isInAnalyzerProcess(this)) {
+            // This process is dedicated to LeakCanary for heap analysis.
+            // You should not init your app in this process.
+            return;
+        }
+        mRefWatcher = LeakCanary.install(this);
+
         TimeUtils.setAppStartTime(getApplicationContext(), System.currentTimeMillis());
 
         // Initialize the Firebase library with an Android context.
