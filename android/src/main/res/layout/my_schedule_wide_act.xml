@@ -13,7 +13,7 @@
   See the License for the specific language governing permissions and
   limitations under the License.
   -->
-<LinearLayout
+<android.support.v4.widget.DrawerLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
@@ -21,33 +21,43 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
-    android:orientation="vertical"
     tools:context=".myschedule.MyScheduleActivity">
 
-    <!-- Main layout -->
-    <fragment
-        android:id="@+id/myScheduleWideFrag"
-        android:name="com.google.samples.apps.iosched.myschedule.MyScheduleAllDaysFragment"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1" />
+        android:layout_height="match_parent"
+        android:fitsSystemWindows="true"
+        android:orientation="vertical">
 
-    <!-- Inactive and invisible ViewPager. This must exist here because a corresponding
-    ViewPager exists on my_schedule_narrow_act, and some device form factors switch
-    between this layout and that one when rotating, so a corresponding ViewPager must exist
-    here for correct state maintenance. -->
-    <android.support.v4.view.ViewPager
-        android:id="@+id/view_pager"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
-        android:visibility="gone" />
+        <!-- Main layout -->
+        <fragment
+            android:id="@+id/myScheduleWideFrag"
+            android:name="com.google.samples.apps.iosched.myschedule.MyScheduleAllDaysFragment"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1" />
 
-    <android.support.design.widget.BottomNavigationView
-        android:id="@+id/bottom_navigation"
-        style="@style/Widget.IOSched.BottomNavigationView"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:menu="@menu/bottom_nav_items" />
+        <!-- Inactive and invisible ViewPager. This must exist here because a corresponding
+        ViewPager exists on my_schedule_narrow_act, and some device form factors switch
+        between this layout and that one when rotating, so a corresponding ViewPager must exist
+        here for correct state maintenance. -->
+        <android.support.v4.view.ViewPager
+            android:id="@+id/view_pager"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:visibility="gone" />
 
-</LinearLayout>
+        <android.support.design.widget.BottomNavigationView
+            android:id="@+id/bottom_navigation"
+            style="@style/Widget.IOSched.BottomNavigationView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:menu="@menu/bottom_nav_items" />
+
+    </LinearLayout>
+
+    <!-- Filter drawer -->
+    <include layout="@layout/explore_sessions_act_filter_drawer_layout" />
+
+</android.support.v4.widget.DrawerLayout>

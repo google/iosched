@@ -14,7 +14,10 @@
  * limitations under the License.
  */
 
-package com.google.samples.apps.iosched.explore;
+package com.google.samples.apps.iosched.myschedule;
+
+import static com.google.samples.apps.iosched.util.LogUtils.LOGE;
+import static com.google.samples.apps.iosched.util.LogUtils.makeLogTag;
 
 import android.os.Parcel;
 import android.os.Parcelable;
@@ -24,9 +27,6 @@ import com.google.samples.apps.iosched.Config;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
-
-import static com.google.samples.apps.iosched.util.LogUtils.LOGE;
-import static com.google.samples.apps.iosched.util.LogUtils.makeLogTag;
 
 /**
  * Class responsible for storing, managing and retrieving Tag filters used in {@link
@@ -45,7 +45,7 @@ public class TagFilterHolder implements Parcelable {
     private final int[] mCategories;
     private boolean mShowLiveStreamedSessions;
 
-    TagFilterHolder() {
+    public TagFilterHolder() {
         mSelectedFilters = new HashSet<>();
         mCategories = new int[3];
         mCategories[CATEGORY_THEME] = 0;

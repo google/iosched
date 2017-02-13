@@ -19,6 +19,7 @@ import android.support.test.runner.AndroidJUnit4;
 import android.test.suitebuilder.annotation.LargeTest;
 
 import com.google.samples.apps.iosched.Config;
+import com.google.samples.apps.iosched.myschedule.TagFilterHolder;
 
 import org.junit.Before;
 import org.junit.Test;

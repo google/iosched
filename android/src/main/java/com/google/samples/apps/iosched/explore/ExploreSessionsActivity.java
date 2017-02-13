@@ -16,6 +16,9 @@
 
 package com.google.samples.apps.iosched.explore;
 
+import static com.google.samples.apps.iosched.util.LogUtils.LOGD;
+import static com.google.samples.apps.iosched.util.LogUtils.makeLogTag;
+
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
@@ -31,12 +34,9 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -44,7 +44,11 @@ import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.target.Target;
 import com.google.samples.apps.iosched.Config;
 import com.google.samples.apps.iosched.R;
+import com.google.samples.apps.iosched.myschedule.SessionsFilterAdapter;
+import com.google.samples.apps.iosched.myschedule.SessionsFilterAdapter.SessionFilterAdapterListener;
 import com.google.samples.apps.iosched.model.TagMetadata;
+import com.google.samples.apps.iosched.model.TagMetadata.Tag;
+import com.google.samples.apps.iosched.myschedule.TagFilterHolder;
 import com.google.samples.apps.iosched.provider.ScheduleContract;
 import com.google.samples.apps.iosched.settings.SettingsUtils;
 import com.google.samples.apps.iosched.ui.BaseActivity;
@@ -54,12 +58,7 @@ import com.google.samples.apps.iosched.util.ImageLoader;
 import com.google.samples.apps.iosched.util.TagUtils;
 import com.google.samples.apps.iosched.util.UIUtils;
 
-import java.util.ArrayList;
 import java.util.List;
-
-import static com.google.samples.apps.iosched.util.LogUtils.LOGD;
-import static com.google.samples.apps.iosched.util.LogUtils.LOGE;
-import static com.google.samples.apps.iosched.util.LogUtils.makeLogTag;
 
 /**
  * This activity displays all sessions based on the selected filters.
@@ -265,7 +264,20 @@ public class ExploreSessionsActivity extends BaseActivity
             }
         }
         reloadFragment();
-        mFiltersList.setAdapter(new FilterAdapter(mTagMetadata));
+        SessionsFilterAdapter adapter = new SessionsFilterAdapter(this, mTagFilterHolder,
+                mTagMetadata);
+        adapter.setSessionFilterAdapterListener(new SessionFilterAdapterListener() {
+            @Override
+            public void reloadFragment() {
+                ExploreSessionsActivity.this.reloadFragment();
+            }
+
+            @Override
+            public void updateFilters(Tag filter, boolean checked) {
+                ExploreSessionsActivity.this.updateFilters(filter, checked);
+            }
+        });
+        mFiltersList.setAdapter(adapter);
     }
 
     /**
@@ -374,188 +386,6 @@ public class ExploreSessionsActivity extends BaseActivity
 
     @Override
     public void onLoaderReset(Loader<Cursor> loader) {
-
-    }
-
-    /**
-     * Adapter for the list of filters that can be applied to this screen i.e. Theme, Session Type,
-     * Live Streamed and Track.
-     */
-    private class FilterAdapter extends RecyclerView.Adapter {
-
-        private static final int TYPE_FILTER = 0;
-
-        private static final int TYPE_LIVE_STREAM_FILTER = 1;
-
-        private static final int TYPE_DIVIDER = 2;
-
-        private final List mItems;
-
-        private final LayoutInflater mInflater;
-
-        FilterAdapter(TagMetadata filters) {
-            mInflater = LayoutInflater.from(ExploreSessionsActivity.this);
-            mItems = new ArrayList();
-            processFilters(filters);
-        }
-
-        @Override
-        public RecyclerView.ViewHolder onCreateViewHolder(final ViewGroup parent,
-                final int viewType) {
-            switch (viewType) {
-                case TYPE_FILTER:
-                    return createFilterViewHolder(parent);
-                case TYPE_LIVE_STREAM_FILTER:
-                    return createLiveStreamFilterViewHolder(parent);
-                case TYPE_DIVIDER:
-                    return createDividerViewHolder(parent);
-                default:
-                    LOGE(TAG, "Unknown view type");
-                    throw new IllegalArgumentException("Unknown view type");
-            }
-        }
-
-        @Override
-        public void onBindViewHolder(final RecyclerView.ViewHolder holder, final int position) {
-            switch (getItemViewType(position)) {
-                case TYPE_FILTER:
-                    bindFilter((FilterViewHolder) holder, (TagMetadata.Tag) mItems.get(position));
-                    break;
-                case TYPE_LIVE_STREAM_FILTER:
-                    bindLiveStreamFilter((FilterViewHolder) holder);
-                    break;
-            }
-        }
-
-        @Override
-        public int getItemCount() {
-            return mItems.size();
-        }
-
-        @Override
-        public int getItemViewType(final int position) {
-            Object item = mItems.get(position);
-            if (item instanceof LiveStream) {
-                return TYPE_LIVE_STREAM_FILTER;
-            } else if (item instanceof Divider) {
-                return TYPE_DIVIDER;
-            }
-            return TYPE_FILTER;
-        }
-
-        /**
-         * We transform the provided data into a structure suitable for the RecyclerView i.e. we
-         * build up {@link #mItems}, adding 'marker' items for dividers & live stream.
-         */
-        private void processFilters(TagMetadata tagMetadata) {
-            List<TagMetadata.Tag> themes =
-                    tagMetadata.getTagsInCategory(Config.Tags.CATEGORY_THEME);
-            if (themes != null && !themes.isEmpty()) {
-                for (TagMetadata.Tag theme : themes) {
-                    mItems.add(theme);
-                }
-            }
-            mItems.add(new Divider());
-
-            List<TagMetadata.Tag> sessionTypes =
-                    tagMetadata.getTagsInCategory(Config.Tags.CATEGORY_TYPE);
-            if (sessionTypes != null && !sessionTypes.isEmpty()) {
-                for (TagMetadata.Tag type : sessionTypes) {
-                    mItems.add(type);
-                }
-            }
-            mItems.add(new Divider());
-
-            mItems.add(new LiveStream());
-            mItems.add(new Divider());
-
-            List<TagMetadata.Tag> topics =
-                    tagMetadata.getTagsInCategory(Config.Tags.CATEGORY_TRACK);
-            if (topics != null && !topics.isEmpty()) {
-                for (TagMetadata.Tag topic : topics) {
-                    mItems.add(topic);
-                }
-            }
-        }
-
-        private FilterViewHolder createFilterViewHolder(final ViewGroup parent) {
-            final FilterViewHolder holder = new FilterViewHolder(mInflater.inflate(
-                    R.layout.explore_sessions_list_item_alt_drawer, parent, false));
-            holder.checkbox.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(final View v) {
-                    final TagMetadata.Tag filter =
-                            (TagMetadata.Tag) mItems.get(holder.getAdapterPosition());
-                    updateFilters(filter, holder.checkbox.isChecked());
-                }
-            });
-            holder.itemView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(final View v) {
-                    holder.checkbox.performClick();
-                }
-            });
-            return holder;
-        }
-
-        private FilterViewHolder createLiveStreamFilterViewHolder(final ViewGroup parent) {
-            final FilterViewHolder holder = new FilterViewHolder(mInflater.inflate(
-                    R.layout.explore_sessions_list_item_livestream_alt_drawer, parent, false));
-            holder.checkbox.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(final View v) {
-                    mTagFilterHolder.setShowLiveStreamedSessions(holder.checkbox.isChecked());
-                    reloadFragment();
-                }
-            });
-            holder.itemView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(final View v) {
-                    holder.checkbox.performClick();
-                }
-            });
-            return holder;
-        }
-
-        private DividerViewHolder createDividerViewHolder(final ViewGroup parent) {
-            // TODO we should use an ItemDecoration rather than a view
-            return new DividerViewHolder(mInflater.inflate(
-                    R.layout.explore_sessions_list_item_alt_header, parent, false));
-        }
-
-        private void bindFilter(final FilterViewHolder holder,
-                final TagMetadata.Tag filter) {
-            holder.label.setText(filter.getName());
-            holder.checkbox.setChecked(mTagFilterHolder.contains(filter.getId()));
-        }
-
-        private void bindLiveStreamFilter(final FilterViewHolder holder) {
-            holder.checkbox.setChecked(mTagFilterHolder.isShowLiveStreamedSessions());
-        }
-
-    }
-
-    private static class Divider {}
-
-    private static class LiveStream {}
-
-    private static class FilterViewHolder extends RecyclerView.ViewHolder {
-
-        final TextView label;
-        final CheckBox checkbox;
-
-        public FilterViewHolder(final View itemView) {
-            super(itemView);
-            label = (TextView) itemView.findViewById(R.id.text_view);
-            checkbox = (CheckBox) itemView.findViewById(R.id.filter_checkbox);
-        }
-    }
-
-    private static class DividerViewHolder extends RecyclerView.ViewHolder {
-
-        public DividerViewHolder(final View itemView) {
-            super(itemView);
-        }
     }
 
 }

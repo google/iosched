@@ -13,71 +13,80 @@
   See the License for the specific language governing permissions and
   limitations under the License.
   -->
-
-<!-- Main layout -->
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.v4.widget.DrawerLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@id/drawer_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
     tools:context=".myschedule.MyScheduleActivity">
 
+    <!-- Main layout -->
     <LinearLayout
-        style="@style/HeaderBar"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="?attr/colorPrimary"
-        android:orientation="vertical"
-        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
+        android:layout_height="match_parent"
+        android:orientation="vertical">
 
-        <include layout="@layout/toolbar" />
-
-        <android.support.design.widget.TabLayout
-            android:id="@+id/sliding_tabs"
+        <LinearLayout
+            style="@style/HeaderBar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:tabIndicatorColor="@color/tab_selected_strip" />
+            android:background="?attr/colorPrimary"
+            android:orientation="vertical"
+            android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
+
+            <include layout="@layout/toolbar" />
+
+            <android.support.design.widget.TabLayout
+                android:id="@+id/sliding_tabs"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:tabIndicatorColor="@color/tab_selected_strip" />
+
+        </LinearLayout>
+
+        <!-- Dummy view that prevents the following ViewPager to capture focus -->
+        <View
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:focusable="true"
+            android:focusableInTouchMode="true" />
+
+        <FrameLayout
+            android:id="@+id/main_content"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:foreground="@drawable/header_shadow">
+
+            <com.google.samples.apps.iosched.ui.widget.MultiSwipeRefreshLayout
+                android:id="@+id/swipe_refresh_layout"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <!-- Sessions fragments showing each day of the conference -->
+                <android.support.v4.view.ViewPager
+                    android:id="@+id/view_pager"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="1" />
+
+            </com.google.samples.apps.iosched.ui.widget.MultiSwipeRefreshLayout>
+
+        </FrameLayout>
+
+        <include layout="@layout/deprecated_include_butter_bar" />
+
+        <android.support.design.widget.BottomNavigationView
+            android:id="@+id/bottom_navigation"
+            style="@style/Widget.IOSched.BottomNavigationView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:menu="@menu/bottom_nav_items" />
 
     </LinearLayout>
 
-    <!-- Dummy view that prevents the following ViewPager to capture focus -->
-    <View
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:focusable="true"
-        android:focusableInTouchMode="true" />
-
-    <FrameLayout
-        android:id="@+id/main_content"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
-        android:foreground="@drawable/header_shadow">
-
-        <com.google.samples.apps.iosched.ui.widget.MultiSwipeRefreshLayout
-            android:id="@+id/swipe_refresh_layout"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
-
-            <!-- Sessions fragments showing each day of the conference -->
-            <android.support.v4.view.ViewPager
-                android:id="@+id/view_pager"
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="1" />
-
-        </com.google.samples.apps.iosched.ui.widget.MultiSwipeRefreshLayout>
-
-    </FrameLayout>
-
-    <include layout="@layout/deprecated_include_butter_bar" />
-
-    <android.support.design.widget.BottomNavigationView
-        android:id="@+id/bottom_navigation"
-        style="@style/Widget.IOSched.BottomNavigationView"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:menu="@menu/bottom_nav_items" />
-
-</LinearLayout>
+    <!-- Filter drawer -->
+    <include layout="@layout/explore_sessions_act_filter_drawer_layout" />
+</android.support.v4.widget.DrawerLayout>

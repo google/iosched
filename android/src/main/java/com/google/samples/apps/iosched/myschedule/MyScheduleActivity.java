@@ -16,16 +16,25 @@
 
 package com.google.samples.apps.iosched.myschedule;
 
+import static com.google.samples.apps.iosched.util.LogUtils.LOGD;
+import static com.google.samples.apps.iosched.util.LogUtils.LOGE;
+import static com.google.samples.apps.iosched.util.LogUtils.makeLogTag;
+
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.database.Cursor;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.design.widget.TabLayout;
+import android.support.v4.app.LoaderManager;
+import android.support.v4.content.Loader;
 import android.support.v4.view.ViewCompat;
 import android.support.v4.view.ViewPager;
+import android.support.v4.widget.DrawerLayout;
+import android.support.v7.widget.RecyclerView;
 import android.text.SpannableString;
 import android.text.TextUtils;
 import android.text.method.LinkMovementMethod;
@@ -40,10 +49,13 @@ import com.google.samples.apps.iosched.R;
 import com.google.samples.apps.iosched.archframework.PresenterImpl;
 import com.google.samples.apps.iosched.injection.ModelProvider;
 import com.google.samples.apps.iosched.model.ScheduleHelper;
+import com.google.samples.apps.iosched.model.TagMetadata;
+import com.google.samples.apps.iosched.model.TagMetadata.Tag;
 import com.google.samples.apps.iosched.myschedule.MyScheduleModel.MyScheduleQueryEnum;
 import com.google.samples.apps.iosched.myschedule.MyScheduleModel.MyScheduleUserActionEnum;
 import com.google.samples.apps.iosched.navigation.NavigationModel;
 import com.google.samples.apps.iosched.session.SessionDetailActivity;
+import com.google.samples.apps.iosched.settings.SettingsUtils;
 import com.google.samples.apps.iosched.ui.BaseActivity;
 import com.google.samples.apps.iosched.util.AnalyticsHelper;
 import com.google.samples.apps.iosched.util.TimeUtils;
@@ -51,11 +63,8 @@ import com.google.samples.apps.iosched.util.UIUtils;
 
 import java.util.Date;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
-
-import static com.google.samples.apps.iosched.util.LogUtils.LOGD;
-import static com.google.samples.apps.iosched.util.LogUtils.LOGE;
-import static com.google.samples.apps.iosched.util.LogUtils.makeLogTag;
 
 /**
  * This shows the schedule of the logged in user, organised per day.
@@ -69,7 +78,7 @@ import static com.google.samples.apps.iosched.util.LogUtils.makeLogTag;
  * allow the user to see all sessions in that slot.
  */
 public class MyScheduleActivity extends BaseActivity implements
-        MyScheduleSingleDayFragment.Listener {
+        MyScheduleSingleDayFragment.Listener, LoaderManager.LoaderCallbacks<Cursor> {
     /**
      * This is used in the narrow mode, to pass in the day index to the {@link
      * MyScheduleSingleDayFragment}.
@@ -88,6 +97,16 @@ public class MyScheduleActivity extends BaseActivity implements
     public static final String EXTRA_DIALOG_URL
             = "com.google.samples.apps.iosched.EXTRA_DIALOG_URL";
 
+    public static final String EXTRA_FILTER_TAG =
+            "com.google.samples.apps.iosched.myschedule.EXTRA_FILTER_TAG";
+    public static final String EXTRA_SHOW_LIVE_STREAM_SESSIONS =
+            "com.google.samples.apps.iosched.myschedule.EXTRA_SHOW_LIVE_STREAM_SESSIONS";
+
+    // The saved instance state filters
+    private static final String STATE_FILTER_TAGS =
+            "com.google.samples.apps.iosched.myschedule.STATE_FILTER_TAGS";
+    private static final String STATE_CURRENT_URI =
+            "com.google.samples.apps.iosched.myschedule.STATE_CURRENT_URI";
     /**
      * Interval that a timer will redraw the UI during the conference, so that time sensitive
      * widgets, like the "Now" and "Ended" indicators can be properly updated.
@@ -110,6 +129,8 @@ public class MyScheduleActivity extends BaseActivity implements
     private static final String SCREEN_LABEL = "My Schedule";
 
     private static final String TAG = makeLogTag(MyScheduleActivity.class);
+
+    private static final int TAG_METADATA_TOKEN = 0x8;
 
     /**
      * If true, we are in the wide (tablet landscape) mode where we show conference days side by
@@ -149,6 +170,11 @@ public class MyScheduleActivity extends BaseActivity implements
      */
     private View mFailedLoginView;
 
+    private DrawerLayout mDrawerLayout;
+    private RecyclerView mFiltersList;
+    private TagMetadata mTagMetadata;
+    private TagFilterHolder mTagFilterHolder;
+
     /**
      * During the conference, this is set to the current day, eg 1 for the first day, 2 for the
      * second etc Outside of conference period, this is set to 1.
@@ -186,20 +212,28 @@ public class MyScheduleActivity extends BaseActivity implements
         String[] singleDayFragmentsTags = null;
         int currentSingleDayFragment = 0;
 
-        if (savedInstanceState != null &&
-                savedInstanceState.containsKey(SINGLE_DAY_FRAGMENTS_TAGS)) {
-            singleDayFragmentsTags = savedInstanceState.getStringArray(SINGLE_DAY_FRAGMENTS_TAGS);
-        }
-        if (savedInstanceState != null &&
-                savedInstanceState.containsKey(CURRENT_SINGLE_DAY_FRAGMENT_POSITION)) {
-            currentSingleDayFragment =
-                    savedInstanceState.getInt(CURRENT_SINGLE_DAY_FRAGMENT_POSITION);
+        if (savedInstanceState != null) {
+            if (savedInstanceState.containsKey(SINGLE_DAY_FRAGMENTS_TAGS)) {
+                singleDayFragmentsTags = savedInstanceState.getStringArray(
+                        SINGLE_DAY_FRAGMENTS_TAGS);
+            }
+            if (savedInstanceState.containsKey(CURRENT_SINGLE_DAY_FRAGMENT_POSITION)) {
+                currentSingleDayFragment = savedInstanceState.getInt(
+                        CURRENT_SINGLE_DAY_FRAGMENT_POSITION);
+            }
+
+            mTagFilterHolder = savedInstanceState.getParcelable(STATE_FILTER_TAGS);
+            // TODO when filters work
+//            mCurrentUri = savedInstanceState.getParcelable(STATE_CURRENT_URI);
         }
 
         initViews(singleDayFragmentsTags, currentSingleDayFragment);
         initPresenter();
 
         overridePendingTransition(0, 0);
+
+        // Start loading the tag metadata
+        getSupportLoaderManager().initLoader(TAG_METADATA_TOKEN, null, this);
     }
 
     @Override
@@ -226,6 +260,10 @@ public class MyScheduleActivity extends BaseActivity implements
             outState.putStringArray(SINGLE_DAY_FRAGMENTS_TAGS, tags);
             outState.putInt(CURRENT_SINGLE_DAY_FRAGMENT_POSITION, mViewPager.getCurrentItem());
         }
+
+        outState.putParcelable(STATE_FILTER_TAGS, mTagFilterHolder);
+        // TODO when filter works
+//        outState.putParcelable(STATE_CURRENT_URI, mCurrentUri);
     }
 
 
@@ -282,6 +320,8 @@ public class MyScheduleActivity extends BaseActivity implements
         } else {
             setUpViewPagerForNarrowMode(singleDayFragmentsTags, currentSingleDayFragment);
         }
+
+        setupFilterDrawer();
     }
 
     private void initPresenter() {
@@ -339,6 +379,11 @@ public class MyScheduleActivity extends BaseActivity implements
         mViewPager.setPageMargin(getResources()
                 .getDimensionPixelSize(R.dimen.my_schedule_page_margin));
         mViewPager.setPageMarginDrawable(R.drawable.page_margin);
+    }
+
+    private void setupFilterDrawer() {
+        mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
+        mFiltersList = (RecyclerView) findViewById(R.id.filters);
     }
 
     @Override
@@ -540,6 +585,75 @@ public class MyScheduleActivity extends BaseActivity implements
 
     private boolean hasBeenDestroyed() {
         return mDestroyed;
+    }
+
+    @Override
+    public Loader<Cursor> onCreateLoader(int id, Bundle args) {
+        if (id == TAG_METADATA_TOKEN) {
+            return TagMetadata.createCursorLoader(this);
+        }
+        return null;
+    }
+
+    @Override
+    public void onLoadFinished(Loader<Cursor> loader, Cursor cursor) {
+        if (loader.getId() == TAG_METADATA_TOKEN) {
+            mTagMetadata = new TagMetadata(cursor);
+            onTagMetadataLoaded();
+        } else {
+            cursor.close();
+        }
+    }
+
+    @Override
+    public void onLoaderReset(Loader<Cursor> loader) {
+    }
+
+    private void onTagMetadataLoaded() {
+        // TODO refactor this to a common location
+        if (mTagFilterHolder == null) {
+            // Use the Intent Extras to set up the TagFilterHolder
+            mTagFilterHolder = new TagFilterHolder();
+
+            String tag = getIntent().getStringExtra(EXTRA_FILTER_TAG);
+            TagMetadata.Tag userTag = mTagMetadata.getTag(tag);
+            String userTagCategory = userTag == null ? null : userTag.getCategory();
+            if (tag != null && userTagCategory != null) {
+                mTagFilterHolder.add(tag, userTagCategory);
+            }
+
+            mTagFilterHolder.setShowLiveStreamedSessions(
+                    getIntent().getBooleanExtra(EXTRA_SHOW_LIVE_STREAM_SESSIONS, false));
+
+            // update the selected filters using the following logic:
+            // a) For onsite attendees, we should default to showing all 'types'
+            // (i.e. Sessions, code labs, sandbox, misc).
+            if (SettingsUtils.isAttendeeAtVenue(this)) {
+                List<Tag> tags =
+                        mTagMetadata.getTagsInCategory(Config.Tags.CATEGORY_TYPE);
+                // Here we only add all 'types' if the user has not explicitly selected
+                // one of the category_type tags.
+                if (tags != null && !TextUtils.equals(userTagCategory, Config.Tags.CATEGORY_TYPE)) {
+                    for (TagMetadata.Tag theTag : tags) {
+                        mTagFilterHolder.add(theTag.getId(), theTag.getCategory());
+                    }
+                }
+            } else {
+                // b) For remote users, default to only showing Sessions that are Live streamed.
+                TagMetadata.Tag theTag = mTagMetadata.getTag(Config.Tags.SESSIONS);
+                if (!TextUtils.equals(theTag.getCategory(), userTagCategory)) {
+                    mTagFilterHolder.add(theTag.getId(), theTag.getCategory());
+                }
+                mTagFilterHolder.setShowLiveStreamedSessions(true);
+            }
+        }
+
+        // TODO reloadFragments();
+
+        SessionsFilterAdapter adapter = new SessionsFilterAdapter(this, mTagFilterHolder,
+                mTagMetadata);
+        // TODO adapter.setSessionFilterAdapterListener();
+        mFiltersList.setAdapter(adapter);
     }
 
 }
