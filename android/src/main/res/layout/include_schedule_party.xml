@@ -13,16 +13,11 @@
   the License.
   -->
 
-<vector
+<ImageView
     xmlns:android="http://schemas.android.com/apk/res/android"
-    android:width="24dp"
-    android:height="24dp"
-    android:viewportWidth="24"
-    android:viewportHeight="24"
-    android:tint="?attr/colorPrimary">
-
-    <path
-        android:pathData="M17,10.5V7c0,-0.55 -0.45,-1 -1,-1H4c-0.55,0 -1,0.45 -1,1v10c0,0.55 0.45,1 1,1h12c0.55,0 1,-0.45 1,-1v-3.5l4,4v-11l-4,4z"
-        android:fillColor="@android:color/black" />
-
-</vector>
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="24dp"
+    android:layout_height="24dp"
+    android:background="@drawable/tag_party_background"
+    android:padding="4dp"
+    app:srcCompat="@drawable/ic_party" />

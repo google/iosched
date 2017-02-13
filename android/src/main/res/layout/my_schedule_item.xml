@@ -17,6 +17,7 @@
 
 <FrameLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
@@ -42,9 +43,16 @@
             style="@style/Body1Text"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingTop="4dp"
+            android:paddingTop="@dimen/spacing_micro"
             android:textAppearance="@style/TextAppearance.AppCompat.Body1"
             tools:text="9:00 AM - 11:30 AM / Room 1" />
+
+        <com.google.android.flexbox.FlexboxLayout
+            android:id="@+id/tags_holder"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/spacing_normal"
+            app:flexWrap="wrap" />
 
         <Button
             android:id="@+id/give_feedback_button"

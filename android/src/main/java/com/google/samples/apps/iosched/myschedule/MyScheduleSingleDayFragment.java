@@ -19,15 +19,20 @@ package com.google.samples.apps.iosched.myschedule;
 import android.app.Activity;
 import android.content.Context;
 import android.content.res.TypedArray;
+import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v4.app.ListFragment;
+import android.support.v4.app.LoaderManager;
+import android.support.v4.content.Loader;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.google.samples.apps.iosched.R;
 import com.google.samples.apps.iosched.archframework.UpdatableView;
+import com.google.samples.apps.iosched.model.TagMetadata;
 import com.google.samples.apps.iosched.myschedule.MyScheduleModel.MyScheduleQueryEnum;
 import com.google.samples.apps.iosched.myschedule.MyScheduleModel.MyScheduleUserActionEnum;
 
@@ -38,9 +43,13 @@ import com.google.samples.apps.iosched.myschedule.MyScheduleModel.MyScheduleUser
  * {@link MyScheduleDayAdapter} as its data source.
  */
 public class MyScheduleSingleDayFragment extends ListFragment
-        implements UpdatableView<MyScheduleModel, MyScheduleQueryEnum, MyScheduleUserActionEnum> {
+        implements UpdatableView<MyScheduleModel, MyScheduleQueryEnum, MyScheduleUserActionEnum>,
+        LoaderManager.LoaderCallbacks<Cursor> {
+
+    private static final int TAG_METADATA_TOKEN = 0x8;
 
     private String mContentDescription = null;
+    private TagMetadata mTagMetadata;
 
     private View mRoot = null;
 
@@ -53,6 +62,12 @@ public class MyScheduleSingleDayFragment extends ListFragment
     private MyScheduleDayAdapter mViewAdapter;
 
     private UserActionListener<MyScheduleUserActionEnum> mListener;
+
+    @Override
+    public void onCreate(@Nullable final Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        getLoaderManager().initLoader(TAG_METADATA_TOKEN, null, this);
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -142,7 +157,7 @@ public class MyScheduleSingleDayFragment extends ListFragment
     private void updateSchedule(MyScheduleModel model) {
         if (isVisible()) {
             if (mViewAdapter == null) {
-                mViewAdapter = new MyScheduleDayAdapter(getActivity(), mListener);
+                mViewAdapter = new MyScheduleDayAdapter(getActivity(), mListener, mTagMetadata);
             }
             mViewAdapter.updateItems(model.getConferenceDataForDay(mDayId));
             if (getListAdapter() == null) {
@@ -177,5 +192,31 @@ public class MyScheduleSingleDayFragment extends ListFragment
         void onSingleDayFragmentAttached(MyScheduleSingleDayFragment fragment);
 
         void onSingleDayFragmentDetached(MyScheduleSingleDayFragment fragment);
+    }
+
+    @Override
+    public Loader<Cursor> onCreateLoader(int id, Bundle args) {
+        switch (id) {
+            case TAG_METADATA_TOKEN:
+                return TagMetadata.createCursorLoader(getActivity());
+            default:
+                return null;
+        }
+    }
+
+    @Override
+    public void onLoadFinished(Loader<Cursor> loader, Cursor cursor) {
+        switch (loader.getId()) {
+            case TAG_METADATA_TOKEN:
+                mTagMetadata = new TagMetadata(cursor);
+                if (mViewAdapter != null) {
+                    mViewAdapter.setTagMetadata(mTagMetadata);
+                }
+                break;
+        }
+    }
+
+    @Override
+    public void onLoaderReset(final Loader<Cursor> loader) {
     }
 }

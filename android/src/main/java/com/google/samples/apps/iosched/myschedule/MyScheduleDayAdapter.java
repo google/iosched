@@ -19,12 +19,14 @@ package com.google.samples.apps.iosched.myschedule;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.ColorStateList;
 import android.content.res.Resources;
 import android.content.res.TypedArray;
 import android.database.DataSetObserver;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.view.ViewCompat;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -34,12 +36,14 @@ import android.widget.Button;
 import android.widget.ListAdapter;
 import android.widget.TextView;
 
+import com.google.android.flexbox.FlexboxLayout;
 import com.google.samples.apps.iosched.Config;
 import com.google.samples.apps.iosched.R;
 import com.google.samples.apps.iosched.archframework.UpdatableView.UserActionListener;
 import com.google.samples.apps.iosched.feedback.SessionFeedbackActivity;
 import com.google.samples.apps.iosched.model.ScheduleItem;
 import com.google.samples.apps.iosched.model.ScheduleItemHelper;
+import com.google.samples.apps.iosched.model.TagMetadata;
 import com.google.samples.apps.iosched.myschedule.MyScheduleModel.MyScheduleUserActionEnum;
 import com.google.samples.apps.iosched.provider.ScheduleContract;
 import com.google.samples.apps.iosched.util.ImageLoader;
@@ -84,10 +88,14 @@ public class MyScheduleDayAdapter implements ListAdapter, AbsListView.RecyclerLi
 
     private UserActionListener<MyScheduleUserActionEnum> mListener;
 
+    private TagMetadata mTagMetadata;
+
     public MyScheduleDayAdapter(Context context,
-            UserActionListener<MyScheduleUserActionEnum> listener) {
+            UserActionListener<MyScheduleUserActionEnum> listener, TagMetadata tagMetadata) {
         mContext = context;
         mListener = listener;
+        mTagMetadata = tagMetadata;
+
         Resources resources = context.getResources();
         mHourColorDefault = ContextCompat.getColor(context,
                 R.color.my_schedule_hour_header_default);
@@ -278,6 +286,13 @@ public class MyScheduleDayAdapter implements ListAdapter, AbsListView.RecyclerLi
         notifyObservers();
     }
 
+    public void setTagMetadata(final TagMetadata tagMetadata) {
+        if (mTagMetadata != tagMetadata) {
+            mTagMetadata = tagMetadata;
+            forceUpdate();
+        }
+    }
+
     public void updateItems(final List<ScheduleItem> items) {
         mItems.clear();
         if (items != null) {
@@ -308,6 +323,7 @@ public class MyScheduleDayAdapter implements ListAdapter, AbsListView.RecyclerLi
         public Button feedback;
         public View live;
         public View separator;
+        public FlexboxLayout tagsHolder;
 
         ItemViewHolder(final View view) {
             super(view);
@@ -316,6 +332,7 @@ public class MyScheduleDayAdapter implements ListAdapter, AbsListView.RecyclerLi
             feedback = (Button) view.findViewById(R.id.give_feedback_button);
             separator = view.findViewById(R.id.separator);
             live = view.findViewById(R.id.live_now_badge);
+            tagsHolder = (FlexboxLayout) view.findViewById(R.id.tags_holder);
             adjustForRtl(this);
         }
 
@@ -350,12 +367,21 @@ public class MyScheduleDayAdapter implements ListAdapter, AbsListView.RecyclerLi
             live.setVisibility((item.flags & ScheduleItem.FLAG_HAS_LIVESTREAM) != 0
                     && isNowPlaying ? View.VISIBLE : View.GONE);
 
+            // Remove all views from tags holder
+            tagsHolder.removeAllViews();
+            final LayoutInflater layoutInflater = LayoutInflater.from(mContext);
+
             view.setTag(R.id.myschedule_uri_tagkey, null);
             if (item.type == ScheduleItem.BREAK) {
                 feedback.setVisibility(View.GONE);
                 title.setVisibility(View.VISIBLE);
                 title.setText(item.title);
                 description.setText(formatDescription(item));
+                if (item.isFoodBreak()) {
+                    layoutInflater.inflate(R.layout.include_schedule_food, tagsHolder);
+                } else if (item.isConcert()) {
+                    layoutInflater.inflate(R.layout.include_schedule_party, tagsHolder);
+                }
             } else if (item.type == ScheduleItem.SESSION) {
                 if (feedback != null) {
                     boolean showFeedbackButton = !item.hasGivenFeedback;
@@ -400,8 +426,34 @@ public class MyScheduleDayAdapter implements ListAdapter, AbsListView.RecyclerLi
                     // description.setTextColor(mColorConflict);
                 }
 
+                if (mTagMetadata != null) {
+                    final TagMetadata.Tag mainTag = mTagMetadata.getTag(item.mainTag);
+                    if (mainTag != null) {
+                        TextView tagView = (TextView) layoutInflater.inflate(
+                                R.layout.include_schedule_tag, tagsHolder, false);
+                        tagView.setText(mainTag.getName());
+                        ViewCompat.setBackgroundTintList(tagView,
+                                ColorStateList.valueOf(mainTag.getColor()));
+                        tagsHolder.addView(tagView);
+                    }
+                }
+
                 description.setText(formatDescription(item));
             }
+
+            if (item.isKeynote() || (item.flags & ScheduleItem.FLAG_HAS_LIVESTREAM) != 0) {
+                if (tagsHolder.getChildCount() > 0) {
+                    // Insert the spacer first
+                    layoutInflater.inflate(R.layout.include_schedule_live_spacer, tagsHolder);
+                }
+
+                View liveStreamView = layoutInflater.inflate(R.layout.include_schedule_live,
+                        tagsHolder, false);
+                // TODO: clickable?
+                tagsHolder.addView(liveStreamView);
+            }
+
+            tagsHolder.setVisibility(tagsHolder.getChildCount() > 0 ? View.VISIBLE : View.GONE);
 
             if (position == 0) { // First item
                 view.setPadding(0, mListSpacing, 0, 0);

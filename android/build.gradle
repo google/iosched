@@ -260,6 +260,8 @@ dependencies {
         exclude group: "com.google.android.gms"
     }
 
+    compile 'com.google.android:flexbox:0.2.5'
+
     // Dependencies for android tests which reside in the "androidTest" src folder.
     androidTestCompile 'com.android.support.test:runner:0.5'
     androidTestCompile 'com.android.support.test.espresso:espresso-core:2.2.2'
