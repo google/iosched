@@ -39,6 +39,7 @@ import com.google.samples.apps.iosched.R;
 import com.google.samples.apps.iosched.archframework.UpdatableView.UserActionListener;
 import com.google.samples.apps.iosched.feedback.SessionFeedbackActivity;
 import com.google.samples.apps.iosched.model.ScheduleItem;
+import com.google.samples.apps.iosched.model.ScheduleItemHelper;
 import com.google.samples.apps.iosched.myschedule.MyScheduleModel.MyScheduleUserActionEnum;
 import com.google.samples.apps.iosched.provider.ScheduleContract;
 import com.google.samples.apps.iosched.util.ImageLoader;
@@ -284,7 +285,7 @@ public class MyScheduleDayAdapter implements ListAdapter, AbsListView.RecyclerLi
                 final ScheduleItem prev = i > 0 ? items.get(i - 1) : null;
                 final ScheduleItem item = items.get(i);
 
-                if (prev == null || prev.startTime != item.startTime) {
+                if (prev == null || !ScheduleItemHelper.sameStartTime(prev, item, true)) {
                     LOGD(TAG, "Adding time seperator item: " + item + " start="
                             + new Date(item.startTime));
                     mItems.add(new TimeSeperatorItem(item));
