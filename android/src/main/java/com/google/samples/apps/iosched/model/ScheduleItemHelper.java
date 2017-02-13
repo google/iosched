@@ -72,4 +72,9 @@ public class ScheduleItemHelper {
         return block2.endTime > (block1.startTime + (useOverlap ? ALLOWED_OVERLAP : 0))
                 && (block2.startTime + (useOverlap ? ALLOWED_OVERLAP : 0)) < block1.endTime;
     }
+
+    public static boolean sameStartTime(ScheduleItem block1, ScheduleItem block2,
+            boolean useOverlap) {
+        return  Math.abs(block1.startTime - block2.startTime) <= (useOverlap ? ALLOWED_OVERLAP : 0);
+    }
 }
