@@ -23,16 +23,20 @@ import android.content.res.ColorStateList;
 import android.content.res.Resources;
 import android.content.res.TypedArray;
 import android.database.DataSetObserver;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.graphics.drawable.DrawableCompat;
 import android.support.v4.view.ViewCompat;
+import android.support.v7.content.res.AppCompatResources;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AbsListView;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.ListAdapter;
 import android.widget.TextView;
 
@@ -73,15 +77,6 @@ public class MyScheduleDayAdapter implements ListAdapter, AbsListView.RecyclerLi
 
     ImageLoader mImageLoader;
 
-    private final int mHourColorDefault;
-    private final int mHourColorPast;
-    private final int mTitleColorDefault;
-    private final int mTitleColorPast;
-    private final int mIconColorDefault;
-    private final int mIconColorPast;
-    private final int mColorConflict;
-    private final int mColorBackgroundDefault;
-    private final int mColorBackgroundPast;
     private final int mListSpacing;
     private final int mSelectableItemBackground;
     private final boolean mIsRtl;
@@ -97,19 +92,6 @@ public class MyScheduleDayAdapter implements ListAdapter, AbsListView.RecyclerLi
         mTagMetadata = tagMetadata;
 
         Resources resources = context.getResources();
-        mHourColorDefault = ContextCompat.getColor(context,
-                R.color.my_schedule_hour_header_default);
-        mHourColorPast = ContextCompat.getColor(context,
-                R.color.my_schedule_hour_header_finished);
-        mTitleColorDefault = ContextCompat.getColor(context,
-                R.color.my_schedule_session_title_default);
-        mTitleColorPast = ContextCompat.getColor(context,
-                R.color.my_schedule_session_title_finished);
-        mIconColorDefault = ContextCompat.getColor(context, R.color.my_schedule_icon_default);
-        mIconColorPast = ContextCompat.getColor(context, R.color.my_schedule_icon_finished);
-        mColorConflict = ContextCompat.getColor(context, R.color.my_schedule_conflict);
-        mColorBackgroundDefault = ContextCompat.getColor(context, android.R.color.white);
-        mColorBackgroundPast = ContextCompat.getColor(context, R.color.my_schedule_past_background);
         mListSpacing = resources.getDimensionPixelOffset(R.dimen.element_spacing_normal);
 
         TypedArray a = context.obtainStyledAttributes(new int[]{R.attr.selectableItemBackground});
@@ -324,6 +306,7 @@ public class MyScheduleDayAdapter implements ListAdapter, AbsListView.RecyclerLi
         public View live;
         public View separator;
         public FlexboxLayout tagsHolder;
+        public ImageView bookmark;
 
         ItemViewHolder(final View view) {
             super(view);
@@ -333,14 +316,13 @@ public class MyScheduleDayAdapter implements ListAdapter, AbsListView.RecyclerLi
             separator = view.findViewById(R.id.separator);
             live = view.findViewById(R.id.live_now_badge);
             tagsHolder = (FlexboxLayout) view.findViewById(R.id.tags_holder);
+            bookmark = (ImageView) view.findViewById(R.id.bookmark);
             adjustForRtl(this);
         }
 
         @Override
         void onBind(int position) {
             clearClickable(view);
-
-            description.setTextColor(mHourColorDefault);
 
             final ScheduleItem item = mItems.get(position);
             final ScheduleItem nextItem = position < mItems.size() - 1
@@ -350,22 +332,13 @@ public class MyScheduleDayAdapter implements ListAdapter, AbsListView.RecyclerLi
             long now = TimeUtils.getCurrentTime(view.getContext());
             boolean isNowPlaying = item.startTime <= now && now <= item.endTime
                     && item.type == ScheduleItem.SESSION;
-            boolean isPastDuringConference = item.endTime <= now
-                    && now < Config.CONFERENCE_END_MILLIS;
-
-            if (isPastDuringConference) {
-                view.setBackgroundColor(mColorBackgroundPast);
-                title.setTextColor(mTitleColorPast);
-                description.setVisibility(View.GONE);
-            } else {
-                view.setBackgroundColor(mColorBackgroundDefault);
-                title.setTextColor(mTitleColorDefault);
-                description.setVisibility(View.VISIBLE);
-            }
 
             // show or hide the "LIVE NOW" badge
             live.setVisibility((item.flags & ScheduleItem.FLAG_HAS_LIVESTREAM) != 0
                     && isNowPlaying ? View.VISIBLE : View.GONE);
+
+            // Mark the bookmark as gone for now. We change the visibility below if needed
+            bookmark.setVisibility(View.GONE);
 
             // Remove all views from tags holder
             tagsHolder.removeAllViews();
@@ -439,6 +412,19 @@ public class MyScheduleDayAdapter implements ListAdapter, AbsListView.RecyclerLi
                 }
 
                 description.setText(formatDescription(item));
+
+                // Populate the bookmark icon
+                if (bookmark.getDrawable() == null) {
+                    Drawable d = ContextCompat.getDrawable(mContext, R.drawable.session_bookmark);
+                    d = DrawableCompat.wrap(d.mutate());
+                    DrawableCompat.setTintList(d, AppCompatResources.getColorStateList(
+                            mContext, R.color.session_bookmark_tint));
+                    bookmark.setImageDrawable(d);
+                }
+                // Show as activated is the item is the keynote or in the schedule
+                // (it is auto added to schedule on sync)
+                bookmark.setActivated(item.isKeynote() || item.inSchedule);
+                bookmark.setVisibility(View.VISIBLE);
             }
 
             if (item.isKeynote() || (item.flags & ScheduleItem.FLAG_HAS_LIVESTREAM) != 0) {

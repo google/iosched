@@ -18,6 +18,9 @@
 <resources>
     <color name="background">#fff7f9f9</color>
 
+    <!-- 2017 palette -->
+    <color name="io17_accent_yellow">#FCD243</color>
+
     <!-- 2016 palette -->
     <color name="io16_primary_cyan">#ff25c5d9</color>
     <color name="io16_primary_purple">#ff5d6abf</color>
@@ -92,14 +95,7 @@
 
     <color name="tab_selected_strip">@android:color/white</color>
 
-    <color name="my_schedule_conflict">#dd2c00</color>
-    <color name="my_schedule_past_background">#f5f5f5</color>
-    <color name="my_schedule_hour_header_default">#de455a64</color>
-    <color name="my_schedule_hour_header_finished">#b8455a64</color>
-    <color name="my_schedule_icon_default">#ff07434d</color>
-    <color name="my_schedule_icon_finished">#ff49757c</color>
-    <color name="my_schedule_session_title_default">#de07434d</color>
-    <color name="my_schedule_session_title_finished">#b807434d</color>
+    <color name="map_icon_default">#ff07434d</color>
 
     <color name="light_grey">#ffeeeeee</color>
 

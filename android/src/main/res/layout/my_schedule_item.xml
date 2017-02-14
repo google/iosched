@@ -47,12 +47,30 @@
             android:textAppearance="@style/TextAppearance.AppCompat.Body1"
             tools:text="9:00 AM - 11:30 AM / Room 1" />
 
-        <com.google.android.flexbox.FlexboxLayout
-            android:id="@+id/tags_holder"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/spacing_normal"
-            app:flexWrap="wrap" />
+            android:orientation="horizontal">
+
+            <com.google.android.flexbox.FlexboxLayout
+                android:id="@+id/tags_holder"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/spacing_normal"
+                app:flexWrap="wrap" />
+
+            <android.support.v4.widget.Space
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_weight="1" />
+
+            <ImageView
+                android:id="@+id/bookmark"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical" />
+
+        </LinearLayout>
 
         <Button
             android:id="@+id/give_feedback_button"
@@ -69,7 +87,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/spacing_normal" />
-
 
     </LinearLayout>
 
