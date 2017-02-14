@@ -109,7 +109,7 @@ public abstract class MapInfoFragment extends Fragment
         mTitle = (TextView) root.findViewById(R.id.map_info_title);
         mSubtitle = (TextView) root.findViewById(R.id.map_info_subtitle);
         mIcon = (ImageView) root.findViewById(R.id.map_info_icon);
-        mIcon.setColorFilter(getResources().getColor(R.color.my_schedule_icon_default));
+        mIcon.setColorFilter(getResources().getColor(R.color.map_icon_default));
         mList = (RecyclerView) root.findViewById(R.id.map_info_list);
         final Context context = mList.getContext();
         mList.addItemDecoration(new DividerDecoration(context));

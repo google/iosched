@@ -198,15 +198,6 @@ public class ScheduleWidgetRemoteViewsService extends RemoteViewsService {
                             && now >= item.startTime && now <= item.endTime;
                     rv.setViewVisibility(R.id.live_now_badge, (showLiveBadge ? View.VISIBLE : View.GONE));
 
-                    // show or hide the "conflict" warning
-                    if (!isPastDuringConference) {
-                        final boolean showConflict = 0 != (item.flags & ScheduleItem.FLAG_CONFLICTS_WITH_PREVIOUS);
-                        if (showConflict && !isNowPlaying) {
-                            int conflictColor = mContext.getResources().getColor(R.color.my_schedule_conflict);
-                            rv.setTextColor(R.id.start_end_time, conflictColor);
-                        }
-                    }
-
                     Intent fillIntent = TaskStackBuilderProxyActivity.getFillIntent(
                             homeIntent,
                             new Intent(Intent.ACTION_VIEW, ScheduleContract.Sessions.buildSessionUri(item.sessionId)));
