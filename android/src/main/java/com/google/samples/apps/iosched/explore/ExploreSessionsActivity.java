@@ -44,10 +44,9 @@ import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.target.Target;
 import com.google.samples.apps.iosched.Config;
 import com.google.samples.apps.iosched.R;
+import com.google.samples.apps.iosched.model.TagMetadata;
 import com.google.samples.apps.iosched.myschedule.SessionsFilterAdapter;
 import com.google.samples.apps.iosched.myschedule.SessionsFilterAdapter.SessionFilterAdapterListener;
-import com.google.samples.apps.iosched.model.TagMetadata;
-import com.google.samples.apps.iosched.model.TagMetadata.Tag;
 import com.google.samples.apps.iosched.myschedule.TagFilterHolder;
 import com.google.samples.apps.iosched.provider.ScheduleContract;
 import com.google.samples.apps.iosched.settings.SettingsUtils;
@@ -238,7 +237,7 @@ public class ExploreSessionsActivity extends BaseActivity
                 mTagFilterHolder.add(tag, userTagCategory);
             }
 
-            mTagFilterHolder.setShowLiveStreamedSessions(
+            mTagFilterHolder.setShowLiveStreamedOnly(
                     getIntent().getBooleanExtra(EXTRA_SHOW_LIVE_STREAM_SESSIONS, false));
 
             // update the selected filters using the following logic:
@@ -260,7 +259,7 @@ public class ExploreSessionsActivity extends BaseActivity
                 if (!TextUtils.equals(theTag.getCategory(), userTagCategory)) {
                     mTagFilterHolder.add(theTag.getId(), theTag.getCategory());
                 }
-                mTagFilterHolder.setShowLiveStreamedSessions(true);
+                mTagFilterHolder.setShowLiveStreamedOnly(true);
             }
         }
         reloadFragment();
@@ -268,13 +267,8 @@ public class ExploreSessionsActivity extends BaseActivity
                 mTagMetadata);
         adapter.setSessionFilterAdapterListener(new SessionFilterAdapterListener() {
             @Override
-            public void reloadFragment() {
-                ExploreSessionsActivity.this.reloadFragment();
-            }
-
-            @Override
-            public void updateFilters(Tag filter, boolean checked) {
-                ExploreSessionsActivity.this.updateFilters(filter, checked);
+            public void onFiltersChanged(TagFilterHolder filterHolder) {
+                reloadFragment();
             }
         });
         mFiltersList.setAdapter(adapter);
@@ -292,11 +286,9 @@ public class ExploreSessionsActivity extends BaseActivity
             String headerImage = null;
             @ColorInt int trackColor = Color.TRANSPARENT;
 
-            // If exactly one theme or one track is selected, show its title and image.
-            int selectedTracks = mTagFilterHolder.getCountByCategory(Config.Tags.CATEGORY_TRACK);
-            int selectedThemes = mTagFilterHolder.getCountByCategory(Config.Tags.CATEGORY_THEME);
-            if (selectedThemes + selectedTracks == 1) {
-                for (String tagId : mTagFilterHolder.getSelectedFilters()) {
+            // If exactly one track is selected, show its title and image.
+            if (mTagFilterHolder.getSelectedTopicsCount() == 1) {
+                for (String tagId : mTagFilterHolder.getSelectedTopics()) {
                     if (TagUtils.isTrackTag(tagId) || TagUtils.isThemeTag(tagId)) {
                         TagMetadata.Tag selectedTag = mTagMetadata.getTag(tagId);
                         title = selectedTag.getName();
@@ -366,22 +358,13 @@ public class ExploreSessionsActivity extends BaseActivity
         setHeader();
         Intent intent = new Intent(Intent.ACTION_VIEW, uri);
         intent.putExtra(ExploreSessionsFragment.EXTRA_SHOW_LIVESTREAMED_SESSIONS,
-                mTagFilterHolder.isShowLiveStreamedSessions());
+                mTagFilterHolder.isShowLiveStreamedOnly());
 
         LOGD(TAG, "Reloading fragment with categories " + mTagFilterHolder.getCategoryCount() +
                 " uri: " + uri +
-                " showLiveStreamedEvents: " + mTagFilterHolder.isShowLiveStreamedSessions());
+                " showLiveStreamedEvents: " + mTagFilterHolder.isShowLiveStreamedOnly());
 
         mFragment.reloadFromArguments(intentToFragmentArguments(intent));
-    }
-
-    private void updateFilters(final TagMetadata.Tag filter, final boolean enable) {
-        if (enable) {
-            mTagFilterHolder.add(filter.getId(), filter.getCategory());
-        } else {
-            mTagFilterHolder.remove(filter.getId(), filter.getCategory());
-        }
-        reloadFragment();
     }
 
     @Override

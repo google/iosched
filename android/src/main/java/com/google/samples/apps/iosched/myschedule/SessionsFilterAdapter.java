@@ -53,9 +53,7 @@ public class SessionsFilterAdapter extends Adapter<ViewHolder> {
     private SessionFilterAdapterListener mListener;
 
     public interface SessionFilterAdapterListener {
-        void reloadFragment();
-
-        void updateFilters(Tag filter, boolean checked);
+        void onFiltersChanged(TagFilterHolder filterHolder);
     }
 
     public SessionsFilterAdapter(Context context, TagFilterHolder tagFilterHolder,
@@ -144,7 +142,7 @@ public class SessionsFilterAdapter extends Adapter<ViewHolder> {
     private boolean isStaticFilterChecked(int position) {
         switch (position) {
             case 0:
-                return mTagFilterHolder.isShowLiveStreamedSessions();
+                return mTagFilterHolder.isShowLiveStreamedOnly();
             case 1:
                 return mTagFilterHolder.showSessionsOnly();
         }
@@ -154,21 +152,26 @@ public class SessionsFilterAdapter extends Adapter<ViewHolder> {
     private void updateStaticFilter(int position, boolean checked) {
         switch (position) {
             case 0:
-                mTagFilterHolder.setShowLiveStreamedSessions(checked);
-                mListener.reloadFragment();
+                mTagFilterHolder.setShowLiveStreamedOnly(checked);
+                dispatchFiltersChanged();
                 break;
             case 1:
                 mTagFilterHolder.setShowSessionsOnly(checked);
-                mListener.reloadFragment();
+                dispatchFiltersChanged();
                 break;
         }
     }
 
     private void updateTagFilter(Tag filter, boolean checked) {
-        if (checked && mTagFilterHolder.add(filter.getId(), filter.getCategory())) {
-            mListener.updateFilters(filter, checked);
-        } else if (!checked && mTagFilterHolder.remove(filter.getId(), filter.getCategory())) {
-            mListener.updateFilters(filter, checked);
+        if ((checked && mTagFilterHolder.add(filter.getId(), filter.getCategory()))
+                || (!checked && mTagFilterHolder.remove(filter.getId(), filter.getCategory()))) {
+            dispatchFiltersChanged();
+        }
+    }
+
+    private void dispatchFiltersChanged() {
+        if (mListener != null) {
+            mListener.onFiltersChanged(mTagFilterHolder);
         }
     }
 

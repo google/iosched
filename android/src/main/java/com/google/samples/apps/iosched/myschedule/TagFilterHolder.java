@@ -16,7 +16,6 @@
 
 package com.google.samples.apps.iosched.myschedule;
 
-import static com.google.samples.apps.iosched.util.LogUtils.LOGE;
 import static com.google.samples.apps.iosched.util.LogUtils.makeLogTag;
 
 import android.os.Parcel;
@@ -33,24 +32,14 @@ import java.util.Set;
  */
 public class TagFilterHolder implements Parcelable {
 
-    public static final int CATEGORY_THEME = 0;
-    public static final int CATEGORY_TYPE = 1;
-    public static final int CATEGORY_TRACK = 2;
-    public static final int CATEGORY_INVALID = -1;
-
     private static final String TAG = makeLogTag(TagFilterHolder.class);
 
-    private final Set<String> mSelectedFilters;
-    private final int[] mCategories;
-    private boolean mShowLiveStreamedSessions;
+    private final Set<String> mSelectedTopics;
+    private boolean mShowLiveStreamedOnly;
     private boolean mShowSessionsOnly;
 
     public TagFilterHolder() {
-        mSelectedFilters = new HashSet<>();
-        mCategories = new int[3];
-        mCategories[CATEGORY_THEME] = 0;
-        mCategories[CATEGORY_TYPE] = 0;
-        mCategories[CATEGORY_TRACK] = 0;
+        mSelectedTopics = new HashSet<>();
     }
 
     /**
@@ -58,7 +47,7 @@ public class TagFilterHolder implements Parcelable {
      * @return boolean Return a boolean indicating that the tagId is present.
      */
     public boolean contains(String tagId) {
-        return mSelectedFilters.contains(tagId);
+        return mSelectedTopics.contains(tagId);
     }
 
     /**
@@ -70,15 +59,7 @@ public class TagFilterHolder implements Parcelable {
      * @return boolean Returns a boolean to indicate whether the operation was successful.
      */
     public boolean add(String tagId, String category) {
-        if (isCategoryValid(category)) {
-            boolean added = mSelectedFilters.add(tagId);
-            if (added) {
-                mCategories[categoryId(category)]++;
-            }
-            return added;
-        } else {
-            return false;
-        }
+        return isCategoryValid(category) && mSelectedTopics.add(tagId);
     }
 
     /**
@@ -87,74 +68,65 @@ public class TagFilterHolder implements Parcelable {
      * @return boolean Returns a boolean to indicate whether the operation was successful.
      */
     public boolean remove(String tagId, String category) {
-        if (isCategoryValid(category)) {
-            boolean removed = mSelectedFilters.remove(tagId);
-            if (removed) {
-                mCategories[categoryId(category)]--;
-            }
-            return removed;
-        } else {
-            return false;
-        }
+        return isCategoryValid(category) && mSelectedTopics.remove(tagId);
+    }
+
+    public void clear() {
+        mSelectedTopics.clear();
+        mShowLiveStreamedOnly = false;
+        mShowSessionsOnly = false;
     }
 
     /**
      * @return String[] containing all the tags from all the categories.
      */
     public String[] toStringArray() {
-        return mSelectedFilters.toArray(new String[mSelectedFilters.size()]);
+        return mSelectedTopics.toArray(new String[mSelectedTopics.size()]);
     }
 
     /**
      * @return An unmodifiable set with all the filters.
      */
-    public Set<String> getSelectedFilters() {
-        return Collections.unmodifiableSet(mSelectedFilters);
+    public Set<String> getSelectedTopics() {
+        return Collections.unmodifiableSet(mSelectedTopics);
     }
 
     /**
-     * Method that returns the number of categories that are in use by this instance. At least 1 and
-     * at most 3 categories can be returned by this method.
-     * <p/>
-     * Example: 1. If there are 2 topics and 1 theme the result would be 2 indicating that two
-     * categories are in use by this filter. 2. If there are 2 topics, 2 themes and 3 types then the
-     * result would be 3 to indicate the non-zero presence of each category.
-     *
-     * @return categoryCount Return the number of non categories in this instance.
+     * Returns the number of tag categories for the filter query against the content provider.
+     * Currently we only use track tags, so this is always 1.
      */
     public int getCategoryCount() {
-        return Math.max(1,
-                (mCategories[CATEGORY_THEME] > 0 ? 1 : 0) +
-                        (mCategories[CATEGORY_TYPE] > 0 ? 1 : 0) +
-                        (mCategories[CATEGORY_TRACK] > 0 ? 1 : 0));
+        return 1;
     }
 
     /**
-     * @return Returns whether the collection is empty
+     * @return The number of topic filters currently in use. Note that non-topic filters are not
+     * considered; use {@link #hasAnyFilters()} instead if trying to determine whether any filters
+     * are active.
      */
-    public boolean isEmpty() {
-        return mSelectedFilters.isEmpty();
+    public int getSelectedTopicsCount() {
+        return mSelectedTopics.size();
     }
 
     /**
-     * @return Returns the number of filters currently in use.
+     * @return true if any filters are active, including non-topic filters (e.g. live streamed)
      */
-    public int size() {
-        return mSelectedFilters.size();
+    public boolean hasAnyFilters() {
+        return mShowLiveStreamedOnly || mShowSessionsOnly || !mSelectedTopics.isEmpty();
     }
 
     /**
      * @param show whether only live streamed events should be shown
      */
-    public void setShowLiveStreamedSessions(boolean show) {
-        mShowLiveStreamedSessions = show;
+    public void setShowLiveStreamedOnly(boolean show) {
+        mShowLiveStreamedOnly = show;
     }
 
     /**
      * @return true if only live streamed events should be shown, false otherwise
      */
-    public boolean isShowLiveStreamedSessions() {
-        return mShowLiveStreamedSessions;
+    public boolean isShowLiveStreamedOnly() {
+        return mShowLiveStreamedOnly;
     }
 
     /**
@@ -171,16 +143,8 @@ public class TagFilterHolder implements Parcelable {
         return mShowSessionsOnly;
     }
 
-    /**
-     * @param category The category to look up.
-     * @return Return the number of entries for the given category.
-     */
-    public int getCountByCategory(String category) {
-        if (isCategoryValid(category)) {
-            return mCategories[categoryId(category)];
-        } else {
-            return 0;
-        }
+    private static boolean isCategoryValid(String category) {
+        return Config.Tags.CATEGORY_TRACK.equals(category); // we only care about tracks
     }
 
     @Override
@@ -190,60 +154,26 @@ public class TagFilterHolder implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
-        dest.writeStringArray(mSelectedFilters.toArray(new String[mSelectedFilters.size()]));
-        dest.writeIntArray(mCategories);
-        dest.writeInt(mShowLiveStreamedSessions ? 1 : 0);
+        dest.writeStringArray(mSelectedTopics.toArray(new String[mSelectedTopics.size()]));
+        dest.writeInt(mShowLiveStreamedOnly ? 1 : 0);
+        dest.writeInt(mShowSessionsOnly ? 1 : 0);
     }
 
-    /**
-     * @param category Must be one of {@link Config.Tags#CATEGORY_THEME}, {@link
-     *                 Config.Tags#CATEGORY_TYPE} or{@link Config.Tags#CATEGORY_TRACK}. To verify if
-     *                 the {@code category is valid}, call {@link #isCategoryValid(String)}.
-     * @return the id of the {@code category}, or {@link #CATEGORY_INVALID}, if the {@code category}
-     * isn't valid.
-     */
-    private static int categoryId(String category) {
-        switch (category) {
-            case Config.Tags.CATEGORY_THEME:
-                return TagFilterHolder.CATEGORY_THEME;
-            case Config.Tags.CATEGORY_TYPE:
-                return TagFilterHolder.CATEGORY_TYPE;
-            case Config.Tags.CATEGORY_TRACK:
-                return TagFilterHolder.CATEGORY_TRACK;
-            default:
-                LOGE(TAG, "Invalid category found " + category);
-                return TagFilterHolder.CATEGORY_INVALID;
-        }
-    }
+    public static final Creator<TagFilterHolder> CREATOR = new Creator<TagFilterHolder>() {
 
-    private static boolean isCategoryValid(String category) {
-        switch (category) {
-            case Config.Tags.CATEGORY_THEME:
-            case Config.Tags.CATEGORY_TYPE:
-            case Config.Tags.CATEGORY_TRACK:
-                return true;
-            default:
-                LOGE(TAG, "Invalid category found " + category);
-                return false;
-        }
-    }
-
-    public static final Creator CREATOR = new Creator() {
-
+        @Override
         public TagFilterHolder createFromParcel(Parcel in) {
             TagFilterHolder holder = new TagFilterHolder();
 
             String[] filters = in.createStringArray();
-            Collections.addAll(holder.mSelectedFilters, filters);
+            Collections.addAll(holder.mSelectedTopics, filters);
 
-            int[] categories = in.createIntArray();
-            System.arraycopy(categories, 0, holder.mCategories, 0, categories.length);
-
-            holder.mShowLiveStreamedSessions = in.readInt() == 1;
+            holder.mShowLiveStreamedOnly = in.readInt() == 1;
 
             return holder;
         }
 
+        @Override
         public TagFilterHolder[] newArray(int size) {
             return new TagFilterHolder[size];
         }

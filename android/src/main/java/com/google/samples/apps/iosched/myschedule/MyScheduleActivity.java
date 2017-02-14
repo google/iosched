@@ -622,7 +622,7 @@ public class MyScheduleActivity extends BaseActivity implements
                 mTagFilterHolder.add(tag, userTagCategory);
             }
 
-            mTagFilterHolder.setShowLiveStreamedSessions(
+            mTagFilterHolder.setShowLiveStreamedOnly(
                     getIntent().getBooleanExtra(EXTRA_SHOW_LIVE_STREAM_SESSIONS, false));
 
             // update the selected filters using the following logic:
@@ -644,7 +644,7 @@ public class MyScheduleActivity extends BaseActivity implements
                 if (!TextUtils.equals(theTag.getCategory(), userTagCategory)) {
                     mTagFilterHolder.add(theTag.getId(), theTag.getCategory());
                 }
-                mTagFilterHolder.setShowLiveStreamedSessions(true);
+                mTagFilterHolder.setShowLiveStreamedOnly(true);
             }
         }
 
