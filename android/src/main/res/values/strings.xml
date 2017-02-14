@@ -582,6 +582,9 @@
     <!-- Title of the Explore Sessions side panel containing all the filters -->
     <string name="title_explore_sessions_filter">Filter</string>
 
+    <!-- Label of filter option to show only sessions -->
+    <string name="filter_label_sessions_only">Sessions only</string>
+
     <!-- BEGIN Explore Message Card User Messages -->
     <string name="explore_io_notifications_ask_opt_in"
             description="This message is displayed on the Explore I/O screen to ask users whether

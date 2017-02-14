@@ -17,13 +17,17 @@ import static com.google.samples.apps.iosched.util.LogUtils.LOGE;
 import static com.google.samples.apps.iosched.util.LogUtils.makeLogTag;
 
 import android.content.Context;
+import android.content.res.Resources;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.RecyclerView.Adapter;
 import android.support.v7.widget.RecyclerView.ViewHolder;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
+import android.widget.CompoundButton;
+import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.TextView;
 
 import com.google.samples.apps.iosched.Config;
@@ -38,11 +42,11 @@ public class SessionsFilterAdapter extends Adapter<ViewHolder> {
 
     private static final String TAG = makeLogTag(SessionsFilterAdapter.class);
 
-    private static final int TYPE_FILTER = 0;
-    private static final int TYPE_LIVE_STREAM_FILTER = 1;
-    private static final int TYPE_DIVIDER = 2;
+    private static final int TYPE_TAG_FILTER = 0;
+    private static final int TYPE_STATIC_FILTER = 1;
+    private static final int TYPE_TOPICS_HEADER = 2;
 
-    private final List mItems;
+    private final List<Object> mItems;
     private TagFilterHolder mTagFilterHolder;
     private final LayoutInflater mInflater;
 
@@ -50,15 +54,35 @@ public class SessionsFilterAdapter extends Adapter<ViewHolder> {
 
     public interface SessionFilterAdapterListener {
         void reloadFragment();
+
         void updateFilters(Tag filter, boolean checked);
     }
 
     public SessionsFilterAdapter(Context context, TagFilterHolder tagFilterHolder,
             TagMetadata filters) {
         mInflater = LayoutInflater.from(context);
-        mItems = new ArrayList();
-        mTagFilterHolder =tagFilterHolder;
-        processFilters(filters);
+        mItems = new ArrayList<>();
+        mTagFilterHolder = tagFilterHolder;
+        processFilters(context.getResources(), filters);
+    }
+
+    /**
+     * Build the list of items
+     */
+    private void processFilters(Resources res, TagMetadata tagMetadata) {
+        // Live Streamed
+        mItems.add(new StaticFilter(res.getString(R.string.session_live_streamed)));
+        // Sessions only
+        mItems.add(new StaticFilter(res.getString(R.string.filter_label_sessions_only)));
+        // "Topics" header
+        mItems.add(new TopicsHeader());
+        // Topics. We only care about tracks.
+        List<TagMetadata.Tag> topics = tagMetadata.getTagsInCategory(Config.Tags.CATEGORY_TRACK);
+        if (topics != null && !topics.isEmpty()) {
+            for (TagMetadata.Tag topic : topics) {
+                mItems.add(topic);
+            }
+        }
     }
 
     public void setSessionFilterAdapterListener(SessionFilterAdapterListener listener) {
@@ -66,14 +90,17 @@ public class SessionsFilterAdapter extends Adapter<ViewHolder> {
     }
 
     @Override
-    public RecyclerView.ViewHolder onCreateViewHolder(final ViewGroup parent, final int viewType) {
+    public ViewHolder onCreateViewHolder(final ViewGroup parent, final int viewType) {
         switch (viewType) {
-            case TYPE_FILTER:
-                return createFilterViewHolder(parent);
-            case TYPE_LIVE_STREAM_FILTER:
-                return createLiveStreamFilterViewHolder(parent);
-            case TYPE_DIVIDER:
-                return createDividerViewHolder(parent);
+            case TYPE_TAG_FILTER:
+                return new TagFilterViewHolder(mInflater.inflate(
+                        R.layout.explore_sessions_list_item_alt_drawer, parent, false));
+            case TYPE_STATIC_FILTER:
+                return new StaticFilterViewHolder(mInflater.inflate(
+                        R.layout.explore_sessions_list_item_alt_drawer, parent, false));
+            case TYPE_TOPICS_HEADER:
+                return new HeaderViewHolder(mInflater.inflate(
+                        R.layout.list_item_filter_drawer_topics_header, parent, false));
             default:
                 LOGE(TAG, "Unknown view type");
                 throw new IllegalArgumentException("Unknown view type");
@@ -83,11 +110,15 @@ public class SessionsFilterAdapter extends Adapter<ViewHolder> {
     @Override
     public void onBindViewHolder(final RecyclerView.ViewHolder holder, final int position) {
         switch (getItemViewType(position)) {
-            case TYPE_FILTER:
-                bindFilter((FilterViewHolder) holder, (TagMetadata.Tag) mItems.get(position));
+            case TYPE_TAG_FILTER:
+                TagFilterViewHolder tfvh = (TagFilterViewHolder) holder;
+                Tag filter = (Tag) mItems.get(position);
+                tfvh.bindFilter(filter, mTagFilterHolder.contains(filter.getId()));
                 break;
-            case TYPE_LIVE_STREAM_FILTER:
-                bindLiveStreamFilter((FilterViewHolder) holder);
+            case TYPE_STATIC_FILTER:
+                StaticFilterViewHolder sfvh = (StaticFilterViewHolder) holder;
+                sfvh.bindFilter((StaticFilter) mItems.get(position),
+                        isStaticFilterChecked(position));
                 break;
         }
     }
@@ -100,128 +131,126 @@ public class SessionsFilterAdapter extends Adapter<ViewHolder> {
     @Override
     public int getItemViewType(final int position) {
         Object item = mItems.get(position);
-        if (item instanceof LiveStream) {
-            return TYPE_LIVE_STREAM_FILTER;
+        if (item instanceof StaticFilter) {
+            return TYPE_STATIC_FILTER;
         } else {
-            if (item instanceof Divider) {
-                return TYPE_DIVIDER;
+            if (item instanceof TopicsHeader) {
+                return TYPE_TOPICS_HEADER;
             }
         }
-        return TYPE_FILTER;
+        return TYPE_TAG_FILTER;
     }
 
-    /**
-     * We transform the provided data into a structure suitable for the RecyclerView i.e. we build
-     * up {@link #mItems}, adding 'marker' items for dividers & live stream.
-     */
-    private void processFilters(TagMetadata tagMetadata) {
-        List<TagMetadata.Tag> themes = tagMetadata.getTagsInCategory(Config.Tags.CATEGORY_THEME);
-        if (themes != null && !themes.isEmpty()) {
-            for (TagMetadata.Tag theme : themes) {
-                mItems.add(theme);
-            }
+    private boolean isStaticFilterChecked(int position) {
+        switch (position) {
+            case 0:
+                return mTagFilterHolder.isShowLiveStreamedSessions();
+            case 1:
+                return mTagFilterHolder.showSessionsOnly();
         }
-        mItems.add(new Divider());
+        return false;
+    }
 
-        List<TagMetadata.Tag> sessionTypes = tagMetadata.getTagsInCategory(
-                Config.Tags.CATEGORY_TYPE);
-        if (sessionTypes != null && !sessionTypes.isEmpty()) {
-            for (TagMetadata.Tag type : sessionTypes) {
-                mItems.add(type);
-            }
-        }
-        mItems.add(new Divider());
-
-        mItems.add(new LiveStream());
-        mItems.add(new Divider());
-
-        List<TagMetadata.Tag> topics = tagMetadata.getTagsInCategory(Config.Tags.CATEGORY_TRACK);
-        if (topics != null && !topics.isEmpty()) {
-            for (TagMetadata.Tag topic : topics) {
-                mItems.add(topic);
-            }
+    private void updateStaticFilter(int position, boolean checked) {
+        switch (position) {
+            case 0:
+                mTagFilterHolder.setShowLiveStreamedSessions(checked);
+                mListener.reloadFragment();
+                break;
+            case 1:
+                mTagFilterHolder.setShowSessionsOnly(checked);
+                mListener.reloadFragment();
+                break;
         }
     }
 
-    private FilterViewHolder createFilterViewHolder(final ViewGroup parent) {
-        final FilterViewHolder holder = new FilterViewHolder(
-                mInflater.inflate(R.layout.explore_sessions_list_item_alt_drawer, parent, false));
-        holder.checkbox.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(final View v) {
-                if (mListener != null) {
-                    final Tag filter = (Tag) mItems.get(holder.getAdapterPosition());
-                    mListener.updateFilters(filter, holder.checkbox.isChecked());
-                }
-            }
-        });
-        holder.itemView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(final View v) {
-                holder.checkbox.performClick();
-            }
-        });
-        return holder;
+    private void updateTagFilter(Tag filter, boolean checked) {
+        if (checked && mTagFilterHolder.add(filter.getId(), filter.getCategory())) {
+            mListener.updateFilters(filter, checked);
+        } else if (!checked && mTagFilterHolder.remove(filter.getId(), filter.getCategory())) {
+            mListener.updateFilters(filter, checked);
+        }
     }
 
-    private FilterViewHolder createLiveStreamFilterViewHolder(final ViewGroup parent) {
-        final FilterViewHolder holder = new FilterViewHolder(
-                mInflater.inflate(R.layout.explore_sessions_list_item_livestream_alt_drawer, parent,
-                        false));
-        holder.checkbox.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(final View v) {
-                mTagFilterHolder.setShowLiveStreamedSessions(holder.checkbox.isChecked());
-                if (mListener != null) {
-                    mListener.reloadFragment();
-                }
-            }
-        });
-        holder.itemView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(final View v) {
-                holder.checkbox.performClick();
-            }
-        });
-        return holder;
+    // -- Marker objects
+
+    private static class TopicsHeader {
     }
 
-    private DividerViewHolder createDividerViewHolder(final ViewGroup parent) {
-        // TODO we should use an ItemDecoration rather than a view
-        return new DividerViewHolder(
-                mInflater.inflate(R.layout.explore_sessions_list_item_alt_header, parent, false));
+    private static class StaticFilter {
+        final CharSequence mLabel;
+
+        private StaticFilter(CharSequence label) {
+            mLabel = label;
+        }
     }
 
-    private void bindFilter(final FilterViewHolder holder, final TagMetadata.Tag filter) {
-        holder.label.setText(filter.getName());
-        holder.checkbox.setChecked(mTagFilterHolder.contains(filter.getId()));
-    }
+    // -- ViewHolders
 
-    private void bindLiveStreamFilter(final FilterViewHolder holder) {
-        holder.checkbox.setChecked(mTagFilterHolder.isShowLiveStreamedSessions());
-    }
+    private abstract class FilterViewHolder extends ViewHolder implements OnCheckedChangeListener {
 
-    private static class Divider {
-    }
-
-    private static class LiveStream {
-    }
-
-    private static class FilterViewHolder extends RecyclerView.ViewHolder {
-
-        final TextView label;
-        final CheckBox checkbox;
+        protected final TextView mLabel;
+        protected final CheckBox mCheckbox;
 
         public FilterViewHolder(final View itemView) {
             super(itemView);
-            label = (TextView) itemView.findViewById(R.id.text_view);
-            checkbox = (CheckBox) itemView.findViewById(R.id.filter_checkbox);
+            mLabel = (TextView) itemView.findViewById(R.id.text_view);
+            mCheckbox = (CheckBox) itemView.findViewById(R.id.filter_checkbox);
+            itemView.setOnClickListener(new OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    mCheckbox.performClick();
+                }
+            });
+        }
+
+        protected void onBind(CharSequence label, boolean checked) {
+            mLabel.setText(label);
+            // avoid dispatching changes when recycling views
+            mCheckbox.setOnCheckedChangeListener(null);
+            mCheckbox.setChecked(checked);
+            mCheckbox.setOnCheckedChangeListener(this);
         }
     }
 
-    private static class DividerViewHolder extends RecyclerView.ViewHolder {
+    private class StaticFilterViewHolder extends FilterViewHolder {
 
-        public DividerViewHolder(final View itemView) {
+        public StaticFilterViewHolder(final View itemView) {
+            super(itemView);
+        }
+
+        void bindFilter(StaticFilter filter, boolean checked) {
+            onBind(filter.mLabel, checked);
+        }
+
+        @Override
+        public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+            updateStaticFilter(getAdapterPosition(), isChecked);
+        }
+    }
+
+    private class TagFilterViewHolder extends FilterViewHolder {
+
+        private Tag mTagFilter;
+
+        public TagFilterViewHolder(final View itemView) {
+            super(itemView);
+        }
+
+        void bindFilter(Tag filter, boolean checked) {
+            mTagFilter = filter;
+            onBind(filter.getName(), checked);
+        }
+
+        @Override
+        public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+            updateTagFilter(mTagFilter, isChecked);
+        }
+    }
+
+    private class HeaderViewHolder extends ViewHolder {
+
+        public HeaderViewHolder(final View itemView) {
             super(itemView);
         }
     }

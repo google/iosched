@@ -29,8 +29,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 /**
- * Class responsible for storing, managing and retrieving Tag filters used in {@link
- * ExploreSessionsActivity}.
+ * Class responsible for storing, managing and retrieving Tag filters used in the filter drawer.
  */
 public class TagFilterHolder implements Parcelable {
 
@@ -44,6 +43,7 @@ public class TagFilterHolder implements Parcelable {
     private final Set<String> mSelectedFilters;
     private final int[] mCategories;
     private boolean mShowLiveStreamedSessions;
+    private boolean mShowSessionsOnly;
 
     public TagFilterHolder() {
         mSelectedFilters = new HashSet<>();
@@ -144,17 +144,31 @@ public class TagFilterHolder implements Parcelable {
     }
 
     /**
-     * @param show Set a boolean to indicate whether live streamed sessions should be shown
+     * @param show whether only live streamed events should be shown
      */
     public void setShowLiveStreamedSessions(boolean show) {
-        this.mShowLiveStreamedSessions = show;
+        mShowLiveStreamedSessions = show;
     }
 
     /**
-     * @return Returns whether a live streamed sessions shown be shown.
+     * @return true if only live streamed events should be shown, false otherwise
      */
     public boolean isShowLiveStreamedSessions() {
         return mShowLiveStreamedSessions;
+    }
+
+    /**
+     * @param show whether only sessions should be shown
+     */
+    public void setShowSessionsOnly(boolean show) {
+        mShowSessionsOnly = show;
+    }
+
+    /**
+     * @return true if only sessions should be shown, false otherwise
+     */
+    public boolean showSessionsOnly() {
+        return mShowSessionsOnly;
     }
 
     /**
