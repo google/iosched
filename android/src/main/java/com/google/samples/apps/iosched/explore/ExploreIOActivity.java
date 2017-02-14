@@ -23,6 +23,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import com.google.samples.apps.iosched.R;
+import com.google.samples.apps.iosched.myschedule.MyScheduleActivity;
 import com.google.samples.apps.iosched.navigation.NavigationModel;
 import com.google.samples.apps.iosched.ui.BaseActivity;
 import com.google.samples.apps.iosched.ui.SearchActivity;
@@ -42,12 +43,19 @@ public class ExploreIOActivity extends BaseActivity implements Toolbar.OnMenuIte
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
         Intent launchIntent = getIntent();
         if (launchIntent != null && (!Intent.ACTION_MAIN.equals(launchIntent.getAction())
                 || !launchIntent.hasCategory(Intent.CATEGORY_LAUNCHER))) {
             overridePendingTransition(0, 0);
+        } else {
+            // Launcher intent. Bounce to Schedule UI and finish
+            startActivity(new Intent(this, MyScheduleActivity.class));
+            finish();
+            return;
         }
-        super.onCreate(savedInstanceState);
+
         setContentView(R.layout.explore_io_act);
         setTitle(R.string.title_explore);
 
