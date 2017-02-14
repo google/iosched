@@ -50,9 +50,10 @@ public class SessionsFilterAdapter extends Adapter<ViewHolder> {
     private TagFilterHolder mTagFilterHolder;
     private final LayoutInflater mInflater;
 
-    private SessionFilterAdapterListener mListener;
+    private OnFiltersChangedListener mListener;
 
-    public interface SessionFilterAdapterListener {
+    public interface OnFiltersChangedListener {
+
         void onFiltersChanged(TagFilterHolder filterHolder);
     }
 
@@ -83,8 +84,14 @@ public class SessionsFilterAdapter extends Adapter<ViewHolder> {
         }
     }
 
-    public void setSessionFilterAdapterListener(SessionFilterAdapterListener listener) {
+    public void setSessionFilterAdapterListener(OnFiltersChangedListener listener) {
         mListener = listener;
+    }
+
+    public void clearAllFilters() {
+        mTagFilterHolder.clear();
+        notifyItemRangeChanged(0, getItemCount());
+        dispatchFiltersChanged();
     }
 
     @Override
@@ -92,10 +99,10 @@ public class SessionsFilterAdapter extends Adapter<ViewHolder> {
         switch (viewType) {
             case TYPE_TAG_FILTER:
                 return new TagFilterViewHolder(mInflater.inflate(
-                        R.layout.explore_sessions_list_item_alt_drawer, parent, false));
+                        R.layout.list_item_filter_drawer, parent, false));
             case TYPE_STATIC_FILTER:
                 return new StaticFilterViewHolder(mInflater.inflate(
-                        R.layout.explore_sessions_list_item_alt_drawer, parent, false));
+                        R.layout.list_item_filter_drawer, parent, false));
             case TYPE_TOPICS_HEADER:
                 return new HeaderViewHolder(mInflater.inflate(
                         R.layout.list_item_filter_drawer_topics_header, parent, false));
@@ -131,10 +138,8 @@ public class SessionsFilterAdapter extends Adapter<ViewHolder> {
         Object item = mItems.get(position);
         if (item instanceof StaticFilter) {
             return TYPE_STATIC_FILTER;
-        } else {
-            if (item instanceof TopicsHeader) {
-                return TYPE_TOPICS_HEADER;
-            }
+        } else if (item instanceof TopicsHeader) {
+            return TYPE_TOPICS_HEADER;
         }
         return TYPE_TAG_FILTER;
     }
@@ -197,7 +202,7 @@ public class SessionsFilterAdapter extends Adapter<ViewHolder> {
 
         public FilterViewHolder(final View itemView) {
             super(itemView);
-            mLabel = (TextView) itemView.findViewById(R.id.text_view);
+            mLabel = (TextView) itemView.findViewById(R.id.filter_label);
             mCheckbox = (CheckBox) itemView.findViewById(R.id.filter_checkbox);
             itemView.setOnClickListener(new OnClickListener() {
                 @Override

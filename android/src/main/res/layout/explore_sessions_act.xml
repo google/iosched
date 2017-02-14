@@ -91,6 +91,6 @@
     </android.support.design.widget.CoordinatorLayout>
 
     <!-- Filter drawer -->
-    <include layout="@layout/explore_sessions_act_filter_drawer_layout" />
+    <include layout="@layout/my_schedule_filter_drawer" />
 
 </android.support.v4.widget.DrawerLayout>

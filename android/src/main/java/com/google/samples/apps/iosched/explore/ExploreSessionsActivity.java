@@ -46,7 +46,7 @@ import com.google.samples.apps.iosched.Config;
 import com.google.samples.apps.iosched.R;
 import com.google.samples.apps.iosched.model.TagMetadata;
 import com.google.samples.apps.iosched.myschedule.SessionsFilterAdapter;
-import com.google.samples.apps.iosched.myschedule.SessionsFilterAdapter.SessionFilterAdapterListener;
+import com.google.samples.apps.iosched.myschedule.SessionsFilterAdapter.OnFiltersChangedListener;
 import com.google.samples.apps.iosched.myschedule.TagFilterHolder;
 import com.google.samples.apps.iosched.provider.ScheduleContract;
 import com.google.samples.apps.iosched.settings.SettingsUtils;
@@ -108,6 +108,9 @@ public class ExploreSessionsActivity extends BaseActivity
 
     private ImageLoader mImageLoader;
 
+    private View mClearFilters;
+    private SessionsFilterAdapter mFilterAdapter;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -121,6 +124,14 @@ public class ExploreSessionsActivity extends BaseActivity
         mHeaderImage = (ImageView) findViewById(R.id.header_image);
         mTitle = (TextView) findViewById(R.id.title);
         mFiltersList = (RecyclerView) findViewById(R.id.filters);
+        mClearFilters = findViewById(R.id.clear_filters);
+        mClearFilters.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(final View v) {
+                // TODO reload
+                mFilterAdapter.clearAllFilters();
+            }
+        });
 
         mDrawerLayout.setDrawerShadow(R.drawable.drawer_shadow_flipped, GravityCompat.END);
 
@@ -128,10 +139,8 @@ public class ExploreSessionsActivity extends BaseActivity
                 .findFragmentById(R.id.explore_sessions_frag);
 
         if (savedInstanceState != null) {
-
             mTagFilterHolder = savedInstanceState.getParcelable(STATE_FILTER_TAGS);
             mCurrentUri = savedInstanceState.getParcelable(STATE_CURRENT_URI);
-
         } else if (getIntent() != null) {
             mCurrentUri = getIntent().getData();
         }
@@ -263,15 +272,15 @@ public class ExploreSessionsActivity extends BaseActivity
             }
         }
         reloadFragment();
-        SessionsFilterAdapter adapter = new SessionsFilterAdapter(this, mTagFilterHolder,
-                mTagMetadata);
-        adapter.setSessionFilterAdapterListener(new SessionFilterAdapterListener() {
+        mFilterAdapter = new SessionsFilterAdapter(this, mTagFilterHolder, mTagMetadata);
+        mFilterAdapter.setSessionFilterAdapterListener(new OnFiltersChangedListener() {
+
             @Override
-            public void onFiltersChanged(TagFilterHolder filterHolder) {
+            public void onFiltersChanged(final TagFilterHolder filterHolder) {
                 reloadFragment();
             }
         });
-        mFiltersList.setAdapter(adapter);
+        mFiltersList.setAdapter(mFilterAdapter);
     }
 
     /**
@@ -342,6 +351,9 @@ public class ExploreSessionsActivity extends BaseActivity
     }
 
     private void reloadFragment() {
+        mClearFilters.setVisibility(
+                mTagFilterHolder.hasAnyFilters() ? View.VISIBLE : View.INVISIBLE);
+
         // Build the tag URI
         Uri uri = mCurrentUri;
 

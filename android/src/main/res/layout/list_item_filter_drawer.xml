@@ -23,27 +23,20 @@ limitations under the License.
     android:gravity="center_vertical"
     android:orientation="horizontal"
     android:baselineAligned="false"
-    android:background="?android:selectableItemBackground">
+    android:background="?android:selectableItemBackground"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <TextView
-        android:id="@+id/text_view"
-        android:layout_width="wrap_content"
+        android:id="@+id/filter_label"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:gravity="center_vertical|start"
+        android:layout_weight="1"
         android:layout_marginStart="@dimen/padding_normal"
         android:layout_marginLeft="@dimen/padding_normal"
-        android:drawablePadding="@dimen/padding_normal"
         android:textAppearance="@style/TextAppearance.Filter"
-        android:drawableEnd="@drawable/ic_videocam_grey"
-        android:drawableRight="@drawable/ic_videocam_grey"
         android:ellipsize="end"
         android:maxLines="1"
-        android:text="@string/session_live_streamed"/>
-
-    <android.support.v4.widget.Space
-        android:layout_width="0dp"
-        android:layout_height="match_parent"
-        android:layout_weight="1"/>
+        tools:text="Develop"/>
 
     <CheckBox
         android:id="@+id/filter_checkbox"

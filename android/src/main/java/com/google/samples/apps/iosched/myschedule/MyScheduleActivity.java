@@ -41,6 +41,7 @@ import android.text.method.LinkMovementMethod;
 import android.text.util.Linkify;
 import android.view.Menu;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
@@ -53,6 +54,7 @@ import com.google.samples.apps.iosched.model.TagMetadata;
 import com.google.samples.apps.iosched.model.TagMetadata.Tag;
 import com.google.samples.apps.iosched.myschedule.MyScheduleModel.MyScheduleQueryEnum;
 import com.google.samples.apps.iosched.myschedule.MyScheduleModel.MyScheduleUserActionEnum;
+import com.google.samples.apps.iosched.myschedule.SessionsFilterAdapter.OnFiltersChangedListener;
 import com.google.samples.apps.iosched.navigation.NavigationModel;
 import com.google.samples.apps.iosched.session.SessionDetailActivity;
 import com.google.samples.apps.iosched.settings.SettingsUtils;
@@ -172,6 +174,8 @@ public class MyScheduleActivity extends BaseActivity implements
 
     private DrawerLayout mDrawerLayout;
     private RecyclerView mFiltersList;
+    private View mClearFilters;
+    private SessionsFilterAdapter mFilterAdapter;
     private TagMetadata mTagMetadata;
     private TagFilterHolder mTagFilterHolder;
 
@@ -384,6 +388,13 @@ public class MyScheduleActivity extends BaseActivity implements
     private void setupFilterDrawer() {
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         mFiltersList = (RecyclerView) findViewById(R.id.filters);
+        mClearFilters = findViewById(R.id.clear_filters);
+        mClearFilters.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mFilterAdapter.clearAllFilters();
+            }
+        });
     }
 
     @Override
@@ -650,10 +661,18 @@ public class MyScheduleActivity extends BaseActivity implements
 
         // TODO reloadFragments();
 
-        SessionsFilterAdapter adapter = new SessionsFilterAdapter(this, mTagFilterHolder,
-                mTagMetadata);
-        // TODO adapter.setSessionFilterAdapterListener();
-        mFiltersList.setAdapter(adapter);
+        mFilterAdapter = new SessionsFilterAdapter(this, mTagFilterHolder, mTagMetadata);
+        mFilterAdapter.setSessionFilterAdapterListener(new OnFiltersChangedListener() {
+            @Override
+            public void onFiltersChanged(TagFilterHolder filterHolder) {
+                updateScheduleFilters(filterHolder);
+            }
+        });
+        mFiltersList.setAdapter(mFilterAdapter);
     }
 
+    private void updateScheduleFilters(TagFilterHolder filterHolder) {
+        mClearFilters.setVisibility(filterHolder.hasAnyFilters() ? View.VISIBLE : View.INVISIBLE);
+        // TODO update fragments
+    }
 }

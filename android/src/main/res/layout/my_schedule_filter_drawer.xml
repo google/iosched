@@ -26,27 +26,49 @@ limitations under the License.
     android:orientation="vertical"
     tools:ignore="Overdraw">
 
-    <!-- Text View for the heading of the drawer. -->
-    <TextView
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="@dimen/padding_normal"
-        android:layout_marginStart="@dimen/padding_normal"
-        android:gravity="center_vertical|start"
+        android:background="@color/light_grey"
         android:minHeight="?actionBarSize"
-        android:text="@string/title_explore_sessions_filter"
-        android:textAppearance="@style/TextAppearance.Title" />
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:baselineAligned="false"
+        android:paddingLeft="@dimen/padding_normal"
+        android:paddingRight="@dimen/padding_normal">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/title_explore_sessions_filter"
+            android:textAppearance="@style/TextAppearance.Title" />
+
+        <Button
+            android:id="@+id/clear_filters"
+            style="@style/Widget.AppCompat.Button.Borderless.Colored"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical|end"
+            android:drawableEnd="@drawable/ic_clear_all"
+            android:drawablePadding="16dp"
+            android:drawableRight="@drawable/ic_clear_all"
+            android:text="@string/clear_all"
+            android:visibility="gone"
+            tools:visibility="visible" />
+    </LinearLayout>
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/filters"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
         android:clipToPadding="false"
         android:paddingBottom="@dimen/spacing_normal"
         android:paddingTop="@dimen/divider_padding_bottom"
         android:scrollbarStyle="insideOverlay"
         android:scrollbars="vertical"
         app:layoutManager="android.support.v7.widget.LinearLayoutManager"
-        tools:listitem="@layout/explore_sessions_list_item_alt_drawer" />
+        tools:listitem="@layout/list_item_filter_drawer" />
 
 </LinearLayout>
