@@ -30,11 +30,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.google.samples.apps.iosched.Config;
 import com.google.samples.apps.iosched.R;
 import com.google.samples.apps.iosched.archframework.UpdatableView;
 import com.google.samples.apps.iosched.model.TagMetadata;
 import com.google.samples.apps.iosched.myschedule.MyScheduleModel.MyScheduleQueryEnum;
 import com.google.samples.apps.iosched.myschedule.MyScheduleModel.MyScheduleUserActionEnum;
+import com.google.samples.apps.iosched.util.TimeUtils;
 
 
 /**
@@ -164,11 +166,43 @@ public class MyScheduleSingleDayFragment extends ListFragment
                 setListAdapter(mViewAdapter);
                 getListView().setRecyclerListener(mViewAdapter);
             }
+            if (isShowingCurrentDay() && getListView().getFirstVisiblePosition() == 0) {
+                // If we're showing the current day and we're still showing the first pos, move
+                // to the current time slot
+                moveToCurrentTimeSlot(false);
+            }
         } else {
             /**
              * Ignore the updated model. The data will be request when the Fragment becomes visible
              * again (in {@link #onResume()}.
              */
+        }
+    }
+
+    private void moveToCurrentTimeSlot(boolean animate) {
+        final long now = TimeUtils.getCurrentTime(getContext());
+        final int pos = mViewAdapter.findTimeHeaderPositionForTime(now);
+        if (pos >= 0) {
+            if (animate) {
+                getListView().smoothScrollToPosition(pos);
+            } else {
+                setSelection(pos);
+            }
+        }
+    }
+
+    private boolean isShowingCurrentDay() {
+        final long now = TimeUtils.getCurrentTime(getContext());
+        return mDayId > 0 && now >= Config.CONFERENCE_DAYS[mDayId - 1][0]
+                && now <= Config.CONFERENCE_DAYS[mDayId - 1][1];
+    }
+
+    public void resetListPosition() {
+        if (isShowingCurrentDay()) {
+            moveToCurrentTimeSlot(true);
+        } else {
+            // Else scroll to the first item
+            getListView().smoothScrollToPosition(0);
         }
     }
 
