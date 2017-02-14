@@ -61,7 +61,7 @@
         android:gravity="bottom"
         android:textColor="@color/body_text_2"
         android:textSize="@dimen/text_size_small"
-        tools:text="@string/explore_sessions_time_slot_title" />
+        tools:text="12:00 pm" />
 
     <TextView
         android:id="@+id/slot_room"

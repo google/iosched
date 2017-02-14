@@ -37,7 +37,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -53,7 +52,6 @@ import com.google.samples.apps.iosched.ui.SearchActivity;
 import com.google.samples.apps.iosched.util.AnalyticsHelper;
 import com.google.samples.apps.iosched.util.ImageLoader;
 import com.google.samples.apps.iosched.util.TagUtils;
-import com.google.samples.apps.iosched.util.TimeUtils;
 import com.google.samples.apps.iosched.util.UIUtils;
 
 import java.util.ArrayList;
@@ -89,10 +87,6 @@ public class ExploreSessionsActivity extends BaseActivity
 
     private static final int TAG_METADATA_TOKEN = 0x8;
 
-    private static final int MODE_TIME_FIT = 1;
-
-    private static final int MODE_EXPLORE = 2;
-
     private TagMetadata mTagMetadata;
 
     private TagFilterHolder mTagFilterHolder;
@@ -104,8 +98,6 @@ public class ExploreSessionsActivity extends BaseActivity
 
     private ExploreSessionsFragment mFragment;
 
-    private int mMode;
-
     private RecyclerView mFiltersList;
 
     private DrawerLayout mDrawerLayout;
@@ -115,10 +107,6 @@ public class ExploreSessionsActivity extends BaseActivity
     private ImageView mHeaderImage;
 
     private TextView mTitle;
-
-    private View mTimeSlotLayout;
-
-    private View mTimeSlotDivider;
 
     private ImageLoader mImageLoader;
 
@@ -135,10 +123,6 @@ public class ExploreSessionsActivity extends BaseActivity
         mHeaderImage = (ImageView) findViewById(R.id.header_image);
         mTitle = (TextView) findViewById(R.id.title);
         mFiltersList = (RecyclerView) findViewById(R.id.filters);
-        mTimeSlotLayout = findViewById(R.id.timeslot_view);
-        mTimeSlotDivider = findViewById(R.id.timeslot_divider);
-        TextView timeSlotTextView = (TextView) findViewById(R.id.timeslot);
-        ImageButton dismissTimeSlotButton = (ImageButton) findViewById(R.id.close_timeslot);
 
         mDrawerLayout.setDrawerShadow(R.drawable.drawer_shadow_flipped, GravityCompat.END);
 
@@ -152,36 +136,6 @@ public class ExploreSessionsActivity extends BaseActivity
 
         } else if (getIntent() != null) {
             mCurrentUri = getIntent().getData();
-        }
-
-        // Build the tag URI
-        long[] interval = ScheduleContract.Sessions.getInterval(mCurrentUri);
-        if (interval != null) {
-            mMode = MODE_TIME_FIT;
-
-            String title = getString(R.string.explore_sessions_time_slot_title,
-                    TimeUtils.getDayName(this,
-                            UIUtils.startTimeToDayIndex(interval[0])),
-                    UIUtils.formatTime(interval[0], this));
-            mTitle.setText(title);
-            mHeaderImage.setScaleType(ImageView.ScaleType.FIT_CENTER);
-            mHeaderImage.setImageResource(R.drawable.ic_hash_io_16_monochrome);
-
-            mTimeSlotLayout.setVisibility(View.VISIBLE);
-            mTimeSlotDivider.setVisibility(View.VISIBLE);
-            timeSlotTextView.setText(title);
-            dismissTimeSlotButton.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    mTimeSlotLayout.setVisibility(View.GONE);
-                    mTimeSlotDivider.setVisibility(View.GONE);
-                    mMode = MODE_EXPLORE;
-                    mCurrentUri = null;
-                    reloadFragment();
-                }
-            });
-        } else {
-            mMode = MODE_EXPLORE;
         }
 
         // Add the back button to the toolbar.
@@ -321,7 +275,7 @@ public class ExploreSessionsActivity extends BaseActivity
      * header image; otherwise a generic title and image is shown.
      */
     private void setHeader() {
-        if (mMode == MODE_EXPLORE && mTagMetadata != null) {
+        if (mTagMetadata != null) {
             String title = null;
             String headerImage = null;
             @ColorInt int trackColor = Color.TRANSPARENT;

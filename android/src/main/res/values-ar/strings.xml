@@ -586,12 +586,6 @@
   <!-- Title of the Explore Sessions side panel containing all the filters -->
   <string name="title_explore_sessions_filter">تصفية</string>
 
-  <!-- Show Day and start time of a session as the title when viewing browsing sessions
-       (ExploreSessionActivity) from MySchedule. -->
-    <string name="explore_sessions_time_slot_title">
-    <xliff:g example="May 18" id="day">%1$s</xliff:g>، <xliff:g example="2:30PM" id="start_time">%2$s</xliff:g>
-  </string>
-
   <!-- BEGIN Explore Message Card User Messages -->
   <string description="This message is displayed on the Explore I/O screen to ask users whether         they would like to opt in to receive notifications for the sessions the have added to their schedule." name="explore_io_notifications_ask_opt_in">&lt;b&gt;إخطارات الجلسة&lt;/b&gt;&lt;br/&gt; هل تود استلام إخطارات للجلسات بجدولك الزمني؟</string>
 

@@ -37,58 +37,6 @@ limitations under the License.
         android:text="@string/title_explore_sessions_filter"
         android:textAppearance="@style/TextAppearance.Title" />
 
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/divider_height"
-        android:background="@color/divider" />
-
-    <!-- Layout for the time slot when the activity is called with a particular
-        conference time interval -->
-    <LinearLayout
-        android:id="@+id/timeslot_view"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/divider_padding_bottom"
-        android:baselineAligned="false"
-        android:clickable="true"
-        android:gravity="center_vertical"
-        android:minHeight="?android:listPreferredItemHeightSmall"
-        android:orientation="horizontal"
-        android:visibility="gone"
-        tools:visibility="visible">
-
-        <TextView
-            android:id="@+id/timeslot"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/padding_normal"
-            android:layout_marginStart="@dimen/padding_normal"
-            android:layout_weight="1"
-            android:ellipsize="end"
-            android:maxLines="1"
-            android:textAppearance="@style/TextAppearance.Filter"
-            tools:text="@string/explore_sessions_time_slot_title" />
-
-        <ImageButton
-            android:id="@+id/close_timeslot"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="@dimen/padding_normal"
-            android:layout_marginStart="@dimen/padding_normal"
-            android:background="?imageItemBackground"
-            android:contentDescription="@string/cancel"
-            app:srcCompat="@drawable/ic_clear_timeslot_filter" />
-
-    </LinearLayout>
-
-    <View
-        android:id="@+id/timeslot_divider"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/divider_height_inc_padding_top_only"
-        android:background="@drawable/inset_divider_top_only"
-        android:visibility="gone"
-        tools:visibility="visible" />
-
     <android.support.v7.widget.RecyclerView
         android:id="@+id/filters"
         android:layout_width="match_parent"
