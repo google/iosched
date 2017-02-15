@@ -69,12 +69,11 @@
                             android:layout_marginStart="@dimen/keyline_1"
                             tools:text="Day 0" />
 
-                        <com.google.samples.apps.iosched.myschedule.MyScheduleSingleDayNoScrollView
+                        <android.support.v7.widget.RecyclerView
                             android:id="@+id/my_schedule_zeroth_day"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_marginBottom="24dp"
-                            android:orientation="vertical" />
+                            android:layout_marginBottom="24dp" />
 
                         <TextView
                             android:id="@+id/day_label_first_day"
@@ -86,11 +85,10 @@
                             android:layout_marginStart="@dimen/keyline_1"
                             tools:text="Day 1" />
 
-                        <com.google.samples.apps.iosched.myschedule.MyScheduleSingleDayNoScrollView
+                        <android.support.v7.widget.RecyclerView
                             android:id="@+id/my_schedule_first_day"
                             android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:orientation="vertical" />
+                            android:layout_height="wrap_content" />
                     </LinearLayout>
 
                     <!-- Day Two -->
@@ -112,11 +110,10 @@
                             android:layout_marginStart="@dimen/keyline_1"
                             tools:text="Day 2" />
 
-                        <com.google.samples.apps.iosched.myschedule.MyScheduleSingleDayNoScrollView
+                        <android.support.v7.widget.RecyclerView
                             android:id="@+id/my_schedule_second_day"
                             android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:orientation="vertical" />
+                            android:layout_height="wrap_content" />
                     </LinearLayout>
 
                     <!-- Day Three -->
@@ -138,11 +135,10 @@
                             android:layout_marginStart="@dimen/keyline_1"
                             tools:text="Day 3" />
 
-                        <com.google.samples.apps.iosched.myschedule.MyScheduleSingleDayNoScrollView
+                        <android.support.v7.widget.RecyclerView
                             android:id="@+id/my_schedule_third_day"
                             android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:orientation="vertical" />
+                            android:layout_height="wrap_content" />
                     </LinearLayout>
                 </LinearLayout>
             </LinearLayout>

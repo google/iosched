@@ -17,15 +17,17 @@
 package com.google.samples.apps.iosched.myschedule;
 
 import android.app.Activity;
-import android.content.Context;
 import android.content.res.TypedArray;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.ListFragment;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.Loader;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -38,22 +40,18 @@ import com.google.samples.apps.iosched.myschedule.MyScheduleModel.MyScheduleQuer
 import com.google.samples.apps.iosched.myschedule.MyScheduleModel.MyScheduleUserActionEnum;
 import com.google.samples.apps.iosched.util.TimeUtils;
 
-
 /**
  * This is used by the {@link android.support.v4.view.ViewPager} used by the narrow layout in {@link
  * MyScheduleActivity}. It is a {@link ListFragment} that shows schedule items for a day, using
  * {@link MyScheduleDayAdapter} as its data source.
  */
-public class MyScheduleSingleDayFragment extends ListFragment
+public class MyScheduleSingleDayFragment extends Fragment
         implements UpdatableView<MyScheduleModel, MyScheduleQueryEnum, MyScheduleUserActionEnum>,
         LoaderManager.LoaderCallbacks<Cursor> {
 
     private static final int TAG_METADATA_TOKEN = 0x8;
 
-    private String mContentDescription = null;
     private TagMetadata mTagMetadata;
-
-    private View mRoot = null;
 
     /**
      * This is 1 for the first day of the conference, 2 for the second, and so on, and {@link
@@ -61,6 +59,7 @@ public class MyScheduleSingleDayFragment extends ListFragment
      */
     private int mDayId = 1;
 
+    private RecyclerView mRecyclerView;
     private MyScheduleDayAdapter mViewAdapter;
 
     private UserActionListener<MyScheduleUserActionEnum> mListener;
@@ -68,25 +67,23 @@ public class MyScheduleSingleDayFragment extends ListFragment
     @Override
     public void onCreate(@Nullable final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setRetainInstance(true);
+
         getLoaderManager().initLoader(TAG_METADATA_TOKEN, null, this);
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState) {
-        mRoot = inflater.inflate(R.layout.my_schedule_singleday_frag, container, false);
-        if (mContentDescription != null) {
-            mRoot.setContentDescription(mContentDescription);
-        }
-        setRetainInstance(true);
-        return mRoot;
+        View view = inflater.inflate(R.layout.my_schedule_singleday_frag, container, false);
+        mRecyclerView = (RecyclerView) view.findViewById(android.R.id.list);
+        mRecyclerView.setLayoutManager(new LinearLayoutManager(container.getContext()));
+        mRecyclerView.setHasFixedSize(true);
+        return view;
     }
 
-    public void setContentDescription(String desc) {
-        mContentDescription = desc;
-        if (mRoot != null) {
-            mRoot.setContentDescription(mContentDescription);
-        }
+    public RecyclerView getRecyclerView() {
+        return mRecyclerView;
     }
 
     @Override
@@ -108,8 +105,7 @@ public class MyScheduleSingleDayFragment extends ListFragment
         TypedArray ids = getResources().obtainTypedArray(R.array.myschedule_listview_ids);
         int listViewId = ids.getResourceId(mDayId, 0);
         ids.recycle();
-        getListView().setId(listViewId);
-
+        mRecyclerView.setId(listViewId);
     }
 
     @Override
@@ -130,8 +126,6 @@ public class MyScheduleSingleDayFragment extends ListFragment
             case SCHEDULE:
                 updateSchedule(model);
                 break;
-            default:
-                break;
         }
     }
 
@@ -151,8 +145,6 @@ public class MyScheduleSingleDayFragment extends ListFragment
                 break;
             case FEEDBACK:
                 break;
-            default:
-                break;
         }
     }
 
@@ -162,20 +154,18 @@ public class MyScheduleSingleDayFragment extends ListFragment
                 mViewAdapter = new MyScheduleDayAdapter(getActivity(), mListener, mTagMetadata);
             }
             mViewAdapter.updateItems(model.getConferenceDataForDay(mDayId));
-            if (getListAdapter() == null) {
-                setListAdapter(mViewAdapter);
-                getListView().setRecyclerListener(mViewAdapter);
+            if (mRecyclerView.getAdapter() == null) {
+                mRecyclerView.setAdapter(mViewAdapter);
             }
-            if (isShowingCurrentDay() && getListView().getFirstVisiblePosition() == 0) {
-                // If we're showing the current day and we're still showing the first pos, move
-                // to the current time slot
-                moveToCurrentTimeSlot(false);
+
+            if (isShowingCurrentDay()) {
+                LinearLayoutManager lm = (LinearLayoutManager) mRecyclerView.getLayoutManager();
+                if (lm.findFirstVisibleItemPosition() == 0) {
+                    // If we're showing the current day and we're still showing the first pos, move
+                    // to the current time slot
+                    moveToCurrentTimeSlot(false);
+                }
             }
-        } else {
-            /**
-             * Ignore the updated model. The data will be request when the Fragment becomes visible
-             * again (in {@link #onResume()}.
-             */
         }
     }
 
@@ -184,9 +174,9 @@ public class MyScheduleSingleDayFragment extends ListFragment
         final int pos = mViewAdapter.findTimeHeaderPositionForTime(now);
         if (pos >= 0) {
             if (animate) {
-                getListView().smoothScrollToPosition(pos);
+                mRecyclerView.smoothScrollToPosition(pos);
             } else {
-                setSelection(pos);
+                mRecyclerView.scrollToPosition(pos);
             }
         }
     }
@@ -202,7 +192,7 @@ public class MyScheduleSingleDayFragment extends ListFragment
             moveToCurrentTimeSlot(true);
         } else {
             // Else scroll to the first item
-            getListView().smoothScrollToPosition(0);
+            mRecyclerView.smoothScrollToPosition(0);
         }
     }
 
@@ -215,11 +205,6 @@ public class MyScheduleSingleDayFragment extends ListFragment
     @Override
     public void addListener(UserActionListener<MyScheduleUserActionEnum> listener) {
         mListener = listener;
-    }
-
-    @Override
-    public Context getContext() {
-        return getActivity();
     }
 
     interface Listener {

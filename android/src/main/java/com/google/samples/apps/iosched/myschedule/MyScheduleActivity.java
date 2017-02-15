@@ -73,7 +73,7 @@ import java.util.Set;
  * <p/>
  * Depending on the device, this Activity uses either a {@link ViewPager} with a {@link
  * MyScheduleSingleDayFragment} for its page (the "narrow" layout) or a {@link
- * MyScheduleAllDaysFragment}, which uses a {@link MyScheduleSingleDayNoScrollView} for each day.
+ * MyScheduleAllDaysFragment}, which uses a {@link RecyclerView} for each day.
  * Each day data is backed by a {@link MyScheduleDayAdapter} (the "wide" layout).
  * <p/>
  * If the user attends the conference, all time slots that have sessions are shown, with a button to
@@ -503,7 +503,7 @@ public class MyScheduleActivity extends BaseActivity implements
                 }
             }
 
-            return ViewCompat.canScrollVertically(fragment.getListView(), -1);
+            return ViewCompat.canScrollVertically(fragment.getRecyclerView(), -1);
         }
 
         return false;
