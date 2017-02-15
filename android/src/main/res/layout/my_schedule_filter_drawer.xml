@@ -30,10 +30,10 @@ limitations under the License.
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/light_grey"
+        android:baselineAligned="false"
+        android:gravity="center_vertical"
         android:minHeight="?actionBarSize"
         android:orientation="horizontal"
-        android:gravity="center_vertical"
-        android:baselineAligned="false"
         android:paddingLeft="@dimen/padding_normal"
         android:paddingRight="@dimen/padding_normal">
 
@@ -50,11 +50,10 @@ limitations under the License.
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical|end"
-            android:drawableEnd="@drawable/ic_clear_all"
             android:drawablePadding="16dp"
-            android:drawableRight="@drawable/ic_clear_all"
             android:text="@string/clear_all"
             android:visibility="gone"
+            tools:drawableEnd="@drawable/ic_clear_all"
             tools:visibility="visible" />
     </LinearLayout>
 

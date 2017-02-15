@@ -34,6 +34,8 @@ import android.support.v4.content.Loader;
 import android.support.v4.view.ViewCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
+import android.support.v4.widget.TextViewCompat;
+import android.support.v7.content.res.AppCompatResources;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.RecyclerView;
 import android.text.SpannableString;
@@ -43,6 +45,7 @@ import android.text.util.Linkify;
 import android.view.Menu;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.widget.Button;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
@@ -175,7 +178,7 @@ public class MyScheduleActivity extends BaseActivity implements
 
     private DrawerLayout mDrawerLayout;
     private RecyclerView mFiltersList;
-    private View mClearFilters;
+    private Button mClearFilters;
     private SessionsFilterAdapter mFilterAdapter;
     private TagMetadata mTagMetadata;
     private TagFilterHolder mTagFilterHolder;
@@ -405,13 +408,15 @@ public class MyScheduleActivity extends BaseActivity implements
         mFiltersList = (RecyclerView) findViewById(R.id.filters);
         mFiltersList.addItemDecoration(new DividerItemDecoration(this,
                 DividerItemDecoration.VERTICAL));
-        mClearFilters = findViewById(R.id.clear_filters);
+        mClearFilters = (Button) findViewById(R.id.clear_filters);
         mClearFilters.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
                 mFilterAdapter.clearAllFilters();
             }
         });
+        TextViewCompat.setCompoundDrawablesRelativeWithIntrinsicBounds(mClearFilters, null, null,
+                AppCompatResources.getDrawable(this, R.drawable.ic_clear_all), null);
     }
 
     @Override
