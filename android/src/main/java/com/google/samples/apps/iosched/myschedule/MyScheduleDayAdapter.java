@@ -483,4 +483,16 @@ public class MyScheduleDayAdapter implements ListAdapter, AbsListView.RecyclerLi
         }
     }
 
+    public int findTimeHeaderPositionForTime(final long time) {
+        for (int j = mItems.size() - 1; j >= 0; j--) {
+            ScheduleItem item = mItems.get(j);
+            // Keep going backwards until we find a time seperator which has a start time before
+            // now
+            if (item instanceof TimeSeperatorItem && ((TimeSeperatorItem) item).startTime < time) {
+                return j;
+            }
+        }
+        return -1;
+    }
+
 }

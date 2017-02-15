@@ -380,6 +380,20 @@ public class MyScheduleActivity extends BaseActivity implements
         mTabLayout = (TabLayout) findViewById(R.id.sliding_tabs);
         mTabLayout.setupWithViewPager(mViewPager);
 
+        // Add a listener for any reselection events
+        mTabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+            @Override
+            public void onTabSelected(final TabLayout.Tab tab) {}
+
+            @Override
+            public void onTabUnselected(final TabLayout.Tab tab) {}
+
+            @Override
+            public void onTabReselected(final TabLayout.Tab tab) {
+                mViewPagerAdapter.getFragments()[tab.getPosition()].resetListPosition();
+            }
+        });
+
         mViewPager.setPageMargin(getResources()
                 .getDimensionPixelSize(R.dimen.my_schedule_page_margin));
         mViewPager.setPageMarginDrawable(R.drawable.page_margin);
