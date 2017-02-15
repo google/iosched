@@ -15,13 +15,12 @@
 
 <TextView
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:paddingTop="4dp"
-    android:paddingBottom="4dp"
-    android:paddingLeft="8dp"
-    android:paddingRight="8dp"
-    android:layout_marginRight="@dimen/spacing_micro"
     android:layout_marginEnd="@dimen/spacing_micro"
+    android:layout_marginRight="@dimen/spacing_micro"
     android:background="@drawable/tag_session_background"
-    android:textAppearance="@style/TextAppearance.AppCompat.Caption" />
+    android:textAppearance="@style/TextAppearance.AppCompat.Caption"
+    tools:backgroundTint="@color/io17_accent_yellow"
+    tools:text="Android" />

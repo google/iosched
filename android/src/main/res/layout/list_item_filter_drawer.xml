@@ -17,32 +17,38 @@ limitations under the License.
 
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:minHeight="?android:listPreferredItemHeightSmall"
-    android:gravity="center_vertical"
-    android:orientation="horizontal"
-    android:baselineAligned="false"
     android:background="?android:selectableItemBackground"
-    xmlns:tools="http://schemas.android.com/tools">
+    android:baselineAligned="false"
+    android:gravity="center_vertical"
+    android:minHeight="?android:listPreferredItemHeightSmall"
+    android:orientation="horizontal">
 
     <TextView
         android:id="@+id/filter_label"
-        android:layout_width="0dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:layout_marginStart="@dimen/padding_normal"
         android:layout_marginLeft="@dimen/padding_normal"
-        android:textAppearance="@style/TextAppearance.Filter"
+        android:layout_marginStart="@dimen/padding_normal"
         android:ellipsize="end"
         android:maxLines="1"
-        tools:text="Develop"/>
+        android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
+        tools:background="@drawable/tag_session_background"
+        tools:backgroundTint="@color/io17_accent_yellow"
+        tools:text="Android" />
+
+    <android.support.v4.widget.Space
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_weight="1" />
 
     <CheckBox
         android:id="@+id/filter_checkbox"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/padding_normal"
-        android:layout_marginEnd="@dimen/padding_normal" />
+        android:layout_marginEnd="@dimen/padding_normal"
+        android:layout_marginStart="@dimen/padding_normal" />
 
 </LinearLayout>

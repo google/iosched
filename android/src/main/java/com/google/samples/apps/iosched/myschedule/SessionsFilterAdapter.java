@@ -17,8 +17,10 @@ import static com.google.samples.apps.iosched.util.LogUtils.LOGE;
 import static com.google.samples.apps.iosched.util.LogUtils.makeLogTag;
 
 import android.content.Context;
+import android.content.res.ColorStateList;
 import android.content.res.Resources;
-import android.support.v7.widget.RecyclerView;
+import android.support.v4.view.ViewCompat;
+import android.support.v7.content.res.AppCompatResources;
 import android.support.v7.widget.RecyclerView.Adapter;
 import android.support.v7.widget.RecyclerView.ViewHolder;
 import android.view.LayoutInflater;
@@ -45,6 +47,8 @@ public class SessionsFilterAdapter extends Adapter<ViewHolder> {
     private static final int TYPE_TAG_FILTER = 0;
     private static final int TYPE_STATIC_FILTER = 1;
     private static final int TYPE_TOPICS_HEADER = 2;
+
+    private static final Object PAYLOAD_CLEAR_CHECK = new Object();
 
     private final List<Object> mItems;
     private TagFilterHolder mTagFilterHolder;
@@ -90,7 +94,7 @@ public class SessionsFilterAdapter extends Adapter<ViewHolder> {
 
     public void clearAllFilters() {
         mTagFilterHolder.clear();
-        notifyItemRangeChanged(0, getItemCount());
+        notifyItemRangeChanged(0, getItemCount(), PAYLOAD_CLEAR_CHECK);
         dispatchFiltersChanged();
     }
 
@@ -113,7 +117,7 @@ public class SessionsFilterAdapter extends Adapter<ViewHolder> {
     }
 
     @Override
-    public void onBindViewHolder(final RecyclerView.ViewHolder holder, final int position) {
+    public void onBindViewHolder(final ViewHolder holder, final int position) {
         switch (getItemViewType(position)) {
             case TYPE_TAG_FILTER:
                 TagFilterViewHolder tfvh = (TagFilterViewHolder) holder;
@@ -126,6 +130,17 @@ public class SessionsFilterAdapter extends Adapter<ViewHolder> {
                         isStaticFilterChecked(position));
                 break;
         }
+    }
+
+    @Override
+    public void onBindViewHolder(ViewHolder holder, int position, List<Object> payloads) {
+        if (payloads.contains(PAYLOAD_CLEAR_CHECK)) {
+            if (holder instanceof FilterViewHolder) {
+                ((FilterViewHolder) holder).setChecked(false);
+            }
+            return;
+        }
+        super.onBindViewHolder(holder, position, payloads);
     }
 
     @Override
@@ -214,6 +229,10 @@ public class SessionsFilterAdapter extends Adapter<ViewHolder> {
 
         protected void onBind(CharSequence label, boolean checked) {
             mLabel.setText(label);
+            setChecked(checked);
+        }
+
+        protected final void setChecked(boolean checked) {
             // avoid dispatching changes when recycling views
             mCheckbox.setOnCheckedChangeListener(null);
             mCheckbox.setChecked(checked);
@@ -248,6 +267,11 @@ public class SessionsFilterAdapter extends Adapter<ViewHolder> {
         void bindFilter(Tag filter, boolean checked) {
             mTagFilter = filter;
             onBind(filter.getName(), checked);
+            if (mLabel.getBackground() == null) {
+                mLabel.setBackground(AppCompatResources.getDrawable(mLabel.getContext(),
+                        R.drawable.tag_session_background));
+            }
+            ViewCompat.setBackgroundTintList(mLabel, ColorStateList.valueOf(filter.getColor()));
         }
 
         @Override

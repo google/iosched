@@ -65,7 +65,6 @@ limitations under the License.
         android:layout_weight="1"
         android:clipToPadding="false"
         android:paddingBottom="@dimen/spacing_normal"
-        android:paddingTop="@dimen/divider_padding_bottom"
         android:scrollbarStyle="insideOverlay"
         android:scrollbars="vertical"
         app:layoutManager="android.support.v7.widget.LinearLayoutManager"

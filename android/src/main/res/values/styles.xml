@@ -47,6 +47,8 @@
         <item name="android:borderlessButtonStyle">@style/Widget.AppCompat.Button.Borderless</item>
 
         <item name="preferenceTheme">@style/SettingsPreferenceThemeOverlay</item>
+
+        <item name="android:listDivider">@drawable/list_divider</item>
     </style>
 
     <style name="Theme.IOSched" parent="Theme.IOSched.Base" />

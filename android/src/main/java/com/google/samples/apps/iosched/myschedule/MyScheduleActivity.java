@@ -34,6 +34,7 @@ import android.support.v4.content.Loader;
 import android.support.v4.view.ViewCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
+import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.RecyclerView;
 import android.text.SpannableString;
 import android.text.TextUtils;
@@ -402,6 +403,8 @@ public class MyScheduleActivity extends BaseActivity implements
     private void setupFilterDrawer() {
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         mFiltersList = (RecyclerView) findViewById(R.id.filters);
+        mFiltersList.addItemDecoration(new DividerItemDecoration(this,
+                DividerItemDecoration.VERTICAL));
         mClearFilters = findViewById(R.id.clear_filters);
         mClearFilters.setOnClickListener(new OnClickListener() {
             @Override
