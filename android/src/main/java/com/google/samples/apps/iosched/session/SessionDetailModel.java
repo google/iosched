@@ -634,15 +634,11 @@ public class SessionDetailModel extends ModelWithLoaderManager<SessionDetailQuer
             case STAR:
                 mInSchedule = true;
                 mSessionsHelper.setSessionStarred(mSessionUri, true, null);
-                amendCalendarAndSetUpNotificationIfRequired();
-                sendAnalyticsEventForStarUnstarSession(true);
                 callback.onModelUpdated(this, action);
                 break;
             case UNSTAR:
                 mInSchedule = false;
                 mSessionsHelper.setSessionStarred(mSessionUri, false, null);
-                amendCalendarAndSetUpNotificationIfRequired();
-                sendAnalyticsEventForStarUnstarSession(false);
                 callback.onModelUpdated(this, action);
                 break;
             case SHOW_MAP:
@@ -674,77 +670,9 @@ public class SessionDetailModel extends ModelWithLoaderManager<SessionDetailQuer
         }
     }
 
-    private void amendCalendarAndSetUpNotificationIfRequired() {
-        if (!hasSessionStarted()) {
-            Intent intent;
-            if (mInSchedule) {
-                intent = new Intent(SessionCalendarService.ACTION_ADD_SESSION_CALENDAR,
-                        mSessionUri);
-                intent.putExtra(SessionCalendarService.EXTRA_SESSION_START,
-                        mSessionStart);
-                intent.putExtra(SessionCalendarService.EXTRA_SESSION_END,
-                        mSessionEnd);
-                intent.putExtra(SessionCalendarService.EXTRA_SESSION_ROOM, mRoomName);
-                intent.putExtra(SessionCalendarService.EXTRA_SESSION_TITLE, mTitle);
-            } else {
-                intent = new Intent(SessionCalendarService.ACTION_REMOVE_SESSION_CALENDAR,
-                        mSessionUri);
-                intent.putExtra(SessionCalendarService.EXTRA_SESSION_START,
-                        mSessionStart);
-                intent.putExtra(SessionCalendarService.EXTRA_SESSION_END,
-                        mSessionEnd);
-                intent.putExtra(SessionCalendarService.EXTRA_SESSION_TITLE, mTitle);
-            }
-            intent.setClass(mContext, SessionCalendarService.class);
-            mContext.startService(intent);
-
-            if (mInSchedule) {
-                setUpNotification();
-            }
-        }
-    }
-
-    private void setUpNotification() {
-        Intent scheduleIntent;
-
-        // Schedule session notification
-        if (!hasSessionStarted()) {
-            LOGD(TAG, "Scheduling notification about session start.");
-            scheduleIntent = new Intent(
-                    SessionAlarmService.ACTION_SCHEDULE_STARRED_BLOCK,
-                    null, mContext, SessionAlarmService.class);
-            scheduleIntent.putExtra(SessionAlarmService.EXTRA_SESSION_START, mSessionStart);
-            scheduleIntent.putExtra(SessionAlarmService.EXTRA_SESSION_END, mSessionEnd);
-            mContext.startService(scheduleIntent);
-        } else {
-            LOGD(TAG, "Not scheduling notification about session start, too late.");
-        }
-
-        // Schedule feedback notification
-        if (!hasSessionEnded()) {
-            LOGD(TAG, "Scheduling notification about session feedback.");
-            scheduleIntent = new Intent(
-                    SessionAlarmService.ACTION_SCHEDULE_FEEDBACK_NOTIFICATION,
-                    null, mContext, SessionAlarmService.class);
-            scheduleIntent.putExtra(SessionAlarmService.EXTRA_SESSION_ID, mSessionId);
-            scheduleIntent.putExtra(SessionAlarmService.EXTRA_SESSION_START, mSessionStart);
-            scheduleIntent.putExtra(SessionAlarmService.EXTRA_SESSION_END, mSessionEnd);
-            scheduleIntent.putExtra(SessionAlarmService.EXTRA_SESSION_TITLE, mTitle);
-            mContext.startService(scheduleIntent);
-        } else {
-            LOGD(TAG, "Not scheduling feedback notification, too late.");
-        }
-    }
-
     @VisibleForTesting
     public void sendAnalyticsEvent(String category, String action, String label) {
         AnalyticsHelper.sendEvent(category, action, label);
-    }
-
-    private void sendAnalyticsEventForStarUnstarSession(boolean starred) {
-        // ANALYTICS EVENT: Add or remove a session from My Schedule (starred vs unstarred)
-        // Contains: Session title, whether it was added or removed (starred or unstarred)
-        sendAnalyticsEvent("Session", starred ? "Starred" : "Unstarred", mTitle);
     }
 
     @Override

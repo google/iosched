@@ -36,6 +36,7 @@ import com.google.samples.apps.iosched.provider.ScheduleContract;
 import com.google.samples.apps.iosched.settings.SettingsUtils;
 import com.google.samples.apps.iosched.util.AnalyticsHelper;
 import com.google.samples.apps.iosched.util.ParserUtils;
+import com.google.samples.apps.iosched.util.SessionsHelper;
 import com.google.samples.apps.iosched.util.ThrottledContentObserver;
 
 import java.util.ArrayList;
@@ -78,9 +79,12 @@ public class MyScheduleModel implements Model<MyScheduleModel.MyScheduleQueryEnu
     protected HashMap<Integer, List<ScheduleItem>> mScheduleData = new HashMap<>();
 
     // The ScheduleHelper is responsible for feeding data in a format suitable to the Adapter.
-    private ScheduleHelper mScheduleHelper;
+    private final ScheduleHelper mScheduleHelper;
 
-    private Context mContext;
+    // The SessionsHelper is responsible for starring/unstarring sessions
+    private final SessionsHelper mSessionsHelper;
+
+    private final Context mContext;
 
     protected DataQueryCallback<MyScheduleQueryEnum> mScheduleDataQueryCallback;
 
@@ -88,9 +92,12 @@ public class MyScheduleModel implements Model<MyScheduleModel.MyScheduleQueryEnu
      * @param scheduleHelper
      * @param context        Should be an Activity context
      */
-    public MyScheduleModel(ScheduleHelper scheduleHelper, Context context) {
+    public MyScheduleModel(@NonNull ScheduleHelper scheduleHelper,
+            @NonNull SessionsHelper sessionsHelper,
+            @NonNull Context context) {
         mContext = context;
         mScheduleHelper = scheduleHelper;
+        mSessionsHelper = sessionsHelper;
     }
 
     /**
@@ -213,24 +220,7 @@ public class MyScheduleModel implements Model<MyScheduleModel.MyScheduleQueryEnu
             final UserActionCallback<MyScheduleUserActionEnum> callback) {
         switch (action) {
             case RELOAD_DATA:
-                DataQueryCallback<MyScheduleQueryEnum> queryCallback =
-                        new DataQueryCallback<MyScheduleQueryEnum>() {
-                    @Override
-                    public void onModelUpdated(Model<MyScheduleQueryEnum, ?> model,
-                            MyScheduleQueryEnum query) {
-                        callback.onModelUpdated(MyScheduleModel.this, action);
-                    }
-
-                    @Override
-                    public void onError(MyScheduleQueryEnum query) {
-                        callback.onError(action);
-                    }
-                };
-
-                if (mScheduleDataQueryCallback == null) {
-                    mScheduleDataQueryCallback = queryCallback;
-                }
-                updateData(queryCallback);
+                requestScheduleUpdateData(action, callback);
                 break;
             case SESSION_SLOT:
                 if (args == null || !args.containsKey(SESSION_URL_KEY)) {
@@ -264,9 +254,42 @@ public class MyScheduleModel implements Model<MyScheduleModel.MyScheduleQueryEnu
                 // We use cached data
                 callback.onModelUpdated(this, action);
                 break;
+            case SESSION_STAR:
+            case SESSION_UNSTAR:
+                if (args == null || !args.containsKey(SESSION_ID_KEY)) {
+                    callback.onError(action);
+                } else {
+                    final String id = args.getString(SESSION_ID_KEY);
+                    mSessionsHelper.setSessionStarred(
+                            ScheduleContract.Sessions.buildSessionUri(id),
+                            action == MyScheduleUserActionEnum.SESSION_STAR, null);
+                    requestScheduleUpdateData(action, callback);
+                }
+                break;
             default:
                 break;
         }
+    }
+
+    private void requestScheduleUpdateData(final MyScheduleUserActionEnum action,
+            final UserActionCallback<MyScheduleUserActionEnum> callback) {
+        final DataQueryCallback<MyScheduleQueryEnum> queryCallback =
+                new DataQueryCallback<MyScheduleQueryEnum>() {
+                    @Override
+                    public void onModelUpdated(Model<MyScheduleQueryEnum, ?> model,
+                            MyScheduleQueryEnum query) {
+                        callback.onModelUpdated(MyScheduleModel.this, action);
+                    }
+
+                    @Override
+                    public void onError(MyScheduleQueryEnum query) {
+                        callback.onError(action);
+                    }
+                };
+        if (mScheduleDataQueryCallback == null) {
+            mScheduleDataQueryCallback = queryCallback;
+        }
+        updateData(queryCallback);
     }
 
     @Override
@@ -321,7 +344,7 @@ public class MyScheduleModel implements Model<MyScheduleModel.MyScheduleQueryEnu
     }
 
     /**
-     * This updates the cached data for the day with id {@code dayId} with {@code scheduleItems}
+     * This updates the cached data for the day with mId {@code dayId} with {@code scheduleItems}
      * then notifies the {@code callback}.It is protected and not private, to allow us to extend
      * this class and use mock data in UI tests (refer {@code StubMyScheduleModel} in {@code
      * androidTest}).
@@ -364,9 +387,11 @@ public class MyScheduleModel implements Model<MyScheduleModel.MyScheduleQueryEnu
         // Click on a row in the schedule, it opens the session or a list of available sessions
         SESSION_SLOT(2),
         FEEDBACK(3),
-        REDRAW_UI(4);
+        REDRAW_UI(4),
+        SESSION_STAR(5),
+        SESSION_UNSTAR(6);
 
-        private int id;
+        private final int id;
 
         MyScheduleUserActionEnum(int id) {
             this.id = id;
@@ -376,7 +401,6 @@ public class MyScheduleModel implements Model<MyScheduleModel.MyScheduleQueryEnu
         public int getId() {
             return id;
         }
-
     }
 
     public interface LoadScheduleDataListener {

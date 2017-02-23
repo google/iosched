@@ -80,6 +80,8 @@ public class MyScheduleDayAdapter
         mContext = context;
         mListener = listener;
         mTagMetadata = tagMetadata;
+
+        setHasStableIds(true);
     }
 
     @Override
@@ -89,7 +91,12 @@ public class MyScheduleDayAdapter
 
     @Override
     public long getItemId(int position) {
-        return position;
+        ScheduleItem item = mItems.get(position);
+        if (item.sessionId != null) {
+            return item.sessionId.hashCode();
+        }
+        // Must be a time separator so just use the startTime
+        return item.startTime;
     }
 
     private final View.OnClickListener mUriOnClickListener = new View.OnClickListener() {
@@ -175,19 +182,18 @@ public class MyScheduleDayAdapter
     }
 
     class ItemViewHolder extends ListViewHolder {
-        public TextView title;
-        public TextView description;
-        public Button feedback;
-        public View live;
-        public View separator;
-        public FlexboxLayout tagsHolder;
-        public ImageView bookmark;
+        private final TextView title;
+        private final TextView description;
+        private final Button feedback;
+        private final View live;
+        private final View separator;
+        private final FlexboxLayout tagsHolder;
+        private final ImageView bookmark;
 
         private final StringBuilder mTmpStringBuilder = new StringBuilder();
 
         ItemViewHolder(final View view) {
             super(view);
-
             title = (TextView) view.findViewById(R.id.slot_title);
             description = (TextView) view.findViewById(R.id.slot_description);
             feedback = (Button) view.findViewById(R.id.give_feedback_button);
@@ -297,6 +303,26 @@ public class MyScheduleDayAdapter
                 // (it is auto added to schedule on sync)
                 bookmark.setActivated(item.isKeynote() || item.inSchedule);
                 bookmark.setVisibility(View.VISIBLE);
+                clearClickable(bookmark);
+                bookmark.setEnabled(false);
+
+                if (!item.isKeynote()) {
+                    bookmark.setEnabled(true);
+                    bookmark.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(final View view) {
+                            // Toggle now so that it looks immediate
+                            view.setActivated(!view.isActivated());
+
+                            MyScheduleUserActionEnum action = item.inSchedule
+                                    ? MyScheduleUserActionEnum.SESSION_UNSTAR
+                                    : MyScheduleUserActionEnum.SESSION_STAR;
+                            Bundle bundle = new Bundle();
+                            bundle.putString(MyScheduleModel.SESSION_ID_KEY, item.sessionId);
+                            mListener.onUserAction(action, bundle);
+                        }
+                    });
+                }
             }
 
             if (item.isKeynote() || (item.flags & ScheduleItem.FLAG_HAS_LIVESTREAM) != 0) {
@@ -362,7 +388,7 @@ public class MyScheduleDayAdapter
     public int findTimeHeaderPositionForTime(final long time) {
         for (int j = mItems.size() - 1; j >= 0; j--) {
             ScheduleItem item = mItems.get(j);
-            // Keep going backwards until we find a time seperator which has a start time before
+            // Keep going backwards until we find a time separator which has a start time before
             // now
             if (item instanceof TimeSeperatorItem && ((TimeSeperatorItem) item).startTime < time) {
                 return j;
@@ -370,5 +396,4 @@ public class MyScheduleDayAdapter
         }
         return -1;
     }
-
 }

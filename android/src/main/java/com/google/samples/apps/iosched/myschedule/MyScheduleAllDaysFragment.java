@@ -127,6 +127,8 @@ public class MyScheduleAllDaysFragment extends Fragment
             boolean success) {
         switch (userAction) {
             case RELOAD_DATA:
+            case SESSION_STAR:
+            case SESSION_UNSTAR:
                 updateSchedule(model);
                 break;
             case SESSION_SLOT:

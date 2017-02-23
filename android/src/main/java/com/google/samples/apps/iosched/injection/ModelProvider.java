@@ -47,11 +47,12 @@ public class ModelProvider {
     }
 
     public static MyScheduleModel provideMyScheduleModel(ScheduleHelper scheduleHelper,
-            Context context) {
+            SessionsHelper sessionsHelper, Context context) {
         if (stubMyScheduleModel != null) {
             return stubMyScheduleModel.initStaticDataAndObservers();
         } else {
-            return new MyScheduleModel(scheduleHelper, context).initStaticDataAndObservers();
+            return new MyScheduleModel(scheduleHelper, sessionsHelper, context)
+                    .initStaticDataAndObservers();
         }
     }
 

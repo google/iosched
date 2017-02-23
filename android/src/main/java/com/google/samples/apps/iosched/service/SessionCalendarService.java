@@ -26,7 +26,6 @@ import android.content.OperationApplicationException;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.net.Uri;
-import android.os.Bundle;
 import android.os.RemoteException;
 import android.provider.CalendarContract;
 import android.support.v4.content.ContextCompat;
@@ -64,26 +63,14 @@ import static com.google.samples.apps.iosched.util.LogUtils.makeLogTag;
  * by the user. (Technically device admin apps can also responded to permissions request.)
  */
 public class SessionCalendarService extends IntentService {
-    public static final String ACTION_ADD_SESSION_CALENDAR =
-            "com.google.samples.apps.iosched.action.ADD_SESSION_CALENDAR";
     public static final String ACTION_CLEAR_ALL_SESSIONS_CALENDAR =
             "com.google.samples.apps.iosched.action.CLEAR_ALL_SESSIONS_CALENDAR";
-    public static final String ACTION_REMOVE_SESSION_CALENDAR =
-            "com.google.samples.apps.iosched.action.REMOVE_SESSION_CALENDAR";
     public static final String ACTION_UPDATE_ALL_SESSIONS_CALENDAR =
             "com.google.samples.apps.iosched.action.UPDATE_ALL_SESSIONS_CALENDAR";
     public static final String ACTION_UPDATE_ALL_SESSIONS_CALENDAR_COMPLETED =
             "com.google.samples.apps.iosched.action.UPDATE_CALENDAR_COMPLETED";
     public static final String EXTRA_ACCOUNT_NAME =
             "com.google.samples.apps.iosched.extra.ACCOUNT_NAME";
-    public static final String EXTRA_SESSION_END =
-            "com.google.samples.apps.iosched.extra.SESSION_BLOCK_END";
-    public static final String EXTRA_SESSION_ROOM =
-            "com.google.samples.apps.iosched.extra.SESSION_ROOM";
-    public static final String EXTRA_SESSION_START =
-            "com.google.samples.apps.iosched.extra.SESSION_BLOCK_START";
-    public static final String EXTRA_SESSION_TITLE =
-            "com.google.samples.apps.iosched.extra.SESSION_TITLE";
     // TODO: localize
     private static final String CALENDAR_CLEAR_SEARCH_LIKE_EXPRESSION =
             "%added by Google I/O Android app%";
@@ -106,15 +93,7 @@ public class SessionCalendarService extends IntentService {
 
         final ContentResolver resolver = getContentResolver();
 
-        boolean isAddEvent = false;
-
-        if (ACTION_ADD_SESSION_CALENDAR.equals(action)) {
-            isAddEvent = true;
-
-        } else if (ACTION_REMOVE_SESSION_CALENDAR.equals(action)) {
-            isAddEvent = false;
-
-        } else if (ACTION_UPDATE_ALL_SESSIONS_CALENDAR.equals(action) &&
+        if (ACTION_UPDATE_ALL_SESSIONS_CALENDAR.equals(action) &&
                 SettingsUtils.shouldSyncCalendar(this)) {
             try {
                 getContentResolver().applyBatch(CalendarContract.AUTHORITY,
@@ -124,34 +103,13 @@ public class SessionCalendarService extends IntentService {
             } catch (RemoteException | OperationApplicationException e) {
                 LOGE(TAG, "Error adding all sessions to Google Calendar", e);
             }
-
         } else if (ACTION_CLEAR_ALL_SESSIONS_CALENDAR.equals(action)) {
             try {
                 getContentResolver().applyBatch(CalendarContract.AUTHORITY,
-                        processClearAllSessions(resolver, getCalendarId(intent)));
+                        processClearAllSessions(getCalendarId(intent)));
             } catch (RemoteException | OperationApplicationException e) {
                 LOGE(TAG, "Error clearing all sessions from Google Calendar", e);
             }
-
-        } else {
-            return;
-        }
-
-        final Uri uri = intent.getData();
-        final Bundle extras = intent.getExtras();
-        if (uri == null || extras == null || !SettingsUtils.shouldSyncCalendar(this)) {
-            return;
-        }
-
-        try {
-            resolver.applyBatch(CalendarContract.AUTHORITY,
-                    processSessionCalendar(resolver, getCalendarId(intent), isAddEvent, uri,
-                            extras.getLong(EXTRA_SESSION_START),
-                            extras.getLong(EXTRA_SESSION_END),
-                            extras.getString(EXTRA_SESSION_TITLE),
-                            extras.getString(EXTRA_SESSION_ROOM)));
-        } catch (RemoteException | OperationApplicationException e) {
-            LOGE(TAG, "Error adding session to Google Calendar", e);
         }
     }
 
@@ -207,7 +165,6 @@ public class SessionCalendarService extends IntentService {
      */
     private ArrayList<ContentProviderOperation> processAllSessionsCalendar(ContentResolver resolver,
             final long calendarId) {
-
         ArrayList<ContentProviderOperation> batch = new ArrayList<>();
 
         // Unable to find the Calendar associated with the user. Stop here.
@@ -227,14 +184,13 @@ public class SessionCalendarService extends IntentService {
                 Uri uri = ScheduleContract.Sessions.buildSessionUri(
                         Long.valueOf(cursor.getLong(0)).toString());
                 boolean isAddEvent = (cursor.getInt(SessionsQuery.SESSION_IN_MY_SCHEDULE) == 1);
-                if (isAddEvent) {
-                    batch.addAll(processSessionCalendar(resolver,
-                            calendarId, isAddEvent, uri,
-                            cursor.getLong(SessionsQuery.SESSION_START),
-                            cursor.getLong(SessionsQuery.SESSION_END),
-                            cursor.getString(SessionsQuery.SESSION_TITLE),
-                            cursor.getString(SessionsQuery.ROOM_NAME)));
-                }
+                batch.addAll(processSessionCalendar(
+                        resolver,
+                        calendarId, isAddEvent, uri,
+                        cursor.getLong(SessionsQuery.SESSION_START),
+                        cursor.getLong(SessionsQuery.SESSION_END),
+                        cursor.getString(SessionsQuery.SESSION_TITLE),
+                        cursor.getString(SessionsQuery.ROOM_NAME)));
             }
             cursor.close();
         }
@@ -245,8 +201,7 @@ public class SessionCalendarService extends IntentService {
     /**
      * Removes all calendar entries associated with Google I/O.
      */
-    private ArrayList<ContentProviderOperation> processClearAllSessions(
-            ContentResolver resolver, long calendarId) {
+    private ArrayList<ContentProviderOperation> processClearAllSessions(long calendarId) {
 
         ArrayList<ContentProviderOperation> batch = new ArrayList<>();
 

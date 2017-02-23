@@ -68,7 +68,11 @@
                 android:id="@+id/bookmark"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical" />
+                android:minHeight="48dp"
+                android:minWidth="48dp"
+                android:scaleType="center"
+                android:layout_gravity="center_vertical"
+                android:background="?attr/selectableItemBackgroundBorderless"/>
 
         </LinearLayout>
 

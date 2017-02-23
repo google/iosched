@@ -17,10 +17,11 @@
 package com.google.samples.apps.iosched.util;
 
 import android.annotation.SuppressLint;
-import android.app.Activity;
 import android.content.AsyncQueryHandler;
 import android.content.ContentValues;
+import android.content.Context;
 import android.net.Uri;
+import android.support.annotation.NonNull;
 
 import com.google.samples.apps.iosched.appwidget.ScheduleWidgetProvider;
 import com.google.samples.apps.iosched.provider.ScheduleContract;
@@ -38,10 +39,10 @@ public class SessionsHelper {
 
     private static final String TAG = makeLogTag(SessionsHelper.class);
 
-    private final Activity mActivity;
+    private final Context mContext;
 
-    public SessionsHelper(Activity activity) {
-        mActivity = activity;
+    public SessionsHelper(@NonNull Context context) {
+        mContext = context;
     }
 
     public void setSessionStarred(Uri sessionUri, boolean starred, String title) {
@@ -49,10 +50,10 @@ public class SessionsHelper {
                 starred + " title=" + title);
         String sessionId = ScheduleContract.Sessions.getSessionId(sessionUri);
         Uri myScheduleUri = ScheduleContract.MySchedule.buildMyScheduleUri(
-                AccountUtils.getActiveAccountName(mActivity));
+                AccountUtils.getActiveAccountName(mContext));
 
         @SuppressLint("HandlerLeak") // this is short-lived
-        AsyncQueryHandler handler = new AsyncQueryHandler(mActivity.getContentResolver()) {};
+        AsyncQueryHandler handler = new AsyncQueryHandler(mContext.getContentResolver()) {};
         final ContentValues values = new ContentValues();
         values.put(ScheduleContract.MySchedule.SESSION_ID, sessionId);
         values.put(ScheduleContract.MySchedule.MY_SCHEDULE_IN_SCHEDULE, starred ? 1 : 0);
@@ -62,14 +63,15 @@ public class SessionsHelper {
 
         // ANALYTICS EVENT: Add or remove a session from the schedule
         // Contains: Session title, whether it was added or removed (starred or unstarred)
-        AnalyticsHelper.sendEvent(
-                "Session", starred ? "Starred" : "Unstarred", title);
+        AnalyticsHelper.sendEvent("Session", starred ? "Starred" : "Unstarred", title);
 
         // Because change listener is set to null during initialization, these
         // won't fire on pageview.
-        mActivity.sendBroadcast(ScheduleWidgetProvider.getRefreshBroadcastIntent(mActivity, false));
+        mContext.sendBroadcast(ScheduleWidgetProvider.getRefreshBroadcastIntent(mContext, false));
 
         // Request an immediate user data sync to reflect the starred user sessions in the cloud
         SyncHelper.requestManualSync(true);
+
+        // No need to manually setup calendar or notifications so they happen on sync
     }
 }

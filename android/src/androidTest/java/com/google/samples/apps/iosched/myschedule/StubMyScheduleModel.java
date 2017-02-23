@@ -47,7 +47,7 @@ public class StubMyScheduleModel extends MyScheduleModel {
     public StubMyScheduleModel(Context context,
             ArrayList<ScheduleItem> mockScheduleDataDay1,
             ArrayList<ScheduleItem> mockScheduleDataDay2) {
-        super(null, context);
+        super(null, null, context);
         mMockScheduleDataDay1 = mockScheduleDataDay1;
         mMockScheduleDataDay2 = mockScheduleDataDay2;
     }

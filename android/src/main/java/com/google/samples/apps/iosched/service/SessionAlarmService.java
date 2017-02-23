@@ -64,9 +64,7 @@ public class SessionAlarmService extends IntentService {
             "com.google.samples.apps.iosched.action.NOTIFY_SESSION";
     public static final String ACTION_NOTIFY_SESSION_FEEDBACK =
             "com.google.samples.apps.iosched.action.NOTIFY_SESSION_FEEDBACK";
-    public static final String ACTION_SCHEDULE_FEEDBACK_NOTIFICATION =
-            "com.google.samples.apps.iosched.action.SCHEDULE_FEEDBACK_NOTIFICATION";
-    public static final String ACTION_SCHEDULE_STARRED_BLOCK =
+    private static final String ACTION_SCHEDULE_STARRED_BLOCK =
             "com.google.samples.apps.iosched.action.SCHEDULE_STARRED_BLOCK";
     public static final String ACTION_SCHEDULE_ALL_STARRED_BLOCKS =
             "com.google.samples.apps.iosched.action.SCHEDULE_ALL_STARRED_BLOCKS";
@@ -139,23 +137,8 @@ public class SessionAlarmService extends IntentService {
                         UNDEFINED_ALARM_OFFSET);
         LOGD(TAG, "Session alarm offset is: " + sessionAlarmOffset);
 
-        // Feedback notifications have a slightly different set of extras.
-        if (ACTION_SCHEDULE_FEEDBACK_NOTIFICATION.equals(action)) {
-            final String sessionId = intent.getStringExtra(SessionAlarmService.EXTRA_SESSION_ID);
-            final String sessionTitle = intent.getStringExtra(
-                    SessionAlarmService.EXTRA_SESSION_TITLE);
-            if (sessionTitle == null || sessionEnd == UNDEFINED_VALUE ||
-                    sessionId == null) {
-                LOGE(TAG, "Attempted to schedule for feedback without providing extras.");
-                return;
-            }
-            LOGD(TAG, "Scheduling feedback alarm for session: " + sessionTitle);
-            scheduleFeedbackAlarm(sessionEnd, sessionAlarmOffset, sessionTitle);
-            return;
-        }
-
-        final long sessionStart =
-                intent.getLongExtra(SessionAlarmService.EXTRA_SESSION_START, UNDEFINED_VALUE);
+        final long sessionStart = intent.getLongExtra(SessionAlarmService.EXTRA_SESSION_START,
+                UNDEFINED_VALUE);
         if (sessionStart == UNDEFINED_VALUE) {
             LOGD(TAG, "IGNORING ACTION -- no session start parameter.");
             return;

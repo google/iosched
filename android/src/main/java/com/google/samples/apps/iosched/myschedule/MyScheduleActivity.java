@@ -64,6 +64,7 @@ import com.google.samples.apps.iosched.session.SessionDetailActivity;
 import com.google.samples.apps.iosched.settings.SettingsUtils;
 import com.google.samples.apps.iosched.ui.BaseActivity;
 import com.google.samples.apps.iosched.util.AnalyticsHelper;
+import com.google.samples.apps.iosched.util.SessionsHelper;
 import com.google.samples.apps.iosched.util.TimeUtils;
 import com.google.samples.apps.iosched.util.UIUtils;
 
@@ -334,7 +335,8 @@ public class MyScheduleActivity extends BaseActivity implements
 
     private void initPresenter() {
         MyScheduleModel model =
-                ModelProvider.provideMyScheduleModel(new ScheduleHelper(this), this);
+                ModelProvider.provideMyScheduleModel(new ScheduleHelper(this),
+                        new SessionsHelper(this), this);
         if (mWideMode) {
             MyScheduleAllDaysFragment fragment = (MyScheduleAllDaysFragment)
                     getSupportFragmentManager().findFragmentById(R.id.myScheduleWideFrag);
