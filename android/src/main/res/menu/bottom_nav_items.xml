@@ -20,17 +20,12 @@
             android:title=""
             android:visible="false" />
         <item
-            android:id="@+id/explore_nav_item"
-            android:checkable="true"
-            android:title=""
-            android:visible="false" />
-        <item
             android:id="@+id/map_nav_item"
             android:checkable="true"
             android:title=""
             android:visible="false" />
         <item
-            android:id="@+id/about_nav_item"
+            android:id="@+id/debug_nav_item"
             android:checkable="true"
             android:title=""
             android:visible="false" />

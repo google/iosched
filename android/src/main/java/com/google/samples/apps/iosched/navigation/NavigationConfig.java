@@ -27,9 +27,10 @@ import java.util.List;
 public class NavigationConfig {
 
     public final static NavigationItemEnum[] ITEMS = new NavigationItemEnum[]{
-                    NavigationItemEnum.MY_SCHEDULE, NavigationItemEnum.EXPLORE,
-                    NavigationItemEnum.MAP, NavigationItemEnum.ABOUT
-            };
+            NavigationItemEnum.MY_SCHEDULE,
+            NavigationItemEnum.MAP,
+            NavigationItemEnum.DEBUG,
+    };
 
     private static NavigationItemEnum[] concatenateItems(NavigationItemEnum[] first,
             NavigationItemEnum[] second) {
