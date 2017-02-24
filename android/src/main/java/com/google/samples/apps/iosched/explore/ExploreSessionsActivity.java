@@ -370,11 +370,11 @@ public class ExploreSessionsActivity extends BaseActivity
         setHeader();
         Intent intent = new Intent(Intent.ACTION_VIEW, uri);
         intent.putExtra(ExploreSessionsFragment.EXTRA_SHOW_LIVESTREAMED_SESSIONS,
-                mTagFilterHolder.isShowLiveStreamedOnly());
+                mTagFilterHolder.showLiveStreamedOnly());
 
         LOGD(TAG, "Reloading fragment with categories " + mTagFilterHolder.getCategoryCount() +
                 " uri: " + uri +
-                " showLiveStreamedEvents: " + mTagFilterHolder.isShowLiveStreamedOnly());
+                " showLiveStreamedEvents: " + mTagFilterHolder.showLiveStreamedOnly());
 
         mFragment.reloadFromArguments(intentToFragmentArguments(intent));
     }

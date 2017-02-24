@@ -199,6 +199,7 @@ public class MyScheduleActivity extends BaseActivity implements
 
     private boolean mShowedAnnouncementDialog = false;
 
+    private MyScheduleModel mModel; // TODO decouple this
     private PresenterImpl<MyScheduleModel, MyScheduleQueryEnum, MyScheduleUserActionEnum>
             mPresenter;
 
@@ -334,13 +335,12 @@ public class MyScheduleActivity extends BaseActivity implements
     }
 
     private void initPresenter() {
-        MyScheduleModel model =
-                ModelProvider.provideMyScheduleModel(new ScheduleHelper(this),
-                        new SessionsHelper(this), this);
+        mModel = ModelProvider.provideMyScheduleModel(new ScheduleHelper(this),
+                new SessionsHelper(this), this);
         if (mWideMode) {
             MyScheduleAllDaysFragment fragment = (MyScheduleAllDaysFragment)
                     getSupportFragmentManager().findFragmentById(R.id.myScheduleWideFrag);
-            mPresenter = new PresenterImpl<>(model,
+            mPresenter = new PresenterImpl<>(mModel,
                     fragment,
                     MyScheduleModel.MyScheduleUserActionEnum.values(),
                     MyScheduleModel.MyScheduleQueryEnum.values());
@@ -348,7 +348,7 @@ public class MyScheduleActivity extends BaseActivity implements
         } else {
             // Each fragment in the pager adapter is an updatable view that the presenter must know
             MyScheduleSingleDayFragment[] fragments = mViewPagerAdapter.getFragments();
-            mPresenter = new PresenterImpl<>(model, fragments,
+            mPresenter = new PresenterImpl<>(mModel, fragments,
                     MyScheduleModel.MyScheduleUserActionEnum.values(),
                     MyScheduleModel.MyScheduleQueryEnum.values());
         }
@@ -697,6 +697,7 @@ public class MyScheduleActivity extends BaseActivity implements
 
     private void updateScheduleFilters(TagFilterHolder filterHolder) {
         mClearFilters.setVisibility(filterHolder.hasAnyFilters() ? View.VISIBLE : View.INVISIBLE);
-        // TODO update fragments
+        mModel.setFilters(filterHolder);
+        mPresenter.onUserAction(MyScheduleUserActionEnum.RELOAD_DATA, null);
     }
 }

@@ -88,6 +88,8 @@ public class MyScheduleModel implements Model<MyScheduleModel.MyScheduleQueryEnu
 
     protected DataQueryCallback<MyScheduleQueryEnum> mScheduleDataQueryCallback;
 
+    private TagFilterHolder mTagFilterHolder;
+
     /**
      * @param scheduleHelper
      * @param context        Should be an Activity context
@@ -114,6 +116,10 @@ public class MyScheduleModel implements Model<MyScheduleModel.MyScheduleQueryEnu
 
         addDataObservers();
         return this;
+    }
+
+    public void setFilters(TagFilterHolder filters) {
+        mTagFilterHolder = filters;
     }
 
     /**
@@ -339,7 +345,7 @@ public class MyScheduleModel implements Model<MyScheduleModel.MyScheduleQueryEnu
                 public void onDataLoaded(ArrayList<ScheduleItem> scheduleItems) {
                     updateCache(dayId, scheduleItems, callback);
                 }
-            }, Config.CONFERENCE_DAYS[i][0], Config.CONFERENCE_DAYS[i][1]);
+            }, Config.CONFERENCE_DAYS[i][0], Config.CONFERENCE_DAYS[i][1], mTagFilterHolder);
         }
     }
 

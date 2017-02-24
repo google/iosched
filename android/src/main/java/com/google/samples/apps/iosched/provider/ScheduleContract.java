@@ -818,6 +818,9 @@ public final class ScheduleContract {
          * @return Uri representing the query parameters for the filter as well as the categories.
          */
         public static Uri buildCategoryTagFilterUri(Uri contentUri, String[] tags, int categories) {
+            if (tags == null || tags.length < 1) {
+                return contentUri;
+            }
             StringBuilder sb = new StringBuilder();
             for (String tag : tags) {
                 if (TextUtils.isEmpty(tag)) {

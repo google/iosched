@@ -18,33 +18,25 @@ package com.google.samples.apps.iosched.myschedule;
 import static android.support.test.espresso.Espresso.onData;
 import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.action.ViewActions.click;
-import static android.support.test.espresso.assertion.ViewAssertions.matches;
-import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static android.support.test.espresso.matcher.ViewMatchers.withContentDescription;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
 
-import static org.hamcrest.CoreMatchers.allOf;
 import static org.hamcrest.CoreMatchers.instanceOf;
 import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.CoreMatchers.not;
 
-import android.content.res.TypedArray;
 import android.support.test.InstrumentationRegistry;
 import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
 import android.test.suitebuilder.annotation.LargeTest;
-import android.test.suitebuilder.annotation.Suppress;
 
 import com.google.samples.apps.iosched.R;
-import com.google.samples.apps.iosched.model.ScheduleItem;
 import com.google.samples.apps.iosched.settings.SettingsUtils;
 import com.google.samples.apps.iosched.testutils.MatchersHelper;
 import com.google.samples.apps.iosched.util.TimeUtils;
 
 import org.junit.Before;
 import org.junit.Rule;
-import org.junit.Test;
 import org.junit.runner.RunWith;
 
 /**
@@ -78,57 +70,57 @@ public class MyScheduleActivity_InteractionsTest {
      * with other screens that manipulate the schedule, it cannot be written with the {@link
      * StubMyScheduleModel}, as this model always returns the same schedule items.
      */
-    @Test
-    @Suppress // Test isn't deterministic when run as part of the full test suite.
-    public void addEventToMySchedule_Flaky() {
-        // Given a free slot with available sessions
-        findFreeSlotWithAvailableSessions();
-
-        // When adding the first available session
-        String title = addFirstAvailableSession();
-
-        // Then the session is shown
-        onView(withText(title)).check(matches(isDisplayed()));
-
-        // Clean up
-        removeSessionFromSchedule(title);
-    }
+//    @Test
+//    @Suppress // Test isn't deterministic when run as part of the full test suite.
+//    public void addEventToMySchedule_Flaky() {
+//        // Given a free slot with available sessions
+//        findFreeSlotWithAvailableSessions();
+//
+//        // When adding the first available session
+//        String title = addFirstAvailableSession();
+//
+//        // Then the session is shown
+//        onView(withText(title)).check(matches(isDisplayed()));
+//
+//        // Clean up
+//        removeSessionFromSchedule(title);
+//    }
 
     /**
      * This will fail if there is no free slot with available sessions. Due to the fact it interacts
      * with other screens that manipulate the schedule, it cannot be written with the {@link
      * StubMyScheduleModel}, as this model always returns the same schedule items.
      */
-    @Test
-    @Suppress // Test isn't deterministic when run as part of the full test suite.
-    public void removeEventToMySchedule_Flaky() {
-        // Given a session in the schedule
-        findFreeSlotWithAvailableSessions();
-        String title = addFirstAvailableSession();
-        onView(withText(title)).check(matches(isDisplayed()));
-
-        // When the session is removed
-        removeSessionFromSchedule(title);
-
-        // Then the session is not shown anymore
-        onView(withText(title)).check(matches(not(isDisplayed())));
-    }
+//    @Test
+//    @Suppress // Test isn't deterministic when run as part of the full test suite.
+//    public void removeEventToMySchedule_Flaky() {
+//        // Given a session in the schedule
+//        findFreeSlotWithAvailableSessions();
+//        String title = addFirstAvailableSession();
+//        onView(withText(title)).check(matches(isDisplayed()));
+//
+//        // When the session is removed
+//        removeSessionFromSchedule(title);
+//
+//        // Then the session is not shown anymore
+//        onView(withText(title)).check(matches(not(isDisplayed())));
+//    }
 
     /**
      * This finds the first free slow with available session and click on "Browse sessions" so the
      * list of available sessions is now displayed
      */
-    private void findFreeSlotWithAvailableSessions() {
-        TypedArray ids = InstrumentationRegistry.getTargetContext().getResources()
-                .obtainTypedArray(R.array.myschedule_listview_ids);
-        //noinspection ResourceType
-        int listViewId = ids.getResourceId(1, 0);
-        ids.recycle();
-        onData(allOf(is(instanceOf(ScheduleItem.class)),
-                new FirstFreeSlotWithAvailableSessionsMatcher()))
-                .inAdapterView(withId(listViewId)).onChildView(withId(R.id.browse_sessions))
-                .perform(click());
-    }
+//    private void findFreeSlotWithAvailableSessions() {
+//        TypedArray ids = InstrumentationRegistry.getTargetContext().getResources()
+//                .obtainTypedArray(R.array.myschedule_listview_ids);
+//        //noinspection ResourceType
+//        int listViewId = ids.getResourceId(1, 0);
+//        ids.recycle();
+//        onData(allOf(is(instanceOf(ScheduleItem.class)),
+//                new FirstFreeSlotWithAvailableSessionsMatcher()))
+//                .inAdapterView(withId(listViewId)).onChildView(withId(R.id.browse_sessions))
+//                .perform(click());
+//    }
 
     /**
      * This assumes that the screen shows a list of available sessions. It adds the first one to the
