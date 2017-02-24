@@ -100,18 +100,20 @@ public class NavigationModel implements Model<NavigationQueryEnum, NavigationUse
                 R.drawable.ic_navview_explore, ExploreIOActivity.class, true),
         MAP(R.id.map_nav_item, R.string.navdrawer_item_map, R.drawable.ic_navview_map,
                 MapActivity.class, true),
-        ABOUT(R.id.about_nav_item, R.string.description_about, R.drawable.ic_about,
-                AboutActivity.class, true),
+        DEBUG(R.id.debug_nav_item, R.string.navdrawer_item_debug, R.drawable.ic_navview_settings,
+                DebugActivity.class),
         INVALID(12, 0, 0, null),
 
-        // Deprecated?
+        // Deprecated.
         SIGN_IN(R.id.signin_nav_item, R.string.navdrawer_item_sign_in, 0, null),
         VIDEO_LIBRARY(R.id.videos_nav_item, R.string.navdrawer_item_video_library,
                 R.drawable.ic_navview_video_library, VideoLibraryActivity.class),
+
+        // TODO: consolidate under Info.
         SETTINGS(R.id.settings_nav_item, R.string.navdrawer_item_settings, R.drawable.ic_navview_settings,
                 SettingsActivity.class),
-        DEBUG(R.id.debug_nav_item, R.string.navdrawer_item_debug, R.drawable.ic_navview_settings,
-                DebugActivity.class);
+        ABOUT(R.id.about_nav_item, R.string.description_about, R.drawable.ic_about,
+                AboutActivity.class, true);
 
         private int id;
 
