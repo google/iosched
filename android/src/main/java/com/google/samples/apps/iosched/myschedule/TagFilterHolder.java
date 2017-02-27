@@ -34,6 +34,7 @@ public class TagFilterHolder implements Parcelable {
 
     private static final String TAG = makeLogTag(TagFilterHolder.class);
 
+    // TODO we should work with Tags directly
     private final Set<String> mSelectedTopics;
     private boolean mShowLiveStreamedOnly;
     private boolean mShowSessionsOnly;

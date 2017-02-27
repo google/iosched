@@ -272,7 +272,7 @@ public class ExploreSessionsActivity extends BaseActivity
             }
         }
         reloadFragment();
-        mFilterAdapter = new SessionsFilterAdapter(this, mTagFilterHolder, mTagMetadata);
+        mFilterAdapter = new SessionsFilterAdapter(this, mTagMetadata);
         mFilterAdapter.setSessionFilterAdapterListener(new OnFiltersChangedListener() {
 
             @Override

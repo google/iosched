@@ -19,6 +19,7 @@ import static com.google.samples.apps.iosched.util.LogUtils.makeLogTag;
 import android.content.Context;
 import android.content.res.ColorStateList;
 import android.content.res.Resources;
+import android.os.Bundle;
 import android.support.v4.view.ViewCompat;
 import android.support.v7.content.res.AppCompatResources;
 import android.support.v7.widget.RecyclerView.Adapter;
@@ -38,20 +39,27 @@ import com.google.samples.apps.iosched.model.TagMetadata;
 import com.google.samples.apps.iosched.model.TagMetadata.Tag;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class SessionsFilterAdapter extends Adapter<ViewHolder> {
 
     private static final String TAG = makeLogTag(SessionsFilterAdapter.class);
+    private static final String STATE_FILTERS = "com.google.samples.apps.iosched.STATE_FILTERS";
 
     private static final int TYPE_TAG_FILTER = 0;
     private static final int TYPE_STATIC_FILTER = 1;
     private static final int TYPE_TOPICS_HEADER = 2;
 
+    private static final int LIVE_STREAM_FILTER_POSITION = 0;
+    private static final int SESSIONS_ONLY_FILTER_POSITION = 1;
+    private static final int STATIC_FILTERS_COUNT = 2;
+
     private static final Object PAYLOAD_CLEAR_CHECK = new Object();
 
+    private final StaticFilter[] mStaticFilters = new StaticFilter[STATIC_FILTERS_COUNT];
     private final List<Object> mItems;
-    private TagFilterHolder mTagFilterHolder;
+    private TagFilterHolder mTagFilterHolder = new TagFilterHolder();
     private final LayoutInflater mInflater;
 
     private OnFiltersChangedListener mListener;
@@ -61,24 +69,33 @@ public class SessionsFilterAdapter extends Adapter<ViewHolder> {
         void onFiltersChanged(TagFilterHolder filterHolder);
     }
 
-    public SessionsFilterAdapter(Context context, TagFilterHolder tagFilterHolder,
-            TagMetadata filters) {
-        mInflater = LayoutInflater.from(context);
-        mItems = new ArrayList<>();
-        mTagFilterHolder = tagFilterHolder;
-        processFilters(context.getResources(), filters);
+    public SessionsFilterAdapter(Context context, TagMetadata filters) {
+        this(context, filters, null);
     }
 
-    /**
-     * Build the list of items
-     */
-    private void processFilters(Resources res, TagMetadata tagMetadata) {
-        // Live Streamed
-        mItems.add(new StaticFilter(res.getString(R.string.session_live_streamed)));
-        // Sessions only
-        mItems.add(new StaticFilter(res.getString(R.string.filter_label_sessions_only)));
+    public SessionsFilterAdapter(Context context, TagMetadata filters, Bundle savedState) {
+        mInflater = LayoutInflater.from(context);
+
+        mItems = new ArrayList<>();
+        initStaticFilters(context.getResources());
+        buildFiltersList(filters);
+        restoreFromState(savedState);
+    }
+
+    private void initStaticFilters(Resources res) {
+        mStaticFilters[LIVE_STREAM_FILTER_POSITION] = new StaticFilter(res.getString(R.string.session_live_streamed));
+        mStaticFilters[SESSIONS_ONLY_FILTER_POSITION] = new StaticFilter(res.getString(R.string.filter_label_sessions_only));
+    }
+
+    private void buildFiltersList(TagMetadata tagMetadata) {
+        mItems.clear();
+        // Live Streamed and Sessions Only
+        Collections.addAll(mItems, mStaticFilters);
         // "Topics" header
         mItems.add(new TopicsHeader());
+        if (tagMetadata == null) {
+            return;
+        }
         // Topics. We only care about tracks.
         List<TagMetadata.Tag> topics = tagMetadata.getTagsInCategory(Config.Tags.CATEGORY_TRACK);
         if (topics != null && !topics.isEmpty()) {
@@ -88,8 +105,29 @@ public class SessionsFilterAdapter extends Adapter<ViewHolder> {
         }
     }
 
+    public void setTagMetadata(TagMetadata tagMetadata) {
+        buildFiltersList(tagMetadata);
+        notifyDataSetChanged();
+    }
+
     public void setSessionFilterAdapterListener(OnFiltersChangedListener listener) {
         mListener = listener;
+    }
+
+    public void setShowLiveStreamedOnly(boolean show) {
+        if (isStaticFilterChecked(LIVE_STREAM_FILTER_POSITION) != show) {
+            updateStaticFilter(LIVE_STREAM_FILTER_POSITION, show);
+            notifyItemChanged(LIVE_STREAM_FILTER_POSITION);
+        }
+    }
+
+    public void addTag(Tag tag) {
+        if (mTagFilterHolder.add(tag.getId(), tag.getCategory())) {
+            int position = mItems.indexOf(tag);
+            if (position >= 0) {
+                notifyItemChanged(position);
+            }
+        }
     }
 
     public void clearAllFilters() {
@@ -161,9 +199,9 @@ public class SessionsFilterAdapter extends Adapter<ViewHolder> {
 
     private boolean isStaticFilterChecked(int position) {
         switch (position) {
-            case 0:
+            case LIVE_STREAM_FILTER_POSITION:
                 return mTagFilterHolder.showLiveStreamedOnly();
-            case 1:
+            case SESSIONS_ONLY_FILTER_POSITION:
                 return mTagFilterHolder.showSessionsOnly();
         }
         return false;
@@ -171,11 +209,11 @@ public class SessionsFilterAdapter extends Adapter<ViewHolder> {
 
     private void updateStaticFilter(int position, boolean checked) {
         switch (position) {
-            case 0:
+            case LIVE_STREAM_FILTER_POSITION:
                 mTagFilterHolder.setShowLiveStreamedOnly(checked);
                 dispatchFiltersChanged();
                 break;
-            case 1:
+            case SESSIONS_ONLY_FILTER_POSITION:
                 mTagFilterHolder.setShowSessionsOnly(checked);
                 dispatchFiltersChanged();
                 break;
@@ -192,6 +230,19 @@ public class SessionsFilterAdapter extends Adapter<ViewHolder> {
     private void dispatchFiltersChanged() {
         if (mListener != null) {
             mListener.onFiltersChanged(mTagFilterHolder);
+        }
+    }
+
+    public void onSaveInstanceState(Bundle outState) {
+        outState.putParcelable(STATE_FILTERS, mTagFilterHolder);
+    }
+
+    private void restoreFromState(Bundle savedState) {
+        if (savedState != null) {
+            TagFilterHolder filterHolder = savedState.getParcelable(STATE_FILTERS);
+            if (filterHolder != null) {
+                mTagFilterHolder = filterHolder;
+            }
         }
     }
 

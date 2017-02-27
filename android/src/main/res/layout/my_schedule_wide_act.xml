@@ -58,6 +58,12 @@
     </LinearLayout>
 
     <!-- Filter drawer -->
-    <include layout="@layout/my_schedule_filter_drawer" />
+    <fragment
+        android:id="@+id/filter_drawer"
+        android:name="com.google.samples.apps.iosched.myschedule.ScheduleFilterFragment"
+        android:layout_width="@dimen/drawer_width"
+        android:layout_height="match_parent"
+        android:layout_gravity="end"
+        tools:layout="@layout/my_schedule_filter_drawer" />
 
 </android.support.v4.widget.DrawerLayout>
