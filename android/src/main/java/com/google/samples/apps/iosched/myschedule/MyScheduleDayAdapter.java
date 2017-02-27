@@ -50,6 +50,7 @@ import com.google.samples.apps.iosched.provider.ScheduleContract;
 import com.google.samples.apps.iosched.util.TimeUtils;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
@@ -62,6 +63,8 @@ import static com.google.samples.apps.iosched.util.LogUtils.makeLogTag;
 public class MyScheduleDayAdapter
         extends RecyclerView.Adapter<MyScheduleDayAdapter.ListViewHolder> {
     private static final String TAG = makeLogTag("MyScheduleDayAdapter");
+
+    private static final long[] ID_ARRAY = new long[4];
 
     private static final int TYPE_SLOT = 0;
     private static final int TYPE_TIME_HEADER = 1;
@@ -91,12 +94,19 @@ public class MyScheduleDayAdapter
 
     @Override
     public long getItemId(int position) {
-        ScheduleItem item = mItems.get(position);
-        if (item.sessionId != null) {
-            return item.sessionId.hashCode();
-        }
-        // Must be a time separator so just use the startTime
-        return item.startTime;
+        final ScheduleItem item = mItems.get(position);
+
+        // This code may look complex but its pretty simple. We need to use stable ids so that
+        // any user interaction animations are run correctly (such as ripples). This means that
+        // we need to generate a stable id. Not all items have sessionIds so we generate one
+        // using the sessionId, title, start time and end time.
+        final long[] array = ID_ARRAY;
+        array[0] = TextUtils.isEmpty(item.sessionId) ? 0 : item.sessionId.hashCode();
+        array[1] = TextUtils.isEmpty(item.title) ? 0 : item.title.hashCode();
+        array[2] = item.startTime;
+        array[3] = item.endTime;
+
+        return Arrays.hashCode(array);
     }
 
     private final View.OnClickListener mUriOnClickListener = new View.OnClickListener() {
