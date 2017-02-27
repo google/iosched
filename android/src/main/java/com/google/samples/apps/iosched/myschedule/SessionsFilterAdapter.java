@@ -162,7 +162,7 @@ public class SessionsFilterAdapter extends Adapter<ViewHolder> {
     private boolean isStaticFilterChecked(int position) {
         switch (position) {
             case 0:
-                return mTagFilterHolder.isShowLiveStreamedOnly();
+                return mTagFilterHolder.showLiveStreamedOnly();
             case 1:
                 return mTagFilterHolder.showSessionsOnly();
         }

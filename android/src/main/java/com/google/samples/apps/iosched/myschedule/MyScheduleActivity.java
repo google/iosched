@@ -31,6 +31,7 @@ import android.os.Handler;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.Loader;
+import android.support.v4.view.GravityCompat;
 import android.support.v4.view.ViewCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
@@ -43,6 +44,7 @@ import android.text.TextUtils;
 import android.text.method.LinkMovementMethod;
 import android.text.util.Linkify;
 import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
@@ -199,6 +201,7 @@ public class MyScheduleActivity extends BaseActivity implements
 
     private boolean mShowedAnnouncementDialog = false;
 
+    private MyScheduleModel mModel; // TODO decouple this
     private PresenterImpl<MyScheduleModel, MyScheduleQueryEnum, MyScheduleUserActionEnum>
             mPresenter;
 
@@ -334,13 +337,12 @@ public class MyScheduleActivity extends BaseActivity implements
     }
 
     private void initPresenter() {
-        MyScheduleModel model =
-                ModelProvider.provideMyScheduleModel(new ScheduleHelper(this),
-                        new SessionsHelper(this), this);
+        mModel = ModelProvider.provideMyScheduleModel(new ScheduleHelper(this),
+                new SessionsHelper(this), this);
         if (mWideMode) {
             MyScheduleAllDaysFragment fragment = (MyScheduleAllDaysFragment)
                     getSupportFragmentManager().findFragmentById(R.id.myScheduleWideFrag);
-            mPresenter = new PresenterImpl<>(model,
+            mPresenter = new PresenterImpl<>(mModel,
                     fragment,
                     MyScheduleModel.MyScheduleUserActionEnum.values(),
                     MyScheduleModel.MyScheduleQueryEnum.values());
@@ -348,7 +350,7 @@ public class MyScheduleActivity extends BaseActivity implements
         } else {
             // Each fragment in the pager adapter is an updatable view that the presenter must know
             MyScheduleSingleDayFragment[] fragments = mViewPagerAdapter.getFragments();
-            mPresenter = new PresenterImpl<>(model, fragments,
+            mPresenter = new PresenterImpl<>(mModel, fragments,
                     MyScheduleModel.MyScheduleUserActionEnum.values(),
                     MyScheduleModel.MyScheduleQueryEnum.values());
         }
@@ -586,6 +588,14 @@ public class MyScheduleActivity extends BaseActivity implements
         return true;
     }
 
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == R.id.menu_filter) {
+            mDrawerLayout.openDrawer(GravityCompat.END);
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
 
     private Runnable mUpdateUIRunnable = new Runnable() {
 
@@ -697,6 +707,7 @@ public class MyScheduleActivity extends BaseActivity implements
 
     private void updateScheduleFilters(TagFilterHolder filterHolder) {
         mClearFilters.setVisibility(filterHolder.hasAnyFilters() ? View.VISIBLE : View.INVISIBLE);
-        // TODO update fragments
+        mModel.setFilters(filterHolder);
+        mPresenter.onUserAction(MyScheduleUserActionEnum.RELOAD_DATA, null);
     }
 }

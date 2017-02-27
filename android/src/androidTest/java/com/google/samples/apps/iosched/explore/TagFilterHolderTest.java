@@ -76,7 +76,7 @@ public class TagFilterHolderTest {
         assertTrue(mReadTagFilterHolder.contains(TAG_ID_2));
         assertTrue(mReadTagFilterHolder.contains(TAG_ID_3));
         assertThat(mReadTagFilterHolder.getCategoryCount(), is(1));
-        assertTrue(mReadTagFilterHolder.isShowLiveStreamedOnly());
+        assertTrue(mReadTagFilterHolder.showLiveStreamedOnly());
         assertTrue(mReadTagFilterHolder.showSessionsOnly());
     }
 

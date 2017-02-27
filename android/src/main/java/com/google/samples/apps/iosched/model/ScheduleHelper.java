@@ -17,6 +17,8 @@ package com.google.samples.apps.iosched.model;
 
 import android.content.Context;
 import android.database.Cursor;
+import android.database.DatabaseUtils;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.support.annotation.NonNull;
 import android.text.TextUtils;
@@ -24,10 +26,10 @@ import android.util.Log;
 
 import com.google.samples.apps.iosched.BuildConfig;
 import com.google.samples.apps.iosched.myschedule.MyScheduleModel;
+import com.google.samples.apps.iosched.myschedule.TagFilterHolder;
 import com.google.samples.apps.iosched.provider.ScheduleContract;
 import com.google.samples.apps.iosched.provider.ScheduleContract.Blocks;
 import com.google.samples.apps.iosched.provider.ScheduleContract.Sessions;
-import com.google.samples.apps.iosched.settings.SettingsUtils;
 import com.google.samples.apps.iosched.util.UIUtils;
 
 import java.util.ArrayList;
@@ -45,11 +47,13 @@ public class ScheduleHelper {
         this.mContext = context;
     }
 
-    public ArrayList<ScheduleItem> getScheduleData(long start, long end) {
+    public ArrayList<ScheduleItem> getScheduleData(long start, long end, TagFilterHolder filters) {
         // get sessions in my schedule and blocks, starting anytime in the conference day
         final ArrayList<ScheduleItem> items = new ArrayList<>();
-        addBlocks(start, end, items);
-        addSessions(start, end, items);
+        if (filters == null || !filters.showSessionsOnly()) {
+            addBlocks(start, end, items);
+        }
+        addSessions(start, end, items, filters);
 
         ArrayList<ScheduleItem> result = ScheduleItemHelper.processItems(items);
         if (BuildConfig.DEBUG || Log.isLoggable(TAG, Log.DEBUG)) {
@@ -66,14 +70,14 @@ public class ScheduleHelper {
     }
 
     public void getScheduleDataAsync(final MyScheduleModel.LoadScheduleDataListener callback,
-            long start, long end) {
+            long start, long end, final TagFilterHolder filters) {
         AsyncTask<Long, Void, ArrayList<ScheduleItem>> task
                 = new AsyncTask<Long, Void, ArrayList<ScheduleItem>>() {
             @Override
             protected ArrayList<ScheduleItem> doInBackground(Long... params) {
                 Long start = params[0];
                 Long end = params[1];
-                return getScheduleData(start, end);
+                return getScheduleData(start, end, filters);
             }
 
             @Override
@@ -89,14 +93,23 @@ public class ScheduleHelper {
     }
 
     protected void addSessions(final long start, final long end,
-            @NonNull final ArrayList<ScheduleItem> items) {
+            @NonNull final ArrayList<ScheduleItem> items, final TagFilterHolder filters) {
         Cursor cursor = null;
         try {
+            Uri uri = Sessions.CONTENT_URI;
+            String selection = Sessions.STARTING_AT_TIME_INTERVAL_SELECTION;
+            if (filters != null) {
+                uri = Sessions.buildCategoryTagFilterUri(uri, filters.toStringArray(),
+                        filters.getCategoryCount());
+                if (filters.showLiveStreamedOnly()) {
+                    selection = DatabaseUtils.concatenateWhere(selection,
+                            Sessions.LIVESTREAM_SELECTION);
+                }
+            }
             cursor = mContext.getContentResolver().query(
-                    Sessions.CONTENT_URI,
+                    uri,
                     SessionsQuery.PROJECTION,
-                    // filter sessions to the specified day
-                    Sessions.STARTING_AT_TIME_INTERVAL_SELECTION,
+                    selection,
                     new String[]{String.valueOf(start), String.valueOf(end)},
                     // order by session start
                     Sessions.SESSION_START);
@@ -138,12 +151,10 @@ public class ScheduleHelper {
             cursor = mContext.getContentResolver().query(
                     Blocks.CONTENT_URI,
                     BlocksQuery.PROJECTION,
-
-                    // filter sessions on the specified day
+                    // constrain to the specified day
                     Blocks.BLOCK_START + " >= ? and " + Blocks.BLOCK_START + " <= ?",
                     new String[]{String.valueOf(start), String.valueOf(end)},
-
-                    // order by session start
+                    // order by start time
                     Blocks.BLOCK_START);
 
             if (cursor.moveToFirst()) {

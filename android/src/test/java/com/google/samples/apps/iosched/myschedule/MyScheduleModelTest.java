@@ -16,25 +16,6 @@
 
 package com.google.samples.apps.iosched.myschedule;
 
-import android.content.Context;
-import android.content.SharedPreferences;
-import android.test.suitebuilder.annotation.SmallTest;
-
-import com.google.samples.apps.iosched.Config;
-import com.google.samples.apps.iosched.archframework.Model;
-import com.google.samples.apps.iosched.model.ScheduleHelper;
-import com.google.samples.apps.iosched.model.ScheduleItem;
-
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Captor;
-import org.mockito.Mock;
-import org.mockito.runners.MockitoJUnitRunner;
-
-import java.util.ArrayList;
-
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertThat;
 import static org.mockito.Matchers.any;
@@ -45,6 +26,26 @@ import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+
+import android.content.Context;
+import android.content.SharedPreferences;
+import android.test.suitebuilder.annotation.SmallTest;
+
+import com.google.samples.apps.iosched.Config;
+import com.google.samples.apps.iosched.archframework.Model;
+import com.google.samples.apps.iosched.model.ScheduleHelper;
+import com.google.samples.apps.iosched.model.ScheduleItem;
+import com.google.samples.apps.iosched.util.SessionsHelper;
+
+import org.junit.Before;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.mockito.ArgumentCaptor;
+import org.mockito.Captor;
+import org.mockito.Mock;
+import org.mockito.runners.MockitoJUnitRunner;
+
+import java.util.ArrayList;
 
 @RunWith(MockitoJUnitRunner.class)
 @SmallTest
@@ -64,6 +65,9 @@ public class MyScheduleModelTest {
 
     @Mock
     private ScheduleHelper mMockScheduleHelper;
+
+    @Mock
+    private SessionsHelper mMockSessionsHelper;
 
     @Mock
     private ArrayList<ScheduleItem> mMockScheduleItems;
@@ -93,7 +97,8 @@ public class MyScheduleModelTest {
         initMockContextWithFakeCurrentTime();
 
         // Create an instance of the model.
-        mMyScheduleModel = spy(new MyScheduleModel(mMockScheduleHelper, mMockContext));
+        mMyScheduleModel = spy(new MyScheduleModel(mMockScheduleHelper, mMockSessionsHelper,
+                mMockContext));
 
     }
 
@@ -109,7 +114,8 @@ public class MyScheduleModelTest {
 
         // Then the schedule helper is called for each day
         verify(mMockScheduleHelper, times(conferenceDays)).getScheduleDataAsync(
-                mLoadScheduleDataCallbackCaptor.capture(), anyLong(), anyLong());
+                mLoadScheduleDataCallbackCaptor.capture(), anyLong(), anyLong(),
+                any(TagFilterHolder.class));
 
         // Given the schedule helper returning the same mock schedule items for each day
         mLoadScheduleDataCallbackCaptor.getValue().onDataLoaded(mMockScheduleItems);
@@ -139,7 +145,8 @@ public class MyScheduleModelTest {
 
         // Then the schedule helper is called for each day
         verify(mMockScheduleHelper, times(conferenceDays)).getScheduleDataAsync(
-                mLoadScheduleDataCallbackCaptor.capture(), anyLong(), anyLong());
+                mLoadScheduleDataCallbackCaptor.capture(), anyLong(), anyLong(),
+                any(TagFilterHolder.class));
 
         // Given the schedule helper returning the same mock schedule items for each day
         mLoadScheduleDataCallbackCaptor.getValue().onDataLoaded(mMockScheduleItems);
@@ -166,7 +173,8 @@ public class MyScheduleModelTest {
 
         // Then the schedule helper is not called
         verify(mMockScheduleHelper, never()).getScheduleDataAsync(
-                mLoadScheduleDataCallbackCaptor.capture(), anyLong(), anyLong());
+                mLoadScheduleDataCallbackCaptor.capture(), anyLong(), anyLong(),
+                any(TagFilterHolder.class));
 
         // Then the callback is fired
         verify(mMockUserActionCallback).onModelUpdated(mMyScheduleModel,
@@ -183,7 +191,6 @@ public class MyScheduleModelTest {
         when(mMockSharedPreferences.getLong("mock_current_time", eq(anyLong())))
                 .thenReturn(FAKE_CURRENT_TIME_OFFSET);
     }
-
     private void setUpMockScheduleItems() {
         when(mMockScheduleItems.size()).thenReturn(2);
         when(mMockScheduleItems.get(0)).thenReturn(mMockScheduleItem1);

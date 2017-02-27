@@ -28,8 +28,8 @@ import java.util.ArrayList;
 
 /**
  * A stub {@link MyScheduleModel}, to be injected using {@link com.google.samples.apps.iosched
- * .injection.Injection}. It overrides {@link #updateData(DataQueryCallback)} to bypass the {@link
- * ScheduleHelper#getScheduleDataAsync(LoadScheduleDataListener, long, long)} mechanism. Use the
+ * .injection.Injection}. It overrides {@link MyScheduleModel#updateData(DataQueryCallback)} to bypass the {@link
+ * ScheduleHelper#getScheduleDataAsync(LoadScheduleDataListener, long, long, TagFilterHolder)} mechanism. Use the
  * classes in {@link com.google.samples.apps.iosched.mockdata} to provide the mock data.
  */
 public class StubMyScheduleModel extends MyScheduleModel {

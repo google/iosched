@@ -125,7 +125,7 @@ public class TagFilterHolder implements Parcelable {
     /**
      * @return true if only live streamed events should be shown, false otherwise
      */
-    public boolean isShowLiveStreamedOnly() {
+    public boolean showLiveStreamedOnly() {
         return mShowLiveStreamedOnly;
     }
 
@@ -169,6 +169,7 @@ public class TagFilterHolder implements Parcelable {
             Collections.addAll(holder.mSelectedTopics, filters);
 
             holder.mShowLiveStreamedOnly = in.readInt() == 1;
+            holder.mShowSessionsOnly = in.readInt() == 1;
 
             return holder;
         }

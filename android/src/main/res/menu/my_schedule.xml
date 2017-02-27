@@ -18,9 +18,10 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
-        android:id="@+id/menu_refresh"
+        android:id="@+id/menu_filter"
+        android:icon="@drawable/ic_action_filter"
         android:orderInCategory="1"
-        android:title="@string/description_refresh"
-        app:showAsAction="never" />
+        android:title="@string/description_filter"
+        app:showAsAction="always" />
 
 </menu>

@@ -43,4 +43,7 @@
     <item name="explore_nav_item" type="id"/>
     <item name="about_nav_item" type="id"/>
 
+    <!-- Used in BaseActivity -->
+    <item name="menu_refresh" type="id" />
+
 </resources>
