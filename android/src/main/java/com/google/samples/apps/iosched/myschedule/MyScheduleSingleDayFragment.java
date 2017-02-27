@@ -109,18 +109,6 @@ public class MyScheduleSingleDayFragment extends Fragment
     }
 
     @Override
-    public void onAttach(Activity activity) {
-        super.onAttach(activity);
-        ((Listener) getActivity()).onSingleDayFragmentAttached(this);
-    }
-
-    @Override
-    public void onDetach() {
-        super.onDetach();
-        ((Listener) getActivity()).onSingleDayFragmentDetached(this);
-    }
-
-    @Override
     public void displayData(MyScheduleModel model, MyScheduleQueryEnum query) {
         switch (query) {
             case SCHEDULE:
@@ -207,12 +195,6 @@ public class MyScheduleSingleDayFragment extends Fragment
     @Override
     public void addListener(UserActionListener<MyScheduleUserActionEnum> listener) {
         mListener = listener;
-    }
-
-    interface Listener {
-        void onSingleDayFragmentAttached(MyScheduleSingleDayFragment fragment);
-
-        void onSingleDayFragmentDetached(MyScheduleSingleDayFragment fragment);
     }
 
     @Override
