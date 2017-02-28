@@ -88,7 +88,9 @@ public class MyScheduleSingleDayFragment extends Fragment
     @Override
     public void onResume() {
         super.onResume();
-        mListener.onUserAction(MyScheduleUserActionEnum.RELOAD_DATA, null);
+        if (mListener != null) {
+            mListener.onUserAction(MyScheduleUserActionEnum.RELOAD_DATA, null);
+        }
     }
 
     @Override

@@ -645,6 +645,8 @@ public final class ScheduleContract {
                 "!='') OR (" +
                 SESSION_YOUTUBE_URL + " is not null AND " + SESSION_YOUTUBE_URL + " != '')";
 
+        public static final String IN_SCHEDULE_SELECTION = SESSION_IN_MY_SCHEDULE + " != 0";
+
         // Used to fetch sessions starting within a specific time interval
         public static final String STARTING_AT_TIME_INTERVAL_SELECTION =
                 SESSION_START + " >= ? and " + SESSION_START + " <= ?";

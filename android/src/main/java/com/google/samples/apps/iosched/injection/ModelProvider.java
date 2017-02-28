@@ -11,6 +11,7 @@ import com.google.samples.apps.iosched.explore.ExploreIOModel;
 import com.google.samples.apps.iosched.feedback.FeedbackHelper;
 import com.google.samples.apps.iosched.feedback.SessionFeedbackModel;
 import com.google.samples.apps.iosched.model.ScheduleHelper;
+import com.google.samples.apps.iosched.myio.MyIOModel;
 import com.google.samples.apps.iosched.myschedule.MyScheduleModel;
 import com.google.samples.apps.iosched.session.SessionDetailModel;
 import com.google.samples.apps.iosched.util.SessionsHelper;
@@ -27,6 +28,9 @@ public class ModelProvider {
 
     @SuppressLint("StaticFieldLeak")
     private static MyScheduleModel stubMyScheduleModel = null;
+
+    @SuppressLint("StaticFieldLeak")
+    private static MyIOModel stubMyIOModel = null;
 
     @SuppressLint("StaticFieldLeak")
     private static SessionFeedbackModel stubSessionFeedbackModel = null;
@@ -48,12 +52,11 @@ public class ModelProvider {
 
     public static MyScheduleModel provideMyScheduleModel(ScheduleHelper scheduleHelper,
             SessionsHelper sessionsHelper, Context context) {
-        if (stubMyScheduleModel != null) {
-            return stubMyScheduleModel.initStaticDataAndObservers();
-        } else {
-            return new MyScheduleModel(scheduleHelper, sessionsHelper, context)
-                    .initStaticDataAndObservers();
-        }
+        MyScheduleModel model = stubMyScheduleModel != null
+                ? stubMyScheduleModel
+                : new MyScheduleModel(scheduleHelper, sessionsHelper, context);
+        model.initStaticDataAndObservers();
+        return model;
     }
 
     public static SessionFeedbackModel provideSessionFeedbackModel(Uri sessionUri, Context context,

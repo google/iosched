@@ -58,10 +58,6 @@ public class ExploreIOActivity extends BaseActivity implements Toolbar.OnMenuIte
 
         setContentView(R.layout.explore_io_act);
         setTitle(R.string.title_explore);
-
-        // ANALYTICS SCREEN: View the Explore I/O screen
-        // Contains: Nothing (Page name is a constant)
-        AnalyticsHelper.sendScreenView(SCREEN_LABEL);
     }
 
     @Override
@@ -88,5 +84,10 @@ public class ExploreIOActivity extends BaseActivity implements Toolbar.OnMenuIte
                 return true;
         }
         return false;
+    }
+
+    @Override
+    protected String getScreenLabel() {
+        return SCREEN_LABEL;
     }
 }

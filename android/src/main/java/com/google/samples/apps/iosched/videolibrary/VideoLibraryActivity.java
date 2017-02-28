@@ -35,18 +35,17 @@ public class VideoLibraryActivity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         setContentView(R.layout.video_library_act);
-
-        // ANALYTICS SCREEN: View the video library screen
-        // Contains: Nothing (Page name is a constant)
-        AnalyticsHelper.sendScreenView(SCREEN_LABEL);
-
     }
 
     @Override
     protected NavigationModel.NavigationItemEnum getSelfNavDrawerItem() {
         return NavigationModel.NavigationItemEnum.VIDEO_LIBRARY;
+    }
+
+    @Override
+    protected String getScreenLabel() {
+        return SCREEN_LABEL;
     }
 
 }

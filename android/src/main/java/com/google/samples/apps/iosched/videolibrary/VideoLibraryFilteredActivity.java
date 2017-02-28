@@ -80,9 +80,6 @@ public class VideoLibraryFilteredActivity extends BaseActivity implements
         mHeaderImage = (ImageView) findViewById(R.id.header_image);
         setTitle(R.string.title_video_library);
 
-        // ANALYTICS SCREEN: View the Filtered Video Library screen
-        // Contains: Nothing (Page name is a constant)
-        AnalyticsHelper.sendScreenView(SCREEN_LABEL);
         LOGD("Tracker", SCREEN_LABEL);
 
         // Add the back button to the toolbar.
@@ -144,5 +141,10 @@ public class VideoLibraryFilteredActivity extends BaseActivity implements
                 ContextCompat.getColor(this, R.color.io16_light_grey);
         mCollapsingToolbar.setContentScrimColor(toolbarScrim);
         mDrawerLayout.setStatusBarBackgroundColor(statusBarColor);
+    }
+
+    @Override
+    protected String getScreenLabel() {
+        return SCREEN_LABEL;
     }
 }

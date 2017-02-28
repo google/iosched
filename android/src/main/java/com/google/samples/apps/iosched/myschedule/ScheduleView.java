@@ -13,7 +13,7 @@
  */
 package com.google.samples.apps.iosched.myschedule;
 
-interface ScheduleView {
+public interface ScheduleView {
     boolean canSwipeRefreshChildScrollUp();
     void onFiltersChanged(TagFilterHolder filters);
 }

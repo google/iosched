@@ -92,10 +92,6 @@ public class MapActivity extends BaseActivity
         setContentView(R.layout.map_act);
         mInfoContainer = findViewById(R.id.map_detail_popup);
 
-        // ANALYTICS SCREEN: View the Map screen on a phone
-        // Contains: Nothing (Page name is a constant)
-        AnalyticsHelper.sendScreenView(SCREEN_LABEL);
-
         overridePendingTransition(0, 0);
     }
 
@@ -314,5 +310,10 @@ public class MapActivity extends BaseActivity
 
         }
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+    }
+
+    @Override
+    protected String getScreenLabel() {
+        return SCREEN_LABEL;
     }
 }

@@ -118,6 +118,8 @@ public class MyScheduleActivity extends BaseActivity implements ScheduleViewPare
 
     private boolean mShowedAnnouncementDialog = false;
 
+    private final Handler mUpdateUiHandler = new Handler();
+
     private MyScheduleModel mModel; // TODO decouple this
     private PresenterImpl<MyScheduleModel, MyScheduleQueryEnum, MyScheduleUserActionEnum>
             mPresenter;
@@ -133,13 +135,6 @@ public class MyScheduleActivity extends BaseActivity implements ScheduleViewPare
         setContentView(R.layout.my_schedule_act);
 
         launchSessionDetailIfRequiredByIntent(getIntent());
-
-        // ANALYTICS SCREEN: View the My Schedule screen
-        // Contains: Nothing (Page name is a constant)
-        AnalyticsHelper.sendScreenView(SCREEN_LABEL);
-
-        String[] singleDayFragmentsTags = null;
-        int currentSingleDayFragment = 0;
 
         mScheduleFilterFragment = (ScheduleFilterFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.filter_drawer);
@@ -165,7 +160,7 @@ public class MyScheduleActivity extends BaseActivity implements ScheduleViewPare
         super.onResume();
 
         if (TimeUtils.isConferenceInProgress(this)) {
-            scheduleNextUIUpdate();
+            scheduleNextUiUpdate();
         }
 
         showAnnouncementDialogIfNeeded(getIntent());
@@ -209,8 +204,10 @@ public class MyScheduleActivity extends BaseActivity implements ScheduleViewPare
     }
 
     private void initPresenter() {
-        mModel = ModelProvider.provideMyScheduleModel(new ScheduleHelper(this),
-                new SessionsHelper(this), this);
+        mModel = ModelProvider.provideMyScheduleModel(
+                new ScheduleHelper(this),
+                new SessionsHelper(this),
+                this);
         TagFilterHolder filters = mScheduleFilterFragment.getFilters();
         mModel.setFilters(filters);
 
@@ -225,7 +222,6 @@ public class MyScheduleActivity extends BaseActivity implements ScheduleViewPare
                 contentFragment.getDayFragments(),
                 MyScheduleModel.MyScheduleUserActionEnum.values(),
                 MyScheduleModel.MyScheduleQueryEnum.values());
-
     }
 
     @Override
@@ -271,10 +267,7 @@ public class MyScheduleActivity extends BaseActivity implements ScheduleViewPare
     public void onAccountChangeRequested() {
         super.onAccountChangeRequested();
         hideLoginFailureView();
-        reloadData();
-    }
 
-    private void reloadData() {
         if (mPresenter != null) {
             mPresenter.onUserAction(MyScheduleModel.MyScheduleUserActionEnum.RELOAD_DATA, null);
         }
@@ -373,19 +366,16 @@ public class MyScheduleActivity extends BaseActivity implements ScheduleViewPare
             mPresenter.onUserAction(MyScheduleModel.MyScheduleUserActionEnum.REDRAW_UI, null);
 
             if (TimeUtils.isConferenceInProgress(activity)) {
-                scheduleNextUIUpdate();
+                scheduleNextUiUpdate();
             }
         }
     };
 
-    private final Handler mUpdateUIHandler = new Handler();
-
-    private void scheduleNextUIUpdate() {
+    void scheduleNextUiUpdate() {
         // Remove existing UI update runnable, if any
-        mUpdateUIHandler.removeCallbacks(mUpdateUIRunnable);
-
+        mUpdateUiHandler.removeCallbacks(mUpdateUIRunnable);
         // Post runnable with delay
-        mUpdateUIHandler.postDelayed(mUpdateUIRunnable, INTERVAL_TO_REDRAW_UI);
+        mUpdateUiHandler.postDelayed(mUpdateUIRunnable, INTERVAL_TO_REDRAW_UI);
     }
 
     private void reloadSchedule(TagFilterHolder filterHolder) {
@@ -395,7 +385,7 @@ public class MyScheduleActivity extends BaseActivity implements ScheduleViewPare
                 .findFragmentById(R.id.schedule_content);
 
         if (contentFragment instanceof ScheduleView) {
-            ((ScheduleView) contentFragment).onFiltersChanged(filterHolder );
+            ((ScheduleView) contentFragment).onFiltersChanged(filterHolder);
         }
     }
 
@@ -404,4 +394,8 @@ public class MyScheduleActivity extends BaseActivity implements ScheduleViewPare
         mScheduleFilterFragment.clearFilters();
     }
 
+    @Override
+    protected String getScreenLabel() {
+        return SCREEN_LABEL;
+    }
 }

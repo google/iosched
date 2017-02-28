@@ -23,6 +23,7 @@ import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.annotation.VisibleForTesting;
+import android.util.SparseArray;
 
 import com.google.samples.apps.iosched.BuildConfig;
 import com.google.samples.apps.iosched.Config;
@@ -41,7 +42,6 @@ import com.google.samples.apps.iosched.util.ThrottledContentObserver;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
 
 import static com.google.samples.apps.iosched.util.LogUtils.LOGD;
@@ -76,7 +76,7 @@ public class MyScheduleModel implements Model<MyScheduleModel.MyScheduleQueryEnu
      * for the first day of the conference, using {@link #PRE_CONFERENCE_DAY_ID} for the
      * preconference day, if any.
      */
-    protected HashMap<Integer, List<ScheduleItem>> mScheduleData = new HashMap<>();
+    private final SparseArray<List<ScheduleItem>> mScheduleData = new SparseArray<>();
 
     // The ScheduleHelper is responsible for feeding data in a format suitable to the Adapter.
     private final ScheduleHelper mScheduleHelper;
@@ -86,7 +86,7 @@ public class MyScheduleModel implements Model<MyScheduleModel.MyScheduleQueryEnu
 
     private final Context mContext;
 
-    protected DataQueryCallback<MyScheduleQueryEnum> mScheduleDataQueryCallback;
+    private DataQueryCallback<MyScheduleQueryEnum> mScheduleDataQueryCallback;
 
     private TagFilterHolder mTagFilterHolder;
 
@@ -109,13 +109,11 @@ public class MyScheduleModel implements Model<MyScheduleModel.MyScheduleQueryEnu
      *
      * @return the Model it can be chained with the constructor
      */
-    public MyScheduleModel initStaticDataAndObservers() {
+    public void initStaticDataAndObservers() {
         if (showPreConferenceData(mContext)) {
             preparePreConferenceDayAdapter();
         }
-
         addDataObservers();
-        return this;
     }
 
     public void setFilters(TagFilterHolder filters) {
@@ -210,10 +208,10 @@ public class MyScheduleModel implements Model<MyScheduleModel.MyScheduleQueryEnu
      * @return the list of items, or an empty list if the day isn't found
      */
     public List<ScheduleItem> getConferenceDataForDay(int day) {
-        if (mScheduleData.containsKey(day)) {
+        if (mScheduleData.indexOfKey(day) >= 0) {
             return mScheduleData.get(day);
         } else {
-            return new ArrayList<>();
+            return Collections.EMPTY_LIST;
         }
     }
 
@@ -320,7 +318,7 @@ public class MyScheduleModel implements Model<MyScheduleModel.MyScheduleQueryEnu
     }
 
     /**
-     * This updates the data, by calling {@link ScheduleHelper#getScheduleDataAsync
+     * This updates the data, by calling {@link ScheduleFetcher#getScheduleDataAsync
      * (LoadScheduleDataListener, long, long)} for each day. It is protected and not private, to
      * allow us to extend this class and use mock data in UI tests (refer {@code
      * StubMyScheduleModel} in {@code androidTest}).
@@ -333,10 +331,8 @@ public class MyScheduleModel implements Model<MyScheduleModel.MyScheduleQueryEnu
             final int dayId = i + 1;
 
             // Immediately use cached data if available
-            if (mScheduleData.containsKey(dayId)) {
-                if (callback != null) {
-                    callback.onModelUpdated(this, MyScheduleQueryEnum.SCHEDULE);
-                }
+            if (callback != null && mScheduleData.indexOfKey(dayId) >= 0) {
+                callback.onModelUpdated(this, MyScheduleQueryEnum.SCHEDULE);
             }
 
             // Update cached data
@@ -385,7 +381,6 @@ public class MyScheduleModel implements Model<MyScheduleModel.MyScheduleQueryEnu
         public String[] getProjection() {
             return projection;
         }
-
     }
 
     public enum MyScheduleUserActionEnum implements UserActionEnum {

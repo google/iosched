@@ -153,10 +153,6 @@ public class ExploreSessionsActivity extends BaseActivity
         // Start loading the tag metadata. This will in turn call the fragment with the
         // correct arguments.
         getSupportLoaderManager().initLoader(TAG_METADATA_TOKEN, null, this);
-
-        // ANALYTICS SCREEN: View the Explore Sessions screen
-        // Contains: Nothing (Page name is a constant)
-        AnalyticsHelper.sendScreenView(SCREEN_LABEL);
     }
 
     @Override
@@ -355,4 +351,8 @@ public class ExploreSessionsActivity extends BaseActivity
     public void onLoaderReset(Loader<Cursor> loader) {
     }
 
+    @Override
+    protected String getScreenLabel() {
+        return SCREEN_LABEL;
+    }
 }

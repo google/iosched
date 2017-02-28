@@ -14,39 +14,17 @@
   -->
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
     android:orientation="vertical">
 
-    <!-- Header bar on top of map -->
-    <LinearLayout
-        android:id="@+id/headerbar"
-        style="@style/HeaderBar"
+    <fragment
+        android:id="@+id/schedule_content"
+        android:name="com.google.samples.apps.iosched.myschedule.MySchedulePagerFragment"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
-
-        <include layout="@layout/toolbar" />
-
-    </LinearLayout>
-
-    <FrameLayout
-        android:id="@+id/main_content"
-        android:layout_width="match_parent"
-        android:layout_height="0px"
-        android:layout_weight="1">
-
-        <!-- TODO Add content here -->
-
-    </FrameLayout>
-
-    <android.support.design.widget.BottomNavigationView
-        android:id="@+id/bottom_navigation"
-        style="@style/Widget.IOSched.BottomNavigationView"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:menu="@menu/bottom_nav_items" />
+        android:layout_height="match_parent"
+        tools:layout="@layout/my_schedule_pager_fragment" />
 
 </LinearLayout>

@@ -65,6 +65,7 @@ import com.google.samples.apps.iosched.sync.SyncHelper;
 import com.google.samples.apps.iosched.sync.account.Account;
 import com.google.samples.apps.iosched.ui.widget.MultiSwipeRefreshLayout;
 import com.google.samples.apps.iosched.util.AccountUtils;
+import com.google.samples.apps.iosched.util.AnalyticsHelper;
 import com.google.samples.apps.iosched.util.RecentTasksStyler;
 import com.google.samples.apps.iosched.welcome.WelcomeActivity;
 
@@ -135,6 +136,11 @@ public abstract class BaseActivity extends AppCompatActivity implements
         ActionBar ab = getSupportActionBar();
         if (ab != null) {
             ab.setDisplayHomeAsUpEnabled(true);
+        }
+
+        String screenLabel = getScreenLabel();
+        if (screenLabel != null) {
+            AnalyticsHelper.sendScreenView(screenLabel);
         }
     }
 
@@ -618,6 +624,10 @@ public abstract class BaseActivity extends AppCompatActivity implements
         }
 
         return mIsFloatingWindow;
+    }
+
+    protected String getScreenLabel() {
+        return null;
     }
 
 }

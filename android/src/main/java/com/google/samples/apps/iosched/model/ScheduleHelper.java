@@ -39,12 +39,22 @@ import static com.google.samples.apps.iosched.util.LogUtils.makeLogTag;
 
 public class ScheduleHelper {
 
+    public static final int MODE_ALL_ITEMS = 0;
+    public static final int MODE_STARRED_ITEMS = 1;
+
     private static final String TAG = makeLogTag(ScheduleHelper.class);
 
-    private Context mContext;
+    private final Context mContext;
+    private final int mMode;
 
-    public ScheduleHelper(Context context) {
-        this.mContext = context;
+    public ScheduleHelper(@NonNull Context context) {
+        mContext = context;
+        mMode = MODE_ALL_ITEMS;
+    }
+
+    public ScheduleHelper(@NonNull Context context, int mode) {
+        mContext = context;
+        mMode = mode;
     }
 
     public ArrayList<ScheduleItem> getScheduleData(long start, long end, TagFilterHolder filters) {
@@ -98,6 +108,10 @@ public class ScheduleHelper {
         try {
             Uri uri = Sessions.CONTENT_URI;
             String selection = Sessions.STARTING_AT_TIME_INTERVAL_SELECTION;
+            if (mMode == MODE_STARRED_ITEMS) {
+                selection = DatabaseUtils.concatenateWhere(selection,
+                        Sessions.IN_SCHEDULE_SELECTION);
+            }
             if (filters != null) {
                 uri = Sessions.buildCategoryTagFilterUri(uri, filters.getSelectedTopicIds(),
                         filters.getCategoryCount());
