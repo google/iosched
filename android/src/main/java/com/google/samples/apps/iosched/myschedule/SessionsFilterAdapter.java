@@ -130,6 +130,10 @@ public class SessionsFilterAdapter extends Adapter<ViewHolder> {
         }
     }
 
+    public TagFilterHolder getFilters() {
+        return mTagFilterHolder;
+    }
+
     public void clearAllFilters() {
         mTagFilterHolder.clear();
         notifyItemRangeChanged(0, getItemCount(), PAYLOAD_CLEAR_CHECK);

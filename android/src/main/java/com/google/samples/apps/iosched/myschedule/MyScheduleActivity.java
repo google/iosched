@@ -211,10 +211,14 @@ public class MyScheduleActivity extends BaseActivity implements ScheduleViewPare
     private void initPresenter() {
         mModel = ModelProvider.provideMyScheduleModel(new ScheduleHelper(this),
                 new SessionsHelper(this), this);
+        TagFilterHolder filters = mScheduleFilterFragment.getFilters();
+        mModel.setFilters(filters);
 
         final MySchedulePagerFragment contentFragment =
                 (MySchedulePagerFragment) getSupportFragmentManager()
                         .findFragmentById(R.id.schedule_content);
+        contentFragment.onFiltersChanged(filters);
+
         // Each fragment in the pager adapter is an updatable view that the presenter must know
         mPresenter = new PresenterImpl<>(
                 mModel,
