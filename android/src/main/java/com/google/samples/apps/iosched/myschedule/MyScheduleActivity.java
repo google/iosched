@@ -68,7 +68,7 @@ import static com.google.samples.apps.iosched.util.LogUtils.makeLogTag;
  * If the user attends the conference, all time slots that have sessions are shown, with a button to
  * allow the user to see all sessions in that slot.
  */
-public class MyScheduleActivity extends BaseActivity {
+public class MyScheduleActivity extends BaseActivity implements ScheduleViewParent {
     /**
      * This is used in the narrow mode, to pass in the day index to the {@link
      * MyScheduleSingleDayFragment}.
@@ -267,10 +267,6 @@ public class MyScheduleActivity extends BaseActivity {
         }
     }
 
-    interface ScheduleView {
-        boolean canSwipeRefreshChildScrollUp();
-    }
-
     @Override
     public boolean canSwipeRefreshChildScrollUp() {
         final Fragment contentFragment = getSupportFragmentManager()
@@ -382,5 +378,17 @@ public class MyScheduleActivity extends BaseActivity {
     private void reloadSchedule(TagFilterHolder filterHolder) {
         mModel.setFilters(filterHolder);
         mPresenter.onUserAction(MyScheduleUserActionEnum.RELOAD_DATA, null);
+        final Fragment contentFragment = getSupportFragmentManager()
+                .findFragmentById(R.id.schedule_content);
+
+        if (contentFragment instanceof ScheduleView) {
+            ((ScheduleView) contentFragment).onFiltersChanged(filterHolder );
+        }
     }
+
+    @Override
+    public void onRequestClearFilters() {
+        mScheduleFilterFragment.clearFilters();
+    }
+
 }

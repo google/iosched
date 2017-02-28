@@ -16,16 +16,25 @@
 
 package com.google.samples.apps.iosched.myschedule;
 
-import static com.google.samples.apps.iosched.util.LogUtils.makeLogTag;
-
+import android.content.res.Resources;
+import android.content.res.Resources.Theme;
+import android.graphics.Typeface;
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.support.v4.content.res.ResourcesCompat;
+import android.text.SpannableStringBuilder;
+import android.text.Spanned;
+import android.text.style.ForegroundColorSpan;
+import android.text.style.StyleSpan;
 
 import com.google.samples.apps.iosched.Config;
+import com.google.samples.apps.iosched.R;
 
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
+
+import static com.google.samples.apps.iosched.util.LogUtils.makeLogTag;
 
 /**
  * Class responsible for storing, managing and retrieving Tag filters used in the filter drawer.
@@ -146,6 +155,42 @@ public class TagFilterHolder implements Parcelable {
 
     private static boolean isCategoryValid(String category) {
         return Config.Tags.CATEGORY_TRACK.equals(category); // we only care about tracks
+    }
+
+    public CharSequence describeFilters(Resources res, Theme theme) {
+        if (!hasAnyFilters()) {
+            return null;
+        }
+        SpannableStringBuilder builder = new SpannableStringBuilder();
+        builder.append(res.getString(R.string.active_filters_description));
+        builder.setSpan(new StyleSpan(Typeface.BOLD), 0, builder.length(),
+                Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+        // TODO this could probably be cleaner
+        int filterNamesStart = builder.length();
+        boolean needComma = false;
+        if (mShowLiveStreamedOnly) {
+            builder.append(res.getString(R.string.session_live_streamed));
+            needComma = true;
+        }
+        if (mShowSessionsOnly) {
+            if (needComma) {
+                builder.append(", ");
+            }
+            builder.append(res.getString(R.string.filter_label_sessions_only));
+            needComma = true;
+        }
+        for (String tag : toStringArray()) {
+            if (needComma) {
+                builder.append(", ");
+            }
+            builder.append(tag);
+            needComma = true;
+        }
+
+        int color = ResourcesCompat.getColor(res, R.color.theme_primary, theme);
+        builder.setSpan(new ForegroundColorSpan(color), filterNamesStart, builder.length(),
+                Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+        return builder;
     }
 
     @Override

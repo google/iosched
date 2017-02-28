@@ -119,6 +119,10 @@ public class ScheduleFilterFragment extends Fragment implements LoaderCallbacks<
         mListener = listener;
     }
 
+    public void clearFilters() {
+        mAdapter.clearAllFilters();
+    }
+
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
         if (id == TAG_METADATA_TOKEN) {

@@ -585,8 +585,14 @@
     <!-- Label of filter option to show only sessions -->
     <string name="filter_label_sessions_only">Sessions only</string>
 
+    <!-- Label of filter option to show only sessions (intentional space) -->
+    <string name="active_filters_description">"Filters: "</string>
+
     <!-- Label for a button which clears all filters in the filter pane -->
     <string name="clear_all">Clear all</string>
+
+    <!-- Label for a button which clears all filters in the filter pane -->
+    <string name="clear_filters">Clear filters</string>
 
     <!-- BEGIN Explore Message Card User Messages -->
     <string name="explore_io_notifications_ask_opt_in"
