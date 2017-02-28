@@ -28,6 +28,7 @@ public class NavigationConfig {
 
     public final static NavigationItemEnum[] ITEMS = new NavigationItemEnum[]{
             NavigationItemEnum.MY_SCHEDULE,
+            NavigationItemEnum.MY_IO,
             NavigationItemEnum.MAP,
             NavigationItemEnum.DEBUG,
     };

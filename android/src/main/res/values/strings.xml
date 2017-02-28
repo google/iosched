@@ -256,6 +256,9 @@
     <!-- Menu item to open the Map screen [CHAR_LIMIT=20] -->
     <string name="navdrawer_item_map">Map</string>
 
+    <!-- Menu item to open the My I/O screen [CHAR_LIMIT=20] -->
+    <string name="navdrawer_item_my_io">My I/O</string>
+
     <!-- Menu item to open the My Schedule screen [CHAR_LIMIT=20] -->
     <string name="navdrawer_item_my_schedule">Schedule</string>
 
@@ -494,6 +497,9 @@
 
     <!-- Navigation bar text for the map -->
     <string name="title_map">Map</string>
+
+    <!-- Navigation bar text for viewing the user's My I/O -->
+    <string name="title_my_io">My I/O</string>
 
     <!-- Navigation bar text for viewing the user's schedule -->
     <string name="title_my_schedule">Schedule</string>

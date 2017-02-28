@@ -209,6 +209,13 @@
         </activity>
 
         <activity
+            android:name=".myio.MyIOActivity"
+            android:exported="false"
+            android:label="@string/title_my_io"
+            android:launchMode="singleTop"
+            android:theme="@style/Theme.IOSched.MySchedule" />
+
+        <activity
             android:name=".settings.SettingsActivity"
             android:exported="false"
             android:label="@string/title_settings"

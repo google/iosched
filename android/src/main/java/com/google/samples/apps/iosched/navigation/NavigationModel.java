@@ -25,6 +25,7 @@ import com.google.samples.apps.iosched.archframework.UserActionEnum;
 import com.google.samples.apps.iosched.debug.DebugActivity;
 import com.google.samples.apps.iosched.explore.ExploreIOActivity;
 import com.google.samples.apps.iosched.map.MapActivity;
+import com.google.samples.apps.iosched.myio.MyIOActivity;
 import com.google.samples.apps.iosched.myschedule.MyScheduleActivity;
 import com.google.samples.apps.iosched.navigation.NavigationModel.NavigationQueryEnum;
 import com.google.samples.apps.iosched.navigation.NavigationModel.NavigationUserActionEnum;
@@ -96,6 +97,8 @@ public class NavigationModel implements Model<NavigationQueryEnum, NavigationUse
     public enum NavigationItemEnum {
         MY_SCHEDULE(R.id.myschedule_nav_item, R.string.navdrawer_item_my_schedule,
                 R.drawable.ic_navview_schedule, MyScheduleActivity.class, true),
+        MY_IO(R.id.myio_nav_item, R.string.navdrawer_item_my_io, R.drawable.ic_navview_myio,
+                MyIOActivity.class, true),
         EXPLORE(R.id.explore_nav_item, R.string.navdrawer_item_explore,
                 R.drawable.ic_navview_explore, ExploreIOActivity.class, true),
         MAP(R.id.map_nav_item, R.string.navdrawer_item_map, R.drawable.ic_navview_map,
