@@ -16,9 +16,6 @@
 
 package com.google.samples.apps.iosched.explore;
 
-import static com.google.samples.apps.iosched.util.LogUtils.LOGD;
-import static com.google.samples.apps.iosched.util.LogUtils.makeLogTag;
-
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
@@ -33,7 +30,6 @@ import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.text.TextUtils;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -42,14 +38,13 @@ import android.widget.TextView;
 
 import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.target.Target;
-import com.google.samples.apps.iosched.Config;
 import com.google.samples.apps.iosched.R;
 import com.google.samples.apps.iosched.model.TagMetadata;
+import com.google.samples.apps.iosched.model.TagMetadata.Tag;
 import com.google.samples.apps.iosched.myschedule.SessionsFilterAdapter;
 import com.google.samples.apps.iosched.myschedule.SessionsFilterAdapter.OnFiltersChangedListener;
 import com.google.samples.apps.iosched.myschedule.TagFilterHolder;
 import com.google.samples.apps.iosched.provider.ScheduleContract;
-import com.google.samples.apps.iosched.settings.SettingsUtils;
 import com.google.samples.apps.iosched.ui.BaseActivity;
 import com.google.samples.apps.iosched.ui.SearchActivity;
 import com.google.samples.apps.iosched.util.AnalyticsHelper;
@@ -57,7 +52,8 @@ import com.google.samples.apps.iosched.util.ImageLoader;
 import com.google.samples.apps.iosched.util.TagUtils;
 import com.google.samples.apps.iosched.util.UIUtils;
 
-import java.util.List;
+import static com.google.samples.apps.iosched.util.LogUtils.LOGD;
+import static com.google.samples.apps.iosched.util.LogUtils.makeLogTag;
 
 /**
  * This activity displays all sessions based on the selected filters.
@@ -241,35 +237,12 @@ public class ExploreSessionsActivity extends BaseActivity
 
             String tag = getIntent().getStringExtra(EXTRA_FILTER_TAG);
             TagMetadata.Tag userTag = mTagMetadata.getTag(tag);
-            String userTagCategory = userTag == null ? null : userTag.getCategory();
-            if (tag != null && userTagCategory != null) {
-                mTagFilterHolder.add(tag, userTagCategory);
+            if (userTag != null) {
+                mTagFilterHolder.add(userTag);
             }
 
             mTagFilterHolder.setShowLiveStreamedOnly(
                     getIntent().getBooleanExtra(EXTRA_SHOW_LIVE_STREAM_SESSIONS, false));
-
-            // update the selected filters using the following logic:
-            // a) For onsite attendees, we should default to showing all 'types'
-            // (i.e. Sessions, code labs, sandbox, misc).
-            if (SettingsUtils.isAttendeeAtVenue(this)) {
-                List<TagMetadata.Tag> tags =
-                        mTagMetadata.getTagsInCategory(Config.Tags.CATEGORY_TYPE);
-                // Here we only add all 'types' if the user has not explicitly selected
-                // one of the category_type tags.
-                if (tags != null && !TextUtils.equals(userTagCategory, Config.Tags.CATEGORY_TYPE)) {
-                    for (TagMetadata.Tag theTag : tags) {
-                        mTagFilterHolder.add(theTag.getId(), theTag.getCategory());
-                    }
-                }
-            } else {
-                // b) For remote users, default to only showing Sessions that are Live streamed.
-                TagMetadata.Tag theTag = mTagMetadata.getTag(Config.Tags.SESSIONS);
-                if (!TextUtils.equals(theTag.getCategory(), userTagCategory)) {
-                    mTagFilterHolder.add(theTag.getId(), theTag.getCategory());
-                }
-                mTagFilterHolder.setShowLiveStreamedOnly(true);
-            }
         }
         reloadFragment();
         mFilterAdapter = new SessionsFilterAdapter(this, mTagMetadata);
@@ -297,12 +270,11 @@ public class ExploreSessionsActivity extends BaseActivity
 
             // If exactly one track is selected, show its title and image.
             if (mTagFilterHolder.getSelectedTopicsCount() == 1) {
-                for (String tagId : mTagFilterHolder.getSelectedTopics()) {
-                    if (TagUtils.isTrackTag(tagId) || TagUtils.isThemeTag(tagId)) {
-                        TagMetadata.Tag selectedTag = mTagMetadata.getTag(tagId);
-                        title = selectedTag.getName();
-                        headerImage = selectedTag.getPhotoUrl();
-                        trackColor = selectedTag.getColor();
+                for (Tag tag : mTagFilterHolder.getSelectedTopics()) {
+                    if (TagUtils.isTrackTag(tag.getId()) || TagUtils.isThemeTag(tag.getId())) {
+                        title = tag.getName();
+                        headerImage = tag.getPhotoUrl();
+                        trackColor = tag.getColor();
                         break;
                     }
                 }
@@ -360,11 +332,11 @@ public class ExploreSessionsActivity extends BaseActivity
         if (uri == null) {
             uri = ScheduleContract.Sessions.buildCategoryTagFilterUri(
                     ScheduleContract.Sessions.CONTENT_URI,
-                    mTagFilterHolder.toStringArray(),
+                    mTagFilterHolder.getSelectedTopicIds(),
                     mTagFilterHolder.getCategoryCount());
         } else { // build a uri with the specific filters
             uri = ScheduleContract.Sessions.buildCategoryTagFilterUri(uri,
-                    mTagFilterHolder.toStringArray(),
+                    mTagFilterHolder.getSelectedTopicIds(),
                     mTagFilterHolder.getCategoryCount());
         }
         setHeader();

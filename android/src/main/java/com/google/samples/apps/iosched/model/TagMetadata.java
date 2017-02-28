@@ -18,7 +18,10 @@ package com.google.samples.apps.iosched.model;
 
 import android.content.Context;
 import android.database.Cursor;
+import android.os.Parcel;
+import android.os.Parcelable;
 import android.provider.BaseColumns;
+import android.support.annotation.NonNull;
 import android.support.v4.content.CursorLoader;
 import android.text.TextUtils;
 
@@ -183,7 +186,7 @@ public class TagMetadata {
         }
     }
 
-    static public class Tag implements Comparable<Tag> {
+    static public class Tag implements Comparable<Tag>, Parcelable {
         private String mId;
         private String mName;
         private String mCategory;
@@ -240,5 +243,53 @@ public class TagMetadata {
         public String toString() {
             return "TagMetadata.Tag: id = " + mId + " name = " + mName;
         }
+
+        @Override
+        public boolean equals(Object obj) {
+            return obj instanceof Tag && TextUtils.equals(mId, ((Tag) obj).mId);
+        }
+
+        @Override
+        public int hashCode() {
+            return mId.hashCode();
+        }
+
+        protected Tag(Parcel in) {
+            mId = in.readString();
+            mName = in.readString();
+            mCategory = in.readString();
+            mOrderInCategory = in.readInt();
+            mAbstract = in.readString();
+            mColor = in.readInt();
+            mPhotoUrl = in.readString();
+        }
+
+        @Override
+        public void writeToParcel(@NonNull Parcel out, int flags) {
+            out.writeString(mId);
+            out.writeString(mName);
+            out.writeString(mCategory);
+            out.writeInt(mOrderInCategory);
+            out.writeString(mAbstract);
+            out.writeInt(mColor);
+            out.writeString(mPhotoUrl);
+        }
+
+        @Override
+        public int describeContents() {
+            return 0;
+        }
+
+        public static final Creator<Tag> CREATOR = new Parcelable.Creator<Tag>() {
+            @Override
+            public Tag createFromParcel(Parcel in) {
+                return new Tag(in);
+            }
+
+            @Override
+            public Tag[] newArray(int size) {
+                return new Tag[size];
+            }
+        };
     }
 }

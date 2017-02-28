@@ -99,7 +99,7 @@ public class ScheduleHelper {
             Uri uri = Sessions.CONTENT_URI;
             String selection = Sessions.STARTING_AT_TIME_INTERVAL_SELECTION;
             if (filters != null) {
-                uri = Sessions.buildCategoryTagFilterUri(uri, filters.toStringArray(),
+                uri = Sessions.buildCategoryTagFilterUri(uri, filters.getSelectedTopicIds(),
                         filters.getCategoryCount());
                 if (filters.showLiveStreamedOnly()) {
                     selection = DatabaseUtils.concatenateWhere(selection,

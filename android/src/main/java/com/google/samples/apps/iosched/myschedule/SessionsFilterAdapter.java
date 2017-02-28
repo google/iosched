@@ -13,9 +13,6 @@
  */
 package com.google.samples.apps.iosched.myschedule;
 
-import static com.google.samples.apps.iosched.util.LogUtils.LOGE;
-import static com.google.samples.apps.iosched.util.LogUtils.makeLogTag;
-
 import android.content.Context;
 import android.content.res.ColorStateList;
 import android.content.res.Resources;
@@ -41,6 +38,9 @@ import com.google.samples.apps.iosched.model.TagMetadata.Tag;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+
+import static com.google.samples.apps.iosched.util.LogUtils.LOGE;
+import static com.google.samples.apps.iosched.util.LogUtils.makeLogTag;
 
 public class SessionsFilterAdapter extends Adapter<ViewHolder> {
 
@@ -122,7 +122,7 @@ public class SessionsFilterAdapter extends Adapter<ViewHolder> {
     }
 
     public void addTag(Tag tag) {
-        if (mTagFilterHolder.add(tag.getId(), tag.getCategory())) {
+        if (mTagFilterHolder.add(tag)) {
             int position = mItems.indexOf(tag);
             if (position >= 0) {
                 notifyItemChanged(position);
@@ -160,7 +160,7 @@ public class SessionsFilterAdapter extends Adapter<ViewHolder> {
             case TYPE_TAG_FILTER:
                 TagFilterViewHolder tfvh = (TagFilterViewHolder) holder;
                 Tag filter = (Tag) mItems.get(position);
-                tfvh.bindFilter(filter, mTagFilterHolder.contains(filter.getId()));
+                tfvh.bindFilter(filter, mTagFilterHolder.contains(filter));
                 break;
             case TYPE_STATIC_FILTER:
                 StaticFilterViewHolder sfvh = (StaticFilterViewHolder) holder;
@@ -221,8 +221,8 @@ public class SessionsFilterAdapter extends Adapter<ViewHolder> {
     }
 
     private void updateTagFilter(Tag filter, boolean checked) {
-        if ((checked && mTagFilterHolder.add(filter.getId(), filter.getCategory()))
-                || (!checked && mTagFilterHolder.remove(filter.getId(), filter.getCategory()))) {
+        if ((checked && mTagFilterHolder.add(filter))
+                || (!checked && mTagFilterHolder.remove(filter))) {
             dispatchFiltersChanged();
         }
     }
