@@ -235,6 +235,15 @@ public class MyScheduleActivity extends BaseActivity {
         }
     }
 
+    @Override
+    public void onBackPressed() {
+        if (mDrawerLayout.isDrawerOpen(GravityCompat.END)) {
+            mDrawerLayout.closeDrawer(GravityCompat.END);
+        } else {
+            super.onBackPressed();
+        }
+    }
+
     private void hideLoginFailureView() {
         mFailedLoginView.setVisibility(View.GONE);
     }
