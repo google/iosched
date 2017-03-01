@@ -14,22 +14,27 @@
 
 package com.google.samples.apps.iosched.myschedule;
 
+import android.app.Activity;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.AppBarLayout;
+import android.support.design.widget.AppBarLayout.OnOffsetChangedListener;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewCompat;
 import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.google.samples.apps.iosched.Config;
 import com.google.samples.apps.iosched.R;
 import com.google.samples.apps.iosched.util.TimeUtils;
 
-public class MySchedulePagerFragment extends Fragment implements MyScheduleActivity.ScheduleView {
+public class MySchedulePagerFragment extends Fragment implements ScheduleView {
 
     /**
      * The key used to save the tags for {@link MyScheduleSingleDayFragment}s so the automatically
@@ -61,6 +66,14 @@ public class MySchedulePagerFragment extends Fragment implements MyScheduleActiv
     private TabLayout mTabLayout;
 
     /**
+     * Bar that appears when there are active filters
+     */
+    private AppBarLayout mFiltersBar;
+    private View mFiltersBarInner;
+    private TextView mFiltersDescription;
+    private View mClearFilters;
+
+    /**
      * During the conference, this is set to the current day, eg 1 for the first day, 2 for the
      * second etc Outside of conference period, this is set to 1.
      */
@@ -77,6 +90,29 @@ public class MySchedulePagerFragment extends Fragment implements MyScheduleActiv
             return ViewCompat.canScrollVertically(fragment.getRecyclerView(), -1);
         }
         return false;
+    }
+
+    @Override
+    public void onFiltersChanged(TagFilterHolder filters) {
+        CharSequence filtersDesc = filters.describeFilters(getResources(), getContext().getTheme());
+        mFiltersDescription.setText(filtersDesc);
+
+        final boolean show = filters.hasAnyFilters();
+        mFiltersBar.setExpanded(show);
+        if (show) {
+            mFiltersBarInner.setVisibility(View.VISIBLE);
+        } else {
+            // Wait for the bar to animate away before making the view GONE
+            mFiltersBar.addOnOffsetChangedListener(new OnOffsetChangedListener() {
+                @Override
+                public void onOffsetChanged(AppBarLayout appBarLayout, int verticalOffset) {
+                    if (Math.abs(verticalOffset) == appBarLayout.getTotalScrollRange()) {
+                        mFiltersBarInner.setVisibility(View.GONE);
+                        mFiltersBar.removeOnOffsetChangedListener(this);
+                    }
+                }
+            });
+        }
     }
 
     @Nullable
@@ -130,6 +166,22 @@ public class MySchedulePagerFragment extends Fragment implements MyScheduleActiv
         mViewPager.setPageMargin(getResources()
                 .getDimensionPixelSize(R.dimen.my_schedule_page_margin));
         mViewPager.setPageMarginDrawable(R.drawable.page_margin);
+
+        mFiltersBar = (AppBarLayout) view.findViewById(R.id.filters_bar);
+        mFiltersBarInner = mFiltersBar.findViewById(R.id.filters_bar_inner);
+        mFiltersDescription = (TextView) mFiltersBar.findViewById(R.id.filters_description);
+        mClearFilters = mFiltersBar.findViewById(R.id.clear_filters);
+
+        mFiltersBar.setExpanded(false);
+        mClearFilters.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Activity activity = getActivity();
+                if (activity instanceof ScheduleViewParent) {
+                    ((ScheduleViewParent) activity).onRequestClearFilters();
+                }
+            }
+        });
 
         calculateCurrentDay();
         if (mViewPager != null) {

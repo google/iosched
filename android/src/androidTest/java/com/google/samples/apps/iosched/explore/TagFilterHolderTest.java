@@ -14,22 +14,21 @@
 
 package com.google.samples.apps.iosched.explore;
 
-import static junit.framework.Assert.assertTrue;
-
-import static org.hamcrest.core.Is.is;
-import static org.junit.Assert.assertThat;
-
 import android.os.Parcel;
 import android.support.test.runner.AndroidJUnit4;
 import android.test.suitebuilder.annotation.LargeTest;
 
-import com.google.samples.apps.iosched.Config;
 import com.google.samples.apps.iosched.Config.Tags;
+import com.google.samples.apps.iosched.model.TagMetadata.Tag;
 import com.google.samples.apps.iosched.myschedule.TagFilterHolder;
 
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+
+import static junit.framework.Assert.assertTrue;
+import static org.hamcrest.core.Is.is;
+import static org.junit.Assert.assertThat;
 
 /**
  * Tests for writing/reading from {@link Parcel} for {@link TagFilterHolder}. These tests require
@@ -59,9 +58,13 @@ public class TagFilterHolderTest {
     @Test
     public void writeToParcel_NonEmptyValues_readFromParcel() {
         // Given a tag filter holder with 3 tag ids and 2 categories, and with livestream
-        mTagFilterHolder.add(TAG_ID_1, Config.Tags.CATEGORY_TRACK);
-        mTagFilterHolder.add(TAG_ID_2, Config.Tags.CATEGORY_TRACK);
-        mTagFilterHolder.add(TAG_ID_3, Config.Tags.CATEGORY_TRACK);
+        final Tag tag1 = new Tag(TAG_ID_1, "Tag1", Tags.CATEGORY_TRACK, 0, null, 0, null);
+        final Tag tag2 = new Tag(TAG_ID_2, "Tag2", Tags.CATEGORY_TRACK, 0, null, 0, null);
+        final Tag tag3 = new Tag(TAG_ID_3, "Tag3", Tags.CATEGORY_TRACK, 0, null, 0, null);
+        mTagFilterHolder.add(tag1);
+        mTagFilterHolder.add(tag2);
+        mTagFilterHolder.add(tag3);
+
         mTagFilterHolder.setShowLiveStreamedOnly(true);
         mTagFilterHolder.setShowSessionsOnly(true);
 
@@ -72,9 +75,9 @@ public class TagFilterHolderTest {
         // and with livestream
         createTagFilterHolderFromParcel();
         assertThat(mReadTagFilterHolder.getSelectedTopicsCount(), is(3));
-        assertTrue(mReadTagFilterHolder.contains(TAG_ID_1));
-        assertTrue(mReadTagFilterHolder.contains(TAG_ID_2));
-        assertTrue(mReadTagFilterHolder.contains(TAG_ID_3));
+        assertTrue(mReadTagFilterHolder.contains(tag1));
+        assertTrue(mReadTagFilterHolder.contains(tag2));
+        assertTrue(mReadTagFilterHolder.contains(tag3));
         assertThat(mReadTagFilterHolder.getCategoryCount(), is(1));
         assertTrue(mReadTagFilterHolder.showLiveStreamedOnly());
         assertTrue(mReadTagFilterHolder.showSessionsOnly());
@@ -97,7 +100,7 @@ public class TagFilterHolderTest {
         // Given an empty TagFilterHolder
 
         // When adding a tag with an invalid category
-        mTagFilterHolder.add("tag", Tags.CATEGORY_THEME);
+        mTagFilterHolder.add(new Tag("TAG", "You're it!", Tags.CATEGORY_THEME, 0, null, 0, null));
 
         // Then the tag filter holder is still empty and has not crashed
         assertThat(mTagFilterHolder.getSelectedTopicsCount(), is(0));
