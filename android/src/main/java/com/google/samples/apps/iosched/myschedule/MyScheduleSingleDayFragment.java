@@ -144,7 +144,7 @@ public class MyScheduleSingleDayFragment extends Fragment
             if (mViewAdapter == null) {
                 mViewAdapter = new MyScheduleDayAdapter(getActivity(), mListener, mTagMetadata);
             }
-            mViewAdapter.updateItems(model.getConferenceDataForDay(mDayId));
+            mViewAdapter.updateItems(model.getMessages(), model.getConferenceDataForDay(mDayId));
             if (mRecyclerView.getAdapter() == null) {
                 mRecyclerView.setAdapter(mViewAdapter);
             }

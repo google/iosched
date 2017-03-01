@@ -41,6 +41,7 @@ import com.google.android.flexbox.FlexboxLayout;
 import com.google.samples.apps.iosched.Config;
 import com.google.samples.apps.iosched.R;
 import com.google.samples.apps.iosched.archframework.UpdatableView.UserActionListener;
+import com.google.samples.apps.iosched.messages.MessageData;
 import com.google.samples.apps.iosched.feedback.SessionFeedbackActivity;
 import com.google.samples.apps.iosched.model.ScheduleItem;
 import com.google.samples.apps.iosched.model.ScheduleItemHelper;
@@ -66,13 +67,14 @@ public class MyScheduleDayAdapter
 
     private static final long[] ID_ARRAY = new long[4];
 
-    private static final int TYPE_SLOT = 0;
-    private static final int TYPE_TIME_HEADER = 1;
+    private static final int ITEM_TYPE_SLOT = 0;
+    private static final int ITEM_TYPE_TIME_HEADER = 1;
+    private static final int ITEM_TYPE_MESSAGE = 2;
 
     private final Context mContext;
 
     // list of items served by this adapter
-    private final ArrayList<ScheduleItem> mItems = new ArrayList<>();
+    private final ArrayList mItems = new ArrayList();
     private final UserActionListener<MyScheduleUserActionEnum> mListener;
 
     private TagMetadata mTagMetadata;
@@ -94,19 +96,15 @@ public class MyScheduleDayAdapter
 
     @Override
     public long getItemId(int position) {
-        final ScheduleItem item = mItems.get(position);
-
-        // This code may look complex but its pretty simple. We need to use stable ids so that
-        // any user interaction animations are run correctly (such as ripples). This means that
-        // we need to generate a stable id. Not all items have sessionIds so we generate one
-        // using the sessionId, title, start time and end time.
-        final long[] array = ID_ARRAY;
-        array[0] = TextUtils.isEmpty(item.sessionId) ? 0 : item.sessionId.hashCode();
-        array[1] = TextUtils.isEmpty(item.title) ? 0 : item.title.hashCode();
-        array[2] = item.startTime;
-        array[3] = item.endTime;
-
-        return Arrays.hashCode(array);
+        final Object item = mItems.get(position);
+        if (item instanceof ScheduleItem) {
+            return generateIdForScheduleItem((ScheduleItem) item);
+        } else if (item instanceof TimeSeperatorItem) {
+            return ((TimeSeperatorItem) item).hashCode();
+        } else if (item instanceof MessageData) {
+            return ((MessageData) item).hashCode();
+        }
+        return position;
     }
 
     private final View.OnClickListener mUriOnClickListener = new View.OnClickListener() {
@@ -138,12 +136,15 @@ public class MyScheduleDayAdapter
     public ListViewHolder onCreateViewHolder(final ViewGroup parent, final int viewType) {
         final LayoutInflater li = LayoutInflater.from(parent.getContext());
         switch (viewType) {
-            case TYPE_SLOT:
+            case ITEM_TYPE_SLOT:
                 return new ItemViewHolder(
                         li.inflate(R.layout.my_schedule_item, parent, false));
-            case TYPE_TIME_HEADER:
+            case ITEM_TYPE_TIME_HEADER:
                 return new TimeSeperatorViewHolder(
-                        li.inflate(R.layout.my_schedule_time_separator_item, parent, false));
+                        li.inflate(R.layout.my_schedule_item_time_separator, parent, false));
+            case ITEM_TYPE_MESSAGE:
+                return new MessageViewHolder(
+                        li.inflate(R.layout.my_schedule_item_message_card, parent, false));
         }
         return null;
     }
@@ -155,11 +156,15 @@ public class MyScheduleDayAdapter
 
     @Override
     public int getItemViewType(int position) {
-        final ScheduleItem item = mItems.get(position);
-        if (item instanceof TimeSeperatorItem) {
-            return TYPE_TIME_HEADER;
+        final Object item = mItems.get(position);
+        if (item instanceof ScheduleItem) {
+            return ITEM_TYPE_SLOT;
+        } else if (item instanceof TimeSeperatorItem) {
+            return ITEM_TYPE_TIME_HEADER;
+        } else if (item instanceof MessageData) {
+            return ITEM_TYPE_MESSAGE;
         }
-        return TYPE_SLOT;
+        return -1;
     }
 
     public void setTagMetadata(final TagMetadata tagMetadata) {
@@ -169,8 +174,14 @@ public class MyScheduleDayAdapter
         }
     }
 
-    public void updateItems(final List<ScheduleItem> items) {
+    public void updateItems(final List<MessageData> messages, final List<ScheduleItem> items) {
         mItems.clear();
+
+        // Add all messages first
+        if (items != null && !items.isEmpty()) {
+            mItems.addAll(messages);
+        }
+
         if (items != null) {
             for (int i = 0, size = items.size(); i < size; i++) {
                 final ScheduleItem prev = i > 0 ? items.get(i - 1) : null;
@@ -191,7 +202,7 @@ public class MyScheduleDayAdapter
         notifyDataSetChanged();
     }
 
-    class ItemViewHolder extends ListViewHolder {
+    class ItemViewHolder extends ListViewHolder<ScheduleItem> {
         private final TextView title;
         private final TextView description;
         private final Button feedback;
@@ -367,7 +378,7 @@ public class MyScheduleDayAdapter
         }
     }
 
-    class TimeSeperatorViewHolder extends ListViewHolder {
+    private static class TimeSeperatorViewHolder extends ListViewHolder<TimeSeperatorItem> {
         private final TextView mStartTime;
 
         TimeSeperatorViewHolder(final View view) {
@@ -375,29 +386,90 @@ public class MyScheduleDayAdapter
             mStartTime = (TextView) view.findViewById(R.id.start_time);
         }
 
-        void onBind(@NonNull final ScheduleItem item) {
+        void onBind(@NonNull final TimeSeperatorItem item) {
             mStartTime.setText(TimeUtils.formatShortTime(
                     itemView.getContext(), new Date(item.startTime)));
         }
     }
 
-    abstract static class ListViewHolder extends RecyclerView.ViewHolder {
+    abstract static class ListViewHolder<T> extends RecyclerView.ViewHolder {
         public ListViewHolder(final View itemView) {
             super(itemView);
         }
 
-        abstract void onBind(@NonNull final ScheduleItem item);
+        abstract void onBind(@NonNull final T item);
     }
 
-    static class TimeSeperatorItem extends ScheduleItem {
-        TimeSeperatorItem(ScheduleItem item) {
-            this.startTime = item.startTime;
+    class MessageViewHolder extends ListViewHolder<MessageData> {
+        final ImageView icon;
+        final TextView description;
+        final Button buttonStart;
+        final Button buttonEnd;
+
+        public MessageViewHolder(final View itemView) {
+            super(itemView);
+            icon = (ImageView) itemView.findViewById(R.id.icon);
+            description = (TextView) itemView.findViewById(R.id.description);
+            buttonStart = (Button) itemView.findViewById(R.id.buttonStart);
+            buttonEnd = (Button) itemView.findViewById(R.id.buttonEnd);
+
+            // Work with pre-existing infrastructure which supplied a click listener and relied on
+            // a shared pref listener & a reload to dismiss message cards.
+            // By setting our own click listener and manually calling onClick we can remove the
+            // item in the adapter directly.
+            buttonStart.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(final View v) {
+                    final int position = getAdapterPosition();
+                    if (position != RecyclerView.NO_POSITION) {
+                        final MessageData message = (MessageData) mItems.get(position);
+                        message.getStartButtonClickListener().onClick(buttonStart);
+                        mItems.remove(position);
+                        notifyItemRemoved(position);
+                    }
+                }
+            });
+            buttonEnd.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(final View v) {
+                    final int position = getAdapterPosition();
+                    if (position != RecyclerView.NO_POSITION) {
+                        final MessageData message = (MessageData) mItems.get(position);
+                        message.getEndButtonClickListener().onClick(buttonEnd);
+                        mItems.remove(position);
+                        notifyItemRemoved(position);
+                    }
+                }
+            });
+        }
+
+        @Override
+        void onBind(@NonNull final MessageData message) {
+            description.setText(message.getMessageString(itemView.getContext()));
+            if (message.getIconDrawableId() > 0) {
+                icon.setVisibility(View.VISIBLE);
+                icon.setImageResource(message.getIconDrawableId());
+            } else {
+                icon.setVisibility(View.GONE);
+            }
+            if (message.getStartButtonStringResourceId() != -1) {
+                buttonEnd.setVisibility(View.VISIBLE);
+                buttonStart.setText(message.getStartButtonStringResourceId());
+            } else {
+                buttonStart.setVisibility(View.GONE);
+            }
+            if (message.getEndButtonStringResourceId() != -1) {
+                buttonEnd.setVisibility(View.VISIBLE);
+                buttonEnd.setText(message.getEndButtonStringResourceId());
+            } else {
+                buttonEnd.setVisibility(View.GONE);
+            }
         }
     }
 
     public int findTimeHeaderPositionForTime(final long time) {
         for (int j = mItems.size() - 1; j >= 0; j--) {
-            ScheduleItem item = mItems.get(j);
+            Object item = mItems.get(j);
             // Keep going backwards until we find a time separator which has a start time before
             // now
             if (item instanceof TimeSeperatorItem && ((TimeSeperatorItem) item).startTime < time) {
@@ -405,5 +477,47 @@ public class MyScheduleDayAdapter
             }
         }
         return -1;
+    }
+
+    private static class TimeSeperatorItem {
+        private final long startTime;
+
+        TimeSeperatorItem(ScheduleItem item) {
+            this.startTime = item.startTime;
+        }
+
+        @Override
+        public boolean equals(final Object o) {
+            if (this == o) {
+                return true;
+            }
+            if (o == null || getClass() != o.getClass()) {
+                return false;
+            }
+            final TimeSeperatorItem that = (TimeSeperatorItem) o;
+            if (startTime != that.startTime) {
+                return false;
+            }
+            return true;
+        }
+
+        @Override
+        public int hashCode() {
+            return (int) (startTime ^ (startTime >>> 32));
+        }
+    }
+
+    private static long generateIdForScheduleItem(@NonNull ScheduleItem item) {
+        final long[] array = ID_ARRAY;
+        // This code may look complex but its pretty simple. We need to use stable ids so that
+        // any user interaction animations are run correctly (such as ripples). This means that
+        // we need to generate a stable id. Not all items have sessionIds so we generate one
+        // using the sessionId, title, start time and end time.
+        array[0] = !TextUtils.isEmpty(item.sessionId)
+                ? item.sessionId.hashCode() : 0;
+        array[1] = !TextUtils.isEmpty(item.title) ? item.title.hashCode() : 0;
+        array[2] = item.startTime;
+        array[3] = item.endTime;
+        return Arrays.hashCode(array);
     }
 }

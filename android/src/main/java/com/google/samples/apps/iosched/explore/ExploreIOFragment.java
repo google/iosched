@@ -56,7 +56,7 @@ import com.google.samples.apps.iosched.explore.ExploreIOModel.ExploreIOUserActio
 import com.google.samples.apps.iosched.explore.data.EventData;
 import com.google.samples.apps.iosched.explore.data.ItemGroup;
 import com.google.samples.apps.iosched.explore.data.LiveStreamData;
-import com.google.samples.apps.iosched.explore.data.MessageData;
+import com.google.samples.apps.iosched.messages.MessageData;
 import com.google.samples.apps.iosched.explore.data.SessionData;
 import com.google.samples.apps.iosched.injection.ModelProvider;
 import com.google.samples.apps.iosched.provider.ScheduleContract;
@@ -514,7 +514,7 @@ public class ExploreIOFragment extends Fragment
 
         private @NonNull MessageViewHolder createMessageViewHolder(final ViewGroup parent) {
             final MessageViewHolder holder = new MessageViewHolder(
-                    mInflater.inflate(R.layout.explore_io_message_card, parent, false));
+                    mInflater.inflate(R.layout.my_schedule_item_message_card, parent, false));
             // Work with pre-existing infrastructure which supplied a click listener and relied on
             // a shared pref listener & a reload to dismiss message cards.
             // By setting our own click listener and manually calling onClick we can remove the
@@ -769,7 +769,6 @@ public class ExploreIOFragment extends Fragment
     }
 
     private static class MessageViewHolder extends RecyclerView.ViewHolder {
-
         final ImageView icon;
         final TextView description;
         final Button buttonStart;

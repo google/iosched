@@ -61,6 +61,11 @@ public class ConfMessageCardUtils {
         SESSION_NOTIFICATIONS("session_notifications", "2016-04-01T00:00:00-07:00", "2016-05-23T00:00:00-07:00", null),
 
         /**
+         * Card asking users to sign-in
+         */
+        SIGN_IN_PROMPT("sign_in_prompt", "2016-04-01T00:00:00-07:00", "2016-05-23T00:00:00-07:00", null),
+
+        /**
          * Card allowing developers to provide feedback for the wifi onsite.
          */
         // The app went out in R1 with "wifi_feedback" property for the WiFi preloading feature so we need to set it back only after I/O.

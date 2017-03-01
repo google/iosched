@@ -643,4 +643,11 @@
 
     <string name="transition_session_image" translatable="false">transition_session_image</string>
 
+    <string name="schedule_msgcards_signin_prompt">Sign-in to sync saved events and reserved
+        sessions from your account across mobile and desktop. You\'ll still be able to save events
+        locally without signing-in.</string>
+
+    <string name="schedule_msgcards_signin_prompt_action">Sign in</string>
+    <string name="schedule_msgcards_signin_prompt_dismiss">Skip</string>
+
 </resources>
