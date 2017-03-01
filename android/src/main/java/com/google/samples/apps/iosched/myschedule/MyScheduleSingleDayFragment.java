@@ -16,7 +16,6 @@
 
 package com.google.samples.apps.iosched.myschedule;
 
-import android.app.Activity;
 import android.content.res.TypedArray;
 import android.database.Cursor;
 import android.net.Uri;

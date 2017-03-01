@@ -119,6 +119,10 @@ public class ScheduleFilterFragment extends Fragment implements LoaderCallbacks<
         mListener = listener;
     }
 
+    public TagFilterHolder getFilters() {
+        return mAdapter.getFilters();
+    }
+
     public void clearFilters() {
         mAdapter.clearAllFilters();
     }
