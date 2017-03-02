@@ -32,6 +32,7 @@ import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -41,11 +42,12 @@ import com.google.android.flexbox.FlexboxLayout;
 import com.google.samples.apps.iosched.Config;
 import com.google.samples.apps.iosched.lib.R;
 import com.google.samples.apps.iosched.archframework.UpdatableView.UserActionListener;
-import com.google.samples.apps.iosched.messages.MessageData;
 import com.google.samples.apps.iosched.feedback.SessionFeedbackActivity;
+import com.google.samples.apps.iosched.messages.MessageData;
 import com.google.samples.apps.iosched.model.ScheduleItem;
 import com.google.samples.apps.iosched.model.ScheduleItemHelper;
 import com.google.samples.apps.iosched.model.TagMetadata;
+import com.google.samples.apps.iosched.model.TagMetadata.Tag;
 import com.google.samples.apps.iosched.myschedule.MyScheduleModel.MyScheduleUserActionEnum;
 import com.google.samples.apps.iosched.provider.ScheduleContract;
 import com.google.samples.apps.iosched.util.TimeUtils;
@@ -75,15 +77,22 @@ public class MyScheduleDayAdapter
 
     // list of items served by this adapter
     private final ArrayList mItems = new ArrayList();
-    private final UserActionListener<MyScheduleUserActionEnum> mListener;
+    private final UserActionListener<MyScheduleUserActionEnum> mUserActionListener;
 
     private TagMetadata mTagMetadata;
+    private ScheduleAdapterListener mScheduleAdapterListener;
+
+    interface ScheduleAdapterListener {
+        void onTagClicked(Tag tag);
+    }
 
     public MyScheduleDayAdapter(@NonNull Context context,
-            @NonNull UserActionListener<MyScheduleUserActionEnum> listener,
+            @NonNull UserActionListener<MyScheduleUserActionEnum> userActionListener,
+            @NonNull ScheduleAdapterListener adapterListener,
             @Nullable TagMetadata tagMetadata) {
         mContext = context;
-        mListener = listener;
+        mUserActionListener = userActionListener;
+        mScheduleAdapterListener = adapterListener;
         mTagMetadata = tagMetadata;
 
         setHasStableIds(true);
@@ -115,7 +124,7 @@ public class MyScheduleDayAdapter
                 Uri uri = (Uri) tag;
                 Bundle bundle = new Bundle();
                 bundle.putString(MyScheduleModel.SESSION_URL_KEY, uri.toString());
-                mListener.onUserAction(MyScheduleUserActionEnum.SESSION_SLOT, bundle);
+                mUserActionListener.onUserAction(MyScheduleUserActionEnum.SESSION_SLOT, bundle);
 
                 mContext.startActivity(new Intent(Intent.ACTION_VIEW, uri));
             }
@@ -273,7 +282,7 @@ public class MyScheduleDayAdapter
                             Bundle bundle = new Bundle();
                             bundle.putString(MyScheduleModel.SESSION_ID_KEY, item.sessionId);
                             bundle.putString(MyScheduleModel.SESSION_TITLE_KEY, item.title);
-                            mListener.onUserAction(MyScheduleUserActionEnum.FEEDBACK, bundle);
+                            mUserActionListener.onUserAction(MyScheduleUserActionEnum.FEEDBACK, bundle);
 
                             Intent feedbackIntent = new Intent(Intent.ACTION_VIEW,
                                     ScheduleContract.Sessions.buildSessionUri(item.sessionId),
@@ -307,6 +316,15 @@ public class MyScheduleDayAdapter
                         ViewCompat.setBackgroundTintList(tagView,
                                 ColorStateList.valueOf(mainTag.getColor()));
                         tagsHolder.addView(tagView);
+
+                        tagView.setOnClickListener(new OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                if (mScheduleAdapterListener != null) {
+                                    mScheduleAdapterListener.onTagClicked(mainTag);
+                                }
+                            }
+                        });
                     }
                 }
 
@@ -340,7 +358,7 @@ public class MyScheduleDayAdapter
                                     : MyScheduleUserActionEnum.SESSION_STAR;
                             Bundle bundle = new Bundle();
                             bundle.putString(MyScheduleModel.SESSION_ID_KEY, item.sessionId);
-                            mListener.onUserAction(action, bundle);
+                            mUserActionListener.onUserAction(action, bundle);
                         }
                     });
                 }

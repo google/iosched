@@ -13,6 +13,10 @@
  */
 package com.google.samples.apps.iosched.myschedule;
 
+import com.google.samples.apps.iosched.model.TagMetadata.Tag;
+
 public interface ScheduleViewParent {
     void onRequestClearFilters();
+
+    void onRequestFilterByTag(Tag tag);
 }
