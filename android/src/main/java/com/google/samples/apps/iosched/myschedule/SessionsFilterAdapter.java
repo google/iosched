@@ -126,6 +126,7 @@ public class SessionsFilterAdapter extends Adapter<ViewHolder> {
             int position = mItems.indexOf(tag);
             if (position >= 0) {
                 notifyItemChanged(position);
+                dispatchFiltersChanged();
             }
         }
     }

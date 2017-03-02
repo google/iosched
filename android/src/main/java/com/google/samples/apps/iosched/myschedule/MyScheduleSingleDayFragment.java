@@ -16,6 +16,7 @@
 
 package com.google.samples.apps.iosched.myschedule;
 
+import android.app.Activity;
 import android.content.res.TypedArray;
 import android.database.Cursor;
 import android.net.Uri;
@@ -23,7 +24,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.ListFragment;
-import android.support.v4.app.LoaderManager;
+import android.support.v4.app.LoaderManager.LoaderCallbacks;
 import android.support.v4.content.Loader;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -35,6 +36,8 @@ import com.google.samples.apps.iosched.Config;
 import com.google.samples.apps.iosched.R;
 import com.google.samples.apps.iosched.archframework.UpdatableView;
 import com.google.samples.apps.iosched.model.TagMetadata;
+import com.google.samples.apps.iosched.model.TagMetadata.Tag;
+import com.google.samples.apps.iosched.myschedule.MyScheduleDayAdapter.ScheduleAdapterListener;
 import com.google.samples.apps.iosched.myschedule.MyScheduleModel.MyScheduleQueryEnum;
 import com.google.samples.apps.iosched.myschedule.MyScheduleModel.MyScheduleUserActionEnum;
 import com.google.samples.apps.iosched.util.TimeUtils;
@@ -46,7 +49,7 @@ import com.google.samples.apps.iosched.util.TimeUtils;
  */
 public class MyScheduleSingleDayFragment extends Fragment
         implements UpdatableView<MyScheduleModel, MyScheduleQueryEnum, MyScheduleUserActionEnum>,
-        LoaderManager.LoaderCallbacks<Cursor> {
+        LoaderCallbacks<Cursor>, ScheduleAdapterListener {
 
     private static final int TAG_METADATA_TOKEN = 0x8;
 
@@ -142,7 +145,8 @@ public class MyScheduleSingleDayFragment extends Fragment
     private void updateSchedule(MyScheduleModel model) {
         if (isVisible()) {
             if (mViewAdapter == null) {
-                mViewAdapter = new MyScheduleDayAdapter(getActivity(), mListener, mTagMetadata);
+                mViewAdapter = new MyScheduleDayAdapter(getActivity(), mListener, this,
+                        mTagMetadata);
             }
             mViewAdapter.updateItems(model.getMessages(), model.getConferenceDataForDay(mDayId));
             if (mRecyclerView.getAdapter() == null) {
@@ -222,5 +226,13 @@ public class MyScheduleSingleDayFragment extends Fragment
 
     @Override
     public void onLoaderReset(final Loader<Cursor> loader) {
+    }
+
+    @Override
+    public void onTagClicked(Tag tag) {
+        Activity activity = getActivity();
+        if (activity instanceof ScheduleViewParent) {
+            ((ScheduleViewParent) activity).onRequestFilterByTag(tag);
+        }
     }
 }
