@@ -280,12 +280,6 @@
   statistics to Google. -->
   <string name="pref_analytics_enabled_description">앱 사용에 대한 통계를 익명으로 Google에 보내기</string>
 
-  <!-- Summary in the Settings screen for the "I will be at Google I/O" option -->
-  <string name="pref_attendee_at_venue_description">모든 세션과 현장 이벤트 표시. 체크 표시하지 않으면, 라이브 스트리밍 세션만 표시됩니다.</string>
-
-  <!-- Title in the Settings screen for the "I will be at Google I/O" option -->
-  <string name="pref_attendee_at_venue_title">Google I/O에 참석합니다!</string>
-
   <!-- Summary in the Settings screen for the "Show local times" option -->
   <string name="pref_local_times_description">컨퍼런스 지역의 현지 시간 대신에 귀하의 현지 시간을 사용하십시오.</string>
 

@@ -30,6 +30,7 @@ import com.google.samples.apps.iosched.lib.BuildConfig;
 import com.google.samples.apps.iosched.Config;
 import com.google.samples.apps.iosched.lib.R;
 import com.google.samples.apps.iosched.settings.SettingsUtils;
+import com.google.samples.apps.iosched.util.RegistrationUtils;
 import com.google.samples.apps.iosched.util.UIUtils;
 
 import java.util.ArrayList;
@@ -77,7 +78,10 @@ public class WelcomeActivity extends AppCompatActivity
                 }
             }
         }
-
+        // There isn't any reliable way to know that the user is a registered attendee until after
+        // the user authenticates and we've verified the user's registrations. For now, assume
+        // the user is not an attendee.
+        RegistrationUtils.setRegisteredAttendee(this, false);
     }
 
     @Override
@@ -137,9 +141,7 @@ public class WelcomeActivity extends AppCompatActivity
     private static List<WelcomeFragment> getWelcomeFragments() {
         return new ArrayList<>(Arrays.asList(
                 new TosFragment(),
-                new ConductFragment(),
-                new AccountFragment(),
-                new AttendingFragment()
+                new AccountFragment()
         ));
     }
 

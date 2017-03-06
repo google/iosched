@@ -39,6 +39,7 @@ import com.google.samples.apps.iosched.myschedule.MyScheduleActivity;
 import com.google.samples.apps.iosched.provider.ScheduleContract;
 import com.google.samples.apps.iosched.provider.ScheduleContractHelper;
 import com.google.samples.apps.iosched.settings.SettingsUtils;
+import com.google.samples.apps.iosched.util.RegistrationUtils;
 import com.google.samples.apps.iosched.util.TimeUtils;
 import com.google.samples.apps.iosched.util.UIUtils;
 
@@ -459,7 +460,7 @@ public class SessionAlarmService extends IntentService {
                         String.format(res.getString(R.string.snooze_x_min), 5),
                         createSnoozeIntent(sessionStart, intervalEnd, 5));
             }
-            if (starredCount == 1 && SettingsUtils.isAttendeeAtVenue(this)) {
+            if (starredCount == 1 && RegistrationUtils.isRegisteredAttendee(this)) {
                 notifBuilder.addAction(R.drawable.ic_stat_map,
                         res.getString(R.string.title_map),
                         createRoomMapIntent(singleSessionRoomId));

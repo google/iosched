@@ -40,6 +40,7 @@ import com.google.samples.apps.iosched.settings.ConfMessageCardUtils;
 import com.google.samples.apps.iosched.settings.SettingsUtils;
 import com.google.samples.apps.iosched.util.AnalyticsHelper;
 import com.google.samples.apps.iosched.util.ParserUtils;
+import com.google.samples.apps.iosched.util.RegistrationUtils;
 import com.google.samples.apps.iosched.util.SessionsHelper;
 import com.google.samples.apps.iosched.util.ThrottledContentObserver;
 import com.google.samples.apps.iosched.util.WiFiUtils;
@@ -234,7 +235,7 @@ public class MyScheduleModel implements Model<MyScheduleModel.MyScheduleQueryEnu
         if (shouldShowCard(ConfMessageCardUtils.ConfMessageCard.SESSION_NOTIFICATIONS)) {
             messages.add(MessageCardHelper.getNotificationsOptInMessageData());
         }
-        if (SettingsUtils.isAttendeeAtVenue(mContext)) {
+        if (RegistrationUtils.isRegisteredAttendee(mContext)) {
             // Users are required to opt in or out of whether they want conference message cards
             if (!ConfMessageCardUtils.hasAnsweredConfMessageCardsPrompt(mContext)) {
                 // User has not answered whether they want to opt in.
@@ -286,7 +287,7 @@ public class MyScheduleModel implements Model<MyScheduleModel.MyScheduleQueryEnu
     }
 
     public static boolean showPreConferenceData(Context context) {
-        return SettingsUtils.isAttendeeAtVenue(context);
+        return RegistrationUtils.isRegisteredAttendee(context);
     }
 
     @Override

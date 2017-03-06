@@ -56,24 +56,6 @@
         android:layout_weight="1"
         android:orientation="vertical">
 
-        <TextView
-            android:id="@android:id/title"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:ellipsize="marquee"
-            android:fadingEdge="horizontal"
-            android:lines="1"
-            android:textAppearance="@style/TextAppearance.AppCompat.Menu"
-            android:textColor="?android:attr/textColorPrimary"
-            tools:text="@string/pref_attendee_at_venue_title" />
-
-        <TextView
-            android:id="@android:id/summary"
-            style="@style/Body1Text"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            tools:text="@string/pref_attendee_at_venue_description" />
-
     </LinearLayout>
 
     <!-- Preference should place its actual preference widget here. -->

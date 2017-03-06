@@ -302,12 +302,6 @@
     statistics to Google. -->
     <string name="pref_analytics_enabled_description">Отправлять анонимные статистические данные об использовании приложения в Google.</string>
 
-    <!-- Summary in the Settings screen for the "I will be at Google I/O" option -->
-    <string name="pref_attendee_at_venue_description">Показывать все сессии и события. Если флажок не установлен, будут показаны только транслируемые в прямом эфире сессии.</string>
-
-    <!-- Title in the Settings screen for the "I will be at Google I/O" option -->
-    <string name="pref_attendee_at_venue_title">Я буду на Google I/O!</string>
-
     <!-- Summary in the Settings screen for the "Show local times" option -->
     <string name="pref_local_times_description">Использовать мое местное время, а не местное время конференции.</string>
 

@@ -26,8 +26,8 @@ import android.text.TextUtils;
 
 import com.google.samples.apps.iosched.lib.R;
 import com.google.samples.apps.iosched.gcm.GCMCommand;
-import com.google.samples.apps.iosched.settings.SettingsUtils;
 import com.google.samples.apps.iosched.myschedule.MyScheduleActivity;
+import com.google.samples.apps.iosched.util.RegistrationUtils;
 import com.google.samples.apps.iosched.util.TimeUtils;
 import com.google.gson.Gson;
 
@@ -132,14 +132,14 @@ public class NotificationCommand extends GCMCommand {
         // Check if we are the right audience
         LOGD(TAG, "Checking audience: " + command.audience);
         if ("remote".equals(command.audience)) {
-            if (SettingsUtils.isAttendeeAtVenue(context)) {
+            if (RegistrationUtils.isRegisteredAttendee(context)) {
                 LOGD(TAG, "Ignoring notification because audience is remote and attendee is on-site");
                 return;
             } else {
                 LOGD(TAG, "Relevant (attendee is remote).");
             }
         } else if ("local".equals(command.audience)) {
-            if (!SettingsUtils.isAttendeeAtVenue(context)) {
+            if (!RegistrationUtils.isRegisteredAttendee(context)) {
                 LOGD(TAG, "Ignoring notification because audience is on-site and attendee is remote.");
                 return;
             } else {

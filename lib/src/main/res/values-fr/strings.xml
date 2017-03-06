@@ -288,12 +288,6 @@
   statistics to Google. -->
   <string name="pref_analytics_enabled_description">Envoyez des statistiques anonymes sur l\'utilisation de l\'application à Google.</string>
 
-  <!-- Summary in the Settings screen for the "I will be at Google I/O" option -->
-  <string name="pref_attendee_at_venue_description">Affichez toutes les sessions et les événements sur place. Si la case est décochée, seules les sessions diffusées en direct seront affichées.</string>
-
-  <!-- Title in the Settings screen for the "I will be at Google I/O" option -->
-  <string name="pref_attendee_at_venue_title">Je serai à Google I/O !</string>
-
   <!-- Summary in the Settings screen for the "Show local times" option -->
   <string name="pref_local_times_description">Utilisez votre heure locale au lieu de l\'heure locale de la conférence.</string>
 

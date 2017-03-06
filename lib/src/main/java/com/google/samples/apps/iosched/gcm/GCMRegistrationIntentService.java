@@ -20,8 +20,8 @@ import com.google.android.gms.gcm.GoogleCloudMessaging;
 import com.google.android.gms.iid.InstanceID;
 import com.google.samples.apps.iosched.lib.BuildConfig;
 import com.google.samples.apps.iosched.settings.ConfMessageCardUtils;
-import com.google.samples.apps.iosched.settings.SettingsUtils;
 import com.google.samples.apps.iosched.util.AccountUtils;
+import com.google.samples.apps.iosched.util.RegistrationUtils;
 
 import android.app.IntentService;
 import android.content.Intent;
@@ -102,7 +102,7 @@ public class GCMRegistrationIntentService extends IntentService {
         try {
             GcmPubSub pubSub = GcmPubSub.getInstance(this);
             if (ConfMessageCardUtils.isConfMessageCardsEnabled(this)) {
-                if (SettingsUtils.isAttendeeAtVenue(this)) {
+                if (RegistrationUtils.isRegisteredAttendee(this)) {
                     pubSub.unsubscribe(registrationToken, CONFERENCE_MESSAGES_TOPIC_OFFSITE);
                     pubSub.subscribe(registrationToken, CONFERENCE_MESSAGES_TOPIC_ONSITE, null);
                 } else {

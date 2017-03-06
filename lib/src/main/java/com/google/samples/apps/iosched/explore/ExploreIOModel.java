@@ -46,7 +46,7 @@ import com.google.samples.apps.iosched.messages.MessageCardHelper;
 import com.google.samples.apps.iosched.model.TagMetadata;
 import com.google.samples.apps.iosched.provider.ScheduleContract;
 import com.google.samples.apps.iosched.settings.ConfMessageCardUtils;
-import com.google.samples.apps.iosched.settings.SettingsUtils;
+import com.google.samples.apps.iosched.util.RegistrationUtils;
 import com.google.samples.apps.iosched.util.TagUtils;
 import com.google.samples.apps.iosched.util.TimeUtils;
 import com.google.samples.apps.iosched.util.WiFiUtils;
@@ -171,7 +171,7 @@ public class ExploreIOModel extends ModelWithLoaderManager<ExploreIOQueryEnum,
         if (shouldShowCard(ConfMessageCardUtils.ConfMessageCard.SESSION_NOTIFICATIONS)) {
             messagesToDisplay.add(MessageCardHelper.getNotificationsOptInMessageData());
         }
-        if (SettingsUtils.isAttendeeAtVenue(mContext)) {
+        if (RegistrationUtils.isRegisteredAttendee(mContext)) {
             // Users are required to opt in or out of whether they want conference message cards
             if (!ConfMessageCardUtils.hasAnsweredConfMessageCardsPrompt(mContext)) {
                 // User has not answered whether they want to opt in.
@@ -361,7 +361,7 @@ public class ExploreIOModel extends ModelWithLoaderManager<ExploreIOQueryEnum,
     private void readDataFromSessionsCursor(Cursor cursor) {
         LOGD(TAG, "Reading session data from cursor.");
 
-        boolean atVenue = SettingsUtils.isAttendeeAtVenue(mContext);
+        boolean atVenue = RegistrationUtils.isRegisteredAttendee(mContext);
 
         LiveStreamData liveStreamData = new LiveStreamData();
         Map<String, ItemGroup> trackGroups = new HashMap<>();

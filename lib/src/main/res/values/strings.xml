@@ -314,12 +314,6 @@
     <string name="pref_analytics_enabled_description">Send anonymous statistics about app usage
     to Google.</string>
 
-    <!-- Summary in the Settings screen for the "I will be at Google I/O" option -->
-    <string name="pref_attendee_at_venue_description">Display all sessions and on-site events. If unchecked, only live-streamed sessions will be shown.</string>
-
-    <!-- Title in the Settings screen for the "I will be at Google I/O" option -->
-    <string name="pref_attendee_at_venue_title">I\'ll be at Google I/O!</string>
-
     <!-- Summary in the Settings screen for the "Show local times" option -->
     <string name="pref_local_times_description">Use your local time instead of the conference’s local time.</string>
 

@@ -69,6 +69,7 @@ import com.google.samples.apps.iosched.ui.widget.recyclerview.ItemMarginDecorati
 import com.google.samples.apps.iosched.ui.widget.recyclerview.UpdatableAdapter;
 import com.google.samples.apps.iosched.util.AccountUtils;
 import com.google.samples.apps.iosched.util.ImageLoader;
+import com.google.samples.apps.iosched.util.RegistrationUtils;
 import com.google.samples.apps.iosched.util.ThrottledContentObserver;
 import com.google.samples.apps.iosched.util.TimeUtils;
 import com.google.samples.apps.iosched.util.UIUtils;
@@ -666,7 +667,7 @@ public class ExploreIOFragment extends Fragment
             }
 
             // Add Event Cards if onsite.
-            if (SettingsUtils.isAttendeeAtVenue(mHost)) {
+            if (RegistrationUtils.isRegisteredAttendee(mHost)) {
                 final EventData eventData = model.getEventData();
                 if (eventData != null && !eventData.getCards().isEmpty()) {
                     exploreCards.add(eventData);

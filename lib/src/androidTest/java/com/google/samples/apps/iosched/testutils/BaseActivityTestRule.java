@@ -69,24 +69,22 @@ public class BaseActivityTestRule<T extends Activity> extends IntentsTestRule<T>
         ModelProvider.setStubModel(mModel);
     }
 
-    protected void prepareActivityForRemoteAttendee() {
-        bypassTOsAndConduct();
+    private void prepareActivityForRemoteAttendee() {
+        bypassToS();
         SettingsUtils.setAttendeeAtVenue(InstrumentationRegistry.getTargetContext(), false);
-        SettingsUtils.markAnsweredLocalOrRemote(InstrumentationRegistry.getTargetContext(), false);
         selectFirstAccount();
     }
 
+    // TODO: revisit once the new auth flow is in place.
     protected void prepareActivityForInPersonAttendee() {
-        bypassTOsAndConduct();
+        bypassToS();
         SettingsUtils.setAttendeeAtVenue(InstrumentationRegistry.getTargetContext(), true);
-        SettingsUtils.markAnsweredLocalOrRemote(InstrumentationRegistry.getTargetContext(), true);
         selectFirstAccount();
         disableConferenceMessages();
     }
 
-    private void bypassTOsAndConduct() {
+    private void bypassToS() {
         SettingsUtils.markTosAccepted(InstrumentationRegistry.getTargetContext(), true);
-        SettingsUtils.markConductAccepted(InstrumentationRegistry.getTargetContext(), true);
     }
 
     private void selectFirstAccount() {
@@ -105,5 +103,4 @@ public class BaseActivityTestRule<T extends Activity> extends IntentsTestRule<T>
                 .markAnsweredConfMessageCardsPrompt(InstrumentationRegistry.getTargetContext(),
                         true);
     }
-
 }

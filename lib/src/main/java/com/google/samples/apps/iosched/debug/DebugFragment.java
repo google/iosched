@@ -41,6 +41,7 @@ import com.google.samples.apps.iosched.settings.ConfMessageCardUtils;
 import com.google.samples.apps.iosched.settings.SettingsUtils;
 import com.google.samples.apps.iosched.ui.widget.DrawShadowFrameLayout;
 import com.google.samples.apps.iosched.util.AccountUtils;
+import com.google.samples.apps.iosched.util.RegistrationUtils;
 import com.google.samples.apps.iosched.util.TimeUtils;
 import com.google.samples.apps.iosched.util.UIUtils;
 import com.google.samples.apps.iosched.util.WiFiUtils;
@@ -103,9 +104,7 @@ public class DebugFragment extends Fragment {
             @Override
             public void run(Context context, Callback callback) {
                 SettingsUtils.markTosAccepted(context, false);
-                SettingsUtils.markConductAccepted(context, false);
-                SettingsUtils.setAttendeeAtVenue(context, false);
-                SettingsUtils.markAnsweredLocalOrRemote(context, false);
+                RegistrationUtils.setRegisteredAttendee(context, false);
                 AccountUtils.setActiveAccount(context, null);
                 context.startActivity(new Intent(context, WelcomeActivity.class));
             }
@@ -120,9 +119,7 @@ public class DebugFragment extends Fragment {
             @Override
             public void run(Context context, Callback callback) {
                 SettingsUtils.markTosAccepted(context, false);
-                SettingsUtils.markConductAccepted(context, false);
-                SettingsUtils.setAttendeeAtVenue(context, false);
-                SettingsUtils.markAnsweredLocalOrRemote(context, false);
+                RegistrationUtils.setRegisteredAttendee(context, false);
                 AccountUtils.setActiveAccount(context, null);
                 ConfMessageCardUtils.unsetStateForAllCards(context);
             }

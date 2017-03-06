@@ -282,12 +282,6 @@
   statistics to Google. -->
   <string name="pref_analytics_enabled_description">Googleへ、アプリの使用状況に関する匿名の統計情報を送信する。</string>
 
-  <!-- Summary in the Settings screen for the "I will be at Google I/O" option -->
-  <string name="pref_attendee_at_venue_description">全セッションおよびオンサイト イベントを表示します。このチェックを外すと、ライブストリーミング配信のセッションのみが表示されます。</string>
-
-  <!-- Title in the Settings screen for the "I will be at Google I/O" option -->
-  <string name="pref_attendee_at_venue_title">Google I/Oに出席します！</string>
-
   <!-- Summary in the Settings screen for the "Show local times" option -->
   <string name="pref_local_times_description">会議開催地の現地時間ではなく、自分の居る場所の現地時間を使用する。</string>
 

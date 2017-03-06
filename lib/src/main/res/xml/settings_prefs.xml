@@ -23,12 +23,6 @@
         android:defaultValue="false" />
 
     <SwitchPreferenceCompat
-        android:key="@string/pref_attendee_at_venue"
-        android:title="@string/pref_attendee_at_venue_title"
-        android:summary="@string/pref_attendee_at_venue_description"
-        android:defaultValue="true" />
-
-    <SwitchPreferenceCompat
         android:key="@string/pref_conf_messages_enabled"
         android:title="@string/pref_conf_message_cards_enabled_title"
         android:summary="@string/pref_conf_message_cards_enabled_description"

@@ -267,7 +267,7 @@ public class WiFiUtils {
             LOGI(TAG, "Wifi isn't enabled");
             return false;
         }
-        if (!SettingsUtils.isAttendeeAtVenue(context)) {
+        if (!RegistrationUtils.isRegisteredAttendee(context)) {
             LOGI(TAG, "Attendee isn't on-site so wifi wouldn't matter");
             return false;
         }

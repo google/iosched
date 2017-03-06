@@ -281,12 +281,6 @@
     statistics to Google. -->
     <string name="pref_analytics_enabled_description">将有关应用程序使用的匿名统计数据发送给Google。</string>
 
-    <!-- Summary in the Settings screen for the "I will be at Google I/O" option -->
-    <string name="pref_attendee_at_venue_description">显示所有活动和现场时间。如果未选中，只会显示现场直播的活动。</string>
-
-    <!-- Title in the Settings screen for the "I will be at Google I/O" option -->
-    <string name="pref_attendee_at_venue_title">我会出席 Google I/O大会！</string>
-
     <!-- Summary in the Settings screen for the "Show local times" option -->
     <string name="pref_local_times_description">使用您的本地时间，而不是大会的本地时间。</string>
 

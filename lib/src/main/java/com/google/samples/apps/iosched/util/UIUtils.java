@@ -316,7 +316,7 @@ public class UIUtils {
 
     @Deprecated
     public static boolean shouldShowLiveSessionsOnly(final Context context) {
-        return !SettingsUtils.isAttendeeAtVenue(context)
+        return !RegistrationUtils.isRegisteredAttendee(context)
                 && TimeUtils.getCurrentTime(context) < Config.CONFERENCE_END_MILLIS;
     }
 
