@@ -371,6 +371,8 @@ public final class ScheduleContract {
 
     private static final String PATH_PEOPLE_IVE_MET = "people_ive_met";
 
+    private static final String PATH_RELATED = "related";
+
     public static final String[] TOP_LEVEL_PATHS = {
             PATH_BLOCKS,
             PATH_TAGS,
@@ -633,6 +635,19 @@ public final class ScheduleContract {
 
         public static final String HAS_GIVEN_FEEDBACK = "has_given_feedback";
 
+        /**
+         * Column name used when performing INSERT or DELETE operations on a related sessions Uri,
+         * such as those returned by {@link #buildRelatedSessionsDirUri(String)}. For example, to
+         * mark that a session has another related session:
+         * <pre>
+         *     Uri uri = Sessions.buildRelatedSessionsDirUri(sessionId);
+         *     ContentValues values = new ContentValues();
+         *     values.put(Sessions.RELATED_SESSION_ID, relatedSessionId);
+         *     contentResolver.insert(uri, null, values);
+         * </pre>
+         */
+        public static final String RELATED_SESSION_ID = "related_session_id";
+
         // ORDER BY clauses
         public static final String SORT_BY_TYPE_THEN_TIME = SESSION_GROUPING_ORDER + " ASC,"
                 + SESSION_START + " ASC," + SESSION_TITLE + " COLLATE NOCASE ASC";
@@ -693,6 +708,14 @@ public final class ScheduleContract {
          */
         public static Uri buildTagsDirUri(String sessionId) {
             return CONTENT_URI.buildUpon().appendPath(sessionId).appendPath(PATH_TAGS).build();
+        }
+
+        /**
+         * Build {@link Uri} that references any related {@link Sessions} associated with
+         * the requested {@link #SESSION_ID}.
+         */
+        public static Uri buildRelatedSessionsDirUri(String sessionId) {
+            return CONTENT_URI.buildUpon().appendPath(sessionId).appendPath(PATH_RELATED).build();
         }
 
         /**

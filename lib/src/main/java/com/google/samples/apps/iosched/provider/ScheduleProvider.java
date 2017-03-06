@@ -358,6 +358,11 @@ public class ScheduleProvider extends ContentProvider {
             case SESSIONS_ID_TAGS: {
                 return Tags.buildTagUri(values.getAsString(Tags.TAG_ID));
             }
+            case SESSIONS_ID_RELATED: {
+                db.insertOrThrow(Tables.RELATED_SESSIONS, null, values);
+                notifyChange(uri);
+                return uri;
+            }
             case MY_SCHEDULE: {
                 values.put(MySchedule.MY_SCHEDULE_ACCOUNT_NAME, getCurrentAccountName(uri, false));
                 db.insertOrThrow(Tables.MY_SCHEDULE, null, values);
@@ -434,6 +439,10 @@ public class ScheduleProvider extends ContentProvider {
         }
 
         final SelectionBuilder builder = buildSimpleSelection(uri);
+        if (matchingUriEnum == ScheduleUriEnum.SESSIONS_ID_RELATED) {
+            // update not supported
+            return 0;
+        }
         if (matchingUriEnum == ScheduleUriEnum.MY_SCHEDULE) {
             values.remove(MySchedule.MY_SCHEDULE_ACCOUNT_NAME);
             builder.where(MySchedule.MY_SCHEDULE_ACCOUNT_NAME + "=?", accountName);
@@ -578,6 +587,11 @@ public class ScheduleProvider extends ContentProvider {
             case SESSIONS_ID_TAGS: {
                 final String sessionId = Sessions.getSessionId(uri);
                 return builder.table(Tables.SESSIONS_TAGS)
+                        .where(Sessions.SESSION_ID + "=?", sessionId);
+            }
+            case SESSIONS_ID_RELATED: {
+                final String sessionId = Sessions.getSessionId(uri);
+                return builder.table(Tables.RELATED_SESSIONS)
                         .where(Sessions.SESSION_ID + "=?", sessionId);
             }
             case SESSIONS_MY_SCHEDULE: {
@@ -804,6 +818,11 @@ public class ScheduleProvider extends ContentProvider {
                         .mapToTable(Tags.TAG_ID, Tables.TAGS)
                         .where(Qualified.SESSIONS_TAGS_SESSION_ID + "=?", sessionId);
             }
+            case SESSIONS_ID_RELATED: {
+                final String sessionId = Sessions.getSessionId(uri);
+                return builder.table(Tables.SESSIONS)
+                        .where(Subquery.RELATED_SESSIONS_SELECTION, sessionId);
+            }
             case SESSIONS_ROOM_AFTER: {
                 final String room = Sessions.getRoom(uri);
                 final String time = Sessions.getAfterForRoom(uri);
@@ -944,6 +963,10 @@ public class ScheduleProvider extends ContentProvider {
                 + Qualified.SESSIONS_SESSION_ID + ")";
 
         String SESSIONS_SNIPPET = "snippet(" + Tables.SESSIONS_SEARCH + ",'{','}','\u2026')";
+
+        String RELATED_SESSIONS_SELECTION = Sessions.SESSION_ID + " IN (SELECT "
+                + Sessions.RELATED_SESSION_ID + " FROM " + Tables.RELATED_SESSIONS + " WHERE "
+                + Sessions.SESSION_ID + " = ?";
     }
 
     /**
