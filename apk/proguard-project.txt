@@ -107,7 +107,6 @@
 -keep class android.support.graphics.drawable.VectorDrawableCompat$* {
     *;
 }
-
 # Other settings
 -keep class com.android.**
 -keep class com.google.android.**
@@ -116,7 +115,6 @@
 -keep class com.google.api.client.**
 -keep class com.google.maps.android.**
 -keep class libcore.**
-
 -dontwarn com.nineoldandroids.view.animation.** #Required by SlidingUpPanel
 -dontwarn org.junit.**
 -dontwarn org.mockito.**
