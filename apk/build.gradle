@@ -140,10 +140,10 @@ android {
             buildConfigField("boolean", "SUPPRESS_DOGFOOD_WARNING", "false")
             targetSdkVersion 23
         }
-
         mapEditor {
             // Disable remote data updates for this flavor. All map data is reloaded from
             // external storage at launch.
+            applicationIdSuffix ".mapeditor"
             buildConfigField("String", "SERVER_MANIFEST_ENDPOINT", "\"\"")
             buildConfigField("boolean", "SUPPRESS_DOGFOOD_WARNING", "true")
             targetSdkVersion 22
@@ -291,5 +291,6 @@ dependencies {
     compile 'com.firebase:firebase-client-android:2.5.0'
 
     debugCompile 'com.squareup.leakcanary:leakcanary-android:1.5'
+    qualityassuranceCompile 'com.squareup.leakcanary:leakcanary-android-no-op:1.5'
     releaseCompile 'com.squareup.leakcanary:leakcanary-android-no-op:1.5'
 }

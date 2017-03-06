@@ -23,7 +23,7 @@ import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.annotation.VisibleForTesting;
-import android.util.SparseArray;
+import android.support.v4.util.SparseArrayCompat;
 
 import com.google.samples.apps.iosched.BuildConfig;
 import com.google.samples.apps.iosched.Config;
@@ -80,7 +80,8 @@ public class MyScheduleModel implements Model<MyScheduleModel.MyScheduleQueryEnu
      * for the first day of the conference, using {@link #PRE_CONFERENCE_DAY_ID} for the
      * preconference day, if any.
      */
-    private final SparseArray<List<ScheduleItem>> mScheduleData = new SparseArray<>();
+    @VisibleForTesting
+    final SparseArrayCompat<List<ScheduleItem>> mScheduleData = new SparseArrayCompat<>();
 
     // The ScheduleHelper is responsible for feeding data in a format suitable to the Adapter.
     private final ScheduleHelper mScheduleHelper;

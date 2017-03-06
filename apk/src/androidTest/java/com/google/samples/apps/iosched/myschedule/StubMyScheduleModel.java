@@ -78,7 +78,7 @@ public class StubMyScheduleModel extends MyScheduleModel {
             final int dayId = i + 1;
 
             // Immediately use cached data if available
-            if (mScheduleData.containsKey(dayId)) {
+            if (mScheduleData.indexOfKey(dayId) >= 0) {
                 if (callback != null) {
                     callback.onModelUpdated(this, MyScheduleQueryEnum.SCHEDULE);
                 }
