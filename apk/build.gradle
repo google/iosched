@@ -38,7 +38,7 @@ android {
         applicationId "com.google.samples.apps.iosched"
         versionCode = Integer.valueOf("" + appVersionCode).intValue()
         versionName "${appVersionName}"
-        minSdkVersion 16
+        minSdkVersion 21
     }
 
     signingConfigs {
