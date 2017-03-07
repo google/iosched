@@ -16,8 +16,6 @@
 
 package com.google.samples.apps.iosched.io.model;
 
-import com.google.samples.apps.iosched.util.HashUtils;
-
 import java.util.Random;
 
 public class Session {
@@ -40,6 +38,7 @@ public class Session {
     public String color;
     public RelatedContent[] relatedContent;
     public int groupingOrder;
+    public String[] relatedSessionIds;
 
     public class RelatedContent {
         public String id;
