@@ -74,7 +74,8 @@ public class ScheduleDatabase extends SQLiteOpenHelper {
     private static final int VER_2015_RELEASE_B = 210;
     private static final int VER_2016_RELEASE_A = 211;
     private static final int VER_2016_RELEASE_B = 212;
-    private static final int CUR_DATABASE_VERSION = VER_2016_RELEASE_B;
+    private static final int VER_2017_RELEASE_A = 213;
+    private static final int CUR_DATABASE_VERSION = VER_2017_RELEASE_A;
 
     private final Context mContext;
 
@@ -101,6 +102,8 @@ public class ScheduleDatabase extends SQLiteOpenHelper {
         String SESSIONS_SEARCH = "sessions_search";
 
         String SEARCH_SUGGEST = "search_suggest";
+
+        String RELATED_SESSIONS = "related_sessions";
 
         String SESSIONS_JOIN_MYSCHEDULE = "sessions "
                 + "LEFT OUTER JOIN myschedule ON sessions.session_id=myschedule.session_id "
@@ -415,6 +418,7 @@ public class ScheduleDatabase extends SQLiteOpenHelper {
         upgradeFrom2015Ato2015B(db);
         upgradeFrom2015Bto2016A(db);
         upgradeFrom2016Ato2016B(db);
+        upgradeFrom2016Bto2017A(db);
     }
 
     private void upgradeFrom2014Cto2015A(SQLiteDatabase db) {
@@ -471,6 +475,15 @@ public class ScheduleDatabase extends SQLiteOpenHelper {
                 + Cards.ACTION_TYPE + " TEXT,  "
                 + Cards.ACTION_EXTRA + " TEXT, "
                 + "UNIQUE (" + Cards.CARD_ID + ") ON CONFLICT REPLACE)");
+    }
+
+    private void upgradeFrom2016Bto2017A(SQLiteDatabase db) {
+        db.execSQL("CREATE TABLE " + Tables.RELATED_SESSIONS + " ("
+                + BaseColumns._ID + " INTEGER PRIMARY KEY AUTOINCREMENT,"
+                + Sessions.SESSION_ID + " TEXT NOT NULL, "
+                + Sessions.RELATED_SESSION_ID + " TEXT NOT NULL, "
+                + "UNIQUE (" + Sessions.SESSION_ID + "," + Sessions.RELATED_SESSION_ID + ") "
+                + "ON CONFLICT IGNORE)");
     }
 
     /**
@@ -552,6 +565,12 @@ public class ScheduleDatabase extends SQLiteOpenHelper {
             LOGD(TAG, "Upgrading database from 2016 release A to 2016 release B.");
             upgradeFrom2016Ato2016B(db);
             version = VER_2016_RELEASE_B;
+        }
+
+        if (version == VER_2016_RELEASE_B) {
+            LOGD(TAG, "Upgrading database from 2016 release B to 2017 release A.");
+            upgradeFrom2016Bto2017A(db);
+            version = VER_2017_RELEASE_A;
         }
 
         LOGD(TAG, "After upgrade logic, at version " + version);
