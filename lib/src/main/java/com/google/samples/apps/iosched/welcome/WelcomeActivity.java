@@ -35,6 +35,7 @@ import com.google.samples.apps.iosched.util.UIUtils;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 import static com.google.samples.apps.iosched.util.LogUtils.makeLogTag;
@@ -42,6 +43,7 @@ import static com.google.samples.apps.iosched.util.LogUtils.makeLogTag;
 /**
  * Responsible for presenting a series of fragments to the user who has just installed the app as
  * part of the welcome/onboarding experience.
+ * TODO (b/36070986): WelcomeActivity architecture assumes multiple fragments. Refactor if showing only a single fragment.
  */
 public class WelcomeActivity extends AppCompatActivity
         implements WelcomeFragment.WelcomeFragmentContainer {
@@ -139,10 +141,7 @@ public class WelcomeActivity extends AppCompatActivity
      * Returns all fragments displayed by {@link WelcomeActivity}.
      */
     private static List<WelcomeFragment> getWelcomeFragments() {
-        return new ArrayList<>(Arrays.asList(
-                new TosFragment(),
-                new AccountFragment()
-        ));
+        return Collections.singletonList((WelcomeFragment) new TosFragment());
     }
 
     @Override

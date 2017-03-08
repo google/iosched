@@ -46,10 +46,12 @@ public abstract class WelcomeFragment extends Fragment {
     protected Activity mActivity;
 
     @Override
-    public void onAttach(Activity activity) {
-        super.onAttach(activity);
-        LOGD(TAG, "Attaching to activity");
-        mActivity = activity;
+    public void onAttach(final Context context) {
+        super.onAttach(context);
+        if (context instanceof Activity) {
+            LOGD(TAG, "Attaching to activity");
+            mActivity = (Activity) context;
+        }
     }
 
     @Override
