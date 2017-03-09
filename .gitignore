@@ -27,10 +27,7 @@ local.properties
 # IDEA/Android Studio project files, because
 # the project can be imported from settings.gradle
 *.iml
-.idea/*
-# Forcibly including certain files we want propagated.
-!\.idea/codeStyleSettings.xml
-!\.idea/copyright
+.idea/
 
 # Gradle cache
 .gradle
@@ -38,3 +35,5 @@ local.properties
 # Sandbox stuff
 _sandbox
 
+# Android Studio captures folder
+captures/
