@@ -18,68 +18,9 @@
           xmlns:android="http://schemas.android.com/apk/res/android"
           xmlns:tools="http://schemas.android.com/tools"
           android:installLocation="auto">
-    <!-- versionName and versionCode are specified in build.gradle -->
-
-    <!-- min and target sdk are defined in build.gradle -->
-    <!-- uses-sdk
-        android:minSdkVersion="14"
-        android:targetSdkVersion="21" / -->
-
-    <permission
-        android:name="com.google.samples.apps.iosched.permission.WRITE_SCHEDULE"
-        android:description="@string/permission_write"
-        android:label="@string/permission_write"
-        android:protectionLevel="normal" />
-
-    <!-- Legacy permissions, required due to minSdk level.
-         Newer devices will use runtime permisisons. -->
-    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
-    <uses-permission android:name="android.permission.AUTHENTICATE_ACCOUNTS" />
-    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
-    <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.GET_ACCOUNTS" />
-    <uses-permission android:name="android.permission.USE_CREDENTIALS" />
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
-    <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
-    <uses-permission android:name="android.permission.READ_SYNC_SETTINGS" />
-    <uses-permission android:name="android.permission.READ_SYNC_STATS" />
-    <uses-permission android:name="android.permission.VIBRATE" />
-    <uses-permission android:name="android.permission.NFC" />
-    <!-- required for YouTube -->
-    <uses-permission android:name="com.google.android.providers.gsf.permission.READ_GSERVICES" />
-    <!-- required for Calendar API in Android 4.0 or above -->
-    <uses-permission android:name="android.permission.READ_CALENDAR" />
-    <uses-permission android:name="android.permission.WRITE_CALENDAR" />
-    <!-- required for setIsSyncable -->
-    <uses-permission android:name="android.permission.WRITE_SYNC_SETTINGS" />
-    <!-- required for GCM -->
-    <uses-permission android:name="android.permission.WAKE_LOCK" />
-    <uses-permission android:name="com.google.android.c2dm.permission.RECEIVE" />
-
-    <permission
-        android:name="com.google.samples.apps.iosched.permission.C2D_MESSAGE"
-        android:protectionLevel="signature" />
-
-    <uses-permission android:name="com.google.samples.apps.iosched.permission.C2D_MESSAGE" />
-
-    <!-- required for MapView v2 -->
-    <permission
-        android:name="com.google.samples.apps.iosched.permission.MAPS_RECEIVE"
-        android:protectionLevel="signature" />
-
-    <uses-permission android:name="com.google.samples.apps.iosched.permission.MAPS_RECEIVE" />
-
-    <uses-feature
-        android:glEsVersion="0x00020000"
-        android:required="true" />
-
-    <uses-permission
-        android:name="android.permission.READ_EXTERNAL_STORAGE"
-        android:maxSdkVersion="18" />
 
     <application
-        android:name=".AppApplication"
+        android:name="com.google.samples.apps.iosched.AppApplication"
         android:allowBackup="false"
         android:hardwareAccelerated="true"
         android:icon="@mipmap/ic_launcher"
@@ -101,7 +42,7 @@
 
         <!-- !!! We can't remove this since we'll break all launcher shortcuts. !!! -->
         <activity
-            android:name=".explore.ExploreIOActivity"
+            android:name="com.google.samples.apps.iosched.explore.ExploreIOActivity"
             android:label="@string/app_name">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -110,7 +51,7 @@
         </activity>
 
         <activity
-            android:name=".myschedule.MyScheduleActivity"
+            android:name="com.google.samples.apps.iosched.myschedule.MyScheduleActivity"
             android:exported="true"
             android:label="@string/app_name"
             android:launchMode="singleTop"
@@ -197,7 +138,7 @@
         </activity>
 
         <activity
-            android:name=".explore.ExploreSessionsActivity"
+            android:name="com.google.samples.apps.iosched.explore.ExploreSessionsActivity"
             android:exported="true"
             android:label="@string/title_explore"
             android:theme="@style/Theme.IOSched.ExploreSessions">
@@ -209,25 +150,24 @@
         </activity>
 
         <activity
-            android:name=".myio.MyIOActivity"
+            android:name="com.google.samples.apps.iosched.myio.MyIOActivity"
             android:exported="false"
             android:label="@string/title_my_io"
             android:launchMode="singleTop"
             android:theme="@style/Theme.IOSched.MySchedule" />
 
         <activity
-            android:name=".settings.SettingsActivity"
+            android:name="com.google.samples.apps.iosched.settings.SettingsActivity"
             android:exported="false"
             android:label="@string/title_settings"
-            android:parentActivityName=".explore.ExploreIOActivity"
-            >
+            android:parentActivityName="com.google.samples.apps.iosched.explore.ExploreIOActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".myschedule.MyScheduleActivity" />
+                android:value="com.google.samples.apps.iosched.myschedule.MyScheduleActivity" />
         </activity>
 
         <activity
-            android:name=".ui.SearchActivity"
+            android:name="com.google.samples.apps.iosched.ui.SearchActivity"
             android:exported="false"
             android:label="@string/title_search"
             android:launchMode="singleTop"
@@ -246,13 +186,13 @@
         </activity>
 
         <activity
-            android:name=".feedback.SessionFeedbackActivity"
+            android:name="com.google.samples.apps.iosched.feedback.SessionFeedbackActivity"
             android:exported="false"
             android:label="@string/title_session_feedback"
             android:theme="@style/Theme.IOSched.Feedback">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".myschedule.MyScheduleActivity" />
+                android:value="com.google.samples.apps.iosched.myschedule.MyScheduleActivity" />
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
                 <category android:name="android.intent.category.DEFAULT" />
@@ -261,37 +201,37 @@
         </activity>
 
         <activity
-            android:name=".welcome.WelcomeActivity"
+            android:name="com.google.samples.apps.iosched.welcome.WelcomeActivity"
             android:exported="false"
             android:theme="@style/Theme.IOSched.Welcome" />
 
         <activity
-            android:name=".login.SwitchUserActivity"
+            android:name="com.google.samples.apps.iosched.login.SwitchUserActivity"
             android:exported="false"
             android:theme="@style/Theme.IOSched.Transparent" />
         <activity
-            android:name=".videolibrary.VideoLibraryActivity"
+            android:name="com.google.samples.apps.iosched.videolibrary.VideoLibraryActivity"
             android:exported="false"
             android:label="@string/title_video_library"
             android:theme="@style/Theme.IOSched.VideoLibrary">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".myschedule.MyScheduleActivity" />
+                android:value="com.google.samples.apps.iosched.myschedule.MyScheduleActivity" />
         </activity>
 
         <activity
-            android:name=".videolibrary.VideoLibraryFilteredActivity"
+            android:name="com.google.samples.apps.iosched.videolibrary.VideoLibraryFilteredActivity"
             android:exported="false"
             android:label="@string/title_video_library"
-            android:parentActivityName=".videolibrary.VideoLibraryActivity"
+            android:parentActivityName="com.google.samples.apps.iosched.videolibrary.VideoLibraryActivity"
             android:theme="@style/Theme.IOSched.VideoLibrary.Filtered">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".videolibrary.VideoLibraryActivity" />
+                android:value="com.google.samples.apps.iosched.videolibrary.VideoLibraryActivity" />
         </activity>
 
         <activity
-            android:name=".session.SessionDetailActivity"
+            android:name="com.google.samples.apps.iosched.session.SessionDetailActivity"
             android:exported="true"
             android:label="@string/title_session_detail"
             android:theme="@style/Theme.IOSched.SessionDetails">
@@ -317,44 +257,44 @@
         </activity>
 
         <activity
-            android:name=".map.MapActivity"
+            android:name="com.google.samples.apps.iosched.map.MapActivity"
             android:exported="true"
             android:label="@string/title_map"
             android:theme="@style/Theme.IOSched.Map">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".myschedule.MyScheduleActivity" />
+                android:value="com.google.samples.apps.iosched.myschedule.MyScheduleActivity" />
         </activity>
 
         <activity
-            android:name=".about.AboutActivity"
+            android:name="com.google.samples.apps.iosched.about.AboutActivity"
             android:exported="false"
             android:label="@string/description_about"
-            android:parentActivityName=".explore.ExploreIOActivity"
+            android:parentActivityName="com.google.samples.apps.iosched.explore.ExploreIOActivity"
             >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".myschedule.MyScheduleActivity" />
+                android:value="com.google.samples.apps.iosched.myschedule.MyScheduleActivity" />
         </activity>
 
         <!-- TaskStackBuilder proxy activity for widgets and notifications. -->
 
         <activity
-            android:name=".ui.TaskStackBuilderProxyActivity"
+            android:name="com.google.samples.apps.iosched.ui.TaskStackBuilderProxyActivity"
             android:exported="false"
             android:theme="@android:style/Theme.NoDisplay" />
         <activity
-            android:name=".debug.DebugActivity"
+            android:name="com.google.samples.apps.iosched.debug.DebugActivity"
             android:exported="false"
             android:label="@string/title_activity_debug_test_runner"
-            android:parentActivityName=".explore.ExploreIOActivity">
+            android:parentActivityName="com.google.samples.apps.iosched.explore.ExploreIOActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".myschedule.MyScheduleActivity" />
+                android:value="com.google.samples.apps.iosched.myschedule.MyScheduleActivity" />
         </activity>
 
         <!-- Session alarm/calendar integrating components. -->
-        <receiver android:name=".receiver.SessionAlarmReceiver">
+        <receiver android:name="com.google.samples.apps.iosched.receiver.SessionAlarmReceiver">
             <intent-filter>
                 <action android:name="android.intent.action.BOOT_COMPLETED" />
                 <action android:name="com.google.samples.apps.iosched.action.UPDATE_CALENDAR_COMPLETED" />
@@ -362,10 +302,10 @@
         </receiver>
 
         <service
-            android:name=".service.SessionAlarmService"
+            android:name="com.google.samples.apps.iosched.service.SessionAlarmService"
             android:exported="false" />
         <service
-            android:name=".service.SessionCalendarService"
+            android:name="com.google.samples.apps.iosched.service.SessionCalendarService"
             android:exported="false" />
 
         <!-- BEGIN Google Analytics install referral measurement -->
@@ -431,7 +371,7 @@
           where we handle received GCM messages.
         -->
         <service
-            android:name=".gcm.GCMMessageListenerService"
+            android:name="com.google.samples.apps.iosched.gcm.GCMMessageListenerService"
             android:exported="false">
             <intent-filter>
                 <action android:name="com.google.android.c2dm.intent.RECEIVE" />
@@ -439,7 +379,7 @@
         </service>
 
         <service
-            android:name=".gcm.GCMInstanceIDListenerService"
+            android:name="com.google.samples.apps.iosched.gcm.GCMInstanceIDListenerService"
             android:exported="false">
             <intent-filter>
                 <action android:name="com.google.android.gms.iid.InstanceID" />
@@ -447,17 +387,17 @@
         </service>
 
         <service
-            android:name=".gcm.GCMRegistrationIntentService"
+            android:name="com.google.samples.apps.iosched.gcm.GCMRegistrationIntentService"
             android:exported="false" />
 
         <service
-            android:name=".gcm.GCMUnregisterIntentService"
+            android:name="com.google.samples.apps.iosched.gcm.GCMUnregisterIntentService"
             android:exported="false" />
 
         <!-- Data, sync and schedule editing components -->
 
         <provider
-            android:name=".provider.ScheduleProvider"
+            android:name="com.google.samples.apps.iosched.provider.ScheduleProvider"
             android:authorities="com.google.samples.apps.iosched"
             android:exported="true"
             android:label="@string/app_name"
@@ -465,7 +405,7 @@
             android:writePermission="com.google.samples.apps.iosched.permission.WRITE_SCHEDULE" />
 
         <service
-            android:name=".sync.SyncService"
+            android:name="com.google.samples.apps.iosched.sync.SyncService"
             android:exported="true"
             tools:ignore="ExportedService">
             <intent-filter>
@@ -481,14 +421,14 @@
             data such as session, speakers, etc. This data is used prior to the app's
             first sync to the backend server. -->
         <service
-            android:name=".service.DataBootstrapService"
+            android:name="com.google.samples.apps.iosched.service.DataBootstrapService"
             android:exported="false" />
 
         <!--
              a simple receiver that triggers a sync for any message it receives. used by our
              GCM implementation
         -->
-        <receiver android:name=".sync.TriggerSyncReceiver" />
+        <receiver android:name="com.google.samples.apps.iosched.sync.TriggerSyncReceiver" />
 
         <!-- Other manifest items -->
 
@@ -499,7 +439,7 @@
         <!-- App widget components -->
 
         <receiver
-            android:name=".appwidget.ScheduleWidgetProvider"
+            android:name="com.google.samples.apps.iosched.appwidget.ScheduleWidgetProvider"
             android:enabled="true">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
@@ -513,14 +453,14 @@
         <!-- The service serving the RemoteViews to the collection widget -->
 
         <service
-            android:name=".appwidget.ScheduleWidgetRemoteViewsService"
+            android:name="com.google.samples.apps.iosched.appwidget.ScheduleWidgetRemoteViewsService"
             android:enabled="true"
             android:exported="false"
             android:permission="android.permission.BIND_REMOTEVIEWS" />
 
         <!-- Account authenticator service for use with sync adapter -->
         <service
-            android:name="sync.account.AuthenticatorService"
+            android:name="com.google.samples.apps.iosched.sync.account.AuthenticatorService"
             tools:ignore="ExportedService">
             <intent-filter>
                 <action android:name="android.accounts.AccountAuthenticator" />
@@ -531,5 +471,4 @@
         </service>
 
     </application>
-
 </manifest>
