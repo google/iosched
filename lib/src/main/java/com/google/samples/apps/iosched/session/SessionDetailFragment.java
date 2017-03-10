@@ -30,11 +30,11 @@ import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CollapsingToolbarLayout;
+import android.support.design.widget.CoordinatorLayout;
 import android.support.graphics.drawable.AnimatedVectorDrawableCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.ShareCompat;
 import android.support.v4.content.ContextCompat;
-import android.support.v4.view.ViewCompat;
 import android.support.v4.view.animation.LinearOutSlowInInterpolator;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
@@ -104,6 +104,8 @@ public class SessionDetailFragment extends Fragment implements
 
     private CheckableFloatingActionButton mAddScheduleFab;
 
+    private CoordinatorLayout mCoordinatorLayout;
+
     private AppBarLayout mAppBar;
 
     private CollapsingToolbarLayout mCollapsingToolbar;
@@ -127,8 +129,6 @@ public class SessionDetailFragment extends Fragment implements
     private ViewGroup mTagsContainer;
 
     private TextView mRequirements;
-
-    private View mHeaderBox;
 
     private View mPhotoViewContainer;
 
@@ -185,17 +185,22 @@ public class SessionDetailFragment extends Fragment implements
 
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+        mCoordinatorLayout = (CoordinatorLayout) view.findViewById(
+                R.id.root_container);
+        mCoordinatorLayout.setStatusBarBackground(null);
+
         mAppBar = (AppBarLayout) view.findViewById(R.id.appbar);
         mCollapsingToolbar =
                 (CollapsingToolbarLayout) mAppBar.findViewById(R.id.collapsing_toolbar);
-        mHeaderBox = mAppBar.findViewById(R.id.header_session);
-        mToolbar = (Toolbar) mHeaderBox.findViewById(R.id.toolbar);
-        mTitle = (TextView) mHeaderBox.findViewById(R.id.session_title);
-        mSubtitle = (TextView) mHeaderBox.findViewById(R.id.session_subtitle);
+        mCollapsingToolbar.setStatusBarScrim(null);
+        mToolbar = (Toolbar) mCollapsingToolbar.findViewById(R.id.toolbar);
         mPhotoViewContainer = mCollapsingToolbar.findViewById(R.id.session_photo_container);
         mPhotoView = (ImageView) mPhotoViewContainer.findViewById(R.id.session_photo);
         mWatchVideo = (Button) mCollapsingToolbar.findViewById(R.id.watch);
+
         final ViewGroup details = (ViewGroup) view.findViewById(R.id.details_container);
+        mTitle = (TextView) details.findViewById(R.id.session_title);
+        mSubtitle = (TextView) details.findViewById(R.id.session_subtitle);
         mAbstract = (TextView) details.findViewById(R.id.session_abstract);
         mLiveStreamedIndicator =
                 (TextView) details.findViewById(R.id.live_streamed_indicator);
@@ -431,13 +436,6 @@ public class SessionDetailFragment extends Fragment implements
 
         if (data.shouldShowHeaderImage()) {
             mImageLoader.loadImage(data.getPhotoUrl(), mPhotoView);
-        } else {
-            mPhotoViewContainer.setVisibility(View.GONE);
-            ViewCompat.setFitsSystemWindows(mAppBar, false);
-            // This is hacky but the collapsing toolbar requires a minimum height to enable
-            // the status bar scrim feature; set 1px. When there is no image, this would leave
-            // a 1px gap so we offset with a negative margin.
-            ((ViewGroup.MarginLayoutParams) mCollapsingToolbar.getLayoutParams()).topMargin = -1;
         }
 
         tryExecuteDeferredUiOperations();
@@ -550,29 +548,23 @@ public class SessionDetailFragment extends Fragment implements
                         R.color.theme_primary);
             }
 
-            final Drawable background = mHeaderBox.getBackground();
+            final Drawable background = mAppBar.getBackground();
             if (background instanceof ColorDrawable
                     && ((ColorDrawable) background).getColor() == trackColor) {
                 return;
             }
 
+            mCollapsingToolbar.setContentScrimColor(trackColor);
+
             // Animate the color change to make the transition smoother
             final ObjectAnimator color =
-                    ObjectAnimator.ofInt(mHeaderBox, UIUtils.BACKGROUND_COLOR, trackColor);
+                    ObjectAnimator.ofInt(mAppBar, UIUtils.BACKGROUND_COLOR, trackColor);
             color.setEvaluator(new ArgbEvaluator());
             if (mHasEnterTransition) {
                 color.setStartDelay(200L);
             }
             color.setDuration(300L);
             color.start();
-
-            if (mCollapsingToolbar.getFitsSystemWindows()
-                    && mPhotoViewContainer.getVisibility() == View.VISIBLE) { // immersive+photo
-                mCollapsingToolbar.setStatusBarScrimColor(trackColor);
-            } else {
-                UIUtils.adjustAndSetStatusBarColor(getActivity(), trackColor);
-            }
-
         }
     }
 
@@ -599,8 +591,8 @@ public class SessionDetailFragment extends Fragment implements
 
     private void returnTransitionStarted() {
         // Fade the header bar for a smoother transition.
-        final ObjectAnimator color = ObjectAnimator.ofInt(mHeaderBox, UIUtils.BACKGROUND_COLOR,
-                        ContextCompat.getColor(getContext(), R.color.background));
+        final ObjectAnimator color = ObjectAnimator.ofInt(mAppBar, UIUtils.BACKGROUND_COLOR,
+                ContextCompat.getColor(getContext(), R.color.background));
         color.setEvaluator(new ArgbEvaluator());
         color.setDuration(200L);
         color.start();
