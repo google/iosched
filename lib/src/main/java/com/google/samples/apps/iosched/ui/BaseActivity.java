@@ -316,21 +316,11 @@ public abstract class BaseActivity extends AppCompatActivity implements
         // Perform one-time bootstrap setup, if needed
         DataBootstrapService.startDataBootstrapIfNecessary(this);
 
-        // Check to ensure a Google Account is active for the app. Placing the check here ensures
-        // it is run again in the case where a Google Account wasn't present on the device and a
-        // picker had to be started.
-        if (!AccountUtils.enforceActiveGoogleAccount(this, SELECT_GOOGLE_ACCOUNT_RESULT)) {
-            LOGD(TAG, "EnforceActiveGoogleAccount returned false");
-            return;
-        }
-
         // Watch for sync state changes
         mSyncStatusObserver.onStatusChanged(0);
         final int mask = ContentResolver.SYNC_OBSERVER_TYPE_PENDING |
                 ContentResolver.SYNC_OBSERVER_TYPE_ACTIVE;
         mSyncObserverHandle = ContentResolver.addStatusChangeListener(mask, mSyncStatusObserver);
-
-        startLoginProcess();
     }
 
     @Override
