@@ -21,11 +21,9 @@ import android.net.Uri;
 
 import com.google.samples.apps.iosched.archframework.PresenterImpl;
 import com.google.samples.apps.iosched.archframework.UpdatableView;
-import com.google.samples.apps.iosched.login.LoginStateListener;
 import com.google.samples.apps.iosched.navigation.NavigationModel.NavigationItemEnum;
 import com.google.samples.apps.iosched.navigation.NavigationModel.NavigationQueryEnum;
 import com.google.samples.apps.iosched.navigation.NavigationModel.NavigationUserActionEnum;
-import com.google.samples.apps.iosched.util.ActivityUtils;
 
 /**
  * This abstract class implements both {@link UpdatableView} and {@link AppNavigationView}, without
@@ -38,8 +36,6 @@ public abstract class AppNavigationViewAbstractImpl implements
         AppNavigationView {
 
     private UserActionListener<NavigationUserActionEnum> mUserActionListener;
-
-    protected LoginStateListener mLoginStateListener;
 
     protected Activity mActivity;
 
@@ -64,10 +60,8 @@ public abstract class AppNavigationViewAbstractImpl implements
     }
 
     @Override
-    public void activityReady(Activity activity, LoginStateListener loginStateListener,
-            NavigationItemEnum self) {
+    public void activityReady(Activity activity, NavigationItemEnum self) {
         mActivity = activity;
-        mLoginStateListener = loginStateListener;
         mSelfItem = self;
 
         setUpView();
@@ -96,19 +90,12 @@ public abstract class AppNavigationViewAbstractImpl implements
 
     @Override
     public void itemSelected(final NavigationItemEnum item) {
-        switch (item) {
-            case SIGN_IN:
-                mLoginStateListener.onSignInOrCreateAccount();
-                break;
-            default:
-                if (item.getClassToLaunch() != null) {
-                    mActivity.startActivity(new Intent(mActivity, item.getClassToLaunch()));
-                    mActivity.overridePendingTransition(0, 0);
-                    if (item.finishCurrentActivity()) {
-                        mActivity.finish();
-                    }
-                }
-                break;
+        if (item.getClassToLaunch() != null) {
+            mActivity.startActivity(new Intent(mActivity, item.getClassToLaunch()));
+            mActivity.overridePendingTransition(0, 0);
+            if (item.finishCurrentActivity()) {
+                mActivity.finish();
+            }
         }
     }
 

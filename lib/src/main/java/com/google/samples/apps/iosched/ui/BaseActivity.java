@@ -16,7 +16,6 @@
 
 package com.google.samples.apps.iosched.ui;
 
-import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.ContentResolver;
 import android.content.Intent;
@@ -28,7 +27,6 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
-import android.provider.Settings;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.NavUtils;
 import android.support.v4.app.TaskStackBuilder;
@@ -45,11 +43,7 @@ import android.view.WindowManager;
 import com.google.android.gms.auth.GoogleAuthUtil;
 import com.google.samples.apps.iosched.lib.BuildConfig;
 import com.google.samples.apps.iosched.lib.R;
-import com.google.samples.apps.iosched.injection.LoginAndAuthProvider;
 import com.google.samples.apps.iosched.injection.MessagingRegistrationProvider;
-import com.google.samples.apps.iosched.login.LoginAndAuth;
-import com.google.samples.apps.iosched.login.LoginAndAuthListener;
-import com.google.samples.apps.iosched.login.LoginStateListener;
 import com.google.samples.apps.iosched.messaging.MessagingRegistration;
 import com.google.samples.apps.iosched.navigation.AppNavigationView;
 import com.google.samples.apps.iosched.navigation.AppNavigationViewAsBottomNavImpl;
@@ -65,7 +59,6 @@ import com.google.samples.apps.iosched.util.RecentTasksStyler;
 import com.google.samples.apps.iosched.welcome.WelcomeActivity;
 
 import static com.google.samples.apps.iosched.util.LogUtils.LOGD;
-import static com.google.samples.apps.iosched.util.LogUtils.LOGE;
 import static com.google.samples.apps.iosched.util.LogUtils.LOGW;
 import static com.google.samples.apps.iosched.util.LogUtils.makeLogTag;
 
@@ -74,17 +67,10 @@ import static com.google.samples.apps.iosched.util.LogUtils.makeLogTag;
  * drawer, login and authentication, Action Bar tweaks, amongst others.
  */
 public abstract class BaseActivity extends AppCompatActivity implements
-        LoginAndAuthListener,
         SharedPreferences.OnSharedPreferenceChangeListener,
-        MultiSwipeRefreshLayout.CanChildScrollUpCallback, LoginStateListener {
+        MultiSwipeRefreshLayout.CanChildScrollUpCallback {
 
     private static final String TAG = makeLogTag(BaseActivity.class);
-
-    public static final int SWITCH_USER_RESULT = 9998;
-    private static final int SELECT_GOOGLE_ACCOUNT_RESULT = 9999;
-
-    // the LoginAndAuthHelper handles signing in to Google Play Services and OAuth
-    private LoginAndAuth mLoginAndAuthProvider;
 
     // Navigation drawer
     private AppNavigationView mAppNavigationView;
@@ -197,7 +183,7 @@ public abstract class BaseActivity extends AppCompatActivity implements
                 findViewById(R.id.bottom_navigation);
         if (bottomNav != null) {
             mAppNavigationView = new AppNavigationViewAsBottomNavImpl(bottomNav);
-            mAppNavigationView.activityReady(this, this, getSelfNavDrawerItem());
+            mAppNavigationView.activityReady(this, getSelfNavDrawerItem());
         }
 
         trySetupSwipeRefresh();
@@ -211,13 +197,6 @@ public abstract class BaseActivity extends AppCompatActivity implements
         }
     }
 
-
-    @Override
-    public void onAccountChangeRequested() {
-        // override if you want to be notified when another account has been selected account has
-        // changed
-    }
-
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == R.id.menu_refresh) {
@@ -229,6 +208,9 @@ public abstract class BaseActivity extends AppCompatActivity implements
 
     protected void requestDataRefresh() {
         android.accounts.Account activeAccount = AccountUtils.getActiveAccount(this);
+        if (activeAccount == null) {
+            return;
+        }
         ContentResolver contentResolver = getContentResolver();
         if (contentResolver.isSyncActive(activeAccount, ScheduleContract.CONTENT_AUTHORITY)) {
             LOGD(TAG, "Ignoring manual sync request because a sync is already in progress.");
@@ -290,25 +272,6 @@ public abstract class BaseActivity extends AppCompatActivity implements
         }
     }
 
-    @SuppressLint("InlinedApi")
-    @Override
-    public void onSignInOrCreateAccount() {
-        //Get list of accounts on device.
-        android.accounts.AccountManager am = android.accounts.AccountManager.get(BaseActivity.this);
-        android.accounts.Account[] accountArray =
-                am.getAccountsByType(GoogleAuthUtil.GOOGLE_ACCOUNT_TYPE);
-        if (accountArray.length == 0) {
-            //Send the user to the "Add Account" page.
-            Intent intent = new Intent(Settings.ACTION_ADD_ACCOUNT);
-            intent.putExtra(Settings.EXTRA_ACCOUNT_TYPES,
-                    new String[]{GoogleAuthUtil.GOOGLE_ACCOUNT_TYPE});
-            startActivity(intent);
-        } else {
-            // Try to log the user in with the first account on the device.
-            startLoginProcess();
-        }
-    }
-
     @Override
     protected void onResume() {
         super.onResume();
@@ -329,10 +292,6 @@ public abstract class BaseActivity extends AppCompatActivity implements
         if (mSyncObserverHandle != null) {
             ContentResolver.removeStatusChangeListener(mSyncObserverHandle);
             mSyncObserverHandle = null;
-        }
-
-        if (mLoginAndAuthProvider != null) {
-            mLoginAndAuthProvider.stop();
         }
     }
 
@@ -356,151 +315,6 @@ public abstract class BaseActivity extends AppCompatActivity implements
         }
 
         return arguments;
-    }
-
-    @Override
-    public void onStartLoginProcessRequested() {
-        startLoginProcess();
-    }
-
-    private void startLoginProcess() {
-        LOGD(TAG, "Starting login process.");
-        if (!AccountUtils.hasActiveAccount(this)) {
-            LOGD(TAG, "No active account, attempting to pick a default.");
-            String defaultAccount = AccountUtils.getActiveAccountName(this);
-            if (defaultAccount == null) {
-                LOGE(TAG, "Failed to pick default account (no accounts). Failing.");
-                //complainMustHaveGoogleAccount();
-                return;
-            }
-            LOGD(TAG, "Default to: " + defaultAccount);
-            AccountUtils.setActiveAccount(this, defaultAccount);
-        }
-
-        if (!AccountUtils.hasActiveAccount(this)) {
-            LOGD(TAG, "Can't proceed with login -- no account chosen.");
-            return;
-        } else {
-            LOGD(TAG, "Chosen account: " + AccountUtils.getActiveAccountName(this));
-        }
-
-        String accountName = AccountUtils.getActiveAccountName(this);
-        LOGD(TAG, "Chosen account: " + AccountUtils.getActiveAccountName(this));
-
-        if (mLoginAndAuthProvider != null && mLoginAndAuthProvider.getAccountName()
-                                                                  .equals(accountName)) {
-            LOGD(TAG, "Helper already set up; simply starting it.");
-            mLoginAndAuthProvider.start();
-            return;
-        }
-
-        LOGD(TAG, "Starting login process with account " + accountName);
-
-        if (mLoginAndAuthProvider != null) {
-            LOGD(TAG, "Tearing down old Helper, was " + mLoginAndAuthProvider.getAccountName());
-            if (mLoginAndAuthProvider.isStarted()) {
-                LOGD(TAG, "Unregister device from GCM");
-                mMessagingRegistration.unregisterDevice(mLoginAndAuthProvider.getAccountName());
-                LOGD(TAG, "Stopping old Helper");
-                mLoginAndAuthProvider.stop();
-            }
-            mLoginAndAuthProvider = null;
-        }
-
-        LOGD(TAG, "Creating and starting new Helper with account: " + accountName);
-        mLoginAndAuthProvider =
-                LoginAndAuthProvider.provideLoginAndAuth(this, this, accountName);
-        mLoginAndAuthProvider.start();
-    }
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode == SELECT_GOOGLE_ACCOUNT_RESULT) {
-            // Handle the select {@code startActivityForResult} from
-            // {@code enforceActiveGoogleAccount()} when a Google Account wasn't present on the
-            // device.
-            if (resultCode == RESULT_OK) {
-                // Set selected GoogleAccount as active.
-                String accountName =
-                        data.getStringExtra(android.accounts.AccountManager.KEY_ACCOUNT_NAME);
-                AccountUtils.setActiveAccount(this, accountName);
-                onAuthSuccess(accountName, true);
-            } else {
-                LOGW(TAG, "A Google Account is required to use this application.");
-                // This application requires a Google Account to be selected.
-                finish();
-            }
-            return;
-        } else if (requestCode == SWITCH_USER_RESULT) {
-            // Handle account change notifications after {@link SwitchUserActivity} has been invoked
-            if (resultCode == RESULT_OK) {
-                onAccountChangeRequested();
-                onStartLoginProcessRequested();
-            }
-        }
-
-        if (mLoginAndAuthProvider == null || !mLoginAndAuthProvider.onActivityResult(requestCode,
-                resultCode, data)) {
-            super.onActivityResult(requestCode, resultCode, data);
-        }
-    }
-
-    @Override
-    public void onPlusInfoLoaded(String accountName) {
-        if (mAppNavigationView != null) {
-            mAppNavigationView.updateNavigationItems();
-        }
-    }
-
-    /**
-     * Called when authentication succeeds. This may either happen because the user just
-     * authenticated for the first time (and went through the sign in flow), or because it's a
-     * returning user.
-     *
-     * @param accountName        name of the account that just authenticated successfully.
-     * @param newlyAuthenticated If true, this user just authenticated for the first time. If false,
-     *                           it's a returning user.
-     */
-    @Override
-    public void onAuthSuccess(String accountName, boolean newlyAuthenticated) {
-        android.accounts.Account account =
-                new android.accounts.Account(accountName, GoogleAuthUtil.GOOGLE_ACCOUNT_TYPE);
-        LOGD(TAG, "onAuthSuccess, account " + accountName + ", newlyAuthenticated="
-                + newlyAuthenticated);
-
-        refreshAccountDependantData();
-
-        if (newlyAuthenticated) {
-            LOGD(TAG, "Enabling auto sync on content provider for account " + accountName);
-            SyncHelper.updateSyncInterval(this);
-            SyncHelper.requestManualSync();
-        }
-        if (mAppNavigationView != null) {
-            mAppNavigationView.updateNavigationItems();
-        }
-        mMessagingRegistration.registerDevice();
-    }
-
-    @Override
-    public void onAuthFailure(String accountName) {
-        LOGD(TAG, "Auth failed for account " + accountName);
-        refreshAccountDependantData();
-        if (mAppNavigationView != null) {
-            mAppNavigationView.updateNavigationItems();
-        }
-    }
-
-    protected void refreshAccountDependantData() {
-        // Force local data refresh for data that depends on the logged user:
-        LOGD(TAG, "Refreshing User Data");
-        getContentResolver().notifyChange(ScheduleContract.MySchedule.CONTENT_URI, null, false);
-        getContentResolver().notifyChange(ScheduleContract.MyViewedVideos.CONTENT_URI, null, false);
-        getContentResolver().notifyChange(
-                ScheduleContract.MyFeedbackSubmitted.CONTENT_URI, null, false);
-    }
-
-    protected void retryAuth() {
-        mLoginAndAuthProvider.retryAuthByUserRequest();
     }
 
     public Toolbar getToolbar() {
