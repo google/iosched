@@ -249,31 +249,6 @@ public class MyScheduleActivity extends BaseActivity implements ScheduleViewPare
     }
 
     @Override
-    public void onAuthFailure(String accountName) {
-        super.onAuthFailure(accountName);
-        UIUtils.setUpButterBar(mFailedLoginView, getString(R.string.login_failed_text),
-                getString(R.string.login_failed_text_retry), new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        hideLoginFailureView();
-                        retryAuth();
-
-                    }
-                }
-        );
-    }
-
-    @Override
-    public void onAccountChangeRequested() {
-        super.onAccountChangeRequested();
-        hideLoginFailureView();
-
-        if (mPresenter != null) {
-            mPresenter.onUserAction(MyScheduleModel.MyScheduleUserActionEnum.RELOAD_DATA, null);
-        }
-    }
-
-    @Override
     public boolean canSwipeRefreshChildScrollUp() {
         final Fragment contentFragment = getSupportFragmentManager()
                 .findFragmentById(R.id.schedule_content);

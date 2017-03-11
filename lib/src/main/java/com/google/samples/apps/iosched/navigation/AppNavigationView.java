@@ -16,7 +16,6 @@ package com.google.samples.apps.iosched.navigation;
 
 import android.app.Activity;
 
-import com.google.samples.apps.iosched.login.LoginStateListener;
 import com.google.samples.apps.iosched.navigation.NavigationModel.NavigationItemEnum;
 
 /**
@@ -32,14 +31,12 @@ public interface AppNavigationView {
      * general set up of the view.
      *
      * @param activity           The activity showing the NavigationView
-     * @param loginStateListener The navigation contains state related to login, so a login listener
-     *                           should be attached to it.
+
      * @param self               The {@link NavigationItemEnum} of the activity showing the
      *                           NavigationView. Pass in {@link NavigationItemEnum#INVALID} if the
      *                           activity should not display the NavigationView.
      */
-    void activityReady(Activity activity, LoginStateListener loginStateListener,
-            NavigationItemEnum self);
+    void activityReady(Activity activity, NavigationItemEnum self);
 
     /**
      * Implements UI specific logic to perform initial set up for the NavigationView. This is
