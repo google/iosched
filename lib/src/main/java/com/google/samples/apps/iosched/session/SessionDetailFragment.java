@@ -16,8 +16,6 @@
 
 package com.google.samples.apps.iosched.session;
 
-import static com.google.samples.apps.iosched.util.LogUtils.LOGD;
-
 import android.animation.ArgbEvaluator;
 import android.animation.ObjectAnimator;
 import android.app.Activity;
@@ -27,9 +25,9 @@ import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.annotation.Nullable;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.graphics.drawable.AnimatedVectorDrawableCompat;
@@ -57,13 +55,13 @@ import com.google.android.gms.appindexing.Action;
 import com.google.android.gms.appindexing.AppIndex;
 import com.google.android.gms.appindexing.Thing;
 import com.google.android.gms.common.api.GoogleApiClient;
-import com.google.samples.apps.iosched.lib.BuildConfig;
 import com.google.samples.apps.iosched.Config;
-import com.google.samples.apps.iosched.lib.R;
 import com.google.samples.apps.iosched.archframework.PresenterImpl;
 import com.google.samples.apps.iosched.archframework.UpdatableView;
 import com.google.samples.apps.iosched.explore.ExploreSessionsActivity;
 import com.google.samples.apps.iosched.injection.ModelProvider;
+import com.google.samples.apps.iosched.lib.BuildConfig;
+import com.google.samples.apps.iosched.lib.R;
 import com.google.samples.apps.iosched.map.MapActivity;
 import com.google.samples.apps.iosched.model.TagMetadata;
 import com.google.samples.apps.iosched.session.SessionDetailModel.SessionDetailQueryEnum;
@@ -84,6 +82,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
+
+import static com.google.samples.apps.iosched.util.LogUtils.LOGD;
 
 /**
  * Displays the details about a session. The user can add/remove a session from the schedule, watch
@@ -184,12 +184,60 @@ public class SessionDetailFragment extends Fragment implements
     }
 
     @Override
+    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+        mAppBar = (AppBarLayout) view.findViewById(R.id.appbar);
+        mCollapsingToolbar =
+                (CollapsingToolbarLayout) mAppBar.findViewById(R.id.collapsing_toolbar);
+        mHeaderBox = mAppBar.findViewById(R.id.header_session);
+        mToolbar = (Toolbar) mHeaderBox.findViewById(R.id.toolbar);
+        mTitle = (TextView) mHeaderBox.findViewById(R.id.session_title);
+        mSubtitle = (TextView) mHeaderBox.findViewById(R.id.session_subtitle);
+        mPhotoViewContainer = mCollapsingToolbar.findViewById(R.id.session_photo_container);
+        mPhotoView = (ImageView) mPhotoViewContainer.findViewById(R.id.session_photo);
+        mWatchVideo = (Button) mCollapsingToolbar.findViewById(R.id.watch);
+        final ViewGroup details = (ViewGroup) view.findViewById(R.id.details_container);
+        mAbstract = (TextView) details.findViewById(R.id.session_abstract);
+        mLiveStreamedIndicator =
+                (TextView) details.findViewById(R.id.live_streamed_indicator);
+        mRequirements = (TextView) details.findViewById(R.id.session_requirements);
+        mTags = (LinearLayout) details.findViewById(R.id.session_tags);
+        mExtended = (TextView) details.findViewById(R.id.extended_session_button);
+        mTagsContainer = (ViewGroup) details.findViewById(R.id.session_tags_container);
+        mAddScheduleFab =
+                (CheckableFloatingActionButton) view.findViewById(R.id.add_schedule_button);
+        mAddScheduleFab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                boolean isInSchedule = !((CheckableFloatingActionButton) view).isChecked();
+                showInSchedule(isInSchedule);
+                if (isInSchedule) {
+                    sendUserAction(SessionDetailUserActionEnum.STAR, null);
+                } else {
+                    sendUserAction(SessionDetailUserActionEnum.UNSTAR, null);
+                }
+
+                mAddScheduleFab.announceForAccessibility(isInSchedule
+                        ? getString(R.string.session_details_a11y_session_added)
+                        : getString(R.string.session_details_a11y_session_removed));
+            }
+        });
+
+        mImageLoader = new ImageLoader(getContext());
+    }
+
+    @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         mHandler = new Handler();
-        initPresenter();
-        initViews();
-        initViewListeners();
+
+        // init presenter
+        SessionDetailModel model = ModelProvider.provideSessionDetailModel(
+                ((SessionDetailActivity) getActivity()).getSessionUri(), getContext(),
+                new SessionsHelper(getActivity()), getLoaderManager());
+        PresenterImpl<SessionDetailModel, SessionDetailQueryEnum, SessionDetailUserActionEnum>
+                presenter = new PresenterImpl<>(model, this, SessionDetailUserActionEnum.values(),
+                SessionDetailQueryEnum.values());
+        presenter.loadInitialQueries();
     }
 
     @Override
@@ -199,32 +247,31 @@ public class SessionDetailFragment extends Fragment implements
             mIsFloatingWindow = ((BaseActivity) activity).shouldBeFloatingWindow();
         }
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            final Transition sharedElementEnterTransition =
-                    activity.getWindow().getSharedElementEnterTransition();
-            if (sharedElementEnterTransition != null) {
-                mHasEnterTransition = true;
-                sharedElementEnterTransition.addListener(new UIUtils.TransitionListenerAdapter() {
-                    @Override
-                    public void onTransitionStart(final Transition transition) {
-                        enterTransitionStarted();
-                    }
-                    @Override
-                    public void onTransitionEnd(final Transition transition) {
-                        enterTransitionFinished();
-                    }
-                });
-            }
-            final Transition sharedElementReturnTransition =
-                    activity.getWindow().getSharedElementReturnTransition();
-            if (sharedElementReturnTransition != null) {
-                sharedElementReturnTransition.addListener(new UIUtils.TransitionListenerAdapter() {
-                    @Override
-                    public void onTransitionStart(final Transition transition) {
-                        returnTransitionStarted();
-                    }
-                });
-            }
+        final Transition sharedElementEnterTransition =
+                activity.getWindow().getSharedElementEnterTransition();
+        if (sharedElementEnterTransition != null) {
+            mHasEnterTransition = true;
+            sharedElementEnterTransition.addListener(new UIUtils.TransitionListenerAdapter() {
+                @Override
+                public void onTransitionStart(final Transition transition) {
+                    enterTransitionStarted();
+                }
+
+                @Override
+                public void onTransitionEnd(final Transition transition) {
+                    enterTransitionFinished();
+                }
+            });
+        }
+        final Transition sharedElementReturnTransition =
+                activity.getWindow().getSharedElementReturnTransition();
+        if (sharedElementReturnTransition != null) {
+            sharedElementReturnTransition.addListener(new UIUtils.TransitionListenerAdapter() {
+                @Override
+                public void onTransitionStart(final Transition transition) {
+                    returnTransitionStarted();
+                }
+            });
         }
     }
 
@@ -280,41 +327,6 @@ public class SessionDetailFragment extends Fragment implements
         mListener.onUserAction(action, args);
     }
 
-    private void initPresenter() {
-        SessionDetailModel model = ModelProvider.provideSessionDetailModel(
-                ((SessionDetailActivity) getActivity()).getSessionUri(), getContext(),
-                new SessionsHelper(getActivity()), getLoaderManager());
-        PresenterImpl<SessionDetailModel, SessionDetailQueryEnum, SessionDetailUserActionEnum>
-                presenter = new PresenterImpl<>(model, this, SessionDetailUserActionEnum.values(),
-                SessionDetailQueryEnum.values());
-        presenter.loadInitialQueries();
-    }
-
-    private void initViews() {
-        final ViewGroup root = (ViewGroup) getActivity().findViewById(R.id.session_detail_frag);
-        mAppBar = (AppBarLayout) root.findViewById(R.id.appbar);
-        mCollapsingToolbar =
-                (CollapsingToolbarLayout) mAppBar.findViewById(R.id.collapsing_toolbar);
-        mHeaderBox = mAppBar.findViewById(R.id.header_session);
-        mToolbar = (Toolbar) mHeaderBox.findViewById(R.id.toolbar);
-        mTitle = (TextView) mHeaderBox.findViewById(R.id.session_title);
-        mSubtitle = (TextView) mHeaderBox.findViewById(R.id.session_subtitle);
-        mPhotoViewContainer = mCollapsingToolbar.findViewById(R.id.session_photo_container);
-        mPhotoView = (ImageView) mPhotoViewContainer.findViewById(R.id.session_photo);
-        mWatchVideo = (Button) mCollapsingToolbar.findViewById(R.id.watch);
-        final ViewGroup details = (ViewGroup) root.findViewById(R.id.details_container);
-        mAbstract = (TextView) details.findViewById(R.id.session_abstract);
-        mLiveStreamedIndicator =
-                (TextView) details.findViewById(R.id.live_streamed_indicator);
-        mRequirements = (TextView) details.findViewById(R.id.session_requirements);
-        mTags = (LinearLayout) details.findViewById(R.id.session_tags);
-        mExtended = (TextView) details.findViewById(R.id.extended_session_button);
-        mTagsContainer = (ViewGroup) details.findViewById(R.id.session_tags_container);
-        mAddScheduleFab =
-                (CheckableFloatingActionButton) root.findViewById(R.id.add_schedule_button);
-        mImageLoader = new ImageLoader(getContext());
-    }
-
     @Override
     public void displayData(SessionDetailModel data, SessionDetailQueryEnum query) {
         switch (query) {
@@ -335,27 +347,6 @@ public class SessionDetailFragment extends Fragment implements
             default:
                 break;
         }
-    }
-
-    private void initViewListeners() {
-        mAddScheduleFab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                boolean isInSchedule = !((CheckableFloatingActionButton) view).isChecked();
-                showInSchedule(isInSchedule);
-                if (isInSchedule) {
-                    sendUserAction(SessionDetailUserActionEnum.STAR, null);
-                } else {
-                    sendUserAction(SessionDetailUserActionEnum.UNSTAR, null);
-                }
-
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
-                    mAddScheduleFab.announceForAccessibility(isInSchedule ?
-                            getString(R.string.session_details_a11y_session_added) :
-                            getString(R.string.session_details_a11y_session_removed));
-                }
-            }
-        });
     }
 
     private void showInSchedule(boolean isInSchedule) {
@@ -388,18 +379,16 @@ public class SessionDetailFragment extends Fragment implements
             boolean success) {
         switch (userAction) {
             case SHOW_MAP:
-                Intent intentShowMap =
-                        new Intent(getActivity().getApplicationContext(), MapActivity.class);
+                Intent intentShowMap = new Intent(getActivity(), MapActivity.class);
                 intentShowMap.putExtra(MapActivity.EXTRA_ROOM, data.getRoomId());
                 intentShowMap.putExtra(MapActivity.EXTRA_DETACHED_MODE, true);
                 getActivity().startActivity(intentShowMap);
                 break;
             case SHOW_SHARE:
-                ShareCompat.IntentBuilder builder =
-                        ShareCompat.IntentBuilder.from(getActivity()).setType(
-                                "text/plain").setText(getActivity()
-                                .getString(R.string.share_template, data.getSessionTitle(),
-                                        BuildConfig.CONFERENCE_HASHTAG, data.getSessionUrl()));
+                ShareCompat.IntentBuilder builder = ShareCompat.IntentBuilder.from(getActivity())
+                        .setType("text/plain")
+                        .setText(getString(R.string.share_template, data.getSessionTitle(),
+                                BuildConfig.CONFERENCE_HASHTAG, data.getSessionUrl()));
                 Intent intentShare = Intent.createChooser(
                         builder.getIntent(),
                         getString(R.string.title_share));
@@ -951,19 +940,6 @@ public class SessionDetailFragment extends Fragment implements
             r.run();
             mDeferredUiOperations.clear();
         }
-    }
-
-    /*
-         * Event structure:
-         * Category -> "Session Details"
-         * Action -> Link Text
-         * Label -> Session's Title
-         * Value -> 0.
-         */
-    private void fireLinkEvent(int actionId, SessionDetailModel data) {
-        // ANALYTICS EVENT:  Click on a link in the Session Details page.
-        // Contains: The link's name and the session title.
-        AnalyticsHelper.sendEvent("Session", getString(actionId), data.getSessionTitle());
     }
 
     private Action getActionForTitle(String title) {

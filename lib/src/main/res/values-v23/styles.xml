@@ -36,9 +36,9 @@
         <item name="android:windowEnterTransition">@transition/fade_system_chrome</item>
     </style>
 
-    <style name="Theme.IOSched.SessionDetails" parent="Theme.IOSched.SessionDetails.VersionBase">
+    <style name="Theme.IOSched.SessionDetails.VersionBase"
+        parent="Theme.IOSched.SessionDetails.SizeBase">
         <item name="android:windowLightStatusBar">true</item>
-        <item name="android:windowDrawsSystemBarBackgrounds">true</item>
         <item name="android:statusBarColor">@color/immersive_light_status_bar</item>
     </style>
 
