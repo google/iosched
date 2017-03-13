@@ -124,11 +124,7 @@ public class SessionDetailFragment extends Fragment implements
 
     private LinearLayout mTags;
 
-    private TextView mExtended;
-
     private ViewGroup mTagsContainer;
-
-    private TextView mRequirements;
 
     private View mPhotoViewContainer;
 
@@ -149,8 +145,6 @@ public class SessionDetailFragment extends Fragment implements
     private boolean mShowFab = false;
 
     private boolean mHasEnterTransition = false;
-
-    private String mExtendedSessionUrl = null;
 
     private GoogleApiClient mClient;
 
@@ -204,9 +198,7 @@ public class SessionDetailFragment extends Fragment implements
         mAbstract = (TextView) details.findViewById(R.id.session_abstract);
         mLiveStreamedIndicator =
                 (TextView) details.findViewById(R.id.live_streamed_indicator);
-        mRequirements = (TextView) details.findViewById(R.id.session_requirements);
         mTags = (LinearLayout) details.findViewById(R.id.session_tags);
-        mExtended = (TextView) details.findViewById(R.id.extended_session_button);
         mTagsContainer = (ViewGroup) details.findViewById(R.id.session_tags_container);
         mAddScheduleFab =
                 (CheckableFloatingActionButton) view.findViewById(R.id.add_schedule_button);
@@ -306,15 +298,6 @@ public class SessionDetailFragment extends Fragment implements
         tryExecuteDeferredUiOperations();
     }
 
-
-    public void fireExtendedSessionIntent() {
-        if (mExtendedSessionUrl != null) {
-            Intent extendedSessionIntent = new Intent(Intent.ACTION_VIEW).setData(Uri.parse(
-                    mExtendedSessionUrl));
-            startActivity(extendedSessionIntent);
-        }
-    }
-
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int itemId = item.getItemId();
@@ -401,9 +384,6 @@ public class SessionDetailFragment extends Fragment implements
                 getActivity().startActivity(intentShare);
 
                 break;
-            case EXTENDED:
-                fireExtendedSessionIntent();
-                break;
             default:
                 // Other user actions are completely handled in model
                 break;
@@ -458,20 +438,6 @@ public class SessionDetailFragment extends Fragment implements
             mAbstract.setVisibility(View.GONE);
         }
 
-        // Build requirements section
-        final View requirementsBlock = getActivity().findViewById(R.id.session_requirements_block);
-        final String sessionRequirements = data.getRequirements();
-        if (!TextUtils.isEmpty(sessionRequirements)) {
-            UIUtils.setTextMaybeHtml(mRequirements, sessionRequirements);
-            requirementsBlock.setVisibility(View.VISIBLE);
-        } else {
-            requirementsBlock.setVisibility(View.GONE);
-        }
-
-        final ViewGroup relatedVideosBlock = (ViewGroup) getActivity().findViewById(
-                R.id.related_videos_block);
-        relatedVideosBlock.setVisibility(View.GONE);
-
         updateEmptyView(data);
 
         updateTimeBasedUi(data);
@@ -513,23 +479,6 @@ public class SessionDetailFragment extends Fragment implements
         if (!mHasEnterTransition) {
             // No enter transition so update UI manually
             enterTransitionFinished();
-        }
-
-
-        if (BuildConfig.ENABLE_EXTENDED_SESSION_URL && data.shouldShowExtendedSessionLink()) {
-            mExtendedSessionUrl = data.getExtendedSessionUrl();
-            if (!TextUtils.isEmpty(mExtendedSessionUrl)) {
-                mExtended.setText(R.string.description_extended);
-                mExtended.setVisibility(View.VISIBLE);
-
-                mExtended.setClickable(true);
-                mExtended.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(final View v) {
-                        sendUserAction(SessionDetailUserActionEnum.EXTENDED, null);
-                    }
-                });
-            }
         }
     }
 

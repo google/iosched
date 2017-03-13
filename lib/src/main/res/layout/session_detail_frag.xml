@@ -187,17 +187,6 @@
                 android:text="@string/session_live_streamed"
                 android:textColor="@color/session_livestreamed_color" />
 
-            <TextView
-                android:id="@+id/extended_session_button"
-                style="@style/SessionExtendedLink"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="@dimen/padding_normal"
-                android:layout_marginLeft="@dimen/keyline_2_session_detail"
-                android:layout_marginStart="@dimen/keyline_2_session_detail"
-                android:drawablePadding="@dimen/keyline_1_minus_8dp"
-                android:visibility="gone" />
-
             <HorizontalScrollView
                 android:id="@+id/session_tags_container"
                 android:layout_width="match_parent"
@@ -238,53 +227,9 @@
 
             </LinearLayout>
 
-            <LinearLayout
-                android:id="@+id/session_requirements_block"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/keyline_2_session_detail"
-                android:layout_marginStart="@dimen/keyline_2_session_detail"
-                android:orientation="vertical"
-                android:visibility="gone">
+            <!-- TODO map -->
 
-                <TextView
-                    android:id="@+id/session_requirements_header"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:gravity="center_vertical"
-                    android:minHeight="?android:listPreferredItemHeightSmall"
-                    android:text="@string/session_requirements"
-                    android:textAppearance="@style/TextAppearance.Subhead" />
-
-                <TextView
-                    android:id="@+id/session_requirements"
-                    style="@style/Body1Text"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="@dimen/spacing_normal"
-                    android:layout_marginTop="@dimen/spacing_normal" />
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:id="@+id/related_videos_block"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:visibility="gone">
-
-                <TextView
-                    android:id="@+id/related_videos_header"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="@dimen/keyline_2_session_detail"
-                    android:layout_marginStart="@dimen/keyline_2_session_detail"
-                    android:gravity="center_vertical"
-                    android:minHeight="?android:listPreferredItemHeightSmall"
-                    android:text="@string/related_videos"
-                    android:textAppearance="@style/TextAppearance.Subhead" />
-
-            </LinearLayout>
+            <!-- TODO related sessions -->
 
             <TextView
                 android:id="@android:id/empty"
@@ -307,8 +252,8 @@
         android:id="@+id/add_schedule_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_gravity="bottom|end"
         android:layout_margin="@dimen/fab_padding"
-        app:layout_anchorGravity="bottom|end"
         android:clickable="true"
         android:contentDescription="@string/add_to_schedule"
         android:focusable="true"
