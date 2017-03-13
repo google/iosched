@@ -102,21 +102,6 @@
             android:paddingTop="@dimen/padding_normal"
             tools:ignore="RtlSymmetry">
 
-            <com.google.samples.apps.iosched.ui.widget.MessageCardView
-                android:id="@+id/give_feedback_card"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="@dimen/keyline_1"
-                android:layout_marginLeft="@dimen/keyline_2_session_detail"
-                android:layout_marginStart="@dimen/keyline_2_session_detail"
-                android:visibility="gone"
-                app:button1text="@string/no_thanks"
-                app:button2emphasis="true"
-                app:button2tag="@string/tag_give_feedback"
-                app:button2text="@string/give_feedback"
-                app:cardBackgroundColor="@color/background"
-                app:messageText="@string/session_give_feedback_message" />
-
             <TextView
                 android:id="@+id/time_hint"
                 style="@style/SessionTimeHint"
@@ -206,6 +191,17 @@
                     android:orientation="horizontal" />
 
             </HorizontalScrollView>
+
+            <Button
+                android:id="@id/give_feedback_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:backgroundTint="@color/feedback_button_tint"
+                android:paddingLeft="@dimen/padding_normal"
+                android:paddingRight="@dimen/padding_normal"
+                android:text="@string/rate_session"
+                android:visibility="gone"
+                tools:visibility="visible" />
 
             <LinearLayout
                 android:id="@+id/session_speakers_block"

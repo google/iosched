@@ -44,6 +44,7 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -68,7 +69,6 @@ import com.google.samples.apps.iosched.session.SessionDetailModel.SessionDetailQ
 import com.google.samples.apps.iosched.session.SessionDetailModel.SessionDetailUserActionEnum;
 import com.google.samples.apps.iosched.ui.BaseActivity;
 import com.google.samples.apps.iosched.ui.widget.CheckableFloatingActionButton;
-import com.google.samples.apps.iosched.ui.widget.MessageCardView;
 import com.google.samples.apps.iosched.util.AccountUtils;
 import com.google.samples.apps.iosched.util.AnalyticsHelper;
 import com.google.samples.apps.iosched.util.ImageLoader;
@@ -80,7 +80,6 @@ import com.google.samples.apps.iosched.util.YouTubeUtils;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.HashSet;
 import java.util.List;
 
 import static com.google.samples.apps.iosched.util.LogUtils.LOGD;
@@ -94,13 +93,6 @@ public class SessionDetailFragment extends Fragment implements
         UpdatableView<SessionDetailModel, SessionDetailQueryEnum, SessionDetailUserActionEnum> {
 
     private static final String TAG = LogUtils.makeLogTag(SessionDetailFragment.class);
-
-    /**
-     * Stores the session IDs for which the user has dismissed the "give feedback" card. This
-     * information is kept for the duration of the app's execution so that if they say "No, thanks",
-     * we don't show the card again for that session while the app is still executing.
-     */
-    private static HashSet<String> sDismissedFeedbackCard = new HashSet<>();
 
     private CheckableFloatingActionButton mAddScheduleFab;
 
@@ -125,6 +117,8 @@ public class SessionDetailFragment extends Fragment implements
     private LinearLayout mTags;
 
     private ViewGroup mTagsContainer;
+
+    private Button mFeedbackButton;
 
     private View mPhotoViewContainer;
 
@@ -200,6 +194,7 @@ public class SessionDetailFragment extends Fragment implements
                 (TextView) details.findViewById(R.id.live_streamed_indicator);
         mTags = (LinearLayout) details.findViewById(R.id.session_tags);
         mTagsContainer = (ViewGroup) details.findViewById(R.id.session_tags_container);
+        mFeedbackButton = (Button) details.findViewById(R.id.give_feedback_button);
         mAddScheduleFab =
                 (CheckableFloatingActionButton) view.findViewById(R.id.add_schedule_button);
         mAddScheduleFab.setOnClickListener(new View.OnClickListener() {
@@ -323,7 +318,7 @@ public class SessionDetailFragment extends Fragment implements
                 displayTrackColor(data);
                 break;
             case FEEDBACK:
-                displayFeedbackData(data);
+                updateFeedbackButton(data);
                 break;
             case SPEAKERS:
                 displaySpeakersData(data);
@@ -568,18 +563,6 @@ public class SessionDetailFragment extends Fragment implements
         }
     }
 
-    private void displayFeedbackData(SessionDetailModel data) {
-        if (data.hasFeedback()) {
-            final MessageCardView giveFeedbackCardView =
-                    (MessageCardView) getActivity().findViewById(R.id.give_feedback_card);
-            if (giveFeedbackCardView != null) {
-                giveFeedbackCardView.setVisibility(View.GONE);
-            }
-        }
-        LOGD(TAG, "User " + (data.hasFeedback() ? "already gave" : "has not given")
-                + " feedback for session.");
-    }
-
     private void displaySpeakersData(SessionDetailModel data) {
         final ViewGroup speakersGroup = (ViewGroup) getActivity()
                 .findViewById(R.id.session_speakers_block);
@@ -739,15 +722,14 @@ public class SessionDetailFragment extends Fragment implements
             mWatchVideo.setVisibility(View.GONE);
         }
 
-        // If the session is done, hide the FAB, and show the "Give feedback" card.
-        if (data.isSessionReadyForFeedback()) {
-            mShowFab = false;
-            mAddScheduleFab.setVisibility(View.GONE);
-            if (!data.hasFeedback() && data.isInScheduleWhenSessionFirstLoaded() &&
-                    !sDismissedFeedbackCard.contains(data.getSessionId())) {
-                showGiveFeedbackCard(data);
-            }
+        // If the session is done, hide the FAB, and show the feedback button.
+        mShowFab = !data.isSessionReadyForFeedback();
+        if (mShowFab) {
+            mAddScheduleFab.show();
+        } else {
+            mAddScheduleFab.hide();
         }
+        updateFeedbackButton(data);
 
         String timeHint = "";
 
@@ -841,23 +823,24 @@ public class SessionDetailFragment extends Fragment implements
         }
     }
 
-    private void showGiveFeedbackCard(final SessionDetailModel data) {
-        final MessageCardView messageCardView = (MessageCardView) getActivity().findViewById(
-                R.id.give_feedback_card);
-        messageCardView.show();
-        messageCardView.setListener(new MessageCardView.OnMessageCardButtonClicked() {
-            @Override
-            public void onMessageCardButtonClicked(String tag) {
-                if (getResources().getString(R.string.tag_give_feedback).equals(tag)) {
+    private void updateFeedbackButton(final SessionDetailModel data) {
+        mFeedbackButton.setVisibility(data.hasFeedback() ? View.GONE : View.VISIBLE);
+        if (!data.hasFeedback() && data.isInScheduleWhenSessionFirstLoaded()) {
+            mFeedbackButton.setVisibility(View.VISIBLE);
+            mFeedbackButton.setOnClickListener(new OnClickListener() {
+                @Override
+                public void onClick(View v) {
                     sendUserAction(SessionDetailUserActionEnum.GIVE_FEEDBACK, null);
                     Intent intent = data.getFeedbackIntent();
-                    getActivity().startActivity(intent);
-                } else {
-                    sDismissedFeedbackCard.add(data.getSessionId());
-                    messageCardView.dismiss();
+                    startActivity(intent);
                 }
-            }
-        });
+            });
+            LOGD(TAG, "User has not given feedback for session.");
+        } else {
+            mFeedbackButton.setVisibility(View.GONE);
+            mFeedbackButton.setOnClickListener(null);
+            LOGD(TAG, "User already gave feedback for session.");
+        }
     }
 
     private void showInScheduleDeferred(final boolean isInSchedule) {
