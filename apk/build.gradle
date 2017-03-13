@@ -30,15 +30,15 @@ repositories {
 }
 
 android {
-    compileSdkVersion 25
-    buildToolsVersion "25.0.2"
+    compileSdkVersion rootProject.ext.compileSdkVersion
+    buildToolsVersion rootProject.ext.buildToolsVersion
 
     defaultConfig {
         proguardFiles getDefaultProguardFile('proguard-android.txt'), file('proguard-project.txt')
         applicationId "com.google.samples.apps.iosched"
         versionCode = Integer.valueOf("" + appVersionCode).intValue()
         versionName "${appVersionName}"
-        minSdkVersion 21
+        minSdkVersion rootProject.ext.minSdkVersion
     }
 
     signingConfigs {

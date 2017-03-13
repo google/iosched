@@ -30,15 +30,15 @@ repositories {
 }
 
 android {
-    compileSdkVersion 25
-    buildToolsVersion "25.0.2"
+    compileSdkVersion rootProject.ext.compileSdkVersion
+    buildToolsVersion rootProject.ext.buildToolsVersion
 
     publishNonDefault true
 
     defaultConfig {
         versionCode = Integer.valueOf("" + appVersionCode).intValue()
         versionName "${appVersionName}"
-        minSdkVersion 21
+        minSdkVersion rootProject.ext.minSdkVersion
 
         vectorDrawables.useSupportLibrary = true
 
@@ -141,7 +141,7 @@ android {
         normal {
             // Do no short-circuit the dogfood warning so it might display if appropriate.
             buildConfigField("boolean", "SUPPRESS_DOGFOOD_WARNING", "false")
-            targetSdkVersion 23
+            targetSdkVersion rootProject.ext.targetSdkVersion
         }
 
         mapEditor {
@@ -149,7 +149,7 @@ android {
             // external storage at launch.
             buildConfigField("String", "SERVER_MANIFEST_ENDPOINT", "\"\"")
             buildConfigField("boolean", "SUPPRESS_DOGFOOD_WARNING", "true")
-            targetSdkVersion 22
+            targetSdkVersion rootProject.ext.targetSdkVersion
         }
     }
 
