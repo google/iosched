@@ -156,22 +156,6 @@
                 android:focusable="true"
                 android:importantForAccessibility="yes" />
 
-            <TextView
-                android:id="@+id/live_streamed_indicator"
-                style="@style/SessionLiveStreamed"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="@dimen/padding_normal"
-                android:layout_marginLeft="@dimen/keyline_2_session_detail"
-                android:layout_marginStart="@dimen/keyline_2_session_detail"
-                android:drawableLeft="@drawable/ic_videocam_grey"
-                android:drawablePadding="@dimen/keyline_1_minus_8dp"
-                android:drawableStart="@drawable/ic_videocam_grey"
-                android:focusable="true"
-                android:gravity="center"
-                android:text="@string/session_live_streamed"
-                android:textColor="@color/session_livestreamed_color" />
-
             <HorizontalScrollView
                 android:id="@+id/session_tags_container"
                 android:layout_width="match_parent"
@@ -186,7 +170,8 @@
                 <LinearLayout
                     android:id="@+id/session_tags"
                     android:layout_width="wrap_content"
-                    android:layout_height="@dimen/a11y_min_touch_target_dimen"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
                     android:minHeight="@dimen/a11y_min_touch_target_dimen"
                     android:orientation="horizontal" />
 

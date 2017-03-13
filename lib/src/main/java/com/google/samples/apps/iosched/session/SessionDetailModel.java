@@ -335,6 +335,10 @@ public class SessionDetailModel extends ModelWithLoaderManager<SessionDetailQuer
         return mTagMetadata;
     }
 
+    public String getMainTag() {
+        return mMainTag;
+    }
+
     public String getTagsString() {
         return mTagsString;
     }

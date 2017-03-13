@@ -21,6 +21,7 @@ import android.animation.ObjectAnimator;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
@@ -59,12 +60,12 @@ import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.samples.apps.iosched.Config;
 import com.google.samples.apps.iosched.archframework.PresenterImpl;
 import com.google.samples.apps.iosched.archframework.UpdatableView;
-import com.google.samples.apps.iosched.explore.ExploreSessionsActivity;
 import com.google.samples.apps.iosched.injection.ModelProvider;
 import com.google.samples.apps.iosched.lib.BuildConfig;
 import com.google.samples.apps.iosched.lib.R;
 import com.google.samples.apps.iosched.map.MapActivity;
-import com.google.samples.apps.iosched.model.TagMetadata;
+import com.google.samples.apps.iosched.model.TagMetadata.Tag;
+import com.google.samples.apps.iosched.myschedule.MyScheduleActivity;
 import com.google.samples.apps.iosched.session.SessionDetailModel.SessionDetailQueryEnum;
 import com.google.samples.apps.iosched.session.SessionDetailModel.SessionDetailUserActionEnum;
 import com.google.samples.apps.iosched.ui.BaseActivity;
@@ -79,7 +80,6 @@ import com.google.samples.apps.iosched.util.UIUtils;
 import com.google.samples.apps.iosched.util.YouTubeUtils;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 import static com.google.samples.apps.iosched.util.LogUtils.LOGD;
@@ -109,8 +109,6 @@ public class SessionDetailFragment extends Fragment implements
     private TextView mSubtitle;
 
     private TextView mAbstract;
-
-    private TextView mLiveStreamedIndicator;
 
     private Button mWatchVideo;
 
@@ -173,8 +171,7 @@ public class SessionDetailFragment extends Fragment implements
 
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
-        mCoordinatorLayout = (CoordinatorLayout) view.findViewById(
-                R.id.root_container);
+        mCoordinatorLayout = (CoordinatorLayout) view.findViewById(R.id.root_container);
         mCoordinatorLayout.setStatusBarBackground(null);
 
         mAppBar = (AppBarLayout) view.findViewById(R.id.appbar);
@@ -190,8 +187,6 @@ public class SessionDetailFragment extends Fragment implements
         mTitle = (TextView) details.findViewById(R.id.session_title);
         mSubtitle = (TextView) details.findViewById(R.id.session_subtitle);
         mAbstract = (TextView) details.findViewById(R.id.session_abstract);
-        mLiveStreamedIndicator =
-                (TextView) details.findViewById(R.id.live_streamed_indicator);
         mTags = (LinearLayout) details.findViewById(R.id.session_tags);
         mTagsContainer = (ViewGroup) details.findViewById(R.id.session_tags_container);
         mFeedbackButton = (Button) details.findViewById(R.id.give_feedback_button);
@@ -704,10 +699,6 @@ public class SessionDetailFragment extends Fragment implements
     }
 
     private void updateTimeBasedUi(SessionDetailModel data) {
-        // Show "Live streamed" label for all live-streamed sessions unless it has ended
-        mLiveStreamedIndicator.setVisibility(
-                (data.hasLiveStream() && !data.hasSessionEnded()) ? View.VISIBLE : View.GONE);
-
         if (data.showLiveStream()) {
             // Show the play button and text only once the session is about to start.
             mWatchVideo.setVisibility(View.VISIBLE);
@@ -768,59 +759,39 @@ public class SessionDetailFragment extends Fragment implements
     }
 
     private void displayTags(SessionDetailModel data) {
-        if (data.getTagMetadata() == null || data.getTagsString() == null) {
-            mTagsContainer.setVisibility(View.GONE);
-            return;
-        }
-
-        if (TextUtils.isEmpty(data.getTagsString())) {
-            mTagsContainer.setVisibility(View.GONE);
-        } else {
-            mTagsContainer.setVisibility(View.VISIBLE);
-            mTags.removeAllViews();
-            LayoutInflater inflater = LayoutInflater.from(getContext());
-            String[] tagIds = data.getTagsString().split(",");
-
-            List<TagMetadata.Tag> tags = new ArrayList<>();
-            for (String tagId : tagIds) {
-                if (Config.Tags.SESSIONS.equals(tagId) ||
-                        Config.Tags.SPECIAL_KEYNOTE.equals(tagId)) {
-                    continue;
-                }
-
-                TagMetadata.Tag tag = data.getTagMetadata().getTag(tagId);
-                if (tag == null) {
-                    continue;
-                }
-
-                tags.add(tag);
-            }
-
-            if (tags.size() == 0) {
-                mTagsContainer.setVisibility(View.GONE);
-                return;
-            }
-
-            Collections.sort(tags, TagMetadata.TAG_DISPLAY_ORDER_COMPARATOR);
-
-            for (final TagMetadata.Tag tag : tags) {
-                TextView chipView = (TextView) inflater.inflate(
-                        R.layout.include_session_tag_chip, mTags, false);
-                chipView.setText(tag.getName());
-                chipView.setContentDescription(tag.getName());
-                chipView.setOnClickListener(new View.OnClickListener() {
+        // TODO determine how to handle tags that aren't filterable (b/36001587)
+        // For now just do the main tag
+        mTags.removeAllViews();
+        LayoutInflater inflater = LayoutInflater.from(mTags.getContext());
+        if (data.getTagMetadata() != null) {
+            final Tag mainTag = data.getTagMetadata().getTag(data.getMainTag());
+            if (mainTag != null) {
+                TextView tagView = (TextView) inflater.inflate(R.layout.include_schedule_tag, mTags,
+                        false);
+                tagView.setText(mainTag.getName());
+                tagView.setBackgroundTintList(ColorStateList.valueOf(mainTag.getColor()));
+                tagView.setOnClickListener(new OnClickListener() {
                     @Override
-                    public void onClick(View view) {
-                        Intent intent = new Intent(getContext(), ExploreSessionsActivity.class)
-                                .putExtra(ExploreSessionsActivity.EXTRA_FILTER_TAG, tag.getId())
-                                .addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                        getActivity().startActivity(intent);
+                    public void onClick(View v) {
+                        Intent intent = new Intent(v.getContext(), MyScheduleActivity.class);
+                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                        intent.putExtra(MyScheduleActivity.EXTRA_FILTER_TAG, mainTag.getId());
+                        startActivity(intent);
                     }
                 });
-
-                mTags.addView(chipView);
+                mTags.addView(tagView);
             }
         }
+
+        if (data.isKeynote() || data.hasLiveStream()) {
+            if (mTags.getChildCount() > 0) {
+                // Insert the spacer first
+                inflater.inflate(R.layout.include_schedule_live_spacer, mTags);
+            }
+            inflater.inflate(R.layout.include_schedule_live, mTags);
+        }
+
+        mTagsContainer.setVisibility(mTags.getChildCount() > 0 ? View.VISIBLE : View.GONE);
     }
 
     private void updateFeedbackButton(final SessionDetailModel data) {

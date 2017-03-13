@@ -161,6 +161,7 @@ public class ScheduleFilterFragment extends Fragment implements LoaderCallbacks<
         if (mTagMetadata != null && mFilterTag != null) {
             Tag tag = mTagMetadata.getTag(mFilterTag);
             if (tag != null) {
+                mAdapter.clearAllFilters();
                 mAdapter.addTag(tag);
                 mFilterTag = null; // we don't have to run this again
             }
