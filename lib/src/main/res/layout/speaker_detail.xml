@@ -15,25 +15,22 @@
   limitations under the License.
   -->
 
-<RelativeLayout
+<LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginBottom="@dimen/padding_normal"
-    android:orientation="vertical">
+    android:background="?selectableItemBackground"
+    android:baselineAligned="false"
+    android:gravity="center_vertical"
+    android:orientation="horizontal"
+    android:padding="@dimen/padding_normal">
 
     <com.google.samples.apps.iosched.ui.widget.BezelImageView
         android:id="@+id/speaker_image"
         android:layout_width="@dimen/speaker_image_size"
         android:layout_height="@dimen/speaker_image_size"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentTop="true"
-        android:layout_marginLeft="@dimen/session_detail_speaker_left_offset"
-        android:layout_marginStart="@dimen/session_detail_speaker_left_offset"
-        android:layout_marginTop="6dp"
         android:clickable="true"
         android:focusable="true"
         android:scaleType="centerCrop"
@@ -41,59 +38,33 @@
         app:maskDrawable="@drawable/circle_mask"
         app:srcCompat="@drawable/ic_default_avatar" />
 
-    <TextView
-        android:id="@+id/speaker_header"
-        style="@style/SessionDetailsSpeakerName"
-        android:layout_width="match_parent"
+    <LinearLayout
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentTop="true"
-        android:layout_marginLeft="@dimen/keyline_2_session_detail"
-        android:layout_marginStart="@dimen/keyline_2_session_detail"
-        tools:text="Andy Android, Google" />
+        android:layout_marginLeft="@dimen/padding_normal"
+        android:layout_marginStart="@dimen/padding_normal"
+        android:layout_weight="1"
+        android:orientation="vertical"
+        tools:ignore="RtlHardcoded">
 
-    <TextView
-        android:id="@+id/speaker_abstract"
-        style="@style/Body1Text"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignEnd="@id/speaker_header"
-        android:layout_alignLeft="@id/speaker_header"
-        android:layout_alignRight="@id/speaker_header"
-        android:layout_alignStart="@id/speaker_header"
-        android:layout_below="@id/speaker_header"
-        android:autoLink="web"
-        android:focusable="true"
-        tools:text="@string/placeholder_lorem_ipsum" />
+        <TextView
+            android:id="@+id/speaker_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ellipsize="end"
+            android:lines="1"
+            android:textColor="@color/theme_primary"
+            android:textSize="18sp"
+            tools:text="Andy Android" />
 
-    <!-- content description set at runtime -->
-    <ImageView
-        android:id="@+id/twitter_icon_box"
-        android:layout_width="@dimen/social_icon_box_size"
-        android:layout_height="@dimen/social_icon_box_size"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentRight="true"
-        android:layout_below="@id/speaker_abstract"
-        android:background="?imageItemBackground"
-        android:padding="@dimen/social_icon_box_padding"
-        app:srcCompat="@drawable/ic_twitter"
-        tools:ignore="ContentDescription" />
+        <TextView
+            android:id="@+id/speaker_company"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ellipsize="end"
+            android:lines="1"
+            android:textSize="16sp"
+            tools:text="Google" />
+    </LinearLayout>
 
-    <!-- content description set at runtime -->
-    <ImageView
-        android:id="@+id/gplus_icon_box"
-        android:layout_width="@dimen/social_icon_box_size"
-        android:layout_height="@dimen/social_icon_box_size"
-        android:layout_alignWithParentIfMissing="true"
-        android:layout_below="@id/speaker_abstract"
-        android:layout_toLeftOf="@id/twitter_icon_box"
-        android:layout_toStartOf="@id/twitter_icon_box"
-        android:background="?imageItemBackground"
-        android:padding="@dimen/social_icon_box_padding"
-        app:srcCompat="@drawable/ic_google_plus"
-        tools:ignore="ContentDescription" />
-
-</RelativeLayout>
+</LinearLayout>

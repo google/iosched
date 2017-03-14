@@ -75,7 +75,7 @@
     <dimen name="content_padding_normal">16dp</dimen>
     <dimen name="content_padding_dialog">24dp</dimen>
 
-    <dimen name="speaker_image_size">40dp</dimen>
+    <dimen name="speaker_image_size">56dp</dimen>
 
     <!-- Widget -->
     <dimen name="widget_margin">0dp</dimen>

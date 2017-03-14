@@ -304,10 +304,6 @@
     <style name="SessionDetailsSubtitle" parent="@style/Body2Text">
     </style>
 
-    <style name="SessionDetailsSpeakerName" parent="@style/Body1Text">
-        <item name="android:textStyle">bold</item>
-    </style>
-
     <style name="VideoThumbnail">
         <item name="playIcon">@drawable/ic_play_shadowed</item>
         <item name="playedTint">@color/played_video_tint</item>

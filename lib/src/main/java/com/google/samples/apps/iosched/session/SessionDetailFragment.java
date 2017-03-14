@@ -16,6 +16,8 @@
 
 package com.google.samples.apps.iosched.session;
 
+import static com.google.samples.apps.iosched.util.LogUtils.LOGD;
+
 import android.animation.ArgbEvaluator;
 import android.animation.ObjectAnimator;
 import android.app.Activity;
@@ -50,7 +52,6 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.google.android.gms.appindexing.Action;
@@ -81,8 +82,6 @@ import com.google.samples.apps.iosched.util.YouTubeUtils;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import static com.google.samples.apps.iosched.util.LogUtils.LOGD;
 
 /**
  * Displays the details about a session. The user can add/remove a session from the schedule, watch
@@ -561,133 +560,31 @@ public class SessionDetailFragment extends Fragment implements
     private void displaySpeakersData(SessionDetailModel data) {
         final ViewGroup speakersGroup = (ViewGroup) getActivity()
                 .findViewById(R.id.session_speakers_block);
-
-        // Remove all existing speakers (everything but first child, which is the header)
-        for (int i = speakersGroup.getChildCount() - 1; i >= 1; i--) {
-            speakersGroup.removeViewAt(i);
-        }
+        speakersGroup.removeAllViews();
 
         final LayoutInflater inflater = getActivity().getLayoutInflater();
-
-        boolean hasSpeakers = false;
-
         List<SessionDetailModel.Speaker> speakers = data.getSpeakers();
+        for (SessionDetailModel.Speaker speaker : speakers) {
+            View speakerView = inflater.inflate(R.layout.speaker_detail, speakersGroup, false);
+            ImageView speakerImage = (ImageView) speakerView.findViewById(R.id.speaker_image);
+            TextView speakerName = (TextView) speakerView.findViewById(R.id.speaker_name);
+            TextView speakerCompany = (TextView) speakerView.findViewById(R.id.speaker_company);
 
-        for (final SessionDetailModel.Speaker speaker : speakers) {
-
-            String speakerHeader = speaker.getName();
-            if (!TextUtils.isEmpty(speaker.getCompany())) {
-                speakerHeader += ", " + speaker.getCompany();
-            }
-
-            final View speakerView = inflater
-                    .inflate(R.layout.speaker_detail, speakersGroup, false);
-            final TextView speakerHeaderView = (TextView) speakerView
-                    .findViewById(R.id.speaker_header);
-            final ImageView speakerImageView = (ImageView) speakerView
-                    .findViewById(R.id.speaker_image);
-            final TextView speakerAbstractView = (TextView) speakerView
-                    .findViewById(R.id.speaker_abstract);
-            final ImageView plusOneIcon = (ImageView) speakerView.findViewById(R.id.gplus_icon_box);
-            final ImageView twitterIcon = (ImageView) speakerView.findViewById(
-                    R.id.twitter_icon_box);
-
-            setUpSpeakerSocialIcon(speaker, twitterIcon, speaker.getTwitterUrl(),
-                    UIUtils.TWITTER_COMMON_NAME, UIUtils.TWITTER_PACKAGE_NAME);
-
-            setUpSpeakerSocialIcon(speaker, plusOneIcon, speaker.getPlusoneUrl(),
-                    UIUtils.GOOGLE_PLUS_COMMON_NAME, UIUtils.GOOGLE_PLUS_PACKAGE_NAME);
-
-            // A speaker may have both a Twitter and GPlus page, only a Twitter page or only a
-            // GPlus page, or neither. By default, align the Twitter icon to the right and the GPlus
-            // icon to its left. If only a single icon is displayed, align it to the right.
-            determineSocialIconPlacement(plusOneIcon, twitterIcon);
-
-            if (!TextUtils.isEmpty(speaker.getImageUrl()) && mImageLoader != null) {
-                mImageLoader.loadImage(speaker.getImageUrl(), speakerImageView);
-            }
-
-            speakerHeaderView.setText(speakerHeader);
-            speakerImageView.setImportantForAccessibility(View.IMPORTANT_FOR_ACCESSIBILITY_NO);
-            UIUtils.setTextMaybeHtml(speakerAbstractView, speaker.getAbstract());
-
-            if (!TextUtils.isEmpty(speaker.getUrl())) {
-                speakerImageView.setEnabled(true);
-                speakerImageView.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        Intent speakerProfileIntent = new Intent(Intent.ACTION_VIEW,
-                                Uri.parse(speaker.getUrl()));
-                        speakerProfileIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_WHEN_TASK_RESET);
-                        UIUtils.preferPackageForIntent(getActivity(),
-                                speakerProfileIntent,
-                                UIUtils.GOOGLE_PLUS_PACKAGE_NAME);
-                        getActivity().startActivity(speakerProfileIntent);
-                    }
-                });
+            speakerName.setText(speaker.getName());
+            if (TextUtils.isEmpty(speaker.getCompany())) {
+                speakerCompany.setVisibility(View.GONE);
             } else {
-                speakerImageView.setEnabled(false);
-                speakerImageView.setOnClickListener(null);
+                speakerCompany.setText(speaker.getCompany());
+            }
+            if (!TextUtils.isEmpty(speaker.getImageUrl()) && mImageLoader != null) {
+                mImageLoader.loadImage(speaker.getImageUrl(), speakerImage);
             }
 
             speakersGroup.addView(speakerView);
-            hasSpeakers = true;
         }
 
-        speakersGroup.setVisibility(hasSpeakers ? View.VISIBLE : View.GONE);
+        speakersGroup.setVisibility(speakersGroup.getChildCount() > 0 ? View.VISIBLE : View.GONE);
         updateEmptyView(data);
-    }
-
-    /**
-     * Determines visibility of a social icon, sets up a click listener to allow the user to
-     * navigate to the social network associated with the icon, and sets up a content description
-     * for the icon.
-     */
-    private void setUpSpeakerSocialIcon(final SessionDetailModel.Speaker speaker,
-            ImageView socialIcon, final String socialUrl,
-            String socialNetworkName, final String packageName) {
-        if (socialUrl == null || socialUrl.isEmpty()) {
-            socialIcon.setVisibility(View.GONE);
-        } else {
-            socialIcon.setContentDescription(getString(
-                            R.string.speaker_social_page,
-                            socialNetworkName,
-                            speaker.getName())
-            );
-            socialIcon.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    UIUtils.fireSocialIntent(
-                            getActivity(),
-                            Uri.parse(socialUrl),
-                            packageName
-                    );
-                }
-            });
-        }
-    }
-
-    /**
-     * Aligns the Twitter icon the parent bottom right. Aligns the G+ icon to the left of the
-     * Twitter icon if it is present. Otherwise, aligns the G+ icon to the parent bottom right.
-     */
-    private void determineSocialIconPlacement(ImageView plusOneIcon, ImageView twitterIcon) {
-        if (plusOneIcon.getVisibility() == View.VISIBLE) {
-            // Set the dimensions of the G+ button.
-            int socialIconDimension = getResources().getDimensionPixelSize(
-                    R.dimen.social_icon_box_size);
-            RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(
-                    socialIconDimension, socialIconDimension);
-            params.addRule(RelativeLayout.BELOW, R.id.speaker_abstract);
-            params.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
-
-            if (twitterIcon.getVisibility() == View.VISIBLE) {
-                params.addRule(RelativeLayout.LEFT_OF, R.id.twitter_icon_box);
-            } else {
-                params.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
-            }
-            plusOneIcon.setLayoutParams(params);
-        }
     }
 
     private void updateEmptyView(SessionDetailModel data) {

@@ -150,6 +150,7 @@
                 android:layout_marginTop="@dimen/padding_normal"
                 android:focusable="true"
                 android:importantForAccessibility="yes"
+                android:textAlignment="viewStart"
                 tools:text="@string/placeholder_lorem_ipsum" />
 
             <HorizontalScrollView
@@ -191,19 +192,11 @@
                 android:id="@+id/session_speakers_block"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/padding_normal"
                 android:orientation="vertical"
+                android:divider="?android:listDivider"
+                android:showDividers="beginning|middle"
                 android:visibility="gone">
-
-                <TextView
-                    android:id="@+id/session_speakers_header"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="@dimen/keyline_2_session_detail"
-                    android:layout_marginStart="@dimen/keyline_2_session_detail"
-                    android:gravity="center_vertical"
-                    android:minHeight="?android:listPreferredItemHeightSmall"
-                    android:text="@string/session_speakers"
-                    android:textAppearance="@style/TextAppearance.Subhead" />
 
             </LinearLayout>
 
