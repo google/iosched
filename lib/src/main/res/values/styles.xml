@@ -282,7 +282,12 @@
     </style>
 
     <style name="Body1Text">
-        <item name="android:textAppearance">@style/TextAppearance.Body1</item>
+        <item name="android:textAppearance">@style/TextAppearance.AppCompat.Body1</item>
+        <item name="android:lineSpacingMultiplier">@dimen/body_1_spacing</item>
+    </style>
+
+    <style name="Body2Text">
+        <item name="android:textAppearance">@style/TextAppearance.AppCompat.Body2</item>
         <item name="android:lineSpacingMultiplier">@dimen/body_1_spacing</item>
     </style>
 
@@ -291,20 +296,12 @@
         <item name="android:lineSpacingMultiplier">@dimen/h3_spacing</item>
     </style>
 
-    <style name="Body2Text">
-        <item name="android:textAppearance">@style/TextAppearance.Body2</item>
-        <item name="android:lineSpacingMultiplier">@dimen/body_1_spacing</item>
-    </style>
-
     <style name="SessionDetailsTitle">
-        <item name="android:textAppearance">@style/TextAppearance.Title</item>
-        <item name="android:textColor">?android:textColorPrimary</item>
-        <item name="android:textSize">18sp</item>
+        <item name="android:textAppearance">@style/TextAppearance.AppCompat.Title</item>
         <item name="android:lineSpacingMultiplier">@dimen/h3_spacing</item>
     </style>
 
-    <style name="SessionDetailsSubtitle" parent="@style/Body1Text">
-        <item name="android:textColor">?android:textColorSecondary</item>
+    <style name="SessionDetailsSubtitle" parent="@style/Body2Text">
     </style>
 
     <style name="SessionDetailsSpeakerName" parent="@style/Body1Text">

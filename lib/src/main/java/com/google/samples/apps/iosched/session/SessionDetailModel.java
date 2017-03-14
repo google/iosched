@@ -32,20 +32,17 @@ import android.text.TextUtils;
 import android.util.Pair;
 
 import com.google.samples.apps.iosched.Config;
-import com.google.samples.apps.iosched.lib.R;
 import com.google.samples.apps.iosched.archframework.ModelWithLoaderManager;
 import com.google.samples.apps.iosched.archframework.QueryEnum;
 import com.google.samples.apps.iosched.archframework.UserActionEnum;
 import com.google.samples.apps.iosched.feedback.SessionFeedbackActivity;
+import com.google.samples.apps.iosched.lib.R;
 import com.google.samples.apps.iosched.model.TagMetadata;
 import com.google.samples.apps.iosched.provider.ScheduleContract;
-import com.google.samples.apps.iosched.service.SessionAlarmService;
-import com.google.samples.apps.iosched.service.SessionCalendarService;
 import com.google.samples.apps.iosched.session.SessionDetailModel.SessionDetailQueryEnum;
 import com.google.samples.apps.iosched.session.SessionDetailModel.SessionDetailUserActionEnum;
 import com.google.samples.apps.iosched.util.AccountUtils;
 import com.google.samples.apps.iosched.util.AnalyticsHelper;
-import com.google.samples.apps.iosched.util.ExtendedSessionHelper;
 import com.google.samples.apps.iosched.util.SessionsHelper;
 import com.google.samples.apps.iosched.util.TimeUtils;
 import com.google.samples.apps.iosched.util.UIUtils;
@@ -54,7 +51,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
-import static com.google.samples.apps.iosched.util.LogUtils.LOGD;
 import static com.google.samples.apps.iosched.util.LogUtils.makeLogTag;
 
 public class SessionDetailModel extends ModelWithLoaderManager<SessionDetailQueryEnum,
@@ -284,12 +280,6 @@ public class SessionDetailModel extends ModelWithLoaderManager<SessionDetailQuer
         }
     }
 
-    public boolean shouldShowExtendedSessionLink() {
-        // If display of link is conditional, place conditions here.
-        // For instance if it should only be shown during a session, use isSessionOngoing().
-        return ExtendedSessionHelper.shouldShowExtendedSessionLink();
-    }
-
     public boolean isSessionReadyForFeedback() {
         long currentTimeMillis = TimeUtils.getCurrentTime(mContext);
         return currentTimeMillis
@@ -343,6 +333,10 @@ public class SessionDetailModel extends ModelWithLoaderManager<SessionDetailQuer
 
     public TagMetadata getTagMetadata() {
         return mTagMetadata;
+    }
+
+    public String getMainTag() {
+        return mMainTag;
     }
 
     public String getTagsString() {
@@ -465,11 +459,6 @@ public class SessionDetailModel extends ModelWithLoaderManager<SessionDetailQuer
         if (mHasLiveStream) {
             mSubtitle += " " + UIUtils.getLiveBadgeText(mContext, mSessionStart, mSessionEnd);
         }
-    }
-
-    @VisibleForTesting
-    public String getExtendedSessionUrl() {
-        return ExtendedSessionHelper.getExtendedSessionUrl(this);
     }
 
     private void buildLinks(Cursor cursor) {

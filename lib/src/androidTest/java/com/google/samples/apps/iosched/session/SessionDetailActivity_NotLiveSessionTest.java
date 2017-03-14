@@ -95,8 +95,8 @@ public class SessionDetailActivity_NotLiveSessionTest {
     }
 
     @Test
-    public void feedbackCard_IsNotVisible() {
-        onView(withId(R.id.give_feedback_card)).check(matches(not(isDisplayed())));
+    public void feedbackButton_IsNotVisible() {
+        onView(withId(R.id.give_feedback_button)).check(matches(not(isDisplayed())));
     }
 
 }

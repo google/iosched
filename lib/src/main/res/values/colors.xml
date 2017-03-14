@@ -21,6 +21,8 @@
     <!-- 2017 palette -->
     <color name="io17_accent_yellow">#FCD243</color>
 
+    <color name="feedback_button_tint">#FF1DE9B6</color>
+
     <!-- 2016 palette -->
     <color name="io16_primary_cyan">#ff25c5d9</color>
     <color name="io16_primary_purple">#ff5d6abf</color>

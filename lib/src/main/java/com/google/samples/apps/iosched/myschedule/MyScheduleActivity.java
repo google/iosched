@@ -36,9 +36,9 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 
-import com.google.samples.apps.iosched.lib.R;
 import com.google.samples.apps.iosched.archframework.PresenterImpl;
 import com.google.samples.apps.iosched.injection.ModelProvider;
+import com.google.samples.apps.iosched.lib.R;
 import com.google.samples.apps.iosched.model.ScheduleHelper;
 import com.google.samples.apps.iosched.model.TagMetadata.Tag;
 import com.google.samples.apps.iosched.myschedule.MyScheduleModel.MyScheduleQueryEnum;
@@ -49,7 +49,6 @@ import com.google.samples.apps.iosched.session.SessionDetailActivity;
 import com.google.samples.apps.iosched.ui.BaseActivity;
 import com.google.samples.apps.iosched.util.SessionsHelper;
 import com.google.samples.apps.iosched.util.TimeUtils;
-import com.google.samples.apps.iosched.util.UIUtils;
 
 import java.util.Date;
 
@@ -232,6 +231,9 @@ public class MyScheduleActivity extends BaseActivity implements ScheduleViewPare
             mShowedAnnouncementDialog = false;
             showAnnouncementDialogIfNeeded(intent);
         }
+
+        setIntent(intent);
+        mScheduleFilterFragment.initWithArguments(intentToFragmentArguments(intent));
     }
 
     @Override

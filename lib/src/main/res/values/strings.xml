@@ -376,6 +376,9 @@
     <!-- Accessibility text announced as a response to pressing a button to remove a session from the schedule. -->
     <string name="session_details_a11y_session_removed">Session removed from your schedule</string>
 
+    <!-- Button text to launch session feedback from session details -->
+    <string name="rate_session">Rate session</string>
+
     <!-- A session feedback title asking you to rate a given session -->
     <string name="session_feedback_title_rate">Rate</string>
 
