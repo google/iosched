@@ -26,6 +26,7 @@ import com.google.samples.apps.iosched.injection.ModelProvider;
 import com.google.samples.apps.iosched.settings.ConfMessageCardUtils;
 import com.google.samples.apps.iosched.settings.SettingsUtils;
 import com.google.samples.apps.iosched.util.AccountUtils;
+import com.google.samples.apps.iosched.util.RegistrationUtils;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -71,14 +72,14 @@ public class BaseActivityTestRule<T extends Activity> extends IntentsTestRule<T>
 
     private void prepareActivityForRemoteAttendee() {
         bypassToS();
-        SettingsUtils.setAttendeeAtVenue(InstrumentationRegistry.getTargetContext(), false);
+        RegistrationUtils.setRegisteredAttendee(InstrumentationRegistry.getTargetContext(), false);
         selectFirstAccount();
     }
 
     // TODO: revisit once the new auth flow is in place.
     protected void prepareActivityForInPersonAttendee() {
         bypassToS();
-        SettingsUtils.setAttendeeAtVenue(InstrumentationRegistry.getTargetContext(), true);
+        RegistrationUtils.setRegisteredAttendee(InstrumentationRegistry.getTargetContext(), true);
         selectFirstAccount();
         disableConferenceMessages();
     }
