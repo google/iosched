@@ -33,8 +33,8 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.google.samples.apps.iosched.Config;
-import com.google.samples.apps.iosched.lib.R;
 import com.google.samples.apps.iosched.archframework.UpdatableView;
+import com.google.samples.apps.iosched.lib.R;
 import com.google.samples.apps.iosched.model.TagMetadata;
 import com.google.samples.apps.iosched.model.TagMetadata.Tag;
 import com.google.samples.apps.iosched.myschedule.MyScheduleDayAdapter.ScheduleAdapterListener;
@@ -148,7 +148,7 @@ public class MyScheduleSingleDayFragment extends Fragment
                 mViewAdapter = new MyScheduleDayAdapter(getActivity(), mListener, this,
                         mTagMetadata);
             }
-            mViewAdapter.updateItems(model.getMessages(), model.getConferenceDataForDay(mDayId));
+            mViewAdapter.updateItems(model.getConferenceDataForDay(mDayId));
             if (mRecyclerView.getAdapter() == null) {
                 mRecyclerView.setAdapter(mViewAdapter);
             }
