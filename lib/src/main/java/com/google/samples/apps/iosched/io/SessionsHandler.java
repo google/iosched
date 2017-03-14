@@ -25,6 +25,8 @@ import android.provider.BaseColumns;
 import android.support.v4.content.ContextCompat;
 import android.text.TextUtils;
 
+import com.google.gson.Gson;
+import com.google.gson.JsonElement;
 import com.google.samples.apps.iosched.Config;
 import com.google.samples.apps.iosched.lib.R;
 import com.google.samples.apps.iosched.io.model.Session;
@@ -34,15 +36,16 @@ import com.google.samples.apps.iosched.provider.ScheduleContract;
 import com.google.samples.apps.iosched.provider.ScheduleContractHelper;
 import com.google.samples.apps.iosched.provider.ScheduleDatabase;
 import com.google.samples.apps.iosched.util.TimeUtils;
-import com.google.gson.Gson;
-import com.google.gson.JsonElement;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 
-import static com.google.samples.apps.iosched.util.LogUtils.*;
+import static com.google.samples.apps.iosched.util.LogUtils.LOGD;
+import static com.google.samples.apps.iosched.util.LogUtils.LOGE;
+import static com.google.samples.apps.iosched.util.LogUtils.LOGW;
+import static com.google.samples.apps.iosched.util.LogUtils.makeLogTag;
 
 public class SessionsHandler extends JSONHandler {
     private static final String TAG = makeLogTag(SessionsHandler.class);
@@ -103,6 +106,7 @@ public class SessionsHandler extends JSONHandler {
                 // add relationships to speakers and track
                 buildSessionSpeakerMapping(session, list);
                 buildTagsMapping(session, list);
+                buildRelatedSessionsMapping(session, list);
             }
         }
 
@@ -303,11 +307,27 @@ public class SessionsHandler extends JSONHandler {
         if (session.tags != null) {
             for (String tag : session.tags) {
                 list.add(ContentProviderOperation.newInsert(uri)
-                                                 .withValue(
-                                                         ScheduleDatabase.SessionsTags.SESSION_ID,
-                                                         session.id)
-                                                 .withValue(ScheduleDatabase.SessionsTags.TAG_ID,
-                                                         tag).build());
+                        .withValue(ScheduleDatabase.SessionsTags.SESSION_ID, session.id)
+                        .withValue(ScheduleDatabase.SessionsTags.TAG_ID, tag)
+                        .build());
+            }
+        }
+    }
+
+    private void buildRelatedSessionsMapping(Session session,
+            ArrayList<ContentProviderOperation> list) {
+        final Uri uri = ScheduleContractHelper.setUriAsCalledFromSyncAdapter(
+                ScheduleContract.Sessions.buildRelatedSessionsDirUri(session.id));
+
+        // delete existing mappings
+        list.add(ContentProviderOperation.newDelete(uri).build());
+
+        // add a mapping for each related session id
+        if (session.relatedSessionIds != null) {
+            for (String id : session.relatedSessionIds) {
+                list.add(ContentProviderOperation.newInsert(uri)
+                        .withValue(ScheduleContract.Sessions.RELATED_SESSION_ID, id)
+                        .build());
             }
         }
     }
