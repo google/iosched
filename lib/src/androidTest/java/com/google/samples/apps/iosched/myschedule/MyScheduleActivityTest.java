@@ -15,40 +15,6 @@
  */
 package com.google.samples.apps.iosched.myschedule;
 
-import android.content.Intent;
-import android.net.Uri;
-import android.os.Looper;
-import android.support.test.InstrumentationRegistry;
-import android.support.test.espresso.Espresso;
-import android.support.test.espresso.IdlingResource;
-import android.support.test.filters.LargeTest;
-import android.support.test.filters.Suppress;
-import android.support.test.runner.AndroidJUnit4;
-import android.util.Log;
-
-import com.google.samples.apps.iosched.Config;
-import com.google.samples.apps.iosched.lib.R;
-import com.google.samples.apps.iosched.feedback.SessionFeedbackActivity;
-import com.google.samples.apps.iosched.injection.ModelProvider;
-import com.google.samples.apps.iosched.mockdata.MyScheduleMockItems;
-import com.google.samples.apps.iosched.mockdata.StubActivityContext;
-import com.google.samples.apps.iosched.navigation.NavigationModel;
-import com.google.samples.apps.iosched.provider.ScheduleContract;
-import com.google.samples.apps.iosched.settings.SettingsUtils;
-import com.google.samples.apps.iosched.testutils.BaseActivityTestRule;
-import com.google.samples.apps.iosched.testutils.MatchersHelper;
-import com.google.samples.apps.iosched.testutils.NavigationUtils;
-import com.google.samples.apps.iosched.testutils.OrientationHelper;
-import com.google.samples.apps.iosched.testutils.ThrottleContentObserverIdlingResource;
-import com.google.samples.apps.iosched.util.TimeUtils;
-
-import org.junit.Before;
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-
-import java.util.Date;
-
 import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.action.ViewActions.click;
 import static android.support.test.espresso.assertion.ViewAssertions.doesNotExist;
@@ -61,10 +27,46 @@ import static android.support.test.espresso.matcher.ViewMatchers.hasSibling;
 import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
+
 import static com.google.samples.apps.iosched.testutils.MatchersHelper.moveViewPagerToPage;
+
 import static org.hamcrest.CoreMatchers.allOf;
 import static org.hamcrest.core.IsEqual.equalTo;
 import static org.hamcrest.core.IsNot.not;
+
+import android.content.Intent;
+import android.net.Uri;
+import android.os.Looper;
+import android.support.test.InstrumentationRegistry;
+import android.support.test.espresso.Espresso;
+import android.support.test.espresso.IdlingResource;
+import android.support.test.filters.LargeTest;
+import android.support.test.filters.Suppress;
+import android.support.test.runner.AndroidJUnit4;
+import android.util.Log;
+
+import com.google.samples.apps.iosched.Config;
+import com.google.samples.apps.iosched.feedback.SessionFeedbackActivity;
+import com.google.samples.apps.iosched.injection.ModelProvider;
+import com.google.samples.apps.iosched.lib.R;
+import com.google.samples.apps.iosched.mockdata.MyScheduleMockItems;
+import com.google.samples.apps.iosched.mockdata.StubActivityContext;
+import com.google.samples.apps.iosched.navigation.NavigationModel;
+import com.google.samples.apps.iosched.provider.ScheduleContract;
+import com.google.samples.apps.iosched.settings.SettingsUtils;
+import com.google.samples.apps.iosched.testutils.BaseActivityTestRule;
+import com.google.samples.apps.iosched.testutils.NavigationUtils;
+import com.google.samples.apps.iosched.testutils.OrientationHelper;
+import com.google.samples.apps.iosched.testutils.ThrottleContentObserverIdlingResource;
+import com.google.samples.apps.iosched.util.RegistrationUtils;
+import com.google.samples.apps.iosched.util.TimeUtils;
+
+import org.junit.Before;
+import org.junit.Rule;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+
+import java.util.Date;
 
 /**
  * UI tests for {@link MyScheduleActivity} for when the user is attending the conference and the
@@ -140,7 +142,7 @@ public class MyScheduleActivityTest {
         SettingsUtils.setShowSessionReminders(InstrumentationRegistry.getTargetContext(), false);
 
         // Mark use as attending conference
-        SettingsUtils.setAttendeeAtVenue(InstrumentationRegistry.getTargetContext(), true);
+        RegistrationUtils.setRegisteredAttendee(InstrumentationRegistry.getTargetContext(), true);
     }
 
     @Test

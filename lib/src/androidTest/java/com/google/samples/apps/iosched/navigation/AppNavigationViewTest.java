@@ -19,11 +19,12 @@ import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
 import android.test.suitebuilder.annotation.LargeTest;
 
-import com.google.samples.apps.iosched.lib.R;
 import com.google.samples.apps.iosched.explore.ExploreIOActivity;
+import com.google.samples.apps.iosched.lib.R;
 import com.google.samples.apps.iosched.settings.SettingsUtils;
 import com.google.samples.apps.iosched.testutils.LoginUtils;
 import com.google.samples.apps.iosched.testutils.NavigationUtils;
+import com.google.samples.apps.iosched.util.RegistrationUtils;
 
 import org.junit.After;
 import org.junit.Rule;
@@ -49,8 +50,8 @@ public class AppNavigationViewTest {
                     SettingsUtils.markTosAccepted(InstrumentationRegistry.getTargetContext(), true);
 
                     // Set user as logged in and attending
-                    SettingsUtils
-                            .setAttendeeAtVenue(InstrumentationRegistry.getTargetContext(), true);
+                    RegistrationUtils.setRegisteredAttendee(
+                            InstrumentationRegistry.getTargetContext(), true);
                     mAccountName = LoginUtils.setFirstAvailableAccountAsActive(
                             InstrumentationRegistry.getTargetContext());
                 }

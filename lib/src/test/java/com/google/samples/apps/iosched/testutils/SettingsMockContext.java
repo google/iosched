@@ -18,6 +18,7 @@ import android.content.Context;
 
 import com.google.samples.apps.iosched.settings.SettingsUtils;
 import com.google.samples.apps.iosched.util.AccountUtils;
+import com.google.samples.apps.iosched.util.RegistrationUtils;
 import com.google.samples.apps.iosched.util.TimeUtils;
 
 import org.mockito.BDDMockito;
@@ -32,7 +33,7 @@ public class SettingsMockContext {
      */
     public static void initMockContextForAttendingVenueSetting(boolean attending, Context context) {
         PowerMockito.mockStatic(SettingsUtils.class);
-        BDDMockito.given(SettingsUtils.isAttendeeAtVenue(context)).willReturn(attending);
+        BDDMockito.given(RegistrationUtils.isRegisteredAttendee(context)).willReturn(attending);
     }
 
     /**
