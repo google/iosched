@@ -16,6 +16,9 @@
 
 package com.google.samples.apps.iosched.myschedule;
 
+import static com.google.samples.apps.iosched.util.LogUtils.LOGD;
+import static com.google.samples.apps.iosched.util.LogUtils.makeLogTag;
+
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.ColorStateList;
@@ -40,9 +43,9 @@ import android.widget.TextView;
 
 import com.google.android.flexbox.FlexboxLayout;
 import com.google.samples.apps.iosched.Config;
-import com.google.samples.apps.iosched.lib.R;
 import com.google.samples.apps.iosched.archframework.UpdatableView.UserActionListener;
 import com.google.samples.apps.iosched.feedback.SessionFeedbackActivity;
+import com.google.samples.apps.iosched.lib.R;
 import com.google.samples.apps.iosched.messages.MessageData;
 import com.google.samples.apps.iosched.model.ScheduleItem;
 import com.google.samples.apps.iosched.model.ScheduleItemHelper;
@@ -57,9 +60,6 @@ import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
-import static com.google.samples.apps.iosched.util.LogUtils.LOGD;
-import static com.google.samples.apps.iosched.util.LogUtils.makeLogTag;
-
 /**
  * Adapter that produces views to render (one day of) the "My Schedule" screen.
  */
@@ -71,7 +71,6 @@ public class MyScheduleDayAdapter
 
     private static final int ITEM_TYPE_SLOT = 0;
     private static final int ITEM_TYPE_TIME_HEADER = 1;
-    private static final int ITEM_TYPE_MESSAGE = 2;
 
     private final Context mContext;
 
@@ -151,9 +150,6 @@ public class MyScheduleDayAdapter
             case ITEM_TYPE_TIME_HEADER:
                 return new TimeSeperatorViewHolder(
                         li.inflate(R.layout.my_schedule_item_time_separator, parent, false));
-            case ITEM_TYPE_MESSAGE:
-                return new MessageViewHolder(
-                        li.inflate(R.layout.my_schedule_item_message_card, parent, false));
         }
         return null;
     }
@@ -170,8 +166,6 @@ public class MyScheduleDayAdapter
             return ITEM_TYPE_SLOT;
         } else if (item instanceof TimeSeperatorItem) {
             return ITEM_TYPE_TIME_HEADER;
-        } else if (item instanceof MessageData) {
-            return ITEM_TYPE_MESSAGE;
         }
         return -1;
     }
@@ -183,13 +177,8 @@ public class MyScheduleDayAdapter
         }
     }
 
-    public void updateItems(final List<MessageData> messages, final List<ScheduleItem> items) {
+    public void updateItems(final List<ScheduleItem> items) {
         mItems.clear();
-
-        // Add all messages first
-        if (items != null && !items.isEmpty()) {
-            mItems.addAll(messages);
-        }
 
         if (items != null) {
             for (int i = 0, size = items.size(); i < size; i++) {
@@ -416,73 +405,6 @@ public class MyScheduleDayAdapter
         }
 
         abstract void onBind(@NonNull final T item);
-    }
-
-    class MessageViewHolder extends ListViewHolder<MessageData> {
-        final ImageView icon;
-        final TextView description;
-        final Button buttonStart;
-        final Button buttonEnd;
-
-        public MessageViewHolder(final View itemView) {
-            super(itemView);
-            icon = (ImageView) itemView.findViewById(R.id.icon);
-            description = (TextView) itemView.findViewById(R.id.description);
-            buttonStart = (Button) itemView.findViewById(R.id.buttonStart);
-            buttonEnd = (Button) itemView.findViewById(R.id.buttonEnd);
-
-            // Work with pre-existing infrastructure which supplied a click listener and relied on
-            // a shared pref listener & a reload to dismiss message cards.
-            // By setting our own click listener and manually calling onClick we can remove the
-            // item in the adapter directly.
-            buttonStart.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(final View v) {
-                    final int position = getAdapterPosition();
-                    if (position != RecyclerView.NO_POSITION) {
-                        final MessageData message = (MessageData) mItems.get(position);
-                        message.getStartButtonClickListener().onClick(buttonStart);
-                        mItems.remove(position);
-                        notifyItemRemoved(position);
-                    }
-                }
-            });
-            buttonEnd.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(final View v) {
-                    final int position = getAdapterPosition();
-                    if (position != RecyclerView.NO_POSITION) {
-                        final MessageData message = (MessageData) mItems.get(position);
-                        message.getEndButtonClickListener().onClick(buttonEnd);
-                        mItems.remove(position);
-                        notifyItemRemoved(position);
-                    }
-                }
-            });
-        }
-
-        @Override
-        void onBind(@NonNull final MessageData message) {
-            description.setText(message.getMessageString(itemView.getContext()));
-            if (message.getIconDrawableId() > 0) {
-                icon.setVisibility(View.VISIBLE);
-                icon.setImageResource(message.getIconDrawableId());
-            } else {
-                icon.setVisibility(View.GONE);
-            }
-            if (message.getStartButtonStringResourceId() != -1) {
-                buttonEnd.setVisibility(View.VISIBLE);
-                buttonStart.setText(message.getStartButtonStringResourceId());
-            } else {
-                buttonStart.setVisibility(View.GONE);
-            }
-            if (message.getEndButtonStringResourceId() != -1) {
-                buttonEnd.setVisibility(View.VISIBLE);
-                buttonEnd.setText(message.getEndButtonStringResourceId());
-            } else {
-                buttonEnd.setVisibility(View.GONE);
-            }
-        }
     }
 
     public int findTimeHeaderPositionForTime(final long time) {

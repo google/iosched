@@ -16,6 +16,11 @@
 
 package com.google.samples.apps.iosched.myschedule;
 
+import static com.google.samples.apps.iosched.util.LogUtils.LOGD;
+import static com.google.samples.apps.iosched.util.LogUtils.LOGE;
+import static com.google.samples.apps.iosched.util.LogUtils.makeLogTag;
+import static com.google.samples.apps.iosched.util.PreconditionUtils.checkNotNull;
+
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -25,34 +30,25 @@ import android.support.annotation.Nullable;
 import android.support.annotation.VisibleForTesting;
 import android.support.v4.util.SparseArrayCompat;
 
-import com.google.samples.apps.iosched.lib.BuildConfig;
 import com.google.samples.apps.iosched.Config;
-import com.google.samples.apps.iosched.lib.R;
 import com.google.samples.apps.iosched.archframework.Model;
 import com.google.samples.apps.iosched.archframework.QueryEnum;
 import com.google.samples.apps.iosched.archframework.UserActionEnum;
-import com.google.samples.apps.iosched.messages.MessageCardHelper;
-import com.google.samples.apps.iosched.messages.MessageData;
+import com.google.samples.apps.iosched.lib.BuildConfig;
+import com.google.samples.apps.iosched.lib.R;
 import com.google.samples.apps.iosched.model.ScheduleHelper;
 import com.google.samples.apps.iosched.model.ScheduleItem;
 import com.google.samples.apps.iosched.provider.ScheduleContract;
-import com.google.samples.apps.iosched.settings.ConfMessageCardUtils;
 import com.google.samples.apps.iosched.settings.SettingsUtils;
 import com.google.samples.apps.iosched.util.AnalyticsHelper;
 import com.google.samples.apps.iosched.util.ParserUtils;
 import com.google.samples.apps.iosched.util.RegistrationUtils;
 import com.google.samples.apps.iosched.util.SessionsHelper;
 import com.google.samples.apps.iosched.util.ThrottledContentObserver;
-import com.google.samples.apps.iosched.util.WiFiUtils;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-
-import static com.google.samples.apps.iosched.util.LogUtils.LOGD;
-import static com.google.samples.apps.iosched.util.LogUtils.LOGE;
-import static com.google.samples.apps.iosched.util.LogUtils.makeLogTag;
-import static com.google.samples.apps.iosched.util.PreconditionUtils.checkNotNull;
 
 public class MyScheduleModel implements Model<MyScheduleModel.MyScheduleQueryEnum,
         MyScheduleModel.MyScheduleUserActionEnum> {
@@ -219,71 +215,6 @@ public class MyScheduleModel implements Model<MyScheduleModel.MyScheduleQueryEnu
         } else {
             return Collections.EMPTY_LIST;
         }
-    }
-
-    /**
-     * Get the list of {@link MessageData} to be displayed to the user, based upon time, location
-     * etc.
-     *
-     * @return messages to be displayed.
-     */
-    public List<MessageData> getMessages() {
-        final List<MessageData> messages = new ArrayList<>();
-        if (shouldShowCard(ConfMessageCardUtils.ConfMessageCard.SIGN_IN_PROMPT)) {
-            messages.add(MessageCardHelper.getSignInPromptMessageData());
-        }
-        if (shouldShowCard(ConfMessageCardUtils.ConfMessageCard.SESSION_NOTIFICATIONS)) {
-            messages.add(MessageCardHelper.getNotificationsOptInMessageData());
-        }
-        if (RegistrationUtils.isRegisteredAttendee(mContext)) {
-            // Users are required to opt in or out of whether they want conference message cards
-            if (!ConfMessageCardUtils.hasAnsweredConfMessageCardsPrompt(mContext)) {
-                // User has not answered whether they want to opt in.
-                // Build a opt-in/out card.
-                messages.add(MessageCardHelper.getConferenceOptInMessageData());
-                return messages;
-            }
-
-            if (ConfMessageCardUtils.isConfMessageCardsEnabled(mContext)) {
-                LOGD(TAG, "Conf cards Enabled");
-                // User has answered they want to opt in AND the message cards are enabled.
-                ConfMessageCardUtils.enableActiveCards(mContext);
-
-                // Note that for these special cards, we'll never show more than one at a time
-                // to prevent overloading the user with messagesToDisplay.
-                // We want each new message to be notable.
-                if (shouldShowCard(ConfMessageCardUtils.ConfMessageCard.WIFI_PRELOAD)) {
-                    // Check whether a wifi setup card should be offered.
-                    if (WiFiUtils.shouldOfferToSetupWifi(mContext, true)) {
-                        // Build card asking users whether they want to enable wifi.
-                        messages.add(MessageCardHelper.getWifiSetupMessageData());
-                        return messages;
-                    }
-                }
-
-                if (messages.size() < 1) {
-                    LOGD(TAG, "Simple cards");
-                    List<ConfMessageCardUtils.ConfMessageCard> simpleCards =
-                            ConfMessageCardUtils.ConfMessageCard.getActiveSimpleCards(mContext);
-                    // Only show a single card at a time.
-                    if (simpleCards.size() > 0) {
-                        messages.add(MessageCardHelper.getSimpleMessageCardData(
-                                simpleCards.get(0)));
-                    }
-                }
-            }
-        }
-        return messages;
-    }
-
-    /**
-     * Check if this card should be shown and hasn't previously been dismissed.
-     *
-     * @return {@code true} if the given message card should be displayed.
-     */
-    private boolean shouldShowCard(ConfMessageCardUtils.ConfMessageCard card) {
-        return ConfMessageCardUtils.shouldShowConfMessageCard(mContext, card) &&
-                !ConfMessageCardUtils.hasDismissedConfMessageCard(mContext, card);
     }
 
     public static boolean showPreConferenceData(Context context) {
