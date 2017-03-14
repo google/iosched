@@ -200,7 +200,22 @@
 
             </LinearLayout>
 
-            <!-- TODO map -->
+            <!-- android:foreground on arbitrary views starts in API 23, so we need a container -->
+            <FrameLayout
+                android:id="@+id/map_container"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:foreground="?selectableItemBackground">
+
+                <!-- TODO real map -->
+                <TextView
+                    android:id="@+id/map_image"
+                    android:layout_width="match_parent"
+                    android:layout_height="200dp"
+                    android:background="@color/light_grey"
+                    android:gravity="center"
+                    android:text="TODO: map goes here" />
+            </FrameLayout>
 
             <!-- TODO related sessions -->
 
@@ -226,7 +241,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|end"
-        android:layout_margin="@dimen/fab_padding"
+        android:layout_margin="@dimen/padding_normal"
         android:clickable="true"
         android:contentDescription="@string/add_to_schedule"
         android:focusable="true"
@@ -236,6 +251,6 @@
         app:pressedTranslationZ="@dimen/fab_touch_raise"
         app:rippleColor="@color/fab_press_ripple"
         app:srcCompat="@drawable/ic_add_to_schedule"
-        app:useCompatPadding="true" />
+        tools:visibility="visible" />
 
 </android.support.design.widget.CoordinatorLayout>

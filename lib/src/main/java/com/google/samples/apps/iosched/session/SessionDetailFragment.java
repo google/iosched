@@ -121,6 +121,8 @@ public class SessionDetailFragment extends Fragment implements
 
     private ImageView mPhotoView;
 
+    private View mMapImage;
+
     private ImageLoader mImageLoader;
 
     private Runnable mTimeHintUpdaterRunnable = null;
@@ -189,6 +191,16 @@ public class SessionDetailFragment extends Fragment implements
         mTags = (LinearLayout) details.findViewById(R.id.session_tags);
         mTagsContainer = (ViewGroup) details.findViewById(R.id.session_tags_container);
         mFeedbackButton = (Button) details.findViewById(R.id.give_feedback_button);
+        final ViewGroup mapContainer = (ViewGroup) details.findViewById(R.id.map_container);
+        mMapImage = mapContainer.findViewById(R.id.map_image);
+
+        mapContainer.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                sendUserAction(SessionDetailUserActionEnum.SHOW_MAP, null);
+            }
+        });
+
         mAddScheduleFab =
                 (CheckableFloatingActionButton) view.findViewById(R.id.add_schedule_button);
         mAddScheduleFab.setOnClickListener(new View.OnClickListener() {
@@ -280,20 +292,13 @@ public class SessionDetailFragment extends Fragment implements
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
         inflater.inflate(R.menu.session_detail, menu);
-        if (!BuildConfig.ENABLE_MAP_IN_NAVIGATION) {
-            MenuItem map = menu.findItem(R.id.menu_map_room);
-            map.setVisible(false);
-        }
         tryExecuteDeferredUiOperations();
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        int itemId = item.getItemId();
-        if (itemId == R.id.menu_map_room) {
-            sendUserAction(SessionDetailUserActionEnum.SHOW_MAP, null);
-            return true;
-        } else if (itemId == R.id.menu_share) {
+        final int itemId = item.getItemId();
+        if (itemId == R.id.menu_share) {
             sendUserAction(SessionDetailUserActionEnum.SHOW_SHARE, null);
             return true;
         }
