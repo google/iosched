@@ -16,26 +16,30 @@
 
 package com.google.samples.apps.iosched.io;
 
+import static com.google.samples.apps.iosched.util.LogUtils.LOGD;
+import static com.google.samples.apps.iosched.util.LogUtils.LOGE;
+import static com.google.samples.apps.iosched.util.LogUtils.LOGW;
+import static com.google.samples.apps.iosched.util.LogUtils.makeLogTag;
+
 import android.content.ContentProviderOperation;
 import android.content.Context;
 import android.database.Cursor;
 import android.net.Uri;
 import android.provider.BaseColumns;
+import android.support.annotation.NonNull;
 import android.text.TextUtils;
 
+import com.google.gson.Gson;
+import com.google.gson.JsonElement;
 import com.google.samples.apps.iosched.Config;
 import com.google.samples.apps.iosched.io.model.Video;
 import com.google.samples.apps.iosched.provider.ScheduleContract;
-import com.google.gson.Gson;
-import com.google.gson.JsonElement;
 import com.google.samples.apps.iosched.provider.ScheduleContractHelper;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Locale;
-
-import static com.google.samples.apps.iosched.util.LogUtils.*;
 
 public class VideosHandler extends JSONHandler {
     private static final String TAG = makeLogTag(VideosHandler.class);
@@ -46,8 +50,8 @@ public class VideosHandler extends JSONHandler {
     }
 
     @Override
-    public void process(JsonElement element) {
-        for (Video video : new Gson().fromJson(element, Video[].class)) {
+    public void process(@NonNull Gson gson, @NonNull JsonElement element) {
+        for (Video video : gson.fromJson(element, Video[].class)) {
             if (TextUtils.isEmpty(video.id)) {
                 LOGW(TAG, "Video without valid ID. Using VID instead: " + video.vid);
                 video.id = video.vid;

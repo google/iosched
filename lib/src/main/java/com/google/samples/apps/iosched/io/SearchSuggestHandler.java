@@ -16,21 +16,21 @@
 
 package com.google.samples.apps.iosched.io;
 
-import com.google.samples.apps.iosched.provider.ScheduleContract;
-import com.google.gson.Gson;
-import com.google.gson.JsonElement;
-import com.google.samples.apps.iosched.provider.ScheduleContractHelper;
+import static com.google.samples.apps.iosched.util.LogUtils.makeLogTag;
 
 import android.app.SearchManager;
 import android.content.ContentProviderOperation;
 import android.content.Context;
 import android.net.Uri;
+import android.support.annotation.NonNull;
+
+import com.google.gson.Gson;
+import com.google.gson.JsonElement;
+import com.google.samples.apps.iosched.provider.ScheduleContract;
+import com.google.samples.apps.iosched.provider.ScheduleContractHelper;
 
 import java.util.ArrayList;
 import java.util.HashSet;
-
-import static com.google.samples.apps.iosched.util.LogUtils.LOGE;
-import static com.google.samples.apps.iosched.util.LogUtils.makeLogTag;
 
 public class SearchSuggestHandler extends JSONHandler {
     private static final String TAG = makeLogTag(SpeakersHandler.class);
@@ -41,8 +41,8 @@ public class SearchSuggestHandler extends JSONHandler {
     }
 
     @Override
-    public void process(JsonElement element) {
-        for (String word : new Gson().fromJson(element, String[].class)) {
+    public void process(@NonNull Gson gson, @NonNull JsonElement element) {
+        for (String word : gson.fromJson(element, String[].class)) {
             mSuggestions.add(word);
         }
     }

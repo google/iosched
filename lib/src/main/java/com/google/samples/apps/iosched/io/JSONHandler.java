@@ -18,7 +18,9 @@ package com.google.samples.apps.iosched.io;
 
 import android.content.ContentProviderOperation;
 import android.content.Context;
+import android.support.annotation.NonNull;
 
+import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 import com.google.samples.apps.iosched.util.IOUtils;
 
@@ -42,7 +44,7 @@ public abstract class JSONHandler {
 
     public abstract void makeContentProviderOperations(ArrayList<ContentProviderOperation> list);
 
-    public abstract void process(JsonElement element);
+    public abstract void process(@NonNull Gson gson, @NonNull JsonElement element);
 
     /**
      * Loads a raw resource and returns its content as a String.

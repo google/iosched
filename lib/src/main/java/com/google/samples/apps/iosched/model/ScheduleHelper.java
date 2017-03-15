@@ -15,12 +15,15 @@
  */
 package com.google.samples.apps.iosched.model;
 
+import static com.google.samples.apps.iosched.util.LogUtils.makeLogTag;
+
 import android.content.Context;
 import android.database.Cursor;
 import android.database.DatabaseUtils;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.text.TextUtils;
 import android.util.Log;
 
@@ -34,8 +37,6 @@ import com.google.samples.apps.iosched.util.UIUtils;
 
 import java.util.ArrayList;
 import java.util.Locale;
-
-import static com.google.samples.apps.iosched.util.LogUtils.makeLogTag;
 
 public class ScheduleHelper {
 
@@ -57,7 +58,8 @@ public class ScheduleHelper {
         mMode = mode;
     }
 
-    public ArrayList<ScheduleItem> getScheduleData(long start, long end, TagFilterHolder filters) {
+    public ArrayList<ScheduleItem> getScheduleData(final long start, final long end,
+            @Nullable final TagFilterHolder filters) {
         // get sessions in my schedule and blocks, starting anytime in the conference day
         final ArrayList<ScheduleItem> items = new ArrayList<>();
         if (filters == null || !filters.showSessionsOnly()) {
@@ -68,7 +70,7 @@ public class ScheduleHelper {
         ArrayList<ScheduleItem> result = ScheduleItemHelper.processItems(items);
         if (BuildConfig.DEBUG || Log.isLoggable(TAG, Log.DEBUG)) {
             ScheduleItem previous = null;
-            for (ScheduleItem item: result) {
+            for (ScheduleItem item : result) {
                 if ((item.flags & ScheduleItem.FLAG_CONFLICTS_WITH_PREVIOUS) != 0) {
                     Log.d(TAG, "Schedule Item conflicts with previous. item="
                             + item + " previous=" + previous);
@@ -79,8 +81,9 @@ public class ScheduleHelper {
         return result;
     }
 
-    public void getScheduleDataAsync(final MyScheduleModel.LoadScheduleDataListener callback,
-            long start, long end, final TagFilterHolder filters) {
+    public void getScheduleDataAsync(
+            final @NonNull MyScheduleModel.LoadScheduleDataListener callback,
+            long start, long end, @Nullable final TagFilterHolder filters) {
         AsyncTask<Long, Void, ArrayList<ScheduleItem>> task
                 = new AsyncTask<Long, Void, ArrayList<ScheduleItem>>() {
             @Override
@@ -136,7 +139,8 @@ public class ScheduleHelper {
                     item.title = cursor.getString(SessionsQuery.SESSION_TITLE);
                     item.startTime = cursor.getLong(SessionsQuery.SESSION_START);
                     item.endTime = cursor.getLong(SessionsQuery.SESSION_END);
-                    if (!TextUtils.isEmpty(cursor.getString(SessionsQuery.SESSION_LIVESTREAM_URL))) {
+                    if (!TextUtils.isEmpty(
+                            cursor.getString(SessionsQuery.SESSION_LIVESTREAM_URL))) {
                         item.flags |= ScheduleItem.FLAG_HAS_LIVESTREAM;
                     }
                     item.subtitle = UIUtils.formatSessionSubtitle(
@@ -145,7 +149,8 @@ public class ScheduleHelper {
                     item.room = cursor.getString(SessionsQuery.ROOM_ROOM_NAME);
                     item.backgroundImageUrl = cursor.getString(SessionsQuery.SESSION_PHOTO_URL);
                     item.backgroundColor = cursor.getInt(SessionsQuery.SESSION_COLOR);
-                    item.sessionType = detectSessionType(cursor.getString(SessionsQuery.SESSION_TAGS));
+                    item.sessionType = detectSessionType(
+                            cursor.getString(SessionsQuery.SESSION_TAGS));
                     item.mainTag = cursor.getString(SessionsQuery.SESSION_MAIN_TAG);
                     item.inSchedule = cursor.getInt(SessionsQuery.SESSION_IN_SCHEDULE) != 0;
                     items.add(item);
@@ -252,7 +257,7 @@ public class ScheduleHelper {
         };
 
         int BLOCK_TITLE = 0;
-        int BLOCK_TYPE= 1;
+        int BLOCK_TYPE = 1;
         int BLOCK_START = 2;
         int BLOCK_END = 3;
         int BLOCK_SUBTITLE = 4;

@@ -14,9 +14,14 @@
 
 package com.google.samples.apps.iosched.io;
 
+import static com.google.samples.apps.iosched.util.LogUtils.LOGE;
+import static com.google.samples.apps.iosched.util.LogUtils.LOGI;
+import static com.google.samples.apps.iosched.util.LogUtils.makeLogTag;
+
 import android.content.ContentProviderOperation;
 import android.content.Context;
 import android.net.Uri;
+import android.support.annotation.NonNull;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonElement;
@@ -26,10 +31,6 @@ import com.google.samples.apps.iosched.provider.ScheduleContractHelper;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-
-import static com.google.samples.apps.iosched.util.LogUtils.LOGE;
-import static com.google.samples.apps.iosched.util.LogUtils.LOGI;
-import static com.google.samples.apps.iosched.util.LogUtils.makeLogTag;
 
 public class CardHandler extends JSONHandler {
     private static final String TAG = makeLogTag(CardHandler.class);
@@ -42,8 +43,8 @@ public class CardHandler extends JSONHandler {
     }
 
     @Override
-    public void process(JsonElement element) {
-        for (Card card : new Gson().fromJson(element, Card[].class)) {
+    public void process(@NonNull Gson gson, @NonNull JsonElement element) {
+        for (Card card : gson.fromJson(element, Card[].class)) {
             mCards.put(card.mId, card);
         }
     }

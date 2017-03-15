@@ -16,21 +16,22 @@
 
 package com.google.samples.apps.iosched.io;
 
-import com.google.samples.apps.iosched.io.model.Block;
-import com.google.samples.apps.iosched.provider.ScheduleContract;
-import com.google.samples.apps.iosched.provider.ScheduleContractHelper;
-import com.google.samples.apps.iosched.util.ParserUtils;
-import com.google.gson.Gson;
-import com.google.gson.JsonElement;
+import static com.google.samples.apps.iosched.util.LogUtils.LOGW;
+import static com.google.samples.apps.iosched.util.LogUtils.makeLogTag;
 
 import android.content.ContentProviderOperation;
 import android.content.Context;
 import android.net.Uri;
+import android.support.annotation.NonNull;
+
+import com.google.gson.Gson;
+import com.google.gson.JsonElement;
+import com.google.samples.apps.iosched.io.model.Block;
+import com.google.samples.apps.iosched.provider.ScheduleContract;
+import com.google.samples.apps.iosched.provider.ScheduleContractHelper;
+import com.google.samples.apps.iosched.util.ParserUtils;
 
 import java.util.ArrayList;
-
-import static com.google.samples.apps.iosched.util.LogUtils.LOGW;
-import static com.google.samples.apps.iosched.util.LogUtils.makeLogTag;
 
 
 public class BlocksHandler extends JSONHandler {
@@ -52,8 +53,8 @@ public class BlocksHandler extends JSONHandler {
     }
 
     @Override
-    public void process(JsonElement element) {
-        for (Block block : new Gson().fromJson(element, Block[].class)) {
+    public void process(@NonNull Gson gson, @NonNull JsonElement element) {
+        for (Block block : gson.fromJson(element, Block[].class)) {
             mBlocks.add(block);
         }
     }

@@ -16,22 +16,28 @@
 
 package com.google.samples.apps.iosched.io;
 
+import static com.google.samples.apps.iosched.util.LogUtils.LOGD;
+import static com.google.samples.apps.iosched.util.LogUtils.LOGE;
+import static com.google.samples.apps.iosched.util.LogUtils.LOGW;
+import static com.google.samples.apps.iosched.util.LogUtils.makeLogTag;
+
 import android.content.ContentProviderOperation;
 import android.content.Context;
 import android.database.Cursor;
 import android.graphics.Color;
 import android.net.Uri;
 import android.provider.BaseColumns;
+import android.support.annotation.NonNull;
 import android.support.v4.content.ContextCompat;
 import android.text.TextUtils;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 import com.google.samples.apps.iosched.Config;
-import com.google.samples.apps.iosched.lib.R;
 import com.google.samples.apps.iosched.io.model.Session;
 import com.google.samples.apps.iosched.io.model.Speaker;
 import com.google.samples.apps.iosched.io.model.Tag;
+import com.google.samples.apps.iosched.lib.R;
 import com.google.samples.apps.iosched.provider.ScheduleContract;
 import com.google.samples.apps.iosched.provider.ScheduleContractHelper;
 import com.google.samples.apps.iosched.provider.ScheduleDatabase;
@@ -42,11 +48,6 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 
-import static com.google.samples.apps.iosched.util.LogUtils.LOGD;
-import static com.google.samples.apps.iosched.util.LogUtils.LOGE;
-import static com.google.samples.apps.iosched.util.LogUtils.LOGW;
-import static com.google.samples.apps.iosched.util.LogUtils.makeLogTag;
-
 public class SessionsHandler extends JSONHandler {
     private static final String TAG = makeLogTag(SessionsHandler.class);
     private HashMap<String, Session> mSessions = new HashMap<>();
@@ -54,15 +55,14 @@ public class SessionsHandler extends JSONHandler {
     private HashMap<String, Speaker> mSpeakerMap = null;
     private int mDefaultSessionColor;
 
-
     public SessionsHandler(Context context) {
         super(context);
         mDefaultSessionColor = ContextCompat.getColor(mContext, R.color.default_session_color);
     }
 
     @Override
-    public void process(JsonElement element) {
-        for (Session session : new Gson().fromJson(element, Session[].class)) {
+    public void process(@NonNull Gson gson, @NonNull JsonElement element) {
+        for (Session session : gson.fromJson(element, Session[].class)) {
             mSessions.put(session.id, session);
         }
     }
