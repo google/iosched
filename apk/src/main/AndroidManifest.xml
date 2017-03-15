@@ -156,6 +156,12 @@
             android:launchMode="singleTop"
             android:theme="@style/Theme.IOSched.MySchedule" />
 
+        <activity android:name="com.google.samples.apps.iosched.feed.FeedActivity"
+            android:exported="false"
+            android:label="@string/title_feed"
+            android:launchMode="singleTop"
+            android:theme="@style/Theme.IOSched.Feed" />
+
         <activity
             android:name="com.google.samples.apps.iosched.settings.SettingsActivity"
             android:exported="false"

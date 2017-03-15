@@ -29,6 +29,7 @@ public class NavigationConfig {
     public final static NavigationItemEnum[] ITEMS = new NavigationItemEnum[]{
             NavigationItemEnum.MY_SCHEDULE,
             NavigationItemEnum.MY_IO,
+            NavigationItemEnum.FEED,
             NavigationItemEnum.MAP,
             NavigationItemEnum.DEBUG,
     };
@@ -61,6 +62,9 @@ public class NavigationConfig {
                     break;
                 case EXPLORE:
                     includeItem = BuildConfig.ENABLE_EXPLORE_IN_NAVIGATION;
+                    break;
+                case FEED:
+                    includeItem = BuildConfig.ENABLE_FEED_IN_NAVIGATION;
                     break;
                 case MAP:
                     includeItem = BuildConfig.ENABLE_MAP_IN_NAVIGATION;

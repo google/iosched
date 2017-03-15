@@ -41,6 +41,7 @@
     <item name="signin_nav_item" type="id"/>
     <item name="videos_nav_item" type="id"/>
     <item name="explore_nav_item" type="id"/>
+    <item name="feed_nav_item" type="id"/>
     <item name="about_nav_item" type="id"/>
 
     <!-- Used in BaseActivity -->
