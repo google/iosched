@@ -73,6 +73,7 @@ android {
                 "\"${iosched_firebase_debug_db2}\",\"${iosched_firebase_debug_db3}\"}")
         buildConfigField("boolean", "ENABLE_MYSCHEDULE_IN_NAVIGATION", "true")
         buildConfigField("boolean", "ENABLE_IOLIVE_IN_NAVIGATION", "false")
+        buildConfigField("boolean", "ENABLE_FEED_IN_NAVIGATION", "true")
         buildConfigField("boolean", "ENABLE_EXPLORE_IN_NAVIGATION", "true")
         buildConfigField("boolean", "ENABLE_MAP_IN_NAVIGATION", "true")
         buildConfigField("boolean", "ENABLE_SOCIAL_IN_NAVIGATION", "false")

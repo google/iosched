@@ -14,20 +14,24 @@
   -->
 
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
-        <item
-            android:id="@+id/myschedule_nav_item"
-            android:checkable="true"
-            android:visible="false" />
-        <item
-            android:id="@+id/myio_nav_item"
-            android:checkable="true"
-            android:visible="false" />
-        <item
-            android:id="@+id/map_nav_item"
-            android:checkable="true"
-            android:visible="false" />
-        <item
-            android:id="@+id/debug_nav_item"
-            android:checkable="true"
-            android:visible="false" />
+    <item
+        android:id="@+id/myschedule_nav_item"
+        android:checkable="true"
+        android:visible="false" />
+    <item
+        android:id="@+id/myio_nav_item"
+        android:checkable="true"
+        android:visible="false" />
+    <item
+        android:id="@+id/feed_nav_item"
+        android:checkable="true"
+        android:visible="false" />
+    <item
+        android:id="@+id/map_nav_item"
+        android:checkable="true"
+        android:visible="false" />
+    <item
+        android:id="@+id/debug_nav_item"
+        android:checkable="true"
+        android:visible="false" />
 </menu>
