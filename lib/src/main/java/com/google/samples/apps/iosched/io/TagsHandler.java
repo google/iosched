@@ -16,21 +16,22 @@
 
 package com.google.samples.apps.iosched.io;
 
+import static com.google.samples.apps.iosched.util.LogUtils.makeLogTag;
+
 import android.content.ContentProviderOperation;
 import android.content.Context;
 import android.graphics.Color;
 import android.net.Uri;
+import android.support.annotation.NonNull;
 
-import com.google.samples.apps.iosched.io.model.Tag;
-import com.google.samples.apps.iosched.provider.ScheduleContract;
 import com.google.gson.Gson;
 import com.google.gson.JsonElement;
+import com.google.samples.apps.iosched.io.model.Tag;
+import com.google.samples.apps.iosched.provider.ScheduleContract;
 import com.google.samples.apps.iosched.provider.ScheduleContractHelper;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-
-import static com.google.samples.apps.iosched.util.LogUtils.makeLogTag;
 
 public class TagsHandler extends JSONHandler {
     private static final String TAG = makeLogTag(TagsHandler.class);
@@ -42,8 +43,8 @@ public class TagsHandler extends JSONHandler {
     }
 
     @Override
-    public void process(JsonElement element) {
-        for (Tag tag : new Gson().fromJson(element, Tag[].class)) {
+    public void process(@NonNull Gson gson, @NonNull JsonElement element) {
+        for (Tag tag : gson.fromJson(element, Tag[].class)) {
             mTags.put(tag.tag, tag);
         }
     }

@@ -25,6 +25,7 @@ import android.os.RemoteException;
 import android.preference.PreferenceManager;
 import android.text.TextUtils;
 
+import com.google.gson.Gson;
 import com.google.gson.JsonParser;
 import com.google.gson.stream.JsonReader;
 import com.google.samples.apps.iosched.io.BlocksHandler;
@@ -105,23 +106,24 @@ public class ConferenceDataHandler {
             DATA_KEY_VIDEOS
     };
 
-    Context mContext = null;
+    private final Context mContext;
+    private final Gson mGson = new Gson();
 
     // Handlers for each entity type:
-    RoomsHandler mRoomsHandler = null;
-    BlocksHandler mBlocksHandler = null;
-    CardHandler mCardHandler = null;
-    TagsHandler mTagsHandler = null;
-    SpeakersHandler mSpeakersHandler = null;
-    SessionsHandler mSessionsHandler = null;
-    SearchSuggestHandler mSearchSuggestHandler = null;
-    MapPropertyHandler mMapPropertyHandler = null;
-    HashtagsHandler mHashtagsHandler = null;
-    VideosHandler mVideosHandler = null;
+    private RoomsHandler mRoomsHandler;
+    private BlocksHandler mBlocksHandler;
+    private CardHandler mCardHandler;
+    private TagsHandler mTagsHandler;
+    private SpeakersHandler mSpeakersHandler;
+    private SessionsHandler mSessionsHandler;
+    private SearchSuggestHandler mSearchSuggestHandler;
+    private MapPropertyHandler mMapPropertyHandler;
+    private HashtagsHandler mHashtagsHandler;
+    private VideosHandler mVideosHandler;
 
     // Convenience map that maps the key name to its corresponding handler (e.g.
     // "blocks" to mBlocksHandler (to avoid very tedious if-elses)
-    HashMap<String, JSONHandler> mHandlerForKey = new HashMap<>();
+    private final HashMap<String, JSONHandler> mHandlerForKey = new HashMap<>();
 
     // Tally of total content provider operations we carried out (for statistical purposes)
     private int mContentProviderOperationsDone = 0;
@@ -134,9 +136,10 @@ public class ConferenceDataHandler {
      * Parses the conference data in the given objects and imports the data into the
      * content provider. The format of the data is documented at https://code.google.com/p/iosched.
      *
-     * @param dataBodies The collection of JSON objects to parse and import.
-     * @param dataTimestamp The timestamp of the data. This should be in RFC1123 format.
-     * @param downloadsAllowed Whether or not we are supposed to download data from the internet if needed.
+     * @param dataBodies       The collection of JSON objects to parse and import.
+     * @param dataTimestamp    The timestamp of the data. This should be in RFC1123 format.
+     * @param downloadsAllowed Whether or not we are supposed to download data from the internet if
+     *                         needed.
      * @throws IOException If there is a problem parsing the data.
      */
     public void applyConferenceData(String[] dataBodies, String dataTimestamp,
@@ -206,8 +209,7 @@ public class ConferenceDataHandler {
             resolver.notifyChange(uri, null);
         }
 
-
-    // update our data timestamp
+        // update our data timestamp
         setDataTimestamp(dataTimestamp);
         LOGD(TAG, "Done applying conference data.");
     }
@@ -234,11 +236,12 @@ public class ConferenceDataHandler {
 
             while (reader.hasNext()) {
                 // the key is "rooms", "speakers", "tracks", etc.
-                String key = reader.nextName();
-                if (mHandlerForKey.containsKey(key)) {
+                final String key = reader.nextName();
+                final JSONHandler handler = mHandlerForKey.get(key);
+                if (handler != null) {
                     LOGD(TAG, "Processing key in conference data json: " + key);
                     // pass the value to the corresponding handler
-                    mHandlerForKey.get(key).process(parser.parse(reader));
+                    handler.process(mGson, parser.parse(reader));
                 } else {
                     LOGW(TAG, "Skipping unknown key in conference data json: " + key);
                     reader.skipValue();
@@ -251,12 +254,13 @@ public class ConferenceDataHandler {
     }
 
     /**
-     * Synchronise the map overlay files either from the local assets (if available) or from a remote url.
+     * Synchronise the map overlay files either from the local assets (if available) or from a
+     * remote url.
      *
      * @param collection Set of tiles containing a local filename and remote url.
-     * @throws IOException
      */
-    private void processMapOverlayFiles(Collection<Tile> collection, boolean downloadAllowed) throws IOException, SVGParseException {
+    private void processMapOverlayFiles(Collection<Tile> collection, boolean downloadAllowed)
+            throws IOException, SVGParseException {
         // clear the tile cache on disk if any tiles have been updated
         boolean shouldClearCache = false;
         // keep track of used files, unused files are removed
@@ -288,10 +292,10 @@ public class ConferenceDataHandler {
                         SVG svg = new SVGBuilder().readFromInputStream(is).build();
                         is.close();
                     } catch (IOException ex) {
-                        LOGE(TAG, "FAILED downloading map overlay tile "+url+
+                        LOGE(TAG, "FAILED downloading map overlay tile " + url +
                                 ": " + ex.getMessage(), ex);
                     } catch (SVGParseException ex) {
-                        LOGE(TAG, "FAILED parsing map overlay tile "+url+
+                        LOGE(TAG, "FAILED parsing map overlay tile " + url +
                                 ": " + ex.getMessage(), ex);
                     }
                 } else {
@@ -331,12 +335,14 @@ public class ConferenceDataHandler {
     /**
      * A type of ConsoleRequestLogger that does not log requests and responses.
      */
-    private RequestLogger mQuietLogger = new ConsoleRequestLogger(){
+    private final RequestLogger mQuietLogger = new ConsoleRequestLogger() {
         @Override
-        public void logRequest(HttpURLConnection uc, Object content) throws IOException { }
+        public void logRequest(HttpURLConnection uc, Object content) throws IOException {
+        }
 
         @Override
-        public void logResponse(HttpResponse res) { }
+        public void logResponse(HttpResponse res) {
+        }
     };
 
 }

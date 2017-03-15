@@ -21,14 +21,15 @@ import static com.google.samples.apps.iosched.util.LogUtils.makeLogTag;
 import android.content.ContentProviderOperation;
 import android.content.Context;
 import android.net.Uri;
+import android.support.annotation.NonNull;
 
+import com.google.gson.Gson;
+import com.google.gson.JsonElement;
 import com.google.samples.apps.iosched.io.map.model.MapData;
 import com.google.samples.apps.iosched.io.map.model.Marker;
 import com.google.samples.apps.iosched.io.map.model.Tile;
 import com.google.samples.apps.iosched.provider.ScheduleContract;
 import com.google.samples.apps.iosched.provider.ScheduleContractHelper;
-import com.google.gson.Gson;
-import com.google.gson.JsonElement;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -49,8 +50,8 @@ public class MapPropertyHandler extends JSONHandler {
     }
 
     @Override
-    public void process(JsonElement element) {
-        for (MapData mapData : new Gson().fromJson(element, MapData[].class)) {
+    public void process(@NonNull Gson gson, @NonNull JsonElement element) {
+        for (MapData mapData : gson.fromJson(element, MapData[].class)) {
             if (mapData.tiles != null) {
                 processTileOverlays(mapData.tiles);
             }
