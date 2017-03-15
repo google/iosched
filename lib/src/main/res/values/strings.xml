@@ -253,6 +253,9 @@
     <!-- Menu item to open the Explore screen [CHAR_LIMIT=20] -->
     <string name="navdrawer_item_explore">Explore</string>
 
+    <!-- Menu item to open the Feed screen [CHAR_LIMIT=20] -->
+    <string name="navdrawer_item_feed">Feed</string>
+
     <!-- Menu item to open the Map screen [CHAR_LIMIT=20] -->
     <string name="navdrawer_item_map">Map</string>
 
@@ -497,6 +500,8 @@
 
     <!-- Navigation bar text for viewing the user's schedule -->
     <string name="title_my_schedule">Schedule</string>
+
+    <string name="title_feed">Feed</string>
 
     <!-- Label for Search screen, that allows users to search for sessions. -->
     <string name="title_search">Search</string>

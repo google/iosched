@@ -17,6 +17,7 @@ package com.google.samples.apps.iosched.navigation;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 
+import com.google.samples.apps.iosched.feed.FeedActivity;
 import com.google.samples.apps.iosched.lib.R;
 import com.google.samples.apps.iosched.about.AboutActivity;
 import com.google.samples.apps.iosched.archframework.Model;
@@ -101,6 +102,8 @@ public class NavigationModel implements Model<NavigationQueryEnum, NavigationUse
                 MyIOActivity.class, true),
         EXPLORE(R.id.explore_nav_item, R.string.navdrawer_item_explore,
                 R.drawable.ic_navview_explore, ExploreIOActivity.class, true),
+        FEED(R.id.feed_nav_item, R.string.navdrawer_item_feed,
+                R.drawable.ic_navview_feed, FeedActivity.class, true),
         MAP(R.id.map_nav_item, R.string.navdrawer_item_map, R.drawable.ic_navview_map,
                 MapActivity.class, true),
         DEBUG(R.id.debug_nav_item, R.string.navdrawer_item_debug, R.drawable.ic_navview_settings,

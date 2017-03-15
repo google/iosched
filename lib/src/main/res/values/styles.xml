@@ -203,6 +203,9 @@
     <!-- Map -->
     <style name="Theme.IOSched.Map" parent="Theme.IOSched" />
 
+    <!-- Feed -->
+    <style name="Theme.IOSched.Feed" parent="Theme.IOSched" />
+
     <style name="MapRoomTitle">
         <item name="android:textSize">@dimen/text_size_xlarge</item>
         <item name="android:textColor">@color/map_text_primary</item>
