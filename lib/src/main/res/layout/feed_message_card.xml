@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
-   Copyright 2016 Google Inc. All rights reserved.
+   Copyright 2017 Google Inc. All rights reserved.
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -24,20 +24,27 @@
     android:layout_height="wrap_content"
     android:orientation="vertical"
     android:padding="@dimen/padding_normal">
-
+    <TextView
+        android:id="@+id/title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginStart="@dimen/padding_normal"
+        android:layout_marginTop="@dimen/padding_normal"
+        android:textSize="24sp"
+        tools:text="@string/placeholder_feed_message_title" />
     <ImageView
         android:id="@+id/icon"
         android:layout_width="@dimen/feed_message_card_image_width"
         android:layout_height="@dimen/feed_message_card_image_width"
         android:layout_alignParentStart="true"
-        android:layout_alignParentTop="true"
+        android:layout_below="@+id/title"
         android:layout_marginStart="@dimen/padding_normal"
         android:layout_marginTop="@dimen/padding_normal"
         android:scaleType="centerInside"
-        android:visibility="visible"
         tools:ignore="ContentDescription"
         tools:src="@drawable/ic_session" />
-
     <TextView
         android:id="@+id/description"
         style="@style/Body1Text"
@@ -45,31 +52,6 @@
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/padding_normal"
         android:layout_toEndOf="@+id/icon"
+        android:layout_below="@+id/title"
         tools:text="@string/placeholder_lorem_ipsum" />
-
-    <Button
-        android:id="@+id/buttonEnd"
-        style="@style/Widget.AppCompat.Button.Borderless.Colored"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentEnd="true"
-        android:layout_below="@+id/description"
-        android:layout_gravity="end"
-        android:layout_marginEnd="@dimen/spacing_normal"
-        android:layout_marginStart="@dimen/spacing_micro"
-        android:paddingLeft="@dimen/spacing_normal"
-        android:paddingRight="@dimen/spacing_normal"
-        tools:text="Button End" />
-
-    <Button
-        android:id="@+id/buttonStart"
-        style="@style/Widget.AppCompat.Button.Borderless.Colored"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignTop="@id/buttonEnd"
-        android:layout_toStartOf="@+id/buttonEnd"
-        android:paddingLeft="@dimen/spacing_normal"
-        android:paddingRight="@dimen/spacing_normal"
-        tools:text="Button Start" />
-
 </RelativeLayout>

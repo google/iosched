@@ -1,7 +1,5 @@
-package com.google.samples.apps.iosched.feed;
-
 /*
- * Copyright (c) 2016 Google Inc.
+ * Copyright (c) 2017 Google Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License. You may obtain a copy of the License at
@@ -13,45 +11,37 @@ package com.google.samples.apps.iosched.feed;
  * or implied. See the License for the specific language governing permissions and limitations under
  * the License.
  */
+package com.google.samples.apps.iosched.feed;
 
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.support.v7.preference.PreferenceManager;
+import android.support.v7.widget.RecyclerView;
 
-import com.google.samples.apps.iosched.archframework.PresenterImpl;
-import com.google.samples.apps.iosched.injection.ModelProvider;
 import com.google.samples.apps.iosched.lib.R;
 import com.google.samples.apps.iosched.navigation.NavigationModel;
 import com.google.samples.apps.iosched.ui.BaseActivity;
 
 /**
- * This shows a list of cards that present key updates on the conference. The cards reside in a
- * {@link RecyclerView} and the content in each card comes from a Firebase real time database.
- * This shows the schedule of the logged in user, organised per day.
+ * This is the host Activity for a list of cards that present key updates on the conference.
+ * The cards are shown in a {@link RecyclerView} and the content in each card comes from a Firebase
+ * Real-Time Database.
  */
-
 public class FeedActivity extends BaseActivity {
 
     private static final String SCREEN_LABEL = "Feed";
 
-    FeedModel mModel;
-    private PresenterImpl<FeedModel, FeedModel.FeedQueryEnum,
-            FeedModel.FeedUserActionEnum> mPresenter;
+    private FeedContract.Presenter mPresenter;
+
     @Override
     protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.feed_act);
-
-
-
-        mModel = ModelProvider.provideFeedModel(this);
-
         final FeedFragment contentFragment = FeedFragment.getInstance(getSupportFragmentManager());
-
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
         // Each fragment in the pager adapter is an updatable view that the presenter must know
-        mPresenter = new PresenterImpl<>(
-                mModel,
-                contentFragment,
-                FeedModel.FeedUserActionEnum.values(),
-                FeedModel.FeedQueryEnum.values());
+        mPresenter = new FeedPresenter(sharedPreferences, contentFragment);
+        contentFragment.setPresenter(mPresenter);
     }
 
     @Override

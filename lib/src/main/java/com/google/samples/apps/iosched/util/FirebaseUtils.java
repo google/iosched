@@ -29,7 +29,7 @@ import static com.google.samples.apps.iosched.util.LogUtils.makeLogTag;
 
 /**
  * Utility methods for setting up and interacting with a Firebase account associated with a user
- * account. TODO: instead of passing Context, pass SharedPreferences to methods. See b/27809306.
+ * account.
  */
 public class FirebaseUtils {
 
