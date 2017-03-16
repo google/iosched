@@ -8,6 +8,7 @@ import android.support.v4.app.LoaderManager;
 
 import com.google.samples.apps.iosched.archframework.Model;
 import com.google.samples.apps.iosched.explore.ExploreIOModel;
+import com.google.samples.apps.iosched.feed.FeedModel;
 import com.google.samples.apps.iosched.feedback.FeedbackHelper;
 import com.google.samples.apps.iosched.feedback.SessionFeedbackModel;
 import com.google.samples.apps.iosched.model.ScheduleHelper;
@@ -56,6 +57,11 @@ public class ModelProvider {
                 ? stubMyScheduleModel
                 : new MyScheduleModel(scheduleHelper, sessionsHelper, context);
         model.initStaticDataAndObservers();
+        return model;
+    }
+
+    public static FeedModel provideFeedModel(Context context) {
+        FeedModel model = new FeedModel();
         return model;
     }
 
