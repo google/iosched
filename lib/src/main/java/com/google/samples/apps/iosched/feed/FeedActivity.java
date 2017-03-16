@@ -15,6 +15,9 @@ package com.google.samples.apps.iosched.feed;
  */
 
 import android.os.Bundle;
+
+import com.google.samples.apps.iosched.archframework.PresenterImpl;
+import com.google.samples.apps.iosched.injection.ModelProvider;
 import com.google.samples.apps.iosched.lib.R;
 import com.google.samples.apps.iosched.navigation.NavigationModel;
 import com.google.samples.apps.iosched.ui.BaseActivity;
@@ -29,10 +32,26 @@ public class FeedActivity extends BaseActivity {
 
     private static final String SCREEN_LABEL = "Feed";
 
+    FeedModel mModel;
+    private PresenterImpl<FeedModel, FeedModel.FeedQueryEnum,
+            FeedModel.FeedUserActionEnum> mPresenter;
     @Override
     protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.feed_act);
+
+
+
+        mModel = ModelProvider.provideFeedModel(this);
+
+        final FeedFragment contentFragment = FeedFragment.getInstance(getSupportFragmentManager());
+
+        // Each fragment in the pager adapter is an updatable view that the presenter must know
+        mPresenter = new PresenterImpl<>(
+                mModel,
+                contentFragment,
+                FeedModel.FeedUserActionEnum.values(),
+                FeedModel.FeedQueryEnum.values());
     }
 
     @Override

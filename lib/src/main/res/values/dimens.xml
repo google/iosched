@@ -70,6 +70,12 @@
 
     <item name="aspect_16_9" format="float" type="dimen">1.7778</item>
 
+    <!-- Feed Feature -->
+    <dimen name="feed_message_card_image_width">56dp</dimen>
+    <dimen name="feed_message_card_min_button_width">48dp</dimen>
+    <dimen name="feed_message_card_desc_padding">4dp</dimen>
+
+
     <!-- body content -->
     <dimen name="element_spacing_normal">8dp</dimen>
     <dimen name="content_padding_normal">16dp</dimen>
