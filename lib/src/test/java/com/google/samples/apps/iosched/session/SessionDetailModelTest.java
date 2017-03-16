@@ -309,7 +309,7 @@ public class SessionDetailModelTest {
         SessionDetailModel spyModel = spy(
                 new SessionDetailModel(mMockUri, mMockContext, mMockSessionsHelper,
                         mMockLoaderManager));
-        doReturn(FAKE_ID).when(spyModel).getSessionId(mMockUri);
+        doReturn(FAKE_ID).when(spyModel).extractSessionId(mMockUri);
         doReturn(mMockCursorLoader).when(spyModel).getCursorLoaderInstance(
                 any(Context.class), any(Uri.class), any(String[].class), any(String.class),
                 any(String[].class), any(String.class));
