@@ -24,19 +24,15 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.text.TextUtils;
 import android.util.Log;
 
 import com.google.samples.apps.iosched.lib.BuildConfig;
 import com.google.samples.apps.iosched.myschedule.MyScheduleModel;
 import com.google.samples.apps.iosched.myschedule.TagFilterHolder;
-import com.google.samples.apps.iosched.provider.ScheduleContract;
 import com.google.samples.apps.iosched.provider.ScheduleContract.Blocks;
 import com.google.samples.apps.iosched.provider.ScheduleContract.Sessions;
-import com.google.samples.apps.iosched.util.UIUtils;
 
 import java.util.ArrayList;
-import java.util.Locale;
 
 public class ScheduleHelper {
 
@@ -125,37 +121,13 @@ public class ScheduleHelper {
             }
             cursor = mContext.getContentResolver().query(
                     uri,
-                    SessionsQuery.PROJECTION,
+                    ScheduleItemHelper.REQUIRED_SESSION_COLUMNS,
                     selection,
                     new String[]{String.valueOf(start), String.valueOf(end)},
                     // order by session start
                     Sessions.SESSION_START);
 
-            if (cursor.moveToFirst()) {
-                do {
-                    ScheduleItem item = new ScheduleItem();
-                    item.type = ScheduleItem.SESSION;
-                    item.sessionId = cursor.getString(SessionsQuery.SESSION_ID);
-                    item.title = cursor.getString(SessionsQuery.SESSION_TITLE);
-                    item.startTime = cursor.getLong(SessionsQuery.SESSION_START);
-                    item.endTime = cursor.getLong(SessionsQuery.SESSION_END);
-                    if (!TextUtils.isEmpty(
-                            cursor.getString(SessionsQuery.SESSION_LIVESTREAM_URL))) {
-                        item.flags |= ScheduleItem.FLAG_HAS_LIVESTREAM;
-                    }
-                    item.subtitle = UIUtils.formatSessionSubtitle(
-                            cursor.getString(SessionsQuery.ROOM_ROOM_NAME),
-                            cursor.getString(SessionsQuery.SESSION_SPEAKER_NAMES), mContext);
-                    item.room = cursor.getString(SessionsQuery.ROOM_ROOM_NAME);
-                    item.backgroundImageUrl = cursor.getString(SessionsQuery.SESSION_PHOTO_URL);
-                    item.backgroundColor = cursor.getInt(SessionsQuery.SESSION_COLOR);
-                    item.sessionType = detectSessionType(
-                            cursor.getString(SessionsQuery.SESSION_TAGS));
-                    item.mainTag = cursor.getString(SessionsQuery.SESSION_MAIN_TAG);
-                    item.inSchedule = cursor.getInt(SessionsQuery.SESSION_IN_SCHEDULE) != 0;
-                    items.add(item);
-                } while (cursor.moveToNext());
-            }
+            ScheduleItemHelper.cursorToItems(cursor, mContext, items);
         } finally {
             if (cursor != null) {
                 cursor.close();
@@ -195,56 +167,6 @@ public class ScheduleHelper {
                 cursor.close();
             }
         }
-    }
-
-    public static int detectSessionType(String tagsText) {
-        if (TextUtils.isEmpty(tagsText)) {
-            return ScheduleItem.SESSION_TYPE_MISC;
-        }
-        String tags = tagsText.toUpperCase(Locale.US);
-        if (tags.contains("TYPE_SESSIONS") || tags.contains("KEYNOTE")) {
-            return ScheduleItem.SESSION_TYPE_SESSION;
-        } else if (tags.contains("TYPE_CODELAB")) {
-            return ScheduleItem.SESSION_TYPE_CODELAB;
-        } else if (tags.contains("TYPE_SANDBOXTALKS")) {
-            return ScheduleItem.SESSION_TYPE_BOXTALK;
-        } else if (tags.contains("TYPE_APPREVIEWS") || tags.contains("TYPE_OFFICEHOURS") ||
-                tags.contains("TYPE_WORKSHOPS")) {
-            return ScheduleItem.SESSION_TYPE_MISC;
-        }
-        return ScheduleItem.SESSION_TYPE_MISC; // default
-    }
-
-    private interface SessionsQuery {
-        String[] PROJECTION = {
-                Sessions.SESSION_ID,
-                Sessions.SESSION_TITLE,
-                Sessions.SESSION_START,
-                Sessions.SESSION_END,
-                ScheduleContract.Rooms.ROOM_NAME,
-                Sessions.SESSION_IN_MY_SCHEDULE,
-                Sessions.SESSION_LIVESTREAM_ID,
-                Sessions.SESSION_SPEAKER_NAMES,
-                Sessions.SESSION_PHOTO_URL,
-                Sessions.SESSION_COLOR,
-                Sessions.SESSION_TAGS,
-                Sessions.SESSION_MAIN_TAG,
-                //Sessions.HAS_GIVEN_FEEDBACK
-        };
-
-        int SESSION_ID = 0;
-        int SESSION_TITLE = 1;
-        int SESSION_START = 2;
-        int SESSION_END = 3;
-        int ROOM_ROOM_NAME = 4;
-        int SESSION_IN_SCHEDULE = 5;
-        int SESSION_LIVESTREAM_URL = 6;
-        int SESSION_SPEAKER_NAMES = 7;
-        int SESSION_PHOTO_URL = 8;
-        int SESSION_COLOR = 9;
-        int SESSION_TAGS = 10;
-        int SESSION_MAIN_TAG = 11;
-        //int HAS_GIVEN_FEEDBACK = 12;
     }
 
     private interface BlocksQuery {

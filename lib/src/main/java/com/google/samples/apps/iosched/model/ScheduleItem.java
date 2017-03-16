@@ -16,6 +16,7 @@
 package com.google.samples.apps.iosched.model;
 
 import android.support.annotation.VisibleForTesting;
+import android.text.TextUtils;
 
 import com.google.samples.apps.iosched.Config;
 import com.google.samples.apps.iosched.provider.ScheduleContract;
@@ -74,6 +75,24 @@ public class ScheduleItem implements Cloneable, Comparable<ScheduleItem> {
     public static final int FLAG_NOT_REMOVABLE = 0x02;
     public static final int FLAG_CONFLICTS_WITH_PREVIOUS = 0x04;
     public static final int FLAG_CONFLICTS_WITH_NEXT = 0x08;
+
+    public static int detectSessionType(String tagsText) {
+        if (TextUtils.isEmpty(tagsText)) {
+            return SESSION_TYPE_MISC;
+        }
+        String tags = tagsText.toUpperCase(Locale.US);
+        if (tags.contains("TYPE_SESSIONS") || tags.contains("KEYNOTE")) {
+            return SESSION_TYPE_SESSION;
+        } else if (tags.contains("TYPE_CODELAB")) {
+            return SESSION_TYPE_CODELAB;
+        } else if (tags.contains("TYPE_SANDBOXTALKS")) {
+            return SESSION_TYPE_BOXTALK;
+        } else if (tags.contains("TYPE_APPREVIEWS") || tags.contains("TYPE_OFFICEHOURS") ||
+                tags.contains("TYPE_WORKSHOPS")) {
+            return SESSION_TYPE_MISC;
+        }
+        return SESSION_TYPE_MISC; // default
+    }
 
     public void setTypeFromBlockType(String blockType) {
         if (ScheduleContract.Blocks.isValidBlockType(blockType) &&
