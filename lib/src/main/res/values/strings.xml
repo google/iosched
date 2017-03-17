@@ -642,11 +642,15 @@
 
     <string name="transition_session_image" translatable="false">transition_session_image</string>
 
-    <string name="schedule_msgcards_signin_prompt">Sign-in to sync saved events and reserved
+    <!-- Message displayed to users as part of onboarding sign in. -->
+    <string name="signin_message">Sign-in to sync saved events and reserved
         sessions from your account across mobile and desktop. You\'ll still be able to save events
         locally without signing-in.</string>
 
-    <string name="schedule_msgcards_signin_prompt_action">Sign in</string>
-    <string name="schedule_msgcards_signin_prompt_dismiss">Skip</string>
+    <!-- Label used on the onboarding sign in screen for signing in. -->
+    <string name="signin_prompt">Sign in</string>
 
+
+    <!-- Label used on the onboarding sign in screen for skipping sign in. -->
+    <string name="signin_prompt_dismiss">Skip</string>
 </resources>
