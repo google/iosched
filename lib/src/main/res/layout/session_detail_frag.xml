@@ -178,10 +178,10 @@
                 android:id="@id/give_feedback_button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:backgroundTint="@color/feedback_button_tint"
                 android:layout_marginLeft="@dimen/padding_normal"
                 android:layout_marginRight="@dimen/padding_normal"
                 android:layout_marginTop="@dimen/padding_normal"
+                android:backgroundTint="@color/feedback_button_tint"
                 android:paddingLeft="@dimen/padding_normal"
                 android:paddingRight="@dimen/padding_normal"
                 android:text="@string/rate_session"
@@ -193,8 +193,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/padding_normal"
-                android:orientation="vertical"
                 android:divider="?android:listDivider"
+                android:orientation="vertical"
                 android:showDividers="beginning|middle"
                 android:visibility="gone">
 
@@ -217,7 +217,30 @@
                     android:text="TODO: map goes here" />
             </FrameLayout>
 
-            <!-- TODO related sessions -->
+            <TextView
+                android:id="@+id/related_sessions_label"
+                style="@style/TextAppearance.AppCompat.Body2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/padding_normal"
+                android:layout_marginRight="@dimen/padding_normal"
+                android:layout_marginTop="32dp"
+                android:text="@string/related_sessions"
+                android:textAllCaps="true"
+                android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+                android:visibility="gone"
+                tools:visibility="visible" />
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/related_sessions_list"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:nestedScrollingEnabled="false"
+                android:visibility="gone"
+                app:layoutManager="android.support.v7.widget.LinearLayoutManager"
+                tools:listitem="@layout/my_schedule_item"
+                tools:visibility="visible" />
 
             <TextView
                 android:id="@android:id/empty"

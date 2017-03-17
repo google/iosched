@@ -39,6 +39,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.ShareCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.animation.LinearOutSlowInInterpolator;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.transition.Transition;
@@ -61,12 +62,16 @@ import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.samples.apps.iosched.Config;
 import com.google.samples.apps.iosched.archframework.PresenterImpl;
 import com.google.samples.apps.iosched.archframework.UpdatableView;
+import com.google.samples.apps.iosched.feedback.SessionFeedbackActivity;
 import com.google.samples.apps.iosched.injection.ModelProvider;
 import com.google.samples.apps.iosched.lib.BuildConfig;
 import com.google.samples.apps.iosched.lib.R;
 import com.google.samples.apps.iosched.map.MapActivity;
 import com.google.samples.apps.iosched.model.TagMetadata.Tag;
 import com.google.samples.apps.iosched.myschedule.MyScheduleActivity;
+import com.google.samples.apps.iosched.myschedule.MyScheduleDayAdapter;
+import com.google.samples.apps.iosched.myschedule.MyScheduleDayAdapter.ScheduleAdapterListener;
+import com.google.samples.apps.iosched.provider.ScheduleContract.Sessions;
 import com.google.samples.apps.iosched.session.SessionDetailModel.SessionDetailQueryEnum;
 import com.google.samples.apps.iosched.session.SessionDetailModel.SessionDetailUserActionEnum;
 import com.google.samples.apps.iosched.ui.BaseActivity;
@@ -89,7 +94,8 @@ import java.util.List;
  * submit feedback.
  */
 public class SessionDetailFragment extends Fragment implements
-        UpdatableView<SessionDetailModel, SessionDetailQueryEnum, SessionDetailUserActionEnum> {
+        UpdatableView<SessionDetailModel, SessionDetailQueryEnum, SessionDetailUserActionEnum>,
+        ScheduleAdapterListener {
 
     private static final String TAG = LogUtils.makeLogTag(SessionDetailFragment.class);
 
@@ -122,6 +128,12 @@ public class SessionDetailFragment extends Fragment implements
     private ImageView mPhotoView;
 
     private View mMapImage;
+
+    private TextView mRelatedSessionsLabel;
+
+    private RecyclerView mRelatedSessions;
+
+    private MyScheduleDayAdapter mRelatedSessionsAdapter;
 
     private ImageLoader mImageLoader;
 
@@ -191,15 +203,20 @@ public class SessionDetailFragment extends Fragment implements
         mTags = (LinearLayout) details.findViewById(R.id.session_tags);
         mTagsContainer = (ViewGroup) details.findViewById(R.id.session_tags_container);
         mFeedbackButton = (Button) details.findViewById(R.id.give_feedback_button);
+
         final ViewGroup mapContainer = (ViewGroup) details.findViewById(R.id.map_container);
         mMapImage = mapContainer.findViewById(R.id.map_image);
-
         mapContainer.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
                 sendUserAction(SessionDetailUserActionEnum.SHOW_MAP, null);
             }
         });
+
+        mRelatedSessionsLabel = (TextView) details.findViewById(R.id.related_sessions_label);
+        mRelatedSessions = (RecyclerView) details.findViewById(R.id.related_sessions_list);
+        mRelatedSessionsAdapter = new MyScheduleDayAdapter(this, null, false);
+        mRelatedSessions.setAdapter(mRelatedSessionsAdapter);
 
         mAddScheduleFab =
                 (CheckableFloatingActionButton) view.findViewById(R.id.add_schedule_button);
@@ -326,6 +343,8 @@ public class SessionDetailFragment extends Fragment implements
                 displayTags(data);
                 displayTrackColor(data);
                 break;
+            case RELATED:
+                displayRelatedSessions(data);
             default:
                 break;
         }
@@ -592,6 +611,13 @@ public class SessionDetailFragment extends Fragment implements
         updateEmptyView(data);
     }
 
+    private void displayRelatedSessions(SessionDetailModel data) {
+        mRelatedSessionsAdapter.updateItems(data.getRelatedSessions());
+        int visibility = mRelatedSessionsAdapter.getItemCount() > 0 ? View.VISIBLE : View.GONE;
+        mRelatedSessions.setVisibility(visibility);
+        mRelatedSessionsLabel.setVisibility(visibility);
+    }
+
     private void updateEmptyView(SessionDetailModel data) {
         getActivity().findViewById(android.R.id.empty).setVisibility(
                 (data.getSessionTitle() != null && data.getSpeakers().size() == 0
@@ -661,6 +687,8 @@ public class SessionDetailFragment extends Fragment implements
     }
 
     private void displayTags(SessionDetailModel data) {
+        mRelatedSessionsAdapter.setTagMetadata(data.getTagMetadata());
+
         // TODO determine how to handle tags that aren't filterable (b/36001587)
         // For now just do the main tag
         mTags.removeAllViews();
@@ -675,10 +703,7 @@ public class SessionDetailFragment extends Fragment implements
                 tagView.setOnClickListener(new OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        Intent intent = new Intent(v.getContext(), MyScheduleActivity.class);
-                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                        intent.putExtra(MyScheduleActivity.EXTRA_FILTER_TAG, mainTag.getId());
-                        startActivity(intent);
+                        MyScheduleActivity.launchScheduleWithFilterTag(getContext(), mainTag);
                     }
                 });
                 mTags.addView(tagView);
@@ -761,5 +786,30 @@ public class SessionDetailFragment extends Fragment implements
         return new Action.Builder(Action.TYPE_VIEW)
                 .setObject(session)
                 .build();
+    }
+
+    @Override
+    public void onSessionClicked(Uri sessionUri) {
+        startActivity(new Intent(Intent.ACTION_VIEW, sessionUri));
+    }
+
+    @Override
+    public void onBookmarkClicked(String sessionId, boolean isInSchedule) {
+        Bundle args = new Bundle();
+        args.putString(Sessions.SESSION_ID, sessionId);
+        SessionDetailUserActionEnum action = isInSchedule
+                ? SessionDetailUserActionEnum.UNSTAR_RELATED
+                : SessionDetailUserActionEnum.STAR_RELATED;
+        sendUserAction(action, args);
+    }
+
+    @Override
+    public void onFeedbackClicked(String sessionId, String sessionTitle) {
+        SessionFeedbackActivity.launchFeedback(getContext(), sessionId);
+    }
+
+    @Override
+    public void onTagClicked(Tag tag) {
+        MyScheduleActivity.launchScheduleWithFilterTag(getContext(), tag);
     }
 }

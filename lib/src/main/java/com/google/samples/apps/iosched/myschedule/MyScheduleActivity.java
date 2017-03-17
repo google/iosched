@@ -16,7 +16,12 @@
 
 package com.google.samples.apps.iosched.myschedule;
 
+import static com.google.samples.apps.iosched.util.LogUtils.LOGD;
+import static com.google.samples.apps.iosched.util.LogUtils.LOGE;
+import static com.google.samples.apps.iosched.util.LogUtils.makeLogTag;
+
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
@@ -43,7 +48,8 @@ import com.google.samples.apps.iosched.model.ScheduleHelper;
 import com.google.samples.apps.iosched.model.TagMetadata.Tag;
 import com.google.samples.apps.iosched.myschedule.MyScheduleModel.MyScheduleQueryEnum;
 import com.google.samples.apps.iosched.myschedule.MyScheduleModel.MyScheduleUserActionEnum;
-import com.google.samples.apps.iosched.myschedule.ScheduleFilterFragment.ScheduleFiltersFragmentListener;
+import com.google.samples.apps.iosched.myschedule.ScheduleFilterFragment
+        .ScheduleFiltersFragmentListener;
 import com.google.samples.apps.iosched.navigation.NavigationModel;
 import com.google.samples.apps.iosched.session.SessionDetailActivity;
 import com.google.samples.apps.iosched.ui.BaseActivity;
@@ -51,10 +57,6 @@ import com.google.samples.apps.iosched.util.SessionsHelper;
 import com.google.samples.apps.iosched.util.TimeUtils;
 
 import java.util.Date;
-
-import static com.google.samples.apps.iosched.util.LogUtils.LOGD;
-import static com.google.samples.apps.iosched.util.LogUtils.LOGE;
-import static com.google.samples.apps.iosched.util.LogUtils.makeLogTag;
 
 /**
  * This shows the schedule of the logged in user, organised per day.
@@ -121,6 +123,15 @@ public class MyScheduleActivity extends BaseActivity implements ScheduleViewPare
     private MyScheduleModel mModel; // TODO decouple this
     private PresenterImpl<MyScheduleModel, MyScheduleQueryEnum, MyScheduleUserActionEnum>
             mPresenter;
+
+    public static void launchScheduleWithFilterTag(Context context, Tag tag) {
+        Intent intent = new Intent(context, MyScheduleActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        if (tag != null) {
+            intent.putExtra(EXTRA_FILTER_TAG, tag.getId());
+        }
+        context.startActivity(intent);
+    }
 
     @Override
     protected NavigationModel.NavigationItemEnum getSelfNavDrawerItem() {

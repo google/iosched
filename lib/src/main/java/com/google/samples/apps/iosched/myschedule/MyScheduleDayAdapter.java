@@ -67,14 +67,14 @@ public class MyScheduleDayAdapter
     private static final int ITEM_TYPE_SLOT = 0;
     private static final int ITEM_TYPE_TIME_HEADER = 1;
 
-
     // list of items served by this adapter
-    private final ArrayList mItems = new ArrayList();
+    private final List<Object> mItems = new ArrayList<>();
 
+    private final boolean mShowTimeSeparators;
     private TagMetadata mTagMetadata;
     private ScheduleAdapterListener mScheduleAdapterListener;
 
-    interface ScheduleAdapterListener {
+    public interface ScheduleAdapterListener {
         /**
          * @param sessionUri The Uri of the clicked session
          */
@@ -99,10 +99,10 @@ public class MyScheduleDayAdapter
     }
 
     public MyScheduleDayAdapter(@NonNull ScheduleAdapterListener adapterListener,
-            @Nullable TagMetadata tagMetadata) {
+            @Nullable TagMetadata tagMetadata, boolean showTimeSeparators) {
         mScheduleAdapterListener = adapterListener;
         mTagMetadata = tagMetadata;
-
+        mShowTimeSeparators = showTimeSeparators;
         setHasStableIds(true);
     }
 
@@ -183,8 +183,14 @@ public class MyScheduleDayAdapter
 
     public void updateItems(final List<ScheduleItem> items) {
         mItems.clear();
+        if (items == null) {
+            notifyDataSetChanged();
+            return;
+        }
 
-        if (items != null) {
+        if (!mShowTimeSeparators) {
+          mItems.addAll(items);
+        } else {
             for (int i = 0, size = items.size(); i < size; i++) {
                 final ScheduleItem prev = i > 0 ? items.get(i - 1) : null;
                 final ScheduleItem item = items.get(i);
