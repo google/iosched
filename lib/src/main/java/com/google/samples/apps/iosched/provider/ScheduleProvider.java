@@ -16,6 +16,11 @@
 
 package com.google.samples.apps.iosched.provider;
 
+import static com.google.samples.apps.iosched.util.LogUtils.LOGD;
+import static com.google.samples.apps.iosched.util.LogUtils.LOGE;
+import static com.google.samples.apps.iosched.util.LogUtils.LOGV;
+import static com.google.samples.apps.iosched.util.LogUtils.makeLogTag;
+
 import android.app.SearchManager;
 import android.content.ContentProvider;
 import android.content.ContentProviderOperation;
@@ -67,11 +72,6 @@ import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-
-import static com.google.samples.apps.iosched.util.LogUtils.LOGD;
-import static com.google.samples.apps.iosched.util.LogUtils.LOGE;
-import static com.google.samples.apps.iosched.util.LogUtils.LOGV;
-import static com.google.samples.apps.iosched.util.LogUtils.makeLogTag;
 
 /**
  * {@link android.content.ContentProvider} that stores {@link ScheduleContract} data. Data is
@@ -359,6 +359,7 @@ public class ScheduleProvider extends ContentProvider {
                 return Tags.buildTagUri(values.getAsString(Tags.TAG_ID));
             }
             case SESSIONS_ID_RELATED: {
+                values.put(Sessions.SESSION_ID, Sessions.getSessionId(uri));
                 db.insertOrThrow(Tables.RELATED_SESSIONS, null, values);
                 notifyChange(uri);
                 return uri;
@@ -820,8 +821,15 @@ public class ScheduleProvider extends ContentProvider {
             }
             case SESSIONS_ID_RELATED: {
                 final String sessionId = Sessions.getSessionId(uri);
-                return builder.table(Tables.SESSIONS)
-                        .where(Subquery.RELATED_SESSIONS_SELECTION, sessionId);
+                return builder
+                        .table(Tables.SESSIONS_JOIN_ROOMS_TAGS, getCurrentAccountName(uri, true))
+                        .mapToTable(Sessions._ID, Tables.SESSIONS)
+                        .mapToTable(Sessions.ROOM_ID, Tables.SESSIONS)
+                        .mapToTable(Sessions.SESSION_ID, Tables.SESSIONS)
+                        .map(Sessions.SESSION_IN_MY_SCHEDULE, "IFNULL(in_schedule, 0)")
+                        .map(Sessions.HAS_GIVEN_FEEDBACK, Subquery.SESSION_HAS_GIVEN_FEEDBACK)
+                        .where(Subquery.RELATED_SESSIONS_SELECTION, sessionId)
+                        .groupBy(Qualified.SESSIONS_SESSION_ID);
             }
             case SESSIONS_ROOM_AFTER: {
                 final String room = Sessions.getRoom(uri);
@@ -964,9 +972,9 @@ public class ScheduleProvider extends ContentProvider {
 
         String SESSIONS_SNIPPET = "snippet(" + Tables.SESSIONS_SEARCH + ",'{','}','\u2026')";
 
-        String RELATED_SESSIONS_SELECTION = Sessions.SESSION_ID + " IN (SELECT "
+        String RELATED_SESSIONS_SELECTION = Qualified.SESSIONS_SESSION_ID + " IN (SELECT "
                 + Sessions.RELATED_SESSION_ID + " FROM " + Tables.RELATED_SESSIONS + " WHERE "
-                + Sessions.SESSION_ID + " = ?";
+                + Sessions.SESSION_ID + " = ?)";
     }
 
     /**
