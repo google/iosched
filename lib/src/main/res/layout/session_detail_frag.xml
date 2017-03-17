@@ -78,7 +78,7 @@
 
             </com.google.samples.apps.iosched.ui.widget.AspectRatioView>
 
-            <include layout="@layout/toolbar" />
+            <include layout="@layout/toolbar_session_detail" />
 
         </android.support.design.widget.CollapsingToolbarLayout>
 
