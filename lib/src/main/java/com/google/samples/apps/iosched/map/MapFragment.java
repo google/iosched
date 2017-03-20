@@ -43,18 +43,20 @@ import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.TileOverlay;
 import com.google.android.gms.maps.model.TileOverlayOptions;
+import com.google.maps.android.geojson.GeoJsonFeature;
+import com.google.maps.android.geojson.GeoJsonLayer;
+import com.google.maps.android.geojson.GeoJsonPoint;
+import com.google.maps.android.geojson.GeoJsonPointStyle;
 import com.google.samples.apps.iosched.lib.BuildConfig;
 import com.google.samples.apps.iosched.lib.R;
 import com.google.samples.apps.iosched.map.util.CachedTileProvider;
 import com.google.samples.apps.iosched.map.util.MarkerLoadingTask;
-import com.google.samples.apps.iosched.map.util.MarkerModel;
 import com.google.samples.apps.iosched.map.util.TileLoadingTask;
 import com.google.samples.apps.iosched.provider.ScheduleContract;
 import com.google.samples.apps.iosched.util.AnalyticsHelper;
 import com.google.samples.apps.iosched.util.MapUtils;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -73,10 +75,6 @@ public class MapFragment extends com.google.android.gms.maps.SupportMapFragment 
      */
     private static final String EXTRAS_HIGHLIGHT_ROOM = "EXTRAS_HIGHLIGHT_ROOM";
 
-    /**
-     * Extras parameter for displaying a specific floor when the map is loaded.
-     */
-    private static final String EXTRAS_ACTIVE_FLOOR = "EXTRAS_ACTIVE_FLOOR";
 
     /**
      * Area covered by the venue. Determines if the venue is currently visible on screen.
@@ -121,10 +119,9 @@ public class MapFragment extends com.google.android.gms.maps.SupportMapFragment 
 
 
     // Markers stored by id
-    protected HashMap<String, MarkerModel> mMarkers = new HashMap<>();
-    // Markers stored by floor
-    protected SparseArray<ArrayList<Marker>> mMarkersFloor =
-            new SparseArray<>(INITIAL_FLOOR_COUNT);
+    protected HashMap<String, GeoJsonFeature> mMarkers = new HashMap<>();
+
+    protected GeoJsonLayer mGeoJsonLayer;
 
     // Screen DPI
     private float mDPI = 0;
@@ -139,7 +136,7 @@ public class MapFragment extends com.google.android.gms.maps.SupportMapFragment 
     private boolean mVenueIsActive = false;
 
 
-    private Marker mActiveMarker = null;
+    private GeoJsonFeature mActiveMarker = null;
     private BitmapDescriptor ICON_ACTIVE;
     private BitmapDescriptor ICON_NORMAL;
 
@@ -149,7 +146,7 @@ public class MapFragment extends com.google.android.gms.maps.SupportMapFragment 
     private Rect mMapInsets = new Rect();
 
     private String mHighlightedRoomId = null;
-    private MarkerModel mHighlightedRoom = null;
+    private GeoJsonFeature mHighlightedRoom = null;
 
     private int mInitialFloor = VENUE_DEFAULT_LEVEL_INDEX;
 
@@ -224,11 +221,9 @@ public class MapFragment extends com.google.android.gms.maps.SupportMapFragment 
         super.onSaveInstanceState(outState);
         if (mActiveMarker != null) {
             // A marker is currently selected, restore its selection.
-            outState.putString(EXTRAS_HIGHLIGHT_ROOM, mActiveMarker.getTitle());
-            outState.putInt(EXTRAS_ACTIVE_FLOOR, INVALID_FLOOR);
+            outState.putString(EXTRAS_HIGHLIGHT_ROOM, mActiveMarker.getProperty("title"));
         } else {
             // No marker is selected, store the active floor if at venue.
-            outState.putInt(EXTRAS_ACTIVE_FLOOR, mFloor);
             outState.putString(EXTRAS_HIGHLIGHT_ROOM, null);
         }
 
@@ -250,7 +245,6 @@ public class MapFragment extends com.google.android.gms.maps.SupportMapFragment 
         Bundle data = getArguments();
         if (data != null) {
             mHighlightedRoomId = data.getString(EXTRAS_HIGHLIGHT_ROOM, null);
-            mInitialFloor = data.getInt(EXTRAS_ACTIVE_FLOOR, VENUE_DEFAULT_LEVEL_INDEX);
         }
 
         getMapAsync(this);
@@ -333,9 +327,7 @@ public class MapFragment extends com.google.android.gms.maps.SupportMapFragment 
         mTileOverlays.clear();
 
         mMarkers.clear();
-        mMarkersFloor.clear();
 
-        mFloor = INVALID_FLOOR;
     }
 
     @Override
@@ -399,7 +391,7 @@ public class MapFragment extends com.google.android.gms.maps.SupportMapFragment 
         mCallbacks = (Callbacks) activity;
 
         activity.getContentResolver().registerContentObserver(
-                ScheduleContract.MapMarkers.CONTENT_URI, true, mObserver);
+                ScheduleContract.MapGeoJson.CONTENT_URI, true, mObserver);
         activity.getContentResolver().registerContentObserver(
                 ScheduleContract.MapTiles.CONTENT_URI, true, mObserver);
     }
@@ -479,11 +471,13 @@ public class MapFragment extends com.google.android.gms.maps.SupportMapFragment 
             overlay.setVisible(visible);
         }
 
-        // Markers
-        final ArrayList<Marker> markers = mMarkersFloor.get(floor);
-        if (markers != null) {
-            for (Marker m : markers) {
-                m.setVisible(visible);
+        //Markers
+
+        if (mGeoJsonLayer != null) {
+            for (GeoJsonFeature feature : mGeoJsonLayer.getFeatures()) {
+                GeoJsonPointStyle p = feature.getPointStyle();
+                p.setVisible(visible);
+                feature.setPointStyle(p);
             }
         }
     }
@@ -493,7 +487,7 @@ public class MapFragment extends com.google.android.gms.maps.SupportMapFragment 
      * tile overlay AND markers.
      */
     private boolean isValidFloor(int floor) {
-        return mTileOverlays.get(floor) != null || mMarkersFloor.get(floor) != null;
+        return mTileOverlays.get(floor) != null;
     }
 
     /**
@@ -504,7 +498,7 @@ public class MapFragment extends com.google.android.gms.maps.SupportMapFragment 
      */
     private void enableMapElements() {
         if (isVenueVisible()) {
-            showFloorElementsIndex(VENUE_DEFAULT_LEVEL_INDEX);
+            onFocusVenue();
         }
     }
 
@@ -519,7 +513,7 @@ public class MapFragment extends com.google.android.gms.maps.SupportMapFragment 
         // Highlight a room if argument is set and it exists, otherwise show the default floor
         if (mHighlightedRoomId != null && mMarkers.containsKey(mHighlightedRoomId)) {
             highlightRoom(mHighlightedRoomId);
-            onFloorActivated(mHighlightedRoom.floor);
+            onFloorActivated(mFloor);
             // Reset highlighted room because it has just been displayed.
             mHighlightedRoomId = null;
         } else {
@@ -546,15 +540,17 @@ public class MapFragment extends com.google.android.gms.maps.SupportMapFragment 
      * highlighted, the map is centered and its marker is activated.
      */
     private void onFloorActivated(int activeLevelIndex) {
-        if (mHighlightedRoom != null && mFloor == mHighlightedRoom.floor) {
+        if (mHighlightedRoom != null) {
             // A room highlight is pending. Highlight the marker and display info details.
-            onMarkerClick(mHighlightedRoom.marker);
-            centerMap(mHighlightedRoom.marker.getPosition());
+            deselectActiveMarker();
+            selectMarker(mHighlightedRoom);
+            GeoJsonPoint room = (GeoJsonPoint) mHighlightedRoom.getGeometry();
+            centerMap(room.getCoordinates());
 
             // Remove the highlight room flag, because the room has just been highlighted.
             mHighlightedRoom = null;
             mHighlightedRoomId = null;
-        } else if (mFloor != activeLevelIndex) {
+        } else {
             // Deselect and hide the info details.
             deselectActiveMarker();
             mCallbacks.onInfoHide();
@@ -572,31 +568,34 @@ public class MapFragment extends com.google.android.gms.maps.SupportMapFragment 
 
     private void deselectActiveMarker() {
         if (mActiveMarker != null) {
-            mActiveMarker.setIcon(ICON_NORMAL);
+            GeoJsonPointStyle style = mActiveMarker.getPointStyle();
+            style.setIcon(ICON_NORMAL);
+            mActiveMarker.setPointStyle(style);
             mActiveMarker = null;
         }
     }
 
-    private void selectActiveMarker(Marker marker) {
-        if (mActiveMarker == marker) {
+    private void selectActiveMarker(GeoJsonFeature feature) {
+        if (mActiveMarker == feature) {
             return;
         }
-        if (marker != null) {
-            mActiveMarker = marker;
-            mActiveMarker.setIcon(ICON_ACTIVE);
+        if (feature != null) {
+            mActiveMarker = feature;
+            GeoJsonPointStyle style = mActiveMarker.getPointStyle();
+            style.setIcon(ICON_ACTIVE);
+            mActiveMarker.setPointStyle(style);
         }
     }
 
     @Override
     public boolean onMarkerClick(Marker marker) {
         final String title = marker.getTitle();
-        final MarkerModel model = mMarkers.get(title);
+        final GeoJsonFeature feature = mMarkers.get(title);
 
         // Log clicks on all markers (regardless of type)
         // ANALYTICS EVENT: Click on marker on the map.
         // Contains: Marker ID (for example room UUID)
         AnalyticsHelper.sendEvent("Map", "markerclick", title);
-
         deselectActiveMarker();
 
         // The venue marker can be compared directly.
@@ -606,27 +605,37 @@ public class MapFragment extends com.google.android.gms.maps.SupportMapFragment 
             LOGD(TAG, "Clicked on the venue marker, return to initial display.");
             centerOnVenue(true);
 
-        } else if (model != null && MapUtils.hasInfoTitleOnly(model.type)) {
+        } else {
+            selectMarker(feature);
+        }
+
+        return true;
+    }
+
+    private void selectMarker(GeoJsonFeature feature) {
+        int type = MapUtils.detectMarkerType(feature.getProperty("type"));
+        String id = feature.getProperty("id");
+        String title = feature.getProperty("title");
+        if (feature != null && MapUtils.hasInfoTitleOnly(type)) {
             // Show a basic info window with a title only
-            mCallbacks.onInfoShowTitle(model.label, model.type);
-            selectActiveMarker(marker);
+            mCallbacks.onInfoShowTitle(title, type);
+            selectActiveMarker(feature);
 
-        } else if (model != null && MapUtils.hasInfoSessionList(model.type)) {
+        } else if (feature != null && MapUtils.hasInfoSessionList(type)) {
             // Type has sessions to display
-            mCallbacks.onInfoShowSessionlist(model.id, model.label, model.type);
-            selectActiveMarker(marker);
+            mCallbacks.onInfoShowSessionlist(id, title, type);
+            selectActiveMarker(feature);
 
-        } else if (model != null && MapUtils.hasInfoFirstDescriptionOnly(model.type)) {
+        } else if (feature != null && MapUtils.hasInfoFirstDescriptionOnly(type)) {
             // Display the description of the first session only
-            mCallbacks.onInfoShowFirstSessionTitle(model.id, model.label, model.type);
-            selectActiveMarker(marker);
+            mCallbacks.onInfoShowFirstSessionTitle(id, title, type);
+            selectActiveMarker(feature);
 
         } else {
             // Hide the bottom sheet for unknown markers
             mCallbacks.onInfoHide();
         }
 
-        return true;
     }
 
     private void centerMap(LatLng position) {
@@ -635,36 +644,22 @@ public class MapFragment extends com.google.android.gms.maps.SupportMapFragment 
     }
 
     private void highlightRoom(String roomId) {
-        MarkerModel m = mMarkers.get(roomId);
-        if (m != null) {
-            mHighlightedRoom = m;
-            showFloorElementsIndex(m.floor);
+        GeoJsonFeature feature = mMarkers.get(roomId);
+        if (feature != null) {
+            mHighlightedRoom = feature;
+            showFloorElementsIndex(mFloor);
         }
     }
 
-    private void onMarkersLoaded(List<MarkerLoadingTask.MarkerEntry> list) {
-        if (list != null) {
-            for (MarkerLoadingTask.MarkerEntry entry : list) {
-
-                // Skip incomplete entries
-                if (entry.options == null || entry.model == null) {
+    private void onMarkersLoaded(GeoJsonLayer layer) {
+        if (layer != null) {
+            layer.addLayerToMap();
+            mGeoJsonLayer = layer;
+            for (GeoJsonFeature feature : layer.getFeatures()) {
+                if (feature == null) {
                     break;
                 }
-
-                // Add marker to the map
-                Marker m = mMap.addMarker(entry.options);
-                MarkerModel model = entry.model;
-                model.marker = m;
-
-                // Store the marker and its model
-                ArrayList<Marker> markerList = mMarkersFloor.get(model.floor);
-                if (markerList == null) {
-                    // Initialise the list of Markers for this floor
-                    markerList = new ArrayList<>();
-                    mMarkersFloor.put(model.floor, markerList);
-                }
-                markerList.add(m);
-                mMarkers.put(model.id, model);
+                mMarkers.put(feature.getProperty("id"), feature);
             }
         }
 
@@ -716,21 +711,21 @@ public class MapFragment extends com.google.android.gms.maps.SupportMapFragment 
     /**
      * LoaderCallbacks for the {@link MarkerLoadingTask} that loads all markers for the map.
      */
-    private LoaderCallbacks<List<MarkerLoadingTask.MarkerEntry>> mMarkerLoader
-            = new LoaderCallbacks<List<MarkerLoadingTask.MarkerEntry>>() {
+    private LoaderCallbacks<GeoJsonLayer> mMarkerLoader
+            = new LoaderCallbacks<GeoJsonLayer>() {
         @Override
-        public Loader<List<MarkerLoadingTask.MarkerEntry>> onCreateLoader(int id, Bundle args) {
-            return new MarkerLoadingTask(getActivity());
+        public Loader<GeoJsonLayer> onCreateLoader(int id, Bundle args) {
+            return new MarkerLoadingTask(mMap, getActivity());
         }
 
         @Override
-        public void onLoadFinished(Loader<List<MarkerLoadingTask.MarkerEntry>> loader,
-                List<MarkerLoadingTask.MarkerEntry> data) {
-            onMarkersLoaded(data);
+        public void onLoadFinished(final Loader<GeoJsonLayer> loader,
+                final GeoJsonLayer geoJsonLayer) {
+            onMarkersLoaded(geoJsonLayer);
         }
 
         @Override
-        public void onLoaderReset(Loader<List<MarkerLoadingTask.MarkerEntry>> loader) {
+        public void onLoaderReset(Loader<GeoJsonLayer> loader) {
         }
     };
 

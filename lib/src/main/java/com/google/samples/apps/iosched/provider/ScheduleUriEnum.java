@@ -46,9 +46,7 @@ public enum ScheduleUriEnum {
     ANNOUNCEMENTS_ID(701, "announcements/*", ScheduleContract.Announcements.CONTENT_TYPE_ID, true, null),
     SEARCH_SUGGEST(800, "search_suggest_query", null, false, ScheduleDatabase.Tables.SEARCH_SUGGEST),
     SEARCH_INDEX(801, "search_index", null, false, null),// update only
-    MAPMARKERS(900, "mapmarkers", ScheduleContract.MapMarkers.CONTENT_TYPE_ID, false, ScheduleDatabase.Tables.MAPMARKERS),
-    MAPMARKERS_FLOOR(901, "mapmarkers/floor/*", ScheduleContract.MapMarkers.CONTENT_TYPE_ID, false, null),
-    MAPMARKERS_ID(902, "mapmarkers/*", ScheduleContract.MapMarkers.CONTENT_TYPE_ID, true, null),
+    MAPGEOJSON(900, "mapgeojson", ScheduleContract.MapGeoJson.CONTENT_TYPE_ID, false, ScheduleDatabase.Tables.MAPGEOJSON),
     MAPTILES(1000, "maptiles", ScheduleContract.MapTiles.CONTENT_TYPE_ID, false, ScheduleDatabase.Tables.MAPTILES),
     MAPTILES_FLOOR(1001, "maptiles/*", ScheduleContract.MapTiles.CONTENT_TYPE_ID, true, null),
     FEEDBACK_ALL(1002, "feedback", ScheduleContract.Feedback.CONTENT_TYPE_ID, false, null),

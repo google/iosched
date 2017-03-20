@@ -248,20 +248,12 @@ public final class ScheduleContract {
         String ACTION_EXTRA = "action_extra";
     }
 
-    interface MapMarkerColumns {
+    interface MapGeoJsonColumns {
 
-        /** Unique string identifying this marker. */
-        String MARKER_ID = "map_marker_id";
-        /** Type of marker. */
-        String MARKER_TYPE = "map_marker_type";
-        /** Latitudinal position of marker. */
-        String MARKER_LATITUDE = "map_marker_latitude";
-        /** Longitudinal position of marker. */
-        String MARKER_LONGITUDE = "map_marker_longitude";
-        /** Label (title) for this marker. */
-        String MARKER_LABEL = "map_marker_label";
-        /** Building floor this marker is on. */
-        String MARKER_FLOOR = "map_marker_floor";
+        /**
+         * String containing geojson representation of markers.
+         */
+        String GEOJSON = "geojson";
     }
 
     interface FeedbackColumns {
@@ -353,8 +345,6 @@ public final class ScheduleContract {
 
     private static final String PATH_ANNOUNCEMENTS = "announcements";
 
-    private static final String PATH_MAP_MARKERS = "mapmarkers";
-
     private static final String PATH_MAP_FLOOR = "floor";
 
     private static final String PATH_MAP_TILES = "maptiles";
@@ -373,6 +363,8 @@ public final class ScheduleContract {
 
     private static final String PATH_RELATED = "related";
 
+    private static final String PATH_MAP_GEOJSON = "mapgeojson";
+
     public static final String[] TOP_LEVEL_PATHS = {
             PATH_BLOCKS,
             PATH_TAGS,
@@ -383,9 +375,8 @@ public final class ScheduleContract {
             PATH_MY_SCHEDULE,
             PATH_SPEAKERS,
             PATH_ANNOUNCEMENTS,
-            PATH_MAP_MARKERS,
             PATH_MAP_FLOOR,
-            PATH_MAP_MARKERS,
+            PATH_MAP_GEOJSON,
             PATH_MAP_TILES,
             PATH_HASHTAGS,
             PATH_VIDEOS,
@@ -939,51 +930,25 @@ public final class ScheduleContract {
         /** Build {@link Uri} for requested floor. */
         public static Uri buildFloorUri(String floor) {
             return CONTENT_URI.buildUpon()
-                    .appendPath(String.valueOf(floor)).build();
-        }
-
-        /** Read floor from {@link MapMarkers} {@link Uri}. */
-        public static String getFloorId(Uri uri) {
-            return uri.getPathSegments().get(1);
+                              .appendPath(String.valueOf(floor)).build();
         }
     }
 
     /**
-     * Markers refer to marked positions on the map.
+     * GeoJson contains markers which refer to marked positions on the map.
      */
-    public static class MapMarkers implements MapMarkerColumns, BaseColumns {
-
+    public static class MapGeoJson implements MapGeoJsonColumns, BaseColumns {
         public static final Uri CONTENT_URI = BASE_CONTENT_URI.buildUpon()
-                .appendPath(PATH_MAP_MARKERS).build();
+                                                              .appendPath(PATH_MAP_GEOJSON).build();
 
-        public static final String CONTENT_TYPE_ID = "mapmarker";
+        public static final String CONTENT_TYPE_ID = "mapgeojson";
 
-        /** Build {@link Uri} for requested {@link #MARKER_ID}. */
-        public static Uri buildMarkerUri(String markerId) {
-            return CONTENT_URI.buildUpon().appendPath(markerId).build();
-        }
-
-        /** Build {@link Uri} for all markers. */
-        public static Uri buildMarkerUri() {
+        /**
+         * Build {@link Uri} for geojson file.
+         */
+        public static Uri buildGeoJsonUri() {
             return CONTENT_URI;
         }
-
-        /** Build {@link Uri} for requested {@link #MARKER_ID}. */
-        public static Uri buildFloorUri(int floor) {
-            return CONTENT_URI.buildUpon().appendPath(PATH_MAP_FLOOR)
-                    .appendPath("" + floor).build();
-        }
-
-        /** Read {@link #MARKER_ID} from {@link MapMarkers} {@link Uri}. */
-        public static String getMarkerId(Uri uri) {
-            return uri.getPathSegments().get(1);
-        }
-
-        /** Read FLOOR from {@link MapMarkers} {@link Uri}. */
-        public static String getMarkerFloor(Uri uri) {
-            return uri.getPathSegments().get(2);
-        }
-
     }
 
     /**

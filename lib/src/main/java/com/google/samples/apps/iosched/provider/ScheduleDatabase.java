@@ -30,7 +30,6 @@ import com.google.samples.apps.iosched.provider.ScheduleContract.BlocksColumns;
 import com.google.samples.apps.iosched.provider.ScheduleContract.Cards;
 import com.google.samples.apps.iosched.provider.ScheduleContract.FeedbackColumns;
 import com.google.samples.apps.iosched.provider.ScheduleContract.HashtagColumns;
-import com.google.samples.apps.iosched.provider.ScheduleContract.MapMarkerColumns;
 import com.google.samples.apps.iosched.provider.ScheduleContract.MapTileColumns;
 import com.google.samples.apps.iosched.provider.ScheduleContract.MyFeedbackSubmitted;
 import com.google.samples.apps.iosched.provider.ScheduleContract.MySchedule;
@@ -57,8 +56,7 @@ import static com.google.samples.apps.iosched.util.LogUtils.LOGW;
 import static com.google.samples.apps.iosched.util.LogUtils.makeLogTag;
 
 /**
- * Helper for managing {@link SQLiteDatabase} that stores data for
- * {@link ScheduleProvider}.
+ * Helper for managing {@link SQLiteDatabase} that stores data for {@link ScheduleProvider}.
  */
 public class ScheduleDatabase extends SQLiteOpenHelper {
     private static final String TAG = makeLogTag(ScheduleDatabase.class);
@@ -75,7 +73,8 @@ public class ScheduleDatabase extends SQLiteOpenHelper {
     private static final int VER_2016_RELEASE_A = 211;
     private static final int VER_2016_RELEASE_B = 212;
     private static final int VER_2017_RELEASE_A = 213;
-    private static final int CUR_DATABASE_VERSION = VER_2017_RELEASE_A;
+    private static final int VER_2017_RELEASE_B = 214;
+    private static final int CUR_DATABASE_VERSION = VER_2017_RELEASE_B;
 
     private final Context mContext;
 
@@ -92,10 +91,10 @@ public class ScheduleDatabase extends SQLiteOpenHelper {
         String SESSIONS_TAGS = "sessions_tags";
         String SESSIONS_SPEAKERS = "sessions_speakers";
         String ANNOUNCEMENTS = "announcements";
-        String MAPMARKERS = "mapmarkers";
         String MAPTILES = "mapoverlays";
         String HASHTAGS = "hashtags";
         String FEEDBACK = "feedback";
+        String MAPGEOJSON = "mapgeojson";
 
         String VIDEOS = "videos";
 
@@ -151,7 +150,8 @@ public class ScheduleDatabase extends SQLiteOpenHelper {
             SANDBOX("sandbox"),
             PEOPLE_IVE_MET("people_ive_met"),
             EXPERTS("experts"),
-            PARTNERS("partners");
+            PARTNERS("partners"),
+            MAPMARKERS("mapmarkers");
 
             String tableName;
 
@@ -351,16 +351,6 @@ public class ScheduleDatabase extends SQLiteOpenHelper {
                 + " WHERE " + Qualified.FEEDBACK_SESSION_ID + "=old." + Sessions.SESSION_ID
                 + ";" + " END;");
 
-        db.execSQL("CREATE TABLE " + Tables.MAPMARKERS + " ("
-                + BaseColumns._ID + " INTEGER PRIMARY KEY AUTOINCREMENT,"
-                + MapMarkerColumns.MARKER_ID + " TEXT NOT NULL,"
-                + MapMarkerColumns.MARKER_TYPE + " TEXT NOT NULL,"
-                + MapMarkerColumns.MARKER_LATITUDE + " DOUBLE NOT NULL,"
-                + MapMarkerColumns.MARKER_LONGITUDE + " DOUBLE NOT NULL,"
-                + MapMarkerColumns.MARKER_LABEL + " TEXT,"
-                + MapMarkerColumns.MARKER_FLOOR + " INTEGER NOT NULL,"
-                + "UNIQUE (" + MapMarkerColumns.MARKER_ID + ") ON CONFLICT REPLACE)");
-
         db.execSQL("CREATE TABLE " + Tables.HASHTAGS + " ("
                 + BaseColumns._ID + " INTEGER PRIMARY KEY AUTOINCREMENT,"
                 + HashtagColumns.HASHTAG_NAME + " TEXT NOT NULL,"
@@ -419,6 +409,7 @@ public class ScheduleDatabase extends SQLiteOpenHelper {
         upgradeFrom2015Bto2016A(db);
         upgradeFrom2016Ato2016B(db);
         upgradeFrom2016Bto2017A(db);
+        upgradeFrom2017Ato2017B(db);
     }
 
     private void upgradeFrom2014Cto2015A(SQLiteDatabase db) {
@@ -426,9 +417,11 @@ public class ScheduleDatabase extends SQLiteOpenHelper {
                 + BaseColumns._ID + " INTEGER PRIMARY KEY AUTOINCREMENT,"
                 + MyFeedbackSubmitted.SESSION_ID + " TEXT NOT NULL " + References.SESSION_ID + ","
                 + MyFeedbackSubmitted.MY_FEEDBACK_SUBMITTED_ACCOUNT_NAME + " TEXT NOT NULL,"
-                + MyFeedbackSubmitted.MY_FEEDBACK_SUBMITTED_DIRTY_FLAG + " INTEGER NOT NULL DEFAULT 1,"
+                + MyFeedbackSubmitted.MY_FEEDBACK_SUBMITTED_DIRTY_FLAG +
+                " INTEGER NOT NULL DEFAULT 1,"
                 + "UNIQUE (" + MyFeedbackSubmitted.SESSION_ID + ","
-                + MyFeedbackSubmitted.MY_FEEDBACK_SUBMITTED_ACCOUNT_NAME + ") ON CONFLICT REPLACE)");
+                + MyFeedbackSubmitted.MY_FEEDBACK_SUBMITTED_ACCOUNT_NAME +
+                ") ON CONFLICT REPLACE)");
 
         db.execSQL("CREATE TABLE " + Tables.MY_VIEWED_VIDEO + " ("
                 + BaseColumns._ID + " INTEGER PRIMARY KEY AUTOINCREMENT,"
@@ -484,6 +477,12 @@ public class ScheduleDatabase extends SQLiteOpenHelper {
                 + Sessions.RELATED_SESSION_ID + " TEXT NOT NULL, "
                 + "UNIQUE (" + Sessions.SESSION_ID + "," + Sessions.RELATED_SESSION_ID + ") "
                 + "ON CONFLICT IGNORE)");
+    }
+
+    private void upgradeFrom2017Ato2017B(SQLiteDatabase db) {
+        db.execSQL("CREATE TABLE " + Tables.MAPGEOJSON + " ("
+                + BaseColumns._ID + " INTEGER PRIMARY KEY AUTOINCREMENT,"
+                + ScheduleContract.MapGeoJson.GEOJSON + " TEXT NOT NULL)");
     }
 
     /**
@@ -560,17 +559,18 @@ public class ScheduleDatabase extends SQLiteOpenHelper {
             version = VER_2016_RELEASE_A;
         }
 
-        // Check if we can upgrade from release 2015 B to release 2016 A.
+        // Check if we can upgrade from release 2016 release A to 2016 release B.
         if (version == VER_2016_RELEASE_A) {
             LOGD(TAG, "Upgrading database from 2016 release A to 2016 release B.");
             upgradeFrom2016Ato2016B(db);
             version = VER_2016_RELEASE_B;
         }
 
-        if (version == VER_2016_RELEASE_B) {
-            LOGD(TAG, "Upgrading database from 2016 release B to 2017 release A.");
-            upgradeFrom2016Bto2017A(db);
-            version = VER_2017_RELEASE_A;
+        // Check if we can upgrade from release 2017 release A to 2017 release B.
+        if (version == VER_2017_RELEASE_A) {
+            LOGD(TAG, "Upgrading database from 2017 release A to 2017 release B.");
+            upgradeFrom2017Ato2017B(db);
+            version = VER_2017_RELEASE_B;
         }
 
         LOGD(TAG, "After upgrade logic, at version " + version);
@@ -590,7 +590,6 @@ public class ScheduleDatabase extends SQLiteOpenHelper {
             db.execSQL("DROP TRIGGER IF EXISTS " + Triggers.SESSIONS_FEEDBACK_DELETE);
             db.execSQL("DROP TRIGGER IF EXISTS " + Triggers.SESSIONS_MY_SCHEDULE_DELETE);
             db.execSQL("DROP TRIGGER IF EXISTS " + Triggers.DeprecatedTriggers.SESSIONS_TRACKS_DELETE);
-
             db.execSQL("DROP TABLE IF EXISTS " + Tables.BLOCKS);
             db.execSQL("DROP TABLE IF EXISTS " + Tables.ROOMS);
             db.execSQL("DROP TABLE IF EXISTS " + Tables.TAGS);
@@ -605,7 +604,6 @@ public class ScheduleDatabase extends SQLiteOpenHelper {
             db.execSQL("DROP TABLE IF EXISTS " + Tables.FEEDBACK);
             db.execSQL("DROP TABLE IF EXISTS " + Tables.SESSIONS_SEARCH);
             db.execSQL("DROP TABLE IF EXISTS " + Tables.SEARCH_SUGGEST);
-            db.execSQL("DROP TABLE IF EXISTS " + Tables.MAPMARKERS);
             db.execSQL("DROP TABLE IF EXISTS " + Tables.MAPTILES);
             db.execSQL("DROP TABLE IF EXISTS " + Tables.HASHTAGS);
             db.execSQL("DROP TABLE IF EXISTS " + Tables.VIDEOS);

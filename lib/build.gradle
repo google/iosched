@@ -269,7 +269,7 @@ dependencies {
     compile(name: 'svg-android-2.0.7-20150515.214425-1', ext: 'jar')
 
     // Google Maps Android API utility library
-    compile('com.google.maps.android:android-maps-utils:0.3.4') {
+    compile('com.google.maps.android:android-maps-utils:0.4+') {
         exclude group: "com.google.android.gms"
     }
 
