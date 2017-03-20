@@ -45,8 +45,6 @@ import com.google.samples.apps.iosched.provider.ScheduleContract.Blocks;
 import com.google.samples.apps.iosched.provider.ScheduleContract.Feedback;
 import com.google.samples.apps.iosched.provider.ScheduleContract.HashtagColumns;
 import com.google.samples.apps.iosched.provider.ScheduleContract.Hashtags;
-import com.google.samples.apps.iosched.provider.ScheduleContract.MapMarkers;
-import com.google.samples.apps.iosched.provider.ScheduleContract.MapTiles;
 import com.google.samples.apps.iosched.provider.ScheduleContract.MyFeedbackSubmitted;
 import com.google.samples.apps.iosched.provider.ScheduleContract.MySchedule;
 import com.google.samples.apps.iosched.provider.ScheduleContract.MyScheduleColumns;
@@ -403,11 +401,12 @@ public class ScheduleProvider extends ContentProvider {
             case SEARCH_SUGGEST: {
                 return SearchSuggest.CONTENT_URI;
             }
-            case MAPMARKERS: {
-                return MapMarkers.buildMarkerUri(values.getAsString(MapMarkers.MARKER_ID));
+            case MAPGEOJSON: {
+                return ScheduleContract.MapGeoJson.buildGeoJsonUri();
             }
             case MAPTILES: {
-                return MapTiles.buildFloorUri(values.getAsString(MapTiles.TILE_FLOOR));
+                return ScheduleContract.MapTiles.buildFloorUri(values.getAsString(
+                        ScheduleContract.MapTiles.TILE_FLOOR));
             }
             case FEEDBACK_FOR_SESSION: {
                 return Feedback.buildFeedbackUri(values.getAsString(Feedback.SESSION_ID));
@@ -554,7 +553,7 @@ public class ScheduleProvider extends ContentProvider {
             case SESSIONS:
             case SPEAKERS:
             case ANNOUNCEMENTS:
-            case MAPMARKERS:
+            case MAPGEOJSON:
             case MAPTILES:
             case SEARCH_SUGGEST:
             case HASHTAGS:
@@ -624,21 +623,6 @@ public class ScheduleProvider extends ContentProvider {
                 final String announcementId = Announcements.getAnnouncementId(uri);
                 return builder.table(Tables.ANNOUNCEMENTS)
                         .where(Announcements.ANNOUNCEMENT_ID + "=?", announcementId);
-            }
-            case MAPMARKERS_FLOOR: {
-                final String floor = MapMarkers.getMarkerFloor(uri);
-                return builder.table(Tables.MAPMARKERS)
-                        .where(MapMarkers.MARKER_FLOOR + "=?", floor);
-            }
-            case MAPMARKERS_ID: {
-                final String markerId = MapMarkers.getMarkerId(uri);
-                return builder.table(Tables.MAPMARKERS)
-                        .where(MapMarkers.MARKER_ID + "=?", markerId);
-            }
-            case MAPTILES_FLOOR: {
-                final String floor = MapTiles.getFloorId(uri);
-                return builder.table(Tables.MAPTILES)
-                        .where(MapTiles.TILE_FLOOR + "=?", floor);
             }
             case FEEDBACK_FOR_SESSION: {
                 final String session_id = Feedback.getSessionId(uri);
@@ -909,26 +893,11 @@ public class ScheduleProvider extends ContentProvider {
                 return builder.table(Tables.ANNOUNCEMENTS)
                         .where(Announcements.ANNOUNCEMENT_ID + "=?", announcementId);
             }
-            case MAPMARKERS: {
-                return builder.table(Tables.MAPMARKERS);
-            }
-            case MAPMARKERS_FLOOR: {
-                final String floor = MapMarkers.getMarkerFloor(uri);
-                return builder.table(Tables.MAPMARKERS)
-                        .where(MapMarkers.MARKER_FLOOR + "=?", floor);
-            }
-            case MAPMARKERS_ID: {
-                final String roomId = MapMarkers.getMarkerId(uri);
-                return builder.table(Tables.MAPMARKERS)
-                        .where(MapMarkers.MARKER_ID + "=?", roomId);
+            case MAPGEOJSON: {
+                return builder.table(Tables.MAPGEOJSON);
             }
             case MAPTILES: {
                 return builder.table(Tables.MAPTILES);
-            }
-            case MAPTILES_FLOOR: {
-                final String floor = MapTiles.getFloorId(uri);
-                return builder.table(Tables.MAPTILES)
-                        .where(MapTiles.TILE_FLOOR + "=?", floor);
             }
             case FEEDBACK_FOR_SESSION: {
                 final String sessionId = Feedback.getSessionId(uri);

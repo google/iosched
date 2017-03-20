@@ -22,18 +22,19 @@
     tools:context=".map.MapEditorActivity">
 
     <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/map_editor_message"
-            android:text="@string/map_editor_intro"
-            android:layout_margin="@dimen/spacing_normal"/>
+        android:id="@+id/map_editor_message"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/spacing_normal"
+        android:maxLines="2"
+        android:text="@string/map_editor_intro" />
 
     <CheckBox
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/map_editor_draggable"
-            android:text="@string/map_editor_set_draggable"
-            android:layout_margin="@dimen/spacing_normal"/>
+        android:id="@+id/map_editor_draggable"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/spacing_normal"
+        android:text="@string/map_editor_set_draggable" />
 
     <FrameLayout
             android:id="@+id/fragment_container_map_editor"

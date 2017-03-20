@@ -16,9 +16,11 @@
 
 package com.google.samples.apps.iosched.io.map.model;
 
+import com.google.gson.JsonObject;
+
 import java.util.Map;
 
 public class MapData {
-    public Map<String, Marker[]> markers;
+    public JsonObject markers;
     public Map<String, Tile> tiles;
 }

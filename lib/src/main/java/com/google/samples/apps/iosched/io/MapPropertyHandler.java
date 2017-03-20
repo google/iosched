@@ -16,15 +16,15 @@
 
 package com.google.samples.apps.iosched.io;
 
-import static com.google.samples.apps.iosched.util.LogUtils.makeLogTag;
-
 import android.content.ContentProviderOperation;
 import android.content.Context;
 import android.net.Uri;
 import android.support.annotation.NonNull;
 
 import com.google.gson.Gson;
+import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
 import com.google.samples.apps.iosched.io.map.model.MapData;
 import com.google.samples.apps.iosched.io.map.model.Marker;
 import com.google.samples.apps.iosched.io.map.model.Tile;
@@ -36,14 +36,15 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
+import static com.google.samples.apps.iosched.util.LogUtils.makeLogTag;
+
 public class MapPropertyHandler extends JSONHandler {
     private static final String TAG = makeLogTag(MapPropertyHandler.class);
 
     // maps floor# to tile overlay for that floor
     private HashMap<String, Tile> mTileOverlays = new HashMap<>();
 
-    // maps floor# to a list of markers on that floor
-    private HashMap<String, ArrayList<Marker>> mMarkers = new HashMap<>();
+    private String geojson = null;
 
     public MapPropertyHandler(Context context) {
         super(context);
@@ -56,10 +57,12 @@ public class MapPropertyHandler extends JSONHandler {
                 processTileOverlays(mapData.tiles);
             }
             if (mapData.markers != null) {
-                processMarkers(mapData.markers);
+                // Get the geojson data that is stored as 'markers' and verify it's valid JSON.
+                geojson = mapData.markers.toString();
             }
         }
     }
+
 
     public Collection<Tile> getTileOverlays() {
         return mTileOverlays.values();
@@ -71,17 +74,6 @@ public class MapPropertyHandler extends JSONHandler {
         }
     }
 
-    private void processMarkers(java.util.Map<String, Marker[]> markers) {
-        for (String floor : markers.keySet()) {
-            if (!mMarkers.containsKey(floor)) {
-                mMarkers.put(floor, new ArrayList<Marker>());
-            }
-            for (Marker marker : markers.get(floor)) {
-                mMarkers.get(floor).add(marker);
-            }
-        }
-    }
-
     @Override
     public void makeContentProviderOperations(ArrayList<ContentProviderOperation> list) {
         buildMarkers(list);
@@ -90,22 +82,13 @@ public class MapPropertyHandler extends JSONHandler {
 
     private void buildMarkers(ArrayList<ContentProviderOperation> list) {
         Uri uri = ScheduleContractHelper
-                .setUriAsCalledFromSyncAdapter(ScheduleContract.MapMarkers.CONTENT_URI);
+                .setUriAsCalledFromSyncAdapter(ScheduleContract.MapGeoJson.CONTENT_URI);
 
         list.add(ContentProviderOperation.newDelete(uri).build());
 
-        for (String floor : mMarkers.keySet()) {
-            for (Marker marker : mMarkers.get(floor)) {
-                ContentProviderOperation.Builder builder = ContentProviderOperation.newInsert(uri);
-                builder.withValue(ScheduleContract.MapMarkers.MARKER_ID, marker.id);
-                builder.withValue(ScheduleContract.MapMarkers.MARKER_FLOOR, floor);
-                builder.withValue(ScheduleContract.MapMarkers.MARKER_LABEL, marker.title);
-                builder.withValue(ScheduleContract.MapMarkers.MARKER_LATITUDE, marker.lat);
-                builder.withValue(ScheduleContract.MapMarkers.MARKER_LONGITUDE, marker.lng);
-                builder.withValue(ScheduleContract.MapMarkers.MARKER_TYPE, marker.type);
-                list.add(builder.build());
-            }
-        }
+        ContentProviderOperation.Builder builder = ContentProviderOperation.newInsert(uri);
+        builder.withValue(ScheduleContract.MapGeoJson.GEOJSON, geojson);
+        list.add(builder.build());
     }
 
     private void buildTiles(ArrayList<ContentProviderOperation> list) {

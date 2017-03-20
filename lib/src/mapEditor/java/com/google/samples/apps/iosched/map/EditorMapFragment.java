@@ -14,15 +14,16 @@
 
 package com.google.samples.apps.iosched.map;
 
-import com.google.android.gms.maps.GoogleMap;
-import com.google.android.gms.maps.model.Marker;
-import com.google.samples.apps.iosched.map.util.MarkerModel;
-
 import android.app.Activity;
 
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.model.Marker;
+import com.google.maps.android.geojson.GeoJsonFeature;
+import com.google.maps.android.geojson.GeoJsonPointStyle;
+
 /**
- * Extension of {@link MapFragment} that contains an option to make all markers
- * draggable and log some additional details through a callback interface.
+ * Extension of {@link MapFragment} that contains an option to make all markers draggable and log
+ * some additional details through a callback interface.
  */
 public class EditorMapFragment extends MapFragment {
 
@@ -92,8 +93,10 @@ public class EditorMapFragment extends MapFragment {
      */
     public void setElementsDraggable(boolean isDraggable) {
         //Set all markers as draggable
-        for (MarkerModel markerModel : mMarkers.values()) {
-            markerModel.marker.setDraggable(isDraggable);
+        for (GeoJsonFeature feature : mMarkers.values()) {
+            GeoJsonPointStyle pointStyle = feature.getPointStyle();
+            pointStyle.setDraggable(isDraggable);
+            feature.setPointStyle(pointStyle);
         }
     }
 
@@ -106,13 +109,13 @@ public class EditorMapFragment extends MapFragment {
 
         @Override
         public void onMarkerDrag(Marker marker) {
-            mCallbacks.onLogMessage("" + marker.getTitle() + ": " + marker.getPosition());
+            mCallbacks.onLogMessage("" + marker.getTitle() + ":\n" + marker.getPosition());
         }
 
         @Override
         public void onMarkerDragEnd(Marker marker) {
             mCallbacks
-                    .onLogMessage("" + marker.getTitle() + " dropped at: " + marker.getPosition());
+                    .onLogMessage("" + marker.getTitle() + " dropped at:\n" + marker.getPosition());
         }
     };
 }
