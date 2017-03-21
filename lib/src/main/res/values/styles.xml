@@ -55,6 +55,8 @@
 
     <style name="ActionBarThemeOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
 
+    <style name="ActionBarThemeOverlay.SessionDetail" parent="ThemeOverlay.AppCompat.ActionBar" />
+
     <style name="SearchViewTheme" parent="ThemeOverlay.AppCompat.ActionBar">
         <item name="android:textColorPrimary">@color/body_text_1</item>
         <item name="colorControlNormal">@color/body_text_2</item>

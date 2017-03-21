@@ -39,6 +39,8 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.ShareCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.animation.LinearOutSlowInInterpolator;
+import android.support.v4.widget.NestedScrollView;
+import android.support.v4.widget.NestedScrollView.OnScrollChangeListener;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
@@ -109,6 +111,10 @@ public class SessionDetailFragment extends Fragment implements
 
     private Toolbar mToolbar;
 
+    private TextView mToolbarTitle;
+
+    private NestedScrollView mScrollView;
+
     private TextView mTitle;
 
     private TextView mSubtitle;
@@ -155,6 +161,8 @@ public class SessionDetailFragment extends Fragment implements
 
     private boolean mIsFloatingWindow;
 
+    private float mToolbarTitleAlpha;
+
     @Override
     public void addListener(UserActionListener<SessionDetailUserActionEnum> listener) {
         mListener = listener;
@@ -192,10 +200,24 @@ public class SessionDetailFragment extends Fragment implements
                 (CollapsingToolbarLayout) mAppBar.findViewById(R.id.collapsing_toolbar);
         mCollapsingToolbar.setStatusBarScrim(null);
         mToolbar = (Toolbar) mCollapsingToolbar.findViewById(R.id.toolbar);
+        mToolbarTitle = (TextView) mToolbar.findViewById(R.id.toolbar_title);
+        mToolbarTitleAlpha = mToolbarTitle.getAlpha();
         mPhotoViewContainer = mCollapsingToolbar.findViewById(R.id.session_photo_container);
         mPhotoView = (ImageView) mPhotoViewContainer.findViewById(R.id.session_photo);
         mWatchVideo = (Button) mCollapsingToolbar.findViewById(R.id.watch);
 
+        mScrollView = (NestedScrollView) view.findViewById(R.id.scroll_view);
+        mScrollView.setOnScrollChangeListener(new OnScrollChangeListener() {
+            @Override
+            public void onScrollChange(NestedScrollView v, int scrollX, int scrollY, int oldScrollX,
+                    int oldScrollY) {
+                if (scrollY > mTitle.getBottom()) {
+                    fadeInToolbarTitle();
+                } else {
+                    fadeOutToolbarTitle();
+                }
+            }
+        });
         final ViewGroup details = (ViewGroup) view.findViewById(R.id.details_container);
         mTitle = (TextView) details.findViewById(R.id.session_title);
         mSubtitle = (TextView) details.findViewById(R.id.session_subtitle);
@@ -419,6 +441,8 @@ public class SessionDetailFragment extends Fragment implements
     }
 
     private void displaySessionData(final SessionDetailModel data) {
+        mToolbarTitle.setText(data.getSessionTitle());
+
         mTitle.setText(data.getSessionTitle());
         mSubtitle.setText(data.getSessionSubtitle());
         try {
@@ -786,6 +810,20 @@ public class SessionDetailFragment extends Fragment implements
         return new Action.Builder(Action.TYPE_VIEW)
                 .setObject(session)
                 .build();
+    }
+
+    private void fadeInToolbarTitle() {
+        if (mToolbarTitleAlpha < 1f) {
+            mToolbarTitleAlpha = 1f;
+            mToolbarTitle.animate().alpha(mToolbarTitleAlpha).start();
+        }
+    }
+
+    private void fadeOutToolbarTitle() {
+        if (mToolbarTitleAlpha > 0f) {
+            mToolbarTitleAlpha = 0f;
+            mToolbarTitle.animate().alpha(mToolbarTitleAlpha).start();
+        }
     }
 
     @Override
