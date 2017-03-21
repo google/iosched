@@ -53,11 +53,6 @@ public class SessionDetailActivity extends BaseActivity {
         UIUtils.tryTranslateHttpIntent(this);
         BeamUtils.tryUpdateIntentFromBeam(this);
 
-        if (shouldBeFloatingWindow()) {
-            setupFloatingWindow(R.dimen.session_details_floating_width,
-                    R.dimen.session_details_floating_height, 1, 0.4f);
-        }
-
         super.onCreate(savedInstanceState);
 
         mSessionUri = getIntent().getData();
@@ -79,10 +74,6 @@ public class SessionDetailActivity extends BaseActivity {
             }
         });
         final Toolbar toolbar = getToolbar();
-        // Override the icon if shouldBeFloatingWindow
-        if (shouldBeFloatingWindow()) {
-            toolbar.setNavigationIcon(R.drawable.ic_close);
-        }
         mHandler.post(new Runnable() {
             @Override
             public void run() {

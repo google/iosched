@@ -128,16 +128,7 @@
     <!-- My Schedule -->
     <style name="Theme.IOSched.MySchedule" />
 
-    <!-- SessionDetails needs two additional 'base' styles.
-         1. SizeBase: applies floating window treatment on larger screens
-         2. VersionBase: applies light status bar treatment on v23+
-    -->
-    <style name="Theme.IOSched.SessionDetails.SizeBase" parent="Theme.IOSched">
-        <item name="isFloatingWindow">false</item>
-    </style>
-
-    <style name="Theme.IOSched.SessionDetails.VersionBase"
-        parent="Theme.IOSched.SessionDetails.SizeBase">
+    <style name="Theme.IOSched.SessionDetails.VersionBase" parent="Theme.IOSched">
         <item name="android:statusBarColor">@color/dark_status_bar</item>
     </style>
 

@@ -76,7 +76,6 @@ import com.google.samples.apps.iosched.myschedule.MyScheduleDayAdapter.ScheduleA
 import com.google.samples.apps.iosched.provider.ScheduleContract.Sessions;
 import com.google.samples.apps.iosched.session.SessionDetailModel.SessionDetailQueryEnum;
 import com.google.samples.apps.iosched.session.SessionDetailModel.SessionDetailUserActionEnum;
-import com.google.samples.apps.iosched.ui.BaseActivity;
 import com.google.samples.apps.iosched.ui.widget.CheckableFloatingActionButton;
 import com.google.samples.apps.iosched.util.AccountUtils;
 import com.google.samples.apps.iosched.util.AnalyticsHelper;
@@ -159,8 +158,6 @@ public class SessionDetailFragment extends Fragment implements
 
     private GoogleApiClient mClient;
 
-    private boolean mIsFloatingWindow;
-
     private float mToolbarTitleAlpha;
 
     @Override
@@ -182,12 +179,7 @@ public class SessionDetailFragment extends Fragment implements
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState) {
-        View root = inflater.inflate(R.layout.session_detail_frag, container, false);
-        if (mIsFloatingWindow) {
-            // Window background is transparent, so set the background of the root view
-            root.setBackgroundColor(ContextCompat.getColor(root.getContext(), R.color.background));
-        }
-        return root;
+        return inflater.inflate(R.layout.session_detail_frag, container, false);
     }
 
     @Override
@@ -280,9 +272,6 @@ public class SessionDetailFragment extends Fragment implements
     @Override
     public void onAttach(final Activity activity) {
         super.onAttach(activity);
-        if (activity instanceof BaseActivity) {
-            mIsFloatingWindow = ((BaseActivity) activity).shouldBeFloatingWindow();
-        }
 
         final Transition sharedElementEnterTransition =
                 activity.getWindow().getSharedElementEnterTransition();

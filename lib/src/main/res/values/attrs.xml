@@ -19,7 +19,6 @@
         <attr name="actionBarInsetStart" format="dimension" />
         <attr name="popupItemBackground" format="reference" />
         <attr name="imageItemBackground" format="reference" />
-        <attr name="isFloatingWindow" format="boolean" />
         <attr name="videoThumbnailStyle" format="reference" />
     </declare-styleable>
 
