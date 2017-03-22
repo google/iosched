@@ -17,21 +17,20 @@ package com.google.samples.apps.iosched.navigation;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 
-import com.google.samples.apps.iosched.feed.FeedActivity;
-import com.google.samples.apps.iosched.lib.R;
 import com.google.samples.apps.iosched.about.AboutActivity;
 import com.google.samples.apps.iosched.archframework.Model;
 import com.google.samples.apps.iosched.archframework.QueryEnum;
 import com.google.samples.apps.iosched.archframework.UserActionEnum;
 import com.google.samples.apps.iosched.debug.DebugActivity;
 import com.google.samples.apps.iosched.explore.ExploreIOActivity;
+import com.google.samples.apps.iosched.feed.FeedActivity;
+import com.google.samples.apps.iosched.lib.R;
 import com.google.samples.apps.iosched.map.MapActivity;
 import com.google.samples.apps.iosched.myio.MyIOActivity;
 import com.google.samples.apps.iosched.myschedule.MyScheduleActivity;
 import com.google.samples.apps.iosched.navigation.NavigationModel.NavigationQueryEnum;
 import com.google.samples.apps.iosched.navigation.NavigationModel.NavigationUserActionEnum;
 import com.google.samples.apps.iosched.settings.SettingsActivity;
-import com.google.samples.apps.iosched.videolibrary.VideoLibraryActivity;
 
 /**
  * Determines which items to show in the {@link AppNavigationView}.
@@ -112,8 +111,6 @@ public class NavigationModel implements Model<NavigationQueryEnum, NavigationUse
 
         // Deprecated.
         SIGN_IN(R.id.signin_nav_item, R.string.navdrawer_item_sign_in, 0, null),
-        VIDEO_LIBRARY(R.id.videos_nav_item, R.string.navdrawer_item_video_library,
-                R.drawable.ic_navview_video_library, VideoLibraryActivity.class),
 
         // TODO: consolidate under Info.
         SETTINGS(R.id.settings_nav_item, R.string.navdrawer_item_settings, R.drawable.ic_navview_settings,

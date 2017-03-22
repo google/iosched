@@ -215,26 +215,6 @@
             android:name="com.google.samples.apps.iosched.login.SwitchUserActivity"
             android:exported="false"
             android:theme="@style/Theme.IOSched.Transparent" />
-        <activity
-            android:name="com.google.samples.apps.iosched.videolibrary.VideoLibraryActivity"
-            android:exported="false"
-            android:label="@string/title_video_library"
-            android:theme="@style/Theme.IOSched.VideoLibrary">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.google.samples.apps.iosched.myschedule.MyScheduleActivity" />
-        </activity>
-
-        <activity
-            android:name="com.google.samples.apps.iosched.videolibrary.VideoLibraryFilteredActivity"
-            android:exported="false"
-            android:label="@string/title_video_library"
-            android:parentActivityName="com.google.samples.apps.iosched.videolibrary.VideoLibraryActivity"
-            android:theme="@style/Theme.IOSched.VideoLibrary.Filtered">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.google.samples.apps.iosched.videolibrary.VideoLibraryActivity" />
-        </activity>
 
         <activity
             android:name="com.google.samples.apps.iosched.session.SessionDetailActivity"

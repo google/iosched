@@ -69,9 +69,6 @@ public class NavigationConfig {
                 case MAP:
                     includeItem = BuildConfig.ENABLE_MAP_IN_NAVIGATION;
                     break;
-                case VIDEO_LIBRARY:
-                    includeItem = BuildConfig.ENABLE_VIDEOLIB_IN_NAVIGATION;
-                    break;
                 case SIGN_IN:
                     includeItem = BuildConfig.ENABLE_SIGNIN_IN_NAVIGATION;
                     break;

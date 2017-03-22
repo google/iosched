@@ -14,7 +14,6 @@
 package com.google.samples.apps.iosched.injection;
 
 import android.annotation.SuppressLint;
-import android.app.Activity;
 import android.content.Context;
 import android.net.Uri;
 import android.support.v4.app.LoaderManager;
@@ -28,7 +27,6 @@ import com.google.samples.apps.iosched.myio.MyIOModel;
 import com.google.samples.apps.iosched.myschedule.MyScheduleModel;
 import com.google.samples.apps.iosched.session.SessionDetailModel;
 import com.google.samples.apps.iosched.util.SessionsHelper;
-import com.google.samples.apps.iosched.videolibrary.VideoLibraryModel;
 
 /**
  * Provides a way to inject stub classes when running integration tests.
@@ -47,9 +45,6 @@ public class ModelProvider {
 
     @SuppressLint("StaticFieldLeak")
     private static SessionFeedbackModel stubSessionFeedbackModel = null;
-
-    @SuppressLint("StaticFieldLeak")
-    private static VideoLibraryModel stubVideoLibraryModel = null;
 
     @SuppressLint("StaticFieldLeak")
     private static ExploreIOModel stubExploreIOModel = null;
@@ -81,15 +76,6 @@ public class ModelProvider {
         }
     }
 
-    public static VideoLibraryModel provideVideoLibraryModel(Uri videoUri, Uri myVideosUri,
-            Uri filterUri, Activity activity, LoaderManager loaderManager) {
-        if (stubVideoLibraryModel != null) {
-            return stubVideoLibraryModel;
-        } else {
-            return new VideoLibraryModel(activity, loaderManager, videoUri, myVideosUri, filterUri);
-        }
-    }
-
     public static ExploreIOModel provideExploreIOModel(Uri sessionsUri, Context context,
             LoaderManager loaderManager) {
         if (stubExploreIOModel != null) {
@@ -102,8 +88,6 @@ public class ModelProvider {
     public static void setStubModel(Model model) {
         if (model instanceof ExploreIOModel) {
             stubExploreIOModel = (ExploreIOModel) model;
-        } else if (model instanceof VideoLibraryModel) {
-            stubVideoLibraryModel = (VideoLibraryModel) model;
         } else if (model instanceof SessionFeedbackModel) {
             stubSessionFeedbackModel = (SessionFeedbackModel) model;
         } else if (model instanceof SessionDetailModel) {
