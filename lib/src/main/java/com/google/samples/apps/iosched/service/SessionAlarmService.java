@@ -366,7 +366,7 @@ public class SessionAlarmService extends IntentService {
             return;
         }
 
-        if (!SettingsUtils.shouldShowSessionReminders(this)) {
+        if (!SettingsUtils.shouldShowNotifications(this)) {
             // skip if disabled in settings
             LOGD(TAG, "Skipping session notification for sessions. Disabled in settings.");
             return;

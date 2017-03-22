@@ -62,7 +62,7 @@ public class MyScheduleActivity_InteractionsTest {
                 InstrumentationRegistry.getTargetContext(), TimeUtils.HOUR * 3);
 
         // Don't show notifications for sessions as they get in the way of the UI
-        SettingsUtils.setShowSessionReminders(InstrumentationRegistry.getTargetContext(), false);
+        SettingsUtils.setShowNotifications(InstrumentationRegistry.getTargetContext(), false);
     }
 
     /**

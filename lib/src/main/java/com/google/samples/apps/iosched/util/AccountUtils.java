@@ -65,11 +65,6 @@ public class AccountUtils {
     private static final String PREFIX_PREF_PLUS_COVER_URL = "plus_cover_url_";
     private static final String PREFIX_PREF_GCM_KEY = "gcm_key_";
 
-    /**
-     * Boolean indicating whether the user explicitly refused sign in.
-     */
-    private static final String PREF_USER_REFUSED_SIGN_IN = "pref_user_refused_sign_in" +
-            Constants.CONFERENCE_YEAR_PREF_POSTFIX;
 
     public static final String AUTH_SCOPES[] = {
             Scopes.PLUS_LOGIN,
@@ -90,26 +85,6 @@ public class AccountUtils {
 
     private static SharedPreferences getSharedPreferences(final Context context) {
         return PreferenceManager.getDefaultSharedPreferences(context);
-    }
-
-    /**
-     * Mark that the user explicitly chose not to sign in.
-     *
-     * @param context Context to be used to edit the {@link android.content.SharedPreferences}.
-     */
-    public static void markUserRefusedSignIn(final Context context, final boolean refused) {
-        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(context);
-        sp.edit().putBoolean(PREF_USER_REFUSED_SIGN_IN, refused).apply();
-    }
-
-    /**
-     * Return true if user refused to sign in, false if they haven't refused (yet).
-     *
-     * @param context Context to be used to lookup the {@link android.content.SharedPreferences}.
-     */
-    public static boolean hasUserRefusedSignIn(final Context context) {
-        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(context);
-        return sp.getBoolean(PREF_USER_REFUSED_SIGN_IN, false);
     }
 
     /**

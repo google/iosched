@@ -53,12 +53,6 @@ public class SettingsUtils {
     /**
      * Boolean indicating whether ToS has been accepted.
      */
-    public static final String PREF_TOS_ACCEPTED = "pref_tos_accepted" +
-            Constants.CONFERENCE_YEAR_PREF_POSTFIX;
-
-    /**
-     * Boolean indicating whether ToS has been accepted.
-     */
     public static final String PREF_DECLINED_WIFI_SETUP = "pref_declined_wifi_setup" +
             Constants.CONFERENCE_YEAR_PREF_POSTFIX;
 
@@ -161,28 +155,6 @@ public class SettingsUtils {
     }
 
     /**
-     * Return true if user has accepted the
-     * {@link WelcomeActivity Tos}, false if they haven't (yet).
-     *
-     * @param context Context to be used to lookup the {@link android.content.SharedPreferences}.
-     */
-    public static boolean isTosAccepted(final Context context) {
-        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(context);
-        return sp.getBoolean(PREF_TOS_ACCEPTED, false);
-    }
-
-    /**
-     * Mark {@code newValue whether} the user has accepted the TOS so the app doesn't ask again.
-     *
-     * @param context Context to be used to edit the {@link android.content.SharedPreferences}.
-     * @param newValue New value that will be set.
-     */
-    public static void markTosAccepted(final Context context, boolean newValue) {
-        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(context);
-        sp.edit().putBoolean(PREF_TOS_ACCEPTED, newValue).apply();
-    }
-
-    /**
      * Return true if user has already declined WiFi setup, but false if they haven't yet.
      *
      * @param context Context to be used to lookup the {@link android.content.SharedPreferences}.
@@ -277,22 +249,22 @@ public class SettingsUtils {
     }
 
     /**
-     * Return true if session reminders are enabled, false if user has disabled them.
+     * Return true if notifications are enabled, false if user has disabled them.
      *
      * @param context Context to be used to lookup the {@link android.content.SharedPreferences}.
      */
-    public static boolean shouldShowSessionReminders(final Context context) {
+    public static boolean shouldShowNotifications(final Context context) {
         SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(context);
-        return sp.getBoolean(BuildConfig.PREF_SESSION_REMINDERS_ENABLED, false);
+        return sp.getBoolean(BuildConfig.PREF_NOTIFICATIONS_ENABLED, false);
     }
 
     /**
      * @param context  Context to be used to edit the {@link android.content.SharedPreferences}.
-     * @param show Whether app should show session reminders
+     * @param show Whether app should show notifications
      */
-    public static void setShowSessionReminders(final Context context, boolean show) {
+    public static void setShowNotifications(final Context context, boolean show) {
         SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(context);
-        sp.edit().putBoolean(BuildConfig.PREF_SESSION_REMINDERS_ENABLED, show).apply();
+        sp.edit().putBoolean(BuildConfig.PREF_NOTIFICATIONS_ENABLED, show).apply();
     }
 
     /**

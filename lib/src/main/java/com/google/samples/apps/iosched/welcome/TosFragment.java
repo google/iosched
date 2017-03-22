@@ -23,6 +23,7 @@ import android.view.ViewGroup;
 
 import com.google.samples.apps.iosched.lib.R;
 import com.google.samples.apps.iosched.settings.SettingsUtils;
+import com.google.samples.apps.iosched.util.WelcomeUtils;
 
 import static com.google.samples.apps.iosched.util.LogUtils.LOGD;
 import static com.google.samples.apps.iosched.util.LogUtils.makeLogTag;
@@ -35,7 +36,7 @@ public class TosFragment extends WelcomeFragment {
 
     @Override
     public boolean shouldDisplay(Context context) {
-        return !SettingsUtils.isTosAccepted(context);
+        return !WelcomeUtils.isTosAccepted(context);
     }
 
     @Override
@@ -45,7 +46,7 @@ public class TosFragment extends WelcomeFragment {
             public void onClick(View v) {
                 // Ensure we don't run this fragment again.
                 LOGD(TAG, "Marking TOS flag.");
-                SettingsUtils.markTosAccepted(mActivity, true);
+                WelcomeUtils.markTosAccepted(mActivity);
                 doNext();
             }
         };

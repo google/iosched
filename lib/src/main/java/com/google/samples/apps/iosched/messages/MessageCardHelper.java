@@ -113,7 +113,7 @@ public class MessageCardHelper {
                 LOGD(TAG, "Marking notifications question answered with decline.");
                 ConfMessageCardUtils.setDismissedConfMessageCard(view.getContext(),
                         ConfMessageCardUtils.ConfMessageCard.SESSION_NOTIFICATIONS, false);
-                SettingsUtils.setShowSessionReminders(view.getContext(), false);
+                SettingsUtils.setShowNotifications(view.getContext(), false);
                 SettingsUtils.setShowSessionFeedbackReminders(view.getContext(), false);
             }
         });
@@ -123,7 +123,7 @@ public class MessageCardHelper {
                 LOGD(TAG, "Marking notifications messages question answered with affirmation.");
                 ConfMessageCardUtils.setDismissedConfMessageCard(view.getContext(),
                         ConfMessageCardUtils.ConfMessageCard.SESSION_NOTIFICATIONS, true);
-                SettingsUtils.setShowSessionReminders(view.getContext(), true);
+                SettingsUtils.setShowNotifications(view.getContext(), true);
                 SettingsUtils.setShowSessionFeedbackReminders(view.getContext(), true);
             }
         });

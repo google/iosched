@@ -137,7 +137,7 @@ public class AnalyticsHelper {
         setupPreferenceChangeListener();
 
         // If TOS hasn't been signed yet, it's the first run.  Exit.
-        if (SettingsUtils.isTosAccepted(sAppContext)) {
+        if (WelcomeUtils.isTosAccepted(sAppContext)) {
             initializeAnalyticsTracker();
         }
     }
@@ -183,11 +183,11 @@ public class AnalyticsHelper {
                 String category = "Preference";
 
                 if (key != null) {
-                    if (key.equals(SettingsUtils.PREF_TOS_ACCEPTED)
+                    if (key.equals(WelcomeUtils.PREF_TOS_ACCEPTED)
                             || key.equals(SettingsUtils.PREF_ANALYTICS_ENABLED)) {
 
                         // If TOS is accepted, initialize the Analytics Tracker.
-                        if (key.equals(SettingsUtils.PREF_TOS_ACCEPTED)
+                        if (key.equals(WelcomeUtils.PREF_TOS_ACCEPTED)
                                 && prefs.getBoolean(key, false)
                                 && mTracker == null) {
                             initializeAnalyticsTracker();
@@ -224,7 +224,7 @@ public class AnalyticsHelper {
                         // ANALYTICS EVENT:  Updated "Sync with Google Calendar" setting.
                         // Contains: The checkbox state of this setting.
                         sendEvent(category, getAction(prefs, key), label);
-                    } else if (key.equals(BuildConfig.PREF_SESSION_REMINDERS_ENABLED)) {
+                    } else if (key.equals(BuildConfig.PREF_NOTIFICATIONS_ENABLED)) {
                         String label = "Session Reminders";
                         // ANALYTICS EVENT:  Updated "Session Reminders" setting.
                         // Contains: The checkbox state of this setting.
@@ -265,7 +265,7 @@ public class AnalyticsHelper {
         // 2) The user has accepted TOS.
         // 3) "Anonymous usage data" is enabled in settings.
         return isInitialized() // Has Analytics been initialized?
-                && SettingsUtils.isTosAccepted(sAppContext) // User has accepted TOS.
+                && WelcomeUtils.isTosAccepted(sAppContext) // User has accepted TOS.
                 && SettingsUtils.isAnalyticsEnabled(sAppContext); // Analytics enabled in settings.
     }
 
@@ -277,7 +277,7 @@ public class AnalyticsHelper {
         try {
             setAnalyticsEnabled(shouldEnableAnalytics());
             LOGD(TAG, "Analytics" + (isInitialized() ? "" : " not") + " initialized"
-                    + ", TOS" + (SettingsUtils.isTosAccepted(sAppContext) ? "" : " not") + " accepted"
+                    + ", TOS" + (WelcomeUtils.isTosAccepted(sAppContext) ? "" : " not") + " accepted"
                     + ", Setting is" + (SettingsUtils.isAnalyticsEnabled(sAppContext) ? "" : " not")
                     + " checked");
         } catch (Exception e) {

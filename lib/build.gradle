@@ -91,7 +91,7 @@ android {
         buildConfigField("String", "PREF_ATTENDEE_AT_VENUE", "\"pref_attendee_at_venue_${conf_version}\"")
 
         resValue("string", "pref_session_reminders_enabled", "pref_session_reminders_enabled_${conf_version}")
-        buildConfigField("String", "PREF_SESSION_REMINDERS_ENABLED", "\"pref_session_reminders_enabled_${conf_version}\"")
+        buildConfigField("String", "PREF_NOTIFICATIONS_ENABLED", "\"pref_session_reminders_enabled_${conf_version}\"")
 
         resValue("string", "pref_session_feedback_reminders_enabled", "pref_session_feedback_reminders_enabled_${conf_version}")
         buildConfigField("String", "PREF_SESSION_FEEDBACK_REMINDERS_ENABLED", "\"pref_session_feedback_reminders_enabled_${conf_version}\"")

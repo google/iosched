@@ -656,7 +656,20 @@
     <!-- Label used on the onboarding sign in screen for signing in. -->
     <string name="signin_prompt">Sign in</string>
 
-
     <!-- Label used on the onboarding sign in screen for skipping sign in. -->
     <string name="signin_prompt_dismiss">Skip</string>
+
+    <!-- Label used on an onboarding screen when user provides a positive response. -->
+    <string name="yes">Yes</string>
+
+    <!-- Label used on an onboarding screen when the user provides a negative response. -->
+    <string name="no">No</string>
+
+    <!-- Text shown on the onboarding screen asking users if they want conference notifications. -->
+    <string name="onboarding_notifications_opt_in">
+        Would you like to receive app notifications about I/O?\n
+        We\'ll send you important info about the event, agenda, schedule, travel, after hours,
+        sessions recordings and more. You can change this setting under \"Info > Settings\" at any
+        time.
+    </string>
 </resources>

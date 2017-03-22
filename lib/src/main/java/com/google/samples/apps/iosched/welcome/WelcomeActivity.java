@@ -139,6 +139,7 @@ public class WelcomeActivity extends AppCompatActivity
     private static List<WelcomeFragment> getWelcomeFragments() {
         return new ArrayList<WelcomeFragment>() {{
             add(new TosFragment());
+            add(new NotificationsFragment());
             add(new SignInFragment());
         }};
     }
