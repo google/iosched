@@ -109,13 +109,6 @@
     <!-- Colors used in the Video Library or Explore list view -->
     <color name="item_text_primary_color">#ff275B64</color>
 
-    <!-- Colors used in the Explore Sessions filter drawer -->
-    <color name="track_header_tint">#20ffffff</color> <!-- background protection for overlaid text -->
-    <array name="session_tile_backgrounds">
-        <item>#ffeceff1</item>
-        <item>#fffafbfc</item>
-        <item>#fff4f5f7</item>
-    </array>
     <color name="hash_io_monochrome">#15000000</color> <!-- 8% black -->
 
     <!-- search -->

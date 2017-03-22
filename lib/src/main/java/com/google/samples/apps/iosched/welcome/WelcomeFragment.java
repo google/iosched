@@ -30,7 +30,6 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.google.samples.apps.iosched.lib.R;
-import com.google.samples.apps.iosched.explore.ExploreIOActivity;
 import com.google.samples.apps.iosched.myschedule.MyScheduleActivity;
 
 import static com.google.samples.apps.iosched.util.LogUtils.LOGD;
