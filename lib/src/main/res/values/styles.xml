@@ -290,7 +290,7 @@
     </style>
 
     <style name="SessionDetailsTitle">
-        <item name="android:textAppearance">@style/TextAppearance.AppCompat.Title</item>
+        <item name="android:textAppearance">@style/TextAppearance.AppCompat.Headline</item>
         <item name="android:lineSpacingMultiplier">@dimen/h3_spacing</item>
     </style>
 
