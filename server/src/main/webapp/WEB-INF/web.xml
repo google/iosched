@@ -23,6 +23,26 @@
    version="2.5">
   <display-name>IOSched updater</display-name>
 
+  <!-- ////////////////////////////////// User Data ////////////////////////////////// -->
+
+  <servlet>
+      <servlet-name>queryRegistration</servlet-name>
+      <servlet-class>com.google.samples.apps.iosched.server.userdata.server.servlet.QueryRegistrationServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+      <servlet-name>queryRegistration</servlet-name>
+      <url-pattern>/users/registration</url-pattern>
+  </servlet-mapping>
+  <security-constraint>
+      <web-resource-collection>
+          <web-resource-name>users</web-resource-name>
+          <url-pattern>/users/</url-pattern>
+      </web-resource-collection>
+      <auth-constraint>
+          <role-name>*</role-name>
+      </auth-constraint>
+  </security-constraint>
+
   <!-- ////////////////////////////////// Schedule Updater ////////////////////////////////// -->
 
     <servlet>
