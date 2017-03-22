@@ -16,8 +16,6 @@
 
 package com.google.samples.apps.iosched.session;
 
-import static com.google.samples.apps.iosched.util.LogUtils.LOGD;
-
 import android.animation.ArgbEvaluator;
 import android.animation.ObjectAnimator;
 import android.app.Activity;
@@ -32,6 +30,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.design.widget.AppBarLayout;
+import android.support.design.widget.AppBarLayout.OnOffsetChangedListener;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.graphics.drawable.AnimatedVectorDrawableCompat;
@@ -41,8 +40,8 @@ import android.support.v4.content.ContextCompat;
 import android.support.v4.view.animation.LinearOutSlowInInterpolator;
 import android.support.v4.widget.NestedScrollView;
 import android.support.v4.widget.NestedScrollView.OnScrollChangeListener;
+import android.support.v7.content.res.AppCompatResources;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.transition.Transition;
 import android.view.LayoutInflater;
@@ -89,6 +88,8 @@ import com.google.samples.apps.iosched.util.YouTubeUtils;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.google.samples.apps.iosched.util.LogUtils.LOGD;
+
 /**
  * Displays the details about a session. The user can add/remove a session from the schedule, watch
  * a live stream if available, watch the session on YouTube, view the map, share the session, and
@@ -108,9 +109,13 @@ public class SessionDetailFragment extends Fragment implements
 
     private CollapsingToolbarLayout mCollapsingToolbar;
 
-    private Toolbar mToolbar;
+    private ViewGroup mToolbar;
 
     private TextView mToolbarTitle;
+
+    private ImageView mBackButton;
+
+    private ImageView mShareButton;
 
     private NestedScrollView mScrollView;
 
@@ -160,6 +165,16 @@ public class SessionDetailFragment extends Fragment implements
 
     private float mToolbarTitleAlpha;
 
+    private float mHeaderImageAlpha;
+
+    private boolean mHasHeaderImage;
+
+    private ColorStateList mIconTintNormal;
+
+    private ColorStateList mIconTintCollapsing;
+
+    private long mHeaderAnimDuration;
+
     @Override
     public void addListener(UserActionListener<SessionDetailUserActionEnum> listener) {
         mListener = listener;
@@ -191,7 +206,7 @@ public class SessionDetailFragment extends Fragment implements
         mCollapsingToolbar =
                 (CollapsingToolbarLayout) mAppBar.findViewById(R.id.collapsing_toolbar);
         mCollapsingToolbar.setStatusBarScrim(null);
-        mToolbar = (Toolbar) mCollapsingToolbar.findViewById(R.id.toolbar);
+        mToolbar = (ViewGroup) mCollapsingToolbar.findViewById(R.id.session_detail_toolbar);
         mToolbarTitle = (TextView) mToolbar.findViewById(R.id.toolbar_title);
         mToolbarTitleAlpha = mToolbarTitle.getAlpha();
         mPhotoViewContainer = mCollapsingToolbar.findViewById(R.id.session_photo_container);
@@ -248,6 +263,39 @@ public class SessionDetailFragment extends Fragment implements
                 mAddScheduleFab.announceForAccessibility(isInSchedule
                         ? getString(R.string.session_details_a11y_session_added)
                         : getString(R.string.session_details_a11y_session_removed));
+            }
+        });
+
+        // Set up the fake toolbar
+        Context toolbarContext = mToolbar.getContext();
+        mIconTintCollapsing = AppCompatResources.getColorStateList(toolbarContext,
+                R.color.session_detail_toolbar_icon_tint_collapsing);
+        mIconTintNormal = AppCompatResources.getColorStateList(toolbarContext,
+                R.color.session_detail_toolbar_icon_tint_normal);
+        mHeaderAnimDuration = getResources().getInteger(android.R.integer.config_shortAnimTime);
+
+        mBackButton = (ImageView) mToolbar.findViewById(R.id.back);
+        mBackButton.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getActivity().onNavigateUp();
+            }
+        });
+        mShareButton = (ImageView) mToolbar.findViewById(R.id.share);
+        mShareButton.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                sendUserAction(SessionDetailUserActionEnum.SHOW_SHARE, null);
+            }
+        });
+        mAppBar.addOnOffsetChangedListener(new OnOffsetChangedListener() {
+            @Override
+            public void onOffsetChanged(AppBarLayout appBarLayout, int verticalOffset) {
+                if (Math.abs(verticalOffset) == appBarLayout.getTotalScrollRange()) {
+                    fadeOutHeaderImage();
+                } else {
+                    fadeInHeaderImage();
+                }
             }
         });
 
@@ -441,14 +489,17 @@ public class SessionDetailFragment extends Fragment implements
         }
 
         if (data.shouldShowHeaderImage()) {
+            setToolbarTint(mIconTintCollapsing);
             mImageLoader.loadImage(data.getPhotoUrl(), mPhotoView);
+        } else {
+            setToolbarTint(mIconTintNormal);
         }
 
         tryExecuteDeferredUiOperations();
 
         // Handle Keynote as a special case, where the user cannot remove it
         // from the schedule (it is auto added to schedule on sync)
-        mShowFab =  (AccountUtils.hasActiveAccount(getContext()) && !data.isKeynote());
+        mShowFab = (AccountUtils.hasActiveAccount(getContext()) && !data.isKeynote());
         mAddScheduleFab.setVisibility(mShowFab ? View.VISIBLE : View.INVISIBLE);
 
         displayTags(data);
@@ -529,8 +580,6 @@ public class SessionDetailFragment extends Fragment implements
                 return;
             }
 
-            mCollapsingToolbar.setContentScrimColor(trackColor);
-
             // Animate the color change to make the transition smoother
             final ObjectAnimator color =
                     ObjectAnimator.ofInt(mAppBar, UIUtils.BACKGROUND_COLOR, trackColor);
@@ -541,6 +590,11 @@ public class SessionDetailFragment extends Fragment implements
             color.setDuration(300L);
             color.start();
         }
+    }
+
+    private void setToolbarTint(ColorStateList tintList) {
+        mBackButton.setImageTintList(tintList);
+        mShareButton.setImageTintList(tintList);
     }
 
     private void enterTransitionStarted() {
@@ -812,6 +866,26 @@ public class SessionDetailFragment extends Fragment implements
         if (mToolbarTitleAlpha > 0f) {
             mToolbarTitleAlpha = 0f;
             mToolbarTitle.animate().alpha(mToolbarTitleAlpha).start();
+        }
+    }
+
+    private void fadeInHeaderImage() {
+        if (mHeaderImageAlpha < 1f) {
+            mHeaderImageAlpha = 1f;
+            mPhotoViewContainer.animate()
+                    .setDuration(mHeaderAnimDuration)
+                    .alpha(mHeaderImageAlpha)
+                    .start();
+        }
+    }
+
+    private void fadeOutHeaderImage() {
+        if (mHeaderImageAlpha > 0f) {
+            mHeaderImageAlpha = 0f;
+            mPhotoViewContainer.animate()
+                    .setDuration(mHeaderAnimDuration)
+                    .alpha(mHeaderImageAlpha)
+                    .start();
         }
     }
 

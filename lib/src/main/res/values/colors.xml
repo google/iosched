@@ -42,7 +42,7 @@
     <color name="dark_status_bar">#ff949595</color>
     <color name="light_status_bar_against_toolbar">#ffe8eaea</color>
     <color name="light_status_bar_against_header_img">#ffe0e1e3</color>
-    <color name="immersive_light_status_bar">#13000000</color> <!-- 7.5% black -->
+    <color name="immersive_status_bar">#40000000</color>
     <!-- todo cleanup old colors -->
 
     <!-- App main palette for io15 version. -->

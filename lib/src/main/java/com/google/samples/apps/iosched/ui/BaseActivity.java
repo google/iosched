@@ -16,10 +16,6 @@
 
 package com.google.samples.apps.iosched.ui;
 
-import static com.google.samples.apps.iosched.util.LogUtils.LOGD;
-import static com.google.samples.apps.iosched.util.LogUtils.LOGW;
-import static com.google.samples.apps.iosched.util.LogUtils.makeLogTag;
-
 import android.app.Activity;
 import android.content.ContentResolver;
 import android.content.Intent;
@@ -58,6 +54,10 @@ import com.google.samples.apps.iosched.util.AccountUtils;
 import com.google.samples.apps.iosched.util.AnalyticsHelper;
 import com.google.samples.apps.iosched.util.RecentTasksStyler;
 import com.google.samples.apps.iosched.welcome.WelcomeActivity;
+
+import static com.google.samples.apps.iosched.util.LogUtils.LOGD;
+import static com.google.samples.apps.iosched.util.LogUtils.LOGW;
+import static com.google.samples.apps.iosched.util.LogUtils.makeLogTag;
 
 /**
  * A base activity that handles common functionality in the app. This includes the navigation
@@ -328,10 +328,11 @@ public abstract class BaseActivity extends AppCompatActivity implements
     protected void setToolbarAsUp(View.OnClickListener clickListener) {
         // Initialise the toolbar
         getToolbar();
-
-        mToolbar.setNavigationIcon(R.drawable.ic_up);
-        mToolbar.setNavigationContentDescription(R.string.close_and_go_back);
-        mToolbar.setNavigationOnClickListener(clickListener);
+        if (mToolbar != null) {
+            mToolbar.setNavigationIcon(R.drawable.ic_up);
+            mToolbar.setNavigationContentDescription(R.string.close_and_go_back);
+            mToolbar.setNavigationOnClickListener(clickListener);
+        }
     }
 
     @Override
