@@ -22,4 +22,5 @@
     android:layout_width="match_parent"
     android:layout_height="?actionBarSize"
     android:theme="@style/ActionBarThemeOverlay"
-    app:popupTheme="@style/ActionBarPopupThemeOverlay" />
+    app:popupTheme="@style/ActionBarPopupThemeOverlay"
+    app:layout_collapseMode="pin" />

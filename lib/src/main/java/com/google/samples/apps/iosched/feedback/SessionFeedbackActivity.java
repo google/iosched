@@ -16,6 +16,10 @@
 
 package com.google.samples.apps.iosched.feedback;
 
+import static com.google.samples.apps.iosched.util.LogUtils.LOGE;
+import static com.google.samples.apps.iosched.util.LogUtils.makeLogTag;
+
+import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -24,11 +28,9 @@ import android.view.View;
 
 import com.google.samples.apps.iosched.lib.R;
 import com.google.samples.apps.iosched.myschedule.MyScheduleActivity;
+import com.google.samples.apps.iosched.provider.ScheduleContract.Sessions;
 import com.google.samples.apps.iosched.ui.BaseActivity;
 import com.google.samples.apps.iosched.util.BeamUtils;
-
-import static com.google.samples.apps.iosched.util.LogUtils.LOGE;
-import static com.google.samples.apps.iosched.util.LogUtils.makeLogTag;
 
 /**
  * Displays the questions and rating bars, as well as a comment box, for the user to provide
@@ -40,6 +42,12 @@ public class SessionFeedbackActivity extends BaseActivity {
     private final static String TAG = makeLogTag(SessionFeedbackActivity.class);
 
     private Uri mSessionUri = null;
+
+    public static void launchFeedback(Context context, String sessionId) {
+        Uri uri = Sessions.buildSessionUri(sessionId);
+        context.startActivity(new Intent(Intent.ACTION_VIEW, uri, context,
+                SessionFeedbackActivity.class));
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

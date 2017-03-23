@@ -55,6 +55,8 @@
 
     <style name="ActionBarThemeOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
 
+    <style name="ActionBarThemeOverlay.SessionDetail" parent="ThemeOverlay.AppCompat.ActionBar" />
+
     <style name="SearchViewTheme" parent="ThemeOverlay.AppCompat.ActionBar">
         <item name="android:textColorPrimary">@color/body_text_1</item>
         <item name="colorControlNormal">@color/body_text_2</item>
@@ -126,21 +128,13 @@
     <!-- My Schedule -->
     <style name="Theme.IOSched.MySchedule" />
 
-    <!-- Styling SessionDetails is complicated; alter the style based on:
-             1. small vs large devices
-             2. Specify activity transition on v21+
-             3. Light status on v23+
-
-    We therefor need 3 points of indirection or 'base' themes to provide this.  -->
-    <style name="Theme.IOSched.SessionDetails.SizeBase" parent="Theme.IOSched">
-        <item name="isFloatingWindow">false</item>
-    </style>
-
-    <style name="Theme.IOSched.SessionDetails.VersionBase"
-           parent="Theme.IOSched.SessionDetails.SizeBase" />
-
     <!-- Session Details -->
-    <style name="Theme.IOSched.SessionDetails" parent="Theme.IOSched.SessionDetails.VersionBase" />
+    <style name="Theme.IOSched.SessionDetails" parent="Theme.IOSched">
+        <item name="android:windowSharedElementEnterTransition">@transition/session_details_shared_enter</item>
+        <item name="android:windowSharedElementReturnTransition">@transition/session_details_shared_return</item>
+        <item name="android:windowEnterTransition">@transition/fade_system_chrome</item>
+        <item name="android:statusBarColor">@color/immersive_status_bar</item>
+    </style>
 
     <!-- Empty views -->
     <style name="EmptyText">
@@ -281,7 +275,12 @@
     </style>
 
     <style name="Body1Text">
-        <item name="android:textAppearance">@style/TextAppearance.Body1</item>
+        <item name="android:textAppearance">@style/TextAppearance.AppCompat.Body1</item>
+        <item name="android:lineSpacingMultiplier">@dimen/body_1_spacing</item>
+    </style>
+
+    <style name="Body2Text">
+        <item name="android:textAppearance">@style/TextAppearance.AppCompat.Body2</item>
         <item name="android:lineSpacingMultiplier">@dimen/body_1_spacing</item>
     </style>
 
@@ -290,24 +289,12 @@
         <item name="android:lineSpacingMultiplier">@dimen/h3_spacing</item>
     </style>
 
-    <style name="Body2Text">
-        <item name="android:textAppearance">@style/TextAppearance.Body2</item>
-        <item name="android:lineSpacingMultiplier">@dimen/body_1_spacing</item>
-    </style>
-
     <style name="SessionDetailsTitle">
-        <item name="android:textAppearance">@style/TextAppearance.Title</item>
-        <item name="android:textColor">?android:textColorPrimary</item>
-        <item name="android:textSize">18sp</item>
+        <item name="android:textAppearance">@style/TextAppearance.AppCompat.Headline</item>
         <item name="android:lineSpacingMultiplier">@dimen/h3_spacing</item>
     </style>
 
-    <style name="SessionDetailsSubtitle" parent="@style/Body1Text">
-        <item name="android:textColor">?android:textColorSecondary</item>
-    </style>
-
-    <style name="SessionDetailsSpeakerName" parent="@style/Body1Text">
-        <item name="android:textStyle">bold</item>
+    <style name="SessionDetailsSubtitle" parent="@style/Body2Text">
     </style>
 
     <style name="VideoThumbnail">

@@ -42,7 +42,7 @@ import com.google.samples.apps.iosched.map.util.MarkerModel;
 import com.google.samples.apps.iosched.map.util.OverviewSessionLoader;
 import com.google.samples.apps.iosched.map.util.SessionLoader;
 import com.google.samples.apps.iosched.map.util.SingleSessionLoader;
-import com.google.samples.apps.iosched.model.ScheduleHelper;
+import com.google.samples.apps.iosched.model.ScheduleItem;
 import com.google.samples.apps.iosched.util.MapUtils;
 import com.google.samples.apps.iosched.util.TimeUtils;
 import com.google.samples.apps.iosched.util.UIUtils;
@@ -406,7 +406,7 @@ public abstract class MapInfoFragment extends Fragment
             final long blockStart = mCursor.getLong(OverviewSessionLoader.Query.SESSION_START);
             final long blockEnd = mCursor.getLong(OverviewSessionLoader.Query.SESSION_END);
             final String sessionTag = mCursor.getString(OverviewSessionLoader.Query.SESSION_TAGS);
-            final int sessionType = ScheduleHelper.detectSessionType(sessionTag);
+            final int sessionType = ScheduleItem.detectSessionType(sessionTag);
             final String text = UIUtils.formatIntervalTimeString(blockStart, blockEnd,
                     mStringBuilder, mContext);
 

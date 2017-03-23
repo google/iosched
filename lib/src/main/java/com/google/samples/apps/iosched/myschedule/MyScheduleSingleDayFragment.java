@@ -17,6 +17,7 @@
 package com.google.samples.apps.iosched.myschedule;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.content.res.TypedArray;
 import android.database.Cursor;
 import android.net.Uri;
@@ -34,6 +35,7 @@ import android.view.ViewGroup;
 
 import com.google.samples.apps.iosched.Config;
 import com.google.samples.apps.iosched.archframework.UpdatableView;
+import com.google.samples.apps.iosched.feedback.SessionFeedbackActivity;
 import com.google.samples.apps.iosched.lib.R;
 import com.google.samples.apps.iosched.model.TagMetadata;
 import com.google.samples.apps.iosched.model.TagMetadata.Tag;
@@ -145,8 +147,7 @@ public class MyScheduleSingleDayFragment extends Fragment
     private void updateSchedule(MyScheduleModel model) {
         if (isVisible()) {
             if (mViewAdapter == null) {
-                mViewAdapter = new MyScheduleDayAdapter(getActivity(), mListener, this,
-                        mTagMetadata);
+                mViewAdapter = new MyScheduleDayAdapter(this, mTagMetadata, true);
             }
             mViewAdapter.updateItems(model.getConferenceDataForDay(mDayId));
             if (mRecyclerView.getAdapter() == null) {
@@ -226,6 +227,35 @@ public class MyScheduleSingleDayFragment extends Fragment
 
     @Override
     public void onLoaderReset(final Loader<Cursor> loader) {
+    }
+
+    @Override
+    public void onSessionClicked(Uri sessionUri) {
+        Bundle args = new Bundle();
+        args.putString(MyScheduleModel.SESSION_URL_KEY, sessionUri.toString());
+        mListener.onUserAction(MyScheduleUserActionEnum.SESSION_SLOT, args);
+
+        startActivity(new Intent(Intent.ACTION_VIEW, sessionUri));
+    }
+
+    @Override
+    public void onBookmarkClicked(String sessionId, boolean isInSchedule) {
+        MyScheduleUserActionEnum action = isInSchedule
+                ? MyScheduleUserActionEnum.SESSION_UNSTAR
+                : MyScheduleUserActionEnum.SESSION_STAR;
+        Bundle args = new Bundle();
+        args.putString(MyScheduleModel.SESSION_ID_KEY, sessionId);
+        mListener.onUserAction(action, args);
+    }
+
+    @Override
+    public void onFeedbackClicked(String sessionId, String sessionTitle) {
+        Bundle args = new Bundle();
+        args.putString(MyScheduleModel.SESSION_ID_KEY, sessionId);
+        args.putString(MyScheduleModel.SESSION_TITLE_KEY, sessionTitle);
+        mListener.onUserAction(MyScheduleUserActionEnum.FEEDBACK, args);
+
+        SessionFeedbackActivity.launchFeedback(getContext(), sessionId);
     }
 
     @Override

@@ -25,7 +25,6 @@ import android.support.test.espresso.intent.Intents;
 import android.support.test.espresso.intent.matcher.IntentMatchers;
 import android.support.test.espresso.matcher.ViewMatchers;
 import android.support.test.filters.LargeTest;
-import android.support.test.filters.Suppress;
 import android.support.test.runner.AndroidJUnit4;
 
 import com.google.samples.apps.iosched.Config;
@@ -143,8 +142,8 @@ public class SessionDetailActivity_EndedLiveSessionTest {
     }
 
     @Test
-    public void feedbackCard_IsNotVisible() {
-        onView(withId(R.id.give_feedback_card)).check(matches(not(isDisplayed())));
+    public void feedbackButton_IsNotVisible() {
+        onView(withId(R.id.give_feedback_button)).check(matches(not(isDisplayed())));
     }
 
 }

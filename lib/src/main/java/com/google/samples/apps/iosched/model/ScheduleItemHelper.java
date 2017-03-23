@@ -16,15 +16,43 @@
 
 package com.google.samples.apps.iosched.model;
 
+import static com.google.samples.apps.iosched.model.ScheduleItem.detectSessionType;
+
+import android.content.Context;
+import android.database.Cursor;
 import android.support.annotation.NonNull;
+import android.text.TextUtils;
+
+import com.google.samples.apps.iosched.provider.ScheduleContract.Sessions;
+import com.google.samples.apps.iosched.util.UIUtils;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.List;
 
 public class ScheduleItemHelper {
 
     public static final long ALLOWED_OVERLAP = 5 * 60 * 1000; // 5 minutes
+
+    /**
+     * Minimum column projection for querying the content provider if planning to convert a sessions
+     * cursor into ScheduleItems.
+     */
+    public static final String[] REQUIRED_SESSION_COLUMNS = {
+            Sessions.SESSION_ID,
+            Sessions.SESSION_TITLE,
+            Sessions.SESSION_START,
+            Sessions.SESSION_END,
+            Sessions.ROOM_NAME,
+            Sessions.SESSION_IN_MY_SCHEDULE,
+            Sessions.SESSION_LIVESTREAM_ID,
+            Sessions.SESSION_SPEAKER_NAMES,
+            Sessions.SESSION_PHOTO_URL,
+            Sessions.SESSION_COLOR,
+            Sessions.SESSION_TAGS,
+            Sessions.SESSION_MAIN_TAG,
+    };
 
     /**
      * Find and resolve time slot conflicts. Items should already be ordered by start time.
@@ -76,5 +104,40 @@ public class ScheduleItemHelper {
     public static boolean sameStartTime(ScheduleItem block1, ScheduleItem block2,
             boolean useOverlap) {
         return  Math.abs(block1.startTime - block2.startTime) <= (useOverlap ? ALLOWED_OVERLAP : 0);
+    }
+
+    public static List<ScheduleItem> cursorToItems(Cursor cursor, Context context) {
+        List<ScheduleItem> list = new ArrayList<>(cursor.getCount());
+        cursorToItems(cursor, context, list);
+        return list;
+    }
+
+    public static void cursorToItems(Cursor cursor, Context context, List<ScheduleItem> list) {
+        while (cursor.moveToNext()) {
+            ScheduleItem item = new ScheduleItem();
+            item.type = ScheduleItem.SESSION;
+            item.sessionId = cursor.getString(cursor.getColumnIndex(Sessions.SESSION_ID));
+            item.title = cursor.getString(cursor.getColumnIndex(Sessions.SESSION_TITLE));
+            item.startTime = cursor.getLong(cursor.getColumnIndex(Sessions.SESSION_START));
+            item.endTime = cursor.getLong(cursor.getColumnIndex(Sessions.SESSION_END));
+            if (!TextUtils.isEmpty(
+                    cursor.getString(cursor.getColumnIndex(Sessions.SESSION_LIVESTREAM_ID)))) {
+                item.flags |= ScheduleItem.FLAG_HAS_LIVESTREAM;
+            }
+            item.subtitle = UIUtils.formatSessionSubtitle(
+                    cursor.getString(cursor.getColumnIndex(Sessions.ROOM_NAME)),
+                    cursor.getString(cursor.getColumnIndex(Sessions.SESSION_SPEAKER_NAMES)),
+                    context);
+            item.room = cursor.getString(cursor.getColumnIndex(Sessions.ROOM_NAME));
+            item.backgroundImageUrl = cursor.getString(
+                    cursor.getColumnIndex(Sessions.SESSION_PHOTO_URL));
+            item.backgroundColor = cursor.getInt(cursor.getColumnIndex(Sessions.SESSION_COLOR));
+            item.sessionType = detectSessionType(
+                    cursor.getString(cursor.getColumnIndex(Sessions.SESSION_TAGS)));
+            item.mainTag = cursor.getString(cursor.getColumnIndex(Sessions.SESSION_MAIN_TAG));
+            item.inSchedule =
+                    cursor.getInt(cursor.getColumnIndex(Sessions.SESSION_IN_MY_SCHEDULE)) != 0;
+            list.add(item);
+        }
     }
 }

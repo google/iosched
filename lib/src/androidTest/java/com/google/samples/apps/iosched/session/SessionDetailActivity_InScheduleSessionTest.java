@@ -30,9 +30,9 @@ import android.support.test.filters.LargeTest;
 import android.support.test.runner.AndroidJUnit4;
 
 import com.google.samples.apps.iosched.Config;
-import com.google.samples.apps.iosched.lib.R;
 import com.google.samples.apps.iosched.explore.ExploreSessionsActivity;
 import com.google.samples.apps.iosched.feedback.SessionFeedbackActivity;
+import com.google.samples.apps.iosched.lib.R;
 import com.google.samples.apps.iosched.map.MapActivity;
 import com.google.samples.apps.iosched.mockdata.SessionsMockCursor;
 import com.google.samples.apps.iosched.mockdata.SpeakersMockCursor;
@@ -58,7 +58,6 @@ import static android.support.test.espresso.intent.matcher.IntentMatchers.hasAct
 import static android.support.test.espresso.intent.matcher.IntentMatchers.hasComponent;
 import static android.support.test.espresso.intent.matcher.IntentMatchers.hasData;
 import static android.support.test.espresso.intent.matcher.IntentMatchers.hasExtra;
-import static android.support.test.espresso.matcher.ViewMatchers.isDescendantOfA;
 import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static android.support.test.espresso.matcher.ViewMatchers.withEffectiveVisibility;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
@@ -124,16 +123,15 @@ public class SessionDetailActivity_InScheduleSessionTest {
     }
 
     @Test
-    public void feedbackCard_IsVisible() {
-        onView(withId(R.id.give_feedback_card)).check(matches(isDisplayed()));
+    public void feedbackButton_IsVisible() {
+        onView(withId(R.id.give_feedback_button)).check(matches(isDisplayed()));
     }
 
     @Test
     @FlakyTest // due to intent checking
     public void submitFeedback_WhenClicked_IntentFired_Flaky() {
         // When clicking on the submit feedback button
-        onView(allOf(withText(R.string.give_feedback),
-                isDescendantOfA(withId(R.id.give_feedback_card)))).perform(click());
+        onView(withId(R.id.give_feedback_button)).perform(click());
 
         // Then the intent to open the feedback activity for that session is fired
         intended(CoreMatchers.allOf(

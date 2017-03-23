@@ -16,29 +16,32 @@
 
 package com.google.samples.apps.iosched.session;
 
-import static com.google.samples.apps.iosched.util.LogUtils.LOGD;
-
 import android.animation.ArgbEvaluator;
 import android.animation.ObjectAnimator;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.annotation.Nullable;
 import android.support.design.widget.AppBarLayout;
+import android.support.design.widget.AppBarLayout.OnOffsetChangedListener;
 import android.support.design.widget.CollapsingToolbarLayout;
+import android.support.design.widget.CoordinatorLayout;
 import android.support.graphics.drawable.AnimatedVectorDrawableCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.ShareCompat;
 import android.support.v4.content.ContextCompat;
-import android.support.v4.view.ViewCompat;
 import android.support.v4.view.animation.LinearOutSlowInInterpolator;
-import android.support.v7.widget.Toolbar;
+import android.support.v4.widget.NestedScrollView;
+import android.support.v4.widget.NestedScrollView.OnScrollChangeListener;
+import android.support.v7.content.res.AppCompatResources;
+import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.transition.Transition;
 import android.view.LayoutInflater;
@@ -46,31 +49,33 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.google.android.gms.appindexing.Action;
 import com.google.android.gms.appindexing.AppIndex;
 import com.google.android.gms.appindexing.Thing;
 import com.google.android.gms.common.api.GoogleApiClient;
-import com.google.samples.apps.iosched.lib.BuildConfig;
 import com.google.samples.apps.iosched.Config;
-import com.google.samples.apps.iosched.lib.R;
 import com.google.samples.apps.iosched.archframework.PresenterImpl;
 import com.google.samples.apps.iosched.archframework.UpdatableView;
-import com.google.samples.apps.iosched.explore.ExploreSessionsActivity;
+import com.google.samples.apps.iosched.feedback.SessionFeedbackActivity;
 import com.google.samples.apps.iosched.injection.ModelProvider;
+import com.google.samples.apps.iosched.lib.BuildConfig;
+import com.google.samples.apps.iosched.lib.R;
 import com.google.samples.apps.iosched.map.MapActivity;
-import com.google.samples.apps.iosched.model.TagMetadata;
+import com.google.samples.apps.iosched.model.TagMetadata.Tag;
+import com.google.samples.apps.iosched.myschedule.MyScheduleActivity;
+import com.google.samples.apps.iosched.myschedule.MyScheduleDayAdapter;
+import com.google.samples.apps.iosched.myschedule.MyScheduleDayAdapter.ScheduleAdapterListener;
+import com.google.samples.apps.iosched.provider.ScheduleContract.Sessions;
 import com.google.samples.apps.iosched.session.SessionDetailModel.SessionDetailQueryEnum;
 import com.google.samples.apps.iosched.session.SessionDetailModel.SessionDetailUserActionEnum;
-import com.google.samples.apps.iosched.ui.BaseActivity;
 import com.google.samples.apps.iosched.ui.widget.CheckableFloatingActionButton;
-import com.google.samples.apps.iosched.ui.widget.MessageCardView;
 import com.google.samples.apps.iosched.util.AccountUtils;
 import com.google.samples.apps.iosched.util.AnalyticsHelper;
 import com.google.samples.apps.iosched.util.ImageLoader;
@@ -81,9 +86,9 @@ import com.google.samples.apps.iosched.util.UIUtils;
 import com.google.samples.apps.iosched.util.YouTubeUtils;
 
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashSet;
 import java.util.List;
+
+import static com.google.samples.apps.iosched.util.LogUtils.LOGD;
 
 /**
  * Displays the details about a session. The user can add/remove a session from the schedule, watch
@@ -91,24 +96,28 @@ import java.util.List;
  * submit feedback.
  */
 public class SessionDetailFragment extends Fragment implements
-        UpdatableView<SessionDetailModel, SessionDetailQueryEnum, SessionDetailUserActionEnum> {
+        UpdatableView<SessionDetailModel, SessionDetailQueryEnum, SessionDetailUserActionEnum>,
+        ScheduleAdapterListener {
 
     private static final String TAG = LogUtils.makeLogTag(SessionDetailFragment.class);
 
-    /**
-     * Stores the session IDs for which the user has dismissed the "give feedback" card. This
-     * information is kept for the duration of the app's execution so that if they say "No, thanks",
-     * we don't show the card again for that session while the app is still executing.
-     */
-    private static HashSet<String> sDismissedFeedbackCard = new HashSet<>();
-
     private CheckableFloatingActionButton mAddScheduleFab;
+
+    private CoordinatorLayout mCoordinatorLayout;
 
     private AppBarLayout mAppBar;
 
     private CollapsingToolbarLayout mCollapsingToolbar;
 
-    private Toolbar mToolbar;
+    private ViewGroup mToolbar;
+
+    private TextView mToolbarTitle;
+
+    private ImageView mBackButton;
+
+    private ImageView mShareButton;
+
+    private NestedScrollView mScrollView;
 
     private TextView mTitle;
 
@@ -116,23 +125,25 @@ public class SessionDetailFragment extends Fragment implements
 
     private TextView mAbstract;
 
-    private TextView mLiveStreamedIndicator;
-
     private Button mWatchVideo;
 
     private LinearLayout mTags;
 
-    private TextView mExtended;
-
     private ViewGroup mTagsContainer;
 
-    private TextView mRequirements;
-
-    private View mHeaderBox;
+    private Button mFeedbackButton;
 
     private View mPhotoViewContainer;
 
     private ImageView mPhotoView;
+
+    private View mMapImage;
+
+    private TextView mRelatedSessionsLabel;
+
+    private RecyclerView mRelatedSessions;
+
+    private MyScheduleDayAdapter mRelatedSessionsAdapter;
 
     private ImageLoader mImageLoader;
 
@@ -150,11 +161,19 @@ public class SessionDetailFragment extends Fragment implements
 
     private boolean mHasEnterTransition = false;
 
-    private String mExtendedSessionUrl = null;
-
     private GoogleApiClient mClient;
 
-    private boolean mIsFloatingWindow;
+    private float mToolbarTitleAlpha;
+
+    private float mHeaderImageAlpha;
+
+    private boolean mHasHeaderImage;
+
+    private ColorStateList mIconTintNormal;
+
+    private ColorStateList mIconTintCollapsing;
+
+    private long mHeaderAnimDuration;
 
     @Override
     public void addListener(UserActionListener<SessionDetailUserActionEnum> listener) {
@@ -175,56 +194,158 @@ public class SessionDetailFragment extends Fragment implements
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState) {
-        View root = inflater.inflate(R.layout.session_detail_frag, container, false);
-        if (mIsFloatingWindow) {
-            // Window background is transparent, so set the background of the root view
-            root.setBackgroundColor(ContextCompat.getColor(root.getContext(), R.color.background));
-        }
-        return root;
+        return inflater.inflate(R.layout.session_detail_frag, container, false);
+    }
+
+    @Override
+    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+        mCoordinatorLayout = (CoordinatorLayout) view.findViewById(R.id.root_container);
+        mCoordinatorLayout.setStatusBarBackground(null);
+
+        mAppBar = (AppBarLayout) view.findViewById(R.id.appbar);
+        mCollapsingToolbar =
+                (CollapsingToolbarLayout) mAppBar.findViewById(R.id.collapsing_toolbar);
+        mCollapsingToolbar.setStatusBarScrim(null);
+        mToolbar = (ViewGroup) mCollapsingToolbar.findViewById(R.id.session_detail_toolbar);
+        mToolbarTitle = (TextView) mToolbar.findViewById(R.id.toolbar_title);
+        mToolbarTitleAlpha = mToolbarTitle.getAlpha();
+        mPhotoViewContainer = mCollapsingToolbar.findViewById(R.id.session_photo_container);
+        mPhotoView = (ImageView) mPhotoViewContainer.findViewById(R.id.session_photo);
+        mWatchVideo = (Button) mCollapsingToolbar.findViewById(R.id.watch);
+
+        mScrollView = (NestedScrollView) view.findViewById(R.id.scroll_view);
+        mScrollView.setOnScrollChangeListener(new OnScrollChangeListener() {
+            @Override
+            public void onScrollChange(NestedScrollView v, int scrollX, int scrollY, int oldScrollX,
+                    int oldScrollY) {
+                if (scrollY > mTitle.getBottom()) {
+                    fadeInToolbarTitle();
+                } else {
+                    fadeOutToolbarTitle();
+                }
+            }
+        });
+        final ViewGroup details = (ViewGroup) view.findViewById(R.id.details_container);
+        mTitle = (TextView) details.findViewById(R.id.session_title);
+        mSubtitle = (TextView) details.findViewById(R.id.session_subtitle);
+        mAbstract = (TextView) details.findViewById(R.id.session_abstract);
+        mTags = (LinearLayout) details.findViewById(R.id.session_tags);
+        mTagsContainer = (ViewGroup) details.findViewById(R.id.session_tags_container);
+        mFeedbackButton = (Button) details.findViewById(R.id.give_feedback_button);
+
+        final ViewGroup mapContainer = (ViewGroup) details.findViewById(R.id.map_container);
+        mMapImage = mapContainer.findViewById(R.id.map_image);
+        mapContainer.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                sendUserAction(SessionDetailUserActionEnum.SHOW_MAP, null);
+            }
+        });
+
+        mRelatedSessionsLabel = (TextView) details.findViewById(R.id.related_sessions_label);
+        mRelatedSessions = (RecyclerView) details.findViewById(R.id.related_sessions_list);
+        mRelatedSessionsAdapter = new MyScheduleDayAdapter(this, null, false);
+        mRelatedSessions.setAdapter(mRelatedSessionsAdapter);
+
+        mAddScheduleFab =
+                (CheckableFloatingActionButton) view.findViewById(R.id.add_schedule_button);
+        mAddScheduleFab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                boolean isInSchedule = !((CheckableFloatingActionButton) view).isChecked();
+                showInSchedule(isInSchedule);
+                if (isInSchedule) {
+                    sendUserAction(SessionDetailUserActionEnum.STAR, null);
+                } else {
+                    sendUserAction(SessionDetailUserActionEnum.UNSTAR, null);
+                }
+
+                mAddScheduleFab.announceForAccessibility(isInSchedule
+                        ? getString(R.string.session_details_a11y_session_added)
+                        : getString(R.string.session_details_a11y_session_removed));
+            }
+        });
+
+        // Set up the fake toolbar
+        Context toolbarContext = mToolbar.getContext();
+        mIconTintCollapsing = AppCompatResources.getColorStateList(toolbarContext,
+                R.color.session_detail_toolbar_icon_tint_collapsing);
+        mIconTintNormal = AppCompatResources.getColorStateList(toolbarContext,
+                R.color.session_detail_toolbar_icon_tint_normal);
+        mHeaderAnimDuration = getResources().getInteger(android.R.integer.config_shortAnimTime);
+
+        mBackButton = (ImageView) mToolbar.findViewById(R.id.back);
+        mBackButton.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getActivity().onNavigateUp();
+            }
+        });
+        mShareButton = (ImageView) mToolbar.findViewById(R.id.share);
+        mShareButton.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                sendUserAction(SessionDetailUserActionEnum.SHOW_SHARE, null);
+            }
+        });
+        mAppBar.addOnOffsetChangedListener(new OnOffsetChangedListener() {
+            @Override
+            public void onOffsetChanged(AppBarLayout appBarLayout, int verticalOffset) {
+                if (Math.abs(verticalOffset) == appBarLayout.getTotalScrollRange()) {
+                    fadeOutHeaderImage();
+                } else {
+                    fadeInHeaderImage();
+                }
+            }
+        });
+
+        mImageLoader = new ImageLoader(getContext());
     }
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         mHandler = new Handler();
-        initPresenter();
-        initViews();
-        initViewListeners();
+
+        // init presenter
+        SessionDetailModel model = ModelProvider.provideSessionDetailModel(
+                ((SessionDetailActivity) getActivity()).getSessionUri(), getContext(),
+                new SessionsHelper(getActivity()), getLoaderManager());
+        PresenterImpl<SessionDetailModel, SessionDetailQueryEnum, SessionDetailUserActionEnum>
+                presenter = new PresenterImpl<>(model, this, SessionDetailUserActionEnum.values(),
+                SessionDetailQueryEnum.values());
+        presenter.loadInitialQueries();
     }
 
     @Override
     public void onAttach(final Activity activity) {
         super.onAttach(activity);
-        if (activity instanceof BaseActivity) {
-            mIsFloatingWindow = ((BaseActivity) activity).shouldBeFloatingWindow();
-        }
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            final Transition sharedElementEnterTransition =
-                    activity.getWindow().getSharedElementEnterTransition();
-            if (sharedElementEnterTransition != null) {
-                mHasEnterTransition = true;
-                sharedElementEnterTransition.addListener(new UIUtils.TransitionListenerAdapter() {
-                    @Override
-                    public void onTransitionStart(final Transition transition) {
-                        enterTransitionStarted();
-                    }
-                    @Override
-                    public void onTransitionEnd(final Transition transition) {
-                        enterTransitionFinished();
-                    }
-                });
-            }
-            final Transition sharedElementReturnTransition =
-                    activity.getWindow().getSharedElementReturnTransition();
-            if (sharedElementReturnTransition != null) {
-                sharedElementReturnTransition.addListener(new UIUtils.TransitionListenerAdapter() {
-                    @Override
-                    public void onTransitionStart(final Transition transition) {
-                        returnTransitionStarted();
-                    }
-                });
-            }
+        final Transition sharedElementEnterTransition =
+                activity.getWindow().getSharedElementEnterTransition();
+        if (sharedElementEnterTransition != null) {
+            mHasEnterTransition = true;
+            sharedElementEnterTransition.addListener(new UIUtils.TransitionListenerAdapter() {
+                @Override
+                public void onTransitionStart(final Transition transition) {
+                    enterTransitionStarted();
+                }
+
+                @Override
+                public void onTransitionEnd(final Transition transition) {
+                    enterTransitionFinished();
+                }
+            });
+        }
+        final Transition sharedElementReturnTransition =
+                activity.getWindow().getSharedElementReturnTransition();
+        if (sharedElementReturnTransition != null) {
+            sharedElementReturnTransition.addListener(new UIUtils.TransitionListenerAdapter() {
+                @Override
+                public void onTransitionStart(final Transition transition) {
+                    returnTransitionStarted();
+                }
+            });
         }
     }
 
@@ -247,29 +368,13 @@ public class SessionDetailFragment extends Fragment implements
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
         inflater.inflate(R.menu.session_detail, menu);
-        if (!BuildConfig.ENABLE_MAP_IN_NAVIGATION) {
-            MenuItem map = menu.findItem(R.id.menu_map_room);
-            map.setVisible(false);
-        }
         tryExecuteDeferredUiOperations();
-    }
-
-
-    public void fireExtendedSessionIntent() {
-        if (mExtendedSessionUrl != null) {
-            Intent extendedSessionIntent = new Intent(Intent.ACTION_VIEW).setData(Uri.parse(
-                    mExtendedSessionUrl));
-            startActivity(extendedSessionIntent);
-        }
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        int itemId = item.getItemId();
-        if (itemId == R.id.menu_map_room) {
-            sendUserAction(SessionDetailUserActionEnum.SHOW_MAP, null);
-            return true;
-        } else if (itemId == R.id.menu_share) {
+        final int itemId = item.getItemId();
+        if (itemId == R.id.menu_share) {
             sendUserAction(SessionDetailUserActionEnum.SHOW_SHARE, null);
             return true;
         }
@@ -280,41 +385,6 @@ public class SessionDetailFragment extends Fragment implements
         mListener.onUserAction(action, args);
     }
 
-    private void initPresenter() {
-        SessionDetailModel model = ModelProvider.provideSessionDetailModel(
-                ((SessionDetailActivity) getActivity()).getSessionUri(), getContext(),
-                new SessionsHelper(getActivity()), getLoaderManager());
-        PresenterImpl<SessionDetailModel, SessionDetailQueryEnum, SessionDetailUserActionEnum>
-                presenter = new PresenterImpl<>(model, this, SessionDetailUserActionEnum.values(),
-                SessionDetailQueryEnum.values());
-        presenter.loadInitialQueries();
-    }
-
-    private void initViews() {
-        final ViewGroup root = (ViewGroup) getActivity().findViewById(R.id.session_detail_frag);
-        mAppBar = (AppBarLayout) root.findViewById(R.id.appbar);
-        mCollapsingToolbar =
-                (CollapsingToolbarLayout) mAppBar.findViewById(R.id.collapsing_toolbar);
-        mHeaderBox = mAppBar.findViewById(R.id.header_session);
-        mToolbar = (Toolbar) mHeaderBox.findViewById(R.id.toolbar);
-        mTitle = (TextView) mHeaderBox.findViewById(R.id.session_title);
-        mSubtitle = (TextView) mHeaderBox.findViewById(R.id.session_subtitle);
-        mPhotoViewContainer = mCollapsingToolbar.findViewById(R.id.session_photo_container);
-        mPhotoView = (ImageView) mPhotoViewContainer.findViewById(R.id.session_photo);
-        mWatchVideo = (Button) mCollapsingToolbar.findViewById(R.id.watch);
-        final ViewGroup details = (ViewGroup) root.findViewById(R.id.details_container);
-        mAbstract = (TextView) details.findViewById(R.id.session_abstract);
-        mLiveStreamedIndicator =
-                (TextView) details.findViewById(R.id.live_streamed_indicator);
-        mRequirements = (TextView) details.findViewById(R.id.session_requirements);
-        mTags = (LinearLayout) details.findViewById(R.id.session_tags);
-        mExtended = (TextView) details.findViewById(R.id.extended_session_button);
-        mTagsContainer = (ViewGroup) details.findViewById(R.id.session_tags_container);
-        mAddScheduleFab =
-                (CheckableFloatingActionButton) root.findViewById(R.id.add_schedule_button);
-        mImageLoader = new ImageLoader(getContext());
-    }
-
     @Override
     public void displayData(SessionDetailModel data, SessionDetailQueryEnum query) {
         switch (query) {
@@ -323,7 +393,7 @@ public class SessionDetailFragment extends Fragment implements
                 displayTrackColor(data);
                 break;
             case FEEDBACK:
-                displayFeedbackData(data);
+                updateFeedbackButton(data);
                 break;
             case SPEAKERS:
                 displaySpeakersData(data);
@@ -332,30 +402,11 @@ public class SessionDetailFragment extends Fragment implements
                 displayTags(data);
                 displayTrackColor(data);
                 break;
+            case RELATED:
+                displayRelatedSessions(data);
             default:
                 break;
         }
-    }
-
-    private void initViewListeners() {
-        mAddScheduleFab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                boolean isInSchedule = !((CheckableFloatingActionButton) view).isChecked();
-                showInSchedule(isInSchedule);
-                if (isInSchedule) {
-                    sendUserAction(SessionDetailUserActionEnum.STAR, null);
-                } else {
-                    sendUserAction(SessionDetailUserActionEnum.UNSTAR, null);
-                }
-
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
-                    mAddScheduleFab.announceForAccessibility(isInSchedule ?
-                            getString(R.string.session_details_a11y_session_added) :
-                            getString(R.string.session_details_a11y_session_removed));
-                }
-            }
-        });
     }
 
     private void showInSchedule(boolean isInSchedule) {
@@ -388,27 +439,22 @@ public class SessionDetailFragment extends Fragment implements
             boolean success) {
         switch (userAction) {
             case SHOW_MAP:
-                Intent intentShowMap =
-                        new Intent(getActivity().getApplicationContext(), MapActivity.class);
+                Intent intentShowMap = new Intent(getActivity(), MapActivity.class);
                 intentShowMap.putExtra(MapActivity.EXTRA_ROOM, data.getRoomId());
                 intentShowMap.putExtra(MapActivity.EXTRA_DETACHED_MODE, true);
                 getActivity().startActivity(intentShowMap);
                 break;
             case SHOW_SHARE:
-                ShareCompat.IntentBuilder builder =
-                        ShareCompat.IntentBuilder.from(getActivity()).setType(
-                                "text/plain").setText(getActivity()
-                                .getString(R.string.share_template, data.getSessionTitle(),
-                                        BuildConfig.CONFERENCE_HASHTAG, data.getSessionUrl()));
+                ShareCompat.IntentBuilder builder = ShareCompat.IntentBuilder.from(getActivity())
+                        .setType("text/plain")
+                        .setText(getString(R.string.share_template, data.getSessionTitle(),
+                                BuildConfig.CONFERENCE_HASHTAG, data.getSessionUrl()));
                 Intent intentShare = Intent.createChooser(
                         builder.getIntent(),
                         getString(R.string.title_share));
                 intentShare.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 getActivity().startActivity(intentShare);
 
-                break;
-            case EXTENDED:
-                fireExtendedSessionIntent();
                 break;
             default:
                 // Other user actions are completely handled in model
@@ -432,6 +478,8 @@ public class SessionDetailFragment extends Fragment implements
     }
 
     private void displaySessionData(final SessionDetailModel data) {
+        mToolbarTitle.setText(data.getSessionTitle());
+
         mTitle.setText(data.getSessionTitle());
         mSubtitle.setText(data.getSessionSubtitle());
         try {
@@ -441,21 +489,17 @@ public class SessionDetailFragment extends Fragment implements
         }
 
         if (data.shouldShowHeaderImage()) {
+            setToolbarTint(mIconTintCollapsing);
             mImageLoader.loadImage(data.getPhotoUrl(), mPhotoView);
         } else {
-            mPhotoViewContainer.setVisibility(View.GONE);
-            ViewCompat.setFitsSystemWindows(mAppBar, false);
-            // This is hacky but the collapsing toolbar requires a minimum height to enable
-            // the status bar scrim feature; set 1px. When there is no image, this would leave
-            // a 1px gap so we offset with a negative margin.
-            ((ViewGroup.MarginLayoutParams) mCollapsingToolbar.getLayoutParams()).topMargin = -1;
+            setToolbarTint(mIconTintNormal);
         }
 
         tryExecuteDeferredUiOperations();
 
         // Handle Keynote as a special case, where the user cannot remove it
         // from the schedule (it is auto added to schedule on sync)
-        mShowFab =  (AccountUtils.hasActiveAccount(getContext()) && !data.isKeynote());
+        mShowFab = (AccountUtils.hasActiveAccount(getContext()) && !data.isKeynote());
         mAddScheduleFab.setVisibility(mShowFab ? View.VISIBLE : View.INVISIBLE);
 
         displayTags(data);
@@ -470,20 +514,6 @@ public class SessionDetailFragment extends Fragment implements
         } else {
             mAbstract.setVisibility(View.GONE);
         }
-
-        // Build requirements section
-        final View requirementsBlock = getActivity().findViewById(R.id.session_requirements_block);
-        final String sessionRequirements = data.getRequirements();
-        if (!TextUtils.isEmpty(sessionRequirements)) {
-            UIUtils.setTextMaybeHtml(mRequirements, sessionRequirements);
-            requirementsBlock.setVisibility(View.VISIBLE);
-        } else {
-            requirementsBlock.setVisibility(View.GONE);
-        }
-
-        final ViewGroup relatedVideosBlock = (ViewGroup) getActivity().findViewById(
-                R.id.related_videos_block);
-        relatedVideosBlock.setVisibility(View.GONE);
 
         updateEmptyView(data);
 
@@ -527,23 +557,6 @@ public class SessionDetailFragment extends Fragment implements
             // No enter transition so update UI manually
             enterTransitionFinished();
         }
-
-
-        if (BuildConfig.ENABLE_EXTENDED_SESSION_URL && data.shouldShowExtendedSessionLink()) {
-            mExtendedSessionUrl = data.getExtendedSessionUrl();
-            if (!TextUtils.isEmpty(mExtendedSessionUrl)) {
-                mExtended.setText(R.string.description_extended);
-                mExtended.setVisibility(View.VISIBLE);
-
-                mExtended.setClickable(true);
-                mExtended.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(final View v) {
-                        sendUserAction(SessionDetailUserActionEnum.EXTENDED, null);
-                    }
-                });
-            }
-        }
     }
 
     /**
@@ -561,7 +574,7 @@ public class SessionDetailFragment extends Fragment implements
                         R.color.theme_primary);
             }
 
-            final Drawable background = mHeaderBox.getBackground();
+            final Drawable background = mAppBar.getBackground();
             if (background instanceof ColorDrawable
                     && ((ColorDrawable) background).getColor() == trackColor) {
                 return;
@@ -569,22 +582,19 @@ public class SessionDetailFragment extends Fragment implements
 
             // Animate the color change to make the transition smoother
             final ObjectAnimator color =
-                    ObjectAnimator.ofInt(mHeaderBox, UIUtils.BACKGROUND_COLOR, trackColor);
+                    ObjectAnimator.ofInt(mAppBar, UIUtils.BACKGROUND_COLOR, trackColor);
             color.setEvaluator(new ArgbEvaluator());
             if (mHasEnterTransition) {
                 color.setStartDelay(200L);
             }
             color.setDuration(300L);
             color.start();
-
-            if (mCollapsingToolbar.getFitsSystemWindows()
-                    && mPhotoViewContainer.getVisibility() == View.VISIBLE) { // immersive+photo
-                mCollapsingToolbar.setStatusBarScrimColor(trackColor);
-            } else {
-                UIUtils.adjustAndSetStatusBarColor(getActivity(), trackColor);
-            }
-
         }
+    }
+
+    private void setToolbarTint(ColorStateList tintList) {
+        mBackButton.setImageTintList(tintList);
+        mShareButton.setImageTintList(tintList);
     }
 
     private void enterTransitionStarted() {
@@ -610,8 +620,8 @@ public class SessionDetailFragment extends Fragment implements
 
     private void returnTransitionStarted() {
         // Fade the header bar for a smoother transition.
-        final ObjectAnimator color = ObjectAnimator.ofInt(mHeaderBox, UIUtils.BACKGROUND_COLOR,
-                        ContextCompat.getColor(getContext(), R.color.background));
+        final ObjectAnimator color = ObjectAnimator.ofInt(mAppBar, UIUtils.BACKGROUND_COLOR,
+                ContextCompat.getColor(getContext(), R.color.background));
         color.setEvaluator(new ArgbEvaluator());
         color.setDuration(200L);
         color.start();
@@ -638,148 +648,41 @@ public class SessionDetailFragment extends Fragment implements
         }
     }
 
-    private void displayFeedbackData(SessionDetailModel data) {
-        if (data.hasFeedback()) {
-            final MessageCardView giveFeedbackCardView =
-                    (MessageCardView) getActivity().findViewById(R.id.give_feedback_card);
-            if (giveFeedbackCardView != null) {
-                giveFeedbackCardView.setVisibility(View.GONE);
-            }
-        }
-        LOGD(TAG, "User " + (data.hasFeedback() ? "already gave" : "has not given")
-                + " feedback for session.");
-    }
-
     private void displaySpeakersData(SessionDetailModel data) {
         final ViewGroup speakersGroup = (ViewGroup) getActivity()
                 .findViewById(R.id.session_speakers_block);
-
-        // Remove all existing speakers (everything but first child, which is the header)
-        for (int i = speakersGroup.getChildCount() - 1; i >= 1; i--) {
-            speakersGroup.removeViewAt(i);
-        }
+        speakersGroup.removeAllViews();
 
         final LayoutInflater inflater = getActivity().getLayoutInflater();
-
-        boolean hasSpeakers = false;
-
         List<SessionDetailModel.Speaker> speakers = data.getSpeakers();
+        for (SessionDetailModel.Speaker speaker : speakers) {
+            View speakerView = inflater.inflate(R.layout.speaker_detail, speakersGroup, false);
+            ImageView speakerImage = (ImageView) speakerView.findViewById(R.id.speaker_image);
+            TextView speakerName = (TextView) speakerView.findViewById(R.id.speaker_name);
+            TextView speakerCompany = (TextView) speakerView.findViewById(R.id.speaker_company);
 
-        for (final SessionDetailModel.Speaker speaker : speakers) {
-
-            String speakerHeader = speaker.getName();
-            if (!TextUtils.isEmpty(speaker.getCompany())) {
-                speakerHeader += ", " + speaker.getCompany();
-            }
-
-            final View speakerView = inflater
-                    .inflate(R.layout.speaker_detail, speakersGroup, false);
-            final TextView speakerHeaderView = (TextView) speakerView
-                    .findViewById(R.id.speaker_header);
-            final ImageView speakerImageView = (ImageView) speakerView
-                    .findViewById(R.id.speaker_image);
-            final TextView speakerAbstractView = (TextView) speakerView
-                    .findViewById(R.id.speaker_abstract);
-            final ImageView plusOneIcon = (ImageView) speakerView.findViewById(R.id.gplus_icon_box);
-            final ImageView twitterIcon = (ImageView) speakerView.findViewById(
-                    R.id.twitter_icon_box);
-
-            setUpSpeakerSocialIcon(speaker, twitterIcon, speaker.getTwitterUrl(),
-                    UIUtils.TWITTER_COMMON_NAME, UIUtils.TWITTER_PACKAGE_NAME);
-
-            setUpSpeakerSocialIcon(speaker, plusOneIcon, speaker.getPlusoneUrl(),
-                    UIUtils.GOOGLE_PLUS_COMMON_NAME, UIUtils.GOOGLE_PLUS_PACKAGE_NAME);
-
-            // A speaker may have both a Twitter and GPlus page, only a Twitter page or only a
-            // GPlus page, or neither. By default, align the Twitter icon to the right and the GPlus
-            // icon to its left. If only a single icon is displayed, align it to the right.
-            determineSocialIconPlacement(plusOneIcon, twitterIcon);
-
-            if (!TextUtils.isEmpty(speaker.getImageUrl()) && mImageLoader != null) {
-                mImageLoader.loadImage(speaker.getImageUrl(), speakerImageView);
-            }
-
-            speakerHeaderView.setText(speakerHeader);
-            speakerImageView.setImportantForAccessibility(View.IMPORTANT_FOR_ACCESSIBILITY_NO);
-            UIUtils.setTextMaybeHtml(speakerAbstractView, speaker.getAbstract());
-
-            if (!TextUtils.isEmpty(speaker.getUrl())) {
-                speakerImageView.setEnabled(true);
-                speakerImageView.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        Intent speakerProfileIntent = new Intent(Intent.ACTION_VIEW,
-                                Uri.parse(speaker.getUrl()));
-                        speakerProfileIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_WHEN_TASK_RESET);
-                        UIUtils.preferPackageForIntent(getActivity(),
-                                speakerProfileIntent,
-                                UIUtils.GOOGLE_PLUS_PACKAGE_NAME);
-                        getActivity().startActivity(speakerProfileIntent);
-                    }
-                });
+            speakerName.setText(speaker.getName());
+            if (TextUtils.isEmpty(speaker.getCompany())) {
+                speakerCompany.setVisibility(View.GONE);
             } else {
-                speakerImageView.setEnabled(false);
-                speakerImageView.setOnClickListener(null);
+                speakerCompany.setText(speaker.getCompany());
+            }
+            if (!TextUtils.isEmpty(speaker.getImageUrl()) && mImageLoader != null) {
+                mImageLoader.loadImage(speaker.getImageUrl(), speakerImage);
             }
 
             speakersGroup.addView(speakerView);
-            hasSpeakers = true;
         }
 
-        speakersGroup.setVisibility(hasSpeakers ? View.VISIBLE : View.GONE);
+        speakersGroup.setVisibility(speakersGroup.getChildCount() > 0 ? View.VISIBLE : View.GONE);
         updateEmptyView(data);
     }
 
-    /**
-     * Determines visibility of a social icon, sets up a click listener to allow the user to
-     * navigate to the social network associated with the icon, and sets up a content description
-     * for the icon.
-     */
-    private void setUpSpeakerSocialIcon(final SessionDetailModel.Speaker speaker,
-            ImageView socialIcon, final String socialUrl,
-            String socialNetworkName, final String packageName) {
-        if (socialUrl == null || socialUrl.isEmpty()) {
-            socialIcon.setVisibility(View.GONE);
-        } else {
-            socialIcon.setContentDescription(getString(
-                            R.string.speaker_social_page,
-                            socialNetworkName,
-                            speaker.getName())
-            );
-            socialIcon.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    UIUtils.fireSocialIntent(
-                            getActivity(),
-                            Uri.parse(socialUrl),
-                            packageName
-                    );
-                }
-            });
-        }
-    }
-
-    /**
-     * Aligns the Twitter icon the parent bottom right. Aligns the G+ icon to the left of the
-     * Twitter icon if it is present. Otherwise, aligns the G+ icon to the parent bottom right.
-     */
-    private void determineSocialIconPlacement(ImageView plusOneIcon, ImageView twitterIcon) {
-        if (plusOneIcon.getVisibility() == View.VISIBLE) {
-            // Set the dimensions of the G+ button.
-            int socialIconDimension = getResources().getDimensionPixelSize(
-                    R.dimen.social_icon_box_size);
-            RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(
-                    socialIconDimension, socialIconDimension);
-            params.addRule(RelativeLayout.BELOW, R.id.speaker_abstract);
-            params.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
-
-            if (twitterIcon.getVisibility() == View.VISIBLE) {
-                params.addRule(RelativeLayout.LEFT_OF, R.id.twitter_icon_box);
-            } else {
-                params.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
-            }
-            plusOneIcon.setLayoutParams(params);
-        }
+    private void displayRelatedSessions(SessionDetailModel data) {
+        mRelatedSessionsAdapter.updateItems(data.getRelatedSessions());
+        int visibility = mRelatedSessionsAdapter.getItemCount() > 0 ? View.VISIBLE : View.GONE;
+        mRelatedSessions.setVisibility(visibility);
+        mRelatedSessionsLabel.setVisibility(visibility);
     }
 
     private void updateEmptyView(SessionDetailModel data) {
@@ -791,10 +694,6 @@ public class SessionDetailFragment extends Fragment implements
     }
 
     private void updateTimeBasedUi(SessionDetailModel data) {
-        // Show "Live streamed" label for all live-streamed sessions unless it has ended
-        mLiveStreamedIndicator.setVisibility(
-                (data.hasLiveStream() && !data.hasSessionEnded()) ? View.VISIBLE : View.GONE);
-
         if (data.showLiveStream()) {
             // Show the play button and text only once the session is about to start.
             mWatchVideo.setVisibility(View.VISIBLE);
@@ -809,15 +708,14 @@ public class SessionDetailFragment extends Fragment implements
             mWatchVideo.setVisibility(View.GONE);
         }
 
-        // If the session is done, hide the FAB, and show the "Give feedback" card.
-        if (data.isSessionReadyForFeedback()) {
-            mShowFab = false;
-            mAddScheduleFab.setVisibility(View.GONE);
-            if (!data.hasFeedback() && data.isInScheduleWhenSessionFirstLoaded() &&
-                    !sDismissedFeedbackCard.contains(data.getSessionId())) {
-                showGiveFeedbackCard(data);
-            }
+        // If the session is done, hide the FAB, and show the feedback button.
+        mShowFab = !data.isSessionReadyForFeedback();
+        if (mShowFab) {
+            mAddScheduleFab.show();
+        } else {
+            mAddScheduleFab.hide();
         }
+        updateFeedbackButton(data);
 
         String timeHint = "";
 
@@ -856,78 +754,58 @@ public class SessionDetailFragment extends Fragment implements
     }
 
     private void displayTags(SessionDetailModel data) {
-        if (data.getTagMetadata() == null || data.getTagsString() == null) {
-            mTagsContainer.setVisibility(View.GONE);
-            return;
-        }
+        mRelatedSessionsAdapter.setTagMetadata(data.getTagMetadata());
 
-        if (TextUtils.isEmpty(data.getTagsString())) {
-            mTagsContainer.setVisibility(View.GONE);
-        } else {
-            mTagsContainer.setVisibility(View.VISIBLE);
-            mTags.removeAllViews();
-            LayoutInflater inflater = LayoutInflater.from(getContext());
-            String[] tagIds = data.getTagsString().split(",");
-
-            List<TagMetadata.Tag> tags = new ArrayList<>();
-            for (String tagId : tagIds) {
-                if (Config.Tags.SESSIONS.equals(tagId) ||
-                        Config.Tags.SPECIAL_KEYNOTE.equals(tagId)) {
-                    continue;
-                }
-
-                TagMetadata.Tag tag = data.getTagMetadata().getTag(tagId);
-                if (tag == null) {
-                    continue;
-                }
-
-                tags.add(tag);
-            }
-
-            if (tags.size() == 0) {
-                mTagsContainer.setVisibility(View.GONE);
-                return;
-            }
-
-            Collections.sort(tags, TagMetadata.TAG_DISPLAY_ORDER_COMPARATOR);
-
-            for (final TagMetadata.Tag tag : tags) {
-                TextView chipView = (TextView) inflater.inflate(
-                        R.layout.include_session_tag_chip, mTags, false);
-                chipView.setText(tag.getName());
-                chipView.setContentDescription(tag.getName());
-                chipView.setOnClickListener(new View.OnClickListener() {
+        // TODO determine how to handle tags that aren't filterable (b/36001587)
+        // For now just do the main tag
+        mTags.removeAllViews();
+        LayoutInflater inflater = LayoutInflater.from(mTags.getContext());
+        if (data.getTagMetadata() != null) {
+            final Tag mainTag = data.getTagMetadata().getTag(data.getMainTag());
+            if (mainTag != null) {
+                TextView tagView = (TextView) inflater.inflate(R.layout.include_schedule_tag, mTags,
+                        false);
+                tagView.setText(mainTag.getName());
+                tagView.setBackgroundTintList(ColorStateList.valueOf(mainTag.getColor()));
+                tagView.setOnClickListener(new OnClickListener() {
                     @Override
-                    public void onClick(View view) {
-                        Intent intent = new Intent(getContext(), ExploreSessionsActivity.class)
-                                .putExtra(ExploreSessionsActivity.EXTRA_FILTER_TAG, tag.getId())
-                                .addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                        getActivity().startActivity(intent);
+                    public void onClick(View v) {
+                        MyScheduleActivity.launchScheduleWithFilterTag(getContext(), mainTag);
                     }
                 });
-
-                mTags.addView(chipView);
+                mTags.addView(tagView);
             }
         }
+
+        if (data.isKeynote() || data.hasLiveStream()) {
+            if (mTags.getChildCount() > 0) {
+                // Insert the spacer first
+                inflater.inflate(R.layout.include_schedule_live_spacer, mTags);
+            }
+            inflater.inflate(R.layout.include_schedule_live, mTags);
+        }
+
+        mTagsContainer.setVisibility(mTags.getChildCount() > 0 ? View.VISIBLE : View.GONE);
     }
 
-    private void showGiveFeedbackCard(final SessionDetailModel data) {
-        final MessageCardView messageCardView = (MessageCardView) getActivity().findViewById(
-                R.id.give_feedback_card);
-        messageCardView.show();
-        messageCardView.setListener(new MessageCardView.OnMessageCardButtonClicked() {
-            @Override
-            public void onMessageCardButtonClicked(String tag) {
-                if (getResources().getString(R.string.tag_give_feedback).equals(tag)) {
+    private void updateFeedbackButton(final SessionDetailModel data) {
+        mFeedbackButton.setVisibility(data.hasFeedback() ? View.GONE : View.VISIBLE);
+        if (!data.hasFeedback() && data.isInScheduleWhenSessionFirstLoaded()) {
+            mFeedbackButton.setVisibility(View.VISIBLE);
+            mFeedbackButton.setOnClickListener(new OnClickListener() {
+                @Override
+                public void onClick(View v) {
                     sendUserAction(SessionDetailUserActionEnum.GIVE_FEEDBACK, null);
                     Intent intent = data.getFeedbackIntent();
-                    getActivity().startActivity(intent);
-                } else {
-                    sDismissedFeedbackCard.add(data.getSessionId());
-                    messageCardView.dismiss();
+                    startActivity(intent);
                 }
-            }
-        });
+            });
+            LOGD(TAG, "User has not given feedback for session.");
+        } else {
+            mFeedbackButton.setVisibility(View.GONE);
+            mFeedbackButton.setOnClickListener(null);
+            LOGD(TAG, "User already gave feedback for session.");
+        }
     }
 
     private void showInScheduleDeferred(final boolean isInSchedule) {
@@ -953,19 +831,6 @@ public class SessionDetailFragment extends Fragment implements
         }
     }
 
-    /*
-         * Event structure:
-         * Category -> "Session Details"
-         * Action -> Link Text
-         * Label -> Session's Title
-         * Value -> 0.
-         */
-    private void fireLinkEvent(int actionId, SessionDetailModel data) {
-        // ANALYTICS EVENT:  Click on a link in the Session Details page.
-        // Contains: The link's name and the session title.
-        AnalyticsHelper.sendEvent("Session", getString(actionId), data.getSessionTitle());
-    }
-
     private Action getActionForTitle(String title) {
         Uri sessionUri = ((SessionDetailActivity) getActivity()).getSessionUri();
         String uuid = sessionUri.toString().substring(sessionUri.toString().lastIndexOf("/") + 1);
@@ -988,5 +853,64 @@ public class SessionDetailFragment extends Fragment implements
         return new Action.Builder(Action.TYPE_VIEW)
                 .setObject(session)
                 .build();
+    }
+
+    private void fadeInToolbarTitle() {
+        if (mToolbarTitleAlpha < 1f) {
+            mToolbarTitleAlpha = 1f;
+            mToolbarTitle.animate().alpha(mToolbarTitleAlpha).start();
+        }
+    }
+
+    private void fadeOutToolbarTitle() {
+        if (mToolbarTitleAlpha > 0f) {
+            mToolbarTitleAlpha = 0f;
+            mToolbarTitle.animate().alpha(mToolbarTitleAlpha).start();
+        }
+    }
+
+    private void fadeInHeaderImage() {
+        if (mHeaderImageAlpha < 1f) {
+            mHeaderImageAlpha = 1f;
+            mPhotoViewContainer.animate()
+                    .setDuration(mHeaderAnimDuration)
+                    .alpha(mHeaderImageAlpha)
+                    .start();
+        }
+    }
+
+    private void fadeOutHeaderImage() {
+        if (mHeaderImageAlpha > 0f) {
+            mHeaderImageAlpha = 0f;
+            mPhotoViewContainer.animate()
+                    .setDuration(mHeaderAnimDuration)
+                    .alpha(mHeaderImageAlpha)
+                    .start();
+        }
+    }
+
+    @Override
+    public void onSessionClicked(Uri sessionUri) {
+        startActivity(new Intent(Intent.ACTION_VIEW, sessionUri));
+    }
+
+    @Override
+    public void onBookmarkClicked(String sessionId, boolean isInSchedule) {
+        Bundle args = new Bundle();
+        args.putString(Sessions.SESSION_ID, sessionId);
+        SessionDetailUserActionEnum action = isInSchedule
+                ? SessionDetailUserActionEnum.UNSTAR_RELATED
+                : SessionDetailUserActionEnum.STAR_RELATED;
+        sendUserAction(action, args);
+    }
+
+    @Override
+    public void onFeedbackClicked(String sessionId, String sessionTitle) {
+        SessionFeedbackActivity.launchFeedback(getContext(), sessionId);
+    }
+
+    @Override
+    public void onTagClicked(Tag tag) {
+        MyScheduleActivity.launchScheduleWithFilterTag(getContext(), tag);
     }
 }

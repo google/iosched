@@ -22,7 +22,6 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SyncStatusObserver;
 import android.content.pm.PackageManager;
-import android.content.res.Resources;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -35,15 +34,13 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
-import android.util.TypedValue;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.WindowManager;
 
 import com.google.android.gms.auth.GoogleAuthUtil;
+import com.google.samples.apps.iosched.injection.MessagingRegistrationProvider;
 import com.google.samples.apps.iosched.lib.BuildConfig;
 import com.google.samples.apps.iosched.lib.R;
-import com.google.samples.apps.iosched.injection.MessagingRegistrationProvider;
 import com.google.samples.apps.iosched.messaging.MessagingRegistration;
 import com.google.samples.apps.iosched.navigation.AppNavigationView;
 import com.google.samples.apps.iosched.navigation.AppNavigationViewAsBottomNavImpl;
@@ -90,10 +87,6 @@ public abstract class BaseActivity extends AppCompatActivity implements
     private Object mSyncObserverHandle;
 
     private boolean mDestroyed;
-
-    // note: not saved during configuration changes
-    private boolean mIsFloatingWindow;
-    private boolean mIsFloatingWindowSet = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -211,8 +204,7 @@ public abstract class BaseActivity extends AppCompatActivity implements
         if (activeAccount == null) {
             return;
         }
-        ContentResolver contentResolver = getContentResolver();
-        if (contentResolver.isSyncActive(activeAccount, ScheduleContract.CONTENT_AUTHORITY)) {
+        if (ContentResolver.isSyncActive(activeAccount, ScheduleContract.CONTENT_AUTHORITY)) {
             LOGD(TAG, "Ignoring manual sync request because a sync is already in progress.");
             return;
         }
@@ -336,10 +328,11 @@ public abstract class BaseActivity extends AppCompatActivity implements
     protected void setToolbarAsUp(View.OnClickListener clickListener) {
         // Initialise the toolbar
         getToolbar();
-
-        mToolbar.setNavigationIcon(R.drawable.ic_up);
-        mToolbar.setNavigationContentDescription(R.string.close_and_go_back);
-        mToolbar.setNavigationOnClickListener(clickListener);
+        if (mToolbar != null) {
+            mToolbar.setNavigationIcon(R.drawable.ic_up);
+            mToolbar.setNavigationContentDescription(R.string.close_and_go_back);
+            mToolbar.setNavigationOnClickListener(clickListener);
+        }
     }
 
     @Override
@@ -394,38 +387,6 @@ public abstract class BaseActivity extends AppCompatActivity implements
     @Override
     public boolean canSwipeRefreshChildScrollUp() {
         return false;
-    }
-
-    /**
-     * Configure this Activity as a floating window, with the given {@code width}, {@code height}
-     * and {@code alpha}, and dimming the background with the given {@code dim} value.
-     */
-    protected void setupFloatingWindow(int width, int height, int alpha, float dim) {
-        WindowManager.LayoutParams params = getWindow().getAttributes();
-        params.width = getResources().getDimensionPixelSize(width);
-        params.height = getResources().getDimensionPixelSize(height);
-        params.alpha = alpha;
-        params.dimAmount = dim;
-        params.flags |= WindowManager.LayoutParams.FLAG_DIM_BEHIND;
-        getWindow().setAttributes(params);
-    }
-
-    /**
-     * Returns true if the theme sets the {@code R.attr.isFloatingWindow} flag to true.
-     */
-    public boolean shouldBeFloatingWindow() {
-        if (!mIsFloatingWindowSet) {
-            Resources.Theme theme = getTheme();
-            TypedValue floatingWindowFlag = new TypedValue();
-
-            // Check isFloatingWindow flag is defined in theme.
-            mIsFloatingWindow = theme != null
-                    && theme.resolveAttribute(R.attr.isFloatingWindow, floatingWindowFlag, true)
-                    && floatingWindowFlag.data != 0;
-            mIsFloatingWindowSet = true;
-        }
-
-        return mIsFloatingWindow;
     }
 
     protected String getScreenLabel() {

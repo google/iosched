@@ -20,11 +20,9 @@ import static com.google.samples.apps.iosched.util.LogUtils.LOGD;
 import static com.google.samples.apps.iosched.util.LogUtils.makeLogTag;
 
 import android.content.Context;
-import android.content.Intent;
 import android.content.res.ColorStateList;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
-import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
@@ -43,15 +41,12 @@ import android.widget.TextView;
 
 import com.google.android.flexbox.FlexboxLayout;
 import com.google.samples.apps.iosched.Config;
-import com.google.samples.apps.iosched.archframework.UpdatableView.UserActionListener;
-import com.google.samples.apps.iosched.feedback.SessionFeedbackActivity;
 import com.google.samples.apps.iosched.lib.R;
 import com.google.samples.apps.iosched.messages.MessageData;
 import com.google.samples.apps.iosched.model.ScheduleItem;
 import com.google.samples.apps.iosched.model.ScheduleItemHelper;
 import com.google.samples.apps.iosched.model.TagMetadata;
 import com.google.samples.apps.iosched.model.TagMetadata.Tag;
-import com.google.samples.apps.iosched.myschedule.MyScheduleModel.MyScheduleUserActionEnum;
 import com.google.samples.apps.iosched.provider.ScheduleContract;
 import com.google.samples.apps.iosched.util.TimeUtils;
 
@@ -72,28 +67,42 @@ public class MyScheduleDayAdapter
     private static final int ITEM_TYPE_SLOT = 0;
     private static final int ITEM_TYPE_TIME_HEADER = 1;
 
-    private final Context mContext;
-
     // list of items served by this adapter
-    private final ArrayList mItems = new ArrayList();
-    private final UserActionListener<MyScheduleUserActionEnum> mUserActionListener;
+    private final List<Object> mItems = new ArrayList<>();
 
+    private final boolean mShowTimeSeparators;
     private TagMetadata mTagMetadata;
     private ScheduleAdapterListener mScheduleAdapterListener;
 
-    interface ScheduleAdapterListener {
+    public interface ScheduleAdapterListener {
+        /**
+         * @param sessionUri The Uri of the clicked session
+         */
+        void onSessionClicked(Uri sessionUri);
+
+        /**
+         * @param sessionId The ID of the session
+         * @param isInSchedule Whether the session is bookmarked in the backing data
+         */
+        void onBookmarkClicked(String sessionId, boolean isInSchedule);
+
+        /**
+         * @param sessionId The ID of the session
+         * @param sessionTitle The title of the session
+         */
+        void onFeedbackClicked(String sessionId, String sessionTitle);
+
+        /**
+         * @param tag The tag that was clicked
+         */
         void onTagClicked(Tag tag);
     }
 
-    public MyScheduleDayAdapter(@NonNull Context context,
-            @NonNull UserActionListener<MyScheduleUserActionEnum> userActionListener,
-            @NonNull ScheduleAdapterListener adapterListener,
-            @Nullable TagMetadata tagMetadata) {
-        mContext = context;
-        mUserActionListener = userActionListener;
+    public MyScheduleDayAdapter(@NonNull ScheduleAdapterListener adapterListener,
+            @Nullable TagMetadata tagMetadata, boolean showTimeSeparators) {
         mScheduleAdapterListener = adapterListener;
         mTagMetadata = tagMetadata;
-
+        mShowTimeSeparators = showTimeSeparators;
         setHasStableIds(true);
     }
 
@@ -119,13 +128,8 @@ public class MyScheduleDayAdapter
         @Override
         public void onClick(View v) {
             Object tag = v.getTag(R.id.myschedule_uri_tagkey);
-            if (tag instanceof Uri) {
-                Uri uri = (Uri) tag;
-                Bundle bundle = new Bundle();
-                bundle.putString(MyScheduleModel.SESSION_URL_KEY, uri.toString());
-                mUserActionListener.onUserAction(MyScheduleUserActionEnum.SESSION_SLOT, bundle);
-
-                mContext.startActivity(new Intent(Intent.ACTION_VIEW, uri));
+            if (tag instanceof Uri && mScheduleAdapterListener != null) {
+                mScheduleAdapterListener.onSessionClicked((Uri) tag);
             }
         }
     };
@@ -179,8 +183,14 @@ public class MyScheduleDayAdapter
 
     public void updateItems(final List<ScheduleItem> items) {
         mItems.clear();
+        if (items == null) {
+            notifyDataSetChanged();
+            return;
+        }
 
-        if (items != null) {
+        if (!mShowTimeSeparators) {
+          mItems.addAll(items);
+        } else {
             for (int i = 0, size = items.size(); i < size; i++) {
                 final ScheduleItem prev = i > 0 ? items.get(i - 1) : null;
                 final ScheduleItem item = items.get(i);
@@ -268,15 +278,10 @@ public class MyScheduleDayAdapter
                     feedback.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View view) {
-                            Bundle bundle = new Bundle();
-                            bundle.putString(MyScheduleModel.SESSION_ID_KEY, item.sessionId);
-                            bundle.putString(MyScheduleModel.SESSION_TITLE_KEY, item.title);
-                            mUserActionListener.onUserAction(MyScheduleUserActionEnum.FEEDBACK, bundle);
-
-                            Intent feedbackIntent = new Intent(Intent.ACTION_VIEW,
-                                    ScheduleContract.Sessions.buildSessionUri(item.sessionId),
-                                    context, SessionFeedbackActivity.class);
-                            context.startActivity(feedbackIntent);
+                            if (mScheduleAdapterListener != null) {
+                                mScheduleAdapterListener.onFeedbackClicked(item.sessionId,
+                                        item.title);
+                            }
                         }
                     });
                 }
@@ -342,12 +347,10 @@ public class MyScheduleDayAdapter
                             // Toggle now so that it looks immediate
                             view.setActivated(!view.isActivated());
 
-                            MyScheduleUserActionEnum action = item.inSchedule
-                                    ? MyScheduleUserActionEnum.SESSION_UNSTAR
-                                    : MyScheduleUserActionEnum.SESSION_STAR;
-                            Bundle bundle = new Bundle();
-                            bundle.putString(MyScheduleModel.SESSION_ID_KEY, item.sessionId);
-                            mUserActionListener.onUserAction(action, bundle);
+                            if (mScheduleAdapterListener != null) {
+                                mScheduleAdapterListener.onBookmarkClicked(item.sessionId,
+                                        item.inSchedule);
+                            }
                         }
                     });
                 }

@@ -16,12 +16,6 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
-        android:id="@+id/menu_map_room"
-        android:icon="@drawable/ic_action_map"
-        android:orderInCategory="1"
-        android:title="@string/description_map"
-        app:showAsAction="ifRoom" />
-    <item
         android:id="@+id/menu_share"
         android:icon="@drawable/ic_action_share"
         android:orderInCategory="1"
