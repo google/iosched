@@ -16,8 +16,6 @@
 <shape xmlns:android="http://schemas.android.com/apk/res/android"
     android:shape="rectangle">
 
-    <corners android:radius="@dimen/card_corner_radius" />
-
     <padding
         android:bottom="4dp"
         android:left="8dp"

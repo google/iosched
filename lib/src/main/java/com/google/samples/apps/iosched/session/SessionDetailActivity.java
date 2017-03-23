@@ -16,15 +16,11 @@
 
 package com.google.samples.apps.iosched.session;
 
-import static com.google.samples.apps.iosched.util.LogUtils.LOGE;
-
 import android.app.Activity;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.Handler;
 import android.support.v4.app.ActivityCompat;
-import android.support.v7.widget.Toolbar;
 import android.view.View;
 
 import com.google.samples.apps.iosched.lib.R;
@@ -35,6 +31,8 @@ import com.google.samples.apps.iosched.util.BeamUtils;
 import com.google.samples.apps.iosched.util.LogUtils;
 import com.google.samples.apps.iosched.util.UIUtils;
 
+import static com.google.samples.apps.iosched.util.LogUtils.LOGE;
+
 /**
  * Displays the details about a session. This Activity is launched via an {@code Intent} with {@link
  * Intent#ACTION_VIEW} and a {@link Uri} built with {@link com.google.samples.apps.iosched
@@ -43,8 +41,6 @@ import com.google.samples.apps.iosched.util.UIUtils;
 public class SessionDetailActivity extends BaseActivity {
 
     private static final String TAG = LogUtils.makeLogTag(SessionDetailActivity.class);
-
-    private Handler mHandler = new Handler();
 
     private Uri mSessionUri;
 
@@ -71,14 +67,6 @@ public class SessionDetailActivity extends BaseActivity {
             @Override
             public void onClick(View view) {
                 ActivityCompat.finishAfterTransition(SessionDetailActivity.this);
-            }
-        });
-        final Toolbar toolbar = getToolbar();
-        mHandler.post(new Runnable() {
-            @Override
-            public void run() {
-                // Do not display the Activity name in the toolbar
-                toolbar.setTitle("");
             }
         });
     }

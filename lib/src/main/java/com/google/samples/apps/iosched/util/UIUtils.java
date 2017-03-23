@@ -16,9 +16,6 @@
 
 package com.google.samples.apps.iosched.util;
 
-import static com.google.samples.apps.iosched.util.LogUtils.LOGE;
-import static com.google.samples.apps.iosched.util.LogUtils.makeLogTag;
-
 import android.annotation.TargetApi;
 import android.app.Activity;
 import android.content.ContentResolver;
@@ -76,14 +73,13 @@ import com.google.samples.apps.iosched.provider.ScheduleContract;
 import com.google.samples.apps.iosched.provider.ScheduleContract.Rooms;
 import com.google.samples.apps.iosched.settings.SettingsUtils;
 
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.Formatter;
-import java.util.Locale;
 import java.util.TimeZone;
 import java.util.regex.Pattern;
+
+import static com.google.samples.apps.iosched.util.LogUtils.LOGE;
+import static com.google.samples.apps.iosched.util.LogUtils.makeLogTag;
 
 /**
  * An assortment of UI helpers.
@@ -104,7 +100,8 @@ public class UIUtils {
      * Flags used with {@link DateUtils#formatDateRange}.
      */
     private static final int TIME_FLAGS = DateUtils.FORMAT_SHOW_TIME
-            | DateUtils.FORMAT_SHOW_DATE;
+            | DateUtils.FORMAT_SHOW_DATE | DateUtils.FORMAT_NO_YEAR
+            | DateUtils.FORMAT_SHOW_WEEKDAY | DateUtils.FORMAT_ABBREV_WEEKDAY;
 
     /**
      * Regex to search for HTML escape sequences. <p/> <p></p>Searches for any continuous string of
@@ -122,19 +119,12 @@ public class UIUtils {
     public static final String GOOGLE_PLUS_COMMON_NAME = "Google Plus";
     public static final String TWITTER_COMMON_NAME = "Twitter";
 
-    public static String formatSessionSubtitle(long intervalStart, long intervalEnd,
-            String roomName, StringBuilder recycle,
-            Context context) {
-        return formatSessionSubtitle(intervalStart, intervalEnd, roomName, recycle, context, false);
-    }
-
     /**
      * Format and return the given session time and {@link Rooms} values using {@link
      * Config#CONFERENCE_TIMEZONE}.
      */
     public static String formatSessionSubtitle(long intervalStart, long intervalEnd,
-            String roomName, StringBuilder recycle,
-            Context context, boolean shortFormat) {
+            String roomName, StringBuilder recycle, Context context) {
 
         // Determine if the session is in the past
         long currentTimeMillis = TimeUtils.getCurrentTime(context);
@@ -147,21 +137,9 @@ public class UIUtils {
         if (roomName == null) {
             roomName = context.getString(R.string.unknown_room);
         }
-
-        if (shortFormat) {
-            TimeZone timeZone = SettingsUtils.getDisplayTimeZone(context);
-            Date intervalStartDate = new Date(intervalStart);
-            SimpleDateFormat shortDateFormat = new SimpleDateFormat("MMM dd", Locale.getDefault());
-            DateFormat shortTimeFormat = DateFormat.getTimeInstance(DateFormat.SHORT);
-            shortDateFormat.setTimeZone(timeZone);
-            shortTimeFormat.setTimeZone(timeZone);
-            return shortDateFormat.format(intervalStartDate) + " "
-                    + shortTimeFormat.format(intervalStartDate);
-        } else {
-            String timeInterval = formatIntervalTimeString(intervalStart, intervalEnd, recycle,
-                    context);
-            return context.getString(R.string.session_subtitle, timeInterval, roomName);
-        }
+        String timeInterval = formatIntervalTimeString(intervalStart, intervalEnd, recycle,
+                context);
+        return timeInterval + "\n" + roomName;
     }
 
     /**

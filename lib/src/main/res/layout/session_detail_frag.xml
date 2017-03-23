@@ -37,8 +37,10 @@
             android:id="@+id/collapsing_toolbar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:minHeight="?actionBarSize"
             app:layout_scrollFlags="scroll|exitUntilCollapsed"
             android:background="@null"
+            android:duplicateParentState="true"
             android:fitsSystemWindows="true"
             app:titleEnabled="false">
 
@@ -78,7 +80,52 @@
 
             </com.google.samples.apps.iosched.ui.widget.AspectRatioView>
 
-            <include layout="@layout/toolbar_session_detail" />
+            <LinearLayout
+                android:id="@+id/session_detail_toolbar"
+                android:layout_width="match_parent"
+                android:layout_height="?actionBarSize"
+                app:layout_collapseMode="pin"
+                android:baselineAligned="false"
+                android:duplicateParentState="true"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:theme="@style/ActionBarThemeOverlay.SessionDetail">
+
+                <ImageView
+                    android:id="@+id/back"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="?selectableItemBackgroundBorderless"
+                    android:contentDescription="@string/close_and_go_back"
+                    android:duplicateParentState="true"
+                    android:minHeight="@dimen/a11y_min_touch_target_dimen"
+                    android:minWidth="@dimen/a11y_min_touch_target_dimen"
+                    android:scaleType="center"
+                    app:srcCompat="@drawable/ic_up" />
+
+                <TextView
+                    android:id="@+id/toolbar_title"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:alpha="0"
+                    android:ellipsize="end"
+                    android:lines="1"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Widget.ActionBar.Title" />
+
+                <ImageView
+                    android:id="@+id/share"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="?selectableItemBackgroundBorderless"
+                    android:contentDescription="@string/description_share"
+                    android:duplicateParentState="true"
+                    android:minHeight="@dimen/a11y_min_touch_target_dimen"
+                    android:minWidth="@dimen/a11y_min_touch_target_dimen"
+                    android:scaleType="center"
+                    app:srcCompat="@drawable/ic_action_share" />
+
+            </LinearLayout>
 
         </android.support.design.widget.CollapsingToolbarLayout>
 
@@ -107,6 +154,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="@dimen/padding_normal"
                 android:layout_marginRight="@dimen/padding_normal"
+                android:layout_marginBottom="@dimen/padding_normal"
                 android:focusable="true"
                 android:visibility="gone"
                 tools:text="@string/time_hint_about_to_start_min"
@@ -119,6 +167,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="@dimen/padding_normal"
                 android:layout_marginRight="@dimen/padding_normal"
+                android:layout_marginBottom="@dimen/padding_normal"
                 android:layout_marginTop="@dimen/padding_normal"
                 android:ellipsize="end"
                 android:gravity="start"
@@ -133,7 +182,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="@dimen/padding_normal"
                 android:layout_marginRight="@dimen/padding_normal"
-                android:layout_marginTop="@dimen/padding_normal"
+                android:layout_marginBottom="@dimen/padding_normal"
                 android:ellipsize="end"
                 android:gravity="start"
                 android:maxLines="2"
@@ -147,7 +196,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="@dimen/padding_normal"
                 android:layout_marginRight="@dimen/padding_normal"
-                android:layout_marginTop="@dimen/padding_normal"
+                android:layout_marginBottom="@dimen/spacing_large"
                 android:focusable="true"
                 android:importantForAccessibility="yes"
                 android:textAlignment="viewStart"
@@ -157,7 +206,7 @@
                 android:id="@+id/session_tags_container"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/padding_normal"
+                android:layout_marginBottom="@dimen/spacing_large"
                 android:fadingEdgeLength="@dimen/padding_normal"
                 android:paddingLeft="@dimen/padding_normal"
                 android:paddingRight="@dimen/padding_normal"
@@ -180,7 +229,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="@dimen/padding_normal"
                 android:layout_marginRight="@dimen/padding_normal"
-                android:layout_marginTop="@dimen/padding_normal"
+                android:layout_marginBottom="@dimen/spacing_large"
                 android:backgroundTint="@color/feedback_button_tint"
                 android:paddingLeft="@dimen/padding_normal"
                 android:paddingRight="@dimen/padding_normal"
@@ -192,7 +241,6 @@
                 android:id="@+id/session_speakers_block"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/padding_normal"
                 android:divider="?android:listDivider"
                 android:orientation="vertical"
                 android:showDividers="beginning|middle"

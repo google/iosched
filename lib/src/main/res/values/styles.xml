@@ -128,15 +128,12 @@
     <!-- My Schedule -->
     <style name="Theme.IOSched.MySchedule" />
 
-    <style name="Theme.IOSched.SessionDetails.VersionBase" parent="Theme.IOSched">
-        <item name="android:statusBarColor">@color/dark_status_bar</item>
-    </style>
-
     <!-- Session Details -->
-    <style name="Theme.IOSched.SessionDetails" parent="Theme.IOSched.SessionDetails.VersionBase">
+    <style name="Theme.IOSched.SessionDetails" parent="Theme.IOSched">
         <item name="android:windowSharedElementEnterTransition">@transition/session_details_shared_enter</item>
         <item name="android:windowSharedElementReturnTransition">@transition/session_details_shared_return</item>
         <item name="android:windowEnterTransition">@transition/fade_system_chrome</item>
+        <item name="android:statusBarColor">@color/immersive_status_bar</item>
     </style>
 
     <!-- Empty views -->
@@ -293,7 +290,7 @@
     </style>
 
     <style name="SessionDetailsTitle">
-        <item name="android:textAppearance">@style/TextAppearance.AppCompat.Title</item>
+        <item name="android:textAppearance">@style/TextAppearance.AppCompat.Headline</item>
         <item name="android:lineSpacingMultiplier">@dimen/h3_spacing</item>
     </style>
 
