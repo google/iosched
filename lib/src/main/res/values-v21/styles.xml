@@ -30,10 +30,6 @@
         <item name="android:windowEnterTransition">@transition/fade_system_chrome</item>
     </style>
 
-    <style name="Theme.IOSched.VideoLibrary.Filtered">
-        <item name="android:windowEnterTransition">@transition/fade_system_chrome</item>
-    </style>
-
     <style name="Theme.IOSched.Welcome" parent="Theme.IOSched.Welcome.Base">
         <item name="android:statusBarColor">@color/dark_status_bar</item>
         <item name="android:navigationBarColor">@color/welcome_nav_bar</item>

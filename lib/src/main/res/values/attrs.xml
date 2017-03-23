@@ -54,11 +54,6 @@
         <attr name="android:foregroundGravity" />
     </declare-styleable>
 
-    <declare-styleable name="VideoThumbnail">
-        <attr name="playIcon" format="reference" />
-        <attr name="playedTint" format="color" />
-    </declare-styleable>
-
     <declare-styleable name="CustomRatingBar">
         <attr name="maxRating" format="integer" />
         <attr name="filledDrawable" format="integer" />

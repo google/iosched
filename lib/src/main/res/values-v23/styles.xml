@@ -31,9 +31,4 @@
         <item name="android:windowEnterTransition">@transition/fade_system_chrome</item>
     </style>
 
-    <style name="Theme.IOSched.VideoLibrary.Filtered">
-        <item name="colorPrimaryDark">@color/light_status_bar_against_header_img</item>
-        <item name="android:windowEnterTransition">@transition/fade_system_chrome</item>
-    </style>
-
 </resources>

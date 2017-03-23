@@ -101,12 +101,6 @@
         <item name="android:backgroundDimEnabled">false</item>
     </style>
 
-    <style name="Theme.IOSched.VideoLibrary" parent="Theme.IOSched.Light">
-        <item name="videoThumbnailStyle">@style/VideoThumbnail</item>
-    </style>
-
-    <style name="Theme.IOSched.VideoLibrary.Filtered" />
-
     <style name="Theme.IOSched.Feedback" parent="Theme.IOSched">
         <item name="colorAccent">@color/flat_button_text</item>
     </style>
@@ -295,11 +289,6 @@
     </style>
 
     <style name="SessionDetailsSubtitle" parent="@style/Body2Text">
-    </style>
-
-    <style name="VideoThumbnail">
-        <item name="playIcon">@drawable/ic_play_shadowed</item>
-        <item name="playedTint">@color/played_video_tint</item>
     </style>
 
     <style name="SettingsPreferenceThemeOverlay" parent="PreferenceThemeOverlay">
