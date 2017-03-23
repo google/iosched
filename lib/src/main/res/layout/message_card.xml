@@ -85,7 +85,7 @@
             android:layout_width="wrap_content"
             android:layout_height="36dp"
             android:background="?android:selectableItemBackground"
-            android:fontFamily="@string/font_fontFamily_medium"
+            android:fontFamily="sans-serif-medium"
             android:gravity="center_vertical"
             android:minWidth="48dp"
             android:paddingLeft="16dp"
@@ -93,7 +93,6 @@
             android:text="@string/placeholder_button_label_1"
             android:textColor="#80000000"
             android:textSize="@dimen/text_size_medium"
-            android:textStyle="@integer/font_textStyle_medium"
             />
 
         <Button
@@ -101,7 +100,7 @@
             style="?android:borderlessButtonStyle"
             android:layout_width="wrap_content"
             android:layout_height="36dp"
-            android:fontFamily="@string/font_fontFamily_medium"
+            android:fontFamily="sans-serif-medium"
             android:gravity="center_vertical"
             android:minWidth="48dp"
             android:paddingLeft="16dp"
@@ -109,7 +108,6 @@
             android:text="@string/placeholder_button_label_2"
             android:textColor="#80000000"
             android:textSize="@dimen/text_size_medium"
-            android:textStyle="@integer/font_textStyle_medium"
             />
 
     </LinearLayout>

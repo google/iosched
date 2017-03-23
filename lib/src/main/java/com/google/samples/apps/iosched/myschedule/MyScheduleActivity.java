@@ -16,10 +16,6 @@
 
 package com.google.samples.apps.iosched.myschedule;
 
-import static com.google.samples.apps.iosched.util.LogUtils.LOGD;
-import static com.google.samples.apps.iosched.util.LogUtils.LOGE;
-import static com.google.samples.apps.iosched.util.LogUtils.makeLogTag;
-
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -38,7 +34,6 @@ import android.text.method.LinkMovementMethod;
 import android.text.util.Linkify;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
 import android.widget.TextView;
 
 import com.google.samples.apps.iosched.archframework.PresenterImpl;
@@ -57,6 +52,10 @@ import com.google.samples.apps.iosched.util.SessionsHelper;
 import com.google.samples.apps.iosched.util.TimeUtils;
 
 import java.util.Date;
+
+import static com.google.samples.apps.iosched.util.LogUtils.LOGD;
+import static com.google.samples.apps.iosched.util.LogUtils.LOGE;
+import static com.google.samples.apps.iosched.util.LogUtils.makeLogTag;
 
 /**
  * This shows the schedule of the logged in user, organised per day.
@@ -107,11 +106,6 @@ public class MyScheduleActivity extends BaseActivity implements ScheduleViewPare
 
     private static final String TAG = makeLogTag(MyScheduleActivity.class);
 
-    /**
-     * This is a view displayed when login has failed
-     */
-    private View mFailedLoginView;
-
     private DrawerLayout mDrawerLayout;
 
     private ScheduleFilterFragment mScheduleFilterFragment;
@@ -158,7 +152,8 @@ public class MyScheduleActivity extends BaseActivity implements ScheduleViewPare
             mScheduleFilterFragment.initWithArguments(intentToFragmentArguments(getIntent()));
         }
 
-        initViews();
+        mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
+
         initPresenter();
 
         overridePendingTransition(0, 0);
@@ -204,14 +199,6 @@ public class MyScheduleActivity extends BaseActivity implements ScheduleViewPare
         }
     }
 
-    private void initViews() {
-        mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
-
-        // Set up view to show login failure
-        mFailedLoginView = findViewById(R.id.butter_bar);
-        hideLoginFailureView();
-    }
-
     private void initPresenter() {
         mModel = ModelProvider.provideMyScheduleModel(
                 new ScheduleHelper(this),
@@ -254,10 +241,6 @@ public class MyScheduleActivity extends BaseActivity implements ScheduleViewPare
         } else {
             super.onBackPressed();
         }
-    }
-
-    private void hideLoginFailureView() {
-        mFailedLoginView.setVisibility(View.GONE);
     }
 
     @Override

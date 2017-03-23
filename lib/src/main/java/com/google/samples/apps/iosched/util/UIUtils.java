@@ -61,7 +61,6 @@ import android.util.Property;
 import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.View;
-import android.widget.Button;
 import android.widget.TextView;
 
 import com.google.samples.apps.iosched.Config;
@@ -388,28 +387,6 @@ public class UIUtils {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
             view.setImportantForAccessibility(View.IMPORTANT_FOR_ACCESSIBILITY_NO);
         }
-    }
-
-    public static void setUpButterBar(View butterBar, String messageText, String actionText,
-            View.OnClickListener listener) {
-        if (butterBar == null) {
-            LOGE(TAG, "Failed to set up butter bar: it's null.");
-            return;
-        }
-
-        TextView textView = (TextView) butterBar.findViewById(R.id.butter_bar_text);
-        if (textView != null) {
-            textView.setText(messageText);
-        }
-
-        Button button = (Button) butterBar.findViewById(R.id.butter_bar_button);
-        if (button != null) {
-            button.setText(actionText == null ? "" : actionText);
-            button.setVisibility(!TextUtils.isEmpty(actionText) ? View.VISIBLE : View.GONE);
-        }
-
-        button.setOnClickListener(listener);
-        butterBar.setVisibility(View.VISIBLE);
     }
 
     public static float getProgress(int value, int min, int max) {

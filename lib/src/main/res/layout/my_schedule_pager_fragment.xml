@@ -119,8 +119,6 @@
 
     </android.support.design.widget.CoordinatorLayout>
 
-    <include layout="@layout/deprecated_include_butter_bar" />
-
     <android.support.design.widget.BottomNavigationView
         android:id="@+id/bottom_navigation"
         style="@style/Widget.IOSched.BottomNavigationView"
