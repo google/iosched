@@ -15,12 +15,6 @@
   limitations under the License.
   -->
 <resources>
-    <declare-styleable name="BaseTheme">
-        <attr name="actionBarInsetStart" format="dimension" />
-        <attr name="popupItemBackground" format="reference" />
-        <attr name="imageItemBackground" format="reference" />
-        <attr name="videoThumbnailStyle" format="reference" />
-    </declare-styleable>
 
     <declare-styleable name="MultiSwipeRefreshLayout">
         <attr name="foreground" format="reference" />
