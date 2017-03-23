@@ -21,78 +21,65 @@
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
     android:orientation="vertical"
-    tools:context=".about.AboutActivity">
+    tools:context="com.google.samples.apps.iosched.about.AboutActivity">
+
+    <android.support.design.widget.AppBarLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:fitsSystemWindows="true">
+
+        <include layout="@layout/toolbar" />
+    </android.support.design.widget.AppBarLayout>
 
     <!-- Main layout -->
-    <com.google.samples.apps.iosched.ui.widget.DrawShadowFrameLayout
-        android:id="@+id/main_content"
+    <LinearLayout
+        android:id="@+id/about_container"
         android:layout_width="match_parent"
         android:layout_height="0px"
         android:layout_weight="1"
-        app:shadowDrawable="@drawable/header_shadow">
+        android:orientation="vertical">
 
-        <LinearLayout
-            android:id="@+id/about_container"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical">
-
-            <TextView
-                android:id="@+id/about_main"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/spacing_normal"
-                android:paddingBottom="@dimen/element_spacing_normal"
-                android:paddingLeft="@dimen/padding_normal"
-                android:paddingRight="@dimen/padding_normal"
-                android:paddingTop="@dimen/spacing_normal"
-                android:textSize="@dimen/text_size_medium"
-                tools:text="@string/about_main" />
-
-            <TextView
-                android:id="@+id/about_terms"
-                style="@style/AboutLink"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/about_terms" />
-
-            <TextView
-                android:id="@+id/about_privacy_policy"
-                style="@style/AboutLink"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/about_privacy_policy" />
-
-            <TextView
-                android:id="@+id/about_licenses"
-                style="@style/AboutLink"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/about_licenses" />
-
-            <TextView
-                android:id="@+id/about_eula"
-                style="@style/AboutLink"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/about_eula" />
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:id="@+id/headerbar"
-            style="@style/HeaderBar"
+        <TextView
+            android:id="@+id/about_main"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:clickable="true"
-            android:orientation="vertical">
+            android:layout_marginTop="@dimen/spacing_normal"
+            android:paddingBottom="@dimen/element_spacing_normal"
+            android:paddingLeft="@dimen/padding_normal"
+            android:paddingRight="@dimen/padding_normal"
+            android:paddingTop="@dimen/spacing_normal"
+            android:textSize="@dimen/text_size_medium"
+            tools:text="@string/about_main" />
 
-            <include layout="@layout/toolbar" />
-            <!-- placeholder, empty except on L -->
+        <TextView
+            android:id="@+id/about_terms"
+            style="@style/AboutLink"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/about_terms" />
 
-        </LinearLayout>
+        <TextView
+            android:id="@+id/about_privacy_policy"
+            style="@style/AboutLink"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/about_privacy_policy" />
 
-    </com.google.samples.apps.iosched.ui.widget.DrawShadowFrameLayout>
+        <TextView
+            android:id="@+id/about_licenses"
+            style="@style/AboutLink"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/about_licenses" />
+
+        <TextView
+            android:id="@+id/about_eula"
+            style="@style/AboutLink"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/about_eula" />
+
+    </LinearLayout>
 
     <android.support.design.widget.BottomNavigationView
         android:id="@+id/bottom_navigation"

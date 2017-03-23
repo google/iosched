@@ -99,8 +99,7 @@
             android:id="@+id/main_content"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            app:layout_behavior="@string/appbar_scrolling_view_behavior"
-            android:foreground="@drawable/header_shadow">
+            app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
             <com.google.samples.apps.iosched.ui.widget.MultiSwipeRefreshLayout
                 android:id="@+id/swipe_refresh_layout"
