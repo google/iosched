@@ -23,6 +23,17 @@
    version="2.5">
   <display-name>IOSched updater</display-name>
 
+  <context-param>
+      <description>accountKey</description>
+      <param-name>accountKey</param-name>
+      <param-value>[path/to/credentials.json]</param-value>
+  </context-param>
+  <context-param>
+      <description>databaseUrl</description>
+      <param-name>databaseUrl</param-name>
+      <param-value>[database url]</param-value>
+  </context-param>
+
   <!-- ////////////////////////////////// User Data ////////////////////////////////// -->
 
   <servlet>

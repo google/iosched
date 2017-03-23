@@ -17,18 +17,35 @@ package com.google.samples.apps.iosched.server.userdata.server.servlet;
 
 import java.io.IOException;
 
-import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.ServletException;
+
+import com.google.samples.apps.iosched.server.FirebaseServlet;
 
 /**
  * A servlet that proxies registration requests to the events server. Returns whether the current
  * user is registered for the event.
  */
-public class QueryRegistrationServlet extends HttpServlet {
+public class QueryRegistrationServlet extends FirebaseServlet {
     @Override
-    public void doGet(HttpServletRequest req, HttpServletResponse resp)
+    public void doGet(HttpServletRequest req, final HttpServletResponse resp)
             throws IOException {
-        resp.setStatus(HttpServletResponse.SC_NOT_IMPLEMENTED);
+        String userToken = req.getHeader(USER_TOKEN_HEADER);
+
+        initFirebase();
+        initFirebaseUser(userToken);
+
+        if (user == null) {
+            resp.setStatus(HttpServletResponse.SC_NOT_FOUND);
+            return;
+        }
+
+        getIsRegistered(user.getEmail());
+    }
+
+    private boolean getIsRegistered(String email) {
+        // TODO(crmarshall): Implement event server query.
+        return true;
     }
 }
