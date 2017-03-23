@@ -17,14 +17,15 @@
 
 <!-- Default layout for FeedActivity. -->
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/drawer_layout"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:fitsSystemWindows="true"
-    android:orientation="vertical">
+              xmlns:app="http://schemas.android.com/apk/res-auto"
+              xmlns:tools="http://schemas.android.com/tools"
+              android:id="@+id/drawer_layout"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:fitsSystemWindows="true"
+              android:orientation="vertical">
 
-    <!-- Header bar on top of map -->
+    <!-- Header bar on top of feed -->
     <LinearLayout
         android:id="@+id/headerbar"
         style="@style/HeaderBar"
@@ -39,13 +40,14 @@
 
     </LinearLayout>
 
-    <!-- Content of screen. Contains a map and optional info bottom sheet. -->
-    <FrameLayout
-        android:id="@+id/main_feed_content"
+    <!-- Content of screen. -->
+    <fragment
+        android:id="@+id/main_content"
+        android:name="com.google.samples.apps.iosched.feed.FeedFragment"
         android:layout_width="match_parent"
         android:layout_height="0px"
-        android:layout_weight="1">
-    </FrameLayout>
+        android:layout_weight="1"
+        tools:layout="@layout/feed_fragment" />
 
     <android.support.design.widget.BottomNavigationView
         android:id="@+id/bottom_navigation"

@@ -13,10 +13,10 @@
  */
 package com.google.samples.apps.iosched.feed;
 
+import android.graphics.Point;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -35,29 +35,22 @@ public class FeedFragment extends Fragment implements FeedContract.View {
     private RecyclerView mRecyclerView;
     private FeedAdapter mFeedAdapter;
 
-    public static FeedFragment getInstance(FragmentManager fragmentManager) {
-        FeedFragment feedFragment = (FeedFragment) fragmentManager
-                .findFragmentById(R.id.main_feed_content);
-        if (feedFragment == null) {
-            feedFragment = new FeedFragment();
-            fragmentManager.beginTransaction().add(R.id.main_feed_content, feedFragment).commit();
-        }
-        return feedFragment;
-    }
-
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container,
             @Nullable Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.feed_fragment, container, false);
         mRecyclerView = (RecyclerView) root.findViewById(R.id.feed_recycler_view);
-        mFeedAdapter = new FeedAdapter(getContext());
-        mRecyclerView.setAdapter(mFeedAdapter);
+        Point screenSize = new Point();
+        getActivity().getWindowManager().getDefaultDisplay().getSize(screenSize);
+        mFeedAdapter = new FeedAdapter(getContext(), screenSize);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
         linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         mRecyclerView.setLayoutManager(linearLayoutManager);
-        mRecyclerView.addItemDecoration(new DividerItemDecoration(mRecyclerView.getContext(),
-                linearLayoutManager.getOrientation()));
+        DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(
+                mRecyclerView.getContext(), linearLayoutManager.getOrientation());
+        mRecyclerView.addItemDecoration(dividerItemDecoration);
+        mRecyclerView.setAdapter(mFeedAdapter);
         return root;
     }
 
@@ -67,23 +60,14 @@ public class FeedFragment extends Fragment implements FeedContract.View {
     }
 
     @Override
-    public void setLoadingFeedMessages(boolean loading) {
-        //TODO(sigelbaum)
-    }
+    public void setLoadingFeedMessages(boolean loading) {}
 
     @Override
-    public void updateDataset(List<FeedMessage> feedMessages) {
-        if (mFeedAdapter == null) {
-            mFeedAdapter = new FeedAdapter(getContext());
-        }
+    public void updateFromDataset(List<FeedMessage> feedMessages) {
         mFeedAdapter.updateItems(feedMessages);
-        if (mRecyclerView != null && mRecyclerView.getAdapter() == null) {
-            mRecyclerView.setAdapter(mFeedAdapter);
-        }
+        mFeedAdapter.notifyDataSetChanged();
     }
 
     @Override
-    public void showError(String errorText) {
-        //TODO(sigelbaum)
-    }
+    public void showError(String errorText) {}
 }

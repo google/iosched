@@ -20,16 +20,23 @@ import com.google.samples.apps.iosched.feed.data.FeedMessage;
 import java.util.List;
 
 public interface FeedContract {
+
+    /**
+     * View for Feed. Responsible for updating UI.
+     */
     interface View {
         void setPresenter(FeedContract.Presenter presenter);
 
         void setLoadingFeedMessages(boolean loading);
 
-        void updateDataset(List<FeedMessage> feedMessages);
+        void updateFromDataset(List<FeedMessage> feedMessages);
 
         void showError(String errorText);
     }
 
+    /**
+     * Presenter for Feed. Middle man between repository (Firebase DB) and Feed View.
+     */
     interface Presenter {
         void loadInitialData();
     }

@@ -17,26 +17,30 @@ public class FeedMessage implements Comparable<FeedMessage> {
 
     private final int id;
     private final String category;
+    private final int categoryColor;
     private final String title;
+    private final String description;
     private final boolean clickable;
     private final String link;
+    private final String imageUrl;
     private final long date;
     private final boolean active;
     private final boolean priority;
-    private boolean read;
+    private boolean expanded;
 
-    public FeedMessage(int id, String category, String title, boolean clickable, String link, long date, boolean active, boolean priority) {
+    public FeedMessage(int id, String category, int categoryColor, String title, String description, boolean clickable, String link, String imageUrl, long date, boolean active, boolean priority) {
         this.id = id;
         this.category = category;
+        this.categoryColor = categoryColor;
         this.title = title;
+        this.description = description;
         this.clickable = clickable;
         this.link = link;
+        this.imageUrl = imageUrl;
         this.date = date;
         this.active = active;
         this.priority = priority;
-
-        //TODO(sigelbaum) get read/unread status from SharedPrefs.
-        this.read = false;
+        this.expanded = false;
     }
 
     @Override
@@ -71,8 +75,16 @@ public class FeedMessage implements Comparable<FeedMessage> {
         return category;
     }
 
+    public int getCategoryColor() {
+        return categoryColor;
+    }
+
     public String getTitle() {
         return title;
+    }
+
+    public String getDescription() {
+        return description;
     }
 
     public boolean isClickable() {
@@ -81,6 +93,10 @@ public class FeedMessage implements Comparable<FeedMessage> {
 
     public String getLink() {
         return link;
+    }
+
+    public String getImageUrl() {
+        return imageUrl;
     }
 
     public long getDate() {
@@ -95,7 +111,11 @@ public class FeedMessage implements Comparable<FeedMessage> {
         return priority;
     }
 
-    public boolean isRead() {
-        return read;
+    public boolean isExpanded() {
+        return expanded;
+    }
+
+    public void flipExpanded() {
+        expanded = !expanded;
     }
 }

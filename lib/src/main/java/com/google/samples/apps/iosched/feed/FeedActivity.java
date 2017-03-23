@@ -13,9 +13,7 @@
  */
 package com.google.samples.apps.iosched.feed;
 
-import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.support.v7.preference.PreferenceManager;
 import android.support.v7.widget.RecyclerView;
 
 import com.google.samples.apps.iosched.lib.R;
@@ -37,11 +35,11 @@ public class FeedActivity extends BaseActivity {
     protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.feed_act);
-        final FeedFragment contentFragment = FeedFragment.getInstance(getSupportFragmentManager());
-        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
-        // Each fragment in the pager adapter is an updatable view that the presenter must know
-        mPresenter = new FeedPresenter(sharedPreferences, contentFragment);
-        contentFragment.setPresenter(mPresenter);
+        FeedFragment feedFragment = (FeedFragment) getSupportFragmentManager()
+                .findFragmentById(R.id.main_content);
+        mPresenter = new FeedPresenter(feedFragment);
+        feedFragment.setPresenter(mPresenter);
+        mPresenter.loadInitialData();
     }
 
     @Override
