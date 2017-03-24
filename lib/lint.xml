@@ -22,27 +22,6 @@
         <ignore path="src/*/res/values/placeholder_strings.xml" />
     </issue>
 
-    <issue id="IconXmlAndPng">
-        <!-- Icons that can appear outside the app (status bar notifications, appwidget) need png
-             versions below Lollipop.
-        -->
-        <ignore path="src/main/res/drawable-xxhdpi/ic_after_hours.png" />
-        <ignore path="src/main/res/drawable-xxhdpi/ic_badge_pickup.png" />
-        <ignore path="src/main/res/drawable-xxhdpi/ic_codelab.png" />
-        <ignore path="src/main/res/drawable-xxhdpi/ic_food.png" />
-        <ignore path="src/main/res/drawable-xxhdpi/ic_live_now.png" />
-        <ignore path="src/main/res/drawable-xxhdpi/ic_misc.png" />
-        <ignore path="src/main/res/drawable-xxhdpi/ic_sandbox.png" />
-        <ignore path="src/main/res/drawable-xxhdpi/ic_session.png" />
-        <ignore path="src/main/res/drawable-xxhdpi/ic_stat_alarm.png" />
-        <ignore path="src/main/res/drawable-xxhdpi/ic_stat_map.png" />
-        <ignore path="src/main/res/drawable-xxhdpi/ic_stat_notification.png" />
-        <ignore path="src/main/res/drawable-xxhdpi/ic_widget_logo.png" />
-
-        <!-- This drawable is used by Glide and crashes on 16-19 if we pass it a vector. -->
-        <ignore path="src/main/res/drawable-xxhdpi/ic_widget_logo.png" />
-    </issue>
-
     <!-- We don't have icons for every density and want to move to vectors anyway -->
     <issue id="IconDensities" severity="ignore" />
     <issue id="IconMissingDensityFolder" severity="ignore" />
