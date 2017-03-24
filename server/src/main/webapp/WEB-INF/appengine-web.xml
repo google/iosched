@@ -33,5 +33,8 @@
       <page name="Appstats" url="/appstats" />
     </admin-console>
 
+    <manual-scaling>
+      <instances>1</instances>
+    </manual-scaling>
 
 </appengine-web-app>
