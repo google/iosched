@@ -38,10 +38,8 @@ import android.view.MenuItem;
 import android.view.View;
 
 import com.google.android.gms.auth.GoogleAuthUtil;
-import com.google.samples.apps.iosched.injection.MessagingRegistrationProvider;
 import com.google.samples.apps.iosched.lib.BuildConfig;
 import com.google.samples.apps.iosched.lib.R;
-import com.google.samples.apps.iosched.messaging.MessagingRegistration;
 import com.google.samples.apps.iosched.navigation.AppNavigationView;
 import com.google.samples.apps.iosched.navigation.AppNavigationViewAsBottomNavImpl;
 import com.google.samples.apps.iosched.navigation.NavigationModel.NavigationItemEnum;
@@ -80,9 +78,6 @@ public abstract class BaseActivity extends AppCompatActivity implements
     // SwipeRefreshLayout allows the user to swipe the screen down to trigger a manual refresh
     private SwipeRefreshLayout mSwipeRefreshLayout;
 
-    // Registration with GCM for notifications
-    private MessagingRegistration mMessagingRegistration;
-
     // handle to our sync observer (that notifies us about changes in our sync state)
     private Object mSyncObserverHandle;
 
@@ -101,13 +96,7 @@ public abstract class BaseActivity extends AppCompatActivity implements
             return;
         }
 
-        mMessagingRegistration = MessagingRegistrationProvider.provideMessagingRegistration(this);
-
         Account.createSyncAccount(this);
-
-        if (savedInstanceState == null) {
-            mMessagingRegistration.registerDevice();
-        }
 
         SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(this);
         sp.registerOnSharedPreferenceChangeListener(this);
@@ -347,10 +336,6 @@ public abstract class BaseActivity extends AppCompatActivity implements
     protected void onDestroy() {
         mDestroyed = true;
         super.onDestroy();
-
-        if (mMessagingRegistration != null) {
-            mMessagingRegistration.destroy();
-        }
 
         SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(this);
         sp.unregisterOnSharedPreferenceChangeListener(this);

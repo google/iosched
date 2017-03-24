@@ -13,10 +13,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.google.samples.apps.iosched.gcm;
+package com.google.samples.apps.iosched.fcm;
 
 import android.content.Context;
 
-public abstract class GCMCommand {
+public abstract class FcmCommand {
     public abstract void execute(Context context, String type, String extraData);
 }

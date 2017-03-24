@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.google.samples.apps.iosched.gcm.command;
+package com.google.samples.apps.iosched.fcm.command;
 
 import android.app.NotificationManager;
 import android.app.PendingIntent;
@@ -24,39 +24,28 @@ import android.net.Uri;
 import android.support.v4.app.NotificationCompat;
 import android.text.TextUtils;
 
+import com.google.gson.Gson;
+import com.google.samples.apps.iosched.fcm.FcmCommand;
 import com.google.samples.apps.iosched.lib.R;
-import com.google.samples.apps.iosched.gcm.GCMCommand;
 import com.google.samples.apps.iosched.myschedule.MyScheduleActivity;
 import com.google.samples.apps.iosched.util.RegistrationUtils;
 import com.google.samples.apps.iosched.util.TimeUtils;
-import com.google.gson.Gson;
 
 import java.util.Date;
 
-import static com.google.samples.apps.iosched.util.LogUtils.*;
+import static com.google.samples.apps.iosched.util.LogUtils.LOGD;
+import static com.google.samples.apps.iosched.util.LogUtils.LOGE;
+import static com.google.samples.apps.iosched.util.LogUtils.LOGI;
+import static com.google.samples.apps.iosched.util.LogUtils.LOGW;
+import static com.google.samples.apps.iosched.util.LogUtils.makeLogTag;
 
-public class NotificationCommand extends GCMCommand {
+public class NotificationCommand extends FcmCommand {
     private static final String TAG = makeLogTag("NotificationCommand");
-
-    private static class NotificationCommandModel {
-        String format;
-        String audience;
-        String minVersion;
-        String maxVersion;
-        String title;
-        String message;
-        String expiry;
-        String dialogTitle;
-        String dialogText;
-        String dialogYes;
-        String dialogNo;
-        String url;
-    }
 
     @Override
     public void execute(Context context, String type, String payload) {
-        LOGI(TAG, "Received GCM message: " + type);
-        LOGI(TAG, "Parsing GCM notification command: " + payload);
+        LOGI(TAG, "Received FCM message: " + type);
+        LOGI(TAG, "Parsing FCM notification command: " + payload);
         Gson gson = new Gson();
         NotificationCommandModel command;
         try {
@@ -79,7 +68,7 @@ public class NotificationCommand extends GCMCommand {
             LOGD(TAG, "Max version code: " + command.maxVersion);
         } catch (Exception ex) {
             ex.printStackTrace();
-            LOGE(TAG, "Failed to parse GCM notification command.");
+            LOGE(TAG, "Failed to parse FCM notification command.");
             return;
         }
 
@@ -90,7 +79,7 @@ public class NotificationCommand extends GCMCommand {
     private void processCommand(Context context, NotificationCommandModel command) {
         // Check format
         if (!"1.0.00".equals(command.format)) {
-            LOGW(TAG, "GCM notification command has unrecognized format: " + command.format);
+            LOGW(TAG, "FCM notification command has unrecognized format: " + command.format);
             return;
         }
 
@@ -148,17 +137,17 @@ public class NotificationCommand extends GCMCommand {
         } else if ("all".equals(command.audience)) {
             LOGD(TAG, "Relevant (audience is 'all').");
         } else {
-            LOGE(TAG, "Invalid audience on GCM notification command: " + command.audience);
+            LOGE(TAG, "Invalid audience on FCM notification command: " + command.audience);
             return;
         }
 
         // Check if it expired
         Date expiry = command.expiry == null ? null : TimeUtils.parseTimestamp(command.expiry);
         if (expiry == null) {
-            LOGW(TAG, "Failed to parse expiry field of GCM notification command: " + command.expiry);
+            LOGW(TAG, "Failed to parse expiry field of FCM notification command: " + command.expiry);
             return;
         } else if (expiry.getTime() < TimeUtils.getCurrentTime(context)) {
-            LOGW(TAG, "Got expired GCM notification command. Expiry: " + expiry.toString());
+            LOGW(TAG, "Got expired FCM notification command. Expiry: " + expiry.toString());
             return;
         } else {
             LOGD(TAG, "Message is still valid (expiry is in the future: " + expiry.toString() + ")");
@@ -174,12 +163,12 @@ public class NotificationCommand extends GCMCommand {
             } else {
                 intent = new Intent(Intent.ACTION_VIEW, Uri.parse(command.url));
             }
-        }  else {
+        } else {
             // use a dialog
             intent = new Intent(context, MyScheduleActivity.class).setFlags(
                     Intent.FLAG_ACTIVITY_CLEAR_TOP |
-                    Intent.FLAG_ACTIVITY_SINGLE_TOP |
-                    Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                            Intent.FLAG_ACTIVITY_SINGLE_TOP |
+                            Intent.FLAG_ACTIVITY_CLEAR_TASK);
             intent.putExtra(MyScheduleActivity.EXTRA_DIALOG_TITLE,
                     command.dialogTitle == null ? "" : command.dialogTitle);
             intent.putExtra(MyScheduleActivity.EXTRA_DIALOG_MESSAGE,
@@ -205,14 +194,29 @@ public class NotificationCommand extends GCMCommand {
                         .setContentTitle(title)
                         .setContentText(message)
                         //.setColor(context.getResources().getColor(R.color.theme_primary))
-                            // Note: setColor() is available in the support lib v21+.
-                            // We commented it out because we want the source to compile 
-                            // against support lib v20. If you are using support lib
-                            // v21 or above on Android L, uncomment this line.
+                        // Note: setColor() is available in the support lib v21+.
+                        // We commented it out because we want the source to compile
+                        // against support lib v20. If you are using support lib
+                        // v21 or above on Android L, uncomment this line.
                         .setContentIntent(PendingIntent.getActivity(context, 0, intent,
                                 PendingIntent.FLAG_CANCEL_CURRENT))
                         .setAutoCancel(true)
                         .build());
+    }
+
+    private static class NotificationCommandModel {
+        String format;
+        String audience;
+        String minVersion;
+        String maxVersion;
+        String title;
+        String message;
+        String expiry;
+        String dialogTitle;
+        String dialogText;
+        String dialogYes;
+        String dialogNo;
+        String url;
     }
 
 }

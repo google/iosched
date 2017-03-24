@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.google.samples.apps.iosched.gcm;
+package com.google.samples.apps.iosched.fcm;
 
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -47,18 +47,19 @@ import static com.google.samples.apps.iosched.util.LogUtils.makeLogTag;
  * Helper class used to communicate with the demo server.
  */
 public final class ServerUtilities {
-    private static final String TAG = makeLogTag("GCMs");
+    private static final String TAG = makeLogTag("FCMs");
 
-    private static final String PREFERENCES = "com.google.samples.apps.iosched.gcm";
+    private static final String PREFERENCES = "com.google.samples.apps.iosched.fcm";
     private static final String PROPERTY_REGISTERED_TS = "registered_ts";
-    private static final String PROPERTY_REG_ID = "gcm_id";
-    private static final String PROPERTY_GCM_KEY = "gcm_key";
+    private static final String PROPERTY_REG_ID = "fcm_id";
+    private static final String PROPERTY_FCM_KEY = "fcm_key";
     private static final int MAX_ATTEMPTS = 5;
     private static final int BACKOFF_MILLI_SECONDS = 2000;
 
     private static final Random sRandom = new Random();
 
-    private static boolean checkGcmEnabled() {
+    private static boolean checkFcmEnabled() {
+        //TODO(36700561) Check google-services.json instead of API keys.
         if (TextUtils.isEmpty(BuildConfig.GCM_SERVER_URL)) {
             LOGD(TAG, "GCM feature disabled (no URL configured)");
             return false;
@@ -76,31 +77,31 @@ public final class ServerUtilities {
      * Register this account/device pair within the server.
      *
      * @param context Current context
-     * @param regId   The GCM registration ID for this device
-     * @param gcmKey  The GCM key with which to register.
+     * @param regId   The FCM registration ID for this device
+     * @param fcmKey  The FCM key with which to register.
      * @return whether the registration succeeded or not.
      */
-    public static boolean register(final Context context, final String regId, final String gcmKey) {
-        if (!checkGcmEnabled()) {
+    public static boolean register(final Context context, final String regId, final String fcmKey) {
+        if (!checkFcmEnabled()) {
             return false;
         }
 
         LOGD(TAG, "registering device (reg_id = " + regId + ")");
         String serverUrl = BuildConfig.GCM_SERVER_URL + "/register";
-        LOGI(TAG, "registering on GCM with GCM key: " + AccountUtils.sanitizeGcmKey(gcmKey));
+        LOGI(TAG, "registering on FCM with FCM key: " + AccountUtils.sanitizeFcmKey(fcmKey));
 
         Map<String, String> params = new HashMap<>();
         params.put(PROPERTY_REG_ID, regId);
-        params.put(PROPERTY_GCM_KEY, gcmKey);
+        params.put(PROPERTY_FCM_KEY, fcmKey);
         long backoff = BACKOFF_MILLI_SECONDS + sRandom.nextInt(1000);
-        // Once GCM returns a registration id, we need to register it in the
+        // Once FCM returns a registration id, we need to register it in the
         // demo server. As the server might be down, we will retry it a couple
         // times.
         for (int i = 1; i <= MAX_ATTEMPTS; i++) {
             LOGV(TAG, "Attempt #" + i + " to register");
             try {
                 post(serverUrl, params, BuildConfig.GCM_API_KEY);
-                setRegisteredOnServer(context, true, regId, gcmKey);
+                setRegisteredOnServer(context, true, regId, fcmKey);
                 return true;
             } catch (IOException e) {
                 // Here we are simplifying and retrying on any error; in a real
@@ -130,22 +131,22 @@ public final class ServerUtilities {
      * Unregister this account/device pair within the server.
      *
      * @param regId  The InstanceID token for this application instance.
-     * @param gcmKey The user identifier used to pair a user with an InstanceID token.
+     * @param fcmKey The user identifier used to pair a user with an InstanceID token.
      */
-    static void unregister(final String regId, final String gcmKey) {
-        if (!checkGcmEnabled()) {
+    static void unregister(final String regId, final String fcmKey) {
+        if (!checkFcmEnabled()) {
             return;
         }
 
         LOGI(TAG, "unregistering device (regId = " + regId + ")");
         String serverUrl = BuildConfig.GCM_SERVER_URL + "/unregister";
         Map<String, String> params = new HashMap<>();
-        params.put(PROPERTY_GCM_KEY, gcmKey);
+        params.put(PROPERTY_FCM_KEY, fcmKey);
         params.put(PROPERTY_REG_ID, regId);
         try {
             post(serverUrl, params, BuildConfig.GCM_API_KEY);
         } catch (IOException e) {
-            // At this point the device is unregistered from GCM, but still
+            // At this point the device is unregistered from FCM, but still
             // registered on the server.
             // We could try to unregister again, but it is not necessary:
             // if the server tries to send a message to the device, it will get
@@ -160,20 +161,20 @@ public final class ServerUtilities {
      * @param context Current context
      */
     public static void notifyUserDataChanged(final Context context) {
-        if (!checkGcmEnabled()) {
+        if (!checkFcmEnabled()) {
             return;
         }
 
-        LOGI(TAG, "Notifying GCM that user data changed");
+        LOGI(TAG, "Notifying FCM that user data changed");
         String serverUrl = BuildConfig.GCM_SERVER_URL + "/send/self/sync_user";
         try {
-            String gcmKey =
-                    AccountUtils.getGcmKey(context, AccountUtils.getActiveAccountName(context));
-            if (gcmKey != null) {
-                post(serverUrl, new HashMap<String, String>(), gcmKey);
+            String fcmKey =
+                    AccountUtils.getFcmKey(context, AccountUtils.getActiveAccountName(context));
+            if (fcmKey != null) {
+                post(serverUrl, new HashMap<String, String>(), fcmKey);
             }
         } catch (IOException e) {
-            LOGE(TAG, "Unable to notify GCM about user data change", e);
+            LOGE(TAG, "Unable to notify FCM about user data change", e);
         }
     }
 
@@ -184,18 +185,18 @@ public final class ServerUtilities {
      * @param flag    True if registration was successful, false otherwise
      * @param regId   InstanceID token generated to represent the current instance of the
      *                Application.
-     * @param gcmKey  User identifier paired with regId on server
+     * @param fcmKey  User identifier paired with regId on server
      */
     protected static void setRegisteredOnServer(Context context, boolean flag, String regId,
-            String gcmKey) {
+            String fcmKey) {
         final SharedPreferences prefs = context.getSharedPreferences(
                 PREFERENCES, Context.MODE_PRIVATE);
-        LOGD(TAG, "Setting registered on server status as: " + flag + ", gcmKey="
-                + AccountUtils.sanitizeGcmKey(gcmKey));
+        LOGD(TAG, "Setting registered on server status as: " + flag + ", fcmKey="
+                + AccountUtils.sanitizeFcmKey(fcmKey));
         Editor editor = prefs.edit();
         if (flag) {
             editor.putLong(PROPERTY_REGISTERED_TS, new Date().getTime());
-            editor.putString(PROPERTY_GCM_KEY, gcmKey == null ? "" : gcmKey);
+            editor.putString(PROPERTY_FCM_KEY, fcmKey == null ? "" : fcmKey);
             editor.putString(PROPERTY_REG_ID, regId);
         } else {
             editor.remove(PROPERTY_REG_ID);
@@ -209,7 +210,7 @@ public final class ServerUtilities {
      * @param context Current context
      * @return True if registration was successful, false otherwise
      */
-    public static boolean isRegisteredOnServer(Context context, String gcmKey) {
+    public static boolean isRegisteredOnServer(Context context, String fcmKey) {
         final SharedPreferences prefs = context.getSharedPreferences(
                 PREFERENCES, Context.MODE_PRIVATE);
         // Find registration threshold
@@ -218,28 +219,28 @@ public final class ServerUtilities {
         long yesterdayTS = cal.getTimeInMillis();
         long regTS = prefs.getLong(PROPERTY_REGISTERED_TS, 0);
 
-        gcmKey = gcmKey == null ? "" : gcmKey;
+        fcmKey = fcmKey == null ? "" : fcmKey;
 
         if (regTS > yesterdayTS) {
-            LOGV(TAG, "GCM registration current. regTS=" + regTS + " yesterdayTS=" + yesterdayTS);
+            LOGV(TAG, "FCM registration current. regTS=" + regTS + " yesterdayTS=" + yesterdayTS);
 
-            final String registeredGcmKey = prefs.getString(PROPERTY_GCM_KEY, "");
-            if (registeredGcmKey.equals(gcmKey)) {
-                LOGD(TAG, "GCM registration is valid and for the correct gcm key: "
-                        + AccountUtils.sanitizeGcmKey(registeredGcmKey));
+            final String registeredFcmKey = prefs.getString(PROPERTY_FCM_KEY, "");
+            if (registeredFcmKey.equals(fcmKey)) {
+                LOGD(TAG, "FCM registration is valid and for the correct fcm key: "
+                        + AccountUtils.sanitizeFcmKey(registeredFcmKey));
                 return true;
             }
-            LOGD(TAG, "GCM registration is for DIFFERENT gcm key "
-                    + AccountUtils.sanitizeGcmKey(registeredGcmKey) + ". We were expecting "
-                    + AccountUtils.sanitizeGcmKey(gcmKey));
+            LOGD(TAG, "FCM registration is for DIFFERENT FCM key "
+                    + AccountUtils.sanitizeFcmKey(registeredFcmKey) + ". We were expecting "
+                    + AccountUtils.sanitizeFcmKey(fcmKey));
             return false;
         } else {
-            LOGV(TAG, "GCM registration expired. regTS=" + regTS + " yesterdayTS=" + yesterdayTS);
+            LOGV(TAG, "FCM registration expired. regTS=" + regTS + " yesterdayTS=" + yesterdayTS);
             return false;
         }
     }
 
-    public static String getGcmRegId(Context context) {
+    public static String getFcmRegId(Context context) {
         final SharedPreferences prefs =
                 context.getSharedPreferences(PREFERENCES, Context.MODE_PRIVATE);
         return prefs.getString(PROPERTY_REG_ID, null);
@@ -267,7 +268,7 @@ public final class ServerUtilities {
         while (iterator.hasNext()) {
             Entry<String, String> param = iterator.next();
             bodyBuilder.append(param.getKey()).append('=')
-                       .append(param.getValue());
+                    .append(param.getValue());
             if (iterator.hasNext()) {
                 bodyBuilder.append('&');
             }

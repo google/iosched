@@ -26,8 +26,8 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.view.View;
 
+import com.google.samples.apps.iosched.fcm.FcmUtilities;
 import com.google.samples.apps.iosched.lib.R;
-import com.google.samples.apps.iosched.messaging.MessagingRegistrationWithGCM;
 import com.google.samples.apps.iosched.settings.ConfMessageCardUtils;
 import com.google.samples.apps.iosched.settings.SettingsUtils;
 import com.google.samples.apps.iosched.util.RegistrationUtils;
@@ -76,8 +76,10 @@ public class MessageCardHelper {
                 ConfMessageCardUtils.setConfMessageCardsEnabled(view.getContext(), false);
                 final Activity activity = getActivity(view);
                 if (activity != null) {
-                    // This will activate re-registering with the correct GCM topic(s).
-                    new MessagingRegistrationWithGCM(activity).registerDevice();
+                    // This will activate re-registering with the correct FCM topic(s).
+                    FcmUtilities.subscribeTopics(
+                            ConfMessageCardUtils.isConfMessageCardsEnabled(view.getContext()),
+                            RegistrationUtils.isRegisteredAttendee(view.getContext()));
                 }
             }
         });
@@ -89,8 +91,10 @@ public class MessageCardHelper {
                 ConfMessageCardUtils.setConfMessageCardsEnabled(view.getContext(), true);
                 final Activity activity = getActivity(view);
                 if (activity != null) {
-                    // This will activate re-registering with the correct GCM topic(s).
-                    new MessagingRegistrationWithGCM(activity).registerDevice();
+                    // This will activate re-registering with the correct FCM topic(s).
+                    FcmUtilities.subscribeTopics(
+                            ConfMessageCardUtils.isConfMessageCardsEnabled(view.getContext()),
+                            RegistrationUtils.isRegisteredAttendee(view.getContext()));
                 }
             }
         });

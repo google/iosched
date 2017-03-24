@@ -56,7 +56,8 @@ public class AccountUtils {
 
     // These names are are prefixes; the account is appended to them.
     public static final String PREFIX_PREF_AUTH_TOKEN = "auth_token_";
-    private static final String PREFIX_PREF_GCM_KEY = "gcm_key_";
+
+    private static final String PREFIX_PREF_FCM_KEY = "gcm_key_";
 
 
     public static final String AUTH_SCOPES[] = {
@@ -196,30 +197,29 @@ public class AccountUtils {
         }
     }
 
-    public static void setGcmKey(final Context context, final String accountName, final String gcmKey) {
+    public static void setFcmKey(final Context context, final String accountName, final String fcmKey) {
         SharedPreferences sp = getSharedPreferences(context);
-        sp.edit().putString(makeAccountSpecificPrefKey(accountName, PREFIX_PREF_GCM_KEY),
-                gcmKey).apply();
-        LOGD(TAG, "GCM key of account " + accountName + " set to: " + sanitizeGcmKey(gcmKey));
+        sp.edit().putString(makeAccountSpecificPrefKey(accountName, PREFIX_PREF_FCM_KEY),
+                fcmKey).apply();
+        LOGD(TAG, "FCM key of account " + accountName + " set to: " + sanitizeFcmKey(fcmKey));
     }
 
-    public static String getGcmKey(final Context context, final String accountName) {
+    public static String getFcmKey(final Context context, final String accountName) {
         SharedPreferences sp = getSharedPreferences(context);
-        String gcmKey = sp.getString(makeAccountSpecificPrefKey(accountName,
-                PREFIX_PREF_GCM_KEY), null);
+        String fcmKey = sp.getString(makeAccountSpecificPrefKey(accountName,
+                PREFIX_PREF_FCM_KEY), null);
 
-        // if there is no current GCM key, generate a new random one
-        if (TextUtils.isEmpty(gcmKey)) {
-            gcmKey = UUID.randomUUID().toString();
-            LOGD(TAG, "No GCM key on account " + accountName + ". Generating random one: "
-                    + sanitizeGcmKey(gcmKey));
-            setGcmKey(context, accountName, gcmKey);
+        // if there is no current FCM key, generate a new random one
+        if (TextUtils.isEmpty(fcmKey)) {
+            fcmKey = UUID.randomUUID().toString();
+            LOGD(TAG, "No FCM key on account " + accountName + ". Generating random one: "
+                    + sanitizeFcmKey(fcmKey));
+            setFcmKey(context, accountName, fcmKey);
         }
-
-        return gcmKey;
+        return fcmKey;
     }
 
-    public static String sanitizeGcmKey(String key) {
+    public static String sanitizeFcmKey(String key) {
         if (key == null) {
             return "(null)";
         } else if (key.length() > 8) {
