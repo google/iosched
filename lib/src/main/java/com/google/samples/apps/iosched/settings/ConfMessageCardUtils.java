@@ -17,6 +17,7 @@
 package com.google.samples.apps.iosched.settings;
 
 import com.google.samples.apps.iosched.lib.BuildConfig;
+import com.google.samples.apps.iosched.util.Constants;
 import com.google.samples.apps.iosched.util.TimeUtils;
 
 import android.content.Context;
@@ -48,7 +49,7 @@ public class ConfMessageCardUtils {
      */
     public static final String PREF_ANSWERED_CONF_MESSAGE_CARDS_PROMPT
             = "pref_answered_conf_message_cards_prompt_" +
-            SettingsUtils.CONFERENCE_YEAR_PREF_POSTFIX;
+            Constants.CONFERENCE_YEAR_PREF_POSTFIX;
 
     /**
      * Enum holding all the different kinds of Conference Message Cards that can appear in Explore.
@@ -154,9 +155,9 @@ public class ConfMessageCardUtils {
     }
 
     private static final String dismiss_prefix = "pref_conf_msg_cards_" +
-            SettingsUtils.CONFERENCE_YEAR_PREF_POSTFIX + "_dismissed_";
+            Constants.CONFERENCE_YEAR_PREF_POSTFIX + "_dismissed_";
     private static final String should_show_prefix = "pref_conf_msg_cards_ " +
-            SettingsUtils.CONFERENCE_YEAR_PREF_POSTFIX + "_should_show_";
+            Constants.CONFERENCE_YEAR_PREF_POSTFIX + "_should_show_";
 
     /**
      * Return true if conference info cards are enabled, false if user has disabled them.

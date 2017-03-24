@@ -23,6 +23,7 @@ import android.preference.PreferenceManager;
 import com.google.samples.apps.iosched.lib.BuildConfig;
 import com.google.samples.apps.iosched.Config;
 import com.google.samples.apps.iosched.ui.BaseActivity;
+import com.google.samples.apps.iosched.util.Constants;
 import com.google.samples.apps.iosched.util.TimeUtils;
 import com.google.samples.apps.iosched.welcome.WelcomeActivity;
 
@@ -37,19 +38,12 @@ public class SettingsUtils {
      * This is changed each year to effectively reset certain preferences that should be re-asked
      * each year. Note, res/xml/settings_prefs.xml must be updated when this value is updated.
      */
-    static final String CONFERENCE_YEAR_PREF_POSTFIX = "_2016";
 
     /**
      * Boolean preference indicating the user would like to see times in their local timezone
      * throughout the app.
      */
     public static final String PREF_LOCAL_TIMES = "pref_local_times";
-
-    /**
-     * Boolean indicating whether the app should attempt to sign in on startup (default true).
-     */
-    private static final String PREF_USER_REFUSED_SIGN_IN = "pref_user_refused_sign_in" +
-            CONFERENCE_YEAR_PREF_POSTFIX;
 
     /**
      * Boolean indicating whether the debug build warning was already shown.
@@ -60,13 +54,13 @@ public class SettingsUtils {
      * Boolean indicating whether ToS has been accepted.
      */
     public static final String PREF_TOS_ACCEPTED = "pref_tos_accepted" +
-            CONFERENCE_YEAR_PREF_POSTFIX;
+            Constants.CONFERENCE_YEAR_PREF_POSTFIX;
 
     /**
      * Boolean indicating whether ToS has been accepted.
      */
     public static final String PREF_DECLINED_WIFI_SETUP = "pref_declined_wifi_setup" +
-            CONFERENCE_YEAR_PREF_POSTFIX;
+            Constants.CONFERENCE_YEAR_PREF_POSTFIX;
 
     /**
      * Long indicating when a sync was last ATTEMPTED (not necessarily succeeded).
@@ -92,7 +86,7 @@ public class SettingsUtils {
      * Boolean indicating whether the app has performed the (one-time) welcome flow.
      */
     private static final String PREF_WELCOME_DONE = "pref_welcome_done" +
-            CONFERENCE_YEAR_PREF_POSTFIX;
+            Constants.CONFERENCE_YEAR_PREF_POSTFIX;
 
     /**
      * Boolean indicating if the app can collect Analytics.
@@ -140,26 +134,6 @@ public class SettingsUtils {
     public static boolean isDataBootstrapDone(final Context context) {
         SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(context);
         return sp.getBoolean(BuildConfig.PREF_DATA_BOOTSTRAP_DONE, false);
-    }
-
-    /**
-     * Mark that the user explicitly chose not to sign in so app doesn't ask them again.
-     *
-     * @param context Context to be used to edit the {@link android.content.SharedPreferences}.
-     */
-    public static void markUserRefusedSignIn(final Context context, final boolean refused) {
-        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(context);
-        sp.edit().putBoolean(PREF_USER_REFUSED_SIGN_IN, refused).apply();
-    }
-
-    /**
-     * Return true if user refused to sign in, false if they haven't refused (yet).
-     *
-     * @param context Context to be used to lookup the {@link android.content.SharedPreferences}.
-     */
-    public static boolean hasUserRefusedSignIn(final Context context) {
-        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(context);
-        return sp.getBoolean(PREF_USER_REFUSED_SIGN_IN, false);
     }
 
     /**

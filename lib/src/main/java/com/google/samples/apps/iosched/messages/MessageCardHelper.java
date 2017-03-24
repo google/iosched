@@ -171,9 +171,9 @@ public class MessageCardHelper {
      */
     public static MessageData getSignInPromptMessageData() {
         MessageData messageData = new MessageData();
-        messageData.setStartButtonStringResourceId(R.string.schedule_msgcards_signin_prompt_action);
-        messageData.setMessageStringResourceId(R.string.schedule_msgcards_signin_prompt);
-        messageData.setEndButtonStringResourceId(R.string.schedule_msgcards_signin_prompt_dismiss);
+        messageData.setStartButtonStringResourceId(R.string.signin_prompt);
+        messageData.setMessageStringResourceId(R.string.signin_message);
+        messageData.setEndButtonStringResourceId(R.string.signin_prompt_dismiss);
 
         // TODO Add actions here
 

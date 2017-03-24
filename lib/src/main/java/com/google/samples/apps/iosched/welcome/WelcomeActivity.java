@@ -30,25 +30,21 @@ import com.google.samples.apps.iosched.lib.BuildConfig;
 import com.google.samples.apps.iosched.Config;
 import com.google.samples.apps.iosched.lib.R;
 import com.google.samples.apps.iosched.settings.SettingsUtils;
+
 import com.google.samples.apps.iosched.util.RegistrationUtils;
 import com.google.samples.apps.iosched.util.UIUtils;
 
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
-
-import static com.google.samples.apps.iosched.util.LogUtils.makeLogTag;
 
 /**
  * Responsible for presenting a series of fragments to the user who has just installed the app as
  * part of the welcome/onboarding experience.
- * TODO (b/36070986): WelcomeActivity architecture assumes multiple fragments. Refactor if showing only a single fragment.
  */
 public class WelcomeActivity extends AppCompatActivity
         implements WelcomeFragment.WelcomeFragmentContainer {
 
-    private static final String TAG = makeLogTag(WelcomeActivity.class);
+    public static final int REQUEST_RESOLVE_ERROR = 9999;
 
     WelcomeFragment mContentFragment;
 
@@ -65,7 +61,8 @@ public class WelcomeActivity extends AppCompatActivity
             finish();
         } else {
             // Wire up the fragment.
-            FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
+            FragmentTransaction fragmentTransaction =
+                    getSupportFragmentManager().beginTransaction();
             fragmentTransaction.add(R.id.welcome_content, mContentFragment);
             fragmentTransaction.commit();
 
@@ -122,7 +119,6 @@ public class WelcomeActivity extends AppCompatActivity
                 return fragment;
             }
         }
-
         return null;
     }
 
@@ -141,7 +137,10 @@ public class WelcomeActivity extends AppCompatActivity
      * Returns all fragments displayed by {@link WelcomeActivity}.
      */
     private static List<WelcomeFragment> getWelcomeFragments() {
-        return Collections.singletonList((WelcomeFragment) new TosFragment());
+        return new ArrayList<WelcomeFragment>() {{
+            add(new TosFragment());
+            add(new SignInFragment());
+        }};
     }
 
     @Override
