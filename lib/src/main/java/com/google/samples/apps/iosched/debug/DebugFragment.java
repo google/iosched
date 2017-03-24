@@ -28,14 +28,14 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.samples.apps.iosched.lib.R;
 import com.google.samples.apps.iosched.debug.actions.DisplayUserDataDebugAction;
 import com.google.samples.apps.iosched.debug.actions.ForceAppDataSyncNowAction;
 import com.google.samples.apps.iosched.debug.actions.ForceSyncNowAction;
 import com.google.samples.apps.iosched.debug.actions.ScheduleStarredSessionAlarmsAction;
 import com.google.samples.apps.iosched.debug.actions.ShowSessionNotificationDebugAction;
 import com.google.samples.apps.iosched.debug.actions.TestScheduleHelperAction;
-import com.google.samples.apps.iosched.explore.ExploreSessionsActivity;
+import com.google.samples.apps.iosched.lib.R;
+import com.google.samples.apps.iosched.myschedule.MyScheduleActivity;
 import com.google.samples.apps.iosched.service.SessionAlarmService;
 import com.google.samples.apps.iosched.settings.ConfMessageCardUtils;
 import com.google.samples.apps.iosched.settings.SettingsUtils;
@@ -132,14 +132,14 @@ public class DebugFragment extends Fragment {
         tests.addView(createTestAction(new DebugAction() {
             @Override
             public void run(Context context, Callback callback) {
-                Intent intent = new Intent(context, ExploreSessionsActivity.class);
-                intent.putExtra(ExploreSessionsActivity.EXTRA_FILTER_TAG, "TOPIC_ANDROID");
+                Intent intent = new Intent(context, MyScheduleActivity.class);
+                intent.putExtra(MyScheduleActivity.EXTRA_FILTER_TAG, "TOPIC_ANDROID");
                 context.startActivity(intent);
             }
 
             @Override
             public String getLabel() {
-                return "Show Explore Sessions Activity (Android Topic)";
+                return "Show Filtered MySchedule Activity (Android Topic)";
             }
         }));
         tests.addView(createTestAction(new DebugAction() {

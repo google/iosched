@@ -30,10 +30,9 @@ import android.net.Uri;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.app.TaskStackBuilder;
 
-import com.google.samples.apps.iosched.lib.R;
-import com.google.samples.apps.iosched.explore.ExploreIOActivity;
 import com.google.samples.apps.iosched.feedback.FeedbackHelper;
 import com.google.samples.apps.iosched.feedback.SessionFeedbackActivity;
+import com.google.samples.apps.iosched.lib.R;
 import com.google.samples.apps.iosched.map.MapActivity;
 import com.google.samples.apps.iosched.myschedule.MyScheduleActivity;
 import com.google.samples.apps.iosched.provider.ScheduleContract;
@@ -48,7 +47,6 @@ import java.util.Date;
 import java.util.List;
 
 import static com.google.samples.apps.iosched.util.LogUtils.LOGD;
-import static com.google.samples.apps.iosched.util.LogUtils.LOGE;
 import static com.google.samples.apps.iosched.util.LogUtils.LOGW;
 import static com.google.samples.apps.iosched.util.LogUtils.makeLogTag;
 
@@ -510,7 +508,7 @@ public class SessionAlarmService extends IntentService {
         mapIntent.putExtra(MapActivity.EXTRA_DETACHED_MODE, true);
         return TaskStackBuilder
                 .create(getApplicationContext())
-                .addNextIntent(new Intent(this, ExploreIOActivity.class))
+                .addNextIntent(new Intent(this, MyScheduleActivity.class))
                 .addNextIntent(mapIntent)
                 .getPendingIntent(0, PendingIntent.FLAG_CANCEL_CURRENT);
     }

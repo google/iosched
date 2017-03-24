@@ -29,7 +29,6 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
-import android.support.v4.content.ContextCompat;
 import android.support.v4.graphics.drawable.DrawableCompat;
 import android.support.v4.widget.SimpleCursorAdapter;
 import android.support.v7.widget.SearchView;
@@ -45,7 +44,7 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 
 import com.google.samples.apps.iosched.lib.R;
-import com.google.samples.apps.iosched.explore.ExploreSessionsActivity;
+import com.google.samples.apps.iosched.myschedule.MyScheduleActivity;
 import com.google.samples.apps.iosched.provider.ScheduleContract;
 import com.google.samples.apps.iosched.session.SessionDetailActivity;
 import com.google.samples.apps.iosched.util.AnalyticsHelper;
@@ -311,8 +310,8 @@ public class SearchActivity extends BaseActivity implements
         boolean isTopicTag = c.getInt(SearchTopicsSessionsQuery.IS_TOPIC_TAG) == 1;
         String tagOrSessionId = c.getString(SearchTopicsSessionsQuery.TAG_OR_SESSION_ID);
         if (isTopicTag) {
-            Intent intent = new Intent(this, ExploreSessionsActivity.class);
-            intent.putExtra(ExploreSessionsActivity.EXTRA_FILTER_TAG, tagOrSessionId);
+            Intent intent = new Intent(this, MyScheduleActivity.class);
+            intent.putExtra(MyScheduleActivity.EXTRA_FILTER_TAG, tagOrSessionId);
             startActivity(intent);
         } else if (tagOrSessionId != null) {
             Intent intent = new Intent(this, SessionDetailActivity.class);

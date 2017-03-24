@@ -60,9 +60,6 @@ public class NavigationConfig {
                 case MY_SCHEDULE:
                     includeItem = BuildConfig.ENABLE_MYSCHEDULE_IN_NAVIGATION;
                     break;
-                case EXPLORE:
-                    includeItem = BuildConfig.ENABLE_EXPLORE_IN_NAVIGATION;
-                    break;
                 case FEED:
                     includeItem = BuildConfig.ENABLE_FEED_IN_NAVIGATION;
                     break;

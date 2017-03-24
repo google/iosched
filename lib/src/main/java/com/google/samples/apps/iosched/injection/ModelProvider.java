@@ -19,7 +19,6 @@ import android.net.Uri;
 import android.support.v4.app.LoaderManager;
 
 import com.google.samples.apps.iosched.archframework.Model;
-import com.google.samples.apps.iosched.explore.ExploreIOModel;
 import com.google.samples.apps.iosched.feedback.FeedbackHelper;
 import com.google.samples.apps.iosched.feedback.SessionFeedbackModel;
 import com.google.samples.apps.iosched.model.ScheduleHelper;
@@ -45,9 +44,6 @@ public class ModelProvider {
 
     @SuppressLint("StaticFieldLeak")
     private static SessionFeedbackModel stubSessionFeedbackModel = null;
-
-    @SuppressLint("StaticFieldLeak")
-    private static ExploreIOModel stubExploreIOModel = null;
 
     public static SessionDetailModel provideSessionDetailModel(Uri sessionUri, Context context,
             SessionsHelper sessionsHelper, LoaderManager loaderManager) {
@@ -76,24 +72,12 @@ public class ModelProvider {
         }
     }
 
-    public static ExploreIOModel provideExploreIOModel(Uri sessionsUri, Context context,
-            LoaderManager loaderManager) {
-        if (stubExploreIOModel != null) {
-            return stubExploreIOModel;
-        } else {
-            return new ExploreIOModel(context, sessionsUri, loaderManager);
-        }
-    }
-
     public static void setStubModel(Model model) {
-        if (model instanceof ExploreIOModel) {
-            stubExploreIOModel = (ExploreIOModel) model;
-        } else if (model instanceof SessionFeedbackModel) {
+        if (model instanceof SessionFeedbackModel) {
             stubSessionFeedbackModel = (SessionFeedbackModel) model;
         } else if (model instanceof SessionDetailModel) {
             stubSessionDetailModel = (SessionDetailModel) model;
-        }
-        if (model instanceof MyScheduleModel) {
+        } else if (model instanceof MyScheduleModel) {
             stubMyScheduleModel = (MyScheduleModel) model;
         }
     }
