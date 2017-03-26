@@ -186,6 +186,18 @@
         </auth-constraint>
     </security-constraint>
 
+    <!-- Feed endpont -->
+    <servlet>
+      <servlet-name>ServingUrlServlet</servlet-name>
+      <servlet-class>
+        com.google.samples.apps.iosched.server.feed.ServingUrlServlet
+      </servlet-class>
+    </servlet>
+    <servlet-mapping>
+      <servlet-name>ServingUrlServlet</servlet-name>
+      <url-pattern>/feed/servingurl</url-pattern>
+    </servlet-mapping>
+
     <!-- Cron endpoints -->
     <!-- Restricted to admin users only to prevent unauthorized execution. -->
     <servlet>
