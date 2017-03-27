@@ -81,6 +81,9 @@ public interface Config {
   // TODO(arthurthompson): Remove CMS_API_CODE since it is no longer used by vendor API.
   public static final String CMS_API_CODE = "UNDEFINED";
 
+  // API key used by feed AppsScript app to allow the retrival of Feed image serving URLs.
+  public static final String FEED_API_KEY = "UNDEFINED";
+
   // See context at b/15452185:
   public static final RoomMapping ROOM_MAPPING = new RoomMapping();
   static class RoomMapping {
