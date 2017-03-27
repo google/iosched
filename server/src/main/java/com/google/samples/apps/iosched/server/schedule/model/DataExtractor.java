@@ -221,15 +221,6 @@ public class DataExtractor {
           // in the same track are going to have the same image then it would make more sense for
           // the images to be attached to the Tag/Track rather than the session.
           if (tagName.getAsString().startsWith(TRACK)) {
-            // Extract photo urls from topics for TRACK tags.
-            String objectId = extractTrackPhotoObjectId(sources,
-                    dest.get(OutputJsonKeys.Tags.original_id.name()).getAsString());
-            if (!objectId.isEmpty()) {
-              dest.addProperty(OutputJsonKeys.Tags.photoUrl.name(),
-                      Converters.SESSION_PHOTO_URL.convert(new JsonPrimitive(objectId))
-                                                  .getAsString());
-            }
-
             // Add background colors for TRACK tags.
             String trackColor = getTrackColor(tagName.getAsString().substring(6));
             if (!trackColor.isEmpty()) {
@@ -264,10 +255,7 @@ public class DataExtractor {
         set(origin, InputJsonKeys.VendorAPISource.Speakers.CompanyName, dest, OutputJsonKeys.Speakers.company, obfuscate?Converters.OBFUSCATE:null);
         JsonElement originalPhoto = get(origin, InputJsonKeys.VendorAPISource.Speakers.Photo);
         if (originalPhoto != null && !"".equals(originalPhoto.getAsString())) {
-          // Note that the input for SPEAKER_PHOTO_ID converter is the entity ID. We simply ignore the original
-          // photo URL, because that will be processed by an offline cron script, resizing the
-          // photos and saving them to a known location with the entity ID as its base name.
-          set(origin, InputJsonKeys.VendorAPISource.Speakers.Id, dest, OutputJsonKeys.Speakers.thumbnailUrl, Converters.SPEAKER_PHOTO_URL);
+          set(origin, InputJsonKeys.VendorAPISource.Speakers.Photo, dest, OutputJsonKeys.Speakers.thumbnailUrl, Converters.PHOTO_URL);
         }
         JsonElement info = origin.get(InputJsonKeys.VendorAPISource.Speakers.Info.name());
         JsonPrimitive plusUrl = getMapValue(info, InputJsonKeys.VendorAPISource.Speakers.INFO_PUBLIC_PLUS_ID, Converters.GPLUS_URL, null);
@@ -324,14 +312,6 @@ public class DataExtractor {
         set(origin, InputJsonKeys.VendorAPISource.Topics.Start, dest, OutputJsonKeys.Sessions.startTimestamp, Converters.DATETIME);
         set(origin, InputJsonKeys.VendorAPISource.Topics.Finish, dest, OutputJsonKeys.Sessions.endTimestamp, Converters.DATETIME);
         set(new JsonPrimitive(isFeatured(origin)), dest, OutputJsonKeys.Sessions.isFeatured);
-
-        JsonElement documents = get(origin, InputJsonKeys.VendorAPISource.Topics.Documents);
-        if (documents != null && documents.isJsonArray() && documents.getAsJsonArray().size()>0) {
-          // Note that the input for SessionPhotoURL is the entity ID. We simply ignore the original
-          // photo URL, because that will be processed by an offline cron script, resizing the
-          // photos and saving them to a known location with the entity ID as its base name.
-          set(origin, InputJsonKeys.VendorAPISource.Topics.Id, dest, OutputJsonKeys.Sessions.photoUrl, Converters.SESSION_PHOTO_URL);
-        }
 
         setVideoPropertiesInSession(origin, dest);
         setRelatedContent(origin, dest);
@@ -661,32 +641,6 @@ public class DataExtractor {
         set(outputArray, dest, OutputJsonKeys.Sessions.relatedContent);
       }
     }
-  }
-
-  /**
-   * Extract the ObjectId (used to generate the photo url of the track) from the first topic that
-   * contains the given trackId.
-   *
-   * @param sources The full JSON object retrieved from the CMS.
-   * @param trackId Track id used to filter the topics, so the correct artwork can be retrieved.
-   * @return ObjectId of the topic that contains the trackId.
-   */
-  private String extractTrackPhotoObjectId(JsonDataSources sources, String trackId) {
-    JsonDataSource source = sources.getSource(InputJsonKeys.VendorAPISource.MainTypes.topics.name());
-    for (JsonObject topic : source) {
-
-      JsonElement documents = get(topic, InputJsonKeys.VendorAPISource.Topics.Documents);
-      JsonArray categories = topic.getAsJsonArray(InputJsonKeys.VendorAPISource.Topics.CategoryIds.name());
-      for (int i = 0; i < categories.size(); i++) {
-        String categoryId = categories.get(i).getAsString();
-        if (categoryId.equals(trackId) && documents.getAsJsonArray().size() > 0) {
-          return documents.getAsJsonArray().get(0).getAsJsonObject().get("ObjectId").getAsString();
-        }
-      }
-    }
-    // If no topic is found to have this trackId contained in its categories array then an empty
-    // String is returned.
-    return "";
   }
 
   // TODO: improve the association of colors with tracks.

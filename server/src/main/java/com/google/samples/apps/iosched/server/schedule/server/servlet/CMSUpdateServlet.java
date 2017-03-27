@@ -26,6 +26,7 @@ import com.google.gson.stream.JsonWriter;
 import com.google.samples.apps.iosched.server.schedule.Config;
 import com.google.samples.apps.iosched.server.schedule.model.JsonDataSource;
 import com.google.samples.apps.iosched.server.schedule.model.JsonDataSources;
+import com.google.samples.apps.iosched.server.schedule.server.image.ImageUpdater;
 import com.google.samples.apps.iosched.server.schedule.server.cloudstorage.CloudFileManager;
 import com.google.samples.apps.iosched.server.schedule.server.input.VendorDynamicInput;
 
@@ -102,6 +103,9 @@ public class CMSUpdateServlet extends HttpServlet {
       summary.append(entity).append(": ").append(source.size()).append("\n");
       contents.add(entity, array);
     }
+
+    // Fetch new images and set up serving URLs.
+    new ImageUpdater().run(sources);
 
     if (showOnly) {
       // Show generated contents to the output
