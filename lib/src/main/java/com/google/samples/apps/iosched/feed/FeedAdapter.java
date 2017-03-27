@@ -13,15 +13,10 @@
  */
 package com.google.samples.apps.iosched.feed;
 
-import android.animation.Animator;
-import android.animation.AnimatorSet;
-import android.animation.ObjectAnimator;
 import android.content.Context;
 import android.graphics.Point;
 import android.support.v7.widget.RecyclerView;
-import android.transition.Transition;
 import android.transition.TransitionManager;
-import android.transition.TransitionValues;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -120,7 +115,7 @@ public class FeedAdapter extends RecyclerView.Adapter<FeedAdapter.FeedViewHolder
             dateTime = (TextView) itemView.findViewById(R.id.dateTime);
             image = (ImageView) itemView.findViewById(R.id.image);
             description = (TextView) itemView.findViewById(R.id.description);
-            category = (TextView) itemView.findViewById(R.id.categoryColorBar);
+            category = (TextView) itemView.findViewById(R.id.categoryText);
             imageDescriptionLayout =
                     (LinearLayout) itemView.findViewById(R.id.imageDescriptionLayout);
             expandIcon = (ImageView) itemView.findViewById(R.id.expandIcon);
@@ -211,7 +206,7 @@ public class FeedAdapter extends RecyclerView.Adapter<FeedAdapter.FeedViewHolder
                 imageDescriptionLayout.setOrientation(LinearLayout.HORIZONTAL);
                 imageLayoutParams.width = messageCardImageWidth;
                 imageLayoutParams.height = messageCardImageHeight;
-                if(hasImage) {
+                if (hasImage) {
                     descriptionLayoutParams.setMarginStart(paddingNormal);
                 }
                 description.setMaxLines(SHORT_DESCRIPTION_MAX_LINES);

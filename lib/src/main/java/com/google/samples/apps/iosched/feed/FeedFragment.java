@@ -60,7 +60,8 @@ public class FeedFragment extends Fragment implements FeedContract.View {
     }
 
     @Override
-    public void setLoadingFeedMessages(boolean loading) {}
+    public void setLoadingFeedMessages(boolean loading) {
+    }
 
     @Override
     public void updateFromDataset(List<FeedMessage> feedMessages) {
@@ -69,5 +70,6 @@ public class FeedFragment extends Fragment implements FeedContract.View {
     }
 
     @Override
-    public void showError(String errorText) {}
+    public void showError(String errorText) {
+    }
 }

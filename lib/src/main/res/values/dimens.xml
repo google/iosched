@@ -75,6 +75,7 @@
     <dimen name="feed_message_card_image_height">56dp</dimen>
     <dimen name="feed_message_card_min_button_width">48dp</dimen>
     <dimen name="feed_message_card_desc_padding">4dp</dimen>
+    <dimen name="feed_color_bar_padding">6dp</dimen>
 
     <!-- body content -->
     <dimen name="element_spacing_normal">8dp</dimen>

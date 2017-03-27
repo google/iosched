@@ -118,7 +118,4 @@
     <color name="welcome_nav_bar">#ff296e78</color>
     <color name="welcome_attending_in_person_background">#fffff6de</color>
 
-    <!-- feed category colors -->
-    <color name="emergency">#ffeeeeee</color>
-
 </resources>
