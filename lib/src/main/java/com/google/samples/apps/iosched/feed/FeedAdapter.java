@@ -13,7 +13,11 @@
  */
 package com.google.samples.apps.iosched.feed;
 
+import android.animation.Animator;
+import android.animation.AnimatorListenerAdapter;
 import android.content.Context;
+import android.graphics.Color;
+import android.graphics.LightingColorFilter;
 import android.graphics.Point;
 import android.support.v7.widget.RecyclerView;
 import android.transition.TransitionManager;
@@ -191,7 +195,7 @@ public class FeedAdapter extends RecyclerView.Adapter<FeedAdapter.FeedViewHolder
 
         public void updateExpandOrCollapse(boolean changed, int paddingNormal, int messageCardImageWidth,
                 int messageCardImageHeight) {
-            rotateExpandIcon(changed);
+            updateExpandIcon(changed);
             LinearLayout.LayoutParams imageLayoutParams =
                     (LinearLayout.LayoutParams) image.getLayoutParams();
             LinearLayout.LayoutParams descriptionLayoutParams =
@@ -214,7 +218,31 @@ public class FeedAdapter extends RecyclerView.Adapter<FeedAdapter.FeedViewHolder
             TransitionManager.beginDelayedTransition(imageDescriptionLayout);
         }
 
-        private void rotateExpandIcon(boolean changed) {
+        private void updateExpandIcon(boolean changed) {
+            if (changed && expanded) {
+                expandIcon.animate().rotation(180f).setListener(new AnimatorListenerAdapter() {
+                    @Override
+                    public void onAnimationEnd(Animator animation) {
+                        super.onAnimationEnd(animation);
+                        expandIcon.setColorFilter(new LightingColorFilter(Color.BLUE, Color.BLUE));
+                    }
+                }).start();
+            } else if (changed && !expanded) {
+                expandIcon.animate().rotation(0f).setListener(new AnimatorListenerAdapter() {
+                    @Override
+                    public void onAnimationEnd(Animator animation) {
+                        super.onAnimationEnd(animation);
+                        expandIcon.setColorFilter(new LightingColorFilter(Color.BLACK, Color.BLACK));
+                    }
+                }).start();
+            } else if (!changed && expanded) {
+                expandIcon.setRotation(180f);
+                expandIcon.setColorFilter(new LightingColorFilter(Color.BLUE, Color.BLUE));
+            } else if (!changed && !expanded) {
+                expandIcon.setRotation(0f);
+                expandIcon.setColorFilter(new LightingColorFilter(Color.BLACK, Color.BLACK));
+            }
+
             float rotationAngle = expanded ? 180f : 0f;
             if (changed) {
                 expandIcon.animate().rotation(rotationAngle).start();
