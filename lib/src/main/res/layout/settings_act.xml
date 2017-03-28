@@ -16,53 +16,29 @@
   -->
 
 <!-- Settings screen layout that automatically adds the SettingsFragment. -->
-<android.support.v4.widget.DrawerLayout
+<LinearLayout
     android:id="@+id/drawer_layout"
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
-    tools:context=".settings.SettingsActivity">
+    android:orientation="vertical"
+    tools:context="com.google.samples.apps.iosched.settings.SettingsActivity">
 
-
-    <com.google.samples.apps.iosched.ui.widget.DrawShadowFrameLayout
-        android:id="@+id/main_content"
+    <android.support.design.widget.AppBarLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:clipChildren="false"
-        app:shadowDrawable="@drawable/header_shadow">
+        android:layout_height="wrap_content"
+        android:fitsSystemWindows="true">
 
-        <fragment
-            android:id="@+id/settings_fragment"
-            android:name="com.google.samples.apps.iosched.settings.SettingsActivity$SettingsFragment"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+        <include layout="@layout/toolbar" />
+    </android.support.design.widget.AppBarLayout>
 
-        <LinearLayout
-            android:id="@+id/headerbar"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:clickable="true"
-            android:orientation="vertical"
-            style="@style/HeaderBar">
+    <fragment
+        android:id="@+id/settings_fragment"
+        android:name="com.google.samples.apps.iosched.settings.SettingsActivity$SettingsFragment"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"/>
 
-            <include layout="@layout/toolbar" />
-
-        </LinearLayout>
-
-        <!-- Butter bar -->
-        <FrameLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="top"
-            android:layout_marginTop="?actionBarSize">
-
-            <include layout="@layout/deprecated_include_butter_bar" />
-
-        </FrameLayout>
-
-    </com.google.samples.apps.iosched.ui.widget.DrawShadowFrameLayout>
-
-</android.support.v4.widget.DrawerLayout>
+</LinearLayout>

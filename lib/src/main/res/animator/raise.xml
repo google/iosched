@@ -21,12 +21,14 @@
         android:state_pressed="true">
         <objectAnimator
             android:duration="@android:integer/config_shortAnimTime"
+            android:interpolator="@android:interpolator/fast_out_slow_in"
             android:propertyName="translationZ"
             android:valueTo="@dimen/touch_raise" />
     </item>
     <item>
         <objectAnimator
             android:duration="@android:integer/config_shortAnimTime"
+            android:interpolator="@android:interpolator/fast_out_slow_in"
             android:propertyName="translationZ"
             android:valueTo="0dp" />
     </item>

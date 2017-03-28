@@ -39,11 +39,9 @@ import com.google.samples.apps.iosched.myschedule.MyScheduleActivity;
 import com.google.samples.apps.iosched.service.SessionAlarmService;
 import com.google.samples.apps.iosched.settings.ConfMessageCardUtils;
 import com.google.samples.apps.iosched.settings.SettingsUtils;
-import com.google.samples.apps.iosched.ui.widget.DrawShadowFrameLayout;
 import com.google.samples.apps.iosched.util.AccountUtils;
 import com.google.samples.apps.iosched.util.RegistrationUtils;
 import com.google.samples.apps.iosched.util.TimeUtils;
-import com.google.samples.apps.iosched.util.UIUtils;
 import com.google.samples.apps.iosched.util.WiFiUtils;
 import com.google.samples.apps.iosched.welcome.WelcomeActivity;
 
@@ -247,28 +245,5 @@ public class DebugFragment extends Fragment {
         message = "[" + time + "ms] " + message;
         Log.d(TAG, message);
         mLogArea.append(message + "\n");
-    }
-
-    private void setContentTopClearance(int clearance) {
-        if (getView() != null) {
-            getView().setPadding(getView().getPaddingLeft(), clearance,
-                    getView().getPaddingRight(), getView().getPaddingBottom());
-        }
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-
-        // configure fragment's top clearance to take our overlaid controls (Action Bar
-        // and spinner box) into account.
-        int actionBarSize = UIUtils.calculateActionBarSize(getActivity());
-        DrawShadowFrameLayout drawShadowFrameLayout =
-                (DrawShadowFrameLayout) getActivity().findViewById(R.id.main_content);
-        if (drawShadowFrameLayout != null) {
-            drawShadowFrameLayout.setShadowTopOffset(actionBarSize);
-        }
-        setContentTopClearance(actionBarSize
-                + getResources().getDimensionPixelSize(R.dimen.explore_grid_padding));
     }
 }

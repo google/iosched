@@ -20,10 +20,8 @@
     <!-- Prevents crash on certain devices to namespace conflict -->
     <style name="FrameworkRoot.Theme" parent="Theme.AppCompat.Light.NoActionBar" />
 
-    <style name="Theme.IOSched.Base" parent="FrameworkRoot.Theme">
-        <item name="actionBarInsetStart">@dimen/keyline_2</item>
+    <style name="Theme.IOSched" parent="FrameworkRoot.Theme">
         <item name="homeAsUpIndicator">@drawable/ic_up</item>
-        <item name="popupItemBackground">?android:selectableItemBackground</item>
 
         <item name="colorPrimary">@color/theme_primary</item>
         <item name="colorPrimaryDark">@color/theme_primary_dark</item>
@@ -38,24 +36,28 @@
         <item name="android:windowBackground">@color/background</item>
         <item name="android:homeAsUpIndicator">@drawable/ic_up</item>
 
-        <item name="android:popupMenuStyle">@style/Widget.IOSched.PopupMenu</item>
-        <item name="android:listPopupWindowStyle">@style/Widget.IOSched.PopupMenu</item>
-        <item name="android:dropDownListViewStyle">@style/Widget.IOSched.ListView.DropDown</item>
-        <item name="android:textAppearanceLargePopupMenu">@style/TextAppearance.LargePopupMenu</item>
-
-        <item name="imageItemBackground">?android:selectableItemBackground</item>
         <item name="android:borderlessButtonStyle">@style/Widget.AppCompat.Button.Borderless</item>
 
         <item name="preferenceTheme">@style/SettingsPreferenceThemeOverlay</item>
 
         <item name="android:listDivider">@drawable/list_divider</item>
+
+        <item name="android:alertDialogTheme">@style/Theme.IOSched.AlertDialog</item>
     </style>
 
-    <style name="Theme.IOSched" parent="Theme.IOSched.Base" />
+    <style name="Theme.IOSched.Light" parent="Theme.IOSched">
+        <item name="colorPrimaryDark">@color/dark_status_bar</item>
+    </style>
 
     <style name="ActionBarThemeOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
 
     <style name="ActionBarThemeOverlay.SessionDetail" parent="ThemeOverlay.AppCompat.ActionBar" />
+
+    <style name="Theme.IOSched.AlertDialog" parent="android:Theme.Material.Light.Dialog.Alert">
+        <item name="android:colorPrimary">@color/theme_primary</item>
+        <item name="android:colorPrimaryDark">@color/theme_primary_dark</item>
+        <item name="android:colorAccent">@color/theme_accent_2</item>
+    </style>
 
     <style name="SearchViewTheme" parent="ThemeOverlay.AppCompat.ActionBar">
         <item name="android:textColorPrimary">@color/body_text_1</item>
@@ -69,7 +71,10 @@
         <item name="android:windowBackground">@color/background</item>
     </style>
 
-    <style name="Theme.IOSched.Welcome" parent="Theme.IOSched.Welcome.Base" />
+    <style name="Theme.IOSched.Welcome" parent="Theme.IOSched.Welcome.Base">
+        <item name="android:statusBarColor">@color/dark_status_bar</item>
+        <item name="android:navigationBarColor">@color/welcome_nav_bar</item>
+    </style>
 
     <style name="Theme.IOSched.Search" parent="Theme.IOSched.Light">
         <item name="android:windowBackground">@android:color/transparent</item>
@@ -101,28 +106,8 @@
         <item name="android:backgroundDimEnabled">false</item>
     </style>
 
-    <style name="Theme.IOSched.VideoLibrary" parent="Theme.IOSched.Light">
-        <item name="videoThumbnailStyle">@style/VideoThumbnail</item>
-    </style>
-
-    <style name="Theme.IOSched.VideoLibrary.Filtered" />
-
     <style name="Theme.IOSched.Feedback" parent="Theme.IOSched">
         <item name="colorAccent">@color/flat_button_text</item>
-    </style>
-
-    <style name="Widget.IOSched.PopupMenu" parent="Widget.AppCompat.Light.PopupMenu">
-        <item name="android:dropDownSelector">?popupItemBackground</item>
-    </style>
-
-    <style name="Widget.IOSched.ListView.DropDown" parent="Widget.AppCompat.Light.ListView.DropDown">
-        <item name="android:listSelector">?popupItemBackground</item>
-        <item name="android:divider">@null</item>
-        <item name="android:dividerHeight">0dp</item>
-    </style>
-
-    <style name="TextAppearance.LargePopupMenu" parent="TextAppearance.AppCompat.Widget.PopupMenu.Large">
-        <item name="android:textColor">@color/body_text_1</item>
     </style>
 
     <!-- My Schedule -->
@@ -204,8 +189,7 @@
         <item name="android:textSize">@dimen/text_size_xlarge</item>
         <item name="android:textColor">@color/map_text_primary</item>
         <item name="android:ellipsize">end</item>
-        <!--<item name="android:textStyle">bold</item>-->
-        <item name="android:fontFamily">@string/font_fontFamily_medium</item>
+        <item name="android:fontFamily">sans-serif-medium</item>
     </style>
 
     <style name="MapLabel" parent="android:TextAppearance.Medium">
@@ -295,11 +279,6 @@
     </style>
 
     <style name="SessionDetailsSubtitle" parent="@style/Body2Text">
-    </style>
-
-    <style name="VideoThumbnail">
-        <item name="playIcon">@drawable/ic_play_shadowed</item>
-        <item name="playedTint">@color/played_video_tint</item>
     </style>
 
     <style name="SettingsPreferenceThemeOverlay" parent="PreferenceThemeOverlay">

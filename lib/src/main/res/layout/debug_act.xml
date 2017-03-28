@@ -14,42 +14,27 @@
   See the License for the specific language governing permissions and
   limitations under the License.
   -->
-<android.support.v4.widget.DrawerLayout
+<LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/drawer_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".debug.DebugActivity">
+    android:orientation="vertical"
+    tools:context="com.google.samples.apps.iosched.debug.DebugActivity">
 
-    <!-- Main layout -->
-    <com.google.samples.apps.iosched.ui.widget.DrawShadowFrameLayout
-        android:id="@+id/main_content"
+    <android.support.design.widget.AppBarLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:fitsSystemWindows="true"
-        app:shadowDrawable="@drawable/header_shadow">
+        android:layout_height="wrap_content"
+        android:fitsSystemWindows="true">
 
-        <fragment
-            android:id="@+id/debug_fragment"
-            android:name="com.google.samples.apps.iosched.debug.DebugFragment"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+        <include layout="@layout/toolbar" />
+    </android.support.design.widget.AppBarLayout>
 
-        <LinearLayout
-            android:id="@+id/headerbar"
-            style="@style/HeaderBar"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:clickable="true"
-            android:orientation="vertical">
+    <fragment
+        android:id="@+id/debug_fragment"
+        android:name="com.google.samples.apps.iosched.debug.DebugFragment"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1" />
 
-            <include layout="@layout/toolbar" />
-            <!-- placeholder, empty except on L -->
-
-        </LinearLayout>
-
-    </com.google.samples.apps.iosched.ui.widget.DrawShadowFrameLayout>
-
-</android.support.v4.widget.DrawerLayout>
+</LinearLayout>

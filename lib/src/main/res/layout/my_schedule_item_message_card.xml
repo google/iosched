@@ -18,7 +18,6 @@
 <!-- Layout used to display data from a MessageCardData object. -->
 <RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
@@ -63,7 +62,6 @@
         android:layout_marginLeft="@dimen/spacing_micro"
         android:layout_marginRight="@dimen/spacing_normal"
         android:layout_marginStart="@dimen/spacing_micro"
-        android:fontFamily="@string/font_fontFamily_medium"
         android:paddingLeft="@dimen/spacing_normal"
         android:paddingRight="@dimen/spacing_normal"
         tools:text="Button End" />

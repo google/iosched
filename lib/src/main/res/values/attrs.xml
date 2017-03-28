@@ -15,20 +15,9 @@
   limitations under the License.
   -->
 <resources>
-    <declare-styleable name="BaseTheme">
-        <attr name="actionBarInsetStart" format="dimension" />
-        <attr name="popupItemBackground" format="reference" />
-        <attr name="imageItemBackground" format="reference" />
-        <attr name="videoThumbnailStyle" format="reference" />
-    </declare-styleable>
 
     <declare-styleable name="MultiSwipeRefreshLayout">
         <attr name="foreground" format="reference" />
-    </declare-styleable>
-
-    <declare-styleable name="DrawShadowFrameLayout">
-        <attr name="shadowDrawable" format="reference" />
-        <attr name="shadowVisible" format="boolean" />
     </declare-styleable>
 
     <declare-styleable name="BezelImageView">
@@ -57,11 +46,6 @@
         <attr name="android:foreground" />
         <attr name="android:foregroundInsidePadding" />
         <attr name="android:foregroundGravity" />
-    </declare-styleable>
-
-    <declare-styleable name="VideoThumbnail">
-        <attr name="playIcon" format="reference" />
-        <attr name="playedTint" format="color" />
     </declare-styleable>
 
     <declare-styleable name="CustomRatingBar">

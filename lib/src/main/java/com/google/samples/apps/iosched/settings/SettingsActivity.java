@@ -35,9 +35,7 @@ import com.google.samples.apps.iosched.messaging.MessagingRegistrationWithGCM;
 import com.google.samples.apps.iosched.navigation.NavigationModel;
 import com.google.samples.apps.iosched.service.SessionCalendarService;
 import com.google.samples.apps.iosched.ui.BaseActivity;
-import com.google.samples.apps.iosched.ui.widget.DrawShadowFrameLayout;
 import com.google.samples.apps.iosched.util.PermissionsUtils;
-import com.google.samples.apps.iosched.util.UIUtils;
 
 /**
  * Activity for customizing app settings.
@@ -136,21 +134,6 @@ public class SettingsActivity extends BaseActivity {
         }
 
         @Override
-        public void onResume() {
-            super.onResume();
-
-            // configure the fragment's top clearance to take our overlaid controls (Action Bar
-            // and spinner box) into account.
-            int actionBarSize = UIUtils.calculateActionBarSize(getActivity());
-            DrawShadowFrameLayout drawShadowFrameLayout =
-                    (DrawShadowFrameLayout) getActivity().findViewById(R.id.main_content);
-            if (drawShadowFrameLayout != null) {
-                drawShadowFrameLayout.setShadowTopOffset(actionBarSize);
-            }
-            setContentTopClearance(actionBarSize);
-        }
-
-        @Override
         public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
             // The Calendar Sync requires checking the Calendar permission.
             if (SettingsUtils.PREF_SYNC_CALENDAR.equals(key)) {
@@ -170,13 +153,6 @@ public class SettingsActivity extends BaseActivity {
                 // This will activate re-registering with the correct GCM topic(s).
                 new MessagingRegistrationWithGCM(getActivity()).registerDevice();
 
-            }
-        }
-
-        private void setContentTopClearance(int clearance) {
-            if (getView() != null) {
-                getView().setPadding(getView().getPaddingLeft(), clearance,
-                        getView().getPaddingRight(), getView().getPaddingBottom());
             }
         }
     }
