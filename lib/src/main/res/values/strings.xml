@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
-  Copyright 2016 Google Inc. All rights reserved.
+  Copyright 2017 Google Inc. All rights reserved.
 
   Licensed under the Apache License, Version 2.0 (the "License");
   you may not use this file except in compliance with the License.
@@ -579,6 +579,9 @@
     <!-- Text of the Filter menu icon -->
     <string name="description_filter">Filter</string>
 
+    <!-- Text of the My I/O menu icon -->
+    <string name="description_avatar">Avatar</string>
+
     <!-- Title of the Video library side panel containing all the filters -->
     <string name="title_video_library_filter">Filter</string>
 
@@ -654,11 +657,8 @@
         sessions from your account across mobile and desktop. You\'ll still be able to save events
         locally without signing-in.</string>
 
-    <!-- Label used on the onboarding sign in screen for signing in. -->
+    <!-- Label used when asking a user to sign in. -->
     <string name="signin_prompt">Sign in</string>
-
-    <!-- Label used on the onboarding sign in screen for skipping sign in. -->
-    <string name="signin_prompt_dismiss">Skip</string>
 
     <!-- Label used on an onboarding screen when user provides a positive response. -->
     <string name="yes">Yes</string>
@@ -672,5 +672,44 @@
         We\'ll send you important info about the event, agenda, schedule, travel, after hours,
         sessions recordings and more. You can change this setting under \"Info > Settings\" at any
         time.
+    </string>
+
+    <!-- Label used when asking a user to sign out. -->
+    <string name="signout_prompt">Sign out</string>
+
+    <!-- Label used on the onboarding sign in screen for skipping sign in. -->
+    <string name="signin_prompt_dismiss">Skip</string>
+
+    <!-- A placeholder value for the user's name in the My I/O dialog -->
+    <string name="my_io_dialog_default_name">Your name</string>
+
+    <!-- A placeholder value for the user's email in the My I/O dialog -->
+    <string name="my_io_dialog_default_email">you@gmail.com</string>
+
+    <!-- An introductory string used in the My I/O dialog to a signed out user  -->
+    <string name="my_io_body_intro_signed_out">Sign in to:</string>
+
+    <!-- An introductory string used in the My I/O dialog to a signed in user  -->
+    <string name="my_io_body_intro_signed_in">As a signed-in user:</string>
+
+    <!-- The first bulletpoint string used in the My I/O dialog to a signed out user  -->
+    <string name="my_io_dialog_first_bullet_point_signed_out">
+        \u2022 Sync saved events and reserved sessions in your account across desktop and mobile
+    </string>
+
+    <!-- The first bulletpoint string used in the My I/O dialog to a signed in user  -->
+    <string name="my_io_dialog_first_bullet_point_signed_in">
+        \u2022 Your saved events and reserved sessions are synced to your account across mobile
+        and desktop
+    </string>
+
+    <!-- The second bulletpoint string used in the My I/O dialog to a signed out user  -->
+    <string name="my_io_dialog_second_bullet_point_signed_out">
+        \u2022 Provide session feedback after sessions end
+    </string>
+
+    <!-- The second bulletpoint string used in the My I/O dialog to a signed in user  -->
+    <string name="my_io_dialog_second_bullet_point_signed_in">
+        \u2022 You can provide session feedback after sessions end
     </string>
 </resources>
