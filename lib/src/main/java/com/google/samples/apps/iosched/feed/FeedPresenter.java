@@ -68,13 +68,13 @@ public class FeedPresenter implements FeedContract.Presenter {
                 "https://i.redd.it/8xr85tal46ny.jpg",
                 "http://i.imgur.com/L6i8Baq.jpg"};
         int defaultCategoryColor = 0xffafbdc4;
-        feedMessages.add(new FeedMessage(0, "Emergency", defaultCategoryColor,
+        feedMessages.add(new FeedMessage(0, "Agenda", defaultCategoryColor,
                 "0Title!", mockDescription, true, "link",
                 imageUrls[0], System.currentTimeMillis(), true, true));
-        feedMessages.add(new FeedMessage(1, "Emergency", defaultCategoryColor,
+        feedMessages.add(new FeedMessage(1, "Event", defaultCategoryColor,
                 "1Title!", mockDescription, true, "link",
                 imageUrls[1], System.currentTimeMillis(), true, true));
-        feedMessages.add(new FeedMessage(2, "Emergency", defaultCategoryColor,
+        feedMessages.add(new FeedMessage(2, "Social", defaultCategoryColor,
                 "2Title!", mockDescription, true, "link",
                 imageUrls[2], System.currentTimeMillis(), true, true));
         feedMessages.add(new FeedMessage(3, "Emergency", defaultCategoryColor,
