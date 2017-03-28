@@ -111,6 +111,14 @@
     </style>
 
     <!-- My Schedule -->
+    <style name="Theme.IOSched.MyIo">
+        <!-- TODO adjust themes later -->
+        <item name="colorPrimary">@color/neon_blue</item>
+        <item name="colorPrimaryDark">@color/neon_blue</item>
+        <item name="colorAccent">@color/aqua_marine</item>
+    </style>
+
+    <!-- My Schedule -->
     <style name="Theme.IOSched.MySchedule" />
 
     <!-- Session Details -->

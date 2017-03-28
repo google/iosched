@@ -15,21 +15,18 @@
  */
 package com.google.samples.apps.iosched.myio;
 
-import com.google.samples.apps.iosched.model.ScheduleItem;
+import android.support.v4.app.LoaderManager;
 
-import java.util.List;
+public class MyIOContract {
 
-public class MyIOModel {
+    interface MyIoView {
 
-    private List<ScheduleItem> mScheduleItems;
-
-    MyIOModel() {}
-
-    public void setScheduleItems(List<ScheduleItem> scheduleItems) {
-        mScheduleItems = scheduleItems;
+        void onScheduleLoaded(MyIOModel model);
     }
 
-    List<ScheduleItem> getScheduleItems() {
-        return mScheduleItems;
+    interface MyIoPresenter {
+
+        void initModel(LoaderManager loaderManager);
     }
+
 }
