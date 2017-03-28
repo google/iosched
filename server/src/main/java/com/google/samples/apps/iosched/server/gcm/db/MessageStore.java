@@ -20,7 +20,7 @@ import com.google.samples.apps.iosched.server.gcm.db.models.MulticastMessage;
 import java.util.List;
 import java.util.logging.Logger;
 
-import static com.google.samples.apps.iosched.server.gcm.db.OfyService.ofy;
+import static com.googlecode.objectify.ObjectifyService.ofy;
 
 /**
  * Simple implementation of a data store using standard Java collections.
