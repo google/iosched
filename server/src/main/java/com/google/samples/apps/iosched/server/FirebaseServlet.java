@@ -20,6 +20,8 @@ import com.google.firebase.FirebaseOptions;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseCredentials;
 import com.google.firebase.auth.FirebaseToken;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.tasks.Task;
 import com.google.firebase.tasks.Tasks;
 
@@ -48,6 +50,10 @@ public abstract class FirebaseServlet extends HttpServlet {
         if (FirebaseApp.getApps().isEmpty()) {
             FirebaseApp.initializeApp(options);
         }
+    }
+
+    protected DatabaseReference getDatabaseReference() {
+        return FirebaseDatabase.getInstance().getReference();
     }
 
     protected void initFirebaseUser(String userToken) {

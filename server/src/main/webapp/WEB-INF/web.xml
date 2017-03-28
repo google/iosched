@@ -39,6 +39,16 @@
   <servlet>
       <servlet-name>queryRegistration</servlet-name>
       <servlet-class>com.google.samples.apps.iosched.server.userdata.server.servlet.QueryRegistrationServlet</servlet-class>
+      <init-param>
+          <description>eventId</description>
+          <param-name>eventId</param-name>
+          <param-value>[eventId]</param-value>
+      </init-param>
+      <init-param>
+          <description>eventManagerUrl</description>
+          <param-name>eventManagerUrl</param-name>
+          <param-value>[eventManagerUrl]</param-value>
+      </init-param>
   </servlet>
   <servlet-mapping>
       <servlet-name>queryRegistration</servlet-name>
