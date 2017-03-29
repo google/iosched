@@ -32,10 +32,11 @@ import com.google.samples.apps.iosched.myio.MyIOContract.MyIoPresenter;
 import com.google.samples.apps.iosched.myio.MyIOContract.MyIoView;
 import com.google.samples.apps.iosched.myschedule.MyScheduleActivity;
 import com.google.samples.apps.iosched.myschedule.MyScheduleDayAdapter;
-import com.google.samples.apps.iosched.myschedule.MyScheduleDayAdapter.ScheduleAdapterListener;
 import com.google.samples.apps.iosched.myschedule.MyScheduleModel;
+import com.google.samples.apps.iosched.myschedule.ScheduleItemViewHolder.Callbacks;
+import com.google.samples.apps.iosched.provider.ScheduleContract.Sessions;
 
-public class MyIOFragment extends Fragment implements MyIoView, ScheduleAdapterListener {
+public class MyIOFragment extends Fragment implements MyIoView, Callbacks {
 
     private MyIoPresenter mPresenter;
     private RecyclerView mRecyclerView;
@@ -68,11 +69,12 @@ public class MyIOFragment extends Fragment implements MyIoView, ScheduleAdapterL
         mAdapter.updateItems(model.getScheduleItems());
     }
 
-    // -- ScheduleAdapterListener callbacks
+    // -- Adapter callbacks
 
     @Override
-    public void onSessionClicked(Uri sessionUri) {
+    public void onSessionClicked(String sessionId) {
         Bundle args = new Bundle();
+        Uri sessionUri = Sessions.buildSessionUri(sessionId);
         args.putString(MyScheduleModel.SESSION_URL_KEY, sessionUri.toString());
         startActivity(new Intent(Intent.ACTION_VIEW, sessionUri));
     }
@@ -85,6 +87,11 @@ public class MyIOFragment extends Fragment implements MyIoView, ScheduleAdapterL
     @Override
     public void onTagClicked(Tag tag) {
         MyScheduleActivity.launchScheduleWithFilterTag(getContext(), tag);
+    }
+
+    @Override
+    public boolean bookmarkingEnabled() {
+        return false; // not supported
     }
 
     @Override

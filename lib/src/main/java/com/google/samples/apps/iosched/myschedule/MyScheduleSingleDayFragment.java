@@ -39,9 +39,10 @@ import com.google.samples.apps.iosched.feedback.SessionFeedbackActivity;
 import com.google.samples.apps.iosched.lib.R;
 import com.google.samples.apps.iosched.model.TagMetadata;
 import com.google.samples.apps.iosched.model.TagMetadata.Tag;
-import com.google.samples.apps.iosched.myschedule.MyScheduleDayAdapter.ScheduleAdapterListener;
 import com.google.samples.apps.iosched.myschedule.MyScheduleModel.MyScheduleQueryEnum;
 import com.google.samples.apps.iosched.myschedule.MyScheduleModel.MyScheduleUserActionEnum;
+import com.google.samples.apps.iosched.myschedule.ScheduleItemViewHolder.Callbacks;
+import com.google.samples.apps.iosched.provider.ScheduleContract.Sessions;
 import com.google.samples.apps.iosched.util.TimeUtils;
 
 /**
@@ -51,7 +52,7 @@ import com.google.samples.apps.iosched.util.TimeUtils;
  */
 public class MyScheduleSingleDayFragment extends Fragment
         implements UpdatableView<MyScheduleModel, MyScheduleQueryEnum, MyScheduleUserActionEnum>,
-        LoaderCallbacks<Cursor>, ScheduleAdapterListener {
+        LoaderCallbacks<Cursor>, Callbacks {
 
     private static final int TAG_METADATA_TOKEN = 0x8;
 
@@ -229,13 +230,21 @@ public class MyScheduleSingleDayFragment extends Fragment
     public void onLoaderReset(final Loader<Cursor> loader) {
     }
 
+    // -- Adapter callbacks
+
     @Override
-    public void onSessionClicked(Uri sessionUri) {
+    public void onSessionClicked(String sessionId) {
         Bundle args = new Bundle();
+        Uri sessionUri = Sessions.buildSessionUri(sessionId);
         args.putString(MyScheduleModel.SESSION_URL_KEY, sessionUri.toString());
         mListener.onUserAction(MyScheduleUserActionEnum.SESSION_SLOT, args);
 
         startActivity(new Intent(Intent.ACTION_VIEW, sessionUri));
+    }
+
+    @Override
+    public boolean bookmarkingEnabled() {
+        return true;
     }
 
     @Override

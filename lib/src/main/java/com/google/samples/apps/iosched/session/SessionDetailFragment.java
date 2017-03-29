@@ -71,7 +71,7 @@ import com.google.samples.apps.iosched.map.MapActivity;
 import com.google.samples.apps.iosched.model.TagMetadata.Tag;
 import com.google.samples.apps.iosched.myschedule.MyScheduleActivity;
 import com.google.samples.apps.iosched.myschedule.MyScheduleDayAdapter;
-import com.google.samples.apps.iosched.myschedule.MyScheduleDayAdapter.ScheduleAdapterListener;
+import com.google.samples.apps.iosched.myschedule.ScheduleItemViewHolder.Callbacks;
 import com.google.samples.apps.iosched.provider.ScheduleContract.Sessions;
 import com.google.samples.apps.iosched.session.SessionDetailModel.SessionDetailQueryEnum;
 import com.google.samples.apps.iosched.session.SessionDetailModel.SessionDetailUserActionEnum;
@@ -97,7 +97,7 @@ import static com.google.samples.apps.iosched.util.LogUtils.LOGD;
  */
 public class SessionDetailFragment extends Fragment implements
         UpdatableView<SessionDetailModel, SessionDetailQueryEnum, SessionDetailUserActionEnum>,
-        ScheduleAdapterListener {
+        Callbacks {
 
     private static final String TAG = LogUtils.makeLogTag(SessionDetailFragment.class);
 
@@ -889,9 +889,16 @@ public class SessionDetailFragment extends Fragment implements
         }
     }
 
+    // -- Adapter callbacks (for related sessions)
+
     @Override
-    public void onSessionClicked(Uri sessionUri) {
-        startActivity(new Intent(Intent.ACTION_VIEW, sessionUri));
+    public void onSessionClicked(String sessionId) {
+        startActivity(new Intent(Intent.ACTION_VIEW, Sessions.buildSessionUri(sessionId)));
+    }
+
+    @Override
+    public boolean bookmarkingEnabled() {
+        return true;
     }
 
     @Override
