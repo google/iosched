@@ -17,6 +17,7 @@ package com.google.samples.apps.iosched.util;
 import android.accounts.Account;
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.net.Uri;
 import android.preference.PreferenceManager;
 import android.text.TextUtils;
 
@@ -59,6 +60,18 @@ public class AccountUtils {
 
     private static final String PREFIX_PREF_FCM_KEY = "gcm_key_";
 
+
+    /**
+     * Used for accessing the account display name stored in {@link SharedPreferences}.
+     */
+    private static final String PREF_ACTIVE_ACCOUNT_DISPLAY_NAME =
+            "pref_active_account_display_name" + Constants.CONFERENCE_YEAR_PREF_POSTFIX;
+
+    /**
+     * Used for accessing the account phot url stored in {@link SharedPreferences}.
+     */
+    private static final String PREF_ACTIVE_ACCOUNT_PHOTO_URL =
+            "pref_active_account_photo_url" + Constants.CONFERENCE_YEAR_PREF_POSTFIX;
 
     public static final String AUTH_SCOPES[] = {
             Scopes.PLUS_LOGIN,
@@ -120,10 +133,63 @@ public class AccountUtils {
         sp.edit().putString(PREF_ACTIVE_ACCOUNT, accountName).apply();
     }
 
+    /**
+     * Returns the display name associated with the active account.
+     *
+     * @param context Context used to lookup {@link SharedPreferences}
+     */
+    public static String getActiveAccountDisplayName(final Context context) {
+        SharedPreferences sp = getSharedPreferences(context);
+        return sp.getString(PREF_ACTIVE_ACCOUNT_DISPLAY_NAME, "");
+    }
+
+    /**
+     * Sets the display name associated with the active account.
+     *
+     * @param context     Context used to lookup {@link SharedPreferences}
+     * @param displayName The display name associated with an account.
+     */
+    public static void setActiveAccountDisplayName(final Context context,
+            final String displayName) {
+        SharedPreferences sp = getSharedPreferences(context);
+        sp.edit().putString(PREF_ACTIVE_ACCOUNT_DISPLAY_NAME, displayName).apply();
+    }
+
+    /**
+     * Returns the photo url associated with the active account.
+     *
+     * @param context Context used to lookup {@link SharedPreferences}
+     */
+    public static Uri getActiveAccountPhotoUrl(final Context context) {
+        SharedPreferences sp = getSharedPreferences(context);
+        String photoUrl = sp.getString(PREF_ACTIVE_ACCOUNT_PHOTO_URL, null);
+        if (photoUrl != null) {
+            return Uri.parse(photoUrl);
+        }
+        return null;
+    }
+
+    /**
+     * Stores the photo url associated with the active account.
+     *
+     * @param context  Context used to lookup {@link SharedPreferences}
+     * @param photoUrl The photo url.
+     */
+    public static void setActiveAccountPhotoUrl(final Context context, final Uri photoUrl) {
+        SharedPreferences sp = getSharedPreferences(context);
+        if (photoUrl != null) {
+            sp.edit().putString(PREF_ACTIVE_ACCOUNT_PHOTO_URL, photoUrl.toString()).apply();
+        }
+    }
+
     public static void clearActiveAccount(final Context context) {
         LOGD(TAG, "Clearing active account");
         SharedPreferences sp = getSharedPreferences(context);
-        sp.edit().remove(PREF_ACTIVE_ACCOUNT).apply();
+        sp.edit()
+          .remove(PREF_ACTIVE_ACCOUNT)
+          .remove(PREF_ACTIVE_ACCOUNT_DISPLAY_NAME)
+          .remove(PREF_ACTIVE_ACCOUNT_PHOTO_URL)
+          .apply();
     }
 
     protected static String makeAccountSpecificPrefKey(Context ctx, String prefix) {
@@ -138,10 +204,12 @@ public class AccountUtils {
     public static String getAuthToken(final Context context) {
         SharedPreferences sp = getSharedPreferences(context);
         return hasActiveAccount(context) ?
-                sp.getString(makeAccountSpecificPrefKey(context, PREFIX_PREF_AUTH_TOKEN), null) : null;
+                sp.getString(makeAccountSpecificPrefKey(context, PREFIX_PREF_AUTH_TOKEN), null) :
+                null;
     }
 
-    public static void setAuthToken(final Context context, final String accountName, final String authToken) {
+    public static void setAuthToken(final Context context, final String accountName,
+            final String authToken) {
         LOGI(TAG, "Auth token of length "
                 + (TextUtils.isEmpty(authToken) ? 0 : authToken.length()) + " for "
                 + accountName);
@@ -179,8 +247,9 @@ public class AccountUtils {
             String accountName = getActiveAccountName(context);
             if (accountName != null) {
                 LOGI(TAG, "Requesting new auth token (with notification)");
-                final String token = GoogleAuthUtil.getTokenWithNotification(context, accountName, AUTH_TOKEN_TYPE,
-                        null, syncAuthority, null);
+                final String token = GoogleAuthUtil
+                        .getTokenWithNotification(context, accountName, AUTH_TOKEN_TYPE,
+                                null, syncAuthority, null);
                 setAuthToken(context, token);
             } else {
                 LOGE(TAG, "Can't try authentication because no account is chosen.");
@@ -197,12 +266,13 @@ public class AccountUtils {
         }
     }
 
+
     public static void setFcmKey(final Context context, final String accountName, final String fcmKey) {
-        SharedPreferences sp = getSharedPreferences(context);
-        sp.edit().putString(makeAccountSpecificPrefKey(accountName, PREFIX_PREF_FCM_KEY),
-                fcmKey).apply();
-        LOGD(TAG, "FCM key of account " + accountName + " set to: " + sanitizeFcmKey(fcmKey));
-    }
+            SharedPreferences sp = getSharedPreferences(context);
+            sp.edit().putString(makeAccountSpecificPrefKey(accountName, PREFIX_PREF_FCM_KEY),
+                    fcmKey).apply();
+            LOGD(TAG, "FCM key of account " + accountName + " set to: " + sanitizeFcmKey(fcmKey));
+        }
 
     public static String getFcmKey(final Context context, final String accountName) {
         SharedPreferences sp = getSharedPreferences(context);

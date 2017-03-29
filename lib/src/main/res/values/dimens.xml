@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
-  Copyright 2015 Google Inc. All rights reserved.
+  Copyright 2017 Google Inc. All rights reserved.
 
   Licensed under the Apache License, Version 2.0 (the "License");
   you may not use this file except in compliance with the License.
@@ -53,6 +53,17 @@
     <dimen name="divider_height_inc_padding_top_only">8dp</dimen>
     <dimen name="divider_padding_top">7dp</dimen>
     <dimen name="divider_padding_bottom">8dp</dimen>
+
+    <!-- My I/O Dialog Features -->
+    <dimen name="my_io_dialog_header_padding">4dp</dimen>
+    <dimen name="my_io_dialog_avatar_dimen">32dp</dimen>
+    <dimen name="my_io_dialog_header_margin">16dp</dimen>
+    <dimen name="my_io_dialog_check_circle_dimen">24dp</dimen>
+    <dimen name="my_io_dialog_header_extra_padding">18dp</dimen>
+    <dimen name="my_io_dialog_body_extra_padding">8dp</dimen>
+    <dimen name="my_io_dialog_button_padding">24dp</dimen>
+    <dimen name="my_io_dialog_spacer_margin_bottom">12dp</dimen>
+    <dimen name="my_io_dialog_bulletpoint_padding">18dp</dimen>
 
     <!-- Explore I/O Feature -->
     <dimen name="explore_io_message_card_image_width">56dp</dimen>

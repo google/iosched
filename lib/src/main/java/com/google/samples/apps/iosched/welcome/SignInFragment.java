@@ -184,11 +184,13 @@ public class SignInFragment extends WelcomeFragment
             if (acct != null) {
                 LOGI(TAG, "signed in successfully: " + acct.getEmail());
                 AccountUtils.setActiveAccount(mActivity, acct.getEmail());
+                AccountUtils.setActiveAccountDisplayName(mActivity, acct.getDisplayName());
+                AccountUtils.setActiveAccountPhotoUrl(mActivity, acct.getPhotoUrl());
+
             }
         } else {
-            // User has never signed in before. If we got here, it means sign failed for some
-            // reason.
             LOGW(TAG, "Initial sign in failed: " + result);
+            AccountUtils.clearActiveAccount(mActivity);
         }
         doNext();
     }

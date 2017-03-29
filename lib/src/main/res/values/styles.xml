@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
-  Copyright 2015 Google Inc. All rights reserved.
+  Copyright 2017 Google Inc. All rights reserved.
 
   Licensed under the Apache License, Version 2.0 (the "License");
   you may not use this file except in compliance with the License.
@@ -253,8 +253,7 @@
         <item name="android:background">?attr/selectableItemBackground</item>
         <item name="android:minHeight">?android:attr/listPreferredItemHeightSmall</item>
         <item name="android:gravity">center_vertical</item>
-        <item name="android:paddingLeft">@dimen/padding_normal</item>
-        <item name="android:paddingRight">@dimen/padding_normal</item>
+
     </style>
 
     <style name="WelcomeTitle">
@@ -302,4 +301,42 @@
         <item name="android:elevation" tools:targetApi="lollipop">@dimen/bottom_nav_elevation</item>
     </style>
 
+    <style name="MyIODialog">
+        <item name="android:paddingLeft">@dimen/padding_normal</item>
+        <item name="android:paddingRight">@dimen/padding_normal</item>
+        <item name="android:textSize">@dimen/text_size_medium</item>
+    </style>
+
+
+    <style name="MyIODialog.Header">
+        <item name="android:paddingLeft">@dimen/my_io_dialog_header_padding</item>
+        <item name="android:paddingRight">@dimen/my_io_dialog_header_padding</item>
+    </style>
+
+
+    <style name="MyIODialog.Header.Name">
+        <item name="android:paddingTop">@dimen/my_io_dialog_header_extra_padding</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="MyIODialog.Header.Email">
+        <item name="android:paddingBottom">@dimen/my_io_dialog_header_extra_padding</item>
+    </style>
+
+    <style name="MyIODialog.Body">
+        <item name="android:paddingTop">@dimen/my_io_dialog_body_extra_padding</item>
+        <item name="android:paddingBottom">@dimen/my_io_dialog_body_extra_padding</item>
+    </style>
+
+    <style name="MyIODialog.Body.BulletedPoint">
+        <item name="android:paddingLeft">@dimen/my_io_dialog_bulletpoint_padding</item>
+        <item name="android:paddingRight">@dimen/padding_normal</item>
+    </style>
+
+    <style name="MyIODialog.Body.AuthButton">
+        <item name="android:background">@color/io16_accent_green</item>
+        <item name="android:layout_marginTop">@dimen/my_io_dialog_button_padding</item>
+        <item name="android:layout_marginRight">@dimen/my_io_dialog_button_padding</item>
+        <item name="android:layout_marginBottom">@dimen/my_io_dialog_button_padding</item>
+    </style>
 </resources>
