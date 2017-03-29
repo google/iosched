@@ -17,11 +17,9 @@ package com.google.samples.apps.iosched.navigation;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 
-import com.google.samples.apps.iosched.about.AboutActivity;
 import com.google.samples.apps.iosched.archframework.Model;
 import com.google.samples.apps.iosched.archframework.QueryEnum;
 import com.google.samples.apps.iosched.archframework.UserActionEnum;
-import com.google.samples.apps.iosched.debug.DebugActivity;
 import com.google.samples.apps.iosched.feed.FeedActivity;
 import com.google.samples.apps.iosched.lib.R;
 import com.google.samples.apps.iosched.map.MapActivity;
@@ -29,7 +27,6 @@ import com.google.samples.apps.iosched.myio.MyIOActivity;
 import com.google.samples.apps.iosched.myschedule.MyScheduleActivity;
 import com.google.samples.apps.iosched.navigation.NavigationModel.NavigationQueryEnum;
 import com.google.samples.apps.iosched.navigation.NavigationModel.NavigationUserActionEnum;
-import com.google.samples.apps.iosched.settings.SettingsActivity;
 
 /**
  * Determines which items to show in the {@link AppNavigationView}.
@@ -102,18 +99,7 @@ public class NavigationModel implements Model<NavigationQueryEnum, NavigationUse
                 R.drawable.ic_navview_feed, FeedActivity.class, true),
         MAP(R.id.map_nav_item, R.string.navdrawer_item_map, R.drawable.ic_navview_map,
                 MapActivity.class, true),
-        DEBUG(R.id.debug_nav_item, R.string.navdrawer_item_debug, R.drawable.ic_navview_settings,
-                DebugActivity.class),
-        INVALID(12, 0, 0, null),
-
-        // Deprecated.
-        SIGN_IN(R.id.signin_nav_item, R.string.navdrawer_item_sign_in, 0, null),
-
-        // TODO: consolidate under Info.
-        SETTINGS(R.id.settings_nav_item, R.string.navdrawer_item_settings, R.drawable.ic_navview_settings,
-                SettingsActivity.class),
-        ABOUT(R.id.about_nav_item, R.string.description_about, R.drawable.ic_about,
-                AboutActivity.class, true);
+        INVALID(12, 0, 0, null);
 
         private int id;
 
@@ -138,6 +124,15 @@ public class NavigationModel implements Model<NavigationQueryEnum, NavigationUse
             this.finishCurrentActivity = finishCurrentActivity;
         }
 
+        public static NavigationItemEnum getById(int id) {
+            for (NavigationItemEnum value : NavigationItemEnum.values()) {
+                if (value.getId() == id) {
+                    return value;
+                }
+            }
+            return INVALID;
+        }
+
         public int getId() {
             return id;
         }
@@ -156,15 +151,6 @@ public class NavigationModel implements Model<NavigationQueryEnum, NavigationUse
 
         public boolean finishCurrentActivity() {
             return finishCurrentActivity;
-        }
-
-        public static NavigationItemEnum getById(int id) {
-            for (NavigationItemEnum value : NavigationItemEnum.values()) {
-                if (value.getId() == id) {
-                    return value;
-                }
-            }
-            return INVALID;
         }
 
     }

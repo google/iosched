@@ -20,17 +20,16 @@ package com.google.samples.apps.iosched.about;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.text.Html;
 import android.view.View;
 import android.widget.TextView;
 
 import com.google.samples.apps.iosched.lib.BuildConfig;
 import com.google.samples.apps.iosched.lib.R;
-import com.google.samples.apps.iosched.navigation.NavigationModel;
-import com.google.samples.apps.iosched.ui.BaseActivity;
 import com.google.samples.apps.iosched.util.AboutUtils;
 
-public class AboutActivity extends BaseActivity {
+public class AboutActivity extends AppCompatActivity {
 
     private static final String URL_TERMS = "http://m.google.com/utos";
     private static final String URL_PRIVACY_POLICY = "http://www.google.com/policies/privacy/";
@@ -66,13 +65,8 @@ public class AboutActivity extends BaseActivity {
         overridePendingTransition(0, 0);
     }
 
-    @Override
-    protected NavigationModel.NavigationItemEnum getSelfNavDrawerItem() {
-        return NavigationModel.NavigationItemEnum.ABOUT;
-    }
 
     private void openUrl(String url) {
         startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(url)));
     }
-
 }

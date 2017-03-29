@@ -114,7 +114,14 @@
                     android:layout_weight="1" />
 
             </com.google.samples.apps.iosched.ui.widget.MultiSwipeRefreshLayout>
-
+            <android.support.design.widget.FloatingActionButton
+                android:id="@+id/debug_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="right"
+                android:src="@drawable/ic_settings"
+                android:visibility="gone"
+                tools:visibility="visible"/>
         </FrameLayout>
 
     </android.support.design.widget.CoordinatorLayout>

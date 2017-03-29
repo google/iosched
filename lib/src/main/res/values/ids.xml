@@ -35,15 +35,6 @@
     <item name="myschedule_listview_day1" type="id"/>
     <item name="myschedule_listview_day2" type="id"/>
 
-    <!-- hang onto these for NavigationModel for now... -->
-    <item name="settings_nav_item" type="id"/>
-    <item name="debug_nav_item" type="id"/>
-    <item name="signin_nav_item" type="id"/>
-    <item name="videos_nav_item" type="id"/>
-    <item name="explore_nav_item" type="id"/>
-    <item name="feed_nav_item" type="id"/>
-    <item name="about_nav_item" type="id"/>
-
     <!-- Used in BaseActivity -->
     <item name="menu_refresh" type="id" />
 

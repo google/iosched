@@ -24,6 +24,7 @@ import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.preference.PreferenceFragmentCompat;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -32,19 +33,14 @@ import android.view.ViewGroup;
 import com.google.samples.apps.iosched.fcm.FcmUtilities;
 import com.google.samples.apps.iosched.lib.BuildConfig;
 import com.google.samples.apps.iosched.lib.R;
-import com.google.samples.apps.iosched.navigation.NavigationModel;
 import com.google.samples.apps.iosched.service.SessionCalendarService;
-import com.google.samples.apps.iosched.ui.BaseActivity;
 import com.google.samples.apps.iosched.util.PermissionsUtils;
-import com.google.samples.apps.iosched.util.UIUtils;
 import com.google.samples.apps.iosched.util.RegistrationUtils;
-
-import static com.google.samples.apps.iosched.fcm.FcmUtilities.subscribeTopics;
 
 /**
  * Activity for customizing app settings.
  */
-public class SettingsActivity extends BaseActivity {
+public class SettingsActivity extends AppCompatActivity {
     public static final String[] CALENDAR_PERMISSIONS =
             new String[]{Manifest.permission.WRITE_CALENDAR};
     /**
@@ -57,9 +53,18 @@ public class SettingsActivity extends BaseActivity {
      */
     private static final int REQUEST_PERMISSION_REQUEST_CODE_ENABLE_CALENDAR = 111;
 
-    @Override
-    protected NavigationModel.NavigationItemEnum getSelfNavDrawerItem() {
-        return NavigationModel.NavigationItemEnum.SETTINGS;
+    static void scheduleCalendarSync(Activity activity) {
+        Intent intent;
+        if (SettingsUtils.shouldSyncCalendar(activity)) {
+            // Add all calendar entries
+            intent = new Intent(SessionCalendarService.ACTION_UPDATE_ALL_SESSIONS_CALENDAR);
+        } else {
+            // Remove all calendar entries
+            intent = new Intent(SessionCalendarService.ACTION_CLEAR_ALL_SESSIONS_CALENDAR);
+        }
+
+        intent.setClass(activity, SessionCalendarService.class);
+        activity.startService(intent);
     }
 
     @Override
@@ -84,20 +89,6 @@ public class SettingsActivity extends BaseActivity {
                     R.string.pref_sync_with_calendar_permission_denied_during_enable);
             PermissionsUtils.displayPermissionDeniedSnackbar(this, messageResId);
         }
-    }
-
-    static void scheduleCalendarSync(Activity activity) {
-        Intent intent;
-        if (SettingsUtils.shouldSyncCalendar(activity)) {
-            // Add all calendar entries
-            intent = new Intent(SessionCalendarService.ACTION_UPDATE_ALL_SESSIONS_CALENDAR);
-        } else {
-            // Remove all calendar entries
-            intent = new Intent(SessionCalendarService.ACTION_CLEAR_ALL_SESSIONS_CALENDAR);
-        }
-
-        intent.setClass(activity, SessionCalendarService.class);
-        activity.startService(intent);
     }
 
     /**

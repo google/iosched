@@ -31,7 +31,6 @@ public class NavigationConfig {
             NavigationItemEnum.MY_IO,
             NavigationItemEnum.FEED,
             NavigationItemEnum.MAP,
-            NavigationItemEnum.DEBUG,
     };
 
     private static NavigationItemEnum[] concatenateItems(NavigationItemEnum[] first,
@@ -60,23 +59,14 @@ public class NavigationConfig {
                 case MY_SCHEDULE:
                     includeItem = BuildConfig.ENABLE_MYSCHEDULE_IN_NAVIGATION;
                     break;
+                case MY_IO:
+                    includeItem = BuildConfig.ENABLE_MYIO_IN_NAVIGATION;
+                    break;
                 case FEED:
                     includeItem = BuildConfig.ENABLE_FEED_IN_NAVIGATION;
                     break;
                 case MAP:
                     includeItem = BuildConfig.ENABLE_MAP_IN_NAVIGATION;
-                    break;
-                case SIGN_IN:
-                    includeItem = BuildConfig.ENABLE_SIGNIN_IN_NAVIGATION;
-                    break;
-                case SETTINGS:
-                    includeItem = BuildConfig.ENABLE_SETTINGS_IN_NAVIGATION;
-                    break;
-                case ABOUT:
-                    includeItem = BuildConfig.ENABLE_ABOUT_IN_NAVIGATION;
-                    break;
-                case DEBUG:
-                    includeItem = BuildConfig.DEBUG;
                     break;
             }
 

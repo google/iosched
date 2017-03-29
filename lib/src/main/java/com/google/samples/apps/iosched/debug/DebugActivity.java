@@ -17,29 +17,23 @@
 package com.google.samples.apps.iosched.debug;
 
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 
 import com.google.samples.apps.iosched.lib.R;
-import com.google.samples.apps.iosched.navigation.NavigationModel;
-import com.google.samples.apps.iosched.ui.BaseActivity;
 
 /**
  * Activity that implements the debug UI. This UI has buttons and other widgets
  * that allows the user to invoke tests and tweak other debug settings.
- *
+ * <p>
  * This screen is only accessible if the app is built with the debug
  * configuration.
  */
-public class DebugActivity extends BaseActivity {
+public class DebugActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.debug_act);
         overridePendingTransition(0, 0);
-    }
-
-    @Override
-    protected NavigationModel.NavigationItemEnum getSelfNavDrawerItem() {
-        return NavigationModel.NavigationItemEnum.DEBUG;
     }
 }

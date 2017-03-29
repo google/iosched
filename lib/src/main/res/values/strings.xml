@@ -250,9 +250,6 @@
     <!-- Accessibility description for navigation drawer -->
     <string name="navdrawer_description_a11y">Navigation Menu</string>
 
-    <!-- Menu item to open the Explore screen [CHAR_LIMIT=20] -->
-    <string name="navdrawer_item_explore">Explore</string>
-
     <!-- Menu item to open the Feed screen [CHAR_LIMIT=20] -->
     <string name="navdrawer_item_feed">Feed</string>
 
@@ -264,18 +261,6 @@
 
     <!-- Menu item to open the My Schedule screen [CHAR_LIMIT=20] -->
     <string name="navdrawer_item_my_schedule">Schedule</string>
-
-    <!-- Menu item to open the Settings screen [CHAR_LIMIT=20] -->
-    <string name="navdrawer_item_settings">Settings</string>
-
-    <!-- Menu item to start the Sign In flow [CHAR_LIMIT=20] -->
-    <string name="navdrawer_item_sign_in">Sign in</string>
-
-    <!-- Menu item to open a list of current and past I/O videos [CHAR_LIMIT=20] -->
-    <string name="navdrawer_item_video_library">Videos</string>
-
-    <!-- Menu item to open the debugging screen on debug builds [CHAR_LIMIT=20] -->
-    <string name="navdrawer_item_debug">Debug</string>
 
     <!-- List dropdown item on the Video Library screen allowing the user to choose to see
     the videos from the last year of Google I/O. -->
