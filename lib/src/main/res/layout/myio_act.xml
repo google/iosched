@@ -13,18 +13,26 @@
   the License.
   -->
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:fitsSystemWindows="true"
     android:orientation="vertical">
 
     <fragment
         android:id="@+id/schedule_content"
-        android:name="com.google.samples.apps.iosched.myschedule.MySchedulePagerFragment"
+        android:name="com.google.samples.apps.iosched.myio.MyIOFragment"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        tools:layout="@layout/my_schedule_pager_fragment" />
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        tools:layout="@layout/fragment_myio" />
+
+    <android.support.design.widget.BottomNavigationView
+        android:id="@+id/bottom_navigation"
+        style="@style/Widget.IOSched.BottomNavigationView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:menu="@menu/bottom_nav_items" />
 
 </LinearLayout>

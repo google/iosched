@@ -640,6 +640,9 @@ public final class ScheduleContract {
         public static final String RELATED_SESSION_ID = "related_session_id";
 
         // ORDER BY clauses
+        public static final String SORT_BY_TIME = SESSION_START + " ASC," + SESSION_TITLE
+                + " COLLATE NOCASE ASC";
+
         public static final String SORT_BY_TYPE_THEN_TIME = SESSION_GROUPING_ORDER + " ASC,"
                 + SESSION_START + " ASC," + SESSION_TITLE + " COLLATE NOCASE ASC";
 

@@ -230,7 +230,7 @@
                 android:layout_marginLeft="@dimen/padding_normal"
                 android:layout_marginRight="@dimen/padding_normal"
                 android:layout_marginBottom="@dimen/spacing_large"
-                android:backgroundTint="@color/feedback_button_tint"
+                android:backgroundTint="@color/aqua_marine"
                 android:paddingLeft="@dimen/padding_normal"
                 android:paddingRight="@dimen/padding_normal"
                 android:text="@string/rate_session"

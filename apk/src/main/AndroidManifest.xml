@@ -141,7 +141,7 @@
             android:exported="false"
             android:label="@string/title_my_io"
             android:launchMode="singleTop"
-            android:theme="@style/Theme.IOSched.MySchedule" />
+            android:theme="@style/Theme.IOSched.MyIo" />
 
         <activity android:name="com.google.samples.apps.iosched.feed.FeedActivity"
             android:exported="false"

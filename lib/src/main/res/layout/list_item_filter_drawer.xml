@@ -36,7 +36,7 @@ limitations under the License.
         android:maxLines="1"
         android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
         tools:background="@drawable/tag_session_background"
-        tools:backgroundTint="@color/io17_accent_yellow"
+        tools:backgroundTint="@color/sunflower_yellow"
         tools:text="Android" />
 
     <android.support.v4.widget.Space
