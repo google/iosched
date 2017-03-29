@@ -18,13 +18,12 @@ package com.google.samples.apps.iosched.sync.userdata;
 
 import android.content.Context;
 
-import com.google.samples.apps.iosched.sync.userdata.firebase.FirebaseUserDataSyncHelper;
-
 /**
  * A simple factory to isolate the decision of which synchelper should be used.
  */
 public class UserDataSyncHelperFactory {
     public static AbstractUserDataSyncHelper buildSyncHelper(Context context, String accountName) {
-        return new FirebaseUserDataSyncHelper(context, accountName);
+      // TODO: replace with new sync helper for 2017.
+      return null;
     }
 }
