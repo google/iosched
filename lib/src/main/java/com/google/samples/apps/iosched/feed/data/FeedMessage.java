@@ -27,7 +27,6 @@ public class FeedMessage implements Comparable<FeedMessage> {
     private final boolean active;
     private final boolean priority;
     private boolean expanded;
-
     public FeedMessage(int id, String category, int categoryColor, String title, String description, boolean clickable, String link, String imageUrl, long date, boolean active, boolean priority) {
         this.id = id;
         this.category = category;
@@ -115,7 +114,27 @@ public class FeedMessage implements Comparable<FeedMessage> {
         return expanded;
     }
 
+    public void setExpanded(boolean expanded) {
+        this.expanded = expanded;
+    }
+
     public void flipExpanded() {
         expanded = !expanded;
+    }
+
+    public boolean isEmergency() {
+        return getCategory().equals(Categories.EMERGENCY);
+    }
+
+    public static final class Categories {
+        public static final String AGENDA = "Agenda";
+        public static final String EVENT = "Event";
+        public static final String SOCIAL = "Social";
+        public static final String EMERGENCY = "Emergency";
+        public static final String TRAVEL = "Travel";
+        public static final String GIVEAWAY = "Giveaway";
+        public static final String AFTER_HOURS = "After Hours";
+        public static final String VIDEO = "Video";
+
     }
 }

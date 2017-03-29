@@ -507,6 +507,7 @@
     <!-- Navigation bar text for viewing the user's schedule -->
     <string name="title_my_schedule">Schedule</string>
 
+    <!-- Navigation bar text for viewing the Feed -->
     <string name="title_feed">Feed</string>
 
     <!-- Label for Search screen, that allows users to search for sessions. -->

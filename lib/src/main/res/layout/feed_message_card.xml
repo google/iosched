@@ -31,42 +31,50 @@
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
         android:layout_alignParentStart="true"
-        tools:text="May 17, 10:52AM" />
-    <FrameLayout
-        android:id="@+id/categoryBackground"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        tools:text="May 17, 10:52AM"
+        android:paddingTop="@dimen/feed_color_bar_padding"
+        android:paddingBottom="@dimen/feed_color_bar_padding"/>
+    <TextView
+        android:id="@+id/categoryText"
         android:layout_alignParentEnd="true"
         android:layout_alignParentTop="true"
-        tools:background="@android:color/holo_red_dark"
-        android:padding="@dimen/feed_color_bar_padding">
-        <TextView
-            android:id="@+id/categoryText"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:lines="1"
-            android:ellipsize="end"
-            tools:text="CATEGORY"/>
-    </FrameLayout>
+        android:padding="@dimen/feed_color_bar_padding"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:lines="1"
+        android:ellipsize="end"
+        tools:text="CATEGORY"
+        tools:background="@color/io16_grey"/>
     <TextView
         android:id="@+id/title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignStart="@+id/dateTime"
-        android:layout_below="@+id/categoryBackground"
+        android:layout_below="@+id/categoryText"
         android:layout_marginTop="@dimen/padding_normal"
         android:textSize="24sp"
         tools:text="@string/placeholder_feed_message_title" />
-    <ImageView
-        android:id="@+id/expandIcon"
-        android:rotation="0"
+    <FrameLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentEnd="true"
-        android:layout_below="@+id/categoryBackground"
-        android:layout_marginTop="@dimen/padding_normal"
-        android:src="@drawable/ic_expand_more_black_24dp"/>
+        android:layout_below="@+id/categoryText"
+        android:layout_marginTop="@dimen/padding_normal">
+        <ImageView
+            android:id="@+id/expandIcon"
+            android:rotation="0"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_expand_more_black_24dp"/>
+        <ImageView
+            android:id="@+id/emergencyIcon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_emergency_24dp"
+            tools:visibility="gone"/>
+    </FrameLayout>
+
     <LinearLayout
         android:id="@+id/imageDescriptionLayout"
         android:layout_width="match_parent"
