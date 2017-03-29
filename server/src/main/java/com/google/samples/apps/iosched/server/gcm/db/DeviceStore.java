@@ -16,7 +16,7 @@
 
 package com.google.samples.apps.iosched.server.gcm.db;
 
-import static com.google.samples.apps.iosched.server.gcm.db.OfyService.ofy;
+import static com.googlecode.objectify.ObjectifyService.ofy;
 
 import com.google.samples.apps.iosched.server.gcm.db.models.Device;
 
