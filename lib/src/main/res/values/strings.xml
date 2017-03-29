@@ -256,6 +256,9 @@
     <!-- Menu item to open the Map screen [CHAR_LIMIT=20] -->
     <string name="navdrawer_item_map">Map</string>
 
+    <!-- Menu item to open the Info screen [CHAR_LIMIT=20] -->
+    <string name="navdrawer_item_info">Info</string>
+
     <!-- Menu item to open the My I/O screen [CHAR_LIMIT=20] -->
     <string name="navdrawer_item_my_io">My I/O</string>
 
@@ -494,6 +497,9 @@
 
     <!-- Navigation bar text for viewing the Feed -->
     <string name="title_feed">Feed</string>
+
+    <!-- Navigation bar text for viewing Info -->
+    <string name="title_info">Info</string>
 
     <!-- Label for Search screen, that allows users to search for sessions. -->
     <string name="title_search">Search</string>

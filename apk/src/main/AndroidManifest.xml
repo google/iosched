@@ -149,6 +149,11 @@
             android:launchMode="singleTop"
             android:theme="@style/Theme.IOSched.Feed" />
 
+        <activity android:name="com.google.samples.apps.iosched.info.InfoActivity"
+                  android:exported="false"
+                  android:label="@string/title_info"
+                  android:launchMode="singleTop"
+                  android:theme="@style/Theme.IOSched.Feed" />
         <activity
             android:name="com.google.samples.apps.iosched.settings.SettingsActivity"
             android:exported="false"

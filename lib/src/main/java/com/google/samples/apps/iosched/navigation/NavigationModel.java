@@ -21,6 +21,7 @@ import com.google.samples.apps.iosched.archframework.Model;
 import com.google.samples.apps.iosched.archframework.QueryEnum;
 import com.google.samples.apps.iosched.archframework.UserActionEnum;
 import com.google.samples.apps.iosched.feed.FeedActivity;
+import com.google.samples.apps.iosched.info.InfoActivity;
 import com.google.samples.apps.iosched.lib.R;
 import com.google.samples.apps.iosched.map.MapActivity;
 import com.google.samples.apps.iosched.myio.MyIOActivity;
@@ -99,8 +100,9 @@ public class NavigationModel implements Model<NavigationQueryEnum, NavigationUse
                 R.drawable.ic_navview_feed, FeedActivity.class, true),
         MAP(R.id.map_nav_item, R.string.navdrawer_item_map, R.drawable.ic_navview_map,
                 MapActivity.class, true),
+        INFO(R.id.info_nav_item, R.string.navdrawer_item_info,
+                R.drawable.ic_navview_info, InfoActivity.class, true),
         INVALID(12, 0, 0, null);
-
         private int id;
 
         private int titleResource;
