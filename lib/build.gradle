@@ -73,6 +73,7 @@ android {
         buildConfigField("boolean", "ENABLE_MYIO_IN_NAVIGATION", "true")
         buildConfigField("boolean", "ENABLE_FEED_IN_NAVIGATION", "true")
         buildConfigField("boolean", "ENABLE_MAP_IN_NAVIGATION", "true")
+        buildConfigField("boolean", "ENABLE_INFO_IN_NAVIGATION", "true")
         buildConfigField("boolean", "ENABLE_EXTENDED_SESSION_URL", "true")
         buildConfigField("String", "CONFERENCE_VERSION", "\"${conf_version}\"")
         buildConfigField("String", "PRODUCTION_WEBSITE_HOST_NAME", "\"${production_website_host_name}\"")
