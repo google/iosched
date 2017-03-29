@@ -14,46 +14,28 @@
   See the License for the specific language governing permissions and
   limitations under the License.
   -->
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/drawer_layout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fitsSystemWindows="true"
+    android:orientation="vertical">
 
-<!-- Default layout for FeedActivity. -->
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              xmlns:app="http://schemas.android.com/apk/res-auto"
-              xmlns:tools="http://schemas.android.com/tools"
-              android:id="@+id/drawer_layout"
-              android:layout_width="match_parent"
-              android:layout_height="match_parent"
-              android:fitsSystemWindows="true"
-              android:orientation="vertical">
-
-    <!-- Header bar on top of feed -->
-    <LinearLayout
-        android:id="@+id/headerbar"
-        style="@style/HeaderBar"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
-
-        <include layout="@layout/toolbar" />
-
-        <!-- placeholder, empty except on L -->
-
-    </LinearLayout>
-
-    <!-- Content of screen. -->
     <fragment
         android:id="@+id/main_content"
         android:name="com.google.samples.apps.iosched.feed.FeedFragment"
         android:layout_width="match_parent"
         android:layout_height="0px"
         android:layout_weight="1"
-        tools:layout="@layout/feed_fragment" />
+        tools:layout="@layout/feed_fragment"/>
 
     <android.support.design.widget.BottomNavigationView
         android:id="@+id/bottom_navigation"
         style="@style/Widget.IOSched.BottomNavigationView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:menu="@menu/bottom_nav_items" />
-
+        app:menu="@menu/bottom_nav_items"/>
 </LinearLayout>
