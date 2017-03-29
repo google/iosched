@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016 Google Inc.
+ * Copyright (c) 2017 Google Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License. You may obtain a copy of the License at
@@ -15,9 +15,7 @@
 package com.google.samples.apps.iosched.util;
 
 import android.accounts.Account;
-import android.app.Activity;
 import android.content.Context;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 import android.text.TextUtils;
@@ -25,7 +23,6 @@ import android.text.TextUtils;
 import com.google.android.gms.auth.GoogleAuthException;
 import com.google.android.gms.auth.GoogleAuthUtil;
 import com.google.android.gms.auth.UserRecoverableNotifiedException;
-import com.google.android.gms.common.AccountPicker;
 import com.google.android.gms.common.Scopes;
 import com.google.samples.apps.iosched.provider.ScheduleContract;
 
@@ -59,10 +56,6 @@ public class AccountUtils {
 
     // These names are are prefixes; the account is appended to them.
     public static final String PREFIX_PREF_AUTH_TOKEN = "auth_token_";
-    private static final String PREFIX_PREF_PLUS_PROFILE_ID = "plus_profile_id_";
-    private static final String PREFIX_PREF_PLUS_NAME = "plus_name_";
-    private static final String PREFIX_PREF_PLUS_IMAGE_URL = "plus_image_url_";
-    private static final String PREFIX_PREF_PLUS_COVER_URL = "plus_cover_url_";
     private static final String PREFIX_PREF_GCM_KEY = "gcm_key_";
 
 
@@ -169,75 +162,15 @@ public class AccountUtils {
         setAuthToken(context, null);
     }
 
-    public static void setPlusProfileId(final Context context, final String accountName, final String profileId) {
-        SharedPreferences sp = getSharedPreferences(context);
-        sp.edit().putString(makeAccountSpecificPrefKey(accountName, PREFIX_PREF_PLUS_PROFILE_ID),
-                profileId).apply();
-    }
-
-    public static String getPlusProfileId(final Context context) {
-        SharedPreferences sp = getSharedPreferences(context);
-        return hasActiveAccount(context) ? sp.getString(makeAccountSpecificPrefKey(context,
-                PREFIX_PREF_PLUS_PROFILE_ID), null) : null;
-    }
-
-    public static boolean hasPlusInfo(final Context context, final String accountName) {
-        SharedPreferences sp = getSharedPreferences(context);
-        return !TextUtils.isEmpty(sp.getString(makeAccountSpecificPrefKey(accountName,
-                PREFIX_PREF_PLUS_PROFILE_ID), null));
-    }
-
     public static boolean hasToken(final Context context, final String accountName) {
         SharedPreferences sp = getSharedPreferences(context);
         return !TextUtils.isEmpty(sp.getString(makeAccountSpecificPrefKey(accountName,
                 PREFIX_PREF_AUTH_TOKEN), null));
     }
 
-    public static void setPlusName(final Context context, final String accountName, final String name) {
-        SharedPreferences sp = getSharedPreferences(context);
-        sp.edit().putString(makeAccountSpecificPrefKey(accountName, PREFIX_PREF_PLUS_NAME),
-                name).apply();
-    }
-
-    public static String getPlusName(final Context context) {
-        SharedPreferences sp = getSharedPreferences(context);
-        return hasActiveAccount(context) ? sp.getString(makeAccountSpecificPrefKey(context,
-                PREFIX_PREF_PLUS_NAME), null) : null;
-    }
-
-    public static void setPlusImageUrl(final Context context, final String accountName, final String imageUrl) {
-        SharedPreferences sp = getSharedPreferences(context);
-        sp.edit().putString(makeAccountSpecificPrefKey(accountName, PREFIX_PREF_PLUS_IMAGE_URL),
-                imageUrl).apply();
-    }
-
-    public static String getPlusImageUrl(final Context context) {
-        SharedPreferences sp = getSharedPreferences(context);
-        return hasActiveAccount(context) ? sp.getString(makeAccountSpecificPrefKey(context,
-                PREFIX_PREF_PLUS_IMAGE_URL), null) : null;
-    }
-
-    public static String getPlusImageUrl(final Context context, final String accountName) {
-        SharedPreferences sp = getSharedPreferences(context);
-        return hasActiveAccount(context) ? sp.getString(makeAccountSpecificPrefKey(accountName,
-                PREFIX_PREF_PLUS_IMAGE_URL), null) : null;
-    }
-
     public static void refreshAuthToken(Context mContext) {
         invalidateAuthToken(mContext);
         tryAuthenticateWithErrorNotification(mContext, ScheduleContract.CONTENT_AUTHORITY);
-    }
-
-    public static void setPlusCoverUrl(final Context context, final String accountName, String coverPhotoUrl) {
-        SharedPreferences sp = getSharedPreferences(context);
-        sp.edit().putString(makeAccountSpecificPrefKey(accountName, PREFIX_PREF_PLUS_COVER_URL),
-                coverPhotoUrl).apply();
-    }
-
-    public static String getPlusCoverUrl(final Context context) {
-        SharedPreferences sp = getSharedPreferences(context);
-        return hasActiveAccount(context) ? sp.getString(makeAccountSpecificPrefKey(context,
-                PREFIX_PREF_PLUS_COVER_URL), null) : null;
     }
 
     static void tryAuthenticateWithErrorNotification(Context context, String syncAuthority) {
@@ -293,26 +226,6 @@ public class AccountUtils {
             return key.substring(0, 4) + "........" + key.substring(key.length() - 4);
         } else {
             return "........";
-        }
-    }
-
-    /**
-     * Enforce an active Google Account by checking to see if an active account is already set. If
-     * it is not set then use the {@link AccountPicker} to have the user select an account.
-     *
-     * @param activity The context to be used for starting an activity.
-     * @param activityResultCode The result to be used to start the {@link AccountPicker}.
-     * @return Returns whether the user already has an active account registered.
-     */
-    public static boolean enforceActiveGoogleAccount(Activity activity, int activityResultCode) {
-        if (hasActiveAccount(activity)) {
-            return true;
-        } else {
-            Intent intent = AccountPicker.newChooseAccountIntent(null, null,
-                    new String[]{GoogleAuthUtil.GOOGLE_ACCOUNT_TYPE},
-                    true, null, null, null, null);
-            activity.startActivityForResult(intent, activityResultCode);
-            return false;
         }
     }
 }
