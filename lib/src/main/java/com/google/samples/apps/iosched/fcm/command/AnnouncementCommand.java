@@ -13,26 +13,27 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.google.samples.apps.iosched.gcm.command;
+package com.google.samples.apps.iosched.fcm.command;
 
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.support.v4.app.NotificationCompat;
+
+import com.google.samples.apps.iosched.fcm.FcmCommand;
 import com.google.samples.apps.iosched.lib.R;
-import com.google.samples.apps.iosched.gcm.GCMCommand;
 import com.google.samples.apps.iosched.myschedule.MyScheduleActivity;
 
 import static com.google.samples.apps.iosched.util.LogUtils.LOGI;
 import static com.google.samples.apps.iosched.util.LogUtils.makeLogTag;
 
-public class AnnouncementCommand extends GCMCommand {
+public class AnnouncementCommand extends FcmCommand {
     private static final String TAG = makeLogTag("AnnouncementCommand");
 
     @Override
     public void execute(Context context, String type, String extraData) {
-        LOGI(TAG, "Received GCM message: " + type);
+        LOGI(TAG, "Received FCM message: " + type);
         displayNotification(context, extraData);
     }
 
@@ -46,10 +47,10 @@ public class AnnouncementCommand extends GCMCommand {
                         .setContentTitle(context.getString(R.string.app_name))
                         .setContentText(message)
                         //.setColor(context.getResources().getColor(R.color.theme_primary))
-                            // Note: setColor() is available in the support lib v21+.
-                            // We commented it out because we want the source to compile 
-                            // against support lib v20. If you are using support lib
-                            // v21 or above on Android L, uncomment this line.
+                        // Note: setColor() is available in the support lib v21+.
+                        // We commented it out because we want the source to compile
+                        // against support lib v20. If you are using support lib
+                        // v21 or above on Android L, uncomment this line.
                         .setContentIntent(
                                 PendingIntent.getActivity(context, 0,
                                         new Intent(context, MyScheduleActivity.class)

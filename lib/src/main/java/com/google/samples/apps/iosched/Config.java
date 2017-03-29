@@ -90,7 +90,7 @@ public class Config {
     public static final long AUTO_SYNC_INTERVAL_AROUND_CONFERENCE =
             TimeUnit.MILLISECONDS.convert(2L, TimeUnit.HOURS);
 
-    // Disable periodic sync after the conference and rely entirely on GCM push for syncing data.
+    // Disable periodic sync after the conference and rely entirely on FCM push for syncing data.
     public static final long AUTO_SYNC_INTERVAL_AFTER_CONFERENCE = -1L;
 
     // How many days before the conference we consider to be "around the conference date"

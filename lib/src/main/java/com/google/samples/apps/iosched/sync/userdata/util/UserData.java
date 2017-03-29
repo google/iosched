@@ -25,8 +25,8 @@ import java.util.Set;
  * Represents all User specific data that can be synchronized on Google Drive App Data.
  */
 public class UserData {
-    /** JSON Attribute name of the GCM Key value. */
-    public static final String JSON_ATTRIBUTE_GCM_KEY = "gcm_key";
+    /** JSON Attribute name of the FCM Key value. */
+    public static final String JSON_ATTRIBUTE_FCM_KEY = "gcm_key";
 
     /** JSON Attribute name of the viewed videos values. */
     public static final String JSON_ATTRIBUTE_VIEWED_VIDEOS = "viewed_videos";
@@ -105,8 +105,8 @@ public class UserData {
     @SerializedName(JSON_ATTRIBUTE_VIEWED_VIDEOS)
     private Set<String> viewedVideoIds = new HashSet<>();
 
-    @SerializedName(JSON_ATTRIBUTE_GCM_KEY)
-    private String gcmKey;
+    @SerializedName(JSON_ATTRIBUTE_FCM_KEY)
+    private String fcmKey;
 
     public Map<String, StarredSession> getStarredSessions() {
         return starredSessions;
@@ -132,12 +132,12 @@ public class UserData {
         this.viewedVideoIds = viewedVideoIds;
     }
 
-    public String getGcmKey() {
-        return gcmKey;
+    public String getFcmKey() {
+        return fcmKey;
     }
 
-    public void setGcmKey(String gcmKey) {
-        this.gcmKey = gcmKey;
+    public void setFcmKey(String fcmKey) {
+        this.fcmKey = fcmKey;
     }
 
     public void addVideoId(String videoId) {
@@ -183,7 +183,7 @@ public class UserData {
                 userData.viewedVideoIds != null) {
             return false;
         }
-        return !(gcmKey != null ? !gcmKey.equals(userData.gcmKey) : userData.gcmKey != null);
+        return !(fcmKey != null ? !fcmKey.equals(userData.fcmKey) : userData.fcmKey != null);
 
     }
 
@@ -197,7 +197,7 @@ public class UserData {
                 (feedbackSubmittedSessionIds != null ? feedbackSubmittedSessionIds.hashCode() :
                         0);
         result = 31 * result + (viewedVideoIds != null ? viewedVideoIds.hashCode() : 0);
-        result = 31 * result + (gcmKey != null ? gcmKey.hashCode() : 0);
+        result = 31 * result + (fcmKey != null ? fcmKey.hashCode() : 0);
         return result;
     }
 }

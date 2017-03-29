@@ -13,19 +13,20 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.google.samples.apps.iosched.gcm.command;
+package com.google.samples.apps.iosched.fcm.command;
 
 import android.content.Context;
-import com.google.samples.apps.iosched.gcm.GCMCommand;
+
+import com.google.samples.apps.iosched.fcm.FcmCommand;
 
 import static com.google.samples.apps.iosched.util.LogUtils.LOGI;
 import static com.google.samples.apps.iosched.util.LogUtils.makeLogTag;
 
-public class TestCommand extends GCMCommand {
+public class TestCommand extends FcmCommand {
     private static final String TAG = makeLogTag("TestCommand");
 
     @Override
     public void execute(Context context, String type, String extraData) {
-        LOGI(TAG, "Received GCM message: type=" + type + ", extraData=" + extraData);
+        LOGI(TAG, "Received FCM message: type=" + type + ", extraData=" + extraData);
     }
 }

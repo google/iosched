@@ -38,6 +38,16 @@
             android:name="com.google.android.maps.v2.API_KEY"
             android:value="@string/maps_api_key" />
 
+        <!-- Default notification icon -->
+        <meta-data
+            android:name="com.google.firebase.messaging.default_notification_icon"
+            android:resource="@drawable/ic_widget_logo" />
+
+        <!-- Default notification color -->
+        <meta-data
+            android:name="com.google.firebase.messaging.default_notification_color"
+            android:resource="@color/io16_primary_blue_grey" />
+
         <!-- Activities -->
         <activity
             android:name="com.google.samples.apps.iosched.myschedule.MyScheduleActivity"
@@ -318,53 +328,24 @@
             android:exported="false" />
 
         <!--
-          This is a receiver provided by Google Play Services. It handles receiving
-          messages and passes them to GcmListenerService which offers a callback
-          that we will override to take action based on the content of the message received.
-
-          The com.google.android.c2dm.permission.SEND permission is necessary
-          so only GCM services can send data messages for the app.
-        -->
-        <receiver
-            android:name="com.google.android.gms.gcm.GcmReceiver"
-            android:exported="true"
-            android:permission="com.google.android.c2dm.permission.SEND">
-            <intent-filter>
-
-                <!-- Receives the actual messages. -->
-                <action android:name="com.google.android.c2dm.intent.RECEIVE" />
-
-                <category android:name="com.google.samples.apps.iosched" />
-            </intent-filter>
-        </receiver>
-
-        <!--
-          GCMMessageListenerService is the extension of the GcmListenerService,
-          where we handle received GCM messages.
+          MyFcmListenerService is the extension of the FirebaseMessagingService,
+          where we handle FCM messages.
         -->
         <service
-            android:name="com.google.samples.apps.iosched.gcm.GCMMessageListenerService"
+            android:name="com.google.samples.apps.iosched.fcm.MyFcmListenerService"
             android:exported="false">
             <intent-filter>
-                <action android:name="com.google.android.c2dm.intent.RECEIVE" />
+                <action android:name="com.google.firebase.MESSAGING_EVENT" />
             </intent-filter>
         </service>
 
         <service
-            android:name="com.google.samples.apps.iosched.gcm.GCMInstanceIDListenerService"
+            android:name="com.google.samples.apps.iosched.fcm.MyInstanceIDService"
             android:exported="false">
             <intent-filter>
-                <action android:name="com.google.android.gms.iid.InstanceID" />
+                <action android:name="com.google.firebase.INSTANCE_ID_EVENT" />
             </intent-filter>
         </service>
-
-        <service
-            android:name="com.google.samples.apps.iosched.gcm.GCMRegistrationIntentService"
-            android:exported="false" />
-
-        <service
-            android:name="com.google.samples.apps.iosched.gcm.GCMUnregisterIntentService"
-            android:exported="false" />
 
         <!-- Data, sync and schedule editing components -->
 
@@ -441,6 +422,5 @@
                 android:name="android.accounts.AccountAuthenticator"
                 android:resource="@xml/authenticator" />
         </service>
-
     </application>
 </manifest>

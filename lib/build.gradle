@@ -135,6 +135,7 @@ android {
             // Targeting prevents runtime permission dialogs from being presented.
             targetSdkVersion 22
         }
+
         normal {
             // Do no short-circuit the dogfood warning so it might display if appropriate.
             buildConfigField("boolean", "SUPPRESS_DOGFOOD_WARNING", "false")
@@ -225,11 +226,9 @@ dependencies {
     // Google Play services split client libs.
     compile "com.google.android.gms:play-services-analytics:${google_play_services_client_library_version}"
     compile "com.google.android.gms:play-services-auth:${google_play_services_client_library_version}"
-    compile "com.google.android.gms:play-services-gcm:${google_play_services_client_library_version}"
     compile "com.google.android.gms:play-services-maps:${google_play_services_client_library_version}"
     compile "com.google.android.gms:play-services-plus:${google_play_services_client_library_version}"
 
-    compile "com.google.firebase:firebase-appindexing:${google_play_services_client_library_version}"
 
     // Android support libraries.
     compile "com.android.support:appcompat-v7:${android_support_lib_version}"
@@ -264,7 +263,12 @@ dependencies {
     // greater is used for both app and test builds.
     compile 'com.google.code.findbugs:jsr305:2.0.1'
 
-    compile 'com.firebase:firebase-client-android:2.5.0'
+
+    // Firebase libraries
+    compile "com.google.firebase:firebase-core:${google_play_services_client_library_version}"
+    compile "com.google.firebase:firebase-messaging:${google_play_services_client_library_version}"
+    compile "com.google.firebase:firebase-appindexing:${google_play_services_client_library_version}"
+
 
     normalDebugCompile 'com.squareup.leakcanary:leakcanary-android:1.5'
     normalQualityassuranceCompile 'com.squareup.leakcanary:leakcanary-android-no-op:1.5'

@@ -141,3 +141,5 @@ dependencies {
             configuration: 'targetSdk22Qualityassurance')
     targetSdk22ReleaseCompile project(path: ':lib', configuration: 'targetSdk22Release')
 }
+
+apply plugin: 'com.google.gms.google-services'

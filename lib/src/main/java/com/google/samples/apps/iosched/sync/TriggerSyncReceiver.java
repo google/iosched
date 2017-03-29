@@ -29,7 +29,7 @@ import com.google.samples.apps.iosched.provider.ScheduleContract;
 import com.google.samples.apps.iosched.util.AccountUtils;
 
 /**
- * A simple {@link BroadcastReceiver} that triggers a sync. This is used by the GCM code to trigger
+ * A simple {@link BroadcastReceiver} that triggers a sync. This is used by the FCM code to trigger
  * jittered syncs using {@link android.app.AlarmManager}.
  */
 public class TriggerSyncReceiver extends BroadcastReceiver {
