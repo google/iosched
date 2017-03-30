@@ -15,18 +15,17 @@
  */
 package com.google.samples.apps.iosched.server.feed;
 
-import com.google.appengine.api.images.ImagesService;
-import com.google.appengine.api.images.ImagesServiceFactory;
-import com.google.appengine.api.images.ServingUrlOptions;
+import com.google.appengine.tools.cloudstorage.GcsFilename;
+import com.google.common.base.Optional;
 import com.google.gson.JsonObject;
 import com.google.samples.apps.iosched.server.schedule.Config;
+import com.google.samples.apps.iosched.server.schedule.server.image.ServingUrlManager;
 import java.io.IOException;
 import java.io.PrintWriter;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import org.apache.http.protocol.HTTP;
 
 /**
  * ServingUrlServlet is used to provide serving URLs for feed images. Feed images
@@ -54,18 +53,14 @@ public class ServingUrlServlet extends HttpServlet {
 
     // Get file path from request.
     String filepath = req.getParameter("filepath");
-
-    // Prepare image service to retrieve serving URL for image.
-    ImagesService imagesService = ImagesServiceFactory.getImagesService();
-    ServingUrlOptions servingUrlOptions = ServingUrlOptions.Builder
-        .withGoogleStorageFileName("/gs/" +
-            Config.CLOUD_STORAGE_BUCKET + "/" + filepath);
+    GcsFilename gcsFilename = new GcsFilename(Config.CLOUD_STORAGE_BUCKET, filepath);
 
     resp.setContentType("application/json");
     JsonObject jsonObject = new JsonObject();
     try {
       // Use ImageService to get serving URL for image.
-      String url = imagesService.getServingUrl(servingUrlOptions);
+      String url = ServingUrlManager.INSTANCE
+          .createServingUrl(gcsFilename, Optional.<String>absent());
       // Use https for url.
       url = url.replace("http://", "https://");
       jsonObject.addProperty("servingUrl", url);

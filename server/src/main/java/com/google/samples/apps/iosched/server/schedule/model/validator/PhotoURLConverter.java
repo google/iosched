@@ -16,24 +16,17 @@
 package com.google.samples.apps.iosched.server.schedule.model.validator;
 
 import com.google.gson.JsonPrimitive;
-import com.google.samples.apps.iosched.server.schedule.Config;
+import com.google.samples.apps.iosched.server.schedule.server.image.ServingUrlManager;
 
 public class PhotoURLConverter extends Converter {
-
-  private static final String PHOTO_BASE_URL = Config.CLOUD_STORAGE_BASE_URL + "images/";
-  private static final String PHOTO_WIDTH_COMPONENT = "__w-200-400-600-800-1000__/";
-
-  private String entityBaseUrl;
-  public PhotoURLConverter(String entityName) {
-    entityBaseUrl = PHOTO_BASE_URL + entityName + "/" + PHOTO_WIDTH_COMPONENT;
-  }
 
   @Override
   public JsonPrimitive convert(JsonPrimitive value) {
     if (value == null) {
       return null;
     }
-    String entityId = value.getAsString();
-    return new JsonPrimitive(entityBaseUrl+entityId+".jpg");
+    String sourceUrl = value.getAsString();
+    String servingUrl = ServingUrlManager.INSTANCE.getServingUrl(sourceUrl);
+    return servingUrl == null ? null : new JsonPrimitive(servingUrl);
   }
 }

@@ -24,8 +24,7 @@ public class Converters {
   public static final SessionURLConverter SESSION_URL = new SessionURLConverter();
   public static final GPlusURLConverter GPLUS_URL = new GPlusURLConverter();
   public static final TwitterURLConverter TWITTER_URL = new TwitterURLConverter();
-  public static final PhotoURLConverter SESSION_PHOTO_URL = new PhotoURLConverter("sessions");
-  public static final PhotoURLConverter SPEAKER_PHOTO_URL = new PhotoURLConverter("speakers");
+  public static final PhotoURLConverter PHOTO_URL = new PhotoURLConverter();
   public static final RegexpConverter URL = new RegexpConverter("\\w{1,}:\\/\\/.*");
   public static final RegexpConverter COLOR = new RegexpConverter("#[a-zA-Z0-9]{6}");
   public static final IntegerConverter INTEGER = new IntegerConverter();
