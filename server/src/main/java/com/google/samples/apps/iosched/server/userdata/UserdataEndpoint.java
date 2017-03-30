@@ -24,7 +24,9 @@ import com.google.api.server.spi.config.ApiMethod;
 import com.google.api.server.spi.config.ApiNamespace;
 import com.google.api.server.spi.config.Named;
 import com.google.api.server.spi.response.UnauthorizedException;
-import com.google.samples.apps.iosched.server.userdata.db.PersistentSession;
+import com.google.samples.apps.iosched.server.userdata.db.BookmarkedSession;
+import com.google.samples.apps.iosched.server.userdata.db.ReservedSession;
+import com.google.samples.apps.iosched.server.userdata.db.ReservedSession.Status;
 import com.google.samples.apps.iosched.server.userdata.db.UserData;
 import com.googlecode.objectify.NotFoundException;
 
@@ -94,7 +96,7 @@ public class UserdataEndpoint {
      * @return Bookmarked sessions for current user
      */
     @ApiMethod(name = "getBookmarkedSessions", path = "bookmarked")
-    public Map<String, PersistentSession> getBookmarkedSessions(User user)
+    public Map<String, BookmarkedSession> getBookmarkedSessions(User user)
             throws UnauthorizedException {
         return getUser(user).bookmarkedSessions;
     }
@@ -106,7 +108,7 @@ public class UserdataEndpoint {
      * @return Reserved sessions for current user
      */
     @ApiMethod(name = "getReservedSessions", path = "reserved")
-    public Map<String, PersistentSession> getReservedSessions(User user)
+    public Map<String, ReservedSession> getReservedSessions(User user)
             throws UnauthorizedException {
         return getUser(user).reservedSessions;
     }
@@ -152,11 +154,11 @@ public class UserdataEndpoint {
      */
     @ApiMethod(name = "addBookmarkedSession", path = "bookmarked", httpMethod = ApiMethod
             .HttpMethod.PUT)
-    public Map<String, PersistentSession> addBookmarkedSession(User user,
+    public Map<String, BookmarkedSession> addBookmarkedSession(User user,
             @Named("sessionId") String sessionId, @Named
             ("timestampUTC") long timestampUTC) throws UnauthorizedException {
         UserData data = getUser(user);
-        PersistentSession s = new PersistentSession(sessionId, true, timestampUTC);
+        BookmarkedSession s = new BookmarkedSession(sessionId, true, timestampUTC);
         data.bookmarkedSessions.put(sessionId, s);
         save(data);
         return data.bookmarkedSessions;
@@ -177,14 +179,38 @@ public class UserdataEndpoint {
     public void removeBookmarkedSession(User user, @Named("sessionId") String sessionId, @Named
             ("timestampUTC") long timestampUTC) throws UnauthorizedException {
         UserData data = getUser(user);
-        PersistentSession s = new PersistentSession(sessionId, false, timestampUTC);
+        BookmarkedSession s = new BookmarkedSession(sessionId, false, timestampUTC);
         data.bookmarkedSessions.put(sessionId, s);
         save(data);
     }
 
     /**
-     * Add a reserved session for the current user. If the session is already in the user's feed, it
-     * will be annotated with inSchedule=true.
+     * Add a waitlisted session for the current user. If the session is already in the user's feed,
+     * it will be annotated with status=WAITLISTED.
+     *
+     * @param user         Current user (injected by Endpoints)
+     * @param sessionId    Session ID to mark as reserved.
+     * @param timestampUTC The time (in millis, UTC) when the user performed this action. May be
+     *                     different than the time this method is called if offline sync is
+     *                     implemented. MUST BE ACCURATE - COMPENSATE FOR CLOCK DRIFT!
+     * @return The list of reserved sessions for the user
+     */
+    @ApiMethod(name = "addWaitlistedSession", httpMethod = ApiMethod.HttpMethod.PUT)
+    public Map<String, ReservedSession> addWaitlistedSession (
+        User user,
+        @Named("sessionId") String sessionId,
+        @Named("timestampUTC") long timestampUTC)
+        throws UnauthorizedException {
+        UserData data = getUser(user);
+        ReservedSession s = new ReservedSession(sessionId, Status.WAITLISTED, timestampUTC);
+        data.reservedSessions.put(sessionId, s);
+        save(data);
+        return data.reservedSessions;
+    }
+
+    /**
+     * Add a reserved session for the current user. If the session is already in the user's feed,
+     * it will be annotated with status=RESERVED.
      *
      * @param user         Current user (injected by Endpoints)
      * @param sessionId    Session ID to mark as reserved.
@@ -194,11 +220,13 @@ public class UserdataEndpoint {
      * @return The list of reserved sessions for the user
      */
     @ApiMethod(name = "addReservedSession", httpMethod = ApiMethod.HttpMethod.PUT)
-    public Map<String, PersistentSession> addReservedSession(User user,
-            @Named("sessionId") String sessionId, @Named
-            ("timestampUTC") long timestampUTC) throws UnauthorizedException {
+    public Map<String, ReservedSession> addReservedSession(
+            User user,
+            @Named("sessionId") String sessionId,
+            @Named("timestampUTC") long timestampUTC)
+            throws UnauthorizedException {
         UserData data = getUser(user);
-        PersistentSession s = new PersistentSession(sessionId, true, timestampUTC);
+        ReservedSession s = new ReservedSession(sessionId, Status.RESERVED, timestampUTC);
         data.reservedSessions.put(sessionId, s);
         save(data);
         return data.reservedSessions;
@@ -206,7 +234,7 @@ public class UserdataEndpoint {
 
     /**
      * Remove a reserved session for the current user. The session will still be
-     * attached to the user's feed, but will be annotated with inSchedule=false.
+     * attached to the user's feed, but will be annotated with status=DELETED.
      *
      * @param user         Current user (injected by Endpoints)
      * @param sessionId    Session ID to mark as not reserved.
@@ -218,7 +246,7 @@ public class UserdataEndpoint {
     public void removeReservedSession(User user, @Named("sessionId") String sessionId, @Named
             ("timestampUTC") long timestampUTC) throws UnauthorizedException {
         UserData data = getUser(user);
-        PersistentSession s = new PersistentSession(sessionId, false, timestampUTC);
+        ReservedSession s = new ReservedSession(sessionId, Status.DELETED, timestampUTC);
         data.reservedSessions.put(sessionId, s);
         save(data);
     }

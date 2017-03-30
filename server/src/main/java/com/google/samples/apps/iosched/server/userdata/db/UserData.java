@@ -27,7 +27,7 @@ import java.util.TreeSet;
 @Entity
 public class UserData {
     @Id public String userId;
-    public Map<String, PersistentSession> bookmarkedSessions = new HashMap<>();
-    public Map<String, PersistentSession> reservedSessions = new HashMap<>();
+    public Map<String, BookmarkedSession> bookmarkedSessions = new HashMap<>();
+    public Map<String, ReservedSession> reservedSessions = new HashMap<>();
     public SortedSet<String> reviewedSessions = new TreeSet<>();
 }
