@@ -21,7 +21,7 @@
     android:orientation="vertical">
 
     <fragment
-        android:id="@+id/schedule_content"
+        android:id="@+id/my_content"
         android:name="com.google.samples.apps.iosched.myio.MyIOFragment"
         android:layout_width="match_parent"
         android:layout_height="0dp"

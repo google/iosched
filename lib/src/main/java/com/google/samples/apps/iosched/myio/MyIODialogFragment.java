@@ -14,6 +14,7 @@
 
 package com.google.samples.apps.iosched.myio;
 
+import android.app.Activity;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.net.Uri;
@@ -31,6 +32,7 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.target.BitmapImageViewTarget;
 import com.google.samples.apps.iosched.lib.R;
+import com.google.samples.apps.iosched.sync.account.Account;
 import com.google.samples.apps.iosched.util.AccountUtils;
 
 /**
@@ -61,6 +63,7 @@ public class MyIODialogFragment extends DialogFragment {
         // photo associated with the account.
         if (url != null && signedIn) {
             final Context context = getActivity().getApplicationContext();
+            // TODO: refactor.
             Glide.with(getActivity().getApplicationContext()).load(url.toString())
                  .asBitmap()
                  .fitCenter()
@@ -108,6 +111,18 @@ public class MyIODialogFragment extends DialogFragment {
         Button authButton = (Button) view.findViewById(R.id.auth_button);
         authButton.setText(signedIn ? getResources().getString(R.string.signout_prompt) :
                 getResources().getString(R.string.signin_prompt));
+        authButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(final View view) {
+                MyIOActivity myIOActivity = ((MyIOActivity) getActivity());
+                if (AccountUtils.hasActiveAccount(getActivity())) {
+                    myIOActivity.signOut();
+                } else {
+                    myIOActivity.signIn();
+                }
+                dismiss();
+            }
+        });
 
         return view;
     }

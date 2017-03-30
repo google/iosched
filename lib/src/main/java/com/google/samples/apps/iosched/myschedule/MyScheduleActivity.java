@@ -209,7 +209,7 @@ public class MyScheduleActivity extends BaseActivity implements ScheduleViewPare
 
         final MySchedulePagerFragment contentFragment =
                 (MySchedulePagerFragment) getSupportFragmentManager()
-                        .findFragmentById(R.id.schedule_content);
+                        .findFragmentById(R.id.my_content);
         contentFragment.onFiltersChanged(filters);
 
         // Each fragment in the pager adapter is an updatable view that the presenter must know
@@ -246,7 +246,7 @@ public class MyScheduleActivity extends BaseActivity implements ScheduleViewPare
     @Override
     public boolean canSwipeRefreshChildScrollUp() {
         final Fragment contentFragment = getSupportFragmentManager()
-                .findFragmentById(R.id.schedule_content);
+                .findFragmentById(R.id.my_content);
 
         if (contentFragment instanceof ScheduleView) {
             return ((ScheduleView) contentFragment).canSwipeRefreshChildScrollUp();
@@ -352,7 +352,7 @@ public class MyScheduleActivity extends BaseActivity implements ScheduleViewPare
         mModel.setFilters(filterHolder);
         mPresenter.onUserAction(MyScheduleUserActionEnum.RELOAD_DATA, null);
         final Fragment contentFragment = getSupportFragmentManager()
-                .findFragmentById(R.id.schedule_content);
+                .findFragmentById(R.id.my_content);
 
         if (contentFragment instanceof ScheduleView) {
             ((ScheduleView) contentFragment).onFiltersChanged(filterHolder);

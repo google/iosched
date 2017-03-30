@@ -633,6 +633,12 @@
          potentially due to a server error or loss of network connectivity. -->
     <string name="google_play_services_disconnected">Unable to connect to Google Play Services</string>
 
+
+    <!-- Error message that is displayed when connection to GoogleP Play Services fails and there
+    is no resolution. -->
+    <string name="google_play_services_failed">Sorry, connection to Google Play Services failed</string>
+
+
     <string name="transition_track_header" translatable="false">transition_track_header</string>
 
     <string name="transition_track_title" translatable="false">transition_track_title</string>
@@ -703,4 +709,10 @@
     <string name="my_io_dialog_second_bullet_point_signed_in">
         \u2022 You can provide session feedback after sessions end
     </string>
+
+    <!-- Message shown when a user initiated sign in fails. -->
+    <string name="signin_failed_text">Could not sign in. Please try again.</string>
+
+    <!-- Message shown when a user initiated sign out fails. -->
+    <string name="signout_failed_text">Could not sign out. Please try again.</string>
 </resources>
