@@ -81,8 +81,6 @@ public abstract class BaseActivity extends AppCompatActivity implements
     // handle to our sync observer (that notifies us about changes in our sync state)
     private Object mSyncObserverHandle;
 
-    private boolean mDestroyed;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -325,20 +323,10 @@ public abstract class BaseActivity extends AppCompatActivity implements
     }
 
     @Override
-    public boolean isDestroyed() {
-        if (Build.VERSION.SDK_INT == 16) {
-            return mDestroyed;
-        }
-        return super.isDestroyed();
-    }
-
-    @Override
-    protected void onDestroy() {
-        mDestroyed = true;
-        super.onDestroy();
-
+    protected void onStop() {
         SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(this);
         sp.unregisterOnSharedPreferenceChangeListener(this);
+        super.onStop();
     }
 
     private SyncStatusObserver mSyncStatusObserver = new SyncStatusObserver() {

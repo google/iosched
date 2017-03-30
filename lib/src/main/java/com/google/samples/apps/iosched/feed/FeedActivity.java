@@ -16,6 +16,9 @@ package com.google.samples.apps.iosched.feed;
 import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
 
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.samples.apps.iosched.feed.data.FeedMessage;
 import com.google.samples.apps.iosched.lib.R;
 import com.google.samples.apps.iosched.navigation.NavigationModel;
 import com.google.samples.apps.iosched.ui.BaseActivity;
@@ -30,16 +33,25 @@ public class FeedActivity extends BaseActivity {
     private static final String SCREEN_LABEL = "Feed";
 
     private FeedContract.Presenter mPresenter;
+    private DatabaseReference mDatabaseReference;
 
     @Override
     protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        FeedMessage.initCategoryColorMap(getResources());
         setContentView(R.layout.feed_act);
         FeedFragment feedFragment = (FeedFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.main_content);
         mPresenter = new FeedPresenter(feedFragment);
         feedFragment.setPresenter(mPresenter);
-        mPresenter.loadInitialData();
+        mDatabaseReference = FirebaseDatabase.getInstance().getReference().child("feed");
+        mPresenter.initializeDataListener(mDatabaseReference);
+    }
+
+    @Override
+    protected void onStop() {
+        mPresenter.removeDataListener(mDatabaseReference);
+        super.onStop();
     }
 
     @Override

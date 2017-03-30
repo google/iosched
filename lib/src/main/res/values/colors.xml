@@ -122,4 +122,14 @@
     <color name="welcome_nav_bar">#ff296e78</color>
     <color name="welcome_attending_in_person_background">#fffff6de</color>
 
+    <!-- Feed category colors -->
+    <color name="feed_category_agenda">#536dfe</color>
+    <color name="feed_category_event">#536dfe</color>
+    <color name="feed_category_social">#536dfe</color>
+    <color name="feed_category_emergency">#536dfe</color>
+    <color name="feed_category_travel">#536dfe</color>
+    <color name="feed_category_giveaway">#536dfe</color>
+    <color name="feed_category_afterhours">#536dfe</color>
+    <color name="feed_category_video">#536dfe</color>
+
 </resources>

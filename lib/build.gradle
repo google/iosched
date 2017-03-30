@@ -265,6 +265,7 @@ dependencies {
     compile "com.google.firebase:firebase-core:${google_play_services_client_library_version}"
     compile "com.google.firebase:firebase-messaging:${google_play_services_client_library_version}"
     compile "com.google.firebase:firebase-appindexing:${google_play_services_client_library_version}"
+    compile "com.google.firebase:firebase-database:${google_play_services_client_library_version}"
 
 
     normalDebugCompile 'com.squareup.leakcanary:leakcanary-android:1.5'

@@ -281,6 +281,16 @@
     "Give feedback" and "No, thanks" as buttons. [CHAR_LIMIT=20]-->
     <string name="no_thanks">No, thanks</string>
 
+    <!-- Feed category names (should be matched in Firebase DB) -->
+    <string name="feed_category_agenda" translatable="false">Agenda</string>
+    <string name="feed_category_event" translatable="false">Event</string>
+    <string name="feed_category_social" translatable="false">Social</string>
+    <string name="feed_category_emergency" translatable="false">Emergency</string>
+    <string name="feed_category_travel" translatable="false">Travel</string>
+    <string name="feed_category_giveaway" translatable="false">Giveaway</string>
+    <string name="feed_category_afterhours" translatable="false">After Hours</string>
+    <string name="feed_category_video" translatable="false">Video</string>
+
     <!-- A single button shown on informative popups, like EULA, open source licenses and About -->
     <string name="ok">OK</string>
 

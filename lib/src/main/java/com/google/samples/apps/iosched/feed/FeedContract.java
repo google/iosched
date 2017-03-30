@@ -15,6 +15,7 @@
  */
 package com.google.samples.apps.iosched.feed;
 
+import com.google.firebase.database.DatabaseReference;
 import com.google.samples.apps.iosched.feed.data.FeedMessage;
 
 import java.util.List;
@@ -29,15 +30,21 @@ public interface FeedContract {
 
         void setLoadingFeedMessages(boolean loading);
 
-        void updateFromDataset(List<FeedMessage> feedMessages);
-
         void showError(String errorText);
+
+        void addFeedMessage(FeedMessage feedMessage);
+
+        void updateFeedMessage(FeedMessage feedMessage);
+
+        void removeFeedMessage(FeedMessage feedMessage);
     }
 
     /**
      * Presenter for Feed. Middle man between repository (Firebase DB) and Feed View.
      */
     interface Presenter {
-        void loadInitialData();
+        void initializeDataListener(DatabaseReference databaseReference);
+
+        void removeDataListener(DatabaseReference databaseReference);
     }
 }

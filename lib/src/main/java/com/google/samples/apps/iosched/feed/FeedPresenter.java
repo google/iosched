@@ -15,88 +15,85 @@
  */
 package com.google.samples.apps.iosched.feed;
 
+import com.google.firebase.database.ChildEventListener;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseException;
+import com.google.firebase.database.DatabaseReference;
 import com.google.samples.apps.iosched.feed.data.FeedMessage;
 
-import java.util.ArrayList;
-import java.util.List;
+import static com.google.samples.apps.iosched.util.LogUtils.LOGE;
+import static com.google.samples.apps.iosched.util.LogUtils.makeLogTag;
 
 public class FeedPresenter implements FeedContract.Presenter {
+    private static final String TAG = makeLogTag(FeedPresenter.class);
+
     private FeedContract.View mView;
+    private ChildEventListener mEventListener;
 
     public FeedPresenter(FeedContract.View view) {
         mView = view;
     }
 
     @Override
-    public void loadInitialData() {
-        List<FeedMessage> feedMessages = new ArrayList<>();
+    public void initializeDataListener(DatabaseReference databaseReference) {
+        if (mEventListener == null) {
+            mEventListener = new ChildEventListener() {
+                @Override
+                public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+                    try {
+                        FeedMessage feedMessage = dataSnapshot.getValue(FeedMessage.class);
+                        mView.addFeedMessage(feedMessage);
+                    } catch (DatabaseException e) {
+                        LOGE(TAG, "Firebase error - " + e);
+                    }
+                }
 
-        //TODO(sigelbaum) Remove mock data generation.
-        fillWithMockData(feedMessages);
+                @Override
+                public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+                    try {
+                        FeedMessage feedMessage = dataSnapshot.getValue(FeedMessage.class);
+                        mView.updateFeedMessage(feedMessage);
+                    } catch (DatabaseException e) {
+                        LOGE(TAG, "Firebase error - " + e);
+                    }
+                }
 
-        mView.updateFromDataset(feedMessages);
+                @Override
+                public void onChildRemoved(DataSnapshot dataSnapshot) {
+                    try {
+                        FeedMessage feedMessage = dataSnapshot.getValue(FeedMessage.class);
+                        mView.removeFeedMessage(feedMessage);
+                    } catch (DatabaseException e) {
+                        LOGE(TAG, "Firebase error - " + e);
+                    }
+                }
 
-        //TODO(sigelbaum) firebase init listeners!
+                @Override
+                public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+                    //TODO will this ever happen?
+                    try {
+                        FeedMessage feedMessage = dataSnapshot.getValue(FeedMessage.class);
+                        mView.updateFeedMessage(feedMessage);
+                    } catch (DatabaseException e) {
+                        LOGE(TAG, "Firebase error - " + e);
+                    }
+                }
+
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
+                    LOGE(TAG, "Firebase error - " + databaseError.toString());
+                }
+            };
+            databaseReference.addChildEventListener(mEventListener);
+        }
     }
 
-    //TODO(sigelbaum) Remove.
-    private void fillWithMockData(List<FeedMessage> feedMessages) {
-        String mockDescription = "Lorem ipsum dolor sit amet, consectetur adipiscing" +
-                "elit. Integer nec eleifend arcu, eu convallis nisi. Etiam bibendum, " +
-                "tellus nec ultric" +
-                "ies suscipit, metus justo fringilla urna, non mollis tortor libero non enim. " +
-                "Mauris sit" +
-                " amet venenatis risus, at ullamcorper " +
-                "ligula. Maecenas adipiscing non odio ut hendrerit. Phasellus pharetra id sapien " +
-                "laoreet sagittis. Etiam mattis " +
-                "bibendum elit. Vestibulum rutrum a libero eget facilisis. " +
-                "Duis tempor quam velit, " +
-                "at viverra tellus faucibus ut. " +
-                "Mauris venenatis odio sed lorem dignissim, vitae tristique " +
-                "arcu sagittis.";
-        String[] imageUrls = {
-                "https://i.redd.it/jt44llj1m7ny.jpg",
-                "http://i.imgur.com/DvDyT67.jpg",
-                "http://i.imgur.com/UvbJlrL.jpg",
-                "https://i.redd.it/oackrjykh3ny.jpg",
-                "https://i.imgur.com/w6dVaSl.jpg",
-//                "http://i.imgur.com/J6yZD8F.jpg",
-                "",
-                "https://i.redd.it/uzinuxmje6ny.jpg",
-                "https://www.demilked.com/magazine/wp-content/uploads/2015/09/old-cartoon" +
-                        "-characters-age-today-andrew-tarusov-thumb640.jpg",
-                "https://i.redd.it/8xr85tal46ny.jpg",
-                "http://i.imgur.com/L6i8Baq.jpg"};
-        int defaultCategoryColor = 0xffafbdc4;
-        feedMessages.add(new FeedMessage(0, "Agenda", defaultCategoryColor,
-                "0Title!", mockDescription, true, "link",
-                imageUrls[0], System.currentTimeMillis(), true, true));
-        feedMessages.add(new FeedMessage(1, "Event", defaultCategoryColor,
-                "1Title!", mockDescription, true, "link",
-                imageUrls[1], System.currentTimeMillis(), true, true));
-        feedMessages.add(new FeedMessage(2, "Social", defaultCategoryColor,
-                "2Title!", mockDescription, true, "link",
-                imageUrls[2], System.currentTimeMillis(), true, true));
-        feedMessages.add(new FeedMessage(3, "Emergency", defaultCategoryColor,
-                "3Title!", mockDescription, true, "link",
-                imageUrls[3], System.currentTimeMillis(), true, true));
-        feedMessages.add(new FeedMessage(4, "Emergency", defaultCategoryColor,
-                "4Title!", mockDescription, true, "link",
-                imageUrls[4], System.currentTimeMillis(), true, true));
-        feedMessages.add(new FeedMessage(5, "Emergency", defaultCategoryColor,
-                "5Title!", mockDescription, true, "link",
-                imageUrls[5], System.currentTimeMillis(), true, true));
-        feedMessages.add(new FeedMessage(6, "Emergency", defaultCategoryColor,
-                "6Title!", mockDescription, true, "link",
-                imageUrls[6], System.currentTimeMillis(), true, true));
-        feedMessages.add(new FeedMessage(7, "Emergency", defaultCategoryColor,
-                "7Title!", mockDescription, true, "link",
-                imageUrls[7], System.currentTimeMillis(), true, true));
-        feedMessages.add(new FeedMessage(8, "Emergency", defaultCategoryColor,
-                "8Title!", mockDescription, true, "link",
-                imageUrls[8], System.currentTimeMillis(), true, true));
-        feedMessages.add(new FeedMessage(9, "Emergency", defaultCategoryColor,
-                "9Title!", mockDescription, true, "link",
-                imageUrls[9], System.currentTimeMillis(), true, true));
+    @Override
+    public void removeDataListener(DatabaseReference databaseReference) {
+        if (mEventListener != null) {
+            databaseReference.removeEventListener(mEventListener);
+            mEventListener = null;
+        }
     }
 }

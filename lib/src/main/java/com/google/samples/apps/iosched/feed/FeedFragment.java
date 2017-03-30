@@ -64,12 +64,21 @@ public class FeedFragment extends Fragment implements FeedContract.View {
     }
 
     @Override
-    public void updateFromDataset(List<FeedMessage> feedMessages) {
-        mFeedAdapter.updateItems(feedMessages);
-        mFeedAdapter.notifyDataSetChanged();
+    public void addFeedMessage(FeedMessage feedMessage) {
+        mFeedAdapter.addFeedMessage(feedMessage);
     }
 
     @Override
     public void showError(String errorText) {
+    }
+
+    @Override
+    public void updateFeedMessage(FeedMessage feedMessage) {
+        mFeedAdapter.updateFeedMessage(feedMessage);
+    }
+
+    @Override
+    public void removeFeedMessage(FeedMessage feedMessage) {
+        mFeedAdapter.removeFeedMessage(feedMessage);
     }
 }

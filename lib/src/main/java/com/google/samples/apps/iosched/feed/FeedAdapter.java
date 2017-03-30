@@ -15,6 +15,7 @@ package com.google.samples.apps.iosched.feed;
 
 import android.content.Context;
 import android.graphics.Point;
+import android.support.v7.util.SortedList;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
@@ -22,23 +23,22 @@ import android.view.ViewGroup;
 import com.google.samples.apps.iosched.feed.data.FeedMessage;
 import com.google.samples.apps.iosched.lib.R;
 
-import java.util.ArrayList;
-import java.util.List;
-
 /**
  * Adapter for the {@link RecyclerView} that holds a list of conference updates.
  */
 public class FeedAdapter extends RecyclerView.Adapter<FeedViewHolder> {
+    private static final int MIN_CAPACITY = 10;
+
     private final Point mScreenSize;
     private Context mContext;
-    private List<FeedMessage> mDataset;
+    private SortedList<FeedMessage> mDataset;
     private int mPaddingNormal;
     private int mMessageCardImageWidth;
     private int mMessageCardImageHeight;
 
     public FeedAdapter(Context context, Point screenSize) {
         mContext = context;
-        mDataset = new ArrayList<>();
+        mDataset = new SortedList<>(FeedMessage.class, new FeedMessageCallback(), MIN_CAPACITY);
         mScreenSize = screenSize;
         mPaddingNormal =
                 (int) context.getResources().getDimension(R.dimen.padding_normal);
@@ -86,8 +86,8 @@ public class FeedAdapter extends RecyclerView.Adapter<FeedViewHolder> {
             });
         }
         holder.updateTitle(feedMessage.getTitle());
-        holder.updateDateTime(feedMessage.getDate());
-        holder.updateDescription(feedMessage.getDescription());
+        holder.updateDateTime(feedMessage.getTimestamp());
+        holder.updateDescription(feedMessage.getMessage());
         holder.updateImage(mContext, mScreenSize, feedMessage.getImageUrl());
         holder.updateCategory(feedMessage.getCategory(), feedMessage.getCategoryColor());
     }
@@ -97,8 +97,63 @@ public class FeedAdapter extends RecyclerView.Adapter<FeedViewHolder> {
         return mDataset.size();
     }
 
-    public void updateItems(final List<FeedMessage> feedMessages) {
-        mDataset = feedMessages;
+    public void addFeedMessage(final FeedMessage feedMessage) {
+        mDataset.add(feedMessage);
         notifyDataSetChanged();
+    }
+
+    public void updateFeedMessage(final FeedMessage feedMessage) {
+        for(int i = 0; i < mDataset.size(); i++) {
+            if(mDataset.get(i) != null) {
+                if(feedMessage.getId() == mDataset.get(i).getId()) {
+                    mDataset.updateItemAt(i, feedMessage);
+                }
+            }
+        }
+    }
+
+    public void removeFeedMessage(final FeedMessage feedMessage) {
+        mDataset.remove(feedMessage);
+    }
+
+    private class FeedMessageCallback extends SortedList.Callback<FeedMessage> {
+        @Override
+        public int compare(FeedMessage o1, FeedMessage o2) {
+            return o1.compareTo(o2);
+        }
+
+        @Override
+        public void onChanged(int position, int count) {
+            // TODO(36778365) but this should never get called unless the CMS input breaks rules.
+            notifyDataSetChanged();
+        }
+
+        @Override
+        public boolean areContentsTheSame(FeedMessage oldItem, FeedMessage newItem) {
+            return oldItem.equals(newItem);
+        }
+
+        @Override
+        public boolean areItemsTheSame(FeedMessage item1, FeedMessage item2) {
+            return item1.getId() == (item2.getId());
+        }
+
+        @Override
+        public void onInserted(int position, int count) {
+            // TODO(36778365) for fancy animation.
+            notifyDataSetChanged();
+        }
+
+        @Override
+        public void onRemoved(int position, int count) {
+            // TODO(36778365) for fancy animation.
+            notifyDataSetChanged();
+        }
+
+        @Override
+        public void onMoved(int fromPosition, int toPosition) {
+            // TODO(36778365) but this should never get called unless the CMS input breaks rules.
+            notifyDataSetChanged();
+        }
     }
 }
