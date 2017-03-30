@@ -28,18 +28,18 @@ import android.view.ViewGroup;
 import com.google.samples.apps.iosched.feedback.SessionFeedbackActivity;
 import com.google.samples.apps.iosched.lib.R;
 import com.google.samples.apps.iosched.model.TagMetadata.Tag;
+import com.google.samples.apps.iosched.myio.MyIOAdapter.Callbacks;
 import com.google.samples.apps.iosched.myio.MyIOContract.MyIoPresenter;
 import com.google.samples.apps.iosched.myio.MyIOContract.MyIoView;
 import com.google.samples.apps.iosched.myschedule.MyScheduleActivity;
-import com.google.samples.apps.iosched.myschedule.MyScheduleDayAdapter;
-import com.google.samples.apps.iosched.myschedule.MyScheduleDayAdapter.ScheduleAdapterListener;
 import com.google.samples.apps.iosched.myschedule.MyScheduleModel;
+import com.google.samples.apps.iosched.provider.ScheduleContract.Sessions;
 
-public class MyIOFragment extends Fragment implements MyIoView, ScheduleAdapterListener {
+public class MyIOFragment extends Fragment implements MyIoView, Callbacks {
 
     private MyIoPresenter mPresenter;
     private RecyclerView mRecyclerView;
-    private MyScheduleDayAdapter mAdapter; // TODO make new adapter
+    private MyIOAdapter mAdapter;
 
     @Nullable
     @Override
@@ -52,7 +52,7 @@ public class MyIOFragment extends Fragment implements MyIoView, ScheduleAdapterL
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         mRecyclerView = (RecyclerView) view.findViewById(android.R.id.list);
-        mAdapter = new MyScheduleDayAdapter(this, null, false);
+        mAdapter = new MyIOAdapter(this);
         mRecyclerView.setAdapter(mAdapter);
     }
 
@@ -65,14 +65,15 @@ public class MyIOFragment extends Fragment implements MyIoView, ScheduleAdapterL
 
     @Override
     public void onScheduleLoaded(MyIOModel model) {
-        mAdapter.updateItems(model.getScheduleItems());
+        mAdapter.setItems(model.getScheduleItems());
     }
 
-    // -- ScheduleAdapterListener callbacks
+    // -- Adapter callbacks
 
     @Override
-    public void onSessionClicked(Uri sessionUri) {
+    public void onSessionClicked(String sessionId) {
         Bundle args = new Bundle();
+        Uri sessionUri = Sessions.buildSessionUri(sessionId);
         args.putString(MyScheduleModel.SESSION_URL_KEY, sessionUri.toString());
         startActivity(new Intent(Intent.ACTION_VIEW, sessionUri));
     }
@@ -88,7 +89,17 @@ public class MyIOFragment extends Fragment implements MyIoView, ScheduleAdapterL
     }
 
     @Override
+    public boolean bookmarkingEnabled() {
+        return false; // not supported
+    }
+
+    @Override
     public void onBookmarkClicked(String sessionId, boolean isInSchedule) {
         // not supported
+    }
+
+    @Override
+    public void onAddEventsClicked(int conferenceDay) {
+        // TODO open schedule to specified day
     }
 }

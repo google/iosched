@@ -16,8 +16,6 @@
 
 package com.google.samples.apps.iosched.session;
 
-import static com.google.samples.apps.iosched.util.LogUtils.makeLogTag;
-
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
@@ -55,6 +53,8 @@ import com.google.samples.apps.iosched.util.UIUtils;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
+
+import static com.google.samples.apps.iosched.util.LogUtils.makeLogTag;
 
 public class SessionDetailModel extends ModelWithLoaderManager<SessionDetailQueryEnum,
         SessionDetailUserActionEnum> {

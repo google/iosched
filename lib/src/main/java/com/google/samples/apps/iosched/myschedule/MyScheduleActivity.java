@@ -43,8 +43,7 @@ import com.google.samples.apps.iosched.model.ScheduleHelper;
 import com.google.samples.apps.iosched.model.TagMetadata.Tag;
 import com.google.samples.apps.iosched.myschedule.MyScheduleModel.MyScheduleQueryEnum;
 import com.google.samples.apps.iosched.myschedule.MyScheduleModel.MyScheduleUserActionEnum;
-import com.google.samples.apps.iosched.myschedule.ScheduleFilterFragment
-        .ScheduleFiltersFragmentListener;
+import com.google.samples.apps.iosched.myschedule.ScheduleFilterFragment.ScheduleFiltersFragmentListener;
 import com.google.samples.apps.iosched.navigation.NavigationModel;
 import com.google.samples.apps.iosched.session.SessionDetailActivity;
 import com.google.samples.apps.iosched.ui.BaseActivity;

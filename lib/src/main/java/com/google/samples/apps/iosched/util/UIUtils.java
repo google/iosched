@@ -99,6 +99,11 @@ public class UIUtils {
     private static final int TIME_FLAGS = DateUtils.FORMAT_SHOW_TIME
             | DateUtils.FORMAT_SHOW_DATE | DateUtils.FORMAT_NO_YEAR
             | DateUtils.FORMAT_SHOW_WEEKDAY | DateUtils.FORMAT_ABBREV_WEEKDAY;
+    /**
+     * Flags used with {@link DateUtils#formatDateRange}.
+     */
+    private static final int DAY_FLAGS = DateUtils.FORMAT_SHOW_DATE | DateUtils.FORMAT_NO_YEAR
+            | DateUtils.FORMAT_SHOW_WEEKDAY | DateUtils.FORMAT_ABBREV_WEEKDAY;
 
     /**
      * Regex to search for HTML escape sequences. <p/> <p></p>Searches for any continuous string of
@@ -170,6 +175,17 @@ public class UIUtils {
         }
         Formatter formatter = new Formatter(recycle);
         return DateUtils.formatDateRange(context, formatter, intervalStart, intervalEnd, TIME_FLAGS,
+                SettingsUtils.getDisplayTimeZone(context).getID()).toString();
+    }
+
+    public static String formatDaySeparator(Context context, StringBuilder recycle, long time) {
+        if (recycle == null) {
+            recycle = new StringBuilder();
+        } else {
+            recycle.setLength(0);
+        }
+        Formatter formatter = new Formatter(recycle);
+        return DateUtils.formatDateRange(context, formatter, time, time, DAY_FLAGS,
                 SettingsUtils.getDisplayTimeZone(context).getID()).toString();
     }
 
