@@ -13,22 +13,10 @@
  */
 package com.google.samples.apps.iosched.info;
 
-import android.os.Bundle;
-import android.support.annotation.Nullable;
+import android.content.Context;
 import android.support.v4.app.Fragment;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
 
-import com.google.samples.apps.iosched.lib.R;
+public abstract class BaseInfoFragment extends Fragment implements InfoContract.View {
 
-public class InfoFragment extends Fragment implements InfoContract.View {
-
-    @Nullable
-    @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container,
-            @Nullable Bundle savedInstanceState) {
-        View root = inflater.inflate(R.layout.info_frag, container, false);
-        return root;
-    }
+    public abstract String getTitle(Context context);
 }

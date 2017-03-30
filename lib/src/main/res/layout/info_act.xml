@@ -26,11 +26,11 @@
 
     <fragment
         android:id="@+id/main_content"
-        android:name="com.google.samples.apps.iosched.info.InfoFragment"
+        android:name="com.google.samples.apps.iosched.info.InfoPagerFragment"
         android:layout_width="match_parent"
         android:layout_height="0px"
         android:layout_weight="1"
-        tools:layout="@layout/info_frag"/>
+        tools:layout="@layout/info_pager_frag"/>
 
     <android.support.design.widget.BottomNavigationView
         android:id="@+id/bottom_navigation"

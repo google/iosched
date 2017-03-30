@@ -510,7 +510,16 @@
     <!-- Label for SessionFeedback activity -->
     <string name="title_session_feedback">Session Feedback</string>
 
-    <!-- Label for Settings activity -->
+    <!-- Label for Event info fragment -->
+    <string name="title_event">Event</string>
+
+    <!-- Label for Travel info fragment -->
+    <string name="title_travel">Travel</string>
+
+    <!-- Label for Frequently Asked Questions info fragment -->
+    <string name="title_faq">FAQ</string>
+
+    <!-- Label for Settings fragment -->
     <string name="title_settings">Settings</string>
 
     <!-- Chooser dialog text when the user is selecting an application with which to share something -->
