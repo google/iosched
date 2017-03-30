@@ -21,17 +21,29 @@ Reservations for I/O are processed in Firebase using RTDB and Firebase Functions
         "queue": {
           "$uid": {
             ".read": "auth != null && auth.uid == $uid",
-            ".write": "auth != null && auth.uid == $uid && !data.exists()"
+          	".write": "auth != null && auth.uid == $uid && !data.exists() && root.child('/users').child(auth.uid).val() == true"
           }
         },
         "sessions": {
           "$sid": {
+            "seats": {
+              "seats_available": {
+                ".read": true,
+                ".write" false
+              }
+            },
             "reservations": {
               "$uid": {
                 ".read": "auth != null && auth.uid == $uid",
                 ".write": false
               }
             }
+          }
+        },
+        "users": {
+          "$uid": {
+            ".write": false,
+            ".read": false
           }
         }
       }

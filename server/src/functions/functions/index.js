@@ -37,12 +37,14 @@ const PATH_SEATS = 'seats';
 const PATH_ACTION = 'action';
 const PATH_SESSION = 'session';
 const PATH_QUEUE = 'queue';
+const PATH_LAST_STATUS_CHANGED = 'last_status_changed';
 
 const ACTION_RESERVE = 'reserve';
 const ACTION_RETURN = 'return';
 
 const STATUS_GRANTED = 'granted';
-const STATUS_DENIED = 'denied';
+const STATUS_WAITING = 'waiting';
+const STATUS_RETURNED = 'returned';
 
 const RESERVATION_RESERVED = 'reserved';
 const RESERVATION_DENIED_NO_SPACE = 'denied no space';
@@ -137,8 +139,9 @@ function processReserve(uid, sid, curr_session) {
 }
 
 /**
- * Process a return request of an existing reservation for user with ID uid
- * for a session with ID sid.
+ * Process a return request of an existing granted reservation
+ * or waitlist reservation for user with ID uid for a session
+ * with ID sid.
  *
  * @param uid ID of user requesting return.
  * @param sid Session ID of requested return.
@@ -150,6 +153,8 @@ function processReturn(uid, sid) {
     const currentStatus = snapshot.val();
     if (currentStatus == STATUS_GRANTED) {
       return handleReturn(uid, sid);
+    } else if(currentStatus == STATUS_WAITING) {
+      return handleRemove(uid, sid);
     } else {
       return RESERVATION_RETURN_FAILED;
     }
@@ -159,6 +164,7 @@ function processReturn(uid, sid) {
 /**
  * Check whether or not the user currently has any reservations that would
  * clash with the time of the session in the current reservation request.
+ * Current reservations include being on the waitlist for a session.
  *
  * @param uid ID of user requesting reservation.
  * @param curr_session Session trying to be reserved.
@@ -177,7 +183,20 @@ function checkForClash(uid, curr_session) {
             return true;
           }
         }
-        return false;
+        // Get all existing wait lists for this user
+        return admin.database().ref(PATH_SESSIONS)
+            .orderByChild(PATH_RESERVATIONS + '/' + uid + '/' + PATH_STATUS)
+            .equalTo(STATUS_WAITING).once('value').then(function(snapshot) {
+                const sessions = snapshot.val();
+                for (var temp_session_id in sessions) {
+                    // Check for clash with existing waitlist
+                    if (curr_session.time_start < sessions[temp_session_id].time_end &&
+                        curr_session.time_end > sessions[temp_session_id].time_start) {
+                        return true;
+                    }
+                }
+                return false;
+            });
       });
 }
 
@@ -193,21 +212,20 @@ function checkForClash(uid, curr_session) {
  */
 function handleCutoff(uid, sid, action) {
   if (action == ACTION_RESERVE) {
-    return getReservationStatusReference(uid, sid).set(RESULT_RESERVED_CUTOFF)
+    return getReservationResultReference(uid, sid).set(RESULT_RESERVED_CUTOFF)
         .then(function() {
           // Reservations are closed.
           return RESERVATION_CLOSED;
         });
   } else if (action == ACTION_RETURN) {
-    return getReservationStatusReference(uid, sid).set(RESULT_RETURNED_CUTOFF)
+    return getReservationResultReference(uid, sid).set(RESULT_RETURNED_CUTOFF)
         .then(function() {
           // Reservations are closed.
           return RESERVATION_CLOSED;
         });
+  } else {
+    return Promise.resolve(RESERVATION_CLOSED);
   }
-  return new Promise(function(res, rej) {
-    res(RESERVATION_CLOSED);
-  });
 }
 
 /**
@@ -224,18 +242,23 @@ function handleReturn(uid, sid) {
       .transaction(function(seats) {
     if (seats) {
       seats.reserved--;
+      setSeatAvailability(seats);
     }
     return seats;
   }).then(function(result) {
     var committed = result.committed;
     var snapshot = result.snapshot;
-    reservationResult = {};
+    var reservationResult = {};
     if (committed && snapshot != null) {
       reservationResult[PATH_RESULT] = RESULT_RETURNED;
-      reservationResult[PATH_STATUS] = 'returned';
+      reservationResult[PATH_STATUS] = STATUS_RETURNED;
+      reservationResult[PATH_LAST_STATUS_CHANGED] = new Date().getTime();
       return getReservationReference(uid, sid).set(reservationResult)
           .then(function() {
-            return RESERVATION_RETURNED;
+            // Promote from waitlist.
+            return promoteFromWaitlist(sid).then(function() {
+              return RESERVATION_RETURNED;
+            });
           });
     } else {
       return getReservationResultReference(uid, sid)
@@ -244,6 +267,104 @@ function handleReturn(uid, sid) {
           });
     }
   });
+}
+
+/**
+ * Handles the return of a waitlist reservation. This does not affect
+ * the state of available seating. However if the user does return to
+ * the waitlist they will have lost their position.
+ *
+ * @param uid ID of user returning waitlist reservation.
+ * @param sid Session ID of returned waitlist entry.
+ * @returns {Promise.<TResult>} string result of return.
+ */
+function handleRemove(uid, sid) {
+  var reservationResult = {};
+  reservationResult[PATH_RESULT] = RESULT_RETURNED;
+  reservationResult[PATH_STATUS] = STATUS_RETURNED;
+  reservationResult[PATH_LAST_STATUS_CHANGED] = new Date().getTime();
+  return getReservationReference(uid, sid).set(reservationResult)
+      .then(function() {
+        return RESERVATION_RETURNED;
+      });
+}
+
+/**
+ * Promote the user that is waiting the longest from the waitlist (if there is one)
+ * to being granted a seat in the session.
+ *
+ * @param sid ID of session where a user will be promoted from the waitlist.
+ */
+function promoteFromWaitlist(sid) {
+  // User that has been waiting the longest.
+  var firstInLine;
+  var prevUserStatus;
+  return getSessionReference(sid).transaction(function(session) {
+    if (session) {
+      var smallestTime;
+      var reservations = session.reservations;
+      for (var uid in reservations) {
+        if (reservations[uid].status == STATUS_WAITING) {
+          if (!smallestTime || reservations[uid].last_status_changed < smallestTime) {
+            firstInLine = uid;
+            smallestTime = reservations[uid].last_status_changed;
+          }
+        }
+      }
+
+      // Check if anyone was in the line waiting for a seat.
+      if (!firstInLine) {
+        // Keep track of the user's pervious status
+        prevUserStatus = reservations[firstInLine].status;
+        var seats = session.seats;
+        // If there is a seat available give it to user first in line.
+        if (seats.capacity > seats.reserved) {
+          seats.reserved++;
+          reservations[firstInLine].status = STATUS_GRANTED;
+          reservations[firstInLine].result = RESULT_RESERVED;
+          reservations[firstInLine].last_status_changed = new Date().getTime();
+          setSeatAvailability(seats);
+        }
+      }
+
+    }
+    return session;
+  }).then(function(result) {
+    var committed = result.committed;
+    var snapshot = result.snapshot.val();
+    if (committed && snapshot != null) {
+      // it is possible that the commit was successful but the promotion was not successful
+      // compare the status of the user
+      if (firstInLine) {
+        // we have a waiting user selected
+        // check if the user was promoted
+        if (prevUserStatus == STATUS_WAITING &&
+            snapshot.reservations[firstInLine].status == STATUS_GRANTED) {
+          // user was promoted
+          console.log('promoted user ' + firstInLine);
+          console.log('send notification to user ' + firstInLine);
+          // TODO(arthurthompson): send notification to promoted user.
+        } else {
+          console.log(firstInLine + ' was first in waitlist but not promoted.');
+        }
+      } else {
+        console.log('waitlist was empty for session ' + sid + ' so no promotions needed.');
+      }
+    }
+  });
+}
+
+/**
+ * Set the availability state of seats in a session.
+ *
+ * @param seats Object representing seats of a session.
+ */
+function setSeatAvailability(seats) {
+  if (seats.capacity > seats.reserved) {
+    seats.seats_available = true;
+  } else {
+    seats.seats_available = false;
+  }
 }
 
 /**
@@ -286,6 +407,7 @@ function handleReservation(uid, sid) {
       if (seats.capacity > seats.reserved) {
         console.log(uid + ' has been granted a seat');
         seats.reserved++;
+        setSeatAvailability(seats);
       } else {
         console.log('no seats available');
       }
@@ -295,18 +417,20 @@ function handleReservation(uid, sid) {
     var committed = result.committed;
     var snapshot = result.snapshot;
     if (committed && snapshot != null) {
-      reservationResult = {};
-      currSeats = snapshot.val();
+      var reservationResult = {};
+      var currSeats = snapshot.val();
       if (currSeats.reserved - 1 == prevSeats.reserved) {
         reservationResult[PATH_RESULT] = RESULT_RESERVED;
         reservationResult[PATH_STATUS] = STATUS_GRANTED;
+        reservationResult[PATH_LAST_STATUS_CHANGED] = new Date().getTime();
         return getReservationReference(uid, sid).set(reservationResult)
             .then(function() {
               return RESERVATION_RESERVED;
             });
       } else {
         reservationResult[PATH_RESULT] = RESULT_RESERVED_NO_SPACE;
-        reservationResult[PATH_STATUS] = STATUS_DENIED;
+        reservationResult[PATH_STATUS] = STATUS_WAITING;
+        reservationResult[PATH_LAST_STATUS_CHANGED] = new Date().getTime();
         return getReservationReference(uid, sid).set(reservationResult)
             .then(function() {
               return RESERVATION_DENIED_NO_SPACE;
