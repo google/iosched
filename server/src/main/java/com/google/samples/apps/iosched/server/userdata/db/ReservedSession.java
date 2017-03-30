@@ -17,30 +17,42 @@
 package com.google.samples.apps.iosched.server.userdata.db;
 
 /**
- * A session which supports sync primitives. Sessions cannot actually be deleted -- though they
- * can be flagged as such (by setting inSchedule=false).
+ * A reserved (or waitlisted) session. ReservedSessions cannot actually be deleted -- though
+ * they can be flagged as such (by setting status=DELETED).
  *
  * The timestamp is used to represent the time the session was added/removed from the user's
  * schedule, in millis (UTC). This is used to resolve sync conflicts. Care must be taken to
  * ensure the timestamp is accurate, even if the user's clock is not.
  */
-public class PersistentSession {
+public class ReservedSession {
+    /**
+     * Reservation status. WAITLISTED means the user is in the waiting list for this
+     * session. RESERVED means the user holds a valid reservation. DELETED means the
+     * user no longer holds any claim to this session (data preserved for sync purposes).
+     */
+    public enum Status {
+        WAITLISTED, DELETED, RESERVED
+    }
+
     /** CMS ID of the session which is being represented */
     public String sessionID;
-    /** Whether this session is in the user's collection or not. (This is a proxy for deleting
-     * a session, while retaining information about it for sync purposes.)
+
+    /**
+     * Whether this session is in the user's collection, and if so whether it's
+     * WAITLISTED or RESERVED.
      */
-    public boolean inSchedule;
+    public Status status;
+
     /**
      * Time the session was added/removed from the user's collection, in millis (UTC).
      */
     public long timestampUTC;
 
-    public PersistentSession() {}
+    public ReservedSession() {}
 
-    public PersistentSession(String sessionID, boolean inSchedule, long timestampUTC) {
+    public ReservedSession(String sessionID, Status status, long timestampUTC) {
         this.sessionID = sessionID;
-        this.inSchedule = inSchedule;
+        this.status = status;
         this.timestampUTC = timestampUTC;
     }
 }
