@@ -28,19 +28,18 @@ import android.view.ViewGroup;
 import com.google.samples.apps.iosched.feedback.SessionFeedbackActivity;
 import com.google.samples.apps.iosched.lib.R;
 import com.google.samples.apps.iosched.model.TagMetadata.Tag;
+import com.google.samples.apps.iosched.myio.MyIOAdapter.Callbacks;
 import com.google.samples.apps.iosched.myio.MyIOContract.MyIoPresenter;
 import com.google.samples.apps.iosched.myio.MyIOContract.MyIoView;
 import com.google.samples.apps.iosched.myschedule.MyScheduleActivity;
-import com.google.samples.apps.iosched.myschedule.MyScheduleDayAdapter;
 import com.google.samples.apps.iosched.myschedule.MyScheduleModel;
-import com.google.samples.apps.iosched.myschedule.ScheduleItemViewHolder.Callbacks;
 import com.google.samples.apps.iosched.provider.ScheduleContract.Sessions;
 
 public class MyIOFragment extends Fragment implements MyIoView, Callbacks {
 
     private MyIoPresenter mPresenter;
     private RecyclerView mRecyclerView;
-    private MyScheduleDayAdapter mAdapter; // TODO make new adapter
+    private MyIOAdapter mAdapter;
 
     @Nullable
     @Override
@@ -53,7 +52,7 @@ public class MyIOFragment extends Fragment implements MyIoView, Callbacks {
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         mRecyclerView = (RecyclerView) view.findViewById(android.R.id.list);
-        mAdapter = new MyScheduleDayAdapter(this, null, false);
+        mAdapter = new MyIOAdapter(this);
         mRecyclerView.setAdapter(mAdapter);
     }
 
@@ -66,7 +65,7 @@ public class MyIOFragment extends Fragment implements MyIoView, Callbacks {
 
     @Override
     public void onScheduleLoaded(MyIOModel model) {
-        mAdapter.updateItems(model.getScheduleItems());
+        mAdapter.setItems(model.getScheduleItems());
     }
 
     // -- Adapter callbacks
@@ -97,5 +96,10 @@ public class MyIOFragment extends Fragment implements MyIoView, Callbacks {
     @Override
     public void onBookmarkClicked(String sessionId, boolean isInSchedule) {
         // not supported
+    }
+
+    @Override
+    public void onAddEventsClicked(int conferenceDay) {
+        // TODO open schedule to specified day
     }
 }

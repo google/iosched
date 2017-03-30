@@ -28,6 +28,7 @@ import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -83,6 +84,12 @@ public class ScheduleItemViewHolder extends RecyclerView.ViewHolder {
          * @param tag The tag that was clicked
          */
         void onTagClicked(Tag tag);
+    }
+
+    public static ScheduleItemViewHolder newInstance(ViewGroup parent, Callbacks callbacks) {
+        LayoutInflater inflater = LayoutInflater.from(parent.getContext());
+        View itemView = inflater.inflate(R.layout.my_schedule_item, parent, false);
+        return new ScheduleItemViewHolder(itemView, callbacks);
     }
 
     public ScheduleItemViewHolder(View itemView, Callbacks callbacks) {
