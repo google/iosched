@@ -195,7 +195,8 @@ public class UserdataEndpoint {
      *                     implemented. MUST BE ACCURATE - COMPENSATE FOR CLOCK DRIFT!
      * @return The list of reserved sessions for the user
      */
-    @ApiMethod(name = "addWaitlistedSession", httpMethod = ApiMethod.HttpMethod.PUT)
+    @ApiMethod(name = "addWaitlistedSession", path = "reservations/waitlist",
+        httpMethod = ApiMethod.HttpMethod.PUT)
     public Map<String, ReservedSession> addWaitlistedSession (
         User user,
         @Named("sessionId") String sessionId,
@@ -219,7 +220,8 @@ public class UserdataEndpoint {
      *                     implemented. MUST BE ACCURATE - COMPENSATE FOR CLOCK DRIFT!
      * @return The list of reserved sessions for the user
      */
-    @ApiMethod(name = "addReservedSession", httpMethod = ApiMethod.HttpMethod.PUT)
+    @ApiMethod(name = "addReservedSession", path = "reservations",
+        httpMethod = ApiMethod.HttpMethod.PUT)
     public Map<String, ReservedSession> addReservedSession(
             User user,
             @Named("sessionId") String sessionId,
@@ -242,7 +244,8 @@ public class UserdataEndpoint {
      *                     different than the time this method is called if offline sync is
      *                     implemented. MUST BE ACCURATE - COMPENSATE FOR CLOCK DRIFT!
      */
-    @ApiMethod(name = "removeReservedSession", httpMethod = ApiMethod.HttpMethod.DELETE)
+    @ApiMethod(name = "removeReservedSession", path = "reservations",
+        httpMethod = ApiMethod.HttpMethod.DELETE)
     public void removeReservedSession(User user, @Named("sessionId") String sessionId, @Named
             ("timestampUTC") long timestampUTC) throws UnauthorizedException {
         UserData data = getUser(user);
