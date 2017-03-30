@@ -35,6 +35,8 @@ import com.google.samples.apps.iosched.server.schedule.model.InputJsonKeys.Vendo
 import com.google.samples.apps.iosched.server.schedule.model.JsonDataSource;
 import com.google.samples.apps.iosched.server.schedule.model.JsonDataSources;
 import java.io.IOException;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.net.URL;
 import java.nio.ByteBuffer;
 import java.util.ArrayList;
@@ -109,8 +111,9 @@ public class ImageUpdater {
 
         // Stores image to GCS using image content's MD5 as file name.
         String imageId = Hashing.md5().hashBytes(imageData).toString();
+        String imageExt = parseFileExtFromUrl(sourceUrl);
         GcsFilename gcsFilename = new GcsFilename(Config.CLOUD_STORAGE_BUCKET,
-            GCS_IMAGE_FOLDERS.get(type) + "/" + imageId);
+            GCS_IMAGE_FOLDERS.get(type) + "/" + imageId + "." + imageExt);
         try {
           gcsService.createOrReplace(
               gcsFilename, GcsFileOptions.getDefaultInstance(), ByteBuffer.wrap(imageData));
@@ -129,7 +132,7 @@ public class ImageUpdater {
   /**
    * Extracts the list of image URLs for every type in EventPoint sources.
    */
-  private Map<MainTypes, List<String>> parseImageUrls(JsonDataSources rawCmsSources) {
+  static Map<MainTypes, List<String>> parseImageUrls(JsonDataSources rawCmsSources) {
     Map<MainTypes, List<String>> imageUrls = new HashMap<>();
 
     // Extract speaker photos.
@@ -142,5 +145,21 @@ public class ImageUpdater {
       }
     }
     return imageUrls;
+  }
+
+  static String parseFileExtFromUrl(String sourceUrl) {
+    if (isNullOrEmpty(sourceUrl)) {
+      return null;
+    }
+    String ext = null;
+    try {
+      String path = new URI(sourceUrl).getPath();
+      int idx = path.lastIndexOf('.');
+      if (idx >= 0) {
+        ext = path.substring(idx + 1);
+      }
+    } catch (URISyntaxException e) {
+    }
+    return isNullOrEmpty(ext) ? "jpg" : ext;  // return "jpg" if failed to parse extension.
   }
 }
