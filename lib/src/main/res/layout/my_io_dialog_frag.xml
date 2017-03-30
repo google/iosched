@@ -40,6 +40,8 @@
         <LinearLayout
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/my_io_dialog_header_margin"
+            android:layout_marginEnd="@dimen/my_io_dialog_header_margin"
             android:layout_weight="1"
             android:orientation="vertical">
 
