@@ -789,7 +789,7 @@
         or more people.</string>
     <string name="publictransportation_info_description">Public transportation to the area is
         accessible via:
-        \nCALTRAIN: Regional rail system
+        \n\nCALTRAIN: Regional rail system
         \nVTA: Light rail system servicing the South Bay
         \nBART:Bay Area Rapid Transit
         \n\nPublic transit doesn\'t go directly to Google I/O. Stay tuned over the coming weeks for
@@ -800,4 +800,12 @@
         the peninsula. The closest location to Shoreline Amphitheatre is at 228 Charleston Road,
         Mountain View, CA 94043. More information regarding membership and pricing is available via
         the Bay Area Bike Share website.</string>
+
+    <string name="faq_attendance_details_title">Attendance Details</string>
+    <string name="faq_protips_title">Pro Tips</string>
+    <string name="faq_protips_description">If you\'re joining us in person at Shoreline
+        Amphitheatre, here are some useful tips to navigate your way through the conference:
+        \n\nBadge pick-up: Everyone is guaranteed a seat for the keynote but the best seats will be
+        assigned on a first-come, first-served basis. Badge pick-up starts at 7:00AM on May 17 so
+        make sure to come by early!</string>
 </resources>

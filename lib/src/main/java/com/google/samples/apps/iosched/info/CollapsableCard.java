@@ -1,4 +1,4 @@
-package com.google.samples.apps.iosched.info.travel;
+package com.google.samples.apps.iosched.info;
 
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
@@ -8,50 +8,47 @@ import android.content.res.TypedArray;
 import android.graphics.Color;
 import android.graphics.LightingColorFilter;
 import android.support.annotation.Nullable;
-import android.support.transition.TransitionManager;
 import android.support.v7.widget.CardView;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.animation.DecelerateInterpolator;
-import android.view.animation.ScaleAnimation;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.google.samples.apps.iosched.lib.R;
 
-public class TravelInfoCollapsableCard extends CardView {
+public class CollapsableCard extends CardView {
 
     private boolean mExpanded = false;
-    private TextView mTravelTitle;
-    private TextView mTravelDescription;
+    private TextView mCardTitle;
+    private TextView mCardDescription;
     private ImageView mExpandIcon;
 
-    public TravelInfoCollapsableCard(Context context) {
+    public CollapsableCard(Context context) {
         this(context, null);
     }
 
-    public TravelInfoCollapsableCard(Context context, @Nullable AttributeSet attrs) {
+    public CollapsableCard(Context context, @Nullable AttributeSet attrs) {
         this(context, attrs, 0);
     }
 
-    public TravelInfoCollapsableCard(Context context, @Nullable AttributeSet attrs,
+    public CollapsableCard(Context context, @Nullable AttributeSet attrs,
             int defStyleAttr) {
         super(context, attrs, defStyleAttr);
-        TypedArray arr = context.obtainStyledAttributes(attrs, R.styleable.TravelInfo, 0, 0);
-        String travelTitle = arr.getString(R.styleable.TravelInfo_travelTitle);
-        String travelDescription = arr.getString(R.styleable.TravelInfo_travelDescription);
+        TypedArray arr = context.obtainStyledAttributes(attrs, R.styleable.CollapsableCard, 0, 0);
+        String cardTitle = arr.getString(R.styleable.CollapsableCard_cardTitle);
+        String cardDescription = arr.getString(R.styleable.CollapsableCard_cardDescription);
         arr.recycle();
         LayoutInflater inflater = (LayoutInflater) context.getSystemService
                 (Context.LAYOUT_INFLATER_SERVICE);
-        inflater.inflate(R.layout.info_travel_content_card, this, true);
-        mTravelTitle = (TextView) ((RelativeLayout) getChildAt(0)).getChildAt(0);
-        mTravelDescription = (TextView) ((RelativeLayout) getChildAt(0)).getChildAt(2);
-        mExpandIcon = (ImageView) ((RelativeLayout) getChildAt(0)).getChildAt(1);
-        mTravelTitle.setText(travelTitle);
-        mTravelDescription.setText(travelDescription);
+        View view = inflater.inflate(R.layout.collapsable_card_content, this, true);
+        mCardTitle = (TextView) view.findViewById(R.id.card_title);
+        mCardDescription = (TextView) view.findViewById(R.id.card_description);
+        mExpandIcon = (ImageView) view.findViewById(R.id.expand_icon);
+        mCardTitle.setText(cardTitle);
+        mCardDescription.setText(cardDescription);
         updateFromExpandOrCollapse();
         mExpandIcon.setOnClickListener(new OnClickListener() {
             @Override
@@ -65,12 +62,12 @@ public class TravelInfoCollapsableCard extends CardView {
     public void updateFromExpandOrCollapse() {
         if (mExpanded) {
             int matchParentMeasureSpec = View.MeasureSpec.makeMeasureSpec
-                    (((View) mTravelDescription.getParent()).getWidth(), View.MeasureSpec.EXACTLY);
+                    (((View) mCardDescription.getParent()).getWidth(), View.MeasureSpec.EXACTLY);
             int wrapContentMeasureSpec = View.MeasureSpec.makeMeasureSpec
                     (0, View.MeasureSpec.UNSPECIFIED);
-            mTravelDescription.measure(matchParentMeasureSpec, wrapContentMeasureSpec);
-            expand(mTravelDescription, 500, mTravelDescription.getMeasuredHeight());
-            mTravelDescription.getMeasuredHeight();
+            mCardDescription.measure(matchParentMeasureSpec, wrapContentMeasureSpec);
+            //TODO find way to use TransitionManager
+            expand(mCardDescription, 500, mCardDescription.getMeasuredHeight());
             mExpandIcon.animate().rotation(180f)
                     .setListener(new AnimatorListenerAdapter() {
                         @Override
@@ -78,11 +75,12 @@ public class TravelInfoCollapsableCard extends CardView {
                             super.onAnimationEnd(animation);
                             mExpandIcon.setColorFilter(
                                     new LightingColorFilter(Color.BLUE, Color.BLUE));
-                            mTravelTitle.setTextColor(Color.BLUE);
+                            mCardTitle.setTextColor(Color.BLUE);
                         }
                     }).start();
         } else {
-            collapse(mTravelDescription, 500, 0);
+            //TODO find way to use TransitionManager
+            collapse(mCardDescription, 500, 0);
             mExpandIcon.animate().rotation(0f)
                     .setListener(new AnimatorListenerAdapter() {
                         @Override
@@ -90,7 +88,7 @@ public class TravelInfoCollapsableCard extends CardView {
                             super.onAnimationEnd(animation);
                             mExpandIcon.setColorFilter(
                                     new LightingColorFilter(Color.BLACK, Color.BLACK));
-                            mTravelTitle.setTextColor(Color.BLACK);
+                            mCardTitle.setTextColor(Color.BLACK);
                         }
                     }).start();
         }
@@ -98,7 +96,7 @@ public class TravelInfoCollapsableCard extends CardView {
     }
 
     private void expand(final View v, int duration, int targetHeight) {
-        int prevHeight  = v.getHeight();
+        int prevHeight = v.getHeight();
         ValueAnimator valueAnimator = ValueAnimator.ofInt(prevHeight, targetHeight);
         valueAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
             @Override
@@ -113,7 +111,7 @@ public class TravelInfoCollapsableCard extends CardView {
     }
 
     private void collapse(final View v, int duration, int targetHeight) {
-        int prevHeight  = v.getHeight();
+        int prevHeight = v.getHeight();
         ValueAnimator valueAnimator = ValueAnimator.ofInt(prevHeight, targetHeight);
         valueAnimator.setInterpolator(new DecelerateInterpolator());
         valueAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {

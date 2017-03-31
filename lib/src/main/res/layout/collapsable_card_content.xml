@@ -1,30 +1,36 @@
 <?xml version="1.0" encoding="utf-8"?>
 <merge xmlns:android="http://schemas.android.com/apk/res/android"
        xmlns:tools="http://schemas.android.com/tools">
+
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
+
         <TextView
-            android:id="@+id/shuttleInfoTitle"
+            android:id="@+id/card_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:padding="@dimen/padding_normal"
             android:layout_alignParentStart="true"
             android:layout_alignParentTop="true"
+            android:padding="@dimen/padding_normal"
             android:text="@string/shuttle_info_title"/>
+
         <ImageView
+            android:id="@+id/expand_icon"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:padding="@dimen/padding_normal"
             android:layout_alignParentEnd="true"
             android:layout_alignParentTop="true"
+            android:padding="@dimen/padding_normal"
             android:src="@drawable/ic_expand_more_black_24dp"/>
+
         <TextView
+            android:id="@+id/card_description"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:padding="@dimen/padding_normal"
             android:layout_alignParentStart="true"
-            android:layout_below="@+id/shuttleInfoTitle"
+            android:layout_below="@+id/card_title"
+            android:padding="@dimen/padding_normal"
             tools:text="@string/shuttle_info_description"/>
     </RelativeLayout>
 </merge>

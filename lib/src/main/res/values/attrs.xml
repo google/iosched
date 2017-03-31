@@ -63,8 +63,8 @@
         <attr name="eventIcon" format="reference" />
     </declare-styleable>
 
-    <declare-styleable name="TravelInfo">
-        <attr name="travelTitle" format="string" />
-        <attr name="travelDescription" format="string" />
+    <declare-styleable name="CollapsableCard">
+        <attr name="cardTitle" format="string"/>
+        <attr name="cardDescription" format="string"/>
     </declare-styleable>
 </resources>
