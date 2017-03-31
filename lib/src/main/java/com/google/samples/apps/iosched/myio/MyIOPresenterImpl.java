@@ -24,10 +24,11 @@ import android.support.v4.content.Loader;
 import com.google.samples.apps.iosched.model.ScheduleItem;
 import com.google.samples.apps.iosched.myio.MyIOContract.MyIoPresenter;
 import com.google.samples.apps.iosched.myio.MyIOContract.MyIoView;
+import com.google.samples.apps.iosched.util.CursorModelLoader;
 
 import java.util.List;
 
-public class MyIOPresenterImpl implements MyIoPresenter, LoaderCallbacks<List<ScheduleItem>> {
+public class MyIOPresenterImpl implements MyIoPresenter {
     private static final int LOADER_SCHEDULE = 1;
 
     private Context mContext;
@@ -42,23 +43,29 @@ public class MyIOPresenterImpl implements MyIoPresenter, LoaderCallbacks<List<Sc
 
     @Override
     public void initModel(LoaderManager loaderManager) {
-        loaderManager.initLoader(LOADER_SCHEDULE, null, this);
+        loaderManager.initLoader(LOADER_SCHEDULE, null, mSessionsLoaderCallbacks);
     }
 
-    @Override
-    public Loader<List<ScheduleItem>> onCreateLoader(int id, Bundle args) {
-        return new MyIOScheduleLoader(mContext);
-    }
+    // -- LoaderCallbacks implementations
 
-    @Override
-    public void onLoadFinished(Loader<List<ScheduleItem>> loader, List<ScheduleItem> data) {
-        mModel.setScheduleItems(data);
-        mView.onScheduleLoaded(mModel);
-    }
+    private LoaderCallbacks<List<ScheduleItem>> mSessionsLoaderCallbacks =
+            new LoaderCallbacks<List<ScheduleItem>>() {
 
-    @Override
-    public void onLoaderReset(Loader<List<ScheduleItem>> loader) {
-        mModel.setScheduleItems(null);
-        mView.onScheduleLoaded(mModel);
-    }
+        @Override
+        public Loader<List<ScheduleItem>> onCreateLoader(int id, Bundle args) {
+            return new CursorModelLoader<>(mContext, new MyIOScheduleCursorTransform());
+        }
+
+        @Override
+        public void onLoadFinished(Loader<List<ScheduleItem>> loader, List<ScheduleItem> data) {
+            mModel.setScheduleItems(data);
+            mView.onScheduleLoaded(mModel);
+        }
+
+        @Override
+        public void onLoaderReset(Loader<List<ScheduleItem>> loader) {
+            mModel.setScheduleItems(null);
+            mView.onScheduleLoaded(mModel);
+        }
+    };
 }

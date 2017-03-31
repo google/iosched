@@ -13,38 +13,70 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.google.samples.apps.iosched.myio;
+package com.google.samples.apps.iosched.util;
 
 import android.content.Context;
 import android.database.Cursor;
+import android.net.Uri;
+import android.support.annotation.NonNull;
 import android.support.v4.content.AsyncTaskLoader;
-import android.support.v4.content.ContentResolverCompat;
 import android.support.v4.os.CancellationSignal;
 import android.support.v4.os.OperationCanceledException;
 
-import com.google.samples.apps.iosched.model.ScheduleItem;
-import com.google.samples.apps.iosched.model.ScheduleItemHelper;
-import com.google.samples.apps.iosched.provider.ScheduleContract.Sessions;
 
-import java.util.List;
+public class CursorModelLoader<D> extends AsyncTaskLoader<D> {
 
+    private D mData;
+    private CursorTransform<D> mCursorTransform;
 
-/**
- * Loader which loads My I/O schedule items.
- * TODO: generalize this so we can make Loaders for other things backed by ContentProvider queries.
- */
-public class MyIOScheduleLoader extends AsyncTaskLoader<List<ScheduleItem>> {
-
-    public MyIOScheduleLoader(Context context) {
-        super(context);
-    }
-
-    private List<ScheduleItem> mItems;
     private ForceLoadContentObserver mObserver;
     private CancellationSignal mCancellationSignal;
 
+    public interface CursorTransform<D> {
+
+        /**
+         * Called when a query needs to be performed. This is called from a background thread.
+         * Typically you would implement this as
+         * <pre>
+         * return ContentResolverCompat.query(loader.getContext().getContentResolver(),
+         *         uri, projection, selection, selectionArgs, sortOrder,
+         *         cancellationSignal);
+         * </pre>
+         *
+         * @param loader The loader performing background work
+         * @param cancellationSignal A CancellationSignal to pass to ContentResolver.query()
+         * @return The query result
+         */
+        Cursor performQuery(@NonNull CursorModelLoader<D> loader,
+                @NonNull CancellationSignal cancellationSignal);
+
+        /**
+         * Called when the query result needs to be transformed into the specified data type.
+         * This is called from a background thread.
+         *
+         * @param loader The loader performing background work
+         * @param cursor The cursor that was loaded. Implementors do not need to close this cursor.
+         * @return The transformed data
+         */
+        D cursorToModel(@NonNull CursorModelLoader<D> loader, @NonNull Cursor cursor);
+
+        /**
+         * Called when the loader wants a Uri for the purpose of registering a ContentObserver.
+         *
+         * @param loader The loader requesting a content Uri
+         * @return A Uri to observe for changes. If not null, a ContentObserver is registered so
+         * that changes automatically cause a reload of the data
+         */
+        Uri getObserverUri(@NonNull CursorModelLoader<D> loader);
+    }
+
+    public CursorModelLoader(Context context, CursorTransform<D> cursorTransform) {
+        super(context);
+        mCursorTransform = cursorTransform;
+    }
+
     @Override
-    public List<ScheduleItem> loadInBackground() {
+    public D loadInBackground() {
         synchronized (this) {
             if (isLoadInBackgroundCanceled()) {
                 throw new OperationCanceledException();
@@ -53,9 +85,7 @@ public class MyIOScheduleLoader extends AsyncTaskLoader<List<ScheduleItem>> {
         }
         Cursor cursor = null;
         try {
-            cursor = ContentResolverCompat.query(getContext().getContentResolver(),
-                    Sessions.CONTENT_MY_SCHEDULE_URI, ScheduleItemHelper.REQUIRED_SESSION_COLUMNS,
-                    null, null, Sessions.SORT_BY_TIME, mCancellationSignal);
+            cursor = mCursorTransform.performQuery(this, mCancellationSignal);
             if (cursor != null) {
                 try {
                     // Ensure the cursor window is filled.
@@ -74,16 +104,12 @@ public class MyIOScheduleLoader extends AsyncTaskLoader<List<ScheduleItem>> {
 
         if (cursor != null) {
             try {
-                return cursorToModel(cursor);
+                return mCursorTransform.cursorToModel(this, cursor);
             } finally {
                 cursor.close();
             }
         }
         return null;
-    }
-
-    private List<ScheduleItem> cursorToModel(Cursor cursor) {
-        return ScheduleItemHelper.cursorToItems(cursor, getContext());
     }
 
     @Override
@@ -99,38 +125,33 @@ public class MyIOScheduleLoader extends AsyncTaskLoader<List<ScheduleItem>> {
 
     /* Runs on the UI thread */
     @Override
-    public void deliverResult(List<ScheduleItem> data) {
+    public void deliverResult(D data) {
         if (isReset()) {
             // An async query came in while the loader is stopped
             return;
         }
 
-        mItems = data;
+        mData = data;
         if (isStarted()) {
-            super.deliverResult(mItems);
+            super.deliverResult(mData);
         }
     }
 
-    /**
-     * Starts an asynchronous load of the contacts list data. When the result is ready the callbacks
-     * will be called on the UI thread. If a previous load has been completed and is still valid
-     * the result may be passed to the callbacks immediately.
-     *
-     * Must be called from the UI thread
-     */
     @Override
     protected void onStartLoading() {
-        if (mItems != null) {
-            deliverResult(mItems);
+        if (mData != null) {
+            deliverResult(mData);
         }
 
         if (mObserver == null) {
-            mObserver = new ForceLoadContentObserver();
-            getContext().getContentResolver().registerContentObserver(
-                    Sessions.CONTENT_MY_SCHEDULE_URI, true, mObserver);
+            Uri uri = mCursorTransform.getObserverUri(this);
+            if (uri != null) {
+                mObserver = new ForceLoadContentObserver();
+                getContext().getContentResolver().registerContentObserver(uri, true, mObserver);
+            }
         }
 
-        if (takeContentChanged() || mItems == null) {
+        if (takeContentChanged() || mData == null) {
             forceLoad();
         }
     }
@@ -155,6 +176,6 @@ public class MyIOScheduleLoader extends AsyncTaskLoader<List<ScheduleItem>> {
             mObserver = null;
         }
 
-        mItems = null;
+        mData = null;
     }
 }
