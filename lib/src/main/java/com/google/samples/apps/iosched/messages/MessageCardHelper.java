@@ -14,9 +14,6 @@
 
 package com.google.samples.apps.iosched.messages;
 
-import static com.google.samples.apps.iosched.util.LogUtils.LOGD;
-import static com.google.samples.apps.iosched.util.LogUtils.makeLogTag;
-
 import android.app.Activity;
 import android.content.Context;
 import android.content.ContextWrapper;
@@ -29,12 +26,15 @@ import android.view.View;
 import com.google.samples.apps.iosched.fcm.FcmUtilities;
 import com.google.samples.apps.iosched.lib.R;
 import com.google.samples.apps.iosched.settings.ConfMessageCardUtils;
+import com.google.samples.apps.iosched.settings.ConfMessageCardUtils.ConfMessageCard;
 import com.google.samples.apps.iosched.settings.SettingsUtils;
 import com.google.samples.apps.iosched.util.RegistrationUtils;
 import com.google.samples.apps.iosched.util.WiFiUtils;
 
-import java.util.ArrayList;
 import java.util.List;
+
+import static com.google.samples.apps.iosched.util.LogUtils.LOGD;
+import static com.google.samples.apps.iosched.util.LogUtils.makeLogTag;
 
 /**
  * Helper class to create message data view objects representing MessageCards
@@ -48,8 +48,8 @@ public class MessageCardHelper {
     public static MessageData getSimpleMessageCardData(
       final ConfMessageCardUtils.ConfMessageCard card) {
         MessageData messageData = new MessageData();
-        messageData.setEndButtonStringResourceId(R.string.ok);
         messageData.setMessage(card.getSimpleMessage());
+        messageData.setEndButtonStringResourceId(R.string.ok);
         messageData.setEndButtonClickListener(new View.OnClickListener() {
             @Override
             public void onClick(final View v) {
@@ -64,8 +64,8 @@ public class MessageCardHelper {
      */
     public static MessageData getConferenceOptInMessageData() {
         MessageData messageData = new MessageData();
-        messageData.setStartButtonStringResourceId(R.string.explore_io_msgcards_answer_no);
         messageData.setMessageStringResourceId(R.string.explore_io_msgcards_ask_opt_in);
+        messageData.setStartButtonStringResourceId(R.string.explore_io_msgcards_answer_no);
         messageData.setEndButtonStringResourceId(R.string.explore_io_msgcards_answer_yes);
 
         messageData.setStartButtonClickListener(new View.OnClickListener() {
@@ -107,8 +107,8 @@ public class MessageCardHelper {
      */
     public static MessageData getNotificationsOptInMessageData() {
         MessageData messageData = new MessageData();
-        messageData.setStartButtonStringResourceId(R.string.explore_io_msgcards_answer_no);
         messageData.setMessageStringResourceId(R.string.explore_io_notifications_ask_opt_in);
+        messageData.setStartButtonStringResourceId(R.string.explore_io_msgcards_answer_no);
         messageData.setEndButtonStringResourceId(R.string.explore_io_msgcards_answer_yes);
 
         messageData.setStartButtonClickListener(new View.OnClickListener() {
@@ -140,8 +140,8 @@ public class MessageCardHelper {
      */
     public static MessageData getWifiSetupMessageData() {
         MessageData messageData = new MessageData();
-        messageData.setStartButtonStringResourceId(R.string.explore_io_msgcards_answer_no);
         messageData.setMessageStringResourceId(R.string.question_setup_wifi_card_text);
+        messageData.setStartButtonStringResourceId(R.string.explore_io_msgcards_answer_no);
         messageData.setEndButtonStringResourceId(R.string.explore_io_msgcards_answer_yes);
         messageData.setIconDrawableId(R.drawable.message_card_wifi);
 
@@ -175,9 +175,9 @@ public class MessageCardHelper {
      */
     public static MessageData getSignInPromptMessageData() {
         MessageData messageData = new MessageData();
-        messageData.setStartButtonStringResourceId(R.string.signin_prompt);
         messageData.setMessageStringResourceId(R.string.signin_message);
-        messageData.setEndButtonStringResourceId(R.string.signin_prompt_dismiss);
+        messageData.setStartButtonStringResourceId(R.string.signin_prompt_dismiss);
+        messageData.setEndButtonStringResourceId(R.string.signin_prompt);
 
         // TODO Add actions here
 
@@ -214,26 +214,21 @@ public class MessageCardHelper {
     }
 
     /**
-     * Get the list of {@link MessageData} to be displayed to the user, based upon time, location
-     * etc.
-     *
-     * @return messages to be displayed.
+     * @return the next message card that should be displayed to the user
      */
-    public List<MessageData> getMessages(@NonNull Context context) {
-        final List<MessageData> messages = new ArrayList<>();
-        if (shouldShowCard(context, ConfMessageCardUtils.ConfMessageCard.SIGN_IN_PROMPT)) {
-            messages.add(MessageCardHelper.getSignInPromptMessageData());
+    public static MessageData getNextMessageCard(@NonNull Context context) {
+        if (shouldShowCard(context, ConfMessageCard.SIGN_IN_PROMPT)) {
+            return getSignInPromptMessageData();
         }
-        if (shouldShowCard(context, ConfMessageCardUtils.ConfMessageCard.SESSION_NOTIFICATIONS)) {
-            messages.add(MessageCardHelper.getNotificationsOptInMessageData());
+        if (shouldShowCard(context, ConfMessageCard.SESSION_NOTIFICATIONS)) {
+            return getNotificationsOptInMessageData();
         }
         if (RegistrationUtils.isRegisteredAttendee(context)) {
             // Users are required to opt in or out of whether they want conference message cards
             if (!ConfMessageCardUtils.hasAnsweredConfMessageCardsPrompt(context)) {
                 // User has not answered whether they want to opt in.
                 // Build a opt-in/out card.
-                messages.add(MessageCardHelper.getConferenceOptInMessageData());
-                return messages;
+                return getConferenceOptInMessageData();
             }
 
             if (ConfMessageCardUtils.isConfMessageCardsEnabled(context)) {
@@ -244,28 +239,23 @@ public class MessageCardHelper {
                 // Note that for these special cards, we'll never show more than one at a time
                 // to prevent overloading the user with messagesToDisplay.
                 // We want each new message to be notable.
-                if (shouldShowCard(context, ConfMessageCardUtils.ConfMessageCard.WIFI_PRELOAD)) {
+                if (shouldShowCard(context, ConfMessageCard.WIFI_PRELOAD)) {
                     // Check whether a wifi setup card should be offered.
                     if (WiFiUtils.shouldOfferToSetupWifi(context, true)) {
                         // Build card asking users whether they want to enable wifi.
-                        messages.add(MessageCardHelper.getWifiSetupMessageData());
-                        return messages;
+                        return getWifiSetupMessageData();
                     }
                 }
 
-                if (messages.size() < 1) {
-                    LOGD(TAG, "Simple cards");
-                    List<ConfMessageCardUtils.ConfMessageCard> simpleCards =
-                            ConfMessageCardUtils.ConfMessageCard.getActiveSimpleCards(context);
-                    // Only show a single card at a time.
-                    if (simpleCards.size() > 0) {
-                        messages.add(MessageCardHelper.getSimpleMessageCardData(
-                                simpleCards.get(0)));
-                    }
+                LOGD(TAG, "Simple cards");
+                List<ConfMessageCard> simpleCards
+                        = ConfMessageCard.getActiveSimpleCards(context);
+                if (!simpleCards.isEmpty()) {
+                    return getSimpleMessageCardData(simpleCards.get(0));
                 }
             }
         }
-        return messages;
+        return null;
     }
 
     /**

@@ -20,6 +20,9 @@
     android:orientation="horizontal"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:background="@color/light_grey"
+    android:baselineAligned="false"
+    android:gravity="center_vertical"
     android:padding="@dimen/padding_normal">
 
     <TextView

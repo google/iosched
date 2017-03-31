@@ -15,101 +15,76 @@
    limitations under the License.
 -->
 <!-- Layout used to display data from a MessageCardData object. -->
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/card_root"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="vertical">
+    android:padding="@dimen/padding_normal">
 
     <TextView
         android:id="@+id/title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="16dp"
-        android:layout_marginLeft="16dp"
-        android:layout_marginRight="16dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
+        android:layout_marginBottom="16dp"
         android:textColor="@color/theme_primary"
         android:textSize="@dimen/text_size_xlarge"
         android:visibility="gone"
         tools:text="The cheese stands alone"
         tools:visibility="visible" />
 
-    <LinearLayout
-        android:layout_width="match_parent"
+    <ImageView
+        android:id="@+id/icon"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        tools:ignore="UseCompoundDrawables">
-
-        <ImageView
-            android:id="@+id/icon"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="16dp"
-            android:layout_marginLeft="16dp"
-            android:layout_marginRight="16dp"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="16dp"
-            android:visibility="gone"
-            tools:ignore="ContentDescription"
-            tools:src="@drawable/ic_session"
-            tools:visibility="visible" />
-
-        <TextView
-            android:id="@+id/text"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="16dp"
-            android:text="@string/placeholder_lorem_ipsum"
-            android:textColor="@color/body_text_2"
-            android:textSize="@dimen/text_size_medium" />
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="12dp"
+        android:layout_below="@+id/title"
+        android:layout_marginBottom="16dp"
         android:layout_marginEnd="16dp"
-        android:layout_marginLeft="16dp"
-        android:layout_marginRight="16dp"
-        android:layout_marginStart="16dp"
-        android:baselineAligned="false"
-        android:gravity="end"
-        android:orientation="horizontal"
-        android:splitMotionEvents="false">
+        android:visibility="gone"
+        tools:ignore="ContentDescription"
+        tools:src="@drawable/ic_session"
+        tools:visibility="visible" />
 
-        <Button
-            android:id="@+id/buttonEnd"
-            style="?android:borderlessButtonStyle"
-            android:layout_width="wrap_content"
-            android:layout_height="36dp"
-            android:background="?android:selectableItemBackground"
-            android:fontFamily="sans-serif-medium"
-            android:gravity="center_vertical"
-            android:minWidth="48dp"
-            android:paddingLeft="16dp"
-            android:paddingRight="16dp"
-            android:text="@string/placeholder_button_label_1"
-            android:textColor="#80000000"
-            android:textSize="@dimen/text_size_medium"
-            />
+    <TextView
+        android:id="@+id/text"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignWithParentIfMissing="true"
+        android:layout_below="@+id/title"
+        android:layout_marginBottom="16dp"
+        android:layout_toEndOf="@+id/icon"
+        android:text="@string/placeholder_lorem_ipsum"
+        android:textColor="@color/body_text_2"
+        android:textSize="@dimen/text_size_medium" />
 
-        <Button
-            android:id="@+id/buttonStart"
-            style="?android:borderlessButtonStyle"
-            android:layout_width="wrap_content"
-            android:layout_height="36dp"
-            android:fontFamily="sans-serif-medium"
-            android:gravity="center_vertical"
-            android:minWidth="48dp"
-            android:paddingLeft="16dp"
-            android:paddingRight="16dp"
-            android:text="@string/placeholder_button_label_2"
-            android:textColor="#80000000"
-            android:textSize="@dimen/text_size_medium"
-            />
+    <Button
+        android:id="@+id/buttonStart"
+        style="@style/Widget.AppCompat.Button.Borderless.Colored"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignWithParentIfMissing="true"
+        android:layout_below="@+id/text"
+        android:layout_toStartOf="@+id/buttonEnd"
+        android:background="?android:selectableItemBackground"
+        android:fontFamily="sans-serif-medium"
+        android:gravity="center_vertical"
+        android:paddingLeft="16dp"
+        android:paddingRight="16dp"
+        android:text="@string/placeholder_button_label_1"
+        />
 
-    </LinearLayout>
+    <Button
+        android:id="@+id/buttonEnd"
+        style="@style/Widget.AppCompat.Button.Borderless.Colored"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_below="@+id/text"
+        android:fontFamily="sans-serif-medium"
+        android:gravity="center_vertical"
+        android:paddingLeft="16dp"
+        android:paddingRight="16dp"
+        android:text="@string/placeholder_button_label_2"
+        />
 
-</LinearLayout>
+</RelativeLayout>

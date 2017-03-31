@@ -15,6 +15,8 @@
  */
 package com.google.samples.apps.iosched.myio;
 
+import android.content.Context;
+import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.RecyclerView.Adapter;
 import android.support.v7.widget.RecyclerView.ViewHolder;
@@ -27,6 +29,8 @@ import android.widget.TextView;
 
 import com.google.samples.apps.iosched.Config;
 import com.google.samples.apps.iosched.lib.R;
+import com.google.samples.apps.iosched.messages.MessageCardHelper;
+import com.google.samples.apps.iosched.messages.MessageData;
 import com.google.samples.apps.iosched.model.ScheduleItem;
 import com.google.samples.apps.iosched.model.TagMetadata;
 import com.google.samples.apps.iosched.myschedule.ScheduleItemViewHolder;
@@ -40,6 +44,7 @@ public class MyIOAdapter extends Adapter<ViewHolder> {
 
     private static final int VIEW_TYPE_SESSION = 0;
     private static final int VIEW_TYPE_SEPARATOR = 1;
+    private static final int VIEW_TYPE_MESSAGE_CARD = 2;
 
     private static final List<DaySeparator> DAY_SEPARATORS;
     static {
@@ -53,6 +58,8 @@ public class MyIOAdapter extends Adapter<ViewHolder> {
     private Callbacks mCallbacks;
     private TagMetadata mTagMetadata;
 
+    private Context mContext;
+
     interface Callbacks extends ScheduleItemViewHolder.Callbacks {
 
         /**
@@ -61,13 +68,22 @@ public class MyIOAdapter extends Adapter<ViewHolder> {
         void onAddEventsClicked(int conferenceDay);
     }
 
-    public MyIOAdapter(Callbacks callbacks) {
+    public MyIOAdapter(Context context, Callbacks callbacks) {
+        mContext = context;
         mCallbacks = callbacks;
-        mItems.addAll(DAY_SEPARATORS); // default state
+        setHasStableIds(true);
+
+        setItems(null); // build the initial list of items
     }
 
     public void setItems(List<ScheduleItem> items) {
         mItems.clear();
+
+        // add a message card if applicable
+        MessageData messageCard = MessageCardHelper.getNextMessageCard(mContext);
+        if (messageCard != null) {
+            mItems.add(messageCard);
+        }
 
         int day = 0;
         if (items != null && !items.isEmpty()) {
@@ -110,6 +126,21 @@ public class MyIOAdapter extends Adapter<ViewHolder> {
     }
 
     @Override
+    public long getItemId(int position) {
+        Object item = mItems.get(position);
+        if (item instanceof ScheduleItem) {
+            return ((ScheduleItem) item).sessionId.hashCode();
+        }
+        if (item instanceof DaySeparator) {
+            return ((DaySeparator) item).mStartTime;
+        }
+        if (item instanceof MessageData) {
+            return 0;
+        }
+        return position;
+    }
+
+    @Override
     public int getItemViewType(int position) {
         Object item = mItems.get(position);
         if (item instanceof ScheduleItem) {
@@ -117,6 +148,9 @@ public class MyIOAdapter extends Adapter<ViewHolder> {
         }
         if (item instanceof DaySeparator) {
             return VIEW_TYPE_SEPARATOR;
+        }
+        if (item instanceof MessageData) {
+            return VIEW_TYPE_MESSAGE_CARD;
         }
         return RecyclerView.INVALID_TYPE;
     }
@@ -128,6 +162,10 @@ public class MyIOAdapter extends Adapter<ViewHolder> {
                 return ScheduleItemViewHolder.newInstance(parent, mCallbacks);
             case VIEW_TYPE_SEPARATOR:
                 return DaySeparatorViewHolder.newInstance(parent, mCallbacks);
+            case VIEW_TYPE_MESSAGE_CARD:
+                LayoutInflater inflater = LayoutInflater.from(parent.getContext());
+                return new MessageCardViewHolder(
+                        inflater.inflate(R.layout.message_card, parent, false));
         }
         return null;
     }
@@ -143,6 +181,70 @@ public class MyIOAdapter extends Adapter<ViewHolder> {
                 DaySeparator separator = (DaySeparator) mItems.get(position);
                 ((DaySeparatorViewHolder) holder).onBind(separator);
                 break;
+            case VIEW_TYPE_MESSAGE_CARD:
+                MessageData data = (MessageData) mItems.get(position);
+                ((MessageCardViewHolder) holder).onBind(data);
+                break;
+        }
+    }
+
+    private class MessageCardViewHolder extends ViewHolder {
+        private final TextView mMessage;
+        private final Button mStartButton;
+        private final Button mEndButton;
+
+        private MessageData mMessageData;
+
+        public MessageCardViewHolder(View itemView) {
+            super(itemView);
+            mMessage = (TextView) itemView.findViewById(R.id.text);
+            mStartButton = (Button) itemView.findViewById(R.id.buttonStart);
+            mEndButton = (Button) itemView.findViewById(R.id.buttonEnd);
+
+            mStartButton.setOnClickListener(new OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (mMessageData != null) {
+                        if (mMessageData.getStartButtonClickListener() != null) {
+                            mMessageData.getStartButtonClickListener().onClick(v);
+                        }
+                        mItems.remove(0); // message card is always at the top
+                        notifyItemRemoved(0);
+                    }
+                }
+            });
+            mEndButton.setOnClickListener(new OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (mMessageData != null) {
+                        if (mMessageData.getEndButtonClickListener() != null) {
+                            mMessageData.getEndButtonClickListener().onClick(v);
+                        }
+                        mItems.remove(0); // message card is always at the top
+                        notifyItemRemoved(0);
+                    }
+                }
+            });
+        }
+
+        private void onBind(@NonNull MessageData messageData) {
+            mMessageData = messageData;
+
+            mMessage.setText(messageData.getMessageString(mMessage.getContext()));
+            int startButtonResId = mMessageData.getStartButtonStringResourceId();
+            if (startButtonResId != 0) {
+                mStartButton.setText(startButtonResId);
+                mStartButton.setVisibility(View.VISIBLE);
+            } else {
+                mStartButton.setVisibility(View.GONE);
+            }
+            int endButtonResId = mMessageData.getEndButtonStringResourceId();
+            if (endButtonResId != 0) {
+                mEndButton.setText(endButtonResId);
+                mEndButton.setVisibility(View.VISIBLE);
+            } else {
+                mEndButton.setVisibility(View.GONE);
+            }
         }
     }
 

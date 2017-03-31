@@ -52,7 +52,7 @@ public class MyIOFragment extends Fragment implements MyIoView, Callbacks {
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         mRecyclerView = (RecyclerView) view.findViewById(android.R.id.list);
-        mAdapter = new MyIOAdapter(this);
+        mAdapter = new MyIOAdapter(getContext(), this);
         mRecyclerView.setAdapter(mAdapter);
     }
 
