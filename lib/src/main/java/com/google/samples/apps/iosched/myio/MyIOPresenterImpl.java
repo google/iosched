@@ -22,6 +22,8 @@ import android.support.v4.app.LoaderManager.LoaderCallbacks;
 import android.support.v4.content.Loader;
 
 import com.google.samples.apps.iosched.model.ScheduleItem;
+import com.google.samples.apps.iosched.model.TagMetadata;
+import com.google.samples.apps.iosched.model.TagMetadataCursorTransform;
 import com.google.samples.apps.iosched.myio.MyIOContract.MyIoPresenter;
 import com.google.samples.apps.iosched.myio.MyIOContract.MyIoView;
 import com.google.samples.apps.iosched.util.CursorModelLoader;
@@ -30,6 +32,7 @@ import java.util.List;
 
 public class MyIOPresenterImpl implements MyIoPresenter {
     private static final int LOADER_SCHEDULE = 1;
+    private static final int LOADER_TAG_METADATA = 2;
 
     private Context mContext;
     private MyIoView mView;
@@ -44,6 +47,7 @@ public class MyIOPresenterImpl implements MyIoPresenter {
     @Override
     public void initModel(LoaderManager loaderManager) {
         loaderManager.initLoader(LOADER_SCHEDULE, null, mSessionsLoaderCallbacks);
+        loaderManager.initLoader(LOADER_TAG_METADATA, null, mTagMetadataLoaderCallbacks);
     }
 
     // -- LoaderCallbacks implementations
@@ -66,6 +70,27 @@ public class MyIOPresenterImpl implements MyIoPresenter {
         public void onLoaderReset(Loader<List<ScheduleItem>> loader) {
             mModel.setScheduleItems(null);
             mView.onScheduleLoaded(mModel);
+        }
+    };
+
+    private LoaderCallbacks<TagMetadata> mTagMetadataLoaderCallbacks =
+            new LoaderCallbacks<TagMetadata>() {
+
+        @Override
+        public Loader<TagMetadata> onCreateLoader(int id, Bundle args) {
+            return new CursorModelLoader<>(mContext, new TagMetadataCursorTransform());
+        }
+
+        @Override
+        public void onLoadFinished(Loader<TagMetadata> loader, TagMetadata data) {
+            mModel.setTagMetadata(data);
+            mView.onTagMetadataLoaded(mModel);
+        }
+
+        @Override
+        public void onLoaderReset(Loader<TagMetadata> loader) {
+            mModel.setScheduleItems(null);
+            mView.onTagMetadataLoaded(mModel);
         }
     };
 }

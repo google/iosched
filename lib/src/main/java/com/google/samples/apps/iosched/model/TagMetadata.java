@@ -37,6 +37,17 @@ import java.util.List;
 
 public class TagMetadata {
 
+    public static final String[] TAGS_PROJECTION = new String[]{
+            BaseColumns._ID,
+            ScheduleContract.Tags.TAG_ID,
+            ScheduleContract.Tags.TAG_NAME,
+            ScheduleContract.Tags.TAG_CATEGORY,
+            ScheduleContract.Tags.TAG_ORDER_IN_CATEGORY,
+            ScheduleContract.Tags.TAG_ABSTRACT,
+            ScheduleContract.Tags.TAG_COLOR,
+            ScheduleContract.Tags.TAG_PHOTO_URL
+    };
+
     // List of tags in each category, sorted by the category sort order.
     private HashMap<String, ArrayList<Tag>> mTagsInCategory = new HashMap<>();
 
@@ -155,16 +166,7 @@ public class TagMetadata {
     };
 
     public enum TagsQueryEnum implements QueryEnum {
-        TAG(0, new String[]{
-                BaseColumns._ID,
-                ScheduleContract.Tags.TAG_ID,
-                ScheduleContract.Tags.TAG_NAME,
-                ScheduleContract.Tags.TAG_CATEGORY,
-                ScheduleContract.Tags.TAG_ORDER_IN_CATEGORY,
-                ScheduleContract.Tags.TAG_ABSTRACT,
-                ScheduleContract.Tags.TAG_COLOR,
-                ScheduleContract.Tags.TAG_PHOTO_URL
-        });
+        TAG(0, TAGS_PROJECTION);
 
         private int id;
 

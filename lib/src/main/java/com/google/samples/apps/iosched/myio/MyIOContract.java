@@ -22,6 +22,8 @@ public class MyIOContract {
     interface MyIoView {
 
         void onScheduleLoaded(MyIOModel model);
+
+        void onTagMetadataLoaded(MyIOModel model);
     }
 
     interface MyIoPresenter {

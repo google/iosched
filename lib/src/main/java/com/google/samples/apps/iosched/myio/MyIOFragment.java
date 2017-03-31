@@ -68,6 +68,11 @@ public class MyIOFragment extends Fragment implements MyIoView, Callbacks {
         mAdapter.setItems(model.getScheduleItems());
     }
 
+    @Override
+    public void onTagMetadataLoaded(MyIOModel model) {
+        mAdapter.setTagMetadata(model.getTagMetadata());
+    }
+
     // -- Adapter callbacks
 
     @Override

@@ -16,6 +16,7 @@
 package com.google.samples.apps.iosched.myio;
 
 import com.google.samples.apps.iosched.model.ScheduleItem;
+import com.google.samples.apps.iosched.model.TagMetadata;
 
 import java.util.List;
 
@@ -23,13 +24,23 @@ public class MyIOModel {
 
     private List<ScheduleItem> mScheduleItems;
 
+    private TagMetadata mTagMetadata;
+
     MyIOModel() {}
 
     public void setScheduleItems(List<ScheduleItem> scheduleItems) {
         mScheduleItems = scheduleItems;
     }
 
-    List<ScheduleItem> getScheduleItems() {
+    public List<ScheduleItem> getScheduleItems() {
         return mScheduleItems;
+    }
+
+    public void setTagMetadata(TagMetadata tagMetadata) {
+        mTagMetadata = tagMetadata;
+    }
+
+    public TagMetadata getTagMetadata() {
+        return mTagMetadata;
     }
 }
