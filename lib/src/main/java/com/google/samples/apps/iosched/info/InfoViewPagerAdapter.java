@@ -17,11 +17,10 @@ import android.content.Context;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 
-import com.google.samples.apps.iosched.info.subpages.EventFragment;
-import com.google.samples.apps.iosched.info.subpages.FaqFragment;
-import com.google.samples.apps.iosched.info.subpages.SettingsFragment;
-import com.google.samples.apps.iosched.info.subpages.TravelFragment;
-import com.google.samples.apps.iosched.myschedule.MyScheduleSingleDayFragment;
+import com.google.samples.apps.iosched.info.event.EventFragment;
+import com.google.samples.apps.iosched.info.faq.FaqFragment;
+import com.google.samples.apps.iosched.info.settings.SettingsFragment;
+import com.google.samples.apps.iosched.info.travel.TravelFragment;
 
 import static com.google.samples.apps.iosched.util.LogUtils.LOGD;
 import static com.google.samples.apps.iosched.util.LogUtils.LOGE;
@@ -86,11 +85,11 @@ public class InfoViewPagerAdapter extends FragmentPagerAdapter {
 
     @Override
     public CharSequence getPageTitle(int position) {
-        return getItem(position).getTitle(mContext);
+        return getItem(position).getTitle(mContext.getResources());
     }
 
     /**
-     * @return all the cached {@link MyScheduleSingleDayFragment}s used by this Adapter.
+     * @return all the cached {@link BaseInfoFragment}s used by this Adapter.
      */
     public BaseInfoFragment[] getFragments() {
         if (mFragments == null) {
@@ -104,14 +103,14 @@ public class InfoViewPagerAdapter extends FragmentPagerAdapter {
     }
 
     /**
-     * When the device changes orientation, the {@link MyScheduleSingleDayFragment}s are recreated
+     * When the device changes orientation, the {@link BaseInfoFragment}s are recreated
      * by the system, and they have the same tag ids as the ones previously used. Therefore, this
      * sets the cached fragments to the ones recreated by the system. This must be called before any
      * call to {@link #getItem(int)} or {@link #getFragments()} (note that when fragments are
      * recreated after orientation change, the {@link FragmentPagerAdapter} doesn't call {@link
      * #getItem(int)}.)
      *
-     * @param tags the tags of the retained {@link MyScheduleSingleDayFragment}s. Ignored if null
+     * @param tags the tags of the retained {@link BaseInfoFragment}s. Ignored if null
      *             or empty.
      */
     public void setRetainedFragmentsTags(String[] tags) {

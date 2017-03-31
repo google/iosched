@@ -22,11 +22,17 @@ import com.google.samples.apps.iosched.ui.BaseActivity;
 public class InfoActivity extends BaseActivity {
 
     private static final String SCREEN_LABEL = "Info";
+    private InfoContract.Presenter mPresenter;
 
     @Override
     protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.info_act);
+        InfoPagerFragment infoPagerFragment = (InfoPagerFragment) getSupportFragmentManager()
+                .findFragmentById(R.id.main_content);
+        mPresenter = new InfoPresenter(infoPagerFragment);
+        mPresenter.initContentCards();
+        mPresenter.initWiFiInfo();
     }
 
     @Override

@@ -14,14 +14,121 @@
   See the License for the specific language governing permissions and
   limitations under the License.
   -->
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              android:orientation="vertical"
-              android:layout_width="match_parent"
-              android:layout_height="match_parent">
+<android.support.v4.widget.NestedScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
 
-    <!--Placeholder text TODO(36732746)-->
-    <TextView
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Event Info Page"/>
-</LinearLayout>
+        android:orientation="vertical">
+
+        <android.support.v7.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            style="@style/Info.Cards">
+
+            <RelativeLayout
+                xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:id="@+id/wifi_network_label"
+                    style="@style/Info.WifiLabels"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentStart="true"
+                    android:text="@string/wifi_network_label"/>
+
+                <TextView
+                    android:id="@+id/wifi_network_value"
+                    style="@style/Info"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:text="@string/default_wifi_network"/>
+
+                <TextView
+                    android:id="@+id/wifi_password_label"
+                    style="@style/Info.WifiLabels"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentStart="true"
+                    android:layout_below="@+id/wifi_network_label"
+                    android:text="@string/wifi_password_label"/>
+
+                <TextView
+                    android:id="@+id/wifi_password_value"
+                    style="@style/Info"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:layout_below="@+id/wifi_network_value"
+                    android:text="@string/default_wifi_password"/>
+
+                <TextView
+                    android:id="@+id/setup_wifi_network"
+                    style="?android:borderlessButtonStyle"
+                    android:textColor="@color/lightish_blue"
+                    android:padding="@dimen/padding_normal"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentStart="true"
+                    android:layout_below="@+id/wifi_password_label"
+                    android:text="@string/setup_wifi"/>
+
+            </RelativeLayout>
+        </android.support.v7.widget.CardView>
+
+        <com.google.samples.apps.iosched.info.event.EventContentCardView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:eventDescription="@string/event_sandbox_default_description"
+            app:eventTitle="@string/event_sandbox_title"
+            app:eventIcon="@drawable/ic_sandbox"
+            app:sessionsLinkUri="@string/view_sandbox_sessions_url"
+            app:mapLinkUri="@string/view_sandbox_map_url"
+            app:boxColor="@color/neon_blue"
+            style="@style/Info.Cards">
+        </com.google.samples.apps.iosched.info.event.EventContentCardView>
+
+        <com.google.samples.apps.iosched.info.event.EventContentCardView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:eventDescription="@string/event_codelabs_default_description"
+            app:eventTitle="@string/event_codelabs_title"
+            app:eventIcon="@drawable/ic_codelab"
+            app:sessionsLinkUri="@string/view_codelabs_sessions_url"
+            app:mapLinkUri="@string/view_sandbox_map_url"
+            app:boxColor="@color/io16_accent_green"
+            style="@style/Info.Cards">
+        </com.google.samples.apps.iosched.info.event.EventContentCardView>
+
+        <com.google.samples.apps.iosched.info.event.EventContentCardView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:eventDescription="@string/event_officehours_default_description"
+            app:eventTitle="@string/event_officehours_title"
+            app:eventIcon="@drawable/ic_officehours"
+            app:sessionsLinkUri="@string/view_officehours_sessions_url"
+            app:mapLinkUri="@string/view_officehours_map_url"
+            app:boxColor="@color/io16_accent_red"
+            style="@style/Info.Cards">
+        </com.google.samples.apps.iosched.info.event.EventContentCardView>
+
+        <com.google.samples.apps.iosched.info.event.EventContentCardView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:eventDescription="@string/event_afterhours_default_description"
+            app:eventTitle="@string/event_afterhours_title"
+            app:eventIcon="@drawable/ic_afterhours"
+            app:sessionsLinkUri="@string/view_afterhours_sessions_url"
+            app:mapLinkUri="@string/view_afterhours_map_url"
+            app:boxColor="@color/lightish_blue"
+            style="@style/Info.Cards">
+        </com.google.samples.apps.iosched.info.event.EventContentCardView>
+    </LinearLayout>
+</android.support.v4.widget.NestedScrollView>

@@ -13,10 +13,9 @@
  */
 package com.google.samples.apps.iosched.info;
 
-import android.content.Context;
+import android.content.res.Resources;
 import android.support.v4.app.Fragment;
 
-public abstract class BaseInfoFragment extends Fragment implements InfoContract.View {
-
-    public abstract String getTitle(Context context);
+public abstract class BaseInfoFragment extends Fragment {
+    public abstract String getTitle(Resources resources);
 }

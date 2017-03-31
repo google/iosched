@@ -33,6 +33,7 @@ public class FeedMessage implements Comparable<FeedMessage> {
     private static String FEED_CATEGORY_EMERGENCY;
     private static String FEED_CATEGORY_TRAVEL;
     private static String FEED_CATEGORY_GIVEAWAY;
+    private static String FEED_CATEGORY_AFTER_HOURS;
     private static String FEED_CATEGORY_VIDEO;
 
     public int id;
@@ -60,6 +61,7 @@ public class FeedMessage implements Comparable<FeedMessage> {
         FEED_CATEGORY_EMERGENCY = resources.getString(R.string.feed_category_emergency);
         FEED_CATEGORY_TRAVEL = resources.getString(R.string.feed_category_travel);
         FEED_CATEGORY_GIVEAWAY = resources.getString(R.string.feed_category_giveaway);
+        FEED_CATEGORY_AFTER_HOURS = resources.getString(R.string.feed_category_afterhours);
         FEED_CATEGORY_VIDEO = resources.getString(R.string.feed_category_video);
 
         categoryColorMap.put(FEED_CATEGORY_AGENDA,
@@ -74,6 +76,8 @@ public class FeedMessage implements Comparable<FeedMessage> {
                 resources.getColor(R.color.feed_category_travel));
         categoryColorMap.put(FEED_CATEGORY_GIVEAWAY,
                 resources.getColor(R.color.feed_category_giveaway));
+        categoryColorMap.put(FEED_CATEGORY_AFTER_HOURS,
+                resources.getColor(R.color.feed_category_afterhours));
         categoryColorMap.put(FEED_CATEGORY_VIDEO,
                 resources.getColor(R.color.feed_category_video));
         defaultCategoryColor = resources.getColor(R.color.io16_light_grey);

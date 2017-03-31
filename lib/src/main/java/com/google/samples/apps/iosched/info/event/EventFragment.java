@@ -11,9 +11,9 @@
  * or implied. See the License for the specific language governing permissions and limitations under
  * the License.
  */
-package com.google.samples.apps.iosched.info.subpages;
+package com.google.samples.apps.iosched.info.event;
 
-import android.content.Context;
+import android.content.res.Resources;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -24,18 +24,18 @@ import android.view.ViewGroup;
 import com.google.samples.apps.iosched.info.BaseInfoFragment;
 import com.google.samples.apps.iosched.lib.R;
 
-public class FaqFragment extends BaseInfoFragment {
+public class EventFragment extends BaseInfoFragment {
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container,
             @Nullable Bundle savedInstanceState) {
-        View root = inflater.inflate(R.layout.info_faq_frag, container, false);
+        View root = inflater.inflate(R.layout.info_event_frag, container, false);
         return root;
     }
 
     @Override
-    public String getTitle(@NonNull Context context) {
-        return context.getString(R.string.title_faq);
+    public String getTitle(@NonNull Resources resources) {
+        return resources.getString(R.string.title_event);
     }
 }

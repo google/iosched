@@ -734,4 +734,39 @@
 
     <!-- Message shown when a user initiated sign out fails. -->
     <string name="signout_failed_text">Could not sign out. Please try again.</string>
+
+    <!-- Strings for Info page-->
+    <string name="wifi_network_label">Wi-Fi Network</string>
+    <string name="wifi_password_label">Password</string>
+    <string name="setup_wifi">Setup Wi-Fi</string>
+    <string name="view_sessions_text">View Sessions</string>
+    <string name="view_map_text">View Map</string>
+    <!-- TODO make these URLs the correct deep link -->
+    <string name="view_sandbox_sessions_url" translatable="false">sandboxsessionsurl</string>
+    <string name="view_codelabs_sessions_url" translatable="false">codelabssessionsurl</string>
+    <string name="view_officehours_sessions_url" translatable="false">
+        officehourssessionsurl</string>
+    <string name="view_afterhours_sessions_url" translatable="false">afterhourssessionsurl</string>
+    <!-- TODO make these URLs the correct deep link -->
+    <string name="view_sandbox_map_url" translatable="false">sandboxmapurl</string>
+    <string name="view_codelabs_map_url" translatable="false">codelabsmapurl</string>
+    <string name="view_officehours_map_url" translatable="false">officehoursmapurl</string>
+    <string name="view_afterhours_map_url" translatable="false">afterhoursmapurl</string>
+
+    <string name="event_sandbox_title">Sandbox</string>
+    <string name="event_codelabs_title">Code Labs</string>
+    <string name="event_officehours_title">Office Hours &amp; App Reviews</string>
+    <string name="event_afterhours_title">After Hours</string>
+    <string name="event_sandbox_default_description">Explore our latest APIs and tools in the
+        developer sandbox.</string>
+    <string name="event_codelabs_default_description">Work through technical modules at your own
+        pace at one of our workstations. Googlers will be on hand to help as needed.</string>
+    <string name="event_officehours_default_description">Office hours are your chance to meet with
+        Google experts, ask technical questions, and receive one-on-one help with your projects and
+        apps.</string>
+    <string name="event_afterhours_default_description">After sessions end for the day, stick around
+        Shoreline for two evenings filled with food, drinks and fun. We’ll throw a party on the
+        evening of the 17th, and host a concert in the Amphitheatre on the 18th.</string>
+    <string name="default_wifi_network" translatable="false">io17</string>
+    <string name="default_wifi_password" translatable="false">GoogleIo2017</string>
 </resources>

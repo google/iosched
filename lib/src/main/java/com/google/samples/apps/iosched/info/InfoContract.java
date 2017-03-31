@@ -15,11 +15,12 @@ package com.google.samples.apps.iosched.info;
 
 public class InfoContract {
 
-    interface View {
-
-    }
+    interface View {}
 
     interface Presenter {
+        void initContentCards();
 
+        void initWiFiInfo();
     }
 }
+

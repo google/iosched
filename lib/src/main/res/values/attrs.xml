@@ -53,4 +53,13 @@
         <attr name="filledDrawable" format="integer" />
         <attr name="unfilledDrawable" format="integer" />
     </declare-styleable>
+
+    <declare-styleable name="EventContent">
+        <attr name="eventTitle" format="string" />
+        <attr name="eventDescription" format="string" />
+        <attr name="sessionsLinkUri" format="string" />
+        <attr name="mapLinkUri" format="string" />
+        <attr name="boxColor" format="color" />
+        <attr name="eventIcon" format="reference" />
+    </declare-styleable>
 </resources>

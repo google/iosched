@@ -439,7 +439,7 @@ public class UIUtils {
     int getBreakIcon(String breakTitle) {
         if (!TextUtils.isEmpty(breakTitle)) {
             if (breakTitle.contains("After") || breakTitle.contains("Concert")) {
-                return R.drawable.ic_after_hours;
+                return R.drawable.ic_afterhours;
             } else if (breakTitle.contains("Badge")) {
                 return R.drawable.ic_badge_pickup;
             } else if (breakTitle.contains("Pre-Keynote")) {

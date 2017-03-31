@@ -11,9 +11,9 @@
  * or implied. See the License for the specific language governing permissions and limitations under
  * the License.
  */
-package com.google.samples.apps.iosched.info.subpages;
+package com.google.samples.apps.iosched.info.settings;
 
-import android.content.Context;
+import android.content.res.Resources;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -35,7 +35,7 @@ public class SettingsFragment extends BaseInfoFragment {
     }
 
     @Override
-    public String getTitle(@NonNull Context context) {
-        return context.getString(R.string.title_settings);
+    public String getTitle(@NonNull Resources resources) {
+        return resources.getString(R.string.title_settings);
     }
 }

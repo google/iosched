@@ -23,8 +23,22 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.google.samples.apps.iosched.lib.R;
+import com.google.samples.apps.iosched.myschedule.MyScheduleSingleDayFragment;
 
-public class InfoPagerFragment extends Fragment {
+public class InfoPagerFragment extends Fragment implements InfoContract.View {
+
+    /**
+     * The key used to save the tags for {@link MyScheduleSingleDayFragment}s so the automatically
+     * recreated fragments can be reused by {@link #mViewPagerAdapter}.
+     */
+    private static final String INFO_TAB_FRAGMENTS_TAGS = "info_tab_fragments_tags";
+
+    /**
+     * The key used to save the position in the {@link #mViewPagerAdapter} for the current {@link
+     * MyScheduleSingleDayFragment}s.
+     */
+    private static final String CURRENT_INFO_TAB_FRAGMENT_POSITION =
+            "current_single_day_fragments_position";
 
     private ViewPager mViewPager;
     private InfoViewPagerAdapter mViewPagerAdapter;
@@ -42,10 +56,22 @@ public class InfoPagerFragment extends Fragment {
     @Override
     public void onViewCreated(final View view, @Nullable final Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        mCurrentPage = 0;
+
+        String[] infoTabFragmentTags = null;
+        if (savedInstanceState != null) {
+            if (savedInstanceState.containsKey(INFO_TAB_FRAGMENTS_TAGS)) {
+                infoTabFragmentTags = savedInstanceState.getStringArray(
+                        INFO_TAB_FRAGMENTS_TAGS);
+            }
+            if (savedInstanceState.containsKey(CURRENT_INFO_TAB_FRAGMENT_POSITION)) {
+                mCurrentPage = savedInstanceState.getInt(
+                        CURRENT_INFO_TAB_FRAGMENT_POSITION);
+            }
+        }
         mViewPager = (ViewPager) view.findViewById(R.id.view_pager);
         mViewPagerAdapter = new InfoViewPagerAdapter(getContext(),
                 getChildFragmentManager());
+        mViewPagerAdapter.setRetainedFragmentsTags(infoTabFragmentTags);
         mViewPager.setAdapter(mViewPagerAdapter);
         mTabLayout = (TabLayout) view.findViewById(R.id.sliding_tabs);
         mTabLayout.setupWithViewPager(mViewPager);
@@ -70,6 +96,21 @@ public class InfoPagerFragment extends Fragment {
         mViewPager.setPageMarginDrawable(R.drawable.page_margin);
 
         setCurrentPage();
+    }
+
+    @Override
+    public void onSaveInstanceState(final Bundle outState) {
+        super.onSaveInstanceState(outState);
+
+        if (mViewPagerAdapter != null && mViewPagerAdapter.getFragments() != null) {
+            BaseInfoFragment[] infoFragments = mViewPagerAdapter.getFragments();
+            String[] tags = new String[infoFragments.length];
+            for (int i = 0; i < tags.length; i++) {
+                tags[i] = infoFragments[i].getTag();
+            }
+            outState.putStringArray(INFO_TAB_FRAGMENTS_TAGS, tags);
+            outState.putInt(CURRENT_INFO_TAB_FRAGMENT_POSITION, mViewPager.getCurrentItem());
+        }
     }
 
     private void setCurrentPage() {
