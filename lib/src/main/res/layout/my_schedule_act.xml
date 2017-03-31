@@ -22,7 +22,7 @@
     tools:context="com.google.samples.apps.iosched.myschedule.MyScheduleActivity">
 
     <fragment
-        android:id="@+id/schedule_content"
+        android:id="@+id/my_content"
         android:name="com.google.samples.apps.iosched.myschedule.MySchedulePagerFragment"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
