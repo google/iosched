@@ -13,8 +13,6 @@
  */
 package com.google.samples.apps.iosched.info;
 
-import android.content.res.Resources;
-
 public class InfoPresenter implements InfoContract.Presenter {
 
     private InfoContract.View mView;
@@ -29,5 +27,9 @@ public class InfoPresenter implements InfoContract.Presenter {
 
     public void initWiFiInfo() {
         //TODO Firebase RemoteConfig
+    }
+
+    @Override
+    public void initTravelInfo() {
     }
 }

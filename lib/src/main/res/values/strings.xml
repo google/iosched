@@ -769,4 +769,35 @@
         evening of the 17th, and host a concert in the Amphitheatre on the 18th.</string>
     <string name="default_wifi_network" translatable="false">io17</string>
     <string name="default_wifi_password" translatable="false">GoogleIo2017</string>
+
+    <string name="travel_details_title">Travel Details</string>
+    <string name="shuttle_info_title">Shuttle Service</string>
+    <string name="carpoolparking_info_title">Carpooling &amp; Parking</string>
+    <string name="publictransportation_info_title">Public Transportation</string>
+    <string name="biking_info_title">Biking</string>
+    <string name="shuttle_info_description">Event shuttles will be provided to Google I/O attendees
+        at no charge from all Google-recommended hotels and with select service from San Francisco
+        and other locations along the Peninsula. Please check back in the coming weeks for pick-up
+        schedules and additional locations. Each pick-up location will have ADA accessible vehicles.
+        Please indicate on your registration form if you have any ADA or special assistance
+        requirements and the planning team will follow up with you directly.</string>
+    <string name="carpoolparking_info_description">Parking is very limited and available only in the
+        Google I/O designated lots located across from Shoreline Amphitheatre along Shoreline
+        Boulevard. There is no event parking along Amphitheatre Parkway or Charleston Road.
+        If you plan to drive, we recommend carpooling with other attendees due to limited parking
+        availability at the venue. Preferred parking spaces will be available for cars containing 2
+        or more people.</string>
+    <string name="publictransportation_info_description">Public transportation to the area is
+        accessible via:
+        \nCALTRAIN: Regional rail system
+        \nVTA: Light rail system servicing the South Bay
+        \nBART:Bay Area Rapid Transit
+        \n\nPublic transit doesn\'t go directly to Google I/O. Stay tuned over the coming weeks for
+        exact transportation locations serviced by Google I/O event shuttles.</string>
+    <string name="biking_info_description">Bike parking will be available at Shoreline Amphitheatre.
+        Recommended bike routes will be available in the coming weeks. Alternatively, the Bay Area
+        Bike Share program provides 24/7 access to shared bicycles in five service areas across
+        the peninsula. The closest location to Shoreline Amphitheatre is at 228 Charleston Road,
+        Mountain View, CA 94043. More information regarding membership and pricing is available via
+        the Bay Area Bike Share website.</string>
 </resources>

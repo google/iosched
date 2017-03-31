@@ -62,4 +62,9 @@
         <attr name="boxColor" format="color" />
         <attr name="eventIcon" format="reference" />
     </declare-styleable>
+
+    <declare-styleable name="TravelInfo">
+        <attr name="travelTitle" format="string" />
+        <attr name="travelDescription" format="string" />
+    </declare-styleable>
 </resources>

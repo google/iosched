@@ -21,6 +21,8 @@ public class InfoContract {
         void initContentCards();
 
         void initWiFiInfo();
+
+        void initTravelInfo();
     }
 }
 
