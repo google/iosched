@@ -156,8 +156,10 @@ android {
             buildConfigField("boolean", "ENABLE_DEBUG_TOOLS", "true")
             buildConfigField("String", "SERVER_MANIFEST_ENDPOINT", "\"${staging_api_manifest_endpoint}\"")
             buildConfigField("String", "GCM_SERVER_URL", "\"${production_gcm_server_endpoint}\"")
+            buildConfigField("String", "DEFAULT_WEB_CLIENT_ID", "\"${default_web_client_id_debug}\"")
             resValue("string", "website_host_name", "${production_website_host_name}")
             resValue("string", "maps_api_key", "${maps_api_key_debugstore}")
+
         }
         qualityassurance {
             debuggable true
@@ -267,6 +269,7 @@ dependencies {
     compile "com.google.firebase:firebase-appindexing:${google_play_services_client_library_version}"
     compile "com.google.firebase:firebase-database:${google_play_services_client_library_version}"
     compile "com.google.firebase:firebase-config:${google_play_services_client_library_version}"
+    compile "com.google.firebase:firebase-auth:${google_play_services_client_library_version}"
 
     normalDebugCompile 'com.squareup.leakcanary:leakcanary-android:1.5'
     normalQualityassuranceCompile 'com.squareup.leakcanary:leakcanary-android-no-op:1.5'

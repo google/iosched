@@ -16,13 +16,26 @@ package com.google.samples.apps.iosched.signin;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.support.annotation.NonNull;
+import android.widget.Toast;
+
 
 import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.auth.api.signin.GoogleSignInResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.ResultCallback;
 import com.google.android.gms.common.api.Status;
+import com.google.samples.apps.iosched.sync.account.Account;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthCredential;
+import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.auth.GoogleAuthProvider;
+import com.google.samples.apps.iosched.lib.R;
 import com.google.samples.apps.iosched.util.AccountUtils;
 
 import java.lang.ref.WeakReference;
@@ -39,6 +52,13 @@ public class SignInManager {
 
     private static final String TAG = makeLogTag(SignInManager.class);
 
+    public static GoogleSignInOptions getGoogleSignInOptions(String webClientId) {
+        return new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                .requestIdToken(webClientId)
+                .requestEmail()
+                .build();
+    }
+
     /**
      * Reference to the Activity this object is bound to (we use a weak ref to avoid context leaks).
      */
@@ -49,13 +69,19 @@ public class SignInManager {
      */
     private WeakReference<SignInListener> mSignInListenerRef;
 
+    /**
+     * The entry point to Google Play Services.
+     */
     private GoogleApiClient mGoogleApiClient;
+
+    private FirebaseAuth mFirebaseAuth;
 
     public SignInManager(Activity activity, SignInListener signInListener,
             GoogleApiClient googleApiClient) {
         mActivityRef = new WeakReference<>(activity);
         mSignInListenerRef = new WeakReference<>(signInListener);
         mGoogleApiClient = googleApiClient;
+        mFirebaseAuth = FirebaseAuth.getInstance();
     }
 
     public void signIn() {
@@ -78,7 +104,7 @@ public class SignInManager {
             return;
         }
 
-        final SignInListener  signInListener = getSignInListener();
+        final SignInListener signInListener = getSignInListener();
         if (signInListener == null) {
             return;
         }
@@ -86,7 +112,7 @@ public class SignInManager {
         // Signing out requires a connected GoogleApiClient. It is the responsibility of the bound
         // activity to ensure that GoogleApiClient is connected.
         if (!mGoogleApiClient.isConnected()) {
-           return;
+            return;
         }
 
         Auth.GoogleSignInApi.signOut(mGoogleApiClient).setResultCallback(
@@ -109,9 +135,9 @@ public class SignInManager {
      * Method for processing sign in logic in the bonding activity's
      * {@link Activity#onActivityResult(int, int, Intent)}.
      *
-     * @param requestCode   The requestCode argument of the activity's onActivityResult.
-     * @param resultCode The resultCode argument of the activity's onActivityResult.
-     * @param data  The Intent argument of the activity's onActivityResult.
+     * @param requestCode The requestCode argument of the activity's onActivityResult.
+     * @param resultCode  The resultCode argument of the activity's onActivityResult.
+     * @param data        The Intent argument of the activity's onActivityResult.
      */
     public void onActivityResult(final int requestCode, final int resultCode,
             final Intent data) {
@@ -138,8 +164,8 @@ public class SignInManager {
     /**
      * Called once a user has signed in.
      *
-     * @param acct  The sign in account.
-     * @param result  The sign in result.
+     * @param acct   The sign in account.
+     * @param result The sign in result.
      */
     private void performPostSignInTasks(GoogleSignInAccount acct, GoogleSignInResult result) {
 
@@ -148,14 +174,18 @@ public class SignInManager {
             return;
         }
 
-        final SignInListener  signInListener = getSignInListener();
+        final SignInListener signInListener = getSignInListener();
         if (signInListener == null) {
             return;
         }
 
+        // Tasks we always want to execute upon sign in.
         AccountUtils.setActiveAccount(activity, acct.getEmail());
         AccountUtils.setActiveAccountDisplayName(activity, acct.getDisplayName());
         AccountUtils.setActiveAccountPhotoUrl(activity, acct.getPhotoUrl());
+        firebaseAuthWithGoogle(acct);
+
+        // Tasks executed by the binding activity on sign in.
         signInListener.onSignIn(result);
     }
 
@@ -172,12 +202,16 @@ public class SignInManager {
             return;
         }
 
-        final SignInListener  signInListener = getSignInListener();
+        final SignInListener signInListener = getSignInListener();
         if (signInListener == null) {
             return;
         }
 
+        // Tasks we always want to execute upon sign out.
         AccountUtils.clearActiveAccount(activity);
+        FirebaseAuth.getInstance().signOut();
+
+        // Tasks executed by the binding activity upon sign out.
         signInListener.onSignOut(status);
     }
 
@@ -195,5 +229,33 @@ public class SignInManager {
             LOGD(TAG, "SignInListener is null");
         }
         return signInListner;
+    }
+
+    private void firebaseAuthWithGoogle(GoogleSignInAccount acct) {
+        LOGD(TAG, "firebaseAuthWithGoogle:" + acct.getId());
+
+        final Activity activity = getActivity();
+        if (activity == null) {
+            return;
+        }
+
+        AuthCredential credential = GoogleAuthProvider.getCredential(acct.getIdToken(), null);
+
+        mFirebaseAuth.signInWithCredential(credential)
+                     .addOnCompleteListener(activity, new OnCompleteListener<AuthResult>() {
+                         @Override
+                         public void onComplete(@NonNull Task<AuthResult> task) {
+                             if (!task.isSuccessful()) {
+                                 LOGW(TAG, "signInWithCredential", task.getException());
+                                 return;
+                             }
+
+                             if (FirebaseAuth.getInstance().getCurrentUser() != null) {
+                                 LOGD(TAG,
+                                         "signInWithCredential:onComplete:" + task.isSuccessful());
+                                 // TODO: kick off code to check if user is registered.
+                             }
+                         }
+                     });
     }
 }
