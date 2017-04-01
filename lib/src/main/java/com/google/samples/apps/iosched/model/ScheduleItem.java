@@ -62,6 +62,10 @@ public class ScheduleItem implements Cloneable, Comparable<ScheduleItem> {
     // is the item in the user's schedule
     public boolean inSchedule;
 
+    // is the item unreserved, reserved, or waitlisted
+    @ScheduleContract.MyReservations.ReservationStatus
+    public int reservationStatus;
+
     // has feedback been given on this session?
     public boolean hasGivenFeedback;
 

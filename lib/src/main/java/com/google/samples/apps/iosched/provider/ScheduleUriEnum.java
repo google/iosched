@@ -40,6 +40,7 @@ public enum ScheduleUriEnum {
     MY_SCHEDULE(600, "my_schedule", ScheduleContract.MySchedule.CONTENT_TYPE_ID, false, null),
     MY_VIEWED_VIDEOS(601, "my_viewed_videos", ScheduleContract.MyViewedVideos.CONTENT_TYPE_ID, false, null),
     MY_FEEDBACK_SUBMITTED(602, "my_feedback_submitted", ScheduleContract.MyFeedbackSubmitted.CONTENT_TYPE_ID, false, null),
+    MY_RESERVATIONS(603, "my_reservations", ScheduleContract.MyReservations.CONTENT_TYPE_ID, false, null),
 
     ANNOUNCEMENTS(700, "announcements", ScheduleContract.Announcements.CONTENT_TYPE_ID, false,
             ScheduleDatabase.Tables.ANNOUNCEMENTS),

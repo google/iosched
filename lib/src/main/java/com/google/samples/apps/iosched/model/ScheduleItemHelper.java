@@ -46,6 +46,7 @@ public class ScheduleItemHelper {
             Sessions.SESSION_END,
             Sessions.ROOM_NAME,
             Sessions.SESSION_IN_MY_SCHEDULE,
+            Sessions.SESSION_RESERVATION_STATUS,
             Sessions.SESSION_LIVESTREAM_ID,
             Sessions.SESSION_SPEAKER_NAMES,
             Sessions.SESSION_PHOTO_URL,
@@ -112,6 +113,7 @@ public class ScheduleItemHelper {
         return list;
     }
 
+    @SuppressWarnings("WrongConstant")
     public static void cursorToItems(Cursor cursor, Context context, List<ScheduleItem> list) {
         while (cursor.moveToNext()) {
             ScheduleItem item = new ScheduleItem();
@@ -137,6 +139,8 @@ public class ScheduleItemHelper {
             item.mainTag = cursor.getString(cursor.getColumnIndex(Sessions.SESSION_MAIN_TAG));
             item.inSchedule =
                     cursor.getInt(cursor.getColumnIndex(Sessions.SESSION_IN_MY_SCHEDULE)) != 0;
+            item.reservationStatus =
+                    cursor.getInt(cursor.getColumnIndex(Sessions.SESSION_RESERVATION_STATUS));
             list.add(item);
         }
     }

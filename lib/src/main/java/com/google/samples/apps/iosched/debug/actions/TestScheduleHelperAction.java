@@ -60,26 +60,26 @@ public class TestScheduleHelperAction implements DebugAction {
         boolean success = true;
         ArrayList<ScheduleItem> items = new ArrayList<>();
 
-        items.add(item(false, "14:00", "14:30", "m1"));
-        items.add(item(true, "14:25", "14:50", "i1"));
+        items.add(item(false, -1, "14:00", "14:30", "m1"));
+        items.add(item(true, -1, "14:25", "14:50", "i1"));
         success &= check("no intersection - within range",
                 ScheduleItemHelper.processItems(items),
                 new ScheduleItem[]{
-                        item(false, "14:00", "14:30", "m1"),
-                        item(true, "14:25", "14:50", "i1")});
+                        item(false, -1, "14:00", "14:30", "m1"),
+                        item(true, -1, "14:25", "14:50", "i1")});
 
         items.clear();
-        items.add(item(true, "14:30", "15:00", "i1"));
-        items.add(item(true, "16:30", "19:00", "i2"));
-        items.add(item(true, "16:30", "17:00", "i3"));
-        items.add(item(true, "18:00", "18:30", "i4"));
+        items.add(item(true, 0, "14:30", "15:00", "i1"));
+        items.add(item(true, -1, "16:30", "19:00", "i2"));
+        items.add(item(true, -1, "16:30", "17:00", "i3"));
+        items.add(item(true, -1, "18:00", "18:30", "i4"));
         success &= check("conflicting sessions",
                 ScheduleItemHelper.processItems(items),
                 new ScheduleItem[]{
-                        item(true, "14:30", "15:00", "i1"),
-                        item(true, "16:30", "19:00", "i2"),
-                        item(true, "16:30", "17:00", "i3", true),
-                        item(true, "18:00", "18:30", "i4", true),
+                        item(true, -1, "14:30", "15:00", "i1"),
+                        item(true, -1, "16:30", "19:00", "i2"),
+                        item(true, -1, "16:30", "17:00", "i3", true),
+                        item(true, -1, "18:00", "18:30", "i4", true),
                 });
 
         return success;
@@ -97,6 +97,7 @@ public class TestScheduleHelperAction implements DebugAction {
                 if (!item.title.equals(expected[i].title) ||
                         item.startTime != expected[i].startTime ||
                         item.endTime != expected[i].endTime ||
+                        item.reservationStatus != expected[i].reservationStatus ||
                         (item.flags & ScheduleItem.FLAG_CONFLICTS_WITH_PREVIOUS) !=
                                 (expected[i].flags & ScheduleItem.FLAG_CONFLICTS_WITH_PREVIOUS)) {
                     equal = false;
@@ -141,20 +142,20 @@ public class TestScheduleHelperAction implements DebugAction {
         }
     }
 
-    private ScheduleItem item(boolean inSchedule, String start, String end, String id) {
-        return item(inSchedule, start, end, id, false);
+    private ScheduleItem item(boolean inSchedule, int inReservationStatus, String start, String end, String id) {
+        return item(inSchedule, inReservationStatus, start, end, id, false);
     }
 
-    private ScheduleItem item(boolean inSchedule, String start, String end, String id, int type) {
-        return item(inSchedule, start, end, id, false, type);
+    private ScheduleItem item(boolean inSchedule, int inReservationStatus, String start, String end, String id, int type) {
+        return item(inSchedule, inReservationStatus, start, end, id, false, type);
     }
 
-    private ScheduleItem item(boolean inSchedule, String start, String end, String id,
+    private ScheduleItem item(boolean inSchedule, int inReservationStatus, String start, String end, String id,
             boolean conflict) {
-        return item(inSchedule, start, end, id, conflict, ScheduleItem.SESSION);
+        return item(inSchedule, inReservationStatus, start, end, id, conflict, ScheduleItem.SESSION);
     }
 
-    private ScheduleItem item(boolean inSchedule, String start, String end, String id,
+    private ScheduleItem item(boolean inSchedule, int inReservationStatus, String start, String end, String id,
             boolean conflict, int type) {
         ScheduleItem i = new ScheduleItem();
         i.title = id;
@@ -162,6 +163,7 @@ public class TestScheduleHelperAction implements DebugAction {
         i.endTime = date(end);
         i.type = type;
         i.inSchedule = inSchedule;
+        i.reservationStatus = inReservationStatus;
         if (conflict) {
             i.flags = ScheduleItem.FLAG_CONFLICTS_WITH_PREVIOUS;
         }

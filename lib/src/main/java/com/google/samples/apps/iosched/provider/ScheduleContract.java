@@ -19,11 +19,15 @@ package com.google.samples.apps.iosched.provider;
 import android.app.SearchManager;
 import android.net.Uri;
 import android.provider.BaseColumns;
+import android.support.annotation.IntDef;
 import android.text.TextUtils;
 import android.text.format.DateUtils;
 
+import com.google.samples.apps.iosched.Config;
 import com.google.samples.apps.iosched.util.ParserUtils;
 
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
 import java.util.List;
 
 /**
@@ -116,6 +120,22 @@ public final class ScheduleContract {
         String MY_SCHEDULE_TIMESTAMP = "timestamp";
     }
 
+    interface MyReservationColumns {
+
+        String SESSION_ID = SessionsColumns.SESSION_ID;
+        /** Account name for which the session is reserved (in my schedule) */
+        String MY_RESERVATION_ACCOUNT_NAME = "account_name";
+        /**
+         * Reservation status - 0 is reserved, 1+ is waitlisted, -1 is not-reserved (technically not needed
+         * because we do only one-way sync with the DB, Firebase functions do the session reservation
+         * magic.)
+         */
+        String MY_RESERVATION_STATUS = "res_status";
+        /** Reservation timestamp --- to match server schema */
+        String MY_RESERVATION_TIMESTAMP = "timestamp";
+    }
+
+
     interface MyFeedbackSubmittedColumns {
 
         String SESSION_ID = SessionsColumns.SESSION_ID;
@@ -164,6 +184,8 @@ public final class ScheduleContract {
         String SESSION_NOTES_URL = "session_notes_url";
         /** User-specific flag indicating starred status. */
         String SESSION_IN_MY_SCHEDULE = "session_in_my_schedule";
+        /** User-specific flag indicating reservation status. */
+        String SESSION_RESERVATION_STATUS = "session_reservation_status";
         /** Key for session Calendar event. (Used in ICS or above) */
         String SESSION_CAL_EVENT_ID = "session_cal_event_id";
         /** The YouTube live stream URL. */
@@ -335,6 +357,8 @@ public final class ScheduleContract {
 
     private static final String PATH_MY_SCHEDULE = "my_schedule";
 
+    private static final String PATH_MY_RESERVATION = "my_reservation";
+
     private static final String PATH_MY_VIEWED_VIDEOS = "my_viewed_videos";
 
     private static final String PATH_MY_FEEDBACK_SUBMITTED = "my_feedback_submitted";
@@ -498,6 +522,31 @@ public final class ScheduleContract {
     }
 
     /**
+     * MyReservations represents the sessions that the user has reserved.  This is closely
+     * related to "MySchedule."  Each row represents one reserved or waitlisted session.
+     */
+    public static class MyReservations implements MyReservationColumns, BaseColumns {
+        // reserved values for reservation status --- anything > 0 is waitlisted
+        @Retention(RetentionPolicy.SOURCE)
+        @IntDef({RESERVATION_STATUS_UNRESERVED, RESERVATION_STATUS_RESERVED, RESERVATION_STATUS_WAITLISTED})
+        public @interface ReservationStatus {}
+        public static final int RESERVATION_STATUS_UNRESERVED = -1;  // default value
+        public static final int RESERVATION_STATUS_RESERVED = 0;
+        public static final int RESERVATION_STATUS_WAITLISTED = 1;
+
+        public static final Uri CONTENT_URI =
+                BASE_CONTENT_URI.buildUpon().appendPath(PATH_MY_RESERVATION).build();
+
+        public static final String CONTENT_TYPE_ID = "myschedule";
+
+        public static Uri buildMyReservationUri(String accountName) {
+            return ScheduleContractHelper.addOverrideAccountName(CONTENT_URI, accountName);
+        }
+
+    }
+
+
+    /**
      * MyFeedbackSubmitted represent the sessions that which the user has submitted feedback.
      * Each row of MyFeedbackSubmitted represents one session for which feedback was submitted by
      * one account.
@@ -651,7 +700,9 @@ public final class ScheduleContract {
                 "!='') OR (" +
                 SESSION_YOUTUBE_URL + " is not null AND " + SESSION_YOUTUBE_URL + " != '')";
 
-        public static final String IN_SCHEDULE_SELECTION = SESSION_IN_MY_SCHEDULE + " != 0";
+        // Keynotes are always bookmarked and in "my schedule"
+        public static final String IN_SCHEDULE_SELECTION = SESSION_IN_MY_SCHEDULE + " = 1 OR " +
+                Sessions.SESSION_TAGS + " LIKE '%" + Config.Tags.SPECIAL_KEYNOTE + "%'";
 
         // Used to fetch sessions starting within a specific time interval
         public static final String STARTING_AT_TIME_INTERVAL_SELECTION =

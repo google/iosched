@@ -17,6 +17,7 @@ package com.google.samples.apps.iosched.mockdata;
 import android.database.MatrixCursor;
 
 import com.google.samples.apps.iosched.Config;
+import com.google.samples.apps.iosched.provider.ScheduleContract;
 import com.google.samples.apps.iosched.util.TimeUtils;
 
 /**
@@ -163,7 +164,8 @@ public class ExploreMockCursor {
     private static MatrixCursor getCursor(boolean[] livestreamed, long now) {
         String[] columns = {"session_id", "session_title", "session_abstract", "session_tags",
                 "session_main_tag", "session_photo_url", "session_start", "session_end",
-                "session_livestream_url", "session_youtube_url", "session_in_my_schedule"};
+                "session_livestream_url", "session_youtube_url", "session_in_my_schedule",
+                "session_reservation_status"};
         MatrixCursor matrixCursor = new MatrixCursor(columns);
         String[] subData = constructStartEndAndLivestream(livestreamed, now, 0);
         String[] data1 = {KEYNOTE_ID, TITLE_KEYNOTE,
@@ -174,7 +176,7 @@ public class ExploreMockCursor {
                 "https://storage.googleapis.com/io2015-data.appspot" +
                         ".com/images/sessions/__w-200-400-600-800-1000__/14f5088b-d0e2-e411-b87f" +
                         "-00155d5066d7.jpg",
-                subData[0], subData[1], subData[2], "null", "0"};
+                subData[0], subData[1], subData[2], "null", "0", "-1"};
         matrixCursor.addRow(data1);
         subData = constructStartEndAndLivestream(livestreamed, now, 1);
         String[] data2 = {"74718f8b-b6d4-e411-b87f-00155d5066d7", TRACK_TOOLS_TITLE1,
@@ -184,7 +186,7 @@ public class ExploreMockCursor {
                 "https://storage.googleapis.com/io2015-data.appspot" +
                         ".com/images/sessions/__w-200-400-600-800-1000__/74718f8b-b6d4-e411-b87f" +
                         "-00155d5066d7.jpg",
-                subData[0], subData[1], subData[2], "null", "0"};
+                subData[0], subData[1], subData[2], "null", "0", "-1"};
         matrixCursor.addRow(data2);
         subData = constructStartEndAndLivestream(livestreamed, now, 2);
         String[] data3 = {"ea96312e-e3d3-e411-b87f-00155d5066d7", TRACK_ANDROID_TITLE1,
@@ -195,7 +197,7 @@ public class ExploreMockCursor {
                 "https://storage.googleapis.com/io2015-data.appspot" +
                         ".com/images/sessions/__w-200-400-600-800-1000__/ea96312e-e3d3-e411-b87f" +
                         "-00155d5066d7.jpg",
-                subData[0], subData[1], subData[2], "null", "0"};
+                subData[0], subData[1], subData[2], "null", "0", "-1"};
         matrixCursor.addRow(data3);
         subData = constructStartEndAndLivestream(livestreamed, now, 3);
         String[] data4 = {"881a8930-f0e2-e411-b87f-00155d5066d7",
@@ -214,7 +216,7 @@ public class ExploreMockCursor {
                 "https://storage.googleapis.com/io2015-data.appspot" +
                         ".com/images/sessions/__w-200-400-600-800-1000__/881a8930-f0e2-e411-b87f" +
                         "-00155d5066d7.jpg",
-                subData[0], subData[1], subData[2], "null", "0"};
+                subData[0], subData[1], subData[2], "null", "0", "-1"};
         matrixCursor.addRow(data4);
         subData = constructStartEndAndLivestream(livestreamed, now, 4);
         String[] data5 =
@@ -228,7 +230,7 @@ public class ExploreMockCursor {
                         "https://storage.googleapis.com/io2015-data.appspot" +
                                 ".com/images/sessions/__w-200-400-600-800-1000__/0c718f8b-b6d4" +
                                 "-e411-b87f-00155d5066d7.jpg",
-                        subData[0], subData[1], subData[2], "null", "0"};
+                        subData[0], subData[1], subData[2], "null", "0", "-1"};
         matrixCursor.addRow(data5);
         subData = constructStartEndAndLivestream(livestreamed, now, 5);
         String[] data6 = {"3a718f8b-b6d4-e411-b87f-00155d5066d7", TRACK_MOBILEWEB_TITLE1,
@@ -242,7 +244,7 @@ public class ExploreMockCursor {
                 "https://storage.googleapis.com/io2015-data.appspot" +
                         ".com/images/sessions/__w-200-400-600-800-1000__/3a718f8b-b6d4-e411-b87f" +
                         "-00155d5066d7.jpg",
-                subData[0], subData[1], subData[2], "null", "0"};
+                subData[0], subData[1], subData[2], "null", "0", "-1"};
         matrixCursor.addRow(data6);
         subData = constructStartEndAndLivestream(livestreamed, now, 6);
         String[] data7 = {"e096312e-e3d3-e411-b87f-00155d5066d7",
@@ -260,7 +262,7 @@ public class ExploreMockCursor {
                 "https://storage.googleapis.com/io2015-data.appspot" +
                         ".com/images/sessions/__w-200-400-600-800-1000__/e096312e-e3d3-e411-b87f" +
                         "-00155d5066d7.jpg",
-                subData[0], subData[1], subData[2], "null", "0"};
+                subData[0], subData[1], subData[2], "null", "0", "-1"};
         matrixCursor.addRow(data7);
         subData = constructStartEndAndLivestream(livestreamed, now, 7);
         String[] data8 = {"21718f8b-b6d4-e411-b87f-00155d5066d7",
@@ -277,7 +279,7 @@ public class ExploreMockCursor {
                 "https://storage.googleapis.com/io2015-data.appspot" +
                         ".com/images/sessions/__w-200-400-600-800-1000__/21718f8b-b6d4-e411-b87f" +
                         "-00155d5066d7.jpg",
-                subData[0], subData[1], subData[2], "null", "0"};
+                subData[0], subData[1], subData[2], "null", "0", "-1"};
         matrixCursor.addRow(data8);
         subData = constructStartEndAndLivestream(livestreamed, now, 8);
         String[] data9 = {"60718f8b-b6d4-e411-b87f-00155d5066d7",
@@ -297,7 +299,7 @@ public class ExploreMockCursor {
                 "https://storage.googleapis.com/io2015-data.appspot" +
                         ".com/images/sessions/__w-200-400-600-800-1000__/60718f8b-b6d4-e411-b87f" +
                         "-00155d5066d7.jpg",
-                subData[0], subData[1], subData[2], "null", "0"};
+                subData[0], subData[1], subData[2], "null", "0", "-1"};
         matrixCursor.addRow(data9);
         return matrixCursor;
     }
