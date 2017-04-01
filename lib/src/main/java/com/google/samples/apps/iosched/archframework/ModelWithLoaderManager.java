@@ -45,13 +45,6 @@ public abstract class ModelWithLoaderManager<Q extends QueryEnum, UA extends Use
     public static final String KEY_RUN_QUERY_ID = "KEY_RUN_QUERY_ID";
 
     private static final String TAG = makeLogTag(ModelWithLoaderManager.class);
-
-    private LoaderManager mLoaderManager;
-
-    private Q[] mQueries;
-
-    private UA[] mUserActions;
-
     /**
      * Map of callbacks, using the query as key. This is required because we can't pass on the
      * {@link com.google.samples.apps.iosched.archframework.Model.DataQueryCallback} to the {@link
@@ -64,7 +57,6 @@ public abstract class ModelWithLoaderManager<Q extends QueryEnum, UA extends Use
      */
     @VisibleForTesting
     protected HashMap<Q, DataQueryCallback<Q>> mDataQueryCallbacks = new HashMap<>();
-
     /**
      * Map of callbacks, using the id of the user action as key. This is required because some user
      * actions launch a data query and we can't pass on the {@link com.google.samples.apps
@@ -82,7 +74,6 @@ public abstract class ModelWithLoaderManager<Q extends QueryEnum, UA extends Use
      */
     @VisibleForTesting
     protected HashMap<Integer, UserActionCallback<UA>> mDataUpdateCallbacks = new HashMap<>();
-
     /**
      * Map of user actions that have launched queries, using their id as key. This is used in
      * conjunction with {@link #mDataUpdateCallbacks}, so once the {@link
@@ -96,6 +87,9 @@ public abstract class ModelWithLoaderManager<Q extends QueryEnum, UA extends Use
      */
     @VisibleForTesting
     protected HashMap<Integer, UA> mUserActionsLaunchingQueries = new HashMap<>();
+    private LoaderManager mLoaderManager;
+    private Q[] mQueries;
+    private UA[] mUserActions;
 
     public ModelWithLoaderManager(Q[] queries, UA[] userActions, LoaderManager loaderManager) {
         mQueries = queries;

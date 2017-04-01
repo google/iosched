@@ -20,6 +20,7 @@
 
     <!-- 2017 palette -->
     <color name="lightish_blue">#536dfe</color>
+    <color name="lighter_blue">#8799ff</color>
     <color name="aqua_marine">#1ce8b5</color>
     <color name="neon_blue">#00e4ff</color>
     <color name="sunflower_yellow">#ffd500</color>

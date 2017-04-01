@@ -42,4 +42,26 @@ public class SessionDetailConstants {
      */
     public static final long LIVESTREAM_BEFORE_SESSION_START_MS = 10 * TimeUtils.MINUTE;
 
+    // Firebase result and status keys.
+    public static final String RESERVED = "reserved";
+    public static final String RESERVE_DENIED_SPACE = "reserve_denied_space";
+    public static final String RESERVE_DENIED_CUTOFF = "reserve_denied_cutoff";
+    public static final String RESERVE_DENIED_CLASH = "reserve_denied_clash";
+    public static final String RESERVE_DENIED_FAILED = "reserve_denied_failed";
+    public static final String RETURNED = "returned";
+    public static final String RETURN_DENIED_CUTOFF = "return_denied_cutoff";
+    public static final String RETURN_DENIED_FAILED = "return_denied_failed";
+    public static final String RESERVE_STATUS_GRANTED = "granted";
+    public static final String RESERVE_STATUS_WAITING = "waiting";
+    public static final String RESERVE_STATUS_RETURNED = "returned";
+
+    // Firebase node keys.
+    public static final String FIREBASE_NODE_QUEUE = "queue";
+    public static final String FIREBASE_NODE_SESSIONS = "sessions";
+    public static final String FIREBASE_NODE_RESERVATIONS = "reservations";
+    public static final String FIREBASE_NODE_STATUS = "status";
+    public static final String FIREBASE_NODE_RESULTS = "status";
+    public static final String FIREBASE_NODE_SEATS = "seats";
+    public static final String FIREBASE_NODE_SEATS_AVAILABLE = "seats_available";
+
 }
