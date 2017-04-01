@@ -23,7 +23,6 @@ import android.content.SharedPreferences;
 import android.content.SyncStatusObserver;
 import android.content.pm.PackageManager;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.design.widget.BottomNavigationView;
@@ -66,20 +65,91 @@ public abstract class BaseActivity extends AppCompatActivity implements
         MultiSwipeRefreshLayout.CanChildScrollUpCallback {
 
     private static final String TAG = makeLogTag(BaseActivity.class);
-
+    private static final int MAIN_CONTENT_FADEIN_DURATION = 250;
     // Navigation drawer
     private AppNavigationView mAppNavigationView;
-
     // Toolbar
     private Toolbar mToolbar;
-
-    private static final int MAIN_CONTENT_FADEIN_DURATION = 250;
-
     // SwipeRefreshLayout allows the user to swipe the screen down to trigger a manual refresh
     private SwipeRefreshLayout mSwipeRefreshLayout;
 
     // handle to our sync observer (that notifies us about changes in our sync state)
     private Object mSyncObserverHandle;
+    private MySyncStatusObserver mSyncStatusObserver = new MySyncStatusObserver(this);
+
+    /**
+     * This utility method handles Up navigation intents by searching for a parent activity and
+     * navigating there if defined. When using this for an activity make sure to define both the
+     * native parentActivity as well as the AppCompat one when supporting API levels less than 16.
+     * when the activity has a single parent activity. If the activity doesn't have a single parent
+     * activity then don't define one and this method will use back button functionality. If "Up"
+     * functionality is still desired for activities without parents then use {@code
+     * syntheticParentActivity} to define one dynamically.
+     * <p/>
+     * Note: Up navigation intents are represented by a back arrow in the top left of the Toolbar in
+     * Material Design guidelines.
+     *
+     * @param currentActivity         Activity in use when navigate Up action occurred.
+     * @param syntheticParentActivity Parent activity to use when one is not already configured.
+     */
+    public static void navigateUpOrBack(Activity currentActivity,
+            Class<? extends Activity> syntheticParentActivity) {
+        // Retrieve parent activity from AndroidManifest.
+        Intent intent = NavUtils.getParentActivityIntent(currentActivity);
+
+        // Synthesize the parent activity when a natural one doesn't exist.
+        if (intent == null && syntheticParentActivity != null) {
+            try {
+                intent = NavUtils.getParentActivityIntent(currentActivity, syntheticParentActivity);
+            } catch (PackageManager.NameNotFoundException e) {
+                e.printStackTrace();
+            }
+        }
+
+        if (intent == null) {
+            // No parent defined in manifest. This indicates the activity may be used by
+            // in multiple flows throughout the app and doesn't have a strict parent. In
+            // this case the navigation up button should act in the same manner as the
+            // back button. This will result in users being forwarded back to other
+            // applications if currentActivity was invoked from another application.
+            currentActivity.onBackPressed();
+        } else {
+            if (NavUtils.shouldUpRecreateTask(currentActivity, intent)) {
+                // Need to synthesize a backstack since currentActivity was probably invoked by a
+                // different app. The preserves the "Up" functionality within the app according to
+                // the activity hierarchy defined in AndroidManifest.xml via parentActivity
+                // attributes.
+                TaskStackBuilder builder = TaskStackBuilder.create(currentActivity);
+                builder.addNextIntentWithParentStack(intent);
+                builder.startActivities();
+            } else {
+                // Navigate normally to the manifest defined "Up" activity.
+                NavUtils.navigateUpTo(currentActivity, intent);
+            }
+        }
+    }
+
+    /**
+     * Converts an intent into a {@link Bundle} suitable for use as fragment arguments.
+     */
+    public static Bundle intentToFragmentArguments(Intent intent) {
+        Bundle arguments = new Bundle();
+        if (intent == null) {
+            return arguments;
+        }
+
+        final Uri data = intent.getData();
+        if (data != null) {
+            arguments.putParcelable("_uri", data);
+        }
+
+        final Bundle extras = intent.getExtras();
+        if (extras != null) {
+            arguments.putAll(intent.getExtras());
+        }
+
+        return arguments;
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -199,58 +269,6 @@ public abstract class BaseActivity extends AppCompatActivity implements
         SyncHelper.requestManualSync();
     }
 
-    /**
-     * This utility method handles Up navigation intents by searching for a parent activity and
-     * navigating there if defined. When using this for an activity make sure to define both the
-     * native parentActivity as well as the AppCompat one when supporting API levels less than 16.
-     * when the activity has a single parent activity. If the activity doesn't have a single parent
-     * activity then don't define one and this method will use back button functionality. If "Up"
-     * functionality is still desired for activities without parents then use {@code
-     * syntheticParentActivity} to define one dynamically.
-     * <p/>
-     * Note: Up navigation intents are represented by a back arrow in the top left of the Toolbar in
-     * Material Design guidelines.
-     *
-     * @param currentActivity         Activity in use when navigate Up action occurred.
-     * @param syntheticParentActivity Parent activity to use when one is not already configured.
-     */
-    public static void navigateUpOrBack(Activity currentActivity,
-            Class<? extends Activity> syntheticParentActivity) {
-        // Retrieve parent activity from AndroidManifest.
-        Intent intent = NavUtils.getParentActivityIntent(currentActivity);
-
-        // Synthesize the parent activity when a natural one doesn't exist.
-        if (intent == null && syntheticParentActivity != null) {
-            try {
-                intent = NavUtils.getParentActivityIntent(currentActivity, syntheticParentActivity);
-            } catch (PackageManager.NameNotFoundException e) {
-                e.printStackTrace();
-            }
-        }
-
-        if (intent == null) {
-            // No parent defined in manifest. This indicates the activity may be used by
-            // in multiple flows throughout the app and doesn't have a strict parent. In
-            // this case the navigation up button should act in the same manner as the
-            // back button. This will result in users being forwarded back to other
-            // applications if currentActivity was invoked from another application.
-            currentActivity.onBackPressed();
-        } else {
-            if (NavUtils.shouldUpRecreateTask(currentActivity, intent)) {
-                // Need to synthesize a backstack since currentActivity was probably invoked by a
-                // different app. The preserves the "Up" functionality within the app according to
-                // the activity hierarchy defined in AndroidManifest.xml via parentActivity
-                // attributes.
-                TaskStackBuilder builder = TaskStackBuilder.create(currentActivity);
-                builder.addNextIntentWithParentStack(intent);
-                builder.startActivities();
-            } else {
-                // Navigate normally to the manifest defined "Up" activity.
-                NavUtils.navigateUpTo(currentActivity, intent);
-            }
-        }
-    }
-
     @Override
     protected void onResume() {
         super.onResume();
@@ -258,6 +276,9 @@ public abstract class BaseActivity extends AppCompatActivity implements
         // Perform one-time bootstrap setup, if needed
         DataBootstrapService.startDataBootstrapIfNecessary(this);
 
+        if(mSyncStatusObserver != null) {
+            mSyncStatusObserver.register(this);
+        }
         // Watch for sync state changes
         mSyncStatusObserver.onStatusChanged(0);
         final int mask = ContentResolver.SYNC_OBSERVER_TYPE_PENDING |
@@ -272,28 +293,9 @@ public abstract class BaseActivity extends AppCompatActivity implements
             ContentResolver.removeStatusChangeListener(mSyncObserverHandle);
             mSyncObserverHandle = null;
         }
-    }
-
-    /**
-     * Converts an intent into a {@link Bundle} suitable for use as fragment arguments.
-     */
-    public static Bundle intentToFragmentArguments(Intent intent) {
-        Bundle arguments = new Bundle();
-        if (intent == null) {
-            return arguments;
+        if(mSyncStatusObserver != null) {
+            mSyncStatusObserver.unregister();
         }
-
-        final Uri data = intent.getData();
-        if (data != null) {
-            arguments.putParcelable("_uri", data);
-        }
-
-        final Bundle extras = intent.getExtras();
-        if (extras != null) {
-            arguments.putAll(intent.getExtras());
-        }
-
-        return arguments;
     }
 
     public Toolbar getToolbar() {
@@ -329,28 +331,6 @@ public abstract class BaseActivity extends AppCompatActivity implements
         super.onStop();
     }
 
-    private SyncStatusObserver mSyncStatusObserver = new SyncStatusObserver() {
-        @Override
-        public void onStatusChanged(int which) {
-            runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    String accountName = AccountUtils.getActiveAccountName(BaseActivity.this);
-                    if (TextUtils.isEmpty(accountName)) {
-                        onRefreshingStateChanged(false);
-                        return;
-                    }
-
-                    android.accounts.Account account = new android.accounts.Account(
-                            accountName, GoogleAuthUtil.GOOGLE_ACCOUNT_TYPE);
-                    boolean syncActive = ContentResolver.isSyncActive(
-                            account, ScheduleContract.CONTENT_AUTHORITY);
-                    onRefreshingStateChanged(syncActive);
-                }
-            });
-        }
-    };
-
     protected void onRefreshingStateChanged(boolean refreshing) {
         if (mSwipeRefreshLayout != null) {
             mSwipeRefreshLayout.setRefreshing(refreshing);
@@ -364,6 +344,47 @@ public abstract class BaseActivity extends AppCompatActivity implements
 
     protected String getScreenLabel() {
         return null;
+    }
+
+    private static class MySyncStatusObserver implements SyncStatusObserver {
+        private BaseActivity mActivity;
+
+        public MySyncStatusObserver(BaseActivity activity) {
+            mActivity = activity;
+        }
+
+        public void register(BaseActivity activity) {
+            mActivity = activity;
+        }
+
+        public void unregister() {
+            mActivity = null;
+        }
+
+
+        @Override
+        public void onStatusChanged(int which) {
+            if (mActivity != null) {
+                mActivity.runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        if (mActivity == null) {
+                            return;
+                        }
+                        String accountName = AccountUtils.getActiveAccountName(mActivity);
+                        if (TextUtils.isEmpty(accountName)) {
+                            mActivity.onRefreshingStateChanged(false);
+                            return;
+                        }
+                        android.accounts.Account account = new android.accounts.Account(
+                                accountName, GoogleAuthUtil.GOOGLE_ACCOUNT_TYPE);
+                        boolean syncActive = ContentResolver.isSyncActive(
+                                account, ScheduleContract.CONTENT_AUTHORITY);
+                        mActivity.onRefreshingStateChanged(syncActive);
+                    }
+                });
+            }
+        }
     }
 
 }
