@@ -82,7 +82,6 @@ public class SignInFragment extends WelcomeFragment
         mGoogleApiClient = new GoogleApiClient.Builder(getActivity())
                 .addApi(Auth.GOOGLE_SIGN_IN_API, gso)
                 .build();
-
     }
 
     @Override
@@ -108,9 +107,9 @@ public class SignInFragment extends WelcomeFragment
 
     @Override
     public boolean shouldDisplay(final Context context) {
-        /* Display if the user hasn't signed in and also not pressed skip. */
-        return AccountUtils.getActiveAccount(context) == null &&
-                !WelcomeUtils.hasUserRefusedSignInDuringOnboarding(context);
+        /* Display if the user hasn't attempted signed in and also not pressed skip. */
+        return !(WelcomeUtils.hasUserAttemptedOnboardingSignIn(context) ||
+                WelcomeUtils.hasUserRefusedOnboardingSignIn(context));
     }
 
     @Override
@@ -128,6 +127,7 @@ public class SignInFragment extends WelcomeFragment
         return new View.OnClickListener() {
             @Override
             public void onClick(final View view) {
+                WelcomeUtils.markUserAttemptedOnboardingSignIn(mActivity);
                 Intent signInIntent = Auth.GoogleSignInApi.getSignInIntent(mGoogleApiClient);
                 startActivityForResult(signInIntent, AccountUtils.RC_SIGN_IN);
             }
@@ -139,7 +139,7 @@ public class SignInFragment extends WelcomeFragment
         return new View.OnClickListener() {
             @Override
             public void onClick(final View view) {
-                WelcomeUtils.markUserRefusedSignInDuringOnboarding(mActivity, true);
+                WelcomeUtils.markUserRefusedOnboardingSignIn(mActivity);
                 doNext();
             }
         };

@@ -44,6 +44,12 @@ public class WelcomeUtils {
             Constants.CONFERENCE_YEAR_PREF_POSTFIX;
 
     /**
+     * Boolean indicating whether the user explicitly refused sign in during onboarding.
+     */
+    private static final String PREF_USER_ATTEMPTED_SIGN_IN = "pref_user_attempted_sign_in" +
+            Constants.CONFERENCE_YEAR_PREF_POSTFIX;
+
+    /**
      * Return true if user has accepted the {@link WelcomeActivity Tos}, false if they haven't.
      *
      * @param context Context to be used to lookup the {@link android.content.SharedPreferences}.
@@ -84,11 +90,32 @@ public class WelcomeUtils {
     }
 
     /**
+     * Return true if user attempted to sign in during onboarding, otherwise false.
+     *
+     * @param context Context to be used to lookup the {@link android.content.SharedPreferences}.
+     */
+    public static boolean hasUserAttemptedOnboardingSignIn(final Context context) {
+        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(context);
+        return sp.getBoolean(PREF_USER_ATTEMPTED_SIGN_IN, false);
+    }
+
+    /**
+     * Mark that the user attempted to sign in. Whether sign in succeeds or fails, we do not show
+     * the user the onboarding sign in screen again.
+     *
+     * @param context Context to be used to edit the {@link android.content.SharedPreferences}.
+     */
+    public static void markUserAttemptedOnboardingSignIn(final Context context) {
+        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(context);
+        sp.edit().putBoolean(PREF_USER_ATTEMPTED_SIGN_IN, true).apply();
+    }
+
+    /**
      * Return true if user refused to sign in during onboarding, otherwise false.
      *
      * @param context Context to be used to lookup the {@link android.content.SharedPreferences}.
      */
-    public static boolean hasUserRefusedSignInDuringOnboarding(final Context context) {
+    public static boolean hasUserRefusedOnboardingSignIn(final Context context) {
         SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(context);
         return sp.getBoolean(PREF_USER_REFUSED_SIGN_IN, false);
     }
@@ -98,9 +125,8 @@ public class WelcomeUtils {
      *
      * @param context Context to be used to edit the {@link android.content.SharedPreferences}.
      */
-    public static void markUserRefusedSignInDuringOnboarding(final Context context,
-            final boolean refused) {
+    public static void markUserRefusedOnboardingSignIn(final Context context) {
         SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(context);
-        sp.edit().putBoolean(PREF_USER_REFUSED_SIGN_IN, refused).apply();
+        sp.edit().putBoolean(PREF_USER_REFUSED_SIGN_IN, true).apply();
     }
 }
