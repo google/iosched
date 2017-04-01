@@ -24,7 +24,7 @@ public class Ids {
             + ".apps.googleusercontent.com";
     public static final String IOS_CLIENT_ID = "237695054204-pjm3begvj1k28pg88ncnacdi6gl5nbcf"
             + ".apps.googleusercontent.com";
-    public static final String WEB_CLIENT_ID = "755839215930-ctkg839m67rtqmgm55c6eg1j7cvu5mmf"
+    public static final String WEB_CLIENT_ID = "596109260910-n1vrfjs8d7105jh5j7qf42ph32sltjp0"
             + ".apps.googleusercontent.com";
     public static final String ANDROID_AUDIENCE = ANDROID_CLIENT_ID;
 }
