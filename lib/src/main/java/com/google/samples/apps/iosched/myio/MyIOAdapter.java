@@ -28,6 +28,7 @@ import android.widget.TextView;
 import com.google.samples.apps.iosched.Config;
 import com.google.samples.apps.iosched.lib.R;
 import com.google.samples.apps.iosched.model.ScheduleItem;
+import com.google.samples.apps.iosched.model.TagMetadata;
 import com.google.samples.apps.iosched.myschedule.ScheduleItemViewHolder;
 import com.google.samples.apps.iosched.util.UIUtils;
 
@@ -50,6 +51,7 @@ public class MyIOAdapter extends Adapter<ViewHolder> {
 
     private List<Object> mItems = new ArrayList<>();
     private Callbacks mCallbacks;
+    private TagMetadata mTagMetadata;
 
     interface Callbacks extends ScheduleItemViewHolder.Callbacks {
 
@@ -96,6 +98,12 @@ public class MyIOAdapter extends Adapter<ViewHolder> {
         notifyDataSetChanged();
     }
 
+    public void setTagMetadata(TagMetadata tagMetadata) {
+        mTagMetadata = tagMetadata;
+        notifyItemRangeChanged(0, getItemCount());
+        // TODO use payload for efficient update
+    }
+
     @Override
     public int getItemCount() {
         return mItems == null ? 0 : mItems.size();
@@ -129,8 +137,7 @@ public class MyIOAdapter extends Adapter<ViewHolder> {
         switch (holder.getItemViewType()) {
             case VIEW_TYPE_SESSION:
                 ScheduleItem item = (ScheduleItem) mItems.get(position);
-                // TODO need TagMetadata
-                ((ScheduleItemViewHolder) holder).onBind(item, null);
+                ((ScheduleItemViewHolder) holder).onBind(item, mTagMetadata);
                 break;
             case VIEW_TYPE_SEPARATOR:
                 DaySeparator separator = (DaySeparator) mItems.get(position);

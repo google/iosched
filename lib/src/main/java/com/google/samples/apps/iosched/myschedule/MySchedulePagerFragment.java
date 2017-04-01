@@ -75,12 +75,25 @@ public class MySchedulePagerFragment extends Fragment implements ScheduleView {
     private View mFiltersBarInner;
     private TextView mFiltersDescription;
     private View mClearFilters;
+    private boolean mFiltersBarPendingVisibilityChange;
 
     /**
      * During the conference, this is set to the current day, eg 1 for the first day, 2 for the
      * second etc Outside of conference period, this is set to 1.
      */
     private int mToday;
+
+    private OnOffsetChangedListener mFiltersBarOffsetListener = new OnOffsetChangedListener() {
+
+        @Override
+        public void onOffsetChanged(AppBarLayout appBarLayout, int verticalOffset) {
+            if (mFiltersBarPendingVisibilityChange
+                    && Math.abs(verticalOffset) == appBarLayout.getTotalScrollRange()) {
+                mFiltersBarInner.setVisibility(View.GONE);
+                mFiltersBarPendingVisibilityChange = false;
+            }
+        }
+    };
 
     @Override
     public boolean canSwipeRefreshChildScrollUp() {
@@ -103,15 +116,7 @@ public class MySchedulePagerFragment extends Fragment implements ScheduleView {
             mFiltersBarInner.setVisibility(View.VISIBLE);
         } else {
             // Wait for the bar to animate away before making the view GONE
-            mFiltersBar.addOnOffsetChangedListener(new OnOffsetChangedListener() {
-                @Override
-                public void onOffsetChanged(AppBarLayout appBarLayout, int verticalOffset) {
-                    if (Math.abs(verticalOffset) == appBarLayout.getTotalScrollRange()) {
-                        mFiltersBarInner.setVisibility(View.GONE);
-                        mFiltersBar.removeOnOffsetChangedListener(this);
-                    }
-                }
-            });
+            mFiltersBarPendingVisibilityChange = true;
         }
     }
 
@@ -168,6 +173,7 @@ public class MySchedulePagerFragment extends Fragment implements ScheduleView {
         mViewPager.setPageMarginDrawable(R.drawable.page_margin);
 
         mFiltersBar = (AppBarLayout) view.findViewById(R.id.filters_bar);
+        mFiltersBar.addOnOffsetChangedListener(mFiltersBarOffsetListener);
         mFiltersBarInner = mFiltersBar.findViewById(R.id.filters_bar_inner);
         mFiltersDescription = (TextView) mFiltersBar.findViewById(R.id.filters_description);
         mClearFilters = mFiltersBar.findViewById(R.id.clear_filters);
