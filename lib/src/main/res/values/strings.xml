@@ -247,6 +247,97 @@
     <!-- Label for the button to rate a session -->
     <string name="my_schedule_rate_this_session">RATE THIS SESSION</string>
 
+    <!-- Label for reserve session button when it is reservable -->
+    <string name="my_schedule_reserve_seat">Reserve Seat</string>
+
+    <!-- Label for reserve session button while request is getting processed -->
+    <string name="my_schedule_request_pending">Request Pending&#8230;</string>
+
+    <!-- Label for reserve session button if session is already reserved by user -->
+    <string name="my_schedule_already_reserved">Seat Reserved</string>
+
+    <!-- Label for reserve session button if reserving is disabled for whatever reason -->
+    <string name="my_schedule_reserve_disabled">Reserving is disabled</string>
+
+    <!-- Label for reserve session button if reserving is disabled due to auth -->
+    <string name="my_schedule_reservation_disabled_auth_button_text">Must sign in to reserve
+    </string>
+
+    <!-- Message in info dialog explaining why reservations are disabled when user is not signed in
+    or not registered -->
+    <string name="my_schedule_reservation_must_sign_in_and_register_message">
+        You must be signed in and registered for the event in order to register.
+    </string>
+
+    <!-- Title for info dialog explaining why reservations are disabled when user is not signed in
+    or not registered -->
+    <string name="my_schedule_reservation_why_disabled">
+        Reservations Disabled
+    </string>
+
+    <!-- Label for reserve session button if user is waitlisted for session -->
+    <string name="my_schedule_waitlisted">Waitlisted</string>
+
+    <!-- Label for reserve session button if session is full and accepting waitlist requests -->
+    <string name="my_schedule_join_waitlist">Join Waitlist</string>
+
+    <!-- Reservation cancellation confirmation dialogue text -->
+    <string name="my_schedule_cancel_reservation_confirmation">Are you sure you want to cancel your
+        reservation?</string>
+
+    <!-- Waitlist cancellation confirmation dialogue text -->
+    <string name="my_schedule_cancel_waitlist_confirmation">Are you sure you want to cancel your
+        reservation?</string>
+
+    <!-- Reservation window closed -->
+    <string name="my_schedule_reservation_window_closed">Reservation window closed</string>
+
+    <!-- Title for dialog when attempted reservation clashed with another reservation -->
+    <string name="my_schedule_reservation_clash_title">Time Conflict</string>
+
+    <!-- Message in dialog when attempted reservation clashed with another reservation -->
+    <string name="my_schedule_reservation_clash_message">You already have a reservation or waitlist
+        request for this time. Only one reservation per time block is allowed; please cancel your
+        previous request if you\'d like to proceed.</string>
+
+    <!-- Message in alert dialog that tells you your seat reservation was successfully cancelled -->
+    <string name="my_schedule_return_successful_message">Your seat reservation was
+        cancelled.</string>
+
+    <!-- Message in alert dialog that tells you your seat reservation was successfully cancelled -->
+    <string name="my_schedule_return_successful_title">Reservation Cancellation</string>
+
+    <!-- Message in alert dialog when attempted reservation cancellation was past the cutoff time
+    -->
+    <string name="my_schedule_return_denied_cutoff_message">Reservations are not cancellable 60
+        minutes before the start time.</string>
+
+    <!-- Reservation window closed info -->
+    <string name="my_schedule_reservation_window_closed_info">Events are not reservable 60 minutes
+        before the start time. A portion of seats will be held and available first-come,
+        first-served onsite.</string>
+
+    <!-- Message in alert dialog when reservation failed for unknown reason. -->
+    <string name="my_schedule_reservation_request_failed_message">Server error: Request
+        failed, please try again later.</string>
+
+    <!-- Title for alert dialog when reservation cancellation failed for unknown reason. -->
+    <string name="my_schedule_request_failed_title">Request failed</string>
+
+    <!-- Title for reservation cancellation confirmation dialog -->
+    <string name="my_schedule_reservation_cancel_confirm_title">Confirm Cancellation</string>
+
+    <!-- Message in reservation cancellation confirmation dialog -->
+    <string name="my_schedule_reservation_cancel_confirm_message">Are you sure you want to
+        cancel your session reservation?</string>
+
+    <!-- Message in waitlist cancellation confirmation dialog -->
+    <string name="my_schedule_waitlist_cancel_confirm_message">Are you sure you want to cancel
+        your waitlist request?</string>
+
+    <!-- Title for waitlist cancellation confirmation dialog -->
+    <string name="my_schedule_waitlist_cancel_confirm_title">Cancel Waitlist Request</string>
+
     <!-- Accessibility description for navigation drawer -->
     <string name="navdrawer_description_a11y">Navigation Menu</string>
 

@@ -22,6 +22,7 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.annotation.VisibleForTesting;
 import android.support.v4.app.LoaderManager;
@@ -31,6 +32,15 @@ import android.support.v4.content.Loader;
 import android.text.TextUtils;
 import android.util.Pair;
 
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseException;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.google.samples.apps.iosched.Config;
 import com.google.samples.apps.iosched.archframework.ModelWithLoaderManager;
 import com.google.samples.apps.iosched.archframework.QueryEnum;
@@ -44,6 +54,7 @@ import com.google.samples.apps.iosched.provider.ScheduleContract;
 import com.google.samples.apps.iosched.provider.ScheduleContract.Sessions;
 import com.google.samples.apps.iosched.session.SessionDetailModel.SessionDetailQueryEnum;
 import com.google.samples.apps.iosched.session.SessionDetailModel.SessionDetailUserActionEnum;
+import com.google.samples.apps.iosched.session.data.QueueAction;
 import com.google.samples.apps.iosched.util.AccountUtils;
 import com.google.samples.apps.iosched.util.AnalyticsHelper;
 import com.google.samples.apps.iosched.util.SessionsHelper;
@@ -54,6 +65,21 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
+import static com.google.samples.apps.iosched.session.SessionDetailConstants.FIREBASE_NODE_QUEUE;
+import static com.google.samples.apps.iosched.session.SessionDetailConstants.FIREBASE_NODE_RESERVATIONS;
+import static com.google.samples.apps.iosched.session.SessionDetailConstants.FIREBASE_NODE_RESULTS;
+import static com.google.samples.apps.iosched.session.SessionDetailConstants.FIREBASE_NODE_SEATS;
+import static com.google.samples.apps.iosched.session.SessionDetailConstants.FIREBASE_NODE_SEATS_AVAILABLE;
+import static com.google.samples.apps.iosched.session.SessionDetailConstants.FIREBASE_NODE_SESSIONS;
+import static com.google.samples.apps.iosched.session.SessionDetailConstants.FIREBASE_NODE_STATUS;
+import static com.google.samples.apps.iosched.session.SessionDetailModel.SessionDetailQueryEnum.AUTH_REGISTRATION;
+import static com.google.samples.apps.iosched.session.SessionDetailModel.SessionDetailQueryEnum.RESERVATION_FAILED;
+import static com.google.samples.apps.iosched.session.SessionDetailModel.SessionDetailQueryEnum.RESERVATION_PENDING;
+import static com.google.samples.apps.iosched.session.SessionDetailModel.SessionDetailQueryEnum.RESERVATION_RESULT;
+import static com.google.samples.apps.iosched.session.SessionDetailModel.SessionDetailQueryEnum.RESERVATION_SEAT_AVAILABILITY;
+import static com.google.samples.apps.iosched.session.SessionDetailModel.SessionDetailQueryEnum.RESERVATION_STATUS;
+import static com.google.samples.apps.iosched.util.LogUtils.LOGD;
+import static com.google.samples.apps.iosched.util.LogUtils.LOGE;
 import static com.google.samples.apps.iosched.util.LogUtils.makeLogTag;
 
 public class SessionDetailModel extends ModelWithLoaderManager<SessionDetailQueryEnum,
@@ -105,7 +131,7 @@ public class SessionDetailModel extends ModelWithLoaderManager<SessionDetailQuer
 
     private boolean mInScheduleWhenSessionFirstLoaded;
 
-    private int mReservationStatus;
+    private int mServerReservationStatus;
 
     private boolean mIsKeynote;
 
@@ -143,6 +169,17 @@ public class SessionDetailModel extends ModelWithLoaderManager<SessionDetailQuer
 
     private TagMetadata mTagMetadata;
 
+    // Request pending
+    private boolean mReservationPending = false;
+    private boolean mReturnPending = false;
+
+    // Reservation status
+    private String mReservationStatus;
+    private String mReservationResult;
+
+    // Seats available
+    private boolean mSeatsAvailable;
+
     /**
      * Holds a list of links for the session. The first element of the {@code Pair} is the resource
      * id for the string describing the link, the second is the {@code Intent} to launch when
@@ -156,6 +193,16 @@ public class SessionDetailModel extends ModelWithLoaderManager<SessionDetailQuer
 
     private StringBuilder mBuffer = new StringBuilder();
 
+    private ValueEventListener mQueueEventListener;
+    private ValueEventListener mSessionReservationStatusEventListener;
+    private ValueEventListener mSessionReservationResultEventListener;
+    private ValueEventListener mSeatAvailabilityEventListener;
+
+    private DatabaseReference mQueueReference;
+    private DatabaseReference mSessionReservationStatusReference;
+    private DatabaseReference mSessionReservationResultReference;
+    private DatabaseReference mSeatAvailabilityReference;
+
     public SessionDetailModel(Uri sessionUri, Context context, SessionsHelper sessionsHelper,
             LoaderManager loaderManager) {
         super(SessionDetailQueryEnum.values(), SessionDetailUserActionEnum.values(), loaderManager);
@@ -163,6 +210,212 @@ public class SessionDetailModel extends ModelWithLoaderManager<SessionDetailQuer
         mSessionsHelper = sessionsHelper;
         mSessionUri = sessionUri;
         mSessionId = extractSessionId(sessionUri);
+    }
+
+    private static DatabaseReference getQueueReference(String userUid) {
+        return FirebaseDatabase.getInstance().getReference()
+                .child(FIREBASE_NODE_QUEUE)
+                .child(userUid);
+    }
+
+    private static DatabaseReference getReservationStatusReference
+            (String userUid, String sessionId) {
+        return FirebaseDatabase.getInstance().getReference()
+                .child(FIREBASE_NODE_SESSIONS)
+                .child(sessionId)
+                .child(FIREBASE_NODE_RESERVATIONS)
+                .child(userUid)
+                .child(FIREBASE_NODE_STATUS);
+    }
+
+    private static DatabaseReference getReservationResultsReference
+            (String userUid, String sessionId) {
+        return FirebaseDatabase.getInstance().getReference()
+                .child(FIREBASE_NODE_SESSIONS)
+                .child(sessionId)
+                .child(FIREBASE_NODE_RESERVATIONS)
+                .child(userUid)
+                .child(FIREBASE_NODE_RESULTS);
+    }
+
+    private static DatabaseReference getSeatAvailabilityReference(String sessionId) {
+        return FirebaseDatabase.getInstance().getReference()
+                .child(FIREBASE_NODE_SESSIONS)
+                .child(sessionId)
+                .child(FIREBASE_NODE_SEATS)
+                .child(FIREBASE_NODE_SEATS_AVAILABLE);
+    }
+
+    @Override
+    public void requestData(@NonNull SessionDetailQueryEnum query,
+            @NonNull DataQueryCallback<SessionDetailQueryEnum> callback) {
+        switch (query) {
+            case RESERVATION_PENDING:
+            case RESERVATION_STATUS:
+            case RESERVATION_RESULT:
+                mDataQueryCallbacks.put(query, callback);
+                break;
+            default:
+                super.requestData(query, callback);
+                break;
+        }
+    }
+
+    public void initReservationListeners() {
+        FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
+        if (currentUser != null) {
+            mQueueReference = getQueueReference(currentUser.getUid());
+            mSessionReservationStatusReference =
+                    getReservationStatusReference(currentUser.getUid(), mSessionId);
+            mSessionReservationResultReference =
+                    getReservationResultsReference(currentUser.getUid(), mSessionId);
+            mSeatAvailabilityReference = getSeatAvailabilityReference(mSessionId);
+
+            mSessionReservationStatusEventListener = new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    try {
+                        mReservationStatus = dataSnapshot.getValue(String.class);
+                        final DataQueryCallback<SessionDetailQueryEnum> reservationStatusCallback =
+                                mDataQueryCallbacks.get(RESERVATION_STATUS);
+                        reservationStatusCallback.onModelUpdated(SessionDetailModel.this,
+                                RESERVATION_STATUS);
+                    } catch (DatabaseException e) {
+                        LOGE(TAG, e.getMessage());
+                    }
+                }
+
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
+                    LOGE(TAG, databaseError.getMessage());
+                }
+            };
+            mSessionReservationResultEventListener = new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    try {
+                        mReservationResult = dataSnapshot.getValue(String.class);
+                        if (mReservationResult != null) {
+                            DataQueryCallback<SessionDetailQueryEnum> reservationResultCallback
+                                    = mDataQueryCallbacks.get(RESERVATION_RESULT);
+                            reservationResultCallback.onModelUpdated(SessionDetailModel.this,
+                                    RESERVATION_RESULT);
+                            mSessionReservationResultReference.removeEventListener(this);
+                        }
+                    } catch (DatabaseException e) {
+                        LOGE(TAG, e.getMessage());
+                    }
+                }
+
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
+                    LOGE(TAG, databaseError.getMessage());
+                }
+            };
+            mQueueEventListener = new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    try {
+                        DataQueryCallback<SessionDetailQueryEnum> reservationPendingCallback
+                                = mDataQueryCallbacks.get(RESERVATION_PENDING);
+                        QueueAction queueAction = dataSnapshot.getValue(QueueAction.class);
+                        if (queueAction == null) {
+                            mReturnPending = false;
+                            mReservationPending = false;
+                            mQueueReference.removeEventListener(this);
+                            reservationPendingCallback.onModelUpdated(
+                                    SessionDetailModel.this, RESERVATION_PENDING);
+                        } else {
+                            if (queueAction.action.equals("return")) {
+                                mReservationPending = false;
+                                mReturnPending = true;
+                            } else if (queueAction.action.equals("reserve")) {
+                                mReservationPending = true;
+                                mReturnPending = false;
+                            }
+                            reservationPendingCallback.onModelUpdated(
+                                    SessionDetailModel.this, RESERVATION_PENDING);
+                            mSessionReservationResultReference
+                                    .child(queueAction.requestId)
+                                    .addValueEventListener(mSessionReservationResultEventListener);
+                        }
+                    } catch (DatabaseException e) {
+                        LOGE(TAG, e.getMessage());
+                    }
+                }
+
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
+                    LOGE(TAG, databaseError.getMessage());
+                }
+            };
+            mSeatAvailabilityEventListener = new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    DataQueryCallback<SessionDetailQueryEnum> seatAvailabilityCallback
+                            = mDataQueryCallbacks.get(RESERVATION_SEAT_AVAILABILITY);
+                    Boolean seatsAvailable = dataSnapshot.getValue(Boolean.class);
+                    if (seatsAvailable != null) {
+                        mSeatsAvailable = seatsAvailable;
+                        seatAvailabilityCallback
+                                .onModelUpdated(SessionDetailModel.this,
+                                        RESERVATION_SEAT_AVAILABILITY);
+                    }
+                }
+
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
+                    LOGE(TAG, databaseError.getMessage());
+                }
+            };
+
+            mSessionReservationStatusReference.addValueEventListener(mSessionReservationStatusEventListener);
+            mSeatAvailabilityReference.addValueEventListener(mSeatAvailabilityEventListener);
+        } else {
+            LOGD(TAG, "Not signed in.");
+            invalidateReservationCache();
+            DataQueryCallback<SessionDetailQueryEnum> authCallback
+                    = mDataQueryCallbacks.get(AUTH_REGISTRATION);
+            authCallback.onModelUpdated(SessionDetailModel.this, AUTH_REGISTRATION);
+        }
+    }
+
+    private void invalidateReservationCache() {
+        mReservationStatus = null;
+        mReservationResult = null;
+        mReservationPending = false;
+        mReturnPending = false;
+    }
+
+    private void removeReservationListeners() {
+        if (mQueueEventListener != null && mQueueReference != null) {
+            mQueueReference.removeEventListener(mQueueEventListener);
+        }
+        if (mSeatAvailabilityReference != null && mSeatAvailabilityEventListener != null) {
+            mSeatAvailabilityReference.removeEventListener(mSeatAvailabilityEventListener);
+        }
+        if (mSessionReservationStatusReference != null &&
+                mSessionReservationStatusEventListener != null) {
+            mSessionReservationStatusReference
+                    .removeEventListener(mSessionReservationStatusEventListener);
+        }
+        if (mSessionReservationResultReference != null &&
+                mSessionReservationResultEventListener != null) {
+            mSessionReservationResultReference
+                    .removeEventListener(mSessionReservationResultEventListener);
+        }
+    }
+
+    public boolean getSeatsAvailability() {
+        return mSeatsAvailable;
+    }
+
+    public String getReservationStatus() {
+        return mReservationStatus;
+    }
+
+    public String getReservationResult() {
+        return mReservationResult;
     }
 
     public String getSessionId() {
@@ -277,7 +530,7 @@ public class SessionDetailModel extends ModelWithLoaderManager<SessionDetailQuer
     }
 
     public long minutesUntilSessionEnds() {
-        if(hasSessionEnded()) {
+        if (hasSessionEnded()) {
             // If session has ended, return 0 minutes until end of session.
             return 0l;
         } else {
@@ -315,7 +568,9 @@ public class SessionDetailModel extends ModelWithLoaderManager<SessionDetailQuer
         return mInScheduleWhenSessionFirstLoaded;
     }
 
-    public int getReservationStatus() { return mReservationStatus; }
+    public int getServerReservationStatus() {
+        return mServerReservationStatus;
+    }
 
     public boolean isKeynote() {
         return mIsKeynote;
@@ -415,7 +670,7 @@ public class SessionDetailModel extends ModelWithLoaderManager<SessionDetailQuer
         mInSchedule = cursor.getInt(cursor.getColumnIndex(
                 ScheduleContract.Sessions.SESSION_IN_MY_SCHEDULE)) != 0;
 
-        mReservationStatus = cursor.getInt(cursor.getColumnIndex(
+        mServerReservationStatus = cursor.getInt(cursor.getColumnIndex(
                 ScheduleContract.Sessions.SESSION_RESERVATION_STATUS));
 
         if (!mSessionLoaded) {
@@ -694,6 +949,12 @@ public class SessionDetailModel extends ModelWithLoaderManager<SessionDetailQuer
                     callback.onModelUpdated(this, action);
                 }
                 break;
+            case RESERVE:
+                attemptReserve();
+                break;
+            case RETURN:
+                attemptReturnReservation();
+                break;
             default:
                 callback.onError(action);
         }
@@ -711,7 +972,148 @@ public class SessionDetailModel extends ModelWithLoaderManager<SessionDetailQuer
 
     @Override
     public void cleanUp() {
-        // Nothing to clean up
+        removeReservationListeners();
+    }
+
+    public boolean isReservationPending() {
+        return mReservationPending;
+    }
+
+    public boolean isReturnPending() {
+        return mReturnPending;
+    }
+
+    public String generateReserveRequestId() {
+        return "" + System.currentTimeMillis();
+    }
+
+    public void attemptReserve() {
+        FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
+        if (mQueueReference != null && currentUser != null) {
+            String requestId = generateReserveRequestId();
+            QueueAction queueAction = new QueueAction(mSessionId, "reserve", requestId);
+            mQueueReference.addValueEventListener(mQueueEventListener);
+            mQueueReference.setValue(queueAction).addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception e) {
+                    LOGE(TAG, e.getMessage());
+                    mReservationPending = false;
+                    mReturnPending = false;
+                    DataQueryCallback<SessionDetailQueryEnum> reservationFailedCallback
+                            = mDataQueryCallbacks.get(RESERVATION_FAILED);
+                    reservationFailedCallback
+                            .onModelUpdated(SessionDetailModel.this, RESERVATION_FAILED);
+                }
+            });
+        }
+    }
+
+    public void attemptReturnReservation() {
+        FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
+        if (mQueueReference != null && currentUser != null) {
+            String requestId = generateReserveRequestId();
+            QueueAction queueAction = new QueueAction(mSessionId, "return", requestId);
+            mQueueReference.child(requestId).addValueEventListener(mQueueEventListener);
+            mQueueReference.setValue(queueAction).addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception e) {
+                    LOGE(TAG, e.getMessage());
+                    mReservationPending = false;
+                    mReturnPending = false;
+                    DataQueryCallback<SessionDetailQueryEnum> reservationFailedCallback
+                            = mDataQueryCallbacks.get(RESERVATION_FAILED);
+                    reservationFailedCallback
+                            .onModelUpdated(SessionDetailModel.this, RESERVATION_FAILED);
+                }
+            });
+        }
+    }
+
+    public enum SessionDetailQueryEnum implements QueryEnum {
+        SESSIONS(0, new String[]{ScheduleContract.Sessions.SESSION_START,
+                ScheduleContract.Sessions.SESSION_END,
+                ScheduleContract.Sessions.SESSION_LEVEL,
+                ScheduleContract.Sessions.SESSION_TITLE,
+                ScheduleContract.Sessions.SESSION_ABSTRACT,
+                ScheduleContract.Sessions.SESSION_REQUIREMENTS,
+                ScheduleContract.Sessions.SESSION_IN_MY_SCHEDULE,
+                ScheduleContract.Sessions.SESSION_RESERVATION_STATUS,
+                ScheduleContract.Sessions.SESSION_HASHTAG,
+                ScheduleContract.Sessions.SESSION_URL,
+                ScheduleContract.Sessions.SESSION_YOUTUBE_URL,
+                ScheduleContract.Sessions.SESSION_PDF_URL,
+                ScheduleContract.Sessions.SESSION_NOTES_URL,
+                ScheduleContract.Sessions.SESSION_LIVESTREAM_ID,
+                ScheduleContract.Sessions.SESSION_MODERATOR_URL,
+                ScheduleContract.Sessions.ROOM_ID,
+                ScheduleContract.Rooms.ROOM_NAME,
+                ScheduleContract.Sessions.SESSION_COLOR,
+                ScheduleContract.Sessions.SESSION_PHOTO_URL,
+                ScheduleContract.Sessions.SESSION_RELATED_CONTENT,
+                ScheduleContract.Sessions.SESSION_TAGS,
+                ScheduleContract.Sessions.SESSION_SPEAKER_NAMES,
+                ScheduleContract.Sessions.SESSION_MAIN_TAG}),
+        SPEAKERS(1, new String[]{ScheduleContract.Speakers.SPEAKER_NAME,
+                ScheduleContract.Speakers.SPEAKER_IMAGE_URL,
+                ScheduleContract.Speakers.SPEAKER_COMPANY,
+                ScheduleContract.Speakers.SPEAKER_ABSTRACT,
+                ScheduleContract.Speakers.SPEAKER_URL,
+                ScheduleContract.Speakers.SPEAKER_PLUSONE_URL,
+                ScheduleContract.Speakers.SPEAKER_TWITTER_URL}),
+        FEEDBACK(2, new String[]{ScheduleContract.Feedback.SESSION_ID}),
+        TAG_METADATA(3, null),
+        MY_VIEWED_VIDEOS(4, new String[]{ScheduleContract.MyViewedVideos.VIDEO_ID}),
+        RELATED(5, ScheduleItemHelper.REQUIRED_SESSION_COLUMNS),
+        RESERVATION_STATUS(6, null),
+        RESERVATION_RESULT(7, null),
+        RESERVATION_PENDING(8, null),
+        RESERVATION_FAILED(9, null),
+        RESERVATION_SEAT_AVAILABILITY(10, null),
+        AUTH_REGISTRATION(11, null);
+
+        private int id;
+
+        private String[] projection;
+
+        SessionDetailQueryEnum(int id, String[] projection) {
+            this.id = id;
+            this.projection = projection;
+        }
+
+        @Override
+        public int getId() {
+            return id;
+        }
+
+        @Override
+        public String[] getProjection() {
+            return projection;
+        }
+
+    }
+
+    public enum SessionDetailUserActionEnum implements UserActionEnum {
+        STAR(1),
+        UNSTAR(2),
+        SHOW_MAP(3),
+        SHOW_SHARE(4),
+        GIVE_FEEDBACK(5),
+        EXTENDED(6),
+        STAR_RELATED(7),
+        UNSTAR_RELATED(8),
+        RESERVE(9),
+        RETURN(10); // Cancel reservation
+        private int id;
+
+        SessionDetailUserActionEnum(int id) {
+            this.id = id;
+        }
+
+        @Override
+        public int getId() {
+            return id;
+        }
+
     }
 
     public static class Speaker {
@@ -768,85 +1170,5 @@ public class SessionDetailModel extends ModelWithLoaderManager<SessionDetailQuer
         public String getAbstract() {
             return mAbstract;
         }
-    }
-
-    public enum SessionDetailQueryEnum implements QueryEnum {
-        SESSIONS(0, new String[]{ScheduleContract.Sessions.SESSION_START,
-                ScheduleContract.Sessions.SESSION_END,
-                ScheduleContract.Sessions.SESSION_LEVEL,
-                ScheduleContract.Sessions.SESSION_TITLE,
-                ScheduleContract.Sessions.SESSION_ABSTRACT,
-                ScheduleContract.Sessions.SESSION_REQUIREMENTS,
-                ScheduleContract.Sessions.SESSION_IN_MY_SCHEDULE,
-                ScheduleContract.Sessions.SESSION_RESERVATION_STATUS,
-                ScheduleContract.Sessions.SESSION_HASHTAG,
-                ScheduleContract.Sessions.SESSION_URL,
-                ScheduleContract.Sessions.SESSION_YOUTUBE_URL,
-                ScheduleContract.Sessions.SESSION_PDF_URL,
-                ScheduleContract.Sessions.SESSION_NOTES_URL,
-                ScheduleContract.Sessions.SESSION_LIVESTREAM_ID,
-                ScheduleContract.Sessions.SESSION_MODERATOR_URL,
-                ScheduleContract.Sessions.ROOM_ID,
-                ScheduleContract.Rooms.ROOM_NAME,
-                ScheduleContract.Sessions.SESSION_COLOR,
-                ScheduleContract.Sessions.SESSION_PHOTO_URL,
-                ScheduleContract.Sessions.SESSION_RELATED_CONTENT,
-                ScheduleContract.Sessions.SESSION_TAGS,
-                ScheduleContract.Sessions.SESSION_SPEAKER_NAMES,
-                ScheduleContract.Sessions.SESSION_MAIN_TAG}),
-        SPEAKERS(1, new String[]{ScheduleContract.Speakers.SPEAKER_NAME,
-                ScheduleContract.Speakers.SPEAKER_IMAGE_URL,
-                ScheduleContract.Speakers.SPEAKER_COMPANY,
-                ScheduleContract.Speakers.SPEAKER_ABSTRACT,
-                ScheduleContract.Speakers.SPEAKER_URL,
-                ScheduleContract.Speakers.SPEAKER_PLUSONE_URL,
-                ScheduleContract.Speakers.SPEAKER_TWITTER_URL}),
-        FEEDBACK(2, new String[]{ScheduleContract.Feedback.SESSION_ID}),
-        TAG_METADATA(3, null),
-        MY_VIEWED_VIDEOS(4, new String[]{ScheduleContract.MyViewedVideos.VIDEO_ID}),
-        RELATED(5, ScheduleItemHelper.REQUIRED_SESSION_COLUMNS);
-
-        private int id;
-
-        private String[] projection;
-
-        SessionDetailQueryEnum(int id, String[] projection) {
-            this.id = id;
-            this.projection = projection;
-        }
-
-        @Override
-        public int getId() {
-            return id;
-        }
-
-        @Override
-        public String[] getProjection() {
-            return projection;
-        }
-
-    }
-
-    public enum SessionDetailUserActionEnum implements UserActionEnum {
-        STAR(1),
-        UNSTAR(2),
-        SHOW_MAP(3),
-        SHOW_SHARE(4),
-        GIVE_FEEDBACK(5),
-        EXTENDED(6),
-        STAR_RELATED(7),
-        UNSTAR_RELATED(8);
-
-        private int id;
-
-        SessionDetailUserActionEnum(int id) {
-            this.id = id;
-        }
-
-        @Override
-        public int getId() {
-            return id;
-        }
-
     }
 }

@@ -75,7 +75,7 @@ public abstract class BaseActivity extends AppCompatActivity implements
 
     // handle to our sync observer (that notifies us about changes in our sync state)
     private Object mSyncObserverHandle;
-    private MySyncStatusObserver mSyncStatusObserver = new MySyncStatusObserver(this);
+    private MySyncStatusObserver mSyncStatusObserver = new MySyncStatusObserver();
 
     /**
      * This utility method handles Up navigation intents by searching for a parent activity and
@@ -276,9 +276,10 @@ public abstract class BaseActivity extends AppCompatActivity implements
         // Perform one-time bootstrap setup, if needed
         DataBootstrapService.startDataBootstrapIfNecessary(this);
 
-        if(mSyncStatusObserver != null) {
-            mSyncStatusObserver.register(this);
+        if(mSyncStatusObserver == null) {
+            mSyncStatusObserver = new MySyncStatusObserver();
         }
+        mSyncStatusObserver.register(this);
         // Watch for sync state changes
         mSyncStatusObserver.onStatusChanged(0);
         final int mask = ContentResolver.SYNC_OBSERVER_TYPE_PENDING |
@@ -295,6 +296,7 @@ public abstract class BaseActivity extends AppCompatActivity implements
         }
         if(mSyncStatusObserver != null) {
             mSyncStatusObserver.unregister();
+            mSyncStatusObserver = null;
         }
     }
 
@@ -348,10 +350,6 @@ public abstract class BaseActivity extends AppCompatActivity implements
 
     private static class MySyncStatusObserver implements SyncStatusObserver {
         private BaseActivity mActivity;
-
-        public MySyncStatusObserver(BaseActivity activity) {
-            mActivity = activity;
-        }
 
         public void register(BaseActivity activity) {
             mActivity = activity;

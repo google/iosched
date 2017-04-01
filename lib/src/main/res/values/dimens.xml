@@ -144,4 +144,6 @@
     <!-- Info -->
     <dimen name="event_content_card_top_padding">48dp</dimen>
 
+    <!-- MySchedule -->
+    <dimen name="reserve_button_height">64dp</dimen>
 </resources>
