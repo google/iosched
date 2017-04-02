@@ -48,7 +48,6 @@ import com.google.samples.apps.iosched.ui.BaseActivity;
 import com.google.samples.apps.iosched.util.AccountUtils;
 
 import static com.google.samples.apps.iosched.util.LogUtils.LOGD;
-import static com.google.samples.apps.iosched.util.LogUtils.LOGI;
 import static com.google.samples.apps.iosched.util.LogUtils.LOGW;
 import static com.google.samples.apps.iosched.util.LogUtils.makeLogTag;
 
@@ -170,10 +169,8 @@ public class MyIOActivity extends BaseActivity implements
         myIODialogFragment.show(fm, "my_io_signed_in_dialog_frag");
     }
 
-
     public void signIn() {
         mSignInManager.signIn();
-
     }
 
     public void signOut() {
@@ -200,7 +197,7 @@ public class MyIOActivity extends BaseActivity implements
 
     @Override
     public void onConnectionFailed(@NonNull final ConnectionResult connectionResult) {
-        LOGI(TAG, "onConnectionFailed");
+        LOGW(TAG, "onConnectionFailed");
         // Anything resolvable is automatically resolved by automanage. Failure is not resolvable.
         Toast.makeText(this, R.string.google_play_services_failed,
                 Toast.LENGTH_LONG).show();

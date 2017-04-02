@@ -47,7 +47,7 @@ public class TosFragment extends WelcomeFragment {
                 // Ensure we don't run this fragment again.
                 LOGD(TAG, "Marking TOS flag.");
                 WelcomeUtils.markTosAccepted(mActivity);
-                doNext();
+                ((WelcomeActivity) mActivity).doNext();
             }
         };
     }

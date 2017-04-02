@@ -55,7 +55,7 @@ public class NotificationsFragment extends WelcomeFragment {
             public void onClick(View v) {
                 SettingsUtils.setShowNotifications(mActivity, true);
                 LOGI(TAG, "User opted in to receive notifications");
-                doNext();
+                ((WelcomeActivity) mActivity).doNext();
             }
         };
     }
@@ -67,7 +67,7 @@ public class NotificationsFragment extends WelcomeFragment {
             public void onClick(final View view) {
                 WelcomeUtils.markUserDeclinedNotificationsDuringOnboarding(mActivity);
                 LOGI(TAG, "User opted out of receiving notifications");
-                doNext();
+                ((WelcomeActivity) mActivity).doNext();
             }
         };
     }

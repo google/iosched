@@ -30,7 +30,7 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.google.samples.apps.iosched.lib.R;
-import com.google.samples.apps.iosched.myschedule.MyScheduleActivity;
+import com.google.samples.apps.iosched.myio.MyIOActivity;
 
 import static com.google.samples.apps.iosched.util.LogUtils.LOGD;
 import static com.google.samples.apps.iosched.util.LogUtils.makeLogTag;
@@ -171,16 +171,6 @@ public abstract class WelcomeFragment extends Fragment {
         public WelcomeFragmentOnClickListener(Activity activity) {
             mActivity = activity;
         }
-    }
-
-    /**
-     * Proceed to the next activity.
-     */
-    void doNext() {
-        LOGD(TAG, "Proceeding to next activity");
-        Intent intent = new Intent(mActivity, MyScheduleActivity.class);
-        startActivity(intent);
-        mActivity.finish();
     }
 
     /**

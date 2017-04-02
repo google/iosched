@@ -17,7 +17,10 @@ package com.google.samples.apps.iosched.welcome;
 
 import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.graphics.drawable.AnimatedVectorDrawableCompat;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
@@ -25,26 +28,49 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.Toast;
 
+import com.google.android.gms.auth.api.Auth;
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
+import com.google.android.gms.auth.api.signin.GoogleSignInResult;
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.common.api.Status;
 import com.google.samples.apps.iosched.lib.BuildConfig;
 import com.google.samples.apps.iosched.Config;
 import com.google.samples.apps.iosched.lib.R;
+import com.google.samples.apps.iosched.myio.MyIOActivity;
 import com.google.samples.apps.iosched.settings.SettingsUtils;
 
+import com.google.samples.apps.iosched.signin.SignInListener;
+import com.google.samples.apps.iosched.signin.SignInManager;
+import com.google.samples.apps.iosched.util.AccountUtils;
 import com.google.samples.apps.iosched.util.RegistrationUtils;
 import com.google.samples.apps.iosched.util.UIUtils;
+import com.google.samples.apps.iosched.util.WelcomeUtils;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
+
+import static com.google.samples.apps.iosched.util.LogUtils.LOGD;
+import static com.google.samples.apps.iosched.util.LogUtils.LOGW;
+import static com.google.samples.apps.iosched.util.LogUtils.makeLogTag;
 
 /**
  * Responsible for presenting a series of fragments to the user who has just installed the app as
  * part of the welcome/onboarding experience.
  */
 public class WelcomeActivity extends AppCompatActivity
-        implements WelcomeFragment.WelcomeFragmentContainer {
+        implements WelcomeFragment.WelcomeFragmentContainer,
+        GoogleApiClient.OnConnectionFailedListener, SignInListener {
 
-    public static final int REQUEST_RESOLVE_ERROR = 9999;
+    private static final String TAG = makeLogTag(WelcomeActivity.class);
+
+    private SignInManager mSignInManager;
+
+    private GoogleApiClient mGoogleApiClient;
 
     WelcomeFragment mContentFragment;
 
@@ -81,6 +107,16 @@ public class WelcomeActivity extends AppCompatActivity
         // the user authenticates and we've verified the user's registrations. For now, assume
         // the user is not an attendee.
         RegistrationUtils.setRegisteredAttendee(this, false);
+
+        GoogleSignInOptions gso = SignInManager.getGoogleSignInOptions(
+                BuildConfig.DEFAULT_WEB_CLIENT_ID);
+
+        mGoogleApiClient = new GoogleApiClient.Builder(this)
+                .enableAutoManage(this, this)
+                .addApi(Auth.GOOGLE_SIGN_IN_API, gso)
+                .build();
+
+        mSignInManager = new SignInManager(this, this, mGoogleApiClient);
     }
 
     @Override
@@ -92,6 +128,13 @@ public class WelcomeActivity extends AppCompatActivity
                 BuildConfig.ENABLE_DEBUG_TOOLS && !SettingsUtils.wasDebugWarningShown(this)) {
             displayDogfoodWarningDialog();
         }
+    }
+
+    @Override
+    protected void onActivityResult(final int requestCode, final int resultCode,
+            final Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        mSignInManager.onActivityResult(requestCode, resultCode, data);
     }
 
     /**
@@ -144,6 +187,10 @@ public class WelcomeActivity extends AppCompatActivity
         }};
     }
 
+    public void signIn() {
+        mSignInManager.signIn();
+    }
+
     @Override
     public Button getPrimaryButton() {
         return (Button) findViewById(R.id.button_accept);
@@ -166,5 +213,45 @@ public class WelcomeActivity extends AppCompatActivity
             ((ViewGroup.MarginLayoutParams) findViewById(R.id.welcome_scrolling_content)
                     .getLayoutParams()).bottomMargin = 0;
         }
+    }
+
+    @Override
+    public void onConnectionFailed(@NonNull final ConnectionResult connectionResult) {
+        LOGW(TAG, "onConnectionFailed");
+        // Anything resolvable is automatically resolved by automanage. Failure is not resolvable.
+        Toast.makeText(this, R.string.google_play_services_failed,
+                Toast.LENGTH_LONG).show();
+    }
+
+    @Override
+    public void onSignIn(final GoogleSignInResult result) {
+        doNext();
+    }
+
+    @Override
+    public void onSignOut(final Status status) {
+        // no-op, since we don't implement sign out in this activity.
+    }
+
+    /**
+     * Proceed to the next activity.
+     */
+    public void doNext() {
+        LOGD(TAG, "Proceeding to next activity");
+        Intent intent = new Intent(this, MyIOActivity.class);
+        startActivity(intent);
+    }
+
+    @Override
+    public void onSignInFailed(final GoogleSignInResult result) {
+        LOGW(TAG, "Failed to sign in: " + result);
+        Toast.makeText(this, getString(R.string.signin_failed_text), Toast.LENGTH_LONG).show();
+        // TODO: show alert?
+        doNext();
+    }
+
+    @Override
+    public void onSignOutFailed(final Status status) {
+        // no-op, since we don't implement sign out in this activity.
     }
 }
