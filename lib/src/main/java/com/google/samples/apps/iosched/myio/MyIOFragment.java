@@ -18,6 +18,7 @@ package com.google.samples.apps.iosched.myio;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.RecyclerView;
@@ -34,12 +35,29 @@ import com.google.samples.apps.iosched.myio.MyIOContract.MyIoView;
 import com.google.samples.apps.iosched.myschedule.MyScheduleActivity;
 import com.google.samples.apps.iosched.myschedule.MyScheduleModel;
 import com.google.samples.apps.iosched.provider.ScheduleContract.Sessions;
+import com.google.samples.apps.iosched.util.LogUtils;
+import com.google.samples.apps.iosched.util.TimeUtils;
 
 public class MyIOFragment extends Fragment implements MyIoView, Callbacks {
+
+    private static final String TAG = LogUtils.makeLogTag(MyIOFragment.class);
+
+    private static final long UI_REFRESH_DELAY = TimeUtils.MINUTE;
 
     private MyIoPresenter mPresenter;
     private RecyclerView mRecyclerView;
     private MyIOAdapter mAdapter;
+    private Handler mHandler;
+
+    private Runnable mUiRefreshRunnable = new Runnable() {
+        @Override
+        public void run() {
+            if (mPresenter != null) {
+                mPresenter.refreshUI(getLoaderManager());
+            }
+            maybePostUiRefreshRunnable();
+        }
+    };
 
     @Nullable
     @Override
@@ -61,7 +79,30 @@ public class MyIOFragment extends Fragment implements MyIoView, Callbacks {
         super.onActivityCreated(savedInstanceState);
         mPresenter = new MyIOPresenterImpl(getContext(), this);
         mPresenter.initModel(getLoaderManager());
+
+        mHandler = new Handler();
     }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        maybePostUiRefreshRunnable();
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        mHandler.removeCallbacks(mUiRefreshRunnable);
+    }
+
+    private void maybePostUiRefreshRunnable() {
+        if (TimeUtils.isConferenceInProgress(getContext())) {
+            mHandler.removeCallbacks(mUiRefreshRunnable);
+            mHandler.postDelayed(mUiRefreshRunnable, UI_REFRESH_DELAY);
+        }
+    }
+
+    // -- MyIoView callbacks
 
     @Override
     public void onScheduleLoaded(MyIOModel model) {
