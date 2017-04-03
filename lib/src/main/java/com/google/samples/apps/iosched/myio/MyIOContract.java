@@ -29,6 +29,8 @@ public class MyIOContract {
     interface MyIoPresenter {
 
         void initModel(LoaderManager loaderManager);
+
+        void refreshUI(LoaderManager loaderManager);
     }
 
 }

@@ -50,6 +50,12 @@ public class MyIOPresenterImpl implements MyIoPresenter {
         loaderManager.initLoader(LOADER_TAG_METADATA, null, mTagMetadataLoaderCallbacks);
     }
 
+    @Override
+    public void refreshUI(LoaderManager loaderManager) {
+        loaderManager.restartLoader(LOADER_SCHEDULE, null, mSessionsLoaderCallbacks);
+        loaderManager.restartLoader(LOADER_TAG_METADATA, null, mTagMetadataLoaderCallbacks);
+    }
+
     // -- LoaderCallbacks implementations
 
     private LoaderCallbacks<List<ScheduleItem>> mSessionsLoaderCallbacks =
