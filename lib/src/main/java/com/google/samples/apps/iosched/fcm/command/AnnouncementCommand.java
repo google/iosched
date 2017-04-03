@@ -23,7 +23,7 @@ import android.support.v4.app.NotificationCompat;
 
 import com.google.samples.apps.iosched.fcm.FcmCommand;
 import com.google.samples.apps.iosched.lib.R;
-import com.google.samples.apps.iosched.myschedule.MyScheduleActivity;
+import com.google.samples.apps.iosched.myio.MyIOActivity;
 
 import static com.google.samples.apps.iosched.util.LogUtils.LOGI;
 import static com.google.samples.apps.iosched.util.LogUtils.makeLogTag;
@@ -53,7 +53,7 @@ public class AnnouncementCommand extends FcmCommand {
                         // v21 or above on Android L, uncomment this line.
                         .setContentIntent(
                                 PendingIntent.getActivity(context, 0,
-                                        new Intent(context, MyScheduleActivity.class)
+                                        new Intent(context, MyIOActivity.class)
                                                 .setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP |
                                                         Intent.FLAG_ACTIVITY_SINGLE_TOP),
                                         0))

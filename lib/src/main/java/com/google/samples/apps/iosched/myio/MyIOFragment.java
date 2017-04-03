@@ -146,6 +146,6 @@ public class MyIOFragment extends Fragment implements MyIoView, Callbacks {
 
     @Override
     public void onAddEventsClicked(int conferenceDay) {
-        // TODO open schedule to specified day
+        MyScheduleActivity.launchScheduleForConferenceDay(getContext(), conferenceDay);
     }
 }

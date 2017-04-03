@@ -16,9 +16,7 @@
 
 package com.google.samples.apps.iosched.myschedule;
 
-import android.app.AlertDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -28,13 +26,9 @@ import android.support.v4.view.GravityCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.widget.RecyclerView;
-import android.text.SpannableString;
 import android.text.TextUtils;
-import android.text.method.LinkMovementMethod;
-import android.text.util.Linkify;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.TextView;
 
 import com.google.samples.apps.iosched.archframework.PresenterImpl;
 import com.google.samples.apps.iosched.injection.ModelProvider;
@@ -71,21 +65,26 @@ public class MyScheduleActivity extends BaseActivity implements ScheduleViewPare
      * This is used in the narrow mode, to pass in the day index to the {@link
      * MyScheduleSingleDayFragment}.
      */
-    public static final String ARG_CONFERENCE_DAY_INDEX
-            = "com.google.samples.apps.iosched.ARG_CONFERENCE_DAY_INDEX";
+    public static final String ARG_CONFERENCE_DAY_INDEX =
+            "com.google.samples.apps.iosched.ARG_CONFERENCE_DAY_INDEX";
 
-    public static final String EXTRA_DIALOG_TITLE
-            = "com.google.samples.apps.iosched.EXTRA_DIALOG_TITLE";
-    public static final String EXTRA_DIALOG_MESSAGE
-            = "com.google.samples.apps.iosched.EXTRA_DIALOG_MESSAGE";
-    public static final String EXTRA_DIALOG_YES
-            = "com.google.samples.apps.iosched.EXTRA_DIALOG_YES";
-    public static final String EXTRA_DIALOG_NO
-            = "com.google.samples.apps.iosched.EXTRA_DIALOG_NO";
-    public static final String EXTRA_DIALOG_URL
-            = "com.google.samples.apps.iosched.EXTRA_DIALOG_URL";
+    /**
+     * Int extra used to indicate a specific conference day should shown initially when the screen
+     * is launched. Conference days are zero-indexed.
+     */
+    public static final String EXTRA_CONFERENCE_DAY =
+            "com.google.samples.apps.iosched.EXTRA_CONFERENCE_DAY_INDEX";
 
+    /**
+     * String extra used to specify a tag to filter sessions on the schedule when the screen
+     * launches.
+     */
     public static final String EXTRA_FILTER_TAG = ScheduleFilterFragment.FILTER_TAG;
+
+    /**
+     * Boolean extra used to specify that the live streamed only sessions filter should be activated
+     * when the screen launches.
+     */
     public static final String EXTRA_SHOW_LIVE_STREAM_SESSIONS =
             ScheduleFilterFragment.SHOW_LIVE_STREAMED_ONLY;
 
@@ -99,7 +98,7 @@ public class MyScheduleActivity extends BaseActivity implements ScheduleViewPare
      * Interval that a timer will redraw the UI during the conference, so that time sensitive
      * widgets, like the "Now" and "Ended" indicators can be properly updated.
      */
-    private static final long INTERVAL_TO_REDRAW_UI = 1 * TimeUtils.MINUTE;
+    private static final long INTERVAL_TO_REDRAW_UI = TimeUtils.MINUTE;
 
     private static final String SCREEN_LABEL = "My Schedule";
 
@@ -109,7 +108,7 @@ public class MyScheduleActivity extends BaseActivity implements ScheduleViewPare
 
     private ScheduleFilterFragment mScheduleFilterFragment;
 
-    private boolean mShowedAnnouncementDialog = false;
+    private MySchedulePagerFragment mSchedulePagerFragment;
 
     private final Handler mUpdateUiHandler = new Handler();
 
@@ -126,6 +125,13 @@ public class MyScheduleActivity extends BaseActivity implements ScheduleViewPare
         context.startActivity(intent);
     }
 
+    public static void launchScheduleForConferenceDay(Context context, int day) {
+        Intent intent = new Intent(context, MyScheduleActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        intent.putExtra(EXTRA_CONFERENCE_DAY, day);
+        context.startActivity(intent);
+    }
+
     @Override
     protected NavigationModel.NavigationItemEnum getSelfNavDrawerItem() {
         return NavigationModel.NavigationItemEnum.MY_SCHEDULE;
@@ -134,9 +140,13 @@ public class MyScheduleActivity extends BaseActivity implements ScheduleViewPare
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.my_schedule_act);
 
-        launchSessionDetailIfRequiredByIntent(getIntent());
+        launchSessionDetailIfRequiredByIntent(getIntent()); // might call finish()
+        if (isFinishing()) {
+            return;
+        }
+
+        setContentView(R.layout.my_schedule_act);
 
         mScheduleFilterFragment = (ScheduleFilterFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.filter_drawer);
@@ -146,6 +156,8 @@ public class MyScheduleActivity extends BaseActivity implements ScheduleViewPare
                 reloadSchedule(filterHolder);
             }
         });
+        mSchedulePagerFragment = (MySchedulePagerFragment) getSupportFragmentManager()
+                .findFragmentById(R.id.my_content);
 
         if (savedInstanceState == null) {
             mScheduleFilterFragment.initWithArguments(intentToFragmentArguments(getIntent()));
@@ -154,8 +166,24 @@ public class MyScheduleActivity extends BaseActivity implements ScheduleViewPare
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
 
         initPresenter();
-
+        if (savedInstanceState == null) {
+            // first time through, check for extras
+            processIntent(getIntent());
+        }
         overridePendingTransition(0, 0);
+    }
+
+    private void processIntent(Intent intent) {
+        if (intent.hasExtra(EXTRA_CONFERENCE_DAY)) {
+            int day = intent.getIntExtra(EXTRA_CONFERENCE_DAY, -1);
+            // clear filters and show the selected day
+            mScheduleFilterFragment.clearFilters();
+            mSchedulePagerFragment.scrollToConferenceDay(day);
+        } else if (intent.hasExtra(EXTRA_FILTER_TAG)
+                || intent.hasExtra(EXTRA_SHOW_LIVE_STREAM_SESSIONS)) {
+            // apply the requested filter
+            mScheduleFilterFragment.initWithArguments(intentToFragmentArguments(intent));
+        }
     }
 
     @Override
@@ -165,8 +193,6 @@ public class MyScheduleActivity extends BaseActivity implements ScheduleViewPare
         if (TimeUtils.isConferenceInProgress(this)) {
             scheduleNextUiUpdate();
         }
-
-        showAnnouncementDialogIfNeeded(getIntent());
     }
 
     /**
@@ -222,15 +248,17 @@ public class MyScheduleActivity extends BaseActivity implements ScheduleViewPare
     @Override
     protected void onNewIntent(Intent intent) {
         super.onNewIntent(intent);
-        launchSessionDetailIfRequiredByIntent(intent);
         LOGD(TAG, "onNewIntent, extras " + intent.getExtras());
-        if (intent.hasExtra(EXTRA_DIALOG_MESSAGE)) {
-            mShowedAnnouncementDialog = false;
-            showAnnouncementDialogIfNeeded(intent);
+
+        launchSessionDetailIfRequiredByIntent(intent); // might call finish()
+        if (isFinishing()) {
+            return;
         }
 
         setIntent(intent);
-        mScheduleFilterFragment.initWithArguments(intentToFragmentArguments(intent));
+        if (!isFinishing()) {
+            processIntent(intent);
+        }
     }
 
     @Override
@@ -252,56 +280,6 @@ public class MyScheduleActivity extends BaseActivity implements ScheduleViewPare
         }
 
         return false;
-    }
-
-    private void showAnnouncementDialogIfNeeded(Intent intent) {
-        final String title = intent.getStringExtra(EXTRA_DIALOG_TITLE);
-        final String message = intent.getStringExtra(EXTRA_DIALOG_MESSAGE);
-
-        if (!mShowedAnnouncementDialog && !TextUtils.isEmpty(title) && !TextUtils
-                .isEmpty(message)) {
-            LOGD(TAG, "showAnnouncementDialogIfNeeded, title: " + title);
-            LOGD(TAG, "showAnnouncementDialogIfNeeded, message: " + message);
-            final String yes = intent.getStringExtra(EXTRA_DIALOG_YES);
-            LOGD(TAG, "showAnnouncementDialogIfNeeded, yes: " + yes);
-            final String no = intent.getStringExtra(EXTRA_DIALOG_NO);
-            LOGD(TAG, "showAnnouncementDialogIfNeeded, no: " + no);
-            final String url = intent.getStringExtra(EXTRA_DIALOG_URL);
-            LOGD(TAG, "showAnnouncementDialogIfNeeded, url: " + url);
-            final SpannableString spannable = new SpannableString(message == null ? "" : message);
-            Linkify.addLinks(spannable, Linkify.WEB_URLS);
-
-            AlertDialog.Builder builder = new AlertDialog.Builder(this);
-            if (!TextUtils.isEmpty(title)) {
-                builder.setTitle(title);
-            }
-            builder.setMessage(spannable);
-            if (!TextUtils.isEmpty(no)) {
-                builder.setNegativeButton(no, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.cancel();
-                    }
-                });
-            }
-            if (!TextUtils.isEmpty(yes)) {
-                builder.setPositiveButton(yes, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
-                        startActivity(intent);
-                    }
-                });
-            }
-            final AlertDialog dialog = builder.create();
-            dialog.show();
-            final TextView messageView = (TextView) dialog.findViewById(android.R.id.message);
-            if (messageView != null) {
-                // makes the embedded links in the text clickable, if there are any
-                messageView.setMovementMethod(LinkMovementMethod.getInstance());
-            }
-            mShowedAnnouncementDialog = true;
-        }
     }
 
     @Override
