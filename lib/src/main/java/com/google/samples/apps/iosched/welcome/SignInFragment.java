@@ -89,7 +89,6 @@ public class SignInFragment extends WelcomeFragment {
                 WelcomeUtils.markUserAttemptedOnboardingSignIn(mActivity);
                 // Let the activity handle the sign in flow.
                 ((WelcomeActivity) mActivity).signIn();
-                mActivity.finish();
             }
         };
     }

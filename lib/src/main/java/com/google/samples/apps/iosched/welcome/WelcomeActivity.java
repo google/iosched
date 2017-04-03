@@ -239,7 +239,9 @@ public class WelcomeActivity extends AppCompatActivity
     public void doNext() {
         LOGD(TAG, "Proceeding to next activity");
         Intent intent = new Intent(this, MyIOActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         startActivity(intent);
+        finish();
     }
 
     @Override
