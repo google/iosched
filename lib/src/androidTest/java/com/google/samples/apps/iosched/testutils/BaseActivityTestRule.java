@@ -60,33 +60,36 @@ public class BaseActivityTestRule<T extends Activity> extends IntentsTestRule<T>
         mAttending = attending;
     }
 
-    @Override
-    protected void beforeActivityLaunched() {
-        if (mAttending) {
-            prepareActivityForInPersonAttendee();
-        } else {
-            prepareActivityForRemoteAttendee();
-        }
-        ModelProvider.setStubModel(mModel);
-    }
+//    DISABLED: Broken
+//    @Override
+//    protected void beforeActivityLaunched() {
+//        if (mAttending) {
+//            prepareActivityForInPersonAttendee();
+//        } else {
+//            prepareActivityForRemoteAttendee();
+//        }
+//        ModelProvider.setStubModel(mModel);
+//    }
 
-    private void prepareActivityForRemoteAttendee() {
-        bypassToS();
-        RegistrationUtils.setRegisteredAttendee(InstrumentationRegistry.getTargetContext(), false);
-        selectFirstAccount();
-    }
+//    DISABLED: Broken
+//    private void prepareActivityForRemoteAttendee() {
+//        bypassToS();
+//        RegistrationUtils.setRegisteredAttendee(InstrumentationRegistry.getTargetContext(), false);
+//        selectFirstAccount();
+//    }
 
-    // TODO: revisit once the new auth flow is in place.
-    protected void prepareActivityForInPersonAttendee() {
-        bypassToS();
-        RegistrationUtils.setRegisteredAttendee(InstrumentationRegistry.getTargetContext(), true);
-        selectFirstAccount();
-        disableConferenceMessages();
-    }
+//    DISABLED: Broken
+//    // TODO: revisit once the new auth flow is in place.
+//    protected void prepareActivityForInPersonAttendee() {
+//        bypassToS();
+//        RegistrationUtils.setRegisteredAttendee(InstrumentationRegistry.getTargetContext(), true);
+//        selectFirstAccount();
+//        disableConferenceMessages();
+//    }
 
-    private void bypassToS() {
-        SettingsUtils.markTosAccepted(InstrumentationRegistry.getTargetContext(), true);
-    }
+//    private void bypassToS() {
+//        SettingsUtils.markTosAccepted(InstrumentationRegistry.getTargetContext(), true);
+//    }
 
     private void selectFirstAccount() {
         List<Account> availableAccounts = new ArrayList<>(

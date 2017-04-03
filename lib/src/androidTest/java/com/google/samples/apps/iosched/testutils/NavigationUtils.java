@@ -54,12 +54,13 @@ public class NavigationUtils {
         NavigationUtils.checkScreenTitleIsDisplayed(expectedTitleResource);
     }
 
-    public static void cleanUpActivityStack(ActivityTestRule rule) {
-        // Selecting Explore activity will clean up the activity stack, leaving only the explore
-        // activity, which can then be finished
-        onView(getNavigationItemMatcher(R.id.explore_nav_item)).perform(click());
-        rule.getActivity().finish();
-    }
+//    DISABLED: Broken
+//    public static void cleanUpActivityStack(ActivityTestRule rule) {
+//        // Selecting Explore activity will clean up the activity stack, leaving only the explore
+//        // activity, which can then be finished
+//        onView(getNavigationItemMatcher(R.id.explore_nav_item)).perform(click());
+//        rule.getActivity().finish();
+//    }
 
     /**
      * Checks that the {@code expectedSelectedItem} is checked in the navigation drawer, and that no

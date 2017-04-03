@@ -122,32 +122,33 @@ public class MyScheduleActivity_InteractionsTest {
 //                .perform(click());
 //    }
 
-    /**
-     * This assumes that the screen shows a list of available sessions. It adds the first one to the
-     * schedule then goes back to the schedule screen.
-     *
-     * @return the title of the session that was added
-     */
-    private String addFirstAvailableSession() {
-        onData(is(instanceOf(Integer.class))).inAdapterView(withId(R.id.sessions_list))
-                                             .atPosition(0).perform(click());
-
-        // Session details screen
-        String title = MatchersHelper.getText(withId(R.id.session_title));
-        onView(withId(R.id.add_schedule_button)).perform(click());
-
-        onView(withContentDescription(InstrumentationRegistry.getTargetContext()
-                                                             .getString(
-                                                                     R.string.close_and_go_back)))
-                .perform(click());
-        onView(withContentDescription(InstrumentationRegistry.getTargetContext()
-                                                             .getString(
-                                                                     R.string.close_and_go_back)))
-                .perform(click());
-
-        return title;
-    }
-
+//    DISABLED: Broken
+//    /**
+//     * This assumes that the screen shows a list of available sessions. It adds the first one to the
+//     * schedule then goes back to the schedule screen.
+//     *
+//     * @return the title of the session that was added
+//     */
+//    private String addFirstAvailableSession() {
+//        onData(is(instanceOf(Integer.class))).inAdapterView(withId(R.id.sessions_list))
+//                                             .atPosition(0).perform(click());
+//
+//        // Session details screen
+//        String title = MatchersHelper.getText(withId(R.id.session_title));
+//        onView(withId(R.id.add_schedule_button)).perform(click());
+//
+//        onView(withContentDescription(InstrumentationRegistry.getTargetContext()
+//                                                             .getString(
+//                                                                     R.string.close_and_go_back)))
+//                .perform(click());
+//        onView(withContentDescription(InstrumentationRegistry.getTargetContext()
+//                                                             .getString(
+//                                                                     R.string.close_and_go_back)))
+//                .perform(click());
+//
+//        return title;
+//    }
+//
     private void removeSessionFromSchedule(String sessionTitle) {
         onView(withText(sessionTitle)).perform(click());
         onView(withId(R.id.add_schedule_button)).perform(click());

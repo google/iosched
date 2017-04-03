@@ -34,9 +34,10 @@ public class SettingsActivityTest {
     public BaseActivityTestRule<SettingsActivity> mActivityRule =
             new BaseActivityTestRule<>(SettingsActivity.class, null, true);
 
-    @Test
-    @Suppress // We don't currently show the bottom nav here
-    public void navigation_WhenShown_CorrectItemIsSelected() {
-        NavigationUtils.checkNavigationItemIsSelected(NavigationModel.NavigationItemEnum.SETTINGS);
-    }
+//    DISABLED: Broken
+//    @Test
+//    @Suppress // We don't currently show the bottom nav here
+//    public void navigation_WhenShown_CorrectItemIsSelected() {
+//        NavigationUtils.checkNavigationItemIsSelected(NavigationModel.NavigationItemEnum.SETTINGS);
+//    }
 }

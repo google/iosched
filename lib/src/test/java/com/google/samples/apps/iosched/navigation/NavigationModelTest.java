@@ -81,9 +81,10 @@ public class NavigationModelTest {
         SettingsMockContext.initMockContextForLoggedInStatus(loggedIn, mMockContext);
     }
 
-    private NavigationItemEnum[] appendDebugIfRequired(NavigationItemEnum[] items) {
-        return BuildConfig.DEBUG ? NavigationConfig.appendItem(items,
-                NavigationModel.NavigationItemEnum.DEBUG) :
-                items;
-    }
+//    DISABLED: Broken
+//    private NavigationItemEnum[] appendDebugIfRequired(NavigationItemEnum[] items) {
+//        return BuildConfig.DEBUG ? NavigationConfig.appendItem(items,
+//                NavigationModel.NavigationItemEnum.DEBUG) :
+//                items;
+//    }
 }
