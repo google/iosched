@@ -171,16 +171,24 @@ public class MessageCardHelper {
     }
 
     /**
-     * Return the sign in prompt message
+     * The card displayed on My I/O to a non-signed in user immediately after onboarding.
      */
-    public static MessageData getSignInPromptMessageData() {
+    public static MessageData notSignedInCard() {
         MessageData messageData = new MessageData();
         messageData.setMessageStringResourceId(R.string.signin_message);
-        messageData.setStartButtonStringResourceId(R.string.signin_prompt_dismiss);
+        messageData.setStartButtonStringResourceId(R.string.signin_prompt_skip);
         messageData.setEndButtonStringResourceId(R.string.signin_prompt);
+        return messageData;
+    }
 
-        // TODO Add actions here
-
+    /**
+     * The card displayed on My I/O to a signed in user immediately after onboarding.
+     */
+    public static MessageData signedInMessageCard() {
+        MessageData messageData = new MessageData();
+        messageData.setMessageStringResourceId(
+                R.string.signed_in_card_message);
+        messageData.setStartButtonStringResourceId(R.string.signin_prompt_dismiss);
         return messageData;
     }
 
@@ -218,7 +226,7 @@ public class MessageCardHelper {
      */
     public static MessageData getNextMessageCard(@NonNull Context context) {
         if (shouldShowCard(context, ConfMessageCard.SIGN_IN_PROMPT)) {
-            return getSignInPromptMessageData();
+            return notSignedInCard();
         }
         if (shouldShowCard(context, ConfMessageCard.SESSION_NOTIFICATIONS)) {
             return getNotificationsOptInMessageData();

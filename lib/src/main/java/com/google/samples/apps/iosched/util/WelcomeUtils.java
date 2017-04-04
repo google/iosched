@@ -50,6 +50,12 @@ public class WelcomeUtils {
             Constants.CONFERENCE_YEAR_PREF_POSTFIX;
 
     /**
+     * Boolean for tracking whether to show post-onboarding message card.
+     */
+    private static final String PREF_SHOW_POST_ONBOARDING_CARD =
+            "pref_show_onboarding_card" + Constants.CONFERENCE_YEAR_PREF_POSTFIX;
+
+    /**
      * Return true if user has accepted the {@link WelcomeActivity Tos}, false if they haven't.
      *
      * @param context Context to be used to lookup the {@link android.content.SharedPreferences}.
@@ -128,5 +134,24 @@ public class WelcomeUtils {
     public static void markUserRefusedOnboardingSignIn(final Context context) {
         SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(context);
         sp.edit().putBoolean(PREF_USER_REFUSED_SIGN_IN, true).apply();
+    }
+
+    /**
+     * Returns true if the user has clicked on the post-onboarding card displayed on My I/O. -->
+     * @param context Context to be used to edit the {@link android.content.SharedPreferences}.
+     */
+    public static boolean showPostOnboardingCard(final Context context) {
+        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(context);
+        return sp.getBoolean(PREF_SHOW_POST_ONBOARDING_CARD, true);
+    }
+
+    /**
+     * Mark that the user explicitly chose not to sign in during onboarding.
+     *
+     * @param context Context to be used to edit the {@link android.content.SharedPreferences}.
+     */
+    public static void markHidePostOnboardingCard(final Context context) {
+        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(context);
+        sp.edit().putBoolean(PREF_SHOW_POST_ONBOARDING_CARD, false).apply();
     }
 }

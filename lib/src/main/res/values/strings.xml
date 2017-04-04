@@ -690,11 +690,20 @@
         time.
     </string>
 
+    <!-- Message displayed in a card to the user on the My I/O screen after they have signed in. -->
+    <string name="signed_in_card_message">
+        Your saved and reserved events appear below and are synced from your account across
+        mobile and desktop.
+    </string>
+
     <!-- Label used when asking a user to sign out. -->
     <string name="signout_prompt">Sign out</string>
 
     <!-- Label used on the onboarding sign in screen for skipping sign in. -->
-    <string name="signin_prompt_dismiss">Skip</string>
+    <string name="signin_prompt_skip">Skip</string>
+
+    <!-- Label used for the user to dismiss a card. -->
+    <string name="signin_prompt_dismiss">Dismiss</string>
 
     <!-- A placeholder value for the user's name in the My I/O dialog -->
     <string name="my_io_dialog_default_name">Your name</string>
@@ -808,4 +817,5 @@
         \n\nBadge pick-up: Everyone is guaranteed a seat for the keynote but the best seats will be
         assigned on a first-come, first-served basis. Badge pick-up starts at 7:00AM on May 17 so
         make sure to come by early!</string>
+
 </resources>

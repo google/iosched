@@ -59,6 +59,13 @@ public class MyIOFragment extends Fragment implements MyIoView, Callbacks {
         }
     };
 
+    /**
+     * Asks {@link MyIOAdapter} to remove the post onboarding message card.
+     */
+    public void removePostOnboardingMessageCard() {
+        mAdapter.removePostOnboardingMessageCard();
+    }
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container,

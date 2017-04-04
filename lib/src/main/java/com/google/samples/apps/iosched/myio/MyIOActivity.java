@@ -52,6 +52,7 @@ import com.google.samples.apps.iosched.signin.SignInListener;
 import com.google.samples.apps.iosched.signin.SignInManager;
 import com.google.samples.apps.iosched.ui.BaseActivity;
 import com.google.samples.apps.iosched.util.AccountUtils;
+import com.google.samples.apps.iosched.util.WelcomeUtils;
 
 import static com.google.samples.apps.iosched.util.LogUtils.LOGD;
 import static com.google.samples.apps.iosched.util.LogUtils.LOGW;
@@ -232,6 +233,16 @@ public class MyIOActivity extends BaseActivity implements
         }
     }
 
+    /**
+     Asks {@link MyIOFragment} to remove the post onboarding message card.
+     */
+    public void removePostOnboardingMessageCard() {
+        WelcomeUtils.markHidePostOnboardingCard(this);
+        final MyIOFragment contentFragment = (MyIOFragment) getSupportFragmentManager()
+                .findFragmentById(R.id.my_content);
+        contentFragment.removePostOnboardingMessageCard();
+    }
+
     @Override
     public void onConnectionSuspended(final int i) {
         LOGW(TAG, "GoogleApiClient suspended");
@@ -248,6 +259,7 @@ public class MyIOActivity extends BaseActivity implements
     @Override
     public void onSignIn(GoogleSignInResult result) {
         showAvatar();
+        removePostOnboardingMessageCard();
     }
 
     @Override
@@ -258,6 +270,7 @@ public class MyIOActivity extends BaseActivity implements
 
     @Override
     public void onSignOut(Status status) {
+        removePostOnboardingMessageCard();
         mAvatar.setIcon(getResources().getDrawable(R.drawable.ic_default_avatar));
     }
 
