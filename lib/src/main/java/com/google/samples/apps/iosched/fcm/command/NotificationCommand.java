@@ -27,7 +27,7 @@ import android.text.TextUtils;
 import com.google.gson.Gson;
 import com.google.samples.apps.iosched.fcm.FcmCommand;
 import com.google.samples.apps.iosched.lib.R;
-import com.google.samples.apps.iosched.myschedule.MyScheduleActivity;
+import com.google.samples.apps.iosched.myio.MyIOActivity;
 import com.google.samples.apps.iosched.util.RegistrationUtils;
 import com.google.samples.apps.iosched.util.TimeUtils;
 
@@ -96,7 +96,8 @@ public class NotificationCommand extends FcmCommand {
                     maxVersion = Integer.parseInt(command.maxVersion);
                 }
                 LOGD(TAG, "Version range: " + minVersion + " - " + maxVersion);
-                PackageInfo pinfo = context.getPackageManager().getPackageInfo(context.getPackageName(), 0);
+                PackageInfo pinfo = context.getPackageManager()
+                        .getPackageInfo(context.getPackageName(), 0);
                 LOGD(TAG, "My version code: " + pinfo.versionCode);
                 if (pinfo.versionCode < minVersion) {
                     LOGD(TAG, "Skipping command because our version is too old, "
@@ -122,14 +123,14 @@ public class NotificationCommand extends FcmCommand {
         LOGD(TAG, "Checking audience: " + command.audience);
         if ("remote".equals(command.audience)) {
             if (RegistrationUtils.isRegisteredAttendee(context)) {
-                LOGD(TAG, "Ignoring notification because audience is remote and attendee is on-site");
+                LOGD(TAG, "Ignoring notification for remote audience (attendee is on-site).");
                 return;
             } else {
                 LOGD(TAG, "Relevant (attendee is remote).");
             }
         } else if ("local".equals(command.audience)) {
             if (!RegistrationUtils.isRegisteredAttendee(context)) {
-                LOGD(TAG, "Ignoring notification because audience is on-site and attendee is remote.");
+                LOGD(TAG, "Ignoring notification for on-site audience (attendee is remote).");
                 return;
             } else {
                 LOGD(TAG, "Relevant (attendee is local).");
@@ -144,13 +145,13 @@ public class NotificationCommand extends FcmCommand {
         // Check if it expired
         Date expiry = command.expiry == null ? null : TimeUtils.parseTimestamp(command.expiry);
         if (expiry == null) {
-            LOGW(TAG, "Failed to parse expiry field of FCM notification command: " + command.expiry);
+            LOGW(TAG, "Failed to parse expiry of FCM notification command: " + command.expiry);
             return;
         } else if (expiry.getTime() < TimeUtils.getCurrentTime(context)) {
             LOGW(TAG, "Got expired FCM notification command. Expiry: " + expiry.toString());
             return;
         } else {
-            LOGD(TAG, "Message is still valid (expiry is in the future: " + expiry.toString() + ")");
+            LOGD(TAG, "Message still valid (expiry is in the future: " + expiry.toString() + ")");
         }
 
         // decide the intent that will be fired when the user clicks the notification
@@ -158,27 +159,22 @@ public class NotificationCommand extends FcmCommand {
         if (TextUtils.isEmpty(command.dialogText)) {
             // notification leads directly to the URL, no dialog
             if (TextUtils.isEmpty(command.url)) {
-                intent = new Intent(context, MyScheduleActivity.class).setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP |
-                        Intent.FLAG_ACTIVITY_SINGLE_TOP);
+                intent = new Intent(context, MyIOActivity.class)
+                        .setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
             } else {
                 intent = new Intent(Intent.ACTION_VIEW, Uri.parse(command.url));
             }
         } else {
             // use a dialog
-            intent = new Intent(context, MyScheduleActivity.class).setFlags(
-                    Intent.FLAG_ACTIVITY_CLEAR_TOP |
-                            Intent.FLAG_ACTIVITY_SINGLE_TOP |
-                            Intent.FLAG_ACTIVITY_CLEAR_TASK);
-            intent.putExtra(MyScheduleActivity.EXTRA_DIALOG_TITLE,
-                    command.dialogTitle == null ? "" : command.dialogTitle);
-            intent.putExtra(MyScheduleActivity.EXTRA_DIALOG_MESSAGE,
-                    command.dialogText == null ? "" : command.dialogText);
-            intent.putExtra(MyScheduleActivity.EXTRA_DIALOG_YES,
-                    command.dialogYes == null ? "OK" : command.dialogYes);
-            intent.putExtra(MyScheduleActivity.EXTRA_DIALOG_NO,
-                    command.dialogNo == null ? "" : command.dialogNo);
-            intent.putExtra(MyScheduleActivity.EXTRA_DIALOG_URL,
-                    command.url == null ? "" : command.url);
+            intent = new Intent(context, MyIOActivity.class)
+                    .setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP |
+                            Intent.FLAG_ACTIVITY_CLEAR_TASK)
+                    .putExtra(MyIOActivity.EXTRA_DIALOG_TITLE, command.dialogTitle)
+                    .putExtra(MyIOActivity.EXTRA_DIALOG_MESSAGE, command.dialogText)
+                    .putExtra(MyIOActivity.EXTRA_DIALOG_URL, command.url)
+                    .putExtra(MyIOActivity.EXTRA_DIALOG_NO, command.dialogNo)
+                    .putExtra(MyIOActivity.EXTRA_DIALOG_YES,
+                            command.dialogYes == null ? "OK" : command.dialogYes);
         }
 
         final String title = TextUtils.isEmpty(command.title) ?

@@ -97,10 +97,10 @@ public class MySchedulePagerFragment extends Fragment implements ScheduleView {
 
     @Override
     public boolean canSwipeRefreshChildScrollUp() {
-        for (MyScheduleSingleDayFragment fragment : mViewPagerAdapter.getFragments()) {
-            if (fragment.getUserVisibleHint()) {
-                return ViewCompat.canScrollVertically(fragment.getRecyclerView(), -1);
-            }
+        MyScheduleSingleDayFragment currentFragment =
+                mViewPagerAdapter.getFragments()[mViewPager.getCurrentItem()];
+        if (currentFragment.getUserVisibleHint()) {
+            return ViewCompat.canScrollVertically(currentFragment.getRecyclerView(), -1);
         }
         return false;
     }
@@ -191,7 +191,7 @@ public class MySchedulePagerFragment extends Fragment implements ScheduleView {
 
         calculateCurrentDay();
         if (mViewPager != null) {
-            showDay(mToday);
+            scrollToConferenceDay(mToday);
         }
 
         if(BuildConfig.DEBUG) {
@@ -228,23 +228,23 @@ public class MySchedulePagerFragment extends Fragment implements ScheduleView {
         final long now = TimeUtils.getCurrentTime(getContext());
 
         // If we are before or after the conference, the first day is considered the current day
-        mToday = 1;
+        mToday = 0;
 
         for (int i = 0; i < Config.CONFERENCE_DAYS.length; i++) {
             if (now >= Config.CONFERENCE_DAYS[i][0] && now <= Config.CONFERENCE_DAYS[i][1]) {
                 // mToday is set to 1 for the first day, 2 for the second etc
-                mToday = i + 1;
+                mToday = i;
                 break;
             }
         }
     }
 
     /**
-     * @param day Pass in 1 for the first day, 2 for the second etc
+     * @param day The zero-indexed conference day.
      */
-    private void showDay(int day) {
+    public void scrollToConferenceDay(int day) {
         int preConferenceDays = MyScheduleModel.showPreConferenceData(getContext()) ? 1 : 0;
-        mViewPager.setCurrentItem(day - 1 + preConferenceDays);
+        mViewPager.setCurrentItem(day + preConferenceDays);
     }
 
     public MyScheduleSingleDayFragment[] getDayFragments() {

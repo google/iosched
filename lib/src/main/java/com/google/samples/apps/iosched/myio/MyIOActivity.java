@@ -14,6 +14,8 @@
 
 package com.google.samples.apps.iosched.myio;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
@@ -24,8 +26,13 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.graphics.drawable.RoundedBitmapDrawable;
 import android.support.v4.graphics.drawable.RoundedBitmapDrawableFactory;
+import android.text.SpannableString;
+import android.text.TextUtils;
+import android.text.method.LinkMovementMethod;
+import android.text.util.Linkify;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
@@ -44,7 +51,6 @@ import com.google.samples.apps.iosched.navigation.NavigationModel;
 import com.google.samples.apps.iosched.signin.SignInListener;
 import com.google.samples.apps.iosched.signin.SignInManager;
 import com.google.samples.apps.iosched.ui.BaseActivity;
-
 import com.google.samples.apps.iosched.util.AccountUtils;
 
 import static com.google.samples.apps.iosched.util.LogUtils.LOGD;
@@ -62,6 +68,18 @@ public class MyIOActivity extends BaseActivity implements
 
     private static final String SCREEN_LABEL = "My I/O";
 
+    // intent extras used to show an arbitrary message sent via FCM
+    public static final String EXTRA_DIALOG_TITLE
+            = "com.google.samples.apps.iosched.EXTRA_DIALOG_TITLE";
+    public static final String EXTRA_DIALOG_MESSAGE
+            = "com.google.samples.apps.iosched.EXTRA_DIALOG_MESSAGE";
+    public static final String EXTRA_DIALOG_YES
+            = "com.google.samples.apps.iosched.EXTRA_DIALOG_YES";
+    public static final String EXTRA_DIALOG_NO
+            = "com.google.samples.apps.iosched.EXTRA_DIALOG_NO";
+    public static final String EXTRA_DIALOG_URL
+            = "com.google.samples.apps.iosched.EXTRA_DIALOG_URL";
+
     private GoogleApiClient mGoogleApiClient;
 
     /**
@@ -73,21 +91,9 @@ public class MyIOActivity extends BaseActivity implements
 
     private SignInManager mSignInManager;
 
-    @Override
-    protected void onCreate(final Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.myio_act);
+    private boolean mIsResumed;
 
-        GoogleSignInOptions gso = SignInManager.getGoogleSignInOptions(
-                BuildConfig.DEFAULT_WEB_CLIENT_ID);
-
-        mGoogleApiClient = new GoogleApiClient.Builder(this)
-                .enableAutoManage(this, this)
-                .addApi(Auth.GOOGLE_SIGN_IN_API, gso)
-                .build();
-
-        mSignInManager = new SignInManager(this, this, mGoogleApiClient);
-    }
+    // -- BaseActivity overrides
 
     @Override
     protected NavigationModel.NavigationItemEnum getSelfNavDrawerItem() {
@@ -111,6 +117,41 @@ public class MyIOActivity extends BaseActivity implements
         return SCREEN_LABEL;
     }
 
+    // -- Lifecycle callbacks
+
+    @Override
+    protected void onCreate(final Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.myio_act);
+
+        GoogleSignInOptions gso = SignInManager.getGoogleSignInOptions(
+                BuildConfig.DEFAULT_WEB_CLIENT_ID);
+
+        mGoogleApiClient = new GoogleApiClient.Builder(this).enableAutoManage(this, this).addApi(
+                Auth.GOOGLE_SIGN_IN_API, gso).build();
+
+        mSignInManager = new SignInManager(this, this, mGoogleApiClient);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        mIsResumed = true;
+        showAnnouncementDialogIfNeeded(getIntent());
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        mIsResumed = false;
+    }
+
+    @Override
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+        setIntent(intent);
+        showAnnouncementDialogIfNeeded(intent);
+    }
 
     @Override
     public boolean onPrepareOptionsMenu(Menu menu) {
@@ -144,6 +185,8 @@ public class MyIOActivity extends BaseActivity implements
         mSignInManager.onActivityResult(requestCode, resultCode, data);
     }
 
+    // -- Auth
+
     private void showAvatar() {
         Uri photoUrl = AccountUtils.getActiveAccountPhotoUrl(this);
         if (photoUrl == null) {
@@ -161,7 +204,6 @@ public class MyIOActivity extends BaseActivity implements
                  }
              });
     }
-
 
     void showDialogFragment() {
         FragmentManager fm = getSupportFragmentManager();
@@ -222,5 +264,67 @@ public class MyIOActivity extends BaseActivity implements
     @Override
     public void onSignOutFailed(Status status) {
         Toast.makeText(this, getString(R.string.signout_failed_text), Toast.LENGTH_LONG).show();
+    }
+
+    // -- Announcement dialog. TODO this may no longer be used
+
+    private void showAnnouncementDialogIfNeeded(Intent intent) {
+        if (!mIsResumed) {
+            // we are called from onResume, so defer until then
+            return;
+        }
+
+        final String title = intent.getStringExtra(EXTRA_DIALOG_TITLE);
+        final String message = intent.getStringExtra(EXTRA_DIALOG_MESSAGE);
+
+        if (!TextUtils.isEmpty(title) && !TextUtils.isEmpty(message)) {
+            final String yes = intent.getStringExtra(EXTRA_DIALOG_YES);
+            final String no = intent.getStringExtra(EXTRA_DIALOG_NO);
+            final String url = intent.getStringExtra(EXTRA_DIALOG_URL);
+            LOGD(TAG, String.format(
+                    "showAnnouncementDialog: {\ntitle: %s\nmesg: %s\nyes: %s\nno %s\nurl: %s\n}",
+                    title, message, yes, no, url));
+
+            final SpannableString spannable = new SpannableString(message == null ? "" : message);
+            Linkify.addLinks(spannable, Linkify.WEB_URLS);
+
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            if (!TextUtils.isEmpty(title)) {
+                builder.setTitle(title);
+            }
+            builder.setMessage(spannable);
+            if (!TextUtils.isEmpty(no)) {
+                builder.setNegativeButton(no, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.cancel();
+                    }
+                });
+            }
+            if (!TextUtils.isEmpty(yes)) {
+                builder.setPositiveButton(yes, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
+                        startActivity(intent);
+                    }
+                });
+            }
+            final AlertDialog dialog = builder.create();
+            dialog.show();
+            final TextView messageView = (TextView) dialog.findViewById(android.R.id.message);
+            if (messageView != null) {
+                // makes the embedded links in the text clickable, if there are any
+                messageView.setMovementMethod(LinkMovementMethod.getInstance());
+            }
+
+            // remove the extras so we don't trigger again
+            intent.removeExtra(EXTRA_DIALOG_TITLE);
+            intent.removeExtra(EXTRA_DIALOG_MESSAGE);
+            intent.removeExtra(EXTRA_DIALOG_YES);
+            intent.removeExtra(EXTRA_DIALOG_NO);
+            intent.removeExtra(EXTRA_DIALOG_URL);
+            setIntent(intent);
+        }
     }
 }
