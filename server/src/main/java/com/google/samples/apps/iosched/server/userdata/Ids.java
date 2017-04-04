@@ -22,9 +22,9 @@ package com.google.samples.apps.iosched.server.userdata;
 public class Ids {
     public static final String ANDROID_CLIENT_ID = "237695054204-m87hbqe20bqpib715p3hiddpjjfih2l9"
             + ".apps.googleusercontent.com";
-    public static final String IOS_CLIENT_ID = "237695054204-pjm3begvj1k28pg88ncnacdi6gl5nbcf"
+    public static final String IOS_CLIENT_ID = "596109260910-n1vrfjs8d7105jh5j7qf42ph32sltjp0"
             + ".apps.googleusercontent.com";
-    public static final String WEB_CLIENT_ID = "596109260910-n1vrfjs8d7105jh5j7qf42ph32sltjp0"
+    public static final String WEB_CLIENT_ID = "755839215930-ctkg839m67rtqmgm55c6eg1j7cvu5mmf"
             + ".apps.googleusercontent.com";
     public static final String ANDROID_AUDIENCE = ANDROID_CLIENT_ID;
 }
