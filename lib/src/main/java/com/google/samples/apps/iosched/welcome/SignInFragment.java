@@ -15,27 +15,13 @@
 package com.google.samples.apps.iosched.welcome;
 
 import android.content.Context;
-import android.content.Intent;
-import android.content.IntentSender;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
-import com.google.android.gms.auth.api.Auth;
-import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
-import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
-import com.google.android.gms.auth.api.signin.GoogleSignInResult;
-import com.google.android.gms.common.ConnectionResult;
-import com.google.android.gms.common.api.GoogleApiClient;
-import com.google.samples.apps.iosched.info.InfoActivity;
 import com.google.samples.apps.iosched.lib.R;
-import com.google.samples.apps.iosched.myio.MyIOActivity;
-import com.google.samples.apps.iosched.signin.SignInManager;
-import com.google.samples.apps.iosched.util.AccountUtils;
 import com.google.samples.apps.iosched.util.WelcomeUtils;
 
 import static com.google.samples.apps.iosched.util.LogUtils.LOGD;
@@ -76,7 +62,7 @@ public class SignInFragment extends WelcomeFragment {
 
     @Override
     protected String getSecondaryButtonText() {
-        return getString(R.string.signin_prompt_dismiss);
+        return getString(R.string.signin_prompt_skip);
     }
 
     @Override

@@ -34,19 +34,22 @@ import com.google.samples.apps.iosched.messages.MessageData;
 import com.google.samples.apps.iosched.model.ScheduleItem;
 import com.google.samples.apps.iosched.model.TagMetadata;
 import com.google.samples.apps.iosched.myschedule.ScheduleItemViewHolder;
+import com.google.samples.apps.iosched.util.AccountUtils;
 import com.google.samples.apps.iosched.util.UIUtils;
+import com.google.samples.apps.iosched.util.WelcomeUtils;
 
 import java.util.ArrayList;
 import java.util.List;
 
 
-public class MyIOAdapter extends Adapter<ViewHolder> {
+class MyIOAdapter extends Adapter<ViewHolder> {
 
     private static final int VIEW_TYPE_SESSION = 0;
     private static final int VIEW_TYPE_SEPARATOR = 1;
     private static final int VIEW_TYPE_MESSAGE_CARD = 2;
 
     private static final List<DaySeparator> DAY_SEPARATORS;
+
     static {
         DAY_SEPARATORS = new ArrayList<>(Config.CONFERENCE_DAYS.length);
         for (int i = 0; i < Config.CONFERENCE_DAYS.length; i++) {
@@ -68,7 +71,7 @@ public class MyIOAdapter extends Adapter<ViewHolder> {
         void onAddEventsClicked(int conferenceDay);
     }
 
-    public MyIOAdapter(Context context, Callbacks callbacks) {
+    MyIOAdapter(Context context, Callbacks callbacks) {
         mContext = context;
         mCallbacks = callbacks;
         setHasStableIds(true);
@@ -79,10 +82,36 @@ public class MyIOAdapter extends Adapter<ViewHolder> {
     public void setItems(List<ScheduleItem> items) {
         mItems.clear();
 
-        // add a message card if applicable
-        MessageData messageCard = MessageCardHelper.getNextMessageCard(mContext);
-        if (messageCard != null) {
-            mItems.add(messageCard);
+        MessageData notSignedInCard =
+                MessageCardHelper.notSignedInCard();
+        notSignedInCard.setStartButtonClickListener(new OnClickListener() {
+            @Override
+            public void onClick(final View view) {
+                WelcomeUtils.markHidePostOnboardingCard(mContext);
+            }
+        });
+        notSignedInCard.setEndButtonClickListener(new OnClickListener() {
+            @Override
+            public void onClick(final View view) {
+                WelcomeUtils.markHidePostOnboardingCard(mContext);
+                ((MyIOActivity) mContext).signIn();
+            }
+        });
+
+        MessageData signedInMessageCard = MessageCardHelper.signedInMessageCard();
+        signedInMessageCard.setStartButtonClickListener(new OnClickListener() {
+            @Override
+            public void onClick(final View view) {
+                WelcomeUtils.markHidePostOnboardingCard(mContext);
+            }
+        });
+
+        if (WelcomeUtils.showPostOnboardingCard(mContext)) {
+            if (AccountUtils.hasActiveAccount(mContext)) {
+                mItems.add(signedInMessageCard);
+            } else {
+                mItems.add(notSignedInCard);
+            }
         }
 
         int day = 0;
@@ -114,7 +143,17 @@ public class MyIOAdapter extends Adapter<ViewHolder> {
         notifyDataSetChanged();
     }
 
-    public void setTagMetadata(TagMetadata tagMetadata) {
+    /**
+     * Removes the first item if it is the post onboarding message card.
+     */
+    void removePostOnboardingMessageCard() {
+        if (mItems.get(0) instanceof MessageData) {
+            mItems.remove(0);
+            notifyItemRemoved(0);
+        }
+    }
+
+    void setTagMetadata(TagMetadata tagMetadata) {
         mTagMetadata = tagMetadata;
         notifyItemRangeChanged(0, getItemCount());
         // TODO use payload for efficient update
@@ -195,7 +234,7 @@ public class MyIOAdapter extends Adapter<ViewHolder> {
 
         private MessageData mMessageData;
 
-        public MessageCardViewHolder(View itemView) {
+        MessageCardViewHolder(View itemView) {
             super(itemView);
             mMessage = (TextView) itemView.findViewById(R.id.text);
             mStartButton = (Button) itemView.findViewById(R.id.buttonStart);
@@ -232,14 +271,14 @@ public class MyIOAdapter extends Adapter<ViewHolder> {
 
             mMessage.setText(messageData.getMessageString(mMessage.getContext()));
             int startButtonResId = mMessageData.getStartButtonStringResourceId();
-            if (startButtonResId != 0) {
+            if (startButtonResId != -1) {
                 mStartButton.setText(startButtonResId);
                 mStartButton.setVisibility(View.VISIBLE);
             } else {
                 mStartButton.setVisibility(View.GONE);
             }
             int endButtonResId = mMessageData.getEndButtonStringResourceId();
-            if (endButtonResId != 0) {
+            if (endButtonResId != -1) {
                 mEndButton.setText(endButtonResId);
                 mEndButton.setVisibility(View.VISIBLE);
             } else {
@@ -257,8 +296,8 @@ public class MyIOAdapter extends Adapter<ViewHolder> {
         private static final StringBuilder FORMAT_STRINGBUILDER = new StringBuilder();
 
         static DaySeparatorViewHolder newInstance(ViewGroup parent, Callbacks callbacks) {
-            View itemView = LayoutInflater.from(parent.getContext())
-                    .inflate(R.layout.myio_list_item_day_separator, parent, false);
+            View itemView = LayoutInflater.from(parent.getContext()).inflate(
+                    R.layout.myio_list_item_day_separator, parent, false);
             return new DaySeparatorViewHolder(itemView, callbacks);
         }
 

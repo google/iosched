@@ -34,8 +34,8 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:fitsSystemWindows="true"
-            app:layout_scrollFlags="scroll|exitUntilCollapsed"
-            android:minHeight="?actionBarSize">
+            android:minHeight="?actionBarSize"
+            app:layout_scrollFlags="scroll|exitUntilCollapsed">
 
             <include layout="@layout/toolbar" />
 
@@ -47,8 +47,8 @@
         android:id="@android:id/list"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior"
         app:layoutManager="android.support.v7.widget.LinearLayoutManager"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"
         tools:listitem="@layout/my_schedule_item" />
 
 </android.support.design.widget.CoordinatorLayout>

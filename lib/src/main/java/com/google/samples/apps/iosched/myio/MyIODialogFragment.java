@@ -34,6 +34,7 @@ import com.bumptech.glide.request.target.BitmapImageViewTarget;
 import com.google.samples.apps.iosched.lib.R;
 import com.google.samples.apps.iosched.sync.account.Account;
 import com.google.samples.apps.iosched.util.AccountUtils;
+import com.google.samples.apps.iosched.util.WelcomeUtils;
 
 /**
  * DialogFragment that handles auth on the My I/O screen.
