@@ -57,8 +57,9 @@ public class SessionsHelper {
         final ContentValues values = new ContentValues();
         values.put(ScheduleContract.MySchedule.SESSION_ID, sessionId);
         values.put(ScheduleContract.MySchedule.MY_SCHEDULE_IN_SCHEDULE, starred ? 1 : 0);
-        values.put(ScheduleContract.MySchedule.MY_SCHEDULE_TIMESTAMP, new Date().getTime());
-
+        int offset = SyncUtils.getServerTimeOffset(mContext);
+        values.put(ScheduleContract.MySchedule.MY_SCHEDULE_TIMESTAMP, new Date().getTime() +
+                offset);
         handler.startInsert(-1, null, myScheduleUri, values);
 
         // ANALYTICS EVENT: Add or remove a session from the schedule
