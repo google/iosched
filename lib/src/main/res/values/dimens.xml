@@ -34,6 +34,7 @@
     <!-- line spacing -->
     <item name="body_1_spacing" format="float" type="dimen">1.3</item>
     <item name="h3_spacing" format="float" type="dimen">1.14285714286</item>
+    <item name="h4_spacing" format="float" type="dimen">1.2</item>
 
     <!-- UI elements -->
     <dimen name="a11y_min_touch_target_dimen">48dp</dimen>
