@@ -33,6 +33,16 @@
       <param-name>databaseUrl</param-name>
       <param-value>[database url]</param-value>
   </context-param>
+  <context-param>
+    <description>eventId</description>
+    <param-name>eventId</param-name>
+    <param-value>[eventId]</param-value>
+  </context-param>
+  <context-param>
+    <description>eventManagerUrl</description>
+    <param-name>eventManagerUrl</param-name>
+    <param-value>[eventManagerUrl]</param-value>
+  </context-param>
 
   <!-- ///////////////////////////////////// Objectify /////////////////////////////// -->
   <filter>
@@ -56,7 +66,7 @@
     <servlet-class>com.google.api.server.spi.SystemServiceServlet</servlet-class>
     <init-param>
       <param-name>services</param-name>
-      <param-value>com.google.samples.apps.iosched.server.userdata.UserdataEndpoint</param-value>
+      <param-value>com.google.samples.apps.iosched.server.userdata.UserdataEndpoint, com.google.samples.apps.iosched.server.registration.RegistrationEndpoint</param-value>
     </init-param>
     <init-param>
       <param-name>restricted</param-name>
@@ -67,36 +77,6 @@
     <servlet-name>SystemServiceServlet</servlet-name>
     <url-pattern>/_ah/spi/*</url-pattern>
   </servlet-mapping>
-
-  <!-- ////////////////////////////////// User Data (Servlet) ////////////////////////////////// -->
-
-  <servlet>
-      <servlet-name>queryRegistration</servlet-name>
-      <servlet-class>com.google.samples.apps.iosched.server.userdata.server.servlet.QueryRegistrationServlet</servlet-class>
-      <init-param>
-          <description>eventId</description>
-          <param-name>eventId</param-name>
-          <param-value>[eventId]</param-value>
-      </init-param>
-      <init-param>
-          <description>eventManagerUrl</description>
-          <param-name>eventManagerUrl</param-name>
-          <param-value>[eventManagerUrl]</param-value>
-      </init-param>
-  </servlet>
-  <servlet-mapping>
-      <servlet-name>queryRegistration</servlet-name>
-      <url-pattern>/users/registration</url-pattern>
-  </servlet-mapping>
-  <security-constraint>
-      <web-resource-collection>
-          <web-resource-name>users</web-resource-name>
-          <url-pattern>/users/</url-pattern>
-      </web-resource-collection>
-      <auth-constraint>
-          <role-name>*</role-name>
-      </auth-constraint>
-  </security-constraint>
 
   <!-- ////////////////////////////////// Schedule Updater ////////////////////////////////// -->
 

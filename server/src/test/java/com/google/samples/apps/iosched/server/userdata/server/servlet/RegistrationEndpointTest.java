@@ -10,6 +10,7 @@ import com.google.appengine.api.urlfetch.HTTPResponse;
 import com.google.appengine.api.urlfetch.URLFetchService;
 import com.google.firebase.database.DatabaseReference;
 import com.google.samples.apps.iosched.server.FirebaseWrapper;
+import com.google.samples.apps.iosched.server.registration.RegistrationEndpoint;
 import java.io.ByteArrayInputStream;
 import java.io.PrintWriter;
 import javax.servlet.ServletConfig;
@@ -22,7 +23,7 @@ import org.mockito.ArgumentCaptor;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
-public class QueryRegistrationServletTest {
+public class RegistrationEndpointTest {
     private static final String REGISTERED_EVENT_RESPONSE = "{\"rsvp_status\":\"confirmed\"}";
     private static final String UNREGISTERED_EVENT_RESPONSE = "{\"rsvp_status\":\"invited\"}";
     private static final String EMPTY_EVENT_RESPONSE = "";
@@ -47,7 +48,7 @@ public class QueryRegistrationServletTest {
     @Mock private PrintWriter mockWriter;
     @Mock private DatabaseReference mockDatabaseReference;
 
-    QueryRegistrationServlet servlet = new QueryRegistrationServlet();
+    RegistrationEndpoint servlet = new RegistrationEndpoint();
 
     @Before
     public void setUp() throws Exception {

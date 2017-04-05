@@ -40,8 +40,8 @@ import java.util.Map;
         version = "v1",
         namespace = @ApiNamespace(
                 ownerDomain = "iosched.apps.samples.google.com",
-                ownerName = "iosched.apps.samples.google.com",
-                packagePath = ""
+                ownerName = "google.com",
+                packagePath = "rpc"
         ),
         clientIds = {Ids.WEB_CLIENT_ID, Ids.ANDROID_CLIENT_ID, Ids.IOS_CLIENT_ID,
                 com.google.api.server.spi.Constant.API_EXPLORER_CLIENT_ID},
