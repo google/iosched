@@ -33,7 +33,8 @@
 
     <!-- line spacing -->
     <item name="body_1_spacing" format="float" type="dimen">1.3</item>
-    <item name="h3_spacing" format="float" type="dimen">1.14285714286</item>
+    <item name="h1_spacing" format="float" type="dimen">1.2</item>
+    <item name="h3_spacing" format="float" type="dimen">1.2</item>
     <item name="h4_spacing" format="float" type="dimen">1.2</item>
 
     <!-- UI elements -->
@@ -57,15 +58,8 @@
     <dimen name="divider_padding_bottom">8dp</dimen>
 
     <!-- My I/O Dialog Features -->
-    <dimen name="my_io_dialog_header_padding">4dp</dimen>
     <dimen name="my_io_dialog_avatar_dimen">32dp</dimen>
-    <dimen name="my_io_dialog_header_margin">16dp</dimen>
     <dimen name="my_io_dialog_check_circle_dimen">24dp</dimen>
-    <dimen name="my_io_dialog_header_extra_padding">18dp</dimen>
-    <dimen name="my_io_dialog_body_extra_padding">8dp</dimen>
-    <dimen name="my_io_dialog_button_padding">24dp</dimen>
-    <dimen name="my_io_dialog_spacer_margin_bottom">12dp</dimen>
-    <dimen name="my_io_dialog_bulletpoint_padding">18dp</dimen>
 
     <!-- Explore I/O Feature -->
     <dimen name="explore_io_message_card_image_width">56dp</dimen>
@@ -84,11 +78,9 @@
     <item name="aspect_16_9" format="float" type="dimen">1.7778</item>
 
     <!-- Feed Feature -->
-    <dimen name="feed_message_card_image_width">56dp</dimen>
-    <dimen name="feed_message_card_image_height">56dp</dimen>
+    <dimen name="feed_message_card_image_width">90dp</dimen>
+    <dimen name="feed_message_card_image_height">51dp</dimen>
     <dimen name="feed_message_card_min_button_width">48dp</dimen>
-    <dimen name="feed_message_card_desc_padding">4dp</dimen>
-    <dimen name="feed_color_bar_padding">6dp</dimen>
 
     <!-- body content -->
     <dimen name="element_spacing_normal">8dp</dimen>

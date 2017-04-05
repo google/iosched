@@ -16,7 +16,7 @@
 <animated-vector
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:aapt="http://schemas.android.com/aapt"
-    android:drawable="@drawable/ic_add_bookmark">
+    android:drawable="@drawable/ic_bookmark_fab">
 
     <target android:name="bookmark">
 

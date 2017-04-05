@@ -23,112 +23,109 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:paddingBottom="@dimen/spacing_normal">
 
-        <android.support.v7.widget.CardView
+        <RelativeLayout
+            xmlns:android="http://schemas.android.com/apk/res/android"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            style="@style/Info.Cards">
+            android:paddingBottom="@dimen/padding_normal"
+            android:paddingTop="24dp">
 
-            <RelativeLayout
-                xmlns:android="http://schemas.android.com/apk/res/android"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+            <TextView
+                android:id="@+id/wifi_network_label"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentStart="true"
+                android:paddingStart="@dimen/padding_normal"
+                android:text="@string/wifi_network_label"
+                android:textAppearance="@style/TextAppearance.H5.Caps" />
 
-                <TextView
-                    android:id="@+id/wifi_network_label"
-                    style="@style/Info.WifiLabels"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentStart="true"
-                    android:text="@string/wifi_network_label"/>
+            <TextView
+                android:id="@+id/wifi_network_value"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignBaseline="@id/wifi_network_label"
+                android:layout_alignParentEnd="true"
+                android:padding="@dimen/padding_normal"
+                android:text="@string/default_wifi_network"
+                android:textAppearance="@style/TextAppearance.H5" />
 
-                <TextView
-                    android:id="@+id/wifi_network_value"
-                    style="@style/Info"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentEnd="true"
-                    android:text="@string/default_wifi_network"/>
+            <TextView
+                android:id="@+id/wifi_password_label"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentStart="true"
+                android:layout_below="@+id/wifi_network_label"
+                android:layout_marginTop="@dimen/padding_normal"
+                android:paddingStart="@dimen/padding_normal"
+                android:text="@string/wifi_password_label"
+                android:textAppearance="@style/TextAppearance.H5.Caps" />
 
-                <TextView
-                    android:id="@+id/wifi_password_label"
-                    style="@style/Info.WifiLabels"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentStart="true"
-                    android:layout_below="@+id/wifi_network_label"
-                    android:text="@string/wifi_password_label"/>
+            <TextView
+                android:id="@+id/wifi_password_value"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignBaseline="@id/wifi_password_label"
+                android:layout_alignParentEnd="true"
+                android:layout_below="@+id/wifi_network_value"
+                android:padding="@dimen/padding_normal"
+                android:text="@string/default_wifi_password"
+                android:textAppearance="@style/TextAppearance.H5" />
 
-                <TextView
-                    android:id="@+id/wifi_password_value"
-                    style="@style/Info"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentEnd="true"
-                    android:layout_below="@+id/wifi_network_value"
-                    android:text="@string/default_wifi_password"/>
+            <TextView
+                android:id="@+id/setup_wifi_network"
+                style="@style/Widget.AppCompat.Button.Borderless.Colored"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentStart="true"
+                android:layout_below="@+id/wifi_password_label"
+                android:padding="@dimen/padding_normal"
+                android:text="@string/setup_wifi" />
 
-                <TextView
-                    android:id="@+id/setup_wifi_network"
-                    style="?android:borderlessButtonStyle"
-                    android:textColor="@color/lightish_blue"
-                    android:padding="@dimen/padding_normal"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentStart="true"
-                    android:layout_below="@+id/wifi_password_label"
-                    android:text="@string/setup_wifi"/>
+        </RelativeLayout>
 
-            </RelativeLayout>
-        </android.support.v7.widget.CardView>
-
-        <com.google.samples.apps.iosched.info.event.EventContentCardView
+        <com.google.samples.apps.iosched.info.event.EventContentView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            app:eventDescription="@string/event_sandbox_default_description"
-            app:eventTitle="@string/event_sandbox_title"
-            app:eventIcon="@drawable/ic_sandbox"
-            app:sessionsLinkUri="@string/view_sandbox_sessions_url"
-            app:mapLinkUri="@string/view_sandbox_map_url"
             app:boxColor="@color/neon_blue"
-            style="@style/Info.Cards">
-        </com.google.samples.apps.iosched.info.event.EventContentCardView>
-
-        <com.google.samples.apps.iosched.info.event.EventContentCardView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            app:eventDescription="@string/event_codelabs_default_description"
-            app:eventTitle="@string/event_codelabs_title"
-            app:eventIcon="@drawable/ic_codelab"
-            app:sessionsLinkUri="@string/view_codelabs_sessions_url"
+            app:eventDescription="@string/event_sandbox_default_description"
+            app:eventIcon="@drawable/ic_sandbox"
+            app:eventTitle="@string/event_sandbox_title"
             app:mapLinkUri="@string/view_sandbox_map_url"
+            app:sessionsLinkUri="@string/view_sandbox_sessions_url" />
+
+        <com.google.samples.apps.iosched.info.event.EventContentView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
             app:boxColor="@color/io16_accent_green"
-            style="@style/Info.Cards">
-        </com.google.samples.apps.iosched.info.event.EventContentCardView>
+            app:eventDescription="@string/event_codelabs_default_description"
+            app:eventIcon="@drawable/ic_codelab"
+            app:eventTitle="@string/event_codelabs_title"
+            app:mapLinkUri="@string/view_sandbox_map_url"
+            app:sessionsLinkUri="@string/view_codelabs_sessions_url" />
 
-        <com.google.samples.apps.iosched.info.event.EventContentCardView
+        <com.google.samples.apps.iosched.info.event.EventContentView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            app:eventDescription="@string/event_officehours_default_description"
-            app:eventTitle="@string/event_officehours_title"
-            app:eventIcon="@drawable/ic_officehours"
-            app:sessionsLinkUri="@string/view_officehours_sessions_url"
-            app:mapLinkUri="@string/view_officehours_map_url"
             app:boxColor="@color/io16_accent_red"
-            style="@style/Info.Cards">
-        </com.google.samples.apps.iosched.info.event.EventContentCardView>
+            app:eventDescription="@string/event_officehours_default_description"
+            app:eventIcon="@drawable/ic_officehours"
+            app:eventTitle="@string/event_officehours_title"
+            app:mapLinkUri="@string/view_officehours_map_url"
+            app:sessionsLinkUri="@string/view_officehours_sessions_url" />
 
-        <com.google.samples.apps.iosched.info.event.EventContentCardView
+        <com.google.samples.apps.iosched.info.event.EventContentView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            app:eventDescription="@string/event_afterhours_default_description"
-            app:eventTitle="@string/event_afterhours_title"
-            app:eventIcon="@drawable/ic_afterhours"
-            app:sessionsLinkUri="@string/view_afterhours_sessions_url"
-            app:mapLinkUri="@string/view_afterhours_map_url"
             app:boxColor="@color/lightish_blue"
-            style="@style/Info.Cards">
-        </com.google.samples.apps.iosched.info.event.EventContentCardView>
+            app:eventDescription="@string/event_afterhours_default_description"
+            app:eventIcon="@drawable/ic_afterhours"
+            app:eventTitle="@string/event_afterhours_title"
+            app:mapLinkUri="@string/view_afterhours_map_url"
+            app:sessionsLinkUri="@string/view_afterhours_sessions_url" />
+
     </LinearLayout>
+
 </android.support.v4.widget.NestedScrollView>

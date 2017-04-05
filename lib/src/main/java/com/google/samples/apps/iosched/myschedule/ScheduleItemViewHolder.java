@@ -203,11 +203,8 @@ public class ScheduleItemViewHolder extends RecyclerView.ViewHolder {
 
             // Populate the bookmark icon
             if (bookmark.getDrawable() == null) {
-                Drawable d = ContextCompat.getDrawable(context, R.drawable.session_bookmark);
-                d = DrawableCompat.wrap(d.mutate());
-                DrawableCompat.setTintList(d, AppCompatResources.getColorStateList(
-                        context, R.color.session_bookmark_tint));
-                bookmark.setImageDrawable(d);
+                bookmark.setImageDrawable(
+                        ContextCompat.getDrawable(context, R.drawable.session_bookmark));
             }
             // Show as activated is the item is the keynote or in the schedule
             // (it is auto added to schedule on sync)

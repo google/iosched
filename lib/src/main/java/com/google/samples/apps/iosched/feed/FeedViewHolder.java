@@ -3,6 +3,7 @@ package com.google.samples.apps.iosched.feed;
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.content.Context;
+import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.graphics.LightingColorFilter;
 import android.graphics.Point;
@@ -56,7 +57,7 @@ public class FeedViewHolder extends RecyclerView.ViewHolder {
 
     public void updateCategory(String categoryString, int color) {
         category.setText(categoryString);
-        category.setBackgroundColor(color);
+        category.setBackgroundTintList(ColorStateList.valueOf(color));
     }
 
     public void updateImage(Context context, Point screenSize, String imageUrlString) {

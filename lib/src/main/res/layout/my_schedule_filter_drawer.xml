@@ -29,20 +29,20 @@ limitations under the License.
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/light_grey"
+        android:background="@color/lighter_grey"
         android:baselineAligned="false"
         android:gravity="center_vertical"
         android:minHeight="?actionBarSize"
         android:orientation="horizontal"
-        android:paddingLeft="@dimen/padding_normal"
-        android:paddingRight="@dimen/padding_normal">
+        android:paddingEnd="@dimen/spacing_normal"
+        android:paddingStart="@dimen/padding_normal">
 
         <TextView
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="@string/title_explore_sessions_filter"
-            android:textAppearance="@style/TextAppearance.Title" />
+            android:textAppearance="@style/TextAppearance.H3" />
 
         <Button
             android:id="@+id/clear_filters"
@@ -50,11 +50,12 @@ limitations under the License.
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical|end"
-            android:drawablePadding="16dp"
+            android:drawablePadding="@dimen/padding_normal"
             android:text="@string/clear_all"
             android:visibility="gone"
             tools:drawableEnd="@drawable/ic_clear_all"
             tools:visibility="visible" />
+
     </LinearLayout>
 
     <android.support.v7.widget.RecyclerView

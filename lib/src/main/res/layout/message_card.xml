@@ -15,20 +15,23 @@
    limitations under the License.
 -->
 <!-- Layout used to display data from a MessageCardData object. -->
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/card_root"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:padding="@dimen/padding_normal">
+    android:background="@color/lighter_grey"
+    android:paddingTop="24dp"
+    android:paddingBottom="@dimen/spacing_normal"
+    android:theme="@style/ThemeOverlay.BlueAccent">
 
     <TextView
         android:id="@+id/title"
+        style="@style/H3Text"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="16dp"
-        android:textColor="@color/theme_primary"
-        android:textSize="@dimen/text_size_xlarge"
+        android:layout_marginBottom="@dimen/padding_normal"
         android:visibility="gone"
         tools:text="The cheese stands alone"
         tools:visibility="visible" />
@@ -37,9 +40,8 @@
         android:id="@+id/icon"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/title"
-        android:layout_marginBottom="16dp"
-        android:layout_marginEnd="16dp"
+        android:layout_below="@id/title"
+        android:layout_margin="@dimen/padding_normal"
         android:visibility="gone"
         tools:ignore="ContentDescription"
         tools:src="@drawable/ic_session"
@@ -50,41 +52,34 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignWithParentIfMissing="true"
-        android:layout_below="@+id/title"
-        android:layout_marginBottom="16dp"
-        android:layout_toEndOf="@+id/icon"
-        android:text="@string/placeholder_lorem_ipsum"
-        android:textColor="@color/body_text_2"
-        android:textSize="@dimen/text_size_medium" />
+        android:layout_below="@id/title"
+        android:layout_marginBottom="@dimen/spacing_normal"
+        android:layout_toEndOf="@id/icon"
+        android:paddingEnd="@dimen/padding_normal"
+        android:paddingStart="@dimen/padding_normal"
+        android:text="@string/placeholder_lorem_ipsum" />
 
     <Button
-        android:id="@+id/buttonStart"
+        android:id="@+id/positive_button"
+        style="@style/Widget.AppCompat.Button.Borderless.Colored"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_below="@id/text"
+        android:paddingLeft="@dimen/spacing_micro"
+        android:paddingRight="@dimen/spacing_micro"
+        android:text="@string/placeholder_button_label_2" />
+
+    <Button
+        android:id="@+id/negative_button"
         style="@style/Widget.AppCompat.Button.Borderless.Colored"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignWithParentIfMissing="true"
-        android:layout_below="@+id/text"
-        android:layout_toStartOf="@+id/buttonEnd"
-        android:background="?android:selectableItemBackground"
-        android:fontFamily="sans-serif-medium"
-        android:gravity="center_vertical"
-        android:paddingLeft="16dp"
-        android:paddingRight="16dp"
-        android:text="@string/placeholder_button_label_1"
-        />
-
-    <Button
-        android:id="@+id/buttonEnd"
-        style="@style/Widget.AppCompat.Button.Borderless.Colored"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentEnd="true"
-        android:layout_below="@+id/text"
-        android:fontFamily="sans-serif-medium"
-        android:gravity="center_vertical"
-        android:paddingLeft="16dp"
-        android:paddingRight="16dp"
-        android:text="@string/placeholder_button_label_2"
-        />
+        android:layout_below="@id/text"
+        android:layout_toEndOf="@id/positive_button"
+        android:paddingLeft="@dimen/spacing_micro"
+        android:paddingRight="@dimen/spacing_micro"
+        android:text="@string/placeholder_button_label_1" />
 
 </RelativeLayout>

@@ -93,15 +93,15 @@ public class NavigationModel implements Model<NavigationQueryEnum, NavigationUse
      */
     public enum NavigationItemEnum {
         MY_SCHEDULE(R.id.myschedule_nav_item, R.string.navdrawer_item_my_schedule,
-                R.drawable.ic_navview_schedule, MyScheduleActivity.class, true),
-        MY_IO(R.id.myio_nav_item, R.string.navdrawer_item_my_io, R.drawable.ic_navview_myio,
+                R.drawable.ic_nav_schedule, MyScheduleActivity.class, true),
+        MY_IO(R.id.myio_nav_item, R.string.navdrawer_item_my_io, R.drawable.ic_nav_myio,
                 MyIOActivity.class, true),
         FEED(R.id.feed_nav_item, R.string.navdrawer_item_feed,
-                R.drawable.ic_navview_feed, FeedActivity.class, true),
-        MAP(R.id.map_nav_item, R.string.navdrawer_item_map, R.drawable.ic_navview_map,
+                R.drawable.ic_nav_feed, FeedActivity.class, true),
+        MAP(R.id.map_nav_item, R.string.navdrawer_item_map, R.drawable.ic_nav_map,
                 MapActivity.class, true),
         INFO(R.id.info_nav_item, R.string.navdrawer_item_info,
-                R.drawable.ic_navview_info, InfoActivity.class, true),
+                R.drawable.ic_nav_info, InfoActivity.class, true),
         INVALID(12, 0, 0, null);
         private int id;
 

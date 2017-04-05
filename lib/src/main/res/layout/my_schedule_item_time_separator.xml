@@ -19,6 +19,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:padding="@dimen/keyline_1"
-    android:textAppearance="@style/TextAppearance.AppCompat.Title"
+    android:textAppearance="@style/TextAppearance.H5.SmallCaps"
+    android:background="@color/lighter_grey"
     tools:text="@string/placeholder_session_start_time" />
 

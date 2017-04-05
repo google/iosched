@@ -241,6 +241,7 @@ dependencies {
     compile "com.android.support:support-v13:${android_support_lib_version}"
     compile "com.android.support:recyclerview-v7:${android_support_lib_version}"
     compile "com.android.support:preference-v7:${android_support_lib_version}"
+    compile 'com.android.support.constraint:constraint-layout:1.0.2'
 
     // JSON utility library.
     compile 'com.google.code.gson:gson:2.3'
@@ -267,6 +268,8 @@ dependencies {
     // greater is used for both app and test builds.
     compile 'com.google.code.findbugs:jsr305:2.0.1'
 
+    // font lib
+    compile 'uk.co.chrisjenx:calligraphy:2.2.0'
 
     // Firebase libraries
     compile "com.google.firebase:firebase-core:${google_play_services_client_library_version}"

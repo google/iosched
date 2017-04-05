@@ -22,26 +22,20 @@
 
     <style name="Theme.IOSched" parent="FrameworkRoot.Theme">
         <item name="homeAsUpIndicator">@drawable/ic_up</item>
-
         <item name="colorPrimary">@color/theme_primary</item>
         <item name="colorPrimaryDark">@color/theme_primary_dark</item>
         <item name="colorAccent">@color/theme_primary</item>
-
-        <item name="android:textColorLink">@color/flat_button_text</item>
-
+        <item name="android:textViewStyle">@style/Widget.IOSched.TextView</item>
+        <item name="android:textColorPrimary">@color/greyish_brown</item>
+        <item name="android:textColorLink">@color/links</item>
         <item name="windowActionBar">false</item>
         <item name="android:windowNoTitle">true</item>
-
         <item name="android:windowContentOverlay">@null</item>
         <item name="android:windowBackground">@color/background</item>
         <item name="android:homeAsUpIndicator">@drawable/ic_up</item>
-
         <item name="android:borderlessButtonStyle">@style/Widget.AppCompat.Button.Borderless</item>
-
         <item name="preferenceTheme">@style/SettingsPreferenceThemeOverlay</item>
-
         <item name="android:listDivider">@drawable/list_divider</item>
-
         <item name="android:alertDialogTheme">@style/Theme.IOSched.AlertDialog</item>
     </style>
 
@@ -112,6 +106,12 @@
         <item name="colorPrimary">@color/neon_blue</item>
         <item name="colorPrimaryDark">@color/neon_blue</item>
         <item name="colorAccent">@color/aqua_marine</item>
+        <item name="android:statusBarColor">@color/immersive_status_bar</item>
+        <item name="android:windowDrawsSystemBarBackgrounds">true</item>
+    </style>
+
+    <style name="ThemeOverlay.BlueAccent" parent="ThemeOverlay.AppCompat.ActionBar">
+        <item name="colorAccent">@color/lightish_blue</item>
     </style>
 
     <!-- My Schedule -->
@@ -123,6 +123,13 @@
         <item name="android:windowSharedElementReturnTransition">@transition/session_details_shared_return</item>
         <item name="android:windowEnterTransition">@transition/fade_system_chrome</item>
         <item name="android:statusBarColor">@color/immersive_status_bar</item>
+    </style>
+
+    <style name="Widget.IOSched" parent="android:Widget" />
+
+    <style name="Widget.IOSched.TextView" parent="@android:style/Widget.TextView">
+        <item name="android:textAppearance">@style/TextAppearance.Body</item>
+        <item name="android:lineSpacingMultiplier">@dimen/body_1_spacing</item>
     </style>
 
     <!-- Empty views -->
@@ -165,10 +172,6 @@
 
     <style name="TextAppearance.VideoDuration" parent="TextAppearance.AppCompat.Caption">
         <item name="android:textColor">@color/body_text_2</item>
-    </style>
-
-    <style name="TextAppearance.Title" parent="TextAppearance.AppCompat.Title">
-        <item name="android:fontFamily">sans-serif-medium</item>
     </style>
 
     <style name="TextAppearance.Subhead" parent="TextAppearance.Body2">
@@ -252,12 +255,6 @@
         <item name="android:background">?attr/selectableItemBackground</item>
         <item name="android:minHeight">?android:attr/listPreferredItemHeightSmall</item>
         <item name="android:gravity">center_vertical</item>
-
-    </style>
-
-    <style name="Body1Text">
-        <item name="android:textAppearance">@style/TextAppearance.AppCompat.Body1</item>
-        <item name="android:lineSpacingMultiplier">@dimen/body_1_spacing</item>
     </style>
 
     <style name="Body2Text">
@@ -279,96 +276,68 @@
     </style>
 
     <style name="Widget.IOSched.BottomNavigationView" parent="Widget.Design.BottomNavigationView">
+        <item name="itemIconTint">@color/nav_icon_tint</item>
         <item name="android:background">?android:attr/colorBackground</item>
         <item name="android:elevation" tools:targetApi="lollipop">@dimen/bottom_nav_elevation</item>
     </style>
 
-    <style name="MyIODialog">
-        <item name="android:paddingLeft">@dimen/padding_normal</item>
-        <item name="android:paddingRight">@dimen/padding_normal</item>
-        <item name="android:textSize">@dimen/text_size_medium</item>
+    <style name="TextAppearance.H1" parent="@style/TextAppearance.AppCompat.Headline">
+        <item name="fontPath">fonts/ProductSans-Regular.ttf</item>
+        <item name="android:letterSpacing">0.03</item>
     </style>
 
-
-    <style name="MyIODialog.Header">
-        <item name="android:paddingLeft">@dimen/my_io_dialog_header_padding</item>
-        <item name="android:paddingRight">@dimen/my_io_dialog_header_padding</item>
+    <style name="TextAppearance.H3" parent="@style/TextAppearance.AppCompat.Title">
+        <item name="android:textSize">18sp</item>
+        <item name="fontPath">fonts/ProductSans-Regular.ttf</item>
+        <item name="android:letterSpacing">0.03</item>
     </style>
 
-
-    <style name="MyIODialog.Header.Name">
-        <item name="android:paddingTop">@dimen/my_io_dialog_header_extra_padding</item>
-        <item name="android:textStyle">bold</item>
+    <style name="TextAppearance.H5" parent="@style/TextAppearance.AppCompat.Body2">
+        <item name="android:textSize">14sp</item>
+        <item name="android:letterSpacing">0.05</item>
     </style>
 
-    <style name="MyIODialog.Header.Email">
-        <item name="android:paddingBottom">@dimen/my_io_dialog_header_extra_padding</item>
-    </style>
-
-    <style name="MyIODialog.Body">
-        <item name="android:paddingTop">@dimen/my_io_dialog_body_extra_padding</item>
-        <item name="android:paddingBottom">@dimen/my_io_dialog_body_extra_padding</item>
-    </style>
-
-    <style name="MyIODialog.Body.BulletedPoint">
-        <item name="android:paddingLeft">@dimen/my_io_dialog_bulletpoint_padding</item>
-        <item name="android:paddingRight">@dimen/padding_normal</item>
-    </style>
-
-    <style name="MyIODialog.Body.AuthButton">
-        <item name="android:background">@color/io16_accent_green</item>
-        <item name="android:layout_marginTop">@dimen/my_io_dialog_button_padding</item>
-        <item name="android:layout_marginRight">@dimen/my_io_dialog_button_padding</item>
-        <item name="android:layout_marginBottom">@dimen/my_io_dialog_button_padding</item>
-    </style>
-
-    <style name="Info">
-        <item name="android:padding">@dimen/padding_normal</item>
-        <item name="android:textSize">@dimen/text_size_medium</item>
-        <item name="android:textColor">?android:textColorPrimary</item>
-    </style>
-    <style name="Info.WifiLabels">
+    <style name="TextAppearance.H5.Caps">
         <item name="android:textAllCaps">true</item>
     </style>
 
-    <style name="Info.Title">
-        <item name="android:textSize">@dimen/text_size_xlarge</item>
-    </style>
-    <style name="Info.Cards">
-        <item name="android:layout_marginStart">@dimen/spacing_micro</item>
-        <item name="android:layout_marginEnd">@dimen/spacing_micro</item>
-        <item name="android:layout_marginBottom">@dimen/spacing_micro</item>
-    </style>
-    <style name="Info.Cards.Top">
-        <item name="android:layout_marginTop">@dimen/spacing_micro</item>
-    </style>
-
-    <style name="TextAppearance.H1" parent="@style/TextAppearance.AppCompat.Headline">
-        <item name="android:textColor">@color/greyish_brown</item>
+    <style name="TextAppearance.H5.SmallCaps">
+        <item name="android:fontFeatureSettings">smcp</item>
     </style>
 
     <style name="TextAppearance.H4" parent="@style/TextAppearance.AppCompat.Body2">
         <item name="android:textSize">15sp</item>
-        <item name="android:textColor">@color/greyish_brown</item>
     </style>
 
     <style name="TextAppearance.Body" parent="@style/TextAppearance.AppCompat.Body1">
         <item name="android:textSize">15sp</item>
-        <item name="android:textColor">@color/greyish_brown</item>
+    </style>
+
+    <style name="TextAppearance.Tag" parent="@style/TextAppearance.AppCompat.Caption" />
+
+    <style name="TextAppearance.Body.Secondary">
+        <item name="android:textColor">#b3424242</item>
     </style>
 
     <style name="H1Text">
         <item name="android:textAppearance">@style/TextAppearance.H1</item>
+        <item name="android:lineSpacingMultiplier">@dimen/h1_spacing</item>
+    </style>
+
+    <style name="H3Text">
+        <item name="android:textAppearance">@style/TextAppearance.H3</item>
         <item name="android:lineSpacingMultiplier">@dimen/h3_spacing</item>
     </style>
 
-    <style name="BodyText">
-        <item name="android:textAppearance">@style/TextAppearance.Body</item>
-        <item name="android:lineSpacingMultiplier">@dimen/body_1_spacing</item>
+    <style name="H3IndigoText">
+        <item name="android:textAppearance">@style/TextAppearance.H1</item>
+        <item name="android:textColor">@color/lightish_blue</item>
+        <item name="android:lineSpacingMultiplier">@dimen/h3_spacing</item>
     </style>
 
     <style name="H4Text">
         <item name="android:textAppearance">@style/TextAppearance.H4</item>
         <item name="android:lineSpacingMultiplier">@dimen/h4_spacing</item>
     </style>
+
 </resources>

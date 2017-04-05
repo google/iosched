@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
-  Copyright (c) 2016 Google Inc.
+  Copyright (c) 2017 Google Inc.
 
   Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except
   in compliance with the License. You may obtain a copy of the License at
@@ -17,11 +17,10 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:width="24dp"
     android:height="24dp"
-    android:viewportWidth="24"
-    android:viewportHeight="24">
-
+    android:viewportWidth="56"
+    android:viewportHeight="56"
+    android:tint="#b3424242">
     <path
-        android:pathData="M20.5,3l-0.16,0.03L15,5.1 9,3 3.36,4.9c-0.21,0.07 -0.36,0.25 -0.36,0.48V20.5c0,0.28 0.22,0.5 0.5,0.5l0.16,-0.03L9,18.9l6,2.1 5.64,-1.9c0.21,-0.07 0.36,-0.25 0.36,-0.48V3.5c0,-0.28 -0.22,-0.5 -0.5,-0.5zM15,19l-6,-2.11V5l6,2.11V19z"
-        android:fillColor="@color/navview_icon" />
-
+        android:pathData="M28,0C12.54,0 0,12.54 0,28C0,43.46 12.54,56 28,56C43.46,56 56,43.46 56,28C56,12.54 43.46,0 28,0ZM28,8.4C32.65,8.4 36.4,12.15 36.4,16.8C36.4,21.45 32.65,25.2 28,25.2C23.35,25.2 19.6,21.45 19.6,16.8C19.6,12.15 23.35,8.4 28,8.4ZM28,48.16C21,48.16 14.81,44.58 11.2,39.14C11.28,33.57 22.4,30.52 28,30.52C33.57,30.52 44.72,33.57 44.8,39.14C41.19,44.58 35,48.16 28,48.16Z"
+        android:fillColor="@android:color/white" />
 </vector>
