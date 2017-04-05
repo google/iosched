@@ -26,16 +26,23 @@
     <android.support.design.widget.AppBarLayout
         android:id="@+id/appbar"
         android:layout_width="match_parent"
-        android:layout_height="160dp"
+        android:layout_height="@dimen/extended_appbar_height"
         android:fitsSystemWindows="true">
 
         <android.support.design.widget.CollapsingToolbarLayout
             android:id="@+id/collapsing_toolbar"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:background="@null"
             android:fitsSystemWindows="true"
             android:minHeight="?actionBarSize"
             app:layout_scrollFlags="scroll|exitUntilCollapsed">
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@color/neon_blue"
+                android:fitsSystemWindows="true" />
 
             <include layout="@layout/toolbar" />
 
@@ -48,6 +55,8 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         app:layoutManager="android.support.v7.widget.LinearLayoutManager"
+        android:scrollbars="vertical"
+        android:scrollbarStyle="insideOverlay"
         app:layout_behavior="@string/appbar_scrolling_view_behavior"
         tools:listitem="@layout/my_schedule_item" />
 

@@ -15,97 +15,120 @@
   limitations under the License.
   -->
 
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              android:layout_width="match_parent"
-              android:layout_height="match_parent"
-              android:layout_gravity="center"
-              android:orientation="vertical">
+<android.support.constraint.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:paddingBottom="@dimen/padding_normal">
 
-    <!-- Header -->
-    <LinearLayout
-        android:layout_width="match_parent"
+    <android.support.constraint.Guideline
+        android:id="@+id/guide_header"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_begin="84dp" />
+
+    <ImageView
+        android:id="@+id/avatar"
+        android:layout_width="@dimen/my_io_dialog_avatar_dimen"
+        android:layout_height="@dimen/my_io_dialog_avatar_dimen"
+        android:layout_margin="@dimen/padding_normal"
+        android:importantForAccessibility="no"
+        android:src="@drawable/ic_default_avatar"
+        android:tint="#52424242"
+        app:layout_constraintBottom_toTopOf="@id/guide_header"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:id="@+id/signed_in_circle_check"
+        android:layout_width="@dimen/my_io_dialog_check_circle_dimen"
+        android:layout_height="@dimen/my_io_dialog_check_circle_dimen"
+        android:layout_marginEnd="@dimen/padding_normal"
+        android:importantForAccessibility="no"
+        android:src="@drawable/ic_check_circle"
+        app:layout_constraintBottom_toTopOf="@id/guide_header"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/name"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:baselineAligned="false"
-        android:gravity="center_vertical">
+        android:layout_marginStart="@dimen/padding_normal"
+        android:ellipsize="end"
+        android:lines="1"
+        android:textAppearance="@style/TextAppearance.Body.Secondary"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@+id/email"
+        app:layout_constraintEnd_toEndOf="@id/signed_in_circle_check"
+        app:layout_constraintStart_toEndOf="@id/avatar"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_chainStyle="packed" />
 
-        <ImageView
-            android:id="@+id/avatar"
-            android:layout_width="@dimen/my_io_dialog_avatar_dimen"
-            android:layout_height="@dimen/my_io_dialog_avatar_dimen"
-            android:importantForAccessibility="no"
-            android:layout_marginStart="@dimen/my_io_dialog_header_margin"
-            android:src="@drawable/ic_default_avatar" />
-
-
-        <LinearLayout
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/my_io_dialog_header_margin"
-            android:layout_marginEnd="@dimen/my_io_dialog_header_margin"
-            android:layout_weight="1"
-            android:orientation="vertical">
-
-            <TextView
-                android:id="@+id/name"
-                style="@style/MyIODialog.Header.Name"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:ellipsize="end"
-                android:lines="1" />
-
-            <TextView
-                android:id="@+id/email"
-                style="@style/MyIODialog.Header.Email"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:ellipsize="end"
-                android:lines="1" />
-        </LinearLayout>
-
-
-            <ImageView
-                android:id="@+id/signed_in_circle_check"
-                android:layout_width="@dimen/my_io_dialog_check_circle_dimen"
-                android:layout_height="@dimen/my_io_dialog_check_circle_dimen"
-                android:layout_marginEnd="@dimen/my_io_dialog_header_margin"
-                android:importantForAccessibility="no"
-                android:src="@drawable/ic_check_circle" />
-
-    </LinearLayout>
+    <TextView
+        android:id="@+id/email"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/padding_normal"
+        android:ellipsize="end"
+        android:lines="1"
+        android:textAppearance="@style/TextAppearance.Body.Secondary"
+        app:layout_constraintBottom_toTopOf="@id/guide_header"
+        app:layout_constraintEnd_toEndOf="@id/signed_in_circle_check"
+        app:layout_constraintStart_toEndOf="@id/avatar"
+        app:layout_constraintTop_toBottomOf="@id/name" />
 
     <View
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
         android:layout_height="1dp"
-        android:layout_marginBottom="@dimen/my_io_dialog_spacer_margin_bottom"
-        android:background="@android:color/darker_gray" />
+        android:background="@color/light_grey"
+        app:layout_constraintBottom_toTopOf="@id/guide_header"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 
     <TextView
         android:id="@+id/body_intro"
-        style="@style/MyIODialog"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="@dimen/padding_normal"
+        android:layout_marginStart="@dimen/padding_normal"
+        android:layout_marginTop="24dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/guide_header" />
 
     <TextView
         android:id="@+id/first_bullet_point"
-        style="@style/MyIODialog.Body.BulletedPoint"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="@dimen/padding_normal"
+        android:layout_marginStart="@dimen/padding_normal"
+        android:layout_marginTop="@dimen/spacing_normal"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/body_intro" />
 
     <TextView
         android:id="@+id/second_bullet_point"
-        style="@style/MyIODialog.Body.BulletedPoint"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="@dimen/padding_normal"
+        android:layout_marginStart="@dimen/padding_normal"
+        android:layout_marginTop="@dimen/spacing_normal"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/first_bullet_point" />
 
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+    <Button
+        android:id="@+id/auth_button"
+        style="@style/Widget.AppCompat.Button.Borderless.Colored"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="@dimen/padding_normal"
+        android:theme="@style/ThemeOverlay.BlueAccent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/second_bullet_point" />
 
-        <Button
-            android:id="@+id/auth_button"
-            style="@style/MyIODialog.Body.AuthButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentEnd="true" />
-    </RelativeLayout>
-</LinearLayout>
+</android.support.constraint.ConstraintLayout>

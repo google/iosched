@@ -17,17 +17,18 @@ import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.drawable.Drawable;
 import android.support.annotation.Nullable;
-import android.support.v7.widget.CardView;
+import android.support.v4.content.ContextCompat;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.google.samples.apps.iosched.lib.R;
 
-public class EventContentCardView extends CardView {
+public class EventContentView extends FrameLayout {
     private TextView mEventTitle;
     private TextView mEventDescription;
     private LinearLayout mColorBox;
@@ -35,27 +36,26 @@ public class EventContentCardView extends CardView {
     private TextView mSessionsLink;
     private TextView mMapLink;
 
-    public EventContentCardView(Context context) {
+    public EventContentView(Context context) {
         this(context, null);
     }
 
-    public EventContentCardView(Context context, @Nullable AttributeSet attrs) {
+    public EventContentView(Context context, @Nullable AttributeSet attrs) {
         this(context, attrs, 0);
     }
 
-    public EventContentCardView(Context context, @Nullable AttributeSet attrs,
-            int defStyleAttr) {
+    public EventContentView(Context context, @Nullable AttributeSet attrs,
+                            int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         TypedArray arr = context.obtainStyledAttributes(attrs, R.styleable.EventContent, 0, 0);
         String eventTitle = arr.getString(R.styleable.EventContent_eventTitle);
         String eventDescription = arr.getString(R.styleable.EventContent_eventDescription);
         Drawable eventIconDrawable = arr.getDrawable(R.styleable.EventContent_eventIcon);
-        int boxColor = arr.getColor(R.styleable.EventContent_boxColor, getResources()
-                .getColor(R.color.io16_light_grey));
+        int boxColor = arr.getColor(R.styleable.EventContent_boxColor,
+                ContextCompat.getColor(getContext(), R.color.io16_light_grey));
         arr.recycle();
-        LayoutInflater inflater = (LayoutInflater) context.getSystemService
-                (Context.LAYOUT_INFLATER_SERVICE);
-        View view = inflater.inflate(R.layout.info_event_content_card_view, this, true);
+        View view = LayoutInflater.from(context)
+                .inflate(R.layout.info_event_content_card_view, this, true);
         mEventTitle = (TextView) view.findViewById(R.id.event_title);
         mEventDescription = (TextView) view.findViewById(R.id.event_content_description);
         mColorBox = (LinearLayout) view.findViewById(R.id.color_box);

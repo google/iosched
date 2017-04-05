@@ -49,12 +49,11 @@
 
         <TextView
             android:id="@+id/speaker_name"
+            style="@style/H3IndigoText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:ellipsize="end"
             android:lines="1"
-            android:textColor="@color/theme_primary"
-            android:textSize="18sp"
             tools:text="Andy Android" />
 
         <TextView
@@ -63,8 +62,8 @@
             android:layout_height="wrap_content"
             android:ellipsize="end"
             android:lines="1"
-            android:textSize="16sp"
             tools:text="Google" />
+
     </LinearLayout>
 
 </LinearLayout>

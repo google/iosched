@@ -13,10 +13,11 @@
   the License.
   -->
 
-<TextView xmlns:android="http://schemas.android.com/apk/res/android"
+<TextView
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:background="@color/lighter_grey"
+    android:padding="@dimen/padding_normal"
     android:text="@string/topics"
-    android:padding="16dp"
-    android:background="@color/light_grey"
-    android:textAppearance="@style/TextAppearance.AppCompat.Title" />
+    android:textAppearance="@style/TextAppearance.H3" />

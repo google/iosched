@@ -33,7 +33,7 @@
         android:layout_height="@dimen/my_schedule_icon_size"
         android:layout_marginLeft="@dimen/my_schedule_icon_horizontal_padding"
         android:layout_marginRight="@dimen/my_schedule_icon_horizontal_padding"
-        app:srcCompat="@drawable/ic_navview_schedule"
+        app:srcCompat="@drawable/ic_nav_schedule"
         tools:ignore="ContentDescription" />
 
     <LinearLayout

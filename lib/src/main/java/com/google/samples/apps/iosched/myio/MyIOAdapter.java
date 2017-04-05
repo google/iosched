@@ -237,8 +237,8 @@ class MyIOAdapter extends Adapter<ViewHolder> {
         MessageCardViewHolder(View itemView) {
             super(itemView);
             mMessage = (TextView) itemView.findViewById(R.id.text);
-            mStartButton = (Button) itemView.findViewById(R.id.buttonStart);
-            mEndButton = (Button) itemView.findViewById(R.id.buttonEnd);
+            mStartButton = (Button) itemView.findViewById(R.id.negative_button);
+            mEndButton = (Button) itemView.findViewById(R.id.positive_button);
 
             mStartButton.setOnClickListener(new OnClickListener() {
                 @Override

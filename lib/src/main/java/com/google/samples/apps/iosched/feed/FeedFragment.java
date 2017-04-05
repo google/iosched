@@ -18,7 +18,6 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.DividerItemDecoration;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -27,7 +26,7 @@ import android.view.ViewGroup;
 import com.google.samples.apps.iosched.feed.data.FeedMessage;
 import com.google.samples.apps.iosched.lib.R;
 
-import java.util.List;
+import static android.support.v7.widget.DividerItemDecoration.VERTICAL;
 
 public class FeedFragment extends Fragment implements FeedContract.View {
 
@@ -41,15 +40,14 @@ public class FeedFragment extends Fragment implements FeedContract.View {
             @Nullable Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.feed_fragment, container, false);
         mRecyclerView = (RecyclerView) root.findViewById(R.id.feed_recycler_view);
+        mRecyclerView.setHasFixedSize(true);
+
+        // TODO remove this; it's gross
         Point screenSize = new Point();
         getActivity().getWindowManager().getDefaultDisplay().getSize(screenSize);
         mFeedAdapter = new FeedAdapter(getContext(), screenSize);
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
-        linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
-        mRecyclerView.setLayoutManager(linearLayoutManager);
-        DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(
-                mRecyclerView.getContext(), linearLayoutManager.getOrientation());
-        mRecyclerView.addItemDecoration(dividerItemDecoration);
+        mRecyclerView.addItemDecoration(
+                new DividerItemDecoration(mRecyclerView.getContext(), VERTICAL));
         mRecyclerView.setAdapter(mFeedAdapter);
         return root;
     }

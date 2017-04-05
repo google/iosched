@@ -14,6 +14,7 @@
   See the License for the specific language governing permissions and
   limitations under the License.
   -->
+
 <android.support.v4.widget.NestedScrollView
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:custom="http://schemas.android.com/apk/res-auto"
@@ -23,66 +24,48 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:divider="@drawable/list_divider"
+        android:orientation="vertical"
+        android:paddingTop="@dimen/padding_normal"
+        android:showDividers="middle">
 
-        <android.support.v7.widget.CardView
-            style="@style/Info.Cards"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-            <TextView
-                style="@style/Info.Title"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/travel_details_title"/>
-        </android.support.v7.widget.CardView>
+        <TextView
+            style="@style/H3Text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/padding_normal"
+            android:text="@string/travel_details_title" />
 
         <com.google.samples.apps.iosched.info.CollapsableCard
             android:id="@+id/shuttleInfoCard"
-            style="@style/Info.Cards"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="@dimen/spacing_micro"
             custom:cardDescription="@string/shuttle_info_description"
-            custom:cardTitle="@string/shuttle_info_title">
-        </com.google.samples.apps.iosched.info.CollapsableCard>
+            custom:cardTitle="@string/shuttle_info_title" />
 
         <com.google.samples.apps.iosched.info.CollapsableCard
-            style="@style/Info.Cards"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="@dimen/spacing_micro"
             custom:cardDescription="@string/carpoolparking_info_description"
-            custom:cardTitle="@string/carpoolparking_info_title">
-        </com.google.samples.apps.iosched.info.CollapsableCard>
+            custom:cardTitle="@string/carpoolparking_info_title" />
 
         <com.google.samples.apps.iosched.info.CollapsableCard
-            style="@style/Info.Cards"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="@dimen/spacing_micro"
             custom:cardDescription="@string/publictransportation_info_description"
-            custom:cardTitle="@string/publictransportation_info_title">
-        </com.google.samples.apps.iosched.info.CollapsableCard>
+            custom:cardTitle="@string/publictransportation_info_title" />
 
         <com.google.samples.apps.iosched.info.CollapsableCard
-            style="@style/Info.Cards"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="@dimen/spacing_micro"
             custom:cardDescription="@string/biking_info_description"
-            custom:cardTitle="@string/biking_info_title">
-        </com.google.samples.apps.iosched.info.CollapsableCard>
+            custom:cardTitle="@string/biking_info_title" />
 
-        <android.support.v7.widget.CardView
-            style="@style/Info.Cards"
+        <ImageView
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:src="@drawable/io17_logo" />
 
-            <ImageView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:src="@drawable/io17_logo"/>
-        </android.support.v7.widget.CardView>
     </LinearLayout>
+
 </android.support.v4.widget.NestedScrollView>

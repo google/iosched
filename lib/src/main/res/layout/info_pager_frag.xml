@@ -54,7 +54,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
-            app:tabIndicatorColor="@color/lightish_blue"/>
+            app:tabIndicatorColor="@color/lightish_blue" />
 
         <android.support.v4.view.ViewPager
             android:id="@+id/view_pager"

@@ -68,8 +68,8 @@ public class MessageCardView extends CardView implements View.OnClickListener {
         mTitleView = (TextView) mRoot.findViewById(R.id.title);
         mMessageView = (TextView) mRoot.findViewById(R.id.text);
         mButtons = new Button[] {
-                (Button) mRoot.findViewById(R.id.buttonStart),
-                (Button) mRoot.findViewById(R.id.buttonEnd)
+                (Button) mRoot.findViewById(R.id.negative_button),
+                (Button) mRoot.findViewById(R.id.positive_button)
         };
         mButtonTags = new String[] { "", "" };
 
