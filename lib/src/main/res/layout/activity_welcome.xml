@@ -14,90 +14,96 @@
   See the License for the specific language governing permissions and
   limitations under the License.
   -->
-
-<FrameLayout
+<android.support.design.widget.CoordinatorLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".welcome.WelcomeActivity">
+    android:fitsSystemWindows="true"
+    tools:context="com.google.samples.apps.iosched.welcome.WelcomeActivity">
 
-    <ImageView
-        android:id="@+id/logo"
-        android:layout_width="wrap_content"
-        android:layout_height="@dimen/welcome_logo_height"
-        android:layout_gravity="top|center_horizontal"
-        android:layout_marginTop="@dimen/welcome_logo_top_spacing"
-        android:adjustViewBounds="true"
-        app:srcCompat="@drawable/io_logo"
-        tools:ignore="ContentDescription" />
+    <android.support.design.widget.AppBarLayout
+        android:id="@+id/appbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:fitsSystemWindows="true">
 
-    <ScrollView
+        <android.support.design.widget.CollapsingToolbarLayout
+            android:id="@+id/collapsing_toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/extended_appbar_height"
+            android:background="@null"
+            android:fitsSystemWindows="true"
+            android:minHeight="82dp"
+            app:layout_scrollFlags="scroll|exitUntilCollapsed"
+            app:statusBarScrim="@null"
+            app:titleEnabled="false">
+
+            <ImageView
+                android:id="@+id/logo"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom|start"
+                android:padding="@dimen/padding_normal"
+                android:src="@drawable/io_logo_onboarding"
+                android:importantForAccessibility="no" />
+
+        </android.support.design.widget.CollapsingToolbarLayout>
+
+    </android.support.design.widget.AppBarLayout>
+
+    <android.support.v4.widget.NestedScrollView
         android:id="@+id/welcome_scrolling_content"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginBottom="?actionBarSize"
+        android:layout_height="wrap_content"
         android:clipToPadding="false"
-        android:paddingBottom="@dimen/padding_normal"
-        android:paddingTop="@dimen/welcome_content_padding_top"
-        android:scrollbarStyle="outsideOverlay">
+        android:paddingBottom="?actionBarSize"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
-        <android.support.v7.widget.CardView
+        <LinearLayout
             android:id="@+id/welcome_content"
-            android:layout_width="@dimen/welcome_content_width"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:layout_marginEnd="@dimen/padding_normal"
-            android:layout_marginStart="@dimen/padding_normal"
-            android:paddingTop="@dimen/spacing_normal"
-            app:cardBackgroundColor="@color/app_white"
-            app:cardCornerRadius="@dimen/card_corner_radius"
-            app:cardElevation="@dimen/card_elevation"
-            app:cardPreventCornerOverlap="false" />
+            android:orientation="vertical"
+            android:paddingBottom="@dimen/padding_normal"
+            tools:ignore="RtlSymmetry">
 
-    </ScrollView>
+            <!-- welcome fragments inserted here -->
+
+        </LinearLayout>
+
+    </android.support.v4.widget.NestedScrollView>
 
     <!-- Button bar -->
-    <!-- need two layouts in order to restrict the width on larger devices -->
-    <FrameLayout
+    <LinearLayout
         android:id="@+id/welcome_button_bar"
         android:layout_width="match_parent"
         android:layout_height="?actionBarSize"
         android:layout_gravity="bottom"
-        android:background="?colorPrimary"
+        android:background="@color/greyish_brown"
         android:elevation="@dimen/welcome_button_bar_elevation"
+        android:gravity="end"
+        app:theme="@style/ThemeOverlay.AppCompat.Dark"
+        tools:ignore="UselessParent"
         tools:targetApi="lollipop">
 
-        <!-- Prevents the buttons from being placed all the way to the side on larger screens -->
-        <LinearLayout
-            android:layout_width="@dimen/welcome_content_width"
+        <Button
+            android:id="@+id/button_decline"
+            style="?borderlessButtonStyle"
+            android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:layout_gravity="center_horizontal"
-            android:gravity="end"
-            tools:ignore="UselessParent">
+            android:text="@string/decline"
+            android:visibility="invisible" />
 
-            <Button
-                android:id="@+id/button_decline"
-                style="?android:borderlessButtonStyle"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:text="@string/decline"
-                android:textAppearance="@style/TextAppearance.AppCompat.Button"
-                android:textColor="@color/body_text_2"
-                android:visibility="invisible" />
+        <Button
+            android:id="@+id/button_accept"
+            style="?borderlessButtonStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:text="@string/accept"
+            android:textColor="@color/aqua_marine" />
 
-            <Button
-                android:id="@+id/button_accept"
-                style="?android:borderlessButtonStyle"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:text="@string/accept"
-                android:textAppearance="@style/TextAppearance.AppCompat.Button"
-                android:textColor="@color/welcome_preferred_button" />
+    </LinearLayout>
 
-        </LinearLayout>
-
-    </FrameLayout>
-
-</FrameLayout>
+</android.support.design.widget.CoordinatorLayout>
