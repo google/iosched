@@ -295,6 +295,10 @@
             android:name="com.google.samples.apps.iosched.service.SessionCalendarService"
             android:exported="false" />
 
+        <service
+            android:name=".signin.RegistrationStatusService"
+            android:exported="false"/>
+
         <!-- BEGIN Google Analytics install referral measurement -->
         <!-- The service (provided by the Google Play services client library) that receives an
              intent from the CampaignTrackingReceiver upon install referral. -->

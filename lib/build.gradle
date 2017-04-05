@@ -222,6 +222,11 @@ dependencies {
     // Include libraries checked into the libs directory.
     compile fileTree(dir: 'libs', include: '*.jar')
 
+    // Backend server
+    compile project(path: ':server', configuration: 'android-endpoints')
+    compile 'com.google.api-client:google-api-client:1.22.0'
+    compile 'com.google.api-client:google-api-client-android:1.22.0'
+
     // Google Play services split client libs.
     compile "com.google.android.gms:play-services-analytics:${google_play_services_client_library_version}"
     compile "com.google.android.gms:play-services-auth:${google_play_services_client_library_version}"

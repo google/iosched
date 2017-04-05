@@ -74,9 +74,7 @@ public class AccountUtils {
             "pref_active_account_photo_url" + Constants.CONFERENCE_YEAR_PREF_POSTFIX;
 
     public static final String AUTH_SCOPES[] = {
-            Scopes.PLUS_LOGIN,
-            Scopes.DRIVE_APPFOLDER,
-            "https://www.googleapis.com/auth/userinfo.email"};
+            Scopes.PROFILE};
 
     static final String AUTH_TOKEN_TYPE;
 
