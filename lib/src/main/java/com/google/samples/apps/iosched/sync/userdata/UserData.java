@@ -12,7 +12,7 @@
  * the License.
  */
 
-package com.google.samples.apps.iosched.sync.userdata.util;
+package com.google.samples.apps.iosched.sync.userdata;
 
 import com.google.gson.annotations.SerializedName;
 

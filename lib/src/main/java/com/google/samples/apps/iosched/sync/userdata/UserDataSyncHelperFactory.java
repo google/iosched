@@ -23,7 +23,6 @@ import android.content.Context;
  */
 public class UserDataSyncHelperFactory {
     public static AbstractUserDataSyncHelper buildSyncHelper(Context context, String accountName) {
-      // TODO: replace with new sync helper for 2017.
-      return null;
+      return new UserDataSyncHelper(context, accountName);
     }
 }
