@@ -16,8 +16,6 @@
 
 package com.google.samples.apps.iosched.server.userdata;
 
-import static com.googlecode.objectify.ObjectifyService.ofy;
-
 import com.google.api.server.spi.auth.common.User;
 import com.google.api.server.spi.config.Api;
 import com.google.api.server.spi.config.ApiMethod;
@@ -31,6 +29,8 @@ import com.google.samples.apps.iosched.server.userdata.db.UserData;
 import com.googlecode.objectify.NotFoundException;
 
 import java.util.Map;
+
+import static com.googlecode.objectify.ObjectifyService.ofy;
 
 /** Endpoint for user data storage. */
 @Api(
@@ -90,6 +90,30 @@ public class UserdataEndpoint {
     }
 
     /**
+     * Batch update user data
+     *
+     * @param user Current user (injected by Endpoints)
+     * @param userData UserData object with new values to save
+     * @return Updated UserData object
+     */
+    @SuppressWarnings("ResourceParameter")  // http://b.android.com/201031
+    @ApiMethod(name = "updateUser", path = "all", httpMethod = ApiMethod.HttpMethod.PUT)
+    public UserData updateUser(User user,  UserData userData) throws UnauthorizedException {
+        UserData savedData = getUser(user);
+
+        // Bookmarked sessions can be overwritten
+        savedData.bookmarkedSessions = userData.bookmarkedSessions;
+        // Reviewed sessions should be merged with old values
+        for (String session : userData.reviewedSessions) {
+            savedData.reviewedSessions.add(session);
+        }
+        // We don't allow clients to update reserved sessions, preserve old values
+
+        save(savedData);
+        return savedData;
+    }
+
+    /**
      * Get bookmarked sessions for currently authenticated user.
      *
      * @param user Current user (injected by Endpoints)
@@ -142,6 +166,25 @@ public class UserdataEndpoint {
     }
 
     /**
+     * Mark a session as reviewed for the current user. This can not be unset.
+     *
+     * @param user       Current user (injected by Endpoints)
+     * @param sessionIds Session IDs to mark as reviewed.
+     * @return The list of reviewed sessions for the user (as an array of Strings)
+     */
+    @ApiMethod(name = "addReviewedSessions", path = "reviewed/batch", httpMethod = ApiMethod.HttpMethod
+            .POST)
+    public Object[] addReviewedSessions(User user, @Named("sessionIds") String[] sessionIds)
+            throws UnauthorizedException {
+        UserData data = getUser(user);
+        for (String session : sessionIds) {
+            data.reviewedSessions.add(session);
+        }
+        save(data);
+        return data.reviewedSessions.toArray();
+    }
+
+    /**
      * Add a bookmarked session for the current user. If the session is already in the user's feed,
      * it will be annotated with inSchedule=true.
      *
@@ -165,6 +208,32 @@ public class UserdataEndpoint {
     }
 
     /**
+     * Add a bookmarked session for the current user. If the session is already in the user's feed,
+     * it will be annotated with inSchedule=true.
+     *
+     * @param user         Current user (injected by Endpoints)
+     * @param sessionIds   Session IDs to mark as bookmarked.
+     * @param timestampUTC The time (in millis, UTC) when the user performed this action. May be
+     *                     different than the time this method is called if offline sync is
+     *                     implemented. MUST BE ACCURATE - COMPENSATE FOR CLOCK DRIFT!
+     * @return The list of bookmarked sessions for the user
+     */
+    @ApiMethod(name = "addBookmarkedSessions", path = "bookmarked/batch", httpMethod = ApiMethod
+            .HttpMethod.POST)
+    public Map<String, BookmarkedSession> addBookmarkedSessions(User user,
+                                                                @Named("sessionIds") String[] sessionIds,
+                                                                @Named("timestampUTC") long timestampUTC)
+            throws UnauthorizedException {
+        UserData data = getUser(user);
+        for (String session : sessionIds) {
+            BookmarkedSession s = new BookmarkedSession(session, true, timestampUTC);
+            data.bookmarkedSessions.put(session, s);
+        }
+        save(data);
+        return data.bookmarkedSessions;
+    }
+
+    /**
      * Remove a bookmarked session for the current user. The session will still be
      * attached to the user's feed, but will be annotated with inSchedule=false.
      *
@@ -181,6 +250,28 @@ public class UserdataEndpoint {
         UserData data = getUser(user);
         BookmarkedSession s = new BookmarkedSession(sessionId, false, timestampUTC);
         data.bookmarkedSessions.put(sessionId, s);
+        save(data);
+    }
+
+    /**
+     * Remove a bookmarked session for the current user. The session will still be
+     * attached to the user's feed, but will be annotated with inSchedule=false.
+     *
+     * @param user          Current user (injected by Endpoints)
+     * @param sessionIds    Session IDs to mark as not bookmarked.
+     * @param timestampUTC  The time (in millis, UTC) when the user performed this action. May be
+     *                      different than the time this method is called if offline sync is
+     *                      implemented. MUST BE ACCURATE - COMPENSATE FOR CLOCK DRIFT!
+     */
+    @ApiMethod(name = "removeBookmarkedSessions", path = "bookmarked/batch", httpMethod = ApiMethod
+            .HttpMethod.DELETE)
+    public void removeBookmarkedSessions(User user, @Named("sessionIds") String[] sessionIds, @Named
+            ("timestampUTC") long timestampUTC) throws UnauthorizedException {
+        UserData data = getUser(user);
+        for (String session : sessionIds) {
+            BookmarkedSession s = new BookmarkedSession(session, false, timestampUTC);
+            data.bookmarkedSessions.put(session, s);
+        }
         save(data);
     }
 
