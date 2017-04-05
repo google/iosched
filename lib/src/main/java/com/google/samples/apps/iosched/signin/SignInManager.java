@@ -14,10 +14,6 @@
 
 package com.google.samples.apps.iosched.signin;
 
-import static com.google.samples.apps.iosched.util.LogUtils.LOGD;
-import static com.google.samples.apps.iosched.util.LogUtils.LOGW;
-import static com.google.samples.apps.iosched.util.LogUtils.makeLogTag;
-
 import android.app.Activity;
 import android.content.Intent;
 
@@ -30,9 +26,14 @@ import com.google.android.gms.common.api.ResultCallback;
 import com.google.android.gms.common.api.Status;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.samples.apps.iosched.sync.SyncHelper;
+import com.google.samples.apps.iosched.sync.userdata.UserDataHelper;
 import com.google.samples.apps.iosched.util.AccountUtils;
 
 import java.lang.ref.WeakReference;
+
+import static com.google.samples.apps.iosched.util.LogUtils.LOGD;
+import static com.google.samples.apps.iosched.util.LogUtils.LOGW;
+import static com.google.samples.apps.iosched.util.LogUtils.makeLogTag;
 
 /**
  * Manages sign in and sign out functionality. Designed to be used with an activity, which
@@ -195,6 +196,7 @@ public class SignInManager {
             return;
         }
 
+        UserDataHelper.clearUserDataOnSignOut(activity);
         // Tasks we always want to execute upon sign out.
         AccountUtils.clearActiveAccount(activity);
         FirebaseAuth.getInstance().signOut();
