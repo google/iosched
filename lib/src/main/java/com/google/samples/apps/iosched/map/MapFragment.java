@@ -25,7 +25,6 @@ import android.os.Handler;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.app.LoaderManager.LoaderCallbacks;
 import android.support.v4.content.Loader;
-import android.util.SparseArray;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -40,6 +39,7 @@ import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
+import com.google.android.gms.maps.model.MapStyleOptions;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.TileOverlay;
 import com.google.android.gms.maps.model.TileOverlayOptions;
@@ -67,20 +67,20 @@ import static com.google.samples.apps.iosched.util.LogUtils.makeLogTag;
  * Shows a map of the conference venue.
  */
 public class MapFragment extends com.google.android.gms.maps.SupportMapFragment implements
-        GoogleMap.OnMarkerClickListener, GoogleMap.OnMapClickListener, OnMapReadyCallback,
-        GoogleMap.OnCameraChangeListener {
+        GoogleMap.OnMarkerClickListener, GoogleMap.OnMapClickListener, OnMapReadyCallback {
+
+    private static final String TAG = makeLogTag(MapFragment.class);
 
     /**
      * Extras parameter for highlighting a specific room when the map is loaded.
      */
     private static final String EXTRAS_HIGHLIGHT_ROOM = "EXTRAS_HIGHLIGHT_ROOM";
 
-
     /**
-     * Area covered by the venue. Determines if the venue is currently visible on screen.
+     * Area covered by the venue. Determines the viewport of the map.
      */
-    private static final LatLngBounds VENUE_AREA =
-            new LatLngBounds(BuildConfig.MAP_AREA_NW, BuildConfig.MAP_AREA_SE);
+    private static final LatLngBounds VIEWPORT =
+            new LatLngBounds(BuildConfig.MAP_VIEWPORT_NW, BuildConfig.MAP_VIEWPORT_SE);
 
     /**
      * Default position of the camera that shows the venue.
@@ -91,31 +91,11 @@ public class MapFragment extends com.google.android.gms.maps.SupportMapFragment 
                                         .zoom(BuildConfig.MAP_DEFAULTCAMERA_ZOOM)
                                         .tilt(BuildConfig.MAP_DEFAULTCAMERA_TILT)
                                         .build();
-
-    /**
-     * Value that denotes an invalid floor.
-     */
-    private static final int INVALID_FLOOR = Integer.MIN_VALUE;
-
-    /**
-     * Estimated number of floors used to initialise data structures with appropriate capacity.
-     */
-    private static final int INITIAL_FLOOR_COUNT = 1;
-
-    /**
-     * Default floor level to display. In the current implementation there is no support to switch
-     * floor levels, so this is always set to 0.
-     */
-    private static final int VENUE_DEFAULT_LEVEL_INDEX = 0;
-
-    private static final String TAG = makeLogTag(MapFragment.class);
     private boolean mMyLocationEnabled = false;
 
-    // Tile Providers
-    private SparseArray<CachedTileProvider> mTileProviders =
-            new SparseArray<>(INITIAL_FLOOR_COUNT);
-    private SparseArray<TileOverlay> mTileOverlays =
-            new SparseArray<>(INITIAL_FLOOR_COUNT);
+    // Tile Provider
+    private CachedTileProvider mTileProvider;
+    private TileOverlay mTileOverlay;
 
 
     // Markers stored by id
@@ -126,29 +106,14 @@ public class MapFragment extends com.google.android.gms.maps.SupportMapFragment 
     // Screen DPI
     private float mDPI = 0;
 
-    // currently displayed floor
-    private int mFloor = INVALID_FLOOR;
-
-    /**
-     * Indicates if the venue is active and its markers and floor plan is being displayed. Set to
-     * false by default, as the venue marker is shown first.
-     */
-    private boolean mVenueIsActive = false;
-
-
     private GeoJsonFeature mActiveMarker = null;
     private BitmapDescriptor ICON_ACTIVE;
     private BitmapDescriptor ICON_NORMAL;
-
-    private Marker mVenueMaker = null;
 
     protected GoogleMap mMap;
     private Rect mMapInsets = new Rect();
 
     private String mHighlightedRoomId = null;
-    private GeoJsonFeature mHighlightedRoom = null;
-
-    private int mInitialFloor = VENUE_DEFAULT_LEVEL_INDEX;
 
     private static final int TOKEN_LOADER_MARKERS = 0x1;
     private static final int TOKEN_LOADER_TILES = 0x2;
@@ -159,8 +124,6 @@ public class MapFragment extends com.google.android.gms.maps.SupportMapFragment 
     public interface Callbacks {
 
         void onInfoHide();
-
-        void onInfoShowVenue();
 
         void onInfoShowTitle(String label, int roomType);
 
@@ -174,10 +137,6 @@ public class MapFragment extends com.google.android.gms.maps.SupportMapFragment 
 
         @Override
         public void onInfoHide() {
-        }
-
-        @Override
-        public void onInfoShowVenue() {
         }
 
         @Override
@@ -303,18 +262,20 @@ public class MapFragment extends com.google.android.gms.maps.SupportMapFragment 
      * @see CachedTileProvider#closeCache()
      */
     private void closeTileCache() {
-        for (int i = 0; i < mTileProviders.size(); i++) {
             try {
-                mTileProviders.valueAt(i).closeCache();
+                if(mTileProvider != null){
+                    mTileProvider.closeCache();
+                }
             } catch (IOException e) {
             }
-        }
+
     }
 
     /**
      * Clears the map and initialises all map variables that hold markers and overlays.
      */
     private void clearMap() {
+        // Empty the map
         if (mMap != null) {
             mMap.clear();
         }
@@ -322,10 +283,9 @@ public class MapFragment extends com.google.android.gms.maps.SupportMapFragment 
         // Close all tile provider caches
         closeTileCache();
 
-        // Clear all map elements
-        mTileProviders.clear();
-        mTileOverlays.clear();
-
+        // Clear all map objects
+        mTileProvider = null;
+        mTileOverlay = null;
         mMarkers.clear();
 
     }
@@ -338,10 +298,12 @@ public class MapFragment extends com.google.android.gms.maps.SupportMapFragment 
         ICON_NORMAL = BitmapDescriptorFactory.fromResource(R.drawable.map_marker_unselected);
 
         mMap = googleMap;
+        mMap.setMapStyle(MapStyleOptions.loadRawResourceStyle(getContext(), R.raw.maps_style));
         mMap.setIndoorEnabled(false);
         mMap.setOnMarkerClickListener(this);
         mMap.setOnMapClickListener(this);
-        mMap.setOnCameraChangeListener(this);
+        mMap.setLatLngBoundsForCameraTarget(VIEWPORT);
+        mMap.setMinZoomPreference(BuildConfig.MAP_VIEWPORT_MINZOOM);
         UiSettings mapUiSettings = mMap.getUiSettings();
         mapUiSettings.setZoomControlsEnabled(false);
         mapUiSettings.setMapToolbarEnabled(false);
@@ -349,8 +311,6 @@ public class MapFragment extends com.google.android.gms.maps.SupportMapFragment 
         // This state is set via 'setMyLocationLayerEnabled.
         //noinspection MissingPermission
         mMap.setMyLocationEnabled(mMyLocationEnabled);
-
-        addVenueMarker();
 
         // Move camera directly to the venue
         centerOnVenue(false);
@@ -373,11 +333,6 @@ public class MapFragment extends com.google.android.gms.maps.SupportMapFragment 
 
         // load the tile overlays
         lm.initLoader(TOKEN_LOADER_TILES, null, mTileLoader).forceLoad();
-    }
-
-    private void addVenueMarker() {
-        mVenueMaker = mMap.addMarker(
-                MapUtils.createVenueMarker(BuildConfig.MAP_VENUEMARKER).visible(false));
     }
 
     @Override
@@ -404,21 +359,6 @@ public class MapFragment extends com.google.android.gms.maps.SupportMapFragment 
         getActivity().getContentResolver().unregisterContentObserver(mObserver);
     }
 
-    @Override
-    public void onCameraChange(final CameraPosition cameraPosition) {
-        boolean isVenueInFocus = cameraPosition.zoom >= (double) BuildConfig.MAP_MAXRENDERED_ZOOM
-                && isVenueVisible();
-
-        // Check if the camera is focused on the venue. Trigger a callback if the state has changed.
-        if (isVenueInFocus && !mVenueIsActive) {
-            onFocusVenue();
-            mVenueIsActive = true;
-        } else if (!isVenueInFocus && mVenueIsActive) {
-            onDefocusVenue();
-            mVenueIsActive = false;
-        }
-    }
-
     /**
      * Moves the camera to the {@link #VENUE_CAMERA} positon.
      *
@@ -431,133 +371,6 @@ public class MapFragment extends com.google.android.gms.maps.SupportMapFragment 
         } else {
             mMap.moveCamera(camera);
         }
-    }
-
-    /**
-     * Switches the displayed floor for which elements are displayed. If the map is not initialised
-     * yet or no data has been loaded, nothing will be displayed. If an invalid floor is specified
-     * and elements are currently on the map, all visible elements will be hidden.
-     *
-     * @param floor index of the floor to display. It requires an overlay or least one Marker to be
-     *              valid.
-     */
-    private void showFloorElementsIndex(int floor) {
-        LOGD(TAG, "Show floor " + floor);
-
-        // Hide previous floor elements if the floor has changed
-        if (mFloor != floor) {
-            setFloorElementsVisible(mFloor, false);
-        }
-
-        mFloor = floor;
-
-        if (isValidFloor(mFloor)) {
-            // Always hide the venue marker if a floor is shown
-            mVenueMaker.setVisible(false);
-            setFloorElementsVisible(mFloor, true);
-        } else {
-            // Show venue marker if at an invalid floor
-            mVenueMaker.setVisible(true);
-        }
-    }
-
-    /**
-     * Change the visibility of all Markers and TileOverlays for a floor.
-     */
-    private void setFloorElementsVisible(int floor, boolean visible) {
-        // Overlays
-        final TileOverlay overlay = mTileOverlays.get(floor);
-        if (overlay != null) {
-            overlay.setVisible(visible);
-        }
-
-        //Markers
-
-        if (mGeoJsonLayer != null) {
-            for (GeoJsonFeature feature : mGeoJsonLayer.getFeatures()) {
-                GeoJsonPointStyle p = feature.getPointStyle();
-                p.setVisible(visible);
-                feature.setPointStyle(p);
-            }
-        }
-    }
-
-    /**
-     * A floor is valid if the venue contains that floor. It is not required for a floor to have a
-     * tile overlay AND markers.
-     */
-    private boolean isValidFloor(int floor) {
-        return mTileOverlays.get(floor) != null;
-    }
-
-    /**
-     * Display map features if at the venue. This explicitly enables all elements that should be
-     * displayed at the default floor.
-     *
-     * @see #isVenueVisible()
-     */
-    private void enableMapElements() {
-        if (isVenueVisible()) {
-            onFocusVenue();
-        }
-    }
-
-    private void onDefocusVenue() {
-        // Hide all markers and tile overlays
-        deselectActiveMarker();
-        showFloorElementsIndex(INVALID_FLOOR);
-        mCallbacks.onInfoShowVenue();
-    }
-
-    private void onFocusVenue() {
-        // Highlight a room if argument is set and it exists, otherwise show the default floor
-        if (mHighlightedRoomId != null && mMarkers.containsKey(mHighlightedRoomId)) {
-            highlightRoom(mHighlightedRoomId);
-            onFloorActivated(mFloor);
-            // Reset highlighted room because it has just been displayed.
-            mHighlightedRoomId = null;
-        } else {
-            // Hide the bottom sheet that is displaying the venue details at this point
-            mCallbacks.onInfoHide();
-            // Switch to the default level for the venue and reset its value
-            onFloorActivated(mInitialFloor);
-        }
-        mInitialFloor = VENUE_DEFAULT_LEVEL_INDEX;
-    }
-
-    public boolean isVenueVisible() {
-        if (mMap == null) {
-            return false;
-        }
-
-        LatLngBounds visibleBounds = mMap.getProjection().getVisibleRegion().latLngBounds;
-
-        return MapUtils.boundsIntersect(visibleBounds, VENUE_AREA);
-    }
-
-    /**
-     * Called when a floor level in the venue building has been activated. If a room is to be
-     * highlighted, the map is centered and its marker is activated.
-     */
-    private void onFloorActivated(int activeLevelIndex) {
-        if (mHighlightedRoom != null) {
-            // A room highlight is pending. Highlight the marker and display info details.
-            deselectActiveMarker();
-            selectMarker(mHighlightedRoom);
-            GeoJsonPoint room = (GeoJsonPoint) mHighlightedRoom.getGeometry();
-            centerMap(room.getCoordinates());
-
-            // Remove the highlight room flag, because the room has just been highlighted.
-            mHighlightedRoom = null;
-            mHighlightedRoomId = null;
-        } else {
-            // Deselect and hide the info details.
-            deselectActiveMarker();
-            mCallbacks.onInfoHide();
-        }
-
-        // Show map elements for this floor
-        showFloorElementsIndex(activeLevelIndex);
     }
 
     @Override
@@ -597,17 +410,7 @@ public class MapFragment extends com.google.android.gms.maps.SupportMapFragment 
         // Contains: Marker ID (for example room UUID)
         AnalyticsHelper.sendEvent("Map", "markerclick", title);
         deselectActiveMarker();
-
-        // The venue marker can be compared directly.
-        // For all other markers the model needs to be looked up first.
-        if (marker.equals(mVenueMaker)) {
-            // Return camera to the venue
-            LOGD(TAG, "Clicked on the venue marker, return to initial display.");
-            centerOnVenue(true);
-
-        } else {
-            selectMarker(feature);
-        }
+        selectMarker(feature);
 
         return true;
     }
@@ -643,12 +446,25 @@ public class MapFragment extends com.google.android.gms.maps.SupportMapFragment 
                 BuildConfig.MAP_VENUECAMERA_ZOOM));
     }
 
-    private void highlightRoom(String roomId) {
-        GeoJsonFeature feature = mMarkers.get(roomId);
-        if (feature != null) {
-            mHighlightedRoom = feature;
-            showFloorElementsIndex(mFloor);
+    private boolean highlightRoom(String roomId) {
+        if(roomId == null){
+            return false;
         }
+        // Hide the active marker.
+        deselectActiveMarker();
+
+        GeoJsonFeature highlightedFeature = mMarkers.get(roomId);
+        if (highlightedFeature == null) {
+            // Room not found. Deselect active marker and hide the info details anyway.
+            mCallbacks.onInfoHide();
+
+            return false;
+        }
+        selectMarker(highlightedFeature);
+        GeoJsonPoint room = (GeoJsonPoint) highlightedFeature.getGeometry();
+        centerMap(room.getCoordinates());
+
+        return true;
     }
 
     private void onMarkersLoaded(GeoJsonLayer layer) {
@@ -663,24 +479,29 @@ public class MapFragment extends com.google.android.gms.maps.SupportMapFragment 
             }
         }
 
-        enableMapElements();
+        // Highlight a room if there is a pending id.
+        highlightRoom(mHighlightedRoomId);
+        mHighlightedRoomId = null;
+
     }
 
+    /**
+     * Add the first TileOverlay to the map.
+     */
     private void onTilesLoaded(List<TileLoadingTask.TileEntry> list) {
-        if (list != null) {
-            // Display tiles if they have been loaded, skip them otherwise but display the rest of
-            // the map.
-            for (TileLoadingTask.TileEntry entry : list) {
-                TileOverlayOptions tileOverlay = new TileOverlayOptions()
-                        .tileProvider(entry.provider).visible(false);
-
-                // Store the tile overlay and provider
-                mTileProviders.put(entry.floor, entry.provider);
-                mTileOverlays.put(entry.floor, mMap.addTileOverlay(tileOverlay));
-            }
+        if (list.isEmpty()) {
+            return;
         }
+        // Get the first entry and make it visible
+        TileLoadingTask.TileEntry entry = list.get(0);
+        TileOverlayOptions tileOverlay = new TileOverlayOptions()
+                .tileProvider(entry.provider).visible(true);
 
-        enableMapElements();
+        // Store the tile overlay and provider
+        mTileProvider = entry.provider;
+        mTileOverlay = mMap.addTileOverlay(tileOverlay);
+
+
     }
 
     private final ContentObserver mObserver = new ContentObserver(new Handler()) {
@@ -698,7 +519,6 @@ public class MapFragment extends com.google.android.gms.maps.SupportMapFragment 
 
             // Clear the map, but don't reset the camera.
             clearMap();
-            addVenueMarker();
 
             // Reload data from loaders. Initialise the loaders first if they are not active yet.
             LoaderManager lm = getLoaderManager();
@@ -709,7 +529,8 @@ public class MapFragment extends com.google.android.gms.maps.SupportMapFragment 
 
 
     /**
-     * LoaderCallbacks for the {@link MarkerLoadingTask} that loads all markers for the map.
+     * LoaderCallbacks for the {@link MarkerLoadingTask} that loads all markers in GeoJson for the
+     * map.
      */
     private LoaderCallbacks<GeoJsonLayer> mMarkerLoader
             = new LoaderCallbacks<GeoJsonLayer>() {
@@ -730,7 +551,8 @@ public class MapFragment extends com.google.android.gms.maps.SupportMapFragment 
     };
 
     /**
-     * LoaderCallbacks for the {@link TileLoadingTask} that loads all tile overlays for the map.
+     * LoaderCallbacks for the {@link TileLoadingTask} that loads the first tile overlay for the
+     * map.
      */
     private LoaderCallbacks<List<TileLoadingTask.TileEntry>> mTileLoader
             = new LoaderCallbacks<List<TileLoadingTask.TileEntry>>() {

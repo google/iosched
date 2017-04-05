@@ -223,12 +223,6 @@
     <!-- Message displayed when the location permission was denied -->
     <string name="map_permission_denied">App permission denied.</string>
 
-    <!-- Label of info screen title for Event Site at a lower zoom level -->
-    <string name="map_venue_name" translatable="false">Shoreline Amphitheatre</string>
-
-    <!-- Address of Moscone Center. Shown together with its name. -->
-    <string name="map_venue_address" translatable="false">1 Amphitheatre Pkwy\nMountain View,\nCA 94043</string>
-
     <!-- Button to view more Videos or sessions from the videos/sessions card view. -->
     <string name="more_items_button">More</string>
 

@@ -90,6 +90,7 @@ public class MarkerLoadingTask extends AsyncTaskLoader<GeoJsonLayer> {
                     // All other markers (that are not inactive) contain a pin icon
                     pointStyle = MapUtils.createPinMarker(id);
                 }
+                pointStyle.setVisible(true);
                 feature.setPointStyle(pointStyle);
             }
             return layer;

@@ -89,6 +89,7 @@ public class SlideableInfoFragment extends MapInfoFragment {
         mBottomSheet = mCoordinator.findViewById(R.id.map_bottomsheet);
         mBehavior = BottomSheetBehavior.from(mBottomSheet);
         mBehavior.setBottomSheetCallback(mBottomSheetCallback);
+        mBehavior.setState(BottomSheetBehavior.STATE_HIDDEN);
     }
 
     @Override
@@ -109,15 +110,6 @@ public class SlideableInfoFragment extends MapInfoFragment {
         // Set up panel: collapsed only with title height and icon
         mBehavior.setPeekHeight(mHeightTitleOnly);
         mBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
-    }
-
-    @Override
-    public void showVenue() {
-        // Set up panel: collapsed with venue height
-        mBehavior.setPeekHeight(mHeightVenue);
-        mBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
-
-        super.showVenue();
     }
 
     @Override

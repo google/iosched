@@ -94,18 +94,16 @@ android {
         buildConfigField("String", "PREF_DATA_BOOTSTRAP_DONE", "\"pref_bootstrap_done_${conf_version}\"")
         buildConfigField("String", "KEYNOTE_SESSION_ID", "\"${keynote_session_id}\"")
 
-        buildConfigField("com.google.android.gms.maps.model.LatLng", "MAP_VENUEMARKER",
-                "new com.google.android.gms.maps.model.LatLng(${map_venuemarker})")
-        buildConfigField("com.google.android.gms.maps.model.LatLng", "MAP_AREA_NW",
-                "new com.google.android.gms.maps.model.LatLng(${map_area_nw})")
-        buildConfigField("com.google.android.gms.maps.model.LatLng", "MAP_AREA_SE",
-                "new com.google.android.gms.maps.model.LatLng(${map_area_se})")
+        buildConfigField("com.google.android.gms.maps.model.LatLng", "MAP_VIEWPORT_NW",
+                "new com.google.android.gms.maps.model.LatLng(${map_viewport_nw})")
+        buildConfigField("com.google.android.gms.maps.model.LatLng", "MAP_VIEWPORT_SE",
+                "new com.google.android.gms.maps.model.LatLng(${map_viewport_se})")
+        buildConfigField("float", "MAP_VIEWPORT_MINZOOM", "${map_viewport_minzoom}")
         buildConfigField("float", "MAP_DEFAULTCAMERA_BEARING", "${map_defaultcamera_bearing}")
         buildConfigField("com.google.android.gms.maps.model.LatLng", "MAP_DEFAULTCAMERA_TARGET",
                 "new com.google.android.gms.maps.model.LatLng(${map_defaultcamera_target})")
         buildConfigField("float", "MAP_DEFAULTCAMERA_ZOOM", "${map_defaultcamera_zoom}")
         buildConfigField("float", "MAP_DEFAULTCAMERA_TILT", "${map_defaultcamera_tilt}")
-        buildConfigField("float", "MAP_MAXRENDERED_ZOOM", "${map_maxrendered_zoom}")
         buildConfigField("float", "MAP_VENUECAMERA_ZOOM", "${map_venuecamera_zoom}")
         buildConfigField("float[]", "MAP_FLOORPLAN_MAPPING", "{${map_floorplan_nw}," +
                 "${map_floorplan_ne}, ${map_floorplan_se}}" )
