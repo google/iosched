@@ -270,14 +270,6 @@
         <item name="android:lineSpacingMultiplier">@dimen/h3_spacing</item>
     </style>
 
-    <style name="SessionDetailsTitle">
-        <item name="android:textAppearance">@style/TextAppearance.AppCompat.Headline</item>
-        <item name="android:lineSpacingMultiplier">@dimen/h3_spacing</item>
-    </style>
-
-    <style name="SessionDetailsSubtitle" parent="@style/Body2Text">
-    </style>
-
     <style name="SettingsPreferenceThemeOverlay" parent="PreferenceThemeOverlay">
         <item name="switchPreferenceCompatStyle">@style/SettingsSwitchPreference</item>
     </style>
@@ -355,6 +347,11 @@
         <item name="android:textColor">@color/greyish_brown</item>
     </style>
 
+    <style name="TextAppearance.H4" parent="@style/TextAppearance.AppCompat.Body2">
+        <item name="android:textSize">15sp</item>
+        <item name="android:textColor">@color/greyish_brown</item>
+    </style>
+
     <style name="TextAppearance.Body" parent="@style/TextAppearance.AppCompat.Body1">
         <item name="android:textSize">15sp</item>
         <item name="android:textColor">@color/greyish_brown</item>
@@ -368,5 +365,10 @@
     <style name="BodyText">
         <item name="android:textAppearance">@style/TextAppearance.Body</item>
         <item name="android:lineSpacingMultiplier">@dimen/body_1_spacing</item>
+    </style>
+
+    <style name="H4Text">
+        <item name="android:textAppearance">@style/TextAppearance.H4</item>
+        <item name="android:lineSpacingMultiplier">@dimen/h4_spacing</item>
     </style>
 </resources>
