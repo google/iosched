@@ -253,6 +253,8 @@ public class SessionDetailModel extends ModelWithLoaderManager<SessionDetailQuer
             case RESERVATION_PENDING:
             case RESERVATION_STATUS:
             case RESERVATION_RESULT:
+            case RESERVATION_FAILED:
+            case RESERVATION_SEAT_AVAILABILITY:
                 mDataQueryCallbacks.put(query, callback);
                 break;
             default:
