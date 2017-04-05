@@ -24,6 +24,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
+import android.content.res.ColorStateList;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
@@ -748,6 +749,24 @@ public class UIUtils {
                 return ((ColorDrawable) d).getColor();
             }
             return Color.TRANSPARENT;
+        }
+    };
+
+    /**
+     * A {@link Property} used for more efficiently animating a Views background tint i.e. avoiding
+     * using reflection to locate the getters and setters.
+     */
+    public static final Property<View, Integer> BACKGROUND_TINT
+            = new Property<View, Integer>(Integer.class, "backgroundTint") {
+
+        @Override
+        public void set(View view, Integer color) {
+            view.setBackgroundTintList(ColorStateList.valueOf(color));
+        }
+
+        @Override
+        public Integer get(View view) {
+            return view.getBackgroundTintList().getDefaultColor();
         }
     };
 
