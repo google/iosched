@@ -23,6 +23,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.res.ColorStateList;
 import android.graphics.Color;
+import android.graphics.drawable.AnimatedVectorDrawable;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
@@ -33,7 +34,6 @@ import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.AppBarLayout.OnOffsetChangedListener;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.CoordinatorLayout;
-import android.support.graphics.drawable.AnimatedVectorDrawableCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.ShareCompat;
 import android.support.v4.content.ContextCompat;
@@ -51,6 +51,8 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.view.animation.AnimationUtils;
+import android.view.animation.LinearInterpolator;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -88,6 +90,8 @@ import com.google.samples.apps.iosched.util.YouTubeUtils;
 import java.util.ArrayList;
 import java.util.List;
 
+import static android.view.View.GONE;
+import static android.view.View.VISIBLE;
 import static com.google.samples.apps.iosched.util.LogUtils.LOGD;
 
 /**
@@ -411,17 +415,20 @@ public class SessionDetailFragment extends Fragment implements
 
     private void showInSchedule(boolean isInSchedule) {
         mAddScheduleFab.setChecked(isInSchedule);
-        if (isInSchedule) {
-            AnimatedVectorDrawableCompat addToSchedule = AnimatedVectorDrawableCompat
-                    .create(getContext(), R.drawable.avd_add_to_schedule);
-            mAddScheduleFab.setImageDrawable(addToSchedule);
-            addToSchedule.start();
-        } else {
-            AnimatedVectorDrawableCompat removeFromSchedule = AnimatedVectorDrawableCompat
-                    .create(getContext(), R.drawable.avd_remove_from_schedule);
-            mAddScheduleFab.setImageDrawable(removeFromSchedule);
-            removeFromSchedule.start();
-        }
+
+        AnimatedVectorDrawable avd = (AnimatedVectorDrawable) ContextCompat.getDrawable(
+                getContext(), isInSchedule ? R.drawable.avd_bookmark : R.drawable.avd_unbookmark);
+        mAddScheduleFab.setImageDrawable(avd);
+        ObjectAnimator backgroundColor = ObjectAnimator.ofArgb(
+                mAddScheduleFab,
+                UIUtils.BACKGROUND_TINT,
+                isInSchedule ? Color.WHITE
+                        : ContextCompat.getColor(getContext(), R.color.lightish_blue));
+        backgroundColor.setDuration(400L);
+        backgroundColor.setInterpolator(AnimationUtils.loadInterpolator(getContext(),
+                android.R.interpolator.fast_out_slow_in));
+        backgroundColor.start();
+        avd.start();
 
         mAddScheduleFab.setContentDescription(getString(isInSchedule
                 ? R.string.remove_from_schedule
@@ -500,7 +507,7 @@ public class SessionDetailFragment extends Fragment implements
         // Handle Keynote as a special case, where the user cannot remove it
         // from the schedule (it is auto added to schedule on sync)
         mShowFab = (AccountUtils.hasActiveAccount(getContext()) && !data.isKeynote());
-        mAddScheduleFab.setVisibility(mShowFab ? View.VISIBLE : View.INVISIBLE);
+        mAddScheduleFab.setVisibility(mShowFab ? VISIBLE : View.INVISIBLE);
 
         displayTags(data);
 
@@ -510,9 +517,9 @@ public class SessionDetailFragment extends Fragment implements
 
         if (!TextUtils.isEmpty(data.getSessionAbstract())) {
             UIUtils.setTextMaybeHtml(mAbstract, data.getSessionAbstract());
-            mAbstract.setVisibility(View.VISIBLE);
+            mAbstract.setVisibility(VISIBLE);
         } else {
-            mAbstract.setVisibility(View.GONE);
+            mAbstract.setVisibility(GONE);
         }
 
         updateEmptyView(data);
@@ -663,7 +670,7 @@ public class SessionDetailFragment extends Fragment implements
 
             speakerName.setText(speaker.getName());
             if (TextUtils.isEmpty(speaker.getCompany())) {
-                speakerCompany.setVisibility(View.GONE);
+                speakerCompany.setVisibility(GONE);
             } else {
                 speakerCompany.setText(speaker.getCompany());
             }
@@ -674,13 +681,13 @@ public class SessionDetailFragment extends Fragment implements
             speakersGroup.addView(speakerView);
         }
 
-        speakersGroup.setVisibility(speakersGroup.getChildCount() > 0 ? View.VISIBLE : View.GONE);
+        speakersGroup.setVisibility(speakersGroup.getChildCount() > 0 ? VISIBLE : GONE);
         updateEmptyView(data);
     }
 
     private void displayRelatedSessions(SessionDetailModel data) {
         mRelatedSessionsAdapter.updateItems(data.getRelatedSessions());
-        int visibility = mRelatedSessionsAdapter.getItemCount() > 0 ? View.VISIBLE : View.GONE;
+        int visibility = mRelatedSessionsAdapter.getItemCount() > 0 ? VISIBLE : GONE;
         mRelatedSessions.setVisibility(visibility);
         mRelatedSessionsLabel.setVisibility(visibility);
     }
@@ -689,14 +696,14 @@ public class SessionDetailFragment extends Fragment implements
         getActivity().findViewById(android.R.id.empty).setVisibility(
                 (data.getSessionTitle() != null && data.getSpeakers().size() == 0
                         && !data.hasSummaryContent())
-                        ? View.VISIBLE
-                        : View.GONE);
+                        ? VISIBLE
+                        : GONE);
     }
 
     private void updateTimeBasedUi(SessionDetailModel data) {
         if (data.showLiveStream()) {
             // Show the play button and text only once the session is about to start.
-            mWatchVideo.setVisibility(View.VISIBLE);
+            mWatchVideo.setVisibility(VISIBLE);
 
             if (data.hasSessionEnded()) {
                 mWatchVideo.setText(getString(R.string.session_watch));
@@ -705,16 +712,12 @@ public class SessionDetailFragment extends Fragment implements
                 mWatchVideo.setText(getString(R.string.session_watch_live));
             }
         } else {
-            mWatchVideo.setVisibility(View.GONE);
+            mWatchVideo.setVisibility(GONE);
         }
 
         // If the session is done, hide the FAB, and show the feedback button.
         mShowFab = !data.isSessionReadyForFeedback();
-        if (mShowFab) {
-            mAddScheduleFab.show();
-        } else {
-            mAddScheduleFab.hide();
-        }
+        mAddScheduleFab.setVisibility( mShowFab ? VISIBLE : GONE);
         updateFeedbackButton(data);
 
         String timeHint = "";
@@ -746,10 +749,10 @@ public class SessionDetailFragment extends Fragment implements
         final TextView timeHintView = (TextView) getActivity().findViewById(R.id.time_hint);
 
         if (!TextUtils.isEmpty(timeHint)) {
-            timeHintView.setVisibility(View.VISIBLE);
+            timeHintView.setVisibility(VISIBLE);
             timeHintView.setText(timeHint);
         } else {
-            timeHintView.setVisibility(View.GONE);
+            timeHintView.setVisibility(GONE);
         }
     }
 
@@ -785,13 +788,13 @@ public class SessionDetailFragment extends Fragment implements
             inflater.inflate(R.layout.include_schedule_live, mTags);
         }
 
-        mTagsContainer.setVisibility(mTags.getChildCount() > 0 ? View.VISIBLE : View.GONE);
+        mTagsContainer.setVisibility(mTags.getChildCount() > 0 ? VISIBLE : GONE);
     }
 
     private void updateFeedbackButton(final SessionDetailModel data) {
-        mFeedbackButton.setVisibility(data.hasFeedback() ? View.GONE : View.VISIBLE);
+        mFeedbackButton.setVisibility(data.hasFeedback() ? GONE : VISIBLE);
         if (!data.hasFeedback() && data.isInScheduleWhenSessionFirstLoaded()) {
-            mFeedbackButton.setVisibility(View.VISIBLE);
+            mFeedbackButton.setVisibility(VISIBLE);
             mFeedbackButton.setOnClickListener(new OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -802,7 +805,7 @@ public class SessionDetailFragment extends Fragment implements
             });
             LOGD(TAG, "User has not given feedback for session.");
         } else {
-            mFeedbackButton.setVisibility(View.GONE);
+            mFeedbackButton.setVisibility(GONE);
             mFeedbackButton.setOnClickListener(null);
             LOGD(TAG, "User already gave feedback for session.");
         }
@@ -814,8 +817,6 @@ public class SessionDetailFragment extends Fragment implements
             public void run() {
                 if (mAddScheduleFab.isChecked() != isInSchedule) {
                     mAddScheduleFab.setChecked(isInSchedule);
-                    mAddScheduleFab.setImageResource(isInSchedule ?
-                            R.drawable.ic_session_in_schedule : R.drawable.ic_add_to_schedule);
                     mAddScheduleFab.setContentDescription(getString(isInSchedule ?
                             R.string.remove_from_schedule_desc : R.string.add_to_schedule_desc));
                 }

@@ -27,6 +27,7 @@
     <color name="warm_grey">#9b9b9b</color>
     <color name="greyish_brown">#424242</color>
     <color name="tos_links">#4151fd</color>
+    <color name="dark_icon">#b3000000</color>
 
     <!-- 2016 palette -->
     <color name="io16_primary_cyan">#ff25c5d9</color>
@@ -40,7 +41,6 @@
     <color name="io16_accent_green">#ff7bb241</color>
     <color name="io16_accent_yellow">#ffffc927</color>
     <color name="io16_accent_purple">#ff7885ca</color>
-    <color name="dark_icon">#99000000</color>
     <color name="large_dark_icon">#66000000</color>
     <color name="map_icon">#ffb4b4b4</color>
     <color name="navview_icon">#ff444444</color>
@@ -69,7 +69,7 @@
 
     <!-- Session Detail colors. -->
     <color name="session_detail_tag_text">@color/session_detail_interactive_element</color>
-    <color name="fab_not_in_schedule">#ffeeff21</color>
+    <color name="fab_not_in_schedule">@color/lightish_blue</color>
     <color name="fab_in_schedule">@android:color/white</color>
     <color name="fab_press_ripple">#1a000000</color>
     <color name="session_tag_stroke">#80546e7a</color>
