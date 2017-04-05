@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.google.samples.apps.iosched.sync.userdata.util;
+package com.google.samples.apps.iosched.sync.userdata;
 
 import android.content.ContentProviderOperation;
 import android.content.Context;
@@ -23,14 +23,7 @@ import android.util.Log;
 
 import com.google.samples.apps.iosched.provider.ScheduleContract;
 import com.google.samples.apps.iosched.provider.ScheduleContractHelper;
-import com.google.samples.apps.iosched.sync.userdata.UserAction;
-import com.google.gson.JsonArray;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonPrimitive;
-import com.google.gson.stream.JsonReader;
 
-import java.io.IOException;
-import java.io.StringReader;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -39,13 +32,13 @@ import static com.google.samples.apps.iosched.util.LogUtils.makeLogTag;
 /**
  * Helper class to handle the format of the User Actions done on the device.
  */
-public class UserActionHelper {
+class UserActionHelper {
     private static final String TAG = makeLogTag(UserActionHelper.class);
 
     /**
      * Update content providers as a batch command based on the given list of User Actions.
      */
-    static public void updateContentProvider(Context context, List<UserAction> userActions,
+    static void updateContentProvider(Context context, List<UserAction> userActions,
             String account) {
         ArrayList<ContentProviderOperation> batch = new ArrayList<>();
         for (UserAction action: userActions) {
@@ -53,9 +46,7 @@ public class UserActionHelper {
         }
         try {
             context.getContentResolver().applyBatch(ScheduleContract.CONTENT_AUTHORITY, batch);
-        } catch (RemoteException e) {
-            Log.e(TAG, "Could not apply operations", e);
-        } catch (OperationApplicationException e) {
+        } catch (RemoteException | OperationApplicationException e) {
             Log.e(TAG, "Could not apply operations", e);
         }
     }
@@ -86,14 +77,6 @@ public class UserActionHelper {
                     .withValue(ScheduleContract.MyFeedbackSubmitted
                             .MY_FEEDBACK_SUBMITTED_DIRTY_FLAG, "0")
                     .withValue(ScheduleContract.MyFeedbackSubmitted.SESSION_ID, action.sessionId)
-                    .build();
-        } else if (action.type == UserAction.TYPE.VIEW_VIDEO) {
-            return ContentProviderOperation
-                    .newInsert(
-                            ScheduleContractHelper.addOverrideAccountName(
-                                    ScheduleContract.MyViewedVideos.CONTENT_URI, account))
-                    .withValue(ScheduleContract.MyViewedVideos.MY_VIEWED_VIDEOS_DIRTY_FLAG, "0")
-                    .withValue(ScheduleContract.MyViewedVideos.VIDEO_ID, action.videoId)
                     .build();
         } else {
             return ContentProviderOperation

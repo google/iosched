@@ -27,6 +27,7 @@ import com.google.android.gms.auth.api.signin.GoogleSignInResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.ResultCallback;
 import com.google.android.gms.common.api.Status;
+import com.google.samples.apps.iosched.sync.SyncHelper;
 import com.google.samples.apps.iosched.sync.account.Account;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -184,6 +185,7 @@ public class SignInManager {
         AccountUtils.setActiveAccountDisplayName(activity, acct.getDisplayName());
         AccountUtils.setActiveAccountPhotoUrl(activity, acct.getPhotoUrl());
         firebaseAuthWithGoogle(acct);
+        SyncHelper.requestManualSync(true);
 
         // Tasks executed by the binding activity on sign in.
         signInListener.onSignIn(result);

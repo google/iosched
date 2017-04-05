@@ -19,8 +19,8 @@ import android.content.Context;
 import android.os.AsyncTask;
 
 import com.google.samples.apps.iosched.debug.DebugAction;
-import com.google.samples.apps.iosched.sync.userdata.util.UserData;
-import com.google.samples.apps.iosched.sync.userdata.util.UserDataHelper;
+import com.google.samples.apps.iosched.sync.userdata.UserData;
+import com.google.samples.apps.iosched.sync.userdata.UserDataHelper;
 import com.google.samples.apps.iosched.util.IOUtils;
 
 /**

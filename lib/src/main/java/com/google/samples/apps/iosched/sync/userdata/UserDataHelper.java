@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.google.samples.apps.iosched.sync.userdata.util;
+package com.google.samples.apps.iosched.sync.userdata;
 
 import android.content.Context;
 import android.database.Cursor;
@@ -21,7 +21,6 @@ import android.net.Uri;
 
 import com.google.gson.Gson;
 import com.google.samples.apps.iosched.provider.ScheduleContract;
-import com.google.samples.apps.iosched.sync.userdata.UserAction;
 import com.google.samples.apps.iosched.util.IOUtils;
 
 import java.util.ArrayList;
@@ -75,19 +74,6 @@ public class UserDataHelper {
                     }
                     userData.getStarredSessions().put(action.sessionId,
                             new UserData.StarredSession(true, action.timestamp));
-                } else if (action.type == UserAction.TYPE.VIEW_VIDEO) {
-                    if(userData.getViewedVideoIds() == null) {
-                        userData.setViewedVideoIds(new HashSet<String>());
-                    }
-                    userData.getViewedVideoIds().add(action.videoId);
-                } else if (action.type == UserAction.TYPE.SUBMIT_FEEDBACK) {
-                    if(userData.getFeedbackSubmittedSessionIds() == null) {
-                        userData.setFeedbackSubmittedSessionIds(new HashSet<String>());
-                    }
-                    userData.getFeedbackSubmittedSessionIds().add(action.sessionId);
-                } else if (action.type == UserAction.TYPE.REMOVE_STAR) {
-                    userData.getStarredSessions().put(action.sessionId,
-                            new UserData.StarredSession(false, action.timestamp));
                 }
             }
         }
@@ -195,27 +181,12 @@ public class UserDataHelper {
             }
         }
 
-        // first clear all viewed videos.
-        context.getContentResolver().delete(ScheduleContract.MyViewedVideos.CONTENT_URI,
-                ScheduleContract.MyViewedVideos.MY_VIEWED_VIDEOS_ACCOUNT_NAME +" = ?",
-                new String[]{accountName});
-
-        // Now add the viewed videos.
-        if (userData.getViewedVideoIds() != null) {
-            for (String videoId : userData.getViewedVideoIds()) {
-                UserAction action = new UserAction();
-                action.type = UserAction.TYPE.VIEW_VIDEO;
-                action.videoId = videoId;
-                actions.add(action);
-            }
-        }
-
-        // first clear all feedback submitted videos.
+        // first clear all feedback submitted sessions.
         context.getContentResolver().delete(ScheduleContract.MyFeedbackSubmitted.CONTENT_URI,
                 ScheduleContract.MyFeedbackSubmitted.MY_FEEDBACK_SUBMITTED_ACCOUNT_NAME +" = ?",
                 new String[]{accountName});
 
-        // Now add the feedback submitted videos.
+        // Now add the feedback submitted sessions.
         if (userData.getFeedbackSubmittedSessionIds() != null) {
             for (String sessionId : userData.getFeedbackSubmittedSessionIds()) {
                 UserAction action = new UserAction();
