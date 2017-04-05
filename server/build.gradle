@@ -80,4 +80,9 @@ appengine {
             id = 'io2017-backend-dev'
         }
     }
+    endpoints {
+        getClientLibsOnBuild = true
+        getDiscoveryDocsOnBuild = true
+        installClientLibsOnBuild = true
+    }
 }

@@ -13,8 +13,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.google.samples.apps.iosched.server.userdata.server.servlet;
+package com.google.samples.apps.iosched.server.registration;
 
+import com.google.api.server.spi.config.Api;
+import com.google.api.server.spi.config.ApiMethod;
+import com.google.api.server.spi.config.ApiNamespace;
+import com.google.api.server.spi.config.Named;
+import com.google.api.server.spi.response.ForbiddenException;
 import com.google.appengine.api.urlfetch.FetchOptions;
 import com.google.appengine.api.urlfetch.HTTPMethod;
 import com.google.appengine.api.urlfetch.HTTPRequest;
@@ -24,22 +29,35 @@ import com.google.appengine.api.urlfetch.URLFetchServiceFactory;
 import com.google.common.annotations.VisibleForTesting;
 import com.google.firebase.database.DatabaseReference;
 import com.google.samples.apps.iosched.server.FirebaseWrapper;
+import com.google.samples.apps.iosched.server.userdata.Ids;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
 import java.util.logging.Logger;
-import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+import javax.servlet.ServletContext;
 import org.json.JSONObject;
 
 /**
  * A servlet that proxies registration requests to the events server. Returns whether the current
  * user is registered for the event.
  */
-public class QueryRegistrationServlet extends HttpServlet {
-    private static final Logger LOG = Logger.getLogger(QueryRegistrationServlet.class.getName());
-    private static final String RESPONSE_REGISTERED_KEY = "registered";
+/** Endpoint for user data storage. */
+@Api(
+    name = "registration",
+    title = "IOSched Registration Status",
+    description = "Event attendance information",
+    version = "v1",
+    namespace = @ApiNamespace(
+        ownerDomain = "iosched.apps.samples.google.com",
+        ownerName = "google.com",
+        packagePath = "rpc"
+    ),
+    clientIds = {Ids.WEB_CLIENT_ID, Ids.ANDROID_CLIENT_ID, Ids.IOS_CLIENT_ID,
+        com.google.api.server.spi.Constant.API_EXPLORER_CLIENT_ID},
+    audiences = {Ids.ANDROID_AUDIENCE}
+)
+public class RegistrationEndpoint {
+    private static final Logger LOG = Logger.getLogger(RegistrationEndpoint.class.getName());
     private static final String EVENT_INFO_RSVP_STATUS_KEY = "rsvp_status";
     private static final String EVENT_INFO_RSVP_STATUS_CONFIRMED_VALUE = "confirmed";
 
@@ -48,38 +66,36 @@ public class QueryRegistrationServlet extends HttpServlet {
     @VisibleForTesting
     public URLFetchService urlFetchService = URLFetchServiceFactory.getURLFetchService();
 
-    @Override
-    public void doGet(HttpServletRequest req, final HttpServletResponse resp) throws IOException {
-        String userToken = req.getHeader(FirebaseWrapper.USER_TOKEN_HEADER);
+    @ApiMethod(path = "status", httpMethod = ApiMethod.HttpMethod.GET)
+    public RegistrationResult registrationStatus(ServletContext context, @Named("firebaseUserToken") String firebaseUserToken)
+        throws IOException, ForbiddenException {
 
-        String databaseUrl = getServletContext().getInitParameter("databaseUrl");
-        String serviceAccountKey = getServletContext().getInitParameter("accountKey");
-        InputStream serviceAccount = getServletContext().getResourceAsStream(serviceAccountKey);
+        String databaseUrl = context.getInitParameter("databaseUrl");
+        LOG.info("databaseUrl: " + databaseUrl);
+        String serviceAccountKey = context.getInitParameter("accountKey");
+        LOG.info("accountKey: " + serviceAccountKey);
+        InputStream serviceAccount = context.getResourceAsStream(serviceAccountKey);
+        LOG.info("serviceAccount: " + serviceAccount);
 
         firebaseWrapper.initFirebase(databaseUrl, serviceAccount);
-        firebaseWrapper.authenticateFirebaseUser(userToken);
+        firebaseWrapper.authenticateFirebaseUser(firebaseUserToken);
 
         if (!firebaseWrapper.isUserAuthenticated()) {
-            resp.setStatus(HttpServletResponse.SC_NOT_FOUND);
-            return;
+            throw new ForbiddenException("Not authenticated");
         }
 
-        boolean isRegistered = isUserRegistered();
+        boolean isRegistered = isUserRegistered(context);
 
         // Update the user registration state in the Real-time Database.
         DatabaseReference dbRef = firebaseWrapper.getDatabaseReference();
         dbRef.child("users").child(firebaseWrapper.getUserId()).setValue(isRegistered);
 
         // Return the user registration state.
-        JSONObject responseJson = new JSONObject();
-        responseJson.put(RESPONSE_REGISTERED_KEY, String.valueOf(isRegistered));
-        resp.getWriter().write(responseJson.toString());
-        resp.setContentType("application/json");
-        resp.setStatus(HttpServletResponse.SC_OK);
+        return new RegistrationResult(isRegistered);
     }
 
-    private boolean isUserRegistered() throws IOException {
-        JSONObject eventDelegateInfo = queryDelegateInfo();
+    private boolean isUserRegistered(ServletContext context) throws IOException {
+        JSONObject eventDelegateInfo = queryDelegateInfo(context);
         if (eventDelegateInfo == null) {
             return false;
         }
@@ -87,9 +103,9 @@ public class QueryRegistrationServlet extends HttpServlet {
         return registeredStatus.equals(EVENT_INFO_RSVP_STATUS_CONFIRMED_VALUE);
     }
 
-    private JSONObject queryDelegateInfo() throws IOException {
-        String eventManagerUrl = getInitParameter("eventManagerUrl");
-        String eventId = getInitParameter("eventId");
+    private JSONObject queryDelegateInfo(ServletContext context) throws IOException {
+        String eventManagerUrl = context.getInitParameter("eventManagerUrl");
+        String eventId = context.getInitParameter("eventId");
         String urlStr = String.format(
                 "%s/%s/delegates/%s/", eventManagerUrl, eventId, firebaseWrapper.getUserEmail());
 
