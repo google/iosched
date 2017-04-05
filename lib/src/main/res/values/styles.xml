@@ -67,13 +67,9 @@
 
     <style name="ActionBarPopupThemeOverlay" parent="ThemeOverlay.AppCompat.Light" />
 
-    <style name="Theme.IOSched.Welcome.Base" parent="Theme.IOSched">
+    <style name="Theme.IOSched.Welcome">
         <item name="android:windowBackground">@color/background</item>
-    </style>
-
-    <style name="Theme.IOSched.Welcome" parent="Theme.IOSched.Welcome.Base">
-        <item name="android:statusBarColor">@color/dark_status_bar</item>
-        <item name="android:navigationBarColor">@color/welcome_nav_bar</item>
+        <item name="android:statusBarColor">@color/immersive_status_bar</item>
     </style>
 
     <style name="Theme.IOSched.Search" parent="Theme.IOSched.Light">
@@ -259,15 +255,6 @@
 
     </style>
 
-    <style name="WelcomeTitle">
-        <item name="android:textAppearance">@style/TextAppearance.Title</item>
-        <item name="android:textColor">@color/flat_button_text</item>
-        <item name="android:textSize">@dimen/welcome_title_size</item>
-        <!-- The activity title is set to string used for the welcome title, so to avoid the text
-         being repeated as the user selects the next item, it is removed from accessibility -->
-        <item name="android:importantForAccessibility">no</item>
-    </style>
-
     <style name="Body1Text">
         <item name="android:textAppearance">@style/TextAppearance.AppCompat.Body1</item>
         <item name="android:lineSpacingMultiplier">@dimen/body_1_spacing</item>
@@ -362,5 +349,24 @@
     </style>
     <style name="Info.Cards.Top">
         <item name="android:layout_marginTop">@dimen/spacing_micro</item>
+    </style>
+
+    <style name="TextAppearance.H1" parent="@style/TextAppearance.AppCompat.Headline">
+        <item name="android:textColor">@color/greyish_brown</item>
+    </style>
+
+    <style name="TextAppearance.Body" parent="@style/TextAppearance.AppCompat.Body1">
+        <item name="android:textSize">15sp</item>
+        <item name="android:textColor">@color/greyish_brown</item>
+    </style>
+
+    <style name="H1Text">
+        <item name="android:textAppearance">@style/TextAppearance.H1</item>
+        <item name="android:lineSpacingMultiplier">@dimen/h3_spacing</item>
+    </style>
+
+    <style name="BodyText">
+        <item name="android:textAppearance">@style/TextAppearance.Body</item>
+        <item name="android:lineSpacingMultiplier">@dimen/body_1_spacing</item>
     </style>
 </resources>

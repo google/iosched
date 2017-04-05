@@ -19,6 +19,10 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.ColorInt;
+import android.support.annotation.ColorRes;
+import android.support.annotation.DrawableRes;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.text.TextUtils;
@@ -149,6 +153,16 @@ public abstract class WelcomeFragment extends Fragment {
      * Returns the {@link android.view.View.OnClickListener} for the secondary action click event.
      */
     protected abstract View.OnClickListener getSecondaryButtonListener();
+
+    /**
+     * Returns a color resource id for the header background.
+     */
+    protected abstract @ColorRes int getHeaderColorRes();
+
+    /**
+     * Returns a drawable resource id for the logo in the header.
+     */
+    protected abstract @DrawableRes int getLogoDrawableRes();
 
     /**
      * Returns whether the button bar should be displayed.

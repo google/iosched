@@ -21,7 +21,10 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.graphics.drawable.AnimatedVectorDrawableCompat;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
@@ -81,27 +84,23 @@ public class WelcomeActivity extends AppCompatActivity
         setContentView(R.layout.activity_welcome);
 
         mContentFragment = getCurrentFragment(this);
-
         // If there's no fragment to use, we're done.
         if (mContentFragment == null) {
             finish();
         } else {
             // Wire up the fragment.
-            FragmentTransaction fragmentTransaction =
-                    getSupportFragmentManager().beginTransaction();
+            FragmentManager fragmentManager = getSupportFragmentManager();
+            FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+            Fragment existing = fragmentManager.findFragmentById(R.id.welcome_content);
+            if (existing != null) {
+                fragmentTransaction.remove(existing);
+            }
             fragmentTransaction.add(R.id.welcome_content, mContentFragment);
             fragmentTransaction.commit();
-
-            final ImageView iv = (ImageView) findViewById(R.id.logo);
-            final AnimatedVectorDrawableCompat logo =
-                    AnimatedVectorDrawableCompat.create(this, R.drawable.avd_hash_io_16);
-            if (iv != null && logo != null) {
-                iv.setImageDrawable(logo);
-
-                if (UIUtils.animationEnabled(getContentResolver())) {
-                    logo.start();
-                }
-            }
+            CollapsingToolbarLayout ctl = (CollapsingToolbarLayout) findViewById(R.id.collapsing_toolbar);
+            ctl.setBackgroundResource(mContentFragment.getHeaderColorRes());
+            ImageView logo = (ImageView) ctl.findViewById(R.id.logo);
+            logo.setImageResource(mContentFragment.getLogoDrawableRes());
         }
         // There isn't any reliable way to know that the user is a registered attendee until after
         // the user authenticates and we've verified the user's registrations. For now, assume
@@ -172,8 +171,7 @@ public class WelcomeActivity extends AppCompatActivity
      * @return true if the activity should be displayed, otherwise false.
      */
     public static boolean shouldDisplay(Context context) {
-        WelcomeFragment fragment = getCurrentFragment(context);
-        return fragment != null;
+        return getCurrentFragment(context) != null;
     }
 
     /**

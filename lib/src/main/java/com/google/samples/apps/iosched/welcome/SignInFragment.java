@@ -89,4 +89,14 @@ public class SignInFragment extends WelcomeFragment {
             }
         };
     }
+
+    @Override
+    protected int getHeaderColorRes() {
+        return R.color.neon_blue;
+    }
+
+    @Override
+    protected int getLogoDrawableRes() {
+        return R.drawable.io_logo_onboarding;
+    }
 }

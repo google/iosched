@@ -23,6 +23,7 @@
     <dimen name="padding_normal">16dp</dimen>
     <dimen name="spacing_large">32dp</dimen>
     <dimen name="touch_raise">6dp</dimen>
+    <dimen name="extended_appbar_height">180dp</dimen>
 
     <!-- App Primary Text Sizes -->
     <dimen name="text_size_small">12sp</dimen>
@@ -31,7 +32,7 @@
     <dimen name="text_size_xlarge">20sp</dimen>
 
     <!-- line spacing -->
-    <item name="body_1_spacing" format="float" type="dimen">1.22448979592</item>
+    <item name="body_1_spacing" format="float" type="dimen">1.3</item>
     <item name="h3_spacing" format="float" type="dimen">1.14285714286</item>
 
     <!-- UI elements -->
@@ -133,13 +134,11 @@
     <item name="match_parent" format="integer" type="dimen">-1</item>
 
     <!-- Welcome Activity -->
-    <dimen name="welcome_logo_top_spacing">48dp</dimen>
-    <dimen name="welcome_logo_height">112dp</dimen>
-    <dimen name="welcome_content_padding_top">200dp</dimen> <!-- welcome_logo_top_spacing + welcome_logo_height + 40dp (logo bottom spacing) -->
+    <dimen name="welcome_content_padding_top">40dp</dimen>
     <dimen name="welcome_content_padding">@dimen/padding_normal</dimen>
+    <dimen name="welcome_content_title_margin">20dp</dimen>
     <dimen name="welcome_button_bar_elevation">6dp</dimen>
     <dimen name="welcome_content_width">@dimen/match_parent</dimen>
-    <dimen name="welcome_title_size">20sp</dimen>
 
     <!-- Info -->
     <dimen name="event_content_card_top_padding">48dp</dimen>

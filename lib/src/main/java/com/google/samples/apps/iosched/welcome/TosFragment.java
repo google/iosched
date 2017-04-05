@@ -17,6 +17,8 @@ package com.google.samples.apps.iosched.welcome;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.v4.content.ContextCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -55,6 +57,16 @@ public class TosFragment extends WelcomeFragment {
     @Override
     protected View.OnClickListener getSecondaryButtonListener() {
         return null;
+    }
+
+    @Override
+    protected int getHeaderColorRes() {
+        return R.color.lightish_blue;
+    }
+
+    @Override
+    protected int getLogoDrawableRes() {
+        return R.drawable.io_logo_onboarding_alt;
     }
 
     @Override

@@ -16,7 +16,7 @@
   -->
 <!-- Colors common among all features in the app. -->
 <resources>
-    <color name="background">#fff7f9f9</color>
+    <color name="background">#ffffffff</color>
 
     <!-- 2017 palette -->
     <color name="lightish_blue">#536dfe</color>
@@ -26,6 +26,7 @@
     <color name="light_periwinkle">#bcc8fb</color>
     <color name="warm_grey">#9b9b9b</color>
     <color name="greyish_brown">#424242</color>
+    <color name="tos_links">#4151fd</color>
 
     <!-- 2016 palette -->
     <color name="io16_primary_cyan">#ff25c5d9</color>
@@ -46,7 +47,7 @@
     <color name="dark_status_bar">#ff949595</color>
     <color name="light_status_bar_against_toolbar">#ffe8eaea</color>
     <color name="light_status_bar_against_header_img">#ffe0e1e3</color>
-    <color name="immersive_status_bar">#40000000</color>
+    <color name="immersive_status_bar">#33000000</color>
     <!-- todo cleanup old colors -->
 
     <!-- App main palette for io15 version. -->
@@ -64,7 +65,6 @@
 
     <color name="flat_button_text">#ff0097a7</color>
     <color name="text_on_primary">#ff004446</color>
-    <color name="preferred_action">#b3000000</color>
     <color name="about_link">#ff00a7b6</color>
 
     <!-- Session Detail colors. -->
@@ -117,10 +117,6 @@
 
     <!-- search -->
     <color name="dialog_background">#7f000000</color>
-
-    <!-- welcome -->
-    <color name="welcome_nav_bar">#ff296e78</color>
-    <color name="welcome_attending_in_person_background">#fffff6de</color>
 
     <!-- Feed category colors -->
     <color name="feed_category_agenda">#536dfe</color>

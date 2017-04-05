@@ -73,6 +73,16 @@ public class NotificationsFragment extends WelcomeFragment {
     }
 
     @Override
+    protected int getHeaderColorRes() {
+        return R.color.sunflower_yellow;
+    }
+
+    @Override
+    protected int getLogoDrawableRes() {
+        return R.drawable.io_logo_onboarding;
+    }
+
+    @Override
     protected String getPrimaryButtonText() {
         return getResourceString(R.string.yes);
     }

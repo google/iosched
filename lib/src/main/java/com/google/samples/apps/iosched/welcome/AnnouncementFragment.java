@@ -17,6 +17,8 @@ package com.google.samples.apps.iosched.welcome;
 import android.content.Context;
 import android.view.View;
 
+import com.google.samples.apps.iosched.lib.R;
+
 /**
  * Stubbing out but don't implement until second release.
  * TODO(28358606): Delete this class.
@@ -47,5 +49,15 @@ public class AnnouncementFragment extends WelcomeFragment {
     @Override
     protected View.OnClickListener getSecondaryButtonListener() {
         return null;
+    }
+
+    @Override
+    protected int getHeaderColorRes() {
+        return R.color.lightish_blue;
+    }
+
+    @Override
+    protected int getLogoDrawableRes() {
+        return R.drawable.io_logo_onboarding;
     }
 }

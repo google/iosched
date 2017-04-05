@@ -682,6 +682,9 @@
     <!-- Label used on an onboarding screen when the user provides a negative response. -->
     <string name="no">No</string>
 
+    <!-- Title for onboarding screen asking users if they want conference notifications. -->
+    <string name="onboarding_notifications_title">I/O Notifications</string>
+
     <!-- Text shown on the onboarding screen asking users if they want conference notifications. -->
     <string name="onboarding_notifications_opt_in">
         Would you like to receive app notifications about I/O?\n
