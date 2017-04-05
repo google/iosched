@@ -16,6 +16,7 @@
 
 package com.google.samples.apps.iosched.provider;
 
+import static com.google.samples.apps.iosched.provider.ScheduleDatabase.Tables.MY_RESERVATIONS;
 import static com.google.samples.apps.iosched.util.LogUtils.LOGD;
 import static com.google.samples.apps.iosched.util.LogUtils.LOGE;
 import static com.google.samples.apps.iosched.util.LogUtils.LOGV;
@@ -48,6 +49,8 @@ import com.google.samples.apps.iosched.provider.ScheduleContract.Hashtags;
 import com.google.samples.apps.iosched.provider.ScheduleContract.MyFeedbackSubmitted;
 import com.google.samples.apps.iosched.provider.ScheduleContract.MySchedule;
 import com.google.samples.apps.iosched.provider.ScheduleContract.MyScheduleColumns;
+import com.google.samples.apps.iosched.provider.ScheduleContract.MyReservations;
+import com.google.samples.apps.iosched.provider.ScheduleContract.MyReservationColumns;
 import com.google.samples.apps.iosched.provider.ScheduleContract.MyViewedVideos;
 import com.google.samples.apps.iosched.provider.ScheduleContract.Rooms;
 import com.google.samples.apps.iosched.provider.ScheduleContract.SearchSuggest;
@@ -371,6 +374,15 @@ public class ScheduleProvider extends ContentProvider {
                 notifyChange(sessionUri);
                 return sessionUri;
             }
+            case MY_RESERVATIONS: {
+                values.put(MyReservations.MY_RESERVATION_ACCOUNT_NAME, getCurrentAccountName(uri, false));
+                db.insertOrThrow(Tables.MY_RESERVATIONS, null, values);
+                notifyChange(uri);
+                Uri sessionUri = Sessions.buildSessionUri(
+                        values.getAsString(MyReservationColumns.SESSION_ID));
+                notifyChange(sessionUri);
+                return sessionUri;
+            }
             case MY_VIEWED_VIDEOS: {
                 values.put(MyViewedVideos.MY_VIEWED_VIDEOS_ACCOUNT_NAME,
                         getCurrentAccountName(uri, false));
@@ -447,6 +459,10 @@ public class ScheduleProvider extends ContentProvider {
             values.remove(MySchedule.MY_SCHEDULE_ACCOUNT_NAME);
             builder.where(MySchedule.MY_SCHEDULE_ACCOUNT_NAME + "=?", accountName);
         }
+        if (matchingUriEnum == ScheduleUriEnum.MY_RESERVATIONS) {
+            values.remove(MyReservations.MY_RESERVATION_ACCOUNT_NAME);
+            builder.where(MyReservations.MY_RESERVATION_ACCOUNT_NAME + "=?", accountName);
+        }
         if (matchingUriEnum == ScheduleUriEnum.MY_VIEWED_VIDEOS) {
             values.remove(MyViewedVideos.MY_VIEWED_VIDEOS_ACCOUNT_NAME);
             builder.where(MyViewedVideos.MY_VIEWED_VIDEOS_ACCOUNT_NAME + "=?", accountName);
@@ -478,6 +494,9 @@ public class ScheduleProvider extends ContentProvider {
         ScheduleUriEnum matchingUriEnum = mUriMatcher.matchUri(uri);
         if (matchingUriEnum == ScheduleUriEnum.MY_SCHEDULE) {
             builder.where(MySchedule.MY_SCHEDULE_ACCOUNT_NAME + "=?", accountName);
+        }
+        if (matchingUriEnum == ScheduleUriEnum.MY_RESERVATIONS) {
+            builder.where(MyReservations.MY_RESERVATION_ACCOUNT_NAME + "=?", accountName);
         }
         if (matchingUriEnum == ScheduleUriEnum.MY_VIEWED_VIDEOS) {
             builder.where(MyViewedVideos.MY_VIEWED_VIDEOS_ACCOUNT_NAME + "=?", accountName);
@@ -604,6 +623,11 @@ public class ScheduleProvider extends ContentProvider {
                         .where(MySchedule.MY_SCHEDULE_ACCOUNT_NAME + "=?",
                                 getCurrentAccountName(uri, false));
             }
+            case MY_RESERVATIONS: {
+                return builder.table(Tables.MY_RESERVATIONS)
+                        .where(MyReservations.MY_RESERVATION_ACCOUNT_NAME + "=?",
+                                getCurrentAccountName(uri, false));
+            }
             case MY_VIEWED_VIDEOS: {
                 return builder.table(Tables.MY_VIEWED_VIDEO)
                         .where(MyViewedVideos.MY_VIEWED_VIDEOS_ACCOUNT_NAME + "=?",
@@ -718,13 +742,16 @@ public class ScheduleProvider extends ContentProvider {
                 // We query sessions on the joined table of sessions with rooms and tags.
                 // Since there may be more than one tag per session, we GROUP BY session ID.
                 // The starred sessions ("my schedule") are associated with a user, so we
-                // use the current user to select them properly
+                // use the current user to select them properly.  Reserved sessions are handled
+                // similarly.
                 return builder
                         .table(Tables.SESSIONS_JOIN_ROOMS_TAGS, getCurrentAccountName(uri, true))
                         .mapToTable(Sessions._ID, Tables.SESSIONS)
                         .mapToTable(Sessions.ROOM_ID, Tables.SESSIONS)
                         .mapToTable(Sessions.SESSION_ID, Tables.SESSIONS)
                         .map(Sessions.SESSION_IN_MY_SCHEDULE, "IFNULL(in_schedule, 0)")
+                        .map(Sessions.SESSION_RESERVATION_STATUS, "IFNULL(" + MyReservations.
+                                MY_RESERVATION_STATUS + ", -1)")
                         .groupBy(Qualified.SESSIONS_SESSION_ID);
             }
             case SESSIONS_COUNTER: {
@@ -732,6 +759,8 @@ public class ScheduleProvider extends ContentProvider {
                         .table(Tables.SESSIONS_JOIN_MYSCHEDULE, getCurrentAccountName(uri, true))
                         .map(Sessions.SESSION_INTERVAL_COUNT, "count(1)")
                         .map(Sessions.SESSION_IN_MY_SCHEDULE, "IFNULL(in_schedule, 0)")
+                        .map(Sessions.SESSION_RESERVATION_STATUS, "IFNULL(" + MyReservations.
+                                MY_RESERVATION_STATUS + ", -1)")
                         .groupBy(Sessions.SESSION_START + ", " + Sessions.SESSION_END);
             }
             case SESSIONS_MY_SCHEDULE: {
@@ -742,6 +771,8 @@ public class ScheduleProvider extends ContentProvider {
                         .mapToTable(Sessions.SESSION_ID, Tables.SESSIONS)
                         .map(Sessions.HAS_GIVEN_FEEDBACK, Subquery.SESSION_HAS_GIVEN_FEEDBACK)
                         .map(Sessions.SESSION_IN_MY_SCHEDULE, "IFNULL(in_schedule, 0)")
+                        .map(Sessions.SESSION_RESERVATION_STATUS, "IFNULL(" + MyReservations.
+                                MY_RESERVATION_STATUS + ", -1)")
                         .where("( " + Sessions.SESSION_IN_MY_SCHEDULE + "=1 OR " +
                                 Sessions.SESSION_TAGS +
                                 " LIKE '%" + Config.Tags.SPECIAL_KEYNOTE + "%' )")
@@ -755,6 +786,8 @@ public class ScheduleProvider extends ContentProvider {
                         .mapToTable(Sessions.ROOM_ID, Tables.SESSIONS)
                         .mapToTable(Sessions.SESSION_ID, Tables.SESSIONS)
                         .map(Sessions.SESSION_IN_MY_SCHEDULE, "IFNULL(in_schedule, 0)")
+                        .map(Sessions.SESSION_RESERVATION_STATUS, "IFNULL(" + MyReservations.
+                                MY_RESERVATION_STATUS + ", -1)")
                         .where(Sessions.SESSION_IN_MY_SCHEDULE + "=0")
                         .where(Sessions.SESSION_START + ">=?", String.valueOf(interval[0]))
                         .where(Sessions.SESSION_START + "<?", String.valueOf(interval[1]))
@@ -769,6 +802,8 @@ public class ScheduleProvider extends ContentProvider {
                         .mapToTable(Sessions.SESSION_ID, Tables.SESSIONS)
                         .mapToTable(Sessions.ROOM_ID, Tables.SESSIONS)
                         .map(Sessions.SESSION_IN_MY_SCHEDULE, "IFNULL(in_schedule, 0)")
+                        .map(Sessions.SESSION_RESERVATION_STATUS, "IFNULL(" + MyReservations.
+                                MY_RESERVATION_STATUS + ", -1)")
                         .where(SessionsSearchColumns.BODY + " MATCH ?", query);
             }
             case SESSIONS_AT: {
@@ -787,6 +822,8 @@ public class ScheduleProvider extends ContentProvider {
                         .mapToTable(Sessions.ROOM_ID, Tables.SESSIONS)
                         .mapToTable(Sessions.SESSION_ID, Tables.SESSIONS)
                         .map(Sessions.SESSION_IN_MY_SCHEDULE, "IFNULL(in_schedule, 0)")
+                        .map(Sessions.SESSION_RESERVATION_STATUS, "IFNULL(" + MyReservations.
+                                MY_RESERVATION_STATUS + ", -1)")
                         .where(Qualified.SESSIONS_SESSION_ID + "=?", sessionId);
             }
             case SESSIONS_ID_SPEAKERS: {
@@ -811,6 +848,8 @@ public class ScheduleProvider extends ContentProvider {
                         .mapToTable(Sessions.ROOM_ID, Tables.SESSIONS)
                         .mapToTable(Sessions.SESSION_ID, Tables.SESSIONS)
                         .map(Sessions.SESSION_IN_MY_SCHEDULE, "IFNULL(in_schedule, 0)")
+                        .map(Sessions.SESSION_RESERVATION_STATUS, "IFNULL(" + ScheduleContract
+                                .MyReservations.MY_RESERVATION_STATUS + ", -1)")
                         .map(Sessions.HAS_GIVEN_FEEDBACK, Subquery.SESSION_HAS_GIVEN_FEEDBACK)
                         .where(Subquery.RELATED_SESSIONS_SELECTION, sessionId)
                         .groupBy(Qualified.SESSIONS_SESSION_ID);
@@ -828,6 +867,8 @@ public class ScheduleProvider extends ContentProvider {
                                 time,
                                 time)
                         .map(Sessions.SESSION_IN_MY_SCHEDULE, "IFNULL(in_schedule, 0)")
+                        .map(Sessions.SESSION_RESERVATION_STATUS, "IFNULL(" + ScheduleContract
+                                .MyReservations.MY_RESERVATION_STATUS + ", -1)")
                         .groupBy(Qualified.SESSIONS_SESSION_ID);
             }
             case SESSIONS_AFTER: {
@@ -837,6 +878,8 @@ public class ScheduleProvider extends ContentProvider {
                         .mapToTable(Sessions.SESSION_ID, Tables.SESSIONS)
                         .mapToTable(Sessions.ROOM_ID, Tables.SESSIONS)
                         .map(Sessions.SESSION_IN_MY_SCHEDULE, "IFNULL(in_schedule, 0)")
+                        .map(Sessions.SESSION_RESERVATION_STATUS, "IFNULL(" + ScheduleContract
+                                .MyReservations.MY_RESERVATION_STATUS + ", -1)")
                         .where("(" + Sessions.SESSION_START + "<= ? AND " + Sessions.SESSION_END +
                                         " >= ?) OR (" + Sessions.SESSION_START + " >= ?)", time,
                                 time, time)
@@ -852,6 +895,15 @@ public class ScheduleProvider extends ContentProvider {
                 // be able to fetch data from a different account.
                 return builder.table(Tables.MY_SCHEDULE)
                         .where(MySchedule.MY_SCHEDULE_ACCOUNT_NAME + "=?",
+                                getCurrentAccountName(uri, true));
+            }
+            case MY_RESERVATIONS: {
+                // force a where condition to avoid leaking reservation info to another account
+                // Note that, since SelectionBuilder always join multiple where calls using AND,
+                // even if malicious code specifying additional conditions on account_name won't
+                // be able to fetch data from a different account.
+                return builder.table(Tables.MY_RESERVATIONS)
+                        .where(MyReservations.MY_RESERVATION_ACCOUNT_NAME + "=?",
                                 getCurrentAccountName(uri, true));
             }
             case MY_FEEDBACK_SUBMITTED: {

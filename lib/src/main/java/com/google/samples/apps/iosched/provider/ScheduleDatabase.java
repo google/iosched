@@ -34,6 +34,8 @@ import com.google.samples.apps.iosched.provider.ScheduleContract.MapTileColumns;
 import com.google.samples.apps.iosched.provider.ScheduleContract.MyFeedbackSubmitted;
 import com.google.samples.apps.iosched.provider.ScheduleContract.MySchedule;
 import com.google.samples.apps.iosched.provider.ScheduleContract.MyScheduleColumns;
+import com.google.samples.apps.iosched.provider.ScheduleContract.MyReservations;
+import com.google.samples.apps.iosched.provider.ScheduleContract.MyReservationColumns;
 import com.google.samples.apps.iosched.provider.ScheduleContract.MyViewedVideos;
 import com.google.samples.apps.iosched.provider.ScheduleContract.Rooms;
 import com.google.samples.apps.iosched.provider.ScheduleContract.RoomsColumns;
@@ -74,7 +76,8 @@ public class ScheduleDatabase extends SQLiteOpenHelper {
     private static final int VER_2016_RELEASE_B = 212;
     private static final int VER_2017_RELEASE_A = 213;
     private static final int VER_2017_RELEASE_B = 214;
-    private static final int CUR_DATABASE_VERSION = VER_2017_RELEASE_B;
+    private static final int VER_2017_RELEASE_C = 215;
+    private static final int CUR_DATABASE_VERSION = VER_2017_RELEASE_C;
 
     private final Context mContext;
 
@@ -85,6 +88,7 @@ public class ScheduleDatabase extends SQLiteOpenHelper {
         String ROOMS = "rooms";
         String SESSIONS = "sessions";
         String MY_SCHEDULE = "myschedule";
+        String MY_RESERVATIONS = "myreservations";
         String MY_VIEWED_VIDEO = "myviewedvideos";
         String MY_FEEDBACK_SUBMITTED = "myfeedbacksubmitted";
         String SPEAKERS = "speakers";
@@ -106,25 +110,29 @@ public class ScheduleDatabase extends SQLiteOpenHelper {
 
         String SESSIONS_JOIN_MYSCHEDULE = "sessions "
                 + "LEFT OUTER JOIN myschedule ON sessions.session_id=myschedule.session_id "
-                + "AND myschedule.account_name=? ";
+                + "AND myschedule.account_name=? "
+                + "LEFT OUTER JOIN myreservations ON sessions.session_id=myreservations.session_id";
 
         String SESSIONS_JOIN_ROOMS_TAGS = "sessions "
                 + "LEFT OUTER JOIN myschedule ON sessions.session_id=myschedule.session_id "
                 + "AND myschedule.account_name=? "
                 + "LEFT OUTER JOIN rooms ON sessions.room_id=rooms.room_id "
-                + "LEFT OUTER JOIN sessions_tags ON sessions.session_id=sessions_tags.session_id";
+                + "LEFT OUTER JOIN sessions_tags ON sessions.session_id=sessions_tags.session_id "
+                + "LEFT OUTER JOIN myreservations ON sessions.session_id=myreservations.session_id";
 
         String SESSIONS_JOIN_ROOMS_TAGS_FEEDBACK_MYSCHEDULE = "sessions "
                 + "LEFT OUTER JOIN myschedule ON sessions.session_id=myschedule.session_id "
                 + "AND myschedule.account_name=? "
                 + "LEFT OUTER JOIN rooms ON sessions.room_id=rooms.room_id "
                 + "LEFT OUTER JOIN sessions_tags ON sessions.session_id=sessions_tags.session_id "
-                + "LEFT OUTER JOIN feedback ON sessions.session_id=feedback.session_id";
+                + "LEFT OUTER JOIN feedback ON sessions.session_id=feedback.session_id "
+                + "LEFT OUTER JOIN myreservations ON sessions.session_id=myreservations.session_id";
 
         String SESSIONS_JOIN_ROOMS = "sessions "
                 + "LEFT OUTER JOIN myschedule ON sessions.session_id=myschedule.session_id "
                 + "AND myschedule.account_name=? "
-                + "LEFT OUTER JOIN rooms ON sessions.room_id=rooms.room_id";
+                + "LEFT OUTER JOIN rooms ON sessions.room_id=rooms.room_id "
+                + "LEFT OUTER JOIN myreservations ON sessions.session_id=myreservations.session_id";
 
         String SESSIONS_SPEAKERS_JOIN_SPEAKERS = "sessions_speakers "
                 + "LEFT OUTER JOIN speakers ON sessions_speakers.speaker_id=speakers.speaker_id";
@@ -140,7 +148,8 @@ public class ScheduleDatabase extends SQLiteOpenHelper {
                 + "LEFT OUTER JOIN sessions ON sessions_search.session_id=sessions.session_id "
                 + "LEFT OUTER JOIN myschedule ON sessions.session_id=myschedule.session_id "
                 + "AND myschedule.account_name=? "
-                + "LEFT OUTER JOIN rooms ON sessions.room_id=rooms.room_id";
+                + "LEFT OUTER JOIN rooms ON sessions.room_id=rooms.room_id "
+                + "LEFT OUTER JOIN myreservations ON sessions.session_id=myreservations.session_id";
 
         // When tables get deprecated, add them to this list (so they get correctly deleted
         // on database upgrades).
@@ -166,6 +175,7 @@ public class ScheduleDatabase extends SQLiteOpenHelper {
         String SESSIONS_TAGS_DELETE = "sessions_tags_delete";
         String SESSIONS_SPEAKERS_DELETE = "sessions_speakers_delete";
         String SESSIONS_MY_SCHEDULE_DELETE = "sessions_myschedule_delete";
+        String SESSIONS_MY_RESERVATIONS_DELETE = "sessions_myreservations_delete";
         String SESSIONS_FEEDBACK_DELETE = "sessions_feedback_delete";
 
         // When triggers get deprecated, add them to this list (so they get correctly deleted
@@ -410,6 +420,7 @@ public class ScheduleDatabase extends SQLiteOpenHelper {
         upgradeFrom2016Ato2016B(db);
         upgradeFrom2016Bto2017A(db);
         upgradeFrom2017Ato2017B(db);
+        upgradeFrom2017Bto2017C(db);
     }
 
     private void upgradeFrom2014Cto2015A(SQLiteDatabase db) {
@@ -483,6 +494,24 @@ public class ScheduleDatabase extends SQLiteOpenHelper {
         db.execSQL("CREATE TABLE " + Tables.MAPGEOJSON + " ("
                 + BaseColumns._ID + " INTEGER PRIMARY KEY AUTOINCREMENT,"
                 + ScheduleContract.MapGeoJson.GEOJSON + " TEXT NOT NULL)");
+    }
+
+    // Adding session reservations
+    private void upgradeFrom2017Bto2017C(SQLiteDatabase db) {
+        db.execSQL("CREATE TABLE " + Tables.MY_RESERVATIONS + " ("
+                + BaseColumns._ID + " INTEGER PRIMARY KEY AUTOINCREMENT,"
+                + MyReservations.SESSION_ID + " TEXT NOT NULL " + References.SESSION_ID + ","
+                + MyReservations.MY_RESERVATION_ACCOUNT_NAME + " TEXT NOT NULL,"
+                + MyReservations.MY_RESERVATION_STATUS + " INTEGER NOT NULL DEFAULT "
+                + Integer.toString(MyReservations.RESERVATION_STATUS_UNRESERVED) + ","
+                + MyReservations.MY_RESERVATION_TIMESTAMP + " DATETIME)");
+
+        db.execSQL("CREATE TRIGGER " + Triggers.SESSIONS_MY_RESERVATIONS_DELETE + " AFTER DELETE ON "
+                + Tables.SESSIONS + " BEGIN DELETE FROM " + Tables.MY_RESERVATIONS + " "
+                + " WHERE " + Tables.MY_RESERVATIONS + "." + MyReservations.SESSION_ID +
+                "=old." + Sessions.SESSION_ID
+                + ";" + " END;");
+
     }
 
     /**
@@ -573,6 +602,13 @@ public class ScheduleDatabase extends SQLiteOpenHelper {
             version = VER_2017_RELEASE_B;
         }
 
+        // Check if we can upgrade from release 2017 release B to 2017 release C.
+        if (version == VER_2017_RELEASE_B) {
+            LOGD(TAG, "Upgrading database from 2017 release A to 2017 release B.");
+            upgradeFrom2017Bto2017C(db);
+            version = VER_2017_RELEASE_C;
+        }
+
         LOGD(TAG, "After upgrade logic, at version " + version);
 
         // Drop tables that have been deprecated.
@@ -589,6 +625,7 @@ public class ScheduleDatabase extends SQLiteOpenHelper {
             db.execSQL("DROP TRIGGER IF EXISTS " + Triggers.SESSIONS_SPEAKERS_DELETE);
             db.execSQL("DROP TRIGGER IF EXISTS " + Triggers.SESSIONS_FEEDBACK_DELETE);
             db.execSQL("DROP TRIGGER IF EXISTS " + Triggers.SESSIONS_MY_SCHEDULE_DELETE);
+            db.execSQL("DROP TRIGGER IF EXISTS " + Triggers.SESSIONS_MY_RESERVATIONS_DELETE);
             db.execSQL("DROP TRIGGER IF EXISTS " + Triggers.DeprecatedTriggers.SESSIONS_TRACKS_DELETE);
             db.execSQL("DROP TABLE IF EXISTS " + Tables.BLOCKS);
             db.execSQL("DROP TABLE IF EXISTS " + Tables.ROOMS);
@@ -596,6 +633,7 @@ public class ScheduleDatabase extends SQLiteOpenHelper {
             db.execSQL("DROP TABLE IF EXISTS " + Tables.SESSIONS);
             db.execSQL("DROP TABLE IF EXISTS " + Tables.SPEAKERS);
             db.execSQL("DROP TABLE IF EXISTS " + Tables.MY_SCHEDULE);
+            db.execSQL("DROP TABLE IF EXISTS " + Tables.MY_RESERVATIONS);
             db.execSQL("DROP TABLE IF EXISTS " + Tables.MY_FEEDBACK_SUBMITTED);
             db.execSQL("DROP TABLE IF EXISTS " + Tables.MY_VIEWED_VIDEO);
             db.execSQL("DROP TABLE IF EXISTS " + Tables.SESSIONS_SPEAKERS);

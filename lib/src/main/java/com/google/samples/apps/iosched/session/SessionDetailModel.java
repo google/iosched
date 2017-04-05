@@ -105,6 +105,8 @@ public class SessionDetailModel extends ModelWithLoaderManager<SessionDetailQuer
 
     private boolean mInScheduleWhenSessionFirstLoaded;
 
+    private int mReservationStatus;
+
     private boolean mIsKeynote;
 
     private long mSessionStart;
@@ -313,6 +315,8 @@ public class SessionDetailModel extends ModelWithLoaderManager<SessionDetailQuer
         return mInScheduleWhenSessionFirstLoaded;
     }
 
+    public int getReservationStatus() { return mReservationStatus; }
+
     public boolean isKeynote() {
         return mIsKeynote;
     }
@@ -410,9 +414,14 @@ public class SessionDetailModel extends ModelWithLoaderManager<SessionDetailQuer
 
         mInSchedule = cursor.getInt(cursor.getColumnIndex(
                 ScheduleContract.Sessions.SESSION_IN_MY_SCHEDULE)) != 0;
+
+        mReservationStatus = cursor.getInt(cursor.getColumnIndex(
+                ScheduleContract.Sessions.SESSION_RESERVATION_STATUS));
+
         if (!mSessionLoaded) {
             mInScheduleWhenSessionFirstLoaded = mInSchedule;
         }
+
         mTagsString = cursor
                 .getString(cursor.getColumnIndex(ScheduleContract.Sessions.SESSION_TAGS));
         mIsKeynote = mTagsString != null && mTagsString.contains(Config.Tags.SPECIAL_KEYNOTE);
@@ -769,6 +778,7 @@ public class SessionDetailModel extends ModelWithLoaderManager<SessionDetailQuer
                 ScheduleContract.Sessions.SESSION_ABSTRACT,
                 ScheduleContract.Sessions.SESSION_REQUIREMENTS,
                 ScheduleContract.Sessions.SESSION_IN_MY_SCHEDULE,
+                ScheduleContract.Sessions.SESSION_RESERVATION_STATUS,
                 ScheduleContract.Sessions.SESSION_HASHTAG,
                 ScheduleContract.Sessions.SESSION_URL,
                 ScheduleContract.Sessions.SESSION_YOUTUBE_URL,
