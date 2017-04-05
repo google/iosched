@@ -44,6 +44,11 @@ import com.google.android.gms.auth.api.signin.GoogleSignInResult;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.Status;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.google.samples.apps.iosched.lib.BuildConfig;
 import com.google.samples.apps.iosched.lib.R;
 import com.google.samples.apps.iosched.myschedule.ScheduleView;
@@ -52,11 +57,14 @@ import com.google.samples.apps.iosched.signin.SignInListener;
 import com.google.samples.apps.iosched.signin.SignInManager;
 import com.google.samples.apps.iosched.ui.BaseActivity;
 import com.google.samples.apps.iosched.util.AccountUtils;
+import com.google.samples.apps.iosched.util.SyncUtils;
 import com.google.samples.apps.iosched.util.WelcomeUtils;
 
 import static com.google.samples.apps.iosched.util.LogUtils.LOGD;
 import static com.google.samples.apps.iosched.util.LogUtils.LOGW;
 import static com.google.samples.apps.iosched.util.LogUtils.makeLogTag;
+
+import java.util.Date;
 
 /**
  * Activity that shows a user's schedule and allows the user to sign in and sign out.
@@ -93,6 +101,18 @@ public class MyIOActivity extends BaseActivity implements
     private SignInManager mSignInManager;
 
     private boolean mIsResumed;
+
+    /**
+     * Reference to Firebase RTDB.
+     */
+    private DatabaseReference mDatabaseReference;
+
+    /**
+     * Listener used to calculate server time offset.
+     * TODO (b/36976685): collect server time offset at other places in the app when connecting to RTDB.
+     */
+    private ValueEventListener mValueEventListener;
+
 
     // -- BaseActivity overrides
 
@@ -132,6 +152,34 @@ public class MyIOActivity extends BaseActivity implements
                 Auth.GOOGLE_SIGN_IN_API, gso).build();
 
         mSignInManager = new SignInManager(this, this, mGoogleApiClient);
+        mDatabaseReference = FirebaseDatabase.getInstance().getReference(
+                SyncUtils.SERVER_TIME_OFFSET_PATH);
+
+        mValueEventListener = new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot snapshot) {
+                double offset = snapshot.getValue(Double.class);
+                SyncUtils.setServerTimeOffset(MyIOActivity.this, (int) offset);
+            }
+
+            @Override
+            public void onCancelled(DatabaseError error) {
+                LOGW(TAG, "Listener was cancelled");
+            }
+        };
+    }
+
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        // We don't want to keep hitting RTDB needlessly, so we throttle how often we attach
+        // a listener to get the server time offset.
+        if (SyncUtils.serverTimeOffsetNeverSet(this) ||
+                (new Date().getTime() - SyncUtils.SERVER_TIME_OFFSET_INTERVAL) >=
+                        SyncUtils.getServerTimeOffsetSetAt(this)) {
+            mDatabaseReference.addValueEventListener(mValueEventListener);
+        }
     }
 
     @Override
@@ -145,6 +193,14 @@ public class MyIOActivity extends BaseActivity implements
     protected void onPause() {
         super.onPause();
         mIsResumed = false;
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        if (mValueEventListener != null) {
+            mDatabaseReference.removeEventListener(mValueEventListener);
+        }
     }
 
     @Override
@@ -234,7 +290,7 @@ public class MyIOActivity extends BaseActivity implements
     }
 
     /**
-     Asks {@link MyIOFragment} to remove the post onboarding message card.
+     * Asks {@link MyIOFragment} to remove the post onboarding message card.
      */
     public void removePostOnboardingMessageCard() {
         WelcomeUtils.markHidePostOnboardingCard(this);
