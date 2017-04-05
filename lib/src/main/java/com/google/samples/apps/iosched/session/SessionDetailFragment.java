@@ -29,7 +29,6 @@ import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
-import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.AppBarLayout.OnOffsetChangedListener;
@@ -424,7 +423,7 @@ public class SessionDetailFragment extends Fragment implements
                 displayRelatedSessions(data);
                 break;
             case RESERVATION_STATUS:
-                updateReservationStatus(data);
+                updateReservationStatusAndSeatAvailability(data);
                 break;
             case RESERVATION_RESULT:
                 updateReservationResult(data);
@@ -434,10 +433,10 @@ public class SessionDetailFragment extends Fragment implements
                 break;
             case RESERVATION_FAILED:
                 showRequestFailed();
-                updateReservationStatus(data);
+                updateReservationStatusAndSeatAvailability(data);
                 break;
             case RESERVATION_SEAT_AVAILABILITY:
-                updateSeatsAvailability(data);
+                updateReservationStatusAndSeatAvailability(data);
                 break;
             case AUTH_REGISTRATION:
                 updateAuthRegistration(data);
@@ -967,7 +966,7 @@ public class SessionDetailFragment extends Fragment implements
                 showAlreadyReserved();
                 break;
             case ScheduleContract.MyReservations.RESERVATION_STATUS_UNRESERVED:
-                updateSeatsAvailability(sessionDetailModel);
+                updateReservationStatusAndSeatAvailability(sessionDetailModel);
                 break;
             case ScheduleContract.MyReservations.RESERVATION_STATUS_WAITLISTED:
                 showWaitlisted();
@@ -976,10 +975,10 @@ public class SessionDetailFragment extends Fragment implements
     }
 
     /**
-     * Update UI to reflect reservation status known to Firebase (which is the ultimate source
-     * of truth).
+     * Update UI to reflect reservation status and seat availability known to Firebase
+     * (which is the ultimate source of truth).
      */
-    public void updateReservationStatus(SessionDetailModel sessionDetailModel) {
+    public void updateReservationStatusAndSeatAvailability(SessionDetailModel sessionDetailModel) {
         if (isAdded()) {
             String reservationStatus = sessionDetailModel.getReservationStatus();
             LOGD(TAG, "reservationStatus == " + reservationStatus);
@@ -1034,7 +1033,7 @@ public class SessionDetailFragment extends Fragment implements
                 case SessionDetailConstants.RETURNED:
                     break;
             }
-            updateReservationStatus(sessionDetailModel);
+            updateReservationStatusAndSeatAvailability(sessionDetailModel);
         }
     }
 
