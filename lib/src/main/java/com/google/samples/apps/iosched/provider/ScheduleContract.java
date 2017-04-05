@@ -357,7 +357,7 @@ public final class ScheduleContract {
 
     private static final String PATH_MY_SCHEDULE = "my_schedule";
 
-    private static final String PATH_MY_RESERVATION = "my_reservation";
+    private static final String PATH_MY_RESERVATION = "my_reservations";
 
     private static final String PATH_MY_VIEWED_VIDEOS = "my_viewed_videos";
 
@@ -537,7 +537,7 @@ public final class ScheduleContract {
         public static final Uri CONTENT_URI =
                 BASE_CONTENT_URI.buildUpon().appendPath(PATH_MY_RESERVATION).build();
 
-        public static final String CONTENT_TYPE_ID = "myschedule";
+        public static final String CONTENT_TYPE_ID = "myreservation";
 
         public static Uri buildMyReservationUri(String accountName) {
             return ScheduleContractHelper.addOverrideAccountName(CONTENT_URI, accountName);
