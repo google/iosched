@@ -31,7 +31,7 @@ public class InputJsonKeys {
     }
 
     static public enum Rooms {
-      Id, Name;
+      Id, Name, Capacity;
     }
 
     static public enum Categories {
