@@ -912,4 +912,10 @@
         assigned on a first-come, first-served basis. Badge pick-up starts at 7:00AM on May 17 so
         make sure to come by early!</string>
 
+    <string name="settings_time_zone_label">Show events in Pacific Time (PT)</string>
+    <string name="settings_enable_notifications">Enable notifications</string>
+    <string name="settings_enable_anon_statistics">Send anonymous usage statistics</string>
+    <string name="about_terms_url">https://www.google.com/policies/terms/</string>
+    <string name="about_privacy_policy_url">https://www.google.com/policies/privacy/</string>
+    <string name="about_app_version">Version %1$s</string>
 </resources>
