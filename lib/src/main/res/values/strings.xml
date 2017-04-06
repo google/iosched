@@ -870,8 +870,8 @@
     <string name="event_afterhours_default_description">After sessions end for the day, stick around
         Shoreline for two evenings filled with food, drinks and fun. We’ll throw a party on the
         evening of the 17th, and host a concert in the Amphitheatre on the 18th.</string>
-    <string name="default_wifi_network" translatable="false">io17</string>
-    <string name="default_wifi_password" translatable="false">GoogleIo2017</string>
+    <string name="default_wifi_network" translatable="false">IO2017</string>
+    <string name="default_wifi_password" translatable="false">inputoutput</string>
 
     <string name="travel_details_title">Travel Details</string>
     <string name="shuttle_info_title">Shuttle Service</string>
