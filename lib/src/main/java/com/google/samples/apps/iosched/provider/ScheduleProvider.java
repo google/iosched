@@ -732,7 +732,9 @@ public class ScheduleProvider extends ContentProvider {
             }
             case ROOMS_ID_SESSIONS: {
                 final String roomId = Rooms.getRoomId(uri);
-                return builder.table(Tables.SESSIONS_JOIN_ROOMS, getCurrentAccountName(uri, true))
+                final String accountName = getCurrentAccountName(uri, true);
+
+                return builder.table(Tables.SESSIONS_JOIN_ROOMS, accountName, accountName)
                         .mapToTable(Sessions._ID, Tables.SESSIONS)
                         .mapToTable(Sessions.ROOM_ID, Tables.SESSIONS)
                         .where(Qualified.SESSIONS_ROOM_ID + "=?", roomId)
@@ -780,6 +782,7 @@ public class ScheduleProvider extends ContentProvider {
             }
             case SESSIONS_UNSCHEDULED: {
                 final long[] interval = Sessions.getInterval(uri);
+
                 return builder.table(Tables.SESSIONS_JOIN_ROOMS_TAGS_FEEDBACK_MYSCHEDULE,
                         getCurrentAccountName(uri, true))
                         .mapToTable(Sessions._ID, Tables.SESSIONS)
@@ -795,6 +798,7 @@ public class ScheduleProvider extends ContentProvider {
             }
             case SESSIONS_SEARCH: {
                 final String query = Sessions.getSearchQuery(uri);
+
                 return builder.table(Tables.SESSIONS_SEARCH_JOIN_SESSIONS_ROOMS,
                         getCurrentAccountName(uri, true))
                         .map(Sessions.SEARCH_SNIPPET, Subquery.SESSIONS_SNIPPET)
@@ -809,6 +813,7 @@ public class ScheduleProvider extends ContentProvider {
             case SESSIONS_AT: {
                 final List<String> segments = uri.getPathSegments();
                 final String time = segments.get(2);
+
                 return builder.table(Tables.SESSIONS_JOIN_ROOMS, getCurrentAccountName(uri, true))
                         .mapToTable(Sessions._ID, Tables.SESSIONS)
                         .mapToTable(Sessions.ROOM_ID, Tables.SESSIONS)
@@ -931,10 +936,13 @@ public class ScheduleProvider extends ContentProvider {
             }
             case SPEAKERS_ID_SESSIONS: {
                 final String speakerId = Speakers.getSpeakerId(uri);
-                return builder.table(Tables.SESSIONS_SPEAKERS_JOIN_SESSIONS_ROOMS)
+                return builder.table(Tables.SESSIONS_SPEAKERS_JOIN_SESSIONS_ROOMS, getCurrentAccountName(uri, true))
                         .mapToTable(Sessions._ID, Tables.SESSIONS)
                         .mapToTable(Sessions.SESSION_ID, Tables.SESSIONS)
                         .mapToTable(Sessions.ROOM_ID, Tables.SESSIONS)
+                        .map(Sessions.SESSION_IN_MY_SCHEDULE, "IFNULL(in_schedule, 0)")
+                        .map(Sessions.SESSION_RESERVATION_STATUS, "IFNULL(" + MyReservations.
+                                MY_RESERVATION_STATUS + ", -1)")
                         .where(Qualified.SESSIONS_SPEAKERS_SPEAKER_ID + "=?", speakerId);
             }
             case ANNOUNCEMENTS: {

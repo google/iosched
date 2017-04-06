@@ -111,14 +111,16 @@ public class ScheduleDatabase extends SQLiteOpenHelper {
         String SESSIONS_JOIN_MYSCHEDULE = "sessions "
                 + "LEFT OUTER JOIN myschedule ON sessions.session_id=myschedule.session_id "
                 + "AND myschedule.account_name=? "
-                + "LEFT OUTER JOIN myreservations ON sessions.session_id=myreservations.session_id";
+                + "LEFT OUTER JOIN myreservations ON sessions.session_id=myreservations.session_id "
+                + "AND myreservations.account_name = myschedule.account_name ";
 
         String SESSIONS_JOIN_ROOMS_TAGS = "sessions "
                 + "LEFT OUTER JOIN myschedule ON sessions.session_id=myschedule.session_id "
                 + "AND myschedule.account_name=? "
                 + "LEFT OUTER JOIN rooms ON sessions.room_id=rooms.room_id "
                 + "LEFT OUTER JOIN sessions_tags ON sessions.session_id=sessions_tags.session_id "
-                + "LEFT OUTER JOIN myreservations ON sessions.session_id=myreservations.session_id";
+                + "LEFT OUTER JOIN myreservations ON sessions.session_id=myreservations.session_id "
+                + "AND myreservations.account_name = myschedule.account_name ";
 
         String SESSIONS_JOIN_ROOMS_TAGS_FEEDBACK_MYSCHEDULE = "sessions "
                 + "LEFT OUTER JOIN myschedule ON sessions.session_id=myschedule.session_id "
@@ -126,13 +128,15 @@ public class ScheduleDatabase extends SQLiteOpenHelper {
                 + "LEFT OUTER JOIN rooms ON sessions.room_id=rooms.room_id "
                 + "LEFT OUTER JOIN sessions_tags ON sessions.session_id=sessions_tags.session_id "
                 + "LEFT OUTER JOIN feedback ON sessions.session_id=feedback.session_id "
-                + "LEFT OUTER JOIN myreservations ON sessions.session_id=myreservations.session_id";
+                + "LEFT OUTER JOIN myreservations ON sessions.session_id=myreservations.session_id "
+                + "AND myreservations.account_name = myschedule.account_name ";
 
         String SESSIONS_JOIN_ROOMS = "sessions "
                 + "LEFT OUTER JOIN myschedule ON sessions.session_id=myschedule.session_id "
                 + "AND myschedule.account_name=? "
                 + "LEFT OUTER JOIN rooms ON sessions.room_id=rooms.room_id "
-                + "LEFT OUTER JOIN myreservations ON sessions.session_id=myreservations.session_id";
+                + "LEFT OUTER JOIN myreservations ON sessions.session_id=myreservations.session_id "
+                + "AND myreservations.account_name = myschedule.account_name ";
 
         String SESSIONS_SPEAKERS_JOIN_SPEAKERS = "sessions_speakers "
                 + "LEFT OUTER JOIN speakers ON sessions_speakers.speaker_id=speakers.speaker_id";
@@ -142,14 +146,19 @@ public class ScheduleDatabase extends SQLiteOpenHelper {
 
         String SESSIONS_SPEAKERS_JOIN_SESSIONS_ROOMS = "sessions_speakers "
                 + "LEFT OUTER JOIN sessions ON sessions_speakers.session_id=sessions.session_id "
-                + "LEFT OUTER JOIN rooms ON sessions.room_id=rooms.room_id";
+                + "LEFT OUTER JOIN rooms ON sessions.room_id=rooms.room_id "
+                + "LEFT OUTER JOIN myschedule ON sessions.session_id=myschedule.session_id "
+                + "AND myschedule.account_name=? "
+                + "LEFT OUTER JOIN myreservations ON sessions.session_id=myreservations.session_id "
+                + "AND myreservations.account_name = myschedule.account_name ";
 
         String SESSIONS_SEARCH_JOIN_SESSIONS_ROOMS = "sessions_search "
                 + "LEFT OUTER JOIN sessions ON sessions_search.session_id=sessions.session_id "
                 + "LEFT OUTER JOIN myschedule ON sessions.session_id=myschedule.session_id "
                 + "AND myschedule.account_name=? "
                 + "LEFT OUTER JOIN rooms ON sessions.room_id=rooms.room_id "
-                + "LEFT OUTER JOIN myreservations ON sessions.session_id=myreservations.session_id";
+                + "LEFT OUTER JOIN myreservations ON sessions.session_id=myreservations.session_id "
+                + "AND myreservations.account_name = myschedule.account_name ";
 
         // When tables get deprecated, add them to this list (so they get correctly deleted
         // on database upgrades).
