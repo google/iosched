@@ -12,13 +12,13 @@ import com.google.samples.apps.iosched.lib.BuildConfig;
  */
 public class RegistrationUtils {
     /**
-     * Return true if the user is a registered I/O attendee.
+     * Return true if the user is a registered I/O attendee. Defaults to false.
      *
      * @param context Context to be used to lookup the {@link android.content.SharedPreferences}.
      */
     public static boolean isRegisteredAttendee(final Context context) {
         SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(context);
-        return sp.getBoolean(BuildConfig.PREF_ATTENDEE_AT_VENUE, true);
+        return sp.getBoolean(BuildConfig.PREF_ATTENDEE_AT_VENUE, false);
     }
 
     /**
