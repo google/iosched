@@ -13,25 +13,61 @@
  */
 package com.google.samples.apps.iosched.info.settings;
 
+import android.content.Intent;
 import android.content.res.Resources;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.google.samples.apps.iosched.info.BaseInfoFragment;
+import com.google.samples.apps.iosched.lib.BuildConfig;
 import com.google.samples.apps.iosched.lib.R;
 
 public class SettingsFragment extends BaseInfoFragment {
+
+    TextView mTermsOfService;
+    TextView mPrivacyPolicy;
+    TextView mAppVersion;
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container,
             @Nullable Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.info_settings_frag, container, false);
+        mTermsOfService = (TextView) root.findViewById(R.id.termsOfServiceLink);
+        mPrivacyPolicy = (TextView) root.findViewById(R.id.privacyPolicyLink);
+        mAppVersion = (TextView) root.findViewById(R.id.appVersion);
         return root;
+    }
+
+    @Override
+    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        mTermsOfService.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent termsLink = new Intent(Intent.ACTION_VIEW);
+                termsLink.setData(Uri.parse(getResources()
+                        .getString(R.string.about_terms_url)));
+                startActivity(termsLink);
+            }
+        });
+        mPrivacyPolicy.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent privacyPolicyLink = new Intent(Intent.ACTION_VIEW);
+                privacyPolicyLink.setData(Uri.parse(getResources()
+                        .getString(R.string.about_privacy_policy_url)));
+                startActivity(privacyPolicyLink);
+            }
+        });
+        mAppVersion.setText(getResources()
+                .getString(R.string.about_app_version, BuildConfig.VERSION_NAME));
     }
 
     @Override
