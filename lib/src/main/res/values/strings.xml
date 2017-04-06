@@ -188,10 +188,6 @@
     conference, when there are no more sessions to show. -->
     <string name="empty_widget_text">No more upcoming sessions.\nSee you next year!</string>
 
-    <!-- Shown on a widget instructing user how to start using the widget. -->
-    <string name="empty_widget_text_signed_out">Touch the Google I/O 2016 logo above to sign in
-        and begin using the app.</string>
-
     <!-- Label for a button to answer the question "Would you like to send feedback
     about this session?" which, when clicked, allows the user to send their feedback (ratings
     and comments) about a particular session [CHAR_LIMIT=10]. -->
