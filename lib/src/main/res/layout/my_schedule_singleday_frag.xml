@@ -19,5 +19,6 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:clipToPadding="false"
-    android:scrollbarStyle="outsideOverlay"
-    android:paddingBottom="8dp" />
+    android:scrollbars="vertical"
+    android:scrollbarStyle="insideOverlay"
+    android:paddingBottom="@dimen/spacing_normal" />

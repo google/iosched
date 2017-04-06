@@ -27,8 +27,10 @@
     <color name="light_periwinkle">#bcc8fb</color>
     <color name="warm_grey">#9b9b9b</color>
     <color name="greyish_brown">#424242</color>
-    <color name="tos_links">#4151fd</color>
+    <color name="links">#4151fd</color>
     <color name="dark_icon">#b3000000</color>
+    <color name="light_grey">#ffeeeeee</color>
+    <color name="lighter_grey">#f6f6f6</color>
 
     <!-- 2016 palette -->
     <color name="io16_primary_cyan">#ff25c5d9</color>
@@ -44,7 +46,6 @@
     <color name="io16_accent_purple">#ff7885ca</color>
     <color name="large_dark_icon">#66000000</color>
     <color name="map_icon">#ffb4b4b4</color>
-    <color name="navview_icon">#ff444444</color>
     <color name="dark_status_bar">#ff949595</color>
     <color name="light_status_bar_against_toolbar">#ffe8eaea</color>
     <color name="light_status_bar_against_header_img">#ffe0e1e3</color>
@@ -103,8 +104,6 @@
     <color name="tab_selected_strip">@android:color/white</color>
 
     <color name="map_icon_default">#ff07434d</color>
-
-    <color name="light_grey">#ffeeeeee</color>
 
     <!-- video lib -->
     <color name="video_title">#de07434d</color>

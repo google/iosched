@@ -32,7 +32,6 @@
         android:text="@string/signin_prompt" />
 
     <TextView
-        style="@style/BodyText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/welcome_content_title_margin"

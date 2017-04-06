@@ -24,120 +24,109 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:divider="@drawable/list_divider"
+        android:orientation="vertical"
+        android:showDividers="middle">
 
-        <android.support.v7.widget.CardView
-            style="@style/Info.Cards"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:paddingBottom="@dimen/settings_content_padding"
-                android:paddingTop="@dimen/settings_content_padding">
-
-                <TextView
-                    android:id="@+id/settingsTimeZoneLabel"
-                    style="@style/Body1Text"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignBaseline="@+id/settingsTimeZoneSwitch"
-                    android:ellipsize="end"
-                    android:padding="@dimen/padding_normal"
-                    android:text="@string/settings_time_zone_label" />
-
-                <Switch
-                    android:id="@+id/settingsTimeZoneSwitch"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentEnd="true"
-                    android:layout_alignParentTop="true"
-                    android:layout_toEndOf="@+id/settingsTimeZoneLabel"
-                    android:padding="@dimen/padding_normal" />
-
-                <TextView
-                    android:id="@+id/settingsNotificationsLabel"
-                    style="@style/Body1Text"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignBaseline="@+id/settingsNotificationsSwitch"
-                    android:layout_alignParentStart="true"
-                    android:padding="@dimen/padding_normal"
-                    android:text="@string/settings_enable_notifications" />
-
-                <Switch
-                    android:id="@+id/settingsNotificationsSwitch"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentEnd="true"
-                    android:layout_below="@+id/settingsTimeZoneSwitch"
-                    android:layout_toEndOf="@+id/settingsNotificationsLabel"
-                    android:padding="@dimen/padding_normal" />
-
-                <TextView
-                    android:id="@+id/settingsAnonStatisticsLabel"
-                    style="@style/Body1Text"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentStart="true"
-                    android:layout_below="@+id/settingsNotificationsLabel"
-                    android:padding="@dimen/padding_normal"
-                    android:text="@string/settings_enable_anon_statistics" />
-
-                <Switch
-                    android:id="@+id/settingsAnonStatisticsSwitch"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentEnd="true"
-                    android:layout_below="@+id/settingsNotificationsSwitch"
-                    android:layout_toEndOf="@+id/settingsAnonStatisticsLabel"
-                    android:padding="@dimen/padding_normal" />
-            </RelativeLayout>
-        </android.support.v7.widget.CardView>
-
-        <android.support.v7.widget.CardView
-            style="@style/Info.Cards"
+        <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:paddingBottom="@dimen/settings_content_padding"
             android:paddingTop="@dimen/settings_content_padding">
 
-            <LinearLayout
+            <TextView
+                android:id="@+id/settingsTimeZoneLabel"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:paddingBottom="@dimen/settings_content_padding"
-                android:paddingTop="@dimen/settings_content_padding">
+                android:layout_alignBaseline="@+id/settingsTimeZoneSwitch"
+                android:ellipsize="end"
+                android:padding="@dimen/padding_normal"
+                android:text="@string/settings_time_zone_label" />
 
-                <TextView
-                    android:id="@+id/termsOfServiceLink"
-                    style="?android:borderlessButtonStyle"
-                    android:textColor="@color/lightish_blue"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:linksClickable="true"
-                    android:padding="@dimen/padding_normal"
-                    android:text="@string/about_terms" />
+            <Switch
+                android:id="@+id/settingsTimeZoneSwitch"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentTop="true"
+                android:layout_toEndOf="@+id/settingsTimeZoneLabel"
+                android:padding="@dimen/padding_normal" />
 
-                <TextView
-                    android:id="@+id/privacyPolicyLink"
-                    style="?android:borderlessButtonStyle"
-                    android:textColor="@color/lightish_blue"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:padding="@dimen/padding_normal"
-                    android:text="@string/about_privacy_policy" />
+            <TextView
+                android:id="@+id/settingsNotificationsLabel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignBaseline="@+id/settingsNotificationsSwitch"
+                android:layout_alignParentStart="true"
+                android:padding="@dimen/padding_normal"
+                android:text="@string/settings_enable_notifications" />
 
-                <TextView
-                    android:id="@+id/appVersion"
-                    style="@style/Body1Text"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:padding="@dimen/padding_normal"
-                    android:text="@string/about_app_version"
-                    tools:text="Version 1.4.278" />
-            </LinearLayout>
-        </android.support.v7.widget.CardView>
+            <Switch
+                android:id="@+id/settingsNotificationsSwitch"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_below="@+id/settingsTimeZoneSwitch"
+                android:layout_toEndOf="@+id/settingsNotificationsLabel"
+                android:padding="@dimen/padding_normal" />
+
+            <TextView
+                android:id="@+id/settingsAnonStatisticsLabel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentStart="true"
+                android:layout_below="@+id/settingsNotificationsLabel"
+                android:padding="@dimen/padding_normal"
+                android:text="@string/settings_enable_anon_statistics" />
+
+            <Switch
+                android:id="@+id/settingsAnonStatisticsSwitch"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_below="@+id/settingsNotificationsSwitch"
+                android:layout_toEndOf="@+id/settingsAnonStatisticsLabel"
+                android:padding="@dimen/padding_normal" />
+
+        </RelativeLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingBottom="@dimen/settings_content_padding"
+            android:paddingTop="@dimen/settings_content_padding">
+
+            <Button
+                android:id="@+id/termsOfServiceLink"
+                style="@style/Widget.AppCompat.Button.Borderless.Colored"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingStart="@dimen/padding_normal"
+                android:paddingEnd="@dimen/padding_normal"
+                android:text="@string/about_terms" />
+
+            <Button
+                android:id="@+id/privacyPolicyLink"
+                style="@style/Widget.AppCompat.Button.Borderless.Colored"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingStart="@dimen/padding_normal"
+                android:paddingEnd="@dimen/padding_normal"
+                android:text="@string/about_privacy_policy" />
+
+            <TextView
+                android:id="@+id/appVersion"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingTop="@dimen/spacing_normal"
+                android:paddingStart="@dimen/padding_normal"
+                android:paddingEnd="@dimen/padding_normal"
+                android:text="@string/about_app_version"
+                tools:text="Version 1.4.278" />
+
+        </LinearLayout>
+
     </LinearLayout>
+
 </android.support.v4.widget.NestedScrollView>

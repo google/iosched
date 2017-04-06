@@ -71,7 +71,7 @@
                     android:paddingLeft="@dimen/spacing_large"
                     android:paddingRight="@dimen/spacing_large"
                     android:paddingTop="28dp"
-                    android:textAppearance="@style/TextAppearance.Title"
+                    android:textAppearance="@style/TextAppearance.H3"
                     android:textColor="@android:color/white"
                     android:visibility="gone"
                     tools:text="@string/session_watch"
@@ -201,7 +201,6 @@
 
                 <TextView
                     android:id="@+id/session_abstract"
-                    style="@style/BodyText"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="@dimen/padding_normal"
@@ -273,6 +272,7 @@
                         android:background="@color/light_grey"
                         android:gravity="center"
                         android:text="TODO: map goes here" />
+
                 </FrameLayout>
 
                 <TextView
@@ -327,7 +327,7 @@
         android:clickable="true"
         android:contentDescription="@string/add_to_schedule"
         android:focusable="true"
-        android:src="@drawable/ic_session_bookmark"
+        android:src="@drawable/ic_session_bookmark_fab"
         android:visibility="invisible"
         app:backgroundTint="@color/session_details_fab"
         app:fabSize="normal"
@@ -359,5 +359,7 @@
             tools:drawableStart="@drawable/ic_reservable"
             tools:text="@string/my_schedule_reserve_seat"
             tools:textColor="@color/app_white" />
+
     </LinearLayout>
+
 </android.support.design.widget.CoordinatorLayout>

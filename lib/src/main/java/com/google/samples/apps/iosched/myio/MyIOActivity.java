@@ -32,6 +32,7 @@ import android.text.method.LinkMovementMethod;
 import android.text.util.Linkify;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -327,7 +328,7 @@ public class MyIOActivity extends BaseActivity implements
     @Override
     public void onSignOut(Status status) {
         removePostOnboardingMessageCard();
-        mAvatar.setIcon(getResources().getDrawable(R.drawable.ic_default_avatar));
+        mAvatar.setIcon(getResources().getDrawable(R.drawable.ic_default_avatar_toolbar));
     }
 
     @Override
