@@ -911,7 +911,7 @@ public class SessionDetailModel extends ModelWithLoaderManager<SessionDetailQuer
             case STAR:
             case UNSTAR:
                 mInSchedule = action == SessionDetailUserActionEnum.STAR;
-                setSessionBookmark(mSessionId, mInSchedule);
+                setSessionBookmark(mSessionId, mInSchedule, mTitle);
                 callback.onModelUpdated(this, action);
                 break;
             case SHOW_MAP:
@@ -942,7 +942,7 @@ public class SessionDetailModel extends ModelWithLoaderManager<SessionDetailQuer
                 String sessionId = args == null ? null : args.getString(Sessions.SESSION_ID);
                 if (!TextUtils.isEmpty(sessionId)) {
                     boolean inSchedule = action == SessionDetailUserActionEnum.STAR_RELATED;
-                    setSessionBookmark(sessionId, inSchedule);
+                    setSessionBookmark(sessionId, inSchedule, mTitle);
                     for (ScheduleItem item : mRelatedSessions) {
                         if (TextUtils.equals(sessionId, item.sessionId)) {
                             item.inSchedule = inSchedule;
@@ -963,9 +963,9 @@ public class SessionDetailModel extends ModelWithLoaderManager<SessionDetailQuer
         }
     }
 
-    private void setSessionBookmark(String sessionId, boolean bookmarked) {
+    private void setSessionBookmark(String sessionId, boolean bookmarked, String title) {
         Uri sessionUri = Sessions.buildSessionUri(sessionId);
-        mSessionsHelper.setSessionStarred(sessionUri, bookmarked, null);
+        mSessionsHelper.setSessionStarred(sessionUri, bookmarked, title);
     }
 
     @VisibleForTesting

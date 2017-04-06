@@ -123,7 +123,8 @@ public class SessionFeedbackFragment extends Fragment
 
                 // ANALYTICS SCREEN: View Send Session Feedback screen
                 // Contains: Session title
-                AnalyticsHelper.sendScreenView("Feedback: " + model.getSessionTitle());
+                AnalyticsHelper.sendScreenView("Feedback: " + model.getSessionTitle(),
+                        getActivity());
                 break;
         }
     }

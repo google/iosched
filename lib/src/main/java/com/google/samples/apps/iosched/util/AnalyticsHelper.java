@@ -17,30 +17,33 @@
 package com.google.samples.apps.iosched.util;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.os.Bundle;
 import android.preference.PreferenceManager;
 
 import com.google.android.gms.analytics.GoogleAnalytics;
 import com.google.android.gms.analytics.HitBuilders;
 import com.google.android.gms.analytics.Tracker;
+import com.google.firebase.analytics.FirebaseAnalytics;
 import com.google.samples.apps.iosched.lib.BuildConfig;
 import com.google.samples.apps.iosched.lib.R;
 import com.google.samples.apps.iosched.settings.SettingsUtils;
+
 
 import static com.google.samples.apps.iosched.util.LogUtils.LOGD;
 
 /**
  * Centralized Analytics interface to ensure proper initialization and
  * consistent analytics application across the app.
- *
+ * <p>
  * For the purposes of this application, initialization of the Analytics tracker is broken
  * into two steps.  {@link #prepareAnalytics(Context)} is called upon app creation, which sets up
  * a listener for changes to shared settings_prefs.  When the user agrees to TOS, the listener triggers
  * the actual initialization step, setting up a Google Analytics tracker.  This ensures that
  * no data is collected or accidentally sent before the TOS step, and that campaign tracking data
  * isn't accidentally deleted by starting and immediately disabling a tracker upon app creation.
- *
  */
 public class AnalyticsHelper {
 
@@ -50,14 +53,22 @@ public class AnalyticsHelper {
     @SuppressLint("StaticFieldLeak")
     private static Context sAppContext = null;
 
+    /**
+     * The analytics trackers.  For 2017 (crossover year), using both Google Analytics and
+     * Firebase Analytics.
+     */
     private static Tracker mTracker;
-
-    /** Custom dimension slot number for the "attendee at venue" preference.
+    private static FirebaseAnalytics mFirebaseAnalytics;
+    /**
+     * Custom dimension slot number for the "attendee at venue" preference.
      * There's a finite number of custom dimensions, and they need to consistently be sent
      * in the same index in order to be tracked properly.  For each custom dimension or metric,
      * always reserve an index.
      */
+    // Not using ATTENDING DIMENSION anymore, but slots don't change, so keeping it here as a
+    // placeholder.
     private static final int SLOT_ATTENDING_DIMENSION = 1;
+    private static final int SLOT_SIGNEDIN_DIMENSION = 2;
 
     /**
      * The {@link PreferenceManager doesn't store a strong references to preference change
@@ -69,12 +80,24 @@ public class AnalyticsHelper {
     /**
      * Log a specific screen view under the {@code screenName} string.
      */
-    public static void sendScreenView(String screenName) {
-        if (isInitialized()) {
-            mTracker.setScreenName(screenName);
-            mTracker.send(new HitBuilders.AppViewBuilder().build());
-            LOGD(TAG, "Screen View recorded: " + screenName);
-        }
+
+    private static String FA_CONTENT_TYPE_SCREENVIEW = "screen";
+    private static String FA_KEY_UI_ACTION = "ui_action";
+    private static String FA_CONTENT_TYPE_UI_EVENT = "ui event";
+
+
+    public static void sendScreenView(String screenName, Activity activity) {
+        // GA hit.
+        mTracker.setScreenName(screenName);
+        mTracker.send(new HitBuilders.ScreenViewBuilder().build());
+        LOGD(TAG, "Screen View recorded: " + screenName);
+
+        // FA hit.
+        Bundle params = new Bundle();
+        params.putString(FirebaseAnalytics.Param.ITEM_ID, screenName);
+        params.putString(FirebaseAnalytics.Param.CONTENT_TYPE, FA_CONTENT_TYPE_SCREENVIEW);
+        mFirebaseAnalytics.setCurrentScreen(activity, screenName, null);
+        mFirebaseAnalytics.logEvent(FirebaseAnalytics.Event.SELECT_CONTENT, params);
     }
 
     /**
@@ -82,20 +105,83 @@ public class AnalyticsHelper {
      */
     public static void sendEvent(String category, String action, String label, long value,
                                  HitBuilders.EventBuilder eventBuilder) {
-        if(isInitialized()) {
-            mTracker.send(eventBuilder
-                    .setCategory(category)
-                    .setAction(action)
-                    .setLabel(label)
-                    .setValue(value)
-                    .build());
+        mTracker.send(eventBuilder
+                .setCategory(category)
+                .setAction(action)
+                .setLabel(label)
+                .setValue(value)
+                .build());
 
-            LOGD(TAG, "Event recorded: \n" +
-                    "\tCategory: " + category +
-                    "\tAction: " + action +
-                    "\tLabel: " + label +
-                    "\tValue: " + value);
+        LOGD(TAG, "Event recorded: \n" +
+                "\tCategory: " + category +
+                "\tAction: " + action +
+                "\tLabel: " + label +
+                "\tValue: " + value);
+
+        convertToFAEvent(category, action, label);
+    }
+
+    /*
+     * When the GA crossover code is gone we can streamline this, but in the interim, it's easiest
+     * to minimize the changes to hte rest of the codebase and hide as much of the dual
+     * implementation in AnalyticsHelper as we can.
+     */
+    private static void convertToFAEvent(String category, String action, String label) {
+
+        switch (action) {
+            case "Starred":
+                logUiEvent(label, "bookmarked");
+                break;
+
+            case "click":
+                if (category.equals("primary nav")) {
+                    logUiEvent(label, "primary nav click");
+                }
+                break;
+            case "Feedback":
+                logUiEvent(category, "rate session click");
+                break;
+            case "Add Events":
+                logUiEvent("Day " + label, "add events click");
+                break;
+            case "Tag":
+                logUiEvent(label, "inline tag click");
+                break;
+
+            case "Reservation":
+                logUiEvent(action, "reservation click");
+                break;
+
+            case "Filters Updated":
+                logUiEvent(label, "topnav filter used");
+                break;
+
+            case "Youtube Video":
+                logUiEvent(label, "youtube link click");
+                break;
+            case "Event Info":
+                logUiEvent(category, label.toLowerCase());
+                break;
+            case "markerclick":
+                logUiEvent(label, "map pin selected");
+                break;
+            case "selectsession":
+                logUiEvent(label, "map pin view details");
+                break;
+
+            default:
+                break;
         }
+    }
+
+    private static void logUiEvent(String itemId, String action) {
+        Bundle params = new Bundle();
+        params.putString(FirebaseAnalytics.Param.ITEM_ID, itemId);
+        params.putString(FirebaseAnalytics.Param.CONTENT_TYPE,
+                FA_CONTENT_TYPE_UI_EVENT);
+        params.putString(FA_KEY_UI_ACTION, action);
+        mFirebaseAnalytics.logEvent(FirebaseAnalytics.Event.SELECT_CONTENT, params);
+        LOGD(TAG, "Event recorded for " + itemId + ", " + action);
     }
 
     /**
@@ -106,28 +192,22 @@ public class AnalyticsHelper {
         sendEvent(category, action, label, 0, eventBuilder);
     }
 
-    /**
-     * Log an specific event under the {@code category}, {@code action}, and {@code label}.  Attach
-     * a custom dimension using the provided {@code dimensionIndex} and {@code dimensionValue}
-     */
-    public static void sendEventWithCustomDimension(String category, String action, String label,
-                                                    int dimensionIndex, String dimensionValue) {
-        // Create a new HitBuilder, populate it with the custom dimension, and send it along
-        // to the rest of the event building process.
+    public static void setUserSignedIn(boolean isSignedIn) {
+        // For GA
         HitBuilders.EventBuilder eventBuilder = new HitBuilders.EventBuilder();
-        eventBuilder.setCustomDimension(dimensionIndex, dimensionValue);
-        sendEvent(category, action, label, 0, eventBuilder);
+        eventBuilder.setCustomDimension(SLOT_SIGNEDIN_DIMENSION, String.valueOf(isSignedIn));
+        String action = isSignedIn ? "signed in" : "signed out";
+        sendEvent("", action, action, 0, eventBuilder);
 
-        LOGD(TAG, "Custom Dimension Attached:\n" +
-                "\tindex: " + dimensionIndex +
-                "\tvalue: " + dimensionValue);
+        // For FA
+        mFirebaseAnalytics.setUserProperty("user_signed_in", String.valueOf(isSignedIn));
     }
 
     /**
      * Sets up Analytics to be initialized when the user agrees to TOS.  If the user has already
      * done so (all runs of the app except the first run), initialize analytics Immediately.
      *
-     * @param context  The context that will later be used to initialize Analytics.
+     * @param context The context that will later be used to initialize Analytics.
      */
     public static void prepareAnalytics(Context context) {
         sAppContext = context.getApplicationContext();
@@ -135,16 +215,11 @@ public class AnalyticsHelper {
         // The listener will initialize Analytics when the TOS is signed, or enable/disable
         // Analytics based on the "anonymous data collection" setting.
         setupPreferenceChangeListener();
-
-        // If TOS hasn't been signed yet, it's the first run.  Exit.
-        if (WelcomeUtils.isTosAccepted(sAppContext)) {
-            initializeAnalyticsTracker();
-        }
+        initializeAnalyticsTracker();
     }
 
     /**
-     * Initialize the analytics tracker in use by the application. This should only be called
-     * once, when the TOS is signed.
+     * Initialize the analytics tracker in use by the application.
      */
     private static synchronized void initializeAnalyticsTracker() {
         if (mTracker == null) {
@@ -158,6 +233,7 @@ public class AnalyticsHelper {
 
             try {
                 mTracker = GoogleAnalytics.getInstance(sAppContext).newTracker(useProfile);
+                mFirebaseAnalytics = FirebaseAnalytics.getInstance(sAppContext);
             } catch (Exception e) {
                 // If anything goes wrong, force an opt-out of tracking. It's better to accidentally
                 // protect privacy than accidentally collect data.
@@ -168,7 +244,7 @@ public class AnalyticsHelper {
 
     /**
      * Listens for preference changes.  When a preference change relevant to toggling Analytics
-     * is detected, {@link AnalyticsHelper#enableOrDisableAnalyticsAsNecessary()} is called, which
+     * is detected, {@link AnalyticsHelper#autoToggleAnalytics()} is called, which
      * will decide whether Analytics should be enabled or disabled based on settings_prefs and
      * application state.
      */
@@ -183,71 +259,56 @@ public class AnalyticsHelper {
                 String category = "Preference";
 
                 if (key != null) {
-                    if (key.equals(WelcomeUtils.PREF_TOS_ACCEPTED)
-                            || key.equals(SettingsUtils.PREF_ANALYTICS_ENABLED)) {
+                    switch (key) {
+                        case SettingsUtils.PREF_ANALYTICS_ENABLED:
+                            if (key.equals(WelcomeUtils.PREF_TOS_ACCEPTED)
+                                    && prefs.getBoolean(key, false)
+                                    && mTracker == null
+                                    && !isInitialized()) {
+                                initializeAnalyticsTracker();
+                            }
 
-                        // If TOS is accepted, initialize the Analytics Tracker.
-                        if (key.equals(WelcomeUtils.PREF_TOS_ACCEPTED)
-                                && prefs.getBoolean(key, false)
-                                && mTracker == null) {
-                            initializeAnalyticsTracker();
+                            // Technically it's possible to just look up the values in the pref
+                            // object provided and enable/disable in here, but it's safer to have all the
+                            // "should analytics run" logic collected in one place.
+                            LOGD(TAG, "Auto togglin'.");
+                            autoToggleAnalytics();
+                            break;
+                        case SettingsUtils.PREF_LOCAL_TIMES: {
+                            String label = "Local time";
+                            // ANALYTICS EVENT:  Updated "Show Local Times" setting.
+                            // Contains: The checkbox state of this setting.
+                            sendEvent(category, getAction(prefs, key), label);
+                            break;
                         }
-
-                        // Technically it's possible to just look up the values in the pref
-                        // object provided and enable/disable in here, but it's safer to have all the
-                        // "should analytics run" logic collected in one place.
-                        enableOrDisableAnalyticsAsNecessary();
-                    } else if (key.equals(SettingsUtils.PREF_LOCAL_TIMES)) {
-                        String label = "Local time";
-                        // ANALYTICS EVENT:  Updated "Show Local Times" setting.
-                        // Contains: The checkbox state of this setting.
-                        sendEvent(category, getAction(prefs, key), label);
-                    } else if (key.equals(BuildConfig.PREF_ATTENDEE_AT_VENUE)) {
-                        // Toggle the "Attending in person" custom dimension so we can track
-                        // how venue attendee behavior contrasts with remote attendee behavior.
-                        int attending = prefs.getInt(key, RegistrationUtils.REGSTATUS_UNKNOWN);
-                        // ANALYTICS EVENT:  Updated "On-Site Attendee" preference.
-                        // Contains: Whether the attendee is identifying themselves as onsite or remote.
-                        String attendeeType;
-                        String action;
-                        switch (attending) {
-                            case RegistrationUtils.REGSTATUS_UNREGISTERED:
-                                attendeeType = "Remote Attendee";
-                                action = "Set";
-                                break;
-                            case RegistrationUtils.REGSTATUS_REGISTERED:
-                                attendeeType = "On-Site Attendee";
-                                action = "Set";
-                                break;
-                            default:
-                                attendeeType = "Unknown Attendee Type";
-                                action = "Unset";
+                        case BuildConfig.PREF_CONF_MESSAGES_ENABLED: {
+                            String label = "Conference Notification Cards";
+                            // ANALYTICS EVENT:  Updated "Conference Notification Cards" setting.
+                            // Contains: The checkbox state of this setting.
+                            sendEvent(category, getAction(prefs, key), label);
+                            break;
                         }
-                        String label = "Will be at I/O";
-
-                        sendEventWithCustomDimension(category, action, label,
-                                SLOT_ATTENDING_DIMENSION,
-                                attendeeType);
-                    } else if (key.equals(BuildConfig.PREF_CONF_MESSAGES_ENABLED)) {
-                        String label = "Conference Notification Cards";
-                        // ANALYTICS EVENT:  Updated "Conference Notification Cards" setting.
-                        // Contains: The checkbox state of this setting.
-                        sendEvent(category, getAction(prefs, key), label);
-                    } else if (key.equals(SettingsUtils.PREF_SYNC_CALENDAR)) {
-                        String label = "Sync with Google Calendar";
-                        // ANALYTICS EVENT:  Updated "Sync with Google Calendar" setting.
-                        // Contains: The checkbox state of this setting.
-                        sendEvent(category, getAction(prefs, key), label);
-                    } else if (key.equals(BuildConfig.PREF_NOTIFICATIONS_ENABLED)) {
-                        String label = "Session Reminders";
-                        // ANALYTICS EVENT:  Updated "Session Reminders" setting.
-                        // Contains: The checkbox state of this setting.
-                        sendEvent(category, getAction(prefs, key), label);
-                    } else if (key.equals(BuildConfig.PREF_SESSION_FEEDBACK_REMINDERS_ENABLED)) {
-                        String label = "Feedback Reminders";
-                        // ANALYTICS EVENT:  Updated "Feedback Reminders" setting.
-                        // Contains: The checkbox state of this setting.
-                        sendEvent(category, getAction(prefs, key), label);
+                        case SettingsUtils.PREF_SYNC_CALENDAR: {
+                            String label = "Sync with Google Calendar";
+                            // ANALYTICS EVENT:  Updated "Sync with Google Calendar" setting.
+                            // Contains: The checkbox state of this setting.
+                            sendEvent(category, getAction(prefs, key), label);
+                            break;
+                        }
+                        case BuildConfig.PREF_NOTIFICATIONS_ENABLED: {
+                            String label = "Session Reminders";
+                            // ANALYTICS EVENT:  Updated "Session Reminders" setting.
+                            // Contains: The checkbox state of this setting.
+                            sendEvent(category, getAction(prefs, key), label);
+                            break;
+                        }
+                        case BuildConfig.PREF_SESSION_FEEDBACK_REMINDERS_ENABLED: {
+                            String label = "Feedback Reminders";
+                            // ANALYTICS EVENT:  Updated "Feedback Reminders" setting.
+                            // Contains: The checkbox state of this setting.
+                            sendEvent(category, getAction(prefs, key), label);
+                            break;
+                        }
                     }
                 }
             }
@@ -270,45 +331,47 @@ public class AnalyticsHelper {
     }
 
     /**
-     * Performs the checks to determine if Analytics should be enabled.
-     * @return whether or not it's safe to enable Analytics.
-     */
-    private static boolean shouldEnableAnalytics() {
-        // Analytics shouldn't run unless all the following are true:
-        // 1) A tracker has been initialized in this class (as opposed to elsewhere in the app).
-        // 2) The user has accepted TOS.
-        // 3) "Anonymous usage data" is enabled in settings.
-        return isInitialized() // Has Analytics been initialized?
-                && WelcomeUtils.isTosAccepted(sAppContext) // User has accepted TOS.
-                && SettingsUtils.isAnalyticsEnabled(sAppContext); // Analytics enabled in settings.
-    }
-
-    /**
      * Checks application state and settings_prefs, then explicitly either enables or
      * disables the tracker.
      */
-    public static void enableOrDisableAnalyticsAsNecessary() {
+    private static void autoToggleAnalytics() {
+        GoogleAnalytics instance = GoogleAnalytics.getInstance(sAppContext);
         try {
-            setAnalyticsEnabled(shouldEnableAnalytics());
+            // Analytics shouldn't run unless all the following are true:
+            // 1) A tracker has been initialized in this class (as opposed to elsewhere in the app).
+            // 2) The user has accepted TOS.
+            // 3) "Anonymous usage data" is enabled in settings.
+            boolean enableAnalytics = isInitialized() // Has Analytics been initialized?
+                    && SettingsUtils.isAnalyticsEnabled(sAppContext); // Analytics enabled in settings.
+            if (instance != null) {
+                instance.setAppOptOut(!enableAnalytics);
+            }
+            if (mFirebaseAnalytics != null) {
+                mFirebaseAnalytics.setAnalyticsCollectionEnabled(enableAnalytics);
+            }
+
             LOGD(TAG, "Analytics" + (isInitialized() ? "" : " not") + " initialized"
                     + ", TOS" + (WelcomeUtils.isTosAccepted(sAppContext) ? "" : " not") + " accepted"
                     + ", Setting is" + (SettingsUtils.isAnalyticsEnabled(sAppContext) ? "" : " not")
                     + " checked");
         } catch (Exception e) {
-            setAnalyticsEnabled(false);
+            if (instance != null) {
+                instance.setAppOptOut(true);
+            }
+            if (mFirebaseAnalytics != null) {
+                mFirebaseAnalytics.setAnalyticsCollectionEnabled(false);
+            }
         }
     }
 
-    /**
-     * Enables or disables Analytics.
-     * @param enableAnalytics Whether analytics should be enabled.
-     */
-    private static void setAnalyticsEnabled(boolean enableAnalytics) {
-        GoogleAnalytics instance  = GoogleAnalytics.getInstance(sAppContext);
+    private static void setAnalyticsEnabled(boolean enabled) {
+        LOGD(TAG, "Setting Analytics enabled: " + enabled);
+        GoogleAnalytics instance = GoogleAnalytics.getInstance(sAppContext);
         if (instance != null) {
-            instance.setAppOptOut(!enableAnalytics);
-            LOGD(TAG, "Analytics enabled: " + enableAnalytics);
+            instance.setAppOptOut(!enabled);
         }
-
+        if (mFirebaseAnalytics != null) {
+            mFirebaseAnalytics.setAnalyticsCollectionEnabled(enabled);
+        }
     }
 }

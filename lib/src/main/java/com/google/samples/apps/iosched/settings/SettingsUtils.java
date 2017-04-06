@@ -282,6 +282,15 @@ public class SettingsUtils {
 
     /**
      * @param context Context to be used to edit the {@link android.content.SharedPreferences}.
+     * @param show    Whether app should send anonymous usage statistics
+     */
+    public static void setEnableAnalytics(final Context context, boolean show) {
+        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(context);
+        sp.edit().putBoolean(PREF_ANALYTICS_ENABLED, show).apply();
+    }
+
+    /**
+     * @param context Context to be used to edit the {@link android.content.SharedPreferences}.
      * @param show    Whether app should show notifications
      */
     public static void setShowNotifications(final Context context, boolean show) {
