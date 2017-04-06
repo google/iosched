@@ -24,7 +24,6 @@
     android:background="@drawable/tag_session_background"
     android:minHeight="32dp"
     android:minWidth="@dimen/a11y_min_touch_target_dimen"
-    android:textAppearance="@style/TextAppearance.AppCompat.Caption"
-    android:textColor="@color/greyish_brown"
+    android:textAppearance="@style/TextAppearance.Tag"
     tools:backgroundTint="@color/sunflower_yellow"
     tools:text="Android" />

@@ -17,62 +17,72 @@
 
 <!-- Layout used to display data from a MessageCardData object. -->
 <RelativeLayout
-    android:id="@+id/feedMessageCardLayout"
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/feedMessageCardLayout"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="vertical"
     android:padding="@dimen/padding_normal">
+
     <TextView
         android:id="@+id/dateTime"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
         android:layout_alignParentStart="true"
-        tools:text="May 17, 10:52AM"
-        android:paddingTop="@dimen/feed_color_bar_padding"
-        android:paddingBottom="@dimen/feed_color_bar_padding"/>
+        android:layout_alignParentTop="true"
+        android:paddingBottom="@dimen/spacing_normal"
+        android:paddingTop="@dimen/spacing_normal"
+        tools:text="May 17, 10:52AM" />
+
     <TextView
         android:id="@+id/categoryText"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentTop="true"
-        android:padding="@dimen/feed_color_bar_padding"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_alignBaseline="@id/dateTime"
+        android:layout_alignParentEnd="true"
         android:layout_gravity="center"
-        android:lines="1"
+        android:background="@drawable/tag_session_background"
+        android:textAllCaps="true"
         android:ellipsize="end"
-        tools:text="CATEGORY"
-        tools:background="@color/io16_grey"/>
+        android:lines="1"
+        android:textAppearance="@style/TextAppearance.Tag"
+        tools:text="CATEGORY" />
+
     <TextView
         android:id="@+id/title"
+        style="@style/H1Text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignStart="@+id/dateTime"
         android:layout_below="@+id/categoryText"
         android:layout_marginTop="@dimen/padding_normal"
-        android:textSize="24sp"
         tools:text="@string/placeholder_feed_message_title" />
+
     <FrameLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentEnd="true"
         android:layout_below="@+id/categoryText"
         android:layout_marginTop="@dimen/padding_normal">
+
         <ImageView
             android:id="@+id/expandIcon"
+            android:layout_width="@dimen/a11y_min_touch_target_dimen"
+            android:layout_height="@dimen/a11y_min_touch_target_dimen"
+            android:background="?selectableItemBackgroundBorderless"
             android:rotation="0"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/ic_expand_more_black_24dp"/>
+            android:scaleType="centerInside"
+            android:src="@drawable/ic_expand_more_black_24dp" />
+
         <ImageView
             android:id="@+id/emergencyIcon"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="@dimen/a11y_min_touch_target_dimen"
+            android:layout_height="@dimen/a11y_min_touch_target_dimen"
+            android:background="?selectableItemBackgroundBorderless"
+            android:scaleType="centerInside"
             android:src="@drawable/ic_emergency_24dp"
-            tools:visibility="gone"/>
+            tools:visibility="gone" />
+
     </FrameLayout>
 
     <LinearLayout
@@ -81,8 +91,9 @@
         android:layout_height="wrap_content"
         android:layout_alignParentStart="true"
         android:layout_below="@+id/title"
-        android:orientation="horizontal"
-        android:animateLayoutChanges="true">
+        android:animateLayoutChanges="true"
+        android:orientation="horizontal">
+
         <ImageView
             android:id="@+id/image"
             android:layout_width="@dimen/feed_message_card_image_width"
@@ -91,14 +102,16 @@
             android:scaleType="centerInside"
             tools:ignore="ContentDescription"
             tools:src="@drawable/ic_session" />
+
         <TextView
             android:id="@+id/description"
-            style="@style/Body1Text"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/padding_normal"
             android:layout_marginBottom="@dimen/padding_normal"
+            android:layout_marginTop="@dimen/padding_normal"
             android:ellipsize="end"
             tools:text="@string/placeholder_lorem_ipsum" />
+
     </LinearLayout>
+
 </RelativeLayout>

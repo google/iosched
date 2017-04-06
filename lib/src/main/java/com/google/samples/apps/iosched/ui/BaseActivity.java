@@ -18,6 +18,7 @@ package com.google.samples.apps.iosched.ui;
 
 import android.app.Activity;
 import android.content.ContentResolver;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SyncStatusObserver;
@@ -51,6 +52,8 @@ import com.google.samples.apps.iosched.util.AccountUtils;
 import com.google.samples.apps.iosched.util.AnalyticsHelper;
 import com.google.samples.apps.iosched.util.RecentTasksStyler;
 import com.google.samples.apps.iosched.welcome.WelcomeActivity;
+
+import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
 import static com.google.samples.apps.iosched.util.LogUtils.LOGD;
 import static com.google.samples.apps.iosched.util.LogUtils.LOGW;
@@ -346,6 +349,11 @@ public abstract class BaseActivity extends AppCompatActivity implements
 
     protected String getScreenLabel() {
         return null;
+    }
+
+    @Override
+    protected void attachBaseContext(Context newBase) {
+        super.attachBaseContext(CalligraphyContextWrapper.wrap(newBase));
     }
 
     private static class MySyncStatusObserver implements SyncStatusObserver {

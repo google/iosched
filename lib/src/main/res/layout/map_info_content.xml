@@ -14,6 +14,7 @@
   See the License for the specific language governing permissions and
   limitations under the License.
   -->
+
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
@@ -25,10 +26,10 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:minHeight="?actionBarSize"
-        android:gravity="start|center_vertical"
-        android:orientation="horizontal"
         android:baselineAligned="false"
+        android:gravity="start|center_vertical"
+        android:minHeight="?actionBarSize"
+        android:orientation="horizontal"
         tools:ignore="UseCompoundDrawables">
 
         <ImageView
@@ -37,19 +38,19 @@
             android:layout_height="@dimen/my_schedule_icon_size"
             android:layout_marginLeft="@dimen/my_schedule_icon_horizontal_padding"
             android:layout_marginRight="@dimen/my_schedule_icon_horizontal_padding"
-            tools:src="@drawable/ic_map_pin"
-            tools:ignore="ContentDescription" />
+            tools:ignore="ContentDescription"
+            tools:src="@drawable/ic_map_pin" />
 
         <TextView
             android:id="@+id/map_info_title"
+            style="@style/MapRoomTitle"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:gravity="center_vertical"
             android:paddingBottom="@dimen/spacing_normal"
             android:paddingTop="@dimen/spacing_normal"
-            tools:text="@string/placeholder_map_title"
-            style="@style/MapRoomTitle" />
+            tools:text="@string/placeholder_map_title" />
 
     </LinearLayout>
 
@@ -62,8 +63,7 @@
         android:paddingBottom="@dimen/spacing_normal"
         android:visibility="gone"
         tools:text="@string/placeholder_map_subtitle"
-        tools:visibility="visible"
-        style="@style/Body1Text" />
+        tools:visibility="visible" />
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/map_info_list"

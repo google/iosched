@@ -34,7 +34,7 @@ limitations under the License.
         android:layout_marginStart="@dimen/padding_normal"
         android:ellipsize="end"
         android:maxLines="1"
-        android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
+        android:textAppearance="@style/TextAppearance.Tag"
         tools:background="@drawable/tag_session_background"
         tools:backgroundTint="@color/sunflower_yellow"
         tools:text="Android" />

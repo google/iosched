@@ -14,13 +14,16 @@
   See the License for the specific language governing permissions and
   limitations under the License.
   -->
-<merge xmlns:android="http://schemas.android.com/apk/res/android"
-       xmlns:tools="http://schemas.android.com/tools">
+
+<merge
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:paddingBottom="@dimen/padding_normal">
 
         <LinearLayout
             android:id="@+id/color_box"
@@ -37,23 +40,25 @@
                 android:layout_marginTop="@dimen/event_content_card_top_padding"
                 android:paddingEnd="@dimen/padding_normal"
                 android:paddingStart="@dimen/padding_normal"
-                tools:src="@drawable/ic_navview_info"/>
+                tools:src="@drawable/ic_nav_info" />
 
             <TextView
                 android:id="@+id/event_title"
-                style="@style/Info.Title"
+                style="@style/H3Text"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_margin="@dimen/padding_normal"
                 android:gravity="start"
-                tools:text="Office Hours &amp; App Reviews"/>
+                tools:text="Office Hours &amp; App Reviews" />
+
         </LinearLayout>
 
         <TextView
             android:id="@+id/event_content_description"
-            style="@style/Info"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            tools:text="@string/placeholder_lorem_ipsum"/>
+            android:padding="@dimen/padding_normal"
+            tools:text="@string/placeholder_lorem_ipsum" />
 
         <LinearLayout
             android:layout_width="wrap_content"
@@ -67,7 +72,7 @@
                 android:layout_height="wrap_content"
                 android:padding="@dimen/padding_normal"
                 android:text="@string/view_sessions_text"
-                android:textColor="@color/lightish_blue"/>
+                android:textColor="@color/lightish_blue" />
 
             <Button
                 android:id="@+id/event_view_map"
@@ -76,7 +81,10 @@
                 android:layout_height="wrap_content"
                 android:padding="@dimen/padding_normal"
                 android:text="@string/view_map_text"
-                android:textColor="@color/lightish_blue"/>
+                android:textColor="@color/lightish_blue" />
+
         </LinearLayout>
+
     </LinearLayout>
+
 </merge>
