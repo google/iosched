@@ -46,6 +46,7 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
+import java.util.function.ToDoubleBiFunction;
 
 /**
  * Service to check the user's conference registration status as a background
@@ -86,7 +87,8 @@ public class RegistrationStatusService extends Service {
 
         firebaseConnect(acct);
 
-        return START_FLAG_REDELIVERY;  // Retry intent if service exits prematurely
+        // TODO (see b/37012781)
+        return START_NOT_STICKY;  // Retry intent if service exits prematurely
     }
 
     /**
