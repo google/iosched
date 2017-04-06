@@ -27,6 +27,9 @@ public class LogUtils {
 
     public static boolean LOGGING_ENABLED = !BuildConfig.BUILD_TYPE.equalsIgnoreCase("release");
 
+    // Since logging is disabled for release, we can set our logging level to DEBUG.
+    public static int LOG_LEVEL = android.util.Log.DEBUG;
+
     public static String makeLogTag(String str) {
         if (str.length() > MAX_LOG_TAG_LENGTH - LOG_PREFIX_LENGTH) {
             return LOG_PREFIX + str.substring(0, MAX_LOG_TAG_LENGTH - LOG_PREFIX_LENGTH - 1);
@@ -44,7 +47,7 @@ public class LogUtils {
 
     public static void LOGD(final String tag, String message) {
         if (LOGGING_ENABLED){
-            if (Log.isLoggable(tag, Log.DEBUG)) {
+            if (LOG_LEVEL <= Log.DEBUG) {
                 Log.d(tag, message);
             }
         }
@@ -52,7 +55,7 @@ public class LogUtils {
 
     public static void LOGD(final String tag, String message, Throwable cause) {
         if (LOGGING_ENABLED){
-            if (Log.isLoggable(tag, Log.DEBUG)) {
+            if (LOG_LEVEL <= Log.DEBUG) {
                 Log.d(tag, message, cause);
             }
         }
@@ -60,7 +63,7 @@ public class LogUtils {
 
     public static void LOGV(final String tag, String message) {
         if (LOGGING_ENABLED) {
-            if (Log.isLoggable(tag, Log.VERBOSE)) {
+            if (LOG_LEVEL <= Log.VERBOSE) {
                 Log.v(tag, message);
             }
         }
@@ -68,7 +71,7 @@ public class LogUtils {
 
     public static void LOGV(final String tag, String message, Throwable cause) {
         if (LOGGING_ENABLED) {
-            if (Log.isLoggable(tag, Log.VERBOSE)) {
+            if (LOG_LEVEL <= Log.VERBOSE) {
                 Log.v(tag, message, cause);
             }
         }
