@@ -20,6 +20,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import com.google.samples.apps.iosched.navigation.NavigationModel.NavigationItemEnum;
+import com.google.samples.apps.iosched.util.AnalyticsHelper;
 
 import static com.google.samples.apps.iosched.util.LogUtils.LOGE;
 import static com.google.samples.apps.iosched.util.LogUtils.makeLogTag;
@@ -61,6 +62,7 @@ public class AppNavigationViewAsBottomNavImpl extends AppNavigationViewAbstractI
         final NavigationItemEnum navItem = NavigationItemEnum.getById(item.getItemId());
         if (navItem != null && navItem != mSelfItem) {
             itemSelected(navItem);
+            AnalyticsHelper.sendEvent("primary nav", "click", item.getTitle().toString());
             // Return true so that BottomNavigationView updates itself to show the new item
             return true;
         }

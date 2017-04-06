@@ -27,6 +27,7 @@ import com.google.samples.apps.iosched.info.faq.FaqInfo;
 import com.google.samples.apps.iosched.info.travel.TravelInfo;
 import com.google.samples.apps.iosched.lib.R;
 import com.google.samples.apps.iosched.schedule.ScheduleSingleDayFragment;
+import com.google.samples.apps.iosched.util.AnalyticsHelper;
 
 public class InfoPagerFragment extends Fragment implements InfoContract.View {
 
@@ -79,10 +80,14 @@ public class InfoPagerFragment extends Fragment implements InfoContract.View {
         mTabLayout = (TabLayout) view.findViewById(R.id.sliding_tabs);
         mTabLayout.setupWithViewPager(mViewPager);
 
+        String currentLabel = (String) mTabLayout.getTabAt(mViewPager.getCurrentItem()).getText();
+        AnalyticsHelper.sendScreenView("Info: " + currentLabel, getActivity());
+
         // Add a listener for any reselection events
         mTabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(final TabLayout.Tab tab) {
+                AnalyticsHelper.sendScreenView("Info: " + tab.getText().toString(), getActivity());
             }
 
             @Override

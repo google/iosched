@@ -198,7 +198,7 @@ public class MapFragment extends com.google.android.gms.maps.SupportMapFragment 
 
         // ANALYTICS SCREEN: View the Map screen
         // Contains: Nothing (Page name is a constant)
-        AnalyticsHelper.sendScreenView(SCREEN_LABEL);
+        AnalyticsHelper.sendScreenView(SCREEN_LABEL, getActivity());
 
         // get DPI
         mDPI = getActivity().getResources().getDisplayMetrics().densityDpi / 160f;
@@ -514,8 +514,6 @@ public class MapFragment extends com.google.android.gms.maps.SupportMapFragment 
         // Store the tile overlay and provider
         mTileProvider = entry.provider;
         mTileOverlay = mMap.addTileOverlay(tileOverlay);
-
-
     }
 
     private final ContentObserver mObserver = new ContentObserver(new Handler()) {

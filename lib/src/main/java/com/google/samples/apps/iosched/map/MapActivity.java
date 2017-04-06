@@ -209,7 +209,9 @@ public class MapActivity extends BaseActivity
     public void onSessionClicked(String sessionId) {
         // ANALYTICS EVENT: Click on a session in the Maps screen.
         // Contains: The session ID.
-        AnalyticsHelper.sendEvent(SCREEN_LABEL, "selectsession", sessionId);
+        String title = mInfoFragment.getTitle();
+        AnalyticsHelper.sendEvent(SCREEN_LABEL, "selectsession", title);
+
         startActivity(new Intent(Intent.ACTION_VIEW,
                 ScheduleContract.Sessions.buildSessionUri(sessionId)));
     }

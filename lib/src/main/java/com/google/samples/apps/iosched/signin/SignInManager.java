@@ -33,9 +33,14 @@ import com.google.android.gms.common.api.Status;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.samples.apps.iosched.sync.userdata.LocalUserDataHelper;
 import com.google.samples.apps.iosched.util.AccountUtils;
+import com.google.samples.apps.iosched.util.AnalyticsHelper;
 import com.google.samples.apps.iosched.util.RegistrationUtils;
 
 import java.lang.ref.WeakReference;
+
+import static com.google.samples.apps.iosched.util.LogUtils.LOGD;
+import static com.google.samples.apps.iosched.util.LogUtils.LOGW;
+import static com.google.samples.apps.iosched.util.LogUtils.makeLogTag;
 
 /**
  * Manages sign in and sign out functionality. Designed to be used with an activity, which
@@ -224,6 +229,7 @@ public class SignInManager {
 
         // Tasks executed by the binding activity on sign in.
         signInListener.onSignIn(result);
+        AnalyticsHelper.setUserSignedIn(true);
     }
 
     /**

@@ -259,9 +259,10 @@ public class ScheduleModel implements Model<ScheduleModel.MyScheduleQueryEnum,
                     callback.onError(action);
                 } else {
                     final String id = args.getString(SESSION_ID_KEY);
+                    String title = args.getString(SESSION_TITLE_KEY);
                     mSessionsHelper.setSessionStarred(
                             ScheduleContract.Sessions.buildSessionUri(id),
-                            action == MyScheduleUserActionEnum.SESSION_STAR, null);
+                            action == MyScheduleUserActionEnum.SESSION_STAR, title);
                     requestScheduleUpdateData(action, callback);
                 }
                 break;

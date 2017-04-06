@@ -102,11 +102,11 @@ public class SettingsFragment extends BaseInfoFragment<Object> {
         setupSettingsSwitch(R.id.settings_anon_statistics_container,
                 R.id.settings_anon_statistics_label,
                 R.id.settings_anon_statistics_switch,
-                false, // TODO not implemented
+                SettingsUtils.isAnalyticsEnabled(getContext()), // TODO not implemented
                 new OnCheckedChangeListener() {
                     @Override
                     public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                        // TODO not implemented
+                        SettingsUtils.setEnableAnalytics(getContext(), isChecked);
                     }
                 });
     }
