@@ -26,6 +26,7 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonPrimitive;
 import com.google.samples.apps.iosched.server.schedule.Config;
+import com.google.samples.apps.iosched.server.schedule.model.InputJsonKeys.VendorAPISource.Rooms;
 import com.google.samples.apps.iosched.server.schedule.model.validator.Converters;
 
 import java.util.HashMap;
@@ -135,9 +136,11 @@ public class DataExtractor {
         String id = Config.ROOM_MAPPING.getRoomId(originalId.getAsString());
         if (!ids.contains(id)) {
           String title = Config.ROOM_MAPPING.getTitle(id, get(origin, InputJsonKeys.VendorAPISource.Rooms.Name).getAsString());
+          int capacity = get(origin, Rooms.Capacity).getAsInt();
           set(new JsonPrimitive(id), dest, OutputJsonKeys.Rooms.id);
           set(originalId, dest, OutputJsonKeys.Rooms.original_id);
           set(new JsonPrimitive(title), dest, OutputJsonKeys.Rooms.name);
+          set(new JsonPrimitive(capacity), dest, OutputJsonKeys.Rooms.capacity);
           result.add(dest);
           ids.add(id);
         }
