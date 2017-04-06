@@ -31,7 +31,7 @@ public class OutputJsonKeys {
   }
 
   static public enum Rooms {
-    id, name, floor, original_id;
+    id, name, floor, original_id, capacity;
   }
 
   static public enum Blocks {
