@@ -18,8 +18,8 @@ package com.google.samples.apps.iosched.session;
 
 import android.animation.ArgbEvaluator;
 import android.animation.ObjectAnimator;
-import android.app.Activity;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.ColorStateList;
 import android.graphics.Color;
@@ -29,6 +29,7 @@ import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.AppBarLayout.OnOffsetChangedListener;
@@ -40,6 +41,7 @@ import android.support.v4.content.ContextCompat;
 import android.support.v4.view.animation.LinearOutSlowInInterpolator;
 import android.support.v4.widget.NestedScrollView;
 import android.support.v4.widget.NestedScrollView.OnScrollChangeListener;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.content.res.AppCompatResources;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
@@ -62,8 +64,8 @@ import com.google.android.gms.appindexing.Action;
 import com.google.android.gms.appindexing.AppIndex;
 import com.google.android.gms.appindexing.Thing;
 import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.samples.apps.iosched.Config;
-import com.google.samples.apps.iosched.archframework.PresenterImpl;
 import com.google.samples.apps.iosched.archframework.UpdatableView;
 import com.google.samples.apps.iosched.feedback.SessionFeedbackActivity;
 import com.google.samples.apps.iosched.injection.ModelProvider;
@@ -74,6 +76,7 @@ import com.google.samples.apps.iosched.model.TagMetadata.Tag;
 import com.google.samples.apps.iosched.myschedule.MyScheduleActivity;
 import com.google.samples.apps.iosched.myschedule.MyScheduleDayAdapter;
 import com.google.samples.apps.iosched.myschedule.ScheduleItemViewHolder.Callbacks;
+import com.google.samples.apps.iosched.provider.ScheduleContract;
 import com.google.samples.apps.iosched.provider.ScheduleContract.Sessions;
 import com.google.samples.apps.iosched.session.SessionDetailModel.SessionDetailQueryEnum;
 import com.google.samples.apps.iosched.session.SessionDetailModel.SessionDetailUserActionEnum;
@@ -104,6 +107,8 @@ public class SessionDetailFragment extends Fragment implements
         Callbacks {
 
     private static final String TAG = LogUtils.makeLogTag(SessionDetailFragment.class);
+
+    private SessionDetailPresenter mPresenter;
 
     private CheckableFloatingActionButton mAddScheduleFab;
 
@@ -179,6 +184,10 @@ public class SessionDetailFragment extends Fragment implements
 
     private long mHeaderAnimDuration;
 
+    private LinearLayout mReservationButtonOutline;
+
+    private TextView mReservationButtonContent;
+
     @Override
     public void addListener(UserActionListener<SessionDetailUserActionEnum> listener) {
         mListener = listener;
@@ -207,6 +216,9 @@ public class SessionDetailFragment extends Fragment implements
         mCoordinatorLayout.setStatusBarBackground(null);
 
         mAppBar = (AppBarLayout) view.findViewById(R.id.appbar);
+        mReservationButtonOutline =
+                (LinearLayout) view.findViewById(R.id.reservation_button_outline);
+        mReservationButtonContent = (TextView) view.findViewById(R.id.reserve_button_text);
         mCollapsingToolbar =
                 (CollapsingToolbarLayout) mAppBar.findViewById(R.id.collapsing_toolbar);
         mCollapsingToolbar.setStatusBarScrim(null);
@@ -315,18 +327,18 @@ public class SessionDetailFragment extends Fragment implements
         SessionDetailModel model = ModelProvider.provideSessionDetailModel(
                 ((SessionDetailActivity) getActivity()).getSessionUri(), getContext(),
                 new SessionsHelper(getActivity()), getLoaderManager());
-        PresenterImpl<SessionDetailModel, SessionDetailQueryEnum, SessionDetailUserActionEnum>
-                presenter = new PresenterImpl<>(model, this, SessionDetailUserActionEnum.values(),
-                SessionDetailQueryEnum.values());
-        presenter.loadInitialQueries();
+        mPresenter =
+                new SessionDetailPresenter(model, this, SessionDetailUserActionEnum.values(),
+                        SessionDetailQueryEnum.values());
+        mPresenter.loadInitialQueries();
     }
 
     @Override
-    public void onAttach(final Activity activity) {
-        super.onAttach(activity);
+    public void onAttach(final Context context) {
+        super.onAttach(context);
 
         final Transition sharedElementEnterTransition =
-                activity.getWindow().getSharedElementEnterTransition();
+                getActivity().getWindow().getSharedElementEnterTransition();
         if (sharedElementEnterTransition != null) {
             mHasEnterTransition = true;
             sharedElementEnterTransition.addListener(new UIUtils.TransitionListenerAdapter() {
@@ -342,7 +354,7 @@ public class SessionDetailFragment extends Fragment implements
             });
         }
         final Transition sharedElementReturnTransition =
-                activity.getWindow().getSharedElementReturnTransition();
+                getActivity().getWindow().getSharedElementReturnTransition();
         if (sharedElementReturnTransition != null) {
             sharedElementReturnTransition.addListener(new UIUtils.TransitionListenerAdapter() {
                 @Override
@@ -360,12 +372,14 @@ public class SessionDetailFragment extends Fragment implements
             mHandler.postDelayed(mTimeHintUpdaterRunnable,
                     SessionDetailConstants.TIME_HINT_UPDATE_INTERVAL);
         }
+        mPresenter.initListeners();
     }
 
     @Override
     public void onPause() {
         super.onPause();
         mHandler.removeCallbacksAndMessages(null);
+        mPresenter.cleanUpListeners();
     }
 
     @Override
@@ -408,6 +422,26 @@ public class SessionDetailFragment extends Fragment implements
                 break;
             case RELATED:
                 displayRelatedSessions(data);
+                break;
+            case RESERVATION_STATUS:
+                updateReservationStatus(data);
+                break;
+            case RESERVATION_RESULT:
+                updateReservationResult(data);
+                break;
+            case RESERVATION_PENDING:
+                updateReservationPending(data);
+                break;
+            case RESERVATION_FAILED:
+                showRequestFailed();
+                updateReservationStatus(data);
+                break;
+            case RESERVATION_SEAT_AVAILABILITY:
+                updateSeatsAvailability(data);
+                break;
+            case AUTH_REGISTRATION:
+                updateAuthRegistration(data);
+                break;
             default:
                 break;
         }
@@ -564,6 +598,8 @@ public class SessionDetailFragment extends Fragment implements
             // No enter transition so update UI manually
             enterTransitionFinished();
         }
+
+        updateReservationStatusFromServer(data);
     }
 
     /**
@@ -618,8 +654,7 @@ public class SessionDetailFragment extends Fragment implements
         }
         if (mToolbar.getAlpha() != 1f) {
             mToolbar.animate()
-                    .alpha(1f)
-                    .setDuration(200L)
+                    .alpha(1f).setDuration(200L)
                     .setInterpolator(new LinearOutSlowInInterpolator())
                     .start();
         }
@@ -634,9 +669,9 @@ public class SessionDetailFragment extends Fragment implements
         color.start();
         // Also fade out the toolbar and FAB
         mToolbar.animate()
-                  .alpha(0f)
-                  .setDuration(200L)
-                  .start();
+                .alpha(0f)
+                .setDuration(200L)
+                .start();
         mAddScheduleFab.hide();
     }
 
@@ -920,5 +955,372 @@ public class SessionDetailFragment extends Fragment implements
     @Override
     public void onTagClicked(Tag tag) {
         MyScheduleActivity.launchScheduleWithFilterTag(getContext(), tag);
+    }
+
+    /**
+     * Update UI to reflect reservation status known to ContentProvider.
+     */
+    public void updateReservationStatusFromServer(SessionDetailModel sessionDetailModel) {
+        int reservationStatus = sessionDetailModel.getServerReservationStatus();
+        switch (reservationStatus) {
+            case ScheduleContract.MyReservations.RESERVATION_STATUS_RESERVED:
+                showAlreadyReserved();
+                break;
+            case ScheduleContract.MyReservations.RESERVATION_STATUS_UNRESERVED:
+                updateSeatsAvailability(sessionDetailModel);
+                break;
+            case ScheduleContract.MyReservations.RESERVATION_STATUS_WAITLISTED:
+                showWaitlisted();
+                break;
+        }
+    }
+
+    /**
+     * Update UI to reflect reservation status known to Firebase (which is the ultimate source
+     * of truth).
+     */
+    public void updateReservationStatus(SessionDetailModel sessionDetailModel) {
+        if (isAdded()) {
+            String reservationStatus = sessionDetailModel.getReservationStatus();
+            LOGD(TAG, "reservationStatus == " + reservationStatus);
+            if (reservationStatus == null) {
+                updateSeatsAvailability(sessionDetailModel);
+            } else {
+                switch (reservationStatus) {
+                    case SessionDetailConstants.RESERVE_STATUS_GRANTED:
+                        showAlreadyReserved();
+                        break;
+                    case SessionDetailConstants.RESERVE_STATUS_RETURNED:
+                        updateSeatsAvailability(sessionDetailModel);
+                        break;
+                    case SessionDetailConstants.RESERVE_STATUS_WAITING:
+                        showWaitlisted();
+                        break;
+                }
+            }
+        }
+    }
+
+    /**
+     * Update UI based on reservation request result. Usually this means presenting a dialog
+     * and/or updating the reservation button UI.
+     */
+    public void updateReservationResult(SessionDetailModel sessionDetailModel) {
+        String reservationResult = sessionDetailModel.getReservationResult();
+        if (reservationResult != null && isAdded()) {
+            LOGD(TAG, "reservationResult == " + reservationResult);
+            switch (reservationResult) {
+                case SessionDetailConstants.RESERVE_DENIED_CUTOFF:
+                    showReservationDeniedCutoff();
+                    break;
+                case SessionDetailConstants.RESERVE_DENIED_CLASH:
+                    showReservationDeniedClash();
+                    break;
+                case SessionDetailConstants.RESERVE_DENIED_FAILED:
+                    showRequestFailed();
+                    break;
+                case SessionDetailConstants.RESERVE_DENIED_SPACE:
+                    showReservationDeniedSpace();
+                    break;
+                case SessionDetailConstants.RESERVED:
+                    showReservationSuccessful();
+                    break;
+                case SessionDetailConstants.RETURN_DENIED_CUTOFF:
+                    showReturnDeniedCutoff();
+                    break;
+                case SessionDetailConstants.RETURN_DENIED_FAILED:
+                    showRequestFailed();
+                    break;
+                case SessionDetailConstants.RETURNED:
+                    break;
+            }
+            updateReservationStatus(sessionDetailModel);
+        }
+    }
+
+    /**
+     * Update the reservation button based on whether the user is logged in and/or is
+     * registered for the event.
+     */
+    public void updateAuthRegistration(SessionDetailModel sessionDetailModel) {
+        if(FirebaseAuth.getInstance().getCurrentUser() == null) {
+            showReservationDisabled();
+        } else {
+            // TODO account for registration.
+        }
+    }
+
+    /**
+     * Update UI based on whether there is space left in the event.
+     */
+    public void updateSeatsAvailability(SessionDetailModel sessionDetailModel) {
+        if(isAdded()) {
+            if (sessionDetailModel.getSeatsAvailability()) {
+                showReservationEnabled();
+            } else {
+                showWaitlistEnabled();
+            }
+            updateAuthRegistration(sessionDetailModel);
+        }
+    }
+
+    /**
+     * Update the button UI while a reservation request is pending.
+     */
+    public void updateReservationPending(SessionDetailModel sessionDetailModel) {
+        if (isAdded()) {
+            if (sessionDetailModel.isReservationPending() ||
+                    sessionDetailModel.isReturnPending()) {
+                showReservationInQueue();
+            }
+        }
+    }
+
+    /**
+     * Update reservation button UI to convey that the session is reservable.
+     */
+    public void showReservationEnabled() {
+        mReservationButtonOutline.setVisibility(View.VISIBLE);
+        mReservationButtonContent.setText(
+                getResources().getString(R.string.my_schedule_reserve_seat));
+        mReservationButtonContent.setCompoundDrawablesRelativeWithIntrinsicBounds(
+                getResources().getDrawable(R.drawable.ic_reservable), null, null, null);
+        mReservationButtonContent.setTextColor(
+                getResources().getColor(R.color.app_white));
+        mReservationButtonOutline.setBackground(
+                getResources().getDrawable(R.drawable.reservation_button_enabled));
+        mReservationButtonOutline.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                sendUserAction(SessionDetailUserActionEnum.RESERVE, null);
+            }
+        });
+    }
+
+    /**
+     * Update reservation button UI to convey that the reserve request is being procesed.
+     */
+    public void showReservationInQueue() {
+        mReservationButtonOutline.setVisibility(View.VISIBLE);
+        mReservationButtonContent.setText(
+                getResources().getString(R.string.my_schedule_request_pending));
+        mReservationButtonContent.setCompoundDrawablesRelativeWithIntrinsicBounds(
+                getResources().getDrawable(R.drawable.ic_reserved), null, null, null);
+        mReservationButtonContent.setTextColor(
+                getResources().getColor(R.color.item_text_primary_color));
+        mReservationButtonOutline.setBackground(
+                getResources().getDrawable(R.drawable.reservation_button_disabled));
+        mReservationButtonOutline.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // no-op
+            }
+        });
+    }
+
+    /**
+     * Update reservation button UI to convey that the user has already reserved the session.
+     */
+    public void showAlreadyReserved() {
+        mReservationButtonOutline.setVisibility(View.VISIBLE);
+        mReservationButtonContent.setText(
+                getResources().getString(R.string.my_schedule_already_reserved));
+        mReservationButtonContent.setCompoundDrawablesRelativeWithIntrinsicBounds(
+                getResources().getDrawable(R.drawable.ic_reserved), null, null, null);
+        mReservationButtonContent.setTextColor(
+                getResources().getColor(R.color.item_text_primary_color));
+        mReservationButtonOutline.setBackground(
+                getResources().getDrawable(R.drawable.reservation_button_disabled));
+        mReservationButtonOutline.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                new AlertDialog.Builder(getActivity())
+                        .setMessage(R.string.my_schedule_reservation_cancel_confirm_message)
+                        .setTitle(R.string.my_schedule_reservation_cancel_confirm_title)
+                        .setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.dismiss();
+                            }
+                        })
+                        .setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                sendUserAction(SessionDetailUserActionEnum.RETURN, null);
+                                dialog.dismiss();
+                            }
+                        })
+                        .create()
+                        .show();
+            }
+        });
+    }
+
+    /**
+     * Update reservation button UI to convey that the user is unable to reserve the event because
+     * they are either not logged in or not registered for the event.
+     */
+    public void showReservationDisabled() {
+        mReservationButtonOutline.setVisibility(View.VISIBLE);
+        mReservationButtonContent.setText(
+                getResources().getString(
+                        R.string.my_schedule_reservation_disabled_auth_button_text));
+        mReservationButtonContent.setCompoundDrawablesRelativeWithIntrinsicBounds(
+                getResources().getDrawable(R.drawable.ic_reserve_disabled_info), null, null, null);
+        mReservationButtonContent.setTextColor(
+                getResources().getColor(R.color.item_text_primary_color));
+        mReservationButtonOutline.setBackground(
+                getResources().getDrawable(R.drawable.reservation_button_disabled));
+        mReservationButtonContent.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                        new AlertDialog.Builder(getActivity())
+                                .setMessage(R.string
+                                        .my_schedule_reservation_must_sign_in_and_register_message)
+                                .setTitle(R.string.my_schedule_reservation_why_disabled)
+                                .setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        dialog.dismiss();
+                                    }
+                                })
+                                .create()
+                                .show();
+            }
+        });
+    }
+
+    public void showReservationSuccessful() {
+        // No excessive UI update when reservation successful.
+    }
+
+    public void showReservationDeniedSpace() {
+        // No excessive UI update when added to waitlist.
+    }
+
+    /**
+     * Update reservation button UI to convey that the user is on the waitlist for the session.
+     */
+    public void showWaitlisted() {
+        mReservationButtonOutline.setVisibility(View.VISIBLE);
+        mReservationButtonContent.setText(
+                getResources().getString(R.string.my_schedule_waitlisted));
+        mReservationButtonContent.setCompoundDrawablesRelativeWithIntrinsicBounds(
+                getResources().getDrawable(R.drawable.ic_reserve_disabled_info), null, null, null);
+        mReservationButtonContent.setTextColor(
+                getResources().getColor(R.color.item_text_primary_color));
+        mReservationButtonOutline.setBackground(
+                getResources().getDrawable(R.drawable.reservation_button_disabled));
+        mReservationButtonOutline.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                new AlertDialog.Builder(getActivity())
+                        .setMessage(R.string.my_schedule_waitlist_cancel_confirm_message)
+                        .setTitle(R.string.my_schedule_waitlist_cancel_confirm_title)
+                        .setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.dismiss();
+                            }
+                        })
+                        .setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                sendUserAction(SessionDetailUserActionEnum.RETURN, null);
+                                dialog.dismiss();
+                            }
+                        })
+                        .create()
+                        .show();
+            }
+        });
+    }
+
+    /**
+     * Update reservation button UI to convey that the session is full and can only be waitlisted.
+     */
+    public void showWaitlistEnabled() {
+        mReservationButtonOutline.setVisibility(View.VISIBLE);
+        mReservationButtonContent.setText(
+                getResources().getString(R.string.my_schedule_join_waitlist));
+        mReservationButtonContent.setTextColor(
+                getResources().getColor(R.color.app_white));
+        mReservationButtonContent.setCompoundDrawablesRelativeWithIntrinsicBounds(
+                getResources().getDrawable(R.drawable.ic_reservable), null, null, null);
+        mReservationButtonOutline.setBackground(
+                getResources().getDrawable(R.drawable.reservation_button_enabled));
+        mReservationButtonOutline.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                sendUserAction(SessionDetailUserActionEnum.RESERVE, null);
+            }
+        });
+    }
+
+    /**
+     * Update reservation button UI to convey that the time window to reserve the session is over.
+     */
+    public void showReservationDeniedCutoff() {
+        new AlertDialog.Builder(getActivity())
+                .setMessage(R.string.my_schedule_reservation_window_closed_info)
+                .setTitle(R.string.my_schedule_reservation_window_closed)
+                .setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                })
+                .create()
+                .show();
+    }
+
+    /**
+     * Alert the user that their reservation request failed due to a time conflict.
+     */
+    public void showReservationDeniedClash() {
+        new AlertDialog.Builder(getActivity())
+                .setMessage(R.string.my_schedule_reservation_clash_message)
+                .setTitle(R.string.my_schedule_reservation_clash_title)
+                .setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                })
+                .create()
+                .show();
+    }
+
+    /**
+     * Alert the user that their reservation cancellation request failed due to a time conflict.
+     */
+    public void showReturnDeniedCutoff() {
+        new AlertDialog.Builder(getActivity())
+                .setMessage(R.string.my_schedule_return_denied_cutoff_message)
+                .setTitle(R.string.my_schedule_reservation_window_closed)
+                .setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                })
+                .create()
+                .show();
+    }
+    /**
+     * Alert the user that their request failed due to an unknown reason (blame the server...).
+     */
+    public void showRequestFailed() {
+        new AlertDialog.Builder(getActivity())
+                .setMessage(R.string.my_schedule_reservation_request_failed_message)
+                .setTitle(R.string.my_schedule_request_failed_title)
+                .setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                })
+                .create()
+                .show();
     }
 }
