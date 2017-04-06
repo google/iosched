@@ -15,12 +15,15 @@
  */
 package com.google.samples.apps.iosched.sync.userdata;
 
+import android.annotation.SuppressLint;
+import android.content.AsyncQueryHandler;
 import android.content.Context;
 import android.database.Cursor;
 import android.net.Uri;
 
 import com.google.gson.Gson;
 import com.google.samples.apps.iosched.provider.ScheduleContract;
+import com.google.samples.apps.iosched.util.AccountUtils;
 import com.google.samples.apps.iosched.util.IOUtils;
 
 import java.util.ArrayList;
@@ -30,11 +33,17 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import static com.google.samples.apps.iosched.provider.ScheduleContract.MyFeedbackSubmitted;
+import static com.google.samples.apps.iosched.provider.ScheduleContract.MyReservations;
+import static com.google.samples.apps.iosched.provider.ScheduleContract.MySchedule;
+import static com.google.samples.apps.iosched.provider.ScheduleContract.MyViewedVideos;
+
 /**
  * Helper class to handle the format of the User Data that is stored into AppData.
  * TODO: Refactor. Class mixes util methods, Pojos and business logic. See b/27809362.
  */
 public class UserDataHelper {
+
     /**
      * Returns a JSON string representation of the given UserData object.
      */
@@ -136,20 +145,20 @@ public class UserDataHelper {
         UserData userData = new UserData();
 
         userData.setStarredSessions(getColumnContentAsMap(context,
-                ScheduleContract.MySchedule.CONTENT_URI,
-                ScheduleContract.MySchedule.SESSION_ID,
-                ScheduleContract.MySchedule.MY_SCHEDULE_IN_SCHEDULE,
-                ScheduleContract.MySchedule.MY_SCHEDULE_TIMESTAMP));
+                MySchedule.CONTENT_URI,
+                MySchedule.SESSION_ID,
+                MySchedule.MY_SCHEDULE_IN_SCHEDULE,
+                MySchedule.MY_SCHEDULE_TIMESTAMP));
 
         // Get Viewed Videos.
         userData.setViewedVideoIds(getColumnContentAsArray(context,
-                ScheduleContract.MyViewedVideos.CONTENT_URI,
-                ScheduleContract.MyViewedVideos.VIDEO_ID));
+                MyViewedVideos.CONTENT_URI,
+                MyViewedVideos.VIDEO_ID));
 
         // Get Feedback Submitted Sessions.
         userData.setFeedbackSubmittedSessionIds(getColumnContentAsArray(context,
-                ScheduleContract.MyFeedbackSubmitted.CONTENT_URI,
-                ScheduleContract.MyFeedbackSubmitted.SESSION_ID));
+                MyFeedbackSubmitted.CONTENT_URI,
+                MyFeedbackSubmitted.SESSION_ID));
 
         return userData;
     }
@@ -164,8 +173,8 @@ public class UserDataHelper {
         }
 
         // first clear all stars.
-        context.getContentResolver().delete(ScheduleContract.MySchedule.CONTENT_URI,
-                ScheduleContract.MySchedule.MY_SCHEDULE_ACCOUNT_NAME +" = ?",
+        context.getContentResolver().delete(MySchedule.CONTENT_URI,
+                MySchedule.MY_SCHEDULE_ACCOUNT_NAME +" = ?",
                 new String[]{accountName});
 
         // Now add the ones in sessionIds.
@@ -197,5 +206,21 @@ public class UserDataHelper {
         }
 
         UserActionHelper.updateContentProvider(context, actions, accountName);
+    }
+
+    public static void clearUserDataOnSignOut(Context context) {
+        @SuppressLint("HandlerLeak")
+        AsyncQueryHandler handler = new AsyncQueryHandler(context.getContentResolver()) {};
+        String[] selectionArgs = new String[]{AccountUtils.getActiveAccountName(context)};
+
+        handler.startDelete(1, null, MySchedule.CONTENT_URI,
+                MySchedule.MY_SCHEDULE_ACCOUNT_NAME + " = ?", selectionArgs);
+
+        handler.startDelete(2, null, MyFeedbackSubmitted.CONTENT_URI,
+                MyFeedbackSubmitted.MY_FEEDBACK_SUBMITTED_ACCOUNT_NAME + " = ?", selectionArgs);
+
+        handler.startDelete(3, null, MyReservations.CONTENT_URI,
+                MyReservations.MY_RESERVATION_ACCOUNT_NAME + " = ?", selectionArgs);
+
     }
 }
