@@ -128,194 +128,182 @@
 
     </android.support.design.widget.AppBarLayout>
 
-    <RelativeLayout
+    <android.support.v4.widget.NestedScrollView
+        android:id="@+id/scroll_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_above="@+id/reserve_button_placeholder"
         android:clipToPadding="false"
+        android:paddingBottom="?actionBarSize"
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
-        <View
-            android:id="@+id/reserve_button_placeholder"
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/reserve_button_height"
-            android:layout_alignParentBottom="true" />
-
-        <android.support.v4.widget.NestedScrollView
-            android:id="@+id/scroll_view"
+        <LinearLayout
+            android:id="@+id/details_container"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_above="@+id/reserve_button_placeholder"
-            android:clipToPadding="false"
-            app:layout_behavior="@string/appbar_scrolling_view_behavior">
+            android:orientation="vertical"
+            android:paddingBottom="@dimen/padding_normal"
+            android:paddingTop="@dimen/padding_normal"
+            tools:ignore="RtlSymmetry">
 
-            <LinearLayout
-                android:id="@+id/details_container"
+            <TextView
+                android:id="@+id/time_hint"
+                style="@style/SessionTimeHint"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:paddingBottom="@dimen/padding_normal"
-                android:paddingTop="@dimen/padding_normal"
-                tools:ignore="RtlSymmetry">
+                android:layout_marginBottom="@dimen/padding_normal"
+                android:layout_marginLeft="@dimen/padding_normal"
+                android:layout_marginRight="@dimen/padding_normal"
+                android:focusable="true"
+                android:visibility="gone"
+                tools:text="@string/time_hint_about_to_start_min"
+                tools:visibility="visible" />
 
-                <TextView
-                    android:id="@+id/time_hint"
-                    style="@style/SessionTimeHint"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="@dimen/padding_normal"
-                    android:layout_marginLeft="@dimen/padding_normal"
-                    android:layout_marginRight="@dimen/padding_normal"
-                    android:focusable="true"
-                    android:visibility="gone"
-                    tools:text="@string/time_hint_about_to_start_min"
-                    tools:visibility="visible" />
+            <TextView
+                android:id="@+id/session_title"
+                style="@style/H1Text"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/padding_normal"
+                android:layout_marginLeft="@dimen/padding_normal"
+                android:layout_marginRight="@dimen/padding_normal"
+                android:layout_marginTop="24dp"
+                android:ellipsize="end"
+                android:gravity="start"
+                android:maxLines="4"
+                android:textAlignment="viewStart"
+                tools:text="@string/placeholder_session_title" />
 
-                <TextView
-                    android:id="@+id/session_title"
-                    style="@style/H1Text"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="@dimen/padding_normal"
-                    android:layout_marginLeft="@dimen/padding_normal"
-                    android:layout_marginRight="@dimen/padding_normal"
-                    android:layout_marginTop="24dp"
-                    android:ellipsize="end"
-                    android:gravity="start"
-                    android:maxLines="4"
-                    android:textAlignment="viewStart"
-                    tools:text="@string/placeholder_session_title" />
+            <TextView
+                android:id="@+id/session_subtitle"
+                style="@style/H4Text"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/padding_normal"
+                android:layout_marginLeft="@dimen/padding_normal"
+                android:layout_marginRight="@dimen/padding_normal"
+                android:ellipsize="end"
+                android:gravity="start"
+                android:maxLines="2"
+                android:textAlignment="viewStart"
+                tools:text="@string/placeholder_session_subtitle" />
 
-                <TextView
-                    android:id="@+id/session_subtitle"
-                    style="@style/H4Text"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="@dimen/padding_normal"
-                    android:layout_marginLeft="@dimen/padding_normal"
-                    android:layout_marginRight="@dimen/padding_normal"
-                    android:ellipsize="end"
-                    android:gravity="start"
-                    android:maxLines="2"
-                    android:textAlignment="viewStart"
-                    tools:text="@string/placeholder_session_subtitle" />
+            <TextView
+                android:id="@+id/session_abstract"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/padding_normal"
+                android:layout_marginLeft="@dimen/padding_normal"
+                android:layout_marginRight="@dimen/padding_normal"
+                android:focusable="true"
+                android:importantForAccessibility="yes"
+                android:textAlignment="viewStart"
+                tools:text="@string/placeholder_lorem_ipsum" />
 
-                <TextView
-                    android:id="@+id/session_abstract"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="@dimen/padding_normal"
-                    android:layout_marginLeft="@dimen/padding_normal"
-                    android:layout_marginRight="@dimen/padding_normal"
-                    android:focusable="true"
-                    android:importantForAccessibility="yes"
-                    android:textAlignment="viewStart"
-                    tools:text="@string/placeholder_lorem_ipsum" />
-
-                <HorizontalScrollView
-                    android:id="@+id/session_tags_container"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="@dimen/spacing_large"
-                    android:fadingEdgeLength="@dimen/padding_normal"
-                    android:paddingLeft="@dimen/padding_normal"
-                    android:paddingRight="@dimen/padding_normal"
-                    android:requiresFadingEdge="horizontal"
-                    android:scrollbars="none"
-                    android:visibility="gone">
-
-                    <LinearLayout
-                        android:id="@+id/session_tags"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:gravity="center_vertical"
-                        android:orientation="horizontal" />
-
-                </HorizontalScrollView>
-
-                <Button
-                    android:id="@id/give_feedback_button"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="@dimen/spacing_large"
-                    android:layout_marginLeft="@dimen/padding_normal"
-                    android:layout_marginRight="@dimen/padding_normal"
-                    android:backgroundTint="@color/aqua_marine"
-                    android:paddingLeft="@dimen/padding_normal"
-                    android:paddingRight="@dimen/padding_normal"
-                    android:text="@string/rate_session"
-                    android:visibility="gone"
-                    tools:visibility="visible" />
+            <HorizontalScrollView
+                android:id="@+id/session_tags_container"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/spacing_large"
+                android:fadingEdgeLength="@dimen/padding_normal"
+                android:paddingLeft="@dimen/padding_normal"
+                android:paddingRight="@dimen/padding_normal"
+                android:requiresFadingEdge="horizontal"
+                android:scrollbars="none"
+                android:visibility="gone">
 
                 <LinearLayout
-                    android:id="@+id/session_speakers_block"
-                    android:layout_width="match_parent"
+                    android:id="@+id/session_tags"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:divider="?android:listDivider"
-                    android:orientation="vertical"
-                    android:showDividers="beginning|middle"
-                    android:visibility="gone">
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal" />
 
-                </LinearLayout>
+            </HorizontalScrollView>
 
-                <!-- android:foreground on arbitrary views starts in API 23, so we need a container -->
-                <FrameLayout
-                    android:id="@+id/map_container"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:foreground="?selectableItemBackground">
+            <Button
+                android:id="@id/give_feedback_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/spacing_large"
+                android:layout_marginLeft="@dimen/padding_normal"
+                android:layout_marginRight="@dimen/padding_normal"
+                android:backgroundTint="@color/aqua_marine"
+                android:paddingLeft="@dimen/padding_normal"
+                android:paddingRight="@dimen/padding_normal"
+                android:text="@string/rate_session"
+                android:visibility="gone"
+                tools:visibility="visible" />
 
-                    <!-- TODO real map -->
-                    <TextView
-                        android:id="@+id/map_image"
-                        android:layout_width="match_parent"
-                        android:layout_height="200dp"
-                        android:background="@color/light_grey"
-                        android:gravity="center"
-                        android:text="TODO: map goes here" />
-
-                </FrameLayout>
-
-                <TextView
-                    android:id="@+id/related_sessions_label"
-                    style="@style/TextAppearance.AppCompat.Body2"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="@dimen/padding_normal"
-                    android:layout_marginRight="@dimen/padding_normal"
-                    android:layout_marginTop="32dp"
-                    android:text="@string/related_sessions"
-                    android:textAllCaps="true"
-                    android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-                    android:visibility="gone"
-                    tools:visibility="visible" />
-
-                <android.support.v7.widget.RecyclerView
-                    android:id="@+id/related_sessions_list"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="16dp"
-                    android:nestedScrollingEnabled="false"
-                    android:visibility="gone"
-                    app:layoutManager="android.support.v7.widget.LinearLayoutManager"
-                    tools:listitem="@layout/my_schedule_item"
-                    tools:visibility="visible" />
-
-                <TextView
-                    android:id="@android:id/empty"
-                    style="@style/EmptyText"
-                    android:layout_width="match_parent"
-                    android:layout_height="0dp"
-                    android:layout_marginLeft="@dimen/padding_normal"
-                    android:layout_marginRight="@dimen/padding_normal"
-                    android:layout_weight="1"
-                    android:gravity="center"
-                    android:text="@string/empty_session_detail"
-                    android:visibility="gone" />
+            <LinearLayout
+                android:id="@+id/session_speakers_block"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:divider="?android:listDivider"
+                android:orientation="vertical"
+                android:showDividers="beginning|middle"
+                android:visibility="gone">
 
             </LinearLayout>
 
-        </android.support.v4.widget.NestedScrollView>
-    </RelativeLayout>
+            <!-- android:foreground on arbitrary views starts in API 23, so we need a container -->
+            <FrameLayout
+                android:id="@+id/map_container"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:foreground="?selectableItemBackground">
+
+                <!-- TODO real map -->
+                <TextView
+                    android:id="@+id/map_image"
+                    android:layout_width="match_parent"
+                    android:layout_height="200dp"
+                    android:background="@color/light_grey"
+                    android:gravity="center"
+                    android:text="TODO: map goes here" />
+
+            </FrameLayout>
+
+            <TextView
+                android:id="@+id/related_sessions_label"
+                style="@style/TextAppearance.AppCompat.Body2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/padding_normal"
+                android:layout_marginRight="@dimen/padding_normal"
+                android:layout_marginTop="32dp"
+                android:text="@string/related_sessions"
+                android:textAllCaps="true"
+                android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+                android:visibility="gone"
+                tools:visibility="visible" />
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/related_sessions_list"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:nestedScrollingEnabled="false"
+                android:visibility="gone"
+                app:layoutManager="android.support.v7.widget.LinearLayoutManager"
+                tools:listitem="@layout/my_schedule_item"
+                tools:visibility="visible" />
+
+            <TextView
+                android:id="@android:id/empty"
+                style="@style/EmptyText"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_marginLeft="@dimen/padding_normal"
+                android:layout_marginRight="@dimen/padding_normal"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text="@string/empty_session_detail"
+                android:visibility="gone" />
+
+        </LinearLayout>
+
+    </android.support.v4.widget.NestedScrollView>
 
     <!-- FAB -->
     <com.google.samples.apps.iosched.ui.widget.CheckableFloatingActionButton
@@ -338,9 +326,10 @@
     <LinearLayout
         android:id="@+id/reservation_button_outline"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/reserve_button_height"
+        android:layout_height="?actionBarSize"
         android:layout_gravity="bottom"
         android:clickable="true"
+        app:layout_insetEdge="bottom"
         android:focusable="true"
         android:gravity="center"
         android:orientation="horizontal"
