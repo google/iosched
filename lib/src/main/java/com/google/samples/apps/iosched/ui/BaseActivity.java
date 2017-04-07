@@ -38,6 +38,7 @@ import android.view.MenuItem;
 import android.view.View;
 
 import com.google.android.gms.auth.GoogleAuthUtil;
+import com.google.firebase.database.FirebaseDatabase;
 import com.google.samples.apps.iosched.lib.BuildConfig;
 import com.google.samples.apps.iosched.lib.R;
 import com.google.samples.apps.iosched.navigation.AppNavigationView;

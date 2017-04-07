@@ -16,19 +16,23 @@ package com.google.samples.apps.iosched.feed;
 import android.graphics.Point;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.google.samples.apps.iosched.feed.data.FeedMessage;
 import com.google.samples.apps.iosched.lib.R;
 
 import static android.support.v7.widget.DividerItemDecoration.VERTICAL;
+import static com.google.samples.apps.iosched.util.LogUtils.makeLogTag;
 
 public class FeedFragment extends Fragment implements FeedContract.View {
+    private static final String TAG = makeLogTag(FeedFragment.class);
 
     private FeedContract.Presenter mPresenter;
     private RecyclerView mRecyclerView;
@@ -58,16 +62,13 @@ public class FeedFragment extends Fragment implements FeedContract.View {
     }
 
     @Override
-    public void setLoadingFeedMessages(boolean loading) {
+    public void showErrorMessage() {
+        Snackbar.make(mRecyclerView, R.string.feed_error, Snackbar.LENGTH_SHORT);
     }
 
     @Override
     public void addFeedMessage(FeedMessage feedMessage) {
         mFeedAdapter.addFeedMessage(feedMessage);
-    }
-
-    @Override
-    public void showError(String errorText) {
     }
 
     @Override

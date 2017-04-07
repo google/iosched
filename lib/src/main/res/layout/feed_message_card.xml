@@ -48,6 +48,15 @@
         android:textAppearance="@style/TextAppearance.Tag"
         tools:text="CATEGORY" />
 
+    <ImageView
+        android:id="@+id/priorityIcon"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toStartOf="@+id/categoryText"
+        android:layout_alignTop="@+id/categoryText"
+        android:layout_marginEnd="@dimen/spacing_micro"
+        android:src="@drawable/ic_pin"/>
+
     <TextView
         android:id="@+id/title"
         style="@style/H1Text"

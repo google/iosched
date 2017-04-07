@@ -368,16 +368,6 @@
     "Give feedback" and "No, thanks" as buttons. [CHAR_LIMIT=20]-->
     <string name="no_thanks">No, thanks</string>
 
-    <!-- Feed category names (should be matched in Firebase DB) -->
-    <string name="feed_category_agenda" translatable="false">Agenda</string>
-    <string name="feed_category_event" translatable="false">Event</string>
-    <string name="feed_category_social" translatable="false">Social</string>
-    <string name="feed_category_emergency" translatable="false">Emergency</string>
-    <string name="feed_category_travel" translatable="false">Travel</string>
-    <string name="feed_category_giveaway" translatable="false">Giveaway</string>
-    <string name="feed_category_afterhours" translatable="false">After Hours</string>
-    <string name="feed_category_video" translatable="false">Video</string>
-
     <!-- A single button shown on informative popups, like EULA, open source licenses and About -->
     <string name="ok">OK</string>
 
@@ -914,4 +904,28 @@
     <string name="about_terms_url">https://www.google.com/policies/terms/</string>
     <string name="about_privacy_policy_url">https://www.google.com/policies/privacy/</string>
     <string name="about_app_version">Version %1$s</string>
+
+    <string name="feed_error">Error loading feed.</string>
+
+
+    <!-- RemoteConfig keys for Feed default messages -->
+    <string name="feed_default_first_title_key"
+            translatable="false">feed_default_first_title</string>
+    <string name="feed_default_first_message_key"
+            translatable="false">feed_default_first_message</string>
+    <string name="feed_default_first_imageurl_key"
+            translatable="false">feed_default_first_imageurl</string>
+    <string name="feed_default_first_timestamp_key"
+            translatable="false">feed_default_first_timestamp</string>
+    <string name="feed_default_first_color_key"
+            translatable="false">feed_default_first_color</string>
+    <string name="feed_default_first_category_key"
+            translatable="false">feed_default_first_category</string>
+    <string name="feed_default_first_clickable_key"
+            translatable="false">feed_default_first_clickable</string>
+    <string name="feed_default_first_link_key"
+            translatable="false">feed_default_first_link</string>
+    <string name="feed_default_first_priority_key"
+            translatable="false">feed_default_first_priority</string>
+
 </resources>
