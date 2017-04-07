@@ -49,7 +49,7 @@ import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
 @SmallTest
-public class SessionFeedbackModelTest {
+public class StarredSessionFeedbackModelTest {
 
     private static final String FAKE_TITLE = "FAKE TITLE";
 

@@ -1,5 +1,5 @@
 /*
- * Copyright 2014 Google Inc. All rights reserved.
+ * Copyright 2016 Google Inc. All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,10 +20,9 @@ import android.content.Context;
 import android.database.Cursor;
 import android.net.Uri;
 
-import com.google.gson.Gson;
+import com.google.api.client.util.Charsets;
 import com.google.samples.apps.iosched.provider.ScheduleContract;
 import com.google.samples.apps.iosched.util.AccountUtils;
-import com.google.samples.apps.iosched.util.IOUtils;
 
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
@@ -36,66 +35,25 @@ import java.util.Set;
 import static com.google.samples.apps.iosched.provider.ScheduleContract.MyFeedbackSubmitted;
 import static com.google.samples.apps.iosched.provider.ScheduleContract.MyReservations;
 import static com.google.samples.apps.iosched.provider.ScheduleContract.MySchedule;
-import static com.google.samples.apps.iosched.provider.ScheduleContract.MyViewedVideos;
-import static com.google.samples.apps.iosched.util.LogUtils.LOGV;
 
 /**
- * Helper class to handle the format of the User Data that is stored into AppData.
- * TODO: Refactor. Class mixes util methods, Pojos and business logic. See b/27809362.
+ * Helper class to process user data stored in the local SQLite db.
  */
-public class UserDataHelper {
-
-    /**
-     * Returns a JSON string representation of the given UserData object.
-     */
-    static public String toJsonString(UserData userData) {
-        return new Gson().toJson(userData);
-    }
+public class LocalUserDataHelper {
 
     /**
      * Returns the JSON string representation of the given UserData object as a byte array.
      */
-    static public byte[] toByteArray(UserData userData) {
-        return toJsonString(userData).getBytes(IOUtils.CHARSET_UTF8);
-    }
-
-    /**
-     * Deserializes the UserData given as a JSON string into a {@link UserData} object.
-     * TODO: put this in UserData.
-     */
-    static public UserData fromString(String str) {
-        if (str == null || str.isEmpty()) {
-            return new UserData();
-        }
-        return new Gson().fromJson(str, UserData.class);
-    }
-
-    /**
-     * Creates a UserData object from the given List of user actions.
-     */
-    static public UserData getUserData(List<UserAction> actions) {
-        UserData userData = new UserData();
-        if (actions != null) {
-            for (UserAction action : actions) {
-                if (action.type == UserAction.TYPE.ADD_STAR) {
-                    if(userData.getStarredSessions() == null) {
-                        // TODO: Make this part of setter. Create lazily.
-                        userData.setStarredSessions(new HashMap<String, UserData.StarredSession>());
-                    }
-                    userData.getStarredSessions().put(action.sessionId,
-                            new UserData.StarredSession(true, action.timestamp));
-                }
-            }
-        }
-        return userData;
+    public static byte[] toByteArray(UserDataModel userDataModel) {
+        return userDataModel.toJsonString().getBytes(Charsets.UTF_8);
     }
 
     /**
      * Reads the data from the {@code column} of the content's {@code queryUri} and returns it as an
      * Array.
      */
-    static private Set<String> getColumnContentAsArray(Context context, Uri queryUri,
-            String column){
+    static private Set<String> getFeedbackSubmittedSessions(Context context, Uri queryUri,
+                                                            String column) {
         Cursor cursor = context.getContentResolver().query(queryUri,
                 new String[]{column}, null, null, null);
         Set<String> columnValues = new HashSet<>();
@@ -116,21 +74,20 @@ public class UserDataHelper {
     /**
      * Reads the data from columns of the content's {@code queryUri} and returns it as a Map.
      */
-    static private Map<String, UserData.StarredSession> getColumnContentAsMap(Context context,
-            Uri queryUri,
-            String sessionIdColumn, String inScheduleColumn, String timestampColumn) {
+    static private Map<String, UserDataModel.StarredSession> getStarredSessions(
+            Context context, Uri queryUri, String sessionIdColumn, String inScheduleColumn,
+            String timestampColumn) {
         Cursor cursor = context.getContentResolver().query(queryUri,
                 new String[]{sessionIdColumn, inScheduleColumn, timestampColumn}, null, null, null);
-        Map<String, UserData.StarredSession> sessionValues = new HashMap<>();
+        Map<String, UserDataModel.StarredSession> sessionValues = new HashMap<>();
         try {
             if (cursor != null && cursor.moveToFirst()) {
                 do {
                     sessionValues.put(cursor.getString(cursor.getColumnIndex(sessionIdColumn)),
-                            new UserData.StarredSession(true,
+                            new UserDataModel.StarredSession(true,
                                     cursor.getLong(cursor.getColumnIndex(timestampColumn))));
                 } while (cursor.moveToNext());
             }
-
         } finally {
             if (cursor != null) {
                 cursor.close();
@@ -140,65 +97,119 @@ public class UserDataHelper {
     }
 
     /**
-     * Returns the User Data that's on the device's local DB.
+     * Reads the data from columns of the content's {@code queryUri} and returns it as a Map.
      */
-    static public UserData getLocalUserData(Context context) {
-        UserData userData = new UserData();
+    static private Map<String, UserDataModel.ReservedSession> getReservedSessions(
+            Context context, Uri queryUri, String sessionIdColumn, String statusColumn,
+            String timestampColumn) {
+        Cursor cursor = context.getContentResolver().query(queryUri,
+                new String[]{sessionIdColumn, statusColumn, timestampColumn}, null, null, null);
+        Map<String, UserDataModel.ReservedSession> sessionValues = new HashMap<>();
+        try {
+            if (cursor != null && cursor.moveToFirst()) {
+                do {
+                    sessionValues.put(cursor.getString(cursor.getColumnIndex(sessionIdColumn)),
+                            new UserDataModel.ReservedSession(cursor.getInt(
+                                    cursor.getColumnIndex(statusColumn)),
+                                    cursor.getLong(cursor.getColumnIndex(timestampColumn))));
+                } while (cursor.moveToNext());
+            }
+        } finally {
+            if (cursor != null) {
+                cursor.close();
+            }
+        }
+        return sessionValues;
+    }
 
-        userData.setStarredSessions(getColumnContentAsMap(context,
+    static UserDataModel getUserData(List<UserAction> actions) {
+        UserDataModel userDataModel = new UserDataModel();
+        if (actions != null) {
+            for (UserAction action : actions) {
+                if (action.type == UserAction.TYPE.ADD_STAR) {
+                    userDataModel.getStarredSessions().put(action.sessionId,
+                            new UserDataModel.StarredSession(true, action.timestamp));
+                } else if (action.type == UserAction.TYPE.REMOVE_STAR) {
+                    userDataModel.getStarredSessions().put(action.sessionId,
+                            new UserDataModel.StarredSession(false, action.timestamp));
+                } else if (action.type == UserAction.TYPE.SUBMIT_FEEDBACK) {
+                    userDataModel.getFeedbackSubmittedSessionIds().add(action.sessionId);
+                }
+            }
+        }
+
+        return userDataModel;
+    }
+
+    /**
+     * Returns the user data that's on the device's local DB.
+     */
+    public static UserDataModel getLocalUserData(Context context) {
+        UserDataModel userDataModel = new UserDataModel();
+
+        userDataModel.setStarredSessions(getStarredSessions(context,
                 MySchedule.CONTENT_URI,
                 MySchedule.SESSION_ID,
                 MySchedule.MY_SCHEDULE_IN_SCHEDULE,
                 MySchedule.MY_SCHEDULE_TIMESTAMP));
 
-        // Get Viewed Videos.
-        userData.setViewedVideoIds(getColumnContentAsArray(context,
-                MyViewedVideos.CONTENT_URI,
-                MyViewedVideos.VIDEO_ID));
+        userDataModel.setReservedSessions(getReservedSessions(context,
+                MyReservations.CONTENT_URI,
+                MyReservations.SESSION_ID,
+                MyReservations.MY_RESERVATION_STATUS,
+                MyReservations.MY_RESERVATION_TIMESTAMP));
 
-        // Get Feedback Submitted Sessions.
-        userData.setFeedbackSubmittedSessionIds(getColumnContentAsArray(context,
+        userDataModel.setFeedbackSubmittedSessionIds(getFeedbackSubmittedSessions(context,
                 MyFeedbackSubmitted.CONTENT_URI,
                 MyFeedbackSubmitted.SESSION_ID));
 
-        return userData;
+        return userDataModel;
     }
 
     /**
      * Writes the given user data into the device's local DB.
      */
-    static public void setLocalUserData(Context context, UserData userData, String accountName) {
+    static void setLocalUserData(Context context, UserDataModel userDataModel,
+                                        String accountName) {
         // TODO: throw if null. Callers should ensure the data is not null. See b/27809502.
-        if (userData == null) {
+        if (userDataModel == null) {
             return;
         }
 
         // first clear all stars.
         context.getContentResolver().delete(MySchedule.CONTENT_URI,
-                MySchedule.MY_SCHEDULE_ACCOUNT_NAME +" = ?",
+                MySchedule.MY_SCHEDULE_ACCOUNT_NAME + " = ?",
                 new String[]{accountName});
 
         // Now add the ones in sessionIds.
         ArrayList<UserAction> actions = new ArrayList<>();
-        if (userData.getStarredSessions() != null) {
-            for (Map.Entry<String, UserData.StarredSession> entry : userData.getStarredSessions().entrySet()) {
+        if (userDataModel.getStarredSessions() != null) {
+            for (Map.Entry<String, UserDataModel.StarredSession> entry :
+                    userDataModel.getStarredSessions().entrySet()) {
                 UserAction action = new UserAction();
-                action.type = entry.getValue().isInSchedule() ? UserAction.TYPE.ADD_STAR:
+                action.type = entry.getValue().inSchedule ? UserAction.TYPE.ADD_STAR :
                         UserAction.TYPE.REMOVE_STAR;
                 action.sessionId = entry.getKey();
-                action.timestamp = entry.getValue().getTimestamp();
+                action.timestamp = entry.getValue().timestamp;
                 actions.add(action);
             }
         }
 
-        // first clear all feedback submitted sessions.
+        // First clear all reservations.
+        context.getContentResolver().delete(MySchedule.CONTENT_URI,
+                MyReservations.MY_RESERVATION_ACCOUNT_NAME + " = ?",
+                new String[]{accountName});
+
+        // TODO (shailen): add reservations.
+
+        // First clear all feedback submitted sessions.
         context.getContentResolver().delete(ScheduleContract.MyFeedbackSubmitted.CONTENT_URI,
-                ScheduleContract.MyFeedbackSubmitted.MY_FEEDBACK_SUBMITTED_ACCOUNT_NAME +" = ?",
+                ScheduleContract.MyFeedbackSubmitted.MY_FEEDBACK_SUBMITTED_ACCOUNT_NAME + " = ?",
                 new String[]{accountName});
 
         // Now add the feedback submitted sessions.
-        if (userData.getFeedbackSubmittedSessionIds() != null) {
-            for (String sessionId : userData.getFeedbackSubmittedSessionIds()) {
+        if (userDataModel.getFeedbackSubmittedSessionIds() != null) {
+            for (String sessionId : userDataModel.getFeedbackSubmittedSessionIds()) {
                 UserAction action = new UserAction();
                 action.type = UserAction.TYPE.SUBMIT_FEEDBACK;
                 action.sessionId = sessionId;
@@ -209,35 +220,29 @@ public class UserDataHelper {
         UserActionHelper.updateContentProvider(context, actions, accountName);
     }
 
-    public static void clearUserDataOnSignOut(final Context context) {
+   public static void clearUserDataOnSignOut(final Context context) {
         String accountName = AccountUtils.getActiveAccountName(context);
         AsyncQueryHandler handler = new ClearDataAsyncQueryHandler(context);
-
         handler.startDelete(ClearDataAsyncQueryHandler.TOKEN_MY_SCHEDULE, null,
                 MySchedule.buildMyScheduleUri(accountName), null, null);
-
         handler.startDelete(2, null, MyFeedbackSubmitted.buildMyFeedbackSubmittedUri(accountName),
                 null, null);
-
         handler.startDelete(3, null, MyReservations.buildMyReservationUri(accountName), null, null);
     }
 
     private static class ClearDataAsyncQueryHandler extends AsyncQueryHandler {
         private final WeakReference<Context> mReference;
         static final int TOKEN_MY_SCHEDULE = 1;
-
         private ClearDataAsyncQueryHandler(Context context) {
             super(context.getContentResolver());
             mReference = new WeakReference<>(context);
         }
-
         @Override
         protected void onDeleteComplete(int token, Object cookie, int result) {
             if (token == TOKEN_MY_SCHEDULE && result > 0) {
                 // When items are deleted from MY_SCHEDULE trigger a notifyChange
                 // so that any current loaders are updated.
-                // TODO: Ideally the MyIo UI should observe individual changes to
-                // the user URIs instead of a composite URI.
+                // TODO (nageshs): Ideally the MyIo UI should observe individual changes to the user URIs instead of a composite URI.
                 Context context = mReference.get();
                 if (context == null) {
                     return;
