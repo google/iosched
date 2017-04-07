@@ -24,9 +24,17 @@ import com.google.samples.apps.iosched.lib.R;
 
 import java.text.DateFormat;
 
+import static android.view.View.GONE;
+import static android.view.View.VISIBLE;
+import static com.google.samples.apps.iosched.util.LogUtils.LOGD;
+import static com.google.samples.apps.iosched.util.LogUtils.LOGE;
+import static com.google.samples.apps.iosched.util.LogUtils.makeLogTag;
+
 public class FeedViewHolder extends RecyclerView.ViewHolder {
     private static final int SHORT_DESCRIPTION_MAX_LINES = 3;
     private static final int LONG_DESCRIPTION_MAX_LINES = 30;
+    private static final String TAG = makeLogTag(FeedViewHolder.class);
+
     boolean expanded;
     boolean hasImage;
     private RelativeLayout mainLayout;
@@ -38,6 +46,8 @@ public class FeedViewHolder extends RecyclerView.ViewHolder {
     private LinearLayout imageDescriptionLayout;
     private ImageView expandIcon;
     private ImageView emergencyIcon;
+    private ImageView priorityIcon;
+
 
     public FeedViewHolder(View itemView) {
         super(itemView);
@@ -51,6 +61,7 @@ public class FeedViewHolder extends RecyclerView.ViewHolder {
                 (LinearLayout) itemView.findViewById(R.id.imageDescriptionLayout);
         expandIcon = (ImageView) itemView.findViewById(R.id.expandIcon);
         emergencyIcon = (ImageView) itemView.findViewById(R.id.emergencyIcon);
+        priorityIcon = (ImageView) itemView.findViewById(R.id.priorityIcon);
         expanded = false;
         hasImage = false;
     }
@@ -60,32 +71,46 @@ public class FeedViewHolder extends RecyclerView.ViewHolder {
         category.setBackgroundTintList(ColorStateList.valueOf(color));
     }
 
-    public void updateImage(Context context, Point screenSize, String imageUrlString) {
-        if (imageUrlString.isEmpty()) {
-            image.setVisibility(View.GONE);
-        }
-        Glide.with(context)
-                .load(imageUrlString)
-                .override(screenSize.x, screenSize.x * 9 / 16) // Guaranteed 16:9 aspect ratio
-                .fitCenter()
-                .diskCacheStrategy(DiskCacheStrategy.ALL)
-                .listener(new RequestListener<String, GlideDrawable>() {
-                    @Override
-                    public boolean onException(Exception e, String model,
-                            Target<GlideDrawable> target, boolean isFirstResource) {
-                        hasImage = false;
-                        return false;
-                    }
+    public void updateImageAndDescriptionExpansion(Context context, Point screenSize,
+            String imageUrlString, final int paddingNormal, final boolean changed,
+            final int imageWidth, final int imageHeight) {
 
-                    @Override
-                    public boolean onResourceReady(GlideDrawable resource, String model,
-                            Target<GlideDrawable> target, boolean isFromMemoryCache,
-                            boolean isFirstResource) {
-                        hasImage = true;
-                        return false;
-                    }
-                })
-                .into(image);
+        if (imageUrlString.isEmpty()) {
+            image.setVisibility(GONE);
+        }
+        LOGD(TAG, "Url == " + imageUrlString + "=s" + screenSize.x);
+        if (!imageUrlString.equals("")) {
+            Glide.with(context)
+                    .load(imageUrlString + "=s" + screenSize.x)
+                    .override(screenSize.x, screenSize.x * 9 / 16) // Guaranteed 16:9 aspect ratio
+                    .fitCenter()
+                    .diskCacheStrategy(DiskCacheStrategy.ALL)
+                    .listener(new RequestListener<String, GlideDrawable>() {
+                        @Override
+                        public boolean onException(Exception e, String model,
+                                Target<GlideDrawable> target, boolean isFirstResource) {
+                            image.setVisibility(GONE);
+                            hasImage = false;
+                            updateExpandOrCollapse(changed, paddingNormal, imageWidth, imageHeight);
+                            LOGE(TAG, title + " - Glide Exception -- " + e.getMessage());
+                            return false;
+                        }
+
+                        @Override
+                        public boolean onResourceReady(GlideDrawable resource, String model,
+                                Target<GlideDrawable> target, boolean isFromMemoryCache,
+                                boolean isFirstResource) {
+                            image.setVisibility(VISIBLE);
+                            hasImage = true;
+                            updateExpandOrCollapse(changed, paddingNormal, imageWidth, imageHeight);
+                            LOGD(TAG, title + " - Glide onResourceReady");
+                            return false;
+                        }
+                    })
+                    .into(image);
+        } else {
+            hasImage = false;
+        }
     }
 
     public void updateDescription(String descriptionString) {
@@ -118,24 +143,25 @@ public class FeedViewHolder extends RecyclerView.ViewHolder {
         });
     }
 
-    public void updateExpandOrCollapse(boolean changed, int paddingNormal, int messageCardImageWidth,
+    private void updateExpandOrCollapse(boolean changed, int paddingNormal, int messageCardImageWidth,
             int messageCardImageHeight) {
         LinearLayout.LayoutParams imageLayoutParams =
                 (LinearLayout.LayoutParams) image.getLayoutParams();
-        LinearLayout.LayoutParams descriptionLayoutParams =
-                (LinearLayout.LayoutParams) description.getLayoutParams();
         if (expanded) {
             imageDescriptionLayout.setOrientation(LinearLayout.VERTICAL);
             imageLayoutParams.width = LinearLayout.LayoutParams.MATCH_PARENT;
             imageLayoutParams.height = LinearLayout.LayoutParams.WRAP_CONTENT;
-            descriptionLayoutParams.setMarginStart(0);
+            description.setPadding(0, 0, 0, 0);
             description.setMaxLines(LONG_DESCRIPTION_MAX_LINES);
         } else {
             imageDescriptionLayout.setOrientation(LinearLayout.HORIZONTAL);
             imageLayoutParams.width = messageCardImageWidth;
             imageLayoutParams.height = messageCardImageHeight;
             if (hasImage) {
-                descriptionLayoutParams.setMarginStart(paddingNormal);
+                description.setPadding(paddingNormal, 0, 0, 0);
+            } else {
+                description.setPadding(0, 0, 0, 0);
+
             }
             description.setMaxLines(SHORT_DESCRIPTION_MAX_LINES);
         }
@@ -180,12 +206,16 @@ public class FeedViewHolder extends RecyclerView.ViewHolder {
     }
 
     public void updateIconVisibilityForEmergency() {
-        emergencyIcon.setVisibility(View.VISIBLE);
-        expandIcon.setVisibility(View.GONE);
+        emergencyIcon.setVisibility(VISIBLE);
+        expandIcon.setVisibility(GONE);
     }
 
     public void updateIconVisibilityForNonEmergency() {
-        emergencyIcon.setVisibility(View.GONE);
-        expandIcon.setVisibility(View.VISIBLE);
+        emergencyIcon.setVisibility(GONE);
+        expandIcon.setVisibility(VISIBLE);
+    }
+
+    public void updatePriority(boolean priority) {
+        priorityIcon.setVisibility(priority ? VISIBLE : GONE);
     }
 }

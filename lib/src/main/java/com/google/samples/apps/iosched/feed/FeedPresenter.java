@@ -45,6 +45,7 @@ public class FeedPresenter implements FeedContract.Presenter {
                         FeedMessage feedMessage = dataSnapshot.getValue(FeedMessage.class);
                         mView.addFeedMessage(feedMessage);
                     } catch (DatabaseException e) {
+                        mView.showErrorMessage();
                         LOGE(TAG, "Firebase error - " + e);
                     }
                 }
@@ -55,6 +56,7 @@ public class FeedPresenter implements FeedContract.Presenter {
                         FeedMessage feedMessage = dataSnapshot.getValue(FeedMessage.class);
                         mView.updateFeedMessage(feedMessage);
                     } catch (DatabaseException e) {
+                        mView.showErrorMessage();
                         LOGE(TAG, "Firebase error - " + e);
                     }
                 }
@@ -65,28 +67,29 @@ public class FeedPresenter implements FeedContract.Presenter {
                         FeedMessage feedMessage = dataSnapshot.getValue(FeedMessage.class);
                         mView.removeFeedMessage(feedMessage);
                     } catch (DatabaseException e) {
+                        mView.showErrorMessage();
                         LOGE(TAG, "Firebase error - " + e);
                     }
                 }
 
                 @Override
                 public void onChildMoved(DataSnapshot dataSnapshot, String s) {
-                    //TODO will this ever happen?
                     try {
                         FeedMessage feedMessage = dataSnapshot.getValue(FeedMessage.class);
                         mView.updateFeedMessage(feedMessage);
                     } catch (DatabaseException e) {
+                        mView.showErrorMessage();
                         LOGE(TAG, "Firebase error - " + e);
                     }
                 }
 
                 @Override
                 public void onCancelled(DatabaseError databaseError) {
-                    LOGE(TAG, "Firebase error - " + databaseError.toString());
+                    mView.showErrorMessage();
                 }
             };
-            databaseReference.addChildEventListener(mEventListener);
         }
+        databaseReference.addChildEventListener(mEventListener);
     }
 
     @Override

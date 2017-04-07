@@ -23,11 +23,14 @@ import android.view.ViewGroup;
 import com.google.samples.apps.iosched.feed.data.FeedMessage;
 import com.google.samples.apps.iosched.lib.R;
 
+import static com.google.samples.apps.iosched.util.LogUtils.makeLogTag;
+
 /**
  * Adapter for the {@link RecyclerView} that holds a list of conference updates.
  */
 public class FeedAdapter extends RecyclerView.Adapter<FeedViewHolder> {
     private static final int MIN_CAPACITY = 10;
+    private static final String TAG = makeLogTag(FeedAdapter.class);
 
     private final Point mScreenSize;
     private Context mContext;
@@ -39,6 +42,7 @@ public class FeedAdapter extends RecyclerView.Adapter<FeedViewHolder> {
     public FeedAdapter(Context context, Point screenSize) {
         mContext = context;
         mDataset = new SortedList<>(FeedMessage.class, new FeedMessageCallback(), MIN_CAPACITY);
+        mDataset.add(FeedMessage.getDefaultFirstMessage(context));
         mScreenSize = screenSize;
         mPaddingNormal =
                 (int) context.getResources().getDimension(R.dimen.padding_normal);
@@ -63,32 +67,28 @@ public class FeedAdapter extends RecyclerView.Adapter<FeedViewHolder> {
             feedMessage.setExpanded(true);
             holder.expanded = feedMessage.isExpanded();
             holder.updateIconVisibilityForEmergency();
-            holder.hasImage = !feedMessage.getImageUrl().isEmpty();
-            holder.updateExpandOrCollapse
-                    (false, mPaddingNormal, mMessageCardImageWidth, mMessageCardImageHeight);
         } else {
             holder.updateIconVisibilityForNonEmergency();
             holder.expanded = feedMessage.isExpanded();
             holder.updateExpandIcon(false);
-            holder.hasImage = !feedMessage.getImageUrl().isEmpty();
-            holder.updateExpandOrCollapse
-                    (false, mPaddingNormal, mMessageCardImageWidth, mMessageCardImageHeight);
             holder.setOnFeedItemExpandListener(new OnFeedItemExpandListener() {
                 @Override
                 public void onFeedItemExpand() {
                     holder.updateExpandIcon(true);
-                    holder.updateExpandOrCollapse
-                            (true, mPaddingNormal, mMessageCardImageWidth, mMessageCardImageHeight);
+                    holder.updateImageAndDescriptionExpansion(mContext, mScreenSize, feedMessage.getImageUrl(),
+                            mPaddingNormal, true, mMessageCardImageWidth, mMessageCardImageHeight);
                     feedMessage.flipExpanded();
                     int pos = holder.getAdapterPosition();
                     notifyItemChanged(pos);
                 }
             });
         }
+        holder.updatePriority(feedMessage.isPriority());
         holder.updateTitle(feedMessage.getTitle());
         holder.updateDateTime(feedMessage.getTimestamp());
         holder.updateDescription(feedMessage.getMessage());
-        holder.updateImage(mContext, mScreenSize, feedMessage.getImageUrl());
+        holder.updateImageAndDescriptionExpansion(mContext, mScreenSize, feedMessage.getImageUrl(),
+                mPaddingNormal, false, mMessageCardImageWidth, mMessageCardImageHeight);
         holder.updateCategory(feedMessage.getCategory(), feedMessage.getCategoryColor());
     }
 
@@ -98,16 +98,26 @@ public class FeedAdapter extends RecyclerView.Adapter<FeedViewHolder> {
     }
 
     public void addFeedMessage(final FeedMessage feedMessage) {
-        mDataset.add(feedMessage);
-        notifyDataSetChanged();
+        if (feedMessage.isActive()) {
+            mDataset.add(feedMessage);
+        }
     }
 
     public void updateFeedMessage(final FeedMessage feedMessage) {
-        for(int i = 0; i < mDataset.size(); i++) {
-            if(mDataset.get(i) != null) {
-                if(feedMessage.getId() == mDataset.get(i).getId()) {
-                    mDataset.updateItemAt(i, feedMessage);
+        if (!feedMessage.isActive()) {
+            removeFeedMessage(feedMessage);
+        } else {
+            boolean found = false;
+            for (int i = 0; i < mDataset.size(); i++) {
+                if (mDataset.get(i) != null) {
+                    if (feedMessage.getId() == mDataset.get(i).getId()) {
+                        mDataset.updateItemAt(i, feedMessage);
+                        found = true;
+                    }
                 }
+            }
+            if (!found) {
+                mDataset.add(feedMessage);
             }
         }
     }
@@ -123,9 +133,8 @@ public class FeedAdapter extends RecyclerView.Adapter<FeedViewHolder> {
         }
 
         @Override
-        public void onChanged(int position, int count) {
-            // TODO(36778365) but this should never get called unless the CMS input breaks rules.
-            notifyDataSetChanged();
+        public void onChanged(final int position, int count) {
+            notifyItemRangeChanged(position, count);
         }
 
         @Override
@@ -139,21 +148,19 @@ public class FeedAdapter extends RecyclerView.Adapter<FeedViewHolder> {
         }
 
         @Override
-        public void onInserted(int position, int count) {
-            // TODO(36778365) for fancy animation.
-            notifyDataSetChanged();
+        public void onInserted(final int position, int count) {
+            notifyItemRangeInserted(position, count);
+
         }
 
         @Override
         public void onRemoved(int position, int count) {
-            // TODO(36778365) for fancy animation.
-            notifyDataSetChanged();
+            notifyItemRangeRemoved(position, count);
         }
 
         @Override
         public void onMoved(int fromPosition, int toPosition) {
-            // TODO(36778365) but this should never get called unless the CMS input breaks rules.
-            notifyDataSetChanged();
+            notifyItemMoved(fromPosition, toPosition);
         }
     }
 }

@@ -18,7 +18,6 @@ import android.support.v7.widget.RecyclerView;
 
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.samples.apps.iosched.feed.data.FeedMessage;
 import com.google.samples.apps.iosched.lib.R;
 import com.google.samples.apps.iosched.navigation.NavigationModel;
 import com.google.samples.apps.iosched.ui.BaseActivity;
@@ -38,20 +37,25 @@ public class FeedActivity extends BaseActivity {
     @Override
     protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        FeedMessage.initCategoryColorMap(getResources());
         setContentView(R.layout.feed_act);
         FeedFragment feedFragment = (FeedFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.main_content);
+        feedFragment.setRetainInstance(true);
         mPresenter = new FeedPresenter(feedFragment);
         feedFragment.setPresenter(mPresenter);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
         mDatabaseReference = FirebaseDatabase.getInstance().getReference().child("feed");
         mPresenter.initializeDataListener(mDatabaseReference);
     }
 
     @Override
-    protected void onStop() {
+    protected void onPause() {
         mPresenter.removeDataListener(mDatabaseReference);
-        super.onStop();
+        super.onPause();
     }
 
     @Override
