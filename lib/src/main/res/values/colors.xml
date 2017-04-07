@@ -31,6 +31,13 @@
     <color name="dark_icon">#b3000000</color>
     <color name="light_grey">#ffeeeeee</color>
     <color name="lighter_grey">#f6f6f6</color>
+    <color name="reddish">#d32f2f</color>
+    <color name="carnation_pink">#ff80ab</color>
+    <color name="light_salmon">#ffab91</color>
+    <color name="off_white">#e6e6e6</color>
+    <color name="duck_egg_blue">#b2ebf2</color>
+    <color name="light_yellowish_green">#ccff90</color>
+
 
     <!-- 2016 palette -->
     <color name="io16_primary_cyan">#ff25c5d9</color>
@@ -117,15 +124,5 @@
 
     <!-- search -->
     <color name="dialog_background">#7f000000</color>
-
-    <!-- Feed category colors -->
-    <color name="feed_category_agenda">#536dfe</color>
-    <color name="feed_category_event">#536dfe</color>
-    <color name="feed_category_social">#536dfe</color>
-    <color name="feed_category_emergency">#536dfe</color>
-    <color name="feed_category_travel">#536dfe</color>
-    <color name="feed_category_giveaway">#536dfe</color>
-    <color name="feed_category_afterhours">#536dfe</color>
-    <color name="feed_category_video">#536dfe</color>
 
 </resources>

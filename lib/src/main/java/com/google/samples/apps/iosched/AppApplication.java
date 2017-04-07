@@ -21,6 +21,11 @@ import android.content.Context;
 import android.content.Intent;
 
 import com.google.android.gms.security.ProviderInstaller;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.remoteconfig.FirebaseRemoteConfig;
+import com.google.firebase.remoteconfig.FirebaseRemoteConfigSettings;
+import com.google.samples.apps.iosched.lib.BuildConfig;
+import com.google.samples.apps.iosched.lib.R;
 import com.google.samples.apps.iosched.settings.SettingsUtils;
 import com.google.samples.apps.iosched.util.AnalyticsHelper;
 import com.google.samples.apps.iosched.util.TimeUtils;
@@ -56,6 +61,12 @@ public class AppApplication extends Application {
             // You should not init your app in this process.
             return;
         }
+        FirebaseDatabase.getInstance().setPersistenceEnabled(true);
+        FirebaseRemoteConfigSettings configSettings = new FirebaseRemoteConfigSettings.Builder()
+                .setDeveloperModeEnabled(BuildConfig.DEBUG)
+                .build();
+        FirebaseRemoteConfig.getInstance().setConfigSettings(configSettings);
+        FirebaseRemoteConfig.getInstance().setDefaults(R.xml.remote_config_defaults);
         mRefWatcher = LeakCanary.install(this);
 
         TimeUtils.setAppStartTime(getApplicationContext(), System.currentTimeMillis());
