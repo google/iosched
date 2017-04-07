@@ -13,28 +13,29 @@
  */
 package com.google.samples.apps.iosched.feed.data;
 
-import android.content.res.Resources;
+import android.content.Context;
+import android.graphics.Color;
 import android.support.annotation.Keep;
+import android.support.annotation.NonNull;
+import android.support.v4.content.ContextCompat;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.database.Exclude;
 import com.google.firebase.database.IgnoreExtraProperties;
+import com.google.firebase.remoteconfig.FirebaseRemoteConfig;
 import com.google.samples.apps.iosched.lib.R;
 
 import java.util.HashMap;
 
+import static com.google.samples.apps.iosched.util.LogUtils.LOGD;
+import static com.google.samples.apps.iosched.util.LogUtils.makeLogTag;
+
 @Keep
 @IgnoreExtraProperties
 public class FeedMessage implements Comparable<FeedMessage> {
-    private static HashMap<String, Integer> categoryColorMap;
-    private static int defaultCategoryColor;
-    private static String FEED_CATEGORY_AGENDA;
-    private static String FEED_CATEGORY_EVENT;
-    private static String FEED_CATEGORY_SOCIAL;
-    private static String FEED_CATEGORY_EMERGENCY;
-    private static String FEED_CATEGORY_TRAVEL;
-    private static String FEED_CATEGORY_GIVEAWAY;
-    private static String FEED_CATEGORY_AFTER_HOURS;
-    private static String FEED_CATEGORY_VIDEO;
+    private static final String TAG = makeLogTag(FeedMessage.class);
+    private static final String FEED_CATEGORY_EMERGENCY = "Emergency";
 
     public int id;
     public String category;
@@ -48,39 +49,46 @@ public class FeedMessage implements Comparable<FeedMessage> {
     public boolean active;
     public boolean priority;
     public boolean expanded;
+    public String color;
 
     public FeedMessage() {
     }
 
-    public static void initCategoryColorMap(Resources resources) {
-        categoryColorMap = new HashMap<>();
+    public static FeedMessage getDefaultFirstMessage(final Context context) {
+        final FeedMessage message = new FeedMessage();
+        applyRemoteConfigToMessage(message, context);
+        FirebaseRemoteConfig.getInstance().fetch().addOnCompleteListener(new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete(@NonNull Task<Void> task) {
+                FirebaseRemoteConfig.getInstance().activateFetched();
+                applyRemoteConfigToMessage(message, context);
+            }
+        });
+        return message;
+    }
 
-        FEED_CATEGORY_AGENDA = resources.getString(R.string.feed_category_agenda);
-        FEED_CATEGORY_EVENT = resources.getString(R.string.feed_category_event);
-        FEED_CATEGORY_SOCIAL = resources.getString(R.string.feed_category_social);
-        FEED_CATEGORY_EMERGENCY = resources.getString(R.string.feed_category_emergency);
-        FEED_CATEGORY_TRAVEL = resources.getString(R.string.feed_category_travel);
-        FEED_CATEGORY_GIVEAWAY = resources.getString(R.string.feed_category_giveaway);
-        FEED_CATEGORY_AFTER_HOURS = resources.getString(R.string.feed_category_afterhours);
-        FEED_CATEGORY_VIDEO = resources.getString(R.string.feed_category_video);
-
-        categoryColorMap.put(FEED_CATEGORY_AGENDA,
-                resources.getColor(R.color.feed_category_agenda));
-        categoryColorMap.put(FEED_CATEGORY_EVENT,
-                resources.getColor(R.color.feed_category_event));
-        categoryColorMap.put(FEED_CATEGORY_SOCIAL,
-                resources.getColor(R.color.feed_category_social));
-        categoryColorMap.put(FEED_CATEGORY_EMERGENCY,
-                resources.getColor(R.color.feed_category_emergency));
-        categoryColorMap.put(FEED_CATEGORY_TRAVEL,
-                resources.getColor(R.color.feed_category_travel));
-        categoryColorMap.put(FEED_CATEGORY_GIVEAWAY,
-                resources.getColor(R.color.feed_category_giveaway));
-        categoryColorMap.put(FEED_CATEGORY_AFTER_HOURS,
-                resources.getColor(R.color.feed_category_afterhours));
-        categoryColorMap.put(FEED_CATEGORY_VIDEO,
-                resources.getColor(R.color.feed_category_video));
-        defaultCategoryColor = resources.getColor(R.color.io16_light_grey);
+    private static void applyRemoteConfigToMessage(FeedMessage message, Context context) {
+        message.id = 0;
+        message.category = FirebaseRemoteConfig.getInstance().getString(
+                context.getString(R.string.feed_default_first_category_key));
+        message.title = FirebaseRemoteConfig.getInstance().getString(
+                context.getString(R.string.feed_default_first_title_key));
+        message.message = FirebaseRemoteConfig.getInstance().getString(
+                context.getString(R.string.feed_default_first_message_key));
+        message.clickable = FirebaseRemoteConfig.getInstance().getBoolean(
+                context.getString(R.string.feed_default_first_clickable_key));
+        message.link = FirebaseRemoteConfig.getInstance().getString(
+                context.getString(R.string.feed_default_first_link_key));
+        message.imageUrl = FirebaseRemoteConfig.getInstance().getString(
+                context.getString(R.string.feed_default_first_imageurl_key));
+        message.imageFileName = "";
+        message.timestamp = FirebaseRemoteConfig.getInstance().getString(
+                context.getString(R.string.feed_default_first_timestamp_key));
+        message.active = true;
+        message.priority = FirebaseRemoteConfig.getInstance().getBoolean(
+                context.getString(R.string.feed_default_first_priority_key));
+        message.color = FirebaseRemoteConfig.getInstance().getString(
+                context.getString(R.string.feed_default_first_color_key));
     }
 
     @Exclude
@@ -146,11 +154,15 @@ public class FeedMessage implements Comparable<FeedMessage> {
     }
 
     public int getCategoryColor() {
-        if (categoryColorMap.containsKey(category)) {
-            return categoryColorMap.get(category);
-        } else {
-            return defaultCategoryColor;
+        // Fallback color if it can't parse the color string.
+        int categoryColor = 0xe6e6e6;
+
+        try {
+            categoryColor = Color.parseColor(color);
+        } catch(Exception e) {
+            LOGD(TAG, e.getMessage());
         }
+        return categoryColor;
     }
 
     public String getTitle() {

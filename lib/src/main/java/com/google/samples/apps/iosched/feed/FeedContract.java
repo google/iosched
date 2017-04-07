@@ -28,9 +28,7 @@ public interface FeedContract {
     interface View {
         void setPresenter(FeedContract.Presenter presenter);
 
-        void setLoadingFeedMessages(boolean loading);
-
-        void showError(String errorText);
+        void showErrorMessage();
 
         void addFeedMessage(FeedMessage feedMessage);
 
