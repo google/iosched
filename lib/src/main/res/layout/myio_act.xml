@@ -18,7 +18,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:fitsSystemWindows="true"
     android:orientation="vertical">
 
     <fragment
@@ -27,13 +26,13 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
-        tools:layout="@layout/myio_fragment"/>
+        tools:layout="@layout/myio_fragment" />
 
     <android.support.design.widget.BottomNavigationView
         android:id="@+id/bottom_navigation"
         style="@style/Widget.IOSched.BottomNavigationView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:menu="@menu/bottom_nav_items"/>
+        app:menu="@menu/bottom_nav_items" />
 
 </LinearLayout>

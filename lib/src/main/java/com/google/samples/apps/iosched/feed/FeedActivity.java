@@ -40,6 +40,8 @@ public class FeedActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         FeedMessage.initCategoryColorMap(getResources());
         setContentView(R.layout.feed_act);
+        setFullscreenLayout();
+        disableActionBarTitle();
         FeedFragment feedFragment = (FeedFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.main_content);
         mPresenter = new FeedPresenter(feedFragment);

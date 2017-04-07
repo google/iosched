@@ -88,7 +88,7 @@
                 android:duplicateParentState="true"
                 android:gravity="center_vertical"
                 android:orientation="horizontal"
-                android:theme="@style/ActionBarThemeOverlay.SessionDetail"
+                android:theme="@style/ThemeOverlay.LightToolbar"
                 app:layout_collapseMode="pin">
 
                 <ImageView

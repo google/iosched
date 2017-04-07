@@ -17,7 +17,8 @@
 
 <!-- Default layout for MapActivity. It contains space for the SlideableInfoFragment on the bottom
 of the map.-->
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/drawer_layout"
     android:layout_width="match_parent"
@@ -28,15 +29,27 @@ of the map.-->
     <!-- Header bar on top of map -->
     <LinearLayout
         android:id="@+id/headerbar"
-        style="@style/HeaderBar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:background="@color/aqua_marine"
+        android:elevation="@dimen/headerbar_elevation"
         android:orientation="vertical"
-        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
+        android:theme="@style/ThemeOverlay.LightToolbar">
 
-        <include layout="@layout/toolbar" />
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?actionBarSize"
+            app:popupTheme="@style/ThemeOverlay.ToolbarPopup">
 
-        <!-- placeholder, empty except on L -->
+            <TextView
+                android:id="@+id/toolbar_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/title_map"
+                android:textAppearance="@style/TextAppearance.H1" />
+
+        </android.support.v7.widget.Toolbar>
 
     </LinearLayout>
 
@@ -44,7 +57,7 @@ of the map.-->
     <FrameLayout
         android:id="@+id/main_content"
         android:layout_width="match_parent"
-        android:layout_height="0px"
+        android:layout_height="0dp"
         android:layout_weight="1">
         <!-- Main layout -->
         <FrameLayout

@@ -37,6 +37,9 @@ import com.google.samples.apps.iosched.lib.BuildConfig;
 import com.google.samples.apps.iosched.lib.R;
 import com.google.samples.apps.iosched.util.TimeUtils;
 
+import static android.view.View.GONE;
+import static android.view.View.VISIBLE;
+
 public class MySchedulePagerFragment extends Fragment implements ScheduleView {
 
     /**
@@ -71,29 +74,16 @@ public class MySchedulePagerFragment extends Fragment implements ScheduleView {
     /**
      * Bar that appears when there are active filters
      */
-    private AppBarLayout mFiltersBar;
+    private AppBarLayout mAppbar;
     private View mFiltersBarInner;
     private TextView mFiltersDescription;
     private View mClearFilters;
-    private boolean mFiltersBarPendingVisibilityChange;
 
     /**
      * During the conference, this is set to the current day, eg 1 for the first day, 2 for the
      * second etc Outside of conference period, this is set to 1.
      */
     private int mToday;
-
-    private OnOffsetChangedListener mFiltersBarOffsetListener = new OnOffsetChangedListener() {
-
-        @Override
-        public void onOffsetChanged(AppBarLayout appBarLayout, int verticalOffset) {
-            if (mFiltersBarPendingVisibilityChange
-                    && Math.abs(verticalOffset) == appBarLayout.getTotalScrollRange()) {
-                mFiltersBarInner.setVisibility(View.GONE);
-                mFiltersBarPendingVisibilityChange = false;
-            }
-        }
-    };
 
     @Override
     public boolean canSwipeRefreshChildScrollUp() {
@@ -109,26 +99,19 @@ public class MySchedulePagerFragment extends Fragment implements ScheduleView {
     public void onFiltersChanged(TagFilterHolder filters) {
         CharSequence filtersDesc = filters.describeFilters(getResources(), getContext().getTheme());
         mFiltersDescription.setText(filtersDesc);
-
-        final boolean show = filters.hasAnyFilters();
-        mFiltersBar.setExpanded(show);
-        if (show) {
-            mFiltersBarInner.setVisibility(View.VISIBLE);
-        } else {
-            // Wait for the bar to animate away before making the view GONE
-            mFiltersBarPendingVisibilityChange = true;
-        }
+        mFiltersBarInner.setVisibility(filters.hasAnyFilters() ? VISIBLE : GONE);
     }
 
     @Nullable
     @Override
-    public View onCreateView(final LayoutInflater inflater, @Nullable final ViewGroup container,
-            @Nullable final Bundle savedInstanceState) {
+    public View onCreateView(final LayoutInflater inflater, @Nullable
+    final ViewGroup container, @Nullable final Bundle savedInstanceState) {
         return inflater.inflate(R.layout.my_schedule_pager_fragment, container, false);
     }
 
     @Override
-    public void onViewCreated(final View view, @Nullable final Bundle savedInstanceState) {
+    public void onViewCreated(final View view, @Nullable
+    final Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
         String[] singleDayFragmentsTags = null;
@@ -157,10 +140,12 @@ public class MySchedulePagerFragment extends Fragment implements ScheduleView {
         // Add a listener for any reselection events
         mTabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
-            public void onTabSelected(final TabLayout.Tab tab) {}
+            public void onTabSelected(final TabLayout.Tab tab) {
+            }
 
             @Override
-            public void onTabUnselected(final TabLayout.Tab tab) {}
+            public void onTabUnselected(final TabLayout.Tab tab) {
+            }
 
             @Override
             public void onTabReselected(final TabLayout.Tab tab) {
@@ -172,13 +157,10 @@ public class MySchedulePagerFragment extends Fragment implements ScheduleView {
                 .getDimensionPixelSize(R.dimen.my_schedule_page_margin));
         mViewPager.setPageMarginDrawable(R.drawable.page_margin);
 
-        mFiltersBar = (AppBarLayout) view.findViewById(R.id.filters_bar);
-        mFiltersBar.addOnOffsetChangedListener(mFiltersBarOffsetListener);
-        mFiltersBarInner = mFiltersBar.findViewById(R.id.filters_bar_inner);
-        mFiltersDescription = (TextView) mFiltersBar.findViewById(R.id.filters_description);
-        mClearFilters = mFiltersBar.findViewById(R.id.clear_filters);
-
-        mFiltersBar.setExpanded(false);
+        mAppbar = (AppBarLayout) view.findViewById(R.id.appbar);
+        mFiltersBarInner = mAppbar.findViewById(R.id.filters_bar_inner);
+        mFiltersDescription = (TextView) mAppbar.findViewById(R.id.filters_description);
+        mClearFilters = mAppbar.findViewById(R.id.clear_filters);
         mClearFilters.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -194,10 +176,10 @@ public class MySchedulePagerFragment extends Fragment implements ScheduleView {
             scrollToConferenceDay(mToday);
         }
 
-        if(BuildConfig.DEBUG) {
+        if (BuildConfig.DEBUG) {
             FloatingActionButton debugButton =
                     (FloatingActionButton) view.findViewById(R.id.debug_button);
-            debugButton.setVisibility(View.VISIBLE);
+            debugButton.setVisibility(VISIBLE);
             debugButton.setOnClickListener(new OnClickListener() {
                 @Override
                 public void onClick(View v) {

@@ -22,7 +22,6 @@ import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
-import android.support.v4.app.FragmentManager;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
@@ -80,18 +79,13 @@ public class MapActivity extends BaseActivity
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        FragmentManager fm = getSupportFragmentManager();
-        mMapFragment = (MapFragment) fm.findFragmentByTag("map");
-
+        mMapFragment = (MapFragment) getSupportFragmentManager().findFragmentByTag("map");
         mDetachedMode = getIntent().getBooleanExtra(EXTRA_DETACHED_MODE, false);
-
-        if (isFinishing()) {
-            return;
-        }
+        if (isFinishing()) return;
 
         setContentView(R.layout.map_act);
+        disableActionBarTitle();
         mInfoContainer = findViewById(R.id.map_detail_popup);
-
         overridePendingTransition(0, 0);
     }
 
@@ -132,15 +126,15 @@ public class MapActivity extends BaseActivity
                 mMapFragment = MapFragment.newInstance(highlightRoomId);
             }
             getSupportFragmentManager().beginTransaction()
-                                .add(R.id.fragment_container_map, mMapFragment, "map")
-                                .commit();
+                    .add(R.id.fragment_container_map, mMapFragment, "map")
+                    .commit();
         }
 
         if (mInfoFragment == null) {
             mInfoFragment = MapInfoFragment.newInstace(this);
             getSupportFragmentManager().beginTransaction()
-                                .add(R.id.fragment_container_map_info, mInfoFragment, "mapsheet")
-                                .commit();
+                    .add(R.id.fragment_container_map_info, mInfoFragment, "mapsheet")
+                    .commit();
         }
 
         mDetachedMode = getIntent().getBooleanExtra(EXTRA_DETACHED_MODE, false);
@@ -290,8 +284,10 @@ public class MapActivity extends BaseActivity
 
     @Override
     public void onRequestPermissionsResult(final int requestCode,
-            @NonNull final String[] permissions,
-            @NonNull final int[] grantResults) {
+                                           @NonNull
+                                           final String[] permissions,
+                                           @NonNull
+                                           final int[] grantResults) {
 
         if (requestCode != REQUEST_LOCATION_PERMISSION) {
             return;
@@ -305,7 +301,7 @@ public class MapActivity extends BaseActivity
             }
         } else {
             // Permission was denied. Display error message that disappears after a short while.
-             PermissionsUtils.displayConditionalPermissionDenialSnackbar(this,
+            PermissionsUtils.displayConditionalPermissionDenialSnackbar(this,
                     R.string.map_permission_denied, PERMISSIONS, REQUEST_LOCATION_PERMISSION, false);
 
         }

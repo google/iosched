@@ -32,7 +32,6 @@ import android.text.method.LinkMovementMethod;
 import android.text.util.Linkify;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -61,11 +60,11 @@ import com.google.samples.apps.iosched.util.AccountUtils;
 import com.google.samples.apps.iosched.util.SyncUtils;
 import com.google.samples.apps.iosched.util.WelcomeUtils;
 
+import java.util.Date;
+
 import static com.google.samples.apps.iosched.util.LogUtils.LOGD;
 import static com.google.samples.apps.iosched.util.LogUtils.LOGW;
 import static com.google.samples.apps.iosched.util.LogUtils.makeLogTag;
-
-import java.util.Date;
 
 /**
  * Activity that shows a user's schedule and allows the user to sign in and sign out.
@@ -145,6 +144,8 @@ public class MyIOActivity extends BaseActivity implements
     protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.myio_act);
+        setFullscreenLayout();
+        disableActionBarTitle();
 
         GoogleSignInOptions gso = SignInManager.getGoogleSignInOptions(
                 BuildConfig.DEFAULT_WEB_CLIENT_ID);

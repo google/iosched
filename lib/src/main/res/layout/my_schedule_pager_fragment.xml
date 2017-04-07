@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
 <!--
   Copyright (c) 2016 Google Inc.
 
@@ -12,53 +13,83 @@
   the License.
   -->
 
-<!-- Main layout -->
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:fitsSystemWindows="true"
     android:orientation="vertical">
-
-    <LinearLayout
-        style="@style/HeaderBar"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="?attr/colorPrimary"
-        android:orientation="vertical"
-        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
-
-        <include layout="@layout/toolbar" />
-
-        <android.support.design.widget.TabLayout
-            android:id="@+id/sliding_tabs"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:tabIndicatorColor="@color/tab_selected_strip" />
-
-    </LinearLayout>
 
     <android.support.design.widget.CoordinatorLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="1">
+        android:layout_weight="1"
+        android:fitsSystemWindows="true">
 
         <android.support.design.widget.AppBarLayout
-            android:id="@+id/filters_bar"
+            android:id="@+id/appbar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@color/light_grey">
+            android:fitsSystemWindows="true">
+
+            <android.support.design.widget.CollapsingToolbarLayout
+                android:id="@+id/collapsing_toolbar"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/extended_appbar_height"
+                android:fitsSystemWindows="true"
+                android:minHeight="?actionBarSize"
+                android:theme="@style/ThemeOverlay.DarkToolbar"
+                app:contentScrim="?colorPrimary"
+                app:layout_scrollFlags="scroll|exitUntilCollapsed"
+                app:scrimAnimationDuration="300"
+                app:statusBarScrim="@null"
+                app:titleEnabled="false">
+
+                <com.airbnb.lottie.LottieAnimationView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:fitsSystemWindows="true"
+                    app:lottie_autoPlay="true"
+                    app:lottie_fileName="animations/header_schedule.json" />
+
+                <android.support.v7.widget.Toolbar
+                    android:id="@+id/toolbar"
+                    android:layout_width="match_parent"
+                    android:layout_height="?actionBarSize"
+                    android:layout_gravity="bottom"
+                    android:layout_marginBottom="48dp"
+                    app:popupTheme="@style/ThemeOverlay.ToolbarPopup">
+
+                    <TextView
+                        android:id="@+id/toolbar_title"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/title_my_schedule"
+                        android:textAppearance="@style/TextAppearance.H1" />
+
+                </android.support.v7.widget.Toolbar>
+
+                <android.support.design.widget.TabLayout
+                    android:id="@+id/sliding_tabs"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="bottom"
+                    app:tabIndicatorColor="@color/tab_selected_strip" />
+
+            </android.support.design.widget.CollapsingToolbarLayout>
 
             <LinearLayout
                 android:id="@+id/filters_bar_inner"
                 android:layout_width="match_parent"
                 android:layout_height="72dp"
-                app:layout_scrollFlags="scroll|enterAlways"
+                android:background="@color/light_grey"
                 android:baselineAligned="false"
                 android:gravity="center_vertical"
                 android:orientation="horizontal"
                 android:visibility="gone"
+                app:layout_scrollFlags="scroll|enterAlways"
                 tools:visibility="visible">
 
                 <TextView
@@ -114,14 +145,17 @@
                     android:layout_weight="1" />
 
             </com.google.samples.apps.iosched.ui.widget.MultiSwipeRefreshLayout>
+
             <android.support.design.widget.FloatingActionButton
                 android:id="@+id/debug_button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="right"
+                android:layout_margin="@dimen/padding_normal"
                 android:src="@drawable/ic_settings"
                 android:visibility="gone"
-                tools:visibility="visible"/>
+                tools:visibility="visible" />
+
         </FrameLayout>
 
     </android.support.design.widget.CoordinatorLayout>
@@ -134,4 +168,3 @@
         app:menu="@menu/bottom_nav_items" />
 
 </LinearLayout>
-
