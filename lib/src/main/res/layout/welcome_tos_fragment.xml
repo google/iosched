@@ -44,4 +44,10 @@
         android:autoLink="web"
         android:text="@string/eula_legal_text" />
 
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/welcome_content_title_margin"
+        android:autoLink="web"
+        android:text="@string/welcome_conduct_text" />
 </LinearLayout>
