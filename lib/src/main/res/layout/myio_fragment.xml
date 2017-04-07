@@ -33,18 +33,38 @@
             android:id="@+id/collapsing_toolbar"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="@null"
+            android:background="@color/neon_blue"
             android:fitsSystemWindows="true"
             android:minHeight="?actionBarSize"
-            app:layout_scrollFlags="scroll|exitUntilCollapsed">
+            app:contentScrim="@color/neon_blue"
+            app:layout_scrollFlags="scroll|exitUntilCollapsed"
+            app:scrimAnimationDuration="300"
+            app:statusBarScrim="@null"
+            app:titleEnabled="false">
 
-            <View
+            <com.airbnb.lottie.LottieAnimationView
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:background="@color/neon_blue"
-                android:fitsSystemWindows="true" />
+                android:layout_height="wrap_content"
+                android:fitsSystemWindows="true"
+                app:lottie_autoPlay="true"
+                app:lottie_fileName="animations/header_my_io.json" />
 
-            <include layout="@layout/toolbar" />
+            <android.support.v7.widget.Toolbar
+                android:id="@+id/toolbar"
+                android:layout_width="match_parent"
+                android:layout_height="?actionBarSize"
+                android:layout_gravity="bottom"
+                app:layout_collapseMode="pin"
+                app:popupTheme="@style/ThemeOverlay.ToolbarPopup">
+
+                <TextView
+                    android:id="@+id/toolbar_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/title_my_io"
+                    android:textAppearance="@style/TextAppearance.H1" />
+
+            </android.support.v7.widget.Toolbar>
 
         </android.support.design.widget.CollapsingToolbarLayout>
 
@@ -54,9 +74,9 @@
         android:id="@android:id/list"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        app:layoutManager="android.support.v7.widget.LinearLayoutManager"
-        android:scrollbars="vertical"
         android:scrollbarStyle="insideOverlay"
+        android:scrollbars="vertical"
+        app:layoutManager="android.support.v7.widget.LinearLayoutManager"
         app:layout_behavior="@string/appbar_scrolling_view_behavior"
         tools:listitem="@layout/my_schedule_item" />
 

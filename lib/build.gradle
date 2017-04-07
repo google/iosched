@@ -268,8 +268,8 @@ dependencies {
     // greater is used for both app and test builds.
     compile 'com.google.code.findbugs:jsr305:2.0.1'
 
-    // font lib
     compile 'uk.co.chrisjenx:calligraphy:2.2.0'
+    compile 'com.airbnb.android:lottie:2.0.0-beta3'
 
     // Firebase libraries
     compile "com.google.firebase:firebase-core:${google_play_services_client_library_version}"

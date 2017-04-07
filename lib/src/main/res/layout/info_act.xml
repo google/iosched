@@ -21,21 +21,21 @@
     android:id="@+id/drawer_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:fitsSystemWindows="true"
     android:orientation="vertical">
 
     <fragment
         android:id="@+id/main_content"
         android:name="com.google.samples.apps.iosched.info.InfoPagerFragment"
         android:layout_width="match_parent"
-        android:layout_height="0px"
+        android:layout_height="0dp"
         android:layout_weight="1"
-        tools:layout="@layout/info_pager_frag"/>
+        tools:layout="@layout/info_pager_frag" />
 
     <android.support.design.widget.BottomNavigationView
         android:id="@+id/bottom_navigation"
         style="@style/Widget.IOSched.BottomNavigationView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:menu="@menu/bottom_nav_items"/>
+        app:menu="@menu/bottom_nav_items" />
+
 </LinearLayout>

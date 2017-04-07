@@ -28,6 +28,8 @@ public class InfoActivity extends BaseActivity {
     protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.info_act);
+        setFullscreenLayout();
+        disableActionBarTitle();
         InfoPagerFragment infoPagerFragment = (InfoPagerFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.main_content);
         mPresenter = new InfoPresenter(infoPagerFragment);

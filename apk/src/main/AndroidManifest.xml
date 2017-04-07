@@ -153,7 +153,7 @@
                   android:exported="false"
                   android:label="@string/title_info"
                   android:launchMode="singleTop"
-                  android:theme="@style/Theme.IOSched.Feed" />
+                  android:theme="@style/Theme.IOSched.Info" />
         <activity
             android:name="com.google.samples.apps.iosched.settings.SettingsActivity"
             android:exported="false"
@@ -201,11 +201,6 @@
             android:name="com.google.samples.apps.iosched.welcome.WelcomeActivity"
             android:exported="false"
             android:theme="@style/Theme.IOSched.Welcome" />
-
-        <activity
-            android:name="com.google.samples.apps.iosched.login.SwitchUserActivity"
-            android:exported="false"
-            android:theme="@style/Theme.IOSched.Transparent" />
 
         <activity
             android:name="com.google.samples.apps.iosched.session.SessionDetailActivity"

@@ -43,9 +43,10 @@
         <item name="colorPrimaryDark">@color/dark_status_bar</item>
     </style>
 
-    <style name="ActionBarThemeOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
-
-    <style name="ActionBarThemeOverlay.SessionDetail" parent="ThemeOverlay.AppCompat.ActionBar" />
+    <style name="Theme.IOSched.Immersive">
+        <item name="android:statusBarColor">@color/immersive_status_bar</item>
+        <item name="android:windowDrawsSystemBarBackgrounds">true</item>
+    </style>
 
     <style name="Theme.IOSched.AlertDialog" parent="android:Theme.Material.Light.Dialog.Alert">
         <item name="android:colorPrimary">@color/theme_primary</item>
@@ -58,8 +59,6 @@
         <item name="colorControlNormal">@color/body_text_2</item>
         <item name="colorControlActivated">@color/theme_accent_1</item>
     </style>
-
-    <style name="ActionBarPopupThemeOverlay" parent="ThemeOverlay.AppCompat.Light" />
 
     <style name="Theme.IOSched.Welcome">
         <item name="android:windowBackground">@color/background</item>
@@ -87,35 +86,40 @@
         <item name="android:textCursorDrawable">@null</item>
     </style>
 
-    <style name="Theme.IOSched.Transparent" parent="Theme.IOSched.Light">
-        <item name="android:windowIsTranslucent">true</item>
-        <item name="android:windowBackground">@android:color/transparent</item>
-        <item name="android:windowContentOverlay">@null</item>
-        <item name="android:windowNoTitle">true</item>
-        <item name="android:windowIsFloating">true</item>
-        <item name="android:backgroundDimEnabled">false</item>
-    </style>
-
-    <style name="Theme.IOSched.Feedback" parent="Theme.IOSched">
+    <style name="Theme.IOSched.Feedback">
         <item name="colorAccent">@color/flat_button_text</item>
     </style>
 
     <!-- My Schedule -->
-    <style name="Theme.IOSched.MyIo">
-        <!-- TODO adjust themes later -->
-        <item name="colorPrimary">@color/neon_blue</item>
-        <item name="colorPrimaryDark">@color/neon_blue</item>
+    <style name="Theme.IOSched.MyIo" parent="@style/Theme.IOSched.Immersive">
         <item name="colorAccent">@color/aqua_marine</item>
         <item name="android:statusBarColor">@color/immersive_status_bar</item>
         <item name="android:windowDrawsSystemBarBackgrounds">true</item>
     </style>
 
+    <!-- My Schedule -->
+    <style name="Theme.IOSched.MySchedule" parent="@style/Theme.IOSched.Immersive" />
+
+    <!-- Map -->
+    <style name="Theme.IOSched.Map">
+        <item name="colorPrimaryDark">#ff16b990</item>
+    </style>
+
+    <!-- Feed -->
+    <style name="Theme.IOSched.Feed" parent="@style/Theme.IOSched.Immersive" />
+
+    <!-- Info -->
+    <style name="Theme.IOSched.Info" parent="@style/Theme.IOSched.Immersive" />
+
+    <style name="ThemeOverlay.DarkToolbar" parent="@style/ThemeOverlay.AppCompat.Dark.ActionBar" />
+
+    <style name="ThemeOverlay.LightToolbar" parent="@style/ThemeOverlay.AppCompat.ActionBar" />
+
+    <style name="ThemeOverlay.ToolbarPopup" parent="@style/ThemeOverlay.AppCompat.Light" />
+
     <style name="ThemeOverlay.BlueAccent" parent="ThemeOverlay.AppCompat.ActionBar">
         <item name="colorAccent">@color/lightish_blue</item>
     </style>
-
-    <!-- My Schedule -->
-    <style name="Theme.IOSched.MySchedule" />
 
     <!-- Session Details -->
     <style name="Theme.IOSched.SessionDetails" parent="Theme.IOSched">
@@ -185,15 +189,6 @@
         <item name="android:lineSpacingMultiplier">1.1</item>
         <item name="android:textAlignment" tools:targetApi="jelly_bean_mr1">textStart</item>
     </style>
-
-    <!-- Map -->
-    <style name="Theme.IOSched.Map" parent="Theme.IOSched" />
-
-    <!-- Feed -->
-    <style name="Theme.IOSched.Feed" parent="Theme.IOSched" />
-
-    <!-- Info -->
-    <style name="Theme.IOSched.Info" parent="Theme.IOSched" />
 
     <style name="MapRoomTitle">
         <item name="android:textSize">@dimen/text_size_xlarge</item>

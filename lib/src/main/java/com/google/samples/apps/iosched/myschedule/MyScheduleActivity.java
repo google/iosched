@@ -147,6 +147,8 @@ public class MyScheduleActivity extends BaseActivity implements ScheduleViewPare
         }
 
         setContentView(R.layout.my_schedule_act);
+        setFullscreenLayout();
+        disableActionBarTitle();
 
         mScheduleFilterFragment = (ScheduleFilterFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.filter_drawer);
