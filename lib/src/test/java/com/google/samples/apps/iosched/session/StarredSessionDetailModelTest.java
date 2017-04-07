@@ -58,7 +58,7 @@ import static org.mockito.Mockito.when;
 @RunWith(PowerMockRunner.class)
 @PrepareForTest({SettingsUtils.class, TimeUtils.class})
 @SmallTest
-public class SessionDetailModelTest {
+public class StarredSessionDetailModelTest {
 
     private static final String FAKE_ID = "FAKE ID";
 

@@ -26,7 +26,7 @@ import com.google.android.gms.common.api.ResultCallback;
 import com.google.android.gms.common.api.Status;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.samples.apps.iosched.sync.SyncHelper;
-import com.google.samples.apps.iosched.sync.userdata.UserDataHelper;
+import com.google.samples.apps.iosched.sync.userdata.LocalUserDataHelper;
 import com.google.samples.apps.iosched.util.AccountUtils;
 
 import java.lang.ref.WeakReference;
@@ -200,7 +200,7 @@ public class SignInManager {
             return;
         }
 
-        UserDataHelper.clearUserDataOnSignOut(activity);
+        LocalUserDataHelper.clearUserDataOnSignOut(activity);
         // Tasks we always want to execute upon sign out.
         AccountUtils.clearActiveAccount(activity);
         FirebaseAuth.getInstance().signOut();

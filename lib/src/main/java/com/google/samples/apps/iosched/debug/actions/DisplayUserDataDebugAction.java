@@ -19,8 +19,8 @@ import android.content.Context;
 import android.os.AsyncTask;
 
 import com.google.samples.apps.iosched.debug.DebugAction;
-import com.google.samples.apps.iosched.sync.userdata.UserData;
-import com.google.samples.apps.iosched.sync.userdata.UserDataHelper;
+import com.google.samples.apps.iosched.sync.userdata.LocalUserDataHelper;
+import com.google.samples.apps.iosched.sync.userdata.UserDataModel;
 import com.google.samples.apps.iosched.util.IOUtils;
 
 /**
@@ -30,16 +30,16 @@ public class DisplayUserDataDebugAction implements DebugAction {
 
     @Override
     public void run(Context context, final Callback callback) {
-        new AsyncTask<Context, Void, UserData>() {
+        new AsyncTask<Context, Void, UserDataModel>() {
             @Override
-            protected UserData doInBackground(Context... contexts) {
-                return UserDataHelper.getLocalUserData(contexts[0]);
+            protected UserDataModel doInBackground(Context... contexts) {
+                return LocalUserDataHelper.getLocalUserData(contexts[0]);
             }
 
             @Override
-            protected void onPostExecute(UserData userData) {
+            protected void onPostExecute(UserDataModel userDataModel) {
                 callback.done(true, "Found User Data: " + new String(
-                        UserDataHelper.toByteArray(userData), IOUtils.CHARSET_UTF8));
+                        LocalUserDataHelper.toByteArray(userDataModel), IOUtils.CHARSET_UTF8));
             }
         }.execute(context);
     }

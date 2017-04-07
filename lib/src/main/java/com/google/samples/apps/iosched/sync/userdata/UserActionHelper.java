@@ -30,7 +30,7 @@ import java.util.List;
 import static com.google.samples.apps.iosched.util.LogUtils.makeLogTag;
 
 /**
- * Helper class to handle the format of the User Actions done on the device.
+ * Helper class to handle the format of the user actions done on the device.
  */
 class UserActionHelper {
     private static final String TAG = makeLogTag(UserActionHelper.class);

@@ -1,9 +1,27 @@
+/*
+ * Copyright 2015 Google Inc. All rights reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package com.google.samples.apps.iosched.session;
 
 import android.content.Intent;
 import android.net.Uri;
 import android.support.test.InstrumentationRegistry;
 import android.support.test.espresso.matcher.ViewMatchers;
+import android.support.test.runner.AndroidJUnit4;
+import android.test.suitebuilder.annotation.LargeTest;
 
 import com.google.samples.apps.iosched.Config;
 import com.google.samples.apps.iosched.lib.R;
@@ -17,6 +35,7 @@ import com.google.samples.apps.iosched.util.TimeUtils;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 
 import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.action.ViewActions.swipeUp;
@@ -29,9 +48,12 @@ import static org.hamcrest.CoreMatchers.allOf;
 import static org.hamcrest.core.IsNot.not;
 
 /**
- * Tests for {@link SessionDetailActivity} when showing a session that is not live.
+ * Tests for {@link SessionDetailActivity} when showing a session that is not the keynote and is not
+ * in user schedule.
  */
-public class SessionDetailActivity_NotLiveSessionTest {
+@RunWith(AndroidJUnit4.class)
+@LargeTest
+public class SessionDetailActivity_NotInScheduleStarredSessionTest {
     public static final String SESSION_ID = "5b7836c8-82bf-e311-b297-00155d5066d7";
 
     private Uri mSessionUri = ScheduleContract.Sessions.buildSessionUri(SESSION_ID);
@@ -39,10 +61,10 @@ public class SessionDetailActivity_NotLiveSessionTest {
     @Rule
     public BaseActivityTestRule<SessionDetailActivity> mActivityRule =
             new BaseActivityTestRule<SessionDetailActivity>(SessionDetailActivity.class,
-                    // Create a stub model to simulate a session without live stream
+                    // Create a stub model to simulate a session not in schedule
                     new StubSessionDetailModel(mSessionUri,
                             InstrumentationRegistry.getTargetContext(),
-                            SessionsMockCursor.getCursorForSessionWithoutLiveStream(),
+                            SessionsMockCursor.getCursorForSessionNotInSchedule(),
                             SpeakersMockCursor.getCursorForSingleSpeaker(),
                             TagMetadataMockCursor.getCursorForSingleTagMetadata()), true) {
                 @Override
@@ -54,8 +76,8 @@ public class SessionDetailActivity_NotLiveSessionTest {
 
     @Before
     public void setTime() {
-        // Set up time to 5 minutes after start of session
-        long timeDiff = SessionsMockCursor.START_SESSION - Config.CONFERENCE_START_MILLIS
+        // Set up time to 5 minutes after end of session
+        long timeDiff = SessionsMockCursor.END_SESSION - Config.CONFERENCE_START_MILLIS
                 + 5 * TimeUtils.MINUTE;
         TimeUtils.setCurrentTimeRelativeToStartOfConference(
                 InstrumentationRegistry.getTargetContext(), timeDiff);
@@ -65,21 +87,6 @@ public class SessionDetailActivity_NotLiveSessionTest {
     public void sessionTitle_ShowsCorrectTitle() {
         onView(withId(R.id.session_title)).check(matches(
                 allOf(withText(SessionsMockCursor.FAKE_TITLE), isDisplayed())));
-    }
-
-    @Test
-    public void liveStreamedText_IsNotVisible() {
-        onView(withText(R.string.session_live_streamed)).check(matches(not(isDisplayed())));
-    }
-
-    @Test
-    public void watchText_IsNotVisible() {
-        onView(withId(R.id.watch)).check(matches(not(isDisplayed())));
-    }
-
-    @Test
-    public void headerImage_IsNotVisible() {
-        onView(withId(R.id.session_photo)).check(matches(not(isDisplayed())));
     }
 
     @Test
