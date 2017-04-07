@@ -123,6 +123,7 @@
         <item name="android:windowSharedElementReturnTransition">@transition/session_details_shared_return</item>
         <item name="android:windowEnterTransition">@transition/fade_system_chrome</item>
         <item name="android:statusBarColor">@color/immersive_status_bar</item>
+        <item name="reserveButtonStyle">@style/Widget.IOSched.ReserveButton</item>
     </style>
 
     <style name="Widget.IOSched" parent="android:Widget" />
@@ -130,6 +131,15 @@
     <style name="Widget.IOSched.TextView" parent="@android:style/Widget.TextView">
         <item name="android:textAppearance">@style/TextAppearance.Body</item>
         <item name="android:lineSpacingMultiplier">@dimen/body_1_spacing</item>
+    </style>
+
+    <style name="Widget.IOSched.ReserveButton">
+        <item name="android:background">@drawable/reserve_background</item>
+        <item name="android:elevation">2dp</item>
+        <item name="android:stateListAnimator">@animator/raise</item>
+        <item name="android:backgroundTint">@color/reserve_background</item>
+        <item name="android:drawablePadding">@dimen/padding_normal</item>
+        <item name="android:drawableStart">@drawable/reserve_icon</item>
     </style>
 
     <!-- Empty views -->

@@ -79,6 +79,7 @@ import com.google.samples.apps.iosched.provider.ScheduleContract.Sessions;
 import com.google.samples.apps.iosched.session.SessionDetailModel.SessionDetailQueryEnum;
 import com.google.samples.apps.iosched.session.SessionDetailModel.SessionDetailUserActionEnum;
 import com.google.samples.apps.iosched.ui.widget.CheckableFloatingActionButton;
+import com.google.samples.apps.iosched.ui.widget.ReserveButton;
 import com.google.samples.apps.iosched.util.AccountUtils;
 import com.google.samples.apps.iosched.util.AnalyticsHelper;
 import com.google.samples.apps.iosched.util.ImageLoader;
@@ -182,9 +183,7 @@ public class SessionDetailFragment extends Fragment implements
 
     private long mHeaderAnimDuration;
 
-    private LinearLayout mReservationButtonOutline;
-
-    private TextView mReservationButtonContent;
+    private ReserveButton mReserve;
 
     @Override
     public void addListener(UserActionListener<SessionDetailUserActionEnum> listener) {
@@ -214,9 +213,7 @@ public class SessionDetailFragment extends Fragment implements
         mCoordinatorLayout.setStatusBarBackground(null);
 
         mAppBar = (AppBarLayout) view.findViewById(R.id.appbar);
-        mReservationButtonOutline =
-                (LinearLayout) view.findViewById(R.id.reservation_button_outline);
-        mReservationButtonContent = (TextView) view.findViewById(R.id.reserve_button_text);
+        mReserve = (ReserveButton) view.findViewById(R.id.reserve);
         mCollapsingToolbar =
                 (CollapsingToolbarLayout) mAppBar.findViewById(R.id.collapsing_toolbar);
         mCollapsingToolbar.setStatusBarScrim(null);
@@ -1078,16 +1075,8 @@ public class SessionDetailFragment extends Fragment implements
      * Update reservation button UI to convey that the session is reservable.
      */
     public void showReservationEnabled() {
-        mReservationButtonOutline.setVisibility(View.VISIBLE);
-        mReservationButtonContent.setText(
-                getResources().getString(R.string.my_schedule_reserve_seat));
-        mReservationButtonContent.setCompoundDrawablesRelativeWithIntrinsicBounds(
-                getResources().getDrawable(R.drawable.ic_reservable), null, null, null);
-        mReservationButtonContent.setTextColor(
-                getResources().getColor(R.color.app_white));
-        mReservationButtonOutline.setBackground(
-                getResources().getDrawable(R.drawable.reservation_button_enabled));
-        mReservationButtonOutline.setOnClickListener(new OnClickListener() {
+        mReserve.setStatus(ReserveButton.ReservationStatus.RESERVABLE);
+        mReserve.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
                 sendUserAction(SessionDetailUserActionEnum.RESERVE, null);
@@ -1099,16 +1088,8 @@ public class SessionDetailFragment extends Fragment implements
      * Update reservation button UI to convey that the reserve request is being procesed.
      */
     public void showReservationInQueue() {
-        mReservationButtonOutline.setVisibility(View.VISIBLE);
-        mReservationButtonContent.setText(
-                getResources().getString(R.string.my_schedule_request_pending));
-        mReservationButtonContent.setCompoundDrawablesRelativeWithIntrinsicBounds(
-                getResources().getDrawable(R.drawable.ic_reserved), null, null, null);
-        mReservationButtonContent.setTextColor(
-                getResources().getColor(R.color.item_text_primary_color));
-        mReservationButtonOutline.setBackground(
-                getResources().getDrawable(R.drawable.reservation_button_disabled));
-        mReservationButtonOutline.setOnClickListener(new OnClickListener() {
+        mReserve.setStatus(ReserveButton.ReservationStatus.RESERVATION_PENDING);
+        mReserve.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
                 // no-op
@@ -1120,16 +1101,8 @@ public class SessionDetailFragment extends Fragment implements
      * Update reservation button UI to convey that the user has already reserved the session.
      */
     public void showAlreadyReserved() {
-        mReservationButtonOutline.setVisibility(View.VISIBLE);
-        mReservationButtonContent.setText(
-                getResources().getString(R.string.my_schedule_already_reserved));
-        mReservationButtonContent.setCompoundDrawablesRelativeWithIntrinsicBounds(
-                getResources().getDrawable(R.drawable.ic_reserved), null, null, null);
-        mReservationButtonContent.setTextColor(
-                getResources().getColor(R.color.item_text_primary_color));
-        mReservationButtonOutline.setBackground(
-                getResources().getDrawable(R.drawable.reservation_button_disabled));
-        mReservationButtonOutline.setOnClickListener(new OnClickListener() {
+        mReserve.setStatus(ReserveButton.ReservationStatus.RESERVED);
+        mReserve.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
                 new AlertDialog.Builder(getActivity())
@@ -1159,31 +1132,22 @@ public class SessionDetailFragment extends Fragment implements
      * they are either not logged in or not registered for the event.
      */
     public void showReservationDisabled() {
-        mReservationButtonOutline.setVisibility(View.VISIBLE);
-        mReservationButtonContent.setText(
-                getResources().getString(
-                        R.string.my_schedule_reservation_disabled_auth_button_text));
-        mReservationButtonContent.setCompoundDrawablesRelativeWithIntrinsicBounds(
-                getResources().getDrawable(R.drawable.ic_reserve_disabled_info), null, null, null);
-        mReservationButtonContent.setTextColor(
-                getResources().getColor(R.color.item_text_primary_color));
-        mReservationButtonOutline.setBackground(
-                getResources().getDrawable(R.drawable.reservation_button_disabled));
-        mReservationButtonContent.setOnClickListener(new OnClickListener() {
+        mReserve.setStatus(ReserveButton.ReservationStatus.RESERVATION_DISABLED);
+        mReserve.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                        new AlertDialog.Builder(getActivity())
-                                .setMessage(R.string
-                                        .my_schedule_reservation_must_sign_in_and_register_message)
-                                .setTitle(R.string.my_schedule_reservation_why_disabled)
-                                .setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
-                                    @Override
-                                    public void onClick(DialogInterface dialog, int which) {
-                                        dialog.dismiss();
-                                    }
-                                })
-                                .create()
-                                .show();
+                new AlertDialog.Builder(getActivity())
+                        .setMessage(R.string
+                                .my_schedule_reservation_must_sign_in_and_register_message)
+                        .setTitle(R.string.my_schedule_reservation_why_disabled)
+                        .setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.dismiss();
+                            }
+                        })
+                        .create()
+                        .show();
             }
         });
     }
@@ -1200,16 +1164,8 @@ public class SessionDetailFragment extends Fragment implements
      * Update reservation button UI to convey that the user is on the waitlist for the session.
      */
     public void showWaitlisted() {
-        mReservationButtonOutline.setVisibility(View.VISIBLE);
-        mReservationButtonContent.setText(
-                getResources().getString(R.string.my_schedule_waitlisted));
-        mReservationButtonContent.setCompoundDrawablesRelativeWithIntrinsicBounds(
-                getResources().getDrawable(R.drawable.ic_reserve_disabled_info), null, null, null);
-        mReservationButtonContent.setTextColor(
-                getResources().getColor(R.color.item_text_primary_color));
-        mReservationButtonOutline.setBackground(
-                getResources().getDrawable(R.drawable.reservation_button_disabled));
-        mReservationButtonOutline.setOnClickListener(new OnClickListener() {
+        mReserve.setStatus(ReserveButton.ReservationStatus.WAITLISTED);
+        mReserve.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
                 new AlertDialog.Builder(getActivity())
@@ -1238,16 +1194,8 @@ public class SessionDetailFragment extends Fragment implements
      * Update reservation button UI to convey that the session is full and can only be waitlisted.
      */
     public void showWaitlistEnabled() {
-        mReservationButtonOutline.setVisibility(View.VISIBLE);
-        mReservationButtonContent.setText(
-                getResources().getString(R.string.my_schedule_join_waitlist));
-        mReservationButtonContent.setTextColor(
-                getResources().getColor(R.color.app_white));
-        mReservationButtonContent.setCompoundDrawablesRelativeWithIntrinsicBounds(
-                getResources().getDrawable(R.drawable.ic_reservable), null, null, null);
-        mReservationButtonOutline.setBackground(
-                getResources().getDrawable(R.drawable.reservation_button_enabled));
-        mReservationButtonOutline.setOnClickListener(new OnClickListener() {
+        mReserve.setStatus(ReserveButton.ReservationStatus.WAITLIST_AVAILABLE);
+        mReserve.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
                 sendUserAction(SessionDetailUserActionEnum.RESERVE, null);
