@@ -85,6 +85,7 @@
 # Needed just to be safe in terms of keeping Google API service model classes
 -keep class com.google.api.services.*.model.*
 -keep class com.google.api.client.**
+-keep class com.google.samples.apps.iosched.rpc.registration.model.**
 -keepattributes Signature,RuntimeVisibleAnnotations,AnnotationDefault
 # See https://groups.google.com/forum/#!topic/guava-discuss/YCZzeCiIVoI
 -dontwarn com.google.common.collect.MinMaxPriorityQueue
