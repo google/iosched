@@ -16,6 +16,10 @@
   -->
 <resources>
 
+    <declare-styleable name="IOSched">
+        <attr name="reserveButtonStyle" format="reference" />
+    </declare-styleable>
+
     <declare-styleable name="MultiSwipeRefreshLayout">
         <attr name="foreground" format="reference" />
     </declare-styleable>
@@ -66,5 +70,15 @@
     <declare-styleable name="CollapsableCard">
         <attr name="cardTitle" format="string"/>
         <attr name="cardDescription" format="string"/>
+    </declare-styleable>
+
+    <declare-styleable name="ReserveButton">" format="boolean|reference"/>
+        <attr name="state_reservable" format="boolean|reference"/>
+        <attr name="state_reservation_pending" format="boolean|reference"/>
+        <attr name="state_reserved" format="boolean|reference"/>
+        <attr name="state_reservation_disabled" format="boolean|reference"/>
+        <attr name="state_auth_required" format="boolean|reference"/>
+        <attr name="state_waitlist_available" format="boolean|reference"/>
+        <attr name="state_waitlisted" format="boolean|reference"/>
     </declare-styleable>
 </resources>
