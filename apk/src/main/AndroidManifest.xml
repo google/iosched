@@ -426,5 +426,10 @@
                 android:name="android.accounts.AccountAuthenticator"
                 android:resource="@xml/authenticator" />
         </service>
+
+        <!-- Intent Service for post sign in activities -->
+        <service
+            android:name="com.google.samples.apps.iosched.signin.PostSignInUpgradeService" />
+
     </application>
 </manifest>

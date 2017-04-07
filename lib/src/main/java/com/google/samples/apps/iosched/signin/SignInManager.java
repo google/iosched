@@ -172,7 +172,11 @@ public class SignInManager {
         AccountUtils.setActiveAccountDisplayName(activity, acct.getDisplayName());
         AccountUtils.setActiveAccountPhotoUrl(activity, acct.getPhotoUrl());
         RegistrationStatusService.updateRegStatusInBackground(activity, acct);
-        SyncHelper.requestManualSync(true);
+
+        // Note: Post Sign in work related to user data is done in the following service.
+        // This also includes calling the sync for user data.
+        PostSignInUpgradeService.upgradeToSignedInUser(
+                activity, AccountUtils.getActiveAccountName(activity));
 
         // Tasks executed by the binding activity on sign in.
         signInListener.onSignIn(result);

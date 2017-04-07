@@ -442,6 +442,8 @@ public class ScheduleProvider extends ContentProvider {
         LOGV(TAG, "update(uri=" + uri + ", values=" + values.toString()
                 + ", account=" + accountName + ")");
 
+        boolean isAccountUpdateAllowed = ScheduleContractHelper.isAccountUpdateAllowed(uri);
+
         final SQLiteDatabase db = mOpenHelper.getWritableDatabase();
         ScheduleUriEnum matchingUriEnum = mUriMatcher.matchUri(uri);
         if (matchingUriEnum == ScheduleUriEnum.SEARCH_INDEX) {
@@ -456,7 +458,9 @@ public class ScheduleProvider extends ContentProvider {
             return 0;
         }
         if (matchingUriEnum == ScheduleUriEnum.MY_SCHEDULE) {
-            values.remove(MySchedule.MY_SCHEDULE_ACCOUNT_NAME);
+            if (!isAccountUpdateAllowed) {
+                values.remove(MySchedule.MY_SCHEDULE_ACCOUNT_NAME);
+            }
             builder.where(MySchedule.MY_SCHEDULE_ACCOUNT_NAME + "=?", accountName);
         }
         if (matchingUriEnum == ScheduleUriEnum.MY_RESERVATIONS) {
@@ -468,7 +472,9 @@ public class ScheduleProvider extends ContentProvider {
             builder.where(MyViewedVideos.MY_VIEWED_VIDEOS_ACCOUNT_NAME + "=?", accountName);
         }
         if (matchingUriEnum == ScheduleUriEnum.MY_FEEDBACK_SUBMITTED) {
-            values.remove(MyFeedbackSubmitted.MY_FEEDBACK_SUBMITTED_ACCOUNT_NAME);
+            if (!isAccountUpdateAllowed) {
+                values.remove(MyFeedbackSubmitted.MY_FEEDBACK_SUBMITTED_ACCOUNT_NAME);
+            }
             builder.where(MyFeedbackSubmitted.MY_FEEDBACK_SUBMITTED_ACCOUNT_NAME + "=?",
                     accountName);
         }

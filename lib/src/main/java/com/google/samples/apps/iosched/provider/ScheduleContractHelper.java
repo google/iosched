@@ -16,6 +16,7 @@
 
 package com.google.samples.apps.iosched.provider;
 
+import android.content.ContentValues;
 import android.net.Uri;
 import android.text.TextUtils;
 
@@ -29,6 +30,8 @@ public class ScheduleContractHelper {
     private static final String QUERY_PARAMETER_OVERRIDE_ACCOUNT_NAME = "overrideAccountName";
 
     private static final String QUERY_PARAMETER_CALLER_IS_SYNC_ADAPTER = "callerIsSyncAdapter";
+
+    private static final String QUERY_PARAMETER_ACCOUNT_UPDATE_ALLOWED = "accountUpdateAllowed";
 
 
     public static boolean isUriCalledFromSyncAdapter(Uri uri) {
@@ -59,5 +62,20 @@ public class ScheduleContractHelper {
     public static Uri addOverrideAccountName(Uri uri, String accountName) {
         return uri.buildUpon().appendQueryParameter(
                 QUERY_PARAMETER_OVERRIDE_ACCOUNT_NAME, accountName).build();
+    }
+
+    public static boolean isAccountUpdateAllowed(Uri uri) {
+        String value = uri.getQueryParameter(QUERY_PARAMETER_ACCOUNT_UPDATE_ALLOWED);
+        return value != null && "true".equals(value);
+    }
+
+    /**
+     * Adds a parameter to indicate that account_name updates are allowed.
+     * This is used by the {@link ScheduleProvider#update(Uri, ContentValues, String, String[])}
+     * for specific updates after a sign-in.
+     */
+    public static Uri addOverrideAccountUpdateAllowed(Uri uri) {
+        return uri.buildUpon().appendQueryParameter(
+                QUERY_PARAMETER_ACCOUNT_UPDATE_ALLOWED, "true").build();
     }
 }
