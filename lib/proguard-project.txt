@@ -86,6 +86,7 @@
 -keep class com.google.api.services.*.model.*
 -keep class com.google.api.client.**
 -keep class com.google.samples.apps.iosched.rpc.registration.model.**
+-keep class com.google.samples.apps.iosched.rpc.userdata.model.**
 -keepattributes Signature,RuntimeVisibleAnnotations,AnnotationDefault
 # See https://groups.google.com/forum/#!topic/guava-discuss/YCZzeCiIVoI
 -dontwarn com.google.common.collect.MinMaxPriorityQueue
