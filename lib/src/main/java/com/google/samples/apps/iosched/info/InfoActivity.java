@@ -32,9 +32,16 @@ public class InfoActivity extends BaseActivity {
         disableActionBarTitle();
         InfoPagerFragment infoPagerFragment = (InfoPagerFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.main_content);
-        mPresenter = new InfoPresenter(infoPagerFragment);
-        mPresenter.initContentCards();
-        mPresenter.initWiFiInfo();
+        mPresenter = new InfoPresenter(this, infoPagerFragment);
+        mPresenter.initEventInfo();
+        mPresenter.initFaqInfo();
+        mPresenter.initTravelInfo();
+        infoPagerFragment.setPresenter(mPresenter);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
     }
 
     @Override

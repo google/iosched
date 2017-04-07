@@ -22,6 +22,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.google.samples.apps.iosched.info.event.EventInfo;
+import com.google.samples.apps.iosched.info.faq.FaqInfo;
+import com.google.samples.apps.iosched.info.travel.TravelInfo;
 import com.google.samples.apps.iosched.lib.R;
 import com.google.samples.apps.iosched.myschedule.MyScheduleSingleDayFragment;
 
@@ -44,6 +47,7 @@ public class InfoPagerFragment extends Fragment implements InfoContract.View {
     private InfoViewPagerAdapter mViewPagerAdapter;
     private TabLayout mTabLayout;
     private int mCurrentPage;
+    private InfoContract.Presenter mPresenter;
 
     @Nullable
     @Override
@@ -117,5 +121,25 @@ public class InfoPagerFragment extends Fragment implements InfoContract.View {
         if (mViewPager != null) {
             mViewPager.setCurrentItem(mCurrentPage);
         }
+    }
+
+    @Override
+    public void setPresenter(InfoContract.Presenter presenter) {
+        mPresenter = presenter;
+    }
+
+    @Override
+    public void showEventInfo(EventInfo eventInfo) {
+        mViewPagerAdapter.updateEventInfo(eventInfo);
+    }
+
+    @Override
+    public void showTravelInfo(TravelInfo travelInfo) {
+        mViewPagerAdapter.updateTravelInfo(travelInfo);
+    }
+
+    @Override
+    public void showFaqInfo(FaqInfo faqInfo) {
+        mViewPagerAdapter.updateFaqInfo(faqInfo);
     }
 }

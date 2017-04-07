@@ -18,15 +18,18 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 
 import com.google.samples.apps.iosched.info.event.EventFragment;
+import com.google.samples.apps.iosched.info.event.EventInfo;
 import com.google.samples.apps.iosched.info.faq.FaqFragment;
+import com.google.samples.apps.iosched.info.faq.FaqInfo;
 import com.google.samples.apps.iosched.info.settings.SettingsFragment;
 import com.google.samples.apps.iosched.info.travel.TravelFragment;
+import com.google.samples.apps.iosched.info.travel.TravelInfo;
 
 import static com.google.samples.apps.iosched.util.LogUtils.LOGD;
 import static com.google.samples.apps.iosched.util.LogUtils.LOGE;
 import static com.google.samples.apps.iosched.util.LogUtils.makeLogTag;
 
-public class InfoViewPagerAdapter extends FragmentPagerAdapter {
+public class InfoViewPagerAdapter<T> extends FragmentPagerAdapter {
 
     private final static String TAG = makeLogTag(InfoViewPagerAdapter.class);
 
@@ -76,6 +79,27 @@ public class InfoViewPagerAdapter extends FragmentPagerAdapter {
                 mFragments[position] = new SettingsFragment();
         }
         return mFragments[position];
+    }
+
+    public void updateEventInfo(EventInfo eventInfo) {
+        BaseInfoFragment infoFragment = getItem(EVENT_INDEX);
+        if (infoFragment instanceof EventFragment) {
+            ((EventFragment) infoFragment).updateInfo(eventInfo);
+        }
+    }
+
+    public void updateTravelInfo(TravelInfo travelInfo) {
+        BaseInfoFragment infoFragment = getItem(TRAVEL_INDEX);
+        if (infoFragment instanceof TravelFragment) {
+            ((TravelFragment) infoFragment).updateInfo(travelInfo);
+        }
+    }
+
+    public void updateFaqInfo(FaqInfo faqInfo) {
+        BaseInfoFragment infoFragment = getItem(FAQ_INDEX);
+        if (infoFragment instanceof FaqFragment) {
+            ((FaqFragment) infoFragment).updateInfo(faqInfo);
+        }
     }
 
     @Override

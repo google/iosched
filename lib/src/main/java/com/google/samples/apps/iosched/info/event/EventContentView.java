@@ -79,4 +79,8 @@ public class EventContentView extends FrameLayout {
             }
         });
     }
+
+    public void setEventDescription(CharSequence description) {
+        mEventDescription.setText(description);
+    }
 }

@@ -32,7 +32,7 @@
             android:layout_alignParentTop="true"
             android:background="?selectableItemBackground"
             android:padding="@dimen/padding_normal"
-            android:text="@string/shuttle_info_title"
+            android:text="@string/travel_shuttle_info_title"
             android:textAppearance="@style/TextAppearance.H5.Caps"
             android:textColor="@color/collapsing_section" />
 

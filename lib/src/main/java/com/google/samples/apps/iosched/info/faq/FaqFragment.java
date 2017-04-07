@@ -22,20 +22,44 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.google.samples.apps.iosched.info.BaseInfoFragment;
+import com.google.samples.apps.iosched.info.CollapsableCard;
 import com.google.samples.apps.iosched.lib.R;
 
-public class FaqFragment extends BaseInfoFragment {
+import static com.google.samples.apps.iosched.util.LogUtils.LOGE;
+import static com.google.samples.apps.iosched.util.LogUtils.makeLogTag;
+
+public class FaqFragment extends BaseInfoFragment<FaqInfo> {
+    private static final String TAG = makeLogTag(FaqFragment.class);
+
+    private FaqInfo mFaqInfo;
+
+    private CollapsableCard proTipsCard;
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container,
             @Nullable Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.info_faq_frag, container, false);
+        proTipsCard = (CollapsableCard) root.findViewById(R.id.proTipsCard);
         return root;
     }
 
     @Override
     public String getTitle(@NonNull Resources resources) {
         return resources.getString(R.string.title_faq);
+    }
+
+    @Override
+    public void updateInfo(FaqInfo info) {
+        mFaqInfo = info;
+    }
+
+    @Override
+    protected void showInfo() {
+        if (mFaqInfo != null) {
+            proTipsCard.setCardDescription(mFaqInfo.getProTips());
+        } else {
+            LOGE(TAG, "FaqInfo should not be null.");
+        }
     }
 }

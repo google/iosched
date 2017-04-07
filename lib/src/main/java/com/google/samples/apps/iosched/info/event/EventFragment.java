@@ -20,22 +20,63 @@ import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.google.samples.apps.iosched.info.BaseInfoFragment;
 import com.google.samples.apps.iosched.lib.R;
 
-public class EventFragment extends BaseInfoFragment {
+import static com.google.samples.apps.iosched.util.LogUtils.LOGE;
+import static com.google.samples.apps.iosched.util.LogUtils.makeLogTag;
+
+public class EventFragment extends BaseInfoFragment<EventInfo> {
+    private static final String TAG = makeLogTag(EventFragment.class);
+
+    private EventInfo mEventInfo;
+
+    private TextView mWiFiNetworkText;
+    private TextView mWiFiPasswordText;
+    private EventContentView mSandboxEventContent;
+    private EventContentView mCodeLabsEventContent;
+    private EventContentView mOfficeHoursEventContent;
+    private EventContentView mAfterHoursEventContent;
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container,
             @Nullable Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.info_event_frag, container, false);
+        mWiFiNetworkText = (TextView) root.findViewById(R.id.wifi_network_value);
+        mWiFiPasswordText = (TextView) root.findViewById(R.id.wifi_password_value);
+        mSandboxEventContent = (EventContentView) root.findViewById(R.id.sandboxEventContent);
+        mCodeLabsEventContent = (EventContentView) root.findViewById(R.id.codeLabsEventContent);
+        mOfficeHoursEventContent =
+                (EventContentView) root.findViewById(R.id.officeHoursEventContent);
+        mAfterHoursEventContent =
+                (EventContentView) root.findViewById(R.id.afterHoursEventContent);
         return root;
     }
 
     @Override
     public String getTitle(@NonNull Resources resources) {
         return resources.getString(R.string.title_event);
+    }
+
+    @Override
+    public void updateInfo(EventInfo info) {
+        mEventInfo = info;
+    }
+
+    @Override
+    protected void showInfo() {
+        if (mEventInfo != null) {
+            mWiFiNetworkText.setText(mEventInfo.getWiFiNetwork());
+            mWiFiPasswordText.setText(mEventInfo.getWiFiPassword());
+            mSandboxEventContent.setEventDescription(mEventInfo.getSandboxDescription());
+            mCodeLabsEventContent.setEventDescription(mEventInfo.getCodeLabsDescription());
+            mOfficeHoursEventContent.setEventDescription(mEventInfo.getOfficeHoursDescription());
+            mAfterHoursEventContent.setEventDescription(mEventInfo.getAfterHoursDescription());
+        } else {
+            LOGE(TAG, "EventInfo should not be null.");
+        }
     }
 }

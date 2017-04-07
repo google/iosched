@@ -22,20 +22,54 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.google.samples.apps.iosched.info.BaseInfoFragment;
+import com.google.samples.apps.iosched.info.CollapsableCard;
 import com.google.samples.apps.iosched.lib.R;
 
-public class TravelFragment extends BaseInfoFragment {
+import static com.google.samples.apps.iosched.util.LogUtils.LOGE;
+import static com.google.samples.apps.iosched.util.LogUtils.makeLogTag;
+
+public class TravelFragment extends BaseInfoFragment<TravelInfo> {
+    private static final String TAG = makeLogTag(TravelFragment.class);
+
+    private TravelInfo mTravelInfo;
+
+    private CollapsableCard bikingCard;
+    private CollapsableCard shuttleServiceCard;
+    private CollapsableCard carpoolingParkingCard;
+    private CollapsableCard publicTransportationCard;
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container,
             @Nullable Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.info_travel_frag, container, false);
+        bikingCard = (CollapsableCard) root.findViewById(R.id.bikingCard);
+        shuttleServiceCard = (CollapsableCard) root.findViewById(R.id.shuttleInfoCard);
+        carpoolingParkingCard = (CollapsableCard) root.findViewById(R.id.carpoolingParkingCard);
+        publicTransportationCard =
+                (CollapsableCard) root.findViewById(R.id.publicTransportationCard);
         return root;
     }
 
     @Override
     public String getTitle(@NonNull Resources resources) {
         return resources.getString(R.string.title_travel);
+    }
+
+    @Override
+    public void updateInfo(TravelInfo info) {
+        mTravelInfo = info;
+    }
+
+    @Override
+    protected void showInfo() {
+        if (mTravelInfo != null) {
+            bikingCard.setCardDescription(mTravelInfo.getBikingInfo());
+            shuttleServiceCard.setCardDescription(mTravelInfo.getShuttleInfo());
+            carpoolingParkingCard.setCardDescription(mTravelInfo.getCarpoolingParkingInfo());
+            publicTransportationCard.setCardDescription(mTravelInfo.getPublicTransportationInfo());
+        } else {
+            LOGE(TAG, "TravelInfo should not be null.");
+        }
     }
 }

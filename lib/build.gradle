@@ -280,6 +280,8 @@ dependencies {
     compile "com.google.firebase:firebase-auth:${google_play_services_client_library_version}"
     compile "com.google.firebase:firebase-config:${google_play_services_client_library_version}"
 
+    compile "org.apache.commons:commons-lang3:3.5"
+
     normalDebugCompile 'com.squareup.leakcanary:leakcanary-android:1.5'
     normalQualityassuranceCompile 'com.squareup.leakcanary:leakcanary-android-no-op:1.5'
     normalReleaseCompile 'com.squareup.leakcanary:leakcanary-android-no-op:1.5'

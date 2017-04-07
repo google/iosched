@@ -40,26 +40,25 @@
             android:id="@+id/shuttleInfoCard"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            custom:cardDescription="@string/shuttle_info_description"
-            custom:cardTitle="@string/shuttle_info_title" />
+            custom:cardTitle="@string/travel_shuttle_info_title" />
 
         <com.google.samples.apps.iosched.info.CollapsableCard
+            android:id="@+id/carpoolingParkingCard"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            custom:cardDescription="@string/carpoolparking_info_description"
-            custom:cardTitle="@string/carpoolparking_info_title" />
+            custom:cardTitle="@string/travel_carpool_parking_info_title" />
 
         <com.google.samples.apps.iosched.info.CollapsableCard
+            android:id="@+id/publicTransportationCard"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            custom:cardDescription="@string/publictransportation_info_description"
-            custom:cardTitle="@string/publictransportation_info_title" />
+            custom:cardTitle="@string/travel_public_transportation_info_title" />
 
         <com.google.samples.apps.iosched.info.CollapsableCard
+            android:id="@+id/bikingCard"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            custom:cardDescription="@string/biking_info_description"
-            custom:cardTitle="@string/biking_info_title" />
+            custom:cardTitle="@string/travel_biking_info_title" />
 
         <ImageView
             android:layout_width="match_parent"
