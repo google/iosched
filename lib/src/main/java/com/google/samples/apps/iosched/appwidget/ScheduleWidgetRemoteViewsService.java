@@ -82,7 +82,7 @@ public class ScheduleWidgetRemoteViewsService extends RemoteViewsService {
         }
 
         public int getCount() {
-            if (mScheduleItems == null || !AccountUtils.hasActiveAccount(mContext)) {
+            if (mScheduleItems == null) {
                 return 0;
             }
             if (mScheduleItems.size() < 10) {
