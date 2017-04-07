@@ -642,10 +642,10 @@
     <string name="watch_now">Watch Now!</string>
 
     <!-- Short text welcoming the user to the application -->
-    <string name="welcome_to_google_i_o_app">Welcome to the Google I/O app!</string>
+    <string name="welcome_to_google_i_o_app">Welcome to the #io17 mobile app!</string>
 
     <!-- Medium-length welcome text indicating the subsequent text is important legal information -->
-    <string name="welcome_text">Before we begin, here is some important legal information regarding your use of this app. This will only take a minute!</string>
+    <string name="welcome_text">Before getting started, here is some important legal information regarding the use of this app.</string>
 
     <!-- Short text introducing the code of conduct for attendees coming in person -->
     <string name="welcome_conduct_title">I/O Community Best Practices</string>
