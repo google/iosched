@@ -49,7 +49,6 @@
                 android:layout_alignBaseline="@id/wifi_network_label"
                 android:layout_alignParentEnd="true"
                 android:padding="@dimen/padding_normal"
-                android:text="@string/default_wifi_network"
                 android:textAppearance="@style/TextAppearance.H5" />
 
             <TextView
@@ -71,7 +70,6 @@
                 android:layout_alignParentEnd="true"
                 android:layout_below="@+id/wifi_network_value"
                 android:padding="@dimen/padding_normal"
-                android:text="@string/default_wifi_password"
                 android:textAppearance="@style/TextAppearance.H5" />
 
             <TextView
@@ -87,40 +85,40 @@
         </RelativeLayout>
 
         <com.google.samples.apps.iosched.info.event.EventContentView
+            android:id="@+id/sandboxEventContent"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             app:boxColor="@color/neon_blue"
-            app:eventDescription="@string/event_sandbox_default_description"
             app:eventIcon="@drawable/ic_sandbox"
             app:eventTitle="@string/event_sandbox_title"
             app:mapLinkUri="@string/view_sandbox_map_url"
             app:sessionsLinkUri="@string/view_sandbox_sessions_url" />
 
         <com.google.samples.apps.iosched.info.event.EventContentView
+            android:id="@+id/codeLabsEventContent"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             app:boxColor="@color/io16_accent_green"
-            app:eventDescription="@string/event_codelabs_default_description"
             app:eventIcon="@drawable/ic_codelab"
             app:eventTitle="@string/event_codelabs_title"
             app:mapLinkUri="@string/view_sandbox_map_url"
             app:sessionsLinkUri="@string/view_codelabs_sessions_url" />
 
         <com.google.samples.apps.iosched.info.event.EventContentView
+            android:id="@+id/officeHoursEventContent"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             app:boxColor="@color/io16_accent_red"
-            app:eventDescription="@string/event_officehours_default_description"
             app:eventIcon="@drawable/ic_officehours"
             app:eventTitle="@string/event_officehours_title"
             app:mapLinkUri="@string/view_officehours_map_url"
             app:sessionsLinkUri="@string/view_officehours_sessions_url" />
 
         <com.google.samples.apps.iosched.info.event.EventContentView
+            android:id="@+id/afterHoursEventContent"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             app:boxColor="@color/lightish_blue"
-            app:eventDescription="@string/event_afterhours_default_description"
             app:eventIcon="@drawable/ic_afterhours"
             app:eventTitle="@string/event_afterhours_title"
             app:mapLinkUri="@string/view_afterhours_map_url"

@@ -132,4 +132,8 @@ public class CollapsableCard extends FrameLayout {
         valueAnimator.setDuration(duration);
         valueAnimator.start();
     }
+
+    public void setCardDescription(CharSequence description) {
+        mCardDescription.setText(description);
+    }
 }

@@ -16,6 +16,16 @@ package com.google.samples.apps.iosched.info;
 import android.content.res.Resources;
 import android.support.v4.app.Fragment;
 
-public abstract class BaseInfoFragment extends Fragment {
+public abstract class BaseInfoFragment<T> extends Fragment {
     public abstract String getTitle(Resources resources);
+
+    public abstract void updateInfo(T info);
+
+    protected abstract void showInfo();
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        showInfo();
+    }
 }

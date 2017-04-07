@@ -11,27 +11,16 @@
  * or implied. See the License for the specific language governing permissions and limitations under
  * the License.
  */
-package com.google.samples.apps.iosched.info;
+package com.google.samples.apps.iosched.info.faq;
 
-import com.google.samples.apps.iosched.info.event.EventInfo;
-import com.google.samples.apps.iosched.info.faq.FaqInfo;
-import com.google.samples.apps.iosched.info.travel.TravelInfo;
+public class FaqInfo {
+    private CharSequence proTips;
 
-public class InfoContract {
-
-    interface View {
-        void setPresenter(InfoContract.Presenter presenter);
-        void showEventInfo(EventInfo eventInfo);
-        void showTravelInfo(TravelInfo travelInfo);
-        void showFaqInfo(FaqInfo faqInfo);
+    public CharSequence getProTips() {
+        return proTips;
     }
 
-    interface Presenter {
-        void initEventInfo();
-
-        void initTravelInfo();
-
-        void initFaqInfo();
+    public void setProTips(CharSequence proTips) {
+        this.proTips = proTips;
     }
 }
-

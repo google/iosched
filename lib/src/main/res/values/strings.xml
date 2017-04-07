@@ -850,57 +850,27 @@
     <string name="event_codelabs_title">Code Labs</string>
     <string name="event_officehours_title">Office Hours &amp; App Reviews</string>
     <string name="event_afterhours_title">After Hours</string>
-    <string name="event_sandbox_default_description">Explore our latest APIs and tools in the
-        developer sandbox.</string>
-    <string name="event_codelabs_default_description">Work through technical modules at your own
-        pace at one of our workstations. Googlers will be on hand to help as needed.</string>
-    <string name="event_officehours_default_description">Office hours are your chance to meet with
-        Google experts, ask technical questions, and receive one-on-one help with your projects and
-        apps.</string>
-    <string name="event_afterhours_default_description">After sessions end for the day, stick around
-        Shoreline for two evenings filled with food, drinks and fun. We’ll throw a party on the
-        evening of the 17th, and host a concert in the Amphitheatre on the 18th.</string>
-    <string name="default_wifi_network" translatable="false">IO2017</string>
-    <string name="default_wifi_password" translatable="false">inputoutput</string>
+    <string name="event_sandbox_description_key" translatable="false">event_sandbox_description</string>
+    <string name="event_code_labs_description_key" translatable="false">event_code_labs_description</string>
+    <string name="event_office_hours_description_key" translatable="false">event_office_hours_description</string>
+    <string name="event_after_hours_description_key" translatable="false">event_after_hours_description</string>
+    <string name="default_wifi_network_key" translatable="false">default_wifi_network</string>
+    <string name="default_wifi_password_key" translatable="false">default_wifi_password</string>
 
     <string name="travel_details_title">Travel Details</string>
-    <string name="shuttle_info_title">Shuttle Service</string>
-    <string name="carpoolparking_info_title">Carpooling &amp; Parking</string>
-    <string name="publictransportation_info_title">Public Transportation</string>
-    <string name="biking_info_title">Biking</string>
-    <string name="shuttle_info_description">Event shuttles will be provided to Google I/O attendees
-        at no charge from all Google-recommended hotels and with select service from San Francisco
-        and other locations along the Peninsula. Please check back in the coming weeks for pick-up
-        schedules and additional locations. Each pick-up location will have ADA accessible vehicles.
-        Please indicate on your registration form if you have any ADA or special assistance
-        requirements and the planning team will follow up with you directly.</string>
-    <string name="carpoolparking_info_description">Parking is very limited and available only in the
-        Google I/O designated lots located across from Shoreline Amphitheatre along Shoreline
-        Boulevard. There is no event parking along Amphitheatre Parkway or Charleston Road.
-        If you plan to drive, we recommend carpooling with other attendees due to limited parking
-        availability at the venue. Preferred parking spaces will be available for cars containing 2
-        or more people.</string>
-    <string name="publictransportation_info_description">Public transportation to the area is
-        accessible via:
-        \n\nCALTRAIN: Regional rail system
-        \nVTA: Light rail system servicing the South Bay
-        \nBART:Bay Area Rapid Transit
-        \n\nPublic transit doesn\'t go directly to Google I/O. Stay tuned over the coming weeks for
-        exact transportation locations serviced by Google I/O event shuttles.</string>
-    <string name="biking_info_description">Bike parking will be available at Shoreline Amphitheatre.
-        Recommended bike routes will be available in the coming weeks. Alternatively, the Bay Area
-        Bike Share program provides 24/7 access to shared bicycles in five service areas across
-        the peninsula. The closest location to Shoreline Amphitheatre is at 228 Charleston Road,
-        Mountain View, CA 94043. More information regarding membership and pricing is available via
-        the Bay Area Bike Share website.</string>
+    <string name="travel_shuttle_info_title">Shuttle Service</string>
+    <string name="travel_carpool_parking_info_title">Carpooling &amp; Parking</string>
+    <string name="travel_public_transportation_info_title">Public Transportation</string>
+    <string name="travel_biking_info_title">Biking</string>
+    <string name="travel_shuttle_service_description_key" translatable="false">travel_shuttle_service_description</string>
+    <string name="travel_carpooling_parking_description_key" translatable="false">travel_carpooling_parking_description</string>
+    <string name="travel_public_transportation_description_key" translatable="false">
+        travel_public_transportation_description</string>
+    <string name="travel_biking_description_key" translatable="false">travel_biking_description</string>
 
     <string name="faq_attendance_details_title">Attendance Details</string>
-    <string name="faq_protips_title">Pro Tips</string>
-    <string name="faq_protips_description">If you\'re joining us in person at Shoreline
-        Amphitheatre, here are some useful tips to navigate your way through the conference:
-        \n\nBadge pick-up: Everyone is guaranteed a seat for the keynote but the best seats will be
-        assigned on a first-come, first-served basis. Badge pick-up starts at 7:00AM on May 17 so
-        make sure to come by early!</string>
+    <string name="faq_pro_tips_title">Pro Tips</string>
+    <string name="faq_pro_tips_description_key" translatable="false">faq_pro_tips_description</string>
 
     <string name="settings_time_zone_label">Show events in Pacific Time (PT)</string>
     <string name="settings_enable_notifications">Enable notifications</string>

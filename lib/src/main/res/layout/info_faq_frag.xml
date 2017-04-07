@@ -37,11 +37,10 @@
             android:text="@string/faq_attendance_details_title" />
 
         <com.google.samples.apps.iosched.info.CollapsableCard
-            android:id="@+id/shuttleInfoCard"
+            android:id="@+id/proTipsCard"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:cardDescription="@string/faq_protips_description"
-            app:cardTitle="@string/faq_protips_title" />
+            app:cardTitle="@string/faq_pro_tips_title" />
 
         <ImageView
             android:layout_width="match_parent"

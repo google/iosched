@@ -33,8 +33,7 @@ import com.google.samples.apps.iosched.lib.BuildConfig;
 import com.google.samples.apps.iosched.lib.R;
 import com.google.samples.apps.iosched.settings.SettingsUtils;
 
-public class SettingsFragment extends BaseInfoFragment implements
-        SharedPreferences.OnSharedPreferenceChangeListener {
+public class SettingsFragment extends BaseInfoFragment<Object> {
 
     TextView mTermsOfService;
     TextView mPrivacyPolicy;
@@ -98,35 +97,14 @@ public class SettingsFragment extends BaseInfoFragment implements
     }
 
     @Override
-    public void onResume() {
-        super.onResume();
-        PreferenceManager.getDefaultSharedPreferences(getContext())
-                .registerOnSharedPreferenceChangeListener(this);
-    }
-
-    @Override
-    public void onPause() {
-        PreferenceManager.getDefaultSharedPreferences(getContext())
-                .unregisterOnSharedPreferenceChangeListener(this);
-        super.onPause();
-    }
-
-    @Override
     public String getTitle(@NonNull Resources resources) {
         return resources.getString(R.string.title_settings);
     }
 
+    public void updateInfo(Object info) {
+    }
+
     @Override
-    public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
-        switch (key) {
-            case SettingsUtils.PREF_LOCAL_TIMES:
-                mTimeZoneSetting.setChecked(SettingsUtils.isUsingLocalTime(getContext()));
-                break;
-            case BuildConfig.PREF_NOTIFICATIONS_ENABLED:
-                mNotificationsSetting.setChecked(
-                        SettingsUtils.shouldShowNotifications(getContext()));
-                break;
-            //TODO(36733076) add disable/enable FA.
-        }
+    protected void showInfo() {
     }
 }
