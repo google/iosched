@@ -104,11 +104,7 @@ public class WelcomeActivity extends AppCompatActivity
             ImageView logo = (ImageView) ctl.findViewById(R.id.logo);
             logo.setImageResource(mContentFragment.getLogoDrawableRes());
         }
-        // There isn't any reliable way to know that the user is a registered attendee until after
-        // the user authenticates and we've verified the user's registrations. For now, assume
-        // the user is not an attendee.
-        RegistrationUtils.setRegisteredAttendee(this, false);
-
+        
         GoogleSignInOptions gso = SignInManager.getGoogleSignInOptions(
                 BuildConfig.DEFAULT_WEB_CLIENT_ID);
 
