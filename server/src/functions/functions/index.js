@@ -19,6 +19,7 @@
 // more requests.
 
 var functions = require('firebase-functions');
+var google = require('googleapis');
 
 // firebase-admin module is used to perform RTDB updates while processing
 // reservation requests.
@@ -66,6 +67,10 @@ const RESULT_RESERVED_FAILED = 'reserve_failed';
 const RESULT_RETURNED = 'returned';
 const RESULT_RETURNED_CUTOFF = 'return_denied_cutoff';
 const RESULT_RETURNED_FAILED = 'return_failed';
+
+const USERDATA_DISCOVERY_URL = 'USERDATA_DISCOVERY_URL';
+
+const GOOGLE_PROVIDER_ID = 'google.com';
 
 /**
  * This function listens to the request queue. When a request is written to the
@@ -302,6 +307,10 @@ function handleReturn(uid, sid, rid) {
             return promoteFromWaitlist(sid)
           })
           .then(function() {
+            // Push reservation update to App Server.
+            return sendReturn(uid, sid);
+          })
+          .then(function() {
             return RESERVATION_RETURNED;
           });
     } else {
@@ -331,6 +340,10 @@ function handleRemove(uid, sid, rid) {
       .then(function() {
         return getReservationResultReference(uid, sid, rid).set(
             RESULT_RETURNED);
+      })
+      .then(function() {
+        // Push reservation update to App Server.
+        return sendReturn(uid, sid);
       })
       .then(function() {
         return RESERVATION_RETURNED;
@@ -387,9 +400,13 @@ function promoteFromWaitlist(sid) {
         if (prevUserStatus == STATUS_WAITING &&
             snapshot.reservations[firstInLine].status == STATUS_GRANTED) {
           // user was promoted
-          console.log('promoted user ' + firstInLine);
-          console.log('send notification to user ' + firstInLine);
-          // TODO(arthurthompson): send notification to promoted user.
+          // Push reservation update to App Server.
+          return sendReserve(firstInLine, sid)
+              .then(function() {
+                console.log('promoted user ' + firstInLine);
+                console.log('send notification to user ' + firstInLine);
+                // TODO(arthurthompson): send notification to promoted user.
+              });
         } else {
           console.log(firstInLine + ' was first in waitlist but not promoted.');
         }
@@ -480,6 +497,10 @@ function handleReservation(uid, sid, rid) {
                   RESULT_RESERVED)
             })
             .then(function() {
+              // Push reservation update to App Server.
+              return sendReserve(uid, sid);
+            })
+            .then(function() {
               return RESERVATION_RESERVED;
             });
       } else {
@@ -496,6 +517,10 @@ function handleReservation(uid, sid, rid) {
                   RESULT_RESERVED_NO_SPACE);
             })
             .then(function() {
+              // Push reservation update to App Server.
+              return sendWaitlist(uid, sid);
+            })
+            .then(function() {
               return RESERVATION_DENIED_NO_SPACE;
             });
       }
@@ -505,6 +530,180 @@ function handleReservation(uid, sid, rid) {
             return RESERVATION_FAILED;
           });
     }
+  });
+}
+
+/**
+ * Send reserve session update to App Server. This allows other client
+ * devices to sync the state of reservations.
+ *
+ * @param uid ID of user reserving a seat in a session.
+ * @param sid ID of session being reserved.
+ * @returns {Promise.<TResult>} empty result.
+ */
+function sendReserve(uid, sid) {
+  var jwtClient = getJwtClient();
+
+  return jwtClient.authorize(function (err, tokens) {
+    if (err) {
+      console.log('Unable to authorize ' + err);
+      return;
+    }
+
+    return getProviderId(uid).then(function(providerId) {
+      return google.discoverAPI(USERDATA_DISCOVERY_URL, function(err, userdata) {
+        userdata.addReservedSession(
+            createUserdataParams(providerId, sid, jwtClient),
+            function(err, result) {
+              if (err) {
+                console.log("Unable to send Reservations: " + err);
+              } else {
+                console.log("Reservation sent successfully: " + result);
+              }
+            });
+      });
+    });
+  });
+}
+
+/**
+ * Send reservation return update to App Server. Clients use App Server to sync.
+ *
+ * @param uid ID of user returning reservation.
+ * @param sid ID of session whose reservation is being returned.
+ * @returns {Promise.<TResult>} empty result.
+ */
+function sendReturn(uid, sid) {
+  var jwtClient = getJwtClient();
+
+  return jwtClient.authorize(function (err, tokens) {
+    if (err) {
+      console.log('Unable to authorize ' + err);
+      return;
+    }
+
+    return getProviderId(uid).then(function(providerId) {
+      return google.discoverAPI(USERDATA_DISCOVERY_URL, function(err, userdata) {
+        userdata.removeReservedSession(
+            createUserdataParams(providerId, sid, jwtClient),
+            function(err, result) {
+              if (err) {
+                console.log(err);
+                console.log("Unable to remove reservation");
+              } else {
+                console.log("Reservation removed successfully");
+              }
+            });
+      });
+    });
+  });
+}
+
+/**
+ * Send wiatlist reservation update to App Server. Clients use App Server to
+ * sync.
+ *
+ * @param uid ID of user added to waitlist.
+ * @param sid ID of session the user is on the waitlist for.
+ * @returns {Promise.<TResult>} empty result.
+ */
+function sendWaitlist(uid, sid) {
+  var jwtClient = getJwtClient();
+
+  return jwtClient.authorize(function (err, tokens) {
+    if (err) {
+      console.log('Unable to authorize ' + err);
+      return;
+    }
+
+    return getProviderId(uid).then(function(providerId) {
+      return google.discoverAPI(USERDATA_DISCOVERY_URL, function(err, userdata) {
+        userdata.addWaitlistedSession(
+            createUserdataParams(providerId, sid, jwtClient),
+            function(err, result) {
+              if (err) {
+                console.log(err);
+                console.log("Unable to send waitlisted reservation");
+              } else {
+                console.log("Waitlisted reservation sent successfully");
+              }
+            });
+      });
+    });
+  });
+}
+
+/**
+ * Get a JWT that is based on the JWT associated with the service account
+ * that is allowed to make reservation requests to the App Server. Required
+ * JWT values are retrieved from functions config.
+ *
+ * @returns {google.auth.JWT}
+ */
+function getJwtClient() {
+  var privateKey = functions.config().userdata.key;
+  var clientEmail = functions.config().userdata.client_key;
+  var scope = functions.config().userdata.scope;
+
+  var jwtClient = new google.auth.JWT(
+      clientEmail,
+      null,
+      privateKey,
+      [scope],
+      null
+  );
+
+  return jwtClient;
+}
+
+/**
+ * Create parameters to be used when sending reservation updates via the
+ * Userdata endpoints.
+ *
+ * @param providerId Google ID of the user whose reservations are being updated.
+ * @param sid ID of session in reservation update.
+ * @param jwtClient JWT that is used to authenticate the request to the App
+ *                  Server.
+ * @returns {
+ *            sessionId: string,
+ *            userId: string,
+ *            timestampUTC: string,
+ *            auth: JWT
+ *          }
+ */
+function createUserdataParams(providerId, sid, jwtClient) {
+  return {
+    sessionId: sid,
+    userId: providerId,
+    timestampUTC: '' + new Date().getTime(),
+    auth: jwtClient
+  }
+}
+
+/**
+ * Get the provider ID that is linked to the FirebaseUser ID.
+ *
+ * @param uid FirebaseUser ID.
+ * @returns {Promise.<TResult>} string provider ID that is linked to the
+ *                              FirebaseUser.
+ */
+function getProviderId(uid) {
+  return admin.auth().getUser(uid).then(function(userRecord) {
+    if (!userRecord) {
+      return uid;
+    }
+    var providers = userRecord.providerData;
+    for (var provider in providers) {
+      // Check that provider is Google.
+      if (provider.providerId == GOOGLE_PROVIDER_ID) {
+        return provider.uid;
+      }
+    }
+    // Return FirebaseUser ID if no Google provider is found.
+    return uid;
+  }).catch(function(error) {
+    console.log('Error fetching user data: ' + error);
+    return uid;
   });
 }
 
