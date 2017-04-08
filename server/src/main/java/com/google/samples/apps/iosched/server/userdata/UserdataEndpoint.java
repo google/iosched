@@ -48,6 +48,7 @@ import static com.googlecode.objectify.ObjectifyService.ofy;
         audiences = {Ids.ANDROID_AUDIENCE}
 )
 public class UserdataEndpoint {
+
     /**
      * Helper method to get the data object for a given User.
      *
@@ -65,6 +66,30 @@ public class UserdataEndpoint {
         } catch (NotFoundException e) {
             UserData data = new UserData();
             data.userId = uid;
+            return data;
+        }
+    }
+
+    /**
+     * Helper method to get the data object for a given user when requested
+     * by a service account.
+     *
+     * @param user Service account user making the request.
+     * @param userId ID of the user whose userdata is being updated.
+     * @return User's data object.
+     * @throws UnauthorizedException
+     */
+    private UserData getUser(User user, String userId) throws UnauthorizedException {
+        if (user == null || user.getEmail() == null ||
+            !Ids.SERVICE_ACCOUNT_EMAIL.equals(user.getEmail())) {
+            throw new UnauthorizedException("Invalid credentials");
+        }
+
+        try {
+            return ofy().load().type(UserData.class).id(userId).safe();
+        } catch (NotFoundException e) {
+            UserData data = new UserData();
+            data.userId = userId;
             return data;
         }
     }
@@ -276,10 +301,11 @@ public class UserdataEndpoint {
     }
 
     /**
-     * Add a waitlisted session for the current user. If the session is already in the user's feed,
+     * Add a waitlisted session for the specified user. If the session is already in the user's feed,
      * it will be annotated with status=WAITLISTED.
      *
-     * @param user         Current user (injected by Endpoints)
+     * @param user         Service account making the request (injected by Endpoints)
+     * @param userId       User ID of user that reserved a session.
      * @param sessionId    Session ID to mark as reserved.
      * @param timestampUTC The time (in millis, UTC) when the user performed this action. May be
      *                     different than the time this method is called if offline sync is
@@ -287,13 +313,14 @@ public class UserdataEndpoint {
      * @return The list of reserved sessions for the user
      */
     @ApiMethod(name = "addWaitlistedSession", path = "reservations/waitlist",
-        httpMethod = ApiMethod.HttpMethod.PUT)
+        httpMethod = ApiMethod.HttpMethod.PUT, clientIds = {Ids.SERVICE_ACCOUNT_CLIENT_ID})
     public Map<String, ReservedSession> addWaitlistedSession (
         User user,
+        @Named("userId") String userId,
         @Named("sessionId") String sessionId,
         @Named("timestampUTC") long timestampUTC)
         throws UnauthorizedException {
-        UserData data = getUser(user);
+        UserData data = getUser(user, userId);
         ReservedSession s = new ReservedSession(sessionId, Status.WAITLISTED, timestampUTC);
         data.reservedSessions.put(sessionId, s);
         save(data);
@@ -301,10 +328,11 @@ public class UserdataEndpoint {
     }
 
     /**
-     * Add a reserved session for the current user. If the session is already in the user's feed,
+     * Add a reserved session for the specified user. If the session is already in the user's feed,
      * it will be annotated with status=RESERVED.
      *
-     * @param user         Current user (injected by Endpoints)
+     * @param user         Service account making the request (injected by Endpoints)
+     * @param userId       User ID of user that reserved a session.
      * @param sessionId    Session ID to mark as reserved.
      * @param timestampUTC The time (in millis, UTC) when the user performed this action. May be
      *                     different than the time this method is called if offline sync is
@@ -312,13 +340,14 @@ public class UserdataEndpoint {
      * @return The list of reserved sessions for the user
      */
     @ApiMethod(name = "addReservedSession", path = "reservations",
-        httpMethod = ApiMethod.HttpMethod.PUT)
+        httpMethod = ApiMethod.HttpMethod.PUT, clientIds = {Ids.SERVICE_ACCOUNT_CLIENT_ID})
     public Map<String, ReservedSession> addReservedSession(
             User user,
+            @Named("userId") String userId,
             @Named("sessionId") String sessionId,
             @Named("timestampUTC") long timestampUTC)
             throws UnauthorizedException {
-        UserData data = getUser(user);
+        UserData data = getUser(user, userId);
         ReservedSession s = new ReservedSession(sessionId, Status.RESERVED, timestampUTC);
         data.reservedSessions.put(sessionId, s);
         save(data);
@@ -326,20 +355,23 @@ public class UserdataEndpoint {
     }
 
     /**
-     * Remove a reserved session for the current user. The session will still be
+     * Remove a reserved session for the specified user. The session will still be
      * attached to the user's feed, but will be annotated with status=DELETED.
      *
-     * @param user         Current user (injected by Endpoints)
+     * @param user         Service account making the request (injected by Endpoints)
+     * @param userId       User ID of user that reserved a session.
      * @param sessionId    Session ID to mark as not reserved.
      * @param timestampUTC The time (in millis, UTC) when the user performed this action. May be
      *                     different than the time this method is called if offline sync is
      *                     implemented. MUST BE ACCURATE - COMPENSATE FOR CLOCK DRIFT!
      */
     @ApiMethod(name = "removeReservedSession", path = "reservations",
-        httpMethod = ApiMethod.HttpMethod.DELETE)
-    public void removeReservedSession(User user, @Named("sessionId") String sessionId, @Named
-            ("timestampUTC") long timestampUTC) throws UnauthorizedException {
-        UserData data = getUser(user);
+        httpMethod = ApiMethod.HttpMethod.DELETE, clientIds = {Ids.SERVICE_ACCOUNT_CLIENT_ID})
+    public void removeReservedSession(User user,
+        @Named("userId") String userId,
+        @Named("sessionId") String sessionId,
+        @Named("timestampUTC") long timestampUTC) throws UnauthorizedException {
+        UserData data = getUser(user, userId);
         ReservedSession s = new ReservedSession(sessionId, Status.DELETED, timestampUTC);
         data.reservedSessions.put(sessionId, s);
         save(data);
