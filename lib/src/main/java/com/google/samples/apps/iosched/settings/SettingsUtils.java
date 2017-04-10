@@ -20,10 +20,12 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 
+import com.google.firebase.messaging.FirebaseMessaging;
 import com.google.samples.apps.iosched.Config;
 import com.google.samples.apps.iosched.lib.BuildConfig;
 import com.google.samples.apps.iosched.ui.BaseActivity;
 import com.google.samples.apps.iosched.util.Constants;
+import com.google.samples.apps.iosched.util.RegistrationUtils;
 import com.google.samples.apps.iosched.util.TimeUtils;
 
 import java.util.TimeZone;
@@ -56,6 +58,21 @@ public class SettingsUtils {
      * Boolean indicating if the app can collect Analytics.
      */
     public static final String PREF_ANALYTICS_ENABLED = "pref_analytics_enabled";
+    /**
+     * Firebase messaging topic for notifications applying to all app users who enabled
+     * notifications.
+     */
+    public static final String GENERIC_NEWS_TOPIC = "generic_news";
+    /**
+     * Firebase messaging topic for notifications applying to users that are conference attendees
+     * who enabled notifications.
+     */
+    public static final String ONSITE_NEWS_TOPIC = "generic_news";
+    /**
+     * Firebase messaging topic for notifications applying to users that are not attendees
+     * but enabled notifications.
+     */
+    public static final String OFFSITE_NEWS_TOPIC = "generic_news";
     /**
      * Boolean indicating whether the debug build warning was already shown.
      */
@@ -92,13 +109,26 @@ public class SettingsUtils {
     /**
      * Return true if the user has indicated they want the schedule in local times, false if they
      * want to use the conference time zone. This preference is enabled/disabled by the user in the
-     * {@link SettingsActivity}.
+     * {@link SettingsActivity}. If not explicitly set, it will default to conference time if
+     * they are attending and local time if they are not attending.
      *
      * @param context Context to be used to lookup the {@link android.content.SharedPreferences}.
      */
-    private static boolean isUsingLocalTime(Context context) {
+    public static boolean isUsingLocalTime(Context context) {
         SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(context);
-        return sp.getBoolean(PREF_LOCAL_TIMES, false);
+        return sp.getBoolean(PREF_LOCAL_TIMES, !RegistrationUtils.isRegisteredAttendee(context));
+    }
+
+    /**
+     * Set whether the user wants to use their local time zone or the conference
+     * time zone.
+     *
+     * @param usingLocalTime true if they want to use their local timezone, false if they want to
+     *                       use the conference's time zone.
+     */
+    public static void setUsingLocalTime(Context context, boolean usingLocalTime) {
+        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(context);
+        sp.edit().putBoolean(PREF_LOCAL_TIMES, usingLocalTime).apply();
     }
 
     /**
@@ -256,6 +286,7 @@ public class SettingsUtils {
     public static void setShowNotifications(final Context context, boolean show) {
         SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(context);
         sp.edit().putBoolean(BuildConfig.PREF_NOTIFICATIONS_ENABLED, show).apply();
+        updateNotificationSubscriptions(context);
     }
 
     /**
@@ -333,5 +364,20 @@ public class SettingsUtils {
             SharedPreferences.OnSharedPreferenceChangeListener listener) {
         SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(context);
         sp.unregisterOnSharedPreferenceChangeListener(listener);
+    }
+
+    public static void updateNotificationSubscriptions(Context context) {
+        if (shouldShowNotifications(context)) {
+            FirebaseMessaging.getInstance().subscribeToTopic(GENERIC_NEWS_TOPIC);
+            if (RegistrationUtils.isRegisteredAttendee(context)) {
+                FirebaseMessaging.getInstance().subscribeToTopic(ONSITE_NEWS_TOPIC);
+            } else {
+                FirebaseMessaging.getInstance().subscribeToTopic(OFFSITE_NEWS_TOPIC);
+            }
+        } else {
+            FirebaseMessaging.getInstance().unsubscribeFromTopic(GENERIC_NEWS_TOPIC);
+            FirebaseMessaging.getInstance().unsubscribeFromTopic(ONSITE_NEWS_TOPIC);
+            FirebaseMessaging.getInstance().unsubscribeFromTopic(OFFSITE_NEWS_TOPIC);
+        }
     }
 }

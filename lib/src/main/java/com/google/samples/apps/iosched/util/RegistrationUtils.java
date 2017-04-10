@@ -6,6 +6,7 @@ import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 
 import com.google.samples.apps.iosched.lib.BuildConfig;
+import com.google.samples.apps.iosched.settings.SettingsUtils;
 
 /**
  * Utility methods dealing with I/O user registration.
@@ -30,5 +31,6 @@ public class RegistrationUtils {
     public static void setRegisteredAttendee(final Context context, final boolean newValue) {
         SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(context);
         sp.edit().putBoolean(BuildConfig.PREF_ATTENDEE_AT_VENUE, newValue).apply();
+        SettingsUtils.updateNotificationSubscriptions(context);
     }
 }
