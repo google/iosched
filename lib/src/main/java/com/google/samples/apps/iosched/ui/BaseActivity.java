@@ -187,8 +187,8 @@ public abstract class BaseActivity extends AppCompatActivity implements
     private void trySetupSwipeRefresh() {
         mSwipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.swipe_refresh_layout);
         if (mSwipeRefreshLayout != null) {
-            mSwipeRefreshLayout.setColorSchemeResources(
-                    R.color.flat_button_text);
+            mSwipeRefreshLayout.setColorSchemeResources(R.color.sunflower_yellow, R.color.neon_blue,
+                    R.color.lightish_blue, R.color.aqua_marine);
             mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
                 @Override
                 public void onRefresh() {
