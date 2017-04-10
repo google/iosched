@@ -70,14 +70,30 @@
 
     </android.support.design.widget.AppBarLayout>
 
-    <android.support.v7.widget.RecyclerView
-        android:id="@android:id/list"
+    <ViewSwitcher
+        android:id="@+id/loading_switcher"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:scrollbarStyle="insideOverlay"
-        android:scrollbars="vertical"
-        app:layoutManager="android.support.v7.widget.LinearLayoutManager"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior"
-        tools:listitem="@layout/my_schedule_item" />
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+        <com.airbnb.lottie.LottieAnimationView
+            android:id="@+id/loading_anim"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            app:lottie_autoPlay="true"
+            app:lottie_fileName="animations/logo.json"
+            app:lottie_loop="true" />
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@android:id/list"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scrollbarStyle="insideOverlay"
+            android:scrollbars="vertical"
+            app:layoutManager="LinearLayoutManager"
+            tools:listitem="@layout/my_schedule_item" />
+
+    </ViewSwitcher>
 
 </android.support.design.widget.CoordinatorLayout>
