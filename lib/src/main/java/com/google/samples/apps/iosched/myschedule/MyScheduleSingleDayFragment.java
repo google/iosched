@@ -32,7 +32,9 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ViewSwitcher;
 
+import com.airbnb.lottie.LottieAnimationView;
 import com.google.samples.apps.iosched.Config;
 import com.google.samples.apps.iosched.archframework.UpdatableView;
 import com.google.samples.apps.iosched.feedback.SessionFeedbackActivity;
@@ -64,6 +66,8 @@ public class MyScheduleSingleDayFragment extends Fragment
      */
     private int mDayId = 1;
 
+    private ViewSwitcher mLoadingSwitcher;
+    private LottieAnimationView mLoadingView;
     private RecyclerView mRecyclerView;
     private MyScheduleDayAdapter mViewAdapter;
 
@@ -73,7 +77,6 @@ public class MyScheduleSingleDayFragment extends Fragment
     public void onCreate(@Nullable final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setRetainInstance(true);
-
         getLoaderManager().initLoader(TAG_METADATA_TOKEN, null, this);
     }
 
@@ -81,8 +84,9 @@ public class MyScheduleSingleDayFragment extends Fragment
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.my_schedule_singleday_frag, container, false);
+        mLoadingSwitcher = (ViewSwitcher) view;
+        mLoadingView = (LottieAnimationView) view.findViewById(R.id.loading_anim);
         mRecyclerView = (RecyclerView) view.findViewById(android.R.id.list);
-        mRecyclerView.setLayoutManager(new LinearLayoutManager(container.getContext()));
         mRecyclerView.setHasFixedSize(true);
         return view;
     }
@@ -147,6 +151,7 @@ public class MyScheduleSingleDayFragment extends Fragment
 
     private void updateSchedule(MyScheduleModel model) {
         if (isVisible()) {
+            showSchedule();
             if (mViewAdapter == null) {
                 mViewAdapter = new MyScheduleDayAdapter(this, mTagMetadata, true);
             }
@@ -273,5 +278,10 @@ public class MyScheduleSingleDayFragment extends Fragment
         if (activity instanceof ScheduleViewParent) {
             ((ScheduleViewParent) activity).onRequestFilterByTag(tag);
         }
+    }
+
+    private void showSchedule() {
+        mLoadingView.cancelAnimation();
+        mLoadingSwitcher.setDisplayedChild(1);
     }
 }
