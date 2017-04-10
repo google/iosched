@@ -16,13 +16,9 @@
 
 package com.google.samples.apps.iosched.util;
 
-import android.annotation.TargetApi;
 import android.app.Activity;
 import android.app.ActivityManager;
-import android.content.res.Resources;
 import android.graphics.Bitmap;
-import android.os.Build;
-import android.support.v4.content.ContextCompat;
 
 import com.google.samples.apps.iosched.lib.R;
 
@@ -35,12 +31,7 @@ public class RecentTasksStyler {
 
     private RecentTasksStyler() { }
 
-    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     public static void styleRecentTasksEntry(Activity activity) {
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
-            return;
-        }
-
         final String label = activity.getString(activity.getApplicationInfo().labelRes);
         final int colorPrimary =
                 UIUtils.getThemeColor(activity, R.attr.colorPrimary, R.color.theme_primary);
