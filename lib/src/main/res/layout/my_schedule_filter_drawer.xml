@@ -27,6 +27,7 @@ limitations under the License.
     tools:ignore="Overdraw">
 
     <LinearLayout
+        android:id="@+id/filters_header"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/lighter_grey"
@@ -35,7 +36,8 @@ limitations under the License.
         android:minHeight="?actionBarSize"
         android:orientation="horizontal"
         android:paddingEnd="@dimen/spacing_normal"
-        android:paddingStart="@dimen/padding_normal">
+        android:paddingStart="@dimen/padding_normal"
+        android:stateListAnimator="@animator/active_raise">
 
         <TextView
             android:layout_width="0dp"
