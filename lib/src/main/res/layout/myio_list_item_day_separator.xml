@@ -17,27 +17,31 @@
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:orientation="horizontal"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@color/light_grey"
-    android:baselineAligned="false"
+    android:background="@color/lighter_grey"
     android:gravity="center_vertical"
-    android:padding="@dimen/padding_normal">
+    android:minHeight="?actionBarSize"
+    android:orientation="horizontal"
+    android:paddingEnd="@dimen/padding_normal"
+    android:paddingStart="@dimen/padding_normal">
 
     <TextView
         android:id="@+id/text"
-        android:textAppearance="@style/TextAppearance.AppCompat.Headline"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_weight="1"
         android:lines="1"
+        android:paddingBottom="@dimen/spacing_micro"
+        android:paddingTop="@dimen/spacing_micro"
+        android:textAppearance="@style/TextAppearance.H5"
         tools:text="Tues, May 17" />
 
     <Button
         android:id="@+id/add_events"
+        style="@style/Widget.IOSched.Button.CTA"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:backgroundTint="@color/aqua_marine"
-        android:text="Add Events"/>
+        android:text="@string/add_events" />
+
 </LinearLayout>

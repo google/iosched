@@ -146,6 +146,12 @@
         <item name="android:drawableStart">@drawable/reserve_icon</item>
     </style>
 
+    <style name="Widget.IOSched.Button.CTA" parent="@style/Widget.AppCompat.Button.Colored">
+        <item name="android:textColor">?android:textColorSecondary</item>
+        <item name="android:textAppearance">@style/TextAppearance.H5</item>
+        <item name="android:textAllCaps">true</item>
+    </style>
+
     <!-- Empty views -->
     <style name="EmptyText">
         <item name="android:textSize">@dimen/text_size_medium</item>
@@ -299,7 +305,7 @@
 
     <style name="TextAppearance.H5" parent="@style/TextAppearance.AppCompat.Body2">
         <item name="android:textSize">14sp</item>
-        <item name="android:letterSpacing">0.05</item>
+        <item name="android:letterSpacing">0.03</item>
     </style>
 
     <style name="TextAppearance.H5.Caps">
