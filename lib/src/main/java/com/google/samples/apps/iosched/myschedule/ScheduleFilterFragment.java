@@ -78,9 +78,16 @@ public class ScheduleFilterFragment extends Fragment implements LoaderCallbacks<
         final Context context = view.getContext();
         TextViewCompat.setCompoundDrawablesRelativeWithIntrinsicBounds(mClearFilters, null, null,
                 AppCompatResources.getDrawable(context, R.drawable.ic_clear_all), null);
-
+        final View filtersHeader = view.findViewById(R.id.filters_header);
         mRecyclerView.addItemDecoration(new DividerItemDecoration(context,
                 DividerItemDecoration.VERTICAL));
+        mRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                // set elevation on header when list is scrolled; see @animator/active_raise
+                filtersHeader.setActivated(recyclerView.canScrollVertically(-1));
+            }
+        });
         mAdapter = new SessionsFilterAdapter(context, null, savedInstanceState);
         mAdapter.setSessionFilterAdapterListener(new OnFiltersChangedListener() {
             @Override
