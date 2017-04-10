@@ -92,10 +92,10 @@ public class NavigationModel implements Model<NavigationQueryEnum, NavigationUse
      * List of all possible navigation items.
      */
     public enum NavigationItemEnum {
-        MY_SCHEDULE(R.id.myschedule_nav_item, R.string.navdrawer_item_my_schedule,
-                R.drawable.ic_nav_schedule, MyScheduleActivity.class, true),
         MY_IO(R.id.myio_nav_item, R.string.navdrawer_item_my_io, R.drawable.ic_nav_myio,
                 MyIOActivity.class, true),
+        MY_SCHEDULE(R.id.myschedule_nav_item, R.string.navdrawer_item_my_schedule,
+                R.drawable.ic_nav_schedule, MyScheduleActivity.class, true),
         FEED(R.id.feed_nav_item, R.string.navdrawer_item_feed,
                 R.drawable.ic_nav_feed, FeedActivity.class, true),
         MAP(R.id.map_nav_item, R.string.navdrawer_item_map, R.drawable.ic_nav_map,
