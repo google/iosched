@@ -14,25 +14,34 @@
 package com.google.samples.apps.iosched.info.settings;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.net.Uri;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CompoundButton;
+import android.widget.Switch;
 import android.widget.TextView;
 
 import com.google.samples.apps.iosched.info.BaseInfoFragment;
 import com.google.samples.apps.iosched.lib.BuildConfig;
 import com.google.samples.apps.iosched.lib.R;
+import com.google.samples.apps.iosched.settings.SettingsUtils;
 
-public class SettingsFragment extends BaseInfoFragment {
+public class SettingsFragment extends BaseInfoFragment implements
+        SharedPreferences.OnSharedPreferenceChangeListener {
 
     TextView mTermsOfService;
     TextView mPrivacyPolicy;
     TextView mAppVersion;
+    Switch mTimeZoneSetting;
+    Switch mNotificationsSetting;
+    Switch mAnonStatisticsSetting;
 
     @Nullable
     @Override
@@ -42,12 +51,17 @@ public class SettingsFragment extends BaseInfoFragment {
         mTermsOfService = (TextView) root.findViewById(R.id.termsOfServiceLink);
         mPrivacyPolicy = (TextView) root.findViewById(R.id.privacyPolicyLink);
         mAppVersion = (TextView) root.findViewById(R.id.appVersion);
+        mTimeZoneSetting = (Switch) root.findViewById(R.id.settingsTimeZoneSwitch);
+        mNotificationsSetting = (Switch) root.findViewById(R.id.settingsNotificationsSwitch);
+        mAnonStatisticsSetting = (Switch) root.findViewById(R.id.settingsAnonStatisticsSwitch);
         return root;
     }
 
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        mNotificationsSetting.setChecked(SettingsUtils.shouldShowNotifications(getContext()));
+        mTimeZoneSetting.setChecked(!SettingsUtils.isUsingLocalTime(getContext()));
         mTermsOfService.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -68,10 +82,51 @@ public class SettingsFragment extends BaseInfoFragment {
         });
         mAppVersion.setText(getResources()
                 .getString(R.string.about_app_version, BuildConfig.VERSION_NAME));
+        mNotificationsSetting.setOnCheckedChangeListener(
+                new CompoundButton.OnCheckedChangeListener() {
+                    @Override
+                    public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                        SettingsUtils.setShowNotifications(getContext(), isChecked);
+                    }
+                });
+        mTimeZoneSetting.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                SettingsUtils.setUsingLocalTime(getContext(), !isChecked);
+            }
+        });
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        PreferenceManager.getDefaultSharedPreferences(getContext())
+                .registerOnSharedPreferenceChangeListener(this);
+    }
+
+    @Override
+    public void onPause() {
+        PreferenceManager.getDefaultSharedPreferences(getContext())
+                .unregisterOnSharedPreferenceChangeListener(this);
+        super.onPause();
     }
 
     @Override
     public String getTitle(@NonNull Resources resources) {
         return resources.getString(R.string.title_settings);
+    }
+
+    @Override
+    public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
+        switch (key) {
+            case SettingsUtils.PREF_LOCAL_TIMES:
+                mTimeZoneSetting.setChecked(SettingsUtils.isUsingLocalTime(getContext()));
+                break;
+            case BuildConfig.PREF_NOTIFICATIONS_ENABLED:
+                mNotificationsSetting.setChecked(
+                        SettingsUtils.shouldShowNotifications(getContext()));
+                break;
+            //TODO(36733076) add disable/enable FA.
+        }
     }
 }

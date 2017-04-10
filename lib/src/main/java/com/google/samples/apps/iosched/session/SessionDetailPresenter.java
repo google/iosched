@@ -40,11 +40,6 @@ public class SessionDetailPresenter extends PresenterImpl<SessionDetailModel,
         super(model, views, validUserActions, initialQueries);
     }
 
-    @Override
-    public void loadInitialQueries() {
-        super.loadInitialQueries();
-    }
-
     public void initListeners() {
         getModel().initReservationListeners();
     }

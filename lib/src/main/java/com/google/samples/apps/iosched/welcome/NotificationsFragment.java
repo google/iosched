@@ -42,7 +42,7 @@ public class NotificationsFragment extends WelcomeFragment {
 
     @Override
     public boolean shouldDisplay(Context context) {
-        /* Display if the user has opted into notifications or hasn't explicitly declined
+        /* Display only if the user hasn't opted into notifications and hasn't explicitly declined
         notifications during onboarding. */
         return !WelcomeUtils.hasUserDeclinedNotificationsDuringOnboarding(context) &&
                 !SettingsUtils.shouldShowNotifications(context);
