@@ -25,7 +25,9 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ViewSwitcher;
 
+import com.airbnb.lottie.LottieAnimationView;
 import com.google.samples.apps.iosched.feedback.SessionFeedbackActivity;
 import com.google.samples.apps.iosched.lib.R;
 import com.google.samples.apps.iosched.model.TagMetadata.Tag;
@@ -45,7 +47,9 @@ public class MyIOFragment extends Fragment implements MyIoView, Callbacks {
     private static final long UI_REFRESH_DELAY = TimeUtils.MINUTE;
 
     private MyIoPresenter mPresenter;
+    private ViewSwitcher mLoadingSwitcher;
     private RecyclerView mRecyclerView;
+    private LottieAnimationView mLoadingView;
     private MyIOAdapter mAdapter;
     private Handler mHandler;
 
@@ -69,13 +73,15 @@ public class MyIOFragment extends Fragment implements MyIoView, Callbacks {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container,
-            @Nullable Bundle savedInstanceState) {
+                             @Nullable Bundle savedInstanceState) {
         return inflater.inflate(R.layout.myio_fragment, container, false);
     }
 
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        mLoadingSwitcher = (ViewSwitcher) view.findViewById(R.id.loading_switcher);
+        mLoadingView = (LottieAnimationView) view.findViewById(R.id.loading_anim);
         mRecyclerView = (RecyclerView) view.findViewById(android.R.id.list);
         mAdapter = new MyIOAdapter(getContext(), this);
         mRecyclerView.setAdapter(mAdapter);
@@ -86,7 +92,6 @@ public class MyIOFragment extends Fragment implements MyIoView, Callbacks {
         super.onActivityCreated(savedInstanceState);
         mPresenter = new MyIOPresenterImpl(getContext(), this);
         mPresenter.initModel(getLoaderManager());
-
         mHandler = new Handler();
     }
 
@@ -113,6 +118,7 @@ public class MyIOFragment extends Fragment implements MyIoView, Callbacks {
 
     @Override
     public void onScheduleLoaded(MyIOModel model) {
+        showSchedule();
         mAdapter.setItems(model.getScheduleItems());
     }
 
@@ -154,5 +160,10 @@ public class MyIOFragment extends Fragment implements MyIoView, Callbacks {
     @Override
     public void onAddEventsClicked(int conferenceDay) {
         MyScheduleActivity.launchScheduleForConferenceDay(getContext(), conferenceDay);
+    }
+
+    private void showSchedule() {
+        mLoadingView.cancelAnimation();
+        mLoadingSwitcher.setDisplayedChild(1);
     }
 }
