@@ -20,12 +20,11 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 
-import com.google.samples.apps.iosched.lib.BuildConfig;
 import com.google.samples.apps.iosched.Config;
+import com.google.samples.apps.iosched.lib.BuildConfig;
 import com.google.samples.apps.iosched.ui.BaseActivity;
 import com.google.samples.apps.iosched.util.Constants;
 import com.google.samples.apps.iosched.util.TimeUtils;
-import com.google.samples.apps.iosched.welcome.WelcomeActivity;
 
 import java.util.TimeZone;
 
@@ -44,48 +43,40 @@ public class SettingsUtils {
      * throughout the app.
      */
     public static final String PREF_LOCAL_TIMES = "pref_local_times";
-
-    /**
-     * Boolean indicating whether the debug build warning was already shown.
-     */
-    private static final String PREF_DEBUG_BUILD_WARNING_SHOWN = "pref_debug_build_warning_shown";
-
     /**
      * Boolean indicating whether ToS has been accepted.
      */
     public static final String PREF_DECLINED_WIFI_SETUP = "pref_declined_wifi_setup" +
             Constants.CONFERENCE_YEAR_PREF_POSTFIX;
-
-    /**
-     * Long indicating when a sync was last ATTEMPTED (not necessarily succeeded).
-     */
-    private static final String PREF_LAST_SYNC_ATTEMPTED = "pref_last_sync_attempted";
-
-    /**
-     * Long indicating when a sync last SUCCEEDED.
-     */
-    private static final String PREF_LAST_SYNC_SUCCEEDED = "pref_last_sync_succeeded";
-
-    /**
-     * Long storing the sync interval that's currently configured.
-     */
-    private static final String PREF_CUR_SYNC_INTERVAL = "pref_cur_sync_interval";
-
     /**
      * Boolean indicating app should sync sessions with local calendar
      */
     public static final String PREF_SYNC_CALENDAR = "pref_sync_calendar";
-
+    /**
+     * Boolean indicating if the app can collect Analytics.
+     */
+    public static final String PREF_ANALYTICS_ENABLED = "pref_analytics_enabled";
+    /**
+     * Boolean indicating whether the debug build warning was already shown.
+     */
+    private static final String PREF_DEBUG_BUILD_WARNING_SHOWN = "pref_debug_build_warning_shown";
+    /**
+     * Long indicating when a sync was last ATTEMPTED (not necessarily succeeded).
+     */
+    private static final String PREF_LAST_SYNC_ATTEMPTED = "pref_last_sync_attempted";
+    /**
+     * Long indicating when a sync last SUCCEEDED.
+     */
+    private static final String PREF_LAST_SYNC_SUCCEEDED = "pref_last_sync_succeeded";
+    /**
+     * Long storing the sync interval that's currently configured.
+     */
+    private static final String PREF_CUR_SYNC_INTERVAL = "pref_cur_sync_interval";
     /**
      * Boolean indicating whether the app has performed the (one-time) welcome flow.
      */
     private static final String PREF_WELCOME_DONE = "pref_welcome_done" +
             Constants.CONFERENCE_YEAR_PREF_POSTFIX;
-
-    /**
-     * Boolean indicating if the app can collect Analytics.
-     */
-    public static final String PREF_ANALYTICS_ENABLED = "pref_analytics_enabled";
 
     /**
      * Return the {@link TimeZone} the app is set to use (either user or conference).
@@ -259,8 +250,8 @@ public class SettingsUtils {
     }
 
     /**
-     * @param context  Context to be used to edit the {@link android.content.SharedPreferences}.
-     * @param show Whether app should show notifications
+     * @param context Context to be used to edit the {@link android.content.SharedPreferences}.
+     * @param show    Whether app should show notifications
      */
     public static void setShowNotifications(final Context context, boolean show) {
         SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(context);
@@ -268,8 +259,8 @@ public class SettingsUtils {
     }
 
     /**
-     * @param context  Context to be used to edit the {@link android.content.SharedPreferences}.
-     * @param show Whether app should show session feedback reminders
+     * @param context Context to be used to edit the {@link android.content.SharedPreferences}.
+     * @param show    Whether app should show session feedback reminders
      */
     public static void setShowSessionFeedbackReminders(final Context context, boolean show) {
         SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(context);
@@ -326,7 +317,7 @@ public class SettingsUtils {
      * @param listener Listener to register.
      */
     static void registerOnSharedPreferenceChangeListener(final Context context,
-                                                                SharedPreferences.OnSharedPreferenceChangeListener listener) {
+            SharedPreferences.OnSharedPreferenceChangeListener listener) {
         SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(context);
         sp.registerOnSharedPreferenceChangeListener(listener);
     }
@@ -339,7 +330,7 @@ public class SettingsUtils {
      * @param listener Listener to un-register.
      */
     static void unregisterOnSharedPreferenceChangeListener(final Context context,
-                                                                  SharedPreferences.OnSharedPreferenceChangeListener listener) {
+            SharedPreferences.OnSharedPreferenceChangeListener listener) {
         SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(context);
         sp.unregisterOnSharedPreferenceChangeListener(listener);
     }
