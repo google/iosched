@@ -15,7 +15,6 @@
  */
 package com.google.samples.apps.iosched.sync.userdata;
 
-import android.annotation.SuppressLint;
 import android.content.AsyncQueryHandler;
 import android.content.Context;
 import android.database.Cursor;
@@ -26,6 +25,7 @@ import com.google.samples.apps.iosched.provider.ScheduleContract;
 import com.google.samples.apps.iosched.util.AccountUtils;
 import com.google.samples.apps.iosched.util.IOUtils;
 
+import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -37,6 +37,7 @@ import static com.google.samples.apps.iosched.provider.ScheduleContract.MyFeedba
 import static com.google.samples.apps.iosched.provider.ScheduleContract.MyReservations;
 import static com.google.samples.apps.iosched.provider.ScheduleContract.MySchedule;
 import static com.google.samples.apps.iosched.provider.ScheduleContract.MyViewedVideos;
+import static com.google.samples.apps.iosched.util.LogUtils.LOGV;
 
 /**
  * Helper class to handle the format of the User Data that is stored into AppData.
@@ -208,19 +209,42 @@ public class UserDataHelper {
         UserActionHelper.updateContentProvider(context, actions, accountName);
     }
 
-    public static void clearUserDataOnSignOut(Context context) {
-        @SuppressLint("HandlerLeak")
-        AsyncQueryHandler handler = new AsyncQueryHandler(context.getContentResolver()) {};
-        String[] selectionArgs = new String[]{AccountUtils.getActiveAccountName(context)};
+    public static void clearUserDataOnSignOut(final Context context) {
+        String accountName = AccountUtils.getActiveAccountName(context);
+        AsyncQueryHandler handler = new ClearDataAsyncQueryHandler(context);
 
-        handler.startDelete(1, null, MySchedule.CONTENT_URI,
-                MySchedule.MY_SCHEDULE_ACCOUNT_NAME + " = ?", selectionArgs);
+        handler.startDelete(ClearDataAsyncQueryHandler.TOKEN_MY_SCHEDULE, null,
+                MySchedule.buildMyScheduleUri(accountName), null, null);
 
-        handler.startDelete(2, null, MyFeedbackSubmitted.CONTENT_URI,
-                MyFeedbackSubmitted.MY_FEEDBACK_SUBMITTED_ACCOUNT_NAME + " = ?", selectionArgs);
+        handler.startDelete(2, null, MyFeedbackSubmitted.buildMyFeedbackSubmittedUri(accountName),
+                null, null);
 
-        handler.startDelete(3, null, MyReservations.CONTENT_URI,
-                MyReservations.MY_RESERVATION_ACCOUNT_NAME + " = ?", selectionArgs);
+        handler.startDelete(3, null, MyReservations.buildMyReservationUri(accountName), null, null);
+    }
 
+    private static class ClearDataAsyncQueryHandler extends AsyncQueryHandler {
+        private final WeakReference<Context> mReference;
+        static final int TOKEN_MY_SCHEDULE = 1;
+
+        private ClearDataAsyncQueryHandler(Context context) {
+            super(context.getContentResolver());
+            mReference = new WeakReference<>(context);
+        }
+
+        @Override
+        protected void onDeleteComplete(int token, Object cookie, int result) {
+            if (token == TOKEN_MY_SCHEDULE && result > 0) {
+                // When items are deleted from MY_SCHEDULE trigger a notifyChange
+                // so that any current loaders are updated.
+                // TODO: Ideally the MyIo UI should observe individual changes to
+                // the user URIs instead of a composite URI.
+                Context context = mReference.get();
+                if (context == null) {
+                    return;
+                }
+                context.getContentResolver()
+                        .notifyChange(ScheduleContract.Sessions.CONTENT_MY_SCHEDULE_URI, null);
+            }
+        }
     }
 }
