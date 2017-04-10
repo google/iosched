@@ -785,6 +785,10 @@
     <!-- Label used for the user to dismiss a card. -->
     <string name="signin_prompt_dismiss">Dismiss</string>
 
+    <!-- Button for finding quickly navigating from a day within My I/O to the relevant day within
+    schedule -->
+    <string name="add_events">Add Events</string>
+
     <!-- A placeholder value for the user's name in the My I/O dialog -->
     <string name="my_io_dialog_default_name">Your name</string>
 
