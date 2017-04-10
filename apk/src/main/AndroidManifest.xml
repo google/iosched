@@ -157,11 +157,8 @@
         <activity
             android:name="com.google.samples.apps.iosched.settings.SettingsActivity"
             android:exported="false"
-            android:label="@string/title_settings">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.google.samples.apps.iosched.myschedule.MyScheduleActivity" />
-        </activity>
+            android:label="@string/title_settings"
+            android:parentActivityName=".myio.MyIOActivity" />
 
         <activity
             android:name="com.google.samples.apps.iosched.ui.SearchActivity"
@@ -186,10 +183,8 @@
             android:name="com.google.samples.apps.iosched.feedback.SessionFeedbackActivity"
             android:exported="false"
             android:label="@string/title_session_feedback"
-            android:theme="@style/Theme.IOSched.Feedback">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.google.samples.apps.iosched.myschedule.MyScheduleActivity" />
+            android:theme="@style/Theme.IOSched.Feedback"
+            android:parentActivityName=".myio.MyIOActivity">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
                 <category android:name="android.intent.category.DEFAULT" />
@@ -232,20 +227,14 @@
             android:name="com.google.samples.apps.iosched.map.MapActivity"
             android:exported="true"
             android:label="@string/title_map"
-            android:theme="@style/Theme.IOSched.Map">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.google.samples.apps.iosched.myschedule.MyScheduleActivity" />
-        </activity>
+            android:theme="@style/Theme.IOSched.Map"
+            android:parentActivityName=".myio.MyIOActivity" />
 
         <activity
             android:name="com.google.samples.apps.iosched.about.AboutActivity"
             android:exported="false"
-            android:label="@string/description_about">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.google.samples.apps.iosched.myschedule.MyScheduleActivity" />
-        </activity>
+            android:label="@string/description_about"
+            android:parentActivityName=".myio.MyIOActivity" />
 
         <!-- TaskStackBuilder proxy activity for widgets and notifications. -->
 
@@ -256,19 +245,16 @@
         <activity
             android:name="com.google.samples.apps.iosched.debug.DebugActivity"
             android:exported="false"
-            android:label="@string/title_activity_debug_test_runner">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.google.samples.apps.iosched.myschedule.MyScheduleActivity" />
-        </activity>
+            android:label="@string/title_activity_debug_test_runner"
+            android:parentActivityName=".myio.MyIOActivity" />
 
         <!-- This activity alias lets us change the main entry point without breaking launcher
              shortcuts. DO NOT change its android:name attribute.
         -->
         <activity-alias
-            android:name="com.google.samples.apps.iosched.explore.ExploreIOActivity"
+            android:name=".Launcher"
             android:label="@string/app_name"
-            android:targetActivity=".myschedule.MyScheduleActivity">
+            android:targetActivity=".myio.MyIOActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
