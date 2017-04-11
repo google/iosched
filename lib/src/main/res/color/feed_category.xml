@@ -15,7 +15,7 @@
      limitations under the License.
 -->
 <selector xmlns:android="http://schemas.android.com/apk/res/android">
-    <!-- use activated as a proxy for expanded state -->
-    <item android:state_activated="true" android:color="?colorPrimary" />
+    <!-- use activated as a proxy for emergency state -->
+    <item android:state_activated="true" android:color="?android:textColorPrimaryInverse" />
     <item android:color="?android:textColorPrimary" />
 </selector>

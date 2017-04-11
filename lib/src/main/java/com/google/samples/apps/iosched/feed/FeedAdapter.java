@@ -66,9 +66,7 @@ public class FeedAdapter extends RecyclerView.Adapter<FeedViewHolder> {
         if (feedMessage.isEmergency()) {
             feedMessage.setExpanded(true);
             holder.expanded = feedMessage.isExpanded();
-            holder.updateIconVisibilityForEmergency();
         } else {
-            holder.updateIconVisibilityForNonEmergency();
             holder.expanded = feedMessage.isExpanded();
             holder.updateExpandIcon(false);
             holder.setOnFeedItemExpandListener(new OnFeedItemExpandListener() {
@@ -83,6 +81,7 @@ public class FeedAdapter extends RecyclerView.Adapter<FeedViewHolder> {
                 }
             });
         }
+        holder.updateEmergencyStatus(feedMessage.isEmergency());
         holder.updatePriority(feedMessage.isPriority());
         holder.updateTitle(feedMessage.getTitle());
         holder.updateDateTime(feedMessage.getTimestamp());

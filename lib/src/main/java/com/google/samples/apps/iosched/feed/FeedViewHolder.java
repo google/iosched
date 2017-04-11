@@ -1,11 +1,7 @@
 package com.google.samples.apps.iosched.feed;
 
-import android.animation.Animator;
-import android.animation.AnimatorListenerAdapter;
 import android.content.Context;
 import android.content.res.ColorStateList;
-import android.graphics.Color;
-import android.graphics.LightingColorFilter;
 import android.graphics.Point;
 import android.support.v7.widget.RecyclerView;
 import android.transition.TransitionManager;
@@ -30,13 +26,13 @@ import static com.google.samples.apps.iosched.util.LogUtils.LOGD;
 import static com.google.samples.apps.iosched.util.LogUtils.LOGE;
 import static com.google.samples.apps.iosched.util.LogUtils.makeLogTag;
 
-public class FeedViewHolder extends RecyclerView.ViewHolder {
+class FeedViewHolder extends RecyclerView.ViewHolder {
     private static final int SHORT_DESCRIPTION_MAX_LINES = 3;
     private static final int LONG_DESCRIPTION_MAX_LINES = 30;
     private static final String TAG = makeLogTag(FeedViewHolder.class);
 
     boolean expanded;
-    boolean hasImage;
+    private boolean hasImage;
     private RelativeLayout mainLayout;
     private TextView title;
     private TextView dateTime;
@@ -49,29 +45,29 @@ public class FeedViewHolder extends RecyclerView.ViewHolder {
     private ImageView priorityIcon;
 
 
-    public FeedViewHolder(View itemView) {
+    FeedViewHolder(View itemView) {
         super(itemView);
         mainLayout = (RelativeLayout) itemView.findViewById(R.id.feedMessageCardLayout);
         title = (TextView) itemView.findViewById(R.id.title);
-        dateTime = (TextView) itemView.findViewById(R.id.dateTime);
+        dateTime = (TextView) itemView.findViewById(R.id.date_time);
         image = (ImageView) itemView.findViewById(R.id.image);
         description = (TextView) itemView.findViewById(R.id.description);
-        category = (TextView) itemView.findViewById(R.id.categoryText);
+        category = (TextView) itemView.findViewById(R.id.category_text);
         imageDescriptionLayout =
-                (LinearLayout) itemView.findViewById(R.id.imageDescriptionLayout);
-        expandIcon = (ImageView) itemView.findViewById(R.id.expandIcon);
-        emergencyIcon = (ImageView) itemView.findViewById(R.id.emergencyIcon);
-        priorityIcon = (ImageView) itemView.findViewById(R.id.priorityIcon);
+                (LinearLayout) itemView.findViewById(R.id.image_description_layout);
+        expandIcon = (ImageView) itemView.findViewById(R.id.expand_icon);
+        emergencyIcon = (ImageView) itemView.findViewById(R.id.emergency_icon);
+        priorityIcon = (ImageView) itemView.findViewById(R.id.priority_icon);
         expanded = false;
         hasImage = false;
     }
 
-    public void updateCategory(String categoryString, int color) {
+    void updateCategory(String categoryString, int color) {
         category.setText(categoryString);
         category.setBackgroundTintList(ColorStateList.valueOf(color));
     }
 
-    public void updateImageAndDescriptionExpansion(Context context, Point screenSize,
+    void updateImageAndDescriptionExpansion(Context context, Point screenSize,
             String imageUrlString, final int paddingNormal, final boolean changed,
             final int imageWidth, final int imageHeight) {
 
@@ -88,7 +84,7 @@ public class FeedViewHolder extends RecyclerView.ViewHolder {
                     .listener(new RequestListener<String, GlideDrawable>() {
                         @Override
                         public boolean onException(Exception e, String model,
-                                Target<GlideDrawable> target, boolean isFirstResource) {
+                               Target<GlideDrawable> target, boolean isFirstResource) {
                             image.setVisibility(GONE);
                             hasImage = false;
                             updateExpandOrCollapse(changed, paddingNormal, imageWidth, imageHeight);
@@ -98,8 +94,8 @@ public class FeedViewHolder extends RecyclerView.ViewHolder {
 
                         @Override
                         public boolean onResourceReady(GlideDrawable resource, String model,
-                                Target<GlideDrawable> target, boolean isFromMemoryCache,
-                                boolean isFirstResource) {
+                               Target<GlideDrawable> target, boolean isFromMemoryCache,
+                               boolean isFirstResource) {
                             image.setVisibility(VISIBLE);
                             hasImage = true;
                             updateExpandOrCollapse(changed, paddingNormal, imageWidth, imageHeight);
@@ -113,7 +109,7 @@ public class FeedViewHolder extends RecyclerView.ViewHolder {
         }
     }
 
-    public void updateDescription(String descriptionString) {
+    void updateDescription(String descriptionString) {
         description.setText(descriptionString);
         if (expanded) {
             description.setMaxLines(Integer.MAX_VALUE);
@@ -122,25 +118,27 @@ public class FeedViewHolder extends RecyclerView.ViewHolder {
         }
     }
 
-    public void updateDateTime(long unixTime) {
+    void updateDateTime(long unixTime) {
         DateFormat dateFormat = DateFormat
                 .getDateTimeInstance(DateFormat.LONG, DateFormat.SHORT);
         dateTime.setText(dateFormat.format(unixTime));
     }
 
-    public void updateTitle(String titleString) {
+    void updateTitle(String titleString) {
         title.setText(titleString);
     }
 
-    public void setOnFeedItemExpandListener(
+    void setOnFeedItemExpandListener(
             final OnFeedItemExpandListener onFeedItemExpandListener) {
-        expandIcon.setOnClickListener(new View.OnClickListener() {
+        final View.OnClickListener expandClick = new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 expanded = !expanded;
                 onFeedItemExpandListener.onFeedItemExpand();
             }
-        });
+        };
+        expandIcon.setOnClickListener(expandClick);
+        title.setOnClickListener(expandClick);
     }
 
     private void updateExpandOrCollapse(boolean changed, int paddingNormal, int messageCardImageWidth,
@@ -172,50 +170,40 @@ public class FeedViewHolder extends RecyclerView.ViewHolder {
         }
     }
 
-    public void updateExpandIcon(boolean changed) {
+    void updateExpandIcon(boolean changed) {
         if (changed && expanded) {
-            expandIcon.animate().rotation(180f).setListener(new AnimatorListenerAdapter() {
-                @Override
-                public void onAnimationEnd(Animator animation) {
-                    super.onAnimationEnd(animation);
-                    expandIcon.setColorFilter(new LightingColorFilter(Color.BLUE, Color.BLUE));
-                }
-            }).start();
+            expandIcon.animate()
+                    .rotation(180f)
+                    .start();
         } else if (changed && !expanded) {
-            expandIcon.animate().rotation(0f).setListener(new AnimatorListenerAdapter() {
-                @Override
-                public void onAnimationEnd(Animator animation) {
-                    super.onAnimationEnd(animation);
-                    expandIcon.setColorFilter(new LightingColorFilter(Color.BLACK, Color.BLACK));
-                }
-            }).start();
+            expandIcon.animate()
+                    .rotation(0f)
+                    .start();
         } else if (!changed && expanded) {
             expandIcon.setRotation(180f);
-            expandIcon.setColorFilter(new LightingColorFilter(Color.BLUE, Color.BLUE));
         } else if (!changed && !expanded) {
             expandIcon.setRotation(0f);
-            expandIcon.setColorFilter(new LightingColorFilter(Color.BLACK, Color.BLACK));
         }
+        expandIcon.setActivated(expanded);
 
         float rotationAngle = expanded ? 180f : 0f;
         if (changed) {
-            expandIcon.animate().rotation(rotationAngle).start();
+            expandIcon.animate()
+                    .rotation(rotationAngle)
+                    .start();
         } else {
             expandIcon.setRotation(rotationAngle);
         }
     }
 
-    public void updateIconVisibilityForEmergency() {
-        emergencyIcon.setVisibility(VISIBLE);
-        expandIcon.setVisibility(GONE);
+    void updateEmergencyStatus(boolean isEmergency) {
+        emergencyIcon.setVisibility(isEmergency ? VISIBLE: GONE);
+        expandIcon.setVisibility(isEmergency ? GONE : VISIBLE);
+        title.setActivated(isEmergency);
+        category.setActivated(isEmergency);
     }
 
-    public void updateIconVisibilityForNonEmergency() {
-        emergencyIcon.setVisibility(GONE);
-        expandIcon.setVisibility(VISIBLE);
-    }
-
-    public void updatePriority(boolean priority) {
+    void updatePriority(boolean priority) {
         priorityIcon.setVisibility(priority ? VISIBLE : GONE);
     }
 }
