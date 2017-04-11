@@ -454,6 +454,14 @@ public class UIUtils {
         return R.drawable.ic_food;
     }
 
+    public static String formatDateTime(long time, Context context) {
+        StringBuilder sb = new StringBuilder();
+        DateUtils.formatDateRange(context, new Formatter(sb), time, time,
+                DateUtils.FORMAT_SHOW_DATE | DateUtils.FORMAT_SHOW_TIME,
+                SettingsUtils.getDisplayTimeZone(context).getID());
+        return sb.toString();
+    }
+
     /**
      * @param startTime The start time of a session in millis.
      * @param context   The context to be used for getting the display timezone.

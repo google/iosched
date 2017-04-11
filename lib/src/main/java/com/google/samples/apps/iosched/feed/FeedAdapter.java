@@ -24,6 +24,7 @@ import com.google.samples.apps.iosched.feed.data.FeedMessage;
 import com.google.samples.apps.iosched.lib.R;
 
 import static com.google.samples.apps.iosched.util.LogUtils.makeLogTag;
+import static com.google.samples.apps.iosched.util.UIUtils.formatDateTime;
 
 /**
  * Adapter for the {@link RecyclerView} that holds a list of conference updates.
@@ -84,7 +85,7 @@ public class FeedAdapter extends RecyclerView.Adapter<FeedViewHolder> {
         holder.updateEmergencyStatus(feedMessage.isEmergency());
         holder.updatePriority(feedMessage.isPriority());
         holder.updateTitle(feedMessage.getTitle());
-        holder.updateDateTime(feedMessage.getTimestamp());
+        holder.updateDateTime(formatDateTime(feedMessage.getTimestamp(), mContext));
         holder.updateDescription(feedMessage.getMessage());
         holder.updateImageAndDescriptionExpansion(mContext, mScreenSize, feedMessage.getImageUrl(),
                 mPaddingNormal, false, mMessageCardImageWidth, mMessageCardImageHeight);
@@ -149,6 +150,7 @@ public class FeedAdapter extends RecyclerView.Adapter<FeedViewHolder> {
         @Override
         public void onInserted(final int position, int count) {
             notifyItemRangeInserted(position, count);
+
 
         }
 

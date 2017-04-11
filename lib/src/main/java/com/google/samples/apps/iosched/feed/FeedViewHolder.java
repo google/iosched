@@ -18,8 +18,6 @@ import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.target.Target;
 import com.google.samples.apps.iosched.lib.R;
 
-import java.text.DateFormat;
-
 import static android.view.View.GONE;
 import static android.view.View.VISIBLE;
 import static com.google.samples.apps.iosched.util.LogUtils.LOGD;
@@ -84,7 +82,7 @@ class FeedViewHolder extends RecyclerView.ViewHolder {
                     .listener(new RequestListener<String, GlideDrawable>() {
                         @Override
                         public boolean onException(Exception e, String model,
-                               Target<GlideDrawable> target, boolean isFirstResource) {
+                                Target<GlideDrawable> target, boolean isFirstResource) {
                             image.setVisibility(GONE);
                             hasImage = false;
                             updateExpandOrCollapse(changed, paddingNormal, imageWidth, imageHeight);
@@ -94,8 +92,8 @@ class FeedViewHolder extends RecyclerView.ViewHolder {
 
                         @Override
                         public boolean onResourceReady(GlideDrawable resource, String model,
-                               Target<GlideDrawable> target, boolean isFromMemoryCache,
-                               boolean isFirstResource) {
+                                Target<GlideDrawable> target, boolean isFromMemoryCache,
+                                boolean isFirstResource) {
                             image.setVisibility(VISIBLE);
                             hasImage = true;
                             updateExpandOrCollapse(changed, paddingNormal, imageWidth, imageHeight);
@@ -118,10 +116,8 @@ class FeedViewHolder extends RecyclerView.ViewHolder {
         }
     }
 
-    void updateDateTime(long unixTime) {
-        DateFormat dateFormat = DateFormat
-                .getDateTimeInstance(DateFormat.LONG, DateFormat.SHORT);
-        dateTime.setText(dateFormat.format(unixTime));
+    void updateDateTime(String formattedTime) {
+        dateTime.setText(formattedTime);
     }
 
     void updateTitle(String titleString) {
@@ -197,7 +193,7 @@ class FeedViewHolder extends RecyclerView.ViewHolder {
     }
 
     void updateEmergencyStatus(boolean isEmergency) {
-        emergencyIcon.setVisibility(isEmergency ? VISIBLE: GONE);
+        emergencyIcon.setVisibility(isEmergency ? VISIBLE : GONE);
         expandIcon.setVisibility(isEmergency ? GONE : VISIBLE);
         title.setActivated(isEmergency);
         category.setActivated(isEmergency);
