@@ -44,7 +44,7 @@
             android:layout_alignParentTop="true"
             android:background="?selectableItemBackgroundBorderless"
             android:padding="@dimen/padding_normal"
-            android:src="@drawable/ic_expand_more_black_24dp"
+            android:src="@drawable/ic_expand"
             android:tint="@color/collapsing_section"
             android:tintMode="src_in" />
 
