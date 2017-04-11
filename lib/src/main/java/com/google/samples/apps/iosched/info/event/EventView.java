@@ -18,6 +18,7 @@ import android.content.res.TypedArray;
 import android.graphics.drawable.Drawable;
 import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
+import android.text.method.LinkMovementMethod;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -54,6 +55,7 @@ public class EventView extends FrameLayout {
         TextView titleView = (TextView) rootView.findViewById(R.id.event_title);
         mDescriptionView = (TextView) rootView.findViewById(R.id.event_content_description);
         mDescriptionView.setText(eventDescription);
+        mDescriptionView.setMovementMethod(LinkMovementMethod.getInstance());
         View header = rootView.findViewById(R.id.header);
         ImageView iconView = (ImageView) rootView.findViewById(R.id.event_icon);
         titleView.setText(eventTitle);

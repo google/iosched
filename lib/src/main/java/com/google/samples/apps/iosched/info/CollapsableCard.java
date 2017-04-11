@@ -19,6 +19,7 @@ import android.animation.ValueAnimator;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.support.annotation.Nullable;
+import android.text.method.LinkMovementMethod;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -54,6 +55,7 @@ public class CollapsableCard extends FrameLayout {
                 .inflate(R.layout.collapsable_card_content, this, true);
         mCardTitle = (TextView) view.findViewById(R.id.card_title);
         mCardDescription = (TextView) view.findViewById(R.id.card_description);
+        mCardDescription.setMovementMethod(LinkMovementMethod.getInstance());
         mExpandIcon = (ImageView) view.findViewById(R.id.expand_icon);
         mCardTitle.setText(cardTitle);
         mCardDescription.setText(cardDescription);

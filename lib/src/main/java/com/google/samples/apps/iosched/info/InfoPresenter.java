@@ -15,7 +15,7 @@ package com.google.samples.apps.iosched.info;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
-import android.text.Html;
+import android.text.Spannable;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -25,7 +25,8 @@ import com.google.samples.apps.iosched.info.faq.FaqInfo;
 import com.google.samples.apps.iosched.info.travel.TravelInfo;
 import com.google.samples.apps.iosched.lib.R;
 
-import org.apache.commons.lang3.StringEscapeUtils;
+import static com.google.samples.apps.iosched.util.FirebaseRemoteConfigUtil.getRemoteConfigSpannable;
+import static com.google.samples.apps.iosched.util.FirebaseRemoteConfigUtil.stripUnderlines;
 
 public class InfoPresenter implements InfoContract.Presenter {
 
@@ -57,20 +58,24 @@ public class InfoPresenter implements InfoContract.Presenter {
                 .getString(mContext.getString(R.string.default_wifi_network_key));
         String wiFiPassword = FirebaseRemoteConfig.getInstance()
                 .getString(mContext.getString(R.string.default_wifi_password_key));
-        String sandboxDescription = FirebaseRemoteConfig.getInstance()
-                .getString(mContext.getString(R.string.event_sandbox_description_key));
-        String codeLabsDescription = FirebaseRemoteConfig.getInstance()
-                .getString(mContext.getString(R.string.event_code_labs_description_key));
-        String officeHoursDescription = FirebaseRemoteConfig.getInstance()
-                .getString(mContext.getString(R.string.event_office_hours_description_key));
-        String afterHoursDescription = FirebaseRemoteConfig.getInstance()
-                .getString(mContext.getString(R.string.event_after_hours_description_key));
-        eventInfo.setWiFiNetwork(StringEscapeUtils.unescapeJava(wiFiNetwork));
-        eventInfo.setWiFiPassword(StringEscapeUtils.unescapeJava(wiFiPassword));
-        eventInfo.setSandboxDescription(Html.fromHtml(StringEscapeUtils.unescapeJava(sandboxDescription)));
-        eventInfo.setCodeLabsDescription(Html.fromHtml(StringEscapeUtils.unescapeJava(codeLabsDescription)));
-        eventInfo.setOfficeHoursDescription(Html.fromHtml(StringEscapeUtils.unescapeJava(officeHoursDescription)));
-        eventInfo.setAfterHoursDescription(Html.fromHtml(StringEscapeUtils.unescapeJava(afterHoursDescription)));
+        Spannable sandboxDescription = getRemoteConfigSpannable(
+                mContext.getString(R.string.event_sandbox_description_key));
+        stripUnderlines(sandboxDescription);
+        Spannable codeLabsDescription = getRemoteConfigSpannable(
+                mContext.getString(R.string.event_code_labs_description_key));
+        stripUnderlines(codeLabsDescription);
+        Spannable officeHoursDescription = getRemoteConfigSpannable(
+                mContext.getString(R.string.event_office_hours_description_key));
+        stripUnderlines(officeHoursDescription);
+        Spannable afterHoursDescription = getRemoteConfigSpannable(
+                mContext.getString(R.string.event_after_hours_description_key));
+        stripUnderlines(afterHoursDescription);
+        eventInfo.setWiFiNetwork(wiFiNetwork);
+        eventInfo.setWiFiPassword(wiFiPassword);
+        eventInfo.setSandboxDescription(sandboxDescription);
+        eventInfo.setCodeLabsDescription(codeLabsDescription);
+        eventInfo.setOfficeHoursDescription(officeHoursDescription);
+        eventInfo.setAfterHoursDescription(afterHoursDescription);
     }
 
     @Override
@@ -91,18 +96,18 @@ public class InfoPresenter implements InfoContract.Presenter {
     }
 
     private void applyRemoteConfigToTravelInfo(TravelInfo travelInfo) {
-        String travelShuttleService = FirebaseRemoteConfig.getInstance()
-                .getString(mContext.getString(R.string.travel_shuttle_service_description_key));
-        String travelCarpoolingParking = FirebaseRemoteConfig.getInstance()
-                .getString(mContext.getString(R.string.travel_carpooling_parking_description_key));
-        String publicTransportation = FirebaseRemoteConfig.getInstance()
-                .getString(mContext.getString(R.string.travel_public_transportation_description_key));
-        String travelBiking = FirebaseRemoteConfig.getInstance()
-                .getString(mContext.getString(R.string.travel_biking_description_key));
-        travelInfo.setShuttleInfo(Html.fromHtml(StringEscapeUtils.unescapeJava(travelShuttleService)));
-        travelInfo.setCarpoolingParkingInfo(Html.fromHtml(StringEscapeUtils.unescapeJava(travelCarpoolingParking)));
-        travelInfo.setPublicTransportationInfo(Html.fromHtml(StringEscapeUtils.unescapeJava(publicTransportation)));
-        travelInfo.setBikingInfo(Html.fromHtml(StringEscapeUtils.unescapeJava(travelBiking)));
+        Spannable travelShuttleService = getRemoteConfigSpannable(
+                mContext.getString(R.string.travel_shuttle_service_description_key));
+        Spannable travelCarpoolingParking = getRemoteConfigSpannable(
+                mContext.getString(R.string.travel_carpooling_parking_description_key));
+        Spannable travelPublicTransportation = getRemoteConfigSpannable(
+                mContext.getString(R.string.travel_public_transportation_description_key));
+        Spannable travelBiking = getRemoteConfigSpannable(
+                mContext.getString(R.string.travel_biking_description_key));
+        travelInfo.setShuttleInfo(travelShuttleService);
+        travelInfo.setCarpoolingParkingInfo(travelCarpoolingParking);
+        travelInfo.setPublicTransportationInfo(travelPublicTransportation);
+        travelInfo.setBikingInfo(travelBiking);
     }
 
     @Override
@@ -123,8 +128,23 @@ public class InfoPresenter implements InfoContract.Presenter {
     }
 
     private void applyRemoteConfigToFaqInfo(FaqInfo faqInfo) {
-        String proTips = FirebaseRemoteConfig.getInstance()
-                .getString(mContext.getString(R.string.faq_pro_tips_description_key));
-        faqInfo.setProTips(StringEscapeUtils.unescapeJava(proTips));
+        Spannable stayInformedDescription = getRemoteConfigSpannable(
+                mContext.getString(R.string.faq_stay_informed_description_key));
+        stripUnderlines(stayInformedDescription);
+        faqInfo.setStayInformedDescription(stayInformedDescription);
+        Spannable contentFormatsDescription = getRemoteConfigSpannable(
+                mContext.getString(R.string.faq_content_formats_description_key));
+        stripUnderlines(contentFormatsDescription);
+        faqInfo.setContentFormatsDescription(contentFormatsDescription);
+
+        Spannable liveStreamRecordingsDescription = getRemoteConfigSpannable(
+                mContext.getString(R.string.faq_livestream_and_recordings_description_key));
+        stripUnderlines(liveStreamRecordingsDescription);
+        faqInfo.setLiveStreamRecordingsDescription(liveStreamRecordingsDescription);
+
+        Spannable attendanceProTipsDescription = getRemoteConfigSpannable(
+                mContext.getString(R.string.faq_attendance_pro_tips_description_key));
+        stripUnderlines(attendanceProTipsDescription);
+        faqInfo.setAttendanceProTipsDescription(attendanceProTipsDescription);
     }
 }
