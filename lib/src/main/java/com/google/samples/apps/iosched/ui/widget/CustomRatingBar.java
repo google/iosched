@@ -47,12 +47,12 @@ public class CustomRatingBar extends LinearLayout implements View.OnClickListene
     /**
      * The drawable used if no unfilled drawable resource is specified.
      */
-    private static final int DEFAULT_UNFILLED_DRAWABLE_ID = R.drawable.ratingbar_star_unfilled;
+    private static final int DEFAULT_UNFILLED_DRAWABLE_ID = R.drawable.ic_star_empty;
 
     /**
      * The drawable used if no filled drawable resource is specified.
      */
-    private static final int DEFAULT_FILLED_DRAWABLE_ID = R.drawable.ratingbar_star_filled;
+    private static final int DEFAULT_FILLED_DRAWABLE_ID = R.drawable.ic_star_filled;
 
     /**
      * The maximum permitted rating.
