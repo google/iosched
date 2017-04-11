@@ -214,15 +214,6 @@ public class MapActivity extends BaseActivity
     }
 
     @Override
-    public void onInfoShowVenue() {
-        if (mInfoFragment != null) {
-            mInfoFragment.showVenue();
-        }
-        setTabletInfoVisibility(View.VISIBLE);
-
-    }
-
-    @Override
     public void onInfoShowTitle(String label, int icon) {
         if (mInfoFragment != null) {
             mInfoFragment.showTitleOnly(icon, label);

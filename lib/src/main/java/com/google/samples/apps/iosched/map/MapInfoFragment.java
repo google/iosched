@@ -250,12 +250,6 @@ public abstract class MapInfoFragment extends Fragment
         mList.setVisibility(View.GONE);
     }
 
-    public void showVenue() {
-        setHeader(MapUtils.getRoomIcon(MarkerModel.TYPE_VENUE), R.string.map_venue_name,
-                R.string.map_venue_address);
-        mList.setVisibility(View.GONE);
-    }
-
     protected void setHeader(int icon, int title, int subTitle) {
         mIcon.setImageResource(icon);
 
