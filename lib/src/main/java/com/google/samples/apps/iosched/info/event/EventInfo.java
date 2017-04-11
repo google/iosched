@@ -14,26 +14,26 @@
 package com.google.samples.apps.iosched.info.event;
 
 public class EventInfo {
-    private CharSequence wiFiNetwork;
-    private CharSequence wiFiPassword;
+    private String wiFiNetwork;
+    private String wiFiPassword;
     private CharSequence sandboxDescription;
     private CharSequence codeLabsDescription;
     private CharSequence officeHoursDescription;
     private CharSequence afterHoursDescription;
 
-    public CharSequence getWiFiNetwork() {
+    public String getWiFiNetwork() {
         return wiFiNetwork;
     }
 
-    public void setWiFiNetwork(CharSequence wiFiNetwork) {
+    public void setWiFiNetwork(String wiFiNetwork) {
         this.wiFiNetwork = wiFiNetwork;
     }
 
-    public CharSequence getWiFiPassword() {
+    public String getWiFiPassword() {
         return wiFiPassword;
     }
 
-    public void setWiFiPassword(CharSequence wiFiPassword) {
+    public void setWiFiPassword(String wiFiPassword) {
         this.wiFiPassword = wiFiPassword;
     }
 
@@ -67,5 +67,17 @@ public class EventInfo {
 
     public void setAfterHoursDescription(CharSequence afterHoursDescription) {
         this.afterHoursDescription = afterHoursDescription;
+    }
+
+    @Override
+    public String toString() {
+        return "EventInfo{" +
+                "wiFiNetwork='" + wiFiNetwork + '\'' +
+                ", wiFiPassword='" + wiFiPassword + '\'' +
+                ", sandboxDescription=" + sandboxDescription +
+                ", codeLabsDescription=" + codeLabsDescription +
+                ", officeHoursDescription=" + officeHoursDescription +
+                ", afterHoursDescription=" + afterHoursDescription +
+                '}';
     }
 }
