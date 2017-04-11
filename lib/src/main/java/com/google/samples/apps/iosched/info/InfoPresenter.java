@@ -65,8 +65,8 @@ public class InfoPresenter implements InfoContract.Presenter {
                 .getString(mContext.getString(R.string.event_office_hours_description_key));
         String afterHoursDescription = FirebaseRemoteConfig.getInstance()
                 .getString(mContext.getString(R.string.event_after_hours_description_key));
-        eventInfo.setWiFiNetwork(Html.fromHtml(StringEscapeUtils.unescapeJava(wiFiNetwork)));
-        eventInfo.setWiFiPassword(Html.fromHtml(StringEscapeUtils.unescapeJava(wiFiPassword)));
+        eventInfo.setWiFiNetwork(StringEscapeUtils.unescapeJava(wiFiNetwork));
+        eventInfo.setWiFiPassword(StringEscapeUtils.unescapeJava(wiFiPassword));
         eventInfo.setSandboxDescription(Html.fromHtml(StringEscapeUtils.unescapeJava(sandboxDescription)));
         eventInfo.setCodeLabsDescription(Html.fromHtml(StringEscapeUtils.unescapeJava(codeLabsDescription)));
         eventInfo.setOfficeHoursDescription(Html.fromHtml(StringEscapeUtils.unescapeJava(officeHoursDescription)));

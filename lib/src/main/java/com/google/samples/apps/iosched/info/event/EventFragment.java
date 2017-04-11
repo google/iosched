@@ -13,6 +13,9 @@
  */
 package com.google.samples.apps.iosched.info.event;
 
+import android.content.ClipData;
+import android.content.ClipboardManager;
+import android.content.Context;
 import android.content.res.Resources;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -45,8 +48,8 @@ public class EventFragment extends BaseInfoFragment<EventInfo> {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container,
             @Nullable Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.info_event_frag, container, false);
-        mWiFiNetworkText = (TextView) root.findViewById(R.id.wifi_network_value);
-        mWiFiPasswordText = (TextView) root.findViewById(R.id.wifi_password_value);
+        mWiFiNetworkText = (TextView) root.findViewById(R.id.wiFiNetworkValue);
+        mWiFiPasswordText = (TextView) root.findViewById(R.id.wiFiPasswordValue);
         mSandboxEventContent = (EventContentView) root.findViewById(R.id.sandboxEventContent);
         mCodeLabsEventContent = (EventContentView) root.findViewById(R.id.codeLabsEventContent);
         mOfficeHoursEventContent =
@@ -54,6 +57,21 @@ public class EventFragment extends BaseInfoFragment<EventInfo> {
         mAfterHoursEventContent =
                 (EventContentView) root.findViewById(R.id.afterHoursEventContent);
         return root;
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        mWiFiPasswordText.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ClipboardManager clipboardManager = (ClipboardManager) getActivity()
+                        .getApplicationContext().getSystemService(Context.CLIPBOARD_SERVICE);
+                ClipData passwordClip = ClipData
+                        .newPlainText("password", mEventInfo.getWiFiPassword());
+                clipboardManager.setPrimaryClip(passwordClip);
+            }
+        });
     }
 
     @Override
