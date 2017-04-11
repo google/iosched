@@ -25,7 +25,7 @@
     android:padding="@dimen/padding_normal">
 
     <TextView
-        android:id="@+id/dateTime"
+        android:id="@+id/date_time"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentStart="true"
@@ -35,67 +35,71 @@
         tools:text="May 17, 10:52AM" />
 
     <TextView
-        android:id="@+id/categoryText"
+        android:id="@+id/category_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignBaseline="@id/dateTime"
+        android:layout_alignBaseline="@id/date_time"
         android:layout_alignParentEnd="true"
         android:layout_gravity="center"
         android:background="@drawable/tag_session_background"
-        android:textAllCaps="true"
         android:ellipsize="end"
         android:lines="1"
+        android:textAllCaps="true"
         android:textAppearance="@style/TextAppearance.Tag"
+        android:textColor="@color/feed_category"
         tools:text="CATEGORY" />
 
     <ImageView
-        android:id="@+id/priorityIcon"
+        android:id="@+id/priority_icon"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_toStartOf="@+id/categoryText"
-        android:layout_alignTop="@+id/categoryText"
+        android:layout_alignTop="@+id/category_text"
         android:layout_marginEnd="@dimen/spacing_micro"
-        android:src="@drawable/ic_pin"/>
+        android:layout_toStartOf="@+id/category_text"
+        android:src="@drawable/ic_pin" />
 
     <TextView
         android:id="@+id/title"
         style="@style/H1Text"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignStart="@+id/dateTime"
-        android:layout_below="@+id/categoryText"
+        android:layout_alignStart="@+id/date_time"
+        android:layout_below="@+id/category_text"
         android:layout_marginTop="@dimen/padding_normal"
+        android:background="?selectableItemBackground"
+        android:textColor="@color/feed_title"
         tools:text="@string/placeholder_feed_message_title" />
 
     <FrameLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentEnd="true"
-        android:layout_below="@+id/categoryText"
-        android:layout_marginTop="@dimen/padding_normal">
+        android:layout_below="@+id/category_text"
+        android:layout_marginTop="@dimen/spacing_normal">
 
         <ImageView
-            android:id="@+id/expandIcon"
+            android:id="@+id/expand_icon"
             android:layout_width="@dimen/a11y_min_touch_target_dimen"
             android:layout_height="@dimen/a11y_min_touch_target_dimen"
             android:background="?selectableItemBackgroundBorderless"
             android:rotation="0"
             android:scaleType="centerInside"
-            android:src="@drawable/ic_expand_more_black_24dp" />
+            android:src="@drawable/ic_expand"
+            android:tint="@color/collapsing_section" />
 
         <ImageView
-            android:id="@+id/emergencyIcon"
+            android:id="@+id/emergency_icon"
             android:layout_width="@dimen/a11y_min_touch_target_dimen"
             android:layout_height="@dimen/a11y_min_touch_target_dimen"
             android:background="?selectableItemBackgroundBorderless"
             android:scaleType="centerInside"
-            android:src="@drawable/ic_emergency_24dp"
+            android:src="@drawable/ic_emergency"
             tools:visibility="gone" />
 
     </FrameLayout>
 
     <LinearLayout
-        android:id="@+id/imageDescriptionLayout"
+        android:id="@+id/image_description_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentStart="true"
