@@ -297,6 +297,11 @@
         <item name="android:letterSpacing">0.03</item>
     </style>
 
+    <style name="TextAppearance.H2" parent="@style/TextAppearance.AppCompat.Headline">
+        <item name="fontPath">fonts/ProductSans-Regular.ttf</item>
+        <item name="android:letterSpacing">0.03</item>
+    </style>
+
     <style name="TextAppearance.H3" parent="@style/TextAppearance.AppCompat.Title">
         <item name="android:textSize">18sp</item>
         <item name="fontPath">fonts/ProductSans-Regular.ttf</item>

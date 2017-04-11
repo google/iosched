@@ -17,74 +17,76 @@
 
 <merge
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
-    <LinearLayout
+    <!-- It seems that ConstraintLayout currently doesn't support merge tags so we need a
+         (otherwise useless) wrapping FrameLayout :( -->
+
+    <android.support.constraint.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
         android:paddingBottom="@dimen/padding_normal">
 
-        <LinearLayout
-            android:id="@+id/color_box"
-            android:layout_width="match_parent"
+        <View
+            android:id="@+id/header"
+            android:layout_width="0dp"
+            android:layout_height="@dimen/event_header_height"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/event_title"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            tools:background="@color/io16_accent_green">
+            android:padding="@dimen/padding_normal"
+            android:textAppearance="@style/TextAppearance.H2"
+            app:layout_constraintBottom_toBottomOf="@id/header"
+            app:layout_constraintStart_toStartOf="parent"
+            tools:text="Office Hours &amp; App Reviews" />
 
-            <ImageView
-                android:id="@+id/event_icon"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="start"
-                android:layout_marginTop="@dimen/event_content_card_top_padding"
-                android:paddingEnd="@dimen/padding_normal"
-                android:paddingStart="@dimen/padding_normal"
-                tools:src="@drawable/ic_nav_info" />
-
-            <TextView
-                android:id="@+id/event_title"
-                style="@style/H3Text"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="@dimen/padding_normal"
-                android:gravity="start"
-                tools:text="Office Hours &amp; App Reviews" />
-
-        </LinearLayout>
+        <ImageView
+            android:id="@+id/event_icon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:importantForAccessibility="no"
+            android:paddingStart="@dimen/padding_normal"
+            app:layout_constraintBottom_toTopOf="@id/event_title"
+            app:layout_constraintStart_toStartOf="parent"
+            tools:src="@drawable/ic_nav_info" />
 
         <TextView
             android:id="@+id/event_content_description"
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/padding_normal"
             android:padding="@dimen/padding_normal"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/header"
             tools:text="@string/placeholder_lorem_ipsum" />
 
-        <LinearLayout
+        <Button
+            android:id="@+id/event_view_sessions"
+            style="@style/Widget.AppCompat.Button.Borderless.Colored"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
+            android:padding="@dimen/padding_normal"
+            android:text="@string/view_sessions_text"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/event_content_description" />
 
-            <Button
-                android:id="@+id/event_view_sessions"
-                style="?android:borderlessButtonStyle"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:padding="@dimen/padding_normal"
-                android:text="@string/view_sessions_text"
-                android:textColor="@color/lightish_blue" />
+        <Button
+            android:id="@+id/event_view_map"
+            style="@style/Widget.AppCompat.Button.Borderless.Colored"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="@dimen/padding_normal"
+            android:text="@string/view_map_text"
+            app:layout_constraintStart_toEndOf="@id/event_view_sessions"
+            app:layout_constraintTop_toBottomOf="@id/event_content_description" />
 
-            <Button
-                android:id="@+id/event_view_map"
-                style="?android:borderlessButtonStyle"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:padding="@dimen/padding_normal"
-                android:text="@string/view_map_text"
-                android:textColor="@color/lightish_blue" />
-
-        </LinearLayout>
-
-    </LinearLayout>
+    </android.support.constraint.ConstraintLayout>
 
 </merge>

@@ -826,6 +826,7 @@
     <string name="wifi_network_label">Wi-Fi Network</string>
     <string name="wifi_password_label">Password</string>
     <string name="setup_wifi">Setup Wi-Fi</string>
+    <string name="password_copied_confirmation">Password copied</string>
     <string name="view_sessions_text">View Sessions</string>
     <string name="view_map_text">View Map</string>
     <!-- TODO make these URLs the correct deep link -->
