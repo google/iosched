@@ -454,9 +454,6 @@
     <!-- Button text to launch session feedback from session details -->
     <string name="rate_session">Rate session</string>
 
-    <!-- A session feedback title asking you to rate a given session -->
-    <string name="session_feedback_title_rate">Rate</string>
-
     <!-- A session feedback section label asking the user to rate the session overall -->
     <string name="session_rating_label_text">Session rating:</string>
 

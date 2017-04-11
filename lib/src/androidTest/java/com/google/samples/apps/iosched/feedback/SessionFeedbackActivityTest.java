@@ -68,12 +68,6 @@ public class SessionFeedbackActivityTest {
             };
 
     @Test
-    public void sessionTitle_ShowsCorrectTitle() {
-        onView(withId(R.id.feedback_header_session_title)).check(matches(
-                allOf(withText(SessionsMockCursor.FAKE_TITLE), isDisplayed())));
-    }
-
-    @Test
     public void sessionRating_ShowsRating() {
         onView(withId(R.id.rating_bar_0)).check(matches(isDisplayed()));
     }
