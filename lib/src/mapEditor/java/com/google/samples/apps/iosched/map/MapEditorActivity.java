@@ -79,11 +79,6 @@ public class MapEditorActivity extends AppCompatActivity implements EditorMapFra
     }
 
     @Override
-    public void onInfoShowVenue() {
-        showMessage("Venue Marker");
-    }
-
-    @Override
     public void onInfoShowTitle(String label, int roomType) {
         showMessage(label);
     }
