@@ -25,7 +25,9 @@ the License.
     </entry>
     <entry>
         <key>feed_default_first_imageurl</key>
-        <value>https://lh3.googleusercontent.com/7_QdtrIdKp0vunD_gw3umvo95j3bCBB3Nz8jUWpEOuIkjGPmiwM6MN2RZhc_rK8cmiq5jA4U-Bip13_XHol7VpjjEKdt31k</value>
+        <value>
+            https://lh3.googleusercontent.com/7_QdtrIdKp0vunD_gw3umvo95j3bCBB3Nz8jUWpEOuIkjGPmiwM6MN2RZhc_rK8cmiq5jA4U-Bip13_XHol7VpjjEKdt31k
+        </value>
     </entry>
     <entry>
         <key>feed_default_first_timestamp</key>
@@ -116,11 +118,41 @@ the License.
         the Bay Area Bike Share website.]]></value>
     </entry>
     <entry>
-        <key>faq_pro_tips_description</key>
-        <value><![CDATA[If you\'re joining us in person at the Shoreline Amphitheatre, here are some
-        useful tips to navigate your way through the conference: <br/><br/>Badge pick-up: Everyone
-        is guaranteed a seat for the keynote but the best seats will be assigned on a first-come,
-        first-served basis. Badge pick-up starts at 7:00AM on May 17 so make sure to come by
-        early!]]></value>
+        <key>faq_stay_informed_description</key>
+        <value><![CDATA[To stay up to date on the latest information on sessions, speakers, and
+        activities, be sure to visit the <a href="https://events.google.com/io/">GOOGLE I/O 2017
+        WEBSITE</a>, the <a href="http://googledevelopers.blogspot.com/">GOOGLE DEVELOPERS BLOG</a>,
+        and follow us on <a href="https://www.facebook.com/Google-Developers-967415219957038/">
+        FACEBOOK</a>, <a href="https://plus.google.com/+GoogleDevelopers">GOOGLE+</a>, and
+        <a href="https://twitter.com/googledevs">TWITTER</a>. You can also follow and join the social
+        conversation about Google I/O 2017 via the official
+        <a href="https://twitter.com/hashtag/io17?lang=en">#IO17</a> hashtag. In addition, we'll be
+        emailing important information to all registered attendees, along with check-in
+        instructions prior to the festival.]]></value>
     </entry>
+    <entry>
+        <key>faq_content_formats_description</key>
+        <value><![CDATA[Throughout the three day festival, in-person attendees will be able to
+        participate by attending sessions, getting hands-on in the sandbox and codelabs, office
+        hours and more.]]></value>
+    </entry>
+    <entry>
+        <key>faq_livestream_and_recordings_description</key>
+        <value><![CDATA[If you’re unable to attend Google I/O in-person, you can still be part of
+        the magic. Watch the livestream of the keynote and many other sessions right here on our
+        website throughout the festival.]]></value>
+    </entry>
+    <entry>
+        <key>faq_attendance_pro_tips_description</key>
+        <value><![CDATA[If you’re joining us in person at Shoreline Amphitheatre, here are some
+        useful tips to navigate your way through the conference:<br/><br/><b>Bike parking:</b> This is
+        complimentary for attendees and will be available in Lot A during event hours.<br/><br/><b>Lost
+        &amp; Found:</b> Will be located at the Conference Help Desk during event hours. Any items
+        left overnight will be turned over to the Conference Security Office.<br/><br/><b>Meals:</b>
+         Attendees are offered complimentary breakfast, lunch and snacks on all days of the
+        conference.<br/><br/><b>After Hours:</b> Two nights you don’t want to miss! Attendees are invited
+        to enjoy food, drinks, music, games, and more during the evenings of May 17th and 18th at
+        Shoreline Amphitheatre. Your attendee badge is required for entrance.]]></value>
+    </entry>
+
 </defaultsMap>

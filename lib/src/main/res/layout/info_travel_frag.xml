@@ -31,13 +31,6 @@
         android:paddingTop="@dimen/padding_normal"
         android:showDividers="middle">
 
-        <TextView
-            style="@style/H3Text"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="@dimen/padding_normal"
-            android:text="@string/travel_details_title" />
-
         <com.google.samples.apps.iosched.info.CollapsableCard
             android:id="@+id/shuttleInfoCard"
             android:layout_width="match_parent"

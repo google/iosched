@@ -31,23 +31,39 @@
         android:paddingTop="@dimen/padding_normal"
         android:showDividers="middle">
 
-        <TextView
-            style="@style/H3Text"
-            android:layout_width="wrap_content"
+        <com.google.samples.apps.iosched.info.CollapsableCard
+            android:id="@+id/stayInformedCard"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="@dimen/padding_normal"
-            android:text="@string/faq_attendance_details_title" />
+            app:cardTitle="@string/faq_stay_informed_title" />
 
         <com.google.samples.apps.iosched.info.CollapsableCard
-            android:id="@+id/proTipsCard"
+            android:id="@+id/contentFormatsCard"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:cardTitle="@string/faq_pro_tips_title" />
+            app:cardTitle="@string/faq_content_formats_title" />
 
-        <ImageView
+        <com.google.samples.apps.iosched.info.CollapsableCard
+            android:id="@+id/liveStreamRecordingsCard"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:src="@drawable/io17_logo" />
+            app:cardTitle="@string/faq_livestream_and_recordings_title" />
+
+        <com.google.samples.apps.iosched.info.CollapsableCard
+            android:id="@+id/attendanceProTipsCard"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:cardTitle="@string/faq_attendance_pro_tips_title" />
+
+        <TextView
+            android:id="@+id/moreLink"
+            style="?android:borderlessButtonStyle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:padding="@dimen/padding_normal"
+            android:textColor="@color/lightish_blue"
+            android:text="@string/faq_more_link_label"/>
 
     </LinearLayout>
 

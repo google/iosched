@@ -14,13 +14,40 @@
 package com.google.samples.apps.iosched.info.faq;
 
 public class FaqInfo {
-    private CharSequence proTips;
+    private CharSequence stayInformedDescription;
+    private CharSequence contentFormatsDescription;
+    private CharSequence liveStreamRecordingsDescription;
+    private CharSequence attendanceProTipsDescription;
 
-    public CharSequence getProTips() {
-        return proTips;
+    public CharSequence getStayInformedDescription() {
+        return stayInformedDescription;
     }
 
-    public void setProTips(CharSequence proTips) {
-        this.proTips = proTips;
+    public void setStayInformedDescription(CharSequence stayInformedDescription) {
+        this.stayInformedDescription = stayInformedDescription;
+    }
+
+    public CharSequence getContentFormatsDescription() {
+        return contentFormatsDescription;
+    }
+
+    public void setContentFormatsDescription(CharSequence contentFormatsDescription) {
+        this.contentFormatsDescription = contentFormatsDescription;
+    }
+
+    public CharSequence getLiveStreamRecordingsDescription() {
+        return liveStreamRecordingsDescription;
+    }
+
+    public void setLiveStreamRecordingsDescription(CharSequence liveStreamRecordingsDescription) {
+        this.liveStreamRecordingsDescription = liveStreamRecordingsDescription;
+    }
+
+    public CharSequence getAttendanceProTipsDescription() {
+        return attendanceProTipsDescription;
+    }
+
+    public void setAttendanceProTipsDescription(CharSequence attendanceProTipsDescription) {
+        this.attendanceProTipsDescription = attendanceProTipsDescription;
     }
 }
