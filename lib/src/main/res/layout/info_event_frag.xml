@@ -18,7 +18,8 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -43,13 +44,14 @@
                 android:textAppearance="@style/TextAppearance.H5.Caps" />
 
             <TextView
-                android:id="@+id/wifi_network_value"
+                android:id="@+id/wiFiNetworkValue"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignBaseline="@id/wifi_network_label"
                 android:layout_alignParentEnd="true"
                 android:padding="@dimen/padding_normal"
-                android:textAppearance="@style/TextAppearance.H5" />
+                android:textAppearance="@style/TextAppearance.H5"
+                tools:text="IO2017"/>
 
             <TextView
                 android:id="@+id/wifi_password_label"
@@ -63,24 +65,18 @@
                 android:textAppearance="@style/TextAppearance.H5.Caps" />
 
             <TextView
-                android:id="@+id/wifi_password_value"
+                android:id="@+id/wiFiPasswordValue"
+                style="@style/Widget.AppCompat.Button.Borderless.Colored"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignBaseline="@id/wifi_password_label"
                 android:layout_alignParentEnd="true"
-                android:layout_below="@+id/wifi_network_value"
+                android:layout_below="@+id/wiFiNetworkValue"
                 android:padding="@dimen/padding_normal"
-                android:textAppearance="@style/TextAppearance.H5" />
-
-            <TextView
-                android:id="@+id/setup_wifi_network"
-                style="@style/Widget.AppCompat.Button.Borderless.Colored"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentStart="true"
-                android:layout_below="@+id/wifi_password_label"
-                android:padding="@dimen/padding_normal"
-                android:text="@string/setup_wifi" />
+                android:textAppearance="@style/TextAppearance.H5"
+                android:drawableStart="@drawable/ic_copy"
+                android:drawablePadding="@dimen/spacing_normal"
+                tools:text="inputoutput" />
 
         </RelativeLayout>
 
