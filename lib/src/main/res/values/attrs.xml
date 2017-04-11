@@ -58,7 +58,7 @@
         <attr name="unfilledDrawable" format="integer" />
     </declare-styleable>
 
-    <declare-styleable name="EventContent">
+    <declare-styleable name="EventView">
         <attr name="eventTitle" format="string" />
         <attr name="eventDescription" format="string" />
         <attr name="sessionsLinkUri" format="string" />

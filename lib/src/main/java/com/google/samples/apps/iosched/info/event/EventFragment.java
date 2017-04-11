@@ -20,6 +20,7 @@ import android.content.res.Resources;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.design.widget.Snackbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -38,24 +39,24 @@ public class EventFragment extends BaseInfoFragment<EventInfo> {
 
     private TextView mWiFiNetworkText;
     private TextView mWiFiPasswordText;
-    private EventContentView mSandboxEventContent;
-    private EventContentView mCodeLabsEventContent;
-    private EventContentView mOfficeHoursEventContent;
-    private EventContentView mAfterHoursEventContent;
+    private EventView mSandboxEventContent;
+    private EventView mCodeLabsEventContent;
+    private EventView mOfficeHoursEventContent;
+    private EventView mAfterHoursEventContent;
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container,
             @Nullable Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.info_event_frag, container, false);
-        mWiFiNetworkText = (TextView) root.findViewById(R.id.wiFiNetworkValue);
-        mWiFiPasswordText = (TextView) root.findViewById(R.id.wiFiPasswordValue);
-        mSandboxEventContent = (EventContentView) root.findViewById(R.id.sandboxEventContent);
-        mCodeLabsEventContent = (EventContentView) root.findViewById(R.id.codeLabsEventContent);
+        mWiFiNetworkText = (TextView) root.findViewById(R.id.wifi_network_value);
+        mWiFiPasswordText = (TextView) root.findViewById(R.id.wifi_password_value);
+        mSandboxEventContent = (EventView) root.findViewById(R.id.sandbox_event);
+        mCodeLabsEventContent = (EventView) root.findViewById(R.id.codelabs_event);
         mOfficeHoursEventContent =
-                (EventContentView) root.findViewById(R.id.officeHoursEventContent);
+                (EventView) root.findViewById(R.id.officehours_event);
         mAfterHoursEventContent =
-                (EventContentView) root.findViewById(R.id.afterHoursEventContent);
+                (EventView) root.findViewById(R.id.afterhours_event);
         return root;
     }
 
@@ -70,6 +71,7 @@ public class EventFragment extends BaseInfoFragment<EventInfo> {
                 ClipData passwordClip = ClipData
                         .newPlainText("password", mEventInfo.getWiFiPassword());
                 clipboardManager.setPrimaryClip(passwordClip);
+                Snackbar.make(getView(), R.string.password_copied_confirmation, Snackbar.LENGTH_SHORT).show();
             }
         });
     }

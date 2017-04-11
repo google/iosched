@@ -134,7 +134,7 @@
     <dimen name="welcome_content_width">@dimen/match_parent</dimen>
 
     <!-- Info -->
-    <dimen name="event_content_card_top_padding">48dp</dimen>
+    <dimen name="event_header_height">140dp</dimen>
     <dimen name="settings_content_padding">32dp</dimen>
 
 </resources>
