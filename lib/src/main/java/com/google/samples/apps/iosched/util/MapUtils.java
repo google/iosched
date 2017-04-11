@@ -73,8 +73,6 @@ public class MapUtils {
             return MarkerModel.TYPE_OFFICEHOURS;
         } else if (tags.contains("MISC")) {
             return MarkerModel.TYPE_MISC;
-        } else if (tags.contains("MOSCONE")) {
-            return MarkerModel.TYPE_VENUE;
         } else if (tags.contains("INACTIVE")) {
             return MarkerModel.TYPE_INACTIVE;
         }
@@ -98,8 +96,6 @@ public class MapUtils {
                 return R.drawable.ic_map_officehours;
             case MarkerModel.TYPE_MISC:
                 return R.drawable.ic_map_misc;
-            case MarkerModel.TYPE_VENUE:
-                return R.drawable.ic_map_venue;
             default:
                 return R.drawable.ic_map_pin;
         }
@@ -220,19 +216,6 @@ public class MapUtils {
         return context.getResources()
                       .getIdentifier(ICON_RESOURCE_PREFIX + iconType.toLowerCase(), "drawable",
                               context.getPackageName());
-    }
-
-    /**
-     * Creates a marker for the venue.
-     */
-    public static MarkerOptions createVenueMarker(LatLng position) {
-        final String title = "VENUE";
-
-        final BitmapDescriptor icon =
-                BitmapDescriptorFactory.fromResource(R.drawable.map_marker_venue);
-
-        return new MarkerOptions().position(position).title(title).icon(icon)
-                                  .visible(false);
     }
 
     private static String[] mapTileAssets;
