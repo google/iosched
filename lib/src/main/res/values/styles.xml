@@ -36,6 +36,8 @@
         <item name="android:borderlessButtonStyle">@style/Widget.AppCompat.Button.Borderless</item>
         <item name="preferenceTheme">@style/SettingsPreferenceThemeOverlay</item>
         <item name="android:listDivider">@drawable/list_divider</item>
+        <item name="android:dividerHeight">@dimen/divider_height</item>
+        <item name="android:divider">@color/off_white</item>
         <item name="android:alertDialogTheme">@style/Theme.IOSched.AlertDialog</item>
     </style>
 
@@ -86,21 +88,19 @@
         <item name="android:textCursorDrawable">@null</item>
     </style>
 
-    <!-- My Schedule -->
-    <style name="Theme.IOSched.MyIo" parent="@style/Theme.IOSched.Immersive">
-        <item name="colorAccent">@color/aqua_marine</item>
-    </style>
+    <!-- My I/O -->
+    <style name="Theme.IOSched.MyIo" parent="@style/Theme.IOSched.Immersive" />
 
-    <!-- My Schedule -->
-    <style name="Theme.IOSched.MySchedule" parent="@style/Theme.IOSched.Immersive" />
+    <!-- Schedule -->
+    <style name="Theme.IOSched.Schedule" parent="@style/Theme.IOSched.Immersive" />
+
+    <!-- Feed -->
+    <style name="Theme.IOSched.Feed" parent="@style/Theme.IOSched.Immersive" />
 
     <!-- Map -->
     <style name="Theme.IOSched.Map">
         <item name="colorPrimaryDark">#ff16b990</item>
     </style>
-
-    <!-- Feed -->
-    <style name="Theme.IOSched.Feed" parent="@style/Theme.IOSched.Immersive" />
 
     <!-- Info -->
     <style name="Theme.IOSched.Info" parent="@style/Theme.IOSched.Immersive" />
@@ -116,8 +116,12 @@
 
     <style name="ThemeOverlay.ToolbarPopup" parent="@style/ThemeOverlay.AppCompat.Light" />
 
-    <style name="ThemeOverlay.BlueAccent" parent="ThemeOverlay.AppCompat.ActionBar">
+    <style name="ThemeOverlay.BlueAccent" parent="@style/ThemeOverlay.AppCompat.ActionBar">
         <item name="colorAccent">@color/lightish_blue</item>
+    </style>
+
+    <style name="ThemeOverlay.GreenAccent" parent="@style/ThemeOverlay.AppCompat.ActionBar">
+        <item name="colorAccent">@color/aqua_marine</item>
     </style>
 
     <!-- Session Details -->

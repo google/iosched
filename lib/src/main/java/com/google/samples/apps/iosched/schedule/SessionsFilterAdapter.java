@@ -11,7 +11,7 @@
  * or implied. See the License for the specific language governing permissions and limitations under
  * the License.
  */
-package com.google.samples.apps.iosched.myschedule;
+package com.google.samples.apps.iosched.schedule;
 
 import android.content.Context;
 import android.content.res.ColorStateList;

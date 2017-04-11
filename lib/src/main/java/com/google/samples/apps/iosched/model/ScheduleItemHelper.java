@@ -137,6 +137,7 @@ public class ScheduleItemHelper {
             item.sessionType = detectSessionType(
                     cursor.getString(cursor.getColumnIndex(Sessions.SESSION_TAGS)));
             item.mainTag = cursor.getString(cursor.getColumnIndex(Sessions.SESSION_MAIN_TAG));
+            item.tags = cursor.getString(cursor.getColumnIndex(Sessions.SESSION_TAGS)).split(",");
             item.inSchedule =
                     cursor.getInt(cursor.getColumnIndex(Sessions.SESSION_IN_MY_SCHEDULE)) != 0;
             item.reservationStatus =

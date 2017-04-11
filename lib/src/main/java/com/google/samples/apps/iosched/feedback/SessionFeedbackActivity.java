@@ -27,7 +27,7 @@ import android.support.v4.app.NavUtils;
 import android.view.View;
 
 import com.google.samples.apps.iosched.lib.R;
-import com.google.samples.apps.iosched.myschedule.MyScheduleActivity;
+import com.google.samples.apps.iosched.schedule.ScheduleActivity;
 import com.google.samples.apps.iosched.provider.ScheduleContract.Sessions;
 import com.google.samples.apps.iosched.ui.BaseActivity;
 import com.google.samples.apps.iosched.util.BeamUtils;
@@ -81,7 +81,7 @@ public class SessionFeedbackActivity extends BaseActivity {
         if (mSessionUri != null) {
             return new Intent(Intent.ACTION_VIEW, mSessionUri);
         } else {
-            return new Intent(this, MyScheduleActivity.class);
+            return new Intent(this, ScheduleActivity.class);
         }
     }
 

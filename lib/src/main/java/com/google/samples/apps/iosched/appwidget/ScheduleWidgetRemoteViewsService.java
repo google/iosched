@@ -29,11 +29,10 @@ import com.google.samples.apps.iosched.lib.R;
 import com.google.samples.apps.iosched.model.ScheduleHelper;
 import com.google.samples.apps.iosched.model.ScheduleItem;
 import com.google.samples.apps.iosched.provider.ScheduleContract;
+import com.google.samples.apps.iosched.schedule.ScheduleActivity;
 import com.google.samples.apps.iosched.settings.SettingsUtils;
-import com.google.samples.apps.iosched.myschedule.MyScheduleActivity;
 import com.google.samples.apps.iosched.ui.SimpleSectionedListAdapter;
 import com.google.samples.apps.iosched.ui.TaskStackBuilderProxyActivity;
-import com.google.samples.apps.iosched.util.AccountUtils;
 import com.google.samples.apps.iosched.util.TimeUtils;
 import com.google.samples.apps.iosched.util.UIUtils;
 
@@ -93,7 +92,7 @@ public class ScheduleWidgetRemoteViewsService extends RemoteViewsService {
 
         public int getItemViewType(int position) {
             if (position < 0 || position >= mScheduleItems.size()) {
-                LOGE(TAG, "Invalid view position passed to MyScheduleDayAdapter: " + position);
+                LOGE(TAG, "Invalid view position passed to ScheduleDayAdapter: " + position);
                 return VIEW_TYPE_NORMAL;
             }
             ScheduleItem item = mScheduleItems.get(position);
@@ -122,7 +121,7 @@ public class ScheduleWidgetRemoteViewsService extends RemoteViewsService {
             } else {
                 int itemPosition = position - offset;
 
-                Intent homeIntent = new Intent(mContext, MyScheduleActivity.class);
+                Intent homeIntent = new Intent(mContext, ScheduleActivity.class);
 
                 final ScheduleItem item = mScheduleItems.get(itemPosition);
                 ScheduleItem nextItem = (itemPosition < mScheduleItems.size() - 1) ? mScheduleItems.get(itemPosition + 1) : null;
@@ -145,7 +144,7 @@ public class ScheduleWidgetRemoteViewsService extends RemoteViewsService {
 
 
                 if (itemPosition < 0 || itemPosition >= mScheduleItems.size()) {
-                    LOGE(TAG, "Invalid view position passed to MyScheduleDayAdapter: " + position);
+                    LOGE(TAG, "Invalid view position passed to ScheduleDayAdapter: " + position);
                     return rv;
                 }
 
@@ -204,7 +203,7 @@ public class ScheduleWidgetRemoteViewsService extends RemoteViewsService {
                     rv.setOnClickFillInIntent(R.id.box, fillIntent);
 
                 } else {
-                    LOGE(TAG, "Invalid item type in MyScheduleDayAdapter: " + item.type);
+                    LOGE(TAG, "Invalid item type in ScheduleDayAdapter: " + item.type);
                 }
             }
 

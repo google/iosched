@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.google.samples.apps.iosched.myschedule;
+package com.google.samples.apps.iosched.schedule;
 
 import android.content.Context;
 import android.content.Intent;
@@ -35,9 +35,9 @@ import com.google.samples.apps.iosched.injection.ModelProvider;
 import com.google.samples.apps.iosched.lib.R;
 import com.google.samples.apps.iosched.model.ScheduleHelper;
 import com.google.samples.apps.iosched.model.TagMetadata.Tag;
-import com.google.samples.apps.iosched.myschedule.MyScheduleModel.MyScheduleQueryEnum;
-import com.google.samples.apps.iosched.myschedule.MyScheduleModel.MyScheduleUserActionEnum;
-import com.google.samples.apps.iosched.myschedule.ScheduleFilterFragment.ScheduleFiltersFragmentListener;
+import com.google.samples.apps.iosched.schedule.ScheduleModel.MyScheduleQueryEnum;
+import com.google.samples.apps.iosched.schedule.ScheduleModel.MyScheduleUserActionEnum;
+import com.google.samples.apps.iosched.schedule.ScheduleFilterFragment.ScheduleFiltersFragmentListener;
 import com.google.samples.apps.iosched.navigation.NavigationModel;
 import com.google.samples.apps.iosched.session.SessionDetailActivity;
 import com.google.samples.apps.iosched.ui.BaseActivity;
@@ -54,16 +54,16 @@ import static com.google.samples.apps.iosched.util.LogUtils.makeLogTag;
  * This shows the schedule of the logged in user, organised per day.
  * <p/>
  * Depending on the device, this Activity uses a {@link ViewPager} with a {@link
- * MyScheduleSingleDayFragment} for its page, which uses a {@link RecyclerView} for each day.
- * Each day data is backed by a {@link MyScheduleDayAdapter}.
+ * ScheduleSingleDayFragment} for its page, which uses a {@link RecyclerView} for each day.
+ * Each day data is backed by a {@link ScheduleDayAdapter}.
  * <p/>
  * If the user attends the conference, all time slots that have sessions are shown, with a button to
  * allow the user to see all sessions in that slot.
  */
-public class MyScheduleActivity extends BaseActivity implements ScheduleViewParent {
+public class ScheduleActivity extends BaseActivity implements ScheduleViewParent {
     /**
      * This is used in the narrow mode, to pass in the day index to the {@link
-     * MyScheduleSingleDayFragment}.
+     * ScheduleSingleDayFragment}.
      */
     public static final String ARG_CONFERENCE_DAY_INDEX =
             "com.google.samples.apps.iosched.ARG_CONFERENCE_DAY_INDEX";
@@ -102,22 +102,22 @@ public class MyScheduleActivity extends BaseActivity implements ScheduleViewPare
 
     private static final String SCREEN_LABEL = "My Schedule";
 
-    private static final String TAG = makeLogTag(MyScheduleActivity.class);
+    private static final String TAG = makeLogTag(ScheduleActivity.class);
 
     private DrawerLayout mDrawerLayout;
 
     private ScheduleFilterFragment mScheduleFilterFragment;
 
-    private MySchedulePagerFragment mSchedulePagerFragment;
+    private SchedulePagerFragment mSchedulePagerFragment;
 
     private final Handler mUpdateUiHandler = new Handler();
 
-    private MyScheduleModel mModel; // TODO decouple this
-    private PresenterImpl<MyScheduleModel, MyScheduleQueryEnum, MyScheduleUserActionEnum>
+    private ScheduleModel mModel; // TODO decouple this
+    private PresenterImpl<ScheduleModel, MyScheduleQueryEnum, MyScheduleUserActionEnum>
             mPresenter;
 
     public static void launchScheduleWithFilterTag(Context context, Tag tag) {
-        Intent intent = new Intent(context, MyScheduleActivity.class);
+        Intent intent = new Intent(context, ScheduleActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         if (tag != null) {
             intent.putExtra(EXTRA_FILTER_TAG, tag.getId());
@@ -126,7 +126,7 @@ public class MyScheduleActivity extends BaseActivity implements ScheduleViewPare
     }
 
     public static void launchScheduleForConferenceDay(Context context, int day) {
-        Intent intent = new Intent(context, MyScheduleActivity.class);
+        Intent intent = new Intent(context, ScheduleActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         intent.putExtra(EXTRA_CONFERENCE_DAY, day);
         context.startActivity(intent);
@@ -146,7 +146,7 @@ public class MyScheduleActivity extends BaseActivity implements ScheduleViewPare
             return;
         }
 
-        setContentView(R.layout.my_schedule_act);
+        setContentView(R.layout.schedule_act);
         setFullscreenLayout();
         disableActionBarTitle();
 
@@ -158,7 +158,7 @@ public class MyScheduleActivity extends BaseActivity implements ScheduleViewPare
                 reloadSchedule(filterHolder);
             }
         });
-        mSchedulePagerFragment = (MySchedulePagerFragment) getSupportFragmentManager()
+        mSchedulePagerFragment = (SchedulePagerFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.my_content);
 
         if (savedInstanceState == null) {
@@ -214,7 +214,7 @@ public class MyScheduleActivity extends BaseActivity implements ScheduleViewPare
                 String sessionId = dataUri.getQueryParameter("sid");
                 if (!TextUtils.isEmpty(sessionId)) {
                     LOGD(TAG, "SessionId received from website: " + sessionId);
-                    SessionDetailActivity.startSessionDetailActivity(MyScheduleActivity.this,
+                    SessionDetailActivity.startSessionDetailActivity(ScheduleActivity.this,
                             sessionId);
                     finish();
                 } else {
@@ -234,8 +234,8 @@ public class MyScheduleActivity extends BaseActivity implements ScheduleViewPare
         TagFilterHolder filters = mScheduleFilterFragment.getFilters();
         mModel.setFilters(filters);
 
-        final MySchedulePagerFragment contentFragment =
-                (MySchedulePagerFragment) getSupportFragmentManager()
+        final SchedulePagerFragment contentFragment =
+                (SchedulePagerFragment) getSupportFragmentManager()
                         .findFragmentById(R.id.my_content);
         contentFragment.onFiltersChanged(filters);
 
@@ -243,8 +243,8 @@ public class MyScheduleActivity extends BaseActivity implements ScheduleViewPare
         mPresenter = new PresenterImpl<>(
                 mModel,
                 contentFragment.getDayFragments(),
-                MyScheduleModel.MyScheduleUserActionEnum.values(),
-                MyScheduleModel.MyScheduleQueryEnum.values());
+                ScheduleModel.MyScheduleUserActionEnum.values(),
+                ScheduleModel.MyScheduleQueryEnum.values());
     }
 
     @Override
@@ -303,7 +303,7 @@ public class MyScheduleActivity extends BaseActivity implements ScheduleViewPare
     private final Runnable mUpdateUIRunnable = new Runnable() {
         @Override
         public void run() {
-            MyScheduleActivity activity = MyScheduleActivity.this;
+            ScheduleActivity activity = ScheduleActivity.this;
             if (activity.isDestroyed()) {
                 LOGD(TAG, "Activity is not valid anymore. Stopping UI Updater");
                 return;
@@ -312,7 +312,7 @@ public class MyScheduleActivity extends BaseActivity implements ScheduleViewPare
             LOGD(TAG, "Running MySchedule UI updater (now=" +
                     new Date(TimeUtils.getCurrentTime(activity)) + ")");
 
-            mPresenter.onUserAction(MyScheduleModel.MyScheduleUserActionEnum.REDRAW_UI, null);
+            mPresenter.onUserAction(ScheduleModel.MyScheduleUserActionEnum.REDRAW_UI, null);
 
             if (TimeUtils.isConferenceInProgress(activity)) {
                 scheduleNextUiUpdate();
