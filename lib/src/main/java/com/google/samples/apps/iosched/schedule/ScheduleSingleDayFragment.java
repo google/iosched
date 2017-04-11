@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.google.samples.apps.iosched.myschedule;
+package com.google.samples.apps.iosched.schedule;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -41,19 +41,19 @@ import com.google.samples.apps.iosched.feedback.SessionFeedbackActivity;
 import com.google.samples.apps.iosched.lib.R;
 import com.google.samples.apps.iosched.model.TagMetadata;
 import com.google.samples.apps.iosched.model.TagMetadata.Tag;
-import com.google.samples.apps.iosched.myschedule.MyScheduleModel.MyScheduleQueryEnum;
-import com.google.samples.apps.iosched.myschedule.MyScheduleModel.MyScheduleUserActionEnum;
-import com.google.samples.apps.iosched.myschedule.ScheduleItemViewHolder.Callbacks;
 import com.google.samples.apps.iosched.provider.ScheduleContract.Sessions;
+import com.google.samples.apps.iosched.schedule.ScheduleModel.MyScheduleQueryEnum;
+import com.google.samples.apps.iosched.schedule.ScheduleModel.MyScheduleUserActionEnum;
+import com.google.samples.apps.iosched.schedule.SessionItemViewHolder.Callbacks;
 import com.google.samples.apps.iosched.util.TimeUtils;
 
 /**
  * This is used by the {@link android.support.v4.view.ViewPager} used by the narrow layout in {@link
- * MyScheduleActivity}. It is a {@link ListFragment} that shows schedule items for a day, using
- * {@link MyScheduleDayAdapter} as its data source.
+ * ScheduleActivity}. It is a {@link ListFragment} that shows schedule items for a day, using
+ * {@link ScheduleDayAdapter} as its data source.
  */
-public class MyScheduleSingleDayFragment extends Fragment
-        implements UpdatableView<MyScheduleModel, MyScheduleQueryEnum, MyScheduleUserActionEnum>,
+public class ScheduleSingleDayFragment extends Fragment
+        implements UpdatableView<ScheduleModel, MyScheduleQueryEnum, MyScheduleUserActionEnum>,
         LoaderCallbacks<Cursor>, Callbacks {
 
     private static final int TAG_METADATA_TOKEN = 0x8;
@@ -62,14 +62,14 @@ public class MyScheduleSingleDayFragment extends Fragment
 
     /**
      * This is 1 for the first day of the conference, 2 for the second, and so on, and {@link
-     * MyScheduleModel#PRE_CONFERENCE_DAY_ID} for the preconference day
+     * ScheduleModel#PRE_CONFERENCE_DAY_ID} for the preconference day
      */
     private int mDayId = 1;
 
     private ViewSwitcher mLoadingSwitcher;
     private LottieAnimationView mLoadingView;
     private RecyclerView mRecyclerView;
-    private MyScheduleDayAdapter mViewAdapter;
+    private ScheduleDayAdapter mViewAdapter;
 
     private UserActionListener<MyScheduleUserActionEnum> mListener;
 
@@ -83,10 +83,11 @@ public class MyScheduleSingleDayFragment extends Fragment
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.my_schedule_singleday_frag, container, false);
+        View view = inflater.inflate(R.layout.schedule_singleday_frag, container, false);
         mLoadingSwitcher = (ViewSwitcher) view;
         mLoadingView = (LottieAnimationView) view.findViewById(R.id.loading_anim);
         mRecyclerView = (RecyclerView) view.findViewById(android.R.id.list);
+        mRecyclerView.addItemDecoration(new DividerDecoration(getContext()));
         mRecyclerView.setHasFixedSize(true);
         return view;
     }
@@ -110,7 +111,7 @@ public class MyScheduleSingleDayFragment extends Fragment
     }
 
     private void initViews() {
-        mDayId = getArguments().getInt(MyScheduleActivity.ARG_CONFERENCE_DAY_INDEX, 0);
+        mDayId = getArguments().getInt(ScheduleActivity.ARG_CONFERENCE_DAY_INDEX, 0);
 
         // Set id to list view, so it can be referred to from tests
         TypedArray ids = getResources().obtainTypedArray(R.array.myschedule_listview_ids);
@@ -120,7 +121,7 @@ public class MyScheduleSingleDayFragment extends Fragment
     }
 
     @Override
-    public void displayData(MyScheduleModel model, MyScheduleQueryEnum query) {
+    public void displayData(ScheduleModel model, MyScheduleQueryEnum query) {
         switch (query) {
             case SCHEDULE:
                 updateSchedule(model);
@@ -134,8 +135,8 @@ public class MyScheduleSingleDayFragment extends Fragment
     }
 
     @Override
-    public void displayUserActionResult(MyScheduleModel model, MyScheduleUserActionEnum userAction,
-            boolean success) {
+    public void displayUserActionResult(ScheduleModel model, MyScheduleUserActionEnum userAction,
+                                        boolean success) {
         switch (userAction) {
             case RELOAD_DATA:
             case SESSION_STAR:
@@ -149,11 +150,11 @@ public class MyScheduleSingleDayFragment extends Fragment
         }
     }
 
-    private void updateSchedule(MyScheduleModel model) {
+    private void updateSchedule(ScheduleModel model) {
         if (isVisible()) {
             showSchedule();
             if (mViewAdapter == null) {
-                mViewAdapter = new MyScheduleDayAdapter(this, mTagMetadata, true);
+                mViewAdapter = new ScheduleDayAdapter(this, mTagMetadata, true);
             }
             mViewAdapter.updateItems(model.getConferenceDataForDay(mDayId));
             if (mRecyclerView.getAdapter() == null) {
@@ -241,7 +242,7 @@ public class MyScheduleSingleDayFragment extends Fragment
     public void onSessionClicked(String sessionId) {
         Bundle args = new Bundle();
         Uri sessionUri = Sessions.buildSessionUri(sessionId);
-        args.putString(MyScheduleModel.SESSION_URL_KEY, sessionUri.toString());
+        args.putString(ScheduleModel.SESSION_URL_KEY, sessionUri.toString());
         mListener.onUserAction(MyScheduleUserActionEnum.SESSION_SLOT, args);
 
         startActivity(new Intent(Intent.ACTION_VIEW, sessionUri));
@@ -258,15 +259,15 @@ public class MyScheduleSingleDayFragment extends Fragment
                 ? MyScheduleUserActionEnum.SESSION_UNSTAR
                 : MyScheduleUserActionEnum.SESSION_STAR;
         Bundle args = new Bundle();
-        args.putString(MyScheduleModel.SESSION_ID_KEY, sessionId);
+        args.putString(ScheduleModel.SESSION_ID_KEY, sessionId);
         mListener.onUserAction(action, args);
     }
 
     @Override
     public void onFeedbackClicked(String sessionId, String sessionTitle) {
         Bundle args = new Bundle();
-        args.putString(MyScheduleModel.SESSION_ID_KEY, sessionId);
-        args.putString(MyScheduleModel.SESSION_TITLE_KEY, sessionTitle);
+        args.putString(ScheduleModel.SESSION_ID_KEY, sessionId);
+        args.putString(ScheduleModel.SESSION_TITLE_KEY, sessionTitle);
         mListener.onUserAction(MyScheduleUserActionEnum.FEEDBACK, args);
 
         SessionFeedbackActivity.launchFeedback(getContext(), sessionId);

@@ -26,19 +26,19 @@ import com.google.samples.apps.iosched.info.event.EventInfo;
 import com.google.samples.apps.iosched.info.faq.FaqInfo;
 import com.google.samples.apps.iosched.info.travel.TravelInfo;
 import com.google.samples.apps.iosched.lib.R;
-import com.google.samples.apps.iosched.myschedule.MyScheduleSingleDayFragment;
+import com.google.samples.apps.iosched.schedule.ScheduleSingleDayFragment;
 
 public class InfoPagerFragment extends Fragment implements InfoContract.View {
 
     /**
-     * The key used to save the tags for {@link MyScheduleSingleDayFragment}s so the automatically
+     * The key used to save the tags for {@link ScheduleSingleDayFragment}s so the automatically
      * recreated fragments can be reused by {@link #mViewPagerAdapter}.
      */
     private static final String INFO_TAB_FRAGMENTS_TAGS = "info_tab_fragments_tags";
 
     /**
      * The key used to save the position in the {@link #mViewPagerAdapter} for the current {@link
-     * MyScheduleSingleDayFragment}s.
+     * ScheduleSingleDayFragment}s.
      */
     private static final String CURRENT_INFO_TAB_FRAGMENT_POSITION =
             "current_single_day_fragments_position";

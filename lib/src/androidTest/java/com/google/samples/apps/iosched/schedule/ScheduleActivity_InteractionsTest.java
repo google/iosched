@@ -13,16 +13,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.google.samples.apps.iosched.myschedule;
+package com.google.samples.apps.iosched.schedule;
 
-import static android.support.test.espresso.Espresso.onData;
 import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.action.ViewActions.click;
 import static android.support.test.espresso.matcher.ViewMatchers.withContentDescription;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
 
-import static org.hamcrest.CoreMatchers.instanceOf;
 import static org.hamcrest.CoreMatchers.is;
 
 import android.support.test.InstrumentationRegistry;
@@ -32,7 +30,6 @@ import android.test.suitebuilder.annotation.LargeTest;
 
 import com.google.samples.apps.iosched.lib.R;
 import com.google.samples.apps.iosched.settings.SettingsUtils;
-import com.google.samples.apps.iosched.testutils.MatchersHelper;
 import com.google.samples.apps.iosched.util.TimeUtils;
 
 import org.junit.Before;
@@ -40,7 +37,7 @@ import org.junit.Rule;
 import org.junit.runner.RunWith;
 
 /**
- * UI tests for {@link MyScheduleActivity} interacting with other activities (adding/removing
+ * UI tests for {@link ScheduleActivity} interacting with other activities (adding/removing
  * session from schedule), when the user is attending the conference and the conference starts in 3
  * hours.
  * <p/>
@@ -49,11 +46,11 @@ import org.junit.runner.RunWith;
  */
 @RunWith(AndroidJUnit4.class)
 @LargeTest
-public class MyScheduleActivity_InteractionsTest {
+public class ScheduleActivity_InteractionsTest {
 
     @Rule
-    public ActivityTestRule<MyScheduleActivity> mActivityRule = new ActivityTestRule<>(
-            MyScheduleActivity.class);
+    public ActivityTestRule<ScheduleActivity> mActivityRule = new ActivityTestRule<>(
+            ScheduleActivity.class);
 
     @Before
     public void setStartTimeAndDisableReminders() {
@@ -68,7 +65,7 @@ public class MyScheduleActivity_InteractionsTest {
     /**
      * This will fail if there is no free slot with available sessions. Due to the fact it interacts
      * with other screens that manipulate the schedule, it cannot be written with the {@link
-     * StubMyScheduleModel}, as this model always returns the same schedule items.
+     * StubScheduleModel}, as this model always returns the same schedule items.
      */
 //    @Test
 //    @Suppress // Test isn't deterministic when run as part of the full test suite.
@@ -89,7 +86,7 @@ public class MyScheduleActivity_InteractionsTest {
     /**
      * This will fail if there is no free slot with available sessions. Due to the fact it interacts
      * with other screens that manipulate the schedule, it cannot be written with the {@link
-     * StubMyScheduleModel}, as this model always returns the same schedule items.
+     * StubScheduleModel}, as this model always returns the same schedule items.
      */
 //    @Test
 //    @Suppress // Test isn't deterministic when run as part of the full test suite.

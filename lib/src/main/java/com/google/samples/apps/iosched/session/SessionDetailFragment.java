@@ -71,9 +71,9 @@ import com.google.samples.apps.iosched.lib.BuildConfig;
 import com.google.samples.apps.iosched.lib.R;
 import com.google.samples.apps.iosched.map.MapActivity;
 import com.google.samples.apps.iosched.model.TagMetadata.Tag;
-import com.google.samples.apps.iosched.myschedule.MyScheduleActivity;
-import com.google.samples.apps.iosched.myschedule.MyScheduleDayAdapter;
-import com.google.samples.apps.iosched.myschedule.ScheduleItemViewHolder.Callbacks;
+import com.google.samples.apps.iosched.schedule.ScheduleActivity;
+import com.google.samples.apps.iosched.schedule.ScheduleDayAdapter;
+import com.google.samples.apps.iosched.schedule.SessionItemViewHolder.Callbacks;
 import com.google.samples.apps.iosched.provider.ScheduleContract;
 import com.google.samples.apps.iosched.provider.ScheduleContract.Sessions;
 import com.google.samples.apps.iosched.session.SessionDetailModel.SessionDetailQueryEnum;
@@ -151,7 +151,7 @@ public class SessionDetailFragment extends Fragment implements
 
     private RecyclerView mRelatedSessions;
 
-    private MyScheduleDayAdapter mRelatedSessionsAdapter;
+    private ScheduleDayAdapter mRelatedSessionsAdapter;
 
     private ImageLoader mImageLoader;
 
@@ -255,7 +255,7 @@ public class SessionDetailFragment extends Fragment implements
 
         mRelatedSessionsLabel = (TextView) details.findViewById(R.id.related_sessions_label);
         mRelatedSessions = (RecyclerView) details.findViewById(R.id.related_sessions_list);
-        mRelatedSessionsAdapter = new MyScheduleDayAdapter(this, null, false);
+        mRelatedSessionsAdapter = new ScheduleDayAdapter(this, null, false);
         mRelatedSessions.setAdapter(mRelatedSessionsAdapter);
 
         mAddScheduleFab =
@@ -803,7 +803,7 @@ public class SessionDetailFragment extends Fragment implements
                 tagView.setOnClickListener(new OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        MyScheduleActivity.launchScheduleWithFilterTag(getContext(), mainTag);
+                        ScheduleActivity.launchScheduleWithFilterTag(getContext(), mainTag);
                     }
                 });
                 mTags.addView(tagView);
@@ -949,7 +949,7 @@ public class SessionDetailFragment extends Fragment implements
 
     @Override
     public void onTagClicked(Tag tag) {
-        MyScheduleActivity.launchScheduleWithFilterTag(getContext(), tag);
+        ScheduleActivity.launchScheduleWithFilterTag(getContext(), tag);
     }
 
     /**

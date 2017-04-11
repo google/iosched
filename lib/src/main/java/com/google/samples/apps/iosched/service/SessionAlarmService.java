@@ -34,7 +34,7 @@ import com.google.samples.apps.iosched.feedback.FeedbackHelper;
 import com.google.samples.apps.iosched.feedback.SessionFeedbackActivity;
 import com.google.samples.apps.iosched.lib.R;
 import com.google.samples.apps.iosched.map.MapActivity;
-import com.google.samples.apps.iosched.myschedule.MyScheduleActivity;
+import com.google.samples.apps.iosched.schedule.ScheduleActivity;
 import com.google.samples.apps.iosched.provider.ScheduleContract;
 import com.google.samples.apps.iosched.provider.ScheduleContractHelper;
 import com.google.samples.apps.iosched.settings.SettingsUtils;
@@ -314,7 +314,7 @@ public class SessionAlarmService extends IntentService {
                 // Only 1 session needs feedback
                 Uri sessionUri = ScheduleContract.Sessions.buildSessionUri(needFeedbackIds.get(0));
                 PendingIntent pi = TaskStackBuilder.create(this)
-                        .addNextIntent(new Intent(this, MyScheduleActivity.class))
+                        .addNextIntent(new Intent(this, ScheduleActivity.class))
                         .addNextIntent(new Intent(Intent.ACTION_VIEW, sessionUri, this,
                                 SessionFeedbackActivity.class))
                         .getPendingIntent(1, PendingIntent.FLAG_CANCEL_CURRENT);
@@ -324,7 +324,7 @@ public class SessionAlarmService extends IntentService {
             } else {
                 // Show information about several sessions that need feedback
                 PendingIntent pi = TaskStackBuilder.create(this)
-                        .addNextIntent(new Intent(this, MyScheduleActivity.class))
+                        .addNextIntent(new Intent(this, ScheduleActivity.class))
                         .getPendingIntent(1, PendingIntent.FLAG_CANCEL_CURRENT);
 
                 NotificationCompat.InboxStyle inboxStyle = new NotificationCompat.InboxStyle();
@@ -408,7 +408,7 @@ public class SessionAlarmService extends IntentService {
             // Generates the pending intent which gets fired when the user taps on the notification.
             // NOTE: Use TaskStackBuilder to comply with Android's design guidelines
             // related to navigation from notifications.
-            Intent baseIntent = new Intent(this, MyScheduleActivity.class);
+            Intent baseIntent = new Intent(this, ScheduleActivity.class);
             baseIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
             TaskStackBuilder taskBuilder = TaskStackBuilder.create(this)
                     .addNextIntent(baseIntent);
@@ -508,7 +508,7 @@ public class SessionAlarmService extends IntentService {
         mapIntent.putExtra(MapActivity.EXTRA_DETACHED_MODE, true);
         return TaskStackBuilder
                 .create(getApplicationContext())
-                .addNextIntent(new Intent(this, MyScheduleActivity.class))
+                .addNextIntent(new Intent(this, ScheduleActivity.class))
                 .addNextIntent(mapIntent)
                 .getPendingIntent(0, PendingIntent.FLAG_CANCEL_CURRENT);
     }

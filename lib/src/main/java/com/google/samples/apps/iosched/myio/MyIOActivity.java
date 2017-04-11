@@ -51,7 +51,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.google.samples.apps.iosched.lib.BuildConfig;
 import com.google.samples.apps.iosched.lib.R;
-import com.google.samples.apps.iosched.myschedule.ScheduleView;
+import com.google.samples.apps.iosched.schedule.ScheduleView;
 import com.google.samples.apps.iosched.navigation.NavigationModel;
 import com.google.samples.apps.iosched.signin.SignInListener;
 import com.google.samples.apps.iosched.signin.SignInManager;

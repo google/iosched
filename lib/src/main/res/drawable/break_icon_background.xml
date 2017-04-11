@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
-  Copyright (c) 2016 Google Inc.
+  Copyright (c) 2017 Google Inc.
 
   Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except
   in compliance with the License. You may obtain a copy of the License at
@@ -13,11 +13,8 @@
   the License.
   -->
 
-<ImageView
+<shape
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="24dp"
-    android:layout_height="24dp"
-    android:background="@drawable/tag_food_background"
-    android:padding="4dp"
-    app:srcCompat="@drawable/ic_food" />
+    android:shape="oval">
+    <solid android:color="@color/break_icon_background" />
+</shape>
