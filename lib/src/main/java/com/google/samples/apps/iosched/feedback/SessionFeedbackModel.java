@@ -38,16 +38,16 @@ import com.google.samples.apps.iosched.util.AnalyticsHelper;
 public class SessionFeedbackModel extends
         ModelWithLoaderManager<SessionFeedbackQueryEnum, SessionFeedbackUserActionEnum> {
 
-    protected final static String DATA_RATING_INT = "DATA_RATING_INT";
+    final static String DATA_RATING_INT = "DATA_RATING_INT";
 
-    protected final static String DATA_SESSION_RELEVANT_ANSWER_INT =
+    final static String DATA_SESSION_RELEVANT_ANSWER_INT =
             "DATA_SESSION_RELEVANT_ANSWER_INT";
 
-    protected final static String DATA_CONTENT_ANSWER_INT = "DATA_CONTENT_ANSWER_INT";
+    final static String DATA_CONTENT_ANSWER_INT = "DATA_CONTENT_ANSWER_INT";
 
-    protected final static String DATA_SPEAKER_ANSWER_INT = "DATA_SPEAKER_ANSWER_INT";
+    final static String DATA_SPEAKER_ANSWER_INT = "DATA_SPEAKER_ANSWER_INT";
 
-    protected final static String DATA_COMMENT_STRING = "DATA_COMMENT_STRING";
+    final static String DATA_COMMENT_STRING = "DATA_COMMENT_STRING";
 
     private final Context mContext;
 
@@ -68,11 +68,11 @@ public class SessionFeedbackModel extends
         mFeedbackHelper = feedbackHelper;
     }
 
-    public String getSessionTitle() {
+    String getSessionTitle() {
         return mTitleString;
     }
 
-    public String getSessionSpeakers() {
+    String getSessionSpeakers() {
         return mSpeakersString;
     }
 
@@ -206,14 +206,14 @@ public class SessionFeedbackModel extends
 
         public int sessionRelevantAnswer;
 
-        public int contentAnswer;
+        int contentAnswer;
 
-        public int speakerAnswer;
+        int speakerAnswer;
 
         public String comments;
 
-        public SessionFeedbackData(String sessionId, int sessionRating, int sessionRelevantAnswer,
-                int contentAnswer, int speakerAnswer, String comments) {
+        SessionFeedbackData(String sessionId, int sessionRating, int sessionRelevantAnswer,
+                            int contentAnswer, int speakerAnswer, String comments) {
             this.sessionId = sessionId;
             this.sessionRating = sessionRating;
             this.sessionRelevantAnswer = sessionRelevantAnswer;
