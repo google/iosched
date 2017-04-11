@@ -86,15 +86,9 @@
         <item name="android:textCursorDrawable">@null</item>
     </style>
 
-    <style name="Theme.IOSched.Feedback">
-        <item name="colorAccent">@color/flat_button_text</item>
-    </style>
-
     <!-- My Schedule -->
     <style name="Theme.IOSched.MyIo" parent="@style/Theme.IOSched.Immersive">
         <item name="colorAccent">@color/aqua_marine</item>
-        <item name="android:statusBarColor">@color/immersive_status_bar</item>
-        <item name="android:windowDrawsSystemBarBackgrounds">true</item>
     </style>
 
     <!-- My Schedule -->
@@ -110,6 +104,11 @@
 
     <!-- Info -->
     <style name="Theme.IOSched.Info" parent="@style/Theme.IOSched.Immersive" />
+
+    <!-- Session Feedback -->
+    <style name="Theme.IOSched.Feedback" parent="@style/Theme.IOSched.Immersive">
+        <item name="colorAccent">@color/aqua_marine</item>
+    </style>
 
     <style name="ThemeOverlay.DarkToolbar" parent="@style/ThemeOverlay.AppCompat.Dark.ActionBar" />
 
@@ -152,6 +151,18 @@
         <item name="android:textAllCaps">true</item>
     </style>
 
+    <style name="Widget.IOSched.BottomNavigationView" parent="Widget.Design.BottomNavigationView">
+        <item name="itemIconTint">@color/nav_icon_tint</item>
+        <item name="android:background">?android:attr/colorBackground</item>
+        <item name="android:elevation" tools:targetApi="lollipop">@dimen/bottom_nav_elevation</item>
+    </style>
+
+    <style name="Widget.IOSched.FeedbackRatingBar">
+        <item name="filledDrawable">@drawable/ic_star_filled</item>
+        <item name="unfilledDrawable">@drawable/ic_star_empty</item>
+        <item name="maxRating">5</item>
+    </style>
+
     <!-- Empty views -->
     <style name="EmptyText">
         <item name="android:textSize">@dimen/text_size_medium</item>
@@ -182,20 +193,8 @@
         <item name="android:textColor">?android:textColorSecondary</item>
     </style>
 
-    <style name="TextAppearance.Filter" parent="TextAppearance.Body1">
-        <item name="android:textColor">@color/filter_text</item>
-    </style>
-
     <style name="TextAppearance.SessionTitle" parent="TextAppearance.Body2">
         <item name="android:textColor">@color/video_title</item>
-    </style>
-
-    <style name="TextAppearance.VideoDuration" parent="TextAppearance.AppCompat.Caption">
-        <item name="android:textColor">@color/body_text_2</item>
-    </style>
-
-    <style name="TextAppearance.Subhead" parent="TextAppearance.Body2">
-        <item name="android:textColor">@color/item_text_primary_color</item>
     </style>
 
     <style name="SessionTimeHint">
@@ -232,19 +231,6 @@
         <item name="android:elevation" tools:targetApi="lollipop">@dimen/headerbar_elevation</item>
     </style>
 
-    <!-- Session feedback -->
-
-    <style name="FeedbackQuestionGuideText">
-        <item name="android:textSize">@dimen/text_size_small</item>
-        <item name="android:textColor">@color/flat_button_text</item>
-    </style>
-
-    <style name="FeedbackNumberRatingBar">
-        <item name="filledDrawable">@drawable/ratingbar_star_filled</item>
-        <item name="unfilledDrawable">@drawable/ratingbar_star_unfilled</item>
-        <item name="maxRating">5</item>
-    </style>
-
     <!-- Buttons -->
     <style name="MoreButton">
         <item name="android:textAppearance">@style/TextAppearance.AppCompat.Button</item>
@@ -268,28 +254,12 @@
         <item name="android:gravity">center_vertical</item>
     </style>
 
-    <style name="Body2Text">
-        <item name="android:textAppearance">@style/TextAppearance.AppCompat.Body2</item>
-        <item name="android:lineSpacingMultiplier">@dimen/body_1_spacing</item>
-    </style>
-
-    <style name="SessionTitle">
-        <item name="android:textAppearance">@style/TextAppearance.AppCompat.Subhead</item>
-        <item name="android:lineSpacingMultiplier">@dimen/h3_spacing</item>
-    </style>
-
     <style name="SettingsPreferenceThemeOverlay" parent="PreferenceThemeOverlay">
         <item name="switchPreferenceCompatStyle">@style/SettingsSwitchPreference</item>
     </style>
 
     <style name="SettingsSwitchPreference" parent="Preference.SwitchPreferenceCompat">
         <item name="android:layout">@layout/iosched_preference</item>
-    </style>
-
-    <style name="Widget.IOSched.BottomNavigationView" parent="Widget.Design.BottomNavigationView">
-        <item name="itemIconTint">@color/nav_icon_tint</item>
-        <item name="android:background">?android:attr/colorBackground</item>
-        <item name="android:elevation" tools:targetApi="lollipop">@dimen/bottom_nav_elevation</item>
     </style>
 
     <style name="TextAppearance.H1" parent="@style/TextAppearance.AppCompat.Headline">
