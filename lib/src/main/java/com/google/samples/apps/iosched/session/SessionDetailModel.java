@@ -32,7 +32,9 @@ import android.support.v4.content.Loader;
 import android.text.TextUtils;
 import android.util.Pair;
 
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -277,11 +279,17 @@ public class SessionDetailModel extends ModelWithLoaderManager<SessionDetailQuer
                 @Override
                 public void onDataChange(DataSnapshot dataSnapshot) {
                     try {
-                        mReservationStatus = dataSnapshot.getValue(String.class);
-                        final DataQueryCallback<SessionDetailQueryEnum> reservationStatusCallback =
-                                mDataQueryCallbacks.get(RESERVATION_STATUS);
-                        reservationStatusCallback.onModelUpdated(SessionDetailModel.this,
-                                RESERVATION_STATUS);
+                        String reservationStatus = dataSnapshot.getValue(String.class);
+                        if (reservationStatus != null) {
+                            mReservationStatus = reservationStatus;
+                            mSessionsHelper.setReservationStatus(mSessionUri,
+                                    ScheduleContract.MyReservations.fromFirebaseString(mReservationStatus),
+                                    mTitle);
+                            final DataQueryCallback<SessionDetailQueryEnum> reservationStatusCallback =
+                                    mDataQueryCallbacks.get(RESERVATION_STATUS);
+                            reservationStatusCallback.onModelUpdated(SessionDetailModel.this,
+                                    RESERVATION_STATUS);
+                        }
                     } catch (DatabaseException e) {
                         LOGE(TAG, e.getMessage());
                     }
@@ -296,8 +304,9 @@ public class SessionDetailModel extends ModelWithLoaderManager<SessionDetailQuer
                 @Override
                 public void onDataChange(DataSnapshot dataSnapshot) {
                     try {
-                        mReservationResult = dataSnapshot.getValue(String.class);
-                        if (mReservationResult != null) {
+                        String reservationResult = dataSnapshot.getValue(String.class);
+                        if (reservationResult != null) {
+                            mReservationResult = reservationResult;
                             DataQueryCallback<SessionDetailQueryEnum> reservationResultCallback
                                     = mDataQueryCallbacks.get(RESERVATION_RESULT);
                             reservationResultCallback.onModelUpdated(SessionDetailModel.this,
@@ -322,24 +331,12 @@ public class SessionDetailModel extends ModelWithLoaderManager<SessionDetailQuer
                                 = mDataQueryCallbacks.get(RESERVATION_PENDING);
                         QueueAction queueAction = dataSnapshot.getValue(QueueAction.class);
                         if (queueAction == null) {
+                            LOGD(TAG, "Exit queue");
                             mReturnPending = false;
                             mReservationPending = false;
                             mQueueReference.removeEventListener(this);
                             reservationPendingCallback.onModelUpdated(
                                     SessionDetailModel.this, RESERVATION_PENDING);
-                        } else {
-                            if (queueAction.action.equals("return")) {
-                                mReservationPending = false;
-                                mReturnPending = true;
-                            } else if (queueAction.action.equals("reserve")) {
-                                mReservationPending = true;
-                                mReturnPending = false;
-                            }
-                            reservationPendingCallback.onModelUpdated(
-                                    SessionDetailModel.this, RESERVATION_PENDING);
-                            mSessionReservationResultReference
-                                    .child(queueAction.requestId)
-                                    .addValueEventListener(mSessionReservationResultEventListener);
                         }
                     } catch (DatabaseException e) {
                         LOGE(TAG, e.getMessage());
@@ -992,10 +989,25 @@ public class SessionDetailModel extends ModelWithLoaderManager<SessionDetailQuer
     public void attemptReserve() {
         FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
         if (mQueueReference != null && currentUser != null) {
-            String requestId = generateReserveRequestId();
+            final String requestId = generateReserveRequestId();
             QueueAction queueAction = new QueueAction(mSessionId, "reserve", requestId);
             mQueueReference.addValueEventListener(mQueueEventListener);
-            mQueueReference.setValue(queueAction).addOnFailureListener(new OnFailureListener() {
+            mQueueReference.setValue(queueAction).addOnCompleteListener(
+                    new OnCompleteListener<Void>() {
+                @Override
+                public void onComplete(@NonNull Task<Void> task) {
+                    LOGD(TAG, "Enter queue.");
+                    mReservationPending = true;
+                    mReturnPending = false;
+                    DataQueryCallback<SessionDetailQueryEnum> reservationPendingCallback
+                            = mDataQueryCallbacks.get(RESERVATION_PENDING);
+                    reservationPendingCallback.onModelUpdated(
+                            SessionDetailModel.this, RESERVATION_PENDING);
+                    mSessionReservationResultReference
+                            .child(requestId)
+                            .addValueEventListener(mSessionReservationResultEventListener);
+                }
+            }).addOnFailureListener(new OnFailureListener() {
                 @Override
                 public void onFailure(@NonNull Exception e) {
                     LOGE(TAG, e.getMessage());
@@ -1013,10 +1025,25 @@ public class SessionDetailModel extends ModelWithLoaderManager<SessionDetailQuer
     public void attemptReturnReservation() {
         FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
         if (mQueueReference != null && currentUser != null) {
-            String requestId = generateReserveRequestId();
+            final String requestId = generateReserveRequestId();
             QueueAction queueAction = new QueueAction(mSessionId, "return", requestId);
-            mQueueReference.child(requestId).addValueEventListener(mQueueEventListener);
-            mQueueReference.setValue(queueAction).addOnFailureListener(new OnFailureListener() {
+            mQueueReference.addValueEventListener(mQueueEventListener);
+            mQueueReference.setValue(queueAction).addOnCompleteListener(
+                    new OnCompleteListener<Void>() {
+                @Override
+                public void onComplete(@NonNull Task<Void> task) {
+                    LOGD(TAG, "Enter queue.");
+                    mReservationPending = false;
+                    mReturnPending = true;
+                    DataQueryCallback<SessionDetailQueryEnum> reservationPendingCallback
+                            = mDataQueryCallbacks.get(RESERVATION_PENDING);
+                    reservationPendingCallback.onModelUpdated(
+                            SessionDetailModel.this, RESERVATION_PENDING);
+                    mSessionReservationResultReference
+                            .child(requestId)
+                            .addValueEventListener(mSessionReservationResultEventListener);
+                }
+            }).addOnFailureListener(new OnFailureListener() {
                 @Override
                 public void onFailure(@NonNull Exception e) {
                     LOGE(TAG, e.getMessage());
