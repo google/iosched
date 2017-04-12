@@ -17,7 +17,9 @@
 package com.google.samples.apps.iosched.ui.widget;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.support.annotation.StringRes;
+import android.support.v7.content.res.AppCompatResources;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.widget.FrameLayout;
@@ -31,13 +33,13 @@ import com.google.samples.apps.iosched.lib.R;
 public class ReserveButton extends FrameLayout {
 
     private TextView text;
-    private ReservationStatus status = ReservationStatus.RESERVABLE;
+    private ReservationStatus status;
 
     public ReserveButton(Context context, AttributeSet attrs) {
         super(context, attrs, R.attr.reserveButtonStyle);
         LayoutInflater.from(context).inflate(R.layout.reserve_button, this, true);
         text = (TextView) findViewById(R.id.reserve_text);
-        text.setText(status.text);
+        setStatus(ReservationStatus.RESERVABLE);
     }
 
     public ReservationStatus getStatus() {
@@ -45,6 +47,7 @@ public class ReserveButton extends FrameLayout {
     }
 
     public void setStatus(ReservationStatus status) {
+        if (this.status == status) return;
         this.status = status;
         refreshDrawableState();
         text.setText(status.text);
@@ -53,10 +56,20 @@ public class ReserveButton extends FrameLayout {
     @Override
     public int[] onCreateDrawableState(int extraSpace) {
         if (status == null) return super.onCreateDrawableState(extraSpace);
-
         final int[] drawableState = super.onCreateDrawableState(extraSpace + 1);
         mergeDrawableStates(drawableState, status.state);
         return drawableState;
+    }
+
+    @Override
+    protected void drawableStateChanged() {
+        super.drawableStateChanged();
+        // theme attrs only supported in ColorStateLists on M+, so do it manually.
+        text.setTextColor(
+                AppCompatResources.getColorStateList(getContext(), R.color.reserve_text));
+        setBackgroundColor(AppCompatResources.getColorStateList(
+                getContext(), R.color.reserve_background)
+                .getColorForState(getDrawableState(), Color.TRANSPARENT));
     }
 
     /**
