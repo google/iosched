@@ -67,7 +67,7 @@ public class MessageSender {
         int counter = 0;
         for (Device device : devices) {
             counter ++;
-            partialDevices.add(device.getGcmId());
+            partialDevices.add(device.getDeviceId());
             int partialSize = partialDevices.size();
             if (partialSize == MAX_DEVICES || counter == total) {
                 // Send multicast message
