@@ -15,7 +15,9 @@
  */
 package com.google.samples.apps.iosched.feed;
 
+import android.content.Intent;
 import android.content.res.ColorStateList;
+import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.constraint.ConstraintLayout;
@@ -123,6 +125,7 @@ class FeedViewHolder extends RecyclerView.ViewHolder {
         description.setHtmlText(feedMessage.getMessage());
         int maxLines = expanded ? EXPANDED_DESC_MAX_LINES : COLLAPSED_DESC_MAX_LINES;
         description.setMaxLines(maxLines);
+        setClickListener(feedMessage.isClickable(), feedMessage.getLink());
     }
 
     private void updateEmergencyStatus(boolean isEmergency) {
@@ -132,4 +135,15 @@ class FeedViewHolder extends RecyclerView.ViewHolder {
         category.setActivated(isEmergency);
     }
 
+    private void setClickListener(boolean isClickable, final String link) {
+        itemView.setClickable(isClickable);
+        itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent linkIntent = new Intent(Intent.ACTION_VIEW);
+                linkIntent.setData(Uri.parse(link));
+                itemView.getContext().startActivity(linkIntent);
+            }
+        });
+    }
 }
