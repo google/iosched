@@ -152,12 +152,8 @@ public class ScheduleDayAdapter extends RecyclerView.Adapter<ViewHolder> {
                 final ScheduleItem item = items.get(i);
 
                 if (prev == null || !ScheduleItemHelper.sameStartTime(prev, item, true)) {
-                    LOGD(TAG, "Adding time seperator item: " + item + " start="
-                            + new Date(item.startTime));
                     mItems.add(new TimeSeperatorItem(item));
                 }
-
-                LOGD(TAG, "Adding schedule item: " + item + " start=" + new Date(item.startTime));
                 mItems.add(item);
             }
         }

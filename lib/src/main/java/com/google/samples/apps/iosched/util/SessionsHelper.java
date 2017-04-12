@@ -75,4 +75,25 @@ public class SessionsHelper {
 
         // No need to manually setup calendar or notifications so they happen on sync
     }
+
+    public void setReservationStatus(Uri sessionUri,
+            @ScheduleContract.MyReservations.ReservationStatus int reservationStatus,
+            String title) {
+        LOGD(TAG, "setReservationStatus session uri=" + sessionUri + " reservationStatus=" +
+                reservationStatus + " title=" + title);
+        String accountName = AccountUtils.getActiveAccountName(mContext);
+        String sessionId = ScheduleContract.Sessions.getSessionId(sessionUri);
+        Uri myReservationsUri = ScheduleContract.MyReservations.buildMyReservationUri(accountName);
+
+        @SuppressLint("HandlerLeak") // this is short-lived
+                AsyncQueryHandler handler = new AsyncQueryHandler(mContext.getContentResolver()) {};
+        final ContentValues values = new ContentValues();
+        values.put(ScheduleContract.MyReservations.SESSION_ID, sessionId);
+        values.put(ScheduleContract.MyReservations.MY_RESERVATION_STATUS, reservationStatus);
+        values.put(ScheduleContract.MyReservations.MY_RESERVATION_ACCOUNT_NAME, accountName);
+        int offset = SyncUtils.getServerTimeOffset(mContext);
+        values.put(ScheduleContract.MyReservations.MY_RESERVATION_TIMESTAMP,
+                System.currentTimeMillis() + offset);
+        handler.startInsert(-1, null, myReservationsUri, values);
+    }
 }

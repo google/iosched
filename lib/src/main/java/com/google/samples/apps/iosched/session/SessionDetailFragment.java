@@ -833,11 +833,9 @@ public class SessionDetailFragment extends Fragment implements
                     startActivity(intent);
                 }
             });
-            LOGD(TAG, "User has not given feedback for session.");
         } else {
             mFeedbackButton.setVisibility(GONE);
             mFeedbackButton.setOnClickListener(null);
-            LOGD(TAG, "User already gave feedback for session.");
         }
     }
 
@@ -977,7 +975,6 @@ public class SessionDetailFragment extends Fragment implements
     public void updateReservationStatusAndSeatAvailability(SessionDetailModel sessionDetailModel) {
         if (isAdded()) {
             String reservationStatus = sessionDetailModel.getReservationStatus();
-            LOGD(TAG, "reservationStatus == " + reservationStatus);
             if (reservationStatus == null) {
                 updateSeatsAvailability(sessionDetailModel);
             } else {
@@ -1003,7 +1000,6 @@ public class SessionDetailFragment extends Fragment implements
     public void updateReservationResult(SessionDetailModel sessionDetailModel) {
         String reservationResult = sessionDetailModel.getReservationResult();
         if (reservationResult != null && isAdded()) {
-            LOGD(TAG, "reservationResult == " + reservationResult);
             switch (reservationResult) {
                 case SessionDetailConstants.RESERVE_DENIED_CUTOFF:
                     showReservationDeniedCutoff();
