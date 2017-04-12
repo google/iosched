@@ -137,10 +137,10 @@
     </style>
 
     <style name="Widget.IOSched.ReserveButton">
-        <item name="android:background">@drawable/reserve_background</item>
-        <item name="android:elevation">2dp</item>
+        <item name="android:foreground">?selectableItemBackground</item>
+        <item name="android:background">@color/lightish_blue</item>
+        <item name="android:elevation">4dp</item>
         <item name="android:stateListAnimator">@animator/raise</item>
-        <item name="android:backgroundTint">@color/reserve_background</item>
         <item name="android:drawablePadding">@dimen/padding_normal</item>
         <item name="android:drawableStart">@drawable/reserve_icon</item>
     </style>
