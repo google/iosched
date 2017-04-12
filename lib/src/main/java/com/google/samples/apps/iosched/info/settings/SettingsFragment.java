@@ -32,11 +32,13 @@ import com.google.samples.apps.iosched.info.BaseInfoFragment;
 import com.google.samples.apps.iosched.lib.BuildConfig;
 import com.google.samples.apps.iosched.lib.R;
 import com.google.samples.apps.iosched.settings.SettingsUtils;
+import com.google.samples.apps.iosched.util.AboutUtils;
 
 public class SettingsFragment extends BaseInfoFragment<Object> {
 
     TextView mTermsOfService;
     TextView mPrivacyPolicy;
+    TextView mOpenSourceLicenses;
     TextView mAppVersion;
     Switch mTimeZoneSetting;
     Switch mNotificationsSetting;
@@ -49,6 +51,7 @@ public class SettingsFragment extends BaseInfoFragment<Object> {
         View root = inflater.inflate(R.layout.info_settings_frag, container, false);
         mTermsOfService = (TextView) root.findViewById(R.id.termsOfServiceLink);
         mPrivacyPolicy = (TextView) root.findViewById(R.id.privacyPolicyLink);
+        mOpenSourceLicenses = (TextView) root.findViewById(R.id.openSourceLicensesLink);
         mAppVersion = (TextView) root.findViewById(R.id.appVersion);
         mTimeZoneSetting = (Switch) root.findViewById(R.id.settingsTimeZoneSwitch);
         mNotificationsSetting = (Switch) root.findViewById(R.id.settingsNotificationsSwitch);
@@ -77,6 +80,12 @@ public class SettingsFragment extends BaseInfoFragment<Object> {
                 privacyPolicyLink.setData(Uri.parse(getResources()
                         .getString(R.string.about_privacy_policy_url)));
                 startActivity(privacyPolicyLink);
+            }
+        });
+        mOpenSourceLicenses.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                AboutUtils.showOpenSourceLicenses(getActivity());
             }
         });
         mAppVersion.setText(getResources()

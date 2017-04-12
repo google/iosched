@@ -116,6 +116,15 @@
                 android:paddingEnd="@dimen/padding_normal"
                 android:text="@string/about_privacy_policy" />
 
+            <Button
+                android:id="@+id/openSourceLicensesLink"
+                style="@style/Widget.AppCompat.Button.Borderless.Colored"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingStart="@dimen/padding_normal"
+                android:paddingEnd="@dimen/padding_normal"
+                android:text="@string/about_licenses" />
+
             <TextView
                 android:id="@+id/appVersion"
                 android:layout_width="wrap_content"
