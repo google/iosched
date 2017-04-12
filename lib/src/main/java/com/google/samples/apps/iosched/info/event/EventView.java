@@ -18,7 +18,6 @@ import android.content.res.TypedArray;
 import android.graphics.drawable.Drawable;
 import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
-import android.text.method.LinkMovementMethod;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -27,10 +26,11 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.google.samples.apps.iosched.lib.R;
+import com.google.samples.apps.iosched.ui.widget.HtmlTextView;
 
 public class EventView extends FrameLayout {
 
-    private TextView mDescriptionView;
+    private HtmlTextView mDescriptionView;
 
     public EventView(Context context) {
         this(context, null);
@@ -53,9 +53,8 @@ public class EventView extends FrameLayout {
         View rootView = LayoutInflater.from(context)
                 .inflate(R.layout.info_event_content_card_view, this, true);
         TextView titleView = (TextView) rootView.findViewById(R.id.event_title);
-        mDescriptionView = (TextView) rootView.findViewById(R.id.event_content_description);
-        mDescriptionView.setText(eventDescription);
-        mDescriptionView.setMovementMethod(LinkMovementMethod.getInstance());
+        mDescriptionView = (HtmlTextView) rootView.findViewById(R.id.event_content_description);
+        mDescriptionView.setHtmlText(eventDescription);
         View header = rootView.findViewById(R.id.header);
         ImageView iconView = (ImageView) rootView.findViewById(R.id.event_icon);
         titleView.setText(eventTitle);

@@ -34,6 +34,7 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.google.samples.apps.iosched.feed.data.FeedMessage;
 import com.google.samples.apps.iosched.lib.R;
+import com.google.samples.apps.iosched.ui.widget.HtmlTextView;
 
 import static android.view.View.GONE;
 import static android.view.View.VISIBLE;
@@ -51,7 +52,7 @@ class FeedViewHolder extends RecyclerView.ViewHolder {
     private TextView title;
     private TextView dateTime;
     private ImageView image;
-    private TextView description;
+    private HtmlTextView description;
     private TextView category;
     private ImageButton expandIcon;
     private ImageView emergencyIcon;
@@ -69,7 +70,7 @@ class FeedViewHolder extends RecyclerView.ViewHolder {
         title = (TextView) itemView.findViewById(R.id.title);
         dateTime = (TextView) itemView.findViewById(R.id.date_time);
         image = (ImageView) itemView.findViewById(R.id.image);
-        description = (TextView) itemView.findViewById(R.id.description);
+        description = (HtmlTextView) itemView.findViewById(R.id.description);
         category = (TextView) itemView.findViewById(R.id.category_text);
         expandIcon = (ImageButton) itemView.findViewById(R.id.expand_icon);
         emergencyIcon = (ImageView) itemView.findViewById(R.id.emergency_icon);
@@ -119,8 +120,9 @@ class FeedViewHolder extends RecyclerView.ViewHolder {
         } else {
             image.setVisibility(GONE);
         }
-        description.setText(feedMessage.getMessage());
-        description.setMaxLines(expanded ? EXPANDED_DESC_MAX_LINES : COLLAPSED_DESC_MAX_LINES);
+        description.setHtmlText(feedMessage.getMessage());
+        int maxLines = expanded ? EXPANDED_DESC_MAX_LINES : COLLAPSED_DESC_MAX_LINES;
+        description.setMaxLines(maxLines);
     }
 
     private void updateEmergencyStatus(boolean isEmergency) {

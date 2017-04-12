@@ -29,12 +29,13 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.google.samples.apps.iosched.lib.R;
+import com.google.samples.apps.iosched.ui.widget.HtmlTextView;
 
 public class CollapsableCard extends FrameLayout {
 
     private boolean mExpanded = false;
     private TextView mCardTitle;
-    private TextView mCardDescription;
+    private HtmlTextView mCardDescription;
     private ImageView mExpandIcon;
 
     public CollapsableCard(Context context) {
@@ -54,11 +55,11 @@ public class CollapsableCard extends FrameLayout {
         View view = LayoutInflater.from(context)
                 .inflate(R.layout.collapsable_card_content, this, true);
         mCardTitle = (TextView) view.findViewById(R.id.card_title);
-        mCardDescription = (TextView) view.findViewById(R.id.card_description);
+        mCardDescription = (HtmlTextView) view.findViewById(R.id.card_description);
         mCardDescription.setMovementMethod(LinkMovementMethod.getInstance());
         mExpandIcon = (ImageView) view.findViewById(R.id.expand_icon);
         mCardTitle.setText(cardTitle);
-        mCardDescription.setText(cardDescription);
+        mCardDescription.setHtmlText(cardDescription);
         updateFromExpandOrCollapse();
         OnClickListener expandClick = new OnClickListener() {
             @Override
@@ -135,7 +136,7 @@ public class CollapsableCard extends FrameLayout {
         valueAnimator.start();
     }
 
-    public void setCardDescription(CharSequence description) {
-        mCardDescription.setText(description);
+    public void setCardDescription(String description) {
+        mCardDescription.setHtmlText(description);
     }
 }
