@@ -23,7 +23,7 @@ import com.google.samples.apps.iosched.feedback.FeedbackHelper;
 import com.google.samples.apps.iosched.feedback.SessionFeedbackModel;
 import com.google.samples.apps.iosched.model.ScheduleHelper;
 import com.google.samples.apps.iosched.myio.MyIOModel;
-import com.google.samples.apps.iosched.myschedule.MyScheduleModel;
+import com.google.samples.apps.iosched.schedule.ScheduleModel;
 import com.google.samples.apps.iosched.session.SessionDetailModel;
 import com.google.samples.apps.iosched.util.SessionsHelper;
 
@@ -37,7 +37,7 @@ public class ModelProvider {
     private static SessionDetailModel stubSessionDetailModel = null;
 
     @SuppressLint("StaticFieldLeak")
-    private static MyScheduleModel stubMyScheduleModel = null;
+    private static ScheduleModel stubScheduleModel = null;
 
     @SuppressLint("StaticFieldLeak")
     private static MyIOModel stubMyIOModel = null;
@@ -54,11 +54,11 @@ public class ModelProvider {
         }
     }
 
-    public static MyScheduleModel provideMyScheduleModel(ScheduleHelper scheduleHelper,
-            SessionsHelper sessionsHelper, Context context) {
-        MyScheduleModel model = stubMyScheduleModel != null
-                ? stubMyScheduleModel
-                : new MyScheduleModel(scheduleHelper, sessionsHelper, context);
+    public static ScheduleModel provideMyScheduleModel(ScheduleHelper scheduleHelper,
+                                                       SessionsHelper sessionsHelper, Context context) {
+        ScheduleModel model = stubScheduleModel != null
+                ? stubScheduleModel
+                : new ScheduleModel(scheduleHelper, sessionsHelper, context);
         model.initStaticDataAndObservers();
         return model;
     }
@@ -77,8 +77,8 @@ public class ModelProvider {
             stubSessionFeedbackModel = (SessionFeedbackModel) model;
         } else if (model instanceof SessionDetailModel) {
             stubSessionDetailModel = (SessionDetailModel) model;
-        } else if (model instanceof MyScheduleModel) {
-            stubMyScheduleModel = (MyScheduleModel) model;
+        } else if (model instanceof ScheduleModel) {
+            stubScheduleModel = (ScheduleModel) model;
         }
     }
 

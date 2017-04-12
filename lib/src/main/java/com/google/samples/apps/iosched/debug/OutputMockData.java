@@ -21,6 +21,7 @@ import android.database.MatrixCursor;
 import android.text.TextUtils;
 
 import com.google.samples.apps.iosched.model.ScheduleItem;
+import com.google.samples.apps.iosched.schedule.ScheduleModel;
 
 import java.util.ArrayList;
 
@@ -86,7 +87,7 @@ public class OutputMockData {
      * This generates code, as a String, to create an {@link ArrayList} of {@link ScheduleItem}s
      * with the same data as {@code items}. This can be used to easily create schedule items with
      * mock data in integration tests (in mockdata package), by logging the output of this method in
-     * {@link com.google.samples.apps.iosched.myschedule.MyScheduleModel
+     * {@link ScheduleModel
      * .LoadScheduleDataListener#onDataLoaded(ArrayList)}
      * and copying the logged string into a method that returns a {@link ArrayList<ScheduleItem>} in
      * a class in {@link com.google.samples.apps.iosched.mockdata}.

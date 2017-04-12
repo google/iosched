@@ -43,6 +43,7 @@ public class ScheduleItem implements Cloneable, Comparable<ScheduleItem> {
 
     // main tag
     public String mainTag;
+    public String[] tags;
 
     // start and end time for this item
     public long startTime = 0;

@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.google.samples.apps.iosched.myschedule;
+package com.google.samples.apps.iosched.schedule;
 
 import static com.google.samples.apps.iosched.util.LogUtils.LOGD;
 import static com.google.samples.apps.iosched.util.LogUtils.LOGE;
@@ -50,10 +50,10 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-public class MyScheduleModel implements Model<MyScheduleModel.MyScheduleQueryEnum,
-        MyScheduleModel.MyScheduleUserActionEnum> {
+public class ScheduleModel implements Model<ScheduleModel.MyScheduleQueryEnum,
+        ScheduleModel.MyScheduleUserActionEnum> {
 
-    private static final String TAG = makeLogTag(MyScheduleModel.class);
+    private static final String TAG = makeLogTag(ScheduleModel.class);
 
     public static final int PRE_CONFERENCE_DAY_ID = 0;
 
@@ -96,9 +96,9 @@ public class MyScheduleModel implements Model<MyScheduleModel.MyScheduleQueryEnu
      * @param scheduleHelper
      * @param context        Should be an Activity context
      */
-    public MyScheduleModel(@NonNull ScheduleHelper scheduleHelper,
-            @NonNull SessionsHelper sessionsHelper,
-            @NonNull Context context) {
+    public ScheduleModel(@NonNull ScheduleHelper scheduleHelper,
+                         @NonNull SessionsHelper sessionsHelper,
+                         @NonNull Context context) {
         mContext = context;
         mScheduleHelper = scheduleHelper;
         mSessionsHelper = sessionsHelper;
@@ -150,7 +150,7 @@ public class MyScheduleModel implements Model<MyScheduleModel.MyScheduleQueryEnu
                         // active but mScheduleDataQueryCallback is null. This was observed when
                         // going to MySchedule screen straight after the welcome flow.
                         if (mScheduleDataQueryCallback != null) {
-                            mScheduleDataQueryCallback.onModelUpdated(MyScheduleModel.this,
+                            mScheduleDataQueryCallback.onModelUpdated(ScheduleModel.this,
                                     MyScheduleQueryEnum.SCHEDULE);
                         } else {
                             LOGE(TAG, "sharedpreferences key " + key +
@@ -284,7 +284,7 @@ public class MyScheduleModel implements Model<MyScheduleModel.MyScheduleQueryEnu
                     @Override
                     public void onModelUpdated(Model<MyScheduleQueryEnum, ?> model,
                             MyScheduleQueryEnum query) {
-                        callback.onModelUpdated(MyScheduleModel.this, action);
+                        callback.onModelUpdated(ScheduleModel.this, action);
                     }
 
                     @Override
@@ -357,7 +357,7 @@ public class MyScheduleModel implements Model<MyScheduleModel.MyScheduleQueryEnu
             DataQueryCallback<MyScheduleQueryEnum> callback) {
         mScheduleData.put(dayId, scheduleItems);
         if (callback != null) {
-            callback.onModelUpdated(MyScheduleModel.this,
+            callback.onModelUpdated(ScheduleModel.this,
                     MyScheduleQueryEnum.SCHEDULE);
         }
     }

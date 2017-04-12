@@ -12,14 +12,13 @@
  * the License.
  */
 
-package com.google.samples.apps.iosched.myschedule;
+package com.google.samples.apps.iosched.schedule;
 
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.AppBarLayout;
-import android.support.design.widget.AppBarLayout.OnOffsetChangedListener;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
@@ -40,17 +39,17 @@ import com.google.samples.apps.iosched.util.TimeUtils;
 import static android.view.View.GONE;
 import static android.view.View.VISIBLE;
 
-public class MySchedulePagerFragment extends Fragment implements ScheduleView {
+public class SchedulePagerFragment extends Fragment implements ScheduleView {
 
     /**
-     * The key used to save the tags for {@link MyScheduleSingleDayFragment}s so the automatically
+     * The key used to save the tags for {@link ScheduleSingleDayFragment}s so the automatically
      * recreated fragments can be reused by {@link #mViewPagerAdapter}.
      */
     private static final String SINGLE_DAY_FRAGMENTS_TAGS = "single_day_fragments_tags";
 
     /**
      * The key used to save the position in the {@link #mViewPagerAdapter} for the current {@link
-     * MyScheduleSingleDayFragment}s.
+     * ScheduleSingleDayFragment}s.
      */
     private static final String CURRENT_SINGLE_DAY_FRAGMENT_POSITION =
             "current_single_day_fragments_position";
@@ -62,9 +61,9 @@ public class MySchedulePagerFragment extends Fragment implements ScheduleView {
 
     /**
      * This is used for narrow mode only, it is null in wide mode. Each page in the {@link
-     * #mViewPager} is a {@link MyScheduleSingleDayFragment}.
+     * #mViewPager} is a {@link ScheduleSingleDayFragment}.
      */
-    private MyScheduleDayViewPagerAdapter mViewPagerAdapter;
+    private ScheduleDayViewPagerAdapter mViewPagerAdapter;
 
     /**
      * This is used for narrow mode only, to display the conference days, it is null in wide mode
@@ -87,7 +86,7 @@ public class MySchedulePagerFragment extends Fragment implements ScheduleView {
 
     @Override
     public boolean canSwipeRefreshChildScrollUp() {
-        MyScheduleSingleDayFragment currentFragment =
+        ScheduleSingleDayFragment currentFragment =
                 mViewPagerAdapter.getFragments()[mViewPager.getCurrentItem()];
         if (currentFragment.getUserVisibleHint()) {
             return ViewCompat.canScrollVertically(currentFragment.getRecyclerView(), -1);
@@ -106,7 +105,7 @@ public class MySchedulePagerFragment extends Fragment implements ScheduleView {
     @Override
     public View onCreateView(final LayoutInflater inflater, @Nullable
     final ViewGroup container, @Nullable final Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.my_schedule_pager_fragment, container, false);
+        return inflater.inflate(R.layout.schedule_pager_fragment, container, false);
     }
 
     @Override
@@ -128,8 +127,8 @@ public class MySchedulePagerFragment extends Fragment implements ScheduleView {
         }
 
         mViewPager = (ViewPager) view.findViewById(R.id.view_pager);
-        mViewPagerAdapter = new MyScheduleDayViewPagerAdapter(getContext(),
-                getChildFragmentManager(), MyScheduleModel.showPreConferenceData(getContext()));
+        mViewPagerAdapter = new ScheduleDayViewPagerAdapter(getContext(),
+                getChildFragmentManager(), ScheduleModel.showPreConferenceData(getContext()));
         mViewPagerAdapter.setRetainedFragmentsTags(singleDayFragmentsTags);
         mViewPager.setAdapter(mViewPagerAdapter);
         mViewPager.setCurrentItem(currentSingleDayFragment);
@@ -196,7 +195,7 @@ public class MySchedulePagerFragment extends Fragment implements ScheduleView {
         super.onSaveInstanceState(outState);
 
         if (mViewPagerAdapter != null && mViewPagerAdapter.getFragments() != null) {
-            MyScheduleSingleDayFragment[] singleDayFragments = mViewPagerAdapter.getFragments();
+            ScheduleSingleDayFragment[] singleDayFragments = mViewPagerAdapter.getFragments();
             String[] tags = new String[singleDayFragments.length];
             for (int i = 0; i < tags.length; i++) {
                 tags[i] = singleDayFragments[i].getTag();
@@ -225,11 +224,11 @@ public class MySchedulePagerFragment extends Fragment implements ScheduleView {
      * @param day The zero-indexed conference day.
      */
     public void scrollToConferenceDay(int day) {
-        int preConferenceDays = MyScheduleModel.showPreConferenceData(getContext()) ? 1 : 0;
+        int preConferenceDays = ScheduleModel.showPreConferenceData(getContext()) ? 1 : 0;
         mViewPager.setCurrentItem(day + preConferenceDays);
     }
 
-    public MyScheduleSingleDayFragment[] getDayFragments() {
+    public ScheduleSingleDayFragment[] getDayFragments() {
         return mViewPagerAdapter != null ? mViewPagerAdapter.getFragments() : null;
     }
 }

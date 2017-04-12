@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.google.samples.apps.iosched.myschedule;
+package com.google.samples.apps.iosched.schedule;
 
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -30,7 +30,7 @@ import com.google.samples.apps.iosched.lib.R;
 import com.google.samples.apps.iosched.model.ScheduleItem;
 import com.google.samples.apps.iosched.model.ScheduleItemHelper;
 import com.google.samples.apps.iosched.model.TagMetadata;
-import com.google.samples.apps.iosched.myschedule.ScheduleItemViewHolder.Callbacks;
+import com.google.samples.apps.iosched.schedule.SessionItemViewHolder.Callbacks;
 import com.google.samples.apps.iosched.util.TimeUtils;
 
 import java.util.ArrayList;
@@ -44,13 +44,14 @@ import static com.google.samples.apps.iosched.util.LogUtils.makeLogTag;
 /**
  * Adapter that produces views to render (one day of) the "My Schedule" screen.
  */
-public class MyScheduleDayAdapter extends RecyclerView.Adapter<ViewHolder> {
-    private static final String TAG = makeLogTag("MyScheduleDayAdapter");
+public class ScheduleDayAdapter extends RecyclerView.Adapter<ViewHolder> {
+    private static final String TAG = makeLogTag("ScheduleDayAdapter");
 
     private static final long[] ID_ARRAY = new long[4];
 
-    private static final int ITEM_TYPE_SLOT = 0;
-    private static final int ITEM_TYPE_TIME_HEADER = 1;
+    private static final int ITEM_TYPE_SESSION = 0;
+    private static final int ITEM_TYPE_BREAK = 1;
+    private static final int ITEM_TYPE_TIME_HEADER = 2;
 
     // list of items served by this adapter
     private final List<Object> mItems = new ArrayList<>();
@@ -59,8 +60,8 @@ public class MyScheduleDayAdapter extends RecyclerView.Adapter<ViewHolder> {
     private TagMetadata mTagMetadata;
     private Callbacks mAdapterCallbacks;
 
-    public MyScheduleDayAdapter(@NonNull Callbacks adapterCallbacks,
-            @Nullable TagMetadata tagMetadata, boolean showTimeSeparators) {
+    public ScheduleDayAdapter(@NonNull Callbacks adapterCallbacks,
+                              @Nullable TagMetadata tagMetadata, boolean showTimeSeparators) {
         mAdapterCallbacks = adapterCallbacks;
         mTagMetadata = tagMetadata;
         mShowTimeSeparators = showTimeSeparators;
@@ -85,14 +86,15 @@ public class MyScheduleDayAdapter extends RecyclerView.Adapter<ViewHolder> {
 
     @Override
     public ViewHolder onCreateViewHolder(final ViewGroup parent, final int viewType) {
-        final LayoutInflater li = LayoutInflater.from(parent.getContext());
         switch (viewType) {
-            case ITEM_TYPE_SLOT:
-                return new ScheduleItemViewHolder(
-                        li.inflate(R.layout.my_schedule_item, parent, false), mAdapterCallbacks);
+            case ITEM_TYPE_SESSION:
+                return SessionItemViewHolder.newInstance(parent, mAdapterCallbacks);
+            case ITEM_TYPE_BREAK:
+                return NonSessionItemViewHolder.newInstance(parent);
             case ITEM_TYPE_TIME_HEADER:
                 return new TimeSeperatorViewHolder(
-                        li.inflate(R.layout.my_schedule_item_time_separator, parent, false));
+                        LayoutInflater.from(parent.getContext())
+                                .inflate(R.layout.schedule_item_time_separator, parent, false));
         }
         return null;
     }
@@ -100,10 +102,17 @@ public class MyScheduleDayAdapter extends RecyclerView.Adapter<ViewHolder> {
     @Override
     public void onBindViewHolder(final ViewHolder holder, final int position) {
         final Object item = mItems.get(position);
-        if (item instanceof ScheduleItem) {
-            ((ScheduleItemViewHolder) holder).onBind((ScheduleItem) item, mTagMetadata);
-        } else if (item instanceof TimeSeperatorItem) {
-            ((TimeSeperatorViewHolder) holder).onBind((TimeSeperatorItem) item);
+        switch (holder.getItemViewType()) {
+            case ITEM_TYPE_SESSION:
+                ((SessionItemViewHolder) holder).onBind((ScheduleItem) item, mTagMetadata);
+                break;
+            case ITEM_TYPE_BREAK:
+                ((NonSessionItemViewHolder) holder).onBind((ScheduleItem) item);
+                break;
+            case ITEM_TYPE_TIME_HEADER:
+            default:
+                ((TimeSeperatorViewHolder) holder).onBind((TimeSeperatorItem) item);
+                break;
         }
     }
 
@@ -111,7 +120,10 @@ public class MyScheduleDayAdapter extends RecyclerView.Adapter<ViewHolder> {
     public int getItemViewType(int position) {
         final Object item = mItems.get(position);
         if (item instanceof ScheduleItem) {
-            return ITEM_TYPE_SLOT;
+            if (((ScheduleItem) item).type == ScheduleItem.BREAK) {
+                return ITEM_TYPE_BREAK;
+            }
+            return ITEM_TYPE_SESSION;
         } else if (item instanceof TimeSeperatorItem) {
             return ITEM_TYPE_TIME_HEADER;
         }

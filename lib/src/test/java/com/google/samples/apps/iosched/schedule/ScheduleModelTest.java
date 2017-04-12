@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.google.samples.apps.iosched.myschedule;
+package com.google.samples.apps.iosched.schedule;
 
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertThat;
@@ -49,7 +49,7 @@ import java.util.ArrayList;
 
 @RunWith(MockitoJUnitRunner.class)
 @SmallTest
-public class MyScheduleModelTest {
+public class ScheduleModelTest {
 
     private static final long FAKE_CURRENT_TIME_OFFSET = 0l;
 
@@ -85,10 +85,10 @@ public class MyScheduleModelTest {
     private ScheduleItem mMockScheduleItem2;
 
     @Captor
-    private ArgumentCaptor<MyScheduleModel.LoadScheduleDataListener>
+    private ArgumentCaptor<ScheduleModel.LoadScheduleDataListener>
             mLoadScheduleDataCallbackCaptor;
 
-    private MyScheduleModel mMyScheduleModel;
+    private ScheduleModel mScheduleModel;
 
     @Before
     public void setUp() {
@@ -97,7 +97,7 @@ public class MyScheduleModelTest {
         initMockContextWithFakeCurrentTime();
 
         // Create an instance of the model.
-        mMyScheduleModel = spy(new MyScheduleModel(mMockScheduleHelper, mMockSessionsHelper,
+        mScheduleModel = spy(new ScheduleModel(mMockScheduleHelper, mMockSessionsHelper,
                 mMockContext));
 
     }
@@ -109,7 +109,7 @@ public class MyScheduleModelTest {
         int conferenceDays = Config.CONFERENCE_DAYS.length;
 
         // When requesting a data update
-        mMyScheduleModel.requestData(MyScheduleModel.MyScheduleQueryEnum.SCHEDULE,
+        mScheduleModel.requestData(ScheduleModel.MyScheduleQueryEnum.SCHEDULE,
                 mMockDataQueryCallback);
 
         // Then the schedule helper is called for each day
@@ -122,15 +122,15 @@ public class MyScheduleModelTest {
 
         // Then the model is updated with the mock schedule items for the last conference day
         // and callback is fired
-        verify(mMyScheduleModel).updateCache(conferenceDays, mMockScheduleItems,
+        verify(mScheduleModel).updateCache(conferenceDays, mMockScheduleItems,
                 mMockDataQueryCallback);
-        assertThat(mMyScheduleModel.getConferenceDataForDay(conferenceDays).size(), is(2));
-        assertThat(mMyScheduleModel.getConferenceDataForDay(conferenceDays).get(0).getTitle(),
+        assertThat(mScheduleModel.getConferenceDataForDay(conferenceDays).size(), is(2));
+        assertThat(mScheduleModel.getConferenceDataForDay(conferenceDays).get(0).getTitle(),
                 is(FAKE_TITLE_1));
-        assertThat(mMyScheduleModel.getConferenceDataForDay(conferenceDays).get(1).getTitle(),
+        assertThat(mScheduleModel.getConferenceDataForDay(conferenceDays).get(1).getTitle(),
                 is(FAKE_TITLE_2));
-        verify(mMockDataQueryCallback).onModelUpdated(mMyScheduleModel,
-                MyScheduleModel.MyScheduleQueryEnum.SCHEDULE);
+        verify(mMockDataQueryCallback).onModelUpdated(mScheduleModel,
+                ScheduleModel.MyScheduleQueryEnum.SCHEDULE);
     }
 
     @Test
@@ -140,7 +140,7 @@ public class MyScheduleModelTest {
         int conferenceDays = Config.CONFERENCE_DAYS.length;
 
         // When delivering user action to reload the data
-        mMyScheduleModel.deliverUserAction(MyScheduleModel.MyScheduleUserActionEnum.RELOAD_DATA,
+        mScheduleModel.deliverUserAction(ScheduleModel.MyScheduleUserActionEnum.RELOAD_DATA,
                 null, mMockUserActionCallback);
 
         // Then the schedule helper is called for each day
@@ -153,22 +153,22 @@ public class MyScheduleModelTest {
 
         // Then the model is updated with the mock schedule items for the last conference day
         // and callback is fired
-        verify(mMyScheduleModel).updateCache(eq(conferenceDays), eq(mMockScheduleItems),
+        verify(mScheduleModel).updateCache(eq(conferenceDays), eq(mMockScheduleItems),
                 any(Model.DataQueryCallback.class));
-        assertThat(mMyScheduleModel.getConferenceDataForDay(conferenceDays).size(), is(2));
-        assertThat(mMyScheduleModel.getConferenceDataForDay(conferenceDays).get(0).getTitle(),
+        assertThat(mScheduleModel.getConferenceDataForDay(conferenceDays).size(), is(2));
+        assertThat(mScheduleModel.getConferenceDataForDay(conferenceDays).get(0).getTitle(),
                 is(FAKE_TITLE_1));
-        assertThat(mMyScheduleModel.getConferenceDataForDay(conferenceDays).get(1).getTitle(),
+        assertThat(mScheduleModel.getConferenceDataForDay(conferenceDays).get(1).getTitle(),
                 is(FAKE_TITLE_2));
-        verify(mMockUserActionCallback).onModelUpdated(mMyScheduleModel,
-                MyScheduleModel.MyScheduleUserActionEnum.RELOAD_DATA);
+        verify(mMockUserActionCallback).onModelUpdated(mScheduleModel,
+                ScheduleModel.MyScheduleUserActionEnum.RELOAD_DATA);
     }
 
     @Test
     public void redrawUIUserAction_scheduleHelperNotCalled_CallbackFired() {
         // When delivering user action to redraw the UI
-        mMyScheduleModel
-                .deliverUserAction(MyScheduleModel.MyScheduleUserActionEnum.REDRAW_UI, null,
+        mScheduleModel
+                .deliverUserAction(ScheduleModel.MyScheduleUserActionEnum.REDRAW_UI, null,
                         mMockUserActionCallback);
 
         // Then the schedule helper is not called
@@ -177,8 +177,8 @@ public class MyScheduleModelTest {
                 any(TagFilterHolder.class));
 
         // Then the callback is fired
-        verify(mMockUserActionCallback).onModelUpdated(mMyScheduleModel,
-                MyScheduleModel.MyScheduleUserActionEnum.REDRAW_UI);
+        verify(mMockUserActionCallback).onModelUpdated(mScheduleModel,
+                ScheduleModel.MyScheduleUserActionEnum.REDRAW_UI);
     }
 
     private void initSharedPreferencesMock() {

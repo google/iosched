@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.google.samples.apps.iosched.myschedule;
+package com.google.samples.apps.iosched.schedule;
 
 import android.content.Context;
 import android.os.Handler;
@@ -27,12 +27,12 @@ import com.google.samples.apps.iosched.model.ScheduleItem;
 import java.util.ArrayList;
 
 /**
- * A stub {@link MyScheduleModel}, to be injected using {@link com.google.samples.apps.iosched
- * .injection.Injection}. It overrides {@link MyScheduleModel#updateData(DataQueryCallback)} to bypass the {@link
+ * A stub {@link ScheduleModel}, to be injected using {@link com.google.samples.apps.iosched
+ * .injection.Injection}. It overrides {@link ScheduleModel#updateData(DataQueryCallback)} to bypass the {@link
  * ScheduleHelper#getScheduleDataAsync(LoadScheduleDataListener, long, long, TagFilterHolder)} mechanism. Use the
  * classes in {@link com.google.samples.apps.iosched.mockdata} to provide the mock data.
  */
-public class StubMyScheduleModel extends MyScheduleModel {
+public class StubScheduleModel extends ScheduleModel {
 
     private ArrayList<ScheduleItem> mMockScheduleDataDay1;
 
@@ -44,9 +44,9 @@ public class StubMyScheduleModel extends MyScheduleModel {
      * @param mockScheduleDataDay1 Stub data for day 1 of the conference
      * @param mockScheduleDataDay2 Stub data for day 2 of the conference
      */
-    public StubMyScheduleModel(Context context,
-            ArrayList<ScheduleItem> mockScheduleDataDay1,
-            ArrayList<ScheduleItem> mockScheduleDataDay2) {
+    public StubScheduleModel(Context context,
+                             ArrayList<ScheduleItem> mockScheduleDataDay1,
+                             ArrayList<ScheduleItem> mockScheduleDataDay2) {
         super(null, null, context);
         mMockScheduleDataDay1 = mockScheduleDataDay1;
         mMockScheduleDataDay2 = mockScheduleDataDay2;
