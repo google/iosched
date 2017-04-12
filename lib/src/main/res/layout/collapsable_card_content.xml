@@ -48,14 +48,13 @@
             android:tint="@color/collapsing_section"
             android:tintMode="src_in" />
 
-        <TextView
+        <com.google.samples.apps.iosched.ui.widget.HtmlTextView
             android:id="@+id/card_description"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentStart="true"
             android:layout_below="@+id/card_title"
             android:padding="@dimen/padding_normal"
-            android:textColorLink="@color/links"
             tools:text="This is a card description" />
 
     </RelativeLayout>

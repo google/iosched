@@ -15,7 +15,6 @@ package com.google.samples.apps.iosched.info;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
-import android.text.Spannable;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -25,8 +24,8 @@ import com.google.samples.apps.iosched.info.faq.FaqInfo;
 import com.google.samples.apps.iosched.info.travel.TravelInfo;
 import com.google.samples.apps.iosched.lib.R;
 
-import static com.google.samples.apps.iosched.util.FirebaseRemoteConfigUtil.getRemoteConfigSpannable;
-import static com.google.samples.apps.iosched.util.FirebaseRemoteConfigUtil.stripUnderlines;
+import static com.google.samples.apps.iosched.util.FirebaseRemoteConfigUtil.getRemoteConfigSequence;
+
 
 public class InfoPresenter implements InfoContract.Presenter {
 
@@ -58,18 +57,14 @@ public class InfoPresenter implements InfoContract.Presenter {
                 .getString(mContext.getString(R.string.default_wifi_network_key));
         String wiFiPassword = FirebaseRemoteConfig.getInstance()
                 .getString(mContext.getString(R.string.default_wifi_password_key));
-        Spannable sandboxDescription = getRemoteConfigSpannable(
+        String sandboxDescription = getRemoteConfigSequence(
                 mContext.getString(R.string.event_sandbox_description_key));
-        stripUnderlines(sandboxDescription);
-        Spannable codeLabsDescription = getRemoteConfigSpannable(
+        String codeLabsDescription = getRemoteConfigSequence(
                 mContext.getString(R.string.event_code_labs_description_key));
-        stripUnderlines(codeLabsDescription);
-        Spannable officeHoursDescription = getRemoteConfigSpannable(
+        String officeHoursDescription = getRemoteConfigSequence(
                 mContext.getString(R.string.event_office_hours_description_key));
-        stripUnderlines(officeHoursDescription);
-        Spannable afterHoursDescription = getRemoteConfigSpannable(
+        String afterHoursDescription = getRemoteConfigSequence(
                 mContext.getString(R.string.event_after_hours_description_key));
-        stripUnderlines(afterHoursDescription);
         eventInfo.setWiFiNetwork(wiFiNetwork);
         eventInfo.setWiFiPassword(wiFiPassword);
         eventInfo.setSandboxDescription(sandboxDescription);
@@ -96,13 +91,13 @@ public class InfoPresenter implements InfoContract.Presenter {
     }
 
     private void applyRemoteConfigToTravelInfo(TravelInfo travelInfo) {
-        Spannable travelShuttleService = getRemoteConfigSpannable(
+        String travelShuttleService = getRemoteConfigSequence(
                 mContext.getString(R.string.travel_shuttle_service_description_key));
-        Spannable travelCarpoolingParking = getRemoteConfigSpannable(
+        String travelCarpoolingParking = getRemoteConfigSequence(
                 mContext.getString(R.string.travel_carpooling_parking_description_key));
-        Spannable travelPublicTransportation = getRemoteConfigSpannable(
+        String travelPublicTransportation = getRemoteConfigSequence(
                 mContext.getString(R.string.travel_public_transportation_description_key));
-        Spannable travelBiking = getRemoteConfigSpannable(
+        String travelBiking = getRemoteConfigSequence(
                 mContext.getString(R.string.travel_biking_description_key));
         travelInfo.setShuttleInfo(travelShuttleService);
         travelInfo.setCarpoolingParkingInfo(travelCarpoolingParking);
@@ -128,23 +123,20 @@ public class InfoPresenter implements InfoContract.Presenter {
     }
 
     private void applyRemoteConfigToFaqInfo(FaqInfo faqInfo) {
-        Spannable stayInformedDescription = getRemoteConfigSpannable(
+        String stayInformedDescription = getRemoteConfigSequence(
                 mContext.getString(R.string.faq_stay_informed_description_key));
-        stripUnderlines(stayInformedDescription);
         faqInfo.setStayInformedDescription(stayInformedDescription);
-        Spannable contentFormatsDescription = getRemoteConfigSpannable(
+
+        String contentFormatsDescription = getRemoteConfigSequence(
                 mContext.getString(R.string.faq_content_formats_description_key));
-        stripUnderlines(contentFormatsDescription);
         faqInfo.setContentFormatsDescription(contentFormatsDescription);
 
-        Spannable liveStreamRecordingsDescription = getRemoteConfigSpannable(
+        String liveStreamRecordingsDescription = getRemoteConfigSequence(
                 mContext.getString(R.string.faq_livestream_and_recordings_description_key));
-        stripUnderlines(liveStreamRecordingsDescription);
         faqInfo.setLiveStreamRecordingsDescription(liveStreamRecordingsDescription);
 
-        Spannable attendanceProTipsDescription = getRemoteConfigSpannable(
+        String attendanceProTipsDescription = getRemoteConfigSequence(
                 mContext.getString(R.string.faq_attendance_pro_tips_description_key));
-        stripUnderlines(attendanceProTipsDescription);
         faqInfo.setAttendanceProTipsDescription(attendanceProTipsDescription);
     }
 }

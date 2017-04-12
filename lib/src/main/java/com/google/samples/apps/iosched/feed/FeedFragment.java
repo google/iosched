@@ -68,10 +68,13 @@ public class FeedFragment extends Fragment implements FeedContract.View {
     @Override
     public void updateFeedMessage(FeedMessage feedMessage) {
         mFeedAdapter.updateFeedMessage(feedMessage);
+        mRecyclerView.getLayoutManager().smoothScrollToPosition(mRecyclerView, null, 0);
+
     }
 
     @Override
     public void removeFeedMessage(FeedMessage feedMessage) {
         mFeedAdapter.removeFeedMessage(feedMessage);
+        mRecyclerView.getLayoutManager().smoothScrollToPosition(mRecyclerView, null, 0);
     }
 }

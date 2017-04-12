@@ -13,40 +13,15 @@
  */
 package com.google.samples.apps.iosched.util;
 
-import android.text.Html;
-import android.text.Spannable;
-import android.text.SpannableString;
-import android.text.TextPaint;
-import android.text.style.URLSpan;
-
 import com.google.firebase.remoteconfig.FirebaseRemoteConfig;
 
 import org.apache.commons.lang3.StringEscapeUtils;
 
 public class FirebaseRemoteConfigUtil {
 
-    public static Spannable getRemoteConfigSpannable(String key) {
-        Spannable spannable = new SpannableString(Html.fromHtml(
-                StringEscapeUtils.unescapeJava(
-                        FirebaseRemoteConfig.getInstance().getString(key))));
-        stripUnderlines(spannable);
-        return spannable;
-    }
-
-    public static void stripUnderlines(Spannable spannable) {
-        URLSpan[] spans = spannable.getSpans(0, spannable.length(), URLSpan.class);
-        for (URLSpan span : spans) {
-            int start = spannable.getSpanStart(span);
-            int end = spannable.getSpanEnd(span);
-            spannable.removeSpan(span);
-            span = new URLSpan(span.getURL()) {
-                @Override
-                public void updateDrawState(TextPaint ds) {
-                    super.updateDrawState(ds);
-                    ds.setUnderlineText(false);
-                }
-            };
-            spannable.setSpan(span, start, end, 0);
-        }
+    public static String getRemoteConfigSequence(String key) {
+        String cleansed = StringEscapeUtils.unescapeJava(
+                FirebaseRemoteConfig.getInstance().getString(key));
+        return cleansed;
     }
 }
