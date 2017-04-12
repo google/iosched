@@ -26,5 +26,7 @@ public class Ids {
             + ".apps.googleusercontent.com";
     public static final String WEB_CLIENT_ID = "755839215930-ctkg839m67rtqmgm55c6eg1j7cvu5mmf"
             + ".apps.googleusercontent.com";
+    public static final String SERVICE_ACCOUNT_CLIENT_ID = "104433463769697768142";
+    public static final String SERVICE_ACCOUNT_EMAIL = "io2017-backend-dev@appspot.gserviceaccount.com";
     public static final String ANDROID_AUDIENCE = ANDROID_CLIENT_ID;
 }
