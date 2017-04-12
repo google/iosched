@@ -31,13 +31,15 @@ const RES_CUT_OFF = 1800000;
 
 const PATH_SESSIONS = 'sessions';
 const PATH_RESERVATIONS = 'reservations';
-const PATH_RESULT = 'result';
+const PATH_RESULTS = 'results';
 const PATH_STATUS = 'status';
 const PATH_SEATS = 'seats';
 const PATH_ACTION = 'action';
 const PATH_SESSION = 'session';
 const PATH_QUEUE = 'queue';
 const PATH_LAST_STATUS_CHANGED = 'last_status_changed';
+
+const REQUEST_ID = 'request_id';
 
 const ACTION_RESERVE = 'reserve';
 const ACTION_RETURN = 'return';
@@ -79,9 +81,10 @@ exports.processRequest = functions.database.ref('/queue/{uid}').onWrite(event =>
   const request = event.data.val();
   const action = request[PATH_ACTION];
   const sid = request[PATH_SESSION];
+  const rid = request[REQUEST_ID];
   const uid = event.params.uid;
 
-  return process(uid, sid, action).then(function(result) {
+  return process(uid, sid, rid, action).then(function(result) {
     console.log(action + ' with uid: ' + uid + ' and sid: ' + sid
         + ' ended with result: ' + result);
     return getQueueReference(uid).set({});
@@ -94,10 +97,11 @@ exports.processRequest = functions.database.ref('/queue/{uid}').onWrite(event =>
  *
  * @param uid ID of user requesting action (reserve or return).
  * @param sid Session ID of requested action (reserve or return).
+ * @param rid ID of the reservation request.
  * @param action Intent of the request, to reserve or return reservation.
  * @returns {Promise.<TResult>} result of processing action.
  */
-function process(uid, sid, action) {
+function process(uid, sid, rid, action) {
   // Get session.
   return getSessionReference(sid).once('value')
       .then(function(snapshot) {
@@ -106,13 +110,13 @@ function process(uid, sid, action) {
     // Check that are reservations still open.
     const now = new Date();
     if (curr_session.time_start - RES_CUT_OFF <= now.getTime()) {
-      return handleCutoff(uid, sid, action);
+      return handleCutoff(uid, sid, rid, action);
     }
 
     if (action == ACTION_RESERVE) {
-      return processReserve(uid, sid, curr_session);
+      return processReserve(uid, sid, rid, curr_session);
     } else if (action == ACTION_RETURN) {
-      return processReturn(uid, sid);
+      return processReturn(uid, sid, rid);
     }
   });
 }
@@ -123,17 +127,18 @@ function process(uid, sid, action) {
  *
  * @param uid ID of user requesting reservation.
  * @param sid Session ID of requested reservation.
+ * @param rid ID of the reservation request.
  * @param curr_session Session body of requested reservation.
  * @returns {Promise.<TResult>} result of processing reservation.
  */
-function processReserve(uid, sid, curr_session) {
+function processReserve(uid, sid, rid, curr_session) {
   return checkForClash(uid, curr_session).then(function(clash) {
     if (clash) {
       // Clash with other session so reject.
-      return handleClash(uid, sid);
+      return handleClash(uid, sid, rid);
     } else {
       // No clash so proceed with reservation request.
-      return handleReservation(uid, sid);
+      return handleReservation(uid, sid, rid);
     }
   });
 }
@@ -145,18 +150,22 @@ function processReserve(uid, sid, curr_session) {
  *
  * @param uid ID of user requesting return.
  * @param sid Session ID of requested return.
+ * @param rid ID of the reservation request.
  * @returns {Promise.<TResult>} result of processing return.
  */
-function processReturn(uid, sid) {
+function processReturn(uid, sid, rid) {
   return getReservationStatusReference(uid, sid).once('value')
       .then(function(snapshot) {
     const currentStatus = snapshot.val();
     if (currentStatus == STATUS_GRANTED) {
-      return handleReturn(uid, sid);
+      return handleReturn(uid, sid, rid);
     } else if(currentStatus == STATUS_WAITING) {
-      return handleRemove(uid, sid);
+      return handleRemove(uid, sid, rid);
     } else {
-      return RESERVATION_RETURN_FAILED;
+      return getReservationResultReference(uid, sid, rid).set(RESULT_RETURNED_FAILED)
+          .then(function() {
+            return RESERVATION_RETURN_FAILED;
+          });
     }
   });
 }
@@ -207,18 +216,19 @@ function checkForClash(uid, curr_session) {
  *
  * @param uid ID of user requesting action (reserve or return).
  * @param sid Session ID of requested action (reserve or return).
+ * @param rid ID of the reservation request.
  * @param action String defining request type, reserve or return.
  * @returns {Promise.<TResult>} string result indicating reservations are closed.
  */
-function handleCutoff(uid, sid, action) {
+function handleCutoff(uid, sid, rid, action) {
   if (action == ACTION_RESERVE) {
-    return getReservationResultReference(uid, sid).set(RESULT_RESERVED_CUTOFF)
+    return getReservationResultReference(uid, sid, rid).set(RESULT_RESERVED_CUTOFF)
         .then(function() {
           // Reservations are closed.
           return RESERVATION_CLOSED;
         });
   } else if (action == ACTION_RETURN) {
-    return getReservationResultReference(uid, sid).set(RESULT_RETURNED_CUTOFF)
+    return getReservationResultReference(uid, sid, rid).set(RESULT_RETURNED_CUTOFF)
         .then(function() {
           // Reservations are closed.
           return RESERVATION_CLOSED;
@@ -234,9 +244,10 @@ function handleCutoff(uid, sid, action) {
  *
  * @param uid ID of user returning reservation.
  * @param sid Session ID of return request.
+ * @param rid ID of the reservation request.
  * @returns {Promise.<TResult>} string result of return.
  */
-function handleReturn(uid, sid) {
+function handleReturn(uid, sid, rid) {
   // Remove session
   return getSeatsReference(sid)
       .transaction(function(seats) {
@@ -248,20 +259,27 @@ function handleReturn(uid, sid) {
   }).then(function(result) {
     var committed = result.committed;
     var snapshot = result.snapshot;
-    var reservationResult = {};
     if (committed && snapshot != null) {
-      reservationResult[PATH_RESULT] = RESULT_RETURNED;
-      reservationResult[PATH_STATUS] = STATUS_RETURNED;
-      reservationResult[PATH_LAST_STATUS_CHANGED] = new Date().getTime();
-      return getReservationReference(uid, sid).set(reservationResult)
+      // Set status to returned
+      return getReservationStatusReference(uid, sid).set(STATUS_RETURNED)
+          .then(function() {
+            // Set last status change time
+            return getReservationLastStatusChangeReference(uid, sid).set(new Date().getTime())
+          })
+          .then(function() {
+            // Set the request result
+            return getReservationResultReference(uid, sid, rid).set(
+                RESULT_RETURNED)
+          })
           .then(function() {
             // Promote from waitlist.
-            return promoteFromWaitlist(sid).then(function() {
-              return RESERVATION_RETURNED;
-            });
+            return promoteFromWaitlist(sid)
+          })
+          .then(function() {
+            return RESERVATION_RETURNED;
           });
     } else {
-      return getReservationResultReference(uid, sid)
+      return getReservationResultReference(uid, sid, rid)
           .set(RESULT_RETURNED_FAILED).then(function() {
             return RESERVATION_RETURN_FAILED;
           });
@@ -276,14 +294,18 @@ function handleReturn(uid, sid) {
  *
  * @param uid ID of user returning waitlist reservation.
  * @param sid Session ID of returned waitlist entry.
+ * @param rid ID of the reservation request.
  * @returns {Promise.<TResult>} string result of return.
  */
-function handleRemove(uid, sid) {
-  var reservationResult = {};
-  reservationResult[PATH_RESULT] = RESULT_RETURNED;
-  reservationResult[PATH_STATUS] = STATUS_RETURNED;
-  reservationResult[PATH_LAST_STATUS_CHANGED] = new Date().getTime();
-  return getReservationReference(uid, sid).set(reservationResult)
+function handleRemove(uid, sid, rid) {
+  return getReservationStatusReference(uid, sid).set(STATUS_RETURNED)
+      .then(function(){
+        return getReservationLastStatusChangeReference(uid, sid).set(new Date().getTime());
+      })
+      .then(function() {
+        return getReservationResultReference(uid, sid, rid).set(
+            RESULT_RETURNED);
+      })
       .then(function() {
         return RESERVATION_RETURNED;
       });
@@ -313,7 +335,7 @@ function promoteFromWaitlist(sid) {
       }
 
       // Check if anyone was in the line waiting for a seat.
-      if (!firstInLine) {
+      if (firstInLine) {
         // Keep track of the user's pervious status
         prevUserStatus = reservations[firstInLine].status;
         var seats = session.seats;
@@ -321,12 +343,10 @@ function promoteFromWaitlist(sid) {
         if (seats.capacity > seats.reserved) {
           seats.reserved++;
           reservations[firstInLine].status = STATUS_GRANTED;
-          reservations[firstInLine].result = RESULT_RESERVED;
           reservations[firstInLine].last_status_changed = new Date().getTime();
           setSeatAvailability(seats);
         }
       }
-
     }
     return session;
   }).then(function(result) {
@@ -377,10 +397,11 @@ function setSeatAvailability(seats) {
  *
  * @param uid ID of user requesting reservation.
  * @param sid Session ID of requested reservation.
+ * @param rid ID of the reservation request.
  * @returns {Promise.<TResult>} string result of denied reservation.
  */
-function handleClash(uid, sid) {
-  return getReservationResultReference(uid, sid).set(RESULT_RESERVED_CLASH)
+function handleClash(uid, sid, rid) {
+  return getReservationResultReference(uid, sid, rid).set(RESULT_RESERVED_CLASH)
       .then(function() {
         return RESERVATION_DENIED_CLASHING;
       })
@@ -396,9 +417,10 @@ function handleClash(uid, sid) {
  *
  * @param uid ID of user requesting reservation.
  * @param sid Session ID of requested reservation.
+ * @param rid ID of the reservation request.
  * @returns {Promise.<TResult>} string result of handled reservation.
  */
-function handleReservation(uid, sid) {
+function handleReservation(uid, sid, rid) {
   var prevSeats = {};
   return getSeatsReference(sid).transaction(function(seats) {
     if (seats) {
@@ -417,27 +439,42 @@ function handleReservation(uid, sid) {
     var committed = result.committed;
     var snapshot = result.snapshot;
     if (committed && snapshot != null) {
-      var reservationResult = {};
       var currSeats = snapshot.val();
       if (currSeats.reserved - 1 == prevSeats.reserved) {
-        reservationResult[PATH_RESULT] = RESULT_RESERVED;
-        reservationResult[PATH_STATUS] = STATUS_GRANTED;
-        reservationResult[PATH_LAST_STATUS_CHANGED] = new Date().getTime();
-        return getReservationReference(uid, sid).set(reservationResult)
+        // Set status to granted
+        return getReservationStatusReference(uid, sid).set(STATUS_GRANTED)
+            .then(function() {
+              // Update last status changed value to now
+              return getReservationLastStatusChangeReference(uid, sid).set(
+                  new Date().getTime());
+            })
+            .then(function() {
+              // Set the request result to reserved
+              return getReservationResultReference(uid, sid, rid).set(
+                  RESULT_RESERVED)
+            })
             .then(function() {
               return RESERVATION_RESERVED;
             });
       } else {
-        reservationResult[PATH_RESULT] = RESULT_RESERVED_NO_SPACE;
-        reservationResult[PATH_STATUS] = STATUS_WAITING;
-        reservationResult[PATH_LAST_STATUS_CHANGED] = new Date().getTime();
-        return getReservationReference(uid, sid).set(reservationResult)
+        // Set status to waiting, put user on the waitlist
+        return getReservationStatusReference(uid, sid).set(STATUS_WAITING)
+            .then(function() {
+              // Set last change status to now
+              return getReservationLastStatusChangeReference(uid, sid).set(
+                  new Date().getTime());
+            })
+            .then(function() {
+              // Set request result to no space
+              return getReservationResultReference(uid, sid, rid).set(
+                  RESULT_RESERVED_NO_SPACE);
+            })
             .then(function() {
               return RESERVATION_DENIED_NO_SPACE;
             });
       }
     } else {
-      return getReservationResultReference(uid, sid)
+      return getReservationResultReference(uid, sid, rid)
           .set(RESULT_RESERVED_FAILED).then(function() {
             return RESERVATION_FAILED;
           });
@@ -462,8 +499,12 @@ function getReservationStatusReference(uid, sid) {
   return getReservationReference(uid, sid).child(PATH_STATUS);
 }
 
-function getReservationResultReference(uid, sid) {
-  return getReservationReference(uid, sid).child(PATH_RESULT);
+function getReservationLastStatusChangeReference(uid, sid) {
+  return getReservationReference(uid, sid).child(PATH_LAST_STATUS_CHANGED);
+}
+
+function getReservationResultReference(uid, sid, rid) {
+  return getReservationReference(uid, sid).child(PATH_RESULTS).child(rid);
 }
 
 function getQueueReference(uid) {
