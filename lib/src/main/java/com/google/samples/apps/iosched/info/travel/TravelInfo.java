@@ -14,40 +14,40 @@
 package com.google.samples.apps.iosched.info.travel;
 
 public class TravelInfo {
-    private CharSequence shuttleInfo;
-    private CharSequence publicTransportationInfo;
-    private CharSequence carpoolingParkingInfo;
-    private CharSequence bikingInfo;
+    private String shuttleInfo;
+    private String publicTransportationInfo;
+    private String carpoolingParkingInfo;
+    private String bikingInfo;
 
-    public CharSequence getShuttleInfo() {
+    public String getShuttleInfo() {
         return shuttleInfo;
     }
 
-    public void setShuttleInfo(CharSequence shuttleInfo) {
+    public void setShuttleInfo(String shuttleInfo) {
         this.shuttleInfo = shuttleInfo;
     }
 
-    public CharSequence getPublicTransportationInfo() {
+    public String getPublicTransportationInfo() {
         return publicTransportationInfo;
     }
 
-    public void setPublicTransportationInfo(CharSequence publicTransportationInfo) {
+    public void setPublicTransportationInfo(String publicTransportationInfo) {
         this.publicTransportationInfo = publicTransportationInfo;
     }
 
-    public CharSequence getCarpoolingParkingInfo() {
+    public String getCarpoolingParkingInfo() {
         return carpoolingParkingInfo;
     }
 
-    public void setCarpoolingParkingInfo(CharSequence carpoolingParkingInfo) {
+    public void setCarpoolingParkingInfo(String carpoolingParkingInfo) {
         this.carpoolingParkingInfo = carpoolingParkingInfo;
     }
 
-    public CharSequence getBikingInfo() {
+    public String getBikingInfo() {
         return bikingInfo;
     }
 
-    public void setBikingInfo(CharSequence bikingInfo) {
+    public void setBikingInfo(String bikingInfo) {
         this.bikingInfo = bikingInfo;
     }
 

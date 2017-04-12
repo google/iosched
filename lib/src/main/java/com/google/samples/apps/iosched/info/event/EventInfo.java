@@ -16,10 +16,10 @@ package com.google.samples.apps.iosched.info.event;
 public class EventInfo {
     private String wiFiNetwork;
     private String wiFiPassword;
-    private CharSequence sandboxDescription;
-    private CharSequence codeLabsDescription;
-    private CharSequence officeHoursDescription;
-    private CharSequence afterHoursDescription;
+    private String sandboxDescription;
+    private String codeLabsDescription;
+    private String officeHoursDescription;
+    private String afterHoursDescription;
 
     public String getWiFiNetwork() {
         return wiFiNetwork;
@@ -37,35 +37,35 @@ public class EventInfo {
         this.wiFiPassword = wiFiPassword;
     }
 
-    public CharSequence getSandboxDescription() {
+    public String getSandboxDescription() {
         return sandboxDescription;
     }
 
-    public void setSandboxDescription(CharSequence sandboxDescription) {
+    public void setSandboxDescription(String sandboxDescription) {
         this.sandboxDescription = sandboxDescription;
     }
 
-    public CharSequence getCodeLabsDescription() {
+    public String getCodeLabsDescription() {
         return codeLabsDescription;
     }
 
-    public void setCodeLabsDescription(CharSequence codeLabsDescription) {
+    public void setCodeLabsDescription(String codeLabsDescription) {
         this.codeLabsDescription = codeLabsDescription;
     }
 
-    public CharSequence getOfficeHoursDescription() {
+    public String getOfficeHoursDescription() {
         return officeHoursDescription;
     }
 
-    public void setOfficeHoursDescription(CharSequence officeHoursDescription) {
+    public void setOfficeHoursDescription(String officeHoursDescription) {
         this.officeHoursDescription = officeHoursDescription;
     }
 
-    public CharSequence getAfterHoursDescription() {
+    public String getAfterHoursDescription() {
         return afterHoursDescription;
     }
 
-    public void setAfterHoursDescription(CharSequence afterHoursDescription) {
+    public void setAfterHoursDescription(String afterHoursDescription) {
         this.afterHoursDescription = afterHoursDescription;
     }
 

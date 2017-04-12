@@ -14,40 +14,40 @@
 package com.google.samples.apps.iosched.info.faq;
 
 public class FaqInfo {
-    private CharSequence stayInformedDescription;
-    private CharSequence contentFormatsDescription;
-    private CharSequence liveStreamRecordingsDescription;
-    private CharSequence attendanceProTipsDescription;
+    private String stayInformedDescription;
+    private String contentFormatsDescription;
+    private String liveStreamRecordingsDescription;
+    private String attendanceProTipsDescription;
 
-    public CharSequence getStayInformedDescription() {
+    public String getStayInformedDescription() {
         return stayInformedDescription;
     }
 
-    public void setStayInformedDescription(CharSequence stayInformedDescription) {
+    public void setStayInformedDescription(String stayInformedDescription) {
         this.stayInformedDescription = stayInformedDescription;
     }
 
-    public CharSequence getContentFormatsDescription() {
+    public String getContentFormatsDescription() {
         return contentFormatsDescription;
     }
 
-    public void setContentFormatsDescription(CharSequence contentFormatsDescription) {
+    public void setContentFormatsDescription(String contentFormatsDescription) {
         this.contentFormatsDescription = contentFormatsDescription;
     }
 
-    public CharSequence getLiveStreamRecordingsDescription() {
+    public String getLiveStreamRecordingsDescription() {
         return liveStreamRecordingsDescription;
     }
 
-    public void setLiveStreamRecordingsDescription(CharSequence liveStreamRecordingsDescription) {
+    public void setLiveStreamRecordingsDescription(String liveStreamRecordingsDescription) {
         this.liveStreamRecordingsDescription = liveStreamRecordingsDescription;
     }
 
-    public CharSequence getAttendanceProTipsDescription() {
+    public String getAttendanceProTipsDescription() {
         return attendanceProTipsDescription;
     }
 
-    public void setAttendanceProTipsDescription(CharSequence attendanceProTipsDescription) {
+    public void setAttendanceProTipsDescription(String attendanceProTipsDescription) {
         this.attendanceProTipsDescription = attendanceProTipsDescription;
     }
 }

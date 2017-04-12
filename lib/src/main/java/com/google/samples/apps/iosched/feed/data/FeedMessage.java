@@ -17,7 +17,6 @@ import android.content.Context;
 import android.graphics.Color;
 import android.support.annotation.Keep;
 import android.support.annotation.NonNull;
-import android.support.v4.content.ContextCompat;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -25,8 +24,6 @@ import com.google.firebase.database.Exclude;
 import com.google.firebase.database.IgnoreExtraProperties;
 import com.google.firebase.remoteconfig.FirebaseRemoteConfig;
 import com.google.samples.apps.iosched.lib.R;
-
-import java.util.HashMap;
 
 import static com.google.samples.apps.iosched.util.LogUtils.LOGD;
 import static com.google.samples.apps.iosched.util.LogUtils.makeLogTag;
@@ -159,7 +156,7 @@ public class FeedMessage implements Comparable<FeedMessage> {
 
         try {
             categoryColor = Color.parseColor(color);
-        } catch(Exception e) {
+        } catch (Exception e) {
             LOGD(TAG, e.getMessage());
         }
         return categoryColor;
