@@ -14,9 +14,11 @@
   -->
 
 <ImageView
-    android:id="@+id/tag_livestream"
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/tag_livestream"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    app:srcCompat="@drawable/ic_live_now" />
+    android:layout_marginTop="@dimen/spacing_normal"
+    android:contentDescription="@string/session_live_streamed"
+    android:src="@drawable/ic_live_now"
+    android:tint="?colorAccent" />

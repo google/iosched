@@ -24,7 +24,7 @@ import android.support.v4.app.ActivityCompat;
 import android.view.View;
 
 import com.google.samples.apps.iosched.lib.R;
-import com.google.samples.apps.iosched.myschedule.MyScheduleActivity;
+import com.google.samples.apps.iosched.schedule.ScheduleActivity;
 import com.google.samples.apps.iosched.provider.ScheduleContract;
 import com.google.samples.apps.iosched.ui.BaseActivity;
 import com.google.samples.apps.iosched.util.BeamUtils;
@@ -77,7 +77,7 @@ public class SessionDetailActivity extends BaseActivity {
 
     @Override
     public Intent getParentActivityIntent() {
-        return new Intent(this, MyScheduleActivity.class);
+        return new Intent(this, ScheduleActivity.class);
     }
 
     public static void startSessionDetailActivity(final Activity activity,

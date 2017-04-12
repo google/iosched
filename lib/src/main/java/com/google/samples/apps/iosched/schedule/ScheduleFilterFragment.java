@@ -11,7 +11,7 @@
  * or implied. See the License for the specific language governing permissions and limitations under
  * the License.
  */
-package com.google.samples.apps.iosched.myschedule;
+package com.google.samples.apps.iosched.schedule;
 
 import android.content.Context;
 import android.database.Cursor;
@@ -33,7 +33,7 @@ import android.widget.Button;
 import com.google.samples.apps.iosched.lib.R;
 import com.google.samples.apps.iosched.model.TagMetadata;
 import com.google.samples.apps.iosched.model.TagMetadata.Tag;
-import com.google.samples.apps.iosched.myschedule.SessionsFilterAdapter.OnFiltersChangedListener;
+import com.google.samples.apps.iosched.schedule.SessionsFilterAdapter.OnFiltersChangedListener;
 
 public class ScheduleFilterFragment extends Fragment implements LoaderCallbacks<Cursor> {
 
@@ -61,7 +61,7 @@ public class ScheduleFilterFragment extends Fragment implements LoaderCallbacks<
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container,
             @Nullable Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.my_schedule_filter_drawer, container, false);
+        return inflater.inflate(R.layout.schedule_filter_drawer, container, false);
     }
 
     @Override

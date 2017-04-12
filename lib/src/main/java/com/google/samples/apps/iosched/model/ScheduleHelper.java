@@ -27,8 +27,8 @@ import android.support.annotation.Nullable;
 import android.util.Log;
 
 import com.google.samples.apps.iosched.lib.BuildConfig;
-import com.google.samples.apps.iosched.myschedule.MyScheduleModel;
-import com.google.samples.apps.iosched.myschedule.TagFilterHolder;
+import com.google.samples.apps.iosched.schedule.ScheduleModel;
+import com.google.samples.apps.iosched.schedule.TagFilterHolder;
 import com.google.samples.apps.iosched.provider.ScheduleContract.Blocks;
 import com.google.samples.apps.iosched.provider.ScheduleContract.Sessions;
 
@@ -78,7 +78,7 @@ public class ScheduleHelper {
     }
 
     public void getScheduleDataAsync(
-            final @NonNull MyScheduleModel.LoadScheduleDataListener callback,
+            final @NonNull ScheduleModel.LoadScheduleDataListener callback,
             long start, long end, @Nullable final TagFilterHolder filters) {
         AsyncTask<Long, Void, ArrayList<ScheduleItem>> task
                 = new AsyncTask<Long, Void, ArrayList<ScheduleItem>>() {

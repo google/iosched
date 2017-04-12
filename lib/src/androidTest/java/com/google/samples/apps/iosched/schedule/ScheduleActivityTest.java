@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.google.samples.apps.iosched.myschedule;
+package com.google.samples.apps.iosched.schedule;
 
 import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.action.ViewActions.click;
@@ -23,7 +23,6 @@ import static android.support.test.espresso.intent.Intents.intended;
 import static android.support.test.espresso.intent.matcher.IntentMatchers.hasAction;
 import static android.support.test.espresso.intent.matcher.IntentMatchers.hasComponent;
 import static android.support.test.espresso.intent.matcher.IntentMatchers.hasData;
-import static android.support.test.espresso.matcher.ViewMatchers.hasSibling;
 import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
@@ -31,45 +30,32 @@ import static android.support.test.espresso.matcher.ViewMatchers.withText;
 import static com.google.samples.apps.iosched.testutils.MatchersHelper.moveViewPagerToPage;
 
 import static org.hamcrest.CoreMatchers.allOf;
-import static org.hamcrest.core.IsEqual.equalTo;
 import static org.hamcrest.core.IsNot.not;
 
 import android.content.Intent;
-import android.net.Uri;
-import android.os.Looper;
 import android.support.test.InstrumentationRegistry;
 import android.support.test.espresso.Espresso;
 import android.support.test.espresso.IdlingResource;
 import android.support.test.filters.LargeTest;
 import android.support.test.filters.Suppress;
 import android.support.test.runner.AndroidJUnit4;
-import android.util.Log;
 
-import com.google.samples.apps.iosched.Config;
-import com.google.samples.apps.iosched.feedback.SessionFeedbackActivity;
-import com.google.samples.apps.iosched.injection.ModelProvider;
 import com.google.samples.apps.iosched.lib.R;
 import com.google.samples.apps.iosched.mockdata.MyScheduleMockItems;
 import com.google.samples.apps.iosched.mockdata.StubActivityContext;
 import com.google.samples.apps.iosched.navigation.NavigationModel;
-import com.google.samples.apps.iosched.provider.ScheduleContract;
 import com.google.samples.apps.iosched.settings.SettingsUtils;
-import com.google.samples.apps.iosched.testutils.BaseActivityTestRule;
 import com.google.samples.apps.iosched.testutils.NavigationUtils;
-import com.google.samples.apps.iosched.testutils.OrientationHelper;
 import com.google.samples.apps.iosched.testutils.ThrottleContentObserverIdlingResource;
 import com.google.samples.apps.iosched.util.RegistrationUtils;
 import com.google.samples.apps.iosched.util.TimeUtils;
 
 import org.junit.Before;
-import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
-import java.util.Date;
-
 /**
- * UI tests for {@link MyScheduleActivity} for when the user is attending the conference and the
+ * UI tests for {@link ScheduleActivity} for when the user is attending the conference and the
  * second day of the conference starts in 3 hours.
  * <p/>
  * This should be run on devices with a narrow layout only (phones all orientation, tablets in
@@ -78,10 +64,10 @@ import java.util.Date;
 @RunWith(AndroidJUnit4.class)
 @LargeTest
 @Suppress // Can't get these to pass. No idea why since they all work
-public class MyScheduleActivityTest {
+public class ScheduleActivityTest {
 
     /**
-     * The {@link StubMyScheduleModel} needs a {@link android.content.Context} but at the stage it
+     * The {@link StubScheduleModel} needs a {@link android.content.Context} but at the stage it
      * is created, {@link #mActivityRule} hasn't got an {@link android.app.Activity} yet so we use
      * the instrumentation target context. However, an Actiivty Context is required by the model for
      * carrying certain actions, such as opening the session that was clicked on (which uses {@link
@@ -91,12 +77,12 @@ public class MyScheduleActivityTest {
      */
     private StubActivityContext mActivityStubContext;
 
-    private StubMyScheduleModel mStubMyScheduleModel;
+    private StubScheduleModel mStubMyScheduleModel;
 
 //    DISABLED: Broken
 //    @Rule
-//    public BaseActivityTestRule<MyScheduleActivity> mActivityRule =
-//            new BaseActivityTestRule<MyScheduleActivity>(MyScheduleActivity.class) {
+//    public BaseActivityTestRule<ScheduleActivity> mActivityRule =
+//            new BaseActivityTestRule<ScheduleActivity>(ScheduleActivity.class) {
 //
 //                @Override
 //                protected void beforeActivityLaunched() {
@@ -109,7 +95,7 @@ public class MyScheduleActivityTest {
 //                            new StubActivityContext(InstrumentationRegistry.getTargetContext());
 //                    try {
 //                        /**
-//                         * {@link MyScheduleModel} uses a Handler, so we need to run this on the
+//                         * {@link ScheduleModel} uses a Handler, so we need to run this on the
 //                         * main thread. If we don't, we need to call {@link Looper#prepare()} but
 //                         * the test runner uses the same non UI thread for setting up each test in a
 //                         * test class, and therefore, upon trying to run the second test, it
@@ -120,7 +106,7 @@ public class MyScheduleActivityTest {
 //                        runOnUiThread(new Runnable() {
 //                            @Override
 //                            public void run() {
-//                                mStubMyScheduleModel = new StubMyScheduleModel(
+//                                mStubMyScheduleModel = new StubScheduleModel(
 //                                        mActivityStubContext,
 //                                        MyScheduleMockItems.getItemsForAttendeeAfter(1, false),
 //                                        MyScheduleMockItems.getItemsForAttendeeBefore(2));

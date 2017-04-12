@@ -33,7 +33,8 @@ import com.google.samples.apps.iosched.messages.MessageCardHelper;
 import com.google.samples.apps.iosched.messages.MessageData;
 import com.google.samples.apps.iosched.model.ScheduleItem;
 import com.google.samples.apps.iosched.model.TagMetadata;
-import com.google.samples.apps.iosched.myschedule.ScheduleItemViewHolder;
+import com.google.samples.apps.iosched.schedule.NonSessionItemViewHolder;
+import com.google.samples.apps.iosched.schedule.SessionItemViewHolder;
 import com.google.samples.apps.iosched.util.AccountUtils;
 import com.google.samples.apps.iosched.util.UIUtils;
 import com.google.samples.apps.iosched.util.WelcomeUtils;
@@ -45,8 +46,9 @@ import java.util.List;
 class MyIOAdapter extends Adapter<ViewHolder> {
 
     private static final int VIEW_TYPE_SESSION = 0;
-    private static final int VIEW_TYPE_SEPARATOR = 1;
-    private static final int VIEW_TYPE_MESSAGE_CARD = 2;
+    private static final int VIEW_TYPE_NON_SESSION = 1;
+    private static final int VIEW_TYPE_SEPARATOR = 2;
+    private static final int VIEW_TYPE_MESSAGE_CARD = 3;
 
     private static final List<DaySeparator> DAY_SEPARATORS;
 
@@ -63,7 +65,7 @@ class MyIOAdapter extends Adapter<ViewHolder> {
 
     private Context mContext;
 
-    interface Callbacks extends ScheduleItemViewHolder.Callbacks {
+    interface Callbacks extends SessionItemViewHolder.Callbacks {
 
         /**
          * @param conferenceDay the conference day for the clicked header, where 0 is the first day
@@ -183,6 +185,9 @@ class MyIOAdapter extends Adapter<ViewHolder> {
     public int getItemViewType(int position) {
         Object item = mItems.get(position);
         if (item instanceof ScheduleItem) {
+            if (((ScheduleItem) item).type == ScheduleItem.BREAK) {
+                return VIEW_TYPE_NON_SESSION;
+            }
             return VIEW_TYPE_SESSION;
         }
         if (item instanceof DaySeparator) {
@@ -198,7 +203,9 @@ class MyIOAdapter extends Adapter<ViewHolder> {
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         switch (viewType) {
             case VIEW_TYPE_SESSION:
-                return ScheduleItemViewHolder.newInstance(parent, mCallbacks);
+                return SessionItemViewHolder.newInstance(parent, mCallbacks);
+            case VIEW_TYPE_NON_SESSION:
+                return NonSessionItemViewHolder.newInstance(parent);
             case VIEW_TYPE_SEPARATOR:
                 return DaySeparatorViewHolder.newInstance(parent, mCallbacks);
             case VIEW_TYPE_MESSAGE_CARD:
@@ -211,18 +218,19 @@ class MyIOAdapter extends Adapter<ViewHolder> {
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
+        final Object item = mItems.get(position);
         switch (holder.getItemViewType()) {
             case VIEW_TYPE_SESSION:
-                ScheduleItem item = (ScheduleItem) mItems.get(position);
-                ((ScheduleItemViewHolder) holder).onBind(item, mTagMetadata);
+                ((SessionItemViewHolder) holder).onBind((ScheduleItem)item, mTagMetadata);
+                break;
+            case VIEW_TYPE_NON_SESSION:
+                ((NonSessionItemViewHolder) holder).onBind((ScheduleItem) item);
                 break;
             case VIEW_TYPE_SEPARATOR:
-                DaySeparator separator = (DaySeparator) mItems.get(position);
-                ((DaySeparatorViewHolder) holder).onBind(separator);
+                ((DaySeparatorViewHolder) holder).onBind((DaySeparator) item);
                 break;
             case VIEW_TYPE_MESSAGE_CARD:
-                MessageData data = (MessageData) mItems.get(position);
-                ((MessageCardViewHolder) holder).onBind(data);
+                ((MessageCardViewHolder) holder).onBind((MessageData) item);
                 break;
         }
     }

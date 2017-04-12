@@ -16,7 +16,6 @@
 
 package com.google.samples.apps.iosched.appwidget;
 
-import android.accounts.Account;
 import android.app.PendingIntent;
 import android.appwidget.AppWidgetManager;
 import android.appwidget.AppWidgetProvider;
@@ -28,10 +27,8 @@ import android.widget.RemoteViews;
 
 import com.google.samples.apps.iosched.lib.R;
 import com.google.samples.apps.iosched.sync.SyncHelper;
-import com.google.samples.apps.iosched.myschedule.MyScheduleActivity;
+import com.google.samples.apps.iosched.schedule.ScheduleActivity;
 import com.google.samples.apps.iosched.ui.TaskStackBuilderProxyActivity;
-import com.google.samples.apps.iosched.util.AccountUtils;
-import com.google.samples.apps.iosched.util.WelcomeUtils;
 
 import static com.google.samples.apps.iosched.util.LogUtils.LOGD;
 import static com.google.samples.apps.iosched.util.LogUtils.makeLogTag;
@@ -103,7 +100,7 @@ public class ScheduleWidgetProvider extends AppWidgetProvider {
                     onClickIntent, PendingIntent.FLAG_UPDATE_CURRENT);
             rv.setPendingIntentTemplate(R.id.widget_schedule_list, onClickPendingIntent);
 
-            final Intent openAppIntent = new Intent(context, MyScheduleActivity.class)
+            final Intent openAppIntent = new Intent(context, ScheduleActivity.class)
                     .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             final PendingIntent openAppPendingIntent = PendingIntent.getActivity(context, 0,
                     openAppIntent, PendingIntent.FLAG_UPDATE_CURRENT);

@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.google.samples.apps.iosched.myschedule;
+package com.google.samples.apps.iosched.schedule;
 
 import android.content.Context;
 import android.os.Bundle;
@@ -29,23 +29,23 @@ import static com.google.samples.apps.iosched.util.LogUtils.LOGE;
 import static com.google.samples.apps.iosched.util.LogUtils.makeLogTag;
 
 /**
- * The {@link MyScheduleActivity} uses a {@link android.support.v4.view.ViewPager} in narrow mode,
- * where each page shows the schedule for the day, using a {@link MyScheduleSingleDayFragment}.
+ * The {@link ScheduleActivity} uses a {@link android.support.v4.view.ViewPager} in narrow mode,
+ * where each page shows the schedule for the day, using a {@link ScheduleSingleDayFragment}.
  */
-public class MyScheduleDayViewPagerAdapter extends FragmentPagerAdapter {
+public class ScheduleDayViewPagerAdapter extends FragmentPagerAdapter {
 
-    private final static String TAG = makeLogTag(MyScheduleDayViewPagerAdapter.class);
+    private final static String TAG = makeLogTag(ScheduleDayViewPagerAdapter.class);
 
     private Context mContext;
 
     private boolean mShowPreConferenceDay;
 
-    private MyScheduleSingleDayFragment[] mFragments;
+    private ScheduleSingleDayFragment[] mFragments;
 
     private FragmentManager mFragmentManager;
 
-    public MyScheduleDayViewPagerAdapter(Context context, FragmentManager fm,
-            boolean showPreConferenceDay) {
+    public ScheduleDayViewPagerAdapter(Context context, FragmentManager fm,
+                                       boolean showPreConferenceDay) {
         super(fm);
         mShowPreConferenceDay = showPreConferenceDay;
         mContext = context;
@@ -53,7 +53,7 @@ public class MyScheduleDayViewPagerAdapter extends FragmentPagerAdapter {
     }
 
     @Override
-    public MyScheduleSingleDayFragment getItem(int position) {
+    public ScheduleSingleDayFragment getItem(int position) {
         LOGD(TAG, "Creating fragment #" + position);
 
         // Reuse cached fragment if present
@@ -61,18 +61,18 @@ public class MyScheduleDayViewPagerAdapter extends FragmentPagerAdapter {
             return mFragments[position];
         }
 
-        MyScheduleSingleDayFragment frag = new MyScheduleSingleDayFragment();
+        ScheduleSingleDayFragment frag = new ScheduleSingleDayFragment();
         Bundle args = new Bundle();
 
         // 1 for the first day of the conference, 2 for the second etc and 0 for the pre conference
         // day if any
-        args.putInt(MyScheduleActivity.ARG_CONFERENCE_DAY_INDEX,
+        args.putInt(ScheduleActivity.ARG_CONFERENCE_DAY_INDEX,
                 mShowPreConferenceDay ? position : position + 1);
 
         frag.setArguments(args);
 
         if (mFragments == null) {
-            mFragments = new MyScheduleSingleDayFragment[getCount()];
+            mFragments = new ScheduleSingleDayFragment[getCount()];
         }
         mFragments[position] = frag;
         return frag;
@@ -89,9 +89,9 @@ public class MyScheduleDayViewPagerAdapter extends FragmentPagerAdapter {
     }
 
     /**
-     * @return all the cached {@link MyScheduleSingleDayFragment}s used by this Adapter.
+     * @return all the cached {@link ScheduleSingleDayFragment}s used by this Adapter.
      */
-    public MyScheduleSingleDayFragment[] getFragments() {
+    public ScheduleSingleDayFragment[] getFragments() {
         if (mFragments == null) {
             // Force creating the fragments
             int count = getCount();
@@ -103,22 +103,22 @@ public class MyScheduleDayViewPagerAdapter extends FragmentPagerAdapter {
     }
 
     /**
-     * When the device changes orientation, the {@link MyScheduleSingleDayFragment}s are recreated
+     * When the device changes orientation, the {@link ScheduleSingleDayFragment}s are recreated
      * by the system, and they have the same tag ids as the ones previously used. Therefore, this
      * sets the cached fragments to the ones recreated by the system. This must be called before any
      * call to {@link #getItem(int)} or {@link #getFragments()} (note that when fragments are
      * recreated after orientation change, the {@link FragmentPagerAdapter} doesn't call {@link
      * #getItem(int)}.)
      *
-     * @param tags the tags of the retained {@link MyScheduleSingleDayFragment}s. Ignored if null
+     * @param tags the tags of the retained {@link ScheduleSingleDayFragment}s. Ignored if null
      *             or empty.
      */
     public void setRetainedFragmentsTags(String[] tags) {
         if (tags != null && tags.length > 0) {
-            mFragments = new MyScheduleSingleDayFragment[tags.length];
+            mFragments = new ScheduleSingleDayFragment[tags.length];
             for (int i = 0; i < tags.length; i++) {
-                MyScheduleSingleDayFragment fragment =
-                        (MyScheduleSingleDayFragment) mFragmentManager.findFragmentByTag(tags[i]);
+                ScheduleSingleDayFragment fragment =
+                        (ScheduleSingleDayFragment) mFragmentManager.findFragmentByTag(tags[i]);
                 mFragments[i] = fragment;
                 if (fragment == null) {
                     LOGE(TAG, "Fragment with existing tag " + tags[i] + " not found!");

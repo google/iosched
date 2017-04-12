@@ -35,7 +35,7 @@ import com.google.samples.apps.iosched.debug.actions.ScheduleStarredSessionAlarm
 import com.google.samples.apps.iosched.debug.actions.ShowSessionNotificationDebugAction;
 import com.google.samples.apps.iosched.debug.actions.TestScheduleHelperAction;
 import com.google.samples.apps.iosched.lib.R;
-import com.google.samples.apps.iosched.myschedule.MyScheduleActivity;
+import com.google.samples.apps.iosched.schedule.ScheduleActivity;
 import com.google.samples.apps.iosched.service.SessionAlarmService;
 import com.google.samples.apps.iosched.settings.ConfMessageCardUtils;
 import com.google.samples.apps.iosched.settings.SettingsUtils;
@@ -128,8 +128,8 @@ public class DebugFragment extends Fragment {
         tests.addView(createTestAction(new DebugAction() {
             @Override
             public void run(Context context, Callback callback) {
-                Intent intent = new Intent(context, MyScheduleActivity.class);
-                intent.putExtra(MyScheduleActivity.EXTRA_FILTER_TAG, "TOPIC_ANDROID");
+                Intent intent = new Intent(context, ScheduleActivity.class);
+                intent.putExtra(ScheduleActivity.EXTRA_FILTER_TAG, "TOPIC_ANDROID");
                 context.startActivity(intent);
             }
 

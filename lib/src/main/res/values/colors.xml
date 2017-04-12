@@ -65,7 +65,7 @@
 
     <!-- App Primary View Colors (might be deprecated). -->
     <color name="app_white">#FFFEFEFE</color>
-    <color name="divider">#1f000000</color>
+    <color name="divider">@color/off_white</color>
 
     <!-- App Primary Text Colors (might be deprecated). -->
     <color name="body_text_1">#de000000</color>

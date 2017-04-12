@@ -92,7 +92,7 @@
             android:scrollbarStyle="insideOverlay"
             android:scrollbars="vertical"
             app:layoutManager="LinearLayoutManager"
-            tools:listitem="@layout/my_schedule_item" />
+            tools:listitem="@layout/schedule_session_item" />
 
     </ViewSwitcher>
 

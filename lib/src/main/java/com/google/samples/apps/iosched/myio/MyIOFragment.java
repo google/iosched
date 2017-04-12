@@ -34,9 +34,10 @@ import com.google.samples.apps.iosched.model.TagMetadata.Tag;
 import com.google.samples.apps.iosched.myio.MyIOAdapter.Callbacks;
 import com.google.samples.apps.iosched.myio.MyIOContract.MyIoPresenter;
 import com.google.samples.apps.iosched.myio.MyIOContract.MyIoView;
-import com.google.samples.apps.iosched.myschedule.MyScheduleActivity;
-import com.google.samples.apps.iosched.myschedule.MyScheduleModel;
 import com.google.samples.apps.iosched.provider.ScheduleContract.Sessions;
+import com.google.samples.apps.iosched.schedule.DividerDecoration;
+import com.google.samples.apps.iosched.schedule.ScheduleActivity;
+import com.google.samples.apps.iosched.schedule.ScheduleModel;
 import com.google.samples.apps.iosched.util.LogUtils;
 import com.google.samples.apps.iosched.util.TimeUtils;
 
@@ -83,6 +84,7 @@ public class MyIOFragment extends Fragment implements MyIoView, Callbacks {
         mLoadingSwitcher = (ViewSwitcher) view.findViewById(R.id.loading_switcher);
         mLoadingView = (LottieAnimationView) view.findViewById(R.id.loading_anim);
         mRecyclerView = (RecyclerView) view.findViewById(android.R.id.list);
+        mRecyclerView.addItemDecoration(new DividerDecoration(getContext()));
         mAdapter = new MyIOAdapter(getContext(), this);
         mRecyclerView.setAdapter(mAdapter);
     }
@@ -133,7 +135,7 @@ public class MyIOFragment extends Fragment implements MyIoView, Callbacks {
     public void onSessionClicked(String sessionId) {
         Bundle args = new Bundle();
         Uri sessionUri = Sessions.buildSessionUri(sessionId);
-        args.putString(MyScheduleModel.SESSION_URL_KEY, sessionUri.toString());
+        args.putString(ScheduleModel.SESSION_URL_KEY, sessionUri.toString());
         startActivity(new Intent(Intent.ACTION_VIEW, sessionUri));
     }
 
@@ -144,7 +146,7 @@ public class MyIOFragment extends Fragment implements MyIoView, Callbacks {
 
     @Override
     public void onTagClicked(Tag tag) {
-        MyScheduleActivity.launchScheduleWithFilterTag(getContext(), tag);
+        ScheduleActivity.launchScheduleWithFilterTag(getContext(), tag);
     }
 
     @Override
@@ -159,7 +161,7 @@ public class MyIOFragment extends Fragment implements MyIoView, Callbacks {
 
     @Override
     public void onAddEventsClicked(int conferenceDay) {
-        MyScheduleActivity.launchScheduleForConferenceDay(getContext(), conferenceDay);
+        ScheduleActivity.launchScheduleForConferenceDay(getContext(), conferenceDay);
     }
 
     private void showSchedule() {
