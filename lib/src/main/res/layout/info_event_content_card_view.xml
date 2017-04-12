@@ -56,7 +56,7 @@
             app:layout_constraintStart_toStartOf="parent"
             tools:src="@drawable/ic_nav_info" />
 
-        <TextView
+        <com.google.samples.apps.iosched.ui.widget.HtmlTextView
             android:id="@+id/event_content_description"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
