@@ -80,6 +80,6 @@
         android:scrollbars="vertical"
         app:layoutManager="android.support.v7.widget.LinearLayoutManager"
         app:layout_behavior="@string/appbar_scrolling_view_behavior"
-        tools:listitem="@layout/feed_message_card" />
+        tools:listitem="@layout/feed_message_card_collapsed" />
 
 </android.support.design.widget.CoordinatorLayout>

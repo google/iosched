@@ -198,15 +198,16 @@ public class FeedMessage implements Comparable<FeedMessage> {
     }
 
     public boolean isExpanded() {
-        return expanded;
+        return expanded || isEmergency();
     }
 
     public void setExpanded(boolean expanded) {
         this.expanded = expanded;
     }
 
-    public void flipExpanded() {
+    public boolean flipExpanded() {
         expanded = !expanded;
+        return expanded;
     }
 
     public boolean isEmergency() {

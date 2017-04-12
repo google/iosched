@@ -13,7 +13,6 @@
  */
 package com.google.samples.apps.iosched.feed;
 
-import android.graphics.Point;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
@@ -40,17 +39,12 @@ public class FeedFragment extends Fragment implements FeedContract.View {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container,
-            @Nullable Bundle savedInstanceState) {
+                             @Nullable Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.feed_fragment, container, false);
         mRecyclerView = (RecyclerView) root.findViewById(R.id.feed_recycler_view);
         mRecyclerView.setHasFixedSize(true);
-
-        // TODO remove this; it's gross
-        Point screenSize = new Point();
-        getActivity().getWindowManager().getDefaultDisplay().getSize(screenSize);
-        mFeedAdapter = new FeedAdapter(getContext(), screenSize);
-        mRecyclerView.addItemDecoration(
-                new DividerItemDecoration(mRecyclerView.getContext(), VERTICAL));
+        mFeedAdapter = new FeedAdapter(getContext());
+        mRecyclerView.addItemDecoration(new DividerItemDecoration(getContext(), VERTICAL));
         mRecyclerView.setAdapter(mFeedAdapter);
         return root;
     }
