@@ -20,10 +20,12 @@ import android.app.SearchManager;
 import android.net.Uri;
 import android.provider.BaseColumns;
 import android.support.annotation.IntDef;
+import android.support.annotation.NonNull;
 import android.text.TextUtils;
 import android.text.format.DateUtils;
 
 import com.google.samples.apps.iosched.Config;
+import com.google.samples.apps.iosched.session.SessionDetailConstants;
 import com.google.samples.apps.iosched.util.ParserUtils;
 
 import java.lang.annotation.Retention;
@@ -541,6 +543,18 @@ public final class ScheduleContract {
 
         public static Uri buildMyReservationUri(String accountName) {
             return ScheduleContractHelper.addOverrideAccountName(CONTENT_URI, accountName);
+        }
+
+        public static @ReservationStatus int fromFirebaseString(@NonNull String reservationStatus) {
+            switch(reservationStatus) {
+                case SessionDetailConstants.RESERVE_STATUS_GRANTED:
+                    return RESERVATION_STATUS_RESERVED;
+                case SessionDetailConstants.RESERVE_STATUS_WAITING:
+                    return RESERVATION_STATUS_WAITLISTED;
+                case SessionDetailConstants.RESERVE_STATUS_RETURNED:
+                default:
+                    return RESERVATION_STATUS_UNRESERVED;
+            }
         }
 
     }
