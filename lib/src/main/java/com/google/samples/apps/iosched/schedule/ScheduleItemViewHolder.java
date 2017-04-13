@@ -37,7 +37,7 @@ abstract class ScheduleItemViewHolder extends RecyclerView.ViewHolder {
     }
 
     String formatDescription(@NonNull Context context,
-                             @NonNull final ScheduleItem item) {
+            @NonNull final ScheduleItem item) {
         final StringBuilder description = mTmpStringBuilder;
         mTmpStringBuilder.setLength(0); // clear the builder
 

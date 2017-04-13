@@ -16,11 +16,6 @@
 
 package com.google.samples.apps.iosched.schedule;
 
-import static com.google.samples.apps.iosched.util.LogUtils.LOGD;
-import static com.google.samples.apps.iosched.util.LogUtils.LOGE;
-import static com.google.samples.apps.iosched.util.LogUtils.makeLogTag;
-import static com.google.samples.apps.iosched.util.PreconditionUtils.checkNotNull;
-
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -50,28 +45,28 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import static com.google.samples.apps.iosched.util.LogUtils.LOGD;
+import static com.google.samples.apps.iosched.util.LogUtils.LOGE;
+import static com.google.samples.apps.iosched.util.LogUtils.makeLogTag;
+import static com.google.samples.apps.iosched.util.PreconditionUtils.checkNotNull;
+
 public class ScheduleModel implements Model<ScheduleModel.MyScheduleQueryEnum,
         ScheduleModel.MyScheduleUserActionEnum> {
 
-    private static final String TAG = makeLogTag(ScheduleModel.class);
-
     public static final int PRE_CONFERENCE_DAY_ID = 0;
-
     /**
      * Used for user action {@link MyScheduleUserActionEnum#SESSION_SLOT}
      */
     public static final String SESSION_URL_KEY = "SESSION_URL_KEY";
-
     /**
      * Used for user action {@link MyScheduleUserActionEnum#FEEDBACK}
      */
     public static final String SESSION_ID_KEY = "SESSION_ID_KEY";
-
     /**
      * Used for user action {@link MyScheduleUserActionEnum#FEEDBACK}
      */
     public static final String SESSION_TITLE_KEY = "SESSION_TITLE_KEY";
-
+    private static final String TAG = makeLogTag(ScheduleModel.class);
     /**
      * The key of {@link #mScheduleData} is the index of the day in the conference, starting at 1
      * for the first day of the conference, using {@link #PRE_CONFERENCE_DAY_ID} for the
@@ -91,17 +86,58 @@ public class ScheduleModel implements Model<ScheduleModel.MyScheduleQueryEnum,
     private DataQueryCallback<MyScheduleQueryEnum> mScheduleDataQueryCallback;
 
     private TagFilterHolder mTagFilterHolder;
+    private final SharedPreferences.OnSharedPreferenceChangeListener mPrefChangeListener =
+            new SharedPreferences.OnSharedPreferenceChangeListener() {
+                @Override
+                public void onSharedPreferenceChanged(SharedPreferences sp, String key) {
+                    LOGD(TAG, "sharedpreferences key " + key + " changed, maybe reloading data.");
+                    if (SettingsUtils.PREF_LOCAL_TIMES.equals(key)) {
+                        // mPrefChangeListener is observing as soon as the model is created but
+                        // mScheduleDataQueryCallback is only created when the view has requested
+                        // some data. There is a tiny amount of time when mPrefChangeListener is
+                        // active but mScheduleDataQueryCallback is null. This was observed when
+                        // going to MySchedule screen straight after the welcome flow.
+                        if (mScheduleDataQueryCallback != null) {
+                            mScheduleDataQueryCallback.onModelUpdated(ScheduleModel.this,
+                                    MyScheduleQueryEnum.SCHEDULE);
+                        } else {
+                            LOGE(TAG, "sharedpreferences key " + key +
+                                    " changed, but null schedule data query callback, cannot " +
+                                    "inform model is updated");
+                        }
+                    } else if (BuildConfig.PREF_ATTENDEE_AT_VENUE.equals(key)) {
+                        updateData(mScheduleDataQueryCallback);
+                    }
+                }
+            };
+    /**
+     * Visible for classes extending this model, so UI tests can be written to simulate the system
+     * firing this observer.
+     */
+    @VisibleForTesting
+    protected final ThrottledContentObserver mObserver = new ThrottledContentObserver(
+            new ThrottledContentObserver.Callbacks() {
+                @Override
+                public void onThrottledContentObserverFired() {
+                    LOGD(TAG, "content may be changed, reloading data");
+                    updateData(mScheduleDataQueryCallback);
+                }
+            });
 
     /**
      * @param scheduleHelper
      * @param context        Should be an Activity context
      */
     public ScheduleModel(@NonNull ScheduleHelper scheduleHelper,
-                         @NonNull SessionsHelper sessionsHelper,
-                         @NonNull Context context) {
+            @NonNull SessionsHelper sessionsHelper,
+            @NonNull Context context) {
         mContext = context;
         mScheduleHelper = scheduleHelper;
         mSessionsHelper = sessionsHelper;
+    }
+
+    public static boolean showPreConferenceData(Context context) {
+        return RegistrationUtils.isRegisteredAttendee(context);
     }
 
     /**
@@ -138,31 +174,6 @@ public class ScheduleModel implements Model<ScheduleModel.MyScheduleQueryEnum,
         mScheduleData.put(PRE_CONFERENCE_DAY_ID, Collections.singletonList(item));
     }
 
-    private final SharedPreferences.OnSharedPreferenceChangeListener mPrefChangeListener =
-            new SharedPreferences.OnSharedPreferenceChangeListener() {
-                @Override
-                public void onSharedPreferenceChanged(SharedPreferences sp, String key) {
-                    LOGD(TAG, "sharedpreferences key " + key + " changed, maybe reloading data.");
-                    if (SettingsUtils.PREF_LOCAL_TIMES.equals(key)) {
-                        // mPrefChangeListener is observing as soon as the model is created but
-                        // mScheduleDataQueryCallback is only created when the view has requested
-                        // some data. There is a tiny amount of time when mPrefChangeListener is
-                        // active but mScheduleDataQueryCallback is null. This was observed when
-                        // going to MySchedule screen straight after the welcome flow.
-                        if (mScheduleDataQueryCallback != null) {
-                            mScheduleDataQueryCallback.onModelUpdated(ScheduleModel.this,
-                                    MyScheduleQueryEnum.SCHEDULE);
-                        } else {
-                            LOGE(TAG, "sharedpreferences key " + key +
-                                    " changed, but null schedule data query callback, cannot " +
-                                    "inform model is updated");
-                        }
-                    } else if (BuildConfig.PREF_ATTENDEE_AT_VENUE.equals(key)) {
-                        updateData(mScheduleDataQueryCallback);
-                    }
-                }
-            };
-
     /**
      * Observe changes on base uri and in shared preferences
      */
@@ -180,20 +191,6 @@ public class ScheduleModel implements Model<ScheduleModel.MyScheduleQueryEnum,
         SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(mContext);
         sp.unregisterOnSharedPreferenceChangeListener(mPrefChangeListener);
     }
-
-    /**
-     * Visible for classes extending this model, so UI tests can be written to simulate the system
-     * firing this observer.
-     */
-    @VisibleForTesting
-    protected final ThrottledContentObserver mObserver = new ThrottledContentObserver(
-            new ThrottledContentObserver.Callbacks() {
-                @Override
-                public void onThrottledContentObserverFired() {
-                    LOGD(TAG, "content may be changed, reloading data");
-                    updateData(mScheduleDataQueryCallback);
-                }
-            });
 
     @Override
     public MyScheduleQueryEnum[] getQueries() {
@@ -215,10 +212,6 @@ public class ScheduleModel implements Model<ScheduleModel.MyScheduleQueryEnum,
         } else {
             return Collections.EMPTY_LIST;
         }
-    }
-
-    public static boolean showPreConferenceData(Context context) {
-        return RegistrationUtils.isRegisteredAttendee(context);
     }
 
     @Override

@@ -15,5 +15,6 @@ package com.google.samples.apps.iosched.schedule;
 
 public interface ScheduleView {
     boolean canSwipeRefreshChildScrollUp();
+
     void onFiltersChanged(TagFilterHolder filters);
 }

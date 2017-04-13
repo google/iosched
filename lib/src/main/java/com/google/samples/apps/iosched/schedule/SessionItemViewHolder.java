@@ -57,42 +57,9 @@ public class SessionItemViewHolder extends ScheduleItemViewHolder
 
     private final Callbacks mCallbacks;
     private final View.OnClickListener mTagClick;
-    private @Nullable ScheduleItem mSession;
-
-    public interface Callbacks {
-        /**
-         * @param sessionId The ID of the session
-         */
-        void onSessionClicked(String sessionId);
-
-        /**
-         * @return true if bookmark icons should be clickable and call back to this listener.
-         */
-        boolean bookmarkingEnabled();
-
-        /**
-         * @param sessionId    The ID of the session
-         * @param isInSchedule Whether the session is bookmarked in the backing data
-         */
-        void onBookmarkClicked(String sessionId, boolean isInSchedule);
-
-        /**
-         * @param sessionId    The ID of the session
-         * @param sessionTitle The title of the session
-         */
-        void onFeedbackClicked(String sessionId, String sessionTitle);
-
-        /**
-         * @param tag The tag that was clicked
-         */
-        void onTagClicked(Tag tag);
-    }
-
-    public static SessionItemViewHolder newInstance(ViewGroup parent, Callbacks callbacks) {
-        LayoutInflater inflater = LayoutInflater.from(parent.getContext());
-        View itemView = inflater.inflate(R.layout.schedule_session_item, parent, false);
-        return new SessionItemViewHolder(itemView, callbacks);
-    }
+    private
+    @Nullable
+    ScheduleItem mSession;
 
     private SessionItemViewHolder(View itemView, final Callbacks callbacks) {
         super(itemView);
@@ -134,6 +101,12 @@ public class SessionItemViewHolder extends ScheduleItemViewHolder
                 mCallbacks.onTagClicked(tag);
             }
         };
+    }
+
+    public static SessionItemViewHolder newInstance(ViewGroup parent, Callbacks callbacks) {
+        LayoutInflater inflater = LayoutInflater.from(parent.getContext());
+        View itemView = inflater.inflate(R.layout.schedule_session_item, parent, false);
+        return new SessionItemViewHolder(itemView, callbacks);
     }
 
     public void onBind(@NonNull final ScheduleItem item, TagMetadata tagMetadata) {
@@ -184,5 +157,34 @@ public class SessionItemViewHolder extends ScheduleItemViewHolder
                 && (item.flags & ScheduleItem.FLAG_HAS_LIVESTREAM) != 0;
         mLiveNow.setVisibility(streamingNow ? VISIBLE : GONE);
         mRate.setVisibility((now > item.endTime && !item.hasGivenFeedback) ? VISIBLE : GONE);
+    }
+
+    public interface Callbacks {
+        /**
+         * @param sessionId The ID of the session
+         */
+        void onSessionClicked(String sessionId);
+
+        /**
+         * @return true if bookmark icons should be clickable and call back to this listener.
+         */
+        boolean bookmarkingEnabled();
+
+        /**
+         * @param sessionId    The ID of the session
+         * @param isInSchedule Whether the session is bookmarked in the backing data
+         */
+        void onBookmarkClicked(String sessionId, boolean isInSchedule);
+
+        /**
+         * @param sessionId    The ID of the session
+         * @param sessionTitle The title of the session
+         */
+        void onFeedbackClicked(String sessionId, String sessionTitle);
+
+        /**
+         * @param tag The tag that was clicked
+         */
+        void onTagClicked(Tag tag);
     }
 }

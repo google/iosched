@@ -45,7 +45,7 @@ public class ScheduleDayViewPagerAdapter extends FragmentPagerAdapter {
     private FragmentManager mFragmentManager;
 
     public ScheduleDayViewPagerAdapter(Context context, FragmentManager fm,
-                                       boolean showPreConferenceDay) {
+            boolean showPreConferenceDay) {
         super(fm);
         mShowPreConferenceDay = showPreConferenceDay;
         mContext = context;

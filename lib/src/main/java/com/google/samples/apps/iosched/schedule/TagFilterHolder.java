@@ -42,8 +42,27 @@ import static com.google.samples.apps.iosched.util.LogUtils.makeLogTag;
  */
 public class TagFilterHolder implements Parcelable {
 
-    private static final String TAG = makeLogTag(TagFilterHolder.class);
+    public static final Creator<TagFilterHolder> CREATOR = new Creator<TagFilterHolder>() {
 
+        @Override
+        public TagFilterHolder createFromParcel(Parcel in) {
+            TagFilterHolder holder = new TagFilterHolder();
+            holder.mShowLiveStreamedOnly = in.readInt() == 1;
+            holder.mShowSessionsOnly = in.readInt() == 1;
+
+            final int size = in.readInt();
+            Tag[] tags = new Tag[size];
+            in.readTypedArray(tags, Tag.CREATOR);
+            Collections.addAll(holder.mSelectedTopics, tags);
+            return holder;
+        }
+
+        @Override
+        public TagFilterHolder[] newArray(int size) {
+            return new TagFilterHolder[size];
+        }
+    };
+    private static final String TAG = makeLogTag(TagFilterHolder.class);
     // TODO we should work with Tags directly
     private final Set<Tag> mSelectedTopics;
     private boolean mShowLiveStreamedOnly;
@@ -51,6 +70,10 @@ public class TagFilterHolder implements Parcelable {
 
     public TagFilterHolder() {
         mSelectedTopics = new HashSet<>();
+    }
+
+    private static boolean isCategoryValid(String category) {
+        return Config.Tags.CATEGORY_TRACK.equals(category); // we only care about tracks
     }
 
     /**
@@ -156,10 +179,6 @@ public class TagFilterHolder implements Parcelable {
         return mShowSessionsOnly;
     }
 
-    private static boolean isCategoryValid(String category) {
-        return Config.Tags.CATEGORY_TRACK.equals(category); // we only care about tracks
-    }
-
     public CharSequence describeFilters(Resources res, Theme theme) {
         if (!hasAnyFilters()) {
             return null;
@@ -211,25 +230,4 @@ public class TagFilterHolder implements Parcelable {
         dest.writeInt(size);
         dest.writeParcelableArray(tags, 0);
     }
-
-    public static final Creator<TagFilterHolder> CREATOR = new Creator<TagFilterHolder>() {
-
-        @Override
-        public TagFilterHolder createFromParcel(Parcel in) {
-            TagFilterHolder holder = new TagFilterHolder();
-            holder.mShowLiveStreamedOnly = in.readInt() == 1;
-            holder.mShowSessionsOnly = in.readInt() == 1;
-
-            final int size = in.readInt();
-            Tag[] tags = new Tag[size];
-            in.readTypedArray(tags, Tag.CREATOR);
-            Collections.addAll(holder.mSelectedTopics, tags);
-            return holder;
-        }
-
-        @Override
-        public TagFilterHolder[] newArray(int size) {
-            return new TagFilterHolder[size];
-        }
-    };
 }
