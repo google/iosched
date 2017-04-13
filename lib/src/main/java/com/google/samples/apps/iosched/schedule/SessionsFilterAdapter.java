@@ -59,15 +59,9 @@ public class SessionsFilterAdapter extends Adapter<ViewHolder> {
 
     private final StaticFilter[] mStaticFilters = new StaticFilter[STATIC_FILTERS_COUNT];
     private final List<Object> mItems;
-    private TagFilterHolder mTagFilterHolder = new TagFilterHolder();
     private final LayoutInflater mInflater;
-
+    private TagFilterHolder mTagFilterHolder = new TagFilterHolder();
     private OnFiltersChangedListener mListener;
-
-    public interface OnFiltersChangedListener {
-
-        void onFiltersChanged(TagFilterHolder filterHolder);
-    }
 
     public SessionsFilterAdapter(Context context, TagMetadata filters) {
         this(context, filters, null);
@@ -249,6 +243,11 @@ public class SessionsFilterAdapter extends Adapter<ViewHolder> {
                 mTagFilterHolder = filterHolder;
             }
         }
+    }
+
+    public interface OnFiltersChangedListener {
+
+        void onFiltersChanged(TagFilterHolder filterHolder);
     }
 
     // -- Marker objects

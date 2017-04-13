@@ -61,11 +61,25 @@ public class ScheduleDayAdapter extends RecyclerView.Adapter<ViewHolder> {
     private Callbacks mAdapterCallbacks;
 
     public ScheduleDayAdapter(@NonNull Callbacks adapterCallbacks,
-                              @Nullable TagMetadata tagMetadata, boolean showTimeSeparators) {
+            @Nullable TagMetadata tagMetadata, boolean showTimeSeparators) {
         mAdapterCallbacks = adapterCallbacks;
         mTagMetadata = tagMetadata;
         mShowTimeSeparators = showTimeSeparators;
         setHasStableIds(true);
+    }
+
+    private static long generateIdForScheduleItem(@NonNull ScheduleItem item) {
+        final long[] array = ID_ARRAY;
+        // This code may look complex but its pretty simple. We need to use stable ids so that
+        // any user interaction animations are run correctly (such as ripples). This means that
+        // we need to generate a stable id. Not all items have sessionIds so we generate one
+        // using the sessionId, title, start time and end time.
+        array[0] = !TextUtils.isEmpty(item.sessionId)
+                ? item.sessionId.hashCode() : 0;
+        array[1] = !TextUtils.isEmpty(item.title) ? item.title.hashCode() : 0;
+        array[2] = item.startTime;
+        array[3] = item.endTime;
+        return Arrays.hashCode(array);
     }
 
     @Override
@@ -145,7 +159,7 @@ public class ScheduleDayAdapter extends RecyclerView.Adapter<ViewHolder> {
         }
 
         if (!mShowTimeSeparators) {
-          mItems.addAll(items);
+            mItems.addAll(items);
         } else {
             for (int i = 0, size = items.size(); i < size; i++) {
                 final ScheduleItem prev = i > 0 ? items.get(i - 1) : null;
@@ -166,6 +180,18 @@ public class ScheduleDayAdapter extends RecyclerView.Adapter<ViewHolder> {
         notifyDataSetChanged();
     }
 
+    public int findTimeHeaderPositionForTime(final long time) {
+        for (int j = mItems.size() - 1; j >= 0; j--) {
+            Object item = mItems.get(j);
+            // Keep going backwards until we find a time separator which has a start time before
+            // now
+            if (item instanceof TimeSeperatorItem && ((TimeSeperatorItem) item).startTime < time) {
+                return j;
+            }
+        }
+        return -1;
+    }
+
     private static class TimeSeperatorViewHolder extends ViewHolder {
         private final TextView mStartTime;
 
@@ -178,18 +204,6 @@ public class ScheduleDayAdapter extends RecyclerView.Adapter<ViewHolder> {
             mStartTime.setText(TimeUtils.formatShortTime(
                     itemView.getContext(), new Date(item.startTime)));
         }
-    }
-
-    public int findTimeHeaderPositionForTime(final long time) {
-        for (int j = mItems.size() - 1; j >= 0; j--) {
-            Object item = mItems.get(j);
-            // Keep going backwards until we find a time separator which has a start time before
-            // now
-            if (item instanceof TimeSeperatorItem && ((TimeSeperatorItem) item).startTime < time) {
-                return j;
-            }
-        }
-        return -1;
     }
 
     private static class TimeSeperatorItem {
@@ -218,19 +232,5 @@ public class ScheduleDayAdapter extends RecyclerView.Adapter<ViewHolder> {
         public int hashCode() {
             return (int) (startTime ^ (startTime >>> 32));
         }
-    }
-
-    private static long generateIdForScheduleItem(@NonNull ScheduleItem item) {
-        final long[] array = ID_ARRAY;
-        // This code may look complex but its pretty simple. We need to use stable ids so that
-        // any user interaction animations are run correctly (such as ripples). This means that
-        // we need to generate a stable id. Not all items have sessionIds so we generate one
-        // using the sessionId, title, start time and end time.
-        array[0] = !TextUtils.isEmpty(item.sessionId)
-                ? item.sessionId.hashCode() : 0;
-        array[1] = !TextUtils.isEmpty(item.title) ? item.title.hashCode() : 0;
-        array[2] = item.startTime;
-        array[3] = item.endTime;
-        return Arrays.hashCode(array);
     }
 }

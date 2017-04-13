@@ -136,7 +136,7 @@ public class ScheduleSingleDayFragment extends Fragment
 
     @Override
     public void displayUserActionResult(ScheduleModel model, MyScheduleUserActionEnum userAction,
-                                        boolean success) {
+            boolean success) {
         switch (userAction) {
             case RELOAD_DATA:
             case SESSION_STAR:

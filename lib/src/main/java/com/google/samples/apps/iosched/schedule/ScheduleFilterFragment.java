@@ -53,10 +53,6 @@ public class ScheduleFilterFragment extends Fragment implements LoaderCallbacks<
     // We may have to hang onto this while TagMetadata is loading.
     private String mFilterTag;
 
-    interface ScheduleFiltersFragmentListener {
-        void onFiltersChanged(TagFilterHolder filterHolder);
-    }
-
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container,
@@ -177,5 +173,9 @@ public class ScheduleFilterFragment extends Fragment implements LoaderCallbacks<
                 mFilterTag = null; // we don't have to run this again
             }
         }
+    }
+
+    interface ScheduleFiltersFragmentListener {
+        void onFiltersChanged(TagFilterHolder filterHolder);
     }
 }

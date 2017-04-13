@@ -37,17 +37,10 @@ import static android.graphics.Paint.ANTI_ALIAS_FLAG;
  */
 public class DividerDecoration extends ItemDecoration {
 
-    /**
-     * Empty marker interface, used to denote a {@link ViewHolder} as requiring a divider.
-     */
-    interface Divided { }
-
     private static final int[] ATTRS =
-            new int[]{ android.R.attr.dividerHeight, android.R.attr.divider };
-
+            new int[]{android.R.attr.dividerHeight, android.R.attr.divider};
     private final Paint mDividerPaint = new Paint(ANTI_ALIAS_FLAG);
     private final float mHalfHeight;
-
     public DividerDecoration(float dividerHeight, @ColorInt int dividerColor) {
         mDividerPaint.setStrokeWidth(dividerHeight);
         mHalfHeight = dividerHeight / 2f;
@@ -86,5 +79,11 @@ public class DividerDecoration extends ItemDecoration {
             previousItemNeedsDivider = needsDivider;
         }
         canvas.drawLines(points, mDividerPaint);
+    }
+
+    /**
+     * Empty marker interface, used to denote a {@link ViewHolder} as requiring a divider.
+     */
+    interface Divided {
     }
 }

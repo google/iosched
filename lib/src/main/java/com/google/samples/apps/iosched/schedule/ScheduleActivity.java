@@ -35,10 +35,10 @@ import com.google.samples.apps.iosched.injection.ModelProvider;
 import com.google.samples.apps.iosched.lib.R;
 import com.google.samples.apps.iosched.model.ScheduleHelper;
 import com.google.samples.apps.iosched.model.TagMetadata.Tag;
+import com.google.samples.apps.iosched.navigation.NavigationModel;
+import com.google.samples.apps.iosched.schedule.ScheduleFilterFragment.ScheduleFiltersFragmentListener;
 import com.google.samples.apps.iosched.schedule.ScheduleModel.MyScheduleQueryEnum;
 import com.google.samples.apps.iosched.schedule.ScheduleModel.MyScheduleUserActionEnum;
-import com.google.samples.apps.iosched.schedule.ScheduleFilterFragment.ScheduleFiltersFragmentListener;
-import com.google.samples.apps.iosched.navigation.NavigationModel;
 import com.google.samples.apps.iosched.session.SessionDetailActivity;
 import com.google.samples.apps.iosched.ui.BaseActivity;
 import com.google.samples.apps.iosched.util.SessionsHelper;
@@ -103,18 +103,32 @@ public class ScheduleActivity extends BaseActivity implements ScheduleViewParent
     private static final String SCREEN_LABEL = "My Schedule";
 
     private static final String TAG = makeLogTag(ScheduleActivity.class);
-
-    private DrawerLayout mDrawerLayout;
-
-    private ScheduleFilterFragment mScheduleFilterFragment;
-
-    private SchedulePagerFragment mSchedulePagerFragment;
-
     private final Handler mUpdateUiHandler = new Handler();
-
+    private DrawerLayout mDrawerLayout;
+    private ScheduleFilterFragment mScheduleFilterFragment;
+    private SchedulePagerFragment mSchedulePagerFragment;
     private ScheduleModel mModel; // TODO decouple this
     private PresenterImpl<ScheduleModel, MyScheduleQueryEnum, MyScheduleUserActionEnum>
             mPresenter;
+    private final Runnable mUpdateUIRunnable = new Runnable() {
+        @Override
+        public void run() {
+            ScheduleActivity activity = ScheduleActivity.this;
+            if (activity.isDestroyed()) {
+                LOGD(TAG, "Activity is not valid anymore. Stopping UI Updater");
+                return;
+            }
+
+            LOGD(TAG, "Running MySchedule UI updater (now=" +
+                    new Date(TimeUtils.getCurrentTime(activity)) + ")");
+
+            mPresenter.onUserAction(ScheduleModel.MyScheduleUserActionEnum.REDRAW_UI, null);
+
+            if (TimeUtils.isConferenceInProgress(activity)) {
+                scheduleNextUiUpdate();
+            }
+        }
+    };
 
     public static void launchScheduleWithFilterTag(Context context, Tag tag) {
         Intent intent = new Intent(context, ScheduleActivity.class);
@@ -299,26 +313,6 @@ public class ScheduleActivity extends BaseActivity implements ScheduleViewParent
         }
         return super.onOptionsItemSelected(item);
     }
-
-    private final Runnable mUpdateUIRunnable = new Runnable() {
-        @Override
-        public void run() {
-            ScheduleActivity activity = ScheduleActivity.this;
-            if (activity.isDestroyed()) {
-                LOGD(TAG, "Activity is not valid anymore. Stopping UI Updater");
-                return;
-            }
-
-            LOGD(TAG, "Running MySchedule UI updater (now=" +
-                    new Date(TimeUtils.getCurrentTime(activity)) + ")");
-
-            mPresenter.onUserAction(ScheduleModel.MyScheduleUserActionEnum.REDRAW_UI, null);
-
-            if (TimeUtils.isConferenceInProgress(activity)) {
-                scheduleNextUiUpdate();
-            }
-        }
-    };
 
     void scheduleNextUiUpdate() {
         // Remove existing UI update runnable, if any

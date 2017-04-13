@@ -40,11 +40,6 @@ public class NonSessionItemViewHolder extends ScheduleItemViewHolder
     private final TextView mDescription;
     private final ImageView mIcon;
 
-    public static NonSessionItemViewHolder newInstance(ViewGroup parent) {
-        return new NonSessionItemViewHolder(LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.schedule_non_session_item, parent, false));
-    }
-
     private NonSessionItemViewHolder(View itemView) {
         super(itemView);
         mTitle = (TextView) itemView.findViewById(R.id.slot_title);
@@ -52,11 +47,16 @@ public class NonSessionItemViewHolder extends ScheduleItemViewHolder
         mIcon = (ImageView) itemView.findViewById(R.id.slot_icon);
     }
 
+    public static NonSessionItemViewHolder newInstance(ViewGroup parent) {
+        return new NonSessionItemViewHolder(LayoutInflater.from(parent.getContext())
+                .inflate(R.layout.schedule_non_session_item, parent, false));
+    }
+
     public void onBind(@NonNull final ScheduleItem item) {
         if (item.type != ScheduleItem.BREAK) return;
 
         mTitle.setText(item.title);
-        mDescription.setText(formatDescription( itemView.getContext(), item));
+        mDescription.setText(formatDescription(itemView.getContext(), item));
         if (item.isFoodBreak() || item.isConcert()) {
             mIcon.setVisibility(VISIBLE);
             mIcon.setActivated(item.isConcert());
