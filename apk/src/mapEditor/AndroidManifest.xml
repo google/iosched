@@ -13,5 +13,51 @@
   the License.
 -->
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-          package="com.google.samples.apps.iosched">
+    xmlns:tools="http://schemas.android.com/tools"
+    package="com.google.samples.apps.iosched">
+
+    <!-- Manifest for the Map Editor build flavor.
+Compared to the default AndroidManifest, here we only declare the map editor activity and
+a different bootstrap service (that refreshes all data from an external file at every start up).
+
+See the /doc/MAP.md readme file for further details. -->
+
+    <application
+        android:name=".AppApplication"
+        android:label="@string/mapeditor_label"
+        tools:replace="label">
+
+        <!-- Activities -->
+        <activity android:name=".map.MapEditorActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN"/>
+
+                <category android:name="android.intent.category.DEFAULT"/>
+                <category android:name="android.intent.category.LAUNCHER"/>
+            </intent-filter>
+        </activity>
+
+        <!-- Remove the default launcher and only use the MapEditorActivity -->
+        <activity-alias
+            android:name=".Launcher"
+            android:label="@string/app_name"
+            android:targetActivity=".myio.MyIOActivity">
+            <intent-filter tools:node="remove">
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity-alias>
+
+        <!-- An IntentService responsible for bootstrapping the app with the necessary
+    data such as session, speakers, etc. -->
+        <service
+            android:name=".service.LocalRefreshingBootstrapService"
+            android:exported="false"/>
+
+
+    </application>
+
+    <uses-permission
+        android:name="android.permission.READ_EXTERNAL_STORAGE"
+        tools:remove="maxSdkVersion"/>
 </manifest>

@@ -14,7 +14,12 @@
 
 package com.google.samples.apps.iosched.map;
 
+import android.Manifest;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
@@ -36,6 +41,7 @@ import static com.google.samples.apps.iosched.util.LogUtils.makeLogTag;
 public class MapEditorActivity extends AppCompatActivity implements EditorMapFragment.Callbacks {
 
     private static final String TAG = makeLogTag(MapActivity.class);
+    private static final int REQUEST_PERMISSIONS = 1;
 
     private TextView mMessageView;
     private EditorMapFragment mMapFragment;
@@ -46,9 +52,6 @@ public class MapEditorActivity extends AppCompatActivity implements EditorMapFra
 
         setContentView(R.layout.map_editor_act);
         mMessageView = (TextView) findViewById(R.id.map_editor_message);
-
-        // Force a reload of bootstrap data from a local file on the device.
-        LocalRefreshingBootstrapService.startDataBootstrap(getApplicationContext());
 
         // Add the map.
         if (mMapFragment == null) {
@@ -71,6 +74,31 @@ public class MapEditorActivity extends AppCompatActivity implements EditorMapFra
                     }
                 });
 
+        // Ensure access to external storage and force a local data sync if the app has access.
+        requireStoragePermission();
+    }
+
+    /**
+     * Request permission for external storage where the bootstrap.json file is stored.
+     */
+    private void requireStoragePermission() {
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE)
+                != PackageManager.PERMISSION_GRANTED) {
+            // Don't have access to external storage. Request permission.
+            ActivityCompat.requestPermissions(this,
+                    new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, REQUEST_PERMISSIONS);
+        } else {
+            // Permission has been granted. Force a local data sync.
+            LocalRefreshingBootstrapService.startDataBootstrap(getApplicationContext());
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
+                                           @NonNull int[] grantResults) {
+        if (requestCode == REQUEST_PERMISSIONS) {
+            requireStoragePermission();
+        }
     }
 
     @Override
