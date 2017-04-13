@@ -52,7 +52,6 @@ import static com.google.samples.apps.iosched.util.PreconditionUtils.checkNotNul
 
 public class ScheduleModel implements Model<ScheduleModel.MyScheduleQueryEnum,
         ScheduleModel.MyScheduleUserActionEnum> {
-
     public static final int PRE_CONFERENCE_DAY_ID = 0;
     /**
      * Used for user action {@link MyScheduleUserActionEnum#SESSION_SLOT}
@@ -110,19 +109,14 @@ public class ScheduleModel implements Model<ScheduleModel.MyScheduleQueryEnum,
                     }
                 }
             };
+    private MyThrottledContentObserverCallbacks mThrottledContentObserverCallbacks;
     /**
      * Visible for classes extending this model, so UI tests can be written to simulate the system
      * firing this observer.
      */
     @VisibleForTesting
-    protected final ThrottledContentObserver mObserver = new ThrottledContentObserver(
-            new ThrottledContentObserver.Callbacks() {
-                @Override
-                public void onThrottledContentObserverFired() {
-                    LOGD(TAG, "content may be changed, reloading data");
-                    updateData(mScheduleDataQueryCallback);
-                }
-            });
+    protected final ThrottledContentObserver mObserver =
+            new ThrottledContentObserver(mThrottledContentObserverCallbacks);
 
     /**
      * @param scheduleHelper
@@ -177,7 +171,10 @@ public class ScheduleModel implements Model<ScheduleModel.MyScheduleQueryEnum,
     /**
      * Observe changes on base uri and in shared preferences
      */
-    private void addDataObservers() {
+    protected void addDataObservers() {
+        mThrottledContentObserverCallbacks = new MyThrottledContentObserverCallbacks();
+        mThrottledContentObserverCallbacks.register(this);
+
         mContext.getContentResolver().registerContentObserver(
                 ScheduleContract.BASE_CONTENT_URI, true, mObserver);
 
@@ -186,6 +183,8 @@ public class ScheduleModel implements Model<ScheduleModel.MyScheduleQueryEnum,
     }
 
     private void removeDataObservers() {
+        mThrottledContentObserverCallbacks.unregister();
+        mThrottledContentObserverCallbacks = null;
         mContext.getContentResolver().unregisterContentObserver(mObserver);
 
         SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(mContext);
@@ -355,6 +354,10 @@ public class ScheduleModel implements Model<ScheduleModel.MyScheduleQueryEnum,
         }
     }
 
+    public DataQueryCallback<MyScheduleQueryEnum> getScheduleDataQueryCallback() {
+        return mScheduleDataQueryCallback;
+    }
+
     public enum MyScheduleQueryEnum implements QueryEnum {
         SCHEDULE(0, null);
 
@@ -403,4 +406,22 @@ public class ScheduleModel implements Model<ScheduleModel.MyScheduleQueryEnum,
         void onDataLoaded(ArrayList<ScheduleItem> scheduleItems);
     }
 
+    private static class MyThrottledContentObserverCallbacks implements ThrottledContentObserver.Callbacks {
+        private ScheduleModel mModel;
+
+        public void register(ScheduleModel model) {
+            mModel = model;
+        }
+
+        public void unregister() {
+            mModel = null;
+        }
+
+        @Override
+        public void onThrottledContentObserverFired() {
+            if (mModel != null && mModel.getScheduleDataQueryCallback() != null) {
+                mModel.updateData(mModel.getScheduleDataQueryCallback());
+            }
+        }
+    }
 }
