@@ -60,7 +60,7 @@ public class SessionDetailConstants {
     public static final String FIREBASE_NODE_SESSIONS = "sessions";
     public static final String FIREBASE_NODE_RESERVATIONS = "reservations";
     public static final String FIREBASE_NODE_STATUS = "status";
-    public static final String FIREBASE_NODE_RESULTS = "status";
+    public static final String FIREBASE_NODE_RESULTS = "results";
     public static final String FIREBASE_NODE_SEATS = "seats";
     public static final String FIREBASE_NODE_SEATS_AVAILABLE = "seats_available";
 
