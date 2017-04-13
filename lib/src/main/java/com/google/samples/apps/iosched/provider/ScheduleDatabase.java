@@ -112,7 +112,7 @@ public class ScheduleDatabase extends SQLiteOpenHelper {
                 + "LEFT OUTER JOIN myschedule ON sessions.session_id=myschedule.session_id "
                 + "AND myschedule.account_name=? "
                 + "LEFT OUTER JOIN myreservations ON sessions.session_id=myreservations.session_id "
-                + "AND myreservations.account_name = myschedule.account_name ";
+                + "AND myreservations.account_name=? ";
 
         String SESSIONS_JOIN_ROOMS_TAGS = "sessions "
                 + "LEFT OUTER JOIN myschedule ON sessions.session_id=myschedule.session_id "
@@ -120,7 +120,7 @@ public class ScheduleDatabase extends SQLiteOpenHelper {
                 + "LEFT OUTER JOIN rooms ON sessions.room_id=rooms.room_id "
                 + "LEFT OUTER JOIN sessions_tags ON sessions.session_id=sessions_tags.session_id "
                 + "LEFT OUTER JOIN myreservations ON sessions.session_id=myreservations.session_id "
-                + "AND myreservations.account_name = myschedule.account_name ";
+                + "AND myreservations.account_name = ? ";
 
         String SESSIONS_JOIN_ROOMS_TAGS_FEEDBACK_MYSCHEDULE = "sessions "
                 + "LEFT OUTER JOIN myschedule ON sessions.session_id=myschedule.session_id "
@@ -129,14 +129,14 @@ public class ScheduleDatabase extends SQLiteOpenHelper {
                 + "LEFT OUTER JOIN sessions_tags ON sessions.session_id=sessions_tags.session_id "
                 + "LEFT OUTER JOIN feedback ON sessions.session_id=feedback.session_id "
                 + "LEFT OUTER JOIN myreservations ON sessions.session_id=myreservations.session_id "
-                + "AND myreservations.account_name = myschedule.account_name ";
+                + "AND myreservations.account_name = ? ";
 
         String SESSIONS_JOIN_ROOMS = "sessions "
                 + "LEFT OUTER JOIN myschedule ON sessions.session_id=myschedule.session_id "
                 + "AND myschedule.account_name=? "
                 + "LEFT OUTER JOIN rooms ON sessions.room_id=rooms.room_id "
                 + "LEFT OUTER JOIN myreservations ON sessions.session_id=myreservations.session_id "
-                + "AND myreservations.account_name = myschedule.account_name ";
+                + "AND myreservations.account_name =? ";
 
         String SESSIONS_SPEAKERS_JOIN_SPEAKERS = "sessions_speakers "
                 + "LEFT OUTER JOIN speakers ON sessions_speakers.speaker_id=speakers.speaker_id";
@@ -150,7 +150,7 @@ public class ScheduleDatabase extends SQLiteOpenHelper {
                 + "LEFT OUTER JOIN myschedule ON sessions.session_id=myschedule.session_id "
                 + "AND myschedule.account_name=? "
                 + "LEFT OUTER JOIN myreservations ON sessions.session_id=myreservations.session_id "
-                + "AND myreservations.account_name = myschedule.account_name ";
+                + "AND myreservations.account_name = ? ";
 
         String SESSIONS_SEARCH_JOIN_SESSIONS_ROOMS = "sessions_search "
                 + "LEFT OUTER JOIN sessions ON sessions_search.session_id=sessions.session_id "
@@ -158,7 +158,7 @@ public class ScheduleDatabase extends SQLiteOpenHelper {
                 + "AND myschedule.account_name=? "
                 + "LEFT OUTER JOIN rooms ON sessions.room_id=rooms.room_id "
                 + "LEFT OUTER JOIN myreservations ON sessions.session_id=myreservations.session_id "
-                + "AND myreservations.account_name = myschedule.account_name ";
+                + "AND myreservations.account_name = ? ";
 
         // When tables get deprecated, add them to this list (so they get correctly deleted
         // on database upgrades).
@@ -513,7 +513,9 @@ public class ScheduleDatabase extends SQLiteOpenHelper {
                 + MyReservations.MY_RESERVATION_ACCOUNT_NAME + " TEXT NOT NULL,"
                 + MyReservations.MY_RESERVATION_STATUS + " INTEGER NOT NULL DEFAULT "
                 + Integer.toString(MyReservations.RESERVATION_STATUS_UNRESERVED) + ","
-                + MyReservations.MY_RESERVATION_TIMESTAMP + " DATETIME)");
+                + MyReservations.MY_RESERVATION_TIMESTAMP + " DATETIME, "
+                + "UNIQUE (" + MyReservations.SESSION_ID + ", "
+                + MyReservations.MY_RESERVATION_ACCOUNT_NAME + ") ON CONFLICT REPLACE)");
 
         db.execSQL("CREATE TRIGGER " + Triggers.SESSIONS_MY_RESERVATIONS_DELETE + " AFTER DELETE ON "
                 + Tables.SESSIONS + " BEGIN DELETE FROM " + Tables.MY_RESERVATIONS + " "
@@ -613,7 +615,7 @@ public class ScheduleDatabase extends SQLiteOpenHelper {
 
         // Check if we can upgrade from release 2017 release B to 2017 release C.
         if (version == VER_2017_RELEASE_B) {
-            LOGD(TAG, "Upgrading database from 2017 release A to 2017 release B.");
+            LOGD(TAG, "Upgrading database from 2017 release B to 2017 release C.");
             upgradeFrom2017Bto2017C(db);
             version = VER_2017_RELEASE_C;
         }
