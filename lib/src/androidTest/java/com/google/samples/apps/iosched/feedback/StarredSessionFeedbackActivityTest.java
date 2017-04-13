@@ -47,7 +47,7 @@ import static org.junit.Assert.assertTrue;
  */
 @RunWith(AndroidJUnit4.class)
 @LargeTest
-public class SessionFeedbackActivityTest {
+public class StarredSessionFeedbackActivityTest {
 
     public static final String SESSION_ID = "5b7836c8-82bf-e311-b297-00155d5066d7";
 

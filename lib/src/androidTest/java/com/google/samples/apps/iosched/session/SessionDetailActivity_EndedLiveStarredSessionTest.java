@@ -13,15 +13,19 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package com.google.samples.apps.iosched.session;
 
+import android.app.Activity;
+import android.app.Instrumentation;
 import android.content.Intent;
 import android.net.Uri;
+import android.os.Bundle;
 import android.support.test.InstrumentationRegistry;
+import android.support.test.espresso.intent.Intents;
+import android.support.test.espresso.intent.matcher.IntentMatchers;
 import android.support.test.espresso.matcher.ViewMatchers;
+import android.support.test.filters.LargeTest;
 import android.support.test.runner.AndroidJUnit4;
-import android.test.suitebuilder.annotation.LargeTest;
 
 import com.google.samples.apps.iosched.Config;
 import com.google.samples.apps.iosched.lib.R;
@@ -30,14 +34,17 @@ import com.google.samples.apps.iosched.mockdata.SpeakersMockCursor;
 import com.google.samples.apps.iosched.mockdata.TagMetadataMockCursor;
 import com.google.samples.apps.iosched.provider.ScheduleContract;
 import com.google.samples.apps.iosched.testutils.BaseActivityTestRule;
+import com.google.samples.apps.iosched.testutils.IntentUtils;
 import com.google.samples.apps.iosched.util.TimeUtils;
 
+import org.hamcrest.CoreMatchers;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import static android.support.test.espresso.Espresso.onView;
+import static android.support.test.espresso.action.ViewActions.click;
 import static android.support.test.espresso.action.ViewActions.swipeUp;
 import static android.support.test.espresso.assertion.ViewAssertions.matches;
 import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
@@ -48,12 +55,12 @@ import static org.hamcrest.CoreMatchers.allOf;
 import static org.hamcrest.core.IsNot.not;
 
 /**
- * Tests for {@link SessionDetailActivity} when showing a session that is not the keynote and is not
- * in user schedule.
+ * Tests for {@link SessionDetailActivity} when showing a session with a livestream but the session
+ * has ended.
  */
 @RunWith(AndroidJUnit4.class)
 @LargeTest
-public class SessionDetailActivity_NotInScheduleSessionTest {
+public class SessionDetailActivity_EndedLiveStarredSessionTest {
     public static final String SESSION_ID = "5b7836c8-82bf-e311-b297-00155d5066d7";
 
     private Uri mSessionUri = ScheduleContract.Sessions.buildSessionUri(SESSION_ID);
@@ -61,10 +68,10 @@ public class SessionDetailActivity_NotInScheduleSessionTest {
     @Rule
     public BaseActivityTestRule<SessionDetailActivity> mActivityRule =
             new BaseActivityTestRule<SessionDetailActivity>(SessionDetailActivity.class,
-                    // Create a stub model to simulate a session not in schedule
+                    // Create a stub model to simulate a live session
                     new StubSessionDetailModel(mSessionUri,
                             InstrumentationRegistry.getTargetContext(),
-                            SessionsMockCursor.getCursorForSessionNotInSchedule(),
+                            SessionsMockCursor.getCursorForSessionWithLiveStream(),
                             SpeakersMockCursor.getCursorForSingleSpeaker(),
                             TagMetadataMockCursor.getCursorForSingleTagMetadata()), true) {
                 @Override
@@ -87,6 +94,39 @@ public class SessionDetailActivity_NotInScheduleSessionTest {
     public void sessionTitle_ShowsCorrectTitle() {
         onView(withId(R.id.session_title)).check(matches(
                 allOf(withText(SessionsMockCursor.FAKE_TITLE), isDisplayed())));
+    }
+
+    @Test
+    public void liveStreamedText_IsNotVisible() {
+        onView(withText(R.string.session_live_streamed)).check(matches(not(isDisplayed())));
+    }
+
+    @Test
+    public void watchText_IsVisible() {
+        onView(withId(R.id.watch)).check(matches(isDisplayed()));
+        onView(withText(R.string.session_watch)).check(matches(isDisplayed()));
+    }
+
+    @Test
+    public void youTubeVideo_WhenClicked_IntentFired() {
+        Intent resultData = new Intent();
+        resultData.putExtras(new Bundle());
+
+        // Create the ActivityResult with the Intent.
+        Intents.intending(CoreMatchers.not(IntentMatchers.isInternal())).respondWith(
+                new Instrumentation.ActivityResult(Activity.RESULT_OK, resultData));
+
+        // When clicking on video
+        onView(withId(R.id.watch)).perform(click());
+
+        // Then the intent to play the video is fired
+        IntentUtils.checkVideoIntentIsFired(SessionsMockCursor.FAKE_YOUTUBE_URL,
+                mActivityRule.getActivity(), false);
+    }
+
+    @Test
+    public void headerImage_IsVisible() {
+        onView(withId(R.id.session_photo)).check(matches(isDisplayed()));
     }
 
     @Test
