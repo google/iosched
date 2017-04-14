@@ -22,25 +22,23 @@ import com.googlecode.objectify.annotation.Index;
 
 @Entity
 public class Device {
-    @Id private String gcmId;
+    @Id private String deviceId;
 
-    // Keep old property name to avoid loosing all registered devices from 2013.
-    // Objectify doesn't support the JPA's @Column annotation
-    @Index private String gPlusId;
+    @Index private String userId;
 
-    public String getGcmId() {
-        return gcmId;
+    public String getDeviceId() {
+        return deviceId;
     }
 
-    public void setGcmId(String gcmId) {
-        this.gcmId = gcmId;
+    public void setDeviceId(String deviceId) {
+        this.deviceId = deviceId;
     }
 
-    public String getGcmGroupId () {
-        return gPlusId;
+    public String getUserId() {
+        return userId;
     }
 
-    public void setGcmGroupId(String gcmGroupId) {
-        this.gPlusId = gcmGroupId;
+    public void setUserId(String userId) {
+        this.userId = userId;
     }
 }
