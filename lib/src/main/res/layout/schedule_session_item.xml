@@ -44,6 +44,16 @@
         app:layout_constraintTop_toBottomOf="@id/slot_title"
         tools:text="9:00 AM - 11:30 AM / Room 1" />
 
+    <TextView
+        android:id="@+id/reserve_status"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:paddingTop="@dimen/spacing_micro"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/slot_description"
+        tools:text="Reserved" />
+
     <com.google.android.flexbox.FlexboxLayout
         android:id="@+id/tags_holder"
         android:layout_width="0dp"
@@ -52,10 +62,10 @@
         app:layout_constraintEnd_toStartOf="@+id/bookmark"
         app:layout_constraintHorizontal_chainStyle="spread_inside"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/slot_description" />
+        app:layout_constraintTop_toBottomOf="@id/reserve_status" />
 
     <ImageButton
-        android:id="@id/bookmark"
+        android:id="@+id/bookmark"
         android:layout_width="@dimen/a11y_min_touch_target_dimen"
         android:layout_height="@dimen/a11y_min_touch_target_dimen"
         android:background="?selectableItemBackgroundBorderless"
@@ -64,7 +74,7 @@
         android:src="@drawable/session_bookmark"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@id/tags_holder"
-        app:layout_constraintTop_toBottomOf="@id/slot_description" />
+        app:layout_constraintTop_toBottomOf="@id/reserve_status" />
 
     <include
         layout="@layout/include_live_now_badge"

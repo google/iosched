@@ -719,7 +719,11 @@ public final class ScheduleContract {
 
         // Keynotes are always bookmarked and in "my schedule"
         public static final String IN_SCHEDULE_SELECTION = SESSION_IN_MY_SCHEDULE + " = 1 OR " +
-                Sessions.SESSION_TAGS + " LIKE '%" + Config.Tags.SPECIAL_KEYNOTE + "%'";
+                Sessions.SESSION_TAGS + " LIKE '%" + Config.Tags.SPECIAL_KEYNOTE + "%' OR " +
+                Sessions.SESSION_RESERVATION_STATUS + " = " +
+                MyReservations.RESERVATION_STATUS_RESERVED + " OR " +
+                Sessions.SESSION_RESERVATION_STATUS + " = " +
+                MyReservations.RESERVATION_STATUS_WAITLISTED;
 
         // Used to fetch sessions starting within a specific time interval
         public static final String STARTING_AT_TIME_INTERVAL_SELECTION =
