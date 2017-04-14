@@ -38,6 +38,7 @@ const PATH_ACTION = 'action';
 const PATH_SESSION = 'session';
 const PATH_QUEUE = 'queue';
 const PATH_LAST_STATUS_CHANGED = 'last_status_changed';
+const PATH_EVENTS = 'events';
 
 const REQUEST_ID = 'request_id';
 
@@ -74,20 +75,45 @@ const RESULT_RETURNED_FAILED = 'return_failed';
  * /queue/<user id> : <session id>
  */
 exports.processRequest = functions.database.ref('/queue/{uid}').onWrite(event => {
-  if (event.data.val() == null) {
+  if (!event.data || !event.data.val() || !event.eventId) {
     return;
   }
 
-  const request = event.data.val();
-  const action = request[PATH_ACTION];
-  const sid = request[PATH_SESSION];
-  const rid = request[REQUEST_ID];
-  const uid = event.params.uid;
+  let eid = event.eventId;
+  // Event IDs contain slashes and when written to the DB they cause children
+  // using replace here to use dashes instead of slashes.
+  eid = eid.replace(/\//g, "-");
 
-  return process(uid, sid, rid, action).then(function(result) {
-    console.log(action + ' with uid: ' + uid + ' and sid: ' + sid
-        + ' ended with result: ' + result);
-    return getQueueReference(uid).set({});
+  let eventAlreadyExists = false;
+
+  // Start a transaction to check if the current event has already started.
+  return admin.database().ref(PATH_EVENTS).child(eid).transaction(function(reqEvent) {
+    // If the event does not exist write it to RTDB.
+    if (!reqEvent) {
+      reqEvent = true;
+      eventAlreadyExists = false;
+    } else {
+      eventAlreadyExists = true;
+    }
+    return reqEvent;
+  }).then(() => {
+    // If event does not already exist then process request.
+    if (!eventAlreadyExists) {
+      const request = event.data.val();
+      const action = request[PATH_ACTION];
+      const sid = request[PATH_SESSION];
+      const rid = request[REQUEST_ID];
+      const uid = event.params.uid;
+
+      return process(uid, sid, rid, action).then(function(result) {
+        console.log(action + ' with uid: ' + uid + ' and sid: ' + sid
+            + ' ended with result: ' + result);
+        return getQueueReference(uid).set({});
+      });
+    } else {
+      // Do nothing, this is a duplicate event.
+      console.log("duplicate event found: " + eid);
+    }
   });
 });
 
