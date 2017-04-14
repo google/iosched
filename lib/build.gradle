@@ -78,6 +78,7 @@ android {
         buildConfigField("String", "CONFERENCE_VERSION", "\"${conf_version}\"")
         buildConfigField("String", "PRODUCTION_WEBSITE_HOST_NAME", "\"${production_website_host_name}\"")
         buildConfigField("String", "WEB_URL_SCHEDULE_PATH", "\"${web_url_schedule_path}\"")
+        buildConfigField("String", "DEFAULT_WEB_CLIENT_ID", "\"${default_web_client_id}\"")
 
         resValue("string", "pref_conf_messages_enabled", "pref_conf_messages_enabled_${conf_version}")
         buildConfigField("String", "PREF_CONF_MESSAGES_ENABLED", "\"pref_conf_messages_enabled_${conf_version}\"")
@@ -154,7 +155,6 @@ android {
             buildConfigField("boolean", "ENABLE_DEBUG_TOOLS", "true")
             buildConfigField("String", "SERVER_MANIFEST_ENDPOINT", "\"${staging_api_manifest_endpoint}\"")
             buildConfigField("String", "GCM_SERVER_URL", "\"${production_gcm_server_endpoint}\"")
-            buildConfigField("String", "DEFAULT_WEB_CLIENT_ID", "\"${default_web_client_id_debug}\"")
             resValue("string", "website_host_name", "${production_website_host_name}")
             resValue("string", "maps_api_key", "${maps_api_key_debugstore}")
 
