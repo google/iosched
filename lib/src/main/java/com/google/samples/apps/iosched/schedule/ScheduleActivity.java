@@ -209,6 +209,13 @@ public class ScheduleActivity extends BaseActivity implements ScheduleViewParent
         if (TimeUtils.isConferenceInProgress(this)) {
             scheduleNextUiUpdate();
         }
+        mModel.addDataObservers();
+    }
+
+    @Override
+    protected void onPause() {
+        mModel.cleanUp();
+        super.onPause();
     }
 
     /**
