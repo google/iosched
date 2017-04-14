@@ -15,6 +15,7 @@
  */
 package com.google.samples.apps.iosched.server.gcm.device;
 
+import com.google.api.client.repackaged.com.google.common.base.Strings;
 import com.google.samples.apps.iosched.server.gcm.AuthHelper;
 import com.google.samples.apps.iosched.server.gcm.BaseServlet;
 import com.google.samples.apps.iosched.server.gcm.AuthHelper.AuthInfo;
@@ -28,7 +29,7 @@ import javax.servlet.http.HttpServletResponse;
 
 /**
  * Servlet that registers a device, whose registration id is identified by
- * {@link #PARAMETER_REG_ID}.
+ * {@link #PARAMETER_DEVICE_ID}.
  *
  * <p>
  * The client app should call this servlet everytime it receives a
@@ -38,8 +39,8 @@ import javax.servlet.http.HttpServletResponse;
 @SuppressWarnings("serial")
 public class RegisterServlet extends BaseServlet {
 
-  private static final String PARAMETER_REG_ID = "gcm_id";
-  private static final String PARAMETER_GROUP_ID = "gcm_key";
+  private static final String PARAMETER_DEVICE_ID = "device_id";
+  private static final String PARAMETER_USER_ID = "user_id";
 
   @Override
   protected void doPost(HttpServletRequest req, HttpServletResponse resp)
@@ -52,18 +53,18 @@ public class RegisterServlet extends BaseServlet {
       send(resp, 403, "Not authorized");
       return;
     }
-    String gcmId = getParameter(req, PARAMETER_REG_ID);
-    String gcmGroupId = getParameter(req, PARAMETER_GROUP_ID);
+    String deviceId = getParameter(req, PARAMETER_DEVICE_ID);
+    String userId = getParameter(req, PARAMETER_USER_ID);
 
-    // Check to see if gcmGroupId looks roughly like a UUID, by checking for the presence
-    // of dashes.
-    if (!gcmGroupId.contains("-")) {
-      // Group ID is malformed. Drop request.
-      send(resp, 400, "Invalid value: " + PARAMETER_GROUP_ID);
+    // Check to see if deviceId and userId exists.
+    if (Strings.isNullOrEmpty(deviceId) || Strings.isNullOrEmpty(userId)) {
+      // Drop request.
+      send(resp, 400, "Invalid request: Request must contain both " +
+          PARAMETER_DEVICE_ID + " and " + PARAMETER_USER_ID);
       return;
     }
 
-    DeviceStore.register(gcmId, gcmGroupId);
+    DeviceStore.register(deviceId, userId);
     setSuccess(resp);
   }
 

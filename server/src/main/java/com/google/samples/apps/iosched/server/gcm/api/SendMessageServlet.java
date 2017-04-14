@@ -128,7 +128,7 @@ public class SendMessageServlet extends BaseServlet {
                 return;
               }
             }
-            List<Device> userDevices = DeviceStore.findDevicesByGcmGroupId(target);
+            List<Device> userDevices = DeviceStore.findDevicesByUserId(target);
             if (userDevices == null || userDevices.isEmpty()) {
                 send(resp, 404, "User not found");
             } else {
