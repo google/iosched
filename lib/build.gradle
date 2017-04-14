@@ -171,7 +171,8 @@ android {
         }
         release {
             debuggable false
-            minifyEnabled true
+            minifyEnabled false
+            useProguard false
             // No signing config as we do this separately.
             buildConfigField("String", "SERVER_MANIFEST_ENDPOINT", "\"${production_api_manifest_endpoint}\"")
             buildConfigField("String", "GCM_SERVER_URL", "\"${production_gcm_server_endpoint}\"")
