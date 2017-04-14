@@ -83,6 +83,7 @@ android {
         release {
             debuggable false
             minifyEnabled true
+            useProguard false
             // Defined in :lib
         }
     }
