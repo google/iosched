@@ -29,7 +29,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/welcome_content_padding_top"
-        android:text="@string/welcome_to_google_i_o_app" />
+        android:text="@string/welcome_to_google_i_o" />
 
     <TextView
         android:layout_width="match_parent"
