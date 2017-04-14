@@ -16,6 +16,14 @@
           xmlns:android="http://schemas.android.com/apk/res/android"
           xmlns:tools="http://schemas.android.com/tools">
 
+    <application
+        android:name="com.google.samples.apps.iosched.AppApplication"
+        android:allowBackup="false"
+        android:hardwareAccelerated="true"
+        android:icon="@mipmap/ic_launcher"
+        android:supportsRtl="true"
+        android:theme="@style/Theme.IOSched"/>
+
     <permission
         android:name="com.google.samples.apps.iosched.permission.WRITE_SCHEDULE"
         android:description="@string/permission_write"
