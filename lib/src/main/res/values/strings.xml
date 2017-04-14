@@ -628,7 +628,7 @@
     <string name="watch_now">Watch Now!</string>
 
     <!-- Short text welcoming the user to the application -->
-    <string name="welcome_to_google_i_o_app">Welcome to the #io17 mobile app!</string>
+    <string name="welcome_to_google_i_o">Welcome to #io17</string>
 
     <!-- Medium-length welcome text indicating the subsequent text is important legal information -->
     <string name="welcome_text">Before getting started, here is some important legal information regarding the use of this app.</string>
@@ -764,10 +764,9 @@
 
     <!-- Text shown on the onboarding screen asking users if they want conference notifications. -->
     <string name="onboarding_notifications_opt_in">
-        Would you like to receive app notifications about I/O?\n
-        We\'ll send you important info about the event, agenda, schedule, travel, after hours,
-        sessions recordings and more. You can change this setting under \"Info > Settings\" at any
-        time.
+        Would you like to receive notifications about I/O?\nWe\'ll send you important
+        information about the event, agenda, schedule, travel, after hours, session recordings
+        and more. You can change this setting under \"Info > Settings\" at any time.
     </string>
 
     <!-- Message displayed in a card to the user on the My I/O screen after they have signed in. -->
