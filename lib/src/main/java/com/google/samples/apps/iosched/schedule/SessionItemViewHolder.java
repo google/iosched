@@ -184,9 +184,14 @@ public class SessionItemViewHolder extends ScheduleItemViewHolder
         }
         mTagsHolder.setVisibility(mTagsHolder.getChildCount() > 0 ? VISIBLE : GONE);
 
-        mBookmark.setEnabled(!item.isKeynote() && mCallbacks.bookmarkingEnabled());
-        // activated is proxy for in-schedule
-        mBookmark.setActivated(item.isKeynote() || item.inSchedule);
+        if (mCallbacks.bookmarkingEnabled()) {
+            mBookmark.setVisibility(VISIBLE);
+            mBookmark.setEnabled(!item.isKeynote());
+            // activated is proxy for in-schedule
+            mBookmark.setActivated(item.isKeynote() || item.inSchedule);
+        } else {
+            mBookmark.setVisibility(GONE);
+        }
 
         final long now = TimeUtils.getCurrentTime(context);
         final boolean streamingNow = item.startTime <= now && now <= item.endTime
@@ -202,7 +207,7 @@ public class SessionItemViewHolder extends ScheduleItemViewHolder
         void onSessionClicked(String sessionId);
 
         /**
-         * @return true if bookmark icons should be clickable and call back to this listener.
+         * @return true if bookmark icons should be shown
          */
         boolean bookmarkingEnabled();
 

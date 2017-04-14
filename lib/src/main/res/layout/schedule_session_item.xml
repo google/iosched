@@ -62,7 +62,8 @@
         app:layout_constraintEnd_toStartOf="@+id/bookmark"
         app:layout_constraintHorizontal_chainStyle="spread_inside"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/reserve_status" />
+        app:layout_constraintTop_toBottomOf="@id/reserve_status"
+        tools:layout_height="48dp" />
 
     <ImageButton
         android:id="@+id/bookmark"
@@ -73,7 +74,6 @@
         android:scaleType="center"
         android:src="@drawable/session_bookmark"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@id/tags_holder"
         app:layout_constraintTop_toBottomOf="@id/reserve_status" />
 
     <include
