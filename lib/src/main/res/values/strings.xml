@@ -234,6 +234,15 @@
     <!-- Accessibility announcement for an item in the custom feedback rating view. For example, "one star".  -->
     <string name="feedback_rating_value">%1$d star</string>
 
+    <!-- Text that shows session is reserved on Schedule and My I/O -->
+    <string name="schedule_item_reserved">Reserved</string>
+
+    <!-- Text that shows session is not reserved on Schedule and My I/O -->
+    <string name="schedule_item_not_reserved">Not reserved</string>
+
+    <!-- Text that shows session is waitlisted on Schedule and My I/O -->
+    <string name="schedule_item_waitlisted">Waitlisted</string>
+
     <!-- Label for the button to rate a session -->
     <string name="my_schedule_rate_this_session">RATE THIS SESSION</string>
 

@@ -29,10 +29,13 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.google.android.flexbox.FlexboxLayout;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.samples.apps.iosched.lib.R;
 import com.google.samples.apps.iosched.model.ScheduleItem;
 import com.google.samples.apps.iosched.model.TagMetadata;
 import com.google.samples.apps.iosched.model.TagMetadata.Tag;
+import com.google.samples.apps.iosched.provider.ScheduleContract;
+import com.google.samples.apps.iosched.util.RegistrationUtils;
 import com.google.samples.apps.iosched.util.TimeUtils;
 
 import java.util.ArrayList;
@@ -41,6 +44,9 @@ import java.util.List;
 import static android.view.View.GONE;
 import static android.view.View.VISIBLE;
 import static com.google.samples.apps.iosched.Config.Tags.CATEGORY_TRACK;
+import static com.google.samples.apps.iosched.provider.ScheduleContract.MyReservations.RESERVATION_STATUS_RESERVED;
+import static com.google.samples.apps.iosched.provider.ScheduleContract.MyReservations.RESERVATION_STATUS_UNRESERVED;
+import static com.google.samples.apps.iosched.provider.ScheduleContract.MyReservations.RESERVATION_STATUS_WAITLISTED;
 
 /**
  * A {@link ViewHolder} modeling Sessions.
@@ -49,6 +55,7 @@ public class SessionItemViewHolder extends ScheduleItemViewHolder
         implements DividerDecoration.Divided {
 
     private final TextView mTitle;
+    private final TextView mReservationStatus;
     private final TextView mDescription;
     private final ViewGroup mTagsHolder;
     private final ImageButton mBookmark;
@@ -65,6 +72,7 @@ public class SessionItemViewHolder extends ScheduleItemViewHolder
         super(itemView);
         mCallbacks = callbacks;
         mTitle = (TextView) itemView.findViewById(R.id.slot_title);
+        mReservationStatus = (TextView) itemView.findViewById(R.id.reserve_status);
         mDescription = (TextView) itemView.findViewById(R.id.slot_description);
         mTagsHolder = (FlexboxLayout) itemView.findViewById(R.id.tags_holder);
         mBookmark = (ImageButton) itemView.findViewById(R.id.bookmark);
@@ -109,12 +117,40 @@ public class SessionItemViewHolder extends ScheduleItemViewHolder
         return new SessionItemViewHolder(itemView, callbacks);
     }
 
+    private String reservationStatusToString(
+            @ScheduleContract.MyReservations.ReservationStatus int reservationStatus) {
+        switch (reservationStatus) {
+            case RESERVATION_STATUS_RESERVED:
+                return mReservationStatus.getContext()
+                        .getString(R.string.schedule_item_reserved);
+            case RESERVATION_STATUS_WAITLISTED:
+                return mReservationStatus.getContext()
+                        .getString(R.string.schedule_item_waitlisted);
+            case RESERVATION_STATUS_UNRESERVED:
+            default:
+                return mReservationStatus.getContext()
+                        .getString(R.string.schedule_item_not_reserved);
+        }
+    }
+
+    private void updateReservationStatus(ScheduleItem item) {
+        if (FirebaseAuth.getInstance().getCurrentUser() == null ||
+                !RegistrationUtils.isRegisteredAttendee(mReservationStatus.getContext()) ||
+                item.isKeynote()) {
+            mReservationStatus.setVisibility(GONE);
+        } else {
+            mReservationStatus.setVisibility(VISIBLE);
+            mReservationStatus.setText(reservationStatusToString(item.reservationStatus));
+        }
+    }
+
     public void onBind(@NonNull final ScheduleItem item, TagMetadata tagMetadata) {
         if (item.type != ScheduleItem.SESSION) return;
         mSession = item;
         final Context context = itemView.getContext();
 
         mTitle.setText(item.title);
+        updateReservationStatus(item);
         mDescription.setText(formatDescription(context, item));
 
         mTagsHolder.removeAllViews();
