@@ -769,6 +769,15 @@
         and more. You can change this setting under \"Info > Settings\" at any time.
     </string>
 
+    <!-- Text shown on the onboarding sign-in screen. -->
+    <string name="onboarding_sign_in">
+        Would you like to sign in to reserve seats for events ahead of time, sync saved events from
+        your account across mobile and desktop, and provide feedback once sessions have ended?
+        You\'ll still be able to save events locally without signing-in but the information won’t be
+        synced to your account.\n\nIMPORTANT: In order to reserve seats at events, you’ll need to
+        sign in with the same email address you used to register for Google I/O.
+    </string>
+
     <!-- Message displayed in a card to the user on the My I/O screen after they have signed in. -->
     <string name="signed_in_card_message">
         Your saved and reserved events appear below and are synced from your account across
