@@ -71,11 +71,11 @@ import com.google.samples.apps.iosched.lib.BuildConfig;
 import com.google.samples.apps.iosched.lib.R;
 import com.google.samples.apps.iosched.map.MapActivity;
 import com.google.samples.apps.iosched.model.TagMetadata.Tag;
+import com.google.samples.apps.iosched.provider.ScheduleContract;
+import com.google.samples.apps.iosched.provider.ScheduleContract.Sessions;
 import com.google.samples.apps.iosched.schedule.ScheduleActivity;
 import com.google.samples.apps.iosched.schedule.ScheduleDayAdapter;
 import com.google.samples.apps.iosched.schedule.SessionItemViewHolder.Callbacks;
-import com.google.samples.apps.iosched.provider.ScheduleContract;
-import com.google.samples.apps.iosched.provider.ScheduleContract.Sessions;
 import com.google.samples.apps.iosched.session.SessionDetailModel.SessionDetailQueryEnum;
 import com.google.samples.apps.iosched.session.SessionDetailModel.SessionDetailUserActionEnum;
 import com.google.samples.apps.iosched.ui.widget.CheckableFloatingActionButton;
@@ -84,6 +84,7 @@ import com.google.samples.apps.iosched.util.AccountUtils;
 import com.google.samples.apps.iosched.util.AnalyticsHelper;
 import com.google.samples.apps.iosched.util.ImageLoader;
 import com.google.samples.apps.iosched.util.LogUtils;
+import com.google.samples.apps.iosched.util.RegistrationUtils;
 import com.google.samples.apps.iosched.util.SessionsHelper;
 import com.google.samples.apps.iosched.util.TimeUtils;
 import com.google.samples.apps.iosched.util.UIUtils;
@@ -747,7 +748,7 @@ public class SessionDetailFragment extends Fragment implements
 
         // If the session is done, hide the FAB, and show the feedback button.
         mShowFab = !data.isSessionReadyForFeedback();
-        mAddScheduleFab.setVisibility( mShowFab ? VISIBLE : GONE);
+        mAddScheduleFab.setVisibility(mShowFab ? VISIBLE : GONE);
         updateFeedbackButton(data);
 
         String timeHint = "";
@@ -974,20 +975,26 @@ public class SessionDetailFragment extends Fragment implements
      */
     public void updateReservationStatusAndSeatAvailability(SessionDetailModel sessionDetailModel) {
         if (isAdded()) {
-            String reservationStatus = sessionDetailModel.getReservationStatus();
-            if (reservationStatus == null) {
-                updateSeatsAvailability(sessionDetailModel);
+            if (sessionDetailModel.isKeynote()) {
+                hideReservationButton();
             } else {
-                switch (reservationStatus) {
-                    case SessionDetailConstants.RESERVE_STATUS_GRANTED:
-                        showAlreadyReserved();
-                        break;
-                    case SessionDetailConstants.RESERVE_STATUS_RETURNED:
-                        updateSeatsAvailability(sessionDetailModel);
-                        break;
-                    case SessionDetailConstants.RESERVE_STATUS_WAITING:
-                        showWaitlisted();
-                        break;
+                showReservationButton();
+                String reservationStatus = sessionDetailModel.getReservationStatus();
+                LOGD(TAG, "reservationStatus == " + reservationStatus);
+                if (reservationStatus == null) {
+                    updateSeatsAvailability(sessionDetailModel);
+                } else {
+                    switch (reservationStatus) {
+                        case SessionDetailConstants.RESERVE_STATUS_GRANTED:
+                            showAlreadyReserved();
+                            break;
+                        case SessionDetailConstants.RESERVE_STATUS_RETURNED:
+                            updateSeatsAvailability(sessionDetailModel);
+                            break;
+                        case SessionDetailConstants.RESERVE_STATUS_WAITING:
+                            showWaitlisted();
+                            break;
+                    }
                 }
             }
         }
@@ -1034,10 +1041,11 @@ public class SessionDetailFragment extends Fragment implements
      * registered for the event.
      */
     public void updateAuthRegistration(SessionDetailModel sessionDetailModel) {
-        if(FirebaseAuth.getInstance().getCurrentUser() == null) {
-            showReservationDisabled();
+        if (FirebaseAuth.getInstance().getCurrentUser() == null ||
+                !RegistrationUtils.isRegisteredAttendee(getContext())) {
+            hideReservationButton();
         } else {
-            // TODO account for registration.
+            showReservationButton();
         }
     }
 
@@ -1045,7 +1053,7 @@ public class SessionDetailFragment extends Fragment implements
      * Update UI based on whether there is space left in the event.
      */
     public void updateSeatsAvailability(SessionDetailModel sessionDetailModel) {
-        if(isAdded()) {
+        if (isAdded()) {
             if (sessionDetailModel.getSeatsAvailability()) {
                 showReservationEnabled();
             } else {
@@ -1114,31 +1122,6 @@ public class SessionDetailFragment extends Fragment implements
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
                                 sendUserAction(SessionDetailUserActionEnum.RETURN, null);
-                                dialog.dismiss();
-                            }
-                        })
-                        .create()
-                        .show();
-            }
-        });
-    }
-
-    /**
-     * Update reservation button UI to convey that the user is unable to reserve the event because
-     * they are either not logged in or not registered for the event.
-     */
-    public void showReservationDisabled() {
-        mReserve.setStatus(ReserveButton.ReservationStatus.RESERVATION_DISABLED);
-        mReserve.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                new AlertDialog.Builder(getActivity())
-                        .setMessage(R.string
-                                .my_schedule_reservation_must_sign_in_and_register_message)
-                        .setTitle(R.string.my_schedule_reservation_why_disabled)
-                        .setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
                                 dialog.dismiss();
                             }
                         })
@@ -1249,6 +1232,7 @@ public class SessionDetailFragment extends Fragment implements
                 .create()
                 .show();
     }
+
     /**
      * Alert the user that their request failed due to an unknown reason (blame the server...).
      */
@@ -1264,5 +1248,13 @@ public class SessionDetailFragment extends Fragment implements
                 })
                 .create()
                 .show();
+    }
+
+    private void hideReservationButton() {
+        mReserve.setVisibility(View.GONE);
+    }
+
+    private void showReservationButton() {
+        mReserve.setVisibility(View.VISIBLE);
     }
 }

@@ -132,7 +132,6 @@
         android:id="@+id/scroll_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_above="@+id/reserve_button_placeholder"
         android:clipToPadding="false"
         android:paddingBottom="?actionBarSize"
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
