@@ -15,5 +15,5 @@
   limitations under the License.
   -->
 <resources>
-    <string name="eula_legal_text">使用此應用程式受以下政策規管： a) Google 服務條款 (http://www.google.com/intl/zh-TW/policies/terms/)；b) Google 隱私政策 (http://www.google.com/intl/zh-TW/policies/privacy/)；及 c) 任何適用的 Google 特定服務條款及隱私政策。Google 的服務及隱私政策可能會經常更新，不另行通知。\n\n此應用程式會在您使用時收集特定資料，包括透過 Google Analytics 收集的資料。Google 的隱私政策闡明您使用應用程式時 Google 處理您的資料及保護您的隱私的方式。 使用這一應用程式即表明您同意根據 Google 隱私政策使用您的資料。</string>
+  <string name="eula_legal_text">使用此應用程式受以下政策規管： a) Google 服務條款 (http://www.google.com/intl/zh-TW/policies/terms/)；b) Google 隱私政策 (http://www.google.com/intl/zh-TW/policies/privacy/)。\n</string>
 </resources>
