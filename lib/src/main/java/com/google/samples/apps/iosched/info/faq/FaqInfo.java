@@ -18,6 +18,7 @@ public class FaqInfo {
     private String contentFormatsDescription;
     private String liveStreamRecordingsDescription;
     private String attendanceProTipsDescription;
+    private String additionalInfoDescription;
 
     public String getStayInformedDescription() {
         return stayInformedDescription;
@@ -49,5 +50,13 @@ public class FaqInfo {
 
     public void setAttendanceProTipsDescription(String attendanceProTipsDescription) {
         this.attendanceProTipsDescription = attendanceProTipsDescription;
+    }
+
+    public String getAdditionalInfoDescription() {
+        return additionalInfoDescription;
+    }
+
+    public void setAdditionalInfoDescription(String additionalInfoDescription) {
+        this.additionalInfoDescription = additionalInfoDescription;
     }
 }

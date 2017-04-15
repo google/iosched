@@ -99,10 +99,13 @@ public class InfoPresenter implements InfoContract.Presenter {
                 mContext.getString(R.string.travel_public_transportation_description_key));
         String travelBiking = getRemoteConfigSequence(
                 mContext.getString(R.string.travel_biking_description_key));
+        String travelRideSharing = getRemoteConfigSequence(
+                mContext.getString(R.string.travel_ride_sharing_description_key));
         travelInfo.setShuttleInfo(travelShuttleService);
         travelInfo.setCarpoolingParkingInfo(travelCarpoolingParking);
         travelInfo.setPublicTransportationInfo(travelPublicTransportation);
         travelInfo.setBikingInfo(travelBiking);
+        travelInfo.setRideSharingInfo(travelRideSharing);
     }
 
     @Override
@@ -138,5 +141,9 @@ public class InfoPresenter implements InfoContract.Presenter {
         String attendanceProTipsDescription = getRemoteConfigSequence(
                 mContext.getString(R.string.faq_attendance_pro_tips_description_key));
         faqInfo.setAttendanceProTipsDescription(attendanceProTipsDescription);
+
+        String moreDescription = getRemoteConfigSequence(
+                mContext.getString(R.string.faq_additional_info_description_key));
+        faqInfo.setAdditionalInfoDescription(moreDescription);
     }
 }

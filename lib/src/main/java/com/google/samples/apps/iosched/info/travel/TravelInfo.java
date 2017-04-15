@@ -18,6 +18,7 @@ public class TravelInfo {
     private String publicTransportationInfo;
     private String carpoolingParkingInfo;
     private String bikingInfo;
+    private String rideSharingInfo;
 
     public String getShuttleInfo() {
         return shuttleInfo;
@@ -49,6 +50,14 @@ public class TravelInfo {
 
     public void setBikingInfo(String bikingInfo) {
         this.bikingInfo = bikingInfo;
+    }
+
+    public String getRideSharingInfo() {
+        return rideSharingInfo;
+    }
+
+    public void setRideSharingInfo(String rideSharingInfo) {
+        this.rideSharingInfo = rideSharingInfo;
     }
 
     @Override

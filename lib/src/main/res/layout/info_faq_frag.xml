@@ -55,15 +55,11 @@
             android:layout_height="wrap_content"
             app:cardTitle="@string/faq_attendance_pro_tips_title" />
 
-        <TextView
-            android:id="@+id/moreLink"
-            style="?android:borderlessButtonStyle"
+        <com.google.samples.apps.iosched.info.CollapsableCard
+            android:id="@+id/additionalInfo"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:gravity="center"
-            android:padding="@dimen/padding_normal"
-            android:textColor="@color/lightish_blue"
-            android:text="@string/faq_more_link_label"/>
+            app:cardTitle="@string/faq_additional_info_title" />
 
     </LinearLayout>
 
