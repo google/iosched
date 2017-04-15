@@ -35,6 +35,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/welcome_content_title_margin"
-        android:text="@string/signin_message" />
+        android:text="@string/onboarding_sign_in" />
 
 </LinearLayout>
