@@ -17,7 +17,7 @@
 
 <android.support.v4.widget.NestedScrollView
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:custom="http://schemas.android.com/apk/res-auto"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:scrollbarStyle="insideOverlay"
@@ -35,25 +35,31 @@
             android:id="@+id/shuttleInfoCard"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            custom:cardTitle="@string/travel_shuttle_info_title" />
-
-        <com.google.samples.apps.iosched.info.CollapsableCard
-            android:id="@+id/carpoolingParkingCard"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            custom:cardTitle="@string/travel_carpool_parking_info_title" />
+            app:cardTitle="@string/travel_shuttle_info_title" />
 
         <com.google.samples.apps.iosched.info.CollapsableCard
             android:id="@+id/publicTransportationCard"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            custom:cardTitle="@string/travel_public_transportation_info_title" />
+            app:cardTitle="@string/travel_public_transportation_info_title" />
 
         <com.google.samples.apps.iosched.info.CollapsableCard
             android:id="@+id/bikingCard"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            custom:cardTitle="@string/travel_biking_info_title" />
+            app:cardTitle="@string/travel_biking_info_title" />
+
+        <com.google.samples.apps.iosched.info.CollapsableCard
+            android:id="@+id/rideSharingCard"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:cardTitle="@string/travel_ride_sharing_info_title" />
+
+        <com.google.samples.apps.iosched.info.CollapsableCard
+            android:id="@+id/carpoolingParkingCard"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:cardTitle="@string/travel_carpool_parking_info_title" />
 
         <ImageView
             android:layout_width="match_parent"

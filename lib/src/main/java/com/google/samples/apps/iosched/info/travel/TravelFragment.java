@@ -37,6 +37,7 @@ public class TravelFragment extends BaseInfoFragment<TravelInfo> {
     private CollapsableCard shuttleServiceCard;
     private CollapsableCard carpoolingParkingCard;
     private CollapsableCard publicTransportationCard;
+    private CollapsableCard rideSharingCard;
 
     @Nullable
     @Override
@@ -48,6 +49,7 @@ public class TravelFragment extends BaseInfoFragment<TravelInfo> {
         carpoolingParkingCard = (CollapsableCard) root.findViewById(R.id.carpoolingParkingCard);
         publicTransportationCard =
                 (CollapsableCard) root.findViewById(R.id.publicTransportationCard);
+        rideSharingCard = (CollapsableCard) root.findViewById(R.id.rideSharingCard);
         return root;
     }
 
@@ -68,6 +70,7 @@ public class TravelFragment extends BaseInfoFragment<TravelInfo> {
             shuttleServiceCard.setCardDescription(mTravelInfo.getShuttleInfo());
             carpoolingParkingCard.setCardDescription(mTravelInfo.getCarpoolingParkingInfo());
             publicTransportationCard.setCardDescription(mTravelInfo.getPublicTransportationInfo());
+            rideSharingCard.setCardDescription(mTravelInfo.getRideSharingInfo());
         } else {
             LOGE(TAG, "TravelInfo should not be null.");
         }

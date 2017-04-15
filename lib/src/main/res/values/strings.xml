@@ -856,7 +856,7 @@
     <string name="view_afterhours_map_url" translatable="false">afterhoursmapurl</string>
 
     <string name="event_sandbox_title">Sandbox</string>
-    <string name="event_codelabs_title">Code Labs</string>
+    <string name="event_codelabs_title">Codelabs</string>
     <string name="event_officehours_title">Office Hours &amp; App Reviews</string>
     <string name="event_afterhours_title">After Hours</string>
     <string name="event_sandbox_description_key" translatable="false">
@@ -872,9 +872,10 @@
 
     <string name="travel_details_title">Travel Details</string>
     <string name="travel_shuttle_info_title">Shuttle Service</string>
-    <string name="travel_carpool_parking_info_title">Carpooling &amp; Parking</string>
+    <string name="travel_carpool_parking_info_title">Parking &amp; Carpool</string>
     <string name="travel_public_transportation_info_title">Public Transportation</string>
     <string name="travel_biking_info_title">Biking</string>
+    <string name="travel_ride_sharing_info_title">Ride Sharing</string>
     <string name="travel_shuttle_service_description_key" translatable="false">
         travel_shuttle_service_description</string>
     <string name="travel_carpooling_parking_description_key" translatable="false">
@@ -883,6 +884,8 @@
         travel_public_transportation_description</string>
     <string name="travel_biking_description_key" translatable="false">
         travel_biking_description</string>
+    <string name="travel_ride_sharing_description_key" translatable="false">
+        travel_ride_sharing_description</string>
 
     <string name="faq_stay_informed_title" translatable="false">Stay Informed</string>
     <string name="faq_stay_informed_description_key" translatable="false">
@@ -897,9 +900,9 @@
     <string name="faq_attendance_pro_tips_title" translatable="false">Attendance Pro Tips</string>
     <string name="faq_attendance_pro_tips_description_key" translatable="false">
         faq_attendance_pro_tips_description</string>
-    <string name="faq_more_link_label" translatable="false">More</string>
-    <string name="faq_more_link_address" translatable="false">
-        https://events.google.com/io/faq/</string>
+    <string name="faq_additional_info_title" translatable="false">Additional Info</string>
+    <string name="faq_additional_info_description_key" translatable="false">
+        faq_additional_info_description</string>
 
     <string name="settings_time_zone_label">Show events in Pacific Time (PT)</string>
     <string name="settings_enable_notifications">Enable notifications</string>

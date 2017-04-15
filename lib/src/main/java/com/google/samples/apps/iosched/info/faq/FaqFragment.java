@@ -13,9 +13,7 @@
  */
 package com.google.samples.apps.iosched.info.faq;
 
-import android.content.Intent;
 import android.content.res.Resources;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -39,6 +37,7 @@ public class FaqFragment extends BaseInfoFragment<FaqInfo> {
     private CollapsableCard mContentFormatsCard;
     private CollapsableCard mLiveStreamsRecordingsCard;
     private CollapsableCard mAttendanceProTipsCard;
+    private CollapsableCard mAdditionalInfoCard;
 
 
     @Nullable
@@ -51,15 +50,7 @@ public class FaqFragment extends BaseInfoFragment<FaqInfo> {
         mLiveStreamsRecordingsCard = (CollapsableCard) root.findViewById(
                 R.id.liveStreamRecordingsCard);
         mAttendanceProTipsCard = (CollapsableCard) root.findViewById(R.id.attendanceProTipsCard);
-        root.findViewById(R.id.moreLink).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent moreLink = new Intent(Intent.ACTION_VIEW);
-                moreLink.setData(Uri.parse(getResources()
-                        .getString(R.string.faq_more_link_address)));
-                startActivity(moreLink);
-            }
-        });
+        mAdditionalInfoCard = (CollapsableCard) root.findViewById(R.id.additionalInfo);
         return root;
     }
 
@@ -81,6 +72,7 @@ public class FaqFragment extends BaseInfoFragment<FaqInfo> {
             mLiveStreamsRecordingsCard.setCardDescription(
                     mFaqInfo.getLiveStreamRecordingsDescription());
             mAttendanceProTipsCard.setCardDescription(mFaqInfo.getAttendanceProTipsDescription());
+            mAdditionalInfoCard.setCardDescription(mFaqInfo.getAdditionalInfoDescription());
         } else {
             LOGE(TAG, "FaqInfo should not be null.");
         }
