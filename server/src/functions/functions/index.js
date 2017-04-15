@@ -642,7 +642,7 @@ function sendWaitlist(uid, sid) {
  */
 function getJwtClient() {
   var privateKey = functions.config().userdata.key;
-  var clientEmail = functions.config().userdata.client_key;
+  var clientEmail = functions.config().userdata.client_email;
   var scope = functions.config().userdata.scope;
 
   var jwtClient = new google.auth.JWT(
@@ -690,10 +690,12 @@ function createUserdataParams(providerId, sid, jwtClient) {
 function getProviderId(uid) {
   return admin.auth().getUser(uid).then(function(userRecord) {
     if (!userRecord) {
+      console.log('Unable to find user record.');
       return uid;
     }
     var providers = userRecord.providerData;
-    for (var provider in providers) {
+    for (var i = 0; i < providers.length; i++) {
+      var provider = providers[i];
       // Check that provider is Google.
       if (provider.providerId == GOOGLE_PROVIDER_ID) {
         return provider.uid;
