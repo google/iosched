@@ -112,7 +112,7 @@ class UserDataSyncHelper extends AbstractUserDataSyncHelper {
 
     private void updateRemote() {
         try {
-            mUserdataHandler.updateUser(RemoteUserDataHelper.asUserData(mLocalUserDataModel))
+            mUserdataHandler.updateUser(RemoteUserDataHelper.asUserData(mReconciledUserDataModel))
                     .execute();
         } catch (IOException e) {
             LOGW(TAG, "Could not update remote with reconciled user data: " + e);

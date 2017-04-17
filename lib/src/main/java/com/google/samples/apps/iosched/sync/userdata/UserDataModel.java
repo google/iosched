@@ -60,7 +60,7 @@ public class UserDataModel {
         return mStarredSessions;
     }
 
-    private Map<String, ReservedSession> getReservedSessions() {
+    Map<String, ReservedSession> getReservedSessions() {
         return mReservedSessions;
     }
 
@@ -69,15 +69,15 @@ public class UserDataModel {
     }
 
     void setStarredSessions(final Map<String, StarredSession> starredSessions) {
-        mStarredSessions = starredSessions;
+        getStarredSessions().putAll(starredSessions);
     }
 
     void setReservedSessions(final Map<String, ReservedSession> reservedSessions) {
-        mReservedSessions = reservedSessions;
+        getReservedSessions().putAll(reservedSessions);
     }
 
     void setFeedbackSubmittedSessionIds(final Set<String> feedbackSubmittedSessionIds) {
-        mFeedbackSubmittedSessionIds = feedbackSubmittedSessionIds;
+        getFeedbackSubmittedSessionIds().addAll(feedbackSubmittedSessionIds);
     }
 
     /**
@@ -99,7 +99,8 @@ public class UserDataModel {
         UserDataModel localCopy = UserDataModel.fromOther(local);
 
         Set<String> localStarredSessionIds = localCopy.getStarredSessions().keySet();
-        for (Map.Entry<String, StarredSession> remoteEntry: remote.getStarredSessions().entrySet()) {
+        for (Map.Entry<String, StarredSession> remoteEntry:
+                remote.getStarredSessions().entrySet()) {
             String starredSessionId = remoteEntry.getKey();
             if (localStarredSessionIds.contains(starredSessionId)) {
                 // If remote is more recent, it should override local.
@@ -114,7 +115,8 @@ public class UserDataModel {
         }
 
         Set<String> localReservedSessionIds = localCopy.getReservedSessions().keySet();
-        for (Map.Entry<String, ReservedSession> remoteEntry: remote.getReservedSessions().entrySet()) {
+        for (Map.Entry<String, ReservedSession> remoteEntry:
+                remote.getReservedSessions().entrySet()) {
             String reservedSessionId = remoteEntry.getKey();
             if (localReservedSessionIds.contains(reservedSessionId)) {
                 if (remoteEntry.getValue().timestamp >
