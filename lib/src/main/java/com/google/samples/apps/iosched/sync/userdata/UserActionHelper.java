@@ -39,9 +39,9 @@ class UserActionHelper {
      * Update content providers as a batch command based on the given list of User Actions.
      */
     static void updateContentProvider(Context context, List<UserAction> userActions,
-            String account) {
+                                      String account) {
         ArrayList<ContentProviderOperation> batch = new ArrayList<>();
-        for (UserAction action: userActions) {
+        for (UserAction action : userActions) {
             batch.add(createUpdateOperation(context, action, account));
         }
         try {
@@ -56,7 +56,7 @@ class UserActionHelper {
      * action.
      */
     static private ContentProviderOperation createUpdateOperation(Context context,
-            UserAction action, String account) {
+                                                                  UserAction action, String account) {
         if (action.type == UserAction.TYPE.ADD_STAR || action.type == UserAction.TYPE.REMOVE_STAR) {
             return ContentProviderOperation
                     .newInsert(
@@ -69,7 +69,7 @@ class UserActionHelper {
                     .withValue(ScheduleContract.MySchedule.MY_SCHEDULE_IN_SCHEDULE,
                             action.type == UserAction.TYPE.ADD_STAR ? 1 : 0)
                     .build();
-        }  else if (action.type == UserAction.TYPE.SUBMIT_FEEDBACK) {
+        } else if (action.type == UserAction.TYPE.SUBMIT_FEEDBACK) {
             return ContentProviderOperation
                     .newInsert(
                             ScheduleContractHelper.addOverrideAccountName(
@@ -78,6 +78,34 @@ class UserActionHelper {
                             .MY_FEEDBACK_SUBMITTED_DIRTY_FLAG, "0")
                     .withValue(ScheduleContract.MyFeedbackSubmitted.SESSION_ID, action.sessionId)
                     .build();
+        } else if (action.type == UserAction.TYPE.RESERVE ||
+                action.type == UserAction.TYPE.WAITLIST ||
+                action.type == UserAction.TYPE.UNRESERVE) {
+
+            int reservationStatus;
+            switch (action.type) {
+                case RESERVE:
+                    reservationStatus = ScheduleContract.MyReservations.RESERVATION_STATUS_RESERVED;
+                    break;
+                case WAITLIST:
+                    reservationStatus =
+                            ScheduleContract.MyReservations.RESERVATION_STATUS_WAITLISTED;
+                    break;
+                default:
+                    reservationStatus =
+                            ScheduleContract.MyReservations.RESERVATION_STATUS_UNRESERVED;
+            }
+
+            return ContentProviderOperation
+                    .newInsert(
+                            ScheduleContractHelper.addOverrideAccountName(
+                                    ScheduleContract.MyReservations.CONTENT_URI, account))
+                    .withValue(ScheduleContract.MyReservations.MY_RESERVATION_STATUS,
+                            reservationStatus)
+                    .withValue(ScheduleContract.MyReservations.MY_RESERVATION_TIMESTAMP,
+                            action.timestamp)
+                    .withValue(ScheduleContract.MyReservations.SESSION_ID, action.sessionId)
+                    .build();
         } else {
             return ContentProviderOperation
                     .newDelete(
@@ -85,7 +113,7 @@ class UserActionHelper {
                                     ScheduleContract.MySchedule.CONTENT_URI, account))
                     .withSelection(
                             ScheduleContract.MySchedule.SESSION_ID + " = ? AND " +
-                            ScheduleContract.MySchedule.MY_SCHEDULE_ACCOUNT_NAME + " = ? ",
+                                    ScheduleContract.MySchedule.MY_SCHEDULE_ACCOUNT_NAME + " = ? ",
                             new String[]{action.sessionId, account}
                     )
                     .build();

@@ -170,11 +170,13 @@ public class LocalUserDataHelper {
      * Writes the given user data into the device's local DB.
      */
     static void setLocalUserData(Context context, UserDataModel userDataModel,
-                                        String accountName) {
+                                 String accountName) {
         // TODO: throw if null. Callers should ensure the data is not null. See b/27809502.
         if (userDataModel == null) {
             return;
         }
+
+        ArrayList<UserAction> actions = new ArrayList<>();
 
         // first clear all stars.
         context.getContentResolver().delete(MySchedule.CONTENT_URI,
@@ -182,7 +184,6 @@ public class LocalUserDataHelper {
                 new String[]{accountName});
 
         // Now add the ones in sessionIds.
-        ArrayList<UserAction> actions = new ArrayList<>();
         if (userDataModel.getStarredSessions() != null) {
             for (Map.Entry<String, UserDataModel.StarredSession> entry :
                     userDataModel.getStarredSessions().entrySet()) {
@@ -200,7 +201,27 @@ public class LocalUserDataHelper {
                 MyReservations.MY_RESERVATION_ACCOUNT_NAME + " = ?",
                 new String[]{accountName});
 
-        // TODO (shailen): add reservations.
+        // Now add the reserved sessions.
+        if (userDataModel.getReservedSessions() != null) {
+            for (Map.Entry<String, UserDataModel.ReservedSession> entry :
+                    userDataModel.getReservedSessions().entrySet()) {
+                UserAction action = new UserAction();
+                UserDataModel.ReservedSession value = entry.getValue();
+                switch (value.status) {
+                    case ScheduleContract.MyReservations.RESERVATION_STATUS_RESERVED:
+                        action.type = UserAction.TYPE.RESERVE;
+                        break;
+                    case MyReservations.RESERVATION_STATUS_WAITLISTED:
+                        action.type = UserAction.TYPE.WAITLIST;
+                        break;
+                    default:
+                        action.type = UserAction.TYPE.UNRESERVE;
+                }
+                action.sessionId = entry.getKey();
+                action.timestamp = value.timestamp;
+                actions.add(action);
+            }
+        }
 
         // First clear all feedback submitted sessions.
         context.getContentResolver().delete(ScheduleContract.MyFeedbackSubmitted.CONTENT_URI,
@@ -220,7 +241,7 @@ public class LocalUserDataHelper {
         UserActionHelper.updateContentProvider(context, actions, accountName);
     }
 
-   public static void clearUserDataOnSignOut(final Context context) {
+    public static void clearUserDataOnSignOut(final Context context) {
         String accountName = AccountUtils.getActiveAccountName(context);
         AsyncQueryHandler handler = new ClearDataAsyncQueryHandler(context);
         handler.startDelete(ClearDataAsyncQueryHandler.TOKEN_MY_SCHEDULE, null,
@@ -233,10 +254,12 @@ public class LocalUserDataHelper {
     private static class ClearDataAsyncQueryHandler extends AsyncQueryHandler {
         private final WeakReference<Context> mReference;
         static final int TOKEN_MY_SCHEDULE = 1;
+
         private ClearDataAsyncQueryHandler(Context context) {
             super(context.getContentResolver());
             mReference = new WeakReference<>(context);
         }
+
         @Override
         protected void onDeleteComplete(int token, Object cookie, int result) {
             if (token == TOKEN_MY_SCHEDULE && result > 0) {
