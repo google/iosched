@@ -1,0 +1,82 @@
+{
+  "project_info": {
+    "project_number": "237695054204",
+    "firebase_url": "https://google-com-api-project-237695054204.firebaseio.com",
+    "project_id": "google.com:api-project-237695054204",
+    "storage_bucket": "google.com:api-project-237695054204.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:237695054204:android:66c485c6a5187053",
+        "android_client_info": {
+          "package_name": "com.google.samples.apps.iosched"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "237695054204-qg3donchhbgmi2s8fnejdgg94c6ugl4r.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.google.samples.apps.iosched",
+            "certificate_hash": "e499e9081b4ddf63788f4dfb4e7018c54f93188b"
+          }
+        },
+        {
+          "client_id": "237695054204-5c83btrn1c3gk978t1l6g27mvfpcf0h6.apps.googleusercontent.com",
+          "client_type": 3
+        },
+        {
+          "client_id": "237695054204-tfn2m7no9bjhej1ddpredbm29ijekot5.apps.googleusercontent.com",
+          "client_type": 3
+        },
+        {
+          "client_id": "237695054204-vib0c833at22rkb2ig03791junv6ltrc.apps.googleusercontent.com",
+          "client_type": 3
+        },
+        {
+          "client_id": "237695054204-dk3ta44733ohtelcf4vf3prqgob3iai0.apps.googleusercontent.com",
+          "client_type": 3
+        },
+        {
+          "client_id": "237695054204-umlfeaogsp53dibh6nc462fa2invrven.apps.googleusercontent.com",
+          "client_type": 3
+        },
+        {
+          "client_id": "237695054204-q2dqu3jaf102253bbogfk66ukskl7fnf.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCIw3t-mikQ59KOFw5fbgM6VKBaswiiVKk"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "237695054204-bqjo88acvuhsfcg0s7mfgs8i67e4r47m.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.google.iosched.dev"
+              }
+            },
+            {
+              "client_id": "237695054204-5c83btrn1c3gk978t1l6g27mvfpcf0h6.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
