@@ -15,5 +15,5 @@
   limitations under the License.
   -->
 <resources>
-    <string name="eula_legal_text">L\'uso della presente applicazione è regolato da: a) le Condizioni di Servizio di Google (http://www.google.com/intl/it/policies/terms/); b) la Politica sulla Privacy di Google (http://www.google.com/intl/it/policies/privacy/); e c) tutte le condizioni di servizio o politiche sulla privacy specifiche di Google. Le condizioni di servizio e le politiche sulla privacy di Google possono essere aggiornate di volta in volta senza preavviso.\n\nQuesta applicazione raccoglie talune informazioni durante l\'uso, anche attraverso Google Analytics. La Politica sulla Privacy di Google spiega in che modo Google elabora le informazioni e protegge la privacy quando si usa l\'applicazione. Utilizzando l\'applicazione si acconsente all\'uso dei dati in conformità alla Politica sulla Privacy di Google.</string>
+  <string name="eula_legal_text">L\'uso della presente applicazione è regolato da: a) le Condizioni di Servizio di Google (http://www.google.com/intl/it/policies/terms/); b) la Politica sulla Privacy di Google (http://www.google.com/intl/it/policies/privacy/). \n</string>
 </resources>
