@@ -747,8 +747,12 @@ public class SessionDetailFragment extends Fragment implements
         }
 
         // If the session is done, hide the FAB, and show the feedback button.
-        mShowFab = !data.isSessionReadyForFeedback();
-        mAddScheduleFab.setVisibility(mShowFab ? VISIBLE : GONE);
+        mShowFab = !data.isKeynote() && !data.isSessionReadyForFeedback();
+        if (mShowFab) {
+            mAddScheduleFab.show();
+        } else {
+            mAddScheduleFab.hide();
+        }
         updateFeedbackButton(data);
 
         String timeHint = "";
@@ -1217,7 +1221,8 @@ public class SessionDetailFragment extends Fragment implements
     }
 
     /**
-     * Alert the user that their reservation cancellation request failed due to a time conflict.
+     * Alert the user that their reservation cancellation request failed because the reservation
+     * cutoff has been reached.
      */
     public void showReturnDeniedCutoff() {
         new AlertDialog.Builder(getActivity())
