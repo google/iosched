@@ -64,9 +64,8 @@ public class SessionItemViewHolder extends ScheduleItemViewHolder
 
     private final Callbacks mCallbacks;
     private final View.OnClickListener mTagClick;
-    private
     @Nullable
-    ScheduleItem mSession;
+    private ScheduleItem mSession;
 
     private SessionItemViewHolder(View itemView, final Callbacks callbacks) {
         super(itemView);
@@ -82,21 +81,27 @@ public class SessionItemViewHolder extends ScheduleItemViewHolder
         itemView.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (mCallbacks == null || mSession == null) return;
+                if (mCallbacks == null || mSession == null) {
+                    return;
+                }
                 mCallbacks.onSessionClicked(mSession.sessionId);
             }
         });
         mRate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (mCallbacks == null || mSession == null) return;
+                if (mCallbacks == null || mSession == null) {
+                    return;
+                }
                 mCallbacks.onFeedbackClicked(mSession.sessionId, mSession.title);
             }
         });
         mBookmark.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(final View view) {
-                if (mCallbacks == null || mSession == null) return;
+                if (mCallbacks == null || mSession == null) {
+                    return;
+                }
                 mBookmark.setActivated(!mBookmark.isActivated());
                 mCallbacks.onBookmarkClicked(mSession.sessionId, mSession.inSchedule);
             }
@@ -105,7 +110,9 @@ public class SessionItemViewHolder extends ScheduleItemViewHolder
             @Override
             public void onClick(View v) {
                 Tag tag = (Tag) v.getTag(R.id.key_session_tag);
-                if (tag == null || mCallbacks == null) return;
+                if (tag == null || mCallbacks == null) {
+                    return;
+                }
                 mCallbacks.onTagClicked(tag);
             }
         };
@@ -145,7 +152,9 @@ public class SessionItemViewHolder extends ScheduleItemViewHolder
     }
 
     public void onBind(@NonNull final ScheduleItem item, TagMetadata tagMetadata) {
-        if (item.type != ScheduleItem.SESSION) return;
+        if (item.type != ScheduleItem.SESSION) {
+            return;
+        }
         mSession = item;
         final Context context = itemView.getContext();
 
@@ -162,9 +171,13 @@ public class SessionItemViewHolder extends ScheduleItemViewHolder
                 tags.add(mainTag);
             }
             for (String tagId : item.tags) {
-                if (!tagId.startsWith(CATEGORY_TRACK)) continue;
+                if (!tagId.startsWith(CATEGORY_TRACK)) {
+                    continue;
+                }
                 Tag tag = tagMetadata.getTagById(tagId);
-                if (tag == null || tag.equals(mainTag)) continue;
+                if (tag == null || tag.equals(mainTag)) {
+                    continue;
+                }
                 tags.add(tag);
             }
             for (Tag tag : tags) {
@@ -184,11 +197,10 @@ public class SessionItemViewHolder extends ScheduleItemViewHolder
         }
         mTagsHolder.setVisibility(mTagsHolder.getChildCount() > 0 ? VISIBLE : GONE);
 
-        if (mCallbacks.bookmarkingEnabled()) {
+        if (mCallbacks.bookmarkingEnabled() && !item.isKeynote()) {
             mBookmark.setVisibility(VISIBLE);
-            mBookmark.setEnabled(!item.isKeynote());
             // activated is proxy for in-schedule
-            mBookmark.setActivated(item.isKeynote() || item.inSchedule);
+            mBookmark.setActivated(item.inSchedule);
         } else {
             mBookmark.setVisibility(GONE);
         }

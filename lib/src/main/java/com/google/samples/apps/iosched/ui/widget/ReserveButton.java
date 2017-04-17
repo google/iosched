@@ -47,7 +47,9 @@ public class ReserveButton extends FrameLayout {
     }
 
     public void setStatus(ReservationStatus status) {
-        if (this.status == status) return;
+        if (this.status == status) {
+            return;
+        }
         this.status = status;
         refreshDrawableState();
         text.setText(status.text);
