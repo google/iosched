@@ -14,17 +14,17 @@
 package com.google.samples.apps.iosched.info.settings;
 
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.net.Uri;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.CompoundButton;
+import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.Switch;
 import android.widget.TextView;
 
@@ -36,35 +36,19 @@ import com.google.samples.apps.iosched.util.AboutUtils;
 
 public class SettingsFragment extends BaseInfoFragment<Object> {
 
-    TextView mTermsOfService;
-    TextView mPrivacyPolicy;
-    TextView mOpenSourceLicenses;
-    TextView mAppVersion;
-    Switch mTimeZoneSetting;
-    Switch mNotificationsSetting;
-    Switch mAnonStatisticsSetting;
-
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container,
             @Nullable Bundle savedInstanceState) {
-        View root = inflater.inflate(R.layout.info_settings_frag, container, false);
-        mTermsOfService = (TextView) root.findViewById(R.id.termsOfServiceLink);
-        mPrivacyPolicy = (TextView) root.findViewById(R.id.privacyPolicyLink);
-        mOpenSourceLicenses = (TextView) root.findViewById(R.id.openSourceLicensesLink);
-        mAppVersion = (TextView) root.findViewById(R.id.appVersion);
-        mTimeZoneSetting = (Switch) root.findViewById(R.id.settingsTimeZoneSwitch);
-        mNotificationsSetting = (Switch) root.findViewById(R.id.settingsNotificationsSwitch);
-        mAnonStatisticsSetting = (Switch) root.findViewById(R.id.settingsAnonStatisticsSwitch);
-        return root;
+        return inflater.inflate(R.layout.info_settings_frag, container, false);
     }
 
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        mNotificationsSetting.setChecked(SettingsUtils.shouldShowNotifications(getContext()));
-        mTimeZoneSetting.setChecked(!SettingsUtils.isUsingLocalTime(getContext()));
-        mTermsOfService.setOnClickListener(new View.OnClickListener() {
+
+        // Links
+        view.findViewById(R.id.terms_of_service_link).setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent termsLink = new Intent(Intent.ACTION_VIEW);
@@ -73,7 +57,7 @@ public class SettingsFragment extends BaseInfoFragment<Object> {
                 startActivity(termsLink);
             }
         });
-        mPrivacyPolicy.setOnClickListener(new View.OnClickListener() {
+        view.findViewById(R.id.privacy_policy_link).setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent privacyPolicyLink = new Intent(Intent.ACTION_VIEW);
@@ -82,27 +66,60 @@ public class SettingsFragment extends BaseInfoFragment<Object> {
                 startActivity(privacyPolicyLink);
             }
         });
-        mOpenSourceLicenses.setOnClickListener(new View.OnClickListener() {
+        view.findViewById(R.id.open_source_licenses_link).setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
                 AboutUtils.showOpenSourceLicenses(getActivity());
             }
         });
-        mAppVersion.setText(getResources()
+
+        // Version
+        TextView appVersion = (TextView) view.findViewById(R.id.app_version);
+        appVersion.setText(getResources()
                 .getString(R.string.about_app_version, BuildConfig.VERSION_NAME));
-        mNotificationsSetting.setOnCheckedChangeListener(
-                new CompoundButton.OnCheckedChangeListener() {
+
+        // Switches
+        setupSettingsSwitch(R.id.settings_timezone_container,
+                R.id.settings_timezone_switch,
+                !SettingsUtils.isUsingLocalTime(getContext()),
+                new OnCheckedChangeListener() {
+                    @Override
+                    public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                        SettingsUtils.setUsingLocalTime(getContext(), !isChecked);
+                    }
+                });
+        setupSettingsSwitch(R.id.settings_notifications_container,
+                R.id.settings_notifications_switch,
+                SettingsUtils.shouldShowNotifications(getContext()),
+                new OnCheckedChangeListener() {
                     @Override
                     public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                         SettingsUtils.setShowNotifications(getContext(), isChecked);
                     }
                 });
-        mTimeZoneSetting.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+        setupSettingsSwitch(R.id.settings_anon_statistics_container,
+                R.id.settings_anon_statistics_switch,
+                false, // TODO not implemented
+                new OnCheckedChangeListener() {
+                    @Override
+                    public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                        // TODO not implemented
+                    }
+                });
+    }
+
+    private void setupSettingsSwitch(int containerId, int switchId, boolean checked,
+            OnCheckedChangeListener checkedChangeListener) {
+        ViewGroup container = (ViewGroup) getView().findViewById(containerId);
+        final Switch switchView = (Switch) container.findViewById(switchId);
+        switchView.setChecked(checked);
+        container.setOnClickListener(new OnClickListener() {
             @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                SettingsUtils.setUsingLocalTime(getContext(), !isChecked);
+            public void onClick(View v) {
+                switchView.performClick();
             }
         });
+        switchView.setOnCheckedChangeListener(checkedChangeListener);
     }
 
     @Override
