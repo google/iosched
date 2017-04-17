@@ -18,8 +18,8 @@ package com.google.samples.apps.iosched.debug;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.Resources;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -34,6 +34,7 @@ import com.google.samples.apps.iosched.debug.actions.ForceSyncNowAction;
 import com.google.samples.apps.iosched.debug.actions.ScheduleStarredSessionAlarmsAction;
 import com.google.samples.apps.iosched.debug.actions.ShowSessionNotificationDebugAction;
 import com.google.samples.apps.iosched.debug.actions.TestScheduleHelperAction;
+import com.google.samples.apps.iosched.info.BaseInfoFragment;
 import com.google.samples.apps.iosched.lib.R;
 import com.google.samples.apps.iosched.schedule.ScheduleActivity;
 import com.google.samples.apps.iosched.service.SessionAlarmService;
@@ -53,7 +54,7 @@ import static com.google.samples.apps.iosched.util.LogUtils.makeLogTag;
  * functionality is only enabled when {@link com.google.samples.apps.iosched.lib.BuildConfig}.DEBUG
  * is true.
  */
-public class DebugFragment extends Fragment {
+public class DebugFragment extends BaseInfoFragment {
 
     private static final String TAG = makeLogTag(DebugFragment.class);
 
@@ -61,20 +62,21 @@ public class DebugFragment extends Fragment {
      * Area of screen used to display log log messages.
      */
     private TextView mLogArea;
+    private ViewGroup mTestActionsList;
 
     @Override
     public View onCreateView(LayoutInflater inflater, final ViewGroup container,
             Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
         ViewGroup rootView = (ViewGroup) inflater.inflate(R.layout.debug_frag, container, false);
         mLogArea = (TextView) rootView.findViewById(R.id.logArea);
-        ViewGroup tests = (ViewGroup) rootView.findViewById(R.id.debug_action_list);
-        tests.addView(createTestAction(new ForceSyncNowAction()));
-        tests.addView(createTestAction(new DisplayUserDataDebugAction()));
-        tests.addView(createTestAction(new ForceAppDataSyncNowAction()));
-        tests.addView(createTestAction(new TestScheduleHelperAction()));
-        tests.addView(createTestAction(new ScheduleStarredSessionAlarmsAction()));
-        tests.addView(createTestAction(new DebugAction() {
+        mTestActionsList = (ViewGroup) rootView.findViewById(R.id.debug_action_list);
+
+        createTestAction(new ForceSyncNowAction());
+        createTestAction(new DisplayUserDataDebugAction());
+        createTestAction(new ForceAppDataSyncNowAction());
+        createTestAction(new TestScheduleHelperAction());
+        createTestAction(new ScheduleStarredSessionAlarmsAction());
+        createTestAction(new DebugAction() {
             @Override
             public void run(final Context context, final Callback callback) {
                 final String sessionId = SessionAlarmService.DEBUG_SESSION_ID;
@@ -89,16 +91,17 @@ public class DebugFragment extends Fragment {
                 intent.putExtra(SessionAlarmService.EXTRA_SESSION_END, System.currentTimeMillis());
                 intent.putExtra(SessionAlarmService.EXTRA_SESSION_TITLE, sessionTitle);
                 context.startService(intent);
-                Toast.makeText(context, "Showing DEBUG session feedback notification.", Toast.LENGTH_LONG).show();
+                Toast.makeText(context, "Showing DEBUG session feedback notification.",
+                        Toast.LENGTH_LONG).show();
             }
 
             @Override
             public String getLabel() {
                 return "Show session feedback notification";
             }
-        }));
-        tests.addView(createTestAction(new ShowSessionNotificationDebugAction()));
-        tests.addView(createTestAction(new DebugAction() {
+        });
+        createTestAction(new ShowSessionNotificationDebugAction());
+        createTestAction(new DebugAction() {
             @Override
             public void run(Context context, Callback callback) {
                 RegistrationUtils.setRegisteredAttendee(context, false);
@@ -110,9 +113,9 @@ public class DebugFragment extends Fragment {
             public String getLabel() {
                 return "Display Welcome Activity";
             }
-        }));
+        });
 
-        tests.addView(createTestAction(new DebugAction() {
+        createTestAction(new DebugAction() {
             @Override
             public void run(Context context, Callback callback) {
                 RegistrationUtils.setRegisteredAttendee(context, false);
@@ -124,21 +127,21 @@ public class DebugFragment extends Fragment {
             public String getLabel() {
                 return "Reset Welcome Flags";
             }
-        }));
-        tests.addView(createTestAction(new DebugAction() {
+        });
+        createTestAction(new DebugAction() {
             @Override
             public void run(Context context, Callback callback) {
                 Intent intent = new Intent(context, ScheduleActivity.class);
-                intent.putExtra(ScheduleActivity.EXTRA_FILTER_TAG, "TOPIC_ANDROID");
+                intent.putExtra(ScheduleActivity.EXTRA_FILTER_TAG, "TRACK_ANDROID");
                 context.startActivity(intent);
             }
 
             @Override
             public String getLabel() {
-                return "Show Filtered MySchedule Activity (Android Topic)";
+                return "Show filtered Schedule (Android Topic)";
             }
-        }));
-        tests.addView(createTestAction(new DebugAction() {
+        });
+        createTestAction(new DebugAction() {
             @Override
             public void run(Context context, Callback callback) {
                 LOGW(TAG, "Unsetting all Explore I/O message card answers.");
@@ -149,10 +152,10 @@ public class DebugFragment extends Fragment {
 
             @Override
             public String getLabel() {
-                return "Unset all Explore I/O-based card answers";
+                return "Unset all My I/O-based card answers";
             }
-        }));
-        tests.addView(createTestAction(new DebugAction() {
+        });
+        createTestAction(new DebugAction() {
             @Override
             public void run(Context context, Callback callback) {
                 TimeUtils.setCurrentTimeRelativeToStartOfConference(context, -TimeUtils.HOUR * 3);
@@ -162,8 +165,8 @@ public class DebugFragment extends Fragment {
             public String getLabel() {
                 return "Set time to 3 hours before Conf";
             }
-        }));
-        tests.addView(createTestAction(new DebugAction() {
+        });
+        createTestAction(new DebugAction() {
             @Override
             public void run(Context context, Callback callback) {
                 TimeUtils.setCurrentTimeRelativeToStartOfConference(context, -TimeUtils.DAY);
@@ -171,11 +174,11 @@ public class DebugFragment extends Fragment {
 
             @Override
             public String getLabel() {
-                return "Set time to Day Before Conf";
+                return "Set time to day before Conf";
             }
-        }));
+        });
 
-        tests.addView(createTestAction(new DebugAction() {
+        createTestAction(new DebugAction() {
             @Override
             public void run(Context context, Callback callback) {
                 TimeUtils.setCurrentTimeRelativeToStartOfConference(context, TimeUtils.HOUR * 3);
@@ -191,8 +194,8 @@ public class DebugFragment extends Fragment {
             public String getLabel() {
                 return "Set time to 3 hours after Conf start";
             }
-        }));
-        tests.addView(createTestAction(new DebugAction() {
+        });
+        createTestAction(new DebugAction() {
             @Override
             public void run(Context context, Callback callback) {
                 TimeUtils.setCurrentTimeRelativeToStartOfSecondDayOfConference(context,
@@ -203,8 +206,8 @@ public class DebugFragment extends Fragment {
             public String getLabel() {
                 return "Set time to 3 hours after 2nd day start";
             }
-        }));
-        tests.addView(createTestAction(new DebugAction() {
+        });
+        createTestAction(new DebugAction() {
             @Override
             public void run(Context context, Callback callback) {
                 TimeUtils.setCurrentTimeRelativeToEndOfConference(context, TimeUtils.HOUR * 3);
@@ -214,13 +217,13 @@ public class DebugFragment extends Fragment {
             public String getLabel() {
                 return "Set time to 3 hours after Conf end";
             }
-        }));
+        });
 
         return rootView;
     }
 
-    protected View createTestAction(final DebugAction test) {
-        Button testButton = new Button(this.getActivity());
+    protected void createTestAction(final DebugAction test) {
+        Button testButton = new Button(mTestActionsList.getContext());
         testButton.setText(test.getLabel());
         testButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -236,12 +239,27 @@ public class DebugFragment extends Fragment {
                 });
             }
         });
-        return testButton;
+        mTestActionsList.addView(testButton);
     }
 
     protected void logTimed(long time, String message) {
         message = "[" + time + "ms] " + message;
         Log.d(TAG, message);
         mLogArea.append(message + "\n");
+    }
+
+    @Override
+    public String getTitle(Resources resources) {
+        return "DEBUG";
+    }
+
+    @Override
+    public void updateInfo(Object info) {
+        //
+    }
+
+    @Override
+    protected void showInfo() {
+        //
     }
 }
