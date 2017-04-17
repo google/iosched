@@ -725,6 +725,10 @@ public final class ScheduleContract {
                 Sessions.SESSION_RESERVATION_STATUS + " = " +
                 MyReservations.RESERVATION_STATUS_WAITLISTED;
 
+        // Keynotes are always bookmarked and in "my schedule"
+        public static final String NOT_IN_SCHEDULE_SELECTION =
+                "NOT (" + IN_SCHEDULE_SELECTION + ")";
+
         // Used to fetch sessions starting within a specific time interval
         public static final String STARTING_AT_TIME_INTERVAL_SELECTION =
                 SESSION_START + " >= ? and " + SESSION_START + " <= ?";

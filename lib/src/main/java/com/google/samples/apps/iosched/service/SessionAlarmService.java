@@ -34,9 +34,9 @@ import com.google.samples.apps.iosched.feedback.FeedbackHelper;
 import com.google.samples.apps.iosched.feedback.SessionFeedbackActivity;
 import com.google.samples.apps.iosched.lib.R;
 import com.google.samples.apps.iosched.map.MapActivity;
-import com.google.samples.apps.iosched.schedule.ScheduleActivity;
 import com.google.samples.apps.iosched.provider.ScheduleContract;
 import com.google.samples.apps.iosched.provider.ScheduleContractHelper;
+import com.google.samples.apps.iosched.schedule.ScheduleActivity;
 import com.google.samples.apps.iosched.settings.SettingsUtils;
 import com.google.samples.apps.iosched.util.RegistrationUtils;
 import com.google.samples.apps.iosched.util.TimeUtils;
@@ -522,7 +522,8 @@ public class SessionAlarmService extends IntentService {
                             ScheduleContractHelper.formatQueryDistinctParameter(
                                     ScheduleContract.Sessions.SESSION_START),
                             ScheduleContract.Sessions.SESSION_END,
-                            ScheduleContract.Sessions.SESSION_IN_MY_SCHEDULE},
+                            ScheduleContract.Sessions.SESSION_IN_MY_SCHEDULE,
+                            ScheduleContract.Sessions.SESSION_RESERVATION_STATUS},
                     null,
                     null,
                     null
@@ -551,6 +552,7 @@ public class SessionAlarmService extends IntentService {
                         ScheduleContract.Sessions.SESSION_TITLE,
                         ScheduleContract.Sessions.SESSION_END,
                         ScheduleContract.Sessions.SESSION_IN_MY_SCHEDULE,
+                        ScheduleContract.Sessions.SESSION_RESERVATION_STATUS
                 },
                 null,
                 null,
@@ -575,7 +577,8 @@ public class SessionAlarmService extends IntentService {
                 ScheduleContract.Sessions.SESSION_ID,
                 ScheduleContract.Sessions.SESSION_TITLE,
                 ScheduleContract.Sessions.ROOM_ID,
-                ScheduleContract.Sessions.SESSION_IN_MY_SCHEDULE
+                ScheduleContract.Sessions.SESSION_IN_MY_SCHEDULE,
+                ScheduleContract.Sessions.SESSION_RESERVATION_STATUS
         };
 
         int SESSION_ID = 0;
@@ -589,6 +592,7 @@ public class SessionAlarmService extends IntentService {
                 ScheduleContract.Sessions.SESSION_TITLE,
                 ScheduleContract.Sessions.SESSION_IN_MY_SCHEDULE,
                 ScheduleContract.Sessions.HAS_GIVEN_FEEDBACK,
+                ScheduleContract.Sessions.SESSION_RESERVATION_STATUS
         };
 
         int SESSION_ID = 0;
