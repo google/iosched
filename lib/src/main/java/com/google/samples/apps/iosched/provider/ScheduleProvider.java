@@ -16,12 +16,6 @@
 
 package com.google.samples.apps.iosched.provider;
 
-import static com.google.samples.apps.iosched.provider.ScheduleDatabase.Tables.MY_RESERVATIONS;
-import static com.google.samples.apps.iosched.util.LogUtils.LOGD;
-import static com.google.samples.apps.iosched.util.LogUtils.LOGE;
-import static com.google.samples.apps.iosched.util.LogUtils.LOGV;
-import static com.google.samples.apps.iosched.util.LogUtils.makeLogTag;
-
 import android.app.SearchManager;
 import android.content.ContentProvider;
 import android.content.ContentProviderOperation;
@@ -47,10 +41,10 @@ import com.google.samples.apps.iosched.provider.ScheduleContract.Feedback;
 import com.google.samples.apps.iosched.provider.ScheduleContract.HashtagColumns;
 import com.google.samples.apps.iosched.provider.ScheduleContract.Hashtags;
 import com.google.samples.apps.iosched.provider.ScheduleContract.MyFeedbackSubmitted;
+import com.google.samples.apps.iosched.provider.ScheduleContract.MyReservationColumns;
+import com.google.samples.apps.iosched.provider.ScheduleContract.MyReservations;
 import com.google.samples.apps.iosched.provider.ScheduleContract.MySchedule;
 import com.google.samples.apps.iosched.provider.ScheduleContract.MyScheduleColumns;
-import com.google.samples.apps.iosched.provider.ScheduleContract.MyReservations;
-import com.google.samples.apps.iosched.provider.ScheduleContract.MyReservationColumns;
 import com.google.samples.apps.iosched.provider.ScheduleContract.MyViewedVideos;
 import com.google.samples.apps.iosched.provider.ScheduleContract.Rooms;
 import com.google.samples.apps.iosched.provider.ScheduleContract.SearchSuggest;
@@ -73,6 +67,11 @@ import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+
+import static com.google.samples.apps.iosched.util.LogUtils.LOGD;
+import static com.google.samples.apps.iosched.util.LogUtils.LOGE;
+import static com.google.samples.apps.iosched.util.LogUtils.LOGV;
+import static com.google.samples.apps.iosched.util.LogUtils.makeLogTag;
 
 /**
  * {@link android.content.ContentProvider} that stores {@link ScheduleContract} data. Data is
@@ -780,9 +779,7 @@ public class ScheduleProvider extends ContentProvider {
                         .map(Sessions.SESSION_IN_MY_SCHEDULE, "IFNULL(in_schedule, 0)")
                         .map(Sessions.SESSION_RESERVATION_STATUS, "IFNULL(" + MyReservations.
                                 MY_RESERVATION_STATUS + ", -1)")
-                        .where("( " + Sessions.SESSION_IN_MY_SCHEDULE + "=1 OR " +
-                                Sessions.SESSION_TAGS +
-                                " LIKE '%" + Config.Tags.SPECIAL_KEYNOTE + "%' )")
+                        .where(Sessions.IN_SCHEDULE_SELECTION)
                         .groupBy(Qualified.SESSIONS_SESSION_ID);
             }
             case SESSIONS_UNSCHEDULED: {
@@ -796,7 +793,7 @@ public class ScheduleProvider extends ContentProvider {
                         .map(Sessions.SESSION_IN_MY_SCHEDULE, "IFNULL(in_schedule, 0)")
                         .map(Sessions.SESSION_RESERVATION_STATUS, "IFNULL(" + MyReservations.
                                 MY_RESERVATION_STATUS + ", -1)")
-                        .where(Sessions.SESSION_IN_MY_SCHEDULE + "=0")
+                        .where(Sessions.NOT_IN_SCHEDULE_SELECTION)
                         .where(Sessions.SESSION_START + ">=?", String.valueOf(interval[0]))
                         .where(Sessions.SESSION_START + "<?", String.valueOf(interval[1]))
                         .groupBy(Qualified.SESSIONS_SESSION_ID);
