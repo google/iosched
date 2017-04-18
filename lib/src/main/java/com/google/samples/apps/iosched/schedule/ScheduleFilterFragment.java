@@ -38,8 +38,6 @@ import com.google.samples.apps.iosched.schedule.SessionsFilterAdapter.OnFiltersC
 public class ScheduleFilterFragment extends Fragment implements LoaderCallbacks<Cursor> {
 
     public static final String FILTER_TAG = "com.google.samples.apps.iosched.FILTER_TAG";
-    public static final String SHOW_LIVE_STREAMED_ONLY =
-            "com.google.samples.apps.iosched.SHOW_LIVE_STREAMED_ONLY";
 
     private static final int TAG_METADATA_TOKEN = 0x8;
 
@@ -112,7 +110,6 @@ public class ScheduleFilterFragment extends Fragment implements LoaderCallbacks<
 
     public void initWithArguments(Bundle args) {
         if (args != null && mAdapter != null) {
-            mAdapter.setShowLiveStreamedOnly(args.getBoolean(SHOW_LIVE_STREAMED_ONLY, false));
             mFilterTag = args.getString(FILTER_TAG);
             maybeApplyPendingFilterTag();
         }

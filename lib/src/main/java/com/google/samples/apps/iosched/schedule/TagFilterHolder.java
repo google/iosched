@@ -27,7 +27,7 @@ import android.text.Spanned;
 import android.text.style.ForegroundColorSpan;
 import android.text.style.StyleSpan;
 
-import com.google.samples.apps.iosched.Config;
+import com.google.samples.apps.iosched.Config.Tags;
 import com.google.samples.apps.iosched.lib.R;
 import com.google.samples.apps.iosched.model.TagMetadata.Tag;
 
@@ -42,38 +42,23 @@ import static com.google.samples.apps.iosched.util.LogUtils.makeLogTag;
  */
 public class TagFilterHolder implements Parcelable {
 
-    public static final Creator<TagFilterHolder> CREATOR = new Creator<TagFilterHolder>() {
-
-        @Override
-        public TagFilterHolder createFromParcel(Parcel in) {
-            TagFilterHolder holder = new TagFilterHolder();
-            holder.mShowLiveStreamedOnly = in.readInt() == 1;
-            holder.mShowSessionsOnly = in.readInt() == 1;
-
-            final int size = in.readInt();
-            Tag[] tags = new Tag[size];
-            in.readTypedArray(tags, Tag.CREATOR);
-            Collections.addAll(holder.mSelectedTopics, tags);
-            return holder;
-        }
-
-        @Override
-        public TagFilterHolder[] newArray(int size) {
-            return new TagFilterHolder[size];
-        }
-    };
     private static final String TAG = makeLogTag(TagFilterHolder.class);
-    // TODO we should work with Tags directly
+
+    private final Set<Tag> mSelectedTypes;
     private final Set<Tag> mSelectedTopics;
-    private boolean mShowLiveStreamedOnly;
-    private boolean mShowSessionsOnly;
 
     public TagFilterHolder() {
+        mSelectedTypes = new HashSet<>();
         mSelectedTopics = new HashSet<>();
     }
 
+    private TagFilterHolder(Parcel in) {
+        this();
+        readFromParcel(in);
+    }
+
     private static boolean isCategoryValid(String category) {
-        return Config.Tags.CATEGORY_TRACK.equals(category); // we only care about tracks
+        return Tags.CATEGORY_TYPE.equals(category) || Tags.CATEGORY_TRACK.equals(category);
     }
 
     /**
@@ -81,7 +66,7 @@ public class TagFilterHolder implements Parcelable {
      * @return boolean Return a boolean indicating that the tagId is present.
      */
     public boolean contains(Tag tag) {
-        return mSelectedTopics.contains(tag);
+        return mSelectedTopics.contains(tag) || mSelectedTopics.contains(tag);
     }
 
     /**
@@ -91,7 +76,16 @@ public class TagFilterHolder implements Parcelable {
      * @return True if the set of filters was modified by this call.
      */
     public boolean add(Tag tag) {
-        return isCategoryValid(tag.getCategory()) && mSelectedTopics.add(tag);
+        final String category = tag.getCategory();
+        if (isCategoryValid(tag.getCategory())) {
+            if (Tags.CATEGORY_TYPE.equals(category)) {
+                return mSelectedTypes.add(tag);
+            }
+            if (Tags.CATEGORY_TRACK.equals(category)) {
+                return mSelectedTopics.add(tag);
+            }
+        }
+        return false;
     }
 
     /**
@@ -99,21 +93,24 @@ public class TagFilterHolder implements Parcelable {
      * @return True if the set of filters was modified by this call.
      */
     public boolean remove(Tag tag) {
-        return mSelectedTopics.remove(tag);
+        return mSelectedTypes.remove(tag) || mSelectedTopics.remove(tag);
     }
 
     public void clear() {
+        mSelectedTypes.clear();
         mSelectedTopics.clear();
-        mShowLiveStreamedOnly = false;
-        mShowSessionsOnly = false;
     }
 
     /**
-     * @return String[] containing all the tag IDs from all the categories.
+     * @return String[] containing all the tag IDs to filter on.
      */
-    public String[] getSelectedTopicIds() {
-        String[] a = new String[mSelectedTopics.size()];
+    public String getSelectedFilterIds()[] {
+        final int size = mSelectedTypes.size() + mSelectedTopics.size();
+        String[] a = new String[size];
         int i = 0;
+        for (Tag tag : mSelectedTypes) {
+            a[i++] = tag.getId();
+        }
         for (Tag tag : mSelectedTopics) {
             a[i++] = tag.getId();
         }
@@ -121,62 +118,17 @@ public class TagFilterHolder implements Parcelable {
     }
 
     /**
-     * @return An unmodifiable set with all the filters.
-     */
-    public Set<Tag> getSelectedTopics() {
-        return Collections.unmodifiableSet(mSelectedTopics);
-    }
-
-    /**
      * Returns the number of tag categories for the filter query against the content provider.
-     * Currently we only use track tags, so this is always 1.
      */
     public int getCategoryCount() {
-        return 1;
-    }
-
-    /**
-     * @return The number of topic filters currently in use. Note that non-topic filters are not
-     * considered; use {@link #hasAnyFilters()} instead if trying to determine whether any filters
-     * are active.
-     */
-    public int getSelectedTopicsCount() {
-        return mSelectedTopics.size();
+        return (mSelectedTypes.isEmpty() ? 0 : 1) + (mSelectedTopics.isEmpty() ? 0 : 1);
     }
 
     /**
      * @return true if any filters are active, including non-topic filters (e.g. live streamed)
      */
     public boolean hasAnyFilters() {
-        return mShowLiveStreamedOnly || mShowSessionsOnly || !mSelectedTopics.isEmpty();
-    }
-
-    /**
-     * @param show whether only live streamed events should be shown
-     */
-    public void setShowLiveStreamedOnly(boolean show) {
-        mShowLiveStreamedOnly = show;
-    }
-
-    /**
-     * @return true if only live streamed events should be shown, false otherwise
-     */
-    public boolean showLiveStreamedOnly() {
-        return mShowLiveStreamedOnly;
-    }
-
-    /**
-     * @param show whether only sessions should be shown
-     */
-    public void setShowSessionsOnly(boolean show) {
-        mShowSessionsOnly = show;
-    }
-
-    /**
-     * @return true if only sessions should be shown, false otherwise
-     */
-    public boolean showSessionsOnly() {
-        return mShowSessionsOnly;
+        return !mSelectedTypes.isEmpty() || !mSelectedTopics.isEmpty();
     }
 
     public CharSequence describeFilters(Resources res, Theme theme) {
@@ -190,15 +142,11 @@ public class TagFilterHolder implements Parcelable {
         // TODO this could probably be cleaner
         int filterNamesStart = builder.length();
         boolean needComma = false;
-        if (mShowLiveStreamedOnly) {
-            builder.append(res.getString(R.string.session_live_streamed));
-            needComma = true;
-        }
-        if (mShowSessionsOnly) {
+        for (Tag tag : mSelectedTypes) {
             if (needComma) {
                 builder.append(", ");
             }
-            builder.append(res.getString(R.string.filter_label_sessions_only));
+            builder.append(tag.getName());
             needComma = true;
         }
         for (Tag tag : mSelectedTopics) {
@@ -215,6 +163,8 @@ public class TagFilterHolder implements Parcelable {
         return builder;
     }
 
+    // -- Parcelable
+
     @Override
     public int describeContents() {
         return 0;
@@ -222,12 +172,39 @@ public class TagFilterHolder implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
-        dest.writeInt(mShowLiveStreamedOnly ? 1 : 0);
-        dest.writeInt(mShowSessionsOnly ? 1 : 0);
+        writeTagSetToParcel(mSelectedTypes, dest);
+        writeTagSetToParcel(mSelectedTopics, dest);
+    }
 
-        final int size = mSelectedTopics.size();
-        Tag[] tags = mSelectedTopics.toArray(new Tag[size]);
+    private void writeTagSetToParcel(Set<Tag> set, Parcel dest) {
+        final int size = set.size();
+        Tag[] tags = set.toArray(new Tag[size]);
         dest.writeInt(size);
         dest.writeParcelableArray(tags, 0);
     }
+
+    private void readFromParcel(Parcel in) {
+        readTagSetFromParcel(mSelectedTypes, in);
+        readTagSetFromParcel(mSelectedTopics, in);
+    }
+
+    private void readTagSetFromParcel(Set<Tag> set, Parcel in) {
+        final int size = in.readInt();
+        Tag[] tags = new Tag[size];
+        in.readTypedArray(tags, Tag.CREATOR);
+        Collections.addAll(set, tags);
+    }
+
+    public static final Creator<TagFilterHolder> CREATOR = new Creator<TagFilterHolder>() {
+
+        @Override
+        public TagFilterHolder createFromParcel(Parcel in) {
+            return new TagFilterHolder(in);
+        }
+
+        @Override
+        public TagFilterHolder[] newArray(int size) {
+            return new TagFilterHolder[size];
+        }
+    };
 }
