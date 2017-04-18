@@ -105,6 +105,10 @@
     <!-- Info -->
     <style name="Theme.IOSched.Info" parent="@style/Theme.IOSched.Immersive" />
 
+    <style name="Theme.IOSched.Debug" parent="@style/Theme.IOSched.Immersive">
+        <item name="android:buttonStyle">@style/Widget.AppCompat.Button.Borderless.Colored</item>
+    </style>
+
     <!-- Session Feedback -->
     <style name="Theme.IOSched.Feedback" parent="@style/Theme.IOSched.Immersive">
         <item name="colorAccent">@color/aqua_marine</item>
