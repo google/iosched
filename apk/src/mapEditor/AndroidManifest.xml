@@ -37,17 +37,6 @@ See the /doc/MAP.md readme file for further details. -->
             </intent-filter>
         </activity>
 
-        <!-- Remove the default launcher and only use the MapEditorActivity -->
-        <activity-alias
-            android:name=".Launcher"
-            android:label="@string/app_name"
-            android:targetActivity=".myio.MyIOActivity">
-            <intent-filter tools:node="remove">
-                <action android:name="android.intent.action.MAIN" />
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity-alias>
-
         <!-- An IntentService responsible for bootstrapping the app with the necessary
     data such as session, speakers, etc. -->
         <service
