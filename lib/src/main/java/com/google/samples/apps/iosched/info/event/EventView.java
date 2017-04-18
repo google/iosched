@@ -31,6 +31,13 @@ import com.google.samples.apps.iosched.ui.widget.HtmlTextView;
 public class EventView extends FrameLayout {
 
     private HtmlTextView mDescriptionView;
+    private String mSessionFilterTag;
+    private EventViewClickListener mListener;
+
+    public interface EventViewClickListener {
+        void onViewSessionsClicked(EventView view, String filterTag);
+        void onViewMapClicked(EventView view, String mapUri);
+    }
 
     public EventView(Context context) {
         this(context, null);
@@ -48,6 +55,7 @@ public class EventView extends FrameLayout {
         Drawable eventIconDrawable = arr.getDrawable(R.styleable.EventView_eventIcon);
         int boxColor = arr.getColor(R.styleable.EventView_boxColor,
                 ContextCompat.getColor(getContext(), R.color.sunflower_yellow));
+        mSessionFilterTag = arr.getString(R.styleable.EventView_scheduleFilterTag);
         arr.recycle();
 
         View rootView = LayoutInflater.from(context)
@@ -63,18 +71,26 @@ public class EventView extends FrameLayout {
         rootView.findViewById(R.id.event_view_sessions).setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                //TODO link to sessions
+                if (mListener != null) {
+                    mListener.onViewSessionsClicked(EventView.this, mSessionFilterTag);
+                }
             }
         });
         rootView.findViewById(R.id.event_view_map).setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                //TODO link to map
+                if (mListener != null) {
+                    // mListener.onViewMapClicked(EventView.this, null); // TODO need map URI
+                }
             }
         });
     }
 
     public void setEventDescription(CharSequence description) {
         mDescriptionView.setText(description);
+    }
+
+    public void setEventViewClickListener(EventViewClickListener listener) {
+        mListener = listener;
     }
 }

@@ -734,17 +734,6 @@
     is no resolution. -->
     <string name="google_play_services_failed">Sorry, connection to Google Play Services failed</string>
 
-
-    <string name="transition_track_header" translatable="false">transition_track_header</string>
-
-    <string name="transition_track_title" translatable="false">transition_track_title</string>
-
-    <string name="transition_track_background" translatable="false">transition_track_background</string>
-
-    <string name="transition_session_background" translatable="false">transition_session_background</string>
-
-    <string name="transition_session_image" translatable="false">transition_session_image</string>
-
     <!-- Message displayed to users as part of onboarding sign in. -->
     <string name="signin_message">Sign in to reserve seats for events ahead of time, sync saved
         and reserved events from your account across mobile and desktop and provide feedback once
@@ -830,17 +819,6 @@
 
     <string name="view_sessions_text">View Sessions</string>
     <string name="view_map_text">View Map</string>
-    <!-- TODO make these URLs the correct deep link -->
-    <string name="view_sandbox_sessions_url" translatable="false">sandboxsessionsurl</string>
-    <string name="view_codelabs_sessions_url" translatable="false">codelabssessionsurl</string>
-    <string name="view_officehours_sessions_url" translatable="false">
-        officehourssessionsurl</string>
-    <string name="view_afterhours_sessions_url" translatable="false">afterhourssessionsurl</string>
-    <!-- TODO make these URLs the correct deep link -->
-    <string name="view_sandbox_map_url" translatable="false">sandboxmapurl</string>
-    <string name="view_codelabs_map_url" translatable="false">codelabsmapurl</string>
-    <string name="view_officehours_map_url" translatable="false">officehoursmapurl</string>
-    <string name="view_afterhours_map_url" translatable="false">afterhoursmapurl</string>
 
     <string name="event_sandbox_title">Sandbox</string>
     <string name="event_codelabs_title">Codelabs</string>
@@ -899,26 +877,5 @@
     <string name="about_app_version">Version %1$s</string>
 
     <string name="feed_error">Error loading feed.</string>
-
-
-    <!-- RemoteConfig keys for Feed default messages -->
-    <string name="feed_default_first_title_key"
-            translatable="false">feed_default_first_title</string>
-    <string name="feed_default_first_message_key"
-            translatable="false">feed_default_first_message</string>
-    <string name="feed_default_first_imageurl_key"
-            translatable="false">feed_default_first_imageurl</string>
-    <string name="feed_default_first_timestamp_key"
-            translatable="false">feed_default_first_timestamp</string>
-    <string name="feed_default_first_color_key"
-            translatable="false">feed_default_first_color</string>
-    <string name="feed_default_first_category_key"
-            translatable="false">feed_default_first_category</string>
-    <string name="feed_default_first_clickable_key"
-            translatable="false">feed_default_first_clickable</string>
-    <string name="feed_default_first_link_key"
-            translatable="false">feed_default_first_link</string>
-    <string name="feed_default_first_priority_key"
-            translatable="false">feed_default_first_priority</string>
 
 </resources>

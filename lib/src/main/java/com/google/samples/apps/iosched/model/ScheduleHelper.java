@@ -15,8 +15,6 @@
  */
 package com.google.samples.apps.iosched.model;
 
-import static com.google.samples.apps.iosched.util.LogUtils.makeLogTag;
-
 import android.content.Context;
 import android.database.Cursor;
 import android.database.DatabaseUtils;
@@ -27,12 +25,14 @@ import android.support.annotation.Nullable;
 import android.util.Log;
 
 import com.google.samples.apps.iosched.lib.BuildConfig;
-import com.google.samples.apps.iosched.schedule.ScheduleModel;
-import com.google.samples.apps.iosched.schedule.TagFilterHolder;
 import com.google.samples.apps.iosched.provider.ScheduleContract.Blocks;
 import com.google.samples.apps.iosched.provider.ScheduleContract.Sessions;
+import com.google.samples.apps.iosched.schedule.ScheduleModel;
+import com.google.samples.apps.iosched.schedule.TagFilterHolder;
 
 import java.util.ArrayList;
+
+import static com.google.samples.apps.iosched.util.LogUtils.makeLogTag;
 
 public class ScheduleHelper {
 
@@ -58,7 +58,8 @@ public class ScheduleHelper {
             @Nullable final TagFilterHolder filters) {
         // get sessions in my schedule and blocks, starting anytime in the conference day
         final ArrayList<ScheduleItem> items = new ArrayList<>();
-        if (filters == null || !filters.showSessionsOnly()) {
+        // if there are any filters, we don't interleave blocks
+        if (filters == null || !filters.hasAnyFilters()) {
             addBlocks(start, end, items);
         }
         addSessions(start, end, items, filters);
@@ -112,12 +113,8 @@ public class ScheduleHelper {
                         Sessions.IN_SCHEDULE_SELECTION);
             }
             if (filters != null) {
-                uri = Sessions.buildCategoryTagFilterUri(uri, filters.getSelectedTopicIds(),
+                uri = Sessions.buildCategoryTagFilterUri(uri, filters.getSelectedFilterIds(),
                         filters.getCategoryCount());
-                if (filters.showLiveStreamedOnly()) {
-                    selection = DatabaseUtils.concatenateWhere(selection,
-                            Sessions.LIVESTREAM_SELECTION);
-                }
             }
             cursor = mContext.getContentResolver().query(
                     uri,
@@ -142,8 +139,7 @@ public class ScheduleHelper {
             cursor = mContext.getContentResolver().query(
                     Blocks.CONTENT_URI,
                     BlocksQuery.PROJECTION,
-                    // constrain to the specified day
-                    Blocks.BLOCK_START + " >= ? and " + Blocks.BLOCK_START + " <= ?",
+                    BlocksQuery.SELECTION,
                     new String[]{String.valueOf(start), String.valueOf(end)},
                     // order by start time
                     Blocks.BLOCK_START);
@@ -156,10 +152,8 @@ public class ScheduleHelper {
                     item.room = item.subtitle = cursor.getString(BlocksQuery.BLOCK_SUBTITLE);
                     item.startTime = cursor.getLong(BlocksQuery.BLOCK_START);
                     item.endTime = cursor.getLong(BlocksQuery.BLOCK_END);
-                    if (item.type != ScheduleItem.FREE) {
-                        item.flags |= ScheduleItem.FLAG_NOT_REMOVABLE;
-                        items.add(item);
-                    }
+                    item.flags |= ScheduleItem.FLAG_NOT_REMOVABLE;
+                    items.add(item);
                 } while (cursor.moveToNext());
             }
         } finally {
@@ -177,6 +171,10 @@ public class ScheduleHelper {
                 Blocks.BLOCK_END,
                 Blocks.BLOCK_SUBTITLE
         };
+
+        // constrain to "break" blocks on the specified day
+        String SELECTION = Blocks.BLOCK_TYPE + " = '" + Blocks.BLOCK_TYPE_BREAK + "' AND " +
+                Blocks.BLOCK_START + " >= ? AND " + Blocks.BLOCK_START + " <= ?";
 
         int BLOCK_TITLE = 0;
         int BLOCK_TYPE = 1;
