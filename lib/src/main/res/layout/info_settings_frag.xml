@@ -25,117 +25,114 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:divider="@drawable/list_divider"
         android:orientation="vertical"
-        android:showDividers="middle">
+        android:paddingBottom="@dimen/spacing_large"
+        android:paddingTop="@dimen/spacing_large">
 
-        <RelativeLayout
+        <LinearLayout
+            android:id="@+id/settings_timezone_container"
+            style="@style/Settings.SwitchContainer"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:paddingBottom="@dimen/settings_content_padding"
-            android:paddingTop="@dimen/settings_content_padding">
+            android:layout_height="wrap_content">
 
             <TextView
-                android:id="@+id/settingsTimeZoneLabel"
-                android:layout_width="wrap_content"
+                android:id="@+id/settings_timezone_label"
+                style="@style/Settings.SwitchLabel"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_alignBaseline="@+id/settingsTimeZoneSwitch"
-                android:ellipsize="end"
-                android:padding="@dimen/padding_normal"
+                android:layout_weight="1"
                 android:text="@string/settings_time_zone_label" />
 
             <Switch
-                android:id="@+id/settingsTimeZoneSwitch"
+                android:id="@+id/settings_timezone_switch"
+                style="@style/Settings.Switch"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignParentEnd="true"
-                android:layout_alignParentTop="true"
-                android:layout_toEndOf="@+id/settingsTimeZoneLabel"
-                android:padding="@dimen/padding_normal" />
+                android:layout_marginStart="@dimen/padding_normal" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/settings_notifications_container"
+            style="@style/Settings.SwitchContainer"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
 
             <TextView
-                android:id="@+id/settingsNotificationsLabel"
-                android:layout_width="wrap_content"
+                android:id="@+id/settings_notifications_label"
+                style="@style/Settings.SwitchLabel"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_alignBaseline="@+id/settingsNotificationsSwitch"
-                android:layout_alignParentStart="true"
-                android:padding="@dimen/padding_normal"
+                android:layout_weight="1"
                 android:text="@string/settings_enable_notifications" />
 
             <Switch
-                android:id="@+id/settingsNotificationsSwitch"
+                android:id="@+id/settings_notifications_switch"
+                style="@style/Settings.Switch"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignParentEnd="true"
-                android:layout_below="@+id/settingsTimeZoneSwitch"
-                android:layout_toEndOf="@+id/settingsNotificationsLabel"
-                android:padding="@dimen/padding_normal" />
+                android:layout_marginStart="@dimen/padding_normal" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/settings_anon_statistics_container"
+            style="@style/Settings.SwitchContainer"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
 
             <TextView
-                android:id="@+id/settingsAnonStatisticsLabel"
-                android:layout_width="wrap_content"
+                android:id="@+id/settings_anon_statistics_label"
+                style="@style/Settings.SwitchLabel"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_alignParentStart="true"
-                android:layout_below="@+id/settingsNotificationsLabel"
-                android:padding="@dimen/padding_normal"
+                android:layout_weight="1"
                 android:text="@string/settings_enable_anon_statistics" />
 
             <Switch
-                android:id="@+id/settingsAnonStatisticsSwitch"
+                android:id="@+id/settings_anon_statistics_switch"
+                style="@style/Settings.Switch"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignParentEnd="true"
-                android:layout_below="@+id/settingsNotificationsSwitch"
-                android:layout_toEndOf="@+id/settingsAnonStatisticsLabel"
-                android:padding="@dimen/padding_normal" />
-
-        </RelativeLayout>
-
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:paddingBottom="@dimen/settings_content_padding"
-            android:paddingTop="@dimen/settings_content_padding">
-
-            <Button
-                android:id="@+id/termsOfServiceLink"
-                style="@style/Widget.AppCompat.Button.Borderless.Colored"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:paddingStart="@dimen/padding_normal"
-                android:paddingEnd="@dimen/padding_normal"
-                android:text="@string/about_terms" />
-
-            <Button
-                android:id="@+id/privacyPolicyLink"
-                style="@style/Widget.AppCompat.Button.Borderless.Colored"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:paddingStart="@dimen/padding_normal"
-                android:paddingEnd="@dimen/padding_normal"
-                android:text="@string/about_privacy_policy" />
-
-            <Button
-                android:id="@+id/openSourceLicensesLink"
-                style="@style/Widget.AppCompat.Button.Borderless.Colored"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:paddingStart="@dimen/padding_normal"
-                android:paddingEnd="@dimen/padding_normal"
-                android:text="@string/about_licenses" />
-
-            <TextView
-                android:id="@+id/appVersion"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:paddingTop="@dimen/spacing_normal"
-                android:paddingStart="@dimen/padding_normal"
-                android:paddingEnd="@dimen/padding_normal"
-                android:text="@string/about_app_version"
-                tools:text="Version 1.4.278" />
+                android:layout_marginStart="@dimen/padding_normal" />
 
         </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginBottom="@dimen/spacing_large"
+            android:layout_marginTop="@dimen/spacing_large"
+            android:background="?android:listDivider" />
+
+        <Button
+            android:id="@+id/terms_of_service_link"
+            style="@style/Settings.LinkButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/about_terms" />
+
+        <Button
+            android:id="@+id/privacy_policy_link"
+            style="@style/Settings.LinkButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/about_privacy_policy" />
+
+        <Button
+            android:id="@+id/open_source_licenses_link"
+            style="@style/Settings.LinkButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/about_licenses" />
+
+        <TextView
+            android:id="@+id/app_version"
+            style="@style/Settings.Version"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/about_app_version"
+            tools:text="Version 1.4.278" />
 
     </LinearLayout>
 
