@@ -136,6 +136,9 @@ class FeedViewHolder extends RecyclerView.ViewHolder {
     }
 
     private void setClickListener(boolean isClickable, final String link) {
+        if (TextUtils.isEmpty(link)) {
+            return;
+        }
         itemView.setClickable(isClickable);
         itemView.setOnClickListener(new View.OnClickListener() {
             @Override
