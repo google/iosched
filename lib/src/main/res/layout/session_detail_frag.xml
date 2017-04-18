@@ -113,6 +113,16 @@
                     android:textColor="@color/greyish_brown" />
 
                 <ImageView
+                    android:id="@+id/map"
+                    android:layout_width="?actionBarSize"
+                    android:layout_height="?actionBarSize"
+                    android:background="?selectableItemBackgroundBorderless"
+                    android:contentDescription="@string/description_share"
+                    android:duplicateParentState="true"
+                    android:scaleType="center"
+                    app:srcCompat="@drawable/ic_action_map" />
+
+                <ImageView
                     android:id="@+id/share"
                     android:layout_width="?actionBarSize"
                     android:layout_height="?actionBarSize"
@@ -245,24 +255,6 @@
                 android:visibility="gone">
 
             </LinearLayout>
-
-            <!-- android:foreground on arbitrary views starts in API 23, so we need a container -->
-            <FrameLayout
-                android:id="@+id/map_container"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:foreground="?selectableItemBackground">
-
-                <!-- TODO real map -->
-                <TextView
-                    android:id="@+id/map_image"
-                    android:layout_width="match_parent"
-                    android:layout_height="200dp"
-                    android:background="@color/light_grey"
-                    android:gravity="center"
-                    android:text="TODO: map goes here" />
-
-            </FrameLayout>
 
             <TextView
                 android:id="@+id/related_sessions_label"

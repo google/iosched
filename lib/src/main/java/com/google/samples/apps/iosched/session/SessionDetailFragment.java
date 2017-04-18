@@ -126,6 +126,8 @@ public class SessionDetailFragment extends Fragment implements
 
     private ImageView mShareButton;
 
+    private ImageView mMapButton;
+
     private NestedScrollView mScrollView;
 
     private TextView mTitle;
@@ -145,8 +147,6 @@ public class SessionDetailFragment extends Fragment implements
     private View mPhotoViewContainer;
 
     private ImageView mPhotoView;
-
-    private View mMapImage;
 
     private TextView mRelatedSessionsLabel;
 
@@ -204,7 +204,7 @@ public class SessionDetailFragment extends Fragment implements
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
-            Bundle savedInstanceState) {
+                             Bundle savedInstanceState) {
         return inflater.inflate(R.layout.session_detail_frag, container, false);
     }
 
@@ -229,7 +229,7 @@ public class SessionDetailFragment extends Fragment implements
         mScrollView.setOnScrollChangeListener(new OnScrollChangeListener() {
             @Override
             public void onScrollChange(NestedScrollView v, int scrollX, int scrollY, int oldScrollX,
-                    int oldScrollY) {
+                                       int oldScrollY) {
                 if (scrollY > mTitle.getBottom()) {
                     fadeInToolbarTitle();
                 } else {
@@ -244,16 +244,6 @@ public class SessionDetailFragment extends Fragment implements
         mTags = (LinearLayout) details.findViewById(R.id.session_tags);
         mTagsContainer = (ViewGroup) details.findViewById(R.id.session_tags_container);
         mFeedbackButton = (Button) details.findViewById(R.id.give_feedback_button);
-
-        final ViewGroup mapContainer = (ViewGroup) details.findViewById(R.id.map_container);
-        mMapImage = mapContainer.findViewById(R.id.map_image);
-        mapContainer.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                sendUserAction(SessionDetailUserActionEnum.SHOW_MAP, null);
-            }
-        });
-
         mRelatedSessionsLabel = (TextView) details.findViewById(R.id.related_sessions_label);
         mRelatedSessions = (RecyclerView) details.findViewById(R.id.related_sessions_list);
         mRelatedSessionsAdapter = new ScheduleDayAdapter(this, null, false);
@@ -291,6 +281,13 @@ public class SessionDetailFragment extends Fragment implements
             @Override
             public void onClick(View v) {
                 getActivity().onNavigateUp();
+            }
+        });
+        mMapButton = (ImageView) mToolbar.findViewById(R.id.map);
+        mMapButton.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                sendUserAction(SessionDetailUserActionEnum.SHOW_MAP, null);
             }
         });
         mShareButton = (ImageView) mToolbar.findViewById(R.id.share);
@@ -388,7 +385,10 @@ public class SessionDetailFragment extends Fragment implements
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         final int itemId = item.getItemId();
-        if (itemId == R.id.menu_share) {
+        if (itemId == R.id.menu_map_room) {
+            sendUserAction(SessionDetailUserActionEnum.SHOW_MAP, null);
+            return true;
+        } else if (itemId == R.id.menu_share) {
             sendUserAction(SessionDetailUserActionEnum.SHOW_SHARE, null);
             return true;
         }
@@ -472,8 +472,8 @@ public class SessionDetailFragment extends Fragment implements
 
     @Override
     public void displayUserActionResult(SessionDetailModel data,
-            SessionDetailUserActionEnum userAction,
-            boolean success) {
+                                        SessionDetailUserActionEnum userAction,
+                                        boolean success) {
         switch (userAction) {
             case SHOW_MAP:
                 Intent intentShowMap = new Intent(getActivity(), MapActivity.class);
@@ -633,6 +633,7 @@ public class SessionDetailFragment extends Fragment implements
 
     private void setToolbarTint(ColorStateList tintList) {
         mBackButton.setImageTintList(tintList);
+        mMapButton.setImageTintList(tintList);
         mShareButton.setImageTintList(tintList);
     }
 
