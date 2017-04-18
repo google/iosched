@@ -15,11 +15,9 @@
 package com.google.samples.apps.iosched.schedule;
 
 import android.app.Activity;
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.AppBarLayout;
-import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewCompat;
@@ -31,8 +29,6 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.google.samples.apps.iosched.Config;
-import com.google.samples.apps.iosched.debug.DebugActivity;
-import com.google.samples.apps.iosched.lib.BuildConfig;
 import com.google.samples.apps.iosched.lib.R;
 import com.google.samples.apps.iosched.util.TimeUtils;
 
@@ -173,20 +169,6 @@ public class SchedulePagerFragment extends Fragment implements ScheduleView {
         calculateCurrentDay();
         if (mViewPager != null) {
             scrollToConferenceDay(mToday);
-        }
-
-        if (BuildConfig.DEBUG) {
-            FloatingActionButton debugButton =
-                    (FloatingActionButton) view.findViewById(R.id.debug_button);
-            debugButton.setVisibility(VISIBLE);
-            debugButton.setOnClickListener(new OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Intent intent = new Intent(getActivity(), DebugActivity.class);
-                    getActivity().startActivity(intent);
-                }
-            });
-
         }
     }
 

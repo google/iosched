@@ -17,6 +17,7 @@ import android.content.Context;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 
+import com.google.samples.apps.iosched.debug.DebugFragment;
 import com.google.samples.apps.iosched.info.event.EventFragment;
 import com.google.samples.apps.iosched.info.event.EventInfo;
 import com.google.samples.apps.iosched.info.faq.FaqFragment;
@@ -24,21 +25,22 @@ import com.google.samples.apps.iosched.info.faq.FaqInfo;
 import com.google.samples.apps.iosched.info.settings.SettingsFragment;
 import com.google.samples.apps.iosched.info.travel.TravelFragment;
 import com.google.samples.apps.iosched.info.travel.TravelInfo;
+import com.google.samples.apps.iosched.lib.BuildConfig;
 
 import static com.google.samples.apps.iosched.util.LogUtils.LOGD;
 import static com.google.samples.apps.iosched.util.LogUtils.LOGE;
 import static com.google.samples.apps.iosched.util.LogUtils.makeLogTag;
 
-public class InfoViewPagerAdapter<T> extends FragmentPagerAdapter {
+public class InfoViewPagerAdapter extends FragmentPagerAdapter {
 
     private final static String TAG = makeLogTag(InfoViewPagerAdapter.class);
 
-    private final static int NUM_PAGES = 4;
+    private final static int NUM_PAGES = BuildConfig.DEBUG ? 5 : 4;
     private final static int EVENT_INDEX = 0;
     private final static int TRAVEL_INDEX = 1;
     private final static int FAQ_INDEX = 2;
     private final static int SETTINGS_INDEX = 3;
-
+    private final static int DEBUG_INDEX = 4;
 
     private Context mContext;
 
@@ -77,6 +79,10 @@ public class InfoViewPagerAdapter<T> extends FragmentPagerAdapter {
                 break;
             case SETTINGS_INDEX:
                 mFragments[position] = new SettingsFragment();
+                break;
+            case DEBUG_INDEX:
+                mFragments[position] = new DebugFragment();
+                break;
         }
         return mFragments[position];
     }
