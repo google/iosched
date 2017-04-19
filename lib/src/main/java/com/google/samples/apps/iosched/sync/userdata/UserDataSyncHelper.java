@@ -96,11 +96,11 @@ class UserDataSyncHelper extends AbstractUserDataSyncHelper {
     private void reconcileRemoteAndLocal() {
         mReconciledUserDataModel = UserDataModel.reconciledUserData(mLocalUserDataModel,
                 mRemoteUserDataModel);
-        if (mReconciledUserDataModel != mLocalUserDataModel) {
+        if (!mReconciledUserDataModel.equals(mLocalUserDataModel)) {
             mDataChanged = true;
             updateLocal();
         }
-        if (mReconciledUserDataModel != mRemoteUserDataModel) {
+        if (!mReconciledUserDataModel.equals(mRemoteUserDataModel)) {
             updateRemote();
         }
     }
