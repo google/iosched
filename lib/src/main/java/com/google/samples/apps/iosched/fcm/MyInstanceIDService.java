@@ -37,7 +37,7 @@ public class MyInstanceIDService extends FirebaseInstanceIdService {
     @Override
     public void onTokenRefresh() {
         LOGV(TAG, "Set registered to false");
-        ServerUtilities.setRegisteredOnServer(this, false, ServerUtilities.getFcmRegId(this), null);
+        ServerUtilities.setRegisteredOnServer(this, false, ServerUtilities.getDeviceId(this), null);
 
         // Get the correct FCM key for the user. FCM key is a somewhat non-standard
         // approach we use in this app. For more about this, check FCM.md.
@@ -45,7 +45,7 @@ public class MyInstanceIDService extends FirebaseInstanceIdService {
                 AccountUtils.getFcmKey(this, AccountUtils.getActiveAccountName(this)) : null;
 
         // Unregister on server.
-        ServerUtilities.unregister(ServerUtilities.getFcmRegId(this), fcmKey);
+        ServerUtilities.unregister(ServerUtilities.getDeviceId(this), fcmKey);
 
         // Register for a new InstanceID token. This token is sent to the server to be paired with
         // the current user's FCM key.

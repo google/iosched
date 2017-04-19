@@ -16,6 +16,7 @@ package com.google.samples.apps.iosched.signin;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.support.annotation.NonNull;
 
 import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
@@ -25,7 +26,6 @@ import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.ResultCallback;
 import com.google.android.gms.common.api.Status;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.samples.apps.iosched.sync.SyncHelper;
 import com.google.samples.apps.iosched.sync.userdata.LocalUserDataHelper;
 import com.google.samples.apps.iosched.util.AccountUtils;
 
@@ -106,7 +106,7 @@ public class SignInManager {
         Auth.GoogleSignInApi.signOut(mGoogleApiClient).setResultCallback(
                 new ResultCallback<Status>() {
                     @Override
-                    public void onResult(Status status) {
+                    public void onResult(@NonNull Status status) {
                         if (status.isSuccess()) {
                             performPostSignOutTasks(status);
                         } else {
@@ -168,10 +168,18 @@ public class SignInManager {
         }
 
         // Tasks we always want to execute upon sign in.
+
+        // Update SharedPreferences with account values.
         AccountUtils.setActiveAccount(activity, acct.getEmail());
         AccountUtils.setActiveAccountDisplayName(activity, acct.getDisplayName());
         AccountUtils.setActiveAccountPhotoUrl(activity, acct.getPhotoUrl());
+        AccountUtils.setActiveAccountId(activity, acct.getId());
+
+        // Check if user is registered.
         RegistrationStatusService.updateRegStatusInBackground(activity, acct);
+
+        // Register this account/device pair within the server.
+        registerWithServer(activity, acct.getId(), true);
 
         // Note: Post Sign in work related to user data is done in the following service.
         // This also includes calling the sync for user data.
@@ -201,6 +209,9 @@ public class SignInManager {
         }
 
         LocalUserDataHelper.clearUserDataOnSignOut(activity);
+
+        registerWithServer(activity, AccountUtils.getActiveAccountId(activity), false);
+
         // Tasks we always want to execute upon sign out.
         AccountUtils.clearActiveAccount(activity);
         FirebaseAuth.getInstance().signOut();
@@ -223,5 +234,20 @@ public class SignInManager {
             LOGD(TAG, "SignInListener is null");
         }
         return signInListner;
+    }
+
+    /**
+     * Register this account/device pair with the server.
+     *
+     * @param activity  The bound activity.
+     * @param acctId  The account ID for the user.
+     * @param signedIn Whether the user is signed in.
+     */
+    private void registerWithServer(Activity activity, String acctId, boolean signedIn) {
+        Intent intent = new Intent(activity, RegisterWithServerIntentService.class);
+        intent.setAction(signedIn ? RegisterWithServerIntentService.ACTION_REGISTER :
+                RegisterWithServerIntentService.ACTION_UNREGISTER);
+        intent.putExtra(RegisterWithServerIntentService.EXTRA_ACCOUNT_ID, acctId);
+        activity.startService(intent);
     }
 }
