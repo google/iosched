@@ -341,663 +341,868 @@
     ],
     "map": [
       {
-      "markers": {
-        "type": "FeatureCollection",
-        "features": [
-          {
-            "type": "Feature",
-            "properties": {
-              "id": "19b9264a-35c9-e511-ab0e-00155d5066d7",
-              "title": "Stage 1 - Hercules",
-              "type": "SESSION"
+        "markers": {
+          "type": "FeatureCollection",
+          "features": [
+            {
+              "type": "Feature",
+              "properties": {
+                "id": "",
+                "type": "LABEL",
+                "title": "Amphitheatre",
+                "tag": "amphi",
+                "description": ""
+              },
+              "geometry": {
+                "type": "Point",
+                "coordinates": [
+                  -122.08068,
+                  37.426791
+                ]
+              }
             },
-            "geometry": {
-              "type": "Point",
-              "coordinates": [
-                -122.079707,
-                37.42563
-              ]
-            }
-          },
-          {
-            "type": "Feature",
-            "properties": {
-              "id": "Stage 1",
-              "title": "1 - Hercules",
-              "type": "LABEL"
+            {
+              "type": "Feature",
+              "properties": {
+                "id": "16ce7c17-f0ef-4c75-828c-655745953690",
+                "type": "SESSION",
+                "title": "Amphitheatre",
+                "tag": "amphi",
+                "description": "Attend the two Keynotes on May 17: The first will feature our latest product and platform innovations with Sundar Pichai (CEO, Google). The second will focus specifically on updates to our developer products and platforms, featuring Jason Titus (Head of Google’s Developer Product Group). The Amphitheatre will also host breakout sessions throughout the three days of the event, and the After Hours Concert on Day 2."
+              },
+              "geometry": {
+                "type": "Point",
+                "coordinates": [
+                  -122.080837,
+                  37.426897
+                ]
+              }
             },
-            "geometry": {
-              "type": "Point",
-              "coordinates": [
-                -122.0796999,
-                37.425622
-              ]
-            }
-          },
-          {
-            "type": "Feature",
-            "properties": {
-              "id": "a8f18b8f-7dcb-e511-ab0e-00155d5066d7",
-              "title": "Stage 2 - Hydra",
-              "type": "SESSION"
+            {
+              "type": "Feature",
+              "properties": {
+                "id": "0ebecfd3-6a9a-4d2a-8b1d-6e002951468e",
+                "type": "SESSION",
+                "title": "Stage 1",
+                "tag": "stage1",
+                "description": "Stage 1"
+              },
+              "geometry": {
+                "type": "Point",
+                "coordinates": [
+                  -122.080357,
+                  37.425493
+                ]
+              }
             },
-            "geometry": {
-              "type": "Point",
-              "coordinates": [
-                -122.080283999,
-                37.425041
-              ]
-            }
-          },
-          {
-            "type": "Feature",
-            "properties": {
-              "id": "Stage 2",
-              "title": "2 - Hydra",
-              "type": "LABEL"
+            {
+              "type": "Feature",
+              "properties": {
+                "id": "",
+                "type": "LABEL",
+                "title": "Stage 1",
+                "tag": "stage1",
+                "description": ""
+              },
+              "geometry": {
+                "type": "Point",
+                "coordinates": [
+                  -122.080336,
+                  37.425458
+                ]
+              }
             },
-            "geometry": {
-              "type": "Point",
-              "coordinates": [
-                -122.080294,
-                37.425053
-              ]
-            }
-          },
-          {
-            "type": "Feature",
-            "properties": {
-              "id": "84a30586-09fd-e511-a517-00155d5066d7",
-              "title": "Stage 3 - Ursa Minor",
-              "type": "SESSION"
+            {
+              "type": "Feature",
+              "properties": {
+                "id": "6063da53-c8ce-44a7-9928-cf6eb4fb39df",
+                "type": "SESSION",
+                "title": "Stage 2",
+                "tag": "stage2",
+                "description": "Stage 2"
+              },
+              "geometry": {
+                "type": "Point",
+                "coordinates": [
+                  -122.080343,
+                  37.425078
+                ]
+              }
             },
-            "geometry": {
-              "type": "Point",
-              "coordinates": [
-                -122.079946,
-                37.424488
-              ]
-            }
-          },
-          {
-            "type": "Feature",
-            "properties": {
-              "id": "Stage 3",
-              "title": "3 - Ursa Minor",
-              "type": "LABEL"
+            {
+              "type": "Feature",
+              "properties": {
+                "id": "",
+                "type": "LABEL",
+                "title": "Stage 2",
+                "tag": "stage2",
+                "description": ""
+              },
+              "geometry": {
+                "type": "Point",
+                "coordinates": [
+                  -122.08033,
+                  37.425034
+                ]
+              }
             },
-            "geometry": {
-              "type": "Point",
-              "coordinates": [
-                -122.0799409999,
-                37.4244799999
-              ]
-            }
-          },
-          {
-            "type": "Feature",
-            "properties": {
-              "id": "1a17939d-09fd-e511-a517-00155d5066d7",
-              "title": "Stage 4 - Ursa Major",
-              "type": "SESSION"
+            {
+              "type": "Feature",
+              "properties": {
+                "id": "8c4125e7-041c-4396-ab5b-c8aab512a73a",
+                "type": "SESSION",
+                "title": "Stage 3",
+                "tag": "stage3",
+                "description": "Stage 3"
+              },
+              "geometry": {
+                "type": "Point",
+                "coordinates": [
+                  -122.079734,
+                  37.425124
+                ]
+              }
             },
-            "geometry": {
-              "type": "Point",
-              "coordinates": [
-                -122.079608999,
-                37.424219
-              ]
-            }
-          },
-          {
-            "type": "Feature",
-            "properties": {
-              "id": "Stage 4",
-              "title": "4 - Ursa Major",
-              "type": "LABEL"
+            {
+              "type": "Feature",
+              "properties": {
+                "id": "",
+                "type": "LABEL",
+                "title": "Stage 3",
+                "tag": "stage3",
+                "description": ""
+              },
+              "geometry": {
+                "type": "Point",
+                "coordinates": [
+                  -122.079734,
+                  37.425067
+                ]
+              }
             },
-            "geometry": {
-              "type": "Point",
-              "coordinates": [
-                -122.079602999,
-                37.424205
-              ]
-            }
-          },
-          {
-            "type": "Feature",
-            "properties": {
-              "id": "d81361d2-09fd-e511-a517-00155d5066d7",
-              "title": "Stage 5 - Libra",
-              "type": "SESSION"
+            {
+              "type": "Feature",
+              "properties": {
+                "id": "",
+                "type": "ICON_restroom",
+                "title": "Restrooms",
+                "tag": "rest1",
+                "description": ""
+              },
+              "geometry": {
+                "type": "Point",
+                "coordinates": [
+                  -122.079708,
+                  37.423942
+                ]
+              }
             },
-            "geometry": {
-              "type": "Point",
-              "coordinates": [
-                -122.078921,
-                37.423983
-              ]
-            }
-          },
-          {
-            "type": "Feature",
-            "properties": {
-              "id": "Stage 5",
-              "title": "5 - Libra",
-              "type": "LABEL"
+            {
+              "type": "Feature",
+              "properties": {
+                "id": "",
+                "type": "ICON_restroom",
+                "title": "Restrooms",
+                "tag": "rest2",
+                "description": ""
+              },
+              "geometry": {
+                "type": "Point",
+                "coordinates": [
+                  -122.07918,
+                  37.423791
+                ]
+              }
             },
-            "geometry": {
-              "type": "Point",
-              "coordinates": [
-                -122.078909,
-                37.423974
-              ]
-            }
-          },
-          {
-            "type": "Feature",
-            "properties": {
-              "id": "a4eedfa7-09fd-e511-a517-00155d5066d7",
-              "title": "Stage 6 - Virgo",
-              "type": "SESSION"
+            {
+              "type": "Feature",
+              "properties": {
+                "id": "",
+                "type": "ICON_restroom",
+                "title": "Restrooms",
+                "tag": "rest3",
+                "description": ""
+              },
+              "geometry": {
+                "type": "Point",
+                "coordinates": [
+                  -122.078777,
+                  37.425154
+                ]
+              }
             },
-            "geometry": {
-              "type": "Point",
-              "coordinates": [
-                -122.07918,
-                37.424177
-              ]
-            }
-          },
-          {
-            "type": "Feature",
-            "properties": {
-              "id": "Stage 6",
-              "title": "6 - Virgo",
-              "type": "LABEL"
+            {
+              "type": "Feature",
+              "properties": {
+                "id": "",
+                "type": "ICON_restroom",
+                "title": "Restrooms",
+                "tag": "rest4",
+                "description": ""
+              },
+              "geometry": {
+                "type": "Point",
+                "coordinates": [
+                  -122.080066,
+                  37.426018
+                ]
+              }
             },
-            "geometry": {
-              "type": "Point",
-              "coordinates": [
-                -122.0791709999,
-                37.42416499999
-              ]
-            }
-          },
-          {
-            "type": "Feature",
-            "properties": {
-              "id": "07f1b8dd-09fd-e511-a517-00155d5066d7",
-              "title": "Stage 7 - Leo",
-              "type": "SESSION"
+            {
+              "type": "Feature",
+              "properties": {
+                "id": "",
+                "type": "ICON_restroom",
+                "title": "Restrooms",
+                "tag": "rest5",
+                "description": ""
+              },
+              "geometry": {
+                "type": "Point",
+                "coordinates": [
+                  -122.07957,
+                  37.426553
+                ]
+              }
             },
-            "geometry": {
-              "type": "Point",
-              "coordinates": [
-                -122.078813,
-                37.424473
-              ]
-            }
-          },
-          {
-            "type": "Feature",
-            "properties": {
-              "id": "Stage 7",
-              "title": "7 - Leo",
-              "type": "LABEL"
+            {
+              "type": "Feature",
+              "properties": {
+                "id": "food",
+                "type": "MISC",
+                "title": "Food Court",
+                "tag": "eats",
+                "description": "Hungry? Pass by our centrally located EATS Market to grab a bite."
+              },
+              "geometry": {
+                "type": "Point",
+                "coordinates": [
+                  -122.08005,
+                  37.424673
+                ]
+              }
             },
-            "geometry": {
-              "type": "Point",
-              "coordinates": [
-                -122.078804999,
-                37.424464
-              ]
-            }
-          },
-          {
-            "type": "Feature",
-            "properties": {
-              "id": "e2b5f2e7-09fd-e511-a517-00155d5066d7",
-              "title": "Stage 8 - Crater",
-              "type": "SESSION"
+            {
+              "type": "Feature",
+              "properties": {
+                "id": "",
+                "type": "ICON_food",
+                "title": "Food Court",
+                "tag": "eats",
+                "description": ""
+              },
+              "geometry": {
+                "type": "Point",
+                "coordinates": [
+                  -122.079876,
+                  37.424591
+                ]
+              }
             },
-            "geometry": {
-              "type": "Point",
-              "coordinates": [
-                -122.078817,
-                37.424912
-              ]
-            }
-          },
-          {
-            "type": "Feature",
-            "properties": {
-              "id": "Stage 8",
-              "title": "8 - Crater",
-              "type": "LABEL"
+            {
+              "type": "Feature",
+              "properties": {
+                "id": "sandboxa",
+                "type": "SANDBOX",
+                "title": "Sandbox A",
+                "tag": "sandboxa",
+                "description": "Learn more about IoT and how our products work together to improve everyday experiences. Interact with Android Auto, Android Things, Android TV, Cast, Google Assistant, Google Home, and Nest."
+              },
+              "geometry": {
+                "type": "Point",
+                "coordinates": [
+                  -122.079675,
+                  37.425892
+                ]
+              }
             },
-            "geometry": {
-              "type": "Point",
-              "coordinates": [
-                -122.078810999,
-                37.424903
-              ]
-            }
-          },
-          {
-            "type": "Feature",
-            "properties": {
-              "id": "d1df0515-0afd-e511-a517-00155d5066d7",
-              "title": "Stage 9 - Cepheus",
-              "type": "SESSION"
+            {
+              "type": "Feature",
+              "properties": {
+                "id": "",
+                "type": "LABEL",
+                "title": "A",
+                "tag": "sandboxa",
+                "description": ""
+              },
+              "geometry": {
+                "type": "Point",
+                "coordinates": [
+                  -122.079729,
+                  37.425852
+                ]
+              }
             },
-            "geometry": {
-              "type": "Point",
-              "coordinates": [
-                -122.079201,
-                37.425236
-              ]
-            }
-          },
-          {
-            "type": "Feature",
-            "properties": {
-              "id": "Stage 9",
-              "title": "9 - Cepheus",
-              "type": "LABEL"
+            {
+              "type": "Feature",
+              "properties": {
+                "id": "sandboxb",
+                "type": "SANDBOX",
+                "title": "Sandbox B",
+                "tag": "sandboxb",
+                "description": "Interact with and learn more about the Google Assistant."
+              },
+              "geometry": {
+                "type": "Point",
+                "coordinates": [
+                  -122.079884,
+                  37.425796
+                ]
+              }
             },
-            "geometry": {
-              "type": "Point",
-              "coordinates": [
-                -122.079195,
-                37.425228
-              ]
-            }
-          },
-          {
-            "type": "Feature",
-            "properties": {
-              "id": "c675afbb-4702-e611-a517-00155d5066d7",
-              "title": "Stage 10 - Cassiopea",
-              "type": "SESSION"
+            {
+              "type": "Feature",
+              "properties": {
+                "id": "",
+                "type": "LABEL",
+                "title": "B",
+                "tag": "sandboxb",
+                "description": ""
+              },
+              "geometry": {
+                "type": "Point",
+                "coordinates": [
+                  -122.07997,
+                  37.425762
+                ]
+              }
             },
-            "geometry": {
-              "type": "Point",
-              "coordinates": [
-                -122.078828,
-                37.425447999999996
-              ]
-            }
-          },
-          {
-            "type": "Feature",
-            "properties": {
-              "id": "Stage 10",
-              "title": "10 - Cassiopea",
-              "type": "LABEL"
+            {
+              "type": "Feature",
+              "properties": {
+                "id": "sandboxc",
+                "type": "SANDBOX",
+                "title": "Sandbox C",
+                "tag": "sandboxc",
+                "description": "Interact with and learn more about Android Platforms, Android Studio, Instant apps, Android Wear, Android Auto, and the Google Play Console. Learn more about the Google Play Awards and this year’s winners, or sign up for an App Review with the Google Play team."
+              },
+              "geometry": {
+                "type": "Point",
+                "coordinates": [
+                  -122.079685,
+                  37.425671
+                ]
+              }
             },
-            "geometry": {
-              "type": "Point",
-              "coordinates": [
-                -122.078818,
-                37.425435
-              ]
-            }
-          },
-          {
-            "type": "Feature",
-            "properties": {
-              "id": "Restroom1",
-              "title": "Restroom",
-              "type": "ICON_RESTROOM"
+            {
+              "type": "Feature",
+              "properties": {
+                "id": "",
+                "type": "LABEL",
+                "title": "C",
+                "tag": "sandboxc",
+                "description": ""
+              },
+              "geometry": {
+                "type": "Point",
+                "coordinates": [
+                  -122.079824,
+                  37.425618
+                ]
+              }
             },
-            "geometry": {
-              "type": "Point",
-              "coordinates": [
-                -122.079754,
-                37.423868
-              ]
-            }
-          },
-          {
-            "type": "Feature",
-            "properties": {
-              "id": "Restroom2",
-              "title": "Restroom",
-              "type": "ICON_RESTROOM"
+            {
+              "type": "Feature",
+              "properties": {
+                "id": "e6ce7473-75fe-4c6b-a790-0a73a8c78c0a",
+                "type": "SESSION",
+                "title": "Stage 7",
+                "tag": "stage7",
+                "description": "Stage 7"
+              },
+              "geometry": {
+                "type": "Point",
+                "coordinates": [
+                  -122.07875,
+                  37.425495
+                ]
+              }
             },
-            "geometry": {
-              "type": "Point",
-              "coordinates": [
-                -122.078723,
-                37.42382
-              ]
-            }
-          },
-          {
-            "type": "Feature",
-            "properties": {
-              "id": "Restroom3",
-              "title": "Restroom",
-              "type": "ICON_RESTROOM"
+            {
+              "type": "Feature",
+              "properties": {
+                "id": "",
+                "type": "LABEL",
+                "title": "Stage 7",
+                "tag": "stage7",
+                "description": "Stage 7"
+              },
+              "geometry": {
+                "type": "Point",
+                "coordinates": [
+                  -122.078731,
+                  37.425444
+                ]
+              }
             },
-            "geometry": {
-              "type": "Point",
-              "coordinates": [
-                -122.07909,
-                37.425685
-              ]
-            }
-          },
-          {
-            "type": "Feature",
-            "properties": {
-              "id": "Totem1",
-              "title": "Totem",
-              "type": "ICON_TOTEM"
+            {
+              "type": "Feature",
+              "properties": {
+                "id": "c51b13d5-28ca-4848-b5a6-6df5b4a6f946",
+                "type": "SESSION",
+                "title": "Stage 4",
+                "tag": "stage4",
+                "description": "Stage 4"
+              },
+              "geometry": {
+                "type": "Point",
+                "coordinates": [
+                  -122.079598,
+                  37.424312
+                ]
+              }
             },
-            "geometry": {
-              "type": "Point",
-              "coordinates": [
-                -122.080074,
-                37.425516
-              ]
-            }
-          },
-          {
-            "type": "Feature",
-            "properties": {
-              "id": "Press",
-              "title": "Press Lounge",
-              "type": "PLAIN"
+            {
+              "type": "Feature",
+              "properties": {
+                "id": "",
+                "type": "LABEL",
+                "title": "Stage 4",
+                "tag": "stage4",
+                "description": "Stage 4"
+              },
+              "geometry": {
+                "type": "Point",
+                "coordinates": [
+                  -122.079606,
+                  37.424196
+                ]
+              }
             },
-            "geometry": {
-              "type": "Point",
-              "coordinates": [
-                -122.07972,
-                37.427156
-              ]
-            }
-          },
-          {
-            "type": "Feature",
-            "properties": {
-              "id": "SandboxA",
-              "title": "Android Pro Audio/Android for Work/Android Experiments",
-              "type": "SANDBOX"
+            {
+              "type": "Feature",
+              "properties": {
+                "id": "c75f8dff-36b3-4248-bc82-d0523ad8f6df",
+                "type": "SESSION",
+                "title": "Stage 5",
+                "tag": "stage5",
+                "description": "Stage 5"
+              },
+              "geometry": {
+                "type": "Point",
+                "coordinates": [
+                  -122.078793,
+                  37.42395
+                ]
+              }
             },
-            "geometry": {
-              "type": "Point",
-              "coordinates": [
-                -122.080362999,
-                37.42546499999
-              ]
-            }
-          },
-          {
-            "type": "Feature",
-            "properties": {
-              "id": "SandboxB",
-              "title": "Living Room/Nest/Android Wear",
-              "type": "SANDBOX"
+            {
+              "type": "Feature",
+              "properties": {
+                "id": "",
+                "type": "LABEL",
+                "title": "Stage 5",
+                "tag": "stage5",
+                "description": "Stage 5"
+              },
+              "geometry": {
+                "type": "Point",
+                "coordinates": [
+                  -122.078769,
+                  37.423909
+                ]
+              }
             },
-            "geometry": {
-              "type": "Point",
-              "coordinates": [
-                -122.07967,
-                37.425385
-              ]
-            }
-          },
-          {
-            "type": "Feature",
-            "properties": {
-              "id": "SandboxC",
-              "title": "Access & Empathy/Design",
-              "type": "SANDBOX"
+            {
+              "type": "Feature",
+              "properties": {
+                "id": "54adc1dc-ee51-44c4-a919-87aec2351826",
+                "type": "SESSION",
+                "title": "Stage 6",
+                "tag": "stage6",
+                "description": "Stage 6"
+              },
+              "geometry": {
+                "type": "Point",
+                "coordinates": [
+                  -122.078839,
+                  37.424665
+                ]
+              }
             },
-            "geometry": {
-              "type": "Point",
-              "coordinates": [
-                -122.07963699,
-                37.425137
-              ]
-            }
-          },
-          {
-            "type": "Feature",
-            "properties": {
-              "id": "SandboxD",
-              "title": "Play & Android Studio",
-              "type": "SANDBOX"
+            {
+              "type": "Feature",
+              "properties": {
+                "id": "",
+                "type": "LABEL",
+                "title": "Stage 6",
+                "tag": "stage6",
+                "description": "Stage 6"
+              },
+              "geometry": {
+                "type": "Point",
+                "coordinates": [
+                  -122.078841,
+                  37.424603
+                ]
+              }
             },
-            "geometry": {
-              "type": "Point",
-              "coordinates": [
-                -122.079906,
-                37.425046
-              ]
-            }
-          },
-          {
-            "type": "Feature",
-            "properties": {
-              "id": "SandboxE",
-              "title": "Project Tango",
-              "type": "SANDBOX"
+            {
+              "type": "Feature",
+              "properties": {
+                "id": "sandboxd",
+                "type": "SANDBOX",
+                "title": "Sandbox D",
+                "tag": "sandboxd",
+                "description": "D"
+              },
+              "geometry": {
+                "type": "Point",
+                "coordinates": [
+                  -122.080351,
+                  37.425651
+                ]
+              }
             },
-            "geometry": {
-              "type": "Point",
-              "coordinates": [
-                -122.07972699,
-                37.424571
-              ]
-            }
-          },
-          {
-            "type": "Feature",
-            "properties": {
-              "id": "SandboxF",
-              "title": "Android Auto",
-              "type": "SANDBOX"
+            {
+              "type": "Feature",
+              "properties": {
+                "id": "",
+                "type": "LABEL",
+                "title": "D",
+                "tag": "sandboxd",
+                "description": ""
+              },
+              "geometry": {
+                "type": "Point",
+                "coordinates": [
+                  -122.080351,
+                  37.425651
+                ]
+              }
             },
-            "geometry": {
-              "type": "Point",
-              "coordinates": [
-                -122.079954,
-                37.424256
-              ]
-            }
-          },
-          {
-            "type": "Feature",
-            "properties": {
-              "id": "SandboxG",
-              "title": "Geo",
-              "type": "SANDBOX"
+            {
+              "type": "Feature",
+              "properties": {
+                "id": "sandboxe",
+                "type": "SANDBOX",
+                "title": "Sandbox E",
+                "tag": "sandboxe",
+                "description": "E"
+              },
+              "geometry": {
+                "type": "Point",
+                "coordinates": [
+                  -122.080081,
+                  37.424321
+                ]
+              }
             },
-            "geometry": {
-              "type": "Point",
-              "coordinates": [
-                -122.079281,
-                37.424379
-              ]
-            }
-          },
-          {
-            "type": "Feature",
-            "properties": {
-              "id": "SandboxH",
-              "title": "Google Cloud Platform",
-              "type": "SANDBOX"
+            {
+              "type": "Feature",
+              "properties": {
+                "id": "",
+                "type": "LABEL",
+                "title": "E",
+                "tag": "sandboxe",
+                "description": ""
+              },
+              "geometry": {
+                "type": "Point",
+                "coordinates": [
+                  -122.080134,
+                  37.424248
+                ]
+              }
             },
-            "geometry": {
-              "type": "Point",
-              "coordinates": [
-                -122.079225,
-                37.424593
-              ]
-            }
-          },
-          {
-            "type": "Feature",
-            "properties": {
-              "id": "SandboxI",
-              "title": "Firebase",
-              "type": "SANDBOX"
+            {
+              "type": "Feature",
+              "properties": {
+                "id": "sandboxf",
+                "type": "SANDBOX",
+                "title": "Sandbox F",
+                "tag": "sandboxf",
+                "description": "F"
+              },
+              "geometry": {
+                "type": "Point",
+                "coordinates": [
+                  -122.080008,
+                  37.424105
+                ]
+              }
             },
-            "geometry": {
-              "type": "Point",
-              "coordinates": [
-                -122.079042,
-                37.424576
-              ]
-            }
-          },
-          {
-            "type": "Feature",
-            "properties": {
-              "id": "SandboxJ",
-              "title": "Office Hours/Ask a Dev",
-              "type": "SANDBOX"
+            {
+              "type": "Feature",
+              "properties": {
+                "id": "",
+                "type": "LABEL",
+                "title": "F",
+                "tag": "sandboxf",
+                "description": ""
+              },
+              "geometry": {
+                "type": "Point",
+                "coordinates": [
+                  -122.080069,
+                  37.424009
+                ]
+              }
             },
-            "geometry": {
-              "type": "Point",
-              "coordinates": [
-                -122.079298,
-                37.42496
-              ]
-            }
-          },
-          {
-            "type": "Feature",
-            "properties": {
-              "id": "SandboxK",
-              "title": "Search/AMP/Mobile Web",
-              "type": "SANDBOX"
+            {
+              "type": "Feature",
+              "properties": {
+                "id": "sandboxg",
+                "type": "SANDBOX",
+                "title": "Sandbox G",
+                "tag": "sandboxg",
+                "description": "G"
+              },
+              "geometry": {
+                "type": "Point",
+                "coordinates": [
+                  -122.079065,
+                  37.424107
+                ]
+              }
             },
-            "geometry": {
-              "type": "Point",
-              "coordinates": [
-                -122.078988,
-                37.425016
-              ]
-            }
-          },
-          {
-            "type": "Feature",
-            "properties": {
-              "id": "SandboxL",
-              "title": "Developing for Kids",
-              "type": "SANDBOX"
+            {
+              "type": "Feature",
+              "properties": {
+                "id": "",
+                "type": "LABEL",
+                "title": "G",
+                "tag": "sandboxg",
+                "description": ""
+              },
+              "geometry": {
+                "type": "Point",
+                "coordinates": [
+                  -122.079086,
+                  37.424031
+                ]
+              }
             },
-            "geometry": {
-              "type": "Point",
-              "coordinates": [
-                -122.078797,
-                37.425202
-              ]
-            }
-          },
-          {
-            "type": "Feature",
-            "properties": {
-              "id": "SandboxM",
-              "title": "Play Music",
-              "type": "SANDBOX"
+            {
+              "type": "Feature",
+              "properties": {
+                "id": "sandboxh",
+                "type": "SANDBOX",
+                "title": "Sandbox H",
+                "tag": "sandboxh",
+                "description": "H"
+              },
+              "geometry": {
+                "type": "Point",
+                "coordinates": [
+                  -122.079161,
+                  37.425061
+                ]
+              }
             },
-            "geometry": {
-              "type": "Point",
-              "coordinates": [
-                -122.080832,
-                37.426007999
-              ]
-            }
-          },
-          {
-            "type": "Feature",
-            "properties": {
-              "id": "Registration",
-              "title": "Registration",
-              "type": "LABEL"
+            {
+              "type": "Feature",
+              "properties": {
+                "id": "",
+                "type": "LABEL",
+                "title": "H",
+                "tag": "sandboxh",
+                "description": ""
+              },
+              "geometry": {
+                "type": "Point",
+                "coordinates": [
+                  -122.079208,
+                  37.424964
+                ]
+              }
             },
-            "geometry": {
-              "type": "Point",
-              "coordinates": [
-                -122.079623,
-                37.426176
-              ]
-            }
-          },
-          {
-            "type": "Feature",
-            "properties": {
-              "id": "0d370d14-9902-e611-a517-00155d5066d7",
-              "title": "Codelabs",
-              "type": "CODELAB"
+            {
+              "type": "Feature",
+              "properties": {
+                "id": "sandboxi",
+                "type": "SANDBOX",
+                "title": "Sandbox I",
+                "tag": "sandboxi",
+                "description": "I"
+              },
+              "geometry": {
+                "type": "Point",
+                "coordinates": [
+                  -122.079024,
+                  37.425219
+                ]
+              }
             },
-            "geometry": {
-              "type": "Point",
-              "coordinates": [
-                -122.079996,
-                37.426367
-              ]
-            }
-          },
-          {
-            "type": "Feature",
-            "properties": {
-              "id": "Code labs",
-              "title": "Codelabs",
-              "type": "LABEL"
+            {
+              "type": "Feature",
+              "properties": {
+                "id": "",
+                "type": "LABEL",
+                "title": "I",
+                "tag": "sandboxi",
+                "description": ""
+              },
+              "geometry": {
+                "type": "Point",
+                "coordinates": [
+                  -122.079054,
+                  37.425162
+                ]
+              }
             },
-            "geometry": {
-              "type": "Point",
-              "coordinates": [
-                -122.079985,
-                37.426361
-              ]
-            }
-          },
-          {
-            "type": "Feature",
-            "properties": {
-              "id": "34b13834-0afd-e511-a517-00155d5066d7",
-              "title": "Keynote & Concert area",
-              "type": "SESSION"
+            {
+              "type": "Feature",
+              "properties": {
+                "id": "officehours",
+                "type": "OFFICEHOURS",
+                "title": "Office Hours",
+                "tag": "officehours",
+                "description": "Office Hours"
+              },
+              "geometry": {
+                "type": "Point",
+                "coordinates": [
+                  -122.079239,
+                  37.425681
+                ]
+              }
             },
-            "geometry": {
-              "type": "Point",
-              "coordinates": [
-                -122.081116,
-                37.427008
-              ]
-            }
-          },
-          {
-            "type": "Feature",
-            "properties": {
-              "id": "Keynote",
-              "title": "Keynote & Concert area",
-              "type": "LABEL"
+            {
+              "type": "Feature",
+              "properties": {
+                "id": "",
+                "type": "LABEL",
+                "title": "Office Hours",
+                "tag": "officehours",
+                "description": ""
+              },
+              "geometry": {
+                "type": "Point",
+                "coordinates": [
+                  -122.079245,
+                  37.425569
+                ]
+              }
             },
-            "geometry": {
-              "type": "Point",
-              "coordinates": [
-                -122.0811109999,
-                37.42698999
-              ]
+            {
+              "type": "Feature",
+              "properties": {
+                "id": "registration",
+                "type": "MISC",
+                "title": "Registration",
+                "tag": "registration",
+                "description": "Pick-up your badge starting on May 16. Check the event agenda for the full schedule."
+              },
+              "geometry": {
+                "type": "Point",
+                "coordinates": [
+                  -122.081036,
+                  37.425943
+                ]
+              }
+            },
+            {
+              "type": "Feature",
+              "properties": {
+                "id": "",
+                "type": "LABEL",
+                "title": "Registration",
+                "tag": "registration",
+                "description": ""
+              },
+              "geometry": {
+                "type": "Point",
+                "coordinates": [
+                  -122.081024,
+                  37.425941
+                ]
+              }
+            },
+            {
+              "type": "Feature",
+              "properties": {
+                "id": "press",
+                "type": "MISC",
+                "title": "Press Lounge",
+                "tag": "press",
+                "description": "Reserved for guests with Press badges."
+              },
+              "geometry": {
+                "type": "Point",
+                "coordinates": [
+                  -122.07977,
+                  37.427036
+                ]
+              }
+            },
+            {
+              "type": "Feature",
+              "properties": {
+                "id": "",
+                "type": "LABEL",
+                "title": "Press Lounge",
+                "tag": "press",
+                "description": ""
+              },
+              "geometry": {
+                "type": "Point",
+                "coordinates": [
+                  -122.079755,
+                  37.427028
+                ]
+              }
+            },
+            {
+              "type": "Feature",
+              "properties": {
+                "id": "",
+                "type": "ICON_medical",
+                "title": "Medical Station",
+                "tag": "emt",
+                "description": ""
+              },
+              "geometry": {
+                "type": "Point",
+                "coordinates": [
+                  -122.080412,
+                  37.426053
+                ]
+              }
+            },
+            {
+              "type": "Feature",
+              "properties": {
+                "id": "",
+                "type": "ICON_store",
+                "title": "I/O Store",
+                "tag": "storeright",
+                "description": ""
+              },
+              "geometry": {
+                "type": "Point",
+                "coordinates": [
+                  -122.080472,
+                  37.426192
+                ]
+              }
+            },
+            {
+              "type": "Feature",
+              "properties": {
+                "id": "",
+                "type": "ICON_store",
+                "title": "I/O Store",
+                "tag": "storeleft",
+                "description": ""
+              },
+              "geometry": {
+                "type": "Point",
+                "coordinates": [
+                  -122.079888,
+                  37.426805
+                ]
+              }
             }
+          ]
+        },
+        "tiles": {
+          "0": {
+            "filename": "floor0-2017-1.svg",
+            "url": ""
           }
-        ]
-      },
-      "tiles": {
-        "0": {
-          "filename": "floor0-2017-1.svg",
-          "url": ""
         }
       }
-    }
     ],
     "rooms": [
       {
