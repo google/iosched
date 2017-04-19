@@ -223,8 +223,18 @@ dependencies {
 
     // Backend server
     compile project(path: ':server', configuration: 'android-endpoints')
-    compile 'com.google.api-client:google-api-client:1.22.0'
-    compile 'com.google.api-client:google-api-client-android:1.22.0'
+
+    compile ('com.google.api-client:google-api-client:1.22.0') {
+        // Dependency org.apache.httpcomponents:httpclient:4.0.1
+        // conflicts with the internal version provided by Android.
+        exclude group: 'org.apache.httpcomponents', module:'httpclient'
+    }
+
+    compile ('com.google.api-client:google-api-client-android:1.22.0') {
+        // Dependency org.apache.httpcomponents:httpclient:4.0.1
+        // conflicts with the internal version provided by Android.
+        exclude group: 'org.apache.httpcomponents', module:'httpclient'
+    }
 
     // Google Play services split client libs.
     compile "com.google.android.gms:play-services-analytics:${google_play_services_client_library_version}"
@@ -249,7 +259,6 @@ dependencies {
     compile 'com.github.bumptech.glide:glide:3.5.2'
 
     compile files('../third_party/disklrucache/libs/disklrucache-2.0.2.jar')
-    compile files('../third_party/volley/libs/volley.jar')
     compile files('../third_party/basic-http-client/libs/basic-http-client-android-0.88.jar')
     // SVG processor for the Conference Map overlay.
     compile(name: 'svg-android-2.0.7-20150515.214425-1', ext: 'jar')
