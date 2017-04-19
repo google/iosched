@@ -42,7 +42,7 @@ public class EditorMapFragment extends MapFragment {
         }
 
         @Override
-        public void onInfoShowTitle(String label, int roomType) {
+        public void onInfoShowTitle(String label, String subtitle, int roomType) {
         }
 
         @Override
