@@ -60,6 +60,7 @@ public class RegistrationEndpoint {
     private static final Logger LOG = Logger.getLogger(RegistrationEndpoint.class.getName());
     private static final String EVENT_INFO_RSVP_STATUS_KEY = "rsvp_status";
     private static final String EVENT_INFO_RSVP_STATUS_CONFIRMED_VALUE = "confirmed";
+    private static final String GOOGLER_EMAIL_DOMAIN = "@google.com";
 
     @VisibleForTesting public FirebaseWrapper firebaseWrapper = new FirebaseWrapper();
 
@@ -95,6 +96,16 @@ public class RegistrationEndpoint {
     }
 
     private boolean isUserRegistered(ServletContext context) throws IOException {
+        // Session seat reservations are gated on the result of this method. If a user is registered
+        // they can reserve otherwise they cannot. Googlers however are not allowed to reserve even
+        // if they are registered. This check ensures that Googlers are marked as not registered so
+        // that they will not be able to reserve seats.
+        // TODO: Allow this to return the accurate registration status and handle reservation status
+        // TODO: elsewhere.
+        if (firebaseWrapper.getUserEmail().endsWith(GOOGLER_EMAIL_DOMAIN)) {
+            return false;
+        }
+
         JSONObject eventDelegateInfo = queryDelegateInfo(context);
         if (eventDelegateInfo == null) {
             return false;
