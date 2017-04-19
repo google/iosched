@@ -215,9 +215,9 @@ public class MapActivity extends BaseActivity
     }
 
     @Override
-    public void onInfoShowTitle(String label, int icon) {
+    public void onInfoShowTitle(String title, String subtitle, int roomType) {
         if (mInfoFragment != null) {
-            mInfoFragment.showTitleOnly(icon, label);
+            mInfoFragment.showTitleOnly(roomType, title, subtitle);
         }
         setTabletInfoVisibility(View.VISIBLE);
 

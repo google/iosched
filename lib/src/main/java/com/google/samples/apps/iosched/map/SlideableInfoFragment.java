@@ -93,8 +93,8 @@ public class SlideableInfoFragment extends MapInfoFragment {
     }
 
     @Override
-    public void showTitleOnly(int roomType, String title) {
-        super.showTitleOnly(roomType, title);
+    public void showTitleOnly(int roomType, String title, String subtitle) {
+        super.showTitleOnly(roomType, title, subtitle);
         setCollapsedOnly();
     }
 

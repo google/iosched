@@ -125,7 +125,7 @@ public class MapFragment extends com.google.android.gms.maps.SupportMapFragment 
 
         void onInfoHide();
 
-        void onInfoShowTitle(String label, int roomType);
+        void onInfoShowTitle(String label,  String subtitle, int roomType);
 
         void onInfoShowSessionlist(String roomId, String roomTitle, int roomType);
 
@@ -140,7 +140,7 @@ public class MapFragment extends com.google.android.gms.maps.SupportMapFragment 
         }
 
         @Override
-        public void onInfoShowTitle(String label, int roomType) {
+        public void onInfoShowTitle(String label, String subtitle, int roomType) {
         }
 
         @Override
@@ -416,20 +416,27 @@ public class MapFragment extends com.google.android.gms.maps.SupportMapFragment 
     }
 
     private void selectMarker(GeoJsonFeature feature) {
+        if (feature == null) {
+            mCallbacks.onInfoHide();
+            return;
+        }
+
         int type = MapUtils.detectMarkerType(feature.getProperty("type"));
         String id = feature.getProperty("id");
         String title = feature.getProperty("title");
-        if (feature != null && MapUtils.hasInfoTitleOnly(type)) {
+        String subtitle = feature.getProperty("description");
+
+        if (MapUtils.hasInfoTitleOnly(type)) {
             // Show a basic info window with a title only
-            mCallbacks.onInfoShowTitle(title, type);
+            mCallbacks.onInfoShowTitle(title, subtitle, type);
             selectActiveMarker(feature);
 
-        } else if (feature != null && MapUtils.hasInfoSessionList(type)) {
+        } else if (MapUtils.hasInfoSessionList(type) || MapUtils.hasInfoSessionListIcons(type)) {
             // Type has sessions to display
             mCallbacks.onInfoShowSessionlist(id, title, type);
             selectActiveMarker(feature);
 
-        } else if (feature != null && MapUtils.hasInfoFirstDescriptionOnly(type)) {
+        } else if (MapUtils.hasInfoFirstDescriptionOnly(type)) {
             // Display the description of the first session only
             mCallbacks.onInfoShowFirstSessionTitle(id, title, type);
             selectActiveMarker(feature);
