@@ -38,6 +38,8 @@ import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.widget.TextView;
 
+import org.apache.commons.lang3.StringEscapeUtils;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Pattern;
@@ -87,7 +89,8 @@ public class HtmlTextView extends AppCompatTextView {
 
     public void setHtmlText(String html) {
         if (html != null) {
-            Spannable sequence = new SpannableString(Html.fromHtml(html));
+            Spannable sequence =
+                    new SpannableString(Html.fromHtml(StringEscapeUtils.unescapeJava(StringEscapeUtils.unescapeHtml4(html))));
             stripUnderlines(sequence);
             setText(sequence);
         }
