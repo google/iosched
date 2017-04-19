@@ -74,7 +74,7 @@ public class MyIOFragment extends Fragment implements MyIoView, Callbacks {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container,
-                             @Nullable Bundle savedInstanceState) {
+            @Nullable Bundle savedInstanceState) {
         return inflater.inflate(R.layout.myio_fragment, container, false);
     }
 

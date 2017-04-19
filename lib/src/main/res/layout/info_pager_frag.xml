@@ -35,18 +35,9 @@
             android:background="@color/lighter_grey"
             android:fitsSystemWindows="true"
             android:minHeight="?actionBarSize"
-            app:contentScrim="@color/lighter_grey"
             app:layout_scrollFlags="scroll|exitUntilCollapsed"
-            app:scrimAnimationDuration="300"
             app:statusBarScrim="@null"
             app:titleEnabled="false">
-
-            <com.airbnb.lottie.LottieAnimationView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:fitsSystemWindows="true"
-                app:lottie_autoPlay="true"
-                app:lottie_fileName="animations/header_info.json" />
 
             <android.support.v7.widget.Toolbar
                 android:id="@+id/toolbar"
