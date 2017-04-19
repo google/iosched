@@ -275,10 +275,7 @@ public class MapActivity extends BaseActivity
 
     @Override
     public void onRequestPermissionsResult(final int requestCode,
-                                           @NonNull
-                                           final String[] permissions,
-                                           @NonNull
-                                           final int[] grantResults) {
+            @NonNull final String[] permissions, @NonNull final int[] grantResults) {
 
         if (requestCode != REQUEST_LOCATION_PERMISSION) {
             return;
@@ -293,7 +290,8 @@ public class MapActivity extends BaseActivity
         } else {
             // Permission was denied. Display error message that disappears after a short while.
             PermissionsUtils.displayConditionalPermissionDenialSnackbar(this,
-                    R.string.map_permission_denied, PERMISSIONS, REQUEST_LOCATION_PERMISSION, false);
+                    R.string.map_permission_denied, PERMISSIONS, REQUEST_LOCATION_PERMISSION,
+                    false);
 
         }
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);

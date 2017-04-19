@@ -34,7 +34,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ViewSwitcher;
 
-import com.airbnb.lottie.LottieAnimationView;
 import com.google.samples.apps.iosched.Config;
 import com.google.samples.apps.iosched.archframework.UpdatableView;
 import com.google.samples.apps.iosched.feedback.SessionFeedbackActivity;
@@ -67,7 +66,6 @@ public class ScheduleSingleDayFragment extends Fragment
     private int mDayId = 1;
 
     private ViewSwitcher mLoadingSwitcher;
-    private LottieAnimationView mLoadingView;
     private RecyclerView mRecyclerView;
     private ScheduleDayAdapter mViewAdapter;
 
@@ -85,7 +83,6 @@ public class ScheduleSingleDayFragment extends Fragment
             Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.schedule_singleday_frag, container, false);
         mLoadingSwitcher = (ViewSwitcher) view;
-        mLoadingView = (LottieAnimationView) view.findViewById(R.id.loading_anim);
         mRecyclerView = (RecyclerView) view.findViewById(android.R.id.list);
         mRecyclerView.addItemDecoration(new DividerDecoration(getContext()));
         mRecyclerView.setHasFixedSize(true);
@@ -282,7 +279,6 @@ public class ScheduleSingleDayFragment extends Fragment
     }
 
     private void showSchedule() {
-        mLoadingView.cancelAnimation();
         mLoadingSwitcher.setDisplayedChild(1);
     }
 }
