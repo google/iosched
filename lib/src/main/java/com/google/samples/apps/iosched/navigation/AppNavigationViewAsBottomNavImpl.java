@@ -14,14 +14,11 @@
 
 package com.google.samples.apps.iosched.navigation;
 
-import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
 
-import com.google.samples.apps.iosched.lib.R;
 import com.google.samples.apps.iosched.navigation.NavigationModel.NavigationItemEnum;
 
 import static com.google.samples.apps.iosched.util.LogUtils.LOGE;
@@ -31,11 +28,6 @@ public class AppNavigationViewAsBottomNavImpl extends AppNavigationViewAbstractI
         implements BottomNavigationView.OnNavigationItemSelectedListener {
 
     private static final String TAG = makeLogTag(AppNavigationViewAsBottomNavImpl.class);
-
-    private static final int CONTENT_FADE_OUT_DURATION = 150;
-    private static final int BOTTOM_NAV_SELECTED_DELAY = 240;
-
-    private final Handler mHandler = new Handler();
 
     private final BottomNavigationView mNavigationView;
 
@@ -68,20 +60,7 @@ public class AppNavigationViewAsBottomNavImpl extends AppNavigationViewAbstractI
     public boolean onNavigationItemSelected(@NonNull final MenuItem item) {
         final NavigationItemEnum navItem = NavigationItemEnum.getById(item.getItemId());
         if (navItem != null && navItem != mSelfItem) {
-            // Launch the target Activity after a short delay, to allow the close animation to play
-            mHandler.postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    itemSelected(navItem);
-                }
-            }, BOTTOM_NAV_SELECTED_DELAY);
-
-            // Fade out the main content
-            View mainContent = mActivity.findViewById(R.id.main_content);
-            if (mainContent != null) {
-                mainContent.animate().alpha(0).setDuration(CONTENT_FADE_OUT_DURATION);
-            }
-
+            itemSelected(navItem);
             // Return true so that BottomNavigationView updates itself to show the new item
             return true;
         }
