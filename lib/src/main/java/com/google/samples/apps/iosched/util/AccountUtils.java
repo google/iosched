@@ -68,10 +68,16 @@ public class AccountUtils {
             "pref_active_account_display_name" + Constants.CONFERENCE_YEAR_PREF_POSTFIX;
 
     /**
-     * Used for accessing the account phot url stored in {@link SharedPreferences}.
+     * Used for accessing the account photo url stored in {@link SharedPreferences}.
      */
     private static final String PREF_ACTIVE_ACCOUNT_PHOTO_URL =
             "pref_active_account_photo_url" + Constants.CONFERENCE_YEAR_PREF_POSTFIX;
+
+    /**
+     * Used for accessing the account id stored in {@link SharedPreferences}.
+     */
+    private static final String PREF_ACTIVE_ACCOUNT_ID =
+            "pref_active_account_id" + Constants.CONFERENCE_YEAR_PREF_POSTFIX;
 
     public static final String AUTH_SCOPES[] = {
             Scopes.PROFILE};
@@ -145,14 +151,36 @@ public class AccountUtils {
      * Sets the display name associated with the active account.
      *
      * @param context     Context used to lookup {@link SharedPreferences}
+     * @param id The id associated with an account.
+     */
+    public static void setActiveAccountId(final Context context,
+            final String id) {
+        SharedPreferences sp = getSharedPreferences(context);
+        sp.edit().putString(PREF_ACTIVE_ACCOUNT_ID, id).apply();
+    }
+
+    /**
+     * Returns the display name associated with the active account.
+     *
+     * @param context Context used to lookup {@link SharedPreferences}
+     */
+    public static String getActiveAccountId(final Context context) {
+        SharedPreferences sp = getSharedPreferences(context);
+        return sp.getString(PREF_ACTIVE_ACCOUNT_ID, "");
+    }
+
+    /**
+     * Sets the display name associated with the active account.
+     *
+     * @param context     Context used to lookup {@link SharedPreferences}
      * @param displayName The display name associated with an account.
      */
     public static void setActiveAccountDisplayName(final Context context,
-            final String displayName) {
+                                                   final String displayName) {
         SharedPreferences sp = getSharedPreferences(context);
         sp.edit().putString(PREF_ACTIVE_ACCOUNT_DISPLAY_NAME, displayName).apply();
     }
-
+    
     /**
      * Returns the photo url associated with the active account.
      *
@@ -269,7 +297,7 @@ public class AccountUtils {
             SharedPreferences sp = getSharedPreferences(context);
             sp.edit().putString(makeAccountSpecificPrefKey(accountName, PREFIX_PREF_FCM_KEY),
                     fcmKey).apply();
-            LOGD(TAG, "FCM key of account " + accountName + " set to: " + sanitizeFcmKey(fcmKey));
+            LOGD(TAG, "FCM key of account " + accountName + " set to: " + sanitizeUserId(fcmKey));
         }
 
     public static String getFcmKey(final Context context, final String accountName) {
@@ -281,13 +309,13 @@ public class AccountUtils {
         if (TextUtils.isEmpty(fcmKey)) {
             fcmKey = UUID.randomUUID().toString();
             LOGD(TAG, "No FCM key on account " + accountName + ". Generating random one: "
-                    + sanitizeFcmKey(fcmKey));
+                    + sanitizeUserId(fcmKey));
             setFcmKey(context, accountName, fcmKey);
         }
         return fcmKey;
     }
 
-    public static String sanitizeFcmKey(String key) {
+    public static String sanitizeUserId(String key) {
         if (key == null) {
             return "(null)";
         } else if (key.length() > 8) {
