@@ -23,7 +23,6 @@ of the map.-->
     android:id="@+id/drawer_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:fitsSystemWindows="true"
     android:orientation="vertical">
 
     <!-- Header bar on top of map -->
@@ -34,6 +33,7 @@ of the map.-->
         android:background="@color/aqua_marine"
         android:elevation="@dimen/headerbar_elevation"
         android:orientation="vertical"
+        android:fitsSystemWindows="true"
         android:theme="@style/ThemeOverlay.LightToolbar">
 
         <android.support.v7.widget.Toolbar

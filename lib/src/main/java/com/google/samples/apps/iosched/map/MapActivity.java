@@ -85,6 +85,7 @@ public class MapActivity extends BaseActivity
 
         setContentView(R.layout.map_act);
         disableActionBarTitle();
+        setFullscreenLayout();
         mInfoContainer = findViewById(R.id.map_detail_popup);
         overridePendingTransition(0, 0);
     }
