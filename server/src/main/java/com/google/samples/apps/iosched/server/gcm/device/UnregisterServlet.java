@@ -33,7 +33,7 @@ import javax.servlet.http.HttpServletResponse;
 @SuppressWarnings("serial")
 public class UnregisterServlet extends BaseServlet {
 
-    private static final String PARAMETER_REG_ID = "gcm_id";
+    private static final String PARAMETER_REG_ID = "device_id";
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp)
