@@ -66,7 +66,7 @@
     <servlet-class>com.google.api.server.spi.SystemServiceServlet</servlet-class>
     <init-param>
       <param-name>services</param-name>
-      <param-value>com.google.samples.apps.iosched.server.userdata.UserdataEndpoint, com.google.samples.apps.iosched.server.registration.RegistrationEndpoint, com.google.samples.apps.iosched.server.feed.ServingUrlEndpoint</param-value>
+      <param-value>com.google.samples.apps.iosched.server.userdata.UserdataEndpoint, com.google.samples.apps.iosched.server.registration.RegistrationEndpoint, com.google.samples.apps.iosched.server.feed.ServingUrlEndpoint, com.google.samples.apps.iosched.server.gcm.FcmRegistrationEndpoint</param-value>
     </init-param>
     <init-param>
       <param-name>restricted</param-name>
@@ -127,31 +127,6 @@
             com.google.samples.apps.iosched.server.gcm.db.ApiKeyInitializer
         </listener-class>
     </listener>
-
-    <!-- inbound device endpoints -->
-    <servlet>
-        <servlet-name>RegisterServlet</servlet-name>
-        <servlet-class>
-            com.google.samples.apps.iosched.server.gcm.device.RegisterServlet
-        </servlet-class>
-        <load-on-startup>1</load-on-startup>
-    </servlet>
-    <servlet-mapping>
-        <servlet-name>RegisterServlet</servlet-name>
-        <url-pattern>/gcm/register/*</url-pattern>
-    </servlet-mapping>
-
-    <servlet>
-        <servlet-name>UnregisterServlet</servlet-name>
-        <servlet-class>
-            com.google.samples.apps.iosched.server.gcm.device.UnregisterServlet
-        </servlet-class>
-        <load-on-startup>1</load-on-startup>
-    </servlet>
-    <servlet-mapping>
-        <servlet-name>UnregisterServlet</servlet-name>
-        <url-pattern>/gcm/unregister/*</url-pattern>
-    </servlet-mapping>
 
     <!-- outbound device endpoints -->
     <servlet>

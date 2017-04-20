@@ -18,6 +18,7 @@ package com.google.samples.apps.iosched.server.feed;
 import com.google.api.server.spi.config.Api;
 import com.google.api.server.spi.config.ApiMethod;
 import com.google.api.server.spi.config.ApiNamespace;
+import com.google.api.server.spi.config.Named;
 import com.google.appengine.tools.cloudstorage.GcsFilename;
 import com.google.common.base.Optional;
 import com.google.samples.apps.iosched.server.schedule.Config;
@@ -49,7 +50,7 @@ public class ServingUrlEndpoint {
    * @return Serving URL that can be used to request different sizes of an image.
    */
   @ApiMethod(name = "getServingUrl", path = "imageurl")
-  public ServingUrlResult getServingUrl(String filepath) {
+  public ServingUrlResult getServingUrl(@Named("filepath") String filepath) {
     GcsFilename gcsFilename = new GcsFilename(Config.CLOUD_STORAGE_BUCKET, filepath);
     // Use ImageService to get serving URL for image.
     String url = ServingUrlManager.INSTANCE
