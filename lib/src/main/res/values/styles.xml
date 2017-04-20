@@ -62,11 +62,6 @@
         <item name="colorControlActivated">@color/theme_accent_1</item>
     </style>
 
-    <style name="Theme.IOSched.Welcome">
-        <item name="android:windowBackground">@color/background</item>
-        <item name="android:statusBarColor">@color/immersive_status_bar</item>
-    </style>
-
     <style name="Theme.IOSched.Search" parent="Theme.IOSched.Light">
         <item name="android:windowBackground">@android:color/transparent</item>
         <item name="android:windowIsTranslucent">true</item>
@@ -88,6 +83,8 @@
         <item name="android:textCursorDrawable">@null</item>
     </style>
 
+    <style name="Theme.IOSched.Welcome" parent="@style/Theme.IOSched.Immersive" />
+
     <!-- My I/O -->
     <style name="Theme.IOSched.MyIo" parent="@style/Theme.IOSched.Immersive" />
 
@@ -98,9 +95,7 @@
     <style name="Theme.IOSched.Feed" parent="@style/Theme.IOSched.Immersive" />
 
     <!-- Map -->
-    <style name="Theme.IOSched.Map">
-        <item name="colorPrimaryDark">#ff16b990</item>
-    </style>
+    <style name="Theme.IOSched.Map" parent="@style/Theme.IOSched.Immersive" />
 
     <!-- Info -->
     <style name="Theme.IOSched.Info" parent="@style/Theme.IOSched.Immersive" />
