@@ -380,6 +380,8 @@ public class ScheduleProvider extends ContentProvider {
                 Uri sessionUri = Sessions.buildSessionUri(
                         values.getAsString(MyReservationColumns.SESSION_ID));
                 notifyChange(sessionUri);
+                // queries for sessions in user's schedule are affected by this change
+                notifyChange(Sessions.CONTENT_MY_SCHEDULE_URI);
                 return sessionUri;
             }
             case MY_VIEWED_VIDEOS: {
@@ -479,7 +481,9 @@ public class ScheduleProvider extends ContentProvider {
         }
 
         int retVal = builder.where(selection, selectionArgs).update(db, values);
-        notifyChange(uri);
+        if (retVal > 0) {
+            notifyChange(uri);
+        }
         return retVal;
     }
 
@@ -512,7 +516,9 @@ public class ScheduleProvider extends ContentProvider {
         }
 
         int retVal = builder.where(selection, selectionArgs).delete(db);
-        notifyChange(uri);
+        if (retVal > 0) {
+            notifyChange(uri);
+        }
         return retVal;
     }
 
