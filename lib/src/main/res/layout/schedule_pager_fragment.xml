@@ -86,23 +86,23 @@
                 <TextView
                     android:id="@+id/filters_description"
                     android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="@dimen/padding_normal"
-                    android:layout_marginStart="@dimen/padding_normal"
+                    android:layout_height="match_parent"
+                    android:paddingStart="@dimen/padding_normal"
+                    android:paddingEnd="@dimen/padding_normal"
                     android:layout_weight="1"
+                    android:gravity="center_vertical"
                     android:ellipsize="end"
-                    android:maxLines="2"
                     android:minLines="1"
-                    tools:text="Filters: Sessions Only, Android" />
+                    android:maxLines="2"
+                    tools:text="Filters: Sessions, Android" />
 
                 <ImageButton
                     android:id="@+id/clear_filters"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="@dimen/padding_normal"
-                    android:layout_marginStart="@dimen/padding_normal"
+                    android:layout_height="match_parent"
                     android:background="?selectableItemBackgroundBorderless"
                     android:contentDescription="@string/clear_filters"
+                    android:scaleType="center"
                     android:padding="@dimen/padding_normal"
                     app:srcCompat="@drawable/ic_clear_all" />
 

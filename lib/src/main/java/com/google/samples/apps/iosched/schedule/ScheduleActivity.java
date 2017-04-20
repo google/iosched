@@ -350,6 +350,11 @@ public class ScheduleActivity extends BaseActivity implements ScheduleViewParent
     }
 
     @Override
+    public void openFilterDrawer() {
+        mDrawerLayout.openDrawer(GravityCompat.END);
+    }
+
+    @Override
     protected String getScreenLabel() {
         return SCREEN_LABEL;
     }

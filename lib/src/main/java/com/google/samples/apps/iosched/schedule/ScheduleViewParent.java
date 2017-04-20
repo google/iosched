@@ -19,4 +19,6 @@ public interface ScheduleViewParent {
     void onRequestClearFilters();
 
     void onRequestFilterByTag(Tag tag);
+
+    void openFilterDrawer();
 }
