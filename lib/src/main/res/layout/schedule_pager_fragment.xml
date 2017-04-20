@@ -67,6 +67,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_gravity="bottom"
+                    app:tabTextColor="@android:color/white"
+                    app:tabIndicatorHeight="4dp"
                     app:tabIndicatorColor="@color/tab_selected_strip" />
 
             </android.support.design.widget.CollapsingToolbarLayout>
