@@ -284,6 +284,7 @@ public class SessionsFilterAdapter extends Adapter<ViewHolder> {
 
         protected void onBind(CharSequence label, boolean checked) {
             mLabel.setText(label);
+            mCheckbox.setContentDescription(mLabel.getText());
             setChecked(checked);
         }
 
