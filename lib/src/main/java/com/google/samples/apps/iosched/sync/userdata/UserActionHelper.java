@@ -39,10 +39,10 @@ class UserActionHelper {
      * Update content providers as a batch command based on the given list of User Actions.
      */
     static void updateContentProvider(Context context, List<UserAction> userActions,
-                                      String account) {
+            String account) {
         ArrayList<ContentProviderOperation> batch = new ArrayList<>();
         for (UserAction action : userActions) {
-            batch.add(createUpdateOperation(context, action, account));
+            batch.add(createUpdateOperation(action, account));
         }
         try {
             context.getContentResolver().applyBatch(ScheduleContract.CONTENT_AUTHORITY, batch);
@@ -55,8 +55,8 @@ class UserActionHelper {
      * Creates the correct content provider update operation depending on the type of the user
      * action.
      */
-    static private ContentProviderOperation createUpdateOperation(Context context,
-                                                                  UserAction action, String account) {
+    static private ContentProviderOperation createUpdateOperation(UserAction action,
+            String account) {
         if (action.type == UserAction.TYPE.ADD_STAR || action.type == UserAction.TYPE.REMOVE_STAR) {
             return ContentProviderOperation
                     .newInsert(
