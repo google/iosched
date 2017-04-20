@@ -155,6 +155,15 @@ public class SchedulePagerFragment extends Fragment implements ScheduleView {
         mAppbar = (AppBarLayout) view.findViewById(R.id.appbar);
         mFiltersBarInner = mAppbar.findViewById(R.id.filters_bar_inner);
         mFiltersDescription = (TextView) mAppbar.findViewById(R.id.filters_description);
+        mFiltersDescription.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Activity activity = getActivity();
+                if (activity instanceof ScheduleViewParent) {
+                    ((ScheduleViewParent) activity).openFilterDrawer();
+                }
+            }
+        });
         mClearFilters = mAppbar.findViewById(R.id.clear_filters);
         mClearFilters.setOnClickListener(new OnClickListener() {
             @Override
