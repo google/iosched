@@ -746,9 +746,9 @@
     <string name="transition_session_image" translatable="false">transition_session_image</string>
 
     <!-- Message displayed to users as part of onboarding sign in. -->
-    <string name="signin_message">Sign-in to sync saved events and reserved
-        sessions from your account across mobile and desktop. You\'ll still be able to save events
-        locally without signing-in.</string>
+    <string name="signin_message">Sign in to reserve seats for events ahead of time, sync saved
+        and reserved events from your account across mobile and desktop and provide feedback once
+        sessions have ended. You\'ll be able to save events locally without signing-in.</string>
 
     <!-- Label used when asking a user to sign in. -->
     <string name="signin_prompt">Sign in</string>
@@ -807,27 +807,38 @@
     <string name="my_io_body_intro_signed_out">Sign in to:</string>
 
     <!-- An introductory string used in the My I/O dialog to a signed in user  -->
-    <string name="my_io_body_intro_signed_in">As a signed-in user:</string>
+    <string name="my_io_body_intro_signed_in">As a signed in user:</string>
 
     <!-- The first bulletpoint string used in the My I/O dialog to a signed out user  -->
     <string name="my_io_dialog_first_bullet_point_signed_out">
-        \u2022 Sync saved events and reserved sessions in your account across desktop and mobile
+        \u2022 Reserve seats for events ahead of time.
     </string>
 
     <!-- The first bulletpoint string used in the My I/O dialog to a signed in user  -->
     <string name="my_io_dialog_first_bullet_point_signed_in">
-        \u2022 Your saved events and reserved sessions are synced to your account across mobile
-        and desktop
+        \u2022 You can reserve seats for events ahead of time (up to one reservation per time
+        block).
     </string>
 
     <!-- The second bulletpoint string used in the My I/O dialog to a signed out user  -->
     <string name="my_io_dialog_second_bullet_point_signed_out">
-        \u2022 Provide session feedback after sessions end
+        \u2022 Sync your saved and reserved events from your account across mobile and desktop.
     </string>
 
     <!-- The second bulletpoint string used in the My I/O dialog to a signed in user  -->
     <string name="my_io_dialog_second_bullet_point_signed_in">
-        \u2022 You can provide session feedback after sessions end
+        \u2022 Your saved and reserved events are synced from your account across mobile and
+        desktop.
+    </string>
+
+    <!-- The third bulletpoint string used in the My I/O dialog to a signed out user  -->
+    <string name="my_io_dialog_third_bullet_point_signed_out">
+        \u2022 Provide session feedback after sessions end.
+    </string>
+
+    <!-- The third bulletpoint string used in the My I/O dialog to a signed in user  -->
+    <string name="my_io_dialog_third_bullet_point_signed_in">
+        \u2022 You can provide session feedback after sessions end.
     </string>
 
     <!-- Message shown when a user initiated sign in fails. -->

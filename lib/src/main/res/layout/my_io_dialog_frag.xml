@@ -121,6 +121,17 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/first_bullet_point" />
 
+    <TextView
+        android:id="@+id/third_bullet_point"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="@dimen/padding_normal"
+        android:layout_marginStart="@dimen/padding_normal"
+        android:layout_marginTop="@dimen/spacing_normal"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/second_bullet_point" />
+
     <Button
         android:id="@+id/auth_button"
         style="@style/Widget.AppCompat.Button.Borderless.Colored"
@@ -129,6 +140,6 @@
         android:layout_marginEnd="@dimen/padding_normal"
         android:theme="@style/ThemeOverlay.BlueAccent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/second_bullet_point" />
+        app:layout_constraintTop_toBottomOf="@id/third_bullet_point" />
 
 </android.support.constraint.ConstraintLayout>

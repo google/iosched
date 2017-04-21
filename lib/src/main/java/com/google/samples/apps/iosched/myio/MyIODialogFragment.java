@@ -109,6 +109,12 @@ public class MyIODialogFragment extends DialogFragment {
                 getResources().getString(R.string.my_io_dialog_second_bullet_point_signed_out)
         );
 
+        TextView thirdBulletPoint = (TextView) view.findViewById(R.id.third_bullet_point);
+        thirdBulletPoint.setText(signedIn ? getResources().getString(
+                R.string.my_io_dialog_third_bullet_point_signed_in) :
+                getResources().getString(R.string.my_io_dialog_third_bullet_point_signed_out)
+        );
+
         Button authButton = (Button) view.findViewById(R.id.auth_button);
         authButton.setText(signedIn ? getResources().getString(R.string.signout_prompt) :
                 getResources().getString(R.string.signin_prompt));
