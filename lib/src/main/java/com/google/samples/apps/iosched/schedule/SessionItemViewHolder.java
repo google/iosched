@@ -34,7 +34,6 @@ import com.google.samples.apps.iosched.lib.R;
 import com.google.samples.apps.iosched.model.ScheduleItem;
 import com.google.samples.apps.iosched.model.TagMetadata;
 import com.google.samples.apps.iosched.model.TagMetadata.Tag;
-import com.google.samples.apps.iosched.provider.ScheduleContract;
 import com.google.samples.apps.iosched.util.RegistrationUtils;
 import com.google.samples.apps.iosched.util.TimeUtils;
 
@@ -44,9 +43,12 @@ import java.util.List;
 import static android.view.View.GONE;
 import static android.view.View.VISIBLE;
 import static com.google.samples.apps.iosched.Config.Tags.CATEGORY_TRACK;
-import static com.google.samples.apps.iosched.provider.ScheduleContract.MyReservations.RESERVATION_STATUS_RESERVED;
-import static com.google.samples.apps.iosched.provider.ScheduleContract.MyReservations.RESERVATION_STATUS_UNRESERVED;
-import static com.google.samples.apps.iosched.provider.ScheduleContract.MyReservations.RESERVATION_STATUS_WAITLISTED;
+import static com.google.samples.apps.iosched.provider.ScheduleContract.MyReservations
+        .RESERVATION_STATUS_RESERVED;
+import static com.google.samples.apps.iosched.provider.ScheduleContract.MyReservations
+        .RESERVATION_STATUS_UNRESERVED;
+import static com.google.samples.apps.iosched.provider.ScheduleContract.MyReservations
+        .RESERVATION_STATUS_WAITLISTED;
 
 /**
  * A {@link ViewHolder} modeling Sessions.
@@ -134,6 +136,7 @@ public class SessionItemViewHolder extends ScheduleItemViewHolder
         }
         if (item.reservationStatus == RESERVATION_STATUS_RESERVED ||
                 item.reservationStatus == RESERVATION_STATUS_WAITLISTED) {
+            mReservationStatus.setVisibility(VISIBLE);
             mReservationStatus.setCompoundDrawablesWithIntrinsicBounds(
                     item.reservationStatus == RESERVATION_STATUS_RESERVED ?
                             R.drawable.ic_reserved : R.drawable.ic_waitlisted, 0, 0, 0);
