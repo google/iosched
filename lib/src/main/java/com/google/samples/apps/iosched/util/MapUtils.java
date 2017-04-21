@@ -24,9 +24,7 @@ import android.text.TextUtils;
 
 import com.google.android.gms.maps.model.BitmapDescriptor;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
-import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
-import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.maps.android.geojson.GeoJsonPointStyle;
 import com.google.maps.android.ui.IconGenerator;
 import com.google.samples.apps.iosched.lib.R;
@@ -73,6 +71,10 @@ public class MapUtils {
             return MarkerModel.TYPE_OFFICEHOURS;
         } else if (tags.contains("MISC")) {
             return MarkerModel.TYPE_MISC;
+        } else if (tags.contains("CHAT")) {
+            return MarkerModel.TYPE_CHAT;
+        } else if (tags.contains("FIRSTSESSION")) {
+            return MarkerModel.TYPE_FIRSTSESSION;
         } else if (tags.contains("INACTIVE")) {
             return MarkerModel.TYPE_INACTIVE;
         }
@@ -86,6 +88,8 @@ public class MapUtils {
         switch (markerType) {
             case MarkerModel.TYPE_SESSION:
                 return R.drawable.ic_map_session;
+            case MarkerModel.TYPE_FIRSTSESSION:
+                return R.drawable.ic_map_session;
             case MarkerModel.TYPE_PLAIN:
                 return R.drawable.ic_map_pin;
             case MarkerModel.TYPE_CODELAB:
@@ -96,16 +100,23 @@ public class MapUtils {
                 return R.drawable.ic_map_officehours;
             case MarkerModel.TYPE_MISC:
                 return R.drawable.ic_map_misc;
+            case MarkerModel.TYPE_CHAT:
+                return R.drawable.ic_map_sandbox;
             default:
                 return R.drawable.ic_map_pin;
         }
     }
 
     /**
-     * True if the info details for this room type should only contain a title.
+     * True if the info details for this room type should only contain a title and optional
+     * subtitle.
      */
     public static boolean hasInfoTitleOnly(int markerType) {
-        return markerType == MarkerModel.TYPE_PLAIN;
+        return markerType == MarkerModel.TYPE_PLAIN ||
+                markerType == MarkerModel.TYPE_OFFICEHOURS ||
+                markerType == MarkerModel.TYPE_MISC ||
+                markerType == MarkerModel.TYPE_SANDBOX ||
+                markerType == MarkerModel.TYPE_CODELAB;
     }
 
 
@@ -113,20 +124,23 @@ public class MapUtils {
      * True if the info details for this room type contain a title and a list of sessions.
      */
     public static boolean hasInfoSessionList(int markerType) {
-        return markerType != MarkerModel.TYPE_INACTIVE && markerType != MarkerModel.TYPE_LABEL
-                && markerType != MarkerModel.TYPE_CODELAB && markerType != MarkerModel.TYPE_ICON;
+        return markerType == MarkerModel.TYPE_SESSION;
     }
 
     /**
-     * True if the info details for this room type contain a title and a list of sessions.
+     * True if the info details for this room type contain a title and the description from the
+     * first scheduled session.
      */
     public static boolean hasInfoFirstDescriptionOnly(int markerType) {
-        return markerType == MarkerModel.TYPE_CODELAB;
+        return markerType == MarkerModel.TYPE_FIRSTSESSION;
     }
 
-
+    /**
+     * True if the info details for this room type contain a title and a list of sessions, with
+     * each row prefixed with the icon for this room.
+     */
     public static boolean hasInfoSessionListIcons(int markerType) {
-        return markerType == MarkerModel.TYPE_SANDBOX;
+        return markerType == MarkerModel.TYPE_CHAT;
     }
 
 

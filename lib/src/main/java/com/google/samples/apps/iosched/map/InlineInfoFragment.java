@@ -88,8 +88,8 @@ public class InlineInfoFragment extends MapInfoFragment {
     }
 
     @Override
-    public void showTitleOnly(int icon, String roomTitle) {
-        super.showTitleOnly(icon, roomTitle);
+    public void showTitleOnly(int icon, String roomTitle, String subTitle) {
+        super.showTitleOnly(icon, roomTitle, subTitle);
         show();
     }
 

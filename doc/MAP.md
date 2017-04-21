@@ -80,6 +80,8 @@ Data for the map is defined in the file bootstrap\_data.json within the
                "properties": {
                   "id": "earnengage",
                   "title": "Earn +\nEngage",
+                  "description": "Optional Subtitle",
+                  "tag": "tag1",
                   "type": "LABEL"
                },
                "geometry": {
@@ -146,19 +148,20 @@ aside from their type and geometry.
         **top-level “rooms” tag. (This means that the “id” of a marker that
         describes a session room must match an entry in “rooms” which lists all
         rooms in which sessions are held.)
-    *   `SANDBOX`: A room that contains only one session. For example, codelabs
-        are scheduled with a time/date in this room. When selected, the map
-        displays *only the first* session scheduled in this room.
+    *   `CHAT`: Similar to `SESSION`, but displays the room icon next to each
+        session.
     *   `LABEL`: text rendered on top of the map, can contain line breaks (“\n”)
     *   `ICON\_XYZ`: Displays an icon on the map. XYZ refers to a drawable with
         the name “map\_marker\_xyz”. (See MapUtils.java#getDrawableForIconType)
-    *   `PLAIN`, `SANDBOX`, `OFFICEHOURS`, `MISC` : Clickable marker that
+    *   `PLAIN`, `OFFICEHOURS`, `MISC`, `SANDBOX`, `CODELAB` : Clickable marker that
         displays its title and an icon when selected. (See
         MapUtils.java#getRoomIcon).
-    *   `CODELAB`: Similar to `SESSION`, but only displays the description of
+    *   `FIRSTSESSION`: Displays the title and only the description of
         the very first session scheduled in this room.
 *   **“title”**: Name of the room displayed on screen when selected. For labels,
     this is displayed directly on the map.
+*   **“description”**: Optional. For clickable marker types (e.g. `PLAIN`), this
+    string is displayed together with the title when clicked.
 
 ### Tiles
 
