@@ -34,6 +34,8 @@ import com.google.samples.apps.iosched.util.MapUtils;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.Iterator;
+
 /**
  * Background task that queries the content provider and prepares a {@link GeoJsonLayer} that can be
  * used to create Markers.
@@ -68,9 +70,12 @@ public class MarkerLoadingTask extends AsyncTaskLoader<GeoJsonLayer> {
                 }
                 cursor.close();
             }
-            Iterable<GeoJsonFeature> features = layer.getFeatures();
+
+            Iterator<GeoJsonFeature> iterator = layer.getFeatures().iterator();
             final IconGenerator labelIconGenerator = MapUtils.getLabelIconGenerator(getContext());
-            for (GeoJsonFeature feature : features) {
+            while (iterator.hasNext()) {
+                GeoJsonFeature feature = iterator.next();
+
                 // get data
                 final String id = feature.getProperty("id");
                 GeoJsonPoint point = (GeoJsonPoint) feature.getGeometry();
@@ -90,8 +95,14 @@ public class MarkerLoadingTask extends AsyncTaskLoader<GeoJsonLayer> {
                     // All other markers (that are not inactive) contain a pin icon
                     pointStyle = MapUtils.createPinMarker(id);
                 }
-                pointStyle.setVisible(true);
-                feature.setPointStyle(pointStyle);
+
+                // If the marker is invalid (e.g. the icon does not exist), remove it from the map.
+                if (pointStyle == null) {
+                    iterator.remove();
+                } else {
+                    pointStyle.setVisible(true);
+                    feature.setPointStyle(pointStyle);
+                }
             }
             return layer;
         } catch (JSONException e) {
