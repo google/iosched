@@ -35,7 +35,6 @@ import com.google.samples.apps.iosched.provider.ScheduleContract.MyFeedbackSubmi
 import com.google.samples.apps.iosched.provider.ScheduleContract.MySchedule;
 import com.google.samples.apps.iosched.provider.ScheduleContract.MyScheduleColumns;
 import com.google.samples.apps.iosched.provider.ScheduleContract.MyReservations;
-import com.google.samples.apps.iosched.provider.ScheduleContract.MyReservationColumns;
 import com.google.samples.apps.iosched.provider.ScheduleContract.MyViewedVideos;
 import com.google.samples.apps.iosched.provider.ScheduleContract.Rooms;
 import com.google.samples.apps.iosched.provider.ScheduleContract.RoomsColumns;
@@ -76,7 +75,8 @@ public class ScheduleDatabase extends SQLiteOpenHelper {
     private static final int VER_2016_RELEASE_B = 212;
     private static final int VER_2017_RELEASE_A = 213;
     private static final int VER_2017_RELEASE_B = 214;
-    private static final int VER_2017_RELEASE_C = 215;
+    private static final int VER_2017_RELEASE_C = 215; // 5.0.0
+
     private static final int CUR_DATABASE_VERSION = VER_2017_RELEASE_C;
 
     private final Context mContext;
@@ -176,7 +176,7 @@ public class ScheduleDatabase extends SQLiteOpenHelper {
             DeprecatedTables(String tableName) {
                 this.tableName = tableName;
             }
-        };
+        }
     }
 
     private interface Triggers {
@@ -191,7 +191,7 @@ public class ScheduleDatabase extends SQLiteOpenHelper {
         // on database upgrades).
         interface DeprecatedTriggers {
             String SESSIONS_TRACKS_DELETE = "sessions_tracks_delete";
-        };
+        }
     }
 
     public interface SessionsSpeakers {
@@ -606,6 +606,13 @@ public class ScheduleDatabase extends SQLiteOpenHelper {
             version = VER_2016_RELEASE_B;
         }
 
+        // Check if we can upgrade from release 2016 release B to 2017 release A.
+        if (version == VER_2016_RELEASE_B) {
+            LOGD(TAG, "Upgrading database from 2016 release B to 2017 release A.");
+            upgradeFrom2016Bto2017A(db);
+            version = VER_2017_RELEASE_A;
+        }
+
         // Check if we can upgrade from release 2017 release A to 2017 release B.
         if (version == VER_2017_RELEASE_A) {
             LOGD(TAG, "Upgrading database from 2017 release A to 2017 release B.");
@@ -632,30 +639,40 @@ public class ScheduleDatabase extends SQLiteOpenHelper {
         if (version != CUR_DATABASE_VERSION) {
             LOGW(TAG, "Upgrade unsuccessful -- destroying old data during upgrade");
 
-            db.execSQL("DROP TRIGGER IF EXISTS " + Triggers.SESSIONS_TAGS_DELETE);
-            db.execSQL("DROP TRIGGER IF EXISTS " + Triggers.SESSIONS_SPEAKERS_DELETE);
-            db.execSQL("DROP TRIGGER IF EXISTS " + Triggers.SESSIONS_FEEDBACK_DELETE);
-            db.execSQL("DROP TRIGGER IF EXISTS " + Triggers.SESSIONS_MY_SCHEDULE_DELETE);
-            db.execSQL("DROP TRIGGER IF EXISTS " + Triggers.SESSIONS_MY_RESERVATIONS_DELETE);
+            // Drop triggers and tables in reverse order of creation.
+
             db.execSQL("DROP TRIGGER IF EXISTS " + Triggers.DeprecatedTriggers.SESSIONS_TRACKS_DELETE);
-            db.execSQL("DROP TABLE IF EXISTS " + Tables.BLOCKS);
+            db.execSQL("DROP TRIGGER IF EXISTS " + Triggers.SESSIONS_MY_RESERVATIONS_DELETE);
+
+            db.execSQL("DROP TABLE IF EXISTS " + Tables.MY_RESERVATIONS);
+            db.execSQL("DROP TABLE IF EXISTS " + Tables.MAPGEOJSON);
+            db.execSQL("DROP TABLE IF EXISTS " + Tables.RELATED_SESSIONS);
+            db.execSQL("DROP TABLE IF EXISTS " + Tables.CARDS);
+            db.execSQL("DROP TABLE IF EXISTS " + Tables.MY_VIEWED_VIDEO);
+            db.execSQL("DROP TABLE IF EXISTS " + Tables.MY_FEEDBACK_SUBMITTED);
+
+            db.execSQL("DROP TRIGGER IF EXISTS " + Triggers.SESSIONS_MY_SCHEDULE_DELETE);
+            db.execSQL("DROP TRIGGER IF EXISTS " + Triggers.SESSIONS_SPEAKERS_DELETE);
+            db.execSQL("DROP TRIGGER IF EXISTS " + Triggers.SESSIONS_TAGS_DELETE);
+
+            db.execSQL("DROP TABLE IF EXISTS " + Tables.SEARCH_SUGGEST);
+            db.execSQL("DROP TABLE IF EXISTS " + Tables.SESSIONS_SEARCH);
+            db.execSQL("DROP TABLE IF EXISTS " + Tables.VIDEOS);
+            db.execSQL("DROP TABLE IF EXISTS " + Tables.HASHTAGS);
+
+            db.execSQL("DROP TRIGGER IF EXISTS " + Triggers.SESSIONS_FEEDBACK_DELETE);
+
+            db.execSQL("DROP TABLE IF EXISTS " + Tables.FEEDBACK);
+            db.execSQL("DROP TABLE IF EXISTS " + Tables.MAPTILES);
+            db.execSQL("DROP TABLE IF EXISTS " + Tables.ANNOUNCEMENTS);
+            db.execSQL("DROP TABLE IF EXISTS " + Tables.SESSIONS_TAGS);
+            db.execSQL("DROP TABLE IF EXISTS " + Tables.SESSIONS_SPEAKERS);
+            db.execSQL("DROP TABLE IF EXISTS " + Tables.MY_SCHEDULE);
+            db.execSQL("DROP TABLE IF EXISTS " + Tables.SPEAKERS);
+            db.execSQL("DROP TABLE IF EXISTS " + Tables.SESSIONS);
             db.execSQL("DROP TABLE IF EXISTS " + Tables.ROOMS);
             db.execSQL("DROP TABLE IF EXISTS " + Tables.TAGS);
-            db.execSQL("DROP TABLE IF EXISTS " + Tables.SESSIONS);
-            db.execSQL("DROP TABLE IF EXISTS " + Tables.SPEAKERS);
-            db.execSQL("DROP TABLE IF EXISTS " + Tables.MY_SCHEDULE);
-            db.execSQL("DROP TABLE IF EXISTS " + Tables.MY_RESERVATIONS);
-            db.execSQL("DROP TABLE IF EXISTS " + Tables.MY_FEEDBACK_SUBMITTED);
-            db.execSQL("DROP TABLE IF EXISTS " + Tables.MY_VIEWED_VIDEO);
-            db.execSQL("DROP TABLE IF EXISTS " + Tables.SESSIONS_SPEAKERS);
-            db.execSQL("DROP TABLE IF EXISTS " + Tables.SESSIONS_TAGS);
-            db.execSQL("DROP TABLE IF EXISTS " + Tables.ANNOUNCEMENTS);
-            db.execSQL("DROP TABLE IF EXISTS " + Tables.FEEDBACK);
-            db.execSQL("DROP TABLE IF EXISTS " + Tables.SESSIONS_SEARCH);
-            db.execSQL("DROP TABLE IF EXISTS " + Tables.SEARCH_SUGGEST);
-            db.execSQL("DROP TABLE IF EXISTS " + Tables.MAPTILES);
-            db.execSQL("DROP TABLE IF EXISTS " + Tables.HASHTAGS);
-            db.execSQL("DROP TABLE IF EXISTS " + Tables.VIDEOS);
+            db.execSQL("DROP TABLE IF EXISTS " + Tables.BLOCKS);
 
             onCreate(db);
             version = CUR_DATABASE_VERSION;
