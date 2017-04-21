@@ -60,7 +60,7 @@
         android:text="@string/placeholder_lorem_ipsum" />
 
     <Button
-        android:id="@+id/positive_button"
+        android:id="@+id/negative_button"
         style="@style/Widget.AppCompat.Button.Borderless.Colored"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -68,18 +68,18 @@
         android:layout_below="@id/text"
         android:paddingLeft="@dimen/spacing_micro"
         android:paddingRight="@dimen/spacing_micro"
-        android:text="@string/placeholder_button_label_2" />
+        android:text="@string/placeholder_button_label_1" />
 
     <Button
-        android:id="@+id/negative_button"
+        android:id="@+id/positive_button"
         style="@style/Widget.AppCompat.Button.Borderless.Colored"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignWithParentIfMissing="true"
         android:layout_below="@id/text"
-        android:layout_toEndOf="@id/positive_button"
+        android:layout_toEndOf="@id/negative_button"
         android:paddingLeft="@dimen/spacing_micro"
         android:paddingRight="@dimen/spacing_micro"
-        android:text="@string/placeholder_button_label_1" />
+        android:text="@string/placeholder_button_label_2" />
 
 </RelativeLayout>
