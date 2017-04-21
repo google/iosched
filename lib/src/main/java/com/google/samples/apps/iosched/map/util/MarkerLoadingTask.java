@@ -21,90 +21,33 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.support.v4.content.AsyncTaskLoader;
 
-import com.google.android.gms.maps.GoogleMap;
-import com.google.android.gms.maps.model.LatLng;
-import com.google.maps.android.geojson.GeoJsonFeature;
-import com.google.maps.android.geojson.GeoJsonLayer;
-import com.google.maps.android.geojson.GeoJsonPoint;
-import com.google.maps.android.geojson.GeoJsonPointStyle;
-import com.google.maps.android.ui.IconGenerator;
 import com.google.samples.apps.iosched.provider.ScheduleContract;
-import com.google.samples.apps.iosched.util.MapUtils;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.util.Iterator;
-
 /**
- * Background task that queries the content provider and prepares a {@link GeoJsonLayer} that can be
- * used to create Markers.
+ * Background task that queries the content provider and prepares a {@link JSONObject} that contains
+ * Geo Json describing the markers.
  */
-public class MarkerLoadingTask extends AsyncTaskLoader<GeoJsonLayer> {
+public class MarkerLoadingTask extends AsyncTaskLoader<JSONObject> {
 
-    private GoogleMap mMap;
-    private Context mContext;
-
-    public MarkerLoadingTask(GoogleMap map, Context context) {
+    public MarkerLoadingTask(Context context) {
         super(context);
-        mContext = context;
-        mMap = map;
     }
 
     @Override
-    public GeoJsonLayer loadInBackground() {
+    public JSONObject loadInBackground() {
         try {
             final Uri uri = ScheduleContract.MapGeoJson.buildGeoJsonUri();
             Cursor cursor = getContext().getContentResolver().query(uri, MarkerQuery.PROJECTION,
                     null, null, null);
 
-            GeoJsonLayer layer = null;
-            if (cursor != null) {
-                if (cursor.moveToFirst()) {
-                    final String id = cursor.getString(MarkerQuery.GEOJSON);
-                    JSONObject j = new JSONObject(id);
-                    //GeoJsonLayer stores a map, which is only modified when addLayerToMap is called
-                    layer = new GeoJsonLayer(mMap, j);
-                } else {
-                    return null;
-                }
-                cursor.close();
+            if (cursor != null && cursor.moveToFirst()) {
+                final String id = cursor.getString(MarkerQuery.GEOJSON);
+                return new JSONObject(id);
             }
 
-            Iterator<GeoJsonFeature> iterator = layer.getFeatures().iterator();
-            final IconGenerator labelIconGenerator = MapUtils.getLabelIconGenerator(getContext());
-            while (iterator.hasNext()) {
-                GeoJsonFeature feature = iterator.next();
-
-                // get data
-                final String id = feature.getProperty("id");
-                GeoJsonPoint point = (GeoJsonPoint) feature.getGeometry();
-                final LatLng position = point.getCoordinates();
-                final String typeString = feature.getProperty("type");
-                final int type = MapUtils.detectMarkerType(typeString);
-                final String label = feature.getProperty("title");
-
-                GeoJsonPointStyle pointStyle = new GeoJsonPointStyle();
-                if (type == MarkerModel.TYPE_LABEL) {
-                    // Label markers contain the label as its icon
-                    pointStyle = MapUtils.createLabelMarker(labelIconGenerator, id, label);
-                } else if (type == MarkerModel.TYPE_ICON) {
-                    // An icon marker is mapped to a drawable based on its full type name
-                    pointStyle = MapUtils.createIconMarker(typeString, id, getContext());
-                } else if (type != MarkerModel.TYPE_INACTIVE) {
-                    // All other markers (that are not inactive) contain a pin icon
-                    pointStyle = MapUtils.createPinMarker(id);
-                }
-
-                // If the marker is invalid (e.g. the icon does not exist), remove it from the map.
-                if (pointStyle == null) {
-                    iterator.remove();
-                } else {
-                    pointStyle.setVisible(true);
-                    feature.setPointStyle(pointStyle);
-                }
-            }
-            return layer;
         } catch (JSONException e) {
             e.printStackTrace();
         }
