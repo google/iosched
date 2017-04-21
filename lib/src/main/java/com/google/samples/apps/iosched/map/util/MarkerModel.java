@@ -34,6 +34,8 @@ public class MarkerModel {
     public static final int TYPE_OFFICEHOURS = 6;
     public static final int TYPE_MISC = 7;
     public static final int TYPE_ICON = 9;
+    public static final int TYPE_CHAT = 10;
+    public static final int TYPE_FIRSTSESSION = 11;
 
     public String id;
     public int floor;

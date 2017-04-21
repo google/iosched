@@ -287,8 +287,8 @@ public abstract class MapInfoFragment extends Fragment
         }
     }
 
-    public void showTitleOnly(int roomType, String title) {
-        setHeader(MapUtils.getRoomIcon(roomType), title, null);
+    public void showTitleOnly(int roomType, String title, String subtitle) {
+        setHeader(MapUtils.getRoomIcon(roomType), title, subtitle);
         mList.setVisibility(View.GONE);
     }
 
