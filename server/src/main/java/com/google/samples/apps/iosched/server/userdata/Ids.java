@@ -22,8 +22,23 @@ package com.google.samples.apps.iosched.server.userdata;
 public class Ids {
     public static final String ANDROID_CLIENT_ID = "596109260910-nh4ecebl3fibbhrk5lld3lprk9id3ecq" +
             ".apps.googleusercontent.com";
-    public static final String IOS_CLIENT_ID = "596109260910-n1vrfjs8d7105jh5j7qf42ph32sltjp0"
+
+    // io2017-backend-dev
+    public static final String IOS_CLIENT_ID_DEV_IO2017 = "596109260910-n1vrfjs8d7105jh5j7qf42ph32sltjp0"
             + ".apps.googleusercontent.com";
+    public static final String IOS_CLIENT_ID_DOGFOOD_IO2017 = "596109260910-f5kc2mv8bhli14sruc3o8tbqdsoske3h"
+            + ".apps.googleusercontent.com";
+
+    // gweb-io2017:
+    public static final String IOS_CLIENT_ID_GWEB_IO2017 = "755839215930-hd6mjgc934bmkoe8dvavr2ivsqjvcvjj"
+            + ".apps.googleusercontent.com";
+    public static final String IOS_CLIENT_ID_DEV_GWEB_IO2017 = "755839215930-5g5lsf8dngohpq7d0tbjq2imdpuqapoj"
+            + ".apps.googleusercontent.com";
+    public static final String IOS_CLIENT_ID_DOGFOOD_GWEB_IO2017 = "755839215930-09ln8hk88ta0dnsevmpp0jm74tkc3ked"
+            + ".apps.googleusercontent.com";
+
+
+
     public static final String WEB_CLIENT_ID = "755839215930-ctkg839m67rtqmgm55c6eg1j7cvu5mmf"
             + ".apps.googleusercontent.com";
     public static final String SERVICE_ACCOUNT_CLIENT_ID = "104433463769697768142";
