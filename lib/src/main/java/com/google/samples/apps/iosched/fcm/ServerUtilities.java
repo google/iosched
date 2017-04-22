@@ -169,10 +169,9 @@ public final class ServerUtilities {
         LOGI(TAG, "Notifying FCM that user data changed");
         String serverUrl = BuildConfig.FCM_SERVER_URL + "/send/self/sync_user";
         try {
-            String fcmKey =
-                    AccountUtils.getFcmKey(context, AccountUtils.getActiveAccountName(context));
-            if (fcmKey != null) {
-                post(serverUrl, new HashMap<String, String>(), fcmKey);
+            if (AccountUtils.hasActiveAccount(context)) {
+                post(serverUrl, new HashMap<String, String>(),
+                        AccountUtils.getActiveAccountId(context));
             }
         } catch (IOException e) {
             LOGE(TAG, "Unable to notify FCM about user data change", e);
