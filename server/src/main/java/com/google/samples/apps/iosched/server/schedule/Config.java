@@ -67,6 +67,7 @@ public interface Config {
 
 
   // GCM confs:
+  public static final String FCM_SEND_URL = "UNDEFINED";
   public static final String GCM_SYNC_URL = "/gcm/send/global/sync_schedule";
 
   public static final String GCM_URL= "https://io2015-dev.appspot.com"+GCM_SYNC_URL;

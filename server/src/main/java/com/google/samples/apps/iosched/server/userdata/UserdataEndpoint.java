@@ -22,6 +22,8 @@ import com.google.api.server.spi.config.ApiMethod;
 import com.google.api.server.spi.config.ApiNamespace;
 import com.google.api.server.spi.config.Named;
 import com.google.api.server.spi.response.UnauthorizedException;
+import com.google.samples.apps.iosched.server.schedule.Config;
+import com.google.samples.apps.iosched.server.schedule.server.GCMPing;
 import com.google.samples.apps.iosched.server.userdata.db.BookmarkedSession;
 import com.google.samples.apps.iosched.server.userdata.db.ReservedSession;
 import com.google.samples.apps.iosched.server.userdata.db.ReservedSession.Status;
@@ -329,6 +331,9 @@ public class UserdataEndpoint {
         ReservedSession s = new ReservedSession(sessionId, Status.WAITLISTED, timestampUTC);
         data.reservedSessions.put(sessionId, s);
         save(data);
+        // notify user's clients of reservation change change
+        String url = Config.FCM_SEND_URL + "/" + data.userId + "/sync_user";
+        new GCMPing().notifyGCMServer(url, Config.GCM_API_KEY);
         return data.reservedSessions;
     }
 
@@ -356,6 +361,9 @@ public class UserdataEndpoint {
         ReservedSession s = new ReservedSession(sessionId, Status.RESERVED, timestampUTC);
         data.reservedSessions.put(sessionId, s);
         save(data);
+        // notify user's clients of reservation change change
+        String url = Config.FCM_SEND_URL + "/" + data.userId + "/sync_user";
+        new GCMPing().notifyGCMServer(url, Config.GCM_API_KEY);
         return data.reservedSessions;
     }
 
@@ -380,5 +388,8 @@ public class UserdataEndpoint {
         ReservedSession s = new ReservedSession(sessionId, Status.DELETED, timestampUTC);
         data.reservedSessions.put(sessionId, s);
         save(data);
+        // notify user's clients of reservation change change
+        String url = Config.FCM_SEND_URL + "/" + data.userId + "/sync_user";
+        new GCMPing().notifyGCMServer(url, Config.GCM_API_KEY);
     }
 }

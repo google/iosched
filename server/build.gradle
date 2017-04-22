@@ -33,6 +33,9 @@ sourceCompatibility = 1.7
 
 repositories {
     mavenCentral()
+    maven {
+        url "https://oss.sonatype.org/content/repositories/snapshots"
+    }
 }
 
 dependencies {
@@ -46,7 +49,7 @@ dependencies {
     compile "com.google.appengine.tools:appengine-gcs-client:0.6"
     compile "com.google.code.gson:gson:2.4"
     compile "com.google.firebase:firebase-admin:4.1.3"
-    compile "com.google.gcm:gcm-server:1.0.0"
+    compile "com.google.gcm:gcm-server:1.0-SNAPSHOT"
     compile "com.googlecode.objectify:objectify:5.1.16"
     compile "com.googlecode.json-simple:json-simple:1.1.1"
     compile "javax.persistence:persistence-api:1.0"

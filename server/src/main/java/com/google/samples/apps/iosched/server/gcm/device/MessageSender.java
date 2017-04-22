@@ -90,13 +90,14 @@ public class MessageSender {
         MulticastMessage msg = MessageStore.getMulticast(multicastId);
         List<String> devices = msg.getDestinations();
         String action = msg.getAction();
-        Message.Builder builder = new Message.Builder().delayWhileIdle(true);
+        Message.Builder builder = new Message.Builder();
         if (action == null || action.length() == 0) {
             throw new IllegalArgumentException("Message action cannot be empty.");
         }
         builder.collapseKey(action)
                     .addData("action", action)
                     .addData("extraData", msg.getExtraData())
+                    .contentAvailable(true)
                     .timeToLive(TTL);
         Message message = builder.build();
         MulticastResult multicastResult = null;
