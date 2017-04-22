@@ -292,29 +292,6 @@ public class AccountUtils {
         }
     }
 
-
-    public static void setFcmKey(final Context context, final String accountName, final String fcmKey) {
-            SharedPreferences sp = getSharedPreferences(context);
-            sp.edit().putString(makeAccountSpecificPrefKey(accountName, PREFIX_PREF_FCM_KEY),
-                    fcmKey).apply();
-            LOGD(TAG, "FCM key of account " + accountName + " set to: " + sanitizeUserId(fcmKey));
-        }
-
-    public static String getFcmKey(final Context context, final String accountName) {
-        SharedPreferences sp = getSharedPreferences(context);
-        String fcmKey = sp.getString(makeAccountSpecificPrefKey(accountName,
-                PREFIX_PREF_FCM_KEY), null);
-
-        // if there is no current FCM key, generate a new random one
-        if (TextUtils.isEmpty(fcmKey)) {
-            fcmKey = UUID.randomUUID().toString();
-            LOGD(TAG, "No FCM key on account " + accountName + ". Generating random one: "
-                    + sanitizeUserId(fcmKey));
-            setFcmKey(context, accountName, fcmKey);
-        }
-        return fcmKey;
-    }
-
     public static String sanitizeUserId(String key) {
         if (key == null) {
             return "(null)";
