@@ -29,14 +29,14 @@ public interface Config {
   public static final long[][] CONFERENCE_DAYS =
       new long[][] {
           // start and end of day 1
-          { new Date(116, Calendar.MAY, 18, 14, 0, 0).getTime(),
-                  new Date(116, Calendar.MAY, 19, 5, 0, 0).getTime() },
+          { new Date(117, Calendar.MAY, 17, 14, 0, 0).getTime(),
+                  new Date(117, Calendar.MAY, 18, 5, 0, 0).getTime() },
           // start and end of day 2
-          { new Date(116, Calendar.MAY, 19, 14, 0, 0).getTime(),
-                  new Date(116, Calendar.MAY, 20, 0, 0, 0).getTime() },
+          { new Date(117, Calendar.MAY, 18, 14, 0, 0).getTime(),
+                  new Date(117, Calendar.MAY, 19, 0, 0, 0).getTime() },
           // start and end of day 3
-          { new Date(116, Calendar.MAY, 20, 14, 0, 0).getTime(),
-              new Date(116, Calendar.MAY, 21, 0, 0, 0).getTime() },
+          { new Date(117, Calendar.MAY, 19, 14, 0, 0).getTime(),
+              new Date(117, Calendar.MAY, 20, 0, 0, 0).getTime() },
       };
 
   public final Pattern SESSIONS_PATTERN = Pattern.compile("session_data_v(\\d+)\\.(\\d+)\\.json");
