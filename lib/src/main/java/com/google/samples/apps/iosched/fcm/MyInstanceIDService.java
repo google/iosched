@@ -42,7 +42,7 @@ public class MyInstanceIDService extends FirebaseInstanceIdService {
         // Get the correct FCM key for the user. FCM key is a somewhat non-standard
         // approach we use in this app. For more about this, check FCM.md.
         final String fcmKey = AccountUtils.hasActiveAccount(this) ?
-                AccountUtils.getFcmKey(this, AccountUtils.getActiveAccountName(this)) : null;
+                AccountUtils.getActiveAccountId(this) : null;
 
         // Unregister on server.
         ServerUtilities.unregister(ServerUtilities.getDeviceId(this), fcmKey);
