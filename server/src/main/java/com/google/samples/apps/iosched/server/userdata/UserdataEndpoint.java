@@ -51,12 +51,6 @@ import static com.googlecode.objectify.ObjectifyService.ofy;
                 Ids.IOS_CLIENT_ID_DOGFOOD_GWEB_IO2017,
                 com.google.api.server.spi.Constant.API_EXPLORER_CLIENT_ID},
         audiences = {Ids.ANDROID_AUDIENCE}
-
-
-
-
-
-
 )
 public class UserdataEndpoint {
 

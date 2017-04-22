@@ -52,8 +52,13 @@ import org.json.JSONObject;
         ownerName = "google.com",
         packagePath = "rpc"
     ),
-    clientIds = {Ids.WEB_CLIENT_ID, Ids.ANDROID_CLIENT_ID, Ids.IOS_CLIENT_ID,
-        com.google.api.server.spi.Constant.API_EXPLORER_CLIENT_ID},
+    clientIds = {Ids.WEB_CLIENT_ID, Ids.ANDROID_CLIENT_ID,
+            Ids.IOS_CLIENT_ID_DEV_IO2017,
+            Ids.IOS_CLIENT_ID_DOGFOOD_IO2017,
+            Ids.IOS_CLIENT_ID_GWEB_IO2017,
+            Ids.IOS_CLIENT_ID_DEV_GWEB_IO2017,
+            Ids.IOS_CLIENT_ID_DOGFOOD_GWEB_IO2017,
+            com.google.api.server.spi.Constant.API_EXPLORER_CLIENT_ID},
     audiences = {Ids.ANDROID_AUDIENCE}
 )
 public class RegistrationEndpoint {
