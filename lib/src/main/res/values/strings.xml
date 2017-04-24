@@ -794,48 +794,18 @@
     schedule -->
     <string name="add_events">Add Events</string>
 
-    <!-- A placeholder value for the user's name in the My I/O dialog -->
-    <string name="my_io_dialog_default_name">Your name</string>
-
-    <!-- A placeholder value for the user's email in the My I/O dialog -->
-    <string name="my_io_dialog_default_email">you@gmail.com</string>
-
     <!-- An introductory string used in the My I/O dialog to a signed out user  -->
-    <string name="my_io_body_intro_signed_out">Sign in to:</string>
+    <string name="my_io_body_intro_signed_out">
+        Sign in to:\n\u2022 Reserve seats for events ahead of time.\n\u2022 Sync your saved and
+        reserved events from your account across mobile and desktop.\n\u2022 You can provide session
+        feedback after sessions end.
+    </string>
 
     <!-- An introductory string used in the My I/O dialog to a signed in user  -->
-    <string name="my_io_body_intro_signed_in">As a signed in user:</string>
-
-    <!-- The first bulletpoint string used in the My I/O dialog to a signed out user  -->
-    <string name="my_io_dialog_first_bullet_point_signed_out">
-        \u2022 Reserve seats for events ahead of time.
-    </string>
-
-    <!-- The first bulletpoint string used in the My I/O dialog to a signed in user  -->
-    <string name="my_io_dialog_first_bullet_point_signed_in">
-        \u2022 You can reserve seats for events ahead of time (up to one reservation per time
-        block).
-    </string>
-
-    <!-- The second bulletpoint string used in the My I/O dialog to a signed out user  -->
-    <string name="my_io_dialog_second_bullet_point_signed_out">
-        \u2022 Sync your saved and reserved events from your account across mobile and desktop.
-    </string>
-
-    <!-- The second bulletpoint string used in the My I/O dialog to a signed in user  -->
-    <string name="my_io_dialog_second_bullet_point_signed_in">
-        \u2022 Your saved and reserved events are synced from your account across mobile and
-        desktop.
-    </string>
-
-    <!-- The third bulletpoint string used in the My I/O dialog to a signed out user  -->
-    <string name="my_io_dialog_third_bullet_point_signed_out">
-        \u2022 Provide session feedback after sessions end.
-    </string>
-
-    <!-- The third bulletpoint string used in the My I/O dialog to a signed in user  -->
-    <string name="my_io_dialog_third_bullet_point_signed_in">
-        \u2022 You can provide session feedback after sessions end.
+    <string name="my_io_body_intro_signed_in">
+        As a signed in user:\n\u2022 You can reserve seats for events ahead of time (up to one
+        reservation per time block).\n\u2022 Your saved and reserved events are synced from your
+        account across mobile and desktop.\n\u2022 Provide session feedback after sessions end.
     </string>
 
     <!-- Message shown when a user initiated sign in fails. -->
