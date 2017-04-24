@@ -25,17 +25,14 @@
     <dimen name="touch_raise">6dp</dimen>
     <dimen name="extended_appbar_height">180dp</dimen>
 
-    <!-- App Primary Text Sizes -->
-    <dimen name="text_size_small">12sp</dimen>
-    <dimen name="text_size_medium">14sp</dimen>
-    <dimen name="text_size_large">18sp</dimen>
-    <dimen name="text_size_xlarge">20sp</dimen>
+    <dimen name="appwidget_text_size_small">12sp</dimen>
+    <dimen name="appwidget_text_size_medium">14sp</dimen>
+    <dimen name="appwidget_text_size_large">18sp</dimen>
+
+    <dimen name="map_room_title_text_size">20sp</dimen>
 
     <!-- line spacing -->
-    <item name="body_1_spacing" format="float" type="dimen">1.3</item>
-    <item name="h1_spacing" format="float" type="dimen">1.2</item>
-    <item name="h3_spacing" format="float" type="dimen">1.2</item>
-    <item name="h4_spacing" format="float" type="dimen">1.2</item>
+    <item name="text_line_spacing" format="float" type="dimen">1.2</item>
 
     <!-- UI elements -->
     <dimen name="a11y_min_touch_target_dimen">48dp</dimen>

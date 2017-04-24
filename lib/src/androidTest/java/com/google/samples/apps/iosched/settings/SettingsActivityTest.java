@@ -18,12 +18,9 @@ import android.support.test.filters.Suppress;
 import android.support.test.runner.AndroidJUnit4;
 import android.test.suitebuilder.annotation.LargeTest;
 
-import com.google.samples.apps.iosched.navigation.NavigationModel;
 import com.google.samples.apps.iosched.testutils.BaseActivityTestRule;
-import com.google.samples.apps.iosched.testutils.NavigationUtils;
 
 import org.junit.Rule;
-import org.junit.Test;
 import org.junit.runner.RunWith;
 
 @RunWith(AndroidJUnit4.class)
