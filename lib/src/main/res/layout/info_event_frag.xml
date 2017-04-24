@@ -60,18 +60,26 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/wifi_network_label" />
 
-        <Button
+        <TextView
             android:id="@+id/wifi_password_value"
-            style="@style/Widget.AppCompat.Button.Borderless.Colored"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:drawablePadding="@dimen/spacing_normal"
-            android:drawableStart="@drawable/ic_copy"
             android:padding="@dimen/padding_normal"
             android:textAppearance="@style/TextAppearance.H5"
             app:layout_constraintBaseline_toBaselineOf="@id/wifi_password_label"
             app:layout_constraintEnd_toEndOf="parent"
             tools:text="inputoutput" />
+
+        <Button
+            android:id="@+id/wifi_save"
+            style="@style/Widget.AppCompat.Button.Borderless.Colored"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/spacing_micro"
+            android:text="@string/setup_wifi"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/wifi_password_label" />
 
         <com.google.samples.apps.iosched.info.event.EventView
             android:id="@+id/sandbox_event"
@@ -83,7 +91,7 @@
             app:eventTitle="@string/event_sandbox_title"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/wifi_password_value"
+            app:layout_constraintTop_toBottomOf="@id/wifi_save"
             app:mapLinkUri="@string/view_sandbox_map_url"
             app:sessionsLinkUri="@string/view_sandbox_sessions_url" />
 
