@@ -50,7 +50,8 @@
                 android:layout_height="0dp"
                 android:fitsSystemWindows="true"
                 app:aspectRatio="@dimen/aspect_16_9"
-                app:layout_collapseMode="parallax">
+                app:layout_collapseMode="parallax"
+                tools:background="@color/duck_egg_blue">
 
                 <ImageView
                     android:id="@+id/session_photo"
@@ -71,7 +72,7 @@
                     android:paddingLeft="@dimen/spacing_large"
                     android:paddingRight="@dimen/spacing_large"
                     android:paddingTop="28dp"
-                    android:textAppearance="@style/TextAppearance.H3"
+                    android:textAppearance="?android:textAppearanceMedium"
                     android:textColor="@android:color/white"
                     android:visibility="gone"
                     tools:text="@string/session_watch"
@@ -80,6 +81,7 @@
 
             </com.google.samples.apps.iosched.ui.widget.AspectRatioView>
 
+            <!-- We don't use a normal Toolbar because we need to access the title and icons -->
             <LinearLayout
                 android:id="@+id/session_detail_toolbar"
                 android:layout_width="match_parent"
@@ -103,13 +105,13 @@
 
                 <TextView
                     android:id="@+id/toolbar_title"
+                    style="@style/ProductSans.Title"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:alpha="0"
                     android:ellipsize="end"
                     android:lines="1"
-                    android:textAppearance="@style/TextAppearance.AppCompat.Widget.ActionBar.Title"
                     android:textColor="@color/greyish_brown" />
 
                 <ImageView
@@ -157,7 +159,7 @@
 
             <TextView
                 android:id="@+id/time_hint"
-                style="@style/SessionTimeHint"
+                style="@style/SessionDetail.TimeHint"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="@dimen/padding_normal"
@@ -170,31 +172,23 @@
 
             <TextView
                 android:id="@+id/session_title"
-                style="@style/H1Text"
+                style="@style/SessionDetail.SessionTitle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="@dimen/padding_normal"
                 android:layout_marginLeft="@dimen/padding_normal"
                 android:layout_marginRight="@dimen/padding_normal"
                 android:layout_marginTop="24dp"
-                android:ellipsize="end"
-                android:gravity="start"
-                android:maxLines="4"
-                android:textAlignment="viewStart"
                 tools:text="@string/placeholder_session_title" />
 
             <TextView
                 android:id="@+id/session_subtitle"
-                style="@style/H4Text"
+                style="@style/SessionDetail.SessionSubtitle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="@dimen/padding_normal"
                 android:layout_marginLeft="@dimen/padding_normal"
                 android:layout_marginRight="@dimen/padding_normal"
-                android:ellipsize="end"
-                android:gravity="start"
-                android:maxLines="2"
-                android:textAlignment="viewStart"
                 tools:text="@string/placeholder_session_subtitle" />
 
             <TextView
@@ -232,13 +226,12 @@
 
             <Button
                 android:id="@id/give_feedback_button"
-                style="@style/Widget.IOSched.Button.CTA"
+                style="@style/Widget.IOSched.Button.Aqua"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="@dimen/spacing_large"
                 android:layout_marginLeft="@dimen/padding_normal"
                 android:layout_marginRight="@dimen/padding_normal"
-                android:backgroundTint="@color/aqua_marine"
                 android:paddingLeft="@dimen/padding_normal"
                 android:paddingRight="@dimen/padding_normal"
                 android:text="@string/rate_session"
@@ -283,7 +276,6 @@
 
             <TextView
                 android:id="@android:id/empty"
-                style="@style/EmptyText"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:layout_marginLeft="@dimen/padding_normal"

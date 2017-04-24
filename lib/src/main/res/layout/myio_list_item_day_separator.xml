@@ -28,21 +28,20 @@
 
     <TextView
         android:id="@+id/text"
+        style="@style/Schedule.TimeSeparator"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_weight="1"
         android:lines="1"
         android:paddingBottom="@dimen/spacing_micro"
         android:paddingTop="@dimen/spacing_micro"
-        android:textAppearance="@style/TextAppearance.H5.SmallCaps"
         tools:text="Tues, May 17" />
 
     <Button
         android:id="@+id/add_events"
-        style="@style/Widget.IOSched.Button.CTA"
+        style="@style/Widget.IOSched.Button.Aqua"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/add_events"
-        android:theme="@style/ThemeOverlay.GreenAccent" />
+        android:text="@string/add_events" />
 
 </LinearLayout>

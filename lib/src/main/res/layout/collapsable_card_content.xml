@@ -26,6 +26,7 @@
 
         <TextView
             android:id="@+id/card_title"
+            style="@style/CollapsibleCardTitle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentStart="true"
@@ -33,7 +34,6 @@
             android:background="?selectableItemBackground"
             android:padding="@dimen/padding_normal"
             android:text="@string/travel_shuttle_info_title"
-            android:textAppearance="@style/TextAppearance.H5.Caps"
             android:textColor="@color/collapsing_section" />
 
         <ImageView

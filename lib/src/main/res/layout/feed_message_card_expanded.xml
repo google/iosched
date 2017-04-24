@@ -52,25 +52,18 @@
 
     <TextView
         android:id="@id/category_text"
+        style="@style/Feed.Category"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:layout_marginEnd="@dimen/padding_normal"
-        android:background="@drawable/tag_session_background"
-        android:ellipsize="end"
-        android:lines="1"
-        android:minWidth="@dimen/a11y_min_touch_target_dimen"
-        android:textAllCaps="true"
-        android:textAppearance="@style/TextAppearance.Tag"
-        android:textColor="@color/feed_category"
         app:layout_constraintBaseline_toBaselineOf="@id/date_time"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@id/priority_icon"
-        tools:text="CATEGORY" />
+        tools:text="event" />
 
     <TextView
         android:id="@+id/title"
-        style="@style/H1Text"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:background="?selectableItemBackground"
@@ -78,6 +71,7 @@
         android:paddingEnd="80dp"
         android:paddingStart="@dimen/padding_normal"
         android:paddingTop="@dimen/spacing_normal"
+        android:textAppearance="?android:textAppearanceLarge"
         android:textColor="@color/feed_title"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

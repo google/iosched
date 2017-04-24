@@ -41,7 +41,7 @@
             android:gravity="top"
             android:lines="15"
             android:hint="&lt;logs&gt;"
-            android:textSize="@dimen/text_size_small"
+            android:textSize="12sp"
             android:padding="@dimen/spacing_normal"
             android:typeface="monospace"
             tools:ignore="HardcodedText" />
