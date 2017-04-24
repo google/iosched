@@ -15,12 +15,18 @@
  */
 package com.google.samples.apps.iosched.server.schedule.server;
 
-import com.google.appengine.api.utils.SystemProperty;
+import com.google.api.client.extensions.appengine.http.UrlFetchTransport;
+import com.google.api.client.googleapis.auth.oauth2.GoogleCredential;
+import com.google.api.client.http.HttpRequest;
+import com.google.api.client.http.HttpRequestInitializer;
+import com.google.api.client.http.HttpTransport;
+import com.google.api.client.json.jackson2.JacksonFactory;
+import com.google.samples.apps.iosched.rpc.sync.Sync;
 import com.google.samples.apps.iosched.server.schedule.input.fetcher.VendorAPIEntityFetcher;
 
-import java.net.HttpURLConnection;
-import java.net.URL;
-import java.util.logging.Level;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Logger;
 
 /**
@@ -29,30 +35,33 @@ import java.util.logging.Logger;
 public class GCMPing {
 
   static Logger LOG = Logger.getLogger(VendorAPIEntityFetcher.class.getName());
+  public static final String SCOPE_EMAIL = "https://www.googleapis.com/auth/userinfo.email";
 
-  public void notifyGCMServer(String urlStr, String key) {
-    if (SystemProperty.environment.value() == SystemProperty.Environment.Value.Development) {
-      // In the development server, don't notify GCM
-      LOG.warning("Should notify the GCM server that new data is available, pinging URL "+urlStr);
-    } else {
-      try {
-        URL url = new URL(urlStr);
-        if (LOG.isLoggable(Level.INFO)) {
-          LOG.info("Pinging GCM at URL: "+url);
-        }
+  /**
+   * Notify user clients that session data has changed.
+   */
+  public void notifySessionSync() {
+    try {
+      SyncServiceManager.INSTANCE.sync.sendSessionDataSync();
+    } catch (IOException e) {
+      LOG.severe("Unable to either get Sync service or send session data sync.");
+    } catch (NullPointerException e) {
+      LOG.severe("Unable to get Sync instance.");
+    }
+  }
 
-        HttpURLConnection connection = (HttpURLConnection) url.openConnection();
-        connection.setReadTimeout(1000 * 30); // 30 seconds
-        connection.setRequestProperty("Authorization", "key="+key);
-        connection.connect();
-        int statusCode = connection.getResponseCode();
-        if (statusCode < 200 || statusCode >= 300) {
-          LOG.severe("Unexpected response code from GCM server: "+statusCode+". "+connection.getResponseMessage());
-        }
-
-      } catch (Exception ex) {
-        LOG.log(Level.SEVERE, "Unexpected error when pinging GCM server", ex);
-      }
+  /**
+   * Notify user's clients that user data has changed so they can sync.
+   *
+   * @param userId ID of user whose clients should sync.
+   */
+  public void notifyUserSync(String userId) {
+    try {
+      SyncServiceManager.INSTANCE.sync.sendUserSync(userId);
+    } catch (IOException e) {
+      LOG.severe("Unable to either get sync service or send user sync.");
+    } catch (NullPointerException e) {
+      LOG.severe("Unable to get Sync instance.");
     }
   }
 }

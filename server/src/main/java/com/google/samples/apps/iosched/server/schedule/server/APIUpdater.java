@@ -152,8 +152,8 @@ public class APIUpdater {
       fileManager.createOrUpdateStagingManifest(newStagingManifest);
 
       try {
-        // notify production GCM server:
-        new GCMPing().notifyGCMServer(Config.GCM_URL, Config.GCM_API_KEY);
+        // notify clients that session data has been updated.
+        new GCMPing().notifySessionSync();
       } catch (Throwable t) {
         Logger.getLogger(APIUpdater.class.getName()).log(Level.SEVERE, "Error while pinging GCM server", t);
       }
