@@ -21,6 +21,6 @@
         android:id="@+id/menu_avatar"
         android:icon="@drawable/ic_default_avatar_toolbar"
         android:orderInCategory="1"
-        android:title="@string/description_avatar"
+        android:title="@string/description_avatar_signed_out"
         app:showAsAction="always" />
 </menu>

@@ -247,6 +247,7 @@ public class MyIOActivity extends BaseActivity implements
     // -- Auth
 
     private void showAvatar() {
+        mAvatar.setTitle(R.string.description_avatar_signed_in);
         Uri photoUrl = AccountUtils.getActiveAccountPhotoUrl(this);
         if (photoUrl == null) {
             return;
@@ -280,6 +281,7 @@ public class MyIOActivity extends BaseActivity implements
             mGoogleApiClient.connect();
         }
         mSignInManager.signOut();
+        mAvatar.setTitle(R.string.description_avatar_signed_out);
     }
 
     @Override
@@ -330,6 +332,7 @@ public class MyIOActivity extends BaseActivity implements
     public void onSignOut(Status status) {
         removePostOnboardingMessageCard();
         mAvatar.setIcon(getResources().getDrawable(R.drawable.ic_default_avatar_toolbar));
+        mAvatar.setTitle(R.string.description_avatar_signed_out);
     }
 
     @Override
