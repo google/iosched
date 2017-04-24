@@ -651,9 +651,6 @@
     <!-- Text for a button which will open the user's Wi-Fi settings -->
     <string name="wifi_dialog_button_settings">Open WiFi Settings</string>
 
-    <!-- Toast failure message if the user's wifi couldn't be updated -->
-    <string name="wifi_install_error_message">Sorry, unable to update WiFi configuration</string>
-
     <!-- Title of the Video library screen when only videos of a given topic are displayed -->
     <string name="title_topic_filtered_video_library">Videos about <xliff:g id="topic">%1$s</xliff:g></string>
 
@@ -848,10 +845,16 @@
     <string name="signout_failed_text">Could not sign out. Please try again.</string>
 
     <!-- Strings for Info page-->
-    <string name="wifi_network_label">Wi-Fi Network</string>
+    <string name="wifi_network_label">Wifi network</string>
     <string name="wifi_password_label">Password</string>
-    <string name="setup_wifi">Setup Wi-Fi</string>
-    <string name="password_copied_confirmation">Password copied</string>
+    <string name="setup_wifi">Save wifi network</string>
+
+    <!-- Snackbar message confirming save of wifi network -->
+    <string name="wifi_install_success">Wifi network saved</string>
+
+    <!-- Snackbar message if failed to save the wifi network -->
+    <string name="wifi_install_error_message">Sorry, unable to save wifi network</string>
+
     <string name="view_sessions_text">View Sessions</string>
     <string name="view_map_text">View Map</string>
     <!-- TODO make these URLs the correct deep link -->
