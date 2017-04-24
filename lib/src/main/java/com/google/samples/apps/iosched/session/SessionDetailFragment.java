@@ -476,22 +476,19 @@ public class SessionDetailFragment extends Fragment implements
                                         boolean success) {
         switch (userAction) {
             case SHOW_MAP:
-                Intent intentShowMap = new Intent(getActivity(), MapActivity.class);
-                intentShowMap.putExtra(MapActivity.EXTRA_ROOM, data.getRoomId());
-                intentShowMap.putExtra(MapActivity.EXTRA_DETACHED_MODE, true);
-                getActivity().startActivity(intentShowMap);
+                Intent mapIntent = new Intent(getActivity(), MapActivity.class);
+                mapIntent.putExtra(MapActivity.EXTRA_ROOM, data.getRoomId());
+                getActivity().startActivity(mapIntent);
                 break;
             case SHOW_SHARE:
                 ShareCompat.IntentBuilder builder = ShareCompat.IntentBuilder.from(getActivity())
                         .setType("text/plain")
                         .setText(getString(R.string.share_template, data.getSessionTitle(),
                                 BuildConfig.CONFERENCE_HASHTAG, data.getSessionUrl()));
-                Intent intentShare = Intent.createChooser(
+                Intent shareIntent = Intent.createChooser(
                         builder.getIntent(),
                         getString(R.string.title_share));
-                intentShare.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                getActivity().startActivity(intentShare);
-
+                getActivity().startActivity(shareIntent);
                 break;
             default:
                 // Other user actions are completely handled in model
