@@ -76,7 +76,7 @@
             <LinearLayout
                 android:id="@+id/filters_bar_inner"
                 android:layout_width="match_parent"
-                android:layout_height="72dp"
+                android:layout_height="?actionBarSize"
                 android:background="@color/light_grey"
                 android:baselineAligned="false"
                 android:gravity="center_vertical"
