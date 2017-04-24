@@ -332,8 +332,7 @@ public class UserdataEndpoint {
         data.reservedSessions.put(sessionId, s);
         save(data);
         // notify user's clients of reservation change change
-        String url = Config.FCM_SEND_URL + "/" + data.userId + "/sync_user";
-        new GCMPing().notifyGCMServer(url, Config.GCM_API_KEY);
+        new GCMPing().notifyUserSync(data.userId);
         return data.reservedSessions;
     }
 
@@ -362,8 +361,7 @@ public class UserdataEndpoint {
         data.reservedSessions.put(sessionId, s);
         save(data);
         // notify user's clients of reservation change change
-        String url = Config.FCM_SEND_URL + "/" + data.userId + "/sync_user";
-        new GCMPing().notifyGCMServer(url, Config.GCM_API_KEY);
+        new GCMPing().notifyUserSync(data.userId);
         return data.reservedSessions;
     }
 
@@ -389,7 +387,6 @@ public class UserdataEndpoint {
         data.reservedSessions.put(sessionId, s);
         save(data);
         // notify user's clients of reservation change change
-        String url = Config.FCM_SEND_URL + "/" + data.userId + "/sync_user";
-        new GCMPing().notifyGCMServer(url, Config.GCM_API_KEY);
+        new GCMPing().notifyUserSync(data.userId);
     }
 }
