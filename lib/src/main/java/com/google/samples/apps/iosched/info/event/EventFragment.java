@@ -24,10 +24,12 @@ import android.support.design.widget.Snackbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 
 import com.google.samples.apps.iosched.info.BaseInfoFragment;
 import com.google.samples.apps.iosched.lib.R;
+import com.google.samples.apps.iosched.util.WiFiUtils;
 
 import static com.google.samples.apps.iosched.util.LogUtils.LOGE;
 import static com.google.samples.apps.iosched.util.LogUtils.makeLogTag;
@@ -39,6 +41,7 @@ public class EventFragment extends BaseInfoFragment<EventInfo> {
 
     private TextView mWiFiNetworkText;
     private TextView mWiFiPasswordText;
+    private Button mWiFiSave;
     private EventView mSandboxEventContent;
     private EventView mCodeLabsEventContent;
     private EventView mOfficeHoursEventContent;
@@ -51,6 +54,15 @@ public class EventFragment extends BaseInfoFragment<EventInfo> {
         View root = inflater.inflate(R.layout.info_event_frag, container, false);
         mWiFiNetworkText = (TextView) root.findViewById(R.id.wifi_network_value);
         mWiFiPasswordText = (TextView) root.findViewById(R.id.wifi_password_value);
+        mWiFiSave = (Button) root.findViewById(R.id.wifi_save);
+        mWiFiSave.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                boolean saved = WiFiUtils.installConferenceWiFi(getContext());
+                Snackbar.make(getView(), saved ? R.string.wifi_install_success
+                        : R.string.wifi_install_error_message, Snackbar.LENGTH_SHORT).show();
+            }
+        });
         mSandboxEventContent = (EventView) root.findViewById(R.id.sandbox_event);
         mCodeLabsEventContent = (EventView) root.findViewById(R.id.codelabs_event);
         mOfficeHoursEventContent =
@@ -58,22 +70,6 @@ public class EventFragment extends BaseInfoFragment<EventInfo> {
         mAfterHoursEventContent =
                 (EventView) root.findViewById(R.id.afterhours_event);
         return root;
-    }
-
-    @Override
-    public void onStart() {
-        super.onStart();
-        mWiFiPasswordText.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                ClipboardManager clipboardManager = (ClipboardManager) getActivity()
-                        .getApplicationContext().getSystemService(Context.CLIPBOARD_SERVICE);
-                ClipData passwordClip = ClipData
-                        .newPlainText("password", mEventInfo.getWiFiPassword());
-                clipboardManager.setPrimaryClip(passwordClip);
-                Snackbar.make(getView(), R.string.password_copied_confirmation, Snackbar.LENGTH_SHORT).show();
-            }
-        });
     }
 
     @Override
