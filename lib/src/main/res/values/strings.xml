@@ -663,8 +663,11 @@
     <!-- Text of the Filter menu icon -->
     <string name="description_filter">Filter</string>
 
-    <!-- Text of the My I/O menu icon -->
-    <string name="description_avatar">Avatar</string>
+    <!-- Text of the My I/O avatar icon whilst signed out -->
+    <string name="description_avatar_signed_out">Sign in</string>
+
+    <!-- Text of the My I/O avatar icon whilst signed in -->
+    <string name="description_avatar_signed_in">Sign out</string>
 
     <!-- Title of the Video library side panel containing all the filters -->
     <string name="title_video_library_filter">Filter</string>
