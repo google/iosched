@@ -66,7 +66,7 @@
     <servlet-class>com.google.api.server.spi.SystemServiceServlet</servlet-class>
     <init-param>
       <param-name>services</param-name>
-      <param-value>com.google.samples.apps.iosched.server.userdata.UserdataEndpoint, com.google.samples.apps.iosched.server.registration.RegistrationEndpoint</param-value>
+      <param-value>com.google.samples.apps.iosched.server.userdata.UserdataEndpoint, com.google.samples.apps.iosched.server.registration.RegistrationEndpoint, com.google.samples.apps.iosched.server.feed.ServingUrlEndpoint</param-value>
     </init-param>
     <init-param>
       <param-name>restricted</param-name>
@@ -177,18 +177,6 @@
     <servlet-mapping>
         <servlet-name>SendMessageServlet</servlet-name>
         <url-pattern>/gcm/send/*</url-pattern>
-    </servlet-mapping>
-
-    <!-- Feed endpont -->
-    <servlet>
-      <servlet-name>ServingUrlServlet</servlet-name>
-      <servlet-class>
-        com.google.samples.apps.iosched.server.feed.ServingUrlServlet
-      </servlet-class>
-    </servlet>
-    <servlet-mapping>
-      <servlet-name>ServingUrlServlet</servlet-name>
-      <url-pattern>/feed/servingurl</url-pattern>
     </servlet-mapping>
 
     <!-- Cron endpoints -->
