@@ -33,7 +33,6 @@ import java.util.List;
 import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.servlet.ServletContext;
 
 /** Utility class for sending individual messages to devices.
  *
@@ -54,12 +53,6 @@ public class MessageSender {
     public MessageSender(ServletConfig config) {
         mApiKey = (String) config.getServletContext().getAttribute(
                 ApiKeyInitializer.ATTRIBUTE_ACCESS_KEY);
-        mGcmService = new Sender(mApiKey);
-    }
-
-    public MessageSender(ServletContext context) {
-        mApiKey = (String) context.getAttribute(
-            ApiKeyInitializer.ATTRIBUTE_ACCESS_KEY);
         mGcmService = new Sender(mApiKey);
     }
 
