@@ -179,27 +179,6 @@
         <url-pattern>/gcm/send/*</url-pattern>
     </servlet-mapping>
 
-    <!-- admin-facing endpoints -->
-    <servlet>
-        <servlet-name>AdminServlet</servlet-name>
-        <servlet-class>
-            com.google.samples.apps.iosched.server.gcm.admin.AdminServlet
-        </servlet-class>
-        <load-on-startup>1</load-on-startup>
-    </servlet>
-    <servlet-mapping>
-        <servlet-name>AdminServlet</servlet-name>
-        <url-pattern>/admin/gcm/</url-pattern>
-    </servlet-mapping>
-    <security-constraint>
-        <web-resource-collection>
-            <url-pattern>/admin/gcm/</url-pattern>
-        </web-resource-collection>
-        <auth-constraint>
-            <role-name>admin</role-name>
-        </auth-constraint>
-    </security-constraint>
-
     <!-- Feed endpont -->
     <servlet>
       <servlet-name>ServingUrlServlet</servlet-name>
