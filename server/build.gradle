@@ -57,6 +57,10 @@ dependencies {
     compile "commons-io:commons-io:2.0.1"
     compile 'com.google.firebase:firebase-admin:4.1.3'
     compile fileTree('lib')
+    // Note that if the Ping endpoint (FcmSendEndpoint.java) is updated this jar needs to be
+    // regenerated. See doc/FCM.md
+    compile files('libs/rpc-ping.jar')
+    compile 'com.google.api-client:google-api-client-appengine:1.22.0'
 
     testCompile 'junit:junit:[4,)'
     testCompile 'org.mockito:mockito-core:1.10.19'
@@ -87,5 +91,8 @@ appengine {
         getClientLibsOnBuild = true
         getDiscoveryDocsOnBuild = true
         installClientLibsOnBuild = true
+        // Use this field to set the output directory of Endpoints client library jars. This is used
+        // together with the appengineEndpointsExportClientLibs task.
+        // clientLibJarOut = new File('PATH_TO_OUTPUT_DIRECTORY')
     }
 }
