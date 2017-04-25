@@ -21,7 +21,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:padding="@dimen/padding_normal">
+    android:paddingLeft="@dimen/padding_normal"
+    android:paddingRight="@dimen/padding_normal">
 
     <TextView
         android:id="@+id/slot_title"
@@ -30,6 +31,8 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
+        android:paddingTop="@dimen/padding_normal"
+        android:textStyle="italic"
         android:textAppearance="?android:textAppearanceLarge"
         tools:text="Breakfast" />
 
@@ -37,22 +40,24 @@
         android:id="@+id/slot_description"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:paddingTop="@dimen/spacing_micro"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/slot_title"
+        android:paddingBottom="@dimen/padding_normal"
+        android:layout_marginTop="@dimen/spacing_micro"
         tools:text="9:00 AM - 11:30 AM / Room 1" />
 
     <ImageView
         android:id="@+id/slot_icon"
-        android:layout_width="24dp"
-        android:layout_height="24dp"
-        android:layout_marginTop="@dimen/spacing_normal"
-        android:background="@drawable/break_icon_background"
-        android:importantForAccessibility="no"
-        android:padding="@dimen/spacing_micro"
-        android:src="@drawable/break_icon"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintDimensionRatio="1"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/slot_description" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@id/slot_title"
+        app:layout_constraintBottom_toBottomOf="@id/slot_description"
+        android:importantForAccessibility="no"
+        android:alpha=".15"
+        android:src="@drawable/break_icon" />
 
 </android.support.constraint.ConstraintLayout>
