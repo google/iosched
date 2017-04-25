@@ -15,9 +15,15 @@
 
 <transitionSet
     xmlns:android="http://schemas.android.com/apk/res/android"
-    android:duration="300"
     android:interpolator="@android:interpolator/fast_out_slow_in"
+    android:duration="300"
     android:transitionOrdering="together">
+
+    <changeBounds android:duration="50">
+        <targets>
+            <target android:targetId="@id/feed_item" />
+        </targets>
+    </changeBounds>
 
     <transitionSet>
         <targets>
