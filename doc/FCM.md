@@ -1,4 +1,4 @@
-    Copyright 2014 Google Inc. All rights reserved.
+    Copyright 2017 Google Inc. All rights reserved.
 
     Licensed under the Apache License, Version 2.0 (the "License");
     you may not use this file except in compliance with the License.
@@ -13,22 +13,21 @@
     limitations under the License.
 
 
-# Google Cloud Messaging in IOSched
+# Firebase Cloud Messaging in IOSched
 
-This app uses Google Cloud Messaging (GCM) to know when to synchronize
-the conference data and the user's schedule. For an introduction to GCM,
-see [http://developer.android.com/google/gcm/index.html](http://developer.android.com/google/gcm/index.html)
+This app uses Firebase Cloud Messaging (FCM) to know when to synchronize
+the conference data and the user's schedule. For an introduction to FCM,
+see [https://firebase.google.com/docs/cloud-messaging](https://firebase.google.com/docs/cloud-messaging)
 
-On startup, the application registers the device with the GCM server (see
-the MessagingRegistrationWithGCM.registerDevice method). This registration sends two
-pieces of data: the device's GCM token and the user's GCM Key. The GCM token is
-a core GCM concept, and essentially consists of a long string that
-identifies the device for the purposes of sending GCM messages.  The GCM
-key, however, is something we use only in this app and is not part of the
-normal GCM protocol. More about this soon.
+On startup, the application registers the device with the FCM server. 
+This registration sends two pieces of data: the device's FCM token and the user's user ID.
+The FCM token is a core FCM concept, and essentially consists of a long string that
+identifies the device for the purposes of sending FCM messages.  The user ID, however, 
+is something we use only in this app and is not part of the
+normal FCM protocol. More about this soon.
 
-The server can send the client several different types of GCM messages.
-When a GCM message arrives, it is processed by GCMMessageListenerService.onMessageReceived.
+The server can send the client several different types of FCM messages.
+When a FCM message arrives, it is processed by MyFcmListenerService.onMessageReceived.
 That method will take the appropriate action depending on the content of
 the message. There are several message verbs we recognize:
 
@@ -71,13 +70,13 @@ maxVersion and minVersion | no | allow you to filter what version of the app wil
 dialogTitle, dialogText, dialogYes, dialogNo | no | If the dialog fields are present, a dialog will be shown when the notification is clicked. That dialog will have the specified title and message. The message can contain newlines (use actual newlines, not \n), and will automaticaly linkify links. dialogYes can be ommitted for dialogs that do not have a positive action. For example "Dismiss" button only. The positive action (the YES button) will always launch the URL.
 
 
-## GCM key
+## User ID
 
-The reason we use the concept of a GCM key is that the application has to
+The reason we use the concept of a user ID is that the application has to
 synchronize the user's data (sessions selected to be in schedule) with the
 Google I/O website.
 
-"GCM key" or "GCM group ID" is not part of the GCM jargon, it's something
+"user ID" or "FCM group ID" is not part of the GCM jargon, it's something
 specific to this app.
 
 Here is some background around the problem we were trying to solve, so
@@ -96,54 +95,57 @@ So these are the problems we had to solve:
 3. how to notify all of the user's devices when a change happens on their schedule
 4. how to ensure users can't abuse the system sending GCM messages to devices that are not theirs
 
-Items 1) and 2) are solved by using Firebase Realtime Database, where users
+Items 1) and 2) are solved by using Cloud Datastore and Cloud Endpoints, where users
 could only read-write their own data. For items 3) and 4) we used a randomly
-generated UUID, which we call GCM key. Each user has their own unique GCM key.
-This key is stored in the Firebase database, along with information about
+generated UUID, which we call user ID. Each user has their own unique user ID.
+This key is stored in the Cloud Datastore, along with information about
 sessions that were added to a user's schedule, the videos watched by the user,
 and information about sessions for which the user provided feedback.
 
 If you look at `AccountUtils`, you will see how this process works.  We first
-generate a random key locally; the first time we try to sync with Firebase, we
-determine if there's already a key there. If there is, the existing key
-overrides the local key.
+generate a random key locally; the first time we try to sync Cloud Datastore, Then later
+when the user signs in we replace it with the user's ID.
 
 Note that the app also sends a sync_user message to the server when the user
 changes their schedule! This is done to cause a sync on all other
 user's devices, so they can reflect that latest change as soon as possible.
 
-## How to send a GCM message
+## How to send a FCM message
 
-If you've set up your GCM server and enabled GCM on IOSched, you should
-be able to push GCM messages to all your users. To do so, you have
-to make an HTTP POST request to your GCM server (that is, your
+If you've set up your FCM server and enabled FCM on IOSched, you should
+be able to push FCM messages to all your users. To do so, you have
+to make an HTTP POST request to your FCM server (that is, your
 App Engine app that's running the [gcm-server/](../server) code).
 
 Here is a sample POST request:
 
-    POST /send/global/sync_schedule HTTP/1.1
+    POST /ping/sessions HTTP/1.1
     Host: your-app.appspot.com
-    Authorization: key=$ADMINKEY
+    Authorization: bearer <your-bearer-token>
     Content-Type: application/octet-stream
     Content-Length: 22
 
     {"sync_jitter":600000}
 
 
-This would send the "sync_schedule" command to all users.
-(replace $ADMINKEY by the admin key you configured in the GCM
-server's AuthHelper.java class!)
+This would send the "sync_schedule" command to all users. Use the generated Endpoints client lib
+to make this call simple.
 
-To make this POST request, you can use one of the many command-line
-HTTP utilities such as curl, or use openssl directly. An example:
+    PingServiceManager.INSTANCE.ping.sendSessionDataSync();
 
-    $ cat <<END | openssl s_client -connect your-app.appspot.com:443
-    POST /send/global/sync_schedule HTTP/1.1
-    Host: your-app.appspot.com
-    Authorization: key=$ADMINKEY
-    Content-Type: application/octet-stream
-    Content-Length: 22
+Note that if you make changes to the FcmSendEndpoint you will have to update the ping jar. The
+ping jar is stored in [server](../server/libs/rpc-ping.jar).
 
-    {"sync_jitter":600000}
-    END
+### Update the ping jar
 
+1. Set the output directory for Cloud Endpoints client library jars. Uncomment the clientLibJarOut
+   parameter in the server's `build.gradle` file and update the output path to the directory where
+   you wan the client libraries to be put.
+
+2. Generate the Cloud Endpoints client library jars.
+
+        ./gradlew :server:appengineEndpointsExportClientLibs
+
+4. Copy the ping jar from the directory you specified above into the server's `libs` directory.
+
+5. Update the server's `build.gradle` dependency to the new name (if changed) of the ping jar.
