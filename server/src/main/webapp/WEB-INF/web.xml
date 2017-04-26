@@ -66,7 +66,7 @@
     <servlet-class>com.google.api.server.spi.SystemServiceServlet</servlet-class>
     <init-param>
       <param-name>services</param-name>
-      <param-value>com.google.samples.apps.iosched.server.userdata.UserdataEndpoint, com.google.samples.apps.iosched.server.registration.RegistrationEndpoint, com.google.samples.apps.iosched.server.feed.ServingUrlEndpoint, com.google.samples.apps.iosched.server.gcm.FcmRegistrationEndpoint, com.google.samples.apps.iosched.server.gcm.FcmSendEndpoint, com.google.samples.apps.iosched.server.schedule.feedback.FeedbackEndpoint</param-value>
+      <param-value>com.google.samples.apps.iosched.server.userdata.UserdataEndpoint, com.google.samples.apps.iosched.server.registration.RegistrationEndpoint, com.google.samples.apps.iosched.server.feed.ServingUrlEndpoint, com.google.samples.apps.iosched.server.gcm.FcmRegistrationEndpoint, com.google.samples.apps.iosched.server.gcm.FcmSendEndpoint, com.google.samples.apps.iosched.server.schedule.feedback.FeedbackEndpoint, com.google.samples.apps.iosched.server.schedule.server.CmsUpdateEndpoint</param-value>
     </init-param>
     <init-param>
       <param-name>restricted</param-name>
@@ -88,26 +88,6 @@
     <servlet-mapping>
         <servlet-name>logData</servlet-name>
         <url-pattern>/admin/schedule/log_data</url-pattern>
-    </servlet-mapping>
-
-    <servlet>
-        <servlet-name>runupdate</servlet-name>
-        <servlet-class>com.google.samples.apps.iosched.server.schedule.server.servlet.RunUpdateServlet</servlet-class>
-    </servlet>
-
-    <servlet-mapping>
-        <servlet-name>runupdate</servlet-name>
-        <url-pattern>/admin/schedule/runupdate</url-pattern>
-    </servlet-mapping>
-
-    <servlet>
-        <servlet-name>cmsupdate</servlet-name>
-        <servlet-class>com.google.samples.apps.iosched.server.schedule.server.servlet.CMSUpdateServlet</servlet-class>
-    </servlet>
-
-    <servlet-mapping>
-        <servlet-name>cmsupdate</servlet-name>
-        <url-pattern>/admin/schedule/cmsupdate</url-pattern>
     </servlet-mapping>
 
     <security-constraint>

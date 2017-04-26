@@ -26,9 +26,8 @@
   <div class="actions">
     <a id="productionManifest" href="#" class="linkasbutton see_manifest">see production manifest</a>
     <a id="stagingManifest" href="#" class="linkasbutton see_manifest">see staging manifest</a>
-    <a href="runupdate" target="_blank" class="run linkasbutton">Update now</a>
-    <a href="runupdate?force=true" target="_blank" class="runForced error linkasbutton">Force
-      Update</a>
+    <a onclick="runUpdate();" class="run linkasbutton">Update now</a>
+    <a onclick="runUpdate();" class="runForced error linkasbutton">Force Update</a>
   </div>
   <table class="log_table">
     <tr class="table_header logline">
@@ -54,6 +53,42 @@
     <textarea></textarea>
   </div>
 </body>
+
+<script>
+  const WEB_CLIENT_ID = '596109260910-gms6j2bqmf2mqkq02i8pgbraqrv0dt7s.apps.googleusercontent.com';
+  const ENDPOINT_URL = 'https://io2017-backend-dev.appspot.com/_ah/api';
+
+  // Initialize Google API Client and IOSched CMS client.
+  function init() {
+    gapi.load('client:auth2', function() {
+      gapi.auth2.authorize({
+        client_id: WEB_CLIENT_ID,
+        scope: 'email'
+      }, function (response) {
+        console.log(response);
+        gapi.client.load('cms', 'v1', function() {
+          console.log('IOSched Data client loaded');
+        }, ENDPOINT_URL);
+      });
+    });
+  }
+
+  /**
+   * Initiate processing of data from CMS and make it available to clients.
+   * Once complete the page is reloaded.
+   */
+  function runUpdate() {
+    document.body.style.cursor = 'wait';
+    gapi.client.cms.useDataFromCms().execute(function(resp) {
+      console.log(resp);
+      location.reload();
+    });
+  }
+
+</script>
+
+<script src="https://apis.google.com/js/client.js?onload=init">
+</script>
 
 <script>
   document.addEventListener('DOMContentLoaded', function() {

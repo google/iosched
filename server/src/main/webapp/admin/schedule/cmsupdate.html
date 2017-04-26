@@ -182,7 +182,7 @@ font-weight: bold;
 </style>
 </head>
 <body>
-<form action="/admin/schedule/cmsupdate" method="post">
+
 <div class="app">
   <div>
     <input type="checkbox" name="user_confirmation">
@@ -203,13 +203,31 @@ font-weight: bold;
     </div>
   </div>
 </div>
-</form>
 </body>
 
+
+
 <script>
+  const WEB_CLIENT_ID = '596109260910-gms6j2bqmf2mqkq02i8pgbraqrv0dt7s.apps.googleusercontent.com';
+  const ENDPOINT_URL = 'https://io2017-backend-dev.appspot.com/_ah/api';
+
+  // Initialize Google API Client and IOSched CMS client.
+  function init() {
+    gapi.load('client:auth2', function() {
+      gapi.auth2.authorize({
+        client_id: WEB_CLIENT_ID,
+        scope: 'email'
+      }, function (response) {
+        console.log(response);
+        gapi.client.load('cms', 'v1', function() {
+          console.log('IOSched CMS client loaded');
+        }, ENDPOINT_URL);
+      });
+    });
+  }
+
   document.addEventListener('DOMContentLoaded', function() {
-    
-    var form=document.querySelector('form');
+
     var proceed=document.querySelector('.proceed');
     var accept=document.querySelector('input[type="checkbox"]');
     accept.addEventListener('click', function(e) {
@@ -223,9 +241,15 @@ font-weight: bold;
     proceed.addEventListener('click', function(e) {
       if (accept.checked) {
         document.body.classList.add('waiting');
-        form.submit();
+        gapi.client.cms.getDataFromCms().execute(function(resp) {
+          console.log(resp);
+          window.location.href = 'updateok.html';
+        });
       }
     });
   });
+</script>
+
+<script src="https://apis.google.com/js/client.js?onload=init">
 </script>
 </html>
