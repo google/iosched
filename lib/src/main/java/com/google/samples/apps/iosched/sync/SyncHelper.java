@@ -95,17 +95,10 @@ public class SyncHelper {
                 .setSyncAutomatically(account, ScheduleContract.CONTENT_AUTHORITY, true);
         ContentResolver.setIsSyncable(account, ScheduleContract.CONTENT_AUTHORITY, 1);
 
-        boolean pending = ContentResolver.isSyncPending(account, ScheduleContract.CONTENT_AUTHORITY);
-        if (pending) {
-            LOGD(TAG, "Warning: sync is PENDING. Will cancel.");
-        }
         boolean active = ContentResolver.isSyncActive(account, ScheduleContract.CONTENT_AUTHORITY);
-        if (active) {
-            LOGD(TAG, "Warning: sync is ACTIVE. Will cancel.");
-        }
 
-        if (pending || active) {
-            LOGD(TAG, "Cancelling previously pending/active sync.");
+        if (active) {
+            LOGD(TAG, "Cancelling previously active sync.");
             ContentResolver.cancelSync(account, ScheduleContract.CONTENT_AUTHORITY);
         }
 
