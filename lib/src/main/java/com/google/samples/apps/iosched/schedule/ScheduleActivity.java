@@ -81,13 +81,6 @@ public class ScheduleActivity extends BaseActivity implements ScheduleViewParent
      */
     public static final String EXTRA_FILTER_TAG = ScheduleFilterFragment.FILTER_TAG;
 
-    /**
-     * Boolean extra used to specify that the live streamed only sessions filter should be activated
-     * when the screen launches.
-     */
-    public static final String EXTRA_SHOW_LIVE_STREAM_SESSIONS =
-            ScheduleFilterFragment.SHOW_LIVE_STREAMED_ONLY;
-
     // The saved instance state filters
     private static final String STATE_FILTER_TAGS =
             "com.google.samples.apps.iosched.myschedule.STATE_FILTER_TAGS";
@@ -131,10 +124,14 @@ public class ScheduleActivity extends BaseActivity implements ScheduleViewParent
     };
 
     public static void launchScheduleWithFilterTag(Context context, Tag tag) {
+        launchScheduleWithFilterTag(context, tag.getId());
+    }
+
+    public static void launchScheduleWithFilterTag(Context context, String tag) {
         Intent intent = new Intent(context, ScheduleActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         if (tag != null) {
-            intent.putExtra(EXTRA_FILTER_TAG, tag.getId());
+            intent.putExtra(EXTRA_FILTER_TAG, tag);
         }
         context.startActivity(intent);
     }
@@ -195,8 +192,8 @@ public class ScheduleActivity extends BaseActivity implements ScheduleViewParent
             // clear filters and show the selected day
             mScheduleFilterFragment.clearFilters();
             mSchedulePagerFragment.scrollToConferenceDay(day);
-        } else if (intent.hasExtra(EXTRA_FILTER_TAG)
-                || intent.hasExtra(EXTRA_SHOW_LIVE_STREAM_SESSIONS)) {
+        }
+        if (intent.hasExtra(EXTRA_FILTER_TAG)) {
             // apply the requested filter
             mScheduleFilterFragment.initWithArguments(intentToFragmentArguments(intent));
         }

@@ -13,9 +13,6 @@
  */
 package com.google.samples.apps.iosched.info.event;
 
-import android.content.ClipData;
-import android.content.ClipboardManager;
-import android.content.Context;
 import android.content.res.Resources;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -28,13 +25,15 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.google.samples.apps.iosched.info.BaseInfoFragment;
+import com.google.samples.apps.iosched.info.event.EventView.EventViewClickListener;
 import com.google.samples.apps.iosched.lib.R;
+import com.google.samples.apps.iosched.schedule.ScheduleActivity;
 import com.google.samples.apps.iosched.util.WiFiUtils;
 
 import static com.google.samples.apps.iosched.util.LogUtils.LOGE;
 import static com.google.samples.apps.iosched.util.LogUtils.makeLogTag;
 
-public class EventFragment extends BaseInfoFragment<EventInfo> {
+public class EventFragment extends BaseInfoFragment<EventInfo> implements EventViewClickListener {
     private static final String TAG = makeLogTag(EventFragment.class);
 
     private EventInfo mEventInfo;
@@ -65,10 +64,12 @@ public class EventFragment extends BaseInfoFragment<EventInfo> {
         });
         mSandboxEventContent = (EventView) root.findViewById(R.id.sandbox_event);
         mCodeLabsEventContent = (EventView) root.findViewById(R.id.codelabs_event);
-        mOfficeHoursEventContent =
-                (EventView) root.findViewById(R.id.officehours_event);
-        mAfterHoursEventContent =
-                (EventView) root.findViewById(R.id.afterhours_event);
+        mOfficeHoursEventContent = (EventView) root.findViewById(R.id.officehours_event);
+        mAfterHoursEventContent = (EventView) root.findViewById(R.id.afterhours_event);
+        mSandboxEventContent.setEventViewClickListener(this);
+        mCodeLabsEventContent.setEventViewClickListener(this);
+        mOfficeHoursEventContent.setEventViewClickListener(this);
+        mAfterHoursEventContent.setEventViewClickListener(this);
         return root;
     }
 
@@ -94,5 +95,15 @@ public class EventFragment extends BaseInfoFragment<EventInfo> {
         } else {
             LOGE(TAG, "EventInfo should not be null.");
         }
+    }
+
+    @Override
+    public void onViewSessionsClicked(EventView view, String filterTag) {
+        ScheduleActivity.launchScheduleWithFilterTag(view.getContext(), filterTag);
+    }
+
+    @Override
+    public void onViewMapClicked(EventView view, String mapUri) {
+
     }
 }
