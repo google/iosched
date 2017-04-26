@@ -17,6 +17,7 @@
 package com.google.samples.apps.iosched.map;
 
 import android.app.Activity;
+import android.content.Context;
 import android.database.ContentObserver;
 import android.graphics.Rect;
 import android.net.Uri;
@@ -55,6 +56,8 @@ import com.google.samples.apps.iosched.map.util.TileLoadingTask;
 import com.google.samples.apps.iosched.provider.ScheduleContract;
 import com.google.samples.apps.iosched.util.AnalyticsHelper;
 import com.google.samples.apps.iosched.util.MapUtils;
+
+import org.json.JSONObject;
 
 import java.io.IOException;
 import java.util.HashMap;
@@ -474,11 +477,15 @@ public class MapFragment extends com.google.android.gms.maps.SupportMapFragment 
         return true;
     }
 
-    private void onMarkersLoaded(GeoJsonLayer layer) {
-        if (layer != null) {
-            layer.addLayerToMap();
-            mGeoJsonLayer = layer;
-            for (GeoJsonFeature feature : layer.getFeatures()) {
+    private void onMarkersLoaded(JSONObject data) {
+        if (data != null) {
+            // Parse the JSONObject as GeoJson and add it to the map
+            mGeoJsonLayer = MapUtils.processGeoJson(getContext(), mMap, data);
+            if(mGeoJsonLayer == null){
+                return;
+            }
+            mGeoJsonLayer.addLayerToMap();
+            for (GeoJsonFeature feature : mGeoJsonLayer.getFeatures()) {
                 if (feature == null) {
                     break;
                 }
@@ -536,24 +543,25 @@ public class MapFragment extends com.google.android.gms.maps.SupportMapFragment 
 
 
     /**
-     * LoaderCallbacks for the {@link MarkerLoadingTask} that loads all markers in GeoJson for the
-     * map.
+     * LoaderCallbacks for the {@link MarkerLoadingTask} that loads all markers from the database
+     * as a JSONOBject, ready for processing into a GeoJsonLayer on this thread.
+     * @see MapUtils#processGeoJson(Context, GoogleMap, JSONObject)
      */
-    private LoaderCallbacks<GeoJsonLayer> mMarkerLoader
-            = new LoaderCallbacks<GeoJsonLayer>() {
+    private LoaderCallbacks<JSONObject> mMarkerLoader
+            = new LoaderCallbacks<JSONObject>() {
         @Override
-        public Loader<GeoJsonLayer> onCreateLoader(int id, Bundle args) {
-            return new MarkerLoadingTask(mMap, getActivity());
+        public Loader<JSONObject> onCreateLoader(int id, Bundle args) {
+            return new MarkerLoadingTask(getActivity());
         }
 
         @Override
-        public void onLoadFinished(final Loader<GeoJsonLayer> loader,
-                final GeoJsonLayer geoJsonLayer) {
-            onMarkersLoaded(geoJsonLayer);
+        public void onLoadFinished(final Loader<JSONObject> loader,
+                final JSONObject jsonObject) {
+            onMarkersLoaded(jsonObject);
         }
 
         @Override
-        public void onLoaderReset(Loader<GeoJsonLayer> loader) {
+        public void onLoaderReset(Loader<JSONObject> loader) {
         }
     };
 
