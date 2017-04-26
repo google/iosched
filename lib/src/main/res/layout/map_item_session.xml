@@ -51,14 +51,14 @@
             android:layout_height="wrap_content"
             android:maxLines="2"
             android:ellipsize="end"
-            android:textAppearance="@style/TextAppearance.SessionTitle"
+            android:textAppearance="@style/TextAppearance.Map.SessionTitle"
             tools:text="@string/placeholder_session_title" />
 
         <TextView
             android:id="@+id/map_item_text"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textAppearance="@style/TextAppearance.Body1"
+            android:textAppearance="@style/TextAppearance.Map.SessionSubtitle"
             tools:text="@string/placeholder_session_block_time" />
 
     </LinearLayout>

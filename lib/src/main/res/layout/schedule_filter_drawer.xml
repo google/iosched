@@ -44,7 +44,7 @@ limitations under the License.
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="@string/title_explore_sessions_filter"
-            android:textAppearance="@style/TextAppearance.H3" />
+            android:textAppearance="?android:textAppearanceMedium" />
 
         <Button
             android:id="@+id/clear_filters"

@@ -44,10 +44,10 @@ of the map.-->
 
             <TextView
                 android:id="@+id/toolbar_title"
+                style="@style/ProductSans.Title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/title_map"
-                android:textAppearance="@style/TextAppearance.H1" />
+                android:text="@string/title_map" />
 
         </android.support.v7.widget.Toolbar>
 

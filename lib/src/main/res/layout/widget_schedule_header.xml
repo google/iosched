@@ -30,7 +30,8 @@
         android:gravity="center_vertical"
         android:paddingLeft="@dimen/padding_normal"
         android:paddingRight="@dimen/padding_normal"
-        style="@style/MyScheduleDayLabel"
+        android:textColor="@color/lightish_blue"
+        android:textSize="@dimen/appwidget_text_size_large"
         tools:text="@string/placeholder_session_day"/>
 
     <!-- plain View class is not a @RemoteView so have to use an ImageView here -->

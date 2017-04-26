@@ -53,7 +53,7 @@
         <activity
             android:name="com.google.samples.apps.iosched.schedule.ScheduleActivity"
             android:exported="true"
-            android:label="@string/app_name"
+            android:label="@string/title_my_schedule"
             android:launchMode="singleTop"
             android:theme="@style/Theme.IOSched.Schedule">
 
@@ -229,12 +229,6 @@
             android:exported="true"
             android:label="@string/title_map"
             android:theme="@style/Theme.IOSched.Map"
-            android:parentActivityName=".myio.MyIOActivity" />
-
-        <activity
-            android:name="com.google.samples.apps.iosched.about.AboutActivity"
-            android:exported="false"
-            android:label="@string/description_about"
             android:parentActivityName=".myio.MyIOActivity" />
 
         <!-- TaskStackBuilder proxy activity for widgets and notifications. -->

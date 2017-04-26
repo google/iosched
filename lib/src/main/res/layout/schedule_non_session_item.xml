@@ -25,13 +25,13 @@
 
     <TextView
         android:id="@+id/slot_title"
-        style="@style/H1Text"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        tools:text="@string/placeholder_session_title" />
+        android:textAppearance="?android:textAppearanceLarge"
+        tools:text="Breakfast" />
 
     <TextView
         android:id="@+id/slot_description"

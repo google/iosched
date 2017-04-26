@@ -27,16 +27,13 @@ limitations under the License.
 
     <TextView
         android:id="@+id/filter_label"
+        style="@style/Session.Tag"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginLeft="@dimen/padding_normal"
         android:layout_marginStart="@dimen/padding_normal"
-        android:ellipsize="end"
         android:importantForAccessibility="no"
         android:labelFor="@+id/filter_checkbox"
-        android:maxLines="1"
-        android:textAppearance="@style/TextAppearance.Tag"
-        tools:background="@drawable/tag_session_background"
         tools:backgroundTint="@color/sunflower_yellow"
         tools:text="Android" />
 
