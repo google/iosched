@@ -15,11 +15,16 @@
 
 <transitionSet
     xmlns:android="http://schemas.android.com/apk/res/android"
-    android:duration="200"
     android:interpolator="@android:interpolator/fast_out_slow_in"
     android:transitionOrdering="together">
 
-    <transitionSet>
+    <changeBounds android:duration="250">
+        <targets>
+            <target android:targetId="@id/feed_item" />
+        </targets>
+    </changeBounds>
+
+    <transitionSet android:duration="170">
         <targets>
             <target android:targetId="@id/image" />
         </targets>
@@ -36,10 +41,16 @@
         <arcMotion />
     </changeBounds>
 
-    <transition class="com.google.samples.apps.iosched.ui.transition.Rotate">
+    <transition
+        class="com.google.samples.apps.iosched.ui.transition.Rotate"
+        android:duration="200">
         <targets>
             <target android:targetId="@id/expand_icon" />
         </targets>
     </transition>
+
+    <fade
+        android:startDelay="200"
+        android:duration="50" />
 
 </transitionSet>
