@@ -878,4 +878,9 @@
 
     <string name="feed_error">Error loading feed.</string>
 
+    <!-- Button text indicating that the session can be added to the user's bookmarks. -->
+    <string name="add_bookmark">Add bookmark</string>
+
+    <!-- Button text indicating that the session can be removed from the user's bookmarks. -->
+    <string name="remove_bookmark">Remove bookmark</string>
 </resources>

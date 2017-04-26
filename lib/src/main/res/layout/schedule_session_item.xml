@@ -74,7 +74,7 @@
         android:layout_width="@dimen/a11y_min_touch_target_dimen"
         android:layout_height="@dimen/a11y_min_touch_target_dimen"
         android:background="?selectableItemBackgroundBorderless"
-        android:contentDescription="@string/add_to_schedule_desc"
+        android:contentDescription="@string/add_bookmark"
         android:scaleType="center"
         android:src="@drawable/session_bookmark"
         app:layout_constraintEnd_toEndOf="parent"
