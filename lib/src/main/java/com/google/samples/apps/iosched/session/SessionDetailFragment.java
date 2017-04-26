@@ -849,7 +849,7 @@ public class SessionDetailFragment extends Fragment implements
                 if (mAddScheduleFab.isChecked() != isInSchedule) {
                     mAddScheduleFab.setChecked(isInSchedule);
                     mAddScheduleFab.setContentDescription(getString(isInSchedule ?
-                            R.string.remove_from_schedule_desc : R.string.add_to_schedule_desc));
+                            R.string.remove_bookmark : R.string.add_bookmark));
                 }
             }
         });

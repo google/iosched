@@ -17,6 +17,7 @@ package com.google.samples.apps.iosched.schedule;
 
 import android.content.Context;
 import android.content.res.ColorStateList;
+import android.content.res.Resources;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.RecyclerView.ViewHolder;
@@ -104,6 +105,11 @@ public class SessionItemViewHolder extends ScheduleItemViewHolder
                 if (mCallbacks == null || mSession == null) {
                     return;
                 }
+                Resources res = view.getResources();
+                // Note: contentDescription is set based on the previous inSchedule state.
+                mBookmark.setContentDescription(mSession.inSchedule ?
+                        res.getString(R.string.add_bookmark) :
+                        res.getString(R.string.remove_bookmark));
                 mBookmark.setActivated(!mBookmark.isActivated());
                 mCallbacks.onBookmarkClicked(mSession.sessionId, mSession.inSchedule);
             }
@@ -198,6 +204,11 @@ public class SessionItemViewHolder extends ScheduleItemViewHolder
         } else {
             mBookmark.setVisibility(GONE);
         }
+
+        Resources res = itemView.getResources();
+        mBookmark.setContentDescription(mSession.inSchedule ?
+                res.getString(R.string.remove_bookmark) :
+                res.getString(R.string.add_bookmark));
 
         final long now = TimeUtils.getCurrentTime(context);
         final boolean streamingNow = item.startTime <= now && now <= item.endTime
