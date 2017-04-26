@@ -82,6 +82,14 @@ public interface Config {
   // TODO(arthurthompson): Remove CMS_API_CODE since it is no longer used by vendor API.
   public static final String CMS_API_CODE = "UNDEFINED";
 
+  // Googlers that are allowed to update CMS data
+  public static final String[] ALLOWED_CMS_UPDATERS = {
+      "arthurthompson@google.com",
+      "lauranozay@google.com",
+      "ldale@google.com",
+      "trevorjohns@google.com"
+  };
+
   // See context at b/15452185:
   public static final RoomMapping ROOM_MAPPING = new RoomMapping();
   static class RoomMapping {

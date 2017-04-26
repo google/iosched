@@ -48,6 +48,8 @@ public class Ids {
     public static final String WEB_CLIENT_ID = "755839215930-ctkg839m67rtqmgm55c6eg1j7cvu5mmf"
             + ".apps.googleusercontent.com";
 
+    public static final String ADMIN_WEB_CLIENT_ID = "596109260910-gms6j2bqmf2mqkq02i8pgbraqrv0dt7s.apps.googleusercontent.com";
+
     // ANDROID AUDIENCE
     public static final String ANDROID_AUDIENCE = ANDROID_CLIENT_ID;
 }
