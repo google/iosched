@@ -19,14 +19,19 @@ import android.content.Context;
 import android.support.annotation.DrawableRes;
 import android.text.TextUtils;
 
+import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.model.BitmapDescriptor;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLngBounds;
+import com.google.maps.android.geojson.GeoJsonFeature;
+import com.google.maps.android.geojson.GeoJsonLayer;
 import com.google.maps.android.geojson.GeoJsonPointStyle;
 import com.google.maps.android.ui.IconGenerator;
 import com.google.samples.apps.iosched.lib.R;
 import com.google.samples.apps.iosched.map.util.MarkerModel;
 import com.jakewharton.disklrucache.DiskLruCache;
+
+import org.json.JSONObject;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -34,6 +39,7 @@ import java.io.FilenameFilter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.Locale;
 
 import static com.google.samples.apps.iosched.util.LogUtils.LOGD;
@@ -368,5 +374,42 @@ public class MapUtils {
         // Both latitude and longitude are intersecting.
         return true;
 
+    }
+
+    public static GeoJsonLayer processGeoJson(Context context, GoogleMap mMap, JSONObject j) {
+        GeoJsonLayer layer = new GeoJsonLayer(mMap, j);
+
+        Iterator<GeoJsonFeature> iterator = layer.getFeatures().iterator();
+        final IconGenerator labelIconGenerator = MapUtils.getLabelIconGenerator(context);
+        while (iterator.hasNext()) {
+            GeoJsonFeature feature = iterator.next();
+
+            // get data
+            final String id = feature.getProperty("id");
+            final String typeString = feature.getProperty("type");
+            final int type = MapUtils.detectMarkerType(typeString);
+            final String label = feature.getProperty("title");
+
+            GeoJsonPointStyle pointStyle = new GeoJsonPointStyle();
+            if (type == MarkerModel.TYPE_LABEL) {
+                // Label markers contain the label as its icon
+                pointStyle = MapUtils.createLabelMarker(labelIconGenerator, id, label);
+            } else if (type == MarkerModel.TYPE_ICON) {
+                // An icon marker is mapped to a drawable based on its full type name
+                pointStyle = MapUtils.createIconMarker(typeString, id, context);
+            } else if (type != MarkerModel.TYPE_INACTIVE) {
+                // All other markers (that are not inactive) contain a pin icon
+                pointStyle = MapUtils.createPinMarker(id);
+            }
+
+            // If the marker is invalid (e.g. the icon does not exist), remove it from the map.
+            if (pointStyle == null) {
+                iterator.remove();
+            } else {
+                pointStyle.setVisible(true);
+                feature.setPointStyle(pointStyle);
+            }
+        }
+        return layer;
     }
 }
