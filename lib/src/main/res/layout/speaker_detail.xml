@@ -31,8 +31,7 @@
         android:id="@+id/speaker_image"
         android:layout_width="@dimen/speaker_image_size"
         android:layout_height="@dimen/speaker_image_size"
-        android:clickable="true"
-        android:focusable="true"
+        android:importantForAccessibility="no"
         android:scaleType="centerCrop"
         app:borderDrawable="@drawable/circle_border"
         app:maskDrawable="@drawable/circle_mask"
@@ -45,6 +44,7 @@
         android:layout_marginStart="@dimen/padding_normal"
         android:layout_weight="1"
         android:orientation="vertical"
+        android:focusable="true"
         tools:ignore="RtlHardcoded">
 
         <TextView
