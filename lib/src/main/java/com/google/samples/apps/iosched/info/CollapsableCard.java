@@ -13,17 +13,18 @@
  */
 package com.google.samples.apps.iosched.info;
 
-import android.animation.Animator;
-import android.animation.AnimatorListenerAdapter;
-import android.animation.ValueAnimator;
 import android.content.Context;
 import android.content.res.TypedArray;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.text.method.LinkMovementMethod;
+import android.transition.Transition;
+import android.transition.TransitionInflater;
+import android.transition.TransitionManager;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.animation.DecelerateInterpolator;
+import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -52,91 +53,34 @@ public class CollapsableCard extends FrameLayout {
         String cardTitle = arr.getString(R.styleable.CollapsableCard_cardTitle);
         String cardDescription = arr.getString(R.styleable.CollapsableCard_cardDescription);
         arr.recycle();
-        View view = LayoutInflater.from(context)
+        final View root = LayoutInflater.from(context)
                 .inflate(R.layout.collapsable_card_content, this, true);
-        mCardTitle = (TextView) view.findViewById(R.id.card_title);
-        mCardDescription = (HtmlTextView) view.findViewById(R.id.card_description);
+        mCardTitle = (TextView) root.findViewById(R.id.card_title);
+        mCardDescription = (HtmlTextView) root.findViewById(R.id.card_description);
         mCardDescription.setMovementMethod(LinkMovementMethod.getInstance());
-        mExpandIcon = (ImageView) view.findViewById(R.id.expand_icon);
+        mExpandIcon = (ImageView) root.findViewById(R.id.expand_icon);
         mCardTitle.setText(cardTitle);
         mCardDescription.setHtmlText(cardDescription);
-        updateFromExpandOrCollapse();
-        OnClickListener expandClick = new OnClickListener() {
+        final Transition toggle = TransitionInflater.from(getContext())
+                .inflateTransition(R.transition.info_card_toggle);
+        final OnClickListener expandClick = new OnClickListener() {
             @Override
             public void onClick(View v) {
                 mExpanded = !mExpanded;
-                updateFromExpandOrCollapse();
+                toggle.setDuration(mExpanded ? 300L : 200L);
+                TransitionManager.beginDelayedTransition((ViewGroup) root.getParent(), toggle);
+                mCardDescription.setVisibility(mExpanded ? VISIBLE : GONE);
+                mExpandIcon.setRotation(mExpanded ? 180f : 0f);
+                // activated used to tint controls when expanded
+                mExpandIcon.setActivated(mExpanded);
+                mCardTitle.setActivated(mExpanded);
             }
         };
         mExpandIcon.setOnClickListener(expandClick);
         mCardTitle.setOnClickListener(expandClick);
     }
 
-    public void updateFromExpandOrCollapse() {
-        if (mExpanded) {
-            int matchParentMeasureSpec = View.MeasureSpec.makeMeasureSpec
-                    (((View) mCardDescription.getParent()).getWidth(), View.MeasureSpec.EXACTLY);
-            int wrapContentMeasureSpec = View.MeasureSpec.makeMeasureSpec
-                    (0, View.MeasureSpec.UNSPECIFIED);
-            mCardDescription.measure(matchParentMeasureSpec, wrapContentMeasureSpec);
-            //TODO find way to use TransitionManager
-            expand(mCardDescription, 300L, mCardDescription.getMeasuredHeight());
-            mExpandIcon.animate().rotation(180f)
-                    .setListener(new AnimatorListenerAdapter() {
-                        @Override
-                        public void onAnimationEnd(Animator animation) {
-                            super.onAnimationEnd(animation);
-                            mExpandIcon.setActivated(true);
-                            mCardTitle.setActivated(true);
-                        }
-                    }).start();
-        } else {
-            //TODO find way to use TransitionManager
-            collapse(mCardDescription, 200L, 0);
-            mExpandIcon.animate().rotation(0f)
-                    .setListener(new AnimatorListenerAdapter() {
-                        @Override
-                        public void onAnimationEnd(Animator animation) {
-                            super.onAnimationEnd(animation);
-                            mExpandIcon.setActivated(false);
-                            mCardTitle.setActivated(false);
-                        }
-                    }).start();
-        }
-    }
-
-    private void expand(final View v, long duration, int targetHeight) {
-        int prevHeight = v.getHeight();
-        ValueAnimator valueAnimator = ValueAnimator.ofInt(prevHeight, targetHeight);
-        valueAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
-            @Override
-            public void onAnimationUpdate(ValueAnimator animation) {
-                v.getLayoutParams().height = (int) animation.getAnimatedValue();
-                v.requestLayout();
-            }
-        });
-        valueAnimator.setInterpolator(new DecelerateInterpolator());
-        valueAnimator.setDuration(duration);
-        valueAnimator.start();
-    }
-
-    private void collapse(final View v, long duration, int targetHeight) {
-        int prevHeight = v.getHeight();
-        ValueAnimator valueAnimator = ValueAnimator.ofInt(prevHeight, targetHeight);
-        valueAnimator.setInterpolator(new DecelerateInterpolator());
-        valueAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
-            @Override
-            public void onAnimationUpdate(ValueAnimator animation) {
-                v.getLayoutParams().height = (int) animation.getAnimatedValue();
-                v.requestLayout();
-            }
-        });
-        valueAnimator.setInterpolator(new DecelerateInterpolator());
-        valueAnimator.setDuration(duration);
-        valueAnimator.start();
-    }
-
-    public void setCardDescription(String description) {
+    public void setCardDescription(@NonNull String description) {
         mCardDescription.setHtmlText(description);
     }
 }
