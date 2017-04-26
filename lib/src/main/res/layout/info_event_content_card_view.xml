@@ -41,7 +41,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:padding="@dimen/padding_normal"
-            android:textAppearance="@style/TextAppearance.H2"
+            android:textAppearance="?android:textAppearanceLarge"
             app:layout_constraintBottom_toBottomOf="@id/header"
             app:layout_constraintStart_toStartOf="parent"
             tools:text="Office Hours &amp; App Reviews" />

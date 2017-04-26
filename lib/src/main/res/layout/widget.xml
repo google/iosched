@@ -66,13 +66,13 @@
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
+        android:background="@android:color/white"
         android:layout_weight="1">
 
         <ListView
             android:id="@+id/widget_schedule_list"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="@color/card"
             android:paddingTop="@dimen/spacing_normal"
             android:clipToPadding="false"
             android:cacheColorHint="@color/card"
@@ -82,14 +82,14 @@
 
         <TextView
             android:id="@android:id/empty"
-            android:background="@android:color/white"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:gravity="center"
-            android:visibility="gone"
             android:padding="16dp"
             android:text="@string/empty_widget_text"
-            style="@style/EmptyText" />
+            android:textSize="@dimen/appwidget_text_size_medium"
+            android:visibility="gone"
+            tools:visibility="visible" />
 
     </FrameLayout>
 

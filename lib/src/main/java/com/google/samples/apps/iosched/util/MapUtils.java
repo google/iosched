@@ -15,9 +15,6 @@
  */
 package com.google.samples.apps.iosched.util;
 
-import static com.google.samples.apps.iosched.util.LogUtils.LOGD;
-import static com.google.samples.apps.iosched.util.LogUtils.LOGE;
-
 import android.content.Context;
 import android.support.annotation.DrawableRes;
 import android.text.TextUtils;
@@ -38,6 +35,9 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Locale;
+
+import static com.google.samples.apps.iosched.util.LogUtils.LOGD;
+import static com.google.samples.apps.iosched.util.LogUtils.LOGE;
 
 public class MapUtils {
 
@@ -165,7 +165,7 @@ public class MapUtils {
      */
     public static IconGenerator getLabelIconGenerator(Context c) {
         IconGenerator iconFactory = new IconGenerator(c);
-        iconFactory.setTextAppearance(R.style.MapLabel);
+        iconFactory.setTextAppearance(R.style.TextApparance_Map_Label);
         iconFactory.setBackground(null);
 
         return iconFactory;

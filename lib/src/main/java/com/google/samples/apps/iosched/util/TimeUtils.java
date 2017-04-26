@@ -16,15 +16,12 @@
 
 package com.google.samples.apps.iosched.util;
 
-import static com.google.samples.apps.iosched.util.LogUtils.LOGW;
-import static com.google.samples.apps.iosched.util.LogUtils.makeLogTag;
-
 import android.content.Context;
 import android.text.TextUtils;
 import android.text.format.DateUtils;
 
-import com.google.samples.apps.iosched.lib.BuildConfig;
 import com.google.samples.apps.iosched.Config;
+import com.google.samples.apps.iosched.lib.BuildConfig;
 import com.google.samples.apps.iosched.lib.R;
 import com.google.samples.apps.iosched.settings.SettingsUtils;
 
@@ -35,6 +32,9 @@ import java.util.Date;
 import java.util.Formatter;
 import java.util.Locale;
 import java.util.TimeZone;
+
+import static com.google.samples.apps.iosched.util.LogUtils.LOGW;
+import static com.google.samples.apps.iosched.util.LogUtils.makeLogTag;
 
 public class TimeUtils {
     public static final int SECOND = 1000;
@@ -113,7 +113,7 @@ public class TimeUtils {
         if (tz != null) {
             format.setTimeZone(tz);
         }
-        return format.format(time);
+        return format.format(time).toLowerCase(Locale.getDefault());
     }
 
     public static String formatShortDateTime(Context context, Date date) {

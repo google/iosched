@@ -22,4 +22,4 @@
     android:minHeight="?actionBarSize"
     android:paddingStart="@dimen/padding_normal"
     android:text="@string/topics"
-    android:textAppearance="@style/TextAppearance.H3" />
+    android:textAppearance="?android:textAppearanceMedium" />
