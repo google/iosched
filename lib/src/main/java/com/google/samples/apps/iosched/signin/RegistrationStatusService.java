@@ -86,8 +86,7 @@ public class RegistrationStatusService extends Service {
 
         firebaseConnect(acct);
 
-        // TODO (see b/37012781)
-        return START_NOT_STICKY;  // Retry intent if service exits prematurely
+        return START_REDELIVER_INTENT;  // Retry intent if service exits prematurely
     }
 
     /**
