@@ -85,53 +85,53 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/padding_normal"
-            app:boxColor="@color/neon_blue"
-            app:eventIcon="@drawable/ic_sandbox"
-            app:eventTitle="@string/event_sandbox_title"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/wifi_save"
+            app:boxColor="@color/neon_blue"
+            app:eventIcon="@drawable/ic_sandbox"
+            app:eventTitle="@string/event_sandbox_title"
             app:mapLinkUri="@string/view_sandbox_map_url"
-            app:sessionsLinkUri="@string/view_sandbox_sessions_url" />
+            app:scheduleFilterTag="@string/sandbox_filter_tag" />
 
         <com.google.samples.apps.iosched.info.event.EventView
             android:id="@+id/codelabs_event"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            app:boxColor="@color/aqua_marine"
-            app:eventIcon="@drawable/ic_codelab"
-            app:eventTitle="@string/event_codelabs_title"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/sandbox_event"
+            app:boxColor="@color/aqua_marine"
+            app:eventIcon="@drawable/ic_codelab"
+            app:eventTitle="@string/event_codelabs_title"
             app:mapLinkUri="@string/view_sandbox_map_url"
-            app:sessionsLinkUri="@string/view_codelabs_sessions_url" />
+            app:scheduleFilterTag="@string/codelabs_filter_tag" />
 
         <com.google.samples.apps.iosched.info.event.EventView
             android:id="@+id/officehours_event"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            app:boxColor="@color/off_white"
-            app:eventIcon="@drawable/ic_officehours"
-            app:eventTitle="@string/event_officehours_title"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/codelabs_event"
+            app:boxColor="@color/off_white"
+            app:eventIcon="@drawable/ic_officehours"
+            app:eventTitle="@string/event_officehours_title"
             app:mapLinkUri="@string/view_officehours_map_url"
-            app:sessionsLinkUri="@string/view_officehours_sessions_url" />
+            app:scheduleFilterTag="@string/officehours_filter_tag" />
 
         <com.google.samples.apps.iosched.info.event.EventView
             android:id="@+id/afterhours_event"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            app:boxColor="@color/light_periwinkle"
-            app:eventIcon="@drawable/ic_afterhours"
-            app:eventTitle="@string/event_afterhours_title"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/officehours_event"
+            app:boxColor="@color/light_periwinkle"
+            app:eventIcon="@drawable/ic_afterhours"
+            app:eventTitle="@string/event_afterhours_title"
             app:mapLinkUri="@string/view_afterhours_map_url"
-            app:sessionsLinkUri="@string/view_afterhours_sessions_url" />
+            app:scheduleFilterTag="@string/afterhours_filter_tag" />
 
     </android.support.constraint.ConstraintLayout>
 
