@@ -151,6 +151,7 @@ public class SchedulePagerFragment extends Fragment implements ScheduleView {
         mViewPager.setPageMargin(getResources()
                 .getDimensionPixelSize(R.dimen.my_schedule_page_margin));
         mViewPager.setPageMarginDrawable(R.drawable.page_margin);
+        mViewPager.setOffscreenPageLimit(3);
 
         mAppbar = (AppBarLayout) view.findViewById(R.id.appbar);
         mFiltersBarInner = mAppbar.findViewById(R.id.filters_bar_inner);
