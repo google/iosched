@@ -261,6 +261,11 @@ public class ScheduleSingleDayFragment extends Fragment
     }
 
     @Override
+    public boolean feedbackEnabled() {
+        return false;
+    }
+
+    @Override
     public void onFeedbackClicked(String sessionId, String sessionTitle) {
         Bundle args = new Bundle();
         args.putString(ScheduleModel.SESSION_ID_KEY, sessionId);

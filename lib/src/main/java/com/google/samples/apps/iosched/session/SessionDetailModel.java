@@ -151,7 +151,7 @@ public class SessionDetailModel extends ModelWithLoaderManager<SessionDetailQuer
 
     private String mRoomName;
 
-    private String mTagsString;
+    private String[] mTags;
 
     private String mLiveStreamId;
 
@@ -541,9 +541,8 @@ public class SessionDetailModel extends ModelWithLoaderManager<SessionDetailQuer
     }
 
     public boolean isSessionReadyForFeedback() {
-        long currentTimeMillis = TimeUtils.getCurrentTime(mContext);
-        return currentTimeMillis
-                > mSessionEnd - SessionDetailConstants.FEEDBACK_MILLIS_BEFORE_SESSION_END_MS;
+        long now = TimeUtils.getCurrentTime(mContext);
+        return now > mSessionEnd - SessionDetailConstants.FEEDBACK_MILLIS_BEFORE_SESSION_END_MS;
     }
 
     public boolean hasLiveStream() {
@@ -603,8 +602,8 @@ public class SessionDetailModel extends ModelWithLoaderManager<SessionDetailQuer
         return mMainTag;
     }
 
-    public String getTagsString() {
-        return mTagsString;
+    public String[] getTags() {
+        return mTags;
     }
 
     public List<Pair<Integer, Intent>> getLinks() {
@@ -620,7 +619,9 @@ public class SessionDetailModel extends ModelWithLoaderManager<SessionDetailQuer
     }
 
     public boolean hasSummaryContent() {
-        return !TextUtils.isEmpty(mSessionAbstract) || !TextUtils.isEmpty(mRequirements);
+        return !TextUtils.isEmpty(mTitle)
+                || !TextUtils.isEmpty(mSubtitle)
+                || !TextUtils.isEmpty(mSessionAbstract);
     }
 
     @Override
@@ -676,9 +677,12 @@ public class SessionDetailModel extends ModelWithLoaderManager<SessionDetailQuer
             mInScheduleWhenSessionFirstLoaded = mInSchedule;
         }
 
-        mTagsString = cursor
+        String tagsString = cursor
                 .getString(cursor.getColumnIndex(ScheduleContract.Sessions.SESSION_TAGS));
-        mIsKeynote = mTagsString != null && mTagsString.contains(Config.Tags.SPECIAL_KEYNOTE);
+        if (tagsString != null) {
+            mIsKeynote = tagsString.contains(Config.Tags.SPECIAL_KEYNOTE);
+            mTags = tagsString.split(",");
+        }
 
         mSessionColor = cursor.getInt(
                 cursor.getColumnIndex(ScheduleContract.Sessions.SESSION_COLOR));
@@ -746,7 +750,7 @@ public class SessionDetailModel extends ModelWithLoaderManager<SessionDetailQuer
                     getWatchLiveIntent()));
         }
 
-        if (!hasFeedback() && isSessionReadyForFeedback()) {
+        if (!hasFeedback() && hasSessionEnded()) {
             mLinks.add(new Pair<>(
                     R.string.session_feedback_submitlink,
                     getFeedbackIntent()
