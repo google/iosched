@@ -22,7 +22,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.google.samples.apps.iosched.info.BaseInfoFragment;
-import com.google.samples.apps.iosched.info.CollapsableCard;
+import com.google.samples.apps.iosched.info.CollapsibleCard;
 import com.google.samples.apps.iosched.lib.R;
 
 import static com.google.samples.apps.iosched.util.LogUtils.LOGE;
@@ -33,11 +33,11 @@ public class FaqFragment extends BaseInfoFragment<FaqInfo> {
 
     private FaqInfo mFaqInfo;
 
-    private CollapsableCard mStayInformedCard;
-    private CollapsableCard mContentFormatsCard;
-    private CollapsableCard mLiveStreamsRecordingsCard;
-    private CollapsableCard mAttendanceProTipsCard;
-    private CollapsableCard mAdditionalInfoCard;
+    private CollapsibleCard mStayInformedCard;
+    private CollapsibleCard mContentFormatsCard;
+    private CollapsibleCard mLiveStreamsRecordingsCard;
+    private CollapsibleCard mAttendanceProTipsCard;
+    private CollapsibleCard mAdditionalInfoCard;
 
 
     @Nullable
@@ -45,12 +45,12 @@ public class FaqFragment extends BaseInfoFragment<FaqInfo> {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container,
             @Nullable Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.info_faq_frag, container, false);
-        mStayInformedCard = (CollapsableCard) root.findViewById(R.id.stayInformedCard);
-        mContentFormatsCard = (CollapsableCard) root.findViewById(R.id.contentFormatsCard);
-        mLiveStreamsRecordingsCard = (CollapsableCard) root.findViewById(
+        mStayInformedCard = (CollapsibleCard) root.findViewById(R.id.stayInformedCard);
+        mContentFormatsCard = (CollapsibleCard) root.findViewById(R.id.contentFormatsCard);
+        mLiveStreamsRecordingsCard = (CollapsibleCard) root.findViewById(
                 R.id.liveStreamRecordingsCard);
-        mAttendanceProTipsCard = (CollapsableCard) root.findViewById(R.id.attendanceProTipsCard);
-        mAdditionalInfoCard = (CollapsableCard) root.findViewById(R.id.additionalInfo);
+        mAttendanceProTipsCard = (CollapsibleCard) root.findViewById(R.id.attendanceProTipsCard);
+        mAdditionalInfoCard = (CollapsibleCard) root.findViewById(R.id.additionalInfo);
         return root;
     }
 

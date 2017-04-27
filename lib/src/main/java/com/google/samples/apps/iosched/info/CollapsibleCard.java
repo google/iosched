@@ -33,29 +33,29 @@ import android.widget.TextView;
 import com.google.samples.apps.iosched.lib.R;
 import com.google.samples.apps.iosched.ui.widget.HtmlTextView;
 
-public class CollapsableCard extends FrameLayout {
+public class CollapsibleCard extends FrameLayout {
 
     private boolean mExpanded = false;
     private TextView mCardTitle;
     private HtmlTextView mCardDescription;
     private ImageView mExpandIcon;
 
-    public CollapsableCard(Context context) {
+    public CollapsibleCard(Context context) {
         this(context, null);
     }
 
-    public CollapsableCard(Context context, @Nullable AttributeSet attrs) {
+    public CollapsibleCard(Context context, @Nullable AttributeSet attrs) {
         this(context, attrs, 0);
     }
 
-    public CollapsableCard(Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
+    public CollapsibleCard(Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
-        TypedArray arr = context.obtainStyledAttributes(attrs, R.styleable.CollapsableCard, 0, 0);
-        final String cardTitle = arr.getString(R.styleable.CollapsableCard_cardTitle);
-        final String cardDescription = arr.getString(R.styleable.CollapsableCard_cardDescription);
+        TypedArray arr = context.obtainStyledAttributes(attrs, R.styleable.CollapsibleCard, 0, 0);
+        final String cardTitle = arr.getString(R.styleable.CollapsibleCard_cardTitle);
+        final String cardDescription = arr.getString(R.styleable.CollapsibleCard_cardDescription);
         arr.recycle();
         final View root = LayoutInflater.from(context)
-                .inflate(R.layout.collapsable_card_content, this, true);
+                .inflate(R.layout.collapsible_card_content, this, true);
 
         mCardTitle = (TextView) root.findViewById(R.id.card_title);
         mCardTitle.setText(cardTitle);
