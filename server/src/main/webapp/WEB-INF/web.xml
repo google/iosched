@@ -90,6 +90,16 @@
         <url-pattern>/admin/schedule/log_data</url-pattern>
     </servlet-mapping>
 
+    <servlet>
+        <servlet-name>LoadSessionsServlet</servlet-name>
+        <servlet-class>com.google.samples.apps.iosched.server.schedule.reservations.LoadSessionsServlet</servlet-class>
+    </servlet>
+
+    <servlet-mapping>
+        <servlet-name>LoadSessionsServlet</servlet-name>
+        <url-pattern>/admin/schedule/reservations/loadsessiondata</url-pattern>
+    </servlet-mapping>
+
     <security-constraint>
         <web-resource-collection>
             <web-resource-name>admin</web-resource-name>
