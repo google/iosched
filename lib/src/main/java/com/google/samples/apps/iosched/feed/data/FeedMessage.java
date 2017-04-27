@@ -38,8 +38,6 @@ public class FeedMessage implements Comparable<FeedMessage> {
     public String category;
     public String title;
     public String message;
-    public boolean clickable;
-    public String link;
     public String imageUrl;
     public String imageFileName;
     public String timestamp;
@@ -72,10 +70,6 @@ public class FeedMessage implements Comparable<FeedMessage> {
                 context.getString(R.string.feed_default_first_title_key));
         message.message = FirebaseRemoteConfig.getInstance().getString(
                 context.getString(R.string.feed_default_first_message_key));
-        message.clickable = FirebaseRemoteConfig.getInstance().getBoolean(
-                context.getString(R.string.feed_default_first_clickable_key));
-        message.link = FirebaseRemoteConfig.getInstance().getString(
-                context.getString(R.string.feed_default_first_link_key));
         message.imageUrl = FirebaseRemoteConfig.getInstance().getString(
                 context.getString(R.string.feed_default_first_imageurl_key));
         message.imageFileName = "";
@@ -111,13 +105,11 @@ public class FeedMessage implements Comparable<FeedMessage> {
         FeedMessage that = (FeedMessage) o;
 
         if (id != that.id) return false;
-        if (clickable != that.clickable) return false;
         if (active != that.active) return false;
         if (priority != that.priority) return false;
         if (!category.equals(that.category)) return false;
         if (!title.equals(that.title)) return false;
         if (!message.equals(that.message)) return false;
-        if (link != null ? !link.equals(that.link) : that.link != null) return false;
         if (imageUrl != null ? !imageUrl.equals(that.imageUrl) : that.imageUrl != null)
             return false;
         if (imageFileName != null ? !imageFileName.equals(that.imageFileName) : that.imageFileName != null)
@@ -132,8 +124,6 @@ public class FeedMessage implements Comparable<FeedMessage> {
         result = 31 * result + category.hashCode();
         result = 31 * result + title.hashCode();
         result = 31 * result + message.hashCode();
-        result = 31 * result + (clickable ? 1 : 0);
-        result = 31 * result + (link != null ? link.hashCode() : 0);
         result = 31 * result + (imageUrl != null ? imageUrl.hashCode() : 0);
         result = 31 * result + (imageFileName != null ? imageFileName.hashCode() : 0);
         result = 31 * result + timestamp.hashCode();
@@ -170,14 +160,6 @@ public class FeedMessage implements Comparable<FeedMessage> {
         return message;
     }
 
-    public boolean isClickable() {
-        return clickable;
-    }
-
-    public String getLink() {
-        return link;
-    }
-
     public String getImageUrl() {
         return imageUrl;
     }
@@ -209,9 +191,5 @@ public class FeedMessage implements Comparable<FeedMessage> {
 
     public boolean isEmergency() {
         return getCategory().equals(FEED_CATEGORY_EMERGENCY);
-    }
-
-    public String getImageFileName() {
-        return imageFileName;
     }
 }

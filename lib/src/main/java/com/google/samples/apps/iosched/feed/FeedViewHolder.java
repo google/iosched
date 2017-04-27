@@ -15,9 +15,8 @@
  */
 package com.google.samples.apps.iosched.feed;
 
-import android.content.Intent;
+import android.content.Context;
 import android.content.res.ColorStateList;
-import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.constraint.ConstraintLayout;
@@ -31,7 +30,6 @@ import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -59,17 +57,19 @@ class FeedViewHolder extends RecyclerView.ViewHolder {
         }
     };
 
-    boolean expanded = false;
+    private boolean expanded = false;
     private ConstraintLayout mainLayout;
     private TextView title;
     private TextView dateTime;
     private ImageView image;
     private HtmlTextView description;
     private TextView category;
-    private ImageButton expandIcon;
+    private ImageView expandIcon;
     private ImageView emergencyIcon;
     private ImageView priorityIcon;
-    private @Nullable FeedMessage feedMessage;
+    private
+    @Nullable
+    FeedMessage feedMessage;
 
     public static FeedViewHolder newInstance(@NonNull ViewGroup parent) {
         return new FeedViewHolder(LayoutInflater.from(parent.getContext())
@@ -84,7 +84,7 @@ class FeedViewHolder extends RecyclerView.ViewHolder {
         image = (ImageView) itemView.findViewById(R.id.image);
         description = (HtmlTextView) itemView.findViewById(R.id.description);
         category = (TextView) itemView.findViewById(R.id.category_text);
-        expandIcon = (ImageButton) itemView.findViewById(R.id.expand_icon);
+        expandIcon = (ImageView) itemView.findViewById(R.id.expand_icon);
         emergencyIcon = (ImageView) itemView.findViewById(R.id.emergency_icon);
         priorityIcon = (ImageView) itemView.findViewById(R.id.priority_icon);
         final View.OnClickListener expandClick = new View.OnClickListener() {
@@ -108,17 +108,18 @@ class FeedViewHolder extends RecyclerView.ViewHolder {
                     }
                 });
                 TransitionManager.beginDelayedTransition(parent, transition);
-                feedMessage.flipExpanded();
-                bind(feedMessage);
+                if (feedMessage != null) {
+                    feedMessage.flipExpanded();
+                    bind(feedMessage);
+                }
             }
         };
-        expandIcon.setOnClickListener(expandClick);
-        title.setOnClickListener(expandClick);
         collapsedConstraints.clone(mainLayout);
         expandedConstraints.clone(mainLayout.getContext(), R.layout.feed_message_card_expanded);
+        title.setOnClickListener(expandClick);
     }
 
-    private void setExpanded(boolean isExpanded) {
+    private void setExpanded(boolean isExpanded, String titleText) {
         if (expanded == isExpanded) return;
         expanded = isExpanded;
         if (expanded) {
@@ -126,17 +127,19 @@ class FeedViewHolder extends RecyclerView.ViewHolder {
         } else {
             collapsedConstraints.applyTo(mainLayout);
         }
+        setTitleContentDescription(titleText);
     }
 
     void bind(@NonNull FeedMessage message) {
         feedMessage = message;
-        setExpanded(feedMessage.isExpanded());
+        setExpanded(feedMessage.isExpanded(), feedMessage.getTitle());
         dateTime.setText(formatDateTime(feedMessage.getTimestamp(), itemView.getContext()));
         priorityIcon.setVisibility(feedMessage.isPriority() ? VISIBLE : GONE);
         category.setText(feedMessage.getCategory());
         category.setBackgroundTintList(ColorStateList.valueOf(feedMessage.getCategoryColor()));
         updateEmergencyStatus(feedMessage.isEmergency());
         title.setText(feedMessage.getTitle());
+        setTitleContentDescription(feedMessage.getTitle());
         expandIcon.setActivated(expanded);
         expandIcon.setRotation(expanded ? 180f : 0f);
         if (!TextUtils.isEmpty(feedMessage.getImageUrl())) {
@@ -150,7 +153,6 @@ class FeedViewHolder extends RecyclerView.ViewHolder {
         description.setHtmlText(feedMessage.getMessage());
         int maxLines = expanded ? EXPANDED_DESC_MAX_LINES : COLLAPSED_DESC_MAX_LINES;
         description.setMaxLines(maxLines);
-        setClickListener(feedMessage.isClickable(), feedMessage.getLink());
     }
 
     private void updateEmergencyStatus(boolean isEmergency) {
@@ -160,18 +162,10 @@ class FeedViewHolder extends RecyclerView.ViewHolder {
         category.setActivated(isEmergency);
     }
 
-    private void setClickListener(boolean isClickable, final String link) {
-        if (TextUtils.isEmpty(link)) {
-            return;
-        }
-        itemView.setClickable(isClickable);
-        itemView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent linkIntent = new Intent(Intent.ACTION_VIEW);
-                linkIntent.setData(Uri.parse(link));
-                itemView.getContext().startActivity(linkIntent);
-            }
-        });
+    private void setTitleContentDescription(String titleText) {
+        Context context = expandIcon.getContext();
+        title.setContentDescription(titleText + ", " +
+                (expanded ? context.getString(R.string.expanded) :
+                        context.getString(R.string.collapsed)));
     }
 }
