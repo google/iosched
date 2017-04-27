@@ -213,8 +213,11 @@ public class SessionItemViewHolder extends ScheduleItemViewHolder
         final long now = TimeUtils.getCurrentTime(context);
         final boolean streamingNow = item.startTime <= now && now <= item.endTime
                 && (item.flags & ScheduleItem.FLAG_HAS_LIVESTREAM) != 0;
+        boolean showFeedback = mCallbacks.feedbackEnabled()
+                && (now >= item.endTime && !item.hasGivenFeedback);
+
         mLiveNow.setVisibility(streamingNow ? VISIBLE : GONE);
-        mRate.setVisibility((now > item.endTime && !item.hasGivenFeedback) ? VISIBLE : GONE);
+        mRate.setVisibility(showFeedback ? VISIBLE : GONE);
     }
 
     public interface Callbacks {
@@ -233,6 +236,11 @@ public class SessionItemViewHolder extends ScheduleItemViewHolder
          * @param isInSchedule Whether the session is bookmarked in the backing data
          */
         void onBookmarkClicked(String sessionId, boolean isInSchedule);
+
+        /**
+         * @return true if feedback buttons can be shown
+         */
+        boolean feedbackEnabled();
 
         /**
          * @param sessionId    The ID of the session
