@@ -41,7 +41,7 @@
     <dimen name="fab_padding">4dp</dimen>
     <dimen name="session_details_floating_width">500dp</dimen>
     <dimen name="session_details_floating_height">650dp</dimen>
-    <dimen name="my_schedule_page_margin">@dimen/padding_normal</dimen>
+    <dimen name="my_schedule_page_margin">8dp</dimen>
     <dimen name="my_schedule_icon_size">24dp</dimen>
     <dimen name="my_schedule_icon_horizontal_padding">24dp</dimen> <!-- center 24dp in @keyline_2 -->
     <dimen name="widget_schedule_header_height">40dp</dimen>

@@ -14,24 +14,12 @@
   See the License for the specific language governing permissions and
   limitations under the License.
   -->
-<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
-    <item>
-        <color android:color="#ddd"/>
-    </item>
-    <item android:right="12dp">
-        <shape android:shape="rectangle">
-            <gradient
-                android:angle="0"
-                android:endColor="#ddd"
-                android:startColor="#ccc"/>
-        </shape>
-    </item>
-    <item android:left="12dp">
-        <shape android:shape="rectangle">
-            <gradient
-                android:angle="180"
-                android:endColor="#ddd"
-                android:startColor="#ccc"/>
-        </shape>
-    </item>
-</layer-list>
+<shape
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:shape="rectangle">
+    <gradient
+        android:angle="0"
+        android:startColor="@color/light_grey"
+        android:centerColor="@color/lighter_grey"
+        android:endColor="@color/light_grey" />
+</shape>
