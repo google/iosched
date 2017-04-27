@@ -172,10 +172,6 @@ public class ScheduleActivity extends BaseActivity implements ScheduleViewParent
         mSchedulePagerFragment = (SchedulePagerFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.my_content);
 
-        if (savedInstanceState == null) {
-            mScheduleFilterFragment.initWithArguments(intentToFragmentArguments(getIntent()));
-        }
-
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
 
         initPresenter();
