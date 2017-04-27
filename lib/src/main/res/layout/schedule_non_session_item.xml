@@ -32,8 +32,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         android:paddingTop="@dimen/padding_normal"
-        android:textStyle="italic"
-        android:textAppearance="?android:textAppearanceLarge"
+        android:textAppearance="@style/Schedule.ItemTitle.Break"
         tools:text="Breakfast" />
 
     <TextView

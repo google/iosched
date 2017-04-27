@@ -31,7 +31,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        android:textAppearance="?android:textAppearanceLarge"
+        android:textAppearance="@style/Schedule.ItemTitle"
         tools:text="@string/placeholder_session_title" />
 
     <TextView
