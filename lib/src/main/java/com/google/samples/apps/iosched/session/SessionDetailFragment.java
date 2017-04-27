@@ -108,6 +108,7 @@ public class SessionDetailFragment extends Fragment implements
         Callbacks {
 
     private static final String TAG = LogUtils.makeLogTag(SessionDetailFragment.class);
+    private static final long HEADER_FADE_DURATION = 300L;
 
     private SessionDetailPresenter mPresenter;
 
@@ -279,7 +280,6 @@ public class SessionDetailFragment extends Fragment implements
                 R.color.session_detail_toolbar_icon_tint_collapsing);
         mIconTintNormal = AppCompatResources.getColorStateList(toolbarContext,
                 R.color.session_detail_toolbar_icon_tint_normal);
-        mHeaderAnimDuration = getResources().getInteger(android.R.integer.config_shortAnimTime);
 
         mBackButton = (ImageView) mToolbar.findViewById(R.id.back);
         mBackButton.setOnClickListener(new OnClickListener() {
@@ -543,8 +543,10 @@ public class SessionDetailFragment extends Fragment implements
         if (data.shouldShowHeaderImage()) {
             setToolbarTint(mIconTintCollapsing);
             mImageLoader.loadImage(data.getPhotoUrl(), mPhotoView);
+            mPhotoViewContainer.setVisibility(VISIBLE);
         } else {
             setToolbarTint(mIconTintNormal);
+            mPhotoViewContainer.setVisibility(GONE);
         }
 
         if (data.getLiveStreamVideoWatched()) {
@@ -891,7 +893,7 @@ public class SessionDetailFragment extends Fragment implements
         if (mHeaderImageAlpha < 1f) {
             mHeaderImageAlpha = 1f;
             mPhotoViewContainer.animate()
-                    .setDuration(mHeaderAnimDuration)
+                    .setDuration(HEADER_FADE_DURATION)
                     .alpha(mHeaderImageAlpha)
                     .start();
         }
@@ -901,7 +903,7 @@ public class SessionDetailFragment extends Fragment implements
         if (mHeaderImageAlpha > 0f) {
             mHeaderImageAlpha = 0f;
             mPhotoViewContainer.animate()
-                    .setDuration(mHeaderAnimDuration)
+                    .setDuration(HEADER_FADE_DURATION)
                     .alpha(mHeaderImageAlpha)
                     .start();
         }
