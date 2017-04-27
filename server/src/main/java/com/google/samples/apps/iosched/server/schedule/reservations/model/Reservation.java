@@ -15,6 +15,8 @@
  */
 package com.google.samples.apps.iosched.server.schedule.reservations.model;
 
+import java.util.Map;
+
 /**
  * Representation of a Reservation object in RTDB.
  */
@@ -22,6 +24,7 @@ public class Reservation implements Comparable<Reservation> {
 
   public long last_status_changed;
   public String status;
+  public Map<String, String> results;
 
   @Override
   public int compareTo(Reservation reservation) {
