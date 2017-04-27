@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--
+<?xml version="1.0" encoding="utf-8"?><!--
   Copyright 2017 Google Inc. All rights reserved.
 
   Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,8 +13,7 @@
   See the License for the specific language governing permissions and
   limitations under the License.
   -->
-<android.support.v4.widget.NestedScrollView
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.v4.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -23,71 +21,82 @@
     android:scrollbarStyle="insideOverlay"
     android:scrollbars="vertical">
 
-    <android.support.constraint.ConstraintLayout
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:orientation="vertical"
         android:paddingBottom="@dimen/spacing_normal"
         android:paddingTop="@dimen/spacing_large">
 
-        <TextView
-            android:id="@+id/wifi_network_label"
-            style="@style/Info.WifiSetup.Label"
-            android:layout_width="wrap_content"
+        <FrameLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingStart="@dimen/padding_normal"
-            android:text="@string/wifi_network_label"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            android:focusable="true">
 
-        <TextView
-            android:id="@+id/wifi_network_value"
-            style="@style/Info.WifiSetup"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:padding="@dimen/padding_normal"
-            app:layout_constraintBaseline_toBaselineOf="@+id/wifi_network_label"
-            app:layout_constraintEnd_toEndOf="parent"
-            tools:text="IO2017" />
+            <TextView
+                android:id="@+id/wifi_network_label"
+                style="@style/Info.WifiSetup.Label"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="start"
+                android:paddingEnd="@dimen/padding_normal"
+                android:paddingStart="@dimen/padding_normal"
+                android:text="@string/wifi_network_label" />
 
-        <TextView
-            android:id="@+id/wifi_password_label"
-            style="@style/Info.WifiSetup.Label"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/padding_normal"
-            android:paddingStart="@dimen/padding_normal"
-            android:text="@string/wifi_password_label"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/wifi_network_label" />
+            <TextView
+                android:id="@+id/wifi_network_value"
+                style="@style/Info.WifiSetup"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="end"
+                android:paddingEnd="@dimen/padding_normal"
+                android:paddingStart="@dimen/padding_normal"
+                tools:text="IO2017" />
+        </FrameLayout>
 
-        <TextView
-            android:id="@+id/wifi_password_value"
-            style="@style/Info.WifiSetup"
-            android:layout_width="wrap_content"
+        <FrameLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:drawablePadding="@dimen/spacing_normal"
-            android:padding="@dimen/padding_normal"
-            app:layout_constraintBaseline_toBaselineOf="@+id/wifi_password_label"
-            app:layout_constraintEnd_toEndOf="parent"
-            tools:text="inputoutput" />
+            android:focusable="true">
+
+            <TextView
+                android:id="@+id/wifi_password_label"
+                style="@style/Info.WifiSetup.Label"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="start"
+                android:layout_marginTop="@dimen/padding_normal"
+                android:paddingEnd="@dimen/padding_normal"
+                android:paddingStart="@dimen/padding_normal"
+                android:text="@string/wifi_password_label" />
+
+            <TextView
+                android:id="@+id/wifi_password_value"
+                style="@style/Info.WifiSetup"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="end"
+                android:layout_marginTop="@dimen/padding_normal"
+                android:drawablePadding="@dimen/spacing_normal"
+                android:paddingEnd="@dimen/padding_normal"
+                android:paddingStart="@dimen/padding_normal"
+                tools:text="inputoutput" />
+        </FrameLayout>
 
         <Button
             android:id="@+id/wifi_save"
             style="@style/Widget.AppCompat.Button.Borderless.Colored"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/setup_wifi"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/wifi_password_label" />
+            android:paddingEnd="@dimen/padding_normal"
+            android:paddingStart="@dimen/padding_normal"
+            android:text="@string/setup_wifi" />
 
         <com.google.samples.apps.iosched.info.event.EventView
             android:id="@+id/sandbox_event"
-            android:layout_width="0dp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/padding_normal"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/wifi_save"
             app:boxColor="@color/neon_blue"
             app:eventIcon="@drawable/ic_sandbox"
             app:eventTitle="@string/event_sandbox_title"
@@ -96,11 +105,8 @@
 
         <com.google.samples.apps.iosched.info.event.EventView
             android:id="@+id/codelabs_event"
-            android:layout_width="0dp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/sandbox_event"
             app:boxColor="@color/aqua_marine"
             app:eventIcon="@drawable/ic_codelab"
             app:eventTitle="@string/event_codelabs_title"
@@ -109,11 +115,8 @@
 
         <com.google.samples.apps.iosched.info.event.EventView
             android:id="@+id/officehours_event"
-            android:layout_width="0dp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/codelabs_event"
             app:boxColor="@color/off_white"
             app:eventIcon="@drawable/ic_officehours"
             app:eventTitle="@string/event_officehours_title"
@@ -122,17 +125,14 @@
 
         <com.google.samples.apps.iosched.info.event.EventView
             android:id="@+id/afterhours_event"
-            android:layout_width="0dp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/officehours_event"
             app:boxColor="@color/light_periwinkle"
             app:eventIcon="@drawable/ic_afterhours"
             app:eventTitle="@string/event_afterhours_title"
             app:mapLinkUri="@string/view_afterhours_map_url"
             app:scheduleFilterTag="@string/afterhours_filter_tag" />
 
-    </android.support.constraint.ConstraintLayout>
+    </LinearLayout>
 
 </android.support.v4.widget.NestedScrollView>
