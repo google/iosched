@@ -171,6 +171,19 @@
                 tools:visibility="visible" />
 
             <TextView
+                android:id="@android:id/empty"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/padding_normal"
+                android:layout_marginRight="@dimen/padding_normal"
+                android:layout_marginBottom="@dimen/padding_normal"
+                android:layout_marginTop="24dp"
+                android:text="@string/empty_session_detail"
+                android:textAlignment="viewStart"
+                android:visibility="gone"
+                android:textAppearance="?android:textAppearanceMedium" />
+
+            <TextView
                 android:id="@+id/session_title"
                 style="@style/SessionDetail.SessionTitle"
                 android:layout_width="match_parent"
@@ -274,17 +287,6 @@
                 tools:listitem="@layout/schedule_session_item"
                 tools:visibility="visible" />
 
-            <TextView
-                android:id="@android:id/empty"
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_marginLeft="@dimen/padding_normal"
-                android:layout_marginRight="@dimen/padding_normal"
-                android:layout_weight="1"
-                android:gravity="center"
-                android:text="@string/empty_session_detail"
-                android:visibility="gone" />
-
         </LinearLayout>
 
     </android.support.v4.widget.NestedScrollView>
@@ -292,9 +294,9 @@
     <com.google.samples.apps.iosched.ui.widget.ReserveButton
         android:id="@+id/reserve"
         android:layout_width="match_parent"
-        app:layout_insetEdge="bottom"
         android:layout_height="?actionBarSize"
-        android:layout_gravity="bottom" />
+        android:layout_gravity="bottom"
+        app:layout_insetEdge="bottom" />
 
     <!-- FAB -->
     <com.google.samples.apps.iosched.ui.widget.CheckableFloatingActionButton

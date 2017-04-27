@@ -305,7 +305,7 @@
         <item name="android:textAppearance">@style/TextAppearance.H5</item>
         <item name="android:textColor">?android:textColorSecondary</item>
         <item name="android:textStyle">italic</item>
-        <item name="android:textAlignment" tools:targetApi="jelly_bean_mr1">textStart</item>
+        <item name="android:textAlignment">viewStart</item>
     </style>
 
     <style name="Info.WifiSetup" parent="">

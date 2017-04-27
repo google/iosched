@@ -160,6 +160,11 @@ public class MyIOFragment extends Fragment implements MyIoView, Callbacks {
     }
 
     @Override
+    public boolean feedbackEnabled() {
+        return true;
+    }
+
+    @Override
     public void onAddEventsClicked(int conferenceDay) {
         ScheduleActivity.launchScheduleForConferenceDay(getContext(), conferenceDay);
     }

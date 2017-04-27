@@ -218,6 +218,17 @@ public class DebugFragment extends BaseInfoFragment {
                 return "Set time to 3 hours after Conf end";
             }
         });
+        createTestAction(new DebugAction() {
+            @Override
+            public void run(Context context, Callback callback) {
+                TimeUtils.clearMockCurrentTime(context);
+            }
+
+            @Override
+            public String getLabel() {
+                return "Clear mock current time";
+            }
+        });
 
         return rootView;
     }
