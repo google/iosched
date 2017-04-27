@@ -458,7 +458,8 @@ public class SessionAlarmService extends IntentService {
                         String.format(res.getString(R.string.snooze_x_min), 5),
                         createSnoozeIntent(sessionStart, intervalEnd, 5));
             }
-            if (starredCount == 1 && RegistrationUtils.isRegisteredAttendee(this)) {
+            if (starredCount == 1 && RegistrationUtils.isRegisteredAttendee(this) ==
+                    RegistrationUtils.REGSTATUS_REGISTERED) {
                 notifBuilder.addAction(R.drawable.ic_stat_map,
                         res.getString(R.string.title_map),
                         createRoomMapIntent(singleSessionRoomId));

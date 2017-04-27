@@ -131,7 +131,8 @@ public class ScheduleModel implements Model<ScheduleModel.MyScheduleQueryEnum,
     }
 
     public static boolean showPreConferenceData(Context context) {
-        return RegistrationUtils.isRegisteredAttendee(context);
+        return RegistrationUtils.isRegisteredAttendee(context) ==
+                RegistrationUtils.REGSTATUS_REGISTERED;
     }
 
     /**

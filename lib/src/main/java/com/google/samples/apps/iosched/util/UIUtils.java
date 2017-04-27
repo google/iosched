@@ -308,7 +308,8 @@ public class UIUtils {
 
     @Deprecated
     public static boolean shouldShowLiveSessionsOnly(final Context context) {
-        return !RegistrationUtils.isRegisteredAttendee(context)
+        return RegistrationUtils.isRegisteredAttendee(context) !=
+                    RegistrationUtils.REGSTATUS_REGISTERED
                 && TimeUtils.getCurrentTime(context) < Config.CONFERENCE_END_MILLIS;
     }
 

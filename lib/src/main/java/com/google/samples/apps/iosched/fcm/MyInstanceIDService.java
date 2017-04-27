@@ -51,7 +51,8 @@ public class MyInstanceIDService extends FirebaseInstanceIdService {
         // the current user's FCM key.
         sendRegistrationToServer(FirebaseInstanceId.getInstance().getToken(), fcmKey);
         subscribeTopics(ConfMessageCardUtils.isConfMessageCardsEnabled(this),
-                RegistrationUtils.isRegisteredAttendee(this));
+                RegistrationUtils.isRegisteredAttendee(this) ==
+                        RegistrationUtils.REGSTATUS_REGISTERED);
     }
 
     /**
