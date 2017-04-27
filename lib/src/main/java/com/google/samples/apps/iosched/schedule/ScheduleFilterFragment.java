@@ -109,7 +109,7 @@ public class ScheduleFilterFragment extends Fragment implements LoaderCallbacks<
     }
 
     public void initWithArguments(Bundle args) {
-        if (args != null && mAdapter != null) {
+        if (args != null) {
             mFilterTag = args.getString(FILTER_TAG);
             maybeApplyPendingFilterTag();
         }
@@ -157,8 +157,8 @@ public class ScheduleFilterFragment extends Fragment implements LoaderCallbacks<
 
     private void onTagMetadataLoaded(TagMetadata tagMetadata) {
         mTagMetadata = tagMetadata;
-        maybeApplyPendingFilterTag();
         mAdapter.setTagMetadata(tagMetadata);
+        maybeApplyPendingFilterTag();
     }
 
     private void maybeApplyPendingFilterTag() {
