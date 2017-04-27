@@ -44,9 +44,6 @@ public class FeedbackEndpoint {
       .POST)
   public void sendSessionFeedback(User user, SessionFeedback sessionFeedback)
       throws UnauthorizedException, BadRequestException {
-    if (user == null) {
-      throw new UnauthorizedException("Invalid credentials");
-    }
     // TODO(arthurthompson): Remove this temporary if-else block. It is only here to test that
     // TODO                  the sessionFeedback object is being received correctly.
     if (sessionFeedback == null || sessionFeedback.getSessionId() == null ||
