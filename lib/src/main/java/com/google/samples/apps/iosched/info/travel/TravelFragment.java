@@ -22,7 +22,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.google.samples.apps.iosched.info.BaseInfoFragment;
-import com.google.samples.apps.iosched.info.CollapsableCard;
+import com.google.samples.apps.iosched.info.CollapsibleCard;
 import com.google.samples.apps.iosched.lib.R;
 
 import static com.google.samples.apps.iosched.util.LogUtils.LOGE;
@@ -33,23 +33,23 @@ public class TravelFragment extends BaseInfoFragment<TravelInfo> {
 
     private TravelInfo mTravelInfo;
 
-    private CollapsableCard bikingCard;
-    private CollapsableCard shuttleServiceCard;
-    private CollapsableCard carpoolingParkingCard;
-    private CollapsableCard publicTransportationCard;
-    private CollapsableCard rideSharingCard;
+    private CollapsibleCard bikingCard;
+    private CollapsibleCard shuttleServiceCard;
+    private CollapsibleCard carpoolingParkingCard;
+    private CollapsibleCard publicTransportationCard;
+    private CollapsibleCard rideSharingCard;
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container,
             @Nullable Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.info_travel_frag, container, false);
-        bikingCard = (CollapsableCard) root.findViewById(R.id.bikingCard);
-        shuttleServiceCard = (CollapsableCard) root.findViewById(R.id.shuttleInfoCard);
-        carpoolingParkingCard = (CollapsableCard) root.findViewById(R.id.carpoolingParkingCard);
+        bikingCard = (CollapsibleCard) root.findViewById(R.id.bikingCard);
+        shuttleServiceCard = (CollapsibleCard) root.findViewById(R.id.shuttleInfoCard);
+        carpoolingParkingCard = (CollapsibleCard) root.findViewById(R.id.carpoolingParkingCard);
         publicTransportationCard =
-                (CollapsableCard) root.findViewById(R.id.publicTransportationCard);
-        rideSharingCard = (CollapsableCard) root.findViewById(R.id.rideSharingCard);
+                (CollapsibleCard) root.findViewById(R.id.publicTransportationCard);
+        rideSharingCard = (CollapsibleCard) root.findViewById(R.id.rideSharingCard);
         return root;
     }
 
