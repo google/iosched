@@ -67,7 +67,7 @@
         <attr name="eventIcon" format="reference" />
     </declare-styleable>
 
-    <declare-styleable name="CollapsableCard">
+    <declare-styleable name="CollapsibleCard">
         <attr name="cardTitle" format="string"/>
         <attr name="cardDescription" format="string"/>
     </declare-styleable>

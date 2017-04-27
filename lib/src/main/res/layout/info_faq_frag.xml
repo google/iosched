@@ -31,31 +31,31 @@
         android:paddingTop="@dimen/padding_normal"
         android:showDividers="middle">
 
-        <com.google.samples.apps.iosched.info.CollapsableCard
+        <com.google.samples.apps.iosched.info.CollapsibleCard
             android:id="@+id/stayInformedCard"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:cardTitle="@string/faq_stay_informed_title" />
 
-        <com.google.samples.apps.iosched.info.CollapsableCard
+        <com.google.samples.apps.iosched.info.CollapsibleCard
             android:id="@+id/contentFormatsCard"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:cardTitle="@string/faq_content_formats_title" />
 
-        <com.google.samples.apps.iosched.info.CollapsableCard
+        <com.google.samples.apps.iosched.info.CollapsibleCard
             android:id="@+id/liveStreamRecordingsCard"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:cardTitle="@string/faq_livestream_and_recordings_title" />
 
-        <com.google.samples.apps.iosched.info.CollapsableCard
+        <com.google.samples.apps.iosched.info.CollapsibleCard
             android:id="@+id/attendanceProTipsCard"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:cardTitle="@string/faq_attendance_pro_tips_title" />
 
-        <com.google.samples.apps.iosched.info.CollapsableCard
+        <com.google.samples.apps.iosched.info.CollapsibleCard
             android:id="@+id/additionalInfo"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
