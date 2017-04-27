@@ -385,7 +385,7 @@
               "type": "SESSION",
               "title": "Stage 1",
               "tag": "stage1",
-              "description": "Stage 1"
+              "description": ""
             },
             "geometry": {
               "type": "Point",
@@ -419,7 +419,7 @@
               "type": "SESSION",
               "title": "Stage 2",
               "tag": "stage2",
-              "description": "Stage 2"
+              "description": ""
             },
             "geometry": {
               "type": "Point",
@@ -453,7 +453,7 @@
               "type": "SESSION",
               "title": "Stage 3",
               "tag": "stage3",
-              "description": "Stage 3"
+              "description": ""
             },
             "geometry": {
               "type": "Point",
@@ -725,7 +725,7 @@
               "type": "SESSION",
               "title": "Stage 7",
               "tag": "stage7",
-              "description": "Stage 7"
+              "description": ""
             },
             "geometry": {
               "type": "Point",
@@ -742,7 +742,7 @@
               "type": "LABEL",
               "title": "Stage 7",
               "tag": "stage7",
-              "description": "Stage 7"
+              "description": ""
             },
             "geometry": {
               "type": "Point",
@@ -759,7 +759,7 @@
               "type": "SESSION",
               "title": "Stage 4",
               "tag": "stage4",
-              "description": "Stage 4"
+              "description": ""
             },
             "geometry": {
               "type": "Point",
@@ -776,7 +776,7 @@
               "type": "LABEL",
               "title": "Stage 4",
               "tag": "stage4",
-              "description": "Stage 4"
+              "description": ""
             },
             "geometry": {
               "type": "Point",
@@ -793,7 +793,7 @@
               "type": "SESSION",
               "title": "Stage 5",
               "tag": "stage5",
-              "description": "Stage 5"
+              "description": ""
             },
             "geometry": {
               "type": "Point",
@@ -810,7 +810,7 @@
               "type": "LABEL",
               "title": "Stage 5",
               "tag": "stage5",
-              "description": "Stage 5"
+              "description": ""
             },
             "geometry": {
               "type": "Point",
@@ -827,7 +827,7 @@
               "type": "SESSION",
               "title": "Stage 6",
               "tag": "stage6",
-              "description": "Stage 6"
+              "description": ""
             },
             "geometry": {
               "type": "Point",
@@ -844,7 +844,7 @@
               "type": "LABEL",
               "title": "Stage 6",
               "tag": "stage6",
-              "description": "Stage 6"
+              "description": ""
             },
             "geometry": {
               "type": "Point",
@@ -1250,7 +1250,7 @@
             "properties": {
               "id": "",
               "type": "ICON_food",
-              "title": "Food1",
+              "title": "Food",
               "tag": "foodright",
               "description": ""
             },
@@ -1284,7 +1284,7 @@
             "properties": {
               "id": "",
               "type": "ICON_food",
-              "title": "Food2",
+              "title": "Food",
               "tag": "foodleft",
               "description": ""
             },
@@ -1301,7 +1301,7 @@
             "properties": {
               "id": "",
               "type": "ICON_food",
-              "title": "Food3",
+              "title": "Food",
               "tag": "food-2",
               "description": ""
             },
@@ -1318,7 +1318,7 @@
             "properties": {
               "id": "",
               "type": "ICON_parking",
-              "title": "parking",
+              "title": "Parking",
               "tag": "parking",
               "description": ""
             },
@@ -1335,7 +1335,7 @@
             "properties": {
               "id": "",
               "type": "ICON_ride",
-              "title": "ride",
+              "title": "Rideshare",
               "tag": "ride",
               "description": ""
             },
@@ -1352,7 +1352,7 @@
             "properties": {
               "id": "",
               "type": "ICON_bike",
-              "title": "bike",
+              "title": "Bike",
               "tag": "bike",
               "description": ""
             },
@@ -1369,7 +1369,7 @@
             "properties": {
               "id": "",
               "type": "ICON_charging",
-              "title": "charging1",
+              "title": "Charging Station",
               "tag": "charging1",
               "description": ""
             },
@@ -1386,7 +1386,7 @@
             "properties": {
               "id": "",
               "type": "ICON_charging",
-              "title": "charging2",
+              "title": "Charging Station",
               "tag": "charging2",
               "description": ""
             },
@@ -1403,7 +1403,7 @@
             "properties": {
               "id": "",
               "type": "ICON_parking",
-              "title": "parking",
+              "title": "Parking",
               "tag": "parking",
               "description": ""
             },
@@ -1420,7 +1420,7 @@
             "properties": {
               "id": "",
               "type": "ICON_ada",
-              "title": "ada",
+              "title": "ADA",
               "tag": "ada",
               "description": ""
             },
@@ -1437,7 +1437,7 @@
             "properties": {
               "id": "",
               "type": "ICON_info",
-              "title": "info",
+              "title": "Info",
               "tag": "info",
               "description": ""
             },
@@ -1446,6 +1446,23 @@
               "coordinates": [
                 -122.079625,
                 37.426169
+              ]
+            }
+          },
+          {
+            "type": "Feature",
+            "properties": {
+              "id": "",
+              "type": "ICON_shuttle",
+              "title": "Shuttle Stop",
+              "tag": "shuttle",
+              "description": ""
+            },
+            "geometry": {
+              "type": "Point",
+              "coordinates": [
+                -122.079049,
+                37.427271
               ]
             }
           }
