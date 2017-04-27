@@ -21,6 +21,7 @@ import android.view.MenuItem;
 
 import com.google.samples.apps.iosched.navigation.NavigationModel.NavigationItemEnum;
 import com.google.samples.apps.iosched.util.AnalyticsHelper;
+import com.google.samples.apps.iosched.ui.widget.BadgedBottomNavigationView;
 
 import static com.google.samples.apps.iosched.util.LogUtils.LOGE;
 import static com.google.samples.apps.iosched.util.LogUtils.makeLogTag;
@@ -30,9 +31,9 @@ public class AppNavigationViewAsBottomNavImpl extends AppNavigationViewAbstractI
 
     private static final String TAG = makeLogTag(AppNavigationViewAsBottomNavImpl.class);
 
-    private final BottomNavigationView mNavigationView;
+    private final BadgedBottomNavigationView mNavigationView;
 
-    public AppNavigationViewAsBottomNavImpl(final BottomNavigationView navigationView) {
+    public AppNavigationViewAsBottomNavImpl(final BadgedBottomNavigationView navigationView) {
         mNavigationView = navigationView;
     }
 
@@ -77,5 +78,15 @@ public class AppNavigationViewAsBottomNavImpl extends AppNavigationViewAbstractI
     @Override
     public void showNavigation() {
         // Don't need this I think
+    }
+
+    @Override
+    public void showItemBadge(NavigationItemEnum item) {
+        mNavigationView.showBadge(item.ordinal());
+    }
+
+    @Override
+    public void clearItemBadge(NavigationItemEnum item) {
+        mNavigationView.clearBadge();
     }
 }
