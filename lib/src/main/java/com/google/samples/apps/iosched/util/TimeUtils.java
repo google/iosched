@@ -257,4 +257,14 @@ public class TimeUtils {
         java.util.Date newTime = new java.util.Date(Config.CONFERENCE_END_MILLIS + timeDifference);
         TimeUtils.setCurrentTime(context, newTime.getTime());
     }
+
+    /**
+     * Clear mock time settings if the current build is a debug build.
+     */
+    public static void clearMockCurrentTime(Context context) {
+        if (BuildConfig.DEBUG) {
+            context.getSharedPreferences(UIUtils.MOCK_DATA_PREFERENCES, Context.MODE_PRIVATE)
+                    .edit().remove(UIUtils.PREFS_MOCK_CURRENT_TIME).apply();
+        }
+    }
 }

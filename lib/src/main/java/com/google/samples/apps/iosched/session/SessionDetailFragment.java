@@ -70,6 +70,7 @@ import com.google.samples.apps.iosched.injection.ModelProvider;
 import com.google.samples.apps.iosched.lib.BuildConfig;
 import com.google.samples.apps.iosched.lib.R;
 import com.google.samples.apps.iosched.map.MapActivity;
+import com.google.samples.apps.iosched.model.TagMetadata;
 import com.google.samples.apps.iosched.model.TagMetadata.Tag;
 import com.google.samples.apps.iosched.provider.ScheduleContract;
 import com.google.samples.apps.iosched.provider.ScheduleContract.Sessions;
@@ -80,7 +81,6 @@ import com.google.samples.apps.iosched.session.SessionDetailModel.SessionDetailQ
 import com.google.samples.apps.iosched.session.SessionDetailModel.SessionDetailUserActionEnum;
 import com.google.samples.apps.iosched.ui.widget.CheckableFloatingActionButton;
 import com.google.samples.apps.iosched.ui.widget.ReserveButton;
-import com.google.samples.apps.iosched.util.AccountUtils;
 import com.google.samples.apps.iosched.util.AnalyticsHelper;
 import com.google.samples.apps.iosched.util.ImageLoader;
 import com.google.samples.apps.iosched.util.LogUtils;
@@ -95,6 +95,7 @@ import java.util.List;
 
 import static android.view.View.GONE;
 import static android.view.View.VISIBLE;
+import static com.google.samples.apps.iosched.Config.Tags.CATEGORY_TRACK;
 import static com.google.samples.apps.iosched.util.LogUtils.LOGD;
 
 /**
@@ -154,6 +155,8 @@ public class SessionDetailFragment extends Fragment implements
 
     private ScheduleDayAdapter mRelatedSessionsAdapter;
 
+    private View mEmptyView;
+
     private ImageLoader mImageLoader;
 
     private Runnable mTimeHintUpdaterRunnable = null;
@@ -204,7 +207,7 @@ public class SessionDetailFragment extends Fragment implements
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+            Bundle savedInstanceState) {
         return inflater.inflate(R.layout.session_detail_frag, container, false);
     }
 
@@ -248,6 +251,8 @@ public class SessionDetailFragment extends Fragment implements
         mRelatedSessions = (RecyclerView) details.findViewById(R.id.related_sessions_list);
         mRelatedSessionsAdapter = new ScheduleDayAdapter(this, null, false);
         mRelatedSessions.setAdapter(mRelatedSessionsAdapter);
+
+        mEmptyView = details.findViewById(android.R.id.empty);
 
         mAddScheduleFab =
                 (CheckableFloatingActionButton) view.findViewById(R.id.add_schedule_button);
@@ -379,7 +384,6 @@ public class SessionDetailFragment extends Fragment implements
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
         inflater.inflate(R.menu.session_detail, menu);
-        tryExecuteDeferredUiOperations();
     }
 
     @Override
@@ -472,8 +476,7 @@ public class SessionDetailFragment extends Fragment implements
 
     @Override
     public void displayUserActionResult(SessionDetailModel data,
-                                        SessionDetailUserActionEnum userAction,
-                                        boolean success) {
+            SessionDetailUserActionEnum userAction, boolean success) {
         switch (userAction) {
             case SHOW_MAP:
                 Intent mapIntent = new Intent(getActivity(), MapActivity.class);
@@ -512,36 +515,15 @@ public class SessionDetailFragment extends Fragment implements
     }
 
     private void displaySessionData(final SessionDetailModel data) {
-        mToolbarTitle.setText(data.getSessionTitle());
-
-        mTitle.setText(data.getSessionTitle());
-        mSubtitle.setText(data.getSessionSubtitle());
         try {
             AppIndex.AppIndexApi.start(mClient, getActionForTitle(data.getSessionTitle()));
         } catch (Throwable e) {
             // Nothing to do if indexing fails.
         }
 
-        if (data.shouldShowHeaderImage()) {
-            setToolbarTint(mIconTintCollapsing);
-            mImageLoader.loadImage(data.getPhotoUrl(), mPhotoView);
-        } else {
-            setToolbarTint(mIconTintNormal);
-        }
-
-        tryExecuteDeferredUiOperations();
-
-        // Handle Keynote as a special case, where the user cannot remove it
-        // from the schedule (it is auto added to schedule on sync)
-        mShowFab = (AccountUtils.hasActiveAccount(getContext()) && !data.isKeynote());
-        mAddScheduleFab.setVisibility(mShowFab ? VISIBLE : View.INVISIBLE);
-
-        displayTags(data);
-
-        if (!data.isKeynote()) {
-            showInScheduleDeferred(data.isInSchedule());
-        }
-
+        mToolbarTitle.setText(data.getSessionTitle());
+        mTitle.setText(data.getSessionTitle());
+        mSubtitle.setText(data.getSessionSubtitle());
         if (!TextUtils.isEmpty(data.getSessionAbstract())) {
             UIUtils.setTextMaybeHtml(mAbstract, data.getSessionAbstract());
             mAbstract.setVisibility(VISIBLE);
@@ -549,9 +531,21 @@ public class SessionDetailFragment extends Fragment implements
             mAbstract.setVisibility(GONE);
         }
 
+        // Handle Keynote as a special case, where the user cannot remove it
+        // from the schedule (it is auto added to schedule on sync)
+
+        showInSchedule(!data.isKeynote() && data.isInSchedule());
+
+        displayTags(data);
+        updateTimeBasedUi(data);
         updateEmptyView(data);
 
-        updateTimeBasedUi(data);
+        if (data.shouldShowHeaderImage()) {
+            setToolbarTint(mIconTintCollapsing);
+            mImageLoader.loadImage(data.getPhotoUrl(), mPhotoView);
+        } else {
+            setToolbarTint(mIconTintNormal);
+        }
 
         if (data.getLiveStreamVideoWatched()) {
             mPhotoView.setColorFilter(getContext().getResources().getColor(
@@ -722,11 +716,7 @@ public class SessionDetailFragment extends Fragment implements
     }
 
     private void updateEmptyView(SessionDetailModel data) {
-        getActivity().findViewById(android.R.id.empty).setVisibility(
-                (data.getSessionTitle() != null && data.getSpeakers().size() == 0
-                        && !data.hasSummaryContent())
-                        ? VISIBLE
-                        : GONE);
+        mEmptyView.setVisibility(data.hasSummaryContent() ? GONE : VISIBLE);
     }
 
     private void updateTimeBasedUi(SessionDetailModel data) {
@@ -745,7 +735,7 @@ public class SessionDetailFragment extends Fragment implements
         }
 
         // If the session is done, hide the FAB, and show the feedback button.
-        mShowFab = !data.isKeynote() && !data.isSessionReadyForFeedback();
+        mShowFab = !data.isKeynote();
         if (mShowFab) {
             mAddScheduleFab.show();
         } else {
@@ -796,13 +786,31 @@ public class SessionDetailFragment extends Fragment implements
         // For now just do the main tag
         mTags.removeAllViews();
         LayoutInflater inflater = LayoutInflater.from(mTags.getContext());
-        if (data.getTagMetadata() != null) {
-            final Tag mainTag = data.getTagMetadata().getTag(data.getMainTag());
+        TagMetadata tagMetadata = data.getTagMetadata();
+        if (tagMetadata != null) {
+            List<Tag> tags = new ArrayList<>();
+            final TagMetadata.Tag mainTag = tagMetadata.getTag(data.getMainTag());
             if (mainTag != null) {
-                TextView tagView = (TextView) inflater.inflate(R.layout.include_schedule_tag, mTags,
-                        false);
-                tagView.setText(mainTag.getName());
-                tagView.setBackgroundTintList(ColorStateList.valueOf(mainTag.getColor()));
+                tags.add(mainTag);
+            }
+            if (data.getTags() != null) {
+                for (String tagId : data.getTags()) {
+                    if (!tagId.startsWith(CATEGORY_TRACK)) {
+                        continue;
+                    }
+                    Tag tag = tagMetadata.getTagById(tagId);
+                    if (tag == null || tag.equals(mainTag)) {
+                        continue;
+                    }
+                    tags.add(tag);
+                }
+            }
+            for (Tag tag : tags) {
+                TextView tagView = (TextView) inflater.inflate(
+                        R.layout.include_schedule_tag, mTags, false);
+                tagView.setText(tag.getName());
+                tagView.setBackgroundTintList(ColorStateList.valueOf(tag.getColor()));
+                tagView.setTag(R.id.key_session_tag, tag);
                 tagView.setOnClickListener(new OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -825,8 +833,7 @@ public class SessionDetailFragment extends Fragment implements
     }
 
     private void updateFeedbackButton(final SessionDetailModel data) {
-        mFeedbackButton.setVisibility(data.hasFeedback() ? GONE : VISIBLE);
-        if (!data.hasFeedback() && data.isInScheduleWhenSessionFirstLoaded()) {
+        if (!data.hasFeedback() && data.hasSessionEnded()) {
             mFeedbackButton.setVisibility(VISIBLE);
             mFeedbackButton.setOnClickListener(new OnClickListener() {
                 @Override
@@ -839,27 +846,6 @@ public class SessionDetailFragment extends Fragment implements
         } else {
             mFeedbackButton.setVisibility(GONE);
             mFeedbackButton.setOnClickListener(null);
-        }
-    }
-
-    private void showInScheduleDeferred(final boolean isInSchedule) {
-        mDeferredUiOperations.add(new Runnable() {
-            @Override
-            public void run() {
-                if (mAddScheduleFab.isChecked() != isInSchedule) {
-                    mAddScheduleFab.setChecked(isInSchedule);
-                    mAddScheduleFab.setContentDescription(getString(isInSchedule ?
-                            R.string.remove_bookmark : R.string.add_bookmark));
-                }
-            }
-        });
-        tryExecuteDeferredUiOperations();
-    }
-
-    private void tryExecuteDeferredUiOperations() {
-        for (Runnable r : mDeferredUiOperations) {
-            r.run();
-            mDeferredUiOperations.clear();
         }
     }
 
@@ -941,6 +927,11 @@ public class SessionDetailFragment extends Fragment implements
                 ? SessionDetailUserActionEnum.UNSTAR_RELATED
                 : SessionDetailUserActionEnum.STAR_RELATED;
         sendUserAction(action, args);
+    }
+
+    @Override
+    public boolean feedbackEnabled() {
+        return false;
     }
 
     @Override
