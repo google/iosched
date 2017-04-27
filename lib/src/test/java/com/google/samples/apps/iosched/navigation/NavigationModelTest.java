@@ -23,6 +23,7 @@ import com.google.samples.apps.iosched.navigation.NavigationModel.NavigationItem
 import com.google.samples.apps.iosched.settings.SettingsUtils;
 import com.google.samples.apps.iosched.testutils.SettingsMockContext;
 import com.google.samples.apps.iosched.util.AccountUtils;
+import com.google.samples.apps.iosched.util.RegistrationUtils;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -59,7 +60,7 @@ public class NavigationModelTest {
     @Test
     public void requestData_LoadItemsForUser_ItemsLoaded() {
         // Given a user attending the conference and logged in
-        setUpMockForAttendance(true);
+        setUpMockForAttendance(RegistrationUtils.REGSTATUS_REGISTERED);
         setUpMockForLoginStatus(true);
         NavigationItemEnum[] expectedItems = NavigationConfig.filterOutItemsDisabledInBuildConfig(
                 NavigationConfig.ITEMS);
@@ -73,7 +74,7 @@ public class NavigationModelTest {
         assertEquals(mNavigationModel.getItems()[0], expectedItems[0]);
     }
 
-    private void setUpMockForAttendance(boolean attending) {
+    private void setUpMockForAttendance(int attending) {
         SettingsMockContext.initMockContextForAttendingVenueSetting(attending, mMockContext);
     }
 

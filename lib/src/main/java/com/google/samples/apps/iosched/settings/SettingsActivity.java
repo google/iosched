@@ -147,7 +147,8 @@ public class SettingsActivity extends AppCompatActivity {
                     BuildConfig.PREF_ATTENDEE_AT_VENUE.equals(key)) {
                 // This will activate re-registering with the correct FCM topic(s).
                 FcmUtilities.subscribeTopics(ConfMessageCardUtils.isConfMessageCardsEnabled(getActivity()),
-                        RegistrationUtils.isRegisteredAttendee(getActivity()));
+                        RegistrationUtils.isRegisteredAttendee(getActivity()) ==
+                                RegistrationUtils.REGSTATUS_REGISTERED);
             }
         }
     }

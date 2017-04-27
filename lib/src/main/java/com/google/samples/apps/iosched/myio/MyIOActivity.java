@@ -57,6 +57,7 @@ import com.google.samples.apps.iosched.signin.SignInListener;
 import com.google.samples.apps.iosched.signin.SignInManager;
 import com.google.samples.apps.iosched.ui.BaseActivity;
 import com.google.samples.apps.iosched.util.AccountUtils;
+import com.google.samples.apps.iosched.util.RegistrationUtils;
 import com.google.samples.apps.iosched.util.SyncUtils;
 import com.google.samples.apps.iosched.util.WelcomeUtils;
 
@@ -88,6 +89,8 @@ public class MyIOActivity extends BaseActivity implements
             = "com.google.samples.apps.iosched.EXTRA_DIALOG_NO";
     public static final String EXTRA_DIALOG_URL
             = "com.google.samples.apps.iosched.EXTRA_DIALOG_URL";
+
+    public static final long ONE_HOUR = 60*60*1000; // One hour in millis
 
     private GoogleApiClient mGoogleApiClient;
 
@@ -182,6 +185,18 @@ public class MyIOActivity extends BaseActivity implements
                         SyncUtils.getServerTimeOffsetSetAt(this)) {
             mDatabaseReference.addValueEventListener(mValueEventListener);
         }
+
+        // Check if an earlier attempt to get the user's registration status failed
+        // (or somehow never occured), and reattempt if necessary.
+        //
+        // We'll also periodically re-run this, in case the user's status has changed.
+        long timeSinceLastRegCheck = RegistrationUtils.timeSinceLastRegCheck(this);
+        if (AccountUtils.hasActiveAccount(this) && (
+                timeSinceLastRegCheck > ONE_HOUR ||
+                RegistrationUtils.isRegisteredAttendee(this) == RegistrationUtils.REGSTATUS_UNKNOWN)) {
+        LOGW(TAG, "Unknown registration status. Retrying post-login tasks to resolve.");
+            mSignInManager.silentSignIn();
+        }
     }
 
     @Override
@@ -257,6 +272,9 @@ public class MyIOActivity extends BaseActivity implements
                  @Override
                  public void onResourceReady(Bitmap resource,
                          GlideAnimation glideAnimation) {
+                     if (mAvatar == null) {
+                         return;
+                     }
                      RoundedBitmapDrawable circularBitmapDrawable =
                              RoundedBitmapDrawableFactory.create(getResources(), resource);
                      circularBitmapDrawable.setCircular(true);

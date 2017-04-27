@@ -16,6 +16,10 @@
 
 package com.google.samples.apps.iosched.ui;
 
+import static com.google.samples.apps.iosched.util.LogUtils.LOGD;
+import static com.google.samples.apps.iosched.util.LogUtils.LOGW;
+import static com.google.samples.apps.iosched.util.LogUtils.makeLogTag;
+
 import android.app.Activity;
 import android.content.ContentResolver;
 import android.content.Context;
@@ -38,7 +42,6 @@ import android.view.MenuItem;
 import android.view.View;
 
 import com.google.android.gms.auth.GoogleAuthUtil;
-import com.google.firebase.database.FirebaseDatabase;
 import com.google.samples.apps.iosched.lib.BuildConfig;
 import com.google.samples.apps.iosched.lib.R;
 import com.google.samples.apps.iosched.navigation.AppNavigationView;
@@ -55,10 +58,6 @@ import com.google.samples.apps.iosched.util.RecentTasksStyler;
 import com.google.samples.apps.iosched.welcome.WelcomeActivity;
 
 import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
-
-import static com.google.samples.apps.iosched.util.LogUtils.LOGD;
-import static com.google.samples.apps.iosched.util.LogUtils.LOGW;
-import static com.google.samples.apps.iosched.util.LogUtils.makeLogTag;
 
 /**
  * A base activity that handles common functionality in the app. This includes the navigation

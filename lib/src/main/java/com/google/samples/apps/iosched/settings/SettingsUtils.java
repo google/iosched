@@ -116,7 +116,8 @@ public class SettingsUtils {
      */
     public static boolean isUsingLocalTime(Context context) {
         SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(context);
-        return sp.getBoolean(PREF_LOCAL_TIMES, !RegistrationUtils.isRegisteredAttendee(context));
+        return sp.getBoolean(PREF_LOCAL_TIMES, RegistrationUtils.isRegisteredAttendee(context) !=
+                RegistrationUtils.REGSTATUS_REGISTERED);
     }
 
     /**
@@ -369,7 +370,8 @@ public class SettingsUtils {
     public static void updateNotificationSubscriptions(Context context) {
         if (shouldShowNotifications(context)) {
             FirebaseMessaging.getInstance().subscribeToTopic(GENERIC_NEWS_TOPIC);
-            if (RegistrationUtils.isRegisteredAttendee(context)) {
+            if (RegistrationUtils.isRegisteredAttendee(context) ==
+                    RegistrationUtils.REGSTATUS_REGISTERED) {
                 FirebaseMessaging.getInstance().subscribeToTopic(ONSITE_NEWS_TOPIC);
             } else {
                 FirebaseMessaging.getInstance().subscribeToTopic(OFFSITE_NEWS_TOPIC);

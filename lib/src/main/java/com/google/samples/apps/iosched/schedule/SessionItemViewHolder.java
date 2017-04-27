@@ -134,7 +134,8 @@ public class SessionItemViewHolder extends ScheduleItemViewHolder
 
     private void updateReservationStatus(ScheduleItem item) {
         if (FirebaseAuth.getInstance().getCurrentUser() == null ||
-                !RegistrationUtils.isRegisteredAttendee(mReservationStatus.getContext()) ||
+                RegistrationUtils.isRegisteredAttendee(mReservationStatus.getContext()) !=
+                        RegistrationUtils.REGSTATUS_REGISTERED ||
                 item.isKeynote() ||
                 item.reservationStatus == RESERVATION_STATUS_UNRESERVED) {
             mReservationStatus.setVisibility(GONE);
