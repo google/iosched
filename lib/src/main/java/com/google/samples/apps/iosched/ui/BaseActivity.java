@@ -26,7 +26,6 @@ import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
-import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.NavUtils;
 import android.support.v4.app.TaskStackBuilder;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -48,6 +47,7 @@ import com.google.samples.apps.iosched.provider.ScheduleContract;
 import com.google.samples.apps.iosched.service.DataBootstrapService;
 import com.google.samples.apps.iosched.sync.SyncHelper;
 import com.google.samples.apps.iosched.sync.account.Account;
+import com.google.samples.apps.iosched.ui.widget.BadgedBottomNavigationView;
 import com.google.samples.apps.iosched.ui.widget.MultiSwipeRefreshLayout;
 import com.google.samples.apps.iosched.util.AccountUtils;
 import com.google.samples.apps.iosched.util.AnalyticsHelper;
@@ -234,7 +234,7 @@ public abstract class BaseActivity extends AppCompatActivity implements
     protected void onPostCreate(Bundle savedInstanceState) {
         super.onPostCreate(savedInstanceState);
 
-        final BottomNavigationView bottomNav = (BottomNavigationView)
+        final BadgedBottomNavigationView bottomNav = (BadgedBottomNavigationView)
                 findViewById(R.id.bottom_navigation);
         if (bottomNav != null) {
             mAppNavigationView = new AppNavigationViewAsBottomNavImpl(bottomNav);
@@ -372,6 +372,14 @@ public abstract class BaseActivity extends AppCompatActivity implements
         flags |= View.SYSTEM_UI_FLAG_LAYOUT_STABLE
                 | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN;
         decor.setSystemUiVisibility(flags);
+    }
+
+    protected void showFeedBadge() {
+        mAppNavigationView.showItemBadge(NavigationItemEnum.FEED);
+    }
+
+    protected void clearFeedBadge() {
+        mAppNavigationView.clearItemBadge(NavigationItemEnum.FEED);
     }
 
     @Override
