@@ -253,10 +253,10 @@ dependencies {
     compile 'com.android.support.constraint:constraint-layout:1.0.2'
 
     // JSON utility library.
-    compile 'com.google.code.gson:gson:2.3'
+    compile 'com.google.code.gson:gson:2.8.0'
 
     // Glide library, used to handle asynchronous loading and caching of images.
-    compile 'com.github.bumptech.glide:glide:3.5.2'
+    compile 'com.github.bumptech.glide:glide:3.7.0'
 
     compile files('../third_party/disklrucache/libs/disklrucache-2.0.2.jar')
     compile files('../third_party/basic-http-client/libs/basic-http-client-android-0.88.jar')
@@ -268,7 +268,7 @@ dependencies {
         exclude group: "com.google.android.gms"
     }
 
-    compile 'com.google.android:flexbox:0.2.5'
+    compile 'com.google.android:flexbox:0.2.6'
 
     // Added to resolve conflicts between the app build and the test build. The app build resolves
     // the jsr305 dependency to version 1.3.9, but in the test build the espresso-core dependency
@@ -277,7 +277,7 @@ dependencies {
     compile 'com.google.code.findbugs:jsr305:2.0.1'
 
     compile 'uk.co.chrisjenx:calligraphy:2.2.0'
-    compile 'com.airbnb.android:lottie:2.0.0-beta3'
+    compile 'com.airbnb.android:lottie:2.0.0-beta4'
 
     // Firebase libraries
     compile "com.google.firebase:firebase-core:${google_play_services_client_library_version}"
@@ -290,17 +290,17 @@ dependencies {
 
     compile "org.apache.commons:commons-lang3:3.5"
 
-    normalDebugCompile 'com.squareup.leakcanary:leakcanary-android:1.5'
-    normalQualityassuranceCompile 'com.squareup.leakcanary:leakcanary-android-no-op:1.5'
-    normalReleaseCompile 'com.squareup.leakcanary:leakcanary-android-no-op:1.5'
+    normalDebugCompile "com.squareup.leakcanary:leakcanary-android:${leak_canary_version}"
+    normalQualityassuranceCompile "com.squareup.leakcanary:leakcanary-android-no-op:${leak_canary_version}"
+    normalReleaseCompile "com.squareup.leakcanary:leakcanary-android-no-op:${leak_canary_version}"
 
-    mapEditorDebugCompile 'com.squareup.leakcanary:leakcanary-android:1.5'
-    mapEditorQualityassuranceCompile 'com.squareup.leakcanary:leakcanary-android-no-op:1.5'
-    mapEditorReleaseCompile 'com.squareup.leakcanary:leakcanary-android-no-op:1.5'
+    mapEditorDebugCompile "com.squareup.leakcanary:leakcanary-android:${leak_canary_version}"
+    mapEditorQualityassuranceCompile "com.squareup.leakcanary:leakcanary-android-no-op:${leak_canary_version}"
+    mapEditorReleaseCompile "com.squareup.leakcanary:leakcanary-android-no-op:${leak_canary_version}"
 
-    targetSdk22DebugCompile 'com.squareup.leakcanary:leakcanary-android:1.5'
-    targetSdk22QualityassuranceCompile 'com.squareup.leakcanary:leakcanary-android-no-op:1.5'
-    targetSdk22ReleaseCompile 'com.squareup.leakcanary:leakcanary-android-no-op:1.5'
+    targetSdk22DebugCompile "com.squareup.leakcanary:leakcanary-android:${leak_canary_version}"
+    targetSdk22QualityassuranceCompile "com.squareup.leakcanary:leakcanary-android-no-op:${leak_canary_version}"
+    targetSdk22ReleaseCompile "com.squareup.leakcanary:leakcanary-android-no-op:${leak_canary_version}"
 
     androidTestCompile 'com.android.support.test:runner:0.5'
     androidTestCompile 'com.android.support.test.espresso:espresso-core:2.2.2'
