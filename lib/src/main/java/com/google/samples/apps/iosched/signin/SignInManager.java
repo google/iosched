@@ -33,6 +33,7 @@ import com.google.android.gms.common.api.Status;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.samples.apps.iosched.sync.userdata.LocalUserDataHelper;
 import com.google.samples.apps.iosched.util.AccountUtils;
+import com.google.samples.apps.iosched.util.RegistrationUtils;
 
 import java.lang.ref.WeakReference;
 
@@ -248,6 +249,7 @@ public class SignInManager {
         registerWithServer(activity, AccountUtils.getActiveAccountId(activity), false);
 
         // Tasks we always want to execute upon sign out.
+        RegistrationUtils.clearRegisteredAttendee(activity);
         AccountUtils.clearActiveAccount(activity);
         FirebaseAuth.getInstance().signOut();
 
