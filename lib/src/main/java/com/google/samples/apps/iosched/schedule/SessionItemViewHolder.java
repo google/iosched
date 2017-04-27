@@ -205,11 +205,6 @@ public class SessionItemViewHolder extends ScheduleItemViewHolder
             mBookmark.setVisibility(GONE);
         }
 
-        Resources res = itemView.getResources();
-        mBookmark.setContentDescription(mSession.inSchedule ?
-                res.getString(R.string.remove_bookmark) :
-                res.getString(R.string.add_bookmark));
-
         final long now = TimeUtils.getCurrentTime(context);
         final boolean streamingNow = item.startTime <= now && now <= item.endTime
                 && (item.flags & ScheduleItem.FLAG_HAS_LIVESTREAM) != 0;
