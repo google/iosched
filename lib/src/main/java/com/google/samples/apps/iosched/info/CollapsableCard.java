@@ -14,6 +14,7 @@
 package com.google.samples.apps.iosched.info;
 
 import android.content.Context;
+import android.content.res.Resources;
 import android.content.res.TypedArray;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -50,17 +51,19 @@ public class CollapsableCard extends FrameLayout {
     public CollapsableCard(Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         TypedArray arr = context.obtainStyledAttributes(attrs, R.styleable.CollapsableCard, 0, 0);
-        String cardTitle = arr.getString(R.styleable.CollapsableCard_cardTitle);
-        String cardDescription = arr.getString(R.styleable.CollapsableCard_cardDescription);
+        final String cardTitle = arr.getString(R.styleable.CollapsableCard_cardTitle);
+        final String cardDescription = arr.getString(R.styleable.CollapsableCard_cardDescription);
         arr.recycle();
         final View root = LayoutInflater.from(context)
                 .inflate(R.layout.collapsable_card_content, this, true);
+
         mCardTitle = (TextView) root.findViewById(R.id.card_title);
+        mCardTitle.setText(cardTitle);
+        setTitleContentDescription(cardTitle);
         mCardDescription = (HtmlTextView) root.findViewById(R.id.card_description);
         mCardDescription.setMovementMethod(LinkMovementMethod.getInstance());
-        mExpandIcon = (ImageView) root.findViewById(R.id.expand_icon);
-        mCardTitle.setText(cardTitle);
         mCardDescription.setHtmlText(cardDescription);
+        mExpandIcon = (ImageView) root.findViewById(R.id.expand_icon);
         final Transition toggle = TransitionInflater.from(getContext())
                 .inflateTransition(R.transition.info_card_toggle);
         final OnClickListener expandClick = new OnClickListener() {
@@ -74,13 +77,20 @@ public class CollapsableCard extends FrameLayout {
                 // activated used to tint controls when expanded
                 mExpandIcon.setActivated(mExpanded);
                 mCardTitle.setActivated(mExpanded);
+                setTitleContentDescription(cardTitle);
             }
         };
-        mExpandIcon.setOnClickListener(expandClick);
         mCardTitle.setOnClickListener(expandClick);
     }
 
     public void setCardDescription(@NonNull String description) {
         mCardDescription.setHtmlText(description);
+    }
+
+    private void setTitleContentDescription(String cardTitle) {
+        Resources res = getResources();
+        mCardTitle.setContentDescription(cardTitle + ", " +
+                (mExpanded ? res.getString(R.string.expanded) :
+                        res.getString(R.string.collapsed)));
     }
 }
