@@ -880,6 +880,9 @@
 
     <!-- Button text indicating that the session can be added to the user's bookmarks. -->
     <string name="add_bookmark">Add bookmark</string>
+    
+    <!-- Button text indicating that the session can be removed from the user's bookmarks. -->
+    <string name="remove_bookmark">Remove bookmark</string>
 
     <!-- The label used on a button when a view is in an expanded state. Clicking on the icon
     collapses the view. -->
@@ -888,7 +891,4 @@
     <!-- The label used on a button when a view is in an collapsed state. Clicking on the icon
     expanded the view. -->
     <string name="collapsed">Collapsed</string>
-    
-    <!-- Button text indicating that the session can be removed from the user's bookmarks. -->
-    <string name="remove_bookmark">Remove bookmark</string>
 </resources>
