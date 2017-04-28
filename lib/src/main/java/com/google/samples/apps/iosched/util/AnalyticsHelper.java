@@ -205,10 +205,20 @@ public class AnalyticsHelper {
                     } else if (key.equals(BuildConfig.PREF_ATTENDEE_AT_VENUE)) {
                         // Toggle the "Attending in person" custom dimension so we can track
                         // how venue attendee behavior contrasts with remote attendee behavior.
-                        boolean attending = prefs.getBoolean(key, true);
+                        int attending = prefs.getInt(key, RegistrationUtils.REGSTATUS_UNKNOWN);
                         // ANALYTICS EVENT:  Updated "On-Site Attendee" preference.
                         // Contains: Whether the attendee is identifying themselves as onsite or remote.
-                        String attendeeType = attending ? "On-Site Attendee" : "Remote Attendee";
+                        String attendeeType;
+                        switch (attending) {
+                            case RegistrationUtils.REGSTATUS_UNREGISTERED:
+                                attendeeType = "Remote Attendee";
+                                break;
+                            case RegistrationUtils.REGSTATUS_REGISTERED:
+                                attendeeType = "On-Site Attendee";
+                                break;
+                            default:
+                                attendeeType = "Unknown Attendee Type";
+                        }
                         String label = "Will be at I/O";
 
                         sendEventWithCustomDimension(category, getAction(prefs, key), label,

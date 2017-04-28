@@ -14,6 +14,10 @@
 
 package com.google.samples.apps.iosched.signin;
 
+import static com.google.samples.apps.iosched.util.LogUtils.LOGD;
+import static com.google.samples.apps.iosched.util.LogUtils.LOGW;
+import static com.google.samples.apps.iosched.util.LogUtils.makeLogTag;
+
 import android.app.Activity;
 import android.content.Intent;
 import android.support.annotation.NonNull;
@@ -23,17 +27,15 @@ import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.auth.api.signin.GoogleSignInResult;
 import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.common.api.OptionalPendingResult;
 import com.google.android.gms.common.api.ResultCallback;
 import com.google.android.gms.common.api.Status;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.samples.apps.iosched.sync.userdata.LocalUserDataHelper;
 import com.google.samples.apps.iosched.util.AccountUtils;
+import com.google.samples.apps.iosched.util.RegistrationUtils;
 
 import java.lang.ref.WeakReference;
-
-import static com.google.samples.apps.iosched.util.LogUtils.LOGD;
-import static com.google.samples.apps.iosched.util.LogUtils.LOGW;
-import static com.google.samples.apps.iosched.util.LogUtils.makeLogTag;
 
 /**
  * Manages sign in and sign out functionality. Designed to be used with an activity, which
@@ -82,6 +84,40 @@ public class SignInManager {
 
         Intent signInIntent = Auth.GoogleSignInApi.getSignInIntent(mGoogleApiClient);
         activity.startActivityForResult(signInIntent, AccountUtils.RC_SIGN_IN);
+    }
+
+    /** Re-run sign-in flow, silently. Used if one or more steps in the postSignInTasks()
+     * fails, to allow the process to re-run.
+     */
+    public void silentSignIn() {
+        LOGD(TAG, "Starting silent sign in");
+
+        final Activity activity = getActivity();
+        if (activity == null) {
+            return;
+        }
+
+        OptionalPendingResult<GoogleSignInResult> pendingResult =
+                Auth.GoogleSignInApi.silentSignIn(mGoogleApiClient);
+        if (pendingResult.isDone()) {
+            GoogleSignInResult result = pendingResult.get();
+            GoogleSignInAccount account = result.getSignInAccount();
+
+            if (result.isSuccess()) {
+                performPostSignInTasks(account, result);
+            }
+        } else {
+            pendingResult.setResultCallback(new ResultCallback<GoogleSignInResult>() {
+                @Override
+                public void onResult(@NonNull GoogleSignInResult result) {
+                    GoogleSignInAccount account = result.getSignInAccount();
+
+                    if (result.isSuccess()) {
+                        performPostSignInTasks(account, result);
+                    }
+                }
+            });
+        }
     }
 
     public void signOut() {
@@ -213,6 +249,7 @@ public class SignInManager {
         registerWithServer(activity, AccountUtils.getActiveAccountId(activity), false);
 
         // Tasks we always want to execute upon sign out.
+        RegistrationUtils.clearRegisteredAttendee(activity);
         AccountUtils.clearActiveAccount(activity);
         FirebaseAuth.getInstance().signOut();
 

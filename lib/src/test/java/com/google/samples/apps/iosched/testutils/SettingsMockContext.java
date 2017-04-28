@@ -31,7 +31,7 @@ public class SettingsMockContext {
      *
      * @PrepareForTest(SettingsUtils.class)}.
      */
-    public static void initMockContextForAttendingVenueSetting(boolean attending, Context context) {
+    public static void initMockContextForAttendingVenueSetting(int attending, Context context) {
         PowerMockito.mockStatic(SettingsUtils.class);
         BDDMockito.given(RegistrationUtils.isRegisteredAttendee(context)).willReturn(attending);
     }

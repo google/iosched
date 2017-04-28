@@ -1035,7 +1035,7 @@ public class SessionDetailFragment extends Fragment implements
      */
     public void updateAuthRegistration(SessionDetailModel sessionDetailModel) {
         if (FirebaseAuth.getInstance().getCurrentUser() == null ||
-                !RegistrationUtils.isRegisteredAttendee(getContext())) {
+                RegistrationUtils.isRegisteredAttendee(getContext()) != RegistrationUtils.REGSTATUS_REGISTERED) {
             hideReservationButton();
         } else {
             showReservationButton();

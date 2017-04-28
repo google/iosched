@@ -79,7 +79,8 @@ public class MessageCardHelper {
                     // This will activate re-registering with the correct FCM topic(s).
                     FcmUtilities.subscribeTopics(
                             ConfMessageCardUtils.isConfMessageCardsEnabled(view.getContext()),
-                            RegistrationUtils.isRegisteredAttendee(view.getContext()));
+                            RegistrationUtils.isRegisteredAttendee(view.getContext()) ==
+                                    RegistrationUtils.REGSTATUS_REGISTERED);
                 }
             }
         });
@@ -94,7 +95,8 @@ public class MessageCardHelper {
                     // This will activate re-registering with the correct FCM topic(s).
                     FcmUtilities.subscribeTopics(
                             ConfMessageCardUtils.isConfMessageCardsEnabled(view.getContext()),
-                            RegistrationUtils.isRegisteredAttendee(view.getContext()));
+                            RegistrationUtils.isRegisteredAttendee(view.getContext()) ==
+                                    RegistrationUtils.REGSTATUS_REGISTERED);
                 }
             }
         });
@@ -231,7 +233,8 @@ public class MessageCardHelper {
         if (shouldShowCard(context, ConfMessageCard.SESSION_NOTIFICATIONS)) {
             return getNotificationsOptInMessageData();
         }
-        if (RegistrationUtils.isRegisteredAttendee(context)) {
+        if (RegistrationUtils.isRegisteredAttendee(context) ==
+                RegistrationUtils.REGSTATUS_REGISTERED) {
             // Users are required to opt in or out of whether they want conference message cards
             if (!ConfMessageCardUtils.hasAnsweredConfMessageCardsPrompt(context)) {
                 // User has not answered whether they want to opt in.

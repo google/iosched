@@ -45,7 +45,6 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
-import java.util.function.ToDoubleBiFunction;
 
 /**
  * Service to check the user's conference registration status as a background
@@ -86,8 +85,7 @@ public class RegistrationStatusService extends Service {
 
         firebaseConnect(acct);
 
-        // TODO (see b/37012781)
-        return START_NOT_STICKY;  // Retry intent if service exits prematurely
+        return START_REDELIVER_INTENT;  // Retry intent if service exits prematurely
     }
 
     /**
@@ -112,7 +110,8 @@ public class RegistrationStatusService extends Service {
                         updateRegStatus(acct);
                     } catch (IOException e) {
                         LOGE(TAG, "Unable to update registration status", e);
-                        // TODO(trevorjohns): Reschedule check
+                        // We'll leave the current value in SharedPreferences, untouched.
+                        // Check should be rescheduled by caller if no previous value known.
                     } finally {
                         // Clean up service. Must be called when work is done.
                         stopSelf();
