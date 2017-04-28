@@ -43,7 +43,7 @@ public class DeviceStore {
         } else {
             // Existing device found
             LOG.warning(deviceId + " is already registered");
-            if (!userId.equals(oldDevice.getUserId())) {
+            if (userId == null || !userId.equals(oldDevice.getUserId())) {
                 LOG.info("User ID has changed from '" + oldDevice.getUserId() + "' to '"
                         + userId + "'");
                 oldDevice.setUserId(userId);
