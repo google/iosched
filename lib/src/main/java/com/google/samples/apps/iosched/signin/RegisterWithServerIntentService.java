@@ -48,7 +48,8 @@ public class RegisterWithServerIntentService extends IntentService {
                 ServerUtilities.register(this, FirebaseInstanceId.getInstance().getToken(),
                         accountId);
             } else if (ACTION_UNREGISTER.equals(action)) {
-                ServerUtilities.unregister(FirebaseInstanceId.getInstance().getToken(), accountId);
+                ServerUtilities.unregister(this, FirebaseInstanceId.getInstance().getToken(),
+                        accountId);
             }
         }
     }

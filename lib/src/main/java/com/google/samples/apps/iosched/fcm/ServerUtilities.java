@@ -20,7 +20,12 @@ import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.text.TextUtils;
 
+import com.google.api.client.extensions.android.json.AndroidJsonFactory;
+import com.google.api.client.googleapis.extensions.android.gms.auth.GoogleAccountCredential;
+import com.google.api.client.http.javanet.NetHttpTransport;
 import com.google.samples.apps.iosched.lib.BuildConfig;
+import com.google.samples.apps.iosched.rpc.fcm.Fcm;
+import com.google.samples.apps.iosched.rpc.ping.Ping;
 import com.google.samples.apps.iosched.util.AccountUtils;
 
 import java.io.IOException;
@@ -28,6 +33,7 @@ import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
@@ -87,45 +93,16 @@ public final class ServerUtilities {
             return false;
         }
 
-        LOGD(TAG, "registering device (reg_id = " + deviceId + ")");
-        String serverUrl = BuildConfig.FCM_SERVER_URL + "/register";
-        LOGI(TAG, "registering on FCM with FCM key: " + AccountUtils.sanitizeUserId(userId));
-
-        Map<String, String> params = new HashMap<>();
-        params.put(KEY_DEVICE_ID, deviceId);
-        params.put(KEY_USER_ID, userId);
-        long backoff = BACKOFF_MILLI_SECONDS + sRandom.nextInt(1000);
-        // Once FCM returns a registration id, we need to register it in the
-        // demo server. As the server might be down, we will retry it a couple
-        // times.
-        for (int i = 1; i <= MAX_ATTEMPTS; i++) {
-            LOGV(TAG, "Attempt #" + i + " to register");
-            try {
-                post(serverUrl, params, BuildConfig.FCM_API_KEY);
-                setRegisteredOnServer(context, true, deviceId, userId);
-                return true;
-            } catch (IOException e) {
-                // Here we are simplifying and retrying on any error; in a real
-                // application, it should retry only on unrecoverable errors
-                // (like HTTP error code 503).
-                LOGE(TAG, "Failed to register on attempt " + i, e);
-                if (i == MAX_ATTEMPTS) {
-                    break;
-                }
-                try {
-                    LOGV(TAG, "Sleeping for " + backoff + " ms before retry");
-                    Thread.sleep(backoff);
-                } catch (InterruptedException e1) {
-                    // Activity finished before we complete - exit.
-                    LOGD(TAG, "Thread interrupted: abort remaining retries!");
-                    Thread.currentThread().interrupt();
-                    return false;
-                }
-                // increase backoff exponentially
-                backoff *= 2;
-            }
+        try {
+            LOGD(TAG, "registering device (reg_id = " + deviceId + ")");
+            getFcmHandler(context).fcmRegistrationEndpoint().register(deviceId).execute();
+            LOGI(TAG, "registering on FCM with FCM key: " + AccountUtils.sanitizeUserId(userId));
+            return true;
+        } catch (IOException e) {
+            e.printStackTrace();
+            LOGI(TAG, "Failed to register with user ID: " + userId + " and device ID: " + deviceId);
+            return false;
         }
-        return false;
     }
 
     /**
@@ -134,25 +111,22 @@ public final class ServerUtilities {
      * @param deviceId  The InstanceID token for this application instance.
      * @param userId The user identifier used to pair a user with an InstanceID token.
      */
-    public static void unregister(final String deviceId, final String userId) {
+    public static void unregister(final Context context, final String deviceId,
+                                  final String userId) {
         if (!checkFcmEnabled()) {
             return;
         }
 
         LOGI(TAG, "unregistering device (deviceId = " + deviceId + ")");
-        String serverUrl = BuildConfig.FCM_SERVER_URL + "/unregister";
-        Map<String, String> params = new HashMap<>();
-        params.put(KEY_USER_ID, userId);
-        params.put(KEY_DEVICE_ID, deviceId);
-        try {
-            post(serverUrl, params, BuildConfig.FCM_API_KEY);
-        } catch (IOException e) {
-            // At this point the device is unregistered from FCM, but still
-            // registered on the server.
-            // We could try to unregister again, but it is not necessary:
-            // if the server tries to send a message to the device, it will get
-            // a "NotRegistered" error message and should unregister the device.
-            LOGD(TAG, "Unable to unregister from application server", e);
+        if (AccountUtils.hasActiveAccount(context)) {
+            try {
+                getFcmHandler(context).fcmRegistrationEndpoint().unregister(deviceId).execute();
+            } catch (IOException e) {
+                e.printStackTrace();
+                LOGD(TAG, "Unable to unregister from application server", e);
+            }
+        } else {
+            LOGD(TAG, "User must be signed in to unregister device");
         }
     }
 
@@ -167,11 +141,9 @@ public final class ServerUtilities {
         }
 
         LOGI(TAG, "Notifying FCM that user data changed");
-        String serverUrl = BuildConfig.FCM_SERVER_URL + "/send/self/sync_user";
         try {
             if (AccountUtils.hasActiveAccount(context)) {
-                post(serverUrl, new HashMap<String, String>(),
-                        AccountUtils.getActiveAccountId(context));
+                getPingHandler(context).sendSelfSync().execute();
             }
         } catch (IOException e) {
             LOGE(TAG, "Unable to notify FCM about user data change", e);
@@ -301,5 +273,59 @@ public final class ServerUtilities {
                 conn.disconnect();
             }
         }
+    }
+
+    /**
+     * Retrieve the Google account credentials of the currently signed in user.
+     *
+     * @param context Current context.
+     * @return Google account credential if user is signed in null otherwise.
+     */
+    private static GoogleAccountCredential getGoogleAccountCredential(Context context) {
+        if (AccountUtils.hasActiveAccount(context)) {
+            GoogleAccountCredential credential =
+                    GoogleAccountCredential
+                            .usingOAuth2(context, Arrays.asList(AccountUtils.AUTH_SCOPES));
+            credential.setSelectedAccount(AccountUtils.getActiveAccount(context));
+            return credential;
+        } else {
+            return null;
+        }
+    }
+
+    /**
+     * Construct a Fcm object that can be used to register the device's ID with the server.
+     *
+     * @param context Current context.
+     * @return Fcm object with user credential if user is signed in Fcm object with no user
+     *         credential if the user is not signed in.
+     */
+    private static Fcm getFcmHandler(Context context) {
+        if (AccountUtils.hasActiveAccount(context)) {
+            return new Fcm.Builder(new NetHttpTransport(),
+                    new AndroidJsonFactory(), getGoogleAccountCredential(context)).build();
+        } else {
+            return new Fcm.Builder(new NetHttpTransport(),
+                    new AndroidJsonFactory(), null).build();
+        }
+
+    }
+
+    /**
+     * Construct a Ping object that can be used to initiate syncs of user data.
+     *
+     * @param context Current context.
+     * @return Ping object with user credential if user is signed in Ping object with no user
+     *         credential if the user is not signed in.
+     */
+    private static Ping getPingHandler(Context context) {
+        if (AccountUtils.hasActiveAccount(context)) {
+            return new Ping.Builder(new NetHttpTransport(),
+                    new AndroidJsonFactory(), getGoogleAccountCredential(context)).build();
+        } else {
+            return new Ping.Builder(new NetHttpTransport(),
+                    new AndroidJsonFactory(), null).build();
+        }
+
     }
 }
