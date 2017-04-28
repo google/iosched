@@ -93,7 +93,8 @@ public class ScheduleFilterFragment extends Fragment implements LoaderCallbacks<
                     mListener.onFiltersChanged(filterHolder);
                     CharSequence filtersDesc = filterHolder
                             .describeFilters(getResources(), getContext().getTheme());
-                    AnalyticsHelper.sendEvent("Filters", "Filters Updated", filtersDesc.toString());
+                    AnalyticsHelper.sendEvent("Filters", "Filters Updated",
+                            String.valueOf(filtersDesc));
                 }
             }
         });
