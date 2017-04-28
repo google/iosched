@@ -122,14 +122,16 @@ public class NotificationCommand extends FcmCommand {
         // Check if we are the right audience
         LOGD(TAG, "Checking audience: " + command.audience);
         if ("remote".equals(command.audience)) {
-            if (RegistrationUtils.isRegisteredAttendee(context)) {
+            if (RegistrationUtils.isRegisteredAttendee(context) ==
+                    RegistrationUtils.REGSTATUS_REGISTERED) {
                 LOGD(TAG, "Ignoring notification for remote audience (attendee is on-site).");
                 return;
             } else {
                 LOGD(TAG, "Relevant (attendee is remote).");
             }
         } else if ("local".equals(command.audience)) {
-            if (!RegistrationUtils.isRegisteredAttendee(context)) {
+            if (RegistrationUtils.isRegisteredAttendee(context) !=
+                    RegistrationUtils.REGSTATUS_REGISTERED) {
                 LOGD(TAG, "Ignoring notification for on-site audience (attendee is remote).");
                 return;
             } else {
