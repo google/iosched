@@ -60,6 +60,8 @@
         android:layout_height="wrap_content"
         android:layout_marginLeft="@dimen/keyline_2"
         android:layout_marginStart="@dimen/keyline_2"
+        android:layout_marginRight="@dimen/padding_normal"
+        android:layout_marginEnd="@dimen/padding_normal"
         android:paddingBottom="@dimen/spacing_normal"
         android:visibility="gone"
         tools:text="@string/placeholder_map_subtitle"
