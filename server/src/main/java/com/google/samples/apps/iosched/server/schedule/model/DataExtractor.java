@@ -139,7 +139,9 @@ public class DataExtractor {
         if (!ids.contains(id)) {
           String title = Config.ROOM_MAPPING.getTitle(id, get(origin, InputJsonKeys.VendorAPISource.Rooms.Name).getAsString());
           int capacity = get(origin, Rooms.Capacity).getAsInt();
+          boolean filter = get(origin, Rooms.Publish).getAsBoolean();
           set(new JsonPrimitive(id), dest, OutputJsonKeys.Rooms.id);
+          set(new JsonPrimitive(filter), dest, OutputJsonKeys.Rooms.filter);
           set(originalId, dest, OutputJsonKeys.Rooms.original_id);
           set(new JsonPrimitive(title), dest, OutputJsonKeys.Rooms.name);
           set(new JsonPrimitive(capacity), dest, OutputJsonKeys.Rooms.capacity);
@@ -310,9 +312,21 @@ public class DataExtractor {
         if (title != null && title.isJsonPrimitive() && "after hours".equalsIgnoreCase(title.getAsString())) {
           set(new JsonPrimitive("__afterhours__"), dest, OutputJsonKeys.Sessions.id);
         } else if (Arrays.asList(Config.KEYNOTE_IDS).contains(id.getAsString())) {
-          int keynoteIndex = Arrays.asList(Config.KEYNOTE_IDS).indexOf(id.getAsString());
-          set(new JsonPrimitive("__keynote" + keynoteIndex + "__"), dest,
+          // TODO: Keynotes should not have special IDs there should be a tag that identifies them
+          // TODO: as keynotes and they can be handled accordingly. This check for a particular ID
+          // TODO: is very brittle and should be removed.
+          String keynoteId;
+          if (id.getAsString().equals("3f3802e4-b24d-4b47-b9c8-b5ab7944411c")) {
+            keynoteId = "__keynote__";
+          } else {
+            keynoteId = "__keynote2__";
+          }
+          set(new JsonPrimitive(keynoteId), dest,
               OutputJsonKeys.Sessions.id);
+
+          // TODO: Keynotes should have tags like other sessions so this hack is not necessary for
+          // TODO: for setting keynote colors.
+          set(new JsonPrimitive("#27e4fd"), dest, OutputJsonKeys.Sessions.color);
         } else {
           set(origin, InputJsonKeys.VendorAPISource.Topics.Id, dest, OutputJsonKeys.Sessions.id);
         }

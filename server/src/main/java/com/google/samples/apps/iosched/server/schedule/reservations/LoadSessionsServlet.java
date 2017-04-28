@@ -125,6 +125,37 @@ public class LoadSessionsServlet extends HttpServlet {
     final JsonArray jRooms = jSessionData.getAsJsonObject().get(ROOMS_KEY).getAsJsonArray();
     final JsonArray jSessions = jSessionData.getAsJsonObject().get(SESSIONS_KEY).getAsJsonArray();
 
+    // Only sessions that are of type TYPE_SESSIONS can be reserved so remove those that do not
+    // have this type.
+    List<JsonElement> sessionsToRemove = new ArrayList<>();
+    for (JsonElement jSession : jSessions) {
+      // TODO: The keynote should not have a type of TYPE_SESSIONS. Remove this hack once
+      // TODO: keynotes have a better type.
+      if (jSession.getAsJsonObject().get("id").getAsString().startsWith("__keynote")) {
+        sessionsToRemove.add(jSession);
+        continue;
+      }
+
+      JsonArray jTags = jSession.getAsJsonObject().get("tags").getAsJsonArray();
+      boolean isReservable = false;
+      for (JsonElement jTag : jTags) {
+        if (jTag.getAsString().equals("TYPE_SESSIONS")) {
+          isReservable = true;
+          break;
+        }
+      }
+      if (!isReservable) {
+        sessionsToRemove.add(jSession);
+      }
+    }
+
+    for (JsonElement jsonElement : sessionsToRemove) {
+      jSessions.remove(jsonElement);
+    }
+
+    log.info("Non-Reservable session count: " + sessionsToRemove.size());
+    log.info("Reservable session count: " + jSessions.size());
+
     resp.setContentType("text/plain");
     resp.getWriter().println("Room and session data retrieved.");
 
