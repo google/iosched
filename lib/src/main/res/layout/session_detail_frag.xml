@@ -119,7 +119,7 @@
                     android:layout_width="?actionBarSize"
                     android:layout_height="?actionBarSize"
                     android:background="?selectableItemBackgroundBorderless"
-                    android:contentDescription="@string/description_share"
+                    android:contentDescription="@string/description_map"
                     android:duplicateParentState="true"
                     android:scaleType="center"
                     app:srcCompat="@drawable/ic_action_map" />
