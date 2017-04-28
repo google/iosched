@@ -62,6 +62,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/spacing_normal"
+        app:alignItems="center"
         app:flexWrap="wrap"
         app:layout_constraintEnd_toStartOf="@+id/bookmark"
         app:layout_constraintHorizontal_chainStyle="spread_inside"
