@@ -19,6 +19,7 @@ package com.google.samples.apps.iosched.session;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -26,7 +27,6 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.annotation.VisibleForTesting;
 import android.support.v4.app.LoaderManager;
-import android.support.v4.content.ContextCompat;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
 import android.text.TextUtils;
@@ -445,23 +445,18 @@ public class SessionDetailModel extends ModelWithLoaderManager<SessionDetailQuer
         return mYouTubeUrl;
     }
 
-    public int getSessionColor() {
-        return mSessionColor;
-    }
-
     public boolean isSessionTrackColorAvailable() {
-        return mTagMetadata != null && mMainTag != null;
+        return mTagMetadata != null;
     }
 
     public int getSessionTrackColor() {
-        if (isSessionTrackColorAvailable()) {
+        if (mTagMetadata != null && mMainTag != null) {
             final TagMetadata.Tag tag = mTagMetadata.getTag(mMainTag);
             if (tag != null) {
                 return tag.getColor();
             }
         }
-        // else default to the session color which is defaulted to the theme primary color
-        return mSessionColor;
+        return Color.TRANSPARENT;
     }
 
     public String getSessionAbstract() {
@@ -682,14 +677,6 @@ public class SessionDetailModel extends ModelWithLoaderManager<SessionDetailQuer
         if (tagsString != null) {
             mIsKeynote = tagsString.contains(Config.Tags.SPECIAL_KEYNOTE);
             mTags = tagsString.split(",");
-        }
-
-        mSessionColor = cursor.getInt(
-                cursor.getColumnIndex(ScheduleContract.Sessions.SESSION_COLOR));
-        if (mSessionColor == 0) {
-            mSessionColor = ContextCompat.getColor(mContext, R.color.default_session_color);
-        } else {
-            mSessionColor = UIUtils.setColorOpaque(mSessionColor);
         }
 
         mMainTag = cursor
