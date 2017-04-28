@@ -42,14 +42,6 @@ the License.
         <value>Welcome</value>
     </entry>
     <entry>
-        <key>feed_default_first_clickable</key>
-        <value>false</value>
-    </entry>
-    <entry>
-        <key>feed_default_first_link</key>
-        <value></value>
-    </entry>
-    <entry>
         <key>feed_default_first_priority</key>
         <value>false</value>
     </entry>
