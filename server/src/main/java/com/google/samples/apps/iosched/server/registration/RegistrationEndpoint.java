@@ -108,7 +108,10 @@ public class RegistrationEndpoint {
         // TODO: Allow this to return the accurate registration status and handle reservation status
         // TODO: elsewhere.
         if (firebaseWrapper.getUserEmail().endsWith(GOOGLER_EMAIL_DOMAIN)) {
-            return false;
+            // TODO(arthurthompson): Return false here when reservation dogfood is over.
+            // TODO                  Returning true here so that all Googlers can test reservations.
+            // return false;
+            return true;
         }
 
         JSONObject eventDelegateInfo = queryDelegateInfo(context);
