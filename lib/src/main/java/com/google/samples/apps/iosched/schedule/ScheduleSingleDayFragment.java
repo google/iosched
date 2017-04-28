@@ -44,6 +44,7 @@ import com.google.samples.apps.iosched.provider.ScheduleContract.Sessions;
 import com.google.samples.apps.iosched.schedule.ScheduleModel.MyScheduleQueryEnum;
 import com.google.samples.apps.iosched.schedule.ScheduleModel.MyScheduleUserActionEnum;
 import com.google.samples.apps.iosched.schedule.SessionItemViewHolder.Callbacks;
+import com.google.samples.apps.iosched.util.AnalyticsHelper;
 import com.google.samples.apps.iosched.util.TimeUtils;
 
 /**
@@ -272,6 +273,7 @@ public class ScheduleSingleDayFragment extends Fragment
         args.putString(ScheduleModel.SESSION_TITLE_KEY, sessionTitle);
         mListener.onUserAction(MyScheduleUserActionEnum.FEEDBACK, args);
 
+
         SessionFeedbackActivity.launchFeedback(getContext(), sessionId);
     }
 
@@ -280,6 +282,7 @@ public class ScheduleSingleDayFragment extends Fragment
         Activity activity = getActivity();
         if (activity instanceof ScheduleViewParent) {
             ((ScheduleViewParent) activity).onRequestFilterByTag(tag);
+            AnalyticsHelper.sendEvent("My Schedule", "Tag", tag.getName().toString());
         }
     }
 

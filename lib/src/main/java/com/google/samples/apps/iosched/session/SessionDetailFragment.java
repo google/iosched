@@ -560,6 +560,7 @@ public class SessionDetailFragment extends Fragment implements
                     String videoId = YouTubeUtils.getVideoIdFromSessionData(data.getYouTubeUrl(),
                             data.getLiveStreamId());
                     YouTubeUtils.showYouTubeVideo(videoId, getActivity());
+                    AnalyticsHelper.sendEvent("Session", "Youtube Video", mTitle.toString());
                 }
             });
         }
@@ -672,8 +673,8 @@ public class SessionDetailFragment extends Fragment implements
     private void fireAnalyticsScreenView(String sessionTitle) {
         if (!mAnalyticsScreenViewHasFired) {
             // ANALYTICS SCREEN: View the Session Details page for a specific session.
-            // Contains: The session title.
-            AnalyticsHelper.sendScreenView("Session: " + sessionTitle);
+            // Contains: The session title and session ID.
+            AnalyticsHelper.sendScreenView("Session: " + sessionTitle, this.getActivity());
             mAnalyticsScreenViewHasFired = true;
         }
     }
@@ -942,6 +943,7 @@ public class SessionDetailFragment extends Fragment implements
     @Override
     public void onTagClicked(Tag tag) {
         ScheduleActivity.launchScheduleWithFilterTag(getContext(), tag);
+        AnalyticsHelper.sendEvent("Session: " + mTitle.getText(), "Tag", tag.getName().toString());
     }
 
     /**
@@ -1077,6 +1079,7 @@ public class SessionDetailFragment extends Fragment implements
             @Override
             public void onClick(View v) {
                 sendUserAction(SessionDetailUserActionEnum.RESERVE, null);
+                AnalyticsHelper.sendEvent("Session: " + mTitle.getText(), "Reservation", "reservation attempted");
             }
         });
     }
