@@ -19,11 +19,17 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.ColorInt;
+import android.support.annotation.NonNull;
+import android.support.annotation.StringRes;
 import android.support.constraint.ConstraintLayout;
 import android.support.constraint.Guideline;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.graphics.drawable.RoundedBitmapDrawable;
 import android.support.v4.graphics.drawable.RoundedBitmapDrawableFactory;
+import android.text.SpannableStringBuilder;
+import android.text.Spanned;
+import android.text.style.BulletSpan;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -91,7 +97,12 @@ public class MyIODialogFragment extends DialogFragment {
                             }
                         });
             }
-            bodyIntro.setText(R.string.my_io_body_intro_signed_in);
+            bodyIntro.setText(buildDialogText(getContext(),
+                    R.string.my_io_body_intro_signed_in,
+                    R.string.my_io_dialog_first_bullet_point_signed_in,
+                    R.string.my_io_dialog_second_bullet_point_signed_in,
+                    R.string.my_io_dialog_third_bullet_point_signed_in,
+                    bodyIntro.getCurrentTextColor()));
         } else {
             avatar.setVisibility(GONE);
             name.setVisibility(GONE);
@@ -100,7 +111,12 @@ public class MyIODialogFragment extends DialogFragment {
             view.findViewById(R.id.divider).setVisibility(GONE);
             ((ConstraintLayout.LayoutParams) view.findViewById(R.id.guide_header).getLayoutParams())
                     .guideBegin = 0;
-            bodyIntro.setText(R.string.my_io_body_intro_signed_out);
+            bodyIntro.setText(buildDialogText(getContext(),
+                    R.string.my_io_body_intro_signed_out,
+                    R.string.my_io_dialog_first_bullet_point_signed_out,
+                    R.string.my_io_dialog_second_bullet_point_signed_out,
+                    R.string.my_io_dialog_third_bullet_point_signed_out,
+                    bodyIntro.getCurrentTextColor()));
         }
 
         authButton.setText(signedIn ? getResources().getString(R.string.signout_prompt) :
@@ -118,5 +134,22 @@ public class MyIODialogFragment extends DialogFragment {
             }
         });
         return view;
+    }
+
+    private CharSequence buildDialogText(@NonNull Context context, @StringRes int intro,
+                                         @StringRes int bullet1, @StringRes int bullet2,
+                                         @StringRes int bullet3, @ColorInt int color) {
+        SpannableStringBuilder ssb = new SpannableStringBuilder(context.getString(intro));
+        int padding = context.getResources().getDimensionPixelSize(R.dimen.padding_normal);
+        ssb.append("\n\n");
+        ssb.append(context.getString(bullet1),
+                new BulletSpan(padding, color), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+        ssb.append("\n\n");
+        ssb.append(context.getString(bullet2),
+                new BulletSpan(padding, color), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+        ssb.append("\n\n");
+        ssb.append(context.getString(bullet3),
+                new BulletSpan(padding, color), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+        return ssb;
     }
 }
