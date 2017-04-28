@@ -41,6 +41,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
+                android:importantForAccessibility="no"
                 android:text="@string/settings_time_zone_label" />
 
             <Switch
@@ -65,6 +66,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
+                android:importantForAccessibility="no"
                 android:text="@string/settings_enable_notifications" />
 
             <Switch
@@ -89,6 +91,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
+                android:importantForAccessibility="no"
                 android:text="@string/settings_enable_anon_statistics" />
 
             <Switch
