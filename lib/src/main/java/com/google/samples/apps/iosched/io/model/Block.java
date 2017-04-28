@@ -22,6 +22,7 @@ public class Block {
     public String start;
     public String end;
     public String type;
+    public String kind;
 }
 
 

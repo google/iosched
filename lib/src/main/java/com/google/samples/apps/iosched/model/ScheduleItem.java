@@ -19,7 +19,9 @@ import android.support.annotation.VisibleForTesting;
 import android.text.TextUtils;
 
 import com.google.samples.apps.iosched.Config;
+import com.google.samples.apps.iosched.lib.R;
 import com.google.samples.apps.iosched.provider.ScheduleContract;
+import com.google.samples.apps.iosched.provider.ScheduleContract.Blocks;
 
 import java.util.Locale;
 
@@ -40,6 +42,8 @@ public class ScheduleItem implements Cloneable, Comparable<ScheduleItem> {
 
     // session type
     public int sessionType = SESSION_TYPE_MISC;
+    // block kind
+    public String blockKind;
 
     // main tag
     public String mainTag;
@@ -113,11 +117,27 @@ public class ScheduleItem implements Cloneable, Comparable<ScheduleItem> {
     }
 
     public boolean isFoodBreak() {
-        return type == BREAK && (title.contains("Breakfast") || title.contains("Lunch"));
+        return Blocks.BLOCK_KIND_MEAL.equals(blockKind);
     }
 
     public boolean isConcert() {
-        return type == BREAK && title.contains("Concert");
+        return Blocks.BLOCK_KIND_CONCERT.equals(blockKind);
+    }
+
+    public int getBreakIcon() {
+        if (blockKind != null) {
+            switch (blockKind) {
+                case Blocks.BLOCK_KIND_MEAL:
+                    return R.drawable.ic_food;
+                case Blocks.BLOCK_KIND_CONCERT:
+                    return R.drawable.ic_concert;
+                case Blocks.BLOCK_KIND_AFTERHOURS:
+                    return R.drawable.ic_afterhours;
+                case Blocks.BLOCK_KIND_BADGEPICKUP:
+                    return R.drawable.ic_badge_pickup;
+            }
+        }
+        return 0;
     }
 
     /**
