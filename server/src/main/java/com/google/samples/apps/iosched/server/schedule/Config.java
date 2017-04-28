@@ -90,6 +90,11 @@ public interface Config {
       "trevorjohns@google.com"
   };
 
+  public static final String[] KEYNOTE_IDS = {
+      "3f3802e4-b24d-4b47-b9c8-b5ab7944411c",
+      "9c2eb575-9aa9-4e5d-8ef8-e9bcc269af03"
+  };
+
   // See context at b/15452185:
   public static final RoomMapping ROOM_MAPPING = new RoomMapping();
   static class RoomMapping {

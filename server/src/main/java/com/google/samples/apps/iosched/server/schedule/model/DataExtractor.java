@@ -27,8 +27,10 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonPrimitive;
 import com.google.samples.apps.iosched.server.schedule.Config;
 import com.google.samples.apps.iosched.server.schedule.model.InputJsonKeys.VendorAPISource.Rooms;
+import com.google.samples.apps.iosched.server.schedule.model.InputJsonKeys.VendorAPISource.Topics;
 import com.google.samples.apps.iosched.server.schedule.model.validator.Converters;
 
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -303,9 +305,14 @@ public class DataExtractor {
         }
         JsonObject dest = new JsonObject();
 
+        JsonElement id = get(origin, Topics.Id);
         // Some sessions require a special ID, so we replace it here...
         if (title != null && title.isJsonPrimitive() && "after hours".equalsIgnoreCase(title.getAsString())) {
           set(new JsonPrimitive("__afterhours__"), dest, OutputJsonKeys.Sessions.id);
+        } else if (Arrays.asList(Config.KEYNOTE_IDS).contains(id.getAsString())) {
+          int keynoteIndex = Arrays.asList(Config.KEYNOTE_IDS).indexOf(id.getAsString());
+          set(new JsonPrimitive("__keynote" + keynoteIndex + "__"), dest,
+              OutputJsonKeys.Sessions.id);
         } else {
           set(origin, InputJsonKeys.VendorAPISource.Topics.Id, dest, OutputJsonKeys.Sessions.id);
         }
