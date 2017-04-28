@@ -106,7 +106,9 @@
     <style name="Theme.IOSched.Map" parent="@style/Theme.IOSched.Immersive" />
 
     <!-- Info -->
-    <style name="Theme.IOSched.Info" parent="@style/Theme.IOSched.Immersive" />
+    <style name="Theme.IOSched.Info" parent="@style/Theme.IOSched.Immersive">
+        <item name="android:statusBarColor">@color/immersive_status_bar_dark</item>
+    </style>
 
     <style name="Theme.IOSched.Debug" parent="@style/Theme.IOSched.Immersive">
         <item name="android:buttonStyle">@style/Widget.AppCompat.Button.Borderless.Colored</item>
