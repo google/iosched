@@ -95,6 +95,32 @@ public interface Config {
       "9c2eb575-9aa9-4e5d-8ef8-e9bcc269af03"
   };
 
+  public static final String[] DOGFOOD_RESERVATION_WHITELIST = {
+      "arthurthompson@google.com",
+      "kroikie5@gmail.com",
+      "crmarshall@google.com",
+      "dgalpin@google.com",
+      "fchung@google.com",
+      "shailen.tuli@gmail.com",
+      "shailentuli@google.com",
+      "st1999@gmail.com",
+      "wwaltersen@googlemail.com",
+      "pfriese@gmail.com",
+      "peterfriese@google.com",
+      "dougs1993@gmail.com",
+      "dougsigelbaum@gmail.com",
+      "fredchung@gmail.com",
+      "jeremydw@google.com",
+      "randymerrill@google.com",
+      "jeremydw@gmail.com",
+      "randy@blinkk.com",
+      "jdkoren@google.com",
+      "jdkoren@gmail.com",
+      "nagiworld@gmail.com",
+      "Zoramite@gmail.com",
+      "claudiocherubino@gmail.com"
+  };
+
   // See context at b/15452185:
   public static final RoomMapping ROOM_MAPPING = new RoomMapping();
   static class RoomMapping {

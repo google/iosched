@@ -29,10 +29,12 @@ import com.google.appengine.api.urlfetch.URLFetchServiceFactory;
 import com.google.common.annotations.VisibleForTesting;
 import com.google.firebase.database.DatabaseReference;
 import com.google.samples.apps.iosched.server.FirebaseWrapper;
+import com.google.samples.apps.iosched.server.schedule.Config;
 import com.google.samples.apps.iosched.server.userdata.Ids;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
+import java.util.Arrays;
 import java.util.logging.Logger;
 import javax.servlet.ServletContext;
 import org.json.JSONObject;
@@ -107,7 +109,9 @@ public class RegistrationEndpoint {
         // that they will not be able to reserve seats.
         // TODO: Allow this to return the accurate registration status and handle reservation status
         // TODO: elsewhere.
-        if (firebaseWrapper.getUserEmail().endsWith(GOOGLER_EMAIL_DOMAIN)) {
+        if (firebaseWrapper.getUserEmail().endsWith(GOOGLER_EMAIL_DOMAIN) ||
+            Arrays.asList(Config.DOGFOOD_RESERVATION_WHITELIST)
+                .contains(firebaseWrapper.getUserEmail())) {
             // TODO(arthurthompson): Return false here when reservation dogfood is over.
             // TODO                  Returning true here so that all Googlers can test reservations.
             // return false;
