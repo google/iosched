@@ -19,7 +19,7 @@
     <color name="background">#ffffffff</color>
 
     <!-- 2017 palette -->
-    <color name="lightish_blue">#536dfe</color>
+    <color name="lightish_blue">#4a5cfe</color>
     <color name="lighter_blue">#8799ff</color>
     <color name="aqua_marine">#1ce8b5</color>
     <color name="neon_blue">#00e4ff</color>
@@ -86,7 +86,7 @@
     <color name="speaker_social_link">@color/session_detail_interactive_element</color>
     <color name="session_detail_interactive_element">#ff546e7a</color>
 
-    <color name="theme_primary">#4C6AF2</color>
+    <color name="theme_primary">@color/lightish_blue</color>
     <color name="theme_primary_dark">#3C53BB</color>
 
     <color name="theme_accent_1">#00b0ff</color>
