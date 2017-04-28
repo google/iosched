@@ -15,8 +15,6 @@
 package com.google.samples.apps.iosched.util;
 
 
-import static java.lang.annotation.RetentionPolicy.SOURCE;
-
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
@@ -26,6 +24,8 @@ import com.google.samples.apps.iosched.lib.BuildConfig;
 import com.google.samples.apps.iosched.settings.SettingsUtils;
 
 import java.lang.annotation.Retention;
+
+import static java.lang.annotation.RetentionPolicy.SOURCE;
 
 /**
  * Utility methods dealing with I/O user registration.
@@ -59,12 +59,12 @@ public class RegistrationUtils {
      * Sets the value indicating whether the user is a registered I/O attendee.
      *
      * @param context  Context to be used to edit the {@link android.content.SharedPreferences}.
-     * @param newValue New value that will be set.
+     * @param registered True if the user is a registered attendee.
      */
-    public static void setRegisteredAttendee(final Context context, final boolean newValue) {
+    public static void setRegisteredAttendee(final Context context, final boolean registered) {
         SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(context);
         sp.edit().putInt(BuildConfig.PREF_ATTENDEE_AT_VENUE,
-                newValue ? REGSTATUS_UNREGISTERED : REGSTATUS_REGISTERED)
+                registered ? REGSTATUS_REGISTERED : REGSTATUS_UNREGISTERED)
                 .apply();
         SettingsUtils.updateNotificationSubscriptions(context);
     }
