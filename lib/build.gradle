@@ -83,8 +83,8 @@ android {
         resValue("string", "pref_conf_messages_enabled", "pref_conf_messages_enabled_${conf_version}")
         buildConfigField("String", "PREF_CONF_MESSAGES_ENABLED", "\"pref_conf_messages_enabled_${conf_version}\"")
 
-        resValue("string", "pref_attendee_at_venue", "pref_attendee_at_venue_${conf_version}")
-        buildConfigField("String", "PREF_ATTENDEE_AT_VENUE", "\"pref_attendee_at_venue_${conf_version}\"")
+        resValue("string", "pref_attendee_at_venue", "pref_attendee_at_venue_int_${conf_version}")
+        buildConfigField("String", "PREF_ATTENDEE_AT_VENUE", "\"pref_attendee_at_venue_int_${conf_version}\"")
 
         resValue("string", "pref_last_registration_check_ts", "pref_last_registration_check_ts_${conf_version}")
         buildConfigField("String", "PREF_LAST_REGISTRATION_CHECK_TS", "\"pref_last_registration_check_ts_${conf_version}\"")
