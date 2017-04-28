@@ -38,6 +38,8 @@
     <color name="duck_egg_blue">#b2ebf2</color>
     <color name="light_yellowish_green">#ccff90</color>
 
+    <color name="text_primary_light">@color/greyish_brown</color>
+    <color name="text_primary_light_disabled">#42424242</color>
 
     <!-- 2016 palette -->
     <color name="io16_primary_cyan">#ff25c5d9</color>

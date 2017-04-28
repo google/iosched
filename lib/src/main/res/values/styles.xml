@@ -33,7 +33,7 @@
         <item name="android:homeAsUpIndicator">@drawable/ic_up</item>
         <item name="homeAsUpIndicator">@drawable/ic_up</item>
 
-        <item name="android:textColorPrimary">@color/greyish_brown</item>
+        <item name="android:textColorPrimary">@color/primary_text_light</item>
         <item name="android:textColorLink">@color/links</item>
         <item name="android:textViewStyle">@style/Widget.IOSched.TextView</item>
         <item name="android:textAppearance">@style/TextAppearance.H4</item>
@@ -270,6 +270,14 @@
         <item name="android:fontFamily">sans-serif-medium</item>
     </style>
 
+    <style name="Schedule.ItemTitle" parent="@style/TextAppearance.H1">
+        <item name="fontPath">fonts/ProductSans-Regular.ttf</item>
+    </style>
+
+    <style name="Schedule.ItemTitle.Break">
+        <item name="fontPath">fonts/ProductSans-Italic.ttf</item>
+    </style>
+
     <style name="Session.Tag" parent="">
         <item name="android:textAppearance">@style/TextAppearance.H5</item>
         <item name="android:background">@drawable/tag_session_background</item>
@@ -285,8 +293,7 @@
         <item name="android:minHeight">32dp</item>
     </style>
 
-    <style name="SessionDetail.SessionTitle" parent="">
-        <item name="android:textAppearance">@style/TextAppearance.AppCompat.Headline</item>
+    <style name="SessionDetail.SessionTitle" parent="ProductSans.Title">
         <item name="android:ellipsize">end</item>
         <item name="android:gravity">start</item>
         <item name="android:maxLines">4</item>
