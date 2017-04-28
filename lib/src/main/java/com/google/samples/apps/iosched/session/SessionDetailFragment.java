@@ -600,8 +600,7 @@ public class SessionDetailFragment extends Fragment implements
         if (data.isSessionTrackColorAvailable()) {
             int trackColor = data.getSessionTrackColor();
             if (trackColor == Color.TRANSPARENT) {
-                trackColor = UIUtils.getThemeColor(getContext(), R.attr.colorPrimary,
-                        R.color.theme_primary);
+                trackColor = ContextCompat.getColor(getContext(), R.color.neon_blue);
             }
 
             final Drawable background = mAppBar.getBackground();
