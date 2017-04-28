@@ -209,19 +209,23 @@ public class AnalyticsHelper {
                         // ANALYTICS EVENT:  Updated "On-Site Attendee" preference.
                         // Contains: Whether the attendee is identifying themselves as onsite or remote.
                         String attendeeType;
+                        String action;
                         switch (attending) {
                             case RegistrationUtils.REGSTATUS_UNREGISTERED:
                                 attendeeType = "Remote Attendee";
+                                action = "Set";
                                 break;
                             case RegistrationUtils.REGSTATUS_REGISTERED:
                                 attendeeType = "On-Site Attendee";
+                                action = "Set";
                                 break;
                             default:
                                 attendeeType = "Unknown Attendee Type";
+                                action = "Unset";
                         }
                         String label = "Will be at I/O";
 
-                        sendEventWithCustomDimension(category, getAction(prefs, key), label,
+                        sendEventWithCustomDimension(category, action, label,
                                 SLOT_ATTENDING_DIMENSION,
                                 attendeeType);
                     } else if (key.equals(BuildConfig.PREF_CONF_MESSAGES_ENABLED)) {
