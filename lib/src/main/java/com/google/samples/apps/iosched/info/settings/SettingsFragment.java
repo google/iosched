@@ -80,6 +80,7 @@ public class SettingsFragment extends BaseInfoFragment<Object> {
 
         // Switches
         setupSettingsSwitch(R.id.settings_timezone_container,
+                R.id.settings_timezone_label,
                 R.id.settings_timezone_switch,
                 !SettingsUtils.isUsingLocalTime(getContext()),
                 new OnCheckedChangeListener() {
@@ -89,6 +90,7 @@ public class SettingsFragment extends BaseInfoFragment<Object> {
                     }
                 });
         setupSettingsSwitch(R.id.settings_notifications_container,
+                R.id.settings_notifications_label,
                 R.id.settings_notifications_switch,
                 SettingsUtils.shouldShowNotifications(getContext()),
                 new OnCheckedChangeListener() {
@@ -98,6 +100,7 @@ public class SettingsFragment extends BaseInfoFragment<Object> {
                     }
                 });
         setupSettingsSwitch(R.id.settings_anon_statistics_container,
+                R.id.settings_anon_statistics_label,
                 R.id.settings_anon_statistics_switch,
                 false, // TODO not implemented
                 new OnCheckedChangeListener() {
@@ -108,10 +111,12 @@ public class SettingsFragment extends BaseInfoFragment<Object> {
                 });
     }
 
-    private void setupSettingsSwitch(int containerId, int switchId, boolean checked,
+    private void setupSettingsSwitch(int containerId, int labelId, int switchId, boolean checked,
             OnCheckedChangeListener checkedChangeListener) {
         ViewGroup container = (ViewGroup) getView().findViewById(containerId);
+        String switchLabel = ((TextView) container.findViewById(labelId)).getText().toString();
         final Switch switchView = (Switch) container.findViewById(switchId);
+        switchView.setContentDescription(switchLabel);
         switchView.setChecked(checked);
         container.setOnClickListener(new OnClickListener() {
             @Override
