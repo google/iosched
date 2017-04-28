@@ -193,6 +193,10 @@ public class SessionItemViewHolder extends ScheduleItemViewHolder
         }
 
         if (item.isKeynote() || (item.flags & ScheduleItem.FLAG_HAS_LIVESTREAM) != 0) {
+            if (mTagsHolder.getChildCount() > 0) {
+                // Insert the spacer first
+                layoutInflater.inflate(R.layout.include_schedule_live_spacer, mTagsHolder);
+            }
             mTagsHolder.addView(layoutInflater.inflate(R.layout.include_schedule_live,
                     mTagsHolder, false));
         }
