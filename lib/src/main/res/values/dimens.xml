@@ -23,7 +23,7 @@
     <dimen name="padding_normal">16dp</dimen>
     <dimen name="spacing_large">32dp</dimen>
     <dimen name="touch_raise">6dp</dimen>
-    <dimen name="extended_appbar_height">180dp</dimen>
+    <dimen name="extended_appbar_height">96dp</dimen>
 
     <dimen name="appwidget_text_size_small">12sp</dimen>
     <dimen name="appwidget_text_size_medium">14sp</dimen>
