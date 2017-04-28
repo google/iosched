@@ -74,6 +74,7 @@
         android:paddingTop="@dimen/spacing_normal"
         android:textAppearance="?android:textAppearanceLarge"
         android:textColor="@color/feed_title"
+        android:minHeight="@dimen/a11y_min_touch_target_dimen"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/date_time"

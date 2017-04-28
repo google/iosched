@@ -46,6 +46,8 @@ limitations under the License.
         android:id="@+id/filter_checkbox"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:minHeight="@dimen/a11y_min_touch_target_dimen"
+        android:minWidth="@dimen/a11y_min_touch_target_dimen"
         android:layout_marginEnd="@dimen/padding_normal"
         android:layout_marginStart="@dimen/padding_normal" />
 </LinearLayout>
