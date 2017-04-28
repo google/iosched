@@ -262,6 +262,11 @@ public class MyIOActivity extends BaseActivity implements
     // -- Auth
 
     private void showAvatar() {
+        if (mAvatar == null) {
+            // Attempt to update avatar image, but avatar view doesn't exist yet
+            return;
+        }
+
         mAvatar.setTitle(R.string.description_avatar_signed_in);
         Uri photoUrl = AccountUtils.getActiveAccountPhotoUrl(this);
         if (photoUrl == null) {
