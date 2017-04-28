@@ -66,12 +66,11 @@ public class FcmRegistrationEndpoint {
    *
    * @param user Current user (injected by Endpoints)
    * @param deviceId FCM token representing the device.
-   * @return Result containing a message about the registration.
    * @throws BadRequestException Thrown when there is no device ID in the request.
    */
   @ApiMethod(path = "register", httpMethod = HttpMethod.POST)
   public void register(User user, @Named(PARAMETER_DEVICE_ID) String deviceId)
-      throws BadRequestException, UnauthorizedException {
+      throws BadRequestException {
 
     // Check to see if deviceId.
     if (Strings.isNullOrEmpty(deviceId)) {
@@ -81,11 +80,12 @@ public class FcmRegistrationEndpoint {
     }
 
     // Check that user making requests is non null.
-    if (user == null || Strings.isNullOrEmpty(user.getId())) {
-      throw new UnauthorizedException("Invalid credentials");
+    if (user != null && !Strings.isNullOrEmpty(user.getId())) {
+      DeviceStore.register(deviceId, user.getId());
+    } else {
+      // If user is null still register device so it can still get session update ping.
+      DeviceStore.register(deviceId, null);
     }
-
-    DeviceStore.register(deviceId, user.getId());
   }
 
   /**
