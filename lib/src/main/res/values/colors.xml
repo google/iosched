@@ -59,6 +59,7 @@
     <color name="light_status_bar_against_toolbar">#ffe8eaea</color>
     <color name="light_status_bar_against_header_img">#ffe0e1e3</color>
     <color name="immersive_status_bar">#33000000</color>
+    <color name="immersive_status_bar_dark">#66000000</color>
     <!-- todo cleanup old colors -->
 
     <!-- App main palette for io15 version. -->
