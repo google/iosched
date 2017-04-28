@@ -64,7 +64,7 @@ public class SessionsHelper {
 
         // ANALYTICS EVENT: Add or remove a session from the schedule
         // Contains: Session title, whether it was added or removed (starred or unstarred)
-        AnalyticsHelper.sendEvent("Session", starred ? "Starred" : "Unstarred", title);
+        AnalyticsHelper.sendEvent("Session", starred ? "Starred" : "Unstarred", "Session: " +title);
 
         // Because change listener is set to null during initialization, these
         // won't fire on pageview.

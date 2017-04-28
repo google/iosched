@@ -32,6 +32,7 @@ import com.google.samples.apps.iosched.util.TimeUtils;
 import com.squareup.leakcanary.LeakCanary;
 import com.squareup.leakcanary.RefWatcher;
 
+import static com.google.samples.apps.iosched.util.LogUtils.LOGD;
 import static com.google.samples.apps.iosched.util.LogUtils.LOGE;
 import static com.google.samples.apps.iosched.util.LogUtils.LOGW;
 import static com.google.samples.apps.iosched.util.LogUtils.makeLogTag;
@@ -71,6 +72,7 @@ public class AppApplication extends Application {
 
         TimeUtils.setAppStartTime(getApplicationContext(), System.currentTimeMillis());
 
+        LOGD(TAG, "Analytics being prepared.");
         AnalyticsHelper.prepareAnalytics(this);
         SettingsUtils.markDeclinedWifiSetup(this, false);
 

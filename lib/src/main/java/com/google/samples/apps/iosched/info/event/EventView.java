@@ -27,6 +27,7 @@ import android.widget.TextView;
 
 import com.google.samples.apps.iosched.lib.R;
 import com.google.samples.apps.iosched.ui.widget.HtmlTextView;
+import com.google.samples.apps.iosched.util.AnalyticsHelper;
 
 public class EventView extends FrameLayout {
 
@@ -50,7 +51,7 @@ public class EventView extends FrameLayout {
     public EventView(Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         TypedArray arr = context.obtainStyledAttributes(attrs, R.styleable.EventView, 0, 0);
-        String eventTitle = arr.getString(R.styleable.EventView_eventTitle);
+        final String eventTitle = arr.getString(R.styleable.EventView_eventTitle);
         String eventDescription = arr.getString(R.styleable.EventView_eventDescription);
         Drawable eventIconDrawable = arr.getDrawable(R.styleable.EventView_eventIcon);
         int boxColor = arr.getColor(R.styleable.EventView_boxColor,
@@ -73,6 +74,7 @@ public class EventView extends FrameLayout {
             public void onClick(View v) {
                 if (mListener != null) {
                     mListener.onViewSessionsClicked(EventView.this, mSessionFilterTag);
+                    AnalyticsHelper.sendEvent(eventTitle, "Event Info", "view sessions");
                 }
             }
         });
@@ -80,6 +82,7 @@ public class EventView extends FrameLayout {
             @Override
             public void onClick(View v) {
                 if (mListener != null) {
+                    AnalyticsHelper.sendEvent(eventTitle, "Event Info", "view map");
                     // mListener.onViewMapClicked(EventView.this, null); // TODO need map URI
                 }
             }

@@ -21,7 +21,6 @@ import com.google.samples.apps.iosched.ui.BaseActivity;
 
 public class InfoActivity extends BaseActivity {
 
-    private static final String SCREEN_LABEL = "Info";
     private InfoContract.Presenter mPresenter;
 
     @Override
@@ -52,10 +51,5 @@ public class InfoActivity extends BaseActivity {
     @Override
     public boolean canSwipeRefreshChildScrollUp() {
         return true;
-    }
-
-    @Override
-    protected String getScreenLabel() {
-        return SCREEN_LABEL;
     }
 }

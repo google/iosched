@@ -93,7 +93,7 @@ public class ScheduleActivity extends BaseActivity implements ScheduleViewParent
      */
     private static final long INTERVAL_TO_REDRAW_UI = TimeUtils.MINUTE;
 
-    private static final String SCREEN_LABEL = "My Schedule";
+    private static final String SCREEN_LABEL = "Schedule";
 
     private static final String TAG = makeLogTag(ScheduleActivity.class);
     private final Handler mUpdateUiHandler = new Handler();

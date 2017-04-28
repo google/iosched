@@ -250,6 +250,13 @@ public abstract class MapInfoFragment extends Fragment
         mList.setVisibility(View.GONE);
     }
 
+    protected String getTitle() {
+        if (mTitle != null) {
+            return mTitle.getText().toString();
+        }
+        return null;
+    }
+
     protected void setHeader(int icon, int title, int subTitle) {
         mIcon.setImageResource(icon);
 

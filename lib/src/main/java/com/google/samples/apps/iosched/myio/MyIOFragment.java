@@ -38,6 +38,7 @@ import com.google.samples.apps.iosched.provider.ScheduleContract.Sessions;
 import com.google.samples.apps.iosched.schedule.DividerDecoration;
 import com.google.samples.apps.iosched.schedule.ScheduleActivity;
 import com.google.samples.apps.iosched.schedule.ScheduleModel;
+import com.google.samples.apps.iosched.util.AnalyticsHelper;
 import com.google.samples.apps.iosched.util.LogUtils;
 import com.google.samples.apps.iosched.util.TimeUtils;
 
@@ -141,11 +142,13 @@ public class MyIOFragment extends Fragment implements MyIoView, Callbacks {
 
     @Override
     public void onFeedbackClicked(String sessionId, String sessionTitle) {
+        AnalyticsHelper.sendEvent("My I/O", "Feedback", sessionTitle);
         SessionFeedbackActivity.launchFeedback(getContext(), sessionId);
     }
 
     @Override
     public void onTagClicked(Tag tag) {
+        AnalyticsHelper.sendEvent("My I/O", "Tag", tag.getName().toString());
         ScheduleActivity.launchScheduleWithFilterTag(getContext(), tag);
     }
 
@@ -166,6 +169,7 @@ public class MyIOFragment extends Fragment implements MyIoView, Callbacks {
 
     @Override
     public void onAddEventsClicked(int conferenceDay) {
+        AnalyticsHelper.sendEvent("My I/O", "Add Events", String.valueOf(conferenceDay));
         ScheduleActivity.launchScheduleForConferenceDay(getContext(), conferenceDay);
     }
 

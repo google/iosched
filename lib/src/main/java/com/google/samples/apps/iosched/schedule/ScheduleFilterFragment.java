@@ -34,6 +34,7 @@ import com.google.samples.apps.iosched.lib.R;
 import com.google.samples.apps.iosched.model.TagMetadata;
 import com.google.samples.apps.iosched.model.TagMetadata.Tag;
 import com.google.samples.apps.iosched.schedule.SessionsFilterAdapter.OnFiltersChangedListener;
+import com.google.samples.apps.iosched.util.AnalyticsHelper;
 
 public class ScheduleFilterFragment extends Fragment implements LoaderCallbacks<Cursor> {
 
@@ -90,6 +91,9 @@ public class ScheduleFilterFragment extends Fragment implements LoaderCallbacks<
                         filterHolder.hasAnyFilters() ? View.VISIBLE : View.GONE);
                 if (mListener != null) {
                     mListener.onFiltersChanged(filterHolder);
+                    CharSequence filtersDesc = filterHolder
+                            .describeFilters(getResources(), getContext().getTheme());
+                    AnalyticsHelper.sendEvent("Filters", "Filters Updated", filtersDesc.toString());
                 }
             }
         });

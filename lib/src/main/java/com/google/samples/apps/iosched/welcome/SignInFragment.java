@@ -22,6 +22,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.google.samples.apps.iosched.lib.R;
+import com.google.samples.apps.iosched.util.AnalyticsHelper;
 import com.google.samples.apps.iosched.util.WelcomeUtils;
 
 import static com.google.samples.apps.iosched.util.LogUtils.LOGD;

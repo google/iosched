@@ -179,7 +179,7 @@ public abstract class BaseActivity extends AppCompatActivity implements
 
         String screenLabel = getScreenLabel();
         if (screenLabel != null) {
-            AnalyticsHelper.sendScreenView(screenLabel);
+            AnalyticsHelper.sendScreenView(screenLabel, this);
         }
     }
 
