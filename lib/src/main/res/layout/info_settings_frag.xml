@@ -48,6 +48,7 @@
                 style="@style/Settings.Switch"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:minHeight="@dimen/a11y_min_touch_target_dimen"
                 android:layout_marginStart="@dimen/padding_normal" />
 
         </LinearLayout>
@@ -71,6 +72,7 @@
                 style="@style/Settings.Switch"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:minHeight="@dimen/a11y_min_touch_target_dimen"
                 android:layout_marginStart="@dimen/padding_normal" />
 
         </LinearLayout>
@@ -94,6 +96,7 @@
                 style="@style/Settings.Switch"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:minHeight="@dimen/a11y_min_touch_target_dimen"
                 android:layout_marginStart="@dimen/padding_normal" />
 
         </LinearLayout>
