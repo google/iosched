@@ -27,6 +27,7 @@
         android:layout_height="wrap_content"
         android:minHeight="@dimen/map_slideableinfo_height_titleonly"
         app:behavior_hideable="true"
+        app:cardCornerRadius="0dp"
         app:layout_behavior="@string/bottom_sheet_behavior">
 
         <include layout="@layout/map_info_content" />
