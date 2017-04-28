@@ -28,7 +28,7 @@ import java.util.Arrays;
 public enum PingServiceManager {
   INSTANCE;
 
-  static final String[] SCOPES = {"https://www.googleapis.com/auth/userinfo.email"};
+  final String[] SCOPES = {"https://www.googleapis.com/auth/userinfo.email"};
 
   Ping ping;
 
