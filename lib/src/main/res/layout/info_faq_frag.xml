@@ -20,6 +20,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    xmlns:tools="http://schemas.android.com/tools"
     android:scrollbarStyle="insideOverlay"
     android:scrollbars="vertical">
 
@@ -60,6 +61,12 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:cardTitle="@string/faq_additional_info_title" />
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:src="@drawable/io17_logo"
+            tools:ignore="ContentDescription" />
 
     </LinearLayout>
 
