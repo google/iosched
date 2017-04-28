@@ -16,9 +16,6 @@
 
 package com.google.samples.apps.iosched.io;
 
-import static com.google.samples.apps.iosched.util.LogUtils.LOGW;
-import static com.google.samples.apps.iosched.util.LogUtils.makeLogTag;
-
 import android.content.ContentProviderOperation;
 import android.content.Context;
 import android.net.Uri;
@@ -32,6 +29,9 @@ import com.google.samples.apps.iosched.provider.ScheduleContractHelper;
 import com.google.samples.apps.iosched.util.ParserUtils;
 
 import java.util.ArrayList;
+
+import static com.google.samples.apps.iosched.util.LogUtils.LOGW;
+import static com.google.samples.apps.iosched.util.LogUtils.makeLogTag;
 
 
 public class BlocksHandler extends JSONHandler {
@@ -64,7 +64,8 @@ public class BlocksHandler extends JSONHandler {
                 ScheduleContract.Blocks.CONTENT_URI);
         ContentProviderOperation.Builder builder = ContentProviderOperation.newInsert(uri);
         String title = block.title != null ? block.title : "";
-        String meta = block.subtitle != null ? block.subtitle : "";
+        String subtitle = block.subtitle != null ? block.subtitle : "";
+        String kind = block.kind != null ? block.kind : "";
 
         String type = block.type;
         if ( ! ScheduleContract.Blocks.isValidBlockType(type)) {
@@ -81,7 +82,8 @@ public class BlocksHandler extends JSONHandler {
         builder.withValue(ScheduleContract.Blocks.BLOCK_START, startTimeL);
         builder.withValue(ScheduleContract.Blocks.BLOCK_END, endTimeL);
         builder.withValue(ScheduleContract.Blocks.BLOCK_TYPE, type);
-        builder.withValue(ScheduleContract.Blocks.BLOCK_SUBTITLE, meta);
+        builder.withValue(ScheduleContract.Blocks.BLOCK_SUBTITLE, subtitle);
+        builder.withValue(ScheduleContract.Blocks.BLOCK_KIND, kind);
         list.add(builder.build());
     }
 }
