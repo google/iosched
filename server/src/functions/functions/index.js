@@ -114,6 +114,9 @@ exports.processRequest = functions.database.ref('/queue/{uid}').onWrite(event =>
         console.log(action + ' with uid: ' + uid + ' and sid: ' + sid
             + ' ended with result: ' + result);
         return getQueueReference(uid).set({});
+      }).catch(function(error) {
+        console.error(error);
+        return getQueueReference(uid).set({});
       });
     } else {
       // Do nothing, this is a duplicate event.
