@@ -96,6 +96,7 @@ import java.util.List;
 import static android.view.View.GONE;
 import static android.view.View.VISIBLE;
 import static com.google.samples.apps.iosched.Config.Tags.CATEGORY_TRACK;
+import static com.google.samples.apps.iosched.model.ScheduleItem.SESSION_TYPE_SESSION;
 import static com.google.samples.apps.iosched.util.LogUtils.LOGD;
 
 /**
@@ -233,7 +234,7 @@ public class SessionDetailFragment extends Fragment implements
         mScrollView.setOnScrollChangeListener(new OnScrollChangeListener() {
             @Override
             public void onScrollChange(NestedScrollView v, int scrollX, int scrollY, int oldScrollX,
-                                       int oldScrollY) {
+                    int oldScrollY) {
                 if (scrollY > mTitle.getBottom()) {
                     fadeInToolbarTitle();
                 } else {
@@ -972,7 +973,9 @@ public class SessionDetailFragment extends Fragment implements
      */
     public void updateReservationStatusAndSeatAvailability(SessionDetailModel sessionDetailModel) {
         if (isAdded()) {
-            if (sessionDetailModel.isKeynote()) {
+            boolean isKeynote = sessionDetailModel.isKeynote();
+            int sessionType = sessionDetailModel.getSessionType();
+            if (isKeynote || sessionType != SESSION_TYPE_SESSION) {
                 hideReservationButton();
             } else {
                 showReservationButton();
