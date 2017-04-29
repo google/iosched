@@ -908,6 +908,15 @@
     <!-- Button text indicating that the session can be removed from the user's bookmarks. -->
     <string name="remove_bookmark">Remove bookmark</string>
 
+    <!-- Hint text indicating bookmarked sessions are added to My I/O. -->
+    <string name="add_bookmark_hint">Event saved in My I/O</string>
+
+    <!-- Hint text indicating unbookmarked sessions are removed from My I/O. -->
+    <string name="remove_bookmark_hint">Event removed from My I/O</string>
+
+    <!-- Opt-out text to stop seeing bookmark related hints. -->
+    <string name="bookmark_hint_optout">Got it</string>
+
     <!-- The label used on a button when a view is in an expanded state. Clicking on the icon
     collapses the view. -->
     <string name="expanded">Expanded</string>
