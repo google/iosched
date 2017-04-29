@@ -185,18 +185,6 @@ public class MyIOActivity extends BaseActivity implements
                         SyncUtils.getServerTimeOffsetSetAt(this)) {
             mDatabaseReference.addValueEventListener(mValueEventListener);
         }
-
-        // Check if an earlier attempt to get the user's registration status failed
-        // (or somehow never occured), and reattempt if necessary.
-        //
-        // We'll also periodically re-run this, in case the user's status has changed.
-        long timeSinceLastRegCheck = RegistrationUtils.timeSinceLastRegCheck(this);
-        if (AccountUtils.hasActiveAccount(this) && (
-                timeSinceLastRegCheck > ONE_HOUR ||
-                RegistrationUtils.isRegisteredAttendee(this) == RegistrationUtils.REGSTATUS_UNKNOWN)) {
-        LOGW(TAG, "Unknown registration status. Retrying post-login tasks to resolve.");
-            mSignInManager.silentSignIn();
-        }
     }
 
     @Override
