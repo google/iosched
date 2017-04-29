@@ -32,7 +32,7 @@ public class GCMPing {
    */
   public void notifySessionSync() {
     try {
-      PingServiceManager.INSTANCE.ping.sendSessionDataSync();
+      PingServiceManager.INSTANCE.ping.sendSessionDataSync().execute();
     } catch (IOException e) {
       LOG.severe("Unable to either get Sync service or send session data ping.");
     } catch (NullPointerException e) {
@@ -47,7 +47,7 @@ public class GCMPing {
    */
   public void notifyUserSync(String userId) {
     try {
-      PingServiceManager.INSTANCE.ping.sendUserSync(userId);
+      PingServiceManager.INSTANCE.ping.sendUserSync(userId).execute();
     } catch (IOException e) {
       LOG.severe("Unable to either get ping service or send user ping.");
     } catch (NullPointerException e) {
