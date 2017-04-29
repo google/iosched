@@ -95,6 +95,7 @@ import java.util.List;
 
 import static android.view.View.GONE;
 import static android.view.View.VISIBLE;
+
 import static com.google.samples.apps.iosched.Config.Tags.CATEGORY_TRACK;
 import static com.google.samples.apps.iosched.model.ScheduleItem.SESSION_TYPE_SESSION;
 import static com.google.samples.apps.iosched.util.LogUtils.LOGD;
@@ -1094,12 +1095,7 @@ public class SessionDetailFragment extends Fragment implements
      */
     public void showReservationInQueue() {
         mReserve.setStatus(ReserveButton.ReservationStatus.RESERVATION_PENDING);
-        mReserve.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // no-op
-            }
-        });
+        mReserve.setOnClickListener(null);
     }
 
     /**
@@ -1113,12 +1109,7 @@ public class SessionDetailFragment extends Fragment implements
                 new AlertDialog.Builder(getActivity())
                         .setMessage(R.string.my_schedule_reservation_cancel_confirm_message)
                         .setTitle(R.string.my_schedule_reservation_cancel_confirm_title)
-                        .setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                dialog.dismiss();
-                            }
-                        })
+                        .setNegativeButton(R.string.cancel, null)
                         .setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
@@ -1151,12 +1142,7 @@ public class SessionDetailFragment extends Fragment implements
                 new AlertDialog.Builder(getActivity())
                         .setMessage(R.string.my_schedule_waitlist_cancel_confirm_message)
                         .setTitle(R.string.my_schedule_waitlist_cancel_confirm_title)
-                        .setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                dialog.dismiss();
-                            }
-                        })
+                        .setNegativeButton(R.string.cancel, null)
                         .setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
@@ -1187,15 +1173,13 @@ public class SessionDetailFragment extends Fragment implements
      * Update reservation button UI to convey that the time window to reserve the session is over.
      */
     public void showReservationDeniedCutoff() {
-        new AlertDialog.Builder(getActivity())
+        if (getContext() == null) {
+            return;
+        }
+        new AlertDialog.Builder(getContext())
                 .setMessage(R.string.my_schedule_reservation_window_closed_info)
                 .setTitle(R.string.my_schedule_reservation_window_closed)
-                .setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.dismiss();
-                    }
-                })
+                .setPositiveButton(R.string.ok, null)
                 .create()
                 .show();
     }
@@ -1204,15 +1188,13 @@ public class SessionDetailFragment extends Fragment implements
      * Alert the user that their reservation request failed due to a time conflict.
      */
     public void showReservationDeniedClash() {
-        new AlertDialog.Builder(getActivity())
+        if (getContext() == null) {
+            return;
+        }
+        new AlertDialog.Builder(getContext())
                 .setMessage(R.string.my_schedule_reservation_clash_message)
                 .setTitle(R.string.my_schedule_reservation_clash_title)
-                .setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.dismiss();
-                    }
-                })
+                .setPositiveButton(R.string.ok, null)
                 .create()
                 .show();
     }
@@ -1222,15 +1204,13 @@ public class SessionDetailFragment extends Fragment implements
      * cutoff has been reached.
      */
     public void showReturnDeniedCutoff() {
-        new AlertDialog.Builder(getActivity())
+        if (getContext() == null) {
+            return;
+        }
+        new AlertDialog.Builder(getContext())
                 .setMessage(R.string.my_schedule_return_denied_cutoff_message)
                 .setTitle(R.string.my_schedule_reservation_window_closed)
-                .setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.dismiss();
-                    }
-                })
+                .setPositiveButton(R.string.ok, null)
                 .create()
                 .show();
     }
@@ -1239,15 +1219,13 @@ public class SessionDetailFragment extends Fragment implements
      * Alert the user that their request failed due to an unknown reason (blame the server...).
      */
     public void showRequestFailed() {
-        new AlertDialog.Builder(getActivity())
+        if (getContext() == null) {
+            return;
+        }
+        new AlertDialog.Builder(getContext())
                 .setMessage(R.string.my_schedule_reservation_request_failed_message)
                 .setTitle(R.string.my_schedule_request_failed_title)
-                .setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.dismiss();
-                    }
-                })
+                .setPositiveButton(R.string.ok, null)
                 .create()
                 .show();
     }
