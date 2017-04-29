@@ -53,16 +53,19 @@ import com.google.samples.apps.iosched.lib.BuildConfig;
 import com.google.samples.apps.iosched.lib.R;
 import com.google.samples.apps.iosched.navigation.NavigationModel;
 import com.google.samples.apps.iosched.schedule.ScheduleView;
+import com.google.samples.apps.iosched.signin.RegistrationStatusService;
 import com.google.samples.apps.iosched.signin.SignInListener;
 import com.google.samples.apps.iosched.signin.SignInManager;
 import com.google.samples.apps.iosched.ui.BaseActivity;
 import com.google.samples.apps.iosched.util.AccountUtils;
 import com.google.samples.apps.iosched.util.SyncUtils;
+import com.google.samples.apps.iosched.util.TimeUtils;
 import com.google.samples.apps.iosched.util.WelcomeUtils;
 
 import java.util.Date;
 
 import static com.google.samples.apps.iosched.util.LogUtils.LOGD;
+import static com.google.samples.apps.iosched.util.LogUtils.LOGI;
 import static com.google.samples.apps.iosched.util.LogUtils.LOGW;
 import static com.google.samples.apps.iosched.util.LogUtils.makeLogTag;
 
@@ -89,7 +92,8 @@ public class MyIOActivity extends BaseActivity implements
     public static final String EXTRA_DIALOG_URL
             = "com.google.samples.apps.iosched.EXTRA_DIALOG_URL";
 
-    public static final long ONE_HOUR = 60*60*1000; // One hour in millis
+    /** How often the registration check should be refreshed for logged-in users. */
+    private static final long REG_CHECK_REFRESH_PERIOD = TimeUtils.HOUR * 12;
 
     private GoogleApiClient mGoogleApiClient;
 
@@ -187,6 +191,20 @@ public class MyIOActivity extends BaseActivity implements
                 (new Date().getTime() - SyncUtils.SERVER_TIME_OFFSET_INTERVAL) >=
                         SyncUtils.getServerTimeOffsetSetAt(this)) {
             mDatabaseReference.addValueEventListener(mValueEventListener);
+        }
+
+        // Check if an earlier attempt to get the user's registration status failed
+        // (or somehow never occured), and reattempt if necessary.
+        //
+        // We'll also periodically re-run this, in case the user's status has changed.
+        long timeSinceLastRegCheck = RegistrationUtils.timeSinceLastRegCheck(this);
+        LOGI(TAG, "Time since last reg check:" + timeSinceLastRegCheck);
+        LOGI(TAG, "Status:" + RegistrationUtils.isRegisteredAttendee(this));
+
+        if (AccountUtils.hasActiveAccount(this) && (
+                timeSinceLastRegCheck > REG_CHECK_REFRESH_PERIOD ||
+                        RegistrationUtils.isRegisteredAttendee(this) == RegistrationUtils.REGSTATUS_UNKNOWN)) {
+            RegistrationStatusService.updateRegStatusInBackground(this);
         }
     }
 
