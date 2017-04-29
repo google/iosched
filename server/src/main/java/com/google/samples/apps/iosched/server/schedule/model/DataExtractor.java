@@ -371,6 +371,11 @@ public class DataExtractor {
             }
           }
         }
+        // TODO: Keynotes should have their own tags that identify them. Adding here like this
+        // TODO: should not be necessary.
+        if (id.getAsString().startsWith("__keynote")) {
+          tags.add("FLAG_KEYNOTE");
+        }
         set(tags, dest, OutputJsonKeys.Sessions.tags);
         if (mainTag != null) {
           set(mainTag, dest, OutputJsonKeys.Sessions.mainTag);
