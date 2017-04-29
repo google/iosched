@@ -45,7 +45,7 @@ public class MyInstanceIDService extends FirebaseInstanceIdService {
                 AccountUtils.getActiveAccountId(this) : null;
 
         // Unregister on server.
-        ServerUtilities.unregister(this, ServerUtilities.getDeviceId(this), fcmKey);
+        ServerUtilities.unregister(this, ServerUtilities.getDeviceId(this));
 
         // Register for a new InstanceID token. This token is sent to the server to be paired with
         // the current user's FCM key.
