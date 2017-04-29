@@ -31,7 +31,11 @@ public class InputJsonKeys {
     }
 
     static public enum Rooms {
-      Id, Name, Capacity;
+      // TODO: The CMS should have a field called filter for the rooms to indicate whether a room
+      // TODO: should be part of a filter. Here we are translating the Publish field from the CMS
+      // TODO: to the filter field in the output JSON. It would be cleaner if this field was filter
+      // TODO: as well.
+      Id, Name, Capacity, Publish;
     }
 
     static public enum Categories {
