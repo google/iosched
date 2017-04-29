@@ -109,16 +109,14 @@ public final class ServerUtilities {
      * Unregister this account/device pair within the server.
      *
      * @param deviceId  The InstanceID token for this application instance.
-     * @param userId The user identifier used to pair a user with an InstanceID token.
      */
-    public static void unregister(final Context context, final String deviceId,
-                                  final String userId) {
+    public static void unregister(final Context context, final String deviceId) {
         if (!checkFcmEnabled()) {
             return;
         }
 
         LOGI(TAG, "unregistering device (deviceId = " + deviceId + ")");
-        if (AccountUtils.hasActiveAccount(context)) {
+        if (AccountUtils.hasActiveAccount(context) && deviceId != null) {
             try {
                 getFcmHandler(context).fcmRegistrationEndpoint().unregister(deviceId).execute();
             } catch (IOException e) {
@@ -126,7 +124,7 @@ public final class ServerUtilities {
                 LOGD(TAG, "Unable to unregister from application server", e);
             }
         } else {
-            LOGD(TAG, "User must be signed in to unregister device");
+            LOGD(TAG, "User must be signed in to unregister device and device ID must be non null");
         }
     }
 
