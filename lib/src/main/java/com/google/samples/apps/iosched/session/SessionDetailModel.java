@@ -67,6 +67,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
+import static com.google.samples.apps.iosched.model.ScheduleItem.detectSessionType;
 import static com.google.samples.apps.iosched.session.SessionDetailConstants.FIREBASE_NODE_QUEUE;
 import static com.google.samples.apps.iosched.session.SessionDetailConstants.FIREBASE_NODE_RESERVATIONS;
 import static com.google.samples.apps.iosched.session.SessionDetailConstants.FIREBASE_NODE_RESULTS;
@@ -170,6 +171,8 @@ public class SessionDetailModel extends ModelWithLoaderManager<SessionDetailQuer
     private String mSpeakersNames;
 
     private TagMetadata mTagMetadata;
+
+    private int mSessionType;
 
     // Request pending
     private boolean mReservationPending = false;
@@ -667,6 +670,9 @@ public class SessionDetailModel extends ModelWithLoaderManager<SessionDetailQuer
         mTitle = cursor.getString(cursor.getColumnIndex(
                 ScheduleContract.Sessions.SESSION_TITLE));
 
+        mSessionType = detectSessionType(
+                cursor.getString(cursor.getColumnIndex(Sessions.SESSION_TAGS)));
+
         mInSchedule = cursor.getInt(cursor.getColumnIndex(
                 ScheduleContract.Sessions.SESSION_IN_MY_SCHEDULE)) != 0;
 
@@ -730,6 +736,10 @@ public class SessionDetailModel extends ModelWithLoaderManager<SessionDetailQuer
         formatSubtitle();
 
         buildLinks(cursor);
+    }
+
+    public int getSessionType() {
+        return mSessionType;
     }
 
     @VisibleForTesting
@@ -998,20 +1008,20 @@ public class SessionDetailModel extends ModelWithLoaderManager<SessionDetailQuer
             mQueueReference.addValueEventListener(mQueueEventListener);
             mQueueReference.setValue(queueAction).addOnCompleteListener(
                     new OnCompleteListener<Void>() {
-                @Override
-                public void onComplete(@NonNull Task<Void> task) {
-                    LOGD(TAG, "Enter queue.");
-                    mReservationPending = true;
-                    mReturnPending = false;
-                    DataQueryCallback<SessionDetailQueryEnum> reservationPendingCallback
-                            = mDataQueryCallbacks.get(RESERVATION_PENDING);
-                    reservationPendingCallback.onModelUpdated(
-                            SessionDetailModel.this, RESERVATION_PENDING);
-                    mSessionReservationResultReference
-                            .child(requestId)
-                            .addValueEventListener(mSessionReservationResultEventListener);
-                }
-            }).addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onComplete(@NonNull Task<Void> task) {
+                            LOGD(TAG, "Enter queue.");
+                            mReservationPending = true;
+                            mReturnPending = false;
+                            DataQueryCallback<SessionDetailQueryEnum> reservationPendingCallback
+                                    = mDataQueryCallbacks.get(RESERVATION_PENDING);
+                            reservationPendingCallback.onModelUpdated(
+                                    SessionDetailModel.this, RESERVATION_PENDING);
+                            mSessionReservationResultReference
+                                    .child(requestId)
+                                    .addValueEventListener(mSessionReservationResultEventListener);
+                        }
+                    }).addOnFailureListener(new OnFailureListener() {
                 @Override
                 public void onFailure(@NonNull Exception e) {
                     LOGE(TAG, e.getMessage());
@@ -1034,20 +1044,20 @@ public class SessionDetailModel extends ModelWithLoaderManager<SessionDetailQuer
             mQueueReference.addValueEventListener(mQueueEventListener);
             mQueueReference.setValue(queueAction).addOnCompleteListener(
                     new OnCompleteListener<Void>() {
-                @Override
-                public void onComplete(@NonNull Task<Void> task) {
-                    LOGD(TAG, "Enter queue.");
-                    mReservationPending = false;
-                    mReturnPending = true;
-                    DataQueryCallback<SessionDetailQueryEnum> reservationPendingCallback
-                            = mDataQueryCallbacks.get(RESERVATION_PENDING);
-                    reservationPendingCallback.onModelUpdated(
-                            SessionDetailModel.this, RESERVATION_PENDING);
-                    mSessionReservationResultReference
-                            .child(requestId)
-                            .addValueEventListener(mSessionReservationResultEventListener);
-                }
-            }).addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onComplete(@NonNull Task<Void> task) {
+                            LOGD(TAG, "Enter queue.");
+                            mReservationPending = false;
+                            mReturnPending = true;
+                            DataQueryCallback<SessionDetailQueryEnum> reservationPendingCallback
+                                    = mDataQueryCallbacks.get(RESERVATION_PENDING);
+                            reservationPendingCallback.onModelUpdated(
+                                    SessionDetailModel.this, RESERVATION_PENDING);
+                            mSessionReservationResultReference
+                                    .child(requestId)
+                                    .addValueEventListener(mSessionReservationResultEventListener);
+                        }
+                    }).addOnFailureListener(new OnFailureListener() {
                 @Override
                 public void onFailure(@NonNull Exception e) {
                     LOGE(TAG, e.getMessage());
