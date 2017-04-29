@@ -14,10 +14,6 @@
 
 package com.google.samples.apps.iosched.signin;
 
-import static com.google.samples.apps.iosched.util.LogUtils.LOGD;
-import static com.google.samples.apps.iosched.util.LogUtils.LOGW;
-import static com.google.samples.apps.iosched.util.LogUtils.makeLogTag;
-
 import android.app.Activity;
 import android.content.Intent;
 import android.support.annotation.NonNull;
@@ -29,13 +25,24 @@ import com.google.android.gms.auth.api.signin.GoogleSignInResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.ResultCallback;
 import com.google.android.gms.common.api.Status;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthCredential;
+import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.GoogleAuthProvider;
 import com.google.samples.apps.iosched.sync.userdata.LocalUserDataHelper;
 import com.google.samples.apps.iosched.util.AccountUtils;
 import com.google.samples.apps.iosched.util.AnalyticsHelper;
 import com.google.samples.apps.iosched.util.RegistrationUtils;
 
 import java.lang.ref.WeakReference;
+import java.util.concurrent.Executor;
+import java.util.concurrent.Executors;
+
+import static com.google.samples.apps.iosched.util.LogUtils.LOGD;
+import static com.google.samples.apps.iosched.util.LogUtils.LOGW;
+import static com.google.samples.apps.iosched.util.LogUtils.makeLogTag;
 
 /**
  * Manages sign in and sign out functionality. Designed to be used with an activity, which
@@ -66,6 +73,9 @@ public class SignInManager {
      * The entry point to Google Play Services.
      */
     private GoogleApiClient mGoogleApiClient;
+
+    private final FirebaseAuth mFirebaseAuth = FirebaseAuth.getInstance();
+    private static final Executor executor = Executors.newSingleThreadExecutor();
 
     public SignInManager(Activity activity, SignInListener signInListener,
                          GoogleApiClient googleApiClient) {
@@ -177,8 +187,8 @@ public class SignInManager {
         AccountUtils.setActiveAccountPhotoUrl(activity, acct.getPhotoUrl());
         AccountUtils.setActiveAccountId(activity, acct.getId());
 
-        // Check if user is registered.
-        RegistrationStatusService.updateRegStatusInBackground(activity, acct);
+        // Perform Firebase auth
+        firebaseAuthWithGoogle(acct);
 
         // Register this account/device pair within the server.
         registerWithServer(activity, acct.getId(), true);
@@ -191,6 +201,41 @@ public class SignInManager {
         // Tasks executed by the binding activity on sign in.
         signInListener.onSignIn(result);
         AnalyticsHelper.setUserSignedIn(true);
+    }
+
+    /**
+     * Connect to Firebase to get login details. Once available, continue execution.
+     *
+     * @param acct Account for currently logged-in user
+     */
+    private void firebaseAuthWithGoogle(GoogleSignInAccount acct) {
+        LOGD(TAG, "firebaseAuthWithGoogle:" + acct.getId());
+
+        final Activity activity = getActivity();
+        if (activity == null) {
+            return;
+        }
+
+        AuthCredential credential = GoogleAuthProvider.getCredential(acct.getIdToken(), null);
+
+        mFirebaseAuth.signInWithCredential(credential)
+                .addOnCompleteListener(activity, new OnCompleteListener<AuthResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<AuthResult> task) {
+                        if (!task.isSuccessful()) {
+                            LOGW(TAG, "signInWithCredential", task.getException());
+                            return;
+                        }
+
+                        if (FirebaseAuth.getInstance().getCurrentUser() != null) {
+                            LOGD(TAG,
+                                    "signInWithCredential:onComplete:" + task.isSuccessful());
+
+                            // Check if user is registered.
+                            RegistrationStatusService.updateRegStatusInBackground(activity);
+                        }
+                    }
+                });
     }
 
     /**

@@ -15,10 +15,6 @@
  */
 package com.google.samples.apps.iosched.signin;
 
-import static com.google.samples.apps.iosched.util.LogUtils.LOGD;
-import static com.google.samples.apps.iosched.util.LogUtils.LOGE;
-import static com.google.samples.apps.iosched.util.LogUtils.makeLogTag;
-
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
@@ -26,16 +22,11 @@ import android.os.IBinder;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
-import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
 import com.google.api.client.extensions.android.json.AndroidJsonFactory;
 import com.google.api.client.googleapis.extensions.android.gms.auth.GoogleAccountCredential;
 import com.google.api.client.http.javanet.NetHttpTransport;
-import com.google.firebase.auth.AuthCredential;
-import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.GoogleAuthProvider;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.samples.apps.iosched.rpc.registration.Registration;
 import com.google.samples.apps.iosched.rpc.registration.model.RegistrationResult;
 import com.google.samples.apps.iosched.util.AccountUtils;
@@ -46,6 +37,10 @@ import java.util.Arrays;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 
+import static com.google.samples.apps.iosched.util.LogUtils.LOGD;
+import static com.google.samples.apps.iosched.util.LogUtils.LOGE;
+import static com.google.samples.apps.iosched.util.LogUtils.makeLogTag;
+
 /**
  * Service to check the user's conference registration status as a background
  * task. (Would be implemented as an IntentService, but needs to do async work,
@@ -54,16 +49,12 @@ import java.util.concurrent.Executors;
  * To invoke, call updateRegStatusInBackground().
  */
 public class RegistrationStatusService extends Service {
-    public static final String EXTRA_GOOGLE_ACCOUNT = "GOOGLE_ACCOUNT";
     private static final String TAG = makeLogTag(RegistrationStatusService.class);
-    private static final Executor executor = Executors.newSingleThreadExecutor();
-
+    private static final Executor EXECUTOR = Executors.newSingleThreadExecutor();
     private final FirebaseAuth mFirebaseAuth = FirebaseAuth.getInstance();
 
-    public static void updateRegStatusInBackground(@NonNull Context ctx,
-            @NonNull GoogleSignInAccount acct) {
+    public static void updateRegStatusInBackground(@NonNull Context ctx) {
         Intent i = new Intent(ctx, RegistrationStatusService.class);
-        i.putExtra(EXTRA_GOOGLE_ACCOUNT, acct);
         ctx.startService(i);
     }
 
@@ -76,84 +67,45 @@ public class RegistrationStatusService extends Service {
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        final GoogleSignInAccount acct =
-                (GoogleSignInAccount) intent.getExtras().get(EXTRA_GOOGLE_ACCOUNT);
-        if (acct == null) {
-            throw new IllegalArgumentException(
-                    "Google Account not specified");
-        }
+        LOGD(TAG, "Refreshing registration status...");
 
-        firebaseConnect(acct);
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    updateRegStatus();
+                } catch (IOException e) {
+                    LOGE(TAG, "Unable to update registration status", e);
+                } finally {
+                    stopSelf();
+                }
+            }
+        }).start();
 
         return START_REDELIVER_INTENT;  // Retry intent if service exits prematurely
     }
 
     /**
-     * Connect to Firebase to get login details. Once available, continue execution.
-     *
-     * @param acct Account for currently logged-in user
-     */
-    private void firebaseConnect(@NonNull final GoogleSignInAccount acct) {
-        LOGD(TAG, "firebaseAuthWithGoogle:" + acct.getId());
-
-        AuthCredential credential = GoogleAuthProvider.getCredential(acct.getIdToken(), null);
-
-        // Note: Callback returned in background thread
-        mFirebaseAuth.signInWithCredential(credential).addOnCompleteListener(executor, new OnCompleteListener<AuthResult>() {
-                @Override
-                public void onComplete(@NonNull final Task<AuthResult> task) {
-                    try {
-                        if (!task.isSuccessful()) {
-                            throw new IOException("Failed to sign-in to Firebase",
-                                    task.getException());
-                        }
-                        updateRegStatus(acct);
-                    } catch (IOException e) {
-                        LOGE(TAG, "Unable to update registration status", e);
-                        // We'll leave the current value in SharedPreferences, untouched.
-                        // Check should be rescheduled by caller if no previous value known.
-                    } finally {
-                        // Clean up service. Must be called when work is done.
-                        stopSelf();
-                    }
-                }
-            });
-    }
-
-    /**
      * Determine if user is registered for the conference and update shared preferences with result.
      *
-     * @param acct Account for currently logged-in user
      * @throws IOException If unable to verify user status
      */
-    private void updateRegStatus(@NonNull final GoogleSignInAccount acct) throws IOException {
-        // Validate auth state
-        if (acct.getAccount() == null) {
-            throw new IOException("Google user not authenticated");
-        }
-
-        if (mFirebaseAuth.getCurrentUser() == null) {
-            throw new IllegalStateException("Firebase user not authenticated");
-        }
-
+    private void updateRegStatus() throws IOException {
         // Build auth tokens
-        String fbToken = mFirebaseAuth.getCurrentUser().getToken(false).getResult().getToken();
-        GoogleAccountCredential credential = getGoogleCredential(acct);
-
-        // Validate auth tokens
-        if (fbToken == null) {
-            throw new IOException("Received null Firebase token");
-        }
+        GoogleAccountCredential credential = getGoogleCredential();
+        String fbToken = getFirebaseToken();
 
         LOGD(TAG, "Firebase token: " + fbToken);
-        LOGD(TAG, "Authenticating as: " + acct.getAccount().name);
+        LOGD(TAG, "Authenticating as: " + credential.getSelectedAccountName());
 
         // Communicate with server
-        boolean isRegistered = isRegisteredAttendee(credential, fbToken);
+        boolean isRegistered;
+        isRegistered = isRegisteredAttendee(credential, fbToken);
         LOGD(TAG, "Conference attendance status: " +
                 (isRegistered ? "REGISTERED" : "NOT_REGISTERED"));
 
         RegistrationUtils.setRegisteredAttendee(getApplicationContext(), isRegistered);
+        RegistrationUtils.updateRegCheckTimestamp(this);
     }
 
     /**
@@ -170,27 +122,40 @@ public class RegistrationStatusService extends Service {
         Registration registration = b.build();
 
         RegistrationResult result;
-        try {
             result = registration.registrationEndpoint()
                     .registrationStatus(firebaseToken).execute();
-        } catch (IOException e) {
-            throw new IOException("Failed to communicate with registration server", e);
-        }
         return result.getRegistered();
     }
 
     /**
+     * Get Firebase token for current user
+     */
+    private String getFirebaseToken() throws IOException {
+        FirebaseUser fbUser = mFirebaseAuth.getCurrentUser();
+        if (fbUser == null) {
+            throw new IOException("Firebase user not authenticated");
+        }
+
+        String fbToken = fbUser.getToken(false).getResult().getToken();
+        if (fbToken == null) {
+            throw new IOException("Received null Firebase token");
+        }
+
+        return fbToken;
+    }
+
+
+    /**
      * Construct auth credential for accessing backend server.
      *
-     * @param acct Account for current user
      * @return Server login credential for current user
      */
     @NonNull
-    private GoogleAccountCredential getGoogleCredential(@NonNull GoogleSignInAccount acct) {
+    private GoogleAccountCredential getGoogleCredential() {
         GoogleAccountCredential
                 credential = GoogleAccountCredential.usingOAuth2(this, Arrays.asList(
                 AccountUtils.AUTH_SCOPES));
-        credential.setSelectedAccount(acct.getAccount());
+        credential.setSelectedAccount(AccountUtils.getActiveAccount(this));
         return credential;
     }
 }

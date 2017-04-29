@@ -80,4 +80,39 @@ public class RegistrationUtils {
         sp.edit().putInt(BuildConfig.PREF_ATTENDEE_AT_VENUE, REGSTATUS_UNKNOWN).apply();
         SettingsUtils.updateNotificationSubscriptions(context);
     }
+
+    /**
+     * Get the time when a registration status was last performed (as reported via
+     * updateRegCheckTimestamp()).
+     *
+     * @param context  Context to be used to edit the {@link android.content.SharedPreferences}.
+     * @return         Timestamp for last registration check, as a UNIX timestamp.
+     */
+    private static long lastRegCheckTimestamp(final Context context) {
+        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(context);
+        return sp.getLong(BuildConfig.PREF_LAST_REGISTRATION_CHECK_TS, 0);
+    }
+
+    /**
+     * Get the difference in time between when a registration status check was last performed
+     * (as reported via updateRegCheckTimestamp()) and the current time.
+     *
+     * @param context  Context to be used to edit the {@link android.content.SharedPreferences}.
+     * @return         Time delta for last registration check, as a UNIX timestamp.
+     */
+    public static long timeSinceLastRegCheck(final Context context) {
+        long lastCheck = lastRegCheckTimestamp(context);
+        return System.currentTimeMillis() - lastCheck;
+    }
+
+    /**
+     * Record that a registration status check has just been performed.
+     *
+     * @param context  Context to be used to edit the {@link android.content.SharedPreferences}.
+     */
+    public static void updateRegCheckTimestamp(final Context context) {
+        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(context);
+        sp.edit().putLong(BuildConfig.PREF_LAST_REGISTRATION_CHECK_TS,
+                System.currentTimeMillis()).apply();
+    }
 }
