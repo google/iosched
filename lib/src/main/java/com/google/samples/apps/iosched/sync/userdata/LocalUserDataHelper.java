@@ -15,10 +15,16 @@
  */
 package com.google.samples.apps.iosched.sync.userdata;
 
-import android.content.AsyncQueryHandler;
+import android.content.ContentProviderOperation;
 import android.content.Context;
+import android.content.OperationApplicationException;
 import android.database.Cursor;
 import android.net.Uri;
+import android.os.Handler;
+import android.os.HandlerThread;
+import android.os.Looper;
+import android.os.Message;
+import android.os.RemoteException;
 
 import com.google.api.client.util.Charsets;
 import com.google.samples.apps.iosched.provider.ScheduleContract;
@@ -35,11 +41,15 @@ import java.util.Set;
 import static com.google.samples.apps.iosched.provider.ScheduleContract.MyFeedbackSubmitted;
 import static com.google.samples.apps.iosched.provider.ScheduleContract.MyReservations;
 import static com.google.samples.apps.iosched.provider.ScheduleContract.MySchedule;
+import static com.google.samples.apps.iosched.util.LogUtils.LOGE;
+import static com.google.samples.apps.iosched.util.LogUtils.makeLogTag;
 
 /**
  * Helper class to process user data stored in the local SQLite db.
  */
 public class LocalUserDataHelper {
+
+    private static final String TAG = makeLogTag("LocalUserDataHelper");
 
     /**
      * Returns the JSON string representation of the given UserData object as a byte array.
@@ -53,7 +63,7 @@ public class LocalUserDataHelper {
      * Array.
      */
     static private Set<String> getFeedbackSubmittedSessions(Context context, Uri queryUri,
-                                                            String column) {
+            String column) {
         Cursor cursor = context.getContentResolver().query(queryUri,
                 new String[]{column}, null, null, null);
         Set<String> columnValues = new HashSet<>();
@@ -170,7 +180,7 @@ public class LocalUserDataHelper {
      * Writes the given user data into the device's local DB.
      */
     static void setLocalUserData(Context context, UserDataModel userDataModel,
-                                 String accountName) {
+            String accountName) {
         // TODO: throw if null. Callers should ensure the data is not null. See b/27809502.
         if (userDataModel == null) {
             return;
@@ -243,36 +253,60 @@ public class LocalUserDataHelper {
 
     public static void clearUserDataOnSignOut(final Context context) {
         String accountName = AccountUtils.getActiveAccountName(context);
-        AsyncQueryHandler handler = new ClearDataAsyncQueryHandler(context);
-        handler.startDelete(ClearDataAsyncQueryHandler.TOKEN_MY_SCHEDULE, null,
-                MySchedule.buildMyScheduleUri(accountName), null, null);
-        handler.startDelete(2, null, MyFeedbackSubmitted.buildMyFeedbackSubmittedUri(accountName),
-                null, null);
-        handler.startDelete(3, null, MyReservations.buildMyReservationUri(accountName), null, null);
+        ClearDataAsyncHandler handler = new ClearDataAsyncHandler(context, accountName);
+        handler.clearUserData();
     }
 
-    private static class ClearDataAsyncQueryHandler extends AsyncQueryHandler {
-        private final WeakReference<Context> mReference;
-        static final int TOKEN_MY_SCHEDULE = 1;
+    private static final class ClearDataAsyncHandler extends Handler {
+        private static final int MSG_CLEAR_USERDATA = 1;
 
-        private ClearDataAsyncQueryHandler(Context context) {
-            super(context.getContentResolver());
+        private static Looper sLooper;
+
+        static {
+            HandlerThread thread = new HandlerThread("ClearDataHandlerThread");
+            thread.start();
+            sLooper = thread.getLooper();
+        }
+
+        private final WeakReference<Context> mReference;
+        private final String mAccountName;
+
+        private ClearDataAsyncHandler(Context context, String accountName) {
+            super(sLooper);
             mReference = new WeakReference<>(context);
+            mAccountName = accountName;
+        }
+
+        public void clearUserData() {
+            Message.obtain(this, MSG_CLEAR_USERDATA).sendToTarget();
         }
 
         @Override
-        protected void onDeleteComplete(int token, Object cookie, int result) {
-            if (token == TOKEN_MY_SCHEDULE && result > 0) {
-                // When items are deleted from MY_SCHEDULE trigger a notifyChange
-                // so that any current loaders are updated.
-                // TODO (nageshs): Ideally the MyIo UI should observe individual changes to the user URIs instead of a composite URI.
-                Context context = mReference.get();
-                if (context == null) {
-                    return;
-                }
-                context.getContentResolver()
-                        .notifyChange(ScheduleContract.Sessions.CONTENT_MY_SCHEDULE_URI, null);
+        public void handleMessage(Message msg) {
+            if (MSG_CLEAR_USERDATA != msg.what) {
+                return;
             }
+
+            Context context = mReference.get();
+            if (context == null) {
+                return;
+            }
+
+            ArrayList<ContentProviderOperation> ops = new ArrayList<>(3);
+            ops.add(ContentProviderOperation.newDelete(MySchedule.buildMyScheduleUri(mAccountName))
+                    .build());
+            ops.add(ContentProviderOperation.newDelete(
+                    MyFeedbackSubmitted.buildMyFeedbackSubmittedUri(mAccountName)).build());
+            ops.add(ContentProviderOperation.newDelete(
+                    MyReservations.buildMyReservationUri(mAccountName)).build());
+            try {
+                context.getContentResolver().applyBatch(ScheduleContract.CONTENT_AUTHORITY, ops);
+            } catch (RemoteException | OperationApplicationException e) {
+                LOGE(TAG, "Error clearing user data", e);
+            }
+
+            // force any current loaders to reload their data
+            context.getContentResolver().notifyChange(ScheduleContract.BASE_CONTENT_URI, null);
         }
     }
 }
