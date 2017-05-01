@@ -53,13 +53,12 @@
         <activity
             android:name="com.google.samples.apps.iosched.schedule.ScheduleActivity"
             android:exported="true"
-            android:label="@string/title_my_schedule"
+            android:label="@string/title_schedule"
             android:launchMode="singleTop"
             android:theme="@style/Theme.IOSched.Schedule">
 
             <!-- Web URLs -->
             <intent-filter
-                android:label="@string/app_name"
                 android:priority="0">
                 <action android:name="android.intent.action.VIEW" />
 
@@ -79,7 +78,6 @@
                     android:scheme="https" />
             </intent-filter>
             <intent-filter
-                android:label="@string/app_name"
                 android:priority="200">
                 <action android:name="android.intent.action.VIEW" />
 
@@ -144,17 +142,20 @@
             android:launchMode="singleTop"
             android:theme="@style/Theme.IOSched.MyIo" />
 
-        <activity android:name="com.google.samples.apps.iosched.feed.FeedActivity"
+        <activity
+            android:name="com.google.samples.apps.iosched.feed.FeedActivity"
             android:exported="false"
             android:label="@string/title_feed"
             android:launchMode="singleTop"
             android:theme="@style/Theme.IOSched.Feed" />
 
-        <activity android:name="com.google.samples.apps.iosched.info.InfoActivity"
-                  android:exported="false"
-                  android:label="@string/title_info"
-                  android:launchMode="singleTop"
-                  android:theme="@style/Theme.IOSched.Info" />
+        <activity
+            android:name="com.google.samples.apps.iosched.info.InfoActivity"
+            android:exported="false"
+            android:label="@string/title_info"
+            android:launchMode="singleTop"
+            android:theme="@style/Theme.IOSched.Info" />
+
         <activity
             android:name="com.google.samples.apps.iosched.settings.SettingsActivity"
             android:exported="false"

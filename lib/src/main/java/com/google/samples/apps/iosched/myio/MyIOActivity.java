@@ -51,13 +51,12 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.google.samples.apps.iosched.lib.BuildConfig;
 import com.google.samples.apps.iosched.lib.R;
-import com.google.samples.apps.iosched.schedule.ScheduleView;
 import com.google.samples.apps.iosched.navigation.NavigationModel;
+import com.google.samples.apps.iosched.schedule.ScheduleView;
 import com.google.samples.apps.iosched.signin.SignInListener;
 import com.google.samples.apps.iosched.signin.SignInManager;
 import com.google.samples.apps.iosched.ui.BaseActivity;
 import com.google.samples.apps.iosched.util.AccountUtils;
-import com.google.samples.apps.iosched.util.RegistrationUtils;
 import com.google.samples.apps.iosched.util.SyncUtils;
 import com.google.samples.apps.iosched.util.WelcomeUtils;
 
@@ -137,8 +136,13 @@ public class MyIOActivity extends BaseActivity implements
     }
 
     @Override
-    protected String getScreenLabel() {
+    protected String getAnalyticsScreenLabel() {
         return SCREEN_LABEL;
+    }
+
+    @Override
+    protected int getNavigationTitleId() {
+        return R.string.title_my_io;
     }
 
     // -- Lifecycle callbacks
@@ -148,7 +152,6 @@ public class MyIOActivity extends BaseActivity implements
         super.onCreate(savedInstanceState);
         setContentView(R.layout.myio_act);
         setFullscreenLayout();
-        disableActionBarTitle();
 
         GoogleSignInOptions gso = SignInManager.getGoogleSignInOptions(
                 BuildConfig.DEFAULT_WEB_CLIENT_ID);

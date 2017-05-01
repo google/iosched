@@ -159,7 +159,6 @@ public class ScheduleActivity extends BaseActivity implements ScheduleViewParent
 
         setContentView(R.layout.schedule_act);
         setFullscreenLayout();
-        disableActionBarTitle();
 
         mScheduleFilterFragment = (ScheduleFilterFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.filter_drawer);
@@ -348,7 +347,12 @@ public class ScheduleActivity extends BaseActivity implements ScheduleViewParent
     }
 
     @Override
-    protected String getScreenLabel() {
+    protected String getAnalyticsScreenLabel() {
         return SCREEN_LABEL;
+    }
+
+    @Override
+    protected int getNavigationTitleId() {
+        return R.string.title_schedule;
     }
 }

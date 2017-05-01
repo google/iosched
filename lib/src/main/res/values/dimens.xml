@@ -103,7 +103,7 @@
 
     <dimen name="session_detail_speaker_left_offset">@dimen/keyline_1</dimen>
 
-    <dimen name="headerbar_elevation">4dp</dimen>
+    <dimen name="appbar_elevation">4dp</dimen>
     <dimen name="card_elevation">2dp</dimen>
     <dimen name="bottom_nav_elevation">8dp</dimen>
 

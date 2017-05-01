@@ -212,9 +212,14 @@
         <item name="android:fontFamily">sans-serif-medium</item>
     </style>
 
-    <style name="HeaderBar">
-        <item name="android:background">?colorPrimary</item>
-        <item name="android:elevation" tools:targetApi="lollipop">@dimen/headerbar_elevation</item>
+    <style name="AppBar">
+        <item name="android:elevation">@dimen/appbar_elevation</item>
+        <item name="android:fitsSystemWindows">true</item>
+        <item name="android:theme">@style/ThemeOverlay.LightToolbar</item>
+    </style>
+
+    <style name="AppBar.Dark">
+        <item name="android:theme">@style/ThemeOverlay.DarkToolbar</item>
     </style>
 
     <style name="Settings.SwitchContainer" parent="">

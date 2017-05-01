@@ -25,33 +25,16 @@ of the map.-->
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <!-- Header bar on top of map -->
-    <LinearLayout
+    <FrameLayout
         android:id="@+id/headerbar"
+        style="@style/AppBar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/aqua_marine"
-        android:elevation="@dimen/headerbar_elevation"
-        android:orientation="vertical"
-        android:fitsSystemWindows="true"
-        android:theme="@style/ThemeOverlay.LightToolbar">
+        android:background="@color/aqua_marine">
 
-        <android.support.v7.widget.Toolbar
-            android:id="@+id/toolbar"
-            android:layout_width="match_parent"
-            android:layout_height="?actionBarSize"
-            app:popupTheme="@style/ThemeOverlay.ToolbarPopup">
+        <include layout="@layout/toolbar" />
 
-            <TextView
-                android:id="@+id/toolbar_title"
-                style="@style/ProductSans.Title"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/title_map" />
-
-        </android.support.v7.widget.Toolbar>
-
-    </LinearLayout>
+    </FrameLayout>
 
     <!-- Content of screen. Contains a map and optional info bottom sheet. -->
     <FrameLayout
