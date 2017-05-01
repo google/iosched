@@ -152,6 +152,7 @@ public class ScheduleHelper {
                     item.room = item.subtitle = cursor.getString(BlocksQuery.BLOCK_SUBTITLE);
                     item.startTime = cursor.getLong(BlocksQuery.BLOCK_START);
                     item.endTime = cursor.getLong(BlocksQuery.BLOCK_END);
+                    item.blockKind = cursor.getString(BlocksQuery.BLOCK_KIND);
                     item.flags |= ScheduleItem.FLAG_NOT_REMOVABLE;
                     items.add(item);
                 } while (cursor.moveToNext());
@@ -169,7 +170,8 @@ public class ScheduleHelper {
                 Blocks.BLOCK_TYPE,
                 Blocks.BLOCK_START,
                 Blocks.BLOCK_END,
-                Blocks.BLOCK_SUBTITLE
+                Blocks.BLOCK_SUBTITLE,
+                Blocks.BLOCK_KIND
         };
 
         // constrain to "break" blocks on the specified day
@@ -181,6 +183,7 @@ public class ScheduleHelper {
         int BLOCK_START = 2;
         int BLOCK_END = 3;
         int BLOCK_SUBTITLE = 4;
+        int BLOCK_KIND = 5;
     }
 
 }
