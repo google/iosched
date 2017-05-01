@@ -14,20 +14,13 @@
 
 package com.google.samples.apps.iosched.navigation;
 
-import android.support.test.InstrumentationRegistry;
-import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
 import android.test.suitebuilder.annotation.LargeTest;
 
 //import com.google.samples.apps.iosched.explore.ExploreIOActivity;
 import com.google.samples.apps.iosched.lib.R;
-import com.google.samples.apps.iosched.settings.SettingsUtils;
-import com.google.samples.apps.iosched.testutils.LoginUtils;
 import com.google.samples.apps.iosched.testutils.NavigationUtils;
-import com.google.samples.apps.iosched.util.RegistrationUtils;
 
-import org.junit.After;
-import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
@@ -68,7 +61,7 @@ public class AppNavigationViewTest {
     public void mySchedule_WhenClicked_ActivityDisplayed() {
         NavigationUtils.clickOnNavigationItemAndCheckActivityIsDisplayed(
                 R.id.myschedule_nav_item,
-                R.string.title_my_schedule);
+                R.string.title_schedule);
     }
 
 //    DISABLED: Broken

@@ -15,11 +15,9 @@
 package com.google.samples.apps.iosched.schedule;
 
 import android.app.Activity;
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.AppBarLayout;
-import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewCompat;
@@ -31,8 +29,6 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.google.samples.apps.iosched.Config;
-import com.google.samples.apps.iosched.debug.DebugActivity;
-import com.google.samples.apps.iosched.lib.BuildConfig;
 import com.google.samples.apps.iosched.lib.R;
 import com.google.samples.apps.iosched.util.AnalyticsHelper;
 import com.google.samples.apps.iosched.util.TimeUtils;
@@ -74,7 +70,7 @@ public class SchedulePagerFragment extends Fragment implements ScheduleView {
     /**
      * Bar that appears when there are active filters
      */
-    private AppBarLayout mAppbar;
+    private AppBarLayout mFiltersBar;
     private View mFiltersBarInner;
     private TextView mFiltersDescription;
     private View mClearFilters;
@@ -158,9 +154,9 @@ public class SchedulePagerFragment extends Fragment implements ScheduleView {
         mViewPager.setPageMarginDrawable(R.drawable.page_margin);
         mViewPager.setOffscreenPageLimit(3);
 
-        mAppbar = (AppBarLayout) view.findViewById(R.id.appbar);
-        mFiltersBarInner = mAppbar.findViewById(R.id.filters_bar_inner);
-        mFiltersDescription = (TextView) mAppbar.findViewById(R.id.filters_description);
+        mFiltersBar = (AppBarLayout) view.findViewById(R.id.filters_appbar);
+        mFiltersBarInner = mFiltersBar.findViewById(R.id.filters_bar_inner);
+        mFiltersDescription = (TextView) mFiltersBar.findViewById(R.id.filters_description);
         mFiltersDescription.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -170,7 +166,7 @@ public class SchedulePagerFragment extends Fragment implements ScheduleView {
                 }
             }
         });
-        mClearFilters = mAppbar.findViewById(R.id.clear_filters);
+        mClearFilters = mFiltersBar.findViewById(R.id.clear_filters);
         mClearFilters.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {

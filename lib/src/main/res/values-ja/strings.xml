@@ -460,7 +460,7 @@
   <string name="title_map">地図</string>
 
   <!-- Navigation bar text for viewing the user's schedule -->
-  <string name="title_my_schedule">私のスケジュール</string>
+  <string name="title_schedule">私のスケジュール</string>
 
   <!-- Label for Search screen, that allows users to search for sessions. -->
   <string name="title_search">検索する</string>
