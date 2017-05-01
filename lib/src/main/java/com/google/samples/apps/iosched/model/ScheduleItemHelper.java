@@ -16,13 +16,12 @@
 
 package com.google.samples.apps.iosched.model;
 
-import static com.google.samples.apps.iosched.model.ScheduleItem.detectSessionType;
-
 import android.content.Context;
 import android.database.Cursor;
 import android.support.annotation.NonNull;
 import android.text.TextUtils;
 
+import com.google.samples.apps.iosched.Config.Tags;
 import com.google.samples.apps.iosched.provider.ScheduleContract.Sessions;
 import com.google.samples.apps.iosched.util.UIUtils;
 
@@ -30,6 +29,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
+
+import static com.google.samples.apps.iosched.model.ScheduleItem.detectSessionType;
 
 public class ScheduleItemHelper {
 
@@ -137,7 +138,11 @@ public class ScheduleItemHelper {
             item.sessionType = detectSessionType(
                     cursor.getString(cursor.getColumnIndex(Sessions.SESSION_TAGS)));
             item.mainTag = cursor.getString(cursor.getColumnIndex(Sessions.SESSION_MAIN_TAG));
-            item.tags = cursor.getString(cursor.getColumnIndex(Sessions.SESSION_TAGS)).split(",");
+            String tags = cursor.getString(cursor.getColumnIndex(Sessions.SESSION_TAGS));
+            if (tags != null) {
+                item.tags = tags.split(",");
+                item.isKeynote = tags.contains(Tags.SPECIAL_KEYNOTE);
+            }
             item.inSchedule =
                     cursor.getInt(cursor.getColumnIndex(Sessions.SESSION_IN_MY_SCHEDULE)) != 0;
             item.reservationStatus =
