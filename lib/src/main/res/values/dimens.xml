@@ -55,7 +55,7 @@
     <dimen name="divider_padding_bottom">8dp</dimen>
 
     <!-- My I/O Dialog Features -->
-    <dimen name="my_io_dialog_avatar_dimen">32dp</dimen>
+    <dimen name="my_io_dialog_avatar_dimen">40dp</dimen>
     <dimen name="my_io_dialog_check_circle_dimen">24dp</dimen>
 
     <!-- Explore I/O Feature -->

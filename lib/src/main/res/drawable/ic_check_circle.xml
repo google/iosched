@@ -12,15 +12,13 @@
   or implied. See the License for the specific language governing permissions and limitations under
   the License.
   -->
-
-<vector
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
     android:width="24dp"
     android:height="24dp"
-    android:viewportWidth="24"
-    android:viewportHeight="24"
-    android:tint="@color/lightish_blue">
+    android:tint="@color/lightish_blue"
+    android:viewportHeight="24.0"
+    android:viewportWidth="24.0">
     <path
-        android:pathData="M10,0C4.48,0 0,4.48 0,10s4.48,10 10,10 10,-4.48 10,-10S15.52,0 10,0zM8,15l-5,-5 1.41,-1.41L8,12.17l7.59,-7.59L17,6l-9,9z"
-        android:fillColor="@android:color/white" />
+        android:fillColor="@android:color/white"
+        android:pathData="M12,2C6.48,2 2,6.48 2,12s4.48,10 10,10 10,-4.48 10,-10S17.52,2 12,2zM10,17l-5,-5 1.41,-1.41L10,14.17l7.59,-7.59L19,8l-9,9z" />
 </vector>
