@@ -17,13 +17,19 @@
 package com.google.samples.apps.iosched.util;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.content.AsyncQueryHandler;
 import android.content.ContentValues;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.net.Uri;
+import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
+import android.support.design.widget.Snackbar;
+import android.view.View;
 
 import com.google.samples.apps.iosched.appwidget.ScheduleWidgetProvider;
+import com.google.samples.apps.iosched.lib.R;
 import com.google.samples.apps.iosched.provider.ScheduleContract;
 import com.google.samples.apps.iosched.sync.SyncHelper;
 
@@ -38,6 +44,15 @@ import static com.google.samples.apps.iosched.util.LogUtils.makeLogTag;
 public class SessionsHelper {
 
     private static final String TAG = makeLogTag(SessionsHelper.class);
+
+    /**
+     * Boolean indicating the user has opted-out of getting bookmark hints.
+     */
+    private static final String PREF_SKIP_BOOKMARK_HINTS = "pref_skip_bookmark_hints";
+    /**
+     * Boolean indicating the user has opted-out of getting unbookmark hints.
+     */
+    private static final String PREF_SKIP_UNBOOKMARK_HINTS = "pref_skip_unbookmark_hints";
 
     private final Context mContext;
 
@@ -95,5 +110,31 @@ public class SessionsHelper {
         values.put(ScheduleContract.MyReservations.MY_RESERVATION_TIMESTAMP,
                 System.currentTimeMillis() + offset);
         handler.startInsert(-1, null, myReservationsUri, values);
+    }
+
+    public static void showBookmarkClickedHint(Activity activity, boolean isBookmarked) {
+        final SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(activity);
+
+        if (isBookmarked && !sp.getBoolean(PREF_SKIP_BOOKMARK_HINTS, false)) {
+            final Snackbar snackbar = Snackbar.make(UIUtils.getRootView(activity),
+                    R.string.add_bookmark_hint, Snackbar.LENGTH_SHORT)
+                    .setAction(R.string.bookmark_hint_optout, new View.OnClickListener() {
+                        @Override
+                        public void onClick(final View v) {
+                            sp.edit().putBoolean(PREF_SKIP_BOOKMARK_HINTS, true).apply();
+                        }
+                    });
+            snackbar.show();
+        } else if (!isBookmarked && !sp.getBoolean(PREF_SKIP_UNBOOKMARK_HINTS, false)) {
+            final Snackbar snackbar = Snackbar.make(UIUtils.getRootView(activity),
+                    R.string.remove_bookmark_hint, Snackbar.LENGTH_SHORT)
+                    .setAction(R.string.bookmark_hint_optout, new View.OnClickListener() {
+                        @Override
+                        public void onClick(final View v) {
+                            sp.edit().putBoolean(PREF_SKIP_UNBOOKMARK_HINTS, true).apply();
+                        }
+                    });
+            snackbar.show();
+        }
     }
 }

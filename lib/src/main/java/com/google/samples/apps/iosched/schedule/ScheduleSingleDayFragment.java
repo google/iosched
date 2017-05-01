@@ -45,6 +45,7 @@ import com.google.samples.apps.iosched.schedule.ScheduleModel.MyScheduleQueryEnu
 import com.google.samples.apps.iosched.schedule.ScheduleModel.MyScheduleUserActionEnum;
 import com.google.samples.apps.iosched.schedule.SessionItemViewHolder.Callbacks;
 import com.google.samples.apps.iosched.util.AnalyticsHelper;
+import com.google.samples.apps.iosched.util.SessionsHelper;
 import com.google.samples.apps.iosched.util.TimeUtils;
 
 /**
@@ -259,6 +260,7 @@ public class ScheduleSingleDayFragment extends Fragment
         Bundle args = new Bundle();
         args.putString(ScheduleModel.SESSION_ID_KEY, sessionId);
         mListener.onUserAction(action, args);
+        SessionsHelper.showBookmarkClickedHint(getActivity(), !isInSchedule);
     }
 
     @Override
