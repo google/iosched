@@ -18,6 +18,7 @@ package com.google.samples.apps.iosched.welcome;
 import android.accounts.Account;
 import android.content.Context;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -94,7 +95,7 @@ public class AccountFragment extends WelcomeFragment implements View.OnClickList
 
     @Override
     public void onConnectionFailed(@NonNull final ConnectionResult connectionResult) {
-        Toast.makeText(getContext(), "Unable to connect to Google Play Services",
+        Toast.makeText(getSafeContext(), "Unable to connect to Google Play Services",
                 Toast.LENGTH_SHORT).show();
     }
 
@@ -120,7 +121,7 @@ public class AccountFragment extends WelcomeFragment implements View.OnClickList
         GoogleSignInOptions gso = gsoBuilder.requestEmail()
                                             .build();
 
-        mGoogleApiClient = new GoogleApiClient.Builder(getContext())
+        mGoogleApiClient = new GoogleApiClient.Builder(getSafeContext())
                 .addApi(Auth.GOOGLE_SIGN_IN_API, gso)
                 .addConnectionCallbacks(this)
                 .addOnConnectionFailedListener(this)
@@ -176,10 +177,13 @@ public class AccountFragment extends WelcomeFragment implements View.OnClickList
             // Signed in successfully, show authenticated UI.
             final GoogleSignInAccount acct = result.getSignInAccount();
             if (acct != null) {
-                AccountUtils.setActiveAccount(getContext(), acct.getEmail());
+                AccountUtils.setActiveAccount(getSafeContext(), acct.getEmail());
                 doNext();
             }
         }
     }
 
+    private Context getSafeContext() {
+        return Build.VERSION.SDK_INT >= 23 ? getContext() : getActivity();
+    }
 }
