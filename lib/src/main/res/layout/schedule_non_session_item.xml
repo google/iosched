@@ -57,6 +57,6 @@
         app:layout_constraintBottom_toBottomOf="@id/slot_description"
         android:importantForAccessibility="no"
         android:alpha=".15"
-        android:src="@drawable/break_icon" />
+        tools:src="@drawable/ic_food" />
 
 </android.support.constraint.ConstraintLayout>

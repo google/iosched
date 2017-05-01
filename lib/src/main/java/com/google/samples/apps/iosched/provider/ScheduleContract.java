@@ -72,6 +72,8 @@ public final class ScheduleContract {
         String BLOCK_TYPE = "block_type";
         /** Extra subtitle for the block. */
         String BLOCK_SUBTITLE = "block_subtitle";
+        /** The kind of block */
+        String BLOCK_KIND = "block_kind";
     }
 
     interface TagsColumns {
@@ -440,6 +442,15 @@ public final class ScheduleContract {
         public static final String BLOCK_TYPE_BREAK = "break";
 
         public static final String BLOCK_TYPE_KEYNOTE = "keynote";
+
+        public static final String BLOCK_KIND_MEAL = "meal";
+
+        public static final String BLOCK_KIND_CONCERT = "concert";
+
+        public static final String BLOCK_KIND_AFTERHOURS = "afterHours";
+
+        // TODO verify string value when backend starts reporting it
+        public static final String BLOCK_KIND_BADGEPICKUP = "badgePickup";
 
         public static final boolean isValidBlockType(String type) {
             return BLOCK_TYPE_FREE.equals(type) || BLOCK_TYPE_BREAK.equals(type)

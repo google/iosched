@@ -26,9 +26,6 @@ import android.widget.TextView;
 import com.google.samples.apps.iosched.lib.R;
 import com.google.samples.apps.iosched.model.ScheduleItem;
 
-import static android.view.View.GONE;
-import static android.view.View.VISIBLE;
-
 /**
  * A {@link RecyclerView.ViewHolder} modeling non-sessions items in the schedule i.e. breaks,
  * codelabs, concert etc.
@@ -53,16 +50,13 @@ public class NonSessionItemViewHolder extends ScheduleItemViewHolder
     }
 
     public void onBind(@NonNull final ScheduleItem item) {
-        if (item.type != ScheduleItem.BREAK) return;
+        if (item.type != ScheduleItem.BREAK) {
+            return;
+        }
 
         mTitle.setText(item.title);
         mDescription.setText(formatDescription(itemView.getContext(), item));
-        if (item.isFoodBreak() || item.isConcert()) {
-            mIcon.setVisibility(VISIBLE);
-            mIcon.setActivated(item.isConcert());
-        } else {
-            mIcon.setVisibility(GONE);
-        }
+        mIcon.setImageResource(item.getBreakIcon());
     }
 
 }

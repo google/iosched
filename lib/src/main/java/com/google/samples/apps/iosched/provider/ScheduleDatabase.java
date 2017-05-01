@@ -32,9 +32,9 @@ import com.google.samples.apps.iosched.provider.ScheduleContract.FeedbackColumns
 import com.google.samples.apps.iosched.provider.ScheduleContract.HashtagColumns;
 import com.google.samples.apps.iosched.provider.ScheduleContract.MapTileColumns;
 import com.google.samples.apps.iosched.provider.ScheduleContract.MyFeedbackSubmitted;
+import com.google.samples.apps.iosched.provider.ScheduleContract.MyReservations;
 import com.google.samples.apps.iosched.provider.ScheduleContract.MySchedule;
 import com.google.samples.apps.iosched.provider.ScheduleContract.MyScheduleColumns;
-import com.google.samples.apps.iosched.provider.ScheduleContract.MyReservations;
 import com.google.samples.apps.iosched.provider.ScheduleContract.MyViewedVideos;
 import com.google.samples.apps.iosched.provider.ScheduleContract.Rooms;
 import com.google.samples.apps.iosched.provider.ScheduleContract.RoomsColumns;
@@ -75,9 +75,10 @@ public class ScheduleDatabase extends SQLiteOpenHelper {
     private static final int VER_2016_RELEASE_B = 212;
     private static final int VER_2017_RELEASE_A = 213;
     private static final int VER_2017_RELEASE_B = 214;
-    private static final int VER_2017_RELEASE_C = 215; // 5.0.0
+    private static final int VER_2017_RELEASE_C = 215;
+    private static final int VER_2017_RELEASE_D = 216; // 5.0.0
 
-    private static final int CUR_DATABASE_VERSION = VER_2017_RELEASE_C;
+    private static final int CUR_DATABASE_VERSION = VER_2017_RELEASE_D;
 
     private final Context mContext;
 
@@ -430,6 +431,7 @@ public class ScheduleDatabase extends SQLiteOpenHelper {
         upgradeFrom2016Bto2017A(db);
         upgradeFrom2017Ato2017B(db);
         upgradeFrom2017Bto2017C(db);
+        upgradeFrom2017Cto2017D(db);
     }
 
     private void upgradeFrom2014Cto2015A(SQLiteDatabase db) {
@@ -523,6 +525,11 @@ public class ScheduleDatabase extends SQLiteOpenHelper {
                 "=old." + Sessions.SESSION_ID
                 + ";" + " END;");
 
+    }
+
+    // Adding block_kind
+    private void upgradeFrom2017Cto2017D(SQLiteDatabase db) {
+        db.execSQL("ALTER TABLE " + Tables.BLOCKS + " ADD COLUMN " + Blocks.BLOCK_KIND + " TEXT");
     }
 
     /**
@@ -625,6 +632,13 @@ public class ScheduleDatabase extends SQLiteOpenHelper {
             LOGD(TAG, "Upgrading database from 2017 release B to 2017 release C.");
             upgradeFrom2017Bto2017C(db);
             version = VER_2017_RELEASE_C;
+        }
+
+        // Check if we can upgrade from release 2017 release C to 2017 release D.
+        if (version == VER_2017_RELEASE_C) {
+            LOGD(TAG, "Upgrading database from 2017 release C to 2017 release D.");
+            upgradeFrom2017Cto2017D(db);
+            version = VER_2017_RELEASE_D;
         }
 
         LOGD(TAG, "After upgrade logic, at version " + version);
