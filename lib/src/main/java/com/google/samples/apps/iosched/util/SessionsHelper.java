@@ -31,6 +31,7 @@ import android.view.View;
 import com.google.samples.apps.iosched.appwidget.ScheduleWidgetProvider;
 import com.google.samples.apps.iosched.lib.R;
 import com.google.samples.apps.iosched.provider.ScheduleContract;
+import com.google.samples.apps.iosched.settings.SettingsUtils;
 import com.google.samples.apps.iosched.sync.SyncHelper;
 
 import java.util.Date;
@@ -44,15 +45,6 @@ import static com.google.samples.apps.iosched.util.LogUtils.makeLogTag;
 public class SessionsHelper {
 
     private static final String TAG = makeLogTag(SessionsHelper.class);
-
-    /**
-     * Boolean indicating the user has opted-out of getting bookmark hints.
-     */
-    private static final String PREF_SKIP_BOOKMARK_HINTS = "pref_skip_bookmark_hints";
-    /**
-     * Boolean indicating the user has opted-out of getting unbookmark hints.
-     */
-    private static final String PREF_SKIP_UNBOOKMARK_HINTS = "pref_skip_unbookmark_hints";
 
     private final Context mContext;
 
@@ -68,7 +60,8 @@ public class SessionsHelper {
                 AccountUtils.getActiveAccountName(mContext));
 
         @SuppressLint("HandlerLeak") // this is short-lived
-        AsyncQueryHandler handler = new AsyncQueryHandler(mContext.getContentResolver()) {};
+                AsyncQueryHandler handler = new AsyncQueryHandler(mContext.getContentResolver()) {
+        };
         final ContentValues values = new ContentValues();
         values.put(ScheduleContract.MySchedule.SESSION_ID, sessionId);
         values.put(ScheduleContract.MySchedule.MY_SCHEDULE_IN_SCHEDULE, starred ? 1 : 0);
@@ -79,7 +72,7 @@ public class SessionsHelper {
 
         // ANALYTICS EVENT: Add or remove a session from the schedule
         // Contains: Session title, whether it was added or removed (starred or unstarred)
-        AnalyticsHelper.sendEvent("Session", starred ? "Starred" : "Unstarred", "Session: " +title);
+        AnalyticsHelper.sendEvent("Session", starred ? "Starred" : "Unstarred", "Session: " + title);
 
         // Because change listener is set to null during initialization, these
         // won't fire on pageview.
@@ -92,8 +85,8 @@ public class SessionsHelper {
     }
 
     public void setReservationStatus(Uri sessionUri,
-            @ScheduleContract.MyReservations.ReservationStatus int reservationStatus,
-            String title) {
+                                     @ScheduleContract.MyReservations.ReservationStatus int reservationStatus,
+                                     String title) {
         LOGD(TAG, "setReservationStatus session uri=" + sessionUri + " reservationStatus=" +
                 reservationStatus + " title=" + title);
         String accountName = AccountUtils.getActiveAccountName(mContext);
@@ -101,7 +94,8 @@ public class SessionsHelper {
         Uri myReservationsUri = ScheduleContract.MyReservations.buildMyReservationUri(accountName);
 
         @SuppressLint("HandlerLeak") // this is short-lived
-                AsyncQueryHandler handler = new AsyncQueryHandler(mContext.getContentResolver()) {};
+                AsyncQueryHandler handler = new AsyncQueryHandler(mContext.getContentResolver()) {
+        };
         final ContentValues values = new ContentValues();
         values.put(ScheduleContract.MyReservations.SESSION_ID, sessionId);
         values.put(ScheduleContract.MyReservations.MY_RESERVATION_STATUS, reservationStatus);
@@ -112,29 +106,23 @@ public class SessionsHelper {
         handler.startInsert(-1, null, myReservationsUri, values);
     }
 
-    public static void showBookmarkClickedHint(Activity activity, boolean isBookmarked) {
-        final SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(activity);
+    public static void showBookmarkClickedHint(View view, boolean isBookmarked) {
+        final SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(
+                view.getContext());
 
-        if (isBookmarked && !sp.getBoolean(PREF_SKIP_BOOKMARK_HINTS, false)) {
-            final Snackbar snackbar = Snackbar.make(UIUtils.getRootView(activity),
-                    R.string.add_bookmark_hint, Snackbar.LENGTH_SHORT)
-                    .setAction(R.string.bookmark_hint_optout, new View.OnClickListener() {
-                        @Override
-                        public void onClick(final View v) {
-                            sp.edit().putBoolean(PREF_SKIP_BOOKMARK_HINTS, true).apply();
-                        }
-                    });
-            snackbar.show();
-        } else if (!isBookmarked && !sp.getBoolean(PREF_SKIP_UNBOOKMARK_HINTS, false)) {
-            final Snackbar snackbar = Snackbar.make(UIUtils.getRootView(activity),
-                    R.string.remove_bookmark_hint, Snackbar.LENGTH_SHORT)
-                    .setAction(R.string.bookmark_hint_optout, new View.OnClickListener() {
-                        @Override
-                        public void onClick(final View v) {
-                            sp.edit().putBoolean(PREF_SKIP_UNBOOKMARK_HINTS, true).apply();
-                        }
-                    });
-            snackbar.show();
+        if (sp.getBoolean(SettingsUtils.PREF_SKIP_BOOKMARK_HINTS, false)) {
+            return;
         }
+
+        // Note: isBookmarked represents the previous widget state.
+        Snackbar.make(view,
+                isBookmarked ? R.string.add_bookmark_hint : R.string.remove_bookmark_hint,
+                Snackbar.LENGTH_LONG)
+                .setAction(R.string.bookmark_hint_optout, new View.OnClickListener() {
+                    @Override
+                    public void onClick(final View v) {
+                        sp.edit().putBoolean(SettingsUtils.PREF_SKIP_BOOKMARK_HINTS, true).apply();
+                    }
+                }).show();
     }
 }

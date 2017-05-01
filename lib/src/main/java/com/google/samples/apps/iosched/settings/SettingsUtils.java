@@ -94,6 +94,10 @@ public class SettingsUtils {
      */
     private static final String PREF_WELCOME_DONE = "pref_welcome_done" +
             Constants.CONFERENCE_YEAR_PREF_POSTFIX;
+    /**
+     * Boolean indicating the user has opted-out of getting bookmark hints.
+     */
+    public static final String PREF_SKIP_BOOKMARK_HINTS = "pref_skip_bookmark_hints";
 
     /**
      * Return the {@link TimeZone} the app is set to use (either user or conference).
