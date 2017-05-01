@@ -260,7 +260,7 @@ public class ScheduleSingleDayFragment extends Fragment
         Bundle args = new Bundle();
         args.putString(ScheduleModel.SESSION_ID_KEY, sessionId);
         mListener.onUserAction(action, args);
-        SessionsHelper.showBookmarkClickedHint(getActivity(), !isInSchedule);
+        SessionsHelper.showBookmarkClickedHint(getView(), !isInSchedule);
     }
 
     @Override
@@ -274,8 +274,6 @@ public class ScheduleSingleDayFragment extends Fragment
         args.putString(ScheduleModel.SESSION_ID_KEY, sessionId);
         args.putString(ScheduleModel.SESSION_TITLE_KEY, sessionTitle);
         mListener.onUserAction(MyScheduleUserActionEnum.FEEDBACK, args);
-
-
         SessionFeedbackActivity.launchFeedback(getContext(), sessionId);
     }
 
