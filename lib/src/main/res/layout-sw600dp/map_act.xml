@@ -19,28 +19,25 @@
  on top of the map.-->
 
 <LinearLayout
-    android:id="@+id/drawer_layout"
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/drawer_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
     android:orientation="vertical">
 
-    <!-- Header bar on top of map -->
-    <LinearLayout
-        android:id="@+id/headerbar"
-        style="@style/HeaderBar"
+    <FrameLayout
+        android:id="@+id/appbar"
+        style="@style/AppBar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:clickable="true"
-        android:orientation="vertical">
+        android:background="@color/aqua_marine">
 
         <include layout="@layout/toolbar" />
-        <!-- placeholder, empty except on L -->
 
-    </LinearLayout>
+    </FrameLayout>
 
     <!-- Content of screen. Contains a map and optional info and detail cards. -->
     <FrameLayout

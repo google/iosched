@@ -16,10 +16,6 @@
 
 package com.google.samples.apps.iosched.ui;
 
-import static com.google.samples.apps.iosched.util.LogUtils.LOGD;
-import static com.google.samples.apps.iosched.util.LogUtils.LOGW;
-import static com.google.samples.apps.iosched.util.LogUtils.makeLogTag;
-
 import android.app.Activity;
 import android.content.ContentResolver;
 import android.content.Context;
@@ -40,6 +36,7 @@ import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.TextView;
 
 import com.google.android.gms.auth.GoogleAuthUtil;
 import com.google.samples.apps.iosched.lib.BuildConfig;
@@ -59,6 +56,10 @@ import com.google.samples.apps.iosched.welcome.WelcomeActivity;
 
 import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
+import static com.google.samples.apps.iosched.util.LogUtils.LOGD;
+import static com.google.samples.apps.iosched.util.LogUtils.LOGW;
+import static com.google.samples.apps.iosched.util.LogUtils.makeLogTag;
+
 /**
  * A base activity that handles common functionality in the app. This includes the navigation
  * drawer, login and authentication, Action Bar tweaks, amongst others.
@@ -73,6 +74,7 @@ public abstract class BaseActivity extends AppCompatActivity implements
     private AppNavigationView mAppNavigationView;
     // Toolbar
     private Toolbar mToolbar;
+    private TextView mToolbarTitle;
     // SwipeRefreshLayout allows the user to swipe the screen down to trigger a manual refresh
     private SwipeRefreshLayout mSwipeRefreshLayout;
 
@@ -177,7 +179,7 @@ public abstract class BaseActivity extends AppCompatActivity implements
             ab.setDisplayHomeAsUpEnabled(true);
         }
 
-        String screenLabel = getScreenLabel();
+        String screenLabel = getAnalyticsScreenLabel();
         if (screenLabel != null) {
             AnalyticsHelper.sendScreenView(screenLabel, this);
         }
@@ -307,9 +309,18 @@ public abstract class BaseActivity extends AppCompatActivity implements
         if (mToolbar == null) {
             mToolbar = (Toolbar) findViewById(R.id.toolbar);
             if (mToolbar != null) {
-                mToolbar.setNavigationContentDescription(getResources().getString(R.string
-                        .navdrawer_description_a11y));
                 setSupportActionBar(mToolbar);
+                mToolbar.setNavigationContentDescription(R.string.navdrawer_description_a11y);
+                mToolbarTitle = (TextView) mToolbar.findViewById(R.id.toolbar_title);
+                if (mToolbarTitle != null) {
+                    int titleId = getNavigationTitleId();
+                    if (titleId != 0) {
+                        mToolbarTitle.setText(titleId);
+                    }
+                }
+
+                // We use our own toolbar title, so hide the default one
+                getSupportActionBar().setDisplayShowTitleEnabled(false);
             }
         }
         return mToolbar;
@@ -347,12 +358,12 @@ public abstract class BaseActivity extends AppCompatActivity implements
         return false;
     }
 
-    protected String getScreenLabel() {
+    protected String getAnalyticsScreenLabel() {
         return null;
     }
 
-    protected void disableActionBarTitle() {
-        getSupportActionBar().setDisplayShowTitleEnabled(false);
+    protected int getNavigationTitleId() {
+        return 0;
     }
 
     protected void setFullscreenLayout() {

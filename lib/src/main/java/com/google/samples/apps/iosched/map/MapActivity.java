@@ -81,10 +81,11 @@ public class MapActivity extends BaseActivity
         super.onCreate(savedInstanceState);
         mMapFragment = (MapFragment) getSupportFragmentManager().findFragmentByTag("map");
         mDetachedMode = getIntent().getBooleanExtra(EXTRA_DETACHED_MODE, false);
-        if (isFinishing()) return;
+        if (isFinishing()) {
+            return;
+        }
 
         setContentView(R.layout.map_act);
-        disableActionBarTitle();
         setFullscreenLayout();
         mInfoContainer = findViewById(R.id.map_detail_popup);
         overridePendingTransition(0, 0);
@@ -301,7 +302,12 @@ public class MapActivity extends BaseActivity
     }
 
     @Override
-    protected String getScreenLabel() {
+    protected String getAnalyticsScreenLabel() {
         return SCREEN_LABEL;
+    }
+
+    @Override
+    protected int getNavigationTitleId() {
+        return R.string.title_map;
     }
 }

@@ -465,7 +465,7 @@
   <string name="title_map">Plan</string>
 
   <!-- Navigation bar text for viewing the user's schedule -->
-  <string name="title_my_schedule">Mon emploi du temps</string>
+  <string name="title_schedule">Mon emploi du temps</string>
 
   <!-- Label for Search screen, that allows users to search for sessions. -->
   <string name="title_search">Rechercher</string>

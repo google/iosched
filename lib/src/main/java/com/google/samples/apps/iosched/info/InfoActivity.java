@@ -28,7 +28,7 @@ public class InfoActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.info_act);
         setFullscreenLayout();
-        disableActionBarTitle();
+
         InfoPagerFragment infoPagerFragment = (InfoPagerFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.main_content);
         mPresenter = new InfoPresenter(this, infoPagerFragment);
@@ -51,5 +51,10 @@ public class InfoActivity extends BaseActivity {
     @Override
     public boolean canSwipeRefreshChildScrollUp() {
         return true;
+    }
+
+    @Override
+    protected int getNavigationTitleId() {
+        return R.string.title_info;
     }
 }

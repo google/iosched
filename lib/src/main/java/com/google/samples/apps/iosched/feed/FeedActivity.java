@@ -39,7 +39,7 @@ public class FeedActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.feed_act);
         setFullscreenLayout();
-        disableActionBarTitle();
+
         FeedFragment feedFragment = (FeedFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.main_content);
         feedFragment.setRetainInstance(true);
@@ -71,7 +71,12 @@ public class FeedActivity extends BaseActivity {
     }
 
     @Override
-    protected String getScreenLabel() {
+    protected String getAnalyticsScreenLabel() {
         return SCREEN_LABEL;
+    }
+
+    @Override
+    protected int getNavigationTitleId() {
+        return R.string.title_feed;
     }
 }
