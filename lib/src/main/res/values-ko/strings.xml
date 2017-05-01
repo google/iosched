@@ -457,7 +457,7 @@
   <string name="title_map">맵</string>
 
   <!-- Navigation bar text for viewing the user's schedule -->
-  <string name="title_my_schedule">내 일정</string>
+  <string name="title_schedule">내 일정</string>
 
   <!-- Label for Search screen, that allows users to search for sessions. -->
   <string name="title_search">검색</string>

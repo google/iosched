@@ -14,63 +14,36 @@
      See the License for the specific language governing permissions and
      limitations under the License.
 -->
-<android.support.design.widget.CoordinatorLayout
+<LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:fitsSystemWindows="true"
-    app:statusBarBackground="@null">
+    android:orientation="vertical">
 
-    <android.support.design.widget.AppBarLayout
+    <FrameLayout
         android:id="@+id/appbar"
+        style="@style/AppBar"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/extended_appbar_height"
-        android:fitsSystemWindows="true">
+        android:layout_height="wrap_content"
+        android:background="@color/sunflower_yellow">
 
-        <android.support.design.widget.CollapsingToolbarLayout
-            android:id="@+id/collapsing_toolbar"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="@color/sunflower_yellow"
-            android:fitsSystemWindows="true"
-            android:minHeight="?actionBarSize"
-            app:layout_scrollFlags="scroll|exitUntilCollapsed"
-            app:statusBarScrim="@null"
-            app:titleEnabled="false">
+        <include layout="@layout/toolbar" />
 
-            <android.support.v7.widget.Toolbar
-                android:id="@+id/toolbar"
-                android:layout_width="match_parent"
-                android:layout_height="?actionBarSize"
-                android:layout_gravity="bottom"
-                app:layout_collapseMode="pin"
-                app:popupTheme="@style/ThemeOverlay.ToolbarPopup">
-
-                <TextView
-                    android:id="@+id/toolbar_title"
-                    style="@style/ProductSans.Title"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/title_feed" />
-
-            </android.support.v7.widget.Toolbar>
-
-        </android.support.design.widget.CollapsingToolbarLayout>
-
-    </android.support.design.widget.AppBarLayout>
+    </FrameLayout>
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/feed_recycler_view"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
         android:listDivider="@drawable/list_divider"
         android:orientation="vertical"
         android:scrollbarStyle="insideOverlay"
         android:scrollbars="vertical"
-        app:layoutManager="android.support.v7.widget.LinearLayoutManager"
         app:layout_behavior="@string/appbar_scrolling_view_behavior"
+        app:layoutManager="android.support.v7.widget.LinearLayoutManager"
         tools:listitem="@layout/feed_message_card_collapsed" />
 
-</android.support.design.widget.CoordinatorLayout>
+</LinearLayout>

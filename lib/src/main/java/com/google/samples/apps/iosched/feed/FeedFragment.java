@@ -39,7 +39,7 @@ public class FeedFragment extends Fragment implements FeedContract.View {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container,
-                             @Nullable Bundle savedInstanceState) {
+            @Nullable Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.feed_fragment, container, false);
         mRecyclerView = (RecyclerView) root.findViewById(R.id.feed_recycler_view);
         mRecyclerView.setHasFixedSize(true);

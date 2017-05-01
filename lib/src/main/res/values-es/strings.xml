@@ -466,7 +466,7 @@
   <string name="title_map">Mapa</string>
 
   <!-- Navigation bar text for viewing the user's schedule -->
-  <string name="title_my_schedule">Mi programación</string>
+  <string name="title_schedule">Mi programación</string>
 
   <!-- Label for Search screen, that allows users to search for sessions. -->
   <string name="title_search">Buscar</string>

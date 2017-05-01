@@ -580,7 +580,7 @@
     <string name="title_my_io">My I/O</string>
 
     <!-- Navigation bar text for viewing the user's schedule -->
-    <string name="title_my_schedule">Schedule</string>
+    <string name="title_schedule">Schedule</string>
 
     <!-- Navigation bar text for viewing the Feed -->
     <string name="title_feed">Feed</string>

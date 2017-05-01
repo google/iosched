@@ -12,15 +12,34 @@
   or implied. See the License for the specific language governing permissions and limitations under
   the License.
   -->
-
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:fitsSystemWindows="true"
     android:orientation="vertical">
+
+    <LinearLayout
+        android:id="@id/appbar"
+        style="@style/AppBar.Dark"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/lightish_blue"
+        android:orientation="vertical">
+
+        <include layout="@layout/toolbar" />
+
+        <android.support.design.widget.TabLayout
+            android:id="@+id/sliding_tabs"
+            android:layout_width="match_parent"
+            android:layout_height="?actionBarSize"
+            android:layout_gravity="bottom"
+            app:tabIndicatorColor="@color/tab_selected_strip"
+            app:tabIndicatorHeight="4dp"
+            app:tabTextColor="@android:color/white" />
+
+    </LinearLayout>
 
     <android.support.design.widget.CoordinatorLayout
         android:layout_width="match_parent"
@@ -29,73 +48,34 @@
         android:fitsSystemWindows="true">
 
         <android.support.design.widget.AppBarLayout
-            android:id="@+id/appbar"
+            android:id="@+id/filters_appbar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:fitsSystemWindows="true">
-
-            <android.support.design.widget.CollapsingToolbarLayout
-                android:id="@+id/collapsing_toolbar"
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/extended_appbar_height"
-                android:fitsSystemWindows="true"
-                android:minHeight="?actionBarSize"
-                android:theme="@style/ThemeOverlay.DarkToolbar"
-                app:layout_scrollFlags="scroll|exitUntilCollapsed"
-                app:statusBarScrim="@null"
-                app:titleEnabled="false">
-
-                <android.support.v7.widget.Toolbar
-                    android:id="@+id/toolbar"
-                    android:layout_width="match_parent"
-                    android:layout_height="?actionBarSize"
-                    android:layout_gravity="bottom"
-                    android:layout_marginBottom="48dp"
-                    app:popupTheme="@style/ThemeOverlay.ToolbarPopup">
-
-                    <TextView
-                        android:id="@+id/toolbar_title"
-                        style="@style/ProductSans.Title"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/title_my_schedule" />
-
-                </android.support.v7.widget.Toolbar>
-
-                <android.support.design.widget.TabLayout
-                    android:id="@+id/sliding_tabs"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="bottom"
-                    app:tabTextColor="@android:color/white"
-                    app:tabIndicatorHeight="4dp"
-                    app:tabIndicatorColor="@color/tab_selected_strip" />
-
-            </android.support.design.widget.CollapsingToolbarLayout>
 
             <LinearLayout
                 android:id="@+id/filters_bar_inner"
                 android:layout_width="match_parent"
                 android:layout_height="?actionBarSize"
+                app:layout_scrollFlags="scroll|enterAlways"
                 android:background="@color/light_grey"
                 android:baselineAligned="false"
                 android:gravity="center_vertical"
                 android:orientation="horizontal"
                 android:visibility="gone"
-                app:layout_scrollFlags="scroll|enterAlways"
                 tools:visibility="visible">
 
                 <TextView
                     android:id="@+id/filters_description"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
-                    android:paddingStart="@dimen/padding_normal"
-                    android:paddingEnd="@dimen/padding_normal"
                     android:layout_weight="1"
-                    android:gravity="center_vertical"
                     android:ellipsize="end"
-                    android:minLines="1"
+                    android:gravity="center_vertical"
                     android:maxLines="2"
+                    android:minLines="1"
+                    android:paddingEnd="@dimen/padding_normal"
+                    android:paddingStart="@dimen/padding_normal"
                     tools:text="Filters: Sessions, Android" />
 
                 <ImageButton
@@ -104,8 +84,8 @@
                     android:layout_height="match_parent"
                     android:background="?selectableItemBackgroundBorderless"
                     android:contentDescription="@string/clear_filters"
-                    android:scaleType="center"
                     android:padding="@dimen/padding_normal"
+                    android:scaleType="center"
                     app:srcCompat="@drawable/ic_clear_all" />
 
             </LinearLayout>
