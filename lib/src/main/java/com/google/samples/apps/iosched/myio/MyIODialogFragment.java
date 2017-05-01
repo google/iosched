@@ -14,37 +14,33 @@
 
 package com.google.samples.apps.iosched.myio;
 
-import android.app.Activity;
+import android.app.Dialog;
 import android.content.Context;
+import android.content.DialogInterface;
+import android.content.DialogInterface.OnClickListener;
 import android.graphics.Bitmap;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.ColorInt;
 import android.support.annotation.NonNull;
 import android.support.annotation.StringRes;
-import android.support.constraint.ConstraintLayout;
-import android.support.constraint.Guideline;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.graphics.drawable.RoundedBitmapDrawable;
 import android.support.v4.graphics.drawable.RoundedBitmapDrawableFactory;
+import android.support.v7.app.AlertDialog;
 import android.text.SpannableStringBuilder;
 import android.text.Spanned;
 import android.text.style.BulletSpan;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.target.BitmapImageViewTarget;
 import com.google.samples.apps.iosched.lib.R;
-import com.google.samples.apps.iosched.sync.account.Account;
 import com.google.samples.apps.iosched.util.AccountUtils;
-import com.google.samples.apps.iosched.util.WelcomeUtils;
-
-import static android.view.View.GONE;
 
 /**
  * DialogFragment that handles auth on the My I/O screen.
@@ -59,86 +55,77 @@ public class MyIODialogFragment extends DialogFragment {
         return new MyIODialogFragment();
     }
 
+    @NonNull
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-            Bundle savedInstanceState) {
-        final View view = inflater.inflate(R.layout.my_io_dialog_frag, container);
+    public Dialog onCreateDialog(Bundle savedInstanceState) {
+        final Context context = getContext();
+        AlertDialog.Builder builder = new AlertDialog.Builder(context);
 
-        TextView name = (TextView) view.findViewById(R.id.name);
-        TextView email = (TextView) view.findViewById(R.id.email);
-        final ImageView avatar = (ImageView) view.findViewById(R.id.avatar);
-        TextView bodyIntro = (TextView) view.findViewById(R.id.body_intro);
-        Button authButton = (Button) view.findViewById(R.id.auth_button);
-
-        // Note: this may be null if the user has not set up a profile photo.
-        Uri url = AccountUtils.getActiveAccountPhotoUrl(getActivity());
-        boolean signedIn = AccountUtils.hasActiveAccount(getActivity());
-
+        boolean signedIn = AccountUtils.hasActiveAccount(context);
         if (signedIn) {
-            name.setText(AccountUtils.getActiveAccountDisplayName(getActivity()));
-            email.setText(AccountUtils.getActiveAccountName(getActivity()));
-            // A default avatar is already specified in XML. This substitutes that default with the
-            // photo associated with the account.
+            LayoutInflater inflater = LayoutInflater.from(context);
+            View titleView = inflater.inflate(R.layout.myio_auth_dialog_signedin_title, null);
+            TextView name = (TextView) titleView.findViewById(R.id.name);
+            TextView email = (TextView) titleView.findViewById(R.id.email);
+            final ImageView avatar = (ImageView) titleView.findViewById(R.id.avatar);
+
+            name.setText(AccountUtils.getActiveAccountDisplayName(context));
+            email.setText(AccountUtils.getActiveAccountName(context));
+
+            // Note: this may be null if the user has not set up a profile photo.
+            Uri url = AccountUtils.getActiveAccountPhotoUrl(context);
             if (url != null) {
-                final Context context = getActivity().getApplicationContext();
-                // TODO: refactor.
                 Glide.with(context)
                         .load(url.toString())
                         .asBitmap()
                         .fitCenter()
+                        .placeholder(R.drawable.ic_default_avatar)
                         .into(new BitmapImageViewTarget(avatar) {
                             @Override
                             protected void setResource(Bitmap resource) {
-                                RoundedBitmapDrawable circularBitmapDrawable =
-                                        RoundedBitmapDrawableFactory
-                                                .create(context.getResources(), resource);
-                                circularBitmapDrawable.setCircular(true);
-                                avatar.setImageDrawable(circularBitmapDrawable);
+                                RoundedBitmapDrawable roundedBmp = RoundedBitmapDrawableFactory
+                                        .create(context.getResources(), resource);
+                                roundedBmp.setCircular(true);
+                                avatar.setImageDrawable(roundedBmp);
                             }
                         });
             }
-            bodyIntro.setText(buildDialogText(getContext(),
+            builder.setCustomTitle(titleView);
+            builder.setMessage(buildDialogText(context,
                     R.string.my_io_body_intro_signed_in,
                     R.string.my_io_dialog_first_bullet_point_signed_in,
                     R.string.my_io_dialog_second_bullet_point_signed_in,
                     R.string.my_io_dialog_third_bullet_point_signed_in,
-                    bodyIntro.getCurrentTextColor()));
+                    Color.BLACK));
         } else {
-            avatar.setVisibility(GONE);
-            name.setVisibility(GONE);
-            email.setVisibility(GONE);
-            view.findViewById(R.id.signed_in_circle_check).setVisibility(GONE);
-            view.findViewById(R.id.divider).setVisibility(GONE);
-            ((ConstraintLayout.LayoutParams) view.findViewById(R.id.guide_header).getLayoutParams())
-                    .guideBegin = 0;
-            bodyIntro.setText(buildDialogText(getContext(),
+            builder.setMessage(buildDialogText(getContext(),
                     R.string.my_io_body_intro_signed_out,
                     R.string.my_io_dialog_first_bullet_point_signed_out,
                     R.string.my_io_dialog_second_bullet_point_signed_out,
                     R.string.my_io_dialog_third_bullet_point_signed_out,
-                    bodyIntro.getCurrentTextColor()));
+                    Color.BLACK));
         }
 
-        authButton.setText(signedIn ? getResources().getString(R.string.signout_prompt) :
-                getResources().getString(R.string.signin_prompt));
-        authButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(final View view) {
-                MyIOActivity myIOActivity = ((MyIOActivity) getActivity());
-                if (AccountUtils.hasActiveAccount(getActivity())) {
-                    myIOActivity.signOut();
-                } else {
-                    myIOActivity.signIn();
-                }
-                dismiss();
-            }
-        });
-        return view;
+        builder.setPositiveButton(signedIn ? R.string.signout_prompt : R.string.signin_prompt,
+                new OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        MyIOActivity myIOActivity = ((MyIOActivity) getActivity());
+                        if (AccountUtils.hasActiveAccount(myIOActivity)) {
+                            myIOActivity.signOut();
+                        } else {
+                            myIOActivity.signIn();
+                        }
+                        dismiss();
+                    }
+                });
+
+        return builder.create();
     }
 
     private CharSequence buildDialogText(@NonNull Context context, @StringRes int intro,
-                                         @StringRes int bullet1, @StringRes int bullet2,
-                                         @StringRes int bullet3, @ColorInt int color) {
+            @StringRes int bullet1, @StringRes int bullet2, @StringRes int bullet3,
+            @ColorInt int color) {
         SpannableStringBuilder ssb = new SpannableStringBuilder(context.getString(intro));
         int padding = context.getResources().getDimensionPixelSize(R.dimen.padding_normal);
         ssb.append("\n\n");
