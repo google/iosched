@@ -68,5 +68,4 @@ public class CheckableFloatingActionButton extends FloatingActionButton implemen
         }
         return drawableState;
     }
-
 }

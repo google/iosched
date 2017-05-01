@@ -267,7 +267,7 @@ public class SessionDetailFragment extends Fragment implements
                     sendUserAction(SessionDetailUserActionEnum.UNSTAR, null);
                 }
 
-                SessionsHelper.showBookmarkClickedHint(getActivity(), isInSchedule);
+                SessionsHelper.showBookmarkClickedHint(mAddScheduleFab, isInSchedule);
                 mAddScheduleFab.announceForAccessibility(isInSchedule
                         ? getString(R.string.session_details_a11y_session_added)
                         : getString(R.string.session_details_a11y_session_removed));
