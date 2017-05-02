@@ -1,16 +1,20 @@
-package com.google.samples.apps.iosched.server.userdata.server.servlet;
+package com.google.samples.apps.iosched.server.registration;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.fail;
 import static org.mockito.Matchers.any;
+import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
+import com.google.api.server.spi.response.ForbiddenException;
 import com.google.appengine.api.urlfetch.HTTPRequest;
 import com.google.appengine.api.urlfetch.HTTPResponse;
 import com.google.appengine.api.urlfetch.URLFetchService;
 import com.google.firebase.database.DatabaseReference;
 import com.google.samples.apps.iosched.server.FirebaseWrapper;
-import com.google.samples.apps.iosched.server.registration.RegistrationEndpoint;
 import java.io.ByteArrayInputStream;
 import java.io.PrintWriter;
 import javax.servlet.ServletConfig;
@@ -27,16 +31,16 @@ public class RegistrationEndpointTest {
     private static final String REGISTERED_EVENT_RESPONSE = "{\"rsvp_status\":\"confirmed\"}";
     private static final String UNREGISTERED_EVENT_RESPONSE = "{\"rsvp_status\":\"invited\"}";
     private static final String EMPTY_EVENT_RESPONSE = "";
-    private static final String REGISTERED_SERVLET_RESPONSE = "{\"registered\":\"true\"}";
-    private static final String UNREGISTERED_SERVLET_RESPONSE = "{\"registered\":\"false\"}";
 
     private static final String EVENT_MANAGER_URL = "http://events.example.com";
-    private static final String EVENT_ID = "event_id";
+    private static final String EVENT_ID_1 = "event_id_1";
+    private static final String EVENT_ID_2 = "event_id_2";
     private static final String USER_ID = "user_id";
     private static final String USER_EMAIL = "email@example.com";
     private static final String DATABASE_URL = "database_url";
     private static final String SERVICE_ACCOUNT = "service_account";
     private static final String SERVICE_ACCOUNT_KEY = "service_account_key";
+    private static final String FIREBASE_TOKEN = "token";
 
     @Mock private HttpServletRequest mockRequest;
     @Mock private HttpServletResponse mockResponse;
@@ -48,19 +52,19 @@ public class RegistrationEndpointTest {
     @Mock private PrintWriter mockWriter;
     @Mock private DatabaseReference mockDatabaseReference;
 
-    RegistrationEndpoint servlet = new RegistrationEndpoint();
+    RegistrationEndpoint endpoint = new RegistrationEndpoint();
 
     @Before
     public void setUp() throws Exception {
         MockitoAnnotations.initMocks(this);
         // Set up servlet environment mocks.
-        when(mockServletConfig.getServletContext()).thenReturn(mockServletContext);
         when(mockServletContext.getInitParameter("databaseUrl")).thenReturn(DATABASE_URL);
         when(mockServletContext.getInitParameter("accountKey")).thenReturn(SERVICE_ACCOUNT);
         when(mockServletContext.getResourceAsStream(SERVICE_ACCOUNT))
                 .thenReturn(new ByteArrayInputStream(SERVICE_ACCOUNT_KEY.getBytes()));
-        when(mockServletConfig.getInitParameter("eventId")).thenReturn(EVENT_ID);
-        when(mockServletConfig.getInitParameter("eventManagerUrl")).thenReturn(EVENT_MANAGER_URL);
+        when(mockServletContext.getInitParameter("eventIds"))
+                .thenReturn(EVENT_ID_1 + ", " + EVENT_ID_2);
+        when(mockServletContext.getInitParameter("eventManagerUrl")).thenReturn(EVENT_MANAGER_URL);
         when(mockResponse.getWriter()).thenReturn(mockWriter);
 
         // Set up Firebase-related mocks.
@@ -70,10 +74,9 @@ public class RegistrationEndpointTest {
         when(mockFirebaseWrapper.getUserId()).thenReturn(USER_ID);
         when(mockFirebaseWrapper.getUserEmail()).thenReturn(USER_EMAIL);
 
-        // Configure test servlet.
-        servlet.init(mockServletConfig);
-        servlet.firebaseWrapper = mockFirebaseWrapper;
-        servlet.urlFetchService = mockUrlFetchService;
+        // Configure test servlet;
+        endpoint.firebaseWrapper = mockFirebaseWrapper;
+        endpoint.urlFetchService = mockUrlFetchService;
     }
 
     @Test
@@ -81,21 +84,64 @@ public class RegistrationEndpointTest {
         when(mockFirebaseWrapper.isUserAuthenticated()).thenReturn(true);
         when(mockHttpResponse.getResponseCode()).thenReturn(200);
         when(mockHttpResponse.getContent()).thenReturn(REGISTERED_EVENT_RESPONSE.getBytes());
+        RegistrationResult result = endpoint.registrationStatus(mockServletContext, FIREBASE_TOKEN);
 
-        servlet.doGet(mockRequest, mockResponse);
+        assertTrue(result.isRegistered());
+    }
 
-        verify(mockResponse).setStatus(HttpServletResponse.SC_OK);
-        verify(mockResponse).setContentType("application/json");
-        verify(mockWriter).write(REGISTERED_SERVLET_RESPONSE);
+    @Test
+    public void testGetRegisteredUserInSecondEventAfterNotFound() throws Exception {
+        when(mockFirebaseWrapper.isUserAuthenticated()).thenReturn(true);
+        when(mockHttpResponse.getResponseCode())
+                .thenReturn(404)
+                .thenReturn(200);
+        when(mockHttpResponse.getContent())
+                .thenReturn(REGISTERED_EVENT_RESPONSE.getBytes());
+
+        RegistrationResult result = endpoint.registrationStatus(mockServletContext, FIREBASE_TOKEN);
+
+        assertTrue(result.isRegistered());
+    }
+
+    @Test
+    public void testGetRegisteredUserInSecondEventAfterUnregistered() throws Exception {
+        when(mockFirebaseWrapper.isUserAuthenticated()).thenReturn(true);
+        when(mockHttpResponse.getResponseCode())
+                .thenReturn(200)
+                .thenReturn(200);
+        when(mockHttpResponse.getContent())
+                .thenReturn(UNREGISTERED_EVENT_RESPONSE.getBytes())
+                .thenReturn(REGISTERED_EVENT_RESPONSE.getBytes());
+
+        RegistrationResult result = endpoint.registrationStatus(mockServletContext, FIREBASE_TOKEN);
+
+        assertTrue(result.isRegistered());
+    }
+
+    @Test
+    public void testGetRegisteredUserInSecondEventAfterServiceError() throws Exception {
+        when(mockFirebaseWrapper.isUserAuthenticated()).thenReturn(true);
+        when(mockHttpResponse.getResponseCode())
+                .thenReturn(500)
+                .thenReturn(200);
+        when(mockHttpResponse.getContent())
+                .thenReturn(REGISTERED_EVENT_RESPONSE.getBytes());
+
+        RegistrationResult result = endpoint.registrationStatus(mockServletContext, FIREBASE_TOKEN);
+
+        assertTrue(result.isRegistered());
     }
 
     @Test
     public void testGetNoAuth() throws Exception {
         when(mockFirebaseWrapper.isUserAuthenticated()).thenReturn(false);
 
-        servlet.doGet(mockRequest, mockResponse);
-
-        verify(mockResponse).setStatus(HttpServletResponse.SC_NOT_FOUND);
+        try {
+            endpoint.registrationStatus(mockServletContext, FIREBASE_TOKEN);
+            fail();
+        } catch (ForbiddenException e) {
+            // Expected exception.
+        }
     }
 
     @Test
@@ -103,11 +149,9 @@ public class RegistrationEndpointTest {
         when(mockFirebaseWrapper.isUserAuthenticated()).thenReturn(true);
         when(mockHttpResponse.getResponseCode()).thenReturn(404);
 
-        servlet.doGet(mockRequest, mockResponse);
+        RegistrationResult result = endpoint.registrationStatus(mockServletContext, FIREBASE_TOKEN);
 
-        verify(mockResponse).setStatus(HttpServletResponse.SC_OK);
-        verify(mockResponse).setContentType("application/json");
-        verify(mockWriter).write(UNREGISTERED_SERVLET_RESPONSE);
+        assertFalse(result.isRegistered());
     }
 
     @Test
@@ -116,11 +160,9 @@ public class RegistrationEndpointTest {
         when(mockHttpResponse.getResponseCode()).thenReturn(200);
         when(mockHttpResponse.getContent()).thenReturn(UNREGISTERED_EVENT_RESPONSE.getBytes());
 
-        servlet.doGet(mockRequest, mockResponse);
+        RegistrationResult result = endpoint.registrationStatus(mockServletContext, FIREBASE_TOKEN);
 
-        verify(mockResponse).setStatus(HttpServletResponse.SC_OK);
-        verify(mockResponse).setContentType("application/json");
-        verify(mockWriter).write(UNREGISTERED_SERVLET_RESPONSE);
+        assertFalse(result.isRegistered());
     }
 
     @Test
@@ -129,25 +171,26 @@ public class RegistrationEndpointTest {
         when(mockHttpResponse.getResponseCode()).thenReturn(500);
         when(mockHttpResponse.getContent()).thenReturn(EMPTY_EVENT_RESPONSE.getBytes());
 
-        servlet.doGet(mockRequest, mockResponse);
+        RegistrationResult result = endpoint.registrationStatus(mockServletContext, FIREBASE_TOKEN);
 
-        verify(mockResponse).setStatus(HttpServletResponse.SC_OK);
-        verify(mockResponse).setContentType("application/json");
-        verify(mockWriter).write(UNREGISTERED_SERVLET_RESPONSE);
+        assertFalse(result.isRegistered());
     }
 
     @Test
     public void testGetQueryEventService() throws Exception {
         when(mockFirebaseWrapper.isUserAuthenticated()).thenReturn(true);
-        when(mockHttpResponse.getResponseCode()).thenReturn(200);
+        when(mockHttpResponse.getResponseCode()).thenReturn(404).thenReturn(200);
         when(mockHttpResponse.getContent()).thenReturn(REGISTERED_EVENT_RESPONSE.getBytes());
 
-        servlet.doGet(mockRequest, mockResponse);
+        endpoint.registrationStatus(mockServletContext, FIREBASE_TOKEN);
 
         ArgumentCaptor<HTTPRequest> httpRequestCaptor = ArgumentCaptor.forClass(HTTPRequest.class);
-        verify(mockUrlFetchService).fetch(httpRequestCaptor.capture());
+        verify(mockUrlFetchService, times(2)).fetch(httpRequestCaptor.capture());
         assertEquals(
-                httpRequestCaptor.getValue().getURL().toString(),
-                "http://events.example.com/event_id/delegates/email@example.com/");
+                httpRequestCaptor.getAllValues().get(0).getURL().toString(),
+                "http://events.example.com/event_id_1/delegates/email@example.com/");
+        assertEquals(
+                httpRequestCaptor.getAllValues().get(1).getURL().toString(),
+                "http://events.example.com/event_id_2/delegates/email@example.com/");
     }
 }
