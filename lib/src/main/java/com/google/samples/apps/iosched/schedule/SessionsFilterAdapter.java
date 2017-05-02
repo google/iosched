@@ -16,8 +16,10 @@ package com.google.samples.apps.iosched.schedule;
 import android.content.Context;
 import android.content.res.ColorStateList;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v4.view.ViewCompat;
 import android.support.v7.content.res.AppCompatResources;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.RecyclerView.Adapter;
 import android.support.v7.widget.RecyclerView.ViewHolder;
 import android.view.LayoutInflater;
@@ -33,6 +35,7 @@ import com.google.samples.apps.iosched.Config.Tags;
 import com.google.samples.apps.iosched.lib.R;
 import com.google.samples.apps.iosched.model.TagMetadata;
 import com.google.samples.apps.iosched.model.TagMetadata.Tag;
+import com.google.samples.apps.iosched.schedule.DividerDecoration.Divided;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -45,8 +48,9 @@ public class SessionsFilterAdapter extends Adapter<ViewHolder> {
     private static final String TAG = makeLogTag(SessionsFilterAdapter.class);
     private static final String STATE_FILTERS = "com.google.samples.apps.iosched.STATE_FILTERS";
 
-    private static final int TYPE_TAG_FILTER = 0;
-    private static final int TYPE_TOPICS_HEADER = 1;
+    private static final int TYPE_TYPE = 0;
+    private static final int TYPE_TOPIC = 1;
+    private static final int TYPE_HEADER = 2;
 
     private static final Object PAYLOAD_CHECK_CHANGED = new Object();
 
@@ -55,11 +59,7 @@ public class SessionsFilterAdapter extends Adapter<ViewHolder> {
     private TagFilterHolder mTagFilterHolder = new TagFilterHolder();
     private OnFiltersChangedListener mListener;
 
-    public SessionsFilterAdapter(Context context, TagMetadata filters) {
-        this(context, filters, null);
-    }
-
-    public SessionsFilterAdapter(Context context, TagMetadata filters, Bundle savedState) {
+    SessionsFilterAdapter(Context context, TagMetadata filters, Bundle savedState) {
         mInflater = LayoutInflater.from(context);
 
         mItems = new ArrayList<>();
@@ -75,31 +75,27 @@ public class SessionsFilterAdapter extends Adapter<ViewHolder> {
         // Types
         List<TagMetadata.Tag> types = tagMetadata.getTagsInCategory(Tags.CATEGORY_TYPE);
         if (types != null && !types.isEmpty()) {
-            for (TagMetadata.Tag topic : types) {
-                mItems.add(topic);
-            }
+            mItems.addAll(types);
         }
         // "Topics" header
         mItems.add(new TopicsHeader());
         // Topics (aka Tracks)
         List<TagMetadata.Tag> topics = tagMetadata.getTagsInCategory(Tags.CATEGORY_TRACK);
         if (topics != null && !topics.isEmpty()) {
-            for (TagMetadata.Tag topic : topics) {
-                mItems.add(topic);
-            }
+            mItems.addAll(topics);
         }
     }
 
-    public void setTagMetadata(TagMetadata tagMetadata) {
+    void setTagMetadata(TagMetadata tagMetadata) {
         buildFiltersList(tagMetadata);
         notifyDataSetChanged();
     }
 
-    public void setSessionFilterAdapterListener(OnFiltersChangedListener listener) {
+    void setSessionFilterAdapterListener(OnFiltersChangedListener listener) {
         mListener = listener;
     }
 
-    public void addTag(Tag tag) {
+    void addTag(Tag tag) {
         if (mTagFilterHolder.add(tag)) {
             int position = mItems.indexOf(tag);
             if (position >= 0) {
@@ -113,7 +109,7 @@ public class SessionsFilterAdapter extends Adapter<ViewHolder> {
         return mTagFilterHolder;
     }
 
-    public void clearAllFilters() {
+    void clearAllFilters() {
         mTagFilterHolder.clear();
         notifyItemRangeChanged(0, getItemCount(), PAYLOAD_CHECK_CHANGED);
         dispatchFiltersChanged();
@@ -122,10 +118,13 @@ public class SessionsFilterAdapter extends Adapter<ViewHolder> {
     @Override
     public ViewHolder onCreateViewHolder(final ViewGroup parent, final int viewType) {
         switch (viewType) {
-            case TYPE_TAG_FILTER:
+            case TYPE_TYPE:
+                return new FilterViewHolder(mInflater.inflate(
+                        R.layout.list_item_filter_drawer_session_type, parent, false));
+            case TYPE_TOPIC:
                 return new FilterViewHolder(mInflater.inflate(
                         R.layout.list_item_filter_drawer, parent, false));
-            case TYPE_TOPICS_HEADER:
+            case TYPE_HEADER:
                 return new HeaderViewHolder(mInflater.inflate(
                         R.layout.list_item_filter_drawer_topics_header, parent, false));
             default:
@@ -136,11 +135,12 @@ public class SessionsFilterAdapter extends Adapter<ViewHolder> {
 
     @Override
     public void onBindViewHolder(final ViewHolder holder, final int position) {
-        switch (getItemViewType(position)) {
-            case TYPE_TAG_FILTER:
+        switch (holder.getItemViewType()) {
+            case TYPE_TYPE: // fall through
+            case TYPE_TOPIC:
                 FilterViewHolder fvh = (FilterViewHolder) holder;
                 Tag filter = (Tag) mItems.get(position);
-                fvh.onBind(filter, mTagFilterHolder.contains(filter));
+                fvh.bind(filter, mTagFilterHolder.contains(filter));
                 break;
         }
     }
@@ -166,9 +166,15 @@ public class SessionsFilterAdapter extends Adapter<ViewHolder> {
     public int getItemViewType(final int position) {
         Object item = mItems.get(position);
         if (item instanceof TopicsHeader) {
-            return TYPE_TOPICS_HEADER;
+            return TYPE_HEADER;
+        } else if (item instanceof Tag) {
+            Tag tag = (Tag) item;
+            if (Tags.CATEGORY_TYPE.equals(tag.getCategory())) {
+                return TYPE_TYPE;
+            }
+            return TYPE_TOPIC;
         }
-        return TYPE_TAG_FILTER;
+        return RecyclerView.INVALID_TYPE;
     }
 
     private void updateTagFilter(Tag filter, boolean checked) {
@@ -184,7 +190,7 @@ public class SessionsFilterAdapter extends Adapter<ViewHolder> {
         }
     }
 
-    public void onSaveInstanceState(Bundle outState) {
+    void onSaveInstanceState(Bundle outState) {
         outState.putParcelable(STATE_FILTERS, mTagFilterHolder);
     }
 
@@ -209,14 +215,13 @@ public class SessionsFilterAdapter extends Adapter<ViewHolder> {
 
     // -- ViewHolders
 
-    private class FilterViewHolder extends ViewHolder implements OnCheckedChangeListener {
+    private class FilterViewHolder extends ViewHolder implements OnCheckedChangeListener, Divided {
 
-        protected final TextView mLabel;
-        protected final CheckBox mCheckbox;
+        final TextView mLabel;
+        final CheckBox mCheckbox;
+        private @Nullable Tag mTagFilter;
 
-        private Tag mTagFilter;
-
-        public FilterViewHolder(final View itemView) {
+        FilterViewHolder(final View itemView) {
             super(itemView);
             mLabel = (TextView) itemView.findViewById(R.id.filter_label);
             mCheckbox = (CheckBox) itemView.findViewById(R.id.filter_checkbox);
@@ -228,7 +233,7 @@ public class SessionsFilterAdapter extends Adapter<ViewHolder> {
             });
         }
 
-        void onBind(Tag filter, boolean checked) {
+        void bind(Tag filter, boolean checked) {
             mTagFilter = filter;
 
             mLabel.setText(filter.getName());
@@ -260,7 +265,7 @@ public class SessionsFilterAdapter extends Adapter<ViewHolder> {
 
     private class HeaderViewHolder extends ViewHolder {
 
-        public HeaderViewHolder(final View itemView) {
+        HeaderViewHolder(final View itemView) {
             super(itemView);
         }
     }
