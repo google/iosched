@@ -63,8 +63,11 @@
 
     <android.support.v4.widget.NestedScrollView
         android:id="@+id/scroll_view"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_width="@dimen/main_content_width"
+        android:layout_height="match_parent"
+        android:layout_gravity="center_horizontal|top"
+        android:background="@color/content_background"
+        android:elevation="@dimen/card_elevation"
         android:scrollbarStyle="insideOverlay"
         android:scrollbars="vertical"
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
@@ -243,9 +246,9 @@
 
     <FrameLayout
         android:id="@+id/submit_feedback_button"
-        android:layout_width="match_parent"
+        android:layout_width="@dimen/main_content_width"
         android:layout_height="wrap_content"
-        android:layout_gravity="bottom"
+        android:layout_gravity="center_horizontal|bottom"
         android:background="?colorPrimary"
         android:contentDescription="@string/session_feedback_submitlink"
         android:elevation="4dp"

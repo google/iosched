@@ -101,8 +101,11 @@
 
         <FrameLayout
             android:id="@+id/main_content"
-            android:layout_width="match_parent"
+            android:layout_width="@dimen/main_content_width"
             android:layout_height="match_parent"
+            android:layout_gravity="center_horizontal|top"
+            android:background="@color/content_background"
+            android:elevation="@dimen/card_elevation"
             app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
             <com.google.samples.apps.iosched.ui.widget.MultiSwipeRefreshLayout
