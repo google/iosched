@@ -133,14 +133,6 @@ public class SessionItemViewHolder extends ScheduleItemViewHolder
     }
 
     private void updateReservationStatus(ScheduleItem item) {
-        if (FirebaseAuth.getInstance().getCurrentUser() == null ||
-                RegistrationUtils.isRegisteredAttendee(mReservationStatus.getContext()) !=
-                        RegistrationUtils.REGSTATUS_REGISTERED ||
-                item.isKeynote() ||
-                item.reservationStatus == RESERVATION_STATUS_UNRESERVED) {
-            mReservationStatus.setVisibility(GONE);
-            return;
-        }
         if (item.reservationStatus == RESERVATION_STATUS_RESERVED ||
                 item.reservationStatus == RESERVATION_STATUS_WAITLISTED) {
             mReservationStatus.setVisibility(VISIBLE);
@@ -149,6 +141,8 @@ public class SessionItemViewHolder extends ScheduleItemViewHolder
                             R.drawable.ic_reserved : R.drawable.ic_waitlisted, 0, 0, 0);
             mReservationStatus.setText(item.reservationStatus == RESERVATION_STATUS_RESERVED ?
                     R.string.schedule_item_reserved : R.string.schedule_item_waitlisted);
+        } else {
+            mReservationStatus.setVisibility(GONE);
         }
     }
 
