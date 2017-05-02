@@ -125,7 +125,7 @@ public class SchedulePagerFragment extends Fragment implements ScheduleView {
 
         mViewPager = (ViewPager) view.findViewById(R.id.view_pager);
         mViewPagerAdapter = new ScheduleDayViewPagerAdapter(getContext(),
-                getChildFragmentManager());
+                getChildFragmentManager(), ScheduleModel.showPreConferenceData(getContext()));
         mViewPagerAdapter.setRetainedFragmentsTags(singleDayFragmentsTags);
         mViewPager.setAdapter(mViewPagerAdapter);
         mViewPager.setCurrentItem(currentSingleDayFragment);
@@ -219,7 +219,8 @@ public class SchedulePagerFragment extends Fragment implements ScheduleView {
      * @param day The zero-indexed conference day.
      */
     public void scrollToConferenceDay(int day) {
-        mViewPager.setCurrentItem(day);
+        int preConferenceDays = ScheduleModel.showPreConferenceData(getContext()) ? 1 : 0;
+        mViewPager.setCurrentItem(day + preConferenceDays);
     }
 
     public ScheduleSingleDayFragment[] getDayFragments() {
