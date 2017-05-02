@@ -61,7 +61,8 @@ public class InputJsonKeys {
       public static String INFO_FEATURED_SESSION="Featured Session";
       public static String INFO_IS_LIVE_STREAM="Is Live Streamed?";
       public static String INFO_HIDDEN_SESSION="Hide from schedule";
-      public static String INFO_STREAM_VIDEO_ID="streamedvideoID";
+      public static String INFO_STREAM_VIDEO_ID="YouTubeLSEventID";
+      public static String INFO_STREAM_CHANNEL="Livestream";
       public static String RELATED_NAME_VIDEO ="video";
       public static String RELATED_NAME_SESSIONS ="related sessions";
     }
