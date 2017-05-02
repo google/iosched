@@ -37,7 +37,6 @@ import com.google.samples.apps.iosched.provider.ScheduleContract;
 import com.google.samples.apps.iosched.settings.SettingsUtils;
 import com.google.samples.apps.iosched.util.AnalyticsHelper;
 import com.google.samples.apps.iosched.util.ParserUtils;
-import com.google.samples.apps.iosched.util.RegistrationUtils;
 import com.google.samples.apps.iosched.util.SessionsHelper;
 import com.google.samples.apps.iosched.util.ThrottledContentObserver;
 
@@ -131,8 +130,9 @@ public class ScheduleModel implements Model<ScheduleModel.MyScheduleQueryEnum,
     }
 
     public static boolean showPreConferenceData(Context context) {
-        return RegistrationUtils.isRegisteredAttendee(context) ==
-                RegistrationUtils.REGSTATUS_REGISTERED;
+//        return RegistrationUtils.isRegisteredAttendee(context) ==
+//                RegistrationUtils.REGSTATUS_REGISTERED;
+        return false;
     }
 
     /**
