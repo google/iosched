@@ -58,6 +58,7 @@ import com.google.samples.apps.iosched.signin.SignInListener;
 import com.google.samples.apps.iosched.signin.SignInManager;
 import com.google.samples.apps.iosched.ui.BaseActivity;
 import com.google.samples.apps.iosched.util.AccountUtils;
+import com.google.samples.apps.iosched.util.RegistrationUtils;
 import com.google.samples.apps.iosched.util.SyncUtils;
 import com.google.samples.apps.iosched.util.TimeUtils;
 import com.google.samples.apps.iosched.util.WelcomeUtils;
