@@ -19,8 +19,8 @@ import android.support.annotation.NonNull;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.remoteconfig.FirebaseRemoteConfig;
+import com.google.samples.apps.iosched.info.about.AboutInfo;
 import com.google.samples.apps.iosched.info.event.EventInfo;
-import com.google.samples.apps.iosched.info.faq.FaqInfo;
 import com.google.samples.apps.iosched.info.travel.TravelInfo;
 import com.google.samples.apps.iosched.lib.R;
 
@@ -109,41 +109,41 @@ public class InfoPresenter implements InfoContract.Presenter {
     }
 
     @Override
-    public void initFaqInfo() {
-        final FaqInfo faqInfo = new FaqInfo();
-        applyRemoteConfigToFaqInfo(faqInfo);
-        mView.showFaqInfo(faqInfo);
+    public void initAboutInfo() {
+        final AboutInfo aboutInfo = new AboutInfo();
+        applyRemoteConfigToAboutInfo(aboutInfo);
+        mView.showAboutInfo(aboutInfo);
         FirebaseRemoteConfig.getInstance().fetch(1800L).addOnCompleteListener(
                 new OnCompleteListener<Void>() {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
                         FirebaseRemoteConfig.getInstance().activateFetched();
-                        applyRemoteConfigToFaqInfo(faqInfo);
-                        mView.showFaqInfo(faqInfo);
+                        applyRemoteConfigToAboutInfo(aboutInfo);
+                        mView.showAboutInfo(aboutInfo);
                     }
                 }
         );
     }
 
-    private void applyRemoteConfigToFaqInfo(FaqInfo faqInfo) {
+    private void applyRemoteConfigToAboutInfo(AboutInfo aboutInfo) {
         String stayInformedDescription = getRemoteConfigSequence(
                 mContext.getString(R.string.faq_stay_informed_description_key));
-        faqInfo.setStayInformedDescription(stayInformedDescription);
+        aboutInfo.setStayInformedDescription(stayInformedDescription);
 
         String contentFormatsDescription = getRemoteConfigSequence(
                 mContext.getString(R.string.faq_content_formats_description_key));
-        faqInfo.setContentFormatsDescription(contentFormatsDescription);
+        aboutInfo.setContentFormatsDescription(contentFormatsDescription);
 
         String liveStreamRecordingsDescription = getRemoteConfigSequence(
                 mContext.getString(R.string.faq_livestream_and_recordings_description_key));
-        faqInfo.setLiveStreamRecordingsDescription(liveStreamRecordingsDescription);
+        aboutInfo.setLiveStreamRecordingsDescription(liveStreamRecordingsDescription);
 
         String attendanceProTipsDescription = getRemoteConfigSequence(
                 mContext.getString(R.string.faq_attendance_pro_tips_description_key));
-        faqInfo.setAttendanceProTipsDescription(attendanceProTipsDescription);
+        aboutInfo.setAttendanceProTipsDescription(attendanceProTipsDescription);
 
         String moreDescription = getRemoteConfigSequence(
                 mContext.getString(R.string.faq_additional_info_description_key));
-        faqInfo.setAdditionalInfoDescription(moreDescription);
+        aboutInfo.setAdditionalInfoDescription(moreDescription);
     }
 }

@@ -23,7 +23,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.google.samples.apps.iosched.info.event.EventInfo;
-import com.google.samples.apps.iosched.info.faq.FaqInfo;
+import com.google.samples.apps.iosched.info.about.AboutInfo;
 import com.google.samples.apps.iosched.info.travel.TravelInfo;
 import com.google.samples.apps.iosched.lib.R;
 import com.google.samples.apps.iosched.schedule.ScheduleSingleDayFragment;
@@ -143,7 +143,7 @@ public class InfoPagerFragment extends Fragment implements InfoContract.View {
     }
 
     @Override
-    public void showFaqInfo(FaqInfo faqInfo) {
-        mViewPagerAdapter.updateFaqInfo(faqInfo);
+    public void showAboutInfo(AboutInfo aboutInfo) {
+        mViewPagerAdapter.updateAboutInfo(aboutInfo);
     }
 }

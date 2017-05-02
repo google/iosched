@@ -13,8 +13,8 @@
  */
 package com.google.samples.apps.iosched.info;
 
+import com.google.samples.apps.iosched.info.about.AboutInfo;
 import com.google.samples.apps.iosched.info.event.EventInfo;
-import com.google.samples.apps.iosched.info.faq.FaqInfo;
 import com.google.samples.apps.iosched.info.travel.TravelInfo;
 
 public class InfoContract {
@@ -23,7 +23,7 @@ public class InfoContract {
         void setPresenter(InfoContract.Presenter presenter);
         void showEventInfo(EventInfo eventInfo);
         void showTravelInfo(TravelInfo travelInfo);
-        void showFaqInfo(FaqInfo faqInfo);
+        void showAboutInfo(AboutInfo aboutInfo);
     }
 
     interface Presenter {
@@ -31,7 +31,7 @@ public class InfoContract {
 
         void initTravelInfo();
 
-        void initFaqInfo();
+        void initAboutInfo();
     }
 }
 

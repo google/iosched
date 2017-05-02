@@ -18,10 +18,10 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 
 import com.google.samples.apps.iosched.debug.DebugFragment;
+import com.google.samples.apps.iosched.info.about.AboutInfo;
 import com.google.samples.apps.iosched.info.event.EventFragment;
 import com.google.samples.apps.iosched.info.event.EventInfo;
-import com.google.samples.apps.iosched.info.faq.FaqFragment;
-import com.google.samples.apps.iosched.info.faq.FaqInfo;
+import com.google.samples.apps.iosched.info.about.AboutFragment;
 import com.google.samples.apps.iosched.info.settings.SettingsFragment;
 import com.google.samples.apps.iosched.info.travel.TravelFragment;
 import com.google.samples.apps.iosched.info.travel.TravelInfo;
@@ -38,8 +38,8 @@ public class InfoViewPagerAdapter extends FragmentPagerAdapter {
     private final static int NUM_PAGES = BuildConfig.DEBUG ? 5 : 4;
     private final static int EVENT_INDEX = 0;
     private final static int TRAVEL_INDEX = 1;
-    private final static int FAQ_INDEX = 2;
-    private final static int SETTINGS_INDEX = 3;
+    private final static int SETTINGS_INDEX = 2;
+    private final static int ABOUT_INDEX = 3;
     private final static int DEBUG_INDEX = 4;
 
     private Context mContext;
@@ -74,8 +74,8 @@ public class InfoViewPagerAdapter extends FragmentPagerAdapter {
             case TRAVEL_INDEX:
                 mFragments[position] = new TravelFragment();
                 break;
-            case FAQ_INDEX:
-                mFragments[position] = new FaqFragment();
+            case ABOUT_INDEX:
+                mFragments[position] = new AboutFragment();
                 break;
             case SETTINGS_INDEX:
                 mFragments[position] = new SettingsFragment();
@@ -101,10 +101,10 @@ public class InfoViewPagerAdapter extends FragmentPagerAdapter {
         }
     }
 
-    public void updateFaqInfo(FaqInfo faqInfo) {
-        BaseInfoFragment infoFragment = getItem(FAQ_INDEX);
-        if (infoFragment instanceof FaqFragment) {
-            ((FaqFragment) infoFragment).updateInfo(faqInfo);
+    public void updateAboutInfo(AboutInfo aboutInfo) {
+        BaseInfoFragment infoFragment = getItem(ABOUT_INDEX);
+        if (infoFragment instanceof AboutFragment) {
+            ((AboutFragment) infoFragment).updateInfo(aboutInfo);
         }
     }
 
