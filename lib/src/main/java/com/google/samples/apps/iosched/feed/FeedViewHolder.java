@@ -17,6 +17,7 @@ package com.google.samples.apps.iosched.feed;
 
 import android.content.Context;
 import android.content.res.ColorStateList;
+import android.graphics.Point;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.constraint.ConstraintLayout;
@@ -30,6 +31,7 @@ import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -67,6 +69,7 @@ class FeedViewHolder extends RecyclerView.ViewHolder {
     private ImageView expandIcon;
     private ImageView emergencyIcon;
     private ImageView priorityIcon;
+    private Point mScreenSize;
     private
     @Nullable
     FeedMessage feedMessage;
@@ -145,7 +148,15 @@ class FeedViewHolder extends RecyclerView.ViewHolder {
         if (!TextUtils.isEmpty(feedMessage.getImageUrl())) {
             image.setVisibility(VISIBLE);
             Glide.with(image.getContext())
-                    .load(feedMessage.getImageUrl())
+                    // Add "=s" query string to scale down GCS image to longest dimension (supposed
+                    // to be width in this case) without affecting the original aspect ratio. This
+                    // is the max resolution that Glide will download.
+                    .load(feedMessage.getImageUrl() + "=s" + getScreenWidth(image.getContext()))
+                    // Override so Glide knows to not scale image resolution down to fit thumbnail.
+                    // Otherwise, image would keep the resolution of the thumbnail size even when
+                    // it is expanded.
+                    .override(getScreenWidth(image.getContext()),
+                            (int) (getScreenWidth(image.getContext()) * 9.0 / 16))
                     .into(image);
         } else {
             image.setVisibility(GONE);
@@ -167,5 +178,14 @@ class FeedViewHolder extends RecyclerView.ViewHolder {
         title.setContentDescription(titleText + ", " +
                 (expanded ? context.getString(R.string.expanded) :
                         context.getString(R.string.collapsed)));
+    }
+
+    private int getScreenWidth(Context context) {
+        if(mScreenSize == null) {
+            mScreenSize = new Point();
+            ((WindowManager) context.getSystemService(Context.WINDOW_SERVICE)).getDefaultDisplay()
+                    .getSize(mScreenSize);
+        }
+        return mScreenSize.x;
     }
 }
