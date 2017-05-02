@@ -67,8 +67,8 @@
         android:layout_height="wrap_content"
         android:layout_alignParentStart="true"
         android:layout_below="@id/text"
-        android:paddingLeft="@dimen/spacing_micro"
-        android:paddingRight="@dimen/spacing_micro"
+        android:paddingLeft="@dimen/borderless_button_margin"
+        android:paddingRight="@dimen/borderless_button_margin"
         android:text="@string/placeholder_button_label_1" />
 
     <Button
@@ -79,8 +79,8 @@
         android:layout_alignWithParentIfMissing="true"
         android:layout_below="@id/text"
         android:layout_toEndOf="@id/negative_button"
-        android:paddingLeft="@dimen/spacing_micro"
-        android:paddingRight="@dimen/spacing_micro"
+        android:paddingLeft="@dimen/borderless_button_margin"
+        android:paddingRight="@dimen/borderless_button_margin"
         android:text="@string/placeholder_button_label_2" />
 
 </RelativeLayout>

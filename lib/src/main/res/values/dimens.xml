@@ -24,6 +24,8 @@
     <dimen name="spacing_large">32dp</dimen>
     <dimen name="touch_raise">6dp</dimen>
     <dimen name="extended_appbar_height">96dp</dimen>
+    <dimen name="borderless_button_margin">4dp</dimen>
+    <dimen name="main_content_width">@dimen/match_parent</dimen>
 
     <dimen name="appwidget_text_size_small">12sp</dimen>
     <dimen name="appwidget_text_size_medium">14sp</dimen>
@@ -41,6 +43,7 @@
     <dimen name="fab_padding">4dp</dimen>
     <dimen name="session_details_floating_width">500dp</dimen>
     <dimen name="session_details_floating_height">650dp</dimen>
+    <integer name="reserve_inset_edge">0x50</integer> <!-- bottom -->
     <dimen name="my_schedule_page_margin">8dp</dimen>
     <dimen name="my_schedule_icon_size">24dp</dimen>
     <dimen name="my_schedule_icon_horizontal_padding">24dp</dimen> <!-- center 24dp in @keyline_2 -->
