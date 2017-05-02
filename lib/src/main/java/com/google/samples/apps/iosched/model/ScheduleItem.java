@@ -18,10 +18,10 @@ package com.google.samples.apps.iosched.model;
 import android.support.annotation.VisibleForTesting;
 import android.text.TextUtils;
 
-import com.google.samples.apps.iosched.Config;
 import com.google.samples.apps.iosched.lib.R;
 import com.google.samples.apps.iosched.provider.ScheduleContract;
 import com.google.samples.apps.iosched.provider.ScheduleContract.Blocks;
+import com.google.samples.apps.iosched.provider.ScheduleContract.MyReservations;
 
 import java.util.Locale;
 
@@ -64,15 +64,18 @@ public class ScheduleItem implements Cloneable, Comparable<ScheduleItem> {
     public String subtitle = "";
     public String room;
 
+    // is the item a Keynote session
+    public boolean isKeynote = false;
+
     // is the item in the user's schedule
-    public boolean inSchedule;
+    public boolean inSchedule = false;
 
     // is the item unreserved, reserved, or waitlisted
     @ScheduleContract.MyReservations.ReservationStatus
-    public int reservationStatus;
+    public int reservationStatus = MyReservations.RESERVATION_STATUS_UNRESERVED;
 
     // has feedback been given on this session?
-    public boolean hasGivenFeedback;
+    public boolean hasGivenFeedback = false;
 
     // background image URL
     public String backgroundImageUrl = "";
@@ -113,7 +116,7 @@ public class ScheduleItem implements Cloneable, Comparable<ScheduleItem> {
     }
 
     public boolean isKeynote() {
-        return mainTag != null && Config.Tags.SPECIAL_KEYNOTE.equals(mainTag);
+        return isKeynote;
     }
 
     public boolean isFoodBreak() {
