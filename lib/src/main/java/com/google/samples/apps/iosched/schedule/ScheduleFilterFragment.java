@@ -73,9 +73,9 @@ public class ScheduleFilterFragment extends Fragment implements LoaderCallbacks<
         final Context context = view.getContext();
         TextViewCompat.setCompoundDrawablesRelativeWithIntrinsicBounds(mClearFilters, null, null,
                 AppCompatResources.getDrawable(context, R.drawable.ic_clear_all), null);
+        mRecyclerView.setHasFixedSize(true);
+        mRecyclerView.addItemDecoration(new DividerDecoration(context));
         final View filtersHeader = view.findViewById(R.id.filters_header);
-        mRecyclerView.addItemDecoration(new DividerItemDecoration(context,
-                DividerItemDecoration.VERTICAL));
         mRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
             public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
