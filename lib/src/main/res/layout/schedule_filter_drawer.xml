@@ -35,7 +35,7 @@ limitations under the License.
         android:gravity="center_vertical"
         android:minHeight="?actionBarSize"
         android:orientation="horizontal"
-        android:paddingEnd="@dimen/spacing_normal"
+        android:paddingEnd="8dp"
         android:paddingStart="@dimen/padding_normal"
         android:stateListAnimator="@animator/active_raise">
 

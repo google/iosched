@@ -14,7 +14,8 @@ See the License for the specific language governing permissions and
 limitations under the License.
 -->
 
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
@@ -27,19 +28,17 @@ limitations under the License.
 
     <TextView
         android:id="@+id/filter_label"
-        style="@style/Session.Tag"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/padding_normal"
+        android:layout_weight="1"
+        android:ellipsize="end"
         android:importantForAccessibility="no"
         android:labelFor="@+id/filter_checkbox"
-        tools:backgroundTint="@color/sunflower_yellow"
-        tools:text="Android" />
-
-    <android.support.v4.widget.Space
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:layout_weight="1" />
+        android:lines="1"
+        android:minWidth="@dimen/a11y_min_touch_target_dimen"
+        android:textAppearance="@style/TextAppearance.H5"
+        tools:text="Codelabs" />
 
     <CheckBox
         android:id="@+id/filter_checkbox"
