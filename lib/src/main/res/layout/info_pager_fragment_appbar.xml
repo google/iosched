@@ -14,15 +14,14 @@
      See the License for the specific language governing permissions and
      limitations under the License.
 -->
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.design.widget.AppBarLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/appbar"
-    style="@style/AppBar"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@color/lighter_grey"
-    android:orientation="vertical">
+    android:background="@color/lighter_grey">
 
     <android.support.v7.widget.Toolbar
         android:id="@+id/toolbar"
@@ -35,15 +34,15 @@
             style="@style/ProductSans.Title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            tools:text="@string/app_name" />
+            tools:text="@string/title_info" />
 
         <android.support.design.widget.TabLayout
             android:id="@+id/sliding_tabs"
             android:layout_width="wrap_content"
-            android:layout_height="?actionBarSize"
+            android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
             app:tabIndicatorHeight="4dp" />
 
     </android.support.v7.widget.Toolbar>
 
-</FrameLayout>
+</android.support.design.widget.AppBarLayout>

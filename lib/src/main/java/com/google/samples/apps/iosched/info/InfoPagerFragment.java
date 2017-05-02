@@ -13,14 +13,17 @@
  */
 package com.google.samples.apps.iosched.info;
 
+import android.graphics.drawable.AnimatedVectorDrawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 
 import com.google.samples.apps.iosched.info.event.EventInfo;
 import com.google.samples.apps.iosched.info.about.AboutInfo;
@@ -102,6 +105,13 @@ public class InfoPagerFragment extends Fragment implements InfoContract.View {
         mViewPager.setPageMargin(getResources()
                 .getDimensionPixelSize(R.dimen.my_schedule_page_margin));
         mViewPager.setPageMarginDrawable(R.drawable.page_margin);
+        View header = view.findViewById(R.id.header_anim);
+        if (header instanceof ImageView) {
+            AnimatedVectorDrawable avd = (AnimatedVectorDrawable) ContextCompat.getDrawable(
+                    getContext(), R.drawable.avd_header_info);
+            ((ImageView) header).setImageDrawable(avd);
+            avd.start();
+        }
 
         setCurrentPage();
     }

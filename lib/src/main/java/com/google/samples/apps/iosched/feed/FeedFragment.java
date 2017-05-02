@@ -13,15 +13,18 @@
  */
 package com.google.samples.apps.iosched.feed;
 
+import android.graphics.drawable.AnimatedVectorDrawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 
 import com.google.samples.apps.iosched.feed.data.FeedMessage;
 import com.google.samples.apps.iosched.lib.R;
@@ -40,13 +43,20 @@ public class FeedFragment extends Fragment implements FeedContract.View {
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container,
             @Nullable Bundle savedInstanceState) {
-        View root = inflater.inflate(R.layout.feed_fragment, container, false);
-        mRecyclerView = (RecyclerView) root.findViewById(R.id.feed_recycler_view);
+        View view = inflater.inflate(R.layout.feed_fragment, container, false);
+        mRecyclerView = (RecyclerView) view.findViewById(R.id.feed_recycler_view);
         mRecyclerView.setHasFixedSize(true);
         mFeedAdapter = new FeedAdapter(getContext());
         mRecyclerView.addItemDecoration(new DividerItemDecoration(getContext(), VERTICAL));
         mRecyclerView.setAdapter(mFeedAdapter);
-        return root;
+        View header = view.findViewById(R.id.header_anim);
+        if (header instanceof ImageView) {
+            AnimatedVectorDrawable avd = (AnimatedVectorDrawable) ContextCompat.getDrawable(
+                    getContext(), R.drawable.avd_header_feed);
+            ((ImageView) header).setImageDrawable(avd);
+            avd.start();
+        }
+        return view;
     }
 
     @Override

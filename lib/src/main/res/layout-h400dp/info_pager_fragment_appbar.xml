@@ -14,22 +14,51 @@
      See the License for the specific language governing permissions and
      limitations under the License.
 -->
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.design.widget.AppBarLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/appbar"
-    style="@style/AppBar"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@color/lighter_grey"
-    android:orientation="vertical">
+    android:fitsSystemWindows="true">
 
-    <include layout="@layout/toolbar" />
-
-    <android.support.design.widget.TabLayout
-        android:id="@+id/sliding_tabs"
+    <android.support.design.widget.CollapsingToolbarLayout
+        android:id="@+id/collapsing_toolbar"
         android:layout_width="match_parent"
-        android:layout_height="?actionBarSize"
-        android:layout_gravity="bottom"
-        app:tabIndicatorHeight="4dp" />
+        android:layout_height="@dimen/extended_appbar_height"
+        android:background="@color/lighter_grey"
+        android:fitsSystemWindows="true"
+        android:minHeight="?actionBarSize"
+        app:contentScrim="@color/lighter_grey"
+        app:layout_scrollFlags="scroll|exitUntilCollapsed"
+        style="@style/Widget.IOSched.CollapsingHeader.Tabs">
 
-</LinearLayout>
+        <include layout="@layout/animated_appbar" />
+
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?actionBarSize"
+            android:layout_gravity="bottom"
+            android:layout_marginBottom="48dp"
+            app:popupTheme="@style/ThemeOverlay.ToolbarPopup">
+
+            <TextView
+                android:id="@+id/toolbar_title"
+                style="@style/ProductSans.Title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/title_info" />
+
+        </android.support.v7.widget.Toolbar>
+
+        <android.support.design.widget.TabLayout
+            android:id="@+id/sliding_tabs"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom"
+            app:tabIndicatorHeight="4dp" />
+
+    </android.support.design.widget.CollapsingToolbarLayout>
+
+</android.support.design.widget.AppBarLayout>

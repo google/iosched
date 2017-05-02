@@ -207,6 +207,17 @@
         <item name="maxRating">5</item>
     </style>
 
+    <style name="Widget.IOSched.CollapsingHeader" parent="@style/Widget.Design.CollapsingToolbar">
+        <item name="scrimAnimationDuration">200</item>
+        <item name="scrimVisibleHeightTrigger">130dp</item>
+        <item name="statusBarScrim">@null</item>
+        <item name="titleEnabled">false</item>
+    </style>
+
+    <style name="Widget.IOSched.CollapsingHeader.Tabs">
+        <item name="scrimVisibleHeightTrigger">156dp</item>
+    </style>
+
     <style name="Map.RoomTitle" parent="">
         <item name="android:textSize">@dimen/map_room_title_text_size</item>
         <item name="android:textColor">@color/map_text_primary</item>

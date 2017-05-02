@@ -14,34 +14,32 @@
      See the License for the specific language governing permissions and
      limitations under the License.
 -->
-<FrameLayout
+<android.support.design.widget.AppBarLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@id/appbar"
-    style="@style/AppBar.Dark"
+    android:id="@+id/appbar"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:background="@color/lightish_blue"
-    android:fitsSystemWindows="true">
+    android:layout_height="wrap_content">
 
     <android.support.v7.widget.Toolbar
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="?actionBarSize"
-        app:popupTheme="@style/ThemeOverlay.ToolbarPopup">
+        android:theme="@style/ThemeOverlay.DarkToolbar">
 
         <TextView
             android:id="@+id/toolbar_title"
             style="@style/ProductSans.Title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/spacing_large"
             tools:text="@string/app_name" />
 
         <android.support.design.widget.TabLayout
             android:id="@+id/sliding_tabs"
             android:layout_width="wrap_content"
-            android:layout_height="?actionBarSize"
+            android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
             app:tabIndicatorColor="@color/tab_selected_strip"
             app:tabIndicatorHeight="4dp"
@@ -49,4 +47,4 @@
 
     </android.support.v7.widget.Toolbar>
 
-</FrameLayout>
+</android.support.design.widget.AppBarLayout>
