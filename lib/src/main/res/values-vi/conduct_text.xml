@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
-  Copyright 2017 Google Inc. All rights reserved.
+  Copyright 2015 Google Inc. All rights reserved.
 
   Licensed under the Apache License, Version 2.0 (the "License");
   you may not use this file except in compliance with the License.
@@ -14,9 +14,9 @@
   See the License for the specific language governing permissions and
   limitations under the License.
   -->
-<!-- Dimensions common among all features in the app. -->
 <resources>
 
-    <dimen name="extended_appbar_height">180dp</dimen>
+    <!-- Long-form text explaining the code of conduct for attending the conference in person -->
+    <string name="welcome_conduct_text">Ngoài ra, vui lòng dành thời gian để đọc và xác nhận Chính sách Chống quấy rối và Hướng dẫn cho Cộng đồng về Sự kiện của Google (events.google.com/io/faq#communityguidelines). \n</string>
 
 </resources>
