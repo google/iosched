@@ -37,7 +37,6 @@ import com.google.samples.apps.iosched.provider.ScheduleContract;
 import com.google.samples.apps.iosched.settings.SettingsUtils;
 import com.google.samples.apps.iosched.util.AnalyticsHelper;
 import com.google.samples.apps.iosched.util.ParserUtils;
-import com.google.samples.apps.iosched.util.RegistrationUtils;
 import com.google.samples.apps.iosched.util.SessionsHelper;
 import com.google.samples.apps.iosched.util.ThrottledContentObserver;
 
@@ -130,11 +129,6 @@ public class ScheduleModel implements Model<ScheduleModel.MyScheduleQueryEnum,
         mSessionsHelper = sessionsHelper;
     }
 
-    public static boolean showPreConferenceData(Context context) {
-        return RegistrationUtils.isRegisteredAttendee(context) ==
-                RegistrationUtils.REGSTATUS_REGISTERED;
-    }
-
     /**
      * Initialises the pre conference data and data observers. This is not called from the
      * constructor, to allow for unit tests to bypass this (as this uses Android methods not
@@ -143,30 +137,11 @@ public class ScheduleModel implements Model<ScheduleModel.MyScheduleQueryEnum,
      * @return the Model it can be chained with the constructor
      */
     public void initStaticDataAndObservers() {
-        if (showPreConferenceData(mContext)) {
-            preparePreConferenceDayAdapter();
-        }
         addDataObservers();
     }
 
     public void setFilters(TagFilterHolder filters) {
         mTagFilterHolder = filters;
-    }
-
-    /**
-     * This method is an ad-hoc implementation of the pre conference day, which contains an item to
-     * pick up the badge at registration desk
-     */
-    private void preparePreConferenceDayAdapter() {
-        ScheduleItem item = new ScheduleItem();
-        item.title = mContext.getString(R.string.my_schedule_badgepickup);
-        item.startTime = ParserUtils.parseTime(BuildConfig.PRECONFERENCE_DAY_START);
-        item.endTime = ParserUtils.parseTime(BuildConfig.PRECONFERENCE_DAY_END);
-        item.type = ScheduleItem.BREAK;
-        item.room =
-                item.subtitle = mContext.getString(R.string.my_schedule_badgepickup_description);
-        item.sessionType = ScheduleItem.SESSION_TYPE_MISC;
-        mScheduleData.put(PRE_CONFERENCE_DAY_ID, Collections.singletonList(item));
     }
 
     /**

@@ -38,16 +38,12 @@ public class ScheduleDayViewPagerAdapter extends FragmentPagerAdapter {
 
     private Context mContext;
 
-    private boolean mShowPreConferenceDay;
-
     private ScheduleSingleDayFragment[] mFragments;
 
     private FragmentManager mFragmentManager;
 
-    public ScheduleDayViewPagerAdapter(Context context, FragmentManager fm,
-            boolean showPreConferenceDay) {
+    public ScheduleDayViewPagerAdapter(Context context, FragmentManager fm) {
         super(fm);
-        mShowPreConferenceDay = showPreConferenceDay;
         mContext = context;
         mFragmentManager = fm;
     }
@@ -66,8 +62,7 @@ public class ScheduleDayViewPagerAdapter extends FragmentPagerAdapter {
 
         // 1 for the first day of the conference, 2 for the second etc and 0 for the pre conference
         // day if any
-        args.putInt(ScheduleActivity.ARG_CONFERENCE_DAY_INDEX,
-                mShowPreConferenceDay ? position : position + 1);
+        args.putInt(ScheduleActivity.ARG_CONFERENCE_DAY_INDEX, position + 1);
 
         frag.setArguments(args);
 
@@ -80,12 +75,12 @@ public class ScheduleDayViewPagerAdapter extends FragmentPagerAdapter {
 
     @Override
     public int getCount() {
-        return Config.CONFERENCE_DAYS.length + (mShowPreConferenceDay ? 1 : 0);
+        return Config.CONFERENCE_DAYS.length;
     }
 
     @Override
     public CharSequence getPageTitle(int position) {
-        return TimeUtils.getDayName(mContext, position - (mShowPreConferenceDay ? 1 : 0));
+        return TimeUtils.getDayName(mContext, position);
     }
 
     /**
