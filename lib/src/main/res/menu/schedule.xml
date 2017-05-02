@@ -20,8 +20,13 @@
     <item
         android:id="@+id/menu_filter"
         android:icon="@drawable/ic_action_filter"
-        android:orderInCategory="1"
         android:title="@string/description_filter"
+        app:showAsAction="always" />
+
+    <item
+        android:id="@+id/menu_search"
+        android:icon="@drawable/ic_action_search"
+        android:title="@string/description_search"
         app:showAsAction="always" />
 
 </menu>
