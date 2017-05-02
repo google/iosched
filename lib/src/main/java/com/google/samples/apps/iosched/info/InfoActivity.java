@@ -33,7 +33,7 @@ public class InfoActivity extends BaseActivity {
                 .findFragmentById(R.id.main_content);
         mPresenter = new InfoPresenter(this, infoPagerFragment);
         mPresenter.initEventInfo();
-        mPresenter.initFaqInfo();
+        mPresenter.initAboutInfo();
         mPresenter.initTravelInfo();
         infoPagerFragment.setPresenter(mPresenter);
     }

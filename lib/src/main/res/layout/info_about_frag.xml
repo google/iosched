@@ -62,6 +62,35 @@
             android:layout_height="wrap_content"
             app:cardTitle="@string/faq_additional_info_title" />
 
+        <Button
+            android:id="@+id/terms_of_service_link"
+            style="@style/Settings.LinkButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/about_terms" />
+
+        <Button
+            android:id="@+id/privacy_policy_link"
+            style="@style/Settings.LinkButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/about_privacy_policy" />
+
+        <Button
+            android:id="@+id/open_source_licenses_link"
+            style="@style/Settings.LinkButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/about_licenses" />
+
+        <TextView
+            android:id="@+id/app_version"
+            style="@style/Settings.Version"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/about_app_version"
+            tools:text="Version 1.4.278" />
+
         <ImageView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

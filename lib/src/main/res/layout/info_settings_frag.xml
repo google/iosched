@@ -104,42 +104,11 @@
 
         </LinearLayout>
 
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:layout_marginBottom="@dimen/spacing_large"
-            android:layout_marginTop="@dimen/spacing_large"
-            android:background="?android:listDivider" />
-
-        <Button
-            android:id="@+id/terms_of_service_link"
-            style="@style/Settings.LinkButton"
+        <ImageView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/about_terms" />
-
-        <Button
-            android:id="@+id/privacy_policy_link"
-            style="@style/Settings.LinkButton"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/about_privacy_policy" />
-
-        <Button
-            android:id="@+id/open_source_licenses_link"
-            style="@style/Settings.LinkButton"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/about_licenses" />
-
-        <TextView
-            android:id="@+id/app_version"
-            style="@style/Settings.Version"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/about_app_version"
-            tools:text="Version 1.4.278" />
-
+            android:src="@drawable/io17_logo"
+            tools:ignore="ContentDescription" />
     </LinearLayout>
 
 </android.support.v4.widget.NestedScrollView>

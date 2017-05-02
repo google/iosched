@@ -11,9 +11,9 @@
  * or implied. See the License for the specific language governing permissions and limitations under
  * the License.
  */
-package com.google.samples.apps.iosched.info.faq;
+package com.google.samples.apps.iosched.info.about;
 
-public class FaqInfo {
+public class AboutInfo {
     private String stayInformedDescription;
     private String contentFormatsDescription;
     private String liveStreamRecordingsDescription;

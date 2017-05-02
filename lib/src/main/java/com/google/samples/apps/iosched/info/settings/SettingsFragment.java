@@ -47,37 +47,6 @@ public class SettingsFragment extends BaseInfoFragment<Object> {
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        // Links
-        view.findViewById(R.id.terms_of_service_link).setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent termsLink = new Intent(Intent.ACTION_VIEW);
-                termsLink.setData(Uri.parse(getResources()
-                        .getString(R.string.about_terms_url)));
-                startActivity(termsLink);
-            }
-        });
-        view.findViewById(R.id.privacy_policy_link).setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent privacyPolicyLink = new Intent(Intent.ACTION_VIEW);
-                privacyPolicyLink.setData(Uri.parse(getResources()
-                        .getString(R.string.about_privacy_policy_url)));
-                startActivity(privacyPolicyLink);
-            }
-        });
-        view.findViewById(R.id.open_source_licenses_link).setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                AboutUtils.showOpenSourceLicenses(getActivity());
-            }
-        });
-
-        // Version
-        TextView appVersion = (TextView) view.findViewById(R.id.app_version);
-        appVersion.setText(getResources()
-                .getString(R.string.about_app_version, BuildConfig.VERSION_NAME));
-
         // Switches
         setupSettingsSwitch(R.id.settings_timezone_container,
                 R.id.settings_timezone_label,
