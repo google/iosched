@@ -14,30 +14,59 @@
      See the License for the specific language governing permissions and
      limitations under the License.
 -->
-<LinearLayout
+<android.support.design.widget.CoordinatorLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:fitsSystemWindows="true"
+    app:statusBarBackground="@null">
 
-    <FrameLayout
+    <android.support.design.widget.AppBarLayout
         android:id="@+id/appbar"
-        style="@style/AppBar"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/sunflower_yellow">
+        android:layout_height="@dimen/extended_appbar_height"
+        android:fitsSystemWindows="true">
 
-        <include layout="@layout/toolbar" />
+        <android.support.design.widget.CollapsingToolbarLayout
+            android:id="@+id/collapsing_toolbar"
+            style="@style/Widget.IOSched.CollapsingHeader"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/sunflower_yellow"
+            android:fitsSystemWindows="true"
+            android:minHeight="?actionBarSize"
+            app:contentScrim="@color/sunflower_yellow"
+            app:layout_scrollFlags="scroll|exitUntilCollapsed">
 
-    </FrameLayout>
+            <include layout="@layout/animated_appbar" />
+
+            <android.support.v7.widget.Toolbar
+                android:id="@+id/toolbar"
+                android:layout_width="match_parent"
+                android:layout_height="?actionBarSize"
+                android:layout_gravity="bottom"
+                app:layout_collapseMode="pin"
+                app:popupTheme="@style/ThemeOverlay.ToolbarPopup">
+
+                <TextView
+                    android:id="@+id/toolbar_title"
+                    style="@style/ProductSans.Title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/title_feed" />
+
+            </android.support.v7.widget.Toolbar>
+
+        </android.support.design.widget.CollapsingToolbarLayout>
+
+    </android.support.design.widget.AppBarLayout>
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/feed_recycler_view"
         android:layout_width="@dimen/main_content_width"
-        android:layout_height="0dp"
-        android:layout_weight="1"
+        android:layout_height="match_parent"
         android:layout_gravity="center_horizontal|top"
         android:background="@color/content_background"
         android:elevation="@dimen/card_elevation"
@@ -45,8 +74,8 @@
         android:orientation="vertical"
         android:scrollbarStyle="insideOverlay"
         android:scrollbars="vertical"
+        app:layoutManager="LinearLayoutManager"
         app:layout_behavior="@string/appbar_scrolling_view_behavior"
-        app:layoutManager="android.support.v7.widget.LinearLayoutManager"
         tools:listitem="@layout/feed_message_card_collapsed" />
 
-</LinearLayout>
+</android.support.design.widget.CoordinatorLayout>

@@ -16,15 +16,18 @@
 package com.google.samples.apps.iosched.myio;
 
 import android.content.Intent;
+import android.graphics.drawable.AnimatedVectorDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.ViewSwitcher;
 
 import com.airbnb.lottie.LottieAnimationView;
@@ -39,7 +42,6 @@ import com.google.samples.apps.iosched.schedule.DividerDecoration;
 import com.google.samples.apps.iosched.schedule.ScheduleActivity;
 import com.google.samples.apps.iosched.schedule.ScheduleModel;
 import com.google.samples.apps.iosched.util.AnalyticsHelper;
-import com.google.samples.apps.iosched.util.LogUtils;
 import com.google.samples.apps.iosched.util.TimeUtils;
 
 import io.doist.recyclerviewext.sticky_headers.StickyHeadersLinearLayoutManager;
@@ -90,6 +92,13 @@ public class MyIOFragment extends Fragment implements MyIoView, Callbacks {
         mRecyclerView.setAdapter(mAdapter);
         mRecyclerView.setLayoutManager(
                 new StickyHeadersLinearLayoutManager<MyIOAdapter>(getContext()));
+        View header = view.findViewById(R.id.header_anim);
+        if (header instanceof ImageView) {
+            AnimatedVectorDrawable avd = (AnimatedVectorDrawable) ContextCompat.getDrawable(
+                    getContext(), R.drawable.avd_header_my_io);
+            ((ImageView) header).setImageDrawable(avd);
+            avd.start();
+        }
     }
 
     @Override

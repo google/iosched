@@ -12,106 +12,84 @@
   or implied. See the License for the specific language governing permissions and limitations under
   the License.
   -->
-<LinearLayout
+<android.support.design.widget.CoordinatorLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:fitsSystemWindows="true">
 
     <include layout="@layout/schedule_pager_fragment_appbar" />
 
-    <android.support.design.widget.CoordinatorLayout
+    <LinearLayout
+        android:id="@+id/filters_bar"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
-        android:fitsSystemWindows="true">
+        android:layout_height="?actionBarSize"
+        android:background="@color/light_grey"
+        android:baselineAligned="false"
+        android:elevation="3dp"
+        android:orientation="horizontal"
+        android:visibility="invisible"
+        app:layout_anchor="@id/appbar"
+        app:layout_behavior="com.google.samples.apps.iosched.schedule.SchedulePagerFragment$FilterPositionBehavior"
+        tools:visibility="visible">
 
-        <android.support.design.widget.AppBarLayout
-            android:id="@+id/filters_appbar"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:fitsSystemWindows="true">
-
-            <LinearLayout
-                android:id="@+id/filters_bar_inner"
-                android:layout_width="match_parent"
-                android:layout_height="?actionBarSize"
-                app:layout_scrollFlags="scroll|enterAlways"
-                android:background="@color/light_grey"
-                android:baselineAligned="false"
-                android:gravity="center_vertical"
-                android:orientation="horizontal"
-                android:visibility="gone"
-                tools:visibility="visible">
-
-                <TextView
-                    android:id="@+id/filters_description"
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:ellipsize="end"
-                    android:gravity="center_vertical"
-                    android:maxLines="2"
-                    android:minLines="1"
-                    android:paddingEnd="@dimen/padding_normal"
-                    android:paddingStart="@dimen/padding_normal"
-                    tools:text="Filters: Sessions, Android" />
-
-                <ImageButton
-                    android:id="@+id/clear_filters"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:background="?selectableItemBackgroundBorderless"
-                    android:contentDescription="@string/clear_filters"
-                    android:padding="@dimen/padding_normal"
-                    android:scaleType="center"
-                    app:srcCompat="@drawable/ic_clear_all" />
-
-            </LinearLayout>
-
-        </android.support.design.widget.AppBarLayout>
-
-        <!-- Dummy view that prevents the following ViewPager to capture focus -->
-        <View
+        <TextView
+            android:id="@+id/filters_description"
             android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:focusable="true"
-            android:focusableInTouchMode="true" />
-
-        <FrameLayout
-            android:id="@+id/main_content"
-            android:layout_width="@dimen/main_content_width"
             android:layout_height="match_parent"
-            android:layout_gravity="center_horizontal|top"
-            android:background="@color/content_background"
-            android:elevation="@dimen/card_elevation"
-            app:layout_behavior="@string/appbar_scrolling_view_behavior">
+            android:layout_weight="1"
+            android:ellipsize="end"
+            android:gravity="center_vertical"
+            android:maxLines="2"
+            android:minLines="1"
+            android:paddingEnd="@dimen/padding_normal"
+            android:paddingStart="@dimen/padding_normal"
+            tools:text="Filters: Sessions, Android" />
 
-            <com.google.samples.apps.iosched.ui.widget.MultiSwipeRefreshLayout
-                android:id="@+id/swipe_refresh_layout"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent">
+        <ImageButton
+            android:id="@+id/clear_filters"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:background="?selectableItemBackgroundBorderless"
+            android:contentDescription="@string/clear_filters"
+            android:padding="@dimen/padding_normal"
+            android:scaleType="center"
+            app:srcCompat="@drawable/ic_clear_all" />
 
-                <!-- Sessions fragments showing each day of the conference -->
-                <android.support.v4.view.ViewPager
-                    android:id="@+id/view_pager"
-                    android:layout_width="match_parent"
-                    android:layout_height="0dp"
-                    android:layout_weight="1" />
+    </LinearLayout>
 
-            </com.google.samples.apps.iosched.ui.widget.MultiSwipeRefreshLayout>
+    <!-- Dummy view that prevents the following ViewPager from capturing focus -->
+    <View
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:focusable="true"
+        android:focusableInTouchMode="true" />
 
-        </FrameLayout>
+    <com.google.samples.apps.iosched.ui.widget.MultiSwipeRefreshLayout
+        android:id="@+id/swipe_refresh_layout"
+        android:layout_width="@dimen/main_content_width"
+        android:layout_height="match_parent"
+        android:layout_gravity="center_horizontal|top"
+        android:background="@color/content_background"
+        android:elevation="@dimen/card_elevation"
+        android:paddingBottom="48dp">
 
-    </android.support.design.widget.CoordinatorLayout>
+        <!-- Sessions fragments showing each day of the conference -->
+        <android.support.v4.view.ViewPager
+            android:id="@+id/view_pager"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+    </com.google.samples.apps.iosched.ui.widget.MultiSwipeRefreshLayout>
 
     <com.google.samples.apps.iosched.ui.widget.BadgedBottomNavigationView
         android:id="@+id/bottom_navigation"
         style="@style/Widget.IOSched.BottomNavigationView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
         app:menu="@menu/bottom_nav_items" />
 
-</LinearLayout>
+</android.support.design.widget.CoordinatorLayout>

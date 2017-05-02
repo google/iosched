@@ -23,7 +23,7 @@
     <dimen name="padding_normal">16dp</dimen>
     <dimen name="spacing_large">32dp</dimen>
     <dimen name="touch_raise">6dp</dimen>
-    <dimen name="extended_appbar_height">96dp</dimen>
+    <dimen name="extended_appbar_height">72dp</dimen>
     <dimen name="borderless_button_margin">4dp</dimen>
     <dimen name="main_content_width">@dimen/match_parent</dimen>
 

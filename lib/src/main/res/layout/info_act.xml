@@ -14,21 +14,19 @@
   See the License for the specific language governing permissions and
   limitations under the License.
   -->
-<LinearLayout
+<FrameLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/drawer_layout"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:layout_height="match_parent">
 
     <fragment
         android:id="@+id/main_content"
         android:name="com.google.samples.apps.iosched.info.InfoPagerFragment"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
+        android:layout_height="match_parent"
+        android:layout_marginBottom="48dp"
         tools:layout="@layout/info_pager_frag" />
 
     <com.google.samples.apps.iosched.ui.widget.BadgedBottomNavigationView
@@ -36,6 +34,7 @@
         style="@style/Widget.IOSched.BottomNavigationView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
         app:menu="@menu/bottom_nav_items" />
 
-</LinearLayout>
+</FrameLayout>
