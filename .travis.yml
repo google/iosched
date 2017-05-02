@@ -14,10 +14,14 @@
 
 language: android
 
+sudo: false
+
 android:
   components:
-    - build-tools-21.1.2
-    - android-21
+    - platform-tool
+    - tool
+    - build-tools-23.0.1
+    - android-23
     - addon-google_apis-google-21
     - extra-google-m2repository
     - extra-android-m2repository
@@ -31,5 +35,10 @@ before_install:
   - emulator -avd test -no-skin -no-audio -no-window &
 
 before_script:
-  - ./scripts/wait_for_emulator.sh
+  - android-wait-for-emulator
   - adb shell input keyevent 82 &
+  - wget -P android https://github.com/google/iosched/raw/0f7e56ff2588b816476fbad253554f49003e869d/android/debug.keystore
+
+script:
+  - ./gradlew clean android:assembleDebug server:assemble
+
