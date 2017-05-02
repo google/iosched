@@ -1,6 +1,6 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <!--
-  Copyright 2016 Google Inc. All rights reserved.
+  Copyright 2017 Google Inc. All rights reserved.
 
   Licensed under the Apache License, Version 2.0 (the "License");
   you may not use this file except in compliance with the License.
@@ -14,585 +14,798 @@
   See the License for the specific language governing permissions and
   limitations under the License.
   -->
-<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
-
-  <plurals description="Shown in the schedule to indicate how many sessions are available on that particular time slot." name="schedule_block_subtitle">
-    <item quantity="zero">
-      <xliff:g id="number_of_sessions">%1$d</xliff:g> جلسة متاحة</item>
-    <item quantity="one">
-      <xliff:g id="number_of_sessions">%1$d</xliff:g> جلسة متاحة</item>
-    <item quantity="two">
-      <xliff:g id="number_of_sessions">%1$d</xliff:g> جلسة متاحة</item>
-    <item quantity="few">
-      <xliff:g id="number_of_sessions">%1$d</xliff:g> جلسات متاحة</item>
-    <item quantity="many">
-      <xliff:g id="number_of_sessions">%1$d</xliff:g> جلسات متاحة</item>
-    <item quantity="other">
-      <xliff:g id="number_of_sessions">%1$d</xliff:g> جلسات متاحة</item>
-  </plurals>
-
-  <plurals description="Shows as a notification on the system bar to alert user that some of their sessions are about to begin." name="session_notification_text">
-    <item quantity="zero">و <xliff:g id="num_sessions">%2$d</xliff:g> أخرى تبدأ في غضون <xliff:g id="remaining_time">%1$d</xliff:g> دقيقة</item>
-    <item quantity="one">وواحدة أخرى تبدأ في غضون <xliff:g id="remaining_time">%1$d</xliff:g> دقيقة</item>
-    <item quantity="two">و <xliff:g id="num_sessions">%2$d</xliff:g> أخرى تبدآن في غضون <xliff:g id="remaining_time">%1$d</xliff:g> دقائق</item>
-    <item quantity="few">و <xliff:g id="num_sessions">%2$d</xliff:g> أخرى تبدأ في غضون <xliff:g id="remaining_time">%1$d</xliff:g> دقائق</item>
-    <item quantity="many">و <xliff:g id="num_sessions">%2$d</xliff:g> أخرى تبدأ في غضون <xliff:g id="remaining_time">%1$d</xliff:g> دقائق</item>
-    <item quantity="other">و <xliff:g id="num_sessions">%2$d</xliff:g> أخرى تبدأ في غضون <xliff:g id="remaining_time">%1$d</xliff:g> دقائق</item>
-  </plurals>
-
-  <plurals description="Shown as a notification on the system bar to alert user that some of their sessions are about to begin." name="session_notification_ticker">
-    <item quantity="zero">%1$d جلسة على وشك البدء.</item>
-    <item quantity="one">هناك جلسة واحدة على وشك البدء.</item>
-    <item quantity="two">%1$d جلسة على وشك البدء.</item>
-    <item quantity="few">%1$d جلسات على وشك البدء.</item>
-    <item quantity="many">%1$d جلسات على وشك البدء.</item>
-    <item quantity="other">%1$d جلسات على وشك البدء.</item>
-  </plurals>
-
-  <plurals description="Indicates a certain number of sessions." name="session_plurals">
-    <item quantity="zero">%1$d جلسة</item>
-    <item quantity="one">جلسة واحدة</item>
-    <item quantity="two">%1$d جلسة</item>
-    <item quantity="few">%1$d جلسات</item>
-    <item quantity="many">%1$d جلسات</item>
-    <item quantity="other">%1$d جلسات</item>
-  </plurals>
-
-  <!-- Title for the notification that alerts the user that some of their sessions are about to begin. -->
-  <plurals name="session_notification_title">
-    <item quantity="zero">
-      <xliff:g id="num_sessions">%2$d</xliff:g> جلسات تبدأ في غضون <xliff:g id="remaining_time">%1$d</xliff:g> دقيقة</item>
-    <item quantity="one">تبدأ جلسة واحدة في غضون <xliff:g id="remaining_time">%1$d</xliff:g> دقيقة</item>
-    <item quantity="two">
-      <xliff:g id="num_sessions">%2$d</xliff:g> جلسات تبدأ في غضون <xliff:g id="remaining_time">%1$d</xliff:g> دقيقة</item>
-    <item quantity="few">
-      <xliff:g id="num_sessions">%2$d</xliff:g> جلسات تبدأ في غضون <xliff:g id="remaining_time">%1$d</xliff:g> دقائق.</item>
-    <item quantity="many">
-      <xliff:g id="num_sessions">%2$d</xliff:g> جلسات تبدأ في غضون <xliff:g id="remaining_time">%1$d</xliff:g> دقائق</item>
-    <item quantity="other">
-      <xliff:g id="num_sessions">%2$d</xliff:g> جلسات تبدأ في غضون <xliff:g id="remaining_time">%1$d</xliff:g> دقائق</item>
-  </plurals>
-
-  <!-- Shown in the 'About' window of the app. -->
-  <string name="about_main">&lt;b&gt;Google I/O 2016&lt;/b&gt;&lt;br&gt; إصدار %s</string>
-
-  <!-- Shown as a link in the About screen of the app; user can click to see the Terms of Services. -->
-  <string name="about_terms">شروط الخدمة</string>
-
-  <!-- Shown as a link in the About screen of the app; user can click to see the Privacy Policy. -->
-  <string name="about_privacy_policy">سياسة الخصوصية</string>
-
-  <!-- Shown as a link in the About screen of the app; user can click to see the EULA. -->
-  <string name="about_eula">اتفاقية ترخيص المستخدم النهائي</string>
-
-  <!-- Shown as a link in the About screen of the app; user can click it to see the licenses. -->
-  <string name="about_licenses">ترخيصات مفتوحة المصدر</string>
-
-  <!-- Label on a button that the user clicks to accept a license agreement. -->
-  <string name="accept">موافق</string>
-
-  <!-- Label on a button that, when clicked, adds the currently displayed session to their schedule. -->
-  <string name="add_to_schedule">إضافة إلى الجدول الزمني</string>
-
-  <!-- Accessibility description for a button that, when clicked, adds the currently
-  displayed session to the user's schedule. -->
-  <string name="add_to_schedule_desc">زر لإضافة الجلسة إلى الجدول الزمني الخاص بك</string>
-
-  <!-- Shown in a drop-down list on the main screen, indicating that all conference themes
-  are being displayed. Themes are major categories for sessions (the themes are Design,
-  Develop and Distribute). -->
-  <string name="all_themes">جميع السمات</string>
-
-  <!-- Shown in a drop-down list on the main screen, indicating that all conference topics
-  are being displayed. Topics are major categories for sessions (example topics are: Android,
-  Chrome, Google APIs, Wearables, etc). -->
-  <string name="all_topics">جميع المواضيع</string>
-
-  <!-- Shown in a drop-down list on the main screen, indicating that all session types
-  are being displayed. Some examples of session types are: session, office hours, code lab. -->
-  <string name="all_types">جميع الأنواع</string>
-
-  <!-- Name of the application, shown in the application's title bar. -->
-  <string name="app_name">Google I/O</string>
-
-  <!-- Label on a button that is one possible answer to the question "Are you attending the
-  conference in person in San Francisco or remotely via livestream?" -->
-  <string name="attending_in_person">شخصيًا</string>
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2" xmlns:tools="http://schemas.android.com/tools">
+
+    <plurals name="schedule_block_subtitle"
+             description="Shown in the schedule to indicate how many sessions are available on that particular time slot.">
+        <item quantity="one"><xliff:g id="number_of_sessions">%1$d</xliff:g> جلسة متاحة</item>
+        <item quantity="other"><xliff:g id="number_of_sessions">%1$d</xliff:g> من الجلسات متاحة</item>
+    </plurals>
+
+    <plurals name="session_notification_text"
+             description="Shows as a notification on the system bar to alert user that some of their sessions are about to begin.">
+        <item quantity="one">و<xliff:g id="num_sessions">%2$d</xliff:g> أخرى تبدأ في غضون <xliff:g id="remaining_time">%1$d</xliff:g> دقيقة</item>
+        <item quantity="other">و<xliff:g id="num_sessions">%2$d</xliff:g> أخرى تبدأ في غضون <xliff:g id="remaining_time">%1$d</xliff:g> دقائق</item>
+    </plurals>
+
+    <plurals name="session_notification_ticker"
+             description="Shown as a notification on the system bar to alert user that some of their sessions are about to begin.">
+        <item quantity="one">هناك %1$d جلسة على وشك البدء.</item>
+        <item quantity="other">هناك %1$d من الجلسات على وشك البدء.</item>
+    </plurals>
+
+    <plurals name="session_plurals"
+             description="Indicates a certain number of sessions.">
+        <item quantity="one">%1$d جلسة</item>
+        <item quantity="other">%1$d جلسة</item>
+    </plurals>
+
+    <!-- Title for the notification that alerts the user that some of their sessions are about to begin. -->
+    <plurals name="session_notification_title">
+        <item quantity="one">تبدأ <xliff:g id="num_sessions">%2$d</xliff:g> جلسة في غضون <xliff:g id="remaining_time">%1$d</xliff:g> دقيقة</item>
+        <item quantity="other">تبدأ <xliff:g id="num_sessions">%2$d</xliff:g> من الجلسات في غضون <xliff:g id="remaining_time">%1$d</xliff:g> دقيقة</item>
+    </plurals>
+
+    <!-- Shown in the 'About' window of the app. -->
+    <string name="about_main"><![CDATA[
+        <b>Google I/O 2016</b><br> الإصدار %s
+    ]]></string>
 
-  <!-- Label on a button that is one possible answer to the question "Are you attending the
-  conference in person in San Francisco or remotely via livestream?" -->
-  <string name="attending_remotely">عن بُعد</string>
+    <!-- Shown as a link in the About screen of the app; user can click to see the Terms of Services. -->
+    <string name="about_terms">شروط الخدمة</string>
+
+    <!-- Shown as a link in the About screen of the app; user can click to see the Privacy Policy. -->
+    <string name="about_privacy_policy">سياسة الخصوصية</string>
+
+    <!-- Shown as a link in the About screen of the app; user can click to see the EULA. -->
+    <string name="about_eula">اتفاقية ترخيص المستخدم النهائي</string>
+
+    <!-- Shown as a link in the About screen of the app; user can click it to see the licenses. -->
+    <string name="about_licenses">تراخيص مفتوحة المصدر</string>
 
-  <!-- Label on a button that allows the user to see what conference sessions are available
-  at a particular time. -->
-  <string name="browse_sessions">استعرض الجلسات</string>
+    <!-- Label on a button that the user clicks to accept a license agreement. -->
+    <string name="accept">موافقة</string>
+
+    <!-- Label on a button that, when clicked, adds the currently displayed session to their schedule. -->
+    <string name="add_to_schedule">إضافة إلى الجدول الزمني</string>
+
+    <!-- Accessibility description for a button that, when clicked, adds the currently
+    displayed session to the user's schedule. -->
+    <string name="add_to_schedule_desc">زر لإضافة الجلسة إلى الجدول الزمني الخاص بك</string>
 
-  <!-- Shown on Configure WiFi dialog, instructing user on what button to click. -->
-  <string name="calltoaction_wifi_configure">&lt;br&gt;&lt;br&gt;انقر على \"إضافة شبكة واي فاي\" للمتابعة.</string>
+    <!-- Shown in a drop-down list on the main screen, indicating that all conference themes
+    are being displayed. Themes are major categories for sessions (the themes are Design,
+    Develop and Distribute). -->
+    <string name="all_themes">جميع السمات</string>
 
-  <!-- Shown on Configure WiFi dialog, instructing user on what button to click. -->
-  <string name="calltoaction_wifi_settings">&lt;br&gt;&lt;br&gt;انقر على \"فتح إعدادات الواي فاي\" لتمكين الواي فاي.</string>
+    <!-- Shown in a drop-down list on the main screen, indicating that all conference topics
+    are being displayed. Topics are major categories for sessions (example topics are: Android,
+    Chrome, Google APIs, Wearables, etc). -->
+    <string name="all_topics">جميع المواضيع</string>
 
-  <!-- Accessibility description for a control that allows the user to close the current screen
-       and go back to the previous one. -->
-  <string name="close_and_go_back">إغلاق ورجوع</string>
+    <!-- Shown in a drop-down list on the main screen, indicating that all session types
+    are being displayed. Some examples of session types are: session, office hours, code lab. -->
+    <string name="all_types">جميع الأنواع</string>
 
-  <!-- Label on a button that allows the user to cancel an operation before it starts. For
-  example, this may be a button on a dialog that says "This will delete your data." -->
-  <string name="cancel">إلغاء</string>
+    <!-- Name of the application, shown in the application's title bar. -->
+    <string name="app_name">Google I/O</string>
 
-  <!-- Shown as the title of the user's schedule for today -->
-  <string name="day_title_today">اليوم</string>
+    <!-- Label on a button that is one possible answer to the question "Are you attending the
+    conference in person in San Francisco or remotely via livestream?" -->
+    <string name="attending_in_person">شخصيًا</string>
 
-  <!-- Shown as the title of the user's schedule for tomorrow -->
-  <string name="day_title_tomorrow">غدا</string>
+    <!-- Label on a button that is one possible answer to the question "Are you attending the
+    conference in person in San Francisco or remotely via livestream?" -->
+    <string name="attending_remotely">عن بُعد</string>
 
-  <!-- Shown as the title of the user's schedule for yesterday -->
-  <string name="day_title_yesterday">أمس</string>
+    <!-- Label on a button that allows the user to see what conference sessions are available
+    at a particular time. -->
+    <string name="browse_sessions">استعراض الجلسات</string>
 
-  <!-- Label on a button that the user clicks to decline something (for example, a license
-  agreement). -->
-  <string name="decline">تراجع</string>
+    <!-- Shown on Configure WiFi dialog, instructing user on what button to click. -->
+    <string name="calltoaction_wifi_configure"><![CDATA[
+        <br><br>انقر على \'إضافة شبكة واي فاي\' للمتابعة.
+    ]]></string>
 
-  <!-- Menu item that brings up the application's About screen -->
-  <string name="description_about">حول</string>
+    <!-- Shown on Configure WiFi dialog, instructing user on what button to click. -->
+    <string name="calltoaction_wifi_settings"><![CDATA[
+        <br><br>انقر على \'فتح إعدادات واي فاي\' لتمكين الواي فاي.
+    ]]></string>
+
+    <!-- Accessibility description for a control that allows the user to close the current screen
+         and go back to the previous one. -->
+    <string name="close_and_go_back">إغلاق ورجوع</string>
 
-  <!-- Menu item that allows user to configure the conference WiFi on their device. -->
-  <string name="description_configure_wifi">تهيئة الواي فاي</string>
+    <!-- Label on a button that allows the user to cancel an operation before it starts. For
+    example, this may be a button on a dialog that says "This will delete your data." -->
+    <string name="cancel">إلغاء</string>
 
-  <!-- Menu item that takes the user to the conference venue map screen -->
-  <string name="description_map">خريطة</string>
+    <!-- Shown as the title of the user's schedule for today -->
+    <string name="day_title_today">اليوم</string>
 
-  <!-- Menu item that allows user to reload the data in the current screen so they see
-  the most up-to-date version from the server. -->
-  <string name="description_refresh">تحديث</string>
+    <!-- Shown as the title of the user's schedule for tomorrow -->
+    <string name="day_title_tomorrow">غدًا</string>
 
-  <!-- Menu item that allows the user to start a search for a session by name. After clicking,
-  they type in their search query. -->
-  <string name="description_search">بحث</string>
+    <!-- Shown as the title of the user's schedule for yesterday -->
+    <string name="day_title_yesterday">أمس</string>
 
-  <!-- Explanation of wifi setup that appears in the WiFi setup dialog box. -->
-  <string name="description_setup_wifi_body">بما أنك تحضر بنفسك، فيمكننا إعداد هذا الجهاز ليدخل إلى شبكة الواي فاي الخاصة بالمؤتمر (5 جيجا هرتز فقط). عن طريق تهيئة الواي فاي الخاص بك الآن، فإنك ستساعد في تجنب ازدحام الشبكة.</string>
+    <!-- Label on a button that the user clicks to decline something (for example, a license
+    agreement). -->
+    <string name="decline">رفض</string>
 
-  <!-- Menu item that allows user to share the currently displayed session. Sharing can be done
-  by email, social networks, etc. -->
-  <string name="description_share">مشاركة</string>
+    <!-- Menu item that brings up the application's About screen -->
+    <string name="description_about">حول</string>
 
-  <!-- Accessibility for the links to the G+ or Twitter pages for speakers.
-  For example: "Go to the Twitter page for Sally Sample. -->
-  <string name="speaker_social_page">انتقل إلى صفحة %1$s لـ %2$s</string>
+    <!-- Menu item that allows user to configure the conference WiFi on their device. -->
+    <string name="description_configure_wifi">تهيئة الواي فاي</string>
 
-  <!-- Shown on the Session page, alerting user that no details could be found for that session. -->
-  <string name="empty_session_detail">لا توجد تفاصيل للدورة.</string>
+    <!-- Menu item that takes the user to the conference venue map screen -->
+    <string name="description_map">خريطة</string>
 
-  <!-- Shown on the Session page if a session is being livestreamed. -->
-  <string name="session_live_streamed">بث حي</string>
+    <!-- Menu item that allows user to reload the data in the current screen so they see
+    the most up-to-date version from the server. -->
+    <string name="description_refresh">تحديث البيانات</string>
 
-  <!-- Text under play button on session page if a session is currently being livestreamed. -->
-  <string name="session_watch_live">مشاهدة بث مباشر</string>
+    <!-- Menu item that allows the user to start a search for a session by name. After clicking,
+    they type in their search query. -->
+    <string name="description_search">بحث</string>
 
-  <!-- Text under play button on session page if a session is no longer being livestreamed. -->
-  <string name="session_watch">شاهد</string>
+    <!-- Explanation of wifi setup that appears in the WiFi setup dialog box. -->
+    <string name="description_setup_wifi_body"><![CDATA[
+        بما أنك تحضر بنفسك، فيمكننا إعداد هذا الجهاز ليدخل إلى شبكة الواي فاي الخاصة بالمؤتمر (5 جيجا هرتز فقط). عن طريق تهيئة الواي فاي الخاص بك الآن، فإنك ستساعد في تجنب ازدحام الشبكة.
+    ]]></string>
 
-  <!-- Text under play button on session page if a livestreamed session was previously watched. -->
-  <string name="session_replay">إعادة تشغيل</string>
+    <!-- Menu item that allows user to share the currently displayed session. Sharing can be done
+    by email, social networks, etc. -->
+    <string name="description_share">مشاركة</string>
 
-  <!-- Shown on a widget that normally displays upcoming sessions. This is shown after the
-  conference, when there are no more sessions to show. -->
-  <string name="empty_widget_text">لا يوجد المزيد من الجلسات المقبلة.\nنراك العام القادم!</string>
+    <!-- Session Detail label for Extended Session link. -->
+    <string name="description_extended">جلسة موسَّعة</string>
 
-  <!-- Shown on a widget instructing user how to start using the widget. -->
-  <string name="empty_widget_text_signed_out">المس شعار Google I/O 2016 بالأعلى لتسجيل الدخول وابدأ استخدام التطبيق.</string>
+    <!-- Accessibility for the links to the G+ or Twitter pages for speakers.
+    For example: "Go to the Twitter page for Sally Sample. -->
+    <string name="speaker_social_page">انتقل إلى صفحة %1$s الخاصة بـ %2$s</string>
 
-  <!-- Label for a button to answer the question "Would you like to send feedback
-  about this session?" which, when clicked, allows the user to send their feedback (ratings
-  and comments) about a particular session [CHAR_LIMIT=10]. -->
+    <!-- Shown on the Session page, alerting user that no details could be found for that session. -->
+    <string name="empty_session_detail">لا توجد تفاصيل للجلسة.</string>
 
-  <!-- Keynotes group title for the video library -->
-  <string name="keynote_group_title">العناصر الأساسية</string>
+    <!-- Shown on the Session page if a session is being livestreamed. -->
+    <string name="session_live_streamed">بث حي</string>
 
-  <!-- Short text appended to the end of the session subtitle when the session will be live
-  streamed. Constrained to 10 chars because the session subtitle should be small enough to fit
-  into the explore cards. [CHAR_LIMIT=10] -->
-  <string name="live_available">بث مباشر</string>
+    <!-- Text under play button on session page if a session is currently being livestreamed. -->
+    <string name="session_watch_live">مشاهدة بث مباشر</string>
 
-  <!-- Short text appended to the end of the session subtitle when the session is currently being
-  streamed. Also used in a "LIVE" badge overlay that shows up on top of the session card.
-  Constrained because the session subtitle should be small enough to fit into the
-  explore cards. [CHAR_LIMIT=10] -->
-  <string name="live_now">مباشر الآن</string>
+    <!-- Text under play button on session page if a session is no longer being livestreamed. -->
+    <string name="session_watch">مشاهدة</string>
 
-  <!-- Message shown in an error bar when there is a problem synchronizing the user's sessions
-  to their account. Can be summarized as "Synchronization failed." if too long [CHAR_LIMIT=50] -->
-  <string name="login_failed_text">لا يمكن مزامنة جلساتك بسبب خطأ.</string>
+    <!-- Text under play button on session page if a livestreamed session was previously watched. -->
+    <string name="session_replay">إعادة تشغيل</string>
 
-  <!-- Button to retry a failed login attempt [CHAR_LIMIT=2 lines of 9 characters].
-  If using multiple lines, separate them with "\n" ("Tentar\nde novo" for example)
-  -->
-  <string name="login_failed_text_retry">إعادة المحاولة</string>
+    <!-- Shown on a widget that normally displays upcoming sessions. This is shown after the
+    conference, when there are no more sessions to show. -->
+    <string name="empty_widget_text">لا يوجد المزيد من الجلسات المقبلة.\nنراك العام القادم!</string>
 
-  <!-- Message displayed when the location permission was denied -->
-  <string name="map_permission_denied">تم رفض إذن التطبيق.</string>
+    <!-- Label for a button to answer the question "Would you like to send feedback
+    about this session?" which, when clicked, allows the user to send their feedback (ratings
+    and comments) about a particular session [CHAR_LIMIT=10]. -->
+    <string name="give_feedback">نعم</string>
 
-  <!-- Button to view more Videos or sessions from the videos/sessions card view. -->
-  <string name="more_items_button">المزيد</string>
+    <!-- Keynotes group title for the video library -->
+    <string name="keynote_group_title">الخطابات الرئيسية</string>
 
-  <!-- Text for the title of an extra schedule item on the pre conference day -->
-  <string name="my_schedule_badgepickup">التقاط الشارة</string>
+    <!-- Short text appended to the end of the session subtitle when the session will be live
+    streamed. Constrained to 10 chars because the session subtitle should be small enough to fit
+    into the explore cards. [CHAR_LIMIT=10] -->
+    <string name="live_available">بث مباشر</string>
 
-  <!-- Text for the description of an extra schedule item on the pre conference day -->
-  <string name="my_schedule_badgepickup_description">مكتب التسجيل</string>
+    <!-- Short text appended to the end of the session subtitle when the session is currently being
+    streamed. Also used in a "LIVE" badge overlay that shows up on top of the session card.
+    Constrained because the session subtitle should be small enough to fit into the
+    explore cards. [CHAR_LIMIT=10] -->
+    <string name="live_now">مباشر الآن</string>
 
-  <!-- Accessibility announcement to confirm the feedback rating made for a session by the user. -->
-  <string name="feedback_rating_confirmation">تقييمك: %1$d من %2$d نجوم</string>
+    <!-- Message shown in an error bar when there is a problem synchronizing the user's sessions
+    to their account. Can be summarized as "Synchronization failed." if too long [CHAR_LIMIT=50] -->
+    <string name="login_failed_text">لا يمكن مزامنة جلساتك بسبب حدوث خطأ.</string>
 
-  <!-- Accessibility announcement for an item in the custom feedback rating view. For example, "one star".  -->
-  <string name="feedback_rating_value">%1$d نجوم</string>
+    <!-- Button to retry a failed login attempt [CHAR_LIMIT=2 lines of 9 characters].
+    If using multiple lines, separate them with "\n" ("Tentar\nde novo" for example)
+    -->
+    <string name="login_failed_text_retry">إعادة المحاولة</string>
 
-  <!-- Label for the button to rate a session -->
-  <string name="my_schedule_rate_this_session">قيِّم هذه الجلسة</string>
+    <!-- Message displayed when the location permission was denied -->
+    <string name="map_permission_denied">تم رفض إذن التطبيق.</string>
 
-  <!-- Accessibility description for navigation drawer -->
-  <string name="navdrawer_description_a11y">يُستخدم Navigation Drawer للتبديل بين المزايا الرئيسية للتطبيق</string>
+    <!-- Button to view more Videos or sessions from the videos/sessions card view. -->
+    <string name="more_items_button">المزيد</string>
 
-  <!-- Menu item to open the Explore screen [CHAR_LIMIT=20] -->
-  <string name="navdrawer_item_explore">استكشاف</string>
+    <!-- Text for the title of an extra schedule item on the pre conference day -->
+    <string name="my_schedule_badgepickup">التقاط الشارة</string>
 
-  <!-- Menu item to open the Map screen [CHAR_LIMIT=20] -->
-  <string name="navdrawer_item_map">خريطة</string>
+    <!-- Text for the description of an extra schedule item on the pre conference day -->
+    <string name="my_schedule_badgepickup_description">مكتب التسجيل</string>
 
-  <!-- Menu item to open the My Schedule screen [CHAR_LIMIT=20] -->
-  <string name="navdrawer_item_my_schedule">جدولي</string>
+    <!-- Accessibility announcement to confirm the feedback rating made for a session by the user. -->
+    <string name="feedback_rating_confirmation">تقييمك: %1$d من %2$d نجوم"</string>
 
-  <!-- Menu item to open the Settings screen [CHAR_LIMIT=20] -->
-  <string name="navdrawer_item_settings">الإعدادات</string>
+    <!-- Accessibility announcement for an item in the custom feedback rating view. For example, "one star".  -->
+    <string name="feedback_rating_value">%1$d نجوم</string>
 
-  <!-- Menu item to start the Sign In flow [CHAR_LIMIT=20] -->
-  <string name="navdrawer_item_sign_in">تسجيل الدخول</string>
+    <!-- Label for the button to rate a session -->
+    <string name="my_schedule_rate_this_session">قيِّم هذه الجلسة</string>
 
-  <!-- Menu item to open a list of current and past I/O videos [CHAR_LIMIT=20] -->
-  <string name="navdrawer_item_video_library">فيديوهات</string>
+    <!-- Label for reserve session button when it is reservable -->
+    <string name="my_schedule_reserve_seat">حجز مقعد</string>
 
-  <!-- Menu item to open the debugging screen on debug builds [CHAR_LIMIT=20] -->
-  <string name="navdrawer_item_debug">تصحيح</string>
+    <!-- Label for reserve session button while request is getting processed -->
+    <string name="my_schedule_request_pending">الطلب معلَّق...</string>
 
-  <!-- List dropdown item on the Video Library screen allowing the user to choose to see
-  the videos from the last year of Google I/O. -->
-    <string name="new_videos_title">جديد لـ <xliff:g id="year">%1$d</xliff:g>
-  </string>
+    <!-- Label for reserve session button if session is already reserved by user -->
+    <string name="my_schedule_already_reserved">تم حجز المقعد</string>
 
-  <!-- Message shown in the session explorer when the user applies a filter that results no
-  session -->
-  <string name="no_matching_sessions">لا توجد جلسات مطابقة.</string>
+    <!-- Label for reserve session button if reserving is disabled for whatever reason -->
+    <string name="my_schedule_reserve_disabled">تم تعطيل الحجز</string>
 
-  <!-- Message shown in the video library when the user applies a filter that results no video -->
-  <string name="no_matching_videos">لا توجد فيديوهات مطابقة.</string>
+    <!-- Label for reserve session button if reserving is disabled due to auth -->
+    <string name="my_schedule_reservation_disabled_auth_button_text">يجب تسجيل الدخول لإجراء الحجز
+    </string>
 
-  <!-- Button of a card in session or session explorer that dismiss the card.
-  One sample of such card is "How was this session? We would love to hear your feedback"  with
-  "Give feedback" and "No, thanks" as buttons. [CHAR_LIMIT=20]-->
-  <string name="no_thanks">لا، شكرًا</string>
+    <!-- Message in info dialog explaining why reservations are disabled when user is not signed in
+    or not registered -->
+    <string name="my_schedule_reservation_must_sign_in_and_register_message">
+        يجب عليك الدخول والتسجيل في الفعالية حتى تتمكن من التسجيل.
+    </string>
 
-  <!-- A single button shown on informative popups, like EULA, open source licenses and About -->
-  <string name="ok">موافق</string>
+    <!-- Title for info dialog explaining why reservations are disabled when user is not signed in
+    or not registered -->
+    <string name="my_schedule_reservation_why_disabled">
+        تم تعطيل الحجوزات
+    </string>
 
-  <!-- An application permission (this permission allows the application to modify the Google
-  I/O schedule data). Shows on a permissions dialog screen. -->
-  <string name="permission_write">تعديل بيانات الجدول الزمني لـ Google I/O</string>
+    <!-- Label for reserve session button if user is waitlisted for session -->
+    <string name="my_schedule_waitlisted">تم الإدراج في قائمة الانتظار</string>
 
-  <string description="Description in the Settings screen for the setting that enables display of             cards with conference information in the explore screen." name="pref_conf_message_cards_enabled_description">بطاقات عرض تحتوي على معلومات المؤتمر في شاشة الاستكشاف.\nتعتمد على الوقت وقد تتضمن رسائل ترويجية من الشركاء.</string>
+    <!-- Label for reserve session button if session is full and accepting waitlist requests -->
+    <string name="my_schedule_join_waitlist">الانضمام إلى قائمة الانتظار</string>
 
-  <!-- Title in the Settings screen for the setting that enables display of cards with
-   conference information in the explore screen. -->
-  <string name="pref_conf_message_cards_enabled_title">أعرض رسائل المؤتمر</string>
+    <!-- Reservation cancellation confirmation dialogue text -->
+    <string name="my_schedule_cancel_reservation_confirmation">هل تريد بالفعل إلغاء حجزك؟</string>
 
-  <!-- Title in the Settings screen for the setting that enables sending of anonymous usage
-  statistics to Google. -->
-  <string name="pref_analytics_enabled_title">إرسال إحصاءات استخدام مجهولة الهوية</string>
+    <!-- Waitlist cancellation confirmation dialogue text -->
+    <string name="my_schedule_cancel_waitlist_confirmation">هل تريد بالفعل إلغاء حجزك؟</string>
 
-  <!-- Description in the Settings screen for the setting that enables sending of anonymous usage
-  statistics to Google. -->
-  <string name="pref_analytics_enabled_description">إرسال إحصائيات مجهولة الهوية حول استخدام التطبيق إلى جوجل.</string>
+    <!-- Reservation window closed -->
+    <string name="my_schedule_reservation_window_closed">تم إغلاق نافذة الحجز</string>
 
-  <!-- Summary in the Settings screen for the "Show local times" option -->
-  <string name="pref_local_times_description">استخدام التوقيت المحلي الخاص بك بدلًا من التوقيت المحلي للمؤتمر.</string>
+    <!-- Title for dialog when attempted reservation clashed with another reservation -->
+    <string name="my_schedule_reservation_clash_title">تعارض في الوقت</string>
 
-  <!-- Title in the Settings screen for the "Show local times" option -->
-  <string name="pref_local_times_title">عرض التوقيتات المحلية</string>
+    <!-- Message in dialog when attempted reservation clashed with another reservation -->
+    <string name="my_schedule_reservation_clash_message">لديك بالفعل طلب حجز أو إدراج في قائمة الانتظار لهذا الوقت. لا يُسمح إلا بحجز واحد فقط لكل مدة زمنية؛ يُرجى إلغاء طلبك السابق إذا كنت ترغب في المتابعة.</string>
 
-  <!-- Summary in the Settings screen for the "Notify me to send feedback about my sessions" option -->
-  <string name="pref_notify_feedback_description">عرض الإخطارات التي تطلب رأيك في جلساتك المحددة.</string>
+    <!-- Message in alert dialog that tells you your seat reservation was successfully cancelled -->
+    <string name="my_schedule_return_successful_message">تم إلغاء حجز المقعد الخاص بك.</string>
 
-  <!-- Title in the Settings screen for the "Notify me to send feedback about my sessions" option -->
-  <string name="pref_notify_feedback_title">أخطرني لإرسال تعقيب</string>
+    <!-- Message in alert dialog that tells you your seat reservation was successfully cancelled -->
+    <string name="my_schedule_return_successful_title">إلغاء الحجز</string>
 
-  <!-- Summary in the Settings screen for the "Notify me when my sessions are about to begin" option -->
-  <string name="pref_notify_starred_sessions_description">عرض إخطار عندما تكون جلساتك المحددة على وشك البدء.</string>
+    <!-- Message in alert dialog when attempted reservation cancellation was past the cutoff time
+    -->
+    <string name="my_schedule_return_denied_cutoff_message">لا يمكن إلغاء الحجوزات قبل وقت البدء بمدة 60 دقيقة.</string>
 
-  <!-- Title in the Settings screen for the "Notify me when my sessions are about to begin" option -->
-  <string name="pref_notify_starred_sessions_title">أخطرتي حول جلساتي</string>
+    <!-- Reservation window closed info -->
+    <string name="my_schedule_reservation_window_closed_info">لا يمكن الحجز في الفعاليات قبل وقت البدء بمدة 60 دقيقة. سيتم الاحتفاظ بنسبة من المقاعد وإتاحتها على أساس مبدأ "مَن يأتي أولاً، يحصل عليها أولاً" في الموقع.</string>
 
-  <!-- Title in the Settings screen for the "Synchronize my schedule with Google Calendar" option -->
-  <string name="pref_sync_with_calendar_description">مزامنة جلساتك تلقائيًا على تقويم Google</string>
+    <!-- Message in alert dialog when reservation failed for unknown reason. -->
+    <string name="my_schedule_reservation_request_failed_message">خطأ في الخادم: فشل الطلب، يُرجى إعادة المحاولة لاحقًا.</string>
 
-  <!-- Summary in the Settings screen for the "Synchronize my schedule with Google Calendar" option -->
-  <string name="pref_sync_with_calendar_title">مزامنة مع تقويم Google</string>
+    <!-- Title for alert dialog when reservation cancellation failed for unknown reason. -->
+    <string name="my_schedule_request_failed_title">فشل الطلب</string>
 
-  <!-- This message is displayed to the user when they disable the Calendar sync and they have revoked the Calendar permission. We are letting them know we couldn't remove the items from their Calendar. -->
-  <string name="pref_sync_with_calendar_permission_denied_during_disable">لم نتمكن من إزالة العناصر من التقويم، تم رفض الإذن.</string>
+    <!-- Title for reservation cancellation confirmation dialog -->
+    <string name="my_schedule_reservation_cancel_confirm_title">تأكيد الإلغاء</string>
 
-  <!-- This message is displayed to the user when they enable the Calendar sync and they don't allow the Calendar permission. We are letting them know we can't process the Calendar updates. -->
-  <string name="pref_sync_with_calendar_permission_denied_during_enable">لم نتمكن من مزامنة التقويم، تم رفض الإذن.</string>
+    <!-- Message in reservation cancellation confirmation dialog -->
+    <string name="my_schedule_reservation_cancel_confirm_message">هل تريد بالفعل إلغاء حجزك في الجلسة؟</string>
 
-  <!-- Text of a card shown in the Explore I/O screen that asks the user if they want to configure
-       the conference WiFi. "Not now" and "Yes, please" are options show on the card -->
-  <string name="question_setup_wifi_card_text">&lt;b&gt;واي فاي المؤتمر&lt;/b&gt;&lt;br/&gt; هل ترغب في إعداد هذا الجهاز ليتصل بالواي الفاي الخاصة بالمؤتمر ذات سرعة 5 جيجاهرتز؟</string>
+    <!-- Message in waitlist cancellation confirmation dialog -->
+    <string name="my_schedule_waitlist_cancel_confirm_message">هل تريد بالفعل إلغاء طلب إدراجك في قائمة الانتظار؟</string>
 
-  <!-- Section title for videos related to a particular event session -->
-  <string name="related_videos">مقاطع الفيديو ذات الصلة</string>
+    <!-- Title for waitlist cancellation confirmation dialog -->
+    <string name="my_schedule_waitlist_cancel_confirm_title">إلغاء طلب الإدراج في قائمة الانتظار</string>
 
-  <!-- Button text indicating the session is in the user's schedule -->
-  <string name="remove_from_schedule">في الجدول</string>
+    <!-- Accessibility description for navigation drawer -->
+    <string name="navdrawer_description_a11y">قائمة التنقل</string>
 
-  <!-- Accessibility content description for button used to remove the session from the user's schedule -->
-  <string name="remove_from_schedule_desc">زر إزالة الجلسة من الجدول الزمني الخاص بك.</string>
+    <!-- Menu item to open the Feed screen [CHAR_LIMIT=20] -->
+    <string name="navdrawer_item_feed">موجز</string>
 
-  <!-- Hint that the user can search across sessions -->
-  <string name="search_hint">بحث عن الجلسات</string>
+    <!-- Menu item to open the Map screen [CHAR_LIMIT=20] -->
+    <string name="navdrawer_item_map">خريطة</string>
 
-  <!-- Search label that shows the type of data being searched for when the user clicks the
-  Search button. -->
-  <string name="search_label">جلسات Google I/O</string>
+    <!-- Menu item to open the Info screen [CHAR_LIMIT=20] -->
+    <string name="navdrawer_item_info">معلومات</string>
 
-  <!-- A fragment of text appended to a Google calendar event indicating it was added by this application -->
-  <string name="session_calendar_suffix">- أضيف من تطبيق Google I/O على أندرويد</string>
+    <!-- Menu item to open the My I/O screen [CHAR_LIMIT=20] -->
+    <string name="navdrawer_item_my_io">صفحة I/O الخاصة بي</string>
 
-  <!-- Accessibility text announced as a response to pressing a button to add a session to the schedule. -->
-  <string name="session_details_a11y_session_added">أضيفت الجلسة إلى جدولك الزمني</string>
+    <!-- Menu item to open the My Schedule screen [CHAR_LIMIT=20] -->
+    <string name="navdrawer_item_my_schedule">الجدول الزمني</string>
 
-  <!-- Accessibility text announced as a response to pressing a button to remove a session from the schedule. -->
-  <string name="session_details_a11y_session_removed">أزيلت الجلسة من جدولك الزمني</string>
+    <!-- List dropdown item on the Video Library screen allowing the user to choose to see
+    the videos from the last year of Google I/O. -->
+    <string name="new_videos_title">جديد لـ <xliff:g id="year">%1$d</xliff:g></string>
 
-  <!-- A session feedback title asking you to rate a given session -->
-  <string name="session_feedback_title_rate">التقييم</string>
+    <!-- Message shown in the session explorer when the user applies a filter that results no
+    session -->
+    <string name="no_matching_sessions">لا توجد جلسات مطابقة.</string>
 
-  <!-- A session feedback section label asking the user to rate the session overall -->
-  <string name="session_rating_label_text">تقييم الجلسة:</string>
+    <!-- Message shown in the video library when the user applies a filter that results no video -->
+    <string name="no_matching_videos">لا توجد مقاطع فيديو مطابقة.</string>
 
-  <!-- A session feedback option indicating the content was too advanced -->
-  <string name="session_feedback_advanced">متقدمة جدًا</string>
+    <!-- Button of a card in session or session explorer that dismiss the card.
+    One sample of such card is "How was this session? We would love to hear your feedback"  with
+    "Give feedback" and "No, thanks" as buttons. [CHAR_LIMIT=20]-->
+    <string name="no_thanks">لا، شكرًا</string>
 
-  <!-- A session feedback option indicating the content was too basic -->
-  <string name="session_feedback_basic">بسيطة جدًا</string>
+    <!-- A single button shown on informative popups, like EULA, open source licenses and About -->
+    <string name="ok">موافق</string>
 
-  <!-- Session feedback section title -->
-  <string name="session_feedback_content_label_text">حسب الوصف/توقعاتي، كان المحتوى:</string>
+    <!-- An application permission (this permission allows the application to modify the Google
+    I/O schedule data). Shows on a permissions dialog screen. -->
+    <string name="permission_write">تعديل بيانات جدول Google I/O الزمني</string>
 
-  <!-- Notification ticker text asking the user to provide session feedback -->
-  <string name="session_feedback_notification_ticker">أعطِ تعقيبًا للجلسة</string>
+    <string name="pref_conf_message_cards_enabled_description"
+            description="Description in the Settings screen for the setting that enables display of
+            cards with conference information in the explore screen.">عرض البطاقات التي تتضمن معلومات المؤتمر على شاشة "استكشاف". هذه البطاقات تستند إلى الوقت وقد تتضمن رسائل ترويجية مقدمة من الشركاء.</string>
 
-  <!-- A negative overall session reating -->
-  <string name="session_feedback_not_so_awesome">ليس رائعا جدا</string>
+    <!-- Title in the Settings screen for the setting that enables display of cards with
+     conference information in the explore screen. -->
+    <string name="pref_conf_message_cards_enabled_title">عرض رسائل المؤتمر</string>
 
-  <!-- A positive overall session reating -->
-  <string name="session_feedback_awesome">رائعا</string>
+    <!-- Title in the Settings screen for the setting that enables sending of anonymous usage
+    statistics to Google. -->
+    <string name="pref_analytics_enabled_title">إرسال إحصائيات استخدام مجهولة الهوية</string>
 
-  <!-- A negative relevance session feedback option -->
-  <string name="session_feedback_not_at_all_relevant">لا، على الإطلاق</string>
+    <!-- Description in the Settings screen for the setting that enables sending of anonymous usage
+    statistics to Google. -->
+    <string name="pref_analytics_enabled_description">إرسال إحصائيات مجهولة الهوية حول استخدام التطبيق إلى Google.</string>
 
-  <!-- A negative relevance session feedback option -->
-  <string name="session_feedback_extremely_relevant">جدًا</string>
+    <!-- Summary in the Settings screen for the "Show local times" option -->
+    <string name="pref_local_times_description">استخدام التوقيت المحلي الخاص بك بدلًا من التوقيت المحلي للمؤتمر.</string>
 
-  <!-- A positive speaker quality session feedback option -->
-  <string name="session_feedback_outstanding">متميزة</string>
+    <!-- Title in the Settings screen for the "Show local times" option -->
+    <string name="pref_local_times_title">عرض التوقيتات المحلية</string>
 
-  <!-- A negative speaker quality session feedback option -->
-  <string name="session_feedback_poor">ضعيفة</string>
+    <!-- Summary in the Settings screen for the "Notify me to send feedback about my sessions" option -->
+    <string name="pref_notify_feedback_description">عرض الإشعارات التي تطلب تعقيبك حول جلساتك المحددة.</string>
 
-  <!-- A session feedback section label asking for the session's relevance to the user's projects -->
-  <string name="session_feedback_relevance">ما مدى صلة هذه الجلسة بمشروعاتك؟</string>
+    <!-- Title in the Settings screen for the "Notify me to send feedback about my sessions" option -->
+    <string name="pref_notify_feedback_title">أخطرني لإرسال تعقيب</string>
 
-  <!-- A session feedback section label asking for the speaker's quality -->
-  <string name="session_feedback_speaker_quality">جودة المتحدث:</string>
+    <!-- Summary in the Settings screen for the "Notify me when my sessions are about to begin" option -->
+    <string name="pref_notify_starred_sessions_description">عرض إشعار عندما تكون جلساتك المحددة على وشك البدء.</string>
 
-  <!-- Button text for submitting session feedback -->
-  <string name="session_feedback_submitlink">أرسل تعقيبك</string>
+    <!-- Title in the Settings screen for the "Notify me when my sessions are about to begin" option -->
+    <string name="pref_notify_starred_sessions_title">أخطرني بمعلومات حول جلساتي</string>
 
-  <!-- Text indicating the session has ended -->
-  <string name="session_finished">انتهت</string>
+    <!-- Title in the Settings screen for the "Synchronize my schedule with Google Calendar" option -->
+    <string name="pref_sync_with_calendar_description">مزامنة جلساتك تلقائيًا مع تقويم Google.</string>
 
-  <!-- Card text asking the user to provide session feedback -->
-  <string name="session_give_feedback_message">كيف كانت هذه الدورة؟ هل ترغب في إرسال تعقيب؟</string>
+    <!-- Summary in the Settings screen for the "Synchronize my schedule with Google Calendar" option -->
+    <string name="pref_sync_with_calendar_title">مزامنة مع تقويم Google</string>
 
-  <!-- Link text for the user to watch a live video stream of the session -->
-  <string name="session_link_livestream">مشاهدة بث مباشر</string>
+    <!-- This message is displayed to the user when they disable the Calendar sync and they have revoked the Calendar permission. We are letting them know we couldn't remove the items from their Calendar. -->
+    <string name="pref_sync_with_calendar_permission_denied_during_disable">تعذرت إزالة العناصر من التقويم، تم رفض الإذن.</string>
 
-  <!-- Link text taking the user to the session's Google Moderator page -->
-  <string name="session_link_moderator">وسيط</string>
+    <!-- This message is displayed to the user when they enable the Calendar sync and they don't allow the Calendar permission. We are letting them know we can't process the Calendar updates. -->
+    <string name="pref_sync_with_calendar_permission_denied_during_enable">تعذرت مزامنة التقويم، تم رفض الإذن.</string>
 
-  <!-- Link text taking the user to the session's notes page -->
-  <string name="session_link_notes">ملاحظات رسمية</string>
+    <!-- Text of a card shown in the Explore I/O screen that asks the user if they want to configure
+         the conference WiFi. "Not now" and "Yes, please" are options show on the card -->
+    <string name="question_setup_wifi_card_text"><![CDATA[
+        <b>واي فاي المؤتمر</b><br/> هل ترغب في إعداد هذا الجهاز ليتصل بشبكة الواي فاي الخاصة بالمؤتمر ذات سرعة 5 غيغاهرتز؟]]></string>
 
-  <!-- Link text taking the user to the session's slides page -->
-  <string name="session_link_pdf">الشرائح</string>
+    <!-- Section title for videos related to a particular event session -->
+    <string name="related_videos">مقاطع الفيديو ذات الصلة</string>
 
-  <!-- Link text taking the user to the session's YouTube page -->
-  <string name="session_link_youtube">فيديو يوتيوب</string>
+    <!-- Section title for sessions related to a particular event session -->
+    <string name="related_sessions">الجلسات ذات الصلة</string>
 
-  <!-- Notification text that a session is starting in some number of minutes -->
-  <string name="session_notification_text_1">يبدأ في غضون <xliff:g id="remaining_time">%1$d</xliff:g> دقيقة</string>
+    <!-- Button text indicating the session is in the user's schedule and can be removed -->
+    <string name="remove_from_schedule">إزالة من الجدول الزمني</string>
 
-  <!-- Short text indicating that the session is currently happening -->
-  <string name="session_now">الآن</string>
+    <!-- Accessibility content description for button used to remove the session from the user's schedule -->
+    <string name="remove_from_schedule_desc">زر لإزالة الجلسة من الجدول الزمني الخاص بك.</string>
 
-  <!-- Label for a session section listing the requirements for the session -->
-  <string name="session_requirements">المتطلبات</string>
+    <!-- Hint that the user can search across sessions -->
+    <string name="search_hint">بحث عن الجلسات</string>
 
-  <!-- Label for a session section listing the presenters at the session -->
-  <string name="session_speakers">مكبرات الصوت</string>
+    <!-- Search label that shows the type of data being searched for when the user clicks the
+    Search button. -->
+    <string name="search_label">جلسات Google I/O</string>
 
-  <!-- Subtitle of a session indicating time interval and room number -->
-    <string name="session_subtitle">
-    <xliff:g id="time">%1$s</xliff:g> في <xliff:g id="room">%2$s</xliff:g>
-  </string>
+    <!-- A fragment of text appended to a Google calendar event indicating it was added by this application -->
+    <string name="session_calendar_suffix">- تمت الإضافة من تطبيق Google I/O على أندرويد</string>
 
-  <!-- Re-share template text indicating the user is at a particular session -->
-    <string name="share_template">تحقق من \'<xliff:g id="title">%1$s</xliff:g>\' على <xliff:g id="hashtags">%2$s</xliff:g> <xliff:g id="url">%3$s</xliff:g>
-  </string>
+    <!-- Accessibility text announced as a response to pressing a button to add a session to the schedule. -->
+    <string name="session_details_a11y_session_added">تمت إضافة الجلسة إلى جدولك الزمني</string>
 
-  <!-- Notification action text for snoozing the notification for some number of minutes -->
-  <string name="snooze_x_min">غفوة <xliff:g id="remaining_time">%1$d</xliff:g> دقيقة.</string>
+    <!-- Accessibility text announced as a response to pressing a button to remove a session from the schedule. -->
+    <string name="session_details_a11y_session_removed">تمت إزالة الجلسة من جدولك الزمني</string>
 
-  <!-- Short text label indicating a grouping of themes -->
-  <string name="themes">السمات</string>
+    <!-- Button text to launch session feedback from session details -->
+    <string name="rate_session">تقييم الجلسة</string>
 
-  <!-- Text indicating the session is going to start in some number of minutes -->
-  <string name="time_hint_about_to_start_min">سوف تبدأ هذه الجلسة في غضون <xliff:g id="minutes">%1$d</xliff:g> دقيقة.</string>
+    <!-- A session feedback section label asking the user to rate the session overall -->
+    <string name="session_rating_label_text">تقييم الجلسة:</string>
 
-  <!-- Text indicating the session is going to start in less than 1 minute -->
-  <string name="time_hint_about_to_start_shortly">هذه الجلسة على وشك أن تبدأ (أقل من دقيقة).</string>
+    <!-- A session feedback option indicating the content was too advanced -->
+    <string name="session_feedback_advanced">متقدمة جدًا</string>
 
-  <!-- Text indicating the session has ended -->
-  <string name="time_hint_session_ended">انتهت هذه الجلسة.</string>
+    <!-- A session feedback option indicating the content was too basic -->
+    <string name="session_feedback_basic">بسيطة جدًا</string>
 
-  <!-- Text indicating the session just started -->
-  <string name="time_hint_started_just">هذه الجلسة منعقدة الآن! (بدأت للتو)</string>
+    <!-- Session feedback section title -->
+    <string name="session_feedback_content_label_text">حسب الوصف/توقعاتي، كان المحتوى:</string>
 
-  <!-- Text indicating the session is in progress but has not completed -->
-  <string name="time_hint_started_min">هذه الجلسة منعقدة الآن! (بدأت منذ <xliff:g id="minutes">%1$d</xliff:g> دقائق)</string>
+    <!-- Notification ticker text asking the user to provide session feedback -->
+    <string name="session_feedback_notification_ticker">أدخل تعقيبات عن الجلسة</string>
 
-  <!-- Title text for dialog screen about the application -->
-  <string name="title_about">حول</string>
+    <!-- A negative overall session reating -->
+    <string name="session_feedback_not_so_awesome">ليست رائعة جدًا</string>
 
-  <!-- Navigation bar text for exploring the sessions -->
-  <string name="title_explore">استكشاف</string>
+    <!-- A positive overall session reating -->
+    <string name="session_feedback_awesome">رائعة</string>
 
-  <!-- Navigation bar text for the map -->
-  <string name="title_map">خريطة</string>
+    <!-- A negative relevance session feedback option -->
+    <string name="session_feedback_not_at_all_relevant">لا، على الإطلاق</string>
 
-  <!-- Navigation bar text for viewing the user's schedule -->
-  <string name="title_schedule">جدولي</string>
+    <!-- A negative relevance session feedback option -->
+    <string name="session_feedback_extremely_relevant">جدًا</string>
 
-  <!-- Label for Search screen, that allows users to search for sessions. -->
-  <string name="title_search">بحث</string>
+    <!-- A positive speaker quality session feedback option -->
+    <string name="session_feedback_outstanding">متميزة</string>
 
-  <!-- Map breadcrumb text for navigating session entries -->
-  <string name="title_session_detail">معلومات الجلسة</string>
+    <!-- A negative speaker quality session feedback option -->
+    <string name="session_feedback_poor">ضعيفة</string>
 
-  <!-- Label for SessionFeedback activity -->
-  <string name="title_session_feedback">تعقيبات الجلسة</string>
+    <!-- A session feedback section label asking for the session's relevance to the user's projects -->
+    <string name="session_feedback_relevance"> ما مدى صلة هذه الجلسة بمشروعاتك؟  </string>
 
-  <!-- Label for Settings activity -->
-  <string name="title_settings">الإعدادات</string>
+    <!-- A session feedback section label asking for the speaker's quality -->
+    <string name="session_feedback_speaker_quality">جودة المتحدث:</string>
 
-  <!-- Chooser dialog text when the user is selecting an application with which to share something -->
-  <string name="title_share">المشاركة باستخدام</string>
+    <!-- Button text for submitting session feedback -->
+    <string name="session_feedback_submitlink">إرسال التعقيبات</string>
 
-  <!-- Label for VideoLibrary activity -->
-  <string name="title_video_library">فيديوهات</string>
+    <!-- Text indicating the session has ended -->
+    <string name="session_finished">انتهت</string>
 
-  <!-- Label for exploration category which groups session topics -->
-  <string name="topics">المواضيع</string>
+    <!-- Card text asking the user to provide session feedback -->
+    <string name="session_give_feedback_message">ما رأيك في هذه الجلسة؟ هل ترغب في إرسال تعقيبات؟</string>
 
-  <!-- Label for exploration category which groups session types -->
-  <string name="types">الأنواع</string>
+    <!-- Link text for the user to watch a live video stream of the session -->
+    <string name="session_link_livestream">مشاهدة بث مباشر</string>
 
-  <!-- Text for a session subtitle indicating it does not have a room specified -->
-  <string name="unknown_room">(قاعة غير محددة)</string>
+    <!-- Link text taking the user to the session's Google Moderator page -->
+    <string name="session_link_moderator">وسيط</string>
 
-  <!-- Text for a button which allows the user to watch this particular session on live stream. -->
-  <string name="watch_now">شاهد الآن!</string>
+    <!-- Link text taking the user to the session's notes page -->
+    <string name="session_link_notes">ملاحظات رسمية</string>
 
-  <!-- Short text welcoming the user to the application -->
-  <string name="welcome_to_google_i_o_app">مرحبا بك في تطبيق Google I/O!</string>
+    <!-- Link text taking the user to the session's slides page -->
+    <string name="session_link_pdf">الشرائح</string>
 
-  <!-- Medium-length welcome text indicating the subsequent text is important legal information -->
-  <string name="welcome_text">قبل أن نبدأ، هذه بعض المعلومات القانونية الهامة فيما يتعلق باستخدامك لهذا التطبيق. ولن تستغرق سوى دقيقة واحدة!</string>
+    <!-- Link text taking the user to the session's YouTube page -->
+    <string name="session_link_youtube">فيديو على YouTube</string>
 
-  <!-- Short text introducing the code of conduct for attendees coming in person -->
-  <string name="welcome_conduct_title">أفضل ممارسات مجتمع I/O</string>
+    <!-- Notification text that a session is starting in some number of minutes -->
+    <string name="session_notification_text_1">ستبدأ في غضون <xliff:g id="remaining_time">%1$d</xliff:g> دقيقة.</string>
 
-  <!-- Medium-length welcome text asking if the user is attending Google I/O in person -->
-  <string name="welcome_attending_text">هل ستحضر I/O عن بعد أم شخصيا في ماونتن فيو؟</string>
+    <!-- Short text indicating that the session is currently happening -->
+    <string name="session_now">الآن</string>
 
-  <!-- Short text asking them to select an account -->
-  <string name="welcome_select_account">اختر حسابًا</string>
+    <!-- Label for a session section listing the requirements for the session -->
+    <string name="session_requirements">المتطلبات</string>
 
-  <!-- Medium text asking to choose an account from a list -->
-  <string name="welcome_select_accoun_text">يرجى اختيار حساب لاستخدامه:</string>
+    <!-- Label for a session section listing the presenters at the session -->
+    <string name="session_speakers">المتحدثون</string>
 
-  <!-- Text for a button which will add a wi-fi network -->
-  <string name="wifi_dialog_button_configure">إضافة شبكة واي فاي</string>
+    <!-- Subtitle of a session indicating time interval and room number -->
+    <string name="session_subtitle"><xliff:g id="time">%1$s</xliff:g> في <xliff:g id="room">%2$s</xliff:g></string>
 
-  <!-- Text for a button which will open the user's Wi-Fi settings -->
-  <string name="wifi_dialog_button_settings">فتح إعدادات واي فاي</string>
+    <!-- Re-share template text indicating the user is at a particular session -->
+    <string name="share_template">تحقق من \'<xliff:g id="title">%1$s</xliff:g>\' على <xliff:g id="hashtags">%2$s</xliff:g> <xliff:g id="url">%3$s</xliff:g></string>
 
-  <!-- Toast failure message if the user's wifi couldn't be updated -->
-  <string name="wifi_install_error_message">عذرًا، غير قادر على تحديث تهيئة الواي فاي</string>
+    <!-- Notification action text for snoozing the notification for some number of minutes -->
+    <string name="snooze_x_min">تأجيل لمدة <xliff:g id="remaining_time">%1$d</xliff:g> دقيقة.</string>
 
-  <!-- Title of the Video library screen when only videos of a given topic are displayed -->
-    <string name="title_topic_filtered_video_library">فيديوهات عن <xliff:g id="topic">%1$s</xliff:g>
-  </string>
+    <!-- Short text label indicating a grouping of themes -->
+    <string name="themes">السمات</string>
 
-  <!-- Title of the Video library screen when only videos of a given year are displayed -->
-    <string name="title_year_filtered_video_library">فيديوهات <xliff:g id="year">%1$d</xliff:g>
-  </string>
+    <!-- Text indicating the session is going to start in some number of minutes -->
+    <string name="time_hint_about_to_start_min">ستبدأ هذه الجلسة في غضون <xliff:g id="minutes">%1$d</xliff:g> دقيقة.</string>
 
-  <!-- Title of the Video library screen when only videos of a given year and a given topic are displayed -->
-    <string name="title_year_and_topic_filtered_video_library">فيديوهات <xliff:g id="year">%1$d</xliff:g> عن <xliff:g id="topic">%2$s</xliff:g>
-  </string>
+    <!-- Text indicating the session is going to start in less than 1 minute -->
+    <string name="time_hint_about_to_start_shortly">هذه الجلسة على وشك أن تبدأ (أقل من دقيقة).</string>
 
-  <!-- Text of the Filter menu icon -->
-  <string name="description_filter">تصفية</string>
+    <!-- Text indicating the session has ended -->
+    <string name="time_hint_session_ended">انتهت هذه الجلسة.</string>
 
-  <!-- Title of the Video library side panel containing all the filters -->
-  <string name="title_video_library_filter">تصفية</string>
+    <!-- Text indicating the session just started -->
+    <string name="time_hint_started_just">هذه الجلسة منعقدة الآن! (بدأت للتو)</string>
 
-  <!-- Sub-title for the Year filters -->
-  <string name="year_filter_section_label">العام</string>
+    <!-- Text indicating the session is in progress but has not completed -->
+    <string name="time_hint_started_min">هذه الجلسة منعقدة الآن! (بدأت منذ <xliff:g id="minutes">%1$d</xliff:g> دقيقة)</string>
 
-  <!-- Sub-title for the Topic filters -->
-  <string name="topic_filter_section_label">الموضوع</string>
+    <!-- Title text for dialog screen about the application -->
+    <string name="title_about">حول</string>
 
-  <!-- Label of filter option that allow to display all elements -->
-  <string name="all">الكل</string>
+    <!-- Navigation bar text for exploring the sessions -->
+    <string name="title_explore">استكشاف</string>
 
-  <!-- Title of the Explore Sessions side panel containing all the filters -->
-  <string name="title_explore_sessions_filter">تصفية</string>
+    <!-- Navigation bar text for the map -->
+    <string name="title_map">خريطة</string>
 
-  <!-- BEGIN Explore Message Card User Messages -->
-  <string description="This message is displayed on the Explore I/O screen to ask users whether         they would like to opt in to receive notifications for the sessions the have added to their schedule." name="explore_io_notifications_ask_opt_in">&lt;b&gt;إخطارات الجلسة&lt;/b&gt;&lt;br/&gt; هل تود استلام إخطارات للجلسات بجدولك الزمني؟</string>
+    <!-- Navigation bar text for viewing the user's My I/O -->
+    <string name="title_my_io">صفحة I/O الخاصة بي</string>
 
-  <string description="This message is displayed on the Explore I/O screen to ask users whether             they would like to opt in to receive messages regarding the conference." name="explore_io_msgcards_ask_opt_in">&lt;b&gt;رسائل المؤتمر&lt;/b&gt;&lt;br/&gt; هل تود استلام الرسائل الهامة المتعلقة بالمؤتمر؟ تعتمد الرسائل على الوقت وقد تتضمن رسائل ترويجية من الشركاء.</string>
+    <!-- Navigation bar text for viewing the user's schedule -->
+    <string name="title_my_schedule">الجدول الزمني</string>
 
-  <!-- This is used on the Explore I/O message cards to answer yes to a particular message -->
-  <string name="explore_io_msgcards_answer_yes">بالتأكيد، لنفعل ذلك!</string>
+    <!-- Navigation bar text for viewing the Feed -->
+    <string name="title_feed">موجز</string>
 
-  <!-- This is used on the Explore I/O message cards to answer no to a particular message -->
-  <string name="explore_io_msgcards_answer_no">لا، شكرا</string>
+    <!-- Navigation bar text for viewing Info -->
+    <string name="title_info">معلومات</string>
 
-  <!-- This string is presented to users when they attempt to click something that indicates they
-       can watch a video but it turns out we can't show the video. -->
-  <string name="explore_io_video_id_not_valid">عذرا، يبدو أن هناك مشكلة في رابط الفيديو.</string>
+    <!-- Label for Search screen, that allows users to search for sessions. -->
+    <string name="title_search">بحث</string>
 
+    <!-- Map breadcrumb text for navigating session entries -->
+    <string name="title_session_detail">معلومات الجلسة</string>
+
+    <!-- Label for SessionFeedback activity -->
+    <string name="title_session_feedback">تعقيبات عن الجلسة</string>
+
+    <!-- Label for Event info fragment -->
+    <string name="title_event">الفعالية</string>
+
+    <!-- Label for Travel info fragment -->
+    <string name="title_travel">معلومات السفر</string>
+
+    <!-- Label for Frequently Asked Questions info fragment -->
+    <string name="title_faq">الأسئلة الشائعة</string>
+
+    <!-- Label for Settings fragment -->
+    <string name="title_settings">الإعدادات</string>
+
+    <!-- Chooser dialog text when the user is selecting an application with which to share something -->
+    <string name="title_share">المشاركة باستخدام</string>
+
+    <!-- Label for VideoLibrary activity -->
+    <string name="title_video_library">مقاطع الفيديو</string>
+
+    <!-- Label for exploration category which groups session topics -->
+    <string name="topics">المواضيع</string>
+
+    <!-- Label for exploration category which groups session types -->
+    <string name="types">الأنواع</string>
+
+    <!-- Text for a session subtitle indicating it does not have a room specified -->
+    <string name="unknown_room">(قاعة غير محددة)</string>
+
+    <!-- Text for a button which allows the user to watch this particular session on live stream. -->
+    <string name="watch_now">شاهد الآن!</string>
+
+    <!-- Short text welcoming the user to the application -->
+    <string name="welcome_to_google_i_o_app">مرحبًا بك في تطبيق #io17 للأجهزة المحمولة!</string>
+
+    <!-- Medium-length welcome text indicating the subsequent text is important legal information -->
+    <string name="welcome_text">قبل أن نبدأ، هذه بعض المعلومات القانونية المهمة فيما يتعلق باستخدامك لهذا التطبيق.</string>
+
+    <!-- Short text introducing the code of conduct for attendees coming in person -->
+    <string name="welcome_conduct_title">أفضل الممارسات لمنتدى I/O</string>
+
+    <!-- Medium-length welcome text asking if the user is attending Google I/O in person -->
+    <string name="welcome_attending_text">هل ستحضر فعاليات I/O عن بُعد أم ستحضر بنفسك إلى ماونتن فيو؟</string>
+
+    <!-- Short text asking them to select an account -->
+    <string name="welcome_select_account">اختر حسابًا</string>
+
+    <!-- Medium text asking to choose an account from a list -->
+    <string name="welcome_select_accoun_text">يرجى اختيار حساب لاستخدامه:</string>
+
+    <!-- Text for a button which will add a wi-fi network -->
+    <string name="wifi_dialog_button_configure">إضافة شبكة واي فاي</string>
+
+    <!-- Text for a button which will open the user's Wi-Fi settings -->
+    <string name="wifi_dialog_button_settings">فتح إعدادات واي فاي</string>
+
+    <!-- Toast failure message if the user's wifi couldn't be updated -->
+    <string name="wifi_install_error_message">عذرًا، تعذر تحديث تهيئة الواي فاي</string>
+
+    <!-- Title of the Video library screen when only videos of a given topic are displayed -->
+    <string name="title_topic_filtered_video_library">مقاطع فيديو عن <xliff:g id="topic">%1$s</xliff:g></string>
+
+    <!-- Title of the Video library screen when only videos of a given year are displayed -->
+    <string name="title_year_filtered_video_library" tools:ignore="PluralsCandidate">مقاطع فيديو <xliff:g id="year">%1$d</xliff:g></string>
+
+    <!-- Title of the Video library screen when only videos of a given year and a given topic are displayed -->
+    <string name="title_year_and_topic_filtered_video_library" tools:ignore="PluralsCandidate">مقاطع فيديو <xliff:g id="year">%1$d</xliff:g> عن <xliff:g id="topic">%2$s</xliff:g></string>
+
+    <!-- Text of the Filter menu icon -->
+    <string name="description_filter">تصفية</string>
+
+    <!-- Text of the My I/O menu icon -->
+    <string name="description_avatar">أفاتار</string>
+
+    <!-- Title of the Video library side panel containing all the filters -->
+    <string name="title_video_library_filter">تصفية</string>
+
+    <!-- Sub-title for the Year filters -->
+    <string name="year_filter_section_label">العام</string>
+
+    <!-- Sub-title for the Topic filters -->
+    <string name="topic_filter_section_label">الموضوع</string>
+
+    <!-- Label of filter option that allow to display all elements -->
+    <string name="all">الكل</string>
+
+    <!-- Title of the Explore Sessions side panel containing all the filters -->
+    <string name="title_explore_sessions_filter">تصفية</string>
+
+    <!-- Label of filter option to show only sessions -->
+    <string name="filter_label_sessions_only">الجلسات فقط</string>
+
+    <!-- Label of filter option to show only sessions (intentional space) -->
+    <string name="active_filters_description">"عوامل التصفية: "</string>
+
+    <!-- Label for a button which clears all filters in the filter pane -->
+    <string name="clear_all">مسح الكل</string>
+
+    <!-- Label for a button which clears all filters in the filter pane -->
+    <string name="clear_filters">مسح عوامل التصفية</string>
+
+    <!-- BEGIN Explore Message Card User Messages -->
+    <string name="explore_io_notifications_ask_opt_in"
+            description="This message is displayed on the Explore I/O screen to ask users whether
+        they would like to opt in to receive notifications for the sessions the have added to their schedule."><![CDATA[
+        <b>إشعارات الجلسات</b><br/> هل ترغب في تلقي إشعارات بخصوص الجلسات في جدولك الزمني؟]]></string>
+
+    <string name="explore_io_msgcards_ask_opt_in"
+            description="This message is displayed on the Explore I/O screen to ask users whether
+            they would like to opt in to receive messages regarding the conference."><![CDATA[
+        <b>رسائل المؤتمر</b><br/> هل ترغب في تلقي الرسائل المهمة المتعلقة بالمؤتمر؟ تستند الرسائل إلى الوقت وقد تتضمن رسائل ترويجية مقدمة من الشركاء.]]></string>
+
+    <!-- This is used on the Explore I/O message cards to answer yes to a particular message -->
+    <string name="explore_io_msgcards_answer_yes">بالتأكيد، لنفعل ذلك!</string>
+
+    <!-- This is used on the Explore I/O message cards to answer no to a particular message -->
+    <string name="explore_io_msgcards_answer_no">لا، شكرًا</string>
+
+    <!-- This string is presented to users when they attempt to click something that indicates they
+         can watch a video but it turns out we can't show the video. -->
+    <string name="explore_io_video_id_not_valid">عذرًا، يبدو أن هناك مشكلة في رابط الفيديو.</string>
+
+    <string description="This string is presented as a header message on a user interface card
+         element. The card element has sub-cards that explain a few logistical details for
+         attendees. 'On the Ground' is slang in English indicating 'What you need to know when
+         you're in the middle of the conference.'"
+            name="explore_io_on_the_ground_title">على أرض الواقع</string>
+
+    <!-- Error message that is displayed when we aren't able to connect to Google Play Services,
+         potentially due to a server error or loss of network connectivity. -->
+    <string name="google_play_services_disconnected">تعذر الاتصال بخدمات Google Play</string>
+
+
+    <!-- Error message that is displayed when connection to GoogleP Play Services fails and there
+    is no resolution. -->
+    <string name="google_play_services_failed">عذرًا، فشل الاتصال بخدمات Google Play</string>
+
+    <!-- Message displayed to users as part of onboarding sign in. -->
+    <string name="signin_message">سجّل الدخول من أجل مزامنة الفعاليات المحفوظة والجلسات المحجوزة من حسابك عبر الأجهزة المحمولة والمكتبية. سيظل بإمكانك حفظ نسخة محلية من الفعاليات بدون تسجيل الدخول.</string>
+
+    <!-- Label used when asking a user to sign in. -->
+    <string name="signin_prompt">تسجيل الدخول</string>
+
+    <!-- Label used on an onboarding screen when user provides a positive response. -->
+    <string name="yes">نعم</string>
+
+    <!-- Label used on an onboarding screen when the user provides a negative response. -->
+    <string name="no">لا</string>
+
+    <!-- Title for onboarding screen asking users if they want conference notifications. -->
+    <string name="onboarding_notifications_title">إشعارات I/O</string>
+
+    <!-- Text shown on the onboarding screen asking users if they want conference notifications. -->
+    <string name="onboarding_notifications_opt_in">
+        هل ترغب في تلقي إشعارات التطبيق حول I/O؟\n سنرسل لك معلومات مهمة حول الفعالية وأجندة الأعمال والجدول الزمني ومعلومات السفر وما بعد ساعات العمل وتسجيلات الجلسات وغير ذلك. يمكنك تغيير هذا الإعداد ضمن \"Info &gt; Settings\" في أي وقت.
+    </string>
+
+    <!-- Message displayed in a card to the user on the My I/O screen after they have signed in. -->
+    <string name="signed_in_card_message">
+        تظهر الفعاليات المحفوظة والمحجوزة أدناه وقد تمت مزامنتها من حسابك عبر الأجهزة المحمولة والمكتبية.
+    </string>
+
+    <!-- Label used when asking a user to sign out. -->
+    <string name="signout_prompt">تسجيل الخروج</string>
+
+    <!-- Label used on the onboarding sign in screen for skipping sign in. -->
+    <string name="signin_prompt_skip">تخطي</string>
+
+    <!-- Label used for the user to dismiss a card. -->
+    <string name="signin_prompt_dismiss">تجاهل</string>
+
+    <!-- Button for finding quickly navigating from a day within My I/O to the relevant day within
+    schedule -->
+    <string name="add_events">إضافة فعاليات</string>
+
+    <!-- A placeholder value for the user's name in the My I/O dialog -->
+    <string name="my_io_dialog_default_name">اسمك</string>
+
+    <!-- A placeholder value for the user's email in the My I/O dialog -->
+    <string name="my_io_dialog_default_email">you@gmail.com</string>
+
+    <!-- An introductory string used in the My I/O dialog to a signed out user  -->
+    <string name="my_io_body_intro_signed_out">تسجيل الدخول إلى:</string>
+
+    <!-- An introductory string used in the My I/O dialog to a signed in user  -->
+    <string name="my_io_body_intro_signed_in">كمستخدم مسجَّل دخوله:</string>
+
+    <!-- The first bulletpoint string used in the My I/O dialog to a signed out user  -->
+    <string name="my_io_dialog_first_bullet_point_signed_out">
+        \u2022 مزامنة الفعاليات المحفوظة والمحجوزة في حسابك عبر الأجهزة المكتبية والمحمولة
+    </string>
+
+    <!-- The first bulletpoint string used in the My I/O dialog to a signed in user  -->
+    <string name="my_io_dialog_first_bullet_point_signed_in">
+        \u2022 تمت مزامنة الفعاليات المحفوظة والمحجوزة لحسابك عبر الأجهزة المحمولة والمكتبية
+    </string>
+
+    <!-- The second bulletpoint string used in the My I/O dialog to a signed out user  -->
+    <string name="my_io_dialog_second_bullet_point_signed_out">
+        \u2022 تقديم تعقيبات حول الجلسات بعد انتهائها
+    </string>
+
+    <!-- The second bulletpoint string used in the My I/O dialog to a signed in user  -->
+    <string name="my_io_dialog_second_bullet_point_signed_in">
+        \u2022 يمكنك تقديم تعقيبات حول الجلسات بعد انتهائها
+    </string>
+
+    <!-- Message shown when a user initiated sign in fails. -->
+    <string name="signin_failed_text">تعذر تسجيل الدخول. يُرجى إعادة المحاولة.</string>
+
+    <!-- Message shown when a user initiated sign out fails. -->
+    <string name="signout_failed_text">تعذر تسجيل الخروج. يُرجى إعادة المحاولة.</string>
+
+    <!-- Strings for Info page-->
+    <string name="wifi_network_label">شبكة الواي فاي</string>
+    <string name="wifi_password_label">كلمة المرور</string>
+    <string name="setup_wifi">إعداد الواي فاي</string>
+    <string name="password_copied_confirmation">تم نسخ كلمة المرور</string>
+    <string name="view_sessions_text">عرض الجلسات</string>
+    <string name="view_map_text">عرض الخريطة</string>
+    <!-- TODO make these URLs the correct deep link -->
+    <string name="event_sandbox_title">بيئة الاختبار</string>
+    <string name="event_codelabs_title">Code Labs</string>
+    <string name="event_officehours_title">ساعات العمل وتقييمات التطبيق</string>
+    <string name="event_afterhours_title">ما بعد ساعات العمل</string>
+    <string name="travel_details_title">معلومات السفر</string>
+    <string name="travel_shuttle_info_title">خدمة النقل بالحافلات</string>
+    <string name="travel_carpool_parking_info_title">خدمات مشاركة السيارات والانتظار</string>
+    <string name="travel_public_transportation_info_title">المواصلات العامة</string>
+    <string name="travel_biking_info_title">خدمة ركوب الدراجات</string>
+
+    <string name="settings_time_zone_label">عرض الفعاليات بتوقيت المحيط الهادئ</string>
+    <string name="settings_enable_notifications">تمكين الإشعارات</string>
+    <string name="settings_enable_anon_statistics">إرسال إحصائيات استخدام مجهولة الهوية</string>
+    <string name="about_terms_url">https://www.google.com/intl/ar/policies/terms/</string>
+    <string name="about_privacy_policy_url">https://www.google.com/intl/ar/policies/privacy/</string>
+    <string name="about_app_version">الإصدار %1$s</string>
+
+    <string name="feed_error">حدث خطأ أثناء تحميل الموجز.</string>
+
+    <!-- RemoteConfig keys for Feed default messages -->
 </resources>
