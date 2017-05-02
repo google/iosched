@@ -38,9 +38,10 @@ import static android.graphics.Paint.ANTI_ALIAS_FLAG;
 public class DividerDecoration extends ItemDecoration {
 
     private static final int[] ATTRS =
-            new int[]{android.R.attr.dividerHeight, android.R.attr.divider};
+            new int[] { android.R.attr.dividerHeight, android.R.attr.divider };
     private final Paint mDividerPaint = new Paint(ANTI_ALIAS_FLAG);
     private final float mHalfHeight;
+
     public DividerDecoration(float dividerHeight, @ColorInt int dividerColor) {
         mDividerPaint.setStrokeWidth(dividerHeight);
         mHalfHeight = dividerHeight / 2f;
@@ -57,7 +58,7 @@ public class DividerDecoration extends ItemDecoration {
     }
 
     @Override
-    public void onDrawOver(Canvas canvas, RecyclerView rv, RecyclerView.State state) {
+    public void onDraw(Canvas canvas, RecyclerView rv, RecyclerView.State state) {
         int count = rv.getChildCount();
         if (count < 2) return;
         float[] points = new float[count * 4];
@@ -84,6 +85,5 @@ public class DividerDecoration extends ItemDecoration {
     /**
      * Empty marker interface, used to denote a {@link ViewHolder} as requiring a divider.
      */
-    interface Divided {
-    }
+    interface Divided { }
 }
