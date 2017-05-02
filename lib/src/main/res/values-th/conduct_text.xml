@@ -17,6 +17,6 @@
 <resources>
 
     <!-- Long-form text explaining the code of conduct for attending the conference in person -->
-    <string name="welcome_conduct_text">Não deixe também de ler e conhecer as Orientações à comunidade de eventos Google e a Política de Antiassédio (events.google.com/io/faq#communityguidelines). \n</string>
+    <string name="welcome_conduct_text">โปรดสละเวลาอ่านและรับทราบแนวทางปฏิบัติและนโยบายต่อต้านการล่วงละเมิดในชุมชนกิจกรรมของ Google (events.google.com/io/faq#communityguidelines) \n</string>
 
 </resources>

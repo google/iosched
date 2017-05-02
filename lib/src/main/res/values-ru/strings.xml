@@ -1,6 +1,6 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <!--
-  Copyright 2016 Google Inc. All rights reserved.
+  Copyright 2017 Google Inc. All rights reserved.
 
   Licensed under the Apache License, Version 2.0 (the "License");
   you may not use this file except in compliance with the License.
@@ -14,54 +14,42 @@
   See the License for the specific language governing permissions and
   limitations under the License.
   -->
-<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2" xmlns:tools="http://schemas.android.com/tools">
 
-    <plurals description="Shown in the schedule to indicate how many sessions are available on that particular time slot." name="schedule_block_subtitle">
-    <item quantity="one">
-      <xliff:g id="number_of_sessions">%1$d</xliff:g> доступная сессия</item>
-    <item quantity="few">
-      <xliff:g id="number_of_sessions">%1$d</xliff:g> доступные сессии</item>
-    <item quantity="many">
-      <xliff:g id="number_of_sessions">%1$d</xliff:g> доступных сессий</item>
-    <item quantity="other">
-      <xliff:g id="number_of_sessions">%1$d</xliff:g> доступных сессий</item>
-  </plurals>
+    <plurals name="schedule_block_subtitle"
+             description="Shown in the schedule to indicate how many sessions are available on that particular time slot.">
+        <item quantity="one">доступно сессий: <xliff:g id="number_of_sessions">%1$d</xliff:g></item>
+        <item quantity="other">доступно сессий: <xliff:g id="number_of_sessions">%1$d</xliff:g></item>
+    </plurals>
 
-  <!-- TODO "one" case needs correction, applies to values other than 1 (e.g. 21, 101) -->
-    <plurals description="Shows as a notification on the system bar to alert user that some of their sessions are about to begin." name="session_notification_text">
-    <item quantity="one">и еще одна, начинающаяся через <xliff:g id="remaining_time">%1$d</xliff:g> мин.</item>
-    <item quantity="few">и <xliff:g id="num_sessions">%2$d</xliff:g> других, начинающихся через <xliff:g id="remaining_time">%1$d</xliff:g> мин.</item>
-    <item quantity="many">и <xliff:g id="num_sessions">%2$d</xliff:g> других, начинающихся через <xliff:g id="remaining_time">%1$d</xliff:g> мин.</item>
-    <item quantity="other">и <xliff:g id="num_sessions">%2$d</xliff:g> других, начинающихся через <xliff:g id="remaining_time">%1$d</xliff:g> мин.</item>
-  </plurals>
+    <plurals name="session_notification_text"
+             description="Shows as a notification on the system bar to alert user that some of their sessions are about to begin.">
+        <item quantity="one">, еще <xliff:g id="num_sessions">%2$d</xliff:g> начнется через <xliff:g id="remaining_time">%1$d</xliff:g> мин.</item>
+        <item quantity="other">, еще <xliff:g id="num_sessions">%2$d</xliff:g> начнутся через <xliff:g id="remaining_time">%1$d</xliff:g> мин.</item>
+    </plurals>
 
-    <plurals description="Shown as a notification on the system bar to alert user that some of their sessions are about to begin." name="session_notification_ticker">
-    <item quantity="one">%1$d сессия скоро начнется.</item>
-    <item quantity="few">%1$d сессии скоро начнутся.</item>
-    <item quantity="many">%1$d сессий скоро начнутся.</item>
-    <item quantity="other">%1$d сессий скоро начнутся.</item>
-  </plurals>
+    <plurals name="session_notification_ticker"
+             description="Shown as a notification on the system bar to alert user that some of their sessions are about to begin.">
+        <item quantity="one">скоро начнется сессий: %1$d.</item>
+        <item quantity="other">скоро начнется сессий: %1$d.</item>
+    </plurals>
 
-    <plurals description="Indicates a certain number of sessions." name="session_plurals">
-    <item quantity="one">%1$d сессия</item>
-    <item quantity="few">%1$d сессии</item>
-    <item quantity="many">%1$d сессий</item>
-    <item quantity="other">%1$d сессий</item>
-  </plurals>
+    <plurals name="session_plurals"
+             description="Indicates a certain number of sessions.">
+        <item quantity="one">сессий: %1$d</item>
+        <item quantity="other">сессий: %1$d</item>
+    </plurals>
 
     <!-- Title for the notification that alerts the user that some of their sessions are about to begin. -->
     <plurals name="session_notification_title">
-    <item quantity="one"><xliff:g id="num_sessions">%2$d</xliff:g> сессия начинается через <xliff:g id="remaining_time">%1$d</xliff:g> мин.</item>
-    <item quantity="few">
-      <xliff:g id="num_sessions">%2$d</xliff:g> сессия начинается через <xliff:g id="remaining_time">%1$d</xliff:g> мин.</item>
-    <item quantity="many">
-      <xliff:g id="num_sessions">%2$d</xliff:g> сессии начинаются через <xliff:g id="remaining_time">%1$d</xliff:g> мин.</item>
-    <item quantity="other">
-      <xliff:g id="num_sessions">%2$d</xliff:g> сессий начинается через <xliff:g id="remaining_time">%1$d</xliff:g> мин.</item>
-  </plurals>
+        <item quantity="one">через <xliff:g id="remaining_time">%1$d</xliff:g> мин. начнется сессий: <xliff:g id="num_sessions">%2$d</xliff:g></item>
+        <item quantity="other">через <xliff:g id="remaining_time">%1$d</xliff:g> мин. начнется сессий: <xliff:g id="num_sessions">%2$d</xliff:g></item>
+    </plurals>
 
     <!-- Shown in the 'About' window of the app. -->
-    <string name="about_main">&lt;b&gt;Google I/O 2016&lt;/b&gt;&lt;br&gt; Версия %s</string>
+    <string name="about_main"><![CDATA[
+        <b>Google I/O 2016</b><br> Версия %s
+    ]]></string>
 
     <!-- Shown as a link in the About screen of the app; user can click to see the Terms of Services. -->
     <string name="about_terms">Условия использования</string>
@@ -70,10 +58,10 @@
     <string name="about_privacy_policy">Политика конфиденциальности</string>
 
     <!-- Shown as a link in the About screen of the app; user can click to see the EULA. -->
-    <string name="about_eula">Лицензионное соглашение конечного пользователя</string>
+    <string name="about_eula">Лицензионное соглашение с конечным пользователем</string>
 
     <!-- Shown as a link in the About screen of the app; user can click it to see the licenses. -->
-    <string name="about_licenses">Лицензии Open Source</string>
+    <string name="about_licenses">Лицензии на ПО с открытым исходным кодом</string>
 
     <!-- Label on a button that the user clicks to accept a license agreement. -->
     <string name="accept">Принять</string>
@@ -115,10 +103,14 @@
     <string name="browse_sessions">ОБЗОР СЕССИЙ</string>
 
     <!-- Shown on Configure WiFi dialog, instructing user on what button to click. -->
-    <string name="calltoaction_wifi_configure">&lt;br&gt;&lt;br&gt;Нажмите \"Добавить сеть Wi-Fi\", чтобы продолжить.</string>
+    <string name="calltoaction_wifi_configure"><![CDATA[
+        <br><br>Нажмите \"Добавить сеть Wi-Fi\", чтобы продолжить.
+    ]]></string>
 
     <!-- Shown on Configure WiFi dialog, instructing user on what button to click. -->
-    <string name="calltoaction_wifi_settings">&lt;br&gt;&lt;br&gt; Нажмите \"Открыть настройки Wi-Fi\", чтобы включить Wi-Fi.</string>
+    <string name="calltoaction_wifi_settings"><![CDATA[
+        <br><br> Нажмите \"Открыть настройки Wi-Fi\", чтобы включить Wi-Fi.
+    ]]></string>
 
     <!-- Accessibility description for a control that allows the user to close the current screen
          and go back to the previous one. -->
@@ -129,7 +121,7 @@
     <string name="cancel">Отмена</string>
 
     <!-- Shown as the title of the user's schedule for today -->
-    <string name="day_title_today">Cегодня</string>
+    <string name="day_title_today">Сегодня</string>
 
     <!-- Shown as the title of the user's schedule for tomorrow -->
     <string name="day_title_tomorrow">Завтра</string>
@@ -159,15 +151,20 @@
     <string name="description_search">Поиск</string>
 
     <!-- Explanation of wifi setup that appears in the WiFi setup dialog box. -->
-    <string name="description_setup_wifi_body">Так как вы будете присутствовать лично, мы можем настроить это устройство для доступа к Wi-Fi сети конференции (только 5 ГГц). Настроив Wi-Fi сейчас, вы поможете предотвратить перегрузку сети.</string>
+    <string name="description_setup_wifi_body"><![CDATA[
+        Поскольку вы присутствуете лично, можно настроить это устройство для доступа к сети Wi-Fi на конференции (только 5 ГГц). Настроив Wi-Fi сейчас, вы поможете предотвратить перегрузку сети.
+    ]]></string>
 
     <!-- Menu item that allows user to share the currently displayed session. Sharing can be done
     by email, social networks, etc. -->
     <string name="description_share">Поделиться</string>
 
+    <!-- Session Detail label for Extended Session link. -->
+    <string name="description_extended">Расширенная сессия</string>
+
     <!-- Accessibility for the links to the G+ or Twitter pages for speakers.
     For example: "Go to the Twitter page for Sally Sample. -->
-    <string name="speaker_social_page">Перейти на страницу %1$s с %2$s</string>
+    <string name="speaker_social_page">Перейти на страницу %1$s для %2$s</string>
 
     <!-- Shown on the Session page, alerting user that no details could be found for that session. -->
     <string name="empty_session_detail">Информации об этой сессии не найдено.</string>
@@ -188,16 +185,13 @@
     conference, when there are no more sessions to show. -->
     <string name="empty_widget_text">Сессий больше нет.\nУвидимся в следующем году!</string>
 
-    <!-- Shown on a widget instructing user how to start using the widget. -->
-    <string name="empty_widget_text_signed_out">Нажмите на логотип Google I/O 2016 вверху, чтобы войти в систему и начать использовать приложение.</string>
-
     <!-- Label for a button to answer the question "Would you like to send feedback
     about this session?" which, when clicked, allows the user to send their feedback (ratings
     and comments) about a particular session [CHAR_LIMIT=10]. -->
     <string name="give_feedback">Да</string>
 
     <!-- Keynotes group title for the video library -->
-    <string name="keynote_group_title">Ключевые слова</string>
+    <string name="keynote_group_title">Вступительная речь</string>
 
     <!-- Short text appended to the end of the session subtitle when the session will be live
     streamed. Constrained to 10 chars because the session subtitle should be small enough to fit
@@ -220,7 +214,7 @@
     <string name="login_failed_text_retry">Повтор</string>
 
     <!-- Message displayed when the location permission was denied -->
-    <string name="map_permission_denied">Отсутствует разрешение для приложения.</string>
+    <string name="map_permission_denied">Нет разрешения для приложения.</string>
 
     <!-- Button to view more Videos or sessions from the videos/sessions card view. -->
     <string name="more_items_button">Еще</string>
@@ -240,41 +234,114 @@
     <!-- Label for the button to rate a session -->
     <string name="my_schedule_rate_this_session">ОЦЕНИТЬ ЭТУ СЕССИЮ</string>
 
-    <!-- Accessibility description for navigation drawer -->
-    <string name="navdrawer_description_a11y">Панель навигации используется для переключения между основными разделами приложения</string>
+    <!-- Label for reserve session button when it is reservable -->
+    <string name="my_schedule_reserve_seat">Зарезервировать место</string>
 
-    <!-- Menu item to open the Explore screen [CHAR_LIMIT=20] -->
-    <string name="navdrawer_item_explore">Обзор</string>
+    <!-- Label for reserve session button while request is getting processed -->
+    <string name="my_schedule_request_pending">Запрос в ожидании…</string>
+
+    <!-- Label for reserve session button if session is already reserved by user -->
+    <string name="my_schedule_already_reserved">Место зарезервировано</string>
+
+    <!-- Label for reserve session button if reserving is disabled for whatever reason -->
+    <string name="my_schedule_reserve_disabled">Резервирование не разрешено</string>
+
+    <!-- Label for reserve session button if reserving is disabled due to auth -->
+    <string name="my_schedule_reservation_disabled_auth_button_text">Для резервирования необходимо войти в систему
+    </string>
+
+    <!-- Message in info dialog explaining why reservations are disabled when user is not signed in
+    or not registered -->
+    <string name="my_schedule_reservation_must_sign_in_and_register_message">
+        Для резервирования вы должны войти в систему и зарегистрироваться для участия в событии.
+    </string>
+
+    <!-- Title for info dialog explaining why reservations are disabled when user is not signed in
+    or not registered -->
+    <string name="my_schedule_reservation_why_disabled">
+        Резервирование не разрешено
+    </string>
+
+    <!-- Label for reserve session button if user is waitlisted for session -->
+    <string name="my_schedule_waitlisted">В списке ожидания</string>
+
+    <!-- Label for reserve session button if session is full and accepting waitlist requests -->
+    <string name="my_schedule_join_waitlist">Войти в список ожидания</string>
+
+    <!-- Reservation cancellation confirmation dialogue text -->
+    <string name="my_schedule_cancel_reservation_confirmation">Вы действительно хотите отменить резервирование?</string>
+
+    <!-- Waitlist cancellation confirmation dialogue text -->
+    <string name="my_schedule_cancel_waitlist_confirmation">Вы действительно хотите отменить резервирование?</string>
+
+    <!-- Reservation window closed -->
+    <string name="my_schedule_reservation_window_closed">Резервирование закрыто</string>
+
+    <!-- Title for dialog when attempted reservation clashed with another reservation -->
+    <string name="my_schedule_reservation_clash_title">Конфликт времени</string>
+
+    <!-- Message in dialog when attempted reservation clashed with another reservation -->
+    <string name="my_schedule_reservation_clash_message">У вас уже есть зарезервированное событие или запрос на внесение в список ожидания на это время. Разрешено только одно резервирование на один временной интервал. Отмените прежний запрос, если хотите продолжить.</string>
+
+    <!-- Message in alert dialog that tells you your seat reservation was successfully cancelled -->
+    <string name="my_schedule_return_successful_message">Резервирование места отменено.</string>
+
+    <!-- Message in alert dialog that tells you your seat reservation was successfully cancelled -->
+    <string name="my_schedule_return_successful_title">Отмена резервирования</string>
+
+    <!-- Message in alert dialog when attempted reservation cancellation was past the cutoff time
+    -->
+    <string name="my_schedule_return_denied_cutoff_message">Резервирование нельзя отменить менее, чем за 60 минут до начала события.</string>
+
+    <!-- Reservation window closed info -->
+    <string name="my_schedule_reservation_window_closed_info">Резервирование прекращается за 60 минут до начала события. Часть мест будет доступна в порядке живой очереди на месте проведения мероприятия.</string>
+
+    <!-- Message in alert dialog when reservation failed for unknown reason. -->
+    <string name="my_schedule_reservation_request_failed_message">Ошибка сервера: Ошибка запроса, попробуйте повторить попытку.</string>
+
+    <!-- Title for alert dialog when reservation cancellation failed for unknown reason. -->
+    <string name="my_schedule_request_failed_title">Ошибка запроса</string>
+
+    <!-- Title for reservation cancellation confirmation dialog -->
+    <string name="my_schedule_reservation_cancel_confirm_title">Подтвердить отмену</string>
+
+    <!-- Message in reservation cancellation confirmation dialog -->
+    <string name="my_schedule_reservation_cancel_confirm_message">Вы действительно хотите отменить резервирование сессии?</string>
+
+    <!-- Message in waitlist cancellation confirmation dialog -->
+    <string name="my_schedule_waitlist_cancel_confirm_message">Вы действительно хотите отменить запрос на внесение в список ожидания?</string>
+
+    <!-- Title for waitlist cancellation confirmation dialog -->
+    <string name="my_schedule_waitlist_cancel_confirm_title">Отменить запрос на внесение в список ожидания</string>
+
+    <!-- Accessibility description for navigation drawer -->
+    <string name="navdrawer_description_a11y">Меню навигации</string>
+
+    <!-- Menu item to open the Feed screen [CHAR_LIMIT=20] -->
+    <string name="navdrawer_item_feed">Канал</string>
 
     <!-- Menu item to open the Map screen [CHAR_LIMIT=20] -->
     <string name="navdrawer_item_map">Карта</string>
 
+    <!-- Menu item to open the Info screen [CHAR_LIMIT=20] -->
+    <string name="navdrawer_item_info">Информация</string>
+
+    <!-- Menu item to open the My I/O screen [CHAR_LIMIT=20] -->
+    <string name="navdrawer_item_my_io">My I/O</string>
+
     <!-- Menu item to open the My Schedule screen [CHAR_LIMIT=20] -->
-    <string name="navdrawer_item_my_schedule">Мое расписание</string>
-
-    <!-- Menu item to open the Settings screen [CHAR_LIMIT=20] -->
-    <string name="navdrawer_item_settings">Настройки</string>
-
-    <!-- Menu item to start the Sign In flow [CHAR_LIMIT=20] -->
-    <string name="navdrawer_item_sign_in">Войти</string>
-
-    <!-- Menu item to open a list of current and past I/O videos [CHAR_LIMIT=20] -->
-    <string name="navdrawer_item_video_library">Видео</string>
-
-    <!-- Menu item to open the debugging screen on debug builds [CHAR_LIMIT=20] -->
-    <string name="navdrawer_item_debug">Отладка</string>
+    <string name="navdrawer_item_my_schedule">Расписание</string>
 
     <!-- List dropdown item on the Video Library screen allowing the user to choose to see
     the videos from the last year of Google I/O. -->
-    <string name="new_videos_title">Новое в <xliff:g id="year">%1$d</xliff:g>
-  </string>
+    <string name="new_videos_title">Новое в <xliff:g id="year">%1$d</xliff:g></string>
 
     <!-- Message shown in the session explorer when the user applies a filter that results no
     session -->
-    <string name="no_matching_sessions">Нет подходящих сессий.</string>
+    <string name="no_matching_sessions">Нет соответствующих сессий.</string>
 
     <!-- Message shown in the video library when the user applies a filter that results no video -->
-    <string name="no_matching_videos">Нет подходящих видео.</string>
+    <string name="no_matching_videos">Нет соответствующих видео.</string>
 
     <!-- Button of a card in session or session explorer that dismiss the card.
     One sample of such card is "How was this session? We would love to hear your feedback"  with
@@ -286,9 +353,11 @@
 
     <!-- An application permission (this permission allows the application to modify the Google
     I/O schedule data). Shows on a permissions dialog screen. -->
-    <string name="permission_write">Изменение данных расписания Google I/O</string>
+    <string name="permission_write">Изменить данные в расписании Google I/O</string>
 
-    <string description="Description in the Settings screen for the setting that enables display of             cards with conference information in the explore screen." name="pref_conf_message_cards_enabled_description">Показывать карточки с информацией о конференции на экране Обзор. Они появляются в определенное время и могут включать в себя рекламные сообщения от партнеров.</string>
+    <string name="pref_conf_message_cards_enabled_description"
+            description="Description in the Settings screen for the setting that enables display of
+            cards with conference information in the explore screen.">Показывать карточки с информацией о конференции на экране обзора. Их содержание зависит от времени и может включать рекламу наших партнеров.</string>
 
     <!-- Title in the Settings screen for the setting that enables display of cards with
      conference information in the explore screen. -->
@@ -303,7 +372,7 @@
     <string name="pref_analytics_enabled_description">Отправлять анонимные статистические данные об использовании приложения в Google.</string>
 
     <!-- Summary in the Settings screen for the "Show local times" option -->
-    <string name="pref_local_times_description">Использовать мое местное время, а не местное время конференции.</string>
+    <string name="pref_local_times_description">Использовать ваше местное время, а не местное время конференции.</string>
 
     <!-- Title in the Settings screen for the "Show local times" option -->
     <string name="pref_local_times_title">Показывать местное время</string>
@@ -315,7 +384,7 @@
     <string name="pref_notify_feedback_title">Напоминания об отправке отзывов</string>
 
     <!-- Summary in the Settings screen for the "Notify me when my sessions are about to begin" option -->
-    <string name="pref_notify_starred_sessions_description">Показывать уведомления о скором начале выбранных мною сессий.</string>
+    <string name="pref_notify_starred_sessions_description">Показывать уведомления о скором начале выбранных вами сессий.</string>
 
     <!-- Title in the Settings screen for the "Notify me when my sessions are about to begin" option -->
     <string name="pref_notify_starred_sessions_title">Уведомлять меня о моих сессиях</string>
@@ -334,13 +403,17 @@
 
     <!-- Text of a card shown in the Explore I/O screen that asks the user if they want to configure
          the conference WiFi. "Not now" and "Yes, please" are options show on the card -->
-    <string name="question_setup_wifi_card_text">&lt;b&gt;Wi-Fi конференции&lt;/b&gt;&lt;br/&gt; Настроить доступ к Wi-Fi конференции (5 Ghz) на этом устройстве?</string>
+    <string name="question_setup_wifi_card_text"><![CDATA[
+        <b>Wi-Fi конференции</b><br/> Настроить доступ к Wi-Fi конференции (5 ГГц) на этом устройстве?]]></string>
 
     <!-- Section title for videos related to a particular event session -->
-    <string name="related_videos">Видео</string>
+    <string name="related_videos">Связанные видео</string>
 
-    <!-- Button text indicating the session is in the user's schedule -->
-    <string name="remove_from_schedule">В расписании</string>
+    <!-- Section title for sessions related to a particular event session -->
+    <string name="related_sessions">Связанные сессии</string>
+
+    <!-- Button text indicating the session is in the user's schedule and can be removed -->
+    <string name="remove_from_schedule">Удалить из расписания</string>
 
     <!-- Accessibility content description for button used to remove the session from the user's schedule -->
     <string name="remove_from_schedule_desc">Кнопка для удаления сессии из вашего расписания.</string>
@@ -353,16 +426,16 @@
     <string name="search_label">Сессии Google I/O</string>
 
     <!-- A fragment of text appended to a Google calendar event indicating it was added by this application -->
-    <string name="session_calendar_suffix">- добавлено приложением Google I/O Android</string>
+    <string name="session_calendar_suffix">- добавлено приложением Google I/O для Android</string>
 
     <!-- Accessibility text announced as a response to pressing a button to add a session to the schedule. -->
-    <string name="session_details_a11y_session_added">Сессия добавлена ​​к вашему расписанию</string>
+    <string name="session_details_a11y_session_added">Сессия добавлена к вашему расписанию</string>
 
     <!-- Accessibility text announced as a response to pressing a button to remove a session from the schedule. -->
     <string name="session_details_a11y_session_removed">Сессия удалена из вашего расписания</string>
 
-    <!-- A session feedback title asking you to rate a given session -->
-    <string name="session_feedback_title_rate">Оценка</string>
+    <!-- Button text to launch session feedback from session details -->
+    <string name="rate_session">Оценить сессию</string>
 
     <!-- A session feedback section label asking the user to rate the session overall -->
     <string name="session_rating_label_text">Оценка сессии:</string>
@@ -380,25 +453,25 @@
     <string name="session_feedback_notification_ticker">Оставьте отзыв о сессии</string>
 
     <!-- A negative overall session reating -->
-    <string name="session_feedback_not_so_awesome">Не очень</string>
+    <string name="session_feedback_not_so_awesome">Не очень хорошо</string>
 
     <!-- A positive overall session reating -->
     <string name="session_feedback_awesome">Отлично</string>
 
     <!-- A negative relevance session feedback option -->
-    <string name="session_feedback_not_at_all_relevant">Абсолютно нет</string>
+    <string name="session_feedback_not_at_all_relevant">Совсем неинтересно</string>
 
     <!-- A negative relevance session feedback option -->
-    <string name="session_feedback_extremely_relevant">Крайне</string>
+    <string name="session_feedback_extremely_relevant">Чрезвычайно</string>
 
     <!-- A positive speaker quality session feedback option -->
-    <string name="session_feedback_outstanding">Выдающимся</string>
+    <string name="session_feedback_outstanding">Исключительно</string>
 
     <!-- A negative speaker quality session feedback option -->
     <string name="session_feedback_poor">Слабо</string>
 
     <!-- A session feedback section label asking for the session's relevance to the user's projects -->
-    <string name="session_feedback_relevance"> Насколько актуальна эта сессия была для ваших проектов?</string>
+    <string name="session_feedback_relevance"> Насколько актуальна эта сессия была для ваших проектов?  </string>
 
     <!-- A session feedback section label asking for the speaker's quality -->
     <string name="session_feedback_speaker_quality">Качество докладчика:</string>
@@ -425,7 +498,7 @@
     <string name="session_link_pdf">Слайды</string>
 
     <!-- Link text taking the user to the session's YouTube page -->
-    <string name="session_link_youtube">YouTube видео</string>
+    <string name="session_link_youtube">Видео на YouTube</string>
 
     <!-- Notification text that a session is starting in some number of minutes -->
     <string name="session_notification_text_1">начинается через <xliff:g id="remaining_time">%1$d</xliff:g> мин.</string>
@@ -440,13 +513,10 @@
     <string name="session_speakers">Докладчики</string>
 
     <!-- Subtitle of a session indicating time interval and room number -->
-    <string name="session_subtitle">
-    <xliff:g id="time">%1$s</xliff:g> в <xliff:g id="room">%2$s</xliff:g>
-  </string>
+    <string name="session_subtitle"><xliff:g id="time">%1$s</xliff:g> в <xliff:g id="room">%2$s</xliff:g></string>
 
     <!-- Re-share template text indicating the user is at a particular session -->
-    <string name="share_template">Ознакомьтесь с \'<xliff:g id="title">%1$s</xliff:g>\' в <xliff:g id="hashtags">%2$s</xliff:g> <xliff:g id="url">%3$s</xliff:g>
-  </string>
+    <string name="share_template">Ознакомьтесь с \'<xliff:g id="title">%1$s</xliff:g>\' в <xliff:g id="hashtags">%2$s</xliff:g> <xliff:g id="url">%3$s</xliff:g></string>
 
     <!-- Notification action text for snoozing the notification for some number of minutes -->
     <string name="snooze_x_min">Сон <xliff:g id="remaining_time">%1$d</xliff:g> мин.</string>
@@ -464,13 +534,13 @@
     <string name="time_hint_session_ended">Эта сессия закончилась.</string>
 
     <!-- Text indicating the session just started -->
-    <string name="time_hint_started_just">Эта сессия проходит сейчас! (началась только что)</string>
+    <string name="time_hint_started_just">Эта сессия проходит сейчас! (только началась)</string>
 
     <!-- Text indicating the session is in progress but has not completed -->
     <string name="time_hint_started_min">Эта сессия проходит сейчас! (началась <xliff:g id="minutes">%1$d</xliff:g> мин. назад)</string>
 
     <!-- Title text for dialog screen about the application -->
-    <string name="title_about">О программе</string>
+    <string name="title_about">О приложении</string>
 
     <!-- Navigation bar text for exploring the sessions -->
     <string name="title_explore">Обзор</string>
@@ -478,8 +548,17 @@
     <!-- Navigation bar text for the map -->
     <string name="title_map">Карта</string>
 
+    <!-- Navigation bar text for viewing the user's My I/O -->
+    <string name="title_my_io">My I/O</string>
+
     <!-- Navigation bar text for viewing the user's schedule -->
-    <string name="title_schedule">Мое расписание</string>
+    <string name="title_my_schedule">Расписание</string>
+
+    <!-- Navigation bar text for viewing the Feed -->
+    <string name="title_feed">Канал</string>
+
+    <!-- Navigation bar text for viewing Info -->
+    <string name="title_info">Информация</string>
 
     <!-- Label for Search screen, that allows users to search for sessions. -->
     <string name="title_search">Поиск</string>
@@ -490,7 +569,16 @@
     <!-- Label for SessionFeedback activity -->
     <string name="title_session_feedback">Отзыв о сессии</string>
 
-    <!-- Label for Settings activity -->
+    <!-- Label for Event info fragment -->
+    <string name="title_event">Событие</string>
+
+    <!-- Label for Travel info fragment -->
+    <string name="title_travel">Проезд</string>
+
+    <!-- Label for Frequently Asked Questions info fragment -->
+    <string name="title_faq">Часто задаваемые вопросы</string>
+
+    <!-- Label for Settings fragment -->
     <string name="title_settings">Настройки</string>
 
     <!-- Chooser dialog text when the user is selecting an application with which to share something -->
@@ -512,7 +600,7 @@
     <string name="watch_now">Смотреть сейчас!</string>
 
     <!-- Short text welcoming the user to the application -->
-    <string name="welcome_to_google_i_o_app">Добро пожаловать в программу Google I/O!</string>
+    <string name="welcome_to_google_i_o_app">Добро пожаловать в мобильное приложение #io17!</string>
 
     <!-- Medium-length welcome text indicating the subsequent text is important legal information -->
     <string name="welcome_text">Прежде чем начать, ознакомьтесь с важной юридической информацией, касающейся использования данного приложения. Это займет всего одну минуту!</string>
@@ -524,10 +612,10 @@
     <string name="welcome_attending_text">Вы собираетесь присутствовать на I/O удаленно или лично в Mountain View?</string>
 
     <!-- Short text asking them to select an account -->
-    <string name="welcome_select_account">Выберите аккаунт</string>
+    <string name="welcome_select_account">Выберите учетную запись</string>
 
     <!-- Medium text asking to choose an account from a list -->
-    <string name="welcome_select_accoun_text">Выберите используемый аккаунт:</string>
+    <string name="welcome_select_accoun_text">Выберите используемую учетную запись:</string>
 
     <!-- Text for a button which will add a wi-fi network -->
     <string name="wifi_dialog_button_configure">Добавить сеть Wi-Fi</string>
@@ -539,20 +627,19 @@
     <string name="wifi_install_error_message">Извините, не удается обновить конфигурацию WiFi</string>
 
     <!-- Title of the Video library screen when only videos of a given topic are displayed -->
-    <string name="title_topic_filtered_video_library">Видео о <xliff:g id="topic">%1$s</xliff:g>
-  </string>
+    <string name="title_topic_filtered_video_library">Видео о <xliff:g id="topic">%1$s</xliff:g></string>
 
     <!-- Title of the Video library screen when only videos of a given year are displayed -->
-    <string name="title_year_filtered_video_library">
-    <xliff:g id="year">%1$d</xliff:g> видео</string>
+    <string name="title_year_filtered_video_library" tools:ignore="PluralsCandidate"><xliff:g id="year">%1$d</xliff:g> видео</string>
 
     <!-- Title of the Video library screen when only videos of a given year and a given topic are displayed -->
-    <string name="title_year_and_topic_filtered_video_library">
-    <xliff:g id="year">%1$d</xliff:g> видео о <xliff:g id="topic">%2$s</xliff:g>
-  </string>
+    <string name="title_year_and_topic_filtered_video_library" tools:ignore="PluralsCandidate"><xliff:g id="year">%1$d</xliff:g> видео о <xliff:g id="topic">%2$s</xliff:g></string>
 
     <!-- Text of the Filter menu icon -->
     <string name="description_filter">Фильтр</string>
+
+    <!-- Text of the My I/O menu icon -->
+    <string name="description_avatar">Аватар</string>
 
     <!-- Title of the Video library side panel containing all the filters -->
     <string name="title_video_library_filter">Фильтр</string>
@@ -569,19 +656,158 @@
     <!-- Title of the Explore Sessions side panel containing all the filters -->
     <string name="title_explore_sessions_filter">Фильтр</string>
 
-    <!-- BEGIN Explore Message Card User Messages -->
-    <string description="This message is displayed on the Explore I/O screen to ask users whether         they would like to opt in to receive notifications for the sessions the have added to their schedule." name="explore_io_notifications_ask_opt_in">&lt;b&gt;Уведомления о сессиях&lt;/b&gt;&lt;br/&gt; Хотите получать уведомления о сессиях из вашего расписания?</string>
+    <!-- Label of filter option to show only sessions -->
+    <string name="filter_label_sessions_only">Только сессии</string>
 
-    <string description="This message is displayed on the Explore I/O screen to ask users whether             they would like to opt in to receive messages regarding the conference." name="explore_io_msgcards_ask_opt_in">&lt;b&gt;Сообщения о конференции&lt;/b&gt;&lt;br/&gt; Хотите получать важные сообщения о конференции? Сообщения зависят от времени и могут включать в себя рекламные сообщения от партнеров.</string>
+    <!-- Label of filter option to show only sessions (intentional space) -->
+    <string name="active_filters_description">"Фильтры: "</string>
+
+    <!-- Label for a button which clears all filters in the filter pane -->
+    <string name="clear_all">Удалить все</string>
+
+    <!-- Label for a button which clears all filters in the filter pane -->
+    <string name="clear_filters">Удалить фильтры</string>
+
+    <!-- BEGIN Explore Message Card User Messages -->
+    <string name="explore_io_notifications_ask_opt_in"
+            description="This message is displayed on the Explore I/O screen to ask users whether
+        they would like to opt in to receive notifications for the sessions the have added to their schedule."><![CDATA[
+        <b>Уведомления о сессиях</b><br/> Вы хотите получать уведомления о сессиях в своем расписании?]]></string>
+
+    <string name="explore_io_msgcards_ask_opt_in"
+            description="This message is displayed on the Explore I/O screen to ask users whether
+            they would like to opt in to receive messages regarding the conference."><![CDATA[
+        <b>Сообщения о конференции</b><br/> Вы хотите получать важные сообщения о конференции? Содержание сообщений зависит от времени и может включать рекламу наших партнеров.]]></string>
 
     <!-- This is used on the Explore I/O message cards to answer yes to a particular message -->
-    <string name="explore_io_msgcards_answer_yes">Конечно, давайте!</string>
+    <string name="explore_io_msgcards_answer_yes">Конечно!</string>
 
     <!-- This is used on the Explore I/O message cards to answer no to a particular message -->
     <string name="explore_io_msgcards_answer_no">Нет, спасибо</string>
 
     <!-- This string is presented to users when they attempt to click something that indicates they
          can watch a video but it turns out we can't show the video. -->
-    <string name="explore_io_video_id_not_valid">Извините. Судя по всему, есть проблема с URL-адресом видео.</string>
+    <string name="explore_io_video_id_not_valid">Извините, возникла проблема с URL-адресом видео.</string>
+
+    <string description="This string is presented as a header message on a user interface card
+         element. The card element has sub-cards that explain a few logistical details for
+         attendees. 'On the Ground' is slang in English indicating 'What you need to know when
+         you're in the middle of the conference.'"
+            name="explore_io_on_the_ground_title">На месте событий</string>
+
+    <!-- Error message that is displayed when we aren't able to connect to Google Play Services,
+         potentially due to a server error or loss of network connectivity. -->
+    <string name="google_play_services_disconnected">Не удалось подключиться к службам Google Play</string>
+
+
+    <!-- Error message that is displayed when connection to GoogleP Play Services fails and there
+    is no resolution. -->
+    <string name="google_play_services_failed">Извините, не удалось подключиться к службам Google Play</string>
+
+    <!-- Message displayed to users as part of onboarding sign in. -->
+    <string name="signin_message">Вход для синхронизации сохраненных событий и зарезервированных сессий вашей учетной записи между мобильным устройством и компьютером. Можно сохранять события локально, не входя в учетную запись.</string>
+
+    <!-- Label used when asking a user to sign in. -->
+    <string name="signin_prompt">Вход</string>
+
+    <!-- Label used on an onboarding screen when user provides a positive response. -->
+    <string name="yes">Да</string>
+
+    <!-- Label used on an onboarding screen when the user provides a negative response. -->
+    <string name="no">Нет</string>
+
+    <!-- Title for onboarding screen asking users if they want conference notifications. -->
+    <string name="onboarding_notifications_title">Уведомления I/O</string>
+
+    <!-- Text shown on the onboarding screen asking users if they want conference notifications. -->
+    <string name="onboarding_notifications_opt_in">
+        Вы хотите получать уведомления об I/O в приложении?\n Мы будем отправлять вам важную информацию о событиях, программе, расписании, проезде, неофициальных мероприятиях, записях сессий и многом другом. Вы всегда можете изменить эту настройку в меню \"Информация &gt; Настройки\".
+    </string>
+
+    <!-- Message displayed in a card to the user on the My I/O screen after they have signed in. -->
+    <string name="signed_in_card_message">
+        События, сохраненные и зарезервированные для вашей учетной записи, показываются ниже и синхронизируются между мобильным устройством и компьютером.
+    </string>
+
+    <!-- Label used when asking a user to sign out. -->
+    <string name="signout_prompt">Выход</string>
+
+    <!-- Label used on the onboarding sign in screen for skipping sign in. -->
+    <string name="signin_prompt_skip">Пропустить</string>
+
+    <!-- Label used for the user to dismiss a card. -->
+    <string name="signin_prompt_dismiss">Убрать</string>
+
+    <!-- Button for finding quickly navigating from a day within My I/O to the relevant day within
+    schedule -->
+    <string name="add_events">Добавить события</string>
+
+    <!-- A placeholder value for the user's name in the My I/O dialog -->
+    <string name="my_io_dialog_default_name">Ваше имя</string>
+
+    <!-- A placeholder value for the user's email in the My I/O dialog -->
+    <string name="my_io_dialog_default_email">you@gmail.com</string>
+
+    <!-- An introductory string used in the My I/O dialog to a signed out user  -->
+    <string name="my_io_body_intro_signed_out">Вход в:</string>
+
+    <!-- An introductory string used in the My I/O dialog to a signed in user  -->
+    <string name="my_io_body_intro_signed_in">Как зарегистрированный пользователь:</string>
+
+    <!-- The first bulletpoint string used in the My I/O dialog to a signed out user  -->
+    <string name="my_io_dialog_first_bullet_point_signed_out">
+        \u2022 Синхронизировать сохраненные события и зарезервированные сессии вашей учетной записи между компьютером и мобильным устройством
+    </string>
+
+    <!-- The first bulletpoint string used in the My I/O dialog to a signed in user  -->
+    <string name="my_io_dialog_first_bullet_point_signed_in">
+        \u2022 Сохраненные события и зарезервированные сессии вашей учетной записи синхронизированы между компьютером и мобильным устройством
+    </string>
+
+    <!-- The second bulletpoint string used in the My I/O dialog to a signed out user  -->
+    <string name="my_io_dialog_second_bullet_point_signed_out">
+        \u2022 Оставьте отзывы о сессиях после их завершения
+    </string>
+
+    <!-- The second bulletpoint string used in the My I/O dialog to a signed in user  -->
+    <string name="my_io_dialog_second_bullet_point_signed_in">
+        \u2022 Вы можете оставить отзывы о сессиях после их завершения
+    </string>
+
+    <!-- Message shown when a user initiated sign in fails. -->
+    <string name="signin_failed_text">Не удалось выполнить вход. Повторите попытку.</string>
+
+    <!-- Message shown when a user initiated sign out fails. -->
+    <string name="signout_failed_text">Не удалось выйти из приложения. Повторите попытку.</string>
+
+    <!-- Strings for Info page-->
+    <string name="wifi_network_label">Сеть Wi-Fi</string>
+    <string name="wifi_password_label">Пароль</string>
+    <string name="setup_wifi">Настройка Wi-Fi</string>
+    <string name="password_copied_confirmation">Пароль скопирован</string>
+    <string name="view_sessions_text">Просмотр сессий</string>
+    <string name="view_map_text">Просмотр карты</string>
+    <!-- TODO make these URLs the correct deep link -->
+    <string name="event_sandbox_title">Тестовый стенд</string>
+    <string name="event_codelabs_title">Практические семинары</string>
+    <string name="event_officehours_title">Консультации и обзоры приложений</string>
+    <string name="event_afterhours_title">Неофициальные мероприятия</string>
+    <string name="travel_details_title">Сведения о проезде</string>
+    <string name="travel_shuttle_info_title">Челночный транспорт</string>
+    <string name="travel_carpool_parking_info_title">Совместное использование автомобилей и парковка</string>
+    <string name="travel_public_transportation_info_title">Общественный транспорт</string>
+    <string name="travel_biking_info_title">Проезд на велосипедах</string>
+
+    <string name="settings_time_zone_label">Показывать события по тихоокеанскому времени</string>
+    <string name="settings_enable_notifications">Включить уведомления</string>
+    <string name="settings_enable_anon_statistics">Отправлять анонимную статистику использования</string>
+    <string name="about_terms_url">https://www.google.com/policies/terms/</string>
+    <string name="about_privacy_policy_url">https://www.google.com/policies/privacy/</string>
+    <string name="about_app_version">Версия %1$s</string>
+
+    <string name="feed_error">Ошибка загрузки канала.</string>
+
+
+    <!-- RemoteConfig keys for Feed default messages -->
 
 </resources>
