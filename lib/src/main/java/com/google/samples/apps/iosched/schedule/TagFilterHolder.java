@@ -66,7 +66,7 @@ public class TagFilterHolder implements Parcelable {
      * @return boolean Return a boolean indicating that the tagId is present.
      */
     public boolean contains(Tag tag) {
-        return mSelectedTopics.contains(tag) || mSelectedTopics.contains(tag);
+        return mSelectedTypes.contains(tag) || mSelectedTopics.contains(tag);
     }
 
     /**

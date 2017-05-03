@@ -22,7 +22,6 @@ import android.support.v4.app.LoaderManager.LoaderCallbacks;
 import android.support.v4.content.Loader;
 import android.support.v4.widget.TextViewCompat;
 import android.support.v7.content.res.AppCompatResources;
-import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -98,6 +97,10 @@ public class ScheduleFilterFragment extends Fragment implements LoaderCallbacks<
                 }
             }
         });
+        TagFilterHolder filters = mAdapter.getFilters();
+        if (filters != null) {
+            mClearFilters.setVisibility(filters.hasAnyFilters() ? View.VISIBLE : View.GONE);
+        }
         mRecyclerView.setAdapter(mAdapter);
     }
 
