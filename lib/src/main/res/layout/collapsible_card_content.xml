@@ -27,8 +27,11 @@
         android:orientation="vertical">
 
         <RelativeLayout
+            android:id="@+id/title_container"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:addStatesFromChildren="true"
+            android:background="?selectableItemBackground"
             android:paddingTop="@dimen/spacing_micro">
 
             <TextView
@@ -38,7 +41,6 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentStart="true"
                 android:layout_alignParentTop="true"
-                android:background="?selectableItemBackground"
                 android:padding="@dimen/padding_normal"
                 android:text="@string/travel_shuttle_info_title"
                 android:textColor="@color/collapsing_section" />
@@ -49,7 +51,6 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentEnd="true"
                 android:layout_alignParentTop="true"
-                android:background="?selectableItemBackgroundBorderless"
                 android:importantForAccessibility="no"
                 android:padding="@dimen/padding_normal"
                 android:src="@drawable/ic_expand"
