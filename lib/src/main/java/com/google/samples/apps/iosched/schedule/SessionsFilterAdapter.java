@@ -56,15 +56,14 @@ public class SessionsFilterAdapter extends Adapter<ViewHolder> {
 
     private final List<Object> mItems;
     private final LayoutInflater mInflater;
-    private TagFilterHolder mTagFilterHolder = new TagFilterHolder();
+    private TagFilterHolder mTagFilterHolder;
     private OnFiltersChangedListener mListener;
 
     SessionsFilterAdapter(Context context, TagMetadata filters, Bundle savedState) {
+        restoreFromState(savedState);
         mInflater = LayoutInflater.from(context);
-
         mItems = new ArrayList<>();
         buildFiltersList(filters);
-        restoreFromState(savedState);
     }
 
     private void buildFiltersList(TagMetadata tagMetadata) {
@@ -200,6 +199,9 @@ public class SessionsFilterAdapter extends Adapter<ViewHolder> {
             if (filterHolder != null) {
                 mTagFilterHolder = filterHolder;
             }
+        }
+        if (mTagFilterHolder == null) {
+            mTagFilterHolder = new TagFilterHolder();
         }
     }
 
