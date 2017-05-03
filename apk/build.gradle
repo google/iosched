@@ -27,6 +27,9 @@ repositories {
     flatDir {
         dirs '../third_party/svg-android/libs/'
     }
+    flatDir {
+        dirs '../third_party/sticky-headers/libs/'
+    }
 }
 
 android {

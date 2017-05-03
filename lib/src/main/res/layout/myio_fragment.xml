@@ -55,7 +55,6 @@
             android:layout_height="match_parent"
             android:scrollbarStyle="insideOverlay"
             android:scrollbars="vertical"
-            app:layoutManager="LinearLayoutManager"
             tools:listitem="@layout/schedule_session_item" />
 
     </ViewSwitcher>

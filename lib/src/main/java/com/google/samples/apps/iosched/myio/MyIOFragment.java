@@ -42,9 +42,9 @@ import com.google.samples.apps.iosched.util.AnalyticsHelper;
 import com.google.samples.apps.iosched.util.LogUtils;
 import com.google.samples.apps.iosched.util.TimeUtils;
 
-public class MyIOFragment extends Fragment implements MyIoView, Callbacks {
+import io.doist.recyclerviewext.sticky_headers.StickyHeadersLinearLayoutManager;
 
-    private static final String TAG = LogUtils.makeLogTag(MyIOFragment.class);
+public class MyIOFragment extends Fragment implements MyIoView, Callbacks {
 
     private static final long UI_REFRESH_DELAY = TimeUtils.MINUTE;
 
@@ -88,6 +88,8 @@ public class MyIOFragment extends Fragment implements MyIoView, Callbacks {
         mRecyclerView.addItemDecoration(new DividerDecoration(getContext()));
         mAdapter = new MyIOAdapter(getContext(), this);
         mRecyclerView.setAdapter(mAdapter);
+        mRecyclerView.setLayoutManager(
+                new StickyHeadersLinearLayoutManager<MyIOAdapter>(getContext()));
     }
 
     @Override
