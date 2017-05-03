@@ -82,8 +82,8 @@ public class EventView extends FrameLayout {
             @Override
             public void onClick(View v) {
                 if (mListener != null) {
+                    mListener.onViewMapClicked(EventView.this, null);
                     AnalyticsHelper.sendEvent(eventTitle, "Event Info", "view map");
-                    // mListener.onViewMapClicked(EventView.this, null); // TODO need map URI
                 }
             }
         });

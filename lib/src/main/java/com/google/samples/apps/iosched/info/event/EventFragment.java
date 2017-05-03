@@ -13,6 +13,8 @@
  */
 package com.google.samples.apps.iosched.info.event;
 
+import android.app.Activity;
+import android.content.Intent;
 import android.content.res.Resources;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -27,6 +29,7 @@ import android.widget.TextView;
 import com.google.samples.apps.iosched.info.BaseInfoFragment;
 import com.google.samples.apps.iosched.info.event.EventView.EventViewClickListener;
 import com.google.samples.apps.iosched.lib.R;
+import com.google.samples.apps.iosched.map.MapActivity;
 import com.google.samples.apps.iosched.schedule.ScheduleActivity;
 import com.google.samples.apps.iosched.util.WiFiUtils;
 
@@ -100,10 +103,18 @@ public class EventFragment extends BaseInfoFragment<EventInfo> implements EventV
     @Override
     public void onViewSessionsClicked(EventView view, String filterTag) {
         ScheduleActivity.launchScheduleWithFilterTag(view.getContext(), filterTag);
+        getActivity().finish();
     }
 
     @Override
     public void onViewMapClicked(EventView view, String mapUri) {
-
+        final Activity activity = getActivity();
+        final Intent mapIntent = new Intent(activity, MapActivity.class);
+        if (mapUri != null) {
+            mapIntent.putExtra(MapActivity.EXTRA_ROOM, mapUri);
+        }
+        mapIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        activity.startActivity(mapIntent);
+        activity.finish();
     }
 }
