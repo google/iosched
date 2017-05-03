@@ -90,6 +90,10 @@ public class ScheduleSingleDayFragment extends Fragment
         mRecyclerView = (RecyclerView) view.findViewById(android.R.id.list);
         mRecyclerView.addItemDecoration(new DividerDecoration(getContext()));
         mRecyclerView.setHasFixedSize(true);
+        mRecyclerView.setLayoutManager(
+                new StickyHeadersLinearLayoutManager<ScheduleDayAdapter>(getContext()));
+        mViewAdapter = new ScheduleDayAdapter(getContext(), this, mTagMetadata, true);
+        mRecyclerView.setAdapter(mViewAdapter);
         return view;
     }
 
@@ -152,25 +156,15 @@ public class ScheduleSingleDayFragment extends Fragment
     }
 
     private void updateSchedule(ScheduleModel model) {
-        if (isVisible()) {
-            showSchedule();
-            if (mViewAdapter == null) {
-                mViewAdapter = new ScheduleDayAdapter(getContext(), this, mTagMetadata, true);
-                mRecyclerView.setLayoutManager(
-                        new StickyHeadersLinearLayoutManager<ScheduleDayAdapter>(getContext()));
-            }
-            mViewAdapter.updateItems(model.getConferenceDataForDay(mDayId));
-            if (mRecyclerView.getAdapter() == null) {
-                mRecyclerView.setAdapter(mViewAdapter);
-            }
+        showSchedule();
+        mViewAdapter.updateItems(model.getConferenceDataForDay(mDayId));
 
-            if (isShowingCurrentDay()) {
-                LinearLayoutManager lm = (LinearLayoutManager) mRecyclerView.getLayoutManager();
-                if (lm.findFirstVisibleItemPosition() == 0) {
-                    // If we're showing the current day and we're still showing the first pos, move
-                    // to the current time slot
-                    moveToCurrentTimeSlot(false);
-                }
+        if (isShowingCurrentDay()) {
+            LinearLayoutManager lm = (LinearLayoutManager) mRecyclerView.getLayoutManager();
+            if (lm.findFirstVisibleItemPosition() == 0) {
+                // If we're showing the current day and we're still showing the first pos, move
+                // to the current time slot
+                moveToCurrentTimeSlot(false);
             }
         }
     }
