@@ -47,12 +47,11 @@
         android:id="@+id/slot_icon"
         android:layout_width="40dp"
         android:layout_height="40dp"
-        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
         android:importantForAccessibility="no"
-        android:alpha=".15"
+        android:tint="@color/light_grey"
         tools:src="@drawable/ic_food" />
 
 </android.support.constraint.ConstraintLayout>
