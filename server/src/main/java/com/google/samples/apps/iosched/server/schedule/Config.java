@@ -86,6 +86,8 @@ public interface Config {
   public static final String[] ALLOWED_CMS_UPDATERS = {
       "arthurthompson@google.com",
       "lauranozay@google.com",
+      "monicabagagem@google.com",
+      "ckatsaros@google.com",
       "ldale@google.com",
       "trevorjohns@google.com"
   };
