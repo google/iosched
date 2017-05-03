@@ -299,6 +299,7 @@ public class LoadSessionsServlet extends HttpServlet {
       seats.capacity = capacity;
       seats.reserved = 0;
       seats.seats_available = true;
+      seats.waitlisted = false;
 
       session.seats = seats;
 
@@ -330,6 +331,7 @@ public class LoadSessionsServlet extends HttpServlet {
     }
     session.seats.reserved = session.seats.reserved - numOfRes;
     session.seats.seats_available = false;
+    session.seats.waitlisted = true;
     // TODO(arthurthompson): send notification to demoted attendees
   }
 
@@ -362,6 +364,13 @@ public class LoadSessionsServlet extends HttpServlet {
     } else {
       session.seats.seats_available = true;
     }
+
+    int stillWaiting = waiting.size() - promoCount;
+    if (stillWaiting > 0) {
+      session.seats.waitlisted = true;
+    } else {
+      session.seats.waitlisted = false;
+    }
     // TODO(arthurthompson): send notification to promoted attendees
   }
 
@@ -376,7 +385,7 @@ public class LoadSessionsServlet extends HttpServlet {
       String reservationType) {
     List<Reservation> grantedReservations = new ArrayList<>();
     for (Reservation res : reservations.values()) {
-      if (res.status.equals(reservationType)) {
+      if (res.status != null && res.status.equals(reservationType)) {
         grantedReservations.add(res);
       }
     }

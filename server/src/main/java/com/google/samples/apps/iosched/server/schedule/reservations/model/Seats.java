@@ -23,5 +23,6 @@ public class Seats {
   public int capacity;
   public int reserved;
   public boolean seats_available;
+  public boolean waitlisted;
 
 }
