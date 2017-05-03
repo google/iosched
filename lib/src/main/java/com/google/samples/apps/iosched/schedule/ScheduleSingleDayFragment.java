@@ -48,6 +48,8 @@ import com.google.samples.apps.iosched.util.AnalyticsHelper;
 import com.google.samples.apps.iosched.util.SessionsHelper;
 import com.google.samples.apps.iosched.util.TimeUtils;
 
+import io.doist.recyclerviewext.sticky_headers.StickyHeadersLinearLayoutManager;
+
 /**
  * This is used by the {@link android.support.v4.view.ViewPager} used by the narrow layout in {@link
  * ScheduleActivity}. It is a {@link ListFragment} that shows schedule items for a day, using
@@ -153,7 +155,9 @@ public class ScheduleSingleDayFragment extends Fragment
         if (isVisible()) {
             showSchedule();
             if (mViewAdapter == null) {
-                mViewAdapter = new ScheduleDayAdapter(this, mTagMetadata, true);
+                mViewAdapter = new ScheduleDayAdapter(getContext(), this, mTagMetadata, true);
+                mRecyclerView.setLayoutManager(
+                        new StickyHeadersLinearLayoutManager<ScheduleDayAdapter>(getContext()));
             }
             mViewAdapter.updateItems(model.getConferenceDataForDay(mDayId));
             if (mRecyclerView.getAdapter() == null) {

@@ -19,7 +19,6 @@
     style="@style/Schedule.TimeSeparator"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:padding="@dimen/keyline_1"
     android:background="@color/lighter_grey"
+    android:padding="@dimen/keyline_1"
     tools:text="@string/placeholder_session_start_time" />
-

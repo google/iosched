@@ -42,8 +42,10 @@ import com.google.samples.apps.iosched.util.WelcomeUtils;
 import java.util.ArrayList;
 import java.util.List;
 
+import io.doist.recyclerviewext.sticky_headers.StickyHeaders;
 
-class MyIOAdapter extends Adapter<ViewHolder> {
+
+class MyIOAdapter extends Adapter<ViewHolder> implements StickyHeaders, StickyHeaders.ViewSetup {
 
     private static final int VIEW_TYPE_SESSION = 0;
     private static final int VIEW_TYPE_NON_SESSION = 1;
@@ -59,8 +61,9 @@ class MyIOAdapter extends Adapter<ViewHolder> {
         }
     }
 
-    private List<Object> mItems = new ArrayList<>();
-    private Callbacks mCallbacks;
+    private final List<Object> mItems = new ArrayList<>();
+    private final Callbacks mCallbacks;
+    private final float stuckHeaderElevation;
     private TagMetadata mTagMetadata;
 
     private Context mContext;
@@ -77,6 +80,7 @@ class MyIOAdapter extends Adapter<ViewHolder> {
         mContext = context;
         mCallbacks = callbacks;
         setHasStableIds(true);
+        stuckHeaderElevation = context.getResources().getDimension(R.dimen.card_elevation);
 
         setItems(null); // build the initial list of items
     }
@@ -233,6 +237,21 @@ class MyIOAdapter extends Adapter<ViewHolder> {
                 ((MessageCardViewHolder) holder).onBind((MessageData) item);
                 break;
         }
+    }
+
+    @Override
+    public boolean isStickyHeader(int position) {
+        return getItemViewType(position) == VIEW_TYPE_SEPARATOR;
+    }
+
+    @Override
+    public void setupStickyHeaderView(View view) {
+        view.setTranslationZ(stuckHeaderElevation);
+    }
+
+    @Override
+    public void teardownStickyHeaderView(View view) {
+        view.setTranslationZ(0f);
     }
 
     private class MessageCardViewHolder extends ViewHolder {
