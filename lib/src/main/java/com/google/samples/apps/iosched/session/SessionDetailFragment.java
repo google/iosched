@@ -249,7 +249,7 @@ public class SessionDetailFragment extends Fragment implements
         mFeedbackButton = (Button) details.findViewById(R.id.give_feedback_button);
         mRelatedSessionsLabel = (TextView) details.findViewById(R.id.related_sessions_label);
         mRelatedSessions = (RecyclerView) details.findViewById(R.id.related_sessions_list);
-        mRelatedSessionsAdapter = new ScheduleDayAdapter(this, null, false);
+        mRelatedSessionsAdapter = new ScheduleDayAdapter(getContext(), this, null, false);
         mRelatedSessions.setAdapter(mRelatedSessionsAdapter);
 
         mEmptyView = details.findViewById(android.R.id.empty);
