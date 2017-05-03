@@ -24,6 +24,7 @@ import android.transition.TransitionInflater;
 import android.transition.TransitionManager;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
@@ -39,6 +40,7 @@ public class CollapsibleCard extends FrameLayout {
     private TextView mCardTitle;
     private HtmlTextView mCardDescription;
     private ImageView mExpandIcon;
+    private View mTitleContainer;
 
     public CollapsibleCard(Context context) {
         this(context, null);
@@ -57,6 +59,7 @@ public class CollapsibleCard extends FrameLayout {
         final View root = LayoutInflater.from(context)
                 .inflate(R.layout.collapsible_card_content, this, true);
 
+        mTitleContainer = root.findViewById(R.id.title_container);
         mCardTitle = (TextView) root.findViewById(R.id.card_title);
         mCardTitle.setText(cardTitle);
         setTitleContentDescription(cardTitle);
@@ -92,5 +95,14 @@ public class CollapsibleCard extends FrameLayout {
         mCardTitle.setContentDescription(cardTitle + ", " +
                 (mExpanded ? res.getString(R.string.expanded) :
                         res.getString(R.string.collapsed)));
+    }
+
+    @Override
+    public boolean onInterceptTouchEvent(MotionEvent ev) {
+        if (ev.getActionMasked() == MotionEvent.ACTION_DOWN) {
+            // propagate hotspot for ripple
+            mTitleContainer.getBackground().setHotspot(ev.getX(), ev.getY());
+        }
+        return super.onInterceptTouchEvent(ev);
     }
 }
