@@ -27,6 +27,9 @@ repositories {
     flatDir {
         dirs '../third_party/svg-android/libs/'
     }
+    flatDir {
+        dirs '../third_party/sticky-headers/libs/'
+    }
 }
 
 android {
@@ -265,6 +268,8 @@ dependencies {
     compile files('../third_party/basic-http-client/libs/basic-http-client-android-0.88.jar')
     // SVG processor for the Conference Map overlay.
     compile(name: 'svg-android-2.0.7-20150515.214425-1', ext: 'jar')
+
+    compile(name: 'StickyHeaders-release', ext: 'aar')
 
     // Google Maps Android API utility library
     compile('com.google.maps.android:android-maps-utils:0.4+') {

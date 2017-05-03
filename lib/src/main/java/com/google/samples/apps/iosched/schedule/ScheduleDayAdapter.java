@@ -16,6 +16,7 @@
 
 package com.google.samples.apps.iosched.schedule;
 
+import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.RecyclerView;
@@ -38,17 +39,18 @@ import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
+import io.doist.recyclerviewext.sticky_headers.StickyHeaders;
+
 import static com.google.samples.apps.iosched.util.LogUtils.LOGD;
 import static com.google.samples.apps.iosched.util.LogUtils.makeLogTag;
 
 /**
  * Adapter that produces views to render (one day of) the "My Schedule" screen.
  */
-public class ScheduleDayAdapter extends RecyclerView.Adapter<ViewHolder> {
-    private static final String TAG = makeLogTag("ScheduleDayAdapter");
+public class ScheduleDayAdapter extends RecyclerView.Adapter<ViewHolder>
+        implements StickyHeaders, StickyHeaders.ViewSetup {
 
     private static final long[] ID_ARRAY = new long[4];
-
     private static final int ITEM_TYPE_SESSION = 0;
     private static final int ITEM_TYPE_BREAK = 1;
     private static final int ITEM_TYPE_TIME_HEADER = 2;
@@ -57,14 +59,16 @@ public class ScheduleDayAdapter extends RecyclerView.Adapter<ViewHolder> {
     private final List<Object> mItems = new ArrayList<>();
 
     private final boolean mShowTimeSeparators;
+    private final float stuckHeaderElevation;
     private TagMetadata mTagMetadata;
     private Callbacks mAdapterCallbacks;
 
-    public ScheduleDayAdapter(@NonNull Callbacks adapterCallbacks,
-            @Nullable TagMetadata tagMetadata, boolean showTimeSeparators) {
+    public ScheduleDayAdapter(@NonNull Context context, @NonNull Callbacks adapterCallbacks,
+                              @Nullable TagMetadata tagMetadata, boolean showTimeSeparators) {
         mAdapterCallbacks = adapterCallbacks;
         mTagMetadata = tagMetadata;
         mShowTimeSeparators = showTimeSeparators;
+        stuckHeaderElevation = context.getResources().getDimension(R.dimen.card_elevation);
         setHasStableIds(true);
     }
 
@@ -186,6 +190,21 @@ public class ScheduleDayAdapter extends RecyclerView.Adapter<ViewHolder> {
             }
         }
         return -1;
+    }
+
+    @Override
+    public boolean isStickyHeader(int position) {
+        return getItemViewType(position) == ITEM_TYPE_TIME_HEADER;
+    }
+
+    @Override
+    public void setupStickyHeaderView(View view) {
+        view.setTranslationZ(stuckHeaderElevation);
+    }
+
+    @Override
+    public void teardownStickyHeaderView(View view) {
+        view.setTranslationZ(0f);
     }
 
     private static class TimeSeperatorViewHolder extends ViewHolder {
