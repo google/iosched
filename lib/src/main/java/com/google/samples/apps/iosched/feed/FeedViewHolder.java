@@ -157,6 +157,7 @@ class FeedViewHolder extends RecyclerView.ViewHolder {
                     // it is expanded.
                     .override(getScreenWidth(image.getContext()),
                             (int) (getScreenWidth(image.getContext()) * 9.0 / 16))
+                    .placeholder(R.drawable.io17_logo)
                     .into(image);
         } else {
             image.setVisibility(GONE);
