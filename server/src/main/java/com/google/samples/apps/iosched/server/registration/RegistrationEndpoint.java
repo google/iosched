@@ -27,6 +27,7 @@ import com.google.appengine.api.urlfetch.HTTPResponse;
 import com.google.appengine.api.urlfetch.URLFetchService;
 import com.google.appengine.api.urlfetch.URLFetchServiceFactory;
 import com.google.common.annotations.VisibleForTesting;
+import com.google.common.collect.ImmutableList;
 import com.google.firebase.database.DatabaseReference;
 import com.google.samples.apps.iosched.server.FirebaseWrapper;
 import com.google.samples.apps.iosched.server.schedule.Config;
@@ -35,6 +36,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
 import java.util.Arrays;
+import java.util.List;
 import java.util.logging.Logger;
 import javax.servlet.ServletContext;
 import org.json.JSONObject;
@@ -118,40 +120,47 @@ public class RegistrationEndpoint {
             return true;
         }
 
-        JSONObject eventDelegateInfo = queryDelegateInfo(context);
-        if (eventDelegateInfo == null) {
-            return false;
+        List<JSONObject> eventDelegateInfo = queryDelegateInfo(context);
+        for(JSONObject delegateInfo : eventDelegateInfo) {
+            String registeredStatus = delegateInfo.optString(EVENT_INFO_RSVP_STATUS_KEY);
+            if (registeredStatus.equals(EVENT_INFO_RSVP_STATUS_CONFIRMED_VALUE)) {
+                return true;
+            }
         }
-        String registeredStatus = eventDelegateInfo.optString(EVENT_INFO_RSVP_STATUS_KEY);
-        return registeredStatus.equals(EVENT_INFO_RSVP_STATUS_CONFIRMED_VALUE);
+        return false;
     }
 
-    private JSONObject queryDelegateInfo(ServletContext context) throws IOException {
+    private ImmutableList<JSONObject> queryDelegateInfo(ServletContext context) throws IOException {
         String eventManagerUrl = context.getInitParameter("eventManagerUrl");
-        String eventId = context.getInitParameter("eventId");
-        String urlStr = String.format(
-                "%s/%s/delegates/%s/", eventManagerUrl, eventId, firebaseWrapper.getUserEmail());
+        String[] eventIds = context.getInitParameter("eventIds").split(",");
 
         FetchOptions fetchOptions =
                 FetchOptions.Builder.doNotFollowRedirects().validateCertificate().disallowTruncate();
 
-        HTTPRequest httpRequest = new HTTPRequest(new URL(urlStr), HTTPMethod.GET, fetchOptions);
-        HTTPResponse httpResponse = urlFetchService.fetch(httpRequest);
+        ImmutableList.Builder delegateInfo = ImmutableList.<JSONObject>builder();
+        for (String eventId : eventIds) {
+            String urlStr = String.format("%s/%s/delegates/%s/",
+                    eventManagerUrl, eventId.trim(), firebaseWrapper.getUserEmail());
 
-        switch (httpResponse.getResponseCode()) {
-            case 200:
-                // Delegate was found.
-                return new JSONObject(new String(httpResponse.getContent()));
-            case 404:
-                // Delegate was not found.
-                return null;
-            default:
-                // An unexpected error occurred.
-                LOG.severe(
-                        String.format(
-                                "Could not retrieve event delegate info: %s",
-                                new String(httpResponse.getContent())));
-                return null;
+            HTTPRequest httpRequest = new HTTPRequest(new URL(urlStr), HTTPMethod.GET, fetchOptions);
+            HTTPResponse httpResponse = urlFetchService.fetch(httpRequest);
+
+            switch (httpResponse.getResponseCode()) {
+                case 200:
+                    // Delegate was found.
+                    delegateInfo.add(new JSONObject(new String(httpResponse.getContent())));
+                case 404:
+                    // Delegate was not found.
+                    break;
+                default:
+                    // An unexpected error occurred.
+                    LOG.severe(
+                            String.format(
+                                    "Could not retrieve event delegate info: %s",
+                                    new String(httpResponse.getContent())));
+                    break;
+            }
         }
+        return delegateInfo.build();
     }
 }
