@@ -26,4 +26,5 @@
     android:paddingBottom="@dimen/spacing_micro"
     android:gravity="start|center_vertical"
     android:minHeight="@dimen/time_header_min_height"
+    android:importantForAccessibility="no"
     tools:text="@string/placeholder_session_start_time" />
