@@ -34,9 +34,9 @@
       <param-value>[database url]</param-value>
   </context-param>
   <context-param>
-    <description>eventId</description>
-    <param-name>eventId</param-name>
-    <param-value>[eventId]</param-value>
+    <description>eventIds</description>
+    <param-name>eventIds</param-name>
+    <param-value>[eventId1],[eventId2]</param-value>
   </context-param>
   <context-param>
     <description>eventManagerUrl</description>
