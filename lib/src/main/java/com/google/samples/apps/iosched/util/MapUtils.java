@@ -16,7 +16,10 @@
 package com.google.samples.apps.iosched.util;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.support.annotation.DrawableRes;
+import android.support.v4.content.ContextCompat;
 import android.text.TextUtils;
 
 import com.google.android.gms.maps.GoogleMap;
@@ -122,6 +125,7 @@ public class MapUtils {
                 markerType == MarkerModel.TYPE_OFFICEHOURS ||
                 markerType == MarkerModel.TYPE_MISC ||
                 markerType == MarkerModel.TYPE_SANDBOX ||
+                markerType == MarkerModel.TYPE_ICON ||
                 markerType == MarkerModel.TYPE_CODELAB;
     }
 
@@ -149,6 +153,13 @@ public class MapUtils {
         return markerType == MarkerModel.TYPE_CHAT;
     }
 
+    /**
+     * True if the marker for this feature should be changed to a generic "active" marker when
+     * clicked, and changed back to the generic marker when deselected.
+     */
+    public static boolean useActiveMarker(int type){
+        return type != MarkerModel.TYPE_ICON && type != MarkerModel.TYPE_LABEL;
+    }
 
     /**
      * Creates a GeoJsonPointStyle for a session.
@@ -199,11 +210,27 @@ public class MapUtils {
     /**
      * Creates a GeoJsonPointStyle for an icon. The icon is selected
      * in {@link #getDrawableForIconType(Context, String)} and anchored
-     * at the bottom center for the location.
+     * at the bottom center for the location. When isActive is set to true, the icon is tinted.
      */
     public static GeoJsonPointStyle createIconMarker(final String iconType, final String id,
-            Context context) {
+                                                     boolean isActive, Context context) {
 
+        final Bitmap iconBitmap = getIconMarkerBitmap(context, iconType, isActive);
+        final BitmapDescriptor icon = BitmapDescriptorFactory.fromBitmap(iconBitmap);
+        GeoJsonPointStyle pointStyle = new GeoJsonPointStyle();
+        pointStyle.setTitle(id);
+        pointStyle.setVisible(false);
+        pointStyle.setIcon(icon);
+        pointStyle.setAnchor(0.5f, 1f);
+        return pointStyle;
+    }
+
+    /**
+     * Loads the marker icon for this ICON_TYPE marker.
+     *
+     * If isActive is set, the marker is tinted. See {@link UIUtils#tintBitmap(Bitmap, int)}.
+     */
+    public static Bitmap getIconMarkerBitmap(Context context, String iconType, boolean isActive){
         final int iconResource = getDrawableForIconType(context, iconType);
 
         if (iconResource < 1) {
@@ -211,13 +238,12 @@ public class MapUtils {
             return null;
         }
 
-        final BitmapDescriptor icon = BitmapDescriptorFactory.fromResource(iconResource);
-        GeoJsonPointStyle pointStyle = new GeoJsonPointStyle();
-        pointStyle.setTitle(id);
-        pointStyle.setVisible(false);
-        pointStyle.setIcon(icon);
-        pointStyle.setAnchor(0.5f, 1f);
-        return pointStyle;
+        Bitmap iconBitmap = BitmapFactory.decodeResource(context.getResources(), iconResource);
+        if(isActive) {
+            iconBitmap = UIUtils.tintBitmap(iconBitmap,
+                    ContextCompat.getColor(context, R.color.map_active_icon_tint));
+        }
+        return iconBitmap;
     }
 
     /**
@@ -396,7 +422,7 @@ public class MapUtils {
                 pointStyle = MapUtils.createLabelMarker(labelIconGenerator, id, label);
             } else if (type == MarkerModel.TYPE_ICON) {
                 // An icon marker is mapped to a drawable based on its full type name
-                pointStyle = MapUtils.createIconMarker(typeString, id, context);
+                pointStyle = MapUtils.createIconMarker(typeString, id, false, context);
             } else if (type != MarkerModel.TYPE_INACTIVE) {
                 // All other markers (that are not inactive) contain a pin icon
                 pointStyle = MapUtils.createPinMarker(id);
