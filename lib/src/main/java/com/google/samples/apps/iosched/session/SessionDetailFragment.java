@@ -674,9 +674,13 @@ public class SessionDetailFragment extends Fragment implements
         List<SessionDetailModel.Speaker> speakers = data.getSpeakers();
         for (SessionDetailModel.Speaker speaker : speakers) {
             View speakerView = inflater.inflate(R.layout.speaker_detail, speakersGroup, false);
+
+
+
             ImageView speakerImage = (ImageView) speakerView.findViewById(R.id.speaker_image);
             TextView speakerName = (TextView) speakerView.findViewById(R.id.speaker_name);
             TextView speakerCompany = (TextView) speakerView.findViewById(R.id.speaker_company);
+            TextView speakerAbstract = (TextView) speakerView.findViewById(R.id.speaker_abstract);
 
             speakerName.setText(speaker.getName());
             if (TextUtils.isEmpty(speaker.getCompany())) {
@@ -687,6 +691,7 @@ public class SessionDetailFragment extends Fragment implements
             if (!TextUtils.isEmpty(speaker.getImageUrl()) && mImageLoader != null) {
                 mImageLoader.loadImage(speaker.getImageUrl(), speakerImage);
             }
+            UIUtils.setTextMaybeHtml(speakerAbstract, speaker.getAbstract());
 
             speakersGroup.addView(speakerView);
         }

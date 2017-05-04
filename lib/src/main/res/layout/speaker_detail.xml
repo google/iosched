@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--
+<?xml version="1.0" encoding="utf-8"?><!--
   Copyright 2014 Google Inc. All rights reserved.
 
   Licensed under the Apache License, Version 2.0 (the "License");
@@ -15,8 +14,7 @@
   limitations under the License.
   -->
 
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -31,6 +29,7 @@
         android:id="@+id/speaker_image"
         android:layout_width="@dimen/speaker_image_size"
         android:layout_height="@dimen/speaker_image_size"
+        android:layout_gravity="center_horizontal"
         android:importantForAccessibility="no"
         android:scaleType="centerCrop"
         app:borderDrawable="@drawable/circle_border"
@@ -43,8 +42,8 @@
         android:layout_marginLeft="@dimen/padding_normal"
         android:layout_marginStart="@dimen/padding_normal"
         android:layout_weight="1"
-        android:orientation="vertical"
         android:focusable="true"
+        android:orientation="vertical"
         tools:ignore="RtlHardcoded">
 
         <TextView
@@ -65,6 +64,13 @@
             android:lines="1"
             tools:text="Google" />
 
+        <TextView
+            android:id="@+id/speaker_abstract"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/spacing_normal"
+            android:autoLink="web"
+            android:focusable="true" />
     </LinearLayout>
 
 </LinearLayout>
