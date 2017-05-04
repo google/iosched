@@ -20,5 +20,10 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="@color/lighter_grey"
-    android:padding="@dimen/keyline_1"
+    android:paddingStart="@dimen/padding_normal"
+    android:paddingEnd="@dimen/padding_normal"
+    android:paddingTop="@dimen/spacing_micro"
+    android:paddingBottom="@dimen/spacing_micro"
+    android:gravity="start|center_vertical"
+    android:minHeight="@dimen/time_header_min_height"
     tools:text="@string/placeholder_session_start_time" />
