@@ -38,6 +38,7 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.google.android.gms.auth.GoogleAuthUtil;
+import com.google.samples.apps.iosched.feed.FeedState;
 import com.google.samples.apps.iosched.lib.BuildConfig;
 import com.google.samples.apps.iosched.lib.R;
 import com.google.samples.apps.iosched.navigation.AppNavigationView;
@@ -226,12 +227,18 @@ public abstract class BaseActivity extends AppCompatActivity implements
 
     @Override
     public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
-        if (key != null && key.equals(BuildConfig.PREF_ATTENDEE_AT_VENUE)) {
+        if (BuildConfig.PREF_ATTENDEE_AT_VENUE.equals(key)) {
             LOGD(TAG, "Attendee at venue preference changed, repopulating nav drawer and menu.");
             if (mAppNavigationView != null) {
                 mAppNavigationView.updateNavigationItems();
             }
             invalidateOptionsMenu();
+        } else if (BuildConfig.NEW_FEED_ITEM.equals(key)) {
+            LOGD(TAG, "New feed message detected - SharedPrefs");
+            // Update the Feed icon badge every time there is a change to SharedPrefs; it is
+            // updated by the FCM service every time a new Feed message is received, and reset
+            // every time the Feed page is visited.
+            updateFeedBadge();
         }
     }
 
@@ -244,6 +251,10 @@ public abstract class BaseActivity extends AppCompatActivity implements
         if (bottomNav != null) {
             mAppNavigationView = new AppNavigationViewAsBottomNavImpl(bottomNav);
             mAppNavigationView.activityReady(this, getSelfNavDrawerItem());
+            // Since onPostCreate happens after onStart, we can't badge during onStart when the
+            // Activity is launched because the AppNavigationView isn't instantiated until this
+            // point.
+            updateFeedBadge();
         }
 
         trySetupSwipeRefresh();
@@ -266,6 +277,14 @@ public abstract class BaseActivity extends AppCompatActivity implements
         return super.onOptionsItemSelected(item);
     }
 
+    public void updateFeedBadge() {
+        if (FeedState.getInstance().isNewFeedItem(this)) {
+            showFeedBadge();
+        } else {
+            clearFeedBadge();
+        }
+    }
+
     protected void requestDataRefresh() {
         android.accounts.Account activeAccount = AccountUtils.getActiveAccount(this);
         if (activeAccount == null) {
@@ -286,7 +305,7 @@ public abstract class BaseActivity extends AppCompatActivity implements
         // Perform one-time bootstrap setup, if needed
         DataBootstrapService.startDataBootstrapIfNecessary(this);
 
-        if(mSyncStatusObserver == null) {
+        if (mSyncStatusObserver == null) {
             mSyncStatusObserver = new MySyncStatusObserver();
         }
         mSyncStatusObserver.register(this);
@@ -304,10 +323,17 @@ public abstract class BaseActivity extends AppCompatActivity implements
             ContentResolver.removeStatusChangeListener(mSyncObserverHandle);
             mSyncObserverHandle = null;
         }
-        if(mSyncStatusObserver != null) {
+        if (mSyncStatusObserver != null) {
             mSyncStatusObserver.unregister();
             mSyncStatusObserver = null;
         }
+    }
+
+    @Override
+    protected void onDestroy() {
+        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(this);
+        sp.unregisterOnSharedPreferenceChangeListener(this);
+        super.onDestroy();
     }
 
     public Toolbar getToolbar() {
@@ -346,10 +372,12 @@ public abstract class BaseActivity extends AppCompatActivity implements
     }
 
     @Override
-    protected void onStop() {
-        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(this);
-        sp.unregisterOnSharedPreferenceChangeListener(this);
-        super.onStop();
+    protected void onStart() {
+        // Update feed badge during onStart because if the app receives the Feed FCM (and updates
+        // the FeedState) while the Activity is no longer visible, this will update the badge
+        // when the Activity is visible again.
+        updateFeedBadge();
+        super.onStart();
     }
 
     protected void onRefreshingStateChanged(boolean refreshing) {
@@ -380,11 +408,15 @@ public abstract class BaseActivity extends AppCompatActivity implements
     }
 
     protected void showFeedBadge() {
-        mAppNavigationView.showItemBadge(NavigationItemEnum.FEED);
+        if (mAppNavigationView != null) {
+            mAppNavigationView.showItemBadge(NavigationItemEnum.FEED);
+        }
     }
 
     protected void clearFeedBadge() {
-        mAppNavigationView.clearItemBadge(NavigationItemEnum.FEED);
+        if (mAppNavigationView != null) {
+            mAppNavigationView.clearItemBadge(NavigationItemEnum.FEED);
+        }
     }
 
     @Override
