@@ -28,6 +28,7 @@ import com.google.gson.JsonPrimitive;
 import com.google.samples.apps.iosched.server.schedule.Config;
 import com.google.samples.apps.iosched.server.schedule.model.InputJsonKeys.VendorAPISource.Rooms;
 import com.google.samples.apps.iosched.server.schedule.model.InputJsonKeys.VendorAPISource.Topics;
+import com.google.samples.apps.iosched.server.schedule.model.OutputJsonKeys.Sessions;
 import com.google.samples.apps.iosched.server.schedule.model.validator.Converters;
 
 import java.util.Arrays;
@@ -542,6 +543,7 @@ public class DataExtractor {
     set(new JsonPrimitive(isLivestream), dest, OutputJsonKeys.Sessions.isLivestream);
 
     JsonPrimitive vid = null;
+    JsonPrimitive channel = null;
 
     if (isLivestream) {
       vid = getVideoFromTopicInfo(origin, InputJsonKeys.VendorAPISource.Topics.INFO_STREAM_VIDEO_ID,
@@ -553,6 +555,10 @@ public class DataExtractor {
     }
     if (vid != null && !vid.getAsString().isEmpty()) {
       set(vid, dest, OutputJsonKeys.Sessions.youtubeUrl);
+      if (isLivestream) {
+        channel = getMapValue(get(origin, Topics.Info), Topics.INFO_STREAM_CHANNEL, null, "");
+        set(channel, dest, Sessions.livestreamChannel);
+      }
     }
   }
 
