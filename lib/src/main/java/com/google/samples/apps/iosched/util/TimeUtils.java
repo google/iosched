@@ -17,6 +17,7 @@
 package com.google.samples.apps.iosched.util;
 
 import android.content.Context;
+import android.support.annotation.NonNull;
 import android.text.TextUtils;
 import android.text.format.DateUtils;
 
@@ -122,6 +123,23 @@ public class TimeUtils {
         String timezone = SettingsUtils.getDisplayTimeZone(context).getID();
         return DateUtils.formatDateRange(context, formatter, date.getTime(), date.getTime(),
                 FORMAT_SHORT_DATETIME_FLAGS, timezone).toString().toUpperCase(Locale.getDefault());
+    }
+
+    public static String formatDuration(@NonNull Context context, long startTime, long endTime) {
+        return formatDuration(context, endTime - startTime);
+    }
+
+    public static String formatDuration(@NonNull Context context, long duration) {
+        Float hours = duration / (float) HOUR;
+        if (hours >= 1f) {
+            return context.getResources().getQuantityString(R.plurals.duration_hours,
+                    (int) Math.ceil(hours), (hours == hours.intValue()) ?
+                            String.valueOf(hours.intValue()) : hours.toString());
+        } else {
+            long mins = duration / MINUTE;
+            return context.getResources().getQuantityString(
+                    R.plurals.duration_minutes, (int) mins, mins);
+        }
     }
 
     public static boolean hasConferenceEnded(final Context context) {
