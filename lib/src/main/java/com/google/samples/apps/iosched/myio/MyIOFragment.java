@@ -173,6 +173,7 @@ public class MyIOFragment extends Fragment implements MyIoView, Callbacks {
     public void onAddEventsClicked(int conferenceDay) {
         AnalyticsHelper.sendEvent("My I/O", "Add Events", String.valueOf(conferenceDay));
         ScheduleActivity.launchScheduleForConferenceDay(getContext(), conferenceDay);
+        getActivity().finish();
     }
 
     private void showSchedule() {
