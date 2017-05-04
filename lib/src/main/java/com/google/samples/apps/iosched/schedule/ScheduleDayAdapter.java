@@ -54,9 +54,11 @@ public class ScheduleDayAdapter extends RecyclerView.Adapter<ViewHolder>
     private static final int ITEM_TYPE_SESSION = 0;
     private static final int ITEM_TYPE_BREAK = 1;
     private static final int ITEM_TYPE_TIME_HEADER = 2;
+    private static final int PAYLOAD_TAG_META = 7;
 
     // list of items served by this adapter
     private final List<Object> mItems = new ArrayList<>();
+    private final TagPool mTagPool = new TagPool();
 
     private final boolean mShowTimeSeparators;
     private final float stuckHeaderElevation;
@@ -122,15 +124,32 @@ public class ScheduleDayAdapter extends RecyclerView.Adapter<ViewHolder>
         final Object item = mItems.get(position);
         switch (holder.getItemViewType()) {
             case ITEM_TYPE_SESSION:
-                ((SessionItemViewHolder) holder).onBind((ScheduleItem) item, mTagMetadata);
+                ((SessionItemViewHolder) holder).bind((ScheduleItem) item, mTagPool, mTagMetadata);
                 break;
             case ITEM_TYPE_BREAK:
-                ((NonSessionItemViewHolder) holder).onBind((ScheduleItem) item);
+                ((NonSessionItemViewHolder) holder).bind((ScheduleItem) item);
                 break;
             case ITEM_TYPE_TIME_HEADER:
             default:
-                ((TimeSeperatorViewHolder) holder).onBind((TimeSeperatorItem) item);
+                ((TimeSeperatorViewHolder) holder).bind((TimeSeperatorItem) item);
                 break;
+        }
+    }
+
+    @Override
+    public void onBindViewHolder(ViewHolder holder, int position, List<Object> payloads) {
+        if (holder instanceof SessionItemViewHolder && payloads.contains(PAYLOAD_TAG_META)) {
+            ((SessionItemViewHolder) holder).updateTags((ScheduleItem) mItems.get(position),
+                    mTagMetadata, mTagPool);
+        } else {
+            onBindViewHolder(holder, position);
+        }
+    }
+
+    @Override
+    public void onViewRecycled(ViewHolder holder) {
+        if (holder instanceof SessionItemViewHolder) {
+            ((SessionItemViewHolder) holder).unbind(mTagPool);
         }
     }
 
@@ -151,7 +170,7 @@ public class ScheduleDayAdapter extends RecyclerView.Adapter<ViewHolder>
     public void setTagMetadata(final TagMetadata tagMetadata) {
         if (mTagMetadata != tagMetadata) {
             mTagMetadata = tagMetadata;
-            notifyDataSetChanged();
+            notifyItemRangeChanged(0, getItemCount() - 1, PAYLOAD_TAG_META);
         }
     }
 
@@ -210,12 +229,12 @@ public class ScheduleDayAdapter extends RecyclerView.Adapter<ViewHolder>
     private static class TimeSeperatorViewHolder extends ViewHolder {
         private final TextView mStartTime;
 
-        TimeSeperatorViewHolder(final View view) {
-            super(view);
-            mStartTime = (TextView) view.findViewById(R.id.start_time);
+        TimeSeperatorViewHolder(final View itemView) {
+            super(itemView);
+            mStartTime = (TextView) itemView;
         }
 
-        void onBind(@NonNull final TimeSeperatorItem item) {
+        void bind(@NonNull final TimeSeperatorItem item) {
             mStartTime.setText(TimeUtils.formatShortTime(
                     itemView.getContext(), new Date(item.startTime)));
         }

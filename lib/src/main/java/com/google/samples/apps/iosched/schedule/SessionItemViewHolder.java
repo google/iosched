@@ -27,15 +27,14 @@ import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.google.android.flexbox.FlexboxLayout;
-import com.google.firebase.auth.FirebaseAuth;
 import com.google.samples.apps.iosched.lib.R;
 import com.google.samples.apps.iosched.model.ScheduleItem;
 import com.google.samples.apps.iosched.model.TagMetadata;
 import com.google.samples.apps.iosched.model.TagMetadata.Tag;
-import com.google.samples.apps.iosched.util.RegistrationUtils;
 import com.google.samples.apps.iosched.util.TimeUtils;
 
 import java.util.ArrayList;
@@ -46,8 +45,6 @@ import static android.view.View.VISIBLE;
 import static com.google.samples.apps.iosched.Config.Tags.CATEGORY_TRACK;
 import static com.google.samples.apps.iosched.provider.ScheduleContract.MyReservations
         .RESERVATION_STATUS_RESERVED;
-import static com.google.samples.apps.iosched.provider.ScheduleContract.MyReservations
-        .RESERVATION_STATUS_UNRESERVED;
 import static com.google.samples.apps.iosched.provider.ScheduleContract.MyReservations
         .RESERVATION_STATUS_WAITLISTED;
 
@@ -146,7 +143,8 @@ public class SessionItemViewHolder extends ScheduleItemViewHolder
         }
     }
 
-    public void onBind(@NonNull final ScheduleItem item, TagMetadata tagMetadata) {
+    public void bind(@NonNull ScheduleItem item, @NonNull TagPool tagPool,
+                     @Nullable TagMetadata tagMetadata) {
         if (item.type != ScheduleItem.SESSION) {
             return;
         }
@@ -158,41 +156,16 @@ public class SessionItemViewHolder extends ScheduleItemViewHolder
         mDescription.setText(formatDescription(context, item));
 
         mTagsHolder.removeAllViews();
-        final LayoutInflater layoutInflater = LayoutInflater.from(context);
         if (tagMetadata != null) {
-            List<Tag> tags = new ArrayList<>();
-            final TagMetadata.Tag mainTag = tagMetadata.getTag(item.mainTag);
-            if (mainTag != null) {
-                tags.add(mainTag);
-            }
-            for (String tagId : item.tags) {
-                if (!tagId.startsWith(CATEGORY_TRACK)) {
-                    continue;
-                }
-                Tag tag = tagMetadata.getTagById(tagId);
-                if (tag == null || tag.equals(mainTag)) {
-                    continue;
-                }
-                tags.add(tag);
-            }
-            for (Tag tag : tags) {
-                TextView tagView = (TextView) layoutInflater.inflate(
-                        R.layout.include_schedule_tag, mTagsHolder, false);
-                tagView.setText(tag.getName());
-                tagView.setBackgroundTintList(ColorStateList.valueOf(tag.getColor()));
-                tagView.setTag(R.id.key_session_tag, tag);
-                mTagsHolder.addView(tagView);
-                tagView.setOnClickListener(mTagClick);
-            }
+            updateTags(item, tagMetadata, tagPool);
         }
 
         if (item.isKeynote() || (item.flags & ScheduleItem.FLAG_HAS_LIVESTREAM) != 0) {
             if (mTagsHolder.getChildCount() > 0) {
                 // Insert the spacer first
-                layoutInflater.inflate(R.layout.include_schedule_live_spacer, mTagsHolder);
+                mTagsHolder.addView(tagPool.getSpacer(mTagsHolder));
             }
-            mTagsHolder.addView(layoutInflater.inflate(R.layout.include_schedule_live,
-                    mTagsHolder, false));
+            mTagsHolder.addView(tagPool.getLivestream(mTagsHolder));
         }
         mTagsHolder.setVisibility(mTagsHolder.getChildCount() > 0 ? VISIBLE : GONE);
 
@@ -207,11 +180,46 @@ public class SessionItemViewHolder extends ScheduleItemViewHolder
         final long now = TimeUtils.getCurrentTime(context);
         final boolean streamingNow = item.startTime <= now && now <= item.endTime
                 && (item.flags & ScheduleItem.FLAG_HAS_LIVESTREAM) != 0;
+        mLiveNow.setVisibility(streamingNow ? VISIBLE : GONE);
+
         boolean showFeedback = mCallbacks.feedbackEnabled()
                 && (now >= item.endTime && !item.hasGivenFeedback);
-
-        mLiveNow.setVisibility(streamingNow ? VISIBLE : GONE);
         mRate.setVisibility(showFeedback ? VISIBLE : GONE);
+    }
+
+    public void updateTags(@NonNull ScheduleItem item,@NonNull TagMetadata tagMetadata,
+                           @NonNull TagPool tagPool) {
+        List<Tag> tags = new ArrayList<>();
+        Tag mainTag = tagMetadata.getTag(item.mainTag);
+        if (mainTag != null) tags.add(mainTag);
+        for (String tagId : item.tags) {
+            if (!tagId.startsWith(CATEGORY_TRACK) || tagId.equals(item.mainTag)) continue;
+            Tag tag = tagMetadata.getTagById(tagId);
+            if (tag != null) tags.add(tag);
+        }
+        for (Tag tag : tags) {
+            TextView tagView = tagPool.getTag(mTagsHolder);
+            tagView.setText(tag.getName());
+            tagView.setBackgroundTintList(ColorStateList.valueOf(tag.getColor()));
+            tagView.setTag(R.id.key_session_tag, tag);
+            tagView.setOnClickListener(mTagClick);
+            mTagsHolder.addView(tagView);
+        }
+    }
+
+    public void unbind(TagPool tagPool) {
+        if (mTagsHolder.getChildCount() == 0) return;
+        for (int i = mTagsHolder.getChildCount() - 1; i >= 0; i--) {
+            View view = mTagsHolder.getChildAt(i);
+            mTagsHolder.removeViewAt(i);
+            if (view instanceof TextView) {
+                tagPool.returnTag((TextView) view);
+            } else if (view instanceof ImageView) {
+                tagPool.returnLivestream((ImageView) view);
+            } else {
+                tagPool.returnSpacer(view);
+            }
+        }
     }
 
     public interface Callbacks {
