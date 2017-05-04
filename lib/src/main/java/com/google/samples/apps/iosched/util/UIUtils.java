@@ -31,6 +31,9 @@ import android.graphics.Color;
 import android.graphics.ColorFilter;
 import android.graphics.ColorMatrixColorFilter;
 import android.graphics.LinearGradient;
+import android.graphics.Paint;
+import android.graphics.PorterDuff;
+import android.graphics.PorterDuffColorFilter;
 import android.graphics.Shader;
 import android.graphics.Typeface;
 import android.graphics.drawable.ColorDrawable;
@@ -43,6 +46,7 @@ import android.os.Build;
 import android.preference.PreferenceManager;
 import android.provider.Settings;
 import android.support.annotation.AttrRes;
+import android.support.annotation.CheckResult;
 import android.support.annotation.ColorInt;
 import android.support.annotation.ColorRes;
 import android.support.annotation.DrawableRes;
@@ -721,6 +725,22 @@ public class UIUtils {
         vector.setBounds(0, 0, canvas.getWidth(), canvas.getHeight());
         vector.draw(canvas);
         return bitmap;
+    }
+
+    /**
+     * Tints a bitmap using a color and {@link PorterDuff.Mode#MULTIPLY} mode.
+     */
+    @CheckResult
+    static Bitmap tintBitmap(@NonNull Bitmap iconBitmap, @ColorInt int color) {
+        Paint paint = new Paint();
+
+        paint.setColorFilter(new PorterDuffColorFilter(color, PorterDuff.Mode.MULTIPLY));
+
+        Bitmap newIcon = Bitmap.createBitmap(iconBitmap.getWidth(), iconBitmap.getHeight(),
+                Bitmap.Config.ARGB_8888);
+        Canvas canvas = new Canvas(newIcon);
+        canvas.drawBitmap(iconBitmap, 0, 0, paint);
+        return newIcon;
     }
 
     /**
