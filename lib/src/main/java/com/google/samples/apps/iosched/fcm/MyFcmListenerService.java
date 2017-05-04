@@ -16,6 +16,7 @@ package com.google.samples.apps.iosched.fcm;
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
 import com.google.samples.apps.iosched.fcm.command.AnnouncementCommand;
+import com.google.samples.apps.iosched.fcm.command.FeedCommand;
 import com.google.samples.apps.iosched.fcm.command.NotificationCommand;
 import com.google.samples.apps.iosched.fcm.command.SyncCommand;
 import com.google.samples.apps.iosched.fcm.command.SyncUserCommand;
@@ -49,6 +50,7 @@ public class MyFcmListenerService extends FirebaseMessagingService {
         receivers.put("sync_schedule", new SyncCommand());
         receivers.put("sync_user", new SyncUserCommand());
         receivers.put("notification", new NotificationCommand());
+        receivers.put("feed_update", new FeedCommand());
         MESSAGE_RECEIVERS = Collections.unmodifiableMap(receivers);
     }
 
