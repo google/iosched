@@ -47,6 +47,7 @@
     <dimen name="widget_schedule_header_height">40dp</dimen>
     <dimen name="drawer_width">@dimen/match_parent</dimen>
     <dimen name="horizontal_scrollbar_height">4dp</dimen>
+    <dimen name="time_header_min_height">0dp</dimen>
 
     <dimen name="divider_height">1dp</dimen>
     <dimen name="divider_height_inc_padding">16dp</dimen>
