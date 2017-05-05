@@ -24,6 +24,7 @@ import android.support.constraint.ConstraintLayout;
 import android.support.constraint.ConstraintSet;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
+import android.text.method.LinkMovementMethod;
 import android.transition.Transition;
 import android.transition.TransitionInflater;
 import android.transition.TransitionManager;
@@ -161,6 +162,7 @@ class FeedViewHolder extends RecyclerView.ViewHolder {
         } else {
             image.setVisibility(GONE);
         }
+        description.setMovementMethod(LinkMovementMethod.getInstance());
         description.setHtmlText(feedMessage.getMessage());
         int maxLines = expanded ? EXPANDED_DESC_MAX_LINES : COLLAPSED_DESC_MAX_LINES;
         description.setMaxLines(maxLines);
