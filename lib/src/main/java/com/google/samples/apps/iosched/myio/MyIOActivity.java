@@ -357,7 +357,9 @@ public class MyIOActivity extends BaseActivity implements
 
     @Override
     public void onSignInFailed(GoogleSignInResult result) {
-        LOGW(TAG, "Failed to sign in: " + result);
+        if(result != null) {
+            LOGW(TAG, "Failed to sign in: status code == " + result.getStatus().getStatusCode());
+        }
         Toast.makeText(this, getString(R.string.signin_failed_text), Toast.LENGTH_LONG).show();
     }
 
