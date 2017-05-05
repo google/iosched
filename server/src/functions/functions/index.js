@@ -91,7 +91,7 @@ exports.processPromotions = functions.database.ref('/promo_queue/{sid}/{rid}').o
   // using replace here to use dashes instead of slashes.
   eid = eid.replace(/\//g, "-");
 
-  isNewEvent(eid).then(function(newEvent) {
+  return isNewEvent(eid).then(function(newEvent) {
     if (newEvent) {
       const sid = event.params.sid;
       const rid = event.params.rid;
@@ -131,7 +131,7 @@ exports.processRequest = functions.database.ref('/queue/{uid}').onWrite(event =>
   // using replace here to use dashes instead of slashes.
   eid = eid.replace(/\//g, "-");
 
-  isNewEvent(eid).then(function(newEvent) {
+  return isNewEvent(eid).then(function(newEvent) {
     if (newEvent) {
       const request = event.data.val();
       const action = request[PATH_ACTION];
