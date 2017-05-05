@@ -218,22 +218,6 @@ public class UIUtils {
         }
     }
 
-    public static String getLiveBadgeText(final Context context, long start, long end) {
-        long now = TimeUtils.getCurrentTime(context);
-
-        if (now < start) {
-            // Will be live later
-            return context.getString(R.string.live_available);
-        } else if (start <= now && now <= end) {
-            // Live right now!
-            // Indicated by a visual live now badge
-            return "";
-        } else {
-            // Too late.
-            return "";
-        }
-    }
-
     /**
      * Given a snippet string with matching segments surrounded by curly braces, turn those areas
      * into bold spans, removing the curly braces.
