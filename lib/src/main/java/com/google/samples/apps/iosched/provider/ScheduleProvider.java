@@ -158,8 +158,7 @@ public class ScheduleProvider extends ContentProvider {
 
     /**
      * Adds the {@code tagsFilter} query parameter to the given {@code builder}. This query
-     * parameter is used by the {@link com.google.samples.apps.iosched.explore.ExploreSessionsActivity}
-     * when the user makes a selection containing multiple filters.
+     * parameter is used when the user makes a selection containing multiple filters.
      */
     private void addTagsFilter(SelectionBuilder builder, String tagsFilter, String numCategories) {
         // Note: for context, remember that session queries are done on a join of sessions
@@ -279,6 +278,7 @@ public class ScheduleProvider extends ContentProvider {
 
     /**
      * Create a {@link MatrixCursor} given the tags and search cursors.
+     *
      * @param tags Cursor with the projection {@link SearchTopicsSessions#TOPIC_TAG_PROJECTION}.
      * @param search Cursor with the projection
      *              {@link SearchTopicsSessions#SEARCH_SESSIONS_PROJECTION}.
@@ -371,6 +371,8 @@ public class ScheduleProvider extends ContentProvider {
                 Uri sessionUri = Sessions.buildSessionUri(
                         values.getAsString(MyScheduleColumns.SESSION_ID));
                 notifyChange(sessionUri);
+                // Queries for sessions in user's schedule are affected by this change.
+                notifyChange(Sessions.CONTENT_MY_SCHEDULE_URI);
                 return sessionUri;
             }
             case MY_RESERVATIONS: {
@@ -380,7 +382,7 @@ public class ScheduleProvider extends ContentProvider {
                 Uri sessionUri = Sessions.buildSessionUri(
                         values.getAsString(MyReservationColumns.SESSION_ID));
                 notifyChange(sessionUri);
-                // queries for sessions in user's schedule are affected by this change
+                // Queries for sessions in user's schedule are affected by this change.
                 notifyChange(Sessions.CONTENT_MY_SCHEDULE_URI);
                 return sessionUri;
             }
@@ -440,6 +442,7 @@ public class ScheduleProvider extends ContentProvider {
     @Override
     public int update(Uri uri, ContentValues values, String selection, String[] selectionArgs) {
         String accountName = getCurrentAccountName(uri, false);
+        Uri notifyUri = null;
         LOGV(TAG, "update(uri=" + uri + ", values=" + values.toString()
                 + ", account=" + accountName + ")");
 
@@ -463,6 +466,8 @@ public class ScheduleProvider extends ContentProvider {
                 values.remove(MySchedule.MY_SCHEDULE_ACCOUNT_NAME);
             }
             builder.where(MySchedule.MY_SCHEDULE_ACCOUNT_NAME + "=?", accountName);
+            // Also notify session listeners.
+            notifyUri = Sessions.CONTENT_MY_SCHEDULE_URI;
         }
         if (matchingUriEnum == ScheduleUriEnum.MY_RESERVATIONS) {
             values.remove(MyReservations.MY_RESERVATION_ACCOUNT_NAME);
@@ -483,6 +488,7 @@ public class ScheduleProvider extends ContentProvider {
         int retVal = builder.where(selection, selectionArgs).update(db, values);
         if (retVal > 0) {
             notifyChange(uri);
+            if (null != notifyUri) notifyChange(notifyUri);
         }
         return retVal;
     }
