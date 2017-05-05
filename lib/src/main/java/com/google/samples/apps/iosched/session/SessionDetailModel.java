@@ -731,11 +731,8 @@ public class SessionDetailModel extends ModelWithLoaderManager<SessionDetailQuer
 
     @VisibleForTesting
     public void formatSubtitle() {
-        mSubtitle = UIUtils.formatSessionSubtitle(
-                mSessionStart, mSessionEnd, mRoomName, mBuffer, mContext);
-        if (mHasLiveStream) {
-            mSubtitle += " " + UIUtils.getLiveBadgeText(mContext, mSessionStart, mSessionEnd);
-        }
+        mSubtitle = UIUtils.formatSessionSubtitle(mSessionStart, mSessionEnd, mRoomName, mBuffer,
+                mContext);
     }
 
     private void buildLinks(Cursor cursor) {
