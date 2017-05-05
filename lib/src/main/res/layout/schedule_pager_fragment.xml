@@ -20,26 +20,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <LinearLayout
-        android:id="@id/appbar"
-        style="@style/AppBar.Dark"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/lightish_blue"
-        android:orientation="vertical">
-
-        <include layout="@layout/toolbar" />
-
-        <android.support.design.widget.TabLayout
-            android:id="@+id/sliding_tabs"
-            android:layout_width="match_parent"
-            android:layout_height="?actionBarSize"
-            android:layout_gravity="bottom"
-            app:tabIndicatorColor="@color/tab_selected_strip"
-            app:tabIndicatorHeight="4dp"
-            app:tabTextColor="@android:color/white" />
-
-    </LinearLayout>
+    <include layout="@layout/schedule_pager_fragment_appbar" />
 
     <android.support.design.widget.CoordinatorLayout
         android:layout_width="match_parent"

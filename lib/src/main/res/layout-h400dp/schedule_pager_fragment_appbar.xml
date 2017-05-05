@@ -17,17 +17,22 @@
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@id/appbar"
+    style="@style/AppBar.Dark"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/lightish_blue"
     android:orientation="vertical">
 
-    <include layout="@layout/info_pager_fragment_appbar" />
+    <include layout="@layout/toolbar" />
 
-    <android.support.v4.view.ViewPager
-        android:id="@+id/view_pager"
+    <android.support.design.widget.TabLayout
+        android:id="@+id/sliding_tabs"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior" />
+        android:layout_height="?actionBarSize"
+        android:layout_gravity="bottom"
+        app:tabIndicatorColor="@color/tab_selected_strip"
+        app:tabIndicatorHeight="4dp"
+        app:tabTextColor="@android:color/white" />
 
 </LinearLayout>
