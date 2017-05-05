@@ -22,7 +22,9 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="?selectableItemBackground"
-    android:padding="@dimen/padding_normal">
+    android:paddingStart="@dimen/padding_normal"
+    android:paddingTop="@dimen/padding_normal"
+    android:paddingBottom="@dimen/padding_normal">
 
     <TextView
         android:id="@+id/slot_title"
@@ -31,6 +33,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
+        android:paddingEnd="@dimen/padding_normal"
         android:textAppearance="@style/Schedule.ItemTitle"
         tools:text="@string/placeholder_session_title" />
 
@@ -42,6 +45,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/slot_title"
+        android:paddingEnd="@dimen/padding_normal"
         tools:text="9:00 AM - 11:30 AM / Room 1" />
 
     <TextView
@@ -74,6 +78,7 @@
         android:id="@+id/bookmark"
         android:layout_width="@dimen/a11y_min_touch_target_dimen"
         android:layout_height="@dimen/a11y_min_touch_target_dimen"
+        android:layout_marginEnd="@dimen/spacing_micro"
         android:background="?selectableItemBackgroundBorderless"
         android:contentDescription="@string/add_bookmark"
         android:scaleType="center"
@@ -95,6 +100,7 @@
         style="@style/Widget.AppCompat.Button.Borderless.Colored"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginEnd="@dimen/spacing_micro"
         android:text="@string/my_schedule_rate_this_session"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@id/live_now_badge" />
