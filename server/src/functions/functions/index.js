@@ -38,6 +38,7 @@ const PATH_SEATS = 'seats';
 const PATH_ACTION = 'action';
 const PATH_SESSION = 'session';
 const PATH_QUEUE = 'queue';
+const PATH_PROMO_QUEUE = 'promo_queue';
 const PATH_LAST_STATUS_CHANGED = 'last_status_changed';
 const PATH_EVENTS = 'events';
 
@@ -73,11 +74,52 @@ const USERDATA_DISCOVERY_URL = 'USERDATA_DISCOVERY_URL';
 const GOOGLE_PROVIDER_ID = 'google.com';
 
 /**
+ * Function to process "promotion from waitlist" requests. When a granted seat
+ * is returned and there are attendees on the waitlist a request is written
+ * to the promo_queue path.
+ *
+ * This function assumes that request are written in the form:
+ * /promo_queue/<session id>/<timestamp>: true
+ */
+exports.processPromotions = functions.database.ref('/promo_queue/{sid}/{rid}').onWrite(event => {
+  if (!event.data || !event.data.val() || !event.eventId) {
+    return;
+  }
+
+  let eid = event.eventId;
+  // Event IDs contain slashes and when written to the DB they cause children
+  // using replace here to use dashes instead of slashes.
+  eid = eid.replace(/\//g, "-");
+
+  isNewEvent(eid).then(function(newEvent) {
+    if (newEvent) {
+      const sid = event.params.sid;
+      const rid = event.params.rid;
+      return promoteFromWaitlist(sid).then(function (result) {
+        console.log('attendee was promoted from waitlist of session ' + sid
+            + ' ended with result: ' + result);
+        return getPromoQueueReference(sid).child(rid).set({});
+      }).catch(function (error) {
+        console.error(error);
+        return getPromoQueueReference(sid).child(rid).set({});
+      });
+    } else {
+      // Do nothing, this is a duplicate event.
+      console.log("duplicate event found: " + eid);
+    }
+  });
+});
+
+/**
  * This function listens to the request queue. When a request is written to the
  * queue by a client, this function executes.
  *
  * This function assumes that requests are submitted of the form:
- * /queue/<user id> : <session id>
+ * /queue/<user id> : {
+ *   session_id: <session id>,
+ *   action: <reserve or return>,
+ *   request_id: <timestamp>
+ * }
  */
 exports.processRequest = functions.database.ref('/queue/{uid}').onWrite(event => {
   if (!event.data || !event.data.val() || !event.eventId) {
@@ -89,21 +131,8 @@ exports.processRequest = functions.database.ref('/queue/{uid}').onWrite(event =>
   // using replace here to use dashes instead of slashes.
   eid = eid.replace(/\//g, "-");
 
-  let eventAlreadyExists = false;
-
-  // Start a transaction to check if the current event has already started.
-  return admin.database().ref(PATH_EVENTS).child(eid).transaction(function(reqEvent) {
-    // If the event does not exist write it to RTDB.
-    if (!reqEvent) {
-      reqEvent = true;
-      eventAlreadyExists = false;
-    } else {
-      eventAlreadyExists = true;
-    }
-    return reqEvent;
-  }).then(() => {
-    // If event does not already exist then process request.
-    if (!eventAlreadyExists) {
+  isNewEvent(eid).then(function(newEvent) {
+    if (newEvent) {
       const request = event.data.val();
       const action = request[PATH_ACTION];
       const sid = request[PATH_SESSION];
@@ -124,6 +153,30 @@ exports.processRequest = functions.database.ref('/queue/{uid}').onWrite(event =>
     }
   });
 });
+
+/**
+ * Determine if an event is new.
+ *
+ * @param eid ID used to check for event's existance.
+ * @returns {Promise.<TResult>} result and be true or false.
+ */
+function isNewEvent(eid) {
+  let newEvent = false;
+
+  // Start a transaction to check if the current event has already started.
+  return admin.database().ref(PATH_EVENTS).child(eid).transaction(function(reqEvent) {
+    // If the event does not exist write it to RTDB.
+    if (!reqEvent) {
+      reqEvent = true;
+      newEvent = true;
+    } else {
+      newEvent = false;
+    }
+    return reqEvent;
+  }).then(() => {
+    return newEvent;
+  });
+}
 
 /**
  * Process action (reserve or return) request by user with ID uid for session
@@ -283,8 +336,7 @@ function handleCutoff(uid, sid, rid, action) {
  */
 function handleReturn(uid, sid, rid) {
   // Remove session
-  return getSeatsReference(sid)
-      .transaction(function(seats) {
+  return getSeatsReference(sid).transaction(function(seats) {
     if (seats) {
       seats.reserved--;
       setSeatAvailability(seats);
@@ -306,8 +358,13 @@ function handleReturn(uid, sid, rid) {
                 RESULT_RETURNED)
           })
           .then(function() {
-            // Promote from waitlist.
-            return promoteFromWaitlist(sid)
+            var waitlisted = snapshot.val().waitlisted;
+            if (waitlisted) {
+              // Initiate promotion from waitlist by writing to the promo_queue.
+              // A function will process all promotion requests from the
+              // promo_queue.
+              return getPromoQueueReference(sid).child(new Date().getTime()).set(true);
+            }
           })
           .then(function() {
             // Push reservation update to App Server.
@@ -336,21 +393,24 @@ function handleReturn(uid, sid, rid) {
  * @returns {Promise.<TResult>} string result of return.
  */
 function handleRemove(uid, sid, rid) {
-  return getReservationStatusReference(uid, sid).set(STATUS_RETURNED)
-      .then(function(){
-        return getReservationLastStatusChangeReference(uid, sid).set(new Date().getTime());
-      })
-      .then(function() {
-        return getReservationResultReference(uid, sid, rid).set(
-            RESULT_RETURNED);
-      })
-      .then(function() {
-        // Push reservation update to App Server.
-        return sendReturn(uid, sid);
-      })
-      .then(function() {
+  return getReservationReference(uid, sid).transaction(function(reservation) {
+    if (reservation) {
+      if (reservation.status == STATUS_WAITING) {
+        reservation.status = STATUS_RETURNED;
+        reservation.last_status_changed = new Date().getTime();
+        reservation.results[rid] = RESULT_RETURNED;
+      }
+    }
+    return reservation;
+  }).then(function(result) {
+    if (result.committed && postReservation.status == STATUS_RETURNED) {
+      return sendReturn(uid, sid).then(function() {
         return RESERVATION_RETURNED;
       });
+    } else {
+      return RESERVATION_RETURN_FAILED;
+    }
+  });
 }
 
 /**
@@ -364,6 +424,8 @@ function promoteFromWaitlist(sid) {
   var firstInLine;
   var prevUserStatus;
   return getSessionReference(sid).transaction(function(session) {
+    firstInLine = null;
+    prevUserStatus = null;
     if (session) {
       var smallestTime;
       var reservations = session.reservations;
@@ -388,6 +450,9 @@ function promoteFromWaitlist(sid) {
           reservations[firstInLine].last_status_changed = new Date().getTime();
           setSeatAvailability(seats);
         }
+      } else {
+        // If there is no one in the waitlist set waitlisted to false.
+        session.seats.waitlisted = false;
       }
     }
     return session;
@@ -409,6 +474,9 @@ function promoteFromWaitlist(sid) {
                 console.log('promoted user ' + firstInLine);
                 console.log('send notification to user ' + firstInLine);
                 // TODO(arthurthompson): send notification to promoted user.
+              }).catch(function(err) {
+                console.error(err);
+                console.log('Unable to send promotion.');
               });
         } else {
           console.log(firstInLine + ' was first in waitlist but not promoted.');
@@ -467,8 +535,9 @@ function handleClash(uid, sid, rid) {
  * @returns {Promise.<TResult>} string result of handled reservation.
  */
 function handleReservation(uid, sid, rid) {
-  var prevSeats = {};
+  var prevSeats;
   return getSeatsReference(sid).transaction(function(seats) {
+    prevSeats = {};
     if (seats) {
       prevSeats.reserved = seats.reserved;
       // Add reservation if possible
@@ -477,6 +546,10 @@ function handleReservation(uid, sid, rid) {
         seats.reserved++;
         setSeatAvailability(seats);
       } else {
+        // If there are no seats available, set the session to waitlisted.
+        // Any granted seat that is returned on a waitlisted session will
+        // trigger a promotion from the waitlist to fill the returned seat.
+        seats.waitlisted = true;
         console.log('no seats available');
       }
     }
@@ -565,6 +638,8 @@ function sendReserve(uid, sid) {
               }
             });
       });
+    }).catch(function() {
+      console.warn('Not sending reserve because of invalid ID:' + uid);
     });
   });
 }
@@ -598,6 +673,8 @@ function sendReturn(uid, sid) {
               }
             });
       });
+    }).catch(function() {
+      console.warn('Not sending return because of invalid ID:' + uid);
     });
   });
 }
@@ -632,6 +709,8 @@ function sendWaitlist(uid, sid) {
               }
             });
       });
+    }).catch(function() {
+      console.warn('Not sending waitlist because of invalid ID:' + uid);
     });
   });
 }
@@ -694,7 +773,7 @@ function getProviderId(uid) {
   return admin.auth().getUser(uid).then(function(userRecord) {
     if (!userRecord) {
       console.log('Unable to find user record.');
-      return uid;
+      throw uid;
     }
     var providers = userRecord.providerData;
     for (var i = 0; i < providers.length; i++) {
@@ -708,7 +787,7 @@ function getProviderId(uid) {
     return uid;
   }).catch(function(error) {
     console.log('Error fetching user data: ' + error);
-    return uid;
+    throw uid;
   });
 }
 
@@ -739,4 +818,8 @@ function getReservationResultReference(uid, sid, rid) {
 
 function getQueueReference(uid) {
   return admin.database().ref(PATH_QUEUE).child(uid);
+}
+
+function getPromoQueueReference(sid) {
+  return admin.database().ref(PATH_PROMO_QUEUE).child(sid);
 }
