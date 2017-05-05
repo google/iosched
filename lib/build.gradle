@@ -297,6 +297,7 @@ dependencies {
     compile "com.google.firebase:firebase-config:${google_play_services_client_library_version}"
     compile "com.google.firebase:firebase-auth:${google_play_services_client_library_version}"
     compile "com.google.firebase:firebase-config:${google_play_services_client_library_version}"
+    compile "com.google.firebase:firebase-crash:${google_play_services_client_library_version}"
 
     compile "org.apache.commons:commons-lang3:3.5"
 
