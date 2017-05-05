@@ -49,10 +49,12 @@ public class MyInstanceIDService extends FirebaseInstanceIdService {
 
         // Register for a new InstanceID token. This token is sent to the server to be paired with
         // the current user's FCM key.
-        sendRegistrationToServer(FirebaseInstanceId.getInstance().getToken(), fcmKey);
-        subscribeTopics(ConfMessageCardUtils.isConfMessageCardsEnabled(this),
-                RegistrationUtils.isRegisteredAttendee(this) ==
-                        RegistrationUtils.REGSTATUS_REGISTERED);
+        if(FirebaseInstanceId.getInstance().getToken() != null) {
+            sendRegistrationToServer(FirebaseInstanceId.getInstance().getToken(), fcmKey);
+            subscribeTopics(ConfMessageCardUtils.isConfMessageCardsEnabled(this),
+                    RegistrationUtils.isRegisteredAttendee(this) ==
+                            RegistrationUtils.REGSTATUS_REGISTERED);
+        }
     }
 
     /**
