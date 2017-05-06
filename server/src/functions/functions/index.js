@@ -70,8 +70,33 @@ const RESULT_RETURNED_CUTOFF = 'return_denied_cutoff';
 const RESULT_RETURNED_FAILED = 'return_failed';
 
 const USERDATA_DISCOVERY_URL = 'USERDATA_DISCOVERY_URL';
+const PING_DISCOVERY_URL = 'PING_DISCOVERY_URL';
 
 const GOOGLE_PROVIDER_ID = 'google.com';
+
+/**
+ * Function to send pings when the feed is updated.
+ */
+exports.sendFeedPing = functions.database.ref('/feed').onWrite(event => {
+  if (!event.data || !event.data.val() || !event.eventId) {
+    return;
+  }
+
+  let eid = event.eventId;
+  // Event IDs contain slashes and when written to the DB they cause children
+  // using replace here to use dashes instead of slashes.
+  eid = eid.replace(/\//g, "-");
+
+  return isNewEvent(eid).then(function(newEvent) {
+    if (newEvent) {
+      return sendFeedPing();
+    } else {
+      // Do nothing, this is a duplicate event.
+      console.log("duplicate event found: " + eid);
+    }
+  });
+
+});
 
 /**
  * Function to process "promotion from waitlist" requests. When a granted seat
@@ -711,6 +736,33 @@ function sendWaitlist(uid, sid) {
       });
     }).catch(function() {
       console.warn('Not sending waitlist because of invalid ID:' + uid);
+    });
+  });
+}
+
+/**
+ * Send feed ping to all devices when the feed is updated.
+ */
+function sendFeedPing() {
+  var jwtClient = getJwtClient();
+
+  return jwtClient.authorize(function (err, tokens) {
+    if (err) {
+      console.log('Unable to authorize ' + err);
+      return;
+    }
+
+    return google.discoverAPI(PING_DISCOVERY_URL, function(err, ping) {
+      ping.sendFeedPing(
+          {auth: jwtClient},
+          function(err, result) {
+            if (err) {
+              console.log(err);
+              console.log("Unable to send feed ping");
+            } else {
+              console.log("feed ping sent successfully");
+            }
+          });
     });
   });
 }
