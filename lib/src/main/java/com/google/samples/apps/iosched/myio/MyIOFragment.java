@@ -23,6 +23,7 @@ import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -56,6 +57,7 @@ public class MyIOFragment extends Fragment implements MyIoView, Callbacks {
     private LottieAnimationView mLoadingView;
     private MyIOAdapter mAdapter;
     private Handler mHandler;
+    private boolean mScrolled = false;
 
     private Runnable mUiRefreshRunnable = new Runnable() {
         @Override
@@ -68,7 +70,7 @@ public class MyIOFragment extends Fragment implements MyIoView, Callbacks {
     };
 
     /**
-     * Asks {@link MyIOAdapter} to remove the post onboarding message card.
+     * Asks {@link MyIOAdapter} to remove the post on-boarding message card.
      */
     public void removePostOnboardingMessageCard() {
         mAdapter.removePostOnboardingMessageCard();
@@ -92,6 +94,13 @@ public class MyIOFragment extends Fragment implements MyIoView, Callbacks {
         mRecyclerView.setAdapter(mAdapter);
         mRecyclerView.setLayoutManager(
                 new StickyHeadersLinearLayoutManager<MyIOAdapter>(getContext()));
+        mRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                mScrolled = true;
+                recyclerView.removeOnScrollListener(this);
+            }
+        });
         View header = view.findViewById(R.id.header_anim);
         if (header instanceof ImageView) {
             AnimatedVectorDrawable avd = (AnimatedVectorDrawable) ContextCompat.getDrawable(
@@ -134,6 +143,7 @@ public class MyIOFragment extends Fragment implements MyIoView, Callbacks {
     public void onScheduleLoaded(MyIOModel model) {
         showSchedule();
         mAdapter.setItems(model.getScheduleItems());
+        moveToCurrentTimeSlot();
     }
 
     @Override
@@ -188,5 +198,17 @@ public class MyIOFragment extends Fragment implements MyIoView, Callbacks {
     private void showSchedule() {
         mLoadingView.cancelAnimation();
         mLoadingSwitcher.setDisplayedChild(1);
+    }
+
+    private void moveToCurrentTimeSlot() {
+        // don't auto-scroll to current time outside of the conf or if user has manually scrolled
+        if (mScrolled || !TimeUtils.isConferenceInProgress(getContext())) return;
+
+        int nowPos = mAdapter.findPositionForTime(TimeUtils.getCurrentTime(getContext()));
+        if (nowPos > 0) {
+            LinearLayoutManager lm = (LinearLayoutManager) mRecyclerView.getLayoutManager();
+            lm.scrollToPositionWithOffset(nowPos,
+                    getResources().getDimensionPixelOffset(R.dimen.spacing_normal));
+        }
     }
 }

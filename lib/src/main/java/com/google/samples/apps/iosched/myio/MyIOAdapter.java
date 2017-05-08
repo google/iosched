@@ -277,6 +277,25 @@ class MyIOAdapter extends Adapter<ViewHolder> implements StickyHeaders, StickyHe
         view.setTranslationZ(0f);
     }
 
+    /**
+     * Return the position of the first item that has not finished.
+     */
+    int findPositionForTime(final long time) {
+        for (int i = 0; i < mItems.size(); i++) {
+            Object item = mItems.get(i);
+            if (item instanceof ScheduleItem) {
+                if (((ScheduleItem) item).endTime > time) {
+                    return i;
+                }
+            } else if (item instanceof DaySeparator) {
+                if (((DaySeparator) item).mStartTime > time) {
+                    return i;
+                }
+            }
+        }
+        return RecyclerView.NO_POSITION;
+    }
+
     private class MessageCardViewHolder extends ViewHolder {
         private final TextView mMessage;
         private final Button mStartButton;
