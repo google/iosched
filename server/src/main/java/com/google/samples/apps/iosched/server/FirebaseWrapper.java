@@ -10,6 +10,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.tasks.Task;
 import com.google.firebase.tasks.Tasks;
 import java.io.InputStream;
+import java.util.concurrent.ExecutionException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -56,5 +57,17 @@ public class FirebaseWrapper {
 
     public String getUserId() {
         return user == null ? null : user.getUid();
+    }
+
+    public String getAccessToken(InputStream serviceAccount) {
+        Task<String> tokenTask = FirebaseCredentials.fromCertificate(serviceAccount)
+            .getAccessToken(false);
+        try {
+            Tasks.await(tokenTask);
+        } catch (InterruptedException | ExecutionException e) {
+            LOG.log(Level.SEVERE, "An error occurred while generating the access token", e);
+            return null;
+        }
+        return tokenTask.getResult();
     }
 }
