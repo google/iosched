@@ -51,6 +51,7 @@ import com.google.samples.apps.iosched.sync.account.Account;
 import com.google.samples.apps.iosched.ui.widget.MultiSwipeRefreshLayout;
 import com.google.samples.apps.iosched.util.AccountUtils;
 import com.google.samples.apps.iosched.util.AnalyticsHelper;
+import com.google.samples.apps.iosched.util.ConnectivityUtils;
 import com.google.samples.apps.iosched.util.RecentTasksStyler;
 import com.google.samples.apps.iosched.welcome.WelcomeActivity;
 
@@ -193,7 +194,11 @@ public abstract class BaseActivity extends AppCompatActivity implements
             mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
                 @Override
                 public void onRefresh() {
-                    requestDataRefresh();
+                    if (ConnectivityUtils.isConnected(BaseActivity.this)) {
+                        requestDataRefresh();
+                    } else {
+                        mSwipeRefreshLayout.setRefreshing(false);
+                    }
                 }
             });
 
