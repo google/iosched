@@ -31,14 +31,14 @@
 
         <android.support.design.widget.CollapsingToolbarLayout
             android:id="@+id/collapsing_toolbar"
+            style="@style/Widget.IOSched.CollapsingHeader"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:background="@color/neon_blue"
             android:fitsSystemWindows="true"
             android:minHeight="?actionBarSize"
             app:contentScrim="@color/neon_blue"
-            app:layout_scrollFlags="scroll|exitUntilCollapsed"
-            style="@style/Widget.IOSched.CollapsingHeader">
+            app:layout_scrollFlags="scroll|exitUntilCollapsed">
 
             <include layout="@layout/animated_appbar" />
 
@@ -84,7 +84,9 @@
             android:layout_height="match_parent"
             android:layout_gravity="center_horizontal|top"
             android:background="@color/content_background"
+            android:clipToPadding="false"
             android:elevation="@dimen/card_elevation"
+            android:paddingBottom="@dimen/spacing_normal"
             android:scrollbarStyle="insideOverlay"
             android:scrollbars="vertical"
             tools:listitem="@layout/schedule_session_item" />

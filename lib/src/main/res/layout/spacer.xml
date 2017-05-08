@@ -16,4 +16,4 @@
 <android.support.v4.widget.Space
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="@dimen/spacing_normal"
-    android:layout_height="0px" />
+    android:layout_height="@dimen/spacing_normal" />
