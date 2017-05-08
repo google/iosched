@@ -16,8 +16,10 @@ package com.google.samples.apps.iosched.info;
 import android.content.Context;
 import android.content.res.Resources;
 import android.content.res.TypedArray;
+import android.os.Build;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v7.content.res.AppCompatResources;
 import android.text.method.LinkMovementMethod;
 import android.transition.Transition;
 import android.transition.TransitionInflater;
@@ -33,6 +35,9 @@ import android.widget.TextView;
 
 import com.google.samples.apps.iosched.lib.R;
 import com.google.samples.apps.iosched.ui.widget.HtmlTextView;
+
+import static android.os.Build.VERSION.SDK_INT;
+import static android.os.Build.VERSION_CODES.M;
 
 public class CollapsibleCard extends FrameLayout {
 
@@ -67,6 +72,10 @@ public class CollapsibleCard extends FrameLayout {
         mCardDescription.setMovementMethod(LinkMovementMethod.getInstance());
         mCardDescription.setHtmlText(cardDescription);
         mExpandIcon = (ImageView) root.findViewById(R.id.expand_icon);
+        if (SDK_INT < M) {
+            mExpandIcon.setImageTintList(
+                    AppCompatResources.getColorStateList(context, R.color.collapsing_section));
+        }
         final Transition toggle = TransitionInflater.from(getContext())
                 .inflateTransition(R.transition.info_card_toggle);
         final OnClickListener expandClick = new OnClickListener() {
