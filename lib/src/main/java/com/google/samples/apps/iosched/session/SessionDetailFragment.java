@@ -817,7 +817,7 @@ public class SessionDetailFragment extends Fragment implements
         if (data.isKeynote() || data.hasLiveStream()) {
             if (mTags.getChildCount() > 0) {
                 // Insert the spacer first
-                inflater.inflate(R.layout.include_schedule_live_spacer, mTags);
+                inflater.inflate(R.layout.spacer, mTags);
             }
             inflater.inflate(R.layout.include_schedule_live, mTags);
         }

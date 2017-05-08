@@ -60,8 +60,7 @@ public class TagPool {
     }
 
     private View createSpacer(ViewGroup parent) {
-        return LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.include_schedule_live_spacer, parent, false);
+        return LayoutInflater.from(parent.getContext()).inflate(R.layout.spacer, parent, false);
     }
 
     public void returnSpacer(View spacer) {

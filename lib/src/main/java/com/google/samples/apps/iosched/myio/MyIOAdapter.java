@@ -47,13 +47,13 @@ import io.doist.recyclerviewext.sticky_headers.StickyHeaders;
 
 import static com.google.samples.apps.iosched.schedule.ScheduleItemViewHolder.SessionTimeFormat.SPAN;
 
-
 class MyIOAdapter extends Adapter<ViewHolder> implements StickyHeaders, StickyHeaders.ViewSetup {
 
     private static final int VIEW_TYPE_SESSION = 0;
     private static final int VIEW_TYPE_NON_SESSION = 1;
-    private static final int VIEW_TYPE_SEPARATOR = 2;
-    private static final int VIEW_TYPE_MESSAGE_CARD = 3;
+    private static final int VIEW_TYPE_SEPARATOR_SPACER = 2;
+    private static final int VIEW_TYPE_SEPARATOR = 3;
+    private static final int VIEW_TYPE_MESSAGE_CARD = 4;
     private static final int PAYLOAD_TAG_META = 7;
 
     private static final List<DaySeparator> DAY_SEPARATORS;
@@ -132,6 +132,7 @@ class MyIOAdapter extends Adapter<ViewHolder> implements StickyHeaders, StickyHe
             for (ScheduleItem item : items) {
                 if (item.startTime >= separatorTime) {
                     // add the separator first
+                    mItems.add(new SeparatorSpacer());
                     mItems.add(DAY_SEPARATORS.get(day));
                     day++;
                     if (day >= DAY_SEPARATORS.size()) {
@@ -148,6 +149,7 @@ class MyIOAdapter extends Adapter<ViewHolder> implements StickyHeaders, StickyHe
 
         // Add any remaining separators
         for (; day < DAY_SEPARATORS.size(); day++) {
+            mItems.add(new SeparatorSpacer());
             mItems.add(DAY_SEPARATORS.get(day));
         }
 
@@ -200,6 +202,9 @@ class MyIOAdapter extends Adapter<ViewHolder> implements StickyHeaders, StickyHe
             }
             return VIEW_TYPE_SESSION;
         }
+        if (item instanceof SeparatorSpacer) {
+            return VIEW_TYPE_SEPARATOR_SPACER;
+        }
         if (item instanceof DaySeparator) {
             return VIEW_TYPE_SEPARATOR;
         }
@@ -216,6 +221,8 @@ class MyIOAdapter extends Adapter<ViewHolder> implements StickyHeaders, StickyHe
                 return SessionItemViewHolder.newInstance(parent, mCallbacks, SPAN);
             case VIEW_TYPE_NON_SESSION:
                 return NonSessionItemViewHolder.newInstance(parent);
+            case VIEW_TYPE_SEPARATOR_SPACER:
+                return SeparatorSpacerViewHolder.newInstance(parent);
             case VIEW_TYPE_SEPARATOR:
                 return DaySeparatorViewHolder.newInstance(parent, mCallbacks);
             case VIEW_TYPE_MESSAGE_CARD:
@@ -379,6 +386,20 @@ class MyIOAdapter extends Adapter<ViewHolder> implements StickyHeaders, StickyHe
         DaySeparator(int day, long startTime) {
             mDay = day;
             mStartTime = startTime;
+        }
+    }
+
+    static class SeparatorSpacer { }
+
+    static class SeparatorSpacerViewHolder extends ViewHolder {
+
+        private SeparatorSpacerViewHolder(View itemView) {
+            super(itemView);
+        }
+
+        public static SeparatorSpacerViewHolder newInstance(@NonNull ViewGroup parent) {
+            return new SeparatorSpacerViewHolder(LayoutInflater.from(parent.getContext())
+                    .inflate(R.layout.spacer, parent, false));
         }
     }
 }
