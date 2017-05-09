@@ -22,6 +22,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.constraint.ConstraintLayout;
 import android.support.constraint.ConstraintSet;
+import android.support.v7.content.res.AppCompatResources;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.text.method.LinkMovementMethod;
@@ -42,6 +43,8 @@ import com.google.samples.apps.iosched.lib.R;
 import com.google.samples.apps.iosched.ui.widget.HtmlTextView;
 import com.google.samples.apps.iosched.util.UIUtils;
 
+import static android.os.Build.VERSION.SDK_INT;
+import static android.os.Build.VERSION_CODES.M;
 import static android.view.View.GONE;
 import static android.view.View.VISIBLE;
 import static com.google.samples.apps.iosched.util.UIUtils.formatDateTime;
@@ -89,6 +92,10 @@ class FeedViewHolder extends RecyclerView.ViewHolder {
         description = (HtmlTextView) itemView.findViewById(R.id.description);
         category = (TextView) itemView.findViewById(R.id.category_text);
         expandIcon = (ImageView) itemView.findViewById(R.id.expand_icon);
+        if (SDK_INT < M) {
+            expandIcon.setImageTintList(AppCompatResources.getColorStateList(
+                    expandIcon.getContext(), R.color.collapsing_section));
+        }
         emergencyIcon = (ImageView) itemView.findViewById(R.id.emergency_icon);
         priorityIcon = (ImageView) itemView.findViewById(R.id.priority_icon);
         final View.OnClickListener expandClick = new View.OnClickListener() {
