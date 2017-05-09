@@ -67,4 +67,8 @@ public interface AppNavigationView {
      */
     void showNavigation();
 
+    void showItemBadge(NavigationItemEnum item);
+
+    void clearItemBadge(NavigationItemEnum item);
+
 }
