@@ -162,7 +162,12 @@ public class SessionItemViewHolder extends ScheduleItemViewHolder
             updateTags(item, tagMetadata, tagPool);
         }
 
-        if (item.isKeynote() || (item.flags & ScheduleItem.FLAG_HAS_LIVESTREAM) != 0) {
+        boolean isLivestreamed = item.isKeynote()
+                || (item.flags & ScheduleItem.FLAG_HAS_LIVESTREAM) != 0;
+        final long now = TimeUtils.getCurrentTime(context);
+        final boolean streamingNow = isLivestreamed && item.startTime <= now && now <= item.endTime;
+
+        if (isLivestreamed && !streamingNow) {
             if (mTagsHolder.getChildCount() > 0) {
                 // Insert the spacer first
                 mTagsHolder.addView(tagPool.getSpacer(mTagsHolder));
@@ -179,9 +184,6 @@ public class SessionItemViewHolder extends ScheduleItemViewHolder
             mBookmark.setVisibility(GONE);
         }
 
-        final long now = TimeUtils.getCurrentTime(context);
-        final boolean streamingNow = item.startTime <= now && now <= item.endTime
-                && (item.flags & ScheduleItem.FLAG_HAS_LIVESTREAM) != 0;
         mLiveNow.setVisibility(streamingNow ? VISIBLE : GONE);
 
         boolean showFeedback = mCallbacks.feedbackEnabled()
