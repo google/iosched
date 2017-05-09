@@ -92,7 +92,7 @@ public class CollapsibleCard extends FrameLayout {
                 setTitleContentDescription(cardTitle);
             }
         };
-        mCardTitle.setOnClickListener(expandClick);
+        mTitleContainer.setOnClickListener(expandClick);
     }
 
     public void setCardDescription(@NonNull String description) {
@@ -104,14 +104,5 @@ public class CollapsibleCard extends FrameLayout {
         mCardTitle.setContentDescription(cardTitle + ", " +
                 (mExpanded ? res.getString(R.string.expanded) :
                         res.getString(R.string.collapsed)));
-    }
-
-    @Override
-    public boolean onInterceptTouchEvent(MotionEvent ev) {
-        if (ev.getActionMasked() == MotionEvent.ACTION_DOWN) {
-            // propagate hotspot for ripple
-            mTitleContainer.getBackground().setHotspot(ev.getX(), ev.getY());
-        }
-        return super.onInterceptTouchEvent(ev);
     }
 }
