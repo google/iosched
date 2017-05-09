@@ -21,6 +21,9 @@
 var functions = require('firebase-functions');
 var google = require('googleapis');
 var request = require('request-promise');
+var md5 = require('md5');
+var moment = require('moment-timezone');
+var bottleneck = require('bottleneck');
 
 // firebase-admin module is used to perform RTDB updates while processing
 // reservation requests.
@@ -77,6 +80,411 @@ const PING_DISCOVERY_URL = 'PING_DISCOVERY_URL';
 const GOOGLE_PROVIDER_ID = 'google.com';
 
 const SERVICE_ACCOUNT_EMAIL = 'io2017-backend-dev@appspot.gserviceaccount.com';
+
+const REST_BASE_URL = 'https://io2017-backend-dev.firebaseio.com';
+const REST_SESSIONS_URL = REST_BASE_URL + '/sessions.json';
+const REST_SESSION_BASE_URL = REST_BASE_URL + '/sessions/';
+
+const CVENT_BASE_URL = 'http://iosandbox17-ev8.alliancetech.com/restapi/';
+const CVENT_BASE_URL_NO_LIMIT = 'https://io17-ev6.alliancetech.com/restapi/';
+const CVENT_HEADERS = {
+  'Authorization': 'Basic BASE64_ENCODED_USERNAME_AND_PASSWORD',
+  'Accept-Encoding': 'identity'
+};
+
+var hashedUserEmails = {};
+var cventHashedUserEmails = [];
+
+/**
+ * HTTP Function to push session data to onsite vendor.
+ */
+exports.updateSessions = functions.https.onRequest((req, res) => {
+  // Get access token to make requests form RTDB.
+  return admin.credential.applicationDefault().getAccessToken().then(function(accessToken) {
+    var token = accessToken.access_token;
+    // Get sessions from RTDB.
+    return request({
+      uri: REST_SESSIONS_URL,
+      qs: {
+        access_token: token,
+        shallow: true
+      },
+      json: true
+    })
+        .then(sessionsResp => {
+          // Create requests to push each session to external vendor.
+          var promises = [];
+          // Use bottleneck library to limit the rate of requests to external vendor.
+          var limiter = new bottleneck(1, 500);
+          for (var key in sessionsResp) {
+            promises.push(limiter.schedule(updateSession, key, token));
+          }
+          console.log('updating ' + promises.length + ' sessions');
+          return Promise.all(promises);
+        })
+        .then(function(results) {
+          console.log(results.length + ' sessions updated');
+          res.status(200).end();
+        })
+        .catch(function(err) {
+          console.error(err);
+          res.status(500).send(err);
+        });
+  });
+});
+
+/**
+ * Push a session from RTDB out to onsite vendor.
+ *
+ * @param sid ID of session to push out.
+ * @param token Access token used to make request from RTDB.
+ * @returns Promise with response of request made to vendor's API.
+ */
+function updateSession(sid, token) {
+  // Session object to send to vendor.
+  var session = {
+    id: sid
+  };
+  // Get session from RTDB.
+  return request({
+    uri: REST_SESSION_BASE_URL + sid + '.json',
+    qs: {
+      access_token: token
+    },
+    json: true
+  })
+  .then(function(sessionResp) {
+    session.title = sessionResp.title;
+    session.room = sessionResp.room_name;
+    session.date = moment.tz(sessionResp.time_start, 'America/Los_Angeles').format('YYYY-MM-DD');
+    session.startTime = moment.tz(sessionResp.time_start, 'America/Los_Angeles').format('h:mm A');
+    session.endTime = moment.tz(sessionResp.time_end, 'America/Los_Angeles').format('h:mm A');
+    session.capacity = sessionResp.seats.capacity;
+
+    // Send session to vendor. Return request promise.
+    return request({
+      uri: CVENT_BASE_URL + 'sessions',
+      headers: CVENT_HEADERS,
+      method: 'POST',
+      json: true,
+      body: {
+        sessionList: [
+          {
+            attrList: [],
+            sessionNumber: session.id,
+            customerId: session.id,
+            title: session.title,
+            room: session.room,
+            date: session.date,
+            startTime: session.startTime,
+            endTime: session.endTime,
+            capacity: session.capacity + '',
+            active: true,
+            status: 'Approved'
+          }
+        ]
+      }
+    });
+  });
+}
+
+/**
+ * HTTP Function that pushes the current reservation state to external vendor.
+ *
+ * Reservations are updated as follows:
+ * - For each session
+ *   - pull the existing reservations from vendor.
+ *   - pull current granted reservations from RTDB.
+ *   - create two lists, reservations to add and reservations to remove.
+ *   - add all reservations from the add list.
+ *   - remove all reservations from the remove list.
+ *
+ * This function will be called once per hour.
+ */
+exports.updateOnsiteReservations = functions.https.onRequest((req, res) => {
+  return request({
+    uri: CVENT_BASE_URL_NO_LIMIT + 'registration',
+    headers: CVENT_HEADERS,
+    json: true
+  }).then(function(registrantsResponse) {
+    var registrants = registrantsResponse['registrantList'];
+    for (var i in registrants) {
+      cventHashedUserEmails.push(registrants[i].customerId);
+    }
+  }).then(function() {
+    console.log('getting sessions');
+    // Get token to allow requests to RTDB.
+    return admin.credential.applicationDefault().getAccessToken().then(function(accessToken) {
+      var token = accessToken.access_token;
+      // Get sessions from RTDB.
+      return request({
+        uri: REST_SESSIONS_URL,
+        qs: {
+          access_token: token,
+          shallow: true
+        },
+        json: true
+      }).then(sessionsResp => {
+        console.log('sessions retrieved');
+        // Initiate the sending of reservations to external vendor.
+        var promises = [];
+        // Use bottleneck library to limit the rate of requests to external vendor.
+        var limiter = new bottleneck(1, 250);
+        for (var sid in sessionsResp) {
+          promises.push(limiter.schedule(updateSessionReservations, sid));
+        }
+        console.log('updating ' + promises.length + ' session reservations');
+        return Promise.all(promises).then(function (results) {
+          console.log(results.length + ' session reservations updated');
+          res.status(200).send(results);
+        }).catch(function (err) {
+          console.error(
+              'Unable to send all reservations to external vendor: ' + err);
+          res.status(500).send(err);
+        });
+      }).catch((err) => {
+        console.error('Unable to get sessions from RTDB: ' + err);
+        res.status(500).send(err);
+      });
+    });
+  });
+});
+
+/**
+ * Push the updated reservations for the given session to external vendor.
+ *
+ * @param sid ID of the session to be updated.
+ * @returns {Promise.<TResult>} Response from external vendor to update request.
+ */
+function updateSessionReservations(sid) {
+  var currList;
+  // Get all existing reservations for given session from external vendor.
+  return request({
+    uri: CVENT_BASE_URL + 'enrollment/' + sid,
+    headers: CVENT_HEADERS,
+    qs: {
+      id_type: 'session'
+    },
+    json: true
+  }).then(function(enrollmentResp) {
+    // Extract the current list of reservations from external vendor.
+    currList = getCurrList(enrollmentResp.enrollmentList);
+    // Get granted reservations for the given session from RTDB.
+    return getSessionReference(sid).child('reservations').orderByChild(
+        PATH_STATUS)
+        .equalTo(STATUS_GRANTED).once('value');
+  }).then(function(snapshot) {
+    var trueList = snapshot.val();
+    // Update RTDB reservations to use hashed user ID that will match vendor.
+    return getHashedList(trueList);
+  }).then(function(hashedList) {
+    // Calculate the diff between vendor and RTDB and push updates to vendor.
+    var addList = getAddList(hashedList, currList);
+    var removeList = getRemoveList(hashedList, currList);
+    if (addList.length > 0 || removeList > 0) {
+      if (addList.length > 0) {
+        console.log('Adding ' + addList.length + ' to ' + sid);
+      }
+      if (removeList.length > 0) {
+        console.log('Removing ' + removeList.length + ' from ' + sid);
+      }
+    } else {
+      console.log('No adding or removal');
+    }
+    return sendEnrollmentUpdates(sid, addList, removeList);
+  });
+}
+
+/**
+ * Transform the user IDs in RTDB to match those in the vendor's database.
+ *
+ * @param trueList List of attendees that actually have a reservation.
+ * @returns {Promise.<TResult>} updated list of user IDs.
+ */
+function getHashedList(trueList) {
+  var promisedHashes = [];
+  for (var uid in trueList) {
+    promisedHashes.push(getHashedUser(uid));
+  }
+  return Promise.all(promisedHashes).then(function(hashes) {
+    var hashedEmails = [];
+    for (var i in hashes) {
+      var hash = hashes[i];
+      if (hash != null) {
+        hashedEmails.push(hash);
+      }
+    }
+    return hashedEmails;
+  });
+}
+
+/**
+ * Get the hashed email of the user with given ID. If the hash exists in the
+ * hashedUserEmails map then it is returned from there otherwise it is retrieved
+ * from Firebase, stored in the map and then returned.
+ *
+ * @param uid ID of user whose hashed email is retrieved.
+ * @returns {Promise.<TResult>} hashed user email.
+ */
+function getHashedUser(uid) {
+  if (uid in hashedUserEmails) {
+    return Promise.resolve(hashedUserEmails[uid]);
+  }
+  return admin.auth().getUser(uid).then(function(user) {
+    hashedUserEmails[uid] = md5(user.email);
+    return hashedUserEmails[uid];
+  }).catch(function(error) {
+    console.error('unable to get user for id: ' + uid);
+    console.error(error);
+    return null;
+  });
+}
+
+/**
+ * Given the list of all reservations for a given session. Identify and return
+ * only those that are confirmed.
+ *
+ * @param rawList List of all reservations for a session.
+ * @returns {Array} List of confirmed reservations.
+ */
+function getCurrList(rawList) {
+  var currList = [];
+  for (var i in rawList) {
+    if (rawList[i].status == 'Confirmed') {
+      currList.push(rawList[i]);
+    }
+  }
+  return currList;
+}
+
+/**
+ * Send enrollment updates to vendor. Add reservations that are not currently
+ * in the vendor's database and remove reservations from the vendor's database
+ * that do not exist in RTDB.
+ *
+ * @param sid ID of session to update.
+ * @param addList List of reservations that need to be added to vendor's database.
+ * @param removeList List of reservations that need to be removed from vendor's database.
+ * @returns {*} Result of removing invalid reservations from vendor.
+ */
+function sendEnrollmentUpdates(sid, addList, removeList) {
+  // Create confirmed reservations to send to vendor.
+  var addArray = [];
+  for (var i in addList) {
+    var reservationBody = {
+      registrantNum: '',
+      customerRegistrantId: addList[i],
+      status: 'Confirmed'
+    };
+    addArray.push(reservationBody);
+  }
+  // Send confirmed reservations to vendor.
+  return request({
+    uri: CVENT_BASE_URL + 'enrollment/' + sid,
+    headers: CVENT_HEADERS,
+    method: 'POST',
+    qs: {
+      id_type: 'session'
+    },
+    body: {
+      enrollmentList: addArray
+    },
+    json: true
+  })
+      .then(function(resp) {
+        console.log('BULK ADD RESPONSE: %o', resp);
+        // Create canceled reservations to send to vendor.
+        var removeArray = [];
+        for (var i in removeList) {
+          var reservationBody = {
+            registrantNum: '',
+            customerRegistrantId: removeList[i],
+            status: 'Canceled'
+          };
+          removeArray.push(reservationBody);
+        }
+        return request({
+          uri: CVENT_BASE_URL + 'enrollment/' + sid,
+          headers: CVENT_HEADERS,
+          method: 'POST',
+          qs: {
+            id_type: 'session'
+          },
+          body: {
+            enrollmentList: removeArray
+          },
+          json: true
+        })
+            .then(function(resp) {
+              console.log('BULK REMOVE RESPONSE %o', resp);
+              console.log('finished updating ' + sid);
+              return Promise.resolve();
+            });
+      });
+}
+
+/**
+ * Compare the true list form RTDB and the current list from the vendor. Create
+ * a list of users have reservations in RTDB but do not have one in the vendor
+ * database.
+ *
+ * @param trueList List of reservations in RTDB for a particular session.
+ * @param currList List of reservations in vendor database for a particular
+ *        session.
+ * @returns {Array} List of reservations to add to vendor database.
+ */
+function getAddList(trueList, currList) {
+  var addList = [];
+  // If a user is in the true list but not in the current list then they must
+  // be added to the add list.
+  for (var i in trueList) {
+    var hashedId = trueList[i];
+    var inCurrList = false;
+    for (var j in currList) {
+      var currRes = currList[j];
+      if (currRes.customerRegistrantId == hashedId) {
+        inCurrList = true;
+        break;
+      }
+    }
+    if (!inCurrList) {
+      if (cventHashedUserEmails.indexOf(hashedId) >= 0) {
+        addList.push(hashedId);
+      } else {
+        for (var uid in hashedUserEmails) {
+          if (hashedUserEmails[uid] == hashedId) {
+            console.log('MISSING USER FOUND ' + uid);
+            break;
+          }
+        }
+      }
+    }
+  }
+  return addList;
+}
+
+/**
+ * Compare the true list form RTDB and the current list from the vendor. Create
+ * a list of users that have reservations in the vendor's database but do not
+ * have one in RTDB.
+ *
+ * @param trueList List of reservations in RTDB for a particular session.
+ * @param currList List of reservations in vendor database for a particular
+ *        session.
+ * @returns {Array} List of reservations to remove from vendor database.
+ */
+function getRemoveList(trueList, currList) {
+  var removeList = [];
+  // If a user is in the vendor database but not in RTDB add the user to the
+  // remove list.
+  for (var i in currList) {
+    var currId = currList[i].customerRegistrantId;
+    if (trueList.indexOf(currId) < 0) {
+      removeList.push(currId);
+    }
+  }
+  return removeList;
+}
 
 /**
  * Function that retrieves all reservations stored in RTDB.

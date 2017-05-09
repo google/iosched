@@ -81,6 +81,7 @@ public class LoadSessionsServlet extends HttpServlet {
   public static final String ID_KEY = "id";
   public static final String TITLE_KEY = "title";
   public static final String CAPACITY_KEY = "capacity";
+  public static final String NAME_KEY = "name";
   private final UserService userService = UserServiceFactory.getUserService();
   private static final HashSet<String> nonAdminUsers = new HashSet<>();
   private static final Logger log = Logger.getLogger(LoadSessionsServlet.class.getName());
@@ -218,6 +219,7 @@ public class LoadSessionsServlet extends HttpServlet {
           if (jRoom != null) {
             final int gcsCap = Long.valueOf(Math.round(jRoom.get(CAPACITY_KEY)
                 .getAsInt() * RESERVABLE_CAPACITY_PERCENTAGE)).intValue();
+            final String gcsRoomName = jRoom.get(NAME_KEY).getAsString();
             final long gcsStartTime = getTimeInMillis(jSession, START_TIME_KEY);
             final long gcsEndTime = getTimeInMillis(jSession, END_TIME_KEY);
             final String gcsTitle = jSession.get(TITLE_KEY).getAsString();
@@ -235,6 +237,8 @@ public class LoadSessionsServlet extends HttpServlet {
 
                   // Update session title.
                   session.title = gcsTitle;
+                  // Update session room name.
+                  session.room_name = gcsRoomName;
 
                   int currResCount = session.seats.reserved;
                   boolean currHasSeats = session.seats.seats_available;
@@ -286,12 +290,14 @@ public class LoadSessionsServlet extends HttpServlet {
       JsonObject jRoom = getRoom(roomId, jRooms);
       int capacity = Long.valueOf(Math.round(jRoom.get(CAPACITY_KEY)
           .getAsInt() * RESERVABLE_CAPACITY_PERCENTAGE)).intValue();
+      String sessionRoomName = jRoom.get(NAME_KEY).getAsString();
 
       long startTime = getTimeInMillis(jSession, START_TIME_KEY);
       long endTime = getTimeInMillis(jSession, END_TIME_KEY);
 
       Session session = new Session();
       session.title = sessionTitle;
+      session.room_name = sessionRoomName;
       session.time_end = endTime;
       session.time_start = startTime;
 

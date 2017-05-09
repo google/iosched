@@ -131,6 +131,18 @@
         <url-pattern>/queue/send</url-pattern>
     </servlet-mapping>
 
+    <servlet>
+      <servlet-name>PushReservationsQueueWorker</servlet-name>
+      <servlet-class>
+        com.google.samples.apps.iosched.server.schedule.reservations.PushReservationQueueWorker
+      </servlet-class>
+      <load-on-startup>1</load-on-startup>
+    </servlet>
+    <servlet-mapping>
+      <servlet-name>PushReservationsQueueWorker</servlet-name>
+      <url-pattern>/queue/pushres</url-pattern>
+    </servlet-mapping>
+
     <!-- Cron endpoints -->
     <!-- Restricted to admin users only to prevent unauthorized execution. -->
     <servlet>
@@ -142,6 +154,17 @@
     <servlet-mapping>
         <servlet-name>VacuumDbServlet</servlet-name>
         <url-pattern>/cron/vacuum_db</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+      <servlet-name>PushReservationsServlet</servlet-name>
+      <servlet-class>
+        com.google.samples.apps.iosched.server.schedule.reservations.PushReservationsServlet
+      </servlet-class>
+    </servlet>
+    <servlet-mapping>
+      <servlet-name>PushReservationsServlet</servlet-name>
+      <url-pattern>/cron/pushres</url-pattern>
     </servlet-mapping>
 
     <security-constraint>
