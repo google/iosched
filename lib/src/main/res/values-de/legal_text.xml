@@ -15,5 +15,5 @@
   limitations under the License.
   -->
 <resources>
-  <string name="eula_legal_text">Mit der Nutzung dieser Anwendung wird geregelt durch: a) die Nutzungsbedingungen von Google (http://www.google.com/intl/de/policies/terms/); b) die Google-Datenschutzrichtlinie (http://www.google.com/intl/de/policies/privacy/). \n</string>
+  <string name="eula_legal_text">Mit der Nutzung dieser Anwendung wird geregelt durch: a) die Nutzungsbedingungen von Google (www.google.com/intl/de/policies/terms/); b) die Google-Datenschutzrichtlinie (www.google.com/intl/de/policies/privacy/). \n</string>
 </resources>

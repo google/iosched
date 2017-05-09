@@ -15,5 +15,5 @@
   limitations under the License.
   -->
 <resources>
-  <string name="eula_legal_text">이 어플리케이션의 사용은 a) Google 서비스 약관(http://www.google.com/intl/ko/policies/terms/), b) Google 개인 정보 보호 정책(http://www.google.com/intl/ko/policies/privacy/). \n</string>
+  <string name="eula_legal_text">이 어플리케이션의 사용은 a) Google 서비스 약관(www.google.com/intl/ko/policies/terms/), b) Google 개인 정보 보호 정책(www.google.com/intl/ko/policies/privacy/). \n</string>
 </resources>
