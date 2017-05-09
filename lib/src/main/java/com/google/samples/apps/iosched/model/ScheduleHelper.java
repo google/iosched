@@ -58,10 +58,7 @@ public class ScheduleHelper {
             @Nullable final TagFilterHolder filters) {
         // get sessions in my schedule and blocks, starting anytime in the conference day
         final ArrayList<ScheduleItem> items = new ArrayList<>();
-        // if there are any filters, we don't interleave blocks
-        if (filters == null || !filters.hasAnyFilters()) {
-            addBlocks(start, end, items);
-        }
+
         addSessions(start, end, items, filters);
 
         ArrayList<ScheduleItem> result = ScheduleItemHelper.processItems(items);
@@ -131,59 +128,4 @@ public class ScheduleHelper {
             }
         }
     }
-
-    protected void addBlocks(final long start, final long end,
-            @NonNull final ArrayList<ScheduleItem> items) {
-        Cursor cursor = null;
-        try {
-            cursor = mContext.getContentResolver().query(
-                    Blocks.CONTENT_URI,
-                    BlocksQuery.PROJECTION,
-                    BlocksQuery.SELECTION,
-                    new String[]{String.valueOf(start), String.valueOf(end)},
-                    // order by start time
-                    Blocks.BLOCK_START);
-
-            if (cursor.moveToFirst()) {
-                do {
-                    ScheduleItem item = new ScheduleItem();
-                    item.setTypeFromBlockType(cursor.getString(BlocksQuery.BLOCK_TYPE));
-                    item.title = cursor.getString(BlocksQuery.BLOCK_TITLE);
-                    item.room = item.subtitle = cursor.getString(BlocksQuery.BLOCK_SUBTITLE);
-                    item.startTime = cursor.getLong(BlocksQuery.BLOCK_START);
-                    item.endTime = cursor.getLong(BlocksQuery.BLOCK_END);
-                    item.blockKind = cursor.getString(BlocksQuery.BLOCK_KIND);
-                    item.flags |= ScheduleItem.FLAG_NOT_REMOVABLE;
-                    items.add(item);
-                } while (cursor.moveToNext());
-            }
-        } finally {
-            if (cursor != null) {
-                cursor.close();
-            }
-        }
-    }
-
-    private interface BlocksQuery {
-        String[] PROJECTION = {
-                Blocks.BLOCK_TITLE,
-                Blocks.BLOCK_TYPE,
-                Blocks.BLOCK_START,
-                Blocks.BLOCK_END,
-                Blocks.BLOCK_SUBTITLE,
-                Blocks.BLOCK_KIND
-        };
-
-        // constrain to "break" blocks on the specified day
-        String SELECTION = Blocks.BLOCK_TYPE + " = '" + Blocks.BLOCK_TYPE_BREAK + "' AND " +
-                Blocks.BLOCK_START + " >= ? AND " + Blocks.BLOCK_START + " <= ?";
-
-        int BLOCK_TITLE = 0;
-        int BLOCK_TYPE = 1;
-        int BLOCK_START = 2;
-        int BLOCK_END = 3;
-        int BLOCK_SUBTITLE = 4;
-        int BLOCK_KIND = 5;
-    }
-
 }

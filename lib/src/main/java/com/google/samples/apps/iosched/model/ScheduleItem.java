@@ -23,7 +23,9 @@ import com.google.samples.apps.iosched.provider.ScheduleContract;
 import com.google.samples.apps.iosched.provider.ScheduleContract.Blocks;
 import com.google.samples.apps.iosched.provider.ScheduleContract.MyReservations;
 
+import java.util.Arrays;
 import java.util.Locale;
+import java.util.Objects;
 
 public class ScheduleItem implements Cloneable, Comparable<ScheduleItem> {
     // types:
@@ -170,21 +172,42 @@ public class ScheduleItem implements Cloneable, Comparable<ScheduleItem> {
     }
 
     @Override
-    public boolean equals(Object o) {
-        if (o == null || !(o instanceof ScheduleItem)) {
-            return false;
-        }
-        ScheduleItem i = (ScheduleItem) o;
-        return type == i.type &&
-                sessionId.equals(i.sessionId) &&
-                startTime == i.startTime &&
-                endTime == i.endTime;
-    }
-
-    @Override
     public String toString() {
         return String.format(Locale.US,
                 "[item type=%d, startTime=%d, endTime=%d, title=%s, subtitle=%s, flags=%d]",
                 type, startTime, endTime, title, subtitle, flags);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        ScheduleItem that = (ScheduleItem) o;
+        return type == that.type &&
+                sessionType == that.sessionType &&
+                startTime == that.startTime &&
+                endTime == that.endTime &&
+                numOfSessions == that.numOfSessions &&
+                isKeynote == that.isKeynote &&
+                inSchedule == that.inSchedule &&
+                reservationStatus == that.reservationStatus &&
+                hasGivenFeedback == that.hasGivenFeedback &&
+                backgroundColor == that.backgroundColor &&
+                flags == that.flags &&
+                Objects.equals(blockKind, that.blockKind) &&
+                Objects.equals(mainTag, that.mainTag) &&
+                Arrays.equals(tags, that.tags) &&
+                Objects.equals(sessionId, that.sessionId) &&
+                Objects.equals(title, that.title) &&
+                Objects.equals(subtitle, that.subtitle) &&
+                Objects.equals(room, that.room) &&
+                Objects.equals(backgroundImageUrl, that.backgroundImageUrl);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(type, sessionType, blockKind, mainTag, tags, startTime, endTime,
+                numOfSessions, sessionId, title, subtitle, room, isKeynote, inSchedule,
+                reservationStatus, hasGivenFeedback, backgroundImageUrl, backgroundColor, flags);
     }
 }
