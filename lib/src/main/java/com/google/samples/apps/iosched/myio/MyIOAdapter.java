@@ -162,7 +162,7 @@ class MyIOAdapter extends Adapter<ViewHolder> implements StickyHeaders, StickyHe
     void removePostOnboardingMessageCard() {
         if (mItems.get(0) instanceof MessageData) {
             mItems.remove(0);
-            notifyItemRemoved(0);
+            notifyDataSetChanged();
         }
     }
 
@@ -304,8 +304,10 @@ class MyIOAdapter extends Adapter<ViewHolder> implements StickyHeaders, StickyHe
                         if (mMessageData.getStartButtonClickListener() != null) {
                             mMessageData.getStartButtonClickListener().onClick(v);
                         }
-                        mItems.remove(0); // message card is always at the top
-                        notifyItemRemoved(0);
+                        if (mItems.get(0) instanceof MessageData) {
+                            mItems.remove(0); // message card is always at the top
+                            notifyDataSetChanged();
+                        }
                     }
                 }
             });
@@ -316,8 +318,10 @@ class MyIOAdapter extends Adapter<ViewHolder> implements StickyHeaders, StickyHe
                         if (mMessageData.getEndButtonClickListener() != null) {
                             mMessageData.getEndButtonClickListener().onClick(v);
                         }
-                        mItems.remove(0); // message card is always at the top
-                        notifyItemRemoved(0);
+                        if (mItems.get(0) instanceof MessageData) {
+                            mItems.remove(0); // message card is always at the top
+                            notifyDataSetChanged();
+                        }
                     }
                 }
             });
