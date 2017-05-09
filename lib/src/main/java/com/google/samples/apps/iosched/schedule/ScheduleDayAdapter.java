@@ -41,8 +41,8 @@ import java.util.List;
 
 import io.doist.recyclerviewext.sticky_headers.StickyHeaders;
 
-import static com.google.samples.apps.iosched.util.LogUtils.LOGD;
-import static com.google.samples.apps.iosched.util.LogUtils.makeLogTag;
+import static com.google.samples.apps.iosched.schedule.ScheduleItemViewHolder.SessionTimeFormat.DURATION;
+import static com.google.samples.apps.iosched.schedule.ScheduleItemViewHolder.SessionTimeFormat.SPAN;
 
 /**
  * Adapter that produces views to render (one day of) the "My Schedule" screen.
@@ -108,7 +108,7 @@ public class ScheduleDayAdapter extends RecyclerView.Adapter<ViewHolder>
     public ViewHolder onCreateViewHolder(final ViewGroup parent, final int viewType) {
         switch (viewType) {
             case ITEM_TYPE_SESSION:
-                return SessionItemViewHolder.newInstance(parent, mAdapterCallbacks);
+                return SessionItemViewHolder.newInstance(parent, mAdapterCallbacks, DURATION);
             case ITEM_TYPE_BREAK:
                 return NonSessionItemViewHolder.newInstance(parent);
             case ITEM_TYPE_TIME_HEADER:
