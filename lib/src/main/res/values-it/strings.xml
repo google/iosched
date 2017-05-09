@@ -14,7 +14,7 @@
   See the License for the specific language governing permissions and
   limitations under the License.
   -->
-<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2" xmlns:tools="http://schemas.android.com/tools">
+<resources xmlns:tools="http://schemas.android.com/tools" xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
 
     <plurals name="schedule_block_subtitle"
              description="Shown in the schedule to indicate how many sessions are available on that particular time slot.">
@@ -58,7 +58,7 @@
     <string name="about_privacy_policy">Norme sulla privacy</string>
 
     <!-- Shown as a link in the About screen of the app; user can click to see the EULA. -->
-    <string name="about_eula">Contratto di licenza per l\'utente</string>
+    <string name="about_eula">Contratto di licenza per l’utente finale</string>
 
     <!-- Shown as a link in the About screen of the app; user can click it to see the licenses. -->
     <string name="about_licenses">Licenze Open Source</string>
@@ -104,12 +104,12 @@
 
     <!-- Shown on Configure WiFi dialog, instructing user on what button to click. -->
     <string name="calltoaction_wifi_configure"><![CDATA[
-        <br><br>Tocca "Aggiungi rete Wi-Fi" per procedere.
+        <br><br>Tocca “Aggiungi rete Wi-Fi” per procedere.
     ]]></string>
 
     <!-- Shown on Configure WiFi dialog, instructing user on what button to click. -->
     <string name="calltoaction_wifi_settings"><![CDATA[
-        <br><br>Tocca "Apri impostazioni Wi-Fi" per abilitare la connessione Wi-Fi.
+        <br><br>Tocca “Apri impostazioni Wi-Fi” per abilitare la connessione Wi-Fi.
     ]]></string>
 
     <!-- Accessibility description for a control that allows the user to close the current screen
@@ -167,7 +167,7 @@
     <string name="speaker_social_page">Vai alla pagina %1$s per %2$s</string>
 
     <!-- Shown on the Session page, alerting user that no details could be found for that session. -->
-    <string name="empty_session_detail">Nessun dettaglio trovato sulla sessione.</string>
+    <string name="empty_session_detail">Nessun dettaglio sulla sessione trovato.</string>
 
     <!-- Shown on the Session page if a session is being livestreamed. -->
     <string name="session_live_streamed">In diretta streaming</string>
@@ -183,7 +183,7 @@
 
     <!-- Shown on a widget that normally displays upcoming sessions. This is shown after the
     conference, when there are no more sessions to show. -->
-    <string name="empty_widget_text">Nessuna sessione imminente.\nCi vediamo l\'anno prossimo!</string>
+    <string name="empty_widget_text">Le sessioni sono terminate.\nCi vediamo l’anno prossimo!</string>
 
     <!-- Label for a button to answer the question "Would you like to send feedback
     about this session?" which, when clicked, allows the user to send their feedback (ratings
@@ -231,6 +231,15 @@
     <!-- Accessibility announcement for an item in the custom feedback rating view. For example, "one star".  -->
     <string name="feedback_rating_value">%1$d stella</string>
 
+    <!-- Text that shows session is reserved on Schedule and My I/O -->
+    <string name="schedule_item_reserved">Prenotata</string>
+
+    <!-- Text that shows session is not reserved on Schedule and My I/O -->
+    <string name="schedule_item_not_reserved">Non prenotata</string>
+
+    <!-- Text that shows session is waitlisted on Schedule and My I/O -->
+    <string name="schedule_item_waitlisted">In lista di attesa</string>
+
     <!-- Label for the button to rate a session -->
     <string name="my_schedule_rate_this_session">VALUTA QUESTA SESSIONE</string>
 
@@ -247,13 +256,13 @@
     <string name="my_schedule_reserve_disabled">Prenotazione disabilitata</string>
 
     <!-- Label for reserve session button if reserving is disabled due to auth -->
-    <string name="my_schedule_reservation_disabled_auth_button_text">Per prenotare è necessario effettuare l\'accesso
+    <string name="my_schedule_reservation_disabled_auth_button_text">Per prenotare è necessario effettuare l’accesso
     </string>
 
     <!-- Message in info dialog explaining why reservations are disabled when user is not signed in
     or not registered -->
     <string name="my_schedule_reservation_must_sign_in_and_register_message">
-        Per la registrazione è necessario effettuare l\'accesso ed essere registrati per l\'evento.
+        Per la registrazione è necessario effettuare l’accesso ed essere registrati per l’evento.
     </string>
 
     <!-- Title for info dialog explaining why reservations are disabled when user is not signed in
@@ -291,10 +300,10 @@
 
     <!-- Message in alert dialog when attempted reservation cancellation was past the cutoff time
     -->
-    <string name="my_schedule_return_denied_cutoff_message">Le prenotazioni non sono annullabili 60 minuti prima dell\'ora di inizio.</string>
+    <string name="my_schedule_return_denied_cutoff_message">Le prenotazioni non sono annullabili 60 minuti prima dell’ora di inizio.</string>
 
     <!-- Reservation window closed info -->
-    <string name="my_schedule_reservation_window_closed_info">Gli eventi non sono prenotabili 60 minuti prima dell\'ora di inizio. Una parte dei posti verrà riservata e resa disponibile in base all\'ordine di arrivo in loco.</string>
+    <string name="my_schedule_reservation_window_closed_info">Gli eventi non sono prenotabili 60 minuti prima dell’ora di inizio. Una parte dei posti verrà riservata e resa disponibile in base all’ordine di arrivo in loco.</string>
 
     <!-- Message in alert dialog when reservation failed for unknown reason. -->
     <string name="my_schedule_reservation_request_failed_message">Errore del server: Richiesta non riuscita, riprova in seguito.</string>
@@ -369,19 +378,19 @@
 
     <!-- Description in the Settings screen for the setting that enables sending of anonymous usage
     statistics to Google. -->
-    <string name="pref_analytics_enabled_description">Invia statistiche anonime sull\'utilizzo dell\'applicazione per Google.</string>
+    <string name="pref_analytics_enabled_description">Invia statistiche anonime sull’utilizzo dell’applicazione per Google.</string>
 
     <!-- Summary in the Settings screen for the "Show local times" option -->
-    <string name="pref_local_times_description">Utilizza la tua ora locale anziché l\'ora locale della conferenza.</string>
+    <string name="pref_local_times_description">Utilizza la tua ora locale anziché l’ora locale della conferenza.</string>
 
     <!-- Title in the Settings screen for the "Show local times" option -->
     <string name="pref_local_times_title">Mostra ora locale</string>
 
     <!-- Summary in the Settings screen for the "Notify me to send feedback about my sessions" option -->
-    <string name="pref_notify_feedback_description">Visualizza le notifiche per richiedere il tuo commento sulle sessioni selezionate.</string>
+    <string name="pref_notify_feedback_description">Visualizza le notifiche per richiedere il tuo feedback sulle sessioni selezionate.</string>
 
     <!-- Title in the Settings screen for the "Notify me to send feedback about my sessions" option -->
-    <string name="pref_notify_feedback_title">Ricezione di notifiche per inviare commenti</string>
+    <string name="pref_notify_feedback_title">Ricezione di notifiche per inviare feedback</string>
 
     <!-- Summary in the Settings screen for the "Notify me when my sessions are about to begin" option -->
     <string name="pref_notify_starred_sessions_description">Visualizza una notifica quando le sessioni selezionate stanno per iniziare.</string>
@@ -393,7 +402,7 @@
     <string name="pref_sync_with_calendar_description">Sincronizza automaticamente le sessioni su Google Calendar.</string>
 
     <!-- Summary in the Settings screen for the "Synchronize my schedule with Google Calendar" option -->
-    <string name="pref_sync_with_calendar_title">Sincronizzazione con Google Calendar</string>
+    <string name="pref_sync_with_calendar_title">Sincronizza con Google Calendar</string>
 
     <!-- This message is displayed to the user when they disable the Calendar sync and they have revoked the Calendar permission. We are letting them know we couldn't remove the items from their Calendar. -->
     <string name="pref_sync_with_calendar_permission_denied_during_disable">Impossibile rimuovere elementi dal calendario, autorizzazione negata.</string>
@@ -419,7 +428,7 @@
     <string name="remove_from_schedule_desc">Pulsante per rimuovere la sessione dal tuo programma.</string>
 
     <!-- Hint that the user can search across sessions -->
-    <string name="search_hint">Ricerca sessioni</string>
+    <string name="search_hint">Cerca sessioni</string>
 
     <!-- Search label that shows the type of data being searched for when the user clicks the
     Search button. -->
@@ -450,7 +459,7 @@
     <string name="session_feedback_content_label_text">In base alla descrizione/alle mie aspettative, il contenuto è stato:</string>
 
     <!-- Notification ticker text asking the user to provide session feedback -->
-    <string name="session_feedback_notification_ticker">Fornire un commento sulla sessione</string>
+    <string name="session_feedback_notification_ticker">Inviare un feedback sulla sessione</string>
 
     <!-- A negative overall session reating -->
     <string name="session_feedback_not_so_awesome">Mediocre</string>
@@ -477,13 +486,13 @@
     <string name="session_feedback_speaker_quality">Qualità del relatore:</string>
 
     <!-- Button text for submitting session feedback -->
-    <string name="session_feedback_submitlink">Inserisci un commento</string>
+    <string name="session_feedback_submitlink">Inserisci un feedback</string>
 
     <!-- Text indicating the session has ended -->
     <string name="session_finished">Terminata</string>
 
     <!-- Card text asking the user to provide session feedback -->
-    <string name="session_give_feedback_message">Com\'è stata questa sessione? Vuoi inviare un commento?</string>
+    <string name="session_give_feedback_message">Com’è stata questa sessione? Vuoi inviare un feedback?</string>
 
     <!-- Link text for the user to watch a live video stream of the session -->
     <string name="session_link_livestream">Guarda in diretta</string>
@@ -516,7 +525,7 @@
     <string name="session_subtitle"><xliff:g id="time">%1$s</xliff:g> presso <xliff:g id="room">%2$s</xliff:g></string>
 
     <!-- Re-share template text indicating the user is at a particular session -->
-    <string name="share_template">Scopri “<xliff:g id="title">%1$s</xliff:g>“ su <xliff:g id="hashtags">%2$s</xliff:g> <xliff:g id="url">%3$s</xliff:g></string>
+    <string name="share_template">Scopri “<xliff:g id="title">%1$s</xliff:g>” su <xliff:g id="hashtags">%2$s</xliff:g> <xliff:g id="url">%3$s</xliff:g></string>
 
     <!-- Notification action text for snoozing the notification for some number of minutes -->
     <string name="snooze_x_min">Ritarda di <xliff:g id="remaining_time">%1$d</xliff:g> min.</string>
@@ -552,7 +561,7 @@
     <string name="title_my_io">Il mio I/O</string>
 
     <!-- Navigation bar text for viewing the user's schedule -->
-    <string name="title_my_schedule">Il mio programma</string>
+    <string name="title_schedule">Il mio programma</string>
 
     <!-- Navigation bar text for viewing the Feed -->
     <string name="title_feed">Feed</string>
@@ -567,7 +576,7 @@
     <string name="title_session_detail">Informazioni sulla sessione</string>
 
     <!-- Label for SessionFeedback activity -->
-    <string name="title_session_feedback">Commento sulla sessione</string>
+    <string name="title_session_feedback">Feedback sulla sessione</string>
 
     <!-- Label for Event info fragment -->
     <string name="title_event">Evento</string>
@@ -588,7 +597,7 @@
     <string name="title_video_library">Video</string>
 
     <!-- Label for exploration category which groups session topics -->
-    <string name="topics">Temi</string>
+    <string name="topics">Argomenti</string>
 
     <!-- Label for exploration category which groups session types -->
     <string name="types">Tipi</string>
@@ -600,10 +609,10 @@
     <string name="watch_now">Guarda adesso!</string>
 
     <!-- Short text welcoming the user to the application -->
-    <string name="welcome_to_google_i_o_app">Benvenuto all’app #io17 per dispositivi mobili!</string>
+    <string name="welcome_to_google_i_o">Benvenuto in #io17</string>
 
     <!-- Medium-length welcome text indicating the subsequent text is important legal information -->
-    <string name="welcome_text">Prima di iniziare, ecco alcune informazioni importanti relative all\’uso di questa app.</string>
+    <string name="welcome_text">Prima di iniziare, ecco alcune informazioni importanti relative all’uso di questa app.</string>
 
     <!-- Short text introducing the code of conduct for attendees coming in person -->
     <string name="welcome_conduct_title">Best practice della community I/O</string>
@@ -615,16 +624,13 @@
     <string name="welcome_select_account">Seleziona un account</string>
 
     <!-- Medium text asking to choose an account from a list -->
-    <string name="welcome_select_accoun_text">Seleziona l\'account da utilizzare:</string>
+    <string name="welcome_select_accoun_text">Seleziona l’account da utilizzare:</string>
 
     <!-- Text for a button which will add a wi-fi network -->
     <string name="wifi_dialog_button_configure">Aggiungi rete Wi-Fi</string>
 
     <!-- Text for a button which will open the user's Wi-Fi settings -->
     <string name="wifi_dialog_button_settings">Apri impostazioni Wi-Fi</string>
-
-    <!-- Toast failure message if the user's wifi couldn't be updated -->
-    <string name="wifi_install_error_message">Spiacenti, non è stato possibile aggiornare la configurazione Wi-Fi</string>
 
     <!-- Title of the Video library screen when only videos of a given topic are displayed -->
     <string name="title_topic_filtered_video_library">Video su <xliff:g id="topic">%1$s</xliff:g></string>
@@ -638,8 +644,11 @@
     <!-- Text of the Filter menu icon -->
     <string name="description_filter">Filtra</string>
 
-    <!-- Text of the My I/O menu icon -->
-    <string name="description_avatar">Avatar</string>
+    <!-- Text of the My I/O avatar icon whilst signed out -->
+    <string name="description_avatar_signed_out">Accesso</string>
+
+    <!-- Text of the My I/O avatar icon whilst signed in -->
+    <string name="description_avatar_signed_in">Disconnetti</string>
 
     <!-- Title of the Video library side panel containing all the filters -->
     <string name="title_video_library_filter">Filtra</string>
@@ -660,7 +669,7 @@
     <string name="filter_label_sessions_only">Solo sessioni</string>
 
     <!-- Label of filter option to show only sessions (intentional space) -->
-    <string name="active_filters_description">“Filtri: "</string>
+    <string name="active_filters_description">“Filtri: ”</string>
 
     <!-- Label for a button which clears all filters in the filter pane -->
     <string name="clear_all">Deseleziona tutto</string>
@@ -689,11 +698,11 @@
          can watch a video but it turns out we can't show the video. -->
     <string name="explore_io_video_id_not_valid">Spiacenti, sembra esserci un problema con l’URL del video.</string>
 
-    <string description="This string is presented as a header message on a user interface card
+    <string name="explore_io_on_the_ground_title"
+            description="This string is presented as a header message on a user interface card
          element. The card element has sub-cards that explain a few logistical details for
          attendees. 'On the Ground' is slang in English indicating 'What you need to know when
-         you're in the middle of the conference.'"
-            name="explore_io_on_the_ground_title">Sul posto</string>
+         you're in the middle of the conference.'">Sul posto</string>
 
     <!-- Error message that is displayed when we aren't able to connect to Google Play Services,
          potentially due to a server error or loss of network connectivity. -->
@@ -705,7 +714,7 @@
     <string name="google_play_services_failed">Spiacenti, connessione a Google Play Services non riuscita</string>
 
     <!-- Message displayed to users as part of onboarding sign in. -->
-    <string name="signin_message">Effettua l\'accesso per sincronizzare gli eventi salvati e le sessioni prenotate dal tuo account fra il dispositivo mobile e il desktop. Puoi comunque salvare gli eventi localmente senza effettuare l\'accesso.</string>
+    <string name="signin_message">Effettua l’accesso per prenotare i posti per gli eventi in anticipo, sincronizzare gli eventi salvati e prenotati dal tuo account fra il dispositivo mobile e il desktop e inviare il tuo feedback al termine delle sessioni. Puoi comunque salvare gli eventi localmente senza effettuare l’accesso.</string>
 
     <!-- Label used when asking a user to sign in. -->
     <string name="signin_prompt">Accesso</string>
@@ -721,7 +730,12 @@
 
     <!-- Text shown on the onboarding screen asking users if they want conference notifications. -->
     <string name="onboarding_notifications_opt_in">
-        Vorresti ricevere notifiche dell\'app su I/O?\n Ti invieremo informazioni importanti sull\'evento, l\'agenda, il programma, il viaggio, gli eventi after-hour, le registrazioni delle sessioni e molto altro ancora. Puoi modificare questa impostazione in "Info &gt; Impostazioni" in qualsiasi momento.
+        Vorresti ricevere notifiche su I/O?\nTi invieremo informazioni importanti sull’evento, l’agenda, il programma, il viaggio, gli eventi after-hour, le registrazioni delle sessioni e molto altro ancora. Puoi modificare questa impostazione in “Info &gt; Impostazioni” in qualsiasi momento.
+    </string>
+
+    <!-- Text shown on the onboarding sign-in screen. -->
+    <string name="onboarding_sign_in">
+        Desideri effettuare l’accesso per prenotare i posti per gli eventi in anticipo, sincronizzare gli eventi salvati e prenotati dal tuo account fra il dispositivo mobile e il desktop e fornire il tuo feedback al termine delle sessioni? Puoi comunque salvare gli eventi localmente senza effettuare l’accesso ma le informazioni non verranno sincronizzate con il tuo account.\n\nIMPORTANTE: per prenotare i posti per gli eventi è necessario effettuare l’accesso con lo stesso indirizzo email utilizzato per la registrazione a Google I/O.
     </string>
 
     <!-- Message displayed in a card to the user on the My I/O screen after they have signed in. -->
@@ -741,41 +755,45 @@
     <!-- Button for finding quickly navigating from a day within My I/O to the relevant day within
     schedule -->
     <string name="add_events">Aggiungi eventi</string>
-
-    <!-- A placeholder value for the user's name in the My I/O dialog -->
-    <string name="my_io_dialog_default_name">Il tuo nome</string>
-
-    <!-- A placeholder value for the user's email in the My I/O dialog -->
-    <string name="my_io_dialog_default_email">tu@gmail.com</string>
-
+\
     <!-- An introductory string used in the My I/O dialog to a signed out user  -->
     <string name="my_io_body_intro_signed_out">Accedi a:</string>
 
     <!-- An introductory string used in the My I/O dialog to a signed in user  -->
-    <string name="my_io_body_intro_signed_in">Come utente che ha effettuato l’accesso:</string>
+    <string name="my_io_body_intro_signed_in">In quanto utente connesso puoi:</string>
 
     <!-- The first bulletpoint string used in the My I/O dialog to a signed out user  -->
     <string name="my_io_dialog_first_bullet_point_signed_out">
-        \u2022 Sincronizza eventi salvati e sessioni prenotate nel tuo account fra il desktop e il dispositivo mobile
+        Prenotare in anticipo i posti per gli eventi.
     </string>
 
     <!-- The first bulletpoint string used in the My I/O dialog to a signed in user  -->
     <string name="my_io_dialog_first_bullet_point_signed_in">
-        \u2022 I tuoi eventi salvati e le sessioni prenotate vengono sincronizzati sul tuo account fra il dispositivo mobile e il desktop
+        Puoi prenotare in anticipo i posti per gli eventi (massimo una prenotazione per blocco orario).
     </string>
 
     <!-- The second bulletpoint string used in the My I/O dialog to a signed out user  -->
     <string name="my_io_dialog_second_bullet_point_signed_out">
-        \u2022 Fornisci un commento sulla sessione al suo termine
+        Sincronizzare gli eventi salvati e prenotati dal tuo account fra il dispositivo mobile e il desktop.
     </string>
 
     <!-- The second bulletpoint string used in the My I/O dialog to a signed in user  -->
     <string name="my_io_dialog_second_bullet_point_signed_in">
-        \u2022 Puoi fornire un commento sulla sessione al suo termine
+        Gli eventi salvati e prenotati vengono sincronizzati dal tuo account fra il dispositivo mobile e il desktop.
+    </string>
+
+    <!-- The third bulletpoint string used in the My I/O dialog to a signed out user  -->
+    <string name="my_io_dialog_third_bullet_point_signed_out">
+        Inviare il tuo feedback al termine delle sessioni.
+    </string>
+
+    <!-- The third bulletpoint string used in the My I/O dialog to a signed in user  -->
+    <string name="my_io_dialog_third_bullet_point_signed_in">
+        Puoi inviare il tuo feedback al termine delle sessioni.
     </string>
 
     <!-- Message shown when a user initiated sign in fails. -->
-    <string name="signin_failed_text">Impossibile effettuare l\'accesso. Riprova.</string>
+    <string name="signin_failed_text">Impossibile effettuare l’accesso. Riprova.</string>
 
     <!-- Message shown when a user initiated sign out fails. -->
     <string name="signout_failed_text">Impossibile effettuare la disconnessione. Riprova.</string>
@@ -783,20 +801,28 @@
     <!-- Strings for Info page-->
     <string name="wifi_network_label">Rete Wi-Fi</string>
     <string name="wifi_password_label">Password</string>
-    <string name="setup_wifi">Imposta Wi-Fi</string>
-    <string name="password_copied_confirmation">Password copiata</string>
+    <string name="setup_wifi">Salva rete Wi-Fi</string>
+
+    <!-- Snackbar message confirming save of wifi network -->
+    <string name="wifi_install_success">Rete Wi-Fi salvata</string>
+
+    <!-- Snackbar message if failed to save the wifi network -->
+    <string name="wifi_install_error_message">Impossibile salvare la rete Wi-Fi</string>
+
     <string name="view_sessions_text">Visualizza sessioni</string>
     <string name="view_map_text">Visualizza mappa</string>
-    <!-- TODO make these URLs the correct deep link -->
+
     <string name="event_sandbox_title">Sandbox</string>
-    <string name="event_codelabs_title">Code Labs</string>
-    <string name="event_officehours_title">Orari di lavoro e recensioni sull\'app</string>
+    <string name="event_codelabs_title">Codelabs</string>
+    <string name="event_officehours_title">Orari di ricevimento e recensioni sull’app</string>
     <string name="event_afterhours_title">Eventi after-hour</string>
+
     <string name="travel_details_title">Dettagli di viaggio</string>
     <string name="travel_shuttle_info_title">Servizio navetta</string>
-    <string name="travel_carpool_parking_info_title">Carpooling e parcheggi</string>
+    <string name="travel_carpool_parking_info_title">Parcheggi e carpooling</string>
     <string name="travel_public_transportation_info_title">Trasporto pubblico</string>
     <string name="travel_biking_info_title">Bici</string>
+    <string name="travel_ride_sharing_info_title">Ride sharing</string>
 
     <string name="settings_time_zone_label">Mostra eventi nel fuso orario della costa pacifica (PT)</string>
     <string name="settings_enable_notifications">Abilita notifiche</string>
@@ -807,5 +833,26 @@
 
     <string name="feed_error">Errore di caricamento del feed</string>
 
-    <!-- RemoteConfig keys for Feed default messages -->
+    <!-- Button text indicating that the session can be added to the user's bookmarks. -->
+    <string name="add_bookmark">Aggiungi segnalibro</string>
+    
+    <!-- Button text indicating that the session can be removed from the user's bookmarks. -->
+    <string name="remove_bookmark">Rimuovi segnalibro</string>
+
+    <!-- Hint text indicating bookmarked sessions are added to My I/O. -->
+    <string name="add_bookmark_hint">Evento salvato in Il mio I/O</string>
+
+    <!-- Hint text indicating unbookmarked sessions are removed from My I/O. -->
+    <string name="remove_bookmark_hint">Evento rimosso da Il mio I/O</string>
+
+    <!-- Opt-out text to stop seeing bookmark related hints. -->
+    <string name="bookmark_hint_optout">OK</string>
+
+    <!-- The label used on a button when a view is in an expanded state. Clicking on the icon
+    collapses the view. -->
+    <string name="expanded">Espansa</string>
+
+    <!-- The label used on a button when a view is in an collapsed state. Clicking on the icon
+    expanded the view. -->
+    <string name="collapsed">Compressa</string>
 </resources>

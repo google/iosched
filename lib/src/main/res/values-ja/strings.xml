@@ -14,7 +14,7 @@
   See the License for the specific language governing permissions and
   limitations under the License.
   -->
-<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2" xmlns:tools="http://schemas.android.com/tools">
+<resources xmlns:tools="http://schemas.android.com/tools" xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
 
     <plurals name="schedule_block_subtitle"
              description="Shown in the schedule to indicate how many sessions are available on that particular time slot.">
@@ -226,10 +226,19 @@
     <string name="my_schedule_badgepickup_description">登録窓口</string>
 
     <!-- Accessibility announcement to confirm the feedback rating made for a session by the user. -->
-    <string name="feedback_rating_confirmation">入力した評価: 星 %2$d つ中で星 %1$d つ"</string>
+    <string name="feedback_rating_confirmation">入力した評価: 星 %2$d つ中で星 %1$d つ“</string>
 
     <!-- Accessibility announcement for an item in the custom feedback rating view. For example, "one star".  -->
     <string name="feedback_rating_value">星 %1$d つ</string>
+
+    <!-- Text that shows session is reserved on Schedule and My I/O -->
+    <string name="schedule_item_reserved">予約済み</string>
+
+    <!-- Text that shows session is not reserved on Schedule and My I/O -->
+    <string name="schedule_item_not_reserved">未予約</string>
+
+    <!-- Text that shows session is waitlisted on Schedule and My I/O -->
+    <string name="schedule_item_waitlisted">キャンセル待ちに登録済み</string>
 
     <!-- Label for the button to rate a session -->
     <string name="my_schedule_rate_this_session">このセッションを評価する</string>
@@ -341,7 +350,7 @@
     <string name="no_matching_sessions">一致するセッションはありません。</string>
 
     <!-- Message shown in the video library when the user applies a filter that results no video -->
-    <string name="no_matching_videos">一致するビデオはありません。</string>
+    <string name="no_matching_videos">一致する動画はありません。</string>
 
     <!-- Button of a card in session or session explorer that dismiss the card.
     One sample of such card is "How was this session? We would love to hear your feedback"  with
@@ -407,7 +416,7 @@
         <b>会場用 Wi-Fi</b><br/> 5 Ghz 会場用 Wi-Fi へアクセスするために端末を設定しますか？]]></string>
 
     <!-- Section title for videos related to a particular event session -->
-    <string name="related_videos">関連ビデオ</string>
+    <string name="related_videos">関連動画</string>
 
     <!-- Section title for sessions related to a particular event session -->
     <string name="related_sessions">関連セッション</string>
@@ -498,7 +507,7 @@
     <string name="session_link_pdf">スライド</string>
 
     <!-- Link text taking the user to the session's YouTube page -->
-    <string name="session_link_youtube">YouTube ビデオ</string>
+    <string name="session_link_youtube">YouTube 動画</string>
 
     <!-- Notification text that a session is starting in some number of minutes -->
     <string name="session_notification_text_1"><xliff:g id="remaining_time">%1$d</xliff:g> 分後に開始します。</string>
@@ -552,7 +561,7 @@
     <string name="title_my_io">自分の I/O</string>
 
     <!-- Navigation bar text for viewing the user's schedule -->
-    <string name="title_my_schedule">スケジュール</string>
+    <string name="title_schedule">スケジュール</string>
 
     <!-- Navigation bar text for viewing the Feed -->
     <string name="title_feed">フィード</string>
@@ -561,7 +570,7 @@
     <string name="title_info">情報</string>
 
     <!-- Label for Search screen, that allows users to search for sessions. -->
-    <string name="title_search">検索</string>
+    <string name="title_search">検索する</string>
 
     <!-- Map breadcrumb text for navigating session entries -->
     <string name="title_session_detail">セッション情報</string>
@@ -585,7 +594,7 @@
     <string name="title_share">次のアプリを使用して共有する</string>
 
     <!-- Label for VideoLibrary activity -->
-    <string name="title_video_library">ビデオ</string>
+    <string name="title_video_library">動画</string>
 
     <!-- Label for exploration category which groups session topics -->
     <string name="topics">トピック</string>
@@ -600,7 +609,7 @@
     <string name="watch_now">今すぐ視聴する！</string>
 
     <!-- Short text welcoming the user to the application -->
-    <string name="welcome_to_google_i_o_app">#io17 モバイルアプリへようこそ！</string>
+    <string name="welcome_to_google_i_o">#io17 へようこそ</string>
 
     <!-- Medium-length welcome text indicating the subsequent text is important legal information -->
     <string name="welcome_text">このアプリをご利用になる前に必ず利用規約をお読みください。</string>
@@ -623,26 +632,26 @@
     <!-- Text for a button which will open the user's Wi-Fi settings -->
     <string name="wifi_dialog_button_settings">WiFi 設定を開く</string>
 
-    <!-- Toast failure message if the user's wifi couldn't be updated -->
-    <string name="wifi_install_error_message">申し訳ありませんが、WiFi の設定を更新することができません</string>
-
     <!-- Title of the Video library screen when only videos of a given topic are displayed -->
-    <string name="title_topic_filtered_video_library"><xliff:g id="topic">%1$s</xliff:g> に関するビデオ</string>
+    <string name="title_topic_filtered_video_library"><xliff:g id="topic">%1$s</xliff:g> に関する動画</string>
 
     <!-- Title of the Video library screen when only videos of a given year are displayed -->
-    <string name="title_year_filtered_video_library" tools:ignore="PluralsCandidate"><xliff:g id="year">%1$d</xliff:g> 年のビデオ</string>
+    <string name="title_year_filtered_video_library" tools:ignore="PluralsCandidate"><xliff:g id="year">%1$d</xliff:g> 年の動画</string>
 
     <!-- Title of the Video library screen when only videos of a given year and a given topic are displayed -->
-    <string name="title_year_and_topic_filtered_video_library" tools:ignore="PluralsCandidate"><xliff:g id="topic">%2$s</xliff:g> に関する <xliff:g id="year">%1$d</xliff:g> 年のビデオ</string>
+    <string name="title_year_and_topic_filtered_video_library" tools:ignore="PluralsCandidate"><xliff:g id="topic">%2$s</xliff:g> に関する <xliff:g id="year">%1$d</xliff:g> 年の動画</string>
 
     <!-- Text of the Filter menu icon -->
-    <string name="description_filter">フィルター</string>
+    <string name="description_filter">フィルタ</string>
 
-    <!-- Text of the My I/O menu icon -->
-    <string name="description_avatar">アバター</string>
+    <!-- Text of the My I/O avatar icon whilst signed out -->
+    <string name="description_avatar_signed_out">ログイン</string>
+
+    <!-- Text of the My I/O avatar icon whilst signed in -->
+    <string name="description_avatar_signed_in">ログアウト</string>
 
     <!-- Title of the Video library side panel containing all the filters -->
-    <string name="title_video_library_filter">フィルター</string>
+    <string name="title_video_library_filter">フィルタ</string>
 
     <!-- Sub-title for the Year filters -->
     <string name="year_filter_section_label">年</string>
@@ -654,30 +663,30 @@
     <string name="all">すべて</string>
 
     <!-- Title of the Explore Sessions side panel containing all the filters -->
-    <string name="title_explore_sessions_filter">フィルター</string>
+    <string name="title_explore_sessions_filter">フィルタ</string>
 
     <!-- Label of filter option to show only sessions -->
     <string name="filter_label_sessions_only">セッションのみ</string>
 
     <!-- Label of filter option to show only sessions (intentional space) -->
-    <string name="active_filters_description">"フィルター: "</string>
+    <string name="active_filters_description">“フィルタ: “</string>
 
     <!-- Label for a button which clears all filters in the filter pane -->
     <string name="clear_all">すべてクリア</string>
 
     <!-- Label for a button which clears all filters in the filter pane -->
-    <string name="clear_filters">フィルターをクリアする</string>
+    <string name="clear_filters">フィルタをクリアする</string>
 
     <!-- BEGIN Explore Message Card User Messages -->
     <string name="explore_io_notifications_ask_opt_in"
             description="This message is displayed on the Explore I/O screen to ask users whether
         they would like to opt in to receive notifications for the sessions the have added to their schedule."><![CDATA[
-        <b>セッション通知</b><br/>スケジュールに含まれるセッションに関する通知を受け取るようにしますか？]]></string>
+        <b>セッション通知</b><br/> スケジュールに含まれるセッションに関する通知を受け取るようにしますか？]]></string>
 
     <string name="explore_io_msgcards_ask_opt_in"
             description="This message is displayed on the Explore I/O screen to ask users whether
             they would like to opt in to receive messages regarding the conference."><![CDATA[
-        <b>会議に関するメッセージ</b><br/>会議に関する重要なメッセージを受け取るようにしますか？メッセージは時間ベースで変わり、パートナーからのプロモーション メッセージが含まれている場合もあります。]]></string>
+        <b>会議に関するメッセージ</b><br/> 会議に関する重要なメッセージを受け取るようにしますか？メッセージは時間ベースで変わり、パートナーからのプロモーション メッセージが含まれている場合もあります。]]></string>
 
     <!-- This is used on the Explore I/O message cards to answer yes to a particular message -->
     <string name="explore_io_msgcards_answer_yes">はい、承諾します！</string>
@@ -689,11 +698,11 @@
          can watch a video but it turns out we can't show the video. -->
     <string name="explore_io_video_id_not_valid">申し訳ありませんが、動画の URL に問題があるようです。</string>
 
-    <string description="This string is presented as a header message on a user interface card
+    <string name="explore_io_on_the_ground_title"
+            description="This string is presented as a header message on a user interface card
          element. The card element has sub-cards that explain a few logistical details for
          attendees. 'On the Ground' is slang in English indicating 'What you need to know when
-         you're in the middle of the conference.'"
-            name="explore_io_on_the_ground_title">現場</string>
+         you're in the middle of the conference.'">現場</string>
 
     <!-- Error message that is displayed when we aren't able to connect to Google Play Services,
          potentially due to a server error or loss of network connectivity. -->
@@ -705,7 +714,7 @@
     <string name="google_play_services_failed">申し訳ありませんが、Google Play サービスに接続できませんでした</string>
 
     <!-- Message displayed to users as part of onboarding sign in. -->
-    <string name="signin_message">ログインして、モバイル端末と PC の両方で使用できるアカウントで、保存済みイベントと予約済みセッションを同期します。ログインしなくてもイベントをローカルに保存することはできます。</string>
+    <string name="signin_message">早めにイベントの席を予約したり、保存済みイベントと予約済みイベントをモバイル端末と PC の両方で使用できるアカウントで同期したり、セッション終了後にフィードバックを提供したりするには、ログインが必要です。ログインしなくてもイベントをローカルに保存することはできます。</string>
 
     <!-- Label used when asking a user to sign in. -->
     <string name="signin_prompt">ログイン</string>
@@ -721,7 +730,12 @@
 
     <!-- Text shown on the onboarding screen asking users if they want conference notifications. -->
     <string name="onboarding_notifications_opt_in">
-        I/O に関するアプリの通知を受け取るようにしますか？\n イベント、アジェンダ、スケジュール、トラベル、I/O 終了後の情報、セッションの録画などに関する重要な情報をお送りします。この設定は、[情報] &gt; [設定] でいつでも変更できます。
+        I/O に関する通知を受け取るようにしますか？\nイベント、アジェンダ、スケジュール、トラベル、アフターアワー、セッションの録画などに関する重要な情報をお送りします。この設定は、[情報] &gt; [設定] でいつでも変更できます。
+    </string>
+
+    <!-- Text shown on the onboarding sign-in screen. -->
+    <string name="onboarding_sign_in">
+        早めにイベントの席を予約したり、保存済みイベントをモバイル端末と PC の両方で使用できるアカウントで同期したり、セッション終了後にフィードバックを提供したりするため、ログインしますか？ログインしなくてもイベントをローカルに保存することはできますが、情報はアカウントで同期されません。\n\n重要:イベントの席を予約するには、Google I/O の登録に使用したものと同じメールアドレスでログインする必要があります。
     </string>
 
     <!-- Message displayed in a card to the user on the My I/O screen after they have signed in. -->
@@ -736,42 +750,46 @@
     <string name="signin_prompt_skip">スキップ</string>
 
     <!-- Label used for the user to dismiss a card. -->
-    <string name="signin_prompt_dismiss">終了</string>
+    <string name="signin_prompt_dismiss">閉じる</string>
 
     <!-- Button for finding quickly navigating from a day within My I/O to the relevant day within
     schedule -->
     <string name="add_events">イベントの追加</string>
-
-    <!-- A placeholder value for the user's name in the My I/O dialog -->
-    <string name="my_io_dialog_default_name">お名前</string>
-
-    <!-- A placeholder value for the user's email in the My I/O dialog -->
-    <string name="my_io_dialog_default_email">you@gmail.com</string>
-
+\
     <!-- An introductory string used in the My I/O dialog to a signed out user  -->
     <string name="my_io_body_intro_signed_out">ログイン先:</string>
 
     <!-- An introductory string used in the My I/O dialog to a signed in user  -->
-    <string name="my_io_body_intro_signed_in">ログイン ユーザーとして:</string>
+    <string name="my_io_body_intro_signed_in">ログイン済みユーザーとして:</string>
 
     <!-- The first bulletpoint string used in the My I/O dialog to a signed out user  -->
     <string name="my_io_dialog_first_bullet_point_signed_out">
-        \u2022 モバイル端末と PC の両方で使用できるアカウントで保存済みイベントと予約済みセッションを同期します
+        早めにイベントの席を予約します。
     </string>
 
     <!-- The first bulletpoint string used in the My I/O dialog to a signed in user  -->
     <string name="my_io_dialog_first_bullet_point_signed_in">
-        \u2022 保存済みイベントと予約済みセッションは、モバイル端末と PC の両方で使用できるアカウントに同期されます
+        早めにイベントの席を予約できます（時間ブロックごとに 1 件の予約が可能です）。
     </string>
 
     <!-- The second bulletpoint string used in the My I/O dialog to a signed out user  -->
     <string name="my_io_dialog_second_bullet_point_signed_out">
-        \u2022 セッション終了後にセッションのフィードバックを提供する
+        保存済みイベントと予約済みイベントをモバイル端末と PC の両方で使用できるアカウントで同期します。
     </string>
 
     <!-- The second bulletpoint string used in the My I/O dialog to a signed in user  -->
     <string name="my_io_dialog_second_bullet_point_signed_in">
-        \u2022 セッション終了後にセッションのフィードバックを提供することができます
+        保存済みイベントと予約済みイベントは、モバイル端末と PC の両方で使用できるアカウントで同期されます。
+    </string>
+
+    <!-- The third bulletpoint string used in the My I/O dialog to a signed out user  -->
+    <string name="my_io_dialog_third_bullet_point_signed_out">
+        セッション終了後にセッションのフィードバックを提供する
+    </string>
+
+    <!-- The third bulletpoint string used in the My I/O dialog to a signed in user  -->
+    <string name="my_io_dialog_third_bullet_point_signed_in">
+        セッション終了後にセッションのフィードバックを提供することができます。
     </string>
 
     <!-- Message shown when a user initiated sign in fails. -->
@@ -781,22 +799,29 @@
     <string name="signout_failed_text">ログアウトできませんでした。やり直してください。</string>
 
     <!-- Strings for Info page-->
-    <string name="wifi_network_label">Wi-Fi ネットワーク</string>
+    <string name="wifi_network_label">WiFi ネットワーク</string>
     <string name="wifi_password_label">パスワード</string>
-    <string name="setup_wifi">Wi-Fi のセットアップ</string>
-    <string name="password_copied_confirmation">パスワードをコピーしました</string>
+    <string name="setup_wifi">WiFi ネットワークの保存</string>
+
+    <!-- Snackbar message confirming save of wifi network -->
+    <string name="wifi_install_success">WiFi ネットワークが保存されました</string>
+
+    <!-- Snackbar message if failed to save the wifi network -->
+    <string name="wifi_install_error_message">申し訳ありません。WiFi ネットワークを保存できませんでした</string>
+
     <string name="view_sessions_text">セッションの表示</string>
     <string name="view_map_text">地図の表示</string>
-    <!-- TODO make these URLs the correct deep link -->
-    <string name="event_sandbox_title">サンドボックス</string>
-    <string name="event_codelabs_title">コードラボ</string>
-    <string name="event_officehours_title">営業時間 &amp; アプリのレビュー</string>
-    <string name="event_afterhours_title">営業時間後</string>
+
+    <string name="event_sandbox_title">Sandbox</string>
+    <string name="event_codelabs_title">Codelabs</string>
+    <string name="event_officehours_title">オフィスアワー &amp; アプリのレビュー</string>
+    <string name="event_afterhours_title">アフターアワー</string>
     <string name="travel_details_title">トラベルの日程</string>
     <string name="travel_shuttle_info_title">シャトル便</string>
     <string name="travel_carpool_parking_info_title">駐車場</string>
     <string name="travel_public_transportation_info_title">公共交通機関</string>
     <string name="travel_biking_info_title">自転車</string>
+    <string name="travel_ride_sharing_info_title">相乗り</string>
     <string name="settings_time_zone_label">イベントを太平洋時間（PT）で表示する</string>
     <string name="settings_enable_notifications">通知を有効にする</string>
     <string name="settings_enable_anon_statistics">匿名の統計情報を送信する</string>
@@ -806,7 +831,26 @@
 
     <string name="feed_error">フィードの読み込みでエラーが発生しました。</string>
 
+    <!-- Button text indicating that the session can be added to the user's bookmarks. -->
+    <string name="add_bookmark">ブックマークの追加</string>
+    
+    <!-- Button text indicating that the session can be removed from the user's bookmarks. -->
+    <string name="remove_bookmark">ブックマークの削除</string>
 
-    <!-- RemoteConfig keys for Feed default messages -->
+    <!-- Hint text indicating bookmarked sessions are added to My I/O. -->
+    <string name="add_bookmark_hint">イベントを自分の I/O に保存しました</string>
 
+    <!-- Hint text indicating unbookmarked sessions are removed from My I/O. -->
+    <string name="remove_bookmark_hint">イベントを自分の I/O から削除しました</string>
+
+    <!-- Opt-out text to stop seeing bookmark related hints. -->
+    <string name="bookmark_hint_optout">OK</string>
+
+    <!-- The label used on a button when a view is in an expanded state. Clicking on the icon
+    collapses the view. -->
+    <string name="expanded">展開</string>
+
+    <!-- The label used on a button when a view is in an collapsed state. Clicking on the icon
+    expanded the view. -->
+    <string name="collapsed">折りたたみ</string>
 </resources>
