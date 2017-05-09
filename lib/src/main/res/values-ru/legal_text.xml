@@ -15,5 +15,5 @@
   limitations under the License.
   -->
 <resources>
-  <string name="eula_legal_text">Your use of this application is governed by: a) the Google Terms of Service (http://www.google.com/intl/en/policies/terms/); b) Google\'s Privacy Policy (http://www.google.com/intl/en/policies/privacy/). \n</string>
+  <string name="eula_legal_text">Your use of this application is governed by: a) the Google Terms of Service (www.google.com/intl/en/policies/terms/); b) Google\'s Privacy Policy (www.google.com/intl/en/policies/privacy/). \n</string>
 </resources>
