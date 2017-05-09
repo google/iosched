@@ -35,6 +35,7 @@ import com.google.samples.apps.iosched.model.ScheduleItem;
 import com.google.samples.apps.iosched.model.TagMetadata;
 import com.google.samples.apps.iosched.schedule.NonSessionItemViewHolder;
 import com.google.samples.apps.iosched.schedule.SessionItemViewHolder;
+import com.google.samples.apps.iosched.schedule.TagPool;
 import com.google.samples.apps.iosched.util.AccountUtils;
 import com.google.samples.apps.iosched.util.UIUtils;
 import com.google.samples.apps.iosched.util.WelcomeUtils;
@@ -51,6 +52,7 @@ class MyIOAdapter extends Adapter<ViewHolder> implements StickyHeaders, StickyHe
     private static final int VIEW_TYPE_NON_SESSION = 1;
     private static final int VIEW_TYPE_SEPARATOR = 2;
     private static final int VIEW_TYPE_MESSAGE_CARD = 3;
+    private static final int PAYLOAD_TAG_META = 7;
 
     private static final List<DaySeparator> DAY_SEPARATORS;
 
@@ -62,6 +64,7 @@ class MyIOAdapter extends Adapter<ViewHolder> implements StickyHeaders, StickyHe
     }
 
     private final List<Object> mItems = new ArrayList<>();
+    private final TagPool mTagPool = new TagPool();
     private final Callbacks mCallbacks;
     private final float stuckHeaderElevation;
     private TagMetadata mTagMetadata;
@@ -160,9 +163,10 @@ class MyIOAdapter extends Adapter<ViewHolder> implements StickyHeaders, StickyHe
     }
 
     void setTagMetadata(TagMetadata tagMetadata) {
-        mTagMetadata = tagMetadata;
-        notifyItemRangeChanged(0, getItemCount());
-        // TODO use payload for efficient update
+        if (mTagMetadata != tagMetadata) {
+            mTagMetadata = tagMetadata;
+            notifyItemRangeChanged(0, getItemCount() - 1, PAYLOAD_TAG_META);
+        }
     }
 
     @Override
@@ -225,10 +229,10 @@ class MyIOAdapter extends Adapter<ViewHolder> implements StickyHeaders, StickyHe
         final Object item = mItems.get(position);
         switch (holder.getItemViewType()) {
             case VIEW_TYPE_SESSION:
-                ((SessionItemViewHolder) holder).onBind((ScheduleItem)item, mTagMetadata);
+                ((SessionItemViewHolder) holder).bind((ScheduleItem)item, mTagPool, mTagMetadata);
                 break;
             case VIEW_TYPE_NON_SESSION:
-                ((NonSessionItemViewHolder) holder).onBind((ScheduleItem) item);
+                ((NonSessionItemViewHolder) holder).bind((ScheduleItem) item);
                 break;
             case VIEW_TYPE_SEPARATOR:
                 ((DaySeparatorViewHolder) holder).onBind((DaySeparator) item);
@@ -236,6 +240,23 @@ class MyIOAdapter extends Adapter<ViewHolder> implements StickyHeaders, StickyHe
             case VIEW_TYPE_MESSAGE_CARD:
                 ((MessageCardViewHolder) holder).onBind((MessageData) item);
                 break;
+        }
+    }
+
+    @Override
+    public void onBindViewHolder(ViewHolder holder, int position, List<Object> payloads) {
+        if (holder instanceof SessionItemViewHolder && payloads.contains(PAYLOAD_TAG_META)) {
+            ((SessionItemViewHolder) holder).updateTags((ScheduleItem) mItems.get(position),
+                    mTagMetadata, mTagPool);
+        } else {
+            onBindViewHolder(holder, position);
+        }
+    }
+
+    @Override
+    public void onViewRecycled(ViewHolder holder) {
+        if (holder instanceof SessionItemViewHolder) {
+            ((SessionItemViewHolder) holder).unbind(mTagPool);
         }
     }
 

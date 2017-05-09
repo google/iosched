@@ -49,7 +49,7 @@ public class NonSessionItemViewHolder extends ScheduleItemViewHolder
                 .inflate(R.layout.schedule_non_session_item, parent, false));
     }
 
-    public void onBind(@NonNull final ScheduleItem item) {
+    public void bind(@NonNull final ScheduleItem item) {
         if (item.type != ScheduleItem.BREAK) {
             return;
         }
