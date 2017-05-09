@@ -91,6 +91,7 @@ import com.google.samples.apps.iosched.util.YouTubeUtils;
 import java.util.ArrayList;
 import java.util.List;
 
+import static android.view.View.*;
 import static android.view.View.GONE;
 import static android.view.View.VISIBLE;
 import static com.google.samples.apps.iosched.Config.Tags.CATEGORY_TRACK;
@@ -256,7 +257,7 @@ public class SessionDetailFragment extends Fragment implements
 
         mAddScheduleFab =
                 (CheckableFloatingActionButton) view.findViewById(R.id.add_schedule_button);
-        mAddScheduleFab.setOnClickListener(new View.OnClickListener() {
+        mAddScheduleFab.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
                 boolean isInSchedule = !((CheckableFloatingActionButton) view).isChecked();
@@ -541,7 +542,7 @@ public class SessionDetailFragment extends Fragment implements
         }
 
         if (data.hasLiveStream()) {
-            mWatchVideo.setOnClickListener(new View.OnClickListener() {
+            mWatchVideo.setOnClickListener(new OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     String videoId = YouTubeUtils.getVideoIdFromSessionData(data.getYouTubeUrl(),
@@ -616,7 +617,7 @@ public class SessionDetailFragment extends Fragment implements
     }
 
     private void enterTransitionStarted() {
-        mAddScheduleFab.setVisibility(View.INVISIBLE);
+        mAddScheduleFab.setVisibility(INVISIBLE);
         mToolbar.setAlpha(0f);
     }
 
@@ -1218,10 +1219,10 @@ public class SessionDetailFragment extends Fragment implements
     }
 
     private void hideReservationButton() {
-        mReserve.setVisibility(View.GONE);
+        mReserve.setVisibility(GONE);
     }
 
     private void showReservationButton() {
-        mReserve.setVisibility(View.VISIBLE);
+        mReserve.setVisibility(VISIBLE);
     }
 }

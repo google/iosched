@@ -35,9 +35,12 @@
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/feed_recycler_view"
-        android:layout_width="match_parent"
+        android:layout_width="@dimen/main_content_width"
         android:layout_height="0dp"
         android:layout_weight="1"
+        android:layout_gravity="center_horizontal|top"
+        android:background="@color/content_background"
+        android:elevation="@dimen/card_elevation"
         android:listDivider="@drawable/list_divider"
         android:orientation="vertical"
         android:scrollbarStyle="insideOverlay"

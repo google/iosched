@@ -17,6 +17,7 @@
 <!-- Colors common among all features in the app. -->
 <resources>
     <color name="background">#ffffffff</color>
+    <color name="content_background">@null</color>
 
     <!-- 2017 palette -->
     <color name="lightish_blue">#4a5cfe</color>
