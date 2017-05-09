@@ -31,7 +31,7 @@
         android:layout_weight="1"
         tools:layout="@layout/info_pager_frag" />
 
-    <android.support.design.widget.BottomNavigationView
+    <com.google.samples.apps.iosched.ui.widget.BadgedBottomNavigationView
         android:id="@+id/bottom_navigation"
         style="@style/Widget.IOSched.BottomNavigationView"
         android:layout_width="match_parent"

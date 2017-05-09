@@ -197,6 +197,8 @@
         <item name="itemIconTint">@color/nav_icon_tint</item>
         <item name="android:background">?android:attr/colorBackground</item>
         <item name="android:elevation" tools:targetApi="lollipop">@dimen/bottom_nav_elevation</item>
+        <item name="badgeColor">?colorPrimary</item>
+        <item name="badgeRadius">3dp</item>
     </style>
 
     <style name="Widget.IOSched.FeedbackRatingBar">
