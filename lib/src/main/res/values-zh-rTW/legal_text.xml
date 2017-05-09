@@ -15,5 +15,5 @@
   limitations under the License.
   -->
 <resources>
-  <string name="eula_legal_text">使用此應用程式受以下政策規管： a) Google 服務條款 (http://www.google.com/intl/zh-TW/policies/terms/)；b) Google 隱私政策 (http://www.google.com/intl/zh-TW/policies/privacy/)。\n</string>
+  <string name="eula_legal_text">使用此應用程式受以下政策規管： a) Google 服務條款 (www.google.com/intl/zh-TW/policies/terms/)；b) Google 隱私政策 (www.google.com/intl/zh-TW/policies/privacy/)。\n</string>
 </resources>
