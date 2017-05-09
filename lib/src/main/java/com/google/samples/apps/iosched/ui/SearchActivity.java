@@ -20,7 +20,6 @@ import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
 import android.app.SearchManager;
 import android.content.Intent;
-import android.content.res.Resources;
 import android.database.Cursor;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
@@ -45,8 +44,8 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 
 import com.google.samples.apps.iosched.lib.R;
-import com.google.samples.apps.iosched.provider.ScheduleContract;
 import com.google.samples.apps.iosched.schedule.ScheduleActivity;
+import com.google.samples.apps.iosched.provider.ScheduleContract;
 import com.google.samples.apps.iosched.session.SessionDetailActivity;
 import com.google.samples.apps.iosched.util.AnalyticsHelper;
 
@@ -58,9 +57,6 @@ public class SearchActivity extends BaseActivity implements
     private static final String TAG = makeLogTag("SearchActivity");
     private static final String SCREEN_LABEL = "Search";
     private static final String ARG_QUERY = "query";
-
-    private static final long ENTER_EXIT_DURATION =
-            Resources.getSystem().getInteger(android.R.integer.config_mediumAnimTime);
 
     private SearchView mSearchView;
     private String mQuery = "";
@@ -185,7 +181,7 @@ public class SearchActivity extends BaseActivity implements
         View scrim = findViewById(R.id.scrim);
         scrim.animate()
                 .alpha(1f)
-                .setDuration(ENTER_EXIT_DURATION)
+                .setDuration(500L)
                 .setInterpolator(
                         AnimationUtils.loadInterpolator(this, android.R.interpolator.fast_out_slow_in))
                 .start();
@@ -209,7 +205,7 @@ public class SearchActivity extends BaseActivity implements
                     // search button which launched this screen.
                     Animator show = ViewAnimationUtils.createCircularReveal(searchPanel,
                         searchPanel.getRight(), searchPanel.getTop(), 0f, revealRadius);
-                    show.setDuration(ENTER_EXIT_DURATION);
+                    show.setDuration(250L);
                     show.setInterpolator(AnimationUtils.loadInterpolator(SearchActivity.this,
                             android.R.interpolator.fast_out_slow_in));
                     show.start();
@@ -233,7 +229,7 @@ public class SearchActivity extends BaseActivity implements
         // Animating the radius to 0 produces the contracting effect
         Animator shrink = ViewAnimationUtils.createCircularReveal(searchPanel,
                 searchPanel.getRight(), searchPanel.getTop(), revealRadius, 0f);
-        shrink.setDuration(ENTER_EXIT_DURATION);
+        shrink.setDuration(200L);
         shrink.setInterpolator(AnimationUtils.loadInterpolator(SearchActivity.this,
                 android.R.interpolator.fast_out_slow_in));
         shrink.addListener(new AnimatorListenerAdapter() {
@@ -248,7 +244,7 @@ public class SearchActivity extends BaseActivity implements
         // We also animate out the translucent background at the same time.
         findViewById(R.id.scrim).animate()
                 .alpha(0f)
-                .setDuration(ENTER_EXIT_DURATION)
+                .setDuration(200L)
                 .setInterpolator(
                         AnimationUtils.loadInterpolator(SearchActivity.this,
                                 android.R.interpolator.fast_out_slow_in))

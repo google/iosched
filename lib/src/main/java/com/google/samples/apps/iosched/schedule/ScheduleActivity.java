@@ -41,7 +41,6 @@ import com.google.samples.apps.iosched.schedule.ScheduleModel.MyScheduleQueryEnu
 import com.google.samples.apps.iosched.schedule.ScheduleModel.MyScheduleUserActionEnum;
 import com.google.samples.apps.iosched.session.SessionDetailActivity;
 import com.google.samples.apps.iosched.ui.BaseActivity;
-import com.google.samples.apps.iosched.ui.SearchActivity;
 import com.google.samples.apps.iosched.util.SessionsHelper;
 import com.google.samples.apps.iosched.util.TimeUtils;
 
@@ -301,7 +300,7 @@ public class ScheduleActivity extends BaseActivity implements ScheduleViewParent
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         super.onCreateOptionsMenu(menu);
-        getMenuInflater().inflate(R.menu.schedule, menu);
+        getMenuInflater().inflate(R.menu.my_schedule, menu);
         return true;
     }
 
@@ -309,9 +308,6 @@ public class ScheduleActivity extends BaseActivity implements ScheduleViewParent
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == R.id.menu_filter) {
             mDrawerLayout.openDrawer(GravityCompat.END);
-            return true;
-        } else if (item.getItemId() == R.id.menu_search) {
-            startActivity(new Intent(this, SearchActivity.class));
             return true;
         }
         return super.onOptionsItemSelected(item);
