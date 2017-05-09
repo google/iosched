@@ -16,16 +16,19 @@
 
 package com.google.samples.apps.iosched.sync;
 
-import android.content.*;
-import android.net.ConnectivityManager;
+import android.content.ContentResolver;
+import android.content.ContentValues;
+import android.content.Context;
+import android.content.Intent;
+import android.content.SyncResult;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.text.TextUtils;
 
-import com.google.samples.apps.iosched.lib.BuildConfig;
 import com.google.samples.apps.iosched.Config;
 import com.google.samples.apps.iosched.feedback.FeedbackApiHelper;
 import com.google.samples.apps.iosched.feedback.FeedbackSyncHelper;
+import com.google.samples.apps.iosched.lib.BuildConfig;
 import com.google.samples.apps.iosched.provider.ScheduleContract;
 import com.google.samples.apps.iosched.service.DataBootstrapService;
 import com.google.samples.apps.iosched.service.SessionAlarmService;
@@ -35,8 +38,8 @@ import com.google.samples.apps.iosched.sync.account.Account;
 import com.google.samples.apps.iosched.sync.userdata.AbstractUserDataSyncHelper;
 import com.google.samples.apps.iosched.sync.userdata.UserDataSyncHelperFactory;
 import com.google.samples.apps.iosched.util.AccountUtils;
+import com.google.samples.apps.iosched.util.ConnectivityUtils;
 import com.google.samples.apps.iosched.util.TimeUtils;
-
 import com.turbomanage.httpclient.BasicHttpClient;
 import com.turbomanage.httpclient.HttpResponse;
 import com.turbomanage.httpclient.RequestLogger;
@@ -45,7 +48,11 @@ import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
-import static com.google.samples.apps.iosched.util.LogUtils.*;
+import static com.google.samples.apps.iosched.util.LogUtils.LOGD;
+import static com.google.samples.apps.iosched.util.LogUtils.LOGE;
+import static com.google.samples.apps.iosched.util.LogUtils.LOGI;
+import static com.google.samples.apps.iosched.util.LogUtils.LOGW;
+import static com.google.samples.apps.iosched.util.LogUtils.makeLogTag;
 
 /**
  * A helper class for dealing with conference data synchronization. All operations occur on the
@@ -258,7 +265,7 @@ public class SyncHelper {
      * @throws IOException if there is a problem downloading or importing the data.
      */
     private boolean doConferenceDataSync() throws IOException {
-        if (!isOnline()) {
+        if (!ConnectivityUtils.isConnected(mContext)) {
             LOGD(TAG, "Not attempting remote sync because device is OFFLINE");
             return false;
         }
@@ -294,7 +301,7 @@ public class SyncHelper {
      * @throws IOException if there is a problem uploading the data.
      */
     private boolean doUserDataSync(SyncResult syncResult) throws IOException {
-        if (!isOnline()) {
+        if (!ConnectivityUtils.isConnected(mContext)) {
             LOGD(TAG, "Not attempting userdata sync because device is OFFLINE");
             return false;
         }
@@ -320,13 +327,6 @@ public class SyncHelper {
         }
         syncResult.stats.numIoExceptions += helper.getIoExcpetions();
         return modified;
-    }
-
-    private boolean isOnline() {
-        ConnectivityManager cm = (ConnectivityManager) mContext.getSystemService(
-                Context.CONNECTIVITY_SERVICE);
-        return cm.getActiveNetworkInfo() != null &&
-                cm.getActiveNetworkInfo().isConnectedOrConnecting();
     }
 
     private void increaseIoExceptions(SyncResult syncResult) {
