@@ -41,6 +41,7 @@
             android:layout_height="?actionBarSize"
             android:layout_gravity="bottom"
             android:layout_marginBottom="48dp"
+            app:contentInsetStart="@dimen/padding_normal"
             app:popupTheme="@style/ThemeOverlay.ToolbarPopup">
 
             <TextView

@@ -270,7 +270,6 @@
 
     <style name="Settings.Version" parent="">
         <item name="android:fontFamily">sans-serif-medium</item>
-        <item name="android:padding">@dimen/padding_normal</item>
         <item name="android:textAllCaps">true</item>
     </style>
 
