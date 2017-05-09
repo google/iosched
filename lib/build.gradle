@@ -101,6 +101,8 @@ android {
         buildConfigField("String", "PREF_DATA_BOOTSTRAP_DONE", "\"pref_bootstrap_done_${conf_version}\"")
         buildConfigField("String", "KEYNOTE_SESSION_ID", "\"${keynote_session_id}\"")
 
+        buildConfigField("String", "NEW_FEED_ITEM", "\"new_feed_item\"")
+
         buildConfigField("com.google.android.gms.maps.model.LatLng", "MAP_VIEWPORT_NW",
                 "new com.google.android.gms.maps.model.LatLng(${map_viewport_nw})")
         buildConfigField("com.google.android.gms.maps.model.LatLng", "MAP_VIEWPORT_SE",
