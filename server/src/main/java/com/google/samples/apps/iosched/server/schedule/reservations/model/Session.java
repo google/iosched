@@ -25,6 +25,7 @@ public class Session {
   public long time_start;
   public long time_end;
   public String title;
+  public String room_name;
   public Map<String, Reservation> reservations;
   public Seats seats;
 
