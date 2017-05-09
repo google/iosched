@@ -359,7 +359,7 @@ public final class ScheduleContract {
 
     private static final String PATH_FEEDBACK = "feedback";
 
-    private static final String PATH_MY_SCHEDULE = "schedule";
+    private static final String PATH_MY_SCHEDULE = "my_schedule";
 
     private static final String PATH_MY_RESERVATION = "my_reservations";
 
