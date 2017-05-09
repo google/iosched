@@ -46,6 +46,16 @@
         <item quantity="other"><xliff:g id="num_sessions">%2$d</xliff:g> sessions are starting in <xliff:g id="remaining_time">%1$d</xliff:g> min.</item>
     </plurals>
 
+    <plurals name="duration_hours">
+        <item quantity="one">%s hour</item>
+        <item quantity="other">%s hours</item>
+    </plurals>
+
+    <plurals name="duration_minutes">
+        <item quantity="one">%s minute</item>
+        <item quantity="other">%s minutes</item>
+    </plurals>
+
     <!-- Shown in the 'About' window of the app. -->
     <string name="about_main"><![CDATA[
         <b>Google I/O 2016</b><br>

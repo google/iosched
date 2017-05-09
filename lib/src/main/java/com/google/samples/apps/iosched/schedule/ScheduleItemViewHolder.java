@@ -20,31 +20,52 @@ import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.View;
+import android.widget.TextView;
 
-import com.google.samples.apps.iosched.Config;
 import com.google.samples.apps.iosched.model.ScheduleItem;
 import com.google.samples.apps.iosched.util.TimeUtils;
 
 import java.util.Date;
 
+import static com.google.samples.apps.iosched.Config.Tags.SPECIAL_KEYNOTE;
+import static com.google.samples.apps.iosched.schedule.ScheduleItemViewHolder.SessionTimeFormat.DURATION;
+import static com.google.samples.apps.iosched.schedule.ScheduleItemViewHolder.SessionTimeFormat.SPAN;
 
-abstract class ScheduleItemViewHolder extends RecyclerView.ViewHolder {
+public abstract class ScheduleItemViewHolder extends RecyclerView.ViewHolder {
 
-    private static final StringBuilder mTmpStringBuilder = new StringBuilder();
-
-    ScheduleItemViewHolder(View itemView) {
-        super(itemView);
+    public enum SessionTimeFormat {
+        DURATION, SPAN
     }
 
-    String formatDescription(@NonNull Context context,
-            @NonNull final ScheduleItem item) {
+    private static final StringBuilder mTmpStringBuilder = new StringBuilder();
+    private final SessionTimeFormat mTimeFormat;
+
+    ScheduleItemViewHolder(View itemView, SessionTimeFormat timeFormat) {
+        super(itemView);
+        mTimeFormat = timeFormat;
+    }
+
+    void setDescription(@NonNull TextView descriptionView, @NonNull ScheduleItem item) {
+        descriptionView.setText(formatDescription(descriptionView.getContext(), item, mTimeFormat));
+        if (mTimeFormat != SPAN) {
+            // always use SPAN time format for content description for accessibility
+            descriptionView.setContentDescription(
+                    formatDescription(descriptionView.getContext(), item, SPAN));
+        }
+    }
+
+    private String formatDescription(@NonNull Context context, @NonNull ScheduleItem item,
+                                     SessionTimeFormat timeFormat) {
         final StringBuilder description = mTmpStringBuilder;
         mTmpStringBuilder.setLength(0); // clear the builder
-
-        description.append(TimeUtils.formatShortTime(context, new Date(item.startTime)));
-        if (!Config.Tags.SPECIAL_KEYNOTE.equals(item.mainTag)) {
-            description.append(" - ");
-            description.append(TimeUtils.formatShortTime(context, new Date(item.endTime)));
+        if (timeFormat == DURATION) {
+            description.append(TimeUtils.formatDuration(context, item.startTime, item.endTime));
+        } else if (timeFormat == SPAN) {
+            description.append(TimeUtils.formatShortTime(context, new Date(item.startTime)));
+            if (!SPECIAL_KEYNOTE.equals(item.mainTag)) {
+                description.append(" - ");
+                description.append(TimeUtils.formatShortTime(context, new Date(item.endTime)));
+            }
         }
         if (!TextUtils.isEmpty(item.room)) {
             description.append(" / ");

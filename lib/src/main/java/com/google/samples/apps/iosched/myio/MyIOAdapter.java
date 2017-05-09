@@ -45,6 +45,8 @@ import java.util.List;
 
 import io.doist.recyclerviewext.sticky_headers.StickyHeaders;
 
+import static com.google.samples.apps.iosched.schedule.ScheduleItemViewHolder.SessionTimeFormat.SPAN;
+
 
 class MyIOAdapter extends Adapter<ViewHolder> implements StickyHeaders, StickyHeaders.ViewSetup {
 
@@ -211,7 +213,7 @@ class MyIOAdapter extends Adapter<ViewHolder> implements StickyHeaders, StickyHe
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         switch (viewType) {
             case VIEW_TYPE_SESSION:
-                return SessionItemViewHolder.newInstance(parent, mCallbacks);
+                return SessionItemViewHolder.newInstance(parent, mCallbacks, SPAN);
             case VIEW_TYPE_NON_SESSION:
                 return NonSessionItemViewHolder.newInstance(parent);
             case VIEW_TYPE_SEPARATOR:

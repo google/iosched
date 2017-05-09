@@ -67,8 +67,9 @@ public class SessionItemViewHolder extends ScheduleItemViewHolder
     @Nullable
     private ScheduleItem mSession;
 
-    private SessionItemViewHolder(View itemView, final Callbacks callbacks) {
-        super(itemView);
+    private SessionItemViewHolder(View itemView, Callbacks callbacks,
+                                  SessionTimeFormat timeFormat) {
+        super(itemView, timeFormat);
         mCallbacks = callbacks;
         mTitle = (TextView) itemView.findViewById(R.id.slot_title);
         mReservationStatus = (TextView) itemView.findViewById(R.id.reserve_status);
@@ -123,10 +124,11 @@ public class SessionItemViewHolder extends ScheduleItemViewHolder
         };
     }
 
-    public static SessionItemViewHolder newInstance(ViewGroup parent, Callbacks callbacks) {
+    public static SessionItemViewHolder newInstance(ViewGroup parent, Callbacks callbacks,
+                                                    SessionTimeFormat timeFormat) {
         LayoutInflater inflater = LayoutInflater.from(parent.getContext());
         View itemView = inflater.inflate(R.layout.schedule_session_item, parent, false);
-        return new SessionItemViewHolder(itemView, callbacks);
+        return new SessionItemViewHolder(itemView, callbacks, timeFormat);
     }
 
     private void updateReservationStatus(ScheduleItem item) {
@@ -153,7 +155,7 @@ public class SessionItemViewHolder extends ScheduleItemViewHolder
 
         mTitle.setText(item.title);
         updateReservationStatus(item);
-        mDescription.setText(formatDescription(context, item));
+        setDescription(mDescription, item);
 
         mTagsHolder.removeAllViews();
         if (tagMetadata != null) {
