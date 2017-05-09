@@ -20,6 +20,7 @@
     <dimen name="spacing_normal">12dp</dimen>
     <dimen name="spacing_micro">8dp</dimen>
     <dimen name="padding_normal">24dp</dimen>
+    <dimen name="borderless_button_margin">8dp</dimen>
 
     <!-- UI elements -->
     <dimen name="action_button_min_width">64dp</dimen>

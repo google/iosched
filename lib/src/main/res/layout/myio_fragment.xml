@@ -51,8 +51,11 @@
 
         <android.support.v7.widget.RecyclerView
             android:id="@android:id/list"
-            android:layout_width="match_parent"
+            android:layout_width="@dimen/main_content_width"
             android:layout_height="match_parent"
+            android:layout_gravity="center_horizontal|top"
+            android:background="@color/content_background"
+            android:elevation="@dimen/card_elevation"
             android:scrollbarStyle="insideOverlay"
             android:scrollbars="vertical"
             tools:listitem="@layout/schedule_session_item" />
