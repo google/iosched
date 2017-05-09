@@ -27,6 +27,7 @@
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="?actionBarSize"
+        app:contentInsetStart="@dimen/padding_normal"
         app:popupTheme="@style/ThemeOverlay.ToolbarPopup">
 
         <TextView

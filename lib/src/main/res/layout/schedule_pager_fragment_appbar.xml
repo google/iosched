@@ -26,6 +26,7 @@
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="?actionBarSize"
+        app:contentInsetStart="@dimen/padding_normal"
         android:theme="@style/ThemeOverlay.DarkToolbar">
 
         <TextView
