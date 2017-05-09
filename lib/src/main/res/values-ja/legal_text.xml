@@ -15,5 +15,5 @@
   limitations under the License.
   -->
 <resources>
-  <string name="eula_legal_text">本アプリケーションのご使用にあたっては、以下が適用されます。a) Google サービス利用規約 (www.google.com/intl/jp/policies/terms/)、b) Google プライバシーポリシー (www.google.com/intl/jp/policies/privacy/)。\n</string>
+  <string name="eula_legal_text">本アプリケーションのご使用にあたっては、以下が適用されます。a) Google サービス利用規約 (www.google.com/intl/jp/policies/terms/ )、b) Google プライバシーポリシー (www.google.com/intl/jp/policies/privacy/ )。\n</string>
 </resources>

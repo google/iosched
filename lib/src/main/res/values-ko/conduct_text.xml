@@ -17,6 +17,6 @@
 <resources>
 
     <!-- Long-form text explaining the code of conduct for attending the conference in person -->
-    <string name="welcome_conduct_text">잠시 시간을 내셔서 Google의 이벤트 커뮤니티 가이드라인과 괴롭힘 방지 정책을 읽고 동의하세요(events.google.com/io/faq#communityguidelines). \n</string>
+    <string name="welcome_conduct_text">잠시 시간을 내셔서 Google의 이벤트 커뮤니티 가이드라인과 괴롭힘 방지 정책을 읽고 동의하세요(events.google.com/io/faq#communityguidelines ). \n</string>
 
 </resources>

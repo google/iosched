@@ -17,6 +17,6 @@
 <resources>
 
     <!-- Long-form text explaining the code of conduct for attending the conference in person -->
-    <string name="welcome_conduct_text">请花点时间阅读并确认 Google 的活动社区准则和反骚扰政策 (events.google.com/io/faq#communityguidelines)。\n</string>
+    <string name="welcome_conduct_text">请花点时间阅读并确认 Google 的活动社区准则和反骚扰政策 (events.google.com/io/faq#communityguidelines )。\n</string>
 
 </resources>

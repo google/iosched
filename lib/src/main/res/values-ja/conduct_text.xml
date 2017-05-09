@@ -17,6 +17,6 @@
 <resources>
 
     <!-- Long-form text explaining the code of conduct for attending the conference in person -->
-    <string name="welcome_conduct_text">Google のイベント コミュニティ ガイドラインとアンチ ハラスメント ポリシー（events.google.com/io/faq#communityguidelines）もご確認くださるようお願いします。\n</string>
+    <string name="welcome_conduct_text">Google のイベント コミュニティ ガイドラインとアンチ ハラスメント ポリシー（events.google.com/io/faq#communityguidelines ）もご確認くださるようお願いします。\n</string>
 
 </resources>
