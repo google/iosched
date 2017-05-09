@@ -18,29 +18,64 @@ package com.google.samples.apps.iosched.myio;
 import com.google.samples.apps.iosched.model.ScheduleItem;
 import com.google.samples.apps.iosched.model.TagMetadata;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 public class MyIOModel {
 
-    private List<ScheduleItem> mScheduleItems;
+    private List<ScheduleItem> mSessionItems;
+
+    private List<ScheduleItem> mBlockItems;
+
+    private List<ScheduleItem> mScheduleItems = new ArrayList<>();
 
     private TagMetadata mTagMetadata;
 
     MyIOModel() {}
 
-    public void setScheduleItems(List<ScheduleItem> scheduleItems) {
-        mScheduleItems = scheduleItems;
+    void setSessionItems(List<ScheduleItem> scheduleItems) {
+        mSessionItems = scheduleItems;
+        merge();
     }
 
-    public List<ScheduleItem> getScheduleItems() {
+    void setBlockItems(List<ScheduleItem> blockItems) {
+        mBlockItems = blockItems;
+        merge();
+    }
+
+    List<ScheduleItem> getScheduleItems() {
         return mScheduleItems;
     }
 
-    public void setTagMetadata(TagMetadata tagMetadata) {
+    void setTagMetadata(TagMetadata tagMetadata) {
         mTagMetadata = tagMetadata;
     }
 
-    public TagMetadata getTagMetadata() {
+    TagMetadata getTagMetadata() {
         return mTagMetadata;
+    }
+
+    /**
+     * Merges session and block items and sorts the merged collection.
+     */
+    private void merge() {
+        mScheduleItems.clear();
+
+        if (mBlockItems != null) {
+            mScheduleItems.addAll(mBlockItems);
+        }
+
+        if (mSessionItems != null) {
+            mScheduleItems.addAll(mSessionItems);
+        }
+
+        Collections.sort(mScheduleItems, new Comparator<ScheduleItem>() {
+            @Override
+            public int compare(ScheduleItem lhs, ScheduleItem rhs) {
+                return Long.compare(lhs.startTime, rhs.startTime);
+            }
+        });
     }
 }

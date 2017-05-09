@@ -182,7 +182,7 @@ class MyIOAdapter extends Adapter<ViewHolder> implements StickyHeaders, StickyHe
     public long getItemId(int position) {
         Object item = mItems.get(position);
         if (item instanceof ScheduleItem) {
-            return ((ScheduleItem) item).sessionId.hashCode();
+            return item.hashCode();
         }
         if (item instanceof DaySeparator) {
             return ((DaySeparator) item).mStartTime;

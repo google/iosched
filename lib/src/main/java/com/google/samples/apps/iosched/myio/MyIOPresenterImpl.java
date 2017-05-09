@@ -33,6 +33,7 @@ import java.util.List;
 public class MyIOPresenterImpl implements MyIoPresenter {
     private static final int LOADER_SCHEDULE = 1;
     private static final int LOADER_TAG_METADATA = 2;
+    private static final int LOADER_BLOCKS = 3;
 
     private Context mContext;
     private MyIoView mView;
@@ -48,12 +49,14 @@ public class MyIOPresenterImpl implements MyIoPresenter {
     public void initModel(LoaderManager loaderManager) {
         loaderManager.initLoader(LOADER_SCHEDULE, null, mSessionsLoaderCallbacks);
         loaderManager.initLoader(LOADER_TAG_METADATA, null, mTagMetadataLoaderCallbacks);
+        loaderManager.initLoader(LOADER_BLOCKS, null, mBlocksLoaderCallbacks);
     }
 
     @Override
     public void refreshUI(LoaderManager loaderManager) {
         loaderManager.restartLoader(LOADER_SCHEDULE, null, mSessionsLoaderCallbacks);
         loaderManager.restartLoader(LOADER_TAG_METADATA, null, mTagMetadataLoaderCallbacks);
+        loaderManager.restartLoader(LOADER_BLOCKS, null, mBlocksLoaderCallbacks);
     }
 
     // -- LoaderCallbacks implementations
@@ -68,16 +71,40 @@ public class MyIOPresenterImpl implements MyIoPresenter {
 
         @Override
         public void onLoadFinished(Loader<List<ScheduleItem>> loader, List<ScheduleItem> data) {
-            mModel.setScheduleItems(data);
+            mModel.setSessionItems(data);
             mView.onScheduleLoaded(mModel);
         }
 
         @Override
         public void onLoaderReset(Loader<List<ScheduleItem>> loader) {
-            mModel.setScheduleItems(null);
+            mModel.setSessionItems(null);
             mView.onScheduleLoaded(mModel);
         }
     };
+
+
+    private LoaderCallbacks<List<ScheduleItem>> mBlocksLoaderCallbacks =
+            new LoaderCallbacks<List<ScheduleItem>>() {
+
+                @Override
+                public Loader<List<ScheduleItem>> onCreateLoader(int id, Bundle args) {
+                    return new CursorModelLoader<>(mContext, new MyIOBlocksCursorTransform());
+                }
+
+                @Override
+                public void onLoadFinished(Loader<List<ScheduleItem>> loader, List<ScheduleItem> data) {
+                    mModel.setBlockItems(data);
+                    mView.onScheduleLoaded(mModel);
+                }
+
+                @Override
+                public void onLoaderReset(Loader<List<ScheduleItem>> loader) {
+                    mModel.setBlockItems(null);
+                    mView.onScheduleLoaded(mModel);
+                }
+            };
+
+
 
     private LoaderCallbacks<TagMetadata> mTagMetadataLoaderCallbacks =
             new LoaderCallbacks<TagMetadata>() {
@@ -95,7 +122,7 @@ public class MyIOPresenterImpl implements MyIoPresenter {
 
         @Override
         public void onLoaderReset(Loader<TagMetadata> loader) {
-            mModel.setScheduleItems(null);
+            mModel.setSessionItems(null);
             mView.onTagMetadataLoaded(mModel);
         }
     };
