@@ -14,7 +14,7 @@
   See the License for the specific language governing permissions and
   limitations under the License.
   -->
-<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2" xmlns:tools="http://schemas.android.com/tools">
+<resources xmlns:tools="http://schemas.android.com/tools" xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
 
     <plurals name="schedule_block_subtitle"
              description="Shown in the schedule to indicate how many sessions are available on that particular time slot.">
@@ -109,7 +109,7 @@
 
     <!-- Shown on Configure WiFi dialog, instructing user on what button to click. -->
     <string name="calltoaction_wifi_settings"><![CDATA[
-        <br><br>แตะ \'เปิดการตั้งค่า Wi-Fi \' เพื่อเปิดใช้งาน Wi-Fi.    
+        <br><br>แตะ \'เปิดการตั้งค่า Wi-Fi \' เพื่อเปิดใช้งาน Wi-Fi
     ]]></string>
 
     <!-- Accessibility description for a control that allows the user to close the current screen
@@ -183,7 +183,7 @@
 
     <!-- Shown on a widget that normally displays upcoming sessions. This is shown after the
     conference, when there are no more sessions to show. -->
-    <string name="empty_widget_text">ไม่มีเซสชั่นที่กำลังจะเริ่มขึ้น\nพบกันใหม่ปีหน้า!</string>
+    <string name="empty_widget_text">ไม่มีเซสชั่นเพิ่มเติม\nพบกันใหม่ปีหน้า</string>
 
     <!-- Label for a button to answer the question "Would you like to send feedback
     about this session?" which, when clicked, allows the user to send their feedback (ratings
@@ -220,7 +220,7 @@
     <string name="more_items_button">เพิ่มเติม</string>
 
     <!-- Text for the title of an extra schedule item on the pre conference day -->
-    <string name="my_schedule_badgepickup">การรับแบดจ์</string>
+    <string name="my_schedule_badgepickup">การรับบัตร</string>
 
     <!-- Text for the description of an extra schedule item on the pre conference day -->
     <string name="my_schedule_badgepickup_description">จุดลงทะเบียน</string>
@@ -230,6 +230,15 @@
 
     <!-- Accessibility announcement for an item in the custom feedback rating view. For example, "one star".  -->
     <string name="feedback_rating_value">%1$d ดาว</string>
+
+    <!-- Text that shows session is reserved on Schedule and My I/O -->
+    <string name="schedule_item_reserved">จองแล้ว</string>
+
+    <!-- Text that shows session is not reserved on Schedule and My I/O -->
+    <string name="schedule_item_not_reserved">ไม่ได้จอง</string>
+
+    <!-- Text that shows session is waitlisted on Schedule and My I/O -->
+    <string name="schedule_item_waitlisted">รายการรอ</string>
 
     <!-- Label for the button to rate a session -->
     <string name="my_schedule_rate_this_session">ให้คะแนนเซสชั่นนี้</string>
@@ -327,7 +336,7 @@
     <string name="navdrawer_item_info">ข้อมูล</string>
 
     <!-- Menu item to open the My I/O screen [CHAR_LIMIT=20] -->
-    <string name="navdrawer_item_my_io">My I/O</string>
+    <string name="navdrawer_item_my_io">I/O ของฉัน</string>
 
     <!-- Menu item to open the My Schedule screen [CHAR_LIMIT=20] -->
     <string name="navdrawer_item_my_schedule">กำหนดการ</string>
@@ -357,7 +366,7 @@
 
     <string name="pref_conf_message_cards_enabled_description"
             description="Description in the Settings screen for the setting that enables display of
-            cards with conference information in the explore screen.">แสดงการ์ดพร้อมข้อมูลการประชุมบนหน้าจอ Explore ซึ่งอิงตามเวลาและอาจมีข้อความส่งเสริมการขายจากคู่ค้า</string>
+            cards with conference information in the explore screen.">แสดงการ์ดพร้อมข้อมูลการประชุมบนหน้าจอสำรวจ ซึ่งอิงตามเวลาและอาจมีข้อความส่งเสริมการขายจากคู่ค้า</string>
 
     <!-- Title in the Settings screen for the setting that enables display of cards with
      conference information in the explore screen. -->
@@ -516,7 +525,7 @@
     <string name="session_subtitle"><xliff:g id="time">%1$s</xliff:g> ใน <xliff:g id="room">%2$s</xliff:g></string>
 
     <!-- Re-share template text indicating the user is at a particular session -->
-    <string name="share_template">เช็คเอาท์ \'<xliff:g id="title">%1$s</xliff:g>\' ที่ <xliff:g id="hashtags">%2$s</xliff:g> <xliff:g id="url">%3$s</xliff:g></string>
+    <string name="share_template">ตรวจสอบ \'<xliff:g id="title">%1$s</xliff:g>\' ได้ที่ <xliff:g id="hashtags">%2$s</xliff:g> <xliff:g id="url">%3$s</xliff:g></string>
 
     <!-- Notification action text for snoozing the notification for some number of minutes -->
     <string name="snooze_x_min">เลื่อนการเตือน <xliff:g id="remaining_time">%1$d</xliff:g> นาที</string>
@@ -534,10 +543,10 @@
     <string name="time_hint_session_ended">เซสชั่นนี้จบแล้ว</string>
 
     <!-- Text indicating the session just started -->
-    <string name="time_hint_started_just">กำลังดำเนินการเซสชั่นนี้ในขณะนี้! (เพิ่งจะเริ่ม)</string>
+    <string name="time_hint_started_just">กำลังดำเนินการเซสชั่นนี้ในขณะนี้ (เพิ่งจะเริ่ม)</string>
 
     <!-- Text indicating the session is in progress but has not completed -->
-    <string name="time_hint_started_min">กำลังดำเนินการเซสชั่นนี้ในขณะนี้! (เริ่มไปแล้วเมื่อ <xliff:g id="minutes">%1$d</xliff:g> นาทีที่แล้ว)</string>
+    <string name="time_hint_started_min">กำลังดำเนินการเซสชั่นนี้ในขณะนี้ (เริ่มไปแล้วเมื่อ <xliff:g id="minutes">%1$d</xliff:g> นาทีที่แล้ว)</string>
 
     <!-- Title text for dialog screen about the application -->
     <string name="title_about">เกี่ยวกับ</string>
@@ -549,10 +558,10 @@
     <string name="title_map">แผนที่</string>
 
     <!-- Navigation bar text for viewing the user's My I/O -->
-    <string name="title_my_io">My I/O</string>
+    <string name="title_my_io">I/O ของฉัน</string>
 
     <!-- Navigation bar text for viewing the user's schedule -->
-    <string name="title_my_schedule">กำหนดการ</string>
+    <string name="title_schedule">กำหนดการ</string>
 
     <!-- Navigation bar text for viewing the Feed -->
     <string name="title_feed">เนื้อหาสรุป</string>
@@ -597,10 +606,10 @@
     <string name="unknown_room">(ห้องที่ไม่ระบุ)</string>
 
     <!-- Text for a button which allows the user to watch this particular session on live stream. -->
-    <string name="watch_now">ดูตอนนี้!</string>
+    <string name="watch_now">ดูตอนนี้</string>
 
     <!-- Short text welcoming the user to the application -->
-    <string name="welcome_to_google_i_o_app">ยินดีต้อนรับสู่แอพมือถือ #io17!</string>
+    <string name="welcome_to_google_i_o">ยินดีต้อนรับสู่ #io17</string>
 
     <!-- Medium-length welcome text indicating the subsequent text is important legal information -->
     <string name="welcome_text">ก่อนเริ่มต้นใช้งาน นี่คือข้อมูลทางกฎหมายที่สำคัญที่เกี่ยวข้องกับการใช้งานแอพนี้</string>
@@ -623,9 +632,6 @@
     <!-- Text for a button which will open the user's Wi-Fi settings -->
     <string name="wifi_dialog_button_settings">เปิดการตั้งค่า Wi-Fi</string>
 
-    <!-- Toast failure message if the user's wifi couldn't be updated -->
-    <string name="wifi_install_error_message">ขออภัย ไม่สามารถอัพเดทการกำหนดค่า Wi-Fi</string>
-
     <!-- Title of the Video library screen when only videos of a given topic are displayed -->
     <string name="title_topic_filtered_video_library">วิดีโอเกี่ยวกับ <xliff:g id="topic">%1$s</xliff:g></string>
 
@@ -638,8 +644,11 @@
     <!-- Text of the Filter menu icon -->
     <string name="description_filter">ตัวกรอง</string>
 
-    <!-- Text of the My I/O menu icon -->
-    <string name="description_avatar">อวาตาร์</string>
+    <!-- Text of the My I/O avatar icon whilst signed out -->
+    <string name="description_avatar_signed_out">ลงชื่อเข้าใช้</string>
+
+    <!-- Text of the My I/O avatar icon whilst signed in -->
+    <string name="description_avatar_signed_in">ลงชื่อออก</string>
 
     <!-- Title of the Video library side panel containing all the filters -->
     <string name="title_video_library_filter">ตัวกรอง</string>
@@ -689,11 +698,11 @@
          can watch a video but it turns out we can't show the video. -->
     <string name="explore_io_video_id_not_valid">ขออภัย เกิดปัญหาบางอย่างกับ URL วิดีโอ</string>
 
-    <string description="This string is presented as a header message on a user interface card
+    <string name="explore_io_on_the_ground_title"
+            description="This string is presented as a header message on a user interface card
          element. The card element has sub-cards that explain a few logistical details for
          attendees. 'On the Ground' is slang in English indicating 'What you need to know when
-         you're in the middle of the conference.'"
-            name="explore_io_on_the_ground_title">บนภาคพื้นดิน</string>
+         you're in the middle of the conference.'">ฝึกปฏิบัติจริง</string>
 
     <!-- Error message that is displayed when we aren't able to connect to Google Play Services,
          potentially due to a server error or loss of network connectivity. -->
@@ -705,7 +714,7 @@
     <string name="google_play_services_failed">ขออภัย การเชื่อมต่อบริการ Google Play ไม่สำเร็จ</string>
 
     <!-- Message displayed to users as part of onboarding sign in. -->
-    <string name="signin_message">ลงชื่อเข้าใช้เพื่อซิงค์กิจกรรมที่บันทึกไว้แล้วจองเซสชั่นจากบัญชีของคุณทั้งบนมือถือและเดสก์ท็อป คุณจะยังคงสามารถบันทึกกิจกรรมในเครื่องได้โดยไม่ต้องลงชื่อเข้าใช้</string>
+    <string name="signin_message">ลงชื่อเข้าใช้เพื่อจองที่นั่งล่วงหน้าสำหรับกิจกรรม, ซิงค์กิจกรรมที่บันทึกและจองไว้โดยใช้บัญชีของคุณได้ทั้งในมือถือและเดสก์ท็อป รวมถึงแสดงความคิดเห็นเมื่อเซสชั่นสิ้นสุด คุณจะยังคงสามารถบันทึกกิจกรรมในเครื่องได้โดยไม่ต้องลงชื่อเข้าใช้</string>
 
     <!-- Label used when asking a user to sign in. -->
     <string name="signin_prompt">ลงชื่อเข้าใช้</string>
@@ -721,7 +730,12 @@
 
     <!-- Text shown on the onboarding screen asking users if they want conference notifications. -->
     <string name="onboarding_notifications_opt_in">
-        คุณต้องการรับการแจ้งเตือนแอพเกี่ยวกับ I/O หรือไม่\n เราจะส่งข้อมูลสำคัญเกี่ยวกับกิจกรรมนี้, วาระการประชุม, กำหนดการ, การเดินทาง, นอกเวลาทำการ, บันทึกเซสชั่น และอื่นๆ ให้กับคุณ คุณสามารถเปลี่ยนการตั้งค่านี้ที่ \"ข้อมูล &gt; การตั้งค่า\" ได้ทุกเวลา  
+        คุณต้องการรับการแจ้งเตือนเกี่ยวกับ I/O หรือไม่\nเราจะส่งข้อมูลสำคัญเกี่ยวกับกิจกรรมนี้, วาระการประชุม, กำหนดการ, การเดินทาง, นอกเวลาทำการ, บันทึกเซสชั่น และอื่นๆ ให้กับคุณ คุณสามารถเปลี่ยนการตั้งค่านี้ที่ \"ข้อมูล &gt; การตั้งค่า\" ได้ทุกเวลา
+    </string>
+
+    <!-- Text shown on the onboarding sign-in screen. -->
+    <string name="onboarding_sign_in">
+        คุณต้องการลงชื่อเข้าใช้เพื่อจองที่นั่งล่วงหน้าสำหรับกิจกรรม ซิงค์กิจกรรมที่บันทึกไว้โดยใช้บัญชีของคุณได้ทั้งในมือถือและเดสก์ท็อป รวมถึงแสดงความคิดเห็นเมื่อเซสชั่นสิ้นสุดหรือไม่ คุณจะยังคงสามารถบันทึกกิจกรรมในเครื่องได้โดยไม่ต้องลงชื่อเข้าใช้ แต่ข้อมูลจะไม่ถูกซิงค์กับบัญชีของคุณ\n\nข้อสำคัญ: ในการจองที่นั่งในงาน คุณต้องลงชื่อเข้าใช้ด้วยที่อยู่อีเมลเดียวกันกับที่คุณใช้ลงทะเบียน Google I/O
     </string>
 
     <!-- Message displayed in a card to the user on the My I/O screen after they have signed in. -->
@@ -741,37 +755,41 @@
     <!-- Button for finding quickly navigating from a day within My I/O to the relevant day within
     schedule -->
     <string name="add_events">เพิ่มกิจกรรม</string>
-
-    <!-- A placeholder value for the user's name in the My I/O dialog -->
-    <string name="my_io_dialog_default_name">ชื่อของคุณ</string>
-
-    <!-- A placeholder value for the user's email in the My I/O dialog -->
-    <string name="my_io_dialog_default_email">you@gmail.com</string>
-
+\
     <!-- An introductory string used in the My I/O dialog to a signed out user  -->
     <string name="my_io_body_intro_signed_out">ลงชื่อเข้าใช้ไปยัง:</string>
 
     <!-- An introductory string used in the My I/O dialog to a signed in user  -->
-    <string name="my_io_body_intro_signed_in">เป็นผู้ใช้ที่ลงชื่อเข้าใช้แล้ว:</string>
+    <string name="my_io_body_intro_signed_in">ในฐานะผู้ใช้ที่ลงชื่อเข้าใช้แล้ว:</string>
 
     <!-- The first bulletpoint string used in the My I/O dialog to a signed out user  -->
     <string name="my_io_dialog_first_bullet_point_signed_out">
-        \u2022 ซิงค์กิจกรรมที่บันทึกและเซสชั่นที่จองแล้วในบัญชีของคุณทั้งบนเดสก์ท็อปและมือถือ
+        จองที่นั่งล่วงหน้าเพื่อเข้าร่วมกิจกรรม
     </string>
 
     <!-- The first bulletpoint string used in the My I/O dialog to a signed in user  -->
     <string name="my_io_dialog_first_bullet_point_signed_in">
-        \u2022 กิจกรรมที่บันทึกและเซสชั่นที่จองแล้วของคุณจะถูกซิงค์ไปยังบัญชีของคุณทั้งบนเดสก์ท็อปและมือถือ
+        คุณสามารถจองที่นั่งล่วงหน้าเพื่อเข้าร่วมกิจกรรม (ไม่เกินหนึ่งรายการต่อหนึ่งช่วงเวลา)
     </string>
 
     <!-- The second bulletpoint string used in the My I/O dialog to a signed out user  -->
     <string name="my_io_dialog_second_bullet_point_signed_out">
-        \u2022 แสดงคำติชมเซสชั่นหลังจากเซสชั่นสิ้นสุดลง
+        ซิงค์กิจกรรมที่คุณบันทึกและจองไว้ได้จากบัญชีของคุณทั้งบนมือถือและเดสก์ท็อป
     </string>
 
     <!-- The second bulletpoint string used in the My I/O dialog to a signed in user  -->
     <string name="my_io_dialog_second_bullet_point_signed_in">
-        \u2022 คุณสามารถแสดงคำติชมเซสชั่นหลังจากเซสชั่นสิ้นสุดลง
+        กิจกรรมที่คุณบันทึกและจองไว้จะถูกซิงค์จากบัญชีของคุณทั้งบนมือถือและเดสก์ท็อป
+    </string>
+
+    <!-- The third bulletpoint string used in the My I/O dialog to a signed out user  -->
+    <string name="my_io_dialog_third_bullet_point_signed_out">
+        แสดงคำติชมเซสชั่นหลังจากเซสชั่นสิ้นสุดลง
+    </string>
+
+    <!-- The third bulletpoint string used in the My I/O dialog to a signed in user  -->
+    <string name="my_io_dialog_third_bullet_point_signed_in">
+        คุณสามารถแสดงคำติชมเซสชั่นหลังจากเซสชั่นสิ้นสุดลง
     </string>
 
     <!-- Message shown when a user initiated sign in fails. -->
@@ -783,20 +801,27 @@
     <!-- Strings for Info page-->
     <string name="wifi_network_label">เครือข่าย Wi-Fi</string>
     <string name="wifi_password_label">รหัสผ่าน</string>
-    <string name="setup_wifi">ตั้งค่า Wi-Fi</string>
-    <string name="password_copied_confirmation">คัดลอกรหัสผ่านแล้ว</string>
+    <string name="setup_wifi">บันทึกเครือข่าย Wi-Fi</string>
+
+    <!-- Snackbar message confirming save of wifi network -->
+    <string name="wifi_install_success">บันทึกเครือข่าย Wi-Fi แล้ว</string>
+
+    <!-- Snackbar message if failed to save the wifi network -->
+    <string name="wifi_install_error_message">ขออภัย ไม่สามารถบันทึกเครือข่าย Wi-Fi</string>
+
     <string name="view_sessions_text">ดูเซสชั่น</string>
     <string name="view_map_text">ดูแผนที่</string>
-    <!-- TODO make these URLs the correct deep link -->
+
     <string name="event_sandbox_title">Sandbox</string>
-    <string name="event_codelabs_title">Code Labs</string>
+    <string name="event_codelabs_title">Codelabs</string>
     <string name="event_officehours_title">เวลาทำการและการรีวิวแอพ</string>
     <string name="event_afterhours_title">นอกเวลาทำการ</string>
     <string name="travel_details_title">รายละเอียดการเดินทาง</string>
     <string name="travel_shuttle_info_title">บริการรถรับส่ง</string>
-    <string name="travel_carpool_parking_info_title">การใช้รถร่วมกันและที่จอดรถ</string>
+    <string name="travel_carpool_parking_info_title">ที่จอดรถและการใช้รถร่วมกัน</string>
     <string name="travel_public_transportation_info_title">ระบบขนส่งสาธารณะ</string>
     <string name="travel_biking_info_title">การขี่จักรยาน</string>
+    <string name="travel_ride_sharing_info_title">การร่วมเดินทาง</string>
     <string name="settings_time_zone_label">แสดงกิจกรรมตามเวลาแปซิฟิก (PT)</string>
     <string name="settings_enable_notifications">เปิดใช้งานการแจ้งเตือน</string>
     <string name="settings_enable_anon_statistics">ส่งสถิติการใช้แบบไม่ระบุชื่อ</string>
@@ -806,7 +831,26 @@
 
     <string name="feed_error">การโหลดเนื้อหาสรุปมีข้อผิดพลาด</string>
 
+    <!-- Button text indicating that the session can be added to the user's bookmarks. -->
+    <string name="add_bookmark">เพิ่มบุ๊กมาร์ก</string>
+    
+    <!-- Button text indicating that the session can be removed from the user's bookmarks. -->
+    <string name="remove_bookmark">ลบบุ๊กมาร์ก</string>
 
-    <!-- RemoteConfig keys for Feed default messages -->
+    <!-- Hint text indicating bookmarked sessions are added to My I/O. -->
+    <string name="add_bookmark_hint">บันทึกกิจกรรมใน I/O ของฉันแล้ว</string>
 
+    <!-- Hint text indicating unbookmarked sessions are removed from My I/O. -->
+    <string name="remove_bookmark_hint">ลบกิจกรรมจาก I/O ของฉันแล้ว</string>
+
+    <!-- Opt-out text to stop seeing bookmark related hints. -->
+    <string name="bookmark_hint_optout">เข้าใจแล้ว</string>
+
+    <!-- The label used on a button when a view is in an expanded state. Clicking on the icon
+    collapses the view. -->
+    <string name="expanded">ขยายแล้ว</string>
+
+    <!-- The label used on a button when a view is in an collapsed state. Clicking on the icon
+    expanded the view. -->
+    <string name="collapsed">ยุบแล้ว</string>
 </resources>

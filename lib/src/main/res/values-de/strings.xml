@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <!--
   Copyright 2017 Google Inc. All rights reserved.
 
@@ -14,7 +14,7 @@
   See the License for the specific language governing permissions and
   limitations under the License.
   -->
-<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2" xmlns:tools="http://schemas.android.com/tools">
+<resources xmlns:tools="http://schemas.android.com/tools" xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
 
     <plurals name="schedule_block_subtitle"
              description="Shown in the schedule to indicate how many sessions are available on that particular time slot.">
@@ -183,7 +183,7 @@
 
     <!-- Shown on a widget that normally displays upcoming sessions. This is shown after the
     conference, when there are no more sessions to show. -->
-    <string name="empty_widget_text">Keine bevorstehenden Sitzungen mehr.\nWir sehen uns nächstes Jahr wieder!</string>
+    <string name="empty_widget_text">Keine anstehenden Sitzungen mehr.\nBis nächstes Jahr!</string>
 
     <!-- Label for a button to answer the question "Would you like to send feedback
     about this session?" which, when clicked, allows the user to send their feedback (ratings
@@ -229,7 +229,16 @@
     <string name="feedback_rating_confirmation">Ihre Bewertung: %1$d von %2$d Sternen"</string>
 
     <!-- Accessibility announcement for an item in the custom feedback rating view. For example, "one star".  -->
-    <string name="feedback_rating_value">%1$d-Sterne</string>
+    <string name="feedback_rating_value">%1$d Stern</string>
+
+    <!-- Text that shows session is reserved on Schedule and My I/O -->
+    <string name="schedule_item_reserved">Reserviert</string>
+
+    <!-- Text that shows session is not reserved on Schedule and My I/O -->
+    <string name="schedule_item_not_reserved">Nicht reserviert</string>
+
+    <!-- Text that shows session is waitlisted on Schedule and My I/O -->
+    <string name="schedule_item_waitlisted">Auf der Warteliste</string>
 
     <!-- Label for the button to rate a session -->
     <string name="my_schedule_rate_this_session">DIESE SITZUNG BEWERTEN</string>
@@ -552,7 +561,7 @@
     <string name="title_my_io">Meine I/O</string>
 
     <!-- Navigation bar text for viewing the user's schedule -->
-    <string name="title_my_schedule">Zeitplan</string>
+    <string name="title_schedule">Zeitplan</string>
 
     <!-- Navigation bar text for viewing the Feed -->
     <string name="title_feed">Datenfeed</string>
@@ -600,7 +609,7 @@
     <string name="watch_now">Jetzt ansehen!</string>
 
     <!-- Short text welcoming the user to the application -->
-    <string name="welcome_to_google_i_o_app">Willkommen bei der Google I/O 2017-App!</string>
+    <string name="welcome_to_google_i_o">Willkommen bei #io17</string>
 
     <!-- Medium-length welcome text indicating the subsequent text is important legal information -->
     <string name="welcome_text">Bevor wir beginnen, erhalten Sie noch einige wichtige rechtliche Informationen zur Nutzung der App. Dies dauert nur einen Augenblick!</string>
@@ -623,9 +632,6 @@
     <!-- Text for a button which will open the user's Wi-Fi settings -->
     <string name="wifi_dialog_button_settings">WLAN-Einstellungen öffnen</string>
 
-    <!-- Toast failure message if the user's wifi couldn't be updated -->
-    <string name="wifi_install_error_message">Kann leider WiFi-Konfiguration nicht aktualisieren</string>
-
     <!-- Title of the Video library screen when only videos of a given topic are displayed -->
     <string name="title_topic_filtered_video_library">Videos zum Thema <xliff:g id="topic">%1$s</xliff:g></string>
 
@@ -638,8 +644,11 @@
     <!-- Text of the Filter menu icon -->
     <string name="description_filter">Filter</string>
 
-    <!-- Text of the My I/O menu icon -->
-    <string name="description_avatar">Avatar</string>
+    <!-- Text of the My I/O avatar icon whilst signed out -->
+    <string name="description_avatar_signed_out">Anmelden</string>
+
+    <!-- Text of the My I/O avatar icon whilst signed in -->
+    <string name="description_avatar_signed_in">Abmelden</string>
 
     <!-- Title of the Video library side panel containing all the filters -->
     <string name="title_video_library_filter">Filter</string>
@@ -689,11 +698,11 @@
          can watch a video but it turns out we can't show the video. -->
     <string name="explore_io_video_id_not_valid">Leider gibt es mit der Video-URL ein Problem.</string>
 
-    <string description="This string is presented as a header message on a user interface card
+    <string name="explore_io_on_the_ground_title"
+            description="This string is presented as a header message on a user interface card
          element. The card element has sub-cards that explain a few logistical details for
          attendees. 'On the Ground' is slang in English indicating 'What you need to know when
-         you're in the middle of the conference.'"
-            name="explore_io_on_the_ground_title">Vor Ort</string>
+         you're in the middle of the conference.'">Vor Ort</string>
 
     <!-- Error message that is displayed when we aren't able to connect to Google Play Services,
          potentially due to a server error or loss of network connectivity. -->
@@ -705,7 +714,7 @@
     <string name="google_play_services_failed">Es konnte keine Verbindung zu den Google Play-Diensten hergestellt werden</string>
 
     <!-- Message displayed to users as part of onboarding sign in. -->
-    <string name="signin_message">Melden Sie sich an, um gespeicherte Veranstaltungen und reservierte Sitzungen über das Konto mit allen Ihren Mobil- und Desktopgeräten zu synchronisieren. Ohne Anmeldung können Sie Veranstaltungen weiterhin lokal speichern.</string>
+    <string name="signin_message">Melden Sie sich an, um Veranstaltungen vorab zu reservieren, gespeicherte und reservierte Veranstaltungen über das Konto mit Ihren Mobil- und Desktopgeräten zu synchronisieren und nach den Sitzungen Feedback abzugeben. Ohne Anmeldung können Sie Veranstaltungen lokal speichern.</string>
 
     <!-- Label used when asking a user to sign in. -->
     <string name="signin_prompt">Anmelden</string>
@@ -721,12 +730,17 @@
 
     <!-- Text shown on the onboarding screen asking users if they want conference notifications. -->
     <string name="onboarding_notifications_opt_in">
-        Möchten Sie App-Benachrichtigungen zur I/O erhalten?\n Wir senden Ihnen alles Wissenswerte zur Veranstaltung, zu den Themen, zum Ablauf, zur Anreise, zu Aftershow-Events, zu aufgezeichneten Sitzungen usw. Unter \"Info &gt; Einstellungen\" können Sie diese Einstellung jederzeit ändern.
+        Möchten Sie Benachrichtigungen zur I/O erhalten?\nWir senden Ihnen alles Wissenswerte zur Veranstaltung, zu den Themen, zum Ablauf, zur Anreise, zu Aftershow-Events, zu aufgezeichneten Sitzungen usw. Unter \"Info &gt; Einstellungen\" können Sie diese Einstellung jederzeit ändern.
+    </string>
+
+    <!-- Text shown on the onboarding sign-in screen. -->
+    <string name="onboarding_sign_in">
+        Möchten Sie sich anmelden, um vorab Veranstaltungen zu reservieren, gespeicherte und reservierte Veranstaltungen über das Konto mit Ihren Mobil- und Desktopgeräten zu synchronisieren und nach den Sitzungen Feedback abzugeben? Ohne Anmeldung können Sie Veranstaltungen weiterhin lokal speichern, die Informationen werden aber nicht mit Ihrem Konto synchronisiert.\n\nWICHTIG: Um Veranstaltungen zu reservieren, müssen Sie sich mit derselben E-Mail-Adresse anmelden, die Sie bei der Registrierung für Google I/O verwendet haben.
     </string>
 
     <!-- Message displayed in a card to the user on the My I/O screen after they have signed in. -->
     <string name="signed_in_card_message">
-        Ihre gespeicherten und reservierten Veranstaltungen sind unten aufgeführt und werden über das Konto mit allen Ihren Mobil- und Desktopgeräten synchronisiert.
+        Ihre gespeicherten und reservierten Veranstaltungen sind unten aufgeführt und werden über das Konto mit Ihren Mobil- und Desktopgeräten synchronisiert.
     </string>
 
     <!-- Label used when asking a user to sign out. -->
@@ -741,37 +755,41 @@
     <!-- Button for finding quickly navigating from a day within My I/O to the relevant day within
     schedule -->
     <string name="add_events">Veranstaltungen hinzufügen</string>
-
-    <!-- A placeholder value for the user's name in the My I/O dialog -->
-    <string name="my_io_dialog_default_name">Name</string>
-
-    <!-- A placeholder value for the user's email in the My I/O dialog -->
-    <string name="my_io_dialog_default_email">ich@gmail.com</string>
-
+\
     <!-- An introductory string used in the My I/O dialog to a signed out user  -->
-    <string name="my_io_body_intro_signed_out">Anmelden in:</string>
+    <string name="my_io_body_intro_signed_out">Anmelden und:</string>
 
     <!-- An introductory string used in the My I/O dialog to a signed in user  -->
     <string name="my_io_body_intro_signed_in">Als angemeldeter Nutzer:</string>
 
     <!-- The first bulletpoint string used in the My I/O dialog to a signed out user  -->
     <string name="my_io_dialog_first_bullet_point_signed_out">
-        \u2022 Im Konto gespeicherte Veranstaltungen und reservierte Sitzungen mit Mobil- und Desktopgeräten synchronisieren
+        Veranstaltungen vorab reservieren
     </string>
 
     <!-- The first bulletpoint string used in the My I/O dialog to a signed in user  -->
     <string name="my_io_dialog_first_bullet_point_signed_in">
-        \u2022 Ihre im Konto gespeicherten Veranstaltungen und reservierten Sitzungen werden mit allen Ihren Mobil- und Desktopgeräten synchronisiert
+        Sie können Veranstaltungen vorab reservieren (maximal eine Reservierung pro Zeitblock).
     </string>
 
     <!-- The second bulletpoint string used in the My I/O dialog to a signed out user  -->
     <string name="my_io_dialog_second_bullet_point_signed_out">
-        \u2022 Feedback zu abgeschlossenen Sitzungen abgeben
+        Ihre gespeicherten und reservierten Veranstaltungen über das Konto mit Ihren Mobil- und Desktopgeräten synchronisieren.
     </string>
 
     <!-- The second bulletpoint string used in the My I/O dialog to a signed in user  -->
     <string name="my_io_dialog_second_bullet_point_signed_in">
-        \u2022 Nach einer Sitzung können Sie Feedback abgeben
+        Ihre gespeicherten und reservierten Veranstaltungen werden über das Konto mit Ihren Mobil- und Desktopgeräten synchronisiert.
+    </string>
+
+    <!-- The third bulletpoint string used in the My I/O dialog to a signed out user  -->
+    <string name="my_io_dialog_third_bullet_point_signed_out">
+        Nach den Sitzungen Feedback abgeben.
+    </string>
+
+    <!-- The third bulletpoint string used in the My I/O dialog to a signed in user  -->
+    <string name="my_io_dialog_third_bullet_point_signed_in">
+        Nach den Sitzungen können Sie Feedback zu den einzelnen Sitzungen hinterlassen.
     </string>
 
     <!-- Message shown when a user initiated sign in fails. -->
@@ -781,22 +799,31 @@
     <string name="signout_failed_text">Fehler bei der Abmeldung. Bitte versuchen Sie es erneut.</string>
 
     <!-- Strings for Info page-->
-    <string name="wifi_network_label">WLAN</string>
+    <string name="wifi_network_label">WLAN-Netzwerk</string>
     <string name="wifi_password_label">Passwort</string>
-    <string name="setup_wifi">WLAN einrichten</string>
-    <string name="password_copied_confirmation">Passwort kopiert</string>
+    <string name="setup_wifi">WLAN-Netzwerk speichern</string>
+
+    <!-- Snackbar message confirming save of wifi network -->
+    <string name="wifi_install_success">WLAN-Netzwerk gespeichert</string>
+
+    <!-- Snackbar message if failed to save the wifi network -->
+    <string name="wifi_install_error_message">WLAN-Netzwerk konnte nicht gespeichert werden</string>
+
     <string name="view_sessions_text">Sitzungen ansehen</string>
     <string name="view_map_text">Karte ansehen</string>
-    <!-- TODO make these URLs the correct deep link -->
+
     <string name="event_sandbox_title">Sandbox</string>
     <string name="event_codelabs_title">Codelabs</string>
     <string name="event_officehours_title">Fachgespräche und App-Bewertungen</string>
     <string name="event_afterhours_title">Aftershow</string>
+
     <string name="travel_details_title">Anreiseinformationen</string>
     <string name="travel_shuttle_info_title">Shuttle-Dienst</string>
-    <string name="travel_carpool_parking_info_title">Fahrgemeinschaften und Parkmöglichkeiten</string>
+    <string name="travel_carpool_parking_info_title">Parken und Fahrgemeinschaften</string>
     <string name="travel_public_transportation_info_title">Öffentlicher Nahverkehr</string>
-    <string name="travel_biking_info_title">Per Rad</string>
+    <string name="travel_biking_info_title">Mit dem Rad</string>
+    <string name="travel_ride_sharing_info_title">Fahrgemeinschaft</string>
+
     <string name="settings_time_zone_label">Veranstaltungen in Pacific Time (PT) anzeigen</string>
     <string name="settings_enable_notifications">Benachrichtigungen aktivieren</string>
     <string name="settings_enable_anon_statistics">Anonyme Nutzungsstatistik senden</string>
@@ -806,6 +833,26 @@
 
     <string name="feed_error">Fehler beim Laden des Datenfeeds.</string>
 
+    <!-- Button text indicating that the session can be added to the user's bookmarks. -->
+    <string name="add_bookmark">Lesezeichen hinzufügen</string>
+    
+    <!-- Button text indicating that the session can be removed from the user's bookmarks. -->
+    <string name="remove_bookmark">Lesezeichen entfernen</string>
 
-    <!-- RemoteConfig keys for Feed default messages -->
+    <!-- Hint text indicating bookmarked sessions are added to My I/O. -->
+    <string name="add_bookmark_hint">Veranstaltung gespeichert in Meine I/O</string>
+
+    <!-- Hint text indicating unbookmarked sessions are removed from My I/O. -->
+    <string name="remove_bookmark_hint">Veranstaltung entfernt aus Meine I/O</string>
+
+    <!-- Opt-out text to stop seeing bookmark related hints. -->
+    <string name="bookmark_hint_optout">OK</string>
+
+    <!-- The label used on a button when a view is in an expanded state. Clicking on the icon
+    collapses the view. -->
+    <string name="expanded">Maximiert</string>
+
+    <!-- The label used on a button when a view is in an collapsed state. Clicking on the icon
+    expanded the view. -->
+    <string name="collapsed">Minimiert</string>
 </resources>

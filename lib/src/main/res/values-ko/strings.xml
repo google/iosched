@@ -14,7 +14,7 @@
   See the License for the specific language governing permissions and
   limitations under the License.
   -->
-<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2" xmlns:tools="http://schemas.android.com/tools">
+<resources xmlns:tools="http://schemas.android.com/tools" xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
 
     <plurals name="schedule_block_subtitle"
              description="Shown in the schedule to indicate how many sessions are available on that particular time slot.">
@@ -183,7 +183,7 @@
 
     <!-- Shown on a widget that normally displays upcoming sessions. This is shown after the
     conference, when there are no more sessions to show. -->
-    <string name="empty_widget_text">더 이상의 세션이 없습니다.\n내년에 또 뵙겠습니다!</string>
+    <string name="empty_widget_text">예정된 세션이 더 이상 없습니다.\n내년에 뵙겠습니다!</string>
 
     <!-- Label for a button to answer the question "Would you like to send feedback
     about this session?" which, when clicked, allows the user to send their feedback (ratings
@@ -230,6 +230,15 @@
 
     <!-- Accessibility announcement for an item in the custom feedback rating view. For example, "one star".  -->
     <string name="feedback_rating_value">%1$d 별점</string>
+
+    <!-- Text that shows session is reserved on Schedule and My I/O -->
+    <string name="schedule_item_reserved">예약됨</string>
+
+    <!-- Text that shows session is not reserved on Schedule and My I/O -->
+    <string name="schedule_item_not_reserved">예약되지 않음</string>
+
+    <!-- Text that shows session is waitlisted on Schedule and My I/O -->
+    <string name="schedule_item_waitlisted">대기목록에 추가됨</string>
 
     <!-- Label for the button to rate a session -->
     <string name="my_schedule_rate_this_session">이 세션 평가</string>
@@ -552,7 +561,7 @@
     <string name="title_my_io">내 I/O</string>
 
     <!-- Navigation bar text for viewing the user's schedule -->
-    <string name="title_my_schedule">일정</string>
+    <string name="title_schedule">일정</string>
 
     <!-- Navigation bar text for viewing the Feed -->
     <string name="title_feed">피드</string>
@@ -600,7 +609,7 @@
     <string name="watch_now">지금 보기!</string>
 
     <!-- Short text welcoming the user to the application -->
-    <string name="welcome_to_google_i_o_app">#io17 모바일 앱에 오신 것을 환영합니다!</string>
+    <string name="welcome_to_google_i_o">#io17에 오신 것을 환영합니다</string>
 
     <!-- Medium-length welcome text indicating the subsequent text is important legal information -->
     <string name="welcome_text">시작하기 전에 이 앱의 사용에 대한 중요한 법적 정보를 읽어 주십시오.</string>
@@ -623,9 +632,6 @@
     <!-- Text for a button which will open the user's Wi-Fi settings -->
     <string name="wifi_dialog_button_settings">와이파이 설정 열기</string>
 
-    <!-- Toast failure message if the user's wifi couldn't be updated -->
-    <string name="wifi_install_error_message">죄송합니다, 와이파이 구성을 업데이트할 수 없습니다.</string>
-
     <!-- Title of the Video library screen when only videos of a given topic are displayed -->
     <string name="title_topic_filtered_video_library"><xliff:g id="topic">%1$s</xliff:g>에 대한 동영상</string>
 
@@ -638,8 +644,11 @@
     <!-- Text of the Filter menu icon -->
     <string name="description_filter">필터</string>
 
-    <!-- Text of the My I/O menu icon -->
-    <string name="description_avatar">아바타</string>
+    <!-- Text of the My I/O avatar icon whilst signed out -->
+    <string name="description_avatar_signed_out">로그인</string>
+
+    <!-- Text of the My I/O avatar icon whilst signed in -->
+    <string name="description_avatar_signed_in">로그아웃</string>
 
     <!-- Title of the Video library side panel containing all the filters -->
     <string name="title_video_library_filter">필터</string>
@@ -660,7 +669,7 @@
     <string name="filter_label_sessions_only">세션 전용</string>
 
     <!-- Label of filter option to show only sessions (intentional space) -->
-    <string name="active_filters_description">"필터: "</string>
+    <string name="active_filters_description">\"필터: \"</string>
 
     <!-- Label for a button which clears all filters in the filter pane -->
     <string name="clear_all">모두 지우기</string>
@@ -689,11 +698,11 @@
          can watch a video but it turns out we can't show the video. -->
     <string name="explore_io_video_id_not_valid">죄송합니다. 동영상 URL에 문제가 있는 것 같습니다.</string>
 
-    <string description="This string is presented as a header message on a user interface card
+    <string name="explore_io_on_the_ground_title"
+            description="This string is presented as a header message on a user interface card
          element. The card element has sub-cards that explain a few logistical details for
          attendees. 'On the Ground' is slang in English indicating 'What you need to know when
-         you're in the middle of the conference.'"
-            name="explore_io_on_the_ground_title">현장에서</string>
+         you're in the middle of the conference.'">현장에서</string>
 
     <!-- Error message that is displayed when we aren't able to connect to Google Play Services,
          potentially due to a server error or loss of network connectivity. -->
@@ -705,7 +714,7 @@
     <string name="google_play_services_failed">죄송합니다. Google Play 서비스에 연결하지 못했습니다.</string>
 
     <!-- Message displayed to users as part of onboarding sign in. -->
-    <string name="signin_message">모바일과 데스크톱에서 저장된 이벤트와 예약된 세션을 동기화하려면 여러분의 계정에서 로그인하세요. 로그인하지 않아도 이벤트를 로컬로 저장할 수는 있습니다.</string>
+    <string name="signin_message">이벤트 좌석을 미리 예약하고, 저장된 이벤트와 예약된 이벤트를 모바일과 데스크톱의 자신 계정에서 동기화하고, 세션이 종료된 후 피드백을 제공하려면 로그인하세요. 로그인하지 않아도 이벤트를 로컬로 저장할 수는 있습니다.</string>
 
     <!-- Label used when asking a user to sign in. -->
     <string name="signin_prompt">로그인</string>
@@ -721,7 +730,12 @@
 
     <!-- Text shown on the onboarding screen asking users if they want conference notifications. -->
     <string name="onboarding_notifications_opt_in">
-        I/O에 대한 앱 알림을 받으시겠습니까?\n 이벤트, 어젠다, 일정, 여행, 폐장 후 시간, 세션 녹화 등에 대한 중요한 정보를 보내드립니다. 이 설정은 \"정보 &gt; 설정\"에서 언제든지 변경할 수 있습니다.
+        I/O에 대한 알림을 받으시겠습니까?\n 이벤트, 어젠다, 일정, 여행, 폐장 후 시간, 세션 녹화 등에 대한 중요한 정보를 보내드립니다. 이 설정은 \"정보 &gt; 설정\"에서 언제든지 변경할 수 있습니다.
+    </string>
+
+    <!-- Text shown on the onboarding sign-in screen. -->
+    <string name="onboarding_sign_in">
+        이벤트 좌석을 미리 예약하고, 저장된 이벤트와 예약된 이벤트를 모바일과 데스크톱의 자신 계정에서 동기화하고, 세션이 종료된 후 피드백을 제공하려면 로그인하시겠습니까? 로그인하지 않아도 여전히 이벤트를 로컬로 저장할 수 있지만 정보가 계정에 동기화되지는 않습니다.\n\n중요: 이벤트 좌석을 예약하려면 Google I/O 등록 시에 사용했던 동일한 이메일 주소로 로그인해야 합니다.
     </string>
 
     <!-- Message displayed in a card to the user on the My I/O screen after they have signed in. -->
@@ -741,37 +755,41 @@
     <!-- Button for finding quickly navigating from a day within My I/O to the relevant day within
     schedule -->
     <string name="add_events">이벤트 추가</string>
-
-    <!-- A placeholder value for the user's name in the My I/O dialog -->
-    <string name="my_io_dialog_default_name">귀하의 이름</string>
-
-    <!-- A placeholder value for the user's email in the My I/O dialog -->
-    <string name="my_io_dialog_default_email">you@gmail.com</string>
-
+\
     <!-- An introductory string used in the My I/O dialog to a signed out user  -->
     <string name="my_io_body_intro_signed_out">로그인 대상:</string>
 
     <!-- An introductory string used in the My I/O dialog to a signed in user  -->
-    <string name="my_io_body_intro_signed_in">로그인한 사용자:</string>
+    <string name="my_io_body_intro_signed_in">로그인한 사용자로:</string>
 
     <!-- The first bulletpoint string used in the My I/O dialog to a signed out user  -->
     <string name="my_io_dialog_first_bullet_point_signed_out">
-        \u2022 모바일과 데스크톱에서 저장된 이벤트와 예약된 세션을 여러분의 계정에서 동기화하십시오
+        이벤트 좌석을 미리 예약합니다.
     </string>
 
     <!-- The first bulletpoint string used in the My I/O dialog to a signed in user  -->
     <string name="my_io_dialog_first_bullet_point_signed_in">
-        \u2022 모바일과 데스크톱에서 저장된 이벤트와 예약된 세션이 여러분의 계정에 동기화됩니다.
+        이벤트 좌석을 미리 예약할 수 있습니다(시간 블록당 하나만 가능).
     </string>
 
     <!-- The second bulletpoint string used in the My I/O dialog to a signed out user  -->
     <string name="my_io_dialog_second_bullet_point_signed_out">
-        \u2022 세션이 종료된 후 세션 피드백을 제공합니다.
+        저장되고 예약된 이벤트를 모바일과 데스크톱에서 여러분의 계정으로부터 동기화하세요.
     </string>
 
     <!-- The second bulletpoint string used in the My I/O dialog to a signed in user  -->
     <string name="my_io_dialog_second_bullet_point_signed_in">
-        \u2022 세션이 종료된 후 세션 피드백을 제공할 수 있습니다.
+        저장되고 예약된 이벤트가 모바일과 데스크톱에서 여러분의 계정으로부터 동기화됩니다.
+    </string>
+
+    <!-- The third bulletpoint string used in the My I/O dialog to a signed out user  -->
+    <string name="my_io_dialog_third_bullet_point_signed_out">
+        세션이 종료된 후 세션 피드백을 제공합니다.
+    </string>
+
+    <!-- The third bulletpoint string used in the My I/O dialog to a signed in user  -->
+    <string name="my_io_dialog_third_bullet_point_signed_in">
+        세션이 종료된 후 세션 피드백을 제공할 수 있습니다.
     </string>
 
     <!-- Message shown when a user initiated sign in fails. -->
@@ -783,20 +801,27 @@
     <!-- Strings for Info page-->
     <string name="wifi_network_label">와이파이 네트워크</string>
     <string name="wifi_password_label">비밀번호</string>
-    <string name="setup_wifi">와이파이 설정</string>
-    <string name="password_copied_confirmation">비밀번호 복사됨</string>
+    <string name="setup_wifi">와이파이 네트워크 저장</string>
+
+    <!-- Snackbar message confirming save of wifi network -->
+    <string name="wifi_install_success">와이파이 네트워크 저장됨</string>
+
+    <!-- Snackbar message if failed to save the wifi network -->
+    <string name="wifi_install_error_message">죄송합니다. 와이파이 네트워크를 저장할 수 없습니다</string>
+
     <string name="view_sessions_text">세션 보기</string>
     <string name="view_map_text">지도 보기</string>
-    <!-- TODO make these URLs the correct deep link -->
-    <string name="event_sandbox_title">샌드박스</string>
-    <string name="event_codelabs_title">코드 랩</string>
+
+    <string name="event_sandbox_title">Sandbox</string>
+    <string name="event_codelabs_title">Codelabs</string>
     <string name="event_officehours_title">영업 시간 및 앱 리뷰</string>
     <string name="event_afterhours_title">폐장 후 시간</string>
     <string name="travel_details_title">여행 세부정보</string>
     <string name="travel_shuttle_info_title">셔틀 서비스</string>
-    <string name="travel_carpool_parking_info_title">카풀 및 주차</string>
+    <string name="travel_carpool_parking_info_title">주차 및 카풀</string>
     <string name="travel_public_transportation_info_title">대중교통</string>
     <string name="travel_biking_info_title">자전거</string>
+    <string name="travel_ride_sharing_info_title">차량 공유</string>
     <string name="settings_time_zone_label">태평양 시간(PT)으로 이벤트 표시</string>
     <string name="settings_enable_notifications">알림 활성화</string>
     <string name="settings_enable_anon_statistics">익명으로 사용 통계 보내기</string>
@@ -806,7 +831,26 @@
 
     <string name="feed_error">피드 로드 중에 오류.</string>
 
+    <!-- Button text indicating that the session can be added to the user's bookmarks. -->
+    <string name="add_bookmark">북마크 추가</string>
+    
+    <!-- Button text indicating that the session can be removed from the user's bookmarks. -->
+    <string name="remove_bookmark">북마크 제거</string>
 
-    <!-- RemoteConfig keys for Feed default messages -->
+    <!-- Hint text indicating bookmarked sessions are added to My I/O. -->
+    <string name="add_bookmark_hint">이벤트가 내 I/O에 저장됨</string>
 
+    <!-- Hint text indicating unbookmarked sessions are removed from My I/O. -->
+    <string name="remove_bookmark_hint">이벤트가 내 I/O에서 제거됨</string>
+
+    <!-- Opt-out text to stop seeing bookmark related hints. -->
+    <string name="bookmark_hint_optout">확인</string>
+
+    <!-- The label used on a button when a view is in an expanded state. Clicking on the icon
+    collapses the view. -->
+    <string name="expanded">확장됨</string>
+
+    <!-- The label used on a button when a view is in an collapsed state. Clicking on the icon
+    expanded the view. -->
+    <string name="collapsed">축소됨</string>
 </resources>
