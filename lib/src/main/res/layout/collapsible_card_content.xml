@@ -15,8 +15,10 @@
   limitations under the License.
   -->
 
-<merge xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools">
+<merge
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:parentTag="android.widget.FrameLayout">
 
     <!-- Note: putting everything in a RelativeLayout confuses Talkback, which does not always
     focus on the HtmlTextView. -->
@@ -30,9 +32,8 @@
             android:id="@+id/title_container"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:addStatesFromChildren="true"
-            android:background="?selectableItemBackground"
-            android:paddingTop="@dimen/spacing_micro">
+            android:minHeight="?android:listPreferredItemHeightSmall"
+            android:background="?selectableItemBackground">
 
             <TextView
                 android:id="@+id/card_title"
@@ -40,30 +41,39 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_alignParentStart="true"
-                android:layout_alignParentTop="true"
-                android:padding="@dimen/padding_normal"
-                android:text="@string/travel_shuttle_info_title"
-                android:textColor="@color/collapsing_section" />
+                android:layout_centerVertical="true"
+                android:paddingBottom="@dimen/spacing_micro"
+                android:paddingEnd="@dimen/padding_normal"
+                android:paddingStart="@dimen/padding_normal"
+                android:paddingTop="@dimen/spacing_micro"
+                android:textColor="@color/collapsing_section"
+                tools:text="@string/travel_shuttle_info_title" />
 
             <ImageView
                 android:id="@+id/expand_icon"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginEnd="@dimen/padding_normal"
                 android:layout_alignParentEnd="true"
-                android:layout_alignParentTop="true"
+                android:layout_centerVertical="true"
                 android:importantForAccessibility="no"
-                android:padding="@dimen/padding_normal"
                 android:src="@drawable/ic_expand"
                 android:tint="@color/collapsing_section"
                 android:tintMode="src_in" />
+
         </RelativeLayout>
 
         <com.google.samples.apps.iosched.ui.widget.HtmlTextView
             android:id="@+id/card_description"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:padding="@dimen/padding_normal"
+            android:paddingBottom="@dimen/padding_normal"
+            android:paddingEnd="@dimen/padding_normal"
+            android:paddingStart="@dimen/padding_normal"
+            android:paddingTop="@dimen/spacing_normal"
             android:visibility="gone"
             tools:text="This is a card description" />
+
     </LinearLayout>
+
 </merge>
