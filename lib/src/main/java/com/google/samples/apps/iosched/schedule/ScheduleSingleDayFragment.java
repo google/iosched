@@ -161,7 +161,7 @@ public class ScheduleSingleDayFragment extends Fragment
 
         if (isShowingCurrentDay()) {
             LinearLayoutManager lm = (LinearLayoutManager) mRecyclerView.getLayoutManager();
-            if (lm.findFirstVisibleItemPosition() == 0) {
+            if (lm.findFirstVisibleItemPosition() <= 0) {
                 // If we're showing the current day and we're still showing the first pos, move
                 // to the current time slot
                 moveToCurrentTimeSlot(false);
@@ -176,7 +176,9 @@ public class ScheduleSingleDayFragment extends Fragment
             if (animate) {
                 mRecyclerView.smoothScrollToPosition(pos);
             } else {
-                mRecyclerView.scrollToPosition(pos);
+                LinearLayoutManager lm = (LinearLayoutManager) mRecyclerView.getLayoutManager();
+                lm.scrollToPositionWithOffset(pos,
+                        getResources().getDimensionPixelSize(R.dimen.spacing_normal));
             }
         }
     }
