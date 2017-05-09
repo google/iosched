@@ -52,11 +52,15 @@ public class FeedActivity extends BaseActivity {
         super.onResume();
         mDatabaseReference = FirebaseDatabase.getInstance().getReference().child("feed");
         mPresenter.initializeDataListener(mDatabaseReference);
+        FeedState.getInstance().enterFeedPage();
+        FeedState.getInstance().updateNewFeedItem(this, false);
+        updateFeedBadge();
     }
 
     @Override
     protected void onPause() {
         mPresenter.removeDataListener(mDatabaseReference);
+        FeedState.getInstance().exitFeedPage();
         super.onPause();
     }
 
