@@ -20,6 +20,8 @@ import com.google.api.server.spi.config.ApiMethod;
 import com.google.api.server.spi.config.ApiNamespace;
 import com.google.api.server.spi.config.Named;
 import com.google.api.server.spi.response.ForbiddenException;
+import com.google.api.server.spi.response.InternalServerErrorException;
+import com.google.api.server.spi.response.NotFoundException;
 import com.google.appengine.api.urlfetch.FetchOptions;
 import com.google.appengine.api.urlfetch.HTTPMethod;
 import com.google.appengine.api.urlfetch.HTTPRequest;
@@ -29,14 +31,20 @@ import com.google.appengine.api.urlfetch.URLFetchServiceFactory;
 import com.google.common.annotations.VisibleForTesting;
 import com.google.common.collect.ImmutableList;
 import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.tasks.OnCompleteListener;
+import com.google.firebase.tasks.Task;
+import com.google.firebase.tasks.TaskCompletionSource;
+import com.google.firebase.tasks.Tasks;
 import com.google.samples.apps.iosched.server.FirebaseWrapper;
 import com.google.samples.apps.iosched.server.schedule.Config;
 import com.google.samples.apps.iosched.server.userdata.Ids;
+import com.sun.org.apache.xpath.internal.operations.Bool;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
 import java.util.Arrays;
 import java.util.List;
+import java.util.concurrent.ExecutionException;
 import java.util.logging.Logger;
 import javax.servlet.ServletContext;
 import org.json.JSONObject;
@@ -66,10 +74,12 @@ import org.json.JSONObject;
     audiences = {Ids.ANDROID_AUDIENCE}
 )
 public class RegistrationEndpoint {
+
     private static final Logger LOG = Logger.getLogger(RegistrationEndpoint.class.getName());
     private static final String EVENT_INFO_RSVP_STATUS_KEY = "rsvp_status";
     private static final String EVENT_INFO_RSVP_STATUS_CONFIRMED_VALUE = "confirmed";
     private static final String GOOGLER_EMAIL_DOMAIN = "@google.com";
+    public static final int RTDB_RETRY_LIMIT = 5;
 
     @VisibleForTesting public FirebaseWrapper firebaseWrapper = new FirebaseWrapper();
 
@@ -78,7 +88,7 @@ public class RegistrationEndpoint {
 
     @ApiMethod(path = "status", httpMethod = ApiMethod.HttpMethod.GET)
     public RegistrationResult registrationStatus(ServletContext context, @Named("firebaseUserToken") String firebaseUserToken)
-        throws IOException, ForbiddenException {
+        throws IOException, ForbiddenException, ExecutionException, InterruptedException, InternalServerErrorException {
 
         String databaseUrl = context.getInitParameter("databaseUrl");
         LOG.info("databaseUrl: " + databaseUrl);
@@ -96,12 +106,39 @@ public class RegistrationEndpoint {
 
         boolean isRegistered = isUserRegistered(context);
 
+        final TaskCompletionSource<Boolean> isRegisteredTCS = new TaskCompletionSource<>();
+        final Task<Boolean> isRegisteredTCSTask = isRegisteredTCS.getTask();
         // Update the user registration state in the Real-time Database.
         DatabaseReference dbRef = firebaseWrapper.getDatabaseReference();
-        dbRef.child("users").child(firebaseWrapper.getUserId()).setValue(isRegistered);
+        int rtdbRetries = 0;
+        while (rtdbRetries < RTDB_RETRY_LIMIT) {
+            dbRef.child("users").child(firebaseWrapper.getUserId()).setValue(isRegistered)
+                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(Task<Void> task) {
+                        if (task.isSuccessful()) {
+                            isRegisteredTCS.setResult(true);
+                        } else {
+                            isRegisteredTCS.setResult(false);
+                        }
+                    }
+                });
+            // If writing to RTDB was successful break out.
+            if (Tasks.await(isRegisteredTCSTask)) {
+                break;
+            }
+            LOG.info("Writing to RTDB has failed.");
+            rtdbRetries++;
+        }
 
-        // Return the user registration state.
-        return new RegistrationResult(isRegistered);
+        // If retry limit was reached return false, user will have to try again if they were
+        // indeed registered.
+        if (rtdbRetries >= RTDB_RETRY_LIMIT) {
+            throw new InternalServerErrorException("Unable to write registration status to RTDB.");
+        } else {
+            // Return the user registration state.
+            return new RegistrationResult(isRegistered);
+        }
     }
 
     private boolean isUserRegistered(ServletContext context) throws IOException {
