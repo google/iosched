@@ -22,7 +22,6 @@ import android.content.Context;
 import android.database.Cursor;
 import android.net.Uri;
 
-import com.google.samples.apps.iosched.lib.BuildConfig;
 import com.google.samples.apps.iosched.provider.ScheduleContract;
 
 import java.util.ArrayList;
@@ -38,58 +37,24 @@ import static com.google.samples.apps.iosched.util.LogUtils.*;
 public class FeedbackSyncHelper {
     private static final String TAG = makeLogTag(FeedbackSyncHelper.class);
 
-    private static final HashMap<String, String> QUESTION_KEYS = new HashMap<>();
-    static {
-        QUESTION_KEYS.put(ScheduleContract.Feedback.SESSION_RATING, "Q10");
-        QUESTION_KEYS.put(ScheduleContract.Feedback.ANSWER_RELEVANCE, "Q20");
-        QUESTION_KEYS.put(ScheduleContract.Feedback.ANSWER_CONTENT, "Q30");
-        QUESTION_KEYS.put(ScheduleContract.Feedback.ANSWER_SPEAKER, "Q40");
-        QUESTION_KEYS.put(ScheduleContract.Feedback.COMMENTS, "Q50");
-    }
+    /**
+     * Translates between fields in ScheduleContract.Feedback and numerical values sent to the
+     * server.
+     */
+    private static final HashMap<String, Integer> FIELDS_TO_VALUES_MAP =
+            new HashMap<String, Integer>() {{
+        put(ScheduleContract.Feedback.SESSION_RATING, 10);
+        put(ScheduleContract.Feedback.ANSWER_RELEVANCE, 20);
+        put(ScheduleContract.Feedback.ANSWER_CONTENT, 30);
+        put(ScheduleContract.Feedback.ANSWER_SPEAKER, 40);
+    }};
 
-    private static final HashMap<String, String> RATING_ANSWERS = new HashMap<>();
-    static {
-        RATING_ANSWERS.put("1", "aece21ff-2cbe-e411-b87f-00155d5066d7");
-        RATING_ANSWERS.put("2", "afce21ff-2cbe-e411-b87f-00155d5066d7");
-        RATING_ANSWERS.put("3", "b0ce21ff-2cbe-e411-b87f-00155d5066d7");
-        RATING_ANSWERS.put("4", "b1ce21ff-2cbe-e411-b87f-00155d5066d7");
-        RATING_ANSWERS.put("5", "b2ce21ff-2cbe-e411-b87f-00155d5066d7");
-    }
-
-    private static final HashMap<String, String> RELEVANCE_ANSWERS = new HashMap<>();
-    static {
-        RELEVANCE_ANSWERS.put("1", "9bce21ff-2cbe-e411-b87f-00155d5066d7");
-        RELEVANCE_ANSWERS.put("2", "9cce21ff-2cbe-e411-b87f-00155d5066d7");
-        RELEVANCE_ANSWERS.put("3", "9dce21ff-2cbe-e411-b87f-00155d5066d7");
-        RELEVANCE_ANSWERS.put("4", "9ece21ff-2cbe-e411-b87f-00155d5066d7");
-        RELEVANCE_ANSWERS.put("5", "9fce21ff-2cbe-e411-b87f-00155d5066d7");
-    }
-
-    private static final HashMap<String, String> CONTENT_ANSWERS = new HashMap<>();
-    static {
-        CONTENT_ANSWERS.put("1", "a1ce21ff-2cbe-e411-b87f-00155d5066d7");
-        CONTENT_ANSWERS.put("2", "a2ce21ff-2cbe-e411-b87f-00155d5066d7");
-        CONTENT_ANSWERS.put("3", "a3ce21ff-2cbe-e411-b87f-00155d5066d7");
-        CONTENT_ANSWERS.put("4", "a4ce21ff-2cbe-e411-b87f-00155d5066d7");
-        CONTENT_ANSWERS.put("5", "a5ce21ff-2cbe-e411-b87f-00155d5066d7");
-    }
-
-    private static final HashMap<String, String> SPEAKER_ANSWERS = new HashMap<>();
-    static {
-        SPEAKER_ANSWERS.put("1", "a8ce21ff-2cbe-e411-b87f-00155d5066d7");
-        SPEAKER_ANSWERS.put("2", "a9ce21ff-2cbe-e411-b87f-00155d5066d7");
-        SPEAKER_ANSWERS.put("3", "aace21ff-2cbe-e411-b87f-00155d5066d7");
-        SPEAKER_ANSWERS.put("4", "abce21ff-2cbe-e411-b87f-00155d5066d7");
-        SPEAKER_ANSWERS.put("5", "acce21ff-2cbe-e411-b87f-00155d5066d7");
-    }
-
-    Context mContext;
-    FeedbackApiHelper mFeedbackApiHelper;
+    private Context mContext;
+    private FeedbackApiHelper mFeedbackApiHelper;
 
     public FeedbackSyncHelper(Context context, FeedbackApiHelper feedbackApi) {
         mContext = context;
         mFeedbackApiHelper = feedbackApi;
-
     }
 
     public void sync() {
@@ -100,47 +65,39 @@ public class FeedbackSyncHelper {
                 ScheduleContract.Feedback.SYNCED + " = 0",
                 null,
                 null);
+
         LOGD(TAG, "Number of unsynced feedbacks: " + c.getCount());
         HashMap<String, String> questions = new HashMap<>();
+
+        HashMap<Integer, Integer> result = new HashMap<>();
+
         List<String> updatedSessions = new ArrayList<>();
 
         try {
             while (c.moveToNext()) {
                 String localSessionId = c.getString(c.getColumnIndex(ScheduleContract.Feedback.SESSION_ID));
                 String remoteSessionId = localSessionId;
-                // EventPoint uses a different Session ID for the keynote than our backend
-                if ("__keynote__".equals(remoteSessionId)) {
-                    remoteSessionId = BuildConfig.KEYNOTE_SESSION_ID;
-                }
 
+                String field;
                 String data;
 
-                data = c.getString(c.getColumnIndex(ScheduleContract.Feedback.SESSION_RATING));
-                questions.put(
-                        QUESTION_KEYS.get(ScheduleContract.Feedback.SESSION_RATING),
-                        RATING_ANSWERS.get(data));
+                field = ScheduleContract.Feedback.SESSION_RATING;
+                data = c.getString(c.getColumnIndex(field));
+                result.put(FIELDS_TO_VALUES_MAP.get(field), Integer.valueOf(data));
 
-                data = c.getString(c.getColumnIndex(ScheduleContract.Feedback.ANSWER_RELEVANCE));
-                questions.put(
-                        QUESTION_KEYS.get(ScheduleContract.Feedback.ANSWER_RELEVANCE),
-                        RELEVANCE_ANSWERS.get(data));
+                field = ScheduleContract.Feedback.ANSWER_RELEVANCE;
+                data = c.getString(c.getColumnIndex(field));
+                result.put(FIELDS_TO_VALUES_MAP.get(field), Integer.valueOf(data));
 
-                data = c.getString(c.getColumnIndex(ScheduleContract.Feedback.ANSWER_CONTENT));
-                questions.put(
-                        QUESTION_KEYS.get(ScheduleContract.Feedback.ANSWER_CONTENT),
-                        CONTENT_ANSWERS.get(data));
+                field = ScheduleContract.Feedback.ANSWER_CONTENT;
+                data = c.getString(c.getColumnIndex(field));
+                result.put(FIELDS_TO_VALUES_MAP.get(field), Integer.valueOf(data));
 
-                data = c.getString(c.getColumnIndex(ScheduleContract.Feedback.ANSWER_SPEAKER));
-                questions.put(
-                        QUESTION_KEYS.get(ScheduleContract.Feedback.ANSWER_SPEAKER),
-                        SPEAKER_ANSWERS.get(data));
+                field = ScheduleContract.Feedback.ANSWER_SPEAKER;
+                data = c.getString(c.getColumnIndex(field));
+                result.put(FIELDS_TO_VALUES_MAP.get(field), Integer.valueOf(data));
 
-                data = c.getString(c.getColumnIndex(ScheduleContract.Feedback.COMMENTS));
-                questions.put(
-                        QUESTION_KEYS.get(ScheduleContract.Feedback.COMMENTS),
-                        data);
-
-                if (mFeedbackApiHelper.sendSessionToServer(remoteSessionId, questions)) {
+                if (mFeedbackApiHelper.sendSessionToServer(remoteSessionId, result)) {
                     LOGI(TAG, "Successfully updated session " + remoteSessionId);
                     updatedSessions.add(localSessionId);
                 } else {
@@ -160,6 +117,5 @@ public class FeedbackSyncHelper {
         for (String sessionId : updatedSessions) {
             cr.update(ScheduleContract.Feedback.buildFeedbackUri(sessionId), contentValues, null, null);
         }
-
     }
 }
