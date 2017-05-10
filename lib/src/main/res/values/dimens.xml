@@ -21,6 +21,7 @@
     <dimen name="spacing_normal">8dp</dimen>
     <dimen name="spacing_micro">4dp</dimen>
     <dimen name="padding_normal">16dp</dimen>
+    <dimen name="padding_normal_button">12dp</dimen>
     <dimen name="spacing_large">32dp</dimen>
     <dimen name="touch_raise">6dp</dimen>
     <dimen name="extended_appbar_height">72dp</dimen>
