@@ -15,6 +15,10 @@
  */
 package com.google.samples.apps.iosched.signin;
 
+import static com.google.samples.apps.iosched.util.LogUtils.LOGD;
+import static com.google.samples.apps.iosched.util.LogUtils.LOGE;
+import static com.google.samples.apps.iosched.util.LogUtils.makeLogTag;
+
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
@@ -22,11 +26,14 @@ import android.os.IBinder;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.api.client.extensions.android.json.AndroidJsonFactory;
 import com.google.api.client.googleapis.extensions.android.gms.auth.GoogleAccountCredential;
 import com.google.api.client.http.javanet.NetHttpTransport;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.auth.GetTokenResult;
 import com.google.samples.apps.iosched.rpc.registration.Registration;
 import com.google.samples.apps.iosched.rpc.registration.model.RegistrationResult;
 import com.google.samples.apps.iosched.util.AccountUtils;
@@ -34,12 +41,9 @@ import com.google.samples.apps.iosched.util.RegistrationUtils;
 
 import java.io.IOException;
 import java.util.Arrays;
+import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
-
-import static com.google.samples.apps.iosched.util.LogUtils.LOGD;
-import static com.google.samples.apps.iosched.util.LogUtils.LOGE;
-import static com.google.samples.apps.iosched.util.LogUtils.makeLogTag;
 
 /**
  * Service to check the user's conference registration status as a background
@@ -74,7 +78,7 @@ public class RegistrationStatusService extends Service {
             public void run() {
                 try {
                     updateRegStatus();
-                } catch (IOException e) {
+                } catch (Exception e) {
                     LOGE(TAG, "Unable to update registration status", e);
                 } finally {
                     stopSelf();
@@ -90,7 +94,7 @@ public class RegistrationStatusService extends Service {
      *
      * @throws IOException If unable to verify user status
      */
-    private void updateRegStatus() throws IOException {
+    private void updateRegStatus() throws Exception {
         // Build auth tokens
         GoogleAccountCredential credential = getGoogleCredential();
         String fbToken = getFirebaseToken();
@@ -130,18 +134,33 @@ public class RegistrationStatusService extends Service {
     /**
      * Get Firebase token for current user
      */
-    private String getFirebaseToken() throws IOException {
+    private String getFirebaseToken() throws Exception {
         FirebaseUser fbUser = mFirebaseAuth.getCurrentUser();
         if (fbUser == null) {
             throw new IOException("Firebase user not authenticated");
         }
 
-        String fbToken = fbUser.getToken(false).getResult().getToken();
-        if (fbToken == null) {
-            throw new IOException("Received null Firebase token");
-        }
+        // Get Firebase token and wait for operation to complete
+        final CountDownLatch latch = new CountDownLatch(1);
+        Task<GetTokenResult> task = fbUser.getToken(false);
+        task.addOnCompleteListener(new OnCompleteListener<GetTokenResult>() {
+            @Override
+            public void onComplete(@NonNull Task<GetTokenResult> task) {
+                latch.countDown();
+            }
+        });
 
-        return fbToken;
+        latch.await();
+
+        if (task.isSuccessful()) {
+            String fbToken = task.getResult().getToken();
+            if (fbToken == null) {
+                throw new IOException("Received null Firebase token");
+            }
+            return fbToken;
+        } else {
+            throw task.getException();
+        }
     }
 
 
