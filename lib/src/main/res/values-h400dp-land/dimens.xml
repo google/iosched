@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
-  Copyright (c) 2016 Google Inc.
+  Copyright (c) 2017 Google Inc.
 
   Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except
   in compliance with the License. You may obtain a copy of the License at
@@ -12,20 +12,8 @@
   or implied. See the License for the specific language governing permissions and limitations under
   the License.
   -->
+<resources>
 
-<vector
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:width="24dp"
-    android:height="24dp"
-    android:viewportWidth="24"
-    android:viewportHeight="24"
-    android:autoMirrored="true"
-    android:tint="?android:colorControlNormal"
-    tools:ignore="UnusedAttribute">
+    <dimen name="session_details_max_header_height">280dp</dimen>
 
-    <path
-        android:pathData="M20,11H7.83l5.59,-5.59L12,4l-8,8 8,8 1.41,-1.41L7.83,13H20v-2z"
-        android:fillColor="@android:color/white" />
-
-</vector>
+</resources>
