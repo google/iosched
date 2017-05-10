@@ -26,7 +26,7 @@
         android:name="com.google.samples.apps.iosched.info.InfoPagerFragment"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginBottom="48dp"
+        android:layout_marginBottom="56dp"
         tools:layout="@layout/info_pager_frag" />
 
     <com.google.samples.apps.iosched.ui.widget.BadgedBottomNavigationView
