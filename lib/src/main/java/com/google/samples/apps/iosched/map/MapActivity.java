@@ -88,7 +88,7 @@ public class MapActivity extends BaseActivity
         setContentView(R.layout.map_act);
         setFullscreenLayout();
         mInfoContainer = findViewById(R.id.map_detail_popup);
-        overridePendingTransition(0, 0);
+        overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
     }
 
 

@@ -71,7 +71,6 @@ public abstract class BaseActivity extends AppCompatActivity implements
         MultiSwipeRefreshLayout.CanChildScrollUpCallback {
 
     private static final String TAG = makeLogTag(BaseActivity.class);
-    private static final int MAIN_CONTENT_FADEIN_DURATION = 250;
     // Navigation drawer
     private AppNavigationView mAppNavigationView;
     // Toolbar
@@ -258,14 +257,6 @@ public abstract class BaseActivity extends AppCompatActivity implements
         }
 
         trySetupSwipeRefresh();
-
-        View mainContent = findViewById(R.id.main_content);
-        if (mainContent != null) {
-            mainContent.setAlpha(0);
-            mainContent.animate().alpha(1).setDuration(MAIN_CONTENT_FADEIN_DURATION);
-        } else {
-            LOGW(TAG, "No view with ID main_content to fade in.");
-        }
     }
 
     @Override

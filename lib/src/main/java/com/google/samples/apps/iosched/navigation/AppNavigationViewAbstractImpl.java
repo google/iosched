@@ -18,9 +18,11 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
+import android.os.Handler;
 
 import com.google.samples.apps.iosched.archframework.PresenterImpl;
 import com.google.samples.apps.iosched.archframework.UpdatableView;
+import com.google.samples.apps.iosched.lib.R;
 import com.google.samples.apps.iosched.navigation.NavigationModel.NavigationItemEnum;
 import com.google.samples.apps.iosched.navigation.NavigationModel.NavigationQueryEnum;
 import com.google.samples.apps.iosched.navigation.NavigationModel.NavigationUserActionEnum;
@@ -35,9 +37,12 @@ public abstract class AppNavigationViewAbstractImpl implements
         UpdatableView<NavigationModel, NavigationQueryEnum, NavigationUserActionEnum>,
         AppNavigationView {
 
+    private static final long BOTTOM_NAV_ANIM_GRACE = 100L;
     private UserActionListener<NavigationUserActionEnum> mUserActionListener;
 
     protected Activity mActivity;
+
+    private final Handler mHandler = new Handler();
 
     protected NavigationItemEnum mSelfItem;
 
@@ -91,11 +96,16 @@ public abstract class AppNavigationViewAbstractImpl implements
     @Override
     public void itemSelected(final NavigationItemEnum item) {
         if (item.getClassToLaunch() != null) {
-            mActivity.startActivity(new Intent(mActivity, item.getClassToLaunch()));
-            mActivity.overridePendingTransition(0, 0);
-            if (item.finishCurrentActivity()) {
-                mActivity.finish();
-            }
+            mHandler.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    mActivity.startActivity(new Intent(mActivity, item.getClassToLaunch()));
+                    if (item.finishCurrentActivity()) {
+                        mActivity.finish();
+                        mActivity.overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
+                    }
+                }
+            }, BOTTOM_NAV_ANIM_GRACE);
         }
     }
 
