@@ -74,7 +74,7 @@
         android:layout_gravity="center_horizontal|top"
         android:background="@color/content_background"
         android:elevation="@dimen/card_elevation"
-        android:paddingBottom="48dp">
+        android:paddingBottom="56dp">
 
         <!-- Sessions fragments showing each day of the conference -->
         <android.support.v4.view.ViewPager
