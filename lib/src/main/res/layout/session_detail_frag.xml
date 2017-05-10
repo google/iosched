@@ -48,6 +48,7 @@
                 android:id="@+id/session_photo_container"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
+                app:maxHeight="@dimen/session_details_max_header_height"
                 android:fitsSystemWindows="true"
                 app:aspectRatio="@dimen/aspect_16_9"
                 app:layout_collapseMode="parallax"
@@ -60,6 +61,12 @@
                     android:scaleType="centerCrop"
                     android:transitionName="@string/transition_session_image"
                     tools:ignore="ContentDescription" />
+
+                <View
+                    android:id="@+id/scrim"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@drawable/livestream_scrim" />
 
                 <Button
                     android:id="@+id/watch"
@@ -74,6 +81,10 @@
                     android:paddingTop="28dp"
                     android:textAppearance="?android:textAppearanceMedium"
                     android:textColor="@android:color/white"
+                    android:shadowColor="@color/greyish_brown"
+                    android:shadowDx="2"
+                    android:shadowDy="2"
+                    android:shadowRadius="8"
                     android:visibility="gone"
                     tools:text="@string/session_watch"
                     tools:visibility="visible" />
