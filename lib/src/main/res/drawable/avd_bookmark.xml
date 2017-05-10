@@ -34,6 +34,21 @@
 
     </target>
 
+    <target android:name="check">
+
+        <aapt:attr name="android:animation">
+
+            <objectAnimator
+                android:propertyName="rotation"
+                android:valueFrom="180"
+                android:valueTo="0"
+                android:duration="300"
+                android:interpolator="@android:interpolator/fast_out_slow_in" />
+
+        </aapt:attr>
+
+    </target>
+
     <target android:name="line1">
 
         <aapt:attr name="android:animation">

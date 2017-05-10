@@ -24,16 +24,21 @@
         android:pathData="M19,0L5.667,0C4.2,0 3.013,1.2 3.013,2.667L3,24L12.333,20L21.667,24L21.667,2.667C21.667,1.2 20.467,0 19,0Z"
         android:strokeColor="#00000000"
         android:strokeWidth="1" />
-    <path
-        android:name="line1"
-        android:pathData="M10,16L7,13"
-        android:strokeColor="@android:color/white"
-        android:strokeLineCap="square"
-        android:strokeWidth="2.4" />
-    <path
-        android:name="line2"
-        android:pathData="M10.483,15.517L18,8"
-        android:strokeColor="@android:color/white"
-        android:strokeLineCap="square"
-        android:strokeWidth="2.4" />
+    <group
+        android:name="check"
+        android:pivotX="12"
+        android:pivotY="11">
+        <path
+            android:name="line1"
+            android:pathData="M10,16L7,13"
+            android:strokeColor="@android:color/white"
+            android:strokeLineCap="square"
+            android:strokeWidth="2.4" />
+        <path
+            android:name="line2"
+            android:pathData="M10.483,15.517L18,8"
+            android:strokeColor="@android:color/white"
+            android:strokeLineCap="square"
+            android:strokeWidth="2.4" />
+    </group>
 </vector>
