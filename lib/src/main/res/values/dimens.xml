@@ -26,6 +26,8 @@
     <dimen name="extended_appbar_height">72dp</dimen>
     <dimen name="borderless_button_margin">0dp</dimen>
     <dimen name="main_content_width">@dimen/match_parent</dimen>
+    <dimen name="feedback_title_margin_bottom">28dp</dimen>
+    <dimen name="feedback_subtitle_margin_bottom">8dp</dimen>
 
     <dimen name="appwidget_text_size_small">12sp</dimen>
     <dimen name="appwidget_text_size_medium">14sp</dimen>

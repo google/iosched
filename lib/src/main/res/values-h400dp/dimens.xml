@@ -15,7 +15,11 @@
      limitations under the License.
 -->
 <resources>
+
     <dimen name="extended_appbar_height">180dp</dimen>
     <dimen name="time_header_min_height">48dp</dimen>
     <dimen name="session_details_max_header_height">0dp</dimen>
+    <dimen name="feedback_title_margin_bottom">48dp</dimen>
+    <dimen name="feedback_subtitle_margin_bottom">20dp</dimen>
+
 </resources>
