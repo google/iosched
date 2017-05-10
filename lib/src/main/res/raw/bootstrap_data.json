@@ -1638,12 +1638,13 @@
       "id": "4dd55fda-1896-49d1-ad70-610cf16a921c",
       "url": "https://events.google.com/io/schedule?sid=4dd55fda-1896-49d1-ad70-610cf16a921c",
       "title": "Open Source TensorFlow Models",
-      "description": "Did you know that you can use TensorFlow to caption images, understand text, and generate art? Come to this talk for a tour of the latest projects using TensorFlow for computer vision, natural language processing, and computer generated artwork. Iâ€™ll share my favorite models for each domain, show live demos you can try at home, and share educational resources you can use to learn more. This requires no special background in machine learning.",
+      "description": "Did you know that you can use TensorFlow to caption images, understand text, and generate art? Come to this talk for a tour of the latest projects using TensorFlow for computer vision, natural language processing, and computer generated artwork. I'll share my favorite models for each domain, show live demos you can try at home, and share educational resources you can use to learn more. This requires no special background in machine learning.",
       "startTimestamp": "2017-05-18T21:30:00Z",
       "endTimestamp": "2017-05-18T22:30:00Z",
       "isFeatured": false,
       "isLivestream": true,
       "youtubeUrl": "https://google.com/events/io",
+      "livestreamChannel": "",
       "tags": [
         "LEVEL_BEGINNER",
         "THEME_BEYONDMOBILE",
@@ -1667,6 +1668,7 @@
       "isFeatured": false,
       "isLivestream": true,
       "youtubeUrl": "https://google.com/events/io",
+      "livestreamChannel": "",
       "tags": [
         "LEVEL_BEGINNER",
         "THEME_PLATFORMS",
@@ -1701,12 +1703,13 @@
       "id": "2a4e897b-cefc-46d4-9ea3-bd7baf406d34",
       "url": "https://events.google.com/io/schedule?sid=2a4e897b-cefc-46d4-9ea3-bd7baf406d34",
       "title": "Stand out on Google Search using structured data and search analytics",
-      "description": "Learn how to make your site stand out on Search. Google increasingly uses structured data to understand a siteâ€™s content and present better web results to users. This trend has created a growing opportunity for site owners to optimize their performance on Search. Find out how to measure the impact of implemented markup and diagnose potential problems, as well as how to choose the best markup for your site. Then, see examples of how Google uses markup end-to-end to create engaging and useful search results.",
+      "description": "Learn how to make your site stand out on Search. Google increasingly uses structured data to understand a site's content and present better web results to users. This trend has created a growing opportunity for site owners to optimize their performance on Search. Find out how to measure the impact of implemented markup and diagnose potential problems, as well as how to choose the best markup for your site. Then, see examples of how Google uses markup end-to-end to create engaging and useful search results.",
       "startTimestamp": "2017-05-17T22:00:00Z",
       "endTimestamp": "2017-05-17T23:00:00Z",
       "isFeatured": false,
       "isLivestream": true,
       "youtubeUrl": "https://google.com/events/io",
+      "livestreamChannel": "",
       "tags": [
         "THEME_PLATFORMS",
         "TRACK_MOBILEWEB",
@@ -1797,12 +1800,13 @@
       "id": "e0e907b5-7471-42dc-9625-1de097062a94",
       "url": "https://events.google.com/io/schedule?sid=e0e907b5-7471-42dc-9625-1de097062a94",
       "title": "Getting the Green Lock: HTTPS Stories from the Field",
-      "description": "HTTPS is not only baseline security on the web, but also benefits site business by unlocking powerful capabilities and performance improvements. As the benefits of HTTPS have increased, and as migrating to HTTPS has become easier and cheaper, weâ€™ve seen a surge in HTTPS usage on the web. Weâ€™ll explore real world stories of sites that have recently migrated to HTTPS. Youâ€™ll get first hand accounts of the benefits and effects of HTTPS migrations, find out how migration challenges were overcome, and hear lessons learned on the path to HTTPS.",
+      "description": "HTTPS is not only baseline security on the web, but also benefits site business by unlocking powerful capabilities and performance improvements. As the benefits of HTTPS have increased, and as migrating to HTTPS has become easier and cheaper, we've seen a surge in HTTPS usage on the web. We'll explore real world stories of sites that have recently migrated to HTTPS. You'll get first hand accounts of the benefits and effects of HTTPS migrations, find out how migration challenges were overcome, and hear lessons learned on the path to HTTPS.",
       "startTimestamp": "2017-05-19T15:30:00Z",
       "endTimestamp": "2017-05-19T16:30:00Z",
       "isFeatured": false,
       "isLivestream": true,
       "youtubeUrl": "https://google.com/events/io",
+      "livestreamChannel": "",
       "tags": [
         "THEME_PLATFORMS",
         "TRACK_MOBILEWEB",
@@ -1820,7 +1824,7 @@
       "id": "0e6bc3ad-5d39-4fe4-9363-e80a396c8f9e",
       "url": "https://events.google.com/io/schedule?sid=0e6bc3ad-5d39-4fe4-9363-e80a396c8f9e",
       "title": "VR Drive-in",
-      "description": "Grab some popcorn and get a ticket to the VR Drive-in where you can check out exclusive showings from Google Spotlight Stories: Oscar-nominated VR short â€œPearlâ€ and newly released Gorillaz VR music video. ",
+      "description": "Grab some popcorn and get a ticket to the VR Drive-in where you can check out exclusive showings from Google Spotlight Stories: Oscar-nominated VR short 'Pearl' and newly released Gorillaz VR music video. ",
       "startTimestamp": "2017-05-18T02:00:00Z",
       "endTimestamp": "2017-05-18T05:00:00Z",
       "isFeatured": false,
@@ -1841,6 +1845,7 @@
       "isFeatured": false,
       "isLivestream": true,
       "youtubeUrl": "https://google.com/events/io",
+      "livestreamChannel": "",
       "tags": [
         "THEME_PLATFORMS",
         "TRACK_ANDROID",
@@ -1895,6 +1900,7 @@
       "isFeatured": false,
       "isLivestream": true,
       "youtubeUrl": "https://google.com/events/io",
+      "livestreamChannel": "",
       "tags": [
         "TRACK_FIREBASE",
         "THEME_GROW&EARN",
@@ -1931,13 +1937,14 @@
     {
       "id": "58f24efc-e6c6-43d9-bd7e-0f395227feaa",
       "url": "https://events.google.com/io/schedule?sid=58f24efc-e6c6-43d9-bd7e-0f395227feaa",
-      "title": "Whatâ€™s new in the Google Cast SDK",
-      "description": "Enabling your apps with Google Cast is getting easier and easier. Millions of users press the Cast button every day to connect their mobile device with Google Home or the best display in their homes. Controlling your favorite media apps with your voice has now become a reality. If youâ€™ve wondered how this is done or are an experienced Cast developer, this session will take you through all the details. Weâ€™ll go through our new receiver, new web sender and recent updates on Android and iOS - including how weâ€™ve made voice control easier, added support for ads. Come listen to Kevin Nilson, Technical Solutions Engineering team lead for Google Home, share these updates.",
+      "title": "What's new in the Google Cast SDK",
+      "description": "Enabling your apps with Google Cast is getting easier and easier. Millions of users press the Cast button every day to connect their mobile device with Google Home or the best display in their homes. Controlling your favorite media apps with your voice has now become a reality. If you've wondered how this is done or are an experienced Cast developer, this session will take you through all the details. We'll go through our new receiver, new web sender and recent updates on Android and iOS - including how we've made voice control easier, added support for ads. Come listen to Kevin Nilson, Technical Solutions Engineering team lead for Google Home, share these updates.",
       "startTimestamp": "2017-05-19T01:30:00Z",
       "endTimestamp": "2017-05-19T02:30:00Z",
       "isFeatured": false,
       "isLivestream": true,
       "youtubeUrl": "https://google.com/events/io",
+      "livestreamChannel": "",
       "tags": [
         "THEME_BEYONDMOBILE",
         "LEVEL_INTERMEDIATE",
@@ -1955,12 +1962,13 @@
       "id": "4a79267f-f0ff-4db3-b60a-6f49bddf63dd",
       "url": "https://events.google.com/io/schedule?sid=4a79267f-f0ff-4db3-b60a-6f49bddf63dd",
       "title": "The AMP Keynote",
-      "description": "Itâ€™s been over a year since the launch of Accelerated Mobile Pages. Now that weâ€™re out of the honeymoon phase, itâ€™s time to take a hard look at what worked and what didnâ€™t. In this talk weâ€™ll cover highs and lows from the perspective of the AMP Project, as well from the platforms and publishers, merchants, and advertisers that have worked with the AMP format. Finally, weâ€™ll turn to the future, and highlight what is coming for AMP in 2017!",
+      "description": "It's been over a year since the launch of Accelerated Mobile Pages. Now that we're out of the honeymoon phase, it's time to take a hard look at what worked and what didn't. In this talk we'll cover highs and lows from the perspective of the AMP Project, as well from the platforms and publishers, merchants, and advertisers that have worked with the AMP format. Finally, we'll turn to the future, and highlight what is coming for AMP in 2017!",
       "startTimestamp": "2017-05-18T01:00:00Z",
       "endTimestamp": "2017-05-18T02:00:00Z",
       "isFeatured": false,
       "isLivestream": true,
       "youtubeUrl": "https://google.com/events/io",
+      "livestreamChannel": "",
       "tags": [
         "LEVEL_BEGINNER",
         "THEME_PLATFORMS",
@@ -1986,6 +1994,7 @@
       "isFeatured": false,
       "isLivestream": true,
       "youtubeUrl": "https://google.com/events/io",
+      "livestreamChannel": "",
       "tags": [
         "LEVEL_ADVANCED",
         "THEME_PLATFORMS",
@@ -2009,6 +2018,7 @@
       "isFeatured": false,
       "isLivestream": true,
       "youtubeUrl": "https://google.com/events/io",
+      "livestreamChannel": "",
       "tags": [
         "THEME_GROW&EARN",
         "TRACK_PLAY",
@@ -2019,7 +2029,8 @@
       "mainTag": "TRACK_PLAY",
       "color": "#CE93D8",
       "speakers": [
-        "2fc3b3ff-1d66-410e-b3f7-43c03dc98005"
+        "2fc3b3ff-1d66-410e-b3f7-43c03dc98005",
+        "0676b02f-ef76-4b2a-93ab-50baef9d71da"
       ],
       "room": "0ebecfd3-6a9a-4d2a-8b1d-6e002951468e"
     },
@@ -2033,6 +2044,7 @@
       "isFeatured": false,
       "isLivestream": true,
       "youtubeUrl": "https://google.com/events/io",
+      "livestreamChannel": "",
       "tags": [
         "THEME_PLATFORMS",
         "TRACK_MOBILEWEB",
@@ -2070,12 +2082,13 @@
       "id": "0dc734bc-e221-4107-97ab-3b6889afec3a",
       "url": "https://events.google.com/io/schedule?sid=0dc734bc-e221-4107-97ab-3b6889afec3a",
       "title": "Defining Multimodal Interactions:  One Size Does Not Fit All",
-      "description": "Multimodal interactions are coming to life on a wide range of surfaces and operate on a set of rules defined in your interaction model.  But the tenets of a multimodal interaction vary wildly depending on whether youâ€™re designing for a mobile device, a TV, a car, etc.  Weâ€™ll delve into some of the things you need to consider when building a model for various surfaces.",
+      "description": "Multimodal interactions are coming to life on a wide range of surfaces and operate on a set of rules defined in your interaction model.  But the tenets of a multimodal interaction vary wildly depending on whether you're designing for a mobile device, a TV, a car, etc.  We'll delve into some of the things you need to consider when building a model for various surfaces.",
       "startTimestamp": "2017-05-18T20:30:00Z",
       "endTimestamp": "2017-05-18T21:30:00Z",
       "isFeatured": false,
       "isLivestream": true,
       "youtubeUrl": "https://google.com/events/io",
+      "livestreamChannel": "",
       "tags": [
         "LEVEL_BEGINNER",
         "TRACK_ASSISTANT",
@@ -2130,12 +2143,13 @@
       "id": "341e352e-2a58-4147-ab66-dafb20ab0197",
       "url": "https://events.google.com/io/schedule?sid=341e352e-2a58-4147-ab66-dafb20ab0197",
       "title": "Exploring Google Maps Solutions",
-      "description": "The Google Maps APIs provide the nuts and bolts to developing great location apps. In this session, weâ€™ll dive into end-to-end Maps solutions such as the Google I/O Transport Tracker. Built using the Google Maps APIs, it also integrates with Firebase and runs on the Google Cloud Platform. If sweet treats are more your thing, weâ€™ll also show you how to build an Ice Cream shop locator!",
+      "description": "The Google Maps APIs provide the nuts and bolts to developing great location apps. In this session, we'll dive into end-to-end Maps solutions such as the Google I/O Transport Tracker. Built using the Google Maps APIs, it also integrates with Firebase and runs on the Google Cloud Platform. If sweet treats are more your thing, we'll also show you how to build an Ice Cream shop locator!",
       "startTimestamp": "2017-05-19T17:30:00Z",
       "endTimestamp": "2017-05-19T18:30:00Z",
       "isFeatured": false,
       "isLivestream": true,
       "youtubeUrl": "https://google.com/events/io",
+      "livestreamChannel": "",
       "tags": [
         "TRACK_LOCATION&MAPS",
         "LEVEL_INTERMEDIATE",
@@ -2153,12 +2167,13 @@
       "id": "d4fa3b87-fdd4-48e4-9322-bed567114d39",
       "url": "https://events.google.com/io/schedule?sid=d4fa3b87-fdd4-48e4-9322-bed567114d39",
       "title": "Building high quality apps and games with Firebase",
-      "description": "Building high quality apps is hard. In this session weâ€™ll introduce new features to test the stability and performance of your applications in both development and production, give you an update on crash reporting, and show how specific customers successfully use Test Lab within their release process and tooling.",
+      "description": "Building high quality apps is hard. In this session we'll introduce new features to test the stability and performance of your applications in both development and production, give you an update on crash reporting, and show how specific customers successfully use Test Lab within their release process and tooling.",
       "startTimestamp": "2017-05-17T23:00:00Z",
       "endTimestamp": "2017-05-18T00:00:00Z",
       "isFeatured": false,
       "isLivestream": true,
       "youtubeUrl": "https://google.com/events/io",
+      "livestreamChannel": "",
       "tags": [
         "TRACK_FIREBASE",
         "THEME_GROW&EARN",
@@ -2170,7 +2185,9 @@
       "color": "#FFD54F",
       "speakers": [
         "c36a8603-4088-4837-8d46-3548c53f3336",
-        "f361a1ab-b8b9-491c-a4f6-caa42a47f9fa"
+        "f361a1ab-b8b9-491c-a4f6-caa42a47f9fa",
+        "57dd98da-21cb-45b2-b7e9-67a00ff6a566",
+        "6009a0a1-a524-49b6-8597-77f491453913"
       ],
       "room": "e6ce7473-75fe-4c6b-a790-0a73a8c78c0a"
     },
@@ -2184,6 +2201,7 @@
       "isFeatured": false,
       "isLivestream": true,
       "youtubeUrl": "https://google.com/events/io",
+      "livestreamChannel": "",
       "tags": [
         "TRACK_FIREBASE",
         "THEME_GROW&EARN",
@@ -2209,6 +2227,7 @@
       "isFeatured": false,
       "isLivestream": true,
       "youtubeUrl": "https://google.com/events/io",
+      "livestreamChannel": "",
       "tags": [
         "THEME_GROW&EARN",
         "LEVEL_ADVANCED",
@@ -2270,6 +2289,7 @@
       "isFeatured": false,
       "isLivestream": true,
       "youtubeUrl": "https://google.com/events/io",
+      "livestreamChannel": "",
       "tags": [
         "LEVEL_BEGINNER",
         "THEME_BEYONDMOBILE",
@@ -2324,12 +2344,13 @@
       "id": "bd03a5f2-5895-4511-9b1c-757baa618c57",
       "url": "https://events.google.com/io/schedule?sid=bd03a5f2-5895-4511-9b1c-757baa618c57",
       "title": "Developing High Performance Games for Android",
-      "description": "Mobile games have better graphics and deeper gameplay than ever before. This means that developers need to optimize their games to get the best experience on each device to meet the expectations of their users. In this session, you will see how Android can be the premier platform for high end, visually rich, game experiences. Weâ€™ll talk about developing high fidelity games on Android, including the latest techniques and tools for optimizing your game. You will hear about real world examples of performance optimization from Samsung and Netmarble.",
+      "description": "Mobile games have better graphics and deeper gameplay than ever before. This means that developers need to optimize their games to get the best experience on each device to meet the expectations of their users. In this session, you will see how Android can be the premier platform for high end, visually rich, game experiences. We'll talk about developing high fidelity games on Android, including the latest techniques and tools for optimizing your game. You will hear about real world examples of performance optimization from Samsung and Netmarble.",
       "startTimestamp": "2017-05-19T19:30:00Z",
       "endTimestamp": "2017-05-19T20:30:00Z",
       "isFeatured": false,
       "isLivestream": true,
       "youtubeUrl": "https://google.com/events/io",
+      "livestreamChannel": "",
       "tags": [
         "THEME_PLATFORMS",
         "TRACK_ANDROID",
@@ -2350,11 +2371,12 @@
       "url": "https://events.google.com/io/schedule?sid=8b85a1ab-2fa6-43a5-9854-ddba6c02d97c",
       "title": "Fragment Tricks",
       "description": "Android's Fragment API provides lots of opportunity for reusable component development and effective factoring of your apps for ease of understanding and testing. We'll show you some of our favorite ways to get the most out of one of Android's most talked about APIs and how we've continued to improve the Fragment infrastructure based on your feedback.",
-      "startTimestamp": "2017-05-18T15:30:00Z",
-      "endTimestamp": "2017-05-18T16:30:00Z",
+      "startTimestamp": "2017-05-18T17:30:00Z",
+      "endTimestamp": "2017-05-18T18:30:00Z",
       "isFeatured": false,
       "isLivestream": true,
       "youtubeUrl": "https://google.com/events/io",
+      "livestreamChannel": "",
       "tags": [
         "THEME_PLATFORMS",
         "TRACK_ANDROID",
@@ -2367,18 +2389,19 @@
         "f4942ddc-9678-4e3b-8f90-4eacd00de354",
         "362c9714-bf39-4ec9-9635-bc374f15522e"
       ],
-      "room": "6063da53-c8ce-44a7-9928-cf6eb4fb39df"
+      "room": "54adc1dc-ee51-44c4-a919-87aec2351826"
     },
     {
       "id": "861c6857-57e9-4a25-9800-0a788f99193a",
       "url": "https://events.google.com/io/schedule?sid=861c6857-57e9-4a25-9800-0a788f99193a",
       "title": "Polymer: Billions Served; Lessons Learned",
-      "description": "Polymer went from an experiment to a Big Thing serving tons of users in major Google products and some of the biggest companies in the world in no time. Success is great! But thereâ€™s always room for improvement. Mistakes were made. Lessons were learned. Regrets were had. Two years, hundreds of elements, and thousands of apps later, weâ€™ve got a pretty good idea what makes an element and an app great, and whatâ€™s changing in Polymer 2.0 as a result. Come hear what this means for the Polymer Elements, your elements and your apps, in a new episode of the Meownica show!",
-      "startTimestamp": "2017-05-18T18:30:00Z",
-      "endTimestamp": "2017-05-18T19:30:00Z",
+      "description": "Polymer went from an experiment to a Big Thing serving tons of users in major Google products and some of the biggest companies in the world in no time. Success is great! But there's always room for improvement. Mistakes were made. Lessons were learned. Regrets were had. Two years, hundreds of elements, and thousands of apps later, we've got a pretty good idea what makes an element and an app great, and what's changing in Polymer 2.0 as a result. Come hear what this means for the Polymer Elements, your elements and your apps, in a new episode of the Meownica show!",
+      "startTimestamp": "2017-05-18T15:30:00Z",
+      "endTimestamp": "2017-05-18T16:30:00Z",
       "isFeatured": false,
       "isLivestream": true,
       "youtubeUrl": "https://google.com/events/io",
+      "livestreamChannel": "",
       "tags": [
         "THEME_PLATFORMS",
         "TRACK_MOBILEWEB",
@@ -2390,7 +2413,7 @@
       "speakers": [
         "6715e062-b02d-4685-a9f1-edf4215f21c1"
       ],
-      "room": "54adc1dc-ee51-44c4-a919-87aec2351826"
+      "room": "6063da53-c8ce-44a7-9928-cf6eb4fb39df"
     },
     {
       "id": "eb5aa1c9-d415-442a-87ae-c222a93d54a3",
@@ -2421,6 +2444,7 @@
       "isFeatured": false,
       "isLivestream": true,
       "youtubeUrl": "https://google.com/events/io",
+      "livestreamChannel": "",
       "tags": [
         "TYPE_SESSIONS",
         "FLAG_KEYNOTE"
@@ -2438,6 +2462,7 @@
       "isFeatured": false,
       "isLivestream": true,
       "youtubeUrl": "https://google.com/events/io",
+      "livestreamChannel": "",
       "tags": [
         "THEME_GROW&EARN",
         "TRACK_ADS",
@@ -2483,6 +2508,7 @@
       "isFeatured": false,
       "isLivestream": true,
       "youtubeUrl": "https://google.com/events/io",
+      "livestreamChannel": "",
       "tags": [
         "THEME_GROW&EARN",
         "TRACK_PLAY",
@@ -2508,6 +2534,7 @@
       "isFeatured": false,
       "isLivestream": true,
       "youtubeUrl": "https://google.com/events/io",
+      "livestreamChannel": "",
       "tags": [
         "THEME_PLATFORMS",
         "TRACK_MOBILEWEB",
@@ -2531,6 +2558,7 @@
       "isFeatured": false,
       "isLivestream": true,
       "youtubeUrl": "https://google.com/events/io",
+      "livestreamChannel": "",
       "tags": [
         "TRACK_DESIGN",
         "LEVEL_INTERMEDIATE",
@@ -2543,7 +2571,6 @@
         "4c178aa2-65c3-48c1-8b8f-e26fa7858357",
         "238dff9e-1132-485b-aada-39d539b38ecd",
         "ea4eb5a8-a8f3-43b0-9458-41a088278dad",
-        "1d062e94-b7d4-4973-af78-89177a005665",
         "7f55386d-f584-4876-bd95-b291c80d17c9",
         "4df25b45-60ae-4e4c-85ba-c90e5b5b57bd",
         "56dd27c0-01ff-43b4-9976-c2db36ac89c3"
@@ -2610,12 +2637,13 @@
       "id": "d9700c16-fa43-44b9-afaa-c25224f0e336",
       "url": "https://events.google.com/io/schedule?sid=d9700c16-fa43-44b9-afaa-c25224f0e336",
       "title": "Android apps for Chromebooks and large screen devices",
-      "description": "Play Store on Chromebooks is a game-changer for how Android apps are expected to behave on large screens and desktop form factors. This session aims to provide Android app developers information, guidance, and examples on how to improve and optimize their app on Chromebooks. Doing so will lead to successfully tapping into a new market, being one of the early adopters, and the opportunity to lead and influence the ecosystem in setting the standard for apps on larger screens. Specific topics are around improving an appâ€™s ability to provide better window management and implement different hardware inputs (trackpad, mouse, keyboard, and stylus) as frequently used with larger screen devices.",
+      "description": "Play Store on Chromebooks is a game-changer for how Android apps are expected to behave on large screens and desktop form factors. This session aims to provide Android app developers information, guidance, and examples on how to improve and optimize their app on Chromebooks. Doing so will lead to successfully tapping into a new market, being one of the early adopters, and the opportunity to lead and influence the ecosystem in setting the standard for apps on larger screens. Specific topics are around improving an app's ability to provide better window management and implement different hardware inputs (trackpad, mouse, keyboard, and stylus) as frequently used with larger screen devices.",
       "startTimestamp": "2017-05-19T19:30:00Z",
       "endTimestamp": "2017-05-19T20:30:00Z",
       "isFeatured": false,
       "isLivestream": true,
       "youtubeUrl": "https://google.com/events/io",
+      "livestreamChannel": "",
       "tags": [
         "LEVEL_ADVANCED",
         "TRACK_PLAY",
@@ -2628,7 +2656,9 @@
       "mainTag": "TRACK_PLAY",
       "color": "#CE93D8",
       "speakers": [
-        "1578b01a-e45a-41b4-8996-735d6e159275"
+        "1578b01a-e45a-41b4-8996-735d6e159275",
+        "3093a2f3-dc8e-4f3a-a001-18568e6926b9",
+        "b565831b-c4c4-4a9e-94ad-182a470e9e0b"
       ],
       "room": "c75f8dff-36b3-4248-bc82-d0523ad8f6df"
     },
@@ -2642,6 +2672,7 @@
       "isFeatured": false,
       "isLivestream": true,
       "youtubeUrl": "https://google.com/events/io",
+      "livestreamChannel": "",
       "tags": [
         "THEME_PLATFORMS",
         "TRACK_MOBILEWEB",
@@ -2790,6 +2821,7 @@
       "isFeatured": false,
       "isLivestream": true,
       "youtubeUrl": "https://google.com/events/io",
+      "livestreamChannel": "",
       "tags": [
         "THEME_PLATFORMS",
         "TRACK_MOBILEWEB",
@@ -2807,7 +2839,7 @@
       "id": "b71f1c7e-2c4a-459c-ae97-1cc452a7a210",
       "url": "https://events.google.com/io/schedule?sid=b71f1c7e-2c4a-459c-ae97-1cc452a7a210",
       "title": "Office Hours: Actions on Google: 1:1 Consultations with our VUI Team",
-      "description": "Building with voice? Whether youâ€™re just starting out or trying to deepen your experience to engage more users, bring your actions to our VUI Lab for 1:1 consults with our experienced team of VUI designers.",
+      "description": "Building with voice? Whether you're just starting out or trying to deepen your experience to engage more users, bring your actions to our VUI Lab for 1:1 consults with our experienced team of VUI designers.",
       "startTimestamp": "2017-05-18T21:30:00Z",
       "endTimestamp": "2017-05-18T22:30:00Z",
       "isFeatured": false,
@@ -2862,7 +2894,7 @@
       "id": "bacc0539-7bb8-460a-b795-60d063313730",
       "url": "https://events.google.com/io/schedule?sid=bacc0539-7bb8-460a-b795-60d063313730",
       "title": "Comedy Club",
-      "description": "Donâ€™t miss the debut of I/O's very own Comedy Club. We'll host the popular \"2 Dope Queens\" podcast featuring former Daily Show contributor Jessica Williams and stand-up comedian and writer Phoebe Robinson. Matt Ingebretson will be opening the show.",
+      "description": "Don't miss the debut of I/O's very own Comedy Club. We'll host the popular \"2 Dope Queens\" podcast featuring former Daily Show contributor Jessica Williams and stand-up comedian and writer Phoebe Robinson. Matt Ingebretson will be opening the show.",
       "startTimestamp": "2017-05-18T02:30:00Z",
       "endTimestamp": "2017-05-18T04:30:00Z",
       "isFeatured": false,
@@ -2883,6 +2915,7 @@
       "isFeatured": false,
       "isLivestream": true,
       "youtubeUrl": "https://google.com/events/io",
+      "livestreamChannel": "",
       "tags": [
         "THEME_PLATFORMS",
         "TRACK_MOBILEWEB",
@@ -2892,7 +2925,6 @@
       "mainTag": "TRACK_MOBILEWEB",
       "color": "#FFF176",
       "speakers": [
-        "d05d60e0-8ae9-4230-8016-e2dc4bc6cdee",
         "29eb540c-63f5-443f-8216-6657e2d3b807"
       ],
       "room": "54adc1dc-ee51-44c4-a919-87aec2351826"
@@ -2907,6 +2939,7 @@
       "isFeatured": false,
       "isLivestream": true,
       "youtubeUrl": "https://google.com/events/io",
+      "livestreamChannel": "",
       "tags": [
         "TRACK_ASSISTANT",
         "THEME_BEYONDMOBILE",
@@ -2931,6 +2964,7 @@
       "isFeatured": false,
       "isLivestream": true,
       "youtubeUrl": "https://google.com/events/io",
+      "livestreamChannel": "",
       "tags": [
         "TRACK_FIREBASE",
         "THEME_GROW&EARN",
@@ -2951,7 +2985,7 @@
       "id": "d6dcfe20-56e8-47f4-bb38-330de3579def",
       "url": "https://events.google.com/io/schedule?sid=d6dcfe20-56e8-47f4-bb38-330de3579def",
       "title": "Office Hours: Actions on Google: 1:1 Consultations with our VUI Team",
-      "description": "Building with voice? Whether youâ€™re just starting out or trying to deepen your experience to engage more users, bring your actions to our VUI Lab for 1:1 consults with our experienced team of VUI designers.",
+      "description": "Building with voice? Whether you're just starting out or trying to deepen your experience to engage more users, bring your actions to our VUI Lab for 1:1 consults with our experienced team of VUI designers.",
       "startTimestamp": "2017-05-19T21:30:00Z",
       "endTimestamp": "2017-05-19T22:30:00Z",
       "isFeatured": false,
@@ -2969,12 +3003,13 @@
       "id": "006961f0-030f-4dca-8277-a479083c208d",
       "url": "https://events.google.com/io/schedule?sid=006961f0-030f-4dca-8277-a479083c208d",
       "title": "Architecture Components - Solving the Lifecycle Problem",
-      "description": "Handling Application & UI lifecycle on Android has always been a challenge for applications: subclassing, overriding, and entirely too much code in your Activity class leads to fragile, complicated application logic. Wouldnâ€™t it be nice if this was easier? This session will cover a new approach to lifecycles and explore functionality that makes the problem dramatically easier. Be sure to also check out the other two â€œArchitecture Componentsâ€ sessions for more information on architecting better Android applications.",
+      "description": "Handling Application & UI lifecycle on Android has always been a challenge for applications: subclassing, overriding, and entirely too much code in your Activity class leads to fragile, complicated application logic. Wouldn't it be nice if this was easier? This session will cover a new approach to lifecycles and explore functionality that makes the problem dramatically easier. Be sure to also check out the other two 'Architecture Components' sessions for more information on architecting better Android applications.",
       "startTimestamp": "2017-05-18T15:30:00Z",
       "endTimestamp": "2017-05-18T16:30:00Z",
       "isFeatured": false,
       "isLivestream": true,
       "youtubeUrl": "https://google.com/events/io",
+      "livestreamChannel": "",
       "tags": [
         "THEME_PLATFORMS",
         "TRACK_ANDROID",
@@ -3011,13 +3046,14 @@
     {
       "id": "bf124bdd-02a1-41c9-83f5-cae9276dd5d0",
       "url": "https://events.google.com/io/schedule?sid=bf124bdd-02a1-41c9-83f5-cae9276dd5d0",
-      "title": "Whatâ€™s new in Googleâ€™s IoT platform? Ubiquitous computing at Google",
+      "title": "What's new in Google's IoT platform? Ubiquitous computing at Google",
       "description": "Google has a wide range of platforms and tools to support the Internet of Things and to bring about the vision of ubiquitous computing so our users can interact with services wherever and whenever it makes sense for them. Come to this talk to learn about all of these initiatives at Google, including the Google Assistant, Android Things, Google Cloud, Android TV, Android Wear, and Android Auto. Learn more about how they all fit together as part of an ecosystem, which one is most appropriate for different types of developers and applications, and which talks you should be attending at Google I/O.",
       "startTimestamp": "2017-05-17T21:00:00Z",
       "endTimestamp": "2017-05-17T22:00:00Z",
       "isFeatured": false,
       "isLivestream": true,
       "youtubeUrl": "https://google.com/events/io",
+      "livestreamChannel": "",
       "tags": [
         "LEVEL_BEGINNER",
         "THEME_BEYONDMOBILE",
@@ -3035,12 +3071,13 @@
       "id": "428dde19-fec0-4303-b5b1-84fe0e3c9109",
       "url": "https://events.google.com/io/schedule?sid=428dde19-fec0-4303-b5b1-84fe0e3c9109",
       "title": "Getting your Assistant App Discovered",
-      "description": "If an action speaks in the forest and no one hears it, did it make a sound? The focus for this talk is discovery -- we want users to be able to find the awesome Actions on Google experiences you've built. Weâ€™ll talk about triggering, directory listings, submissions, and overall best practices for getting your experience discovered by Google Assistant users.",
+      "description": "If an action speaks in the forest and no one hears it, did it make a sound? The focus for this talk is discovery -- we want users to be able to find the awesome Actions on Google experiences you've built. We'll talk about triggering, directory listings, submissions, and overall best practices for getting your experience discovered by Google Assistant users.",
       "startTimestamp": "2017-05-19T00:30:00Z",
       "endTimestamp": "2017-05-19T01:30:00Z",
       "isFeatured": false,
       "isLivestream": true,
       "youtubeUrl": "https://google.com/events/io",
+      "livestreamChannel": "",
       "tags": [
         "TRACK_ASSISTANT",
         "THEME_BEYONDMOBILE",
@@ -3059,12 +3096,13 @@
       "id": "fed907cf-4b51-4337-8ee0-43bca96dec08",
       "url": "https://events.google.com/io/schedule?sid=fed907cf-4b51-4337-8ee0-43bca96dec08",
       "title": "Prototyping to Production: Bridging the Gap with a Common Tool",
-      "description": "Design and engineering collaboration is difficult but vital for iterative user-centered product development. Join us (a designer and UI developer) as we use the Flutter UI framework to evolve a UI concept from prototype to production code. Youâ€™ll leave this talk with a deeper understanding of how to bridge the gap between designers and UI developers through a prototyping-centric workflow, and why using a single framework between designers and developers helps your team work more efficiently.",
+      "description": "Design and engineering collaboration is difficult but vital for iterative user-centered product development. Join us (a designer and UI developer) as we use the Flutter UI framework to evolve a UI concept from prototype to production code. You'll leave this talk with a deeper understanding of how to bridge the gap between designers and UI developers through a prototyping-centric workflow, and why using a single framework between designers and developers helps your team work more efficiently.",
       "startTimestamp": "2017-05-19T15:30:00Z",
       "endTimestamp": "2017-05-19T16:30:00Z",
       "isFeatured": false,
       "isLivestream": true,
       "youtubeUrl": "https://google.com/events/io",
+      "livestreamChannel": "",
       "tags": [
         "TRACK_DESIGN",
         "LEVEL_INTERMEDIATE",
@@ -3144,6 +3182,7 @@
       "isFeatured": false,
       "isLivestream": true,
       "youtubeUrl": "https://google.com/events/io",
+      "livestreamChannel": "",
       "tags": [
         "TRACK_FIREBASE",
         "THEME_GROW&EARN",
@@ -3165,12 +3204,13 @@
       "id": "a3bec051-b37b-4bca-a3bf-1a45a7e9bba2",
       "url": "https://events.google.com/io/schedule?sid=a3bec051-b37b-4bca-a3bf-1a45a7e9bba2",
       "title": "10 secrets to debug and optimize Android apps for stellar user retention",
-      "description": "An end-to-end review of how to identify and fix bad application behavior in and before production. Understand the tools available for identifying and resolving Android â€˜health incidentsâ€™ in production. Review each stage of the development cycle and the ways to leverage Android Studio, Play Console, and platform APIs to have a better picture of how your app is behaving and impacting the health of your userâ€™s device.",
+      "description": "An end-to-end review of how to identify and fix bad application behavior in and before production. Understand the tools available for identifying and resolving Android 'health incidents' in production. Review each stage of the development cycle and the ways to leverage Android Studio, Play Console, and platform APIs to have a better picture of how your app is behaving and impacting the health of your user's device.",
       "startTimestamp": "2017-05-17T22:00:00Z",
       "endTimestamp": "2017-05-17T23:00:00Z",
       "isFeatured": false,
       "isLivestream": true,
       "youtubeUrl": "https://google.com/events/io",
+      "livestreamChannel": "",
       "tags": [
         "TRACK_PLAY",
         "THEME_PLATFORMS",
@@ -3234,6 +3274,7 @@
       "isFeatured": false,
       "isLivestream": true,
       "youtubeUrl": "https://google.com/events/io",
+      "livestreamChannel": "",
       "tags": [
         "LEVEL_ADVANCED",
         "THEME_PLATFORMS",
@@ -3318,12 +3359,13 @@
       "id": "e8436b55-ea89-4243-a644-5ecb319d9ef0",
       "url": "https://events.google.com/io/schedule?sid=e8436b55-ea89-4243-a644-5ecb319d9ef0",
       "title": "Production Progressive Web Apps With JavaScript Frameworks",
-      "description": "Learn how the worldâ€™s largest brands ship Progressive Web Apps that instantly load on mobile hardware. Weâ€™ll look at how apps built using React, Preact, Vue, Angular & Polymer can be used to build instantly interactive, engaging & data-plan sensitive user experiences. We'll also look at how this investment paid off on core business metrics. Youâ€™ll leave this session learning PWA best practices, patterns for efficiently loading websites and the latest tools for getting fast and staying fast. You wonâ€™t want to miss it.",
+      "description": "Learn how the world's largest brands ship Progressive Web Apps that instantly load on mobile hardware. We'll look at how apps built using React, Preact, Vue, Angular & Polymer can be used to build instantly interactive, engaging & data-plan sensitive user experiences. We'll also look at how this investment paid off on core business metrics. You'll leave this session learning PWA best practices, patterns for efficiently loading websites and the latest tools for getting fast and staying fast. You won't want to miss it.",
       "startTimestamp": "2017-05-19T21:30:00Z",
       "endTimestamp": "2017-05-19T22:30:00Z",
       "isFeatured": false,
       "isLivestream": true,
       "youtubeUrl": "https://google.com/events/io",
+      "livestreamChannel": "",
       "tags": [
         "LEVEL_ADVANCED",
         "THEME_PLATFORMS",
@@ -3356,12 +3398,13 @@
       "id": "4cf193f0-22b3-4f6d-8979-fa27be37ef17",
       "url": "https://events.google.com/io/schedule?sid=4cf193f0-22b3-4f6d-8979-fa27be37ef17",
       "title": "Finding the Right Voice Interactions for your App",
-      "description": "Imagine trying to read a website through a straw... mentally processing an audio signal feels a lot like that. In our new era of computing where advancements in conversational UIs and artificial intelligence are enabling users in new ways, itâ€™s easy to be tempted to take an existing visual-based app or GUI and simply â€œconvert it to voiceâ€. But while voice brings with it the potential for speed and simplicity, hands-free experiences can become overly complicated easily when based on another mode of interaction. Get the scoop on what types of use cases transfer well to voice interactions and why. ",
+      "description": "Imagine trying to read a website through a straw... mentally processing an audio signal feels a lot like that. In our new era of computing where advancements in conversational UIs and artificial intelligence are enabling users in new ways, it's easy to be tempted to take an existing visual-based app or GUI and simply 'convert it to voice'. But while voice brings with it the potential for speed and simplicity, hands-free experiences can become overly complicated easily when based on another mode of interaction. Get the scoop on what types of use cases transfer well to voice interactions and why. ",
       "startTimestamp": "2017-05-18T22:30:00Z",
       "endTimestamp": "2017-05-18T23:30:00Z",
       "isFeatured": false,
       "isLivestream": true,
       "youtubeUrl": "https://google.com/events/io",
+      "livestreamChannel": "",
       "tags": [
         "TRACK_DESIGN",
         "LEVEL_BEGINNER",
@@ -3385,6 +3428,7 @@
       "isFeatured": false,
       "isLivestream": true,
       "youtubeUrl": "https://google.com/events/io",
+      "livestreamChannel": "",
       "tags": [
         "THEME_PLATFORMS",
         "TRACK_MOBILEWEB",
@@ -3453,6 +3497,7 @@
       "isFeatured": false,
       "isLivestream": true,
       "youtubeUrl": "https://google.com/events/io",
+      "livestreamChannel": "",
       "tags": [
         "LEVEL_BEGINNER",
         "THEME_BEYONDMOBILE",
@@ -3476,6 +3521,7 @@
       "isFeatured": false,
       "isLivestream": true,
       "youtubeUrl": "https://google.com/events/io",
+      "livestreamChannel": "",
       "tags": [
         "TRACK_FIREBASE",
         "THEME_GROW&EARN",
@@ -3495,12 +3541,13 @@
       "id": "bd623b44-d26a-4b62-9833-c0301bd4217b",
       "url": "https://events.google.com/io/schedule?sid=bd623b44-d26a-4b62-9833-c0301bd4217b",
       "title": "What's new for Android TV",
-      "description": "Developers will learn whatâ€™s new with Android TV, from recent system enhancements that help users quickly access relevant content, to an overview of new APIs for developers to build apps for Android TV. This session will cover new APIs, features and also upcoming platform enhancements.",
-      "startTimestamp": "2017-05-18T17:30:00Z",
-      "endTimestamp": "2017-05-18T18:30:00Z",
+      "description": "Developers will learn what's new with Android TV, from recent system enhancements that help users quickly access relevant content, to an overview of new APIs for developers to build apps for Android TV. This session will cover new APIs, features and also upcoming platform enhancements.",
+      "startTimestamp": "2017-05-18T01:00:00Z",
+      "endTimestamp": "2017-05-18T02:00:00Z",
       "isFeatured": false,
       "isLivestream": true,
       "youtubeUrl": "https://google.com/events/io",
+      "livestreamChannel": "",
       "tags": [
         "LEVEL_BEGINNER",
         "THEME_PLATFORMS",
@@ -3513,7 +3560,7 @@
         "550a069b-68e9-4b5c-8294-a08d45de5065",
         "5846181d-25d6-49d5-9b28-1b40f95ee40c"
       ],
-      "room": "6063da53-c8ce-44a7-9928-cf6eb4fb39df"
+      "room": "54adc1dc-ee51-44c4-a919-87aec2351826"
     },
     {
       "id": "4412fdb7-263f-4fec-b97a-b4749b0228df",
@@ -3576,6 +3623,7 @@
       "isFeatured": false,
       "isLivestream": true,
       "youtubeUrl": "https://google.com/events/io",
+      "livestreamChannel": "",
       "tags": [
         "TRACK_PLAY",
         "LEVEL_BEGINNER",
@@ -3615,6 +3663,7 @@
       "isFeatured": false,
       "isLivestream": true,
       "youtubeUrl": "https://google.com/events/io",
+      "livestreamChannel": "",
       "tags": [
         "THEME_GROW&EARN",
         "LEVEL_ADVANCED",
@@ -3640,6 +3689,7 @@
       "isFeatured": false,
       "isLivestream": true,
       "youtubeUrl": "https://google.com/events/io",
+      "livestreamChannel": "",
       "tags": [
         "LEVEL_ADVANCED",
         "THEME_PLATFORMS",
@@ -3658,12 +3708,13 @@
       "id": "cd92d3ba-b11f-41c6-a388-9c9a1e78bc35",
       "url": "https://events.google.com/io/schedule?sid=cd92d3ba-b11f-41c6-a388-9c9a1e78bc35",
       "title": "Bringing VR Video apps to Daydream: Making great Daydream experiences with Unity",
-      "description": "Experiences in virtual reality can be powerful and immersive. This session provides a foundation for building great VR video based apps using Unity, a game engine for 3D rendering, and Exoplayer, an open source playback library for Android. Weâ€™ll review the recommended architecture for Daydream apps and scene designs for multiple videos, as well as 360 degree and 2D playback. We'll also explore how to work with Android libraries in Unity.",
+      "description": "Experiences in virtual reality can be powerful and immersive. This session provides a foundation for building great VR video based apps using Unity, a game engine for 3D rendering, and Exoplayer, an open source playback library for Android. We'll review the recommended architecture for Daydream apps and scene designs for multiple videos, as well as 360 degree and 2D playback. We'll also explore how to work with Android libraries in Unity.",
       "startTimestamp": "2017-05-18T21:30:00Z",
       "endTimestamp": "2017-05-18T22:30:00Z",
       "isFeatured": false,
       "isLivestream": true,
       "youtubeUrl": "https://google.com/events/io",
+      "livestreamChannel": "",
       "tags": [
         "LEVEL_BEGINNER",
         "THEME_BEYONDMOBILE",
@@ -3706,6 +3757,7 @@
       "isFeatured": false,
       "isLivestream": true,
       "youtubeUrl": "https://google.com/events/io",
+      "livestreamChannel": "",
       "tags": [
         "TRACK_FIREBASE",
         "THEME_GROW&EARN",
@@ -3726,12 +3778,13 @@
       "id": "0d807819-84a0-4dcb-9315-1d3006faa32e",
       "url": "https://events.google.com/io/schedule?sid=0d807819-84a0-4dcb-9315-1d3006faa32e",
       "title": "How words can make your product stand out",
-      "description": "People encounter a lot of high-quality, visually compelling apps. So what can you do to make sure they connect with yours? This is where content strategy comes in. Weâ€™ll share how you can use words to create a clear brand voice and unify your user experience. The talk will include case studies from Google UX writers, as well as writing principles you can apply to your own product.",
+      "description": "People encounter a lot of high-quality, visually compelling apps. So what can you do to make sure they connect with yours? This is where content strategy comes in. We'll share how you can use words to create a clear brand voice and unify your user experience. The talk will include case studies from Google UX writers, as well as writing principles you can apply to your own product.",
       "startTimestamp": "2017-05-19T16:30:00Z",
       "endTimestamp": "2017-05-19T17:30:00Z",
       "isFeatured": false,
       "isLivestream": true,
       "youtubeUrl": "https://google.com/events/io",
+      "livestreamChannel": "",
       "tags": [
         "TRACK_DESIGN",
         "LEVEL_BEGINNER",
@@ -3813,6 +3866,7 @@
       "isFeatured": false,
       "isLivestream": true,
       "youtubeUrl": "https://google.com/events/io",
+      "livestreamChannel": "",
       "tags": [
         "TRACK_FIREBASE",
         "THEME_GROW&EARN",
@@ -3913,6 +3967,7 @@
       "isFeatured": false,
       "isLivestream": true,
       "youtubeUrl": "https://google.com/events/io",
+      "livestreamChannel": "",
       "tags": [
         "LEVEL_ADVANCED",
         "THEME_PLATFORMS",
@@ -3976,6 +4031,7 @@
       "isFeatured": false,
       "isLivestream": true,
       "youtubeUrl": "https://google.com/events/io",
+      "livestreamChannel": "",
       "tags": [
         "TRACK_DESIGN",
         "LEVEL_INTERMEDIATE",
@@ -3986,7 +4042,7 @@
       "color": "#F8BBD0",
       "speakers": [
         "51439cb7-c55f-46e8-babf-7d5182243b9e",
-        "d27bc2e7-a926-44e0-9463-a52b4495dba9"
+        "e49d4720-3998-4dce-9b33-93a04aa725e9"
       ],
       "room": "54adc1dc-ee51-44c4-a919-87aec2351826"
     },
@@ -3995,11 +4051,12 @@
       "url": "https://events.google.com/io/schedule?sid=5bd70da9-c3b6-4b39-85c2-a8fbe140b7f2",
       "title": "Great Progressive Web App Experiences with Angular",
       "description": "Angular is a platform for building apps with the web, and supports Progressive Web Apps out of the box. Learn how Angular's tools enable you to increase engagement with faster loads, offline access, and push notifications through progressive enhancement of your mobile web apps.",
-      "startTimestamp": "2017-05-18T17:30:00Z",
-      "endTimestamp": "2017-05-18T18:30:00Z",
+      "startTimestamp": "2017-05-18T18:30:00Z",
+      "endTimestamp": "2017-05-18T19:30:00Z",
       "isFeatured": false,
       "isLivestream": true,
       "youtubeUrl": "https://google.com/events/io",
+      "livestreamChannel": "",
       "tags": [
         "THEME_PLATFORMS",
         "TRACK_MOBILEWEB",
@@ -4076,6 +4133,7 @@
       "isFeatured": false,
       "isLivestream": true,
       "youtubeUrl": "https://google.com/events/io",
+      "livestreamChannel": "",
       "tags": [
         "TRACK_PLAY",
         "THEME_PLATFORMS",
@@ -4099,12 +4157,13 @@
       "id": "ed6375dc-c224-4e08-9d1c-a641ad423368",
       "url": "https://events.google.com/io/schedule?sid=ed6375dc-c224-4e08-9d1c-a641ad423368",
       "title": "Applying Built-in Hacks of Conversation to Your Voice UI",
-      "description": "As you gear up to build great Conversation Actions for the Google Assistant, find out how to leverage one of the principles that practically defines what it means to be â€œconversationalâ€ â€“ our ability to take mental leaps, to draw inferences, to be informative, to feel like weâ€™re making progress.  Conversation is systematic, but to the surprise of many technologists, this conversational principle actually defies the rules of formal logic. So come find out the non-literal truth of everyday back-and-forths; take advantage of this principled, built-in â€œhackâ€ of spoken language; and delight your users with the intuitive ease of everyday conversation.",
+      "description": "As you gear up to build great Conversation Actions for the Google Assistant, find out how to leverage one of the principles that practically defines what it means to be 'conversational' - our ability to take mental leaps, to draw inferences, to be informative, to feel like we're making progress.  Conversation is systematic, but to the surprise of many technologists, this conversational principle actually defies the rules of formal logic. So come find out the non-literal truth of everyday back-and-forths; take advantage of this principled, built-in 'hack' of spoken language; and delight your users with the intuitive ease of everyday conversation.",
       "startTimestamp": "2017-05-19T20:30:00Z",
       "endTimestamp": "2017-05-19T21:30:00Z",
       "isFeatured": false,
       "isLivestream": true,
       "youtubeUrl": "https://google.com/events/io",
+      "livestreamChannel": "",
       "tags": [
         "LEVEL_BEGINNER",
         "TRACK_ASSISTANT",
@@ -4191,12 +4250,13 @@
       "id": "69d89fd9-f05a-452e-85ba-fc636054789e",
       "url": "https://events.google.com/io/schedule?sid=69d89fd9-f05a-452e-85ba-fc636054789e",
       "title": "In Conversation, There Are No Errors",
-      "description": "When building a Conversation Action for the Google Assistant, consider that so-called â€œerror events\" don't have to be treated as edge cases. Instead, these can become opportunities to forge meaningful exchanges that leverage usersâ€™ mental models of how everyday conversations unfold.  This talk will frame a new way of approaching fallback and repair, in which so-called errors become organic turns in the dialog. We will provide design tips for your action logic to allow the conversation to move forward naturally.",
+      "description": "When building a Conversation Action for the Google Assistant, consider that so-called 'error events' don't have to be treated as edge cases. Instead, these can become opportunities to forge meaningful exchanges that leverage users' mental models of how everyday conversations unfold.  This talk will frame a new way of approaching fallback and repair, in which so-called errors become organic turns in the dialog. We will provide design tips for your action logic to allow the conversation to move forward naturally.",
       "startTimestamp": "2017-05-19T01:30:00Z",
       "endTimestamp": "2017-05-19T02:30:00Z",
       "isFeatured": false,
       "isLivestream": true,
       "youtubeUrl": "https://google.com/events/io",
+      "livestreamChannel": "",
       "tags": [
         "TRACK_ASSISTANT",
         "THEME_BEYONDMOBILE",
@@ -4271,12 +4331,13 @@
       "id": "73b6b8e3-0cc7-4c18-81bd-eb7d6f9f61b5",
       "url": "https://events.google.com/io/schedule?sid=73b6b8e3-0cc7-4c18-81bd-eb7d6f9f61b5",
       "title": "A Sense of Place in your apps",
-      "description": "Place means something different to everyone. Where we come from, where we work, where we live-- these are all ways of making sense of the world around us. In this session, weâ€™ll dive into how â€œplaceâ€ manifests itself to different developers, unlocking meaningful impact to their usersâ€™ experience in the real world. Developers can expect to leave this session with deep knowledge of tools in the Places API.",
+      "description": "Place means something different to everyone. Where we come from, where we work, where we live-- these are all ways of making sense of the world around us. In this session, we'll dive into how 'place' manifests itself to different developers, unlocking meaningful impact to their users' experience in the real world. Developers can expect to leave this session with deep knowledge of tools in the Places API.",
       "startTimestamp": "2017-05-19T16:30:00Z",
       "endTimestamp": "2017-05-19T17:30:00Z",
       "isFeatured": false,
       "isLivestream": true,
       "youtubeUrl": "https://google.com/events/io",
+      "livestreamChannel": "",
       "tags": [
         "TRACK_LOCATION&MAPS",
         "LEVEL_INTERMEDIATE",
@@ -4330,12 +4391,13 @@
       "id": "b5355230-00c5-473b-aee8-5e2199190ebe",
       "url": "https://events.google.com/io/schedule?sid=b5355230-00c5-473b-aee8-5e2199190ebe",
       "title": "From AMP to PWA: Progressive Web AMPs",
-      "description": "AMP delivers outstanding page-load performance for users browsing content on the mobile web. Progressive Web Apps deliver reliable performance for re-visits to sites thanks to Service Workers and allows unprecedented engagement via push notifications and Add To Homescreen.\n\nWhat if I told you thereâ€™s a way to utilize the unique power of both? To build a web experience that loads in an instant and upgrades you to maximum interactivity and engagement?\n\nLearn about how to connect AMP and PWA to reap the benefits of both: AMPâ€™s instant first load, and PWAâ€™s subsequent engagement features.",
+      "description": "AMP delivers outstanding page-load performance for users browsing content on the mobile web. Progressive Web Apps deliver reliable performance for re-visits to sites thanks to Service Workers and allows unprecedented engagement via push notifications and Add To Homescreen.\n\nWhat if I told you there's a way to utilize the unique power of both? To build a web experience that loads in an instant and upgrades you to maximum interactivity and engagement?\n\nLearn about how to connect AMP and PWA to reap the benefits of both: AMP's instant first load, and PWA's subsequent engagement features.",
       "startTimestamp": "2017-05-18T16:30:00Z",
       "endTimestamp": "2017-05-18T17:30:00Z",
       "isFeatured": false,
       "isLivestream": true,
       "youtubeUrl": "https://google.com/events/io",
+      "livestreamChannel": "",
       "tags": [
         "THEME_PLATFORMS",
         "TRACK_MOBILEWEB",
@@ -4378,6 +4440,7 @@
       "isFeatured": false,
       "isLivestream": true,
       "youtubeUrl": "https://google.com/events/io",
+      "livestreamChannel": "",
       "tags": [
         "LEVEL_BEGINNER",
         "THEME_PLATFORMS",
@@ -4398,12 +4461,13 @@
       "id": "5869a78a-fb7f-4e98-8951-ea6f7ebb3649",
       "url": "https://events.google.com/io/schedule?sid=5869a78a-fb7f-4e98-8951-ea6f7ebb3649",
       "title": "Developer Tooling for Web Components",
-      "description": "Itâ€™s 2017, and Web Components - the technology that allows you to extend the vocabulary of the web platform - have grown up, with finalized specs and native implementations in Chrome and Safari. Tools now need to evolve to help developers utilize this quantum-leap in web development. Learn about the powerful tools the Polymer team has built for all Web Components developers, enabling turn-key creation, testing, and optimization of Web Component-based PWA's. We'll take a deep dive into this brand-new suite of tools like the Polymer CLI, Linter, Bundler and IDE plugins.",
+      "description": "It's 2017, and Web Components - the technology that allows you to extend the vocabulary of the web platform - have grown up, with finalized specs and native implementations in Chrome and Safari. Tools now need to evolve to help developers utilize this quantum-leap in web development. Learn about the powerful tools the Polymer team has built for all Web Components developers, enabling turn-key creation, testing, and optimization of Web Component-based PWA's. We'll take a deep dive into this brand-new suite of tools like the Polymer CLI, Linter, Bundler and IDE plugins.",
       "startTimestamp": "2017-05-18T23:30:00Z",
       "endTimestamp": "2017-05-19T00:30:00Z",
       "isFeatured": false,
       "isLivestream": true,
       "youtubeUrl": "https://google.com/events/io",
+      "livestreamChannel": "",
       "tags": [
         "THEME_PLATFORMS",
         "TRACK_MOBILEWEB",
@@ -4458,12 +4522,13 @@
       "id": "3a7c6766-0d0d-4778-bc22-b8f3094aa451",
       "url": "https://events.google.com/io/schedule?sid=3a7c6766-0d0d-4778-bc22-b8f3094aa451",
       "title": "Designing screen interfaces for VR",
-      "description": "When we think of VR, our minds naturally gravitate towards three-dimensional environments and interactions. But, there are times when itâ€™s necessary to present content in a two-dimensional way. With VR, we have the opportunity to reevaluate the nature of screens, and how we view and interact with screen-based content. This talk will cover techniques the Daydream team uses to create legible, usable screen interfaces in VR. We will introduce new workflows, new units, and highlight interaction opportunities and pitfalls.",
+      "description": "When we think of VR, our minds naturally gravitate towards three-dimensional environments and interactions. But, there are times when it's necessary to present content in a two-dimensional way. With VR, we have the opportunity to reevaluate the nature of screens, and how we view and interact with screen-based content. This talk will cover techniques the Daydream team uses to create legible, usable screen interfaces in VR. We will introduce new workflows, new units, and highlight interaction opportunities and pitfalls.",
       "startTimestamp": "2017-05-19T18:30:00Z",
       "endTimestamp": "2017-05-19T19:30:00Z",
       "isFeatured": false,
       "isLivestream": true,
       "youtubeUrl": "https://google.com/events/io",
+      "livestreamChannel": "",
       "tags": [
         "LEVEL_ADVANCED",
         "LEVEL_BEGINNER",
@@ -4524,6 +4589,7 @@
       "isFeatured": false,
       "isLivestream": true,
       "youtubeUrl": "https://google.com/events/io",
+      "livestreamChannel": "",
       "tags": [
         "LEVEL_BEGINNER",
         "THEME_PLATFORMS",
@@ -4567,6 +4633,7 @@
       "isFeatured": false,
       "isLivestream": true,
       "youtubeUrl": "https://google.com/events/io",
+      "livestreamChannel": "",
       "tags": [
         "TRACK_FIREBASE",
         "THEME_GROW&EARN",
@@ -4607,6 +4674,7 @@
       "isFeatured": false,
       "isLivestream": true,
       "youtubeUrl": "https://google.com/events/io",
+      "livestreamChannel": "",
       "tags": [
         "LEVEL_BEGINNER",
         "THEME_BEYONDMOBILE",
@@ -4625,12 +4693,13 @@
       "id": "254bef1b-fd20-4618-8aca-d9bb6de00539",
       "url": "https://events.google.com/io/schedule?sid=254bef1b-fd20-4618-8aca-d9bb6de00539",
       "title": "Building Virtual Reality on the Web with WebVR",
-      "description": "WebVR enables web developers to create frictionless, immersive experiences. It allows them access using any VR headset and reach the billions of users without VR hardware via 2D screens. Weâ€™ll explore how to get started with WebVR by creating an app on stage, and show you how others are already using WebVR today.",
+      "description": "WebVR enables web developers to create frictionless, immersive experiences. It allows them access using any VR headset and reach the billions of users without VR hardware via 2D screens. We'll explore how to get started with WebVR by creating an app on stage, and show you how others are already using WebVR today.",
       "startTimestamp": "2017-05-18T22:30:00Z",
       "endTimestamp": "2017-05-18T23:30:00Z",
       "isFeatured": false,
       "isLivestream": true,
       "youtubeUrl": "https://google.com/events/io",
+      "livestreamChannel": "",
       "tags": [
         "THEME_PLATFORMS",
         "TRACK_MOBILEWEB",
@@ -4725,6 +4794,7 @@
       "isFeatured": false,
       "isLivestream": true,
       "youtubeUrl": "https://google.com/events/io",
+      "livestreamChannel": "",
       "tags": [
         "THEME_PLATFORMS",
         "TRACK_ANDROID",
@@ -4821,6 +4891,7 @@
       "isFeatured": false,
       "isLivestream": true,
       "youtubeUrl": "https://google.com/events/io",
+      "livestreamChannel": "",
       "tags": [
         "TRACK_FIREBASE",
         "THEME_GROW&EARN",
@@ -4866,6 +4937,7 @@
       "isFeatured": false,
       "isLivestream": true,
       "youtubeUrl": "https://google.com/events/io",
+      "livestreamChannel": "",
       "tags": [
         "TYPE_SESSIONS",
         "FLAG_KEYNOTE"
@@ -4876,7 +4948,7 @@
     {
       "id": "1f7e24ea-05ba-42b1-861d-942760626653",
       "url": "https://events.google.com/io/schedule?sid=1f7e24ea-05ba-42b1-861d-942760626653",
-      "title": "Office Hours with Googleâ€™s Accessibility experts",
+      "title": "Office Hours with Google's Accessibility experts",
       "description": "Have questions about how to improve accessibility on your Website or Android app? Want to create more inclusive experiences for people with disabilities? Want to learn how to design, develop and test for everyone? Come have a chat with Android and Web accessibility experts",
       "startTimestamp": "2017-05-19T16:30:00Z",
       "endTimestamp": "2017-05-19T17:30:00Z",
@@ -4901,6 +4973,7 @@
       "isFeatured": false,
       "isLivestream": true,
       "youtubeUrl": "https://google.com/events/io",
+      "livestreamChannel": "",
       "tags": [
         "TRACK_DESIGN",
         "LEVEL_BEGINNER",
@@ -4977,6 +5050,7 @@
       "isFeatured": false,
       "isLivestream": true,
       "youtubeUrl": "https://google.com/events/io",
+      "livestreamChannel": "",
       "tags": [
         "LEVEL_BEGINNER",
         "THEME_BEYONDMOBILE",
@@ -5020,6 +5094,7 @@
       "isFeatured": false,
       "isLivestream": true,
       "youtubeUrl": "https://google.com/events/io",
+      "livestreamChannel": "",
       "tags": [
         "TRACK_FIREBASE",
         "THEME_GROW&EARN",
@@ -5074,12 +5149,13 @@
       "id": "25215e2d-57b4-42a7-baed-902e0e736518",
       "url": "https://events.google.com/io/schedule?sid=25215e2d-57b4-42a7-baed-902e0e736518",
       "title": "No one likes crashing or janky apps! The Google Play Console is here to help.",
-      "description": "With over one million apps on Google Play itâ€™s becoming more important to focus on the technical performance of your app. Hear from the Google Play Console about the new & existing tools to help you understand your technical performance before, during & after release. Understand how to optimize your battery usage, crash free users, screen rendering, usability and much more. Learn about how you will be rewarded by Play for offering a high performance app.",
+      "description": "With over one million apps on Google Play it's becoming more important to focus on the technical performance of your app. Hear from the Google Play Console about the new & existing tools to help you understand your technical performance before, during & after release. Understand how to optimize your battery usage, crash free users, screen rendering, usability and much more. Learn about how you will be rewarded by Play for offering a high performance app.",
       "startTimestamp": "2017-05-19T00:30:00Z",
       "endTimestamp": "2017-05-19T01:30:00Z",
       "isFeatured": false,
       "isLivestream": true,
       "youtubeUrl": "https://google.com/events/io",
+      "livestreamChannel": "",
       "tags": [
         "THEME_GROW&EARN",
         "TRACK_PLAY",
@@ -5099,12 +5175,13 @@
       "id": "cebe1dfb-f988-4090-8df1-041cb587bb21",
       "url": "https://events.google.com/io/schedule?sid=cebe1dfb-f988-4090-8df1-041cb587bb21",
       "title": "Android Sensors & Location: What's New & Best Practices",
-      "description": "Location services on Android empowers developers to create personalized and contextual experiences in their apps based on location information. In this session, weâ€™ll show some best practices for using Android location services while optimizing for performance and user experience. You will also learn about background location limits in the Android O release as well as the new Android Sensor Hub features and algorithm improvements to the compass, which will help you better prepare your apps for future updates.",
+      "description": "Location services on Android empowers developers to create personalized and contextual experiences in their apps based on location information. In this session, we'll show some best practices for using Android location services while optimizing for performance and user experience. You will also learn about background location limits in the Android O release as well as the new Android Sensor Hub features and algorithm improvements to the compass, which will help you better prepare your apps for future updates.",
       "startTimestamp": "2017-05-19T20:30:00Z",
       "endTimestamp": "2017-05-19T21:30:00Z",
       "isFeatured": false,
       "isLivestream": true,
       "youtubeUrl": "https://google.com/events/io",
+      "livestreamChannel": "",
       "tags": [
         "THEME_PLATFORMS",
         "TRACK_ANDROID",
@@ -5125,12 +5202,13 @@
       "id": "a8c57cf7-cf7d-4c67-9a7d-20bcc6768ad3",
       "url": "https://events.google.com/io/schedule?sid=a8c57cf7-cf7d-4c67-9a7d-20bcc6768ad3",
       "title": "Best Practices for Android Audio",
-      "description": "Don't believe the hype...high-performance audio on Android is possible. Weâ€™ll share tips and tricks you can apply immediately, and we'll demonstrate real apps that use them. Weâ€™ll also show whatâ€™s new: a native API that is easier to develop against and with better performance options. Even if the new stuff we have added to the Android O release does not excite you, the strategies weâ€™ll discuss can also be used with apps targeting earlier Android versions.",
+      "description": "Don't believe the hype...high-performance audio on Android is possible. We'll share tips and tricks you can apply immediately, and we'll demonstrate real apps that use them. We'll also show what's new: a native API that is easier to develop against and with better performance options. Even if the new stuff we have added to the Android O release does not excite you, the strategies we'll discuss can also be used with apps targeting earlier Android versions.",
       "startTimestamp": "2017-05-19T16:30:00Z",
       "endTimestamp": "2017-05-19T17:30:00Z",
       "isFeatured": false,
       "isLivestream": true,
       "youtubeUrl": "https://google.com/events/io",
+      "livestreamChannel": "",
       "tags": [
         "THEME_PLATFORMS",
         "TRACK_ANDROID",
@@ -5151,12 +5229,13 @@
       "id": "f284b405-65db-45b2-b178-68eb73aaf96e",
       "url": "https://events.google.com/io/schedule?sid=f284b405-65db-45b2-b178-68eb73aaf96e",
       "title": "Assisting the Driver: From Android Phones to Android Cars",
-      "description": "Android as a mobile platform has been around for 10+ years.  The Android Auto team works with the auto industry to extend this robust platform for in-car infotainment, supporting developers in extending their apps to work on the Android Auto platform towards ensuring seamless experiences across our surfaces. In this session, weâ€™ll look at how the Android Auto ecosystem assists the driver, how weâ€™re making development easier across platforms and for all cars, and how the Google Assistant can help developers engage users in the automotive space.",
+      "description": "Android as a mobile platform has been around for 10+ years.  The Android Auto team works with the auto industry to extend this robust platform for in-car infotainment, supporting developers in extending their apps to work on the Android Auto platform towards ensuring seamless experiences across our surfaces. In this session, we'll look at how the Android Auto ecosystem assists the driver, how we're making development easier across platforms and for all cars, and how the Google Assistant can help developers engage users in the automotive space.",
       "startTimestamp": "2017-05-17T21:00:00Z",
       "endTimestamp": "2017-05-17T22:00:00Z",
       "isFeatured": false,
       "isLivestream": true,
       "youtubeUrl": "https://google.com/events/io",
+      "livestreamChannel": "",
       "tags": [
         "THEME_PLATFORMS",
         "TRACK_ANDROID",
@@ -5168,7 +5247,8 @@
       "speakers": [
         "575d1349-f68a-4a08-b0f2-ee774a54397d",
         "314fdb2d-b732-42ba-b1b3-b9fe19b5d1e7",
-        "e7af6485-eca5-439c-819d-5eb356719083"
+        "e7af6485-eca5-439c-819d-5eb356719083",
+        "5ea728d2-befb-4ffb-88bb-02a66f319f33"
       ],
       "room": "0ebecfd3-6a9a-4d2a-8b1d-6e002951468e"
     },
@@ -5176,12 +5256,13 @@
       "id": "8075afbc-88ab-4fbe-ab7f-1cf9f480afdd",
       "url": "https://events.google.com/io/schedule?sid=8075afbc-88ab-4fbe-ab7f-1cf9f480afdd",
       "title": "Building apps for the Google Assistant",
-      "description": "The Google Assistantâ€™s mission is to help users get things done in their world. This session will explain how to plug into the Google Assistant services ecosystem. We'll cover everything from understanding the business use case and high level user interface design to implementation and growing usage. By the end of this session, you should have a better understanding of the Assistant service ecosystem and how to get started.",
+      "description": "The Google Assistant's mission is to help users get things done in their world. This session will explain how to plug into the Google Assistant services ecosystem. We'll cover everything from understanding the business use case and high level user interface design to implementation and growing usage. By the end of this session, you should have a better understanding of the Assistant service ecosystem and how to get started.",
       "startTimestamp": "2017-05-18T15:30:00Z",
       "endTimestamp": "2017-05-18T16:30:00Z",
       "isFeatured": false,
       "isLivestream": true,
       "youtubeUrl": "https://google.com/events/io",
+      "livestreamChannel": "",
       "tags": [
         "LEVEL_BEGINNER",
         "TRACK_ASSISTANT",
@@ -5207,6 +5288,7 @@
       "isFeatured": false,
       "isLivestream": true,
       "youtubeUrl": "https://google.com/events/io",
+      "livestreamChannel": "",
       "tags": [
         "TRACK_LOCATION&MAPS",
         "LEVEL_INTERMEDIATE",
@@ -5299,6 +5381,7 @@
       "isFeatured": false,
       "isLivestream": true,
       "youtubeUrl": "https://google.com/events/io",
+      "livestreamChannel": "",
       "tags": [
         "THEME_GROW&EARN",
         "LEVEL_ADVANCED",
@@ -5325,6 +5408,7 @@
       "isFeatured": false,
       "isLivestream": true,
       "youtubeUrl": "https://google.com/events/io",
+      "livestreamChannel": "",
       "tags": [
         "TRACK_FIREBASE",
         "THEME_GROW&EARN",
@@ -5351,6 +5435,7 @@
       "isFeatured": false,
       "isLivestream": true,
       "youtubeUrl": "https://google.com/events/io",
+      "livestreamChannel": "",
       "tags": [
         "THEME_GROW&EARN",
         "TRACK_PLAY",
@@ -5369,13 +5454,14 @@
     {
       "id": "95d1cbe2-0c36-4220-b11b-551b6b6cc5b8",
       "url": "https://events.google.com/io/schedule?sid=95d1cbe2-0c36-4220-b11b-551b6b6cc5b8",
-      "title": "Find your appsâ€™ best users with Googleâ€™s machine learning",
+      "title": "Find your apps' best users with Google's machine learning",
       "description": "Acquiring users who love your app enough to spend their time and money with you is critical to your success. The good news is there is a playbook for user acquisition that leads to consistent growth. In this session we will show you the data you need, the best mathematical models for calculating lifetime value and how machine learning is the missing link that converts LTV into actual high value users for your app.",
       "startTimestamp": "2017-05-19T17:30:00Z",
       "endTimestamp": "2017-05-19T18:30:00Z",
       "isFeatured": false,
       "isLivestream": true,
       "youtubeUrl": "https://google.com/events/io",
+      "livestreamChannel": "",
       "tags": [
         "THEME_GROW&EARN",
         "TRACK_ADS",
@@ -5416,6 +5502,7 @@
       "isFeatured": false,
       "isLivestream": true,
       "youtubeUrl": "https://google.com/events/io",
+      "livestreamChannel": "",
       "tags": [
         "THEME_BEYONDMOBILE",
         "LEVEL_INTERMEDIATE",
@@ -5434,12 +5521,13 @@
       "id": "9b1a0c76-c84a-4777-9396-1020e1618b1c",
       "url": "https://events.google.com/io/schedule?sid=9b1a0c76-c84a-4777-9396-1020e1618b1c",
       "title": "Making data on Google Play work for you",
-      "description": "Google Play has invaluable data and comprehensive analytics features that help you understand and grow your business. With this yearâ€™s new features weâ€™ve made it even easier to analyze and improve the health and performance of your app as well as your user acquisition and retention strategies. Whatever your business model, the Google Play Console has new tools and insights to help you succeed. ",
+      "description": "Google Play has invaluable data and comprehensive analytics features that help you understand and grow your business. With this year's new features we've made it even easier to analyze and improve the health and performance of your app as well as your user acquisition and retention strategies. Whatever your business model, the Google Play Console has new tools and insights to help you succeed. ",
       "startTimestamp": "2017-05-18T20:30:00Z",
       "endTimestamp": "2017-05-18T21:30:00Z",
       "isFeatured": false,
       "isLivestream": true,
       "youtubeUrl": "https://google.com/events/io",
+      "livestreamChannel": "",
       "tags": [
         "THEME_GROW&EARN",
         "LEVEL_ADVANCED",
@@ -5466,6 +5554,7 @@
       "isFeatured": false,
       "isLivestream": true,
       "youtubeUrl": "https://google.com/events/io",
+      "livestreamChannel": "",
       "tags": [
         "TRACK_FIREBASE",
         "THEME_GROW&EARN",
@@ -5490,6 +5579,7 @@
       "isFeatured": false,
       "isLivestream": true,
       "youtubeUrl": "https://google.com/events/io",
+      "livestreamChannel": "",
       "tags": [
         "THEME_PLATFORMS",
         "TRACK_ANDROID",
@@ -5537,12 +5627,13 @@
       "id": "77a07bfa-52e2-4488-8166-53f5c5a15ebc",
       "url": "https://events.google.com/io/schedule?sid=77a07bfa-52e2-4488-8166-53f5c5a15ebc",
       "title": "Architecture Components - Introduction",
-      "description": "Writing robust Android apps can be challenging, between complex lifecycle issues, unreliable mobile networks, and constrained device capabilities. Mistakes in these areas lead to memory leaks, crashing apps, drained batteries, and unhappy users. This session will cover a new approach to good Android app architecture, including an overview of functionality that will make these problems fundamentally easier to solve. This session is the first of three on this new initiative; be sure to check out the other two â€œArchitecture Componentsâ€ sessions.",
+      "description": "Writing robust Android apps can be challenging, between complex lifecycle issues, unreliable mobile networks, and constrained device capabilities. Mistakes in these areas lead to memory leaks, crashing apps, drained batteries, and unhappy users. This session will cover a new approach to good Android app architecture, including an overview of functionality that will make these problems fundamentally easier to solve. This session is the first of three on this new initiative; be sure to check out the other two 'Architecture Components' sessions.",
       "startTimestamp": "2017-05-17T22:00:00Z",
       "endTimestamp": "2017-05-17T23:00:00Z",
       "isFeatured": false,
       "isLivestream": true,
       "youtubeUrl": "https://google.com/events/io",
+      "livestreamChannel": "",
       "tags": [
         "THEME_PLATFORMS",
         "TRACK_ANDROID",
@@ -5567,6 +5658,7 @@
       "isFeatured": false,
       "isLivestream": true,
       "youtubeUrl": "https://google.com/events/io",
+      "livestreamChannel": "",
       "tags": [
         "LEVEL_ADVANCED",
         "LEVEL_BEGINNER",
@@ -5593,6 +5685,7 @@
       "isFeatured": false,
       "isLivestream": true,
       "youtubeUrl": "https://google.com/events/io",
+      "livestreamChannel": "",
       "tags": [
         "LEVEL_BEGINNER",
         "TRACK_ASSISTANT",
@@ -5616,6 +5709,7 @@
       "isFeatured": false,
       "isLivestream": true,
       "youtubeUrl": "https://google.com/events/io",
+      "livestreamChannel": "",
       "tags": [
         "THEME_GROW&EARN",
         "TRACK_ADS",
@@ -5732,6 +5826,7 @@
       "isFeatured": false,
       "isLivestream": true,
       "youtubeUrl": "https://google.com/events/io",
+      "livestreamChannel": "",
       "tags": [
         "LEVEL_ADVANCED",
         "LEVEL_BEGINNER",
@@ -5772,6 +5867,7 @@
       "isFeatured": false,
       "isLivestream": true,
       "youtubeUrl": "https://google.com/events/io",
+      "livestreamChannel": "",
       "tags": [
         "TRACK_FIREBASE",
         "THEME_GROW&EARN",
@@ -5836,6 +5932,7 @@
       "isFeatured": false,
       "isLivestream": true,
       "youtubeUrl": "https://google.com/events/io",
+      "livestreamChannel": "",
       "tags": [
         "LEVEL_ADVANCED",
         "LEVEL_BEGINNER",
@@ -5856,12 +5953,13 @@
       "id": "bda1dcaf-8172-4e9a-bd5b-04afa68c8439",
       "url": "https://events.google.com/io/schedule?sid=bda1dcaf-8172-4e9a-bd5b-04afa68c8439",
       "title": "Web Performance: Leveraging the Metrics that Most Affect User Experience",
-      "description": "Performance is crucial for user engagement, especially on mobile web. Yet users are regularly bogged down by slow page loads, delayed interactivity after page load, high input latency on critical interactions (tap, click, scroll etc), and janky animations or scrolling. These negative experiences turn away users and hurt businesses.\n\nDevelopers need to measure performance in the real world to get insight into their usersâ€™ experiences on the myriad configurations of devices and networks. Unfortunately, many of the techniques used today donâ€™t capture the right metrics or make performance worse.\n\nThis talk will cover the new metrics and platform APIs that enable user-centric performance measurement, both in the lab and the real world. Weâ€™ll show how developers can track down problems, understand their root causes, and prevent future regressions to ensure users consistently get a great experience.",
+      "description": "Performance is crucial for user engagement, especially on mobile web. Yet users are regularly bogged down by slow page loads, delayed interactivity after page load, high input latency on critical interactions (tap, click, scroll etc), and janky animations or scrolling. These negative experiences turn away users and hurt businesses.\n\nDevelopers need to measure performance in the real world to get insight into their users' experiences on the myriad configurations of devices and networks. Unfortunately, many of the techniques used today don't capture the right metrics or make performance worse.\n\nThis talk will cover the new metrics and platform APIs that enable user-centric performance measurement, both in the lab and the real world. We'll show how developers can track down problems, understand their root causes, and prevent future regressions to ensure users consistently get a great experience.",
       "startTimestamp": "2017-05-18T21:30:00Z",
       "endTimestamp": "2017-05-18T22:30:00Z",
       "isFeatured": false,
       "isLivestream": true,
       "youtubeUrl": "https://google.com/events/io",
+      "livestreamChannel": "",
       "tags": [
         "LEVEL_ADVANCED",
         "THEME_PLATFORMS",
@@ -5955,11 +6053,12 @@
       "url": "https://events.google.com/io/schedule?sid=0281c897-0b90-452c-b39e-29f398bc79a5",
       "title": "What's new in Android Support Library",
       "description": "The Android Support Library is a collection of modules that provide everything from basic compatibility for method calls to standalone implementations of new features. We'll cover best practices for integrating Support Library modules into apps -- including some features you may not have known were available -- with a focus on new features in versions 25 and 26.",
-      "startTimestamp": "2017-05-18T18:30:00Z",
-      "endTimestamp": "2017-05-18T19:30:00Z",
+      "startTimestamp": "2017-05-18T17:30:00Z",
+      "endTimestamp": "2017-05-18T18:30:00Z",
       "isFeatured": false,
       "isLivestream": true,
       "youtubeUrl": "https://google.com/events/io",
+      "livestreamChannel": "",
       "tags": [
         "LEVEL_ADVANCED",
         "LEVEL_BEGINNER",
@@ -6028,7 +6127,7 @@
     {
       "id": "29883984-a87e-42f2-b818-4eabac8851ea",
       "url": "https://events.google.com/io/schedule?sid=29883984-a87e-42f2-b818-4eabac8851ea",
-      "title": "Office Hours with Googleâ€™s Accessibility experts",
+      "title": "Office Hours with Google's Accessibility experts",
       "description": "Have questions about how to improve accessibility on your Website or Android app? Want to create more inclusive experiences for people with disabilities? Want to learn how to design, develop and test for everyone? Come have a chat with Android and Web accessibility experts",
       "startTimestamp": "2017-05-18T19:30:00Z",
       "endTimestamp": "2017-05-18T20:30:00Z",
@@ -6087,6 +6186,7 @@
       "isFeatured": false,
       "isLivestream": true,
       "youtubeUrl": "https://google.com/events/io",
+      "livestreamChannel": "",
       "tags": [
         "LEVEL_ADVANCED",
         "THEME_PLATFORMS",
@@ -6124,12 +6224,13 @@
       "id": "13d692b7-c1b3-4dc7-9c5b-e9e3b662eab3",
       "url": "https://events.google.com/io/schedule?sid=13d692b7-c1b3-4dc7-9c5b-e9e3b662eab3",
       "title": "ExoPlayer: Flexible media playback for Android",
-      "description": "ExoPlayer is an open source media playback library for Android. Used by thousands of applications, it enables great media experiences and can be customized to suit individual needs. Recent additions to the library have ranged from a new high level API to advanced features such as multi-period DASH support and spatial audio. In this talk youâ€™ll learn whatâ€™s new in ExoPlayer, as well as some of ExoPlayerâ€™s key concepts, points of customization and inner workings.",
+      "description": "ExoPlayer is an open source media playback library for Android. Used by thousands of applications, it enables great media experiences and can be customized to suit individual needs. Recent additions to the library have ranged from a new high level API to advanced features such as multi-period DASH support and spatial audio. In this talk you'll learn what's new in ExoPlayer, as well as some of ExoPlayer's key concepts, points of customization and inner workings.",
       "startTimestamp": "2017-05-18T01:00:00Z",
       "endTimestamp": "2017-05-18T02:00:00Z",
       "isFeatured": false,
       "isLivestream": true,
       "youtubeUrl": "https://google.com/events/io",
+      "livestreamChannel": "",
       "tags": [
         "THEME_PLATFORMS",
         "TRACK_ANDROID",
@@ -6154,6 +6255,7 @@
       "isFeatured": false,
       "isLivestream": true,
       "youtubeUrl": "https://google.com/events/io",
+      "livestreamChannel": "",
       "tags": [
         "LEVEL_BEGINNER",
         "THEME_BEYONDMOBILE",
@@ -6196,6 +6298,7 @@
       "isFeatured": false,
       "isLivestream": true,
       "youtubeUrl": "https://google.com/events/io",
+      "livestreamChannel": "",
       "tags": [
         "TRACK_FIREBASE",
         "THEME_GROW&EARN",
@@ -6208,7 +6311,6 @@
       "color": "#FFD54F",
       "speakers": [
         "cb5cefb7-0ae1-4d59-9827-bc6371a7f53e",
-        "931d9c4a-bb12-4e4b-a753-b5537d59f6ad",
         "57cf0105-146c-4119-8025-714bc7288292"
       ],
       "room": "e6ce7473-75fe-4c6b-a790-0a73a8c78c0a"
@@ -6241,6 +6343,7 @@
       "isFeatured": false,
       "isLivestream": true,
       "youtubeUrl": "https://google.com/events/io",
+      "livestreamChannel": "",
       "tags": [
         "LEVEL_BEGINNER",
         "THEME_BEYONDMOBILE",
@@ -6286,6 +6389,7 @@
       "isFeatured": false,
       "isLivestream": true,
       "youtubeUrl": "https://google.com/events/io",
+      "livestreamChannel": "",
       "tags": [
         "TRACK_FIREBASE",
         "THEME_GROW&EARN",
@@ -6329,6 +6433,7 @@
       "isFeatured": false,
       "isLivestream": true,
       "youtubeUrl": "https://google.com/events/io",
+      "livestreamChannel": "",
       "tags": [
         "LEVEL_BEGINNER",
         "THEME_PLATFORMS",
@@ -6353,6 +6458,7 @@
       "isFeatured": false,
       "isLivestream": true,
       "youtubeUrl": "https://google.com/events/io",
+      "livestreamChannel": "",
       "tags": [
         "THEME_PLATFORMS",
         "TRACK_MOBILEWEB",
@@ -6362,7 +6468,8 @@
       "mainTag": "TRACK_MOBILEWEB",
       "color": "#FFF176",
       "speakers": [
-        "e109ab48-9cdf-46b7-9c0d-bb837e1f512a"
+        "6b74805c-659e-4e14-9480-9604309c2057",
+        "545a5f06-a5fe-4ad5-87ec-786e96eb20bf"
       ],
       "room": "54adc1dc-ee51-44c4-a919-87aec2351826"
     },
@@ -6376,6 +6483,7 @@
       "isFeatured": false,
       "isLivestream": true,
       "youtubeUrl": "https://google.com/events/io",
+      "livestreamChannel": "",
       "tags": [
         "TRACK_FIREBASE",
         "THEME_GROW&EARN",
@@ -6394,12 +6502,13 @@
       "id": "24f359da-3cb9-4121-96fb-f121f401e870",
       "url": "https://events.google.com/io/schedule?sid=24f359da-3cb9-4121-96fb-f121f401e870",
       "title": "Great app performance with Firebase",
-      "description": "The world has a short attention span. Every time your app takes long to respond, does not render smoothly, or does not perform well you risk losing users. We all know tracking and understanding performance issues is hard, which is why so many apps are affected by them. \n\nIn this talk, weâ€™ll walk you through how to use Firebase to gain contextual insights into the performance of your app. Weâ€™ll also show how you can attribute these insights to factors like devices, countries and app versions.",
+      "description": "The world has a short attention span. Every time your app takes long to respond, does not render smoothly, or does not perform well you risk losing users. We all know tracking and understanding performance issues is hard, which is why so many apps are affected by them. \n\nIn this talk, we'll walk you through how to use Firebase to gain contextual insights into the performance of your app. We'll also show how you can attribute these insights to factors like devices, countries and app versions.",
       "startTimestamp": "2017-05-18T23:30:00Z",
       "endTimestamp": "2017-05-19T00:30:00Z",
       "isFeatured": false,
       "isLivestream": true,
       "youtubeUrl": "https://google.com/events/io",
+      "livestreamChannel": "",
       "tags": [
         "TRACK_FIREBASE",
         "THEME_GROW&EARN",
@@ -6445,6 +6554,7 @@
       "isFeatured": false,
       "isLivestream": true,
       "youtubeUrl": "https://google.com/events/io",
+      "livestreamChannel": "",
       "tags": [
         "THEME_PLATFORMS",
         "TRACK_MOBILEWEB",
@@ -6505,6 +6615,7 @@
       "isFeatured": false,
       "isLivestream": true,
       "youtubeUrl": "https://google.com/events/io",
+      "livestreamChannel": "",
       "tags": [
         "LEVEL_BEGINNER",
         "THEME_PLATFORMS",
@@ -6529,6 +6640,7 @@
       "isFeatured": false,
       "isLivestream": true,
       "youtubeUrl": "https://google.com/events/io",
+      "livestreamChannel": "",
       "tags": [
         "THEME_PLATFORMS",
         "TRACK_MOBILEWEB",
@@ -6554,6 +6666,7 @@
       "isFeatured": false,
       "isLivestream": true,
       "youtubeUrl": "https://google.com/events/io",
+      "livestreamChannel": "",
       "tags": [
         "THEME_PLATFORMS",
         "TRACK_ANDROID",
@@ -6630,6 +6743,7 @@
       "isFeatured": false,
       "isLivestream": true,
       "youtubeUrl": "https://google.com/events/io",
+      "livestreamChannel": "",
       "tags": [
         "LEVEL_ADVANCED",
         "LEVEL_BEGINNER",
@@ -6693,6 +6807,7 @@
       "isFeatured": false,
       "isLivestream": true,
       "youtubeUrl": "https://google.com/events/io",
+      "livestreamChannel": "",
       "tags": [
         "THEME_GROW&EARN",
         "LEVEL_ADVANCED",
@@ -6737,6 +6852,7 @@
       "isFeatured": false,
       "isLivestream": true,
       "youtubeUrl": "https://google.com/events/io",
+      "livestreamChannel": "",
       "tags": [
         "THEME_PLATFORMS",
         "TRACK_ANDROID",
@@ -6763,6 +6879,7 @@
       "isFeatured": false,
       "isLivestream": true,
       "youtubeUrl": "https://google.com/events/io",
+      "livestreamChannel": "",
       "tags": [
         "LEVEL_BEGINNER",
         "THEME_BEYONDMOBILE",
@@ -6787,6 +6904,7 @@
       "isFeatured": false,
       "isLivestream": true,
       "youtubeUrl": "https://google.com/events/io",
+      "livestreamChannel": "",
       "tags": [
         "LEVEL_BEGINNER",
         "THEME_BEYONDMOBILE",
@@ -6825,6 +6943,7 @@
       "isFeatured": false,
       "isLivestream": true,
       "youtubeUrl": "https://google.com/events/io",
+      "livestreamChannel": "",
       "tags": [
         "THEME_PLATFORMS",
         "TRACK_ANDROID",
@@ -6845,12 +6964,13 @@
       "id": "677ff8e2-7ca3-4269-8e59-4ac1da29b775",
       "url": "https://events.google.com/io/schedule?sid=677ff8e2-7ca3-4269-8e59-4ac1da29b775",
       "title": "Building for enterprise IoT using Android Things and Google Cloud Platform",
-      "description": "This talk will give examples and showcase how Android Things, Google Cloud Platform (storage, compute, analytics, and ML services), and other Google technologies can be used to deploy enterprise IoT systems to drive business outcomes. Weâ€™ll cover key uses cases and tools available for enterprise developers to build solutions for enterprise customers.",
+      "description": "This talk will give examples and showcase how Android Things, Google Cloud Platform (storage, compute, analytics, and ML services), and other Google technologies can be used to deploy enterprise IoT systems to drive business outcomes. We'll cover key uses cases and tools available for enterprise developers to build solutions for enterprise customers.",
       "startTimestamp": "2017-05-18T20:30:00Z",
       "endTimestamp": "2017-05-18T21:30:00Z",
       "isFeatured": false,
       "isLivestream": true,
       "youtubeUrl": "https://google.com/events/io",
+      "livestreamChannel": "",
       "tags": [
         "LEVEL_BEGINNER",
         "THEME_BEYONDMOBILE",
@@ -6927,6 +7047,7 @@
       "isFeatured": false,
       "isLivestream": true,
       "youtubeUrl": "https://google.com/events/io",
+      "livestreamChannel": "",
       "tags": [
         "LEVEL_ADVANCED",
         "LEVEL_BEGINNER",
@@ -6970,6 +7091,7 @@
       "isFeatured": false,
       "isLivestream": true,
       "youtubeUrl": "https://google.com/events/io",
+      "livestreamChannel": "",
       "tags": [
         "LEVEL_ADVANCED",
         "LEVEL_BEGINNER",
@@ -7051,6 +7173,7 @@
       "isFeatured": false,
       "isLivestream": true,
       "youtubeUrl": "https://google.com/events/io",
+      "livestreamChannel": "",
       "tags": [
         "THEME_BEYONDMOBILE",
         "TRACK_ACCESSIBILITY",
@@ -7105,6 +7228,7 @@
       "isFeatured": false,
       "isLivestream": true,
       "youtubeUrl": "https://google.com/events/io",
+      "livestreamChannel": "",
       "tags": [
         "THEME_PLATFORMS",
         "TRACK_ANDROID",
@@ -7129,6 +7253,7 @@
       "isFeatured": false,
       "isLivestream": true,
       "youtubeUrl": "https://google.com/events/io",
+      "livestreamChannel": "",
       "tags": [
         "TRACK_PLAY",
         "THEME_PLATFORMS",
@@ -7146,13 +7271,14 @@
     {
       "id": "5ad5eeaa-dfb8-42d2-8ddb-d9564d4d41e4",
       "url": "https://events.google.com/io/schedule?sid=5ad5eeaa-dfb8-42d2-8ddb-d9564d4d41e4",
-      "title": "Creating UX that â€œjust feels rightâ€ with Progressive Web Apps",
-      "description": "On mobile, a seamless user experience can be the difference between success or failure for a product. In this talk, Mustafa and Owen will share the secrets to creating UX on the web that â€œjust feels rightâ€ in the way users have come to expect. You'll see some real world examples of how this is done right, as well as get UX Principles that cover slick transitions, handling network failures, increasing conversions and much more.",
-      "startTimestamp": "2017-05-18T01:00:00Z",
-      "endTimestamp": "2017-05-18T02:00:00Z",
+      "title": "Creating UX that 'just feels right' with Progressive Web Apps",
+      "description": "On mobile, a seamless user experience can be the difference between success or failure for a product. In this talk, Mustafa and Owen will share the secrets to creating UX on the web that 'just feels right' in the way users have come to expect. You'll see some real world examples of how this is done right, as well as get UX Principles that cover slick transitions, handling network failures, increasing conversions and much more.",
+      "startTimestamp": "2017-05-18T18:30:00Z",
+      "endTimestamp": "2017-05-18T19:30:00Z",
       "isFeatured": false,
       "isLivestream": true,
       "youtubeUrl": "https://google.com/events/io",
+      "livestreamChannel": "",
       "tags": [
         "TRACK_DESIGN",
         "LEVEL_INTERMEDIATE",
@@ -7164,18 +7290,19 @@
       "speakers": [
         "bf896988-ec2d-49c6-9c72-bede3b507c89"
       ],
-      "room": "54adc1dc-ee51-44c4-a919-87aec2351826"
+      "room": "6063da53-c8ce-44a7-9928-cf6eb4fb39df"
     },
     {
       "id": "310200a5-b0fd-432d-b704-d772e2cec4b3",
       "url": "https://events.google.com/io/schedule?sid=310200a5-b0fd-432d-b704-d772e2cec4b3",
-      "title": "The Future of Fabric: Building Momentum at Google",
+      "title": "The future of Fabric: Building Momentum at Google",
       "description": "It's been an exciting 5 months since Fabric, a platform that helps you build, understand, and grow your app, joined the Google family. Wondering what we've been up to in our new home? Join us to learn about what we're working on, new features we launched, and how to use the best of Fabric and Firebase together.",
       "startTimestamp": "2017-05-18T17:30:00Z",
       "endTimestamp": "2017-05-18T18:30:00Z",
       "isFeatured": false,
       "isLivestream": true,
       "youtubeUrl": "https://google.com/events/io",
+      "livestreamChannel": "",
       "tags": [
         "TRACK_FIREBASE",
         "THEME_GROW&EARN",
@@ -7188,7 +7315,10 @@
       "mainTag": "TRACK_FIREBASE",
       "color": "#FFD54F",
       "speakers": [
-        "2fe2dde5-8fb1-43c9-9a80-b01f868dd2c5"
+        "9b2f7ebf-e311-47f7-829c-34cbe07f985c",
+        "92e8b9af-6d1a-49b0-88d9-c66e9b3c8283",
+        "0cbc436b-ec47-4b58-a8f7-59b56bc754ad",
+        "41f04a6c-0a6b-4d88-9533-9b4b58da486e"
       ],
       "room": "e6ce7473-75fe-4c6b-a790-0a73a8c78c0a"
     },
@@ -7267,12 +7397,13 @@
       "id": "8d8284bf-b639-41ff-8ae4-10d507649005",
       "url": "https://events.google.com/io/schedule?sid=8d8284bf-b639-41ff-8ae4-10d507649005",
       "title": "Architecture Components - Persistence and Offline",
-      "description": "Writing database-driven apps on Android requires too much boilerplate code and too many edge cases that must be handled manually. This session will cover a new approach that allows you to architect your persistence layer in a much more robust and scalable way, benefiting from the full power of SQL without sacrificing compile-time code guarantees. We'll also discuss approaches and features that make offline persistence easier. Be sure to also check out the other two â€œArchitecture Componentsâ€ sessions for more information on architecting better Android applications.",
+      "description": "Writing database-driven apps on Android requires too much boilerplate code and too many edge cases that must be handled manually. This session will cover a new approach that allows you to architect your persistence layer in a much more robust and scalable way, benefiting from the full power of SQL without sacrificing compile-time code guarantees. We'll also discuss approaches and features that make offline persistence easier. Be sure to also check out the other two 'Architecture Components' sessions for more information on architecting better Android applications.",
       "startTimestamp": "2017-05-18T19:30:00Z",
       "endTimestamp": "2017-05-18T20:30:00Z",
       "isFeatured": false,
       "isLivestream": true,
       "youtubeUrl": "https://google.com/events/io",
+      "livestreamChannel": "",
       "tags": [
         "THEME_PLATFORMS",
         "TRACK_ANDROID",
@@ -7297,6 +7428,7 @@
       "isFeatured": false,
       "isLivestream": true,
       "youtubeUrl": "https://google.com/events/io",
+      "livestreamChannel": "",
       "tags": [
         "LEVEL_BEGINNER",
         "TRACK_ASSISTANT",
@@ -7374,6 +7506,7 @@
       "isFeatured": false,
       "isLivestream": true,
       "youtubeUrl": "https://google.com/events/io",
+      "livestreamChannel": "",
       "tags": [
         "TRACK_FIREBASE",
         "THEME_GROW&EARN",
@@ -7417,6 +7550,7 @@
       "isFeatured": false,
       "isLivestream": true,
       "youtubeUrl": "https://google.com/events/io",
+      "livestreamChannel": "",
       "tags": [
         "TRACK_FIREBASE",
         "THEME_GROW&EARN",
@@ -7436,12 +7570,13 @@
       "id": "7b0b4c44-8121-4d87-9149-2fe61ff77e9d",
       "url": "https://events.google.com/io/schedule?sid=7b0b4c44-8121-4d87-9149-2fe61ff77e9d",
       "title": "Future, faster: Unlock the power of Web Components with Polymer",
-      "description": "It took a few years and a couple of trips around the block, but Web Components have truly arrived: theyâ€™re natively supported in Chrome and Safari today, with other browsers joining the party soon. Polymer is still the most popular way to build your own Web Components. Polymer 2.0 has been updated to the final v1 Web Components specs, getting leaner, faster and more modular along the way â€“ and offering a seamless upgrade path from Polymer 1. In this session, you will learn how Web Components and Polymer can help you build performant, maintainable web apps that unlock the full potential of the browser. Youâ€™ll also hear about the latest advancements in the Polymer library that are bringing Polymer development closer native than ever before, like ES6 class-based syntax and a suite of tools. ",
+      "description": "It took a few years and a couple of trips around the block, but Web Components have truly arrived: they're natively supported in Chrome and Safari today, with other browsers joining the party soon. Polymer is still the most popular way to build your own Web Components. Polymer 2.0 has been updated to the final v1 Web Components specs, getting leaner, faster and more modular along the way - and offering a seamless upgrade path from Polymer 1. In this session, you will learn how Web Components and Polymer can help you build performant, maintainable web apps that unlock the full potential of the browser. You'll also hear about the latest advancements in the Polymer library that are bringing Polymer development closer native than ever before, like ES6 class-based syntax and a suite of tools. ",
       "startTimestamp": "2017-05-17T21:00:00Z",
       "endTimestamp": "2017-05-17T22:00:00Z",
       "isFeatured": false,
       "isLivestream": true,
       "youtubeUrl": "https://google.com/events/io",
+      "livestreamChannel": "",
       "tags": [
         "THEME_PLATFORMS",
         "TRACK_MOBILEWEB",
@@ -7480,6 +7615,7 @@
       "isFeatured": false,
       "isLivestream": true,
       "youtubeUrl": "https://google.com/events/io",
+      "livestreamChannel": "",
       "tags": [
         "THEME_GROW&EARN",
         "LEVEL_ADVANCED",
@@ -7499,12 +7635,13 @@
       "id": "4a287748-fbbc-4cdc-a5bb-4cddfa45fab5",
       "url": "https://events.google.com/io/schedule?sid=4a287748-fbbc-4cdc-a5bb-4cddfa45fab5",
       "title": "Learn Web Security with Google",
-      "description": "Every year we warn close to a million webmasters about their sites being hacked. As a developer, knowing security best practices to defend your site against hacking is essential. In this talk, weâ€™ll cover common attack vectors and teach you how to protect your users, reputation, and data. Finally, weâ€™ll introduce you to a new security course that provides hands-on exercises and concise lectures on topics covering both attack and defense.",
+      "description": "Every year we warn close to a million webmasters about their sites being hacked. As a developer, knowing security best practices to defend your site against hacking is essential. In this talk, we'll cover common attack vectors and teach you how to protect your users, reputation, and data. Finally, we'll introduce you to a new security course that provides hands-on exercises and concise lectures on topics covering both attack and defense.",
       "startTimestamp": "2017-05-18T21:30:00Z",
       "endTimestamp": "2017-05-18T22:30:00Z",
       "isFeatured": false,
       "isLivestream": true,
       "youtubeUrl": "https://google.com/events/io",
+      "livestreamChannel": "",
       "tags": [
         "THEME_PLATFORMS",
         "TRACK_MOBILEWEB",
@@ -7524,12 +7661,13 @@
       "id": "05996c26-6f49-487c-802f-bc628cff8491",
       "url": "https://events.google.com/io/schedule?sid=05996c26-6f49-487c-802f-bc628cff8491",
       "title": "Data Pipelines with Firebase and Google Cloud",
-      "description": "From tagging a GIF to realtime video transcoding, apps of all sizes need data pipelines. How do you know which tools to use to process all this data? With many different powerful and mature tools like Cloud Functions, Cloud Dataflow, Firebase Queue, and BigQuery it can be confusing to know where to start. Weâ€™ll dive into each of these tools so youâ€™ll be able to confidently choose the solution thatâ€™s right for your app and business - even as it grows!",
+      "description": "From tagging a GIF to realtime video transcoding, apps of all sizes need data pipelines. How do you know which tools to use to process all this data? With many different powerful and mature tools like Cloud Functions, Cloud Dataflow, Firebase Queue, and BigQuery it can be confusing to know where to start. We'll dive into each of these tools so you'll be able to confidently choose the solution that's right for your app and business - even as it grows!",
       "startTimestamp": "2017-05-19T22:30:00Z",
       "endTimestamp": "2017-05-19T23:30:00Z",
       "isFeatured": false,
       "isLivestream": true,
       "youtubeUrl": "https://google.com/events/io",
+      "livestreamChannel": "",
       "tags": [
         "TRACK_FIREBASE",
         "THEME_GROW&EARN",
@@ -7549,12 +7687,13 @@
       "id": "7bf31aed-1c69-48dd-9a89-1f292f452d3d",
       "url": "https://events.google.com/io/schedule?sid=7bf31aed-1c69-48dd-9a89-1f292f452d3d",
       "title": "Building for Your Next Billion Users",
-      "description": "New internet users are coming online around the world and are facing very different constraints to accessing the internet. In this talk, weâ€™ll cover what weâ€™ve learned from building experiences for new internet users and walk through how you can build great experiences that work well for billions of users around the world.",
+      "description": "New internet users are coming online around the world and are facing very different constraints to accessing the internet. In this talk, we'll cover what we've learned from building experiences for new internet users and walk through how you can build great experiences that work well for billions of users around the world.",
       "startTimestamp": "2017-05-19T16:30:00Z",
       "endTimestamp": "2017-05-19T17:30:00Z",
       "isFeatured": false,
       "isLivestream": true,
       "youtubeUrl": "https://google.com/events/io",
+      "livestreamChannel": "",
       "tags": [
         "THEME_PLATFORMS",
         "TRACK_MOBILEWEB",
@@ -7573,13 +7712,14 @@
     {
       "id": "f012d609-8990-4c4d-ba3a-4d03982c6ffb",
       "url": "https://events.google.com/io/schedule?sid=f012d609-8990-4c4d-ba3a-4d03982c6ffb",
-      "title": "WomenTechmakers.comâ€”A Progressive Web App Migration",
+      "title": "WomenTechmakers.com - A Progressive Web App Migration",
       "description": "Journey along with Google employee Ewa Gasperowicz, as she walks you through the steps she and her team took to turn the existing WomenTechmakers.com site into a progressive web app.\nAs part of that journey, Jeff Posnick will introduce a new set of service worker libraries that help power the offline-first, fast experience, and explain how you can effectively use them in your own progressive web app.",
       "startTimestamp": "2017-05-19T01:30:00Z",
       "endTimestamp": "2017-05-19T02:30:00Z",
       "isFeatured": false,
       "isLivestream": true,
       "youtubeUrl": "https://google.com/events/io",
+      "livestreamChannel": "",
       "tags": [
         "THEME_PLATFORMS",
         "TRACK_MOBILEWEB",
@@ -7650,7 +7790,7 @@
     {
       "id": "a17d88f8-35a2-4ccb-a31e-c25221c5dc53",
       "url": "https://events.google.com/io/schedule?sid=a17d88f8-35a2-4ccb-a31e-c25221c5dc53",
-      "title": "Office Hours with Googleâ€™s Accessibility experts",
+      "title": "Office Hours with Google's Accessibility experts",
       "description": "Have questions about how to improve accessibility on your Website or Android app? Want to create more inclusive experiences for people with disabilities? Want to learn how to design, develop and test for everyone? Come have a chat with Android and Web accessibility experts",
       "startTimestamp": "2017-05-18T01:00:00Z",
       "endTimestamp": "2017-05-18T02:00:00Z",
@@ -7675,6 +7815,7 @@
       "isFeatured": false,
       "isLivestream": true,
       "youtubeUrl": "https://google.com/events/io",
+      "livestreamChannel": "",
       "tags": [
         "LEVEL_BEGINNER",
         "THEME_BEYONDMOBILE",
@@ -7772,6 +7913,7 @@
       "isFeatured": false,
       "isLivestream": true,
       "youtubeUrl": "https://google.com/events/io",
+      "livestreamChannel": "",
       "tags": [
         "THEME_GROW&EARN",
         "TRACK_PLAY",
@@ -7811,11 +7953,12 @@
       "url": "https://events.google.com/io/schedule?sid=1ce10bee-3c21-4115-b01c-f7bf4d977064",
       "title": "Compiling for the Web with WebAssembly",
       "description": "WebAssembly is a fast, portable, compact, cross-browser binary format for compilation to the Web.  It allows new types of applications and heavy 3D games to run efficiently in browsers. We'll describe what web assembly is, the problems it solves, the low level format and compilation tools available to try it out. In addition, the interfacing between compiled language modules and Javascript is explained.",
-      "startTimestamp": "2017-05-19T21:30:00Z",
-      "endTimestamp": "2017-05-19T22:30:00Z",
+      "startTimestamp": "2017-05-18T00:00:00Z",
+      "endTimestamp": "2017-05-18T01:00:00Z",
       "isFeatured": false,
       "isLivestream": true,
       "youtubeUrl": "https://google.com/events/io",
+      "livestreamChannel": "",
       "tags": [
         "LEVEL_ADVANCED",
         "THEME_PLATFORMS",
@@ -7888,13 +8031,14 @@
     {
       "id": "c5f0436b-9f47-43a7-b0de-7c7efd7a1804",
       "url": "https://events.google.com/io/schedule?sid=c5f0436b-9f47-43a7-b0de-7c7efd7a1804",
-      "title": "âš¡ï¸ Supercharged Live",
-      "description": "We're gonna build a thing...live. With an audience. Itâ€™s gonna be fancy, totally not over the top and web based. You can try and confuse the two by asking difficult questions in the live chat.",
+      "title": "Supercharged Live",
+      "description": "We're gonna build a thing...live. With an audience. It's gonna be fancy, totally not over the top and web based. You can try and confuse the two by asking difficult questions in the live chat.",
       "startTimestamp": "2017-05-18T20:30:00Z",
       "endTimestamp": "2017-05-18T21:30:00Z",
       "isFeatured": false,
       "isLivestream": true,
       "youtubeUrl": "https://google.com/events/io",
+      "livestreamChannel": "",
       "tags": [
         "LEVEL_ADVANCED",
         "THEME_PLATFORMS",
@@ -8011,6 +8155,7 @@
       "isFeatured": false,
       "isLivestream": true,
       "youtubeUrl": "https://google.com/events/io",
+      "livestreamChannel": "",
       "tags": [
         "LEVEL_ADVANCED",
         "LEVEL_BEGINNER",
@@ -8127,6 +8272,7 @@
       "isFeatured": false,
       "isLivestream": true,
       "youtubeUrl": "https://google.com/events/io",
+      "livestreamChannel": "",
       "tags": [
         "THEME_PLATFORMS",
         "TRACK_ANDROID",
@@ -8171,6 +8317,7 @@
       "isFeatured": false,
       "isLivestream": true,
       "youtubeUrl": "https://google.com/events/io",
+      "livestreamChannel": "",
       "tags": [
         "LEVEL_BEGINNER",
         "THEME_BEYONDMOBILE",
@@ -8188,7 +8335,7 @@
       "id": "0eeaff98-92f7-4393-bf6b-04b1ea0c7277",
       "url": "https://events.google.com/io/schedule?sid=0eeaff98-92f7-4393-bf6b-04b1ea0c7277",
       "title": "Office Hours: Actions on Google: 1:1 Consultations with our VUI Team",
-      "description": "Building with voice? Whether youâ€™re just starting out or trying to deepen your experience to engage more users, bring your actions to our VUI Lab for 1:1 consults with our experienced team of VUI designers.",
+      "description": "Building with voice? Whether you're just starting out or trying to deepen your experience to engage more users, bring your actions to our VUI Lab for 1:1 consults with our experienced team of VUI designers.",
       "startTimestamp": "2017-05-18T01:00:00Z",
       "endTimestamp": "2017-05-18T02:00:00Z",
       "isFeatured": false,
@@ -8275,7 +8422,7 @@
     {
       "id": "ea4eb5a8-a8f3-43b0-9458-41a088278dad",
       "name": "Ratna Desai",
-      "bio": "Ratna Desai is a UX Lead at Google. She leads multi-disciplinary teams across Search, Identity, Maps and Assistant to help define and develop engaging, predictive, assistive experiences for the next generation of Google products and services. Over the course of her career, Ratna has integrated design thinking, design sprints and innovation methods into organizations. She takes a holistic, human-centered approach to business challenges, developing solutions that consider the broader cultural context with the belief that well-designed products can improve and ultimately, transform peopleâ€™s lives.",
+      "bio": "Ratna Desai is a UX Lead at Google. She leads multi-disciplinary teams across Search, Identity, Maps and Assistant to help define and develop engaging, predictive, assistive experiences for the next generation of Google products and services. Over the course of her career, Ratna has integrated design thinking, design sprints and innovation methods into organizations. She takes a holistic, human-centered approach to business challenges, developing solutions that consider the broader cultural context with the belief that well-designed products can improve and ultimately, transform people's lives.",
       "company": "Google",
       "thumbnailUrl": "https://lh3.googleusercontent.com/HGa3ntSIsNoqJMhxZ4idV1uMD63vlYNMzNHSYYBdt0J7FRfxqLEDoDsW7J5cK8O5Pih07DKqw0itLDX7QjtD9tE",
       "plusoneUrl": "",
@@ -8320,7 +8467,7 @@
     {
       "id": "27aad3bd-5485-4f50-98f6-371536886de9",
       "name": "Robert-Jan Huijsman",
-      "bio": "Robert-Jan Huijsman is a Software Engineer working on Google Cloud Functions and Firebase, Googleâ€™s â€œserverlessâ€ cloud offerings. Previously he worked on Spanner, Googleâ€™s state-of-the-art planet-scale database. He joined Google in 2012, after getting a Masterâ€™s degree in Parallel and Distributed Computer Systems at the VU University in Amsterdam, the Netherlands.",
+      "bio": "Robert-Jan Huijsman is a Software Engineer working on Google Cloud Functions and Firebase, Google's 'serverless' cloud offerings. Previously he worked on Spanner, Google's state-of-the-art planet-scale database. He joined Google in 2012, after getting a Master's degree in Parallel and Distributed Computer Systems at the VU University in Amsterdam, the Netherlands.",
       "company": "Google",
       "thumbnailUrl": "https://lh3.googleusercontent.com/SlCDQDW9rKjh6yAE-MZC4bu3bdBi_KEfgNmSWE5g3IAcVJw32g2A_7bF7TDQiwpU-4UUfrbSf0lA1Z3NYmRNDt4",
       "plusoneUrl": "",
@@ -8338,7 +8485,7 @@
     {
       "id": "5846181d-25d6-49d5-9b28-1b40f95ee40c",
       "name": "Isaac Katzenelson",
-      "bio": "Isaac is a software engineer working on the Android TV team. At Google he has worked on several Android apps including Fit, Calendar, and Clock. Prior to Google, Isaac worked on new technology adoption at Israelâ€™s leading mobile phone operator, building one of the first Internet mobile gateways at Comverse, and networking and printing solutions at Electronics For Imaging. Isaac earned his bachelorâ€™s degree in computer science from the Hebrew University at Jerusalem.",
+      "bio": "Isaac is a software engineer working on the Android TV team. At Google he has worked on several Android apps including Fit, Calendar, and Clock. Prior to Google, Isaac worked on new technology adoption at Israel's leading mobile phone operator, building one of the first Internet mobile gateways at Comverse, and networking and printing solutions at Electronics For Imaging. Isaac earned his bachelor's degree in computer science from the Hebrew University at Jerusalem.",
       "company": "Google",
       "thumbnailUrl": "https://lh3.googleusercontent.com/wwQKi7zhe4U1DNK_Y70pDJyeVpTomwdeHkUBSkZEqKMLMlxpRm_FqHbdjQ1-REsaPrBecONVzG1Xcc-C9hTRPxsd",
       "plusoneUrl": "",
@@ -8347,7 +8494,7 @@
     {
       "id": "27d7e7e0-9600-4b61-8541-2c4c7a10772b",
       "name": "Xiaowen Xin",
-      "bio": "As the product manager for Android platform security and Pixel security, Xiaowen oversees efforts to make Android the most secure mobile OS and Pixel the most secure phone.  She has almost fifteen years of experience in the tech industry, having worked on both Android and Chrome OS at Google, as well as at a number of startups and other major tech companies like Microsoft and EMC.  Xiaowen earned a bachelorâ€™s degree in computer science from MIT.",
+      "bio": "As the product manager for Android platform security and Pixel security, Xiaowen oversees efforts to make Android the most secure mobile OS and Pixel the most secure phone.  She has almost fifteen years of experience in the tech industry, having worked on both Android and Chrome OS at Google, as well as at a number of startups and other major tech companies like Microsoft and EMC.  Xiaowen earned a bachelor's degree in computer science from MIT.",
       "company": "Google",
       "thumbnailUrl": "https://lh3.googleusercontent.com/BJL8PB7fCqTCiMOGkqGHu7sCvMFARHO_ch528g0EXVtaUUV0xCEelBzm2leLDS3OR412RMuSHfURGF22QEBOX98",
       "plusoneUrl": "",
@@ -8399,7 +8546,7 @@
     {
       "id": "e6e36b37-5f5a-47c3-b8f0-17d54b18790a",
       "name": "James Giangola",
-      "bio": "A simple and beautiful idea: everyday conversation exhibits systematic design features essential for the creation of successful Voice UIs.  This is James Giangolaâ€™s disruptive contribution to the VUI industry, a concept heâ€™s researched rigorously and promoted globally.  His approach has led to a paradigm shift with significant implications for dialog architecture, prompt design, prosody, who we work with and how, corporate branding, and the design process itself.  James is co-inventor and linguist on the patent â€œVUIs with Personalityâ€ and co-author of Voice User Interface Design.",
+      "bio": "A simple and beautiful idea: everyday conversation exhibits systematic design features essential for the creation of successful Voice UIs.  This is James Giangola's disruptive contribution to the VUI industry, a concept he's researched rigorously and promoted globally.  His approach has led to a paradigm shift with significant implications for dialog architecture, prompt design, prosody, who we work with and how, corporate branding, and the design process itself.  James is co-inventor and linguist on the patent 'VUIs with Personality' and co-author of Voice User Interface Design.",
       "company": "Google",
       "thumbnailUrl": "https://lh3.googleusercontent.com/htiJYkotmvrMyHoUQC6bWV-irZzv6QcErRK0l7p5K7gao2MXfe_4XxNmdRStXT6mswzrMjliroGR0JSKjY5ATHM",
       "plusoneUrl": "",
@@ -8426,7 +8573,7 @@
     {
       "id": "57cf0105-146c-4119-8025-714bc7288292",
       "name": "Alex Geboff",
-      "bio": "Alex writes developer docs for Firebase â€” specifically for Realtime Database, App Indexing, and the iOS SDKs. Before joining Google, Alex wrote docs at Box, VeriSign, and ESET. She also herded projects and managed a team at ProvideCommerce. After getting her bachelor's degree from Stanford University in Palo Alto, Alex started out her career writing riveting advertorial and designing marketing websites at the San Diego Union-Tribune.",
+      "bio": "Alex writes developer docs for Firebase - specifically for Realtime Database, App Indexing, and the iOS SDKs. Before joining Google, Alex wrote docs at Box, VeriSign, and ESET. She also herded projects and managed a team at ProvideCommerce. After getting her bachelor's degree from Stanford University in Palo Alto, Alex started out her career writing riveting advertorial and designing marketing websites at the San Diego Union-Tribune.",
       "company": "Google",
       "thumbnailUrl": "https://lh3.googleusercontent.com/BvJFuuAxO_MB582Y1qEzh-CcFYaJHojE9cPOo3KkqvlCRevPmYYtCOw60RVm92yhhvQs4hRLJJ7ydTZrfSJkGg",
       "plusoneUrl": "",
@@ -8453,7 +8600,7 @@
     {
       "id": "92aa6198-e8b1-441e-9747-b852afe76bfe",
       "name": "Justin Barber",
-      "bio": "Justin leads the visual design of certain features within the Android operating system and Google Pixel. Before that he freelanced for various clientele including a Grammy winner and New York Times Bestseller; and his work has been published by International designersâ€™ Network and HOW Design. Justin graduated from Savannah College of Art and Design with a Bachelor of Fine Arts in graphic design.",
+      "bio": "Justin leads the visual design of certain features within the Android operating system and Google Pixel. Before that he freelanced for various clientele including a Grammy winner and New York Times Bestseller; and his work has been published by International designers' Network and HOW Design. Justin graduated from Savannah College of Art and Design with a Bachelor of Fine Arts in graphic design.",
       "company": "Google",
       "thumbnailUrl": "https://lh3.googleusercontent.com/hJVftMi9TR6Z7Mz-SuxymDPhNoutzONAEoi2CJSFHYhV9QeQGL2WKbA-BUbzhH8Gq9yUx0RRqLLQb-W9XcAzBA",
       "plusoneUrl": "",
@@ -8462,7 +8609,7 @@
     {
       "id": "b2dc394e-7b87-4e5e-99c5-3a0019674752",
       "name": "Eric  Bidelman",
-      "bio": "Eric is a Senior Staff Engineer at Google working with the Chrome team on web projects like Lighthouse, Polymer, web components. He's the author of â€œUsing the HTML5 Filesystem APIâ€ and has led frontend projects like the Google I/O web app (2015-16), Google's Santa tracker, chromestatus.com, and html5rocks.com. Prior to Google, Eric worked as a software engineer at the University of Michigan where he designed rich web applications and APIs for the universityâ€™s 19 libraries.",
+      "bio": "Eric is a Senior Staff Engineer at Google working with the Chrome team on web projects like Lighthouse, Polymer, web components. He's the author of 'Using the HTML5 Filesystem API' and has led frontend projects like the Google I/O web app (2015-16), Google's Santa tracker, chromestatus.com, and html5rocks.com. Prior to Google, Eric worked as a software engineer at the University of Michigan where he designed rich web applications and APIs for the university's 19 libraries.",
       "company": "Google",
       "thumbnailUrl": "https://lh3.googleusercontent.com/elFnUMdNFNUqIrLvQOjAivuvwe5pz_eF98r1Isk7m6Cn8IZzPiyh49mEyuXnUtL_srbcmTkg7ilP46h8LAJtKA",
       "plusoneUrl": "https://plus.google.com/+EricBidelman",
@@ -8514,9 +8661,10 @@
     },
     {
       "id": "748ab7e9-5593-4ede-87ff-54de49b0e3f7",
-      "name": "Kim Paulhaumus",
+      "name": "Kim Paulhamus",
       "bio": "",
       "company": "Google",
+      "thumbnailUrl": "https://lh3.googleusercontent.com/jqBI1tj-fQjp33ovmMe-MzN8le_PuhPoUXLDbQmLZrVoxLsikiIUjlU_Jk6DYifRvFna-Gx3xIR3_loskBS-2Y0c",
       "plusoneUrl": "",
       "twitterUrl": ""
     },
@@ -8558,7 +8706,7 @@
     {
       "id": "f4c26195-582d-4cb8-89f6-2358f5f896f7",
       "name": "Patrick Clary",
-      "bio": "Patrick is a product manager on the central Accessibility Engineering team at Google where he works to develop services and technology that benefit users with disabilities. Prior to Google, Patrick was a software engineer at Lockheed Martin working on NASA related projects. Patrick earned bachelor's and masterâ€™s degrees in computer science from the University of Colorado at Boulder, and an MBA with a focus on new product development from Carnegie Mellon.",
+      "bio": "Patrick is a product manager on the central Accessibility Engineering team at Google where he works to develop services and technology that benefit users with disabilities. Prior to Google, Patrick was a software engineer at Lockheed Martin working on NASA related projects. Patrick earned bachelor's and master's degrees in computer science from the University of Colorado at Boulder, and an MBA with a focus on new product development from Carnegie Mellon.",
       "company": "Google",
       "thumbnailUrl": "https://lh3.googleusercontent.com/n5iVJn183QN5iujDiEyWnAm5GyVQOOt033zxw64It_3t3lRYe9Tta5ouhl-DdiMZJO3HW8DF7VZYeLDd-BF0gQ",
       "plusoneUrl": "",
@@ -8567,7 +8715,7 @@
     {
       "id": "b07c3024-2e11-4bb4-91d6-131950cd1f00",
       "name": "Felipe Leme",
-      "bio": "Felipe Leme is the lead engineer of the Android Autofill Framework. He joined the Android Framework team in 2015 and worked on many Nougat features such as Data Saver, Interactive Bugreports, and Scoped Directory Access. Heâ€™s at Google since 2011, and worked on other Android projects such a as Google Cloud Messaging and Google Play Movies.\r\n\r\nFelipe is a passionate TDD (Test-Driven Development) proponent, and co-authored the JUnit in Action, 2nd edition book. He is also a homebrewer and an amateur poker player.",
+      "bio": "Felipe Leme is the lead engineer of the Android Autofill Framework. He joined the Android Framework team in 2015 and worked on many Nougat features such as Data Saver, Interactive Bugreports, and Scoped Directory Access. He's been at Google since 2011, and worked on other Android projects such a as Google Cloud Messaging and Google Play Movies.\n\nFelipe is a passionate TDD (Test-Driven Development) proponent, and co-authored the JUnit in Action, 2nd edition book. He is also a homebrewer and an amateur poker player.",
       "company": "Google",
       "thumbnailUrl": "https://lh3.googleusercontent.com/6SXqyKcnXZgkkNoLkaqH6s7lNCSRZo2NsSFZQsn9GYbVAZnMItnYHOeGJJc_INPjMygr_5W28xDx-YbAP62T3oo",
       "plusoneUrl": "https://plus.google.com/+FelipeLeme",
@@ -8610,15 +8758,6 @@
       "twitterUrl": ""
     },
     {
-      "id": "0492edb3-4be6-46c1-9bbb-5c7dc8379aa5",
-      "name": "Kelly Cox-Jorrie",
-      "bio": "Kelly is the Global Head of Music Apps BD for Google Play. In this role, Kelly partners with music and audio developers to launch and grow successful app businesses on Android. She has worked with independent music startups as well as the largest publishing companies in the world to help shape product strategy and drive sustainable growth. Kelly holds an MBA from Stanford Graduate School of Business where she was actively involved with early-stage ventures as a Founder of the Stanford Venture Studio. ",
-      "company": "Google",
-      "thumbnailUrl": "https://lh3.googleusercontent.com/e1Qsoiv68g27FMtuUbpmQI_EF6YreVeqUZezx44dKWXQ0Dk-UQQzlK5w_19dgZ6wPJmN1BU2Ayx2xTNTu8xUrA",
-      "plusoneUrl": "",
-      "twitterUrl": "https://kellypcox"
-    },
-    {
       "id": "000e9070-5d16-4d84-a7f8-270d6493b1c6",
       "name": "George Audi",
       "bio": "",
@@ -8626,6 +8765,15 @@
       "thumbnailUrl": "https://lh3.googleusercontent.com/Nm0VlJ7Jp-AG8vP-ZahBqqxT9uzY8vk7xm2PnQnWthstkPW_qLi85mkpOAn2vQld8pDWmNh6ttFm2dcKl1YTtyE",
       "plusoneUrl": "",
       "twitterUrl": "https://audi_george"
+    },
+    {
+      "id": "0492edb3-4be6-46c1-9bbb-5c7dc8379aa5",
+      "name": "Kelly Cox-Jorrie",
+      "bio": "Kelly is the Global Head of Music Apps BD for Google Play. In this role, Kelly partners with music and audio developers to launch and grow successful app businesses on Android. She has worked with independent music startups as well as the largest publishing companies in the world to help shape product strategy and drive sustainable growth. Kelly holds an MBA from Stanford Graduate School of Business where she was actively involved with early-stage ventures as a Founder of the Stanford Venture Studio. ",
+      "company": "Google",
+      "thumbnailUrl": "https://lh3.googleusercontent.com/e1Qsoiv68g27FMtuUbpmQI_EF6YreVeqUZezx44dKWXQ0Dk-UQQzlK5w_19dgZ6wPJmN1BU2Ayx2xTNTu8xUrA",
+      "plusoneUrl": "",
+      "twitterUrl": "https://kellypcox"
     },
     {
       "id": "f95e6893-1e4c-4770-a2bb-4dbd4e666607",
@@ -8648,7 +8796,7 @@
     {
       "id": "d5f5e8f7-a80b-4f3b-8d8f-7551474cfa85",
       "name": "Maya Ben Ari",
-      "bio": "Maya is leading Android Accessibility efforts to make technology usable for everyone. Previously, she led the next generation of the Android Lock Screen and Fingerprint to give users better security without the hassle of entering passwords. Prior to Google, Maya worked for Microsoft as an on-campus representative and helped design their university strategy. Maya is a technology enthusiast and was heavily involved in the Israeli startup community, co-founding two startups. She earned a bachelorâ€™s and masterâ€™s degree in Computer Science from Tel-Aviv University, and an MBA from University of Michigan.",
+      "bio": "Maya is leading Android Accessibility efforts to make technology usable for everyone. Previously, she led the next generation of the Android Lock Screen and Fingerprint to give users better security without the hassle of entering passwords. Prior to Google, Maya worked for Microsoft as an on-campus representative and helped design their university strategy. Maya is a technology enthusiast and was heavily involved in the Israeli startup community, co-founding two startups. She earned a bachelor's and master's degree in Computer Science from Tel-Aviv University, and an MBA from University of Michigan.",
       "company": "Google",
       "thumbnailUrl": "https://lh3.googleusercontent.com/4R7ez41-DioKBxakRjLi6HZlVbupobSFNlGcxU_zNK7KhjIgYac2m3lNxsMCLBHtAh3gIb5HHMQ2FeIZIKFutzE",
       "plusoneUrl": "",
@@ -8675,7 +8823,7 @@
     {
       "id": "5e632951-c301-4616-b8e2-81dd1bc08f13",
       "name": "Varun Kapoor",
-      "bio": "Varun is the Tech Lead for Googleâ€™s Nearby platform. Prior to this, he led the Abuse Prevention platform team at Yahoo!, was a founding member of the Hadoop Ambari project (yeah, heâ€™s as surprised as you are at how he got roped in to working on a UI installer) at Hortonworks, and worked on the planetâ€™s largest distributed system at YouTube. He promises not to move on to working on the Blockchain until he makes proximate drones self-assimilate using fully-offline P2P quorum protocols.",
+      "bio": "Varun is the Tech Lead for Google's Nearby platform. Prior to this, he led the Abuse Prevention platform team at Yahoo!, was a founding member of the Hadoop Ambari project (yeah, he's as surprised as you are at how he got roped in to working on a UI installer) at Hortonworks, and worked on the planet's largest distributed system at YouTube. He promises not to move on to working on the Blockchain until he makes proximate drones self-assimilate using fully-offline P2P quorum protocols.",
       "company": "Google",
       "thumbnailUrl": "https://lh3.googleusercontent.com/UWwVDDrvM79HrAGiGoSMg-SpmaWT4mQf-yKxt-sbsqjzG9SW2iSgdsWin-LsP5v6WOiJAIsGZAeDvLlmMGkKtXI",
       "plusoneUrl": "",
@@ -8744,7 +8892,7 @@
     {
       "id": "57e1dd1f-4a14-4fbc-b893-d3002fbe32a4",
       "name": "Jen Tong",
-      "bio": "Jen is a Developer Advocate on Cloud at Google. In this role she helps developers build cool stuff on all sorts of platforms. If sheâ€™s away from her laptop, sheâ€™s probably skating around a roller derby track, or hanging from aerial silk.",
+      "bio": "Jen is a Developer Advocate on Cloud at Google. In this role she helps developers build cool stuff on all sorts of platforms. If she's away from her laptop, she's probably skating around a roller derby track, or hanging from aerial silk.",
       "company": "Google",
       "thumbnailUrl": "https://lh3.googleusercontent.com/BAVPD4ipKzXIW4IUHPqRymlt3MLwdtpDdstYzXRoMixzSXRh0Y9Er-LVoN9K3C0RM1srFKbw4BsebmvzgkNyog",
       "plusoneUrl": "https://plus.google.com/+mimming",
@@ -8774,13 +8922,14 @@
       "bio": "",
       "company": "Google",
       "plusoneUrl": "",
-      "twitterUrl": ""
+      "twitterUrl": "https://twitter.com/marrrr"
     },
     {
       "id": "85f09846-0b22-42ec-b83d-2ce699d2f908",
       "name": "William Chou",
       "bio": "William is a software engineer working on new dynamic content in the open-source AMP Project. Prior to joining Google, William studied Computer Science at Cornell University and worked in the games industry.",
       "company": "Google",
+      "thumbnailUrl": "https://lh3.googleusercontent.com/yBESXRBgPIStTWhEoO4_PZPXXPZollojSHrKTuRdTEzsP2esz4aqg9dz_0wA0euLzKIL01bvpV3BTebJ1ng73cY",
       "plusoneUrl": "",
       "twitterUrl": "https://twitter.com/choumx"
     },
@@ -8798,13 +8947,14 @@
       "name": "Jen Fernquist",
       "bio": "",
       "company": "Google",
+      "thumbnailUrl": "https://lh3.googleusercontent.com/y5rbyMSE7hFcL1VBvD7HCGJLf7Bs4vOdbrgdqzVhaychw5xLH76rFyhitiS58UFt5u0JP3sYGiayHLsZB6y3V4hd",
       "plusoneUrl": "",
       "twitterUrl": ""
     },
     {
       "id": "8f537649-2890-4a0c-88ae-bcc637fa820d",
       "name": "Sara Robinson",
-      "bio": "Sara is a Developer Advocate on Google's Cloud Platform team, focusing on big data and machine learning. She helps developers build awesome apps through demos, online content, and events. Sara has a bachelorâ€™s degree in Business and International Studies from Brandeis University. When she's not programming she can be found on a spin bike, listening to the Hamilton soundtrack, or finding the best ice cream in New York.",
+      "bio": "Sara is a Developer Advocate on Google's Cloud Platform team, focusing on big data and machine learning. She helps developers build awesome apps through demos, online content, and events. Sara has a bachelor's degree in Business and International Studies from Brandeis University. When she's not programming she can be found on a spin bike, listening to the Hamilton soundtrack, or finding the best ice cream in New York.",
       "company": "Google",
       "thumbnailUrl": "https://lh3.googleusercontent.com/xBIgFgZRyZGFqQfd3cw3UfpjRa0fAn5tebNzxUBpgTi6iQm_-9-sJ9yTbaddCgTesAG4HGpYUJelO_fPLyBTxRQ",
       "plusoneUrl": "",
@@ -8813,7 +8963,7 @@
     {
       "id": "96514000-09aa-47e4-82f9-f4187ef85087",
       "name": "Duncan Osborn",
-      "bio": "Duncan is a product manager on the Google Search team in New York. He was previously based in Paris as product manager for Google Arts & Culture. Prior to Google, he was on the mobile app product team at LinkedIn. Duncan has a bachelor's degree in computer engineering from the Georgia Institute of Technology and a masterâ€™s degree in business and entrepreneurship at HEC Paris.",
+      "bio": "Duncan is a product manager on the Google Search team in New York. He was previously based in Paris as product manager for Google Arts & Culture. Prior to Google, he was on the mobile app product team at LinkedIn. Duncan has a bachelor's degree in computer engineering from the Georgia Institute of Technology and a master's degree in business and entrepreneurship at HEC Paris.",
       "company": "Google",
       "thumbnailUrl": "https://lh3.googleusercontent.com/dNDf9hfEZbuEJ9LP-Kc1oiKFDWF-JykadsdTH6xR6ZCPlf-G7kq0-1xQ0v6OBmHSk93mFjtWiqJXY3FXwxy5tYM",
       "plusoneUrl": "",
@@ -8827,6 +8977,14 @@
       "thumbnailUrl": "https://lh3.googleusercontent.com/2ZUGhRH6_XjC_uMJ2Rqe5RRTtngs_ITtKRmema2aeK8X_OTXAyRmGp0ECf9-097mz-IRkvKPYv0rAKOCBQqZtrRV",
       "plusoneUrl": "",
       "twitterUrl": "https://twitter.com/@chenshayt"
+    },
+    {
+      "id": "6b74805c-659e-4e14-9480-9604309c2057",
+      "name": "FranÃ§ois Beaufort",
+      "bio": "",
+      "company": "Google",
+      "plusoneUrl": "",
+      "twitterUrl": ""
     },
     {
       "id": "238dff9e-1132-485b-aada-39d539b38ecd",
@@ -8927,9 +9085,17 @@
       "twitterUrl": "https://twitter.com/cramforce"
     },
     {
+      "id": "41f04a6c-0a6b-4d88-9533-9b4b58da486e",
+      "name": "Jason Titus",
+      "bio": "",
+      "company": "Google",
+      "plusoneUrl": "",
+      "twitterUrl": ""
+    },
+    {
       "id": "b5ea5ecc-2c55-44d0-a6a0-699871c1d205",
       "name": "Jonathan Karmel",
-      "bio": "Jonathan is a Senior Product Manager focused on the end-to-end developer experience for Android Instant Apps. Previously, Jonathan was the PM Lead for Analytics, Data Science, and CRM at Google Play, overseeing the data infrastructure, analysis, and experimentation for Google Playâ€™s storefront and digital offerings. Jonathan holds a Bachelor of Science in Statistics and Finance and an MBA in Customer Analytics, both from the Wharton School at the University of Pennsylvania.",
+      "bio": "Jonathan is a Senior Product Manager focused on the end-to-end developer experience for Android Instant Apps. Previously, Jonathan was the PM Lead for Analytics, Data Science, and CRM at Google Play, overseeing the data infrastructure, analysis, and experimentation for Google Play's storefront and digital offerings. Jonathan holds a Bachelor of Science in Statistics and Finance and an MBA in Customer Analytics, both from the Wharton School at the University of Pennsylvania.",
       "company": "Google",
       "thumbnailUrl": "https://lh3.googleusercontent.com/3LqezlW4jXcou8T5m2YGbETDE0PoLfdSUkvBpBXc6x1HZsdD9p5SpCBumeNj_fAjikKzAUVTDCOaFP2rwJA6gaA",
       "plusoneUrl": "",
@@ -8945,36 +9111,19 @@
       "twitterUrl": "https://twitter.com/Tojiro"
     },
     {
+      "id": "5ea728d2-befb-4ffb-88bb-02a66f319f33",
+      "name": "Patrick Brady",
+      "bio": "",
+      "company": "Google",
+      "plusoneUrl": "",
+      "twitterUrl": ""
+    },
+    {
       "id": "8ef9fe71-7391-409a-b37c-2b6ca99aed16",
       "name": "Varouj Chitilian",
       "bio": "Varouj Chitilian heads engineering for Google's consumer payment products.  He has been an engineer at Google for over 10 years holding various positions in the Ads and Commerce organization. \r\nVarouj holds MEng and BSc degrees in Electrical Engineering and Computer Science from MIT.",
       "company": "Google",
       "thumbnailUrl": "https://lh3.googleusercontent.com/ywHgJNGzqWKSZrbcqCedqxr5A_0thDrynX41P7QVJLN_wwvf9nj2lxp1HAWvUl742AfFcYgxLtd46CP4NiR9ZA",
-      "plusoneUrl": "",
-      "twitterUrl": ""
-    },
-    {
-      "id": "7f55386d-f584-4876-bd95-b291c80d17c9",
-      "name": "Jenny Gove",
-      "bio": "Jenny Gove is a User Experience Researcher at Google, where she studies the use of mobile devices. Currently Managing an Ads UX research team, she has also managed the Apps research team in her 10 years at Google. Previously she held UX roles at Sun Microsystems and startÂ­up, Zadu. In her spare time Jenny mentors for 500 Startups. Jenny started her career in academia, as a Lecturer at the Open University, UK. She received her Ph.D. from the University of Southampton in the UK.",
-      "company": "Google",
-      "thumbnailUrl": "https://lh3.googleusercontent.com/efKUpjhchAJjW2DGxB_41KnqkTyEvobcCPnRGihFUrPHG4gWdg6jr6Y0mSAzbHuFoLSybjIje-kLdiy4IkrAS5M",
-      "plusoneUrl": "",
-      "twitterUrl": "https://Jennylg"
-    },
-    {
-      "id": "9b2f7ebf-e311-47f7-829c-34cbe07f985c",
-      "name": "James Tamplin",
-      "bio": "James has a bachelor's and a master's degree in Industrial and Systems Engineering from the University of Wisconsin. He is a Y-Combinator alumni, has founded 4 startups -- including Firebase -- and likes to do improv comedy in his spare time.",
-      "company": "Google",
-      "plusoneUrl": "",
-      "twitterUrl": "https://twitter.com/jamestamplin"
-    },
-    {
-      "id": "4afaa573-5d3f-4f40-8e83-f686d63f0b6f",
-      "name": "Griff Hazen",
-      "bio": "",
-      "company": "Google",
       "plusoneUrl": "",
       "twitterUrl": ""
     },
@@ -8986,6 +9135,32 @@
       "thumbnailUrl": "https://lh3.googleusercontent.com/JuCHDjazhX9_ex5dMK2glZEY6s_ZRmB1TMpk-fy_byVD021DIi6zNdf30RhEQoYKwcmiG8Jq3VszqUzpvye7POc",
       "plusoneUrl": "",
       "twitterUrl": "https://fergushurley"
+    },
+    {
+      "id": "4afaa573-5d3f-4f40-8e83-f686d63f0b6f",
+      "name": "Griff Hazen",
+      "bio": "",
+      "company": "Google",
+      "thumbnailUrl": "https://lh3.googleusercontent.com/AwMsN3qEry_SiM13TIqPA5nFQg9Osbv4RB3UKFqu6WOdInoKAupCOLlKQ93PkGrThx_7EBJWCOkFrtaEgnTrpNs",
+      "plusoneUrl": "",
+      "twitterUrl": ""
+    },
+    {
+      "id": "9b2f7ebf-e311-47f7-829c-34cbe07f985c",
+      "name": "James Tamplin",
+      "bio": "James has a bachelor's and a master's degree in Industrial and Systems Engineering from the University of Wisconsin. He is a Y-Combinator alumni, has founded 4 startups -- including Firebase -- and likes to do improv comedy in his spare time.",
+      "company": "Google",
+      "plusoneUrl": "",
+      "twitterUrl": "https://twitter.com/jamestamplin"
+    },
+    {
+      "id": "7f55386d-f584-4876-bd95-b291c80d17c9",
+      "name": "Jenny Gove",
+      "bio": "Jenny Gove is a User Experience Researcher at Google, where she studies the use of mobile devices. Currently Managing an Ads UX research team, she has also managed the Apps research team in her 10 years at Google. Previously she held UX roles at Sun Microsystems and startÂ­up, Zadu. In her spare time Jenny mentors for 500 Startups. Jenny started her career in academia, as a Lecturer at the Open University, UK. She received her Ph.D. from the University of Southampton in the UK.",
+      "company": "Google",
+      "thumbnailUrl": "https://lh3.googleusercontent.com/efKUpjhchAJjW2DGxB_41KnqkTyEvobcCPnRGihFUrPHG4gWdg6jr6Y0mSAzbHuFoLSybjIje-kLdiy4IkrAS5M",
+      "plusoneUrl": "",
+      "twitterUrl": "https://Jennylg"
     },
     {
       "id": "18114604-7b57-484c-aa9f-2759953b3826",
@@ -9035,7 +9210,7 @@
     {
       "id": "c15b47dd-c8f0-4667-91a7-a49964f7cb8c",
       "name": "Serge Kassardjian",
-      "bio": "Serge Kassardjian is the Global Head of Media Apps for Google Play and Android. He currently leads global business development efforts with Media companies including Entertainment, Video, Sports, News, Virtual Reality and Cable verticals. He was on the launch team for Daydream Virtual Reality, Android TV and various Nexus devices. He formerly worked on incubation businesses in Googleâ€™s GeoCommerce division, focused on Payments and Offers and was a member of the original Google Wallet launch team doing merchant partnerships. He also was a Venture Capital Investor at Globespan Capital Partners and Corporate Development Director in Sony Musicâ€™s Global Digital Business. He started his career as an investment banker at Morgan Stanley. He received his MBA from Harvard and Bachelors and Masters in Engineering from Stanford.",
+      "bio": "Serge Kassardjian is the Global Head of Media Apps for Google Play and Android. He currently leads global business development efforts with Media companies including Entertainment, Video, Sports, News, Virtual Reality and Cable verticals. He was on the launch team for Daydream Virtual Reality, Android TV and various Nexus devices. He formerly worked on incubation businesses in Google's GeoCommerce division, focused on Payments and Offers and was a member of the original Google Wallet launch team doing merchant partnerships. He also was a Venture Capital Investor at Globespan Capital Partners and Corporate Development Director in Sony Music's Global Digital Business. He started his career as an investment banker at Morgan Stanley. He received his MBA from Harvard and Bachelors and Masters in Engineering from Stanford.",
       "company": "Google",
       "thumbnailUrl": "https://lh3.googleusercontent.com/IhRT-jFdeVetG-qGiOuQRUtwNNhjyFxizdqU1kWd1FnCU8IEv8bG-Rlj-9Hmi9mDyEPZWV6HgYeQTqUNxAsUUTEl",
       "plusoneUrl": "https://sergekass",
@@ -9061,7 +9236,7 @@
     {
       "id": "e2e3e676-70e5-47ec-a8a4-ae7eb357959a",
       "name": "Thomas Bouldin",
-      "bio": "Thomas is the Tech Lead of Cloud Functions for Firebase. Before Cloud Functions, Thomas contributed to the Firebase Realtime Database, backend reliability, and Firebase SDKs. Before Firebase, Thomas was an early engineer at Parse. He had a hand in many Parse products and is best known as the lead developer for Parse Push. Previously Thomas was an engineer on Google's Image Search infrastructure and Microsoft Windows. Thomas Earned his bachelorâ€™s degree in software engineering at Cal Poly San Luis Obispo with a focus on computer graphics and operating systems & security.",
+      "bio": "Thomas is the Tech Lead of Cloud Functions for Firebase. Before Cloud Functions, Thomas contributed to the Firebase Realtime Database, backend reliability, and Firebase SDKs. Before Firebase, Thomas was an early engineer at Parse. He had a hand in many Parse products and is best known as the lead developer for Parse Push. Previously Thomas was an engineer on Google's Image Search infrastructure and Microsoft Windows. Thomas Earned his bachelor's degree in software engineering at Cal Poly San Luis Obispo with a focus on computer graphics and operating systems & security.",
       "company": "Google",
       "thumbnailUrl": "https://lh3.googleusercontent.com/r0JYtPZVkUdaitPZC0WfElavrKpb_jvF1VaxJoGyryZCW5aUvgY43XMTnsG_EYr2V0PRxlDA3k_zTyi87Wx5Hsc",
       "plusoneUrl": "",
@@ -9073,14 +9248,6 @@
       "bio": "Lukas is a product manager for Android developer frameworks. He was previously product manager for Google Tag  Manager, and before Google at CrowdFlower. He has held roles as a software engineer, management consultant and program manager for organizations including Monitor Group (now Monitor Deloitte) and One Acre Fund.",
       "company": "Google",
       "thumbnailUrl": "https://lh3.googleusercontent.com/swETrIjhNX17orHan5N1FXxb9pt09QPyifbiaf27xYye6uWQpeWg6o1jPoWMwnqlZe486dytPB301t_flJdFEkFN",
-      "plusoneUrl": "",
-      "twitterUrl": ""
-    },
-    {
-      "id": "2fe2dde5-8fb1-43c9-9a80-b01f868dd2c5",
-      "name": "Kristen Johnson",
-      "bio": "",
-      "company": "Google",
       "plusoneUrl": "",
       "twitterUrl": ""
     },
@@ -9122,7 +9289,7 @@
     {
       "id": "e7f08660-366c-4812-b408-5a7bd336ddba",
       "name": "Chris Raynor",
-      "bio": "Chris joined Firebase in 2013 as employee 11. He is the author of Firebase Queue and currently leads infrastructure for Firebase Hosting. Chris cut his teeth at startups, where he managed large-scale data processing pipelines. He holds a bachelorâ€™s in Mechanical Engineering and a masterâ€™s in Advanced Engineering from the University of Warwick in the United Kingdom.",
+      "bio": "Chris joined Firebase in 2013 as employee 11. He is the author of Firebase Queue and currently leads infrastructure for Firebase Hosting. Chris cut his teeth at startups, where he managed large-scale data processing pipelines. He holds a bachelor's in Mechanical Engineering and a master's in Advanced Engineering from the University of Warwick in the United Kingdom.",
       "company": "Google",
       "thumbnailUrl": "https://lh3.googleusercontent.com/vvUW0uHB1BWW6HTMMwOw3M_gMxJ4dMl-S8pQGcdDTGcdCp39uqni08ashB80O1ADJoGx-GC-GTLPQuqqlut06A",
       "plusoneUrl": "",
@@ -9138,18 +9305,9 @@
       "twitterUrl": ""
     },
     {
-      "id": "1d062e94-b7d4-4973-af78-89177a005665",
-      "name": "Jess Holbrook",
-      "bio": "",
-      "company": "Google",
-      "thumbnailUrl": "https://lh3.googleusercontent.com/ZnN1OR3CN-pa6NeTpySBv51uaUWj5lHFk0WV4VYFZtNh0GUePDeyHXuLYU55PtId_93pD6TRfIS7XcKUBXfpf1U",
-      "plusoneUrl": "",
-      "twitterUrl": ""
-    },
-    {
       "id": "c37f53c4-80d2-4c1f-9a68-b43adc899706",
       "name": "Valerie Nygaard",
-      "bio": "Valerie leads the consumer experience product team for Actions on Google. Sheâ€™s worked on search and NLP in Silicon Valley for over 15 years, with stints in research, engineering, business and product. She's been employee #2 and employee #44,674 (or so). Big company or small, her product philosophy is the same -- she tries hard to make things easy.",
+      "bio": "Valerie leads the consumer experience product team for Actions on Google. She's worked on search and NLP in Silicon Valley for over 15 years, with stints in research, engineering, business and product. She's been employee #2 and employee #44,674 (or so). Big company or small, her product philosophy is the same -- she tries hard to make things easy.",
       "company": "Google",
       "thumbnailUrl": "https://lh3.googleusercontent.com/iId7Ge9E2f35_aVRyskGydcyJTOhjtYg4ytexVp9YdsgXGoHuWksiqIsfLxVRY8441xhDqUc-_S3vUhVqJAClcw",
       "plusoneUrl": "",
@@ -9184,7 +9342,7 @@
     {
       "id": "0964089e-46c0-4637-889e-623d6674abb4",
       "name": "Fiona Yeung",
-      "bio": "Fiona is an interaction designer on Googleâ€™s Material Design team. She is passionate about designing the future and helping the UX community through design outreach and diversity efforts. On the side, she manages XX+UX, an organization celebrating and empowering women in UX through mentorship and community events. Fiona earned a Bachelor's degree in Design with an emphasis on graphic and UX design from York University & Sheridan College in Toronto. ",
+      "bio": "Fiona is an interaction designer on Google's Material Design team. She is passionate about designing the future and helping the UX community through design outreach and diversity efforts. On the side, she manages XX+UX, an organization celebrating and empowering women in UX through mentorship and community events. Fiona earned a Bachelor's degree in Design with an emphasis on graphic and UX design from York University & Sheridan College in Toronto. ",
       "company": "Google",
       "thumbnailUrl": "https://lh3.googleusercontent.com/ps1rkR3-tObQJTcQNULOWcuj9TO_Z6JuBva8jdNBO2QBrD8JrhHsRxTQWP_2yR7UeDhTUSz2haq5UvvBY5wKss4",
       "plusoneUrl": "",
@@ -9219,7 +9377,7 @@
     {
       "id": "4c178aa2-65c3-48c1-8b8f-e26fa7858357",
       "name": "Kai Haley",
-      "bio": "Kai Haley is a UX designer leading the Design Relations team at Google. She is one of the lead trainers for Sprint Master Academy and has spent the last 2 years training over 200 Sprint Masters across Googleâ€™s diverse product areas. She is passionate about design thinking and inspiring the UX community to effectively utilize Design Sprints for speed and innovation. Her UX expertise has been centered on creating monetization opportunities, most recently on the Search Ads Team, and prior to Google, on the Yahoo! Front Page. She earned a Masters Degree in Design from CCA, where she focused on sustainable design.",
+      "bio": "Kai Haley is a UX designer leading the Design Relations team at Google. She is one of the lead trainers for Sprint Master Academy and has spent the last 2 years training over 200 Sprint Masters across Google's diverse product areas. She is passionate about design thinking and inspiring the UX community to effectively utilize Design Sprints for speed and innovation. Her UX expertise has been centered on creating monetization opportunities, most recently on the Search Ads Team, and prior to Google, on the Yahoo! Front Page. She earned a Masters Degree in Design from CCA, where she focused on sustainable design.",
       "company": "Google",
       "thumbnailUrl": "https://lh3.googleusercontent.com/Nc_kzhOp5sXZ-HjBPwV5CwlLg-oQ0QKvvkWFj2LlcCpDxGoKUIxeYtN65ClIeK2Vy7l7PfAQF2jIjprxkqbBaZ7z",
       "plusoneUrl": "",
@@ -9237,7 +9395,7 @@
     {
       "id": "5a55e102-be87-4488-ae15-8e6185519f5f",
       "name": "Emily Shack",
-      "bio": "Emily has been a software engineer at Google for a little under two years. She is an expert on the Flutter framework, and is passionate about exploring the intersection between machine learning and user interface design. She received her bachelorâ€™s degree in computer science from Carleton College in Northfield, Minnesota.",
+      "bio": "Emily has been a software engineer at Google for a little under two years. She is an expert on the Flutter framework, and is passionate about exploring the intersection between machine learning and user interface design. She received her bachelor's degree in computer science from Carleton College in Northfield, Minnesota.",
       "company": "Google",
       "thumbnailUrl": "https://lh3.googleusercontent.com/tFlRL9K-jKaFyKIv85Soo4nFdvXV7M38xtRu2ssgUFv4P7lH1JpNE_WSaW7IVWzleOunlEa_uQTq_dhhFxVr5HA",
       "plusoneUrl": "",
@@ -9280,7 +9438,7 @@
     },
     {
       "id": "ead9248a-863e-42ea-b728-c4ebd332e408",
-      "name": "Shai Barrak",
+      "name": "Shai Barack",
       "bio": "Shai works on Google's frameworks and infrastructure for Android app developers, making sure that the tools are working for the engineer and not the other way around. Previously, Shai built distributed software systems to help run Google's massive internal data center network. A strange thought possessed him that mobile might be something that's worth looking into, and a few years later, here we are. Shai is a bachelor of computer science & electrical engineering from Tel Aviv University.",
       "company": "Google",
       "thumbnailUrl": "https://lh3.googleusercontent.com/5BkopbdMrhkrg6oE05jpobZS9_CHh2QJWPD3Bh4deNw4yd8H3hsnUPZWS24wrA8cdT2FXSZi5715DQTmLx8eN7CZ",
@@ -9293,6 +9451,14 @@
       "bio": "Vamsee Jasti is a product manager on AMP. His mission is to fix the biggest offender of performance on the web - ads.",
       "company": "Google",
       "thumbnailUrl": "https://lh3.googleusercontent.com/6F6ZCYuwwJ4EHkk3gLz6v7pkaAewkAjFy2ExCbt55XLQ6tKUgUxcun-Pc1APHMYef9pkNoKJ5gQPxa6gk_B5Cc4",
+      "plusoneUrl": "",
+      "twitterUrl": ""
+    },
+    {
+      "id": "92e8b9af-6d1a-49b0-88d9-c66e9b3c8283",
+      "name": "Timothy Jordon",
+      "bio": "",
+      "company": "Google",
       "plusoneUrl": "",
       "twitterUrl": ""
     },
@@ -9412,14 +9578,6 @@
       "twitterUrl": ""
     },
     {
-      "id": "d27bc2e7-a926-44e0-9463-a52b4495dba9",
-      "name": "Mrinal Sharma",
-      "bio": "",
-      "company": "Google",
-      "plusoneUrl": "",
-      "twitterUrl": ""
-    },
-    {
       "id": "d3e63320-e0e7-470c-9a0f-dc8c2a2f00e6",
       "name": "Andre Valente",
       "bio": "Andre manages a number of development programs in Google Search, particularly focused on structured data. Prior to Google, Andre founded software start-up companies, and managed software engineering for businesses in the software, manufacturing and aerospace. He also worked as a research scientist at the University of Southern California. Andre received a Ph.D. in Computer Science from the University of Amsterdam and an MBA from the University of Southern California. He has published more than 70 technical articles on areas such as AI and e-learning.",
@@ -9431,7 +9589,7 @@
     {
       "id": "57aa21eb-7e9e-4b13-b282-e5fede197090",
       "name": "Duke Dukellis",
-      "bio": "John â€˜Dukeâ€™ Dukellis is a Group Product Manager at Google, where he leads mobile app advertising products for developers and publishers.  Prior to Google, Duke led the Consumer Wallet and Consumer Financial Services teams at PayPal.  Earlier was CEO at StepNexus, a global chip security company acquired by Gemalto.  He received his B.S. in Computer Science, B.S. in Management Science, and Masters in Computer Science from MIT.  He holds an MBA from the Stanford Graduate School of Business and is a CFA charterholder.",
+      "bio": "John 'Duke' Dukellis is a Group Product Manager at Google, where he leads mobile app advertising products for developers and publishers.  Prior to Google, Duke led the Consumer Wallet and Consumer Financial Services teams at PayPal.  Earlier was CEO at StepNexus, a global chip security company acquired by Gemalto.  He received his B.S. in Computer Science, B.S. in Management Science, and Masters in Computer Science from MIT.  He holds an MBA from the Stanford Graduate School of Business and is a CFA charterholder.",
       "company": "Google",
       "thumbnailUrl": "https://lh3.googleusercontent.com/H8uO5CcOW9e-vJdYVONV3smGyaxTjSRgeT3Cfz2FEfmmIa6lTX67vtd1hWdMv5ZIV7vbPSnKmfMTs6Uy6C9y_ig",
       "plusoneUrl": "",
@@ -9473,6 +9631,14 @@
       "twitterUrl": "https://twitter.com/lmoroney"
     },
     {
+      "id": "0cbc436b-ec47-4b58-a8f7-59b56bc754ad",
+      "name": "Rich Paret",
+      "bio": "",
+      "company": "Google",
+      "plusoneUrl": "",
+      "twitterUrl": ""
+    },
+    {
       "id": "26617edc-ba11-445e-85e6-f4a18a5cce59",
       "name": "Sarah Allen",
       "bio": "",
@@ -9497,6 +9663,14 @@
       "thumbnailUrl": "https://lh3.googleusercontent.com/UTKgUSovwA8OegDl_hT8s0c7FyNR0ZdoQbKdR-lz1bEQ4kRKrFvJ-TuDndt_mc8NXLUmrJNWuLHKMXVHKYN-z3c",
       "plusoneUrl": "",
       "twitterUrl": "https://mbleigh"
+    },
+    {
+      "id": "b565831b-c4c4-4a9e-94ad-182a470e9e0b",
+      "name": "Shahid Hussain",
+      "bio": "",
+      "company": "Google",
+      "plusoneUrl": "",
+      "twitterUrl": "https://twitter.com/shahidhussain"
     },
     {
       "id": "6d454bbb-adaf-421a-8693-e3b57c071988",
@@ -9525,7 +9699,7 @@
     {
       "id": "c6116541-4dd7-4bda-b6c7-c095ae08a5d6",
       "name": "Wei Wang",
-      "bio": "Wei is a Software Engineer in Android Location and Context team. He works on Fused Location Provider API. His main focus is reducing battery consumption of location, as well increasing location accuracy. Wei received a master's degree in Information Security from Carnegie Mellon University. Prior to that he earned a masterâ€™s degree and a bachelor's degree from Southeast University in China.",
+      "bio": "Wei is a Software Engineer in Android Location and Context team. He works on Fused Location Provider API. His main focus is reducing battery consumption of location, as well increasing location accuracy. Wei received a master's degree in Information Security from Carnegie Mellon University. Prior to that he earned a master's degree and a bachelor's degree from Southeast University in China.",
       "company": "Google",
       "thumbnailUrl": "https://lh3.googleusercontent.com/T-ee4pEyJNg9l8f3ebDmxN79axtFSPfiCL-2Uia0-as5hC6GOYas7TIt7H9yzcteCpkJbe04uo9suH2XJmQ7dvyh",
       "plusoneUrl": "",
@@ -9552,7 +9726,7 @@
     {
       "id": "56388a47-02c0-4306-ada4-f943860e8f3b",
       "name": "Bill Bilodeau",
-      "bio": "Bill Bilodeau helps make mobile game companies successful by working as a Developer Advocate at Google. Prior to Google, he worked at AMD in graphics developer relations. Before that, Bill worked as a game developer at TKO Software and THQâ€™s Pacific Coast Power and Light studio. He has a bachelorâ€™s degree in Computer Science from the University of California, Berkeley.",
+      "bio": "Bill Bilodeau helps make mobile game companies successful by working as a Developer Advocate at Google. Prior to Google, he worked at AMD in graphics developer relations. Before that, Bill worked as a game developer at TKO Software and THQ's Pacific Coast Power and Light studio. He has a bachelor's degree in Computer Science from the University of California, Berkeley.",
       "company": "Google",
       "thumbnailUrl": "https://lh3.googleusercontent.com/dElEhInyVjflAguTOyzcm6Vxq7pl258kzpLYTwpDfi09cCD6FFOpb8sUEfiD8ITJgW0znsgbdj7SEoTGB3reOA",
       "plusoneUrl": "",
@@ -9561,7 +9735,7 @@
     {
       "id": "69c3e3c5-8da1-4a42-a314-eb170c581ea2",
       "name": "Sridhar  Ramaswamy",
-      "bio": "Sridhar Ramaswamy oversees all of Googleâ€™s Ads and Commerce products, which include search, display and video advertising, analytics, shopping, payments, and travel. Joining Google as an engineer since 2003, heâ€™s been an integral part of the growth of AdWords and Googleâ€™s advertising business.\nPrior to joining Google, Sridhar was a Director of Engineering for the analytics platform at E.piphany. He also held research positions at Bell Labs, Lucent Technologies, and Bell Communications Research (Bellcore). Sridhar earned a bachelor's degree in computer science from the Indian Institute of Technology Madras, and his masterâ€™s of science and PhD in computer science from Brown University. He has published numerous papers on database systems and database theory, and holds several patents in that area.",
+      "bio": "Sridhar Ramaswamy oversees all of Google's Ads and Commerce products, which include search, display and video advertising, analytics, shopping, payments, and travel. Joining Google as an engineer in 2003, he's been an integral part of the growth of AdWords and Google's advertising business.\nPrior to joining Google, Sridhar was a Director of Engineering for the analytics platform at E.piphany. He also held research positions at Bell Labs, Lucent Technologies, and Bell Communications Research (Bellcore). Sridhar earned a bachelor's degree in computer science from the Indian Institute of Technology Madras, and his master's of science and PhD in computer science from Brown University. He has published numerous papers on database systems and database theory, and holds several patents in that area.",
       "company": "Google",
       "thumbnailUrl": "https://lh3.googleusercontent.com/c99-AD6ORk9eAembivLU_RXvHlgUqRuk0OgiQN_hxg4N3ijE7fjUyRMOyfPKnx1GvYKx_PjdjYy5vM0Xsx25CQ",
       "plusoneUrl": "",
@@ -9592,6 +9766,14 @@
       "thumbnailUrl": "https://lh3.googleusercontent.com/GfqCnkVuacPTAx0Ug48DDNyhjR6BRvFVCa_JlZU6AbjlvB1RW7TxoCKNJTSe4WM1HCHJs96TXKWLDF_b5Ke5TYS4",
       "plusoneUrl": "https://plus.google.com/+NikoSchroer",
       "twitterUrl": "https://niko_schr"
+    },
+    {
+      "id": "3093a2f3-dc8e-4f3a-a001-18568e6926b9",
+      "name": "Margaret Chang",
+      "bio": "",
+      "company": "Google",
+      "plusoneUrl": "",
+      "twitterUrl": ""
     },
     {
       "id": "39ca6987-a5dc-4c33-b0bb-311d622c1a78",
@@ -9630,9 +9812,17 @@
       "twitterUrl": "https://twitter.com/startupandrew"
     },
     {
+      "id": "545a5f06-a5fe-4ad5-87ec-786e96eb20bf",
+      "name": "John Pallett",
+      "bio": "",
+      "company": "Google",
+      "plusoneUrl": "",
+      "twitterUrl": ""
+    },
+    {
       "id": "8ff3ec72-3776-4b2f-af6d-b5653815c904",
       "name": "Maggie Stanphill",
-      "bio": "Since joining Google in 2011, Maggie has shaped Google products through language. Sheâ€™s developed company-wide UX writing and brand voice guidelines while working on Google Assistant, Maps, Search, Shopping, and Travel. She also co-founded the UX content strategy discipline at Google. After starting out as a newspaper and book editor, Maggie then moved into content strategy at Expedia, Razorfish, MSN, and Nike. She majored in English and creative writing at UW in Seattle â€” and had no idea then that her Mad Libs-style dialogue brainstorming would someday impact people around the world.",
+      "bio": "Since joining Google in 2011, Maggie has shaped Google products through language. She's developed company-wide UX writing and brand voice guidelines while working on Google Assistant, Maps, Search, Shopping, and Travel. She also co-founded the UX content strategy discipline at Google. After starting out as a newspaper and book editor, Maggie then moved into content strategy at Expedia, Razorfish, MSN, and Nike. She majored in English and creative writing at UW in Seattle \n - and had no idea then that her Mad Libs-style dialogue brainstorming would someday impact people around the world.",
       "company": "Google",
       "thumbnailUrl": "https://lh3.googleusercontent.com/ed5HF_q1eS-gYA3XUuk2za0IgkKQf5SzuLuzEnWFaAWLF_aMehKqSiMb1nbBorgGmdOX-kuuqNwfyhhQWxwPfWw",
       "plusoneUrl": "https://plus.google.com/107210518037295768657",
@@ -9684,14 +9874,6 @@
       "twitterUrl": "https://sam_m_birch"
     },
     {
-      "id": "931d9c4a-bb12-4e4b-a753-b5537d59f6ad",
-      "name": "Francesco Nerieri",
-      "bio": "",
-      "company": "Google",
-      "plusoneUrl": "",
-      "twitterUrl": ""
-    },
-    {
       "id": "0a752b3b-0b42-43b1-a29e-358b4f72c40b",
       "name": "Francis Ma",
       "bio": "",
@@ -9720,11 +9902,20 @@
     {
       "id": "587010d6-c860-4dbc-bc89-d04e8b391dc9",
       "name": "Shubhie Panicker",
-      "bio": "Shubhie drives web performance efforts as an engineer on the Chrome Web Platform team. She develops web performance metrics and standardized platform APIs. Prior to Chrome, she worked on server infrastructure and web frameworks for products like Google Search, Google Photos etc. Shubhie holds a masterâ€™s degree from Carnegie Mellon University.",
+      "bio": "Shubhie drives web performance efforts as an engineer on the Chrome Web Platform team. She develops web performance metrics and standardized platform APIs. Prior to Chrome, she worked on server infrastructure and web frameworks for products like Google Search, Google Photos etc. Shubhie holds a master's degree from Carnegie Mellon University.",
       "company": "Google",
       "thumbnailUrl": "https://lh3.googleusercontent.com/LxTfJtwFZvDqE2dzNhnBQ4yDMNMUxym5ndVIc7pOhScdNc1Nnv3glUb4Y2OfYWq5viwFHPB571QpeKr_2cIB4qDf",
       "plusoneUrl": "https://plus.google.com/+ShubhiePanicker",
       "twitterUrl": "https://twitter.com/shubhie"
+    },
+    {
+      "id": "b5ff3770-3202-4c1c-b9b7-14a1badbe0d5",
+      "name": "Jared Strawderman",
+      "bio": "Jared Strawderman is a Multimodal Design Lead on Google's conversation design team.  He comes from electric car start-up, Lucid Motors, where he was Head of User Experience.  And previously, he led the team who designed the conversational interface for Alexa at Amazon.  Jared has unique experience in shipping multimodal solutions on a broad range of products, including enterprise customer care, medical, automotive, TV, desktop, mobile, and other consumer electronic devices.",
+      "company": "Google",
+      "thumbnailUrl": "https://lh3.googleusercontent.com/Z-YGcV0eLPrcjJJ63V-RJtdEj0R63HGD5NGlIitGg_UVSwyk8NlEo1h-WfXbcWsP-8bvk5LjlYMzJR8Hzfvp4g",
+      "plusoneUrl": "",
+      "twitterUrl": ""
     },
     {
       "id": "52ba3af8-860c-4c98-bf5d-40cdfd277e6d",
@@ -9733,15 +9924,6 @@
       "company": "Google",
       "plusoneUrl": "",
       "twitterUrl": "https://mabouza"
-    },
-    {
-      "id": "b5ff3770-3202-4c1c-b9b7-14a1badbe0d5",
-      "name": "Jared Strawderman",
-      "bio": "Jared Strawderman is a Multimodal Design Lead on Googleâ€™s conversation design team.  He comes from electric car start-up, Lucid Motors, where he was Head of User Experience.  And previously, he led the team who designed the conversational interface for Alexa at Amazon.  Jared has unique experience in shipping multimodal solutions on a broad range of products, including enterprise customer care, medical, automotive, TV, desktop, mobile, and other consumer electronic devices.",
-      "company": "Google",
-      "thumbnailUrl": "https://lh3.googleusercontent.com/Z-YGcV0eLPrcjJJ63V-RJtdEj0R63HGD5NGlIitGg_UVSwyk8NlEo1h-WfXbcWsP-8bvk5LjlYMzJR8Hzfvp4g",
-      "plusoneUrl": "",
-      "twitterUrl": ""
     },
     {
       "id": "d8f19c95-4ae5-49e7-8473-e73903f0de87",
@@ -9764,7 +9946,7 @@
     {
       "id": "55079201-9784-48ab-97f2-66c55a8b06d9",
       "name": "Juliana Appenrodt",
-      "bio": "Juliana is a UX writer on the Payments team at Google, where sheâ€™s been translating technical jargon into user-friendly terms for nearly 3 years. Before discovering her passion for UX, she worked with words as both a marketing and lifestyle writer, contributing pieces about fashion, food, and travel to a variety of print and online publications. She has a degree in journalism from the University of Southern California.",
+      "bio": "Juliana is a UX writer on the Payments team at Google, where she's been translating technical jargon into user-friendly terms for nearly 3 years. Before discovering her passion for UX, she worked with words as both a marketing and lifestyle writer, contributing pieces about fashion, food, and travel to a variety of print and online publications. She has a degree in journalism from the University of Southern California.",
       "company": "Google",
       "thumbnailUrl": "https://lh3.googleusercontent.com/Qs-meX4-gAAVpboPmOkHo5Z1rrKpPjwSx8wn2K5XIeevnOfg6PsZsv3DemxA08b_xL8LIYHL4xqsqQ0LEosvXZg",
       "plusoneUrl": "",
@@ -9773,7 +9955,7 @@
     {
       "id": "298e20b0-7e3b-47ad-b957-35d62a69720c",
       "name": "Elie Bursztein",
-      "bio": "Elie Bursztein leads Googleâ€™s anti-abuse research, which helps protect users against Internet threats.  Elie has contributed to applied-cryptography, machine learning for security, malware understanding, and web security; authoring over fifty research papers in the field. Recently he was involved in finding the first SHA-1 collision. Elie is a beret aficionado and performs magic tricks in his spare time. Born in Paris, he received a Ph.D from ENS-cachan in 2008 before working at Stanford University and ultimately joining Google in 2011.",
+      "bio": "Elie Bursztein leads Google's anti-abuse research, which helps protect users against Internet threats.  Elie has contributed to applied-cryptography, machine learning for security, malware understanding, and web security; authoring over fifty research papers in the field. Recently he was involved in finding the first SHA-1 collision. Elie is a beret aficionado and performs magic tricks in his spare time. Born in Paris, he received a Ph.D from ENS-cachan in 2008 before working at Stanford University and ultimately joining Google in 2011.",
       "company": "Google",
       "thumbnailUrl": "https://lh3.googleusercontent.com/5yR0UKEbyr_Nb4ykd3Q6sskNnKUx1cnRfAn3yAvg5YHxiwgjw1kcMQjt0kB39dK4cxaTXdvXsAo2RmiKdXKgeZrj",
       "plusoneUrl": "https://plus.google.com/+ElieBursztein",
@@ -9845,7 +10027,7 @@
     {
       "id": "b84bfc95-1385-481b-9374-d76154abd843",
       "name": "Eric Kuan",
-      "bio": "Eric is a search outreach specialist currently focused on creating a secure web ecosystem. He also has experience in combating web spam and fraud at Google. Prior to Google, he worked at Bank of America supporting major trading application systems. Eric earned his bachelorâ€™s degree at The University of Texas at Austin in Management Information Systems and is a proud Longhorn. Hook â€˜em!",
+      "bio": "Eric is a search outreach specialist currently focused on creating a secure web ecosystem. He also has experience in combating web spam and fraud at Google. Prior to Google, he worked at Bank of America supporting major trading application systems. Eric earned his bachelor's degree at The University of Texas at Austin in Management Information Systems and is a proud Longhorn. Hook 'em!",
       "company": "Google",
       "thumbnailUrl": "https://lh3.googleusercontent.com/ST4vLRdZWrEBnUYn1TlmS9hieWkG4GS1Ks4hbXnnWokvILevutsBk44EyEfli8dODoYl4Kf3xIv9WRYJi9Xq6w",
       "plusoneUrl": "",
@@ -9865,6 +10047,7 @@
       "name": "Wale Ogunwale",
       "bio": "",
       "company": "Google",
+      "thumbnailUrl": "https://lh3.googleusercontent.com/aGiWNu-6NhYVqzu_6NIxjWVVfqoFdNTghNfoGAwCKcpn9ES6WYhIyefqtyp2oIUKq1P1X_fj-ISSE_YDvm6HjQ",
       "plusoneUrl": "",
       "twitterUrl": ""
     },
@@ -9934,7 +10117,7 @@
     {
       "id": "1de6b326-a578-407c-8c88-59e50ae66e9f",
       "name": "Jamal Eason",
-      "bio": "Jamal Eason is a product manager for Android developer tools & products at Google. He is responsible for setting the product roadmap and features that help Android developers make great apps.  Prior to Google, he worked on developer tools at Intel, worked as product manager at a mobile app startup, and was a telecommunications officer in the US Army. Jamal earned a bachelor's degree in computer science from the US Military Academy (West Point), a masterâ€™s degree from UMUC, and a MBA from Harvard Business School. ",
+      "bio": "Jamal Eason is a product manager for Android developer tools & products at Google. He is responsible for setting the product roadmap and features that help Android developers make great apps.  Prior to Google, he worked on developer tools at Intel, worked as product manager at a mobile app startup, and was a telecommunications officer in the US Army. Jamal earned a bachelor's degree in computer science from the US Military Academy (West Point), a master's degree from UMUC, and a MBA from Harvard Business School. ",
       "company": "Google",
       "thumbnailUrl": "https://lh3.googleusercontent.com/m6YNpsICQ1_OdxXATOWqHU393eqz2Rj7-6S45yIfMHHK4I45TxFmISrctI_DXoSY3HsPXRbTN6y8yH_BRZfJykg",
       "plusoneUrl": "https://plus.google.com/+JamalEason",
@@ -9962,6 +10145,7 @@
       "name": "Dave Burke",
       "bio": "",
       "company": "Google",
+      "thumbnailUrl": "https://lh3.googleusercontent.com/eXwW_6Z1oOW1Uucm05beVGR5sl90tZ_URdoTU6HbNtwO791NkXdKI91H27zNSCHKuhXkugx4ePYrRWITlE1rMrV3",
       "plusoneUrl": "",
       "twitterUrl": ""
     },
@@ -9986,7 +10170,7 @@
     {
       "id": "f36bc7cb-97f6-45b5-8fb6-a2aa3c945738",
       "name": "Ed Weng",
-      "bio": "Edward is a Product Manager of Google's AdMob mobile advertising platform, leading initiatives to bring best-in-class reporting tools to AdMob publishers. Prior to Google, Edward was a full-stack developer at LivingSocial, where he was responsible for the mobile web platform. He holds an MBA from Harvard Business School and a bachelorâ€™s degree in Electrical Engineering from Princeton University.",
+      "bio": "Edward is a Product Manager of Google's AdMob mobile advertising platform, leading initiatives to bring best-in-class reporting tools to AdMob publishers. Prior to Google, Edward was a full-stack developer at LivingSocial, where he was responsible for the mobile web platform. He holds an MBA from Harvard Business School and a bachelor's degree in Electrical Engineering from Princeton University.",
       "company": "Google",
       "thumbnailUrl": "https://lh3.googleusercontent.com/rwJHRxcUtIctV8MfNDU0USwi-FIn7at7ow0HB4Vk--HBB8nbDYe59r6rOQ4BnAUeTg5Gze_yDrnTMZlEZ6Bq8Z8",
       "plusoneUrl": "",
@@ -10031,6 +10215,7 @@
       "name": "Judy Tuan",
       "bio": "",
       "company": "Tech Workers Coalition",
+      "thumbnailUrl": "https://lh3.googleusercontent.com/O6TQ7g1L3kbRcMrXteWzsDWavtVrgM6fCWFxRkUbiGrEqElVLxngUSjaH3brT17aik6JzVY8k3AqzM0coYlO8w8i",
       "plusoneUrl": "",
       "twitterUrl": ""
     },
@@ -10064,7 +10249,7 @@
     {
       "id": "383d171d-8f95-4dae-8c5c-30a40d44a4ae",
       "name": "Preston Jackson",
-      "bio": "Preston manages the engineering team developing business analytics and guidance features in the Play Developer Console. Prior to Play, he worked on the SketchUp team with a focus on 3D graphics, mobile, and web products. He started his career working in the High Performance Computing Group at the MIT Lincoln Laboratory. He holds a masterâ€™s degree in electrical engineering from Brigham Young University.",
+      "bio": "Preston manages the engineering team developing business analytics and guidance features in the Play Developer Console. Prior to Play, he worked on the SketchUp team with a focus on 3D graphics, mobile, and web products. He started his career working in the High Performance Computing Group at the MIT Lincoln Laboratory. He holds a master's degree in electrical engineering from Brigham Young University.",
       "company": "Google",
       "thumbnailUrl": "https://lh3.googleusercontent.com/BQJwSLpVHWw_PxxN7h44ARL4JwUwh_JbvDfzQL9uhikIOjzmauxl962xnKGSLNpk7nNC8Gyx2iwY3np_rKaICcQ",
       "plusoneUrl": "",
@@ -10106,10 +10291,26 @@
       "twitterUrl": "https://twitter.com/bavetta"
     },
     {
+      "id": "6009a0a1-a524-49b6-8597-77f491453913",
+      "name": "Andreas Stecher",
+      "bio": "",
+      "company": "Deep Silver FISHLABS",
+      "plusoneUrl": "",
+      "twitterUrl": ""
+    },
+    {
       "id": "cf05a07d-19a9-4639-95b1-921df17ecb3a",
       "name": "Rob Stets",
       "bio": "",
       "company": "Google",
+      "plusoneUrl": "",
+      "twitterUrl": ""
+    },
+    {
+      "id": "57dd98da-21cb-45b2-b7e9-67a00ff6a566",
+      "name": "Johannes Kuhlmann",
+      "bio": "",
+      "company": "Deep Silver FISHLABS",
       "plusoneUrl": "",
       "twitterUrl": ""
     },
@@ -10205,7 +10406,7 @@
       "bio": "Tal is a product manager on the Chrome for Android team. Prior to joining the Chrome team, she worked on Google Apps and Local Search. She earned her bachelors degree in Neurobiology with a secondary focus in Computer Science at Harvard.",
       "company": "Google",
       "thumbnailUrl": "https://lh3.googleusercontent.com/2ijRxxufoiDusmlrM_BR9YQFegIN6Qt8LhAeKdFx9T57cV7qtxaprEFed2cQEYDI9NqQvDwlITFGNKytFHRokg",
-      "plusoneUrl": "https://plus.google.com/+TalOppenheimer",
+      "plusoneUrl": "",
       "twitterUrl": "https://twitter.com/@taloppenheimer"
     },
     {
@@ -10237,11 +10438,19 @@
     {
       "id": "9beaf798-bd58-494f-8c75-e359366654c9",
       "name": "Jeni Fisher",
-      "bio": "Jeni is a Google Play business development manager, working with EMEA lifestyle and travel app developers to build sustainable businesses. She previously curated Play store editorial content across apps, games and digital content, following three years building a career in merchandising at Amazon. Jeni earned a bachelorâ€™s degree from Cardiff University. ",
+      "bio": "Jeni is a Google Play business development manager, working with EMEA lifestyle and travel app developers to build sustainable businesses. She previously curated Play store editorial content across apps, games and digital content, following three years building a career in merchandising at Amazon. Jeni earned a bachelor's degree from Cardiff University. ",
       "company": "Google",
       "thumbnailUrl": "https://lh3.googleusercontent.com/ABRWaLKvkcNRyAKlGapiQ6854KyIbzxqiVtGUXfiWtchaCkDwm32G4eET_H9mwh9VHp6qHlWzj83inkZfgH22iI",
       "plusoneUrl": "https://plus.google.com/111501738335683867888",
       "twitterUrl": "https://_jeniwren"
+    },
+    {
+      "id": "0676b02f-ef76-4b2a-93ab-50baef9d71da",
+      "name": "Jeena James",
+      "bio": "",
+      "company": "",
+      "plusoneUrl": "",
+      "twitterUrl": ""
     },
     {
       "id": "d8c84161-e2a5-4e4f-b34b-16ee7067c474",
@@ -10297,15 +10506,6 @@
       "twitterUrl": "https://amadurska@"
     },
     {
-      "id": "e109ab48-9cdf-46b7-9c0d-bb837e1f512a",
-      "name": "Sam Dutton",
-      "bio": "Sam Dutton is a Developer Advocate for Google Chrome, based in London. He specialises in media APIs and Progressive Web Apps, with a particular interest in regions where users are coming online fastest. Sam also maintains simpl.info, a site for simplest-possible examples of HTML, CSS and JavaScript. ",
-      "company": "Google",
-      "thumbnailUrl": "https://lh3.googleusercontent.com/wCh-yDQ_TXsh3PpKSU0QU7JDKOrLhKVvfgT3hpwY-tK08xGWXu2-Sqh1b_TutjDx7CuP7ScsmRfB2PIWozPz1M4",
-      "plusoneUrl": "https://plus.google.com/+samdutton",
-      "twitterUrl": "https://sw12"
-    },
-    {
       "id": "124aab96-1fff-4927-86fa-4bc22cfb58ed",
       "name": "Justin Novosad",
       "bio": "Justin Novosad has been a member of the Chrome GPU team since joining Google in 2011. He is the technical lead for canvas APIs in Chrome. Prior to Google, he was a software developer at Autodesk where he has worked on the Maya rendering team, and the image science team. He holds a bachelor's degree in computer engineering and a master's in biomedical engineering from Polytechnique MontrÃ©al.",
@@ -10326,7 +10526,7 @@
     {
       "id": "bf35ce82-57de-4ef0-9054-8541418807b2",
       "name": "Noah Fiedel",
-      "bio": "Noah is Tech Lead of TensorFlow Serving, the open source ML serving system running many production models at Google. In his Google career he has helped build the systems powering YouTube, Blogger, Google+ and Hangouts. Prior to Google heâ€™s worked on projects as large as Boeing-Jeppesen flight planning software and as small as Color Labs, a 25 person startup he co-founded in the mobile space. Noah holds a BS in EECS from UC Berkeley, is a private pilot and is on a mission to find the best burrito in Silicon Valley. ",
+      "bio": "Noah is Tech Lead of TensorFlow Serving, the open source ML serving system running many production models at Google. In his Google career he has helped build the systems powering YouTube, Blogger, Google+ and Hangouts. Prior to Google he's worked on projects as large as Boeing-Jeppesen flight planning software and as small as Color Labs, a 25 person startup he co-founded in the mobile space. Noah holds a BS in EECS from UC Berkeley, is a private pilot and is on a mission to find the best burrito in Silicon Valley. ",
       "company": "Google",
       "thumbnailUrl": "https://lh3.googleusercontent.com/LeWCaB3GNN49pFAAKqhnMVxfYRTQ_PXKO_dUgqzVTEmw6Hp203ZV67QVHujCVMNDR2KHMaBGfyURGtJ6s-gCADM",
       "plusoneUrl": "",
@@ -10343,7 +10543,7 @@
     {
       "id": "90cfc1ff-f7e8-4c6d-84f2-04e7a5863c3a",
       "name": "Adriana Olmos Antillon",
-      "bio": "Adriana Olmos is a product designer on The Google Assistant Team, she leads the design effort for third party multimodal interactions. She worked in award winning projects like the â€œ100 Years of the Canadiensâ€. She was also a design research fellow at the Shared Reality Lab, and the Centre for Interdisciplinary Research in Music Media and Technology (CIRMMT) at McGill University. ",
+      "bio": "Adriana Olmos is a product designer on The Google Assistant Team, she leads the design effort for third party multimodal interactions. She worked in award winning projects like the '100 Years of the Canadiens'. She was also a design research fellow at the Shared Reality Lab, and the Centre for Interdisciplinary Research in Music Media and Technology (CIRMMT) at McGill University. ",
       "company": "Google",
       "thumbnailUrl": "https://lh3.googleusercontent.com/GRkdtrzrsmH7hVW9fBMUd5G4u3O997tlg9S6GvPVXw7UJmBUBVVUq4uxZnDi-q4f8YrHCn870cCj7TOArWV9jGgf",
       "plusoneUrl": "",
@@ -10386,7 +10586,7 @@
     {
       "id": "17686e6f-d5b3-4a84-a232-96938c8d58a7",
       "name": "Darren Krahn",
-      "bio": "Darren currently leads security efforts for IoT platforms. At Google, he has also worked on Chrome OS security. Prior to Google, Darren worked on a variety of security-focused products for companies such as Imation Mobile Security and ActivIdentity. Darren earned a bachelorâ€™s degree in Mathematics (Computer Science) from the University of Waterloo.",
+      "bio": "Darren currently leads security efforts for IoT platforms. At Google, he has also worked on Chrome OS security. Prior to Google, Darren worked on a variety of security-focused products for companies such as Imation Mobile Security and ActivIdentity. Darren earned a bachelor's degree in Mathematics (Computer Science) from the University of Waterloo.",
       "company": "Google",
       "thumbnailUrl": "https://lh3.googleusercontent.com/CCC3p5l0oLzStYVi6GCn4w_KW6b6otRoJgCK6Y1brC_hEzSSxVbhslau7gtO_ufJxTlcAALRCrtUN0TN9dhzm_YF",
       "plusoneUrl": "",
@@ -10424,6 +10624,14 @@
       "company": "Google",
       "thumbnailUrl": "https://lh3.googleusercontent.com/Tv1Jwe6y7ciho6F4IkK5KL0k8c7gK3wNFbCaznv96gMgcjYHHXVPdFdw8WLWH1sxtH5Ibs5JtM5Q2a6Mf6rjG8Y",
       "plusoneUrl": "https://plus.google.com/+AartBik",
+      "twitterUrl": ""
+    },
+    {
+      "id": "e49d4720-3998-4dce-9b33-93a04aa725e9",
+      "name": "Tracey Chan",
+      "bio": "",
+      "company": "Google",
+      "plusoneUrl": "",
       "twitterUrl": ""
     },
     {
@@ -10525,7 +10733,7 @@
     {
       "id": "055319fb-9ecd-49a9-bcf9-4df78f57ab72",
       "name": "Joe Castorena",
-      "bio": "Joe heads app partnerships for Business, Productivity, and Finance; working with developers to build high quality Android apps and successful businesses. He has also worked on global strategy for mobile publisher ad products. Prior to Google, Joe worked in publisher partnerships for AdMob, and Right Media/Yahoo!. Joe earned an MBA with honors from the University of Notre Dame, and a bachelorâ€™s degree in business from Trinity University.",
+      "bio": "Joe heads app partnerships for Business, Productivity, and Finance; working with developers to build high quality Android apps and successful businesses. He has also worked on global strategy for mobile publisher ad products. Prior to Google, Joe worked in publisher partnerships for AdMob, and Right Media/Yahoo!. Joe earned an MBA with honors from the University of Notre Dame, and a bachelor's degree in business from Trinity University.",
       "company": "Google",
       "thumbnailUrl": "https://lh3.googleusercontent.com/9jyDpmJY3sSHPWuqO_QsEjHvngbRh5XnIOpwIM3tKhGKDLRt6C7s6C5cnuCZWyaQ-Zd9M5sveliuNng9oPlyoH9C",
       "plusoneUrl": "",
@@ -10572,13 +10780,14 @@
       "name": "Adam Glazier",
       "bio": "",
       "company": "Google",
+      "thumbnailUrl": "https://lh3.googleusercontent.com/nb2efRbs0N-U7zXLlhdI7P2aHygeoGb1EEBftEXQTPuVl-trGC502wOGZz9OSW0M4KwFCgSZ_oSFpBiSwQppMNI",
       "plusoneUrl": "",
       "twitterUrl": ""
     },
     {
       "id": "0c8da42d-7494-4461-a52d-88f96e5cc2b1",
       "name": "Gerardo Capiel",
-      "bio": "Gerardo Capiel is Director of Product Management for Consumer Payments. Prior to Google, Gerardo founded three pioneering companies in the fields of eCRM, social media marketing and SMB omnichannel commerce. He also led engineering at one of Silicon Valleyâ€™s first purposely nonprofits, focusing on literacy, human rights and the environment.  Heâ€™s now on their board of directors. Gerardo earned a B.S. from M.I.T. and an MBA from the Stanford Graduate School of Business. ",
+      "bio": "Gerardo Capiel is Director of Product Management for Consumer Payments. Prior to Google, Gerardo founded three pioneering companies in the fields of eCRM, social media marketing and SMB omnichannel commerce. He also led engineering at one of Silicon Valley's first purposely nonprofits, focusing on literacy, human rights and the environment.  He's now on their board of directors. Gerardo earned a B.S. from M.I.T. and an MBA from the Stanford Graduate School of Business. ",
       "company": "Google",
       "thumbnailUrl": "https://lh3.googleusercontent.com/fN0DjSMS-4rI4Df9hc5Sh2jC_wpDiBAVZgm5eESCuslp2gIWJeMQvVSaX0_0_xRKU9viMHL9Lw0oQIywhxEUIQ",
       "plusoneUrl": "",
@@ -10616,8 +10825,8 @@
       "name": "Justin Fagnani",
       "bio": "",
       "company": "Google",
-      "plusoneUrl": "https://JustinFagnani",
-      "twitterUrl": "https://justinfagnani"
+      "plusoneUrl": "",
+      "twitterUrl": "https://twitter.com/justinfagnani"
     },
     {
       "id": "5c7cafdc-a50e-40c9-8826-8ec166c8fb6e",
@@ -10631,7 +10840,7 @@
     {
       "id": "90c23b7d-418e-4949-b707-62b98e967caa",
       "name": "Steve Malkos",
-      "bio": "Steve Malkos is the Technical Program Manager in the Android Location and Context Group at Google. He manages all engineering aspects for Androidâ€™s Location and Context programs.  Steve is responsible for defining these initiatives within Google which includes everything from GPS, Fused Location Provider (FLP), Android Sensor Hub, Sensors, and more. Steve  has been involved in the field of location now for over 14 years. Prior to his role at Google, he worked as an Associate Program Management Director at Broadcom, where he managed engineering teams within Broadcomâ€™s GNSS software. He holds a B.S. in Computer Science from Purdue University, currently holds 8 patents and has many more pending patents in the field of location.",
+      "bio": "Steve Malkos is the Technical Program Manager in the Android Location and Context Group at Google. He manages all engineering aspects for Android's Location and Context programs.  Steve is responsible for defining these initiatives within Google which includes everything from GPS, Fused Location Provider (FLP), Android Sensor Hub, Sensors, and more. Steve  has been involved in the field of location now for over 14 years. Prior to his role at Google, he worked as an Associate Program Management Director at Broadcom, where he managed engineering teams within Broadcom's GNSS software. He holds a B.S. in Computer Science from Purdue University, currently holds 8 patents and has many more pending patents in the field of location.",
       "company": "Google",
       "thumbnailUrl": "https://lh3.googleusercontent.com/LklIk7gNtd8jU5h1-bAuU1OlRZHJN2VJkYyz1qWpVgXHO40-alN0rdR1ez4LkDfgEGrz4iz7M6gE3rW42vAPZAM",
       "plusoneUrl": "",
