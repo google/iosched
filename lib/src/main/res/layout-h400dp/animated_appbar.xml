@@ -18,7 +18,8 @@
     android:id="@+id/header_anim"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    app:layout_collapseMode="parallax"
     android:adjustViewBounds="true"
     android:fitsSystemWindows="true"
-    android:scaleType="fitEnd" />
+    android:paddingBottom="@dimen/spacing_large"
+    android:scaleType="fitEnd"
+    app:layout_collapseMode="parallax" />
