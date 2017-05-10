@@ -27,6 +27,7 @@ public class InfoActivity extends BaseActivity {
     protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.info_act);
+        overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
         setFullscreenLayout();
 
         InfoPagerFragment infoPagerFragment = (InfoPagerFragment) getSupportFragmentManager()

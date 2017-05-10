@@ -37,7 +37,7 @@ public abstract class AppNavigationViewAbstractImpl implements
         UpdatableView<NavigationModel, NavigationQueryEnum, NavigationUserActionEnum>,
         AppNavigationView {
 
-    private static final long BOTTOM_NAV_ANIM_GRACE = 100L;
+    private static final long BOTTOM_NAV_ANIM_GRACE = 115L;
     private UserActionListener<NavigationUserActionEnum> mUserActionListener;
 
     protected Activity mActivity;
