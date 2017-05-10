@@ -547,8 +547,10 @@ public class SessionDetailFragment extends Fragment implements
                 public void onClick(View v) {
                     String videoId = YouTubeUtils.getVideoIdFromSessionData(data.getYouTubeUrl(),
                             data.getLiveStreamId());
-                    YouTubeUtils.showYouTubeVideo(videoId, getActivity());
-                    AnalyticsHelper.sendEvent("Session", "Youtube Video", mTitle.toString());
+                    if (videoId != null) {
+                        YouTubeUtils.showYouTubeVideo(videoId, getActivity());
+                        AnalyticsHelper.sendEvent("Session", "Youtube Video", mTitle.toString());
+                    }
                 }
             });
         }
