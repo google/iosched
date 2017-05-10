@@ -14,7 +14,7 @@
   See the License for the specific language governing permissions and
   limitations under the License.
   -->
-<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2" xmlns:tools="http://schemas.android.com/tools">
+<resources xmlns:tools="http://schemas.android.com/tools" xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
 
     <plurals name="schedule_block_subtitle"
              description="Shown in the schedule to indicate how many sessions are available on that particular time slot.">
@@ -231,6 +231,15 @@
     <!-- Accessibility announcement for an item in the custom feedback rating view. For example, "one star".  -->
     <string name="feedback_rating_value">%1$d 星</string>
 
+    <!-- Text that shows session is reserved on Schedule and My I/O -->
+    <string name="schedule_item_reserved">已预定</string>
+
+    <!-- Text that shows session is not reserved on Schedule and My I/O -->
+    <string name="schedule_item_not_reserved">未预定</string>
+
+    <!-- Text that shows session is waitlisted on Schedule and My I/O -->
+    <string name="schedule_item_waitlisted">已列入等待列表</string>
+
     <!-- Label for the button to rate a session -->
     <string name="my_schedule_rate_this_session">评价本场会议</string>
 
@@ -241,7 +250,7 @@
     <string name="my_schedule_request_pending">请求正在处理中…</string>
 
     <!-- Label for reserve session button if session is already reserved by user -->
-    <string name="my_schedule_already_reserved">已预订座位</string>
+    <string name="my_schedule_already_reserved">已预定座位</string>
 
     <!-- Label for reserve session button if reserving is disabled for whatever reason -->
     <string name="my_schedule_reserve_disabled">预定功能已停用</string>
@@ -552,7 +561,7 @@
     <string name="title_my_io">我的 I/O</string>
 
     <!-- Navigation bar text for viewing the user's schedule -->
-    <string name="title_my_schedule">日程表</string>
+    <string name="title_schedule">日程表</string>
 
     <!-- Navigation bar text for viewing the Feed -->
     <string name="title_feed">Feed</string>
@@ -600,7 +609,7 @@
     <string name="watch_now">立即观看！</string>
 
     <!-- Short text welcoming the user to the application -->
-    <string name="welcome_to_google_i_o_app">欢迎使用 #io17 移动应用！</string>
+    <string name="welcome_to_google_i_o">欢迎参加 #io17</string>
 
     <!-- Medium-length welcome text indicating the subsequent text is important legal information -->
     <string name="welcome_text">在我们开始之前，这里提供与您使用这款应用有关的一些重要法律信息。</string>
@@ -623,9 +632,6 @@
     <!-- Text for a button which will open the user's Wi-Fi settings -->
     <string name="wifi_dialog_button_settings">打开 WiFi 设置</string>
 
-    <!-- Toast failure message if the user's wifi couldn't be updated -->
-    <string name="wifi_install_error_message">很抱歉，无法更新 WiFi 配置</string>
-
     <!-- Title of the Video library screen when only videos of a given topic are displayed -->
     <string name="title_topic_filtered_video_library">有关 <xliff:g id="topic">%1$s</xliff:g> 的视频</string>
 
@@ -636,13 +642,16 @@
     <string name="title_year_and_topic_filtered_video_library" tools:ignore="PluralsCandidate"><xliff:g id="year">%1$d</xliff:g> 年的视频，话题为 <xliff:g id="topic">%2$s</xliff:g></string>
 
     <!-- Text of the Filter menu icon -->
-    <string name="description_filter">过滤</string>
+    <string name="description_filter">过滤器</string>
 
-    <!-- Text of the My I/O menu icon -->
-    <string name="description_avatar">头像</string>
+    <!-- Text of the My I/O avatar icon whilst signed out -->
+    <string name="description_avatar_signed_out">登录</string>
+
+    <!-- Text of the My I/O avatar icon whilst signed in -->
+    <string name="description_avatar_signed_in">注销</string>
 
     <!-- Title of the Video library side panel containing all the filters -->
-    <string name="title_video_library_filter">过滤</string>
+    <string name="title_video_library_filter">过滤器</string>
 
     <!-- Sub-title for the Year filters -->
     <string name="year_filter_section_label">年</string>
@@ -654,7 +663,7 @@
     <string name="all">全部</string>
 
     <!-- Title of the Explore Sessions side panel containing all the filters -->
-    <string name="title_explore_sessions_filter">过滤</string>
+    <string name="title_explore_sessions_filter">过滤器</string>
 
     <!-- Label of filter option to show only sessions -->
     <string name="filter_label_sessions_only">仅会议</string>
@@ -689,11 +698,11 @@
          can watch a video but it turns out we can't show the video. -->
     <string name="explore_io_video_id_not_valid">很抱歉，视频网址似乎有问题。</string>
 
-    <string description="This string is presented as a header message on a user interface card
+    <string name="explore_io_on_the_ground_title"
+            description="This string is presented as a header message on a user interface card
          element. The card element has sub-cards that explain a few logistical details for
          attendees. 'On the Ground' is slang in English indicating 'What you need to know when
-         you're in the middle of the conference.'"
-            name="explore_io_on_the_ground_title">会议安排</string>
+         you're in the middle of the conference.'">会议安排</string>
 
     <!-- Error message that is displayed when we aren't able to connect to Google Play Services,
          potentially due to a server error or loss of network connectivity. -->
@@ -705,7 +714,7 @@
     <string name="google_play_services_failed">抱歉，Google Play 服务连接失败</string>
 
     <!-- Message displayed to users as part of onboarding sign in. -->
-    <string name="signin_message">登录以通过移动设备和桌面设备同步同步您的帐户中已保存的活动和已预定的会议。在不登录的情况下，您仍可在本地保存活动。</string>
+    <string name="signin_message">登录以便提前预定活动座位，通过移动设备和桌面设备将保存和预定的活动同步至您的帐户，以及在会议结束后提供反馈。在不登录的情况下，您可以在本地保存活动。</string>
 
     <!-- Label used when asking a user to sign in. -->
     <string name="signin_prompt">登录</string>
@@ -721,7 +730,12 @@
 
     <!-- Text shown on the onboarding screen asking users if they want conference notifications. -->
     <string name="onboarding_notifications_opt_in">
-        您想要接收有关 I/O 的应用通知吗?\n我们将向您发送有关活动、议程、日程表、旅行、会后安排、会议录音等的重要信息。您可以随时在“信息 &gt; 设置”中更改此设置。
+        您想要接收有关 I/O 的通知吗?\n我们将向您发送有关活动、议程、日程表、旅行、会后安排、会议录音等的重要信息。您可以随时在“信息 &gt; 设置”中更改此设置。
+    </string>
+
+    <!-- Text shown on the onboarding sign-in screen. -->
+    <string name="onboarding_sign_in">
+        您是否想登录，以便提前预定活动座位，通过移动设备和桌面设备将保存的活动同步至您的帐户，以及在会议结束后提供反馈？在不登录的情况下，您仍可在本地保存活动，但信息不会同步至您的帐户。\n\n重要说明：要想预定活动座位，您登录时使用的电子邮件地址必须与您注册 Google I/O 时使用的电子邮件地址相同。
     </string>
 
     <!-- Message displayed in a card to the user on the My I/O screen after they have signed in. -->
@@ -741,37 +755,41 @@
     <!-- Button for finding quickly navigating from a day within My I/O to the relevant day within
     schedule -->
     <string name="add_events">添加活动</string>
-
-    <!-- A placeholder value for the user's name in the My I/O dialog -->
-    <string name="my_io_dialog_default_name">您的姓名</string>
-
-    <!-- A placeholder value for the user's email in the My I/O dialog -->
-    <string name="my_io_dialog_default_email">you@gmail.com</string>
-
+\
     <!-- An introductory string used in the My I/O dialog to a signed out user  -->
-    <string name="my_io_body_intro_signed_out">登录至:</string>
+    <string name="my_io_body_intro_signed_out">登录至：</string>
 
     <!-- An introductory string used in the My I/O dialog to a signed in user  -->
-    <string name="my_io_body_intro_signed_in">作为已登录用户:</string>
+    <string name="my_io_body_intro_signed_in">作为已登录用户：</string>
 
     <!-- The first bulletpoint string used in the My I/O dialog to a signed out user  -->
     <string name="my_io_dialog_first_bullet_point_signed_out">
-        \u2022 通过桌面设备和移动设备同步您的帐户中已保存的活动和已预定的会议。
+        提前预定活动座位。
     </string>
 
     <!-- The first bulletpoint string used in the My I/O dialog to a signed in user  -->
     <string name="my_io_dialog_first_bullet_point_signed_in">
-        \u2022 您的已保存活动和已预订会议已通过移动设备和桌面设备同步到您的帐户
+        您可以提前预定活动座位（每个时段最多预定一次）。
     </string>
 
     <!-- The second bulletpoint string used in the My I/O dialog to a signed out user  -->
     <string name="my_io_dialog_second_bullet_point_signed_out">
-        \u2022 在会议结束后提供会议反馈
+        通过移动设备和桌面设备将您的已保存活动和已预定活动同步到您的帐户。
     </string>
 
     <!-- The second bulletpoint string used in the My I/O dialog to a signed in user  -->
     <string name="my_io_dialog_second_bullet_point_signed_in">
-        \u2022 您可以在会议结束后提供会议反馈
+        您的已保存活动和已预定活动已通过移动设备和桌面设备同步到您的帐户。
+    </string>
+
+    <!-- The third bulletpoint string used in the My I/O dialog to a signed out user  -->
+    <string name="my_io_dialog_third_bullet_point_signed_out">
+        在会议结束后提供会议反馈。
+    </string>
+
+    <!-- The third bulletpoint string used in the My I/O dialog to a signed in user  -->
+    <string name="my_io_dialog_third_bullet_point_signed_in">
+        您可以在会议结束后提供会议反馈。
     </string>
 
     <!-- Message shown when a user initiated sign in fails. -->
@@ -781,22 +799,30 @@
     <string name="signout_failed_text">无法注销。请稍后重试。</string>
 
     <!-- Strings for Info page-->
-    <string name="wifi_network_label">Wi-Fi 网络</string>
+    <string name="wifi_network_label">WiFi 网络</string>
     <string name="wifi_password_label">密码</string>
-    <string name="setup_wifi">设置 Wi-Fi</string>
-    <string name="password_copied_confirmation">密码已复制</string>
+    <string name="setup_wifi">保存 WiFi 网络</string>
+
+    <!-- Snackbar message confirming save of wifi network -->
+    <string name="wifi_install_success">WiFi 网络已保存</string>
+
+    <!-- Snackbar message if failed to save the wifi network -->
+    <string name="wifi_install_error_message">抱歉，无法保存 WiFi 网络</string>
+
     <string name="view_sessions_text">查看会议</string>
     <string name="view_map_text">查看地图</string>
-    <!-- TODO make these URLs the correct deep link -->
-    <string name="event_sandbox_title">沙盒</string>
-    <string name="event_codelabs_title">代码实验室</string>
+
+    <string name="event_sandbox_title">Sandbox</string>
+    <string name="event_codelabs_title">Codelabs</string>
     <string name="event_officehours_title">工作时间和应用评论</string>
-    <string name="event_afterhours_title">非工作时间</string>
+    <string name="event_afterhours_title">会后安排</string>
+
     <string name="travel_details_title">旅行详情</string>
     <string name="travel_shuttle_info_title">穿梭巴士服务</string>
-    <string name="travel_carpool_parking_info_title">拼车和泊车</string>
+    <string name="travel_carpool_parking_info_title">泊车和拼车</string>
     <string name="travel_public_transportation_info_title">公共交通</string>
     <string name="travel_biking_info_title">骑车</string>
+    <string name="travel_ride_sharing_info_title">共乘</string>
 
     <string name="settings_time_zone_label">以太平洋时间 (PT) 显示活动</string>
     <string name="settings_enable_notifications">启用通知</string>
@@ -807,7 +833,26 @@
 
     <string name="feed_error">加载 Feed 时出错。</string>
 
+    <!-- Button text indicating that the session can be added to the user's bookmarks. -->
+    <string name="add_bookmark">添加书签</string>
+    
+    <!-- Button text indicating that the session can be removed from the user's bookmarks. -->
+    <string name="remove_bookmark">移除书签</string>
 
-    <!-- RemoteConfig keys for Feed default messages -->
+    <!-- Hint text indicating bookmarked sessions are added to My I/O. -->
+    <string name="add_bookmark_hint">已在我的 I/O 中保存活动</string>
 
+    <!-- Hint text indicating unbookmarked sessions are removed from My I/O. -->
+    <string name="remove_bookmark_hint">已从我的 I/O 移除活动</string>
+
+    <!-- Opt-out text to stop seeing bookmark related hints. -->
+    <string name="bookmark_hint_optout">知道了</string>
+
+    <!-- The label used on a button when a view is in an expanded state. Clicking on the icon
+    collapses the view. -->
+    <string name="expanded">展开</string>
+
+    <!-- The label used on a button when a view is in an collapsed state. Clicking on the icon
+    expanded the view. -->
+    <string name="collapsed">折叠</string>
 </resources>

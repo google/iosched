@@ -14,7 +14,7 @@
   See the License for the specific language governing permissions and
   limitations under the License.
   -->
-<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2" xmlns:tools="http://schemas.android.com/tools">
+<resources xmlns:tools="http://schemas.android.com/tools" xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
 
     <plurals name="schedule_block_subtitle"
              description="Shown in the schedule to indicate how many sessions are available on that particular time slot.">
@@ -183,7 +183,7 @@
 
     <!-- Shown on a widget that normally displays upcoming sessions. This is shown after the
     conference, when there are no more sessions to show. -->
-    <string name="empty_widget_text">Không còn phiên nào sắp diễn ra.\nHẹn gặp lại bạn vào năm tới!</string>
+    <string name="empty_widget_text">Không còn phiên nào sắp diễn ra.\nChúng tôi mong sẽ gặp lại bạn vào năm sau!</string>
 
     <!-- Label for a button to answer the question "Would you like to send feedback
     about this session?" which, when clicked, allows the user to send their feedback (ratings
@@ -226,10 +226,19 @@
     <string name="my_schedule_badgepickup_description">Bàn Đăng ký</string>
 
     <!-- Accessibility announcement to confirm the feedback rating made for a session by the user. -->
-    <string name="feedback_rating_confirmation">Xếp hạng của bạn: %1$d trên %2$d sao"</string>
+    <string name="feedback_rating_confirmation">Xếp hạng của bạn: %1$d trên %2$d sao</string>
 
     <!-- Accessibility announcement for an item in the custom feedback rating view. For example, "one star".  -->
     <string name="feedback_rating_value">%1$d sao</string>
+
+    <!-- Text that shows session is reserved on Schedule and My I/O -->
+    <string name="schedule_item_reserved">Đã đặt chỗ</string>
+
+    <!-- Text that shows session is not reserved on Schedule and My I/O -->
+    <string name="schedule_item_not_reserved">Chưa đặt chỗ</string>
+
+    <!-- Text that shows session is waitlisted on Schedule and My I/O -->
+    <string name="schedule_item_waitlisted">Đã được đưa vào danh sách chờ</string>
 
     <!-- Label for the button to rate a session -->
     <string name="my_schedule_rate_this_session">XẾP HẠNG PHIÊN NÀY</string>
@@ -552,7 +561,7 @@
     <string name="title_my_io">I/O của tôi</string>
 
     <!-- Navigation bar text for viewing the user's schedule -->
-    <string name="title_my_schedule">Lịch biểu</string>
+    <string name="title_schedule">Lịch biểu</string>
 
     <!-- Navigation bar text for viewing the Feed -->
     <string name="title_feed">Nguồn cấp</string>
@@ -600,7 +609,7 @@
     <string name="watch_now">Xem Ngay!</string>
 
     <!-- Short text welcoming the user to the application -->
-    <string name="welcome_to_google_i_o_app">Chào mừng bạn đến với ứng dụng di động #io17!</string>
+    <string name="welcome_to_google_i_o">Chào mừng bạn đến với #io17</string>
 
     <!-- Medium-length welcome text indicating the subsequent text is important legal information -->
     <string name="welcome_text">Trước khi bắt đầu, sau đây là một số thông tin pháp lý quan trọng về việc sử dụng ứng dụng này.</string>
@@ -623,9 +632,6 @@
     <!-- Text for a button which will open the user's Wi-Fi settings -->
     <string name="wifi_dialog_button_settings">Mở Cài đặt Wi-Fi</string>
 
-    <!-- Toast failure message if the user's wifi couldn't be updated -->
-    <string name="wifi_install_error_message">Rất tiếc, không thể cập nhật cấu hình Wi-Fi</string>
-
     <!-- Title of the Video library screen when only videos of a given topic are displayed -->
     <string name="title_topic_filtered_video_library">Video về <xliff:g id="topic">%1$s</xliff:g></string>
 
@@ -638,8 +644,11 @@
     <!-- Text of the Filter menu icon -->
     <string name="description_filter">Bộ lọc</string>
 
-    <!-- Text of the My I/O menu icon -->
-    <string name="description_avatar">Ảnh đại diện</string>
+    <!-- Text of the My I/O avatar icon whilst signed out -->
+    <string name="description_avatar_signed_out">Đăng nhập</string>
+
+    <!-- Text of the My I/O avatar icon whilst signed in -->
+    <string name="description_avatar_signed_in">Đăng xuất</string>
 
     <!-- Title of the Video library side panel containing all the filters -->
     <string name="title_video_library_filter">Bộ lọc</string>
@@ -689,11 +698,11 @@
          can watch a video but it turns out we can't show the video. -->
     <string name="explore_io_video_id_not_valid">Rất tiếc, dường như đã xảy ra sự cố với url video.</string>
 
-    <string description="This string is presented as a header message on a user interface card
+    <string name="explore_io_on_the_ground_title"
+            description="This string is presented as a header message on a user interface card
          element. The card element has sub-cards that explain a few logistical details for
          attendees. 'On the Ground' is slang in English indicating 'What you need to know when
-         you're in the middle of the conference.'"
-            name="explore_io_on_the_ground_title">Hiện trường</string>
+         you're in the middle of the conference.'">Hiện trường</string>
 
     <!-- Error message that is displayed when we aren't able to connect to Google Play Services,
          potentially due to a server error or loss of network connectivity. -->
@@ -705,7 +714,7 @@
     <string name="google_play_services_failed">Rất tiếc, kết nối với Dịch vụ Google Play không thành công</string>
 
     <!-- Message displayed to users as part of onboarding sign in. -->
-    <string name="signin_message">Đăng nhập để đồng bộ hóa sự kiện đã lưu và phiên đã đặt từ tài khoản trên thiết bị di động và máy tính bàn của bạn. Bạn sẽ vẫn có thể lưu sự kiện tại chỗ mà không cần đăng nhập.</string>
+    <string name="signin_message">Đăng nhập để đặt chỗ trước tại các sự kiện, đồng bộ hóa các sự kiện đã lưu và đặt chỗ từ tài khoản trên các thiết bị máy tính và di động của bạn và đưa ra ý kiến phản hồi sau khi các phiên kết thúc. Bạn sẽ vẫn có thể lưu sự kiện tại chỗ mà không cần đăng nhập.</string>
 
     <!-- Label used when asking a user to sign in. -->
     <string name="signin_prompt">Đăng nhập</string>
@@ -721,7 +730,12 @@
 
     <!-- Text shown on the onboarding screen asking users if they want conference notifications. -->
     <string name="onboarding_notifications_opt_in">
-        Bạn có muốn nhận thông báo của ứng dụng về I/O không?\n Chúng tôi sẽ gửi cho bạn thông tin quan trọng về sự kiện, nghị trình, lịch biểu, di chuyển, hoạt động sau sự kiện, nội dung ghi lại phiên và nhiều thông tin khác. Bạn có thể thay đổi cài đặt này trong \"Thông tin &gt; Cài đặt\" bất kỳ lúc nào.
+        Bạn có muốn nhận thông báo về I/O không?\nChúng tôi sẽ gửi cho bạn thông tin quan trọng về sự kiện, nghị trình, lịch biểu, di chuyển, hoạt động sau sự kiện, ghi hình/âm phiên và nhiều thông tin khác. Bạn có thể thay đổi cài đặt này trong \"Thông tin &gt; Cài đặt\" bất kỳ lúc nào.
+    </string>
+
+    <!-- Text shown on the onboarding sign-in screen. -->
+    <string name="onboarding_sign_in">
+        Bạn có muốn đăng nhập để đặt chỗ trước tại các sự kiện, đồng bộ hóa các sự kiện đã lưu và đặt chỗ từ tài khoản trên các thiết bị máy tính bàn và di động của bạn và đưa ra ý kiến phản hồi sau khi các phiên kết thúc không? Bạn vẫn có thể lưu các sự kiện tại chỗ mà không cần đăng nhập nhưng thông tin sẽ không được đồng bộ hóa vào tài khoản của bạn.\n\nQUAN TRỌNG: Để đặt chỗ tại các sự kiện, bạn sẽ cần đăng nhập bằng địa chỉ email mà bạn đã dùng để đăng ký Google I/O
     </string>
 
     <!-- Message displayed in a card to the user on the My I/O screen after they have signed in. -->
@@ -741,37 +755,41 @@
     <!-- Button for finding quickly navigating from a day within My I/O to the relevant day within
     schedule -->
     <string name="add_events">Thêm Sự kiện</string>
-
-    <!-- A placeholder value for the user's name in the My I/O dialog -->
-    <string name="my_io_dialog_default_name">Tên của bạn</string>
-
-    <!-- A placeholder value for the user's email in the My I/O dialog -->
-    <string name="my_io_dialog_default_email">you@gmail.com</string>
-
+\
     <!-- An introductory string used in the My I/O dialog to a signed out user  -->
     <string name="my_io_body_intro_signed_out">Đăng nhập để:</string>
 
     <!-- An introductory string used in the My I/O dialog to a signed in user  -->
-    <string name="my_io_body_intro_signed_in">Là người dùng đã đăng nhập:</string>
+    <string name="my_io_body_intro_signed_in">Với tư cách là người dùng đã đăng nhập:</string>
 
     <!-- The first bulletpoint string used in the My I/O dialog to a signed out user  -->
     <string name="my_io_dialog_first_bullet_point_signed_out">
-        \u2022 Đồng bộ hóa các sự kiện đã lưu và phiên đã đặt vào tài khoản trên mọi thiết bị di động và máy tính bàn của bạn
+        Đặt chỗ trước tại các sự kiện.
     </string>
 
     <!-- The first bulletpoint string used in the My I/O dialog to a signed in user  -->
     <string name="my_io_dialog_first_bullet_point_signed_in">
-        \u2022 Các sự kiện đã lưu và phiên đã đặt được đồng bộ hóa vào tài khoản trên mọi thiết bị di động và máy tính bàn của bạn
+        Bạn có thể đặt chỗ trước tại các sự kiện (tối đa một đặt chỗ/khối thời gian).
     </string>
 
     <!-- The second bulletpoint string used in the My I/O dialog to a signed out user  -->
     <string name="my_io_dialog_second_bullet_point_signed_out">
-        \u2022 Cung cấp ý kiến phản hồi sau khi phiên kết thúc
+        Đồng bộ hóa các sự kiện đã lưu và đặt chỗ từ tài khoản trên mọi thiết bị di động và máy tính bàn của bạn.
     </string>
 
     <!-- The second bulletpoint string used in the My I/O dialog to a signed in user  -->
     <string name="my_io_dialog_second_bullet_point_signed_in">
-        \u2022 Bạn có thể cung cấp ý kiến phản hồi về phiên sau khi phiên kết thúc
+        Các sự kiện đã lưu và đặt chỗ của bạn được đồng bộ hóa từ tài khoản trên mọi thiết bị di động và máy tính bàn của bạn.
+    </string>
+
+    <!-- The third bulletpoint string used in the My I/O dialog to a signed out user  -->
+    <string name="my_io_dialog_third_bullet_point_signed_out">
+        Đưa ra ý kiến phản hồi sau khi phiên kết thúc.
+    </string>
+
+    <!-- The third bulletpoint string used in the My I/O dialog to a signed in user  -->
+    <string name="my_io_dialog_third_bullet_point_signed_in">
+        Bạn có thể cung cấp ý kiến phản hồi về phiên sau khi phiên kết thúc.
     </string>
 
     <!-- Message shown when a user initiated sign in fails. -->
@@ -781,23 +799,31 @@
     <string name="signout_failed_text">Không thể đăng xuất. Xin vui lòng thử lại.</string>
 
     <!-- Strings for Info page-->
-    <string name="wifi_network_label">Mạng Wi-Fi</string>
+    <string name="wifi_network_label">Mạng wifi</string>
     <string name="wifi_password_label">Mật khẩu</string>
-    <string name="setup_wifi">Cài đặt Wi-Fi</string>
-    <string name="password_copied_confirmation">Mật khẩu đã được sao chép</string>
+    <string name="setup_wifi">Lưu mạng wifi</string>
+
+    <!-- Snackbar message confirming save of wifi network -->
+    <string name="wifi_install_success">Đã lưu mạng wifi</string>
+
+    <!-- Snackbar message if failed to save the wifi network -->
+    <string name="wifi_install_error_message">Rất tiếc, không thể lưu mạng wifi</string>
+
     <string name="view_sessions_text">Xem Phiên</string>
     <string name="view_map_text">Xem Bản đồ</string>
-    <!-- TODO make these URLs the correct deep link -->
-    <string name="event_sandbox_title">Hộp cát</string>
-    <string name="event_codelabs_title">Phòng thử viết mã</string>
+
+    <string name="event_sandbox_title">Sandbox</string>
+    <string name="event_codelabs_title">Codelab</string>
     <string name="event_officehours_title">Giờ làm việc &amp; Đánh giá Ứng dụng</string>
     <string name="event_afterhours_title">Hoạt động sau kết thúc phiên</string>
 
     <string name="travel_details_title">Thông tin Di chuyển</string>
     <string name="travel_shuttle_info_title">Dịch vụ Đưa đón</string>
-    <string name="travel_carpool_parking_info_title">Đi xe chung &amp; Đậu xe</string>
+    <string name="travel_carpool_parking_info_title">Đậu xe &amp; Đi chung</string>
     <string name="travel_public_transportation_info_title">Vận tải Công cộng</string>
     <string name="travel_biking_info_title">Đi bằng xe đạp</string>
+    <string name="travel_ride_sharing_info_title">Đi chung</string>
+
     <string name="settings_time_zone_label">Hiển thị sự kiện theo Giờ Thái Bình Dương (PT)</string>
     <string name="settings_enable_notifications">Bật thông báo</string>
     <string name="settings_enable_anon_statistics">Gửi số liệu thống kê mức độ sử dụng ẩn danh</string>
@@ -807,7 +833,26 @@
 
     <string name="feed_error">Lỗi tải nguồn tin.</string>
 
+    <!-- Button text indicating that the session can be added to the user's bookmarks. -->
+    <string name="add_bookmark">Thêm đánh dấu</string>
+    
+    <!-- Button text indicating that the session can be removed from the user's bookmarks. -->
+    <string name="remove_bookmark">Xóa đánh dấu</string>
 
-    <!-- RemoteConfig keys for Feed default messages -->
+    <!-- Hint text indicating bookmarked sessions are added to My I/O. -->
+    <string name="add_bookmark_hint">Đã lưu sự kiện vào I/O của tôi</string>
 
+    <!-- Hint text indicating unbookmarked sessions are removed from My I/O. -->
+    <string name="remove_bookmark_hint">Đã xóa sự kiện khỏi I/O của tôi</string>
+
+    <!-- Opt-out text to stop seeing bookmark related hints. -->
+    <string name="bookmark_hint_optout">Đã hiểu</string>
+
+    <!-- The label used on a button when a view is in an expanded state. Clicking on the icon
+    collapses the view. -->
+    <string name="expanded">Được mở rộng</string>
+
+    <!-- The label used on a button when a view is in an collapsed state. Clicking on the icon
+    expanded the view. -->
+    <string name="collapsed">Được thu gọn</string>
 </resources>
