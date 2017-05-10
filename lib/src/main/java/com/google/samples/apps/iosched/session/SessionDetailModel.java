@@ -548,12 +548,14 @@ public class SessionDetailModel extends ModelWithLoaderManager<SessionDetailQuer
     }
 
     /**
-     * Show header image if it has a photo url and it is keynote session, or has a youTube
-     * url or has a live stream for a session that is about to start, is ongoing, or has ended.
+     * Show header image only if the session has a either a valid youTube url or a livestream Id. We
+     * have historically had more than one video ID associated with a video, one for when the
+     * session is livestreamed and another for when a video is made available after the session has
+     * concluded. These may be the same. One or both may be null.
      */
-    public boolean shouldShowHeaderImage() {
-        boolean hasYouTubeUrl = !TextUtils.isEmpty(mYouTubeUrl) && !mYouTubeUrl.equals("null");
-        return hasPhotoUrl() && (isKeynote() || hasYouTubeUrl || showLiveStream());
+    boolean shouldShowHeaderImage() {
+        return (!TextUtils.isEmpty(mYouTubeUrl) || !TextUtils.isEmpty(mLiveStreamId)) &&
+                showLiveStream();
     }
 
     public boolean isInSchedule() {
@@ -695,7 +697,6 @@ public class SessionDetailModel extends ModelWithLoaderManager<SessionDetailQuer
 
         mYouTubeUrl = cursor.getString(cursor.getColumnIndex(
                 ScheduleContract.Sessions.SESSION_YOUTUBE_URL));
-
         mSessionStart = cursor
                 .getLong(cursor.getColumnIndex(ScheduleContract.Sessions.SESSION_START));
         mSessionEnd = cursor.getLong(cursor.getColumnIndex(ScheduleContract.Sessions.SESSION_END));
