@@ -178,7 +178,7 @@ public class ScheduleActivity extends BaseActivity implements ScheduleViewParent
             // first time through, check for extras
             processIntent(getIntent());
         }
-        overridePendingTransition(0, 0);
+        overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
     }
 
     private void processIntent(Intent intent) {
