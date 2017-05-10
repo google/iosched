@@ -322,8 +322,9 @@ public class UIUtils {
 
         if (sessionDetailWebUrlPrefix.getScheme().equals(uri.getScheme()) &&
                 sessionDetailWebUrlPrefix.getHost().equals(uri.getHost()) &&
-                path.startsWith(prefixPath)) {
-            String sessionId = path.substring(prefixPath.length());
+                path.startsWith(prefixPath) &&
+                uri.getQueryParameter(Config.SESSION_ID_URL_QUERY_KEY) != null) {
+            String sessionId = uri.getQueryParameter(Config.SESSION_ID_URL_QUERY_KEY);
             activity.setIntent(new Intent(
                     Intent.ACTION_VIEW,
                     ScheduleContract.Sessions.buildSessionUri(sessionId)));

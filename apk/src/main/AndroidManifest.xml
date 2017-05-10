@@ -59,32 +59,14 @@
 
             <!-- Web URLs -->
             <intent-filter
-                android:priority="0">
+                android:priority="200"
+                android:autoVerify="true">
                 <action android:name="android.intent.action.VIEW" />
 
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
 
-                <!-- These catch /io2016 as well as /io2016//// because of pathPattern.
-                     Dev testing easily done with adb commands:
-                     adb shell am start -a android.intent.action.VIEW -d http://events.google.com/io2016 -->
-                <data
-                    android:host="@string/website_host_name"
-                    android:pathPattern="/io2016/*"
-                    android:scheme="http" />
-                <data
-                    android:host="@string/website_host_name"
-                    android:pathPattern="/io2016/*"
-                    android:scheme="https" />
-            </intent-filter>
-            <intent-filter
-                android:priority="200">
-                <action android:name="android.intent.action.VIEW" />
-
-                <category android:name="android.intent.category.DEFAULT" />
-                <category android:name="android.intent.category.BROWSABLE" />
-
-                <!-- This catches /io2016/schedule//// but not /io2016/schedule
+                <!-- This catches /io/schedule//// but not /io/schedule
                      Note: Query parameters are not part of the path and when ?sid=UUID is appended
                            to this path it indicates a session on the website and there is therefore
                            code in MySchedule.onCreate that invokes SessionDetailActivity if the sid
@@ -92,46 +74,24 @@
                      See above for testing notes. -->
                 <data
                     android:host="@string/website_host_name"
-                    android:pathPattern="/io2016/schedule/*"
+                    android:pathPattern="/io/schedule/*"
                     android:scheme="http" />
                 <data
                     android:host="@string/website_host_name"
-                    android:pathPattern="/io2016/schedule/*"
+                    android:pathPattern="/io/schedule/*"
                     android:scheme="https" />
 
-                <!-- This catches /io2016/schedule but not /io2016/schedule//////
+                <!-- This catches /io/schedule but not /io/schedule//////
                      See above for testing notes. -->
                 <data
                     android:host="@string/website_host_name"
-                    android:path="/io2016/schedule"
+                    android:path="/io/schedule"
                     android:scheme="http" />
                 <data
                     android:host="@string/website_host_name"
-                    android:path="/io2016/schedule"
+                    android:path="/io/schedule"
                     android:scheme="https" />
 
-                <!-- Replicating the above data elements for www.google.com -->
-                <!-- This catches /events/io/schedule//// but not /events/io/schedule
-                     See above for tes ting notes. -->
-                <data
-                    android:host="www.google.com"
-                    android:pathPattern="/events/io/schedule/*"
-                    android:scheme="http" />
-                <data
-                    android:host="www.google.com"
-                    android:pathPattern="/io2016/schedule/*"
-                    android:scheme="https" />
-
-                <!-- This catches /events/io/schedule but not /events/io/schedule//////
-                     See above for testing notes. -->
-                <data
-                    android:host="www.google.com"
-                    android:path="/events/io/schedule"
-                    android:scheme="http" />
-                <data
-                    android:host="www.google.com"
-                    android:path="/events/io/schedule"
-                    android:scheme="https" />
             </intent-filter>
         </activity>
 
