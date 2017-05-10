@@ -23,6 +23,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.ColorStateList;
 import android.graphics.Color;
+import android.graphics.drawable.AnimatedVectorDrawable;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
@@ -51,6 +52,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -261,7 +263,7 @@ public class SessionDetailFragment extends Fragment implements
             @Override
             public void onClick(View view) {
                 boolean isInSchedule = !((CheckableFloatingActionButton) view).isChecked();
-                showInSchedule(isInSchedule);
+                showInSchedule(isInSchedule, true);
                 if (isInSchedule) {
                     sendUserAction(SessionDetailUserActionEnum.STAR, null);
                 } else {
@@ -448,11 +450,26 @@ public class SessionDetailFragment extends Fragment implements
         }
     }
 
-    private void showInSchedule(boolean isInSchedule) {
+    private void showInSchedule(boolean isInSchedule, boolean animate) {
         mAddScheduleFab.setChecked(isInSchedule);
         mAddScheduleFab.setContentDescription(getString(isInSchedule
                 ? R.string.remove_from_schedule
                 : R.string.add_to_schedule));
+        if (!animate) return;
+
+        AnimatedVectorDrawable avd = (AnimatedVectorDrawable) ContextCompat.getDrawable(
+                getContext(), isInSchedule ? R.drawable.avd_bookmark : R.drawable.avd_unbookmark);
+        mAddScheduleFab.setImageDrawable(avd);
+        ObjectAnimator backgroundColor = ObjectAnimator.ofArgb(
+                mAddScheduleFab,
+                UIUtils.BACKGROUND_TINT,
+                isInSchedule ? Color.WHITE
+                        : ContextCompat.getColor(getContext(), R.color.lightish_blue));
+        backgroundColor.setDuration(400L);
+        backgroundColor.setInterpolator(AnimationUtils.loadInterpolator(getContext(),
+                android.R.interpolator.fast_out_slow_in));
+        backgroundColor.start();
+        avd.start();
     }
 
     @Override
@@ -520,7 +537,7 @@ public class SessionDetailFragment extends Fragment implements
         // Handle Keynote as a special case, where the user cannot remove it
         // from the schedule (it is auto added to schedule on sync)
 
-        showInSchedule(!data.isKeynote() && data.isInSchedule());
+        showInSchedule(!data.isKeynote() && data.isInSchedule(), false);
 
         displayTags(data);
         updateTimeBasedUi(data);
