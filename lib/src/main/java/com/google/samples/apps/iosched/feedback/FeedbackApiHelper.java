@@ -16,11 +16,18 @@
 
 package com.google.samples.apps.iosched.feedback;
 
+import com.google.api.client.extensions.android.json.AndroidJsonFactory;
+import com.google.api.client.http.javanet.NetHttpTransport;
+import com.google.samples.apps.iosched.rpc.feedback.Feedback;
+import com.google.samples.apps.iosched.rpc.feedback.model.Rating;
+import com.google.samples.apps.iosched.rpc.feedback.model.SessionFeedback;
 import com.turbomanage.httpclient.BasicHttpClient;
 
+import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
 
-import static com.google.samples.apps.iosched.util.LogUtils.LOGE;
+import static com.google.samples.apps.iosched.util.LogUtils.LOGW;
 import static com.google.samples.apps.iosched.util.LogUtils.makeLogTag;
 import static com.google.samples.apps.iosched.util.PreconditionUtils.checkState;
 
@@ -45,17 +52,37 @@ public class FeedbackApiHelper {
      * a background thread, do not call from the UI thread.
      *
      * @param sessionId The ID of the session that was reviewed.
-     * @param questions
+     * @param questions Map where the keys are question codes and values are user responses.
      * @return true if successful.
      */
-    public boolean sendSessionToServer(String sessionId, HashMap<String, String> questions) {
+    boolean sendSessionToServer(String sessionId, final HashMap<Integer, Integer> questions) {
         checkState(sessionId != null && !sessionId.isEmpty() && questions != null
                 && questions.size() > 0, "Error posting session: some of the data is"
                 + " invalid. SessionId " + sessionId + " Questions: " + questions);
 
-        // TODO: Implement custom survey handling code here
-        LOGE(TAG, "Survey handler not implemented!");
+        Feedback feedbackHandler = new Feedback.Builder(new NetHttpTransport(),
+                new AndroidJsonFactory(), null).build();
+
+        SessionFeedback sessionFeedback = new SessionFeedback();
+        sessionFeedback.setSessionId(sessionId);
+
+        ArrayList<Rating> ratings = new ArrayList<>();
+
+        for (Integer key: questions.keySet()) {
+            Rating rating = new Rating();
+            rating.setQuestion(key);
+            rating.setAnswer(questions.get(key));
+            ratings.add(rating);
+        }
+
+        sessionFeedback.setRatings(ratings);
+
+        try {
+            feedbackHandler.sendSessionFeedback(sessionFeedback).execute();
+        } catch (IOException e) {
+            LOGW(TAG, "Could not submit session feedback: " + e);
+            return false;
+        }
         return true;
     }
-
 }
