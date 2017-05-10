@@ -41,6 +41,7 @@ const PATH_QUEUE = 'queue';
 const PATH_PROMO_QUEUE = 'promo_queue';
 const PATH_LAST_STATUS_CHANGED = 'last_status_changed';
 const PATH_EVENTS = 'events';
+const PATH_USER_SESSIONS = 'user_sessions';
 
 const REQUEST_ID = 'request_id';
 
@@ -97,6 +98,166 @@ exports.sendFeedPing = functions.database.ref('/feed').onWrite(event => {
   });
 
 });
+
+/**
+ * HTTP Function used to generate user_sessions path. This path will be used
+ * to determine whether or not a user's reservation request clashes with an
+ * existing one.
+ *
+ * This Function will use existing reservations to compile a list of easy to
+ * read an process. This may be used in conjunction with isUserSessions valid
+ * function to ensure that user_sessions path is accurate.
+ */
+exports.setUserSessions = functions.https.onRequest((req, res) => {
+  // Get all users that can reserve sessions.
+  admin.database().ref('users').orderByValue().equalTo(true).on('value',
+      function (snapshot) {
+        var users = snapshot.val();
+        var promises = [];
+        for (var uid in users) {
+          // Create a user_sessions entry for each existing reservation the user
+          // has.
+          promises.push(setUserSessions(uid));
+        }
+        Promise.all(promises).then(function() {
+          res.status(200).end();
+        }).catch(function() {
+          res.status(500).end();
+        });
+      });
+});
+
+/**
+ * Insert a user_sessions entry for each granted or waiting reservation the
+ * given user has.
+ *
+ * @param uid ID of the user to insert user_sessions items.
+ */
+function setUserSessions(uid) {
+  // Clear the users current user_session entries.
+  return getUserSessionsReference(uid).set({}).then(function() {
+    return setUserSessionsByStatus(uid, STATUS_GRANTED).then(function () {
+      return setUserSessionsByStatus(uid, STATUS_WAITING);
+    });
+  });
+}
+
+/**
+ * Set user_sessions for the given user with sessions that match the given
+ * reservation type.
+ *
+ * @param uid ID of user whose user_sessions will be set.
+ * @param status Status of reservations to set, generally granted or waiting.
+ * @returns {Promise.<TResult>} resolved if all sessions wer set, rejected
+ *                              otherwise.
+ */
+function setUserSessionsByStatus(uid, status) {
+  return admin.database().ref(PATH_SESSIONS)
+      .orderByChild(PATH_RESERVATIONS + '/' + uid + '/' + PATH_STATUS)
+      .equalTo(status).once('value')
+      .then(function(snapshot) {
+        const sessions = snapshot.val();
+        var promises = [];
+        for (var temp_session_id in sessions) {
+          promises.push(getUserSessionReference(uid, temp_session_id).set(true));
+        }
+        return Promise.all(promises);
+      });
+}
+
+/**
+ * Check if user_sessions data is valid.
+ */
+exports.isUserSessionsValid = functions.https.onRequest((req, res) => {
+  // Get all users that can reserve sessions.
+  admin.database().ref('users').orderByValue().equalTo(true).on('value',
+      function (snapshot) {
+        var users = snapshot.val();
+        var promises = [];
+        for (var uid in users) {
+          // Check the user_sessions validity of each user that can reserve.
+          promises.push(isUserSessionsValid(uid));
+        }
+        return Promise.all(promises).then(function() {
+          res.status(200).send("User Sessions are valid");
+        }).catch(function(invalid) {
+          console.log('USER SESSION INVALID');
+          console.log(invalid);
+          res.status(500).send(invalid);
+        });
+      });
+});
+
+/**
+ * Check if user_sessions matches the granted and waiting reservations of the
+ * given user.
+ *
+ * @param uid ID of user whose user_sessions will be validated.
+ */
+function isUserSessionsValid(uid) {
+  var reservationPromises = [];
+  reservationPromises.push(getUserReservationsByStatus(uid, STATUS_GRANTED));
+  reservationPromises.push(getUserReservationsByStatus(uid, STATUS_WAITING));
+  return Promise.all(reservationPromises).then(function(results) {
+    var reservations = [];
+    reservations = reservations.concat(results[0]);
+    reservations = reservations.concat(results[1]);
+    return reservations;
+  }).then(function(trueReservations) {
+    // Get all user's user_sessions data.
+    return getUserSessionsReference(uid).once('value')
+        .then(function(snapshot) {
+          if (snapshot.val() == null) {
+            if (trueReservations.length == 0) {
+              console.log('user has no reservations');
+              return Promise.resolve(uid);
+            } else {
+              console.log('RESERVATIONS MISSING');
+              return Promise.reject(uid);
+            }
+          }
+          var currSessions = Object.keys(snapshot.val());
+          // Check that user_sessions contains at most the number of true
+          // reservations.
+          if (currSessions.length > trueReservations.length) {
+            console.log('TOO MANY RESERVATIONS');
+            return Promise.reject(uid);
+          } else {
+            // Check that user_sessions does not contain any reservation
+            // that does not exist in true reservations.
+            for (var i in currSessions) {
+              var sid = currSessions[i];
+              if (trueReservations.indexOf(sid) < 0) {
+                console.log('MYSTERY RESERVATION ' + sid);
+                return Promise.reject(uid);
+              }
+            }
+          }
+          return Promise.resolve();
+        });
+  });
+}
+
+/**
+ * Retrieve a given user's reservations that match the given status.
+ *
+ * @param uid ID of user whose reservations are retrieved.
+ * @param status Status of reservations to retrieve.
+ * @returns {Promise.<TResult>} Array of retrieved reservations.
+ */
+function getUserReservationsByStatus(uid, status) {
+  return admin.database().ref(PATH_SESSIONS)
+      .orderByChild(PATH_RESERVATIONS + '/' + uid + '/' + PATH_STATUS)
+      .equalTo(status).once('value')
+      .then(function(snapshot) {
+        const sessions = snapshot.val();
+        var reservations = [];
+        for (var temp_session_id in sessions) {
+          reservations.push(temp_session_id);
+        }
+        return reservations;
+      });
+}
 
 /**
  * Function to process "promotion from waitlist" requests. When a granted seat
@@ -378,6 +539,9 @@ function handleReturn(uid, sid, rid) {
             return getReservationLastStatusChangeReference(uid, sid).set(new Date().getTime())
           })
           .then(function() {
+            return getUserSessionReference(uid, sid).set({});
+          })
+          .then(function() {
             // Set the request result
             return getReservationResultReference(uid, sid, rid).set(
                 RESULT_RETURNED)
@@ -429,7 +593,10 @@ function handleRemove(uid, sid, rid) {
     return reservation;
   }).then(function(result) {
     if (result.committed && postReservation.status == STATUS_RETURNED) {
-      return sendReturn(uid, sid).then(function() {
+      return getUserSessionReference(uid, sid).set({}).then(function() {
+        return sendReturn(uid, sid);
+      })
+      .then(function() {
         return RESERVATION_RETURNED;
       });
     } else {
@@ -591,6 +758,9 @@ function handleReservation(uid, sid, rid) {
               // Update last status changed value to now
               return getReservationLastStatusChangeReference(uid, sid).set(
                   new Date().getTime());
+            })
+            .then(function() {
+              return getUserSessionReference(uid, sid).set(true);
             })
             .then(function() {
               // Set the request result to reserved
@@ -846,6 +1016,14 @@ function getProviderId(uid) {
 // Helper functions for getting database references.
 function getSessionReference(sid) {
   return admin.database().ref(PATH_SESSIONS).child(sid);
+}
+
+function getUserSessionsReference(uid) {
+  return admin.database().ref(PATH_USER_SESSIONS).child(uid);
+}
+
+function getUserSessionReference(uid, sid) {
+  return getUserSessionsReference(uid).child(sid);
 }
 
 function getSeatsReference(sid) {
