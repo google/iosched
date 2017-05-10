@@ -44,6 +44,7 @@
 
     <declare-styleable name="AspectRatioView">
         <attr name="aspectRatio" format="float" />
+        <attr name="maxHeight" format="dimension" />
     </declare-styleable>
 
     <declare-styleable name="ForegroundView">

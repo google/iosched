@@ -17,4 +17,5 @@
 <resources>
     <dimen name="extended_appbar_height">180dp</dimen>
     <dimen name="time_header_min_height">48dp</dimen>
+    <dimen name="session_details_max_header_height">0dp</dimen>
 </resources>

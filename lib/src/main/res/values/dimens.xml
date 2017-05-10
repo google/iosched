@@ -43,6 +43,7 @@
     <dimen name="fab_padding">4dp</dimen>
     <dimen name="session_details_floating_width">500dp</dimen>
     <dimen name="session_details_floating_height">650dp</dimen>
+    <dimen name="session_details_max_header_height">144dp</dimen>
     <integer name="reserve_inset_edge">0x50</integer> <!-- bottom -->
     <dimen name="my_schedule_page_margin">8dp</dimen>
     <dimen name="my_schedule_icon_size">24dp</dimen>
