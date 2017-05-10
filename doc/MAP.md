@@ -152,7 +152,9 @@ aside from their type and geometry.
         session.
     *   `LABEL`: text rendered on top of the map, can contain line breaks (“\n”)
     *   `ICON\_XYZ`: Displays an icon on the map. XYZ refers to a drawable with
-        the name “map\_marker\_xyz”. (See MapUtils.java#getDrawableForIconType)
+        the name “map\_marker\_xyz”. (See MapUtils.java#getDrawableForIconType).
+        When clicked, its title and optional description are shown in the bottom bar.
+        The icon is not changed when clicked.
     *   `PLAIN`, `OFFICEHOURS`, `MISC`, `SANDBOX`, `CODELAB` : Clickable marker that
         displays its title and an icon when selected. (See
         MapUtils.java#getRoomIcon).

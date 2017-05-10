@@ -115,6 +115,8 @@
     <color name="tab_selected_strip">@android:color/white</color>
 
     <color name="map_icon_default">#ff07434d</color>
+    <color name="map_active_icon_tint">#ccff90</color>
+
 
     <!-- video lib -->
     <color name="video_title">#de07434d</color>

@@ -19,6 +19,7 @@ package com.google.samples.apps.iosched.map;
 import android.app.Activity;
 import android.content.Context;
 import android.database.ContentObserver;
+import android.graphics.Bitmap;
 import android.graphics.Rect;
 import android.net.Uri;
 import android.os.Bundle;
@@ -52,6 +53,7 @@ import com.google.samples.apps.iosched.lib.BuildConfig;
 import com.google.samples.apps.iosched.lib.R;
 import com.google.samples.apps.iosched.map.util.CachedTileProvider;
 import com.google.samples.apps.iosched.map.util.MarkerLoadingTask;
+import com.google.samples.apps.iosched.map.util.MarkerModel;
 import com.google.samples.apps.iosched.map.util.TileLoadingTask;
 import com.google.samples.apps.iosched.provider.ScheduleContract;
 import com.google.samples.apps.iosched.util.AnalyticsHelper;
@@ -383,24 +385,50 @@ public class MapFragment extends com.google.android.gms.maps.SupportMapFragment 
     }
 
     private void deselectActiveMarker() {
-        if (mActiveMarker != null) {
-            GeoJsonPointStyle style = mActiveMarker.getPointStyle();
-            style.setIcon(ICON_NORMAL);
-            mActiveMarker.setPointStyle(style);
-            mActiveMarker = null;
+        if (mActiveMarker == null) {
+            return;
         }
+
+        final String typeString = mActiveMarker.getProperty("type");
+        final int type = MapUtils.detectMarkerType(typeString);
+        GeoJsonPointStyle style = mActiveMarker.getPointStyle();
+
+        if (type == MarkerModel.TYPE_ICON) {
+            // For icon markers, use the Maputils to load the original icon again.
+            final Bitmap iconBitmap = MapUtils.getIconMarkerBitmap(getContext(), typeString, false);
+            if(iconBitmap != null) {
+                style.setIcon(BitmapDescriptorFactory.fromBitmap(iconBitmap));
+            }
+        } else if (MapUtils.useActiveMarker(type)) {
+            // Change the icon back if the generic active marker was used.
+            style.setIcon(ICON_NORMAL);
+        }
+        mActiveMarker.setPointStyle(style);
+        mActiveMarker = null;
     }
 
     private void selectActiveMarker(GeoJsonFeature feature) {
-        if (mActiveMarker == feature) {
+        if (mActiveMarker == feature || feature == null) {
             return;
         }
-        if (feature != null) {
-            mActiveMarker = feature;
-            GeoJsonPointStyle style = mActiveMarker.getPointStyle();
+        final String typeString = feature.getProperty("type");
+        final int type = MapUtils.detectMarkerType(typeString);
+
+        mActiveMarker = feature;
+        GeoJsonPointStyle style = mActiveMarker.getPointStyle();
+
+
+        if (type == MarkerModel.TYPE_ICON) {
+            // For TYPE_ICON markers, use the MapUtils to generate a tinted icon.
+            final Bitmap iconBitmap = MapUtils.getIconMarkerBitmap(getContext(), typeString, true);
+            if (iconBitmap != null) {
+                style.setIcon(BitmapDescriptorFactory.fromBitmap(iconBitmap));
+            }
+        } else if (MapUtils.useActiveMarker(type)) {
+            // Replace the icon of this feature with the generic active marker.
             style.setIcon(ICON_ACTIVE);
-            mActiveMarker.setPointStyle(style);
         }
+        mActiveMarker.setPointStyle(style);
     }
 
     @Override
