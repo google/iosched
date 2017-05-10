@@ -38,6 +38,7 @@ public class FeedActivity extends BaseActivity {
     protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.feed_act);
+        overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
         setFullscreenLayout();
 
         FeedFragment feedFragment = (FeedFragment) getSupportFragmentManager()
