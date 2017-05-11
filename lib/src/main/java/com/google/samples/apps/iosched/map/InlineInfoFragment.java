@@ -16,20 +16,18 @@
 
 package com.google.samples.apps.iosched.map;
 
-import com.google.samples.apps.iosched.lib.R;
-
-import android.animation.ObjectAnimator;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v4.view.animation.FastOutSlowInInterpolator;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.google.samples.apps.iosched.lib.R;
+
 /**
  * Map info fragment that displays its content within in.
- *
+ * <p>
  * It resizes based on the available space of its container. The list of sessions is automatically
  * marked as scrollable if required.
  * It is designed to be displayed at the left of the screen with a fixed width that is the only
@@ -46,7 +44,7 @@ public class InlineInfoFragment extends MapInfoFragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
-            Bundle savedInstanceState) {
+                             Bundle savedInstanceState) {
         mLayout = super
                 .onCreateView(inflater, container, savedInstanceState, R.layout.map_info_inline);
 
@@ -58,7 +56,7 @@ public class InlineInfoFragment extends MapInfoFragment {
     private View.OnLayoutChangeListener mLayoutChangeListener = new View.OnLayoutChangeListener() {
         @Override
         public void onLayoutChange(View v, int left, int top, int right, int bottom, int oldLeft,
-                int oldTop, int oldRight, int oldBottom) {
+                                   int oldTop, int oldRight, int oldBottom) {
             mWidth = right;
             mLayout.removeOnLayoutChangeListener(this);
         }
@@ -70,8 +68,9 @@ public class InlineInfoFragment extends MapInfoFragment {
     }
 
     @Override
-    protected void onSessionsLoaded(String roomTitle, int roomType, Cursor cursor) {
-        super.onSessionsLoaded(roomTitle, roomType, cursor);
+    protected void onSessionsLoaded(String roomTitle, int roomType, Cursor cursor,
+                                    String markerType) {
+        super.onSessionsLoaded(roomTitle, roomType, cursor, markerType);
         show();
     }
 
@@ -82,14 +81,14 @@ public class InlineInfoFragment extends MapInfoFragment {
     }
 
     @Override
-    protected void onSessionLoadingFailed(String roomTitle, int roomType) {
-        super.onSessionLoadingFailed(roomTitle, roomType);
+    protected void onSessionLoadingFailed(String roomTitle, int roomType, String markerType) {
+        super.onSessionLoadingFailed(roomTitle, roomType, markerType);
         show();
     }
 
     @Override
-    public void showTitleOnly(int icon, String roomTitle, String subTitle) {
-        super.showTitleOnly(icon, roomTitle, subTitle);
+    public void showTitleOnly(int icon, String roomTitle, String subTitle, String iconType) {
+        super.showTitleOnly(icon, roomTitle, subTitle, iconType);
         show();
     }
 
