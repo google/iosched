@@ -30,6 +30,9 @@ repositories {
     flatDir {
         dirs '../third_party/sticky-headers/libs/'
     }
+    flatDir {
+        dirs '../third_party/material-components-android/libs/'
+    }
 }
 
 android {
@@ -250,15 +253,17 @@ dependencies {
     compile "com.google.android.gms:play-services-maps:${google_play_services_client_library_version}"
     compile "com.google.android.gms:play-services-plus:${google_play_services_client_library_version}"
 
-
     // Android support libraries.
     compile "com.android.support:appcompat-v7:${android_support_lib_version}"
     compile "com.android.support:cardview-v7:${android_support_lib_version}"
-    compile "com.android.support:design:${android_support_lib_version}"
     compile "com.android.support:support-v13:${android_support_lib_version}"
     compile "com.android.support:recyclerview-v7:${android_support_lib_version}"
     compile "com.android.support:preference-v7:${android_support_lib_version}"
+    compile "com.android.support:transition:${android_support_lib_version}"
     compile 'com.android.support.constraint:constraint-layout:1.0.2'
+    // Use a local build of the design lib to pick up some fixes.
+    // See third_party/material-components-android
+    compile(name: 'design-release-d15d791', ext: 'aar')
 
     // JSON utility library.
     compile 'com.google.code.gson:gson:2.8.0'
@@ -286,7 +291,9 @@ dependencies {
     // greater is used for both app and test builds.
     compile 'com.google.code.findbugs:jsr305:2.0.1'
 
-    compile 'uk.co.chrisjenx:calligraphy:2.2.0'
+    compile ('uk.co.chrisjenx:calligraphy:2.2.0') {
+        exclude group: 'com.android.support:design'
+    }
     compile 'com.airbnb.android:lottie:2.0.0-beta4'
 
     // Firebase libraries
