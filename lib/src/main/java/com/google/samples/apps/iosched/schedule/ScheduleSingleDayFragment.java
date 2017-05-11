@@ -287,6 +287,11 @@ public class ScheduleSingleDayFragment extends Fragment
     }
 
     private void showSchedule() {
-        mLoadingSwitcher.setDisplayedChild(1);
+        // If mLoadingSwitcher is null, the null check kicks in and the screen displays a progress
+        // bar, which isn't great; without the null check, we would get an NPE, which is much worse.
+        // Picking the less bad option.
+        if (mLoadingSwitcher != null) {
+            mLoadingSwitcher.setDisplayedChild(1);
+        }
     }
 }
