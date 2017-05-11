@@ -38,6 +38,9 @@ public class Config {
     public static final String DOGFOOD_BUILD_WARNING_TEXT = "Shhh! This is a pre-release build "
             + "of the I/O app. Don't show it around.";
 
+    public static final long PRECONFERENCE_START =
+            ParserUtils.parseTime(BuildConfig.PRECONFERENCE_DAY_START);
+
     // Turn the hard-coded conference dates in gradle.properties into workable objects.
     public static final long[][] CONFERENCE_DAYS = new long[][]{
             // start and end of day 1
