@@ -62,18 +62,16 @@ public class ScheduleSingleDayFragment extends Fragment
     private static final int TAG_METADATA_TOKEN = 0x8;
 
     private TagMetadata mTagMetadata;
-
     /**
      * This is 1 for the first day of the conference, 2 for the second, and so on, and {@link
      * ScheduleModel#PRE_CONFERENCE_DAY_ID} for the preconference day
      */
     private int mDayId = 1;
-
     private ViewSwitcher mLoadingSwitcher;
     private RecyclerView mRecyclerView;
     private ScheduleDayAdapter mViewAdapter;
-
     private UserActionListener<MyScheduleUserActionEnum> mListener;
+    private boolean mScheduleLoaded = false;
 
     @Override
     public void onCreate(@Nullable final Bundle savedInstanceState) {
@@ -97,6 +95,13 @@ public class ScheduleSingleDayFragment extends Fragment
         return view;
     }
 
+    @Override
+    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+        if (mScheduleLoaded) {
+            showSchedule();
+        }
+    }
+
     public RecyclerView getRecyclerView() {
         return mRecyclerView;
     }
@@ -113,16 +118,6 @@ public class ScheduleSingleDayFragment extends Fragment
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         initViews();
-    }
-
-    private void initViews() {
-        mDayId = getArguments().getInt(ScheduleActivity.ARG_CONFERENCE_DAY_INDEX, 0);
-
-        // Set id to list view, so it can be referred to from tests
-        TypedArray ids = getResources().obtainTypedArray(R.array.myschedule_listview_ids);
-        int listViewId = ids.getResourceId(mDayId, 0);
-        ids.recycle();
-        mRecyclerView.setId(listViewId);
     }
 
     @Override
@@ -158,6 +153,7 @@ public class ScheduleSingleDayFragment extends Fragment
     private void updateSchedule(ScheduleModel model) {
         showSchedule();
         mViewAdapter.updateItems(model.getConferenceDataForDay(mDayId));
+        mScheduleLoaded = true;
 
         if (isShowingCurrentDay()) {
             LinearLayoutManager lm = (LinearLayoutManager) mRecyclerView.getLayoutManager();
@@ -167,26 +163,6 @@ public class ScheduleSingleDayFragment extends Fragment
                 moveToCurrentTimeSlot(false);
             }
         }
-    }
-
-    private void moveToCurrentTimeSlot(boolean animate) {
-        final long now = TimeUtils.getCurrentTime(getContext());
-        final int pos = mViewAdapter.findTimeHeaderPositionForTime(now);
-        if (pos >= 0) {
-            if (animate) {
-                mRecyclerView.smoothScrollToPosition(pos);
-            } else {
-                LinearLayoutManager lm = (LinearLayoutManager) mRecyclerView.getLayoutManager();
-                lm.scrollToPositionWithOffset(pos,
-                        getResources().getDimensionPixelSize(R.dimen.spacing_normal));
-            }
-        }
-    }
-
-    private boolean isShowingCurrentDay() {
-        final long now = TimeUtils.getCurrentTime(getContext());
-        return mDayId > 0 && now >= Config.CONFERENCE_DAYS[mDayId - 1][0]
-                && now <= Config.CONFERENCE_DAYS[mDayId - 1][1];
     }
 
     public void resetListPosition() {
@@ -286,10 +262,37 @@ public class ScheduleSingleDayFragment extends Fragment
         }
     }
 
+    private void initViews() {
+        mDayId = getArguments().getInt(ScheduleActivity.ARG_CONFERENCE_DAY_INDEX, 0);
+
+        // Set id to list view, so it can be referred to from tests
+        TypedArray ids = getResources().obtainTypedArray(R.array.myschedule_listview_ids);
+        int listViewId = ids.getResourceId(mDayId, 0);
+        ids.recycle();
+        mRecyclerView.setId(listViewId);
+    }
+
+    private void moveToCurrentTimeSlot(boolean animate) {
+        final long now = TimeUtils.getCurrentTime(getContext());
+        final int pos = mViewAdapter.findTimeHeaderPositionForTime(now);
+        if (pos >= 0) {
+            if (animate) {
+                mRecyclerView.smoothScrollToPosition(pos);
+            } else {
+                LinearLayoutManager lm = (LinearLayoutManager) mRecyclerView.getLayoutManager();
+                lm.scrollToPositionWithOffset(pos,
+                        getResources().getDimensionPixelSize(R.dimen.spacing_normal));
+            }
+        }
+    }
+
+    private boolean isShowingCurrentDay() {
+        final long now = TimeUtils.getCurrentTime(getContext());
+        return mDayId > 0 && now >= Config.CONFERENCE_DAYS[mDayId - 1][0]
+                && now <= Config.CONFERENCE_DAYS[mDayId - 1][1];
+    }
+
     private void showSchedule() {
-        // If mLoadingSwitcher is null, the null check kicks in and the screen displays a progress
-        // bar, which isn't great; without the null check, we would get an NPE, which is much worse.
-        // Picking the less bad option.
         if (mLoadingSwitcher != null) {
             mLoadingSwitcher.setDisplayedChild(1);
         }
