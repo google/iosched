@@ -69,7 +69,6 @@ public class CollapsibleCard extends FrameLayout {
         mCardTitle.setText(cardTitle);
         setTitleContentDescription(cardTitle);
         mCardDescription = (HtmlTextView) root.findViewById(R.id.card_description);
-        mCardDescription.setMovementMethod(LinkMovementMethod.getInstance());
         mCardDescription.setHtmlText(cardDescription);
         mExpandIcon = (ImageView) root.findViewById(R.id.expand_icon);
         if (SDK_INT < M) {
