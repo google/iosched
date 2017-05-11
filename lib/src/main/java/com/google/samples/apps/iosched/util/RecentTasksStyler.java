@@ -37,7 +37,7 @@ public class RecentTasksStyler {
                 UIUtils.getThemeColor(activity, R.attr.colorPrimary, R.color.theme_primary);
         if (sIcon == null) {
             // Cache to avoid decoding the same bitmap on every Activity change
-            sIcon = UIUtils.vectorToBitmap(activity, R.drawable.ic_recents_logo);
+            sIcon = UIUtils.drawableToBitmap(activity, R.drawable.ic_recents_logo);
         }
         activity.setTaskDescription(
                 new ActivityManager.TaskDescription(label, sIcon, colorPrimary));
