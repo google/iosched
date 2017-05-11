@@ -54,6 +54,7 @@ import android.support.annotation.NonNull;
 import android.support.graphics.drawable.VectorDrawableCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.graphics.ColorUtils;
+import android.support.v7.content.res.AppCompatResources;
 import android.text.Html;
 import android.text.Spannable;
 import android.text.SpannableStringBuilder;
@@ -716,15 +717,13 @@ public class UIUtils {
         return activity.getWindow().getDecorView().findViewById(android.R.id.content);
     }
 
-    public static Bitmap vectorToBitmap(@NonNull Context context, @DrawableRes int drawableResId) {
-        VectorDrawableCompat vector = VectorDrawableCompat
-                .create(context.getResources(), drawableResId, context.getTheme());
-        final Bitmap bitmap = Bitmap.createBitmap(vector.getIntrinsicWidth(),
-                vector.getIntrinsicHeight(),
+    public static Bitmap drawableToBitmap(@NonNull Context context, @DrawableRes int drawableId) {
+        Drawable d = AppCompatResources.getDrawable(context, drawableId);
+        final Bitmap bitmap = Bitmap.createBitmap(d.getIntrinsicWidth(), d.getIntrinsicHeight(),
                 Bitmap.Config.ARGB_8888);
         final Canvas canvas = new Canvas(bitmap);
-        vector.setBounds(0, 0, canvas.getWidth(), canvas.getHeight());
-        vector.draw(canvas);
+        d.setBounds(0, 0, canvas.getWidth(), canvas.getHeight());
+        d.draw(canvas);
         return bitmap;
     }
 

@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  Copyright (c) 2017 Google Inc.
+
+  Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except
+  in compliance with the License. You may obtain a copy of the License at
+
+  http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software distributed under the License
+  is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express
+  or implied. See the License for the specific language governing permissions and limitations under
+  the License.
+  -->
+<vector
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="24dp"
+    android:height="24dp"
+    android:viewportWidth="24"
+    android:viewportHeight="24">
+    <path
+        android:fillColor="#FFDC55"
+        android:pathData="M12,12m-12,0a12,12 0,1 1,24 0a12,12 0,1 1,-24 0" />
+    <path
+        android:fillColor="#414242"
+        android:pathData="M8.848,15.992L8.848,12.616L8.176,12.616L8.176,10.152C8.176,9.657 8.577,9.256 9.072,9.256L10.416,9.256C10.911,9.256 11.312,9.657 11.312,10.152L11.312,12.616L10.576,12.616L10.576,15.992L8.848,15.992ZM14.48,15.992L14.48,13.304L15.824,13.304L14.688,9.864C14.553,9.481 14.181,9.233 13.776,9.256C13.388,9.259 13.046,9.51 12.928,9.88L11.776,13.304L13.12,13.304L13.12,16.008L14.48,15.992L14.48,15.992ZM9.68,8.792C10.11,8.791 10.48,8.484 10.559,8.061C10.638,7.638 10.406,7.218 10.005,7.062C9.604,6.905 9.148,7.055 8.919,7.42C8.69,7.785 8.753,8.26 9.069,8.553C9.251,8.723 9.495,8.81 9.744,8.792L9.68,8.792L9.68,8.792ZM13.776,8.792C14.271,8.792 14.672,8.391 14.672,7.896C14.672,7.401 14.271,7 13.776,7C13.281,7 12.88,7.401 12.88,7.896C12.88,8.391 13.281,8.792 13.776,8.792L13.776,8.792Z" />
+</vector>
