@@ -30,6 +30,9 @@
     <!-- my schedule -->
     <dimen name="my_schedule_icon_horizontal_padding">28dp</dimen> <!-- center 24dp in @keyline_2 -->
 
+    <!-- my io -->
+    <dimen name="my_io_toolbar_avatar_margin">12dp</dimen>
+
     <dimen name="keyline_1">24dp</dimen>
     <dimen name="keyline_1_minus_8dp">16dp</dimen>
     <dimen name="keyline_2">80dp</dimen>

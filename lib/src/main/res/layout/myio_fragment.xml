@@ -48,6 +48,7 @@
                 android:layout_height="?actionBarSize"
                 android:layout_gravity="bottom"
                 app:contentInsetStart="@dimen/padding_normal"
+                android:paddingEnd="@dimen/my_io_toolbar_avatar_margin"
                 app:layout_collapseMode="pin"
                 app:popupTheme="@style/ThemeOverlay.ToolbarPopup">
 
