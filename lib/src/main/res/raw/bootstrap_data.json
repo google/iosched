@@ -1643,7 +1643,7 @@
       "endTimestamp": "2017-05-18T22:30:00Z",
       "isFeatured": false,
       "isLivestream": true,
-      "youtubeUrl": "https://google.com/events/io",
+      "youtubeUrl": "",
       "livestreamChannel": "",
       "tags": [
         "LEVEL_BEGINNER",
@@ -1667,7 +1667,7 @@
       "endTimestamp": "2017-05-17T22:00:00Z",
       "isFeatured": false,
       "isLivestream": true,
-      "youtubeUrl": "https://google.com/events/io",
+      "youtubeUrl": "",
       "livestreamChannel": "",
       "tags": [
         "LEVEL_BEGINNER",
@@ -1708,7 +1708,7 @@
       "endTimestamp": "2017-05-17T23:00:00Z",
       "isFeatured": false,
       "isLivestream": true,
-      "youtubeUrl": "https://google.com/events/io",
+      "youtubeUrl": "",
       "livestreamChannel": "",
       "tags": [
         "THEME_PLATFORMS",
@@ -1805,7 +1805,7 @@
       "endTimestamp": "2017-05-19T16:30:00Z",
       "isFeatured": false,
       "isLivestream": true,
-      "youtubeUrl": "https://google.com/events/io",
+      "youtubeUrl": "",
       "livestreamChannel": "",
       "tags": [
         "THEME_PLATFORMS",
@@ -1844,7 +1844,7 @@
       "endTimestamp": "2017-05-19T02:30:00Z",
       "isFeatured": false,
       "isLivestream": true,
-      "youtubeUrl": "https://google.com/events/io",
+      "youtubeUrl": "",
       "livestreamChannel": "",
       "tags": [
         "THEME_PLATFORMS",
@@ -1899,7 +1899,7 @@
       "endTimestamp": "2017-05-19T16:30:00Z",
       "isFeatured": false,
       "isLivestream": true,
-      "youtubeUrl": "https://google.com/events/io",
+      "youtubeUrl": "",
       "livestreamChannel": "",
       "tags": [
         "TRACK_FIREBASE",
@@ -1943,7 +1943,7 @@
       "endTimestamp": "2017-05-19T02:30:00Z",
       "isFeatured": false,
       "isLivestream": true,
-      "youtubeUrl": "https://google.com/events/io",
+      "youtubeUrl": "",
       "livestreamChannel": "",
       "tags": [
         "THEME_BEYONDMOBILE",
@@ -1967,7 +1967,7 @@
       "endTimestamp": "2017-05-18T02:00:00Z",
       "isFeatured": false,
       "isLivestream": true,
-      "youtubeUrl": "https://google.com/events/io",
+      "youtubeUrl": "",
       "livestreamChannel": "",
       "tags": [
         "LEVEL_BEGINNER",
@@ -1993,7 +1993,7 @@
       "endTimestamp": "2017-05-19T22:30:00Z",
       "isFeatured": false,
       "isLivestream": true,
-      "youtubeUrl": "https://google.com/events/io",
+      "youtubeUrl": "",
       "livestreamChannel": "",
       "tags": [
         "LEVEL_ADVANCED",
@@ -2017,7 +2017,7 @@
       "endTimestamp": "2017-05-19T21:30:00Z",
       "isFeatured": false,
       "isLivestream": true,
-      "youtubeUrl": "https://google.com/events/io",
+      "youtubeUrl": "",
       "livestreamChannel": "",
       "tags": [
         "THEME_GROW&EARN",
@@ -2043,7 +2043,7 @@
       "endTimestamp": "2017-05-18T01:00:00Z",
       "isFeatured": false,
       "isLivestream": true,
-      "youtubeUrl": "https://google.com/events/io",
+      "youtubeUrl": "",
       "livestreamChannel": "",
       "tags": [
         "THEME_PLATFORMS",
@@ -2087,7 +2087,7 @@
       "endTimestamp": "2017-05-18T21:30:00Z",
       "isFeatured": false,
       "isLivestream": true,
-      "youtubeUrl": "https://google.com/events/io",
+      "youtubeUrl": "",
       "livestreamChannel": "",
       "tags": [
         "LEVEL_BEGINNER",
@@ -2148,7 +2148,7 @@
       "endTimestamp": "2017-05-19T18:30:00Z",
       "isFeatured": false,
       "isLivestream": true,
-      "youtubeUrl": "https://google.com/events/io",
+      "youtubeUrl": "",
       "livestreamChannel": "",
       "tags": [
         "TRACK_LOCATION&MAPS",
@@ -2172,7 +2172,7 @@
       "endTimestamp": "2017-05-18T00:00:00Z",
       "isFeatured": false,
       "isLivestream": true,
-      "youtubeUrl": "https://google.com/events/io",
+      "youtubeUrl": "",
       "livestreamChannel": "",
       "tags": [
         "TRACK_FIREBASE",
@@ -2200,7 +2200,7 @@
       "endTimestamp": "2017-05-19T16:30:00Z",
       "isFeatured": false,
       "isLivestream": true,
-      "youtubeUrl": "https://google.com/events/io",
+      "youtubeUrl": "",
       "livestreamChannel": "",
       "tags": [
         "TRACK_FIREBASE",
@@ -2226,7 +2226,7 @@
       "endTimestamp": "2017-05-18T22:30:00Z",
       "isFeatured": false,
       "isLivestream": true,
-      "youtubeUrl": "https://google.com/events/io",
+      "youtubeUrl": "",
       "livestreamChannel": "",
       "tags": [
         "THEME_GROW&EARN",
@@ -2288,7 +2288,7 @@
       "endTimestamp": "2017-05-18T17:30:00Z",
       "isFeatured": false,
       "isLivestream": true,
-      "youtubeUrl": "https://google.com/events/io",
+      "youtubeUrl": "",
       "livestreamChannel": "",
       "tags": [
         "LEVEL_BEGINNER",
@@ -2349,7 +2349,7 @@
       "endTimestamp": "2017-05-19T20:30:00Z",
       "isFeatured": false,
       "isLivestream": true,
-      "youtubeUrl": "https://google.com/events/io",
+      "youtubeUrl": "",
       "livestreamChannel": "",
       "tags": [
         "THEME_PLATFORMS",
@@ -2375,7 +2375,7 @@
       "endTimestamp": "2017-05-18T18:30:00Z",
       "isFeatured": false,
       "isLivestream": true,
-      "youtubeUrl": "https://google.com/events/io",
+      "youtubeUrl": "",
       "livestreamChannel": "",
       "tags": [
         "THEME_PLATFORMS",
@@ -2400,7 +2400,7 @@
       "endTimestamp": "2017-05-18T16:30:00Z",
       "isFeatured": false,
       "isLivestream": true,
-      "youtubeUrl": "https://google.com/events/io",
+      "youtubeUrl": "",
       "livestreamChannel": "",
       "tags": [
         "THEME_PLATFORMS",
@@ -2443,7 +2443,7 @@
       "endTimestamp": "2017-05-17T18:30:00Z",
       "isFeatured": false,
       "isLivestream": true,
-      "youtubeUrl": "https://google.com/events/io",
+      "youtubeUrl": "https://www.youtube.com/watch?v=Y2VF8tmLFHw",
       "livestreamChannel": "",
       "tags": [
         "TYPE_SESSIONS",
@@ -2461,7 +2461,7 @@
       "endTimestamp": "2017-05-17T23:00:00Z",
       "isFeatured": false,
       "isLivestream": true,
-      "youtubeUrl": "https://google.com/events/io",
+      "youtubeUrl": "",
       "livestreamChannel": "",
       "tags": [
         "THEME_GROW&EARN",
@@ -2507,7 +2507,7 @@
       "endTimestamp": "2017-05-19T18:30:00Z",
       "isFeatured": false,
       "isLivestream": true,
-      "youtubeUrl": "https://google.com/events/io",
+      "youtubeUrl": "",
       "livestreamChannel": "",
       "tags": [
         "THEME_GROW&EARN",
@@ -2533,7 +2533,7 @@
       "endTimestamp": "2017-05-19T16:30:00Z",
       "isFeatured": false,
       "isLivestream": true,
-      "youtubeUrl": "https://google.com/events/io",
+      "youtubeUrl": "",
       "livestreamChannel": "",
       "tags": [
         "THEME_PLATFORMS",
@@ -2557,7 +2557,7 @@
       "endTimestamp": "2017-05-19T02:30:00Z",
       "isFeatured": false,
       "isLivestream": true,
-      "youtubeUrl": "https://google.com/events/io",
+      "youtubeUrl": "",
       "livestreamChannel": "",
       "tags": [
         "TRACK_DESIGN",
@@ -2642,7 +2642,7 @@
       "endTimestamp": "2017-05-19T20:30:00Z",
       "isFeatured": false,
       "isLivestream": true,
-      "youtubeUrl": "https://google.com/events/io",
+      "youtubeUrl": "",
       "livestreamChannel": "",
       "tags": [
         "LEVEL_ADVANCED",
@@ -2671,7 +2671,7 @@
       "endTimestamp": "2017-05-19T23:30:00Z",
       "isFeatured": false,
       "isLivestream": true,
-      "youtubeUrl": "https://google.com/events/io",
+      "youtubeUrl": "",
       "livestreamChannel": "",
       "tags": [
         "THEME_PLATFORMS",
@@ -2820,7 +2820,7 @@
       "endTimestamp": "2017-05-18T00:00:00Z",
       "isFeatured": false,
       "isLivestream": true,
-      "youtubeUrl": "https://google.com/events/io",
+      "youtubeUrl": "",
       "livestreamChannel": "",
       "tags": [
         "THEME_PLATFORMS",
@@ -2914,7 +2914,7 @@
       "endTimestamp": "2017-05-18T16:30:00Z",
       "isFeatured": false,
       "isLivestream": true,
-      "youtubeUrl": "https://google.com/events/io",
+      "youtubeUrl": "",
       "livestreamChannel": "",
       "tags": [
         "THEME_PLATFORMS",
@@ -2938,7 +2938,7 @@
       "endTimestamp": "2017-05-19T00:30:00Z",
       "isFeatured": false,
       "isLivestream": true,
-      "youtubeUrl": "https://google.com/events/io",
+      "youtubeUrl": "",
       "livestreamChannel": "",
       "tags": [
         "TRACK_ASSISTANT",
@@ -2963,7 +2963,7 @@
       "endTimestamp": "2017-05-19T22:30:00Z",
       "isFeatured": false,
       "isLivestream": true,
-      "youtubeUrl": "https://google.com/events/io",
+      "youtubeUrl": "",
       "livestreamChannel": "",
       "tags": [
         "TRACK_FIREBASE",
@@ -3008,7 +3008,7 @@
       "endTimestamp": "2017-05-18T16:30:00Z",
       "isFeatured": false,
       "isLivestream": true,
-      "youtubeUrl": "https://google.com/events/io",
+      "youtubeUrl": "",
       "livestreamChannel": "",
       "tags": [
         "THEME_PLATFORMS",
@@ -3052,7 +3052,7 @@
       "endTimestamp": "2017-05-17T22:00:00Z",
       "isFeatured": false,
       "isLivestream": true,
-      "youtubeUrl": "https://google.com/events/io",
+      "youtubeUrl": "",
       "livestreamChannel": "",
       "tags": [
         "LEVEL_BEGINNER",
@@ -3076,7 +3076,7 @@
       "endTimestamp": "2017-05-19T01:30:00Z",
       "isFeatured": false,
       "isLivestream": true,
-      "youtubeUrl": "https://google.com/events/io",
+      "youtubeUrl": "",
       "livestreamChannel": "",
       "tags": [
         "TRACK_ASSISTANT",
@@ -3101,7 +3101,7 @@
       "endTimestamp": "2017-05-19T16:30:00Z",
       "isFeatured": false,
       "isLivestream": true,
-      "youtubeUrl": "https://google.com/events/io",
+      "youtubeUrl": "",
       "livestreamChannel": "",
       "tags": [
         "TRACK_DESIGN",
@@ -3181,7 +3181,7 @@
       "endTimestamp": "2017-05-17T23:00:00Z",
       "isFeatured": false,
       "isLivestream": true,
-      "youtubeUrl": "https://google.com/events/io",
+      "youtubeUrl": "",
       "livestreamChannel": "",
       "tags": [
         "TRACK_FIREBASE",
@@ -3209,7 +3209,7 @@
       "endTimestamp": "2017-05-17T23:00:00Z",
       "isFeatured": false,
       "isLivestream": true,
-      "youtubeUrl": "https://google.com/events/io",
+      "youtubeUrl": "",
       "livestreamChannel": "",
       "tags": [
         "TRACK_PLAY",
@@ -3273,7 +3273,7 @@
       "endTimestamp": "2017-05-18T20:30:00Z",
       "isFeatured": false,
       "isLivestream": true,
-      "youtubeUrl": "https://google.com/events/io",
+      "youtubeUrl": "",
       "livestreamChannel": "",
       "tags": [
         "LEVEL_ADVANCED",
@@ -3364,7 +3364,7 @@
       "endTimestamp": "2017-05-19T22:30:00Z",
       "isFeatured": false,
       "isLivestream": true,
-      "youtubeUrl": "https://google.com/events/io",
+      "youtubeUrl": "",
       "livestreamChannel": "",
       "tags": [
         "LEVEL_ADVANCED",
@@ -3403,7 +3403,7 @@
       "endTimestamp": "2017-05-18T23:30:00Z",
       "isFeatured": false,
       "isLivestream": true,
-      "youtubeUrl": "https://google.com/events/io",
+      "youtubeUrl": "",
       "livestreamChannel": "",
       "tags": [
         "TRACK_DESIGN",
@@ -3427,7 +3427,7 @@
       "endTimestamp": "2017-05-19T01:30:00Z",
       "isFeatured": false,
       "isLivestream": true,
-      "youtubeUrl": "https://google.com/events/io",
+      "youtubeUrl": "",
       "livestreamChannel": "",
       "tags": [
         "THEME_PLATFORMS",
@@ -3496,7 +3496,7 @@
       "endTimestamp": "2017-05-19T22:30:00Z",
       "isFeatured": false,
       "isLivestream": true,
-      "youtubeUrl": "https://google.com/events/io",
+      "youtubeUrl": "",
       "livestreamChannel": "",
       "tags": [
         "LEVEL_BEGINNER",
@@ -3520,7 +3520,7 @@
       "endTimestamp": "2017-05-18T16:30:00Z",
       "isFeatured": false,
       "isLivestream": true,
-      "youtubeUrl": "https://google.com/events/io",
+      "youtubeUrl": "",
       "livestreamChannel": "",
       "tags": [
         "TRACK_FIREBASE",
@@ -3546,7 +3546,7 @@
       "endTimestamp": "2017-05-18T02:00:00Z",
       "isFeatured": false,
       "isLivestream": true,
-      "youtubeUrl": "https://google.com/events/io",
+      "youtubeUrl": "",
       "livestreamChannel": "",
       "tags": [
         "LEVEL_BEGINNER",
@@ -3622,7 +3622,7 @@
       "endTimestamp": "2017-05-18T21:30:00Z",
       "isFeatured": false,
       "isLivestream": true,
-      "youtubeUrl": "https://google.com/events/io",
+      "youtubeUrl": "",
       "livestreamChannel": "",
       "tags": [
         "TRACK_PLAY",
@@ -3662,7 +3662,7 @@
       "endTimestamp": "2017-05-18T16:30:00Z",
       "isFeatured": false,
       "isLivestream": true,
-      "youtubeUrl": "https://google.com/events/io",
+      "youtubeUrl": "",
       "livestreamChannel": "",
       "tags": [
         "THEME_GROW&EARN",
@@ -3688,7 +3688,7 @@
       "endTimestamp": "2017-05-19T01:30:00Z",
       "isFeatured": false,
       "isLivestream": true,
-      "youtubeUrl": "https://google.com/events/io",
+      "youtubeUrl": "",
       "livestreamChannel": "",
       "tags": [
         "LEVEL_ADVANCED",
@@ -3713,7 +3713,7 @@
       "endTimestamp": "2017-05-18T22:30:00Z",
       "isFeatured": false,
       "isLivestream": true,
-      "youtubeUrl": "https://google.com/events/io",
+      "youtubeUrl": "",
       "livestreamChannel": "",
       "tags": [
         "LEVEL_BEGINNER",
@@ -3756,7 +3756,7 @@
       "endTimestamp": "2017-05-19T17:30:00Z",
       "isFeatured": false,
       "isLivestream": true,
-      "youtubeUrl": "https://google.com/events/io",
+      "youtubeUrl": "",
       "livestreamChannel": "",
       "tags": [
         "TRACK_FIREBASE",
@@ -3783,7 +3783,7 @@
       "endTimestamp": "2017-05-19T17:30:00Z",
       "isFeatured": false,
       "isLivestream": true,
-      "youtubeUrl": "https://google.com/events/io",
+      "youtubeUrl": "",
       "livestreamChannel": "",
       "tags": [
         "TRACK_DESIGN",
@@ -3865,7 +3865,7 @@
       "endTimestamp": "2017-05-18T20:30:00Z",
       "isFeatured": false,
       "isLivestream": true,
-      "youtubeUrl": "https://google.com/events/io",
+      "youtubeUrl": "",
       "livestreamChannel": "",
       "tags": [
         "TRACK_FIREBASE",
@@ -3966,7 +3966,7 @@
       "endTimestamp": "2017-05-18T16:30:00Z",
       "isFeatured": false,
       "isLivestream": true,
-      "youtubeUrl": "https://google.com/events/io",
+      "youtubeUrl": "",
       "livestreamChannel": "",
       "tags": [
         "LEVEL_ADVANCED",
@@ -4030,7 +4030,7 @@
       "endTimestamp": "2017-05-19T21:30:00Z",
       "isFeatured": false,
       "isLivestream": true,
-      "youtubeUrl": "https://google.com/events/io",
+      "youtubeUrl": "",
       "livestreamChannel": "",
       "tags": [
         "TRACK_DESIGN",
@@ -4055,7 +4055,7 @@
       "endTimestamp": "2017-05-18T19:30:00Z",
       "isFeatured": false,
       "isLivestream": true,
-      "youtubeUrl": "https://google.com/events/io",
+      "youtubeUrl": "",
       "livestreamChannel": "",
       "tags": [
         "THEME_PLATFORMS",
@@ -4132,7 +4132,7 @@
       "endTimestamp": "2017-05-18T17:30:00Z",
       "isFeatured": false,
       "isLivestream": true,
-      "youtubeUrl": "https://google.com/events/io",
+      "youtubeUrl": "",
       "livestreamChannel": "",
       "tags": [
         "TRACK_PLAY",
@@ -4162,7 +4162,7 @@
       "endTimestamp": "2017-05-19T21:30:00Z",
       "isFeatured": false,
       "isLivestream": true,
-      "youtubeUrl": "https://google.com/events/io",
+      "youtubeUrl": "",
       "livestreamChannel": "",
       "tags": [
         "LEVEL_BEGINNER",
@@ -4255,7 +4255,7 @@
       "endTimestamp": "2017-05-19T02:30:00Z",
       "isFeatured": false,
       "isLivestream": true,
-      "youtubeUrl": "https://google.com/events/io",
+      "youtubeUrl": "",
       "livestreamChannel": "",
       "tags": [
         "TRACK_ASSISTANT",
@@ -4336,7 +4336,7 @@
       "endTimestamp": "2017-05-19T17:30:00Z",
       "isFeatured": false,
       "isLivestream": true,
-      "youtubeUrl": "https://google.com/events/io",
+      "youtubeUrl": "",
       "livestreamChannel": "",
       "tags": [
         "TRACK_LOCATION&MAPS",
@@ -4396,7 +4396,7 @@
       "endTimestamp": "2017-05-18T17:30:00Z",
       "isFeatured": false,
       "isLivestream": true,
-      "youtubeUrl": "https://google.com/events/io",
+      "youtubeUrl": "",
       "livestreamChannel": "",
       "tags": [
         "THEME_PLATFORMS",
@@ -4439,7 +4439,7 @@
       "endTimestamp": "2017-05-18T17:30:00Z",
       "isFeatured": false,
       "isLivestream": true,
-      "youtubeUrl": "https://google.com/events/io",
+      "youtubeUrl": "",
       "livestreamChannel": "",
       "tags": [
         "LEVEL_BEGINNER",
@@ -4466,7 +4466,7 @@
       "endTimestamp": "2017-05-19T00:30:00Z",
       "isFeatured": false,
       "isLivestream": true,
-      "youtubeUrl": "https://google.com/events/io",
+      "youtubeUrl": "",
       "livestreamChannel": "",
       "tags": [
         "THEME_PLATFORMS",
@@ -4527,7 +4527,7 @@
       "endTimestamp": "2017-05-19T19:30:00Z",
       "isFeatured": false,
       "isLivestream": true,
-      "youtubeUrl": "https://google.com/events/io",
+      "youtubeUrl": "",
       "livestreamChannel": "",
       "tags": [
         "LEVEL_ADVANCED",
@@ -4588,7 +4588,7 @@
       "endTimestamp": "2017-05-19T23:30:00Z",
       "isFeatured": false,
       "isLivestream": true,
-      "youtubeUrl": "https://google.com/events/io",
+      "youtubeUrl": "",
       "livestreamChannel": "",
       "tags": [
         "LEVEL_BEGINNER",
@@ -4632,7 +4632,7 @@
       "endTimestamp": "2017-05-19T18:30:00Z",
       "isFeatured": false,
       "isLivestream": true,
-      "youtubeUrl": "https://google.com/events/io",
+      "youtubeUrl": "",
       "livestreamChannel": "",
       "tags": [
         "TRACK_FIREBASE",
@@ -4673,7 +4673,7 @@
       "endTimestamp": "2017-05-18T18:30:00Z",
       "isFeatured": false,
       "isLivestream": true,
-      "youtubeUrl": "https://google.com/events/io",
+      "youtubeUrl": "",
       "livestreamChannel": "",
       "tags": [
         "LEVEL_BEGINNER",
@@ -4698,7 +4698,7 @@
       "endTimestamp": "2017-05-18T23:30:00Z",
       "isFeatured": false,
       "isLivestream": true,
-      "youtubeUrl": "https://google.com/events/io",
+      "youtubeUrl": "",
       "livestreamChannel": "",
       "tags": [
         "THEME_PLATFORMS",
@@ -4793,7 +4793,7 @@
       "endTimestamp": "2017-05-19T17:30:00Z",
       "isFeatured": false,
       "isLivestream": true,
-      "youtubeUrl": "https://google.com/events/io",
+      "youtubeUrl": "",
       "livestreamChannel": "",
       "tags": [
         "THEME_PLATFORMS",
@@ -4890,7 +4890,7 @@
       "endTimestamp": "2017-05-18T22:30:00Z",
       "isFeatured": false,
       "isLivestream": true,
-      "youtubeUrl": "https://google.com/events/io",
+      "youtubeUrl": "",
       "livestreamChannel": "",
       "tags": [
         "TRACK_FIREBASE",
@@ -4936,7 +4936,7 @@
       "endTimestamp": "2017-05-17T21:00:00Z",
       "isFeatured": false,
       "isLivestream": true,
-      "youtubeUrl": "https://google.com/events/io",
+      "youtubeUrl": "https://www.youtube.com/watch?v=gBB0X0DzOL4",
       "livestreamChannel": "",
       "tags": [
         "TYPE_SESSIONS",
@@ -4972,7 +4972,7 @@
       "endTimestamp": "2017-05-19T20:30:00Z",
       "isFeatured": false,
       "isLivestream": true,
-      "youtubeUrl": "https://google.com/events/io",
+      "youtubeUrl": "",
       "livestreamChannel": "",
       "tags": [
         "TRACK_DESIGN",
@@ -5049,7 +5049,7 @@
       "endTimestamp": "2017-05-18T00:00:00Z",
       "isFeatured": false,
       "isLivestream": true,
-      "youtubeUrl": "https://google.com/events/io",
+      "youtubeUrl": "",
       "livestreamChannel": "",
       "tags": [
         "LEVEL_BEGINNER",
@@ -5093,7 +5093,7 @@
       "endTimestamp": "2017-05-17T22:00:00Z",
       "isFeatured": false,
       "isLivestream": true,
-      "youtubeUrl": "https://google.com/events/io",
+      "youtubeUrl": "",
       "livestreamChannel": "",
       "tags": [
         "TRACK_FIREBASE",
@@ -5154,7 +5154,7 @@
       "endTimestamp": "2017-05-19T01:30:00Z",
       "isFeatured": false,
       "isLivestream": true,
-      "youtubeUrl": "https://google.com/events/io",
+      "youtubeUrl": "",
       "livestreamChannel": "",
       "tags": [
         "THEME_GROW&EARN",
@@ -5180,7 +5180,7 @@
       "endTimestamp": "2017-05-19T21:30:00Z",
       "isFeatured": false,
       "isLivestream": true,
-      "youtubeUrl": "https://google.com/events/io",
+      "youtubeUrl": "",
       "livestreamChannel": "",
       "tags": [
         "THEME_PLATFORMS",
@@ -5207,7 +5207,7 @@
       "endTimestamp": "2017-05-19T17:30:00Z",
       "isFeatured": false,
       "isLivestream": true,
-      "youtubeUrl": "https://google.com/events/io",
+      "youtubeUrl": "",
       "livestreamChannel": "",
       "tags": [
         "THEME_PLATFORMS",
@@ -5234,7 +5234,7 @@
       "endTimestamp": "2017-05-17T22:00:00Z",
       "isFeatured": false,
       "isLivestream": true,
-      "youtubeUrl": "https://google.com/events/io",
+      "youtubeUrl": "",
       "livestreamChannel": "",
       "tags": [
         "THEME_PLATFORMS",
@@ -5261,7 +5261,7 @@
       "endTimestamp": "2017-05-18T16:30:00Z",
       "isFeatured": false,
       "isLivestream": true,
-      "youtubeUrl": "https://google.com/events/io",
+      "youtubeUrl": "",
       "livestreamChannel": "",
       "tags": [
         "LEVEL_BEGINNER",
@@ -5287,7 +5287,7 @@
       "endTimestamp": "2017-05-19T00:30:00Z",
       "isFeatured": false,
       "isLivestream": true,
-      "youtubeUrl": "https://google.com/events/io",
+      "youtubeUrl": "",
       "livestreamChannel": "",
       "tags": [
         "TRACK_LOCATION&MAPS",
@@ -5380,7 +5380,7 @@
       "endTimestamp": "2017-05-18T20:30:00Z",
       "isFeatured": false,
       "isLivestream": true,
-      "youtubeUrl": "https://google.com/events/io",
+      "youtubeUrl": "",
       "livestreamChannel": "",
       "tags": [
         "THEME_GROW&EARN",
@@ -5407,7 +5407,7 @@
       "endTimestamp": "2017-05-18T00:00:00Z",
       "isFeatured": false,
       "isLivestream": true,
-      "youtubeUrl": "https://google.com/events/io",
+      "youtubeUrl": "",
       "livestreamChannel": "",
       "tags": [
         "TRACK_FIREBASE",
@@ -5434,7 +5434,7 @@
       "endTimestamp": "2017-05-17T22:00:00Z",
       "isFeatured": false,
       "isLivestream": true,
-      "youtubeUrl": "https://google.com/events/io",
+      "youtubeUrl": "",
       "livestreamChannel": "",
       "tags": [
         "THEME_GROW&EARN",
@@ -5460,7 +5460,7 @@
       "endTimestamp": "2017-05-19T18:30:00Z",
       "isFeatured": false,
       "isLivestream": true,
-      "youtubeUrl": "https://google.com/events/io",
+      "youtubeUrl": "",
       "livestreamChannel": "",
       "tags": [
         "THEME_GROW&EARN",
@@ -5501,7 +5501,7 @@
       "endTimestamp": "2017-05-19T16:30:00Z",
       "isFeatured": false,
       "isLivestream": true,
-      "youtubeUrl": "https://google.com/events/io",
+      "youtubeUrl": "",
       "livestreamChannel": "",
       "tags": [
         "THEME_BEYONDMOBILE",
@@ -5526,7 +5526,7 @@
       "endTimestamp": "2017-05-18T21:30:00Z",
       "isFeatured": false,
       "isLivestream": true,
-      "youtubeUrl": "https://google.com/events/io",
+      "youtubeUrl": "",
       "livestreamChannel": "",
       "tags": [
         "THEME_GROW&EARN",
@@ -5553,7 +5553,7 @@
       "endTimestamp": "2017-05-19T21:30:00Z",
       "isFeatured": false,
       "isLivestream": true,
-      "youtubeUrl": "https://google.com/events/io",
+      "youtubeUrl": "",
       "livestreamChannel": "",
       "tags": [
         "TRACK_FIREBASE",
@@ -5578,7 +5578,7 @@
       "endTimestamp": "2017-05-18T01:00:00Z",
       "isFeatured": false,
       "isLivestream": true,
-      "youtubeUrl": "https://google.com/events/io",
+      "youtubeUrl": "",
       "livestreamChannel": "",
       "tags": [
         "THEME_PLATFORMS",
@@ -5632,7 +5632,7 @@
       "endTimestamp": "2017-05-17T23:00:00Z",
       "isFeatured": false,
       "isLivestream": true,
-      "youtubeUrl": "https://google.com/events/io",
+      "youtubeUrl": "",
       "livestreamChannel": "",
       "tags": [
         "THEME_PLATFORMS",
@@ -5657,7 +5657,7 @@
       "endTimestamp": "2017-05-18T00:00:00Z",
       "isFeatured": false,
       "isLivestream": true,
-      "youtubeUrl": "https://google.com/events/io",
+      "youtubeUrl": "",
       "livestreamChannel": "",
       "tags": [
         "LEVEL_ADVANCED",
@@ -5684,7 +5684,7 @@
       "endTimestamp": "2017-05-18T18:30:00Z",
       "isFeatured": false,
       "isLivestream": true,
-      "youtubeUrl": "https://google.com/events/io",
+      "youtubeUrl": "",
       "livestreamChannel": "",
       "tags": [
         "LEVEL_BEGINNER",
@@ -5708,7 +5708,7 @@
       "endTimestamp": "2017-05-19T00:30:00Z",
       "isFeatured": false,
       "isLivestream": true,
-      "youtubeUrl": "https://google.com/events/io",
+      "youtubeUrl": "",
       "livestreamChannel": "",
       "tags": [
         "THEME_GROW&EARN",
@@ -5825,7 +5825,7 @@
       "endTimestamp": "2017-05-19T17:30:00Z",
       "isFeatured": false,
       "isLivestream": true,
-      "youtubeUrl": "https://google.com/events/io",
+      "youtubeUrl": "",
       "livestreamChannel": "",
       "tags": [
         "LEVEL_ADVANCED",
@@ -5866,7 +5866,7 @@
       "endTimestamp": "2017-05-18T18:30:00Z",
       "isFeatured": false,
       "isLivestream": true,
-      "youtubeUrl": "https://google.com/events/io",
+      "youtubeUrl": "",
       "livestreamChannel": "",
       "tags": [
         "TRACK_FIREBASE",
@@ -5931,7 +5931,7 @@
       "endTimestamp": "2017-05-19T22:30:00Z",
       "isFeatured": false,
       "isLivestream": true,
-      "youtubeUrl": "https://google.com/events/io",
+      "youtubeUrl": "",
       "livestreamChannel": "",
       "tags": [
         "LEVEL_ADVANCED",
@@ -5958,7 +5958,7 @@
       "endTimestamp": "2017-05-18T22:30:00Z",
       "isFeatured": false,
       "isLivestream": true,
-      "youtubeUrl": "https://google.com/events/io",
+      "youtubeUrl": "",
       "livestreamChannel": "",
       "tags": [
         "LEVEL_ADVANCED",
@@ -6057,7 +6057,7 @@
       "endTimestamp": "2017-05-18T18:30:00Z",
       "isFeatured": false,
       "isLivestream": true,
-      "youtubeUrl": "https://google.com/events/io",
+      "youtubeUrl": "",
       "livestreamChannel": "",
       "tags": [
         "LEVEL_ADVANCED",
@@ -6185,7 +6185,7 @@
       "endTimestamp": "2017-05-18T19:30:00Z",
       "isFeatured": false,
       "isLivestream": true,
-      "youtubeUrl": "https://google.com/events/io",
+      "youtubeUrl": "",
       "livestreamChannel": "",
       "tags": [
         "LEVEL_ADVANCED",
@@ -6229,7 +6229,7 @@
       "endTimestamp": "2017-05-18T02:00:00Z",
       "isFeatured": false,
       "isLivestream": true,
-      "youtubeUrl": "https://google.com/events/io",
+      "youtubeUrl": "",
       "livestreamChannel": "",
       "tags": [
         "THEME_PLATFORMS",
@@ -6254,7 +6254,7 @@
       "endTimestamp": "2017-05-18T18:30:00Z",
       "isFeatured": false,
       "isLivestream": true,
-      "youtubeUrl": "https://google.com/events/io",
+      "youtubeUrl": "",
       "livestreamChannel": "",
       "tags": [
         "LEVEL_BEGINNER",
@@ -6297,7 +6297,7 @@
       "endTimestamp": "2017-05-18T23:30:00Z",
       "isFeatured": false,
       "isLivestream": true,
-      "youtubeUrl": "https://google.com/events/io",
+      "youtubeUrl": "",
       "livestreamChannel": "",
       "tags": [
         "TRACK_FIREBASE",
@@ -6342,7 +6342,7 @@
       "endTimestamp": "2017-05-17T23:00:00Z",
       "isFeatured": false,
       "isLivestream": true,
-      "youtubeUrl": "https://google.com/events/io",
+      "youtubeUrl": "",
       "livestreamChannel": "",
       "tags": [
         "LEVEL_BEGINNER",
@@ -6388,7 +6388,7 @@
       "endTimestamp": "2017-05-19T23:30:00Z",
       "isFeatured": false,
       "isLivestream": true,
-      "youtubeUrl": "https://google.com/events/io",
+      "youtubeUrl": "",
       "livestreamChannel": "",
       "tags": [
         "TRACK_FIREBASE",
@@ -6432,7 +6432,7 @@
       "endTimestamp": "2017-05-19T23:30:00Z",
       "isFeatured": false,
       "isLivestream": true,
-      "youtubeUrl": "https://google.com/events/io",
+      "youtubeUrl": "",
       "livestreamChannel": "",
       "tags": [
         "LEVEL_BEGINNER",
@@ -6457,7 +6457,7 @@
       "endTimestamp": "2017-05-19T18:30:00Z",
       "isFeatured": false,
       "isLivestream": true,
-      "youtubeUrl": "https://google.com/events/io",
+      "youtubeUrl": "",
       "livestreamChannel": "",
       "tags": [
         "THEME_PLATFORMS",
@@ -6482,7 +6482,7 @@
       "endTimestamp": "2017-05-19T01:30:00Z",
       "isFeatured": false,
       "isLivestream": true,
-      "youtubeUrl": "https://google.com/events/io",
+      "youtubeUrl": "",
       "livestreamChannel": "",
       "tags": [
         "TRACK_FIREBASE",
@@ -6507,7 +6507,7 @@
       "endTimestamp": "2017-05-19T00:30:00Z",
       "isFeatured": false,
       "isLivestream": true,
-      "youtubeUrl": "https://google.com/events/io",
+      "youtubeUrl": "",
       "livestreamChannel": "",
       "tags": [
         "TRACK_FIREBASE",
@@ -6553,7 +6553,7 @@
       "endTimestamp": "2017-05-19T19:30:00Z",
       "isFeatured": false,
       "isLivestream": true,
-      "youtubeUrl": "https://google.com/events/io",
+      "youtubeUrl": "",
       "livestreamChannel": "",
       "tags": [
         "THEME_PLATFORMS",
@@ -6614,7 +6614,7 @@
       "endTimestamp": "2017-05-18T23:30:00Z",
       "isFeatured": false,
       "isLivestream": true,
-      "youtubeUrl": "https://google.com/events/io",
+      "youtubeUrl": "",
       "livestreamChannel": "",
       "tags": [
         "LEVEL_BEGINNER",
@@ -6639,7 +6639,7 @@
       "endTimestamp": "2017-05-19T19:30:00Z",
       "isFeatured": false,
       "isLivestream": true,
-      "youtubeUrl": "https://google.com/events/io",
+      "youtubeUrl": "",
       "livestreamChannel": "",
       "tags": [
         "THEME_PLATFORMS",
@@ -6665,7 +6665,7 @@
       "endTimestamp": "2017-05-19T22:30:00Z",
       "isFeatured": false,
       "isLivestream": true,
-      "youtubeUrl": "https://google.com/events/io",
+      "youtubeUrl": "",
       "livestreamChannel": "",
       "tags": [
         "THEME_PLATFORMS",
@@ -6742,7 +6742,7 @@
       "endTimestamp": "2017-05-18T22:30:00Z",
       "isFeatured": false,
       "isLivestream": true,
-      "youtubeUrl": "https://google.com/events/io",
+      "youtubeUrl": "",
       "livestreamChannel": "",
       "tags": [
         "LEVEL_ADVANCED",
@@ -6806,7 +6806,7 @@
       "endTimestamp": "2017-05-19T23:30:00Z",
       "isFeatured": false,
       "isLivestream": true,
-      "youtubeUrl": "https://google.com/events/io",
+      "youtubeUrl": "",
       "livestreamChannel": "",
       "tags": [
         "THEME_GROW&EARN",
@@ -6851,7 +6851,7 @@
       "endTimestamp": "2017-05-19T22:30:00Z",
       "isFeatured": false,
       "isLivestream": true,
-      "youtubeUrl": "https://google.com/events/io",
+      "youtubeUrl": "",
       "livestreamChannel": "",
       "tags": [
         "THEME_PLATFORMS",
@@ -6878,7 +6878,7 @@
       "endTimestamp": "2017-05-18T20:30:00Z",
       "isFeatured": false,
       "isLivestream": true,
-      "youtubeUrl": "https://google.com/events/io",
+      "youtubeUrl": "",
       "livestreamChannel": "",
       "tags": [
         "LEVEL_BEGINNER",
@@ -6903,7 +6903,7 @@
       "endTimestamp": "2017-05-19T01:30:00Z",
       "isFeatured": false,
       "isLivestream": true,
-      "youtubeUrl": "https://google.com/events/io",
+      "youtubeUrl": "",
       "livestreamChannel": "",
       "tags": [
         "LEVEL_BEGINNER",
@@ -6942,7 +6942,7 @@
       "endTimestamp": "2017-05-19T00:30:00Z",
       "isFeatured": false,
       "isLivestream": true,
-      "youtubeUrl": "https://google.com/events/io",
+      "youtubeUrl": "",
       "livestreamChannel": "",
       "tags": [
         "THEME_PLATFORMS",
@@ -6969,7 +6969,7 @@
       "endTimestamp": "2017-05-18T21:30:00Z",
       "isFeatured": false,
       "isLivestream": true,
-      "youtubeUrl": "https://google.com/events/io",
+      "youtubeUrl": "",
       "livestreamChannel": "",
       "tags": [
         "LEVEL_BEGINNER",
@@ -7046,7 +7046,7 @@
       "endTimestamp": "2017-05-19T23:30:00Z",
       "isFeatured": false,
       "isLivestream": true,
-      "youtubeUrl": "https://google.com/events/io",
+      "youtubeUrl": "",
       "livestreamChannel": "",
       "tags": [
         "LEVEL_ADVANCED",
@@ -7090,7 +7090,7 @@
       "endTimestamp": "2017-05-19T02:30:00Z",
       "isFeatured": false,
       "isLivestream": true,
-      "youtubeUrl": "https://google.com/events/io",
+      "youtubeUrl": "",
       "livestreamChannel": "",
       "tags": [
         "LEVEL_ADVANCED",
@@ -7172,7 +7172,7 @@
       "endTimestamp": "2017-05-18T21:30:00Z",
       "isFeatured": false,
       "isLivestream": true,
-      "youtubeUrl": "https://google.com/events/io",
+      "youtubeUrl": "",
       "livestreamChannel": "",
       "tags": [
         "THEME_BEYONDMOBILE",
@@ -7227,7 +7227,7 @@
       "endTimestamp": "2017-05-19T23:30:00Z",
       "isFeatured": false,
       "isLivestream": true,
-      "youtubeUrl": "https://google.com/events/io",
+      "youtubeUrl": "",
       "livestreamChannel": "",
       "tags": [
         "THEME_PLATFORMS",
@@ -7252,7 +7252,7 @@
       "endTimestamp": "2017-05-19T00:30:00Z",
       "isFeatured": false,
       "isLivestream": true,
-      "youtubeUrl": "https://google.com/events/io",
+      "youtubeUrl": "",
       "livestreamChannel": "",
       "tags": [
         "TRACK_PLAY",
@@ -7277,7 +7277,7 @@
       "endTimestamp": "2017-05-18T19:30:00Z",
       "isFeatured": false,
       "isLivestream": true,
-      "youtubeUrl": "https://google.com/events/io",
+      "youtubeUrl": "",
       "livestreamChannel": "",
       "tags": [
         "TRACK_DESIGN",
@@ -7301,7 +7301,7 @@
       "endTimestamp": "2017-05-18T18:30:00Z",
       "isFeatured": false,
       "isLivestream": true,
-      "youtubeUrl": "https://google.com/events/io",
+      "youtubeUrl": "",
       "livestreamChannel": "",
       "tags": [
         "TRACK_FIREBASE",
@@ -7402,7 +7402,7 @@
       "endTimestamp": "2017-05-18T20:30:00Z",
       "isFeatured": false,
       "isLivestream": true,
-      "youtubeUrl": "https://google.com/events/io",
+      "youtubeUrl": "",
       "livestreamChannel": "",
       "tags": [
         "THEME_PLATFORMS",
@@ -7427,7 +7427,7 @@
       "endTimestamp": "2017-05-19T18:30:00Z",
       "isFeatured": false,
       "isLivestream": true,
-      "youtubeUrl": "https://google.com/events/io",
+      "youtubeUrl": "",
       "livestreamChannel": "",
       "tags": [
         "LEVEL_BEGINNER",
@@ -7505,7 +7505,7 @@
       "endTimestamp": "2017-05-18T21:30:00Z",
       "isFeatured": false,
       "isLivestream": true,
-      "youtubeUrl": "https://google.com/events/io",
+      "youtubeUrl": "",
       "livestreamChannel": "",
       "tags": [
         "TRACK_FIREBASE",
@@ -7549,7 +7549,7 @@
       "endTimestamp": "2017-05-18T17:30:00Z",
       "isFeatured": false,
       "isLivestream": true,
-      "youtubeUrl": "https://google.com/events/io",
+      "youtubeUrl": "",
       "livestreamChannel": "",
       "tags": [
         "TRACK_FIREBASE",
@@ -7575,7 +7575,7 @@
       "endTimestamp": "2017-05-17T22:00:00Z",
       "isFeatured": false,
       "isLivestream": true,
-      "youtubeUrl": "https://google.com/events/io",
+      "youtubeUrl": "",
       "livestreamChannel": "",
       "tags": [
         "THEME_PLATFORMS",
@@ -7614,7 +7614,7 @@
       "endTimestamp": "2017-05-19T02:30:00Z",
       "isFeatured": false,
       "isLivestream": true,
-      "youtubeUrl": "https://google.com/events/io",
+      "youtubeUrl": "",
       "livestreamChannel": "",
       "tags": [
         "THEME_GROW&EARN",
@@ -7640,7 +7640,7 @@
       "endTimestamp": "2017-05-18T22:30:00Z",
       "isFeatured": false,
       "isLivestream": true,
-      "youtubeUrl": "https://google.com/events/io",
+      "youtubeUrl": "",
       "livestreamChannel": "",
       "tags": [
         "THEME_PLATFORMS",
@@ -7666,7 +7666,7 @@
       "endTimestamp": "2017-05-19T23:30:00Z",
       "isFeatured": false,
       "isLivestream": true,
-      "youtubeUrl": "https://google.com/events/io",
+      "youtubeUrl": "",
       "livestreamChannel": "",
       "tags": [
         "TRACK_FIREBASE",
@@ -7692,7 +7692,7 @@
       "endTimestamp": "2017-05-19T17:30:00Z",
       "isFeatured": false,
       "isLivestream": true,
-      "youtubeUrl": "https://google.com/events/io",
+      "youtubeUrl": "",
       "livestreamChannel": "",
       "tags": [
         "THEME_PLATFORMS",
@@ -7718,7 +7718,7 @@
       "endTimestamp": "2017-05-19T02:30:00Z",
       "isFeatured": false,
       "isLivestream": true,
-      "youtubeUrl": "https://google.com/events/io",
+      "youtubeUrl": "",
       "livestreamChannel": "",
       "tags": [
         "THEME_PLATFORMS",
@@ -7814,7 +7814,7 @@
       "endTimestamp": "2017-05-18T23:30:00Z",
       "isFeatured": false,
       "isLivestream": true,
-      "youtubeUrl": "https://google.com/events/io",
+      "youtubeUrl": "",
       "livestreamChannel": "",
       "tags": [
         "LEVEL_BEGINNER",
@@ -7912,7 +7912,7 @@
       "endTimestamp": "2017-05-19T16:30:00Z",
       "isFeatured": false,
       "isLivestream": true,
-      "youtubeUrl": "https://google.com/events/io",
+      "youtubeUrl": "",
       "livestreamChannel": "",
       "tags": [
         "THEME_GROW&EARN",
@@ -7957,7 +7957,7 @@
       "endTimestamp": "2017-05-18T01:00:00Z",
       "isFeatured": false,
       "isLivestream": true,
-      "youtubeUrl": "https://google.com/events/io",
+      "youtubeUrl": "",
       "livestreamChannel": "",
       "tags": [
         "LEVEL_ADVANCED",
@@ -8037,7 +8037,7 @@
       "endTimestamp": "2017-05-18T21:30:00Z",
       "isFeatured": false,
       "isLivestream": true,
-      "youtubeUrl": "https://google.com/events/io",
+      "youtubeUrl": "",
       "livestreamChannel": "",
       "tags": [
         "LEVEL_ADVANCED",
@@ -8154,7 +8154,7 @@
       "endTimestamp": "2017-05-19T17:30:00Z",
       "isFeatured": false,
       "isLivestream": true,
-      "youtubeUrl": "https://google.com/events/io",
+      "youtubeUrl": "",
       "livestreamChannel": "",
       "tags": [
         "LEVEL_ADVANCED",
@@ -8271,7 +8271,7 @@
       "endTimestamp": "2017-05-19T16:30:00Z",
       "isFeatured": false,
       "isLivestream": true,
-      "youtubeUrl": "https://google.com/events/io",
+      "youtubeUrl": "",
       "livestreamChannel": "",
       "tags": [
         "THEME_PLATFORMS",
@@ -8316,7 +8316,7 @@
       "endTimestamp": "2017-05-18T00:00:00Z",
       "isFeatured": false,
       "isLivestream": true,
-      "youtubeUrl": "https://google.com/events/io",
+      "youtubeUrl": "",
       "livestreamChannel": "",
       "tags": [
         "LEVEL_BEGINNER",
