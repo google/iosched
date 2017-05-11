@@ -23,7 +23,7 @@
     android:gravity="center_vertical"
     android:minHeight="?actionBarSize"
     android:orientation="horizontal"
-    android:paddingEnd="@dimen/padding_normal"
+    android:paddingEnd="@dimen/padding_normal_button"
     android:paddingStart="@dimen/padding_normal">
 
     <TextView
