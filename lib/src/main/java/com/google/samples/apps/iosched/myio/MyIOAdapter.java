@@ -45,6 +45,8 @@ import java.util.List;
 
 import io.doist.recyclerviewext.sticky_headers.StickyHeaders;
 
+import static android.view.View.GONE;
+import static android.view.View.VISIBLE;
 import static com.google.samples.apps.iosched.schedule.ScheduleItemViewHolder.SessionTimeFormat.SPAN;
 
 class MyIOAdapter extends Adapter<ViewHolder> implements StickyHeaders, StickyHeaders.ViewSetup {
@@ -59,7 +61,9 @@ class MyIOAdapter extends Adapter<ViewHolder> implements StickyHeaders, StickyHe
     private static final List<DaySeparator> DAY_SEPARATORS;
 
     static {
-        DAY_SEPARATORS = new ArrayList<>(Config.CONFERENCE_DAYS.length);
+        DAY_SEPARATORS = new ArrayList<>(Config.CONFERENCE_DAYS.length + 1);
+        DAY_SEPARATORS.add(new DaySeparator(-1, Config.PRECONFERENCE_START));
+
         for (int i = 0; i < Config.CONFERENCE_DAYS.length; i++) {
             DAY_SEPARATORS.add(new DaySeparator(i, Config.CONFERENCE_DAYS[i][0]));
         }
@@ -244,7 +248,7 @@ class MyIOAdapter extends Adapter<ViewHolder> implements StickyHeaders, StickyHe
                 ((NonSessionItemViewHolder) holder).bind((ScheduleItem) item);
                 break;
             case VIEW_TYPE_SEPARATOR:
-                ((DaySeparatorViewHolder) holder).onBind((DaySeparator) item);
+                ((DaySeparatorViewHolder) holder).bind((DaySeparator) item);
                 break;
             case VIEW_TYPE_MESSAGE_CARD:
                 ((MessageCardViewHolder) holder).onBind((MessageData) item);
@@ -353,16 +357,16 @@ class MyIOAdapter extends Adapter<ViewHolder> implements StickyHeaders, StickyHe
             int startButtonResId = mMessageData.getStartButtonStringResourceId();
             if (startButtonResId != -1) {
                 mStartButton.setText(startButtonResId);
-                mStartButton.setVisibility(View.VISIBLE);
+                mStartButton.setVisibility(VISIBLE);
             } else {
-                mStartButton.setVisibility(View.GONE);
+                mStartButton.setVisibility(GONE);
             }
             int endButtonResId = mMessageData.getEndButtonStringResourceId();
             if (endButtonResId != -1) {
                 mEndButton.setText(endButtonResId);
-                mEndButton.setVisibility(View.VISIBLE);
+                mEndButton.setVisibility(VISIBLE);
             } else {
-                mEndButton.setVisibility(View.GONE);
+                mEndButton.setVisibility(GONE);
             }
         }
     }
@@ -388,21 +392,22 @@ class MyIOAdapter extends Adapter<ViewHolder> implements StickyHeaders, StickyHe
             mAddEventsButton = (Button) itemView.findViewById(R.id.add_events);
         }
 
-        private void onBind(final DaySeparator separator) {
+        private void bind(final DaySeparator separator) {
             mDateText.setText(UIUtils.formatDaySeparator(itemView.getContext(),
                     FORMAT_STRINGBUILDER, separator.mStartTime));
             mAddEventsButton.setOnClickListener(new OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    if (mCallbacks != null) {
+                    if (mCallbacks != null && separator.mDay >= 0) {
                         mCallbacks.onAddEventsClicked(separator.mDay);
                     }
                 }
             });
+            mAddEventsButton.setVisibility(separator.mDay >= 0 ? VISIBLE : GONE);
         }
     }
 
-    static class DaySeparator {
+    private static class DaySeparator {
         private final int mDay;
         private final long mStartTime;
 
@@ -412,15 +417,15 @@ class MyIOAdapter extends Adapter<ViewHolder> implements StickyHeaders, StickyHe
         }
     }
 
-    static class SeparatorSpacer { }
+    private static class SeparatorSpacer { }
 
-    static class SeparatorSpacerViewHolder extends ViewHolder {
+    private static class SeparatorSpacerViewHolder extends ViewHolder {
 
         private SeparatorSpacerViewHolder(View itemView) {
             super(itemView);
         }
 
-        public static SeparatorSpacerViewHolder newInstance(@NonNull ViewGroup parent) {
+        static SeparatorSpacerViewHolder newInstance(@NonNull ViewGroup parent) {
             return new SeparatorSpacerViewHolder(LayoutInflater.from(parent.getContext())
                     .inflate(R.layout.spacer, parent, false));
         }
