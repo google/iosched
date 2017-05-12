@@ -53,7 +53,7 @@
             android:ellipsize="end"
             android:lines="1"
             android:textAppearance="?android:textAppearanceMedium"
-            android:textColor="@color/lightish_blue"
+            android:textColor="?colorAccent"
             tools:text="Andy Android" />
 
         <TextView

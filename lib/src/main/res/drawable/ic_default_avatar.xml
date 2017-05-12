@@ -19,7 +19,7 @@
     android:height="56dp"
     android:viewportWidth="56"
     android:viewportHeight="56"
-    android:tint="@color/lightish_blue">
+    android:tint="?colorPrimary">
     <path
         android:pathData="M28,0C12.54,0 0,12.54 0,28C0,43.46 12.54,56 28,56C43.46,56 56,43.46 56,28C56,12.54 43.46,0 28,0ZM28,8.4C32.65,8.4 36.4,12.15 36.4,16.8C36.4,21.45 32.65,25.2 28,25.2C23.35,25.2 19.6,21.45 19.6,16.8C19.6,12.15 23.35,8.4 28,8.4ZM28,48.16C21,48.16 14.81,44.58 11.2,39.14C11.28,33.57 22.4,30.52 28,30.52C33.57,30.52 44.72,33.57 44.8,39.14C41.19,44.58 35,48.16 28,48.16Z"
         android:fillColor="@android:color/white" />
