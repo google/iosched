@@ -15,51 +15,49 @@
   limitations under the License.
   -->
 
-<!-- Default layout for MapActivity. It contains space for the SlideableInfoFragment on the bottom
-of the map.-->
-<LinearLayout
+<FrameLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/drawer_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
 
     <FrameLayout
-        android:id="@+id/headerbar"
-        style="@style/AppBar"
+        android:id="@+id/fragment_container_map"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginBottom="56dp" />
+
+    <FrameLayout
+        android:id="@+id/fragment_container_map_info"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginBottom="56dp" />
+
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/aqua_marine">
+        app:contentInsetStart="@dimen/padding_normal"
+        android:background="@color/aqua_marine_90"
+        android:fitsSystemWindows="true"
+        app:popupTheme="@style/ThemeOverlay.ToolbarPopup">
 
-        <include layout="@layout/toolbar" />
+        <TextView
+            android:id="@+id/toolbar_title"
+            style="@style/ProductSans.Title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/title_map" />
 
-    </FrameLayout>
-
-    <!-- Content of screen. Contains a map and optional info bottom sheet. -->
-    <FrameLayout
-        android:id="@+id/main_content"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1">
-        <!-- Main layout -->
-        <FrameLayout
-            android:id="@+id/fragment_container_map"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent" />
-
-        <FrameLayout
-            android:id="@+id/fragment_container_map_info"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent" />
-
-    </FrameLayout>
+    </android.support.v7.widget.Toolbar>
 
     <com.google.samples.apps.iosched.ui.widget.BadgedBottomNavigationView
         android:id="@+id/bottom_navigation"
         style="@style/Widget.IOSched.BottomNavigationView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
         app:menu="@menu/bottom_nav_items" />
 
-</LinearLayout>
+</FrameLayout>

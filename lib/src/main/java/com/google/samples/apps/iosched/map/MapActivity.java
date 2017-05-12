@@ -33,6 +33,7 @@ import com.google.samples.apps.iosched.ui.BaseActivity;
 import com.google.samples.apps.iosched.util.AnalyticsHelper;
 import com.google.samples.apps.iosched.util.PermissionsUtils;
 
+import static android.view.View.VISIBLE;
 import static com.google.samples.apps.iosched.util.LogUtils.makeLogTag;
 
 /**
@@ -104,8 +105,8 @@ public class MapActivity extends BaseActivity
     @Override
     protected void onPostCreate(Bundle savedInstanceState) {
         super.onPostCreate(savedInstanceState);
+        final Toolbar toolbar = getToolbar();
         if (mDetachedMode) {
-            final Toolbar toolbar = getToolbar();
             toolbar.setNavigationIcon(R.drawable.ic_up);
             toolbar.setNavigationOnClickListener(new View.OnClickListener() {
                 @Override
@@ -114,6 +115,19 @@ public class MapActivity extends BaseActivity
                 }
             });
         }
+        toolbar.addOnLayoutChangeListener(new View.OnLayoutChangeListener() {
+            @Override
+            public void onLayoutChange(View v, int left, int top, int right, int toolbarBottom,
+                                       int oldLeft, int oldTop, int oldRight, int oldBottom) {
+                if (mMapFragment != null) {
+                    int insetLeft = 0;
+                    if (mInfoContainer != null && mInfoContainer.getVisibility() == VISIBLE) {
+                        insetLeft = mInfoContainer.getRight();
+                    }
+                    mMapFragment.setMapInsets(insetLeft, toolbarBottom, 0, 0);
+                }
+            }
+        });
 
         if (mMapFragment == null) {
             // Either restore the state of the map or read it from the Intent extras.
@@ -182,27 +196,27 @@ public class MapActivity extends BaseActivity
     @Override
     public void onInfoSizeChanged(int left, int top, int right, int bottom) {
         if (mMapFragment != null) {
+            final int insetTop = getToolbar().getBottom();
             if (mInfoFragment instanceof InlineInfoFragment) {
                 // InlineInfoFragment is shown on the left on tablet layouts.
                 // Use the right edge of its containers for padding of the map.
                 //TODO: RTL support - compare left and right positioning
                 if (right > 0) {
-                    mMapFragment.setMapInsets(mInfoContainer.getRight(), 0, 0, 0);
+                    mMapFragment.setMapInsets(mInfoContainer.getRight(), insetTop, 0, 0);
                 } else {
-                    mMapFragment.setMapInsets(0, 0, 0, 0);
+                    mMapFragment.setMapInsets(0, insetTop, 0, 0);
                 }
             } else if (mInfoFragment instanceof SlideableInfoFragment) {
                 // SlideableInfoFragment is only shown on phone layouts at the bottom of the screen,
                 // but only up to 50% of the total height of the screen
                 if ((float) top / (float) bottom > SlideableInfoFragment.MAX_PANEL_PADDING_FACTOR) {
 
-                    mMapFragment.setMapInsets(0, 0, 0, bottom - top);
+                    mMapFragment.setMapInsets(0, insetTop, 0, bottom - top);
                 }
                 final int bottomPadding = Math.min(bottom - top,
                         Math.round(bottom * SlideableInfoFragment.MAX_PANEL_PADDING_FACTOR));
-                mMapFragment.setMapInsets(0, 0, 0, bottomPadding);
+                mMapFragment.setMapInsets(0, insetTop, 0, bottomPadding);
             }
-            // F
         }
     }
 
@@ -222,7 +236,7 @@ public class MapActivity extends BaseActivity
         if (mInfoFragment != null) {
             mInfoFragment.showTitleOnly(roomType, title, subtitle, iconType);
         }
-        setTabletInfoVisibility(View.VISIBLE);
+        setTabletInfoVisibility(VISIBLE);
     }
 
     @Override
@@ -231,8 +245,7 @@ public class MapActivity extends BaseActivity
         if (mInfoFragment != null) {
             mInfoFragment.showSessionList(roomId, roomTitle, roomType, markerType);
         }
-        setTabletInfoVisibility(View.VISIBLE);
-
+        setTabletInfoVisibility(VISIBLE);
     }
 
     @Override
@@ -240,7 +253,7 @@ public class MapActivity extends BaseActivity
         if (mInfoFragment != null) {
             mInfoFragment.showFirstSessionTitle(roomId, roomTitle, roomType, null);
         }
-        setTabletInfoVisibility(View.VISIBLE);
+        setTabletInfoVisibility(VISIBLE);
     }
 
     @Override
@@ -255,7 +268,6 @@ public class MapActivity extends BaseActivity
         final View view = findViewById(R.id.map_detail_popup);
         if (view != null) {
             view.setVisibility(visibility);
-
         }
     }
 
