@@ -350,4 +350,9 @@
         <item name="fontPath">fonts/ProductSans-Regular.ttf</item>
     </style>
 
+    <style name="TextAppearance.ProductSans.ToolbarTitle" parent="@style/TextAppearance.Widget.AppCompat.Toolbar.Title">
+        <item name="fontPath">fonts/ProductSans-Regular.ttf</item>
+    </style>
+
+
 </resources>

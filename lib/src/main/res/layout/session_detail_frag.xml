@@ -122,14 +122,13 @@
 
                 <TextView
                     android:id="@+id/toolbar_title"
-                    style="@style/ProductSans.Title"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:alpha="0"
                     android:ellipsize="end"
                     android:lines="1"
-                    android:textColor="@color/greyish_brown" />
+                    android:textAppearance="@style/TextAppearance.ProductSans.ToolbarTitle" />
 
                 <ImageView
                     android:id="@+id/map"
