@@ -86,18 +86,6 @@
 
             </com.google.samples.apps.iosched.ui.widget.AspectRatioView>
 
-            <!-- AppBarLayout + CollapsingToolbarLayout doesn't support wrap_content well when
-                 fitting system windows, so use this view to maintain a minimum height if the video
-                 thumbnail container is GONE. Use a top margin equal to the status bar height, and
-                 set fitsSystemWindows="true" so that CollapsingToolbarLayout doesn't push it down.
-                 TODO remove when the fix for this is released
-            -->
-            <Space
-                android:layout_width="match_parent"
-                android:layout_marginTop="@dimen/status_bar_height"
-                android:fitsSystemWindows="true"
-                android:layout_height="?actionBarSize" />
-
             <!-- We don't use a normal Toolbar because we need to access the title and icons -->
             <LinearLayout
                 android:id="@+id/session_detail_toolbar"
