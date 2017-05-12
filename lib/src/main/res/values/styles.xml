@@ -97,7 +97,7 @@
     <style name="Theme.IOSched.MyIo" parent="@style/Theme.IOSched.Immersive" />
 
     <!-- Schedule -->
-    <style name="Theme.IOSched.Schedule" parent="@style/Theme.IOSched.Immersive" />
+    <style name="Theme.IOSched.Schedule" parent="@style/Theme.IOSched" />
 
     <!-- Feed -->
     <style name="Theme.IOSched.Feed" parent="@style/Theme.IOSched.Immersive" />
