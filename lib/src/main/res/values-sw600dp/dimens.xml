@@ -22,6 +22,7 @@
     <dimen name="padding_normal">24dp</dimen>
     <dimen name="padding_normal_button">20dp</dimen>
     <dimen name="borderless_button_margin">8dp</dimen>
+    <dimen name="event_button_margin">12dp</dimen>
 
     <!-- UI elements -->
     <dimen name="action_button_min_width">64dp</dimen>

@@ -21,6 +21,7 @@ import android.support.v4.content.ContextCompat;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -32,7 +33,6 @@ import com.google.samples.apps.iosched.util.AnalyticsHelper;
 public class EventView extends FrameLayout {
 
     private HtmlTextView mDescriptionView;
-    private String mSessionFilterTag;
     private EventViewClickListener mListener;
 
     public interface EventViewClickListener {
@@ -50,13 +50,16 @@ public class EventView extends FrameLayout {
 
     public EventView(Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
-        TypedArray arr = context.obtainStyledAttributes(attrs, R.styleable.EventView, 0, 0);
+        final TypedArray arr = context.obtainStyledAttributes(attrs, R.styleable.EventView,
+                defStyleAttr, 0);
         final String eventTitle = arr.getString(R.styleable.EventView_eventTitle);
-        String eventDescription = arr.getString(R.styleable.EventView_eventDescription);
-        Drawable eventIconDrawable = arr.getDrawable(R.styleable.EventView_eventIcon);
-        int boxColor = arr.getColor(R.styleable.EventView_boxColor,
+        final String eventDescription = arr.getString(R.styleable.EventView_eventDescription);
+        final Drawable eventIconDrawable = arr.getDrawable(R.styleable.EventView_eventIcon);
+        final int boxColor = arr.getColor(R.styleable.EventView_boxColor,
                 ContextCompat.getColor(getContext(), R.color.sunflower_yellow));
-        mSessionFilterTag = arr.getString(R.styleable.EventView_scheduleFilterTag);
+        final String sessionFilterTag = arr.getString(R.styleable.EventView_scheduleFilterTag);
+        final String sessionsText = arr.getString(R.styleable.EventView_sessionsText);
+        final String mapUri = arr.getString(R.styleable.EventView_mapLinkUri);
         arr.recycle();
 
         View rootView = LayoutInflater.from(context)
@@ -69,24 +72,37 @@ public class EventView extends FrameLayout {
         titleView.setText(eventTitle);
         header.setBackgroundColor(boxColor);
         iconView.setImageDrawable(eventIconDrawable);
-        rootView.findViewById(R.id.event_view_sessions).setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (mListener != null) {
-                    mListener.onViewSessionsClicked(EventView.this, mSessionFilterTag);
-                    AnalyticsHelper.sendEvent(eventTitle, "Event Info", "view sessions");
-                }
+        Button viewSessions = (Button) rootView.findViewById(R.id.event_view_sessions);
+        if (sessionFilterTag != null) {
+            if (sessionsText != null) {
+                viewSessions.setText(sessionsText);
             }
-        });
-        rootView.findViewById(R.id.event_view_map).setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (mListener != null) {
-                    mListener.onViewMapClicked(EventView.this, null);
-                    AnalyticsHelper.sendEvent(eventTitle, "Event Info", "view map");
+            viewSessions.setOnClickListener(new OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (mListener != null) {
+                        mListener.onViewSessionsClicked(EventView.this, sessionFilterTag);
+                        AnalyticsHelper.sendEvent(eventTitle, "Event Info", "view sessions");
+                    }
                 }
-            }
-        });
+            });
+        } else {
+            viewSessions.setVisibility(GONE);
+        }
+        View viewMap = rootView.findViewById(R.id.event_view_map);
+        if (mapUri != null) {
+            viewMap.setOnClickListener(new OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (mListener != null) {
+                        mListener.onViewMapClicked(EventView.this, mapUri);
+                        AnalyticsHelper.sendEvent(eventTitle, "Event Info", "view map");
+                    }
+                }
+            });
+        } else {
+            viewMap.setVisibility(GONE);
+        }
     }
 
     public void setEventDescription(CharSequence description) {
