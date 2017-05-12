@@ -62,6 +62,7 @@
     <declare-styleable name="EventView">
         <attr name="eventTitle" format="string" />
         <attr name="eventDescription" format="string" />
+        <attr name="sessionsText" format="string" />
         <attr name="scheduleFilterTag" format="string" />
         <attr name="mapLinkUri" format="string" />
         <attr name="boxColor" format="color" />

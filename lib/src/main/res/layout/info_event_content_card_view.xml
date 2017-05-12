@@ -18,7 +18,8 @@
 <merge
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools">
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:parentTag="android.widget.FrameLayout">
 
     <!-- It seems that ConstraintLayout currently doesn't support merge tags so we need a
          (otherwise useless) wrapping FrameLayout :( -->
@@ -38,10 +39,10 @@
 
         <TextView
             android:id="@+id/event_title"
+            style="@style/ProductSans.Title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:padding="@dimen/padding_normal"
-            android:textAppearance="?android:textAppearanceLarge"
             app:layout_constraintBottom_toBottomOf="@id/header"
             app:layout_constraintStart_toStartOf="parent"
             tools:text="Office Hours &amp; App Reviews" />
@@ -60,19 +61,27 @@
             android:id="@+id/event_content_description"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/padding_normal"
-            android:padding="@dimen/padding_normal"
+            android:paddingLeft="@dimen/padding_normal"
+            android:paddingRight="@dimen/padding_normal"
+            android:paddingTop="@dimen/padding_normal"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/header"
             tools:text="@string/placeholder_lorem_ipsum" />
+
+        <!-- space maintains bottom margins if buttons aren't shown -->
+        <Space
+            android:layout_width="0dp"
+            android:layout_height="@dimen/padding_normal"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/event_content_description" />
 
         <Button
             android:id="@+id/event_view_sessions"
             style="@style/Widget.AppCompat.Button.Borderless.Colored"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:padding="@dimen/padding_normal"
+            android:layout_marginStart="@dimen/event_button_margin"
             android:text="@string/view_sessions_text"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/event_content_description" />
@@ -82,7 +91,7 @@
             style="@style/Widget.AppCompat.Button.Borderless.Colored"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:padding="@dimen/padding_normal"
+            android:layout_marginStart="@dimen/event_button_margin"
             android:text="@string/view_map_text"
             app:layout_constraintStart_toEndOf="@id/event_view_sessions"
             app:layout_constraintTop_toBottomOf="@id/event_content_description" />
