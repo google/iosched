@@ -546,7 +546,7 @@ public class DataExtractor {
     JsonPrimitive channel = null;
 
     if (isLivestream) {
-      vid = getVideoFromTopicInfo(origin, InputJsonKeys.VendorAPISource.Topics.INFO_STREAM_VIDEO_ID,
+      vid = getVideoFromTopicInfo(origin, Topics.INFO_VIDEO_URL,
           Config.VIDEO_LIVESTREAMURL_FOR_EMPTY);
     } else {
       vid = getMapValue(

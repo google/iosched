@@ -34,7 +34,7 @@
     </admin-console>
 
     <manual-scaling>
-      <instances>1</instances>
+      <instances>10</instances>
     </manual-scaling>
 
   <system-properties>
