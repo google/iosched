@@ -307,6 +307,7 @@ public class BottomNavigationMenuView extends ViewGroup implements MenuView {
   }
 
   public void updateMenuView() {
+    if (mMenu == null || mButtons == null) return;
     final int menuSize = mMenu.size();
     if (menuSize != mButtons.length) {
       // The size has changed. Rebuild menu view from scratch.
