@@ -96,8 +96,6 @@
     <color name="theme_accent_1">#00b0ff</color>
     <color name="theme_accent_2">#e91e63</color>
 
-    <color name="map_text_primary">@color/io15_dark_grey</color>
-
     <color name="more_button_background">#40707070</color>
 
     <color name="navdrawer_background">#ffffffff</color>
