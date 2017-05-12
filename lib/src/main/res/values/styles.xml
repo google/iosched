@@ -23,7 +23,7 @@
     <style name="Theme.IOSched" parent="FrameworkRoot.Theme">
         <item name="colorPrimary">@color/theme_primary</item>
         <item name="colorPrimaryDark">@color/theme_primary_dark</item>
-        <item name="colorAccent">@color/theme_primary</item>
+        <item name="colorAccent">@color/lightish_blue_a11y</item>
 
         <item name="windowActionBar">false</item>
         <item name="android:windowBackground">@color/background</item>
@@ -125,10 +125,6 @@
 
     <style name="ThemeOverlay.ToolbarPopup" parent="@style/ThemeOverlay.AppCompat.Light" />
 
-    <style name="ThemeOverlay.BlueAccent" parent="@style/ThemeOverlay.AppCompat.ActionBar">
-        <item name="colorAccent">@color/lightish_blue</item>
-    </style>
-
     <style name="Theme.IOSched.SessionDetails" parent="Theme.IOSched">
         <item name="android:windowSharedElementEnterTransition">@transition/session_details_shared_enter</item>
         <item name="android:windowSharedElementReturnTransition">@transition/session_details_shared_return</item>
@@ -197,7 +193,7 @@
         <item name="itemIconTint">@color/nav_icon_tint</item>
         <item name="android:background">?android:attr/colorBackground</item>
         <item name="android:elevation" tools:targetApi="lollipop">@dimen/bottom_nav_elevation</item>
-        <item name="badgeColor">?colorPrimary</item>
+        <item name="badgeColor">?colorAccent</item>
         <item name="badgeRadius">3dp</item>
     </style>
 
