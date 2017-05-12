@@ -62,12 +62,6 @@
                     android:transitionName="@string/transition_session_image"
                     tools:ignore="ContentDescription" />
 
-                <View
-                    android:id="@+id/scrim"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:background="@drawable/livestream_scrim" />
-
                 <Button
                     android:id="@+id/watch"
                     style="?borderlessButtonStyle"
@@ -82,8 +76,8 @@
                     android:textAppearance="?android:textAppearanceMedium"
                     android:textColor="@android:color/white"
                     android:shadowColor="@color/greyish_brown"
-                    android:shadowDx="2"
-                    android:shadowDy="2"
+                    android:shadowDx="1"
+                    android:shadowDy="1"
                     android:shadowRadius="8"
                     android:visibility="gone"
                     tools:text="@string/session_watch"
