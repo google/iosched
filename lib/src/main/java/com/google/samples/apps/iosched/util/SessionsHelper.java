@@ -26,6 +26,7 @@ import android.net.Uri;
 import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
+import android.support.v4.content.ContextCompat;
 import android.view.View;
 
 import com.google.samples.apps.iosched.appwidget.ScheduleWidgetProvider;
@@ -123,6 +124,8 @@ public class SessionsHelper {
                     public void onClick(final View v) {
                         sp.edit().putBoolean(SettingsUtils.PREF_SKIP_BOOKMARK_HINTS, true).apply();
                     }
-                }).show();
+                })
+                .setActionTextColor(ContextCompat.getColor(view.getContext(), R.color.aqua_marine))
+                .show();
     }
 }
