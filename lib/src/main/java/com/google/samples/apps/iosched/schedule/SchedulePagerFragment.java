@@ -110,8 +110,10 @@ public class SchedulePagerFragment extends Fragment implements ScheduleView {
         if (filters.hasAnyFilters()) {
             mFiltersBar.setVisibility(VISIBLE);
             mContent.setTranslationY(mFiltersBar.getHeight());
+            offsetFilters(mFiltersBar.getHeight(), 0);
         } else {
             mFiltersBar.setVisibility(INVISIBLE);
+            offsetFilters(mFiltersBar.getHeight(), 0);
             mContent.setTranslationY(0f);
         }
     }
@@ -237,13 +239,6 @@ public class SchedulePagerFragment extends Fragment implements ScheduleView {
                     int offset = (int) Math.min(filtersOffset - dyConsumed, 0f);
                     offsetFilters(filtersHeight, offset);
                 }
-            }
-
-            private void offsetFilters(int filtersHeight, int offset) {
-                mFiltersBar.setTranslationY(offset);
-                mFiltersBarClip.set(0, -offset, mFiltersBar.getWidth(), filtersHeight);
-                mFiltersBar.setClipBounds(mFiltersBarClip);
-                mContent.setTranslationY(filtersHeight + offset);
             }});
 
         AnalyticsHelper.sendScreenView("Schedule for Day " + mToday, getActivity());
@@ -262,6 +257,13 @@ public class SchedulePagerFragment extends Fragment implements ScheduleView {
             outState.putStringArray(SINGLE_DAY_FRAGMENTS_TAGS, tags);
             outState.putInt(CURRENT_SINGLE_DAY_FRAGMENT_POSITION, mViewPager.getCurrentItem());
         }
+    }
+
+    private void offsetFilters(int filtersHeight, int offset) {
+        mFiltersBar.setTranslationY(offset);
+        mFiltersBarClip.set(0, -offset, mFiltersBar.getWidth(), filtersHeight);
+        mFiltersBar.setClipBounds(mFiltersBarClip);
+        mContent.setTranslationY(filtersHeight + offset);
     }
 
     private void calculateCurrentDay() {
