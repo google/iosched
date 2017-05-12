@@ -43,14 +43,9 @@
         translatable="false">feed_default_first_priority</string>
 
     <!-- Filter tags for Info > Events screen "View sessions" buttons -->
-    <string name="afterhours_filter_tag" translatable="false">TYPE_AFTERHOURS</string>
     <string name="codelabs_filter_tag" translatable="false">TYPE_CODELABS</string>
-    <string name="officehours_filter_tag" translatable="false">TYPE_OFFICEHOURS</string>
-    <string name="sandbox_filter_tag" translatable="false">TYPE_SANDBOXDEMO</string>
-    <!-- Map links for Info > Events screen "View map" buttons.
-         TODO make these URLs the correct deep link -->
-    <string name="view_sandbox_map_url" translatable="false">sandboxmapurl</string>
-    <string name="view_codelabs_map_url" translatable="false">codelabsmapurl</string>
-    <string name="view_officehours_map_url" translatable="false">officehoursmapurl</string>
-    <string name="view_afterhours_map_url" translatable="false">afterhoursmapurl</string>
+    <string name="officehours_filter_tag" translatable="false">TYPE_OFFICEHOURS,TYPE_APPREVIEWS</string>
+    <!-- Map links for Info > Events screen "View map" buttons. -->
+    <string name="view_codelabs_map_url" translatable="false">4748d33e-f935-4c9e-bca6-67b61b875dc7</string>
+    <string name="view_officehours_map_url" translatable="false">officehours</string>
 </resources>

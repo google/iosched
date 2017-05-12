@@ -13,11 +13,12 @@
   See the License for the specific language governing permissions and
   limitations under the License.
   -->
-<android.support.v4.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.v4.widget.NestedScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="match_parent"
     android:scrollbarStyle="insideOverlay"
     android:scrollbars="vertical">
 
@@ -99,9 +100,7 @@
             android:layout_marginTop="@dimen/padding_normal"
             app:boxColor="@color/neon_blue"
             app:eventIcon="@drawable/ic_sandbox"
-            app:eventTitle="@string/event_sandbox_title"
-            app:mapLinkUri="@string/view_sandbox_map_url"
-            app:scheduleFilterTag="@string/sandbox_filter_tag" />
+            app:eventTitle="@string/event_sandbox_title" />
 
         <com.google.samples.apps.iosched.info.event.EventView
             android:id="@+id/codelabs_event"
@@ -110,7 +109,8 @@
             app:boxColor="@color/aqua_marine"
             app:eventIcon="@drawable/ic_codelab"
             app:eventTitle="@string/event_codelabs_title"
-            app:mapLinkUri="@string/view_sandbox_map_url"
+            app:sessionsText="@string/view_codelabs_text"
+            app:mapLinkUri="@string/view_codelabs_map_url"
             app:scheduleFilterTag="@string/codelabs_filter_tag" />
 
         <com.google.samples.apps.iosched.info.event.EventView
@@ -120,6 +120,7 @@
             app:boxColor="@color/off_white"
             app:eventIcon="@drawable/ic_officehours"
             app:eventTitle="@string/event_officehours_title"
+            app:sessionsText="@string/view_events_text"
             app:mapLinkUri="@string/view_officehours_map_url"
             app:scheduleFilterTag="@string/officehours_filter_tag" />
 
@@ -129,9 +130,13 @@
             android:layout_height="wrap_content"
             app:boxColor="@color/light_periwinkle"
             app:eventIcon="@drawable/ic_afterhours"
-            app:eventTitle="@string/event_afterhours_title"
-            app:mapLinkUri="@string/view_afterhours_map_url"
-            app:scheduleFilterTag="@string/afterhours_filter_tag" />
+            app:eventTitle="@string/event_afterhours_title" />
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:src="@drawable/io17_logo"
+            tools:ignore="ContentDescription" />
 
     </LinearLayout>
 

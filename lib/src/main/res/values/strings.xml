@@ -852,6 +852,8 @@
     <string name="wifi_install_error_message">Sorry, unable to save wifi network</string>
 
     <string name="view_sessions_text">View Sessions</string>
+    <string name="view_codelabs_text">View Codelabs</string>
+    <string name="view_events_text">View Events</string>
     <string name="view_map_text">View Map</string>
 
     <string name="event_sandbox_title">Sandbox</string>

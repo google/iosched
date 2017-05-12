@@ -122,6 +122,20 @@ public class TagMetadata {
         }
     }
 
+    /**
+     * @param searchString A comma separated list of tag ids or names.
+     */
+    public Tag[] getTags(@NonNull String searchString) {
+        if (TextUtils.isEmpty(searchString)) return null;
+
+        String[] queries = searchString.split(",");
+        Tag[] tags = new Tag[queries.length];
+        for (int i = 0; i < queries.length; i++) {
+            tags[i] = getTag(queries[i]);
+        }
+        return tags;
+    }
+
     public List<Tag> getTagsInCategory(String category) {
         return mTagsInCategory.containsKey(category) ?
                 Collections.unmodifiableList(mTagsInCategory.get(category)) : null;
