@@ -16,35 +16,33 @@
 
 package com.google.samples.apps.iosched.map.util;
 
-import com.google.samples.apps.iosched.provider.ScheduleContract;
-
 import android.content.Context;
+
+import com.google.samples.apps.iosched.provider.ScheduleContract;
 
 /**
  * Loads the title and abstract for the very first session scheduled in a room.
  */
 public class SingleSessionLoader extends SessionLoader {
 
-
-    public SingleSessionLoader(Context context, String roomId, String roomTitle, int roomType) {
-        super(context, roomId, roomTitle, roomType,
+    public SingleSessionLoader(Context context, String roomId, String roomTitle, int roomType,
+                               String markerType) {
+        super(context, roomId, roomTitle, roomType, markerType,
                 ScheduleContract.Rooms.buildSessionsDirUri(roomId),
                 Query.PROJECTION, null, null, Query.ORDER_LIMIT);
 
     }
-
 
     /**
      * Query Paramters for the "Sessions in room after" query that returns a list of sessions
      * that are following a given time in a particular room. Results are limited to the first
      * session only.
      */
-    public static interface Query {
+    public interface Query {
 
-        final String ORDER_LIMIT = ScheduleContract.Sessions.SESSION_START + " ASC LIMIT 1";
+        String ORDER_LIMIT = ScheduleContract.Sessions.SESSION_START + " ASC LIMIT 1";
 
-
-        final String[] PROJECTION = {
+        String[] PROJECTION = {
                 ScheduleContract.Sessions._ID,
                 ScheduleContract.Sessions.SESSION_TITLE,
                 ScheduleContract.Sessions.SESSION_ABSTRACT
