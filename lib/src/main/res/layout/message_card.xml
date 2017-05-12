@@ -23,8 +23,7 @@
     android:layout_height="wrap_content"
     android:background="@color/lighter_grey"
     android:paddingTop="24dp"
-    android:paddingBottom="@dimen/spacing_normal"
-    android:theme="@style/ThemeOverlay.BlueAccent">
+    android:paddingBottom="@dimen/spacing_normal">
 
     <TextView
         android:id="@+id/title"

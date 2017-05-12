@@ -30,6 +30,7 @@ import android.text.style.StyleSpan;
 import com.google.samples.apps.iosched.Config.Tags;
 import com.google.samples.apps.iosched.lib.R;
 import com.google.samples.apps.iosched.model.TagMetadata.Tag;
+import com.google.samples.apps.iosched.util.UIUtils;
 
 import java.util.Collections;
 import java.util.HashSet;
@@ -157,7 +158,7 @@ public class TagFilterHolder implements Parcelable {
             needComma = true;
         }
 
-        int color = ResourcesCompat.getColor(res, R.color.theme_primary, theme);
+        int color = ResourcesCompat.getColor(res, R.color.lightish_blue_a11y, theme);
         builder.setSpan(new ForegroundColorSpan(color), filterNamesStart, builder.length(),
                 Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
         return builder;
