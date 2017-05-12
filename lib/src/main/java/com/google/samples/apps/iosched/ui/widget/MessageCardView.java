@@ -92,7 +92,7 @@ public class MessageCardView extends CardView implements View.OnClickListener {
         boolean button2emphasis = a.getBoolean(R.styleable.MessageCard_button2emphasis, false);
         String button2tag = a.getString(R.styleable.MessageCard_button2tag);
         int emphasisColor = a.getColor(R.styleable.MessageCard_emphasisColor,
-                getResources().getColor(R.color.theme_primary));
+                getResources().getColor(R.color.lightish_blue_a11y));
         a.recycle();
 
         if (button1text != null) {
@@ -121,7 +121,7 @@ public class MessageCardView extends CardView implements View.OnClickListener {
         mButtonTags[index] = tag;
         if (emphasis) {
             if (emphasisColor == 0) {
-                emphasisColor = getResources().getColor(R.color.theme_primary);
+                emphasisColor = getResources().getColor(R.color.lightish_blue_a11y);
             }
             mButtons[index].setTextColor(emphasisColor);
             mButtons[index].setTypeface(null, Typeface.BOLD);
