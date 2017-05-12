@@ -27,8 +27,8 @@ const admin = require('firebase-admin');
 admin.initializeApp(functions.config().firebase);
 
 // Amount of time (in millis) before the start of a session required for
-// reservations to be allowed. 30 minutes.
-const RES_CUT_OFF = 1800000;
+// reservations to be allowed. 1 hour.
+const RES_CUT_OFF = 3600000;
 
 const PATH_SESSIONS = 'sessions';
 const PATH_RESERVATIONS = 'reservations';
@@ -98,166 +98,6 @@ exports.sendFeedPing = functions.database.ref('/feed').onWrite(event => {
   });
 
 });
-
-/**
- * HTTP Function used to generate user_sessions path. This path will be used
- * to determine whether or not a user's reservation request clashes with an
- * existing one.
- *
- * This Function will use existing reservations to compile a list of easy to
- * read an process. This may be used in conjunction with isUserSessions valid
- * function to ensure that user_sessions path is accurate.
- */
-exports.setUserSessions = functions.https.onRequest((req, res) => {
-  // Get all users that can reserve sessions.
-  admin.database().ref('users').orderByValue().equalTo(true).on('value',
-      function (snapshot) {
-        var users = snapshot.val();
-        var promises = [];
-        for (var uid in users) {
-          // Create a user_sessions entry for each existing reservation the user
-          // has.
-          promises.push(setUserSessions(uid));
-        }
-        Promise.all(promises).then(function() {
-          res.status(200).end();
-        }).catch(function() {
-          res.status(500).end();
-        });
-      });
-});
-
-/**
- * Insert a user_sessions entry for each granted or waiting reservation the
- * given user has.
- *
- * @param uid ID of the user to insert user_sessions items.
- */
-function setUserSessions(uid) {
-  // Clear the users current user_session entries.
-  return getUserSessionsReference(uid).set({}).then(function() {
-    return setUserSessionsByStatus(uid, STATUS_GRANTED).then(function () {
-      return setUserSessionsByStatus(uid, STATUS_WAITING);
-    });
-  });
-}
-
-/**
- * Set user_sessions for the given user with sessions that match the given
- * reservation type.
- *
- * @param uid ID of user whose user_sessions will be set.
- * @param status Status of reservations to set, generally granted or waiting.
- * @returns {Promise.<TResult>} resolved if all sessions wer set, rejected
- *                              otherwise.
- */
-function setUserSessionsByStatus(uid, status) {
-  return admin.database().ref(PATH_SESSIONS)
-      .orderByChild(PATH_RESERVATIONS + '/' + uid + '/' + PATH_STATUS)
-      .equalTo(status).once('value')
-      .then(function(snapshot) {
-        const sessions = snapshot.val();
-        var promises = [];
-        for (var temp_session_id in sessions) {
-          promises.push(getUserSessionReference(uid, temp_session_id).set(true));
-        }
-        return Promise.all(promises);
-      });
-}
-
-/**
- * Check if user_sessions data is valid.
- */
-exports.isUserSessionsValid = functions.https.onRequest((req, res) => {
-  // Get all users that can reserve sessions.
-  admin.database().ref('users').orderByValue().equalTo(true).on('value',
-      function (snapshot) {
-        var users = snapshot.val();
-        var promises = [];
-        for (var uid in users) {
-          // Check the user_sessions validity of each user that can reserve.
-          promises.push(isUserSessionsValid(uid));
-        }
-        return Promise.all(promises).then(function() {
-          res.status(200).send("User Sessions are valid");
-        }).catch(function(invalid) {
-          console.log('USER SESSION INVALID');
-          console.log(invalid);
-          res.status(500).send(invalid);
-        });
-      });
-});
-
-/**
- * Check if user_sessions matches the granted and waiting reservations of the
- * given user.
- *
- * @param uid ID of user whose user_sessions will be validated.
- */
-function isUserSessionsValid(uid) {
-  var reservationPromises = [];
-  reservationPromises.push(getUserReservationsByStatus(uid, STATUS_GRANTED));
-  reservationPromises.push(getUserReservationsByStatus(uid, STATUS_WAITING));
-  return Promise.all(reservationPromises).then(function(results) {
-    var reservations = [];
-    reservations = reservations.concat(results[0]);
-    reservations = reservations.concat(results[1]);
-    return reservations;
-  }).then(function(trueReservations) {
-    // Get all user's user_sessions data.
-    return getUserSessionsReference(uid).once('value')
-        .then(function(snapshot) {
-          if (snapshot.val() == null) {
-            if (trueReservations.length == 0) {
-              console.log('user has no reservations');
-              return Promise.resolve(uid);
-            } else {
-              console.log('RESERVATIONS MISSING');
-              return Promise.reject(uid);
-            }
-          }
-          var currSessions = Object.keys(snapshot.val());
-          // Check that user_sessions contains at most the number of true
-          // reservations.
-          if (currSessions.length > trueReservations.length) {
-            console.log('TOO MANY RESERVATIONS');
-            return Promise.reject(uid);
-          } else {
-            // Check that user_sessions does not contain any reservation
-            // that does not exist in true reservations.
-            for (var i in currSessions) {
-              var sid = currSessions[i];
-              if (trueReservations.indexOf(sid) < 0) {
-                console.log('MYSTERY RESERVATION ' + sid);
-                return Promise.reject(uid);
-              }
-            }
-          }
-          return Promise.resolve();
-        });
-  });
-}
-
-/**
- * Retrieve a given user's reservations that match the given status.
- *
- * @param uid ID of user whose reservations are retrieved.
- * @param status Status of reservations to retrieve.
- * @returns {Promise.<TResult>} Array of retrieved reservations.
- */
-function getUserReservationsByStatus(uid, status) {
-  return admin.database().ref(PATH_SESSIONS)
-      .orderByChild(PATH_RESERVATIONS + '/' + uid + '/' + PATH_STATUS)
-      .equalTo(status).once('value')
-      .then(function(snapshot) {
-        const sessions = snapshot.val();
-        var reservations = [];
-        for (var temp_session_id in sessions) {
-          reservations.push(temp_session_id);
-        }
-        return reservations;
-      });
-}
 
 /**
  * Function to process "promotion from waitlist" requests. When a granted seat
@@ -453,33 +293,50 @@ function processReturn(uid, sid, rid) {
  * @returns {Promise.<TResult>} result can be true or false.
  */
 function checkForClash(uid, curr_session) {
-  // Get all existing reservations for this user
-  return admin.database().ref(PATH_SESSIONS)
-      .orderByChild(PATH_RESERVATIONS + '/' + uid + '/' + PATH_STATUS)
-      .equalTo(STATUS_GRANTED).once('value').then(function(snapshot) {
+  return getUserSessionsReference(uid).once('value')
+      .then(function(snapshot) {
         const sessions = snapshot.val();
-        for (var temp_session_id in sessions) {
-          // Check for clash with existing reservation
-          if (curr_session.time_start < sessions[temp_session_id].time_end &&
-              curr_session.time_end > sessions[temp_session_id].time_start) {
-            return true;
-          }
+        var promises = [];
+        for (var sessionId in sessions) {
+          promises.push(hasSessionClash(sessionId, curr_session));
         }
-        // Get all existing wait lists for this user
-        return admin.database().ref(PATH_SESSIONS)
-            .orderByChild(PATH_RESERVATIONS + '/' + uid + '/' + PATH_STATUS)
-            .equalTo(STATUS_WAITING).once('value').then(function(snapshot) {
-                const sessions = snapshot.val();
-                for (var temp_session_id in sessions) {
-                    // Check for clash with existing waitlist
-                    if (curr_session.time_start < sessions[temp_session_id].time_end &&
-                        curr_session.time_end > sessions[temp_session_id].time_start) {
-                        return true;
-                    }
-                }
-                return false;
-            });
+        return Promise.all(promises).then(function() {
+          // If all checks for a clash are resolved, no clash found.
+          return false;
+        }).catch(function() {
+          // If any check for a clash is rejected, a clash is found.
+          return true;
+        });
       });
+}
+
+/**
+ * Check if the session with session ID {sid} clashes with {curr_session}.
+ *
+ * @param sid ID of session to retrieve for comparison with {curr_session}.
+ * @param curr_session Object representing session being compared.
+ * @returns {Promise.<TResult>} resolved if no clash is found rejected otherwise.
+ */
+function hasSessionClash(sid, curr_session) {
+  // Get the end time of session with ID {sid}.
+  return Promise.all([
+    getSessionReference(sid).child('time_end').once('value'),
+    getSessionReference(sid).child('time_start').once('value')
+  ]).then(function(results) {
+    return {
+      time_end: results[0].val(),
+      time_start: results[1].val()
+    }
+  }).then(function(sessionTime) {
+    // Compare times for any overlap.
+    if (curr_session.time_start < sessionTime.time_end &&
+        curr_session.time_end > sessionTime.time_start) {
+      // Clash found so return rejected promise.
+      return Promise.reject();
+    }
+    // No clash found so return resolved promise.
+    return Promise.resolve();
+  });
 }
 
 /**
