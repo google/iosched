@@ -142,6 +142,4 @@
     <dimen name="event_button_margin">4dp</dimen>
     <dimen name="settings_content_padding">32dp</dimen>
 
-    <dimen name="status_bar_height">25dp</dimen>
-
 </resources>
