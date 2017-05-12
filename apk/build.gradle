@@ -30,6 +30,9 @@ repositories {
     flatDir {
         dirs '../third_party/sticky-headers/libs/'
     }
+    flatDir {
+        dirs '../third_party/material-components-android/libs/'
+    }
 }
 
 android {
