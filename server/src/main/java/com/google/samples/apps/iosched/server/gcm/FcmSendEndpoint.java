@@ -112,6 +112,22 @@ public class FcmSendEndpoint {
     sender.multicastSend(devices, "sync_schedule", null);
   }
 
+  /**
+   * Ping all users' devices to update UI indicating that the feed has been updated.
+   *
+   * @param context Servlet context (injected by Endpoints)
+   * @param user User making the request (injected by Endpoints)
+   */
+  @ApiMethod(name = "sendFeedPing", path = "feed",
+      clientIds = {Ids.SERVICE_ACCOUNT_CLIENT_ID})
+  public void sendFeedPing(ServletContext context, User user)
+      throws UnauthorizedException {
+    validateServiceAccount(user);
+    MessageSender sender = new MessageSender(context);
+    List<Device> devices = DeviceStore.getAllDevices();
+    sender.multicastSend(devices, "feed_update", null);
+  }
+
   private void validateServiceAccount(User user) throws UnauthorizedException {
     if (user == null || !user.getEmail().equals(Ids.SERVICE_ACCOUNT_EMAIL)) {
       throw new UnauthorizedException("Invalid credentials");
