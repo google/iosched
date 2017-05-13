@@ -28,17 +28,14 @@ public abstract class SessionLoader extends CursorLoader {
     private String mRoomTitle;
     private String mRoomId;
     private int mRoomType;
-    private String mMarkerType;
 
-    public SessionLoader(Context context, String roomId, String roomTitle, int roomType,
-                         String markerType, Uri uri, String[] projection, String selection,
-                         String[] selectionArgs, String sortOrder) {
+    public SessionLoader(Context context, String roomId, String roomTitle, int roomType, Uri uri,
+            String[] projection, String selection, String[] selectionArgs, String sortOrder) {
         super(context, uri, projection, selection, selectionArgs, sortOrder);
 
         mRoomId = roomId;
         mRoomTitle = roomTitle;
         mRoomType = roomType;
-        mMarkerType = markerType;
     }
 
     public int getRoomType() {
@@ -53,7 +50,5 @@ public abstract class SessionLoader extends CursorLoader {
         return mRoomTitle;
     }
 
-    public String getMarkerType() {
-        return mMarkerType;
-    }
+
 }

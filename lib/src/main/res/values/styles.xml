@@ -214,6 +214,13 @@
         <item name="scrimVisibleHeightTrigger">156dp</item>
     </style>
 
+    <style name="Map.RoomTitle" parent="">
+        <item name="android:textSize">@dimen/map_room_title_text_size</item>
+        <item name="android:textColor">@color/map_text_primary</item>
+        <item name="android:ellipsize">end</item>
+        <item name="android:fontFamily">sans-serif-medium</item>
+    </style>
+
     <style name="AppBar">
         <item name="android:elevation">@dimen/appbar_elevation</item>
         <item name="android:fitsSystemWindows">true</item>
