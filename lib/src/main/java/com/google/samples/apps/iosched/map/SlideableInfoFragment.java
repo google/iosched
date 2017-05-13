@@ -16,6 +16,8 @@
 
 package com.google.samples.apps.iosched.map;
 
+import com.google.samples.apps.iosched.lib.R;
+
 import android.content.res.Resources;
 import android.database.Cursor;
 import android.os.Bundle;
@@ -26,8 +28,6 @@ import android.support.design.widget.CoordinatorLayout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-
-import com.google.samples.apps.iosched.lib.R;
 
 /**
  * Map info fragment that uses a {@link com.sothree.slidinguppanel.SlidingUpPanelLayout} to display
@@ -77,7 +77,7 @@ public class SlideableInfoFragment extends MapInfoFragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+            Bundle savedInstanceState) {
         return super.onCreateView(inflater, container, savedInstanceState,
                 R.layout.map_info_bottom);
     }
@@ -93,8 +93,8 @@ public class SlideableInfoFragment extends MapInfoFragment {
     }
 
     @Override
-    public void showTitleOnly(int roomType, String title, String subtitle, String iconType) {
-        super.showTitleOnly(roomType, title, subtitle, iconType);
+    public void showTitleOnly(int roomType, String title, String subtitle) {
+        super.showTitleOnly(roomType, title, subtitle);
         setCollapsedOnly();
     }
 
@@ -113,16 +113,15 @@ public class SlideableInfoFragment extends MapInfoFragment {
     }
 
     @Override
-    protected void onSessionLoadingFailed(String roomTitle, int roomType, String markerType) {
+    protected void onSessionLoadingFailed(String roomTitle, int roomType) {
         // Do not display the list but permanently hide it
-        super.onSessionLoadingFailed(roomTitle, roomType, markerType);
+        super.onSessionLoadingFailed(roomTitle, roomType);
         setCollapsedOnly();
     }
 
     @Override
-    protected void onSessionsLoaded(String roomTitle, int roomType, Cursor cursor,
-                                    String markerType) {
-        super.onSessionsLoaded(roomTitle, roomType, cursor, markerType);
+    protected void onSessionsLoaded(String roomTitle, int roomType, Cursor cursor) {
+        super.onSessionsLoaded(roomTitle, roomType, cursor);
         // Set up panel: expandable with session height
         mBehavior.setPeekHeight(mHeightSession);
         mBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);

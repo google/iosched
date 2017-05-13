@@ -43,7 +43,7 @@ import static com.google.samples.apps.iosched.util.LogUtils.makeLogTag;
  * Optionally a room can be specified via {@link #EXTRA_ROOM} that pans the map to its indicated
  * marker.
  *
- * @see com.google.samples.apps.iosched.map.MapInfoFragment#newInstance(android.content.Context)
+ * @see com.google.samples.apps.iosched.map.MapInfoFragment#newInstace(android.content.Context)
  */
 public class MapActivity extends BaseActivity
         implements SlideableInfoFragment.Callback, MapFragment.Callbacks,
@@ -147,7 +147,7 @@ public class MapActivity extends BaseActivity
         }
 
         if (mInfoFragment == null) {
-            mInfoFragment = MapInfoFragment.newInstance(this);
+            mInfoFragment = MapInfoFragment.newInstace(this);
             getSupportFragmentManager().beginTransaction()
                     .add(R.id.fragment_container_map_info, mInfoFragment, "mapsheet")
                     .commit();
@@ -232,18 +232,17 @@ public class MapActivity extends BaseActivity
     }
 
     @Override
-    public void onInfoShowTitle(String title, String subtitle, int roomType, String iconType) {
+    public void onInfoShowTitle(String title, String subtitle, int roomType) {
         if (mInfoFragment != null) {
-            mInfoFragment.showTitleOnly(roomType, title, subtitle, iconType);
+            mInfoFragment.showTitleOnly(roomType, title, subtitle);
         }
         setTabletInfoVisibility(VISIBLE);
     }
 
     @Override
-    public void onInfoShowSessionList(String roomId, String roomTitle, int roomType,
-                                      String markerType) {
+    public void onInfoShowSessionlist(String roomId, String roomTitle, int roomType) {
         if (mInfoFragment != null) {
-            mInfoFragment.showSessionList(roomId, roomTitle, roomType, markerType);
+            mInfoFragment.showSessionList(roomId, roomTitle, roomType);
         }
         setTabletInfoVisibility(VISIBLE);
     }
@@ -251,7 +250,7 @@ public class MapActivity extends BaseActivity
     @Override
     public void onInfoShowFirstSessionTitle(String roomId, String roomTitle, int roomType) {
         if (mInfoFragment != null) {
-            mInfoFragment.showFirstSessionTitle(roomId, roomTitle, roomType, null);
+            mInfoFragment.showFirstSessionTitle(roomId, roomTitle, roomType);
         }
         setTabletInfoVisibility(VISIBLE);
     }
@@ -291,7 +290,7 @@ public class MapActivity extends BaseActivity
 
     @Override
     public void onRequestPermissionsResult(final int requestCode,
-                                           @NonNull final String[] permissions, @NonNull final int[] grantResults) {
+            @NonNull final String[] permissions, @NonNull final int[] grantResults) {
 
         if (requestCode != REQUEST_LOCATION_PERMISSION) {
             return;

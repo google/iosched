@@ -16,9 +16,9 @@
 
 package com.google.samples.apps.iosched.map.util;
 
-import android.content.Context;
-
 import com.google.samples.apps.iosched.provider.ScheduleContract;
+
+import android.content.Context;
 
 /**
  * Loads session information for all sessions scheduled in a particular room after a timestamp.
@@ -27,8 +27,8 @@ public class OverviewSessionLoader extends SessionLoader {
 
 
     public OverviewSessionLoader(Context context, String roomId, String roomTitle,
-                                 int roomType, String markerType, long time) {
-        super(context, roomId, roomTitle, roomType, markerType,
+            int roomType, long time) {
+        super(context, roomId, roomTitle, roomType,
                 ScheduleContract.Sessions.buildSessionsInRoomAfterUri(roomId, time),
                 Query.PROJECTION,
                 null, null, Query.ORDER);
