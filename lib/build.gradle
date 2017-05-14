@@ -263,7 +263,7 @@ dependencies {
     compile 'com.android.support.constraint:constraint-layout:1.0.2'
     // Use a local build of the design lib to pick up some fixes.
     // See third_party/material-components-android
-    compile(name: 'design-release-d15d791', ext: 'aar')
+    compile(name: 'design-release-32b1f74', ext: 'aar')
 
     // JSON utility library.
     compile 'com.google.code.gson:gson:2.8.0'
