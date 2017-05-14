@@ -50,10 +50,10 @@ import static com.google.samples.apps.iosched.util.LogUtils.LOGE;
 
 public class MapUtils {
 
-    public static final String ICON_RESOURCE_PREFIX = "map_marker_";
+    private static final String ICON_RESOURCE_PREFIX = "map_marker_";
     private static final String TILE_PATH = "maptiles";
     private static final String TAG = LogUtils.makeLogTag(MapUtils.class);
-    public static final String TYPE_ICON_PREFIX = "ICON_";
+    private static final String TYPE_ICON_PREFIX = "ICON_";
 
     /**
      * Returns the room type for a {@link com.google.samples.apps.iosched.map.util.MarkerModel}
@@ -91,32 +91,6 @@ public class MapUtils {
     }
 
     /**
-     * Returns the drawable Id of icon to use for a room type.
-     */
-    public static @DrawableRes int getRoomIcon(int markerType) {
-        switch (markerType) {
-            case MarkerModel.TYPE_SESSION:
-                return R.drawable.ic_map_session;
-            case MarkerModel.TYPE_FIRSTSESSION:
-                return R.drawable.ic_map_session;
-            case MarkerModel.TYPE_PLAIN:
-                return R.drawable.ic_map_pin;
-            case MarkerModel.TYPE_CODELAB:
-                return R.drawable.ic_map_codelab;
-            case MarkerModel.TYPE_SANDBOX:
-                return R.drawable.ic_map_sandbox;
-            case MarkerModel.TYPE_OFFICEHOURS:
-                return R.drawable.ic_map_officehours;
-            case MarkerModel.TYPE_MISC:
-                return R.drawable.ic_map_misc;
-            case MarkerModel.TYPE_CHAT:
-                return R.drawable.ic_map_sandbox;
-            default:
-                return R.drawable.ic_map_pin;
-        }
-    }
-
-    /**
      * True if the info details for this room type should only contain a title and optional
      * subtitle.
      */
@@ -128,7 +102,6 @@ public class MapUtils {
                 markerType == MarkerModel.TYPE_ICON ||
                 markerType == MarkerModel.TYPE_CODELAB;
     }
-
 
     /**
      * True if the info details for this room type contain a title and a list of sessions.
@@ -157,7 +130,7 @@ public class MapUtils {
      * True if the marker for this feature should be changed to a generic "active" marker when
      * clicked, and changed back to the generic marker when deselected.
      */
-    public static boolean useActiveMarker(int type){
+    public static boolean useActiveMarker(int type) {
         return type != MarkerModel.TYPE_ICON && type != MarkerModel.TYPE_LABEL;
     }
 
@@ -181,11 +154,10 @@ public class MapUtils {
     /**
      * Creates a new IconGenerator for labels on the map.
      */
-    public static IconGenerator getLabelIconGenerator(Context c) {
+    private static IconGenerator getLabelIconGenerator(Context c) {
         IconGenerator iconFactory = new IconGenerator(c);
         iconFactory.setTextAppearance(R.style.TextApparance_Map_Label);
         iconFactory.setBackground(null);
-
         return iconFactory;
     }
 
@@ -193,16 +165,16 @@ public class MapUtils {
      * Creates a GeoJsonPointStyle for a label.
      *
      * @param iconFactory Reusable IconFactory
-     * @param id          Id to be embedded as the title
+     * @param title          Id to be embedded as the title
      * @param label       Text to be shown on the label
      */
-    public static GeoJsonPointStyle createLabelMarker(IconGenerator iconFactory, String id,
-            String label) {
+    private static GeoJsonPointStyle createLabelMarker(IconGenerator iconFactory, String title,
+                                                       String label) {
         final BitmapDescriptor icon =
                 BitmapDescriptorFactory.fromBitmap(iconFactory.makeIcon(label));
         GeoJsonPointStyle pointStyle = new GeoJsonPointStyle();
         pointStyle.setAnchor(0.5f, 0.5f);
-        pointStyle.setTitle(id);
+        pointStyle.setTitle(title);
         pointStyle.setIcon(icon);
         pointStyle.setVisible(false);
         return pointStyle;
@@ -213,13 +185,12 @@ public class MapUtils {
      * in {@link #getDrawableForIconType(Context, String)} and anchored
      * at the bottom center for the location. When isActive is set to true, the icon is tinted.
      */
-    public static GeoJsonPointStyle createIconMarker(final String iconType, final String id,
-                                                     boolean isActive, Context context) {
-
+    private static GeoJsonPointStyle createIconMarker(final String iconType, final String title,
+                                                      boolean isActive, Context context) {
         final Bitmap iconBitmap = getIconMarkerBitmap(context, iconType, isActive);
         final BitmapDescriptor icon = BitmapDescriptorFactory.fromBitmap(iconBitmap);
         GeoJsonPointStyle pointStyle = new GeoJsonPointStyle();
-        pointStyle.setTitle(id);
+        pointStyle.setTitle(title);
         pointStyle.setVisible(false);
         pointStyle.setIcon(icon);
         pointStyle.setAnchor(0.5f, 1f);
@@ -228,10 +199,10 @@ public class MapUtils {
 
     /**
      * Loads the marker icon for this ICON_TYPE marker.
-     *
+     * <p>
      * If isActive is set, the marker is tinted. See {@link UIUtils#tintBitmap(Bitmap, int)}.
      */
-    public static Bitmap getIconMarkerBitmap(Context context, String iconType, boolean isActive){
+    public static Bitmap getIconMarkerBitmap(Context context, String iconType, boolean isActive) {
         final int iconResource = getDrawableForIconType(context, iconType);
 
         if (iconResource < 1) {
@@ -239,7 +210,7 @@ public class MapUtils {
             return null;
         }
         Bitmap iconBitmap = UIUtils.drawableToBitmap(context, iconResource);
-        if(isActive) {
+        if (isActive) {
             iconBitmap = UIUtils.tintBitmap(iconBitmap,
                     ContextCompat.getColor(context, R.color.map_active_icon_tint));
         }
@@ -251,7 +222,8 @@ public class MapUtils {
      * prefixing #ICON_RESOURCE_PREFIX to the icon type in lower case. Returns 0 if no resource with
      * this name exists.
      */
-    private static int getDrawableForIconType(final Context context, final String iconType) {
+    public static @DrawableRes int getDrawableForIconType(@NonNull Context context,
+                                                          @NonNull String iconType) {
         if (iconType == null || !iconType.startsWith(TYPE_ICON_PREFIX)) {
             return 0;
         }
@@ -259,9 +231,8 @@ public class MapUtils {
         // Return the ID of the resource that matches the iconType name.
         // If no resources matches this name, returns 0.
         //noinspection DefaultLocale
-        return context.getResources()
-                      .getIdentifier(ICON_RESOURCE_PREFIX + iconType.toLowerCase(), "drawable",
-                              context.getPackageName());
+        return context.getResources().getIdentifier(ICON_RESOURCE_PREFIX + iconType.toLowerCase(),
+                "drawable", context.getPackageName());
     }
 
     private static String[] mapTileAssets;

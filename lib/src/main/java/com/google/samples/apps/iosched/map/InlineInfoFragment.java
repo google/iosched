@@ -29,7 +29,7 @@ import android.view.ViewGroup;
 
 /**
  * Map info fragment that displays its content within in.
- *
+ * <p>
  * It resizes based on the available space of its container. The list of sessions is automatically
  * marked as scrollable if required.
  * It is designed to be displayed at the left of the screen with a fixed width that is the only
@@ -46,7 +46,7 @@ public class InlineInfoFragment extends MapInfoFragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
-            Bundle savedInstanceState) {
+                             Bundle savedInstanceState) {
         mLayout = super
                 .onCreateView(inflater, container, savedInstanceState, R.layout.map_info_inline);
 
@@ -58,7 +58,7 @@ public class InlineInfoFragment extends MapInfoFragment {
     private View.OnLayoutChangeListener mLayoutChangeListener = new View.OnLayoutChangeListener() {
         @Override
         public void onLayoutChange(View v, int left, int top, int right, int bottom, int oldLeft,
-                int oldTop, int oldRight, int oldBottom) {
+                                   int oldTop, int oldRight, int oldBottom) {
             mWidth = right;
             mLayout.removeOnLayoutChangeListener(this);
         }
@@ -70,26 +70,28 @@ public class InlineInfoFragment extends MapInfoFragment {
     }
 
     @Override
-    protected void onSessionsLoaded(String roomTitle, int roomType, Cursor cursor) {
-        super.onSessionsLoaded(roomTitle, roomType, cursor);
+    protected void onSessionsLoaded(String roomTitle, int roomType, Cursor cursor,
+                                    String iconType) {
+        super.onSessionsLoaded(roomTitle, roomType, cursor, iconType);
         show();
     }
 
     @Override
-    protected void onRoomSubtitleLoaded(String roomTitle, int roomType, String subTitle) {
-        super.onRoomSubtitleLoaded(roomTitle, roomType, subTitle);
+    protected void onRoomSubtitleLoaded(String roomTitle, int roomType, String subTitle,
+                                        String iconType) {
+        super.onRoomSubtitleLoaded(roomTitle, roomType, subTitle, iconType);
         show();
     }
 
     @Override
-    protected void onSessionLoadingFailed(String roomTitle, int roomType) {
-        super.onSessionLoadingFailed(roomTitle, roomType);
+    protected void onSessionLoadingFailed(String roomTitle, int roomType, String iconType) {
+        super.onSessionLoadingFailed(roomTitle, roomType, iconType);
         show();
     }
 
     @Override
-    public void showTitleOnly(int icon, String roomTitle, String subTitle) {
-        super.showTitleOnly(icon, roomTitle, subTitle);
+    public void showTitleOnly(int icon, String roomTitle, String subTitle, String iconType) {
+        super.showTitleOnly(icon, roomTitle, subTitle, iconType);
         show();
     }
 

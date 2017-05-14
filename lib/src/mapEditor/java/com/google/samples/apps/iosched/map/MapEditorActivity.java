@@ -107,17 +107,19 @@ public class MapEditorActivity extends AppCompatActivity implements EditorMapFra
     }
 
     @Override
-    public void onInfoShowTitle(String label, String subtitle, int roomType) {
+    public void onInfoShowTitle(String label, String subtitle, int roomType, String iconType) {
         showMessage(label);
     }
 
     @Override
-    public void onInfoShowSessionlist(String roomId, String roomTitle, int roomType) {
+    public void onInfoShowSessionList(String roomId, String roomTitle, int roomType,
+                                      String iconType) {
         showMessage(String.format("%s (%s) + session list", roomTitle, roomId));
     }
 
     @Override
-    public void onInfoShowFirstSessionTitle(String roomId, String roomTitle, int roomType) {
+    public void onInfoShowFirstSessionTitle(String roomId, String roomTitle, int roomType,
+                                            String iconType) {
         showMessage(String.format("%s (%s) + first session title", roomTitle, roomId));
     }
 
