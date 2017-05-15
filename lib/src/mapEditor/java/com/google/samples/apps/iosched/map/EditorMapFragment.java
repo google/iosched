@@ -42,15 +42,17 @@ public class EditorMapFragment extends MapFragment {
         }
 
         @Override
-        public void onInfoShowTitle(String label, String subtitle, int roomType) {
+        public void onInfoShowTitle(String label, String subtitle, int roomType, String iconType) {
         }
 
         @Override
-        public void onInfoShowSessionlist(String roomId, String roomTitle, int roomType) {
+        public void onInfoShowSessionList(String roomId, String roomTitle, int roomType,
+                                          String iconType) {
         }
 
         @Override
-        public void onInfoShowFirstSessionTitle(String roomId, String roomTitle, int roomType) {
+        public void onInfoShowFirstSessionTitle(String roomId, String roomTitle, int roomType,
+                                                String iconType) {
         }
 
     };
