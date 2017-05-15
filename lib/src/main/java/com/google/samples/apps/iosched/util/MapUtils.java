@@ -17,8 +17,8 @@ package com.google.samples.apps.iosched.util;
 
 import android.content.Context;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.support.annotation.DrawableRes;
+import android.support.annotation.NonNull;
 import android.support.v4.content.ContextCompat;
 import android.text.TextUtils;
 
@@ -164,13 +164,14 @@ public class MapUtils {
     /**
      * Creates a GeoJsonPointStyle for a session.
      *
-     * @param id Id to be embedded as the title
+     * @param title Id to be embedded as the title
      */
-    public static GeoJsonPointStyle createPinMarker(String id) {
+    public static GeoJsonPointStyle createPinMarker(@NonNull Context context, String title) {
         final BitmapDescriptor icon =
-                BitmapDescriptorFactory.fromResource(R.drawable.map_marker_unselected);
+                BitmapDescriptorFactory.fromBitmap(
+                        UIUtils.drawableToBitmap(context, R.drawable.map_marker_unselected));
         GeoJsonPointStyle pointStyle = new GeoJsonPointStyle();
-        pointStyle.setTitle(id);
+        pointStyle.setTitle(title);
         pointStyle.setIcon(icon);
         pointStyle.setVisible(false);
         pointStyle.setAnchor(0.5f, 0.85526f);
@@ -237,8 +238,7 @@ public class MapUtils {
             // Not a valid icon type.
             return null;
         }
-
-        Bitmap iconBitmap = BitmapFactory.decodeResource(context.getResources(), iconResource);
+        Bitmap iconBitmap = UIUtils.drawableToBitmap(context, iconResource);
         if(isActive) {
             iconBitmap = UIUtils.tintBitmap(iconBitmap,
                     ContextCompat.getColor(context, R.color.map_active_icon_tint));
@@ -425,7 +425,7 @@ public class MapUtils {
                 pointStyle = MapUtils.createIconMarker(typeString, id, false, context);
             } else if (type != MarkerModel.TYPE_INACTIVE) {
                 // All other markers (that are not inactive) contain a pin icon
-                pointStyle = MapUtils.createPinMarker(id);
+                pointStyle = MapUtils.createPinMarker(context, id);
             }
 
             // If the marker is invalid (e.g. the icon does not exist), remove it from the map.

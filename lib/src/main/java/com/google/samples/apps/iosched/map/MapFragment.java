@@ -58,6 +58,7 @@ import com.google.samples.apps.iosched.map.util.TileLoadingTask;
 import com.google.samples.apps.iosched.provider.ScheduleContract;
 import com.google.samples.apps.iosched.util.AnalyticsHelper;
 import com.google.samples.apps.iosched.util.MapUtils;
+import com.google.samples.apps.iosched.util.UIUtils;
 
 import org.json.JSONObject;
 
@@ -299,8 +300,10 @@ public class MapFragment extends com.google.android.gms.maps.SupportMapFragment 
     public void onMapReady(GoogleMap googleMap) {
 
         // Initialise marker icons.
-        ICON_ACTIVE = BitmapDescriptorFactory.fromResource(R.drawable.map_marker_selected);
-        ICON_NORMAL = BitmapDescriptorFactory.fromResource(R.drawable.map_marker_unselected);
+        ICON_ACTIVE = BitmapDescriptorFactory.fromBitmap(
+                UIUtils.drawableToBitmap(getContext(), R.drawable.map_marker_selected));
+        ICON_NORMAL = BitmapDescriptorFactory.fromBitmap(
+                UIUtils.drawableToBitmap(getContext(), R.drawable.map_marker_unselected));
 
         mMap = googleMap;
         mMap.setMapStyle(MapStyleOptions.loadRawResourceStyle(getContext(), R.raw.maps_style));
