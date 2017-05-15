@@ -236,7 +236,8 @@ public class ScheduleSingleDayFragment extends Fragment
         Bundle args = new Bundle();
         args.putString(ScheduleModel.SESSION_ID_KEY, sessionId);
         mListener.onUserAction(action, args);
-        SessionsHelper.showBookmarkClickedHint(getView(), !isInSchedule);
+        SessionsHelper.showBookmarkClickedHint(getActivity().findViewById(android.R.id.content),
+                !isInSchedule);
     }
 
     @Override
