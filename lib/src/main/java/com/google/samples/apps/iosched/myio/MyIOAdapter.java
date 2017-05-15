@@ -17,6 +17,7 @@ package com.google.samples.apps.iosched.myio;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
+import android.support.v7.util.DiffUtil;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.RecyclerView.Adapter;
 import android.support.v7.widget.RecyclerView.ViewHolder;
@@ -53,8 +54,8 @@ class MyIOAdapter extends Adapter<ViewHolder> implements StickyHeaders, StickyHe
 
     private static final int VIEW_TYPE_SESSION = 0;
     private static final int VIEW_TYPE_NON_SESSION = 1;
-    private static final int VIEW_TYPE_SEPARATOR_SPACER = 2;
-    private static final int VIEW_TYPE_SEPARATOR = 3;
+    private static final int VIEW_TYPE_SPACER = 2;
+    private static final int VIEW_TYPE_DAY_HEADER = 3;
     private static final int VIEW_TYPE_MESSAGE_CARD = 4;
     private static final int PAYLOAD_TAG_META = 7;
 
@@ -88,14 +89,12 @@ class MyIOAdapter extends Adapter<ViewHolder> implements StickyHeaders, StickyHe
     MyIOAdapter(Context context, Callbacks callbacks) {
         mContext = context;
         mCallbacks = callbacks;
-        setHasStableIds(true);
         stuckHeaderElevation = context.getResources().getDimension(R.dimen.card_elevation);
-
         setItems(null); // build the initial list of items
     }
 
-    public void setItems(List<ScheduleItem> items) {
-        mItems.clear();
+    void setItems(List<ScheduleItem> items) {
+        List<Object> newData = new ArrayList<>();
 
         MessageData notSignedInCard =
                 MessageCardHelper.notSignedInCard();
@@ -123,9 +122,9 @@ class MyIOAdapter extends Adapter<ViewHolder> implements StickyHeaders, StickyHe
 
         if (WelcomeUtils.showPostOnboardingCard(mContext)) {
             if (AccountUtils.hasActiveAccount(mContext)) {
-                mItems.add(signedInMessageCard);
+                newData.add(signedInMessageCard);
             } else {
-                mItems.add(notSignedInCard);
+                newData.add(notSignedInCard);
             }
         }
 
@@ -136,8 +135,8 @@ class MyIOAdapter extends Adapter<ViewHolder> implements StickyHeaders, StickyHe
             for (ScheduleItem item : items) {
                 if (item.startTime >= separatorTime) {
                     // add the separator first
-                    mItems.add(new SeparatorSpacer());
-                    mItems.add(DAY_SEPARATORS.get(day));
+                    newData.add(new SeparatorSpacer());
+                    newData.add(DAY_SEPARATORS.get(day));
                     day++;
                     if (day >= DAY_SEPARATORS.size()) {
                         // run the list to the end
@@ -147,16 +146,22 @@ class MyIOAdapter extends Adapter<ViewHolder> implements StickyHeaders, StickyHe
                     }
                 }
                 // Add the item
-                mItems.add(item);
+                newData.add(item);
             }
         }
 
         // Add any remaining separators
         for (; day < DAY_SEPARATORS.size(); day++) {
-            mItems.add(new SeparatorSpacer());
-            mItems.add(DAY_SEPARATORS.get(day));
+            newData.add(new SeparatorSpacer());
+            newData.add(DAY_SEPARATORS.get(day));
         }
 
+        DiffUtil.DiffResult diff = DiffUtil.calculateDiff(new MyIoDiff(mItems, newData));
+        mItems.clear();
+        mItems.addAll(newData);
+        diff.dispatchUpdatesTo(this);
+        // we shouldn't need the following call, but without it the StickyHeader LayoutManger's
+        // bookkeeping gets messed up; this forces it to re-create it's internal state.
         notifyDataSetChanged();
     }
 
@@ -207,10 +212,10 @@ class MyIOAdapter extends Adapter<ViewHolder> implements StickyHeaders, StickyHe
             return VIEW_TYPE_SESSION;
         }
         if (item instanceof SeparatorSpacer) {
-            return VIEW_TYPE_SEPARATOR_SPACER;
+            return VIEW_TYPE_SPACER;
         }
         if (item instanceof DaySeparator) {
-            return VIEW_TYPE_SEPARATOR;
+            return VIEW_TYPE_DAY_HEADER;
         }
         if (item instanceof MessageData) {
             return VIEW_TYPE_MESSAGE_CARD;
@@ -225,9 +230,9 @@ class MyIOAdapter extends Adapter<ViewHolder> implements StickyHeaders, StickyHe
                 return SessionItemViewHolder.newInstance(parent, mCallbacks, SPAN);
             case VIEW_TYPE_NON_SESSION:
                 return NonSessionItemViewHolder.newInstance(parent);
-            case VIEW_TYPE_SEPARATOR_SPACER:
+            case VIEW_TYPE_SPACER:
                 return SeparatorSpacerViewHolder.newInstance(parent);
-            case VIEW_TYPE_SEPARATOR:
+            case VIEW_TYPE_DAY_HEADER:
                 return DaySeparatorViewHolder.newInstance(parent, mCallbacks);
             case VIEW_TYPE_MESSAGE_CARD:
                 LayoutInflater inflater = LayoutInflater.from(parent.getContext());
@@ -247,7 +252,7 @@ class MyIOAdapter extends Adapter<ViewHolder> implements StickyHeaders, StickyHe
             case VIEW_TYPE_NON_SESSION:
                 ((NonSessionItemViewHolder) holder).bind((ScheduleItem) item);
                 break;
-            case VIEW_TYPE_SEPARATOR:
+            case VIEW_TYPE_DAY_HEADER:
                 ((DaySeparatorViewHolder) holder).bind((DaySeparator) item);
                 break;
             case VIEW_TYPE_MESSAGE_CARD:
@@ -275,7 +280,7 @@ class MyIOAdapter extends Adapter<ViewHolder> implements StickyHeaders, StickyHe
 
     @Override
     public boolean isStickyHeader(int position) {
-        return getItemViewType(position) == VIEW_TYPE_SEPARATOR;
+        return getItemViewType(position) == VIEW_TYPE_DAY_HEADER;
     }
 
     @Override
@@ -428,6 +433,47 @@ class MyIOAdapter extends Adapter<ViewHolder> implements StickyHeaders, StickyHe
         static SeparatorSpacerViewHolder newInstance(@NonNull ViewGroup parent) {
             return new SeparatorSpacerViewHolder(LayoutInflater.from(parent.getContext())
                     .inflate(R.layout.spacer, parent, false));
+        }
+    }
+
+    private static class MyIoDiff extends DiffUtil.Callback {
+
+        private final List<Object> oldItems;
+        private final List<Object> newItems;
+
+        public MyIoDiff(List<Object> oldItems, List<Object> newItems) {
+            this.oldItems = oldItems;
+            this.newItems = newItems;
+        }
+
+        @Override
+        public int getOldListSize() {
+            return oldItems.size();
+        }
+
+        @Override
+        public int getNewListSize() {
+            return newItems.size();
+        }
+
+        @Override
+        public boolean areItemsTheSame(int oldItemPosition, int newItemPosition) {
+            Object oldItem = oldItems.get(oldItemPosition);
+            Object newItem = newItems.get(newItemPosition);
+            if (oldItem instanceof SeparatorSpacer && newItem instanceof SeparatorSpacer) {
+                return true;
+            } else if (oldItem instanceof DaySeparator && newItem instanceof DaySeparator) {
+                return ((DaySeparator) oldItem).mDay == ((DaySeparator) newItem).mDay;
+            } else if ((oldItem instanceof ScheduleItem && newItem instanceof ScheduleItem)
+                    || (oldItem instanceof MessageData && newItem instanceof MessageData)) {
+                return oldItem.equals(newItem);
+            }
+            return false;
+        }
+
+        @Override
+        public boolean areContentsTheSame(int oldItemPosition, int newItemPosition) {
+            return true; // all items are stateless
         }
     }
 }
