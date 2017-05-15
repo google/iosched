@@ -27,12 +27,11 @@ public class OverviewSessionLoader extends SessionLoader {
 
 
     public OverviewSessionLoader(Context context, String roomId, String roomTitle,
-            int roomType, long time) {
-        super(context, roomId, roomTitle, roomType,
+                                 int roomType, String markerType, long time) {
+        super(context, roomId, roomTitle, roomType, markerType,
                 ScheduleContract.Sessions.buildSessionsInRoomAfterUri(roomId, time),
                 Query.PROJECTION,
                 null, null, Query.ORDER);
-
     }
 
 

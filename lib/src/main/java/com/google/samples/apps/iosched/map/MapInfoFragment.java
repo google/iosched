@@ -24,6 +24,8 @@ import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Rect;
 import android.os.Bundle;
+import android.support.annotation.DrawableRes;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager;
@@ -38,7 +40,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.google.samples.apps.iosched.lib.R;
-import com.google.samples.apps.iosched.map.util.MarkerModel;
 import com.google.samples.apps.iosched.map.util.OverviewSessionLoader;
 import com.google.samples.apps.iosched.map.util.SessionLoader;
 import com.google.samples.apps.iosched.map.util.SingleSessionLoader;
@@ -46,6 +47,9 @@ import com.google.samples.apps.iosched.model.ScheduleItem;
 import com.google.samples.apps.iosched.util.MapUtils;
 import com.google.samples.apps.iosched.util.TimeUtils;
 import com.google.samples.apps.iosched.util.UIUtils;
+
+import static android.view.View.GONE;
+import static android.view.View.VISIBLE;
 
 /**
  * Displays information about the map.
@@ -60,6 +64,7 @@ public abstract class MapInfoFragment extends Fragment
     private static final String QUERY_ARG_ROOMID = "roomid";
     private static final String QUERY_ARG_ROOMTITLE = "roomtitle";
     private static final String QUERY_ARG_ROOMTYPE = "roomicon";
+    private static final String QUERY_ARG_ICONTYPE = "icontype";
 
     protected TextView mTitle;
     protected TextView mSubtitle;
@@ -109,7 +114,6 @@ public abstract class MapInfoFragment extends Fragment
         mTitle = (TextView) root.findViewById(R.id.map_info_title);
         mSubtitle = (TextView) root.findViewById(R.id.map_info_subtitle);
         mIcon = (ImageView) root.findViewById(R.id.map_info_icon);
-        mIcon.setColorFilter(getResources().getColor(R.color.map_icon_default));
         mList = (RecyclerView) root.findViewById(R.id.map_info_list);
         final Context context = mList.getContext();
         mList.addItemDecoration(new DividerDecoration(context));
@@ -127,11 +131,13 @@ public abstract class MapInfoFragment extends Fragment
         final String roomId = args.getString(QUERY_ARG_ROOMID);
         final String roomTitle = args.getString(QUERY_ARG_ROOMTITLE);
         final int roomType = args.getInt(QUERY_ARG_ROOMTYPE);
+        final String iconType = args.getString(QUERY_ARG_ICONTYPE);
 
         if (id == QUERY_TOKEN_SESSION_ROOM) {
-            return new OverviewSessionLoader(getActivity(), roomId, roomTitle, roomType, time);
+            return new OverviewSessionLoader(getActivity(), roomId, roomTitle, roomType, iconType,
+                    time);
         } else if (id == QUERY_TOKEN_SUBTITLE) {
-            return new SingleSessionLoader(getActivity(), roomId, roomTitle, roomType);
+            return new SingleSessionLoader(getActivity(), roomId, roomTitle, roomType, iconType);
         }
         return null;
     }
@@ -144,13 +150,14 @@ public abstract class MapInfoFragment extends Fragment
         switch (loader.getId()) {
             case QUERY_TOKEN_SESSION_ROOM: {
                 SessionLoader sessionLoader = (SessionLoader) loader;
-                showSessionList(sessionLoader.getRoomTitle(), sessionLoader.getRoomType(), cursor);
+                showSessionList(sessionLoader.getRoomTitle(), sessionLoader.getRoomType(), cursor,
+                        sessionLoader.getIconType());
                 break;
             }
             case QUERY_TOKEN_SUBTITLE: {
                 SessionLoader sessionLoader = (SessionLoader) loader;
                 showSessionSubtitle(sessionLoader.getRoomTitle(), sessionLoader.getRoomType(),
-                        cursor);
+                        cursor, sessionLoader.getIconType());
             }
         }
     }
@@ -162,28 +169,29 @@ public abstract class MapInfoFragment extends Fragment
      *
      * @see com.google.samples.apps.iosched.util.UIUtils#isTablet(android.content.Context)
      */
-    public static MapInfoFragment newInstace(Context c) {
-        if (UIUtils.isTablet(c)) {
+    public static MapInfoFragment newInstance(@NonNull Context context) {
+        if (UIUtils.isTablet(context)) {
             return InlineInfoFragment.newInstance();
         } else {
             return SlideableInfoFragment.newInstance();
         }
     }
 
-    private void showSessionList(String roomTitle, int roomType, Cursor sessions) {
+    private void showSessionList(String roomTitle, int roomType, Cursor sessions, String iconType) {
         if (sessions == null || sessions.isAfterLast()) {
-            onSessionLoadingFailed(roomTitle, roomType);
+            onSessionLoadingFailed(roomTitle, roomType, iconType);
             return;
         }
 
-        onSessionsLoaded(roomTitle, roomType, sessions);
+        onSessionsLoaded(roomTitle, roomType, sessions, iconType);
         mList.setAdapter(new SessionAdapter(getActivity(), sessions,
                 MapUtils.hasInfoSessionListIcons(roomType), mOnClickListener));
     }
 
-    private void showSessionSubtitle(String roomTitle, int roomType, Cursor sessions) {
+    private void showSessionSubtitle(String roomTitle, int roomType, Cursor sessions,
+                                     String iconType) {
         if (sessions == null || sessions.isAfterLast()) {
-            onSessionLoadingFailed(roomTitle, roomType);
+            onSessionLoadingFailed(roomTitle, roomType, iconType);
             return;
         }
         sessions.moveToFirst();
@@ -191,16 +199,17 @@ public abstract class MapInfoFragment extends Fragment
         final String title = roomTitle;
         final String subtitle = sessions.getString(SingleSessionLoader.Query.SESSION_ABSTRACT);
 
-        setHeader(MapUtils.getRoomIcon(roomType), title, subtitle);
-        mList.setVisibility(View.GONE);
+        setHeader(MapUtils.getDrawableForIconType(getContext(), iconType), title, subtitle);
+        mList.setVisibility(GONE);
 
-        onRoomSubtitleLoaded(title, roomType, subtitle);
+        onRoomSubtitleLoaded(title, roomType, subtitle, iconType);
     }
 
     /**
      * Called when the subtitle has been loaded for a room.
      */
-    protected void onRoomSubtitleLoaded(String roomTitle, int roomType, String subTitle){
+    protected void onRoomSubtitleLoaded(String roomTitle, int roomType, String subTitle,
+                                        String iconType){
 
     }
     /**
@@ -213,8 +222,9 @@ public abstract class MapInfoFragment extends Fragment
     /**
      * Prepares and starts a SessionLoader for the specified query token.
      */
-    private void loadSessions(String roomId, String roomTitle, int roomType, int queryToken){
-        setHeader(MapUtils.getRoomIcon(roomType), roomTitle, null);
+    private void loadSessions(String roomId, String roomTitle, int roomType, int queryToken,
+                              String iconType){
+        setHeader(MapUtils.getDrawableForIconType(getContext(), iconType), roomTitle, null);
         onSessionListLoading(roomId, roomTitle);
 
         // Load the following sessions for this room
@@ -223,31 +233,34 @@ public abstract class MapInfoFragment extends Fragment
         args.putString(QUERY_ARG_ROOMID, roomId);
         args.putString(QUERY_ARG_ROOMTITLE, roomTitle);
         args.putInt(QUERY_ARG_ROOMTYPE, roomType);
+        args.putString(QUERY_ARG_ICONTYPE, iconType);
         lm.restartLoader(queryToken, args, this);
     }
 
     /**
      * Called when the abstract of the first session in this room is to be used as the subtitle.
      */
-    public void showFirstSessionTitle(String roomId, String roomTitle, int roomType) {
-        loadSessions(roomId,roomTitle,roomType, QUERY_TOKEN_SUBTITLE);
+    public void showFirstSessionTitle(String roomId, String roomTitle, int roomType,
+                                      String iconType) {
+        loadSessions(roomId,roomTitle,roomType, QUERY_TOKEN_SUBTITLE, iconType);
     }
 
     /**
      * Called when a session list is to be displayed and has to be loaded.
      */
-    public void showSessionList(String roomId, String roomTitle, int roomType) {
-        loadSessions(roomId,roomTitle,roomType, QUERY_TOKEN_SESSION_ROOM);
+    public void showSessionList(String roomId, String roomTitle, int roomType, String iconType) {
+        loadSessions(roomId,roomTitle,roomType, QUERY_TOKEN_SESSION_ROOM, iconType);
     }
 
-    protected void onSessionsLoaded(String roomTitle, int roomType, Cursor cursor) {
-        setHeader(MapUtils.getRoomIcon(roomType), roomTitle, null);
-        mList.setVisibility(View.VISIBLE);
+    protected void onSessionsLoaded(String roomTitle, int roomType, Cursor cursor,
+                                    String iconType) {
+        setHeader(MapUtils.getDrawableForIconType(getContext(), iconType), roomTitle, null);
+        mList.setVisibility(VISIBLE);
     }
 
-    protected void onSessionLoadingFailed(String roomTitle, int roomType) {
-        setHeader(MapUtils.getRoomIcon(roomType), roomTitle, null);
-        mList.setVisibility(View.GONE);
+    protected void onSessionLoadingFailed(String roomTitle, int roomType, String iconType) {
+        setHeader(MapUtils.getDrawableForIconType(getContext(), iconType), roomTitle, null);
+        mList.setVisibility(GONE);
     }
 
     protected String getTitle() {
@@ -262,41 +275,41 @@ public abstract class MapInfoFragment extends Fragment
 
         if (title != 0) {
             mTitle.setText(title);
-            mTitle.setVisibility(View.VISIBLE);
+            mTitle.setVisibility(VISIBLE);
         } else {
-            mTitle.setVisibility(View.GONE);
+            mTitle.setVisibility(GONE);
         }
 
         if (subTitle != 0) {
             mSubtitle.setText(subTitle);
-            mSubtitle.setVisibility(View.VISIBLE);
+            mSubtitle.setVisibility(VISIBLE);
         } else {
-            mSubtitle.setVisibility(View.GONE);
+            mSubtitle.setVisibility(GONE);
         }
 
     }
 
-    private void setHeader(int icon, String title, String subTitle) {
-        mIcon.setImageResource(icon);
+    private void setHeader(@DrawableRes int icon, String title, String subTitle) {
+        mIcon.setImageResource(icon == 0 ? R.drawable.map_marker_selected : icon);
 
         if (title != null && !title.isEmpty()) {
             mTitle.setText(title);
-            mTitle.setVisibility(View.VISIBLE);
+            mTitle.setVisibility(VISIBLE);
         } else {
-            mTitle.setVisibility(View.GONE);
+            mTitle.setVisibility(GONE);
         }
 
         if (subTitle != null && !subTitle.isEmpty()) {
             mSubtitle.setText(subTitle);
-            mSubtitle.setVisibility(View.VISIBLE);
+            mSubtitle.setVisibility(VISIBLE);
         } else {
-            mSubtitle.setVisibility(View.GONE);
+            mSubtitle.setVisibility(GONE);
         }
     }
 
-    public void showTitleOnly(int roomType, String title, String subtitle) {
-        setHeader(MapUtils.getRoomIcon(roomType), title, subtitle);
-        mList.setVisibility(View.GONE);
+    public void showTitleOnly(int roomType, String title, String subtitle, String iconType) {
+        setHeader(MapUtils.getDrawableForIconType(mIcon.getContext(), iconType), title, subtitle);
+        mList.setVisibility(GONE);
     }
 
     public abstract void hide();
@@ -311,10 +324,8 @@ public abstract class MapInfoFragment extends Fragment
     }
 
     interface Callback {
-
-        public void onInfoSizeChanged(int left, int top, int right, int bottom);
-
-        public void onSessionClicked(String id);
+        void onInfoSizeChanged(int left, int top, int right, int bottom);
+        void onSessionClicked(String id);
     }
 
     private View.OnClickListener mOnClickListener = new View.OnClickListener() {
@@ -394,7 +405,7 @@ public abstract class MapInfoFragment extends Fragment
         @Override
         public ItemHolder onCreateViewHolder(final ViewGroup parent, final int viewType) {
             final ItemHolder holder = new ItemHolder(LayoutInflater.from(mContext), parent);
-            holder.image.setVisibility(mDisplayIcons ? View.VISIBLE : View.INVISIBLE);
+            holder.image.setVisibility(mDisplayIcons ? VISIBLE : View.INVISIBLE);
             holder.itemView.setOnClickListener(mListener);
             return holder;
         }

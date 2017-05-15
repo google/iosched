@@ -25,17 +25,19 @@ import android.support.v4.content.CursorLoader;
  */
 public abstract class SessionLoader extends CursorLoader {
 
-    private String mRoomTitle;
-    private String mRoomId;
-    private int mRoomType;
+    private final String mRoomTitle;
+    private final String mRoomId;
+    private final int mRoomType;
+    private final String mIconType;
 
-    public SessionLoader(Context context, String roomId, String roomTitle, int roomType, Uri uri,
-            String[] projection, String selection, String[] selectionArgs, String sortOrder) {
+    public SessionLoader(Context context, String roomId, String roomTitle, int roomType,
+                         String iconType, Uri uri, String[] projection, String selection,
+                         String[] selectionArgs, String sortOrder) {
         super(context, uri, projection, selection, selectionArgs, sortOrder);
-
         mRoomId = roomId;
         mRoomTitle = roomTitle;
         mRoomType = roomType;
+        mIconType = iconType;
     }
 
     public int getRoomType() {
@@ -50,5 +52,7 @@ public abstract class SessionLoader extends CursorLoader {
         return mRoomTitle;
     }
 
-
+    public String getIconType() {
+        return mIconType;
+    }
 }

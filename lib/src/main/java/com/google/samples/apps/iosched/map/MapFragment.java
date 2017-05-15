@@ -93,10 +93,10 @@ public class MapFragment extends com.google.android.gms.maps.SupportMapFragment 
      */
     private static final CameraPosition VENUE_CAMERA =
             new CameraPosition.Builder().bearing(BuildConfig.MAP_DEFAULTCAMERA_BEARING)
-                                        .target(BuildConfig.MAP_DEFAULTCAMERA_TARGET)
-                                        .zoom(BuildConfig.MAP_DEFAULTCAMERA_ZOOM)
-                                        .tilt(BuildConfig.MAP_DEFAULTCAMERA_TILT)
-                                        .build();
+                    .target(BuildConfig.MAP_DEFAULTCAMERA_TARGET)
+                    .zoom(BuildConfig.MAP_DEFAULTCAMERA_ZOOM)
+                    .tilt(BuildConfig.MAP_DEFAULTCAMERA_TILT)
+                    .build();
     private boolean mMyLocationEnabled = false;
 
     // Tile Provider
@@ -131,11 +131,13 @@ public class MapFragment extends com.google.android.gms.maps.SupportMapFragment 
 
         void onInfoHide();
 
-        void onInfoShowTitle(String label,  String subtitle, int roomType);
+        void onInfoShowTitle(String label, String subtitle, int roomType, String iconType);
 
-        void onInfoShowSessionlist(String roomId, String roomTitle, int roomType);
+        void onInfoShowSessionList(String roomId, String roomTitle, int roomType,
+                                   String iconType);
 
-        void onInfoShowFirstSessionTitle(String roomId, String roomTitle, int roomType);
+        void onInfoShowFirstSessionTitle(String roomId, String roomTitle, int roomType,
+                                         String iconType);
 
     }
 
@@ -146,15 +148,18 @@ public class MapFragment extends com.google.android.gms.maps.SupportMapFragment 
         }
 
         @Override
-        public void onInfoShowTitle(String label, String subtitle, int roomType) {
+        public void onInfoShowTitle(String label, String subtitle, int roomType, String iconType) {
         }
 
         @Override
-        public void onInfoShowSessionlist(String roomId, String roomTitle, int roomType) {
+        public void onInfoShowSessionList(String roomId, String roomTitle, int roomType,
+                                          String iconType) {
+
         }
 
         @Override
-        public void onInfoShowFirstSessionTitle(String roomId, String roomTitle, int roomType) {
+        public void onInfoShowFirstSessionTitle(String roomId, String roomTitle, int roomType,
+                                                String iconType) {
         }
 
     };
@@ -171,7 +176,6 @@ public class MapFragment extends com.google.android.gms.maps.SupportMapFragment 
         Bundle arguments = new Bundle();
         arguments.putString(EXTRAS_HIGHLIGHT_ROOM, highlightedRoomId);
         fragment.setArguments(arguments);
-
         return fragment;
     }
 
@@ -217,11 +221,9 @@ public class MapFragment extends com.google.android.gms.maps.SupportMapFragment 
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
-            Bundle savedInstanceState) {
+                             Bundle savedInstanceState) {
         View mapView = super.onCreateView(inflater, container, savedInstanceState);
-
         setMapInsets(mMapInsets);
-
         return mapView;
     }
 
@@ -268,12 +270,12 @@ public class MapFragment extends com.google.android.gms.maps.SupportMapFragment 
      * @see CachedTileProvider#closeCache()
      */
     private void closeTileCache() {
-            try {
-                if(mTileProvider != null){
-                    mTileProvider.closeCache();
-                }
-            } catch (IOException e) {
+        try {
+            if (mTileProvider != null) {
+                mTileProvider.closeCache();
             }
+        } catch (IOException e) {
+        }
 
     }
 
@@ -399,7 +401,7 @@ public class MapFragment extends com.google.android.gms.maps.SupportMapFragment 
         if (type == MarkerModel.TYPE_ICON) {
             // For icon markers, use the Maputils to load the original icon again.
             final Bitmap iconBitmap = MapUtils.getIconMarkerBitmap(getContext(), typeString, false);
-            if(iconBitmap != null) {
+            if (iconBitmap != null) {
                 style.setIcon(BitmapDescriptorFactory.fromBitmap(iconBitmap));
             }
         } else if (MapUtils.useActiveMarker(type)) {
@@ -455,24 +457,25 @@ public class MapFragment extends com.google.android.gms.maps.SupportMapFragment 
             return;
         }
 
-        int type = MapUtils.detectMarkerType(feature.getProperty("type"));
+        String type = feature.getProperty("type");
+        int markerType = MapUtils.detectMarkerType(type);
         String id = feature.getProperty("id");
         String title = feature.getProperty("title");
         String subtitle = feature.getProperty("description");
 
-        if (MapUtils.hasInfoTitleOnly(type)) {
+        if (MapUtils.hasInfoTitleOnly(markerType)) {
             // Show a basic info window with a title only
-            mCallbacks.onInfoShowTitle(title, subtitle, type);
+            mCallbacks.onInfoShowTitle(title, subtitle, markerType, type);
             selectActiveMarker(feature);
 
-        } else if (MapUtils.hasInfoSessionList(type) || MapUtils.hasInfoSessionListIcons(type)) {
+        } else if (MapUtils.hasInfoSessionList(markerType) || MapUtils.hasInfoSessionListIcons(markerType)) {
             // Type has sessions to display
-            mCallbacks.onInfoShowSessionlist(id, title, type);
+            mCallbacks.onInfoShowSessionList(id, title, markerType, type);
             selectActiveMarker(feature);
 
-        } else if (MapUtils.hasInfoFirstDescriptionOnly(type)) {
+        } else if (MapUtils.hasInfoFirstDescriptionOnly(markerType)) {
             // Display the description of the first session only
-            mCallbacks.onInfoShowFirstSessionTitle(id, title, type);
+            mCallbacks.onInfoShowFirstSessionTitle(id, title, markerType, type);
             selectActiveMarker(feature);
 
         } else {
@@ -488,7 +491,7 @@ public class MapFragment extends com.google.android.gms.maps.SupportMapFragment 
     }
 
     private boolean highlightRoom(String roomId) {
-        if(roomId == null){
+        if (roomId == null) {
             return false;
         }
         // Hide the active marker.
@@ -512,7 +515,7 @@ public class MapFragment extends com.google.android.gms.maps.SupportMapFragment 
         if (data != null) {
             // Parse the JSONObject as GeoJson and add it to the map
             mGeoJsonLayer = MapUtils.processGeoJson(getContext(), mMap, data);
-            if(mGeoJsonLayer == null){
+            if (mGeoJsonLayer == null) {
                 return;
             }
             mGeoJsonLayer.addLayerToMap();
@@ -574,6 +577,7 @@ public class MapFragment extends com.google.android.gms.maps.SupportMapFragment 
     /**
      * LoaderCallbacks for the {@link MarkerLoadingTask} that loads all markers from the database
      * as a JSONOBject, ready for processing into a GeoJsonLayer on this thread.
+     *
      * @see MapUtils#processGeoJson(Context, GoogleMap, JSONObject)
      */
     private LoaderCallbacks<JSONObject> mMarkerLoader
@@ -585,7 +589,7 @@ public class MapFragment extends com.google.android.gms.maps.SupportMapFragment 
 
         @Override
         public void onLoadFinished(final Loader<JSONObject> loader,
-                final JSONObject jsonObject) {
+                                   final JSONObject jsonObject) {
             onMarkersLoaded(jsonObject);
         }
 
@@ -607,7 +611,7 @@ public class MapFragment extends com.google.android.gms.maps.SupportMapFragment 
 
         @Override
         public void onLoadFinished(Loader<List<TileLoadingTask.TileEntry>> loader,
-                List<TileLoadingTask.TileEntry> data) {
+                                   List<TileLoadingTask.TileEntry> data) {
             onTilesLoaded(data);
         }
 

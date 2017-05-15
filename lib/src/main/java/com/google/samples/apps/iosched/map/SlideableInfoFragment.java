@@ -93,8 +93,8 @@ public class SlideableInfoFragment extends MapInfoFragment {
     }
 
     @Override
-    public void showTitleOnly(int roomType, String title, String subtitle) {
-        super.showTitleOnly(roomType, title, subtitle);
+    public void showTitleOnly(int roomType, String title, String subtitle, String iconType) {
+        super.showTitleOnly(roomType, title, subtitle, iconType);
         setCollapsedOnly();
     }
 
@@ -120,23 +120,25 @@ public class SlideableInfoFragment extends MapInfoFragment {
     }
 
     @Override
-    protected void onSessionLoadingFailed(String roomTitle, int roomType) {
+    protected void onSessionLoadingFailed(String roomTitle, int roomType, String markerType) {
         // Do not display the list but permanently hide it
-        super.onSessionLoadingFailed(roomTitle, roomType);
+        super.onSessionLoadingFailed(roomTitle, roomType, markerType);
         setCollapsedOnly();
     }
 
     @Override
-    protected void onSessionsLoaded(String roomTitle, int roomType, Cursor cursor) {
-        super.onSessionsLoaded(roomTitle, roomType, cursor);
+    protected void onSessionsLoaded(String roomTitle, int roomType, Cursor cursor,
+                                    String markerType) {
+        super.onSessionsLoaded(roomTitle, roomType, cursor, markerType);
         // Set up panel: expandable with session height
         mBehavior.setPeekHeight(mHeightSession);
         mBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
     }
 
     @Override
-    protected void onRoomSubtitleLoaded(String roomTitle, int roomType, String subTitle) {
-        super.onRoomSubtitleLoaded(roomTitle, roomType, subTitle);
+    protected void onRoomSubtitleLoaded(String roomTitle, int roomType, String subTitle,
+                                        String iconType) {
+        super.onRoomSubtitleLoaded(roomTitle, roomType, subTitle, iconType);
 
         // Set up panel: Same height as venue, but collapsible
         mBehavior.setPeekHeight(mHeightVenue);
