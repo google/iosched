@@ -110,7 +110,10 @@ public class BottomNavigationMenuView extends ViewGroup implements MenuView {
   @Override
   protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
     final int width = MeasureSpec.getSize(widthMeasureSpec);
-    final int count = getChildCount();
+    // Use visible item count to calculate widths
+    final int visibleCount = mMenu.getVisibleItems().size();
+    // Use total item counts to measure children
+    final int totalCount = getChildCount();
 
     final int heightSpec = MeasureSpec.makeMeasureSpec(mItemHeight, MeasureSpec.EXACTLY);
 
@@ -124,38 +127,46 @@ public class BottomNavigationMenuView extends ViewGroup implements MenuView {
             MeasureSpec.makeMeasureSpec(mActiveItemMaxWidth, MeasureSpec.AT_MOST), heightSpec);
         activeItemWidth = Math.max(activeItemWidth, child.getMeasuredWidth());
       }
-      final int inactiveCount = count - 1;
+      final int inactiveCount = visibleCount - 1;
       final int activeMaxAvailable = width - inactiveCount * mInactiveItemMinWidth;
       final int activeWidth =
           Math.min(activeMaxAvailable, Math.min(activeItemWidth, mActiveItemMaxWidth));
       final int inactiveMaxAvailable = (width - activeWidth) / inactiveCount;
       final int inactiveWidth = Math.min(inactiveMaxAvailable, mInactiveItemMaxWidth);
       int extra = width - activeWidth - inactiveWidth * inactiveCount;
-      for (int i = 0; i < count; i++) {
-        mTempChildWidths[i] = (i == mSelectedItemPosition) ? activeWidth : inactiveWidth;
-        // Account for integer division which sometimes leaves some extra pixel spaces.
-        // e.g. If the nav was 10px wide, and 3 children were measured to be 3px-3px-3px, there
-        // would be a 1px gap somewhere, which this fills in.
-        if (extra > 0) {
-          mTempChildWidths[i]++;
-          extra--;
+      for (int i = 0; i < totalCount; i++) {
+        if (getChildAt(i).getVisibility() != View.GONE) {
+          mTempChildWidths[i] = (i == mSelectedItemPosition) ? activeWidth : inactiveWidth;
+          // Account for integer division which sometimes leaves some extra pixel spaces.
+          // e.g. If the nav was 10px wide, and 3 children were measured to be 3px-3px-3px, there
+          // would be a 1px gap somewhere, which this fills in.
+          if (extra > 0) {
+            mTempChildWidths[i]++;
+            extra--;
+          }
+        } else {
+          mTempChildWidths[i] = 0;
         }
       }
     } else {
-      final int maxAvailable = width / (count == 0 ? 1 : count);
+      final int maxAvailable = width / (visibleCount == 0 ? 1 : visibleCount);
       final int childWidth = Math.min(maxAvailable, mActiveItemMaxWidth);
-      int extra = width - childWidth * count;
-      for (int i = 0; i < count; i++) {
-        mTempChildWidths[i] = childWidth;
-        if (extra > 0) {
-          mTempChildWidths[i]++;
-          extra--;
+      int extra = width - childWidth * visibleCount;
+      for (int i = 0; i < totalCount; i++) {
+        if (getChildAt(i).getVisibility() != View.GONE) {
+          mTempChildWidths[i] = childWidth;
+          if (extra > 0) {
+            mTempChildWidths[i]++;
+            extra--;
+          }
+        } else {
+          mTempChildWidths[i] = 0;
         }
       }
     }
 
     int totalWidth = 0;
-    for (int i = 0; i < count; i++) {
+    for (int i = 0; i < totalCount; i++) {
       final View child = getChildAt(i);
       if (child.getVisibility() == GONE) {
         continue;
@@ -277,7 +288,7 @@ public class BottomNavigationMenuView extends ViewGroup implements MenuView {
         }
       }
     }
-    if (mMenu.getVisibleItems().isEmpty()) {
+    if (mMenu.size() == 0) {
       mSelectedItemId = 0;
       mSelectedItemPosition = 0;
       mButtons = null;
@@ -286,7 +297,6 @@ public class BottomNavigationMenuView extends ViewGroup implements MenuView {
     mButtons = new BottomNavigationItemView[mMenu.size()];
     mShiftingMode = mMenu.getVisibleItems().size() > 3;
     for (int i = 0; i < mMenu.size(); i++) {
-      if (mMenu.getItem(i).isVisible()) {
         mPresenter.setUpdateSuspended(true);
         mMenu.getItem(i).setCheckable(true);
         mPresenter.setUpdateSuspended(false);
@@ -300,7 +310,6 @@ public class BottomNavigationMenuView extends ViewGroup implements MenuView {
         child.setItemPosition(i);
         child.setOnClickListener(mOnClickListener);
         addView(child);
-      }
     }
     mSelectedItemPosition = Math.min(mMenu.size() - 1, mSelectedItemPosition);
     mMenu.getItem(mSelectedItemPosition).setChecked(true);
@@ -331,9 +340,7 @@ public class BottomNavigationMenuView extends ViewGroup implements MenuView {
 
     for (int i = 0; i < menuSize; i++) {
       mPresenter.setUpdateSuspended(true);
-      if (mButtons[i] != null) {
-        mButtons[i].initialize((MenuItemImpl) mMenu.getItem(i), 0);
-      }
+      mButtons[i].initialize((MenuItemImpl) mMenu.getItem(i), 0);
       mPresenter.setUpdateSuspended(false);
     }
   }

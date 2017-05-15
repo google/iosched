@@ -34,6 +34,7 @@ import android.support.v7.view.menu.MenuView;
 import android.util.AttributeSet;
 import android.view.Gravity;
 import android.view.LayoutInflater;
+import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -96,6 +97,7 @@ public class BottomNavigationItemView extends FrameLayout implements MenuView.It
     setIcon(itemData.getIcon());
     setTitle(itemData.getTitle());
     setId(itemData.getItemId());
+    setVisibility(itemData.isVisible() ? View.VISIBLE : View.GONE);
   }
 
   public void setItemPosition(int position) {
