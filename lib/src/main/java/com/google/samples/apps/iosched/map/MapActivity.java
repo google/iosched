@@ -126,6 +126,9 @@ public class MapActivity extends BaseActivity
                     }
                     mMapFragment.setMapInsets(insetLeft, toolbarBottom, 0, 0);
                 }
+                if (mInfoFragment instanceof SlideableInfoFragment) {
+                    ((SlideableInfoFragment) mInfoFragment).setMarginTop(toolbarBottom);
+                }
             }
         });
 

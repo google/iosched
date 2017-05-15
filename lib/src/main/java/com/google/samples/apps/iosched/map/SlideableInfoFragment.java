@@ -26,6 +26,7 @@ import android.support.design.widget.CoordinatorLayout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewGroup.MarginLayoutParams;
 
 import com.google.samples.apps.iosched.lib.R;
 
@@ -158,6 +159,10 @@ public class SlideableInfoFragment extends MapInfoFragment {
     @Override
     public void minimize() {
         mBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
+    }
+
+    void setMarginTop(int margin) {
+        ((MarginLayoutParams) mCoordinator.getLayoutParams()).topMargin = margin;
     }
 
     private BottomSheetBehavior.BottomSheetCallback mBottomSheetCallback

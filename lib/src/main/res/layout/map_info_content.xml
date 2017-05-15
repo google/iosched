@@ -43,7 +43,7 @@
 
         <TextView
             android:id="@+id/map_info_title"
-            style="@style/Map.RoomTitle"
+            style="@style/ProductSans.Title"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -62,7 +62,7 @@
         android:layout_marginStart="@dimen/keyline_2"
         android:layout_marginRight="@dimen/padding_normal"
         android:layout_marginEnd="@dimen/padding_normal"
-        android:paddingBottom="@dimen/spacing_normal"
+        android:paddingBottom="@dimen/padding_normal"
         android:visibility="gone"
         tools:text="@string/placeholder_map_subtitle"
         tools:visibility="visible" />
@@ -71,6 +71,8 @@
         android:id="@+id/map_info_list"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:scrollbars="vertical"
+        android:scrollbarStyle="insideOverlay"
         tools:listitem="@layout/map_item_session" />
 
 </LinearLayout>
