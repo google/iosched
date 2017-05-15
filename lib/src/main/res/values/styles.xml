@@ -152,7 +152,7 @@
 
     <!-- TODO clean up map styles -->
     <style name="TextAppearance.Map.SessionTitle" parent="TextAppearance.AppCompat.Body2">
-        <item name="android:textColor">@color/video_title</item>
+        <item name="android:textColor">?android:textColorPrimary</item>
     </style>
 
     <style name="TextAppearance.Map.SessionSubtitle" parent="TextAppearance.AppCompat.Body1">

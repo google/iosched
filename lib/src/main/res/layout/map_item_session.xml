@@ -21,8 +21,8 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="?attr/selectableItemBackground"
-    android:paddingTop="@dimen/map_info_item_vertical_padding"
-    android:paddingBottom="@dimen/map_info_item_vertical_padding"
+    android:paddingTop="@dimen/padding_normal"
+    android:paddingBottom="@dimen/padding_normal"
     android:minHeight="@dimen/map_info_item_height"
     android:orientation="horizontal"
     android:baselineAligned="false">
