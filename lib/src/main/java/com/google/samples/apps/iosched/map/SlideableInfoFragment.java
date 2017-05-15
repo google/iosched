@@ -16,8 +16,6 @@
 
 package com.google.samples.apps.iosched.map;
 
-import com.google.samples.apps.iosched.lib.R;
-
 import android.content.res.Resources;
 import android.database.Cursor;
 import android.os.Bundle;
@@ -28,6 +26,8 @@ import android.support.design.widget.CoordinatorLayout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
+import com.google.samples.apps.iosched.lib.R;
 
 /**
  * Map info fragment that uses a {@link com.sothree.slidinguppanel.SlidingUpPanelLayout} to display
@@ -77,7 +77,7 @@ public class SlideableInfoFragment extends MapInfoFragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
-            Bundle savedInstanceState) {
+                             Bundle savedInstanceState) {
         return super.onCreateView(inflater, container, savedInstanceState,
                 R.layout.map_info_bottom);
     }
@@ -110,6 +110,13 @@ public class SlideableInfoFragment extends MapInfoFragment {
         // Set up panel: collapsed only with title height and icon
         mBehavior.setPeekHeight(mHeightTitleOnly);
         mBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
+        int currentSheetHeight = mCoordinator.getHeight() - mBottomSheet.getTop();
+        if (currentSheetHeight > mHeightTitleOnly) {
+            mCallback.onInfoSizeChanged(mBottomSheet.getLeft(),
+                    mCoordinator.getHeight() - mHeightTitleOnly,
+                    mBottomSheet.getRight(),
+                    mCoordinator.getHeight());
+        }
     }
 
     @Override
