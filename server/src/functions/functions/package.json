@@ -4,7 +4,9 @@
   "dependencies": {
     "firebase-admin": "^4.2.0",
     "firebase-functions": "^0.5",
-    "googleapis": "^18.0.0"
+    "googleapis": "^18.0.0",
+    "request": "^2.81.0",
+    "request-promise": "^4.2.1"
   },
   "private": true
 }

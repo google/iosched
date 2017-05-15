@@ -20,6 +20,7 @@
 
 var functions = require('firebase-functions');
 var google = require('googleapis');
+var request = require('request-promise');
 
 // firebase-admin module is used to perform RTDB updates while processing
 // reservation requests.
@@ -74,6 +75,114 @@ const USERDATA_DISCOVERY_URL = 'USERDATA_DISCOVERY_URL';
 const PING_DISCOVERY_URL = 'PING_DISCOVERY_URL';
 
 const GOOGLE_PROVIDER_ID = 'google.com';
+
+const SERVICE_ACCOUNT_EMAIL = 'io2017-backend-dev@appspot.gserviceaccount.com';
+
+/**
+ * Function that retrieves all reservations stored in RTDB.
+ *
+ * This function is manually triggered by an IOSched admin when there is
+ * concern that reservations in datastore and RTDB are out of sync. This
+ * function would be used to push reservations from RTDB into datastore to
+ * bring the sources back into sync.
+ */
+exports.getReservations = functions.https.onRequest((req, res) => {
+  // Check that the token used to call this function is an expected one.
+  var token = req.query.token;
+  request({
+    uri: 'https://www.googleapis.com/oauth2/v3/tokeninfo',
+    qs: {
+      access_token: token
+    },
+    json: true
+  }).then(function(resp) {
+    if (resp.email == SERVICE_ACCOUNT_EMAIL &&
+        resp.exp > (new Date().getTime() / 1000)) {
+      console.log('Token verified');
+      // Get all users that can reserve sessions.
+      admin.database().ref('/users').orderByValue().equalTo(true).once('value')
+          .then(function(snapshot) {
+        return snapshot.val();
+      }).then(function(users) {
+        // Get the reservations of all users that can reserve.
+        var reservationRequests = [];
+
+        for (userId in users) {
+          reservationRequests.push(getUserReservations(userId));
+        }
+
+        return Promise.all(reservationRequests);
+      }).then(function(results) {
+        // Return all user reservations.
+        res.status(200).send(results);
+      });
+    } else {
+      console.error('Token expired');
+      res.status(401).end();
+    }
+  }).catch(function(err){
+    console.log('Unable to verify');
+    console.log(err);
+    res.status(401).end();
+  });
+});
+
+/**
+ * Get reservations (granted and waiting) of the specified user.
+ *
+ * @param userId ID of users whose reservations are retrieved.
+ * @returns {Promise.<TResult>} Object of the form:
+ *   {
+ *     userId: <provider's user ID>,
+ *     reservations: [
+ *       {
+ *         sessionId: <ID of reserved session>,
+ *         status: <current status of reservation>
+ *       }
+ *     ]
+ *   }
+ */
+function getUserReservations(userId) {
+  var userReservations = {};
+  // Get the provider ID of the user.
+  return admin.auth().getUser(userId).then(function(userRecord) {
+    userReservations.userId = userRecord.providerData[0].uid;
+  }).then(function() {
+    var reservations = [];
+    // Get all granted user reservations.
+    return admin.database().ref(PATH_SESSIONS)
+        .orderByChild(PATH_RESERVATIONS + '/' + userId + '/' + PATH_STATUS)
+        .equalTo(STATUS_GRANTED).once('value').then(function (snapshot) {
+          const sessions = snapshot.val();
+          for (var sid in sessions) {
+            reservations.push({
+              sessionId: sid,
+              status: STATUS_GRANTED
+            });
+          }
+        }).then(function () {
+          // Get all waiting user reservations.
+          return admin.database().ref(PATH_SESSIONS)
+              .orderByChild(
+                  PATH_RESERVATIONS + '/' + userId + '/' + PATH_STATUS)
+              .equalTo(STATUS_WAITING).once('value').then(function (snapshot) {
+            const sessions = snapshot.val();
+            for (var sid in sessions) {
+              reservations.push({
+                sessionId: sid,
+                status: STATUS_WAITING
+              });
+            }
+            userReservations.reservations = reservations;
+            return userReservations;
+          });
+        });
+  }).catch(function() {
+    return {
+      userId: userId
+    };
+  });
+}
 
 /**
  * Function to send pings when the feed is updated.

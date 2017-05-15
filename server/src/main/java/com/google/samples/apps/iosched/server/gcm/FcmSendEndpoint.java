@@ -54,6 +54,10 @@ import javax.servlet.ServletContext;
 )
 public class FcmSendEndpoint {
 
+  public static final String ACTION_SYNC_USER = "sync_user";
+  public static final String ACTION_SYNC_SCHEDULE = "sync_schedule";
+  public static final String INVALID_CREDENTIALS_MSG = "Invalid credentials";
+
   /**
    * Clients can initiate a sync on all of a user's devices. This will usually be called
    * when a client pushes a user data update to the server and wants other clients to
@@ -65,12 +69,12 @@ public class FcmSendEndpoint {
   @ApiMethod(name = "sendSelfSync", path = "self")
   public void sendSelfSync(ServletContext context, User user) throws UnauthorizedException {
     if (user == null) {
-      throw new UnauthorizedException("Invalid credentials");
+      throw new UnauthorizedException(INVALID_CREDENTIALS_MSG);
     }
     MessageSender sender = new MessageSender(context);
     String userId = user.getId();
     List<Device> devices = DeviceStore.findDevicesByUserId(userId);
-    sender.multicastSend(devices, "sync_user", null);
+    sender.multicastSend(devices, ACTION_SYNC_USER, null);
   }
 
   /**
@@ -92,8 +96,26 @@ public class FcmSendEndpoint {
     if (devices.isEmpty()) {
       throw new NotFoundException("No devices for user found");
     }
-    sender.multicastSend(devices, "sync_user", null);
+    sender.multicastSend(devices, ACTION_SYNC_USER, null);
     return new SendUserSyncResult(devices.size());
+  }
+
+  /**
+   * Ping all users' devices to sync user data.
+   *
+   * @param context Servlet context (injected by Endpoints)
+   * @param user User making the request (injected by Endpoints)
+   */
+  @ApiMethod(name = "sendUserDataSync", path = "users",
+      clientIds = {com.google.api.server.spi.Constant.API_EXPLORER_CLIENT_ID})
+  public void sendUserDataSync(ServletContext context, User user)
+      throws UnauthorizedException {
+    if (user == null) {
+      throw new UnauthorizedException(INVALID_CREDENTIALS_MSG);
+    }
+    MessageSender sender = new MessageSender(context);
+    List<Device> devices = DeviceStore.getAllDevices();
+    sender.multicastSend(devices, ACTION_SYNC_USER, null);
   }
 
   /**
@@ -109,7 +131,7 @@ public class FcmSendEndpoint {
     validateServiceAccount(user);
     MessageSender sender = new MessageSender(context);
     List<Device> devices = DeviceStore.getAllDevices();
-    sender.multicastSend(devices, "sync_schedule", null);
+    sender.multicastSend(devices, ACTION_SYNC_SCHEDULE, null);
   }
 
   /**
@@ -130,7 +152,7 @@ public class FcmSendEndpoint {
 
   private void validateServiceAccount(User user) throws UnauthorizedException {
     if (user == null || !user.getEmail().equals(Ids.SERVICE_ACCOUNT_EMAIL)) {
-      throw new UnauthorizedException("Invalid credentials");
+      throw new UnauthorizedException(INVALID_CREDENTIALS_MSG);
     }
   }
 

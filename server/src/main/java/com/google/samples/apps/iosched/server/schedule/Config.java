@@ -123,6 +123,8 @@ public interface Config {
       "claudiocherubino@gmail.com"
   };
 
+  String HTTP_FUNCTIONS_BASE_URL = "https://us-central1-io2017-backend-dev.cloudfunctions.net";
+
   // See context at b/15452185:
   public static final RoomMapping ROOM_MAPPING = new RoomMapping();
   static class RoomMapping {
