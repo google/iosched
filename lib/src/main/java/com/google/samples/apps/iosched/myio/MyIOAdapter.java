@@ -90,6 +90,7 @@ class MyIOAdapter extends Adapter<ViewHolder> implements StickyHeaders, StickyHe
         mContext = context;
         mCallbacks = callbacks;
         stuckHeaderElevation = context.getResources().getDimension(R.dimen.card_elevation);
+        setHasStableIds(true);
         setItems(null); // build the initial list of items
     }
 
@@ -160,9 +161,6 @@ class MyIOAdapter extends Adapter<ViewHolder> implements StickyHeaders, StickyHe
         mItems.clear();
         mItems.addAll(newData);
         diff.dispatchUpdatesTo(this);
-        // we shouldn't need the following call, but without it the StickyHeader LayoutManger's
-        // bookkeeping gets messed up; this forces it to re-create it's internal state.
-        notifyDataSetChanged();
     }
 
     /**
@@ -441,7 +439,7 @@ class MyIOAdapter extends Adapter<ViewHolder> implements StickyHeaders, StickyHe
         private final List<Object> oldItems;
         private final List<Object> newItems;
 
-        public MyIoDiff(List<Object> oldItems, List<Object> newItems) {
+        MyIoDiff(List<Object> oldItems, List<Object> newItems) {
             this.oldItems = oldItems;
             this.newItems = newItems;
         }
