@@ -143,6 +143,18 @@
       <url-pattern>/queue/pushres</url-pattern>
     </servlet-mapping>
 
+    <servlet>
+      <servlet-name>SyncReservationsQueueWorker</servlet-name>
+      <servlet-class>
+        com.google.samples.apps.iosched.server.schedule.reservations.SyncReservationsQueueWorker
+      </servlet-class>
+      <load-on-startup>1</load-on-startup>
+    </servlet>
+    <servlet-mapping>
+      <servlet-name>SyncReservationsQueueWorker</servlet-name>
+      <url-pattern>/queue/syncres</url-pattern>
+    </servlet-mapping>
+
     <!-- Cron endpoints -->
     <!-- Restricted to admin users only to prevent unauthorized execution. -->
     <servlet>
