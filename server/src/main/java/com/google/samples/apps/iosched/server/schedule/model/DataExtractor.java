@@ -542,24 +542,8 @@ public class DataExtractor {
     boolean isLivestream = isLivestreamed(origin);
     set(new JsonPrimitive(isLivestream), dest, OutputJsonKeys.Sessions.isLivestream);
 
-    JsonPrimitive vid = null;
-    JsonPrimitive channel = null;
-
-    if (isLivestream) {
-      vid = getVideoFromTopicInfo(origin, Topics.INFO_VIDEO_URL,
-          Config.VIDEO_LIVESTREAMURL_FOR_EMPTY);
-    } else {
-      vid = getMapValue(
-          get(origin, InputJsonKeys.VendorAPISource.Topics.Info), InputJsonKeys.VendorAPISource.Topics.INFO_VIDEO_URL,
-          Converters.YOUTUBE_URL, null);
-    }
-    if (vid != null && !vid.getAsString().isEmpty()) {
-      set(vid, dest, OutputJsonKeys.Sessions.youtubeUrl);
-      if (isLivestream) {
-        channel = getMapValue(get(origin, Topics.Info), Topics.INFO_STREAM_CHANNEL, null, "");
-        set(channel, dest, Sessions.livestreamChannel);
-      }
-    }
+    JsonPrimitive videoUrl = getVideoFromTopicInfo(origin, Topics.INFO_VIDEO_URL, null);
+    set(videoUrl, dest, OutputJsonKeys.Sessions.youtubeUrl);
   }
 
   private JsonPrimitive getVideoFromTopicInfo(JsonObject origin, String sourceInfoKey, String defaultVideoUrl) {
