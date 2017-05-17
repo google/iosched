@@ -513,7 +513,7 @@ exports.getReservations = functions.https.onRequest((req, res) => {
         resp.exp > (new Date().getTime() / 1000)) {
       console.log('Token verified');
       // Get all users that can reserve sessions.
-      admin.database().ref('/users').orderByValue().equalTo(true).once('value')
+      admin.database().ref(PATH_USER_SESSIONS).once('value')
           .then(function(snapshot) {
         return snapshot.val();
       }).then(function(users) {
@@ -527,6 +527,7 @@ exports.getReservations = functions.https.onRequest((req, res) => {
         return Promise.all(reservationRequests);
       }).then(function(results) {
         // Return all user reservations.
+        console.log('sending all user reservations');
         res.status(200).send(results);
       });
     } else {
@@ -556,45 +557,60 @@ exports.getReservations = functions.https.onRequest((req, res) => {
  *   }
  */
 function getUserReservations(userId) {
+  console.log('getting reservations for ' + userId);
   var userReservations = {};
   // Get the provider ID of the user.
   return admin.auth().getUser(userId).then(function(userRecord) {
+    console.log('got provider ID for: ' + userId + ' it is: ' + userRecord.providerData[0].uid);
     userReservations.userId = userRecord.providerData[0].uid;
   }).then(function() {
-    var reservations = [];
     // Get all granted user reservations.
-    return admin.database().ref(PATH_SESSIONS)
-        .orderByChild(PATH_RESERVATIONS + '/' + userId + '/' + PATH_STATUS)
-        .equalTo(STATUS_GRANTED).once('value').then(function (snapshot) {
+    return admin.database().ref(PATH_USER_SESSIONS).child(userId)
+        .once('value').then(function (snapshot) {
           const sessions = snapshot.val();
+          return sessions;
+        })
+        .then(function(sessions) {
+          var sessionPromises = [];
           for (var sid in sessions) {
-            reservations.push({
-              sessionId: sid,
-              status: STATUS_GRANTED
-            });
+            sessionPromises.push(getUserSessionStatus(userId, sid));
           }
-        }).then(function () {
-          // Get all waiting user reservations.
-          return admin.database().ref(PATH_SESSIONS)
-              .orderByChild(
-                  PATH_RESERVATIONS + '/' + userId + '/' + PATH_STATUS)
-              .equalTo(STATUS_WAITING).once('value').then(function (snapshot) {
-            const sessions = snapshot.val();
-            for (var sid in sessions) {
-              reservations.push({
-                sessionId: sid,
-                status: STATUS_WAITING
-              });
-            }
-            userReservations.reservations = reservations;
-            return userReservations;
-          });
+          return Promise.all(sessionPromises);
+        })
+        .then(function(statuses) {
+          var reservations = [];
+          for (var i in statuses) {
+            reservations.push(statuses[i]);
+          }
+          userReservations.reservations = reservations;
+          return userReservations;
         });
-  }).catch(function() {
+  }).catch(function(err) {
+    console.error(err);
+    console.error('Unable to getUser by ID: ' + userId);
     return {
       userId: userId
     };
   });
+}
+
+/**
+ * Get the status of the given user's reservation for the given session.
+ *
+ * @param uid ID of user whose reservation status is retrieved.
+ * @param sid ID of ession that is checked for user's reservation status.
+ * @returns {Promise.<TResult>|*} Object containing session ID and reservation
+ *                                status.
+ */
+function getUserSessionStatus(uid, sid) {
+  return getReservationStatusReference(uid, sid).once('value').then(function(snapshot) {
+    var status = snapshot.val();
+    var userSessionStatus = {
+      sessionId: sid,
+      status: status
+    };
+    return userSessionStatus;
+  })
 }
 
 /**
