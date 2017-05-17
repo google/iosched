@@ -61,11 +61,6 @@ public interface Config {
   public final String CLOUD_STORAGE_BUCKET = "io2016-bucket-dev";
   public final String CLOUD_STORAGE_BASE_URL = "https://storage.googleapis.com/"+CLOUD_STORAGE_BUCKET+"/";
 
-  // Used when the CMS doesn't have a proper live stream Youtube URL but we still want to
-  // have a non-empty URL so that the app will show the "LIVE" indicator.
-  public final String VIDEO_LIVESTREAMURL_FOR_EMPTY = "https://google.com/events/io";
-
-
   // GCM confs:
   public static final String FCM_SEND_URL = "UNDEFINED";
   public static final String GCM_SYNC_URL = "/gcm/send/global/sync_schedule";
