@@ -94,7 +94,7 @@ public class DeviceStore {
     }
 
     public static List<Device> getAllDevices() {
-        return ofy().load().type(Device.class).list();
+        return ofy().load().type(Device.class).filter("userId >", "").list();
     }
 
     public static Device findDeviceByDeviceId(String deviceId) {
