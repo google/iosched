@@ -33,6 +33,9 @@ admin.initializeApp(functions.config().firebase);
 // Amount of time (in millis) before the start of a session required for
 // reservations to be allowed. 1 hour.
 const RES_CUT_OFF = 3600000;
+// Amount of time (in millis) before the start of a session that scanning
+// of badges can be scanned. 20 minutes.
+const RES_SCAN_BUFFER = 20 * 60 * 1000;
 
 const PATH_SESSIONS = 'sessions';
 const PATH_RESERVATIONS = 'reservations';
@@ -157,6 +160,7 @@ function updateSession(sid, token) {
     session.title = sessionResp.title;
     session.room = sessionResp.room_name;
     session.date = moment.tz(sessionResp.time_start, 'America/Los_Angeles').format('YYYY-MM-DD');
+    session.readerStartTime = moment.tz(sessionResp.time_start - RES_SCAN_BUFFER, 'America/Los_Angeles').format('h:mm A');
     session.startTime = moment.tz(sessionResp.time_start, 'America/Los_Angeles').format('h:mm A');
     session.endTime = moment.tz(sessionResp.time_end, 'America/Los_Angeles').format('h:mm A');
     session.capacity = sessionResp.seats.capacity;
@@ -176,6 +180,7 @@ function updateSession(sid, token) {
             title: session.title,
             room: session.room,
             date: session.date,
+            readerStartTime: session.readerStartTime,
             startTime: session.startTime,
             endTime: session.endTime,
             capacity: session.capacity + '',
