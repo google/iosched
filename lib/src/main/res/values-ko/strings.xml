@@ -140,7 +140,7 @@
     <string name="description_configure_wifi">와이파이 구성</string>
 
     <!-- Menu item that takes the user to the conference venue map screen -->
-    <string name="description_map">맵</string>
+    <string name="description_map">지도</string>
 
     <!-- Menu item that allows user to reload the data in the current screen so they see
     the most up-to-date version from the server. -->
@@ -330,7 +330,7 @@
     <string name="navdrawer_item_feed">피드</string>
 
     <!-- Menu item to open the Map screen [CHAR_LIMIT=20] -->
-    <string name="navdrawer_item_map">맵</string>
+    <string name="navdrawer_item_map">지도</string>
 
     <!-- Menu item to open the Info screen [CHAR_LIMIT=20] -->
     <string name="navdrawer_item_info">정보</string>
@@ -555,7 +555,7 @@
     <string name="title_explore">탐색</string>
 
     <!-- Navigation bar text for the map -->
-    <string name="title_map">맵</string>
+    <string name="title_map">지도</string>
 
     <!-- Navigation bar text for viewing the user's My I/O -->
     <string name="title_my_io">내 I/O</string>
