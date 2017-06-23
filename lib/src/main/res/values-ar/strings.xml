@@ -25,7 +25,7 @@
     <plurals name="session_notification_text"
              description="Shows as a notification on the system bar to alert user that some of their sessions are about to begin.">
         <item quantity="one">و<xliff:g id="num_sessions">%2$d</xliff:g> أخرى تبدأ في غضون <xliff:g id="remaining_time">%1$d</xliff:g> دقيقة</item>
-        <item quantity="other">و<xliff:g id="num_sessions">%2$d</xliff:g> أخرى تبدأ في غضون <xliff:g id="remaining_time">%1$d</xliff:g> دقائق</item>
+        <item quantity="other">و<xliff:g id="num_sessions">%2$d</xliff:g> أخرى تبدأ في غضون <xliff:g id="remaining_time">%1$d</xliff:g> دقيقة</item>
     </plurals>
 
     <plurals name="session_notification_ticker"
@@ -152,7 +152,7 @@
 
     <!-- Explanation of wifi setup that appears in the WiFi setup dialog box. -->
     <string name="description_setup_wifi_body"><![CDATA[
-        بما أنك تحضر بنفسك، فيمكننا إعداد هذا الجهاز ليدخل إلى شبكة الواي فاي الخاصة بالمؤتمر (5 غيغاهرتز فقط). عن طريق تهيئة الواي فاي الخاص بك الآن، فإنك ستساهم في تجنب ازدحام الشبكة.
+        بما أنك ستحضر بصفة شخصية، فيمكننا إعداد هذا الجهاز ليتصل بشبكة الواي فاي الخاصة بالمؤتمر (5 غيغاهرتز فقط). عن طريق تهيئة الواي فاي الخاص بك الآن، فإنك ستساهم في تجنب ازدحام الشبكة.
     ]]></string>
 
     <!-- Menu item that allows user to share the currently displayed session. Sharing can be done
@@ -366,7 +366,7 @@
 
     <string name="pref_conf_message_cards_enabled_description"
             description="Description in the Settings screen for the setting that enables display of
-            cards with conference information in the explore screen.">عرض البطاقات التي تتضمن معلومات المؤتمر في شاشة "استكشاف". هذه البطاقات تستند إلى الوقت وقد تتضمن رسائل ترويجية مقدمة من الشركاء.</string>
+            cards with conference information in the explore screen.">عرض البطاقات التي تتضمن معلومات المؤتمر في شاشة "استكشاف". هذه البطاقات تعتمد على الوقت وقد تتضمن رسائل ترويجية مقدمة من الشركاء.</string>
 
     <!-- Title in the Settings screen for the setting that enables display of cards with
      conference information in the explore screen. -->
@@ -381,7 +381,7 @@
     <string name="pref_analytics_enabled_description">إرسال إحصائيات مجهولة الهوية حول استخدام التطبيق إلى Google‏.</string>
 
     <!-- Summary in the Settings screen for the "Show local times" option -->
-    <string name="pref_local_times_description">استخدام التوقيت المحلي الخاص بمنطقتك بدلًا من التوقيت المحلي للمؤتمر.</string>
+    <string name="pref_local_times_description">استخدام التوقيت المحلي الخاص بمنطقتك بدلاً من التوقيت المحلي للمؤتمر.</string>
 
     <!-- Title in the Settings screen for the "Show local times" option -->
     <string name="pref_local_times_title">عرض التوقيتات المحلية</string>
@@ -428,7 +428,7 @@
     <string name="remove_from_schedule_desc">زر لإزالة الجلسة من جدولك الزمني.</string>
 
     <!-- Hint that the user can search across sessions -->
-    <string name="search_hint">بحث عن الجلسات</string>
+    <string name="search_hint">بحث في الجلسات</string>
 
     <!-- Search label that shows the type of data being searched for when the user clicks the
     Search button. -->
@@ -450,10 +450,10 @@
     <string name="session_rating_label_text">تقييم الجلسة:</string>
 
     <!-- A session feedback option indicating the content was too advanced -->
-    <string name="session_feedback_advanced">متقدمة جدًا</string>
+    <string name="session_feedback_advanced">متقدمًا جدًا</string>
 
     <!-- A session feedback option indicating the content was too basic -->
-    <string name="session_feedback_basic">بسيطة جدًا</string>
+    <string name="session_feedback_basic">بسيطًا جدًا</string>
 
     <!-- Session feedback section title -->
     <string name="session_feedback_content_label_text">حسب الوصف/توقعاتي، كان المحتوى:</string>
@@ -468,13 +468,13 @@
     <string name="session_feedback_awesome">رائعة</string>
 
     <!-- A negative relevance session feedback option -->
-    <string name="session_feedback_not_at_all_relevant">لا، على الإطلاق</string>
+    <string name="session_feedback_not_at_all_relevant">ليست ذات صلة على الإطلاق</string>
 
     <!-- A negative relevance session feedback option -->
-    <string name="session_feedback_extremely_relevant">لأقصى درجة</string>
+    <string name="session_feedback_extremely_relevant">ذات صلة لأقصى درجة</string>
 
     <!-- A positive speaker quality session feedback option -->
-    <string name="session_feedback_outstanding">متميزة</string>
+    <string name="session_feedback_outstanding">ممتازة</string>
 
     <!-- A negative speaker quality session feedback option -->
     <string name="session_feedback_poor">ضعيفة</string>
@@ -498,7 +498,7 @@
     <string name="session_link_livestream">مشاهدة بث مباشر</string>
 
     <!-- Link text taking the user to the session's Google Moderator page -->
-    <string name="session_link_moderator">وسيط</string>
+    <string name="session_link_moderator">المنسِّق</string>
 
     <!-- Link text taking the user to the session's notes page -->
     <string name="session_link_notes">ملاحظات رسمية</string>
@@ -603,7 +603,7 @@
     <string name="types">الأنواع</string>
 
     <!-- Text for a session subtitle indicating it does not have a room specified -->
-    <string name="unknown_room">(قاعة غير محددة)</string>
+    <string name="unknown_room">(القاعة غير محددة)</string>
 
     <!-- Text for a button which allows the user to watch this particular session on live stream. -->
     <string name="watch_now">شاهد الآن!</string>
@@ -618,7 +618,7 @@
     <string name="welcome_conduct_title">أفضل الممارسات لمنتدى I/O</string>
 
     <!-- Medium-length welcome text asking if the user is attending Google I/O in person -->
-    <string name="welcome_attending_text">هل ستحضر فعاليات I/O‏ عن بُعد أم ستحضر بنفسك إلى ماونتن فيو؟</string>
+    <string name="welcome_attending_text">هل ستحضر فعاليات I/O‏ عن بُعد أم ستحضر شخصيًا إلى ماونتن فيو؟</string>
 
     <!-- Short text asking them to select an account -->
     <string name="welcome_select_account">اختر حسابًا</string>
@@ -686,7 +686,7 @@
     <string name="explore_io_msgcards_ask_opt_in"
             description="This message is displayed on the Explore I/O screen to ask users whether
             they would like to opt in to receive messages regarding the conference."><![CDATA[
-        <b>رسائل المؤتمر</b><br/> هل ترغب في تلقي الرسائل المهمة المتعلقة بالمؤتمر؟ تستند الرسائل إلى الوقت وقد تتضمن رسائل ترويجية مقدمة من الشركاء.]]></string>
+        <b>رسائل المؤتمر</b><br/> هل ترغب في تلقي الرسائل المهمة المتعلقة بالمؤتمر؟ تعتمد الرسائل على الوقت وقد تتضمن رسائل ترويجية مقدمة من الشركاء.]]></string>
 
     <!-- This is used on the Explore I/O message cards to answer yes to a particular message -->
     <string name="explore_io_msgcards_answer_yes">بالتأكيد، لنفعل ذلك!</string>
@@ -730,7 +730,7 @@
 
     <!-- Text shown on the onboarding screen asking users if they want conference notifications. -->
     <string name="onboarding_notifications_opt_in">
-        هل ترغب في تلقي إشعارات حول I/O؟\nسنرسل لك معلومات مهمة حول الفعالية وأجندة الأعمال والجدول الزمني ومعلومات السفر وما بعد ساعات العمل وتسجيلات الجلسات وغير ذلك. يمكنك تغيير هذا الإعداد ضمن \"معلومات &gt; الإعدادات\" في أي وقت.
+        هل ترغب في تلقي إشعارات حول مؤتمر I/O؟\nسنرسل لك معلومات مهمة حول الفعالية وأجندة الأعمال والجدول الزمني ومعلومات السفر وأنشطة ما بعد ساعات العمل وتسجيلات الجلسات وغير ذلك. يمكنك تغيير هذا الإعداد ضمن \"معلومات &gt; الإعدادات\" في أي وقت.
     </string>
 
     <!-- Text shown on the onboarding sign-in screen. -->
@@ -760,7 +760,7 @@
     <string name="my_io_body_intro_signed_out">تسجيل الدخول إلى:</string>
 
     <!-- An introductory string used in the My I/O dialog to a signed in user  -->
-    <string name="my_io_body_intro_signed_in">كمستخدم مسجَّل دخوله:</string>
+    <string name="my_io_body_intro_signed_in">بصفتك مستخدمًا مسجَّل دخوله:</string>
 
     <!-- The first bulletpoint string used in the My I/O dialog to a signed out user  -->
     <string name="my_io_dialog_first_bullet_point_signed_out">
@@ -845,7 +845,7 @@
     <string name="remove_bookmark_hint">تمت إزالة الفعالية من صفحة I/O‏ الخاصة بي</string>
 
     <!-- Opt-out text to stop seeing bookmark related hints. -->
-    <string name="bookmark_hint_optout">موافق</string>
+    <string name="bookmark_hint_optout">حسنًا</string>
 
     <!-- The label used on a button when a view is in an expanded state. Clicking on the icon
     collapses the view. -->

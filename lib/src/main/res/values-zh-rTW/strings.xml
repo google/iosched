@@ -609,7 +609,7 @@
     <string name="watch_now">立即觀看！</string>
 
     <!-- Short text welcoming the user to the application -->
-    <string name="welcome_to_google_i_o">歡迎參加 #io17</string>
+    <string name="welcome_to_google_i_o">歡迎使用 #io17</string>
 
     <!-- Medium-length welcome text indicating the subsequent text is important legal information -->
     <string name="welcome_text">在開始之前，請參考一些關於使用這款應用程式的重要法律資訊。</string>
