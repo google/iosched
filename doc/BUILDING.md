@@ -73,7 +73,7 @@ To build the app:
    ```
     ./gradlew installDebug
    ```
-1. [Refer to 'Navigating the Android app' doc] (NAVIGATING_CODE.md).
+1. [Refer to 'Navigating the Android app' doc](NAVIGATING_CODE.md).
 
 # Server-side setup
 
