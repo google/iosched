@@ -17,7 +17,30 @@
 <!-- Colors common among all features in the app. -->
 <resources>
     <color name="transparent">#00000000</color>
-    <color name="background">#f5f5f5</color>
+    <color name="background">#fff7f9f9</color>
+
+    <!-- 2016 palette -->
+    <color name="io16_primary_cyan">#ff25c5d9</color>
+    <color name="io16_primary_purple">#ff5d6abf</color>
+    <color name="io16_primary_blue_grey">#ff445963</color>
+    <color name="io16_grey">#ffafbdc4</color>
+    <color name="io16_light_grey">#ffebeef0</color>
+    <color name="io16_accent_red">#ffff5151</color>
+    <color name="io16_accent_cyan">#ff4ccfe0</color>
+    <color name="io16_accent_light_cyan">#ff8cedea</color>
+    <color name="io16_accent_green">#ff7bb241</color>
+    <color name="io16_accent_yellow">#ffffc927</color>
+    <color name="io16_accent_purple">#ff7885ca</color>
+    <color name="dark_icon">#99000000</color>
+    <color name="large_dark_icon">#66000000</color>
+    <color name="map_icon">#ffb4b4b4</color>
+    <color name="navview_icon">#ff444444</color>
+    <color name="dark_status_bar">#ff949595</color>
+    <color name="light_status_bar_against_toolbar">#ffe8eaea</color>
+    <color name="light_status_bar_against_header_img">#ffe0e1e3</color>
+    <color name="immersive_status_bar">#26000000</color> <!-- 15% black -->
+    <color name="immersive_light_status_bar">#13000000</color> <!-- 7.5% black -->
+    <!-- todo cleanup old colors -->
 
     <!-- App main palette for io15 version. -->
     <color name="io15_dark_grey">#FF455A64</color>
@@ -45,18 +68,22 @@
     <color name="app_body_text_disabled">#44000000</color>
     <color name="app_body_text_1_inverse">#deffffff</color>
     <color name="app_body_text_2_inverse">#8affffff</color>
-    <color name="flat_button_text">#ff008094</color>
+    <color name="flat_button_text">#ff0097a7</color>
     <color name="text_on_primary">#ff004446</color>
     <color name="subtitle_on_primary">#de004446</color>
     <color name="unselected_tab_on_primary">#b3004446</color>
+    <color name="preferred_action">#b3000000</color>
+    <color name="about_link">#ff00a7b6</color>
 
     <!-- Session Detail colors. -->
-    <color name="session_detail_tag_text_color">@color/flat_button_text</color>
-    <color name="section_header_views_color">@color/io15_dark_grey</color>
+    <color name="session_detail_tag_text">@color/session_detail_interactive_element</color>
     <color name="fab_not_in_schedule">#ffeeff21</color>
     <color name="fab_in_schedule">@color/io15_white</color>
     <color name="fab_press_ripple">#1a000000</color>
-    <color name="fab_icon_color">#99000000</color>
+    <color name="fab_icon_color">@color/dark_icon</color>
+    <color name="session_tag_stroke">#80546e7a</color>
+    <color name="speaker_social_link">@color/session_detail_interactive_element</color>
+    <color name="session_detail_interactive_element">#ff546e7a</color>
 
     <!-- start deprecated -->
     <color name="body_text_1">#de000000</color>
@@ -90,8 +117,7 @@
     <color name="grey_background">#f5f5f5</color>
     <color name="dark_divider">#32000000</color>
 
-    <color name="more_button_background">#ffcfd8dc</color>
-    <color name="more_button_text">@color/cyan_a700_plus</color>
+    <color name="more_button_background">#40707070</color>
 
     <color name="navdrawer_background">#ffffffff</color>
     <color name="navdrawer_text_color">@color/body_text_1</color>
@@ -115,6 +141,7 @@
 
     <!-- IO15 session detail colors -->
     <color name="session_livestreamed_color">@color/app_body_text_2</color>
+    <color name="session_extended_color">#546E7A</color>
 
     <color name="list_dropdown_foreground_normal">#ff333333</color>
     <color name="list_dropdown_divider_color">#92a3a3a3</color>
@@ -133,13 +160,13 @@
     <color name="my_schedule_session_title_default">#de07434d</color>
     <color name="my_schedule_session_title_finished">#b807434d</color>
 
-    <color name="light_grey">#fff0f0f0</color>
+    <color name="light_grey">#ffeeeeee</color>
     <color name="lighter_gray">#ddd</color>
 
     <!-- video lib -->
     <color name="video_title">#de07434d</color>
     <color name="filter_text">@color/app_primary_text</color>
-    <color name="video_scrim_watched">#b3f1f1f1</color>
+    <color name="played_video_tint">#b3f1f1f1</color>
 
     <!-- Colors used in the Social feature. -->
     <color name="social_io15">@color/io15_dark_grey</color>
@@ -158,7 +185,19 @@
 
     <!-- Colors used in the Explore Sessions filter drawer -->
     <color name="explore_sessions_body_color">#444444</color>
+    <color name="track_header_tint">#20ffffff</color> <!-- background protection for overlaid text -->
+    <array name="session_tile_backgrounds">
+        <item>#ffeceff1</item>
+        <item>#fffafbfc</item>
+        <item>#fff4f5f7</item>
+    </array>
+    <color name="hash_io_monochrome">#15000000</color> <!-- 8% black -->
 
     <!-- search -->
     <color name="dialog_background">#7f000000</color>
+
+    <!-- welcome -->
+    <color name="welcome_nav_bar">#ff296e78</color>
+    <color name="welcome_attending_in_person_background">#fffff6de</color>
+
 </resources>

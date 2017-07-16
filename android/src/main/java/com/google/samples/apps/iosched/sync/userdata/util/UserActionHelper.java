@@ -66,15 +66,19 @@ public class UserActionHelper {
      */
     static private ContentProviderOperation createUpdateOperation(Context context,
             UserAction action, String account) {
-        if (action.type == UserAction.TYPE.ADD_STAR) {
+        if (action.type == UserAction.TYPE.ADD_STAR || action.type == UserAction.TYPE.REMOVE_STAR) {
             return ContentProviderOperation
                     .newInsert(
                             ScheduleContractHelper.addOverrideAccountName(
                                     ScheduleContract.MySchedule.CONTENT_URI, account))
                     .withValue(ScheduleContract.MySchedule.MY_SCHEDULE_DIRTY_FLAG, "0")
                     .withValue(ScheduleContract.MySchedule.SESSION_ID, action.sessionId)
+                    .withValue(ScheduleContract.MySchedule.MY_SCHEDULE_TIMESTAMP,
+                            action.timestamp)
+                    .withValue(ScheduleContract.MySchedule.MY_SCHEDULE_IN_SCHEDULE,
+                            action.type == UserAction.TYPE.ADD_STAR ? 1 : 0)
                     .build();
-        } else if (action.type == UserAction.TYPE.SUBMIT_FEEDBACK) {
+        }  else if (action.type == UserAction.TYPE.SUBMIT_FEEDBACK) {
             return ContentProviderOperation
                     .newInsert(
                             ScheduleContractHelper.addOverrideAccountName(

@@ -14,22 +14,49 @@
   limitations under the License.
 -->
 
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical">
 
-    <TextView
-        android:id="@+id/start_time"
+    <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="48dp"
-        android:gravity="center_vertical"
-        android:paddingLeft="@dimen/keyline_2"
-        android:paddingRight="@dimen/keyline_2"
-        android:textColor="@color/body_text_1"
-        android:textSize="@dimen/text_size_large"
-        tools:text="@string/placeholder_session_start_time" />
+        android:foreground="?android:selectableItemBackground"
+        android:importantForAccessibility="yes">
+
+        <TextView
+            android:id="@+id/start_time"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center_vertical"
+            android:paddingLeft="@dimen/keyline_2"
+            android:paddingRight="@dimen/keyline_2"
+            android:textColor="@color/body_text_1"
+            android:textSize="@dimen/text_size_large"
+            tools:text="@string/placeholder_session_start_time" />
+
+        <TextView
+            android:id="@+id/more"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical|end|right"
+            android:layout_marginEnd="@dimen/padding_normal"
+            android:layout_marginRight="@dimen/padding_normal"
+            android:gravity="center_vertical"
+            android:paddingBottom="@dimen/spacing_micro"
+            android:paddingEnd="@dimen/spacing_normal"
+            android:paddingLeft="@dimen/spacing_normal"
+            android:paddingRight="@dimen/spacing_normal"
+            android:paddingStart="@dimen/spacing_normal"
+            android:paddingTop="@dimen/spacing_micro"
+            android:text="@string/more_items_button"
+            style="@style/MoreButton" />
+
+    </FrameLayout>
 
     <LinearLayout
         android:id="@+id/touch_area"
@@ -46,7 +73,7 @@
             android:layout_marginRight="@dimen/my_schedule_icon_horizontal_padding"
             android:layout_marginTop="8dp"
             android:contentDescription="@null"
-            android:src="@drawable/ic_navview_my_schedule" />
+            app:srcCompat="@drawable/ic_navview_schedule" />
 
         <LinearLayout
             android:layout_width="0dp"
@@ -71,9 +98,9 @@
                 android:id="@+id/slot_description"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="4dp"
                 android:layout_marginEnd="8dp"
                 android:layout_marginRight="8dp"
+                android:layout_marginTop="4dp"
                 android:textSize="@dimen/text_size_medium"
                 tools:text="9:00 AM - 11:30 AM / Room 1"
                 style="@style/Body1Text" />

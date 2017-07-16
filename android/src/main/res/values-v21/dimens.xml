@@ -18,4 +18,7 @@
 
     <!-- we use a different padding here because we draw behind the status bar on v21 -->
     <dimen name="navdrawer_logo_vertical_padding">32dp</dimen>
+
+    <!-- we use a different value here due to the change in status bar height on v21 -->
+    <dimen name="navdrawer_header_icon_margin_top">24dp</dimen>
 </resources>

@@ -28,7 +28,7 @@
         android:id="@+id/main_content"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/light_grey"
+        android:background="@color/background"
         app:shadowDrawable="@drawable/header_shadow">
 
         <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
@@ -42,53 +42,69 @@
                 android:id="@+id/about_main"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/element_spacing_normal"
+                android:layout_marginTop="@dimen/spacing_normal"
                 android:paddingBottom="@dimen/element_spacing_normal"
-                android:paddingLeft="@dimen/content_padding_dialog"
-                android:paddingRight="@dimen/content_padding_dialog"
-                android:paddingTop="8dp"
+                android:paddingLeft="@dimen/padding_normal"
+                android:paddingRight="@dimen/padding_normal"
+                android:paddingTop="@dimen/spacing_normal"
                 android:textSize="@dimen/text_size_medium"
                 tools:text="@string/about_main" />
 
             <TextView
                 android:id="@+id/about_terms"
-                style="@style/AboutLink"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/about_terms" />
+                android:gravity="center_vertical"
+                android:minHeight="?android:listPreferredItemHeightSmall"
+                android:paddingLeft="@dimen/padding_normal"
+                android:paddingRight="@dimen/padding_normal"
+                android:text="@string/about_terms"
+                style="@style/AboutLink" />
 
             <TextView
                 android:id="@+id/about_privacy_policy"
-                style="@style/AboutLink"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/about_privacy_policy" />
+                android:gravity="center_vertical"
+                android:minHeight="?android:listPreferredItemHeightSmall"
+                android:paddingLeft="@dimen/padding_normal"
+                android:paddingRight="@dimen/padding_normal"
+                android:text="@string/about_privacy_policy"
+                style="@style/AboutLink" />
 
             <TextView
                 android:id="@+id/about_licenses"
-                style="@style/AboutLink"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/about_licenses" />
+                android:gravity="center_vertical"
+                android:minHeight="?android:listPreferredItemHeightSmall"
+                android:paddingLeft="@dimen/padding_normal"
+                android:paddingRight="@dimen/padding_normal"
+                android:text="@string/about_licenses"
+                style="@style/AboutLink" />
 
             <TextView
                 android:id="@+id/about_eula"
-                style="@style/AboutLink"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/about_eula" />
+                android:gravity="center_vertical"
+                android:minHeight="?android:listPreferredItemHeightSmall"
+                android:paddingLeft="@dimen/padding_normal"
+                android:paddingRight="@dimen/padding_normal"
+                android:text="@string/about_eula"
+                style="@style/AboutLink" />
 
         </LinearLayout>
 
         <LinearLayout
             android:id="@+id/headerbar"
-            style="@style/HeaderBar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:clickable="true"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            style="@style/HeaderBar">
 
-            <include layout="@layout/toolbar_actionbar" />
+            <include layout="@layout/toolbar" />
             <!-- placeholder, empty except on L -->
 
         </LinearLayout>
@@ -97,6 +113,6 @@
     </com.google.samples.apps.iosched.ui.widget.DrawShadowFrameLayout>
 
     <!-- Nav drawer -->
-    <include layout="@layout/navdrawer" />
+    <include layout="@layout/navigation_view" />
 
 </android.support.v4.widget.DrawerLayout>

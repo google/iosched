@@ -53,6 +53,7 @@ import android.content.Context;
 import android.content.OperationApplicationException;
 import android.database.Cursor;
 import android.database.MatrixCursor;
+import android.database.sqlite.SQLiteConstraintException;
 import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
 import android.os.ParcelFileDescriptor;
@@ -70,6 +71,7 @@ import java.util.List;
 import static com.google.samples.apps.iosched.util.LogUtils.LOGD;
 import static com.google.samples.apps.iosched.util.LogUtils.LOGE;
 import static com.google.samples.apps.iosched.util.LogUtils.LOGV;
+import static com.google.samples.apps.iosched.util.LogUtils.LOGW;
 import static com.google.samples.apps.iosched.util.LogUtils.makeLogTag;
 
 /**
@@ -204,7 +206,7 @@ public class ScheduleProvider extends ContentProvider {
 
         // Avoid the expensive string concatenation below if not loggable.
         if (Log.isLoggable(TAG, Log.VERBOSE)) {
-            Log.v(TAG, "uri=" + uri + " code=" + matchingUriEnum.code + " proj=" +
+            LOGV(TAG, "uri=" + uri + " code=" + matchingUriEnum.code + " proj=" +
                     Arrays.toString(projection) + " selection=" + selection + " args="
                     + Arrays.toString(selectionArgs) + ")");
         }
@@ -258,8 +260,8 @@ public class ScheduleProvider extends ContentProvider {
                 // First we query the Tags table to find any tags that match the given query
                 Cursor tags = query(Tags.CONTENT_URI, SearchTopicsSessions.TOPIC_TAG_PROJECTION,
                         SearchTopicsSessions.TOPIC_TAG_SELECTION,
-                        new String[] {Config.Tags.CATEGORY_TOPIC, selectionArg + "%"},
-                        Tags.TAG_ORDER_BY_CATEGORY);
+                        new String[] {Config.Tags.CATEGORY_TRACK, selectionArg + "%"},
+                        SearchTopicsSessions.TOPIC_TAG_SORT);
                 // Then we query the sessions_search table and get a list of sessions that match
                 // the given keywords.
                 Cursor search = null;
@@ -324,13 +326,23 @@ public class ScheduleProvider extends ContentProvider {
         final SQLiteDatabase db = mOpenHelper.getWritableDatabase();
         ScheduleUriEnum matchingUriEnum = mUriMatcher.matchUri(uri);
         if (matchingUriEnum.table != null) {
-            db.insertOrThrow(matchingUriEnum.table, null, values);
-            notifyChange(uri);
+            try {
+                db.insertOrThrow(matchingUriEnum.table, null, values);
+                notifyChange(uri);
+            } catch (SQLiteConstraintException exception) {
+                // Leaving this here as it's handy to to breakpoint on this throw when debugging a
+                // bootstrap file issue.
+                throw exception;
+            }
         }
 
         switch (matchingUriEnum) {
             case BLOCKS: {
                 return Blocks.buildBlockUri(values.getAsString(Blocks.BLOCK_ID));
+            }
+            case CARDS: {
+                return ScheduleContract.Cards.buildCardUri(values.getAsString(
+                        ScheduleContract.Cards.CARD_ID));
             }
             case TAGS: {
                 return Tags.buildTagUri(values.getAsString(Tags.TAG_ID));
@@ -527,6 +539,7 @@ public class ScheduleProvider extends ContentProvider {
         // criteria so the full table is used. The others apply a selection criteria.
         switch (matchingUriEnum) {
             case BLOCKS:
+            case CARDS:
             case TAGS:
             case ROOMS:
             case SESSIONS:
@@ -675,6 +688,9 @@ public class ScheduleProvider extends ContentProvider {
                 final String blockId = Blocks.getBlockId(uri);
                 return builder.table(Tables.BLOCKS)
                         .where(Blocks.BLOCK_ID + "=?", blockId);
+            }
+            case CARDS: {
+                return builder.table(Tables.CARDS);
             }
             case TAGS: {
                 return builder.table(Tables.TAGS);

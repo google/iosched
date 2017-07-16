@@ -1,12 +1,13 @@
 package com.google.samples.apps.iosched.explore.data;
 
-import com.google.samples.apps.iosched.util.UIUtils;
-
 import android.content.Context;
 import android.text.TextUtils;
 
+import com.google.samples.apps.iosched.settings.SettingsUtils;
+import com.google.samples.apps.iosched.util.TimeUtils;
+
 import java.util.Calendar;
-import java.util.Date;
+import java.util.TimeZone;
 
 /**
  * This represent a Session that is pulled from the schedule.
@@ -17,8 +18,8 @@ public class SessionData {
     private String mSessionId;
     private String mImageUrl;
     private String mMainTag;
-    private Date mStartDate;
-    private Date mEndDate;
+    private Calendar mStartDate;
+    private Calendar mEndDate;
     private String mLiveStreamId;
     private String mYouTubeUrl;
     private String mTags;
@@ -26,23 +27,28 @@ public class SessionData {
 
     public SessionData() { }
 
-    public SessionData(String sessionName, String details, String sessionId, String imageUrl,
-                       String mainTag, long startTime, long endTime, String liveStreamId,
-                       String youTubeUrl, String tags, boolean inSchedule) {
-        updateData(sessionName, details, sessionId, imageUrl, mainTag, startTime, endTime,
+    public SessionData(Context context, String sessionName, String details, String sessionId,
+            String imageUrl, String mainTag, long startTime, long endTime, String liveStreamId,
+            String youTubeUrl, String tags, boolean inSchedule) {
+        updateData(context, sessionName, details, sessionId, imageUrl, mainTag, startTime, endTime,
                 liveStreamId, youTubeUrl, tags, inSchedule);
     }
 
-    public void updateData(String sessionName, String details, String sessionId, String imageUrl,
-                           String mainTag, long startTime, long endTime, String liveStreamId,
-                           String youTubeUrl, String tags, boolean inSchedule) {
+    public void updateData(Context context, String sessionName, String details, String sessionId,
+            String imageUrl, String mainTag, long startTime, long endTime, String liveStreamId,
+            String youTubeUrl, String tags, boolean inSchedule) {
         mSessionName = sessionName;
         mDetails = details;
         mSessionId = sessionId;
         mImageUrl = imageUrl;
         mMainTag = mainTag;
-        try { mStartDate = new java.util.Date(startTime); } catch (Exception ignored) { }
-        try { mEndDate = new java.util.Date(endTime); } catch (Exception ignored) { }
+        TimeZone timeZone = SettingsUtils.getDisplayTimeZone(context);
+        mStartDate = Calendar.getInstance();
+        mStartDate.setTimeInMillis(startTime);
+        mStartDate.setTimeZone(timeZone);
+        mEndDate = Calendar.getInstance();
+        mEndDate.setTimeInMillis(endTime);
+        mEndDate.setTimeZone(timeZone);
         mLiveStreamId = liveStreamId;
         mYouTubeUrl = youTubeUrl;
         mTags = tags;
@@ -60,12 +66,8 @@ public class SessionData {
             return false;
         }
         Calendar now = java.util.Calendar.getInstance();
-        now.setTimeInMillis(UIUtils.getCurrentTime(context));
-        if (mStartDate.before(now.getTime()) && mEndDate.after(now.getTime())) {
-            return true;
-        } else {
-            return false;
-        }
+        now.setTimeInMillis(TimeUtils.getCurrentTime(context));
+        return mStartDate.before(now) && mEndDate.after(now);
     }
 
     public boolean isLiveStreamAvailable() {
@@ -98,9 +100,9 @@ public class SessionData {
 
     public void setDetails(String details) { mDetails = details; }
 
-    public Date getStartDate() { return mStartDate; }
+    public Calendar getStartDate() { return mStartDate; }
 
-    public Date getEndDate() { return mEndDate; }
+    public Calendar getEndDate() { return mEndDate; }
 
     public String getLiveStreamId() { return mLiveStreamId; }
 
@@ -109,4 +111,68 @@ public class SessionData {
     public String getTags() { return mTags; }
 
     public boolean isInSchedule() { return mInSchedule; }
+
+    @Override
+    public boolean equals(final Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+
+        final SessionData that = (SessionData) o;
+
+        if (mInSchedule != that.mInSchedule) {
+            return false;
+        }
+        if (mSessionName != null ? !mSessionName.equals(that.mSessionName) :
+                that.mSessionName != null) {
+            return false;
+        }
+        if (mDetails != null ? !mDetails.equals(that.mDetails) : that.mDetails != null) {
+            return false;
+        }
+        if (mSessionId != null ? !mSessionId.equals(that.mSessionId) : that.mSessionId != null) {
+            return false;
+        }
+        if (mImageUrl != null ? !mImageUrl.equals(that.mImageUrl) : that.mImageUrl != null) {
+            return false;
+        }
+        if (mMainTag != null ? !mMainTag.equals(that.mMainTag) : that.mMainTag != null) {
+            return false;
+        }
+        if (mStartDate != null ? !mStartDate.equals(that.mStartDate) : that.mStartDate != null) {
+            return false;
+        }
+        if (mEndDate != null ? !mEndDate.equals(that.mEndDate) : that.mEndDate != null) {
+            return false;
+        }
+        if (mLiveStreamId != null ? !mLiveStreamId.equals(that.mLiveStreamId) :
+                that.mLiveStreamId != null) {
+            return false;
+        }
+        if (mYouTubeUrl != null ? !mYouTubeUrl.equals(that.mYouTubeUrl) :
+                that.mYouTubeUrl != null) {
+            return false;
+        }
+        return mTags != null ? mTags.equals(that.mTags) : that.mTags == null;
+
+    }
+
+    @Override
+    public int hashCode() {
+        int result = mSessionName != null ? mSessionName.hashCode() : 0;
+        result = 31 * result + (mDetails != null ? mDetails.hashCode() : 0);
+        result = 31 * result + (mSessionId != null ? mSessionId.hashCode() : 0);
+        result = 31 * result + (mImageUrl != null ? mImageUrl.hashCode() : 0);
+        result = 31 * result + (mMainTag != null ? mMainTag.hashCode() : 0);
+        result = 31 * result + (mStartDate != null ? mStartDate.hashCode() : 0);
+        result = 31 * result + (mEndDate != null ? mEndDate.hashCode() : 0);
+        result = 31 * result + (mLiveStreamId != null ? mLiveStreamId.hashCode() : 0);
+        result = 31 * result + (mYouTubeUrl != null ? mYouTubeUrl.hashCode() : 0);
+        result = 31 * result + (mTags != null ? mTags.hashCode() : 0);
+        result = 31 * result + (mInSchedule ? 1 : 0);
+        return result;
+    }
 }

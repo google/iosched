@@ -27,7 +27,6 @@ import com.google.samples.apps.iosched.provider.ScheduleContract;
 import com.google.samples.apps.iosched.settings.SettingsUtils;
 import com.google.samples.apps.iosched.sync.ConferenceDataHandler;
 import com.google.samples.apps.iosched.sync.SyncHelper;
-import com.google.samples.apps.iosched.util.AccountUtils;
 import com.google.samples.apps.iosched.util.LogUtils;
 
 import java.io.IOException;
@@ -106,7 +105,7 @@ public class DataBootstrapService extends IntentService {
         } finally {
             // Request a manual sync immediately after the bootstrapping process, in case we
             // have an active connection. Otherwise, the scheduled sync could take a while.
-            SyncHelper.requestManualSync(AccountUtils.getActiveAccount(appContext));
+            SyncHelper.requestManualSync();
         }
     }
 }

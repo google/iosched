@@ -18,7 +18,6 @@ package com.google.samples.apps.iosched.appwidget;
 
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Bitmap;
 import android.text.format.DateUtils;
 import android.util.SparseBooleanArray;
 import android.util.SparseIntArray;
@@ -94,11 +93,11 @@ public class ScheduleWidgetRemoteViewsService extends RemoteViewsService {
 
         public int getItemViewType(int position) {
             if (position < 0 || position >= mScheduleItems.size()) {
-                LOGE(TAG, "Invalid view position passed to MyScheduleAdapter: " + position);
+                LOGE(TAG, "Invalid view position passed to MyScheduleDayAdapter: " + position);
                 return VIEW_TYPE_NORMAL;
             }
             ScheduleItem item = mScheduleItems.get(position);
-            long now = UIUtils.getCurrentTime(mContext);
+            long now = TimeUtils.getCurrentTime(mContext);
             if (item.startTime <= now && now <= item.endTime && item.type == ScheduleItem.SESSION) {
                 return VIEW_TYPE_NOW;
             } else {
@@ -146,11 +145,11 @@ public class ScheduleWidgetRemoteViewsService extends RemoteViewsService {
 
 
                 if (itemPosition < 0 || itemPosition >= mScheduleItems.size()) {
-                    LOGE(TAG, "Invalid view position passed to MyScheduleAdapter: " + position);
+                    LOGE(TAG, "Invalid view position passed to MyScheduleDayAdapter: " + position);
                     return rv;
                 }
 
-                long now = UIUtils.getCurrentTime(mContext);
+                long now = TimeUtils.getCurrentTime(mContext);
                 rv.setTextViewText(R.id.start_end_time, formatTime(now, item));
 
                 rv.setViewVisibility(R.id.live_now_badge, View.GONE);
@@ -214,7 +213,7 @@ public class ScheduleWidgetRemoteViewsService extends RemoteViewsService {
                     rv.setOnClickFillInIntent(R.id.box, fillIntent);
 
                 } else {
-                    LOGE(TAG, "Invalid item type in MyScheduleAdapter: " + item.type);
+                    LOGE(TAG, "Invalid item type in MyScheduleDayAdapter: " + item.type);
                 }
             }
 
@@ -264,7 +263,7 @@ public class ScheduleWidgetRemoteViewsService extends RemoteViewsService {
             int position = 0;
             mScheduleItems = new ArrayList<ScheduleItem>();
             for (ScheduleItem item : allScheduleItems) {
-                if (item.endTime <= UIUtils.getCurrentTime(mContext)) {
+                if (item.endTime <= TimeUtils.getCurrentTime(mContext)) {
                     continue;
                 }
                 mScheduleItems.add(item);

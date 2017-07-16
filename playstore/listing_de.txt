@@ -1,0 +1,35 @@
+#  Copyright 2015 Google Inc. All rights reserved.
+#
+#  Licensed under the Apache License, Version 2.0 (the "License");
+#  you may not use this file except in compliance with the License.
+#  You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+#  Unless required by applicable law or agreed to in writing, software
+#  distributed under the License is distributed on an "AS IS" BASIS,
+#  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+#  See the License for the specific language governing permissions and
+#  limitations under the License.
+******************** Short description in locale <de> ********************
+Ihr Co-Pilot zur I/O, ob Sie nun persönlich oder von außerhalb dabei sind.
+******************** Title in locale <de> ********************
+Google I/O 2016
+******************** Full description in locale <de> ********************
+Die offizielle Google I/O 2016-App ist Ihr Co-Pilot für die Konferenz, ob Sie persönlich oder von außerhalb teilnehmen.
+– Erkunden Sie die Konferenz-Agenda mit Details über Themen, Bereiche und Referenten
+– Speichern Sie Sitzungen in Ihrem persönlichen Zeitplan
+– Erhalten Sie Erinnerungen, bevor Sitzungen in Ihrem Zeitplan beginnen
+– Sehen Sie sich die Keynotes und Sitzungen im Live-Stream an
+– Synchronisieren Sie Ihren Zeitplan zwischen allen Geräten und der I/O-Website
+– Finden Sie den Weg mit Hilfe der Vektor-basierten Konferenzkarte
+– Folgen Sie den I/O-relevanten Gesprächen in den sozialen Medien
+– Schauen Sie sich I/O-Inhalte per Videos aus den Vorjahren an
+
+* Exklusiv wenn Sie persönlich teilnehmen: *
+Nutzen Sie die App um das Konferenz-WLAN einzurichten.
+
+Diese App wurde für Handys und Tablets aller Formen und Größen optimiert.
+Der Quellcode der App wird nach Abschluss der I/O zur Verfügung gestellt.
+
+v4.0: Aktualisiert für Google I/O 2016

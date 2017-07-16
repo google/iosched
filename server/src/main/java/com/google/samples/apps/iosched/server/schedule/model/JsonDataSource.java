@@ -90,7 +90,7 @@ public class JsonDataSource implements Comparable<JsonDataSource>, Iterable<Json
   }
 
   private String getKeyProperty(JsonObject obj) {
-    JsonElement idEl = obj.get("id");
+    JsonElement idEl = obj.get("Id");
     if (idEl == null) {
       // reflection is not efficient in general, but the overhead should be insignificant
       // compared to the usual times taken to load a datasource (either from HTTP, disk or
@@ -107,7 +107,7 @@ public class JsonDataSource implements Comparable<JsonDataSource>, Iterable<Json
             + "nor a static getKey() method in the enum.", e);
       }
     }
-    return "id";
+    return "Id";
   }
 
   public void addAll(JsonArray arr) {

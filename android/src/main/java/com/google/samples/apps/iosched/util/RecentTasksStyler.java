@@ -21,8 +21,8 @@ import android.app.Activity;
 import android.app.ActivityManager;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.os.Build;
+import android.support.v4.content.ContextCompat;
 
 import com.google.samples.apps.iosched.R;
 
@@ -30,10 +30,10 @@ import com.google.samples.apps.iosched.R;
  * Helper class that applies the proper icon, title and background color to recent tasks list.
  */
 public class RecentTasksStyler {
+
     private static Bitmap sIcon = null;
 
-    private RecentTasksStyler() {
-    }
+    private RecentTasksStyler() { }
 
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     public static void styleRecentTasksEntry(Activity activity) {
@@ -41,15 +41,14 @@ public class RecentTasksStyler {
             return;
         }
 
-        Resources resources = activity.getResources();
-        String label = resources.getString(activity.getApplicationInfo().labelRes);
-        int colorPrimary = resources.getColor(R.color.theme_primary);
-
+        final String label = activity.getString(activity.getApplicationInfo().labelRes);
+        final int colorPrimary =
+                UIUtils.getThemeColor(activity, R.attr.colorPrimary, R.color.theme_primary);
         if (sIcon == null) {
             // Cache to avoid decoding the same bitmap on every Activity change
-            sIcon = BitmapFactory.decodeResource(resources, R.drawable.ic_stat_notification);
+            sIcon = UIUtils.vectorToBitmap(activity, R.drawable.ic_recents_logo);
         }
-
-        activity.setTaskDescription(new ActivityManager.TaskDescription(label, sIcon, colorPrimary));
+        activity.setTaskDescription(
+                new ActivityManager.TaskDescription(label, sIcon, colorPrimary));
     }
 }

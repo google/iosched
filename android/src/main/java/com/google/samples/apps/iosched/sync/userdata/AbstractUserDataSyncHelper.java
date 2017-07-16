@@ -22,7 +22,7 @@ import android.net.Uri;
 import android.util.Log;
 
 import com.google.samples.apps.iosched.appwidget.ScheduleWidgetProvider;
-import com.google.samples.apps.iosched.framework.QueryEnum;
+import com.google.samples.apps.iosched.archframework.QueryEnum;
 import com.google.samples.apps.iosched.gcm.ServerUtilities;
 import com.google.samples.apps.iosched.provider.ScheduleContract;
 import com.google.samples.apps.iosched.provider.ScheduleContract.MySchedule;
@@ -68,6 +68,7 @@ public abstract class AbstractUserDataSyncHelper {
 
     protected Context mContext;
     protected String mAccountName;
+    protected int mIoExceptions = 0;
 
     public AbstractUserDataSyncHelper(Context context, String accountName) {
         this.mContext = context;
@@ -107,6 +108,8 @@ public abstract class AbstractUserDataSyncHelper {
                 }
                 userAction.requiresSync = scheduleData.getInt(
                         scheduleData.getColumnIndex(MySchedule.MY_SCHEDULE_DIRTY_FLAG)) == 1;
+                userAction.timestamp = scheduleData.getLong(
+                        scheduleData.getColumnIndex(MySchedule.MY_SCHEDULE_TIMESTAMP));
                 actions.add(userAction);
                 if (!hasPendingLocalData && userAction.requiresSync) {
                     hasPendingLocalData = true;
@@ -160,7 +163,7 @@ public abstract class AbstractUserDataSyncHelper {
         }
 
 
-        Log.d(TAG, "Starting Drive AppData sync. hasPendingData = " + hasPendingLocalData);
+        Log.d(TAG, "Starting User Data sync. hasPendingData = " + hasPendingLocalData);
 
         boolean dataChanged = syncImpl(actions, hasPendingLocalData);
 
@@ -227,9 +230,17 @@ public abstract class AbstractUserDataSyncHelper {
         }
     }
 
+    public void incrementIoExceptions() {
+        mIoExceptions++;
+    }
+
+    public int getIoExcpetions() {
+        return mIoExceptions;
+    }
+
     private enum UserDataQueryEnum implements QueryEnum {
         MY_SCHEDULE(0, new String[]{MySchedule.SESSION_ID, MySchedule.MY_SCHEDULE_IN_SCHEDULE,
-                MySchedule.MY_SCHEDULE_DIRTY_FLAG}),
+                MySchedule.MY_SCHEDULE_DIRTY_FLAG, MySchedule.MY_SCHEDULE_TIMESTAMP}),
 
         MY_FEEDBACK_SUBMITTED(0, new String[]{MyFeedbackSubmitted.SESSION_ID,
                 MyFeedbackSubmitted.MY_FEEDBACK_SUBMITTED_DIRTY_FLAG}),

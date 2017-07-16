@@ -18,23 +18,14 @@ package com.google.samples.apps.iosched.feedback;
 
 import android.content.ContentValues;
 import android.content.Context;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.Uri;
 import android.preference.PreferenceManager;
-import android.text.TextUtils;
 
-import com.google.android.gms.wearable.DataMap;
-import com.google.samples.apps.iosched.provider.ScheduleContract;
-import com.google.samples.apps.iosched.service.SessionAlarmService;
 import com.google.samples.apps.iosched.feedback.SessionFeedbackModel.SessionFeedbackData;
-
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
+import com.google.samples.apps.iosched.provider.ScheduleContract;
 
 import static com.google.samples.apps.iosched.util.LogUtils.LOGD;
-import static com.google.samples.apps.iosched.util.LogUtils.LOGE;
 import static com.google.samples.apps.iosched.util.LogUtils.makeLogTag;
 
 /**
@@ -75,18 +66,6 @@ public class FeedbackHelper {
         Uri uri = mContext.getContentResolver()
                 .insert(ScheduleContract.Feedback.buildFeedbackUri(data.sessionId), values);
         LOGD(TAG, null == uri ? "No feedback was saved" : uri.toString());
-        dismissFeedbackNotification(data.sessionId);
-    }
-
-    /**
-     * Invokes the {@link FeedbackWearableListenerService} to dismiss the notification on both the device
-     * and wear.
-     */
-    private void dismissFeedbackNotification(String sessionId) {
-        Intent dismissalIntent = new Intent(mContext, FeedbackWearableListenerService.class);
-        dismissalIntent.setAction(SessionAlarmService.ACTION_NOTIFICATION_DISMISSAL);
-        dismissalIntent.putExtra(SessionAlarmService.KEY_SESSION_ID, sessionId);
-        mContext.startService(dismissalIntent);
     }
 
     /**
@@ -111,61 +90,6 @@ public class FeedbackHelper {
 
     private String createKeyForNotification(String sessionId){
         return String.format("feedback_notification_fired_%s", sessionId);
-    }
-
-    /**
-     * Returns the path for the session feedback with the given session id, as used when
-     * communication with the wear app.
-     */
-    public static String getFeedbackDataPathForWear(String sessionId) {
-        return SessionAlarmService.PATH_FEEDBACK + "/" + sessionId;
-    }
-
-    /**
-     * Converts the feedback data from a {@link com.google.android.gms.wearable.DataMap} to a
-     * {@link SessionFeedbackModel.SessionFeedbackData};
-     *
-     * The {@code data} is a JSON string. The format of a typical response is:
-     * <pre>[{"s":"sessionId-1234"},{"q":1,"a":2},{"q":0,"a":1},{"q":3,"a":1},{"q":2,"a":1}]</pre>
-     *
-     * @return SessionFeedbackData object, or null if JSON Parsing error
-     */
-    public static SessionFeedbackData convertDataMapToFeedbackData(DataMap data) {
-        try {
-            if (data == null){
-                LOGE(TAG, "Failed to parse session data, DataMap is null");
-                return null;
-            }
-            String jsonString = data.getString("response");
-            if (TextUtils.isEmpty(jsonString)) {
-                LOGE(TAG, "Failed to parse session data, empty json string");
-                return null;
-            }
-
-            LOGD(TAG, "jsonString is: " + jsonString);
-
-            JSONArray jsonArray = new JSONArray(jsonString);
-            if (jsonArray.length() > 0) {
-                JSONObject sessionObj = (JSONObject) jsonArray.get(0);
-                String sessionId = sessionObj.getString("s");
-                int[] answers = new int[4];
-                for (int i = 0; i < answers.length; i++) {
-                    answers[i] = -1;
-                }
-                for (int i = 1; i < jsonArray.length(); i++) {
-                    JSONObject answerObj = (JSONObject) jsonArray.get(i);
-                    int question = answerObj.getInt("q");
-                    int answer = answerObj.getInt("a") + 1;
-                    answers[question] = answer;
-                }
-                return new SessionFeedbackData(sessionId, answers[0], answers[1], answers[2],
-                        answers[3], null);
-            }
-
-        } catch (JSONException e) {
-            LOGE(TAG, "Failed to parse the json received from the wear", e);
-        }
-        return null;
     }
 
 }

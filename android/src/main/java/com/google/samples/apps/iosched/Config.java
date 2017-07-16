@@ -23,7 +23,12 @@ import java.util.Map;
 import java.util.TimeZone;
 import java.util.concurrent.TimeUnit;
 
+import static com.google.samples.apps.iosched.util.LogUtils.LOGW;
+import static com.google.samples.apps.iosched.util.LogUtils.makeLogTag;
+
 public class Config {
+
+    private static final String TAG = makeLogTag(Config.class);
 
     // Warning messages for dogfood build
     public static final String DOGFOOD_BUILD_WARNING_TITLE = "DOGFOOD BUILD";
@@ -39,6 +44,9 @@ public class Config {
             // start and end of day 2
             {ParserUtils.parseTime(BuildConfig.CONFERENCE_DAY2_START),
                     ParserUtils.parseTime(BuildConfig.CONFERENCE_DAY2_END)},
+            // start and end of day 3
+            {ParserUtils.parseTime(BuildConfig.CONFERENCE_DAY3_START),
+                    ParserUtils.parseTime(BuildConfig.CONFERENCE_DAY3_END)},
     };
 
     public static final TimeZone CONFERENCE_TIMEZONE =
@@ -49,7 +57,7 @@ public class Config {
     public static final long CONFERENCE_END_MILLIS = CONFERENCE_DAYS[CONFERENCE_DAYS.length - 1][1];
 
     public static final long SHOW_IO15_REQUEST_SOCIAL_PANEL_TIME = ParserUtils.parseTime(
-            BuildConfig.SHOW_IO15_REQUEST_SOCIAL_PANEL_TIME);
+            BuildConfig.SHOW_IO_REQUEST_SOCIAL_PANEL_TIME);
 
     // YouTube share URL
     public static final String YOUTUBE_SHARE_URL_PREFIX = "http://youtu.be/";
@@ -122,16 +130,14 @@ public class Config {
 
         // tag categories
         public static final String CATEGORY_THEME = "THEME";
-        public static final String CATEGORY_TOPIC = "TOPIC";
+        public static final String CATEGORY_TRACK = "TRACK";
         public static final String CATEGORY_TYPE = "TYPE";
-
-        public static final Map<String, Integer> CATEGORY_DISPLAY_ORDERS
-                = new HashMap<String, Integer>();
+        public static final String CATEGORY_SEP = "_";
 
         public static final String SPECIAL_KEYNOTE = "FLAG_KEYNOTE";
 
         public static final String[] EXPLORE_CATEGORIES =
-                {CATEGORY_THEME, CATEGORY_TOPIC, CATEGORY_TYPE};
+                {CATEGORY_THEME, CATEGORY_TRACK, CATEGORY_TYPE};
 
         public static final int[] EXPLORE_CATEGORY_ALL_STRING = {
                 R.string.all_themes, R.string.all_topics, R.string.all_types
@@ -142,13 +148,31 @@ public class Config {
         };
     }
 
+    private static final Map<String, Integer> CATEGORY_DISPLAY_ORDERS = new HashMap<>();
+
     static {
-        Tags.CATEGORY_DISPLAY_ORDERS.put(Tags.CATEGORY_THEME, 0);
-        Tags.CATEGORY_DISPLAY_ORDERS.put(Tags.CATEGORY_TOPIC, 1);
-        Tags.CATEGORY_DISPLAY_ORDERS.put(Tags.CATEGORY_TYPE, 2);
+        CATEGORY_DISPLAY_ORDERS.put(Tags.CATEGORY_THEME, 0);
+        CATEGORY_DISPLAY_ORDERS.put(Tags.CATEGORY_TRACK, 1);
+        CATEGORY_DISPLAY_ORDERS.put(Tags.CATEGORY_TYPE, 2);
+    }
+
+    /**
+     * Return a configured display order for the tags or zero for default.
+     */
+    public static int getCategoryDisplayOrder(String category) {
+        LOGW(TAG, "Error, category not found for the display order: " + category);
+        Integer displayOrder = CATEGORY_DISPLAY_ORDERS.get(category);
+        if (displayOrder == null) {
+            return 0;
+        }
+        return displayOrder;
     }
 
     // URL prefix for web links to session pages
     public static final String SESSION_DETAIL_WEB_URL_PREFIX
             = "https://www.google.com/events/io/schedule/session/";
+
+    public static final String HTTPS = "https";
+
+    public static final String SESSION_ID_URL_QUERY_KEY = "sid";
 }

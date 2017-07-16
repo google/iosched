@@ -22,9 +22,10 @@
     android:layout_height="match_parent"
     tools:context="com.google.samples.apps.iosched.welcome.AccountFragment"
     android:orientation="vertical"
-    android:padding="@dimen/welcome_content_padding">
+    android:padding="@dimen/welcome_content_padding" >
 
     <TextView
+        android:id="@+id/title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/welcome_select_account"
@@ -38,12 +39,11 @@
         android:text="@string/welcome_select_accoun_text"
         style="@style/Body1Text" />
 
-    <RadioGroup
-        android:id="@+id/welcome_account_list"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        style="@style/WelcomeAccounts">
-    </RadioGroup>
-
+    <com.google.android.gms.common.SignInButton
+        android:id="@+id/sign_in_button"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:layout_marginTop="@dimen/padding_normal"
+        android:layout_weight="1"
+        android:layout_gravity="center" />
 </LinearLayout>

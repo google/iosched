@@ -28,6 +28,7 @@ import android.text.TextUtils;
 import com.google.samples.apps.iosched.io.*;
 import com.google.samples.apps.iosched.io.map.model.Tile;
 import com.google.samples.apps.iosched.provider.ScheduleContract;
+import com.google.samples.apps.iosched.util.AccountUtils;
 import com.google.samples.apps.iosched.util.IOUtils;
 import com.google.samples.apps.iosched.util.MapUtils;
 import com.google.gson.JsonParser;
@@ -66,6 +67,7 @@ public class ConferenceDataHandler {
 
     private static final String DATA_KEY_ROOMS = "rooms";
     private static final String DATA_KEY_BLOCKS = "blocks";
+    private static final String DATA_KEY_CARDS = "cards";
     private static final String DATA_KEY_TAGS = "tags";
     private static final String DATA_KEY_SPEAKERS = "speakers";
     private static final String DATA_KEY_SESSIONS = "sessions";
@@ -77,6 +79,7 @@ public class ConferenceDataHandler {
     private static final String[] DATA_KEYS_IN_ORDER = {
             DATA_KEY_ROOMS,
             DATA_KEY_BLOCKS,
+            DATA_KEY_CARDS,
             DATA_KEY_TAGS,
             DATA_KEY_SPEAKERS,
             DATA_KEY_SESSIONS,
@@ -91,6 +94,7 @@ public class ConferenceDataHandler {
     // Handlers for each entity type:
     RoomsHandler mRoomsHandler = null;
     BlocksHandler mBlocksHandler = null;
+    CardHandler mCardHandler = null;
     TagsHandler mTagsHandler = null;
     SpeakersHandler mSpeakersHandler = null;
     SessionsHandler mSessionsHandler = null;
@@ -134,6 +138,7 @@ public class ConferenceDataHandler {
         mHandlerForKey.put(DATA_KEY_MAP, mMapPropertyHandler = new MapPropertyHandler(mContext));
         mHandlerForKey.put(DATA_KEY_HASHTAGS, mHashtagsHandler = new HashtagsHandler(mContext));
         mHandlerForKey.put(DATA_KEY_VIDEOS, mVideosHandler = new VideosHandler(mContext));
+        mHandlerForKey.put(DATA_KEY_CARDS, mCardHandler = new CardHandler(mContext));
 
         // process the jsons. This will call each of the handlers when appropriate to deal
         // with the objects we see in the data.
@@ -150,9 +155,9 @@ public class ConferenceDataHandler {
         // produce the necessary content provider operations
         ArrayList<ContentProviderOperation> batch = new ArrayList<ContentProviderOperation>();
         for (String key : DATA_KEYS_IN_ORDER) {
-            LOGD(TAG, "Building content provider operations for: " + key);
+            LOGI(TAG, "Building content provider operations for: " + key);
             mHandlerForKey.get(key).makeContentProviderOperations(batch);
-            LOGD(TAG, "Content provider operations so far: " + batch.size());
+            LOGI(TAG, "Content provider operations so far: " + batch.size());
         }
         LOGD(TAG, "Total content provider operations: " + batch.size());
 
@@ -161,7 +166,7 @@ public class ConferenceDataHandler {
         processMapOverlayFiles(mMapPropertyHandler.getTileOverlays(), downloadsAllowed);
 
         // finally, push the changes into the Content Provider
-        LOGD(TAG, "Applying " + batch.size() + " content provider operations.");
+        LOGI(TAG, "Applying " + batch.size() + " content provider operations.");
         try {
             int operations = batch.size();
             if (operations > 0) {
@@ -215,6 +220,7 @@ public class ConferenceDataHandler {
                 // the key is "rooms", "speakers", "tracks", etc.
                 String key = reader.nextName();
                 if (mHandlerForKey.containsKey(key)) {
+                    LOGD(TAG, "Processing key in conference data json: " + key);
                     // pass the value to the corresponding handler
                     mHandlerForKey.get(key).process(parser.parse(reader));
                 } else {
@@ -257,6 +263,7 @@ public class ConferenceDataHandler {
                         File tileFile = MapUtils.getTileFile(mContext, filename);
                         BasicHttpClient httpClient = new BasicHttpClient();
                         httpClient.setRequestLogger(mQuietLogger);
+                        IOUtils.authorizeHttpClient(mContext, httpClient);
                         HttpResponse httpResponse = httpClient.get(url, null);
                         IOUtils.writeToFile(httpResponse.getBody(), tileFile);
 

@@ -16,19 +16,7 @@
 
 package com.google.samples.apps.iosched.session;
 
-import com.google.samples.apps.iosched.BuildConfig;
-import com.google.samples.apps.iosched.InvalidEnum;
-import com.google.samples.apps.iosched.R;
-import com.google.samples.apps.iosched.model.TagMetadataTest;
-import com.google.samples.apps.iosched.provider.ScheduleContract;
-import com.google.samples.apps.iosched.util.SessionsHelper;
-
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.mockito.Mock;
-import org.mockito.runners.MockitoJUnitRunner;
-
+import android.app.LoaderManager;
 import android.content.Context;
 import android.content.CursorLoader;
 import android.content.SharedPreferences;
@@ -36,24 +24,39 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.test.suitebuilder.annotation.SmallTest;
 
+import com.google.samples.apps.iosched.BuildConfig;
+import com.google.samples.apps.iosched.archframework.Model;
+import com.google.samples.apps.iosched.model.TagMetadataTest;
+import com.google.samples.apps.iosched.provider.ScheduleContract;
+import com.google.samples.apps.iosched.settings.SettingsUtils;
+import com.google.samples.apps.iosched.testutils.SettingsMockContext;
+import com.google.samples.apps.iosched.util.LogUtils;
+import com.google.samples.apps.iosched.util.SessionsHelper;
+import com.google.samples.apps.iosched.util.TimeUtils;
+
+import org.junit.Before;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.mockito.Mock;
+import org.powermock.core.classloader.annotations.PrepareForTest;
+import org.powermock.modules.junit4.PowerMockRunner;
+
 import static org.hamcrest.CoreMatchers.not;
 import static org.hamcrest.CoreMatchers.nullValue;
-import static org.hamcrest.CoreMatchers.sameInstance;
 import static org.hamcrest.core.Is.is;
+import static org.hamcrest.core.IsSame.sameInstance;
 import static org.junit.Assert.assertThat;
-import static org.junit.Assert.assertTrue;
 import static org.mockito.Matchers.any;
-import static org.mockito.Matchers.anyLong;
 import static org.mockito.Matchers.anyString;
 import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.doReturn;
-import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-@RunWith(MockitoJUnitRunner.class)
+@RunWith(PowerMockRunner.class)
+@PrepareForTest({SettingsUtils.class, TimeUtils.class})
 @SmallTest
 public class SessionDetailModelTest {
 
@@ -132,6 +135,12 @@ public class SessionDetailModelTest {
     @Mock
     private CursorLoader mMockCursorLoader;
 
+    @Mock
+    private LoaderManager mMockLoaderManager;
+
+    @Mock
+    private Model.UserActionCallback mMockUserActionCallback;
+
     private SessionDetailModel mSessionDetailModel;
 
     @Before
@@ -140,9 +149,11 @@ public class SessionDetailModelTest {
         initMockCursors();
         initMockContextWithFakeCurrentTime();
 
+        LogUtils.LOGGING_ENABLED = false;
+
         // Create an instance of the model.
         mSessionDetailModel = new SessionDetailModel(mMockUri, mMockContext,
-                mMockSessionsHelper);
+                mMockSessionsHelper, mMockLoaderManager);
     }
 
     @Test
@@ -285,17 +296,19 @@ public class SessionDetailModelTest {
     public void readDataFromCursor_InvalidQuery_ReturnsFalse() {
         // When ran with invalid query and non empty cursor
         boolean success = mSessionDetailModel.readDataFromCursor(
-                mMockCursor, InvalidEnum.INVALID);
+                mMockCursor, null);
 
         // Then false is returned
         assertThat(success, is(false));
     }
 
+
     @Test
     public void createCursorLoader_SessionQuery_ReturnsCursorLoader() {
         // Given a mock uri and mock cursor loader
         SessionDetailModel spyModel = spy(
-                new SessionDetailModel(mMockUri, mMockContext, mMockSessionsHelper));
+                new SessionDetailModel(mMockUri, mMockContext, mMockSessionsHelper,
+                        mMockLoaderManager));
         doReturn(FAKE_ID).when(spyModel).getSessionId(mMockUri);
         doReturn(mMockCursorLoader).when(spyModel).getCursorLoaderInstance(
                 any(Context.class), any(Uri.class), any(String[].class), any(String.class),
@@ -304,7 +317,7 @@ public class SessionDetailModelTest {
         // When ran with mock uri and session query loader id
         CursorLoader createdCursorLoader =
                 (CursorLoader) spyModel.createCursorLoader(
-                        SessionDetailModel.SessionDetailQueryEnum.SESSIONS.getId(), mMockUri, null);
+                        SessionDetailModel.SessionDetailQueryEnum.SESSIONS, null);
 
         // Then the returned cursor loader is the mock cursor loader
         assertThat(createdCursorLoader, sameInstance(mMockCursorLoader));
@@ -314,14 +327,14 @@ public class SessionDetailModelTest {
     public void createCursorLoader_TagMetadaQuery_ReturnsCursorLoader() {
         // Given a mock uri and mock cursor loader
         SessionDetailModel spyModel = spy(
-                new SessionDetailModel(mMockUri, mMockContext, mMockSessionsHelper));
+                new SessionDetailModel(mMockUri, mMockContext, mMockSessionsHelper,
+                        mMockLoaderManager));
         doReturn(mMockCursorLoader).when(spyModel).getTagMetadataLoader();
 
         // When ran with mock uri and tag metadata query loader id
         CursorLoader createdCursorLoader =
                 (CursorLoader) spyModel.createCursorLoader(
-                        SessionDetailModel.SessionDetailQueryEnum.TAG_METADATA.getId(),
-                        mMockUri, null);
+                        SessionDetailModel.SessionDetailQueryEnum.TAG_METADATA, null);
 
         // Then the returned cursor loader is the mock cursor loader
         assertThat(createdCursorLoader, sameInstance(mMockCursorLoader));
@@ -331,7 +344,8 @@ public class SessionDetailModelTest {
     public void createCursorLoader_SpeakersQuery_ReturnsCursor() {
         // Given a mock uri and mock cursor loader
         SessionDetailModel spyModel = spy(
-                new SessionDetailModel(mMockUri, mMockContext, mMockSessionsHelper));
+                new SessionDetailModel(mMockUri, mMockContext, mMockSessionsHelper,
+                        mMockLoaderManager));
         doReturn(mMockUri).when(spyModel).getSpeakersDirUri(any(String.class));
         doReturn(mMockCursorLoader).when(spyModel).getCursorLoaderInstance(
                 any(Context.class), any(Uri.class), any(String[].class), any(String.class),
@@ -340,8 +354,7 @@ public class SessionDetailModelTest {
         // When ran with mock uri and speakers query loader id
         CursorLoader createdCursorLoader =
                 (CursorLoader) spyModel.createCursorLoader(
-                        SessionDetailModel.SessionDetailQueryEnum.SPEAKERS.getId(),
-                        mMockUri, null);
+                        SessionDetailModel.SessionDetailQueryEnum.SPEAKERS, null);
 
         // Then the returned cursor loader is the mock cursor loader
         assertThat(createdCursorLoader, sameInstance(mMockCursorLoader));
@@ -351,7 +364,8 @@ public class SessionDetailModelTest {
     public void createCursorLoader_FeedbackQuery_ReturnsCursor() {
         // Given a mock uri and mock cursor loader
         SessionDetailModel spyModel = spy(
-                new SessionDetailModel(mMockUri, mMockContext, mMockSessionsHelper));
+                new SessionDetailModel(mMockUri, mMockContext, mMockSessionsHelper,
+                        mMockLoaderManager));
         doReturn(mMockUri).when(spyModel).getFeedbackUri(any(String.class));
         doReturn(mMockCursorLoader).when(spyModel).getCursorLoaderInstance(
                 any(Context.class), any(Uri.class), any(String[].class), any(String.class),
@@ -360,26 +374,24 @@ public class SessionDetailModelTest {
         // When ran with mock uri and feedback query loader id
         CursorLoader createdCursorLoader =
                 (CursorLoader) spyModel.createCursorLoader(
-                        SessionDetailModel.SessionDetailQueryEnum.FEEDBACK.getId(),
-                        mMockUri, null);
+                        SessionDetailModel.SessionDetailQueryEnum.FEEDBACK, null);
 
         // Then the returned cursor loader is the mock cursor loader
         assertThat(createdCursorLoader, sameInstance(mMockCursorLoader));
     }
 
     @Test
-    public void createCursorLoader_InvalidQuery_ReturnsNullCursor() {
-        // When ran with mock uri and invalid query loader id
+    public void createCursorLoader_NullQuery_ReturnsNullCursor() {
+        // When ran with mock uri and null query loader id
         CursorLoader createdCursorLoader =
-                (CursorLoader) mSessionDetailModel.createCursorLoader(InvalidEnum.INVALID.getId(),
-                        mMockUri, null);
+                (CursorLoader) mSessionDetailModel.createCursorLoader(null, null);
 
         // Then the returned cursor loader is null
         assertThat(createdCursorLoader, nullValue());
     }
 
     @Test
-    public void requestModelUpdate_StarSession_Success() {
+    public void deliverUserAction_StarSession_Success() {
         // Given a loaded session not in user schedule
         initMockCursorWithSessionNotInSchedule(mMockCursor);
         SessionDetailModel spyModel = setSpyModelForSessionLoading();
@@ -389,17 +401,20 @@ public class SessionDetailModelTest {
                 any(String.class), any(String.class), any(String.class));
 
         // When ran with star user action
-        boolean success = spyModel.requestModelUpdate(
-                SessionDetailModel.SessionDetailUserActionEnum.STAR, null);
+        spyModel.deliverUserAction(SessionDetailModel.SessionDetailUserActionEnum.STAR, null,
+                mMockUserActionCallback);
 
-        // Then the session is in user schedule and set session starred is called with true
-        verify(mMockSessionsHelper).setSessionStarred(eq(mMockUri), eq(true), anyString());
+        // Then verify the callback was called successfully
+        verify(mMockUserActionCallback).onModelUpdated(spyModel,
+                SessionDetailModel.SessionDetailUserActionEnum.STAR);
+        // And the session is in user schedule and set session starred is called with true
+        verify(mMockSessionsHelper)
+                .setSessionStarred(eq(mMockUri), eq(true), anyString());
         assertThat(spyModel.isInSchedule(), is(true));
-        assertThat(success, is(true));
     }
 
     @Test
-    public void requestModelUpdate_UnstarSession_Success() {
+    public void deliverUserAction_UnstarSession_Success() {
         // Given a loaded session in user schedule
         initMockCursorWithSessionInSchedule(mMockCursor);
         SessionDetailModel spyModel = setSpyModelForSessionLoading();
@@ -409,17 +424,20 @@ public class SessionDetailModelTest {
                 any(String.class), any(String.class), any(String.class));
 
         // When ran with unstar user action
-        boolean success = spyModel.requestModelUpdate(
-                SessionDetailModel.SessionDetailUserActionEnum.UNSTAR, null);
+        spyModel.deliverUserAction(SessionDetailModel.SessionDetailUserActionEnum.UNSTAR, null,
+                mMockUserActionCallback);
 
-        // Then the session is not in user schedule and set session starred is called with false
-        verify(mMockSessionsHelper).setSessionStarred(eq(mMockUri), eq(false), anyString());
+        // Then verify the callback was called successfully
+        verify(mMockUserActionCallback).onModelUpdated(spyModel,
+                SessionDetailModel.SessionDetailUserActionEnum.UNSTAR);
+        // And the session is not in user schedule and set session starred is called with false
+        verify(mMockSessionsHelper)
+                .setSessionStarred(eq(mMockUri), eq(false), anyString());
         assertThat(spyModel.isInSchedule(), is(false));
-        assertThat(success, is(true));
     }
 
     @Test
-    public void requestModelUpdate_ShowMap_Success() {
+    public void deliverUserAction_ShowMap_Success() {
         // Given a loaded session with a fake room id
         initMockCursorWithRoomId(mMockCursor);
         SessionDetailModel spyModel = setSpyModelForSessionLoading();
@@ -429,16 +447,16 @@ public class SessionDetailModelTest {
                 any(String.class), any(String.class), any(String.class));
 
         // When ran with show map user action
-        boolean success = spyModel.requestModelUpdate(
-                SessionDetailModel.SessionDetailUserActionEnum.SHOW_MAP, null);
+        spyModel.deliverUserAction(SessionDetailModel.SessionDetailUserActionEnum.SHOW_MAP, null,
+                mMockUserActionCallback);
 
-        // Then start map activity is called with the fake room id
-        verify(mMockSessionsHelper).startMapActivity(eq(FAKE_ROOM_ID));
-        assertThat(success, is(true));
+        // Then verify the callback was called successfully
+        verify(mMockUserActionCallback).onModelUpdated(spyModel,
+                SessionDetailModel.SessionDetailUserActionEnum.SHOW_MAP);
     }
 
     @Test
-    public void requestModelUpdate_ShowShare_Success() {
+    public void deliverUserAction_ShowShare_Success() {
         // Given a loaded session with a fake title
         initMockCursorWithTitle(mMockCursor);
         SessionDetailModel spyModel = setSpyModelForSessionLoading();
@@ -446,22 +464,12 @@ public class SessionDetailModelTest {
                 SessionDetailModel.SessionDetailQueryEnum.SESSIONS);
 
         // When ran with show share user action
-        boolean success = spyModel.requestModelUpdate(
-                SessionDetailModel.SessionDetailUserActionEnum.SHOW_SHARE, null);
+        spyModel.deliverUserAction(SessionDetailModel.SessionDetailUserActionEnum.SHOW_SHARE, null,
+                mMockUserActionCallback);
 
-        // Then share session is called with the fake title
-        verify(mMockSessionsHelper).shareSession(any(Context.class), eq(R.string.share_template),
-                eq(FAKE_TITLE), anyString(), anyString());
-        assertThat(success, is(true));
-    }
-
-    @Test
-    public void requestModelUpdate_InvalidUserAction_ReturnsFalse() {
-        // When ran with an invalid user action
-        boolean success = mSessionDetailModel.requestModelUpdate(InvalidEnum.INVALID, null);
-
-        // Then false is returned
-        assertThat(success, is(false));
+        // Then verify the callback was called successfully
+        verify(mMockUserActionCallback).onModelUpdated(spyModel,
+                SessionDetailModel.SessionDetailUserActionEnum.SHOW_SHARE);
     }
 
     @Test
@@ -706,7 +714,8 @@ public class SessionDetailModelTest {
     public void isSessionReadyForFeedback_OnGoingSessionJustStarted_ReturnsFalse() {
         // Only possible to mock current time in debug build
         if (BuildConfig.DEBUG) {
-            // Given a mock cursor for a session in progress that started 1 minute ago and lasts 2 hours
+            // Given a mock cursor for a session in progress that started 1 minute ago and lasts
+            // 2 hours
             initMockCursorWithJustStartedSession(mMockCursor);
             SessionDetailModel spyModel = setSpyModelForSessionLoading();
 
@@ -723,7 +732,8 @@ public class SessionDetailModelTest {
     public void isSessionReadyForFeedback_OnGoingSessionNearEnd_ReturnsTrue() {
         // Only possible to mock current time in debug build
         if (BuildConfig.DEBUG) {
-            // Given a mock cursor for a session in progress that will end within feedback allowed time
+            // Given a mock cursor for a session in progress that will end within feedback
+            // allowed time
             initMockCursorWithSessionEndingSoon(mMockCursor);
             SessionDetailModel spyModel = setSpyModelForSessionLoading();
 
@@ -755,7 +765,8 @@ public class SessionDetailModelTest {
 
     private SessionDetailModel setSpyModelForSessionLoading() {
         SessionDetailModel spyModel = spy(
-                new SessionDetailModel(mMockUri, mMockContext, mMockSessionsHelper));
+                new SessionDetailModel(mMockUri, mMockContext, mMockSessionsHelper,
+                        mMockLoaderManager));
         doNothing().when(spyModel).formatSubtitle();
         return spyModel;
     }
@@ -774,10 +785,7 @@ public class SessionDetailModelTest {
     }
 
     private void initMockContextWithFakeCurrentTime() {
-        when(mMockContext.getSharedPreferences("mock_data", Context.MODE_PRIVATE))
-                .thenReturn(mMockSharedPreferences);
-        when(mMockSharedPreferences.getLong("mock_current_time", eq(anyLong())))
-                .thenReturn(FAKE_CURRENT_TIME_OFFSET);
+        SettingsMockContext.initMockContextForCurrentTime(FAKE_CURRENT_TIME_OFFSET, mMockContext);
     }
 
     private void initMockCursorWithTitle(Cursor cursor) {

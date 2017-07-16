@@ -16,7 +16,7 @@
 -->
 
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:iosched="http://schemas.android.com/apk/res-auto"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="?android:listPreferredItemHeightSmall"
     android:background="?android:selectableItemBackground"
@@ -29,9 +29,9 @@
         android:layout_width="34dp"
         android:layout_height="34dp"
         android:layout_gravity="center_vertical"
-        android:src="@drawable/person_image_empty"
         android:scaleType="centerCrop"
-        iosched:maskDrawable="@drawable/circle_mask" />
+        app:srcCompat="@drawable/ic_default_avatar"
+        app:maskDrawable="@drawable/circle_mask" />
 
     <TextView
         android:id="@+id/profile_email_text"

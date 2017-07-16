@@ -76,7 +76,7 @@ what each configuration parameter means.
 ## GCM setup
 
 To set up the GCM server (optional), you can start with the code 
-available in [gcm-server/](../gcm-server). In particular:
+available in [gcm](../server/src/main/java/com/google/samples/apps/iosched/server/gcm). In particular:
 
 1. Make up your own keys in AuthHelper.java. There are keys that
    allow registration and message sending.

@@ -18,12 +18,13 @@ package com.google.samples.apps.iosched.map;
 
 import com.google.samples.apps.iosched.R;
 
-import com.sothree.slidinguppanel.SlidingUpPanelLayout;
-
 import android.content.res.Resources;
 import android.database.Cursor;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.design.widget.BottomSheetBehavior;
+import android.support.design.widget.CoordinatorLayout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -39,20 +40,14 @@ import android.view.ViewGroup;
  */
 public class SlideableInfoFragment extends MapInfoFragment {
 
-    private View mSlideableView;
+    private View mBottomSheet;
 
-    private SlidingUpPanelLayout mLayout;
+    private CoordinatorLayout mCoordinator;
 
-    /**
-     * View that is used by the SlidingUpPanel as its main content. It does not contain anything
-     * and is only used as a transparent overlay to intercept touch events and to provide a dummy
-     * container for the panel layout.
-     */
-    private View mPanelContent;
-
+    private BottomSheetBehavior mBehavior;
 
     private int mHeightTitleOnly;
-    private int mHeightMoscone;
+    private int mHeightVenue;
     private int mHeightSession;
 
     /**
@@ -73,8 +68,8 @@ public class SlideableInfoFragment extends MapInfoFragment {
         final Resources resources = getResources();
         mHeightTitleOnly = resources
                 .getDimensionPixelOffset(R.dimen.map_slideableinfo_height_titleonly);
-        mHeightMoscone = resources
-                .getDimensionPixelOffset(R.dimen.map_slideableinfo_height_moscone);
+        mHeightVenue = resources
+                .getDimensionPixelOffset(R.dimen.map_slideableinfo_height_venue);
         mHeightSession = resources
                 .getDimensionPixelOffset(R.dimen.map_slideableinfo_height_session);
     }
@@ -83,26 +78,17 @@ public class SlideableInfoFragment extends MapInfoFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState) {
-        View root = super
-                .onCreateView(inflater, container, savedInstanceState, R.layout.map_info_bottom);
-        mLayout = (SlidingUpPanelLayout) root.findViewById(R.id.map_bottomsheet);
-        mSlideableView = mLayout.findViewById(R.id.map_bottomsheet_slideable);
+        return super.onCreateView(inflater, container, savedInstanceState,
+                R.layout.map_info_bottom);
+    }
 
-        mLayout.setPanelSlideListener(mPanelSlideListener);
-        mLayout.setPanelState(SlidingUpPanelLayout.PanelState.HIDDEN);
-        mLayout.setEnableDragViewTouchEvents(false);
-
-        // Collapse the panel when the dummy content view is touched
-        mPanelContent = root.findViewById(R.id.map_bottomsheet_dummycontent);
-        mPanelContent.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mLayout.setPanelState(SlidingUpPanelLayout.PanelState.COLLAPSED);
-            }
-        });
-        mPanelContent.setClickable(false);
-
-        return root;
+    @Override
+    public void onViewCreated(final View view, final Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        mCoordinator = (CoordinatorLayout) view.findViewById(R.id.map_coordinator);
+        mBottomSheet = mCoordinator.findViewById(R.id.map_bottomsheet);
+        mBehavior = BottomSheetBehavior.from(mBottomSheet);
+        mBehavior.setBottomSheetCallback(mBottomSheetCallback);
     }
 
     @Override
@@ -113,29 +99,25 @@ public class SlideableInfoFragment extends MapInfoFragment {
 
     @Override
     protected void onSessionListLoading(String roomId, String roomTitle) {
-
         // Update the title and hide the list if displayed.
         // We don't want to uneccessarily resize the panel.
         mTitle.setText(roomTitle);
         mList.setVisibility(mList.getVisibility() == View.VISIBLE ? View.INVISIBLE : View.GONE);
-
     }
-
 
     private void setCollapsedOnly() {
         // Set up panel: collapsed only with title height and icon
-        mLayout.setPanelHeight(mHeightTitleOnly);
-        mLayout.setPanelState(SlidingUpPanelLayout.PanelState.COLLAPSED);
-        mLayout.setTouchEnabled(false);
+        mBehavior.setPeekHeight(mHeightTitleOnly);
+        mBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
     }
 
-    public void showMoscone() {
-        // Set up panel: collapsed with moscone height
-        mLayout.setPanelHeight(mHeightMoscone);
-        mLayout.setPanelState(SlidingUpPanelLayout.PanelState.COLLAPSED);
-        mLayout.setTouchEnabled(false);
+    @Override
+    public void showVenue() {
+        // Set up panel: collapsed with venue height
+        mBehavior.setPeekHeight(mHeightVenue);
+        mBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
 
-        super.showMoscone();
+        super.showVenue();
     }
 
     @Override
@@ -145,78 +127,67 @@ public class SlideableInfoFragment extends MapInfoFragment {
         setCollapsedOnly();
     }
 
-
     @Override
     protected void onSessionsLoaded(String roomTitle, int roomType, Cursor cursor) {
         super.onSessionsLoaded(roomTitle, roomType, cursor);
         // Set up panel: expandable with session height
-        mLayout.setPanelHeight(mHeightSession);
-        mLayout.setPanelState(SlidingUpPanelLayout.PanelState.COLLAPSED);
-        mLayout.setTouchEnabled(true);
-
+        mBehavior.setPeekHeight(mHeightSession);
+        mBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
     }
 
     @Override
     protected void onRoomSubtitleLoaded(String roomTitle, int roomType, String subTitle) {
         super.onRoomSubtitleLoaded(roomTitle, roomType, subTitle);
 
-        // Set up panel: Same height as Moscone, but collapsible
-        mLayout.setPanelHeight(mHeightMoscone);
-        mLayout.setPanelState(SlidingUpPanelLayout.PanelState.COLLAPSED);
-        mLayout.setTouchEnabled(true);
+        // Set up panel: Same height as venue, but collapsible
+        mBehavior.setPeekHeight(mHeightVenue);
+        mBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
     }
 
+    @Override
     public void hide() {
-        mLayout.setPanelState(SlidingUpPanelLayout.PanelState.HIDDEN);
-        mLayout.setPanelHeight(0);
+        mBehavior.setState(BottomSheetBehavior.STATE_HIDDEN);
     }
 
     @Override
     public boolean isExpanded() {
-        return mLayout.getPanelState() == SlidingUpPanelLayout.PanelState.EXPANDED;
+        return mBehavior.getState() == BottomSheetBehavior.STATE_EXPANDED;
     }
 
     @Override
     public void minimize() {
-        mLayout.setPanelState(SlidingUpPanelLayout.PanelState.COLLAPSED);
+        mBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
     }
 
-    private SlidingUpPanelLayout.PanelSlideListener mPanelSlideListener
-            = new SlidingUpPanelLayout.PanelSlideListener() {
+    private BottomSheetBehavior.BottomSheetCallback mBottomSheetCallback
+            = new BottomSheetBehavior.BottomSheetCallback() {
+
         @Override
-        public void onPanelSlide(View view, float v) {
-            // Visible size of panel. The bottom position is therefore the height of the layout,
-            // not the bottom of the expandable view.
-            mCallback.onInfoSizeChanged(mSlideableView.getLeft(), mSlideableView.getTop(),
-                    mSlideableView.getRight(), mLayout.getHeight());
-            mPanelContent.setClickable(false);
+        public void onStateChanged(@NonNull final View bottomSheet, final int newState) {
+            switch (newState) {
+                case BottomSheetBehavior.STATE_COLLAPSED:
+                    mList.setScrollContainer(false);
+                    mList.setEnabled(false);
+                    mList.getLayoutManager().scrollToPosition(0);
+                    mCoordinator.requestLayout();
+                    break;
+                case BottomSheetBehavior.STATE_EXPANDED:
+                    mList.setScrollContainer(true);
+                    mList.setEnabled(true);
+                    break;
+                case BottomSheetBehavior.STATE_HIDDEN:
+                    mCallback.onInfoSizeChanged(mBottomSheet.getLeft(), mBottomSheet.getTop(),
+                            mBottomSheet.getRight(), mCoordinator.getHeight());
+                    break;
+            }
         }
 
         @Override
-        public void onPanelCollapsed(View view) {
-            mList.setScrollContainer(false);
-            mList.setEnabled(false);
-            mList.setSelection(0);
-            mPanelContent.setClickable(false);
-
+        public void onSlide(@NonNull final View bottomSheet, final float slideOffset) {
+            mCallback.onInfoSizeChanged(mBottomSheet.getLeft(), mBottomSheet.getTop(),
+                    mBottomSheet.getRight(), mCoordinator.getHeight());
         }
 
-        @Override
-        public void onPanelExpanded(View view) {
-            mList.setScrollContainer(true);
-            mList.setEnabled(true);
-            mPanelContent.setClickable(true);
-        }
-
-        @Override
-        public void onPanelAnchored(View view) {
-        }
-
-        @Override
-        public void onPanelHidden(View view) {
-            mCallback.onInfoSizeChanged(mSlideableView.getLeft(), mSlideableView.getTop(),
-                    mSlideableView.getRight(), mLayout.getHeight());
-        }
     };
 
 }

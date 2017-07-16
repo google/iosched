@@ -19,7 +19,7 @@
     <dimen name="session_details_floating_height">450dp</dimen>
 
     <!-- Welcome Activity -->
-    <dimen name="welcome_appbar_height">192dp</dimen> <!-- 4 * ?actionBarSize -->
-    <dimen name="welcome_content_padding_top">144dp</dimen> <!-- 3 * ?actionBarSize -->
+    <dimen name="welcome_logo_top_spacing">32dp</dimen>
+    <dimen name="welcome_content_padding_top">186dp</dimen> <!-- welcome_logo_top_spacing + welcome_logo_height + 32dp (logo bottom spacing) -->
 
 </resources>

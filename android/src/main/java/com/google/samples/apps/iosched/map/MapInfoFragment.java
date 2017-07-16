@@ -22,8 +22,8 @@ import com.google.samples.apps.iosched.map.util.OverviewSessionLoader;
 import com.google.samples.apps.iosched.map.util.MarkerModel;
 import com.google.samples.apps.iosched.map.util.SessionLoader;
 import com.google.samples.apps.iosched.model.ScheduleHelper;
-import com.google.samples.apps.iosched.provider.ScheduleContract;
 import com.google.samples.apps.iosched.util.MapUtils;
+import com.google.samples.apps.iosched.util.TimeUtils;
 import com.google.samples.apps.iosched.util.UIUtils;
 
 import android.app.Activity;
@@ -31,16 +31,20 @@ import android.app.Fragment;
 import android.app.LoaderManager;
 import android.content.Context;
 import android.content.Loader;
+import android.content.res.Resources;
 import android.database.Cursor;
+import android.graphics.Canvas;
+import android.graphics.Paint;
+import android.graphics.Rect;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.content.res.ResourcesCompat;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.CursorAdapter;
 import android.widget.ImageView;
-import android.widget.ListView;
 import android.widget.TextView;
 
 /**
@@ -61,7 +65,7 @@ public abstract class MapInfoFragment extends Fragment
     protected TextView mSubtitle;
     protected ImageView mIcon;
 
-    protected ListView mList;
+    protected RecyclerView mList;
 
     protected Callback mCallback = sDummyCallback;
 
@@ -74,19 +78,6 @@ public abstract class MapInfoFragment extends Fragment
         public void onSessionClicked(String id) {
         }
     };
-
-
-    private AdapterView.OnItemClickListener mListClickListener
-            = new AdapterView.OnItemClickListener() {
-        @Override
-        public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-            SessionAdapter adapter = (SessionAdapter) parent.getAdapter();
-
-            final String sessionId = adapter.getSessionIdAtPosition(position);
-            mCallback.onSessionClicked(sessionId);
-        }
-    };
-
 
     @Override
     public void onAttach(Activity activity) {
@@ -119,9 +110,10 @@ public abstract class MapInfoFragment extends Fragment
         mSubtitle = (TextView) root.findViewById(R.id.map_info_subtitle);
         mIcon = (ImageView) root.findViewById(R.id.map_info_icon);
         mIcon.setColorFilter(getResources().getColor(R.color.my_schedule_icon_default));
-        mList = (ListView) root.findViewById(R.id.map_info_list);
-        mList.setOnItemClickListener(mListClickListener);
-
+        mList = (RecyclerView) root.findViewById(R.id.map_info_list);
+        final Context context = mList.getContext();
+        mList.addItemDecoration(new DividerDecoration(context));
+        mList.setLayoutManager(new LinearLayoutManager(context));
         return root;
     }
 
@@ -131,7 +123,7 @@ public abstract class MapInfoFragment extends Fragment
             return null;
         }
 
-        final long time = UIUtils.getCurrentTime(getActivity());
+        final long time = TimeUtils.getCurrentTime(getActivity());
         final String roomId = args.getString(QUERY_ARG_ROOMID);
         final String roomTitle = args.getString(QUERY_ARG_ROOMTITLE);
         final int roomType = args.getInt(QUERY_ARG_ROOMTYPE);
@@ -185,8 +177,8 @@ public abstract class MapInfoFragment extends Fragment
         }
 
         onSessionsLoaded(roomTitle, roomType, sessions);
-        mList.setAdapter(new SessionAdapter(getActivity(), sessions, 0,
-                MapUtils.hasInfoSessionListIcons(roomType)));
+        mList.setAdapter(new SessionAdapter(getActivity(), sessions,
+                MapUtils.hasInfoSessionListIcons(roomType), mOnClickListener));
     }
 
     private void showSessionSubtitle(String roomTitle, int roomType, Cursor sessions) {
@@ -258,9 +250,9 @@ public abstract class MapInfoFragment extends Fragment
         mList.setVisibility(View.GONE);
     }
 
-    public void showMoscone() {
-        setHeader(MapUtils.getRoomIcon(MarkerModel.TYPE_MOSCONE), R.string.map_moscone,
-                R.string.map_moscone_address);
+    public void showVenue() {
+        setHeader(MapUtils.getRoomIcon(MarkerModel.TYPE_VENUE), R.string.map_venue_name,
+                R.string.map_venue_address);
         mList.setVisibility(View.GONE);
     }
 
@@ -324,95 +316,128 @@ public abstract class MapInfoFragment extends Fragment
         public void onSessionClicked(String id);
     }
 
+    private View.OnClickListener mOnClickListener = new View.OnClickListener() {
+
+        @Override
+        public void onClick(final View v) {
+            String sessionId = (String) v.getTag(R.id.tag_session_id);
+            if (sessionId != null) {
+                mCallback.onSessionClicked(sessionId);
+            }
+        }
+
+    };
+
+    private static class DividerDecoration extends RecyclerView.ItemDecoration {
+
+        private final Paint mPaint = new Paint();
+        private final int mHeight;
+
+        public DividerDecoration(Context context) {
+            final Resources resources = context.getResources();
+            mPaint.setColor(ResourcesCompat.getColor(resources, R.color.divider,
+                    context.getTheme()));
+            mHeight = resources.getDimensionPixelSize(R.dimen.divider_height);
+        }
+
+        @Override
+        public void getItemOffsets(final Rect outRect, final View view, final RecyclerView parent,
+                final RecyclerView.State state) {
+            outRect.set(0, 0, 0, mHeight);
+        }
+
+        @Override
+        public void onDraw(final Canvas c, final RecyclerView parent,
+                final RecyclerView.State state) {
+            int width = parent.getWidth();
+            for (int i = 0, count = parent.getChildCount(); i < count; i++) {
+                View child = parent.getChildAt(i);
+                int bottom = child.getBottom();
+                c.drawRect(0, bottom, width, bottom + mHeight, mPaint);
+            }
+        }
+    }
 
     /**
      * Adapter that displays a list of sessions.
      * This includes its title, time slot and icon.
      */
-    class SessionAdapter extends CursorAdapter {
+    private static class SessionAdapter extends RecyclerView.Adapter<ItemHolder> {
 
-        private StringBuilder mStringBuilder = new StringBuilder();
+        private final StringBuilder mStringBuilder = new StringBuilder();
+
+        private final Context mContext;
+
+        private final Cursor mCursor;
+
         private final boolean mDisplayIcons;
 
-        public SessionAdapter(Context context, Cursor c, int flags, boolean displayIcons) {
-            super(context, c, flags);
-            mDisplayIcons = displayIcons;
-        }
+        private final View.OnClickListener mListener;
 
-        @Override
-        public View newView(Context context, Cursor cursor, ViewGroup parent) {
-            // Initialise the row and set a holder for views within it
-            final View view = ((LayoutInflater) context
-                    .getSystemService(Context.LAYOUT_INFLATER_SERVICE))
-                    .inflate(R.layout.map_item_session, parent, false);
-            final ItemHolder holder = initialiseHolder(view);
-            view.setTag(holder);
-            return view;
+        public SessionAdapter(Context context, Cursor cursor, boolean displayIcons,
+                View.OnClickListener listener) {
+            mContext = context;
+            mCursor = cursor;
+            mDisplayIcons = displayIcons;
+            mListener = listener;
         }
 
         public String getSessionIdAtPosition(int position) {
-            Cursor cursor = getCursor();
-            if (cursor == null) {
-                return null;
-            }
-
-            if (cursor.moveToPosition(position)) {
-                return cursor
-                        .getString(cursor.getColumnIndex(ScheduleContract.Sessions.SESSION_ID));
+            if (mCursor.moveToPosition(position)) {
+                return  mCursor.getString(OverviewSessionLoader.Query.SESSION_ID);
             } else {
                 return null;
             }
-
         }
 
         @Override
-        public void bindView(View view, Context context, Cursor cursor) {
-            ItemHolder holder = (ItemHolder) view.getTag();
-            if (holder == null) {
-                holder = initialiseHolder(view);
-                view.setTag(holder);
-            }
-            final String title = cursor
-                    .getString(OverviewSessionLoader.Query.SESSION_TITLE);
-            final String sessionId = cursor
-                    .getString(OverviewSessionLoader.Query.SESSION_ID);
-            final long blockStart = cursor
-                    .getLong(OverviewSessionLoader.Query.SESSION_START);
-            final long blockEnd = cursor
-                    .getLong(OverviewSessionLoader.Query.SESSION_END);
-            final String sessionTag = cursor
-                    .getString(OverviewSessionLoader.Query.SESSION_TAGS);
+        public ItemHolder onCreateViewHolder(final ViewGroup parent, final int viewType) {
+            final ItemHolder holder = new ItemHolder(LayoutInflater.from(mContext), parent);
+            holder.image.setVisibility(mDisplayIcons ? View.VISIBLE : View.INVISIBLE);
+            holder.itemView.setOnClickListener(mListener);
+            return holder;
+        }
 
+        @Override
+        public void onBindViewHolder(final ItemHolder holder, final int position) {
+            mCursor.moveToPosition(position);
+            final String title = mCursor.getString(OverviewSessionLoader.Query.SESSION_TITLE);
+            final String sessionId = mCursor.getString(OverviewSessionLoader.Query.SESSION_ID);
+            final long blockStart = mCursor.getLong(OverviewSessionLoader.Query.SESSION_START);
+            final long blockEnd = mCursor.getLong(OverviewSessionLoader.Query.SESSION_END);
+            final String sessionTag = mCursor.getString(OverviewSessionLoader.Query.SESSION_TAGS);
             final int sessionType = ScheduleHelper.detectSessionType(sessionTag);
             final String text = UIUtils.formatIntervalTimeString(blockStart, blockEnd,
-                    mStringBuilder, context);
+                    mStringBuilder, mContext);
 
+            holder.itemView.setTag(R.id.tag_session_id, sessionId);
             holder.title.setText(title);
-            holder.title.setTag(sessionId);
             holder.text.setText(text);
             if (mDisplayIcons) {
                 holder.image.setImageResource(UIUtils.getSessionIcon(sessionType));
             }
         }
 
-        private ItemHolder initialiseHolder(View view) {
-            ItemHolder holder = new ItemHolder();
-            holder.title = (TextView) view.findViewById(R.id.map_item_title);
-            holder.text = (TextView) view.findViewById(R.id.map_item_text);
-            holder.image = (ImageView) view.findViewById(R.id.map_item_image);
-            if (!mDisplayIcons) {
-                holder.image.setVisibility(View.INVISIBLE);
-            } else {
-                holder.image.setVisibility(View.VISIBLE);
-            }
-            return holder;
+        @Override
+        public int getItemCount() {
+            return mCursor.getCount();
         }
 
-        class ItemHolder {
-
-            TextView title;
-            TextView text;
-            ImageView image;
-        }
     }
+
+    private static class ItemHolder extends RecyclerView.ViewHolder {
+
+        TextView title;
+        TextView text;
+        ImageView image;
+
+        public ItemHolder(LayoutInflater inflater, ViewGroup parent) {
+            super(inflater.inflate(R.layout.map_item_session, parent, false));
+            title = (TextView) itemView.findViewById(R.id.map_item_title);
+            text = (TextView) itemView.findViewById(R.id.map_item_text);
+            image = (ImageView) itemView.findViewById(R.id.map_item_image);
+        }
+
+    }
+
 }

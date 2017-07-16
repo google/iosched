@@ -48,7 +48,7 @@
         <item name="android:windowNoTitle">true</item>
 
         <item name="android:windowContentOverlay">@null</item>
-        <item name="android:windowBackground">@android:color/white</item>
+        <item name="android:windowBackground">@color/background</item>
         <item name="android:homeAsUpIndicator">@drawable/ic_up</item>
 
         <item name="android:popupMenuStyle">@style/Widget.IOSched.PopupMenu</item>
@@ -58,6 +58,8 @@
 
         <item name="imageItemBackground">?android:selectableItemBackground</item>
         <item name="android:borderlessButtonStyle">@style/Widget.AppCompat.Button.Borderless</item>
+
+        <item name="preferenceTheme">@style/SettingsPreferenceThemeOverlay</item>
     </style>
 
     <style name="Theme.IOSched" parent="Theme.IOSched.Base" />
@@ -84,17 +86,17 @@
 
     <style name="ActionBarPopupThemeOverlay" parent="ThemeOverlay.AppCompat.Light" />
 
-    <style name="Theme.IOSched.Welcome" parent="Theme.IOSched">
+    <style name="Theme.IOSched.Welcome.Base" parent="Theme.IOSched">
         <item name="android:windowBackground">@color/background</item>
     </style>
 
-    <style name="Theme.IOSched.Sessions" parent="Theme.IOSched.WithNavDrawer">
-        <item name="actionBarInsetStart">@dimen/keyline_2_minus_16dp</item>
-        <item name="spinnerBarInsetStart">@dimen/keyline_2_minus_16dp</item>
-        <item name="android:windowBackground">@color/grey_background</item>
-    </style>
+    <style name="Theme.IOSched.Welcome" parent="Theme.IOSched.Welcome.Base" />
 
-    <style name="Theme.IOSched.Search" parent="Theme.IOSched">
+    <style name="Theme.IOSched.Light" parent="Theme.IOSched.WithNavDrawer" />
+
+    <style name="Theme.IOSched.ExploreSessions" parent="Theme.IOSched.Light" />
+
+    <style name="Theme.IOSched.Search" parent="Theme.IOSched.Light">
         <item name="android:windowBackground">@android:color/transparent</item>
         <item name="android:windowIsTranslucent">true</item>
         <item name="autoCompleteTextViewStyle">@style/Widget.IOSched.Search.AutoCompleteTextView</item>
@@ -115,7 +117,20 @@
         <item name="android:textCursorDrawable">@null</item>
     </style>
 
-    <style name="Theme.IOSched.VideoLibrary" parent="Theme.IOSched.WithNavDrawer" />
+    <style name="Theme.IOSched.Transparent" parent="Theme.IOSched.Light">
+        <item name="android:windowIsTranslucent">true</item>
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:windowContentOverlay">@null</item>
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowIsFloating">true</item>
+        <item name="android:backgroundDimEnabled">false</item>
+    </style>
+
+    <style name="Theme.IOSched.VideoLibrary" parent="Theme.IOSched.Light">
+        <item name="videoThumbnailStyle">@style/VideoThumbnail</item>
+    </style>
+
+    <style name="Theme.IOSched.VideoLibrary.Filtered" />
 
     <style name="Theme.IOSched.Feedback" parent="Theme.IOSched">
         <item name="colorAccent">@color/flat_button_text</item>
@@ -148,13 +163,21 @@
     <!-- My Schedule -->
     <style name="Theme.IOSched.MySchedule" parent="Theme.IOSched.WithNavDrawer" />
 
-    <!-- Intermediary theme for SessionDetails (so we can override it on large screens) -->
-    <style name="Theme.IOSched.SessionDetails.Base" parent="Theme.IOSched">
+    <!-- Styling SessionDetails is complicated; alter the style based on:
+             1. small vs large devices
+             2. Specify activity transition on v21+
+             3. Light status on v23+
+
+    We therefor need 3 points of indirection or 'base' themes to provide this.  -->
+    <style name="Theme.IOSched.SessionDetails.SizeBase" parent="Theme.IOSched">
         <item name="isFloatingWindow">false</item>
     </style>
 
+    <style name="Theme.IOSched.SessionDetails.VersionBase"
+           parent="Theme.IOSched.SessionDetails.SizeBase" />
+
     <!-- Session Details -->
-    <style name="Theme.IOSched.SessionDetails" parent="Theme.IOSched.SessionDetails.Base" />
+    <style name="Theme.IOSched.SessionDetails" parent="Theme.IOSched.SessionDetails.VersionBase" />
 
     <!-- Social -->
     <style name="Theme.IOSched.Social" parent="Theme.IOSched.WithNavDrawer">
@@ -213,6 +236,12 @@
     <style name="SessionLiveStreamed">
         <item name="android:textSize">@dimen/text_size_medium</item>
         <item name="android:textColor">@color/session_livestreamed_color</item>
+        <item name="android:lineSpacingMultiplier">1.1</item>
+    </style>
+
+    <style name="SessionExtendedLink">
+        <item name="android:textSize">@dimen/text_size_medium</item>
+        <item name="android:textColor">@color/session_extended_color</item>
         <item name="android:lineSpacingMultiplier">1.1</item>
     </style>
 
@@ -305,7 +334,6 @@
         <item name="android:ellipsize">end</item>
         <!--<item name="android:textStyle">bold</item>-->
         <item name="android:fontFamily">@string/font_fontFamily_medium</item>
-        <item name="android:singleLine">true</item>
     </style>
 
     <style name="MapLabel" parent="android:TextAppearance.Medium">
@@ -372,9 +400,9 @@
 
     <style name="MoreButton">
         <item name="android:textAppearance">@style/TextAppearance.AppCompat.Button</item>
-        <item name="android:textColor">@color/more_button_text</item>
         <item name="android:textSize">@dimen/app_text_size_small</item>
         <item name="android:background">@drawable/more_button_background</item>
+        <item name="android:letterSpacing">0.1</item>
     </style>
 
     <style name="LiveNowIndicator">
@@ -386,23 +414,27 @@
 
     <style name="AboutLink" parent="">
         <item name="android:textSize">@dimen/text_size_medium</item>
-        <item name="android:textColor">@color/theme_accent_1</item>
+        <item name="android:textColor">@color/about_link</item>
         <item name="android:background">?attr/selectableItemBackground</item>
-        <item name="android:paddingLeft">@dimen/content_padding_dialog</item>
-        <item name="android:paddingRight">@dimen/content_padding_dialog</item>
-        <item name="android:minHeight">48dp</item>
-        <item name="android:gravity">center_vertical</item>
     </style>
 
     <style name="WelcomeTitle">
         <item name="android:textAppearance">@style/TextAppearance.Title</item>
         <item name="android:textColor">@color/flat_button_text</item>
         <item name="android:textSize">@dimen/welcome_title_size</item>
+        <!-- The activity title is set to string used for the welcome title, so to avoid the text
+         being repeated as the user selects the next item, it is removed from accessibility -->
+        <item name="android:importantForAccessibility">no</item>
     </style>
 
     <style name="Body1Text">
         <item name="android:textAppearance">@style/TextAppearance.Body1</item>
         <item name="android:lineSpacingMultiplier">@dimen/body_1_spacing</item>
+    </style>
+
+    <style name="SessionTitle">
+        <item name="android:textAppearance">@style/TextAppearance.AppCompat.Subhead</item>
+        <item name="android:lineSpacingMultiplier">@dimen/h3_spacing</item>
     </style>
 
     <style name="Body2Text">
@@ -428,6 +460,19 @@
     <style name="WelcomeAccounts">
         <item name="android:paddingTop">@dimen/padding_normal</item>
         <item name="android:paddingBottom">@dimen/spacing_normal</item>
+    </style>
+
+    <style name="VideoThumbnail">
+        <item name="playIcon">@drawable/ic_play_shadowed</item>
+        <item name="playedTint">@color/played_video_tint</item>
+    </style>
+
+    <style name="SettingsPreferenceThemeOverlay" parent="PreferenceThemeOverlay">
+        <item name="switchPreferenceCompatStyle">@style/SettingsSwitchPreference</item>
+    </style>
+
+    <style name="SettingsSwitchPreference" parent="Preference.SwitchPreferenceCompat">
+        <item name="android:layout">@layout/iosched_preference</item>
     </style>
 
 </resources>

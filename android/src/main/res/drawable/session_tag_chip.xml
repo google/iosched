@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
 <!--
   Copyright 2014 Google Inc. All rights reserved.
 
@@ -14,8 +15,8 @@
   limitations under the License.
   -->
 
-
 <selector xmlns:android="http://schemas.android.com/apk/res/android">
+
     <item android:state_focused="true">
         <shape android:shape="rectangle">
             <stroke android:width="1dp" android:color="#888" />
@@ -23,19 +24,21 @@
             <corners android:radius="4dp" />
         </shape>
     </item>
+
     <item android:state_pressed="true">
         <shape android:shape="rectangle">
-            <stroke android:width="1dp" android:color="#e5e5e5" />
-            <solid android:color="#e5e5e5" />
+            <stroke android:width="1dp" android:color="@color/session_tag_stroke" />
+            <solid android:color="@color/session_tag_stroke" />
             <corners android:radius="4dp" />
         </shape>
     </item>
+
     <item>
         <shape android:shape="rectangle">
-            <stroke android:width="1dp" android:color="#e5e5e5" />
+            <stroke android:width="1dp" android:color="@color/session_tag_stroke" />
             <solid android:color="@android:color/transparent" />
             <corners android:radius="4dp" />
         </shape>
     </item>
-</selector>
 
+</selector>

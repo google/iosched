@@ -27,7 +27,7 @@
 
     <integer name="explore_topic_theme_onsite_max_item_count">2</integer>
     <integer name="explore_theme_max_item_count_offsite">6</integer>
-    <integer name="explore_session_column_item_count">1</integer>
+    <integer name="explore_session_column_item_count">2</integer>
 
     <integer name="social_grid_columns">3</integer>
     <integer name="video_library_columns">1</integer>
@@ -36,4 +36,5 @@
     <!-- Number of grid columns spanned by the hero on wide layout.
     Recommended: 1 less than explore_1st_level_grid_columns -->
     <integer name="deprecated_explore_wide_layout_hero_weight">1</integer>
+
 </resources>

@@ -21,6 +21,8 @@
     <dimen name="spacing_normal">8dp</dimen>
     <dimen name="spacing_micro">4dp</dimen>
     <dimen name="padding_normal">16dp</dimen>
+    <dimen name="spacing_large">32dp</dimen>
+    <dimen name="touch_raise">6dp</dimen>
 
     <!-- App Primary Text Sizes -->
     <dimen name="app_text_size_xsmall">11sp</dimen>
@@ -35,6 +37,7 @@
     <item name="h3_spacing" format="float" type="dimen">1.14285714286</item>
 
     <!-- UI elements -->
+    <dimen name="a11y_min_touch_target_dimen">48dp</dimen>
     <dimen name="whats_on_height">64dp</dimen>
     <dimen name="track_icon_source_size">48dp</dimen>
     <dimen name="track_icon_size">32dp</dimen>
@@ -49,11 +52,11 @@
     <dimen name="add_to_schedule_button_height">56dp</dimen> <!-- including padding -->
     <dimen name="add_to_schedule_button_height_no_padding">40dp</dimen>
     <dimen name="fab_touch_raise">6dp</dimen>
+    <dimen name="fab_padding">4dp</dimen>
     <dimen name="indeterminate_progress_size">16dp</dimen>
     <dimen name="data_item_padding">16dp</dimen>
     <dimen name="session_details_floating_width">500dp</dimen>
     <dimen name="session_details_floating_height">650dp</dimen>
-    <dimen name="session_details_extra_space_bottom">48dp</dimen>
     <dimen name="my_schedule_item_height">136dp</dimen>
     <dimen name="my_schedule_item_height_break">80dp</dimen>
     <dimen name="my_schedule_item_height_past">60dp</dimen>
@@ -65,6 +68,7 @@
     <dimen name="widget_schedule_time_width">72dp</dimen>
     <dimen name="widget_schedule_header_height">40dp</dimen>
     <dimen name="drawer_width">@dimen/match_parent</dimen>
+    <dimen name="horizontal_scrollbar_height">4dp</dimen>
 
     <dimen name="divider_height">1dp</dimen>
     <dimen name="divider_height_inc_padding">16dp</dimen>
@@ -103,6 +107,10 @@
     <item name="aspect_16_9" format="float" type="dimen">1.7778</item>
     <item name="aspect_4_3" format="float" type="dimen">1.3333</item>
     <item name="aspect_phi" format="float" type="dimen">1.618</item>
+    <dimen name="explore_topic_card_header_height">112dp</dimen>
+    <dimen name="track_header_detail_height">168dp</dimen>
+    <dimen name="compact_list_tile">168dp</dimen>
+    <dimen name="explore_empty_state_padding">112dp</dimen>
 
     <!-- body content -->
     <dimen name="element_spacing_normal">8dp</dimen>
@@ -123,22 +131,17 @@
     <dimen name="widget_margin">0dp</dimen>
 
     <!-- Map -->
-    <dimen name="map_slideableinfo_height_titleonly">56dp</dimen>
-    <dimen name="map_slideableinfo_height_moscone">120dp</dimen>
+    <dimen name="map_slideableinfo_height_titleonly">80dp</dimen>
+    <dimen name="map_slideableinfo_height_venue">120dp</dimen>
     <dimen name="map_slideableinfo_height_session">100dp</dimen>
     <dimen name="map_info_item_height">72dp</dimen>
     <dimen name="map_info_item_vertical_padding">20dp</dimen>
 
-
-    <!-- Deprecate these -->
-    <dimen name="navdrawer_chosen_account_height">140dp</dimen>
-    <dimen name="navdrawer_width">260dp</dimen>
     <dimen name="navdrawer_profile_image_size">40dp</dimen>
     <dimen name="navdrawer_item_icon_size">24dp</dimen>
-    <dimen name="navdrawer_item_icon_margin_end">32dp</dimen>
+    <dimen name="navdrawer_header_icon_margin_top">25dp</dimen>
     <dimen name="navdrawer_logo_vertical_padding">16dp</dimen>
     <dimen name="navdrawer_logo_padding_right">16dp</dimen>
-    <!-- End Deprecate -->
 
     <!-- Action Bar auto-hide-on-scroll behavior parameters -->
     <dimen name="action_bar_auto_hide_min_y">152dp</dimen>
@@ -219,10 +222,9 @@
     <item name="match_parent" format="integer" type="dimen">-1</item>
 
     <!-- Welcome Activity -->
-    <dimen name="welcome_appbar_height">224dp</dimen> <!-- 4 * ?actionBarSize -->
-    <dimen name="welcome_image_width">200dp</dimen>
-    <dimen name="welcome_image_height">80dp</dimen>
-    <dimen name="welcome_content_padding_top">168dp</dimen> <!-- 3 * ?actionBarSize -->
+    <dimen name="welcome_logo_top_spacing">48dp</dimen>
+    <dimen name="welcome_logo_height">112dp</dimen>
+    <dimen name="welcome_content_padding_top">200dp</dimen> <!-- welcome_logo_top_spacing + welcome_logo_height + 40dp (logo bottom spacing) -->
     <dimen name="welcome_content_padding">@dimen/padding_normal</dimen>
     <dimen name="welcome_button_bar_elevation">6dp</dimen>
     <dimen name="welcome_content_width">@dimen/match_parent</dimen>

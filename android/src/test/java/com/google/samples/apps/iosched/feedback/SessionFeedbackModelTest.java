@@ -16,17 +16,17 @@
 
 package com.google.samples.apps.iosched.feedback;
 
+import android.app.LoaderManager;
 import android.content.Context;
 import android.content.CursorLoader;
-import android.content.Loader;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
 import android.test.suitebuilder.annotation.SmallTest;
 
-import com.google.samples.apps.iosched.InvalidEnum;
-import com.google.samples.apps.iosched.provider.ScheduleContract;
+import com.google.samples.apps.iosched.archframework.Model;
 import com.google.samples.apps.iosched.feedback.SessionFeedbackModel.SessionFeedbackData;
+import com.google.samples.apps.iosched.provider.ScheduleContract;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -35,12 +35,10 @@ import org.mockito.ArgumentCaptor;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
-import static org.hamcrest.CoreMatchers.nullValue;
 import static org.hamcrest.CoreMatchers.sameInstance;
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertThat;
 import static org.mockito.Matchers.any;
-import static org.mockito.Matchers.anyLong;
 import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.doReturn;
@@ -72,28 +70,34 @@ public class SessionFeedbackModelTest {
     @Mock
     private Bundle mMockBundle;
 
+    @Mock
+    private LoaderManager mMockLoaderManager;
+
+    @Mock
+    private Model.UserActionCallback mMockUserActionCallback;
 
     private SessionFeedbackModel mSessionFeedbackModel;
 
     @Before
     public void setUp() {
         // Mocks
-        initWithStubbedCursor(mMockCursor);
+        initMockCursors();
 
         // Create an instance of the model.
-        mSessionFeedbackModel = new SessionFeedbackModel(mMockUri, mMockContext,
+        mSessionFeedbackModel = new SessionFeedbackModel(mMockLoaderManager, mMockUri, mMockContext,
                 mMockFeedbackHelper);
     }
 
     @Test
-    public void requestModelUpdate_SubmitFeedback_Success() {
+    public void deliverUserAction_SubmitFeedback_Success() {
         // Given a mock bundle with feedback data and a mock FeedbackHelper
-        SessionFeedbackModel spyModel = spy(
-                new SessionFeedbackModel(mMockUri, mMockContext, mMockFeedbackHelper));
+        SessionFeedbackModel spyModel =
+                spy(new SessionFeedbackModel(mMockLoaderManager, mMockUri, mMockContext,
+                        mMockFeedbackHelper));
 
         doReturn(FAKE_TITLE).when(spyModel).getSessionId(mMockUri);
         doNothing().when(spyModel)
-                .sendAnalyticsEvent(anyString(), anyString(), anyString());
+                   .sendAnalyticsEvent(anyString(), anyString(), anyString());
 
         final String comments = "My comment";
         int rating = 1;
@@ -101,14 +105,18 @@ public class SessionFeedbackModelTest {
         int contentAnswer = 3;
         int speakerAnswer = 2;
         when(mMockBundle.getInt(SessionFeedbackModel.DATA_RATING_INT)).thenReturn(rating);
-        when(mMockBundle.getInt(SessionFeedbackModel.DATA_SESSION_RELEVANT_ANSWER_INT)).thenReturn(sessionRelevantAnswer);
-        when(mMockBundle.getInt(SessionFeedbackModel.DATA_CONTENT_ANSWER_INT)).thenReturn(contentAnswer);
-        when(mMockBundle.getInt(SessionFeedbackModel.DATA_SPEAKER_ANSWER_INT)).thenReturn(speakerAnswer);
+        when(mMockBundle.getInt(SessionFeedbackModel.DATA_SESSION_RELEVANT_ANSWER_INT))
+                .thenReturn(sessionRelevantAnswer);
+        when(mMockBundle.getInt(SessionFeedbackModel.DATA_CONTENT_ANSWER_INT))
+                .thenReturn(contentAnswer);
+        when(mMockBundle.getInt(SessionFeedbackModel.DATA_SPEAKER_ANSWER_INT))
+                .thenReturn(speakerAnswer);
         when(mMockBundle.getString(SessionFeedbackModel.DATA_COMMENT_STRING)).thenReturn(comments);
 
         // When ran with the submit user action and the mock bundle
-        spyModel.requestModelUpdate(
-                SessionFeedbackModel.SessionFeedbackUserActionEnum.SUBMIT, mMockBundle);
+        spyModel.deliverUserAction(
+                SessionFeedbackModel.SessionFeedbackUserActionEnum.SUBMIT, mMockBundle,
+                mMockUserActionCallback);
 
         // Then the saveSessionFeedback method in the FeedbackHelper is called with the correct
         // feedback data parameters
@@ -124,15 +132,6 @@ public class SessionFeedbackModelTest {
     }
 
     @Test
-    public void requestModelUpdate_UserStartedUnknownAction_Unsuccessful() {
-        // When ran with an invalid user action
-        boolean success = mSessionFeedbackModel.requestModelUpdate(InvalidEnum.INVALID, null);
-
-        // Then the request model update fails
-        assertThat(success, is(false));
-    }
-
-    @Test
     public void readDataFromCursor_SessionQuery_SessionLoaded() {
         // Given a mock cursor with data
         when(mMockCursor.moveToFirst()).thenReturn(true);
@@ -144,15 +143,6 @@ public class SessionFeedbackModelTest {
         // Then the model is updated and the request succeeds
         assertThat(mSessionFeedbackModel.getSessionTitle(), is(FAKE_TITLE));
         assertThat(success, is(true));
-    }
-
-    @Test
-    public void readDataFromCursor_UnsupportedQuery_Unsuccessful() {
-        // When ran with an invalid query
-        boolean result = mSessionFeedbackModel.readDataFromCursor(mMockCursor, InvalidEnum.INVALID);
-
-        // Then the request model update fails
-        assertThat(result, is(false));
     }
 
     @Test
@@ -171,12 +161,11 @@ public class SessionFeedbackModelTest {
     @Test
     public void createCursorLoader_SessionQuery_Success() {
         // Given a mock cursor loader set up for a session query
-        int sessionsLoaderId = SessionFeedbackModel.SessionFeedbackQueryEnum.SESSION.getId();
-
         CursorLoader mockCursorLoaderSession = mock(CursorLoader.class);
 
         SessionFeedbackModel spyModel = spy(
-                new SessionFeedbackModel(mMockUri, mMockContext, mMockFeedbackHelper));
+                new SessionFeedbackModel(mMockLoaderManager, mMockUri, mMockContext,
+                        mMockFeedbackHelper));
 
         doReturn(mockCursorLoaderSession).when(spyModel).getCursorLoaderInstance(
                 any(Context.class), any(Uri.class), any(String[].class), any(String.class),
@@ -184,27 +173,22 @@ public class SessionFeedbackModelTest {
 
         // When ran with the session query
         CursorLoader createdCursorLoader1 =
-                (CursorLoader) spyModel.createCursorLoader(sessionsLoaderId, mMockUri, null);
+                (CursorLoader) spyModel
+                        .createCursorLoader(SessionFeedbackModel.SessionFeedbackQueryEnum.SESSION,
+                                null);
 
         // Then the returned cursor loader is the same as the mock one
         assertThat(createdCursorLoader1, sameInstance(mockCursorLoaderSession));
     }
 
-    @Test
-    public void createCursorLoader_UnknownLoaderId_CreatesNullCursorLoader() {
-        // When ran with an invalid query
-        Loader<Cursor> cursorLoader = mSessionFeedbackModel
-                .createCursorLoader(InvalidEnum.INVALID.getId(), mMockUri, null);
+    private void initMockCursors() {
+        // Set non empty cursor.
+        when(mMockCursor.moveToFirst()).thenReturn(true);
 
-        // Then the returned cursor is null
-        assertThat(cursorLoader, nullValue());
-    }
-
-    private void initWithStubbedCursor(Cursor cursor) {
-        // Return a fake title
-        when(cursor.getColumnIndex(ScheduleContract.Sessions.SESSION_TITLE))
+        // Sets fake title
+        when(mMockCursor.getColumnIndex(ScheduleContract.Sessions.SESSION_TITLE))
                 .thenReturn(SESSION_TITLE_COLUMN_INDEX);
-        when(cursor.getString(SESSION_TITLE_COLUMN_INDEX))
+        when(mMockCursor.getString(SESSION_TITLE_COLUMN_INDEX))
                 .thenReturn(FAKE_TITLE);
     }
 }

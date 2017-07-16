@@ -1,0 +1,35 @@
+#  Copyright 2015 Google Inc. All rights reserved.
+#
+#  Licensed under the Apache License, Version 2.0 (the "License");
+#  you may not use this file except in compliance with the License.
+#  You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+#  Unless required by applicable law or agreed to in writing, software
+#  distributed under the License is distributed on an "AS IS" BASIS,
+#  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+#  See the License for the specific language governing permissions and
+#  limitations under the License.
+******************** Title in locale <pt> ********************
+Google I/O 2016
+******************** Full description in locale <pt> ********************
+O app oficial do Google I/O 2016 foi desenvolvido para atuar como seu co-piloto ao navegar pela conferência, quer sua participação seja remota ou em pessoa.
+- Explore a pauta da conferência, com informações sobre os temas, tópicos e palestrantes
+- Adicione eventos a um calendário personalizado
+- Receba lembretes antes dos eventos em sua programação
+- Assista às transmissões ao vivo das palestras e sessões
+- Sincronize seu calendário em todos os seus dispositivos e no site do I/O
+- Oriente-se utilizando o mapa da conferência, baseado em vetores
+- Siga conversas sociais públicas relativas ao I/O
+- Veja os conteúdos do I/O de anos anteriores em vídeos
+
+* Exclusivo para participantes presenciais:*
+- Aproveite a configuração Wi-Fi pré-evento facilitada
+
+Este aplicativo foi otimizado para celulares e tablets de todos os formatos e tamanhos.
+O código-fonte para o aplicativo estará disponível logo após o I/O.
+
+v4.0: Atualizada para o Google I/O 2016
+******************** Short description in locale <pt> ********************
+Seu co-piloto para navegar pelo I/O, participando pessoalmente ou remotamente

@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
 <!--
   Copyright 2014 Google Inc. All rights reserved.
 
@@ -13,12 +14,14 @@
   See the License for the specific language governing permissions and
   limitations under the License.
   -->
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:iosched="http://schemas.android.com/apk/res-auto"
+
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginBottom="16dp">
+    android:layout_marginBottom="@dimen/padding_normal">
 
     <com.google.samples.apps.iosched.ui.widget.BezelImageView
         android:id="@+id/speaker_image"
@@ -33,9 +36,9 @@
         android:layout_marginTop="6dp"
         android:clickable="true"
         android:focusable="true"
-        iosched:maskDrawable="@drawable/circle_mask"
-        iosched:borderDrawable="@drawable/circle_border"
-        android:src="@drawable/person_image_empty" />
+        app:maskDrawable="@drawable/circle_mask"
+        app:borderDrawable="@drawable/circle_border"
+        app:srcCompat="@drawable/ic_default_avatar" />
 
     <TextView
         android:id="@+id/speaker_header"
@@ -48,11 +51,10 @@
         android:layout_alignParentTop="true"
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true"
-        android:clickable="true"
-        android:focusable="true"
         style="@style/SessionDetailsSpeakerName" />
 
     <TextView
+        android:focusable="true"
         android:id="@+id/speaker_abstract"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -73,14 +75,15 @@
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true"
         android:layout_alignParentBottom="true"
-        android:src="@drawable/ic_twitter_blue"
-        android:background="?imageItemBackground" />
+        android:background="?imageItemBackground"
+        app:srcCompat="@drawable/ic_twitter" />
 
     <ImageView
         android:id="@+id/gplus_icon_box"
         android:layout_width="@dimen/social_icon_box_size"
         android:layout_height="@dimen/social_icon_box_size"
         android:padding="@dimen/social_icon_box_padding"
-        android:src="@drawable/ic_gplus_blue"
-        android:background="?imageItemBackground"/>
+        android:background="?imageItemBackground"
+        app:srcCompat="@drawable/ic_google_plus" />
+
 </RelativeLayout>

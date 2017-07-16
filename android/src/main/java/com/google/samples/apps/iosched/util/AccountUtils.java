@@ -1,17 +1,15 @@
 /*
- * Copyright 2014 Google Inc. All rights reserved.
+ * Copyright (c) 2016 Google Inc.
  *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
+ * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except
+ * in compliance with the License. You may obtain a copy of the License at
  *
- *      http://www.apache.org/licenses/LICENSE-2.0
+ * http://www.apache.org/licenses/LICENSE-2.0
  *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
+ * Unless required by applicable law or agreed to in writing, software distributed under the License
+ * is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express
+ * or implied. See the License for the specific language governing permissions and limitations under
+ * the License.
  */
 
 package com.google.samples.apps.iosched.util;
@@ -50,10 +48,12 @@ import static com.google.samples.apps.iosched.util.LogUtils.makeLogTag;
 public class AccountUtils {
     private static final String TAG = makeLogTag(AccountUtils.class);
 
-    private static final String PREF_ACTIVE_ACCOUNT = "chosen_account";
+    public static final String DEFAULT_OAUTH_PROVIDER = "google";
 
-    // these names are are prefixes; the account is appended to them
-    private static final String PREFIX_PREF_AUTH_TOKEN = "auth_token_";
+    public static final String PREF_ACTIVE_ACCOUNT = "chosen_account";
+
+    // These names are are prefixes; the account is appended to them.
+    public static final String PREFIX_PREF_AUTH_TOKEN = "auth_token_";
     private static final String PREFIX_PREF_PLUS_PROFILE_ID = "plus_profile_id_";
     private static final String PREFIX_PREF_PLUS_NAME = "plus_name_";
     private static final String PREFIX_PREF_PLUS_IMAGE_URL = "plus_image_url_";
@@ -114,19 +114,24 @@ public class AccountUtils {
         }
     }
 
-    public static boolean setActiveAccount(final Context context, final String accountName) {
+    public static void setActiveAccount(final Context context, final String accountName) {
         LOGD(TAG, "Set active account to: " + accountName);
         SharedPreferences sp = getSharedPreferences(context);
         sp.edit().putString(PREF_ACTIVE_ACCOUNT, accountName).apply();
-        return true;
     }
 
-    private static String makeAccountSpecificPrefKey(Context ctx, String prefix) {
+    public static void clearActiveAccount(final Context context) {
+        LOGD(TAG, "Clearing active account");
+        SharedPreferences sp = getSharedPreferences(context);
+        sp.edit().remove(PREF_ACTIVE_ACCOUNT).apply();
+    }
+
+    protected static String makeAccountSpecificPrefKey(Context ctx, String prefix) {
         return hasActiveAccount(ctx) ? makeAccountSpecificPrefKey(getActiveAccountName(ctx),
                 prefix) : null;
     }
 
-    private static String makeAccountSpecificPrefKey(String accountName, String prefix) {
+    protected static String makeAccountSpecificPrefKey(String accountName, String prefix) {
         return prefix + accountName;
     }
 
@@ -155,7 +160,6 @@ public class AccountUtils {
     }
 
     static void invalidateAuthToken(final Context context) {
-        GoogleAuthUtil.invalidateToken(context, getAuthToken(context));
         setAuthToken(context, null);
     }
 

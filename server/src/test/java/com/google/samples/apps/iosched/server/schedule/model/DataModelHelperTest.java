@@ -46,7 +46,7 @@ public class DataModelHelperTest {
   public void testSetSimple() throws IOException {
     JsonObject dest = new JsonObject();
     String originalValue = "testvalue";
-    Enum<?> destKey = InputJsonKeys.VendorAPISource.Rooms.name;
+    Enum<?> destKey = InputJsonKeys.VendorAPISource.Rooms.Name;
     JsonPrimitive value = new JsonPrimitive(originalValue);
     DataModelHelper.set(value, dest, destKey);
     assertEquals(1, dest.entrySet().size());
@@ -61,8 +61,8 @@ public class DataModelHelperTest {
   public void testSetSimpleFromComplex() throws IOException {
     JsonObject src = (JsonObject) TestHelper.readJsonTestDataFile("sample_topic.json");
     JsonObject dest = new JsonObject();
-    Enum<?> srcKey = InputJsonKeys.VendorAPISource.Topics.title;
-    Enum<?> destKey = InputJsonKeys.VendorAPISource.Topics.title;
+    Enum<?> srcKey = InputJsonKeys.VendorAPISource.Topics.Title;
+    Enum<?> destKey = InputJsonKeys.VendorAPISource.Topics.Title;
     DataModelHelper.set(src, srcKey, dest, destKey);
     assertEquals("Enabling Blind and Low-Vision Accessibility On Android", dest.get(destKey.name()).getAsString());
   }
@@ -75,8 +75,8 @@ public class DataModelHelperTest {
   public void testSetDateFromComplex() throws IOException {
     JsonObject src = (JsonObject) TestHelper.readJsonTestDataFile("sample_topic.json");
     JsonObject dest = new JsonObject();
-    Enum<?> srcKey = InputJsonKeys.VendorAPISource.Topics.start;
-    Enum<?> destKey = InputJsonKeys.VendorAPISource.Topics.start;
+    Enum<?> srcKey = InputJsonKeys.VendorAPISource.Topics.Start;
+    Enum<?> destKey = InputJsonKeys.VendorAPISource.Topics.Start;
     DataModelHelper.set(src, srcKey, dest, destKey, Converters.DATETIME);
     assertEquals("2013-05-16T21:00:00Z", dest.get(destKey.name()).getAsString());
   }
@@ -90,7 +90,7 @@ public class DataModelHelperTest {
   public void testSetInComplexObject() throws IOException {
     JsonObject dest = (JsonObject) TestHelper.readJsonTestDataFile("sample_topic.json");
     String originalValue = "testvalue";
-    Enum<?> destKey = InputJsonKeys.VendorAPISource.Rooms.name;
+    Enum<?> destKey = InputJsonKeys.VendorAPISource.Rooms.Name;
     JsonPrimitive value = new JsonPrimitive(originalValue);
     DataModelHelper.set(value, dest, destKey);
     assertEquals(originalValue, dest.get(destKey.name()).getAsString());

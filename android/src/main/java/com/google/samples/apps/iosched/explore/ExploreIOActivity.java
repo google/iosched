@@ -16,34 +16,18 @@
 
 package com.google.samples.apps.iosched.explore;
 
-import com.google.samples.apps.iosched.R;
-import com.google.samples.apps.iosched.explore.ExploreModel.ExploreQueryEnum;
-import com.google.samples.apps.iosched.explore.ExploreModel.ExploreUserActionEnum;
-import com.google.samples.apps.iosched.explore.data.ItemGroup;
-import com.google.samples.apps.iosched.explore.data.LiveStreamData;
-import com.google.samples.apps.iosched.explore.data.SessionData;
-import com.google.samples.apps.iosched.framework.QueryEnum;
-import com.google.samples.apps.iosched.provider.ScheduleContract;
-import com.google.samples.apps.iosched.session.SessionDetailActivity;
-import com.google.samples.apps.iosched.ui.BaseActivity;
-import com.google.samples.apps.iosched.ui.SearchActivity;
-import com.google.samples.apps.iosched.ui.widget.CollectionView;
-import com.google.samples.apps.iosched.ui.widget.DrawShadowFrameLayout;
-import com.google.samples.apps.iosched.util.AnalyticsHelper;
-import com.google.samples.apps.iosched.util.UIUtils;
-
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
-import android.text.TextUtils;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.Toast;
 
-import static com.google.samples.apps.iosched.util.LogUtils.LOGD;
-import static com.google.samples.apps.iosched.util.LogUtils.LOGE;
+import com.google.samples.apps.iosched.R;
+import com.google.samples.apps.iosched.navigation.NavigationModel;
+import com.google.samples.apps.iosched.ui.BaseActivity;
+import com.google.samples.apps.iosched.ui.SearchActivity;
+import com.google.samples.apps.iosched.util.AnalyticsHelper;
+
 import static com.google.samples.apps.iosched.util.LogUtils.makeLogTag;
 
 /**
@@ -58,43 +42,23 @@ public class ExploreIOActivity extends BaseActivity implements Toolbar.OnMenuIte
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        Intent launchIntent = getIntent();
+        if (launchIntent != null && (!Intent.ACTION_MAIN.equals(launchIntent.getAction())
+                || !launchIntent.hasCategory(Intent.CATEGORY_LAUNCHER))) {
+            overridePendingTransition(0, 0);
+        }
         super.onCreate(savedInstanceState);
-
         setContentView(R.layout.explore_io_act);
-        addPresenterFragment(
-                R.id.explore_library_frag,
-                new ExploreModel(
-                        getApplicationContext()),
-                new QueryEnum[]{
-                        ExploreQueryEnum.SESSIONS,
-                        ExploreQueryEnum.TAGS},
-                new ExploreUserActionEnum[]{
-                        ExploreUserActionEnum.RELOAD});
+        setTitle(R.string.title_explore);
 
         // ANALYTICS SCREEN: View the Explore I/O screen
         // Contains: Nothing (Page name is a constant)
         AnalyticsHelper.sendScreenView(SCREEN_LABEL);
-
-        registerHideableHeaderView(findViewById(R.id.headerbar));
     }
 
     @Override
-    protected void onPostCreate(Bundle savedInstanceState) {
-        super.onPostCreate(savedInstanceState);
-
-        enableActionBarAutoHide((CollectionView) findViewById(R.id.explore_collection_view));
-    }
-
-    @Override
-    protected int getSelfNavDrawerItem() {
-        return NAVDRAWER_ITEM_EXPLORE;
-    }
-
-    @Override
-    protected void onActionBarAutoShowOrHide(boolean shown) {
-        super.onActionBarAutoShowOrHide(shown);
-        DrawShadowFrameLayout frame = (DrawShadowFrameLayout) findViewById(R.id.main_content);
-        frame.setShadowVisible(shown, shown);
+    protected NavigationModel.NavigationItemEnum getSelfNavDrawerItem() {
+        return NavigationModel.NavigationItemEnum.EXPLORE;
     }
 
     @Override
@@ -102,7 +66,7 @@ public class ExploreIOActivity extends BaseActivity implements Toolbar.OnMenuIte
         super.onCreateOptionsMenu(menu);
 
         // Add the search button to the toolbar.
-        Toolbar toolbar = getActionBarToolbar();
+        Toolbar toolbar = getToolbar();
         toolbar.inflateMenu(R.menu.explore_io_menu);
         toolbar.setOnMenuItemClickListener(this);
         return true;
@@ -116,41 +80,5 @@ public class ExploreIOActivity extends BaseActivity implements Toolbar.OnMenuIte
                 return true;
         }
         return false;
-    }
-
-    public void sessionDetailItemClicked(View viewClicked) {
-        LOGD(TAG, "clicked: " + viewClicked + " " +
-                ((viewClicked != null) ? viewClicked.getTag() : ""));
-        Object tag = null;
-        if (viewClicked != null) {
-            tag = viewClicked.getTag();
-        }
-        if (tag instanceof SessionData) {
-            SessionData sessionData = (SessionData)viewClicked.getTag();
-            if (!TextUtils.isEmpty(sessionData.getSessionId())) {
-                Intent intent = new Intent(getApplicationContext(), SessionDetailActivity.class);
-                Uri sessionUri = ScheduleContract.Sessions.buildSessionUri(sessionData.getSessionId());
-                intent.setData(sessionUri);
-                startActivity(intent);
-            } else {
-                LOGE(TAG, "Theme item clicked but session data was null:" + sessionData);
-                Toast.makeText(this, R.string.unknown_error, Toast.LENGTH_LONG).show();
-            }
-        }
-    }
-
-    public void cardHeaderClicked(View viewClicked) {
-        LOGD(TAG, "clicked: " + viewClicked + " " +
-                ((viewClicked != null) ? viewClicked.getTag() : ""));
-        View moreButton = viewClicked.findViewById(android.R.id.button1);
-        Object tag = moreButton != null ? moreButton.getTag() : null;
-        Intent intent = new Intent(getApplicationContext(), ExploreSessionsActivity.class);
-        if (tag instanceof LiveStreamData) {
-            intent.setData(ScheduleContract.Sessions.buildSessionsAfterUri(UIUtils.getCurrentTime(this)));
-            intent.putExtra(ExploreSessionsActivity.EXTRA_SHOW_LIVE_STREAM_SESSIONS, true);
-        } else if (tag instanceof ItemGroup) {
-            intent.putExtra(ExploreSessionsActivity.EXTRA_FILTER_TAG, ((ItemGroup)tag).getId());
-        }
-        startActivity(intent);
     }
 }

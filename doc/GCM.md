@@ -20,15 +20,15 @@ the conference data and the user's schedule. For an introduction to GCM,
 see [http://developer.android.com/google/gcm/index.html](http://developer.android.com/google/gcm/index.html)
 
 On startup, the application registers the device with the GCM server (see
-the BaseActivity.registerGCMClient method). This registration sends two
-pieces of data: the device's GCM id and the user's GCM Key. The GCM id is
-a core GCM concept, and essentially consists of a long number that
+the MessagingRegistrationWithGCM.registerDevice method). This registration sends two
+pieces of data: the device's GCM token and the user's GCM Key. The GCM token is
+a core GCM concept, and essentially consists of a long string that
 identifies the device for the purposes of sending GCM messages.  The GCM
 key, however, is something we use only in this app and is not part of the
 normal GCM protocol. More about this soon.
 
 The server can send the client several different types of GCM messages.
-When a GCM message arrives, it is processed by GCMIntentService.onMessage.
+When a GCM message arrives, it is processed by GCMMessageListenerService.onMessageReceived.
 That method will take the appropriate action depending on the content of
 the message. There are several message verbs we recognize:
 
@@ -96,44 +96,20 @@ So these are the problems we had to solve:
 3. how to notify all of the user's devices when a change happens on their schedule
 4. how to ensure users can't abuse the system sending GCM messages to devices that are not theirs
 
-Items 1) and 2) are solved in a very elegant fashion: we simply use the
-[Google Drive AppData API](https://developers.google.com/drive/web/appdata).
-User data always stays in the user's own Google Drive account, and this solves
-the problem of access control to that data.
+Items 1) and 2) are solved by using Firebase Realtime Database, where users
+could only read-write their own data. For items 3) and 4) we used a randomly
+generated UUID, which we call GCM key. Each user has their own unique GCM key.
+This key is stored in the Firebase database, along with information about
+sessions that were added to a user's schedule, the videos watched by the user,
+and information about sessions for which the user provided feedback.
 
-To tackle 3), one easy way would be to store the user's Google+ ID on the
-server, associated with the device IDs, so that we knew, given a Google+
-ID, what are all the devices that the user has and thus can send a message
-to all of them. The website, on the other hand, knows the Google+ of the
-user who is logged in, so they can instruct the GCM server to notify those
-user's devices when the schedule changes.
+If you look at `AccountUtils`, you will see how this process works.  We first
+generate a random key locally; the first time we try to sync with Firebase, we
+determine if there's already a key there. If there is, the existing key
+overrides the local key.
 
-However, we wanted to minimize the amount of user information stored on
-the server (there is no such thing as too much security!), and by using the
-Google+ ID as key we would need an API on the GCM server that could send
-a GCM message to all devices belonging to that user. But since someone's
-Google+ ID is not a secret, a malicious user could, knowing an attendee's
-Google+ ID, send an unending stream of GCM messages and drain their battery.
-Clearly that would not be satisfactory security, and fails to solve item 4).
-
-So, to solve 4), instead of using Google+ IDs we use a randomly generated
-UUID which we call GCM key (aka GCM group ID). Each user has their own
-unique GCM key, but a user can't guess another user's GCM key, and it's
-impossible to determine to what particular user a GCM key belongs. So the
-GCM server API takes GCM keys and not Google+ IDs.
-
-And where is the GCM key for a user stored? Easy: in their Google Drive
-AppData folder, along with their selected sessions. That way both the app
-and the website know the user's GCM key, and can use that to signal the
-user's devices.
-
-So if you look at BaseActivity.registerGCMClient, you will see how this
-mechanism works: we first generate a random key locally; the first time we
-try to sync with Google Drive, we determine if there's already a key
-there. If there is, the existing key overrides the local key.
-
-Note that the app also sends a sync_user message to the server when the
-user changes their schedule! This is done to cause a sync on all other
+Note that the app also sends a sync_user message to the server when the user
+changes their schedule! This is done to cause a sync on all other
 user's devices, so they can reflect that latest change as soon as possible.
 
 ## How to send a GCM message
@@ -141,7 +117,7 @@ user's devices, so they can reflect that latest change as soon as possible.
 If you've set up your GCM server and enabled GCM on IOSched, you should
 be able to push GCM messages to all your users. To do so, you have
 to make an HTTP POST request to your GCM server (that is, your
-App Engine app that's running the [gcm-server/](../gcm-server) code).
+App Engine app that's running the [gcm-server/](../server) code).
 
 Here is a sample POST request:
 

@@ -17,6 +17,7 @@ limitations under the License.
 
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="@dimen/drawer_width"
     android:layout_height="match_parent"
     android:layout_gravity="end"
@@ -57,9 +58,9 @@ limitations under the License.
             android:id="@+id/timeslot"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_weight="1"
             android:layout_marginLeft="@dimen/padding_normal"
             android:layout_marginStart="@dimen/padding_normal"
-            android:layout_weight="1"
             android:ellipsize="end"
             android:maxLines="1"
             android:textAppearance="@style/TextAppearance.Filter" />
@@ -71,8 +72,8 @@ limitations under the License.
             android:layout_marginEnd="@dimen/padding_normal"
             android:layout_marginStart="@dimen/padding_normal"
             android:background="?imageItemBackground"
-            android:src="@drawable/ic_pane_close"
-            android:contentDescription="@string/cancel"/>
+            android:contentDescription="@string/cancel"
+            app:srcCompat="@drawable/ic_clear_timeslot_filter" />
 
     </LinearLayout>
 
@@ -83,12 +84,15 @@ limitations under the License.
         android:background="@drawable/inset_divider_top_only"
         android:visibility="gone" />
 
-    <com.google.samples.apps.iosched.ui.widget.CollectionView
-        android:id="@+id/drawer_collection_view"
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/filters"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:clipToPadding="false"
         android:paddingTop="@dimen/divider_padding_bottom"
-        android:paddingBottom="@dimen/spacing_normal" />
+        android:paddingBottom="@dimen/spacing_normal"
+        android:clipToPadding="false"
+        android:scrollbars="vertical"
+        android:scrollbarStyle="insideOverlay"
+        app:layoutManager="android.support.v7.widget.LinearLayoutManager" />
 
 </LinearLayout>

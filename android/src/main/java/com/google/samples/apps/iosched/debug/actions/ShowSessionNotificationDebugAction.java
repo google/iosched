@@ -28,7 +28,6 @@ import com.google.samples.apps.iosched.R;
 import com.google.samples.apps.iosched.map.MapActivity;
 import com.google.samples.apps.iosched.provider.ScheduleContract;
 import com.google.samples.apps.iosched.debug.DebugAction;
-import com.google.samples.apps.iosched.util.UIUtils;
 
 /**
 * Show a notification that a session is about to start. Simplified version of the one shown at
@@ -62,7 +61,7 @@ public class ShowSessionNotificationDebugAction implements DebugAction {
                 .setContentIntent(pi)
                 .setPriority(Notification.PRIORITY_MAX)
                 .setAutoCancel(true);
-        notifBuilder.addAction(R.drawable.ic_map_holo_dark,
+        notifBuilder.addAction(R.drawable.ic_stat_map,
                 context.getString(R.string.title_map),
                 piMap);
 

@@ -16,9 +16,9 @@
   -->
 
 <ScrollView
+    android:id="@+id/scroll_view"
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/scroll_view"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fillViewport="true">
@@ -29,48 +29,51 @@
         android:orientation="vertical">
 
         <android.support.v7.widget.Toolbar
-            android:id="@+id/toolbar_actionbar"
+            android:id="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="@dimen/spacing_normal"
+            android:background="?colorPrimary"
             android:minHeight="?actionBarSize"
             app:contentInsetStart="?actionBarInsetStart"
-            android:background="?colorPrimary"
             app:popupTheme="@style/ActionBarPopupThemeOverlay"
-            app:theme="@style/ActionBarThemeOverlay">
+            android:theme="@style/ActionBarThemeOverlay">
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
+                android:paddingBottom="@dimen/spacing_normal"
                 android:paddingEnd="@dimen/spacing_normal"
-                android:paddingRight="@dimen/spacing_normal"
-                android:paddingBottom="@dimen/spacing_normal">
+                android:paddingRight="@dimen/spacing_normal">
 
                 <TextView
                     android:id="@+id/feedback_header_rate"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_gravity="start"
                     android:layout_marginTop="@dimen/feedback_rate_padding_top"
                     android:text="@string/session_feedback_title_rate"
-                    android:textAppearance="@style/TextAppearance.AppCompat.Widget.ActionBar.Subtitle"
-                    android:textAlignment="viewStart" />
+                    android:textAlignment="viewStart"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Widget.ActionBar.Subtitle" />
 
                 <TextView
                     android:id="@+id/feedback_header_session_title"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_gravity="start"
                     android:layout_marginTop="@dimen/spacing_micro"
-                    android:textAppearance="@style/TextAppearance.AppCompat.Widget.ActionBar.Title"
-                    android:textAlignment="viewStart" />
+                    android:textAlignment="viewStart"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Widget.ActionBar.Title" />
 
                 <TextView
                     android:id="@+id/feedback_header_session_speakers"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_gravity="start"
                     android:layout_marginTop="@dimen/spacing_micro"
-                    android:textAppearance="@style/TextAppearance.AppCompat.Widget.ActionBar.Subtitle"
-                    android:textAlignment="viewStart" />
+                    android:textAlignment="viewStart"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Widget.ActionBar.Subtitle" />
 
             </LinearLayout>
 
@@ -78,222 +81,222 @@
 
         <!-- Q0 -->
         <TextView
+            style="@style/Body2Text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:paddingLeft="@dimen/padding_normal"
-            android:paddingStart="@dimen/padding_normal"
-            android:paddingRight="@dimen/padding_normal"
-            android:paddingEnd="@dimen/padding_normal"
-            android:paddingTop="@dimen/spacing_normal"
-            android:paddingBottom="@dimen/spacing_normal"
-            android:minHeight="?android:listPreferredItemHeightSmall"
             android:gravity="center_vertical"
-            android:text="@string/session_rating_label_text"
-            android:textAlignment="viewStart"
-            style="@style/Body2Text" />
+            android:minHeight="?android:listPreferredItemHeightSmall"
+            android:paddingBottom="@dimen/spacing_normal"
+            android:paddingEnd="@dimen/padding_normal"
+            android:paddingLeft="@dimen/padding_normal"
+            android:paddingRight="@dimen/padding_normal"
+            android:paddingStart="@dimen/padding_normal"
+            android:paddingTop="@dimen/spacing_normal"
+            android:text="@string/session_rating_label_text" />
 
-        <!-- todo: width should be match_parent but shows too many stars?! -->
-        <RatingBar
+        <com.google.samples.apps.iosched.ui.widget.CustomRatingBar
             android:id="@+id/rating_bar_0"
+            style="@style/FeedbackRatingBar"
             android:layout_width="wrap_content"
             android:layout_height="?android:listPreferredItemHeightSmall"
             android:layout_gravity="center"
-            android:layout_marginLeft="@dimen/spacing_normal"
-            android:layout_marginStart="@dimen/spacing_normal"
-            android:layout_marginRight="@dimen/spacing_normal"
             android:layout_marginEnd="@dimen/spacing_normal"
-            android:paddingTop="@dimen/spacing_normal"
-            android:contentDescription="@string/default_session_feedback_rating_bar_content_description"
-            style="@style/FeedbackRatingBar" />
+            android:layout_marginLeft="@dimen/spacing_normal"
+            android:layout_marginRight="@dimen/spacing_normal"
+            android:layout_marginStart="@dimen/spacing_normal"
+            android:paddingTop="@dimen/spacing_normal" />
 
         <FrameLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingLeft="@dimen/padding_normal"
-            android:paddingStart="@dimen/padding_normal"
-            android:paddingRight="@dimen/padding_normal"
+            android:paddingBottom="@dimen/padding_normal"
             android:paddingEnd="@dimen/padding_normal"
-            android:paddingTop="@dimen/spacing_micro"
-            android:paddingBottom="@dimen/padding_normal">
+            android:paddingLeft="@dimen/padding_normal"
+            android:paddingRight="@dimen/padding_normal"
+            android:paddingStart="@dimen/padding_normal"
+            android:paddingTop="@dimen/spacing_micro">
 
             <TextView
+                style="@style/FeedbackQuestionGuideText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="start|left"
-                android:text="@string/session_feedback_not_so_awesome"
-                style="@style/FeedbackQuestionGuideText" />
+                android:importantForAccessibility="2"
+                android:text="@string/session_feedback_not_so_awesome" />
 
             <TextView
+                style="@style/FeedbackQuestionGuideText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="end|right"
-                android:text="@string/session_feedback_awesome"
-                style="@style/FeedbackQuestionGuideText" />
+                android:importantForAccessibility="2"
+                android:text="@string/session_feedback_awesome" />
 
         </FrameLayout>
 
         <!-- Q1 -->
         <TextView
+            android:id="@+id/session_feedback_relevance"
+            style="@style/Body2Text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:paddingLeft="@dimen/padding_normal"
-            android:paddingStart="@dimen/padding_normal"
-            android:paddingRight="@dimen/padding_normal"
-            android:paddingEnd="@dimen/padding_normal"
-            android:paddingTop="@dimen/spacing_normal"
-            android:paddingBottom="@dimen/spacing_normal"
-            android:minHeight="?android:listPreferredItemHeightSmall"
             android:gravity="center_vertical"
-            android:text="@string/session_feedback_relevance"
-            android:textAlignment="viewStart"
-            style="@style/Body2Text" />
-
-        <com.google.samples.apps.iosched.ui.widget.NumberRatingBar
-            android:id="@+id/session_relevant_feedback_bar"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
             android:minHeight="?android:listPreferredItemHeightSmall"
-            android:maxHeight="?android:listPreferredItemHeightSmall"
-            android:layout_marginLeft="@dimen/spacing_normal"
-            android:layout_marginStart="@dimen/spacing_normal"
-            android:layout_marginRight="@dimen/spacing_normal"
-            android:layout_marginEnd="@dimen/spacing_normal"
+            android:paddingBottom="@dimen/spacing_normal"
+            android:paddingEnd="@dimen/padding_normal"
+            android:paddingLeft="@dimen/padding_normal"
+            android:paddingRight="@dimen/padding_normal"
+            android:paddingStart="@dimen/padding_normal"
             android:paddingTop="@dimen/spacing_normal"
-            style="@style/FeedbackNumberRatingBar" />
+            android:text="@string/session_feedback_relevance" />
+
+        <com.google.samples.apps.iosched.ui.widget.CustomRatingBar
+            android:id="@+id/session_relevant_feedback_bar"
+            style="@style/FeedbackNumberRatingBar"
+            android:layout_width="wrap_content"
+            android:layout_height="?android:listPreferredItemHeightSmall"
+            android:layout_gravity="center"
+            android:layout_marginEnd="@dimen/spacing_normal"
+            android:layout_marginLeft="@dimen/spacing_normal"
+            android:layout_marginRight="@dimen/spacing_normal"
+            android:layout_marginStart="@dimen/spacing_normal"
+            android:paddingTop="@dimen/spacing_normal" />
 
         <FrameLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingLeft="@dimen/padding_normal"
-            android:paddingStart="@dimen/padding_normal"
-            android:paddingRight="@dimen/padding_normal"
+            android:paddingBottom="@dimen/padding_normal"
             android:paddingEnd="@dimen/padding_normal"
-            android:paddingTop="@dimen/spacing_micro"
-            android:paddingBottom="@dimen/padding_normal">
+            android:paddingLeft="@dimen/padding_normal"
+            android:paddingRight="@dimen/padding_normal"
+            android:paddingStart="@dimen/padding_normal"
+            android:paddingTop="@dimen/spacing_micro">
 
             <TextView
+                style="@style/FeedbackQuestionGuideText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="start|left"
-                android:text="@string/session_feedback_not_at_all_relevant"
-                style="@style/FeedbackQuestionGuideText" />
+                android:importantForAccessibility="2"
+                android:text="@string/session_feedback_not_at_all_relevant" />
 
             <TextView
+                style="@style/FeedbackQuestionGuideText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="end|right"
-                android:text="@string/session_feedback_extremely_relevant"
-                style="@style/FeedbackQuestionGuideText" />
+                android:importantForAccessibility="2"
+                android:text="@string/session_feedback_extremely_relevant" />
 
         </FrameLayout>
 
         <!-- Q2 -->
         <TextView
+            style="@style/Body2Text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:paddingLeft="@dimen/padding_normal"
-            android:paddingStart="@dimen/padding_normal"
-            android:paddingRight="@dimen/padding_normal"
-            android:paddingEnd="@dimen/padding_normal"
-            android:paddingTop="@dimen/spacing_normal"
-            android:paddingBottom="@dimen/spacing_normal"
-            android:minHeight="?android:listPreferredItemHeightSmall"
             android:gravity="center_vertical"
-            android:text="@string/session_feedback_content_label_text"
-            android:textAlignment="viewStart"
-            style="@style/Body2Text" />
-
-        <com.google.samples.apps.iosched.ui.widget.NumberRatingBar
-            android:id="@+id/content_feedback_bar"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
             android:minHeight="?android:listPreferredItemHeightSmall"
-            android:maxHeight="?android:listPreferredItemHeightSmall"
-            android:layout_marginLeft="@dimen/spacing_normal"
-            android:layout_marginStart="@dimen/spacing_normal"
-            android:layout_marginRight="@dimen/spacing_normal"
-            android:layout_marginEnd="@dimen/spacing_normal"
+            android:paddingBottom="@dimen/spacing_normal"
+            android:paddingEnd="@dimen/padding_normal"
+            android:paddingLeft="@dimen/padding_normal"
+            android:paddingRight="@dimen/padding_normal"
+            android:paddingStart="@dimen/padding_normal"
             android:paddingTop="@dimen/spacing_normal"
-            style="@style/FeedbackNumberRatingBar" />
+            android:text="@string/session_feedback_content_label_text" />
+
+        <com.google.samples.apps.iosched.ui.widget.CustomRatingBar
+            android:id="@+id/content_feedback_bar"
+            style="@style/FeedbackNumberRatingBar"
+            android:layout_width="wrap_content"
+            android:layout_height="?android:listPreferredItemHeightSmall"
+            android:layout_gravity="center"
+            android:layout_marginEnd="@dimen/spacing_normal"
+            android:layout_marginLeft="@dimen/spacing_normal"
+            android:layout_marginRight="@dimen/spacing_normal"
+            android:layout_marginStart="@dimen/spacing_normal"
+            android:paddingTop="@dimen/spacing_normal" />
 
         <FrameLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingLeft="@dimen/padding_normal"
-            android:paddingStart="@dimen/padding_normal"
-            android:paddingRight="@dimen/padding_normal"
+            android:paddingBottom="@dimen/padding_normal"
             android:paddingEnd="@dimen/padding_normal"
-            android:paddingTop="@dimen/spacing_micro"
-            android:paddingBottom="@dimen/padding_normal">
+            android:paddingLeft="@dimen/padding_normal"
+            android:paddingRight="@dimen/padding_normal"
+            android:paddingStart="@dimen/padding_normal"
+            android:paddingTop="@dimen/spacing_micro">
 
             <TextView
+                style="@style/FeedbackQuestionGuideText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="start|left"
-                android:text="@string/session_feedback_basic"
-                style="@style/FeedbackQuestionGuideText" />
+                android:importantForAccessibility="2"
+                android:text="@string/session_feedback_basic" />
 
             <TextView
+                style="@style/FeedbackQuestionGuideText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="end|right"
-                android:text="@string/session_feedback_advanced"
-                style="@style/FeedbackQuestionGuideText" />
+                android:importantForAccessibility="2"
+                android:text="@string/session_feedback_advanced" />
 
         </FrameLayout>
 
         <!-- Q3 -->
         <TextView
+            style="@style/Body2Text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:paddingLeft="@dimen/padding_normal"
-            android:paddingStart="@dimen/padding_normal"
-            android:paddingRight="@dimen/padding_normal"
-            android:paddingEnd="@dimen/padding_normal"
-            android:paddingTop="@dimen/spacing_normal"
-            android:paddingBottom="@dimen/spacing_normal"
-            android:minHeight="?android:listPreferredItemHeightSmall"
             android:gravity="center_vertical"
-            android:text="@string/session_feedback_speaker_quality"
-            android:textAlignment="viewStart"
-            style="@style/Body2Text" />
-
-        <com.google.samples.apps.iosched.ui.widget.NumberRatingBar
-            android:id="@+id/speaker_feedback_bar"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
             android:minHeight="?android:listPreferredItemHeightSmall"
-            android:maxHeight="?android:listPreferredItemHeightSmall"
-            android:layout_marginLeft="@dimen/spacing_normal"
-            android:layout_marginStart="@dimen/spacing_normal"
-            android:layout_marginRight="@dimen/spacing_normal"
-            android:layout_marginEnd="@dimen/spacing_normal"
+            android:paddingBottom="@dimen/spacing_normal"
+            android:paddingEnd="@dimen/padding_normal"
+            android:paddingLeft="@dimen/padding_normal"
+            android:paddingRight="@dimen/padding_normal"
+            android:paddingStart="@dimen/padding_normal"
             android:paddingTop="@dimen/spacing_normal"
-            style="@style/FeedbackNumberRatingBar" />
+            android:text="@string/session_feedback_speaker_quality" />
+
+        <com.google.samples.apps.iosched.ui.widget.CustomRatingBar
+            android:id="@+id/speaker_feedback_bar"
+            style="@style/FeedbackNumberRatingBar"
+            android:layout_width="wrap_content"
+            android:layout_height="?android:listPreferredItemHeightSmall"
+            android:layout_gravity="center"
+            android:layout_marginEnd="@dimen/spacing_normal"
+            android:layout_marginLeft="@dimen/spacing_normal"
+            android:layout_marginRight="@dimen/spacing_normal"
+            android:layout_marginStart="@dimen/spacing_normal"
+            android:paddingTop="@dimen/spacing_normal" />
 
         <FrameLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingLeft="@dimen/padding_normal"
-            android:paddingStart="@dimen/padding_normal"
-            android:paddingRight="@dimen/padding_normal"
+            android:paddingBottom="@dimen/padding_normal"
             android:paddingEnd="@dimen/padding_normal"
-            android:paddingTop="@dimen/spacing_micro"
-            android:paddingBottom="@dimen/padding_normal">
+            android:paddingLeft="@dimen/padding_normal"
+            android:paddingRight="@dimen/padding_normal"
+            android:paddingStart="@dimen/padding_normal"
+            android:paddingTop="@dimen/spacing_micro">
 
             <TextView
+                style="@style/FeedbackQuestionGuideText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="start|left"
-                android:text="@string/session_feedback_poor"
-                style="@style/FeedbackQuestionGuideText" />
+                android:importantForAccessibility="2"
+                android:text="@string/session_feedback_poor" />
 
             <TextView
+                style="@style/FeedbackQuestionGuideText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="end|right"
-                android:text="@string/session_feedback_outstanding"
-                style="@style/FeedbackQuestionGuideText" />
+                android:importantForAccessibility="2"
+                android:text="@string/session_feedback_outstanding" />
 
         </FrameLayout>
 

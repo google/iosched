@@ -1,0 +1,34 @@
+#  Copyright 2015 Google Inc. All rights reserved.
+#
+#  Licensed under the Apache License, Version 2.0 (the "License");
+#  you may not use this file except in compliance with the License.
+#  You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+#  Unless required by applicable law or agreed to in writing, software
+#  distributed under the License is distributed on an "AS IS" BASIS,
+#  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+#  See the License for the specific language governing permissions and
+#  limitations under the License.
+******************** Full description in locale <ja> ********************
+公式Google I/O 2016アプリは、リモート参加および直接参加したい会議をスマートにナビゲートするために開発されたお役立ちアプリです。
+-- 会議の議題および「テーマ、トピック、後援者に関する詳細」を確認できます
+-- 自分のスケジュールにイベントを追加できます
+-- スケジュールされたイベントの開始前に、リマインダーを受け取れます
+-- キーノートおよびセッション ライブ ストリームを閲覧できます
+-- 全てのデバイスとI/O website間で、スケジュールを同期できます
+-- 便利なベクターベースの会議マップをご利用いただけます
+-- 公式ソーシャルでやり取りされているI/O関連の会話をフォロー
+-- ビデオで過去のI/Oコンテンツを閲覧する
+
+*直接参加者のみご利用いただける特典*
+-- ファシリティ プレイベントのWi-Fi設定をご利用いただけます
+
+このアプリは、すべての形や大きさのタブレット端末および携帯電話用に最適化されています。アプリ用のソースコードは、I/Oの開催後すぐに、ご利用可能となります。
+
+v4.0: Google I/O 2016向けに更新されました
+******************** Short description in locale <ja> ********************
+これは、会議へのリモート参加および直接参加に関わらず、I/Oをナビゲートしてくれるお役立ちアプリです。
+******************** Title in locale <ja> ********************
+Google I/O 2016

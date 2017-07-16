@@ -14,12 +14,10 @@
   See the License for the specific language governing permissions and
   limitations under the License.
   -->
-<manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    package="com.google.samples.apps.iosched"
-    android:versionCode="333"
-    android:versionName="3.3.3"
-    android:installLocation="auto">
+<manifest package="com.google.samples.apps.iosched"
+          xmlns:android="http://schemas.android.com/apk/res/android"
+          xmlns:tools="http://schemas.android.com/tools"
+          android:installLocation="auto">
     <!-- versionName and versionCode are specified in build.gradle -->
 
     <!-- min and target sdk are defined in build.gradle -->
@@ -33,6 +31,10 @@
         android:label="@string/permission_write"
         android:protectionLevel="normal" />
 
+    <!-- Legacy permissions, required due to minSdk level.
+         Newer devices will use runtime permisisons. -->
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.AUTHENTICATE_ACCOUNTS" />
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.GET_ACCOUNTS" />
@@ -40,7 +42,6 @@
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
     <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.READ_SYNC_SETTINGS" />
     <uses-permission android:name="android.permission.READ_SYNC_STATS" />
     <uses-permission android:name="android.permission.VIBRATE" />
@@ -83,7 +84,6 @@
         android:hardwareAccelerated="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
-        android:logo="@drawable/actionbar_logo"
         android:supportsRtl="true"
         android:theme="@style/Theme.IOSched">
 
@@ -102,121 +102,123 @@
         <activity
             android:name=".explore.ExploreIOActivity"
             android:label="@string/app_name"
-            android:theme="@style/Theme.IOSched.Sessions">
+            android:theme="@style/Theme.IOSched.Light">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
             <!-- Web URLs -->
-            <intent-filter android:label="@string/app_name"
-                    android:priority="0">
+            <intent-filter
+                android:label="@string/app_name"
+                android:priority="0">
                 <action android:name="android.intent.action.VIEW" />
 
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
 
-                <!-- These catch /io2015 as well as /io2015//// because of pathPattern.
+                <!-- These catch /io2016 as well as /io2016//// because of pathPattern.
                      Dev testing easily done with adb commands:
-                     adb shell am start -a android.intent.action.VIEW -d http://events.google.com/io2015 -->
+                     adb shell am start -a android.intent.action.VIEW -d http://events.google.com/io2016 -->
                 <data
                     android:host="@string/website_host_name"
-                    android:pathPattern="/io2015/*"
+                    android:pathPattern="/io2016/*"
                     android:scheme="http" />
                 <data
                     android:host="@string/website_host_name"
-                    android:pathPattern="/io2015/*"
+                    android:pathPattern="/io2016/*"
                     android:scheme="https" />
             </intent-filter>
         </activity>
         <activity
             android:name=".myschedule.MyScheduleActivity"
+            android:exported="true"
             android:label="@string/title_my_schedule"
-            android:parentActivityName=".explore.ExploreIOActivity"
             android:launchMode="singleTop"
-            android:theme="@style/Theme.IOSched.MySchedule"
-            android:exported="true">
+            android:parentActivityName=".explore.ExploreIOActivity"
+            android:theme="@style/Theme.IOSched.MySchedule">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".explore.ExploreIOActivity" />
             <!-- Web URLs -->
-            <intent-filter android:label="@string/app_name"
-                    android:priority="200">
+            <intent-filter
+                android:label="@string/app_name"
+                android:priority="200">
                 <action android:name="android.intent.action.VIEW" />
 
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
 
-                <!-- This catches /io2015/schedule//// but not /io2015/schedule
+                <!-- This catches /io2016/schedule//// but not /io2016/schedule
                      Note: Query parameters are not part of the path and when ?sid=UUID is appended
                            to this path it indicates a session on the website and there is therefore
                            code in MySchedule.onCreate that invokes SessionDetailActivity if the sid
                            is present.
                      See above for testing notes. -->
                 <data
-                        android:host="@string/website_host_name"
-                        android:pathPattern="/io2015/schedule/*"
-                        android:scheme="http" />
+                    android:host="@string/website_host_name"
+                    android:pathPattern="/io2016/schedule/*"
+                    android:scheme="http" />
                 <data
-                        android:host="@string/website_host_name"
-                        android:pathPattern="/io2015/schedule/*"
-                        android:scheme="https" />
+                    android:host="@string/website_host_name"
+                    android:pathPattern="/io2016/schedule/*"
+                    android:scheme="https" />
 
-                <!-- This catches /io2015/schedule but not /io2015/schedule//////
+                <!-- This catches /io2016/schedule but not /io2016/schedule//////
                      See above for testing notes. -->
                 <data
-                        android:host="@string/website_host_name"
-                        android:path="/io2015/schedule"
-                        android:scheme="http" />
+                    android:host="@string/website_host_name"
+                    android:path="/io2016/schedule"
+                    android:scheme="http" />
                 <data
-                        android:host="@string/website_host_name"
-                        android:path="/io2015/schedule"
-                        android:scheme="https" />
+                    android:host="@string/website_host_name"
+                    android:path="/io2016/schedule"
+                    android:scheme="https" />
 
                 <!-- Replicating the above data elements for www.google.com -->
                 <!-- This catches /events/io/schedule//// but not /events/io/schedule
                      See above for tes ting notes. -->
                 <data
-                        android:host="www.google.com"
-                        android:pathPattern="/events/io/schedule/*"
-                        android:scheme="http" />
+                    android:host="www.google.com"
+                    android:pathPattern="/events/io/schedule/*"
+                    android:scheme="http" />
                 <data
-                        android:host="www.google.com"
-                        android:pathPattern="/io2015/schedule/*"
-                        android:scheme="https" />
+                    android:host="www.google.com"
+                    android:pathPattern="/io2016/schedule/*"
+                    android:scheme="https" />
 
                 <!-- This catches /events/io/schedule but not /events/io/schedule//////
                      See above for testing notes. -->
                 <data
-                        android:host="www.google.com"
-                        android:path="/events/io/schedule"
-                        android:scheme="http" />
+                    android:host="www.google.com"
+                    android:path="/events/io/schedule"
+                    android:scheme="http" />
                 <data
-                        android:host="www.google.com"
-                        android:path="/events/io/schedule"
-                        android:scheme="https" />
+                    android:host="www.google.com"
+                    android:path="/events/io/schedule"
+                    android:scheme="https" />
             </intent-filter>
         </activity>
- 
+
         <activity
             android:name=".explore.ExploreSessionsActivity"
-            android:label="Explore"
-            android:theme="@style/Theme.IOSched.WithNavDrawer"
-            android:exported="true">
+            android:exported="true"
+            android:label="@string/title_explore"
+            android:theme="@style/Theme.IOSched.ExploreSessions">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
 
                 <category android:name="android.intent.category.DEFAULT" />
 
-                <data android:mimeType="vnd.android.cursor.dir/vnd.iosched2015.session" />
+                <data android:mimeType="vnd.android.cursor.dir/vnd.iosched2016.session" />
             </intent-filter>
         </activity>
 
         <activity
             android:name=".settings.SettingsActivity"
+            android:exported="false"
             android:label="@string/title_settings"
             android:parentActivityName=".explore.ExploreIOActivity"
-            android:theme="@style/Theme.IOSched.WithNavDrawer"
-            android:exported="false">
+            android:theme="@style/Theme.IOSched.WithNavDrawer">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".explore.ExploreIOActivity" />
@@ -224,10 +226,10 @@
 
         <activity
             android:name=".ui.SearchActivity"
+            android:exported="false"
             android:label="@string/title_search"
-            android:theme="@style/Theme.IOSched.Search"
             android:launchMode="singleTop"
-            android:exported="false">
+            android:theme="@style/Theme.IOSched.Search">
             <!-- This Activity handles the search intent -->
             <intent-filter>
                 <action android:name="android.intent.action.SEARCH" />
@@ -240,12 +242,13 @@
                 android:name="android.app.searchable"
                 android:resource="@xml/searchable" />
         </activity>
+
         <activity
             android:name=".feedback.SessionFeedbackActivity"
+            android:exported="false"
             android:label="@string/title_session_feedback"
-            android:theme="@style/Theme.IOSched.Feedback"
             android:parentActivityName=".explore.ExploreIOActivity"
-            android:exported="false">
+            android:theme="@style/Theme.IOSched.Feedback">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".explore.ExploreIOActivity" />
@@ -254,21 +257,25 @@
 
                 <category android:name="android.intent.category.DEFAULT" />
 
-                <data android:mimeType="vnd.android.cursor.item/vnd.iosched2015.session_feedback" />
+                <data android:mimeType="vnd.android.cursor.item/vnd.iosched2016.session_feedback" />
             </intent-filter>
         </activity>
 
         <activity
             android:name=".welcome.WelcomeActivity"
-            android:theme="@style/Theme.IOSched.Welcome"
-            android:exported="false" />
+            android:exported="false"
+            android:theme="@style/Theme.IOSched.Welcome" />
 
         <activity
+            android:name=".login.SwitchUserActivity"
+            android:exported="false"
+            android:theme="@style/Theme.IOSched.Transparent" />
+        <activity
             android:name=".videolibrary.VideoLibraryActivity"
-            android:theme="@style/Theme.IOSched.VideoLibrary"
+            android:exported="false"
             android:label="@string/title_video_library"
             android:parentActivityName=".explore.ExploreIOActivity"
-            android:exported="false">
+            android:theme="@style/Theme.IOSched.VideoLibrary">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".explore.ExploreIOActivity" />
@@ -276,10 +283,10 @@
 
         <activity
             android:name=".videolibrary.VideoLibraryFilteredActivity"
-            android:theme="@style/Theme.IOSched.VideoLibrary"
+            android:exported="false"
             android:label="@string/title_video_library"
             android:parentActivityName=".videolibrary.VideoLibraryActivity"
-            android:exported="false">
+            android:theme="@style/Theme.IOSched.VideoLibrary.Filtered">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".videolibrary.VideoLibraryActivity" />
@@ -287,15 +294,15 @@
 
         <activity
             android:name=".session.SessionDetailActivity"
+            android:exported="true"
             android:label="@string/title_session_detail"
-            android:theme="@style/Theme.IOSched.SessionDetails"
-            android:exported="true">
+            android:theme="@style/Theme.IOSched.SessionDetails">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
 
                 <category android:name="android.intent.category.DEFAULT" />
 
-                <data android:mimeType="vnd.android.cursor.item/vnd.iosched2015.session" />
+                <data android:mimeType="vnd.android.cursor.item/vnd.iosched2016.session" />
             </intent-filter>
             <!-- Android Beam for session details -->
             <intent-filter>
@@ -303,11 +310,11 @@
 
                 <category android:name="android.intent.category.DEFAULT" />
 
-                <data android:mimeType="vnd.android.cursor.item/vnd.iosched2015.session" />
+                <data android:mimeType="vnd.android.cursor.item/vnd.iosched2016.session" />
             </intent-filter>
             <!-- Web URLs -->
             <!-- URLs are indexed in search engines in the form:
-                 https://events.google.com/io2015/schedule?sid=<session_id>
+                 https://events.google.com/io2016/schedule?sid=<session_id>
                  so direct session links are captured in MySchedule. -->
         </activity>
 
@@ -323,22 +330,11 @@
         </activity>
 
         <activity
-            android:name=".social.SocialActivity"
-            android:label="@string/title_activity_new_social"
-            android:parentActivityName=".explore.ExploreIOActivity"
-            android:theme="@style/Theme.IOSched.WithNavDrawer"
-            android:exported="false">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value=".explore.ExploreIOActivity" />
-        </activity>
-
-        <activity
             android:name=".about.AboutActivity"
+            android:exported="false"
             android:label="@string/description_about"
             android:parentActivityName=".explore.ExploreIOActivity"
-            android:theme="@style/Theme.IOSched.WithNavDrawer"
-            android:exported="false">
+            android:theme="@style/Theme.IOSched.WithNavDrawer">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".explore.ExploreIOActivity" />
@@ -348,23 +344,18 @@
 
         <activity
             android:name=".ui.TaskStackBuilderProxyActivity"
-            android:theme="@android:style/Theme.NoDisplay"
-            android:exported="false" />
+            android:exported="false"
+            android:theme="@android:style/Theme.NoDisplay" />
         <activity
             android:name=".debug.DebugActivity"
+            android:exported="false"
             android:label="@string/title_activity_debug_test_runner"
             android:parentActivityName=".explore.ExploreIOActivity"
-            android:theme="@style/Theme.IOSched"
-            android:exported="false">
+            android:theme="@style/Theme.IOSched">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".explore.ExploreIOActivity" />
         </activity>
-        <activity
-            android:name=".debug.actions.ViewFilesInAppFolderActivity"
-            android:label="list files in appdata folder"
-            android:parentActivityName=".debug.DebugActivity"
-            android:exported="false"></activity>
 
         <!-- Session alarm/calendar integrating components. -->
         <receiver android:name=".receiver.SessionAlarmReceiver">
@@ -376,10 +367,10 @@
 
         <service
             android:name=".service.SessionAlarmService"
-            android:exported="false"/>
+            android:exported="false" />
         <service
             android:name=".service.SessionCalendarService"
-            android:exported="false"/>
+            android:exported="false" />
 
         <!-- BEGIN Google Analytics install referral measurement -->
         <!-- The service (provided by the Google Play services client library) that receives an
@@ -402,35 +393,67 @@
              https://goo.gl/RWn9xv -->
         <!-- END Google Analytics install referral measurement -->
 
+        <!-- Register AnalyticsReceiver and AnalyticsService to support background
+             dispatching on non-Google Play devices. -->
+        <receiver android:name="com.google.android.gms.analytics.AnalyticsReceiver"
+                  android:enabled="true">
+            <intent-filter>
+                <action android:name="com.google.android.gms.analytics.ANALYTICS_DISPATCH" />
+            </intent-filter>
+        </receiver>
+        <service android:name="com.google.android.gms.analytics.AnalyticsService"
+                 android:enabled="true"
+                 android:exported="false"/>
+
+
         <!--
-          BroadcastReceiver that will receive the C2DM messages from GCM
-          services and handle them to the custom IntentService.
+          This is a receiver provided by Google Play Services. It handles receiving
+          messages and passes them to GcmListenerService which offers a callback
+          that we will override to take action based on the content of the message received.
 
           The com.google.android.c2dm.permission.SEND permission is necessary
           so only GCM services can send data messages for the app.
         -->
         <receiver
-            android:name=".gcm.GCMRedirectedBroadcastReceiver"
+            android:name="com.google.android.gms.gcm.GcmReceiver"
+            android:exported="true"
             android:permission="com.google.android.c2dm.permission.SEND">
             <intent-filter>
 
                 <!-- Receives the actual messages. -->
                 <action android:name="com.google.android.c2dm.intent.RECEIVE" />
-                <!-- Receives the registration id. -->
-                <action android:name="com.google.android.c2dm.intent.REGISTRATION" />
 
                 <category android:name="com.google.samples.apps.iosched" />
             </intent-filter>
         </receiver>
 
         <!--
-          Application-specific subclass of GCMBaseIntentService that will
-          handle received messages.
-
-          By default, it must be named .GCMIntentService, unless the
-          application uses a custom BroadcastReceiver that redefines its name.
+          GCMMessageListenerService is the extension of the GcmListenerService,
+          where we handle received GCM messages.
         -->
-        <service android:name=".gcm.GCMIntentService" />
+        <service
+            android:name=".gcm.GCMMessageListenerService"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="com.google.android.c2dm.intent.RECEIVE" />
+            </intent-filter>
+        </service>
+
+        <service
+            android:name=".gcm.GCMInstanceIDListenerService"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="com.google.android.gms.iid.InstanceID" />
+            </intent-filter>
+        </service>
+
+        <service
+            android:name=".gcm.GCMRegistrationIntentService"
+            android:exported="false" />
+
+        <service
+            android:name=".gcm.GCMUnregisterIntentService"
+            android:exported="false" />
 
         <!-- Data, sync and schedule editing components -->
 
@@ -496,14 +519,17 @@
             android:exported="false"
             android:permission="android.permission.BIND_REMOTEVIEWS" />
 
-        <!-- The service listening for incoming messages from the wear device -->
+        <!-- Account authenticator service for use with sync adapter -->
         <service
-            android:name=".feedback.FeedbackWearableListenerService"
-            android:exported="false">
+            android:name="sync.account.AuthenticatorService">
             <intent-filter>
-                <action android:name="com.google.android.gms.wearable.BIND_LISTENER" />
+                <action android:name="android.accounts.AccountAuthenticator"/>
             </intent-filter>
+            <meta-data
+                android:name="android.accounts.AccountAuthenticator"
+                android:resource="@xml/authenticator" />
         </service>
+
     </application>
 
 </manifest>

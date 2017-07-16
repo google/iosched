@@ -45,6 +45,7 @@ import com.google.samples.apps.iosched.settings.SettingsUtils;
 
 import java.util.List;
 
+import static com.google.samples.apps.iosched.util.LogUtils.LOGI;
 import static com.google.samples.apps.iosched.util.LogUtils.LOGW;
 import static com.google.samples.apps.iosched.util.LogUtils.makeLogTag;
 
@@ -88,10 +89,12 @@ public class WiFiUtils {
         WifiManager wifiManager = (WifiManager) context.getSystemService(Context.WIFI_SERVICE);
 
         List<WifiConfiguration> configuredNetworks = wifiManager.getConfiguredNetworks();
-        for (WifiConfiguration wifiConfig: configuredNetworks) {
-            if (wifiConfig.SSID.equals(conferenceConfig.SSID)) {
-                LOGW(TAG, "Removing network: " + wifiConfig.networkId);
-                wifiManager.removeNetwork(wifiConfig.networkId);
+        if (configuredNetworks != null) {
+            for (WifiConfiguration wifiConfig: configuredNetworks) {
+                if (wifiConfig.SSID.equals(conferenceConfig.SSID)) {
+                    LOGW(TAG, "Removing network: " + wifiConfig.networkId);
+                    wifiManager.removeNetwork(wifiConfig.networkId);
+                }
             }
         }
     }
@@ -251,29 +254,29 @@ public class WiFiUtils {
      * (in the overflow menu, for instance).
      */
     public static boolean shouldOfferToSetupWifi(final Context context, boolean actively) {
-        long now = UIUtils.getCurrentTime(context);
+        long now = TimeUtils.getCurrentTime(context);
         if (now < Config.WIFI_SETUP_OFFER_START) {
-            LOGW(TAG, "Too early to offer wifi");
+            LOGI(TAG, "Too early to offer wifi");
             return false;
         }
         if (now > Config.CONFERENCE_END_MILLIS) {
-            LOGW(TAG, "Too late to offer wifi");
+            LOGI(TAG, "Too late to offer wifi");
             return false;
         }
         if (!WiFiUtils.isWiFiEnabled(context)) {
-            LOGW(TAG, "Wifi isn't enabled");
+            LOGI(TAG, "Wifi isn't enabled");
             return false;
         }
         if (!SettingsUtils.isAttendeeAtVenue(context)) {
-            LOGW(TAG, "Attendee isn't onsite so wifi wouldn't matter");
+            LOGI(TAG, "Attendee isn't on-site so wifi wouldn't matter");
             return false;
         }
         if (WiFiUtils.isWiFiApConfigured(context)) {
-            LOGW(TAG, "Attendee is already setup for wifi.");
+            LOGI(TAG, "Attendee is already setup for wifi.");
             return false;
         }
         if (actively && SettingsUtils.hasDeclinedWifiSetup(context)) {
-            LOGW(TAG, "Attendee opted out of wifi.");
+            LOGI(TAG, "Attendee opted out of wifi.");
             return false;
         }
         return true;

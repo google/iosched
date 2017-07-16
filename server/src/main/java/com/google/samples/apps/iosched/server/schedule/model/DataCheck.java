@@ -33,6 +33,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.logging.Logger;
 import java.util.regex.Matcher;
 
 
@@ -41,6 +42,8 @@ import java.util.regex.Matcher;
  *
  */
 public class DataCheck {
+
+  static Logger LOG = Logger.getLogger(DataCheck.class.getName());
 
   private CloudFileManager fileManager;
 
@@ -112,6 +115,7 @@ public class DataCheck {
 
     // Check if blocks start and end timestamps are valid
     JsonArray newBlocks = getAsArray(newData, OutputJsonKeys.MainTypes.blocks);
+    LOG.info(newData.toString());
     if (newBlocks == null ) {
       StringBuilder sb= new StringBuilder();
       for (Map.Entry<String, JsonElement> entry: newData.entrySet()) {
@@ -138,7 +142,6 @@ public class DataCheck {
                 +". Block=" + block));
       }
     }
-
 
     // Check if sessions start and end timestamps are valid
     JsonArray newSessions = getAsArray(newData, OutputJsonKeys.MainTypes.sessions);

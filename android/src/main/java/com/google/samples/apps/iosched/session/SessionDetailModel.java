@@ -16,22 +16,7 @@
 
 package com.google.samples.apps.iosched.session;
 
-import com.google.common.annotations.VisibleForTesting;
-import com.google.samples.apps.iosched.Config;
-import com.google.samples.apps.iosched.R;
-import com.google.samples.apps.iosched.feedback.SessionFeedbackActivity;
-import com.google.samples.apps.iosched.framework.Model;
-import com.google.samples.apps.iosched.framework.QueryEnum;
-import com.google.samples.apps.iosched.framework.UserActionEnum;
-import com.google.samples.apps.iosched.model.TagMetadata;
-import com.google.samples.apps.iosched.provider.ScheduleContract;
-import com.google.samples.apps.iosched.service.SessionAlarmService;
-import com.google.samples.apps.iosched.service.SessionCalendarService;
-import com.google.samples.apps.iosched.util.AccountUtils;
-import com.google.samples.apps.iosched.util.AnalyticsHelper;
-import com.google.samples.apps.iosched.util.SessionsHelper;
-import com.google.samples.apps.iosched.util.UIUtils;
-
+import android.app.LoaderManager;
 import android.content.Context;
 import android.content.CursorLoader;
 import android.content.Intent;
@@ -40,19 +25,39 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.v4.content.ContextCompat;
 import android.text.TextUtils;
 import android.util.Pair;
+
+import com.google.common.annotations.VisibleForTesting;
+import com.google.samples.apps.iosched.Config;
+import com.google.samples.apps.iosched.R;
+import com.google.samples.apps.iosched.archframework.ModelWithLoaderManager;
+import com.google.samples.apps.iosched.archframework.QueryEnum;
+import com.google.samples.apps.iosched.archframework.UserActionEnum;
+import com.google.samples.apps.iosched.feedback.SessionFeedbackActivity;
+import com.google.samples.apps.iosched.model.TagMetadata;
+import com.google.samples.apps.iosched.provider.ScheduleContract;
+import com.google.samples.apps.iosched.service.SessionAlarmService;
+import com.google.samples.apps.iosched.service.SessionCalendarService;
+import com.google.samples.apps.iosched.util.AccountUtils;
+import com.google.samples.apps.iosched.util.AnalyticsHelper;
+import com.google.samples.apps.iosched.util.ExtendedSessionHelper;
+import com.google.samples.apps.iosched.util.SessionsHelper;
+import com.google.samples.apps.iosched.util.TimeUtils;
+import com.google.samples.apps.iosched.util.UIUtils;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
-import javax.annotation.Nullable;
-
 import static com.google.samples.apps.iosched.util.LogUtils.LOGD;
+
 import static com.google.samples.apps.iosched.util.LogUtils.makeLogTag;
 
-public class SessionDetailModel implements Model {
+public class SessionDetailModel
+        extends ModelWithLoaderManager<SessionDetailModel.SessionDetailQueryEnum,
+        SessionDetailModel.SessionDetailUserActionEnum> {
 
     protected final static String TAG = makeLogTag(SessionDetailModel.class);
 
@@ -93,6 +98,8 @@ public class SessionDetailModel implements Model {
     private String mSubtitle;
 
     private int mSessionColor;
+
+    private String mMainTag;
 
     private boolean mInSchedule;
 
@@ -145,7 +152,9 @@ public class SessionDetailModel implements Model {
 
     private StringBuilder mBuffer = new StringBuilder();
 
-    public SessionDetailModel(Uri sessionUri, Context context, SessionsHelper sessionsHelper) {
+    public SessionDetailModel(Uri sessionUri, Context context, SessionsHelper sessionsHelper,
+            LoaderManager loaderManager) {
+        super(SessionDetailQueryEnum.values(), SessionDetailUserActionEnum.values(), loaderManager);
         mContext = context;
         mSessionsHelper = sessionsHelper;
         mSessionUri = sessionUri;
@@ -167,6 +176,10 @@ public class SessionDetailModel implements Model {
         return mUrl;
     }
 
+    public String getRoomId() {
+        return mRoomId;
+    }
+
     public String getLiveStreamId() {
         return mLiveStreamId;
     }
@@ -179,6 +192,21 @@ public class SessionDetailModel implements Model {
         return mSessionColor;
     }
 
+    public boolean isSessionTrackColorAvailable() {
+        return mTagMetadata != null && mMainTag != null;
+    }
+
+    public int getSessionTrackColor() {
+        if (isSessionTrackColorAvailable()) {
+            final TagMetadata.Tag tag = mTagMetadata.getTag(mMainTag);
+            if (tag != null) {
+                return tag.getColor();
+            }
+        }
+        // else default to the session color which is defaulted to the theme primary color
+        return mSessionColor;
+    }
+
     public String getSessionAbstract() {
         return mSessionAbstract;
     }
@@ -188,17 +216,30 @@ public class SessionDetailModel implements Model {
     }
 
     public boolean isSessionOngoing() {
-        long currentTimeMillis = UIUtils.getCurrentTime(mContext);
+        long currentTimeMillis = TimeUtils.getCurrentTime(mContext);
         return currentTimeMillis > mSessionStart && currentTimeMillis <= mSessionEnd;
     }
 
+    /**
+     * Live stream should be shown if url is available and the session will start in no more than 10
+     * minutes, or is ongoing or has ended.
+     */
+    public boolean showLiveStream() {
+        if (!hasLiveStream()) {
+            return false;
+        }
+        long currentTimeMillis = TimeUtils.getCurrentTime(mContext);
+        return currentTimeMillis >
+                mSessionStart - SessionDetailConstants.LIVESTREAM_BEFORE_SESSION_START_MS;
+    }
+
     public boolean hasSessionStarted() {
-        long currentTimeMillis = UIUtils.getCurrentTime(mContext);
+        long currentTimeMillis = TimeUtils.getCurrentTime(mContext);
         return currentTimeMillis > mSessionStart;
     }
 
     public boolean hasSessionEnded() {
-        long currentTimeMillis = UIUtils.getCurrentTime(mContext);
+        long currentTimeMillis = TimeUtils.getCurrentTime(mContext);
         return currentTimeMillis > mSessionEnd;
     }
 
@@ -210,7 +251,7 @@ public class SessionDetailModel implements Model {
         if (!hasSessionStarted()) {
             return 0l;
         } else {
-            long currentTimeMillis = UIUtils.getCurrentTime(mContext);
+            long currentTimeMillis = TimeUtils.getCurrentTime(mContext);
             // Rounded down number of minutes.
             return (currentTimeMillis - mSessionStart) / 60000;
         }
@@ -223,20 +264,48 @@ public class SessionDetailModel implements Model {
         if (hasSessionStarted()) {
             return 0l;
         } else {
-            long currentTimeMillis = UIUtils.getCurrentTime(mContext);
+            long currentTimeMillis = TimeUtils.getCurrentTime(mContext);
+            int minutes = (int) ((mSessionStart - currentTimeMillis) / 60000);
             // Rounded up number of minutes.
-            return (mSessionStart - currentTimeMillis) / 60000 + 1;
+            return minutes * 60000 < (mSessionStart - currentTimeMillis) ? minutes + 1 : minutes;
         }
     }
 
+    public long minutesUntilSessionEnds() {
+        if(hasSessionEnded()) {
+            // If session has ended, return 0 minutes until end of session.
+            return 0l;
+        } else {
+            long currentTimeMillis = TimeUtils.getCurrentTime(mContext);
+            int minutes = (int) ((mSessionEnd - currentTimeMillis) / 60000);
+            // Rounded up number of minutes.
+            return minutes * 60000 < (mSessionEnd - currentTimeMillis) ? minutes + 1 : minutes;
+        }
+    }
+
+    public boolean shouldShowExtendedSessionLink() {
+        // If display of link is conditional, place conditions here.
+        // For instance if it should only be shown during a session, use isSessionOngoing().
+        return ExtendedSessionHelper.shouldShowExtendedSessionLink();
+    }
+
     public boolean isSessionReadyForFeedback() {
-        long currentTimeMillis = UIUtils.getCurrentTime(mContext);
+        long currentTimeMillis = TimeUtils.getCurrentTime(mContext);
         return currentTimeMillis
                 > mSessionEnd - SessionDetailConstants.FEEDBACK_MILLIS_BEFORE_SESSION_END_MS;
     }
 
     public boolean hasLiveStream() {
-        return mHasLiveStream || !TextUtils.isEmpty(mYouTubeUrl);
+        return mHasLiveStream || (!TextUtils.isEmpty(mYouTubeUrl) && !mYouTubeUrl.equals("null"));
+    }
+
+    /**
+     * Show header image if it has a photo url and it is keynote session, or has a youTube
+     * url or has a live stream for a session that is about to start, is ongoing, or has ended.
+     */
+    public boolean shouldShowHeaderImage() {
+        boolean hasYouTubeUrl = !TextUtils.isEmpty(mYouTubeUrl) && !mYouTubeUrl.equals("null");
+        return hasPhotoUrl() && (isKeynote() || hasYouTubeUrl || showLiveStream());
     }
 
     public boolean isInSchedule() {
@@ -292,15 +361,11 @@ public class SessionDetailModel implements Model {
     }
 
     @Override
-    public QueryEnum[] getQueries() {
-        return SessionDetailQueryEnum.values();
-    }
-
-    @Override
-    public boolean readDataFromCursor(Cursor cursor, QueryEnum query) {
+    public boolean readDataFromCursor(Cursor cursor, SessionDetailQueryEnum query) {
         boolean success = false;
 
         if (cursor != null && cursor.moveToFirst()) {
+
             if (SessionDetailQueryEnum.SESSIONS == query) {
                 readDataFromSessionCursor(cursor);
                 mSessionLoaded = true;
@@ -347,10 +412,13 @@ public class SessionDetailModel implements Model {
         mSessionColor = cursor.getInt(
                 cursor.getColumnIndex(ScheduleContract.Sessions.SESSION_COLOR));
         if (mSessionColor == 0) {
-            mSessionColor = mContext.getResources().getColor(R.color.default_session_color);
+            mSessionColor = ContextCompat.getColor(mContext, R.color.default_session_color);
         } else {
             mSessionColor = UIUtils.setColorOpaque(mSessionColor);
         }
+
+        mMainTag = cursor
+                .getString(cursor.getColumnIndex(ScheduleContract.Sessions.SESSION_MAIN_TAG));
 
         mLiveStreamId = cursor
                 .getString(cursor.getColumnIndex(ScheduleContract.Sessions.SESSION_LIVESTREAM_ID));
@@ -396,6 +464,11 @@ public class SessionDetailModel implements Model {
         if (mHasLiveStream) {
             mSubtitle += " " + UIUtils.getLiveBadgeText(mContext, mSessionStart, mSessionEnd);
         }
+    }
+
+    @VisibleForTesting
+    public String getExtendedSessionUrl() {
+        return ExtendedSessionHelper.getExtendedSessionUrl(this);
     }
 
     private void buildLinks(Cursor cursor) {
@@ -492,38 +565,44 @@ public class SessionDetailModel implements Model {
     }
 
     @Override
-    public Loader<Cursor> createCursorLoader(int loaderId, Uri uri, Bundle args) {
+    public Loader<Cursor> createCursorLoader(SessionDetailQueryEnum query, Bundle args) {
         CursorLoader loader = null;
-
-        if (loaderId == SessionDetailQueryEnum.SESSIONS.getId()) {
-            mSessionUri = uri;
-            mSessionId = getSessionId(uri);
-            loader = getCursorLoaderInstance(mContext, uri,
-                    SessionDetailQueryEnum.SESSIONS.getProjection(), null, null, null);
-        } else if (loaderId == SessionDetailQueryEnum.SPEAKERS.getId() && mSessionUri != null) {
-            Uri speakersUri = getSpeakersDirUri(mSessionId);
-            loader = getCursorLoaderInstance(mContext, speakersUri,
-                    SessionDetailQueryEnum.SPEAKERS.getProjection(), null, null,
-                    ScheduleContract.Speakers.DEFAULT_SORT);
-        } else if (loaderId == SessionDetailQueryEnum.FEEDBACK.getId()) {
-            Uri feedbackUri = getFeedbackUri(mSessionId);
-            loader = getCursorLoaderInstance(mContext, feedbackUri,
-                    SessionDetailQueryEnum.FEEDBACK.getProjection(), null, null, null);
-        } else if (loaderId == SessionDetailQueryEnum.TAG_METADATA.getId()) {
-            loader = getTagMetadataLoader();
-        } else if (loaderId == SessionDetailQueryEnum.MY_VIEWED_VIDEOS.getId()) {
-            LOGD(TAG, "Starting My Viewed Videos query");
-            Uri myPlayedVideoUri = ScheduleContract.MyViewedVideos.buildMyViewedVideosUri(
-                    AccountUtils.getActiveAccountName(mContext));
-            loader = getCursorLoaderInstance(mContext, myPlayedVideoUri,
-                    SessionDetailQueryEnum.MY_VIEWED_VIDEOS.getProjection(), null, null, null);
+        if (query == null) {
+            return loader;
+        }
+        switch (query) {
+            case SESSIONS:
+                mSessionId = getSessionId(mSessionUri);
+                loader = getCursorLoaderInstance(mContext, mSessionUri,
+                        SessionDetailQueryEnum.SESSIONS.getProjection(), null, null, null);
+                break;
+            case SPEAKERS:
+                Uri speakersUri = getSpeakersDirUri(mSessionId);
+                loader = getCursorLoaderInstance(mContext, speakersUri,
+                        SessionDetailQueryEnum.SPEAKERS.getProjection(), null, null,
+                        ScheduleContract.Speakers.DEFAULT_SORT);
+                break;
+            case FEEDBACK:
+                Uri feedbackUri = getFeedbackUri(mSessionId);
+                loader = getCursorLoaderInstance(mContext, feedbackUri,
+                        SessionDetailQueryEnum.FEEDBACK.getProjection(), null, null, null);
+                break;
+            case TAG_METADATA:
+                loader = getTagMetadataLoader();
+                break;
+            case MY_VIEWED_VIDEOS:
+                Uri myPlayedVideoUri = ScheduleContract.MyViewedVideos.buildMyViewedVideosUri(
+                        AccountUtils.getActiveAccountName(mContext));
+                loader = getCursorLoaderInstance(mContext, myPlayedVideoUri,
+                        SessionDetailQueryEnum.MY_VIEWED_VIDEOS.getProjection(), null, null, null);
+                break;
         }
         return loader;
     }
 
     @VisibleForTesting
     public CursorLoader getCursorLoaderInstance(Context context, Uri uri, String[] projection,
-                                                String selection, String[] selectionArgs, String sortOrder) {
+            String selection, String[] selectionArgs, String sortOrder) {
         return new CursorLoader(context, uri, projection, selection, selectionArgs, sortOrder);
     }
 
@@ -548,34 +627,51 @@ public class SessionDetailModel implements Model {
     }
 
     @Override
-    public boolean requestModelUpdate(UserActionEnum action, @Nullable Bundle args) {
-        boolean success = false;
-        if (action == SessionDetailUserActionEnum.STAR) {
-            mInSchedule = true;
-            mSessionsHelper.setSessionStarred(mSessionUri, true, null);
-            amendCalendarAndSetUpNotificationIfRequired();
-            success = true;
-            sendAnalyticsEventForStarUnstarSession(true);
-        } else if (action == SessionDetailUserActionEnum.UNSTAR) {
-            mInSchedule = false;
-            mSessionsHelper.setSessionStarred(mSessionUri, false, null);
-            amendCalendarAndSetUpNotificationIfRequired();
-            success = true;
-            sendAnalyticsEventForStarUnstarSession(false);
-        } else if (action == SessionDetailUserActionEnum.SHOW_MAP) {
-            // ANALYTICS EVENT: Click on Map action in Session Details page.
-            // Contains: Session title/subtitle
-            sendAnalyticsEvent("Session", "Map", mTitle);
-            mSessionsHelper.startMapActivity(mRoomId);
-            success = true;
-        } else if (action == SessionDetailUserActionEnum.SHOW_SHARE) {
-            // On ICS+ devices, we normally won't reach this as ShareActionProvider will handle
-            // sharing.
-            mSessionsHelper.shareSession(mContext, R.string.share_template, mTitle,
-                    mHashTag, mUrl);
-            success = true;
+    public void processUserAction(SessionDetailUserActionEnum action,
+            @android.support.annotation.Nullable Bundle args,
+            UserActionCallback callback) {
+        switch (action) {
+            case STAR:
+                mInSchedule = true;
+                mSessionsHelper.setSessionStarred(mSessionUri, true, null);
+                amendCalendarAndSetUpNotificationIfRequired();
+                sendAnalyticsEventForStarUnstarSession(true);
+                callback.onModelUpdated(this, action);
+                break;
+            case UNSTAR:
+                mInSchedule = false;
+                mSessionsHelper.setSessionStarred(mSessionUri, false, null);
+                amendCalendarAndSetUpNotificationIfRequired();
+                sendAnalyticsEventForStarUnstarSession(false);
+                callback.onModelUpdated(this, action);
+                break;
+            case SHOW_MAP:
+                // ANALYTICS EVENT: Click on Map action in Session Details page.
+                // Contains: Session title/subtitle
+                sendAnalyticsEvent("Session", "Map", mTitle);
+                callback.onModelUpdated(this, action);
+                break;
+            case SHOW_SHARE:
+                // ANALYTICS EVENT: Share a session.
+                // Contains: Session title.
+                sendAnalyticsEvent("Session", "Shared", mTitle);
+                callback.onModelUpdated(this, action);
+                break;
+            case GIVE_FEEDBACK:
+                // ANALYTICS EVENT: Click on the "send feedback" action in Session Details.
+                // Contains: The session title.
+                sendAnalyticsEvent("Session", "Feedback", getSessionTitle());
+                callback.onModelUpdated(this, action);
+                break;
+            case EXTENDED:
+                // ANALYTICS EVENT: Click on the extended session link in Session Details.
+                sendAnalyticsEvent("Session", "Extended Session", getSessionTitle());
+                callback.onModelUpdated(this, action);
+                break;
+
+            default:
+                callback.onError(action);
         }
-        return success;
     }
 
     private void amendCalendarAndSetUpNotificationIfRequired() {
@@ -651,6 +747,11 @@ public class SessionDetailModel implements Model {
         sendAnalyticsEvent("Session", starred ? "Starred" : "Unstarred", mTitle);
     }
 
+    @Override
+    public void cleanUp() {
+        // Nothing to clean up
+    }
+
     public static class Speaker {
 
         private String mName;
@@ -668,7 +769,7 @@ public class SessionDetailModel implements Model {
         private String mAbstract;
 
         public Speaker(String name, String imageUrl, String company, String url, String plusoneUrl,
-                       String twitterUrl, String anAbstract) {
+                String twitterUrl, String anAbstract) {
             mName = name;
             mImageUrl = imageUrl;
             mCompany = company;
@@ -728,7 +829,8 @@ public class SessionDetailModel implements Model {
                 ScheduleContract.Sessions.SESSION_PHOTO_URL,
                 ScheduleContract.Sessions.SESSION_RELATED_CONTENT,
                 ScheduleContract.Sessions.SESSION_TAGS,
-                ScheduleContract.Sessions.SESSION_SPEAKER_NAMES}),
+                ScheduleContract.Sessions.SESSION_SPEAKER_NAMES,
+                ScheduleContract.Sessions.SESSION_MAIN_TAG}),
         SPEAKERS(1, new String[]{ScheduleContract.Speakers.SPEAKER_NAME,
                 ScheduleContract.Speakers.SPEAKER_IMAGE_URL,
                 ScheduleContract.Speakers.SPEAKER_COMPANY,
@@ -765,7 +867,9 @@ public class SessionDetailModel implements Model {
         STAR(1),
         UNSTAR(2),
         SHOW_MAP(3),
-        SHOW_SHARE(4);
+        SHOW_SHARE(4),
+        GIVE_FEEDBACK(5),
+        EXTENDED(6);
 
         private int id;
 

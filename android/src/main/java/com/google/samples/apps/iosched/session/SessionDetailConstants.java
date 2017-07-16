@@ -16,6 +16,8 @@
 
 package com.google.samples.apps.iosched.session;
 
+import com.google.samples.apps.iosched.util.TimeUtils;
+
 public class SessionDetailConstants {
 
     /**
@@ -25,7 +27,8 @@ public class SessionDetailConstants {
 
     /**
      * Every 10 seconds, the time sensitive views of {@link SessionDetailFragment} are updated.
-     * Those are related to live streaming, feedback, and information about how soon the session starts.
+     * Those are related to live streaming, feedback, and information about how soon the session
+     * starts.
      */
     public static final int TIME_HINT_UPDATE_INTERVAL = 10000;
 
@@ -35,8 +38,8 @@ public class SessionDetailConstants {
     public static final long FEEDBACK_MILLIS_BEFORE_SESSION_END_MS = 15 * 60 * 1000l;
 
     /**
-     * The name of the shared transition shown when loading {@link SessionDetailFragment}.
+     * How long before the start of a session should livestream be open.
      */
-    public static final String TRANSITION_NAME_PHOTO = "photo";
+    public static final long LIVESTREAM_BEFORE_SESSION_START_MS = 10 * TimeUtils.MINUTE;
 
 }

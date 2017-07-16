@@ -44,11 +44,6 @@
         <attr name="desaturateOnPress" format="boolean" />
     </declare-styleable>
 
-    <declare-styleable name="CollectionView">
-        <attr name="internalPadding" format="dimension" />
-        <attr name="contentTopClearance" format="dimension" />
-    </declare-styleable>
-
     <declare-styleable name="MessageCard">
         <attr name="messageTitle" format="string" />
         <attr name="messageText" format="string" />
@@ -63,6 +58,7 @@
 
     <declare-styleable name="ThemeIOSched">
         <attr name="isFloatingWindow" format="boolean" />
+        <attr name="videoThumbnailStyle" format="reference" />
     </declare-styleable>
 
     <declare-styleable name="AspectRatioView">
@@ -75,8 +71,14 @@
         <attr name="android:foregroundGravity" />
     </declare-styleable>
 
-    <declare-styleable name="NavDrawerItemView">
-        <attr name="iconTints" format="color" />
+    <declare-styleable name="VideoThumbnail">
+        <attr name="playIcon" format="reference" />
+        <attr name="playedTint" format="color" />
     </declare-styleable>
 
+    <declare-styleable name="CustomRatingBar">
+        <attr name="maxRating" format="integer" />
+        <attr name="filledDrawable" format="integer" />
+        <attr name="unfilledDrawable" format="integer" />
+    </declare-styleable>
 </resources>

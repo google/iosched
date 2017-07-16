@@ -26,6 +26,7 @@
     <dimen name="action_button_min_width">64dp</dimen>
     <dimen name="add_to_schedule_button_height">72dp</dimen> <!-- including padding -->
     <dimen name="add_to_schedule_button_height_no_padding">56dp</dimen>
+    <dimen name="fab_padding">20dp</dimen>
 
     <dimen name="filter_spinner_width">200dp</dimen>
     <integer name="filter_spinner_weight">0</integer>
@@ -66,9 +67,10 @@
 
 
     <!-- Welcome Activity -->
-    <dimen name="welcome_appbar_height">256dp</dimen> <!-- 4 * ?actionBarSize -->
-    <dimen name="welcome_content_padding_top">192dp</dimen> <!-- 3 * ?actionBarSize -->
     <dimen name="welcome_content_padding">64dp</dimen>
     <dimen name="welcome_title_size">24sp</dimen>
+
+    <!-- explore + videos -->
+    <dimen name="compact_list_tile">224dp</dimen>
 
 </resources>

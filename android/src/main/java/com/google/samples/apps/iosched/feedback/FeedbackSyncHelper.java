@@ -22,6 +22,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.net.Uri;
 
+import com.google.samples.apps.iosched.BuildConfig;
 import com.google.samples.apps.iosched.provider.ScheduleContract;
 
 import java.util.ArrayList;
@@ -109,7 +110,7 @@ public class FeedbackSyncHelper {
                 String remoteSessionId = localSessionId;
                 // EventPoint uses a different Session ID for the keynote than our backend
                 if ("__keynote__".equals(remoteSessionId)) {
-                    remoteSessionId = "14f5088b-d0e2-e411-b87f-00155d5066d7";
+                    remoteSessionId = BuildConfig.KEYNOTE_SESSION_ID;
                 }
 
                 String data;

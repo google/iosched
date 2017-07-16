@@ -65,7 +65,6 @@ public class RemoteJsonHelper {
 
   public static JsonObject fetchJsonFromPublicURL(String urlStr) throws IOException {
     URL url = new URL(urlStr);
-
     HttpURLConnection connection = (HttpURLConnection) url.openConnection();
     connection.setReadTimeout(1000 * 30); // 30 seconds
     int response = connection.getResponseCode();

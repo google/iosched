@@ -16,8 +16,7 @@
 
 <appengine-web-app xmlns="http://appengine.google.com/ns/1.0">
   <!-- Replace this with your application id from http://appengine.google.com -->
-  <application>google.com:io2015-data-dev</application>
-  <!--<application>io2015-data</application>-->
+  <application>io2016-dev</application>
 
   <version>1</version>
 

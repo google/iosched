@@ -16,12 +16,6 @@
 
 package com.google.samples.apps.iosched.feedback;
 
-import com.google.samples.apps.iosched.R;
-import com.google.samples.apps.iosched.framework.QueryEnum;
-import com.google.samples.apps.iosched.framework.UpdatableView;
-import com.google.samples.apps.iosched.ui.widget.NumberRatingBar;
-import com.google.samples.apps.iosched.util.AnalyticsHelper;
-
 import android.app.Fragment;
 import android.content.Context;
 import android.net.Uri;
@@ -34,6 +28,15 @@ import android.view.ViewGroup;
 import android.widget.RatingBar;
 import android.widget.TextView;
 
+import com.google.samples.apps.iosched.R;
+import com.google.samples.apps.iosched.archframework.PresenterImpl;
+import com.google.samples.apps.iosched.archframework.UpdatableView;
+import com.google.samples.apps.iosched.feedback.SessionFeedbackModel.SessionFeedbackQueryEnum;
+import com.google.samples.apps.iosched.feedback.SessionFeedbackModel.SessionFeedbackUserActionEnum;
+import com.google.samples.apps.iosched.injection.ModelProvider;
+import com.google.samples.apps.iosched.ui.widget.CustomRatingBar;
+import com.google.samples.apps.iosched.util.AnalyticsHelper;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -42,21 +45,22 @@ import java.util.List;
  * A fragment that lets the user submit feedback about a given session.
  */
 public class SessionFeedbackFragment extends Fragment
-        implements UpdatableView<SessionFeedbackModel> {
+        implements UpdatableView<SessionFeedbackModel, SessionFeedbackQueryEnum,
+        SessionFeedbackUserActionEnum> {
 
     private TextView mTitle;
 
     private TextView mSpeakers;
 
-    private RatingBar mOverallFeedbackBar;
+    private CustomRatingBar mOverallFeedbackBar;
 
-    private NumberRatingBar mSessionRelevantFeedbackBar;
+    private CustomRatingBar mSessionRelevantFeedbackBar;
 
-    private NumberRatingBar mContentFeedbackBar;
+    private CustomRatingBar mContentFeedbackBar;
 
-    private NumberRatingBar mSpeakerFeedbackBar;
+    private CustomRatingBar mSpeakerFeedbackBar;
 
-    private List<UserActionListener> listeners = new ArrayList<UserActionListener>();
+    private List<UserActionListener> listeners = new ArrayList<>();
 
     public SessionFeedbackFragment() {
     }
@@ -75,29 +79,21 @@ public class SessionFeedbackFragment extends Fragment
 
         mTitle = (TextView) rootView.findViewById(R.id.feedback_header_session_title);
         mSpeakers = (TextView) rootView.findViewById(R.id.feedback_header_session_speakers);
-        mOverallFeedbackBar = (RatingBar) rootView.findViewById(R.id.rating_bar_0);
-        mSessionRelevantFeedbackBar = (NumberRatingBar) rootView.findViewById(
+        mOverallFeedbackBar = (CustomRatingBar) rootView.findViewById(R.id.rating_bar_0);
+        mSessionRelevantFeedbackBar = (CustomRatingBar) rootView.findViewById(
                 R.id.session_relevant_feedback_bar);
-        mContentFeedbackBar = (NumberRatingBar) rootView.findViewById(R.id.content_feedback_bar);
-        mSpeakerFeedbackBar = (NumberRatingBar) rootView.findViewById(R.id.speaker_feedback_bar);
+        mContentFeedbackBar = (CustomRatingBar) rootView.findViewById(R.id.content_feedback_bar);
+        mSpeakerFeedbackBar = (CustomRatingBar) rootView.findViewById(R.id.speaker_feedback_bar);
 
         if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
             // Helps accessibility services determine the importance of this view.
-            mOverallFeedbackBar.setImportantForAccessibility(RatingBar.IMPORTANT_FOR_ACCESSIBILITY_YES);
+            mOverallFeedbackBar
+                    .setImportantForAccessibility(RatingBar.IMPORTANT_FOR_ACCESSIBILITY_YES);
 
             // Automatically notifies the user about changes to the view's content description.
-            mOverallFeedbackBar.setAccessibilityLiveRegion(View.ACCESSIBILITY_LIVE_REGION_ASSERTIVE);
+            mOverallFeedbackBar
+                    .setAccessibilityLiveRegion(View.ACCESSIBILITY_LIVE_REGION_ASSERTIVE);
         }
-
-        // When the rating changes, update the content description. In TalkBack mode, this
-        // informs the user about the selected rating.
-        mOverallFeedbackBar.setOnRatingBarChangeListener(new RatingBar.OnRatingBarChangeListener() {
-            @Override
-            public void onRatingChanged(RatingBar ratingBar, float rating, boolean fromUser) {
-                ratingBar.setContentDescription(
-                        getString(R.string.updated_session_feedback_rating_bar_content_description, (int) rating));
-            }
-        });
 
         rootView.findViewById(R.id.submit_feedback_button).setOnClickListener(
                 new View.OnClickListener() {
@@ -110,11 +106,27 @@ public class SessionFeedbackFragment extends Fragment
         return rootView;
     }
 
+    @Override
+    public void onActivityCreated(Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        initPresenter();
+    }
+
+    private void initPresenter() {
+        SessionFeedbackModel model = ModelProvider.provideSessionFeedbackModel(
+                ((SessionFeedbackActivity) getActivity()).getSessionUri(), getContext(),
+                new FeedbackHelper(getContext()), getLoaderManager());
+        PresenterImpl presenter =
+                new PresenterImpl(model, this, SessionFeedbackUserActionEnum.values(),
+                        SessionFeedbackQueryEnum.values());
+        presenter.loadInitialQueries();
+    }
+
     private void submitFeedback() {
-        int overallAnswer = (int) mOverallFeedbackBar.getRating();
-        int sessionRelevantAnswer = mSessionRelevantFeedbackBar.getProgress();
-        int contentAnswer = mContentFeedbackBar.getProgress();
-        int speakerAnswer = mSpeakerFeedbackBar.getProgress();
+        int overallAnswer = mOverallFeedbackBar.getRating();
+        int sessionRelevantAnswer = mSessionRelevantFeedbackBar.getRating();
+        int contentAnswer = mContentFeedbackBar.getRating();
+        int speakerAnswer = mSpeakerFeedbackBar.getRating();
         String comments = "";
 
         Bundle args = new Bundle();
@@ -132,33 +144,44 @@ public class SessionFeedbackFragment extends Fragment
     }
 
     @Override
-    public void displayData(SessionFeedbackModel model, QueryEnum query) {
-        if (SessionFeedbackModel.SessionFeedbackQueryEnum.SESSION == query) {
-            mTitle.setText(model.getSessionTitle());
-            if (!TextUtils.isEmpty(model.getSessionSpeakers())) {
-                mSpeakers.setText(model.getSessionSpeakers());
-            } else {
-                mSpeakers.setVisibility(View.GONE);
-            }
+    public void displayData(final SessionFeedbackModel model,
+            final SessionFeedbackQueryEnum query) {
+        switch (query) {
+            case SESSION:
+                mTitle.setText(model.getSessionTitle());
+                if (!TextUtils.isEmpty(model.getSessionSpeakers())) {
+                    mSpeakers.setText(model.getSessionSpeakers());
+                } else {
+                    mSpeakers.setVisibility(View.GONE);
+                }
 
-            // ANALYTICS SCREEN: View Send Session Feedback screen
-            // Contains: Session title
-            AnalyticsHelper.sendScreenView("Feedback: " + model.getSessionTitle());
+                // ANALYTICS SCREEN: View Send Session Feedback screen
+                // Contains: Session title
+                AnalyticsHelper.sendScreenView("Feedback: " + model.getSessionTitle());
+                break;
         }
     }
 
     @Override
-    public void displayErrorMessage(QueryEnum query) {
-        //Close the Activity
+    public void displayErrorMessage(final SessionFeedbackQueryEnum query) {
+        // Close the Activity
         getActivity().finish();
     }
 
     @Override
-    public Uri getDataUri(QueryEnum query) {
-        if (SessionFeedbackModel.SessionFeedbackQueryEnum.SESSION == query) {
-            return ((SessionFeedbackActivity) getActivity()).getSessionUri();
-        } else {
-            return null;
+    public void displayUserActionResult(final SessionFeedbackModel model,
+            final SessionFeedbackUserActionEnum userAction, final boolean success) {
+        // User actions all handled in model
+    }
+
+    @Override
+    public Uri getDataUri(final SessionFeedbackQueryEnum query) {
+        switch (query) {
+            case SESSION:
+                return ((SessionFeedbackActivity) getActivity()).getSessionUri();
+            default:
+                return null;
+
         }
     }
 

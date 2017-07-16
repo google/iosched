@@ -1,0 +1,34 @@
+#  Copyright 2015 Google Inc. All rights reserved.
+#
+#  Licensed under the Apache License, Version 2.0 (the "License");
+#  you may not use this file except in compliance with the License.
+#  You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+#  Unless required by applicable law or agreed to in writing, software
+#  distributed under the License is distributed on an "AS IS" BASIS,
+#  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+#  See the License for the specific language governing permissions and
+#  limitations under the License.
+******************** Short description in locale <ko> ********************
+직접 참석하건 원격으로 참여하건, I/O를 보다 가까이 누릴 수 있는 도우미도우미
+******************** Full description in locale <ko> ********************
+Google I/O 2016 컨퍼런스에 직접 또는 원격으로 참석하시는 여러분이 컨퍼런스를 탐구하는데 도움을 드릴 수 있도록 공식앱을 만들었습니다. 
+-- 테마, 주제 및 강연자 세부정보와 컨퍼런스 의제를 살펴보세요. 
+-- 개인 일정에 이벤트를 추가하세요.
+-- 이벤트가 시작하기 전 알림을 받으세요.
+-- 키노트와 세션을 라이브 스트리밍으로 보세요.
+-- 일정을 모든 기기 및 I/O 웹사이트에 동기화하세요.
+-- 벡터 기반 컨퍼런스 맵을 사용하여 안내를 받으세요.
+-- 공식 소셜 계정을 팔로우하세요.
+-- 이전 년도의 I/O 콘텐츠를 동영상으로 보세요.
+
+*직접 참석자만을 위한 혜택:*
+-- 무료 와이파이 구성의 혜택을 받아보세요.
+
+이 앱은 모든 모양과 크기의 전화기 및 태블릿에 최적화되어 있습니다. 앱의 소스 코드는 I/O 이후 곧 공개됩니다.
+
+v4.0: Google I/O 2016에 대해 업데이트됨
+******************** Title in locale <ko> ********************
+Google I/O 2016

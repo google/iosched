@@ -16,40 +16,39 @@
 
 package com.google.samples.apps.iosched.settings;
 
+import com.google.samples.apps.iosched.BuildConfig;
 import com.google.samples.apps.iosched.util.TimeUtils;
-import com.google.samples.apps.iosched.util.UIUtils;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.os.Build;
 import android.preference.PreferenceManager;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.text.TextUtils;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Random;
+
+import static com.google.samples.apps.iosched.util.LogUtils.LOGE;
+import static com.google.samples.apps.iosched.util.LogUtils.LOGW;
+import static com.google.samples.apps.iosched.util.LogUtils.makeLogTag;
 
 /**
  * Utilities and constants to deal with enabling & showing conference message cards.
  */
 public class ConfMessageCardUtils {
 
-    /**
-     * Boolean preference indicating whether to show conference info cards in Explore stream.
-     */
-    public static final String PREF_CONF_MESSAGE_CARDS_ENABLED = "pref_conf_message_cards_enabled";
+    public static final String TAG = makeLogTag(ConfMessageCardUtils.class);
 
     /**
      * Boolean preference indicating whether to show conference info cards in Explore stream.
      */
     public static final String PREF_ANSWERED_CONF_MESSAGE_CARDS_PROMPT
-            = "pref_answered_conf_message_cards_prompt";
-
-    private static Random random = new Random();
-
-    /**
-     * A random int from zero to this number is requested to determine whether the wifi feedback
-     * card should be active. This allows for randomization across attendees.
-     */
-    private static final int WIFI_FEEDBACK_RANDOM_INT_UPPER_RANGE = 30;
+            = "pref_answered_conf_message_cards_prompt_" +
+            SettingsUtils.CONFERENCE_YEAR_PREF_POSTFIX;
 
     /**
      * Enum holding all the different kinds of Conference Message Cards that can appear in Explore.
@@ -57,78 +56,102 @@ public class ConfMessageCardUtils {
      */
     public enum ConfMessageCard {
         /**
-         * Card showing information about wristbands & badges.
+         * Card asking users to opt-in to session notifications
          */
-        CONFERENCE_CREDENTIALS("2015-05-27T09:00:00-07:00", "2015-05-27T18:00:00-07:00"),
-
-        /**
-         * Card showing information about getting into the keynote.
-         */
-        KEYNOTE_ACCESS("2015-05-27T09:00:00-07:00", "2015-05-28T09:30:00-07:00"),
-
-        /**
-         * Card showing information about the after hours party.
-         */
-        AFTER_HOURS("2015-05-28T11:00:00-07:00", "2015-05-28T17:00:00-07:00"),
+        SESSION_NOTIFICATIONS("session_notifications", "2016-04-01T00:00:00-07:00", "2016-05-23T00:00:00-07:00", null),
 
         /**
          * Card allowing developers to provide feedback for the wifi onsite.
          */
-        WIFI_FEEDBACK("2015-05-28T09:30:00-07:00", "2015-05-29T17:30:00-07:00");
+        // The app went out in R1 with "wifi_feedback" property for the WiFi preloading feature so we need to set it back only after I/O.
+        WIFI_PRELOAD("wifi_feedback", "2016-05-18T09:00:00-07:00", "2015-05-20T16:00:00-07:00", null),
+
+        // The demo card's start and end time are never active because debug builds ignore these times, see below.
+        DEMO_MODE("demo_mode",                   "2015-01-01T01:00:00-07:00", "2015-01-01T01:00:00-07:00", "<b>Demo mode</b><br/>You're running a debug build so the conference cards are always active."),
+        // The following cards aren't internationalized, but are only shown to onsite attendees.
+        BADGE_PICKUP("badge_pickup",             "2016-05-17T07:00:00-07:00", "2016-05-17T19:00:00-07:00", "<b>Badge Pick-Up</b><br/>You can pick up your badge starting today, May 17th between 7AM-7PM at the Shoreline Amphitheatre."),
+        KEYNOTE("keynote",                       "2016-05-18T09:45:00-07:00", "2016-05-18T10:00:00-07:00", "<b>Keynote</b><br/>Welcome to Google I/O 2016! The Keynote will start in 15 minutes. Please join us in the Amphitheatre, you won't want to miss this!"),
+        SANDBOX_AND_CODELABS("sandbox_codelabs", "2016-05-18T12:30:00-07:00", "2016-05-18T04:00:00-07:00", "<b>Sandbox and Codelabs</b><br/>Sandbox and Codelabs are now open! Get hands-on with our latest tools and chat with Googlers as you work on technical modules."),
+        CONCERT("concert",                       "2016-05-18T19:15:00-07:00", "2016-05-18T19:45:00-07:00", "<b>Concert</b><br/>Join us in the Amphitheatre - the show is about to begin!"),
+        CONCERT2("concert2",                     "2016-05-18T22:30:00-07:00", "2016-05-18T23:00:00-07:00", "<b>Concert</b><br/>We hope you had a great first day at I/O. Get home safely - we look forward to seeing you tomorrow!"),
+        AFTER_HOURS1("af1",                      "2016-05-19T18:00:00-07:00", "2016-05-19T18:19:00-07:00", "<b>After Hours</b><br/>After Hours is officially underway!  Explore, connect and unwind with others as you immerse yourself in tonight’s unique experiences."),
+        AFTER_HOURS2("af2",                      "2016-05-19T18:20:00-07:00", "2016-05-18T19:00:00-07:00", "<b>After Hours</b><br/>The Grand I/O procession is about to begin! Head to the I/O totem in Zone A to join Jazz Mafia and Vau de Vire for a live performance! "),
+        AFTER_HOURS3("af3",                      "2016-05-19T19:00:00-07:00", "2016-05-19T19:29:00-07:00", "<b>After Hours</b><br/>Experience the intersection of technology, code, and art - Art House in Virgo is now open!"),
+        AFTER_HOURS4("af4",                      "2016-05-19T19:30:00-07:00", "2016-05-19T19:59:00-07:00", "<b>After Hours</b><br/>Having fun yet? Now it's time to sway in the Underwater Disco at Hercules, lose yourself in the Planetarium at Ursa Minor and become mesmerized by live VR art in the Tilt Brush Throwback at Libra."),
+        AFTER_HOURS5("af5",                      "2016-05-19T20:00:00-07:00", "2016-05-19T21:00:00-07:00", "<b>After Hours</b><br/>Calling all gamers! The I/O Arcade at Ursa Major and Phantogeist - with Project Tango - at Cassiopeia are now open!"),
+        AFTER_HOURS6("af6",                      "2016-05-19T22:30:00-07:00", "2016-05-19T23:00:00-07:00", "<b>After Hours</b><br/>We hope After Hours blew your mind. We look forward to seeing you tomorrow!"),
+        THANK_YOU("thank_you",                   "2016-05-20T15:45:00-07:00", "2016-05-20T18:00:00-07:00", "<b>Thank You</b><br/>Thank you for attending Google I/O 2016! We hope you had a great time at the festival. Get home safely!");
 
         long mStartTime;
         long mEndTime;
-        ConfMessageCard(String startTime, String endTime) {
-            mStartTime = TimeUtils.parseTimestamp(startTime).getTime();
-            mEndTime = TimeUtils.parseTimestamp(endTime).getTime();
-        }
-
-
-        public boolean isActive(long millisSinceEpoch) {
-            boolean returnVal = mStartTime <= millisSinceEpoch && mEndTime >= millisSinceEpoch;
-
-            // Wifi card is active randomly to spread the time attendees are shown the cards.
-            // TODO: Refactor this into message cards configuration module.
-            if (WIFI_FEEDBACK.equals(this)) {
-                return (random.nextInt(WIFI_FEEDBACK_RANDOM_INT_UPPER_RANGE) == 1);
+        String mSimpleMessage;
+        String mKey;
+        ConfMessageCard(String key, String startTime, String endTime, String simpleMessage) {
+            mKey = key;
+            try {
+                mStartTime = TimeUtils.parseTimestamp(startTime).getTime();
+            } catch (NullPointerException npe) {
+                LOGE(TAG, "Invalid time for key = " + key + " and time = " + startTime);
+                mStartTime = Long.MIN_VALUE;
             }
-            return returnVal;
+            try {
+                mEndTime = TimeUtils.parseTimestamp(endTime).getTime();
+            } catch (NullPointerException npe) {
+                LOGE(TAG, "Invalid time for key = " + key + " and time = " + endTime);
+                mEndTime = Long.MIN_VALUE;
+            }
+            mSimpleMessage = simpleMessage;
+
+            // Debug builds show all conference cards.
+            if (BuildConfig.DEBUG) {
+                mStartTime = 0;
+                mEndTime = Long.MAX_VALUE;
+            }
+        }
+
+        public String getDismissedPreferenceKey() {
+            return dismiss_prefix + mKey;
+        }
+
+        public String getShouldShowPreferenceKey() {
+            return should_show_prefix + mKey;
+        }
+
+        /**
+         * Identify if this card is a simple message card.
+         */
+        public boolean isSimpleMessageCard() {
+            return !TextUtils.isEmpty(mSimpleMessage);
+        }
+
+        /**
+         * Return a message if this is a simplified conference message card that is meant to only
+         * display a message.
+         */
+        public String getSimpleMessage() {
+            return mSimpleMessage;
+        }
+
+        public boolean isTimeActive(long millisSinceEpoch) {
+            return mStartTime <= millisSinceEpoch && mEndTime >= millisSinceEpoch;
+        }
+
+        public static List<ConfMessageCard> getActiveSimpleCards(Context context) {
+            ArrayList<ConfMessageCard> activeSimpleCards = new ArrayList<>();
+            for (ConfMessageCard card : ConfMessageCard.values()) {
+                if (card.isSimpleMessageCard() && card.isTimeActive(TimeUtils.getCurrentTime(context))
+                        && !hasDismissedConfMessageCard(context, card)) {
+                    activeSimpleCards.add(card);
+                }
+            }
+            return activeSimpleCards;
         }
     }
 
-    /**
-     * Private mapping of ConfMessageCard enum to strings to be stored as preferences. Preference
-     * is a boolean value indicating whether the user has dismissed that particular card yet.
-     */
-    private static final HashMap<ConfMessageCard, String> ConfMessageCardsDismissedMap
-            = new HashMap<>();
-    private static final String dismiss_prefix = "pref_conf_message_cards_dismissed_";
-
-    private static final HashMap<ConfMessageCard, String> ConfMessageCardsShouldShowMap
-            = new HashMap<>();
-
-    private static final String should_show_prefix = "pref_conf_message_cards_should_show_";
-
-    static {
-        ConfMessageCardsDismissedMap.put(ConfMessageCard.CONFERENCE_CREDENTIALS, dismiss_prefix
-                + "conference_credentials");
-        ConfMessageCardsDismissedMap.put(ConfMessageCard.KEYNOTE_ACCESS, dismiss_prefix
-                + "keynote_access");
-        ConfMessageCardsDismissedMap.put(ConfMessageCard.AFTER_HOURS, dismiss_prefix
-                + "after_hours");
-        ConfMessageCardsDismissedMap.put(ConfMessageCard.WIFI_FEEDBACK, dismiss_prefix
-                + "wifi_feedback");
-
-        ConfMessageCardsShouldShowMap.put(ConfMessageCard.CONFERENCE_CREDENTIALS, should_show_prefix
-                + "conference_credentials");
-        ConfMessageCardsShouldShowMap.put(ConfMessageCard.KEYNOTE_ACCESS, should_show_prefix
-                + "keynote_access");
-        ConfMessageCardsShouldShowMap.put(ConfMessageCard.AFTER_HOURS, should_show_prefix
-                + "after_hours");
-        ConfMessageCardsShouldShowMap.put(ConfMessageCard.WIFI_FEEDBACK, should_show_prefix
-                + "wifi_feedback");
-    }
-
+    private static final String dismiss_prefix = "pref_conf_msg_cards_" +
+            SettingsUtils.CONFERENCE_YEAR_PREF_POSTFIX + "_dismissed_";
+    private static final String should_show_prefix = "pref_conf_msg_cards_ " +
+            SettingsUtils.CONFERENCE_YEAR_PREF_POSTFIX + "_should_show_";
 
     /**
      * Return true if conference info cards are enabled, false if user has disabled them.
@@ -137,7 +160,7 @@ public class ConfMessageCardUtils {
      */
     public static boolean isConfMessageCardsEnabled(final Context context) {
         SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(context);
-        return sp.getBoolean(PREF_CONF_MESSAGE_CARDS_ENABLED, false);
+        return sp.getBoolean(BuildConfig.PREF_CONF_MESSAGES_ENABLED, false);
     }
 
     /**
@@ -150,9 +173,9 @@ public class ConfMessageCardUtils {
                                                   @Nullable Boolean newValue) {
         SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(context);
         if (newValue == null) {
-            sp.edit().remove(PREF_CONF_MESSAGE_CARDS_ENABLED).apply();
+            sp.edit().remove(BuildConfig.PREF_CONF_MESSAGES_ENABLED).apply();
         } else {
-            sp.edit().putBoolean(PREF_CONF_MESSAGE_CARDS_ENABLED, newValue).apply();
+            sp.edit().putBoolean(BuildConfig.PREF_CONF_MESSAGES_ENABLED, newValue).apply();
         }
     }
 
@@ -192,7 +215,7 @@ public class ConfMessageCardUtils {
      */
     public static boolean hasDismissedConfMessageCard(final Context context, ConfMessageCard card) {
         SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(context);
-        return sp.getBoolean(ConfMessageCardsDismissedMap.get(card), false);
+        return sp.getBoolean(card.getDismissedPreferenceKey(), false);
     }
 
     /**
@@ -204,7 +227,7 @@ public class ConfMessageCardUtils {
      */
     public static void markDismissedConfMessageCard(final Context context, ConfMessageCard card) {
         SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(context);
-        sp.edit().putBoolean(ConfMessageCardsDismissedMap.get(card), true).apply();
+        sp.edit().putBoolean(card.getDismissedPreferenceKey(), true).apply();
     }
 
     /**
@@ -218,9 +241,9 @@ public class ConfMessageCardUtils {
             Boolean newValue) {
         SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(context);
         if (newValue == null) {
-            sp.edit().remove(ConfMessageCardsDismissedMap.get(card)).apply();
+            sp.edit().remove(card.getDismissedPreferenceKey()).apply();
         } else {
-            sp.edit().putBoolean(ConfMessageCardsDismissedMap.get(card), newValue).apply();
+            sp.edit().putBoolean(card.getDismissedPreferenceKey(), newValue).apply();
         }
     }
 
@@ -232,7 +255,7 @@ public class ConfMessageCardUtils {
      */
     public static boolean shouldShowConfMessageCard(final Context context, ConfMessageCard card) {
         SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(context);
-        return sp.getBoolean(ConfMessageCardsShouldShowMap.get(card), false);
+        return sp.getBoolean(card.getShouldShowPreferenceKey(), true);
     }
 
     /**
@@ -248,9 +271,9 @@ public class ConfMessageCardUtils {
         SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(context);
 
         if (newValue == null) {
-            sp.edit().remove(ConfMessageCardsShouldShowMap.get(card)).apply();
+            sp.edit().remove(card.getShouldShowPreferenceKey()).apply();
         } else {
-            sp.edit().putBoolean(ConfMessageCardsShouldShowMap.get(card), newValue).apply();
+            sp.edit().putBoolean(card.getShouldShowPreferenceKey(), newValue).apply();
         }
     }
 
@@ -295,12 +318,16 @@ public class ConfMessageCardUtils {
      * @param context Context to be used to lookup the {@link android.content.SharedPreferences}.
      */
     public static void enableActiveCards(final Context context) {
-        long currentTime = UIUtils.getCurrentTime(context);
+        long currentTime = TimeUtils.getCurrentTime(context);
         for (ConfMessageCard card : ConfMessageCard.values()) {
-            if (card.isActive(currentTime)) {
+            if (card.isTimeActive(currentTime)) {
                 markShouldShowConfMessageCard(context, card, true);
             }
         }
+    }
+
+    public static boolean isConfMessageKey(@NonNull String key) {
+        return key.startsWith(dismiss_prefix) || key.startsWith(should_show_prefix);
     }
 
     /**
@@ -314,12 +341,10 @@ public class ConfMessageCardUtils {
             if (PREF_ANSWERED_CONF_MESSAGE_CARDS_PROMPT.equals(key)) {
                 onPrefChanged(PREF_ANSWERED_CONF_MESSAGE_CARDS_PROMPT,
                         sp.getBoolean(PREF_ANSWERED_CONF_MESSAGE_CARDS_PROMPT, true));
-            } else if (PREF_CONF_MESSAGE_CARDS_ENABLED.equals(key)) {
-                onPrefChanged(PREF_CONF_MESSAGE_CARDS_ENABLED,
-                        sp.getBoolean(PREF_CONF_MESSAGE_CARDS_ENABLED, false));
-            } else if (key != null && key.startsWith(dismiss_prefix)) {
-                onPrefChanged(key, sp.getBoolean(key, false));
-            } else if (key != null && key.startsWith(should_show_prefix)) {
+            } else if (BuildConfig.PREF_CONF_MESSAGES_ENABLED.equals(key)) {
+                onPrefChanged(BuildConfig.PREF_CONF_MESSAGES_ENABLED,
+                        sp.getBoolean(BuildConfig.PREF_CONF_MESSAGES_ENABLED, false));
+            } else if (isConfMessageKey(key)) {
                 onPrefChanged(key, sp.getBoolean(key, false));
             }
         }

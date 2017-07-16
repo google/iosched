@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
 <!--
   Copyright 2014 Google Inc. All rights reserved.
 
@@ -23,7 +24,7 @@
 
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:iosched="http://schemas.android.com/apk/res-auto"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:animateLayoutChanges="true"
@@ -39,7 +40,8 @@
         android:foreground="?photoItemForeground">
 
         <!-- Session image -->
-        <ImageView android:id="@+id/session_photo"
+        <ImageView
+            android:id="@+id/session_photo"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:scaleType="centerCrop"
@@ -49,11 +51,12 @@
         <include layout="@layout/include_live_now_badge" />
 
         <!-- Session category/group if non-default (e.g. "Workshop") -->
-        <TextView android:id="@+id/session_category"
-            style="@style/ExploreItem.Category"
+        <TextView
+            android:id="@+id/session_category"
             android:padding="16dp"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            style="@style/ExploreItem.Category" />
 
         <!-- Info box -->
         <LinearLayout
@@ -66,29 +69,31 @@
             android:orientation="vertical">
 
             <!-- Session title -->
-            <TextView android:id="@+id/session_title"
-                style="@style/ExploreItem.Title.Hero"
+            <TextView
+                android:id="@+id/session_title"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:paddingBottom="4dp"
-                android:text="@string/placeholder_session_title" />
+                android:text="@string/placeholder_session_title"
+                style="@style/ExploreItem.Title.Hero" />
 
             <!-- Subtitle -->
             <TextView android:id="@+id/session_subtitle"
-                style="@style/ExploreItem.Subtitle.Hero"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/placeholder_session_subtitle" />
+                android:text="@string/placeholder_session_subtitle"
+                style="@style/ExploreItem.Subtitle.Hero" />
 
         </LinearLayout>
 
         <!-- "In schedule" indicator -->
-        <ImageView android:id="@+id/indicator_in_schedule"
+        <ImageView
+            android:id="@+id/indicator_in_schedule"
             android:layout_gravity="top|end"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/indicator_in_schedule"
-            android:contentDescription="@null" />
+            android:contentDescription="@null"
+            app:srcCompat="@drawable/ic_in_schedule" />
 
     </FrameLayout>
 
@@ -100,8 +105,8 @@
         android:layout_marginBottom="8dp"
         android:layout_marginLeft="4dp"
         android:layout_marginRight="4dp"
-        iosched:cardBackgroundColor="#fff"
+        app:cardBackgroundColor="#fff"
         android:visibility="visible"
-        android:layout_height="wrap_content"
-        />
+        android:layout_height="wrap_content" />
+
 </LinearLayout>

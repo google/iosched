@@ -1,0 +1,23 @@
+Your store listing text is now localized. To make this available on Google Play store, you will need to submit this content on Google Developer Console.
+******************** Short description in locale <zh-TW> ********************
+您的I/O大會導航助手，不管您是親臨現場或遠端參與都能為您提供幫助。
+******************** Title in locale <zh-TW> ********************
+Google I/O 2016
+******************** Full description in locale <zh-TW> ********************
+Google I/O 2016官方應用程式旨在成為您的I/O大會導航助手，不管您是親臨現場或遠端參與都能為您提供幫助。 
+-- 探索會議日程，瞭解主題、話題和演講者的詳細資訊 
+-- 新增活動到個性化的日程表 
+-- 在日程表中的活動開始之前收到提醒 
+-- 觀看主題演講和活動現場直播 
+-- 在您的所有裝置和I/O網站之間同步您的日程表 
+-- 使用向量式大會地圖為自己指引路線 
+-- 關注I/O相關的公共社交對話 
+-- 在影片中檢視往年的I/O內容
+
+*親臨大會現場參與者專享：* 
+- 利用在大會前預先設定的WiFi網路
+
+這款應用程式針對各種形狀和尺寸的手機及平板電腦進行了最佳化。
+應用程式的原始程式碼將在I/O後不久發佈。
+
+v4.0：Google I/O 2016更新

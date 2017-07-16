@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  Copyright 2016 Google Inc. All rights reserved.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+       http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+  -->
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <include layout="@layout/toolbar_with_headerbar"/>
+
+    <com.google.samples.apps.iosched.ui.widget.MultiSwipeRefreshLayout
+        android:id="@+id/swipe_refresh_layout"
+        app:foreground="@drawable/header_shadow"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <ScrollView
+            android:id="@+id/main_content_wide"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:fillViewport="true">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <include layout="@layout/deprecated_include_butter_bar"/>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:padding="32dp">
+
+                    <!-- Day One -->
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_marginEnd="16dp"
+                        android:layout_marginRight="16dp"
+                        android:layout_weight="1"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:id="@+id/day_label_zeroth_day"
+                            style="@style/MyScheduleDayLabel"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="16dp"
+                            android:layout_marginLeft="@dimen/keyline_1"/>
+
+                        <com.google.samples.apps.iosched.myschedule.MyScheduleSingleDayNoScrollView
+                            android:id="@+id/my_schedule_zeroth_day"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="24dp"
+                            android:orientation="vertical"/>
+
+                        <TextView
+                            android:id="@+id/day_label_first_day"
+                            style="@style/MyScheduleDayLabel"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="16dp"
+                            android:layout_marginLeft="@dimen/keyline_1"/>
+
+                        <com.google.samples.apps.iosched.myschedule.MyScheduleSingleDayNoScrollView
+                            android:id="@+id/my_schedule_first_day"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical"/>
+                    </LinearLayout>
+
+                    <!-- Day Two -->
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_marginLeft="16dp"
+                        android:layout_marginStart="16dp"
+                        android:layout_weight="1"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:id="@+id/day_label_second_day"
+                            style="@style/MyScheduleDayLabel"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="16dp"
+                            android:layout_marginLeft="@dimen/keyline_1"/>
+
+                        <com.google.samples.apps.iosched.myschedule.MyScheduleSingleDayNoScrollView
+                            android:id="@+id/my_schedule_second_day"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical"/>
+                    </LinearLayout>
+
+                    <!-- Day Three -->
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_marginLeft="16dp"
+                        android:layout_marginStart="16dp"
+                        android:layout_weight="1"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:id="@+id/day_label_third_day"
+                            style="@style/MyScheduleDayLabel"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="16dp"
+                            android:layout_marginLeft="@dimen/keyline_1"/>
+
+                        <com.google.samples.apps.iosched.myschedule.MyScheduleSingleDayNoScrollView
+                            android:id="@+id/my_schedule_third_day"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical"/>
+                    </LinearLayout>
+                </LinearLayout>
+            </LinearLayout>
+        </ScrollView>
+
+    </com.google.samples.apps.iosched.ui.widget.MultiSwipeRefreshLayout>
+</LinearLayout>

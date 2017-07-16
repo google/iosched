@@ -16,46 +16,46 @@
   -->
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <CheckBoxPreference
+    <SwitchPreferenceCompat
         android:key="pref_local_times"
         android:title="@string/pref_local_times_title"
         android:summary="@string/pref_local_times_description"
         android:defaultValue="false" />
 
-    <CheckBoxPreference
-        android:key="pref_attendee_at_venue_2015"
+    <SwitchPreferenceCompat
+        android:key="@string/pref_attendee_at_venue"
         android:title="@string/pref_attendee_at_venue_title"
         android:summary="@string/pref_attendee_at_venue_description"
         android:defaultValue="true" />
 
-    <CheckBoxPreference
-        android:key="pref_conf_message_cards_enabled"
+    <SwitchPreferenceCompat
+        android:key="@string/pref_conf_messages_enabled"
         android:title="@string/pref_conf_message_cards_enabled_title"
         android:summary="@string/pref_conf_message_cards_enabled_description"
         android:defaultValue="false" />
 
-    <CheckBoxPreference
+    <SwitchPreferenceCompat
         android:key="pref_analytics_enabled"
         android:title="@string/pref_analytics_enabled_title"
         android:summary="@string/pref_analytics_enabled_description"
         android:defaultValue="true" />
 
-    <CheckBoxPreference
+    <SwitchPreferenceCompat
         android:key="pref_sync_calendar"
         android:title="@string/pref_sync_with_calendar_title"
         android:summary="@string/pref_sync_with_calendar_description"
         android:defaultValue="false" />
 
-    <CheckBoxPreference
-        android:key="pref_show_session_reminders_2015"
+    <SwitchPreferenceCompat
+        android:key="@string/pref_session_reminders_enabled"
         android:title="@string/pref_notify_starred_sessions_title"
         android:summary="@string/pref_notify_starred_sessions_description"
-        android:defaultValue="true" />
+        android:defaultValue="false" />
 
-    <CheckBoxPreference
-        android:key="pref_show_session_feedback_reminders_2015"
+    <SwitchPreferenceCompat
+        android:key="@string/pref_session_feedback_reminders_enabled"
         android:title="@string/pref_notify_feedback_title"
         android:summary="@string/pref_notify_feedback_description"
-        android:defaultValue="true" />
+        android:defaultValue="false" />
 
 </PreferenceScreen>

@@ -18,6 +18,7 @@ package com.google.samples.apps.iosched.util;
 
 import android.annotation.TargetApi;
 import android.app.Activity;
+import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -25,12 +26,15 @@ import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 import android.content.res.Resources;
 import android.content.res.TypedArray;
+import android.graphics.Bitmap;
+import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.ColorFilter;
 import android.graphics.ColorMatrixColorFilter;
 import android.graphics.LinearGradient;
 import android.graphics.Shader;
 import android.graphics.Typeface;
+import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.PaintDrawable;
 import android.graphics.drawable.ShapeDrawable;
@@ -38,7 +42,15 @@ import android.graphics.drawable.shapes.RectShape;
 import android.net.Uri;
 import android.os.Build;
 import android.preference.PreferenceManager;
+import android.provider.Settings;
+import android.support.annotation.AttrRes;
+import android.support.annotation.ColorInt;
+import android.support.annotation.ColorRes;
 import android.support.annotation.DrawableRes;
+import android.support.annotation.NonNull;
+import android.support.graphics.drawable.VectorDrawableCompat;
+import android.support.v4.content.ContextCompat;
+import android.support.v4.graphics.ColorUtils;
 import android.text.Html;
 import android.text.Spannable;
 import android.text.SpannableStringBuilder;
@@ -46,12 +58,14 @@ import android.text.TextUtils;
 import android.text.format.DateUtils;
 import android.text.method.LinkMovementMethod;
 import android.text.style.StyleSpan;
+import android.transition.Transition;
+import android.util.Property;
+import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
-import com.google.samples.apps.iosched.BuildConfig;
 import com.google.samples.apps.iosched.Config;
 import com.google.samples.apps.iosched.R;
 import com.google.samples.apps.iosched.model.ScheduleItem;
@@ -77,8 +91,8 @@ public class UIUtils {
     private static final String TAG = makeLogTag(UIUtils.class);
 
     /**
-     * Factor applied to session color to derive the background color on panels and when
-     * a session photo could not be downloaded (or while it is being downloaded)
+     * Factor applied to session color to derive the background color on panels and when a session
+     * photo could not be downloaded (or while it is being downloaded)
      */
     public static final float SESSION_BG_COLOR_SCALE_FACTOR = 0.75f;
 
@@ -92,14 +106,13 @@ public class UIUtils {
             | DateUtils.FORMAT_SHOW_DATE;
 
     /**
-     * Regex to search for HTML escape sequences.
-     *
-     * <p></p>Searches for any continuous string of characters starting with an ampersand and ending with a
-     * semicolon. (Example: &amp;amp;)
+     * Regex to search for HTML escape sequences. <p/> <p></p>Searches for any continuous string of
+     * characters starting with an ampersand and ending with a semicolon. (Example: &amp;amp;)
      */
     private static final Pattern REGEX_HTML_ESCAPE = Pattern.compile(".*&\\S;.*");
     public static final String MOCK_DATA_PREFERENCES = "mock_data";
     public static final String PREFS_MOCK_CURRENT_TIME = "mock_current_time";
+    public static final String PREFS_MOCK_APP_START_TIME = "mock_app_start_time";
 
     public static final String GOOGLE_PLUS_PACKAGE_NAME = "com.google.android.apps.plus";
     public static final String YOUTUBE_PACKAGE_NAME = "com.google.android.youtube";
@@ -108,20 +121,22 @@ public class UIUtils {
     public static final String GOOGLE_PLUS_COMMON_NAME = "Google Plus";
     public static final String TWITTER_COMMON_NAME = "Twitter";
 
-    public static String formatSessionSubtitle(long intervalStart, long intervalEnd, String roomName, StringBuilder recycle,
+    public static String formatSessionSubtitle(long intervalStart, long intervalEnd,
+            String roomName, StringBuilder recycle,
             Context context) {
         return formatSessionSubtitle(intervalStart, intervalEnd, roomName, recycle, context, false);
     }
 
     /**
-     * Format and return the given session time and {@link Rooms} values using
-     * {@link Config#CONFERENCE_TIMEZONE}.
+     * Format and return the given session time and {@link Rooms} values using {@link
+     * Config#CONFERENCE_TIMEZONE}.
      */
-    public static String formatSessionSubtitle(long intervalStart, long intervalEnd, String roomName, StringBuilder recycle,
+    public static String formatSessionSubtitle(long intervalStart, long intervalEnd,
+            String roomName, StringBuilder recycle,
             Context context, boolean shortFormat) {
 
         // Determine if the session is in the past
-        long currentTimeMillis = UIUtils.getCurrentTime(context);
+        long currentTimeMillis = TimeUtils.getCurrentTime(context);
         boolean conferenceEnded = currentTimeMillis > Config.CONFERENCE_END_MILLIS;
         boolean sessionEnded = currentTimeMillis > intervalEnd;
         if (sessionEnded && !conferenceEnded) {
@@ -167,8 +182,8 @@ public class UIUtils {
     }
 
     /**
-     * Format and return the given time interval using {@link Config#CONFERENCE_TIMEZONE}
-     * (unless local time was explicitly requested by the user).
+     * Format and return the given time interval using {@link Config#CONFERENCE_TIMEZONE} (unless
+     * local time was explicitly requested by the user).
      */
     public static String formatIntervalTimeString(long intervalStart, long intervalEnd,
             StringBuilder recycle, Context context) {
@@ -193,9 +208,9 @@ public class UIUtils {
     }
 
     /**
-     * Populate the given {@link TextView} with the requested text, formatting
-     * through {@link Html#fromHtml(String)} when applicable. Also sets
-     * {@link TextView#setMovementMethod} so inline links are handled.
+     * Populate the given {@link TextView} with the requested text, formatting through {@link
+     * Html#fromHtml(String)} when applicable. Also sets {@link TextView#setMovementMethod} so
+     * inline links are handled.
      */
     public static void setTextMaybeHtml(TextView view, String text) {
         if (TextUtils.isEmpty(text)) {
@@ -211,7 +226,7 @@ public class UIUtils {
     }
 
     public static String getLiveBadgeText(final Context context, long start, long end) {
-        long now = getCurrentTime(context);
+        long now = TimeUtils.getCurrentTime(context);
 
         if (now < start) {
             // Will be live later
@@ -227,8 +242,8 @@ public class UIUtils {
     }
 
     /**
-     * Given a snippet string with matching segments surrounded by curly
-     * braces, turn those areas into bold spans, removing the curly braces.
+     * Given a snippet string with matching segments surrounded by curly braces, turn those areas
+     * into bold spans, removing the curly braces.
      */
     public static Spannable buildStyledSnippet(String snippet) {
         final SpannableStringBuilder builder = new SpannableStringBuilder(snippet);
@@ -256,8 +271,8 @@ public class UIUtils {
 
     /**
      * This allows the app to specify a {@code packageName} to handle the {@code intent}, if the
-     * {@code packageName} is available on the device and can handle it. An example use is to open
-     * a Google + stream directly using the Google + app.
+     * {@code packageName} is available on the device and can handle it. An example use is to open a
+     * Google + stream directly using the Google + app.
      */
     public static void preferPackageForIntent(Context context, Intent intent, String packageName) {
         PackageManager pm = context.getPackageManager();
@@ -274,8 +289,7 @@ public class UIUtils {
     private static final int BRIGHTNESS_THRESHOLD = 130;
 
     /**
-     * Calculate whether a color is light or dark, based on a commonly known
-     * brightness formula.
+     * Calculate whether a color is light or dark, based on a commonly known brightness formula.
      *
      * @see {@literal http://en.wikipedia.org/wiki/HSV_color_space%23Lightness}
      */
@@ -299,41 +313,15 @@ public class UIUtils {
         return fired;
     }
 
-    private static final long sAppLoadTime = System.currentTimeMillis();
-
-    /**
-     * Retrieve the current time. If the current build is a debug build the mock time is returned
-     * when set.
-     */
-    public static long getCurrentTime(final Context context) {
-        if (BuildConfig.DEBUG) {
-            return context.getSharedPreferences(MOCK_DATA_PREFERENCES, Context.MODE_PRIVATE)
-                    .getLong(PREFS_MOCK_CURRENT_TIME, System.currentTimeMillis())
-                    + System.currentTimeMillis() - sAppLoadTime;
-        } else {
-            return System.currentTimeMillis();
-        }
-    }
-
-    /**
-     * Set the current time only when the current build is a debug build.
-     */
-    public static void setCurrentTime(Context context, long newTime) {
-        if (BuildConfig.DEBUG) {
-            context.getSharedPreferences(MOCK_DATA_PREFERENCES, Context.MODE_PRIVATE).edit()
-                    .putLong(PREFS_MOCK_CURRENT_TIME, newTime).apply();
-        }
-    }
-
     @Deprecated
     public static boolean shouldShowLiveSessionsOnly(final Context context) {
         return !SettingsUtils.isAttendeeAtVenue(context)
-                && getCurrentTime(context) < Config.CONFERENCE_END_MILLIS;
+                && TimeUtils.getCurrentTime(context) < Config.CONFERENCE_END_MILLIS;
     }
 
     /**
-     * If an activity's intent is for a Google I/O web URL that the app can handle
-     * natively, this method translates the intent to the equivalent native intent.
+     * If an activity's intent is for a Google I/O web URL that the app can handle natively, this
+     * method translates the intent to the equivalent native intent.
      */
     public static void tryTranslateHttpIntent(Activity activity) {
         Intent intent = activity.getIntent();
@@ -360,9 +348,11 @@ public class UIUtils {
         }
     }
 
-    private static final int[] RES_IDS_ACTION_BAR_SIZE = { R.attr.actionBarSize };
+    private static final int[] RES_IDS_ACTION_BAR_SIZE = {R.attr.actionBarSize};
 
-    /** Calculates the Action Bar height in pixels. */
+    /**
+     * Calculates the Action Bar height in pixels.
+     */
     public static int calculateActionBarSize(Context context) {
         if (context == null) {
             return 0;
@@ -383,14 +373,16 @@ public class UIUtils {
         return (int) size;
     }
 
-    public static int setColorOpaque(int color){
+    public static int setColorOpaque(int color) {
         return Color.argb(255, Color.red(color), Color.green(color), Color.blue(color));
     }
 
     public static int scaleColor(int color, float factor, boolean scaleAlpha) {
-        return Color.argb(scaleAlpha ? (Math.round(Color.alpha(color) * factor)) : Color.alpha(color),
-                Math.round(Color.red(color) * factor), Math.round(Color.green(color) * factor),
-                Math.round(Color.blue(color) * factor));
+        return Color
+                .argb(scaleAlpha ? (Math.round(Color.alpha(color) * factor)) : Color.alpha(color),
+                        Math.round(Color.red(color) * factor),
+                        Math.round(Color.green(color) * factor),
+                        Math.round(Color.blue(color) * factor));
     }
 
     public static int scaleSessionColorToDefaultBG(int color) {
@@ -402,6 +394,27 @@ public class UIUtils {
         Intent intent = new Intent(Intent.ACTION_VIEW, uri);
         UIUtils.preferPackageForIntent(context, intent, packageName);
         context.startActivity(intent);
+    }
+
+    /**
+     * @return If on SDK 17+, returns false if setting for animator duration scale is set to 0.
+     * Returns true otherwise.
+     */
+    public static boolean animationEnabled(ContentResolver contentResolver) {
+        boolean animationEnabled = true;
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
+            try {
+                if (Settings.Global.getFloat(contentResolver,
+                        Settings.Global.ANIMATOR_DURATION_SCALE) == 0.0f) {
+                    animationEnabled = false;
+
+                }
+            } catch (Settings.SettingNotFoundException e) {
+                LOGE(TAG, "Setting ANIMATOR_DURATION_SCALE not found");
+            }
+        }
+        return animationEnabled;
     }
 
     @TargetApi(Build.VERSION_CODES.JELLY_BEAN_MR1)
@@ -453,7 +466,9 @@ public class UIUtils {
         return (value - min) / (float) (max - min);
     }
 
-    public static @DrawableRes int getSessionIcon(int sessionType) {
+    public static
+    @DrawableRes
+    int getSessionIcon(int sessionType) {
         switch (sessionType) {
             case ScheduleItem.SESSION_TYPE_SESSION:
                 return R.drawable.ic_session;
@@ -467,14 +482,25 @@ public class UIUtils {
         }
     }
 
-    public static @DrawableRes int getBreakIcon(String breakTitle) {
+    // TODO: Improve the mapping of icons to breaks.
+    // Initially this was a convenience method and there were few icons to be assigned to
+    // breaks. The current implementation could be improved if the icon - break mapping
+    // was defined via a configuration file and loaded at runtime. This would make the breaks
+    // more flexible.
+    public static
+    @DrawableRes
+    int getBreakIcon(String breakTitle) {
         if (!TextUtils.isEmpty(breakTitle)) {
-            if (breakTitle.contains("After")) {
+            if (breakTitle.contains("After") || breakTitle.contains("Concert")) {
                 return R.drawable.ic_after_hours;
             } else if (breakTitle.contains("Badge")) {
                 return R.drawable.ic_badge_pickup;
             } else if (breakTitle.contains("Pre-Keynote")) {
                 return R.drawable.ic_session;
+            } else if (breakTitle.contains("Codelabs")) {
+                return R.drawable.ic_codelab;
+            } else if (breakTitle.contains("Sandbox") || breakTitle.contains("Office hours")) {
+                return R.drawable.ic_sandbox;
             }
         }
         return R.drawable.ic_food;
@@ -482,9 +508,8 @@ public class UIUtils {
 
     /**
      * @param startTime The start time of a session in millis.
-     * @param context The context to be used for getting the display timezone.
-     * @return Formats a given startTime to the specific short time.
-     *         example: 12:00 AM
+     * @param context   The context to be used for getting the display timezone.
+     * @return Formats a given startTime to the specific short time. example: 12:00 AM
      */
     public static String formatTime(long startTime, Context context) {
         StringBuilder sb = new StringBuilder();
@@ -495,16 +520,26 @@ public class UIUtils {
     }
 
     /**
-     * @param startTime The start time of a session.
-     * @return Returns the Day index such as 1 or 2 based on the given start time.
+     * @param startTime The start time of a session. It is expected to be a start time during the
+     *                  conference.
+     * @return the position in the {@link Config#CONFERENCE_DAYS} of the day of the session at
+     * {@code startTime}. Note that to avoid possible crashes, the returned index is always a valid
+     * position in the {@link Config#CONFERENCE_DAYS} array, so if the {@code startTime} is before
+     * the start of the conference, 0 will be returned, and if it is after the end of the
+     * conference, the index of the last day will be returned. If the time is outside of the
+     * start/end times of a conference day, for example at 5am, it returns 0.
      */
     public static int startTimeToDayIndex(long startTime) {
-        if (startTime <= Config.CONFERENCE_DAYS[0][1] &&
-                startTime >= Config.CONFERENCE_DAYS[0][0]) {
-            return 1;
-        } else if (startTime <= Config.CONFERENCE_DAYS[1][1] &&
-                startTime >= Config.CONFERENCE_DAYS[1][0]) {
-            return 2;
+        if (startTime < Config.CONFERENCE_START_MILLIS) {
+            return 0;
+        } else if (startTime > Config.CONFERENCE_END_MILLIS) {
+            return Config.CONFERENCE_DAYS.length - 1;
+        }
+        for (int i = 0; i < Config.CONFERENCE_DAYS.length; i++) {
+            if (startTime >=
+                    Config.CONFERENCE_DAYS[i][0] && startTime <= Config.CONFERENCE_DAYS[i][1]) {
+                return i;
+            }
         }
         return 0;
     }
@@ -537,9 +572,12 @@ public class UIUtils {
 //        return new ColorMatrixColorFilter(cm);
         float sat = SESSION_PHOTO_SCRIM_SATURATION; // saturation (0=gray, 1=color)
         return new ColorMatrixColorFilter(new float[]{
-                ((1 - 0.213f) * sat + 0.213f) * a, ((0 - 0.715f) * sat + 0.715f) * a, ((0 - 0.072f) * sat + 0.072f) * a, 0, Color.red(sessionColor) * (1 - a),
-                ((0 - 0.213f) * sat + 0.213f) * a, ((1 - 0.715f) * sat + 0.715f) * a, ((0 - 0.072f) * sat + 0.072f) * a, 0, Color.green(sessionColor) * (1 - a),
-                ((0 - 0.213f) * sat + 0.213f) * a, ((0 - 0.715f) * sat + 0.715f) * a, ((1 - 0.072f) * sat + 0.072f) * a, 0, Color.blue(sessionColor) * (1 - a),
+                ((1 - 0.213f) * sat + 0.213f) * a, ((0 - 0.715f) * sat + 0.715f) * a,
+                ((0 - 0.072f) * sat + 0.072f) * a, 0, Color.red(sessionColor) * (1 - a),
+                ((0 - 0.213f) * sat + 0.213f) * a, ((1 - 0.715f) * sat + 0.715f) * a,
+                ((0 - 0.072f) * sat + 0.072f) * a, 0, Color.green(sessionColor) * (1 - a),
+                ((0 - 0.213f) * sat + 0.213f) * a, ((0 - 0.715f) * sat + 0.715f) * a,
+                ((1 - 0.072f) * sat + 0.072f) * a, 0, Color.blue(sessionColor) * (1 - a),
                 0, 0, 0, 0, 255
         });
 //        a = 0.2f;
@@ -597,16 +635,16 @@ public class UIUtils {
 //    }
 
     /**
-     * This helper method creates a 'nice' scrim or background protection for layering text over
-     * an image. This non-linear scrim is less noticable than a linear or constant one.
-     *
+     * This helper method creates a 'nice' scrim or background protection for layering text over an
+     * image. This non-linear scrim is less noticable than a linear or constant one.
+     * <p/>
      * Borrowed from github.com/romannurik/muzei
-     *
-     * Creates an approximated cubic gradient using a multi-stop linear gradient. See
-     * <a href="https://plus.google.com/+RomanNurik/posts/2QvHVFWrHZf">this post</a> for more
-     * details.
+     * <p/>
+     * Creates an approximated cubic gradient using a multi-stop linear gradient. See <a
+     * href="https://plus.google.com/+RomanNurik/posts/2QvHVFWrHZf">this post</a> for more details.
      */
-    public static Drawable makeCubicGradientScrimDrawable(int baseColor, int numStops, int gravity) {
+    public static Drawable makeCubicGradientScrimDrawable(int baseColor, int numStops,
+            int gravity) {
         numStops = Math.max(numStops, 2);
 
         PaintDrawable paintDrawable = new PaintDrawable();
@@ -624,14 +662,32 @@ public class UIUtils {
 
         final float x0, x1, y0, y1;
         switch (gravity & Gravity.HORIZONTAL_GRAVITY_MASK) {
-            case Gravity.LEFT:  x0 = 1; x1 = 0; break;
-            case Gravity.RIGHT: x0 = 0; x1 = 1; break;
-            default:            x0 = 0; x1 = 0; break;
+            case Gravity.LEFT:
+                x0 = 1;
+                x1 = 0;
+                break;
+            case Gravity.RIGHT:
+                x0 = 0;
+                x1 = 1;
+                break;
+            default:
+                x0 = 0;
+                x1 = 0;
+                break;
         }
         switch (gravity & Gravity.VERTICAL_GRAVITY_MASK) {
-            case Gravity.TOP:    y0 = 1; y1 = 0; break;
-            case Gravity.BOTTOM: y0 = 0; y1 = 1; break;
-            default:             y0 = 0; y1 = 0; break;
+            case Gravity.TOP:
+                y0 = 1;
+                y1 = 0;
+                break;
+            case Gravity.BOTTOM:
+                y0 = 0;
+                y1 = 1;
+                break;
+            default:
+                y0 = 0;
+                y1 = 0;
+                break;
         }
 
         paintDrawable.setShaderFactory(new ShapeDrawable.ShaderFactory() {
@@ -650,4 +706,129 @@ public class UIUtils {
 
         return paintDrawable;
     }
+
+    /**
+     * Calculate a darker variant of the given color to make it suitable for setting as the status
+     * bar background.
+     *
+     * @param color the color to adjust.
+     * @return the adjusted color.
+     */
+    public static
+    @ColorInt
+    int adjustColorForStatusBar(@ColorInt int color) {
+        float[] hsl = new float[3];
+        ColorUtils.colorToHSL(color, hsl);
+
+        // darken the color by 7.5%
+        float lightness = hsl[2] * 0.925f;
+        // constrain lightness to be within [0–1]
+        lightness = Math.max(0f, Math.min(1f, lightness));
+        hsl[2] = lightness;
+        return ColorUtils.HSLToColor(hsl);
+    }
+
+    /**
+     * Queries the theme of the given {@code context} for a theme color.
+     *
+     * @param context            the context holding the current theme.
+     * @param attrResId          the theme color attribute to resolve.
+     * @param fallbackColorResId a color resource id tto fallback to if the theme color cannot be
+     *                           resolved.
+     * @return the theme color or the fallback color.
+     */
+    public static
+    @ColorInt
+    int getThemeColor(@NonNull Context context, @AttrRes int attrResId,
+            @ColorRes int fallbackColorResId) {
+        final TypedValue tv = new TypedValue();
+        if (context.getTheme().resolveAttribute(attrResId, tv, true)) {
+            return tv.data;
+        }
+        return ContextCompat.getColor(context, fallbackColorResId);
+    }
+
+    /**
+     * Sets the status bar of the given {@code activity} based on the given {@code color}. Note that
+     * {@code color} will be adjusted per {@link #adjustColorForStatusBar(int)}.
+     *
+     * @param activity The activity to set the status bar color for.
+     * @param color    The color to be adjusted and set as the status bar background.
+     */
+    public static void adjustAndSetStatusBarColor(@NonNull Activity activity, @ColorInt int color) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            activity.getWindow().setStatusBarColor(adjustColorForStatusBar(color));
+        }
+    }
+
+    /**
+     * Retrieves the rootView of the specified {@link Activity}.
+     */
+    public static View getRootView(Activity activity) {
+        return activity.getWindow().getDecorView().findViewById(android.R.id.content);
+    }
+
+    public static Bitmap vectorToBitmap(@NonNull Context context, @DrawableRes int drawableResId) {
+        VectorDrawableCompat vector = VectorDrawableCompat
+                .create(context.getResources(), drawableResId, context.getTheme());
+        final Bitmap bitmap = Bitmap.createBitmap(vector.getIntrinsicWidth(),
+                vector.getIntrinsicHeight(),
+                Bitmap.Config.ARGB_8888);
+        final Canvas canvas = new Canvas(bitmap);
+        vector.setBounds(0, 0, canvas.getWidth(), canvas.getHeight());
+        vector.draw(canvas);
+        return bitmap;
+    }
+
+    /**
+     * A {@link Property} used for more efficiently animating a Views background color i.e. avoiding
+     * using reflection to locate the getters and setters.
+     */
+    public static final Property<View, Integer> BACKGROUND_COLOR
+            = new Property<View, Integer>(Integer.class, "backgroundColor") {
+
+        @Override
+        public void set(View view, Integer value) {
+            view.setBackgroundColor(value);
+        }
+
+        @Override
+        public Integer get(View view) {
+            Drawable d = view.getBackground();
+            if (d instanceof ColorDrawable) {
+                return ((ColorDrawable) d).getColor();
+            }
+            return Color.TRANSPARENT;
+        }
+    };
+
+    @TargetApi(Build.VERSION_CODES.KITKAT)
+    public static class TransitionListenerAdapter implements Transition.TransitionListener {
+
+        @Override
+        public void onTransitionStart(final Transition transition) {
+
+        }
+
+        @Override
+        public void onTransitionEnd(final Transition transition) {
+
+        }
+
+        @Override
+        public void onTransitionCancel(final Transition transition) {
+
+        }
+
+        @Override
+        public void onTransitionPause(final Transition transition) {
+
+        }
+
+        @Override
+        public void onTransitionResume(final Transition transition) {
+
+        }
+    }
+
 }

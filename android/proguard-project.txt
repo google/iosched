@@ -1,11 +1,11 @@
 # Copyright 2014 Google Inc. All rights reserved.
-# 
+#
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
-# 
+#
 #     http://www.apache.org/licenses/LICENSE-2.0
-# 
+#
 # Unless required by applicable law or agreed to in writing, software
 # distributed under the License is distributed on an "AS IS" BASIS,
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -103,6 +103,15 @@
     public <methods>;
 }
 
+# Jackson uses reflection, so needs these attributes preserved
+-keepattributes InnerClasses,EnclosingMethod
+
+# Keep app compat vector animation class
+-keep class android.support.graphics.drawable.VectorDrawableCompat
+-keep class android.support.graphics.drawable.VectorDrawableCompat$* {
+    *;
+}
+
 # Other settings
 -keep class com.android.**
 -keep class com.google.android.**
@@ -123,3 +132,22 @@
 -dontwarn com.sothree.slidinguppanel.**
 -dontwarn sun.misc.Unsafe
 -dontwarn com.google.common.util.concurrent.RateLimiter
+-dontwarn com.larvalabs.svgandroid.**
+
+# Firebase
+# See: http://stackoverflow.com/questions/26273929/what-proguard-configuration-do-i-need-for-firebase-on-android
+-keepnames class com.google.samples.apps.iosched.sync.userdata.** { *; }
+-keep class com.firebase.** { *; }
+-keep class org.apache.** { *; }
+-keepnames class com.fasterxml.jackson.** { *; }
+-keepnames class javax.servlet.** { *; }
+-keepnames class org.ietf.jgss.** { *; }
+-dontwarn org.w3c.dom.**
+-dontwarn org.joda.time.**
+-dontwarn org.shaded.apache.**
+-dontwarn org.ietf.jgss.**
+
+# Rick-rolls (b/28358606): Delete this after launch of Phase1
+-keep class com.google.samples.apps.iosched.welcome.AnnouncementFragment {
+    public static *;
+}

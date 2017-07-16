@@ -16,21 +16,26 @@
 
 package com.google.samples.apps.iosched.videolibrary;
 
+import android.graphics.Color;
 import android.os.Bundle;
+import android.support.annotation.ColorInt;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
+import android.support.design.widget.CollapsingToolbarLayout;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ImageView;
 
 import com.google.samples.apps.iosched.R;
 import com.google.samples.apps.iosched.ui.BaseActivity;
-import com.google.samples.apps.iosched.ui.widget.CollectionView;
-import com.google.samples.apps.iosched.ui.widget.DrawShadowFrameLayout;
 import com.google.samples.apps.iosched.util.AnalyticsHelper;
-import com.google.samples.apps.iosched.videolibrary.VideoLibraryModel.VideoLibraryQueryEnum;
-import com.google.samples.apps.iosched.videolibrary.VideoLibraryModel.VideoLibraryUserActionEnum;
+import com.google.samples.apps.iosched.util.ImageLoader;
+import com.google.samples.apps.iosched.util.UIUtils;
 
 import static com.google.samples.apps.iosched.util.LogUtils.LOGD;
 import static com.google.samples.apps.iosched.util.LogUtils.makeLogTag;
@@ -43,7 +48,8 @@ import static com.google.samples.apps.iosched.util.LogUtils.makeLogTag;
  * the extras. For this use the {@code KEY_FILTER_TOPIC} and {@code KEY_FILTER_YEAR} keys.
  */
 public class VideoLibraryFilteredActivity extends BaseActivity implements
-        Toolbar.OnMenuItemClickListener {
+        Toolbar.OnMenuItemClickListener,
+        VideoLibraryFilteredFragment.VideoLibraryFilteredContainer {
 
     private static final String TAG = makeLogTag(VideoLibraryFilteredActivity.class);
 
@@ -54,50 +60,38 @@ public class VideoLibraryFilteredActivity extends BaseActivity implements
 
     protected static final String KEY_FILTER_YEAR =
             "com.google.samples.apps.iosched.KEY_FILTER_YEAR";
+
     private DrawerLayout mDrawerLayout;
+
+    private CollapsingToolbarLayout mCollapsingToolbar;
+
+    private ImageView mHeaderImage;
+
+    private ImageLoader mImageLoader;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        // Get the initial filter values from the intent call.
-        Bundle extras = getIntent().getExtras();
-        setTitle(R.string.title_video_library);
-        String topicFilter = VideoLibraryModel.ALL_TOPICS;
-        int yearFilter = VideoLibraryModel.ALL_YEARS;
-        if (extras != null) {
-            topicFilter = extras.getString(KEY_FILTER_TOPIC, VideoLibraryModel.ALL_TOPICS);
-            yearFilter = extras.getInt(KEY_FILTER_YEAR, VideoLibraryModel.ALL_YEARS);
-        }
-
-        // Instantiate a new model with initial filter values from the intent call.
-        VideoLibraryModel model = new VideoLibraryModel(getApplicationContext(), this);
-        model.setSelectedTopic(topicFilter);
-        model.setSelectedYear(yearFilter);
-
         setContentView(R.layout.video_library_filtered_act);
 
-        addPresenterFragment(R.id.video_library_frag, model, VideoLibraryQueryEnum.values(),
-                VideoLibraryUserActionEnum.values());
+        mImageLoader = new ImageLoader(this);
+        mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
+        mCollapsingToolbar = (CollapsingToolbarLayout) findViewById(R.id.collapsing_toolbar);
+        mHeaderImage = (ImageView) findViewById(R.id.header_image);
+        setTitle(R.string.title_video_library);
 
-        // ANALYTICS EVENT: View the Filtered Video Library screen
+        // ANALYTICS SCREEN: View the Filtered Video Library screen
         // Contains: Nothing (Page name is a constant)
         AnalyticsHelper.sendScreenView(SCREEN_LABEL);
         LOGD("Tracker", SCREEN_LABEL);
 
-        registerHideableHeaderView(findViewById(R.id.headerbar));
-
         // Add the back button to the toolbar.
-        Toolbar toolbar = getActionBarToolbar();
-        toolbar.setNavigationIcon(R.drawable.ic_up);
-        toolbar.setNavigationContentDescription(R.string.close_and_go_back);
-        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+        setToolbarAsUp(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 navigateUpOrBack(VideoLibraryFilteredActivity.this, null);
             }
         });
-        mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
     }
 
     @Override
@@ -105,7 +99,7 @@ public class VideoLibraryFilteredActivity extends BaseActivity implements
         super.onCreateOptionsMenu(menu);
 
         // Add the filter button to the toolbar.
-        Toolbar toolbar = getActionBarToolbar();
+        Toolbar toolbar = getToolbar();
         toolbar.inflateMenu(R.menu.video_library_filtered);
         toolbar.setOnMenuItemClickListener(this);
         return true;
@@ -117,24 +111,9 @@ public class VideoLibraryFilteredActivity extends BaseActivity implements
             case R.id.menu_filter:
                 LOGD(TAG, "Clicking Filter menu button on FilteredVideoLib.");
                 mDrawerLayout.openDrawer(GravityCompat.END);
-
                 return true;
         }
-
         return false;
-    }
-
-    @Override
-    protected void onPostCreate(Bundle savedInstanceState) {
-        super.onPostCreate(savedInstanceState);
-        enableActionBarAutoHide((CollectionView) findViewById(R.id.videos_collection_view));
-    }
-
-    @Override
-    protected void onActionBarAutoShowOrHide(boolean shown) {
-        super.onActionBarAutoShowOrHide(shown);
-        DrawShadowFrameLayout frame = (DrawShadowFrameLayout) findViewById(R.id.main_content);
-        frame.setShadowVisible(shown, shown);
     }
 
     @Override
@@ -144,5 +123,26 @@ public class VideoLibraryFilteredActivity extends BaseActivity implements
         } else {
             super.onBackPressed();
         }
+    }
+
+    @Override
+    public void filtersUpdated(@NonNull final String title, @Nullable final String selectionImage,
+            @ColorInt int trackColor) {
+        setTitle(title);
+        if (selectionImage != null) {
+            mHeaderImage.setScaleType(ImageView.ScaleType.CENTER_CROP);
+            mImageLoader.loadImage(selectionImage, mHeaderImage);
+        } else {
+            mHeaderImage.setScaleType(ImageView.ScaleType.FIT_CENTER);
+            mHeaderImage.setImageResource(R.drawable.ic_hash_io_16_monochrome);
+        }
+        final int statusBarColor =
+                trackColor != Color.TRANSPARENT ? UIUtils.adjustColorForStatusBar(trackColor) :
+                        UIUtils.getThemeColor(this, R.attr.colorPrimaryDark,
+                                R.color.theme_primary_dark);
+        final @ColorInt int toolbarScrim = trackColor != Color.TRANSPARENT ? trackColor :
+                ContextCompat.getColor(this, R.color.io16_light_grey);
+        mCollapsingToolbar.setContentScrimColor(toolbarScrim);
+        mDrawerLayout.setStatusBarBackgroundColor(statusBarColor);
     }
 }

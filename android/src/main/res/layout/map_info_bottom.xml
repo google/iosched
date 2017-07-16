@@ -14,35 +14,23 @@
   See the License for the specific language governing permissions and
   limitations under the License.
   -->
-<com.sothree.slidinguppanel.SlidingUpPanelLayout
-        xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:sothree="http://schemas.android.com/apk/res-auto"
-        android:id="@+id/map_bottomsheet"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:gravity="bottom"
-        sothree:umanoPanelHeight="0dp"
-        sothree:umanoShadowHeight="@dimen/card_elevation"
-        sothree:umanoFadeColor="@android:color/transparent"
-        sothree:umanoInitialState="hidden"
-        >
-
-    <!-- Dummy view required for SlidingPanelLayout that's supposed to contain the main content.
-    We are only using it as an overlay.-->
-    <View
-            android:id="@+id/map_bottomsheet_dummycontent"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:clickable="false"
-            android:focusableInTouchMode="false"/>
+<android.support.design.widget.CoordinatorLayout
+    android:id="@+id/map_coordinator"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <android.support.v7.widget.CardView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/map_bottomsheet_slideable">
+        android:id="@+id/map_bottomsheet"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:minHeight="@dimen/map_slideableinfo_height_titleonly"
+        app:layout_behavior="@string/bottom_sheet_behavior"
+        app:behavior_hideable="true">
 
-        <include layout="@layout/map_info_content"/>
+        <include layout="@layout/map_info_content" />
 
     </android.support.v7.widget.CardView>
 
-</com.sothree.slidinguppanel.SlidingUpPanelLayout>
+</android.support.design.widget.CoordinatorLayout>

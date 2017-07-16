@@ -38,7 +38,7 @@ import java.util.List;
  */
 public final class ScheduleContract {
 
-    public static final String CONTENT_TYPE_APP_BASE = "iosched2015.";
+    public static final String CONTENT_TYPE_APP_BASE = "iosched2016.";
 
     public static final String CONTENT_TYPE_BASE = "vnd.android.cursor.dir/vnd."
             + CONTENT_TYPE_APP_BASE;
@@ -86,6 +86,8 @@ public final class ScheduleContract {
         String TAG_COLOR = "tag_color";
         /** Tag abstract. Short summary describing tag. */
         String TAG_ABSTRACT = "tag_abstract";
+        /** The tag's photo Url. */
+        String TAG_PHOTO_URL = "tag_photo_url";
     }
 
     interface RoomsColumns {
@@ -111,6 +113,7 @@ public final class ScheduleContract {
         String MY_SCHEDULE_IN_SCHEDULE = "in_schedule";
         /** Flag to indicate if the corresponding in_my_schedule item needs to be synced */
         String MY_SCHEDULE_DIRTY_FLAG = "dirty";
+        String MY_SCHEDULE_TIMESTAMP = "timestamp";
     }
 
     interface MyFeedbackSubmittedColumns {
@@ -213,7 +216,7 @@ public final class ScheduleContract {
 
     interface AnnouncementsColumns {
 
-        /** Unique string identifying this announcment. */
+        /** Unique string identifying this announcement. */
         String ANNOUNCEMENT_ID = "announcement_id";
         /** Title of the announcement. */
         String ANNOUNCEMENT_TITLE = "announcement_title";
@@ -223,6 +226,26 @@ public final class ScheduleContract {
         String ANNOUNCEMENT_URL = "announcement_url";
         /** Date of the announcement. */
         String ANNOUNCEMENT_DATE = "announcement_date";
+    }
+
+    interface CardsColumns {
+        /** Unique id for each card */
+        String CARD_ID = "card_id";
+        String TITLE = "title";
+        /** URL for the action displayed on the card */
+        String ACTION_URL = "action_url";
+        /** Time when the card can start to be displayed */
+        String DISPLAY_START_DATE = "start_date";
+        /** Time when the card should no longer be displayed */
+        String DISPLAY_END_DATE = "end_date";
+        /** Extended message for the card */
+        String MESSAGE = "message";
+        String BACKGROUND_COLOR = "bg_color";
+        String TEXT_COLOR = "text_color";
+        String ACTION_COLOR = "action_color";
+        String ACTION_TEXT = "action_text";
+        String ACTION_TYPE = "action_type";
+        String ACTION_EXTRA = "action_extra";
     }
 
     interface MapMarkerColumns {
@@ -304,6 +327,8 @@ public final class ScheduleContract {
 
     private static final String PATH_AFTER = "after";
 
+    private static final String PATH_CARDS = "cards";
+
     private static final String PATH_TAGS = "tags";
 
     private static final String PATH_ROOM = "room";
@@ -350,6 +375,7 @@ public final class ScheduleContract {
             PATH_BLOCKS,
             PATH_TAGS,
             PATH_ROOMS,
+            PATH_CARDS,
             PATH_SESSIONS,
             PATH_FEEDBACK,
             PATH_MY_SCHEDULE,
@@ -443,9 +469,6 @@ public final class ScheduleContract {
 
         public static final String CONTENT_TYPE_ID = "tag";
 
-        // Used for tag search projection.
-        public static final String TAG_ORDER_BY_CATEGORY = Tags.TAG_ORDER_IN_CATEGORY + " ASC";
-
         /**
          * Build {@link Uri} that references all tags.
          */
@@ -514,6 +537,29 @@ public final class ScheduleContract {
             return ScheduleContractHelper.addOverrideAccountName(CONTENT_URI, accountName);
         }
 
+    }
+
+    /**
+     * Cards are presented on the Explore I/O screen.
+     */
+    public static class Cards implements CardsColumns, BaseColumns {
+
+        public static final Uri CONTENT_URI =
+                BASE_CONTENT_URI.buildUpon().appendPath(PATH_CARDS).build();
+
+        public static final String CONTENT_TYPE_ID = "cards";
+
+        /**
+         * Build {@link Uri} that references any {@link Cards}.
+         */
+        public static Uri buildCardsUri() {
+            return CONTENT_URI.buildUpon().appendPath(PATH_CARDS).build();
+        }
+
+        /** Build {@link Uri} for requested {@link #CARD_ID}. */
+        public static Uri buildCardUri(String cardId) {
+            return CONTENT_URI.buildUpon().appendPath(PATH_CARDS).appendPath(cardId).build();
+        }
     }
 
     /**
@@ -983,6 +1029,8 @@ public final class ScheduleContract {
 
         public static final String TOPIC_TAG_SELECTION = Tags.TAG_CATEGORY + "= ? and " +
                 Tags.TAG_NAME + " like ?";
+
+        public static final String TOPIC_TAG_SORT = Tags.TAG_NAME + " ASC";
 
         public static final String[] TOPIC_TAG_PROJECTION = {
                 BaseColumns._ID,

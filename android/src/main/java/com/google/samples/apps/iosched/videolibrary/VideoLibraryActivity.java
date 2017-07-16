@@ -17,17 +17,12 @@
 package com.google.samples.apps.iosched.videolibrary;
 
 import android.os.Bundle;
+import android.support.v7.widget.RecyclerView;
 
 import com.google.samples.apps.iosched.R;
+import com.google.samples.apps.iosched.navigation.NavigationModel;
 import com.google.samples.apps.iosched.ui.BaseActivity;
-import com.google.samples.apps.iosched.ui.widget.CollectionView;
-import com.google.samples.apps.iosched.ui.widget.DrawShadowFrameLayout;
 import com.google.samples.apps.iosched.util.AnalyticsHelper;
-import com.google.samples.apps.iosched.videolibrary.VideoLibraryModel.VideoLibraryUserActionEnum;
-import com.google.samples.apps.iosched.videolibrary.VideoLibraryModel.VideoLibraryQueryEnum;
-
-
-import static com.google.samples.apps.iosched.util.LogUtils.LOGD;
 
 /**
  * This Activity displays all the videos of past Google I/O sessions in the form of a card for each
@@ -43,35 +38,15 @@ public class VideoLibraryActivity extends BaseActivity {
 
         setContentView(R.layout.video_library_act);
 
-        addPresenterFragment(R.id.video_library_frag,
-                new VideoLibraryModel(getApplicationContext(), this),
-                new VideoLibraryQueryEnum[]{VideoLibraryQueryEnum.VIDEOS,
-                        VideoLibraryQueryEnum.MY_VIEWED_VIDEOS},
-                new VideoLibraryUserActionEnum[]{VideoLibraryUserActionEnum.RELOAD,
-                        VideoLibraryUserActionEnum.VIDEO_PLAYED});
-
         // ANALYTICS SCREEN: View the video library screen
         // Contains: Nothing (Page name is a constant)
         AnalyticsHelper.sendScreenView(SCREEN_LABEL);
 
-        registerHideableHeaderView(findViewById(R.id.headerbar));
     }
 
     @Override
-    protected void onPostCreate(Bundle savedInstanceState) {
-        super.onPostCreate(savedInstanceState);
-        enableActionBarAutoHide((CollectionView) findViewById(R.id.videos_collection_view));
+    protected NavigationModel.NavigationItemEnum getSelfNavDrawerItem() {
+        return NavigationModel.NavigationItemEnum.VIDEO_LIBRARY;
     }
 
-    @Override
-    protected int getSelfNavDrawerItem() {
-        return NAVDRAWER_ITEM_VIDEO_LIBRARY;
-    }
-
-    @Override
-    protected void onActionBarAutoShowOrHide(boolean shown) {
-        super.onActionBarAutoShowOrHide(shown);
-        DrawShadowFrameLayout frame = (DrawShadowFrameLayout) findViewById(R.id.main_content);
-        frame.setShadowVisible(shown, shown);
-    }
 }

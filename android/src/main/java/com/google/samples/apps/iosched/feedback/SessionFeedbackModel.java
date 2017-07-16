@@ -17,13 +17,7 @@
 package com.google.samples.apps.iosched.feedback;
 
 
-import com.google.common.annotations.VisibleForTesting;
-import com.google.samples.apps.iosched.framework.Model;
-import com.google.samples.apps.iosched.framework.QueryEnum;
-import com.google.samples.apps.iosched.framework.UserActionEnum;
-import com.google.samples.apps.iosched.provider.ScheduleContract;
-import com.google.samples.apps.iosched.util.AnalyticsHelper;
-
+import android.app.LoaderManager;
 import android.content.Context;
 import android.content.CursorLoader;
 import android.content.Loader;
@@ -32,11 +26,22 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 
-public class SessionFeedbackModel implements Model {
+import com.google.common.annotations.VisibleForTesting;
+import com.google.samples.apps.iosched.archframework.ModelWithLoaderManager;
+import com.google.samples.apps.iosched.archframework.QueryEnum;
+import com.google.samples.apps.iosched.archframework.UserActionEnum;
+import com.google.samples.apps.iosched.feedback.SessionFeedbackModel.SessionFeedbackQueryEnum;
+import com.google.samples.apps.iosched.feedback.SessionFeedbackModel.SessionFeedbackUserActionEnum;
+import com.google.samples.apps.iosched.provider.ScheduleContract;
+import com.google.samples.apps.iosched.util.AnalyticsHelper;
+
+public class SessionFeedbackModel extends
+        ModelWithLoaderManager<SessionFeedbackQueryEnum, SessionFeedbackUserActionEnum> {
 
     protected final static String DATA_RATING_INT = "DATA_RATING_INT";
 
-    protected final static String DATA_SESSION_RELEVANT_ANSWER_INT = "DATA_SESSION_RELEVANT_ANSWER_INT";
+    protected final static String DATA_SESSION_RELEVANT_ANSWER_INT =
+            "DATA_SESSION_RELEVANT_ANSWER_INT";
 
     protected final static String DATA_CONTENT_ANSWER_INT = "DATA_CONTENT_ANSWER_INT";
 
@@ -54,7 +59,10 @@ public class SessionFeedbackModel implements Model {
 
     private String mSpeakersString;
 
-    public SessionFeedbackModel(Uri sessionUri, Context context, FeedbackHelper feedbackHelper) {
+    public SessionFeedbackModel(LoaderManager loaderManager, Uri sessionUri, Context context,
+            FeedbackHelper feedbackHelper) {
+        super(SessionFeedbackQueryEnum.values(), SessionFeedbackUserActionEnum.values(),
+                loaderManager);
         mContext = context;
         mSessionUri = sessionUri;
         mFeedbackHelper = feedbackHelper;
@@ -69,61 +77,72 @@ public class SessionFeedbackModel implements Model {
     }
 
     @Override
-    public QueryEnum[] getQueries() {
-        return SessionFeedbackQueryEnum.values();
+    public void cleanUp() {
+        // Nothing to clean up
     }
 
     @Override
-    public boolean readDataFromCursor(Cursor cursor, QueryEnum query) {
-        if (!cursor.moveToFirst()) {
-            return false;
+    public void processUserAction(final SessionFeedbackUserActionEnum action,
+            @Nullable final Bundle args, final UserActionCallback callback) {
+        switch (action) {
+            case SUBMIT:
+                mFeedbackHelper
+                        .saveSessionFeedback(new SessionFeedbackData(getSessionId(mSessionUri),
+                                args.getInt(DATA_RATING_INT),
+                                args.getInt(DATA_SESSION_RELEVANT_ANSWER_INT),
+                                args.getInt(DATA_CONTENT_ANSWER_INT),
+                                args.getInt(DATA_SPEAKER_ANSWER_INT),
+                                args.getString(DATA_COMMENT_STRING)));
+
+                // ANALYTICS EVENT: Send session feedback
+                // Contains: Session title.  Feedback is NOT included.
+                sendAnalyticsEvent("Session", "Feedback", mTitleString);
+                callback.onModelUpdated(this, action);
+                break;
+            default:
+                callback.onError(action);
+                break;
         }
-
-        if (SessionFeedbackQueryEnum.SESSION == query) {
-            mTitleString = cursor.getString(cursor.getColumnIndex(
-                    ScheduleContract.Sessions.SESSION_TITLE));
-
-            mSpeakersString = cursor.getString(cursor.getColumnIndex(
-                    ScheduleContract.Sessions.SESSION_SPEAKER_NAMES));
-
-            return true;
-        }
-
-        return false;
     }
 
     @Override
-    public Loader<Cursor> createCursorLoader(int loaderId, Uri uri, Bundle args) {
+    public Loader<Cursor> createCursorLoader(final SessionFeedbackQueryEnum query,
+            final Bundle args) {
         CursorLoader loader = null;
-        if (loaderId == SessionFeedbackQueryEnum.SESSION.getId()) {
-            loader = getCursorLoaderInstance(mContext, uri,
-                    SessionFeedbackQueryEnum.SESSION.getProjection(), null, null, null);
+        switch (query) {
+            case SESSION:
+                loader = getCursorLoaderInstance(mContext, mSessionUri,
+                        SessionFeedbackQueryEnum.SESSION.getProjection(), null, null, null);
+                break;
         }
         return loader;
     }
 
-    @VisibleForTesting
-    public CursorLoader getCursorLoaderInstance(Context context, Uri uri, String[] projection,
-                                                String selection, String[] selectionArgs, String sortOrder) {
-        return new CursorLoader(context, uri, projection, selection, selectionArgs, sortOrder);
-    }
-
     @Override
-    public boolean requestModelUpdate(UserActionEnum action, @Nullable Bundle args) {
-        if (SessionFeedbackUserActionEnum.SUBMIT == action) {
-            mFeedbackHelper.saveSessionFeedback(new SessionFeedbackData(getSessionId(mSessionUri),
-                    args.getInt(DATA_RATING_INT), args.getInt(DATA_SESSION_RELEVANT_ANSWER_INT),
-                    args.getInt(DATA_CONTENT_ANSWER_INT), args.getInt(DATA_SPEAKER_ANSWER_INT),
-                    args.getString(DATA_COMMENT_STRING)));
-
-            // ANALYTICS EVENT: Send session feedback
-            // Contains: Session title.  Feedback is NOT included.
-            sendAnalyticsEvent("Session", "Feedback", mTitleString);
-
-            return true;
-        } else {
+    public boolean readDataFromCursor(final Cursor cursor,
+            final SessionFeedbackQueryEnum query) {
+        if (!cursor.moveToFirst()) {
             return false;
         }
+
+        switch (query) {
+            case SESSION:
+                mTitleString = cursor.getString(cursor.getColumnIndex(
+                        ScheduleContract.Sessions.SESSION_TITLE));
+
+                mSpeakersString = cursor.getString(cursor.getColumnIndex(
+                        ScheduleContract.Sessions.SESSION_SPEAKER_NAMES));
+                return true;
+            default:
+                return false;
+
+        }
+    }
+
+    @VisibleForTesting
+    public CursorLoader getCursorLoaderInstance(Context context, Uri uri, String[] projection,
+            String selection, String[] selectionArgs, String sortOrder) {
+        return new CursorLoader(context, uri, projection, selection, selectionArgs, sortOrder);
     }
 
     @VisibleForTesting
@@ -193,7 +212,7 @@ public class SessionFeedbackModel implements Model {
         public String comments;
 
         public SessionFeedbackData(String sessionId, int sessionRating, int sessionRelevantAnswer,
-                                   int contentAnswer, int speakerAnswer, String comments) {
+                int contentAnswer, int speakerAnswer, String comments) {
             this.sessionId = sessionId;
             this.sessionRating = sessionRating;
             this.sessionRelevantAnswer = sessionRelevantAnswer;

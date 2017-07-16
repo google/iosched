@@ -16,7 +16,6 @@
 
 package com.google.samples.apps.iosched.sync;
 
-import android.accounts.Account;
 import android.content.*;
 import android.net.ConnectivityManager;
 import android.os.Bundle;
@@ -31,14 +30,19 @@ import com.google.samples.apps.iosched.service.DataBootstrapService;
 import com.google.samples.apps.iosched.service.SessionAlarmService;
 import com.google.samples.apps.iosched.service.SessionCalendarService;
 import com.google.samples.apps.iosched.settings.SettingsUtils;
+import com.google.samples.apps.iosched.sync.account.Account;
 import com.google.samples.apps.iosched.sync.userdata.AbstractUserDataSyncHelper;
 import com.google.samples.apps.iosched.sync.userdata.UserDataSyncHelperFactory;
 import com.google.samples.apps.iosched.util.AccountUtils;
-import com.google.samples.apps.iosched.util.UIUtils;
+import com.google.samples.apps.iosched.util.TimeUtils;
 
 import com.turbomanage.httpclient.BasicHttpClient;
+import com.turbomanage.httpclient.HttpResponse;
+import com.turbomanage.httpclient.RequestLogger;
 
 import java.io.IOException;
+import java.net.HttpURLConnection;
+import java.net.URL;
 
 import static com.google.samples.apps.iosched.util.LogUtils.*;
 
@@ -68,47 +72,44 @@ public class SyncHelper {
         mConferenceDataHandler = new ConferenceDataHandler(mContext);
         mRemoteDataFetcher = new RemoteConferenceDataFetcher(mContext);
         mHttpClient = new BasicHttpClient();
-    }
-
-    public static void requestManualSync(Account mChosenAccount) {
-        requestManualSync(mChosenAccount, false);
-    }
-
-    public static void requestManualSync(Account mChosenAccount, boolean userDataSyncOnly) {
-        if (mChosenAccount != null) {
-            LOGD(TAG, "Requesting manual sync for account " + mChosenAccount.name
-                    + " userDataSyncOnly=" + userDataSyncOnly);
-            Bundle b = new Bundle();
-            b.putBoolean(ContentResolver.SYNC_EXTRAS_MANUAL, true);
-            b.putBoolean(ContentResolver.SYNC_EXTRAS_EXPEDITED, true);
-            if (userDataSyncOnly) {
-                b.putBoolean(SyncAdapter.EXTRA_SYNC_USER_DATA_ONLY, true);
-            }
-            ContentResolver
-                    .setSyncAutomatically(mChosenAccount, ScheduleContract.CONTENT_AUTHORITY, true);
-            ContentResolver.setIsSyncable(mChosenAccount, ScheduleContract.CONTENT_AUTHORITY, 1);
-
-            boolean pending = ContentResolver.isSyncPending(mChosenAccount,
-                    ScheduleContract.CONTENT_AUTHORITY);
-            if (pending) {
-                LOGD(TAG, "Warning: sync is PENDING. Will cancel.");
-            }
-            boolean active = ContentResolver.isSyncActive(mChosenAccount,
-                    ScheduleContract.CONTENT_AUTHORITY);
-            if (active) {
-                LOGD(TAG, "Warning: sync is ACTIVE. Will cancel.");
-            }
-
-            if (pending || active) {
-                LOGD(TAG, "Cancelling previously pending/active sync.");
-                ContentResolver.cancelSync(mChosenAccount, ScheduleContract.CONTENT_AUTHORITY);
-            }
-
-            LOGD(TAG, "Requesting sync now.");
-            ContentResolver.requestSync(mChosenAccount, ScheduleContract.CONTENT_AUTHORITY, b);
-        } else {
-            LOGD(TAG, "Can't request manual sync -- no chosen account.");
+        if (!BuildConfig.DEBUG) {
+            mHttpClient.setRequestLogger(new MinimalRequestLogger());
         }
+    }
+
+    public static void requestManualSync() {
+        requestManualSync(false);
+    }
+
+    public static void requestManualSync(boolean userDataSyncOnly) {
+        LOGD(TAG, "Requesting manual sync for account. userDataSyncOnly=" + userDataSyncOnly);
+        android.accounts.Account account = Account.getAccount();
+        Bundle b = new Bundle();
+        b.putBoolean(ContentResolver.SYNC_EXTRAS_MANUAL, true);
+        b.putBoolean(ContentResolver.SYNC_EXTRAS_EXPEDITED, true);
+        if (userDataSyncOnly) {
+            b.putBoolean(SyncAdapter.EXTRA_SYNC_USER_DATA_ONLY, true);
+        }
+        ContentResolver
+                .setSyncAutomatically(account, ScheduleContract.CONTENT_AUTHORITY, true);
+        ContentResolver.setIsSyncable(account, ScheduleContract.CONTENT_AUTHORITY, 1);
+
+        boolean pending = ContentResolver.isSyncPending(account, ScheduleContract.CONTENT_AUTHORITY);
+        if (pending) {
+            LOGD(TAG, "Warning: sync is PENDING. Will cancel.");
+        }
+        boolean active = ContentResolver.isSyncActive(account, ScheduleContract.CONTENT_AUTHORITY);
+        if (active) {
+            LOGD(TAG, "Warning: sync is ACTIVE. Will cancel.");
+        }
+
+        if (pending || active) {
+            LOGD(TAG, "Cancelling previously pending/active sync.");
+            ContentResolver.cancelSync(account, ScheduleContract.CONTENT_AUTHORITY);
+        }
+
+        LOGD(TAG, "Requesting sync now.");
+        ContentResolver.requestSync(account, ScheduleContract.CONTENT_AUTHORITY, b);
     }
 
     /**
@@ -123,12 +124,13 @@ public class SyncHelper {
      *
      *
      * @param syncResult The sync result object to update with statistics.
-     * @param account The account associated with this sync
      * @param extras Specifies additional information about the sync. This must contain key
      *               {@code SyncAdapter.EXTRA_SYNC_USER_DATA_ONLY} with boolean value
      * @return true if the sync changed the data.
      */
-    public boolean performSync(@Nullable SyncResult syncResult, Account account, Bundle extras) {
+    public boolean performSync(@Nullable SyncResult syncResult, Bundle extras) {
+        android.accounts.Account account = Account.getAccount();
+
         boolean dataChanged = false;
 
         if (!SettingsUtils.isDataBootstrapDone(mContext)) {
@@ -167,7 +169,7 @@ public class SyncHelper {
                         dataChanged |= doConferenceDataSync();
                         break;
                     case OP_USER_SCHEDULE_DATA_SYNC:
-                        dataChanged |= doUserDataSync(account.name);
+                        dataChanged |= doUserDataSync(syncResult, account.name);
                         break;
                     case OP_USER_FEEDBACK_DATA_SYNC:
                         // User feedback data sync is an outgoing sync only so not affecting
@@ -226,7 +228,7 @@ public class SyncHelper {
 
         LOGI(TAG, "End of sync (" + (dataChanged ? "data changed" : "no data change") + ")");
 
-        updateSyncInterval(mContext, account);
+        updateSyncInterval(mContext);
 
         return dataChanged;
     }
@@ -297,7 +299,7 @@ public class SyncHelper {
      * @return Whether or not data was changed.
      * @throws IOException if there is a problem uploading the data.
      */
-    private boolean doUserDataSync(String accountName) throws IOException {
+    private boolean doUserDataSync(SyncResult syncResult, String accountName) throws IOException {
         if (!isOnline()) {
             LOGD(TAG, "Not attempting userdata sync because device is OFFLINE");
             return false;
@@ -308,6 +310,7 @@ public class SyncHelper {
         AbstractUserDataSyncHelper helper = UserDataSyncHelperFactory.buildSyncHelper(
                 mContext, accountName);
         boolean modified = helper.sync();
+
         if (modified) {
             // Schedule notifications for the starred sessions.
             Intent scheduleIntent = new Intent(
@@ -315,6 +318,7 @@ public class SyncHelper {
                     null, mContext, SessionAlarmService.class);
             mContext.startService(scheduleIntent);
         }
+        syncResult.stats.numIoExceptions += helper.getIoExcpetions();
         return modified;
     }
 
@@ -336,7 +340,7 @@ public class SyncHelper {
     }
 
    private static long calculateRecommendedSyncInterval(final Context context) {
-        long now = UIUtils.getCurrentTime(context);
+        long now = TimeUtils.getCurrentTime(context);
         long aroundConferenceStart = Config.CONFERENCE_START_MILLIS
                 - Config.AUTO_SYNC_AROUND_CONFERENCE_THRESH;
         if (now < aroundConferenceStart) {
@@ -348,14 +352,15 @@ public class SyncHelper {
         }
     }
 
-    public static void updateSyncInterval(final Context context, final Account account) {
-        LOGD(TAG, "Checking sync interval for " + account);
+    public static void updateSyncInterval(final Context context) {
+        android.accounts.Account account = Account.getAccount();
+        LOGD(TAG, "Checking sync interval");
         long recommended = calculateRecommendedSyncInterval(context);
         long current = SettingsUtils.getCurSyncInterval(context);
         LOGD(TAG, "Recommended sync interval " + recommended + ", current " + current);
         if (recommended != current) {
             LOGD(TAG,
-                    "Setting up sync for account " + account + ", interval " + recommended + "ms");
+                    "Setting up sync for account, interval " + recommended + "ms");
             ContentResolver.setIsSyncable(account, ScheduleContract.CONTENT_AUTHORITY, 1);
             ContentResolver.setSyncAutomatically(account, ScheduleContract.CONTENT_AUTHORITY, true);
             if (recommended <= 0L) { // Disable periodic sync.
@@ -368,6 +373,39 @@ public class SyncHelper {
             SettingsUtils.setCurSyncInterval(context, recommended);
         } else {
             LOGD(TAG, "No need to update sync interval.");
+        }
+    }
+
+    public static class MinimalRequestLogger implements RequestLogger {
+
+        @Override
+        public boolean isLoggingEnabled() {
+            return true;
+        }
+
+        @Override
+        public void log(final String s) { }
+
+        @Override
+        public void logRequest(final HttpURLConnection urlConnection, final Object o)
+                throws IOException {
+            try {
+                URL url = urlConnection.getURL();
+                LOGW(TAG, "HTTPRequest to " + url.getHost());
+            } catch (Throwable e) {
+                LOGI(TAG, "Exception while logging http request.");
+            }
+
+        }
+
+        @Override
+        public void logResponse(final HttpResponse httpResponse) {
+            try {
+                URL url = new URL(httpResponse.getUrl());
+                LOGW(TAG, "HTTPResponse from " + url.getHost() + " had return status " + httpResponse.getStatus());
+            } catch (Throwable e) {
+                LOGI(TAG, "Exception while logging http response.");
+            }
         }
     }
 }

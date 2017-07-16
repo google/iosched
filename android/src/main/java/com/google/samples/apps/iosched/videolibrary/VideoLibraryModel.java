@@ -16,30 +16,40 @@
 
 package com.google.samples.apps.iosched.videolibrary;
 
-import com.google.common.annotations.VisibleForTesting;
-import com.google.samples.apps.iosched.appwidget.ScheduleWidgetProvider;
-
-import com.google.samples.apps.iosched.framework.Model;
-import com.google.samples.apps.iosched.framework.QueryEnum;
-import com.google.samples.apps.iosched.framework.UserActionEnum;
-import com.google.samples.apps.iosched.provider.ScheduleContract;
-import com.google.samples.apps.iosched.sync.SyncHelper;
-import com.google.samples.apps.iosched.util.AccountUtils;
-import com.google.samples.apps.iosched.util.ParserUtils;
-
-import android.app.Activity;
+import android.app.LoaderManager;
 import android.content.AsyncQueryHandler;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.CursorLoader;
 import android.content.Loader;
 import android.database.Cursor;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.ColorInt;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.text.TextUtils;
 
+import com.google.common.annotations.VisibleForTesting;
+import com.google.samples.apps.iosched.R;
+import com.google.samples.apps.iosched.appwidget.ScheduleWidgetProvider;
+import com.google.samples.apps.iosched.archframework.Model;
+import com.google.samples.apps.iosched.archframework.ModelWithLoaderManager;
+import com.google.samples.apps.iosched.archframework.QueryEnum;
+import com.google.samples.apps.iosched.archframework.UserActionEnum;
+import com.google.samples.apps.iosched.model.TagMetadata;
+import com.google.samples.apps.iosched.provider.ScheduleContract;
+import com.google.samples.apps.iosched.sync.SyncHelper;
+import com.google.samples.apps.iosched.util.AccountUtils;
+import com.google.samples.apps.iosched.util.ParserUtils;
+import com.google.samples.apps.iosched.videolibrary.VideoLibraryModel.VideoLibraryQueryEnum;
+import com.google.samples.apps.iosched.videolibrary.VideoLibraryModel.VideoLibraryUserActionEnum;
+import com.google.samples.apps.iosched.videolibrary.data.Video;
+import com.google.samples.apps.iosched.videolibrary.data.VideoTrack;
+
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashSet;
@@ -52,29 +62,30 @@ import static com.google.samples.apps.iosched.util.LogUtils.makeLogTag;
 
 /**
  * This is an implementation of a {@link Model} that queries data for the Video library feature.
- *
+ * <p/>
  * Two types of Data can be queried: A list of Videos which can be filtered by year and Topic and a
  * list of available years and topics which can be used for filtering.
- *
+ * <p/>
  * The data can be loaded using two queries: {@link VideoLibraryModel.VideoLibraryQueryEnum#VIDEOS}
- * and {@link VideoLibraryModel.VideoLibraryQueryEnum#FILTERS}.
- * The query for videos can be filtered by year and topic. These filters values needs to be set in a
- * {@code Bundle} passed to the {@link #createCursorLoader(int, android.net.Uri, android.os.Bundle)}
- * like this:
- *
- * {@code Bundle args = new Bundle();
- * args.putInt(VideoLibraryModel.KEY_YEAR, selectedYear);
+ * and {@link VideoLibraryModel.VideoLibraryQueryEnum#FILTERS}. The query for videos can be filtered
+ * by year and topic. These filters values needs to be set in a {@code Bundle} passed to the {@link
+ * #createCursorLoader(VideoLibraryQueryEnum, Bundle)}  like this:
+ * <p/>
+ * {@code Bundle args = new Bundle(); args.putInt(VideoLibraryModel.KEY_YEAR, selectedYear);
  * args.putString(VideoLibraryModel.KEY_TOPIC, selectedTopic);}
- *
+ * <p/>
  * Once the data has been loaded it can be retrieved using {@link #getVideos()}, {@link #getYears()}
  * and {@link #getTopics()}.
- *
+ * <p/>
  * The process of loading and reading video library data is typically done in the lifecycle of a
- * {@link com.google.samples.apps.iosched.framework.PresenterFragmentImpl}.
+ * {@link com.google.samples.apps.iosched.archframework.PresenterImpl}.
  */
-public class VideoLibraryModel implements Model {
+public class VideoLibraryModel
+        extends ModelWithLoaderManager<VideoLibraryQueryEnum, VideoLibraryUserActionEnum> {
 
-    private static final String TAG = makeLogTag(VideoLibraryModel.class);
+    public static final int TRACK_ID_NEW = 0;
+
+    public static final int TRACK_ID_KEYNOTES = 1;
 
     protected static final String KEY_YEAR = "com.google.samples.apps.iosched.KEY_YEAR";
 
@@ -88,13 +99,17 @@ public class VideoLibraryModel implements Model {
 
     protected static final String KEYNOTES_TOPIC = "Keynote";
 
-    private final Context mContext;
+    private static final String TAG = makeLogTag(VideoLibraryModel.class);
 
     private List<Integer> mYears;
 
     private List<String> mTopics;
 
-    private List<Video> mVideos;
+    private VideoTrack mKeynoteVideos;
+
+    private VideoTrack mCurrentYearVideos;
+
+    private List<VideoTrack> mVideos;
 
     private Set<String> mViewedVideosIds = new HashSet<>();
 
@@ -102,91 +117,27 @@ public class VideoLibraryModel implements Model {
 
     private String mSelectedTopic = ALL_TOPICS;
 
-    private Activity mActivity;
+    private Context mContext;
 
-    /**
-     * This represent a Video that is pulled from the Video Library.
-     */
-    public static class Video {
+    private Uri mVideoUri;
 
-        final private String mId;
+    private Uri mMyVideosUri;
 
-        final private int mYear;
+    private Uri mFilterUri;
 
-        final private String mTopic;
+    private TagMetadata mTagMetadata;
 
-        final private String mTitle;
-
-        final private String mDesc;
-
-        final private String mVid;
-
-        final private String mSpeakers;
-
-        final private String mThumbnailUrl;
-
-        private boolean mAlreadyPlayed = false;
-
-        public Video(String id, int year, String topic, String title, String desc, String vid,
-                String speakers, String thumbnailUrl) {
-            mId = id;
-            mYear = year;
-            mTopic = topic;
-            mTitle = title;
-            mDesc = desc;
-            mVid = vid;
-            mSpeakers = speakers;
-            mThumbnailUrl = thumbnailUrl;
-        }
-
-        public String getId() {
-            return mId;
-        }
-
-        public int getYear() {
-            return mYear;
-        }
-
-        public String getTopic() {
-            return mTopic;
-        }
-
-        public String getTitle() {
-            return mTitle;
-        }
-
-        public String getDesc() {
-            return mDesc;
-        }
-
-        public String getVid() {
-            return mVid;
-        }
-
-        public String getSpeakers() {
-            return mSpeakers;
-        }
-
-        public String getThumbnailUrl() {
-            return mThumbnailUrl;
-        }
-
-        public boolean getAlreadyPlayed() {
-            return mAlreadyPlayed;
-        }
-
-        public void setAlreadyPlayed(boolean alreadyPlayed) {
-            mAlreadyPlayed = alreadyPlayed;
-        }
-    }
-
-    public VideoLibraryModel(Context context, Activity activity) {
+    public VideoLibraryModel(Context context, LoaderManager loaderManager, Uri videoUri,
+            Uri myVideosUri, Uri filterUri) {
+        super(VideoLibraryQueryEnum.values(), VideoLibraryUserActionEnum.values(), loaderManager);
         mContext = context;
-        mActivity = activity;
+        mVideoUri = videoUri;
+        mMyVideosUri = myVideosUri;
+        mFilterUri = filterUri;
     }
 
-    public void setSelectedYear(int selectedYear) {
-        mSelectedYear = selectedYear;
+    public String getSelectedTopic() {
+        return mSelectedTopic;
     }
 
     public void setSelectedTopic(String selectedTopic) {
@@ -197,17 +148,87 @@ public class VideoLibraryModel implements Model {
         return mSelectedYear;
     }
 
-    public String getSelectedTopic() {
-        return mSelectedTopic;
+    public void setSelectedYear(int selectedYear) {
+        mSelectedYear = selectedYear;
+    }
+
+    public @Nullable String getSelectedTopicImageUrl() {
+        if (mSelectedTopic != null && mTagMetadata != null) {
+            final TagMetadata.Tag tag = mTagMetadata.getTag(mSelectedTopic);
+            if (tag != null) {
+                return tag.getPhotoUrl();
+            }
+        }
+        return null;
+    }
+
+    public @ColorInt int getSelectedTopicColor() {
+        if (mSelectedTopic != null && mTagMetadata != null) {
+            final TagMetadata.Tag tag = mTagMetadata.getTag(mSelectedTopic);
+            if (tag != null) {
+                return tag.getColor();
+            }
+        }
+        return Color.TRANSPARENT;
     }
 
     /**
-     * Returns the list of videos retrieved by the last run of a
-     * {@link VideoLibraryModel.VideoLibraryQueryEnum#VIDEOS} query or {@code null} if no VIDEOS
-     * queries have been ran before.
+     * Returns the keynote {@link VideoTrack} as retrieved by the last run of a {@link
+     * VideoLibraryModel.VideoLibraryQueryEnum#VIDEOS} query or {@code null} if no VIDEOS queries
+     * have been ran before.
      */
-    public List<Video> getVideos() {
+    public VideoTrack getKeynoteVideos() {
+        return mKeynoteVideos;
+    }
+
+    /**
+     * Returns the {@link VideoTrack} listing any videos released this year, as retrieved by the
+     * last run of a {@link VideoLibraryModel.VideoLibraryQueryEnum#VIDEOS} query or {@code null} if
+     * no VIDEOS queries have been ran before.
+     */
+    public VideoTrack getCurrentYearVideos() {
+        return mCurrentYearVideos;
+    }
+
+    /**
+     * Returns the list of {@link VideoTrack}s retrieved by the last run of a {@link
+     * VideoLibraryModel.VideoLibraryQueryEnum#VIDEOS} query or {@code null} if no VIDEOS queries
+     * have been ran before.
+     */
+    public List<VideoTrack> getVideos() {
         return mVideos;
+    }
+
+    /**
+     * Convenience method for retrieving a flat list of <b>all</b> videos retrieved by the last run
+     * of a {@link VideoLibraryModel.VideoLibraryQueryEnum#VIDEOS} query or an empty {@code List} if
+     * no VIDEOS queries have been ran before.
+     *
+     * @return
+     */
+    public List<Video> getAllVideos() {
+        List<Video> allVideos = new ArrayList<>();
+        if (mKeynoteVideos != null && mKeynoteVideos.hasVideos()) {
+            allVideos.addAll(mKeynoteVideos.getVideos());
+        }
+        if (mCurrentYearVideos != null && mCurrentYearVideos.hasVideos()) {
+            allVideos.addAll(mCurrentYearVideos.getVideos());
+        }
+        if (mVideos != null && !mVideos.isEmpty()) {
+            for (final VideoTrack videoTrack : mVideos) {
+                if (videoTrack.hasVideos()) {
+                    allVideos.addAll(videoTrack.getVideos());
+                }
+            }
+        }
+
+        return allVideos;
+    }
+
+    public boolean hasVideos() {
+        return (mVideos != null && !mVideos.isEmpty()) ||
+                (mKeynoteVideos != null && mKeynoteVideos.hasVideos()) ||
+                (mCurrentYearVideos != null && mCurrentYearVideos.hasVideos());
     }
 
     /**
@@ -219,165 +240,311 @@ public class VideoLibraryModel implements Model {
     }
 
     /**
-     * Returns the alphabetically ordered list of years for all videos or {@code null} if the
-     * {@link VideoLibraryModel.VideoLibraryQueryEnum#FILTERS} query have never been ran.
+     * Returns the alphabetically ordered list of years for all videos or {@code null} if the {@link
+     * VideoLibraryModel.VideoLibraryQueryEnum#FILTERS} query have never been ran.
      */
     public List<Integer> getYears() {
         return mYears;
     }
 
     @Override
-    public QueryEnum[] getQueries() {
-        return VideoLibraryQueryEnum.values();
+    public void cleanUp() {
+
     }
 
     @Override
-    public boolean readDataFromCursor(Cursor cursor, QueryEnum query) {
-        LOGD(TAG, "readDataFromCursor");
-        if (query == VideoLibraryQueryEnum.VIDEOS) {
-            LOGD(TAG, "Reading video library collection Data from cursor.");
-            mVideos = new ArrayList<>();
-            if(cursor.moveToFirst()) {
-                do {
-                    // Create Video objects and add to the video list.
-                    Video video = new Video(
-                            cursor.getString(cursor.getColumnIndex(
-                                    ScheduleContract.Videos.VIDEO_ID)),
-                            cursor.getInt(cursor.getColumnIndex(
-                                    ScheduleContract.Videos.VIDEO_YEAR)),
-                            cursor.getString(cursor.getColumnIndex(
-                                    ScheduleContract.Videos.VIDEO_TOPIC)),
-                            cursor.getString(cursor.getColumnIndex(
-                                    ScheduleContract.Videos.VIDEO_TITLE)),
-                            cursor.getString(cursor.getColumnIndex(
-                                    ScheduleContract.Videos.VIDEO_DESC)),
-                            cursor.getString(cursor.getColumnIndex(
-                                    ScheduleContract.Videos.VIDEO_VID)),
-                            cursor.getString(cursor.getColumnIndex(
-                                    ScheduleContract.Videos.VIDEO_SPEAKERS)),
-                            cursor.getString(cursor.getColumnIndex(
-                                    ScheduleContract.Videos.VIDEO_THUMBNAIL_URL)));
-                    mVideos.add(video);
-                } while (cursor.moveToNext());
-                markVideosAsViewed();
-            }
-            return true;
-        } else if (query == VideoLibraryQueryEnum.MY_VIEWED_VIDEOS) {
-            LOGD(TAG, "Reading my viewed videos Data from cursor.");
-            if(cursor.moveToFirst()) {
-                Set<String> viewedVideoIds = new HashSet<>();
-                do {
-                    viewedVideoIds.add(cursor.getString(cursor.getColumnIndex(
-                            ScheduleContract.MyViewedVideos.VIDEO_ID)));
-                } while (cursor.moveToNext());
+    public void processUserAction(final VideoLibraryUserActionEnum action,
+            @Nullable final Bundle args, final UserActionCallback callback) {
+        switch (action) {
+            case VIDEO_PLAYED:
+                // If the action is a VIDEO_VIEWED we save the information that the video has
+                // been viewed by the user in AppData.
+                if (args != null && args.containsKey(KEY_VIDEO_ID)) {
+                    String playedVideoId = args.getString(KEY_VIDEO_ID);
 
-                if (!mViewedVideosIds.containsAll(viewedVideoIds)) {
-                    mViewedVideosIds = viewedVideoIds;
+                    LOGD(TAG, "setVideoViewed id=" + playedVideoId);
+                    Uri myPlayedVideoUri = ScheduleContract.MyViewedVideos.buildMyViewedVideosUri(
+                            AccountUtils.getActiveAccountName(mContext));
+
+                    AsyncQueryHandler handler =
+                            new AsyncQueryHandler(mContext.getContentResolver()) {};
+                    final ContentValues values = new ContentValues();
+                    values.put(ScheduleContract.MyViewedVideos.VIDEO_ID, playedVideoId);
+                    handler.startInsert(-1, null, myPlayedVideoUri, values);
+
+                    // Because change listener is set to null during initialization, these
+                    // won't fire on pageview.
+                    mContext.sendBroadcast(
+                            ScheduleWidgetProvider.getRefreshBroadcastIntent(mContext,
+                                    false));
+
+                    // Request an immediate user data sync to reflect the viewed video in the cloud.
+                    SyncHelper.requestManualSync(true);
+                } else {
+                    LOGE(TAG,
+                            "The VideoLibraryUserActionEnum.VIDEO_VIEWED action was called " +
+                                    "without a "
+                                    + "proper Bundle.");
+                }
+                break;
+        }
+    }
+
+    @Override
+    public Loader<Cursor> createCursorLoader(final VideoLibraryQueryEnum query,
+            final Bundle args) {
+        CursorLoader loader = null;
+        switch (query) {
+            case VIDEOS:
+                ArrayList<String> selectionArgs = new ArrayList<>();
+                ArrayList<String> selectionClauses = new ArrayList<>();
+
+                // Extract possible filter values from the Bundle.
+                if (args != null && args.containsKey(KEY_YEAR)) {
+                    mSelectedYear = args.getInt(KEY_YEAR);
+                }
+                if (args != null && args.containsKey(KEY_TOPIC)) {
+                    mSelectedTopic = args.getString(KEY_TOPIC);
+                }
+
+                // If filter values have been set we add the filter clause to the Loader.
+                if (mSelectedYear > ALL_YEARS) {
+                    selectionClauses.add(ScheduleContract.Videos.VIDEO_YEAR + "=?");
+                    selectionArgs.add(Integer.toString(mSelectedYear));
+                }
+                if (mSelectedTopic != null && !mSelectedTopic.equals(ALL_TOPICS)) {
+                    selectionClauses.add(ScheduleContract.Videos.VIDEO_TOPIC + "=?");
+                    selectionArgs.add(mSelectedTopic);
+                }
+                String selection = selectionClauses.isEmpty() ? null :
+                        ParserUtils.joinStrings(" AND ", selectionClauses, null);
+                String[] selectionArgsArray =
+                        selectionArgs.isEmpty() ? null : selectionArgs.toArray(
+                                new String[selectionArgs.size()]);
+
+                LOGD(TAG,
+                        "Starting videos query, selection=" + selection + " (year=" + mSelectedYear
+                                + ", topic=" + mSelectedTopic);
+
+                // Create and return the Loader.
+                loader = getCursorLoaderInstance(mContext, mVideoUri,
+                        VideoLibraryQueryEnum.VIDEOS.getProjection(), selection, selectionArgsArray,
+                        ScheduleContract.Videos.DEFAULT_SORT);
+                break;
+            case FILTERS:
+                LOGD(TAG, "Starting Video Filters query");
+                loader = getCursorLoaderInstance(mContext, mFilterUri,
+                        VideoLibraryQueryEnum.FILTERS.getProjection(), null, null, null);
+                break;
+            case MY_VIEWED_VIDEOS:
+                LOGD(TAG, "Starting My Viewed Videos query");
+                loader = getCursorLoaderInstance(mContext, mMyVideosUri,
+                        VideoLibraryQueryEnum.MY_VIEWED_VIDEOS.getProjection(), null, null, null);
+                break;
+            case TAGS:
+                loader = TagMetadata.createCursorLoader(mContext);
+        }
+
+        return loader;
+    }
+
+    @Override
+    public boolean readDataFromCursor(final Cursor cursor, final VideoLibraryQueryEnum query) {
+        LOGD(TAG, "readDataFromCursor");
+        switch (query) {
+            case VIDEOS:
+                LOGD(TAG, "Reading video library collection Data from cursor.");
+                if (cursor.moveToFirst()) {
+                    processVideos(cursor);
+                    markVideosAsViewed();
+                }
+                return true;
+
+            case MY_VIEWED_VIDEOS:
+                LOGD(TAG, "Reading my viewed videos Data from cursor.");
+                mViewedVideosIds.clear();
+                if (cursor.moveToFirst()) {
+                    do {
+                        mViewedVideosIds.add(cursor.getString(cursor.getColumnIndex(
+                                ScheduleContract.MyViewedVideos.VIDEO_ID)));
+                    } while (cursor.moveToNext());
+
                     markVideosAsViewed();
                     return true;
                 }
-            }
-            return false;
-        } else if (query == VideoLibraryQueryEnum.FILTERS) {
+                return true;
+            case FILTERS:
 
-            // Read all the Years and Topics from the Cursor.
-            LOGD(TAG, "Reading video library collection Data from cursor.");
-            mYears = new ArrayList<>();
-            mTopics = new ArrayList<>();
-            if (cursor.moveToFirst()) {
-                do {
-                    int year = cursor.getInt(
-                            cursor.getColumnIndex(ScheduleContract.Videos.VIDEO_YEAR));
-                    String topic = cursor.getString(
-                            cursor.getColumnIndex(ScheduleContract.Videos.VIDEO_TOPIC));
+                // Read all the Years and Topics from the Cursor.
+                LOGD(TAG, "Reading video library collection Data from cursor.");
+                mYears = new ArrayList<>();
+                mTopics = new ArrayList<>();
+                if (cursor != null && cursor.moveToFirst()) {
+                    do {
+                        int year = cursor.getInt(
+                                cursor.getColumnIndex(ScheduleContract.Videos.VIDEO_YEAR));
+                        String topic = cursor.getString(
+                                cursor.getColumnIndex(ScheduleContract.Videos.VIDEO_TOPIC));
 
-                    // Build a list of unique Years and Topics.
-                    if (!mYears.contains(year)) {
-                        mYears.add(year);
-                    }
-                    if (!TextUtils.isEmpty(topic) && !mTopics.contains(topic)) {
-                        mTopics.add(topic);
-                    }
-                } while (cursor.moveToNext());
-            }
-
-            // Sort years in decreasing order (start with most recent).
-            Collections.sort(mYears, new Comparator<Integer>() {
-                @Override
-                public int compare(Integer a, Integer b) {
-                    return b.compareTo(a);
+                        // Build a list of unique Years and Topics.
+                        if (!mYears.contains(year)) {
+                            mYears.add(year);
+                        }
+                        if (!TextUtils.isEmpty(topic) && !mTopics.contains(topic)) {
+                            mTopics.add(topic);
+                        }
+                    } while (cursor.moveToNext());
                 }
-            });
-            Collections.sort(mTopics);
-            return true;
+
+                // Sort years in decreasing order (start with most recent).
+                Collections.sort(mYears, new Comparator<Integer>() {
+                    @Override
+                    public int compare(Integer a, Integer b) {
+                        return b.compareTo(a);
+                    }
+                });
+                Collections.sort(mTopics);
+                return true;
+            case TAGS:
+                mTagMetadata = new TagMetadata(cursor);
+                addImageUrlToVideoTracksIfAvailable();
+                return true;
+            default:
+                return false;
         }
-        return false;
+    }
+
+    private void addImageUrlToVideoTracksIfAvailable() {
+        if (mTagMetadata != null) {
+            if (mKeynoteVideos != null) {
+                mKeynoteVideos.setTrackImageUrlIfAvailable(mTagMetadata);
+            }
+            if (mCurrentYearVideos != null) {
+                mCurrentYearVideos.setTrackImageUrlIfAvailable(mTagMetadata);
+            }
+            if (mVideos != null) {
+                for (VideoTrack track : mVideos) {
+                    track.setTrackImageUrlIfAvailable(mTagMetadata);
+                }
+            }
+        }
+    }
+
+    /**
+     * Populate the model objects (mKeynoteVideos, mCurrentYearVideos & mVideos) from the given
+     * cursor. Note we assume that the data is already sorted by track (per {@link
+     * ScheduleContract.Videos#DEFAULT_SORT}).
+     *
+     * @param cursor The cursor to read data from.
+     */
+    private void processVideos(final Cursor cursor) {
+        final int currentYear = Calendar.getInstance().get(Calendar.YEAR);
+        String currentTrack = null;
+        List<Video> keynoteVideos = new ArrayList<>();
+        List<Video> twentySixteenVideos = new ArrayList<>();
+        List<Video> currentTrackVideos = new ArrayList<>();
+        List<VideoTrack> videoTracks = new ArrayList<>();
+
+        do {
+            final Video video = readVideo(cursor);
+            final String track = video.getTopic();
+            if (track == null) {
+                continue;
+            }
+
+            // Special handling for keynotes & videos from this year
+            if (KEYNOTES_TOPIC.equals(track)) {
+                keynoteVideos.add(video);
+            } else if (video.getYear() == currentYear) {
+                twentySixteenVideos.add(video);
+            } else {
+                // Otherwise group by track
+                if (!track.equals(currentTrack)) {
+                    // New track reached, store current track and update working vars
+                    if (!currentTrackVideos.isEmpty()) {
+                        videoTracks.add(new VideoTrack(currentTrack,
+                                currentTrack.hashCode(), currentTrackVideos));
+                    }
+                    currentTrack = track;
+                    currentTrackVideos = new ArrayList<>();
+                }
+                currentTrackVideos.add(video);
+            }
+        } while (cursor.moveToNext());
+
+        // After looping there should be one populated track not added to the list
+        if (!currentTrackVideos.isEmpty()) {
+            videoTracks.add(
+                    new VideoTrack(currentTrack, currentTrack.hashCode(), currentTrackVideos));
+        }
+        // Store the (non keynote or current year) video tracks
+        mVideos = videoTracks;
+
+        // Store any videos from this year
+        if (!twentySixteenVideos.isEmpty()) {
+            final String newThisYear = mContext.getString(R.string.new_videos_title, currentYear);
+            mCurrentYearVideos = new VideoTrack(newThisYear, TRACK_ID_NEW, twentySixteenVideos);
+        }
+
+        // Store any keynote videos
+        if (!keynoteVideos.isEmpty()) {
+            mKeynoteVideos = new VideoTrack(KEYNOTES_TOPIC, TRACK_ID_KEYNOTES, keynoteVideos);
+        }
+
+        addImageUrlToVideoTracksIfAvailable();
+    }
+
+    /**
+     * Create a single {@link Video} object form the given cursor.
+     */
+    private
+    @NonNull
+    Video readVideo(final Cursor cursor) {
+        return new Video(
+                cursor.getString(cursor.getColumnIndex(
+                        ScheduleContract.Videos.VIDEO_ID)),
+                cursor.getInt(cursor.getColumnIndex(
+                        ScheduleContract.Videos.VIDEO_YEAR)),
+                cursor.getString(cursor.getColumnIndex(
+                        ScheduleContract.Videos.VIDEO_TOPIC)),
+                cursor.getString(cursor.getColumnIndex(
+                        ScheduleContract.Videos.VIDEO_TITLE)),
+                cursor.getString(cursor.getColumnIndex(
+                        ScheduleContract.Videos.VIDEO_DESC)),
+                cursor.getString(cursor.getColumnIndex(
+                        ScheduleContract.Videos.VIDEO_VID)),
+                cursor.getString(cursor.getColumnIndex(
+                        ScheduleContract.Videos.VIDEO_SPEAKERS)),
+                cursor.getString(cursor.getColumnIndex(
+                        ScheduleContract.Videos.VIDEO_THUMBNAIL_URL)));
     }
 
     /**
      * Mark videos as viewed if they are listed in {@code mViewedVideosIds}.
      */
     private void markVideosAsViewed() {
-        if (mVideos == null || mViewedVideosIds == null) {
+        if (mViewedVideosIds == null) {
             return;
         }
-        for (Video video : mVideos) {
-            if (mViewedVideosIds.contains(video.getId())) {
-                video.setAlreadyPlayed(true);
+        if (mKeynoteVideos != null && mKeynoteVideos.getVideos() != null) {
+            for (Video video : mKeynoteVideos.getVideos()) {
+                video.setAlreadyPlayed(mViewedVideosIds.contains(video.getId()));
             }
         }
-    }
-
-    @Override
-    public Loader<Cursor> createCursorLoader(int loaderId, Uri uri, @Nullable Bundle args) {
-        CursorLoader loader = null;
-
-        if (loaderId == VideoLibraryQueryEnum.VIDEOS.getId()) {
-
-            ArrayList<String> selectionArgs = new ArrayList<>();
-            ArrayList<String> selectionClauses = new ArrayList<>();
-
-            // Extract possible filter values from the Bundle.
-            if (args != null && args.containsKey(KEY_YEAR)) {
-                mSelectedYear = args.getInt(KEY_YEAR);
+        if (mCurrentYearVideos != null && mCurrentYearVideos.getVideos() != null) {
+            for (Video video : mCurrentYearVideos.getVideos()) {
+                video.setAlreadyPlayed(mViewedVideosIds.contains(video.getId()));
             }
-            if (args != null && args.containsKey(KEY_TOPIC)) {
-                mSelectedTopic = args.getString(KEY_TOPIC);
-            }
-
-            // If filter values have been set we add the filter clause to the Loader.
-            if (mSelectedYear > ALL_YEARS) {
-                selectionClauses.add(ScheduleContract.Videos.VIDEO_YEAR + "=?");
-                selectionArgs.add(Integer.toString(mSelectedYear));
-            }
-            if (mSelectedTopic != null && !mSelectedTopic.equals(ALL_TOPICS)) {
-                selectionClauses.add(ScheduleContract.Videos.VIDEO_TOPIC + "=?");
-                selectionArgs.add(mSelectedTopic);
-            }
-            String selection = selectionClauses.isEmpty() ? null :
-                    ParserUtils.joinStrings(" AND ", selectionClauses, null);
-            String[] selectionArgsArray = selectionArgs.isEmpty() ? null : selectionArgs.toArray(
-                    new String[selectionArgs.size()]);
-
-            LOGD(TAG, "Starting videos query, selection=" + selection + " (year=" + mSelectedYear
-                    + ", topic=" + mSelectedTopic);
-
-            // Create and return the Loader.
-            loader = getCursorLoaderInstance(mContext, uri,
-                    VideoLibraryQueryEnum.VIDEOS.getProjection(), selection, selectionArgsArray,
-                    ScheduleContract.Videos.DEFAULT_SORT);
-        } else if (loaderId == VideoLibraryQueryEnum.FILTERS.getId()) {
-            LOGD(TAG, "Starting Video Filters query");
-            loader = getCursorLoaderInstance(mContext, uri,
-                    VideoLibraryQueryEnum.FILTERS.getProjection(), null, null, null);
-        } else if (loaderId == VideoLibraryQueryEnum.MY_VIEWED_VIDEOS.getId()) {
-            LOGD(TAG, "Starting My Viewed Videos query");
-            loader = getCursorLoaderInstance(mContext, uri,
-                    VideoLibraryQueryEnum.MY_VIEWED_VIDEOS.getProjection(), null, null, null);
-        } else {
-            LOGE(TAG, "Invalid query loaderId: " + loaderId);
         }
-        return loader;
+        if (mVideos != null && !mVideos.isEmpty()) {
+            for (final VideoTrack videoTrack : mVideos) {
+                if (videoTrack.getVideos() != null) {
+                    for (final Video video : videoTrack.getVideos()) {
+                        video.setAlreadyPlayed(mViewedVideosIds.contains(video.getId()));
+                    }
+                }
+            }
+        }
     }
 
     @VisibleForTesting
@@ -386,56 +553,21 @@ public class VideoLibraryModel implements Model {
         return new CursorLoader(context, uri, projection, selection, selectionArgs, sortOrder);
     }
 
-    @Override
-    public boolean requestModelUpdate(UserActionEnum action, @Nullable Bundle args) {
-        // If the action is a VIDEO_VIEWED we save the information that the video has been viewed by
-        // the user in AppData.
-        if (action.equals(VideoLibraryUserActionEnum.VIDEO_PLAYED)) {
-            if (args != null && args.containsKey(KEY_VIDEO_ID)) {
-                String playedVideoId = args.getString(KEY_VIDEO_ID);
-
-                LOGD(TAG, "setVideoViewed id=" + playedVideoId);
-                Uri myPlayedVideoUri = ScheduleContract.MyViewedVideos.buildMyViewedVideosUri(
-                        AccountUtils.getActiveAccountName(mActivity));
-
-                AsyncQueryHandler handler =
-                        new AsyncQueryHandler(mActivity.getContentResolver()) {};
-                final ContentValues values = new ContentValues();
-                values.put(ScheduleContract.MyViewedVideos.VIDEO_ID, playedVideoId);
-                handler.startInsert(-1, null, myPlayedVideoUri, values);
-
-                // Because change listener is set to null during initialization, these
-                // won't fire on pageview.
-                mActivity.sendBroadcast(ScheduleWidgetProvider.getRefreshBroadcastIntent(mActivity,
-                        false));
-
-                // Request an immediate user data sync to reflect the viewed video in the cloud.
-                SyncHelper.requestManualSync(AccountUtils.getActiveAccount(mActivity), true);
-            } else {
-                LOGE(TAG, "The VideoLibraryUserActionEnum.VIDEO_VIEWED action was called without a "
-                        + "proper Bundle.");
-                return false;
-            }
-        }
-        return true;
-    }
-
     /**
      * Enumeration of the possible queries that can be done by this Model to retrieve data.
      */
-    public static enum VideoLibraryQueryEnum implements QueryEnum {
+    public enum VideoLibraryQueryEnum implements QueryEnum {
 
         /**
          * Query that retrieves a list of available videos.
-         *
+         * <p/>
          * The query for videos can be filtered by year and topic. These filters values needs to be
-         * set in a {@code Bundle} passed to the
-         * {@link #createCursorLoader(int, android.net.Uri, android.os.Bundle)} like this:
-         *
-         * {@code Bundle args = new Bundle();
-         * args.putInt(VideoLibraryModel.KEY_YEAR, selectedYear);
+         * set in a {@code Bundle} passed to the {@link #createCursorLoader(VideoLibraryQueryEnum,
+         * Bundle)} like this:
+         * <p/>
+         * {@code Bundle args = new Bundle(); args.putInt(VideoLibraryModel.KEY_YEAR, selectedYear);
          * args.putString(VideoLibraryModel.KEY_TOPIC, selectedTopic);}
-         *
+         * <p/>
          * Once the data has been loaded it can be retrieved using {@link #getVideos()}.
          */
         VIDEOS(0x1, new String[]{
@@ -451,7 +583,7 @@ public class VideoLibraryModel implements Model {
 
         /**
          * Query that retrieves a list of already viewed videos.
-         *
+         * <p/>
          * Once the data has been loaded it can be retrieved using {@link #getVideos()}.
          */
         MY_VIEWED_VIDEOS(0x2, new String[]{
@@ -461,14 +593,19 @@ public class VideoLibraryModel implements Model {
         /**
          * Query that retrieves the list of possible filter values such as all Years and Topics of
          * existing videos.
-         *
-         * Once the data has been loaded it can be retrieved using {@link #getYears()} and
-         * {@link #getTopics()}.
+         * <p/>
+         * Once the data has been loaded it can be retrieved using {@link #getYears()} and {@link
+         * #getTopics()}.
          */
         FILTERS(0x3, new String[]{
                 ScheduleContract.Videos.VIDEO_YEAR,
                 ScheduleContract.Videos.VIDEO_TOPIC
-        });
+        }),
+
+        /**
+         * Query that retrieves all the possible tags
+         */
+        TAGS(0x4, null);
 
         private int id;
 
@@ -491,10 +628,10 @@ public class VideoLibraryModel implements Model {
     }
 
     /**
-     * Enumeration of the possible events that a user can trigger that would affect the state of
-     * the date of this Model.
+     * Enumeration of the possible events that a user can trigger that would affect the state of the
+     * date of this Model.
      */
-    public static enum VideoLibraryUserActionEnum implements UserActionEnum {
+    public enum VideoLibraryUserActionEnum implements UserActionEnum {
 
         /**
          * Event that is triggered when a user changes the filters of the Video Library. For
@@ -503,16 +640,15 @@ public class VideoLibraryModel implements Model {
         CHANGE_FILTER(1),
 
         /**
-         * Event that is triggered when a user re-enters the video library this triggers a reload
-         * so that we can display another set of randomly selected videos.
-         */
-        RELOAD(2),
-
-        /**
          * Event that is triggered when a user clicks on a video to play it. We save that
          * information because we grey out videos that have been played already.
          */
-        VIDEO_PLAYED(3);
+        VIDEO_PLAYED(2),
+
+        /**
+         * Event that is triggered when a user changes the account.
+         */
+        RELOAD_USER_VIDEOS(3);
 
         private int id;
 
