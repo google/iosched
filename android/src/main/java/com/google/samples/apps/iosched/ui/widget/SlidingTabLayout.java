@@ -34,16 +34,16 @@ import android.widget.TextView;
 /**
  * To be used with ViewPager to provide a tab indicator component which give constant feedback as to
  * the user's scroll progress.
- * <p>
+ * <p/>
  * To use the component, simply add it to your view hierarchy. Then in your
  * {@link android.app.Activity} or {@link android.support.v4.app.Fragment} call
  * {@link #setViewPager(ViewPager)} providing it the ViewPager this layout is being used for.
- * <p>
+ * <p/>
  * The colors can be customized in two ways. The first and simplest is to provide an array of colors
  * via {@link #setSelectedIndicatorColors(int...)}. The
  * alternative is via the {@link TabColorizer} interface which provides you complete control over
  * which color is used for any individual position.
- * <p>
+ * <p/>
  * The views used as tabs can be customized by calling {@link #setCustomTabView(int, int)},
  * providing the layout ID of your custom layout.
  */
@@ -101,7 +101,7 @@ public class SlidingTabLayout extends HorizontalScrollView {
 
     /**
      * Set the custom {@link TabColorizer} to be used.
-     *
+     * <p/>
      * If you only require simple custmisation then you can use
      * {@link #setSelectedIndicatorColors(int...)} to achieve
      * similar effects.
@@ -137,7 +137,7 @@ public class SlidingTabLayout extends HorizontalScrollView {
      * Set the custom layout to be inflated for the tab views.
      *
      * @param layoutResId Layout id to be inflated
-     * @param textViewId id of the {@link TextView} in the inflated view
+     * @param textViewId  id of the {@link TextView} in the inflated view
      */
     public void setCustomTabView(int layoutResId, int textViewId) {
         mTabViewLayoutId = layoutResId;
@@ -297,7 +297,10 @@ public class SlidingTabLayout extends HorizontalScrollView {
                 scrollToTab(position, 0);
             }
             for (int i = 0; i < mTabStrip.getChildCount(); i++) {
-                mTabStrip.getChildAt(i).setSelected(position == i);
+                View v = mTabStrip.getChildAt(i);
+                boolean isPosition = i == position;
+                v.setSelected(isPosition);
+                invokeTabTextChangeNotify(v, i, isPosition);
             }
             if (mViewPagerPageChangeListener != null) {
                 mViewPagerPageChangeListener.onPageSelected(position);
@@ -316,6 +319,44 @@ public class SlidingTabLayout extends HorizontalScrollView {
                 }
             }
         }
+    }
+
+    private TabTextChangeListener mTabTextChangeListener;
+
+    private void invokeTabTextChangeNotify(View view, int position, boolean isSelected) {
+        if (mTabTextChangeListener != null) {
+            CharSequence afterText = mTabTextChangeListener.tabTextChange(position, isSelected);
+            if (afterText != null) {
+                ((TextView) view.findViewById(mTabViewTextViewId)).setText(afterText);
+            }
+        }
+    }
+
+    /**
+     * Set the {@link TabTextChangeListener}. When using {@link SlidingTabLayout} you are required
+     * to change Tab Header Text dynamically.
+     *
+     * @param listener {@link TabTextChangeListener}
+     */
+    public void setTabTextChangeListener(TabTextChangeListener listener) {
+        mTabTextChangeListener = listener;
+    }
+
+    /**
+     * Allow Tab Header Text change dynamically when Swiped or Tab Clicked
+     * {@link #setTabTextChangeListener}
+     */
+    public interface TabTextChangeListener {
+
+        /**
+         * Set Tab Header Text.
+         * This is callback method when Swiped or Tab Clicked.
+         *
+         * @param position   selected/unselected position
+         * @param isSelected position's selected/unselected
+         * @return return TabText (null OK. then not Tab Text change)
+         */
+        CharSequence tabTextChange(int position, boolean isSelected);
     }
 
 }
