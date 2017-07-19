@@ -13,23 +13,39 @@
 # limitations under the License.
 
 language: android
+# Turn off caching to avoid any caching problems
+cache: false
+# Use the Travis Container-Based Infrastructure (see #203)
+sudo: false
+env:
+  global:
+    - ANDROID_API_LEVEL=21
+    - ANDROID_BUILD_TOOLS_VERSION=21.1.2
+    - ANDROID_ABI=google_apis/armeabi-v7a
 
 android:
   components:
-    - build-tools-21.1.2
-    - android-21
-    - addon-google_apis-google-21
+    - platform-tools
+    - tools
+    - build-tools-$ANDROID_BUILD_TOOLS_VERSION
+    - android-$ANDROID_API_LEVEL
+    # For Google Maps API v1
+    - addon-google_apis-google-$ANDROID_API_LEVEL
+    # Google Play Services
+    - extra-google-google_play_services
+    # Support library
+    - extra-android-support
+    # Latest artifacts in local repository
     - extra-google-m2repository
     - extra-android-m2repository
-    - sys-img-armeabi-v7a-addon-google_apis-google-21
-
-notifications:
-  email: false
-
-before_install:
-  - echo no | android create avd --force -n test -t "Google Inc.:Google APIs:21" --abi google_apis/armeabi-v7a
-  - emulator -avd test -no-skin -no-audio -no-window &
+    # Specify at least one system image,
+    - sys-img-armeabi-v7a-addon-google_apis-google-$ANDROID_API_LEVEL
 
 before_script:
-  - ./scripts/wait_for_emulator.sh
-  - adb shell input keyevent 82 &
+  # Create and start emulator
+  - echo no | android create avd --force -n test -t "Google Inc.:Google APIs:"$ANDROID_API_LEVEL --abi $ANDROID_ABI
+  - emulator -avd test -no-skin -no-audio -no-window &
+
+script:
+  - ./wait_for_emulator
+  - ./gradlew connectedCheck -PdisablePreDex
