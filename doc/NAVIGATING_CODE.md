@@ -32,13 +32,12 @@ emulator to be run.
 
 The main packages are:
 
-+ **archframework**: classes used for the mvp framework. [Refer to the MVP Framework doc]
-(MVP_FRAMEWORK.md).
++ **archframework**: classes used for the mvp framework. [Refer to the MVP Framework doc](MVP_FRAMEWORK.md).
 + **explore**: the *explore* feature. This is the home screen for the app, and it also accessible
 from the navigation drawer.
 + **feedback**: the *session feedback* feature, where the user can provide feedback for a session.
 This feature is accessible from various other screens.
-+ **gcm**: this handles the notifications received by the backend. [Refer to the GCM doc] (GCM.md).
++ **gcm**: this handles the notifications received by the backend. [Refer to the GCM doc](GCM.md).
 + **io**: this handles the conversion of the json from the backend into POJOs. It uses the 
 Gson library.
 + **map**: the *map* feature.
@@ -46,10 +45,10 @@ Gson library.
 + **provider**: the content provider and contract used for all the data in the app.
 + **session**: the *session details* feature. This is accessible when selecting a session from 
 either *explore* or *schedule* features. Sessions that the user views are indexed using the [App 
-Indexing API] (https://developers.google.com/app-indexing/introduction#android), and will appear as 
+Indexing API](https://developers.google.com/app-indexing/introduction#android), and will appear as 
 search suggestions in the Google app.
 + **sync**: this contains all the logic to handle the *backend sync* of the data. [Refer to the sync 
-doc] (SYNC.md).
+doc](SYNC.md).
 + **ui**: contains custom Activities which are extended and used by different features, as well as 
 custom views which are also used by different features.
 + **videolibrary**: the *video library* feature. This is accessible from the navigation drawer.
@@ -66,5 +65,4 @@ test. An example would be "SessionDetailActivity_KeynoteSessionTest".
 + **test methods**: for unit tests, they are named following the 
 *MethodUnderTest_DataType_ExpectedResult* convention. For UI tests, they are named following the 
 *ViewUnderTest_ActionOnView_ExpectedResult*. Note that *ActionOnView* may be omitted for some tests.
-+ **UI tests**: UI tests are written using the [Android Testing Support Library]
- (https://google.github.io/android-testing-support-library/).
++ **UI tests**: UI tests are written using the [Android Testing Support Library](https://google.github.io/android-testing-support-library/).
