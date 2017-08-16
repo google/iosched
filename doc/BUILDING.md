@@ -26,13 +26,13 @@ This is a Gradle-based project that works best with
 
 To build the app:
 
-1. Install the following software:
-       - Android SDK:
-         http://developer.android.com/sdk/index.html
-       - Gradle:
-         http://www.gradle.org/downloads
-       - Android Studio:
-         http://developer.android.com/sdk/installing/studio.html
+1. Install the following software: 
+    - Android SDK:
+    http://developer.android.com/sdk/index.html
+    - Gradle:
+    http://www.gradle.org/downloads
+    - Android Studio:
+    http://developer.android.com/sdk/installing/studio.html
 
 1. Run the Android SDK Manager by pressing the SDK Manager toolbar button
    in Android Studio or by running the 'android' command in a terminal
@@ -40,15 +40,15 @@ To build the app:
 
 1. In the Android SDK Manager, ensure that the following are installed,
    and are updated to the latest available version:
-       - Tools > Android SDK Platform-tools
-       - Tools > Android SDK Tools
-       - Tools > Android SDK Build-tools
-       - Tools > Android SDK Build-tools
-       - Android 6.0 > SDK Platform (API 23)
-       - Extras > Android Support Repository
-       - Extras > Android Support Library
-       - Extras > Google Play services
-       - Extras > Google Repository
+   - Tools > Android SDK Platform-tools
+   - Tools > Android SDK Tools
+   - Tools > Android SDK Build-tools
+   - Tools > Android SDK Build-tools
+   - Android 6.0 > SDK Platform (API 23)
+   - Extras > Android Support Repository
+   - Extras > Android Support Library
+   - Extras > Google Play services
+   - Extras > Google Repository
 
 1. Create a file in your working directory called local.properties,
    containing the path to your Android SDK. Use local.properties.example as a
