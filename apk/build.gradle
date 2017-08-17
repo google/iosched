@@ -19,9 +19,6 @@ apply plugin: 'jacoco'
 repositories {
     mavenCentral()
     flatDir {
-        dirs 'libs'
-    }
-    flatDir {
         dirs '../third_party/AndroidSlidingUpPanel/libs/'
     }
     flatDir {

@@ -19,9 +19,6 @@ apply plugin: 'jacoco'
 repositories {
     mavenCentral()
     flatDir {
-        dirs 'libs'
-    }
-    flatDir {
         dirs '../third_party/AndroidSlidingUpPanel/libs/'
     }
     flatDir {
@@ -229,9 +226,6 @@ configurations {
 }
 
 dependencies {
-    // Include libraries checked into the libs directory.
-    compile fileTree(dir: 'libs', include: '*.jar')
-
     // Backend server
     compile project(path: ':server', configuration: 'android-endpoints')
 
@@ -267,6 +261,9 @@ dependencies {
 
     // JSON utility library.
     compile 'com.google.code.gson:gson:2.8.0'
+
+    // YouTube client library
+    compile files('../third_party/youtube/libs/YouTubeAndroidPlayerApi.jar')
 
     // Glide library, used to handle asynchronous loading and caching of images.
     compile 'com.github.bumptech.glide:glide:3.7.0'
