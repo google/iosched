@@ -11,7 +11,7 @@ and sizes.
 
 <h2>Source</h2>
 
-The source code in this repository reflects the app as of I/O 2016.
+The source code in this repository reflects the app as of I/O 2017.
 
 <h2>Features</h2>
 
