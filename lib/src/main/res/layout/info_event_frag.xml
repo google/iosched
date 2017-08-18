@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="utf-8"?><!--
+  Copyright 2017 Google Inc. All rights reserved.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+       http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+  -->
+<android.support.v4.widget.NestedScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:scrollbarStyle="insideOverlay"
+    android:scrollbars="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:paddingBottom="@dimen/spacing_normal"
+        android:paddingTop="@dimen/spacing_large">
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:focusable="true">
+
+            <TextView
+                android:id="@+id/wifi_network_label"
+                style="@style/Info.WifiSetup.Label"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="start"
+                android:paddingEnd="@dimen/padding_normal"
+                android:paddingStart="@dimen/padding_normal"
+                android:text="@string/wifi_network_label" />
+
+            <TextView
+                android:id="@+id/wifi_network_value"
+                style="@style/Info.WifiSetup"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="end"
+                android:paddingEnd="@dimen/padding_normal"
+                android:paddingStart="@dimen/padding_normal"
+                tools:text="IO2017" />
+        </FrameLayout>
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:focusable="true">
+
+            <TextView
+                android:id="@+id/wifi_password_label"
+                style="@style/Info.WifiSetup.Label"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="start"
+                android:layout_marginTop="@dimen/padding_normal"
+                android:paddingEnd="@dimen/padding_normal"
+                android:paddingStart="@dimen/padding_normal"
+                android:text="@string/wifi_password_label" />
+
+            <TextView
+                android:id="@+id/wifi_password_value"
+                style="@style/Info.WifiSetup"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="end"
+                android:layout_marginTop="@dimen/padding_normal"
+                android:drawablePadding="@dimen/spacing_normal"
+                android:paddingEnd="@dimen/padding_normal"
+                android:paddingStart="@dimen/padding_normal"
+                tools:text="inputoutput" />
+        </FrameLayout>
+
+        <Button
+            android:id="@+id/wifi_save"
+            style="@style/Widget.AppCompat.Button.Borderless.Colored"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingEnd="@dimen/padding_normal"
+            android:paddingStart="@dimen/padding_normal"
+            android:text="@string/setup_wifi" />
+
+        <com.google.samples.apps.iosched.info.event.EventView
+            android:id="@+id/sandbox_event"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/padding_normal"
+            app:boxColor="@color/neon_blue"
+            app:eventIcon="@drawable/ic_sandbox"
+            app:eventTitle="@string/event_sandbox_title" />
+
+        <com.google.samples.apps.iosched.info.event.EventView
+            android:id="@+id/codelabs_event"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:boxColor="@color/aqua_marine"
+            app:eventIcon="@drawable/ic_codelab"
+            app:eventTitle="@string/event_codelabs_title"
+            app:sessionsText="@string/view_codelabs_text"
+            app:mapLinkUri="@string/view_codelabs_map_url"
+            app:scheduleFilterTag="@string/codelabs_filter_tag" />
+
+        <com.google.samples.apps.iosched.info.event.EventView
+            android:id="@+id/officehours_event"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:boxColor="@color/off_white"
+            app:eventIcon="@drawable/ic_officehours"
+            app:eventTitle="@string/event_officehours_title"
+            app:sessionsText="@string/view_events_text"
+            app:mapLinkUri="@string/view_officehours_map_url"
+            app:scheduleFilterTag="@string/officehours_filter_tag" />
+
+        <com.google.samples.apps.iosched.info.event.EventView
+            android:id="@+id/afterhours_event"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:boxColor="@color/light_periwinkle"
+            app:eventIcon="@drawable/ic_afterhours"
+            app:eventTitle="@string/event_afterhours_title" />
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:src="@drawable/io17_logo"
+            tools:ignore="ContentDescription" />
+
+    </LinearLayout>
+
+</android.support.v4.widget.NestedScrollView>

@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+     Copyright (C) 2017 Google Inc.
+
+     Licensed under the Apache License, Version 2.0 (the "License");
+     you may not use this file except in compliance with the License.
+     You may obtain a copy of the License at
+
+          http://www.apache.org/licenses/LICENSE-2.0
+
+     Unless required by applicable law or agreed to in writing, software
+     distributed under the License is distributed on an "AS IS" BASIS,
+     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+     See the License for the specific language governing permissions and
+     limitations under the License.
+-->
+<resources>
+    <!-- View transition names -->
+    <string name="transition_track_header" translatable="false">transition_track_header</string>
+    <string name="transition_track_title" translatable="false">transition_track_title</string>
+    <string name="transition_track_background" translatable="false">transition_track_background</string>
+    <string name="transition_session_background" translatable="false">transition_session_background</string>
+    <string name="transition_session_image" translatable="false">transition_session_image</string>
+
+    <!-- RemoteConfig keys for Feed default messages -->
+    <string name="feed_default_first_title_key"
+        translatable="false">feed_default_first_title</string>
+    <string name="feed_default_first_message_key"
+        translatable="false">feed_default_first_message</string>
+    <string name="feed_default_first_imageurl_key"
+        translatable="false">feed_default_first_imageurl</string>
+    <string name="feed_default_first_timestamp_key"
+        translatable="false">feed_default_first_timestamp</string>
+    <string name="feed_default_first_color_key"
+        translatable="false">feed_default_first_color</string>
+    <string name="feed_default_first_category_key"
+        translatable="false">feed_default_first_category</string>
+    <string name="feed_default_first_clickable_key"
+        translatable="false">feed_default_first_clickable</string>
+    <string name="feed_default_first_link_key"
+        translatable="false">feed_default_first_link</string>
+    <string name="feed_default_first_priority_key"
+        translatable="false">feed_default_first_priority</string>
+
+    <!-- Filter tags for Info > Events screen "View sessions" buttons -->
+    <string name="codelabs_filter_tag" translatable="false">TYPE_CODELABS</string>
+    <string name="officehours_filter_tag" translatable="false">TYPE_OFFICEHOURS,TYPE_APPREVIEWS</string>
+    <!-- Map links for Info > Events screen "View map" buttons. -->
+    <string name="view_codelabs_map_url" translatable="false">4748d33e-f935-4c9e-bca6-67b61b875dc7</string>
+    <string name="view_officehours_map_url" translatable="false">officehours</string>
+</resources>

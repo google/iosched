@@ -28,6 +28,13 @@
         <timezone>America/Los_Angeles</timezone>
     </cron>
 
+    <cron>
+        <url>/cron/pushres</url>
+        <description>Push updated reservations to onsite vendor</description>
+        <schedule>every 1 hours from 00:15 to 23:15</schedule>
+        <timezone>America/Los_Angeles</timezone>
+    </cron>
+
     <!-- Auto sync for dev server. Disable when running in prod. -->
     <!--<cron>-->
         <!--<url>/admin/schedule/cmsupdate?user_confirmation=true&amp;cron=true</url>-->

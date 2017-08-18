@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  Copyright 2017 Google Inc. All rights reserved.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+       http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+  -->
+
+<android.support.v4.widget.NestedScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:scrollbarStyle="insideOverlay"
+    android:scrollbars="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:divider="@drawable/list_divider"
+        android:orientation="vertical"
+        android:paddingTop="@dimen/spacing_normal"
+        android:showDividers="middle">
+
+        <com.google.samples.apps.iosched.info.CollapsibleCard
+            android:id="@+id/stayInformedCard"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:cardTitle="@string/faq_stay_informed_title" />
+
+        <com.google.samples.apps.iosched.info.CollapsibleCard
+            android:id="@+id/contentFormatsCard"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:cardTitle="@string/faq_content_formats_title" />
+
+        <com.google.samples.apps.iosched.info.CollapsibleCard
+            android:id="@+id/liveStreamRecordingsCard"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:cardTitle="@string/faq_livestream_and_recordings_title" />
+
+        <com.google.samples.apps.iosched.info.CollapsibleCard
+            android:id="@+id/attendanceProTipsCard"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:cardTitle="@string/faq_attendance_pro_tips_title" />
+
+        <com.google.samples.apps.iosched.info.CollapsibleCard
+            android:id="@+id/additionalInfo"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:cardTitle="@string/faq_additional_info_title" />
+
+        <Button
+            android:id="@+id/terms_of_service_link"
+            style="@style/Settings.LinkButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/about_terms" />
+
+        <Button
+            android:id="@+id/privacy_policy_link"
+            style="@style/Settings.LinkButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/about_privacy_policy" />
+
+        <Button
+            android:id="@+id/open_source_licenses_link"
+            style="@style/Settings.LinkButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/about_licenses" />
+
+        <TextView
+            android:id="@+id/app_version"
+            style="@style/Settings.Version"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical|start"
+            android:minHeight="?android:listPreferredItemHeightSmall"
+            android:paddingEnd="@dimen/padding_normal"
+            android:paddingStart="@dimen/padding_normal"
+            android:text="@string/about_app_version"
+            tools:text="Version 1.4.278" />
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:src="@drawable/io17_logo"
+            tools:ignore="ContentDescription" />
+
+    </LinearLayout>
+
+</android.support.v4.widget.NestedScrollView>

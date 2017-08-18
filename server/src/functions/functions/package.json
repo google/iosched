@@ -1,0 +1,15 @@
+{
+  "name": "functions",
+  "description": "Cloud Functions for Firebase",
+  "dependencies": {
+    "firebase-admin": "^4.2.0",
+    "firebase-functions": "^0.5",
+    "googleapis": "^18.0.0",
+    "request": "^2.81.0",
+    "request-promise": "^4.2.1",
+    "md5": "^2.2.1",
+    "moment-timezone": "^0.5.13",
+    "bottleneck": "^1.15.1"
+  },
+  "private": true
+}

@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  Copyright (c) 2017 Google Inc.
+
+  Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except
+  in compliance with the License. You may obtain a copy of the License at
+
+  http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software distributed under the License
+  is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express
+  or implied. See the License for the specific language governing permissions and limitations under
+  the License.
+  -->
+<lint>
+    <!-- Availablility of new versions of dependencies should not affect builds -->
+    <issue id="GradleDependency" severity="informational" />
+    <issue id="OldTargetApi" severity="informational" />
+
+    <!-- Used in layouts with tools:text -->
+    <issue id="UnusedResources">
+        <ignore path="src/*/res/values/placeholder_strings.xml" />
+    </issue>
+
+    <issue id="IconXmlAndPng">
+        <!-- Icons that can appear outside the app (status bar notifications, appwidget) need png
+             versions below Lollipop.
+        -->
+        <ignore path="src/main/res/drawable-xxhdpi/ic_after_hours.png" />
+        <ignore path="src/main/res/drawable-xxhdpi/ic_badge_pickup.png" />
+        <ignore path="src/main/res/drawable-xxhdpi/ic_codelab.png" />
+        <ignore path="src/main/res/drawable-xxhdpi/ic_food.png" />
+        <ignore path="src/main/res/drawable-xxhdpi/ic_live_now.png" />
+        <ignore path="src/main/res/drawable-xxhdpi/ic_misc.png" />
+        <ignore path="src/main/res/drawable-xxhdpi/ic_sandbox.png" />
+        <ignore path="src/main/res/drawable-xxhdpi/ic_session.png" />
+        <ignore path="src/main/res/drawable-xxhdpi/ic_stat_alarm.png" />
+        <ignore path="src/main/res/drawable-xxhdpi/ic_stat_map.png" />
+        <ignore path="src/main/res/drawable-xxhdpi/ic_stat_notification.png" />
+        <ignore path="src/main/res/drawable-xxhdpi/ic_widget_logo.png" />
+
+        <!-- This drawable is used by Glide and crashes on 16-19 if we pass it a vector. -->
+        <ignore path="src/main/res/drawable-xxhdpi/ic_widget_logo.png" />
+    </issue>
+
+    <!-- We don't have icons for every density and want to move to vectors anyway -->
+    <issue id="IconDensities" severity="ignore" />
+    <issue id="IconMissingDensityFolder" severity="ignore" />
+</lint>

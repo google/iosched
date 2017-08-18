@@ -1,0 +1,857 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  Copyright 2017 Google Inc. All rights reserved.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+       http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+  -->
+<resources xmlns:tools="http://schemas.android.com/tools" xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+
+    <plurals name="schedule_block_subtitle"
+             description="Shown in the schedule to indicate how many sessions are available on that particular time slot.">
+        <item quantity="one"><xliff:g id="number_of_sessions">%1$d</xliff:g> 場可參加的講座</item>
+        <item quantity="other"><xliff:g id="number_of_sessions">%1$d</xliff:g> 場可參加的講座</item>
+    </plurals>
+
+    <plurals name="session_notification_text"
+             description="Shows as a notification on the system bar to alert user that some of their sessions are about to begin.">
+        <item quantity="one">其他 <xliff:g id="num_sessions">%2$d</xliff:g> 場講座將在 <xliff:g id="remaining_time">%1$d</xliff:g> 分鐘後開始</item>
+        <item quantity="other">其他 <xliff:g id="num_sessions">%2$d</xliff:g> 場講座將在 <xliff:g id="remaining_time">%1$d</xliff:g> 分鐘後開始</item>
+    </plurals>
+
+    <plurals name="session_notification_ticker"
+             description="Shown as a notification on the system bar to alert user that some of their sessions are about to begin.">
+        <item quantity="one">%1$d 場講座即將開始。</item>
+        <item quantity="other">%1$d 場講座即將開始。</item>
+    </plurals>
+
+    <plurals name="session_plurals"
+             description="Indicates a certain number of sessions.">
+        <item quantity="one">%1$d 場講座</item>
+        <item quantity="other">%1$d 場講座</item>
+    </plurals>
+
+    <!-- Title for the notification that alerts the user that some of their sessions are about to begin. -->
+    <plurals name="session_notification_title">
+        <item quantity="one"><xliff:g id="num_sessions">%2$d</xliff:g> 場講座將在 <xliff:g id="remaining_time">%1$d</xliff:g> 分鐘後開始</item>
+        <item quantity="other"><xliff:g id="num_sessions">%2$d</xliff:g> 場講座將在 <xliff:g id="remaining_time">%1$d</xliff:g> 分鐘後開始</item>
+    </plurals>
+
+    <!-- Shown in the 'About' window of the app. -->
+    <string name="about_main"><![CDATA[
+        <b>Google I/O 2016</b><br> 版本 %s
+    ]]></string>
+
+    <!-- Shown as a link in the About screen of the app; user can click to see the Terms of Services. -->
+    <string name="about_terms">服務條款</string>
+
+    <!-- Shown as a link in the About screen of the app; user can click to see the Privacy Policy. -->
+    <string name="about_privacy_policy">隱私權政策</string>
+
+    <!-- Shown as a link in the About screen of the app; user can click to see the EULA. -->
+    <string name="about_eula">使用者授權合約</string>
+
+    <!-- Shown as a link in the About screen of the app; user can click it to see the licenses. -->
+    <string name="about_licenses">開放原始碼授權</string>
+
+    <!-- Label on a button that the user clicks to accept a license agreement. -->
+    <string name="accept">接受</string>
+
+    <!-- Label on a button that, when clicked, adds the currently displayed session to their schedule. -->
+    <string name="add_to_schedule">新增到行程</string>
+
+    <!-- Accessibility description for a button that, when clicked, adds the currently
+    displayed session to the user's schedule. -->
+    <string name="add_to_schedule_desc">使用按鈕將講座新增到行程</string>
+
+    <!-- Shown in a drop-down list on the main screen, indicating that all conference themes
+    are being displayed. Themes are major categories for sessions (the themes are Design,
+    Develop and Distribute). -->
+    <string name="all_themes">所有主題</string>
+
+    <!-- Shown in a drop-down list on the main screen, indicating that all conference topics
+    are being displayed. Topics are major categories for sessions (example topics are: Android,
+    Chrome, Google APIs, Wearables, etc). -->
+    <string name="all_topics">所有話題</string>
+
+    <!-- Shown in a drop-down list on the main screen, indicating that all session types
+    are being displayed. Some examples of session types are: session, office hours, code lab. -->
+    <string name="all_types">所有類型</string>
+
+    <!-- Name of the application, shown in the application's title bar. -->
+    <string name="app_name">Google I/O</string>
+
+    <!-- Label on a button that is one possible answer to the question "Are you attending the
+    conference in person in San Francisco or remotely via livestream?" -->
+    <string name="attending_in_person">親臨現場</string>
+
+    <!-- Label on a button that is one possible answer to the question "Are you attending the
+    conference in person in San Francisco or remotely via livestream?" -->
+    <string name="attending_remotely">遠端參加</string>
+
+    <!-- Label on a button that allows the user to see what conference sessions are available
+    at a particular time. -->
+    <string name="browse_sessions">瀏覽講座</string>
+
+    <!-- Shown on Configure WiFi dialog, instructing user on what button to click. -->
+    <string name="calltoaction_wifi_configure"><![CDATA[
+        <br><br>輕按 [新增 Wi-Fi 網路] 來繼續。
+    ]]></string>
+
+    <!-- Shown on Configure WiFi dialog, instructing user on what button to click. -->
+    <string name="calltoaction_wifi_settings"><![CDATA[
+        <br><br>輕按 [開啟 Wi-Fi 設定] 來啟用 Wi-Fi。
+    ]]></string>
+
+    <!-- Accessibility description for a control that allows the user to close the current screen
+         and go back to the previous one. -->
+    <string name="close_and_go_back">關閉並返回</string>
+
+    <!-- Label on a button that allows the user to cancel an operation before it starts. For
+    example, this may be a button on a dialog that says "This will delete your data." -->
+    <string name="cancel">取消</string>
+
+    <!-- Shown as the title of the user's schedule for today -->
+    <string name="day_title_today">今天</string>
+
+    <!-- Shown as the title of the user's schedule for tomorrow -->
+    <string name="day_title_tomorrow">明天</string>
+
+    <!-- Shown as the title of the user's schedule for yesterday -->
+    <string name="day_title_yesterday">昨天</string>
+
+    <!-- Label on a button that the user clicks to decline something (for example, a license
+    agreement). -->
+    <string name="decline">拒絕</string>
+
+    <!-- Menu item that brings up the application's About screen -->
+    <string name="description_about">關於</string>
+
+    <!-- Menu item that allows user to configure the conference WiFi on their device. -->
+    <string name="description_configure_wifi">設定 Wi-Fi</string>
+
+    <!-- Menu item that takes the user to the conference venue map screen -->
+    <string name="description_map">地圖</string>
+
+    <!-- Menu item that allows user to reload the data in the current screen so they see
+    the most up-to-date version from the server. -->
+    <string name="description_refresh">重新整理資料</string>
+
+    <!-- Menu item that allows the user to start a search for a session by name. After clicking,
+    they type in their search query. -->
+    <string name="description_search">搜尋</string>
+
+    <!-- Explanation of wifi setup that appears in the WiFi setup dialog box. -->
+    <string name="description_setup_wifi_body"><![CDATA[
+        由於您親臨現場，因此可以將此裝置設定為存取會議 Wi-Fi 網路 (僅支援 5GHz)。您若能現在設定 Wi-Fi 網路的話，將能協助防止網路壅塞。
+    ]]></string>
+
+    <!-- Menu item that allows user to share the currently displayed session. Sharing can be done
+    by email, social networks, etc. -->
+    <string name="description_share">分享</string>
+
+    <!-- Session Detail label for Extended Session link. -->
+    <string name="description_extended">延伸講座</string>
+
+    <!-- Accessibility for the links to the G+ or Twitter pages for speakers.
+    For example: "Go to the Twitter page for Sally Sample. -->
+    <string name="speaker_social_page">前往 %2$s 的 %1$s 頁面</string>
+
+    <!-- Shown on the Session page, alerting user that no details could be found for that session. -->
+    <string name="empty_session_detail">找不到講座詳細資訊。</string>
+
+    <!-- Shown on the Session page if a session is being livestreamed. -->
+    <string name="session_live_streamed">直播已開始</string>
+
+    <!-- Text under play button on session page if a session is currently being livestreamed. -->
+    <string name="session_watch_live">觀看直播</string>
+
+    <!-- Text under play button on session page if a session is no longer being livestreamed. -->
+    <string name="session_watch">觀看</string>
+
+    <!-- Text under play button on session page if a livestreamed session was previously watched. -->
+    <string name="session_replay">重播</string>
+
+    <!-- Shown on a widget that normally displays upcoming sessions. This is shown after the
+    conference, when there are no more sessions to show. -->
+    <string name="empty_widget_text">沒有其他近期講座了。\n明年見！</string>
+
+    <!-- Label for a button to answer the question "Would you like to send feedback
+    about this session?" which, when clicked, allows the user to send their feedback (ratings
+    and comments) about a particular session [CHAR_LIMIT=10]. -->
+    <string name="give_feedback">是</string>
+
+    <!-- Keynotes group title for the video library -->
+    <string name="keynote_group_title">主題演講</string>
+
+    <!-- Short text appended to the end of the session subtitle when the session will be live
+    streamed. Constrained to 10 chars because the session subtitle should be small enough to fit
+    into the explore cards. [CHAR_LIMIT=10] -->
+    <string name="live_available">直播</string>
+
+    <!-- Short text appended to the end of the session subtitle when the session is currently being
+    streamed. Also used in a "LIVE" badge overlay that shows up on top of the session card.
+    Constrained because the session subtitle should be small enough to fit into the
+    explore cards. [CHAR_LIMIT=10] -->
+    <string name="live_now">現正直播</string>
+
+    <!-- Message shown in an error bar when there is a problem synchronizing the user's sessions
+    to their account. Can be summarized as "Synchronization failed." if too long [CHAR_LIMIT=50] -->
+    <string name="login_failed_text">發生錯誤，無法同步講座。</string>
+
+    <!-- Button to retry a failed login attempt [CHAR_LIMIT=2 lines of 9 characters].
+    If using multiple lines, separate them with "\n" ("Tentar\nde novo" for example)
+    -->
+    <string name="login_failed_text_retry">重試</string>
+
+    <!-- Message displayed when the location permission was denied -->
+    <string name="map_permission_denied">應用程式權限遭到拒絕。</string>
+
+    <!-- Button to view more Videos or sessions from the videos/sessions card view. -->
+    <string name="more_items_button">更多</string>
+
+    <!-- Text for the title of an extra schedule item on the pre conference day -->
+    <string name="my_schedule_badgepickup">領取徽章</string>
+
+    <!-- Text for the description of an extra schedule item on the pre conference day -->
+    <string name="my_schedule_badgepickup_description">報到處</string>
+
+    <!-- Accessibility announcement to confirm the feedback rating made for a session by the user. -->
+    <string name="feedback_rating_confirmation">您的評價：%1$d 顆星 (滿分 %2$d 顆星)</string>
+
+    <!-- Accessibility announcement for an item in the custom feedback rating view. For example, "one star".  -->
+    <string name="feedback_rating_value">%1$d 顆星</string>
+
+    <!-- Text that shows session is reserved on Schedule and My I/O -->
+    <string name="schedule_item_reserved">已預定</string>
+
+    <!-- Text that shows session is not reserved on Schedule and My I/O -->
+    <string name="schedule_item_not_reserved">未預定</string>
+
+    <!-- Text that shows session is waitlisted on Schedule and My I/O -->
+    <string name="schedule_item_waitlisted">已添加至候補名單</string>
+
+    <!-- Label for the button to rate a session -->
+    <string name="my_schedule_rate_this_session">評價本講座</string>
+
+    <!-- Label for reserve session button when it is reservable -->
+    <string name="my_schedule_reserve_seat">預定座位</string>
+
+    <!-- Label for reserve session button while request is getting processed -->
+    <string name="my_schedule_request_pending">正在處理要求…</string>
+
+    <!-- Label for reserve session button if session is already reserved by user -->
+    <string name="my_schedule_already_reserved">已預定座位</string>
+
+    <!-- Label for reserve session button if reserving is disabled for whatever reason -->
+    <string name="my_schedule_reserve_disabled">已停用預定</string>
+
+    <!-- Label for reserve session button if reserving is disabled due to auth -->
+    <string name="my_schedule_reservation_disabled_auth_button_text">須登入才能預定
+    </string>
+
+    <!-- Message in info dialog explaining why reservations are disabled when user is not signed in
+    or not registered -->
+    <string name="my_schedule_reservation_must_sign_in_and_register_message">
+        您必須先登入並在該活動中註冊後才能註冊。
+    </string>
+
+    <!-- Title for info dialog explaining why reservations are disabled when user is not signed in
+    or not registered -->
+    <string name="my_schedule_reservation_why_disabled">
+        已停用預定
+    </string>
+
+    <!-- Label for reserve session button if user is waitlisted for session -->
+    <string name="my_schedule_waitlisted">已添加至候補名單</string>
+
+    <!-- Label for reserve session button if session is full and accepting waitlist requests -->
+    <string name="my_schedule_join_waitlist">加入候補名單</string>
+
+    <!-- Reservation cancellation confirmation dialogue text -->
+    <string name="my_schedule_cancel_reservation_confirmation">確定取消預定嗎？</string>
+
+    <!-- Waitlist cancellation confirmation dialogue text -->
+    <string name="my_schedule_cancel_waitlist_confirmation">確定取消預定嗎？</string>
+
+    <!-- Reservation window closed -->
+    <string name="my_schedule_reservation_window_closed">預定視窗已關閉</string>
+
+    <!-- Title for dialog when attempted reservation clashed with another reservation -->
+    <string name="my_schedule_reservation_clash_title">時間衝突</string>
+
+    <!-- Message in dialog when attempted reservation clashed with another reservation -->
+    <string name="my_schedule_reservation_clash_message">您在此時段已有預定或候補名單要求。每個時段只能有一個預定；如果要繼續操作，請取消之前的預定要求。</string>
+
+    <!-- Message in alert dialog that tells you your seat reservation was successfully cancelled -->
+    <string name="my_schedule_return_successful_message">您的座位預定已取消。</string>
+
+    <!-- Message in alert dialog that tells you your seat reservation was successfully cancelled -->
+    <string name="my_schedule_return_successful_title">取消預定</string>
+
+    <!-- Message in alert dialog when attempted reservation cancellation was past the cutoff time
+    -->
+    <string name="my_schedule_return_denied_cutoff_message">活動開始前 60 分鐘內，無法取消預定。</string>
+
+    <!-- Reservation window closed info -->
+    <string name="my_schedule_reservation_window_closed_info">活動開始前 60 分鐘內，不再辦理預定。現場保留部分座位，先到場的觀眾可優先獲得。</string>
+
+    <!-- Message in alert dialog when reservation failed for unknown reason. -->
+    <string name="my_schedule_reservation_request_failed_message">伺服器錯誤：要求失敗，請稍後再試。</string>
+
+    <!-- Title for alert dialog when reservation cancellation failed for unknown reason. -->
+    <string name="my_schedule_request_failed_title">要求失敗</string>
+
+    <!-- Title for reservation cancellation confirmation dialog -->
+    <string name="my_schedule_reservation_cancel_confirm_title">確定取消</string>
+
+    <!-- Message in reservation cancellation confirmation dialog -->
+    <string name="my_schedule_reservation_cancel_confirm_message">確定取消講座預定嗎？</string>
+
+    <!-- Message in waitlist cancellation confirmation dialog -->
+    <string name="my_schedule_waitlist_cancel_confirm_message">確定取消候補名單要求嗎？</string>
+
+    <!-- Title for waitlist cancellation confirmation dialog -->
+    <string name="my_schedule_waitlist_cancel_confirm_title">取消候補名單要求</string>
+
+    <!-- Accessibility description for navigation drawer -->
+    <string name="navdrawer_description_a11y">導覽選單</string>
+
+    <!-- Menu item to open the Feed screen [CHAR_LIMIT=20] -->
+    <string name="navdrawer_item_feed">動態</string>
+
+    <!-- Menu item to open the Map screen [CHAR_LIMIT=20] -->
+    <string name="navdrawer_item_map">地圖</string>
+
+    <!-- Menu item to open the Info screen [CHAR_LIMIT=20] -->
+    <string name="navdrawer_item_info">資訊</string>
+
+    <!-- Menu item to open the My I/O screen [CHAR_LIMIT=20] -->
+    <string name="navdrawer_item_my_io">我的 I/O</string>
+
+    <!-- Menu item to open the My Schedule screen [CHAR_LIMIT=20] -->
+    <string name="navdrawer_item_my_schedule">行程</string>
+
+    <!-- List dropdown item on the Video Library screen allowing the user to choose to see
+    the videos from the last year of Google I/O. -->
+    <string name="new_videos_title"><xliff:g id="year">%1$d</xliff:g> 年新影片</string>
+
+    <!-- Message shown in the session explorer when the user applies a filter that results no
+    session -->
+    <string name="no_matching_sessions">沒有符合的講座。</string>
+
+    <!-- Message shown in the video library when the user applies a filter that results no video -->
+    <string name="no_matching_videos">沒有符合的影片。</string>
+
+    <!-- Button of a card in session or session explorer that dismiss the card.
+    One sample of such card is "How was this session? We would love to hear your feedback"  with
+    "Give feedback" and "No, thanks" as buttons. [CHAR_LIMIT=20]-->
+    <string name="no_thanks">不用了，謝謝</string>
+
+    <!-- A single button shown on informative popups, like EULA, open source licenses and About -->
+    <string name="ok">確定</string>
+
+    <!-- An application permission (this permission allows the application to modify the Google
+    I/O schedule data). Shows on a permissions dialog screen. -->
+    <string name="permission_write">修改 Google I/O 行程資料</string>
+
+    <string name="pref_conf_message_cards_enabled_description"
+            description="Description in the Settings screen for the setting that enables display of
+            cards with conference information in the explore screen.">在「探索」畫面顯示含有會議資訊的資訊卡。資訊卡按時間先後顯示，且可能包括來自合作夥伴的促銷訊息。</string>
+
+    <!-- Title in the Settings screen for the setting that enables display of cards with
+     conference information in the explore screen. -->
+    <string name="pref_conf_message_cards_enabled_title">顯示會議訊息</string>
+
+    <!-- Title in the Settings screen for the setting that enables sending of anonymous usage
+    statistics to Google. -->
+    <string name="pref_analytics_enabled_title">發送匿名使用統計資料</string>
+
+    <!-- Description in the Settings screen for the setting that enables sending of anonymous usage
+    statistics to Google. -->
+    <string name="pref_analytics_enabled_description">將與應用程式使用有關的匿名統計資料發送給 Google。</string>
+
+    <!-- Summary in the Settings screen for the "Show local times" option -->
+    <string name="pref_local_times_description">請使用您的本地時間，而非會議舉辦地時間。</string>
+
+    <!-- Title in the Settings screen for the "Show local times" option -->
+    <string name="pref_local_times_title">顯示本地時間</string>
+
+    <!-- Summary in the Settings screen for the "Notify me to send feedback about my sessions" option -->
+    <string name="pref_notify_feedback_description">顯示通知，徵求您對所選的講座之意見回饋。</string>
+
+    <!-- Title in the Settings screen for the "Notify me to send feedback about my sessions" option -->
+    <string name="pref_notify_feedback_title">通知我發送意見回饋</string>
+
+    <!-- Summary in the Settings screen for the "Notify me when my sessions are about to begin" option -->
+    <string name="pref_notify_starred_sessions_description">在所選的講座即將開始時顯示通知。</string>
+
+    <!-- Title in the Settings screen for the "Notify me when my sessions are about to begin" option -->
+    <string name="pref_notify_starred_sessions_title">通知我關於所選講座的資訊</string>
+
+    <!-- Title in the Settings screen for the "Synchronize my schedule with Google Calendar" option -->
+    <string name="pref_sync_with_calendar_description">自動將講座同步到 Google Calendar。</string>
+
+    <!-- Summary in the Settings screen for the "Synchronize my schedule with Google Calendar" option -->
+    <string name="pref_sync_with_calendar_title">與 Google Calendar 同步</string>
+
+    <!-- This message is displayed to the user when they disable the Calendar sync and they have revoked the Calendar permission. We are letting them know we couldn't remove the items from their Calendar. -->
+    <string name="pref_sync_with_calendar_permission_denied_during_disable">無法從行事曆中移除項目，權限遭到拒絕。</string>
+
+    <!-- This message is displayed to the user when they enable the Calendar sync and they don't allow the Calendar permission. We are letting them know we can't process the Calendar updates. -->
+    <string name="pref_sync_with_calendar_permission_denied_during_enable">無法同步行事曆，權限遭到拒絕。</string>
+
+    <!-- Text of a card shown in the Explore I/O screen that asks the user if they want to configure
+         the conference WiFi. "Not now" and "Yes, please" are options show on the card -->
+    <string name="question_setup_wifi_card_text"><![CDATA[
+        <b>會議 Wi-Fi</b><br/> 您想設定此裝置存取會議的 5 Ghz Wi-Fi 網路嗎？]]></string>
+
+    <!-- Section title for videos related to a particular event session -->
+    <string name="related_videos">相關影片</string>
+
+    <!-- Section title for sessions related to a particular event session -->
+    <string name="related_sessions">相關講座</string>
+
+    <!-- Button text indicating the session is in the user's schedule and can be removed -->
+    <string name="remove_from_schedule">從行程中移除</string>
+
+    <!-- Accessibility content description for button used to remove the session from the user's schedule -->
+    <string name="remove_from_schedule_desc">使用按鈕將講座從行程中移除。</string>
+
+    <!-- Hint that the user can search across sessions -->
+    <string name="search_hint">搜尋講座</string>
+
+    <!-- Search label that shows the type of data being searched for when the user clicks the
+    Search button. -->
+    <string name="search_label">Google I/O 講座</string>
+
+    <!-- A fragment of text appended to a Google calendar event indicating it was added by this application -->
+    <string name="session_calendar_suffix">- 由 Google I/O Android 應用程式新增</string>
+
+    <!-- Accessibility text announced as a response to pressing a button to add a session to the schedule. -->
+    <string name="session_details_a11y_session_added">講座已新增到您的行程中</string>
+
+    <!-- Accessibility text announced as a response to pressing a button to remove a session from the schedule. -->
+    <string name="session_details_a11y_session_removed">講座已從您的行程中移除</string>
+
+    <!-- Button text to launch session feedback from session details -->
+    <string name="rate_session">評價講座</string>
+
+    <!-- A session feedback section label asking the user to rate the session overall -->
+    <string name="session_rating_label_text">講座評價：</string>
+
+    <!-- A session feedback option indicating the content was too advanced -->
+    <string name="session_feedback_advanced">太先進</string>
+
+    <!-- A session feedback option indicating the content was too basic -->
+    <string name="session_feedback_basic">太簡單</string>
+
+    <!-- Session feedback section title -->
+    <string name="session_feedback_content_label_text">根據描述/我的期望，內容是：</string>
+
+    <!-- Notification ticker text asking the user to provide session feedback -->
+    <string name="session_feedback_notification_ticker">提供講座意見回饋</string>
+
+    <!-- A negative overall session reating -->
+    <string name="session_feedback_not_so_awesome">不是很棒</string>
+
+    <!-- A positive overall session reating -->
+    <string name="session_feedback_awesome">很棒</string>
+
+    <!-- A negative relevance session feedback option -->
+    <string name="session_feedback_not_at_all_relevant">一點也不相關</string>
+
+    <!-- A negative relevance session feedback option -->
+    <string name="session_feedback_extremely_relevant">非常相關</string>
+
+    <!-- A positive speaker quality session feedback option -->
+    <string name="session_feedback_outstanding">優秀</string>
+
+    <!-- A negative speaker quality session feedback option -->
+    <string name="session_feedback_poor">很差</string>
+
+    <!-- A session feedback section label asking for the session's relevance to the user's projects -->
+    <string name="session_feedback_relevance"> 此講座與您專案的相關度如何？  </string>
+
+    <!-- A session feedback section label asking for the speaker's quality -->
+    <string name="session_feedback_speaker_quality">演講者品質：</string>
+
+    <!-- Button text for submitting session feedback -->
+    <string name="session_feedback_submitlink">提交意見回饋</string>
+
+    <!-- Text indicating the session has ended -->
+    <string name="session_finished">已結束</string>
+
+    <!-- Card text asking the user to provide session feedback -->
+    <string name="session_give_feedback_message">此講座如何？您想發送意見回饋嗎？</string>
+
+    <!-- Link text for the user to watch a live video stream of the session -->
+    <string name="session_link_livestream">觀看直播</string>
+
+    <!-- Link text taking the user to the session's Google Moderator page -->
+    <string name="session_link_moderator">好問</string>
+
+    <!-- Link text taking the user to the session's notes page -->
+    <string name="session_link_notes">官方說明</string>
+
+    <!-- Link text taking the user to the session's slides page -->
+    <string name="session_link_pdf">簡報</string>
+
+    <!-- Link text taking the user to the session's YouTube page -->
+    <string name="session_link_youtube">YouTube 影片</string>
+
+    <!-- Notification text that a session is starting in some number of minutes -->
+    <string name="session_notification_text_1">將在 <xliff:g id="remaining_time">%1$d</xliff:g> 分鐘後開始</string>
+
+    <!-- Short text indicating that the session is currently happening -->
+    <string name="session_now">現在</string>
+
+    <!-- Label for a session section listing the requirements for the session -->
+    <string name="session_requirements">要求</string>
+
+    <!-- Label for a session section listing the presenters at the session -->
+    <string name="session_speakers">演講者</string>
+
+    <!-- Subtitle of a session indicating time interval and room number -->
+    <string name="session_subtitle"><xliff:g id="time">%1$s</xliff:g> 在 <xliff:g id="room">%2$s</xliff:g></string>
+
+    <!-- Re-share template text indicating the user is at a particular session -->
+    <string name="share_template">看！「<xliff:g id="title">%1$s</xliff:g>」正在參加 <xliff:g id="hashtags">%2$s</xliff:g> <xliff:g id="url">%3$s</xliff:g></string>
+
+    <!-- Notification action text for snoozing the notification for some number of minutes -->
+    <string name="snooze_x_min">延遲 <xliff:g id="remaining_time">%1$d</xliff:g> 分鐘</string>
+
+    <!-- Short text label indicating a grouping of themes -->
+    <string name="themes">主題</string>
+
+    <!-- Text indicating the session is going to start in some number of minutes -->
+    <string name="time_hint_about_to_start_min">本講座將在 <xliff:g id="minutes">%1$d</xliff:g> 分鐘後開始</string>
+
+    <!-- Text indicating the session is going to start in less than 1 minute -->
+    <string name="time_hint_about_to_start_shortly">本講座即將開始 (不到 1 分鐘後)。</string>
+
+    <!-- Text indicating the session has ended -->
+    <string name="time_hint_session_ended">本講座已結束。</string>
+
+    <!-- Text indicating the session just started -->
+    <string name="time_hint_started_just">本講座正在進行！(剛開始)</string>
+
+    <!-- Text indicating the session is in progress but has not completed -->
+    <string name="time_hint_started_min">本講座正在進行！(<xliff:g id="minutes">%1$d</xliff:g> 分鐘前開始)</string>
+
+    <!-- Title text for dialog screen about the application -->
+    <string name="title_about">關於</string>
+
+    <!-- Navigation bar text for exploring the sessions -->
+    <string name="title_explore">探索</string>
+
+    <!-- Navigation bar text for the map -->
+    <string name="title_map">地圖</string>
+
+    <!-- Navigation bar text for viewing the user's My I/O -->
+    <string name="title_my_io">我的 I/O</string>
+
+    <!-- Navigation bar text for viewing the user's schedule -->
+    <string name="title_schedule">行程</string>
+
+    <!-- Navigation bar text for viewing the Feed -->
+    <string name="title_feed">動態</string>
+
+    <!-- Navigation bar text for viewing Info -->
+    <string name="title_info">資訊</string>
+
+    <!-- Label for Search screen, that allows users to search for sessions. -->
+    <string name="title_search">搜尋</string>
+
+    <!-- Map breadcrumb text for navigating session entries -->
+    <string name="title_session_detail">講座資訊</string>
+
+    <!-- Label for SessionFeedback activity -->
+    <string name="title_session_feedback">講座意見回饋</string>
+
+    <!-- Label for Event info fragment -->
+    <string name="title_event">活動</string>
+
+    <!-- Label for Travel info fragment -->
+    <string name="title_travel">交通方式</string>
+
+    <!-- Label for Frequently Asked Questions info fragment -->
+    <string name="title_faq">常見問題</string>
+
+    <!-- Label for Settings fragment -->
+    <string name="title_settings">設定</string>
+
+    <!-- Chooser dialog text when the user is selecting an application with which to share something -->
+    <string name="title_share">分享途徑</string>
+
+    <!-- Label for VideoLibrary activity -->
+    <string name="title_video_library">影片</string>
+
+    <!-- Label for exploration category which groups session topics -->
+    <string name="topics">話題</string>
+
+    <!-- Label for exploration category which groups session types -->
+    <string name="types">類型</string>
+
+    <!-- Text for a session subtitle indicating it does not have a room specified -->
+    <string name="unknown_room">(未指定空間)</string>
+
+    <!-- Text for a button which allows the user to watch this particular session on live stream. -->
+    <string name="watch_now">立即觀看！</string>
+
+    <!-- Short text welcoming the user to the application -->
+    <string name="welcome_to_google_i_o">歡迎使用 #io17</string>
+
+    <!-- Medium-length welcome text indicating the subsequent text is important legal information -->
+    <string name="welcome_text">在開始之前，請參考一些關於使用這款應用程式的重要法律資訊。</string>
+
+    <!-- Short text introducing the code of conduct for attendees coming in person -->
+    <string name="welcome_conduct_title">I/O 社群最佳做法</string>
+
+    <!-- Medium-length welcome text asking if the user is attending Google I/O in person -->
+    <string name="welcome_attending_text">您是遠端參加 I/O 還是親臨山景城大會現場？</string>
+
+    <!-- Short text asking them to select an account -->
+    <string name="welcome_select_account">選擇一個帳戶</string>
+
+    <!-- Medium text asking to choose an account from a list -->
+    <string name="welcome_select_accoun_text">請選擇要使用的帳戶：</string>
+
+    <!-- Text for a button which will add a wi-fi network -->
+    <string name="wifi_dialog_button_configure">新增 Wi-Fi 網路</string>
+
+    <!-- Text for a button which will open the user's Wi-Fi settings -->
+    <string name="wifi_dialog_button_settings">開啟 Wi-Fi 設定</string>
+
+    <!-- Title of the Video library screen when only videos of a given topic are displayed -->
+    <string name="title_topic_filtered_video_library"><xliff:g id="topic">%1$s</xliff:g> 相關影片</string>
+
+    <!-- Title of the Video library screen when only videos of a given year are displayed -->
+    <string name="title_year_filtered_video_library" tools:ignore="PluralsCandidate"><xliff:g id="year">%1$d</xliff:g> 年影片</string>
+
+    <!-- Title of the Video library screen when only videos of a given year and a given topic are displayed -->
+    <string name="title_year_and_topic_filtered_video_library" tools:ignore="PluralsCandidate"><xliff:g id="year">%1$d</xliff:g> 年 <xliff:g id="topic">%2$s</xliff:g> 相關影片</string>
+
+    <!-- Text of the Filter menu icon -->
+    <string name="description_filter">篩選器</string>
+
+    <!-- Text of the My I/O avatar icon whilst signed out -->
+    <string name="description_avatar_signed_out">登入</string>
+
+    <!-- Text of the My I/O avatar icon whilst signed in -->
+    <string name="description_avatar_signed_in">登出</string>
+
+    <!-- Title of the Video library side panel containing all the filters -->
+    <string name="title_video_library_filter">篩選器</string>
+
+    <!-- Sub-title for the Year filters -->
+    <string name="year_filter_section_label">年</string>
+
+    <!-- Sub-title for the Topic filters -->
+    <string name="topic_filter_section_label">話題</string>
+
+    <!-- Label of filter option that allow to display all elements -->
+    <string name="all">全部</string>
+
+    <!-- Title of the Explore Sessions side panel containing all the filters -->
+    <string name="title_explore_sessions_filter">篩選器</string>
+
+    <!-- Label of filter option to show only sessions -->
+    <string name="filter_label_sessions_only">只顯示講座</string>
+
+    <!-- Label of filter option to show only sessions (intentional space) -->
+    <string name="active_filters_description">"篩選器："</string>
+
+    <!-- Label for a button which clears all filters in the filter pane -->
+    <string name="clear_all">全部清除</string>
+
+    <!-- Label for a button which clears all filters in the filter pane -->
+    <string name="clear_filters">清除篩選內容</string>
+
+    <!-- BEGIN Explore Message Card User Messages -->
+    <string name="explore_io_notifications_ask_opt_in"
+            description="This message is displayed on the Explore I/O screen to ask users whether
+        they would like to opt in to receive notifications for the sessions the have added to their schedule."><![CDATA[
+        <b>講座通知</b><br/> 您想收到行程中的講座通知嗎？]]></string>
+
+    <string name="explore_io_msgcards_ask_opt_in"
+            description="This message is displayed on the Explore I/O screen to ask users whether
+            they would like to opt in to receive messages regarding the conference."><![CDATA[
+        <b>會議訊息</b><br/> 您想收到重要會議訊息嗎？訊息按時間先後顯示，且可能包括來自合作夥伴的促銷訊息。]]></string>
+
+    <!-- This is used on the Explore I/O message cards to answer yes to a particular message -->
+    <string name="explore_io_msgcards_answer_yes">當然，我們開始吧！</string>
+
+    <!-- This is used on the Explore I/O message cards to answer no to a particular message -->
+    <string name="explore_io_msgcards_answer_no">不用了，謝謝</string>
+
+    <!-- This string is presented to users when they attempt to click something that indicates they
+         can watch a video but it turns out we can't show the video. -->
+    <string name="explore_io_video_id_not_valid">很抱歉，影片網址似乎有問題。</string>
+
+    <string name="explore_io_on_the_ground_title"
+            description="This string is presented as a header message on a user interface card
+         element. The card element has sub-cards that explain a few logistical details for
+         attendees. 'On the Ground' is slang in English indicating 'What you need to know when
+         you're in the middle of the conference.'">身在現場</string>
+
+    <!-- Error message that is displayed when we aren't able to connect to Google Play Services,
+         potentially due to a server error or loss of network connectivity. -->
+    <string name="google_play_services_disconnected">無法連接到 Google Play Services</string>
+
+
+    <!-- Error message that is displayed when connection to GoogleP Play Services fails and there
+    is no resolution. -->
+    <string name="google_play_services_failed">很抱歉，無法連接到 Google Play Services</string>
+
+    <!-- Message displayed to users as part of onboarding sign in. -->
+    <string name="signin_message">登入以事先預定活動席位、透過您的帳戶在手機與電腦間同步處理已儲存和已預定的活動，並在講座結束後提出意見回饋。無須登入即可將活動儲存於本機。</string>
+
+    <!-- Label used when asking a user to sign in. -->
+    <string name="signin_prompt">登入</string>
+
+    <!-- Label used on an onboarding screen when user provides a positive response. -->
+    <string name="yes">是</string>
+
+    <!-- Label used on an onboarding screen when the user provides a negative response. -->
+    <string name="no">否</string>
+
+    <!-- Title for onboarding screen asking users if they want conference notifications. -->
+    <string name="onboarding_notifications_title">I/O 通知</string>
+
+    <!-- Text shown on the onboarding screen asking users if they want conference notifications. -->
+    <string name="onboarding_notifications_opt_in">
+        您希望接收 I/O 相關通知嗎？\n我們會將活動、議程、行程、交通方式、會後交流、講座錄影等重要資訊寄送給您。您可以隨時在 [資訊] &gt; [設定] 更此改設定。
+    </string>
+
+    <!-- Text shown on the onboarding sign-in screen. -->
+    <string name="onboarding_sign_in">
+        您希望登入以事先預定活動席位、透過您的帳戶在手機與電腦間同步處理已儲存的活動，並在講座結束後提出意見回饋嗎？無須登入也能將活動儲存在本機，但資訊無法同步到您的帳戶。\n\n重要說明：若要預定活動席位，必須使用報名 Google I/O 的電子郵件地址登入。
+    </string>
+
+    <!-- Message displayed in a card to the user on the My I/O screen after they have signed in. -->
+    <string name="signed_in_card_message">
+        您的儲存活動及預定活動將出現在下方，並透過您的帳戶在手機和電腦之間同步。
+    </string>
+
+    <!-- Label used when asking a user to sign out. -->
+    <string name="signout_prompt">登出</string>
+
+    <!-- Label used on the onboarding sign in screen for skipping sign in. -->
+    <string name="signin_prompt_skip">略過</string>
+
+    <!-- Label used for the user to dismiss a card. -->
+    <string name="signin_prompt_dismiss">關閉</string>
+
+    <!-- Button for finding quickly navigating from a day within My I/O to the relevant day within
+    schedule -->
+    <string name="add_events">新增活動</string>
+\
+    <!-- An introductory string used in the My I/O dialog to a signed out user  -->
+    <string name="my_io_body_intro_signed_out">登入到：</string>
+
+    <!-- An introductory string used in the My I/O dialog to a signed in user  -->
+    <string name="my_io_body_intro_signed_in">身為已登入的使用者：</string>
+
+    <!-- The first bulletpoint string used in the My I/O dialog to a signed out user  -->
+    <string name="my_io_dialog_first_bullet_point_signed_out">
+        提前預定現場座位。
+    </string>
+
+    <!-- The first bulletpoint string used in the My I/O dialog to a signed in user  -->
+    <string name="my_io_dialog_first_bullet_point_signed_in">
+        您可提前預定活動座位 (每時段最多預約一次)。
+    </string>
+
+    <!-- The second bulletpoint string used in the My I/O dialog to a signed out user  -->
+    <string name="my_io_dialog_second_bullet_point_signed_out">
+        透過您的帳戶在手機與電腦之間同步處理已儲存和已預定的活動。
+    </string>
+
+    <!-- The second bulletpoint string used in the My I/O dialog to a signed in user  -->
+    <string name="my_io_dialog_second_bullet_point_signed_in">
+        已儲存和已預定的活動會透過您的帳戶，在手機與電腦之間同步處理。
+    </string>
+
+    <!-- The third bulletpoint string used in the My I/O dialog to a signed out user  -->
+    <string name="my_io_dialog_third_bullet_point_signed_out">
+        在講座結束後提出意見回饋。
+    </string>
+
+    <!-- The third bulletpoint string used in the My I/O dialog to a signed in user  -->
+    <string name="my_io_dialog_third_bullet_point_signed_in">
+        您可在講座結束後提出意見回饋。
+    </string>
+
+    <!-- Message shown when a user initiated sign in fails. -->
+    <string name="signin_failed_text">無法登入。請重試。</string>
+
+    <!-- Message shown when a user initiated sign out fails. -->
+    <string name="signout_failed_text">無法登出。請重試。</string>
+
+    <!-- Strings for Info page-->
+    <string name="wifi_network_label">Wi-Fi 網路</string>
+    <string name="wifi_password_label">密碼</string>
+    <string name="setup_wifi">儲存 Wi-Fi 網路</string>
+
+    <!-- Snackbar message confirming save of wifi network -->
+    <string name="wifi_install_success">已儲存 Wi-Fi 網路</string>
+
+    <!-- Snackbar message if failed to save the wifi network -->
+    <string name="wifi_install_error_message">抱歉，無法儲存 Wi-Fi 網路</string>
+
+    <string name="view_sessions_text">查看講座</string>
+    <string name="view_map_text">查看地圖</string>
+
+    <string name="event_sandbox_title">Sandbox</string>
+    <string name="event_codelabs_title">Codelabs</string>
+    <string name="event_officehours_title">諮詢時間與應用程式檢查</string>
+    <string name="event_afterhours_title">會後交流</string>
+
+    <string name="travel_details_title">詳細交通資訊</string>
+    <string name="travel_shuttle_info_title">接駁服務</string>
+    <string name="travel_carpool_parking_info_title">停車與共乘</string>
+    <string name="travel_public_transportation_info_title">大眾運輸工具</string>
+    <string name="travel_biking_info_title">騎自行車</string>
+    <string name="travel_ride_sharing_info_title">共乘</string>
+    <string name="settings_time_zone_label">依太平洋時間 (PT) 顯示活動</string>
+    <string name="settings_enable_notifications">啟用通知</string>
+    <string name="settings_enable_anon_statistics">發送匿名使用統計資料</string>
+    <string name="about_terms_url">https://www.google.com/policies/terms/</string>
+    <string name="about_privacy_policy_url">https://www.google.com/policies/privacy/</string>
+    <string name="about_app_version">版本 %1$s</string>
+
+    <string name="feed_error">載入動態時發生錯誤。</string>
+
+    <!-- Button text indicating that the session can be added to the user's bookmarks. -->
+    <string name="add_bookmark">新增書籤</string>
+    
+    <!-- Button text indicating that the session can be removed from the user's bookmarks. -->
+    <string name="remove_bookmark">移除書籤</string>
+
+    <!-- Hint text indicating bookmarked sessions are added to My I/O. -->
+    <string name="add_bookmark_hint">活動已儲存到我的 I/O</string>
+
+    <!-- Hint text indicating unbookmarked sessions are removed from My I/O. -->
+    <string name="remove_bookmark_hint">活動已從我的 I/O 移除</string>
+
+    <!-- Opt-out text to stop seeing bookmark related hints. -->
+    <string name="bookmark_hint_optout">我知道了</string>
+
+    <!-- The label used on a button when a view is in an expanded state. Clicking on the icon
+    collapses the view. -->
+    <string name="expanded">展開</string>
+
+    <!-- The label used on a button when a view is in an collapsed state. Clicking on the icon
+    expanded the view. -->
+    <string name="collapsed">收合</string>
+</resources>

@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Copyright (C) 2015 The Android Open Source Project
+
+     Licensed under the Apache License, Version 2.0 (the "License");
+     you may not use this file except in compliance with the License.
+     You may obtain a copy of the License at
+
+          http://www.apache.org/licenses/LICENSE-2.0
+
+     Unless required by applicable law or agreed to in writing, software
+     distributed under the License is distributed on an "AS IS" BASIS,
+     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+     See the License for the specific language governing permissions and
+     limitations under the License.
+-->
+
+<!-- Definitions of attributes to be exposed as public -->
+<resources>
+    <public type="attr" name="backgroundTint"/>
+    <public type="attr" name="backgroundTintMode"/>
+    <public type="attr" name="behavior_hideable"/>
+    <public type="attr" name="behavior_overlapTop"/>
+    <public type="attr" name="behavior_peekHeight"/>
+    <public type="attr" name="borderWidth"/>
+    <public type="attr" name="bottomSheetDialogTheme"/>
+    <public type="attr" name="bottomSheetStyle"/>
+    <public type="attr" name="collapsedTitleGravity"/>
+    <public type="attr" name="collapsedTitleTextAppearance"/>
+    <public type="attr" name="contentScrim"/>
+    <public type="attr" name="counterEnabled"/>
+    <public type="attr" name="counterMaxLength"/>
+    <public type="attr" name="counterOverflowTextAppearance"/>
+    <public type="attr" name="counterTextAppearance"/>
+    <public type="attr" name="elevation"/>
+    <public type="attr" name="errorEnabled"/>
+    <public type="attr" name="errorTextAppearance"/>
+    <public type="attr" name="expanded"/>
+    <public type="attr" name="expandedTitleGravity"/>
+    <public type="attr" name="expandedTitleMargin"/>
+    <public type="attr" name="expandedTitleMarginBottom"/>
+    <public type="attr" name="expandedTitleMarginEnd"/>
+    <public type="attr" name="expandedTitleMarginStart"/>
+    <public type="attr" name="expandedTitleMarginTop"/>
+    <public type="attr" name="expandedTitleTextAppearance"/>
+    <public type="attr" name="fabSize"/>
+    <public type="attr" name="headerLayout"/>
+    <public type="attr" name="hintAnimationEnabled"/>
+    <public type="attr" name="hintEnabled"/>
+    <public type="attr" name="hintTextAppearance"/>
+    <public type="attr" name="itemBackground"/>
+    <public type="attr" name="itemIconTint"/>
+    <public type="attr" name="itemTextAppearance"/>
+    <public type="attr" name="itemTextColor"/>
+    <public type="attr" name="keylines"/>
+    <public type="attr" name="layout_anchor"/>
+    <public type="attr" name="layout_anchorGravity"/>
+    <public type="attr" name="layout_behavior"/>
+    <public type="attr" name="layout_collapseMode"/>
+    <public type="attr" name="layout_collapseParallaxMultiplier"/>
+    <public type="attr" name="layout_keyline"/>
+    <public type="attr" name="layout_scrollFlags"/>
+    <public type="attr" name="layout_scrollInterpolator"/>
+    <public type="attr" name="menu"/>
+    <public type="attr" name="pressedTranslationZ"/>
+    <public type="attr" name="rippleColor"/>
+    <public type="attr" name="statusBarBackground"/>
+    <public type="attr" name="statusBarScrim"/>
+    <public type="attr" name="tabBackground"/>
+    <public type="attr" name="tabContentStart"/>
+    <public type="attr" name="tabGravity"/>
+    <public type="attr" name="tabIndicatorColor"/>
+    <public type="attr" name="tabIndicatorHeight"/>
+    <public type="attr" name="tabMaxWidth"/>
+    <public type="attr" name="tabMinWidth"/>
+    <public type="attr" name="tabMode"/>
+    <public type="attr" name="tabPadding"/>
+    <public type="attr" name="tabPaddingBottom"/>
+    <public type="attr" name="tabPaddingEnd"/>
+    <public type="attr" name="tabPaddingStart"/>
+    <public type="attr" name="tabPaddingTop"/>
+    <public type="attr" name="tabSelectedTextColor"/>
+    <public type="attr" name="tabTextAppearance"/>
+    <public type="attr" name="tabTextColor"/>
+    <public type="attr" name="textColorError"/>
+    <public type="attr" name="title"/>
+    <public type="attr" name="titleEnabled"/>
+    <public type="attr" name="toolbarId"/>
+    <public type="attr" name="useCompatPadding"/>
+</resources>

@@ -1,0 +1,144 @@
+{
+  "project_info": {
+    "project_number": "596109260910",
+    "firebase_url": "https://io2017-backend-dev.firebaseio.com",
+    "project_id": "io2017-backend-dev",
+    "storage_bucket": "io2017-backend-dev.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:596109260910:android:66c485c6a5187053",
+        "android_client_info": {
+          "package_name": "com.google.samples.apps.iosched"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "596109260910-h8qnllpecphms1slou8fo5ubvo7s0qmf.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.google.samples.apps.iosched",
+            "certificate_hash": "c76219dd7aecdd7d1a369f6e0824816051fdf829"
+          }
+        },
+        {
+          "client_id": "596109260910-i3q455a3o41neji376apo66dnmrfudro.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD_ShkoKvgMABYhjWZzDwwPn8PcfAjNY_o"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "596109260910-i3q455a3o41neji376apo66dnmrfudro.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "596109260910-f5kc2mv8bhli14sruc3o8tbqdsoske3h.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.google.iosched.enterprise"
+              }
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:596109260910:android:2ec766f5e0d55252",
+        "android_client_info": {
+          "package_name": "com.google.samples.apps.iosched.mapeditor"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "596109260910-i3q455a3o41neji376apo66dnmrfudro.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD_ShkoKvgMABYhjWZzDwwPn8PcfAjNY_o"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:596109260910:android:4326f83533eec59c",
+        "android_client_info": {
+          "package_name": "com.google.firebase.arthurthompson.reserverdev"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "596109260910-cefkkka3upc61lb5litt12euod6mmsu3.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.google.firebase.arthurthompson.reserverdev",
+            "certificate_hash": "842c34f964ca41f5270aed86a1b40939e9d5190d"
+          }
+        },
+        {
+          "client_id": "596109260910-i3q455a3o41neji376apo66dnmrfudro.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD_ShkoKvgMABYhjWZzDwwPn8PcfAjNY_o"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "596109260910-i3q455a3o41neji376apo66dnmrfudro.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "596109260910-f5kc2mv8bhli14sruc3o8tbqdsoske3h.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.google.iosched.enterprise"
+              }
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

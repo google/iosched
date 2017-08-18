@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  Copyright 2015 Google Inc. All rights reserved.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+       http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+  -->
+<!-- Colors common among all features in the app. -->
+<resources>
+    <color name="background">#ffffffff</color>
+    <color name="content_background">@null</color>
+
+    <!-- 2017 palette -->
+    <color name="lightish_blue">#536dfe</color>
+    <color name="lightish_blue_a11y">#4a5cfe</color>
+    <color name="lighter_blue">#8799ff</color>
+    <color name="aqua_marine">#1ce8b5</color>
+    <color name="aqua_marine_90">#e51ce8b5</color>
+    <color name="neon_blue">#00e4ff</color>
+    <color name="sunflower_yellow">#ffd500</color>
+    <color name="light_periwinkle">#bcc8fb</color>
+    <color name="warm_grey">#9b9b9b</color>
+    <color name="greyish_brown">#424242</color>
+    <color name="links">#4151fd</color>
+    <color name="dark_icon">#b3000000</color>
+    <color name="light_grey">#ffeeeeee</color>
+    <color name="lighter_grey">#f6f6f6</color>
+    <color name="reddish">#d32f2f</color>
+    <color name="carnation_pink">#ff80ab</color>
+    <color name="light_salmon">#ffab91</color>
+    <color name="off_white">#e6e6e6</color>
+    <color name="duck_egg_blue">#b2ebf2</color>
+    <color name="light_yellowish_green">#ccff90</color>
+
+    <color name="text_primary_light">@color/greyish_brown</color>
+    <color name="text_primary_light_disabled">#42424242</color>
+
+    <!-- 2016 palette -->
+    <color name="io16_primary_cyan">#ff25c5d9</color>
+    <color name="io16_primary_purple">#ff5d6abf</color>
+    <color name="io16_primary_blue_grey">#ff445963</color>
+    <color name="io16_grey">#ffafbdc4</color>
+    <color name="io16_light_grey">#ffebeef0</color>
+    <color name="io16_accent_red">#ffff5151</color>
+    <color name="io16_accent_cyan">#ff4ccfe0</color>
+    <color name="io16_accent_light_cyan">#ff8cedea</color>
+    <color name="io16_accent_green">#ff7bb241</color>
+    <color name="io16_accent_yellow">#ffffc927</color>
+    <color name="io16_accent_purple">#ff7885ca</color>
+    <color name="large_dark_icon">#66000000</color>
+    <color name="map_icon">#ffb4b4b4</color>
+    <color name="dark_status_bar">#ff949595</color>
+    <color name="light_status_bar_against_toolbar">#ffe8eaea</color>
+    <color name="light_status_bar_against_header_img">#ffe0e1e3</color>
+    <color name="immersive_status_bar">#33000000</color>
+    <color name="immersive_status_bar_dark">#66000000</color>
+    <!-- todo cleanup old colors -->
+
+    <!-- App main palette for io15 version. -->
+    <color name="io15_dark_grey">#FF455A64</color>
+    <color name="card">@android:color/white</color>
+
+    <!-- App Primary View Colors (might be deprecated). -->
+    <color name="app_white">#FFFEFEFE</color>
+    <color name="divider">@color/off_white</color>
+
+    <!-- App Primary Text Colors (might be deprecated). -->
+    <color name="body_text_1">#de000000</color>
+    <color name="body_text_2">#8a000000</color>
+    <color name="body_text_disabled">#44000000</color>
+
+    <color name="flat_button_text">#ff0097a7</color>
+    <color name="text_on_primary">#ff004446</color>
+    <color name="about_link">#ff00a7b6</color>
+
+    <!-- Session Detail colors. -->
+    <color name="session_detail_tag_text">@color/session_detail_interactive_element</color>
+    <color name="fab_not_in_schedule">@color/lightish_blue</color>
+    <color name="fab_in_schedule">@android:color/white</color>
+    <color name="fab_press_ripple">#1a000000</color>
+    <color name="session_tag_stroke">#80546e7a</color>
+    <color name="session_tag_stroke_focused">#888</color>
+    <color name="speaker_social_link">@color/session_detail_interactive_element</color>
+    <color name="session_detail_interactive_element">#ff546e7a</color>
+
+    <color name="theme_primary">@color/lightish_blue</color>
+    <color name="theme_primary_dark">#3C53BB</color>
+
+    <color name="theme_accent_1">#00b0ff</color>
+    <color name="theme_accent_2">#e91e63</color>
+
+    <color name="map_text_primary">@color/io15_dark_grey</color>
+
+    <color name="more_button_background">#40707070</color>
+
+    <color name="navdrawer_background">#ffffffff</color>
+
+    <!-- Might be deprecated. -->
+    <color name="default_session_color">@color/theme_primary</color>
+
+    <!-- IO15 session detail colors -->
+    <color name="session_livestreamed_color">@color/body_text_2</color>
+    <color name="session_extended_color">#546E7A</color>
+
+    <color name="list_dropdown_divider_color">#289e9e9e</color>
+    <color name="butter_bar_light">#eee0e0e0</color>
+
+    <color name="tab_selected_strip">@android:color/white</color>
+
+    <color name="map_active_icon_tint">@color/warm_grey</color>
+
+
+    <!-- video lib -->
+    <color name="video_title">#de07434d</color>
+    <color name="filter_text">#444444</color>
+    <color name="played_video_tint">#b3f1f1f1</color>
+
+    <!-- Colors used in the Video Library or Explore list view -->
+    <color name="item_text_primary_color">#ff275B64</color>
+
+    <color name="hash_io_monochrome">#15000000</color> <!-- 8% black -->
+
+    <!-- search -->
+    <color name="dialog_background">#7f000000</color>
+
+</resources>

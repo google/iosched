@@ -1,0 +1,276 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  Copyright 2015 Google Inc. All rights reserved.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+       http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+  -->
+
+<android.support.design.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <android.support.design.widget.AppBarLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <android.support.design.widget.CollapsingToolbarLayout
+            android:id="@+id/collapsing_toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/extended_appbar_height"
+            android:background="@color/lighter_grey"
+            app:collapsedTitleTextAppearance="@style/TextAppearance.Widget.AppCompat.Toolbar.Title"
+            app:contentScrim="@color/lighter_grey"
+            app:expandedTitleMarginBottom="@dimen/feedback_title_margin_bottom"
+            app:expandedTitleMarginStart="@dimen/keyline_2"
+            app:expandedTitleTextAppearance="?android:textAppearanceLarge"
+            app:layout_scrollFlags="scroll|exitUntilCollapsed"
+            app:scrimAnimationDuration="200">
+
+            <TextView
+                android:id="@+id/feedback_header_session_speakers"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom"
+                android:layout_marginBottom="@dimen/feedback_subtitle_margin_bottom"
+                android:layout_marginStart="@dimen/keyline_2"
+                android:layout_marginEnd="@dimen/padding_normal"
+                android:ellipsize="end"
+                android:maxLines="1"
+                android:textAppearance="@style/TextAppearance.AppCompat.Widget.ActionBar.Subtitle"
+                app:layout_collapseMode="parallax"
+                app:layout_collapseParallaxMultiplier="0.15"
+                tools:text="Big Bird, Cookie Monster" />
+
+            <android.support.v7.widget.Toolbar
+                android:id="@+id/toolbar"
+                android:layout_width="match_parent"
+                android:layout_height="?actionBarSize"
+                app:layout_collapseMode="pin" />
+
+        </android.support.design.widget.CollapsingToolbarLayout>
+
+    </android.support.design.widget.AppBarLayout>
+
+    <android.support.v4.widget.NestedScrollView
+        android:id="@+id/scroll_view"
+        android:layout_width="@dimen/main_content_width"
+        android:layout_height="match_parent"
+        android:layout_gravity="center_horizontal|top"
+        android:background="@color/content_background"
+        android:elevation="@dimen/card_elevation"
+        android:scrollbarStyle="insideOverlay"
+        android:scrollbars="vertical"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+        <android.support.constraint.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingBottom="?actionBarSize"
+            android:paddingTop="@dimen/padding_normal">
+
+            <TextView
+                android:id="@+id/rating_label"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/spacing_micro"
+                android:padding="@dimen/padding_normal"
+                android:text="@string/session_rating_label_text"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <com.google.samples.apps.iosched.ui.widget.CustomRatingBar
+                android:id="@+id/rating_bar_0"
+                style="@style/Widget.IOSched.FeedbackRatingBar"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:accessibilityLiveRegion="assertive"
+                android:importantForAccessibility="yes"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/rating_label" />
+
+            <TextView
+                android:id="@+id/rating_bad"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:importantForAccessibility="no"
+                android:padding="@dimen/padding_normal"
+                android:text="@string/session_feedback_not_so_awesome"
+                android:textAppearance="@style/TextAppearance.H5"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/rating_bar_0" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:importantForAccessibility="no"
+                android:padding="@dimen/padding_normal"
+                android:text="@string/session_feedback_awesome"
+                android:textAppearance="@style/TextAppearance.H5"
+                app:layout_constraintBaseline_toBaselineOf="@id/rating_bad"
+                app:layout_constraintEnd_toEndOf="parent" />
+
+            <TextView
+                android:id="@+id/session_feedback_relevance"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/spacing_micro"
+                android:padding="@dimen/padding_normal"
+                android:text="@string/session_feedback_relevance"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/rating_bad" />
+
+            <com.google.samples.apps.iosched.ui.widget.CustomRatingBar
+                android:id="@+id/session_relevant_feedback_bar"
+                style="@style/Widget.IOSched.FeedbackRatingBar"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/session_feedback_relevance" />
+
+            <TextView
+                android:id="@+id/relevance_poor"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:importantForAccessibility="no"
+                android:padding="@dimen/padding_normal"
+                android:text="@string/session_feedback_not_at_all_relevant"
+                android:textAppearance="@style/TextAppearance.H5"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/session_relevant_feedback_bar" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:importantForAccessibility="no"
+                android:padding="@dimen/padding_normal"
+                android:text="@string/session_feedback_extremely_relevant"
+                android:textAppearance="@style/TextAppearance.H5"
+                app:layout_constraintBaseline_toBaselineOf="@id/relevance_poor"
+                app:layout_constraintEnd_toEndOf="parent" />
+
+            <TextView
+                android:id="@+id/feedback_content"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/spacing_micro"
+                android:padding="@dimen/padding_normal"
+                android:text="@string/session_feedback_content_label_text"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/relevance_poor" />
+
+            <com.google.samples.apps.iosched.ui.widget.CustomRatingBar
+                android:id="@+id/content_feedback_bar"
+                style="@style/Widget.IOSched.FeedbackRatingBar"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/feedback_content" />
+
+            <TextView
+                android:id="@+id/content_poor"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:importantForAccessibility="no"
+                android:padding="@dimen/padding_normal"
+                android:text="@string/session_feedback_basic"
+                android:textAppearance="@style/TextAppearance.H5"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/content_feedback_bar" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:importantForAccessibility="no"
+                android:padding="@dimen/padding_normal"
+                android:text="@string/session_feedback_advanced"
+                android:textAppearance="@style/TextAppearance.H5"
+                app:layout_constraintBaseline_toBaselineOf="@id/content_poor"
+                app:layout_constraintEnd_toEndOf="parent" />
+
+            <TextView
+                android:id="@+id/speaker_quality"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/spacing_micro"
+                android:padding="@dimen/padding_normal"
+                android:text="@string/session_feedback_speaker_quality"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/content_poor" />
+
+            <com.google.samples.apps.iosched.ui.widget.CustomRatingBar
+                android:id="@+id/speaker_feedback_bar"
+                style="@style/Widget.IOSched.FeedbackRatingBar"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/speaker_quality" />
+
+            <TextView
+                android:id="@+id/speaker_quality_poor"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:importantForAccessibility="no"
+                android:padding="@dimen/padding_normal"
+                android:text="@string/session_feedback_poor"
+                android:textAppearance="@style/TextAppearance.H5"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/speaker_feedback_bar" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:importantForAccessibility="no"
+                android:padding="@dimen/padding_normal"
+                android:text="@string/session_feedback_outstanding"
+                android:textAppearance="@style/TextAppearance.H5"
+                app:layout_constraintBaseline_toBaselineOf="@id/speaker_quality_poor"
+                app:layout_constraintEnd_toEndOf="parent" />
+
+        </android.support.constraint.ConstraintLayout>
+
+    </android.support.v4.widget.NestedScrollView>
+
+    <FrameLayout
+        android:id="@+id/submit_feedback_button"
+        android:layout_width="@dimen/main_content_width"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal|bottom"
+        android:background="?colorPrimary"
+        android:contentDescription="@string/session_feedback_submitlink"
+        android:elevation="4dp"
+        android:foreground="?android:selectableItemBackground"
+        android:minHeight="?actionBarSize"
+        android:stateListAnimator="@animator/raise"
+        android:theme="@style/ThemeOverlay.DarkToolbar">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:drawablePadding="@dimen/spacing_normal"
+            android:drawableStart="@drawable/ic_submit_feedback"
+            android:gravity="center_vertical"
+            android:text="@string/session_feedback_submitlink"
+            android:textAppearance="@style/TextAppearance.AppCompat.Widget.Button"
+            tools:ignore="RtlSymmetry" />
+
+    </FrameLayout>
+
+</android.support.design.widget.CoordinatorLayout>

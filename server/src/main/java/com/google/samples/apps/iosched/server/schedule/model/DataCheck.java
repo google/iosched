@@ -223,8 +223,8 @@ public class DataCheck {
 
 
   public void checkUsingPredicator(CheckResult result, JsonObject oldData, JsonObject newData, Enum<?> entityType, Enum<?> entityKey, EntityValidator predicate) {
-    HashMap<String, JsonObject> oldMap = new HashMap<String, JsonObject>();
-    HashMap<String, JsonObject> newMap = new HashMap<String, JsonObject>();
+    HashMap<String, JsonObject> oldMap = new HashMap<>();
+    HashMap<String, JsonObject> newMap = new HashMap<>();
     JsonArray oldArray = getAsArray(oldData, entityType);
     JsonArray newArray = getAsArray(newData, entityType);
     if (oldArray!=null) for (JsonElement el: oldArray) {
@@ -307,7 +307,7 @@ public class DataCheck {
   }
 
   public static class CheckResult {
-    public ArrayList<CheckFailure> failures = new ArrayList<CheckFailure>();
+    public ArrayList<CheckFailure> failures = new ArrayList<>();
   }
 
 }

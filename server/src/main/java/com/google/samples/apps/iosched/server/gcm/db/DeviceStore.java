@@ -16,7 +16,7 @@
 
 package com.google.samples.apps.iosched.server.gcm.db;
 
-import static com.google.samples.apps.iosched.server.gcm.db.OfyService.ofy;
+import static com.googlecode.objectify.ObjectifyService.ofy;
 
 import com.google.samples.apps.iosched.server.gcm.db.models.Device;
 
@@ -29,24 +29,24 @@ public class DeviceStore {
     /**
      * Registers a device.
      *
-     * @param gcmId device's registration id.
+     * @param deviceId device's registration id.
      */
-    public static void register(String gcmId, String gcmGroupId) {
-        LOG.info("Registering device.\nGroup ID: " + gcmGroupId + "\nGCM ID: " + gcmId);
-        Device oldDevice = findDeviceByGcmId(gcmId);
+    public static void register(String deviceId, String userId) {
+        LOG.info("Registering device.\nGroup ID: " + userId + "\nGCM ID: " + deviceId);
+        Device oldDevice = findDeviceByDeviceId(deviceId);
         if (oldDevice == null) {
             // Existing device not found (as expected)
             Device newDevice = new Device();
-            newDevice.setGcmId(gcmId);
-            newDevice.setGcmGroupId(gcmGroupId);
+            newDevice.setDeviceId(deviceId);
+            newDevice.setUserId(userId);
             ofy().save().entity(newDevice);
         } else {
             // Existing device found
-            LOG.warning(gcmId + " is already registered");
-            if (!gcmGroupId.equals(oldDevice.getGcmGroupId())) {
-                LOG.info("GcmGroupId has changed from '" + oldDevice.getGcmGroupId() + "' to '"
-                        + gcmGroupId + "'");
-                oldDevice.setGcmGroupId(gcmGroupId);
+            LOG.warning(deviceId + " is already registered");
+            if (userId == null || !userId.equals(oldDevice.getUserId())) {
+                LOG.info("User ID has changed from '" + oldDevice.getUserId() + "' to '"
+                        + userId + "'");
+                oldDevice.setUserId(userId);
                 ofy().save().entity(oldDevice);
             }
         }
@@ -55,33 +55,33 @@ public class DeviceStore {
     /**
      * Unregisters a device.
      *
-     * @param gcmId device's registration id.
+     * @param deviceId device's registration id.
      */
-    public static void unregister(String gcmId) {
-        Device device = findDeviceByGcmId(gcmId);
+    public static void unregister(String deviceId) {
+        Device device = findDeviceByDeviceId(deviceId);
         if (device == null) {
-            LOG.warning("Device " + gcmId + " already unregistered");
+            LOG.warning("Device " + deviceId + " already unregistered");
             return;
         }
-        LOG.info("Unregistering " + gcmId);
+        LOG.info("Unregistering " + deviceId);
         ofy().delete().entity(device);
     }
 
     /**
      * Updates the registration id of a device.
      */
-    public static void updateRegistration(String oldGcmId, String newGcmId) {
-        LOG.info("Updating " + oldGcmId + " to " + newGcmId);
-        Device oldDevice = findDeviceByGcmId(oldGcmId);
+    public static void updateRegistration(String oldDeviceId, String newDeviceId) {
+        LOG.info("Updating " + oldDeviceId + " to " + newDeviceId);
+        Device oldDevice = findDeviceByDeviceId(oldDeviceId);
         if (oldDevice == null) {
-            LOG.warning("No device for registration id " + oldGcmId);
+            LOG.warning("No device for registration id " + oldDeviceId);
             return;
         }
         // Device exists. Since we use the GCM key as the (immutable) primary key,
         // we must create a new entity.
         Device newDevice = new Device();
-        newDevice.setGcmId(newGcmId);
-        newDevice.setGcmGroupId(oldDevice.getGcmGroupId());
+        newDevice.setDeviceId(newDeviceId);
+        newDevice.setUserId(oldDevice.getUserId());
         ofy().save().entity(newDevice);
         ofy().delete().entity(oldDevice);
     }
@@ -94,14 +94,14 @@ public class DeviceStore {
     }
 
     public static List<Device> getAllDevices() {
-        return ofy().load().type(Device.class).list();
+        return ofy().load().type(Device.class).filter("userId >", "").list();
     }
 
-    public static Device findDeviceByGcmId(String regId) {
-        return ofy().load().type(Device.class).id(regId).now();
+    public static Device findDeviceByDeviceId(String deviceId) {
+        return ofy().load().type(Device.class).id(deviceId).now();
     }
 
-    public static List<Device> findDevicesByGcmGroupId(String target) {
-        return ofy().load().type(Device.class).filter("gPlusId", target).list();
+    public static List<Device> findDevicesByUserId(String target) {
+        return ofy().load().type(Device.class).filter("userId", target).list();
     }
 }

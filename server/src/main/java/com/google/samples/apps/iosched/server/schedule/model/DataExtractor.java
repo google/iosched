@@ -26,8 +26,12 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonPrimitive;
 import com.google.samples.apps.iosched.server.schedule.Config;
+import com.google.samples.apps.iosched.server.schedule.model.InputJsonKeys.VendorAPISource.Rooms;
+import com.google.samples.apps.iosched.server.schedule.model.InputJsonKeys.VendorAPISource.Topics;
+import com.google.samples.apps.iosched.server.schedule.model.OutputJsonKeys.Sessions;
 import com.google.samples.apps.iosched.server.schedule.model.validator.Converters;
 
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -87,8 +91,8 @@ public class DataExtractor {
   }
 
   public JsonObject extractFromDataSources(JsonDataSources sources) {
-    usedTags = new HashSet<String>();
-    usedSpeakers = new HashSet<String>();
+    usedTags = new HashSet<>();
+    usedSpeakers = new HashSet<>();
 
     JsonObject result = new JsonObject();
     result.add(OutputJsonKeys.MainTypes.rooms.name(), extractRooms(sources));
@@ -125,7 +129,7 @@ public class DataExtractor {
   }
 
   public JsonArray extractRooms(JsonDataSources sources) {
-    HashSet<String> ids = new HashSet<String>();
+    HashSet<String> ids = new HashSet<>();
     JsonArray result = new JsonArray();
     JsonDataSource source = sources.getSource(InputJsonKeys.VendorAPISource.MainTypes.rooms.name());
     if (source != null) {
@@ -135,9 +139,13 @@ public class DataExtractor {
         String id = Config.ROOM_MAPPING.getRoomId(originalId.getAsString());
         if (!ids.contains(id)) {
           String title = Config.ROOM_MAPPING.getTitle(id, get(origin, InputJsonKeys.VendorAPISource.Rooms.Name).getAsString());
+          int capacity = get(origin, Rooms.Capacity).getAsInt();
+          boolean filter = get(origin, Rooms.Publish).getAsBoolean();
           set(new JsonPrimitive(id), dest, OutputJsonKeys.Rooms.id);
+          set(new JsonPrimitive(filter), dest, OutputJsonKeys.Rooms.filter);
           set(originalId, dest, OutputJsonKeys.Rooms.original_id);
           set(new JsonPrimitive(title), dest, OutputJsonKeys.Rooms.name);
+          set(new JsonPrimitive(capacity), dest, OutputJsonKeys.Rooms.capacity);
           result.add(dest);
           ids.add(id);
         }
@@ -156,10 +164,10 @@ public class DataExtractor {
         .tag_category_mapping.name());
     JsonDataSource tagsConfSource = sources.getSource(InputJsonKeys.ExtraSource.MainTypes.tag_conf.name());
 
-    categoryToTagMap = new HashMap<String, JsonObject>();
+    categoryToTagMap = new HashMap<>();
 
     // Only for checking duplicates.
-    HashSet<String> originalTagNames = new HashSet<String>();
+    HashSet<String> originalTagNames = new HashSet<>();
 
     if (source != null) {
       for (JsonObject origin: source) {
@@ -221,15 +229,6 @@ public class DataExtractor {
           // in the same track are going to have the same image then it would make more sense for
           // the images to be attached to the Tag/Track rather than the session.
           if (tagName.getAsString().startsWith(TRACK)) {
-            // Extract photo urls from topics for TRACK tags.
-            String objectId = extractTrackPhotoObjectId(sources,
-                    dest.get(OutputJsonKeys.Tags.original_id.name()).getAsString());
-            if (!objectId.isEmpty()) {
-              dest.addProperty(OutputJsonKeys.Tags.photoUrl.name(),
-                      Converters.SESSION_PHOTO_URL.convert(new JsonPrimitive(objectId))
-                                                  .getAsString());
-            }
-
             // Add background colors for TRACK tags.
             String trackColor = getTrackColor(tagName.getAsString().substring(6));
             if (!trackColor.isEmpty()) {
@@ -251,7 +250,7 @@ public class DataExtractor {
   }
 
   public JsonArray extractSpeakers(JsonDataSources sources) {
-    speakersById = new HashMap<String, JsonObject>();
+    speakersById = new HashMap<>();
     JsonArray result = new JsonArray();
     JsonDataSource source = sources.getSource(InputJsonKeys.VendorAPISource.MainTypes.speakers.name());
     if (source != null) {
@@ -264,10 +263,7 @@ public class DataExtractor {
         set(origin, InputJsonKeys.VendorAPISource.Speakers.CompanyName, dest, OutputJsonKeys.Speakers.company, obfuscate?Converters.OBFUSCATE:null);
         JsonElement originalPhoto = get(origin, InputJsonKeys.VendorAPISource.Speakers.Photo);
         if (originalPhoto != null && !"".equals(originalPhoto.getAsString())) {
-          // Note that the input for SPEAKER_PHOTO_ID converter is the entity ID. We simply ignore the original
-          // photo URL, because that will be processed by an offline cron script, resizing the
-          // photos and saving them to a known location with the entity ID as its base name.
-          set(origin, InputJsonKeys.VendorAPISource.Speakers.Id, dest, OutputJsonKeys.Speakers.thumbnailUrl, Converters.SPEAKER_PHOTO_URL);
+          set(origin, InputJsonKeys.VendorAPISource.Speakers.Photo, dest, OutputJsonKeys.Speakers.thumbnailUrl, Converters.PHOTO_URL);
         }
         JsonElement info = origin.get(InputJsonKeys.VendorAPISource.Speakers.Info.name());
         JsonPrimitive plusUrl = getMapValue(info, InputJsonKeys.VendorAPISource.Speakers.INFO_PUBLIC_PLUS_ID, Converters.GPLUS_URL, null);
@@ -312,9 +308,26 @@ public class DataExtractor {
         }
         JsonObject dest = new JsonObject();
 
+        JsonElement id = get(origin, Topics.Id);
         // Some sessions require a special ID, so we replace it here...
         if (title != null && title.isJsonPrimitive() && "after hours".equalsIgnoreCase(title.getAsString())) {
           set(new JsonPrimitive("__afterhours__"), dest, OutputJsonKeys.Sessions.id);
+        } else if (Arrays.asList(Config.KEYNOTE_IDS).contains(id.getAsString())) {
+          // TODO: Keynotes should not have special IDs there should be a tag that identifies them
+          // TODO: as keynotes and they can be handled accordingly. This check for a particular ID
+          // TODO: is very brittle and should be removed.
+          String keynoteId;
+          if (id.getAsString().equals("3f3802e4-b24d-4b47-b9c8-b5ab7944411c")) {
+            keynoteId = "__keynote__";
+          } else {
+            keynoteId = "__keynote2__";
+          }
+          set(new JsonPrimitive(keynoteId), dest,
+              OutputJsonKeys.Sessions.id);
+
+          // TODO: Keynotes should have tags like other sessions so this hack is not necessary for
+          // TODO: for setting keynote colors.
+          set(new JsonPrimitive("#27e4fd"), dest, OutputJsonKeys.Sessions.color);
         } else {
           set(origin, InputJsonKeys.VendorAPISource.Topics.Id, dest, OutputJsonKeys.Sessions.id);
         }
@@ -324,14 +337,6 @@ public class DataExtractor {
         set(origin, InputJsonKeys.VendorAPISource.Topics.Start, dest, OutputJsonKeys.Sessions.startTimestamp, Converters.DATETIME);
         set(origin, InputJsonKeys.VendorAPISource.Topics.Finish, dest, OutputJsonKeys.Sessions.endTimestamp, Converters.DATETIME);
         set(new JsonPrimitive(isFeatured(origin)), dest, OutputJsonKeys.Sessions.isFeatured);
-
-        JsonElement documents = get(origin, InputJsonKeys.VendorAPISource.Topics.Documents);
-        if (documents != null && documents.isJsonArray() && documents.getAsJsonArray().size()>0) {
-          // Note that the input for SessionPhotoURL is the entity ID. We simply ignore the original
-          // photo URL, because that will be processed by an offline cron script, resizing the
-          // photos and saving them to a known location with the entity ID as its base name.
-          set(origin, InputJsonKeys.VendorAPISource.Topics.Id, dest, OutputJsonKeys.Sessions.photoUrl, Converters.SESSION_PHOTO_URL);
-        }
 
         setVideoPropertiesInSession(origin, dest);
         setRelatedContent(origin, dest);
@@ -366,6 +371,11 @@ public class DataExtractor {
               }
             }
           }
+        }
+        // TODO: Keynotes should have their own tags that identify them. Adding here like this
+        // TODO: should not be necessary.
+        if (get(dest, OutputJsonKeys.Sessions.id).getAsString().startsWith("__keynote")) {
+          tags.add("FLAG_KEYNOTE");
         }
         set(tags, dest, OutputJsonKeys.Sessions.tags);
         if (mainTag != null) {
@@ -408,7 +418,7 @@ public class DataExtractor {
   }
 
   public JsonArray extractVideoSessions(JsonDataSources sources) {
-    videoSessionsById = new HashMap<String, JsonObject>();
+    videoSessionsById = new HashMap<>();
     if (categoryToTagMap == null) {
       throw new IllegalStateException("You need to extract tags before attempting to extract video sessions");
     }
@@ -532,19 +542,8 @@ public class DataExtractor {
     boolean isLivestream = isLivestreamed(origin);
     set(new JsonPrimitive(isLivestream), dest, OutputJsonKeys.Sessions.isLivestream);
 
-    JsonPrimitive vid = null;
-
-    if (isLivestream) {
-      vid = getVideoFromTopicInfo(origin, InputJsonKeys.VendorAPISource.Topics.INFO_STREAM_VIDEO_ID,
-          Config.VIDEO_LIVESTREAMURL_FOR_EMPTY);
-    } else {
-      vid = getMapValue(
-          get(origin, InputJsonKeys.VendorAPISource.Topics.Info), InputJsonKeys.VendorAPISource.Topics.INFO_VIDEO_URL,
-          Converters.YOUTUBE_URL, null);
-    }
-    if (vid != null && !vid.getAsString().isEmpty()) {
-      set(vid, dest, OutputJsonKeys.Sessions.youtubeUrl);
-    }
+    JsonPrimitive videoUrl = getVideoFromTopicInfo(origin, Topics.INFO_VIDEO_URL, null);
+    set(videoUrl, dest, OutputJsonKeys.Sessions.youtubeUrl);
   }
 
   private JsonPrimitive getVideoFromTopicInfo(JsonObject origin, String sourceInfoKey, String defaultVideoUrl) {
@@ -661,32 +660,6 @@ public class DataExtractor {
         set(outputArray, dest, OutputJsonKeys.Sessions.relatedContent);
       }
     }
-  }
-
-  /**
-   * Extract the ObjectId (used to generate the photo url of the track) from the first topic that
-   * contains the given trackId.
-   *
-   * @param sources The full JSON object retrieved from the CMS.
-   * @param trackId Track id used to filter the topics, so the correct artwork can be retrieved.
-   * @return ObjectId of the topic that contains the trackId.
-   */
-  private String extractTrackPhotoObjectId(JsonDataSources sources, String trackId) {
-    JsonDataSource source = sources.getSource(InputJsonKeys.VendorAPISource.MainTypes.topics.name());
-    for (JsonObject topic : source) {
-
-      JsonElement documents = get(topic, InputJsonKeys.VendorAPISource.Topics.Documents);
-      JsonArray categories = topic.getAsJsonArray(InputJsonKeys.VendorAPISource.Topics.CategoryIds.name());
-      for (int i = 0; i < categories.size(); i++) {
-        String categoryId = categories.get(i).getAsString();
-        if (categoryId.equals(trackId) && documents.getAsJsonArray().size() > 0) {
-          return documents.getAsJsonArray().get(0).getAsJsonObject().get("ObjectId").getAsString();
-        }
-      }
-    }
-    // If no topic is found to have this trackId contained in its categories array then an empty
-    // String is returned.
-    return "";
   }
 
   // TODO: improve the association of colors with tracks.

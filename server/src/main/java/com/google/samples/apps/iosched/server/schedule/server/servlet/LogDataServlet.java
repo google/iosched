@@ -58,7 +58,7 @@ public class LogDataServlet extends HttpServlet {
     for (Entity run: lastRunsEntities) {
       JsonObject obj= new JsonObject();
       JsonObject timings = new JsonObject();
-      TreeMap<String, Object> sortedMap = new TreeMap<String, Object>(run.getProperties());
+      TreeMap<String, Object> sortedMap = new TreeMap<>(run.getProperties());
       for (Entry<String, Object> property: sortedMap.entrySet()) {
         Object value = property.getValue();
         String key = property.getKey();

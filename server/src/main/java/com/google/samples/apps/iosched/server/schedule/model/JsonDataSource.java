@@ -33,7 +33,7 @@ public class JsonDataSource implements Comparable<JsonDataSource>, Iterable<Json
 
   public JsonDataSource(Enum<?> sourceType) {
     this.sourceType = sourceType;
-    this.data = new HashMap<String, JsonObject>();
+    this.data = new HashMap<>();
   }
 
   public JsonDataSource(Enum<?> sourceType, JsonArray arr) {

@@ -23,6 +23,61 @@
    version="2.5">
   <display-name>IOSched updater</display-name>
 
+  <context-param>
+      <description>accountKey</description>
+      <param-name>accountKey</param-name>
+      <param-value>[path/to/credentials.json]</param-value>
+  </context-param>
+  <context-param>
+      <description>databaseUrl</description>
+      <param-name>databaseUrl</param-name>
+      <param-value>[database url]</param-value>
+  </context-param>
+  <context-param>
+    <description>eventIds</description>
+    <param-name>eventIds</param-name>
+    <param-value>[eventId1],[eventId2]</param-value>
+  </context-param>
+  <context-param>
+    <description>eventManagerUrl</description>
+    <param-name>eventManagerUrl</param-name>
+    <param-value>[eventManagerUrl]</param-value>
+  </context-param>
+
+  <!-- ///////////////////////////////////// Objectify /////////////////////////////// -->
+  <filter>
+      <filter-name>ObjectifyFilter</filter-name>
+      <filter-class>com.googlecode.objectify.ObjectifyFilter</filter-class>
+  </filter>
+  <filter-mapping>
+      <filter-name>ObjectifyFilter</filter-name>
+      <url-pattern>/*</url-pattern>
+      <dispatcher>REQUEST</dispatcher>
+      <dispatcher>INCLUDE</dispatcher>
+      <dispatcher>FORWARD</dispatcher>
+  </filter-mapping>
+  <listener>
+      <listener-class>com.google.samples.apps.iosched.server.OfyHelper</listener-class>
+  </listener>
+
+  <!-- ///////////////////////////////////// Userdata (Endpoints) /////////////////////////////// -->
+  <servlet>
+    <servlet-name>SystemServiceServlet</servlet-name>
+    <servlet-class>com.google.api.server.spi.SystemServiceServlet</servlet-class>
+    <init-param>
+      <param-name>services</param-name>
+      <param-value>com.google.samples.apps.iosched.server.userdata.UserdataEndpoint, com.google.samples.apps.iosched.server.registration.RegistrationEndpoint, com.google.samples.apps.iosched.server.feed.ServingUrlEndpoint, com.google.samples.apps.iosched.server.gcm.FcmRegistrationEndpoint, com.google.samples.apps.iosched.server.gcm.FcmSendEndpoint, com.google.samples.apps.iosched.server.schedule.feedback.FeedbackEndpoint, com.google.samples.apps.iosched.server.schedule.server.CmsUpdateEndpoint, com.google.samples.apps.iosched.server.schedule.reservations.ReservationsEndpoint</param-value>
+    </init-param>
+    <init-param>
+      <param-name>restricted</param-name>
+      <param-value>false</param-value>
+    </init-param>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>SystemServiceServlet</servlet-name>
+    <url-pattern>/_ah/spi/*</url-pattern>
+  </servlet-mapping>
+
   <!-- ////////////////////////////////// Schedule Updater ////////////////////////////////// -->
 
     <servlet>
@@ -36,23 +91,13 @@
     </servlet-mapping>
 
     <servlet>
-        <servlet-name>runupdate</servlet-name>
-        <servlet-class>com.google.samples.apps.iosched.server.schedule.server.servlet.RunUpdateServlet</servlet-class>
+        <servlet-name>LoadSessionsServlet</servlet-name>
+        <servlet-class>com.google.samples.apps.iosched.server.schedule.reservations.LoadSessionsServlet</servlet-class>
     </servlet>
 
     <servlet-mapping>
-        <servlet-name>runupdate</servlet-name>
-        <url-pattern>/admin/schedule/runupdate</url-pattern>
-    </servlet-mapping>
-
-    <servlet>
-        <servlet-name>cmsupdate</servlet-name>
-        <servlet-class>com.google.samples.apps.iosched.server.schedule.server.servlet.CMSUpdateServlet</servlet-class>
-    </servlet>
-
-    <servlet-mapping>
-        <servlet-name>cmsupdate</servlet-name>
-        <url-pattern>/admin/schedule/cmsupdate</url-pattern>
+        <servlet-name>LoadSessionsServlet</servlet-name>
+        <url-pattern>/admin/schedule/reservations/loadsessiondata</url-pattern>
     </servlet-mapping>
 
     <security-constraint>
@@ -66,47 +111,12 @@
     </security-constraint>
 
     <!-- ////////////////////////////////// GCM Support ////////////////////////////////// -->
-    <!-- Objectify support -->
-    <filter>
-        <filter-name>ObjectifyFilter</filter-name>
-        <filter-class>com.googlecode.objectify.ObjectifyFilter</filter-class>
-    </filter>
-    <filter-mapping>
-        <filter-name>ObjectifyFilter</filter-name>
-        <url-pattern>/*</url-pattern>
-    </filter-mapping>
-
     <!-- context initializer -->
     <listener>
         <listener-class>
             com.google.samples.apps.iosched.server.gcm.db.ApiKeyInitializer
         </listener-class>
     </listener>
-
-    <!-- inbound device endpoints -->
-    <servlet>
-        <servlet-name>RegisterServlet</servlet-name>
-        <servlet-class>
-            com.google.samples.apps.iosched.server.gcm.device.RegisterServlet
-        </servlet-class>
-        <load-on-startup>1</load-on-startup>
-    </servlet>
-    <servlet-mapping>
-        <servlet-name>RegisterServlet</servlet-name>
-        <url-pattern>/gcm/register/*</url-pattern>
-    </servlet-mapping>
-
-    <servlet>
-        <servlet-name>UnregisterServlet</servlet-name>
-        <servlet-class>
-            com.google.samples.apps.iosched.server.gcm.device.UnregisterServlet
-        </servlet-class>
-        <load-on-startup>1</load-on-startup>
-    </servlet>
-    <servlet-mapping>
-        <servlet-name>UnregisterServlet</servlet-name>
-        <url-pattern>/gcm/unregister/*</url-pattern>
-    </servlet-mapping>
 
     <!-- outbound device endpoints -->
     <servlet>
@@ -121,39 +131,29 @@
         <url-pattern>/queue/send</url-pattern>
     </servlet-mapping>
 
-    <!-- API endpoints -->
     <servlet>
-        <servlet-name>SendMessageServlet</servlet-name>
-        <servlet-class>
-            com.google.samples.apps.iosched.server.gcm.api.SendMessageServlet
-        </servlet-class>
-        <load-on-startup>1</load-on-startup>
+      <servlet-name>PushReservationsQueueWorker</servlet-name>
+      <servlet-class>
+        com.google.samples.apps.iosched.server.schedule.reservations.PushReservationQueueWorker
+      </servlet-class>
+      <load-on-startup>1</load-on-startup>
     </servlet>
     <servlet-mapping>
-        <servlet-name>SendMessageServlet</servlet-name>
-        <url-pattern>/gcm/send/*</url-pattern>
+      <servlet-name>PushReservationsQueueWorker</servlet-name>
+      <url-pattern>/queue/pushres</url-pattern>
     </servlet-mapping>
 
-    <!-- admin-facing endpoints -->
     <servlet>
-        <servlet-name>AdminServlet</servlet-name>
-        <servlet-class>
-            com.google.samples.apps.iosched.server.gcm.admin.AdminServlet
-        </servlet-class>
-        <load-on-startup>1</load-on-startup>
+      <servlet-name>SyncReservationsQueueWorker</servlet-name>
+      <servlet-class>
+        com.google.samples.apps.iosched.server.schedule.reservations.SyncReservationsQueueWorker
+      </servlet-class>
+      <load-on-startup>1</load-on-startup>
     </servlet>
     <servlet-mapping>
-        <servlet-name>AdminServlet</servlet-name>
-        <url-pattern>/admin/gcm/</url-pattern>
+      <servlet-name>SyncReservationsQueueWorker</servlet-name>
+      <url-pattern>/queue/syncres</url-pattern>
     </servlet-mapping>
-    <security-constraint>
-        <web-resource-collection>
-            <url-pattern>/admin/gcm/</url-pattern>
-        </web-resource-collection>
-        <auth-constraint>
-            <role-name>admin</role-name>
-        </auth-constraint>
-    </security-constraint>
 
     <!-- Cron endpoints -->
     <!-- Restricted to admin users only to prevent unauthorized execution. -->
@@ -166,6 +166,17 @@
     <servlet-mapping>
         <servlet-name>VacuumDbServlet</servlet-name>
         <url-pattern>/cron/vacuum_db</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+      <servlet-name>PushReservationsServlet</servlet-name>
+      <servlet-class>
+        com.google.samples.apps.iosched.server.schedule.reservations.PushReservationsServlet
+      </servlet-class>
+    </servlet>
+    <servlet-mapping>
+      <servlet-name>PushReservationsServlet</servlet-name>
+      <url-pattern>/cron/pushres</url-pattern>
     </servlet-mapping>
 
     <security-constraint>

@@ -29,14 +29,14 @@ public interface Config {
   public static final long[][] CONFERENCE_DAYS =
       new long[][] {
           // start and end of day 1
-          { new Date(116, Calendar.MAY, 18, 14, 0, 0).getTime(),
-                  new Date(116, Calendar.MAY, 19, 5, 0, 0).getTime() },
+          { new Date(117, Calendar.MAY, 17, 14, 0, 0).getTime(),
+                  new Date(117, Calendar.MAY, 18, 5, 0, 0).getTime() },
           // start and end of day 2
-          { new Date(116, Calendar.MAY, 19, 14, 0, 0).getTime(),
-                  new Date(116, Calendar.MAY, 20, 0, 0, 0).getTime() },
+          { new Date(117, Calendar.MAY, 18, 14, 0, 0).getTime(),
+                  new Date(117, Calendar.MAY, 19, 0, 0, 0).getTime() },
           // start and end of day 3
-          { new Date(116, Calendar.MAY, 20, 14, 0, 0).getTime(),
-              new Date(116, Calendar.MAY, 21, 0, 0, 0).getTime() },
+          { new Date(117, Calendar.MAY, 19, 14, 0, 0).getTime(),
+              new Date(117, Calendar.MAY, 20, 0, 0, 0).getTime() },
       };
 
   public final Pattern SESSIONS_PATTERN = Pattern.compile("session_data_v(\\d+)\\.(\\d+)\\.json");
@@ -61,12 +61,8 @@ public interface Config {
   public final String CLOUD_STORAGE_BUCKET = "io2016-bucket-dev";
   public final String CLOUD_STORAGE_BASE_URL = "https://storage.googleapis.com/"+CLOUD_STORAGE_BUCKET+"/";
 
-  // Used when the CMS doesn't have a proper live stream Youtube URL but we still want to
-  // have a non-empty URL so that the app will show the "LIVE" indicator.
-  public final String VIDEO_LIVESTREAMURL_FOR_EMPTY = "https://google.com/events/io";
-
-
   // GCM confs:
+  public static final String FCM_SEND_URL = "UNDEFINED";
   public static final String GCM_SYNC_URL = "/gcm/send/global/sync_schedule";
 
   public static final String GCM_URL= "https://io2015-dev.appspot.com"+GCM_SYNC_URL;
@@ -81,12 +77,55 @@ public interface Config {
   // TODO(arthurthompson): Remove CMS_API_CODE since it is no longer used by vendor API.
   public static final String CMS_API_CODE = "UNDEFINED";
 
+  // Googlers that are allowed to update CMS data
+  public static final String[] ALLOWED_CMS_UPDATERS = {
+      "arthurthompson@google.com",
+      "lauranozay@google.com",
+      "monicabagagem@google.com",
+      "ckatsaros@google.com",
+      "ldale@google.com",
+      "trevorjohns@google.com"
+  };
+
+  public static final String[] KEYNOTE_IDS = {
+      "3f3802e4-b24d-4b47-b9c8-b5ab7944411c",
+      "9c2eb575-9aa9-4e5d-8ef8-e9bcc269af03"
+  };
+
+  public static final String[] DOGFOOD_RESERVATION_WHITELIST = {
+      "arthurthompson@google.com",
+      "kroikie5@gmail.com",
+      "crmarshall@google.com",
+      "dgalpin@google.com",
+      "fchung@google.com",
+      "shailen.tuli@gmail.com",
+      "shailentuli@google.com",
+      "st1999@gmail.com",
+      "wwaltersen@googlemail.com",
+      "pfriese@gmail.com",
+      "peterfriese@google.com",
+      "dougs1993@gmail.com",
+      "dougsigelbaum@gmail.com",
+      "fredchung@gmail.com",
+      "jeremydw@google.com",
+      "randymerrill@google.com",
+      "jeremydw@gmail.com",
+      "randy@blinkk.com",
+      "jdkoren@google.com",
+      "jdkoren@gmail.com",
+      "nagiworld@gmail.com",
+      "Zoramite@gmail.com",
+      "claudiocherubino@gmail.com"
+  };
+
+  String HTTP_FUNCTIONS_BASE_URL = "https://us-central1-io2017-backend-dev.cloudfunctions.net";
+
   // See context at b/15452185:
   public static final RoomMapping ROOM_MAPPING = new RoomMapping();
   static class RoomMapping {
-    private HashMap<String, String> idMapping = new HashMap<String, String>();
-    private HashMap<String, String> titleMapping = new HashMap<String, String>();
-    private HashMap<String, String> captionsMapping = new HashMap<String, String>();
+    private HashMap<String, String> idMapping = new HashMap<>();
+    private HashMap<String, String> titleMapping = new HashMap<>();
+    private HashMap<String, String> captionsMapping = new HashMap<>();
     public RoomMapping() {
       idMapping.put("e9f3b25f-d4e2-e411-b87f-00155d5066d7", "keynote");
       idMapping.put("6822c256-d4e2-e411-b87f-00155d5066d7", "sandbox");

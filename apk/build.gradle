@@ -1,0 +1,149 @@
+/*
+ * Copyright 2015 Google Inc. All rights reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+apply plugin: 'com.android.application'
+apply plugin: 'jacoco'
+
+repositories {
+    mavenCentral()
+    flatDir {
+        dirs '../third_party/AndroidSlidingUpPanel/libs/'
+    }
+    flatDir {
+        dirs '../third_party/svg-android/libs/'
+    }
+    flatDir {
+        dirs '../third_party/sticky-headers/libs/'
+    }
+    flatDir {
+        dirs '../third_party/material-components-android/libs/'
+    }
+}
+
+android {
+    compileSdkVersion rootProject.ext.compileSdkVersion
+    buildToolsVersion rootProject.ext.buildToolsVersion
+
+    defaultConfig {
+        proguardFiles getDefaultProguardFile('proguard-android.txt'), file('proguard-project.txt')
+        applicationId "com.google.samples.apps.iosched"
+        versionCode = Integer.valueOf("" + appVersionCode).intValue()
+        versionName "${appVersionName}"
+        minSdkVersion rootProject.ext.minSdkVersion
+    }
+
+    signingConfigs {
+        debug {
+            storeFile file("debug.keystore")
+            storePassword "android"
+            keyAlias "androiddebugkey"
+            keyPassword "android"
+        }
+        // Notice the production keystore and password are not checked in. Signing resources for
+        // release builds are typically stored somewhere more secure than the source repo.
+        // This typically also means that release builds are signed manually rather than by
+        // Gradle.
+    }
+
+    productFlavors {
+        // Use this flavor to run automated tests.
+        targetSdk22 {
+            // Defined in :lib
+        }
+        normal {
+            // Defined in :lib
+        }
+        mapEditor {
+            applicationIdSuffix = ".mapeditor"
+            // Defined in :lib
+        }
+    }
+
+    buildTypes {
+        debug {
+            debuggable true
+            minifyEnabled true
+            useProguard false
+            // Defined in :lib
+        }
+        qualityassurance {
+            debuggable true
+            minifyEnabled true
+            // Defined in :lib
+        }
+        release {
+            debuggable false
+            minifyEnabled true
+            useProguard false
+            // Defined in :lib
+        }
+    }
+
+    lintOptions {
+        abortOnError false
+    }
+
+    aaptOptions {
+        noCompress 'apk'
+    }
+
+    packagingOptions {
+        // Exclude files to avoid packaging collisions (same file name in multiple dependencies).
+        exclude 'LICENSE.txt'
+        exclude 'META-INF/LICENSE'
+        exclude 'META-INF/LICENSE-FIREBASE.txt'
+        exclude 'META-INF/NOTICE'
+    }
+
+    // Test Android jar comes with unimplemented methods that throw exceptions by default. This
+    // option forces the methods to return default values instead. Required for static methods,
+    // such as TextUtils, as those cannot be mocked with Mockito.
+    // Refer http://tools.android.com/tech-docs/unit-testing-support#TOC-Method-...-not-mocked.-
+    testOptions {
+        unitTests.returnDefaultValues = true
+    }
+}
+
+// TODO Remove once https://b.android.com/162285 is resolved.
+configurations {
+    normalDebugCompile
+    normalQualityassuranceCompile
+    normalReleaseCompile
+
+    targetSdk22DebugCompile
+    targetSdk22QualityassuranceCompile
+    targetSdk22ReleaseCompile
+
+    mapEditorDebugCompile
+    mapEditorQualityassuranceCompile
+    mapEditorReleaseCompile
+}
+
+dependencies {
+    normalDebugCompile project(path: ':lib', configuration: 'normalDebug')
+    normalQualityassuranceCompile project(path: ':lib',
+            configuration: 'normalQualityassurance')
+    normalReleaseCompile project(path: ':lib', configuration: 'normalRelease')
+    mapEditorDebugCompile project(path: ':lib', configuration: 'mapEditorDebug')
+    mapEditorQualityassuranceCompile project(path: ':lib',
+            configuration: 'mapEditorQualityassurance')
+    mapEditorReleaseCompile project(path: ':lib', configuration: 'mapEditorRelease')
+    targetSdk22DebugCompile project(path: ':lib', configuration: 'targetSdk22Debug')
+    targetSdk22QualityassuranceCompile project(path: ':lib',
+            configuration: 'targetSdk22Qualityassurance')
+    targetSdk22ReleaseCompile project(path: ':lib', configuration: 'targetSdk22Release')
+}
+
+apply plugin: 'com.google.gms.google-services'

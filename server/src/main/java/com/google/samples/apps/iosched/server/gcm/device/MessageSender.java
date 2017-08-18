@@ -33,6 +33,7 @@ import java.util.List;
 import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.servlet.ServletContext;
 
 /** Utility class for sending individual messages to devices.
  *
@@ -56,6 +57,12 @@ public class MessageSender {
         mGcmService = new Sender(mApiKey);
     }
 
+    public MessageSender(ServletContext context) {
+        mApiKey = (String) context.getAttribute(
+            ApiKeyInitializer.ATTRIBUTE_ACCESS_KEY);
+        mGcmService = new Sender(mApiKey);
+    }
+
     public void multicastSend(List<Device> devices, String action, String extraData) {
         Queue queue = QueueFactory.getQueue("MulticastMessagesQueue");
 
@@ -63,11 +70,11 @@ public class MessageSender {
         // GCM limits maximum devices per multicast request. AppEngine also limits the size of
         // lists stored in the datastore.
         int total = devices.size();
-        List<String> partialDevices = new ArrayList<String>(total);
+        List<String> partialDevices = new ArrayList<>(total);
         int counter = 0;
         for (Device device : devices) {
             counter ++;
-            partialDevices.add(device.getGcmId());
+            partialDevices.add(device.getDeviceId());
             int partialSize = partialDevices.size();
             if (partialSize == MAX_DEVICES || counter == total) {
                 // Send multicast message
@@ -90,13 +97,14 @@ public class MessageSender {
         MulticastMessage msg = MessageStore.getMulticast(multicastId);
         List<String> devices = msg.getDestinations();
         String action = msg.getAction();
-        Message.Builder builder = new Message.Builder().delayWhileIdle(true);
+        Message.Builder builder = new Message.Builder();
         if (action == null || action.length() == 0) {
             throw new IllegalArgumentException("Message action cannot be empty.");
         }
         builder.collapseKey(action)
                     .addData("action", action)
                     .addData("extraData", msg.getExtraData())
+                    .contentAvailable(true)
                     .timeToLive(TTL);
         Message message = builder.build();
         MulticastResult multicastResult = null;
@@ -130,7 +138,7 @@ public class MessageSender {
         if (multicastResult.getFailure() != 0) {
             // there were failures, check if any could be retried
             List<Result> results = multicastResult.getResults();
-            List<String> retriableRegIds = new ArrayList<String>();
+            List<String> retriableRegIds = new ArrayList<>();
             for (int i = 0; i < results.size(); i++) {
                 String error = results.get(i).getErrorCodeName();
                 if (error != null) {

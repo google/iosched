@@ -31,7 +31,7 @@ public class OutputJsonKeys {
   }
 
   static public enum Rooms {
-    id, name, floor, original_id;
+    id, name, floor, original_id, capacity, filter;
   }
 
   static public enum Blocks {
@@ -49,7 +49,7 @@ public class OutputJsonKeys {
   static public enum Sessions {
     id, title, description, startTimestamp, endTimestamp, tags, mainTag,
     hashtag, isFeatured, isLivestream, youtubeUrl, captionsUrl, speakers, room, photoUrl, color,
-    relatedSessions, relatedContent, url;
+    relatedSessions, relatedContent, url, livestreamChannel;
   }
 
   static public enum RelatedContent {

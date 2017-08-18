@@ -15,12 +15,9 @@
  */
 package com.google.samples.apps.iosched.server.schedule.server;
 
-import com.google.appengine.api.utils.SystemProperty;
 import com.google.samples.apps.iosched.server.schedule.input.fetcher.VendorAPIEntityFetcher;
 
-import java.net.HttpURLConnection;
-import java.net.URL;
-import java.util.logging.Level;
+import java.io.IOException;
 import java.util.logging.Logger;
 
 /**
@@ -30,29 +27,31 @@ public class GCMPing {
 
   static Logger LOG = Logger.getLogger(VendorAPIEntityFetcher.class.getName());
 
-  public void notifyGCMServer(String urlStr, String key) {
-    if (SystemProperty.environment.value() == SystemProperty.Environment.Value.Development) {
-      // In the development server, don't notify GCM
-      LOG.warning("Should notify the GCM server that new data is available, pinging URL "+urlStr);
-    } else {
-      try {
-        URL url = new URL(urlStr);
-        if (LOG.isLoggable(Level.INFO)) {
-          LOG.info("Pinging GCM at URL: "+url);
-        }
+  /**
+   * Notify user clients that session data has changed.
+   */
+  public void notifySessionSync() {
+    try {
+      PingServiceManager.INSTANCE.ping.sendSessionDataSync().execute();
+    } catch (IOException e) {
+      LOG.severe("Unable to either get Sync service or send session data ping.");
+    } catch (NullPointerException e) {
+      LOG.severe("Unable to get Sync instance.");
+    }
+  }
 
-        HttpURLConnection connection = (HttpURLConnection) url.openConnection();
-        connection.setReadTimeout(1000 * 30); // 30 seconds
-        connection.setRequestProperty("Authorization", "key="+key);
-        connection.connect();
-        int statusCode = connection.getResponseCode();
-        if (statusCode < 200 || statusCode >= 300) {
-          LOG.severe("Unexpected response code from GCM server: "+statusCode+". "+connection.getResponseMessage());
-        }
-
-      } catch (Exception ex) {
-        LOG.log(Level.SEVERE, "Unexpected error when pinging GCM server", ex);
-      }
+  /**
+   * Notify user's clients that user data has changed so they can ping.
+   *
+   * @param userId ID of user whose clients should ping.
+   */
+  public void notifyUserSync(String userId) {
+    try {
+      PingServiceManager.INSTANCE.ping.sendUserSync(userId).execute();
+    } catch (IOException e) {
+      LOG.severe("Unable to either get ping service or send user ping.");
+    } catch (NullPointerException e) {
+      LOG.severe("Unable to get Sync instance.");
     }
   }
 }

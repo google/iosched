@@ -87,7 +87,7 @@ available in [gcm](../server/src/main/java/com/google/samples/apps/iosched/serve
    Config.java (GCM_* constants).
 
 Using a GCM server means you, as the admin, can push GCM messages
-to all your users. Read [GCM.md](GCM.md) for more information about the
+to all your users. Read [FCM.md](FCM.md) for more information about the
 syntax of messages and how to send them.
 
 Remember that each GCM message has a cost in terms of battery life and

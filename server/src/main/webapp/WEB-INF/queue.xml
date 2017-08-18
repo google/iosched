@@ -27,4 +27,22 @@
 			<max-doublings>2</max-doublings>
 		</retry-parameters>
 	</queue>
+	<queue>
+		<name>PushReservationsQueue</name>
+		<rate>3/s</rate>
+		<max-concurrent-requests>1</max-concurrent-requests>
+		<bucket-size>2</bucket-size>
+		<retry-parameters>
+			<task-retry-limit>0</task-retry-limit>
+		</retry-parameters>
+	</queue>
+	<queue>
+		<name>SyncReservationsQueue</name>
+		<rate>3/s</rate>
+		<max-concurrent-requests>1</max-concurrent-requests>
+		<bucket-size>2</bucket-size>
+		<retry-parameters>
+			<task-retry-limit>0</task-retry-limit>
+		</retry-parameters>
+	</queue>
 </queue-entries>

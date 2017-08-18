@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+Copyright (c) 2017 Google Inc.
+
+Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except
+in compliance with the License. You may obtain a copy of the License at
+
+http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software distributed under the License
+is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express
+or implied. See the License for the specific language governing permissions and limitations under
+the License.
+-->
+
+<!-- START xml_defaults -->
+<defaultsMap>
+    <entry>
+        <key>feed_default_first_title</key>
+        <value>Welcome to the I/O Feed</value>
+    </entry>
+    <entry>
+        <key>feed_default_first_message</key>
+        <value><![CDATA[Here you'll find cards with relevant info and tips about Google I/O before, throughout, and even after the conference. You can expect content related to the Agenda / Schedule, Travel, After Hours, as well as highlights from our social channels.]]></value>
+    </entry>
+    <entry>
+        <key>feed_default_first_imageurl</key>
+        <value>
+            https://lh3.googleusercontent.com/7_QdtrIdKp0vunD_gw3umvo95j3bCBB3Nz8jUWpEOuIkjGPmiwM6MN2RZhc_rK8cmiq5jA4U-Bip13_XHol7VpjjEKdt31k
+        </value>
+    </entry>
+    <entry>
+        <key>feed_default_first_timestamp</key>
+        <value>1494424800000</value>
+    </entry>
+    <entry>
+        <key>feed_default_first_color</key>
+        <value>#b2ebf2</value>
+    </entry>
+    <entry>
+        <key>feed_default_first_category</key>
+        <value>Welcome</value>
+    </entry>
+    <entry>
+        <key>feed_default_first_priority</key>
+        <value>false</value>
+    </entry>
+    <entry>
+        <key>default_wifi_network</key>
+        <value>IO2017</value>
+    </entry>
+    <entry>
+        <key>default_wifi_password</key>
+        <value>inputoutput</value>
+    </entry>
+    <entry>
+        <key>event_sandbox_description</key>
+        <value><![CDATA[Explore our latest APIs and tools in the developer sandbox. Expect lots of interactive experiences and demos.]]></value>
+    </entry>
+    <entry>
+        <key>event_code_labs_description</key>
+        <value><![CDATA[Work through technical modules at your own pace at one of our workstations. Googlers will be on hand to help as needed.]]></value>
+    </entry>
+    <entry>
+        <key>event_office_hours_description</key>
+        <value><![CDATA[Meet with Google experts, ask technical questions, and receive one-on-one help with your projects and apps.]]></value>
+    </entry>
+    <entry>
+        <key>event_after_hours_description</key>
+        <value><![CDATA[After sessions end for the day, stick around Shoreline for two evenings filled with food, drinks and fun. We’ll throw a party on the evening of the 17th, and host a concert in the Amphitheatre on the 18th.]]></value>
+    </entry>
+    <entry>
+        <key>travel_shuttle_service_description</key>
+        <value><![CDATA[Event shuttles will be provided to Google I/O attendees at no charge from all Google-recommended hotels and with select service from San Francisco and other locations along the Peninsula. Please check back in the coming weeks for pick-up schedules and additional locations.<br/><br/>Each pick-up location will have ADA accessible vehicles. Please indicate on your registration form if you have any ADA or special assistance requirements and the planning team will follow up with you directly.]]>
+        </value>
+    </entry>
+    <entry>
+        <key>travel_carpooling_parking_description</key>
+        <value><![CDATA[Parking is very limited and available only in the Google I/O designated lots located across from Shoreline Amphitheatre along Shoreline Boulevard.<br/><br/>There is no event parking along Amphitheatre Parkway or Charleston Road. If you plan to drive, we recommend carpooling with other attendees due to limited parking availability at the venue. Preferred parking spaces will be available for cars containing 2 or more people.]]>
+        </value>
+    </entry>
+    <entry>
+        <key>travel_public_transportation_description</key>
+        <value><![CDATA[Public transportation to the area is accessible via:<br/><br/><a href="http://www.caltrain.com/">CALTRAIN</a>: Regional rail system<br/><a href="http://www.vta.org/getting-around/interactive-light-rail-map">VTA:</a> Light rail system servicing the South Bay<br/><a href="https://www.bart.gov/">BART</a>: Bay Area Rapid Transit<br/><br/>Public transit doesn't go directly to Google I/O. Stay tuned over the coming weeks for exact transportation locations serviced by Google I/O event shuttles.]]></value>
+    </entry>
+    <entry>
+        <key>travel_biking_description</key>
+        <value><![CDATA[Bike parking will be available at Shoreline Amphitheatre. We will be providing a bike corral for your convenience in Parking Lot A. There’ll be secure valet parking for your bicycle from 7AM until the event ends each day, provided by Silicon Valley Bicycle Coalition. You can avoid the traffic, ride right up to the corral, hand your bike over to the attendant and receive a ticket to retrieve your bike when you wish to leave.<br/><br/>Alternatively, the Bay Area Bike Share program provides 24/7 access to shared bicycles in five <a href="http://www.bayareabikeshare.com/stations">SERVICE AREAS</a> across the Peninsula. The closest location to Shoreline Amphitheatre is at 228 Charleston Road, Mountain View, CA 94043. More information regarding membership and pricing is available via the <a href="http://www.bayareabikeshare.com/stations">BAY AREA BIKE SHARE WEBSITE</a>.]]></value>
+    </entry>
+    <entry>
+        <key>travel_ride_sharing_description</key>
+        <value><![CDATA[<b>Lyft Line</b>: Download the Lyft app (<a href="https://play.google.com/store/apps/details?id=me.lyft.android&hl=enor">GOOGLE PLAY</a>) and use <a href="https://www.lyft.com/line">LYFT LINE</a> to share a ride with others going the same way for less.<br/><br/><b>uberPOOL</b>: Download the app today (<a href="https://play.google.com/store/apps/details?id=com.ubercab&hl=en">GOOGLE PLAY</a>) to use uberPOOL and share a ride.]]></value>
+    </entry>
+    <entry>
+        <key>faq_stay_informed_description</key>
+        <value><![CDATA[To stay up to date on the latest information on sessions, speakers, and activities, be sure to visit the <a href="https://events.google.com/io/">GOOGLE I/O 2017 WEBSITE</a>, the <a href="http://googledevelopers.blogspot.com/">GOOGLE DEVELOPERS BLOG</a>, and follow us on <a href="https://www.facebook.com/Google-Developers-967415219957038/"> FACEBOOK</a>, <a href="https://plus.google.com/+GoogleDevelopers">GOOGLE+</a>, and <a href="https://twitter.com/googledevs">TWITTER</a>. You can also follow and join the social conversation about Google I/O 2017 via the official <a href="https://twitter.com/hashtag/io17?lang=en">#IO17</a> hashtag. In addition, we'll be emailing important information to all registered attendees, along with check-in instructions prior to the festival.]]></value>
+    </entry>
+    <entry>
+        <key>faq_content_formats_description</key>
+        <value><![CDATA[Throughout the three day festival, in-person attendees will be able to participate by attending sessions, getting hands-on in the sandbox and codelabs, chatting with Googlers at office hours, and more.]]></value>
+    </entry>
+    <entry>
+        <key>faq_livestream_and_recordings_description</key>
+        <value><![CDATA[If you’re unable to attend Google I/O, you can still be part of the magic. Watch the livestream of the keynote and all sessions right here in the app or on google.com/io during the three days of the festival.]]></value>
+    </entry>
+    <entry>
+        <key>faq_attendance_pro_tips_description</key>
+        <value><![CDATA[If you’re joining us in person at Shoreline Amphitheatre, here are some useful tips to navigate your way through the conference:<br/><br/><b>Bike parking:</b> This is complimentary for attendees and will be available in Lot A during event hours.<br/><br/><b>Lost &amp; Found:</b> Will be located at the Conference Help Desk during event hours. Any items left overnight will be turned over to the Conference Security Office.<br/><br/><b>Meals:</b> Attendees are offered complimentary breakfast, lunch and snacks on all days of the conference.<br/><br/><b>After Hours:</b> Two nights you don’t want to miss! Attendees are invited to enjoy food, drinks, music, games, and more during the evenings of May 17th and 18th at Shoreline Amphitheatre. Your attendee badge is required for entrance.]]></value>
+    </entry>
+    <entry>
+        <key>faq_additional_info_description</key>
+        <value><![CDATA[Find additional info on Badge Pick-up, Accessibility, Conduct Policy, Child Care, Mothers' Rooms, and more on the <a href="https://events.google.com/io/faq/">I/O website</a>.]]></value>
+    </entry>
+</defaultsMap>

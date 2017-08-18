@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+   Copyright 2017 Google Inc. All rights reserved.
+
+   Licensed under the Apache License, Version 2.0 (the "License");
+   you may not use this file except in compliance with the License.
+   You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+   Unless required by applicable law or agreed to in writing, software
+   distributed under the License is distributed on an "AS IS" BASIS,
+   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+   See the License for the specific language governing permissions and
+   limitations under the License.
+-->
+
+<android.support.constraint.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/feed_item"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingBottom="@dimen/padding_normal"
+    android:paddingTop="@dimen/padding_normal">
+
+    <TextView
+        android:id="@+id/date_time"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:paddingBottom="@dimen/spacing_normal"
+        android:paddingEnd="@dimen/padding_normal"
+        android:paddingStart="@dimen/padding_normal"
+        android:paddingTop="@dimen/padding_normal"
+        app:layout_constraintEnd_toStartOf="@+id/priority_icon"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="May 17, 10:52AM" />
+
+    <ImageView
+        android:id="@id/priority_icon"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="@dimen/spacing_micro"
+        android:importantForAccessibility="no"
+        android:src="@drawable/ic_pin"
+        app:layout_constraintBottom_toBottomOf="@+id/category_text"
+        app:layout_constraintEnd_toStartOf="@id/category_text"
+        app:layout_constraintStart_toEndOf="@id/date_time"
+        app:layout_constraintTop_toTopOf="@id/category_text" />
+
+    <TextView
+        android:id="@id/category_text"
+        style="@style/Feed.Category"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginEnd="@dimen/padding_normal"
+        app:layout_constraintBaseline_toBaselineOf="@id/date_time"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/priority_icon"
+        tools:text="event" />
+
+    <TextView
+        android:id="@+id/title"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:background="?selectableItemBackground"
+        android:paddingBottom="@dimen/spacing_normal"
+        android:paddingEnd="80dp"
+        android:paddingStart="@dimen/padding_normal"
+        android:paddingTop="@dimen/spacing_normal"
+        android:textAppearance="?android:textAppearanceLarge"
+        android:textColor="@color/feed_title"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/date_time"
+        tools:text="@string/placeholder_feed_message_title" />
+
+    <ImageView
+        android:id="@+id/expand_icon"
+        android:layout_width="@dimen/a11y_min_touch_target_dimen"
+        android:layout_height="@dimen/a11y_min_touch_target_dimen"
+        android:layout_marginEnd="@dimen/spacing_normal"
+        android:background="?selectableItemBackgroundBorderless"
+        android:importantForAccessibility="no"
+        android:rotation="180"
+        android:scaleType="centerInside"
+        android:src="@drawable/ic_expand"
+        android:tint="@color/collapsing_section"
+        app:layout_constraintBottom_toBottomOf="@id/title"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@id/title" />
+
+    <ImageView
+        android:id="@+id/emergency_icon"
+        android:layout_width="@dimen/a11y_min_touch_target_dimen"
+        android:layout_height="@dimen/a11y_min_touch_target_dimen"
+        android:layout_marginEnd="@dimen/spacing_normal"
+        android:background="?selectableItemBackgroundBorderless"
+        android:importantForAccessibility="no"
+        android:scaleType="centerInside"
+        android:src="@drawable/ic_emergency"
+        app:layout_constraintBottom_toBottomOf="@id/title"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@id/title"
+        tools:visibility="gone" />
+
+    <ImageView
+        android:id="@+id/image"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginEnd="@dimen/padding_normal"
+        android:layout_marginStart="@dimen/padding_normal"
+        android:layout_marginTop="@dimen/spacing_normal"
+        android:background="@color/lighter_grey"
+        android:importantForAccessibility="no"
+        android:scaleType="centerCrop"
+        app:layout_constraintDimensionRatio="16:9"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/title"
+        tools:src="@drawable/io17_logo" />
+
+    <com.google.samples.apps.iosched.ui.widget.HtmlTextView
+        android:id="@id/description"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/padding_normal"
+        android:ellipsize="end"
+        android:maxLines="30"
+        android:paddingBottom="@dimen/padding_normal"
+        android:paddingEnd="@dimen/padding_normal"
+        android:paddingStart="@dimen/padding_normal"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/image"
+        tools:text="@string/placeholder_lorem_ipsum" />
+
+</android.support.constraint.ConstraintLayout>

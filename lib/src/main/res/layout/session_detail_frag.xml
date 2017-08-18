@@ -1,0 +1,324 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  Copyright 2015 Google Inc. All rights reserved.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+       http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+  -->
+<android.support.design.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/root_container"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fitsSystemWindows="true"
+    android:transitionName="@string/transition_session_background"
+    app:statusBarBackground="@null">
+
+    <android.support.design.widget.AppBarLayout
+        android:id="@+id/appbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/background"
+        android:fitsSystemWindows="true">
+        <!-- temporary background -->
+
+        <android.support.design.widget.CollapsingToolbarLayout
+            android:id="@+id/collapsing_toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@null"
+            android:duplicateParentState="true"
+            android:fitsSystemWindows="true"
+            android:minHeight="?actionBarSize"
+            app:layout_scrollFlags="scroll|exitUntilCollapsed"
+            app:titleEnabled="false">
+
+            <com.google.samples.apps.iosched.ui.widget.AspectRatioView
+                android:id="@+id/session_photo_container"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                app:maxHeight="@dimen/session_details_max_header_height"
+                android:fitsSystemWindows="true"
+                app:aspectRatio="@dimen/aspect_16_9"
+                app:layout_collapseMode="parallax"
+                tools:background="@color/duck_egg_blue">
+
+                <ImageView
+                    android:id="@+id/session_photo"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:scaleType="centerCrop"
+                    android:transitionName="@string/transition_session_image"
+                    tools:ignore="ContentDescription" />
+
+                <Button
+                    android:id="@+id/watch"
+                    style="?borderlessButtonStyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:drawablePadding="@dimen/spacing_normal"
+                    android:drawableTop="@drawable/ic_play"
+                    android:paddingLeft="@dimen/spacing_large"
+                    android:paddingRight="@dimen/spacing_large"
+                    android:paddingTop="28dp"
+                    android:textAppearance="?android:textAppearanceMedium"
+                    android:textColor="@android:color/white"
+                    android:shadowColor="@color/greyish_brown"
+                    android:shadowDx="1"
+                    android:shadowDy="1"
+                    android:shadowRadius="8"
+                    android:visibility="gone"
+                    tools:text="@string/session_watch"
+                    tools:visibility="visible" />
+                <!-- paddingTop offsets the text+drawablePadding to center the image -->
+
+            </com.google.samples.apps.iosched.ui.widget.AspectRatioView>
+
+            <!-- We don't use a normal Toolbar because we need to access the title and icons -->
+            <LinearLayout
+                android:id="@+id/session_detail_toolbar"
+                android:layout_width="match_parent"
+                android:layout_height="?actionBarSize"
+                android:baselineAligned="false"
+                android:duplicateParentState="true"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:theme="@style/ThemeOverlay.LightToolbar"
+                app:layout_collapseMode="pin">
+
+                <ImageView
+                    android:id="@+id/back"
+                    android:layout_width="?actionBarSize"
+                    android:layout_height="?actionBarSize"
+                    android:background="?selectableItemBackgroundBorderless"
+                    android:contentDescription="@string/close_and_go_back"
+                    android:duplicateParentState="true"
+                    android:scaleType="center"
+                    app:srcCompat="@drawable/ic_up" />
+
+                <TextView
+                    android:id="@+id/toolbar_title"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:alpha="0"
+                    android:ellipsize="end"
+                    android:lines="1"
+                    android:textAppearance="@style/TextAppearance.ProductSans.ToolbarTitle" />
+
+                <ImageView
+                    android:id="@+id/map"
+                    android:layout_width="?actionBarSize"
+                    android:layout_height="?actionBarSize"
+                    android:background="?selectableItemBackgroundBorderless"
+                    android:contentDescription="@string/description_map"
+                    android:duplicateParentState="true"
+                    android:scaleType="center"
+                    app:srcCompat="@drawable/ic_action_map" />
+
+                <ImageView
+                    android:id="@+id/share"
+                    android:layout_width="?actionBarSize"
+                    android:layout_height="?actionBarSize"
+                    android:background="?selectableItemBackgroundBorderless"
+                    android:contentDescription="@string/description_share"
+                    android:duplicateParentState="true"
+                    android:scaleType="center"
+                    app:srcCompat="@drawable/ic_action_share" />
+
+            </LinearLayout>
+
+        </android.support.design.widget.CollapsingToolbarLayout>
+
+    </android.support.design.widget.AppBarLayout>
+
+    <android.support.v4.widget.NestedScrollView
+        android:id="@+id/scroll_view"
+        android:layout_width="@dimen/main_content_width"
+        android:layout_height="match_parent"
+        android:layout_gravity="center_horizontal|top"
+        android:background="@color/content_background"
+        android:clipToPadding="false"
+        android:elevation="@dimen/card_elevation"
+        android:paddingBottom="?actionBarSize"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+        <LinearLayout
+            android:id="@+id/details_container"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingBottom="@dimen/padding_normal"
+            android:paddingTop="@dimen/padding_normal"
+            tools:ignore="RtlSymmetry">
+
+            <TextView
+                android:id="@+id/time_hint"
+                style="@style/SessionDetail.TimeHint"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/padding_normal"
+                android:layout_marginLeft="@dimen/padding_normal"
+                android:layout_marginRight="@dimen/padding_normal"
+                android:focusable="true"
+                android:visibility="gone"
+                tools:text="@string/time_hint_about_to_start_min"
+                tools:visibility="visible" />
+
+            <TextView
+                android:id="@android:id/empty"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/padding_normal"
+                android:layout_marginRight="@dimen/padding_normal"
+                android:layout_marginBottom="@dimen/padding_normal"
+                android:layout_marginTop="24dp"
+                android:text="@string/empty_session_detail"
+                android:textAlignment="viewStart"
+                android:visibility="gone"
+                android:textAppearance="?android:textAppearanceMedium" />
+
+            <TextView
+                android:id="@+id/session_title"
+                style="@style/SessionDetail.SessionTitle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/padding_normal"
+                android:layout_marginLeft="@dimen/padding_normal"
+                android:layout_marginRight="@dimen/padding_normal"
+                android:layout_marginTop="24dp"
+                tools:text="@string/placeholder_session_title" />
+
+            <TextView
+                android:id="@+id/session_subtitle"
+                style="@style/SessionDetail.SessionSubtitle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/padding_normal"
+                android:layout_marginLeft="@dimen/padding_normal"
+                android:layout_marginRight="@dimen/padding_normal"
+                tools:text="@string/placeholder_session_subtitle" />
+
+            <TextView
+                android:id="@+id/session_abstract"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/padding_normal"
+                android:layout_marginLeft="@dimen/padding_normal"
+                android:layout_marginRight="@dimen/padding_normal"
+                android:focusable="true"
+                android:importantForAccessibility="yes"
+                android:textAlignment="viewStart"
+                tools:text="@string/placeholder_lorem_ipsum" />
+
+            <HorizontalScrollView
+                android:id="@+id/session_tags_container"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/padding_normal"
+                android:fadingEdgeLength="@dimen/padding_normal"
+                android:paddingLeft="@dimen/padding_normal"
+                android:paddingRight="@dimen/padding_normal"
+                android:requiresFadingEdge="horizontal"
+                android:scrollbars="none"
+                android:visibility="gone">
+
+                <LinearLayout
+                    android:id="@+id/session_tags"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal" />
+
+            </HorizontalScrollView>
+
+            <Button
+                android:id="@id/give_feedback_button"
+                style="@style/Widget.IOSched.Button.Aqua"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/padding_normal"
+                android:layout_marginLeft="@dimen/padding_normal_button"
+                android:layout_marginRight="@dimen/padding_normal"
+                android:text="@string/rate_session"
+                android:visibility="gone"
+                tools:visibility="visible" />
+
+            <LinearLayout
+                android:id="@+id/session_speakers_block"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:divider="?android:listDivider"
+                android:orientation="vertical"
+                android:showDividers="beginning|middle"
+                android:visibility="gone">
+
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/related_sessions_label"
+                style="@style/TextAppearance.AppCompat.Body2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/padding_normal"
+                android:layout_marginRight="@dimen/padding_normal"
+                android:layout_marginTop="32dp"
+                android:text="@string/related_sessions"
+                android:textAllCaps="true"
+                android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+                android:visibility="gone"
+                tools:visibility="visible" />
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/related_sessions_list"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:nestedScrollingEnabled="false"
+                android:visibility="gone"
+                app:layoutManager="android.support.v7.widget.LinearLayoutManager"
+                tools:listitem="@layout/schedule_session_item"
+                tools:visibility="visible" />
+
+        </LinearLayout>
+
+    </android.support.v4.widget.NestedScrollView>
+
+    <com.google.samples.apps.iosched.ui.widget.ReserveButton
+        android:id="@+id/reserve"
+        android:layout_width="@dimen/main_content_width"
+        android:layout_height="?actionBarSize"
+        android:layout_gravity="center_horizontal|bottom"
+        app:layout_insetEdge="@integer/reserve_inset_edge" />
+
+    <!-- FAB -->
+    <com.google.samples.apps.iosched.ui.widget.CheckableFloatingActionButton
+        android:id="@+id/add_schedule_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|end"
+        android:layout_margin="@dimen/padding_normal"
+        android:clickable="true"
+        android:contentDescription="@string/add_to_schedule"
+        android:focusable="true"
+        android:src="@drawable/ic_session_bookmark_fab"
+        android:visibility="invisible"
+        app:backgroundTint="@color/session_details_fab"
+        app:fabSize="normal"
+        app:pressedTranslationZ="@dimen/fab_touch_raise"
+        app:rippleColor="@color/fab_press_ripple"
+        tools:visibility="visible" />
+
+</android.support.design.widget.CoordinatorLayout>

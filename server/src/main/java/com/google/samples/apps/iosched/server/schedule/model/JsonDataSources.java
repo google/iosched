@@ -29,7 +29,7 @@ public class JsonDataSources implements Iterable<String> {
    *
    */
   public JsonDataSources() {
-    this.sources = new HashMap<String, JsonDataSource>();
+    this.sources = new HashMap<>();
   }
 
   public JsonDataSource getSource(String entityType) {

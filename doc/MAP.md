@@ -12,68 +12,118 @@ Data for the map is defined in the file bootstrap\_data.json within the
 
 ```
 "map": [
-        {
-            "markers": {
-                "0": [
-                    {
-                        "id": "room1",
-                        "lat": 37.426041,
-                        "lng": -122.079488,
-                        "title": "Session 1",
-                        "type": "SESSION"
-                    },
-                    {
-                        "id": "room2",
-                        "lat": 37.426045,
-                        "lng": -122.079000,
-                        "title": "Session 2",
-                        "type": "SESSION"
-                    },
-                    {
-                        "id": "e32adaab-37e5-e411-b87f-00155d5066d7",
-                        "lat": 37.426450,
-                        "lng": -122.079300,
-                        "title": "Codelabs",
-                        "type": "CODELAB"
-                    },
-                    {
-                        "id": "9cf51a8f-ace3-e411-b87f-00155d5066d7",
-                        "lat": 37.427689,
-                        "lng": -122.078758,
-
-                        "title": "Design Talk",
-                        "type": "SANDBOX"
-                    },
-                    {
-                        "id": "earnengage",
-                        "lat": 37.427519,
-                        "lng": -122.079155,
-                        "title": "Earn +\nEngage",
-                        "type": "LABEL"
-                    },
-                    {
-                        "id": "Restroom1",
-                        "lat": 37.423868,
-                        "lng": -122.079754,
-                        "title": "Restroom",
-                        "type": "ICON_RESTROOM"
-                    }
-                ]
+       {
+          "type": "FeatureCollection",
+          "features": [
+             {
+               "type": "Feature",
+               "properties": {
+                  "id": "room1",
+                  "title": "Session 1",
+                  "type": "SESSION"
+               },
+               "geometry": {
+                  "type": "Point",
+                  "coordinates": [
+                    -122.079488,
+                    37.426041
+                  ]
+               }
+             },
+             {
+               "type": "Feature",
+               "properties": {
+                  "id": "room2",
+                  "title": "Session 2",
+                  "type": "SESSION"
+               },
+               "geometry": {
+                  "type": "Point",
+                  "coordinates": [
+                    -122.079000,
+                    37.426045
+                  ]
+               }
+             },
+             {
+               "type": "Feature",
+               "properties": {
+                  "id": "e32adaab-37e5-e411-b87f-00155d5066d7",
+                  "title": "Codelabs",
+                  "type": "CODELAB"
+               },
+               "geometry": {
+                  "type": "Point",
+                  "coordinates": [
+                    -122.079300,
+                    37.426450
+                  ]
+               }
+             },
+             {
+               "type": "Feature",
+               "properties": {
+                  "id": "9cf51a8f-ace3-e411-b87f-00155d5066d7",
+                  "title": "Design Talk",
+                  "type": "SANDBOX"
+               },
+               "geometry": {
+                  "type": "Point",
+                  "coordinates": [
+                    -122.078758,
+                    37.427689
+                  ]
+               }
+             },
+             {
+               "type": "Feature",
+               "properties": {
+                  "id": "earnengage",
+                  "title": "Earn +\nEngage",
+                  "description": "Optional Subtitle",
+                  "tag": "tag1",
+                  "type": "LABEL"
+               },
+               "geometry": {
+                  "type": "Point",
+                  "coordinates": [
+                    -122.079155,
+                    37.427519
+                  ]
+               }
+             },
+             {
+               "type": "Feature",
+               "properties": {
+                  "id": "Restroom1",
+                  "title": "Restroom",
+                  "type": "ICON_RESTROOM"
+               },
+               "geometry": {
+                  "type": "Point",
+                  "coordinates": [
+                    -122.079754,
+                    37.423868
+                  ]
+               }
+             }
+             ]
             },
-            "tiles": {
-                "0": {
-                    "filename": "floor0-2016-2.svg",
-                    "url": ""
-                }
+	    {
+               "tiles": {
+                  "0": {
+                      "filename": "floor0-2016-2.svg",
+                      "url": ""
+                   }
+                } 
             }
-        }
 ],
 ```
 
 ### Top level:
 
-*   “**markers**”: Array of markers per floor. Markers are grouped per floor,
-    the definition here only contains floor 0.
+*   “**markers**”: GeoJson feature collection containing a list of Points, which
+    are represented as markers on a GoogleMap.
 *   “**tiles**”: Array of tile files per floor. The SVG file is rendered through
     a tile overlay on top of the map. (The real-world coordinates where the file
     is rendered is currently hardcoded in the app - this will be moved out into
@@ -84,13 +134,13 @@ Data for the map is defined in the file bootstrap\_data.json within the
 ### Markers
 
 A **marker** is an object that sits *on top of* the map, this includes markers
-for rooms and text labels.
+for rooms and text labels. All markers are represented as geojson which is rendered
+through the android maps utility library. Each GeoJSON point has additional properties
+aside from their type and geometry.
 
 *   “**id**”: unique identifier for this marker. Id values cannot be repeated.
     If this marker is of the “SESSION” type, the identifier should map to an
     entry in the “rooms” list and associated sessions.
-*   “**lat**”: latitude of the marker
-*   “**lng**”: longitude of the marker
 *   “**type**”: the type of the marker. Allowed values are:
     *   `SESSION`: A room that contains sessions.** **When selected, the map
         will display any upcoming sessions on screen. ** For this to work, the
@@ -98,19 +148,22 @@ for rooms and text labels.
         **top-level “rooms” tag. (This means that the “id” of a marker that
         describes a session room must match an entry in “rooms” which lists all
         rooms in which sessions are held.)
-    *   `SANDBOX`: A room that contains only one session. For example, codelabs
-        are scheduled with a time/date in this room. When selected, the map
-        displays *only the first* session scheduled in this room.
+    *   `CHAT`: Similar to `SESSION`, but displays the room icon next to each
+        session.
     *   `LABEL`: text rendered on top of the map, can contain line breaks (“\n”)
     *   `ICON\_XYZ`: Displays an icon on the map. XYZ refers to a drawable with
-        the name “map\_marker\_xyz”. (See MapUtils.java#getDrawableForIconType)
-    *   `PLAIN`, `SANDBOX`, `OFFICEHOURS`, `MISC` : Clickable marker that
+        the name “map\_marker\_xyz”. (See MapUtils.java#getDrawableForIconType).
+        When clicked, its title and optional description are shown in the bottom bar.
+        The icon is not changed when clicked.
+    *   `PLAIN`, `OFFICEHOURS`, `MISC`, `SANDBOX`, `CODELAB` : Clickable marker that
         displays its title and an icon when selected. (See
         MapUtils.java#getRoomIcon).
-    *   `CODELAB`: Similar to `SESSION`, but only displays the description of
+    *   `FIRSTSESSION`: Displays the title and only the description of
         the very first session scheduled in this room.
 *   **“title”**: Name of the room displayed on screen when selected. For labels,
     this is displayed directly on the map.
+*   **“description”**: Optional. For clickable marker types (e.g. `PLAIN`), this
+    string is displayed together with the title when clicked.
 
 ### Tiles
 
@@ -178,15 +231,15 @@ The workflow might be as follows:
 
 1.  Add all required properties to the `gradle.properties` file, including the
     Google Maps API key. Build and install the I/O map editor.
-1.  Copy the file `bootstrap_data.json` to the sdcard/external storage of the
+2.  Copy the file `bootstrap_data.json` to the sdcard/external storage of the
     device, for example through adb: `adb push bootstrap_data.json /sdcard/`.
     Ensure it is still named “boostrap_data.json”
-1.  Start the I/O map editor, a few seconds after the map is loaded the map data
+3.  Start the I/O map editor, a few seconds after the map is loaded the map data
     is refreshed with the values loaded from your updated file.
-1.  Change the data in the `bootstrap_data.json` file and upload it back to the
+4.  Change the data in the `bootstrap_data.json` file and upload it back to the
     device.
-1.  Restart the app, observe the changes.
-1.  Repeat 4-5.
+5.  Restart the app, observe the changes.
+6.  Repeat 4-5.
 
 **Note that the tiles cannot be updated in the map editor app. **Only the marker
 data can be changed by reloading the app. The editor needs to be rebuilt and
@@ -205,11 +258,11 @@ the logcat (run `adb logcat`).
 
 ### Adding new locations
 
-Simply add new entries into the “`maps` -> `marker` -> `floor`” list in the json
+Simply add new entries into the “`map` -> `features`” list in the json
 data file.
 
-Use a tool like http://www.latlong.net/ to find the rough latitude and longitude
-of a location. Then, add it to the `bootstrap_data.json` file (see above) and
+Use a tool like http://http://geojson.io/ to find the geojson representation of a 
+marker on the approximate location. Then, add it to the `bootstrap_data.json` file (see above) and
 use the ‘draggable’ feature in the map editor to move it to the correct
 location. Copy the lat/long values from the logging output (or from the screen)
 and update its lat/lng properties in the json file.

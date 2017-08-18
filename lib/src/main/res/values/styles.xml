@@ -1,0 +1,365 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  Copyright 2017 Google Inc. All rights reserved.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+       http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+  -->
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <!-- Root styles that vary by API level -->
+
+    <!-- Prevents crash on certain devices to namespace conflict -->
+    <style name="FrameworkRoot.Theme" parent="Theme.AppCompat.Light.NoActionBar" />
+
+    <style name="Theme.IOSched" parent="FrameworkRoot.Theme">
+        <item name="colorPrimary">@color/theme_primary</item>
+        <item name="colorPrimaryDark">@color/theme_primary_dark</item>
+        <item name="colorAccent">@color/lightish_blue_a11y</item>
+
+        <item name="windowActionBar">false</item>
+        <item name="android:windowBackground">@color/background</item>
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowContentOverlay">@null</item>
+
+        <item name="android:homeAsUpIndicator">@drawable/ic_up</item>
+        <item name="homeAsUpIndicator">@drawable/ic_up</item>
+
+        <item name="android:textColorPrimary">@color/primary_text_light</item>
+        <item name="android:textColorLink">@color/links</item>
+        <item name="android:textViewStyle">@style/Widget.IOSched.TextView</item>
+        <item name="android:textAppearance">@style/TextAppearance.H4</item>
+        <item name="android:textAppearanceSmall">@style/TextAppearance.H4</item>
+        <item name="android:textAppearanceMedium">@style/TextAppearance.H3</item>
+        <item name="android:textAppearanceLarge">@style/TextAppearance.H1</item>
+
+        <item name="android:borderlessButtonStyle">@style/Widget.AppCompat.Button.Borderless</item>
+        <item name="preferenceTheme">@style/SettingsPreferenceThemeOverlay</item>
+        <item name="android:listDivider">@drawable/list_divider</item>
+        <item name="android:dividerHeight">@dimen/divider_height</item>
+        <item name="android:divider">@color/off_white</item>
+        <item name="android:alertDialogTheme">@style/Theme.IOSched.AlertDialog</item>
+    </style>
+
+    <style name="Theme.IOSched.Light" parent="Theme.IOSched">
+        <item name="colorPrimaryDark">@color/dark_status_bar</item>
+    </style>
+
+    <style name="Theme.IOSched.Immersive">
+        <item name="android:statusBarColor">@color/immersive_status_bar</item>
+        <item name="android:windowDrawsSystemBarBackgrounds">true</item>
+    </style>
+
+    <style name="Theme.IOSched.AlertDialog" parent="android:Theme.Material.Light.Dialog.Alert">
+        <item name="android:colorPrimary">@color/theme_primary</item>
+        <item name="android:colorPrimaryDark">@color/theme_primary_dark</item>
+        <item name="android:colorAccent">@color/theme_accent_2</item>
+    </style>
+
+    <style name="SearchViewTheme" parent="ThemeOverlay.AppCompat.ActionBar">
+        <item name="android:textColorPrimary">@color/body_text_1</item>
+        <item name="colorControlNormal">@color/body_text_2</item>
+        <item name="colorControlActivated">@color/theme_accent_1</item>
+    </style>
+
+    <style name="Theme.IOSched.Search" parent="Theme.IOSched.Light">
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:windowIsTranslucent">true</item>
+        <item name="autoCompleteTextViewStyle">@style/Widget.IOSched.Search.AutoCompleteTextView</item>
+        <item name="searchViewStyle">@style/Widget.IOSched.SearchView</item>
+        <item name="colorControlNormal">@color/body_text_2</item>
+        <item name="colorControlActivated">@color/theme_accent_1</item>
+    </style>
+
+    <style name="Widget.IOSched.SearchView" parent="Widget.AppCompat.SearchView">
+        <item name="searchHintIcon">@null</item>
+        <item name="queryBackground">@null</item>
+        <item name="submitBackground">@null</item>
+    </style>
+
+    <style name="Widget.IOSched.Search.AutoCompleteTextView" parent="Widget.AppCompat.Light.AutoCompleteTextView">
+        <item name="android:textColorHint">@color/body_text_2</item>
+        <!-- If set to @null the cursor will be displayed using android:textColor -->
+        <item name="android:textCursorDrawable">@null</item>
+    </style>
+
+    <style name="Theme.IOSched.Welcome" parent="@style/Theme.IOSched.Immersive" />
+
+    <!-- My I/O -->
+    <style name="Theme.IOSched.MyIo" parent="@style/Theme.IOSched.Immersive" />
+
+    <!-- Schedule -->
+    <style name="Theme.IOSched.Schedule" parent="@style/Theme.IOSched" />
+
+    <!-- Feed -->
+    <style name="Theme.IOSched.Feed" parent="@style/Theme.IOSched.Immersive" />
+
+    <!-- Map -->
+    <style name="Theme.IOSched.Map" parent="@style/Theme.IOSched.Immersive" />
+
+    <!-- Info -->
+    <style name="Theme.IOSched.Info" parent="@style/Theme.IOSched.Immersive">
+        <item name="android:statusBarColor">@color/immersive_status_bar_dark</item>
+    </style>
+
+    <style name="Theme.IOSched.Debug" parent="@style/Theme.IOSched.Immersive">
+        <item name="android:buttonStyle">@style/Widget.AppCompat.Button.Borderless.Colored</item>
+    </style>
+
+    <!-- Session Feedback -->
+    <style name="Theme.IOSched.Feedback" parent="@style/Theme.IOSched.Immersive">
+        <item name="colorAccent">@color/aqua_marine</item>
+    </style>
+
+    <style name="ThemeOverlay.DarkToolbar" parent="@style/ThemeOverlay.AppCompat.Dark.ActionBar" />
+
+    <style name="ThemeOverlay.LightToolbar" parent="@style/ThemeOverlay.AppCompat.ActionBar" />
+
+    <style name="ThemeOverlay.ToolbarPopup" parent="@style/ThemeOverlay.AppCompat.Light" />
+
+    <style name="Theme.IOSched.SessionDetails" parent="Theme.IOSched">
+        <item name="android:windowSharedElementEnterTransition">@transition/session_details_shared_enter</item>
+        <item name="android:windowSharedElementReturnTransition">@transition/session_details_shared_return</item>
+        <item name="android:windowEnterTransition">@transition/fade_system_chrome</item>
+        <item name="android:statusBarColor">@color/immersive_status_bar</item>
+        <item name="reserveButtonStyle">@style/Widget.IOSched.ReserveButton</item>
+    </style>
+
+    <!-- Text appearances -->
+    <style name="TextAppearance.H1" parent="@style/TextAppearance.AppCompat.Large">
+    </style>
+
+    <style name="TextAppearance.H3" parent="@style/TextAppearance.AppCompat.Medium">
+        <item name="android:textColor">?android:textColorPrimary</item>
+    </style>
+
+    <style name="TextAppearance.H4" parent="@style/TextAppearance.AppCompat.Small">
+        <item name="android:textColor">?android:textColorPrimary</item>
+        <item name="android:textSize">15sp</item>
+    </style>
+
+    <style name="TextAppearance.H5" parent="@style/TextAppearance.AppCompat.Small">
+        <item name="android:textColor">?android:textColorPrimary</item>
+    </style>
+
+    <!-- TODO clean up map styles -->
+    <style name="TextAppearance.Map.SessionTitle" parent="TextAppearance.AppCompat.Body2">
+        <item name="android:textColor">?android:textColorPrimary</item>
+    </style>
+
+    <style name="TextAppearance.Map.SessionSubtitle" parent="TextAppearance.AppCompat.Body1">
+        <item name="android:textSize">14sp</item> <!-- bug in AppCompat, can remove this when it's fixed -->
+        <item name="android:textColor">?android:textColorSecondary</item>
+    </style>
+
+    <style name="TextApparance.Map.Label" parent="TextAppearance.AppCompat.Medium">
+        <item name="android:textSize">13sp</item>
+        <item name="android:textColor">#FFF</item>
+        <item name="android:shadowColor">#FF000000</item>
+        <item name="android:shadowDx">1</item>
+        <item name="android:shadowDy">1</item>
+        <item name="android:shadowRadius">3</item>
+    </style>
+
+    <!-- Widget styles-->
+    <style name="Widget.IOSched" parent="android:Widget" />
+
+    <style name="Widget.IOSched.TextView" parent="@android:style/Widget.Material.TextView">
+        <item name="android:lineSpacingMultiplier">@dimen/text_line_spacing</item>
+    </style>
+
+    <style name="Widget.IOSched.ReserveButton">
+        <item name="android:foreground">?selectableItemBackground</item>
+        <item name="android:background">@color/lightish_blue</item>
+        <item name="android:elevation">4dp</item>
+        <item name="android:stateListAnimator">@animator/raise</item>
+        <item name="android:drawablePadding">@dimen/padding_normal</item>
+        <item name="android:drawableStart">@drawable/reserve_icon</item>
+    </style>
+
+    <style name="Widget.IOSched.Button.Aqua" parent="@style/Widget.AppCompat.Button">
+        <item name="android:backgroundTint">@color/aqua_marine</item>
+    </style>
+
+    <style name="Widget.IOSched.BottomNavigationView" parent="Widget.Design.BottomNavigationView">
+        <item name="itemIconTint">@color/nav_icon_tint</item>
+        <item name="android:background">?android:attr/colorBackground</item>
+        <item name="android:elevation" tools:targetApi="lollipop">@dimen/bottom_nav_elevation</item>
+        <item name="badgeColor">?colorAccent</item>
+        <item name="badgeRadius">3dp</item>
+    </style>
+
+    <style name="Widget.IOSched.FeedbackRatingBar">
+        <item name="filledDrawable">@drawable/ic_star_filled</item>
+        <item name="unfilledDrawable">@drawable/ic_star_empty</item>
+        <item name="maxRating">5</item>
+    </style>
+
+    <style name="Widget.IOSched.CollapsingHeader" parent="@style/Widget.Design.CollapsingToolbar">
+        <item name="scrimAnimationDuration">200</item>
+        <item name="scrimVisibleHeightTrigger">130dp</item>
+        <item name="statusBarScrim">@null</item>
+        <item name="titleEnabled">false</item>
+    </style>
+
+    <style name="Widget.IOSched.CollapsingHeader.Tabs">
+        <item name="scrimVisibleHeightTrigger">156dp</item>
+    </style>
+
+    <style name="Map.RoomTitle" parent="">
+        <item name="android:textSize">@dimen/map_room_title_text_size</item>
+        <item name="android:textColor">@color/map_text_primary</item>
+        <item name="android:ellipsize">end</item>
+        <item name="android:fontFamily">sans-serif-medium</item>
+    </style>
+
+    <style name="AppBar">
+        <item name="android:elevation">@dimen/appbar_elevation</item>
+        <item name="android:fitsSystemWindows">true</item>
+        <item name="android:theme">@style/ThemeOverlay.LightToolbar</item>
+    </style>
+
+    <style name="AppBar.Dark">
+        <item name="android:theme">@style/ThemeOverlay.DarkToolbar</item>
+    </style>
+
+    <style name="Settings.SwitchContainer" parent="">
+        <item name="android:background">?selectableItemBackground</item>
+        <item name="android:gravity">center_vertical</item>
+        <item name="android:minHeight">?listPreferredItemHeightSmall</item>
+        <item name="android:orientation">horizontal</item>
+        <item name="android:paddingEnd">?android:listPreferredItemPaddingEnd</item>
+        <item name="android:paddingStart">?android:listPreferredItemPaddingStart</item>
+    </style>
+
+    <style name="Settings.SwitchLabel" parent="">
+        <item name="android:ellipsize">end</item>
+        <item name="android:lines">1</item>
+        <item name="android:paddingBottom">@dimen/spacing_normal</item>
+        <item name="android:paddingTop">@dimen/spacing_normal</item>
+    </style>
+
+    <style name="Settings.Switch" parent="">
+        <!-- We make the parent view clickable instead for better touch feedback -->
+        <item name="android:background">@null</item>
+        <item name="android:clickable">false</item>
+    </style>
+
+    <style name="Settings.LinkButton" parent="@style/Widget.AppCompat.Button.Borderless">
+        <item name="android:background">?selectableItemBackground</item>
+        <item name="android:gravity">center_vertical|start</item>
+        <item name="android:minHeight">?android:listPreferredItemHeightSmall</item>
+        <item name="android:paddingEnd">?android:listPreferredItemPaddingEnd</item>
+        <item name="android:paddingStart">?android:listPreferredItemPaddingStart</item>
+        <item name="android:paddingBottom">@dimen/spacing_normal</item>
+        <item name="android:paddingTop">@dimen/spacing_normal</item>
+        <item name="android:textSize">15sp</item>
+    </style>
+
+    <style name="Settings.Version" parent="">
+        <item name="android:fontFamily">sans-serif-medium</item>
+        <item name="android:textAllCaps">true</item>
+    </style>
+
+    <style name="SettingsPreferenceThemeOverlay" parent="PreferenceThemeOverlay">
+        <item name="switchPreferenceCompatStyle">@style/SettingsSwitchPreference</item>
+    </style>
+
+    <style name="SettingsSwitchPreference" parent="Preference.SwitchPreferenceCompat">
+        <item name="android:layout">@layout/iosched_preference</item>
+    </style>
+
+    <style name="Schedule.TimeSeparator" parent="">
+        <item name="android:textAppearance">?android:textAppearanceMedium</item>
+        <item name="android:fontFeatureSettings">smcp</item>
+        <item name="android:fontFamily">sans-serif-medium</item>
+    </style>
+
+    <style name="Schedule.ItemTitle" parent="@style/TextAppearance.H1">
+        <item name="fontPath">fonts/ProductSans-Regular.ttf</item>
+    </style>
+
+    <style name="Schedule.ItemTitle.Break">
+        <item name="fontPath">fonts/ProductSans-Italic.ttf</item>
+    </style>
+
+    <style name="Session.Tag" parent="">
+        <item name="android:textAppearance">@style/TextAppearance.H5</item>
+        <item name="android:background">@drawable/tag_session_background</item>
+        <item name="android:gravity">center</item>
+        <item name="android:ellipsize">end</item>
+        <item name="android:lines">1</item>
+        <item name="android:minWidth">@dimen/a11y_min_touch_target_dimen</item>
+    </style>
+
+    <style name="Feed.Category" parent="Session.Tag">
+        <item name="android:textAllCaps">true</item>
+        <item name="android:textColor">@color/feed_category</item>
+        <item name="android:minHeight">32dp</item>
+    </style>
+
+    <style name="SessionDetail.SessionTitle" parent="ProductSans.Title">
+        <item name="android:ellipsize">end</item>
+        <item name="android:gravity">start</item>
+        <item name="android:maxLines">4</item>
+        <item name="android:textAlignment">viewStart</item>
+    </style>
+
+    <style name="SessionDetail.SessionSubtitle" parent="">
+        <item name="android:fontFamily">sans-serif-medium</item>
+        <item name="android:ellipsize">end</item>
+        <item name="android:gravity">start</item>
+        <item name="android:maxLines">2</item>
+        <item name="android:textAlignment">viewStart</item>
+    </style>
+
+    <style name="SessionDetail.TimeHint" parent="">
+        <item name="android:textAppearance">@style/TextAppearance.H5</item>
+        <item name="android:textColor">?android:textColorSecondary</item>
+        <item name="android:textStyle">italic</item>
+        <item name="android:textAlignment">viewStart</item>
+    </style>
+
+    <style name="Info.WifiSetup" parent="">
+        <item name="android:fontFamily">sans-serif-medium</item>
+    </style>
+
+    <style name="Info.WifiSetup.Label">
+        <item name="android:textAllCaps">true</item>
+    </style>
+
+    <style name="CollapsibleCardTitle">
+        <item name="android:fontFamily">sans-serif-medium</item>
+        <item name="android:textAllCaps">true</item>
+    </style>
+
+    <style name="LiveNowBadge">
+        <item name="android:background">@drawable/tag_session_background</item>
+        <item name="android:backgroundTint">@color/reddish</item>
+        <item name="android:drawableLeft">@drawable/ic_live_now</item>
+        <item name="android:drawablePadding">@dimen/spacing_micro</item>
+        <item name="android:gravity">center_vertical</item>
+        <item name="android:text">@string/live_now</item>
+        <item name="android:textAppearance">@style/TextAppearance.H5</item>
+        <item name="android:textColor">?android:textColorPrimaryInverse</item>
+    </style>
+
+    <style name="ProductSans.Title" parent="">
+        <item name="android:textAppearance">@style/TextAppearance.AppCompat.Headline</item>
+        <item name="fontPath">fonts/ProductSans-Regular.ttf</item>
+    </style>
+
+    <style name="TextAppearance.ProductSans.ToolbarTitle" parent="@style/TextAppearance.Widget.AppCompat.Toolbar.Title">
+        <item name="fontPath">fonts/ProductSans-Regular.ttf</item>
+    </style>
+
+
+</resources>

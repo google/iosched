@@ -46,7 +46,7 @@ public class UpdateRunLogger {
   private HashMap<String, Long> timers;
 
   public UpdateRunLogger() {
-    timers = new HashMap<String, Long>();
+    timers = new HashMap<>();
   }
 
   public void startTimer() {

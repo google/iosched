@@ -1,0 +1,377 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  Copyright 2015 Google Inc. All rights reserved.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+       http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+  -->
+<manifest package="com.google.samples.apps.iosched"
+          xmlns:android="http://schemas.android.com/apk/res/android"
+          xmlns:tools="http://schemas.android.com/tools"
+          android:installLocation="auto">
+
+    <application
+        android:name="com.google.samples.apps.iosched.AppApplication"
+        android:allowBackup="false"
+        android:hardwareAccelerated="true"
+        android:icon="@mipmap/ic_launcher"
+        android:roundIcon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:supportsRtl="true"
+        android:theme="@style/Theme.IOSched">
+
+        <!-- Google Play Services -->
+        <meta-data
+            android:name="com.google.android.gms.version"
+            android:value="@integer/google_play_services_version" />
+
+        <!-- MapView v2 API -->
+        <meta-data
+            android:name="com.google.android.maps.v2.API_KEY"
+            android:value="@string/maps_api_key" />
+
+        <!-- Default notification icon -->
+        <meta-data
+            android:name="com.google.firebase.messaging.default_notification_icon"
+            android:resource="@drawable/ic_widget_logo" />
+
+        <!-- Default notification color -->
+        <meta-data
+            android:name="com.google.firebase.messaging.default_notification_color"
+            android:resource="@color/io16_primary_blue_grey" />
+
+        <!-- Activities -->
+        <activity
+            android:name="com.google.samples.apps.iosched.schedule.ScheduleActivity"
+            android:exported="true"
+            android:label="@string/title_schedule"
+            android:launchMode="singleTop"
+            android:theme="@style/Theme.IOSched.Schedule">
+
+            <!-- Web URLs -->
+            <intent-filter
+                android:priority="200"
+                android:autoVerify="true">
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <!-- This catches /io/schedule//// but not /io/schedule
+                     Note: Query parameters are not part of the path and when ?sid=UUID is appended
+                           to this path it indicates a session on the website and there is therefore
+                           code in MySchedule.onCreate that invokes SessionDetailActivity if the sid
+                           is present.
+                     See above for testing notes. -->
+                <data
+                    android:host="@string/website_host_name"
+                    android:pathPattern="/io/schedule/*"
+                    android:scheme="http" />
+                <data
+                    android:host="@string/website_host_name"
+                    android:pathPattern="/io/schedule/*"
+                    android:scheme="https" />
+
+                <!-- This catches /io/schedule but not /io/schedule//////
+                     See above for testing notes. -->
+                <data
+                    android:host="@string/website_host_name"
+                    android:path="/io/schedule"
+                    android:scheme="http" />
+                <data
+                    android:host="@string/website_host_name"
+                    android:path="/io/schedule"
+                    android:scheme="https" />
+
+            </intent-filter>
+        </activity>
+
+        <activity
+            android:name="com.google.samples.apps.iosched.myio.MyIOActivity"
+            android:exported="false"
+            android:label="@string/title_my_io"
+            android:launchMode="singleTop"
+            android:theme="@style/Theme.IOSched.MyIo" />
+
+        <activity
+            android:name="com.google.samples.apps.iosched.feed.FeedActivity"
+            android:exported="false"
+            android:label="@string/title_feed"
+            android:launchMode="singleTop"
+            android:theme="@style/Theme.IOSched.Feed" />
+
+        <activity
+            android:name="com.google.samples.apps.iosched.info.InfoActivity"
+            android:exported="false"
+            android:label="@string/title_info"
+            android:launchMode="singleTop"
+            android:theme="@style/Theme.IOSched.Info" />
+
+        <activity
+            android:name="com.google.samples.apps.iosched.settings.SettingsActivity"
+            android:exported="false"
+            android:label="@string/title_settings"
+            android:parentActivityName=".myio.MyIOActivity" />
+
+        <activity
+            android:name="com.google.samples.apps.iosched.ui.SearchActivity"
+            android:exported="false"
+            android:label="@string/title_search"
+            android:launchMode="singleTop"
+            android:theme="@style/Theme.IOSched.Search">
+            <!-- This Activity handles the search intent -->
+            <intent-filter>
+                <action android:name="android.intent.action.SEARCH" />
+                <!-- Intent filter does not need a category = default, since the system delivers
+                     the ACTION_SEARCH intent explicitly to the searcheable activity,
+                     using component name.
+                  -->
+            </intent-filter>
+            <meta-data
+                android:name="android.app.searchable"
+                android:resource="@xml/searchable" />
+        </activity>
+
+        <activity
+            android:name="com.google.samples.apps.iosched.feedback.SessionFeedbackActivity"
+            android:exported="false"
+            android:label="@string/title_session_feedback"
+            android:theme="@style/Theme.IOSched.Feedback"
+            android:parentActivityName=".myio.MyIOActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <data android:mimeType="vnd.android.cursor.item/vnd.iosched2016.session_feedback" />
+            </intent-filter>
+        </activity>
+
+        <activity
+            android:name="com.google.samples.apps.iosched.welcome.WelcomeActivity"
+            android:exported="false"
+            android:theme="@style/Theme.IOSched.Welcome" />
+
+        <activity
+            android:name="com.google.samples.apps.iosched.session.SessionDetailActivity"
+            android:exported="true"
+            android:label="@string/title_session_detail"
+            android:theme="@style/Theme.IOSched.SessionDetails">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+
+                <data android:mimeType="vnd.android.cursor.item/vnd.iosched2016.session" />
+            </intent-filter>
+            <!-- Android Beam for session details -->
+            <intent-filter>
+                <action android:name="android.nfc.action.NDEF_DISCOVERED" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+
+                <data android:mimeType="vnd.android.cursor.item/vnd.iosched2016.session" />
+            </intent-filter>
+            <!-- Web URLs -->
+            <!-- URLs are indexed in search engines in the form:
+                 https://events.google.com/io2016/schedule?sid=<session_id>
+                 so direct session links are captured in MySchedule. -->
+        </activity>
+
+        <activity
+            android:name="com.google.samples.apps.iosched.map.MapActivity"
+            android:exported="true"
+            android:label="@string/title_map"
+            android:theme="@style/Theme.IOSched.Map"
+            android:parentActivityName=".myio.MyIOActivity" />
+
+        <!-- TaskStackBuilder proxy activity for widgets and notifications. -->
+
+        <activity
+            android:name="com.google.samples.apps.iosched.ui.TaskStackBuilderProxyActivity"
+            android:exported="false"
+            android:theme="@android:style/Theme.NoDisplay" />
+        <activity
+            android:name="com.google.samples.apps.iosched.debug.DebugActivity"
+            android:exported="false"
+            android:label="@string/title_activity_debug_test_runner"
+            android:parentActivityName=".myio.MyIOActivity" />
+
+        <!-- This activity alias lets us change the main entry point without breaking launcher
+             shortcuts. DO NOT change its android:name attribute.
+        -->
+        <activity-alias
+            android:name=".Launcher"
+            android:label="@string/app_name"
+            android:targetActivity=".myio.MyIOActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity-alias>
+
+        <!-- Session alarm/calendar integrating components. -->
+        <receiver android:name="com.google.samples.apps.iosched.receiver.SessionAlarmReceiver">
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+                <action android:name="com.google.samples.apps.iosched.action.UPDATE_CALENDAR_COMPLETED" />
+            </intent-filter>
+        </receiver>
+
+        <service
+            android:name="com.google.samples.apps.iosched.service.SessionAlarmService"
+            android:exported="false" />
+        <service
+            android:name="com.google.samples.apps.iosched.service.SessionCalendarService"
+            android:exported="false" />
+
+        <service
+            android:name=".signin.RegistrationStatusService"
+            android:exported="false"/>
+
+        <!-- BEGIN Google Analytics install referral measurement -->
+        <!-- The service (provided by the Google Play services client library) that receives an
+             intent from the CampaignTrackingReceiver upon install referral. -->
+        <service
+            android:name="com.google.android.gms.analytics.CampaignTrackingService"
+            android:exported="false" />
+
+        <!-- The receiver is called when Google Play has install referrer information and the app
+             was installed from Google Play. On API >= 13 the receiver is called after first app
+             launch rather than after install. -->
+        <receiver
+            android:name="com.google.android.gms.analytics.CampaignTrackingReceiver"
+            android:exported="true"
+            tools:ignore="ExportedReceiver">
+            <intent-filter>
+                <action android:name="com.android.vending.INSTALL_REFERRER" />
+            </intent-filter>
+        </receiver>
+        <!-- For more information on Google Analytics install referral measurement see
+             https://goo.gl/RWn9xv -->
+        <!-- END Google Analytics install referral measurement -->
+
+        <!-- Register AnalyticsReceiver and AnalyticsService to support background
+             dispatching on non-Google Play devices. -->
+        <receiver
+            android:name="com.google.android.gms.analytics.AnalyticsReceiver"
+            android:enabled="true"
+            tools:ignore="ExportedReceiver">
+            <intent-filter>
+                <action android:name="com.google.android.gms.analytics.ANALYTICS_DISPATCH" />
+            </intent-filter>
+        </receiver>
+        <service
+            android:name="com.google.android.gms.analytics.AnalyticsService"
+            android:enabled="true"
+            android:exported="false" />
+
+        <!--
+          MyFcmListenerService is the extension of the FirebaseMessagingService,
+          where we handle FCM messages.
+        -->
+        <service
+            android:name="com.google.samples.apps.iosched.fcm.MyFcmListenerService"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="com.google.firebase.MESSAGING_EVENT" />
+            </intent-filter>
+        </service>
+
+        <service
+            android:name="com.google.samples.apps.iosched.fcm.MyInstanceIDService"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="com.google.firebase.INSTANCE_ID_EVENT" />
+            </intent-filter>
+        </service>
+
+        <!-- Data, sync and schedule editing components -->
+
+        <provider
+            android:name="com.google.samples.apps.iosched.provider.ScheduleProvider"
+            android:authorities="com.google.samples.apps.iosched"
+            android:exported="true"
+            android:label="@string/app_name"
+            android:syncable="true"
+            android:writePermission="com.google.samples.apps.iosched.permission.WRITE_SCHEDULE" />
+
+        <service
+            android:name="com.google.samples.apps.iosched.sync.SyncService"
+            android:exported="true"
+            tools:ignore="ExportedService">
+            <intent-filter>
+                <action android:name="android.content.SyncAdapter" />
+            </intent-filter>
+
+            <meta-data
+                android:name="android.content.SyncAdapter"
+                android:resource="@xml/syncadapter" />
+        </service>
+
+        <!-- An IntentService responsible for bootstrapping the app with the necessary
+            data such as session, speakers, etc. This data is used prior to the app's
+            first sync to the backend server. -->
+        <service
+            android:name="com.google.samples.apps.iosched.service.DataBootstrapService"
+            android:exported="false" />
+
+        <!--
+             a simple receiver that triggers a sync for any message it receives. used by our
+             GCM implementation
+        -->
+        <receiver android:name="com.google.samples.apps.iosched.sync.TriggerSyncReceiver" />
+
+        <!-- Other manifest items -->
+
+        <meta-data
+            android:name="android.app.default_searchable"
+            android:value=".ui.BrowseSessionsActivity" />
+
+        <!-- App widget components -->
+
+        <receiver
+            android:name="com.google.samples.apps.iosched.appwidget.ScheduleWidgetProvider"
+            android:enabled="true">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+            </intent-filter>
+            <!-- This specifies the widget provider info -->
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/widgetinfo" />
+        </receiver>
+
+        <!-- The service serving the RemoteViews to the collection widget -->
+
+        <service
+            android:name="com.google.samples.apps.iosched.appwidget.ScheduleWidgetRemoteViewsService"
+            android:enabled="true"
+            android:exported="false"
+            android:permission="android.permission.BIND_REMOTEVIEWS" />
+
+        <!-- Account authenticator service for use with sync adapter -->
+        <service
+            android:name="com.google.samples.apps.iosched.sync.account.AuthenticatorService"
+            tools:ignore="ExportedService">
+            <intent-filter>
+                <action android:name="android.accounts.AccountAuthenticator" />
+            </intent-filter>
+            <meta-data
+                android:name="android.accounts.AccountAuthenticator"
+                android:resource="@xml/authenticator" />
+        </service>
+
+        <!-- Intent Service for post sign in activities -->
+        <service
+            android:name="com.google.samples.apps.iosched.signin.PostSignInUpgradeService" />
+
+    </application>
+</manifest>
