@@ -6,7 +6,7 @@ technical content featuring technical sessions and hundreds of demonstrations
 from developers showcasing their technologies.
 
 This project is the Android app for the conference. The app supports devices
-running Android 4.0+, and is optimized for phones and tablets of all shapes
+running Android 5.0+, and is optimized for phones and tablets of all shapes
 and sizes.
 
 <h2>Source</h2>
