@@ -21,7 +21,7 @@ With the app, you can:
 - Sync your schedule between all of your devices and the I/O website
 - View detailed session, code lab, office hours, and speaker information,
   including speaker bios, photos, and Google+ profiles
-- Participate in public #io15 conversations on Google+
+- Participate in public #io17 conversations on Google+
 - Guide yourself using the vector-based conference map
 - Get a reminder a few minutes before sessions in your schedule are due to
   start
