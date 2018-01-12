@@ -1,5 +1,0 @@
-# IOSched Build/Test Enviornment
-
-This directory contains a Dockerfile used for instantiating an Android
-build and test environment. This is used for our continuous integration
-server.
