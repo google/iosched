@@ -1,3 +1,6 @@
 <resources>
     <string name="app_name">IOSched</string>
+    <string name="title_schedule">Schedule</string>
+    <string name="title_feed">Feed</string>
+    <string name="title_map">Map</string>
 </resources>
