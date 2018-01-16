@@ -32,6 +32,7 @@ buildscript {
         kotlinVersion = '1.2.10'
         runnerVersion = '1.0.1'
         supportLibraryVersion = '27.0.2'
+        designLibraryVersion = '27.0.2'
     }
 
     repositories {
