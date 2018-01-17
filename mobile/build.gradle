@@ -7,7 +7,7 @@ apply plugin: 'kotlin-android-extensions'
 android {
     compileSdkVersion rootProject.compileSdkVersion
     defaultConfig {
-        applicationId "iosched.apps.samples.google.com.iosched"
+        applicationId "com.google.samples.apps.iosched"
         minSdkVersion rootProject.minSdkVersion
         targetSdkVersion rootProject.targetSdkVersion
         versionCode 1

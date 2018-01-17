@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="iosched.apps.samples.google.com.iosched.ui.MainActivity">
+    tools:context="com.google.samples.apps.iosched.ui.MainActivity">
 
     <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:id="@+id/fragment_container"
