@@ -13,7 +13,7 @@
   -->
 
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="iosched.apps.samples.google.com.shared">
+    package="com.google.samples.apps.iosched.shared">
 
     <application
         android:allowBackup="true"
