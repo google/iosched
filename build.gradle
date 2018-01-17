@@ -29,7 +29,7 @@ buildscript {
         espressoVersion = '3.0.1'
         gradleVersion = '3.0.1'
         junitVersion = '4.12'
-        kotlinVersion = '1.2.10'
+        kotlinVersion = '1.2.20'
         runnerVersion = '1.0.1'
         supportLibraryVersion = '27.0.2'
         designLibraryVersion = '27.0.2'
