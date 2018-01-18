@@ -23,21 +23,24 @@ package com.google.samples.apps.iosched.shared.model
  * {category: "TYPE", name: "OFFICEHOURS"}. The first tag defines the session track as Android, and
  * the second tag defines the session type as an office hour.
  */
-internal interface Tag {
-    fun getId(): String
+data class Tag (
+    /**
+     * Unique string identifying this tag.
+     */
+    val id: String,
 
     /**
      * Tag category type. For example, "Track", "Level", "Type", "Theme". etc.
      */
-    fun getCategory(): String
+    val category: String,
 
     /**
      * Tag name within a category. For example, "Android", or "Ads", or "Design".
      */
-    fun getName(): String
+    val name: String,
 
     /**
      * The color associated with this tag as a hex string. Example, "#FFEE88".
      */
-    fun getColor(): String
-}
+    val color: String
+)

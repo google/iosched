@@ -19,19 +19,19 @@ package com.google.samples.apps.iosched.shared.model
 /**
  * Describes a venue associated with the conference.
  */
-internal interface Room {
+data class Room (
     /**
      * Unique string identifying this room.
      */
-    fun getId(): String
+    val id: String,
 
     /**
      * The name of the room.
      */
-    fun getName(): String
+    val name: String,
 
     /**
      * The number of attendees a room can hold.
      */
-    fun getCapacity(): Int
-}
+    val capacity: Int
+)
