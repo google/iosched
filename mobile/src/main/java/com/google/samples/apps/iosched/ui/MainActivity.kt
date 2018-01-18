@@ -16,15 +16,18 @@
 package com.google.samples.apps.iosched.ui
 
 import android.os.Bundle
-import android.support.design.widget.BottomNavigationView
+import android.support.design.widget.BottomNavigationView.OnNavigationItemSelectedListener
 import android.support.v4.app.Fragment
 import android.support.v7.app.AppCompatActivity
 import com.google.samples.apps.iosched.R
+import com.google.samples.apps.iosched.ui.feed.FeedFragment
+import com.google.samples.apps.iosched.ui.map.MapFragment
+import com.google.samples.apps.iosched.ui.schedule.ScheduleFragment
 import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity() {
 
-    private val mOnNavigationItemSelectedListener = BottomNavigationView.OnNavigationItemSelectedListener { item ->
+    private val mOnNavigationItemSelectedListener = OnNavigationItemSelectedListener { item ->
         when (item.itemId) {
             R.id.navigation_schedule -> {
                 replaceFragment(ScheduleFragment())
@@ -43,10 +46,9 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun replaceFragment(fragment: Fragment) {
-        getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, fragment).commit()
-
+        supportFragmentManager.beginTransaction().replace(R.id.fragment_container, fragment)
+                .commit()
     }
-
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
