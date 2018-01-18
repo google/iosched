@@ -14,20 +14,15 @@
  * limitations under the License.
  */
 
-package com.google.samples.apps.iosched.shared
+package com.google.samples.apps.iosched.shared.data.session
 
-import org.junit.Test
+import com.google.samples.apps.iosched.shared.model.Session
 
-import org.junit.Assert.*
+object DefaultSessionRepository : SessionRepository(RemoteSessionDataSource)
 
-/**
- * Example local unit test, which will execute on the development machine (host).
- *
- * See [testing documentation](http://d.android.com/tools/testing).
- */
-class ExampleUnitTest {
-    @Test
-    fun addition_isCorrect() {
-        assertEquals(4, 2 + 2)
+open class SessionRepository(private val remoteDataSource: SessionDataSource) {
+
+    fun getSessions(): List<Session> {
+        return remoteDataSource.getSessions()
     }
 }

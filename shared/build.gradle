@@ -41,9 +41,18 @@ dependencies {
     implementation "com.android.support.constraint:constraint-layout:$rootProject.constraintLayoutVersion"
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jre7:$rootProject.kotlinVersion"
 
-    api "com.jakewharton.threetenabp:threetenabp:1.0.5"
+    // Utils
+    api "com.jakewharton.timber:timber:$rootProject.timberVersion"
 
+    // ThreeTenBP for the shared module only
+    testCompile "org.threeten:threetenbp:$rootProject.threetenbpVersion"
+    compileOnly "org.threeten:threetenbp:$rootProject.threetenbpVersion:no-tzdb"
+
+    // Unit tests
+    testCompile "android.arch.core:core-testing:$rootProject.archLifecycleVersion"
+    testImplementation "junit:junit:$rootProject.junitVersion"
+
+    // Instrumented tests
     androidTestImplementation "com.android.support.test.espresso:espresso-core:$rootProject.espressoVersion"
     androidTestImplementation "com.android.support.test:runner:$rootProject.runnerVersion"
-    testImplementation "junit:junit:$rootProject.junitVersion"
 }

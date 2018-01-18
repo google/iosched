@@ -19,4 +19,6 @@
     <string name="title_schedule">Schedule</string>
     <string name="title_feed">Feed</string>
     <string name="title_map">Map</string>
+    <string name="numberOfSessions">Sessions: %d</string>
+    <string name="loading">Loading...</string>
 </resources>

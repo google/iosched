@@ -16,23 +16,25 @@
 
 package com.google.samples.apps.iosched.ui
 
-import android.os.Bundle
-import android.support.v4.app.Fragment
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
-import com.google.samples.apps.iosched.R
+import android.app.Application
+import com.google.samples.apps.iosched.BuildConfig
+import com.jakewharton.threetenabp.AndroidThreeTen
+import timber.log.Timber
 
-class FeedFragment : Fragment() {
+/**
+ * Initialization of libraries.
+ */
+class MainApplication : Application() {
+    override fun onCreate() {
+        super.onCreate()
 
-    companion object {
-        val TAG: String = FeedFragment::class.java.simpleName
-        fun newInstance() = FeedFragment()
+        // Timber, for logging
+        if (BuildConfig.DEBUG) {
+            Timber.plant(Timber.DebugTree())
+        }
+
+        // ThreeTenBP for times and dates
+        AndroidThreeTen.init(this)
     }
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        activity?.title = getString(R.string.title_feed)
-        val view = inflater.inflate(R.layout.fragment_feed, container, false)
-        return view
-    }
 }
