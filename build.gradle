@@ -22,6 +22,7 @@ buildscript {
         // SDK and tools
         compileSdkVersion = 27
         minSdkVersion = 15
+        minTvSdkVersion = 21 // TV was introduced with Lollipop, min SDK should be 21.
         targetSdkVersion = 27
 
         // App dependencies
