@@ -14,44 +14,44 @@
  * limitations under the License.
  */
 
-package com.google.samples.apps.iosched.shared.model;
+package com.google.samples.apps.iosched.shared.model
 
 /**
  * Describes a speaker at the conference.
  */
-interface Speaker {
+data class Speaker(
     /**
      * Unique string identifying this speaker.
      */
-    String getId();
+    val id: String,
 
     /**
      * Name of this speaker.
      */
-    String getName();
+    val name: String,
 
     /**
      * Profile photo of this speaker.
      */
-    String getImageUrl();
+    val imageUrl: String,
 
     /**
      * Company this speaker works for.
      */
-    String getCompany();
+    val company: String,
 
     /**
      * Text describing this speaker in detail.
      */
-    String getAbstract();
+    val abstract: String,
 
     /**
      * Full URL of the speaker's G+ profile.
      */
-    String getGPlusUrl();
+    val gPlusUrl: String,
 
     /**
      * Full URL of the speaker's Twitter profile.
      */
-    String getTwitterUrl();
-}
+    val twitterUrl: String
+)
