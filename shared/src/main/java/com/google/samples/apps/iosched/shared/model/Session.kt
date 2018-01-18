@@ -21,65 +21,64 @@ package com.google.samples.apps.iosched.shared.model
  * variety of conference events: talks, sandbox demos, office hours, etc. A session is usually
  * associated with one or more [Tag]s.
  */
-internal interface Session {
+data class Session(
     /**
      * Unique string identifying this session.
      */
-    fun getId(): String
+    val id: String,
 
     /**
      * Start time of the session in RFC 3339 time. Example, "2017-05-19T22:30:00Z"
      */
-    fun getStartTime(): String
+    val startTime: String,
 
     /**
      * End time of the session in RFC 3339 time. Example, "2017-05-19T22:30:00Z"
      */
-    fun getEndTime(): String
+    val endTime: String,
 
     /**
      * Session title.
      */
-    fun getTitle(): String
+    val title: String,
 
     /**
      * Body of text explaining this session in detail.
      */
-    fun getAbstract(): String
+    val abstract: String,
 
     /**
      * Full URL for the session online.
      */
-    fun getSessionUrl(): String
+    val sessionUrl: String,
 
     /**
      * Url for the session livestream.
      */
-    fun getLiveStreamUrl(): String
+    val liveStreamUrl: String,
 
     /**
      * Full URL to YouTube.
      */
-    fun getYouTubeUrl(): String
+    val youTubeUrl: String,
 
     /**
      * The [Tag]s associated with the session. Ordered, with the most important tags appearing
      * first.
      */
-    fun getTags(): List<Tag>
+    val tags: List<Tag>,
 
     /**
      * The session speakers.
      */
-    fun getSpeakers(): Set<Speaker>
+    val speakers: Set<Speaker>,
 
     /**
      * The session's photo URL.
      */
-    fun getPhotoUrl(): String
+    val photoUrl: String,
 
     /**
      * Sessions related to this session.
      */
-    fun getRelatedSessions(): Set<Session>
-}
+    val relatedSessions: Set<Session>)
