@@ -14,4 +14,18 @@
  * limitations under the License.
  */
 
-include ':mobile', ':shared', ':tv'
+package com.google.samples.apps.iosched.tv
+
+import android.app.Activity
+import android.os.Bundle
+
+/*
+ * MainActivity class that loads {@link MainFragment}.
+ */
+class MainActivity : Activity() {
+
+    public override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setContentView(R.layout.activity_main)
+    }
+}

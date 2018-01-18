@@ -15,5 +15,5 @@
   -->
 
 <resources>
-    <string name="app_name">Shared</string>
+    <string name="app_name" translatable="false">Google I/O</string>
 </resources>
