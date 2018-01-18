@@ -19,30 +19,29 @@ package com.google.samples.apps.iosched.shared.model
  * Defines a block of time associated with the conference. For example, a span of time denotes the
  * time when codelabs are offered, or when lunch is provided, etc.
  */
-internal interface Block {
-
+data class Block (
     /**
      * The title of the block. Example, "Sandbox".
      */
-    fun getTitle(): String
+    val title: String,
 
     /**
      * The subtitle of the block. Example, "Registration" (with title "Badge Pick-Up").
      */
-    fun getSubtitle(): String
+    val subtitle: String,
 
     /**
-     * The type of the block. Example, "concert", or "meal".
+     * The kind of block. Example, "concert", or "meal".
      */
-    fun getKind(): String
+    val kind: String,
 
     /**
      * Start time in RFC 3339 time. Example, "2017-05-19T22:30:00Z"
      */
-    fun getStartTime(): Long
+    val startTime: Long,
 
     /**
      * End time in RFC 3339 time. Example, "2017-05-19T22:30:00Z"
      */
-    fun getEndTime(): Long
-}
+    val endTime: Long
+)
