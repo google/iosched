@@ -44,7 +44,7 @@ android {
 }
 
 dependencies {
-    compile project(":shared")
+    implementation project(":shared")
 
     implementation fileTree(dir: 'libs', include: ['*.jar'])
 
@@ -55,13 +55,13 @@ dependencies {
 
     // ARCH
     implementation "android.arch.lifecycle:extensions:$rootProject.archLifecycleVersion"
-    annotationProcessor "android.arch.lifecycle:compiler:$rootProject.archLifecycleVersion"
+    kapt "android.arch.lifecycle:compiler:$rootProject.archLifecycleVersion"
     kapt "com.android.databinding:compiler:$rootProject.dataBindingCompilerVersion"
-    testCompile "android.arch.core:core-testing:$rootProject.archLifecycleVersion"
+    testImplementation "android.arch.core:core-testing:$rootProject.archLifecycleVersion"
 
     // UTIL
     api "com.jakewharton.threetenabp:threetenabp:$rootProject.threetenabpVersion"
-    testCompile "org.threeten:threetenbp:$rootProject.threetenbpVersion"
+    testImplementation "org.threeten:threetenbp:$rootProject.threetenbpVersion"
 
     // KOTLIN
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jre7:$rootProject.kotlinVersion"
