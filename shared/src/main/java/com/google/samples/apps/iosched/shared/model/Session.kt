@@ -16,6 +16,8 @@
 
 package com.google.samples.apps.iosched.shared.model
 
+import org.threeten.bp.ZonedDateTime
+
 /**
  * Describes a conference session. Sessions have specific start and end times, and they represent a
  * variety of conference events: talks, sandbox demos, office hours, etc. A session is usually
@@ -28,14 +30,14 @@ data class Session(
     val id: String,
 
     /**
-     * Start time of the session in RFC 3339 time. Example, "2017-05-19T22:30:00Z"
+     * Start time of the session
      */
-    val startTime: String,
+    val startTime: ZonedDateTime,
 
     /**
-     * End time of the session in RFC 3339 time. Example, "2017-05-19T22:30:00Z"
+     * End time of the session
      */
-    val endTime: String,
+    val endTime: ZonedDateTime,
 
     /**
      * Session title.
