@@ -15,6 +15,8 @@
  */
 package com.google.samples.apps.iosched.shared.model
 
+import org.threeten.bp.ZonedDateTime
+
 /**
  * Defines a block of time associated with the conference. For example, a span of time denotes the
  * time when codelabs are offered, or when lunch is provided, etc.
@@ -36,12 +38,12 @@ data class Block (
     val kind: String,
 
     /**
-     * Start time in RFC 3339 time. Example, "2017-05-19T22:30:00Z"
+     * Start time
      */
-    val startTime: Long,
+    val startTime: ZonedDateTime,
 
     /**
-     * End time in RFC 3339 time. Example, "2017-05-19T22:30:00Z"
+     * End time
      */
-    val endTime: Long
+    val endTime: ZonedDateTime
 )
