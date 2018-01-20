@@ -25,6 +25,16 @@ android {
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+
+        buildConfigField("String", "CONFERENCE_TIMEZONE", "\"${conference_timezone}\"")
+        buildConfigField("String", "PRECONFERENCE_DAY_START", "\"${preconference_day_start}\"")
+        buildConfigField("String", "PRECONFERENCE_DAY_END", "\"${preconference_day_end}\"")
+        buildConfigField("String", "CONFERENCE_DAY1_START", "\"${conference_day1_start}\"")
+        buildConfigField("String", "CONFERENCE_DAY1_END", "\"${conference_day1_end}\"")
+        buildConfigField("String", "CONFERENCE_DAY2_START", "\"${conference_day2_start}\"")
+        buildConfigField("String", "CONFERENCE_DAY2_END", "\"${conference_day2_end}\"")
+        buildConfigField("String", "CONFERENCE_DAY3_START", "\"${conference_day3_start}\"")
+        buildConfigField("String", "CONFERENCE_DAY3_END", "\"${conference_day3_end}\"")
     }
 
     buildTypes {
