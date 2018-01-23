@@ -27,7 +27,7 @@ import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity() {
 
-    private val mOnNavigationItemSelectedListener = OnNavigationItemSelectedListener { item ->
+    private val onNavigationItemSelectedListener = OnNavigationItemSelectedListener { item ->
         when (item.itemId) {
             R.id.navigation_schedule -> {
                 replaceFragment(ScheduleFragment())
@@ -63,7 +63,7 @@ class MainActivity : AppCompatActivity() {
                     .add(R.id.fragment_container, fragment, ScheduleFragment.TAG).commit()
         }
 
-        navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener)
+        navigation.setOnNavigationItemSelectedListener(onNavigationItemSelectedListener)
 
 
     }
