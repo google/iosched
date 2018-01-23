@@ -22,6 +22,29 @@
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
+
+        <item name="toolbarStyle">@style/Widget.Toolbar</item>
+    </style>
+
+    <style name="AppTheme.NoActionBar">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+    </style>
+
+    <style name="AppTheme.ActionBar" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
+
+    <style name="AppTheme.PopupTheme" parent="ThemeOverlay.AppCompat.Light" />
+
+    <style name="Widget.AppBar" parent="">
+        <item name="popupTheme">@style/AppTheme.PopupTheme</item>
+        <item name="android:background">?colorPrimary</item>
+        <item name="android:elevation">8dp</item>
+        <item name="android:orientation">vertical</item>
+        <item name="android:theme">@style/AppTheme.ActionBar</item>
+    </style>
+
+    <style name="Widget.Toolbar" parent="Widget.AppCompat.Toolbar">
+        <item name="popupTheme">@style/AppTheme.PopupTheme</item>
     </style>
 
 </resources>

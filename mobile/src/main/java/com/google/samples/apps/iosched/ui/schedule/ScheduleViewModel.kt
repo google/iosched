@@ -26,7 +26,6 @@ class ScheduleViewModel(loadSessionsUseCase: LoadSessionsUseCase) : ViewModel() 
     val numberOfSessions = ObservableInt()
 
     init {
-
         // TODO: replace. Dummy async task
         loadSessionsUseCase.executeAsync("someVar") { result: Result<List<Session>> ->
             when (result) {

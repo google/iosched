@@ -15,23 +15,14 @@
   ~ limitations under the License.
   -->
 
-<android.support.constraint.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<android.support.v7.widget.Toolbar xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/toolbar"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
-
-    <LinearLayout
-        android:id="@+id/appbar"
-        style="@style/Widget.AppBar"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
-
-        <include layout="@layout/toolbar" />
-
-    </LinearLayout>
-
-</android.support.constraint.ConstraintLayout>
+    android:layout_height="?actionBarSize"
+    android:background="@null"
+    android:elevation="0dp"
+    android:theme="@style/AppTheme.ActionBar"
+    tools:background="?colorPrimary"
+    tools:title="@string/app_name">
+</android.support.v7.widget.Toolbar>

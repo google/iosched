@@ -22,6 +22,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.google.samples.apps.iosched.R
+import kotlinx.android.synthetic.main.toolbar.*
 
 class FeedFragment : Fragment() {
 
@@ -30,9 +31,12 @@ class FeedFragment : Fragment() {
         fun newInstance() = FeedFragment()
     }
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        activity?.title = getString(R.string.title_feed)
-        val view = inflater.inflate(R.layout.fragment_feed, container, false)
-        return view
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
+            savedInstanceState: Bundle?): View? {
+        return inflater.inflate(R.layout.fragment_feed, container, false)
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        toolbar.setTitle(R.string.title_feed)
     }
 }
