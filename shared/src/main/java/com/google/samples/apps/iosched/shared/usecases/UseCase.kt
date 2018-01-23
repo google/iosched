@@ -16,38 +16,40 @@
 
 package com.google.samples.apps.iosched.shared.usecases
 
+import android.arch.lifecycle.LiveData
+import android.arch.lifecycle.MutableLiveData
 import com.google.samples.apps.iosched.shared.result.Result
 import com.google.samples.apps.iosched.shared.usecases.internal.DefaultScheduler
 import com.google.samples.apps.iosched.shared.usecases.internal.Scheduler
 import timber.log.Timber
-import java.lang.ref.WeakReference
 
 /**
  * Executes business logic synchronously or asynchronously using a [Scheduler].
  */
-abstract class UseCase<in P, out R> {
+abstract class UseCase<in P, R> {
 
     private val taskScheduler = DefaultScheduler
 
-    /* The callback is stored with a weak reference to prevent leaks. */
-    private lateinit var callback: WeakReference<(Result<R>) -> Any>
-
-    /** Executes the use case asynchronously  */
-    fun executeAsync(parameters: P, callback: (Result<R>) -> Any) {
-        this.callback = WeakReference(callback)
-
-        taskScheduler.execute {
-            // Run in background
-            try {
-                execute(parameters)?.let {
-                    notifyResult(it)
-                } ?: notifyError(NullPointerException("Result was null"))
-            } catch (e: Exception) {
-                Timber.d(e)
-                notifyError(e)
+    /** Executes the use case asynchronously
+     *
+     * @return an observable [LiveData] with a [Result].
+     *
+     * @param parameters the input parameters to run the use case with
+     */
+    fun executeAsync(parameters: P) : LiveData<Result<R>> {
+        val liveCallback: MutableLiveData<Result<R>> = MutableLiveData()
+        try {
+            taskScheduler.execute {
+                execute(parameters).let { result ->
+                    liveCallback.postValue(Result.Success(result))
+                }
             }
         }
-
+        catch (e: Exception) {
+            Timber.d(e)
+            liveCallback.postValue(Result.Error(e))
+        }
+        return liveCallback
     }
 
     /** Executes the use case synchronously  */
@@ -56,26 +58,6 @@ abstract class UseCase<in P, out R> {
             Result.Success(execute(parameters))
         } catch (e: Exception) {
             Result.Error(e)
-        }
-    }
-
-    private fun notifyResult(result: R) {
-        callback.get()?.let {
-            taskScheduler.postToMainThread {
-                // Double check because of WeakRef
-                val safeCallback: (Result<R>) -> Any = callback.get() ?: return@postToMainThread
-                safeCallback(Result.Success(result))
-            }
-        }
-    }
-
-    private fun notifyError(e: Exception) {
-        callback.get()?.let {
-            taskScheduler.postToMainThread {
-                // Double check because of WeakRef
-                val safeCallback: (Result<R>) -> Any = callback.get() ?: return@postToMainThread
-                safeCallback(Result.Error(e))
-            }
         }
     }
 

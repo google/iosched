@@ -43,26 +43,38 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+    dataBinding {
+        enabled true
+    }
 }
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
+
+    // UI
     implementation "com.android.support:appcompat-v7:$rootProject.supportLibraryVersion"
+    implementation "com.android.support:support-v4:$rootProject.supportLibraryVersion"
     implementation "com.android.support.constraint:constraint-layout:$rootProject.constraintLayoutVersion"
-    implementation "org.jetbrains.kotlin:kotlin-stdlib-jre7:$rootProject.kotlinVersion"
+
+    // Architecture Components
+    implementation "android.arch.lifecycle:livedata:$rootProject.archLifecycleVersion"
+    implementation "android.arch.lifecycle:viewmodel:$rootProject.archLifecycleVersion"
 
     // Utils
     api "com.jakewharton.timber:timber:$rootProject.timberVersion"
 
-    // ThreeTenBP for the shared module only
-    testCompile "org.threeten:threetenbp:$rootProject.threetenbpVersion"
+    // Kotlin
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jre7:$rootProject.kotlinVersion"
+
+    // ThreeTenBP for the shared module only. Date and time API for Java.
+    testImplementation "org.threeten:threetenbp:$rootProject.threetenbpVersion"
     compileOnly "org.threeten:threetenbp:$rootProject.threetenbpVersion:no-tzdb"
 
     // Unit tests
-    testCompile "android.arch.core:core-testing:$rootProject.archLifecycleVersion"
+    testImplementation "android.arch.core:core-testing:$rootProject.archLifecycleVersion"
     testImplementation "junit:junit:$rootProject.junitVersion"
 
-    // Instrumented tests
+    // Instrumentation tests
     androidTestImplementation "com.android.support.test.espresso:espresso-core:$rootProject.espressoVersion"
     androidTestImplementation "com.android.support.test:runner:$rootProject.runnerVersion"
 }
