@@ -53,23 +53,23 @@ dependencies {
     implementation "com.android.support:design:$rootProject.designLibraryVersion"
     implementation "com.android.support.constraint:constraint-layout:$rootProject.constraintLayoutVersion"
 
-    // ARCH
+    // Architecture Components
     implementation "android.arch.lifecycle:extensions:$rootProject.archLifecycleVersion"
     kapt "android.arch.lifecycle:compiler:$rootProject.archLifecycleVersion"
-    kapt "com.android.databinding:compiler:$rootProject.dataBindingCompilerVersion"
     testImplementation "android.arch.core:core-testing:$rootProject.archLifecycleVersion"
 
-    // UTIL
+    // Utils
+    // Date and time API for Java.
     api "com.jakewharton.threetenabp:threetenabp:$rootProject.threetenabpVersion"
     testImplementation "org.threeten:threetenbp:$rootProject.threetenbpVersion"
 
-    // KOTLIN
+    // Kotlin
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jre7:$rootProject.kotlinVersion"
 
-    // INST TESTS
+    // Instrumentation tests
     androidTestImplementation "com.android.support.test.espresso:espresso-core:$rootProject.espressoVersion"
     androidTestImplementation "com.android.support.test:runner:$rootProject.runnerVersion"
 
-    // LOCAL TESTS
+    // Local unit tests
     testImplementation "junit:junit:$rootProject.junitVersion"
 }

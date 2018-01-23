@@ -47,6 +47,7 @@ class ScheduleFragment : Fragment() {
 
         // Set the layout variables
         binding.viewModel = viewModel
+        binding.setLifecycleOwner(this)
 
         // TODO: This is an example subscription
         observeViewModel(viewModel, binding)
