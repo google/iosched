@@ -16,6 +16,8 @@
 
 package com.google.samples.apps.iosched.shared.di
 
+import com.google.samples.apps.iosched.shared.data.map.MapMetadataDataSource
+import com.google.samples.apps.iosched.shared.data.map.RemoteMapMetadataDataSource
 import com.google.samples.apps.iosched.shared.data.session.RemoteSessionDataSource
 import com.google.samples.apps.iosched.shared.data.session.SessionDataSource
 import com.google.samples.apps.iosched.shared.data.tag.RemoteTagDataSource
@@ -30,23 +32,23 @@ import javax.inject.Singleton
 @Module
 class SharedModule {
 
-    /**
-     * Defines the implementation of [SessionDataSource] that should be used.
-     * The [SessionDataSource] is a singleton.
-     */
+// Define the data source implementations that should be used. All data sources are singletons.
+
     @Singleton
     @Provides
     fun provideSessionDataSource(): SessionDataSource {
         return RemoteSessionDataSource
     }
 
-    /**
-     * Defines the implementation of [TagDataSource] that should be used.
-     * The [TagDataSource] is a singleton.
-     */
     @Singleton
     @Provides
     fun provideTagDataSource(): TagDataSource {
         return RemoteTagDataSource
+    }
+
+    @Singleton
+    @Provides
+    fun provideMapMetadataDataSource(): MapMetadataDataSource {
+        return RemoteMapMetadataDataSource()
     }
 }

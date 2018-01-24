@@ -42,6 +42,8 @@ buildscript {
         dagger = "2.14.1"
         gsonVersion = "2.8.1"
         ktxVersion = "0.1"
+        googleMapUtilsVersion = "0.5"
+        googlePlayServicesClientVersion = "11.8.0"
     }
 
     repositories {
