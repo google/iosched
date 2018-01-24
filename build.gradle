@@ -26,16 +26,16 @@ buildscript {
         targetSdkVersion = 27
 
         // App dependencies
+        archLifecycleVersion = '1.1.0'
         constraintLayoutVersion = '1.0.2'
+        dataBindingCompilerVersion = '3.0.1'
+        designLibraryVersion = '27.0.2'
         espressoVersion = '3.0.1'
         gradleVersion = '3.0.1'
         junitVersion = '4.12'
-        kotlinVersion = '1.2.20'
+        kotlinVersion = '1.2.21'
         runnerVersion = '1.0.1'
         supportLibraryVersion = '27.0.2'
-        designLibraryVersion = '27.0.2'
-        archLifecycleVersion = '1.0.0'
-        dataBindingCompilerVersion = '3.0.1'
         threetenabpVersion = "1.0.5"
         threetenbpVersion = "1.3.6"
         timberVersion = "4.6.0"
