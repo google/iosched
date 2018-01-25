@@ -21,33 +21,65 @@ import android.arch.lifecycle.Transformations
 import android.arch.lifecycle.ViewModel
 import com.google.samples.apps.iosched.shared.model.Session
 import com.google.samples.apps.iosched.shared.result.Result
-import com.google.samples.apps.iosched.shared.usecases.repository.LoadSessionsUseCase
+import com.google.samples.apps.iosched.shared.util.TimeUtils.ConferenceDay
+import com.google.samples.apps.iosched.shared.util.TimeUtils.ConferenceDay.DAY_1
+import com.google.samples.apps.iosched.shared.util.TimeUtils.ConferenceDay.DAY_2
+import com.google.samples.apps.iosched.shared.util.TimeUtils.ConferenceDay.DAY_3
+import com.google.samples.apps.iosched.shared.util.TimeUtils.ConferenceDay.PRECONFERENCE_DAY
 import javax.inject.Inject
+
 
 /**
  * Loads data and exposes it to the view.
  * By annotating the constructor with [@Inject], Dagger will use that constructor when needing to
  * create the object, so defining a [@Provides] method for this class won't be needed.
  */
-class ScheduleViewModel @Inject constructor(loadSessionsUseCase: LoadSessionsUseCase)
+class ScheduleViewModel @Inject constructor(
+        private val loadSessionsByDayUseCase: LoadSessionsByDayUseCase)
     : ViewModel() {
 
-    // TODO: Example LiveData holders
-    val sessions: LiveData<List<Session>>
-    val isLoading: LiveData<Boolean>
-    val numberOfSessions: LiveData<Int>
+    private var filters = SessionFilters()
+
+    lateinit var isLoading: LiveData<Boolean>
+
+    private lateinit var preconferenceSessions: LiveData<List<Session>>
+    private lateinit var day1Sessions: LiveData<List<Session>>
+    private lateinit var day2Sessions: LiveData<List<Session>>
+    private lateinit var day3Sessions: LiveData<List<Session>>
 
     init {
-        // TODO: replace. Dummy async task
-        val liveResult: LiveData<Result<List<Session>>> = loadSessionsUseCase.executeAsync("dummy")
+        loadSessions()
+    }
 
-        sessions = Transformations.map(liveResult, { result ->
-            (result as? Result.Success)?.data ?: emptyList()
-        })
-        isLoading = Transformations.map(liveResult, { result -> result == Result.Loading })
-        numberOfSessions = Transformations.map(liveResult, { result ->
-            (result as? Result.Success)?.data?.size ?: 0
-        })
+    private fun loadSessions() {
+        val liveResult = loadSessionsByDayUseCase.executeAsync(filters)
+
+        // map LiveData results from UseCase to each day's individual LiveData
+        preconferenceSessions = Transformations.map(liveResult) { result ->
+            (result as? Result.Success)?.data?.get(PRECONFERENCE_DAY) ?: emptyList()
+        }
+        day1Sessions = Transformations.map(liveResult) { result ->
+            (result as? Result.Success)?.data?.get(DAY_1) ?: emptyList()
+        }
+        day2Sessions = Transformations.map(liveResult) { result ->
+            (result as? Result.Success)?.data?.get(DAY_2) ?: emptyList()
+        }
+        day3Sessions = Transformations.map(liveResult) { result ->
+            (result as? Result.Success)?.data?.get(DAY_3) ?: emptyList()
+        }
+
+        isLoading = Transformations.map(liveResult) { result -> result == Result.Loading }
+    }
+
+    fun getSessionsForDay(day: ConferenceDay): LiveData<List<Session>> = when (day) {
+        PRECONFERENCE_DAY -> preconferenceSessions
+        DAY_1 -> day1Sessions
+        DAY_2 -> day2Sessions
+        DAY_3 -> day3Sessions
+    }
+
+    fun applyFilters(filters: SessionFilters) {
+        this.filters = filters
+        loadSessions()
     }
 }
-

@@ -14,20 +14,8 @@
  * limitations under the License.
  */
 
-package com.google.samples.apps.iosched.shared.data.session
+package com.google.samples.apps.iosched.ui.schedule
 
-import com.google.samples.apps.iosched.shared.model.Session
-import javax.inject.Inject
-import javax.inject.Singleton
-
-/**
- * Single point of access to session data for the presentation layer.
- */
-@Singleton
-open class SessionRepository @Inject constructor(private val dataSource: SessionDataSource) {
-
-    fun getSessions(): List<Session> {
-        return dataSource.getSessions()
-    }
-
+class SessionFilters {
+    //TODO support filters by tags, isLiveStreamed
 }

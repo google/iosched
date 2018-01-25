@@ -38,6 +38,7 @@ abstract class UseCase<in P, R> {
      */
     fun executeAsync(parameters: P) : LiveData<Result<R>> {
         val liveCallback: MutableLiveData<Result<R>> = MutableLiveData()
+        liveCallback.value = Result.Loading
         try {
             taskScheduler.execute {
                 execute(parameters).let { result ->

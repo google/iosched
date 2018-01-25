@@ -63,6 +63,7 @@ dependencies {
     implementation "com.android.support.constraint:constraint-layout:$rootProject.constraintLayoutVersion"
 
     // Architecture Components
+    implementation "android.arch.lifecycle:extensions:$rootProject.archLifecycleVersion"
     implementation "android.arch.lifecycle:livedata:$rootProject.archLifecycleVersion"
     implementation "android.arch.lifecycle:viewmodel:$rootProject.archLifecycleVersion"
 

@@ -36,7 +36,7 @@ class ScheduleViewModel(loadSessionsUseCase: LoadSessionsUseCase) : ViewModel() 
 
     init {
         // TODO: replace. Dummy async task
-        val liveResult: LiveData<Result<List<Session>>> = loadSessionsUseCase.executeAsync("dummy")
+        val liveResult: LiveData<Result<List<Session>>> = loadSessionsUseCase.executeAsync(Unit)
 
         sessions = Transformations.map(liveResult, { result ->
             (result as? Result.Success)?.data ?: emptyList()

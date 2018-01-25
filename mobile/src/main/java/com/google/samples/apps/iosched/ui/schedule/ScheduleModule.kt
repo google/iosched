@@ -34,7 +34,14 @@ internal abstract class ScheduleModule {
      * [MainModule].
      */
     @ContributesAndroidInjector
-    internal abstract fun showDetailsFragment(): ScheduleFragment
+    internal abstract fun contributeScheduleFragment(): ScheduleFragment
+
+    /**
+     * Generates an [AndroidInjector] for the [ScheduleDayFragment] as a Dagger subcomponent of the
+     * [MainModule].
+     */
+    @ContributesAndroidInjector
+    internal abstract fun contributeScheduleDayFragment(): ScheduleDayFragment
 
     /**
      * The ViewModels are created by Dagger in a map. Via the @ViewModelKey, we define that we
