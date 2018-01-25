@@ -14,20 +14,17 @@
  * limitations under the License.
  */
 
-package com.google.samples.apps.iosched.shared.data.session
+package com.google.samples.apps.iosched.util
 
-import com.google.samples.apps.iosched.shared.model.Session
-import javax.inject.Inject
-import javax.inject.Singleton
+import android.databinding.BindingAdapter
+import android.view.View
 
-/**
- * Single point of access to session data for the presentation layer.
- */
-@Singleton
-open class SessionRepository @Inject constructor(private val dataSource: SessionDataSource) {
+@BindingAdapter("app:invisibleUnless")
+fun invisibleUnless(view: View, visible: Boolean) {
+    view.visibility = if (visible) View.VISIBLE else View.INVISIBLE
+}
 
-    fun getSessions(): List<Session> {
-        return dataSource.getSessions()
-    }
-
+@BindingAdapter("app:goneUnless")
+fun goneUnless(view: View, visible: Boolean) {
+    view.visibility = if (visible) View.VISIBLE else View.GONE
 }

@@ -60,26 +60,17 @@
 
         </android.support.v4.view.ViewPager>
 
-        <TextView
-            android:id="@+id/numberOfSessions"
+        <!-- TODO(b/72711711): Provide a better loading indicator -->
+        <ProgressBar
+            android:id="@+id/loading"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="24dp"
-            android:layout_marginTop="28dp"
-            android:text="@{@string/numberOfSessions(viewModel.numberOfSessions)}"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="@id/viewpager" />
-
-        <TextView
-            android:id="@+id/textView"
-            android:layout_width="0dp"
-            android:layout_height="235dp"
-            android:layout_marginEnd="24dp"
-            android:layout_marginStart="24dp"
-            android:layout_marginTop="28dp"
+            android:indeterminate="true"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/numberOfSessions" />
+            app:layout_constraintTop_toTopOf="@+id/viewpager"
+            app:goneUnless="@{viewModel.isLoading}"/>
 
     </android.support.constraint.ConstraintLayout>
 </layout>

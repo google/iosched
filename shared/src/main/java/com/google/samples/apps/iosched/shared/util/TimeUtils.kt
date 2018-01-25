@@ -21,7 +21,7 @@ import com.google.samples.apps.iosched.shared.model.Session
 import org.threeten.bp.ZoneId
 import org.threeten.bp.ZonedDateTime
 import org.threeten.bp.format.DateTimeFormatter
-import java.util.Locale
+import java.util.*
 
 object TimeUtils {
     val CONFERENCE_TIMEZONE = ZoneId.of(BuildConfig.CONFERENCE_TIMEZONE)
@@ -41,6 +41,8 @@ object TimeUtils {
                 ZonedDateTime.parse(BuildConfig.CONFERENCE_DAY3_END));
 
         fun contains(session: Session) = start <= session.startTime && end >= session.endTime
+
+        fun formatMonthDay() = FORMATTER_MONTH_DAY.format(start)
     }
 
     fun timeString(startTime: ZonedDateTime, endTime: ZonedDateTime): String {
@@ -49,7 +51,9 @@ object TimeUtils {
 
         val startTimeMeridiem: String = DateTimeFormatter.ofPattern("a").format(startTime)
         val endTimeMeridiem: String = DateTimeFormatter.ofPattern("a").format(endTime)
-        if (startTimeMeridiem != endTimeMeridiem) sb.append(startTimeMeridiem).append(" ")
+        if (startTimeMeridiem != endTimeMeridiem) {
+            sb.append(startTimeMeridiem).append(" ")
+        }
 
         sb.append(DateTimeFormatter.ofPattern("- h:mm a").format(endTime))
         return sb.toString()
