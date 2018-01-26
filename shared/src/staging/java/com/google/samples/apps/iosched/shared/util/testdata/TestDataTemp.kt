@@ -14,19 +14,28 @@
  * limitations under the License.
  */
 
-package com.google.samples.apps.iosched
+package com.google.samples.apps.iosched.shared.util.testdata
 
-import org.junit.Assert.assertEquals
-import org.junit.Test
+import com.google.samples.apps.iosched.shared.model.*
 
 /**
- * Example local unit test, which will execute on the development machine (host).
- *
- * See [testing documentation](http://d.android.com/tools/testing).
+ * A class containing the unprocessed schedule data.
  */
-class ExampleUnitTest {
-    @Test
-    fun addition_isCorrect() {
-        assertEquals(4, 2 + 2)
-    }
-}
+class TestDataTemp(
+        val blocks: List<Block>,
+        val sessions: List<SessionTemp>,
+        val speakers: List<Speaker>,
+        val rooms: List<Room>,
+        val tags: List<Tag>
+)
+
+/**
+ * Contains schedule data with the UI models.
+ */
+class TestData(
+        val blocks: List<Block>,
+        val sessions: List<Session>,
+        val speakers: List<Speaker>,
+        val rooms: List<Room>,
+        val tags: List<Tag>
+)

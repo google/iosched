@@ -44,6 +44,10 @@ android {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
+
+        staging {
+            initWith debug
+        }
     }
     dataBinding {
         enabled true
@@ -64,6 +68,7 @@ dependencies {
 
     // Utils
     api "com.jakewharton.timber:timber:$rootProject.timberVersion"
+    stagingImplementation "com.google.code.gson:gson:$rootProject.gsonVersion"
 
     // Kotlin
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jre7:$rootProject.kotlinVersion"

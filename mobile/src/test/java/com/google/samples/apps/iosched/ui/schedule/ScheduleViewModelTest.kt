@@ -1,10 +1,25 @@
+/*
+ * Copyright 2018 Google LLC
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     https://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 @file:Suppress("FunctionName")
 
 package com.google.samples.apps.iosched.ui.schedule
 
 import android.arch.core.executor.testing.InstantTaskExecutorRule
-import com.google.samples.apps.iosched.model.TestData
-import com.google.samples.apps.iosched.shared.data.session.DefaultSessionRepository
+import com.google.samples.apps.iosched.shared.data.session.SessionRepository
 import com.google.samples.apps.iosched.shared.model.Session
 import com.google.samples.apps.iosched.shared.usecases.repository.LoadSessionsUseCase
 import com.google.samples.apps.iosched.util.LiveDataTestUtil
@@ -29,7 +44,7 @@ class ScheduleViewModelTest {
     @Test
     fun testDataIsLoaded_ObservablesUpdated() {
         // Create a test use cases with test data
-        val testData = listOf((TestData.session1))
+        val testData = TestSessionDataSource.getSessions()
         val loadSessionsUseCase = createUseCase(testData)
 
         // Create ViewModel with the use case
@@ -55,7 +70,7 @@ class ScheduleViewModelTest {
      * Creates a use case that will return the provided list of sessions.
      */
     private fun createUseCase(sessions: List<Session>): LoadSessionsUseCase {
-        return object : LoadSessionsUseCase(DefaultSessionRepository) {
+        return object : LoadSessionsUseCase(SessionRepository(TestSessionDataSource)) {
             override fun execute(parameters: String): List<Session> {
                 return sessions
             }
@@ -66,10 +81,11 @@ class ScheduleViewModelTest {
      * Creates a use case that throws an exception.
      */
     private fun createExceptionUseCase(): LoadSessionsUseCase {
-        return object : LoadSessionsUseCase(DefaultSessionRepository) {
+        return object : LoadSessionsUseCase(SessionRepository(TestSessionDataSource)) {
             override fun execute(parameters: String): List<Session> {
                 throw Exception("Testing exception")
             }
         }
     }
 }
+

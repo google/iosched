@@ -17,16 +17,11 @@
 package com.google.samples.apps.iosched.shared.data.session
 
 import com.google.samples.apps.iosched.shared.model.Session
-import javax.inject.Inject
-import javax.inject.Singleton
+import com.google.samples.apps.iosched.shared.util.ConferenceDataJsonParser
 
 /**
- * Single point of access to session data for the presentation layer.
+ * Returns data loaded from a local JSON file for development and testing.
  */
-@Singleton
-open class SessionRepository @Inject constructor(private val dataSource: SessionDataSource) {
-
-    fun getSessions(): List<Session> {
-        return dataSource.getSessions()
-    }
+object FakeSessionDataSource : SessionDataSource {
+    override fun getSessions() = ConferenceDataJsonParser.getSessions()
 }
