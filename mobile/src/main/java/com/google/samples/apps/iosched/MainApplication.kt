@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.google.samples.apps.iosched.ui
+package com.google.samples.apps.iosched
 
 import com.google.samples.apps.iosched.BuildConfig
 import com.google.samples.apps.iosched.di.DaggerAppComponent

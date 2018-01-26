@@ -23,21 +23,9 @@ import android.support.v17.leanback.widget.ArrayObjectAdapter
 import android.support.v17.leanback.widget.HeaderItem
 import android.support.v17.leanback.widget.ListRowPresenter
 import android.support.v17.leanback.widget.PageRow
-import android.support.v17.leanback.widget.Row
-import android.support.v4.app.Fragment
 import android.support.v4.content.ContextCompat
+import com.google.samples.apps.iosched.shared.util.TimeUtils
 import com.google.samples.apps.iosched.tv.R
-import com.google.samples.apps.iosched.tv.ui.schedule.ScheduleFragment
-
-// TODO: Replace these constants with a viewModel
-private const val HEADER_ID_1: Long = 1
-private const val HEADER_NAME_1 = "Day 1"
-private const val HEADER_ID_2: Long = 2
-private const val HEADER_NAME_2 = "Day 2"
-private const val HEADER_ID_3: Long = 3
-private const val HEADER_NAME_3 = "Day 3"
-private const val HEADER_ID_4: Long = 4
-private const val HEADER_NAME_4 = "Map"
 
 class MainFragment : BrowseSupportFragment() {
 
@@ -57,36 +45,19 @@ class MainFragment : BrowseSupportFragment() {
 
         loadData()
 
-        mainFragmentRegistry.registerFragment(PageRow::class.java, PageRowFragmentFactory())
+        mainFragmentRegistry.registerFragment(PageRow::class.java, MainPageRowFragmentFactory())
     }
 
     private fun loadData() {
-        // TODO: this is dummy data, replace with loading a viewModel.
-        val headerItem1 = HeaderItem(HEADER_ID_1, HEADER_NAME_1)
-        val pageRow1 = PageRow(headerItem1)
-        rowsAdapter.add(pageRow1)
 
-        val headerItem2 = HeaderItem(HEADER_ID_2, HEADER_NAME_2)
-        val pageRow2 = PageRow(headerItem2)
-        rowsAdapter.add(pageRow2)
+        val days = TimeUtils.CONFERENCE_DAYS
+        days.forEach { day ->
 
-        val headerItem3 = HeaderItem(HEADER_ID_3, HEADER_NAME_3)
-        val pageRow3 = PageRow(headerItem3)
-        rowsAdapter.add(pageRow3)
+            val displayDate = day.start.format(TimeUtils.FORMATTER_MONTH_DAY)
 
-        val headerItem4 = HeaderItem(HEADER_ID_4, HEADER_NAME_4)
-        val pageRow4 = PageRow(headerItem4)
-        rowsAdapter.add(pageRow4)
-    }
-
-    private inner class PageRowFragmentFactory : BrowseSupportFragment.FragmentFactory<Fragment>() {
-
-        override fun createFragment(rowObj: Any): Fragment {
-            val row = rowObj as Row
-            return when (row.headerItem.id) {
-                HEADER_ID_1, HEADER_ID_2, HEADER_ID_3, HEADER_ID_4 -> ScheduleFragment()
-                else -> throw IllegalArgumentException("Invalid row $rowObj")
-            }
+            val headerItem = HeaderItem(day.ordinal.toLong(), displayDate)
+            val pageRow = PageRow(headerItem)
+            rowsAdapter.add(pageRow)
         }
     }
 }
