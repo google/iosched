@@ -16,19 +16,24 @@
 
 package com.google.samples.apps.iosched.ui.sessiondetail
 
+import android.arch.lifecycle.LiveData
 import android.arch.lifecycle.MutableLiveData
+import android.arch.lifecycle.Transformations
 import android.arch.lifecycle.ViewModel
 import com.google.samples.apps.iosched.shared.model.Room
 import com.google.samples.apps.iosched.shared.model.Session
 import com.google.samples.apps.iosched.shared.model.Speaker
 import com.google.samples.apps.iosched.shared.model.Tag
+import com.google.samples.apps.iosched.shared.util.TimeUtils
 import org.threeten.bp.ZonedDateTime
 
 /**
  * Loads [Session] data and exposes it to the session detail view.
  */
 class SessionDetailViewModel(sessionId: String) : ViewModel() {
-    private val session = MutableLiveData<Session>()
+    val session: MutableLiveData<Session> = MutableLiveData()
+    val timeString: LiveData<String>
+
     init {
         // TODO Connect with UseCase to get data from data layer
 
@@ -43,10 +48,15 @@ class SessionDetailViewModel(sessionId: String) : ViewModel() {
 
         val dummySession = Session(id = "1", startTime = ZonedDateTime.now(),
                 endTime = ZonedDateTime.now().plusHours(1),
-                title = "Fuchsia", abstract = "", room = room, sessionUrl = "", liveStreamUrl = "",
+                title = "Fuchsia", abstract = "Come learn about the hottest, newest OS",
+                room = room, sessionUrl = "", liveStreamUrl = "",
                 youTubeUrl = "", tags = listOf(androidTag, webTag), speakers = setOf(dummySpeaker),
                 photoUrl = "", relatedSessions = emptySet())
 
         session.value = dummySession
+
+        timeString = Transformations.map(session, { ses ->
+            TimeUtils.timeString(ses.startTime, ses.endTime)
+        })
     }
 }
