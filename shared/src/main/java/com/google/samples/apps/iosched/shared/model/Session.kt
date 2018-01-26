@@ -86,6 +86,6 @@ data class Session(
     val photoUrl: String,
 
     /**
-     * Sessions related to this session.
+     * IDs of the sessions related to this session.
      */
-    val relatedSessions: Set<Session>)
+    val relatedSessions: Set<String>)

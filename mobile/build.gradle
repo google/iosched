@@ -37,6 +37,10 @@ android {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
+
+        staging {
+            initWith debug
+        }
     }
     dataBinding {
         enabled true

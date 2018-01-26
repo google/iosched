@@ -14,19 +14,21 @@
  * limitations under the License.
  */
 
-package com.google.samples.apps.iosched.shared.data.session
+package com.google.samples.apps.iosched.shared
 
-import com.google.samples.apps.iosched.shared.model.Session
-import javax.inject.Inject
-import javax.inject.Singleton
+import com.google.samples.apps.iosched.shared.util.ConferenceDataJsonParser
+import org.junit.Assert.assertTrue
+import org.junit.Test
+
 
 /**
- * Single point of access to session data for the presentation layer.
+ * Checks that the data loading mechanism for the staging variant works.
  */
-@Singleton
-open class SessionRepository @Inject constructor(private val dataSource: SessionDataSource) {
+class TestDataTest {
 
-    fun getSessions(): List<Session> {
-        return dataSource.getSessions()
+    @Test
+    fun loadJson_resultIsNotEmpty() {
+        val sessions = ConferenceDataJsonParser.getSessions()
+        assertTrue(sessions.isNotEmpty())
     }
 }
