@@ -50,6 +50,11 @@ data class Session(
     val abstract: String,
 
     /**
+     * The session room.
+     */
+    val room: Room,
+
+    /**
      * Full URL for the session online.
      */
     val sessionUrl: String,
