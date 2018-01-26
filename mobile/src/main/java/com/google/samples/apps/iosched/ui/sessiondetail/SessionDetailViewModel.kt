@@ -18,6 +18,7 @@ package com.google.samples.apps.iosched.ui.sessiondetail
 
 import android.arch.lifecycle.MutableLiveData
 import android.arch.lifecycle.ViewModel
+import com.google.samples.apps.iosched.shared.model.Room
 import com.google.samples.apps.iosched.shared.model.Session
 import com.google.samples.apps.iosched.shared.model.Speaker
 import com.google.samples.apps.iosched.shared.model.Tag
@@ -38,9 +39,11 @@ class SessionDetailViewModel(sessionId: String) : ViewModel() {
         val dummySpeaker = Speaker(id = "1", name = "Troy McClure", imageUrl = "",
                 company = "", abstract = "", gPlusUrl = "", twitterUrl = "")
 
+        val room = Room(id = "1", name = "Tent 1", capacity = 40)
+
         val dummySession = Session(id = "1", startTime = ZonedDateTime.now(),
                 endTime = ZonedDateTime.now().plusHours(1),
-                title = "Fuchsia", abstract = "", sessionUrl = "", liveStreamUrl = "",
+                title = "Fuchsia", abstract = "", room = room, sessionUrl = "", liveStreamUrl = "",
                 youTubeUrl = "", tags = listOf(androidTag, webTag), speakers = setOf(dummySpeaker),
                 photoUrl = "", relatedSessions = emptySet())
 

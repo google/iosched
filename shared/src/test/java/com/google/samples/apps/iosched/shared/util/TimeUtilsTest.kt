@@ -16,6 +16,7 @@
 
 package com.google.samples.apps.iosched.shared.util
 
+import com.google.samples.apps.iosched.shared.model.Room
 import com.google.samples.apps.iosched.shared.model.Session
 import com.google.samples.apps.iosched.shared.util.TimeUtils.ConferenceDay
 import com.google.samples.apps.iosched.shared.util.TimeUtils.ConferenceDay.DAY_1
@@ -27,20 +28,22 @@ class TimeUtilsTest {
 
     @Test
     fun conferenceDay_contains() {
+        val room1 = Room(id = "1", name = "Tent 1", capacity = 40)
+
         val inDay1 = Session("1", ConferenceDay.DAY_1.start, ConferenceDay.DAY_1.end,
-                "", "", "", "", "", emptyList(), emptySet(), "", emptySet())
+                "", "", room1, "", "", "", emptyList(), emptySet(), "", emptySet())
         assertTrue(DAY_1.contains(inDay1))
 
         // Starts before DAY_1
         val day1MinusMinute = ConferenceDay.DAY_1.start.minusMinutes(1)
         val notInDay1 = Session("2", day1MinusMinute, ConferenceDay.DAY_1.end,
-                "", "", "", "", "", emptyList(), emptySet(), "", emptySet())
+                "", "", room1, "", "", "", emptyList(), emptySet(), "", emptySet())
         assertFalse(DAY_1.contains(notInDay1))
 
         // Ends after DAY_1
         val day1PlusMinute = ConferenceDay.DAY_1.end.plusMinutes(1)
         val alsoNotInDay1 = Session("3", ConferenceDay.DAY_1.start, day1PlusMinute,
-                "", "", "", "", "", emptyList(), emptySet(), "", emptySet())
+                "", "", room1, "", "", "", emptyList(), emptySet(), "", emptySet())
         assertFalse(DAY_1.contains(alsoNotInDay1))
     }
 }
