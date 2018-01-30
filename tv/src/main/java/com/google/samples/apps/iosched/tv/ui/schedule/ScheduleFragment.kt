@@ -16,6 +16,8 @@
 
 package com.google.samples.apps.iosched.tv.ui.schedule
 
+import android.arch.lifecycle.Observer
+import android.arch.lifecycle.ViewModelProviders
 import android.os.Bundle
 import android.support.v17.leanback.app.RowsSupportFragment
 import android.support.v17.leanback.widget.ArrayObjectAdapter
@@ -25,7 +27,11 @@ import android.support.v17.leanback.widget.ListRowPresenter
 import android.support.v17.leanback.widget.Presenter
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import com.google.samples.apps.iosched.shared.util.inTransaction
 import com.google.samples.apps.iosched.tv.R
+import com.google.samples.apps.iosched.tv.ui.SpinnerFragment
+import com.google.samples.apps.iosched.ui.schedule.ScheduleViewModel
+import com.google.samples.apps.iosched.ui.schedule.ScheduleViewModelFactory
 
 /**
  * Displays a single day's session schedule.
@@ -34,10 +40,31 @@ class ScheduleFragment : RowsSupportFragment() {
 
     private val rowsAdapter = ArrayObjectAdapter(ListRowPresenter())
 
+    private val spinnerFragment = SpinnerFragment()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
         adapter = rowsAdapter
 
+        fragmentManager?.inTransaction {
+            add(R.id.main_frame, spinnerFragment)
+        }
+
+        val viewModel: ScheduleViewModel = ViewModelProviders.of(
+                this, ScheduleViewModelFactory()).get(ScheduleViewModel::class.java)
+
+        observeViewModel(viewModel)
+    }
+
+    override fun onStop() {
+        super.onStop()
+        fragmentManager?.inTransaction {
+            remove(spinnerFragment)
+        }
+    }
+
+    private fun loadAdapter() {
         // TODO: replace with real data.
         val dummyAdapter = ArrayObjectAdapter(object : Presenter() {
             override fun onCreateViewHolder(parent: ViewGroup?): ViewHolder {
@@ -60,5 +87,23 @@ class ScheduleFragment : RowsSupportFragment() {
         rowsAdapter.add(dummyRow)
 
         mainFragmentAdapter.fragmentHost.notifyDataReady(mainFragmentAdapter)
+    }
+
+    private fun observeViewModel(viewModel: ScheduleViewModel) {
+
+        // Update text if there are sessions available
+        viewModel.sessions.observe(this, Observer { sessions ->
+            loadAdapter()
+        })
+
+        // Update text if the screen is in loading state.
+        viewModel.isLoading.observe(this, Observer { isLoading ->
+
+            if (isLoading == false) {
+                fragmentManager?.inTransaction {
+                    remove(spinnerFragment)
+                }
+            }
+        })
     }
 }

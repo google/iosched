@@ -39,6 +39,9 @@ android {
             initWith debug
         }
     }
+    dataBinding {
+        enabled true
+    }
 }
 
 dependencies {

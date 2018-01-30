@@ -17,13 +17,12 @@ package com.google.samples.apps.iosched.ui
 
 import android.os.Bundle
 import android.support.v4.app.Fragment
-import android.support.v7.app.AppCompatActivity
 import com.google.samples.apps.iosched.R
 import com.google.samples.apps.iosched.ui.feed.FeedFragment
 import com.google.samples.apps.iosched.ui.map.MapFragment
 import com.google.samples.apps.iosched.ui.schedule.ScheduleFragment
-import com.google.samples.apps.iosched.util.consume
-import com.google.samples.apps.iosched.util.inTransaction
+import com.google.samples.apps.iosched.shared.util.consume
+import com.google.samples.apps.iosched.shared.util.inTransaction
 import dagger.android.support.DaggerAppCompatActivity
 import kotlinx.android.synthetic.main.activity_main.*
 
