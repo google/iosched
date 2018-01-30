@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.google.samples.apps.iosched.util
+package com.google.samples.apps.iosched.shared.util
 
 import android.support.v4.app.FragmentManager
 import android.support.v4.app.FragmentTransaction

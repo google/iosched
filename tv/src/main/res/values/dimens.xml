@@ -15,12 +15,6 @@
   ~ limitations under the License.
   -->
 
-<fragment xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/main_frame"
-    android:name="com.google.samples.apps.iosched.tv.ui.MainFragment"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context="com.google.samples.apps.iosched.tv.ui.MainActivity"
-    tools:deviceIds="tv"
-    tools:ignore="MergeRootFrame" />
+<resources>
+    <dimen name="spinner_size">50dp</dimen>
+</resources>
