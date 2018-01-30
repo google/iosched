@@ -58,6 +58,12 @@ dependencies {
     kapt "android.arch.lifecycle:compiler:$rootProject.archLifecycleVersion"
     testImplementation "android.arch.core:core-testing:$rootProject.archLifecycleVersion"
 
+    // Dagger
+    implementation "com.google.dagger:dagger-android:$rootProject.dagger"
+    implementation "com.google.dagger:dagger-android-support:$rootProject.dagger"
+    kapt "com.google.dagger:dagger-compiler:$rootProject.dagger"
+    kapt "com.google.dagger:dagger-android-processor:$rootProject.dagger"
+
     // Utils
     // Date and time API for Java.
     api "com.jakewharton.threetenabp:threetenabp:$rootProject.threetenabpVersion"
