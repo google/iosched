@@ -24,9 +24,10 @@ import com.google.samples.apps.iosched.ui.map.MapFragment
 import com.google.samples.apps.iosched.ui.schedule.ScheduleFragment
 import com.google.samples.apps.iosched.util.consume
 import com.google.samples.apps.iosched.util.inTransaction
+import dagger.android.support.DaggerAppCompatActivity
 import kotlinx.android.synthetic.main.activity_main.*
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : DaggerAppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
