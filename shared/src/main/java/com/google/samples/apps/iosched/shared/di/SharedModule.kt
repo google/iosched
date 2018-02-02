@@ -14,18 +14,27 @@
  * limitations under the License.
  */
 
-package com.google.samples.apps.iosched.shared.data.session
+package com.google.samples.apps.iosched.shared.di
 
-import com.google.samples.apps.iosched.shared.model.Session
-import javax.inject.Inject
+import com.google.samples.apps.iosched.shared.data.session.RemoteSessionDataSource
+import com.google.samples.apps.iosched.shared.data.session.SessionDataSource
+import dagger.Module
+import dagger.Provides
 import javax.inject.Singleton
 
-object DefaultSessionRepository : SessionRepository(RemoteSessionDataSource)
+/**
+ * Module where classes created in the shared module are created.
+ */
+@Module
+class SharedModule {
 
-@Singleton
-open class SessionRepository @Inject constructor(private val dataSource: SessionDataSource) {
-
-    fun getSessions(): List<Session> {
-        return dataSource.getSessions()
+    /**
+     * Defines the implementation of [SessionDataSource] that should be used.
+     * The [SessionDataSource] is a singleton.
+     */
+    @Singleton
+    @Provides
+    fun provideSessionDataSource(): SessionDataSource {
+        return RemoteSessionDataSource
     }
 }

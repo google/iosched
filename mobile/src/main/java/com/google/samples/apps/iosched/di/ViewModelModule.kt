@@ -14,18 +14,20 @@
  * limitations under the License.
  */
 
-package com.google.samples.apps.iosched.shared.data.session
+package com.google.samples.apps.iosched.di
 
-import com.google.samples.apps.iosched.shared.model.Session
-import javax.inject.Inject
-import javax.inject.Singleton
+import android.arch.lifecycle.ViewModelProvider
+import dagger.Binds
+import dagger.Module
 
-object DefaultSessionRepository : SessionRepository(RemoteSessionDataSource)
+/**
+ * Module used to define the connection between the framework's [ViewModelProvider.Factory] and
+ * our own implementation: [IOSchedViewModelFactory].
+ */
+@Module
+internal abstract class ViewModelModule {
 
-@Singleton
-open class SessionRepository @Inject constructor(private val dataSource: SessionDataSource) {
-
-    fun getSessions(): List<Session> {
-        return dataSource.getSessions()
-    }
+    @Binds
+    internal abstract fun bindViewModelFactory(factory: IOSchedViewModelFactory)
+            : ViewModelProvider.Factory
 }
