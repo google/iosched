@@ -27,9 +27,9 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:banner="@drawable/ic_banner"
-        android:theme="@style/Theme.Leanback">
+        android:theme="@style/AppTheme">
 
-        <activity android:name=".MainActivity"
+        <activity android:name=".ui.MainActivity"
             android:banner="@drawable/ic_banner"
             android:icon="@mipmap/ic_launcher"
             android:label="@string/app_name"
