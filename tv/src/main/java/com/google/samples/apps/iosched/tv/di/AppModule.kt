@@ -14,10 +14,10 @@
  * limitations under the License.
  */
 
-package com.google.samples.apps.iosched.di
+package com.google.samples.apps.iosched.tv.di
 
 import android.content.Context
-import com.google.samples.apps.iosched.MainApplication
+import com.google.samples.apps.iosched.tv.MainApplication
 import dagger.Module
 import dagger.Provides
 

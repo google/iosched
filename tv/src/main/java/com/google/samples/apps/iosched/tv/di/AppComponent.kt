@@ -14,11 +14,10 @@
  * limitations under the License.
  */
 
-package com.google.samples.apps.iosched.di
+package com.google.samples.apps.iosched.tv.di
 
 import com.google.samples.apps.iosched.shared.di.SharedModule
-import com.google.samples.apps.iosched.MainApplication
-import com.google.samples.apps.iosched.ui.MainModule
+import com.google.samples.apps.iosched.tv.MainApplication
 import dagger.Component
 import dagger.android.AndroidInjector
 import dagger.android.support.AndroidSupportInjectionModule
@@ -33,9 +32,7 @@ import javax.inject.Singleton
 @Component(modules = arrayOf(
         AndroidSupportInjectionModule::class,
         AppModule::class,
-        ViewModelModule::class,
-        SharedModule::class,
-        MainModule::class))
+        SharedModule::class))
 interface AppComponent : AndroidInjector<MainApplication> {
 
     @Component.Builder
