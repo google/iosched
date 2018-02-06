@@ -17,6 +17,7 @@
 apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
+apply plugin: 'kotlin-kapt'
 
 android {
     compileSdkVersion rootProject.compileSdkVersion
@@ -47,12 +48,36 @@ android {
 dependencies {
     implementation project(":shared")
 
+    // UI
     implementation "com.android.support:appcompat-v7:$rootProject.supportLibraryVersion"
+    implementation "com.android.support:design:$rootProject.designLibraryVersion"
+    implementation "com.android.support.constraint:constraint-layout:$rootProject.constraintLayoutVersion"
     implementation "com.android.support:leanback-v17:$rootProject.supportLibraryVersion"
     implementation "com.android.support:support-tv-provider:$rootProject.supportLibraryVersion"
+
+    // Architecture Components
+    implementation "android.arch.lifecycle:extensions:$rootProject.archLifecycleVersion"
+    kapt "android.arch.lifecycle:compiler:$rootProject.archLifecycleVersion"
+    testImplementation "android.arch.core:core-testing:$rootProject.archLifecycleVersion"
+
+    // Dagger
+    implementation "com.google.dagger:dagger-android:$rootProject.dagger"
+    implementation "com.google.dagger:dagger-android-support:$rootProject.dagger"
+    kapt "com.google.dagger:dagger-compiler:$rootProject.dagger"
+    kapt "com.google.dagger:dagger-android-processor:$rootProject.dagger"
+
+    // Utils
+    // Date and time API for Java.
+    api "com.jakewharton.threetenabp:threetenabp:$rootProject.threetenabpVersion"
+    testImplementation "org.threeten:threetenbp:$rootProject.threetenbpVersion"
+
+    // Kotlin
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jre7:$rootProject.kotlinVersion"
 
+    // Instrumentation tests
     androidTestImplementation "com.android.support.test.espresso:espresso-core:$rootProject.espressoVersion"
     androidTestImplementation "com.android.support.test:runner:$rootProject.runnerVersion"
+
+    // Local unit tests
     testImplementation "junit:junit:$rootProject.junitVersion"
 }

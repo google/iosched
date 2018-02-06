@@ -26,6 +26,9 @@ object TimeUtils {
     val CONFERENCE_TIMEZONE = ZoneId.of(BuildConfig.CONFERENCE_TIMEZONE)
     val CONFERENCE_DAYS = ConferenceDay.values()
 
+    private val formatPattern = "MMMM d"
+    val FORMATTER_MONTH_DAY = DateTimeFormatter.ofPattern(formatPattern, Locale.getDefault())
+
     enum class ConferenceDay(val start: ZonedDateTime, val end: ZonedDateTime) {
         PRECONFERENCE_DAY(ZonedDateTime.parse(BuildConfig.PRECONFERENCE_DAY_START),
                 ZonedDateTime.parse(BuildConfig.PRECONFERENCE_DAY_END)),
