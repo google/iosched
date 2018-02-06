@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.google.samples.apps.iosched.ui.schedule
+package com.google.samples.apps.iosched.tv.ui.schedule
 
 import android.arch.lifecycle.LiveData
 import android.arch.lifecycle.Transformations
