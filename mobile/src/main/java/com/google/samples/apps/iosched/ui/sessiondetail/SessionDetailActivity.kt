@@ -19,7 +19,7 @@ package com.google.samples.apps.iosched.ui.sessiondetail
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import com.google.samples.apps.iosched.R
-import com.google.samples.apps.iosched.util.inTransaction
+import com.google.samples.apps.iosched.shared.util.inTransaction
 
 class SessionDetailActivity : AppCompatActivity() {
 

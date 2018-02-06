@@ -21,6 +21,7 @@ import com.google.samples.apps.iosched.shared.model.Session
 import org.threeten.bp.ZoneId
 import org.threeten.bp.ZonedDateTime
 import org.threeten.bp.format.DateTimeFormatter
+import java.util.Locale
 
 object TimeUtils {
     val CONFERENCE_TIMEZONE = ZoneId.of(BuildConfig.CONFERENCE_TIMEZONE)

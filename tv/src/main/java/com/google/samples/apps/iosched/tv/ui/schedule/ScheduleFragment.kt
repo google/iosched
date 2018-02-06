@@ -30,8 +30,6 @@ import android.view.ViewGroup
 import com.google.samples.apps.iosched.shared.util.inTransaction
 import com.google.samples.apps.iosched.tv.R
 import com.google.samples.apps.iosched.tv.ui.SpinnerFragment
-import com.google.samples.apps.iosched.ui.schedule.ScheduleViewModel
-import com.google.samples.apps.iosched.ui.schedule.ScheduleViewModelFactory
 
 /**
  * Displays a single day's session schedule.
@@ -51,8 +49,10 @@ class ScheduleFragment : RowsSupportFragment() {
             add(R.id.main_frame, spinnerFragment)
         }
 
+        // TODO: Inject view model factory
         val viewModel: ScheduleViewModel = ViewModelProviders.of(
-                this, ScheduleViewModelFactory()).get(ScheduleViewModel::class.java)
+                this, TODO("ViewModel Factory not provided."))
+                .get(ScheduleViewModel::class.java)
 
         observeViewModel(viewModel)
     }
