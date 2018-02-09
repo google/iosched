@@ -16,7 +16,6 @@
 
 package com.google.samples.apps.iosched
 
-import com.google.samples.apps.iosched.BuildConfig
 import com.google.samples.apps.iosched.di.DaggerAppComponent
 import com.jakewharton.threetenabp.AndroidThreeTen
 import dagger.android.AndroidInjector
