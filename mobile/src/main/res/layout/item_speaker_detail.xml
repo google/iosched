@@ -15,56 +15,68 @@
   ~ limitations under the License.
   -->
 
-<android.support.constraint.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    xmlns:tools="http://schemas.android.com/tools">
 
-    <ImageView
-        android:id="@+id/speaker_item_headshot"
-        android:layout_width="@dimen/speaker_headshot_size"
-        android:layout_height="@dimen/speaker_headshot_size"
-        android:layout_marginStart="@dimen/margin_normal"
-        android:layout_marginTop="@dimen/margin_normal"
-        android:contentDescription="@string/a11y_speaker_headshot"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@android:drawable/sym_def_app_icon" />
+    <data>
+        <variable
+            name="speaker"
+            type="com.google.samples.apps.iosched.shared.model.Speaker"/>
+    </data>
 
-    <TextView
-        android:id="@+id/speaker_item_name"
-        android:layout_width="0dp"
+    <android.support.constraint.ConstraintLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="@dimen/margin_normal"
-        android:layout_marginStart="@dimen/spacing_normal"
-        android:layout_marginTop="@dimen/margin_normal"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/speaker_item_headshot"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:text="Speaker Name" />
+        android:layout_marginBottom="@dimen/spacing_normal"
+        android:layout_marginTop="@dimen/spacing_normal">
 
-    <TextView
-        android:id="@+id/speaker_item_company"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="@dimen/margin_normal"
-        android:layout_marginTop="@dimen/spacing_normal"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="@+id/speaker_item_name"
-        app:layout_constraintTop_toBottomOf="@+id/speaker_item_name"
-        tools:text="Speaker Company" />
+        <ImageView
+            android:id="@+id/speaker_item_headshot"
+            android:layout_width="@dimen/speaker_headshot_size"
+            android:layout_height="@dimen/speaker_headshot_size"
+            android:layout_marginStart="@dimen/margin_normal"
+            android:contentDescription="@string/a11y_speaker_headshot"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@android:drawable/sym_def_app_icon" />
 
-    <TextView
-        android:id="@+id/speaker_item_bio"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="@dimen/margin_normal"
-        android:layout_marginTop="@dimen/spacing_normal"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="@+id/speaker_item_name"
-        app:layout_constraintTop_toBottomOf="@+id/speaker_item_company"
-        tools:text="SPEAKER is an Android Developer Advocate at Google. Prior to joining Google, she worked at Udacity on the Android team, where she taught introductory to advanced Android and Firebase content to over a hundred thousand developers. She's a returned Peace Corps volunteer and has taught and lived on three continents." />
+        <TextView
+            android:id="@+id/speaker_item_name"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/margin_normal"
+            android:layout_marginStart="@dimen/spacing_normal"
+            android:text="@{speaker.name}"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/speaker_item_headshot"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="Speaker Name" />
 
-</android.support.constraint.ConstraintLayout>
+        <TextView
+            android:id="@+id/speaker_item_company"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/margin_normal"
+            android:layout_marginTop="@dimen/spacing_normal"
+            android:text="@{speaker.company}"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="@+id/speaker_item_name"
+            app:layout_constraintTop_toBottomOf="@+id/speaker_item_name"
+            tools:text="Speaker Company" />
+
+        <TextView
+            android:id="@+id/speaker_item_bio"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/margin_normal"
+            android:layout_marginTop="@dimen/spacing_normal"
+            android:text="@{speaker.abstract}"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="@+id/speaker_item_name"
+            app:layout_constraintTop_toBottomOf="@+id/speaker_item_company"
+            tools:text="SPEAKER is an Android Developer Advocate at Google. Prior to joining Google, she worked at Udacity on the Android team, where she taught introductory to advanced Android and Firebase content to over a hundred thousand developers. She's a returned Peace Corps volunteer and has taught and lived on three continents." />
+
+    </android.support.constraint.ConstraintLayout>
+
+</layout>
