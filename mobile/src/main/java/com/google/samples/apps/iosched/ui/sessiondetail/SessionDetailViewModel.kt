@@ -41,8 +41,23 @@ class SessionDetailViewModel(sessionId: String) : ViewModel() {
 
         val webTag = Tag(id = "2", category = "Technology", name = "Web", color = "#F30F30")
 
-        val dummySpeaker = Speaker(id = "1", name = "Troy McClure", imageUrl = "",
-                company = "", abstract = "", gPlusUrl = "", twitterUrl = "")
+        val speakerSet = HashSet<Speaker>().apply {
+            add(Speaker(id = "1", name = "Troy McClure", imageUrl = "",
+                    company = "Google", abstract = "Hi I'm Troy McClure", gPlusUrl = "",
+                    twitterUrl = ""))
+            add(Speaker(id = "2", name = "Ally McBeal", imageUrl = "",
+                    company = "Google", abstract = "Hi I'm a lawyer", gPlusUrl = "",
+                    twitterUrl = ""))
+            add(Speaker(id = "3", name = "Ziggy Stardust", imageUrl = "",
+                    company = "Google", abstract = "Hi I'm David Bowie.", gPlusUrl = "",
+                    twitterUrl = ""))
+            add(Speaker(id = "4", name = "Tiem Song", imageUrl = "",
+                    company = "Google", abstract = "Hi I'm an Android DPE", gPlusUrl = "",
+                    twitterUrl = ""))
+            add(Speaker(id = "5", name = "Lyla Fujiwara", imageUrl = "",
+                    company = "Google", abstract = "Hi I'm an Android DA", gPlusUrl = "",
+                    twitterUrl = ""))
+        }
 
         val room = Room(id = "1", name = "Tent 1", capacity = 40)
 
@@ -50,7 +65,7 @@ class SessionDetailViewModel(sessionId: String) : ViewModel() {
                 endTime = ZonedDateTime.now().plusHours(1),
                 title = "Fuchsia", abstract = "Come learn about the hottest, newest OS",
                 room = room, sessionUrl = "", liveStreamUrl = "",
-                youTubeUrl = "", tags = listOf(androidTag, webTag), speakers = setOf(dummySpeaker),
+                youTubeUrl = "", tags = listOf(androidTag, webTag), speakers = speakerSet,
                 photoUrl = "", relatedSessions = emptySet())
 
         session.value = dummySession
