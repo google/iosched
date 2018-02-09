@@ -17,7 +17,7 @@
 package com.google.samples.apps.iosched.tv.di
 
 import android.content.Context
-import com.google.samples.apps.iosched.tv.MainApplication
+import com.google.samples.apps.iosched.tv.TVApplication
 import dagger.Module
 import dagger.Provides
 
@@ -28,10 +28,10 @@ import dagger.Provides
  * others. If some of those objects are singletons, they should be annotated with `@Singleton`.
  */
 @Module
-class AppModule {
+class TVAppModule {
 
     @Provides
-    fun provideContext(application: MainApplication): Context {
+    fun provideContext(application: TVApplication): Context {
         return application.applicationContext
     }
 }
