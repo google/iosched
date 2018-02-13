@@ -16,6 +16,6 @@
   -->
 
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/fragment_container"
+    android:id="@+id/session_detail_container"
     android:layout_width="match_parent"
     android:layout_height="match_parent" />
