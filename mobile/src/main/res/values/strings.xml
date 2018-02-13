@@ -31,6 +31,7 @@
 
     <!-- Accessibility -->
     <string name="a11y_session_detail_video_icon">TODO: a11y text for icon</string>
+    <string name="a11y_session_detail_video_description">TODO video description</string>
     <string name="a11y_speaker_headshot">TODO a11y content description for speaker headshot</string>
     <string name="a11y_session_item_actions">TODO: a11y content description for session item actions</string>
 

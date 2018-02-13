@@ -20,6 +20,7 @@ import android.arch.lifecycle.ViewModelProviders
 import android.databinding.DataBindingUtil
 import android.os.Bundle
 import android.support.v4.app.Fragment
+import android.support.v7.app.AppCompatActivity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -47,6 +48,9 @@ class SessionDetailFragment : Fragment() {
             viewModel = sessionDetailViewModel
             setLifecycleOwner(this@SessionDetailFragment)
         }
+
+        // TODO: replace with Toolbar (b/73537084)
+        (activity as AppCompatActivity).setSupportActionBar(binding.sessionDetailToolbar)
 
         return binding.root
     }
