@@ -30,7 +30,34 @@ abstract class UseCase<in P, R> {
 
     private val taskScheduler = DefaultScheduler
 
-    /** Executes the use case asynchronously
+    /** Executes the use case asynchronously and places the [Result] in a MutableLiveData
+     *
+     * @param parameters the input parameters to run the use case with
+     * @param result the MutableLiveData where the result is posted to
+     *
+     */
+    fun executeAsync(parameters: P, result: MutableLiveData<Result<R>>) {
+        result.value = Result.Loading
+        try {
+            taskScheduler.execute {
+                try {
+                    execute(parameters).let { useCaseResult ->
+                        result.postValue(Result.Success(useCaseResult))
+                    }
+                }
+                catch (e: Exception) {
+                    Timber.d(e)
+                    result.postValue(Result.Error(e))
+                }
+            }
+        }
+        catch (e: Exception) {
+            Timber.d(e)
+            result.postValue(Result.Error(e))
+        }
+    }
+
+    /** Executes the use case asynchronously and returns a [Result] in a new LiveData object.
      *
      * @return an observable [LiveData] with a [Result].
      *
@@ -38,18 +65,7 @@ abstract class UseCase<in P, R> {
      */
     fun executeAsync(parameters: P) : LiveData<Result<R>> {
         val liveCallback: MutableLiveData<Result<R>> = MutableLiveData()
-        liveCallback.value = Result.Loading
-        try {
-            taskScheduler.execute {
-                execute(parameters).let { result ->
-                    liveCallback.postValue(Result.Success(result))
-                }
-            }
-        }
-        catch (e: Exception) {
-            Timber.d(e)
-            liveCallback.postValue(Result.Error(e))
-        }
+        executeAsync(parameters, liveCallback)
         return liveCallback
     }
 

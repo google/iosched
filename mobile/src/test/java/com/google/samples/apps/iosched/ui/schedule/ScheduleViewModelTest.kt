@@ -27,6 +27,7 @@ import com.google.samples.apps.iosched.util.LiveDataTestUtil
 import com.google.samples.apps.iosched.util.SyncTaskExecutorRule
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
+import org.junit.Assert.assertTrue
 import org.junit.Rule
 import org.junit.Test
 
@@ -55,6 +56,18 @@ class ScheduleViewModelTest {
             assertEquals(testData[day], LiveDataTestUtil.getValue(viewModel.getSessionsForDay(day)))
         }
         assertFalse(LiveDataTestUtil.getValue(viewModel.isLoading)!!)
+    }
+
+    @Test
+    fun testDataIsLoaded_Fails() {
+        // Create a test use cases with test data
+        val testData = TestData.sessionsMap
+        val loadSessionsUseCase = createUseCase(testData)
+
+        // Create ViewModel with the use case
+        val viewModel = ScheduleViewModel(createExceptionUseCase())
+
+        assertTrue(!LiveDataTestUtil.getValue(viewModel.errorMessage).isNullOrEmpty())
     }
 
     /**

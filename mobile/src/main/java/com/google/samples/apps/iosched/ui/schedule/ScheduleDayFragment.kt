@@ -23,6 +23,7 @@ import android.support.v7.widget.DividerItemDecoration
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import com.google.samples.apps.iosched.R
 import com.google.samples.apps.iosched.shared.util.TimeUtils.ConferenceDay
 import com.google.samples.apps.iosched.shared.util.getEnum
@@ -77,6 +78,16 @@ class ScheduleDayFragment : DaggerFragment() {
         viewModel = parentViewModelProvider(viewModelFactory)
         viewModel.getSessionsForDay(conferenceDay).observe(this, Observer { list ->
             adapter.setList(list ?: emptyList())
+        })
+
+        // Show an error message
+        viewModel.errorMessage.observe(this, Observer { message ->
+            //TODO: Change once there's a way to show errors to the user
+            if (!message.isNullOrEmpty() && !viewModel.wasErrorMessageShown()) {
+                // Prevent the message from showing more than once
+                viewModel.onErrorMessageShown()
+                Toast.makeText(this.context, message, Toast.LENGTH_LONG).show()
+            }
         })
     }
 }
