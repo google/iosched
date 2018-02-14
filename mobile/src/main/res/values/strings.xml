@@ -44,4 +44,9 @@
         <item quantity="one">%s minute</item>
         <item quantity="other">%s minutes</item>
     </plurals>
+
+    <!--Strings for sharing session-->
+    <string name="share_session_menu_item">Share session</string>
+    <string name="share_text_session_detail">Check out \'%1$s\' at #io18 %2$s</string>
+    <string name="intent_chooser_session_detail">Share</string>
 </resources>
