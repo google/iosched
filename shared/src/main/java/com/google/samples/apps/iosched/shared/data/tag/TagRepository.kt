@@ -14,23 +14,20 @@
  * limitations under the License.
  */
 
-package com.google.samples.apps.iosched.shared
+package com.google.samples.apps.iosched.shared.data.tag
 
-import com.google.samples.apps.iosched.shared.util.ConferenceDataJsonParser
-import org.junit.Assert.assertTrue
-import org.junit.Test
-
+import com.google.samples.apps.iosched.shared.model.Tag
+import javax.inject.Inject
+import javax.inject.Singleton
 
 /**
- * Checks that the data loading mechanism for the staging variant works.
+ * Single point of access to tag data for the presentation layer.
  */
-class TestDataTest {
+@Singleton
+open class TagRepository @Inject constructor(private val dataSource: TagDataSource) {
 
-    @Test
-    fun loadJson_resultIsNotEmpty() {
-        val sessions = ConferenceDataJsonParser.getSessions()
-        assertTrue(sessions.isNotEmpty())
-        val tags = ConferenceDataJsonParser.getTags()
-        assertTrue(tags.isNotEmpty())
+    fun getTags(): List<Tag> {
+        return dataSource.getTags()
     }
+
 }

@@ -21,6 +21,7 @@ import android.arch.lifecycle.MutableLiveData
 import android.arch.lifecycle.Transformations
 import android.arch.lifecycle.ViewModel
 import com.google.samples.apps.iosched.shared.model.Session
+import com.google.samples.apps.iosched.shared.model.Tag
 import com.google.samples.apps.iosched.shared.result.Result
 import com.google.samples.apps.iosched.shared.util.TimeUtils.ConferenceDay
 import com.google.samples.apps.iosched.shared.util.TimeUtils.ConferenceDay.DAY_1
@@ -37,7 +38,8 @@ import javax.inject.Inject
  * create the object, so defining a [@Provides] method for this class won't be needed.
  */
 class ScheduleViewModel @Inject constructor(
-        private val loadSessionsByDayUseCase: LoadSessionsByDayUseCase
+        private val loadSessionsByDayUseCase: LoadSessionsByDayUseCase,
+        private val loadTagsByCategoryUseCase: LoadTagsByCategoryUseCase
 ) : ViewModel(), ScheduleEventListener {
 
     private var filters = SessionFilters()
@@ -47,36 +49,43 @@ class ScheduleViewModel @Inject constructor(
     val errorMessage: LiveData<String>
     val errorMessageShown = MutableLiveData<Boolean>()
 
-    private val useCaseResult = MutableLiveData<Result<Map<ConferenceDay, List<Session>>>>()
+    private val loadSessionsResult = MutableLiveData<Result<Map<ConferenceDay, List<Session>>>>()
+    private val loadTagsResult = MutableLiveData<Result<List<Tag>>>()
 
     private val preconferenceSessions: LiveData<List<Session>>
     private val day1Sessions: LiveData<List<Session>>
     private val day2Sessions: LiveData<List<Session>>
     private val day3Sessions: LiveData<List<Session>>
 
+    val tags: LiveData<List<Tag>>
 
     init {
-        loadSessionsByDayUseCase.executeAsync(filters, useCaseResult)
+        loadSessionsByDayUseCase.executeAsync(filters, loadSessionsResult)
+        loadTagsByCategoryUseCase.executeAsync(Unit, loadTagsResult)
 
         // map LiveData results from UseCase to each day's individual LiveData
-        preconferenceSessions = Transformations.map(useCaseResult) { result ->
+        preconferenceSessions = Transformations.map(loadSessionsResult) { result ->
             (result as? Result.Success)?.data?.get(PRECONFERENCE_DAY) ?: emptyList()
         }
-        day1Sessions = Transformations.map(useCaseResult) { result ->
+        day1Sessions = Transformations.map(loadSessionsResult) { result ->
             (result as? Result.Success)?.data?.get(DAY_1) ?: emptyList()
         }
-        day2Sessions = Transformations.map(useCaseResult) { result ->
+        day2Sessions = Transformations.map(loadSessionsResult) { result ->
             (result as? Result.Success)?.data?.get(DAY_2) ?: emptyList()
         }
-        day3Sessions = Transformations.map(useCaseResult) { result ->
+        day3Sessions = Transformations.map(loadSessionsResult) { result ->
             (result as? Result.Success)?.data?.get(DAY_3) ?: emptyList()
         }
 
-        isLoading = Transformations.map(useCaseResult) { result -> result == Result.Loading }
+        isLoading = Transformations.map(loadSessionsResult) { result -> result == Result.Loading }
 
-        errorMessage = Transformations.map(useCaseResult) { result ->
+        errorMessage = Transformations.map(loadSessionsResult) { result ->
             errorMessageShown.value = false
             (result as? Result.Error)?.exception?.message ?: ""
+        }
+
+        tags = Transformations.map(loadTagsResult) { result ->
+            (result as? Result.Success)?.data ?: emptyList()
         }
     }
 
@@ -93,7 +102,7 @@ class ScheduleViewModel @Inject constructor(
 
     fun applyFilters(filters: SessionFilters) {
         this.filters = filters
-        loadSessionsByDayUseCase.executeAsync(filters, useCaseResult)
+        loadSessionsByDayUseCase.executeAsync(filters, loadSessionsResult)
     }
 
     override fun openSessionDetail(id: String) {

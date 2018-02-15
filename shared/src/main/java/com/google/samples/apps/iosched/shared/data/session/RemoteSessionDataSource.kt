@@ -22,11 +22,6 @@ import com.google.samples.apps.iosched.shared.model.Speaker
 import com.google.samples.apps.iosched.shared.model.Tag
 import com.google.samples.apps.iosched.shared.util.TimeUtils.ConferenceDay
 
-
-interface SessionDataSource {
-    fun getSessions(): List<Session>
-}
-
 /**
  * TODO: Placeholder
  */

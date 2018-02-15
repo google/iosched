@@ -14,23 +14,13 @@
  * limitations under the License.
  */
 
-package com.google.samples.apps.iosched.shared
+package com.google.samples.apps.iosched.shared.data.tag
 
 import com.google.samples.apps.iosched.shared.util.ConferenceDataJsonParser
-import org.junit.Assert.assertTrue
-import org.junit.Test
-
 
 /**
- * Checks that the data loading mechanism for the staging variant works.
+ * Returns data loaded from a local JSON file for development and testing.
  */
-class TestDataTest {
-
-    @Test
-    fun loadJson_resultIsNotEmpty() {
-        val sessions = ConferenceDataJsonParser.getSessions()
-        assertTrue(sessions.isNotEmpty())
-        val tags = ConferenceDataJsonParser.getTags()
-        assertTrue(tags.isNotEmpty())
-    }
+object FakeTagDataSource : TagDataSource {
+    override fun getTags() = ConferenceDataJsonParser.getTags()
 }

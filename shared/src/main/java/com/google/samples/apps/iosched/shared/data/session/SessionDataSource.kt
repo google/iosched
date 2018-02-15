@@ -14,23 +14,10 @@
  * limitations under the License.
  */
 
-package com.google.samples.apps.iosched.shared
+package com.google.samples.apps.iosched.shared.data.session
 
-import com.google.samples.apps.iosched.shared.util.ConferenceDataJsonParser
-import org.junit.Assert.assertTrue
-import org.junit.Test
+import com.google.samples.apps.iosched.shared.model.Session
 
-
-/**
- * Checks that the data loading mechanism for the staging variant works.
- */
-class TestDataTest {
-
-    @Test
-    fun loadJson_resultIsNotEmpty() {
-        val sessions = ConferenceDataJsonParser.getSessions()
-        assertTrue(sessions.isNotEmpty())
-        val tags = ConferenceDataJsonParser.getTags()
-        assertTrue(tags.isNotEmpty())
-    }
+interface SessionDataSource {
+    fun getSessions(): List<Session>
 }
