@@ -20,60 +20,38 @@ import android.arch.lifecycle.LiveData
 import android.arch.lifecycle.MutableLiveData
 import android.arch.lifecycle.Transformations
 import android.arch.lifecycle.ViewModel
-import com.google.samples.apps.iosched.shared.model.Room
 import com.google.samples.apps.iosched.shared.model.Session
-import com.google.samples.apps.iosched.shared.model.Speaker
-import com.google.samples.apps.iosched.shared.model.Tag
+import com.google.samples.apps.iosched.shared.result.Result
+import com.google.samples.apps.iosched.shared.usecases.repository.LoadSessionUseCase
 import com.google.samples.apps.iosched.shared.util.TimeUtils
-import org.threeten.bp.ZonedDateTime
+import javax.inject.Inject
 
 /**
  * Loads [Session] data and exposes it to the session detail view.
  */
-class SessionDetailViewModel(sessionId: String) : ViewModel() {
-    val session: MutableLiveData<Session> = MutableLiveData()
+class SessionDetailViewModel @Inject constructor(
+        private val loadSessionUseCase: LoadSessionUseCase
+): ViewModel() {
+
+    val useCaseResult = MutableLiveData<Result<Session>>()
+    val session: LiveData<Session?>
     val timeString: LiveData<String>
 
     init {
-        // TODO Connect with UseCase to get data from data layer
-
-        val androidTag = Tag(id = "1", category = "TRACK", orderInCategory = 0,
-                name = "Android", color = 0xFFAED581.toInt())
-
-        val webTag = Tag(id = "2", category = "TRACK", orderInCategory = 1, name = "Web",
-                color = 0xFFFFF176.toInt())
-
-        val speakerSet = HashSet<Speaker>().apply {
-            add(Speaker(id = "1", name = "Troy McClure", imageUrl = "",
-                    company = "Google", abstract = "Hi I'm Troy McClure", gPlusUrl = "",
-                    twitterUrl = ""))
-            add(Speaker(id = "2", name = "Ally McBeal", imageUrl = "",
-                    company = "Google", abstract = "Hi I'm a lawyer", gPlusUrl = "",
-                    twitterUrl = ""))
-            add(Speaker(id = "3", name = "Ziggy Stardust", imageUrl = "",
-                    company = "Google", abstract = "Hi I'm David Bowie.", gPlusUrl = "",
-                    twitterUrl = ""))
-            add(Speaker(id = "4", name = "Tiem Song", imageUrl = "",
-                    company = "Google", abstract = "Hi I'm an Android DPE", gPlusUrl = "",
-                    twitterUrl = ""))
-            add(Speaker(id = "5", name = "Lyla Fujiwara", imageUrl = "",
-                    company = "Google", abstract = "Hi I'm an Android DA", gPlusUrl = "",
-                    twitterUrl = ""))
+        session = Transformations.map(useCaseResult) { result ->
+            (result as? Result.Success)?.data
         }
 
-        val room = Room(id = "1", name = "Tent 1", capacity = 40)
-
-        val dummySession = Session(id = "1", startTime = ZonedDateTime.now(),
-                endTime = ZonedDateTime.now().plusHours(1),
-                title = "Fuchsia", abstract = "Come learn about the hottest, newest OS",
-                room = room, sessionUrl = "", liveStreamUrl = "",
-                youTubeUrl = "", tags = listOf(androidTag, webTag), speakers = speakerSet,
-                photoUrl = "", relatedSessions = emptySet())
-
-        session.value = dummySession
-
-        timeString = Transformations.map(session, { ses ->
-            TimeUtils.timeString(ses.startTime, ses.endTime)
+        timeString = Transformations.map(session, { currentSession ->
+            if (currentSession == null) {
+                ""
+            } else {
+                TimeUtils.timeString(currentSession.startTime, currentSession.endTime)
+            }
         })
+    }
+
+    fun loadSessionById(sessionId: String) {
+        loadSessionUseCase.executeAsync(sessionId, useCaseResult)
     }
 }

@@ -14,24 +14,21 @@
  * limitations under the License.
  */
 
-package com.google.samples.apps.iosched.ui.sessiondetail
+package com.google.samples.apps.iosched.shared.usecases.repository
 
-import android.arch.lifecycle.ViewModel
-import android.arch.lifecycle.ViewModelProvider
+import com.google.samples.apps.iosched.shared.data.session.SessionRepository
+import com.google.samples.apps.iosched.shared.model.Session
+import com.google.samples.apps.iosched.shared.usecases.UseCase
+import javax.inject.Inject
 
 /**
- * Generates SessionDetailViewModel that takes appropriate session ID in constructor
+ * TODO: Example use case that simulates a delay.
  */
-class SessionDetailViewModelFactory(
-        private val sessionId: String
-) : ViewModelProvider.NewInstanceFactory() {
+open class LoadSessionUseCase @Inject constructor(private val repository: SessionRepository)
+    : UseCase<String, Session>() {
 
-    /**
-     * Creates ViewModel with sessionId
-     */
-    @Suppress("UNCHECKED_CAST")
-    override fun <T : ViewModel> create(modelClass: Class<T>): T {
-        return SessionDetailViewModel(sessionId) as T
+    override fun execute(parameters: String): Session {
+        Thread.sleep(3000)
+        return repository.getSession(parameters)
     }
-
 }

@@ -16,7 +16,6 @@
 
 package com.google.samples.apps.iosched.shared.data.session
 
-import com.google.samples.apps.iosched.shared.model.Session
 import com.google.samples.apps.iosched.shared.util.ConferenceDataJsonParser
 
 /**
@@ -24,4 +23,6 @@ import com.google.samples.apps.iosched.shared.util.ConferenceDataJsonParser
  */
 object FakeSessionDataSource : SessionDataSource {
     override fun getSessions() = ConferenceDataJsonParser.getSessions()
+
+    override fun getSession(sessionId: String) = ConferenceDataJsonParser.getSessions()[0]
 }

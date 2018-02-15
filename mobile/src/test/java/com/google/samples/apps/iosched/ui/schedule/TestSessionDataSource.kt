@@ -58,4 +58,6 @@ object TestSessionDataSource : SessionDataSource, TagDataSource {
 
     override fun getTags() =
             listOf(androidTag, webTag, sessionsTag, codelabsTag, beginnerTag, intermediateTag)
+
+    override fun getSession(sessionId: String) = getSessions()[0]
 }

@@ -44,8 +44,8 @@ import org.threeten.bp.format.DateTimeFormatter
  * A [RecyclerView.ItemDecoration] which draws sticky headers for a given list of sessions.
  */
 class ScheduleTimeHeadersDecoration(
-    context: Context,
-    sessions: List<Session>
+        context: Context,
+        sessions: List<Session>
 ) : RecyclerView.ItemDecoration() {
 
     private val paint: TextPaint
@@ -57,20 +57,20 @@ class ScheduleTimeHeadersDecoration(
 
     init {
         val attrs = context.obtainStyledAttributes(R.style.Widget_IOSched_TimeHeaders,
-            R.styleable.TimeHeader) // TODO replace with use block from ktx when released
+                R.styleable.TimeHeader) // TODO replace with use block from ktx when released
         paint = TextPaint(ANTI_ALIAS_FLAG).apply {
             color = attrs.getColorOrThrow(R.styleable.TimeHeader_android_textColor)
             textSize = attrs.getDimensionOrThrow(R.styleable.TimeHeader_hourTextSize)
             try {
                 typeface = ResourcesCompat.getFont(context,
-                    attrs.getResourceId(R.styleable.TimeHeader_android_fontFamily, 0))
+                        attrs.getResourceId(R.styleable.TimeHeader_android_fontFamily, 0))
             } catch (nfe: Resources.NotFoundException) {
             }
         }
         width = attrs.getDimensionPixelSizeOrThrow(R.styleable.TimeHeader_android_width)
         paddingTop = attrs.getDimensionPixelSizeOrThrow(R.styleable.TimeHeader_android_paddingTop)
         meridiemTextSize =
-            attrs.getDimensionPixelSizeOrThrow(R.styleable.TimeHeader_meridiemTextSize)
+                attrs.getDimensionPixelSizeOrThrow(R.styleable.TimeHeader_meridiemTextSize)
         attrs.recycle()
     }
 
@@ -100,8 +100,8 @@ class ScheduleTimeHeadersDecoration(
                 val position = parent.getChildAdapterPosition(view)
                 timeSlots[position]?.let {
                     val top = (viewTop + paddingTop)
-                        .coerceAtLeast(paddingTop)
-                        .coerceAtMost(prevHeaderTop - it.height)
+                            .coerceAtLeast(paddingTop)
+                            .coerceAtMost(prevHeaderTop - it.height)
                     c.withTranslation(y = top.toFloat()) {
                         it.draw(c)
                     }
