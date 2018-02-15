@@ -30,8 +30,8 @@ import org.threeten.bp.ZonedDateTime
 object TestSessionDataSource : SessionDataSource {
     override fun getSessions(): List<Session> {
 
-        val androidTag = Tag("1", "Technology", "Android", "#F30F30")
-        val webTag = Tag("2", "Technology", "Web", "#F30F30")
+        val androidTag = Tag("1", "TRACK", 0, "Android", 0xFFAED581.toInt())
+        val webTag = Tag("2", "TRACK", 1, "Web", 0xFFFFF176.toInt())
         val speaker1 = Speaker("1", "Troy McClure", "", "", "", "", "")
         val time1 = ZonedDateTime.of(2017, 3, 12, 12, 0, 0, 0, ZoneId.of("Asia/Tokyo"))
         val time2 = ZonedDateTime.of(2017, 3, 12, 13, 0, 0, 0, ZoneId.of("Asia/Tokyo"))
