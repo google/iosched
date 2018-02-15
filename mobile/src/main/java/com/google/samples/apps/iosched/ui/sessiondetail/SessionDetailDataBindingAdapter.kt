@@ -18,7 +18,6 @@ package com.google.samples.apps.iosched.ui.sessiondetail
 
 import android.databinding.BindingAdapter
 import android.databinding.DataBindingUtil
-import android.graphics.Color
 import android.graphics.PorterDuff
 import android.view.LayoutInflater
 import android.view.View
@@ -55,7 +54,7 @@ private fun createSessionTagButton(
 ): Button {
     return (inflater.inflate(R.layout.item_session_tag, container, false) as Button).apply {
         text = tag.name
-        background.setColorFilter(Color.parseColor(tag.color), PorterDuff.Mode.SRC_ATOP)
+        background.setColorFilter(tag.color, PorterDuff.Mode.SRC_ATOP)
     }
 }
 

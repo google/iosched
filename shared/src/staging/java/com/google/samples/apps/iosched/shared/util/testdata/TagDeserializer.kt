@@ -16,10 +16,13 @@
 
 package com.google.samples.apps.iosched.shared.util.testdata
 
+import android.graphics.Color
 import com.google.gson.JsonDeserializationContext
 import com.google.gson.JsonDeserializer
 import com.google.gson.JsonElement
 import com.google.samples.apps.iosched.shared.model.Tag
+import com.google.samples.apps.iosched.shared.util.ColorUtils
+import timber.log.Timber
 import java.lang.reflect.Type
 
 /**
@@ -33,11 +36,22 @@ class TagDeserializer : JsonDeserializer<Tag> {
             context: JsonDeserializationContext?
     ): Tag {
         val obj = json?.asJsonObject!!
-
+        val colorString = obj.get("color")?.asString
+        val color = if (colorString != null) {
+            try {
+                ColorUtils.parseHexColor(colorString)
+            } catch (t: Throwable) {
+                Timber.d(t, "Falied to parse tag color")
+                Color.TRANSPARENT
+            }
+        } else {
+            Color.TRANSPARENT
+        }
         return Tag(
                 id = obj.get("tag").asString,
                 category = obj.get("category").asString,
-                color = obj.get("color")?.asString ?: "#000000",
+                orderInCategory = obj.get("order_in_category")?.asInt ?: 999,
+                color = color,
                 name = obj.get("name").asString
         )
     }

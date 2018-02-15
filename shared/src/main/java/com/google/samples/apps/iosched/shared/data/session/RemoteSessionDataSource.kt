@@ -33,8 +33,8 @@ interface SessionDataSource {
 object RemoteSessionDataSource : SessionDataSource {
 
     private val SESSIONS: List<Session> by lazy {
-        val androidTag = Tag("1", "TRACK", "Android", "#AED581")
-        val webTag = Tag("2", "TRACK", "Web", "#FFF176")
+        val androidTag = Tag("1", "TRACK", 0, "Android", 0xFFAED581.toInt())
+        val webTag = Tag("2", "TRACK", 1, "Web", 0xFFFFF176.toInt())
         val speakers = setOf(Speaker("1", "Troy McClure", "", "", "", "", ""))
         val room = Room(id = "1", name = "Tent 1", capacity = 40)
 

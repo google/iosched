@@ -14,9 +14,11 @@ import com.google.samples.apps.iosched.shared.util.TimeUtils.ConferenceDay.PRECO
  * TODO: Temporary test data, improve.
  */
 object TestData {
-    val androidTag = Tag(id = "1", category = "TRACK", name = "Android", color = "#AED581")
+    val androidTag = Tag(id = "1", category = "TRACK", orderInCategory = 0, name = "Android",
+            color = 0xFFAED581.toInt())
 
-    val webTag = Tag(id = "2", category = "TRACK", name = "Web", color = "#FFF176")
+    val webTag = Tag(id = "2", category = "TRACK", orderInCategory = 1, name = "Web",
+            color = 0xFFFFF176.toInt())
 
     val speaker = Speaker(id = "1", name = "Troy McClure", imageUrl = "",
             company = "", abstract = "", gPlusUrl = "", twitterUrl = "")

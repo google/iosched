@@ -37,9 +37,11 @@ class SessionDetailViewModel(sessionId: String) : ViewModel() {
     init {
         // TODO Connect with UseCase to get data from data layer
 
-        val androidTag = Tag(id = "1", category = "Technology", name = "Android", color = "#F30F30")
+        val androidTag = Tag(id = "1", category = "TRACK", orderInCategory = 0,
+                name = "Android", color = 0xFFAED581.toInt())
 
-        val webTag = Tag(id = "2", category = "Technology", name = "Web", color = "#F30F30")
+        val webTag = Tag(id = "2", category = "TRACK", orderInCategory = 1, name = "Web",
+                color = 0xFFFFF176.toInt())
 
         val speakerSet = HashSet<Speaker>().apply {
             add(Speaker(id = "1", name = "Troy McClure", imageUrl = "",

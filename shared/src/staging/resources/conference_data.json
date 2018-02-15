@@ -4263,7 +4263,8 @@
             "tag": "THEME_WHATSNEXT",
             "name": "What's Next",
             "original_id": "70e9302c-35c9-e511-ab0e-00155d5066d7",
-            "abstract": ""
+            "abstract": "",
+            "order_in_category": 2
         },
         {
             "category": "TRACK",
@@ -4357,6 +4358,7 @@
             "name": "Misc",
             "original_id": "8b6f0c85-1300-e611-a517-00155d5066d7",
             "abstract": "",
+            "order_in_category": 15,
             "photoUrl": "https://storage.googleapis.com/io2016-festivus/images/sessions/__w-200-400-600-800-1000__/d2641ff7-0bef-e511-a517-00155d5066d7.jpg",
             "color": "#C5C9E9"
         },
