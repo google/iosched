@@ -45,7 +45,8 @@
                 android:id="@+id/tabs"
                 android:layout_width="match_parent"
                 android:layout_height="?actionBarSize"
-                app:tabIndicatorColor="@android:color/white" />
+                app:tabIndicatorColor="@android:color/white"
+                app:theme="@style/ThemeOverlay.IOSched.GoogleSans" />
 
         </LinearLayout>
 

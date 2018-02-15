@@ -44,7 +44,16 @@
     </style>
 
     <style name="Widget.Toolbar" parent="Widget.AppCompat.Toolbar">
+        <item name="titleTextAppearance">@style/TextAppearance.IOSched.ToolbarTitle</item>
         <item name="popupTheme">@style/AppTheme.PopupTheme</item>
+    </style>
+
+    <style name="TextAppearance.IOSched.ToolbarTitle" parent="@style/TextAppearance.Widget.AppCompat.Toolbar.Title">
+        <item name="android:fontFamily">@font/google_sans</item>
+    </style>
+
+    <style name="ThemeOverlay.IOSched.GoogleSans" parent="@style/ThemeOverlay.AppCompat">
+        <item name="android:fontFamily">@font/google_sans</item>
     </style>
 
 </resources>
