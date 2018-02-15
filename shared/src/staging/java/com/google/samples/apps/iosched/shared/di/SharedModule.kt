@@ -18,6 +18,8 @@ package com.google.samples.apps.iosched.shared.di
 
 import com.google.samples.apps.iosched.shared.data.session.FakeSessionDataSource
 import com.google.samples.apps.iosched.shared.data.session.SessionDataSource
+import com.google.samples.apps.iosched.shared.data.tag.FakeTagDataSource
+import com.google.samples.apps.iosched.shared.data.tag.TagDataSource
 import dagger.Module
 import dagger.Provides
 import javax.inject.Singleton
@@ -36,5 +38,15 @@ class SharedModule {
     @Provides
     fun provideSessionDataSource(): SessionDataSource {
         return FakeSessionDataSource
+    }
+
+    /**
+     * Defines the implementation of [TagDataSource] that should be used.
+     * The [TagDataSource] is a singleton.
+     */
+    @Singleton
+    @Provides
+    fun provideTagDataSource(): TagDataSource {
+        return FakeTagDataSource
     }
 }

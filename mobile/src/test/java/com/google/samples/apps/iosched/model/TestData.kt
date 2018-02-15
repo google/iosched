@@ -14,11 +14,14 @@ import com.google.samples.apps.iosched.shared.util.TimeUtils.ConferenceDay.PRECO
  * TODO: Temporary test data, improve.
  */
 object TestData {
-    val androidTag = Tag(id = "1", category = "TRACK", orderInCategory = 0, name = "Android",
-            color = 0xFFAED581.toInt())
 
-    val webTag = Tag(id = "2", category = "TRACK", orderInCategory = 1, name = "Web",
-            color = 0xFFFFF176.toInt())
+    val androidTag = Tag("1", "TRACK", 0, "Android", 0xFFAED581.toInt())
+    val webTag = Tag("2", "TRACK", 1, "Web", 0xFFFFF176.toInt())
+    val sessionsTag = Tag("101", "TYPE", 0, "Sessions", 0)
+    val codelabsTag = Tag("102", "TYPE", 1, "Codelabs", 0)
+    val beginnerTag = Tag("201", "LEVEL", 0, "Beginner", 0)
+    val intermediateTag = Tag("202", "LEVEL", 1, "Intermediate", 0)
+    val advancedTag = Tag("203", "LEVEL", 2, "Advanced", 0)
 
     val speaker = Speaker(id = "1", name = "Troy McClure", imageUrl = "",
             company = "", abstract = "", gPlusUrl = "", twitterUrl = "")
@@ -51,4 +54,7 @@ object TestData {
             ConferenceDay.DAY_1 to listOf(session1),
             ConferenceDay.DAY_2 to listOf(session2),
             ConferenceDay.DAY_3 to listOf(session3))
+
+    val tagsList = listOf(androidTag, webTag, sessionsTag, codelabsTag, beginnerTag,
+            intermediateTag, advancedTag)
 }

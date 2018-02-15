@@ -14,23 +14,21 @@
  * limitations under the License.
  */
 
-package com.google.samples.apps.iosched.shared
+package com.google.samples.apps.iosched.shared.usecases.repository
 
-import com.google.samples.apps.iosched.shared.util.ConferenceDataJsonParser
-import org.junit.Assert.assertTrue
-import org.junit.Test
-
+import com.google.samples.apps.iosched.shared.data.tag.TagRepository
+import com.google.samples.apps.iosched.shared.model.Tag
+import com.google.samples.apps.iosched.shared.usecases.UseCase
+import javax.inject.Inject
 
 /**
- * Checks that the data loading mechanism for the staging variant works.
+ * TODO: Example use case that simulates a delay.
  */
-class TestDataTest {
+open class LoadTagsUseCase @Inject constructor(private val repository: TagRepository)
+    : UseCase<Unit, List<Tag>>() {
 
-    @Test
-    fun loadJson_resultIsNotEmpty() {
-        val sessions = ConferenceDataJsonParser.getSessions()
-        assertTrue(sessions.isNotEmpty())
-        val tags = ConferenceDataJsonParser.getTags()
-        assertTrue(tags.isNotEmpty())
+    override fun execute(parameters: Unit): List<Tag> {
+        Thread.sleep(1000)
+        return repository.getTags()
     }
 }
