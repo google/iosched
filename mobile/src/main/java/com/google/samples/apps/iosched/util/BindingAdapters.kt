@@ -43,10 +43,12 @@ fun goneUnless(view: View, visible: Boolean) {
 }
 
 @BindingAdapter("sessionTags")
-fun sessionTags(container: LinearLayout, sessionTags: List<Tag>) {
+fun sessionTags(container: LinearLayout, sessionTags: List<Tag>?) {
     container.removeAllViews()
-    val inflater = LayoutInflater.from(container.context)
-    sessionTags.forEach { container.addView(createSessionTagButton(inflater, container, it)) }
+    if (sessionTags != null) {
+        val inflater = LayoutInflater.from(container.context)
+        sessionTags.forEach { container.addView(createSessionTagButton(inflater, container, it)) }
+    }
 }
 
 private fun createSessionTagButton(
