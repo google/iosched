@@ -14,24 +14,22 @@
  * limitations under the License.
  */
 
-package com.google.samples.apps.iosched.tv.di
+package com.google.samples.apps.iosched.tv.ui.schedule.di
 
-import android.content.Context
-import com.google.samples.apps.iosched.tv.TVApplication
+import com.google.samples.apps.iosched.shared.data.session.SessionRepository
+import com.google.samples.apps.iosched.tv.ui.schedule.ScheduleViewModelFactory
 import dagger.Module
 import dagger.Provides
 
 /**
- * Defines all the classes that need to be provided in the scope of the app.
- *
- * Define here all objects that are shared throughout the app, like SharedPreferences, navigators or
- * others. If some of those objects are singletons, they should be annotated with `@Singleton`.
+ * Provides Dagger with dependencies for the [ScheduleFragment].
  */
 @Module
-class TVAppModule {
+class TvScheduleModule {
 
     @Provides
-    fun provideContext(application: TVApplication): Context {
-        return application.applicationContext
+    fun provideScheduleViewModelFactory(sessionRepository: SessionRepository)
+            : ScheduleViewModelFactory {
+        return ScheduleViewModelFactory(sessionRepository)
     }
 }

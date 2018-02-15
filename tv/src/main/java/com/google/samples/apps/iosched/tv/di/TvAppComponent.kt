@@ -17,25 +17,24 @@
 package com.google.samples.apps.iosched.tv.di
 
 import com.google.samples.apps.iosched.shared.di.SharedModule
-import com.google.samples.apps.iosched.tv.TVApplication
+import com.google.samples.apps.iosched.tv.ui.schedule.di.TvScheduleModule
+import com.google.samples.apps.iosched.tv.ui.schedule.di.TvScheduleComponent
 import dagger.Component
-import dagger.android.AndroidInjector
-import dagger.android.support.AndroidSupportInjectionModule
+import dagger.Subcomponent
 import javax.inject.Singleton
 
+
 /**
- * Main component of the app, created and persisted in the Application class.
+ * Main component of the tv app, created and persisted in the [Injector] singleton.
  *
  * Whenever a new module is created, it should be added to the list of modules.
+ *
+ * Whenever a [Subcomponent] is created, a new method should be added to the interface.
  */
 @Singleton
-@Component(modules = arrayOf(
-        AndroidSupportInjectionModule::class,
-        TVAppModule::class,
-        SharedModule::class))
-interface TVAppComponent : AndroidInjector<TVApplication> {
+@Component(modules = arrayOf(SharedModule::class, TvAppModule::class))
+interface TvAppComponent {
 
-    @Component.Builder
-    abstract class Builder : AndroidInjector.Builder<TVApplication>()
+    fun plus(scheduleModule: TvScheduleModule): TvScheduleComponent
 
 }

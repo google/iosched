@@ -25,6 +25,11 @@ import com.google.samples.apps.iosched.shared.model.Tag
 import org.threeten.bp.ZoneId
 import org.threeten.bp.ZonedDateTime
 
+/**
+ * Generates dummy session data to be used in tests.
+ *
+ * TODO: Move to testutils module b/72216577
+ */
 object TestSessionDataSource : SessionDataSource, TagDataSource {
 
     private val androidTag = Tag("1", "TRACK", 0, "Android", 0xFFAED581.toInt())

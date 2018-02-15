@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.google.samples.apps.iosched.test.util
+package com.google.samples.apps.iosched.tv.util
 
 import android.arch.lifecycle.LiveData
 import android.arch.lifecycle.Observer

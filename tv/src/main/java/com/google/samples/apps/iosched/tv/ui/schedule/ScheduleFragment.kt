@@ -17,24 +17,37 @@
 package com.google.samples.apps.iosched.tv.ui.schedule
 
 import android.arch.lifecycle.Observer
-import android.arch.lifecycle.ViewModelProviders
 import android.os.Bundle
 import android.support.v17.leanback.app.RowsSupportFragment
 import android.support.v17.leanback.widget.ArrayObjectAdapter
+import android.support.v17.leanback.widget.DiffCallback
 import android.support.v17.leanback.widget.HeaderItem
+import android.support.v17.leanback.widget.ImageCardView
 import android.support.v17.leanback.widget.ListRow
 import android.support.v17.leanback.widget.ListRowPresenter
 import android.support.v17.leanback.widget.Presenter
-import android.view.LayoutInflater
+import android.text.TextUtils
 import android.view.ViewGroup
+import com.google.samples.apps.iosched.shared.model.Session
+import com.google.samples.apps.iosched.shared.util.TimeUtils
 import com.google.samples.apps.iosched.shared.util.inTransaction
+import com.google.samples.apps.iosched.shared.util.viewModelProvider
 import com.google.samples.apps.iosched.tv.R
+import com.google.samples.apps.iosched.tv.di.Injector
 import com.google.samples.apps.iosched.tv.ui.SpinnerFragment
+import com.google.samples.apps.iosched.tv.ui.presenter.SessionPresenter
+import com.google.samples.apps.iosched.tv.util.toArrayObjectAdapter
+import javax.inject.Inject
 
 /**
  * Displays a single day's session schedule.
  */
 class ScheduleFragment : RowsSupportFragment() {
+
+    @Inject
+    lateinit var viewModelFactory: ScheduleViewModelFactory
+
+    private lateinit var viewModel: ScheduleViewModel
 
     private val rowsAdapter = ArrayObjectAdapter(ListRowPresenter())
 
@@ -42,6 +55,7 @@ class ScheduleFragment : RowsSupportFragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        Injector.scheduleComponent.inject(this)
 
         adapter = rowsAdapter
 
@@ -49,10 +63,7 @@ class ScheduleFragment : RowsSupportFragment() {
             add(R.id.main_frame, spinnerFragment)
         }
 
-        // TODO: Inject view model factory
-        val viewModel: ScheduleViewModel = ViewModelProviders.of(
-                this, TODO("ViewModel Factory not provided."))
-                .get(ScheduleViewModel::class.java)
+        viewModel = viewModelProvider(viewModelFactory)
 
         observeViewModel(viewModel)
     }
@@ -64,28 +75,76 @@ class ScheduleFragment : RowsSupportFragment() {
         }
     }
 
-    private fun loadAdapter() {
-        // TODO: replace with real data.
-        val dummyAdapter = ArrayObjectAdapter(object : Presenter() {
-            override fun onCreateViewHolder(parent: ViewGroup?): ViewHolder {
-                val view = LayoutInflater.from(parent?.context)
-                        .inflate(R.layout.card_session, parent, false)
-                return ViewHolder(view)
-            }
+    private fun loadAdapter(sessions: List<Session>) {
 
-            override fun onBindViewHolder(viewHolder: ViewHolder?, item: Any?) {}
+        val rows = mutableListOf<ListRow>()
 
-            override fun onUnbindViewHolder(viewHolder: ViewHolder?) {}
+        if (sessions.isEmpty()) {
+            // TODO: replace with real UI once we have mocks.
+            val dummyheader = HeaderItem(-1, getString(R.string.no_sessions_available))
+            val dummyAdapter = ArrayObjectAdapter(object : Presenter() {
+                override fun onCreateViewHolder(parent: ViewGroup?): ViewHolder {
+                    return ViewHolder(ImageCardView(parent?.context))
+                }
 
-        }).apply {
-            add("Goodbye World")
+                override fun onBindViewHolder(viewHolder: ViewHolder?, item: Any?) {
+                    val cardView = viewHolder?.view as ImageCardView
+
+                    // TODO: replace with actual error message wording
+                    cardView.titleText = getString(R.string.try_later)
+                    cardView.contentText = getString(R.string.sorry_for_the_troubles)
+
+                    // Set the image card's height and width.
+                    val resources = cardView.context.resources
+                    val cardWidth = resources.getDimensionPixelSize(R.dimen.card_width)
+                    val cardHeight = resources.getDimensionPixelSize(R.dimen.card_height)
+                    cardView.setMainImageDimensions(cardWidth, cardHeight)
+                }
+
+                override fun onUnbindViewHolder(viewHolder: ViewHolder?) {}
+            }).apply { add(Any()) }
+            val dummyRow = ListRow(dummyheader, dummyAdapter)
+            rows.add(dummyRow)
+        } else {
+            // TODO: replace with real data.
+            val sessionAdapter = sessions.toArrayObjectAdapter(SessionPresenter())
+
+            val firstSession = sessions[0]
+            // TODO: move logic to format header string to ViewModel
+            val header = TimeUtils.timeString(firstSession.startTime, firstSession.endTime)
+
+            val dummyheader = HeaderItem(1, header)
+            val dummyRow = ListRow(dummyheader, sessionAdapter)
+            rows.add(dummyRow)
         }
 
-        val dummyheader = HeaderItem(1, "Dummy Header")
-        val dummyRow = ListRow(dummyheader, dummyAdapter)
+        // TODO: move this DiffCallback implementation to it's own class/file once the algorithm for
+        // comparing rows in this fragment is more concrete.
+        rowsAdapter.setItems(rows, object : DiffCallback<ListRow>() {
+            override fun areItemsTheSame(oldRow: ListRow, newRow: ListRow): Boolean {
+                return TextUtils.equals(oldRow.contentDescription, newRow.contentDescription)
+            }
 
-        rowsAdapter.add(dummyRow)
+            override fun areContentsTheSame(oldItem: ListRow, newItem: ListRow): Boolean {
+                val oldAdapter = oldItem.adapter
+                val newAdapter = newItem.adapter
+                val sameSize = oldAdapter.size() == newAdapter.size()
+                if (!sameSize) {
+                    return false
+                }
 
+                for (i in 0 until oldAdapter.size()) {
+                    val oldSession = oldAdapter.get(i) as Session
+                    val newSession = newAdapter.get(i) as Session
+
+                    if (!TextUtils.equals(oldSession.id, newSession.id)) {
+                        return false
+                    }
+                }
+
+                return true
+            }
+        })
         mainFragmentAdapter.fragmentHost.notifyDataReady(mainFragmentAdapter)
     }
 
@@ -93,7 +152,7 @@ class ScheduleFragment : RowsSupportFragment() {
 
         // Update text if there are sessions available
         viewModel.sessions.observe(this, Observer { sessions ->
-            loadAdapter()
+            loadAdapter(sessions ?: emptyList())
         })
 
         // Update text if the screen is in loading state.

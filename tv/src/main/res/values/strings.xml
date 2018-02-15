@@ -15,4 +15,9 @@
   -->
 <resources>
     <string name="browse_title" translatable="false">Hello World</string>
+    <string name="no_sessions_available">No sessions available</string>
+
+    <!-- TODO: replace with actual error message wording -->
+    <string name="try_later">Try again later</string>
+    <string name="sorry_for_the_troubles">Sorry for the troubles</string>
 </resources>
