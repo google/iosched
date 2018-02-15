@@ -87,4 +87,5 @@ dependencies {
 
     // Local unit tests
     testImplementation "junit:junit:$rootProject.junitVersion"
+    testImplementation "org.hamcrest:hamcrest-library:$rootProject.hamcrestVersion"
 }

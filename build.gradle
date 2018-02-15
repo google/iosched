@@ -29,6 +29,7 @@ buildscript {
         constraintLayoutVersion = '1.1.0-beta5'
         espressoVersion = '3.0.1'
         androidGradlePluginVersion = '3.1.0-beta4'
+        hamcrestVersion = '1.3'
         junitVersion = '4.12'
         kotlinVersion = '1.2.21'
         runnerVersion = '1.0.1'
