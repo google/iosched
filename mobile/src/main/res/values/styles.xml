@@ -85,4 +85,14 @@
         <item name="tabIndicatorColor">?colorPrimary</item>
     </style>
 
+    <style name="Session.Tag" parent="">
+        <item name="android:textAppearance">@style/TextAppearance.AppCompat.Small</item>
+        <item name="android:textColor">?android:textColorPrimary</item>
+        <item name="android:background">@drawable/tag_background</item>
+        <item name="android:gravity">center</item>
+        <item name="android:ellipsize">end</item>
+        <item name="android:lines">1</item>
+        <item name="android:minWidth">@dimen/a11y_min_touch_target_dimen</item>
+    </style>
+
 </resources>

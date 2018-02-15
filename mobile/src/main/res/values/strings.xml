@@ -20,14 +20,19 @@
     <string name="title_feed">Feed</string>
     <string name="title_map">Map</string>
     <string name="title_info">Info</string>
-    <string name="a11y_session_detail_video_icon">TODO: a11y text for icon</string>
-    <string name="a11y_speaker_headshot">TODO a11y content description for speaker headshot</string>
 
-    <string name="loading">Loading...</string>
+    <!-- Schedule -->
+    <string name="filters">Filters</string>
+    <string name="clear_all">Clear all</string>
+    <string name="session_duration_location">%1s / %2s</string>
+
+    <!-- Session Detail -->
     <string name="rate_session">Rate Session</string>
 
+    <!-- Accessibility -->
+    <string name="a11y_session_detail_video_icon">TODO: a11y text for icon</string>
+    <string name="a11y_speaker_headshot">TODO a11y content description for speaker headshot</string>
     <string name="a11y_session_item_actions">TODO: a11y content description for session item actions</string>
-    <string name="session_duration_location">%1s / %2s</string>
 
     <plurals name="duration_hours">
         <item quantity="one">%s hour</item>

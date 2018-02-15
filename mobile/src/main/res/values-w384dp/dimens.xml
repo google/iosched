@@ -14,23 +14,6 @@
   ~ See the License for the specific language governing permissions and
   ~ limitations under the License.
   -->
-
 <resources>
-    <!-- theme colors -->
-    <color name="colorPrimary">@color/indigo</color>
-    <color name="colorAccent">@color/teal</color>
-
-    <!-- primary palette -->
-    <color name="indigo">#536DFE</color>
-    <color name="indigo_dark">#3C54FE</color> <!-- todo confirm this color -->
-    <color name="teal">#1DE9B6</color>
-    <color name="yellow">#FDD835</color>
-    <color name="orange">#FF6D00</color>
-    <color name="white">#fff</color>
-
-    <color name="status_bar">#202124</color>
-    <color name="light_grey">#dadce0</color>
-
-    <color name="navdrawer_background">@color/white</color>
-    <color name="lighter_grey">#f6f6f6</color>
+    <dimen name="drawer_width">320dp</dimen>
 </resources>
