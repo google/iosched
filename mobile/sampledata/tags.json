@@ -1,0 +1,75 @@
+{
+  "comment": "Sample tag data for use with tools:... attributes in layouts, primarily list items",
+  "tags": [
+    {
+      "name": "Ads",
+      "color": "#B0BEC5",
+      "checked": false
+    },
+    {
+      "name": "Android",
+      "color": "#AED581",
+      "checked": true
+    },
+    {
+      "name": "Assistant",
+      "color": "#1ce8b5",
+      "checked": false
+    },
+    {
+      "name": "Cloud",
+      "color": "#80CBC4",
+      "checked": false
+    },
+    {
+      "name": "Design",
+      "color": "#F8BBD0",
+      "checked": false
+    },
+    {
+      "name": "Firebase",
+      "color": "#FFD54F",
+      "checked": false
+    },
+    {
+      "name": "IoT",
+      "color": "#BCAAA4",
+      "checked": false
+    },
+    {
+      "name": "Location & Maps",
+      "color": "#EF9A9A",
+      "checked": false
+    },
+    {
+      "name": "Look how long the name of this track is!",
+      "color": "#33b5e5",
+      "checked": false
+    },
+    {
+      "name": "Machine Learning & AI",
+      "color": "#bcc8fb",
+      "checked": false
+    },
+    {
+      "name": "Misc",
+      "color": "#C5C9E9",
+      "checked": false
+    },
+    {
+      "name": "Mobile Web",
+      "color": "#FFF176",
+      "checked": false
+    },
+    {
+      "name": "Search",
+      "color": "#90CAF9",
+      "checked": false
+    },
+    {
+      "name": "VR",
+      "color": "#FF8A65",
+      "checked": false
+    }
+  ]
+}

@@ -26,4 +26,10 @@
     <dimen name="tag_dot_size">12dp</dimen>
     <dimen name="tag_hz_padding">12dp</dimen>
     <dimen name="tag_corner_radius">100dp</dimen> <!-- Large value ensures the desired 'pill shape' -->
+
+    <!-- developer.android.com/reference/android/view/ViewGroup.LayoutParams.html#MATCH_PARENT -->
+    <item name="match_parent" format="integer" type="dimen">-1</item>
+    <dimen name="drawer_width">@dimen/match_parent</dimen>
+
+    <dimen name="a11y_min_touch_target_dimen">48dp</dimen>
 </resources>
