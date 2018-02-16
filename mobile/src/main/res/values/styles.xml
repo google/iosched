@@ -14,7 +14,7 @@
   ~ limitations under the License.
   -->
 
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
 
     <!-- Base application theme. -->
     <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
@@ -23,6 +23,9 @@
         <item name="colorAccent">@color/colorAccent</item>
         <item name="toolbarStyle">@style/Widget.Toolbar</item>
         <item name="android:windowBackground">@color/white</item>
+        <item name="android:statusBarColor">@color/status_bar</item>
+        <item name="android:windowLightStatusBar" tools:targetApi="m">true</item>
+        <item name="android:navigationBarColor">@color/indigo_dark</item>
     </style>
 
     <style name="AppTheme.NoActionBar">
@@ -30,16 +33,13 @@
         <item name="windowNoTitle">true</item>
     </style>
 
-    <style name="AppTheme.ActionBar" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
-
     <style name="AppTheme.PopupTheme" parent="ThemeOverlay.AppCompat.Light" />
 
-    <style name="Widget.AppBar" parent="">
+    <style name="Widget.AppBar" parent="@style/Widget.Design.AppBarLayout">
         <item name="popupTheme">@style/AppTheme.PopupTheme</item>
-        <item name="android:background">?colorPrimary</item>
+        <item name="android:background">@color/white</item>
         <item name="android:elevation">8dp</item>
         <item name="android:orientation">vertical</item>
-        <item name="android:theme">@style/AppTheme.ActionBar</item>
     </style>
 
     <style name="Widget.Toolbar" parent="Widget.AppCompat.Toolbar">
@@ -53,6 +53,25 @@
 
     <style name="ThemeOverlay.IOSched.GoogleSans" parent="@style/ThemeOverlay.AppCompat">
         <item name="android:fontFamily">@font/google_sans</item>
+    </style>
+
+    <style name="ThemeOverlay.IOSched.BottomNav" parent="@style/ThemeOverlay.AppCompat.Dark">
+        <item name="android:fontFamily">@font/google_sans</item>
+    </style>
+
+    <style name="Widget.IOSched" parent="@android:style/Widget" />
+
+    <style name="Widget.IOSched.BottomNav" parent="@style/Widget.Design.BottomNavigationView">
+        <item name="android:background">?colorPrimary</item>
+        <item name="itemIconTint">@color/bottom_nav_item</item>
+        <item name="itemTextColor">@color/bottom_nav_item</item>
+        <item name="android:theme">@style/ThemeOverlay.IOSched.BottomNav</item>
+    </style>
+
+    <style name="Widget.IOSched.Tabs" parent="@style/Widget.Design.TabLayout">
+        <item name="tabTextColor">?colorPrimary</item>
+        <item name="tabSelectedTextColor">?colorPrimary</item>
+        <item name="tabIndicatorColor">?colorPrimary</item>
     </style>
 
 </resources>

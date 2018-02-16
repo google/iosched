@@ -39,7 +39,7 @@ object RemoteSessionDataSource : SessionDataSource {
         val room = Room(id = "1", name = "Tent 1", capacity = 40)
 
         val list = ArrayList<Session>()
-        for (i in 1..30) {
+        for (i in 1..90) {
             val startTime = when (i % 3) {
                 0 -> ConferenceDay.DAY_1.start.plusHours(2)
                 1 -> ConferenceDay.DAY_2.start.plusHours(2)

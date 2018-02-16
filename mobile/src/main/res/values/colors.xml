@@ -22,8 +22,11 @@
 
     <!-- primary palette -->
     <color name="indigo">#536DFE</color>
+    <color name="indigo_dark">#3C54FE</color> <!-- todo confirm this color -->
     <color name="teal">#1DE9B6</color>
     <color name="yellow">#FDD835</color>
     <color name="orange">#FF6D00</color>
     <color name="white">#fff</color>
+
+    <color name="status_bar">#202124</color>
 </resources>
