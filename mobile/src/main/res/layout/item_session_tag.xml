@@ -15,10 +15,31 @@
   ~ limitations under the License.
   -->
 
-<Button xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:layout_marginEnd="@dimen/spacing_normal"
-    tools:text="Android"
-    tools:background="@color/colorAccent" />
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+        <variable
+            name="tag"
+            type="com.google.samples.apps.iosched.shared.model.Tag" />
+    </data>
+
+    <Button
+        android:id="@+id/tag_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:minWidth="@dimen/min_touch_target"
+        android:minHeight="@dimen/tag_height"
+        android:layout_marginEnd="@dimen/spacing_normal"
+        android:gravity="center_vertical"
+        android:paddingHorizontal="@dimen/tag_hz_padding"
+        android:background="@drawable/tag_outline"
+        android:drawablePadding="@dimen/spacing_normal"
+        android:drawableStart="@drawable/tag_dot"
+        android:clickable="true"
+        android:text="@{tag.name}"
+        android:textAppearance="@style/TextAppearance.IOSched.Tag"
+        app:tagTint="@{tag.color}" />
+
+</layout>

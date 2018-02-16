@@ -19,7 +19,6 @@ package com.google.samples.apps.iosched.ui.schedule
 import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProvider
 import android.os.Bundle
-import android.support.v7.widget.DividerItemDecoration
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -68,8 +67,6 @@ class ScheduleDayFragment : DaggerFragment() {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        recyclerview.addItemDecoration(
-                DividerItemDecoration(view.context, DividerItemDecoration.VERTICAL))
         recyclerview.adapter = adapter
     }
 

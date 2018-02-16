@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--
+<?xml version="1.0" encoding="utf-8"?><!--
   ~ Copyright 2018 Google LLC
   ~
   ~ Licensed under the Apache License, Version 2.0 (the "License");
@@ -15,15 +14,13 @@
   ~ limitations under the License.
   -->
 
-<resources>
-    <dimen name="margin_normal">16dp</dimen>
-    <dimen name="spacing_normal">8dp</dimen>
-    <dimen name="spacing_micro">4dp</dimen>
-    <dimen name="min_touch_target">48dp</dimen>
-    <dimen name="speaker_headshot_size">60dp</dimen>
-    <dimen name="session_keyline">80dp</dimen>
-    <dimen name="tag_height">32sp</dimen>
-    <dimen name="tag_dot_size">12dp</dimen>
-    <dimen name="tag_hz_padding">12dp</dimen>
-    <dimen name="tag_corner_radius">100dp</dimen> <!-- Large value ensures the desired 'pill shape' -->
-</resources>
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="24dp"
+    android:height="24dp"
+    android:viewportWidth="24"
+    android:viewportHeight="24"
+    android:tint="?colorControlNormal">
+    <path
+        android:pathData="M12,8c1.1,0 2,-0.9 2,-2s-0.9,-2 -2,-2 -2,0.9 -2,2 0.9,2 2,2zM12,10c-1.1,0 -2,0.9 -2,2s0.9,2 2,2 2,-0.9 2,-2 -0.9,-2 -2,-2zM12,16c-1.1,0 -2,0.9 -2,2s0.9,2 2,2 2,-0.9 2,-2 -0.9,-2 -2,-2z"
+        android:fillColor="#fff"/>
+</vector>
