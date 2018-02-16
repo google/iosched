@@ -22,7 +22,4 @@
     android:layout_height="?actionBarSize"
     android:background="@null"
     android:elevation="0dp"
-    android:theme="@style/AppTheme.ActionBar"
-    tools:background="?colorPrimary"
-    tools:title="@string/app_name">
-</android.support.v7.widget.Toolbar>
+    tools:title="@string/app_name" />

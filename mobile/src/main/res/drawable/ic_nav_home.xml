@@ -15,9 +15,12 @@
   ~ limitations under the License.
   -->
 
-<resources>
-    <dimen name="margin_normal">16dp</dimen>
-    <dimen name="spacing_normal">8dp</dimen>
-    <dimen name="speaker_headshot_size">60dp</dimen>
-    <dimen name="tab_bar_min_height">55dp</dimen> <!-- Must be smaller than height for app bar collapsing behavior -->
-</resources>
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+        android:width="24dp"
+        android:height="24dp"
+        android:viewportWidth="24"
+        android:viewportHeight="24">
+    <path
+        android:pathData="M10,20v-6h4v6h5v-8h3L12,3 2,12h3v8z"
+        android:fillColor="#fff" />
+</vector>

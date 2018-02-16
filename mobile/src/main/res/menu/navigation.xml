@@ -24,11 +24,17 @@
 
     <item
         android:id="@+id/navigation_feed"
-        android:icon="@drawable/ic_nav_feed"
+        android:icon="@drawable/ic_nav_home"
         android:title="@string/title_feed" />
 
     <item
         android:id="@+id/navigation_map"
         android:icon="@drawable/ic_nav_map"
         android:title="@string/title_map" />
+
+    <item
+        android:id="@+id/navigation_info"
+        android:icon="@drawable/ic_nav_info"
+        android:title="@string/title_info" />
+
 </menu>

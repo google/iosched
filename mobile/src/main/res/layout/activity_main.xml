@@ -36,11 +36,10 @@
         android:id="@+id/navigation"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:background="?android:attr/windowBackground"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:menu="@menu/navigation"
-        app:theme="@style/ThemeOverlay.IOSched.GoogleSans" />
+        style="@style/Widget.IOSched.BottomNav" />
 
 </android.support.constraint.ConstraintLayout>

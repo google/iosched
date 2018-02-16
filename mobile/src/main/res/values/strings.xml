@@ -19,6 +19,7 @@
     <string name="title_schedule">Schedule</string>
     <string name="title_feed">Feed</string>
     <string name="title_map">Map</string>
+    <string name="title_info">Info</string>
     <string name="a11y_session_detail_video_icon">TODO: a11y text for icon</string>
     <string name="a11y_speaker_headshot">TODO a11y content description for speaker headshot</string>
 

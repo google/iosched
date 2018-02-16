@@ -15,9 +15,11 @@
   ~ limitations under the License.
   -->
 
-<resources>
-    <dimen name="margin_normal">16dp</dimen>
-    <dimen name="spacing_normal">8dp</dimen>
-    <dimen name="speaker_headshot_size">60dp</dimen>
-    <dimen name="tab_bar_min_height">55dp</dimen> <!-- Must be smaller than height for app bar collapsing behavior -->
-</resources>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:state_checked="true"
+        android:color="?android:textColorPrimary" />
+    <item android:color="?android:textColorSecondary" />
+
+</selector>
