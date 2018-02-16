@@ -26,7 +26,7 @@ buildscript {
         targetSdkVersion = 27
 
         // App dependencies
-        constraintLayoutVersion = '1.0.2'
+        constraintLayoutVersion = '1.1.0-beta5'
         espressoVersion = '3.0.1'
         gradleVersion = '3.1.0-beta3'
         junitVersion = '4.12'

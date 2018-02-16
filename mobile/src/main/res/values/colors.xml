@@ -29,4 +29,5 @@
     <color name="white">#fff</color>
 
     <color name="status_bar">#202124</color>
+    <color name="light_grey">#dadce0</color>
 </resources>
