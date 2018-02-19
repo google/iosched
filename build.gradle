@@ -41,6 +41,7 @@ buildscript {
         timberVersion = "4.6.0"
         dagger = "2.14.1"
         gsonVersion = "2.8.1"
+        ktxVersion = "0.1"
     }
 
     repositories {
