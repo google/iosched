@@ -21,13 +21,16 @@
         <variable
             name="session"
             type="com.google.samples.apps.iosched.shared.model.Session" />
+        <variable
+            name="eventListener"
+            type="com.google.samples.apps.iosched.ui.schedule.ScheduleEventListener" />
     </data>
 
     <android.support.constraint.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:paddingVertical="@dimen/spacing_normal"
-        android:clickable="true"
+        android:onClick="@{() -> eventListener.openSessionDetail(session.id)}"
         android:background="?selectableItemBackground">
 
         <android.support.constraint.Guideline

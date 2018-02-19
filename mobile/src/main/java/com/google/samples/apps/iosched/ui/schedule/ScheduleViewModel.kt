@@ -27,6 +27,7 @@ import com.google.samples.apps.iosched.shared.util.TimeUtils.ConferenceDay.DAY_1
 import com.google.samples.apps.iosched.shared.util.TimeUtils.ConferenceDay.DAY_2
 import com.google.samples.apps.iosched.shared.util.TimeUtils.ConferenceDay.DAY_3
 import com.google.samples.apps.iosched.shared.util.TimeUtils.ConferenceDay.PRECONFERENCE_DAY
+import timber.log.Timber
 import javax.inject.Inject
 
 
@@ -36,8 +37,8 @@ import javax.inject.Inject
  * create the object, so defining a [@Provides] method for this class won't be needed.
  */
 class ScheduleViewModel @Inject constructor(
-        private val loadSessionsByDayUseCase: LoadSessionsByDayUseCase)
-    : ViewModel() {
+        private val loadSessionsByDayUseCase: LoadSessionsByDayUseCase
+) : ViewModel(), ScheduleEventListener {
 
     private var filters = SessionFilters()
 
@@ -94,4 +95,12 @@ class ScheduleViewModel @Inject constructor(
         this.filters = filters
         loadSessionsByDayUseCase.executeAsync(filters, useCaseResult)
     }
+
+    override fun openSessionDetail(id: String) {
+        Timber.d("TODO: Open session detail for id: $id")
+    }
+}
+
+interface ScheduleEventListener {
+    fun openSessionDetail(id: String)
 }
