@@ -59,7 +59,7 @@ class ScheduleDayFragment : DaggerFragment() {
         args.getEnum<ConferenceDay>(ARG_CONFERENCE_DAY)
     }
 
-    private val adapter = ScheduleDayAdapter()
+    private lateinit var adapter: ScheduleDayAdapter
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
             savedInstanceState: Bundle?): View? {
@@ -67,12 +67,13 @@ class ScheduleDayFragment : DaggerFragment() {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        viewModel = parentViewModelProvider(viewModelFactory)
+        adapter = ScheduleDayAdapter(viewModel)
         recyclerview.adapter = adapter
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        viewModel = parentViewModelProvider(viewModelFactory)
         viewModel.getSessionsForDay(conferenceDay).observe(this, Observer { list ->
             adapter.setList(list ?: emptyList())
         })
