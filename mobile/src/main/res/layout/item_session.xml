@@ -29,8 +29,9 @@
     <android.support.constraint.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingVertical="@dimen/spacing_normal"
         android:onClick="@{() -> eventListener.openSessionDetail(session.id)}"
+        android:paddingTop="@dimen/margin_normal"
+        android:paddingBottom="@dimen/spacing_micro"
         android:background="?selectableItemBackground">
 
         <android.support.constraint.Guideline

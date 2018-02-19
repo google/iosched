@@ -29,6 +29,7 @@ import com.google.samples.apps.iosched.shared.util.getEnum
 import com.google.samples.apps.iosched.shared.util.lazyFast
 import com.google.samples.apps.iosched.shared.util.parentViewModelProvider
 import com.google.samples.apps.iosched.shared.util.putEnum
+import com.google.samples.apps.iosched.util.clearDecorations
 import dagger.android.support.DaggerFragment
 import kotlinx.android.synthetic.main.fragment_schedule_day.*
 import javax.inject.Inject
@@ -76,6 +77,13 @@ class ScheduleDayFragment : DaggerFragment() {
         super.onActivityCreated(savedInstanceState)
         viewModel.getSessionsForDay(conferenceDay).observe(this, Observer { list ->
             adapter.setList(list ?: emptyList())
+
+            // Recreate the decoration used for the sticky time headers
+            recyclerview.clearDecorations()
+            if (list != null && list.isNotEmpty()) {
+                recyclerview.addItemDecoration(
+                    ScheduleTimeHeadersDecoration(recyclerview.context, list))
+            }
         })
 
         // Show an error message
