@@ -15,7 +15,8 @@
   -->
 
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <data>
         <variable
@@ -30,7 +31,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:onClick="@{() -> eventListener.openSessionDetail(session.id)}"
-        android:paddingTop="@dimen/margin_normal"
+        android:paddingTop="@dimen/spacing_normal"
         android:paddingBottom="@dimen/spacing_micro"
         android:background="?selectableItemBackground">
 
@@ -48,6 +49,7 @@
             app:layout_constraintStart_toEndOf="@id/keyline"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/overflow"
+            android:layout_marginTop="@dimen/spacing_normal"
             android:textAppearance="@style/TextAppearance.IOSched.SessionTitle"
             android:text="@{session.title}" />
 
@@ -81,9 +83,11 @@
             app:layout_constraintStart_toEndOf="@id/keyline"
             app:layout_constraintTop_toBottomOf="@id/length_location"
             app:layout_constraintEnd_toEndOf="parent"
+            android:paddingEnd="@dimen/spacing_normal"
             android:requiresFadingEdge="horizontal"
-            android:fadingEdgeLength="24dp"
-            android:scrollbarSize="2dp">
+            android:fadingEdgeLength="48dp"
+            android:scrollbars="none"
+            tools:ignore="RtlSymmetry">
 
             <LinearLayout
                 android:id="@+id/tags"
