@@ -30,7 +30,7 @@
 
     <color name="status_bar">#202124</color>
     <color name="light_grey">#dadce0</color>
-
     <color name="navdrawer_background">@color/white</color>
     <color name="lighter_grey">#f6f6f6</color>
+    <color name="default_tag_color">#999</color>
 </resources>

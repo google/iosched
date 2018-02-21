@@ -17,6 +17,8 @@
 package com.google.samples.apps.iosched.util
 
 import android.databinding.BindingAdapter
+import android.graphics.Color.TRANSPARENT
+import android.support.v4.content.ContextCompat
 import android.view.LayoutInflater
 import android.view.View
 import android.view.View.GONE
@@ -26,6 +28,7 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.LinearLayout
 import android.widget.TextView
+import com.google.samples.apps.iosched.R
 import com.google.samples.apps.iosched.databinding.ItemSessionTagBinding
 import com.google.samples.apps.iosched.shared.model.Tag
 
@@ -59,5 +62,10 @@ private fun createSessionTagButton(
 
 @BindingAdapter("tagTint")
 fun tagTint(textView: TextView, color: Int) {
-    textView.compoundDrawablesRelative[0].setTint(color)
+    val tintColor = if (color != TRANSPARENT) {
+        color
+    } else {
+        ContextCompat.getColor(textView.context, R.color.default_tag_color)
+    }
+    textView.compoundDrawablesRelative[0]?.setTint(tintColor)
 }
