@@ -42,16 +42,21 @@
                 android:layout_height="wrap_content"
                 android:minHeight="?actionBarSize"
                 android:gravity="center"
-                app:layout_scrollFlags="scroll"
+                app:layout_scrollFlags="scroll|snap"
                 android:text="@string/title_schedule"
                 android:textAppearance="@style/TextAppearance.IOSched.ToolbarTitle" />
+
+            <!-- AppBarLayout requires a collapsing view for the header pinning behavior we want -->
+            <android.support.v4.widget.Space
+                android:layout_width="0dp"
+                android:layout_height="1px"
+                app:layout_scrollFlags="scroll|exitUntilCollapsed"
+                android:minHeight="0px" />
 
             <android.support.design.widget.TabLayout
                 android:id="@+id/tabs"
                 android:layout_width="match_parent"
                 android:layout_height="?actionBarSize"
-                android:minHeight="@dimen/tab_bar_min_height"
-                app:layout_scrollFlags="scroll|exitUntilCollapsed"
                 app:theme="@style/ThemeOverlay.IOSched.GoogleSans"
                 style="@style/Widget.IOSched.Tabs" />
 
