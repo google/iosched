@@ -81,7 +81,7 @@ class ScheduleViewModelTest {
     private fun createSessionsUseCase(
             sessions: Map<ConferenceDay, List<Session>>): LoadSessionsByDayUseCase {
         return object : LoadSessionsByDayUseCase(SessionRepository(TestSessionDataSource)) {
-            override fun execute(parameters: SessionFilters): Map<ConferenceDay, List<Session>> {
+            override fun execute(filters: SessionFilters): Map<ConferenceDay, List<Session>> {
                 return sessions
             }
         }
@@ -92,7 +92,7 @@ class ScheduleViewModelTest {
      */
     private fun createSessionsExceptionUseCase(): LoadSessionsByDayUseCase {
         return object : LoadSessionsByDayUseCase(SessionRepository(TestSessionDataSource)) {
-            override fun execute(parameters: SessionFilters): Map<ConferenceDay, List<Session>> {
+            override fun execute(filters: SessionFilters): Map<ConferenceDay, List<Session>> {
                 throw Exception("Testing exception")
             }
         }

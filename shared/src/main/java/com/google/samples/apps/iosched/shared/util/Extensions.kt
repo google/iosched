@@ -16,6 +16,8 @@
 
 package com.google.samples.apps.iosched.shared.util
 
+import android.arch.lifecycle.LiveData
+import android.arch.lifecycle.Transformations
 import android.arch.lifecycle.ViewModel
 import android.arch.lifecycle.ViewModelProvider
 import android.arch.lifecycle.ViewModelProviders
@@ -114,5 +116,19 @@ fun <T : Enum<T>> Bundle.putEnum(key: String, value: T) = putString(key, value.n
 
 /** Read an enum value from a Bundle */
 inline fun <reified T : Enum<T>> Bundle.getEnum(key: String): T = enumValueOf(getString(key))
+
+// endregion
+
+// region LiveData
+
+/** Uses `Transformations.map` on a LiveData */
+fun <X, T> LiveData<T>.map(body: (T) -> X): LiveData<X> {
+    return Transformations.map(this, body)
+}
+
+/** Uses `Transformations.switchMap` on a LiveData */
+fun <X, T> LiveData<T>.switchMap(body: (T) -> LiveData<X>): LiveData<X> {
+    return Transformations.switchMap(this, body)
+}
 
 // endregion

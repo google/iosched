@@ -39,7 +39,7 @@ class ScheduleFilterFragment : DaggerFragment() {
 
     private lateinit var viewModel: ScheduleViewModel
 
-    private var filterAdapter = ScheduleFilterAdapter()
+    private lateinit var filterAdapter: ScheduleFilterAdapter
 
     override fun onCreateView(
             inflater: LayoutInflater,
@@ -52,6 +52,7 @@ class ScheduleFilterFragment : DaggerFragment() {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         viewModel = activityViewModelProvider(viewModelFactory)
+        filterAdapter = ScheduleFilterAdapter(viewModel)
         viewModel.tags.observe(this, Observer { list ->
             filterAdapter.setItems(list ?: emptyList())
         })
