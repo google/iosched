@@ -59,12 +59,8 @@ class ScheduleTimeHeadersDecoration(
         paint = TextPaint(ANTI_ALIAS_FLAG).apply {
             color = attrs.getColorOrThrow(R.styleable.TimeHeader_android_textColor)
             textSize = attrs.getDimensionOrThrow(R.styleable.TimeHeader_hourTextSize)
-            try {
-                typeface = ResourcesCompat.getFont(context,
-                        attrs.getResourceId(R.styleable.TimeHeader_android_fontFamily, 0))
-            } catch (e:Exception) {
-                //TODO: fix fonts for AIA on O+
-            }
+            typeface = ResourcesCompat.getFont(context,
+                attrs.getResourceId(R.styleable.TimeHeader_android_fontFamily, 0))
         }
         width = attrs.getDimensionPixelSizeOrThrow(R.styleable.TimeHeader_android_width)
         paddingTop = attrs.getDimensionPixelSizeOrThrow(R.styleable.TimeHeader_android_paddingTop)

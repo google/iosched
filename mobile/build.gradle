@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-apply plugin: 'com.android.feature'
+apply plugin: 'com.android.application'
 
 apply plugin: 'kotlin-android'
 
@@ -23,9 +23,9 @@ apply plugin: 'kotlin-android-extensions'
 apply plugin: 'kotlin-kapt'
 
 android {
-    baseFeature true
     compileSdkVersion rootProject.compileSdkVersion
     defaultConfig {
+        applicationId "com.google.samples.apps.iosched"
         minSdkVersion rootProject.minSdkVersion
         targetSdkVersion rootProject.targetSdkVersion
         versionCode 1
@@ -48,19 +48,17 @@ android {
 }
 
 dependencies {
-    application project(':mobileapp')
-
-    api project(":shared")
+    implementation project(":shared")
 
     implementation fileTree(dir: 'libs', include: ['*.jar'])
 
     // UI
-    api "com.android.support:appcompat-v7:$rootProject.supportLibraryVersion"
-    api "com.android.support:design:$rootProject.designLibraryVersion"
-    api "com.android.support.constraint:constraint-layout:$rootProject.constraintLayoutVersion"
+    implementation "com.android.support:appcompat-v7:$rootProject.supportLibraryVersion"
+    implementation "com.android.support:design:$rootProject.designLibraryVersion"
+    implementation "com.android.support.constraint:constraint-layout:$rootProject.constraintLayoutVersion"
 
     // Architecture Components
-    api "android.arch.lifecycle:extensions:$rootProject.archLifecycleVersion"
+    implementation "android.arch.lifecycle:extensions:$rootProject.archLifecycleVersion"
     kapt "android.arch.lifecycle:compiler:$rootProject.archLifecycleVersion"
     testImplementation "android.arch.core:core-testing:$rootProject.archLifecycleVersion"
 
