@@ -32,7 +32,7 @@ import com.google.samples.apps.iosched.ui.schedule.ScheduleFilterAdapter.FilterV
 /**
  * Adapter for the filters drawer
  */
-class ScheduleFilterAdapter : Adapter<FilterViewHolder>() {
+class ScheduleFilterAdapter(val viewModel: ScheduleViewModel) : Adapter<FilterViewHolder>() {
 
     private var tags: List<Tag> = emptyList()
 
@@ -47,9 +47,10 @@ class ScheduleFilterAdapter : Adapter<FilterViewHolder>() {
 
     fun clearFilters() {
         // TODO(jdkoren) uncheck all items
+        viewModel.clearFilters()
     }
 
-    class FilterViewHolder(itemView: View) : ViewHolder(itemView) {
+    inner class FilterViewHolder(itemView: View) : ViewHolder(itemView) {
 
         private val label: TextView = itemView.findViewById(R.id.filter_label)
         private val checkbox: CheckBox = itemView.findViewById(R.id.filter_checkbox)
@@ -57,7 +58,13 @@ class ScheduleFilterAdapter : Adapter<FilterViewHolder>() {
         private var tag: Tag? = null
 
         init {
-            itemView.setOnClickListener { checkbox.performClick() }
+            itemView.setOnClickListener {
+                //TODO move to Data Binding
+                checkbox.performClick()
+                if (tag != null) {
+                    viewModel.toggleFilter(tag!!, checkbox.isChecked)
+                }
+            }
         }
 
         // TODO(jdkoren): add databinding
