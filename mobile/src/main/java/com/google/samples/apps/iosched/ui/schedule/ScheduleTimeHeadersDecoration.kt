@@ -17,6 +17,7 @@
 package com.google.samples.apps.iosched.ui.schedule
 
 import android.content.Context
+import android.content.res.Resources
 import android.graphics.Canvas
 import android.graphics.Paint.ANTI_ALIAS_FLAG
 import android.graphics.Typeface
@@ -59,8 +60,11 @@ class ScheduleTimeHeadersDecoration(
         paint = TextPaint(ANTI_ALIAS_FLAG).apply {
             color = attrs.getColorOrThrow(R.styleable.TimeHeader_android_textColor)
             textSize = attrs.getDimensionOrThrow(R.styleable.TimeHeader_hourTextSize)
-            typeface = ResourcesCompat.getFont(context,
-                attrs.getResourceId(R.styleable.TimeHeader_android_fontFamily, 0))
+            try {
+                typeface = ResourcesCompat.getFont(context,
+                    attrs.getResourceId(R.styleable.TimeHeader_android_fontFamily, 0))
+            } catch (nfe: Resources.NotFoundException) {
+            }
         }
         width = attrs.getDimensionPixelSizeOrThrow(R.styleable.TimeHeader_android_width)
         paddingTop = attrs.getDimensionPixelSizeOrThrow(R.styleable.TimeHeader_android_paddingTop)
@@ -102,9 +106,9 @@ class ScheduleTimeHeadersDecoration(
             if (view.bottom > 0 && viewTop < parent.height) {
                 val position = parent.getChildAdapterPosition(view)
                 timeSlots[position]?.let {
-                val top = (viewTop + paddingTop)
-                    .coerceAtLeast(paddingTop)
-                    .coerceAtMost(prevHeaderTop - it.height)
+                    val top = (viewTop + paddingTop)
+                        .coerceAtLeast(paddingTop)
+                        .coerceAtMost(prevHeaderTop - it.height)
                     c.withTranslation(y = top.toFloat()) {
                         it.draw(c)
                     }
