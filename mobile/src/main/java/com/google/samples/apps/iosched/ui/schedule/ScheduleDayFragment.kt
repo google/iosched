@@ -25,9 +25,9 @@ import android.view.ViewGroup
 import android.widget.Toast
 import com.google.samples.apps.iosched.R
 import com.google.samples.apps.iosched.shared.util.TimeUtils.ConferenceDay
+import com.google.samples.apps.iosched.shared.util.activityViewModelProvider
 import com.google.samples.apps.iosched.shared.util.getEnum
 import com.google.samples.apps.iosched.shared.util.lazyFast
-import com.google.samples.apps.iosched.shared.util.parentViewModelProvider
 import com.google.samples.apps.iosched.shared.util.putEnum
 import com.google.samples.apps.iosched.util.clearDecorations
 import dagger.android.support.DaggerFragment
@@ -68,14 +68,14 @@ class ScheduleDayFragment : DaggerFragment() {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        viewModel = parentViewModelProvider(viewModelFactory)
+        viewModel = activityViewModelProvider(viewModelFactory)
         adapter = ScheduleDayAdapter(viewModel)
         recyclerview.adapter = adapter
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        viewModel.getSessionsForDay(conferenceDay).observe(this, Observer { list ->
+        viewModel.getSessionsForDay(conferenceDay).observe(activity!!, Observer { list ->
             adapter.setList(list ?: emptyList())
 
             // Recreate the decoration used for the sticky time headers

@@ -16,6 +16,7 @@
 
 package com.google.samples.apps.iosched.ui.schedule
 
+import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProvider
 import android.os.Bundle
 import android.support.v7.widget.RecyclerView
@@ -38,7 +39,7 @@ class ScheduleFilterFragment : DaggerFragment() {
 
     private lateinit var viewModel: ScheduleViewModel
 
-    private var filterAdapter = ScheduleFilterAdapter()
+    private lateinit var filterAdapter: ScheduleFilterAdapter
 
     override fun onCreateView(
             inflater: LayoutInflater,
@@ -51,6 +52,10 @@ class ScheduleFilterFragment : DaggerFragment() {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         viewModel = activityViewModelProvider(viewModelFactory)
+        filterAdapter = ScheduleFilterAdapter(viewModel)
+        viewModel.tags.observe(this, Observer { list ->
+            filterAdapter.setItems(list ?: emptyList())
+        })
 
         clear_filters.setOnClickListener { filterAdapter.clearFilters() }
         recyclerview.apply {

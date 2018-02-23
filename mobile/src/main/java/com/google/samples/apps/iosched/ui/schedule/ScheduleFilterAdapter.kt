@@ -32,24 +32,9 @@ import com.google.samples.apps.iosched.ui.schedule.ScheduleFilterAdapter.FilterV
 /**
  * Adapter for the filters drawer
  */
-class ScheduleFilterAdapter : Adapter<FilterViewHolder>() {
+class ScheduleFilterAdapter(val viewModel: ScheduleViewModel) : Adapter<FilterViewHolder>() {
 
-    // TODO(jdkoren) temporary just to see it render
-    private var tags = listOf(
-            Tag("1", "TRACK", 0, "Ads", 0xFFB0BEC5.toInt()),
-            Tag("2", "TRACK", 1, "Android", 0xFFAED581.toInt()),
-            Tag("3", "TRACK", 2, "Assistant", 0xFF1ce8b5.toInt()),
-            Tag("4", "TRACK", 3, "Cloud", 0xFF80CBC4.toInt()),
-            Tag("5", "TRACK", 4, "Design", 0xFFF8BBD0.toInt()),
-            Tag("6", "TRACK", 5, "Firebase", 0xFFFFD54F.toInt()),
-            Tag("7", "TRACK", 6, "IoT", 0xFFBCAAA4.toInt()),
-            Tag("8", "TRACK", 7, "Location & Maps", 0xFFEF9A9A.toInt()),
-            Tag("9", "TRACK", 8, "Machine Learning", 0xFFbcc8fb.toInt()),
-            Tag("10", "TRACK", 9, "Misc", 0xFFC5C9E9.toInt()),
-            Tag("11", "TRACK", 10, "Mobile Web", 0xFFFFF176.toInt()),
-            Tag("12", "TRACK", 11, "Search", 0xFF90CAF9.toInt()),
-            Tag("13", "TRACK", 12, "VR", 0xFFFF8A65.toInt())
-    )
+    private var tags: List<Tag> = emptyList()
 
     override fun getItemCount() = tags.size
 
@@ -62,9 +47,10 @@ class ScheduleFilterAdapter : Adapter<FilterViewHolder>() {
 
     fun clearFilters() {
         // TODO(jdkoren) uncheck all items
+        viewModel.clearFilters()
     }
 
-    class FilterViewHolder(itemView: View) : ViewHolder(itemView) {
+    inner class FilterViewHolder(itemView: View) : ViewHolder(itemView) {
 
         private val label: TextView = itemView.findViewById(R.id.filter_label)
         private val checkbox: CheckBox = itemView.findViewById(R.id.filter_checkbox)
@@ -72,7 +58,13 @@ class ScheduleFilterAdapter : Adapter<FilterViewHolder>() {
         private var tag: Tag? = null
 
         init {
-            itemView.setOnClickListener { checkbox.performClick() }
+            itemView.setOnClickListener {
+                //TODO move to Data Binding
+                checkbox.performClick()
+                if (tag != null) {
+                    viewModel.toggleFilter(tag!!, checkbox.isChecked)
+                }
+            }
         }
 
         // TODO(jdkoren): add databinding
@@ -81,5 +73,12 @@ class ScheduleFilterAdapter : Adapter<FilterViewHolder>() {
             label.text = tag.name
             ViewCompat.setBackgroundTintList(label, ColorStateList.valueOf(tag.color))
         }
+    }
+
+    fun setItems(list: List<Tag>) {
+        // TODO(jdkoren) use DiffUtil
+        // TODO(jdkoren) reconcile new tags with current filters
+        tags = list
+        notifyDataSetChanged()
     }
 }

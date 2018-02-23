@@ -18,15 +18,16 @@ package com.google.samples.apps.iosched.ui.schedule
 
 import android.arch.lifecycle.LiveData
 import android.arch.lifecycle.MutableLiveData
-import android.arch.lifecycle.Transformations
 import android.arch.lifecycle.ViewModel
 import com.google.samples.apps.iosched.shared.model.Session
+import com.google.samples.apps.iosched.shared.model.Tag
 import com.google.samples.apps.iosched.shared.result.Result
 import com.google.samples.apps.iosched.shared.util.TimeUtils.ConferenceDay
 import com.google.samples.apps.iosched.shared.util.TimeUtils.ConferenceDay.DAY_1
 import com.google.samples.apps.iosched.shared.util.TimeUtils.ConferenceDay.DAY_2
 import com.google.samples.apps.iosched.shared.util.TimeUtils.ConferenceDay.DAY_3
 import com.google.samples.apps.iosched.shared.util.TimeUtils.ConferenceDay.PRECONFERENCE_DAY
+import com.google.samples.apps.iosched.shared.util.map
 import timber.log.Timber
 import javax.inject.Inject
 
@@ -37,46 +38,55 @@ import javax.inject.Inject
  * create the object, so defining a [@Provides] method for this class won't be needed.
  */
 class ScheduleViewModel @Inject constructor(
-        private val loadSessionsByDayUseCase: LoadSessionsByDayUseCase
+        private val loadSessionsByDayUseCase: LoadSessionsByDayUseCase,
+        private val loadTagsByCategoryUseCase: LoadTagsByCategoryUseCase
 ) : ViewModel(), ScheduleEventListener {
 
     private var filters = SessionFilters()
 
-    lateinit var isLoading: LiveData<Boolean>
+    val isLoading: LiveData<Boolean>
+
+    val tags: LiveData<List<Tag>>
 
     val errorMessage: LiveData<String>
     val errorMessageShown = MutableLiveData<Boolean>()
 
-    private val useCaseResult = MutableLiveData<Result<Map<ConferenceDay, List<Session>>>>()
+    private val loadSessionsResult = MutableLiveData<Result<Map<ConferenceDay, List<Session>>>>()
+    private val loadTagsResult = MutableLiveData<Result<List<Tag>>>()
 
     private val preconferenceSessions: LiveData<List<Session>>
     private val day1Sessions: LiveData<List<Session>>
     private val day2Sessions: LiveData<List<Session>>
     private val day3Sessions: LiveData<List<Session>>
 
-
     init {
-        loadSessionsByDayUseCase.executeAsync(filters, useCaseResult)
+        // Load sessions and tags and store the result in `LiveData`s
+        loadSessionsByDayUseCase.executeAsync(filters, loadSessionsResult)
+        loadTagsByCategoryUseCase.executeAsync(Unit, loadTagsResult)
 
         // map LiveData results from UseCase to each day's individual LiveData
-        preconferenceSessions = Transformations.map(useCaseResult) { result ->
-            (result as? Result.Success)?.data?.get(PRECONFERENCE_DAY) ?: emptyList()
+        preconferenceSessions = loadSessionsResult.map {
+            (it as? Result.Success)?.data?.get(PRECONFERENCE_DAY) ?: emptyList()
         }
-        day1Sessions = Transformations.map(useCaseResult) { result ->
-            (result as? Result.Success)?.data?.get(DAY_1) ?: emptyList()
+        day1Sessions = loadSessionsResult.map {
+            (it as? Result.Success)?.data?.get(DAY_1) ?: emptyList()
         }
-        day2Sessions = Transformations.map(useCaseResult) { result ->
-            (result as? Result.Success)?.data?.get(DAY_2) ?: emptyList()
+        day2Sessions = loadSessionsResult.map {
+            (it as? Result.Success)?.data?.get(DAY_2) ?: emptyList()
         }
-        day3Sessions = Transformations.map(useCaseResult) { result ->
-            (result as? Result.Success)?.data?.get(DAY_3) ?: emptyList()
+        day3Sessions = loadSessionsResult.map {
+            (it as? Result.Success)?.data?.get(DAY_3) ?: emptyList()
         }
 
-        isLoading = Transformations.map(useCaseResult) { result -> result == Result.Loading }
+        isLoading = loadSessionsResult.map { it == Result.Loading}
 
-        errorMessage = Transformations.map(useCaseResult) { result ->
+        errorMessage = loadSessionsResult.map { result ->
             errorMessageShown.value = false
             (result as? Result.Error)?.exception?.message ?: ""
+        }
+
+        tags = loadTagsResult.map { result ->
+            (result as? Result.Success)?.data ?: emptyList()
         }
     }
 
@@ -91,16 +101,27 @@ class ScheduleViewModel @Inject constructor(
         DAY_3 -> day3Sessions
     }
 
-    fun applyFilters(filters: SessionFilters) {
-        this.filters = filters
-        loadSessionsByDayUseCase.executeAsync(filters, useCaseResult)
-    }
-
     override fun openSessionDetail(id: String) {
         Timber.d("TODO: Open session detail for id: $id")
+    }
+
+    override fun toggleFilter(tag: Tag, enabled: Boolean) {
+        if (enabled) {
+            filters.add(tag)
+        } else {
+            filters.remove(tag)
+        }
+        loadSessionsByDayUseCase.executeAsync(filters, loadSessionsResult)
+    }
+
+    override fun clearFilters() {
+        filters.clearAll()
+        loadSessionsByDayUseCase.executeAsync(filters, loadSessionsResult)
     }
 }
 
 interface ScheduleEventListener {
     fun openSessionDetail(id: String)
+    fun toggleFilter(tag: Tag, enabled: Boolean)
+    fun clearFilters()
 }
