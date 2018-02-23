@@ -52,6 +52,7 @@
         android:layout_marginStart="@dimen/spacing_normal"
         android:minHeight="@dimen/a11y_min_touch_target_dimen"
         android:minWidth="@dimen/a11y_min_touch_target_dimen"
+        android:clickable="false"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"

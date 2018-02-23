@@ -14,8 +14,10 @@
  * limitations under the License.
  */
 
-package com.google.samples.apps.iosched.ui.schedule
+package com.google.samples.apps.iosched.shared.data.session
 
-class SessionFilters {
-    //TODO support filters by tags, isLiveStreamed
+import com.google.samples.apps.iosched.shared.model.Session
+
+interface SessionDataSource {
+    fun getSessions(): List<Session>
 }
