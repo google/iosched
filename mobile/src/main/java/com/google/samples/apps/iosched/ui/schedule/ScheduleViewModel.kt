@@ -19,6 +19,8 @@ package com.google.samples.apps.iosched.ui.schedule
 import android.arch.lifecycle.LiveData
 import android.arch.lifecycle.MutableLiveData
 import android.arch.lifecycle.ViewModel
+import android.databinding.ObservableBoolean
+import android.support.annotation.VisibleForTesting
 import com.google.samples.apps.iosched.shared.domain.agenda.LoadAgendaUseCase
 import com.google.samples.apps.iosched.shared.domain.invoke
 import com.google.samples.apps.iosched.shared.domain.sessions.LoadSessionsByDayUseCase
@@ -27,11 +29,13 @@ import com.google.samples.apps.iosched.shared.model.Block
 import com.google.samples.apps.iosched.shared.model.Session
 import com.google.samples.apps.iosched.shared.model.Tag
 import com.google.samples.apps.iosched.shared.result.Result
-import com.google.samples.apps.iosched.shared.schedule.SessionFilters
+import com.google.samples.apps.iosched.shared.result.Result.Success
+import com.google.samples.apps.iosched.shared.schedule.SessionMatcher
 import com.google.samples.apps.iosched.shared.util.TimeUtils.ConferenceDay
 import com.google.samples.apps.iosched.shared.util.TimeUtils.ConferenceDay.DAY_1
 import com.google.samples.apps.iosched.shared.util.TimeUtils.ConferenceDay.DAY_2
 import com.google.samples.apps.iosched.shared.util.TimeUtils.ConferenceDay.DAY_3
+import com.google.samples.apps.iosched.shared.util.hasSameValue
 import com.google.samples.apps.iosched.shared.util.map
 import timber.log.Timber
 import javax.inject.Inject
@@ -42,16 +46,19 @@ import javax.inject.Inject
  * create the object, so defining a [@Provides] method for this class won't be needed.
  */
 class ScheduleViewModel @Inject constructor(
-        private val loadSessionsByDayUseCase: LoadSessionsByDayUseCase,
-        loadAgendaUseCase: LoadAgendaUseCase,
-        loadTagsByCategoryUseCase: LoadTagsByCategoryUseCase
+    private val loadSessionsByDayUseCase: LoadSessionsByDayUseCase,
+    loadAgendaUseCase: LoadAgendaUseCase,
+    loadTagsByCategoryUseCase: LoadTagsByCategoryUseCase
 ) : ViewModel(), ScheduleEventListener {
-
-    private var filters = SessionFilters()
 
     val isLoading: LiveData<Boolean>
 
-    val tags: LiveData<List<Tag>>
+    private val sessionMatcher = SessionMatcher()
+    // List of TagFilters returned by the LiveData transformation. Only Result.Success modifies it.
+    private var cachedTagFilters = emptyList<TagFilter>()
+
+    val tagFilters: LiveData<List<TagFilter>>
+    val hasAnyFilters = ObservableBoolean(false)
 
     val errorMessage: LiveData<String>
     val errorMessageShown = MutableLiveData<Boolean>()
@@ -68,7 +75,7 @@ class ScheduleViewModel @Inject constructor(
 
     init {
         // Load sessions and tags and store the result in `LiveData`s
-        loadSessionsByDayUseCase(filters, loadSessionsResult)
+        loadSessionsByDayUseCase(sessionMatcher, loadSessionsResult)
         loadAgendaUseCase(loadAgendaResult)
         loadTagsByCategoryUseCase(loadTagsResult)
 
@@ -83,7 +90,7 @@ class ScheduleViewModel @Inject constructor(
             (it as? Result.Success)?.data?.get(DAY_3) ?: emptyList()
         }
 
-        isLoading = loadSessionsResult.map { it == Result.Loading}
+        isLoading = loadSessionsResult.map { it == Result.Loading }
 
         errorMessage = loadSessionsResult.map { result ->
             errorMessageShown.value = false
@@ -95,14 +102,27 @@ class ScheduleViewModel @Inject constructor(
         }
         // TODO handle agenda errors
 
-        tags = loadTagsResult.map { result ->
-            (result as? Result.Success)?.data ?: emptyList()
+        tagFilters = loadTagsResult.map {
+            if (it is Success) {
+                cachedTagFilters = processTags(it.data)
+            }
+            // TODO handle Error result
+            cachedTagFilters
         }
     }
 
-    fun wasErrorMessageShown() : Boolean = errorMessageShown.value ?: false
+    fun wasErrorMessageShown() = errorMessageShown.value ?: false
 
-    fun onErrorMessageShown() { errorMessageShown.value = true }
+    fun onErrorMessageShown() {
+        errorMessageShown.value = true
+    }
+
+    @VisibleForTesting
+    internal fun processTags(tags: List<Tag>): List<TagFilter> {
+        sessionMatcher.removeOrphanedTags(tags)
+        // Convert to list of TagFilters, checking the ones that are selected in SessionMatcher.
+        return tags.map { TagFilter(it, it in sessionMatcher) }
+    }
 
     fun getSessionsForDay(day: ConferenceDay): LiveData<List<Session>> = when (day) {
         DAY_1 -> day1Sessions
@@ -114,23 +134,44 @@ class ScheduleViewModel @Inject constructor(
         Timber.d("TODO: Open session detail for id: $id")
     }
 
-    override fun toggleFilter(tag: Tag, enabled: Boolean) {
-        if (enabled) {
-            filters.add(tag)
-        } else {
-            filters.remove(tag)
+    override fun toggleFilter(filter: TagFilter, enabled: Boolean) {
+        // If sessionMatcher.add or .remove returns false, we do nothing.
+        if (enabled && sessionMatcher.add(filter.tag)) {
+            filter.isChecked.set(true)
+            hasAnyFilters.set(true)
+            loadSessionsByDayUseCase(sessionMatcher, loadSessionsResult)
+
+        } else if (!enabled && sessionMatcher.remove(filter.tag)) {
+            filter.isChecked.set(false)
+            hasAnyFilters.set(!sessionMatcher.isEmpty())
+            loadSessionsByDayUseCase(sessionMatcher, loadSessionsResult)
         }
-        loadSessionsByDayUseCase(filters, loadSessionsResult)
     }
 
     override fun clearFilters() {
-        filters.clearAll()
-        loadSessionsByDayUseCase(filters, loadSessionsResult)
+        if (sessionMatcher.clearAll()) {
+            tagFilters.value?.forEach { it.isChecked.set(false) }
+            hasAnyFilters.set(false)
+            loadSessionsByDayUseCase(sessionMatcher, loadSessionsResult)
+        }
     }
+}
+
+class TagFilter(val tag: Tag, isChecked: Boolean) {
+    val isChecked = ObservableBoolean(isChecked)
+
+    /** Only the tag is used for equality. */
+    override fun equals(other: Any?) = this === other || (other is TagFilter && other.tag == tag)
+
+    /** Only the tag is used for equality. */
+    override fun hashCode() = tag.hashCode()
+
+    fun isUiContentEqual(other: TagFilter) =
+        tag.isUiContentEqual(other.tag) && isChecked.hasSameValue(other.isChecked)
 }
 
 interface ScheduleEventListener {
     fun openSessionDetail(id: String)
-    fun toggleFilter(tag: Tag, enabled: Boolean)
+    fun toggleFilter(filter: TagFilter, enabled: Boolean)
     fun clearFilters()
 }

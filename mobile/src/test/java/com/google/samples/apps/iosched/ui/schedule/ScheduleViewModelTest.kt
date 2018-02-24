@@ -29,7 +29,7 @@ import com.google.samples.apps.iosched.shared.domain.sessions.LoadTagsByCategory
 import com.google.samples.apps.iosched.shared.model.Block
 import com.google.samples.apps.iosched.shared.model.Session
 import com.google.samples.apps.iosched.shared.model.Tag
-import com.google.samples.apps.iosched.shared.schedule.SessionFilters
+import com.google.samples.apps.iosched.shared.schedule.SessionMatcher
 import com.google.samples.apps.iosched.shared.util.TimeUtils.ConferenceDay
 import com.google.samples.apps.iosched.test.util.LiveDataTestUtil
 import com.google.samples.apps.iosched.test.util.SyncTaskExecutorRule
@@ -70,7 +70,8 @@ class ScheduleViewModelTest {
         }
         assertFalse(LiveDataTestUtil.getValue(viewModel.isLoading)!!)
         // Tags
-        assertEquals(TestData.tagsList, LiveDataTestUtil.getValue(viewModel.tags))
+        val tagFilters = viewModel.processTags(TestData.tagsList)
+        assertEquals(tagFilters, LiveDataTestUtil.getValue(viewModel.tagFilters))
     }
 
     @Test
@@ -91,7 +92,7 @@ class ScheduleViewModelTest {
     private fun createSessionsUseCase(
             sessions: Map<ConferenceDay, List<Session>>): LoadSessionsByDayUseCase {
         return object : LoadSessionsByDayUseCase(SessionRepository(TestSessionDataSource)) {
-            override fun execute(parameters: SessionFilters): Map<ConferenceDay, List<Session>> {
+            override fun execute(parameters: SessionMatcher): Map<ConferenceDay, List<Session>> {
                 return sessions
             }
         }
@@ -102,7 +103,7 @@ class ScheduleViewModelTest {
      */
     private fun createSessionsExceptionUseCase(): LoadSessionsByDayUseCase {
         return object : LoadSessionsByDayUseCase(SessionRepository(TestSessionDataSource)) {
-            override fun execute(parameters: SessionFilters): Map<ConferenceDay, List<Session>> {
+            override fun execute(parameters: SessionMatcher): Map<ConferenceDay, List<Session>> {
                 throw Exception("Testing exception")
             }
         }

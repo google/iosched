@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.google.samples.apps.iosched.ui.schedule.day.filters
+package com.google.samples.apps.iosched.ui.schedule.filters
 
 import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProvider
@@ -24,7 +24,7 @@ import android.support.v7.widget.RecyclerView.OnScrollListener
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.google.samples.apps.iosched.R
+import com.google.samples.apps.iosched.databinding.FragmentScheduleFilterBinding
 import com.google.samples.apps.iosched.shared.util.activityViewModelProvider
 import com.google.samples.apps.iosched.ui.schedule.ScheduleViewModel
 import dagger.android.support.DaggerFragment
@@ -42,23 +42,25 @@ class ScheduleFilterFragment : DaggerFragment() {
 
     private lateinit var filterAdapter: ScheduleFilterAdapter
 
+    private lateinit var binding: FragmentScheduleFilterBinding
+
     override fun onCreateView(
-            inflater: LayoutInflater,
-            container: ViewGroup?,
-            savedInstanceState: Bundle?
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
     ): View? {
-        return inflater.inflate(R.layout.fragment_schedule_filter, container, false)
+        binding = FragmentScheduleFilterBinding.inflate(inflater, container, false)
+        return binding.root
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         viewModel = activityViewModelProvider(viewModelFactory)
-        filterAdapter = ScheduleFilterAdapter(viewModel)
-        viewModel.tags.observe(this, Observer { list ->
-            filterAdapter.setItems(list ?: emptyList())
-        })
+        binding.viewModel = viewModel
 
-        clear_filters.setOnClickListener { filterAdapter.clearFilters() }
+        filterAdapter = ScheduleFilterAdapter(viewModel)
+        viewModel.tagFilters.observe(this, Observer { filterAdapter.submitList(it) })
+
         recyclerview.apply {
             adapter = filterAdapter
             setHasFixedSize(true)

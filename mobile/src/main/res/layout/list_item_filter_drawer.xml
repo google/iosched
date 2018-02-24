@@ -15,47 +15,42 @@
   ~ limitations under the License.
   -->
 
-<android.support.constraint.ConstraintLayout
+<layout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:background="?android:selectableItemBackground"
-    android:gravity="center_vertical"
-    android:importantForAccessibility="no"
-    android:minHeight="?android:listPreferredItemHeightSmall"
-    android:orientation="horizontal">
+    xmlns:tools="http://schemas.android.com/tools">
 
-    <TextView
-        android:id="@+id/filter_label"
-        style="@style/Session.Tag"
-        android:layout_width="wrap_content"
+    <data>
+
+        <variable
+            name="tagFilter"
+            type="com.google.samples.apps.iosched.ui.schedule.TagFilter" />
+
+        <variable
+            name="viewModel"
+            type="com.google.samples.apps.iosched.ui.schedule.ScheduleViewModel" />
+    </data>
+
+    <FrameLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="@dimen/margin_normal"
-        android:layout_marginStart="@dimen/margin_normal"
-        android:importantForAccessibility="no"
-        android:labelFor="@+id/filter_checkbox"
-        app:layout_constrainedWidth="true"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/filter_checkbox"
-        app:layout_constraintHorizontal_bias="0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:backgroundTint="@sample/tags.json/tags/color"
-        tools:text="@sample/tags.json/tags/name" />
+        android:gravity="center_vertical"
+        android:minHeight="?android:listPreferredItemHeightSmall">
 
-    <CheckBox
-        android:id="@+id/filter_checkbox"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/spacing_normal"
-        android:minHeight="@dimen/a11y_min_touch_target_dimen"
-        android:minWidth="@dimen/a11y_min_touch_target_dimen"
-        android:clickable="false"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:checked="@sample/tags.json/tags/checked" />
+        <CheckedTextView
+            android:id="@+id/filter_label"
+            style="@style/Widget.IOSched.Tag.Filter"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/margin_normal"
+            android:layout_marginStart="@dimen/margin_normal"
+            android:checked="@{tagFilter.isChecked}"
+            android:onClick="@{() -> viewModel.toggleFilter(tagFilter, !filterLabel.checked)}"
+            android:text="@{tagFilter.tag.name}"
+            app:tagColor="@{tagFilter.tag.color}"
+            tools:checked="@sample/tags.json/tags/checked"
+            tools:tagColor="@sample/tags.json/tags/color"
+            tools:text="@sample/tags.json/tags/name" />
 
-</android.support.constraint.ConstraintLayout>
+    </FrameLayout>
+</layout>

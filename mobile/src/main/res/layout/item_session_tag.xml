@@ -16,11 +16,12 @@
   -->
 
 <layout
-    xmlns:tools="http://schemas.android.com/tools"
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <data>
+
         <variable
             name="tag"
             type="com.google.samples.apps.iosched.shared.model.Tag" />
@@ -28,21 +29,15 @@
 
     <Button
         android:id="@+id/tag_button"
+        style="@style/Widget.IOSched.Tag"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:minWidth="@dimen/min_touch_target"
-        android:minHeight="@dimen/tag_height"
         android:layout_marginEnd="@dimen/spacing_normal"
-        android:gravity="center_vertical"
-        android:paddingHorizontal="@dimen/tag_hz_padding"
-        android:background="@drawable/tag_outline"
-        android:drawablePadding="@dimen/spacing_normal"
-        android:drawableStart="@drawable/tag_dot"
-        android:clickable="true"
+        android:focusable="true"
         android:text="@{tag.name}"
         android:textAppearance="@style/TextAppearance.IOSched.Tag"
         app:tagTint="@{tag.color}"
-        tools:ignore="UnusedAttribute"
-        android:focusable="true"/>
+        tools:ignore="UnusedAttribute" />
+
 
 </layout>
