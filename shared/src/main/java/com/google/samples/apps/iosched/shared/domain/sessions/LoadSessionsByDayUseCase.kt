@@ -21,16 +21,16 @@ import com.google.samples.apps.iosched.shared.data.session.SessionRepository
 import com.google.samples.apps.iosched.shared.domain.UseCase
 import com.google.samples.apps.iosched.shared.model.Session
 import com.google.samples.apps.iosched.shared.util.TimeUtils.ConferenceDay
-import com.google.samples.apps.iosched.shared.schedule.SessionFilters
+import com.google.samples.apps.iosched.shared.schedule.SessionMatcher
 import javax.inject.Inject
 
 /**
  * Loads sessions into lists keyed by [ConferenceDay].
  */
 open class LoadSessionsByDayUseCase @Inject constructor(private val repository: SessionRepository)
-    : UseCase<SessionFilters, Map<ConferenceDay, List<Session>>>() {
+    : UseCase<SessionMatcher, Map<ConferenceDay, List<Session>>>() {
 
-    override fun execute(parameters: SessionFilters): Map<ConferenceDay, List<Session>> {
+    override fun execute(parameters: SessionMatcher): Map<ConferenceDay, List<Session>> {
         val allSessions = repository.getSessions()
         return ArrayMap<ConferenceDay, List<Session>>().apply {
             for (day in ConferenceDay.values()) {

@@ -21,6 +21,7 @@ import android.arch.lifecycle.Transformations
 import android.arch.lifecycle.ViewModel
 import android.arch.lifecycle.ViewModelProvider
 import android.arch.lifecycle.ViewModelProviders
+import android.databinding.ObservableBoolean
 import android.os.Bundle
 import android.os.Parcel
 import android.support.annotation.LayoutRes
@@ -118,17 +119,21 @@ fun <T : Enum<T>> Bundle.putEnum(key: String, value: T) = putString(key, value.n
 inline fun <reified T : Enum<T>> Bundle.getEnum(key: String): T = enumValueOf(getString(key))
 
 // endregion
-
 // region LiveData
 
 /** Uses `Transformations.map` on a LiveData */
-fun <X, T> LiveData<T>.map(body: (T) -> X): LiveData<X> {
+fun <X, Y> LiveData<X>.map(body: (X) -> Y): LiveData<Y> {
     return Transformations.map(this, body)
 }
 
 /** Uses `Transformations.switchMap` on a LiveData */
-fun <X, T> LiveData<T>.switchMap(body: (T) -> LiveData<X>): LiveData<X> {
+fun <X, Y> LiveData<X>.switchMap(body: (X) -> LiveData<Y>): LiveData<Y> {
     return Transformations.switchMap(this, body)
 }
+
+// endregion
+// region Observable
+
+fun ObservableBoolean.hasSameValue(other: ObservableBoolean) = get() == other.get()
 
 // endregion

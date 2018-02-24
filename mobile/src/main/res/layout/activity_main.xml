@@ -53,7 +53,7 @@
     -->
     <fragment
         android:id="@+id/filter_drawer"
-        android:name="com.google.samples.apps.iosched.ui.schedule.day.filters.ScheduleFilterFragment"
+        android:name="com.google.samples.apps.iosched.ui.schedule.filters.ScheduleFilterFragment"
         android:layout_width="@dimen/drawer_width"
         android:layout_height="match_parent"
         android:layout_gravity="end"

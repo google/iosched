@@ -22,7 +22,7 @@ import com.google.samples.apps.iosched.shared.data.session.SessionRepository
 import com.google.samples.apps.iosched.shared.model.Session
 import com.google.samples.apps.iosched.shared.model.TestData
 import com.google.samples.apps.iosched.shared.result.Result
-import com.google.samples.apps.iosched.shared.schedule.SessionFilters
+import com.google.samples.apps.iosched.shared.schedule.SessionMatcher
 import com.google.samples.apps.iosched.shared.util.TimeUtils.ConferenceDay
 import org.junit.Assert.assertEquals
 import org.junit.Test
@@ -35,7 +35,7 @@ class LoadSessionsByDayUseCaseTest {
     @Test
     fun returnsMapOfSessions() {
         val useCase = LoadSessionsByDayUseCase(SessionRepository(TestSessionDataSource))
-        val sessions = useCase.executeNow(SessionFilters())
+        val sessions = useCase.executeNow(SessionMatcher())
                 as Result.Success<Map<ConferenceDay, List<Session>>>
 
         assertEquals(TestData.sessionsMap, sessions.data)
