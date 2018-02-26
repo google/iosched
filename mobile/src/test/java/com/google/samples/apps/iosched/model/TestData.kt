@@ -8,7 +8,6 @@ import com.google.samples.apps.iosched.shared.util.TimeUtils.ConferenceDay
 import com.google.samples.apps.iosched.shared.util.TimeUtils.ConferenceDay.DAY_1
 import com.google.samples.apps.iosched.shared.util.TimeUtils.ConferenceDay.DAY_2
 import com.google.samples.apps.iosched.shared.util.TimeUtils.ConferenceDay.DAY_3
-import com.google.samples.apps.iosched.shared.util.TimeUtils.ConferenceDay.PRECONFERENCE_DAY
 
 /**
  * TODO: Temporary test data, improve.
@@ -29,7 +28,7 @@ object TestData {
     val room = Room(id = "1", name = "Tent 1", capacity = 40)
 
     val session0 = Session(id = "0", title = "Session 0", abstract = "",
-            startTime = PRECONFERENCE_DAY.start, endTime = PRECONFERENCE_DAY.end,
+            startTime = DAY_1.start, endTime = DAY_1.end,
             room = room, sessionUrl = "", liveStreamUrl = "", youTubeUrl = "", photoUrl = "",
             tags = listOf(androidTag, webTag), speakers = setOf(speaker),
             relatedSessions = emptySet())
@@ -50,8 +49,7 @@ object TestData {
             room = room, sessionUrl = "", liveStreamUrl = "", youTubeUrl = "", photoUrl = "",
             tags = listOf(webTag), speakers = setOf(speaker), relatedSessions = emptySet())
 
-    val sessionsMap = mapOf(ConferenceDay.PRECONFERENCE_DAY to listOf(session0),
-            ConferenceDay.DAY_1 to listOf(session1),
+    val sessionsMap = mapOf(ConferenceDay.DAY_1 to listOf(session0, session1),
             ConferenceDay.DAY_2 to listOf(session2),
             ConferenceDay.DAY_3 to listOf(session3))
 
