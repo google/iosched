@@ -68,3 +68,14 @@ task clean(type: Delete) {
     delete rootProject.buildDir
 }
 
+// Force all of the primary support libraries to use the same version.
+configurations.all {
+    resolutionStrategy {
+        eachDependency { details ->
+            if (details.requested.group == 'com.android.support') {
+                details.useVersion supportLibraryVersion
+            }
+        }
+    }
+}
+
