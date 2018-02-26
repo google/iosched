@@ -52,6 +52,6 @@ class SessionDetailViewModel @Inject constructor(
     }
 
     fun loadSessionById(sessionId: String) {
-        loadSessionUseCase.executeAsync(sessionId, useCaseResult)
+        loadSessionUseCase(sessionId, useCaseResult)
     }
 }
