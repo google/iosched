@@ -37,13 +37,7 @@ class LoadSessionsByDayUseCaseTest {
         val sessions = useCase.executeNow(SessionFilters())
                 as Result.Success<Map<ConferenceDay, List<Session>>>
 
-        // Expected values to assert
-        val map = mapOf(ConferenceDay.PRECONFERENCE_DAY to listOf(TestData.session0),
-                ConferenceDay.DAY_1 to listOf(TestData.session1),
-                ConferenceDay.DAY_2 to listOf(TestData.session2),
-                ConferenceDay.DAY_3 to listOf(TestData.session3))
-
-        assertEquals(map, sessions.data)
+        assertEquals(TestData.sessionsMap, sessions.data)
     }
 
     object TestSessionDataSource : SessionDataSource {

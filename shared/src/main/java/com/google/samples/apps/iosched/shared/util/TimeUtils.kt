@@ -31,8 +31,6 @@ object TimeUtils {
     val FORMATTER_MONTH_DAY = DateTimeFormatter.ofPattern(formatPattern, Locale.getDefault())
 
     enum class ConferenceDay(val start: ZonedDateTime, val end: ZonedDateTime) {
-        PRECONFERENCE_DAY(ZonedDateTime.parse(BuildConfig.PRECONFERENCE_DAY_START),
-                ZonedDateTime.parse(BuildConfig.PRECONFERENCE_DAY_END)),
         DAY_1(ZonedDateTime.parse(BuildConfig.CONFERENCE_DAY1_START),
                 ZonedDateTime.parse(BuildConfig.CONFERENCE_DAY1_END)),
         DAY_2(ZonedDateTime.parse(BuildConfig.CONFERENCE_DAY2_START),

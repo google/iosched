@@ -31,8 +31,7 @@ class MainPageRowFragmentFactory : BrowseSupportFragment.FragmentFactory<Schedul
         return when (row.headerItem.id) {
             TimeUtils.ConferenceDay.DAY_1.ordinal.toLong(),
             TimeUtils.ConferenceDay.DAY_2.ordinal.toLong(),
-            TimeUtils.ConferenceDay.DAY_3.ordinal.toLong(),
-            TimeUtils.ConferenceDay.PRECONFERENCE_DAY.ordinal.toLong() -> ScheduleFragment()
+            TimeUtils.ConferenceDay.DAY_3.ordinal.toLong() -> ScheduleFragment()
             else -> throw IllegalArgumentException("Invalid row $rowObj")
         }
     }
