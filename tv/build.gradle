@@ -38,6 +38,12 @@ android {
 
         staging {
             initWith debug
+
+            // Specifies a sorted list of fallback build types that the
+            // plugin should try to use when a dependency does not include a
+            // "staging" build type.
+            // Used with :test-shared, which doesn't have a staging variant.
+            matchingFallbacks = ['debug']
         }
     }
     dataBinding {
@@ -47,6 +53,7 @@ android {
 
 dependencies {
     implementation project(":shared")
+    testImplementation project(':test-shared')
 
     // UI
     implementation "com.android.support:appcompat-v7:$rootProject.supportLibraryVersion"

@@ -40,7 +40,7 @@ class SessionFilters {
      */
     fun matchesSessionTags(sessionTags: List<Tag>): Boolean {
         var match = true
-        filteredTags.groupBy { it.category }.forEach { category, tagsInCategory ->
+        filteredTags.groupBy { it.category }.forEach { _, tagsInCategory ->
             if (sessionTags.intersect(tagsInCategory).isEmpty()) {
                 match = false
                 return@forEach
