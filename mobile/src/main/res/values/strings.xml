@@ -29,6 +29,13 @@
     <!-- Session Detail -->
     <string name="rate_session">Rate Session</string>
 
+    <!-- Info -->
+    <string name="info_title">Info</string>
+    <string name="event_title">Event</string>
+    <string name="travel_title">Travel</string>
+    <string name="faq_title">FAQ</string>
+    <string name="settings_title">Settings</string>
+
     <!-- Accessibility -->
     <string name="a11y_session_detail_video_icon">TODO: a11y text for icon</string>
     <string name="a11y_session_detail_video_description">TODO video description</string>
