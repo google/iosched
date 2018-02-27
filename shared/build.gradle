@@ -50,15 +50,11 @@ android {
     dataBinding {
         enabled true
     }
+
 }
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
-
-    // UI
-    implementation "com.android.support:appcompat-v7:$rootProject.supportLibraryVersion"
-    implementation "com.android.support:support-v4:$rootProject.supportLibraryVersion"
-    implementation "com.android.support.constraint:constraint-layout:$rootProject.constraintLayoutVersion"
 
     // Architecture Components
     implementation "android.arch.lifecycle:extensions:$rootProject.archLifecycleVersion"
@@ -78,6 +74,7 @@ dependencies {
     kapt "com.google.dagger:dagger-compiler:$rootProject.dagger"
     kapt "com.google.dagger:dagger-android-processor:$rootProject.dagger"
 
+
     // ThreeTenBP for the shared module only. Date and time API for Java.
     testImplementation "org.threeten:threetenbp:$rootProject.threetenbpVersion"
     compileOnly "org.threeten:threetenbp:$rootProject.threetenbpVersion:no-tzdb"
@@ -85,8 +82,15 @@ dependencies {
     // Unit tests
     testImplementation "android.arch.core:core-testing:$rootProject.archLifecycleVersion"
     testImplementation "junit:junit:$rootProject.junitVersion"
+}
 
-    // Instrumentation tests
-    androidTestImplementation "com.android.support.test.espresso:espresso-core:$rootProject.espressoVersion"
-    androidTestImplementation "com.android.support.test:runner:$rootProject.runnerVersion"
+// Force Dagger's transitive dependencies to use the project's version of the support libraries.
+configurations.all {
+    resolutionStrategy {
+        eachDependency { details ->
+            if (details.requested.group == 'com.android.support') {
+                details.useVersion supportLibraryVersion
+            }
+        }
+    }
 }
