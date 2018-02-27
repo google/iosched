@@ -32,8 +32,8 @@ buildscript {
         junitVersion = '4.12'
         kotlinVersion = '1.2.21'
         runnerVersion = '1.0.1'
-        supportLibraryVersion = '27.0.2'
-        designLibraryVersion = '27.0.2'
+        supportLibraryVersion = '27.1.0'
+        designLibraryVersion = '27.1.0'
         archLifecycleVersion = '1.1.0'
         dataBindingCompilerVersion = '3.0.1'
         threetenabpVersion = "1.0.5"
