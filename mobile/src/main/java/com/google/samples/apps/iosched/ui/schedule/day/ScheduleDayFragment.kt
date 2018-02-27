@@ -90,10 +90,8 @@ class ScheduleDayFragment : DaggerFragment() {
         // Show an error message
         viewModel.errorMessage.observe(this, Observer { message ->
             //TODO: Change once there's a way to show errors to the user
-            if (!message.isNullOrEmpty() && !viewModel.wasErrorMessageShown()) {
-                // Prevent the message from showing more than once
-                viewModel.onErrorMessageShown()
-                Toast.makeText(this.context, message, Toast.LENGTH_LONG).show()
+            message?.getContentIfNotHandled()?.let { errorMsg ->
+                Toast.makeText(this.context, errorMsg, Toast.LENGTH_LONG).show()
             }
         })
     }
