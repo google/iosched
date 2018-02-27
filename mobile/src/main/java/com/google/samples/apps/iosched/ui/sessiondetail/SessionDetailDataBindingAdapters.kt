@@ -22,10 +22,13 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.LinearLayout
+import android.widget.TextView
 import com.google.samples.apps.iosched.R
 import com.google.samples.apps.iosched.databinding.ItemSpeakerDetailBinding
 import com.google.samples.apps.iosched.shared.model.Speaker
 import com.google.samples.apps.iosched.shared.util.SpeakerUtils
+import com.google.samples.apps.iosched.shared.util.TimeUtils
+import org.threeten.bp.ZonedDateTime
 
 @Suppress("unused")
 @BindingAdapter("sessionSpeakers")
@@ -35,6 +38,16 @@ fun sessionSpeakers(layout: LinearLayout, speakers: Set<Speaker>?) {
         SpeakerUtils.alphabeticallyOrderedSpeakerList(speakers).forEach {
             layout.addView(createSessionSpeakerView(layout, it))
         }
+    }
+}
+
+@Suppress("unused")
+@BindingAdapter(value = ["startTime", "endTime"], requireAll = true)
+fun timeString(view: TextView, startTime: ZonedDateTime?, endTime: ZonedDateTime?) {
+    if (startTime == null || endTime == null) {
+        view.text = ""
+    } else {
+        view.text = TimeUtils.timeString(startTime, endTime)
     }
 }
 

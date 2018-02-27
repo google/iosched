@@ -28,7 +28,7 @@ open class LoadSessionUseCase @Inject constructor(private val repository: Sessio
     : UseCase<String, Session>() {
 
     override fun execute(parameters: String): Session {
-        Thread.sleep(3000)
+        Thread.sleep(1000)
         return repository.getSession(parameters)
     }
 }

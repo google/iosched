@@ -82,8 +82,8 @@ class ScheduleViewModelTest {
 
         // Create ViewModel with the use case
         val viewModel = ScheduleViewModel(loadSessionsUseCase, loadAgendaUseCase, loadTagsUseCase)
-
-        assertTrue(!LiveDataTestUtil.getValue(viewModel.errorMessage).isNullOrEmpty())
+        val errorMsg = LiveDataTestUtil.getValue(viewModel.errorMessage)
+        assertTrue(errorMsg?.peekContent()?.isNotEmpty() ?: false)
     }
 
     /**

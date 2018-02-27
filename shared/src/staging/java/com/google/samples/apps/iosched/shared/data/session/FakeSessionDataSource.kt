@@ -24,5 +24,5 @@ import com.google.samples.apps.iosched.shared.util.ConferenceDataJsonParser
 object FakeSessionDataSource : SessionDataSource {
     override fun getSessions() = ConferenceDataJsonParser.getSessions()
 
-    override fun getSession(sessionId: String) = ConferenceDataJsonParser.getSessions()[0]
+    override fun getSession(sessionId: String) = ConferenceDataJsonParser.getSession(sessionId)
 }

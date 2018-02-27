@@ -17,6 +17,7 @@
 package com.google.samples.apps.iosched.ui.schedule
 
 import android.arch.lifecycle.LiveData
+import android.arch.lifecycle.MediatorLiveData
 import android.arch.lifecycle.MutableLiveData
 import android.arch.lifecycle.ViewModel
 import android.databinding.ObservableBoolean
@@ -37,7 +38,6 @@ import com.google.samples.apps.iosched.shared.util.TimeUtils.ConferenceDay.DAY_2
 import com.google.samples.apps.iosched.shared.util.TimeUtils.ConferenceDay.DAY_3
 import com.google.samples.apps.iosched.shared.util.hasSameValue
 import com.google.samples.apps.iosched.shared.util.map
-import timber.log.Timber
 import javax.inject.Inject
 
 /**
@@ -60,9 +60,6 @@ class ScheduleViewModel @Inject constructor(
     val tagFilters: LiveData<List<TagFilter>>
     val hasAnyFilters = ObservableBoolean(false)
 
-    val errorMessage: LiveData<String>
-    val errorMessageShown = MutableLiveData<Boolean>()
-
     private val loadSessionsResult = MutableLiveData<Result<Map<ConferenceDay, List<Session>>>>()
     private val loadAgendaResult = MutableLiveData<Result<List<Block>>>()
     private val loadTagsResult = MutableLiveData<Result<List<Tag>>>()
@@ -72,6 +69,10 @@ class ScheduleViewModel @Inject constructor(
     private val day3Sessions: LiveData<List<Session>>
 
     val agenda: LiveData<List<Block>>
+
+    /** LiveData for Actions and Events **/
+    val errorMessage: MediatorLiveData<Event<String>>
+    val navigateToSessionAction = MutableLiveData<Event<String>>()
 
     init {
         // Load sessions and tags and store the result in `LiveData`s
@@ -92,10 +93,17 @@ class ScheduleViewModel @Inject constructor(
 
         isLoading = loadSessionsResult.map { it == Result.Loading }
 
-        errorMessage = loadSessionsResult.map { result ->
-            errorMessageShown.value = false
-            (result as? Result.Error)?.exception?.message ?: ""
-        }
+        errorMessage = MediatorLiveData()
+        errorMessage.addSource(loadSessionsResult, { result ->
+            if (result is Result.Error) {
+                errorMessage.value = Event(content = result.exception.message ?: "Error")
+            }
+        })
+        errorMessage.addSource(loadTagsResult, { result ->
+            if (result is Result.Error) {
+                errorMessage.value = Event(content = result.exception.message ?: "Error")
+            }
+        })
 
         agenda = loadAgendaResult.map {
             (it as? Result.Success)?.data ?: emptyList()
@@ -111,12 +119,6 @@ class ScheduleViewModel @Inject constructor(
         }
     }
 
-    fun wasErrorMessageShown() = errorMessageShown.value ?: false
-
-    fun onErrorMessageShown() {
-        errorMessageShown.value = true
-    }
-
     @VisibleForTesting
     internal fun processTags(tags: List<Tag>): List<TagFilter> {
         sessionMatcher.removeOrphanedTags(tags)
@@ -124,16 +126,25 @@ class ScheduleViewModel @Inject constructor(
         return tags.map { TagFilter(it, it in sessionMatcher) }
     }
 
+    /**
+     * Called from each schedule day fragment to load data.
+     */
     fun getSessionsForDay(day: ConferenceDay): LiveData<List<Session>> = when (day) {
         DAY_1 -> day1Sessions
         DAY_2 -> day2Sessions
         DAY_3 -> day3Sessions
     }
 
+    /**
+     * Called from UI to start a navigation action to the detail screen.
+     */
     override fun openSessionDetail(id: String) {
-        Timber.d("TODO: Open session detail for id: $id")
+        navigateToSessionAction.value = Event(id)
     }
 
+    /**
+     * Called from the UI to enable or disable the filters.
+     */
     override fun toggleFilter(filter: TagFilter, enabled: Boolean) {
         // If sessionMatcher.add or .remove returns false, we do nothing.
         if (enabled && sessionMatcher.add(filter.tag)) {
@@ -148,6 +159,9 @@ class ScheduleViewModel @Inject constructor(
         }
     }
 
+    /**
+     * Called from the UI to reset the filters.
+     */
     override fun clearFilters() {
         if (sessionMatcher.clearAll()) {
             tagFilters.value?.forEach { it.isChecked.set(false) }
@@ -174,4 +188,27 @@ interface ScheduleEventListener {
     fun openSessionDetail(id: String)
     fun toggleFilter(filter: TagFilter, enabled: Boolean)
     fun clearFilters()
+}
+
+//TODO(jalc) move somewhere else (b/74113562)
+/**
+ * Used as a wrapper for data that is exposed via a LiveData that represents an event.
+ */
+class Event<T>(private val content: T, private var hasBeenHandled: Boolean = false) {
+    /**
+     * Returns the content and prevents its use again.
+     */
+    fun getContentIfNotHandled(): T? {
+        return if (hasBeenHandled) {
+            null
+        } else {
+            hasBeenHandled = true
+            content
+        }
+    }
+
+    /**
+     * Returns the content, even if it's already been handled.
+     */
+    fun peekContent(): T = content
 }

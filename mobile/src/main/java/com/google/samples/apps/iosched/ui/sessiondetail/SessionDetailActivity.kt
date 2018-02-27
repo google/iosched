@@ -16,6 +16,8 @@
 
 package com.google.samples.apps.iosched.ui.sessiondetail
 
+import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import com.google.samples.apps.iosched.R
 import com.google.samples.apps.iosched.shared.util.inTransaction
@@ -29,7 +31,18 @@ class SessionDetailActivity : DaggerAppCompatActivity() {
 
         if (savedInstanceState == null) {
             supportFragmentManager.inTransaction {
-                add(R.id.session_detail_container, SessionDetailFragment())
+                val sessionId = intent.getStringExtra(EXTRA_SESSION_ID)
+                add(R.id.session_detail_container, SessionDetailFragment.newInstance(sessionId))
+            }
+        }
+    }
+
+    companion object {
+        private const val EXTRA_SESSION_ID = "SESSION_ID"
+
+        fun starterIntent(context: Context, sessionId: String): Intent {
+            return Intent(context, SessionDetailActivity::class.java).apply {
+                putExtra(EXTRA_SESSION_ID, sessionId)
             }
         }
     }

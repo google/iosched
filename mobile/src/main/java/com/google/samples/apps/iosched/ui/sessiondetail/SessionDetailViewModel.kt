@@ -18,12 +18,11 @@ package com.google.samples.apps.iosched.ui.sessiondetail
 
 import android.arch.lifecycle.LiveData
 import android.arch.lifecycle.MutableLiveData
-import android.arch.lifecycle.Transformations
 import android.arch.lifecycle.ViewModel
+import com.google.samples.apps.iosched.shared.domain.sessions.LoadSessionUseCase
 import com.google.samples.apps.iosched.shared.model.Session
 import com.google.samples.apps.iosched.shared.result.Result
-import com.google.samples.apps.iosched.shared.domain.sessions.LoadSessionUseCase
-import com.google.samples.apps.iosched.shared.util.TimeUtils
+import com.google.samples.apps.iosched.shared.util.map
 import javax.inject.Inject
 
 /**
@@ -33,22 +32,11 @@ class SessionDetailViewModel @Inject constructor(
         private val loadSessionUseCase: LoadSessionUseCase
 ): ViewModel() {
 
-    val useCaseResult = MutableLiveData<Result<Session>>()
+    private val useCaseResult = MutableLiveData<Result<Session>>()
     val session: LiveData<Session?>
-    val timeString: LiveData<String>
 
     init {
-        session = Transformations.map(useCaseResult) { result ->
-            (result as? Result.Success)?.data
-        }
-
-        timeString = Transformations.map(session, { currentSession ->
-            if (currentSession == null) {
-                ""
-            } else {
-                TimeUtils.timeString(currentSession.startTime, currentSession.endTime)
-            }
-        })
+        session = useCaseResult.map { (it as? Result.Success)?.data }
     }
 
     fun loadSessionById(sessionId: String) {

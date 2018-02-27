@@ -33,7 +33,7 @@ class MainFragment : BrowseSupportFragment() {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
 
-        val context = activity!!.applicationContext
+        val context = requireActivity().applicationContext
 
         title = getString(R.string.browse_title)
         badgeDrawable = ContextCompat.getDrawable(context, R.drawable.ic_banner)
