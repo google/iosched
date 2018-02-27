@@ -26,7 +26,7 @@
         <item name="android:statusBarColor">@color/status_bar</item>
         <item name="android:windowLightStatusBar" tools:targetApi="m">true</item>
         <item name="android:navigationBarColor">@color/indigo_dark</item>
-        <item name="android:textColorTertiary">@color/light_grey</item>
+        <item name="android:textColorTertiary">@color/text_color_tertiary</item>
     </style>
 
     <style name="AppTheme.NoActionBar">

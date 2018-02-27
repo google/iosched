@@ -22,7 +22,7 @@
     android:layout_width="@dimen/drawer_width"
     android:layout_height="match_parent"
     android:layout_gravity="end"
-    android:background="@color/navdrawer_background"
+    android:background="@color/white"
     android:orientation="vertical"
     tools:ignore="Overdraw">
 
@@ -30,7 +30,7 @@
         android:id="@+id/filters_header"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/lighter_grey"
+        android:background="@color/white"
         android:baselineAligned="false"
         android:gravity="center_vertical"
         android:minHeight="?actionBarSize"
