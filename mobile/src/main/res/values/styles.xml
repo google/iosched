@@ -57,9 +57,18 @@
         <item name="android:textStyle">bold</item>
     </style>
 
+    <style name="TextAppearance.IOSched.ListSecondary" parent="@style/TextAppearance.AppCompat.Body1">
+        <item name="android:textColor">?android:textColorSecondary</item>
+    </style>
+
     <style name="TextAppearance.IOSched.Tag" parent="@style/TextAppearance.AppCompat.Caption">
         <item name="android:fontFamily">@font/google_sans</item>
         <item name="android:textColor">?android:textColorSecondary</item>
+    </style>
+
+    <style name="TextAppearance.IOSched.AgendaTitle" parent="@style/TextAppearance.AppCompat.Body1">
+        <item name="android:fontFamily">@font/google_sans</item>
+        <item name="android:textStyle">bold</item>
     </style>
 
     <style name="ThemeOverlay.IOSched.GoogleSans" parent="@style/ThemeOverlay.AppCompat">
@@ -102,6 +111,18 @@
         <item name="android:fontFamily">@font/google_sans</item>
         <item name="hourTextSize">@dimen/time_header_hour_text_size</item>
         <item name="meridiemTextSize">@dimen/time_header_meridiem_text_size</item>
+    </style>
+
+    <style name="Widget.IOSched.DateHeaders">
+        <item name="android:width">@dimen/session_keyline</item>
+        <item name="android:padding">@dimen/time_header_padding_top</item>
+        <item name="android:layout_margin">@dimen/margin_normal</item>
+        <item name="android:textColor">?android:textColorPrimary</item>
+        <item name="android:fontFamily">@font/google_sans</item>
+        <item name="dayTextSize">@dimen/time_header_meridiem_text_size</item>
+        <item name="dateTextSize">@dimen/time_header_hour_text_size</item>
+        <item name="android:divider">@color/light_grey</item>
+        <item name="android:dividerHeight">@dimen/divider</item>
     </style>
 
 </resources>

@@ -92,7 +92,7 @@ inline fun <reified VM : ViewModel> Fragment.viewModelProvider(
  */
 inline fun <reified VM : ViewModel> Fragment.activityViewModelProvider(
         provider: ViewModelProvider.Factory) =
-    ViewModelProviders.of(activity!!, provider).get(VM::class.java)
+    ViewModelProviders.of(requireActivity(), provider).get(VM::class.java)
 
 /**
  * Like [Fragment.viewModelProvider] for Fragments that want a [ViewModel] scoped to the parent

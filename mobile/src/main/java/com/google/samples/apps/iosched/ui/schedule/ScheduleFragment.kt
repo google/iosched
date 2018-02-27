@@ -29,6 +29,7 @@ import com.google.samples.apps.iosched.R
 import com.google.samples.apps.iosched.databinding.FragmentScheduleBinding
 import com.google.samples.apps.iosched.shared.util.TimeUtils.ConferenceDay
 import com.google.samples.apps.iosched.shared.util.activityViewModelProvider
+import com.google.samples.apps.iosched.ui.schedule.agenda.ScheduleAgendaFragment
 import dagger.android.support.DaggerFragment
 import kotlinx.android.synthetic.main.fragment_schedule.*
 import javax.inject.Inject
@@ -40,7 +41,8 @@ class ScheduleFragment : DaggerFragment() {
 
     companion object {
         val TAG: String = ScheduleFragment::class.java.simpleName
-        val COUNT = ConferenceDay.values().size
+        val COUNT = ConferenceDay.values().size + 1 // Agenda
+        val AGENDA_POSITION = COUNT - 1
     }
 
     @Inject lateinit var viewModelFactory: ViewModelProvider.Factory
@@ -76,11 +78,17 @@ class ScheduleFragment : DaggerFragment() {
         override fun getCount() = COUNT
 
         override fun getItem(position: Int): Fragment {
-            return ScheduleDayFragment.newInstance(ConferenceDay.values()[position])
+            return when(position) {
+                AGENDA_POSITION -> ScheduleAgendaFragment()
+                else -> ScheduleDayFragment.newInstance(ConferenceDay.values()[position])
+            }
         }
 
         override fun getPageTitle(position: Int): CharSequence {
-            return ConferenceDay.values()[position].formatMonthDay()
+            return when(position) {
+                AGENDA_POSITION -> getString(R.string.agenda)
+                else -> ConferenceDay.values()[position].formatMonthDay()
+            }
         }
     }
 }

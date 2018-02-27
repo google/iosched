@@ -25,6 +25,8 @@
     <string name="filters">Filters</string>
     <string name="clear_all">Clear all</string>
     <string name="session_duration_location">%1s / %2s</string>
+    <string name="agenda">Agenda</string>
+    <string name="agenda_duration">%1$s – %2$s</string>
 
     <!-- Session Detail -->
     <string name="rate_session">Rate Session</string>

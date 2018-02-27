@@ -24,4 +24,16 @@
         <attr name="hourTextSize" format="dimension" />
         <attr name="meridiemTextSize" format="dimension" />
     </declare-styleable>
+
+    <declare-styleable name="DateHeader">
+        <attr name="android:width" />
+        <attr name="android:padding" />
+        <attr name="android:layout_margin" />
+        <attr name="android:textColor" />
+        <attr name="android:fontFamily" />
+        <attr name="dayTextSize" format="dimension" />
+        <attr name="dateTextSize" format="dimension" />
+        <attr name="android:divider" />
+        <attr name="android:dividerHeight" />
+    </declare-styleable>
 </resources>

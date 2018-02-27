@@ -32,6 +32,7 @@ import android.text.style.StyleSpan
 import androidx.content.res.getColorOrThrow
 import androidx.content.res.getDimensionOrThrow
 import androidx.content.res.getDimensionPixelSizeOrThrow
+import androidx.content.res.getResourceIdOrThrow
 import androidx.graphics.withTranslation
 import androidx.text.inSpans
 import androidx.view.get
@@ -44,8 +45,8 @@ import org.threeten.bp.format.DateTimeFormatter
  * A [RecyclerView.ItemDecoration] which draws sticky headers for a given list of sessions.
  */
 class ScheduleTimeHeadersDecoration(
-        context: Context,
-        sessions: List<Session>
+    context: Context,
+    sessions: List<Session>
 ) : RecyclerView.ItemDecoration() {
 
     private val paint: TextPaint
@@ -56,21 +57,25 @@ class ScheduleTimeHeadersDecoration(
     private val meridiemFormatter = DateTimeFormatter.ofPattern("a")
 
     init {
-        val attrs = context.obtainStyledAttributes(R.style.Widget_IOSched_TimeHeaders,
-                R.styleable.TimeHeader) // TODO replace with use block from ktx when released
+        val attrs = context.obtainStyledAttributes(
+            R.style.Widget_IOSched_TimeHeaders,
+            R.styleable.TimeHeader
+        )
         paint = TextPaint(ANTI_ALIAS_FLAG).apply {
             color = attrs.getColorOrThrow(R.styleable.TimeHeader_android_textColor)
             textSize = attrs.getDimensionOrThrow(R.styleable.TimeHeader_hourTextSize)
             try {
-                typeface = ResourcesCompat.getFont(context,
-                        attrs.getResourceId(R.styleable.TimeHeader_android_fontFamily, 0))
+                typeface = ResourcesCompat.getFont(
+                    context,
+                    attrs.getResourceIdOrThrow(R.styleable.TimeHeader_android_fontFamily)
+                )
             } catch (nfe: Resources.NotFoundException) {
             }
         }
         width = attrs.getDimensionPixelSizeOrThrow(R.styleable.TimeHeader_android_width)
         paddingTop = attrs.getDimensionPixelSizeOrThrow(R.styleable.TimeHeader_android_paddingTop)
         meridiemTextSize =
-                attrs.getDimensionPixelSizeOrThrow(R.styleable.TimeHeader_meridiemTextSize)
+            attrs.getDimensionPixelSizeOrThrow(R.styleable.TimeHeader_meridiemTextSize)
         attrs.recycle()
     }
 
@@ -100,8 +105,8 @@ class ScheduleTimeHeadersDecoration(
                 val position = parent.getChildAdapterPosition(view)
                 timeSlots[position]?.let {
                     val top = (viewTop + paddingTop)
-                            .coerceAtLeast(paddingTop)
-                            .coerceAtMost(prevHeaderTop - it.height)
+                        .coerceAtLeast(paddingTop)
+                        .coerceAtMost(prevHeaderTop - it.height)
                     c.withTranslation(y = top.toFloat()) {
                         it.draw(c)
                     }
@@ -135,7 +140,7 @@ class ScheduleTimeHeadersDecoration(
      */
     private fun createHeader(startTime: ZonedDateTime): StaticLayout {
         val text = SpannableStringBuilder(hourFormatter.format(startTime)).apply {
-            append('\n')
+            append(System.lineSeparator())
             inSpans(AbsoluteSizeSpan(meridiemTextSize), StyleSpan(BOLD)) {
                 append(meridiemFormatter.format(startTime).toUpperCase())
             }

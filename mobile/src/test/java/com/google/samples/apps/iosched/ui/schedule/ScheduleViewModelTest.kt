@@ -21,12 +21,16 @@ package com.google.samples.apps.iosched.ui.schedule
 import android.arch.core.executor.testing.InstantTaskExecutorRule
 import com.google.samples.apps.iosched.model.TestData
 import com.google.samples.apps.iosched.shared.data.session.SessionRepository
+import com.google.samples.apps.iosched.shared.data.session.agenda.AgendaRepository
 import com.google.samples.apps.iosched.shared.data.tag.TagRepository
+import com.google.samples.apps.iosched.shared.model.Block
 import com.google.samples.apps.iosched.shared.model.Session
 import com.google.samples.apps.iosched.shared.model.Tag
 import com.google.samples.apps.iosched.shared.util.TimeUtils.ConferenceDay
-import com.google.samples.apps.iosched.test.util.SyncTaskExecutorRule
 import com.google.samples.apps.iosched.test.util.LiveDataTestUtil
+import com.google.samples.apps.iosched.test.util.SyncTaskExecutorRule
+import com.google.samples.apps.iosched.ui.schedule.agenda.LoadAgendaUseCase
+import com.google.samples.apps.iosched.ui.schedule.agenda.TestAgendaDataSource
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
 import org.junit.Assert.assertTrue
@@ -48,10 +52,11 @@ class ScheduleViewModelTest {
     fun testDataIsLoaded_ObservablesUpdated() {
         // Create test use cases with test data
         val loadSessionsUseCase = createSessionsUseCase(TestData.sessionsMap)
+        val loadAgendaUseCase = createAgendaUseCase(TestData.agenda)
         val loadTagsUseCase = createTagsUseCase(TestData.tagsList)
 
         // Create ViewModel with the use cases
-        val viewModel = ScheduleViewModel(loadSessionsUseCase, loadTagsUseCase)
+        val viewModel = ScheduleViewModel(loadSessionsUseCase, loadAgendaUseCase, loadTagsUseCase)
 
         // Check that data were loaded correctly
         // Sessions
@@ -67,10 +72,11 @@ class ScheduleViewModelTest {
     @Test
     fun testDataIsLoaded_Fails() {
         val loadSessionsUseCase = createSessionsExceptionUseCase()
+        val loadAgendaUseCase = createAgendaUseCase(TestData.agenda)
         val loadTagsUseCase = createTagsExceptionUseCase()
 
         // Create ViewModel with the use case
-        val viewModel = ScheduleViewModel(loadSessionsUseCase, loadTagsUseCase)
+        val viewModel = ScheduleViewModel(loadSessionsUseCase, loadAgendaUseCase, loadTagsUseCase)
 
         assertTrue(!LiveDataTestUtil.getValue(viewModel.errorMessage).isNullOrEmpty())
     }
@@ -99,10 +105,21 @@ class ScheduleViewModelTest {
     }
 
     /**
+     * Creates a use case that will return the provided list of agenda blocks.
+     */
+    private fun createAgendaUseCase(agenda: List<Block>): LoadAgendaUseCase {
+        return object : LoadAgendaUseCase(AgendaRepository(TestAgendaDataSource)) {
+            override fun execute(parameters: Unit): List<Block> {
+                return agenda
+            }
+        }
+    }
+
+    /**
      * Creates a use case that will return the provided list of tags.
      */
     private fun createTagsUseCase(tags: List<Tag>): LoadTagsByCategoryUseCase {
-        return object : LoadTagsByCategoryUseCase(TagRepository(TestSessionDataSource)) {
+        return object : LoadTagsByCategoryUseCase(TagRepository(TestTagDataSource)) {
             override fun execute(parameters: Unit): List<Tag> {
                 return tags
             }
@@ -113,7 +130,7 @@ class ScheduleViewModelTest {
      * Creates a use case that throws an exception.
      */
     private fun createTagsExceptionUseCase(): LoadTagsByCategoryUseCase {
-        return object : LoadTagsByCategoryUseCase(TagRepository(TestSessionDataSource)) {
+        return object : LoadTagsByCategoryUseCase(TagRepository(TestTagDataSource)) {
             override fun execute(parameters: Unit): List<Tag> {
                 throw Exception("Testing exception")
             }
