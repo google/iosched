@@ -72,9 +72,10 @@
             app:layout_constraintTop_toBottomOf="@id/title"
             app:layout_constraintEnd_toEndOf="@id/title"
             android:layout_marginTop="@dimen/spacing_micro"
-            android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-            android:textColor="?android:textColorSecondary"
-            app:sessionLengthLocation="@{session}" />
+            android:textAppearance="@style/TextAppearance.IOSched.ListSecondary"
+            app:sessionStart="@{session.startTime}"
+            app:sessionEnd="@{session.endTime}"
+            app:sessionRoom="@{session.room.name}" />
 
         <HorizontalScrollView
             android:id="@+id/tags_container"

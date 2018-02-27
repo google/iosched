@@ -19,8 +19,10 @@ package com.google.samples.apps.iosched.shared.di
 import com.google.samples.apps.iosched.shared.data.map.MapMetadataDataSource
 import com.google.samples.apps.iosched.shared.data.map.RemoteMapMetadataDataSource
 import com.google.samples.apps.iosched.shared.data.session.RemoteSessionDataSource
-import com.google.samples.apps.iosched.shared.data.tag.RemoteTagDataSource
 import com.google.samples.apps.iosched.shared.data.session.SessionDataSource
+import com.google.samples.apps.iosched.shared.data.session.agenda.AgendaDataSource
+import com.google.samples.apps.iosched.shared.data.session.agenda.RemoteAgendaDataSource
+import com.google.samples.apps.iosched.shared.data.tag.RemoteTagDataSource
 import com.google.samples.apps.iosched.shared.data.tag.TagDataSource
 import dagger.Module
 import dagger.Provides
@@ -32,13 +34,18 @@ import javax.inject.Singleton
 @Module
 class SharedModule {
 
-
 // Define the data source implementations that should be used. All data sources are singletons.
 
     @Singleton
     @Provides
     fun provideSessionDataSource(): SessionDataSource {
         return RemoteSessionDataSource
+    }
+
+    @Singleton
+    @Provides
+    fun provideAgendaDataSource(): AgendaDataSource {
+        return RemoteAgendaDataSource
     }
 
     @Singleton

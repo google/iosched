@@ -67,6 +67,8 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginBottom="?actionBarSize"
+            app:pageMargin="@{@dimen/spacing_normal}"
+            app:pageMarginDrawable="@{@drawable/page_margin}"
             app:layout_behavior="@string/appbar_scrolling_view_behavior" />
 
         <!-- TODO(b/72711711): Provide a better loading indicator -->

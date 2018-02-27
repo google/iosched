@@ -19,6 +19,7 @@ package com.google.samples.apps.iosched.util
 import android.databinding.BindingAdapter
 import android.graphics.Color.TRANSPARENT
 import android.support.v4.content.ContextCompat
+import android.support.v4.view.ViewPager
 import android.view.LayoutInflater
 import android.view.View
 import android.view.View.GONE
@@ -70,4 +71,9 @@ fun tagTint(textView: TextView, color: Int) {
         ContextCompat.getColor(textView.context, R.color.default_tag_color)
     }
     textView.compoundDrawablesRelative[0]?.setTint(tintColor)
+}
+
+@BindingAdapter("pageMargin")
+fun pageMargin(viewPager: ViewPager, pageMargin: Float) {
+    viewPager.pageMargin = pageMargin.toInt()
 }

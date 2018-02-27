@@ -14,10 +14,10 @@
  * limitations under the License.
  */
 
-package com.google.samples.apps.iosched.shared.util
+package com.google.samples.apps.iosched.shared.data.session.agenda
 
-import com.google.samples.apps.iosched.shared.model.Session
-import org.threeten.bp.Duration
+import com.google.samples.apps.iosched.shared.model.Block
 
-val Session.duration: Duration
-    get() = Duration.between(startTime, endTime)
+interface AgendaDataSource {
+    fun getAgenda(): List<Block>
+}

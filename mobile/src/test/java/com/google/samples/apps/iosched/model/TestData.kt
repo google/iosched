@@ -16,6 +16,7 @@
 
 package com.google.samples.apps.iosched.model
 
+import com.google.samples.apps.iosched.shared.model.Block
 import com.google.samples.apps.iosched.shared.model.Room
 import com.google.samples.apps.iosched.shared.model.Session
 import com.google.samples.apps.iosched.shared.model.Speaker
@@ -71,4 +72,20 @@ object TestData {
 
     val tagsList = listOf(androidTag, webTag, sessionsTag, codelabsTag, beginnerTag,
             intermediateTag, advancedTag)
+
+    val block1 = Block(
+        title = "Keynote",
+        type = "keynote",
+        color = 0xffff00ff.toInt(),
+        startTime = DAY_1.start,
+        endTime = DAY_1.start.plusHours(1L))
+
+    val block2 = Block(
+        title = "Breakfast",
+        type = "meal",
+        color = 0xffff00ff.toInt(),
+        startTime = DAY_1.start.plusHours(1L),
+        endTime = DAY_1.start.plusHours(2L))
+
+    val agenda = listOf(block1, block2)
 }
