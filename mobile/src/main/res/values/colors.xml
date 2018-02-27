@@ -21,16 +21,16 @@
     <color name="colorAccent">@color/teal</color>
 
     <!-- primary palette -->
-    <color name="indigo">#536DFE</color>
-    <color name="indigo_dark">#3C54FE</color> <!-- todo confirm this color -->
-    <color name="teal">#1DE9B6</color>
-    <color name="yellow">#FDD835</color>
-    <color name="orange">#FF6D00</color>
+    <color name="indigo">#4768fd</color>
+    <color name="indigo_dark">#3c54fe</color> <!-- todo confirm this color -->
+    <color name="teal">#31e7b6</color>
+    <color name="light_blue">#27e5fd</color>
+    <color name="yellow">#fcd230</color>
+    <color name="orange">#ff6c00</color>
     <color name="white">#fff</color>
 
     <color name="status_bar">#202124</color>
-    <color name="light_grey">#dadce0</color>
-    <color name="navdrawer_background">@color/white</color>
-    <color name="lighter_grey">#f6f6f6</color>
+    <color name="text_color_tertiary">#dadce0</color>
+    <color name="light_grey">#e6e6e6</color>
     <color name="default_tag_color">#999</color>
 </resources>
