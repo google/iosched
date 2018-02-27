@@ -20,7 +20,7 @@ import android.content.Context
 import android.content.res.Resources
 import android.graphics.Canvas
 import android.graphics.Paint.ANTI_ALIAS_FLAG
-import android.graphics.Typeface
+import android.graphics.Typeface.BOLD
 import android.support.v4.content.res.ResourcesCompat
 import android.support.v7.widget.RecyclerView
 import android.text.Layout.Alignment.ALIGN_CENTER
@@ -37,6 +37,7 @@ import androidx.text.inSpans
 import androidx.view.get
 import com.google.samples.apps.iosched.R
 import com.google.samples.apps.iosched.shared.model.Session
+import org.threeten.bp.ZonedDateTime
 import org.threeten.bp.format.DateTimeFormatter
 
 /**
@@ -76,15 +77,7 @@ class ScheduleTimeHeadersDecoration(
     // Get the sessions index:start time and create header layouts for each
     private val timeSlots: Map<Int, StaticLayout> =
         indexSessionHeaders(sessions).map {
-            it.first to it.second.let {
-                val ssb = SpannableStringBuilder(hourFormatter.format(it)).apply {
-                    append('\n')
-                    inSpans(AbsoluteSizeSpan(meridiemTextSize), StyleSpan(Typeface.BOLD)) {
-                        append(meridiemFormatter.format(it).toUpperCase())
-                    }
-                }
-                StaticLayout(ssb, paint, width, ALIGN_CENTER, 1f, 0f, false)
-            }
+            it.first to createHeader(it.second)
         }.toMap()
 
     /**
@@ -135,5 +128,18 @@ class ScheduleTimeHeadersDecoration(
                 break
             }
         }
+    }
+
+    /**
+     * Create a header layout for the given [startTime]
+     */
+    private fun createHeader(startTime: ZonedDateTime): StaticLayout {
+        val text = SpannableStringBuilder(hourFormatter.format(startTime)).apply {
+            append('\n')
+            inSpans(AbsoluteSizeSpan(meridiemTextSize), StyleSpan(BOLD)) {
+                append(meridiemFormatter.format(startTime).toUpperCase())
+            }
+        }
+        return StaticLayout(text, paint, width, ALIGN_CENTER, 1f, 0f, false)
     }
 }
