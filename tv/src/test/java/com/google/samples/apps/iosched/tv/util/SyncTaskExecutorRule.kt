@@ -24,7 +24,8 @@ import org.junit.runner.Description
 /**
  * Rule to be used in tests that sets a synchronous task scheduler used to avoid race conditions.
  *
- * TODO: Move to testutils module b/72216577
+ * Copied rule from mobile instead of putting it in test-shared to prevent cyclic dependency between
+ * shared and test-shared.
  */
 class SyncTaskExecutorRule : TestWatcher() {
     override fun starting(description: Description?) {
