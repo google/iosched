@@ -5,6 +5,11 @@ set -e
 # Display commands to stderr.
 set -x
 
+GRADLE_FLAGS=()
+if [[ -n "$GRADLE_DEBUG" ]]; then
+  GRADLE_FLAGS=( --debug --stacktrace )
+fi
+
 # Set up local maven repo
 cd $KOKORO_GFILE_DIR
 unzip repository.zip
@@ -13,4 +18,4 @@ mdc_repo_location=$(pwd)
 
 cd $KOKORO_ARTIFACTS_DIR/git/iosched
 
-./gradlew -Pmdc_repo_location="$mdc_repo_location" build
+./gradlew "${GRADLE_FLAGS[@]}" -Pmdc_repo_location="$mdc_repo_location" build
