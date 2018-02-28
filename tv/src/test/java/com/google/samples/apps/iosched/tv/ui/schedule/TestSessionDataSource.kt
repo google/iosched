@@ -17,6 +17,7 @@
 package com.google.samples.apps.iosched.tv.ui.schedule
 
 import com.google.samples.apps.iosched.shared.data.session.SessionDataSource
+import com.google.samples.apps.iosched.shared.data.tag.TagDataSource
 import com.google.samples.apps.iosched.shared.model.Room
 import com.google.samples.apps.iosched.shared.model.Session
 import com.google.samples.apps.iosched.shared.model.Speaker
@@ -27,37 +28,42 @@ import org.threeten.bp.ZonedDateTime
 /**
  * Generates dummy session data to be used in tests.
  *
- * TODO: Move to testutils module b/72216577
+ * Copied from mobile instead of putting it in test-shared to prevent cyclic dependency between
+ * shared and test-shared.
  */
-object TestSessionDataSource : SessionDataSource {
+object TestSessionDataSource : SessionDataSource, TagDataSource {
 
-    override fun getSession(sessionId: String): Session {
-        TODO("This is just to unbreak the build")
-    }
+    private val androidTag = Tag("1", "TRACK", 0, "Android", 0xFFAED581.toInt())
+    private val webTag = Tag("2", "TRACK", 1, "Web", 0xFFFFF176.toInt())
+    private val sessionsTag = Tag("101", "TYPE", 0, "Sessions", 0)
+    private val codelabsTag = Tag("102", "TYPE", 1, "Codelabs", 0)
+    private val beginnerTag = Tag("201", "LEVEL", 0, "Beginner", 0)
+    private val intermediateTag = Tag("202", "LEVEL", 1, "Intermediate", 0)
 
-    override fun getSessions(): List<Session> {
+    private val time1 = ZonedDateTime.of(2017, 3, 12, 12, 0, 0, 0, ZoneId.of("Asia/Tokyo"))
+    private val time2 = ZonedDateTime.of(2017, 3, 12, 13, 0, 0, 0, ZoneId.of("Asia/Tokyo"))
+    private val room1 = Room(id = "1", name = "Tent 1", capacity = 40)
+    private val speaker1 = Speaker("1", "Troy McClure", "", "", "", "", "")
 
-        val androidTag = Tag("1", "TRACK", 0, "Android", 0xFFAED581.toInt())
-        val webTag = Tag("2", "TRACK", 1, "Web", 0xFFFFF176.toInt())
-        val speaker1 = Speaker("1", "Troy McClure", "", "", "", "", "")
-        val time1 = ZonedDateTime.of(2017, 3, 12, 12, 0, 0, 0, ZoneId.of("Asia/Tokyo"))
-        val time2 = ZonedDateTime.of(2017, 3, 12, 13, 0, 0, 0, ZoneId.of("Asia/Tokyo"))
-        val room1 = Room(id = "1", name = "Tent 1", capacity = 40)
-        val session1 = Session(id = "1", startTime = time1, endTime = time2,
-                title = "Jet Packs", abstract = "", room = room1, sessionUrl = "", liveStreamUrl = "",
-                youTubeUrl = "", tags = listOf(androidTag, webTag), speakers = setOf(speaker1),
-                photoUrl = "", relatedSessions = emptySet())
+    private val session1 = Session(id = "1", startTime = time1, endTime = time2,
+            title = "Jet Packs", abstract = "", room = room1, sessionUrl = "",
+            liveStreamUrl = "", youTubeUrl = "", tags = listOf(androidTag, webTag),
+            speakers = setOf(speaker1), photoUrl = "", relatedSessions = emptySet())
 
-        val session2 = Session(id = "2", startTime = time1, endTime = time2,
-                title = "Flying Cars", abstract = "", room = room1, sessionUrl = "Title 1",
-                liveStreamUrl = "", youTubeUrl = "", tags = listOf(androidTag),
-                speakers = setOf(speaker1), photoUrl = "", relatedSessions = emptySet())
+    private val session2 = Session(id = "2", startTime = time1, endTime = time2,
+            title = "Flying Cars", abstract = "", room = room1, sessionUrl = "Title 1",
+            liveStreamUrl = "", youTubeUrl = "", tags = listOf(androidTag),
+            speakers = setOf(speaker1), photoUrl = "", relatedSessions = emptySet())
 
-        val session3 = Session(id = "3", startTime = time1, endTime = time2,
-                title = "Teleportation", abstract = "", room = room1, sessionUrl = "Title 1",
-                liveStreamUrl = "", youTubeUrl = "", tags = listOf(webTag),
-                speakers = setOf(speaker1), photoUrl = "", relatedSessions = emptySet())
+    private val session3 = Session(id = "3", startTime = time1, endTime = time2,
+            title = "Teleportation", abstract = "", room = room1, sessionUrl = "Title 1",
+            liveStreamUrl = "", youTubeUrl = "", tags = listOf(webTag),
+            speakers = setOf(speaker1), photoUrl = "", relatedSessions = emptySet())
 
-        return listOf(session1, session2, session3)
-    }
+    override fun getSessions() = listOf(session1, session2, session3)
+
+    override fun getTags() =
+            listOf(androidTag, webTag, sessionsTag, codelabsTag, beginnerTag, intermediateTag)
+
+    override fun getSession(sessionId: String) = getSessions()[0]
 }
