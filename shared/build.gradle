@@ -61,6 +61,12 @@ dependencies {
     implementation "android.arch.lifecycle:livedata:$rootProject.archLifecycleVersion"
     implementation "android.arch.lifecycle:viewmodel:$rootProject.archLifecycleVersion"
 
+    // Maps
+    implementation("com.google.maps.android:android-maps-utils:$rootProject.googleMapUtilsVersion") {
+        exclude group: "com.google.android.gms"
+    }
+    api "com.google.android.gms:play-services-maps:$rootProject.googlePlayServicesClientVersion"
+
     // Utils
     api "com.jakewharton.timber:timber:$rootProject.timberVersion"
     stagingImplementation "com.google.code.gson:gson:$rootProject.gsonVersion"
