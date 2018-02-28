@@ -30,6 +30,11 @@ import org.threeten.bp.ZonedDateTime
  * TODO: Move to testutils module b/72216577
  */
 object TestSessionDataSource : SessionDataSource {
+
+    override fun getSession(sessionId: String): Session {
+        TODO("This is just to unbreak the build")
+    }
+
     override fun getSessions(): List<Session> {
 
         val androidTag = Tag("1", "TRACK", 0, "Android", 0xFFAED581.toInt())
