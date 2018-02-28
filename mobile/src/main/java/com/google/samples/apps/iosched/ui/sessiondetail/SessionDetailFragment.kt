@@ -21,11 +21,7 @@ import android.arch.lifecycle.ViewModelProvider
 import android.databinding.DataBindingUtil
 import android.os.Bundle
 import android.support.v4.app.ShareCompat
-import android.support.v7.app.AppCompatActivity
 import android.view.LayoutInflater
-import android.view.Menu
-import android.view.MenuInflater
-import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import com.google.samples.apps.iosched.R
@@ -55,10 +51,18 @@ class SessionDetailFragment : DaggerFragment() {
         binding.run {
             viewModel = sessionDetailViewModel
             setLifecycleOwner(this@SessionDetailFragment)
+            sessionDetailToolbar.inflateMenu(R.menu.session_detail_menu)
+            sessionDetailToolbar.setOnMenuItemClickListener { item ->
+                if (item.itemId == R.id.menu_item_share) {
+                    ShareCompat.IntentBuilder.from(activity)
+                            .setType("text/plain")
+                            .setText(shareString)
+                            .setChooserTitle(R.string.intent_chooser_session_detail)
+                            .startChooser()
+                }
+                true
+            }
         }
-
-        // TODO: replace with Toolbar (b/73537084)
-        (activity as AppCompatActivity).setSupportActionBar(binding.sessionDetailToolbar)
 
         sessionDetailViewModel.session.observe(this, Observer {
             shareString = if (it == null) {
@@ -69,25 +73,6 @@ class SessionDetailFragment : DaggerFragment() {
         })
 
         return binding.root
-    }
-
-    override fun onCreateOptionsMenu(menu: Menu?, inflater: MenuInflater) {
-        super.onCreateOptionsMenu(menu, inflater)
-        inflater.inflate(R.menu.session_detail_menu, menu)
-    }
-
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        return when(item.itemId) {
-            R.id.menu_item_share -> {
-                ShareCompat.IntentBuilder.from(activity)
-                        .setType("text/plain")
-                        .setText(shareString)
-                        .setChooserTitle(R.string.intent_chooser_session_detail)
-                        .startChooser()
-                true
-            }
-            else -> super.onOptionsItemSelected(item)
-        }
     }
 
     companion object {
