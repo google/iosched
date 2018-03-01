@@ -75,8 +75,8 @@ class ScheduleDayFragment : DaggerFragment() {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        viewModel.getSessionsForDay(conferenceDay).observe(activity!!, Observer { list ->
-            adapter.setList(list ?: emptyList())
+        viewModel.getSessionsForDay(conferenceDay).observe(requireActivity(), Observer { list ->
+            adapter.submitList(list ?: emptyList())
 
             // Recreate the decoration used for the sticky time headers
             recyclerview.clearDecorations()
