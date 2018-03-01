@@ -31,7 +31,7 @@ buildscript {
         androidGradlePluginVersion = '3.1.0-beta4'
         hamcrestVersion = '1.3'
         junitVersion = '4.12'
-        kotlinVersion = '1.2.21'
+        kotlinVersion = '1.2.30'
         runnerVersion = '1.0.1'
         supportLibraryVersion = '27.1.0'
         designLibraryVersion = '27.1.0'
