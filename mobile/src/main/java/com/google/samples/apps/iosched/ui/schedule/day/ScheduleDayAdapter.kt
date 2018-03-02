@@ -22,12 +22,12 @@ import android.support.v7.widget.RecyclerView.ViewHolder
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import com.google.samples.apps.iosched.databinding.ItemSessionBinding
-import com.google.samples.apps.iosched.shared.model.Session
+import com.google.samples.apps.iosched.shared.model.UserSession
 import com.google.samples.apps.iosched.ui.schedule.ScheduleEventListener
 
 class ScheduleDayAdapter(
     private val eventListener: ScheduleEventListener
-) : ListAdapter<Session, SessionViewHolder>(SessionDiff) {
+) : ListAdapter<UserSession, SessionViewHolder>(SessionDiff) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SessionViewHolder {
         return SessionViewHolder(
@@ -46,18 +46,23 @@ class SessionViewHolder(
     private val eventListener: ScheduleEventListener
 ) : ViewHolder(binding.root) {
 
-    fun bind(session: Session) {
-        binding.session = session
+    fun bind(userSession: UserSession) {
+        binding.session = userSession.session
+        binding.userEvent = userSession.userEvent
         binding.eventListener = eventListener
         binding.executePendingBindings()
     }
 }
 
-object SessionDiff : DiffUtil.ItemCallback<Session>() {
-
-    override fun areItemsTheSame(oldItem: Session?, newItem: Session?): Boolean {
-        return oldItem?.id == newItem?.id
+object SessionDiff : DiffUtil.ItemCallback<UserSession>() {
+    override fun areItemsTheSame(oldItem: UserSession,
+                                 newItem: UserSession): Boolean {
+        // We don't have to compare the #userEvent because the id of #session and #userEvent
+        // should match
+        return oldItem.session.id == newItem.session.id
     }
 
-    override fun areContentsTheSame(oldItem: Session?, newItem: Session?) = (oldItem == newItem)
+    override fun areContentsTheSame(oldItem: UserSession, newItem: UserSession): Boolean {
+        return oldItem == newItem
+    }
 }

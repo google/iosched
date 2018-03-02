@@ -24,11 +24,11 @@ import android.databinding.ObservableBoolean
 import android.support.annotation.VisibleForTesting
 import com.google.samples.apps.iosched.shared.domain.agenda.LoadAgendaUseCase
 import com.google.samples.apps.iosched.shared.domain.invoke
-import com.google.samples.apps.iosched.shared.domain.sessions.LoadSessionsByDayUseCase
 import com.google.samples.apps.iosched.shared.domain.sessions.LoadTagsByCategoryUseCase
+import com.google.samples.apps.iosched.shared.domain.sessions.LoadUserSessionsByDayUseCase
 import com.google.samples.apps.iosched.shared.model.Block
-import com.google.samples.apps.iosched.shared.model.Session
 import com.google.samples.apps.iosched.shared.model.Tag
+import com.google.samples.apps.iosched.shared.model.UserSession
 import com.google.samples.apps.iosched.shared.result.Result
 import com.google.samples.apps.iosched.shared.result.Result.Success
 import com.google.samples.apps.iosched.shared.schedule.SessionMatcher
@@ -50,7 +50,7 @@ import javax.inject.Inject
  * create the object, so defining a [@Provides] method for this class won't be needed.
  */
 class ScheduleViewModel @Inject constructor(
-    private val loadSessionsByDayUseCase: LoadSessionsByDayUseCase,
+    private val loadUserSessionsByDayUseCase: LoadUserSessionsByDayUseCase,
     loadAgendaUseCase: LoadAgendaUseCase,
     loadTagsByCategoryUseCase: LoadTagsByCategoryUseCase
 ) : ViewModel(), ScheduleEventListener {
@@ -64,13 +64,14 @@ class ScheduleViewModel @Inject constructor(
     val tagFilters: LiveData<List<TagFilter>>
     val hasAnyFilters = ObservableBoolean(false)
 
-    private val loadSessionsResult = MutableLiveData<Result<Map<ConferenceDay, List<Session>>>>()
+    private val loadSessionsResult =
+            MutableLiveData<Result<Map<ConferenceDay, List<UserSession>>>>()
     private val loadAgendaResult = MutableLiveData<Result<List<Block>>>()
     private val loadTagsResult = MutableLiveData<Result<List<Tag>>>()
 
-    private val day1Sessions: LiveData<List<Session>>
-    private val day2Sessions: LiveData<List<Session>>
-    private val day3Sessions: LiveData<List<Session>>
+    private val day1Sessions: LiveData<List<UserSession>>
+    private val day2Sessions: LiveData<List<UserSession>>
+    private val day3Sessions: LiveData<List<UserSession>>
 
     val agenda: LiveData<List<Block>>
 
@@ -78,9 +79,12 @@ class ScheduleViewModel @Inject constructor(
     val errorMessage: MediatorLiveData<Event<String>>
     val navigateToSessionAction = MutableLiveData<Event<String>>()
 
+    // TODO: Replace the userID once login feature is implemented
+    private val userID = "user1"
+
     init {
         // Load sessions and tags and store the result in `LiveData`s
-        loadSessionsByDayUseCase(sessionMatcher, loadSessionsResult)
+        refreshUserSessions()
         loadAgendaUseCase(loadAgendaResult)
         loadTagsByCategoryUseCase(loadTagsResult)
 
@@ -133,7 +137,8 @@ class ScheduleViewModel @Inject constructor(
     /**
      * Called from each schedule day fragment to load data.
      */
-    fun getSessionsForDay(day: ConferenceDay): LiveData<List<Session>> = when (day) {
+    fun getSessionsForDay(day: ConferenceDay):
+            LiveData<List<UserSession>> = when (day) {
         DAY_1 -> day1Sessions
         DAY_2 -> day2Sessions
         DAY_3 -> day3Sessions
@@ -154,13 +159,11 @@ class ScheduleViewModel @Inject constructor(
         if (enabled && sessionMatcher.add(filter.tag)) {
             filter.isChecked.set(true)
             hasAnyFilters.set(true)
-            loadSessionsByDayUseCase(sessionMatcher, loadSessionsResult)
-
         } else if (!enabled && sessionMatcher.remove(filter.tag)) {
             filter.isChecked.set(false)
             hasAnyFilters.set(!sessionMatcher.isEmpty())
-            loadSessionsByDayUseCase(sessionMatcher, loadSessionsResult)
         }
+        refreshUserSessions()
     }
 
     /**
@@ -170,7 +173,7 @@ class ScheduleViewModel @Inject constructor(
         if (sessionMatcher.clearAll()) {
             tagFilters.value?.forEach { it.isChecked.set(false) }
             hasAnyFilters.set(false)
-            loadSessionsByDayUseCase(sessionMatcher, loadSessionsResult)
+            refreshUserSessions()
         }
     }
 
@@ -189,6 +192,9 @@ class ScheduleViewModel @Inject constructor(
             }
         }.checkAllSealed
     }
+
+    private fun refreshUserSessions() =
+            loadUserSessionsByDayUseCase(sessionMatcher to userID, loadSessionsResult)
 }
 
 class TagFilter(val tag: Tag, isChecked: Boolean) {

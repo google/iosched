@@ -27,6 +27,8 @@ import com.google.samples.apps.iosched.shared.data.session.agenda.AgendaDataSour
 import com.google.samples.apps.iosched.shared.data.session.agenda.RemoteAgendaDataSource
 import com.google.samples.apps.iosched.shared.data.tag.RemoteTagDataSource
 import com.google.samples.apps.iosched.shared.data.tag.TagDataSource
+import com.google.samples.apps.iosched.shared.data.userevent.RemoteUserEventDataSource
+import com.google.samples.apps.iosched.shared.data.userevent.UserEventDataSource
 import dagger.Module
 import dagger.Provides
 import javax.inject.Named
@@ -79,5 +81,11 @@ class SharedModule {
     @Provides
     fun provideMapMetadataDataSource(): MapMetadataDataSource {
         return RemoteMapMetadataDataSource()
+    }
+
+    @Singleton
+    @Provides
+    fun provideUserEventDataSource(): UserEventDataSource {
+        return RemoteUserEventDataSource
     }
 }
