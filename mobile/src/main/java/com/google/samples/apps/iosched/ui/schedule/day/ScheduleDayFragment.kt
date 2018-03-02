@@ -83,7 +83,7 @@ class ScheduleDayFragment : DaggerFragment() {
             recyclerview.clearDecorations()
             if (list != null && list.isNotEmpty()) {
                 recyclerview.addItemDecoration(
-                        ScheduleTimeHeadersDecoration(recyclerview.context, list))
+                        ScheduleTimeHeadersDecoration(recyclerview.context, list.map {it.session}))
             }
         })
 

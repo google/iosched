@@ -22,20 +22,22 @@ import android.arch.core.executor.testing.InstantTaskExecutorRule
 import com.google.samples.apps.iosched.model.TestData
 import com.google.samples.apps.iosched.shared.data.ConferenceDataRepository
 import com.google.samples.apps.iosched.shared.data.session.SessionRepository
+import com.google.samples.apps.iosched.shared.data.session.UserEventRepository
 import com.google.samples.apps.iosched.shared.data.session.agenda.AgendaRepository
 import com.google.samples.apps.iosched.shared.data.tag.TagRepository
 import com.google.samples.apps.iosched.shared.domain.agenda.LoadAgendaUseCase
-import com.google.samples.apps.iosched.shared.domain.sessions.LoadSessionsByDayUseCase
 import com.google.samples.apps.iosched.shared.domain.sessions.LoadTagsByCategoryUseCase
+import com.google.samples.apps.iosched.shared.domain.sessions.LoadUserSessionsByDayUseCase
 import com.google.samples.apps.iosched.shared.model.Block
-import com.google.samples.apps.iosched.shared.model.Session
 import com.google.samples.apps.iosched.shared.model.Tag
+import com.google.samples.apps.iosched.shared.model.UserSession
 import com.google.samples.apps.iosched.shared.schedule.SessionMatcher
 import com.google.samples.apps.iosched.shared.util.TimeUtils.ConferenceDay
 import com.google.samples.apps.iosched.test.util.LiveDataTestUtil
 import com.google.samples.apps.iosched.test.util.SyncTaskExecutorRule
 import com.google.samples.apps.iosched.ui.schedule.day.TestAgendaDataSource
 import com.google.samples.apps.iosched.ui.schedule.day.TestSessionDataSource
+import com.google.samples.apps.iosched.ui.schedule.day.TestUserEventDataSource
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
 import org.junit.Assert.assertTrue
@@ -56,7 +58,7 @@ class ScheduleViewModelTest {
     @Test
     fun testDataIsLoaded_ObservablesUpdated() {
         // Create test use cases with test data
-        val loadSessionsUseCase = createSessionsUseCase(TestData.sessionsMap)
+        val loadSessionsUseCase = createSessionsUseCase(TestData.userSessionMap)
         val loadAgendaUseCase = createAgendaUseCase(TestData.agenda)
         val loadTagsUseCase = createTagsUseCase(TestData.tagsList)
 
@@ -66,7 +68,7 @@ class ScheduleViewModelTest {
         // Check that data were loaded correctly
         // Sessions
         for (day in ConferenceDay.values()) {
-            assertEquals(TestData.sessionsMap[day],
+            assertEquals(TestData.userSessionMap[day],
                     LiveDataTestUtil.getValue(viewModel.getSessionsForDay(day)))
         }
         assertFalse(LiveDataTestUtil.getValue(viewModel.isLoading)!!)
@@ -91,13 +93,16 @@ class ScheduleViewModelTest {
      * Creates a use case that will return the provided list of sessions.
      */
     private fun createSessionsUseCase(
-            sessions: Map<ConferenceDay, List<Session>>): LoadSessionsByDayUseCase {
+            sessions: Map<ConferenceDay, List<UserSession>>): LoadUserSessionsByDayUseCase {
 
         val conferenceDataRepository = ConferenceDataRepository(
                 TestSessionDataSource, TestSessionDataSource)
+        val userEventRepository = UserEventRepository(TestUserEventDataSource)
 
-        return object : LoadSessionsByDayUseCase(SessionRepository(conferenceDataRepository)) {
-            override fun execute(parameters: SessionMatcher): Map<ConferenceDay, List<Session>> {
+        return object : LoadUserSessionsByDayUseCase(SessionRepository(conferenceDataRepository),
+                userEventRepository) {
+            override fun execute(parameters: Pair<SessionMatcher, String>):
+                    Map<ConferenceDay, List<UserSession>> {
                 return sessions
             }
         }
@@ -106,12 +111,15 @@ class ScheduleViewModelTest {
     /**
      * Creates a use case that throws an exception.
      */
-    private fun createSessionsExceptionUseCase(): LoadSessionsByDayUseCase {
+    private fun createSessionsExceptionUseCase(): LoadUserSessionsByDayUseCase {
         val conferenceDataRepository = ConferenceDataRepository(
                 TestSessionDataSource, TestSessionDataSource)
+        val userEventRepository = UserEventRepository(TestUserEventDataSource)
 
-        return object : LoadSessionsByDayUseCase(SessionRepository(conferenceDataRepository)) {
-            override fun execute(parameters: SessionMatcher): Map<ConferenceDay, List<Session>> {
+        return object : LoadUserSessionsByDayUseCase(SessionRepository(conferenceDataRepository),
+                userEventRepository) {
+            override fun execute(parameters: Pair<SessionMatcher, String>):
+                    Map<ConferenceDay, List<UserSession>> {
                 throw Exception("Testing exception")
             }
         }
