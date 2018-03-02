@@ -22,10 +22,10 @@ import android.arch.core.executor.testing.InstantTaskExecutorRule
 import com.google.samples.apps.iosched.model.TestData
 import com.google.samples.apps.iosched.shared.data.session.SessionRepository
 import com.google.samples.apps.iosched.shared.model.Session
-import com.google.samples.apps.iosched.shared.usecases.repository.LoadSessionUseCase
+import com.google.samples.apps.iosched.shared.domain.sessions.LoadSessionUseCase
 import com.google.samples.apps.iosched.test.util.LiveDataTestUtil
 import com.google.samples.apps.iosched.test.util.SyncTaskExecutorRule
-import com.google.samples.apps.iosched.ui.schedule.TestSessionDataSource
+import com.google.samples.apps.iosched.ui.schedule.day.TestSessionDataSource
 import org.junit.Assert.assertEquals
 import org.junit.Before
 import org.junit.Rule

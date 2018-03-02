@@ -23,14 +23,18 @@ import com.google.samples.apps.iosched.model.TestData
 import com.google.samples.apps.iosched.shared.data.session.SessionRepository
 import com.google.samples.apps.iosched.shared.data.session.agenda.AgendaRepository
 import com.google.samples.apps.iosched.shared.data.tag.TagRepository
+import com.google.samples.apps.iosched.shared.domain.agenda.LoadAgendaUseCase
+import com.google.samples.apps.iosched.shared.domain.sessions.LoadSessionsByDayUseCase
+import com.google.samples.apps.iosched.shared.domain.sessions.LoadTagsByCategoryUseCase
 import com.google.samples.apps.iosched.shared.model.Block
 import com.google.samples.apps.iosched.shared.model.Session
 import com.google.samples.apps.iosched.shared.model.Tag
+import com.google.samples.apps.iosched.shared.schedule.SessionFilters
 import com.google.samples.apps.iosched.shared.util.TimeUtils.ConferenceDay
 import com.google.samples.apps.iosched.test.util.LiveDataTestUtil
 import com.google.samples.apps.iosched.test.util.SyncTaskExecutorRule
-import com.google.samples.apps.iosched.ui.schedule.agenda.LoadAgendaUseCase
-import com.google.samples.apps.iosched.ui.schedule.agenda.TestAgendaDataSource
+import com.google.samples.apps.iosched.ui.schedule.day.TestAgendaDataSource
+import com.google.samples.apps.iosched.ui.schedule.day.TestSessionDataSource
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
 import org.junit.Assert.assertTrue
@@ -87,7 +91,7 @@ class ScheduleViewModelTest {
     private fun createSessionsUseCase(
             sessions: Map<ConferenceDay, List<Session>>): LoadSessionsByDayUseCase {
         return object : LoadSessionsByDayUseCase(SessionRepository(TestSessionDataSource)) {
-            override fun execute(filters: SessionFilters): Map<ConferenceDay, List<Session>> {
+            override fun execute(parameters: SessionFilters): Map<ConferenceDay, List<Session>> {
                 return sessions
             }
         }
@@ -98,7 +102,7 @@ class ScheduleViewModelTest {
      */
     private fun createSessionsExceptionUseCase(): LoadSessionsByDayUseCase {
         return object : LoadSessionsByDayUseCase(SessionRepository(TestSessionDataSource)) {
-            override fun execute(filters: SessionFilters): Map<ConferenceDay, List<Session>> {
+            override fun execute(parameters: SessionFilters): Map<ConferenceDay, List<Session>> {
                 throw Exception("Testing exception")
             }
         }

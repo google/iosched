@@ -22,9 +22,9 @@ import android.arch.lifecycle.ViewModel
 import com.google.android.gms.maps.model.LatLngBounds
 import com.google.android.gms.maps.model.MarkerOptions
 import com.google.samples.apps.iosched.shared.result.Result
-import com.google.samples.apps.iosched.shared.usecases.invoke
-import com.google.samples.apps.iosched.shared.usecases.repository.LoadConferenceLocationUseCase
-import com.google.samples.apps.iosched.shared.usecases.repository.LoadConferenceMinZoomUseCase
+import com.google.samples.apps.iosched.shared.domain.invoke
+import com.google.samples.apps.iosched.shared.domain.map.LoadConferenceLocationUseCase
+import com.google.samples.apps.iosched.shared.domain.map.LoadConferenceMinZoomUseCase
 import com.google.samples.apps.iosched.shared.util.map
 import javax.inject.Inject
 

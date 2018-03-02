@@ -19,17 +19,20 @@ package com.google.samples.apps.iosched.ui.schedule
 import android.arch.lifecycle.LiveData
 import android.arch.lifecycle.MutableLiveData
 import android.arch.lifecycle.ViewModel
+import com.google.samples.apps.iosched.shared.domain.agenda.LoadAgendaUseCase
+import com.google.samples.apps.iosched.shared.domain.invoke
+import com.google.samples.apps.iosched.shared.domain.sessions.LoadSessionsByDayUseCase
+import com.google.samples.apps.iosched.shared.domain.sessions.LoadTagsByCategoryUseCase
 import com.google.samples.apps.iosched.shared.model.Block
 import com.google.samples.apps.iosched.shared.model.Session
 import com.google.samples.apps.iosched.shared.model.Tag
 import com.google.samples.apps.iosched.shared.result.Result
-import com.google.samples.apps.iosched.shared.usecases.invoke
+import com.google.samples.apps.iosched.shared.schedule.SessionFilters
 import com.google.samples.apps.iosched.shared.util.TimeUtils.ConferenceDay
 import com.google.samples.apps.iosched.shared.util.TimeUtils.ConferenceDay.DAY_1
 import com.google.samples.apps.iosched.shared.util.TimeUtils.ConferenceDay.DAY_2
 import com.google.samples.apps.iosched.shared.util.TimeUtils.ConferenceDay.DAY_3
 import com.google.samples.apps.iosched.shared.util.map
-import com.google.samples.apps.iosched.ui.schedule.agenda.LoadAgendaUseCase
 import timber.log.Timber
 import javax.inject.Inject
 
