@@ -36,6 +36,7 @@ import androidx.content.res.getResourceIdOrThrow
 import androidx.graphics.withTranslation
 import androidx.text.inSpans
 import androidx.view.get
+import androidx.view.isEmpty
 import com.google.samples.apps.iosched.R
 import com.google.samples.apps.iosched.shared.model.Session
 import org.threeten.bp.ZonedDateTime
@@ -91,7 +92,7 @@ class ScheduleTimeHeadersDecoration(
      * found i.e. which needs to be sticky.
      */
     override fun onDrawOver(c: Canvas, parent: RecyclerView, state: RecyclerView.State?) {
-        if (timeSlots.isEmpty()) return
+        if (timeSlots.isEmpty() || parent.isEmpty()) return
 
         var earliestFoundHeaderPos = -1
         var prevHeaderTop = Int.MAX_VALUE
