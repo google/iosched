@@ -22,7 +22,8 @@ import dagger.Module
 import dagger.Provides
 
 /**
- * Provides Dagger with dependencies for the [ScheduleFragment].
+ * Provides Dagger with dependencies for the
+ * [com.google.samples.apps.iosched.tv.ui.schedule.ScheduleFragment].
  */
 @Module
 class TvScheduleModule {

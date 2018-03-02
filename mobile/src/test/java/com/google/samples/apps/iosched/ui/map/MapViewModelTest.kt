@@ -21,8 +21,8 @@ import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.LatLngBounds
 import com.google.samples.apps.iosched.shared.data.map.MapMetadataRepository
 import com.google.samples.apps.iosched.shared.data.map.RemoteMapMetadataDataSource
-import com.google.samples.apps.iosched.shared.usecases.repository.LoadConferenceLocationUseCase
-import com.google.samples.apps.iosched.shared.usecases.repository.LoadConferenceMinZoomUseCase
+import com.google.samples.apps.iosched.shared.domain.map.LoadConferenceLocationUseCase
+import com.google.samples.apps.iosched.shared.domain.map.LoadConferenceMinZoomUseCase
 import com.google.samples.apps.iosched.test.util.LiveDataTestUtil
 import com.google.samples.apps.iosched.test.util.SyncTaskExecutorRule
 import org.junit.Assert

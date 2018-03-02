@@ -44,7 +44,7 @@ import org.threeten.bp.format.DateTimeFormatter
 
 /**
  * A [RecyclerView.ItemDecoration] which draws sticky headers marking the days in a given list of
- * [blocks]. It also inserts gaps & a dividing line between days.
+ * [Block]s. It also inserts gaps & a dividing line between days.
  */
 class ScheduleAgendaHeadersDecoration(
     context: Context,

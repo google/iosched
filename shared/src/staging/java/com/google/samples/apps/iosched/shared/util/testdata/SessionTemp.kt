@@ -19,7 +19,7 @@ package com.google.samples.apps.iosched.shared.util.testdata
 import org.threeten.bp.ZonedDateTime
 
 /**
- * Like [Session] but with list of IDs instead of objects in tags, speakers and related sessions.
+ * Like `Session` but with list of IDs instead of objects in tags, speakers and related sessions.
  */
 data class SessionTemp(
         /**
@@ -68,7 +68,7 @@ data class SessionTemp(
         val youTubeUrl: String,
 
         /**
-         * IDs of the [Tag]s associated with the session. Ordered, with the most important tags
+         * IDs of the `Tag`s associated with the session. Ordered, with the most important tags
          * appearing first.
          */
         val tags: List<String>,

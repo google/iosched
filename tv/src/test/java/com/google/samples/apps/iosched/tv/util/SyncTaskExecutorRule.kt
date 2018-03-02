@@ -16,8 +16,8 @@
 
 package com.google.samples.apps.iosched.tv.util
 
-import com.google.samples.apps.iosched.shared.usecases.internal.DefaultScheduler
-import com.google.samples.apps.iosched.shared.usecases.internal.SyncScheduler
+import com.google.samples.apps.iosched.shared.domain.internal.DefaultScheduler
+import com.google.samples.apps.iosched.shared.domain.internal.SyncScheduler
 import org.junit.rules.TestWatcher
 import org.junit.runner.Description
 

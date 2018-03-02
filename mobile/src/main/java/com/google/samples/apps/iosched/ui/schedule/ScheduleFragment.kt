@@ -30,6 +30,7 @@ import com.google.samples.apps.iosched.databinding.FragmentScheduleBinding
 import com.google.samples.apps.iosched.shared.util.TimeUtils.ConferenceDay
 import com.google.samples.apps.iosched.shared.util.activityViewModelProvider
 import com.google.samples.apps.iosched.ui.schedule.agenda.ScheduleAgendaFragment
+import com.google.samples.apps.iosched.ui.schedule.day.ScheduleDayFragment
 import dagger.android.support.DaggerFragment
 import kotlinx.android.synthetic.main.fragment_schedule.*
 import javax.inject.Inject

@@ -21,8 +21,8 @@ import android.arch.lifecycle.Transformations
 import android.arch.lifecycle.ViewModel
 import com.google.samples.apps.iosched.shared.model.Session
 import com.google.samples.apps.iosched.shared.result.Result
-import com.google.samples.apps.iosched.shared.usecases.invoke
-import com.google.samples.apps.iosched.shared.usecases.repository.LoadSessionsUseCase
+import com.google.samples.apps.iosched.shared.domain.invoke
+import com.google.samples.apps.iosched.shared.domain.sessions.LoadSessionsUseCase
 
 
 /**

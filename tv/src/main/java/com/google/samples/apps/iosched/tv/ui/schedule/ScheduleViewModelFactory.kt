@@ -19,7 +19,7 @@ package com.google.samples.apps.iosched.tv.ui.schedule
 import android.arch.lifecycle.ViewModel
 import android.arch.lifecycle.ViewModelProvider
 import com.google.samples.apps.iosched.shared.data.session.SessionRepository
-import com.google.samples.apps.iosched.shared.usecases.repository.LoadSessionsUseCase
+import com.google.samples.apps.iosched.shared.domain.sessions.LoadSessionsUseCase
 
 /**
  * Creates [ScheduleViewModel]s, used with the [android.arch.lifecycle.ViewModelProviders].

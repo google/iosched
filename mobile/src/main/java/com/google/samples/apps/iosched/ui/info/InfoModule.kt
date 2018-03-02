@@ -16,7 +16,9 @@
 
 package com.google.samples.apps.iosched.ui.info
 
+import com.google.samples.apps.iosched.ui.MainModule
 import dagger.Module
+import dagger.android.AndroidInjector
 import dagger.android.ContributesAndroidInjector
 
 /**

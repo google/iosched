@@ -20,7 +20,7 @@ package com.google.samples.apps.iosched.tv.ui.schedule
 
 import android.arch.core.executor.testing.InstantTaskExecutorRule
 import com.google.samples.apps.iosched.shared.data.session.SessionRepository
-import com.google.samples.apps.iosched.shared.usecases.repository.LoadSessionsUseCase
+import com.google.samples.apps.iosched.shared.domain.sessions.LoadSessionsUseCase
 import com.google.samples.apps.iosched.test.util.LiveDataTestUtil
 import com.google.samples.apps.iosched.tv.util.SyncTaskExecutorRule
 import org.hamcrest.collection.IsCollectionWithSize.hasSize
