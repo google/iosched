@@ -16,8 +16,13 @@
 
 package com.google.samples.apps.iosched.tv.ui.schedule
 
+import android.app.Activity
 import android.arch.lifecycle.Observer
+import android.content.Context
+import android.graphics.drawable.ColorDrawable
+import android.graphics.drawable.Drawable
 import android.os.Bundle
+import android.support.v17.leanback.app.BackgroundManager
 import android.support.v17.leanback.app.RowsSupportFragment
 import android.support.v17.leanback.widget.ArrayObjectAdapter
 import android.support.v17.leanback.widget.DiffCallback
@@ -30,6 +35,7 @@ import android.text.TextUtils
 import android.view.ViewGroup
 import com.google.samples.apps.iosched.shared.model.Session
 import com.google.samples.apps.iosched.shared.util.TimeUtils
+import com.google.samples.apps.iosched.shared.util.getThemeColor
 import com.google.samples.apps.iosched.shared.util.inTransaction
 import com.google.samples.apps.iosched.shared.util.viewModelProvider
 import com.google.samples.apps.iosched.tv.R
@@ -53,6 +59,9 @@ class ScheduleFragment : RowsSupportFragment() {
     private val rowsAdapter = ArrayObjectAdapter(ListRowPresenter())
 
     private val spinnerFragment = SpinnerFragment()
+
+    private lateinit var backgroundManager: BackgroundManager
+    private lateinit var defaultBackground: Drawable
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -79,6 +88,30 @@ class ScheduleFragment : RowsSupportFragment() {
         observeViewModel(viewModel)
     }
 
+    override fun onAttach(context: Context?) {
+        super.onAttach(context)
+        prepareBackgroundManager(requireActivity())
+    }
+
+    override fun onStop() {
+        super.onStop()
+        fragmentManager?.inTransaction {
+            remove(spinnerFragment)
+        }
+    }
+
+    private fun prepareBackgroundManager(activity: Activity) {
+        backgroundManager = BackgroundManager.getInstance(activity)
+        if (!backgroundManager.isAttached) {
+            backgroundManager.attach(activity.window)
+        }
+        // Use the darker primary color for the background to contrast with the headers.
+        val color = activity.getThemeColor(R.attr.colorPrimaryDark, R.color.colorPrimaryDark)
+        defaultBackground = ColorDrawable(color)
+
+        backgroundManager.drawable = defaultBackground
+    }
+
     private fun loadAdapter(sessions: List<Session>) {
 
         val rows = mutableListOf<ListRow>()
@@ -86,27 +119,29 @@ class ScheduleFragment : RowsSupportFragment() {
         if (sessions.isEmpty()) {
             // TODO: replace with real UI once we have mocks.
             val dummyheader = HeaderItem(-1, getString(R.string.no_sessions_available))
-            val dummyAdapter = ArrayObjectAdapter(object : Presenter() {
-                override fun onCreateViewHolder(parent: ViewGroup?): ViewHolder {
-                    return ViewHolder(ImageCardView(parent?.context))
+            val dummyAdapter = ArrayObjectAdapter(
+                object : Presenter() {
+                    override fun onCreateViewHolder(parent: ViewGroup?): ViewHolder {
+                        return ViewHolder(ImageCardView(parent?.context))
+                    }
+
+                    override fun onBindViewHolder(viewHolder: ViewHolder?, item: Any?) {
+                        val cardView = viewHolder?.view as ImageCardView
+
+                        // TODO: replace with actual error message wording
+                        cardView.titleText = getString(R.string.try_later)
+                        cardView.contentText = getString(R.string.sorry_for_the_troubles)
+
+                        // Set the image card's height and width.
+                        val resources = cardView.context.resources
+                        val cardWidth = resources.getDimensionPixelSize(R.dimen.card_width)
+                        val cardHeight = resources.getDimensionPixelSize(R.dimen.card_height)
+                        cardView.setMainImageDimensions(cardWidth, cardHeight)
+                    }
+
+                    override fun onUnbindViewHolder(viewHolder: ViewHolder?) {}
                 }
-
-                override fun onBindViewHolder(viewHolder: ViewHolder?, item: Any?) {
-                    val cardView = viewHolder?.view as ImageCardView
-
-                    // TODO: replace with actual error message wording
-                    cardView.titleText = getString(R.string.try_later)
-                    cardView.contentText = getString(R.string.sorry_for_the_troubles)
-
-                    // Set the image card's height and width.
-                    val resources = cardView.context.resources
-                    val cardWidth = resources.getDimensionPixelSize(R.dimen.card_width)
-                    val cardHeight = resources.getDimensionPixelSize(R.dimen.card_height)
-                    cardView.setMainImageDimensions(cardWidth, cardHeight)
-                }
-
-                override fun onUnbindViewHolder(viewHolder: ViewHolder?) {}
-            }).apply { add(Any()) }
+            ).apply { add(Any()) }
             val dummyRow = ListRow(dummyheader, dummyAdapter)
             rows.add(dummyRow)
         } else {
@@ -161,11 +196,8 @@ class ScheduleFragment : RowsSupportFragment() {
 
         // Update text if the screen is in loading state.
         viewModel.isLoading.observe(this, Observer { isLoading ->
-
-            if (isLoading == false) {
-                fragmentManager?.inTransaction {
-                    remove(spinnerFragment)
-                }
+            if (isLoading == false) fragmentManager?.inTransaction {
+                remove(spinnerFragment)
             }
         })
     }
