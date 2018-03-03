@@ -17,35 +17,82 @@
 package com.google.samples.apps.iosched.tv.ui.schedule
 
 import android.arch.lifecycle.LiveData
-import android.arch.lifecycle.Transformations
+import android.arch.lifecycle.MutableLiveData
 import android.arch.lifecycle.ViewModel
-import com.google.samples.apps.iosched.shared.model.Session
+import com.google.samples.apps.iosched.shared.domain.sessions.LoadUserSessionsByDayUseCase
+import com.google.samples.apps.iosched.shared.model.UserSession
 import com.google.samples.apps.iosched.shared.result.Result
-import com.google.samples.apps.iosched.shared.domain.invoke
-import com.google.samples.apps.iosched.shared.domain.sessions.LoadSessionsUseCase
-
+import com.google.samples.apps.iosched.shared.schedule.TagFilterMatcher
+import com.google.samples.apps.iosched.shared.util.TimeUtils
+import com.google.samples.apps.iosched.shared.util.TimeUtils.ConferenceDay
+import com.google.samples.apps.iosched.shared.util.map
 
 /**
- * Loads data and exposes it to the view.
+ * Loads sessions data and exposes each day's sessions to the view.
  */
-class ScheduleViewModel(loadSessionsUseCase: LoadSessionsUseCase) : ViewModel() {
+class ScheduleViewModel(loadSessionsByDayUseCase: LoadUserSessionsByDayUseCase) : ViewModel() {
 
-    // TODO: Example LiveData holders
-    val sessions: LiveData<List<Session>>
+    // The current UserSessionMatcher, used to filter the events that are shown
+    private var userSessionMatcher = TagFilterMatcher()
+
+    // TODO: Remove it once the FirebaseUser is available when the app is launched
+    val tempUser = "user1"
+
     val isLoading: LiveData<Boolean>
-    val numberOfSessions: LiveData<Int>
+
+    val errorMessage: LiveData<String>
+    private val errorMessageShown = MutableLiveData<Boolean>()
+
+    private val loadSessionsResult: LiveData<Result<Map<ConferenceDay, List<UserSession>>>>
+
+    // Each day is represented by a map of time slot labels to a list of sessions.
+    private val day1Sessions: LiveData<Map<String, List<UserSession>>>
+    private val day2Sessions: LiveData<Map<String, List<UserSession>>>
+    private val day3Sessions: LiveData<Map<String, List<UserSession>>>
 
     init {
-        // TODO: replace. Dummy async task
-        val liveResult: LiveData<Result<List<Session>>> = loadSessionsUseCase()
+        // Load sessions and tags and store the result in `LiveData`s
+        loadSessionsResult = loadSessionsByDayUseCase.observe()
+        loadSessionsByDayUseCase.execute(parameters = userSessionMatcher to tempUser)
 
-        sessions = Transformations.map(liveResult, { result ->
-            (result as? Result.Success)?.data ?: emptyList()
-        })
-        isLoading = Transformations.map(liveResult, { result -> result == Result.Loading })
-        numberOfSessions = Transformations.map(liveResult, { result ->
-            (result as? Result.Success)?.data?.size ?: 0
-        })
+        // Map LiveData results from UseCase to each day's individual LiveData
+        day1Sessions = groupSessionsByTimeSlot(loadSessionsResult, ConferenceDay.DAY_1)
+        day2Sessions = groupSessionsByTimeSlot(loadSessionsResult, ConferenceDay.DAY_2)
+        day3Sessions = groupSessionsByTimeSlot(loadSessionsResult, ConferenceDay.DAY_3)
+
+        isLoading = loadSessionsResult.map { it == Result.Loading }
+
+        errorMessage = loadSessionsResult.map { result ->
+            errorMessageShown.value = false
+            (result as? Result.Error)?.exception?.message ?: ""
+        }
     }
+
+    private fun groupSessionsByTimeSlot(
+            result: MutableLiveData<Result<Map<ConferenceDay, List<UserSession>>>>,
+            day: ConferenceDay
+    ): LiveData<Map<String, List<UserSession>>> {
+        return result.map {
+            val sessions = (it as? Result.Success)?.data?.get(day) ?: emptyList()
+
+            // Groups sessions by formatted header string.
+            sessions.groupBy({ TimeUtils.timeString(it.session.startTime, it.session.endTime) })
+        }
+    }
+
+    fun wasErrorMessageShown(): Boolean = errorMessageShown.value ?: false
+
+    fun onErrorMessageShown() {
+        errorMessageShown.value = true
+    }
+
+    fun getSessionsGroupedByTimeForDay(
+            day: ConferenceDay
+    ): LiveData<Map<String, List<UserSession>>> =
+            when (day) {
+                ConferenceDay.DAY_1 -> day1Sessions
+                ConferenceDay.DAY_2 -> day2Sessions
+                ConferenceDay.DAY_3 -> day3Sessions
+            }
 }
 

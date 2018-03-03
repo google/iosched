@@ -20,7 +20,6 @@ import android.arch.lifecycle.ViewModel
 import android.arch.lifecycle.ViewModelProvider
 import com.google.samples.apps.iosched.shared.data.session.SessionRepository
 import com.google.samples.apps.iosched.shared.domain.sessions.LoadSessionUseCase
-import com.google.samples.apps.iosched.shared.domain.sessions.LoadSessionsUseCase
 
 /**
  * Creates [SessionDetailViewModel]s, used with the [android.arch.lifecycle.ViewModelProviders].

@@ -16,9 +16,7 @@
 
 package com.google.samples.apps.iosched.tv.ui.schedule.di
 
-import android.content.Context
-import com.google.samples.apps.iosched.shared.data.session.SessionRepository
-import com.google.samples.apps.iosched.tv.TvApplication
+import com.google.samples.apps.iosched.shared.data.userevent.DefaultSessionAndUserEventRepository
 import com.google.samples.apps.iosched.tv.ui.schedule.ScheduleViewModelFactory
 import dagger.Module
 import dagger.Provides
@@ -31,8 +29,9 @@ import dagger.Provides
 class TvScheduleModule {
 
     @Provides
-    fun provideScheduleViewModelFactory(sessionRepository: SessionRepository)
-            : ScheduleViewModelFactory {
-        return ScheduleViewModelFactory(sessionRepository)
+    fun provideScheduleViewModelFactory(
+        userEventRepository: DefaultSessionAndUserEventRepository
+    ): ScheduleViewModelFactory {
+        return ScheduleViewModelFactory(userEventRepository)
     }
 }

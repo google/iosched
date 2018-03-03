@@ -25,19 +25,22 @@ import android.os.Bundle
 import android.support.v17.leanback.app.BackgroundManager
 import android.support.v17.leanback.app.RowsSupportFragment
 import android.support.v17.leanback.widget.ArrayObjectAdapter
-import android.support.v17.leanback.widget.DiffCallback
 import android.support.v17.leanback.widget.HeaderItem
 import android.support.v17.leanback.widget.ImageCardView
 import android.support.v17.leanback.widget.ListRow
 import android.support.v17.leanback.widget.ListRowPresenter
 import android.support.v17.leanback.widget.Presenter
-import android.text.TextUtils
 import android.view.ViewGroup
+import android.widget.Toast
 import com.google.samples.apps.iosched.shared.model.Session
-import com.google.samples.apps.iosched.shared.util.TimeUtils
+import com.google.samples.apps.iosched.shared.model.UserSession
+import com.google.samples.apps.iosched.shared.util.TimeUtils.ConferenceDay
+import com.google.samples.apps.iosched.shared.util.activityViewModelProvider
+import com.google.samples.apps.iosched.shared.util.getEnum
 import com.google.samples.apps.iosched.shared.util.getThemeColor
 import com.google.samples.apps.iosched.shared.util.inTransaction
-import com.google.samples.apps.iosched.shared.util.viewModelProvider
+import com.google.samples.apps.iosched.shared.util.lazyFast
+import com.google.samples.apps.iosched.shared.util.putEnum
 import com.google.samples.apps.iosched.tv.R
 import com.google.samples.apps.iosched.tv.TvApplication
 import com.google.samples.apps.iosched.tv.ui.SpinnerFragment
@@ -56,7 +59,14 @@ class ScheduleFragment : RowsSupportFragment() {
 
     private lateinit var viewModel: ScheduleViewModel
 
+    private val conferenceDay: ConferenceDay by lazyFast {
+        val args = arguments ?: throw IllegalStateException("Missing arguments!")
+        args.getEnum<ConferenceDay>(ARG_CONFERENCE_DAY)
+    }
+
     private val rowsAdapter = ArrayObjectAdapter(ListRowPresenter())
+
+    private lateinit var noSessionsRow: ListRow
 
     private val spinnerFragment = SpinnerFragment()
 
@@ -74,7 +84,9 @@ class ScheduleFragment : RowsSupportFragment() {
             add(R.id.main_frame, spinnerFragment)
         }
 
-        viewModel = viewModelProvider(viewModelFactory)
+        viewModel = activityViewModelProvider(viewModelFactory)
+
+        noSessionsRow = createNoSessionRow()
 
         setOnItemViewClickedListener { itemViewHolder, item, _, _ ->
             if (item is Session) {
@@ -84,20 +96,37 @@ class ScheduleFragment : RowsSupportFragment() {
                     SessionDetailActivity.createIntent(context = context, sessionId = item.id))
             }
         }
+    }
 
-        observeViewModel(viewModel)
+    override fun onActivityCreated(savedInstanceState: Bundle?) {
+        super.onActivityCreated(savedInstanceState)
+        viewModel.getSessionsGroupedByTimeForDay(conferenceDay)
+                .observe(requireActivity(), Observer { map ->
+                    loadAdapter(sessionsByTimeSlot = map ?: emptyMap())
+                })
+
+        viewModel.isLoading.observe(this, Observer { isLoading ->
+
+            if (isLoading == false) {
+                fragmentManager?.inTransaction {
+                    remove(spinnerFragment)
+                }
+            }
+        })
+
+        viewModel.errorMessage.observe(this, Observer { message ->
+            //TODO: Change once there's a way to show errors to the user
+            if (!message.isNullOrEmpty() && !viewModel.wasErrorMessageShown()) {
+                // Prevent the message from showing more than once
+                viewModel.onErrorMessageShown()
+                Toast.makeText(this.context, message, Toast.LENGTH_LONG).show()
+            }
+        })
     }
 
     override fun onAttach(context: Context?) {
         super.onAttach(context)
         prepareBackgroundManager(requireActivity())
-    }
-
-    override fun onStop() {
-        super.onStop()
-        fragmentManager?.inTransaction {
-            remove(spinnerFragment)
-        }
     }
 
     private fun prepareBackgroundManager(activity: Activity) {
@@ -112,93 +141,62 @@ class ScheduleFragment : RowsSupportFragment() {
         backgroundManager.drawable = defaultBackground
     }
 
-    private fun loadAdapter(sessions: List<Session>) {
+    private fun createNoSessionRow(): ListRow {
+        val noSessionHeader = HeaderItem(-1, getString(R.string.no_sessions_available))
+        val noSessionAdapter = ArrayObjectAdapter(object : Presenter() {
+            override fun onCreateViewHolder(parent: ViewGroup?): ViewHolder {
+                return ViewHolder(ImageCardView(parent?.context))
+            }
+
+            override fun onBindViewHolder(viewHolder: ViewHolder?, item: Any?) {
+                val cardView = viewHolder?.view as ImageCardView
+
+                // TODO: replace with actual error message wording
+                cardView.titleText = getString(R.string.try_later)
+                cardView.contentText = getString(R.string.sorry_for_the_troubles)
+
+                // Set the image card's height and width.
+                val resources = cardView.context.resources
+                val cardWidth = resources.getDimensionPixelSize(R.dimen.card_width)
+                val cardHeight = resources.getDimensionPixelSize(R.dimen.card_height)
+                cardView.setMainImageDimensions(cardWidth, cardHeight)
+            }
+
+            override fun onUnbindViewHolder(viewHolder: ViewHolder?) {}
+        }).apply { add(Any()) }
+        return ListRow(noSessionHeader, noSessionAdapter)
+    }
+
+    private fun loadAdapter(sessionsByTimeSlot: Map<String, List<UserSession>>) {
 
         val rows = mutableListOf<ListRow>()
 
-        if (sessions.isEmpty()) {
-            // TODO: replace with real UI once we have mocks.
-            val dummyheader = HeaderItem(-1, getString(R.string.no_sessions_available))
-            val dummyAdapter = ArrayObjectAdapter(
-                object : Presenter() {
-                    override fun onCreateViewHolder(parent: ViewGroup?): ViewHolder {
-                        return ViewHolder(ImageCardView(parent?.context))
-                    }
-
-                    override fun onBindViewHolder(viewHolder: ViewHolder?, item: Any?) {
-                        val cardView = viewHolder?.view as ImageCardView
-
-                        // TODO: replace with actual error message wording
-                        cardView.titleText = getString(R.string.try_later)
-                        cardView.contentText = getString(R.string.sorry_for_the_troubles)
-
-                        // Set the image card's height and width.
-                        val resources = cardView.context.resources
-                        val cardWidth = resources.getDimensionPixelSize(R.dimen.card_width)
-                        val cardHeight = resources.getDimensionPixelSize(R.dimen.card_height)
-                        cardView.setMainImageDimensions(cardWidth, cardHeight)
-                    }
-
-                    override fun onUnbindViewHolder(viewHolder: ViewHolder?) {}
-                }
-            ).apply { add(Any()) }
-            val dummyRow = ListRow(dummyheader, dummyAdapter)
-            rows.add(dummyRow)
+        if (sessionsByTimeSlot.isEmpty()) {
+            rows.add(noSessionsRow)
         } else {
-            // TODO: replace with real data.
-            val sessionAdapter = sessions.toArrayObjectAdapter(SessionPresenter())
-
-            val firstSession = sessions[0]
-            // TODO: move logic to format header string to ViewModel
-            val header = TimeUtils.timeString(firstSession.startTime, firstSession.endTime)
-
-            val dummyheader = HeaderItem(1, header)
-            val dummyRow = ListRow(dummyheader, sessionAdapter)
-            rows.add(dummyRow)
+            for (timeSlot in sessionsByTimeSlot) {
+                val header = HeaderItem(timeSlot.key)
+                // TODO: use UserSession instead of plain session
+                val sessions = timeSlot.value.map { it -> it.session }
+                val sessionAdapter = sessions.toArrayObjectAdapter(SessionPresenter())
+                val timeSlotRow = ListRow(header, sessionAdapter)
+                rows.add(timeSlotRow)
+            }
         }
 
-        // TODO: move this DiffCallback implementation to it's own class/file once the algorithm for
-        // comparing rows in this fragment is more concrete.
-        rowsAdapter.setItems(rows, object : DiffCallback<ListRow>() {
-            override fun areItemsTheSame(oldRow: ListRow, newRow: ListRow): Boolean {
-                return TextUtils.equals(oldRow.contentDescription, newRow.contentDescription)
-            }
-
-            override fun areContentsTheSame(oldItem: ListRow, newItem: ListRow): Boolean {
-                val oldAdapter = oldItem.adapter
-                val newAdapter = newItem.adapter
-                val sameSize = oldAdapter.size() == newAdapter.size()
-                if (!sameSize) {
-                    return false
-                }
-
-                for (i in 0 until oldAdapter.size()) {
-                    val oldSession = oldAdapter.get(i) as Session
-                    val newSession = newAdapter.get(i) as Session
-
-                    if (!TextUtils.equals(oldSession.id, newSession.id)) {
-                        return false
-                    }
-                }
-
-                return true
-            }
-        })
+        rowsAdapter.setItems(rows, TimeSlotSessionDiffCallback())
         mainFragmentAdapter.fragmentHost.notifyDataReady(mainFragmentAdapter)
     }
 
-    private fun observeViewModel(viewModel: ScheduleViewModel) {
+    companion object {
 
-        // Update text if there are sessions available
-        viewModel.sessions.observe(this, Observer { sessions ->
-            loadAdapter(sessions ?: emptyList())
-        })
+        const val ARG_CONFERENCE_DAY = "com.google.samples.apps.iosched.tv.ARG_CONFERENCE_DAY"
 
-        // Update text if the screen is in loading state.
-        viewModel.isLoading.observe(this, Observer { isLoading ->
-            if (isLoading == false) fragmentManager?.inTransaction {
-                remove(spinnerFragment)
+        fun newInstance(day: ConferenceDay): ScheduleFragment {
+            val args = Bundle().apply {
+                putEnum(ARG_CONFERENCE_DAY, day)
             }
-        })
+            return ScheduleFragment().apply { arguments = args }
+        }
     }
 }

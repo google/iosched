@@ -31,6 +31,7 @@ import com.google.samples.apps.iosched.shared.model.Session
 import com.google.samples.apps.iosched.shared.model.Speaker
 import com.google.samples.apps.iosched.shared.model.Tag
 import com.google.samples.apps.iosched.shared.model.UserSession
+import com.google.samples.apps.iosched.shared.util.TimeUtils
 import com.google.samples.apps.iosched.shared.util.TimeUtils.ConferenceDay
 import com.google.samples.apps.iosched.shared.util.TimeUtils.ConferenceDay.DAY_1
 import com.google.samples.apps.iosched.shared.util.TimeUtils.ConferenceDay.DAY_2
@@ -196,6 +197,19 @@ object TestData : ConferenceDataSource {
         userEvent3
     )
 
+    val day1SessionMap = mapOf(
+            TimeUtils.timeString(ConferenceDay.DAY_1.start, ConferenceDay.DAY_1.end)
+                    to listOf(userSession0, userSession1))
+    val day2SessionMap = mapOf(
+            TimeUtils.timeString(ConferenceDay.DAY_2.start, ConferenceDay.DAY_2.end)
+                    to listOf(userSession2))
+    val day3SessionMap = mapOf(
+            TimeUtils.timeString(ConferenceDay.DAY_3.start, ConferenceDay.DAY_3.end)
+                    to listOf(userSession3))
+    val sessionsByDayGroupedByTimeMap = mapOf(ConferenceDay.DAY_1 to day1SessionMap,
+            ConferenceDay.DAY_2 to day2SessionMap,
+            ConferenceDay.DAY_3 to day3SessionMap)
+
     // endregion Declarations
 
     private val conferenceData = ConferenceData(
@@ -215,7 +229,4 @@ object TestData : ConferenceDataSource {
 }
 
 /** ConferenceDataRepository for tests */
-object TestDataRepository : ConferenceDataRepository(
-    TestData,
-    TestData
-)
+object TestDataRepository : ConferenceDataRepository(TestData, TestData)

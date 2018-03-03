@@ -21,12 +21,14 @@ import timber.log.Timber
 import java.io.IOException
 import javax.inject.Inject
 import javax.inject.Named
+import javax.inject.Singleton
 
 /**
  * Single point of access to session data for the presentation layer.
  *
  * The session data is loaded from the bootstrap file.
  */
+@Singleton
 open class ConferenceDataRepository @Inject constructor(
         @Named("remoteConfDatasource") private val remoteDataSource: ConferenceDataSource,
         @Named("bootstrapConfDataSource") private val boostrapDataSource: ConferenceDataSource
