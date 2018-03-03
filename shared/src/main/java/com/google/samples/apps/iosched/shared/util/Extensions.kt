@@ -21,13 +21,19 @@ import android.arch.lifecycle.Transformations
 import android.arch.lifecycle.ViewModel
 import android.arch.lifecycle.ViewModelProvider
 import android.arch.lifecycle.ViewModelProviders
+import android.content.Context
 import android.os.Bundle
 import android.os.Parcel
+import android.support.annotation.AttrRes
+import android.support.annotation.ColorInt
+import android.support.annotation.ColorRes
 import android.support.annotation.LayoutRes
 import android.support.v4.app.Fragment
 import android.support.v4.app.FragmentActivity
 import android.support.v4.app.FragmentManager
 import android.support.v4.app.FragmentTransaction
+import android.support.v4.content.ContextCompat
+import android.util.TypedValue
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -160,3 +166,23 @@ fun ZonedDateTime.toEpochMilli() = this.toInstant().toEpochMilli()
 val <T> T.checkAllMatched: T
     get() = this
 
+// region UI utils
+
+/**
+ * Retrieves a color from the theme by attributes. If the attribute is not defined, a fall back
+ * color will be returned.
+ */
+@ColorInt
+fun Context.getThemeColor(
+    @AttrRes attrResId: Int,
+    @ColorRes fallbackColorResId: Int
+): Int {
+    val tv = TypedValue()
+    return if (theme.resolveAttribute(attrResId, tv, true)) {
+        tv.data
+    } else {
+        ContextCompat.getColor(this, fallbackColorResId)
+    }
+}
+
+// endregion

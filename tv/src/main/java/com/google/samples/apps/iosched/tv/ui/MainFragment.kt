@@ -24,6 +24,7 @@ import android.support.v17.leanback.widget.ListRowPresenter
 import android.support.v17.leanback.widget.PageRow
 import android.support.v4.content.ContextCompat
 import com.google.samples.apps.iosched.shared.util.TimeUtils
+import com.google.samples.apps.iosched.shared.util.getThemeColor
 import com.google.samples.apps.iosched.tv.R
 
 class MainFragment : BrowseSupportFragment() {
@@ -39,6 +40,7 @@ class MainFragment : BrowseSupportFragment() {
         badgeDrawable = ContextCompat.getDrawable(context, R.drawable.ic_banner)
         headersState = BrowseSupportFragment.HEADERS_ENABLED
         isHeadersTransitionOnBackEnabled = true
+        brandColor = context.getThemeColor(R.attr.colorPrimary, R.color.colorPrimary)
 
         adapter = rowsAdapter
 

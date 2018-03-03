@@ -76,6 +76,7 @@ dependencies {
     // Date and time API for Java.
     api "com.jakewharton.threetenabp:threetenabp:$rootProject.threetenabpVersion"
     testImplementation "org.threeten:threetenbp:$rootProject.threetenbpVersion"
+    implementation "androidx.core:core-ktx:$rootProject.ktxVersion"
 
     // Kotlin
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jre7:$rootProject.kotlinVersion"
