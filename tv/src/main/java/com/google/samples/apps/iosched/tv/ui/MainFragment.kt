@@ -54,7 +54,7 @@ class MainFragment : BrowseSupportFragment() {
         val days = TimeUtils.CONFERENCE_DAYS
         days.forEach { day ->
 
-            val displayDate = day.start.format(TimeUtils.FORMATTER_MONTH_DAY)
+            val displayDate = day.formatMonthDay()
 
             val headerItem = HeaderItem(day.ordinal.toLong(), displayDate)
             val pageRow = PageRow(headerItem)

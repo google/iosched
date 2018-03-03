@@ -20,13 +20,19 @@ package com.google.samples.apps.iosched.tv.ui.schedule
 
 import android.arch.core.executor.testing.InstantTaskExecutorRule
 import com.google.samples.apps.iosched.shared.data.session.SessionRepository
-import com.google.samples.apps.iosched.shared.domain.sessions.LoadSessionsUseCase
+import com.google.samples.apps.iosched.shared.data.userevent.DefaultSessionAndUserEventRepository
+import com.google.samples.apps.iosched.shared.domain.sessions.LoadUserSessionsByDayUseCase
+import com.google.samples.apps.iosched.shared.result.Result
+import com.google.samples.apps.iosched.shared.schedule.UserSessionMatcher
+import com.google.samples.apps.iosched.shared.util.TimeUtils
 import com.google.samples.apps.iosched.test.util.LiveDataTestUtil
 import com.google.samples.apps.iosched.tv.model.TestData
 import com.google.samples.apps.iosched.tv.model.TestDataRepository
+import com.google.samples.apps.iosched.tv.model.TestUserEventDataSource
 import com.google.samples.apps.iosched.tv.util.SyncTaskExecutorRule
-import org.hamcrest.collection.IsCollectionWithSize.hasSize
 import org.hamcrest.core.Is.`is`
+import org.junit.Assert.assertEquals
+import org.junit.Assert.assertFalse
 import org.junit.Assert.assertThat
 import org.junit.Rule
 import org.junit.Test
@@ -37,28 +43,65 @@ import org.junit.Test
 class ScheduleViewModelTest {
 
     // Executes tasks in the Architecture Components in the same thread
-    @get:Rule var instantTaskExecutorRule = InstantTaskExecutorRule()
+    @get:Rule
+    var instantTaskExecutorRule = InstantTaskExecutorRule()
 
     // Executes tasks in a synchronous [TaskScheduler]
-    @get:Rule var syncTaskExecutorRule = SyncTaskExecutorRule()
+    @get:Rule
+    var syncTaskExecutorRule = SyncTaskExecutorRule()
 
     @Test
     fun testDataIsLoaded_ObservablesUpdated() {
         // Create a test use cases with test data
-        val expectedSessions = TestData.sessionsList
-        val loadSessionsUseCase = LoadSessionsUseCase(SessionRepository(TestDataRepository))
+        val loadSessionsUseCase = createUseCase()
 
         // Create ViewModel with the use case
         val viewModel = ScheduleViewModel(loadSessionsUseCase)
 
         // Check that data was loaded correctly
-        assertThat("There should be ${expectedSessions.size} session in the ViewModel",
-                LiveDataTestUtil.getValue(viewModel.sessions),
-                hasSize(expectedSessions.size))
+        for (day in TimeUtils.ConferenceDay.values()) {
+            val actual = LiveDataTestUtil.getValue(viewModel.getSessionsGroupedByTimeForDay(day))
+            assertEquals(actual, TestData.sessionsByDayGroupedByTimeMap[day])
+        }
 
         assertThat("Once sessions are loaded, isLoading should be false",
                 LiveDataTestUtil.getValue(viewModel.isLoading),
                 `is`(false))
+    }
+
+    @Test
+    fun testDataIsLoaded_ErrorMessageOnFailure() {
+        val loadSessionsUseCase = createSessionsExceptionUseCase()
+
+        // Create ViewModel with the use case
+        val viewModel = ScheduleViewModel(loadSessionsUseCase)
+
+        assertFalse(LiveDataTestUtil.getValue(viewModel.errorMessage).isNullOrBlank())
+    }
+
+    /**
+     * Creates a use case that will return the provided list of sessions.
+     */
+    private fun createUseCase(): LoadUserSessionsByDayUseCase {
+        return LoadUserSessionsByDayUseCase(
+            DefaultSessionAndUserEventRepository(
+                TestUserEventDataSource, SessionRepository(TestDataRepository)))
+    }
+
+    /**
+     * Creates a use case that throws an exception.
+     */
+    private fun createSessionsExceptionUseCase(): LoadUserSessionsByDayUseCase {
+        val sessionRepository = SessionRepository(TestDataRepository)
+        val userEventRepository = DefaultSessionAndUserEventRepository(
+            TestUserEventDataSource, sessionRepository)
+
+
+        return object : LoadUserSessionsByDayUseCase(userEventRepository) {
+            override fun execute(parameters: Pair<UserSessionMatcher, String>) {
+                result.postValue(Result.Error(Exception("Testing exception")))
+            }
+        }
     }
 }
 

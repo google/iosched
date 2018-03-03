@@ -18,7 +18,7 @@ package com.google.samples.apps.iosched.tv.ui
 
 import android.support.v17.leanback.app.BrowseSupportFragment
 import android.support.v17.leanback.widget.Row
-import com.google.samples.apps.iosched.shared.util.TimeUtils
+import com.google.samples.apps.iosched.shared.util.TimeUtils.CONFERENCE_DAYS
 import com.google.samples.apps.iosched.tv.ui.schedule.ScheduleFragment
 
 /**
@@ -28,11 +28,11 @@ class MainPageRowFragmentFactory : BrowseSupportFragment.FragmentFactory<Schedul
 
     override fun createFragment(rowObj: Any): ScheduleFragment {
         val row = rowObj as Row
-        return when (row.headerItem.id) {
-            TimeUtils.ConferenceDay.DAY_1.ordinal.toLong(),
-            TimeUtils.ConferenceDay.DAY_2.ordinal.toLong(),
-            TimeUtils.ConferenceDay.DAY_3.ordinal.toLong() -> ScheduleFragment()
-            else -> throw IllegalArgumentException("Invalid row $rowObj")
+        val ordinal = row.headerItem.id.toInt()
+        if (ordinal in 0..CONFERENCE_DAYS.size) {
+            val day = CONFERENCE_DAYS[ordinal]
+            return ScheduleFragment.newInstance(day)
         }
+        throw IllegalArgumentException("Invalid row selected: $rowObj")
     }
 }

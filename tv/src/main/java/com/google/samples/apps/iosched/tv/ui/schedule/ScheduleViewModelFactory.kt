@@ -18,20 +18,20 @@ package com.google.samples.apps.iosched.tv.ui.schedule
 
 import android.arch.lifecycle.ViewModel
 import android.arch.lifecycle.ViewModelProvider
-import com.google.samples.apps.iosched.shared.data.session.SessionRepository
-import com.google.samples.apps.iosched.shared.domain.sessions.LoadSessionsUseCase
+import com.google.samples.apps.iosched.shared.data.userevent.DefaultSessionAndUserEventRepository
+import com.google.samples.apps.iosched.shared.domain.sessions.LoadUserSessionsByDayUseCase
 
 /**
  * Creates [ScheduleViewModel]s, used with the [android.arch.lifecycle.ViewModelProviders].
  */
 class ScheduleViewModelFactory(
-        private val sessionRepository: SessionRepository
+    private val userEventRepository: DefaultSessionAndUserEventRepository
 ) : ViewModelProvider.Factory {
 
     @Suppress("UNCHECKED_CAST")
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
         if (modelClass.isAssignableFrom(ScheduleViewModel::class.java)) {
-            return ScheduleViewModel(LoadSessionsUseCase(sessionRepository)) as T
+            return ScheduleViewModel(LoadUserSessionsByDayUseCase(userEventRepository)) as T
         }
         throw IllegalArgumentException("Unknown ViewModel class")
     }
