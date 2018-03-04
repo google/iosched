@@ -5,6 +5,12 @@ set -e
 # Display commands to stderr.
 set -x
 
-cd git/iosched
+# Set up local maven repo
+cd $KOKORO_GFILE_DIR
+unzip repository.zip
+cd repository
+mdc_repo_location=$(pwd)
 
-./gradlew build
+cd $KOKORO_ARTIFACTS_DIR/git/iosched
+
+./gradlew -Pmdc_repo_location="$mdc_repo_location" build
