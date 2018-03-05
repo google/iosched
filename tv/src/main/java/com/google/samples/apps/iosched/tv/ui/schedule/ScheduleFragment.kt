@@ -33,7 +33,7 @@ import com.google.samples.apps.iosched.shared.util.TimeUtils
 import com.google.samples.apps.iosched.shared.util.inTransaction
 import com.google.samples.apps.iosched.shared.util.viewModelProvider
 import com.google.samples.apps.iosched.tv.R
-import com.google.samples.apps.iosched.tv.di.Injector
+import com.google.samples.apps.iosched.tv.TvApplication
 import com.google.samples.apps.iosched.tv.ui.SpinnerFragment
 import com.google.samples.apps.iosched.tv.ui.presenter.SessionPresenter
 import com.google.samples.apps.iosched.tv.util.toArrayObjectAdapter
@@ -55,7 +55,8 @@ class ScheduleFragment : RowsSupportFragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        Injector.scheduleComponent.inject(this)
+        (context?.applicationContext as TvApplication).scheduleComponent
+                .inject(scheduleFragment = this)
 
         adapter = rowsAdapter
 

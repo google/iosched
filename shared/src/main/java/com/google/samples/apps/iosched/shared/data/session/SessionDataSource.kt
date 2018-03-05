@@ -19,6 +19,5 @@ package com.google.samples.apps.iosched.shared.data.session
 import com.google.samples.apps.iosched.shared.model.Session
 
 interface SessionDataSource {
-    fun getSessions(): List<Session>
-    fun getSession(sessionId: String): Session
+    fun getSessions(): List<Session>?
 }

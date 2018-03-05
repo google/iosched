@@ -17,6 +17,12 @@
 package com.google.samples.apps.iosched.tv
 
 import android.app.Application
+import com.google.samples.apps.iosched.shared.di.SharedModule
+import com.google.samples.apps.iosched.tv.di.DaggerTvAppComponent
+import com.google.samples.apps.iosched.tv.di.TvAppComponent
+import com.google.samples.apps.iosched.tv.di.TvAppModule
+import com.google.samples.apps.iosched.tv.ui.schedule.di.TvScheduleComponent
+import com.google.samples.apps.iosched.tv.ui.schedule.di.TvScheduleModule
 import com.jakewharton.threetenabp.AndroidThreeTen
 import timber.log.Timber
 
@@ -34,5 +40,29 @@ class TvApplication : Application() {
 
         // ThreeTenBP for times and dates
         AndroidThreeTen.init(this)
+    }
+
+    /**
+     * Components for providing the Dagger object graph and injection to fragments and activities.
+     *
+     * To use in a fragment, get the appropriate component and call the inject method
+     *
+     * ```
+     * override fun onCreate(savedInstanceState: Bundle?) {
+     *   super.onCreate(savedInstanceState)
+     *   (context?.applicationContext as TvApplication).appComponent.inject(this)
+     *   ...
+     * }
+     * ```
+     */
+    val appComponent: TvAppComponent by lazy {
+        DaggerTvAppComponent.builder()
+                .tvAppModule(TvAppModule(context = this))
+                .sharedModule(SharedModule())
+                .build()
+    }
+
+    val scheduleComponent: TvScheduleComponent by lazy {
+        appComponent.plus(TvScheduleModule())
     }
 }

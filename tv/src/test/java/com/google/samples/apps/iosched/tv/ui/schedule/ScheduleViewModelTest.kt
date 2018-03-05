@@ -19,6 +19,7 @@
 package com.google.samples.apps.iosched.tv.ui.schedule
 
 import android.arch.core.executor.testing.InstantTaskExecutorRule
+import com.google.samples.apps.iosched.shared.data.ConferenceDataRepository
 import com.google.samples.apps.iosched.shared.data.session.SessionRepository
 import com.google.samples.apps.iosched.shared.domain.sessions.LoadSessionsUseCase
 import com.google.samples.apps.iosched.test.util.LiveDataTestUtil
@@ -43,7 +44,7 @@ class ScheduleViewModelTest {
     @Test
     fun testDataIsLoaded_ObservablesUpdated() {
         // Create a test use cases with test data
-        val expectedSessions = TestSessionDataSource.getSessions()
+        val expectedSessions = TestSessionDataSource.getConferenceData()!!.sessions
         val loadSessionsUseCase = createUseCase()
 
         // Create ViewModel with the use case
@@ -63,7 +64,9 @@ class ScheduleViewModelTest {
      * Creates a use case that will return the provided list of sessions.
      */
     private fun createUseCase(): LoadSessionsUseCase {
-        return LoadSessionsUseCase(SessionRepository(TestSessionDataSource))
+        val conferenceDataRepository = ConferenceDataRepository(
+                TestSessionDataSource, TestSessionDataSource)
+        return LoadSessionsUseCase(SessionRepository(conferenceDataRepository))
     }
 }
 

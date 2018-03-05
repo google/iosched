@@ -14,33 +14,28 @@
  * limitations under the License.
  */
 
-package com.google.samples.apps.iosched.shared.util
+package com.google.samples.apps.iosched.shared.data
 
 import com.google.gson.GsonBuilder
+import com.google.gson.JsonIOException
+import com.google.gson.JsonSyntaxException
+import com.google.samples.apps.iosched.shared.data.session.json.BlockDeserializer
+import com.google.samples.apps.iosched.shared.data.session.json.SessionDeserializer
+import com.google.samples.apps.iosched.shared.data.session.json.SessionTemp
+import com.google.samples.apps.iosched.shared.data.session.json.TagDeserializer
 import com.google.samples.apps.iosched.shared.model.Block
+import com.google.samples.apps.iosched.shared.model.ConferenceData
+import com.google.samples.apps.iosched.shared.model.Room
 import com.google.samples.apps.iosched.shared.model.Session
+import com.google.samples.apps.iosched.shared.model.Speaker
 import com.google.samples.apps.iosched.shared.model.Tag
-import com.google.samples.apps.iosched.shared.util.testdata.BlockDeserializer
-import com.google.samples.apps.iosched.shared.util.testdata.SessionDeserializer
-import com.google.samples.apps.iosched.shared.util.testdata.SessionTemp
-import com.google.samples.apps.iosched.shared.util.testdata.TagDeserializer
-import com.google.samples.apps.iosched.shared.util.testdata.TestData
-import com.google.samples.apps.iosched.shared.util.testdata.TestDataTemp
+import java.io.InputStream
 
-private val FILENAME = "conference_data.json"
-
-/**
- * Loads data from JSON file specified in [FILENAME] to be used for development and testing.
- */
 object ConferenceDataJsonParser {
 
-    private val testData by lazy { parseConferenceData() }
-
-    private fun parseConferenceData() : TestData {
-        val inputStream = this.javaClass.classLoader.getResource(FILENAME)
-                .openStream()
-
-        val jsonReader = com.google.gson.stream.JsonReader(inputStream.bufferedReader())
+    @Throws(JsonIOException::class, JsonSyntaxException::class)
+    fun parseConferenceData(unprocessedSessionData: InputStream): ConferenceData {
+        val jsonReader = com.google.gson.stream.JsonReader(unprocessedSessionData.reader())
 
         val gson = GsonBuilder()
                 .registerTypeAdapter(SessionTemp::class.java, SessionDeserializer())
@@ -48,14 +43,14 @@ object ConferenceDataJsonParser {
                 .registerTypeAdapter(Tag::class.java, TagDeserializer())
                 .create()
 
-        val tempData: TestDataTemp = gson.fromJson(jsonReader, TestDataTemp::class.java)
+        val tempData: TempConferenceData = gson.fromJson(jsonReader, TempConferenceData::class.java)
         return normalize(tempData)
     }
 
     /**
-     * Adds nested objects like `session.tags`.
+     * Adds nested objects like `session.tags` to `sessions`
      */
-    private fun normalize(data: TestDataTemp): TestData {
+    private fun normalize(data: TempConferenceData): ConferenceData {
         val sessions: MutableList<Session> = mutableListOf()
 
         data.sessions.forEach { session: SessionTemp ->
@@ -77,21 +72,25 @@ object ConferenceDataJsonParser {
             sessions.add(newSession)
         }
 
-        return TestData(sessions = sessions,
+        return ConferenceData(
+                sessions = sessions,
                 tags = data.tags,
                 speakers = data.speakers,
                 blocks = data.blocks,
-                rooms = data.rooms)
+                rooms = data.rooms,
+                version = data.version)
     }
-
-    fun getSessions() = testData.sessions
-
-    fun getSession(sessionId: String): Session {
-        return testData.sessions.firstOrNull { it.id == sessionId } ?: throw IllegalStateException(
-                "Session $sessionId does not exist.")
-    }
-
-    fun getAgenda() = testData.blocks
-
-    fun getTags() = testData.tags
 }
+
+/**
+ * Temporary data type for conference data where some collections are lists of IDs instead
+ * of lists of domain objects.
+ */
+data class TempConferenceData(
+        val blocks: List<Block>,
+        val sessions: List<SessionTemp>,
+        val speakers: List<Speaker>,
+        val rooms: List<Room>,
+        val tags: List<Tag>,
+        val version: Int
+)

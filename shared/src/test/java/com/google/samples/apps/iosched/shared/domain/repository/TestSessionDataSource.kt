@@ -16,49 +16,34 @@
 
 package com.google.samples.apps.iosched.shared.domain.repository
 
-import com.google.samples.apps.iosched.shared.data.session.SessionDataSource
-import com.google.samples.apps.iosched.shared.model.Room
-import com.google.samples.apps.iosched.shared.model.Session
-import com.google.samples.apps.iosched.shared.model.Speaker
-import com.google.samples.apps.iosched.shared.model.Tag
-import org.threeten.bp.ZoneId
-import org.threeten.bp.ZonedDateTime
+import com.google.samples.apps.iosched.shared.data.ConferenceDataSource
+import com.google.samples.apps.iosched.shared.model.ConferenceData
+import com.google.samples.apps.iosched.shared.model.TestData.androidTag
+import com.google.samples.apps.iosched.shared.model.TestData.session0
+import com.google.samples.apps.iosched.shared.model.TestData.session1
+import com.google.samples.apps.iosched.shared.model.TestData.session2
+import com.google.samples.apps.iosched.shared.model.TestData.session3
+import com.google.samples.apps.iosched.shared.model.TestData.speaker
+import com.google.samples.apps.iosched.shared.model.TestData.webTag
 
 /**
  * Generates dummy session data to be used in tests.
  */
-object TestSessionDataSource : SessionDataSource {
+object TestSessionDataSource : ConferenceDataSource {
+    override fun getConferenceData(): ConferenceData? {
+        return conferenceData
+    }
 
-    private val androidTag = Tag("1", "TRACK", 0, "Android", 0xFFAED581.toInt())
-    private val webTag = Tag("2", "TRACK", 1, "Web", 0xFFFFF176.toInt())
+    override fun getOfflineConferenceData(): ConferenceData? {
+        return conferenceData
+    }
 
-    private val time1 = ZonedDateTime.of(2017, 3, 12, 12, 0, 0, 0, ZoneId.of("Asia/Tokyo"))
-    private val time2 = ZonedDateTime.of(2017, 3, 12, 13, 0, 0, 0, ZoneId.of("Asia/Tokyo"))
-    private val room1 = Room(id = "1", name = "Tent 1", capacity = 40)
-    private val speaker1 = Speaker("1", "Troy McClure", "", "", "", "", "")
-
-    private val session1 = Session(
-        id = "1", startTime = time1, endTime = time2,
-        title = "Jet Packs", abstract = "", room = room1, sessionUrl = "",
-        liveStreamUrl = "", youTubeUrl = "", tags = listOf(androidTag, webTag),
-        speakers = setOf(speaker1), photoUrl = "", relatedSessions = emptySet()
+    private val conferenceData = ConferenceData(
+            sessions = listOf(session0, session1, session2, session3),
+            tags = listOf(androidTag, webTag),
+            blocks = emptyList(),
+            speakers = listOf(speaker),
+            rooms = emptyList(),
+            version = 42
     )
-
-    private val session2 = Session(
-        id = "2", startTime = time1, endTime = time2,
-        title = "Flying Cars", abstract = "", room = room1, sessionUrl = "Title 1",
-        liveStreamUrl = "", youTubeUrl = "", tags = listOf(androidTag),
-        speakers = setOf(speaker1), photoUrl = "", relatedSessions = emptySet()
-    )
-
-    private val session3 = Session(
-        id = "3", startTime = time1, endTime = time2,
-        title = "Teleportation", abstract = "", room = room1, sessionUrl = "Title 1",
-        liveStreamUrl = "", youTubeUrl = "", tags = listOf(webTag),
-        speakers = setOf(speaker1), photoUrl = "", relatedSessions = emptySet()
-    )
-
-    override fun getSessions() = listOf(session1, session2, session3)
-
-    override fun getSession(sessionId: String) = getSessions()[0]
 }

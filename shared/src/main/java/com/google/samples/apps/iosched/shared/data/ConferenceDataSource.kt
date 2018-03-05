@@ -14,13 +14,18 @@
  * limitations under the License.
  */
 
-package com.google.samples.apps.iosched.shared.data.tag
+package com.google.samples.apps.iosched.shared.data
 
-import com.google.samples.apps.iosched.shared.util.StagingConferenceDataJsonParser
+import com.google.samples.apps.iosched.shared.model.ConferenceData
 
-/**
- * Returns data loaded from a local JSON file for development and testing.
- */
-object FakeTagDataSource : TagDataSource {
-    override fun getTags() = StagingConferenceDataJsonParser.getTags()
+interface ConferenceDataSource {
+    fun getConferenceData(): ConferenceData?
+    fun getOfflineConferenceData(): ConferenceData?
+}
+
+enum class UpdateSource {
+    NONE,
+    NETWORK,
+    CACHE,
+    BOOTSTRAP
 }

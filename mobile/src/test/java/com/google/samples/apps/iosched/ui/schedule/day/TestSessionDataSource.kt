@@ -16,7 +16,8 @@
 
 package com.google.samples.apps.iosched.ui.schedule.day
 
-import com.google.samples.apps.iosched.shared.data.session.SessionDataSource
+import com.google.samples.apps.iosched.shared.data.ConferenceDataSource
+import com.google.samples.apps.iosched.shared.model.ConferenceData
 import com.google.samples.apps.iosched.shared.model.Room
 import com.google.samples.apps.iosched.shared.model.Session
 import com.google.samples.apps.iosched.shared.model.Speaker
@@ -27,7 +28,14 @@ import org.threeten.bp.ZonedDateTime
 /**
  * Generates dummy session data to be used in tests.
  */
-object TestSessionDataSource : SessionDataSource {
+object TestSessionDataSource : ConferenceDataSource {
+    override fun getOfflineConferenceData(): ConferenceData? {
+        return conferenceData
+    }
+
+    override fun getConferenceData(): ConferenceData? {
+       return conferenceData
+    }
 
     private val androidTag = Tag("1", "TRACK", 0, "Android", 0xFFAED581.toInt())
     private val webTag = Tag("2", "TRACK", 1, "Web", 0xFFFFF176.toInt())
@@ -57,8 +65,12 @@ object TestSessionDataSource : SessionDataSource {
         liveStreamUrl = "", youTubeUrl = "", tags = listOf(webTag),
         speakers = setOf(speaker1), photoUrl = "", relatedSessions = emptySet()
     )
-
-    override fun getSessions() = listOf(session1, session2, session3)
-
-    override fun getSession(sessionId: String) = getSessions()[0]
+    private val conferenceData = ConferenceData(
+        sessions = listOf(session1, session2, session3),
+        tags = listOf(androidTag, webTag),
+        blocks = emptyList(),
+        speakers = listOf(speaker1),
+        rooms = emptyList(),
+        version = 42
+        )
 }

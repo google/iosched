@@ -16,7 +16,8 @@
 
 package com.google.samples.apps.iosched.tv.di
 
-import com.google.samples.apps.iosched.shared.data.session.SessionDataSource
+import android.content.Context
+import com.google.samples.apps.iosched.shared.data.ConferenceDataRepository
 import com.google.samples.apps.iosched.shared.data.session.SessionRepository
 import dagger.Module
 import dagger.Provides
@@ -25,10 +26,15 @@ import dagger.Provides
  * Defines all the classes that need to be provided in the scope of the app.
  */
 @Module
-class TvAppModule {
+class TvAppModule(private val context: Context) {
 
     @Provides
-    fun provideSessionRepository(sessionDataSource: SessionDataSource): SessionRepository {
-        return SessionRepository(sessionDataSource)
+    fun provideSessionRepository(conferenceRepo: ConferenceDataRepository): SessionRepository {
+        return SessionRepository(conferenceRepo)
+    }
+
+    @Provides
+    fun provideContext(): Context {
+        return context.applicationContext
     }
 }

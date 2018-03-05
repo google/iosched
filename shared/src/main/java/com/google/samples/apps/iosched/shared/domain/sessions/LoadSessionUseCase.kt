@@ -17,8 +17,8 @@
 package com.google.samples.apps.iosched.shared.domain.sessions
 
 import com.google.samples.apps.iosched.shared.data.session.SessionRepository
-import com.google.samples.apps.iosched.shared.model.Session
 import com.google.samples.apps.iosched.shared.domain.UseCase
+import com.google.samples.apps.iosched.shared.model.Session
 import javax.inject.Inject
 
 /**
@@ -29,6 +29,9 @@ open class LoadSessionUseCase @Inject constructor(private val repository: Sessio
 
     override fun execute(parameters: String): Session {
         Thread.sleep(1000)
-        return repository.getSession(parameters)
+        return repository.getSessions().firstOrNull { it -> it.id == parameters }
+                ?: throw SessionNotFoundException()
     }
 }
+
+class SessionNotFoundException : Throwable()
