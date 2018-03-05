@@ -80,6 +80,9 @@ dependencies {
     kapt "com.google.dagger:dagger-compiler:$rootProject.dagger"
     kapt "com.google.dagger:dagger-android-processor:$rootProject.dagger"
 
+    // Firebase
+    implementation "com.google.firebase:firebase-core:$rootProject.googlePlayServicesClientVersion"
+    implementation "com.google.firebase:firebase-firestore:$rootProject.googlePlayServicesClientVersion"
 
     // ThreeTenBP for the shared module only. Date and time API for Java.
     testImplementation "org.threeten:threetenbp:$rootProject.threetenbpVersion"
@@ -100,3 +103,5 @@ configurations.all {
         }
     }
 }
+
+apply plugin: 'com.google.gms.google-services'
