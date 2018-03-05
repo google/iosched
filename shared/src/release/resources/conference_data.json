@@ -1,5 +1,5 @@
 {
-    "version": 2,
+    "version": 3,
     "blocks": [
         {
             "title": "Breakfast",
@@ -603,7 +603,7 @@
         {
             "id": "__keynote__",
             "url": "https://events.google.com/io2016/",
-            "title": "Keynote Staging!",
+            "title": "Keynote RELEASE",
             "description": "Join us to learn about product and platform innovation at Google, starting with a live kickoff from Google CEO Sundar Pichai.",
             "startTimestamp": "2018-05-08T17:00:00Z",
             "endTimestamp": "2018-05-08T19:00:00Z",

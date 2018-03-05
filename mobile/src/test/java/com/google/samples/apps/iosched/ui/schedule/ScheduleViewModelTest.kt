@@ -20,6 +20,7 @@ package com.google.samples.apps.iosched.ui.schedule
 
 import android.arch.core.executor.testing.InstantTaskExecutorRule
 import com.google.samples.apps.iosched.model.TestData
+import com.google.samples.apps.iosched.shared.data.ConferenceDataRepository
 import com.google.samples.apps.iosched.shared.data.session.SessionRepository
 import com.google.samples.apps.iosched.shared.data.session.agenda.AgendaRepository
 import com.google.samples.apps.iosched.shared.data.tag.TagRepository
@@ -91,7 +92,11 @@ class ScheduleViewModelTest {
      */
     private fun createSessionsUseCase(
             sessions: Map<ConferenceDay, List<Session>>): LoadSessionsByDayUseCase {
-        return object : LoadSessionsByDayUseCase(SessionRepository(TestSessionDataSource)) {
+
+        val conferenceDataRepository = ConferenceDataRepository(
+                TestSessionDataSource, TestSessionDataSource)
+
+        return object : LoadSessionsByDayUseCase(SessionRepository(conferenceDataRepository)) {
             override fun execute(parameters: SessionMatcher): Map<ConferenceDay, List<Session>> {
                 return sessions
             }
@@ -102,7 +107,10 @@ class ScheduleViewModelTest {
      * Creates a use case that throws an exception.
      */
     private fun createSessionsExceptionUseCase(): LoadSessionsByDayUseCase {
-        return object : LoadSessionsByDayUseCase(SessionRepository(TestSessionDataSource)) {
+        val conferenceDataRepository = ConferenceDataRepository(
+                TestSessionDataSource, TestSessionDataSource)
+
+        return object : LoadSessionsByDayUseCase(SessionRepository(conferenceDataRepository)) {
             override fun execute(parameters: SessionMatcher): Map<ConferenceDay, List<Session>> {
                 throw Exception("Testing exception")
             }

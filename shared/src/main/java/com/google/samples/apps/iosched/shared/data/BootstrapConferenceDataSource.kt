@@ -14,21 +14,31 @@
  * limitations under the License.
  */
 
-package com.google.samples.apps.iosched.shared.data.session
+package com.google.samples.apps.iosched.shared.data
 
-import com.google.samples.apps.iosched.shared.data.BootstrapConferenceDataSource
-import com.google.samples.apps.iosched.shared.data.ConferenceDataSource
 import com.google.samples.apps.iosched.shared.model.ConferenceData
 
+
+//TODO(jalc): Move
+const val bootstrap_conference_data_filename = "conference_data.json"
+
 /**
- * Returns data loaded from a local JSON file for development and testing.
+ * Loads bootstrap data file from resources and parses it.
  */
-object FakeSessionDataSource : ConferenceDataSource {
-    override fun getOfflineConferenceData(): ConferenceData? {
-        return BootstrapConferenceDataSource.loadAndParseBootstrapData()
+object BootstrapConferenceDataSource : ConferenceDataSource{
+    override fun getConferenceData(): ConferenceData? {
+        throw Exception("Bootstrap data source doesn't have remote data")
     }
 
-    override fun getConferenceData(): ConferenceData? {
-        return BootstrapConferenceDataSource.loadAndParseBootstrapData()
+    override fun getOfflineConferenceData(): ConferenceData? {
+        return loadAndParseBootstrapData()
+    }
+
+    fun loadAndParseBootstrapData(): ConferenceData {
+
+        val conferenceDataStream = this.javaClass.classLoader
+                .getResource(bootstrap_conference_data_filename).openStream()
+
+        return ConferenceDataJsonParser.parseConferenceData(conferenceDataStream)
     }
 }

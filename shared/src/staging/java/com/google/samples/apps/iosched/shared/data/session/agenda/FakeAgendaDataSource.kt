@@ -16,12 +16,11 @@
 
 package com.google.samples.apps.iosched.shared.data.session.agenda
 
-import com.google.samples.apps.iosched.shared.model.Session
-import com.google.samples.apps.iosched.shared.util.ConferenceDataJsonParser
+import com.google.samples.apps.iosched.shared.util.StagingConferenceDataJsonParser
 
 /**
  * Returns data loaded from a local JSON file for development and testing.
  */
 object FakeAgendaDataSource : AgendaDataSource {
-    override fun getAgenda() = ConferenceDataJsonParser.getAgenda()
+    override fun getAgenda() = StagingConferenceDataJsonParser.getAgenda()
 }

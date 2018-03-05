@@ -42,6 +42,7 @@ buildscript {
         timberVersion = "4.6.0"
         dagger = "2.14.1"
         gsonVersion = "2.8.1"
+        okhttpVersion = "3.10.0"
         ktxVersion = "0.2"
         googleMapUtilsVersion = "0.5"
         googlePlayServicesClientVersion = "11.8.0"

@@ -14,13 +14,17 @@
  * limitations under the License.
  */
 
-package com.google.samples.apps.iosched.shared.data.tag
+package com.google.samples.apps.iosched.shared.model
 
-import com.google.samples.apps.iosched.shared.util.StagingConferenceDataJsonParser
 
 /**
- * Returns data loaded from a local JSON file for development and testing.
+ * Contains schedule data with the UI models.
  */
-object FakeTagDataSource : TagDataSource {
-    override fun getTags() = StagingConferenceDataJsonParser.getTags()
-}
+data class ConferenceData(
+        val blocks: List<Block>,
+        val sessions: List<Session>,
+        val speakers: List<Speaker>,
+        val rooms: List<Room>,
+        val tags: List<Tag>,
+        val version: Int
+)

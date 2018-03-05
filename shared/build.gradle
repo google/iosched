@@ -69,7 +69,10 @@ dependencies {
 
     // Utils
     api "com.jakewharton.timber:timber:$rootProject.timberVersion"
-    stagingImplementation "com.google.code.gson:gson:$rootProject.gsonVersion"
+    implementation "com.google.code.gson:gson:$rootProject.gsonVersion"
+
+    implementation "com.squareup.okhttp3:okhttp:$rootProject.okhttpVersion"
+    implementation "com.squareup.okhttp3:logging-interceptor:$rootProject.okhttpVersion"
 
     // Kotlin
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jre7:$rootProject.kotlinVersion"
@@ -91,6 +94,7 @@ dependencies {
     // Unit tests
     testImplementation "android.arch.core:core-testing:$rootProject.archLifecycleVersion"
     testImplementation "junit:junit:$rootProject.junitVersion"
+    testImplementation "org.hamcrest:hamcrest-library:$rootProject.hamcrestVersion"
 }
 
 // Force Dagger's transitive dependencies to use the project's version of the support libraries.

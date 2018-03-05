@@ -37,6 +37,8 @@ class SessionDetailViewModel @Inject constructor(
 
     init {
         session = useCaseResult.map { (it as? Result.Success)?.data }
+
+        //TODO: Deal with error SessionNotFoundException
     }
 
     fun loadSessionById(sessionId: String) {

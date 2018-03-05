@@ -14,13 +14,21 @@
  * limitations under the License.
  */
 
-package com.google.samples.apps.iosched.shared.data.tag
+package com.google.samples.apps.iosched.shared.data.session.json
 
-import com.google.samples.apps.iosched.shared.util.StagingConferenceDataJsonParser
+import android.graphics.Color
+import com.google.samples.apps.iosched.shared.util.ColorUtils
+import timber.log.Timber
 
-/**
- * Returns data loaded from a local JSON file for development and testing.
- */
-object FakeTagDataSource : TagDataSource {
-    override fun getTags() = StagingConferenceDataJsonParser.getTags()
+fun parseColor(colorString: String?): Int {
+    return if (colorString != null) {
+        try {
+            ColorUtils.parseHexColor(colorString)
+        } catch (t: Throwable) {
+            Timber.d(t, "Failed to parse color")
+            Color.TRANSPARENT
+        }
+    } else {
+        Color.TRANSPARENT
+    }
 }

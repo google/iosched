@@ -20,9 +20,10 @@ package com.google.samples.apps.iosched.ui.sessiondetail
 
 import android.arch.core.executor.testing.InstantTaskExecutorRule
 import com.google.samples.apps.iosched.model.TestData
+import com.google.samples.apps.iosched.shared.data.ConferenceDataRepository
 import com.google.samples.apps.iosched.shared.data.session.SessionRepository
-import com.google.samples.apps.iosched.shared.model.Session
 import com.google.samples.apps.iosched.shared.domain.sessions.LoadSessionUseCase
+import com.google.samples.apps.iosched.shared.model.Session
 import com.google.samples.apps.iosched.test.util.LiveDataTestUtil
 import com.google.samples.apps.iosched.test.util.SyncTaskExecutorRule
 import com.google.samples.apps.iosched.ui.schedule.day.TestSessionDataSource
@@ -58,7 +59,11 @@ class SessionDetailViewModelTest {
      * Creates a use case that will return the provided session.
      */
     private fun createUseCase(session: Session): LoadSessionUseCase {
-        return object : LoadSessionUseCase(SessionRepository(TestSessionDataSource)) {
+
+        val conferenceDataRepository = ConferenceDataRepository(
+                TestSessionDataSource, TestSessionDataSource)
+
+        return object : LoadSessionUseCase(SessionRepository(conferenceDataRepository)) {
             override fun execute(parameters: String) = session
         }
     }

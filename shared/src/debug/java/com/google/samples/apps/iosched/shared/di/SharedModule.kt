@@ -16,16 +16,20 @@
 
 package com.google.samples.apps.iosched.shared.di
 
+import android.content.Context
+import com.google.samples.apps.iosched.shared.data.BootstrapConferenceDataSource
+import com.google.samples.apps.iosched.shared.data.ConferenceDataRepository
+import com.google.samples.apps.iosched.shared.data.ConferenceDataSource
+import com.google.samples.apps.iosched.shared.data.NetworkConferenceDataSource
 import com.google.samples.apps.iosched.shared.data.map.MapMetadataDataSource
 import com.google.samples.apps.iosched.shared.data.map.RemoteMapMetadataDataSource
-import com.google.samples.apps.iosched.shared.data.session.RemoteSessionDataSource
-import com.google.samples.apps.iosched.shared.data.session.SessionDataSource
 import com.google.samples.apps.iosched.shared.data.session.agenda.AgendaDataSource
 import com.google.samples.apps.iosched.shared.data.session.agenda.RemoteAgendaDataSource
 import com.google.samples.apps.iosched.shared.data.tag.RemoteTagDataSource
 import com.google.samples.apps.iosched.shared.data.tag.TagDataSource
 import dagger.Module
 import dagger.Provides
+import javax.inject.Named
 import javax.inject.Singleton
 
 /**
@@ -38,8 +42,25 @@ class SharedModule {
 
     @Singleton
     @Provides
-    fun provideSessionDataSource(): SessionDataSource {
-        return RemoteSessionDataSource
+    @Named("remoteConfDatasource")
+    fun provideConferenceDataSource(context: Context): ConferenceDataSource {
+        return NetworkConferenceDataSource(context)
+    }
+
+    @Singleton
+    @Provides
+    @Named("bootstrapConfDataSource")
+    fun provideBootstrapRemoteSessionDataSource(): ConferenceDataSource {
+        return BootstrapConferenceDataSource
+    }
+
+    @Singleton
+    @Provides
+    fun provideConferenceDataRepository(
+            @Named("remoteConfDatasource") remoteDataSource: ConferenceDataSource,
+            @Named("bootstrapConfDataSource") boostrapDataSource: ConferenceDataSource
+    ): ConferenceDataRepository {
+        return ConferenceDataRepository(remoteDataSource, boostrapDataSource)
     }
 
     @Singleton

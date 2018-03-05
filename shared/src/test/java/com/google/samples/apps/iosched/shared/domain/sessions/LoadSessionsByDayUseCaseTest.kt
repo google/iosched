@@ -17,8 +17,9 @@
 package com.google.samples.apps.iosched.shared.domain.sessions
 
 
-import com.google.samples.apps.iosched.shared.data.session.SessionDataSource
+import com.google.samples.apps.iosched.shared.data.ConferenceDataRepository
 import com.google.samples.apps.iosched.shared.data.session.SessionRepository
+import com.google.samples.apps.iosched.shared.domain.repository.TestSessionDataSource
 import com.google.samples.apps.iosched.shared.model.Session
 import com.google.samples.apps.iosched.shared.model.TestData
 import com.google.samples.apps.iosched.shared.result.Result
@@ -34,19 +35,15 @@ class LoadSessionsByDayUseCaseTest {
 
     @Test
     fun returnsMapOfSessions() {
-        val useCase = LoadSessionsByDayUseCase(SessionRepository(TestSessionDataSource))
+
+        val testConferenceDataRepository = ConferenceDataRepository(
+                boostrapDataSource = TestSessionDataSource,
+                remoteDataSource = TestSessionDataSource)
+
+        val useCase = LoadSessionsByDayUseCase(SessionRepository(testConferenceDataRepository))
         val sessions = useCase.executeNow(SessionMatcher())
                 as Result.Success<Map<ConferenceDay, List<Session>>>
 
         assertEquals(TestData.sessionsMap, sessions.data)
-    }
-
-    private object TestSessionDataSource : SessionDataSource {
-        override fun getSessions(): List<Session> {
-            return listOf(TestData.session0, TestData.session1, TestData.session2,
-                    TestData.session3)
-        }
-
-        override fun getSession(sessionId: String) = TestData.session0
     }
 }

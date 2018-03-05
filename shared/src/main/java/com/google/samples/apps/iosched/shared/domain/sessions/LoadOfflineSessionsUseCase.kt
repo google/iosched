@@ -14,25 +14,20 @@
  * limitations under the License.
  */
 
-package com.google.samples.apps.iosched.tv.ui.schedule.di
+package com.google.samples.apps.iosched.shared.domain.sessions
 
-import android.content.Context
 import com.google.samples.apps.iosched.shared.data.session.SessionRepository
-import com.google.samples.apps.iosched.tv.TvApplication
-import com.google.samples.apps.iosched.tv.ui.schedule.ScheduleViewModelFactory
-import dagger.Module
-import dagger.Provides
+import com.google.samples.apps.iosched.shared.domain.UseCase
+import com.google.samples.apps.iosched.shared.model.Session
+import javax.inject.Inject
 
 /**
- * Provides Dagger with dependencies for the
- * [com.google.samples.apps.iosched.tv.ui.schedule.ScheduleFragment].
+ * Gets offline sessions from the repository.
  */
-@Module
-class TvScheduleModule {
+open class LoadOfflineSessionsUseCase @Inject constructor(private val repository: SessionRepository)
+    : UseCase<Unit, List<Session>>() {
 
-    @Provides
-    fun provideScheduleViewModelFactory(sessionRepository: SessionRepository)
-            : ScheduleViewModelFactory {
-        return ScheduleViewModelFactory(sessionRepository)
+    override fun execute(parameters: Unit): List<Session> {
+        return repository.getSessionsOffline()
     }
 }
