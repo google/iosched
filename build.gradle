@@ -25,6 +25,11 @@ buildscript {
         minTvSdkVersion = 21 // TV was introduced with Lollipop, min SDK should be 21.
         targetSdkVersion = 27
 
+        // At this time, there isn't a device (or emulator) that supports 27.
+        compileWearSdkVersion = 26
+        minWearSdkVersion = 23
+        targetWearSdkVersion = 26
+
         // App dependencies
         constraintLayoutVersion = '1.1.0-beta5'
         espressoVersion = '3.0.1'
@@ -53,6 +58,7 @@ buildscript {
         mockitoKotlinVersion = "1.5.0"
         glideVersion = "4.6.1"
         flexboxVersion = "0.3.2"
+        wearableSupportLibraryVersion = "2.2.0"
     }
 
     repositories {
@@ -107,4 +113,3 @@ configurations.all {
         }
     }
 }
-
