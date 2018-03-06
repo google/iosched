@@ -137,3 +137,21 @@ fun <X, Y> LiveData<X>.switchMap(body: (X) -> LiveData<Y>): LiveData<Y> {
 fun ObservableBoolean.hasSameValue(other: ObservableBoolean) = get() == other.get()
 
 // endregion
+
+/**
+ * Helper to force a when statement to assert all sealed classes are matched.
+ *
+ * By default, Kotlin doesn't care if you enumerate sealed classes. However, if you use when in
+ * an expression it will force you to match all of them. This helper is to make a lightweight
+ * way to say you meant to match all of them.
+ *
+ * Usage:
+ *
+ * ```
+ * when(sealedObject) {
+ *     is OneType -> //
+ *     is AnotherType -> //
+ * }.checkAllSealed
+ */
+val <T> T.checkAllSealed: T
+    get() = this

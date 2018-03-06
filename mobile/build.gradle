@@ -52,6 +52,16 @@ android {
     dataBinding {
         enabled true
     }
+
+    signingConfigs {
+        // We need to sign debug builds with a debug key to make firebase auth happy
+        debug {
+            storeFile file("../debug.keystore")
+            keyAlias "androiddebugkey"
+            keyPassword "android"
+            storePassword "android"
+        }
+    }
 }
 
 dependencies {
@@ -75,6 +85,11 @@ dependencies {
     implementation "com.google.dagger:dagger-android-support:$rootProject.dagger"
     kapt "com.google.dagger:dagger-compiler:$rootProject.dagger"
     kapt "com.google.dagger:dagger-android-processor:$rootProject.dagger"
+
+    // Firebase
+    implementation("com.firebaseui:firebase-ui-auth:$rootProject.firebaseUiVersion") {
+        exclude group: 'com.android.support'
+    }
 
     // Utils
     // Date and time API for Java.

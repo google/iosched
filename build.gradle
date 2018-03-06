@@ -47,6 +47,7 @@ buildscript {
         googleMapUtilsVersion = "0.5"
         googlePlayServicesClientVersion = "11.8.0"
         googleServicesVersion = "3.2.0"
+        firebaseUiVersion = "3.2.2"
     }
 
     repositories {
