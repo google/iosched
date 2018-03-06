@@ -14,4 +14,17 @@
  * limitations under the License.
  */
 
-include ':mobile', ':tv', ':wear', ':shared', ':test-shared'
+package com.google.samples.apps.iosched.wear
+
+import android.app.Activity
+import android.os.Bundle
+
+class MainActivity : Activity() {
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setContentView(R.layout.activity_main)
+
+        // TODO (b/74258141): Build out main activity with always-on.
+    }
+}

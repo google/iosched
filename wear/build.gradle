@@ -1,0 +1,55 @@
+/*
+ * Copyright 2018 Google LLC
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     https://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+apply plugin: 'com.android.application'
+apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-android-extensions'
+android {
+    compileSdkVersion rootProject.compileWearSdkVersion
+
+
+    defaultConfig {
+        applicationId "com.google.samples.apps.iosched.wear"
+        minSdkVersion rootProject.minWearSdkVersion
+        targetSdkVersion rootProject.targetWearSdkVersion
+        versionCode 1
+        versionName "1.0"
+    }
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+}
+
+dependencies {
+    implementation project(":shared")
+
+    // UI
+    implementation "com.android.support:percent:$rootProject.supportLibraryVersion"
+    implementation "com.android.support:support-v4:$rootProject.supportLibraryVersion"
+    implementation "com.android.support:recyclerview-v7:$rootProject.supportLibraryVersion"
+    implementation "com.android.support:wear:$rootProject.supportLibraryVersion"
+    implementation "com.google.android.support:wearable:$rootProject.wearableSupportLibraryVersion"
+    compileOnly "com.google.android.wearable:wearable:$rootProject.wearableSupportLibraryVersion"
+
+    // Utils
+    implementation "androidx.core:core-ktx:$rootProject.ktxVersion"
+
+    // Kotlin
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jre7:$rootProject.kotlinVersion"
+}
