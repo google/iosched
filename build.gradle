@@ -35,6 +35,7 @@ buildscript {
         runnerVersion = '1.0.1'
         supportLibraryVersion = '27.1.0'
         designLibraryVersion = '27.1.0'
+        mdcVersion = '1.0.0-alpha'
         archLifecycleVersion = '1.1.0'
         dataBindingCompilerVersion = '3.0.1'
         threetenabpVersion = "1.0.5"
@@ -63,6 +64,9 @@ buildscript {
 
 allprojects {
     repositories {
+        maven {
+            url "$mdc_repo_location"
+        }
         google()
         jcenter()
     }
