@@ -50,6 +50,17 @@ android {
     dataBinding {
         enabled true
     }
+
+    lintOptions {
+        disable "BinaryOperationInTimber",
+                "LogNotTimber",
+                "StringFormatInTimber",
+                "ThrowableNotAtBeginning",
+                "TimberArgCount",
+                "TimberArgTypes",
+                "TimberExceptionLogging",
+                "TimberTagLength"
+    }
 }
 
 dependencies {

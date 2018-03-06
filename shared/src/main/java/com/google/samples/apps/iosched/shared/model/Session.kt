@@ -88,4 +88,27 @@ data class Session(
     /**
      * IDs of the sessions related to this session.
      */
-    val relatedSessions: Set<String>)
+    val relatedSessions: Set<String>
+) {
+
+    /**
+     * Returns whether the session is currently being live streamed or not.
+     */
+    fun isLive(): Boolean {
+        val now = ZonedDateTime.now()
+        // TODO: Determine when a session is live based on the time AND the liveStream being
+        // available.
+        return startTime <= now && endTime >= now
+    }
+
+    /**
+     * The year the session was held.
+     */
+    val year = startTime.year
+
+    /**
+     * The duration of the session.
+     */
+    //TODO: Get duration from the YouTube video. Not every talk fills the full session time.
+    val duration = endTime.toInstant().toEpochMilli() - startTime.toInstant().toEpochMilli()
+}

@@ -76,7 +76,7 @@ inline fun FragmentManager.inTransaction(func: FragmentTransaction.() -> Fragmen
 /**
  * For Actvities, allows declarations like
  * ```
- * val myViewModelv = iewModelProvider(myViewModelFactory)
+ * val myViewModel = viewModelProvider(myViewModelFactory)
  * ```
  */
 inline fun <reified VM : ViewModel> FragmentActivity.viewModelProvider(

@@ -23,6 +23,8 @@ import com.google.samples.apps.iosched.tv.di.TvAppComponent
 import com.google.samples.apps.iosched.tv.di.TvAppModule
 import com.google.samples.apps.iosched.tv.ui.schedule.di.TvScheduleComponent
 import com.google.samples.apps.iosched.tv.ui.schedule.di.TvScheduleModule
+import com.google.samples.apps.iosched.tv.ui.search.di.TvSearchableComponent
+import com.google.samples.apps.iosched.tv.ui.search.di.TvSearchableModule
 import com.jakewharton.threetenabp.AndroidThreeTen
 import timber.log.Timber
 
@@ -64,5 +66,9 @@ class TvApplication : Application() {
 
     val scheduleComponent: TvScheduleComponent by lazy {
         appComponent.plus(TvScheduleModule())
+    }
+
+    val searchableComponent: TvSearchableComponent by lazy {
+        appComponent.plus(TvSearchableModule())
     }
 }

@@ -20,11 +20,10 @@ import com.google.samples.apps.iosched.tv.ui.schedule.ScheduleFragment
 import com.google.samples.apps.iosched.tv.ui.schedule.ScheduleViewModelFactory
 import dagger.Subcomponent
 
-
 /**
  * Schedule component for the tv app, created and managed in the [TvApplication].
  */
-@Subcomponent(modules = arrayOf(TvScheduleModule::class))
+@Subcomponent(modules = [(TvScheduleModule::class)])
 interface TvScheduleComponent {
 
     fun scheduleViewModelFactory(): ScheduleViewModelFactory
