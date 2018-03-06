@@ -14,23 +14,26 @@
   ~ See the License for the specific language governing permissions and
   ~ limitations under the License.
   -->
+<inset
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:insetBottom="8dp"
+    android:insetTop="8dp">
 
-<ripple xmlns:android="http://schemas.android.com/apk/res/android"
-    android:color="?android:colorControlHighlight">
+    <ripple
+        android:color="?colorControlHighlight">
 
-    <item android:id="@android:id/mask">
-        <shape android:shape="rectangle">
-            <solid android:color="@android:color/white" />
-        </shape>
-    </item>
+        <item android:id="@android:id/mask">
+            <shape android:shape="rectangle">
+                <size android:height="@dimen/tag_height" />
+                <corners android:radius="@dimen/tag_corner_radius" />
+                <solid android:color="@color/white" />
+            </shape>
 
-    <item>
-        <shape android:shape="rectangle">
-            <padding
-                android:bottom="4dp"
-                android:left="8dp"
-                android:right="8dp"
-                android:top="4dp" />
-        </shape>
-    </item>
-</ripple>
+        </item>
+
+        <item
+            android:id="@+id/tag_fill"
+            android:drawable="@drawable/tag_outline" />
+
+    </ripple>
+</inset>

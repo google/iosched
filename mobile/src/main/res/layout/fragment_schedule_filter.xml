@@ -15,61 +15,73 @@
   ~ limitations under the License.
   -->
 
-<LinearLayout
+<layout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="@dimen/drawer_width"
-    android:layout_height="match_parent"
-    android:layout_gravity="end"
-    android:background="@color/white"
-    android:orientation="vertical"
-    tools:ignore="Overdraw">
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="viewModel"
+            type="com.google.samples.apps.iosched.ui.schedule.ScheduleViewModel" />
+    </data>
 
     <LinearLayout
-        android:id="@+id/filters_header"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_width="@dimen/drawer_width"
+        android:layout_height="match_parent"
+        android:layout_gravity="end"
         android:background="@color/white"
-        android:baselineAligned="false"
-        android:gravity="center_vertical"
-        android:minHeight="?actionBarSize"
-        android:orientation="horizontal"
-        android:paddingEnd="@dimen/spacing_normal"
-        android:paddingStart="@dimen/margin_normal"
-        android:stateListAnimator="@animator/active_raise">
+        android:orientation="vertical"
+        tools:ignore="Overdraw">
 
-        <TextView
-            android:layout_width="0dp"
+        <LinearLayout
+            android:id="@+id/filters_header"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:background="@color/white"
+            android:baselineAligned="false"
+            android:gravity="center_vertical"
+            android:minHeight="?actionBarSize"
+            android:orientation="horizontal"
+            android:paddingEnd="@dimen/spacing_normal"
+            android:paddingStart="@dimen/margin_normal"
+            android:stateListAnimator="@animator/active_raise">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/filters"
+                android:textAppearance="?android:textAppearanceMedium" />
+
+            <Button
+                android:id="@+id/clear_filters"
+                style="@style/Widget.AppCompat.Button.Borderless.Colored"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical|end"
+                android:drawablePadding="@dimen/spacing_normal"
+                android:text="@string/clear_all"
+                android:textColor="?colorPrimary"
+                android:onClick="@{(v) -> viewModel.clearFilters()}"
+                app:invisibleUnless="@{viewModel.hasAnyFilters}"
+                android:drawableEnd="@drawable/ic_clear_all"
+                tools:visibility="visible" />
+
+        </LinearLayout>
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/recyclerview"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
             android:layout_weight="1"
-            android:text="@string/filters"
-            android:textAppearance="?android:textAppearanceMedium" />
-
-        <Button
-            android:id="@+id/clear_filters"
-            style="@style/Widget.AppCompat.Button.Borderless.Colored"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical|end"
-            android:drawablePadding="@dimen/spacing_normal"
-            android:text="@string/clear_all"
-            android:visibility="gone"
-            android:drawableEnd="@drawable/ic_clear_all"
-            tools:visibility="visible" />
+            android:clipToPadding="false"
+            android:paddingVertical="@dimen/spacing_normal"
+            android:scrollbars="vertical"
+            app:layoutManager="LinearLayoutManager"
+            tools:listitem="@layout/list_item_filter_drawer"
+            tools:targetApi="o" />
 
     </LinearLayout>
-
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/recyclerview"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
-        android:clipToPadding="false"
-        android:paddingBottom="@dimen/spacing_normal"
-        android:scrollbarStyle="insideOverlay"
-        android:scrollbars="vertical"
-        app:layoutManager="LinearLayoutManager"
-        tools:listitem="@layout/list_item_filter_drawer" />
-
-</LinearLayout>
+</layout>
