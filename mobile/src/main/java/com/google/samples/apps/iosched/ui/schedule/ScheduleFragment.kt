@@ -18,6 +18,7 @@ package com.google.samples.apps.iosched.ui.schedule
 
 import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProvider
+import android.content.Intent
 import android.databinding.DataBindingUtil
 import android.os.Bundle
 import android.support.v4.app.Fragment
@@ -33,6 +34,7 @@ import com.google.samples.apps.iosched.shared.util.activityViewModelProvider
 import com.google.samples.apps.iosched.ui.schedule.agenda.ScheduleAgendaFragment
 import com.google.samples.apps.iosched.ui.schedule.day.ScheduleDayFragment
 import com.google.samples.apps.iosched.ui.sessiondetail.SessionDetailActivity
+import com.google.samples.apps.iosched.util.login.LoginHandler
 import dagger.android.support.DaggerFragment
 import kotlinx.android.synthetic.main.fragment_schedule.*
 import javax.inject.Inject
@@ -46,9 +48,13 @@ class ScheduleFragment : DaggerFragment() {
         val TAG: String = ScheduleFragment::class.java.simpleName
         val COUNT = ConferenceDay.values().size + 1 // Agenda
         val AGENDA_POSITION = COUNT - 1
+
+        // requestCodes
+        const val RC_LOG_IN = 1
     }
 
     @Inject lateinit var viewModelFactory: ViewModelProvider.Factory
+    @Inject lateinit var loginHandler: LoginHandler
 
     private lateinit var viewModel: ScheduleViewModel
 
@@ -58,7 +64,8 @@ class ScheduleFragment : DaggerFragment() {
     ): View? {
         viewModel = activityViewModelProvider(viewModelFactory)
         val binding: FragmentScheduleBinding = DataBindingUtil.inflate(
-                inflater, R.layout.fragment_schedule, container, false)
+                inflater, R.layout.fragment_schedule, container, false
+        )
 
         // Set the layout variables
         binding.viewModel = viewModel
@@ -81,6 +88,20 @@ class ScheduleFragment : DaggerFragment() {
 
     private fun openSessionDetail(id: String) {
         startActivity(SessionDetailActivity.starterIntent(requireContext(), id))
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+
+        when(resultCode) {
+            RC_LOG_IN -> loginHandler.handleLogin(resultCode, data) { loginResult ->
+                viewModel.handleLoginResult(loginResult)
+            }
+        }
+    }
+
+    private fun requestLogin() {
+        startActivityForResult(loginHandler.makeLoginIntent(), RC_LOG_IN)
     }
 
     /**

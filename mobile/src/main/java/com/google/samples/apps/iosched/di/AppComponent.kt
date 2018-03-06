@@ -20,6 +20,7 @@ import com.google.samples.apps.iosched.shared.di.SharedModule
 import com.google.samples.apps.iosched.MainApplication
 import com.google.samples.apps.iosched.ui.MainModule
 import com.google.samples.apps.iosched.ui.sessiondetail.SessionDetailModule
+import com.google.samples.apps.iosched.util.login.LoginModule
 import dagger.Component
 import dagger.android.AndroidInjector
 import dagger.android.support.AndroidSupportInjectionModule
@@ -37,7 +38,8 @@ import javax.inject.Singleton
         ViewModelModule::class,
         SharedModule::class,
         MainModule::class,
-        SessionDetailModule::class))
+        SessionDetailModule::class,
+        LoginModule::class))
 interface AppComponent : AndroidInjector<MainApplication> {
 
     @Component.Builder

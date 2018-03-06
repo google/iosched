@@ -86,6 +86,7 @@ dependencies {
     // Firebase
     implementation "com.google.firebase:firebase-core:$rootProject.googlePlayServicesClientVersion"
     implementation "com.google.firebase:firebase-firestore:$rootProject.googlePlayServicesClientVersion"
+    implementation "com.google.firebase:firebase-auth:$rootProject.googlePlayServicesClientVersion"
 
     // ThreeTenBP for the shared module only. Date and time API for Java.
     testImplementation "org.threeten:threetenbp:$rootProject.threetenbpVersion"
