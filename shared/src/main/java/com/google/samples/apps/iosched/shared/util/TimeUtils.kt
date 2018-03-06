@@ -43,6 +43,21 @@ object TimeUtils {
         fun formatMonthDay() = FORMATTER_MONTH_DAY.format(start)
     }
 
+    enum class SessionState { BEFORE, DURING, AFTER, UNKNOWN }
+
+    /** Determine whether the current time is before, during, or after a Session's time slot **/
+    fun getSessionState(
+            session: Session?,
+            currentTime: ZonedDateTime = ZonedDateTime.now()
+    ) : SessionState {
+        return when {
+            session == null -> SessionState.UNKNOWN
+            currentTime < session.startTime -> SessionState.BEFORE
+            currentTime > session.endTime -> SessionState.AFTER
+            else -> SessionState.DURING
+        }
+    }
+
     fun timeString(startTime: ZonedDateTime, endTime: ZonedDateTime): String {
         val sb = StringBuilder()
         sb.append(DateTimeFormatter.ofPattern("EEE, MMM d, h:mm ").format(startTime))
