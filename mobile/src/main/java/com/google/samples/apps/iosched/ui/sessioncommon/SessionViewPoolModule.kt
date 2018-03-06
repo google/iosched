@@ -16,20 +16,26 @@
 
 package com.google.samples.apps.iosched.ui.sessioncommon
 
-import android.support.v7.widget.RecyclerView.RecycledViewPool
+import android.support.v7.widget.RecyclerView
+import com.google.samples.apps.iosched.shared.di.FragmentScoped
 import dagger.Module
 import dagger.Provides
 import javax.inject.Named
 
-//TODO @FragmentScope once legit/74444 lands
+/**
+ * Provides [RecycleViewPool]s to share views between [RecyclerView]s.
+ * E.g. Between different days of the schedule.
+ */
 @Module
-internal class ViewPoolModule {
+internal class SessionViewPoolModule {
 
+    @FragmentScoped
     @Provides
     @Named("sessionViewPool")
-    fun providesSessionViewPool(): RecycledViewPool = RecycledViewPool()
+    fun providesSessionViewPool(): RecyclerView.RecycledViewPool = RecyclerView.RecycledViewPool()
 
+    @FragmentScoped
     @Provides
     @Named("tagViewPool")
-    fun providesTagViewPool(): RecycledViewPool = RecycledViewPool()
+    fun providesTagViewPool(): RecyclerView.RecycledViewPool = RecyclerView.RecycledViewPool()
 }

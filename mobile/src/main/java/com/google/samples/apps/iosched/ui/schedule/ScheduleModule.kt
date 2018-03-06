@@ -17,11 +17,10 @@
 package com.google.samples.apps.iosched.ui.schedule
 
 import android.arch.lifecycle.ViewModel
+import com.google.samples.apps.iosched.shared.di.FragmentScoped
 import com.google.samples.apps.iosched.di.ViewModelKey
-import com.google.samples.apps.iosched.ui.MainModule
-import com.google.samples.apps.iosched.ui.schedule.agenda.ScheduleAgendaFragment
-import com.google.samples.apps.iosched.ui.schedule.day.ScheduleDayFragment
 import com.google.samples.apps.iosched.ui.schedule.filters.ScheduleFilterFragment
+import com.google.samples.apps.iosched.ui.sessioncommon.SessionViewPoolModule
 import dagger.Binds
 import dagger.Module
 import dagger.android.AndroidInjector
@@ -35,30 +34,17 @@ import dagger.multibindings.IntoMap
 internal abstract class ScheduleModule {
 
     /**
-     * Generates an [AndroidInjector] for the [ScheduleFragment] as a Dagger subcomponent of the
-     * [MainModule].
+     * Generates an [AndroidInjector] for the [ScheduleFragment].
      */
-    @ContributesAndroidInjector
+    @FragmentScoped
+    @ContributesAndroidInjector(modules = [ScheduleChildFragmentsModule::class,
+        SessionViewPoolModule::class])
     internal abstract fun contributeScheduleFragment(): ScheduleFragment
 
     /**
-     * Generates an [AndroidInjector] for the [ScheduleDayFragment] as a Dagger subcomponent of the
-     * [MainModule].
+     * Generates an [AndroidInjector] for the [ScheduleFilterFragment].
      */
-    @ContributesAndroidInjector
-    internal abstract fun contributeScheduleDayFragment(): ScheduleDayFragment
-
-    /**
-     * Generates an [AndroidInjector] for the [ScheduleAgendaFragment] as a Dagger subcomponent of
-     * the [MainModule].
-     */
-    @ContributesAndroidInjector
-    internal abstract fun contributeScheduleAgendaFragment(): ScheduleAgendaFragment
-
-    /**
-     * Generates an [AndroidInjector] for the [ScheduleFilterFragment] as a Dagger subcomponent of
-     * the [MainModule].
-     */
+    @FragmentScoped
     @ContributesAndroidInjector
     internal abstract fun contributeScheduleFilterFragment(): ScheduleFilterFragment
 

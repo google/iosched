@@ -18,9 +18,7 @@ package com.google.samples.apps.iosched.di
 
 import com.google.samples.apps.iosched.MainApplication
 import com.google.samples.apps.iosched.shared.di.SharedModule
-import com.google.samples.apps.iosched.ui.MainModule
 import com.google.samples.apps.iosched.ui.login.LoginViewModelPluginModule
-import com.google.samples.apps.iosched.ui.sessioncommon.ViewPoolModule
 import com.google.samples.apps.iosched.ui.sessiondetail.SessionDetailModule
 import com.google.samples.apps.iosched.util.login.LoginModule
 import dagger.Component
@@ -32,23 +30,20 @@ import javax.inject.Singleton
  * Main component of the app, created and persisted in the Application class.
  *
  * Whenever a new module is created, it should be added to the list of modules.
+ * [AndroidSupportInjectionModule] is the module from Dagger.Android that helps with the
+ * generation and location of subcomponents.
  */
 @Singleton
-@Component(
-        modules = arrayOf(
-                AndroidSupportInjectionModule::class,
-                AppModule::class,
-                ViewModelModule::class,
-                SharedModule::class,
-                MainModule::class,
-                SessionDetailModule::class,
-                LoginModule::class,
-                LoginViewModelPluginModule::class,
-                ViewPoolModule::class
-        )
-)
+@Component(modules = [
+    AndroidSupportInjectionModule::class,
+    AppModule::class,
+    ActivityBindingModule::class,
+    ViewModelModule::class,
+    SharedModule::class,
+    SessionDetailModule::class,
+    LoginModule::class,
+    LoginViewModelPluginModule::class])
 interface AppComponent : AndroidInjector<MainApplication> {
-
     @Component.Builder
     abstract class Builder : AndroidInjector.Builder<MainApplication>()
 }
