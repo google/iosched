@@ -17,6 +17,7 @@
 package com.google.samples.apps.iosched.ui.sessiondetail
 
 import android.arch.lifecycle.ViewModel
+import com.google.samples.apps.iosched.shared.di.FragmentScoped
 import com.google.samples.apps.iosched.di.ViewModelKey
 import dagger.Binds
 import dagger.Module
@@ -30,14 +31,9 @@ import dagger.multibindings.IntoMap
 internal abstract class SessionDetailModule {
 
     /**
-     * Generates an AndroidInjector for the [SessionDetailActivity].
-     */
-    @ContributesAndroidInjector
-    internal abstract fun sessionDetailActivity(): SessionDetailActivity
-
-    /**
      * Generates an AndroidInjector for the [SessionDetailFragment].
      */
+    @FragmentScoped
     @ContributesAndroidInjector
     internal abstract fun contributeSessionDetailFragment(): SessionDetailFragment
 

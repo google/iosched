@@ -17,7 +17,7 @@
 package com.google.samples.apps.iosched.ui.map
 
 import android.arch.lifecycle.ViewModel
-import com.google.samples.apps.iosched.ui.MainModule
+import com.google.samples.apps.iosched.shared.di.FragmentScoped
 import com.google.samples.apps.iosched.di.ViewModelKey
 import dagger.Binds
 import dagger.Module
@@ -32,9 +32,9 @@ import dagger.multibindings.IntoMap
 @Module
 internal abstract class MapModule {
     /**
-     * Generates an [AndroidInjector] for the [MapFragment] as a Dagger subcomponent of the
-     * [MainModule].
+     * Generates an [AndroidInjector] for the [MapFragment] as a Dagger subcomponent.
      */
+    @FragmentScoped
     @ContributesAndroidInjector
     internal abstract fun contributeMapFragment(): MapFragment
 

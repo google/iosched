@@ -13,25 +13,22 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+package com.google.samples.apps.iosched.shared.di;
 
-package com.google.samples.apps.iosched.ui.info
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
 
-import com.google.samples.apps.iosched.shared.di.FragmentScoped
-import dagger.Module
-import dagger.android.AndroidInjector
-import dagger.android.ContributesAndroidInjector
+import javax.inject.Scope;
 
 /**
- * Module where classes needed to create the [InfoFragment] are defined.
+ * The FragmentScoped custom scoping annotation specifies that the lifespan of a dependency be
+ * the same as that of a Fragment. This is used to annotate dependencies that behave like a
+ * singleton within the lifespan of a Fragment
  */
-@Module
-internal abstract class InfoModule {
-    /**
-     * Generates an [AndroidInjector] for the [InfoFragment].
-     */
-    @FragmentScoped
-    @ContributesAndroidInjector(modules = [InfoFragmentsModule::class])
-    internal abstract fun contributeInfoFragment(): InfoFragment
-
-
+@Scope
+@Retention(RetentionPolicy.RUNTIME)
+@Target({ElementType.TYPE, ElementType.METHOD})
+public @interface FragmentScoped {
 }
