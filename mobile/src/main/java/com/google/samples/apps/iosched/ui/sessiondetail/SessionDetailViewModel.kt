@@ -41,7 +41,8 @@ class SessionDetailViewModel @Inject constructor(
         //TODO: Deal with error SessionNotFoundException
     }
 
+    // TODO: write tests b/74611561
     fun loadSessionById(sessionId: String) {
-        loadSessionUseCase(sessionId, useCaseResult)
+        session.value ?: loadSessionUseCase(sessionId, useCaseResult)
     }
 }
