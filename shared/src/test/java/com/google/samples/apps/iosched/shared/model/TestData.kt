@@ -52,7 +52,7 @@ object TestData : ConferenceDataSource {
 
     val room = Room(id = "1", name = "Tent 1", capacity = 40)
 
-    val session0 = Session(id = "0", title = "Session 0", abstract = "",
+    val session0 = Session(id = "0", title = "Session 0", abstract = "This session is awesome",
             startTime = DAY_1.start, endTime = DAY_1.end,
             room = room, sessionUrl = "", liveStreamUrl = "", youTubeUrl = "", photoUrl = "",
             tags = listOf(androidTag, webTag), speakers = setOf(speaker),

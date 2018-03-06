@@ -1,4 +1,5 @@
-<?xml version="1.0" encoding="utf-8"?><!--
+<?xml version="1.0" encoding="utf-8"?>
+<!--
   ~ Copyright 2018 Google LLC
   ~
   ~ Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,6 +15,7 @@
   ~ limitations under the License.
   -->
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="com.google.samples.apps.iosched.tv">
 
     <uses-feature
@@ -49,6 +51,27 @@
         <activity
             android:name=".ui.sessiondetail.SessionDetailActivity"
             android:screenOrientation="landscape" />
+
+        <activity
+            android:name=".ui.search.SearchableActivity"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.SEARCH" />
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.LEANBACK_LAUNCHER" />
+            </intent-filter>
+
+            <meta-data
+                android:name="android.app.searchable"
+                android:resource="@xml/searchable" />
+        </activity>
+
+        <provider android:name=".search.SessionContentProvider"
+            android:authorities="@string/search_authority"
+            android:exported="true"
+            tools:ignore="ExportedContentProvider" />
+
     </application>
 
 </manifest>
