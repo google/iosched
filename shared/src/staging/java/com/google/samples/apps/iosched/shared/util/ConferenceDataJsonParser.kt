@@ -86,6 +86,11 @@ object ConferenceDataJsonParser {
 
     fun getSessions() = testData.sessions
 
+    fun getSession(sessionId: String): Session {
+        return testData.sessions.firstOrNull { it.id == sessionId } ?: throw IllegalStateException(
+                "Session $sessionId does not exist.")
+    }
+
     fun getAgenda() = testData.blocks
 
     fun getTags() = testData.tags

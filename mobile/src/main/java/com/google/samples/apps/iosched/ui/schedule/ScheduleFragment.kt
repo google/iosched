@@ -16,6 +16,7 @@
 
 package com.google.samples.apps.iosched.ui.schedule
 
+import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProvider
 import android.databinding.DataBindingUtil
 import android.os.Bundle
@@ -31,6 +32,7 @@ import com.google.samples.apps.iosched.shared.util.TimeUtils.ConferenceDay
 import com.google.samples.apps.iosched.shared.util.activityViewModelProvider
 import com.google.samples.apps.iosched.ui.schedule.agenda.ScheduleAgendaFragment
 import com.google.samples.apps.iosched.ui.schedule.day.ScheduleDayFragment
+import com.google.samples.apps.iosched.ui.sessiondetail.SessionDetailActivity
 import dagger.android.support.DaggerFragment
 import kotlinx.android.synthetic.main.fragment_schedule.*
 import javax.inject.Inject
@@ -62,6 +64,12 @@ class ScheduleFragment : DaggerFragment() {
         binding.viewModel = viewModel
         binding.setLifecycleOwner(this)
 
+        viewModel.navigateToSessionAction.observe(this, Observer { navigationEvent ->
+            navigationEvent?.getContentIfNotHandled()?.let { sessionId ->
+                openSessionDetail(sessionId)
+            }
+        })
+
         return binding.root
     }
 
@@ -69,6 +77,10 @@ class ScheduleFragment : DaggerFragment() {
         viewpager.offscreenPageLimit = COUNT - 1
         viewpager.adapter = ScheduleAdapter(childFragmentManager)
         tabs.setupWithViewPager(viewpager)
+    }
+
+    private fun openSessionDetail(id: String) {
+        startActivity(SessionDetailActivity.starterIntent(requireContext(), id))
     }
 
     /**
