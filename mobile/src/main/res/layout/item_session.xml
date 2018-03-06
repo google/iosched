@@ -49,7 +49,6 @@
             app:layout_constraintStart_toEndOf="@id/keyline"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/overflow"
-            android:layout_marginTop="@dimen/spacing_normal"
             android:textAppearance="@style/TextAppearance.IOSched.SessionTitle"
             android:text="@{session.title}" />
 

@@ -49,8 +49,11 @@ data class Tag (
      */
     val color: Int
 ) {
-    /**
-     * Names or colors can change anytime. Only IDs are used for equality.
-     */
+    /** Only IDs are used for equality. */
     override fun equals(other: Any?): Boolean = this === other || (other is Tag && other.id == id)
+
+    /** Only IDs are used for equality. */
+    override fun hashCode(): Int = id.hashCode()
+
+    fun isUiContentEqual(other: Tag) = color == other.color && name == other.name
 }
