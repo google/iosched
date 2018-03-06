@@ -47,11 +47,8 @@ class SessionDetailFragment : DaggerFragment() {
     ): View? {
         setHasOptionsMenu(true)
 
-        // TODO: wire up detail page to schedule list and get session ID intent extra (b/72671324)
-        val dummySessionId = "1"
-
         val sessionDetailViewModel: SessionDetailViewModel = viewModelProvider(viewModelFactory)
-        sessionDetailViewModel.loadSessionById(dummySessionId)
+        sessionDetailViewModel.loadSessionById(checkNotNull(arguments).getString(EXTRA_SESSION_ID))
 
         val binding: FragmentSessionDetailBinding = DataBindingUtil.inflate(
                 inflater, R.layout.fragment_session_detail, container, false)
@@ -90,6 +87,15 @@ class SessionDetailFragment : DaggerFragment() {
                 true
             }
             else -> super.onOptionsItemSelected(item)
+        }
+    }
+
+    companion object {
+        private const val EXTRA_SESSION_ID = "SESSION_ID"
+
+        fun newInstance(sessionId: String): SessionDetailFragment {
+            val bundle = Bundle().apply { putString(EXTRA_SESSION_ID, sessionId) }
+            return SessionDetailFragment().apply { arguments = bundle }
         }
     }
 }
