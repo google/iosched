@@ -42,12 +42,16 @@ fun sessionSpeakers(layout: LinearLayout, speakers: Set<Speaker>?) {
 }
 
 @Suppress("unused")
-@BindingAdapter(value = ["startTime", "endTime"], requireAll = true)
-fun timeString(view: TextView, startTime: ZonedDateTime?, endTime: ZonedDateTime?) {
-    if (startTime == null || endTime == null) {
+@BindingAdapter(value = ["sessionDetailStartTime", "sessionDetailEndTime"], requireAll = true)
+fun timeString(
+        view: TextView,
+        sessionDetailStartTime: ZonedDateTime?,
+        sessionDetailEndTime: ZonedDateTime?
+) {
+    if (sessionDetailStartTime == null || sessionDetailEndTime == null) {
         view.text = ""
     } else {
-        view.text = TimeUtils.timeString(startTime, endTime)
+        view.text = TimeUtils.timeString(sessionDetailStartTime, sessionDetailEndTime)
     }
 }
 
