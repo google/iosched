@@ -21,14 +21,10 @@ import com.google.samples.apps.iosched.shared.domain.UseCase
 import com.google.samples.apps.iosched.shared.model.Session
 import javax.inject.Inject
 
-/**
- * TODO: Example use case that simulates a delay.
- */
 open class LoadSessionUseCase @Inject constructor(private val repository: SessionRepository)
     : UseCase<String, Session>() {
 
     override fun execute(parameters: String): Session {
-        Thread.sleep(1000)
         return repository.getSessions().firstOrNull { it -> it.id == parameters }
                 ?: throw SessionNotFoundException()
     }
