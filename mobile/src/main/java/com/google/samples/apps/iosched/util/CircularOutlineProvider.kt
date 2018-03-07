@@ -14,10 +14,17 @@
  * limitations under the License.
  */
 
-package com.google.samples.apps.iosched.util.login
+package com.google.samples.apps.iosched.util
 
-import com.firebase.ui.auth.FirebaseUiException
+import android.graphics.Outline
+import android.view.View
+import android.view.ViewOutlineProvider
 
-sealed class LoginResult
-object LoginSuccess : LoginResult()
-data class LoginFailed(val error: FirebaseUiException?) : LoginResult()
+class CircularOutlineProvider(private val circleSize: Int) : ViewOutlineProvider() {
+    override fun getOutline(view: View?, outline: Outline?) {
+        view ?: return
+        outline ?: return
+
+        outline.setOval(0, 0, circleSize, circleSize)
+    }
+}

@@ -14,10 +14,13 @@
  * limitations under the License.
  */
 
-package com.google.samples.apps.iosched.util.login
+package com.google.samples.apps.iosched.shared.data.login
 
-import com.firebase.ui.auth.FirebaseUiException
+import timber.log.Timber
 
-sealed class LoginResult
-object LoginSuccess : LoginResult()
-data class LoginFailed(val error: FirebaseUiException?) : LoginResult()
+class LoginRemoteDataSource : LoginDataSource {
+    override fun getUserForToken(token: String) {
+        Timber.d("getUserForToken: $token")
+//        TODO("getUserforToken needs to be implemented. Need to find endpoint. @seanmcq")
+    }
+}

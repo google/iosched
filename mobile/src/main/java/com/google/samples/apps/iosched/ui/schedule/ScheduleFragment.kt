@@ -18,7 +18,6 @@ package com.google.samples.apps.iosched.ui.schedule
 
 import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProvider
-import android.content.Intent
 import android.databinding.DataBindingUtil
 import android.os.Bundle
 import android.support.v4.app.Fragment
@@ -31,12 +30,16 @@ import com.google.samples.apps.iosched.R
 import com.google.samples.apps.iosched.databinding.FragmentScheduleBinding
 import com.google.samples.apps.iosched.shared.util.TimeUtils.ConferenceDay
 import com.google.samples.apps.iosched.shared.util.activityViewModelProvider
+import com.google.samples.apps.iosched.shared.util.checkAllMatched
+import com.google.samples.apps.iosched.ui.login.LoginEvent.RequestLogin
+import com.google.samples.apps.iosched.ui.login.LoginEvent.RequestLogout
 import com.google.samples.apps.iosched.ui.schedule.agenda.ScheduleAgendaFragment
 import com.google.samples.apps.iosched.ui.schedule.day.ScheduleDayFragment
 import com.google.samples.apps.iosched.ui.sessiondetail.SessionDetailActivity
 import com.google.samples.apps.iosched.util.login.LoginHandler
 import dagger.android.support.DaggerFragment
 import kotlinx.android.synthetic.main.fragment_schedule.*
+import timber.log.Timber
 import javax.inject.Inject
 
 /**
@@ -48,9 +51,6 @@ class ScheduleFragment : DaggerFragment() {
         val TAG: String = ScheduleFragment::class.java.simpleName
         val COUNT = ConferenceDay.values().size + 1 // Agenda
         val AGENDA_POSITION = COUNT - 1
-
-        // requestCodes
-        const val RC_LOG_IN = 1
     }
 
     @Inject lateinit var viewModelFactory: ViewModelProvider.Factory
@@ -58,9 +58,10 @@ class ScheduleFragment : DaggerFragment() {
 
     private lateinit var viewModel: ScheduleViewModel
 
-    override fun onCreateView(inflater: LayoutInflater,
-            container: ViewGroup?,
-            savedInstanceState: Bundle?
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
     ): View? {
         viewModel = activityViewModelProvider(viewModelFactory)
         val binding: FragmentScheduleBinding = DataBindingUtil.inflate(
@@ -77,6 +78,15 @@ class ScheduleFragment : DaggerFragment() {
             }
         })
 
+        viewModel.performLoginEvent.observe(this, Observer { loginRequestEvent ->
+            loginRequestEvent?.getContentIfNotHandled()?.let { loginEvent ->
+                when (loginEvent) {
+                    RequestLogout -> doLogout()
+                    RequestLogin -> requestLogin()
+                }.checkAllMatched
+            }
+        })
+
         return binding.root
     }
 
@@ -90,18 +100,17 @@ class ScheduleFragment : DaggerFragment() {
         startActivity(SessionDetailActivity.starterIntent(requireContext(), id))
     }
 
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-
-        when(resultCode) {
-            RC_LOG_IN -> loginHandler.handleLogin(resultCode, data) { loginResult ->
-                viewModel.handleLoginResult(loginResult)
+    private fun doLogout() {
+        // TODO: b/74393872 Implement full UX here
+        this.context?.let {
+            loginHandler.logout(it) {
+                Timber.d("Logged out!")
             }
         }
     }
 
     private fun requestLogin() {
-        startActivityForResult(loginHandler.makeLoginIntent(), RC_LOG_IN)
+        startActivity(loginHandler.makeLoginIntent())
     }
 
     /**
@@ -112,14 +121,14 @@ class ScheduleFragment : DaggerFragment() {
         override fun getCount() = COUNT
 
         override fun getItem(position: Int): Fragment {
-            return when(position) {
+            return when (position) {
                 AGENDA_POSITION -> ScheduleAgendaFragment()
                 else -> ScheduleDayFragment.newInstance(ConferenceDay.values()[position])
             }
         }
 
         override fun getPageTitle(position: Int): CharSequence {
-            return when(position) {
+            return when (position) {
                 AGENDA_POSITION -> getString(R.string.agenda)
                 else -> ConferenceDay.values()[position].formatMonthDay()
             }

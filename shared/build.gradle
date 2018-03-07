@@ -84,7 +84,9 @@ dependencies {
     // Firebase
     implementation "com.google.firebase:firebase-core:$rootProject.googlePlayServicesClientVersion"
     implementation "com.google.firebase:firebase-firestore:$rootProject.googlePlayServicesClientVersion"
-    implementation "com.google.firebase:firebase-auth:$rootProject.googlePlayServicesClientVersion"
+    api("com.google.firebase:firebase-auth:$rootProject.googlePlayServicesClientVersion") {
+        exclude group: 'com.android.support', module: 'support-v4'
+    }
 
     // ThreeTenBP for the shared module only. Date and time API for Java.
     testImplementation "org.threeten:threetenbp:$rootProject.threetenbpVersion"
@@ -94,6 +96,11 @@ dependencies {
     testImplementation "android.arch.core:core-testing:$rootProject.archLifecycleVersion"
     testImplementation "junit:junit:$rootProject.junitVersion"
     testImplementation "org.hamcrest:hamcrest-library:$rootProject.hamcrestVersion"
+    testImplementation "org.mockito:mockito-core:$rootProject.mockitoVersion"
+    testImplementation "com.nhaarman:mockito-kotlin:$rootProject.mockitoKotlinVersion"
+
+    // unit tests livedata
+    testImplementation "android.arch.core:core-testing:1.1.0"
 }
 
 // Force Dagger's transitive dependencies to use the project's version of the support libraries.

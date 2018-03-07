@@ -22,6 +22,7 @@ import android.graphics.Color.TRANSPARENT
 import android.graphics.drawable.InsetDrawable
 import android.graphics.drawable.RippleDrawable
 import android.graphics.drawable.StateListDrawable
+import android.net.Uri
 import android.support.v4.content.ContextCompat
 import android.support.v4.view.ViewPager
 import android.support.v7.content.res.AppCompatResources
@@ -30,11 +31,15 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
+import com.bumptech.glide.Glide
 import com.google.samples.apps.iosched.R
 import com.google.samples.apps.iosched.databinding.ItemSessionTagBinding
 import com.google.samples.apps.iosched.shared.model.Tag
+import com.google.samples.apps.iosched.util.CircularOutlineProvider
+import timber.log.Timber
 
 @BindingAdapter("sessionTags")
 fun sessionTags(container: LinearLayout, sessionTags: List<Tag>?) {
@@ -46,9 +51,9 @@ fun sessionTags(container: LinearLayout, sessionTags: List<Tag>?) {
 }
 
 private fun createSessionTagButton(
-        inflater: LayoutInflater,
-        container: ViewGroup,
-        sessionTag: Tag
+    inflater: LayoutInflater,
+    container: ViewGroup,
+    sessionTag: Tag
 ): Button {
     val tagBinding = ItemSessionTagBinding.inflate(inflater, container, false).apply {
         tag = sessionTag
@@ -76,8 +81,10 @@ fun tagColor(textView: TextView, color: Int) {
     // for a state (different from transparent tint, which makes the drawable invisible).
     val dotOrClear = StateListDrawable().apply {
         // clear icon when checked
-        addState(intArrayOf(android.R.attr.state_checked),
-                drawableCompat(textView, R.drawable.tag_clear))
+        addState(
+                intArrayOf(android.R.attr.state_checked),
+                drawableCompat(textView, R.drawable.tag_clear)
+        )
         // colored dot by default
         addState(StateSet.WILD_CARD,
                 drawableCompat(textView, R.drawable.tag_dot)?.apply { setTint(tintColor) })
@@ -92,7 +99,7 @@ fun tagColor(textView: TextView, color: Int) {
         addState(StateSet.WILD_CARD, drawableCompat(textView, R.drawable.tag_outline))
     }
     ((textView.background as InsetDrawable).drawable as RippleDrawable)
-            .setDrawableByLayerId(R.id.tag_fill, tagBg)
+        .setDrawableByLayerId(R.id.tag_fill, tagBg)
 }
 
 fun tagTintOrDefault(color: Int, context: Context): Int {
@@ -109,3 +116,28 @@ fun drawableCompat(view: View, id: Int) = AppCompatResources.getDrawable(view.co
 fun pageMargin(viewPager: ViewPager, pageMargin: Float) {
     viewPager.pageMargin = pageMargin.toInt()
 }
+
+@BindingAdapter("clipToCircle")
+fun clipToCircle(view: View, circleSize: Float) {
+    view.clipToOutline = true
+    view.outlineProvider = CircularOutlineProvider(circleSize.toInt())
+}
+
+@BindingAdapter("imageUrl")
+fun imageUrl(imageView: ImageView, imageUrl: Uri?) {
+    when (imageUrl) {
+        null -> {
+            Timber.d("Unsetting image url")
+            // TODO: b/74393872 Use an actual placeholder.
+            Glide.with(imageView)
+                .load(R.drawable.tag_filled)
+                .into(imageView)
+        }
+        else -> {
+            Glide.with(imageView)
+                .load(imageUrl)
+                .into(imageView)
+        }
+    }
+}
+

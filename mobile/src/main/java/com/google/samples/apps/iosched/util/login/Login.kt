@@ -23,13 +23,15 @@ import com.firebase.ui.auth.AuthUI
 import com.firebase.ui.auth.IdpResponse
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 
+// this is mutable because FirebaseUI requires it be mutable
 private val providers = mutableListOf(
         AuthUI.IdpConfig.GoogleBuilder().setSignInOptions(
                 GoogleSignInOptions.Builder()
                     .requestId()
                     .requestProfile()
                     .requestEmail()
-                    .build())
+                    .build()
+        )
             .build()
 )
 
@@ -40,10 +42,12 @@ class LoginHandler {
      *
      * To observe the result you must pass this to startActivityForResult.
      */
-    fun makeLoginIntent() = AuthUI.getInstance()
-        .createSignInIntentBuilder()
-        .setAvailableProviders(providers)
-        .build()
+    fun makeLoginIntent(): Intent {
+        return AuthUI.getInstance()
+            .createSignInIntentBuilder()
+            .setAvailableProviders(providers)
+            .build()
+    }
 
     /**
      * Parse the response from a a login request, helper to call from onActivityResult.
@@ -59,17 +63,17 @@ class LoginHandler {
      *
      * @param resultCode activity result code
      * @param data activity result intent
-     * @param callback callback to pass parsed result
-     *
+     * @param onComplete pass parsed result of either LoginSuccess or LoginFailed
      */
+    @SuppressWarnings("unused")
     fun handleLogin(
         resultCode: Int,
         data: Intent?,
-        callback: (LoginResult) -> Unit
+        onComplete: (LoginResult) -> Unit
     ) {
         when (resultCode) {
-            Activity.RESULT_OK ->  callback(LoginSuccess())
-            else -> callback(LoginFailed(IdpResponse.fromResultIntent(data)?.error))
+            Activity.RESULT_OK -> onComplete(LoginSuccess)
+            else -> onComplete(LoginFailed(IdpResponse.fromResultIntent(data)?.error))
         }
     }
 
@@ -77,11 +81,11 @@ class LoginHandler {
      * Attempt to log the current user out.
      *
      * @param context any context
-     * @param callback used to notify of logout completion.
+     * @param onComplete used to notify of logout completion.
      */
-    fun logout(context: Context, callback: () -> Unit = {}) {
+    fun logout(context: Context, onComplete: () -> Unit = {}) {
         AuthUI.getInstance()
             .signOut(context)
-            .addOnCompleteListener { callback() }
+            .addOnCompleteListener { onComplete() }
     }
 }

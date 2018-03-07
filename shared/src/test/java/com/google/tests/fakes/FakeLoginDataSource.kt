@@ -14,10 +14,14 @@
  * limitations under the License.
  */
 
-package com.google.samples.apps.iosched.util.login
+package com.google.samples.apps.iosched.test.util.fakes
 
-import com.firebase.ui.auth.FirebaseUiException
+import com.google.samples.apps.iosched.shared.data.login.LoginDataSource
 
-sealed class LoginResult
-object LoginSuccess : LoginResult()
-data class LoginFailed(val error: FirebaseUiException?) : LoginResult()
+class FakeLoginDataSource : LoginDataSource {
+    var token: String? = null
+
+    override fun getUserForToken(token: String) {
+        this.token = token
+    }
+}
