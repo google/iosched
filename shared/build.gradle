@@ -65,7 +65,9 @@ dependencies {
     implementation("com.google.maps.android:android-maps-utils:$rootProject.googleMapUtilsVersion") {
         exclude group: "com.google.android.gms"
     }
-    api "com.google.android.gms:play-services-maps:$rootProject.googlePlayServicesClientVersion"
+    api("com.google.android.gms:play-services-maps:$rootProject.googlePlayServicesClientVersion") {
+        exclude group: 'com.android.support', module: 'support-v4'
+    }
 
     // Utils
     api "com.jakewharton.timber:timber:$rootProject.timberVersion"

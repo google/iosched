@@ -17,11 +17,12 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
 
     <!-- Base application theme. -->
-    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+    <style name="AppTheme" parent="Theme.MaterialComponents.Light">
         <!-- Customize your theme here. -->
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorAccent">@color/colorAccent</item>
         <item name="toolbarStyle">@style/Widget.Toolbar</item>
+        <item name="tabStyle">@style/Widget.IOSched.Tabs</item>
         <item name="android:windowBackground">@color/white</item>
         <item name="android:statusBarColor">@color/status_bar</item>
         <item name="android:windowLightStatusBar" tools:targetApi="m">true</item>
@@ -34,7 +35,7 @@
         <item name="windowNoTitle">true</item>
     </style>
 
-    <style name="AppTheme.PopupTheme" parent="ThemeOverlay.AppCompat.Light" />
+    <style name="AppTheme.PopupTheme" parent="ThemeOverlay.MaterialComponents.Light" />
 
     <style name="Widget.AppBar" parent="@style/Widget.Design.AppBarLayout">
         <item name="popupTheme">@style/AppTheme.PopupTheme</item>
@@ -71,26 +72,33 @@
         <item name="android:textStyle">bold</item>
     </style>
 
-    <style name="ThemeOverlay.IOSched.GoogleSans" parent="@style/ThemeOverlay.AppCompat">
+    <style name="TextAppearance.IOSched.Tab" parent="@style/TextAppearance.MaterialComponents.Tab">
         <item name="android:fontFamily">@font/google_sans</item>
+        <item name="android:textColor">@color/tab_text</item>
+        <item name="android:textStyle">bold</item>
+        <item name="textAllCaps">false</item>
     </style>
 
-    <style name="ThemeOverlay.IOSched.BottomNav" parent="@style/ThemeOverlay.AppCompat.Dark">
+    <style name="TextAppearance.IOSched.BottomNavigationView" parent="@style/TextAppearance.MaterialComponents.BottomNavigationView.Colored">
         <item name="android:fontFamily">@font/google_sans</item>
+        <item name="android:textColor">@color/bottom_nav_item</item>
+    </style>
+
+    <style name="TextAppearance.IOSched.BottomNavigationView.Active">
+        <item name="android:textStyle">bold</item>
     </style>
 
     <style name="Widget.IOSched" parent="@android:style/Widget" />
 
-    <style name="Widget.IOSched.BottomNav" parent="@style/Widget.Design.BottomNavigationView">
-        <item name="android:background">?colorPrimary</item>
+    <style name="Widget.IOSched.BottomNav" parent="@style/Widget.MaterialComponents.BottomNavigationView.Colored">
         <item name="itemIconTint">@color/bottom_nav_item</item>
-        <item name="itemTextColor">@color/bottom_nav_item</item>
-        <item name="android:theme">@style/ThemeOverlay.IOSched.BottomNav</item>
+        <item name="itemTextAppearanceActive">@style/TextAppearance.IOSched.BottomNavigationView.Active</item>
+        <item name="itemTextAppearanceInactive">@style/TextAppearance.IOSched.BottomNavigationView</item>
+        <item name="android:theme">@style/ThemeOverlay.MaterialComponents.Dark</item>
     </style>
 
-    <style name="Widget.IOSched.Tabs" parent="@style/Widget.Design.TabLayout">
-        <item name="tabTextColor">?colorPrimary</item>
-        <item name="tabSelectedTextColor">?colorPrimary</item>
+    <style name="Widget.IOSched.Tabs" parent="@style/Widget.MaterialComponents.TabLayout">
+        <item name="tabTextAppearance">@style/TextAppearance.IOSched.Tab</item>
         <item name="tabIndicatorColor">?colorPrimary</item>
     </style>
 
