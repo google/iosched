@@ -73,7 +73,8 @@ inline fun FragmentManager.inTransaction(func: FragmentTransaction.() -> Fragmen
  * ```
  */
 inline fun <reified VM : ViewModel> FragmentActivity.viewModelProvider(
-        provider: ViewModelProvider.Factory) = lazyFast {
+    provider: ViewModelProvider.Factory
+) = lazyFast {
     ViewModelProviders.of(this, provider).get(VM::class.java)
 }
 
@@ -84,14 +85,16 @@ inline fun <reified VM : ViewModel> FragmentActivity.viewModelProvider(
  * ```
  */
 inline fun <reified VM : ViewModel> Fragment.viewModelProvider(
-        provider: ViewModelProvider.Factory) =
+    provider: ViewModelProvider.Factory
+) =
     ViewModelProviders.of(this, provider).get(VM::class.java)
 
 /**
  * Like [Fragment.viewModelProvider] for Fragments that want a [ViewModel] scoped to the Activity.
  */
 inline fun <reified VM : ViewModel> Fragment.activityViewModelProvider(
-        provider: ViewModelProvider.Factory) =
+    provider: ViewModelProvider.Factory
+) =
     ViewModelProviders.of(requireActivity(), provider).get(VM::class.java)
 
 /**
@@ -99,7 +102,8 @@ inline fun <reified VM : ViewModel> Fragment.activityViewModelProvider(
  * Fragment.
  */
 inline fun <reified VM : ViewModel> Fragment.parentViewModelProvider(
-        provider: ViewModelProvider.Factory) =
+    provider: ViewModelProvider.Factory
+) =
     ViewModelProviders.of(parentFragment!!, provider).get(VM::class.java)
 
 // endregion
@@ -133,11 +137,12 @@ fun <X, Y> LiveData<X>.switchMap(body: (X) -> LiveData<Y>): LiveData<Y> {
 // endregion
 
 /**
- * Helper to force a when statement to assert all sealed classes are matched.
+ * Helper to force a when statement to assert all options are matched in a when statement.
  *
- * By default, Kotlin doesn't care if you enumerate sealed classes. However, if you use when in
- * an expression it will force you to match all of them. This helper is to make a lightweight
- * way to say you meant to match all of them.
+ * By default, Kotlin doesn't care if all branches are handled in a when statement. However, if you
+ * use the when statement as an expression (with a value) it will force all cases to be handled.
+ *
+ * This helper is to make a lightweight way to say you meant to match all of them.
  *
  * Usage:
  *
@@ -145,7 +150,8 @@ fun <X, Y> LiveData<X>.switchMap(body: (X) -> LiveData<Y>): LiveData<Y> {
  * when(sealedObject) {
  *     is OneType -> //
  *     is AnotherType -> //
- * }.checkAllSealed
+ * }.checkAllMatched
  */
-val <T> T.checkAllSealed: T
+val <T> T.checkAllMatched: T
     get() = this
+

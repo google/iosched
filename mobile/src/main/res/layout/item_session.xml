@@ -19,12 +19,15 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
+
         <variable
             name="session"
             type="com.google.samples.apps.iosched.shared.model.Session" />
+
         <variable
             name="userEvent"
             type="com.google.samples.apps.iosched.shared.firestore.entity.UserEvent" />
+
         <variable
             name="eventListener"
             type="com.google.samples.apps.iosched.ui.schedule.ScheduleEventListener" />

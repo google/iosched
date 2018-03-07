@@ -36,15 +36,34 @@
             android:layout_height="wrap_content"
             style="@style/Widget.AppBar">
 
-            <TextView
-                android:id="@+id/title"
+            <FrameLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:minHeight="?actionBarSize"
-                android:gravity="center"
-                app:layout_scrollFlags="scroll|snap"
-                android:text="@string/title_schedule"
-                android:textAppearance="@style/TextAppearance.IOSched.ToolbarTitle" />
+                app:layout_scrollFlags="scroll|snap">
+
+                <ImageView
+                    android:id="@+id/profile_button"
+                    android:layout_width="@dimen/min_touch_target"
+                    android:layout_height="@dimen/min_touch_target"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginStart="@dimen/margin_normal"
+                    app:imageUrl="@{viewModel.currentUserImageUri}"
+                    app:clipToCircle="@{@dimen/min_touch_target}"
+                    android:contentDescription="@string/logged_in"
+                    android:foreground="?selectableItemBackground"
+                    android:onClick="@{() -> viewModel.onProfileClicked()}" />
+
+                <TextView
+                    android:id="@+id/title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:minHeight="?actionBarSize"
+                    android:gravity="center"
+                    android:layout_gravity="center"
+                    android:text="@string/title_schedule"
+                    android:textAppearance="@style/TextAppearance.IOSched.ToolbarTitle" />
+
+            </FrameLayout>
 
             <!-- AppBarLayout requires a collapsing view for the header pinning behavior we want -->
             <android.support.v4.widget.Space
@@ -76,7 +95,7 @@
             android:layout_height="wrap_content"
             android:indeterminate="true"
             android:layout_gravity="center"
-            app:goneUnless="@{viewModel.isLoading}"/>
+            app:goneUnless="@{viewModel.isLoading}" />
 
     </android.support.design.widget.CoordinatorLayout>
 

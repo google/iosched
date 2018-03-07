@@ -36,12 +36,9 @@ import com.google.samples.apps.iosched.shared.util.TimeUtils.ConferenceDay
 import com.google.samples.apps.iosched.shared.util.TimeUtils.ConferenceDay.DAY_1
 import com.google.samples.apps.iosched.shared.util.TimeUtils.ConferenceDay.DAY_2
 import com.google.samples.apps.iosched.shared.util.TimeUtils.ConferenceDay.DAY_3
-import com.google.samples.apps.iosched.shared.util.checkAllSealed
 import com.google.samples.apps.iosched.shared.util.map
+import com.google.samples.apps.iosched.ui.login.LoginViewModelPlugin
 import com.google.samples.apps.iosched.util.hasSameValue
-import com.google.samples.apps.iosched.util.login.LoginFailed
-import com.google.samples.apps.iosched.util.login.LoginResult
-import com.google.samples.apps.iosched.util.login.LoginSuccess
 import javax.inject.Inject
 
 /**
@@ -52,8 +49,9 @@ import javax.inject.Inject
 class ScheduleViewModel @Inject constructor(
     private val loadUserSessionsByDayUseCase: LoadUserSessionsByDayUseCase,
     loadAgendaUseCase: LoadAgendaUseCase,
-    loadTagsByCategoryUseCase: LoadTagsByCategoryUseCase
-) : ViewModel(), ScheduleEventListener {
+    loadTagsByCategoryUseCase: LoadTagsByCategoryUseCase,
+    loginViewModelPlugin: LoginViewModelPlugin
+) : ViewModel(), ScheduleEventListener, LoginViewModelPlugin by loginViewModelPlugin {
 
     val isLoading: LiveData<Boolean>
 
@@ -65,7 +63,7 @@ class ScheduleViewModel @Inject constructor(
     val hasAnyFilters = ObservableBoolean(false)
 
     private val loadSessionsResult =
-            MutableLiveData<Result<Map<ConferenceDay, List<UserSession>>>>()
+        MutableLiveData<Result<Map<ConferenceDay, List<UserSession>>>>()
     private val loadAgendaResult = MutableLiveData<Result<List<Block>>>()
     private val loadTagsResult = MutableLiveData<Result<List<Tag>>>()
 
@@ -177,24 +175,16 @@ class ScheduleViewModel @Inject constructor(
         }
     }
 
-    /**
-     * Handle the a login result.
-     */
-    fun handleLoginResult(result: LoginResult) {
-        when(result) {
-            is LoginSuccess -> {
-                // success
-                Unit
-            }
-            is LoginFailed -> {
-                // failed
-                Unit
-            }
-        }.checkAllSealed
+    fun onProfileClicked() {
+        if (isLoggedIn()) {
+            emitLogoutRequest()
+        } else {
+            emitLoginRequest()
+        }
     }
 
     private fun refreshUserSessions() =
-            loadUserSessionsByDayUseCase(sessionMatcher to userID, loadSessionsResult)
+        loadUserSessionsByDayUseCase(sessionMatcher to userID, loadSessionsResult)
 }
 
 class TagFilter(val tag: Tag, isChecked: Boolean) {
@@ -220,7 +210,7 @@ interface ScheduleEventListener {
 /**
  * Used as a wrapper for data that is exposed via a LiveData that represents an event.
  */
-class Event<T>(private val content: T, private var hasBeenHandled: Boolean = false) {
+open class Event<T>(private val content: T, private var hasBeenHandled: Boolean = false) {
     /**
      * Returns the content and prevents its use again.
      */

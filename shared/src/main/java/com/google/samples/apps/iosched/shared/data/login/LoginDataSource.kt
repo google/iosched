@@ -14,10 +14,9 @@
  * limitations under the License.
  */
 
-package com.google.samples.apps.iosched.util.login
+package com.google.samples.apps.iosched.shared.data.login
 
-import com.firebase.ui.auth.FirebaseUiException
-
-sealed class LoginResult
-object LoginSuccess : LoginResult()
-data class LoginFailed(val error: FirebaseUiException?) : LoginResult()
+interface LoginDataSource {
+    // TODO: Figure out what this is and implement it b/74395224
+    fun getUserForToken(token: String)
+}

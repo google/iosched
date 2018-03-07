@@ -35,6 +35,7 @@ import com.google.samples.apps.iosched.shared.schedule.SessionMatcher
 import com.google.samples.apps.iosched.shared.util.TimeUtils.ConferenceDay
 import com.google.samples.apps.iosched.test.util.LiveDataTestUtil
 import com.google.samples.apps.iosched.test.util.SyncTaskExecutorRule
+import com.google.samples.apps.iosched.test.util.fakes.FakeLoginViewModelPlugin
 import com.google.samples.apps.iosched.ui.schedule.day.TestUserEventDataSource
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
@@ -57,20 +58,25 @@ class ScheduleViewModelTest {
     fun testDataIsLoaded_ObservablesUpdated() {
         // Create test use cases with test data
         val loadSessionsUseCase = LoadUserSessionsByDayUseCase(
-            SessionRepository(TestDataRepository),
-            UserEventRepository(TestUserEventDataSource)
+                SessionRepository(TestDataRepository),
+                UserEventRepository(TestUserEventDataSource)
         )
         val loadAgendaUseCase = LoadAgendaUseCase(AgendaRepository(TestDataRepository))
         val loadTagsUseCase = LoadTagsByCategoryUseCase(TagRepository(TestDataRepository))
+        val loginViewModelComponent = createLoginViewModelComponent()
 
         // Create ViewModel with the use cases
-        val viewModel = ScheduleViewModel(loadSessionsUseCase, loadAgendaUseCase, loadTagsUseCase)
+        val viewModel = ScheduleViewModel(
+                loadSessionsUseCase, loadAgendaUseCase, loadTagsUseCase, loginViewModelComponent
+        )
 
         // Check that data were loaded correctly
         // Sessions
         for (day in ConferenceDay.values()) {
-            assertEquals(TestData.userSessionMap[day],
-                    LiveDataTestUtil.getValue(viewModel.getSessionsForDay(day)))
+            assertEquals(
+                    TestData.userSessionMap[day],
+                    LiveDataTestUtil.getValue(viewModel.getSessionsForDay(day))
+            )
         }
         assertFalse(LiveDataTestUtil.getValue(viewModel.isLoading)!!)
         // Tags
@@ -78,13 +84,56 @@ class ScheduleViewModelTest {
     }
 
     @Test
+    fun profileClicked_whileLoggedIn_logsOut() {
+        val loadSessionsUseCase = createSessionsExceptionUseCase()
+        val loadAgendaUseCase = createAgendaExceptionUseCase()
+        val loadTagsUseCase = createTagsExceptionUseCase()
+        val loginViewModelComponent = createLoginViewModelComponent()
+
+        // Create ViewModel with the use cases
+        val viewModel = ScheduleViewModel(
+                loadSessionsUseCase, loadAgendaUseCase, loadTagsUseCase, loginViewModelComponent
+        )
+
+        loginViewModelComponent.injectIsLoggedIn = true
+
+        // click profile
+        viewModel.onProfileClicked()
+
+        assertEquals(1, loginViewModelComponent.logoutRequestsEmitted)
+    }
+
+    @Test
+    fun profileClicked_whileLoggedOut_logsIn() {
+        val loadSessionsUseCase = createSessionsExceptionUseCase()
+        val loadAgendaUseCase = createAgendaExceptionUseCase()
+        val loadTagsUseCase = createTagsExceptionUseCase()
+        val loginViewModelComponent = createLoginViewModelComponent()
+
+        // Create ViewModel with the use cases
+        val viewModel = ScheduleViewModel(
+                loadSessionsUseCase, loadAgendaUseCase, loadTagsUseCase, loginViewModelComponent
+        )
+
+        loginViewModelComponent.injectIsLoggedIn = false
+
+        // click profile
+        viewModel.onProfileClicked()
+
+        assertEquals(1, loginViewModelComponent.loginRequestsEmitted)
+    }
+
+    @Test
     fun testDataIsLoaded_Fails() {
         val loadSessionsUseCase = createSessionsExceptionUseCase()
         val loadAgendaUseCase = createAgendaExceptionUseCase()
         val loadTagsUseCase = createTagsExceptionUseCase()
+        val loginViewModelComponent = createLoginViewModelComponent()
 
         // Create ViewModel with the use case
-        val viewModel = ScheduleViewModel(loadSessionsUseCase, loadAgendaUseCase, loadTagsUseCase)
+        val viewModel = ScheduleViewModel(
+                loadSessionsUseCase, loadAgendaUseCase, loadTagsUseCase, loginViewModelComponent
+        )
         val errorMsg = LiveDataTestUtil.getValue(viewModel.errorMessage)
         assertTrue(errorMsg?.peekContent()?.isNotEmpty() ?: false)
     }
@@ -96,7 +145,10 @@ class ScheduleViewModelTest {
         val sessionRepository = SessionRepository(TestDataRepository)
         val userEventRepository = UserEventRepository(TestUserEventDataSource)
 
-        return object : LoadUserSessionsByDayUseCase(sessionRepository, userEventRepository) {
+        return object : LoadUserSessionsByDayUseCase(
+                sessionRepository,
+                userEventRepository
+        ) {
             override fun execute(parameters: Pair<SessionMatcher, String>):
                     Map<ConferenceDay, List<UserSession>> {
                 throw Exception("Testing exception")
@@ -125,5 +177,7 @@ class ScheduleViewModelTest {
             }
         }
     }
+
+    private fun createLoginViewModelComponent() = FakeLoginViewModelPlugin()
 }
 
