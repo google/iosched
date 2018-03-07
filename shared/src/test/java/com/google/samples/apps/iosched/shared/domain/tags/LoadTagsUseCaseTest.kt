@@ -19,6 +19,7 @@ package com.google.samples.apps.iosched.shared.domain.tags
 
 import com.google.samples.apps.iosched.shared.data.tag.TagRepository
 import com.google.samples.apps.iosched.shared.model.Tag
+import com.google.samples.apps.iosched.shared.model.TestDataRepository
 import com.google.samples.apps.iosched.shared.result.Result
 import com.google.samples.apps.iosched.shared.result.Result.Success
 import org.junit.Assert.assertEquals
@@ -31,10 +32,10 @@ class LoadTagsUseCaseTest {
 
     @Test
     fun returnsListOfTags() {
-        val loadTagsUseCase = LoadTagsUseCase(TagRepository(TestTagDataSource))
+        val loadTagsUseCase = LoadTagsUseCase(TagRepository(TestDataRepository))
         val tags: Result.Success<List<Tag>> =
                 loadTagsUseCase.executeNow(Unit) as Success<List<Tag>>
 
-        assertEquals(tags.data, TagRepository(TestTagDataSource).getTags())
+        assertEquals(tags.data, TagRepository(TestDataRepository).getTags())
     }
 }

@@ -17,12 +17,11 @@
 package com.google.samples.apps.iosched.shared.domain.sessions
 
 
-import com.google.samples.apps.iosched.shared.data.ConferenceDataRepository
 import com.google.samples.apps.iosched.shared.data.session.SessionRepository
 import com.google.samples.apps.iosched.shared.data.session.UserEventRepository
-import com.google.samples.apps.iosched.shared.domain.repository.TestSessionDataSource
 import com.google.samples.apps.iosched.shared.domain.repository.TestUserEventDataSource
 import com.google.samples.apps.iosched.shared.model.TestData
+import com.google.samples.apps.iosched.shared.model.TestDataRepository
 import com.google.samples.apps.iosched.shared.model.UserSession
 import com.google.samples.apps.iosched.shared.result.Result
 import com.google.samples.apps.iosched.shared.schedule.SessionMatcher
@@ -37,14 +36,8 @@ class LoadUserSessionsByDayUseCaseTest {
 
     @Test
     fun returnsMapOfSessions() {
-
-        val testConferenceDataRepository = ConferenceDataRepository(
-                boostrapDataSource = TestSessionDataSource,
-                remoteDataSource = TestSessionDataSource)
-
         val testUserEventRepository = UserEventRepository(TestUserEventDataSource)
-
-        val useCase = LoadUserSessionsByDayUseCase(SessionRepository(testConferenceDataRepository),
+        val useCase = LoadUserSessionsByDayUseCase(SessionRepository(TestDataRepository),
                 testUserEventRepository)
         val sessions = useCase.executeNow(Pair(SessionMatcher(), "user1"))
                 as Result.Success<Map<ConferenceDay, List<UserSession>>>

@@ -20,14 +20,14 @@ package com.google.samples.apps.iosched.ui.schedule
 
 import android.arch.core.executor.testing.InstantTaskExecutorRule
 import com.google.samples.apps.iosched.model.TestData
-import com.google.samples.apps.iosched.shared.data.ConferenceDataRepository
+import com.google.samples.apps.iosched.model.TestDataRepository
 import com.google.samples.apps.iosched.shared.data.session.SessionRepository
 import com.google.samples.apps.iosched.shared.data.session.UserEventRepository
 import com.google.samples.apps.iosched.shared.data.session.agenda.AgendaRepository
 import com.google.samples.apps.iosched.shared.data.tag.TagRepository
 import com.google.samples.apps.iosched.shared.domain.agenda.LoadAgendaUseCase
-import com.google.samples.apps.iosched.shared.domain.sessions.LoadTagsByCategoryUseCase
 import com.google.samples.apps.iosched.shared.domain.sessions.LoadUserSessionsByDayUseCase
+import com.google.samples.apps.iosched.shared.domain.tags.LoadTagsByCategoryUseCase
 import com.google.samples.apps.iosched.shared.model.Block
 import com.google.samples.apps.iosched.shared.model.Tag
 import com.google.samples.apps.iosched.shared.model.UserSession
@@ -35,8 +35,6 @@ import com.google.samples.apps.iosched.shared.schedule.SessionMatcher
 import com.google.samples.apps.iosched.shared.util.TimeUtils.ConferenceDay
 import com.google.samples.apps.iosched.test.util.LiveDataTestUtil
 import com.google.samples.apps.iosched.test.util.SyncTaskExecutorRule
-import com.google.samples.apps.iosched.ui.schedule.day.TestAgendaDataSource
-import com.google.samples.apps.iosched.ui.schedule.day.TestSessionDataSource
 import com.google.samples.apps.iosched.ui.schedule.day.TestUserEventDataSource
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
@@ -58,9 +56,12 @@ class ScheduleViewModelTest {
     @Test
     fun testDataIsLoaded_ObservablesUpdated() {
         // Create test use cases with test data
-        val loadSessionsUseCase = createSessionsUseCase(TestData.userSessionMap)
-        val loadAgendaUseCase = createAgendaUseCase(TestData.agenda)
-        val loadTagsUseCase = createTagsUseCase(TestData.tagsList)
+        val loadSessionsUseCase = LoadUserSessionsByDayUseCase(
+            SessionRepository(TestDataRepository),
+            UserEventRepository(TestUserEventDataSource)
+        )
+        val loadAgendaUseCase = LoadAgendaUseCase(AgendaRepository(TestDataRepository))
+        val loadTagsUseCase = LoadTagsByCategoryUseCase(TagRepository(TestDataRepository))
 
         // Create ViewModel with the use cases
         val viewModel = ScheduleViewModel(loadSessionsUseCase, loadAgendaUseCase, loadTagsUseCase)
@@ -73,14 +74,13 @@ class ScheduleViewModelTest {
         }
         assertFalse(LiveDataTestUtil.getValue(viewModel.isLoading)!!)
         // Tags
-        val tagFilters = viewModel.processTags(TestData.tagsList)
-        assertEquals(tagFilters, LiveDataTestUtil.getValue(viewModel.tagFilters))
+        assertEquals(TestData.tagFiltersList, LiveDataTestUtil.getValue(viewModel.tagFilters))
     }
 
     @Test
     fun testDataIsLoaded_Fails() {
         val loadSessionsUseCase = createSessionsExceptionUseCase()
-        val loadAgendaUseCase = createAgendaUseCase(TestData.agenda)
+        val loadAgendaUseCase = createAgendaExceptionUseCase()
         val loadTagsUseCase = createTagsExceptionUseCase()
 
         // Create ViewModel with the use case
@@ -90,34 +90,13 @@ class ScheduleViewModelTest {
     }
 
     /**
-     * Creates a use case that will return the provided list of sessions.
-     */
-    private fun createSessionsUseCase(
-            sessions: Map<ConferenceDay, List<UserSession>>): LoadUserSessionsByDayUseCase {
-
-        val conferenceDataRepository = ConferenceDataRepository(
-                TestSessionDataSource, TestSessionDataSource)
-        val userEventRepository = UserEventRepository(TestUserEventDataSource)
-
-        return object : LoadUserSessionsByDayUseCase(SessionRepository(conferenceDataRepository),
-                userEventRepository) {
-            override fun execute(parameters: Pair<SessionMatcher, String>):
-                    Map<ConferenceDay, List<UserSession>> {
-                return sessions
-            }
-        }
-    }
-
-    /**
      * Creates a use case that throws an exception.
      */
     private fun createSessionsExceptionUseCase(): LoadUserSessionsByDayUseCase {
-        val conferenceDataRepository = ConferenceDataRepository(
-                TestSessionDataSource, TestSessionDataSource)
+        val sessionRepository = SessionRepository(TestDataRepository)
         val userEventRepository = UserEventRepository(TestUserEventDataSource)
 
-        return object : LoadUserSessionsByDayUseCase(SessionRepository(conferenceDataRepository),
-                userEventRepository) {
+        return object : LoadUserSessionsByDayUseCase(sessionRepository, userEventRepository) {
             override fun execute(parameters: Pair<SessionMatcher, String>):
                     Map<ConferenceDay, List<UserSession>> {
                 throw Exception("Testing exception")
@@ -126,23 +105,12 @@ class ScheduleViewModelTest {
     }
 
     /**
-     * Creates a use case that will return the provided list of agenda blocks.
+     * Creates a use case that throws an exception.
      */
-    private fun createAgendaUseCase(agenda: List<Block>): LoadAgendaUseCase {
-        return object : LoadAgendaUseCase(AgendaRepository(TestAgendaDataSource)) {
-            override fun execute(parameters: Unit): List<Block> {
-                return agenda
-            }
-        }
-    }
-
-    /**
-     * Creates a use case that will return the provided list of tags.
-     */
-    private fun createTagsUseCase(tags: List<Tag>): LoadTagsByCategoryUseCase {
-        return object : LoadTagsByCategoryUseCase(TagRepository(TestTagDataSource)) {
+    private fun createTagsExceptionUseCase(): LoadTagsByCategoryUseCase {
+        return object : LoadTagsByCategoryUseCase(TagRepository(TestDataRepository)) {
             override fun execute(parameters: Unit): List<Tag> {
-                return tags
+                throw Exception("Testing exception")
             }
         }
     }
@@ -150,9 +118,9 @@ class ScheduleViewModelTest {
     /**
      * Creates a use case that throws an exception.
      */
-    private fun createTagsExceptionUseCase(): LoadTagsByCategoryUseCase {
-        return object : LoadTagsByCategoryUseCase(TagRepository(TestTagDataSource)) {
-            override fun execute(parameters: Unit): List<Tag> {
+    private fun createAgendaExceptionUseCase(): LoadAgendaUseCase {
+        return object : LoadAgendaUseCase(AgendaRepository(TestDataRepository)) {
+            override fun execute(parameters: Unit): List<Block> {
                 throw Exception("Testing exception")
             }
         }

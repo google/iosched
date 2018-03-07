@@ -16,6 +16,7 @@
 
 package com.google.samples.apps.iosched.shared.data.tag
 
+import com.google.samples.apps.iosched.shared.data.ConferenceDataRepository
 import com.google.samples.apps.iosched.shared.model.Tag
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -24,10 +25,10 @@ import javax.inject.Singleton
  * Single point of access to tag data for the presentation layer.
  */
 @Singleton
-open class TagRepository @Inject constructor(private val dataSource: TagDataSource) {
+open class TagRepository @Inject constructor(
+    private val conferenceDataRepository: ConferenceDataRepository)
+{
+    fun getTags(): List<Tag> = conferenceDataRepository.getConferenceData().tags
 
-    fun getTags(): List<Tag> {
-        return dataSource.getTags()
-    }
-
+    fun getTagsOffline(): List<Tag> = conferenceDataRepository.getOfflineConferenceData().tags
 }
