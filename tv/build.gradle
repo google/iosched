@@ -57,7 +57,6 @@ dependencies {
 
     // UI
     implementation "com.android.support:appcompat-v7:$rootProject.supportLibraryVersion"
-    implementation "com.android.support:design:$rootProject.designLibraryVersion"
     implementation "com.android.support.constraint:constraint-layout:$rootProject.constraintLayoutVersion"
     implementation "com.android.support:leanback-v17:$rootProject.supportLibraryVersion"
     implementation "com.android.support:support-tv-provider:$rootProject.supportLibraryVersion"
