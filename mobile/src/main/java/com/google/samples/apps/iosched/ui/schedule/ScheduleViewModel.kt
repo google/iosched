@@ -37,8 +37,8 @@ import com.google.samples.apps.iosched.shared.util.TimeUtils.ConferenceDay.DAY_1
 import com.google.samples.apps.iosched.shared.util.TimeUtils.ConferenceDay.DAY_2
 import com.google.samples.apps.iosched.shared.util.TimeUtils.ConferenceDay.DAY_3
 import com.google.samples.apps.iosched.shared.util.checkAllSealed
-import com.google.samples.apps.iosched.shared.util.hasSameValue
 import com.google.samples.apps.iosched.shared.util.map
+import com.google.samples.apps.iosched.util.hasSameValue
 import com.google.samples.apps.iosched.util.login.LoginFailed
 import com.google.samples.apps.iosched.util.login.LoginResult
 import com.google.samples.apps.iosched.util.login.LoginSuccess

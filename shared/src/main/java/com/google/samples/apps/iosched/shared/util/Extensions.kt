@@ -21,7 +21,6 @@ import android.arch.lifecycle.Transformations
 import android.arch.lifecycle.ViewModel
 import android.arch.lifecycle.ViewModelProvider
 import android.arch.lifecycle.ViewModelProviders
-import android.databinding.ObservableBoolean
 import android.os.Bundle
 import android.os.Parcel
 import android.support.annotation.LayoutRes
@@ -130,11 +129,6 @@ fun <X, Y> LiveData<X>.map(body: (X) -> Y): LiveData<Y> {
 fun <X, Y> LiveData<X>.switchMap(body: (X) -> LiveData<Y>): LiveData<Y> {
     return Transformations.switchMap(this, body)
 }
-
-// endregion
-// region Observable
-
-fun ObservableBoolean.hasSameValue(other: ObservableBoolean) = get() == other.get()
 
 // endregion
 
