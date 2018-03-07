@@ -16,6 +16,7 @@
 
 package com.google.samples.apps.iosched.shared.data.session.agenda
 
+import com.google.samples.apps.iosched.shared.data.ConferenceDataRepository
 import com.google.samples.apps.iosched.shared.model.Block
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -24,10 +25,10 @@ import javax.inject.Singleton
  * Single point of access to agenda data for the presentation layer.
  */
 @Singleton
-open class AgendaRepository @Inject constructor(private val dataSource: AgendaDataSource) {
+open class AgendaRepository @Inject constructor(
+    private val conferenceDataRepository: ConferenceDataRepository
+) {
+    fun getAgenda(): List<Block> = conferenceDataRepository.getConferenceData().blocks
 
-    fun getAgenda(): List<Block> {
-        return dataSource.getAgenda()
-    }
-
+    fun getAgendaOffline(): List<Block> = conferenceDataRepository.getOfflineConferenceData().blocks
 }

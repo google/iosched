@@ -14,14 +14,17 @@
  * limitations under the License.
  */
 
-package com.google.samples.apps.iosched.ui.schedule
+package com.google.samples.apps.iosched.shared.domain.tags
 
-import com.google.samples.apps.iosched.model.TestData
-import com.google.samples.apps.iosched.shared.data.tag.TagDataSource
+import com.google.samples.apps.iosched.shared.data.tag.TagRepository
+import com.google.samples.apps.iosched.shared.model.Tag
+import javax.inject.Inject
 
-/**
- * Generates dummy tag data to be used in tests.
- */
-object TestTagDataSource : TagDataSource {
-    override fun getTags() = TestData.tagsList
+open class LoadTagsByCategoryUseCase @Inject constructor(repository: TagRepository)
+    : LoadTagsUseCase(repository) {
+
+    override fun execute(parameters: Unit): List<Tag> {
+        return super.execute(parameters)
+                .sortedWith(compareBy<Tag> { it.category }.thenBy { it.orderInCategory })
+    }
 }

@@ -17,14 +17,11 @@
 package com.google.samples.apps.iosched.shared.di
 
 import com.google.samples.apps.iosched.shared.data.BootstrapConferenceDataSource
+import com.google.samples.apps.iosched.shared.data.ConferenceDataRepository
 import com.google.samples.apps.iosched.shared.data.ConferenceDataSource
+import com.google.samples.apps.iosched.shared.data.OfflineConferenceDataSource
 import com.google.samples.apps.iosched.shared.data.map.FakeMapMetadataDataSource
 import com.google.samples.apps.iosched.shared.data.map.MapMetadataDataSource
-import com.google.samples.apps.iosched.shared.data.session.FakeSessionDataSource
-import com.google.samples.apps.iosched.shared.data.session.agenda.AgendaDataSource
-import com.google.samples.apps.iosched.shared.data.session.agenda.FakeAgendaDataSource
-import com.google.samples.apps.iosched.shared.data.tag.FakeTagDataSource
-import com.google.samples.apps.iosched.shared.data.tag.TagDataSource
 import com.google.samples.apps.iosched.shared.data.userevent.FakeUserEventDataSource
 import com.google.samples.apps.iosched.shared.data.userevent.UserEventDataSource
 import dagger.Module
@@ -44,7 +41,7 @@ class SharedModule {
     @Provides
     @Named("remoteConfDatasource")
     fun provideConferenceDataSource(): ConferenceDataSource {
-        return FakeSessionDataSource
+        return OfflineConferenceDataSource()
     }
 
     @Singleton
@@ -56,14 +53,11 @@ class SharedModule {
 
     @Singleton
     @Provides
-    fun provideAgendaDataSource(): AgendaDataSource {
-        return FakeAgendaDataSource
-    }
-
-    @Singleton
-    @Provides
-    fun provideTagDataSource(): TagDataSource {
-        return FakeTagDataSource
+    fun provideConferenceDataRepository(
+        @Named("remoteConfDatasource") remoteDataSource: ConferenceDataSource,
+        @Named("bootstrapConfDataSource") boostrapDataSource: ConferenceDataSource
+    ): ConferenceDataRepository {
+        return ConferenceDataRepository(remoteDataSource, boostrapDataSource)
     }
 
     @Singleton

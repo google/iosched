@@ -24,8 +24,8 @@ import android.databinding.ObservableBoolean
 import android.support.annotation.VisibleForTesting
 import com.google.samples.apps.iosched.shared.domain.agenda.LoadAgendaUseCase
 import com.google.samples.apps.iosched.shared.domain.invoke
-import com.google.samples.apps.iosched.shared.domain.sessions.LoadTagsByCategoryUseCase
 import com.google.samples.apps.iosched.shared.domain.sessions.LoadUserSessionsByDayUseCase
+import com.google.samples.apps.iosched.shared.domain.tags.LoadTagsByCategoryUseCase
 import com.google.samples.apps.iosched.shared.model.Block
 import com.google.samples.apps.iosched.shared.model.Tag
 import com.google.samples.apps.iosched.shared.model.UserSession

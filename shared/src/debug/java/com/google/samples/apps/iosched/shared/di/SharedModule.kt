@@ -23,10 +23,6 @@ import com.google.samples.apps.iosched.shared.data.ConferenceDataSource
 import com.google.samples.apps.iosched.shared.data.NetworkConferenceDataSource
 import com.google.samples.apps.iosched.shared.data.map.MapMetadataDataSource
 import com.google.samples.apps.iosched.shared.data.map.RemoteMapMetadataDataSource
-import com.google.samples.apps.iosched.shared.data.session.agenda.AgendaDataSource
-import com.google.samples.apps.iosched.shared.data.session.agenda.RemoteAgendaDataSource
-import com.google.samples.apps.iosched.shared.data.tag.RemoteTagDataSource
-import com.google.samples.apps.iosched.shared.data.tag.TagDataSource
 import com.google.samples.apps.iosched.shared.data.userevent.RemoteUserEventDataSource
 import com.google.samples.apps.iosched.shared.data.userevent.UserEventDataSource
 import dagger.Module
@@ -63,18 +59,6 @@ class SharedModule {
             @Named("bootstrapConfDataSource") boostrapDataSource: ConferenceDataSource
     ): ConferenceDataRepository {
         return ConferenceDataRepository(remoteDataSource, boostrapDataSource)
-    }
-
-    @Singleton
-    @Provides
-    fun provideAgendaDataSource(): AgendaDataSource {
-        return RemoteAgendaDataSource
-    }
-
-    @Singleton
-    @Provides
-    fun provideTagDataSource(): TagDataSource {
-        return RemoteTagDataSource
     }
 
     @Singleton
