@@ -17,10 +17,16 @@
 package com.google.samples.apps.iosched.util
 
 import android.databinding.BindingAdapter
+import android.net.Uri
+import android.support.v4.view.ViewPager
 import android.view.View
 import android.view.View.GONE
 import android.view.View.INVISIBLE
 import android.view.View.VISIBLE
+import android.widget.ImageView
+import com.bumptech.glide.Glide
+import com.google.samples.apps.iosched.R
+import timber.log.Timber
 
 @BindingAdapter("invisibleUnless")
 fun invisibleUnless(view: View, visible: Boolean) {
@@ -30,4 +36,33 @@ fun invisibleUnless(view: View, visible: Boolean) {
 @BindingAdapter("goneUnless")
 fun goneUnless(view: View, visible: Boolean) {
     view.visibility = if (visible) VISIBLE else GONE
+}
+
+@BindingAdapter("pageMargin")
+fun pageMargin(viewPager: ViewPager, pageMargin: Float) {
+    viewPager.pageMargin = pageMargin.toInt()
+}
+
+@BindingAdapter("clipToCircle")
+fun clipToCircle(view: View, circleSize: Float) {
+    view.clipToOutline = true
+    view.outlineProvider = CircularOutlineProvider(circleSize.toInt())
+}
+
+@BindingAdapter("imageUrl")
+fun imageUrl(imageView: ImageView, imageUrl: Uri?) {
+    when (imageUrl) {
+        null -> {
+            Timber.d("Unsetting image url")
+            // TODO: b/74393872 Use an actual placeholder.
+            Glide.with(imageView)
+                .load(R.drawable.tag_filled)
+                .into(imageView)
+        }
+        else -> {
+            Glide.with(imageView)
+                .load(imageUrl)
+                .into(imageView)
+        }
+    }
 }

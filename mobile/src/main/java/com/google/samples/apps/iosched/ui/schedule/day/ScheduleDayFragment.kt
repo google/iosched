@@ -19,6 +19,8 @@ package com.google.samples.apps.iosched.ui.schedule.day
 import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProvider
 import android.os.Bundle
+import android.support.v7.widget.LinearLayoutManager
+import android.support.v7.widget.RecyclerView.RecycledViewPool
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -34,6 +36,7 @@ import com.google.samples.apps.iosched.util.clearDecorations
 import dagger.android.support.DaggerFragment
 import kotlinx.android.synthetic.main.fragment_schedule_day.*
 import javax.inject.Inject
+import javax.inject.Named
 
 /**
  * Fragment displaying a single conference day's schedule
@@ -52,9 +55,18 @@ class ScheduleDayFragment : DaggerFragment() {
         }
     }
 
-    @Inject lateinit var viewModelFactory: ViewModelProvider.Factory
+    @Inject
+    lateinit var viewModelFactory: ViewModelProvider.Factory
 
     private lateinit var viewModel: ScheduleViewModel
+
+    @Inject
+    @field:Named("sessionViewPool")
+    lateinit var sessionViewPool: RecycledViewPool
+
+    @Inject
+    @field:Named("tagViewPool")
+    lateinit var tagViewPool: RecycledViewPool
 
     private val conferenceDay: ConferenceDay by lazyFast {
         val args = arguments ?: throw IllegalStateException("Missing arguments!")
@@ -63,15 +75,21 @@ class ScheduleDayFragment : DaggerFragment() {
 
     private lateinit var adapter: ScheduleDayAdapter
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
-            savedInstanceState: Bundle?): View? {
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
         return inflater.inflate(R.layout.fragment_schedule_day, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         viewModel = activityViewModelProvider(viewModelFactory)
-        adapter = ScheduleDayAdapter(viewModel)
-        recyclerview.adapter = adapter
+        adapter = ScheduleDayAdapter(viewModel, tagViewPool)
+        recyclerview.apply {
+            adapter = this@ScheduleDayFragment.adapter
+            recyclerview.recycledViewPool = sessionViewPool
+            (layoutManager as LinearLayoutManager).recycleChildrenOnDetach = true
+        }
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
@@ -83,7 +101,8 @@ class ScheduleDayFragment : DaggerFragment() {
             recyclerview.clearDecorations()
             if (list != null && list.isNotEmpty()) {
                 recyclerview.addItemDecoration(
-                        ScheduleTimeHeadersDecoration(recyclerview.context, list.map {it.session}))
+                    ScheduleTimeHeadersDecoration(recyclerview.context, list.map { it.session })
+                )
             }
         })
 

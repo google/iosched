@@ -130,6 +130,15 @@
                     app:layout_constraintTop_toBottomOf="@id/session_detail_time"
                     tools:text="Session Location" />
 
+                <ImageView
+                    android:id="@+id/session_detail_recorded"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:contentDescription="@string/a11y_session_detail_video_icon"
+                    app:layout_constraintStart_toStartOf="@id/guideline_start"
+                    app:layout_constraintTop_toBottomOf="@id/session_detail_room"
+                    app:srcCompat="@android:drawable/presence_video_online" />
+
                 <TextView
                     android:id="@+id/session_detail_description"
                     android:layout_width="0dp"
@@ -138,32 +147,22 @@
                     android:text="@{viewModel.session.abstract}"
                     app:layout_constraintEnd_toEndOf="@id/guideline_end"
                     app:layout_constraintStart_toStartOf="@id/guideline_start"
-                    app:layout_constraintTop_toBottomOf="@id/session_detail_room"
+                    app:layout_constraintTop_toBottomOf="@id/session_detail_recorded"
                     tools:text="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus et mauris blandit, porttitor leo sit amet, tincidunt tellus. Proin at rutrum risus. Sed volutpat tellus  " />
 
-                <LinearLayout
-                    android:id="@+id/session_detail_tags_container"
-                    android:layout_width="wrap_content"
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/tags"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/spacing_normal"
-                    android:orientation="horizontal"
-                    app:layout_constraintEnd_toStartOf="@+id/session_detail_recorded"
-                    app:layout_constraintHorizontal_bias="0.0"
-                    app:layout_constraintHorizontal_chainStyle="packed"
+                    app:layout_constraintEnd_toEndOf="@id/guideline_end"
                     app:layout_constraintStart_toStartOf="@id/guideline_start"
                     app:layout_constraintTop_toBottomOf="@+id/session_detail_description"
+                    app:layoutManager="com.google.android.flexbox.FlexboxLayoutManager"
+                    android:orientation="horizontal"
+                    app:flexDirection="row"
+                    app:flexWrap="wrap"
                     app:sessionTags="@{viewModel.session.tags}" />
-
-                <ImageView
-                    android:id="@+id/session_detail_recorded"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:contentDescription="@string/a11y_session_detail_video_icon"
-                    app:layout_constraintBottom_toBottomOf="@id/session_detail_tags_container"
-                    app:layout_constraintEnd_toStartOf="@id/guideline_end"
-                    app:layout_constraintStart_toEndOf="@id/session_detail_tags_container"
-                    app:layout_constraintTop_toTopOf="@id/session_detail_tags_container"
-                    app:srcCompat="@android:drawable/presence_video_online" />
 
                 <Button
                     android:id="@+id/session_detail_rate_button"
@@ -172,7 +171,7 @@
                     android:layout_marginTop="@dimen/spacing_normal"
                     android:text="@string/rate_session"
                     app:layout_constraintStart_toStartOf="@id/guideline_start"
-                    app:layout_constraintTop_toBottomOf="@id/session_detail_tags_container"
+                    app:layout_constraintTop_toBottomOf="@id/tags"
                     tools:text="Rate Session" />
 
                 <LinearLayout
