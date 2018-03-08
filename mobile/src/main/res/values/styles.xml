@@ -1,0 +1,142 @@
+<!--
+  ~ Copyright 2018 Google LLC
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~     https://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+  -->
+
+<resources xmlns:tools="http://schemas.android.com/tools">
+
+    <!-- Base application theme. -->
+    <style name="AppTheme" parent="Theme.MaterialComponents.Light">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorAccent">@color/colorAccent</item>
+        <item name="toolbarStyle">@style/Widget.Toolbar</item>
+        <item name="tabStyle">@style/Widget.IOSched.Tabs</item>
+        <item name="android:windowBackground">@color/white</item>
+        <item name="android:statusBarColor">@color/status_bar</item>
+        <item name="android:windowLightStatusBar" tools:targetApi="m">true</item>
+        <item name="android:navigationBarColor">@color/indigo_dark</item>
+        <item name="android:textColorTertiary">@color/text_color_tertiary</item>
+    </style>
+
+    <style name="AppTheme.NoActionBar">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+    </style>
+
+    <style name="AppTheme.PopupTheme" parent="ThemeOverlay.MaterialComponents.Light" />
+
+    <style name="Widget.AppBar" parent="@style/Widget.Design.AppBarLayout">
+        <item name="popupTheme">@style/AppTheme.PopupTheme</item>
+        <item name="android:background">@color/white</item>
+        <item name="android:elevation">8dp</item>
+        <item name="android:orientation">vertical</item>
+    </style>
+
+    <style name="Widget.Toolbar" parent="Widget.AppCompat.Toolbar">
+        <item name="titleTextAppearance">@style/TextAppearance.IOSched.ToolbarTitle</item>
+        <item name="popupTheme">@style/AppTheme.PopupTheme</item>
+    </style>
+
+    <style name="TextAppearance.IOSched.ToolbarTitle" parent="@style/TextAppearance.Widget.AppCompat.Toolbar.Title">
+        <item name="android:fontFamily">@font/google_sans</item>
+    </style>
+
+    <style name="TextAppearance.IOSched.SessionTitle" parent="@style/TextAppearance.AppCompat.Subhead">
+        <item name="android:fontFamily">@font/google_sans</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="TextAppearance.IOSched.ListSecondary" parent="@style/TextAppearance.AppCompat.Body1">
+        <item name="android:textColor">?android:textColorSecondary</item>
+    </style>
+
+    <style name="TextAppearance.IOSched.Tag" parent="@style/TextAppearance.AppCompat.Caption">
+        <item name="android:fontFamily">@font/google_sans</item>
+        <item name="android:textColor">?android:textColorSecondary</item>
+    </style>
+
+    <style name="TextAppearance.IOSched.AgendaTitle" parent="@style/TextAppearance.AppCompat.Body1">
+        <item name="android:fontFamily">@font/google_sans</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="TextAppearance.IOSched.Tab" parent="@style/TextAppearance.MaterialComponents.Tab">
+        <item name="android:fontFamily">@font/google_sans</item>
+        <item name="android:textColor">@color/tab_text</item>
+        <item name="android:textStyle">bold</item>
+        <item name="textAllCaps">false</item>
+    </style>
+
+    <style name="TextAppearance.IOSched.BottomNavigationView" parent="@style/TextAppearance.MaterialComponents.BottomNavigationView.Colored">
+        <item name="android:fontFamily">@font/google_sans</item>
+        <item name="android:textColor">@color/bottom_nav_item</item>
+    </style>
+
+    <style name="TextAppearance.IOSched.BottomNavigationView.Active">
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="Widget.IOSched" parent="@android:style/Widget" />
+
+    <style name="Widget.IOSched.BottomNav" parent="@style/Widget.MaterialComponents.BottomNavigationView.Colored">
+        <item name="itemIconTint">@color/bottom_nav_item</item>
+        <item name="itemTextAppearanceActive">@style/TextAppearance.IOSched.BottomNavigationView.Active</item>
+        <item name="itemTextAppearanceInactive">@style/TextAppearance.IOSched.BottomNavigationView</item>
+        <item name="android:theme">@style/ThemeOverlay.MaterialComponents.Dark</item>
+    </style>
+
+    <style name="Widget.IOSched.Tabs" parent="@style/Widget.MaterialComponents.TabLayout">
+        <item name="tabTextAppearance">@style/TextAppearance.IOSched.Tab</item>
+        <item name="tabIndicatorColor">?colorPrimary</item>
+    </style>
+
+    <style name="Widget.IOSched.Tag">
+        <item name="android:background">@drawable/tag_background</item>
+        <item name="android:drawablePadding">@dimen/spacing_normal</item>
+        <item name="android:drawableStart">@drawable/tag_dot</item>
+        <item name="android:gravity">center_vertical</item>
+        <item name="android:minHeight">@dimen/tag_height</item>
+        <item name="android:minWidth">@dimen/min_touch_target</item>
+        <item name="android:paddingHorizontal" tools:targetApi="o">@dimen/tag_hz_padding</item>
+        <item name="android:textAppearance">@style/TextAppearance.IOSched.Tag</item>
+    </style>
+
+    <style name="Widget.IOSched.Tag.Filter">
+        <item name="android:textSize">14sp</item>
+        <item name="android:textColor">?android:textColorPrimary</item>
+    </style>
+
+    <style name="Widget.IOSched.TimeHeaders">
+        <item name="android:width">@dimen/session_keyline</item>
+        <item name="android:paddingTop">@dimen/time_header_padding_top</item>
+        <item name="android:textColor">?android:textColorPrimary</item>
+        <item name="android:fontFamily">@font/google_sans</item>
+        <item name="hourTextSize">@dimen/time_header_hour_text_size</item>
+        <item name="meridiemTextSize">@dimen/time_header_meridiem_text_size</item>
+    </style>
+
+    <style name="Widget.IOSched.DateHeaders">
+        <item name="android:width">@dimen/session_keyline</item>
+        <item name="android:padding">@dimen/time_header_padding_top</item>
+        <item name="android:layout_margin">@dimen/margin_normal</item>
+        <item name="android:textColor">?android:textColorPrimary</item>
+        <item name="android:fontFamily">@font/google_sans</item>
+        <item name="dayTextSize">@dimen/time_header_meridiem_text_size</item>
+        <item name="dateTextSize">@dimen/time_header_hour_text_size</item>
+        <item name="android:divider">@color/light_grey</item>
+        <item name="android:dividerHeight">@dimen/divider</item>
+    </style>
+
+</resources>

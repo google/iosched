@@ -1,0 +1,62 @@
+<!--
+  ~ Copyright 2018 Google LLC
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~     https://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+  -->
+
+<resources>
+    <string name="app_name">IOSched</string>
+    <string name="title_schedule">Schedule</string>
+    <string name="title_feed">Feed</string>
+    <string name="title_map">Map</string>
+    <string name="title_info">Info</string>
+
+    <!-- Schedule -->
+    <string name="filters">Filters</string>
+    <string name="clear_all">Clear all</string>
+    <string name="session_duration_location">%1s / %2s</string>
+    <string name="agenda">Agenda</string>
+    <string name="agenda_duration">%1$s – %2$s</string>
+
+    <!-- Session Detail -->
+    <string name="rate_session">Rate Session</string>
+
+    <!-- Info -->
+    <string name="info_title">Info</string>
+    <string name="event_title">Event</string>
+    <string name="travel_title">Travel</string>
+    <string name="faq_title">FAQ</string>
+    <string name="settings_title">Settings</string>
+
+    <!-- Accessibility -->
+    <string name="a11y_session_detail_video_icon">TODO: a11y text for icon</string>
+    <string name="a11y_session_detail_video_description">TODO video description</string>
+    <string name="a11y_speaker_headshot">TODO a11y content description for speaker headshot</string>
+    <string name="a11y_session_item_actions">TODO: a11y content description for session item actions</string>
+    <string name="a11y_star_session_actions">TODO: a11y content description for star item actions</string>
+
+    <plurals name="duration_hours">
+        <item quantity="one">%s hour</item>
+        <item quantity="other">%s hours</item>
+    </plurals>
+
+    <plurals name="duration_minutes">
+        <item quantity="one">%s minute</item>
+        <item quantity="other">%s minutes</item>
+    </plurals>
+
+    <!--Strings for sharing session-->
+    <string name="share_session_menu_item">Share session</string>
+    <string name="share_text_session_detail">Check out \'%1$s\' at #io18 %2$s</string>
+    <string name="intent_chooser_session_detail">Share</string>
+</resources>
