@@ -27,8 +27,8 @@
     <dimen name="tag_dot_size">12dp</dimen>
     <dimen name="tag_hz_padding">12dp</dimen>
     <dimen name="tag_corner_radius">100dp</dimen> <!-- Large value ensures the desired 'pill shape' -->
-    <dimen name="time_header_hour_text_size">28sp</dimen>
-    <dimen name="time_header_meridiem_text_size">14sp</dimen>
+    <dimen name="time_header_hour_text_size">24sp</dimen>
+    <dimen name="time_header_meridiem_text_size">12sp</dimen>
     <dimen name="time_header_padding_top">12dp</dimen>
     <dimen name="agenda_item_stroke">2dp</dimen>
     <dimen name="agenda_block_padding_vert">12dp</dimen>

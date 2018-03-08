@@ -19,12 +19,11 @@ package com.google.samples.apps.iosched.ui.schedule.agenda
 import android.content.Context
 import android.content.res.Resources
 import android.graphics.Canvas
-import android.graphics.Paint
 import android.graphics.Paint.ANTI_ALIAS_FLAG
 import android.graphics.Rect
 import android.support.v4.content.res.ResourcesCompat
 import android.support.v7.widget.RecyclerView
-import android.text.Layout.Alignment.ALIGN_OPPOSITE
+import android.text.Layout.Alignment.ALIGN_CENTER
 import android.text.SpannableStringBuilder
 import android.text.StaticLayout
 import android.text.TextPaint
@@ -45,30 +44,28 @@ import org.threeten.bp.format.DateTimeFormatter
 
 /**
  * A [RecyclerView.ItemDecoration] which draws sticky headers marking the days in a given list of
- * [Block]s. It also inserts gaps & a dividing line between days.
+ * [Block]s. It also inserts gaps between days.
  */
 class ScheduleAgendaHeadersDecoration(
     context: Context,
     blocks: List<Block>
 ) : RecyclerView.ItemDecoration() {
 
-    private val textPaint: TextPaint
-    private val dividerPaint: Paint
+    private val paint: TextPaint
     private val width: Int
-    private val padding: Int
-    private val margin: Int
-    private val dayFormatter = DateTimeFormatter.ofPattern("eee")
+    private val paddingTop: Int
     private val dateFormatter = DateTimeFormatter.ofPattern("d")
-    private val dateTextSize: Int
+    private val dayFormatter = DateTimeFormatter.ofPattern("eee")
+    private val dayTextSize: Int
 
     init {
         val attrs = context.obtainStyledAttributes(
             R.style.Widget_IOSched_DateHeaders,
             R.styleable.DateHeader
         )
-        textPaint = TextPaint(ANTI_ALIAS_FLAG).apply {
+        paint = TextPaint(ANTI_ALIAS_FLAG).apply {
             color = attrs.getColorOrThrow(R.styleable.DateHeader_android_textColor)
-            textSize = attrs.getDimensionOrThrow(R.styleable.DateHeader_dayTextSize)
+            textSize = attrs.getDimensionOrThrow(R.styleable.DateHeader_dateTextSize)
             try {
                 typeface = ResourcesCompat.getFont(
                     context,
@@ -77,14 +74,9 @@ class ScheduleAgendaHeadersDecoration(
             } catch (nfe: Resources.NotFoundException) {
             }
         }
-        dividerPaint = Paint().apply {
-            color = attrs.getColorOrThrow(R.styleable.DateHeader_android_divider)
-            strokeWidth = attrs.getDimensionOrThrow(R.styleable.DateHeader_android_dividerHeight)
-        }
         width = attrs.getDimensionPixelSizeOrThrow(R.styleable.DateHeader_android_width)
-        padding = attrs.getDimensionPixelSizeOrThrow(R.styleable.DateHeader_android_padding)
-        margin = attrs.getDimensionPixelSizeOrThrow(R.styleable.DateHeader_android_layout_margin)
-        dateTextSize = attrs.getDimensionPixelSizeOrThrow(R.styleable.DateHeader_dateTextSize)
+        paddingTop = attrs.getDimensionPixelSizeOrThrow(R.styleable.DateHeader_android_paddingTop)
+        dayTextSize = attrs.getDimensionPixelSizeOrThrow(R.styleable.DateHeader_dayTextSize)
         attrs.recycle()
     }
 
@@ -106,10 +98,10 @@ class ScheduleAgendaHeadersDecoration(
 
         if (daySlots.containsKey(position)) {
             // first block of day, pad top
-            outRect.top = padding
+            outRect.top = paddingTop
         } else if (daySlots.containsKey(position + 1)) {
             // last block of day, pad bottom
-            outRect.bottom = padding
+            outRect.bottom = paddingTop
         }
     }
 
@@ -132,20 +124,15 @@ class ScheduleAgendaHeadersDecoration(
             if (view.bottom > 0 && viewTop < parent.height) {
                 val position = parent.getChildAdapterPosition(view)
                 daySlots[position]?.let { layout ->
-                    val top = (viewTop + padding)
-                        .coerceAtLeast(padding)
+                    paint.alpha = (view.alpha * 255).toInt()
+                    val top = (viewTop + paddingTop)
+                        .coerceAtLeast(paddingTop)
                         .coerceAtMost(prevHeaderTop - layout.height)
                     c.withTranslation(y = top.toFloat()) {
                         layout.draw(c)
-
-                        // draw a divider line above day headers (except the first)
-                        if (position != 0) {
-                            val dividerY = padding * -2f
-                            c.drawLine(0f, dividerY, parent.width.toFloat(), dividerY, dividerPaint)
-                        }
                     }
                     earliestFoundHeaderPos = position
-                    prevHeaderTop = viewTop - padding - padding
+                    prevHeaderTop = viewTop - paddingTop - paddingTop
                 }
             }
         }
@@ -159,7 +146,7 @@ class ScheduleAgendaHeadersDecoration(
         for (headerPos in daySlots.keys.reversed()) {
             if (headerPos < earliestFoundHeaderPos) {
                 daySlots[headerPos]?.let { layout ->
-                    val top = (prevHeaderTop - layout.height).coerceAtMost(padding)
+                    val top = (prevHeaderTop - layout.height).coerceAtMost(paddingTop)
                     c.withTranslation(y = top.toFloat()) {
                         layout.draw(c)
                     }
@@ -173,12 +160,12 @@ class ScheduleAgendaHeadersDecoration(
      * Create a header layout for the given [day]
      */
     private fun createHeader(day: ZonedDateTime): StaticLayout {
-        val text = SpannableStringBuilder(dayFormatter.format(day).toUpperCase()).apply {
+        val text = SpannableStringBuilder(dateFormatter.format(day)).apply {
             append(System.lineSeparator())
-            inSpans(AbsoluteSizeSpan(dateTextSize)) {
-                append(dateFormatter.format(day))
+            inSpans(AbsoluteSizeSpan(dayTextSize)) {
+                append(dayFormatter.format(day).toUpperCase())
             }
         }
-        return StaticLayout(text, textPaint, width - margin, ALIGN_OPPOSITE, 1f, 0f, false)
+        return StaticLayout(text, paint, width, ALIGN_CENTER, 1f, 0f, false)
     }
 }

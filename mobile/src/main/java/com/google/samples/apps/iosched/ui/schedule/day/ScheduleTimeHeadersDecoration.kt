@@ -104,12 +104,13 @@ class ScheduleTimeHeadersDecoration(
             val viewTop = view.top + view.translationY.toInt()
             if (view.bottom > 0 && viewTop < parent.height) {
                 val position = parent.getChildAdapterPosition(view)
-                timeSlots[position]?.let {
+                timeSlots[position]?.let { layout ->
+                    paint.alpha = (view.alpha * 255).toInt()
                     val top = (viewTop + paddingTop)
                         .coerceAtLeast(paddingTop)
-                        .coerceAtMost(prevHeaderTop - it.height)
+                        .coerceAtMost(prevHeaderTop - layout.height)
                     c.withTranslation(y = top.toFloat()) {
-                        it.draw(c)
+                        layout.draw(c)
                     }
                     earliestFoundHeaderPos = position
                     prevHeaderTop = viewTop
