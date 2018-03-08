@@ -54,6 +54,8 @@ buildscript {
     repositories {
         google()
         jcenter()
+        // Android Build Server
+        maven { url '../iosched-prebuilts/m2repository' }
     }
     dependencies {
         classpath "com.android.tools.build:gradle:$androidGradlePluginVersion"
@@ -66,11 +68,21 @@ buildscript {
 
 allprojects {
     repositories {
-        maven {
-            url "$mdc_repo_location"
-        }
         google()
         jcenter()
+
+        // Material Design Components in Kokoro & local
+        if (project.hasProperty('mdc_repo_location')) {
+            maven { url "$mdc_repo_location" }
+        }
+
+        // For Android Build Server
+        // - Material Design Components
+        maven { url "${rootProject.projectDir}/../iosched-prebuilts/repository" }
+        // - Other dependencies
+        maven { url "${rootProject.projectDir}/../iosched-prebuilts/m2repository" }
+        // - Support Libraries, etc
+        maven { url "${rootProject.projectDir}/../../../prebuilts/fullsdk/linux/extras/support/m2repository" }
     }
 }
 
