@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright 2018 Google LLC
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~     https://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+  -->
+
+<resources>
+    <dimen name="margin_normal">16dp</dimen>
+    <dimen name="spacing_normal">8dp</dimen>
+    <dimen name="spacing_micro">4dp</dimen>
+    <dimen name="min_touch_target">48dp</dimen>
+    <dimen name="divider">1dp</dimen>
+    <dimen name="speaker_headshot_size">60dp</dimen>
+    <dimen name="session_keyline">80dp</dimen>
+    <dimen name="tag_height">32sp</dimen>
+    <dimen name="tag_dot_size">12dp</dimen>
+    <dimen name="tag_hz_padding">12dp</dimen>
+    <dimen name="tag_corner_radius">100dp</dimen> <!-- Large value ensures the desired 'pill shape' -->
+    <dimen name="time_header_hour_text_size">28sp</dimen>
+    <dimen name="time_header_meridiem_text_size">14sp</dimen>
+    <dimen name="time_header_padding_top">12dp</dimen>
+    <dimen name="agenda_item_stroke">2dp</dimen>
+    <dimen name="agenda_block_padding_vert">12dp</dimen>
+    <dimen name="agenda_icon_width">56dp</dimen>
+
+    <!-- developer.android.com/reference/android/view/ViewGroup.LayoutParams.html#MATCH_PARENT -->
+    <item name="match_parent" format="integer" type="dimen">-1</item>
+    <dimen name="drawer_width">@dimen/match_parent</dimen>
+
+    <dimen name="a11y_min_touch_target_dimen">48dp</dimen>
+
+    <dimen name="app_bar_height">200dp</dimen>
+</resources>

@@ -1,0 +1,109 @@
+/*
+ * Copyright 2018 Google LLC
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     https://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+apply plugin: 'com.android.application'
+
+apply plugin: 'kotlin-android'
+
+apply plugin: 'kotlin-android-extensions'
+
+apply plugin: 'kotlin-kapt'
+
+android {
+    compileSdkVersion rootProject.compileSdkVersion
+    defaultConfig {
+        applicationId "com.google.samples.apps.iosched"
+        minSdkVersion rootProject.minSdkVersion
+        targetSdkVersion rootProject.targetSdkVersion
+        versionCode 1
+        versionName "1.0"
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        resValue "string", "google_maps_key", (project.findProperty("IOSCHED_GOOGLE_MAPS_API_KEY") ?: "")
+    }
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+
+        staging {
+            initWith debug
+
+            // Specifies a sorted list of fallback build types that the
+            // plugin should try to use when a dependency does not include a
+            // "staging" build type.
+            // Used with :test-shared, which doesn't have a staging variant.
+            matchingFallbacks = ['debug']
+        }
+    }
+    dataBinding {
+        enabled true
+    }
+
+    signingConfigs {
+        // We need to sign debug builds with a debug key to make firebase auth happy
+        debug {
+            storeFile file("../debug.keystore")
+            keyAlias "androiddebugkey"
+            keyPassword "android"
+            storePassword "android"
+        }
+    }
+}
+
+dependencies {
+    implementation project(":shared")
+    testImplementation project(':test-shared')
+
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+
+    // UI
+    implementation "com.android.support:appcompat-v7:$rootProject.supportLibraryVersion"
+    implementation "com.android.support.constraint:constraint-layout:$rootProject.constraintLayoutVersion"
+    implementation "com.google.android.material:material:$rootProject.mdcVersion"
+
+    // Architecture Components
+    implementation "android.arch.lifecycle:extensions:$rootProject.archLifecycleVersion"
+    kapt "android.arch.lifecycle:compiler:$rootProject.archLifecycleVersion"
+    testImplementation "android.arch.core:core-testing:$rootProject.archLifecycleVersion"
+
+    // Dagger
+    implementation "com.google.dagger:dagger-android:$rootProject.dagger"
+    implementation "com.google.dagger:dagger-android-support:$rootProject.dagger"
+    kapt "com.google.dagger:dagger-compiler:$rootProject.dagger"
+    kapt "com.google.dagger:dagger-android-processor:$rootProject.dagger"
+
+    // Firebase
+    implementation("com.firebaseui:firebase-ui-auth:$rootProject.firebaseUiVersion") {
+        exclude group: 'com.android.support'
+    }
+
+    // Utils
+    // Date and time API for Java.
+    api "com.jakewharton.threetenabp:threetenabp:$rootProject.threetenabpVersion"
+    testImplementation "org.threeten:threetenbp:$rootProject.threetenbpVersion"
+    implementation "androidx.core:core-ktx:$rootProject.ktxVersion"
+
+    // Kotlin
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jre7:$rootProject.kotlinVersion"
+
+    // Instrumentation tests
+    androidTestImplementation "com.android.support.test.espresso:espresso-core:$rootProject.espressoVersion"
+    androidTestImplementation "com.android.support.test:runner:$rootProject.runnerVersion"
+
+    // Local unit tests
+    testImplementation "junit:junit:$rootProject.junitVersion"
+}

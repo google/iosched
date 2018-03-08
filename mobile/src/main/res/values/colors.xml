@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright 2018 Google LLC
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~     https://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+  -->
+
+<resources>
+    <!-- theme colors -->
+    <color name="colorPrimary">@color/indigo</color>
+    <color name="colorAccent">@color/teal</color>
+
+    <!-- primary palette -->
+    <color name="indigo">#4768fd</color>
+    <color name="indigo_dark">#3c54fe</color> <!-- todo confirm this color -->
+    <color name="teal">#31e7b6</color>
+    <color name="light_blue">#27e5fd</color>
+    <color name="yellow">#fcd230</color>
+    <color name="orange">#ff6c00</color>
+    <color name="white">#fff</color>
+
+    <color name="status_bar">#202124</color>
+    <color name="text_color_tertiary">#dadce0</color>
+    <color name="light_grey">#e6e6e6</color>
+    <color name="default_tag_color">#999</color>
+</resources>

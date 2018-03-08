@@ -1,0 +1,175 @@
+{
+    "version": 42,
+    "blocks": [
+        {
+            "title": "Breakfast",
+            "type": "meal",
+            "color": "#31E7B6",
+            "start": "2018-05-08T07:00-07:00",
+            "end": "2018-05-08T09:30-07:00"
+        },
+        {
+            "title": "Badge pick-up",
+            "type": "badge",
+            "color": "#E6E6E6",
+            "start": "2018-05-08T07:00-07:00",
+            "end": "2018-05-08T19:00-07:00"
+        },
+        {
+            "title": "Lip sync battle room",
+            "type": "lipsync",
+            "color": "#E6E3E6",
+            "start": "2018-05-08T07:00-07:00",
+            "end": "2018-05-08T19:00-07:00"
+        }
+    ],
+    "map": [
+        {
+            "markers": {
+                "0": [
+                    {
+                        "id": "19b9264a-35c9-e511-ab0e-00155d5066d7",
+                        "lat": 37.42563,
+                        "lng": -122.079707,
+                        "title": "Stage 1 - Hercules",
+                        "type": "SESSION"
+                    },
+                    {
+                        "id": "Stage 1",
+                        "lat": 37.425622,
+                        "lng": -122.0796999,
+                        "title": "1 - Hercules",
+                        "type": "LABEL"
+                    }
+                ]
+            },
+            "tiles": {
+                "0": {
+                    "filename": "floor0-2016-2.svg",
+                    "url": ""
+                }
+            }
+        }
+    ],
+    "rooms": [
+        {
+            "id": "a4eedfa7-09fd-e511-a517-00155d5066d7",
+            "name": "The Cool Room",
+            "original_id": "a4eedfa7-09fd-e511-a517-00155d5066d7"
+        },
+        {
+            "id": "34b13834-0afd-e511-a517-00155d5066d7",
+            "name": "Amphitheatre",
+            "original_id": "34b13834-0afd-e511-a517-00155d5066d7"
+        }
+    ],
+    "sessions": [
+        {
+            "id": "__keynote__",
+            "url": "https://events.google.com/io2016/",
+            "title": "Keynote Staging!",
+            "description": "Join us to learn about product and platform innovation at Google, starting with a live kickoff from Google CEO Sundar Pichai.",
+            "startTimestamp": "2018-05-08T17:00:00Z",
+            "endTimestamp": "2018-05-08T19:00:00Z",
+            "photoUrl": "https://storage.googleapis.com/io2016-festivus/images/sessions/__w-200-400-600-800-1000__/9d72d428-2b03-e611-a517-00155d5066d7.jpg",
+            "isLivestream": false,
+            "tags": [
+                "FLAG_KEYNOTE"
+            ],
+            "mainTag": "FLAG_KEYNOTE",
+            "color": "#b5ebf7",
+            "hashtag": "keynote",
+            "room": "34b13834-0afd-e511-a517-00155d5066d7",
+            "speakers": []
+        },
+        {
+            "id": "61d80842-c8f6-e511-a517-00155d5066d7",
+            "url": "https://events.google.com/io2016/schedule?sid=61d80842-c8f6-e511-a517-00155d5066d7",
+            "title": "Advanced Data Binding",
+            "description": "Android Data Binding preview was introduced at Google I/O in 2015, and released later that Fall. Come and learn about new Data Binding features, including two-way data binding and lambda expressions. We will also talk about the design decisions behind Data Binding's architecture, how it works with animations, RecyclerView, dependency injection and the best practices you can apply while you are integrating it with your application.",
+            "startTimestamp": "2018-05-10T18:00:00Z",
+            "endTimestamp": "2018-05-10T19:00:00Z",
+            "isFeatured": false,
+            "photoUrl": "https://storage.googleapis.com/io2016-festivus/images/sessions/__w-200-400-600-800-1000__/61d80842-c8f6-e511-a517-00155d5066d7.jpg",
+            "isLivestream": false,
+            "tags": [
+                "TRACK_ANDROID",
+                "TYPE_SESSIONS",
+                "THEME_DEVELOP"
+            ],
+            "mainTag": "TRACK_ANDROID",
+            "color": "#AED581",
+            "speakers": [
+                "44cd40c9-c2ee-e511-a517-00155d5066d7",
+                "2609dbe7-c2ee-e511-a517-00155d5066d7"
+            ],
+            "room": "a4eedfa7-09fd-e511-a517-00155d5066d7"
+        }
+    ],
+    "speakers": [
+        {
+            "id": "44cd40c9-c2ee-e511-a517-00155d5066d7",
+            "name": "Yigit Boyar",
+            "bio": "Yigit works on building UI widgets and improving layout performance as part of Android UI Toolkit Team. Prior to Google, he was the Android Engineering Lead at Path.com where he was mostly focused on building application architecture, real time camera filters and buttery smooth UI performance. He received his bachelor's degree in computer engineering from Middle East Technical University, Turkey",
+            "company": "Google",
+            "plusoneUrl": "",
+            "twitterUrl": "https://twitter.com/yigitboyar"
+        },
+        {
+            "id": "2609dbe7-c2ee-e511-a517-00155d5066d7",
+            "name": "Wojtek Kalicinski",
+            "bio": "Wojtek provides outreach to developers on new Android framework features, tools and testing as part of his job as a Senior Developer Advocate. He has worked with Android since the early days of the platform and enjoys looking for ways to make apps more usable, mostly through better development patterns and code optimizations. Prior to working at Google, Wojtek was a co-founder and CTO at a digital agency startup. For many years he was also involved in organizing and speaking at community events through Google Developer Groups.",
+            "company": "Google",
+            "plusoneUrl": "https://plus.google.com/+WojtekKalicinski",
+            "twitterUrl": "https://twitter.com/wkalic"
+        }
+    ],
+    "tags": [
+        {
+            "category": "TYPE",
+            "tag": "TYPE_SESSIONS",
+            "name": "Sessions",
+            "original_id": "6ce9302c-35c9-e511-ab0e-00155d5066d7",
+            "abstract": "",
+            "order_in_category": 6
+        },
+        {
+            "category": "THEME",
+            "tag": "THEME_DEVELOP",
+            "name": "Develop",
+            "original_id": "6ee9302c-35c9-e511-ab0e-00155d5066d7",
+            "abstract": "",
+            "order_in_category": 0
+        },
+        {
+            "category": "TRACK",
+            "tag": "TRACK_ANDROID",
+            "name": "Android",
+            "original_id": "8fe01677-60ec-e511-a517-00155d5066d7",
+            "abstract": "",
+            "order_in_category": 1,
+            "photoUrl": "https://storage.googleapis.com/io2016-festivus/images/sessions/__w-200-400-600-800-1000__/61d80842-c8f6-e511-a517-00155d5066d7.jpg",
+            "color": "#AED581"
+        }
+    ],
+    "video_library": [
+        {
+            "year": "2015",
+            "desc": "On May 28, 2015 we welcomed 6,000 developers to our 8th annual Google I/O developer conference in San Francisco. Google I/O 2015 kicked-off with a live keynote from our Senior Vice-President of Products, Sundar Pichai.",
+            "title": "Google I/O 2015 - Keynote",
+            "topic": "Keynote",
+            "id": "7V-fIGMDsmE",
+            "thumbnailUrl": "http://img.youtube.com/vi/7V-fIGMDsmE/hqdefault.jpg",
+            "vid": "7V-fIGMDsmE"
+        },
+        {
+            "year": "2015",
+            "desc": "The living room ecosystem and its 1 billion TVs are exploding with new entertainment and new forms of interactivity. With the tremendous growth of Google Cast and Android TV devices, building engaging living room experiences has never been easier or more important. Whether you're building applications to deliver media, live tv or a multi-screen game, come join us as we discuss how to build a great TV application, get it discovered, and how to engage users in the many hours a day that people spend in front of their TV. (Note: Tune into this live stream on CHANNEL 1.)",
+            "title": "Developing for the living room with Google",
+            "topic": "Misc.",
+            "id": "w7adxgUfATw",
+            "thumbnailUrl": "http://img.youtube.com/vi/w7adxgUfATw/hqdefault.jpg",
+            "vid": "w7adxgUfATw"
+        }
+    ]
+}
