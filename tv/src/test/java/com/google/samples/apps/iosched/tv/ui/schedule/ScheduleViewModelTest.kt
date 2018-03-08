@@ -19,10 +19,11 @@
 package com.google.samples.apps.iosched.tv.ui.schedule
 
 import android.arch.core.executor.testing.InstantTaskExecutorRule
-import com.google.samples.apps.iosched.shared.data.ConferenceDataRepository
 import com.google.samples.apps.iosched.shared.data.session.SessionRepository
 import com.google.samples.apps.iosched.shared.domain.sessions.LoadSessionsUseCase
 import com.google.samples.apps.iosched.test.util.LiveDataTestUtil
+import com.google.samples.apps.iosched.tv.model.TestData
+import com.google.samples.apps.iosched.tv.model.TestDataRepository
 import com.google.samples.apps.iosched.tv.util.SyncTaskExecutorRule
 import org.hamcrest.collection.IsCollectionWithSize.hasSize
 import org.hamcrest.core.Is.`is`
@@ -44,8 +45,8 @@ class ScheduleViewModelTest {
     @Test
     fun testDataIsLoaded_ObservablesUpdated() {
         // Create a test use cases with test data
-        val expectedSessions = TestSessionDataSource.getConferenceData()!!.sessions
-        val loadSessionsUseCase = createUseCase()
+        val expectedSessions = TestData.sessionsList
+        val loadSessionsUseCase = LoadSessionsUseCase(SessionRepository(TestDataRepository))
 
         // Create ViewModel with the use case
         val viewModel = ScheduleViewModel(loadSessionsUseCase)
@@ -58,15 +59,6 @@ class ScheduleViewModelTest {
         assertThat("Once sessions are loaded, isLoading should be false",
                 LiveDataTestUtil.getValue(viewModel.isLoading),
                 `is`(false))
-    }
-
-    /**
-     * Creates a use case that will return the provided list of sessions.
-     */
-    private fun createUseCase(): LoadSessionsUseCase {
-        val conferenceDataRepository = ConferenceDataRepository(
-                TestSessionDataSource, TestSessionDataSource)
-        return LoadSessionsUseCase(SessionRepository(conferenceDataRepository))
     }
 }
 
