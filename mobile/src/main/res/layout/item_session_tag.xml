@@ -17,27 +17,22 @@
 
 <layout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools">
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
-
         <variable
             name="tag"
             type="com.google.samples.apps.iosched.shared.model.Tag" />
     </data>
 
-    <Button
-        android:id="@+id/tag_button"
+    <TextView
         style="@style/Widget.IOSched.Tag"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="@dimen/spacing_normal"
-        android:focusable="true"
-        android:text="@{tag.name}"
+        android:layout_marginEnd="@dimen/margin_normal"
+        android:layout_marginTop="@dimen/spacing_normal"
         android:textAppearance="@style/TextAppearance.IOSched.Tag"
-        app:tagTint="@{tag.color}"
-        tools:ignore="UnusedAttribute" />
-
+        android:text="@{tag.name}"
+        app:tagTint="@{tag.color}" />
 
 </layout>

@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.google.samples.apps.iosched.ui.schedule
+package com.google.samples.apps.iosched.ui.sessioncommon
 
 import android.content.Context
 import android.databinding.BindingAdapter
@@ -22,49 +22,32 @@ import android.graphics.Color.TRANSPARENT
 import android.graphics.drawable.InsetDrawable
 import android.graphics.drawable.RippleDrawable
 import android.graphics.drawable.StateListDrawable
-import android.net.Uri
 import android.support.v4.content.ContextCompat
-import android.support.v4.view.ViewPager
 import android.support.v7.content.res.AppCompatResources
+import android.support.v7.widget.RecyclerView
 import android.util.StateSet
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
-import android.widget.Button
-import android.widget.ImageView
-import android.widget.LinearLayout
 import android.widget.TextView
-import com.bumptech.glide.Glide
 import com.google.samples.apps.iosched.R
-import com.google.samples.apps.iosched.databinding.ItemSessionTagBinding
 import com.google.samples.apps.iosched.shared.model.Tag
-import com.google.samples.apps.iosched.util.CircularOutlineProvider
-import timber.log.Timber
 
 @BindingAdapter("sessionTags")
-fun sessionTags(container: LinearLayout, sessionTags: List<Tag>?) {
-    container.removeAllViews()
-    if (sessionTags != null) {
-        val inflater = LayoutInflater.from(container.context)
-        sessionTags.forEach { container.addView(createSessionTagButton(inflater, container, it)) }
+fun sessionTags(recyclerView: RecyclerView, sessionTags: List<Tag>?) {
+    recyclerView.adapter = (recyclerView.adapter as? TagAdapter
+        ?: TagAdapter()).apply {
+        tags = sessionTags ?: emptyList()
     }
-}
-
-private fun createSessionTagButton(
-    inflater: LayoutInflater,
-    container: ViewGroup,
-    sessionTag: Tag
-): Button {
-    val tagBinding = ItemSessionTagBinding.inflate(inflater, container, false).apply {
-        tag = sessionTag
-    }
-    return tagBinding.tagButton
 }
 
 @BindingAdapter("tagTint")
 fun tagTint(textView: TextView, color: Int) {
     // Tint the colored dot
-    textView.compoundDrawablesRelative[0]?.setTint(tagTintOrDefault(color, textView.context))
+    textView.compoundDrawablesRelative[0]?.setTint(
+        tagTintOrDefault(
+            color,
+            textView.context
+        )
+    )
 }
 
 /**
@@ -73,7 +56,8 @@ fun tagTint(textView: TextView, color: Int) {
  */
 @BindingAdapter("tagColor")
 fun tagColor(textView: TextView, color: Int) {
-    val tintColor = tagTintOrDefault(color, textView.context)
+    val tintColor =
+        tagTintOrDefault(color, textView.context)
 
     // We can't define these with XML <selector>s because we want to tint only one state in each,
     // and StateListDrawable does not give us a way to extract any of its contained Drawables.
@@ -82,21 +66,36 @@ fun tagColor(textView: TextView, color: Int) {
     val dotOrClear = StateListDrawable().apply {
         // clear icon when checked
         addState(
-                intArrayOf(android.R.attr.state_checked),
-                drawableCompat(textView, R.drawable.tag_clear)
+            intArrayOf(android.R.attr.state_checked),
+            drawableCompat(
+                textView,
+                R.drawable.tag_clear
+            )
         )
         // colored dot by default
         addState(StateSet.WILD_CARD,
-                drawableCompat(textView, R.drawable.tag_dot)?.apply { setTint(tintColor) })
+            drawableCompat(
+                textView,
+                R.drawable.tag_dot
+            )?.apply { setTint(tintColor) })
     }
     textView.setCompoundDrawablesRelativeWithIntrinsicBounds(dotOrClear, null, null, null)
 
     val tagBg = StateListDrawable().apply {
         // filled chip when checked
         addState(intArrayOf(android.R.attr.state_checked),
-                drawableCompat(textView, R.drawable.tag_filled)?.apply { setTint(tintColor) })
+            drawableCompat(
+                textView,
+                R.drawable.tag_filled
+            )?.apply { setTint(tintColor) })
         // outline by default
-        addState(StateSet.WILD_CARD, drawableCompat(textView, R.drawable.tag_outline))
+        addState(
+            StateSet.WILD_CARD,
+            drawableCompat(
+                textView,
+                R.drawable.tag_outline
+            )
+        )
     }
     ((textView.background as InsetDrawable).drawable as RippleDrawable)
         .setDrawableByLayerId(R.id.tag_fill, tagBg)
@@ -111,33 +110,3 @@ fun tagTintOrDefault(color: Int, context: Context): Int {
 }
 
 fun drawableCompat(view: View, id: Int) = AppCompatResources.getDrawable(view.context, id)
-
-@BindingAdapter("pageMargin")
-fun pageMargin(viewPager: ViewPager, pageMargin: Float) {
-    viewPager.pageMargin = pageMargin.toInt()
-}
-
-@BindingAdapter("clipToCircle")
-fun clipToCircle(view: View, circleSize: Float) {
-    view.clipToOutline = true
-    view.outlineProvider = CircularOutlineProvider(circleSize.toInt())
-}
-
-@BindingAdapter("imageUrl")
-fun imageUrl(imageView: ImageView, imageUrl: Uri?) {
-    when (imageUrl) {
-        null -> {
-            Timber.d("Unsetting image url")
-            // TODO: b/74393872 Use an actual placeholder.
-            Glide.with(imageView)
-                .load(R.drawable.tag_filled)
-                .into(imageView)
-        }
-        else -> {
-            Glide.with(imageView)
-                .load(imageUrl)
-                .into(imageView)
-        }
-    }
-}
-

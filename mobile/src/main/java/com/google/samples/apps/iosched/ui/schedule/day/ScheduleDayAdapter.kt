@@ -18,22 +18,29 @@ package com.google.samples.apps.iosched.ui.schedule.day
 
 import android.support.v7.recyclerview.extensions.ListAdapter
 import android.support.v7.util.DiffUtil
+import android.support.v7.widget.RecyclerView
 import android.support.v7.widget.RecyclerView.ViewHolder
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import com.google.android.flexbox.FlexboxLayoutManager
 import com.google.samples.apps.iosched.databinding.ItemSessionBinding
 import com.google.samples.apps.iosched.shared.model.UserSession
 import com.google.samples.apps.iosched.ui.schedule.ScheduleEventListener
 
 class ScheduleDayAdapter(
-    private val eventListener: ScheduleEventListener
+    private val eventListener: ScheduleEventListener,
+    private val tagViewPool: RecyclerView.RecycledViewPool
 ) : ListAdapter<UserSession, SessionViewHolder>(SessionDiff) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SessionViewHolder {
-        return SessionViewHolder(
-                ItemSessionBinding.inflate(LayoutInflater.from(parent.context), parent, false),
-                eventListener
-        )
+        val binding =
+            ItemSessionBinding.inflate(LayoutInflater.from(parent.context), parent, false).apply {
+                tags.recycledViewPool = tagViewPool
+                (tags.layoutManager as? FlexboxLayoutManager)?.let {
+                    it.recycleChildrenOnDetach = true
+                }
+            }
+        return SessionViewHolder(binding, eventListener)
     }
 
     override fun onBindViewHolder(holder: SessionViewHolder, position: Int) {
@@ -55,8 +62,10 @@ class SessionViewHolder(
 }
 
 object SessionDiff : DiffUtil.ItemCallback<UserSession>() {
-    override fun areItemsTheSame(oldItem: UserSession,
-                                 newItem: UserSession): Boolean {
+    override fun areItemsTheSame(
+        oldItem: UserSession,
+        newItem: UserSession
+    ): Boolean {
         // We don't have to compare the #userEvent because the id of #session and #userEvent
         // should match
         return oldItem.session.id == newItem.session.id

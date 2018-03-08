@@ -15,8 +15,7 @@
   -->
 
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools">
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
 
@@ -37,8 +36,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:onClick="@{() -> eventListener.openSessionDetail(session.id)}"
-        android:paddingTop="@dimen/spacing_normal"
-        android:paddingBottom="@dimen/spacing_micro"
+        android:paddingVertical="@dimen/spacing_normal"
         android:background="?selectableItemBackground">
 
         <android.support.constraint.Guideline
@@ -52,6 +50,7 @@
             android:id="@+id/title"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/spacing_normal"
             app:layout_constraintStart_toEndOf="@id/keyline"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/bookmark_session"
@@ -83,27 +82,20 @@
             app:sessionEnd="@{session.endTime}"
             app:sessionRoom="@{session.room.name}" />
 
-        <HorizontalScrollView
-            android:id="@+id/tags_container"
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/tags"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/margin_normal"
+            android:paddingBottom="@dimen/spacing_micro"
             app:layout_constraintStart_toEndOf="@id/keyline"
             app:layout_constraintTop_toBottomOf="@id/length_location"
             app:layout_constraintEnd_toEndOf="parent"
-            android:paddingEnd="@dimen/spacing_normal"
-            android:requiresFadingEdge="horizontal"
-            android:fadingEdgeLength="48dp"
-            android:scrollbars="none"
-            tools:ignore="RtlSymmetry">
-
-            <LinearLayout
-                android:id="@+id/tags"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                app:sessionTags="@{session.tags}" />
-
-        </HorizontalScrollView>
+            app:layoutManager="com.google.android.flexbox.FlexboxLayoutManager"
+            android:orientation="horizontal"
+            app:flexDirection="row"
+            app:flexWrap="wrap"
+            app:sessionTags="@{session.tags}" />
 
     </android.support.constraint.ConstraintLayout>
 

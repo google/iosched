@@ -52,6 +52,7 @@ buildscript {
         mockitoVersion = "2.8.9"
         mockitoKotlinVersion = "1.5.0"
         glideVersion = "4.6.1"
+        flexboxVersion = "0.3.2"
     }
 
     repositories {
