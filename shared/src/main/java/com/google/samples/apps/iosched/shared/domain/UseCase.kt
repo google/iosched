@@ -18,9 +18,9 @@ package com.google.samples.apps.iosched.shared.domain
 
 import android.arch.lifecycle.LiveData
 import android.arch.lifecycle.MutableLiveData
-import com.google.samples.apps.iosched.shared.result.Result
 import com.google.samples.apps.iosched.shared.domain.internal.DefaultScheduler
 import com.google.samples.apps.iosched.shared.domain.internal.Scheduler
+import com.google.samples.apps.iosched.shared.result.Result
 import timber.log.Timber
 
 /**

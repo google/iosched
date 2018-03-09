@@ -14,20 +14,22 @@
  * limitations under the License.
  */
 
-package com.google.samples.apps.iosched.shared.data.session
+package com.google.samples.apps.iosched.shared.domain
 
-import com.google.samples.apps.iosched.shared.data.userevent.UserEventDataSource
-import com.google.samples.apps.iosched.shared.firestore.entity.UserEvent
-import javax.inject.Inject
-import javax.inject.Singleton
+import android.arch.lifecycle.MediatorLiveData
+import com.google.samples.apps.iosched.shared.result.Result
 
 /**
- * Single point of access to user events data associated with an user for the presentation layer.
+ * Executes business logic in its execute method and keep posting updates to the result as
+ * [Result<R>].
+ * Handling an exception (emit [Result.Error] to the result) is the subclasses's responsibility.
  */
-@Singleton
-open class UserEventRepository @Inject constructor(private val dataSource: UserEventDataSource) {
+abstract class MediatorUseCase<in P, R> {
+    protected val result = MediatorLiveData<Result<R>>()
 
-    fun getUserEvents(userID: String): List<UserEvent> {
-        return dataSource.getUserEvents(userID)
+    fun observe(): MediatorLiveData<Result<R>> {
+        return result
     }
+
+    abstract fun execute(parameters: P)
 }

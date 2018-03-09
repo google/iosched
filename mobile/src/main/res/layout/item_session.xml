@@ -62,12 +62,13 @@
             android:layout_width="@dimen/min_touch_target"
             android:layout_height="@dimen/min_touch_target"
             android:layout_marginEnd="@dimen/spacing_normal"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            android:src="@drawable/star_session_checkbox"
-            android:checked="@{userEvent.isStarred}"
             android:background="?selectableItemBackgroundBorderless"
-            android:contentDescription="@string/a11y_star_session_actions" />
+            android:checked="@{userEvent.isStarred}"
+            android:contentDescription="@string/a11y_star_session_actions"
+            android:onClick="@{() -> eventListener.onStarClicked(session, userEvent)}"
+            android:src="@drawable/star_session_checkbox"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
             android:id="@+id/length_location"

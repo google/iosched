@@ -25,7 +25,10 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import com.google.android.material.widget.Snackbar
 import com.google.samples.apps.iosched.R
+import com.google.samples.apps.iosched.shared.domain.users.UpdatedStatus.STARRED
+import com.google.samples.apps.iosched.shared.domain.users.UpdatedStatus.UNSTARRED
 import com.google.samples.apps.iosched.shared.util.TimeUtils.ConferenceDay
 import com.google.samples.apps.iosched.shared.util.activityViewModelProvider
 import com.google.samples.apps.iosched.shared.util.getEnum
@@ -94,7 +97,8 @@ class ScheduleDayFragment : DaggerFragment() {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        viewModel.getSessionsForDay(conferenceDay).observe(requireActivity(), Observer { list ->
+        val activity = requireActivity()
+        viewModel.getSessionsForDay(conferenceDay).observe(activity, Observer { list ->
             adapter.submitList(list ?: emptyList())
 
             // Recreate the decoration used for the sticky time headers
@@ -106,6 +110,25 @@ class ScheduleDayFragment : DaggerFragment() {
             }
         })
 
+        viewModel.starEvent.observe(activity, Observer {
+            it?.getContentIfNotHandled()?.let { starred ->
+                val coordinatorLayout
+                        = activity.findViewById<View>(R.id.coordinator_layout)
+                when (starred) {
+                    STARRED -> {
+                        Snackbar.make(coordinatorLayout,
+                                R.string.event_starred, Snackbar.LENGTH_SHORT).apply {
+                            setAction(R.string.got_it, { this.dismiss() })
+                            show()
+                        }
+                    }
+                    UNSTARRED -> {
+                        Snackbar.make(coordinatorLayout,
+                                R.string.event_removed, Snackbar.LENGTH_SHORT).show()
+                    }
+                }
+            }
+        })
         // Show an error message
         viewModel.errorMessage.observe(this, Observer { message ->
             //TODO: Change once there's a way to show errors to the user

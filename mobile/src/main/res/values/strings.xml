@@ -26,6 +26,9 @@
     <string name="session_duration_location" translatable="false">%1s / %2s</string>
     <string name="agenda" translation_description="The title for the agenda screen where user can see all the sessions they plan to attend.">Agenda</string>
     <string name="agenda_duration" translatable="false">%1$s – %2$s</string>
+    <string name="event_starred">Event added to your starred items</string>
+    <string name="event_removed">Event removed</string>
+    <string name="got_it">Got it</string>
 
     <!-- Session Detail -->
     <string name="rate_session" translation_description="The label for the button to rate the session by 5 stars">Rate Session</string>

@@ -16,10 +16,28 @@
 
 package com.google.samples.apps.iosched.shared.domain.repository
 
+import android.arch.lifecycle.LiveData
+import android.arch.lifecycle.MutableLiveData
 import com.google.samples.apps.iosched.shared.data.userevent.UserEventDataSource
+import com.google.samples.apps.iosched.shared.data.userevent.UserEventsResult
+import com.google.samples.apps.iosched.shared.model.Session
 import com.google.samples.apps.iosched.shared.model.TestData
+import com.google.samples.apps.iosched.shared.result.Result
 
 object TestUserEventDataSource : UserEventDataSource {
 
-    override fun getUserEvents(userID: String) = TestData.userEvents
+    override fun getObservableUserEvents(userId: String): LiveData<UserEventsResult> {
+        val result = MutableLiveData<UserEventsResult>()
+        result.postValue(UserEventsResult(true, TestData.userEvents))
+        return result
+    }
+
+    override fun updateStarred(userId: String, session: Session, isStarred: Boolean):
+            LiveData<Result<Boolean>> {
+        val result = MutableLiveData<Result<Boolean>>()
+        result.postValue(Result.Success(true))
+        return result
+    }
+
+    override fun getUserEvents(userId: String) = TestData.userEvents
 }
