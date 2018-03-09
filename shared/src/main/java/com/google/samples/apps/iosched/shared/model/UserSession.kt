@@ -21,7 +21,6 @@ import com.google.samples.apps.iosched.shared.firestore.entity.UserEvent
 /**
  * Wrapper class to hold the [Session] and associating [UserEvent].
  */
-// TODO: Consider modeling UserEvent as nonnull
 data class UserSession(
         val session: Session,
-        val userEvent: UserEvent?)
+        val userEvent: UserEvent)

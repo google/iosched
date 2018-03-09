@@ -24,6 +24,7 @@ import com.google.samples.apps.iosched.shared.data.userevent.UserEventsResult
 import com.google.samples.apps.iosched.shared.domain.users.ReservationRequestAction
 import com.google.samples.apps.iosched.shared.domain.users.StarUpdatedStatus
 import com.google.samples.apps.iosched.shared.firestore.entity.LastReservationRequested
+import com.google.samples.apps.iosched.shared.firestore.entity.UserEvent
 import com.google.samples.apps.iosched.shared.model.Session
 import com.google.samples.apps.iosched.shared.result.Result
 
@@ -36,12 +37,13 @@ class TestUserEventDataSource(
         return userEventsResult
     }
 
-    override fun updateStarred(userId: String, session: Session, isStarred: Boolean):
+    override fun starEvent(userId: String, userEvent: UserEvent):
             LiveData<Result<StarUpdatedStatus>> {
 
         val result = MutableLiveData<Result<StarUpdatedStatus>>()
         result.postValue(Result.Success(
-                if (isStarred) StarUpdatedStatus.STARRED else StarUpdatedStatus.UNSTARRED))
+                if (userEvent.isStarred) StarUpdatedStatus.STARRED
+                else StarUpdatedStatus.UNSTARRED))
         return result
     }
 
@@ -55,6 +57,4 @@ class TestUserEventDataSource(
                 else LastReservationRequested.CANCEL))
         return result
     }
-
-    override fun getUserEvents(userId: String) = TestData.userEvents
 }

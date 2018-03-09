@@ -18,7 +18,7 @@ package com.google.samples.apps.iosched.shared.domain.users
 
 import com.google.samples.apps.iosched.shared.data.userevent.SessionAndUserEventRepository
 import com.google.samples.apps.iosched.shared.domain.MediatorUseCase
-import com.google.samples.apps.iosched.shared.model.Session
+import com.google.samples.apps.iosched.shared.firestore.entity.UserEvent
 import com.google.samples.apps.iosched.shared.result.Result
 import javax.inject.Inject
 
@@ -28,7 +28,7 @@ open class StarEventUseCase @Inject constructor(
 
     override fun execute(parameters: StarEventParameter) {
         val updateResult = try {
-             repository.updateIsStarred(parameters.userId, parameters.session, parameters.isStarred)
+             repository.starEvent(parameters.userId, parameters.userEvent)
         } catch (e: Exception) {
             result.postValue(Result.Error(e))
             return
@@ -42,9 +42,7 @@ open class StarEventUseCase @Inject constructor(
 }
 
 data class StarEventParameter(val userId: String,
-                              /** The session for which isStarred is going to be updated */
-                              val session: Session,
-                              val isStarred: Boolean)
+                              val userEvent: UserEvent)
 
 enum class StarUpdatedStatus {
     STARRED,

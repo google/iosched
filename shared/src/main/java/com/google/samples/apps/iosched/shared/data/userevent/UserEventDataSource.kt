@@ -27,24 +27,20 @@ import com.google.samples.apps.iosched.shared.result.Result
 
 interface UserEventDataSource {
 
-    fun getUserEvents(userId: String): List<UserEvent>
-
     fun getObservableUserEvents(userId: String): LiveData<UserEventsResult>
 
     /**
      * Toggle the isStarred status for an event.
      *
      * @param userId the userId ([FirebaseUser#uid]) of the current logged in user
-     * @param session the event being toggled
-     * @param isStarred the updated state whether the event is starred
+     * @param userEvent the [UserEvent], which isStarred is going to be the updated status
      * @return the LiveData that represents the status of the star operation.
      */
-    fun updateStarred(userId: String, session: Session, isStarred: Boolean):
+    fun starEvent(userId: String, userEvent: UserEvent):
             LiveData<Result<StarUpdatedStatus>>
 
-
-    fun requestReservation(userId: String, session: Session, action: ReservationRequestAction
-    ): LiveData<Result<LastReservationRequested>>
+    fun requestReservation(userId: String, session: Session, action: ReservationRequestAction):
+            LiveData<Result<LastReservationRequested>>
 }
 
 data class UserEventsResult(

@@ -226,7 +226,7 @@ class ScheduleViewModelTest {
         // Create test use cases with test data
         val viewModel = createScheduleViewModel()
 
-        viewModel.onStarClicked(TestData.session0, TestData.userEvents[0])
+        viewModel.onStarClicked(TestData.userEvents[0])
 
         val starEvent: Event<SnackbarMessage>? =
                 LiveDataTestUtil.getValue(viewModel.snackBarMessage)
@@ -248,7 +248,7 @@ class ScheduleViewModelTest {
 
         val viewModel = createScheduleViewModel()
 
-        viewModel.onStarClicked(TestData.session1, TestData.userEvents[1])
+        viewModel.onStarClicked(TestData.userEvents[1])
 
         val starEvent: Event<SnackbarMessage>?
                 = LiveDataTestUtil.getValue(viewModel.snackBarMessage)
@@ -266,7 +266,7 @@ class ScheduleViewModelTest {
         // Create test use cases with test data
         val viewModel = createScheduleViewModel()
 
-        viewModel.onStarClicked(TestData.session0, null)
+        viewModel.onStarClicked(TestData.userEvents[0])
 
         val starEvent: Event<SnackbarMessage>? =
                 LiveDataTestUtil.getValue(viewModel.snackBarMessage)
@@ -282,7 +282,7 @@ class ScheduleViewModelTest {
 
         val viewModel = createScheduleViewModel(loginViewModelDelegate = loginDelegate)
 
-        viewModel.onStarClicked(TestData.session0, TestData.userEvents[1])
+        viewModel.onStarClicked(TestData.userEvents[1])
 
         val starEvent: Event<SnackbarMessage>? =
                 LiveDataTestUtil.getValue(viewModel.snackBarMessage)
