@@ -17,14 +17,17 @@
 package com.google.samples.apps.iosched.util
 
 import android.databinding.BindingAdapter
+import android.graphics.drawable.Drawable
 import android.net.Uri
 import android.support.v4.view.ViewPager
+import android.support.v7.content.res.AppCompatResources
 import android.view.View
 import android.view.View.GONE
 import android.view.View.INVISIBLE
 import android.view.View.VISIBLE
 import android.widget.ImageView
 import com.bumptech.glide.Glide
+import com.bumptech.glide.request.RequestOptions
 import com.google.samples.apps.iosched.R
 import timber.log.Timber
 
@@ -44,24 +47,30 @@ fun pageMargin(viewPager: ViewPager, pageMargin: Float) {
 }
 
 @BindingAdapter("clipToCircle")
-fun clipToCircle(view: View, circleSize: Float) {
-    view.clipToOutline = true
-    view.outlineProvider = CircularOutlineProvider(circleSize.toInt())
+fun clipToCircle(view: View, clip: Boolean) {
+    view.clipToOutline = clip
+    view.outlineProvider = if (clip) CircularOutlineProvider else null
 }
 
-@BindingAdapter("imageUrl")
-fun imageUrl(imageView: ImageView, imageUrl: Uri?) {
+@BindingAdapter(value = ["imageUrl", "placeholder"], requireAll = false)
+fun imageUrl(
+    imageView: ImageView,
+    imageUrl: Uri?,
+    placeholder: Drawable?
+) {
+    val placeholderDrawable = placeholder ?: AppCompatResources.getDrawable(
+        imageView.context, R.drawable.generic_placeholder)
     when (imageUrl) {
         null -> {
             Timber.d("Unsetting image url")
-            // TODO: b/74393872 Use an actual placeholder.
             Glide.with(imageView)
-                .load(R.drawable.tag_filled)
+                .load(placeholderDrawable)
                 .into(imageView)
         }
         else -> {
             Glide.with(imageView)
                 .load(imageUrl)
+                .apply(RequestOptions().placeholder(placeholderDrawable))
                 .into(imageView)
         }
     }
