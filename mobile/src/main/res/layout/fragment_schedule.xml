@@ -50,7 +50,7 @@
                     android:layout_gravity="center_vertical|start"
                     android:layout_marginStart="@dimen/margin_normal"
                     android:padding="@dimen/spacing_normal"
-                    app:imageUrl="@{viewModel.currentUserImageUri}"
+                    app:imageUri="@{viewModel.currentUserImageUri}"
                     app:clipToCircle="@{true}"
                     android:contentDescription="@{context.getString(viewModel.profileContentDesc)}"
                     android:foreground="?selectableItemBackground"
