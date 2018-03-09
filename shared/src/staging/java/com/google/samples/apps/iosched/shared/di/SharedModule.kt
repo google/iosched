@@ -27,7 +27,10 @@ import com.google.samples.apps.iosched.shared.data.login.LoginDataSource
 import com.google.samples.apps.iosched.shared.data.login.LoginRemoteDataSource
 import com.google.samples.apps.iosched.shared.data.map.FakeMapMetadataDataSource
 import com.google.samples.apps.iosched.shared.data.map.MapMetadataDataSource
+import com.google.samples.apps.iosched.shared.data.session.SessionRepository
+import com.google.samples.apps.iosched.shared.data.userevent.DefaultSessionAndUserEventRepository
 import com.google.samples.apps.iosched.shared.data.userevent.FakeUserEventDataSource
+import com.google.samples.apps.iosched.shared.data.userevent.SessionAndUserEventRepository
 import com.google.samples.apps.iosched.shared.data.userevent.UserEventDataSource
 import dagger.Module
 import dagger.Provides
@@ -79,6 +82,15 @@ class SharedModule {
 
     @Singleton
     @Provides
+    fun provideSessionAndUserEventRepository(
+            userEventDataSource: UserEventDataSource,
+            sessionRepository: SessionRepository
+    ): SessionAndUserEventRepository {
+        return DefaultSessionAndUserEventRepository(userEventDataSource, sessionRepository)
+    }
+
+    @Singleton
+    @Provides
     fun provideLoginDataSource(): LoginDataSource {
         return LoginRemoteDataSource()
     }
@@ -89,7 +101,7 @@ class SharedModule {
 
     @Singleton
     @Provides
-    fun provideLoginWatcher(firebase: FirebaseAuth): FirebaseUserDataSource {
+    fun provideFirebaseUserDataSource(firebase: FirebaseAuth): FirebaseUserDataSource {
         return DefaultFirebaseUserDataSource(firebase)
     }
 }

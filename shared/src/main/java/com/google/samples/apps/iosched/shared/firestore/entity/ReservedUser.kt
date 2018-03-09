@@ -14,5 +14,5 @@ data class ReservedUser(
         /** The time that the user acquired reservation status. */
         val timestamp: Long
 ) {
-        enum class ReservationStatus {RESERVED, WAITLISTED};
+        enum class ReservationStatus {RESERVED, WAITLISTED}
 }

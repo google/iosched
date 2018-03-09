@@ -89,10 +89,14 @@ dependencies {
     kapt "com.google.dagger:dagger-android-processor:$rootProject.dagger"
 
     // Firebase
-    implementation "com.google.firebase:firebase-core:$rootProject.googlePlayServicesClientVersion"
-    implementation "com.google.firebase:firebase-firestore:$rootProject.googlePlayServicesClientVersion"
+    api("com.google.firebase:firebase-core:$rootProject.googlePlayServicesClientVersion") {
+        exclude group: 'com.android.support'
+    }
+    api("com.google.firebase:firebase-firestore:$rootProject.googlePlayServicesClientVersion") {
+        exclude group: 'com.android.support'
+    }
     api("com.google.firebase:firebase-auth:$rootProject.googlePlayServicesClientVersion") {
-        exclude group: 'com.android.support', module: 'support-v4'
+        exclude group: 'com.android.support'
     }
 
     // ThreeTenBP for the shared module only. Date and time API for Java.

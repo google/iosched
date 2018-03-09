@@ -86,7 +86,6 @@ class ScheduleFragment : DaggerFragment() {
                 }.checkAllMatched
             }
         })
-
         return binding.root
     }
 

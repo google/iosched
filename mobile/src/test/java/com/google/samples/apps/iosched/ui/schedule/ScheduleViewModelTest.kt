@@ -27,15 +27,16 @@ import com.google.samples.apps.iosched.model.TestData
 import com.google.samples.apps.iosched.model.TestDataRepository
 import com.google.samples.apps.iosched.shared.data.login.FirebaseUserDataSource
 import com.google.samples.apps.iosched.shared.data.session.SessionRepository
-import com.google.samples.apps.iosched.shared.data.session.UserEventRepository
 import com.google.samples.apps.iosched.shared.data.session.agenda.AgendaRepository
 import com.google.samples.apps.iosched.shared.data.tag.TagRepository
+import com.google.samples.apps.iosched.shared.data.userevent.DefaultSessionAndUserEventRepository
 import com.google.samples.apps.iosched.shared.domain.agenda.LoadAgendaUseCase
 import com.google.samples.apps.iosched.shared.domain.sessions.LoadUserSessionsByDayUseCase
 import com.google.samples.apps.iosched.shared.domain.tags.LoadTagsByCategoryUseCase
+import com.google.samples.apps.iosched.shared.domain.users.StarEventUseCase
+import com.google.samples.apps.iosched.shared.domain.users.UpdatedStatus
 import com.google.samples.apps.iosched.shared.model.Block
 import com.google.samples.apps.iosched.shared.model.Tag
-import com.google.samples.apps.iosched.shared.model.UserSession
 import com.google.samples.apps.iosched.shared.result.Result
 import com.google.samples.apps.iosched.shared.schedule.UserSessionMatcher
 import com.google.samples.apps.iosched.shared.util.TimeUtils.ConferenceDay
@@ -43,6 +44,7 @@ import com.google.samples.apps.iosched.test.util.LiveDataTestUtil
 import com.google.samples.apps.iosched.test.util.SyncTaskExecutorRule
 import com.google.samples.apps.iosched.test.util.fakes.FakeLoginViewModelPlugin
 import com.google.samples.apps.iosched.ui.login.DefaultLoginViewModelPlugin
+import com.google.samples.apps.iosched.test.util.fakes.FakeStarEventUseCase
 import com.google.samples.apps.iosched.ui.login.LoginViewModelPlugin
 import com.google.samples.apps.iosched.ui.schedule.day.TestUserEventDataSource
 import com.nhaarman.mockito_kotlin.mock
@@ -69,24 +71,24 @@ class ScheduleViewModelTest {
     fun testDataIsLoaded_ObservablesUpdated() {
         // Create test use cases with test data
         val loadSessionsUseCase = LoadUserSessionsByDayUseCase(
-            SessionRepository(TestDataRepository),
-            UserEventRepository(TestUserEventDataSource)
+                DefaultSessionAndUserEventRepository(
+                        TestUserEventDataSource, SessionRepository(TestDataRepository))
         )
         val loadAgendaUseCase = LoadAgendaUseCase(AgendaRepository(TestDataRepository))
         val loadTagsUseCase = LoadTagsByCategoryUseCase(TagRepository(TestDataRepository))
         val loginViewModelComponent = createLoginViewModelComponent()
-
+        val updateStarUseCase = createStarEventUseCase()
         // Create ViewModel with the use cases
         val viewModel = ScheduleViewModel(
-            loadSessionsUseCase, loadAgendaUseCase, loadTagsUseCase, loginViewModelComponent
-        )
+                loadSessionsUseCase, loadAgendaUseCase, loadTagsUseCase, loginViewModelComponent,
+                updateStarUseCase)
 
         // Check that data were loaded correctly
         // Sessions
         for (day in ConferenceDay.values()) {
             assertEquals(
-                TestData.userSessionMap[day],
-                LiveDataTestUtil.getValue(viewModel.getSessionsForDay(day))
+                    TestData.userSessionMap[day],
+                    LiveDataTestUtil.getValue(viewModel.getSessionsForDay(day))
             )
         }
         assertFalse(LiveDataTestUtil.getValue(viewModel.isLoading)!!)
@@ -114,6 +116,7 @@ class ScheduleViewModelTest {
 
         // Create ViewModel with the use cases
         val viewModel = createScheduleViewModel(loginViewModelDelegate = loginViewModelComponent)
+
         loginViewModelComponent.injectIsLoggedIn = false
 
         // click profile
@@ -173,14 +176,58 @@ class ScheduleViewModelTest {
     }
 
     private fun createScheduleViewModel(
-        loadSessionsUseCase: LoadUserSessionsByDayUseCase = createSessionsExceptionUseCase(),
-        loadAgendaUseCase: LoadAgendaUseCase = createAgendaExceptionUseCase(),
-        loadTagsUseCase: LoadTagsByCategoryUseCase = createTagsExceptionUseCase(),
-        loginViewModelDelegate: LoginViewModelPlugin = createLoginViewModelComponent()
+            loadSessionsUseCase: LoadUserSessionsByDayUseCase = createSessionsExceptionUseCase(),
+            loadAgendaUseCase: LoadAgendaUseCase = createAgendaExceptionUseCase(),
+            loadTagsUseCase: LoadTagsByCategoryUseCase = createTagsExceptionUseCase(),
+            loginViewModelDelegate: LoginViewModelPlugin = createLoginViewModelComponent(),
+            starEventUseCase: StarEventUseCase = createStarEventUseCase()
     ): ScheduleViewModel {
         return ScheduleViewModel(
-            loadSessionsUseCase, loadAgendaUseCase, loadTagsUseCase, loginViewModelDelegate
+                loadSessionsUseCase, loadAgendaUseCase, loadTagsUseCase, loginViewModelDelegate,
+                starEventUseCase)
+    }
+
+    @Test
+    fun testStarEvent() {
+        // Create test use cases with test data
+        val loadSessionsUseCase = LoadUserSessionsByDayUseCase(
+                DefaultSessionAndUserEventRepository(
+                        TestUserEventDataSource, SessionRepository(TestDataRepository))
         )
+        val loadAgendaUseCase = LoadAgendaUseCase(AgendaRepository(TestDataRepository))
+        val loadTagsUseCase = LoadTagsByCategoryUseCase(TagRepository(TestDataRepository))
+        val loginViewModelComponent = createLoginViewModelComponent()
+        val updateStarUseCase = createStarEventUseCase()
+        val viewModel = ScheduleViewModel(
+                loadSessionsUseCase, loadAgendaUseCase, loadTagsUseCase, loginViewModelComponent,
+                updateStarUseCase)
+
+        viewModel.onStarClicked(TestData.session0, TestData.userEvents[0])
+
+        val starEvent: Event<UpdatedStatus>? = LiveDataTestUtil.getValue(viewModel.starEvent)
+        assertTrue(starEvent?.getContentIfNotHandled() == UpdatedStatus.STARRED)
+    }
+
+    @Test
+    fun testUnstarEvent() {
+        // Create test use cases with test data
+
+        val loadSessionsUseCase = LoadUserSessionsByDayUseCase(
+                DefaultSessionAndUserEventRepository(
+                        TestUserEventDataSource, SessionRepository(TestDataRepository))
+        )
+        val loadAgendaUseCase = LoadAgendaUseCase(AgendaRepository(TestDataRepository))
+        val loadTagsUseCase = LoadTagsByCategoryUseCase(TagRepository(TestDataRepository))
+        val loginViewModelComponent = createLoginViewModelComponent()
+        val updateStarUseCase = createStarEventUseCase()
+        val viewModel = ScheduleViewModel(
+                loadSessionsUseCase, loadAgendaUseCase, loadTagsUseCase, loginViewModelComponent,
+                updateStarUseCase)
+
+        viewModel.onStarClicked(TestData.session1, TestData.userEvents[1])
+
+        val starEvent: Event<UpdatedStatus>? = LiveDataTestUtil.getValue(viewModel.starEvent)
+        assertTrue(starEvent?.getContentIfNotHandled() == UpdatedStatus.UNSTARRED)
     }
 
     /**
@@ -188,11 +235,13 @@ class ScheduleViewModelTest {
      */
     private fun createSessionsExceptionUseCase(): LoadUserSessionsByDayUseCase {
         val sessionRepository = SessionRepository(TestDataRepository)
-        val userEventRepository = UserEventRepository(TestUserEventDataSource)
-        return object : LoadUserSessionsByDayUseCase(sessionRepository, userEventRepository) {
-            override fun execute(parameters: Pair<UserSessionMatcher, String>):
-                    Map<ConferenceDay, List<UserSession>> {
-                throw Exception("Testing exception")
+        val userEventRepository = DefaultSessionAndUserEventRepository(
+                TestUserEventDataSource, sessionRepository)
+
+
+        return object : LoadUserSessionsByDayUseCase(userEventRepository) {
+            override fun execute(parameters: Pair<UserSessionMatcher, String>) {
+                result.postValue(Result.Error(Exception("Testing exception")))
             }
         }
     }
@@ -234,4 +283,6 @@ class ScheduleViewModelTest {
             }
         }
     }
+
+    private fun createStarEventUseCase() = FakeStarEventUseCase()
 }

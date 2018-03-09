@@ -31,6 +31,7 @@ import android.support.v4.app.FragmentTransaction
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import org.threeten.bp.ZonedDateTime
 
 /**
  * Implementation of lazy that is not thread safe. Useful when you know what thread you will be
@@ -134,6 +135,10 @@ fun <X, Y> LiveData<X>.switchMap(body: (X) -> LiveData<Y>): LiveData<Y> {
     return Transformations.switchMap(this, body)
 }
 
+// endregion
+
+// region ZonedDateTime
+fun ZonedDateTime.toEpochMilli() = this.toInstant().toEpochMilli()
 // endregion
 
 /**

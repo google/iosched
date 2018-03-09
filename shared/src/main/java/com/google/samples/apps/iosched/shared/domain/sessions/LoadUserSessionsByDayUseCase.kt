@@ -16,11 +16,11 @@
 
 package com.google.samples.apps.iosched.shared.domain.sessions
 
-import com.google.samples.apps.iosched.shared.data.session.SessionRepository
-import com.google.samples.apps.iosched.shared.data.session.UserEventRepository
-import com.google.samples.apps.iosched.shared.domain.UseCase
-import com.google.samples.apps.iosched.shared.firestore.entity.UserEvent
+import com.google.samples.apps.iosched.shared.data.userevent.DefaultSessionAndUserEventRepository
+import com.google.samples.apps.iosched.shared.domain.MediatorUseCase
+import com.google.samples.apps.iosched.shared.domain.internal.DefaultScheduler
 import com.google.samples.apps.iosched.shared.model.UserSession
+import com.google.samples.apps.iosched.shared.result.Result
 import com.google.samples.apps.iosched.shared.schedule.UserSessionMatcher
 import com.google.samples.apps.iosched.shared.util.TimeUtils.ConferenceDay
 import javax.inject.Inject
@@ -29,22 +29,29 @@ import javax.inject.Inject
  * Loads sessions into lists keyed by [ConferenceDay].
  */
 open class LoadUserSessionsByDayUseCase @Inject constructor(
-    private val sessionRepository: SessionRepository,
-    private val userEventRepository: UserEventRepository
-) : UseCase<Pair<UserSessionMatcher, String>, Map<ConferenceDay, List<UserSession>>>() {
+        private val userEventRepository: DefaultSessionAndUserEventRepository
+): MediatorUseCase<Pair<UserSessionMatcher, String>, Map<ConferenceDay, List<UserSession>>>() {
 
-    override fun execute(parameters: Pair<UserSessionMatcher, String>):
-            Map<ConferenceDay, List<UserSession>> {
-        val (sessionMatcher, userID) = parameters
-        val allSessions = sessionRepository.getSessions()
-        val userEvents = userEventRepository.getUserEvents(userID)
-        val eventIdToUserEvent: Map<String, UserEvent?> = userEvents.map { it.id to it }.toMap()
-        val allUserSessions = allSessions.map { UserSession(it, eventIdToUserEvent[it.id]) }
+    override fun execute(parameters: Pair<UserSessionMatcher, String>) {
+        val (sessionMatcher, userId) = parameters
+        val userSessions = userEventRepository.getObservableUserEvents(userId)
 
-        return ConferenceDay.values().map { day ->
-            day to allUserSessions.filter { day.contains(it.session) }
-                .filter { sessionMatcher.matches(it) }
-                .sortedBy { it.session.startTime }
-        }.toMap()
+        // Avoid duplicating sources and trigger an update on the LiveData from the base class.
+        result.removeSource(userSessions)
+        result.addSource(userSessions) {
+            DefaultScheduler.execute {
+                when (it) {
+                    is Result.Success -> {
+                        val res = it.data.mapValues { (_, sessions) ->
+                            sessions.filter { sessionMatcher.matches(it) }
+                        }
+                        result.postValue(Result.Success(res))
+                    }
+                    is Result.Error -> {
+                        result.postValue(it)
+                    }
+                }
+            }
+        }
     }
 }

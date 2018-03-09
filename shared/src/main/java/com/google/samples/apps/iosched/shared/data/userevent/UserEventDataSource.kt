@@ -16,9 +16,30 @@
 
 package com.google.samples.apps.iosched.shared.data.userevent
 
+import android.arch.lifecycle.LiveData
 import com.google.samples.apps.iosched.shared.firestore.entity.UserEvent
+import com.google.samples.apps.iosched.shared.model.Session
+import com.google.samples.apps.iosched.shared.result.Result
 
 interface UserEventDataSource {
 
-    fun getUserEvents(userID: String): List<UserEvent>
+    fun getUserEvents(userId: String): List<UserEvent>
+
+    fun getObservableUserEvents(userId: String): LiveData<UserEventsResult>
+
+    /**
+     * Toggle the isStarred status for an event.
+     *
+     * @param userId the userId ([FirebaseUser#uid]) of the current logged in user
+     * @param session the event being toggled
+     * @param isStarred the updated state whether the event is starred
+     * @return the LiveData that represents the status of the star operation.
+     */
+    fun updateStarred(userId: String, session: Session, isStarred: Boolean):
+            LiveData<Result<Boolean>>
 }
+
+data class UserEventsResult(
+        /** If this is true, all [UserEvent] in the userEvents field are synced to the backend */
+        val allDataSynced: Boolean,
+        val userEvents: List<UserEvent>)

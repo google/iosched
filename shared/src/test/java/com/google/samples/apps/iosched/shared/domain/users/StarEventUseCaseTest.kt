@@ -14,50 +14,81 @@
  * limitations under the License.
  */
 
-package com.google.samples.apps.iosched.shared.domain.sessions
+package com.google.samples.apps.iosched.shared.domain.users
 
 import android.arch.core.executor.testing.InstantTaskExecutorRule
+import android.arch.lifecycle.LiveData
+import android.arch.lifecycle.MutableLiveData
 import com.google.samples.apps.iosched.shared.data.session.SessionRepository
 import com.google.samples.apps.iosched.shared.data.userevent.DefaultSessionAndUserEventRepository
+import com.google.samples.apps.iosched.shared.data.userevent.SessionAndUserEventRepository
 import com.google.samples.apps.iosched.shared.domain.repository.TestUserEventDataSource
+import com.google.samples.apps.iosched.shared.model.Session
 import com.google.samples.apps.iosched.shared.model.TestData
 import com.google.samples.apps.iosched.shared.model.TestDataRepository
 import com.google.samples.apps.iosched.shared.model.UserSession
 import com.google.samples.apps.iosched.shared.result.Result
-import com.google.samples.apps.iosched.shared.schedule.UserSessionMatcher
 import com.google.samples.apps.iosched.shared.util.SyncExecutorRule
+import com.google.samples.apps.iosched.shared.util.TimeUtils
 import com.google.samples.apps.iosched.test.util.LiveDataTestUtil
-import org.junit.Assert.assertEquals
+import org.junit.Assert
+import org.junit.Assert.assertTrue
 import org.junit.Rule
 import org.junit.Test
 
 /**
- * Unit tests for [LoadUserSessionsByDayUseCase]
+ * Unit tests for [StarEventUseCase]
  */
-class LoadUserSessionsByDayUseCaseTest {
+class StarEventUseCaseTest {
 
     // Executes tasks in the Architecture Components in the same thread
     @get:Rule
     var instantTaskExecutorRule = InstantTaskExecutorRule()
 
     // Executes tasks in a synchronous [TaskScheduler]
-    @get:Rule var syncExecutorRule = SyncExecutorRule()
+    @get:Rule
+    var syncExecutorRule = SyncExecutorRule()
 
     @Test
-    fun returnsMapOfSessions() {
+    fun sessionIsStarredSuccessfully() {
         val testUserEventRepository = DefaultSessionAndUserEventRepository(
                 TestUserEventDataSource, SessionRepository(TestDataRepository))
-        val useCase = LoadUserSessionsByDayUseCase(testUserEventRepository)
+        val useCase = StarEventUseCase(testUserEventRepository)
 
         val resultLiveData = useCase.observe()
 
-        useCase.execute(Pair(FakeUserSessionMatcher, "user1"))
+        useCase.execute(StarEventParameter("userIdTest", TestData.session0, true))
 
         val result = LiveDataTestUtil.getValue(resultLiveData)
-        assertEquals(TestData.userSessionMap, (result as Result.Success<*>).data)
+        Assert.assertEquals(result, Result.Success(true))
+    }
+
+
+    @Test
+    fun sessionIsStarredUnsuccessfully() {
+
+        val useCase = StarEventUseCase(FailingSessionAndUserEventRepository)
+
+        val resultLiveData = useCase.observe()
+
+        useCase.execute(StarEventParameter("userIdTest", TestData.session0, true))
+
+        val result = LiveDataTestUtil.getValue(resultLiveData)
+        assertTrue(result is Result.Error)
     }
 }
 
-object FakeUserSessionMatcher : UserSessionMatcher {
-    override fun matches(userSession: UserSession): Boolean = true
+val FailingSessionAndUserEventRepository = object : SessionAndUserEventRepository {
+    val result = MutableLiveData<Result<Boolean>>()
+    override fun updateIsStarred(userId: String, session: Session, isStarred: Boolean):
+            LiveData<Result<Boolean>> {
+
+        result.postValue(Result.Error(Exception("Test")))
+        return result
+    }
+
+    override fun getObservableUserEvents(userId: String):
+            LiveData<Result<Map<TimeUtils.ConferenceDay, List<UserSession>>>> {
+        throw NotImplementedError()
+    }
 }
