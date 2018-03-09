@@ -37,7 +37,7 @@ import com.google.samples.apps.iosched.shared.model.Block
 import com.google.samples.apps.iosched.shared.model.Tag
 import com.google.samples.apps.iosched.shared.model.UserSession
 import com.google.samples.apps.iosched.shared.result.Result
-import com.google.samples.apps.iosched.shared.schedule.SessionMatcher
+import com.google.samples.apps.iosched.shared.schedule.UserSessionMatcher
 import com.google.samples.apps.iosched.shared.util.TimeUtils.ConferenceDay
 import com.google.samples.apps.iosched.test.util.LiveDataTestUtil
 import com.google.samples.apps.iosched.test.util.SyncTaskExecutorRule
@@ -197,13 +197,9 @@ class ScheduleViewModelTest {
     private fun createSessionsExceptionUseCase(): LoadUserSessionsByDayUseCase {
         val sessionRepository = SessionRepository(TestDataRepository)
         val userEventRepository = UserEventRepository(TestUserEventDataSource)
-
-        return object : LoadUserSessionsByDayUseCase(
-            sessionRepository,
-            userEventRepository
-        ) {
-            override fun execute(parameters: Pair<SessionMatcher, String>):
-                Map<ConferenceDay, List<UserSession>> {
+        return object : LoadUserSessionsByDayUseCase(sessionRepository, userEventRepository) {
+            override fun execute(parameters: Pair<UserSessionMatcher, String>):
+                    Map<ConferenceDay, List<UserSession>> {
                 throw Exception("Testing exception")
             }
         }
