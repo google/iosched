@@ -47,9 +47,10 @@
                     android:layout_height="@dimen/min_touch_target"
                     android:layout_gravity="center_vertical"
                     android:layout_marginStart="@dimen/margin_normal"
+                    android:padding="@dimen/spacing_normal"
                     app:imageUrl="@{viewModel.currentUserImageUri}"
-                    app:clipToCircle="@{@dimen/min_touch_target}"
-                    android:contentDescription="@string/logged_in"
+                    app:clipToCircle="@{true}"
+                    android:contentDescription="@{context.getString(viewModel.profileContentDesc)}"
                     android:foreground="?selectableItemBackground"
                     android:onClick="@{() -> viewModel.onProfileClicked()}" />
 

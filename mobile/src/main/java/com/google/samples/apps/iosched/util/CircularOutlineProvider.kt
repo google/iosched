@@ -20,11 +20,13 @@ import android.graphics.Outline
 import android.view.View
 import android.view.ViewOutlineProvider
 
-class CircularOutlineProvider(private val circleSize: Int) : ViewOutlineProvider() {
-    override fun getOutline(view: View?, outline: Outline?) {
-        view ?: return
-        outline ?: return
-
-        outline.setOval(0, 0, circleSize, circleSize)
+object CircularOutlineProvider : ViewOutlineProvider() {
+    override fun getOutline(view: View, outline: Outline) {
+        outline.setOval(
+            view.paddingLeft,
+            view.paddingTop,
+            view.width - view.paddingRight,
+            view.height - view.paddingBottom
+        )
     }
 }
