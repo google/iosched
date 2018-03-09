@@ -53,11 +53,7 @@ fun clipToCircle(view: View, clip: Boolean) {
 }
 
 @BindingAdapter(value = ["imageUrl", "placeholder"], requireAll = false)
-fun imageUrl(
-    imageView: ImageView,
-    imageUrl: Uri?,
-    placeholder: Drawable?
-) {
+fun imageUrl(imageView: ImageView, imageUrl: Uri?, placeholder: Drawable?) {
     val placeholderDrawable = placeholder ?: AppCompatResources.getDrawable(
         imageView.context, R.drawable.generic_placeholder)
     when (imageUrl) {
@@ -74,4 +70,9 @@ fun imageUrl(
                 .into(imageView)
         }
     }
+}
+
+@BindingAdapter(value = ["imageUrl", "placeholder"], requireAll = false)
+fun imageUrl(imageView: ImageView, imageUrl: String?, placeholder: Drawable?) {
+    imageUrl(imageView, Uri.parse(imageUrl), placeholder)
 }
