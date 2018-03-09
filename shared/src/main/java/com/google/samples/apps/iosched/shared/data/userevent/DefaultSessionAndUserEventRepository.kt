@@ -30,6 +30,7 @@ import com.google.samples.apps.iosched.shared.model.Session
 import com.google.samples.apps.iosched.shared.model.UserSession
 import com.google.samples.apps.iosched.shared.result.Result
 import com.google.samples.apps.iosched.shared.util.TimeUtils.ConferenceDay
+import com.google.samples.apps.iosched.shared.util.toEpochMilli
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -84,9 +85,9 @@ open class DefaultSessionAndUserEventRepository @Inject constructor(
         return result
     }
 
-    override fun updateIsStarred(userId: String, session: Session, isStarred: Boolean):
+    override fun starEvent(userId: String, userEvent: UserEvent):
             LiveData<Result<StarUpdatedStatus>> {
-        return userEventDataSource.updateStarred(userId, session, isStarred)
+        return userEventDataSource.starEvent(userId, userEvent)
     }
 
     override fun changeReservation(
@@ -107,11 +108,12 @@ open class DefaultSessionAndUserEventRepository @Inject constructor(
 
         // If there is no logged-in user, return the map with null UserEvents
         if (userData == null) {
-
             return ConferenceDay.values().map { day ->
                 day to allSessions
                         .filter { day.contains(it) }
-                        .map { session -> UserSession(session, null) }
+                        .map { session -> UserSession(session, UserEvent(session.id,
+                                session.startTime.toEpochMilli(),
+                                session.endTime.toEpochMilli())) }
 
             }.toMap()
         }
@@ -119,7 +121,10 @@ open class DefaultSessionAndUserEventRepository @Inject constructor(
         val (allDataSynced, userEvents, _) = userData
 
         val eventIdToUserEvent: Map<String, UserEvent?> = userEvents.map { it.id to it }.toMap()
-        val allUserSessions = allSessions.map { UserSession(it, eventIdToUserEvent[it.id]) }
+        val allUserSessions = allSessions.map { UserSession(it,
+                eventIdToUserEvent[it.id] ?: UserEvent(id = it.id,
+                        startTime = it.startTime.toEpochMilli(),
+                        endTime = it.endTime.toEpochMilli())) }
 
         // If there are already entities that are marked as hasPendingWrite,
         // we merge the hasPendingWrite states unless all data is synced to the backend
@@ -128,8 +133,8 @@ open class DefaultSessionAndUserEventRepository @Inject constructor(
                 emptySet()
             } else {
                 (result.value as Result.Success).data.userSessionsPerDay.flatMap { it.value }
-                        .filter { it.userEvent?.hasPendingWrite == true }
-                        .map { it.userEvent?.id }
+                        .filter { it.userEvent.hasPendingWrite }
+                        .map { it.userEvent.id }
                         .toSet()
             }
         } else {
@@ -144,7 +149,7 @@ open class DefaultSessionAndUserEventRepository @Inject constructor(
             day to allUserSessions
                     .filter { day.contains(it.session) }
                     .map { userSession ->
-                        UserSession(userSession.session, userSession.userEvent?.apply {
+                        UserSession(userSession.session, userSession.userEvent.apply {
                             if (alreadyPendingWriteIds.contains(id)) {
                                 hasPendingWrite = true
                             }
@@ -160,11 +165,10 @@ interface SessionAndUserEventRepository {
     fun getObservableUserEvents(userId: String?):
             LiveData<Result<LoadUserSessionsByDayUseCaseResult>>
 
-    fun updateIsStarred(userId: String, session: Session, isStarred: Boolean):
-            LiveData<Result<StarUpdatedStatus>>
-
     fun changeReservation(
             userId: String, session: Session, action: ReservationRequestAction
     ): LiveData<Result<LastReservationRequested>>
+
+    fun starEvent(userId: String, userEvent: UserEvent): LiveData<Result<StarUpdatedStatus>>
 }
 

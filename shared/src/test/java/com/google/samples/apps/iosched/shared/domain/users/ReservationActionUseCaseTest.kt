@@ -22,6 +22,7 @@ import android.arch.lifecycle.MutableLiveData
 import com.google.samples.apps.iosched.shared.data.userevent.SessionAndUserEventRepository
 import com.google.samples.apps.iosched.shared.domain.sessions.LoadUserSessionsByDayUseCaseResult
 import com.google.samples.apps.iosched.shared.firestore.entity.LastReservationRequested
+import com.google.samples.apps.iosched.shared.firestore.entity.UserEvent
 import com.google.samples.apps.iosched.shared.model.Session
 import com.google.samples.apps.iosched.shared.model.TestData
 import com.google.samples.apps.iosched.shared.result.Result
@@ -90,12 +91,12 @@ class ReservationActionUseCaseTest {
 object TestUserEventRepository : SessionAndUserEventRepository {
 
     override fun getObservableUserEvents(userId: String?
-    ): LiveData<Result<LoadUserSessionsByDayUseCaseResult>>  {
+    ): LiveData<Result<LoadUserSessionsByDayUseCaseResult>> {
         TODO("not implemented")
     }
 
-    override fun updateIsStarred(userId: String, session: Session, isStarred: Boolean
-    ): LiveData<Result<StarUpdatedStatus>> {
+    override fun starEvent(userId: String, userEvent: UserEvent):
+            LiveData<Result<StarUpdatedStatus>> {
         TODO("not implemented")
     }
 
@@ -119,11 +120,15 @@ object FailingUserEventRepository : SessionAndUserEventRepository {
         TODO("not implemented")
     }
 
-    override fun updateIsStarred(userId: String, session: Session, isStarred: Boolean): LiveData<Result<StarUpdatedStatus>> {
+    override fun starEvent(userId: String, userEvent: UserEvent):
+            LiveData<Result<StarUpdatedStatus>> {
         TODO("not implemented")
     }
 
-    override fun changeReservation(userId: String, session: Session, action: ReservationRequestAction): LiveData<Result<LastReservationRequested>> {
+    override fun changeReservation(userId: String,
+                                   session: Session,
+                                   action: ReservationRequestAction):
+            LiveData<Result<LastReservationRequested>> {
         throw Exception("Test")
     }
 
