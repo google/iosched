@@ -39,7 +39,8 @@
             android:contentDescription="@string/a11y_speaker_headshot"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@android:drawable/sym_def_app_icon" />
+            app:imageUrl="@{speaker.imageUrl}"
+            app:placeholder="@{@drawable/ic_default_avatar}" />
 
         <TextView
             android:id="@+id/speaker_item_name"

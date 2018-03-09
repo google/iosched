@@ -22,6 +22,7 @@ import com.google.gson.JsonSyntaxException
 import com.google.samples.apps.iosched.shared.data.session.json.BlockDeserializer
 import com.google.samples.apps.iosched.shared.data.session.json.SessionDeserializer
 import com.google.samples.apps.iosched.shared.data.session.json.SessionTemp
+import com.google.samples.apps.iosched.shared.data.session.json.SpeakerDeserializer
 import com.google.samples.apps.iosched.shared.data.session.json.TagDeserializer
 import com.google.samples.apps.iosched.shared.model.Block
 import com.google.samples.apps.iosched.shared.model.ConferenceData
@@ -41,6 +42,7 @@ object ConferenceDataJsonParser {
                 .registerTypeAdapter(SessionTemp::class.java, SessionDeserializer())
                 .registerTypeAdapter(Block::class.java, BlockDeserializer())
                 .registerTypeAdapter(Tag::class.java, TagDeserializer())
+                .registerTypeAdapter(Speaker::class.java, SpeakerDeserializer())
                 .create()
 
         val tempData: TempConferenceData = gson.fromJson(jsonReader, TempConferenceData::class.java)
