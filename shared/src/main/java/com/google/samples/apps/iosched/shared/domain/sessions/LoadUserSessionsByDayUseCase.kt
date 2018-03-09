@@ -21,7 +21,7 @@ import com.google.samples.apps.iosched.shared.data.session.UserEventRepository
 import com.google.samples.apps.iosched.shared.domain.UseCase
 import com.google.samples.apps.iosched.shared.firestore.entity.UserEvent
 import com.google.samples.apps.iosched.shared.model.UserSession
-import com.google.samples.apps.iosched.shared.schedule.SessionMatcher
+import com.google.samples.apps.iosched.shared.schedule.UserSessionMatcher
 import com.google.samples.apps.iosched.shared.util.TimeUtils.ConferenceDay
 import javax.inject.Inject
 
@@ -29,22 +29,22 @@ import javax.inject.Inject
  * Loads sessions into lists keyed by [ConferenceDay].
  */
 open class LoadUserSessionsByDayUseCase @Inject constructor(
-        private val sessionRepository: SessionRepository,
-        private val userEventRepository: UserEventRepository)
-    : UseCase<Pair<SessionMatcher, String>, Map<ConferenceDay, List<UserSession>>>() {
+    private val sessionRepository: SessionRepository,
+    private val userEventRepository: UserEventRepository
+) : UseCase<Pair<UserSessionMatcher, String>, Map<ConferenceDay, List<UserSession>>>() {
 
-    override fun execute(parameters: Pair<SessionMatcher, String>):
+    override fun execute(parameters: Pair<UserSessionMatcher, String>):
             Map<ConferenceDay, List<UserSession>> {
         val (sessionMatcher, userID) = parameters
         val allSessions = sessionRepository.getSessions()
         val userEvents = userEventRepository.getUserEvents(userID)
-        val eventIdToUserEvent: Map<String, UserEvent?> = userEvents.map {it.id to it}.toMap()
+        val eventIdToUserEvent: Map<String, UserEvent?> = userEvents.map { it.id to it }.toMap()
         val allUserSessions = allSessions.map { UserSession(it, eventIdToUserEvent[it.id]) }
 
-        return ConferenceDay.values().map {day -> day to
-                allUserSessions
-                    .filter { day.contains(it.session) }
-                    .filter { sessionMatcher.matchesSessionTags(it.session.tags) }
-                    .sortedBy { it.session.startTime }}.toMap()
+        return ConferenceDay.values().map { day ->
+            day to allUserSessions.filter { day.contains(it.session) }
+                .filter { sessionMatcher.matches(it) }
+                .sortedBy { it.session.startTime }
+        }.toMap()
     }
 }

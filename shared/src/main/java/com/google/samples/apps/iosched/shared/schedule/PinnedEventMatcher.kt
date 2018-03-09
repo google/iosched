@@ -14,14 +14,13 @@
  * limitations under the License.
  */
 
-package com.google.samples.apps.iosched.shared.model
+package com.google.samples.apps.iosched.shared.schedule
 
-import com.google.samples.apps.iosched.shared.firestore.entity.UserEvent
+import com.google.samples.apps.iosched.shared.model.UserSession
 
-/**
- * Wrapper class to hold the [Session] and associating [UserEvent].
- */
-data class UserSession(
-    val session: Session,
-    val userEvent: UserEvent?
-)
+/** Discerns UserSessions that should be "pinned" based on their star and/or reservation status. */
+object PinnedEventMatcher : UserSessionMatcher {
+
+    /** Returns true if the UserSession is starred or has an appropriate reservation status. */
+    override fun matches(userSession: UserSession) = userSession.userEvent?.isPinned() ?: false
+}

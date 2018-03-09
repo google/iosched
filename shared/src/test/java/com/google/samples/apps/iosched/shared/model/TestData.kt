@@ -97,21 +97,25 @@ object TestData : ConferenceDataSource {
 
     val agenda = listOf(block1, block2)
 
-    private val userEvent0 = UserEvent(sessionIDs[0], isStarred = false,
+    // Reserved event
+    private val userEvent0 = UserEvent(sessionIDs[0], isStarred = true,
             isReviewed = false,
             startTime = session0.startTime.toInstant().toEpochMilli(),
             endTime = session0.endTime.toInstant().toEpochMilli(),
             reservation = ReservationRequestResult(RESERVE_SUCCEEDED, System.currentTimeMillis()))
-    private val userEvent1 = UserEvent(sessionIDs[1], isStarred = true,
+    // Waitlisted event
+    private val userEvent1 = UserEvent(sessionIDs[1], isStarred = false,
             isReviewed = true,
             startTime = session1.startTime.toInstant().toEpochMilli(),
             endTime = session1.endTime.toInstant().toEpochMilli(),
             reservation = ReservationRequestResult(RESERVE_WAITLISTED, System.currentTimeMillis()))
+    // Starred event
     private val userEvent2 = UserEvent(sessionIDs[2], isStarred = true,
             isReviewed = false,
             startTime = session2.startTime.toInstant().toEpochMilli(),
             endTime = session2.endTime.toInstant().toEpochMilli(),
             reservation = ReservationRequestResult(RESERVE_DENIED_CUTOFF, System.currentTimeMillis()))
+    // Not starred, reserved, or waitlisted
     private val userEvent3 = UserEvent(sessionIDs[3], isStarred = false,
             isReviewed = true,
             startTime = session3.startTime.toInstant().toEpochMilli(),
