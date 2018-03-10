@@ -15,10 +15,12 @@
   ~ limitations under the License.
   -->
 
-<resources>
-    <dimen name="spinner_size">50dp</dimen>
-    <dimen name="card_width">156dp</dimen>
-    <dimen name="card_height">88dp</dimen>
-    <dimen name="detail_thumb_width">274dp</dimen>
-    <dimen name="detail_thumb_height">274dp</dimen>
-</resources>
+<fragment xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main_frame"
+    android:name="com.google.samples.apps.iosched.tv.ui.sessiondetail.SessionDetailFragment"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.google.samples.apps.iosched.tv.ui.sessiondetail.SessionDetailActivity"
+    tools:deviceIds="tv"
+    tools:ignore="MergeRootFrame" />
