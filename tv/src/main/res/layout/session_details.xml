@@ -15,10 +15,16 @@
   ~ limitations under the License.
   -->
 
-<resources>
-    <dimen name="spinner_size">50dp</dimen>
-    <dimen name="card_width">156dp</dimen>
-    <dimen name="card_height">88dp</dimen>
-    <dimen name="detail_thumb_width">274dp</dimen>
-    <dimen name="detail_thumb_height">274dp</dimen>
-</resources>
+<android.support.constraint.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <TextView
+        android:id="@+id/title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        tools:text="Session title" />
+
+</android.support.constraint.ConstraintLayout>

@@ -36,6 +36,7 @@ import com.google.samples.apps.iosched.tv.R
 import com.google.samples.apps.iosched.tv.TvApplication
 import com.google.samples.apps.iosched.tv.ui.SpinnerFragment
 import com.google.samples.apps.iosched.tv.ui.presenter.SessionPresenter
+import com.google.samples.apps.iosched.tv.ui.sessiondetail.SessionDetailActivity
 import com.google.samples.apps.iosched.tv.util.toArrayObjectAdapter
 import javax.inject.Inject
 
@@ -56,7 +57,7 @@ class ScheduleFragment : RowsSupportFragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         (context?.applicationContext as TvApplication).scheduleComponent
-                .inject(scheduleFragment = this)
+            .inject(scheduleFragment = this)
 
         adapter = rowsAdapter
 
@@ -66,14 +67,16 @@ class ScheduleFragment : RowsSupportFragment() {
 
         viewModel = viewModelProvider(viewModelFactory)
 
-        observeViewModel(viewModel)
-    }
-
-    override fun onStop() {
-        super.onStop()
-        fragmentManager?.inTransaction {
-            remove(spinnerFragment)
+        setOnItemViewClickedListener { itemViewHolder, item, _, _ ->
+            if (item is Session) {
+                val context = itemViewHolder.view.context
+                // TODO: Add fragment transition from session card to detail's logo presenter
+                startActivity(
+                    SessionDetailActivity.createIntent(context = context, sessionId = item.id))
+            }
         }
+
+        observeViewModel(viewModel)
     }
 
     private fun loadAdapter(sessions: List<Session>) {
