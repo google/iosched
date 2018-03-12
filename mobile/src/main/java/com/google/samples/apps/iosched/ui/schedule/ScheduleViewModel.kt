@@ -29,7 +29,6 @@ import com.google.samples.apps.iosched.shared.domain.invoke
 import com.google.samples.apps.iosched.shared.domain.sessions.LoadUserSessionsByDayUseCase
 import com.google.samples.apps.iosched.shared.domain.sessions.LoadUserSessionsByDayUseCaseResult
 import com.google.samples.apps.iosched.shared.domain.sessions.UserEventsMessage
-import com.google.samples.apps.iosched.shared.domain.tags.LoadTagsByCategoryUseCase
 import com.google.samples.apps.iosched.shared.domain.users.ReservationActionUseCase
 import com.google.samples.apps.iosched.shared.domain.users.ReservationRequestAction
 import com.google.samples.apps.iosched.shared.domain.users.ReservationRequestParameters
@@ -40,7 +39,6 @@ import com.google.samples.apps.iosched.shared.firestore.entity.LastReservationRe
 import com.google.samples.apps.iosched.shared.firestore.entity.UserEvent
 import com.google.samples.apps.iosched.shared.model.Block
 import com.google.samples.apps.iosched.shared.model.Session
-import com.google.samples.apps.iosched.shared.model.Tag
 import com.google.samples.apps.iosched.shared.model.UserSession
 import com.google.samples.apps.iosched.shared.result.Result
 import com.google.samples.apps.iosched.shared.result.Result.Success
@@ -54,7 +52,8 @@ import com.google.samples.apps.iosched.shared.util.TimeUtils.ConferenceDay.DAY_3
 import com.google.samples.apps.iosched.shared.util.map
 import com.google.samples.apps.iosched.ui.SnackbarMessage
 import com.google.samples.apps.iosched.ui.login.LoginViewModelPlugin
-import com.google.samples.apps.iosched.util.hasSameValue
+import com.google.samples.apps.iosched.ui.schedule.filters.LoadTagFiltersUseCase
+import com.google.samples.apps.iosched.ui.schedule.filters.TagFilter
 import timber.log.Timber
 import javax.inject.Inject
 
@@ -66,7 +65,7 @@ import javax.inject.Inject
 class ScheduleViewModel @Inject constructor(
     private val loadUserSessionsByDayUseCase: LoadUserSessionsByDayUseCase,
     loadAgendaUseCase: LoadAgendaUseCase,
-    loadTagsByCategoryUseCase: LoadTagsByCategoryUseCase,
+    loadTagFiltersUseCase: LoadTagFiltersUseCase,
     loginViewModelPlugin: LoginViewModelPlugin,
     private val starEventUseCase: StarEventUseCase,
     private val reservationActionUseCase: ReservationActionUseCase
@@ -78,7 +77,7 @@ class ScheduleViewModel @Inject constructor(
     private var userSessionMatcher: UserSessionMatcher
 
     private val tagFilterMatcher = TagFilterMatcher()
-    // List of TagFilters returned by the LiveData transformation. Only Result.Success modifies it.
+    // Cached list of TagFilters returned by the use case. Only Result.Success modifies it.
     private var cachedTagFilters = emptyList<TagFilter>()
 
     val tagFilters: LiveData<List<TagFilter>>
@@ -87,7 +86,7 @@ class ScheduleViewModel @Inject constructor(
 
     private val loadSessionsResult: MediatorLiveData<Result<LoadUserSessionsByDayUseCaseResult>>
     private val loadAgendaResult = MutableLiveData<Result<List<Block>>>()
-    private val loadTagsResult = MutableLiveData<Result<List<Tag>>>()
+    private val loadTagsResult = MutableLiveData<Result<List<TagFilter>>>()
 
     private val day1Sessions: LiveData<List<UserSession>>
     private val day2Sessions: LiveData<List<UserSession>>
@@ -130,7 +129,7 @@ class ScheduleViewModel @Inject constructor(
         loadSessionsResult = loadUserSessionsByDayUseCase.observe()
 
         loadAgendaUseCase(loadAgendaResult)
-        loadTagsByCategoryUseCase(loadTagsResult)
+        loadTagFiltersUseCase(tagFilterMatcher, loadTagsResult)
 
         // map LiveData results from UseCase to each day's individual LiveData
         day1Sessions = loadSessionsResult.map {
@@ -163,7 +162,7 @@ class ScheduleViewModel @Inject constructor(
 
         tagFilters = loadTagsResult.map {
             if (it is Success) {
-                cachedTagFilters = processTags(it.data)
+                cachedTagFilters = it.data
             }
             // TODO handle Error result
             cachedTagFilters
@@ -213,12 +212,6 @@ class ScheduleViewModel @Inject constructor(
             refreshUserSessions()
 
         }
-    }
-
-    private fun processTags(tags: List<Tag>): List<TagFilter> {
-        tagFilterMatcher.removeOrphanedTags(tags)
-        // Convert to list of TagFilters, checking the ones that are selected in TagFilterMatcher.
-        return tags.map { TagFilter(it, it in tagFilterMatcher) }
     }
 
     /**
@@ -352,19 +345,6 @@ class ScheduleViewModel @Inject constructor(
         val user = currentFirebaseUser.value
         return (user as? Result.Success)?.data?.getUid()
     }
-}
-
-class TagFilter(val tag: Tag, isChecked: Boolean) {
-    val isChecked = ObservableBoolean(isChecked)
-
-    /** Only the tag is used for equality. */
-    override fun equals(other: Any?) = this === other || (other is TagFilter && other.tag == tag)
-
-    /** Only the tag is used for equality. */
-    override fun hashCode() = tag.hashCode()
-
-    fun isUiContentEqual(other: TagFilter) =
-        tag.isUiContentEqual(other.tag) && isChecked.hasSameValue(other.isChecked)
 }
 
 interface ScheduleEventListener {

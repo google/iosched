@@ -24,7 +24,7 @@
 
         <variable
             name="tagFilter"
-            type="com.google.samples.apps.iosched.ui.schedule.TagFilter" />
+            type="com.google.samples.apps.iosched.ui.schedule.filters.TagFilter" />
 
         <variable
             name="viewModel"

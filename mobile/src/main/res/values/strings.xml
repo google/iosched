@@ -23,7 +23,10 @@
 
     <!-- Schedule -->
     <string name="filters" translation_description="The label for the button to filter sessions by their topics, room, and so on.">Filters</string>
+    <string name="category_heading_tracks" translation_description="Label in the filters panel above session topics (Android, Cloud, etc.)">Topics</string>
+    <string name="category_heading_types" translation_description="Label in the filters panel above event types (Sessions, Codelabs, etc.)">Types</string>
     <string name="clear_all" translation_description="The label for the button to clear all the filter conditions.">Clear all</string>
+
     <string name="session_duration_location" translatable="false">%1s / %2s</string>
     <string name="agenda" translation_description="The title for the agenda screen where user can see all the sessions they plan to attend.">Agenda</string>
     <string name="agenda_duration" translatable="false">%1$s – %2$s</string>
