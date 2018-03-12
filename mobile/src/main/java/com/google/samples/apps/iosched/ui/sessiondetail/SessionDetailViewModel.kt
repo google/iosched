@@ -18,11 +18,14 @@ package com.google.samples.apps.iosched.ui.sessiondetail
 
 import android.arch.lifecycle.LiveData
 import android.arch.lifecycle.MutableLiveData
+import android.arch.lifecycle.Transformations
 import android.arch.lifecycle.ViewModel
 import com.google.samples.apps.iosched.shared.domain.sessions.LoadSessionUseCase
 import com.google.samples.apps.iosched.shared.model.Session
 import com.google.samples.apps.iosched.shared.result.Result
+import com.google.samples.apps.iosched.shared.util.TimeUtils
 import com.google.samples.apps.iosched.shared.util.map
+import org.threeten.bp.ZonedDateTime
 import javax.inject.Inject
 
 /**
@@ -33,12 +36,24 @@ class SessionDetailViewModel @Inject constructor(
 ): ViewModel() {
 
     private val useCaseResult = MutableLiveData<Result<Session>>()
+    private val sessionState: LiveData<TimeUtils.SessionState>
+
     val session: LiveData<Session?>
+    val showRateButton: LiveData<Boolean>
 
     init {
         session = useCaseResult.map { (it as? Result.Success)?.data }
 
         //TODO: Deal with error SessionNotFoundException
+
+        // TODO this should also be called when session state is stale (b/74242921)
+        sessionState = Transformations.map(session, { currentSession ->
+            TimeUtils.getSessionState(currentSession, ZonedDateTime.now())
+        })
+
+        showRateButton = Transformations.map(sessionState, { currentState ->
+            currentState == TimeUtils.SessionState.AFTER
+        })
     }
 
     fun loadSessionById(sessionId: String) {
