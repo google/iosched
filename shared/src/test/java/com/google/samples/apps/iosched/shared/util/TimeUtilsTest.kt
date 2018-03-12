@@ -18,6 +18,7 @@ package com.google.samples.apps.iosched.shared.util
 
 import com.google.samples.apps.iosched.shared.model.Room
 import com.google.samples.apps.iosched.shared.model.Session
+import com.google.samples.apps.iosched.shared.model.TestData
 import com.google.samples.apps.iosched.shared.util.TimeUtils.ConferenceDay
 import com.google.samples.apps.iosched.shared.util.TimeUtils.ConferenceDay.DAY_1
 import org.junit.Assert
@@ -40,8 +41,7 @@ class TimeUtilsTest {
         time1300 = ZonedDateTime.parse("2018-05-08T13:00:00.000-08:00[America/Los_Angeles]")
     }
 
-    @Test
-    fun conferenceDay_contains() {
+    @Test fun conferenceDay_contains() {
         val room1 = Room(id = "1", name = "Tent 1", capacity = 40)
 
         val inDay1 = Session("1", ConferenceDay.DAY_1.start, ConferenceDay.DAY_1.end,
@@ -61,12 +61,39 @@ class TimeUtilsTest {
         assertFalse(DAY_1.contains(alsoNotInDay1))
     }
 
-    @Test
-    fun conferenceDay_formatMonthDay() {
+    @Test fun conferenceDay_formatMonthDay() {
         val pattern = Pattern.compile("""0\d""") // zero followed by any digit
         ConferenceDay.values().forEach {
             assertFalse(pattern.matcher(it.formatMonthDay()).find())
         }
+    }
+
+    @Test fun getSessionState_unknown() {
+        Assert.assertEquals(TimeUtils.SessionState.UNKNOWN, TimeUtils.getSessionState(null))
+        Assert.assertEquals(TimeUtils.SessionState.UNKNOWN,
+                TimeUtils.getSessionState(null, time0800))
+    }
+
+    @Test fun getSessionState_before() {
+        val session = TestData.session0
+        Assert.assertEquals(TimeUtils.SessionState.BEFORE,
+                TimeUtils.getSessionState(session, session.startTime.minusHours(1L)))
+    }
+
+    @Test fun getSessionState_after() {
+        val session = TestData.session0
+        Assert.assertEquals(TimeUtils.SessionState.AFTER,
+                TimeUtils.getSessionState(session, session.endTime.plusHours(1L)))
+    }
+
+    @Test fun getSessionState_during() {
+        val session = TestData.session0
+        Assert.assertEquals(TimeUtils.SessionState.DURING,
+                TimeUtils.getSessionState(session, session.startTime))
+        Assert.assertEquals(TimeUtils.SessionState.DURING,
+                TimeUtils.getSessionState(session, session.startTime.plusMinutes(1L)))
+        Assert.assertEquals(TimeUtils.SessionState.DURING,
+                TimeUtils.getSessionState(session, session.endTime))
     }
 
     @Test fun timeString_sameMeridiem() {
