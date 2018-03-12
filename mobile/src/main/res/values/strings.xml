@@ -15,50 +15,49 @@
   -->
 
 <resources>
-    <string name="app_name">IOSched</string>
-    <string name="title_schedule">Schedule</string>
-    <string name="title_feed">Feed</string>
-    <string name="title_map">Map</string>
-    <string name="title_info">Info</string>
+    <string name="title_schedule" translation_description="The title for the schedule screen where user can see their schedule for Google I/O.">Schedule</string>
+    <string name="title_feed" translation_description="The title for the feed screen where user can all the updates from Google I/O team.">Feed</string>
+    <string name="title_map" translation_description="The title for the map screen where user can see the map of the venue.">Map</string>
+    <string name="title_info" translation_description="The title for the info screen where user can see various information, such as FAQ and travel info.">Info</string>
 
     <!-- Schedule -->
-    <string name="filters">Filters</string>
-    <string name="clear_all">Clear all</string>
-    <string name="session_duration_location">%1s / %2s</string>
-    <string name="agenda">Agenda</string>
-    <string name="agenda_duration">%1$s – %2$s</string>
+    <string name="filters" translation_description="The label for the button to filter sessions by their topics, room, and so on.">Filters</string>
+    <string name="clear_all" translation_description="The label for the button to clear all the filter conditions.">Clear all</string>
+    <string name="session_duration_location" translatable="false">%1s / %2s</string>
+    <string name="agenda" translation_description="The title for the agenda screen where user can see all the sessions they plan to attend.">Agenda</string>
+    <string name="agenda_duration" translatable="false">%1$s – %2$s</string>
 
     <!-- Session Detail -->
-    <string name="rate_session">Rate Session</string>
+    <string name="rate_session" translation_description="The label for the button to rate the session by 5 stars">Rate Session</string>
 
     <!-- Info -->
-    <string name="info_title">Info</string>
-    <string name="event_title">Event</string>
-    <string name="travel_title">Travel</string>
-    <string name="faq_title">FAQ</string>
-    <string name="settings_title">Settings</string>
+    <string name="info_title" translation_description="The title for the info screen where user can see various information, such as FAQ and travel info.">Info</string>
+    <string name="event_title" translation_description="The title for the tab that shows interesting events, such as sessions and office hours.">Event</string>
+    <string name="travel_title" translation_description="The title for the tab that shows travel information, such as carpool and bus schedules.">Travel</string>
+    <string name="faq_title" translation_description="The title for the tab that shows FAQ.">FAQ</string>
+    <string name="settings_title" translation_description="Title for the tab that shows all the settings of this app.">Settings</string>
 
     <!-- Accessibility -->
-    <string name="a11y_session_detail_video_icon">TODO: a11y text for icon</string>
-    <string name="a11y_session_detail_video_description">TODO video description</string>
-    <string name="a11y_speaker_headshot">TODO a11y content description for speaker headshot</string>
-    <string name="a11y_session_item_actions">TODO: a11y content description for session item actions</string>
-    <string name="a11y_star_session_actions">TODO: a11y content description for star item actions</string>
-    <string name="a11y_login">TODO: a11y content description for login action</string>
-    <string name="a11y_logout">TODO: a11y content description for logout action</string>
+    <string name="a11y_session_detail_video_icon" translatable="false">TODO: a11y text for icon</string>
+    <string name="a11y_session_detail_video_description" translatable="false">TODO video description</string>
+    <string name="a11y_speaker_headshot" translatable="false">TODO a11y content description for speaker headshot</string>
+    <string name="a11y_session_item_actions" translatable="false">TODO: a11y content description for session item actions</string>
+    <string name="a11y_star_session_actions" translatable="false">TODO: a11y content description for star item actions</string>
+    <string name="a11y_login" translatable="false">TODO: a11y content description for login action</string>
+    <string name="a11y_logout" translatable="false">TODO: a11y content description for logout action</string>
 
     <plurals name="duration_hours">
-        <item quantity="one">%s hour</item>
-        <item quantity="other">%s hours</item>
+        <item quantity="one" translation_description="Unit for duration of time by hours. Singular.">%s hour</item>
+        <item quantity="other" translation_description="Unit for duration of time by hours. Plural.">%s hours</item>
     </plurals>
 
     <plurals name="duration_minutes">
-        <item quantity="one">%s minute</item>
-        <item quantity="other">%s minutes</item>
+        <item quantity="one" translation_description="Unit for duration of time by minutes. Singular.">%s minute</item>
+        <item quantity="other" translation_description="Unit for duration of time by minutes. Plural.">%s minutes</item>
     </plurals>
 
     <!--Strings for sharing session-->
-    <string name="share_session_menu_item">Share session</string>
-    <string name="share_text_session_detail">Check out \'%1$s\' at #io18 %2$s</string>
-    <string name="intent_chooser_session_detail">Share</string>
+    <string name="share_session_menu_item" translation_description="The label for the button to share this session on SNS, etc.">Share session</string>
+    <string name="share_text_session_detail" translation_description="The default message to be used when user is sharing an I/O session on SNS, etc.">Check out \'%1$s\' at #io18 %2$s</string>
+    <string name="intent_chooser_session_detail" translation_description="The label for share screen where user can tell people about an I/O session on SNS, etc.">Share</string>
 </resources>
