@@ -38,12 +38,11 @@ import com.google.samples.apps.iosched.shared.domain.agenda.LoadAgendaUseCase
 import com.google.samples.apps.iosched.shared.domain.auth.ObserveUserAuthStateUseCase
 import com.google.samples.apps.iosched.shared.domain.sessions.LoadUserSessionsByDayUseCase
 import com.google.samples.apps.iosched.shared.domain.sessions.UserEventsMessage
-import com.google.samples.apps.iosched.shared.domain.tags.LoadTagsByCategoryUseCase
 import com.google.samples.apps.iosched.shared.domain.users.ReservationActionUseCase
 import com.google.samples.apps.iosched.shared.domain.users.StarEventUseCase
 import com.google.samples.apps.iosched.shared.model.Block
-import com.google.samples.apps.iosched.shared.model.Tag
 import com.google.samples.apps.iosched.shared.result.Result
+import com.google.samples.apps.iosched.shared.schedule.TagFilterMatcher
 import com.google.samples.apps.iosched.shared.schedule.UserSessionMatcher
 import com.google.samples.apps.iosched.shared.util.TimeUtils.ConferenceDay
 import com.google.samples.apps.iosched.test.util.LiveDataTestUtil
@@ -54,6 +53,8 @@ import com.google.samples.apps.iosched.ui.SnackbarMessage
 import com.google.samples.apps.iosched.ui.login.FirebaseLoginViewModelPlugin
 import com.google.samples.apps.iosched.ui.login.LoginViewModelPlugin
 import com.google.samples.apps.iosched.ui.schedule.day.TestUserEventDataSource
+import com.google.samples.apps.iosched.ui.schedule.filters.LoadTagFiltersUseCase
+import com.google.samples.apps.iosched.ui.schedule.filters.TagFilter
 import com.nhaarman.mockito_kotlin.doReturn
 import com.nhaarman.mockito_kotlin.mock
 import org.hamcrest.CoreMatchers.equalTo
@@ -86,8 +87,9 @@ class ScheduleViewModelTest {
                 DefaultSessionAndUserEventRepository(
                         TestUserEventDataSource(), DefaultSessionRepository(TestDataRepository))
         )
-        val loadTagsUseCase = LoadTagsByCategoryUseCase(TagRepository(TestDataRepository))
+        val loadTagsUseCase = LoadTagFiltersUseCase(TagRepository(TestDataRepository))
         val loginDelegate = FakeLoginViewModelPlugin()
+
         // Create ViewModel with the use cases
         val viewModel = createScheduleViewModel(loadSessionsUseCase = loadSessionsUseCase,
                 loadTagsUseCase = loadTagsUseCase,
@@ -205,12 +207,12 @@ class ScheduleViewModelTest {
     }
 
     private fun createScheduleViewModel(
-            loadSessionsUseCase: LoadUserSessionsByDayUseCase = createTestLoadUserSessionsByDayUseCase(),
-            loadAgendaUseCase: LoadAgendaUseCase = createAgendaExceptionUseCase(),
-            loadTagsUseCase: LoadTagsByCategoryUseCase = createTagsExceptionUseCase(),
-            loginViewModelDelegate: LoginViewModelPlugin = createLoginViewModelComponent(),
-            starEventUseCase: StarEventUseCase = createStarEventUseCase(),
-            reservationActionUseCase: ReservationActionUseCase = createReservationActionUseCase()
+        loadSessionsUseCase: LoadUserSessionsByDayUseCase = createTestLoadUserSessionsByDayUseCase(),
+        loadAgendaUseCase: LoadAgendaUseCase = createAgendaExceptionUseCase(),
+        loadTagsUseCase: LoadTagFiltersUseCase = createTagsExceptionUseCase(),
+        loginViewModelDelegate: LoginViewModelPlugin = createLoginViewModelComponent(),
+        starEventUseCase: StarEventUseCase = createStarEventUseCase(),
+        reservationActionUseCase: ReservationActionUseCase = createReservationActionUseCase()
     ): ScheduleViewModel {
         return ScheduleViewModel(
                 loadSessionsUseCase, loadAgendaUseCase, loadTagsUseCase, loginViewModelDelegate,
@@ -427,9 +429,9 @@ class ScheduleViewModelTest {
     /**
      * Creates a use case that throws an exception.
      */
-    private fun createTagsExceptionUseCase(): LoadTagsByCategoryUseCase {
-        return object : LoadTagsByCategoryUseCase(TagRepository(TestDataRepository)) {
-            override fun execute(parameters: Unit): List<Tag> {
+    private fun createTagsExceptionUseCase(): LoadTagFiltersUseCase {
+        return object : LoadTagFiltersUseCase(TagRepository(TestDataRepository)) {
+            override fun execute(parameters: TagFilterMatcher): List<TagFilter> {
                 throw Exception("Testing exception")
             }
         }

@@ -54,16 +54,14 @@ class LoadUserSessionsByDayUseCaseTest {
     @Test
     fun returnsMapOfSessions() {
 
-        val userEventsResult: MutableLiveData<UserEventsResult>
-                = MutableLiveData<UserEventsResult>()
+        val userEventsResult: MutableLiveData<UserEventsResult> = MutableLiveData()
 
         val testUserEventRepository = DefaultSessionAndUserEventRepository(
                 TestUserEventDataSource(userEventsResult),
                 DefaultSessionRepository(TestDataRepository))
         val useCase = LoadUserSessionsByDayUseCase(testUserEventRepository)
 
-        val resultLiveData: MediatorLiveData<Result<LoadUserSessionsByDayUseCaseResult>>
-                = useCase.observe()
+        val resultLiveData = useCase.observe()
 
         useCase.execute(Pair(FakeUserSessionMatcher, "user1"))
 
@@ -78,16 +76,14 @@ class LoadUserSessionsByDayUseCaseTest {
     @Test
     fun userEventsMessage() {
 
-        val userEventsResult: MutableLiveData<UserEventsResult>
-                = MutableLiveData<UserEventsResult>()
+        val userEventsResult: MutableLiveData<UserEventsResult> = MutableLiveData()
 
         val testUserEventRepository = DefaultSessionAndUserEventRepository(
                 TestUserEventDataSource(userEventsResult),
                 DefaultSessionRepository(TestDataRepository))
         val useCase = LoadUserSessionsByDayUseCase(testUserEventRepository)
 
-        val resultLiveData: MediatorLiveData<Result<LoadUserSessionsByDayUseCaseResult>>
-                = useCase.observe()
+        val resultLiveData = useCase.observe()
 
         useCase.execute(Pair(FakeUserSessionMatcher, "user1"))
 
@@ -111,8 +107,7 @@ class LoadUserSessionsByDayUseCaseTest {
     @Test
     fun errorCase() {
 
-        val userEventsResult: MutableLiveData<UserEventsResult>
-                = MutableLiveData<UserEventsResult>()
+        val userEventsResult: MutableLiveData<UserEventsResult> = MutableLiveData()
 
         val testUserEventRepository = DefaultSessionAndUserEventRepository(
                 TestUserEventDataSource(userEventsResult),
@@ -121,17 +116,13 @@ class LoadUserSessionsByDayUseCaseTest {
 
         val useCase = LoadUserSessionsByDayUseCase(testUserEventRepository)
 
-        val resultLiveData: MediatorLiveData<Result<LoadUserSessionsByDayUseCaseResult>>
-                = useCase.observe()
+        val resultLiveData = useCase.observe()
 
         useCase.execute(Pair(FakeUserSessionMatcher, "user1"))
 
         val result = LiveDataTestUtil.getValue(resultLiveData)
 
-        assertThat(
-                result,
-                `is`(instanceOf(Result.Error::class.java)))
-
+        assertThat(result, `is`(instanceOf(Result.Error::class.java)))
     }
 }
 

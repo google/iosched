@@ -19,6 +19,7 @@ package com.google.samples.apps.iosched.ui.schedule.filters
 import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProvider
 import android.os.Bundle
+import android.support.v7.widget.GridLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.support.v7.widget.RecyclerView.OnScrollListener
 import android.view.LayoutInflater
@@ -59,11 +60,13 @@ class ScheduleFilterFragment : DaggerFragment() {
         binding.viewModel = viewModel
 
         filterAdapter = ScheduleFilterAdapter(viewModel)
-        viewModel.tagFilters.observe(this, Observer { filterAdapter.submitList(it) })
+        viewModel.tagFilters.observe(this, Observer { filterAdapter.submitTagFilterList(it) })
 
         recyclerview.apply {
             adapter = filterAdapter
             setHasFixedSize(true)
+            (layoutManager as GridLayoutManager).spanSizeLookup =
+                    ScheduleFilterSpanSizeLookup(filterAdapter)
             addOnScrollListener(object : OnScrollListener() {
                 override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
                     filters_header.isActivated = recyclerView.canScrollVertically(-1)

@@ -14,10 +14,21 @@
  * limitations under the License.
  */
 
-package com.google.samples.apps.iosched.util
+package com.google.samples.apps.iosched.ui.schedule.filters
 
 import android.databinding.ObservableBoolean
+import com.google.samples.apps.iosched.shared.model.Tag
+import com.google.samples.apps.iosched.util.hasSameValue
 
-fun ObservableBoolean.hasSameValue(other: ObservableBoolean) = get() == other.get()
+class TagFilter(val tag: Tag, isChecked: Boolean) {
+    val isChecked = ObservableBoolean(isChecked)
 
-fun Int.isEven() = this % 2 == 0
+    /** Only the tag is used for equality. */
+    override fun equals(other: Any?) = this === other || (other is TagFilter && other.tag == tag)
+
+    /** Only the tag is used for equality. */
+    override fun hashCode() = tag.hashCode()
+
+    fun isUiContentEqual(other: TagFilter) =
+        tag.isUiContentEqual(other.tag) && isChecked.hasSameValue(other.isChecked)
+}

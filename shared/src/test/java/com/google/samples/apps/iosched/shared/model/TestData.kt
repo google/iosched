@@ -37,15 +37,18 @@ object TestData : ConferenceDataSource {
     // region Declarations
 
     val androidTag = Tag("1", "TRACK", 0, "Android", 0xFFAED581.toInt())
-    val webTag = Tag("2", "TRACK", 1, "Web", 0xFFFFF176.toInt())
+    val cloudTag = Tag("2", "TRACK", 1, "Cloud", 0xFFFFF176.toInt())
+    val webTag = Tag("3", "TRACK", 2, "Web", 0xFFFFF176.toInt())
     val sessionsTag = Tag("101", "TYPE", 0, "Sessions", 0)
     val codelabsTag = Tag("102", "TYPE", 1, "Codelabs", 0)
     val beginnerTag = Tag("201", "LEVEL", 0, "Beginner", 0)
     val intermediateTag = Tag("202", "LEVEL", 1, "Intermediate", 0)
     val advancedTag = Tag("203", "LEVEL", 2, "Advanced", 0)
 
-    val tagsList = listOf(androidTag, webTag, sessionsTag, codelabsTag, beginnerTag,
-        intermediateTag, advancedTag)
+    val tagsList = listOf(
+        androidTag, cloudTag, webTag, sessionsTag, codelabsTag, beginnerTag,
+        intermediateTag, advancedTag
+    )
 
     val speaker = Speaker(id = "1", name = "Troy McClure", imageUrl = "",
             company = "", abstract = "", gPlusUrl = "", twitterUrl = "")

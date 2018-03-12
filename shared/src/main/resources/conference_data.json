@@ -4089,6 +4089,46 @@
             "order_in_category": 6
         },
         {
+            "category": "TYPE",
+            "tag": "TYPE_APPREVIEWS",
+            "name": "App Reviews",
+            "original_id": "c25f7bd9-ff01-40cc-af43-538cb4d6828d",
+            "abstract": "",
+            "order_in_category": 1
+        },
+        {
+            "category": "TYPE",
+            "tag": "TYPE_AFTERHOURS",
+            "name": "After Hours",
+            "original_id": "0fe6d584-086f-4477-89a8-155bab64eb4e",
+            "abstract": "",
+            "order_in_category": 0
+        },
+        {
+            "category": "TYPE",
+            "tag": "TYPE_CODELABS",
+            "name": "Codelabs",
+            "original_id": "824dd96a-1de7-457a-bdd2-ba7513526d09",
+            "abstract": "",
+            "order_in_category": 2
+        },
+        {
+            "category": "TYPE",
+            "tag": "TYPE_SANDBOXDEMO",
+            "name": "Sandbox Demos",
+            "original_id": "ae7c66c3-fbb4-42ff-b65e-036f4833f1a2",
+            "abstract": "",
+            "order_in_category": 5
+        },
+        {
+            "category": "TYPE",
+            "tag": "TYPE_OFFICEHOURS",
+            "name": "Office Hours",
+            "original_id": "2d119030-86ca-4529-b168-65e7cb4f4b5b",
+            "abstract": "",
+            "order_in_category": 4
+        },
+        {
             "category": "TRACK",
             "tag": "TRACK_FIREBASE",
             "name": "Firebase",

@@ -149,11 +149,11 @@ enum class SessionType {
             val typeTag = tags.firstOrNull { it.category == Tag.CATEGORY_TYPE }
 
             return when (typeTag?.id) {
-                "TYPE_APP_REVIEW" -> APP_REVIEW
-                "TYPE_OFFICE_HOURS" -> OFFICE_HOURS
-                "TYPE_CODELAB" -> CODELAB
-                "TYPE_SANDBOX" -> SANDBOX
-                "TYPE_AFTER_HOURS" -> AFTER_HOURS
+                Tag.TYPE_APP_REVIEWS -> APP_REVIEW
+                Tag.TYPE_AFTERHOURS -> AFTER_HOURS
+                Tag.TYPE_CODELABS -> CODELAB
+                Tag.TYPE_OFFICEHOURS -> OFFICE_HOURS
+                Tag.TYPE_SANDBOXDEMO -> SANDBOX
                 else -> SESSION
             }
         }

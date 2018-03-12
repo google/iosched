@@ -49,6 +49,26 @@ data class Tag (
      */
     val color: Int
 ) {
+
+    companion object {
+        /** Category value for topic tags */
+        const val CATEGORY_TRACK = "TRACK"
+        /** Category value for type tags */
+        const val CATEGORY_TYPE = "TYPE"
+        /** Category value for theme tags */
+        const val CATEGORY_THEME = "THEME"
+        /** Category value for level tags */
+        const val CATEGORY_LEVEL = "LEVEL"
+
+        // Exhaustive list of IDs for tags with category = TYPE
+        const val TYPE_SESSIONS = "TYPE_SESSIONS"
+        const val TYPE_APP_REVIEWS = "TYPE_APPREVIEWS"
+        const val TYPE_AFTERHOURS = "TYPE_AFTERHOURS"
+        const val TYPE_CODELABS = "TYPE_CODELABS"
+        const val TYPE_OFFICEHOURS = "TYPE_OFFICEHOURS"
+        const val TYPE_SANDBOXDEMO = "TYPE_SANDBOXDEMO"
+    }
+
     /** Only IDs are used for equality. */
     override fun equals(other: Any?): Boolean = this === other || (other is Tag && other.id == id)
 
@@ -56,11 +76,4 @@ data class Tag (
     override fun hashCode(): Int = id.hashCode()
 
     fun isUiContentEqual(other: Tag) = color == other.color && name == other.name
-
-    companion object {
-        /** Category value for topic tags */
-        const val CATEGORY_TRACK = "TRACK"
-
-        const val CATEGORY_TYPE = "TYPE"
-    }
 }

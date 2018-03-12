@@ -37,7 +37,9 @@ import android.util.TypedValue
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import com.google.samples.apps.iosched.shared.BuildConfig
 import org.threeten.bp.ZonedDateTime
+import timber.log.Timber
 
 /**
  * Implementation of lazy that is not thread safe. Useful when you know what thread you will be
@@ -186,3 +188,14 @@ fun Context.getThemeColor(
 }
 
 // endregion
+
+/**
+ * Helper to throw exceptions only in Debug builds, logging a warning otherwise.
+ */
+fun exceptionInDebug(t: Throwable) {
+    if (BuildConfig.DEBUG) {
+        throw t
+    } else {
+        Timber.e(t)
+    }
+}

@@ -53,6 +53,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:text="@string/filters"
+                android:textColor="?android:textColorPrimary"
                 android:textAppearance="?android:textAppearanceMedium" />
 
             <Button
@@ -77,10 +78,12 @@
             android:layout_height="0dp"
             android:layout_weight="1"
             android:clipToPadding="false"
+            android:orientation="vertical"
             android:paddingVertical="@dimen/spacing_normal"
             android:scrollbars="vertical"
-            app:layoutManager="LinearLayoutManager"
-            tools:listitem="@layout/list_item_filter_drawer"
+            app:layoutManager="GridLayoutManager"
+            app:spanCount="2"
+            tools:listitem="@layout/item_tag_filter"
             tools:targetApi="o" />
 
     </LinearLayout>

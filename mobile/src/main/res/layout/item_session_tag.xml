@@ -17,9 +17,11 @@
 
 <layout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <data>
+
         <variable
             name="tag"
             type="com.google.samples.apps.iosched.shared.model.Tag" />
@@ -31,8 +33,10 @@
         android:layout_height="wrap_content"
         android:layout_marginEnd="@dimen/margin_normal"
         android:layout_marginTop="@dimen/spacing_normal"
-        android:textAppearance="@style/TextAppearance.IOSched.Tag"
         android:text="@{tag.name}"
-        app:tagTint="@{tag.color}" />
+        app:tagTint="@{tag.color}"
+        tools:drawableStart="@drawable/tag_dot"
+        tools:drawableTint="#f0f"
+        tools:text="Android" />
 
 </layout>
