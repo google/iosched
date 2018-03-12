@@ -47,11 +47,16 @@ open class ConferenceDataRepository @Inject constructor(
     var latestUpdateSource: UpdateSource = UpdateSource.NONE
         private set
 
+    // Prevents multiple consumers requesting data at the same time
+    private val loadConfDataLock = Any()
+
     fun getConferenceData(forceUpdate: Boolean = false): ConferenceData {
-        if (forceUpdate || conferenceDataCache == null) {
-            conferenceDataCache = loadConferenceData()
+        synchronized(loadConfDataLock) {
+            if (forceUpdate || conferenceDataCache == null) {
+                conferenceDataCache = loadConferenceData()
+            }
+            return conferenceDataCache!!
         }
-        return conferenceDataCache!!
     }
 
     fun getOfflineConferenceData(): ConferenceData {
