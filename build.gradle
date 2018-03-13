@@ -26,9 +26,9 @@ buildscript {
         targetSdkVersion = 27
 
         // At this time, there isn't a device (or emulator) that supports 27.
-        compileWearSdkVersion = 26
+        compileWearSdkVersion = 27
         minWearSdkVersion = 23
-        targetWearSdkVersion = 26
+        targetWearSdkVersion = 27
 
         // App dependencies
         constraintLayoutVersion = '1.1.0-beta5'
@@ -62,8 +62,9 @@ buildscript {
     }
 
     repositories {
-        maven {
-            url "$mdc_repo_location"
+        // Material Design Components in Kokoro & local
+        if (project.hasProperty('mdc_repo_location')) {
+            maven { url "$mdc_repo_location" }
         }
         google()
         jcenter()
