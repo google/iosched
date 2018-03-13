@@ -17,27 +17,32 @@
 package com.google.samples.apps.iosched.shared.schedule
 
 import com.google.samples.apps.iosched.shared.model.Tag
+import com.google.samples.apps.iosched.shared.model.TestData.androidTag
+import com.google.samples.apps.iosched.shared.model.TestData.codelabsTag
+import com.google.samples.apps.iosched.shared.model.TestData.session0
+import com.google.samples.apps.iosched.shared.model.TestData.sessionsTag
+import com.google.samples.apps.iosched.shared.model.TestData.webTag
+import com.google.samples.apps.iosched.shared.model.UserSession
 import org.junit.Assert.assertFalse
 import org.junit.Assert.assertTrue
 import org.junit.Before
 import org.junit.Test
 
 /**
- * Unit tests for [SessionMatcher].
+ * Unit tests for [TagFilterMatcher].
  */
-class SessionMatcherTest {
+class TagFilterMatcherTest {
 
-    private val androidTag = Tag("1", "TRACK", 0, "Android", 0xFFAED581.toInt())
-    private val webTag = Tag("2", "TRACK", 1, "Web", 0xFFFFF176.toInt())
-    private val sessionsTag = Tag("101", "TYPE", 0, "Sessions", 0)
-    private val codelabsTag = Tag("102", "TYPE", 1, "Codelabs", 0)
+    private var sessionMatcher = TagFilterMatcher()
 
-    private var sessionMatcher = SessionMatcher()
+    private fun createTestUserSession(vararg tags: Tag): UserSession {
+        return UserSession(session0.copy(tags = tags.asList()), null)
+    }
 
     @Before
     fun createSessionFilters() {
         // Reset filters
-        sessionMatcher = SessionMatcher()
+        sessionMatcher = TagFilterMatcher()
     }
 
     @Test
@@ -46,10 +51,10 @@ class SessionMatcherTest {
         sessionMatcher.addAll(androidTag, webTag)
 
         // And the session contains those two tags
-        val sessionTags = listOf(androidTag, webTag)
+        val session = createTestUserSession(androidTag, webTag)
 
         // There's a match
-        assertTrue(sessionMatcher.matchesSessionTags(sessionTags))
+        assertTrue(sessionMatcher.matches(session))
     }
 
     @Test
@@ -58,10 +63,10 @@ class SessionMatcherTest {
         sessionMatcher.add(androidTag)
 
         // And the session contains that tag
-        val sessionTags = listOf(androidTag, webTag)
+        val session = createTestUserSession(androidTag, webTag)
 
         // There's a match
-        assertTrue(sessionMatcher.matchesSessionTags(sessionTags))
+        assertTrue(sessionMatcher.matches(session))
     }
 
     @Test
@@ -70,10 +75,10 @@ class SessionMatcherTest {
         sessionMatcher.addAll(androidTag, webTag)
 
         // And the session only contains one
-        val sessionTags = listOf(androidTag)
+        val session = createTestUserSession(androidTag)
 
         // There's a match
-        assertTrue(sessionMatcher.matchesSessionTags(sessionTags))
+        assertTrue(sessionMatcher.matches(session))
     }
 
     @Test
@@ -82,10 +87,10 @@ class SessionMatcherTest {
         sessionMatcher.addAll(androidTag, codelabsTag)
 
         // And the session only contains one of them
-        val sessionTags = listOf(androidTag, sessionsTag)
+        val session = createTestUserSession(androidTag, sessionsTag)
 
         // There's no match
-        assertFalse(sessionMatcher.matchesSessionTags(sessionTags))
+        assertFalse(sessionMatcher.matches(session))
     }
 
     @Test
@@ -94,10 +99,10 @@ class SessionMatcherTest {
         sessionMatcher.addAll(androidTag, codelabsTag)
 
         // And the session only contains one of them and no category for the other
-        val sessionTags = listOf(androidTag)
+        val session = createTestUserSession(androidTag)
 
         // There's no match
-        assertFalse(sessionMatcher.matchesSessionTags(sessionTags))
+        assertFalse(sessionMatcher.matches(session))
     }
 
     @Test
@@ -106,16 +111,16 @@ class SessionMatcherTest {
         sessionMatcher.clearAll()
 
         // Given all combinations
-        val noTags = emptyList<Tag>()
-        val oneTag = listOf(androidTag)
-        val twoTagsSameCat = listOf(androidTag, webTag)
-        val twoTagsDiffCat = listOf(androidTag, codelabsTag)
+        val noTags = createTestUserSession()
+        val oneTag = createTestUserSession(androidTag)
+        val twoTagsSameCat = createTestUserSession(androidTag, webTag)
+        val twoTagsDiffCat = createTestUserSession(androidTag, codelabsTag)
 
         // They all match
-        assertTrue(sessionMatcher.matchesSessionTags(noTags))
-        assertTrue(sessionMatcher.matchesSessionTags(oneTag))
-        assertTrue(sessionMatcher.matchesSessionTags(twoTagsSameCat))
-        assertTrue(sessionMatcher.matchesSessionTags(twoTagsDiffCat))
+        assertTrue(sessionMatcher.matches(noTags))
+        assertTrue(sessionMatcher.matches(oneTag))
+        assertTrue(sessionMatcher.matches(twoTagsSameCat))
+        assertTrue(sessionMatcher.matches(twoTagsDiffCat))
     }
 
     @Test

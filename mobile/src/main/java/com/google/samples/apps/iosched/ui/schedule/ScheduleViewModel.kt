@@ -22,7 +22,6 @@ import android.arch.lifecycle.MutableLiveData
 import android.arch.lifecycle.ViewModel
 import android.databinding.ObservableBoolean
 import android.support.annotation.StringRes
-import android.support.annotation.VisibleForTesting
 import com.google.firebase.auth.FirebaseUser
 import com.google.samples.apps.iosched.R
 import com.google.samples.apps.iosched.shared.domain.agenda.LoadAgendaUseCase
@@ -35,7 +34,9 @@ import com.google.samples.apps.iosched.shared.model.UserSession
 import com.google.samples.apps.iosched.shared.result.Result
 import com.google.samples.apps.iosched.shared.result.Result.Success
 import com.google.samples.apps.iosched.shared.result.succeeded
-import com.google.samples.apps.iosched.shared.schedule.SessionMatcher
+import com.google.samples.apps.iosched.shared.schedule.PinnedEventMatcher
+import com.google.samples.apps.iosched.shared.schedule.TagFilterMatcher
+import com.google.samples.apps.iosched.shared.schedule.UserSessionMatcher
 import com.google.samples.apps.iosched.shared.util.TimeUtils.ConferenceDay
 import com.google.samples.apps.iosched.shared.util.TimeUtils.ConferenceDay.DAY_1
 import com.google.samples.apps.iosched.shared.util.TimeUtils.ConferenceDay.DAY_2
@@ -59,12 +60,16 @@ class ScheduleViewModel @Inject constructor(
 
     val isLoading: LiveData<Boolean>
 
-    private val sessionMatcher = SessionMatcher()
+    // The current UserSessionMatcher, used to filter the events that are shown
+    private var userSessionMatcher: UserSessionMatcher
+
+    private val tagFilterMatcher = TagFilterMatcher()
     // List of TagFilters returned by the LiveData transformation. Only Result.Success modifies it.
     private var cachedTagFilters = emptyList<TagFilter>()
 
     val tagFilters: LiveData<List<TagFilter>>
     val hasAnyFilters = ObservableBoolean(false)
+    val showPinnedEvents = ObservableBoolean(false)
 
     private val loadSessionsResult =
         MutableLiveData<Result<Map<ConferenceDay, List<UserSession>>>>()
@@ -88,6 +93,8 @@ class ScheduleViewModel @Inject constructor(
     val profileContentDesc: LiveData<Int>
 
     init {
+        userSessionMatcher = tagFilterMatcher
+
         // Load sessions and tags and store the result in `LiveData`s
         refreshUserSessions()
         loadAgendaUseCase(loadAgendaResult)
@@ -134,11 +141,10 @@ class ScheduleViewModel @Inject constructor(
         profileContentDesc = currentFirebaseUser.map(::getProfileContentDescription)
     }
 
-    @VisibleForTesting
-    internal fun processTags(tags: List<Tag>): List<TagFilter> {
-        sessionMatcher.removeOrphanedTags(tags)
-        // Convert to list of TagFilters, checking the ones that are selected in SessionMatcher.
-        return tags.map { TagFilter(it, it in sessionMatcher) }
+    private fun processTags(tags: List<Tag>): List<TagFilter> {
+        tagFilterMatcher.removeOrphanedTags(tags)
+        // Convert to list of TagFilters, checking the ones that are selected in TagFilterMatcher.
+        return tags.map { TagFilter(it, it in tagFilterMatcher) }
     }
 
     /**
@@ -151,35 +157,36 @@ class ScheduleViewModel @Inject constructor(
         DAY_3 -> day3Sessions
     }
 
-    /**
-     * Called from UI to start a navigation action to the detail screen.
-     */
     override fun openSessionDetail(id: String) {
         navigateToSessionAction.value = Event(id)
     }
 
-    /**
-     * Called from the UI to enable or disable the filters.
-     */
     override fun toggleFilter(filter: TagFilter, enabled: Boolean) {
-        // If sessionMatcher.add or .remove returns false, we do nothing.
-        if (enabled && sessionMatcher.add(filter.tag)) {
+        // If tagFilterMatcher.add or .remove returns false, we do nothing.
+        if (enabled && tagFilterMatcher.add(filter.tag)) {
             filter.isChecked.set(true)
             hasAnyFilters.set(true)
-        } else if (!enabled && sessionMatcher.remove(filter.tag)) {
+            refreshUserSessions()
+        } else if (!enabled && tagFilterMatcher.remove(filter.tag)) {
             filter.isChecked.set(false)
-            hasAnyFilters.set(!sessionMatcher.isEmpty())
+            hasAnyFilters.set(!tagFilterMatcher.isEmpty())
+            refreshUserSessions()
         }
-        refreshUserSessions()
     }
 
-    /**
-     * Called from the UI to reset the filters.
-     */
     override fun clearFilters() {
-        if (sessionMatcher.clearAll()) {
+        if (tagFilterMatcher.clearAll()) {
             tagFilters.value?.forEach { it.isChecked.set(false) }
             hasAnyFilters.set(false)
+            refreshUserSessions()
+        }
+    }
+
+    override fun togglePinnedEvents(pinned: Boolean) {
+        // TODO check if logged in first
+        if (showPinnedEvents.get() != pinned) {
+            showPinnedEvents.set(pinned)
+            userSessionMatcher = if (pinned) { PinnedEventMatcher } else { tagFilterMatcher }
             refreshUserSessions()
         }
     }
@@ -192,9 +199,6 @@ class ScheduleViewModel @Inject constructor(
         }
     }
 
-    private fun refreshUserSessions() =
-        loadUserSessionsByDayUseCase(sessionMatcher to userID, loadSessionsResult)
-
     @StringRes
     private fun getProfileContentDescription(userResult: Result<FirebaseUser?>): Int {
         return if (userResult.succeeded) {
@@ -203,6 +207,11 @@ class ScheduleViewModel @Inject constructor(
             R.string.a11y_login
         }
     }
+
+    private fun refreshUserSessions() {
+        loadUserSessionsByDayUseCase(userSessionMatcher to userID, loadSessionsResult)
+    }
+
 }
 
 class TagFilter(val tag: Tag, isChecked: Boolean) {
@@ -219,9 +228,17 @@ class TagFilter(val tag: Tag, isChecked: Boolean) {
 }
 
 interface ScheduleEventListener {
+    /** Called from UI to start a navigation action to the detail screen. */
     fun openSessionDetail(id: String)
+
+    /** Called from the UI to enable or disable a particular filter. */
     fun toggleFilter(filter: TagFilter, enabled: Boolean)
+
+    /** Called from the UI to remove all filters. */
     fun clearFilters()
+
+    /** Called from the UI to toggle showing starred or reserved events only. */
+    fun togglePinnedEvents(pinned: Boolean)
 }
 
 //TODO(jalc) move somewhere else (b/74113562)
