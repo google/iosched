@@ -21,6 +21,7 @@ import android.databinding.DataBindingUtil
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
 import com.google.samples.apps.iosched.R
@@ -28,13 +29,27 @@ import com.google.samples.apps.iosched.databinding.ItemSpeakerDetailBinding
 import com.google.samples.apps.iosched.shared.model.Speaker
 import com.google.samples.apps.iosched.shared.util.SpeakerUtils
 import com.google.samples.apps.iosched.shared.util.TimeUtils
+import com.google.samples.apps.iosched.util.drawable.HeaderGridDrawable
 import org.threeten.bp.ZonedDateTime
+
+@Suppress("unused")
+@BindingAdapter("headerImage")
+fun headerImage(imageView: ImageView, photoUrl: String?) {
+    if (!photoUrl.isNullOrEmpty()) {
+        // TODO get thumbnail
+    } else {
+        imageView.setImageDrawable(HeaderGridDrawable(imageView.context))
+    }
+}
 
 @Suppress("unused")
 @BindingAdapter("sessionSpeakers")
 fun sessionSpeakers(layout: LinearLayout, speakers: Set<Speaker>?) {
-    layout.removeAllViews()
     if (speakers != null) {
+        // remove all views other than the header
+        for (i in layout.childCount - 1 downTo 1) {
+            layout.removeViewAt(i)
+        }
         SpeakerUtils.alphabeticallyOrderedSpeakerList(speakers).forEach {
             layout.addView(createSessionSpeakerView(layout, it))
         }

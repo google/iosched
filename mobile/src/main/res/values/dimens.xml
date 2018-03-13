@@ -22,7 +22,7 @@
     <dimen name="min_touch_target">48dp</dimen>
     <dimen name="divider">1dp</dimen>
     <item name="text_line_spacing" format="float" type="dimen">1.2</item>
-    <dimen name="speaker_headshot_size">60dp</dimen>
+    <dimen name="speaker_headshot_size">40dp</dimen>
     <dimen name="session_keyline">80dp</dimen>
     <dimen name="tag_height">32sp</dimen>
     <dimen name="tag_dot_size">12dp</dimen>

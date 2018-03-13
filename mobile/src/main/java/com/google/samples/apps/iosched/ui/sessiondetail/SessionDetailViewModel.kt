@@ -20,7 +20,6 @@ import android.arch.lifecycle.LiveData
 import android.arch.lifecycle.MutableLiveData
 import android.arch.lifecycle.Transformations
 import android.arch.lifecycle.ViewModel
-import android.support.annotation.VisibleForTesting
 import com.google.samples.apps.iosched.shared.domain.sessions.LoadSessionUseCase
 import com.google.samples.apps.iosched.shared.model.Session
 import com.google.samples.apps.iosched.shared.result.Result
@@ -34,8 +33,8 @@ import javax.inject.Inject
  * Loads [Session] data and exposes it to the session detail view.
  */
 class SessionDetailViewModel @Inject constructor(
-        private val loadSessionUseCase: LoadSessionUseCase
-): ViewModel() {
+    private val loadSessionUseCase: LoadSessionUseCase
+) : ViewModel() {
 
     private val useCaseResult = MutableLiveData<Result<Session>>()
     private val sessionState: LiveData<TimeUtils.SessionState>
@@ -45,22 +44,32 @@ class SessionDetailViewModel @Inject constructor(
     val session: LiveData<Session?>
     val showRateButton: LiveData<Boolean>
     val isPlayable: LiveData<Boolean>
+    val hasSpeakers: LiveData<Boolean>
+    val hasRelated: LiveData<Boolean>
 
     init {
         //TODO: Deal with error SessionNotFoundException
         session = useCaseResult.map { (it as? Result.Success)?.data }
-
-        isPlayable = Transformations.map(session, { currentSession ->
-            checkPlayable(currentSession)
-        })
 
         // TODO this should also be called when session state is stale (b/74242921)
         sessionState = Transformations.map(session, { currentSession ->
             TimeUtils.getSessionState(currentSession, ZonedDateTime.now())
         })
 
+        isPlayable = Transformations.map(session, { currentSession ->
+            checkPlayable(currentSession)
+        })
+
         showRateButton = Transformations.map(sessionState, { currentState ->
             currentState == TimeUtils.SessionState.AFTER
+        })
+
+        hasSpeakers = Transformations.map(session, { currentSession ->
+            currentSession?.speakers?.isNotEmpty() ?: false
+        })
+
+        hasRelated = Transformations.map(session, { currentSession ->
+            currentSession?.relatedSessions?.isNotEmpty() ?: false
         })
     }
 
@@ -83,7 +92,7 @@ class SessionDetailViewModel @Inject constructor(
         return session.value ?: throw IllegalStateException("Session should not be null")
     }
 
-    @VisibleForTesting fun checkPlayable(currentSession: Session?): Boolean {
+    fun checkPlayable(currentSession: Session?): Boolean {
         return currentSession != null && currentSession.youTubeUrl.isNotBlank()
     }
 }

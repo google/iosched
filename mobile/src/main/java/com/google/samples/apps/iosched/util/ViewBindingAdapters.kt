@@ -26,6 +26,7 @@ import android.view.View.GONE
 import android.view.View.INVISIBLE
 import android.view.View.VISIBLE
 import android.widget.ImageView
+import androidx.net.toUri
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.google.samples.apps.iosched.R
@@ -74,5 +75,5 @@ fun imageUrl(imageView: ImageView, imageUrl: Uri?, placeholder: Drawable?) {
 
 @BindingAdapter(value = ["imageUrl", "placeholder"], requireAll = false)
 fun imageUrl(imageView: ImageView, imageUrl: String?, placeholder: Drawable?) {
-    imageUrl(imageView, Uri.parse(imageUrl), placeholder)
+    imageUrl(imageView, imageUrl?.toUri(), placeholder)
 }
