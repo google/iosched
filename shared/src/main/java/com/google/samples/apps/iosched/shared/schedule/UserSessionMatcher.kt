@@ -14,14 +14,13 @@
  * limitations under the License.
  */
 
-package com.google.samples.apps.iosched.shared.model
+package com.google.samples.apps.iosched.shared.schedule
 
-import com.google.samples.apps.iosched.shared.firestore.entity.UserEvent
+import com.google.samples.apps.iosched.shared.model.UserSession
 
-/**
- * Wrapper class to hold the [Session] and associating [UserEvent].
- */
-data class UserSession(
-    val session: Session,
-    val userEvent: UserEvent?
-)
+/** Capable of discerning [UserSession]s that match some criterion. */
+interface UserSessionMatcher {
+
+    /** Return true if the [UserSession] matches some criterion. */
+    fun matches(userSession: UserSession): Boolean
+}

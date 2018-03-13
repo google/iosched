@@ -21,6 +21,7 @@
         <!-- Customize your theme here. -->
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorAccent">@color/colorAccent</item>
+        <item name="colorControlActivated">@color/colorPrimary</item>
         <item name="toolbarStyle">@style/Widget.Toolbar</item>
         <item name="tabStyle">@style/Widget.IOSched.Tabs</item>
         <item name="android:windowBackground">@color/white</item>

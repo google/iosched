@@ -16,9 +16,16 @@
 
 package com.google.samples.apps.iosched.shared.schedule
 
+import com.google.samples.apps.iosched.shared.model.Session
 import com.google.samples.apps.iosched.shared.model.Tag
+import com.google.samples.apps.iosched.shared.model.UserSession
 
-class SessionMatcher {
+/**
+ * Discerns UserSessions that have [Tag]s satisfying a selected set of Tags as follows:
+ * - selected Tags are grouped by their [category][Tag.category]
+ * - for each category, the UserSession must contain at least one of those Tags
+ */
+class TagFilterMatcher : UserSessionMatcher {
 
     private val selectedTags = HashSet<Tag>()
 
@@ -61,13 +68,12 @@ class SessionMatcher {
     }
 
     /**
-     * There are different types of tag categories. Only filter if there are tags in each
-     * category.
+     * For each category among selected [Tag]s, the [Session] must have at least one of those tags.
      */
-    fun matchesSessionTags(sessionTags: List<Tag>): Boolean {
+    override fun matches(userSession: UserSession): Boolean {
         var match = true
         selectedTags.groupBy { it.category }.forEach { (_, tagsInCategory) ->
-            if (sessionTags.intersect(tagsInCategory).isEmpty()) {
+            if (userSession.session.tags.intersect(tagsInCategory).isEmpty()) {
                 match = false
                 return@forEach
             }
