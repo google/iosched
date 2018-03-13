@@ -19,18 +19,18 @@
 package com.google.samples.apps.iosched.ui.schedule
 
 import android.arch.core.executor.testing.InstantTaskExecutorRule
+import android.arch.lifecycle.LiveData
 import android.arch.lifecycle.MutableLiveData
 import com.google.firebase.auth.FirebaseUser
 import com.google.samples.apps.iosched.R
 import com.google.samples.apps.iosched.model.TestData
 import com.google.samples.apps.iosched.model.TestDataRepository
-import com.google.samples.apps.iosched.shared.data.login.LoginRepository
+import com.google.samples.apps.iosched.shared.data.login.FirebaseUserDataSource
 import com.google.samples.apps.iosched.shared.data.session.SessionRepository
 import com.google.samples.apps.iosched.shared.data.session.UserEventRepository
 import com.google.samples.apps.iosched.shared.data.session.agenda.AgendaRepository
 import com.google.samples.apps.iosched.shared.data.tag.TagRepository
 import com.google.samples.apps.iosched.shared.domain.agenda.LoadAgendaUseCase
-import com.google.samples.apps.iosched.shared.domain.login.ObservableFirebaseUserUseCase
 import com.google.samples.apps.iosched.shared.domain.sessions.LoadUserSessionsByDayUseCase
 import com.google.samples.apps.iosched.shared.domain.tags.LoadTagsByCategoryUseCase
 import com.google.samples.apps.iosched.shared.model.Block
@@ -41,11 +41,9 @@ import com.google.samples.apps.iosched.shared.schedule.UserSessionMatcher
 import com.google.samples.apps.iosched.shared.util.TimeUtils.ConferenceDay
 import com.google.samples.apps.iosched.test.util.LiveDataTestUtil
 import com.google.samples.apps.iosched.test.util.SyncTaskExecutorRule
-import com.google.samples.apps.iosched.test.util.fakes.FakeFirebaseUserDataSource
-import com.google.samples.apps.iosched.test.util.fakes.FakeLoginDataSource
 import com.google.samples.apps.iosched.test.util.fakes.FakeLoginViewModelPlugin
+import com.google.samples.apps.iosched.ui.login.DefaultLoginViewModelPlugin
 import com.google.samples.apps.iosched.ui.login.LoginViewModelPlugin
-import com.google.samples.apps.iosched.ui.login.LoginViewModelPluginImpl
 import com.google.samples.apps.iosched.ui.schedule.day.TestUserEventDataSource
 import com.nhaarman.mockito_kotlin.mock
 import org.junit.Assert.assertEquals
@@ -127,13 +125,11 @@ class ScheduleViewModelTest {
     @Test
     fun loggedInUser_setsProfileContentDescription() {
         // Given a mock firebase user
-        val mockFirebaseUser = mock<FirebaseUser>()
+        val mockFirebaseUser = Result.Success(mock<FirebaseUser>())
 
         // Create ViewModel
-        val observableFirebaseUserUseCase = createObservableFierbaseUserUseCase {
-            Result.Success(mockFirebaseUser)
-        }
-        val loginViewModelComponent = LoginViewModelPluginImpl(observableFirebaseUserUseCase)
+        val observableFirebaseUserUseCase = createFirebaseUserDataSource(mockFirebaseUser)
+        val loginViewModelComponent = DefaultLoginViewModelPlugin(observableFirebaseUserUseCase)
         val viewModel = createScheduleViewModel(loginViewModelDelegate = loginViewModelComponent)
 
         // Check that the expected content description is set
@@ -143,13 +139,11 @@ class ScheduleViewModelTest {
     @Test
     fun noLoggedInUser_setsProfileContentDescription() {
         // Given no firebase user
-        val noFirebaseUser = null
+        val noFirebaseUser = Result.Success(null)
 
         // Create ViewModel
-        val observableFirebaseUserUseCase = createObservableFierbaseUserUseCase {
-            Result.Success(noFirebaseUser)
-        }
-        val loginViewModelComponent = LoginViewModelPluginImpl(observableFirebaseUserUseCase)
+        val observableFirebaseUserUseCase = createFirebaseUserDataSource(noFirebaseUser)
+        val loginViewModelComponent = DefaultLoginViewModelPlugin(observableFirebaseUserUseCase)
         val viewModel = createScheduleViewModel(loginViewModelDelegate = loginViewModelComponent)
 
         // Check that the expected content description is set
@@ -162,10 +156,8 @@ class ScheduleViewModelTest {
         val errorLoadingFirebaseUser = Result.Error(Exception())
 
         // Create ViewModel
-        val observableFirebaseUserUseCase = createObservableFierbaseUserUseCase {
-            errorLoadingFirebaseUser
-        }
-        val loginViewModelComponent = LoginViewModelPluginImpl(observableFirebaseUserUseCase)
+        val observableFirebaseUserUseCase = createFirebaseUserDataSource(errorLoadingFirebaseUser)
+        val loginViewModelComponent = DefaultLoginViewModelPlugin(observableFirebaseUserUseCase)
         val viewModel = createScheduleViewModel(loginViewModelDelegate = loginViewModelComponent)
 
         // Check that the expected content description is set
@@ -229,19 +221,16 @@ class ScheduleViewModelTest {
 
     private fun createLoginViewModelComponent() = FakeLoginViewModelPlugin()
 
-    private fun createLoginRepository(): LoginRepository {
-        val loginDataSource = FakeLoginDataSource()
-        val currentFirebaseUserObservableDataSource = FakeFirebaseUserDataSource()
-        return LoginRepository(loginDataSource, currentFirebaseUserObservableDataSource)
-    }
+    private fun createFirebaseUserDataSource(user: Result<FirebaseUser?>) : FirebaseUserDataSource {
 
-    private fun createObservableFierbaseUserUseCase(
-        repository: LoginRepository = createLoginRepository(),
-        userFactory: () -> Result<FirebaseUser?>
-    ) : ObservableFirebaseUserUseCase {
-        return object : ObservableFirebaseUserUseCase(repository) {
-            override fun execute(parameters: Unit, result: MutableLiveData<Result<FirebaseUser?>>) {
-                result.value = userFactory()
+        return object : FirebaseUserDataSource {
+            override fun getToken(): LiveData<Result<String>> {
+                TODO("not implemented")
+            }
+
+            override fun getCurrentUser(): LiveData<Result<FirebaseUser?>?> {
+                val res = MutableLiveData<Result<FirebaseUser?>>().apply { value = user }
+                return res
             }
         }
     }

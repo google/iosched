@@ -22,11 +22,10 @@ import com.google.samples.apps.iosched.shared.data.BootstrapConferenceDataSource
 import com.google.samples.apps.iosched.shared.data.ConferenceDataRepository
 import com.google.samples.apps.iosched.shared.data.ConferenceDataSource
 import com.google.samples.apps.iosched.shared.data.NetworkConferenceDataSource
+import com.google.samples.apps.iosched.shared.data.login.DefaultFirebaseUserDataSource
 import com.google.samples.apps.iosched.shared.data.login.FirebaseUserDataSource
-import com.google.samples.apps.iosched.shared.data.login.FirebaseUserDataSourceImpl
 import com.google.samples.apps.iosched.shared.data.login.LoginDataSource
 import com.google.samples.apps.iosched.shared.data.login.LoginRemoteDataSource
-import com.google.samples.apps.iosched.shared.data.login.LoginRepository
 import com.google.samples.apps.iosched.shared.data.map.MapMetadataDataSource
 import com.google.samples.apps.iosched.shared.data.map.RemoteMapMetadataDataSource
 import com.google.samples.apps.iosched.shared.data.userevent.RemoteUserEventDataSource
@@ -91,16 +90,7 @@ class SharedModule {
 
     @Singleton
     @Provides
-    fun provideLoginWatcher(firebase: FirebaseAuth): FirebaseUserDataSource {
-        return FirebaseUserDataSourceImpl(firebase)
-    }
-
-    @Singleton
-    @Provides
-    fun provideLoginRepository(
-        dataSource: LoginDataSource,
-        firebaseDataSource: FirebaseUserDataSource
-    ): LoginRepository {
-        return LoginRepository(dataSource, firebaseDataSource)
+    fun provideFirebaseUserDataSource(firebase: FirebaseAuth): FirebaseUserDataSource {
+        return DefaultFirebaseUserDataSource(firebase)
     }
 }

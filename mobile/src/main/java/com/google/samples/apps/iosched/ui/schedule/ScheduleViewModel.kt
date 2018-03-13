@@ -33,7 +33,6 @@ import com.google.samples.apps.iosched.shared.model.Tag
 import com.google.samples.apps.iosched.shared.model.UserSession
 import com.google.samples.apps.iosched.shared.result.Result
 import com.google.samples.apps.iosched.shared.result.Result.Success
-import com.google.samples.apps.iosched.shared.result.succeeded
 import com.google.samples.apps.iosched.shared.schedule.PinnedEventMatcher
 import com.google.samples.apps.iosched.shared.schedule.TagFilterMatcher
 import com.google.samples.apps.iosched.shared.schedule.UserSessionMatcher
@@ -139,6 +138,7 @@ class ScheduleViewModel @Inject constructor(
         }
 
         profileContentDesc = currentFirebaseUser.map(::getProfileContentDescription)
+
     }
 
     private fun processTags(tags: List<Tag>): List<TagFilter> {
@@ -200,8 +200,8 @@ class ScheduleViewModel @Inject constructor(
     }
 
     @StringRes
-    private fun getProfileContentDescription(userResult: Result<FirebaseUser?>): Int {
-        return if (userResult.succeeded) {
+    private fun getProfileContentDescription(userResult: Result<FirebaseUser?>?): Int {
+        return if (userResult is Success && userResult.data != null) {
             R.string.a11y_logout
         } else {
             R.string.a11y_login
