@@ -64,7 +64,7 @@ class LoginViewModelPluginTest {
     fun testLoggedIn() {
         val repository = createLoginRepository()
         val mockUri = mock<Uri>()
-        val mockFirebaseUser = mock<FirebaseUser>() {
+        val mockFirebaseUser = mock<FirebaseUser> {
             on { photoUrl }.doReturn(mockUri)
         }
 

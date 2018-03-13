@@ -48,7 +48,7 @@
                 app:layout_scrollFlags="scroll|exitUntilCollapsed"
                 app:toolbarId="@+id/toolbar">
 
-                <!-- TODO: replace placeholder image once final mock is available -->
+                <!-- TODO: replace generic_placeholder image once final mock is available -->
                 <ImageView
                     android:id="@+id/detail_image"
                     android:layout_width="match_parent"
