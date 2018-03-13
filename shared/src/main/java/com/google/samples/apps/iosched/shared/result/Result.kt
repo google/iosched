@@ -16,6 +16,8 @@
 
 package com.google.samples.apps.iosched.shared.result
 
+import com.google.samples.apps.iosched.shared.result.Result.Success
+
 /**
  * A generic class that holds a value with its loading status.
  * @param <T>
@@ -27,10 +29,16 @@ sealed class Result<out R> {
     object Loading : Result<Nothing>()
 
     override fun toString(): String {
-        return when(this) {
+        return when (this) {
             is Success<*> -> "Success[data=$data]"
             is Error -> "Error[exception=$exception]"
             Loading -> "Loading"
         }
     }
 }
+
+/**
+ * `true` if [Result] is of type [Success] & holds non-null [Success.data].
+ */
+val Result<*>.succeeded
+    get() = this is Success && data != null

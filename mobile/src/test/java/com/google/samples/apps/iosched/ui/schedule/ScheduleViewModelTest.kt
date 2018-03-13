@@ -19,24 +19,35 @@
 package com.google.samples.apps.iosched.ui.schedule
 
 import android.arch.core.executor.testing.InstantTaskExecutorRule
+import android.arch.lifecycle.MutableLiveData
+import com.google.firebase.auth.FirebaseUser
+import com.google.samples.apps.iosched.R
 import com.google.samples.apps.iosched.model.TestData
 import com.google.samples.apps.iosched.model.TestDataRepository
+import com.google.samples.apps.iosched.shared.data.login.LoginRepository
 import com.google.samples.apps.iosched.shared.data.session.SessionRepository
 import com.google.samples.apps.iosched.shared.data.session.UserEventRepository
 import com.google.samples.apps.iosched.shared.data.session.agenda.AgendaRepository
 import com.google.samples.apps.iosched.shared.data.tag.TagRepository
 import com.google.samples.apps.iosched.shared.domain.agenda.LoadAgendaUseCase
+import com.google.samples.apps.iosched.shared.domain.login.ObservableFirebaseUserUseCase
 import com.google.samples.apps.iosched.shared.domain.sessions.LoadUserSessionsByDayUseCase
 import com.google.samples.apps.iosched.shared.domain.tags.LoadTagsByCategoryUseCase
 import com.google.samples.apps.iosched.shared.model.Block
 import com.google.samples.apps.iosched.shared.model.Tag
 import com.google.samples.apps.iosched.shared.model.UserSession
+import com.google.samples.apps.iosched.shared.result.Result
 import com.google.samples.apps.iosched.shared.schedule.SessionMatcher
 import com.google.samples.apps.iosched.shared.util.TimeUtils.ConferenceDay
 import com.google.samples.apps.iosched.test.util.LiveDataTestUtil
 import com.google.samples.apps.iosched.test.util.SyncTaskExecutorRule
+import com.google.samples.apps.iosched.test.util.fakes.FakeFirebaseUserDataSource
+import com.google.samples.apps.iosched.test.util.fakes.FakeLoginDataSource
 import com.google.samples.apps.iosched.test.util.fakes.FakeLoginViewModelPlugin
+import com.google.samples.apps.iosched.ui.login.LoginViewModelPlugin
+import com.google.samples.apps.iosched.ui.login.LoginViewModelPluginImpl
 import com.google.samples.apps.iosched.ui.schedule.day.TestUserEventDataSource
+import com.nhaarman.mockito_kotlin.mock
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
 import org.junit.Assert.assertTrue
@@ -49,17 +60,19 @@ import org.junit.Test
 class ScheduleViewModelTest {
 
     // Executes tasks in the Architecture Components in the same thread
-    @get:Rule var instantTaskExecutorRule = InstantTaskExecutorRule()
+    @get:Rule
+    var instantTaskExecutorRule = InstantTaskExecutorRule()
 
     // Executes tasks in a synchronous [TaskScheduler]
-    @get:Rule var syncTaskExecutorRule = SyncTaskExecutorRule()
+    @get:Rule
+    var syncTaskExecutorRule = SyncTaskExecutorRule()
 
     @Test
     fun testDataIsLoaded_ObservablesUpdated() {
         // Create test use cases with test data
         val loadSessionsUseCase = LoadUserSessionsByDayUseCase(
-                SessionRepository(TestDataRepository),
-                UserEventRepository(TestUserEventDataSource)
+            SessionRepository(TestDataRepository),
+            UserEventRepository(TestUserEventDataSource)
         )
         val loadAgendaUseCase = LoadAgendaUseCase(AgendaRepository(TestDataRepository))
         val loadTagsUseCase = LoadTagsByCategoryUseCase(TagRepository(TestDataRepository))
@@ -67,15 +80,15 @@ class ScheduleViewModelTest {
 
         // Create ViewModel with the use cases
         val viewModel = ScheduleViewModel(
-                loadSessionsUseCase, loadAgendaUseCase, loadTagsUseCase, loginViewModelComponent
+            loadSessionsUseCase, loadAgendaUseCase, loadTagsUseCase, loginViewModelComponent
         )
 
         // Check that data were loaded correctly
         // Sessions
         for (day in ConferenceDay.values()) {
             assertEquals(
-                    TestData.userSessionMap[day],
-                    LiveDataTestUtil.getValue(viewModel.getSessionsForDay(day))
+                TestData.userSessionMap[day],
+                LiveDataTestUtil.getValue(viewModel.getSessionsForDay(day))
             )
         }
         assertFalse(LiveDataTestUtil.getValue(viewModel.isLoading)!!)
@@ -85,16 +98,10 @@ class ScheduleViewModelTest {
 
     @Test
     fun profileClicked_whileLoggedIn_logsOut() {
-        val loadSessionsUseCase = createSessionsExceptionUseCase()
-        val loadAgendaUseCase = createAgendaExceptionUseCase()
-        val loadTagsUseCase = createTagsExceptionUseCase()
         val loginViewModelComponent = createLoginViewModelComponent()
 
         // Create ViewModel with the use cases
-        val viewModel = ScheduleViewModel(
-                loadSessionsUseCase, loadAgendaUseCase, loadTagsUseCase, loginViewModelComponent
-        )
-
+        val viewModel = createScheduleViewModel(loginViewModelDelegate = loginViewModelComponent)
         loginViewModelComponent.injectIsLoggedIn = true
 
         // click profile
@@ -105,16 +112,10 @@ class ScheduleViewModelTest {
 
     @Test
     fun profileClicked_whileLoggedOut_logsIn() {
-        val loadSessionsUseCase = createSessionsExceptionUseCase()
-        val loadAgendaUseCase = createAgendaExceptionUseCase()
-        val loadTagsUseCase = createTagsExceptionUseCase()
         val loginViewModelComponent = createLoginViewModelComponent()
 
         // Create ViewModel with the use cases
-        val viewModel = ScheduleViewModel(
-                loadSessionsUseCase, loadAgendaUseCase, loadTagsUseCase, loginViewModelComponent
-        )
-
+        val viewModel = createScheduleViewModel(loginViewModelDelegate = loginViewModelComponent)
         loginViewModelComponent.injectIsLoggedIn = false
 
         // click profile
@@ -124,18 +125,70 @@ class ScheduleViewModelTest {
     }
 
     @Test
-    fun testDataIsLoaded_Fails() {
-        val loadSessionsUseCase = createSessionsExceptionUseCase()
-        val loadAgendaUseCase = createAgendaExceptionUseCase()
-        val loadTagsUseCase = createTagsExceptionUseCase()
-        val loginViewModelComponent = createLoginViewModelComponent()
+    fun loggedInUser_setsProfileContentDescription() {
+        // Given a mock firebase user
+        val mockFirebaseUser = mock<FirebaseUser>()
 
-        // Create ViewModel with the use case
-        val viewModel = ScheduleViewModel(
-                loadSessionsUseCase, loadAgendaUseCase, loadTagsUseCase, loginViewModelComponent
-        )
+        // Create ViewModel
+        val observableFirebaseUserUseCase = createObservableFierbaseUserUseCase {
+            Result.Success(mockFirebaseUser)
+        }
+        val loginViewModelComponent = LoginViewModelPluginImpl(observableFirebaseUserUseCase)
+        val viewModel = createScheduleViewModel(loginViewModelDelegate = loginViewModelComponent)
+
+        // Check that the expected content description is set
+        assertEquals(R.string.a11y_logout, LiveDataTestUtil.getValue(viewModel.profileContentDesc))
+    }
+
+    @Test
+    fun noLoggedInUser_setsProfileContentDescription() {
+        // Given no firebase user
+        val noFirebaseUser = null
+
+        // Create ViewModel
+        val observableFirebaseUserUseCase = createObservableFierbaseUserUseCase {
+            Result.Success(noFirebaseUser)
+        }
+        val loginViewModelComponent = LoginViewModelPluginImpl(observableFirebaseUserUseCase)
+        val viewModel = createScheduleViewModel(loginViewModelDelegate = loginViewModelComponent)
+
+        // Check that the expected content description is set
+        assertEquals(R.string.a11y_login, LiveDataTestUtil.getValue(viewModel.profileContentDesc))
+    }
+
+    @Test
+    fun errorLoggingIn_setsProfileContentDescription() {
+        // Given no firebase user
+        val errorLoadingFirebaseUser = Result.Error(Exception())
+
+        // Create ViewModel
+        val observableFirebaseUserUseCase = createObservableFierbaseUserUseCase {
+            errorLoadingFirebaseUser
+        }
+        val loginViewModelComponent = LoginViewModelPluginImpl(observableFirebaseUserUseCase)
+        val viewModel = createScheduleViewModel(loginViewModelDelegate = loginViewModelComponent)
+
+        // Check that the expected content description is set
+        assertEquals(R.string.a11y_login, LiveDataTestUtil.getValue(viewModel.profileContentDesc))
+    }
+
+    @Test
+    fun testDataIsLoaded_Fails() {
+        // Create ViewModel
+        val viewModel = createScheduleViewModel()
         val errorMsg = LiveDataTestUtil.getValue(viewModel.errorMessage)
         assertTrue(errorMsg?.peekContent()?.isNotEmpty() ?: false)
+    }
+
+    private fun createScheduleViewModel(
+        loadSessionsUseCase: LoadUserSessionsByDayUseCase = createSessionsExceptionUseCase(),
+        loadAgendaUseCase: LoadAgendaUseCase = createAgendaExceptionUseCase(),
+        loadTagsUseCase: LoadTagsByCategoryUseCase = createTagsExceptionUseCase(),
+        loginViewModelDelegate: LoginViewModelPlugin = createLoginViewModelComponent()
+    ): ScheduleViewModel {
+        return ScheduleViewModel(
+            loadSessionsUseCase, loadAgendaUseCase, loadTagsUseCase, loginViewModelDelegate
+        )
     }
 
     /**
@@ -146,11 +199,11 @@ class ScheduleViewModelTest {
         val userEventRepository = UserEventRepository(TestUserEventDataSource)
 
         return object : LoadUserSessionsByDayUseCase(
-                sessionRepository,
-                userEventRepository
+            sessionRepository,
+            userEventRepository
         ) {
             override fun execute(parameters: Pair<SessionMatcher, String>):
-                    Map<ConferenceDay, List<UserSession>> {
+                Map<ConferenceDay, List<UserSession>> {
                 throw Exception("Testing exception")
             }
         }
@@ -179,5 +232,21 @@ class ScheduleViewModelTest {
     }
 
     private fun createLoginViewModelComponent() = FakeLoginViewModelPlugin()
-}
 
+    private fun createLoginRepository(): LoginRepository {
+        val loginDataSource = FakeLoginDataSource()
+        val currentFirebaseUserObservableDataSource = FakeFirebaseUserDataSource()
+        return LoginRepository(loginDataSource, currentFirebaseUserObservableDataSource)
+    }
+
+    private fun createObservableFierbaseUserUseCase(
+        repository: LoginRepository = createLoginRepository(),
+        userFactory: () -> Result<FirebaseUser?>
+    ) : ObservableFirebaseUserUseCase {
+        return object : ObservableFirebaseUserUseCase(repository) {
+            override fun execute(parameters: Unit, result: MutableLiveData<Result<FirebaseUser?>>) {
+                result.value = userFactory()
+            }
+        }
+    }
+}

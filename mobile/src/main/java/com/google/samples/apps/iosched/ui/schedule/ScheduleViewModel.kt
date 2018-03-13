@@ -21,7 +21,10 @@ import android.arch.lifecycle.MediatorLiveData
 import android.arch.lifecycle.MutableLiveData
 import android.arch.lifecycle.ViewModel
 import android.databinding.ObservableBoolean
+import android.support.annotation.StringRes
 import android.support.annotation.VisibleForTesting
+import com.google.firebase.auth.FirebaseUser
+import com.google.samples.apps.iosched.R
 import com.google.samples.apps.iosched.shared.domain.agenda.LoadAgendaUseCase
 import com.google.samples.apps.iosched.shared.domain.invoke
 import com.google.samples.apps.iosched.shared.domain.sessions.LoadUserSessionsByDayUseCase
@@ -31,6 +34,7 @@ import com.google.samples.apps.iosched.shared.model.Tag
 import com.google.samples.apps.iosched.shared.model.UserSession
 import com.google.samples.apps.iosched.shared.result.Result
 import com.google.samples.apps.iosched.shared.result.Result.Success
+import com.google.samples.apps.iosched.shared.result.succeeded
 import com.google.samples.apps.iosched.shared.schedule.SessionMatcher
 import com.google.samples.apps.iosched.shared.util.TimeUtils.ConferenceDay
 import com.google.samples.apps.iosched.shared.util.TimeUtils.ConferenceDay.DAY_1
@@ -80,6 +84,9 @@ class ScheduleViewModel @Inject constructor(
     // TODO: Replace the userID once login feature is implemented
     private val userID = "user1"
 
+    /** Resource id of the profile button's content description; changes based on login state**/
+    val profileContentDesc: LiveData<Int>
+
     init {
         // Load sessions and tags and store the result in `LiveData`s
         refreshUserSessions()
@@ -123,6 +130,8 @@ class ScheduleViewModel @Inject constructor(
             // TODO handle Error result
             cachedTagFilters
         }
+
+        profileContentDesc = currentFirebaseUser.map(::getProfileContentDescription)
     }
 
     @VisibleForTesting
@@ -136,7 +145,7 @@ class ScheduleViewModel @Inject constructor(
      * Called from each schedule day fragment to load data.
      */
     fun getSessionsForDay(day: ConferenceDay):
-            LiveData<List<UserSession>> = when (day) {
+        LiveData<List<UserSession>> = when (day) {
         DAY_1 -> day1Sessions
         DAY_2 -> day2Sessions
         DAY_3 -> day3Sessions
@@ -185,6 +194,15 @@ class ScheduleViewModel @Inject constructor(
 
     private fun refreshUserSessions() =
         loadUserSessionsByDayUseCase(sessionMatcher to userID, loadSessionsResult)
+
+    @StringRes
+    private fun getProfileContentDescription(userResult: Result<FirebaseUser?>): Int {
+        return if (userResult.succeeded) {
+            R.string.a11y_logout
+        } else {
+            R.string.a11y_login
+        }
+    }
 }
 
 class TagFilter(val tag: Tag, isChecked: Boolean) {
