@@ -16,18 +16,23 @@
 
 package com.google.samples.apps.iosched.test.util.fakes
 
+import android.arch.lifecycle.LiveData
 import android.arch.lifecycle.MutableLiveData
 import com.google.firebase.auth.FirebaseUser
 import com.google.samples.apps.iosched.shared.data.login.FirebaseUserDataSource
 import com.google.samples.apps.iosched.shared.result.Result
 
-class FakeFirebaseUserDataSource :
+const val FAKE_TOKEN = "3141592"
+
+class FakeFirebaseUserDataSource(val mockFirebaseUser: FirebaseUser?) :
         FirebaseUserDataSource {
-    override fun addObservableFirebaseUser(into: MutableLiveData<Result<FirebaseUser?>>) = Unit
 
-    var onTokenChanged: ((String) -> Unit)? = null
+    override fun getToken(): LiveData<Result<String>> {
+        return MutableLiveData<Result<String>>().apply { value = Result.Success(FAKE_TOKEN )}
+    }
 
-    override fun watch(onTokenChanged: (String) -> Unit) {
-        this.onTokenChanged = onTokenChanged
+    override fun getCurrentUser(): LiveData<Result<FirebaseUser?>?> {
+        return MutableLiveData<Result<FirebaseUser?>>()
+                .apply { value =  Result.Success(mockFirebaseUser) }
     }
 }

@@ -17,17 +17,12 @@
 package com.google.samples.apps.iosched.ui.login
 
 import android.arch.core.executor.testing.InstantTaskExecutorRule
-import android.arch.lifecycle.MutableLiveData
 import android.net.Uri
 import com.google.firebase.auth.FirebaseUser
-import com.google.samples.apps.iosched.shared.data.login.LoginRepository
-import com.google.samples.apps.iosched.shared.domain.login.ObservableFirebaseUserUseCase
 import com.google.samples.apps.iosched.shared.result.Result
-import com.google.samples.apps.iosched.shared.result.Result.Success
 import com.google.samples.apps.iosched.test.util.LiveDataTestUtil
 import com.google.samples.apps.iosched.test.util.SyncTaskExecutorRule
 import com.google.samples.apps.iosched.test.util.fakes.FakeFirebaseUserDataSource
-import com.google.samples.apps.iosched.test.util.fakes.FakeLoginDataSource
 import com.google.samples.apps.iosched.ui.login.LoginEvent.RequestLogin
 import com.google.samples.apps.iosched.ui.login.LoginEvent.RequestLogout
 import com.nhaarman.mockito_kotlin.doReturn
@@ -38,7 +33,7 @@ import junit.framework.TestCase.assertTrue
 import org.junit.Rule
 import org.junit.Test
 
-class LoginViewModelPluginTest {
+class DefaultLoginViewModelPluginTest {
 
     // Executes tasks in the Architecture Components in the same thread
     @get:Rule var instantTaskExecutorRule = InstantTaskExecutorRule()
@@ -48,37 +43,30 @@ class LoginViewModelPluginTest {
 
     @Test
     fun testLoggedOut() {
-        val observableFirebaseUserUseCase = createObservableFirebaseUserUseCase(null)
-
-        val subject = LoginViewModelPluginImpl(observableFirebaseUserUseCase)
+        val subject = DefaultLoginViewModelPlugin(FakeFirebaseUserDataSource(null))
 
         assertEquals(
                 null,
-                (LiveDataTestUtil.getValue(subject.currentFirebaseUser) as? Success)?.data
+                (LiveDataTestUtil.getValue(subject.currentFirebaseUser) as Result.Success).data
         )
-        assertEquals(null, LiveDataTestUtil.getValue(subject.currentUserImageUri))
+        assertEquals(
+                null,
+                LiveDataTestUtil.getValue(subject.currentUserImageUri)
+        )
         assertFalse(subject.isLoggedIn())
     }
 
     @Test
     fun testLoggedIn() {
-        val repository = createLoginRepository()
         val mockUri = mock<Uri>()
         val mockFirebaseUser = mock<FirebaseUser> {
             on { photoUrl }.doReturn(mockUri)
         }
-
-        val observableFirebaseUserUseCase = object : ObservableFirebaseUserUseCase(repository) {
-            override fun execute(parameters: Unit, result: MutableLiveData<Result<FirebaseUser?>>) {
-                result.value = Success(mockFirebaseUser)
-            }
-        }
-
-        val subject = LoginViewModelPluginImpl(observableFirebaseUserUseCase)
-
+        val subject =
+                DefaultLoginViewModelPlugin(FakeFirebaseUserDataSource(mockFirebaseUser))
         assertEquals(
                 mockFirebaseUser,
-                (LiveDataTestUtil.getValue(subject.currentFirebaseUser) as? Success)?.data
+                (LiveDataTestUtil.getValue(subject.currentFirebaseUser) as Result.Success).data
         )
         assertEquals(mockUri, LiveDataTestUtil.getValue(subject.currentUserImageUri))
         assertTrue(subject.isLoggedIn())
@@ -86,9 +74,7 @@ class LoginViewModelPluginTest {
 
     @Test
     fun testPostLogin() {
-        val observableFirebaseUserUseCase = createObservableFirebaseUserUseCase(null)
-
-        val subject = LoginViewModelPluginImpl(observableFirebaseUserUseCase)
+        val subject = DefaultLoginViewModelPlugin(FakeFirebaseUserDataSource(null))
 
         subject.emitLoginRequest()
 
@@ -99,9 +85,7 @@ class LoginViewModelPluginTest {
 
     @Test
     fun testPostLogout() {
-        val observableFirebaseUserUseCase = createObservableFirebaseUserUseCase(null)
-
-        val subject = LoginViewModelPluginImpl(observableFirebaseUserUseCase)
+        val subject = DefaultLoginViewModelPlugin(FakeFirebaseUserDataSource(null))
 
         subject.emitLogoutRequest()
 
@@ -109,21 +93,4 @@ class LoginViewModelPluginTest {
                 LiveDataTestUtil.getValue(subject.performLoginEvent)?.peekContent(), RequestLogout
         )
     }
-}
-
-private fun createObservableFirebaseUserUseCase(value: FirebaseUser?):
-        ObservableFirebaseUserUseCase {
-    val loginRepository = createLoginRepository()
-    return object : ObservableFirebaseUserUseCase(loginRepository) {
-
-        override fun execute(parameters: Unit, result: MutableLiveData<Result<FirebaseUser?>>) {
-            result.value = Success(value)
-        }
-    }
-}
-
-private fun createLoginRepository(): LoginRepository {
-    val loginDataSource = FakeLoginDataSource()
-    val currentFirebaseUserObservableDataSource = FakeFirebaseUserDataSource()
-    return LoginRepository(loginDataSource, currentFirebaseUserObservableDataSource)
 }

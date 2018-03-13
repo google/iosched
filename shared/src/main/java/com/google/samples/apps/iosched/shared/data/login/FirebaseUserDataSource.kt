@@ -16,76 +16,59 @@
 
 package com.google.samples.apps.iosched.shared.data.login
 
+import android.arch.lifecycle.LiveData
 import android.arch.lifecycle.MutableLiveData
+import com.google.android.gms.tasks.Task
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
+import com.google.firebase.auth.GetTokenResult
 import com.google.samples.apps.iosched.shared.result.Result
-import com.google.samples.apps.iosched.shared.util.WeakLiveDataHolder
+import timber.log.Timber
 import javax.inject.Inject
 
 interface FirebaseUserDataSource {
-    fun watch(onTokenChanged: (String) -> Unit)
-    /**
-     * Register a MutableLiveData to receive updates as the current user changes.
-     */
-    fun addObservableFirebaseUser(into: MutableLiveData<Result<FirebaseUser?>>)
+    fun getToken(): LiveData<Result<String>>
+
+    fun getCurrentUser(): LiveData<Result<FirebaseUser?>?>
 }
 
-internal class FirebaseUserDataSourceImpl @Inject constructor(private val firebase: FirebaseAuth) :
-        FirebaseUserDataSource {
+internal class DefaultFirebaseUserDataSource @Inject constructor(
+        firebase: FirebaseAuth
+) : FirebaseUserDataSource {
 
-    private val liveDataHolder = WeakLiveDataHolder<Result<FirebaseUser?>>()
+    private val tokenChangedObservable = MutableLiveData<Result<String>>()
 
-    private var initialized: Boolean = false
+    private val currentUserObservable = MutableLiveData<Result<FirebaseUser?>?>()
+            .apply { value = null }
 
-    /**
-     * Watch for changes to auth state and notify the caller via onTokenChanged.
-     *
-     * This function is for use by Repository classes. UI or ViewModel code should
-     * use a use case to get this data.
-     *
-     * @see ObservableFirebaseUserUseCase
-     *
-     * @param onTokenChanged called with the new user token whenever the user changes (at least once
-     *                 per app session)
-     */
-    override fun watch(onTokenChanged: (String) -> Unit) {
-        initialized = true
-
+    init {
+        // Listen for changes in the authentication state
         firebase.addAuthStateListener { auth ->
-            notifyObservers(auth.currentUser)
+            // Save the current user
+            currentUserObservable.postValue(Result.Success(auth.currentUser))
             auth.currentUser?.let {
-                processUserForTokenCallback(it, onTokenChanged)
+                // Get the ID token (no force refresh)
+                val tokenTask = it.getIdToken(false)
+                tokenTask.addOnCompleteListener { result: Task<GetTokenResult> ->
+                    if (result.isSuccessful && result.result.token != null) {
+                        // Save the current token
+                        tokenChangedObservable.postValue(Result.Success(result.result.token!!))
+                    } else {
+                        Timber.e(result.exception?.message ?: "Error getting ID token")
+                        tokenChangedObservable.postValue(
+                                Result.Error(result.exception
+                                        ?: RuntimeException("Error getting ID token")))
+                    }
+                }
             }
         }
     }
 
-    private fun processUserForTokenCallback(
-        currentUser: FirebaseUser,
-        onTokenChanged: (String) -> Unit
-    ) {
-        // then, inform any repository callbacks of the change
-        if (currentUser.isAnonymous) return
-
-        val tokenTask = currentUser.getIdToken(false)
-        tokenTask.addOnCompleteListener { result ->
-            if (result.isSuccessful) {
-                val token = result.result.token ?: return@addOnCompleteListener
-                onTokenChanged(token)
-            }
-        }
+    override fun getToken(): LiveData<Result<String>> {
+        return tokenChangedObservable
     }
 
-    private fun notifyObservers(currentUser: FirebaseUser?) {
-        liveDataHolder.notifyAll(Result.Success(currentUser))
-    }
-
-    override fun addObservableFirebaseUser(into: MutableLiveData<Result<FirebaseUser?>>) {
-        liveDataHolder.addLiveDataObserver(into)
-        liveDataHolder.notifyIfChanged(Result.Success(firebase.currentUser))
-
-        if (!initialized) {
-            watch {} // force initialization to observe future updates
-        }
+    override fun getCurrentUser(): LiveData<Result<FirebaseUser?>?> {
+        return currentUserObservable
     }
 }

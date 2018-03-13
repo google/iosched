@@ -20,10 +20,8 @@ import android.arch.lifecycle.LiveData
 import android.arch.lifecycle.MutableLiveData
 import android.net.Uri
 import com.google.firebase.auth.FirebaseUser
-import com.google.samples.apps.iosched.shared.domain.login.ObservableFirebaseUserUseCase
+import com.google.samples.apps.iosched.shared.data.login.FirebaseUserDataSource
 import com.google.samples.apps.iosched.shared.result.Result
-import com.google.samples.apps.iosched.shared.result.Result.Success
-import com.google.samples.apps.iosched.shared.util.checkAllMatched
 import com.google.samples.apps.iosched.shared.util.map
 import com.google.samples.apps.iosched.ui.login.LoginEvent.RequestLogin
 import com.google.samples.apps.iosched.ui.login.LoginEvent.RequestLogout
@@ -52,7 +50,7 @@ interface LoginViewModelPlugin {
     /**
      * Live updated value of the current firebase user
      */
-    val currentFirebaseUser: MutableLiveData<Result<FirebaseUser?>>
+    val currentFirebaseUser: LiveData<Result<FirebaseUser?>?>
 
     /**
      * Live updated value of the current firebase users image url
@@ -64,13 +62,7 @@ interface LoginViewModelPlugin {
      */
     val performLoginEvent: MutableLiveData<Event<LoginEvent>>
 
-    fun isLoggedIn(): Boolean {
-        val currentUser = currentFirebaseUser.value
-        return when (currentUser) {
-            is Success -> currentUser.data != null
-            else -> false
-        }.checkAllMatched
-    }
+    fun isLoggedIn(): Boolean
 
     /**
      * Emit an Event on performLoginEvent to request login
@@ -86,19 +78,32 @@ interface LoginViewModelPlugin {
 /**
  * Implementation of LoginViewModel that can be used as an interface delegate.
  */
-internal class LoginViewModelPluginImpl @Inject constructor(
-    observableFirebaseUserUseCase: ObservableFirebaseUserUseCase
+internal class DefaultLoginViewModelPlugin @Inject constructor(
+        dataSource: FirebaseUserDataSource
 ) : LoginViewModelPlugin {
     override val performLoginEvent = MutableLiveData<Event<LoginEvent>>()
-    override val currentFirebaseUser = MutableLiveData<Result<FirebaseUser?>>()
-    override val currentUserImageUri: LiveData<Uri?> = currentFirebaseUser.map { result ->
-        when (result) {
-            is Success -> result.data?.photoUrl
-            else -> null
+    override val currentFirebaseUser: LiveData<Result<FirebaseUser?>?>
+    override val currentUserImageUri: LiveData<Uri?>
+
+    init {
+        currentFirebaseUser = dataSource.getCurrentUser()
+        currentUserImageUri = currentFirebaseUser.map { result: Result<FirebaseUser?>? ->
+            (result as? Result.Success)?.data?.photoUrl
         }
     }
 
-    init {
-        observableFirebaseUserUseCase(Unit, currentFirebaseUser)
+    override fun isLoggedIn(): Boolean {
+        return currentFirebaseUser.value is Result.Success
+                && (currentFirebaseUser.value as Result.Success).data != null
     }
+
+    /**
+     * Emit an Event on performLoginEvent to request login
+     */
+    override fun emitLoginRequest() = performLoginEvent.postValue(Event(RequestLogin))
+
+    /**
+     * Emit an Event on performLoginEvent to request logout
+     */
+    override fun emitLogoutRequest() = performLoginEvent.postValue(Event(RequestLogout))
 }
