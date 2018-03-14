@@ -20,7 +20,6 @@ import android.content.SharedPreferences
 import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.support.v4.app.Fragment
-import android.support.v4.app.FragmentActivity
 import android.support.v4.content.ContextCompat
 import android.support.wear.ambient.AmbientModeSupport
 import android.support.wear.widget.drawer.WearableNavigationDrawerView
@@ -31,6 +30,7 @@ import com.google.samples.apps.iosched.wear.R.layout
 import com.google.samples.apps.iosched.wear.ui.schedule.ScheduleFragment
 import com.google.samples.apps.iosched.wear.ui.settings.SettingsFragment
 import com.google.samples.apps.iosched.wear.ui.signinandout.SignInOrOutFragment
+import dagger.android.support.DaggerAppCompatActivity
 import kotlinx.android.synthetic.main.activity_main.*
 
 private const val NAV_DRAWER_STATE_SIZE = 3
@@ -44,7 +44,7 @@ private const val NAV_DRAWER_STATE_FRAGMENT_SETTINGS = 2
  * (schedule, sign in/out, and settings) and are swapped out based on the user's choice via the
  * WearableNavigationDrawerView.
  */
-class MainActivity : FragmentActivity(), AmbientModeSupport.AmbientCallbackProvider,
+class MainActivity : DaggerAppCompatActivity(), AmbientModeSupport.AmbientCallbackProvider,
         SharedPreferences.OnSharedPreferenceChangeListener {
 
     private lateinit var navigationDrawerAdapter: NavigationDrawerAdapter
@@ -78,7 +78,7 @@ class MainActivity : FragmentActivity(), AmbientModeSupport.AmbientCallbackProvi
             }
         })
 
-        // Ensure the nav drawer shows the workout data screen as selected.
+        // Ensure the nav drawer shows the agenda data screen as selected.
         navigationDrawer.setCurrentItem(NAV_DRAWER_STATE_FRAGMENT_SCHEDULE, false)
     }
 
@@ -120,12 +120,12 @@ class MainActivity : FragmentActivity(), AmbientModeSupport.AmbientCallbackProvi
         }
     }
 
-    private inner class NavigationDrawerAdapter() :
+    private inner class NavigationDrawerAdapter :
             WearableNavigationDrawerView.WearableNavigationDrawerAdapter(),
             WearableNavigationDrawerView.OnItemSelectedListener {
 
         private var currentNavigationItemPosition = 0
-        private val activity = this@MainActivity;
+        private val activity = this@MainActivity
 
         override fun getCount(): Int {
             return NAV_DRAWER_STATE_SIZE

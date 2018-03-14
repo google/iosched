@@ -19,4 +19,26 @@
     <string name="schedule" translation_description="The title of user's schedule in Google I/O.">Schedule</string>
     <string name="sign_in_or_out" translation_description="The label for the button to sign in or out.">Sign in / out</string>
     <string name="settings" translation_description="The title of the app settings screen.">Settings</string>
+
+
+
+    <!-- TODO: move to wear/mobile to shared -->
+    <string name="session_duration_location" translatable="false">%1s / %2s</string>
+
+    <plurals name="duration_hours">
+        <item quantity="one" translation_description="Unit for duration of time by hours. Singular.">%s hour</item>
+        <item quantity="other" translation_description="Unit for duration of time by hours. Plural.">%s hours</item>
+    </plurals>
+
+    <plurals name="duration_minutes">
+        <item quantity="one" translation_description="Unit for duration of time by minutes. Singular.">%s minute</item>
+        <item quantity="other" translation_description="Unit for duration of time by minutes. Plural.">%s minutes</item>
+    </plurals>
+
+    <string name="a11y_login" translatable="false">TODO: a11y content description for login action</string>
+    <string name="a11y_logout" translatable="false">TODO: a11y content description for logout action</string>
+
+    <string name="schedule_icon_image_view_content_description"  translatable="false">Schedule Icon</string>
+    <string name="item_session_image_view_time_icon_content_description"  translatable="true">Icon of the start time.</string>
+
 </resources>
