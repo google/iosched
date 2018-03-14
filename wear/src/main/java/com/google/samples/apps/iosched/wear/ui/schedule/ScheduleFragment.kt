@@ -14,17 +14,16 @@
  * limitations under the License.
  */
 
-package com.google.samples.apps.iosched.wear
+package com.google.samples.apps.iosched.wear.ui.schedule
 
-import android.app.Activity
-import android.os.Bundle
+import com.google.samples.apps.iosched.wear.ui.WearableFragment
 
-class MainActivity : Activity() {
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
-
-        // TODO (b/74258141): Build out main activity with always-on.
+/**
+ * Lists the remaining sessions in a user's schedule based on the current time.
+ */
+class ScheduleFragment : WearableFragment() {
+    override fun onUpdateAmbient() {
+        // TODO(b/74259577): implement ambient UI
     }
+    // TODO(b/74258141): Populate WearableRecycleView with schedule.
 }

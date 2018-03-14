@@ -15,24 +15,27 @@
   ~ limitations under the License.
   -->
 
-<android.support.wear.widget.BoxInsetLayout
+<android.support.wear.widget.drawer.WearableDrawerLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/drawer_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/dark_grey"
-    android:padding="@dimen/box_inset_layout_padding"
-    tools:context=".MainActivity"
+    android:background="@color/colorPrimary"
+    tools:context=".ui.MainActivity"
     tools:deviceIds="wear">
 
     <FrameLayout
+        android:id="@+id/main_content_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+    <android.support.wear.widget.drawer.WearableNavigationDrawerView
+        android:id="@+id/navigationDrawer"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:padding="@dimen/inner_frame_layout_padding"
-        app:boxedEdges="all">
+        app:navigationStyle="singlePage"
+        android:background="@color/colorPrimaryDark"/>
 
-        <!-- TODO (b/74258141): Add content. -->
-
-    </FrameLayout>
-</android.support.wear.widget.BoxInsetLayout>
+</android.support.wear.widget.drawer.WearableDrawerLayout>
