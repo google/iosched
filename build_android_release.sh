@@ -25,8 +25,8 @@ cp $DIR/tv/build/outputs/apk/staging/tv-staging.apk $DIST_DIR/staging/
 
 # Release
 [ ! -d $DIST_DIR/release ] && mkdir $DIST_DIR/release
-cp $DIR/mobile/build/outputs/apk/release/mobile-release-unsigned.apk $DIST_DIR/release/
-cp $DIR/tv/build/outputs/apk/release/tv-release-unsigned.apk $DIST_DIR/release/
-cp $DIR/wear/build/outputs/apk/release/wear-release-unsigned.apk $DIST_DIR/release/
+cp $DIR/mobile/build/outputs/apk/release/mobile-release-unsigned.apk $DIST_DIR/release/mobile-release.apk
+cp $DIR/tv/build/outputs/apk/release/tv-release-unsigned.apk $DIST_DIR/release/tv-release.apk
+cp $DIR/wear/build/outputs/apk/release/wear-release-unsigned.apk $DIST_DIR/release/wear-release.apk
 
 exit $BUILD_RESULT
