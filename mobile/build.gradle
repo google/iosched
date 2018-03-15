@@ -75,6 +75,8 @@ dependencies {
     implementation "com.android.support.constraint:constraint-layout:$rootProject.constraintLayoutVersion"
     implementation "com.google.android.material:material:$rootProject.mdcVersion"
     implementation "com.google.android:flexbox:$rootProject.flexboxVersion"
+    implementation "com.airbnb.android:lottie:$rootProject.lottieVersion"
+    implementation "com.pacioianu.david:ink-page-indicator:$rootProject.pageIndicatorVersion"
 
     // Architecture Components
     implementation "android.arch.lifecycle:extensions:$rootProject.archLifecycleVersion"
