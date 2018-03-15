@@ -56,7 +56,8 @@ class SessionDetailViewModel @Inject constructor(
         })
     }
 
+    // TODO: write tests b/74611561
     fun loadSessionById(sessionId: String) {
-        loadSessionUseCase(sessionId, useCaseResult)
+        session.value ?: loadSessionUseCase(sessionId, useCaseResult)
     }
 }
