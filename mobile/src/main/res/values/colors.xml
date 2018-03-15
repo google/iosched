@@ -16,9 +16,6 @@
   -->
 
 <resources>
-    <!-- theme colors -->
-    <color name="colorPrimary">@color/indigo</color>
-    <color name="colorAccent">@color/teal</color>
 
     <!-- primary palette -->
     <color name="indigo">#4768fd</color>
@@ -33,4 +30,5 @@
     <color name="text_color_tertiary">#dadce0</color>
     <color name="light_grey">#e6e6e6</color>
     <color name="default_tag_color">#999</color>
+    <color name="highlight_light">#33ffffff</color>
 </resources>

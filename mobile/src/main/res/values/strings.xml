@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ Copyright 2018 Google LLC
   ~
@@ -64,4 +65,17 @@
     <string name="share_session_menu_item" translation_description="The label for the button to share this session on SNS, etc.">Share session</string>
     <string name="share_text_session_detail" translation_description="The default message to be used when user is sharing an I/O session on SNS, etc.">Check out \'%1$s\' at #io18 %2$s</string>
     <string name="intent_chooser_session_detail" translation_description="The label for share screen where user can tell people about an I/O session on SNS, etc.">Share</string>
+
+    <!-- Onboarding -->
+    <string name="onboarding_get_started" translation_description="The label for the button to start using the app">Get started</string>
+    <string name="onboarding_welcome_to_google_i_o">Welcome to Google I/O</string>
+    <string name="onboarding_date_location">May 8–10,\n2018 Mountain View, CA</string>
+    <string name="onboarding_build_schedule">Build your own schedule</string>
+    <string name="onboarding_build_sched_benefits">Build your custom I/O experience and reserve seats if you\'re an attendee</string>
+    <string name="onboarding_watch_live">Watch I/O Live</string>
+    <string name="onboarding_join_online">Join us online. We\'ll be streaming the keynotes and most sessions live.</string>
+    <string name="onboarding_label_days" translation_description="The label for the display of the number of days until the conference starts">D</string>
+    <string name="onboarding_label_hours" translation_description="The label for the display of the number of hours until the conference starts">H</string>
+    <string name="onboarding_label_mins" translation_description="The label for the display of the number of minutes until the conference starts">M</string>
+    <string name="onboarding_label_seconds" translation_description="The label for the display of the number of seconds until the conference starts">S</string>
 </resources>
