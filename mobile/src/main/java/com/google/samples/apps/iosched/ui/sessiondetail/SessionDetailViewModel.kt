@@ -20,11 +20,13 @@ import android.arch.lifecycle.LiveData
 import android.arch.lifecycle.MutableLiveData
 import android.arch.lifecycle.Transformations
 import android.arch.lifecycle.ViewModel
+import android.support.annotation.VisibleForTesting
 import com.google.samples.apps.iosched.shared.domain.sessions.LoadSessionUseCase
 import com.google.samples.apps.iosched.shared.model.Session
 import com.google.samples.apps.iosched.shared.result.Result
 import com.google.samples.apps.iosched.shared.util.TimeUtils
 import com.google.samples.apps.iosched.shared.util.map
+import com.google.samples.apps.iosched.ui.schedule.Event
 import org.threeten.bp.ZonedDateTime
 import javax.inject.Inject
 
@@ -38,13 +40,19 @@ class SessionDetailViewModel @Inject constructor(
     private val useCaseResult = MutableLiveData<Result<Session>>()
     private val sessionState: LiveData<TimeUtils.SessionState>
 
+    val navigateToYouTubeAction = MutableLiveData<Event<String>>()
+
     val session: LiveData<Session?>
     val showRateButton: LiveData<Boolean>
+    val isPlayable: LiveData<Boolean>
 
     init {
+        //TODO: Deal with error SessionNotFoundException
         session = useCaseResult.map { (it as? Result.Success)?.data }
 
-        //TODO: Deal with error SessionNotFoundException
+        isPlayable = Transformations.map(session, { currentSession ->
+            checkPlayable(currentSession)
+        })
 
         // TODO this should also be called when session state is stale (b/74242921)
         sessionState = Transformations.map(session, { currentSession ->
@@ -59,5 +67,23 @@ class SessionDetailViewModel @Inject constructor(
     // TODO: write tests b/74611561
     fun loadSessionById(sessionId: String) {
         session.value ?: loadSessionUseCase(sessionId, useCaseResult)
+    }
+
+    /**
+     * Called by the UI when play button is clicked
+     */
+    fun onPlayVideo() {
+        val currentSession = session.value
+        if (checkPlayable(currentSession)) {
+            navigateToYouTubeAction.value = Event(requireSession().youTubeUrl)
+        }
+    }
+
+    private fun requireSession(): Session {
+        return session.value ?: throw IllegalStateException("Session should not be null")
+    }
+
+    @VisibleForTesting fun checkPlayable(currentSession: Session?): Boolean {
+        return currentSession != null && currentSession.youTubeUrl.isNotBlank()
     }
 }

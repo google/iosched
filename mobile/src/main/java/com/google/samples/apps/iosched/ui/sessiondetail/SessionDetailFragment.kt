@@ -18,12 +18,14 @@ package com.google.samples.apps.iosched.ui.sessiondetail
 
 import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProvider
+import android.content.Intent
 import android.databinding.DataBindingUtil
 import android.os.Bundle
 import android.support.v4.app.ShareCompat
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.net.toUri
 import com.google.samples.apps.iosched.R
 import com.google.samples.apps.iosched.databinding.FragmentSessionDetailBinding
 import com.google.samples.apps.iosched.shared.util.viewModelProvider
@@ -72,7 +74,17 @@ class SessionDetailFragment : DaggerFragment() {
             }
         })
 
+        sessionDetailViewModel.navigateToYouTubeAction.observe(this, Observer { navigationEvent ->
+            navigationEvent?.getContentIfNotHandled()?.let { youtubeUrl ->
+                openYoutubeUrl(youtubeUrl)
+            }
+        })
+
         return binding.root
+    }
+
+    private fun openYoutubeUrl(youtubeUrl: String) {
+        startActivity(Intent(Intent.ACTION_VIEW, youtubeUrl.toUri()))
     }
 
     companion object {
