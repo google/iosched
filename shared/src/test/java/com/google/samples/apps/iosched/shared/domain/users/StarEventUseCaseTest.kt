@@ -19,17 +19,17 @@ package com.google.samples.apps.iosched.shared.domain.users
 import android.arch.core.executor.testing.InstantTaskExecutorRule
 import android.arch.lifecycle.LiveData
 import android.arch.lifecycle.MutableLiveData
-import com.google.samples.apps.iosched.shared.data.session.SessionRepository
+import com.google.samples.apps.iosched.shared.data.session.DefaultSessionRepository
 import com.google.samples.apps.iosched.shared.data.userevent.DefaultSessionAndUserEventRepository
 import com.google.samples.apps.iosched.shared.data.userevent.SessionAndUserEventRepository
 import com.google.samples.apps.iosched.shared.domain.repository.TestUserEventDataSource
+import com.google.samples.apps.iosched.shared.domain.sessions.LoadUserSessionsByDayUseCaseResult
+import com.google.samples.apps.iosched.shared.firestore.entity.LastReservationRequested
 import com.google.samples.apps.iosched.shared.model.Session
 import com.google.samples.apps.iosched.shared.model.TestData
 import com.google.samples.apps.iosched.shared.model.TestDataRepository
-import com.google.samples.apps.iosched.shared.model.UserSession
 import com.google.samples.apps.iosched.shared.result.Result
 import com.google.samples.apps.iosched.shared.util.SyncExecutorRule
-import com.google.samples.apps.iosched.shared.util.TimeUtils
 import com.google.samples.apps.iosched.test.util.LiveDataTestUtil
 import org.junit.Assert
 import org.junit.Assert.assertTrue
@@ -52,7 +52,7 @@ class StarEventUseCaseTest {
     @Test
     fun sessionIsStarredSuccessfully() {
         val testUserEventRepository = DefaultSessionAndUserEventRepository(
-                TestUserEventDataSource, SessionRepository(TestDataRepository))
+                TestUserEventDataSource(), DefaultSessionRepository(TestDataRepository))
         val useCase = StarEventUseCase(testUserEventRepository)
 
         val resultLiveData = useCase.observe()
@@ -60,7 +60,7 @@ class StarEventUseCaseTest {
         useCase.execute(StarEventParameter("userIdTest", TestData.session0, true))
 
         val result = LiveDataTestUtil.getValue(resultLiveData)
-        Assert.assertEquals(result, Result.Success(true))
+        Assert.assertEquals(result, Result.Success(StarUpdatedStatus.STARRED))
     }
 
 
@@ -79,16 +79,21 @@ class StarEventUseCaseTest {
 }
 
 val FailingSessionAndUserEventRepository = object : SessionAndUserEventRepository {
-    val result = MutableLiveData<Result<Boolean>>()
+
+    val result = MutableLiveData<Result<StarUpdatedStatus>>()
     override fun updateIsStarred(userId: String, session: Session, isStarred: Boolean):
-            LiveData<Result<Boolean>> {
+            LiveData<Result<StarUpdatedStatus>> {
 
         result.postValue(Result.Error(Exception("Test")))
         return result
     }
 
     override fun getObservableUserEvents(userId: String):
-            LiveData<Result<Map<TimeUtils.ConferenceDay, List<UserSession>>>> {
+            LiveData<Result<LoadUserSessionsByDayUseCaseResult>> {
+        throw NotImplementedError()
+    }
+
+    override fun changeReservation(userId: String, session: Session, action: ReservationRequestAction): LiveData<Result<LastReservationRequested>> {
         throw NotImplementedError()
     }
 }

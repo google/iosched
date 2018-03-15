@@ -20,6 +20,7 @@ import android.arch.lifecycle.LiveData
 import android.arch.lifecycle.MutableLiveData
 import android.arch.lifecycle.ViewModel
 import com.google.samples.apps.iosched.shared.domain.sessions.LoadUserSessionsByDayUseCase
+import com.google.samples.apps.iosched.shared.domain.sessions.LoadUserSessionsByDayUseCaseResult
 import com.google.samples.apps.iosched.shared.model.UserSession
 import com.google.samples.apps.iosched.shared.result.Result
 import com.google.samples.apps.iosched.shared.schedule.TagFilterMatcher
@@ -43,7 +44,7 @@ class ScheduleViewModel(loadSessionsByDayUseCase: LoadUserSessionsByDayUseCase) 
     val errorMessage: LiveData<String>
     private val errorMessageShown = MutableLiveData<Boolean>()
 
-    private val loadSessionsResult: LiveData<Result<Map<ConferenceDay, List<UserSession>>>>
+    private val loadSessionsResult: LiveData<Result<LoadUserSessionsByDayUseCaseResult>>
 
     // Each day is represented by a map of time slot labels to a list of sessions.
     private val day1Sessions: LiveData<Map<String, List<UserSession>>>
@@ -69,11 +70,12 @@ class ScheduleViewModel(loadSessionsByDayUseCase: LoadUserSessionsByDayUseCase) 
     }
 
     private fun groupSessionsByTimeSlot(
-            result: MutableLiveData<Result<Map<ConferenceDay, List<UserSession>>>>,
+            result: MutableLiveData<Result<LoadUserSessionsByDayUseCaseResult>>,
             day: ConferenceDay
     ): LiveData<Map<String, List<UserSession>>> {
         return result.map {
-            val sessions = (it as? Result.Success)?.data?.get(day) ?: emptyList()
+            val sessions = (it as? Result.Success)?.data?.userSessionsPerDay?.get(day)
+                    ?: emptyList()
 
             // Groups sessions by formatted header string.
             sessions.groupBy({ TimeUtils.timeString(it.session.startTime, it.session.endTime) })

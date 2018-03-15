@@ -31,6 +31,9 @@ data class UserEvent(
         /** Stores the result of a reservation request for the event. */
         val reservation: ReservationRequestResult? = null,
 
+        /** Stores the user's latest reservation action  */
+        val reservationRequested: LastReservationRequested? = null,
+
         /**
          * Whether this entity has a pending write to the server.
          * This flag is set to true when there is a locally modified data, but not synced to the
@@ -44,4 +47,29 @@ data class UserEvent(
                 || reservation?.status == RESERVE_SUCCEEDED
                 || reservation?.status == RESERVE_WAITLISTED
     }
+
+    fun isReserved(): Boolean {
+        // If the server is not yet updated, show the session as not reserved.
+        return reservation?.status == RESERVE_SUCCEEDED
+                && !isPending()
+    }
+
+    fun isWaitlisted(): Boolean {
+        // If the server is not yet updated, show the session as not waitlisted.
+        return reservation?.status == RESERVE_WAITLISTED
+                && !isPending()
+    }
+
+    fun isPending(): Boolean {
+        return reservationRequested != null
+    }
+
+    fun isReservationPending(): Boolean {
+        return reservationRequested == LastReservationRequested.RESERVATION
+    }
+}
+
+enum class LastReservationRequested {
+    RESERVATION,
+    CANCEL
 }

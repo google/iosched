@@ -21,6 +21,10 @@ import android.arch.lifecycle.MediatorLiveData
 import android.support.annotation.WorkerThread
 import com.google.samples.apps.iosched.shared.data.session.SessionRepository
 import com.google.samples.apps.iosched.shared.domain.internal.DefaultScheduler
+import com.google.samples.apps.iosched.shared.domain.sessions.LoadUserSessionsByDayUseCaseResult
+import com.google.samples.apps.iosched.shared.domain.users.ReservationRequestAction
+import com.google.samples.apps.iosched.shared.domain.users.StarUpdatedStatus
+import com.google.samples.apps.iosched.shared.firestore.entity.LastReservationRequested
 import com.google.samples.apps.iosched.shared.firestore.entity.UserEvent
 import com.google.samples.apps.iosched.shared.model.Session
 import com.google.samples.apps.iosched.shared.model.UserSession
@@ -38,10 +42,10 @@ open class DefaultSessionAndUserEventRepository @Inject constructor(
         private val sessionRepository: SessionRepository
 ) : SessionAndUserEventRepository {
 
-    val result = MediatorLiveData<Result<Map<ConferenceDay, List<UserSession>>>>()
+    val result = MediatorLiveData<Result<LoadUserSessionsByDayUseCaseResult>>()
 
     override fun getObservableUserEvents(userId: String):
-            LiveData<Result<Map<ConferenceDay, List<UserSession>>>> {
+            LiveData<Result<LoadUserSessionsByDayUseCaseResult>> {
 
         // Observes the user events and merges them with session data.
         val observableUserEvents = userEventDataSource.getObservableUserEvents(userId)
@@ -55,7 +59,12 @@ open class DefaultSessionAndUserEventRepository @Inject constructor(
                     val allSessions = sessionRepository.getSessions()
                     // Merges sessions with user data and emits the result
                     result.postValue(Result.Success(
-                            mapUserDataAndSessions(userEvents, allSessions)))
+                            LoadUserSessionsByDayUseCaseResult(
+                                    userSessionsPerDay =  mapUserDataAndSessions(
+                                            userEvents, allSessions),
+                                    userMessage = userEvents.userEventsMessage)
+                    ))
+
                 } catch (e: Exception) {
                     result.postValue(Result.Error(e))
                 }
@@ -65,10 +74,17 @@ open class DefaultSessionAndUserEventRepository @Inject constructor(
     }
 
     override fun updateIsStarred(userId: String, session: Session, isStarred: Boolean):
-            LiveData<Result<Boolean>> {
+            LiveData<Result<StarUpdatedStatus>> {
         return userEventDataSource.updateStarred(userId, session, isStarred)
     }
 
+    override fun changeReservation(
+            userId: String,
+            session: Session,
+            action: ReservationRequestAction
+    ): LiveData<Result<LastReservationRequested>> {
+        return userEventDataSource.requestReservation(userId, session, action)
+    }
     /**
      * Merges user data with sessions.
      */
@@ -78,7 +94,7 @@ open class DefaultSessionAndUserEventRepository @Inject constructor(
             allSessions: List<Session>
     ): Map<ConferenceDay, List<UserSession>> {
 
-        val (allDataSynced, userEvents) = userData
+        val (allDataSynced, userEvents, userEventsMessage) = userData
 
         val eventIdToUserEvent: Map<String, UserEvent?> = userEvents.map { it.id to it }.toMap()
         val allUserSessions = allSessions.map { UserSession(it, eventIdToUserEvent[it.id]) }
@@ -89,7 +105,7 @@ open class DefaultSessionAndUserEventRepository @Inject constructor(
             if (allDataSynced) {
                 emptySet()
             } else {
-                (result.value as Result.Success).data.flatMap { it.value }
+                (result.value as Result.Success).data.userSessionsPerDay.flatMap { it.value }
                         .filter { it.userEvent?.hasPendingWrite == true }
                         .map { it.userEvent?.id }
                         .toSet()
@@ -120,9 +136,13 @@ open class DefaultSessionAndUserEventRepository @Inject constructor(
 interface SessionAndUserEventRepository {
 
     fun getObservableUserEvents(userId: String):
-            LiveData<Result<Map<ConferenceDay, List<UserSession>>>>
+            LiveData<Result<LoadUserSessionsByDayUseCaseResult>>
 
     fun updateIsStarred(userId: String, session: Session, isStarred: Boolean):
-            LiveData<Result<Boolean>>
+            LiveData<Result<StarUpdatedStatus>>
+
+    fun changeReservation(
+            userId: String, session: Session, action: ReservationRequestAction
+    ): LiveData<Result<LastReservationRequested>>
 }
 

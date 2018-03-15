@@ -27,12 +27,16 @@ import com.google.samples.apps.iosched.shared.data.login.AuthenticatedUserInfo
 import com.google.samples.apps.iosched.shared.domain.agenda.LoadAgendaUseCase
 import com.google.samples.apps.iosched.shared.domain.invoke
 import com.google.samples.apps.iosched.shared.domain.sessions.LoadUserSessionsByDayUseCase
+import com.google.samples.apps.iosched.shared.domain.sessions.LoadUserSessionsByDayUseCaseResult
+import com.google.samples.apps.iosched.shared.domain.sessions.UserEventsMessage
 import com.google.samples.apps.iosched.shared.domain.tags.LoadTagsByCategoryUseCase
+import com.google.samples.apps.iosched.shared.domain.users.ReservationActionUseCase
+import com.google.samples.apps.iosched.shared.domain.users.ReservationRequestAction
+import com.google.samples.apps.iosched.shared.domain.users.ReservationRequestParameters
 import com.google.samples.apps.iosched.shared.domain.users.StarEventParameter
 import com.google.samples.apps.iosched.shared.domain.users.StarEventUseCase
-import com.google.samples.apps.iosched.shared.domain.users.UpdatedStatus
-import com.google.samples.apps.iosched.shared.domain.users.UpdatedStatus.STARRED
-import com.google.samples.apps.iosched.shared.domain.users.UpdatedStatus.UNSTARRED
+import com.google.samples.apps.iosched.shared.domain.users.StarUpdatedStatus
+import com.google.samples.apps.iosched.shared.firestore.entity.LastReservationRequested
 import com.google.samples.apps.iosched.shared.firestore.entity.UserEvent
 import com.google.samples.apps.iosched.shared.model.Block
 import com.google.samples.apps.iosched.shared.model.Session
@@ -48,6 +52,7 @@ import com.google.samples.apps.iosched.shared.util.TimeUtils.ConferenceDay.DAY_1
 import com.google.samples.apps.iosched.shared.util.TimeUtils.ConferenceDay.DAY_2
 import com.google.samples.apps.iosched.shared.util.TimeUtils.ConferenceDay.DAY_3
 import com.google.samples.apps.iosched.shared.util.map
+import com.google.samples.apps.iosched.ui.SnackbarMessage
 import com.google.samples.apps.iosched.ui.login.LoginViewModelPlugin
 import com.google.samples.apps.iosched.util.hasSameValue
 import timber.log.Timber
@@ -63,7 +68,8 @@ class ScheduleViewModel @Inject constructor(
     loadAgendaUseCase: LoadAgendaUseCase,
     loadTagsByCategoryUseCase: LoadTagsByCategoryUseCase,
     loginViewModelPlugin: LoginViewModelPlugin,
-    private val starEventUseCase: StarEventUseCase
+    private val starEventUseCase: StarEventUseCase,
+    private val reservationActionUseCase: ReservationActionUseCase
 ) : ViewModel(), ScheduleEventListener, LoginViewModelPlugin by loginViewModelPlugin {
 
     val isLoading: LiveData<Boolean>
@@ -79,7 +85,7 @@ class ScheduleViewModel @Inject constructor(
     val hasAnyFilters = ObservableBoolean(false)
     val showPinnedEvents = ObservableBoolean(false)
 
-    private val loadSessionsResult: LiveData<Result<Map<ConferenceDay, List<UserSession>>>>
+    private val loadSessionsResult: LiveData<Result<LoadUserSessionsByDayUseCaseResult>>
     private val loadAgendaResult = MutableLiveData<Result<List<Block>>>()
     private val loadTagsResult = MutableLiveData<Result<List<Tag>>>()
 
@@ -90,12 +96,19 @@ class ScheduleViewModel @Inject constructor(
     val agenda: LiveData<List<Block>>
 
     /** LiveData for Actions and Events **/
-    val errorMessage: MediatorLiveData<Event<String>>
-    val navigateToSessionAction = MutableLiveData<Event<String>>()
 
-    private val _starEvent = MutableLiveData<Event<UpdatedStatus>>()
-    val starEvent: LiveData<Event<UpdatedStatus>>
-        get() = _starEvent
+    private val _errorMessage = MediatorLiveData<Event<String>>()
+    val errorMessage : LiveData<Event<String>>
+        get() = _errorMessage
+
+    private val _navigateToSessionAction = MutableLiveData<Event<String>>()
+    val navigateToSessionAction : LiveData<Event<String>>
+        get() = _navigateToSessionAction
+
+    private val _snackBarMessage = MediatorLiveData<Event<SnackbarMessage>>()
+    val snackBarMessage : LiveData<Event<SnackbarMessage>>
+        get() = _snackBarMessage
+
 
     // TODO: Remove it once the FirebaseUser is available when the app is launched
     val tempUser = "user1"
@@ -116,26 +129,25 @@ class ScheduleViewModel @Inject constructor(
 
         // map LiveData results from UseCase to each day's individual LiveData
         day1Sessions = loadSessionsResult.map {
-            (it as? Result.Success)?.data?.get(DAY_1) ?: emptyList()
+            (it as? Result.Success)?.data?.userSessionsPerDay?.get(DAY_1) ?: emptyList()
         }
         day2Sessions = loadSessionsResult.map {
-            (it as? Result.Success)?.data?.get(DAY_2) ?: emptyList()
+            (it as? Result.Success)?.data?.userSessionsPerDay?.get(DAY_2) ?: emptyList()
         }
         day3Sessions = loadSessionsResult.map {
-            (it as? Result.Success)?.data?.get(DAY_3) ?: emptyList()
+            (it as? Result.Success)?.data?.userSessionsPerDay?.get(DAY_3) ?: emptyList()
         }
 
         isLoading = loadSessionsResult.map { it == Result.Loading }
 
-        errorMessage = MediatorLiveData()
-        errorMessage.addSource(loadSessionsResult, { result ->
+        _errorMessage.addSource(loadSessionsResult, { result ->
             if (result is Result.Error) {
-                errorMessage.value = Event(content = result.exception.message ?: "Error")
+                _errorMessage.value = Event(content = result.exception.message ?: "Error")
             }
         })
-        errorMessage.addSource(loadTagsResult, { result ->
+        _errorMessage.addSource(loadTagsResult, { result ->
             if (result is Result.Error) {
-                errorMessage.value = Event(content = result.exception.message ?: "Error")
+                _errorMessage.value = Event(content = result.exception.message ?: "Error")
             }
         })
 
@@ -154,6 +166,39 @@ class ScheduleViewModel @Inject constructor(
 
         profileContentDesc = currentFirebaseUser.map(::getProfileContentDescription)
 
+        // Show an error message if a reservation request fails
+        _snackBarMessage.addSource(reservationActionUseCase.observe()) {
+            if (it is Result.Error) {
+                _snackBarMessage.postValue(Event(SnackbarMessage(R.string.reservation_error)))
+            }
+        }
+
+        // Show an error message if a reservation request fails
+        _snackBarMessage.addSource(starEventUseCase.observe()) { it: Result<StarUpdatedStatus>? ->
+            // Show a snackbar message on error.
+            if (it is Result.Error)  {
+                _snackBarMessage.postValue(Event(SnackbarMessage(R.string.event_star_error)))
+            }
+        }
+
+        // Show a message with the result of a reservation
+        _snackBarMessage.addSource(loadUserSessionsByDayUseCase.observe()) {
+            val message = when (it) {
+                is Result.Success ->
+                    when(it.data.userMessage) {
+                        UserEventsMessage.CHANGES_IN_WAITLIST -> R.string.waitlist_new
+                        UserEventsMessage.CHANGES_IN_RESERVATIONS -> R.string.reservation_new
+                        else -> null
+                    }
+                else -> null
+            }
+
+            message?.let {
+                // Snackbar messages about changes in reservations last longer and have an action.
+                _snackBarMessage.postValue(Event(
+                        SnackbarMessage(message, actionId = R.string.got_it, longDuration = true)))
+            }
+        }
     }
 
     private fun processTags(tags: List<Tag>): List<TagFilter> {
@@ -173,7 +218,7 @@ class ScheduleViewModel @Inject constructor(
     }
 
     override fun openSessionDetail(id: String) {
-        navigateToSessionAction.value = Event(id)
+        _navigateToSessionAction.value = Event(id)
     }
 
     override fun toggleFilter(filter: TagFilter, enabled: Boolean) {
@@ -232,15 +277,48 @@ class ScheduleViewModel @Inject constructor(
             // TODO: Show a dialog saying "Sign in to customize your schedule"
             // https://docs.google.com/presentation/d/1VtsO3f-FfaigP1dErhIYJaqRXMCIYMXvHBa3y5cUTb0/edit?ts=5aa15da0#slide=id.g34bc00dc0a_0_7
             Timber.d("You need to sign in to star an event")
-            errorMessage.value = Event("Sign in to star events")
+            _errorMessage.value = Event("Sign in to star events")
             return
         }
-        val newIsStarredState = if (userEvent?.isStarred != null) !userEvent.isStarred else true
-        starEventUseCase.observe()
+        val newIsStarredState = !(userEvent?.isStarred ?: false)
+
+        // Update the snackbar message optimistically.
+        val snackbarMessage = if(newIsStarredState) {
+            SnackbarMessage(R.string.event_starred, R.string.got_it)
+        } else {
+            SnackbarMessage(R.string.event_unstarred)
+        }
+        _snackBarMessage.postValue(Event(snackbarMessage))
 
         starEventUseCase.execute(StarEventParameter(tempUser, session, newIsStarredState))
+    }
 
-        _starEvent.value = if (newIsStarredState) Event(STARRED) else Event(UNSTARRED)
+    override fun onReservationClicked(session: Session, userEvent: UserEvent?) {
+        if (!isLoggedIn()) {
+            // TODO: Show a dialog saying "Sign in to customize your schedule"
+            // https://docs.google.com/presentation/d/1VtsO3f-FfaigP1dErhIYJaqRXMCIYMXvHBa3y5cUTb0/edit?ts=5aa15da0#slide=id.g34bc00dc0a_0_7
+            Timber.d("You need to sign in to star an event")
+            _errorMessage.value = Event("Sign in to star events")
+            return
+        }
+
+        val action = if (userEvent?.isReserved() == true
+                || userEvent?.isWaitlisted() == true
+                || userEvent?.reservationRequested == LastReservationRequested.RESERVATION) {
+            // Cancel the reservation if it's reserved, waitlisted or pending
+            ReservationRequestAction.CANCEL
+        } else {
+            ReservationRequestAction.REQUEST
+        }
+
+        // Update the snackbar message optimistically.
+        val snackbarMessage = when(action) {
+            ReservationRequestAction.REQUEST -> SnackbarMessage(R.string.reservation_request_succeeded, R.string.got_it)
+            ReservationRequestAction.CANCEL -> SnackbarMessage(R.string.reservation_cancel_succeeded, R.string.got_it)
+        }
+        _snackBarMessage.postValue(Event(snackbarMessage))
+
+        reservationActionUseCase.execute(ReservationRequestParameters(tempUser, session, action))
     }
 }
 
@@ -272,13 +350,15 @@ interface ScheduleEventListener {
 
     // TODO: replace session with sessionId once userEvent in [UserSession] isn't nullable
     fun onStarClicked(session: Session, userEvent: UserEvent?)
+
+    fun onReservationClicked(session: Session, userEvent: UserEvent?)
 }
 
 //TODO(jalc) move somewhere else (b/74113562)
 /**
  * Used as a wrapper for data that is exposed via a LiveData that represents an event.
  */
-open class Event<T>(private val content: T, private var hasBeenHandled: Boolean = false) {
+open class Event<out T>(private val content: T, private var hasBeenHandled: Boolean = false) {
     /**
      * Returns the content and prevents its use again.
      */

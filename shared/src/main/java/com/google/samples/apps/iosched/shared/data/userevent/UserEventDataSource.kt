@@ -17,6 +17,10 @@
 package com.google.samples.apps.iosched.shared.data.userevent
 
 import android.arch.lifecycle.LiveData
+import com.google.samples.apps.iosched.shared.domain.sessions.UserEventsMessage
+import com.google.samples.apps.iosched.shared.domain.users.ReservationRequestAction
+import com.google.samples.apps.iosched.shared.domain.users.StarUpdatedStatus
+import com.google.samples.apps.iosched.shared.firestore.entity.LastReservationRequested
 import com.google.samples.apps.iosched.shared.firestore.entity.UserEvent
 import com.google.samples.apps.iosched.shared.model.Session
 import com.google.samples.apps.iosched.shared.result.Result
@@ -36,10 +40,15 @@ interface UserEventDataSource {
      * @return the LiveData that represents the status of the star operation.
      */
     fun updateStarred(userId: String, session: Session, isStarred: Boolean):
-            LiveData<Result<Boolean>>
+            LiveData<Result<StarUpdatedStatus>>
+
+
+    fun requestReservation(userId: String, session: Session, action: ReservationRequestAction
+    ): LiveData<Result<LastReservationRequested>>
 }
 
 data class UserEventsResult(
         /** If this is true, all [UserEvent] in the userEvents field are synced to the backend */
         val allDataSynced: Boolean,
-        val userEvents: List<UserEvent>)
+        val userEvents: List<UserEvent>,
+        val userEventsMessage: UserEventsMessage? = null)
