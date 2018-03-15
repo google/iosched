@@ -59,6 +59,8 @@ buildscript {
         glideVersion = "4.6.1"
         flexboxVersion = "0.3.2"
         wearableSupportLibraryVersion = "2.2.0"
+        lottieVersion = "2.5.1"
+        pageIndicatorVersion = "1.3.0"
     }
 
     repositories {

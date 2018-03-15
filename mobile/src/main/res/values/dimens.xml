@@ -21,6 +21,7 @@
     <dimen name="spacing_micro">4dp</dimen>
     <dimen name="min_touch_target">48dp</dimen>
     <dimen name="divider">1dp</dimen>
+    <item name="text_line_spacing" format="float" type="dimen">1.2</item>
     <dimen name="speaker_headshot_size">60dp</dimen>
     <dimen name="session_keyline">80dp</dimen>
     <dimen name="tag_height">32sp</dimen>
@@ -33,6 +34,9 @@
     <dimen name="agenda_item_stroke">2dp</dimen>
     <dimen name="agenda_block_padding_vert">12dp</dimen>
     <dimen name="agenda_icon_width">56dp</dimen>
+    <dimen name="onboarding_actions_height">112dp</dimen>
+    <dimen name="onboarding_margins">48dp</dimen>
+    <dimen name="onboarding_animation_padding">40dp</dimen>
 
     <!-- developer.android.com/reference/android/view/ViewGroup.LayoutParams.html#MATCH_PARENT -->
     <item name="match_parent" format="integer" type="dimen">-1</item>

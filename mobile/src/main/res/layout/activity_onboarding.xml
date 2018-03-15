@@ -15,16 +15,10 @@
   ~ limitations under the License.
   -->
 
-<font-family
+<FrameLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:fontProviderAuthority="com.google.android.gms.fonts"
-    android:fontProviderCerts="@array/com_google_android_gms_fonts_certs"
-    android:fontProviderPackage="com.google.android.gms"
-    android:fontProviderQuery="Google Sans"
-    app:fontProviderAuthority="com.google.android.gms.fonts"
-    app:fontProviderCerts="@array/com_google_android_gms_fonts_certs"
-    app:fontProviderPackage="com.google.android.gms"
-    app:fontProviderQuery="Google Sans"
-    tools:ignore="FontValidationError,FontValidationWarning,UnusedAttribute" />
+    android:id="@+id/fragment_container"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ui.onboarding.OnboardingActivity" />
