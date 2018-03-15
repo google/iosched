@@ -19,8 +19,8 @@
     <!-- Base application theme. -->
     <style name="AppTheme" parent="Theme.MaterialComponents.Light">
         <!-- Customize your theme here. -->
-        <item name="colorPrimary">@color/colorPrimary</item>
-        <item name="colorAccent">@color/colorAccent</item>
+        <item name="colorPrimary">@color/indigo</item>
+        <item name="colorAccent">@color/indigo</item>
         <item name="colorControlActivated">@color/colorPrimary</item>
         <item name="toolbarStyle">@style/Widget.Toolbar</item>
         <item name="tabStyle">@style/Widget.IOSched.Tabs</item>
@@ -35,6 +35,10 @@
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
     </style>
+
+    <style name="AppTheme.LightNav" parent="AppTheme.NoActionBar" />
+
+    <style name="AppTheme.Onboarding" parent="AppTheme.LightNav" />
 
     <style name="AppTheme.PopupTheme" parent="ThemeOverlay.MaterialComponents.Light" />
 
@@ -88,6 +92,18 @@
         <item name="android:textStyle">bold</item>
     </style>
 
+    <style name="TextAppearance.IOSched.H1" parent="@style/TextAppearance.AppCompat.Headline">
+        <item name="android:fontFamily">@font/google_sans</item>
+        <item name="android:textColor">?android:textColorPrimary</item>
+    </style>
+
+    <style name="TextAppearance.IOSched.OnboardingDeck" parent="@style/TextAppearance.AppCompat.Body1">
+        <item name="android:fontFamily">@font/google_sans</item>
+        <item name="android:textColor">?android:textColorSecondary</item>
+        <item name="android:textSize">18sp</item>
+        <item name="android:lineSpacingMultiplier">@dimen/text_line_spacing</item>
+    </style>
+
     <style name="Widget.IOSched" parent="@android:style/Widget" />
 
     <style name="Widget.IOSched.BottomNav" parent="@style/Widget.MaterialComponents.BottomNavigationView.Colored">
@@ -134,6 +150,22 @@
         <item name="android:fontFamily">@font/google_sans</item>
         <item name="dateTextSize">@dimen/time_header_hour_text_size</item>
         <item name="dayTextSize">@dimen/time_header_meridiem_text_size</item>
+    </style>
+
+    <style name="Widget.IOSched.RaisedButton" parent="@style/Widget.AppCompat.Button.Colored">
+        <item name="android:fontFamily">@font/google_sans</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:background">@drawable/raised_button_background</item>
+        <item name="android:letterSpacing">0.025</item>
+        <item name="android:textAllCaps">false</item>
+        <item name="android:paddingHorizontal" tools:ignore="NewApi">24dp</item>
+        <item name="android:paddingVertical" tools:ignore="NewApi">@dimen/margin_normal</item>
+    </style>
+
+    <style name="Widget.IOSched.OnboardingDeck" parent="@android:style/Widget.Material.TextView">
+        <item name="android:textAppearance">@style/TextAppearance.IOSched.OnboardingDeck</item>
+        <item name="android:lineSpacingMultiplier">@dimen/text_line_spacing</item>
+        <item name="android:textAlignment">center</item>
     </style>
 
 </resources>

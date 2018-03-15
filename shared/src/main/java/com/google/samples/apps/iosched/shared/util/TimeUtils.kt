@@ -31,12 +31,18 @@ object TimeUtils {
     val FORMATTER_MONTH_DAY = DateTimeFormatter.ofPattern(formatPattern, Locale.getDefault())
 
     enum class ConferenceDay(val start: ZonedDateTime, val end: ZonedDateTime) {
-        DAY_1(ZonedDateTime.parse(BuildConfig.CONFERENCE_DAY1_START),
-                ZonedDateTime.parse(BuildConfig.CONFERENCE_DAY1_END)),
-        DAY_2(ZonedDateTime.parse(BuildConfig.CONFERENCE_DAY2_START),
-                ZonedDateTime.parse(BuildConfig.CONFERENCE_DAY2_END)),
-        DAY_3(ZonedDateTime.parse(BuildConfig.CONFERENCE_DAY3_START),
-                ZonedDateTime.parse(BuildConfig.CONFERENCE_DAY3_END));
+        DAY_1(
+            ZonedDateTime.parse(BuildConfig.CONFERENCE_DAY1_START),
+            ZonedDateTime.parse(BuildConfig.CONFERENCE_DAY1_END)
+        ),
+        DAY_2(
+            ZonedDateTime.parse(BuildConfig.CONFERENCE_DAY2_START),
+            ZonedDateTime.parse(BuildConfig.CONFERENCE_DAY2_END)
+        ),
+        DAY_3(
+            ZonedDateTime.parse(BuildConfig.CONFERENCE_DAY3_START),
+            ZonedDateTime.parse(BuildConfig.CONFERENCE_DAY3_END)
+        );
 
         fun contains(session: Session) = start <= session.startTime && end >= session.endTime
 
@@ -47,9 +53,9 @@ object TimeUtils {
 
     /** Determine whether the current time is before, during, or after a Session's time slot **/
     fun getSessionState(
-            session: Session?,
-            currentTime: ZonedDateTime = ZonedDateTime.now()
-    ) : SessionState {
+        session: Session?,
+        currentTime: ZonedDateTime = ZonedDateTime.now()
+    ): SessionState {
         return when {
             session == null -> SessionState.UNKNOWN
             currentTime < session.startTime -> SessionState.BEFORE
@@ -70,5 +76,9 @@ object TimeUtils {
 
         sb.append(DateTimeFormatter.ofPattern("- h:mm a").format(endTime))
         return sb.toString()
+    }
+
+    fun conferenceHasStarted(): Boolean {
+        return ZonedDateTime.now().isAfter(ConferenceDay.DAY_1.start)
     }
 }
