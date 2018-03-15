@@ -17,7 +17,6 @@
 package com.google.samples.apps.iosched.ui.schedule.agenda
 
 import android.content.Context
-import android.content.res.Resources
 import android.graphics.Canvas
 import android.graphics.Paint.ANTI_ALIAS_FLAG
 import android.graphics.Rect
@@ -71,7 +70,8 @@ class ScheduleAgendaHeadersDecoration(
                     context,
                     attrs.getResourceIdOrThrow(R.styleable.DateHeader_android_fontFamily)
                 )
-            } catch (nfe: Resources.NotFoundException) {
+            } catch (_: Exception) {
+                // ignore
             }
         }
         width = attrs.getDimensionPixelSizeOrThrow(R.styleable.DateHeader_android_width)
