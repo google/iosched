@@ -31,13 +31,12 @@ import android.widget.Toast
 import com.google.samples.apps.iosched.shared.data.BootstrapConferenceDataSource
 import com.google.samples.apps.iosched.shared.data.ConferenceDataRepository
 import com.google.samples.apps.iosched.shared.data.NetworkConferenceDataSource
-import com.google.samples.apps.iosched.shared.data.session.SessionRepository
+import com.google.samples.apps.iosched.shared.data.session.DefaultSessionRepository
+import com.google.samples.apps.iosched.shared.model.Session
 import com.google.samples.apps.iosched.shared.util.viewModelProvider
-
 import com.google.samples.apps.iosched.tv.R
 import com.google.samples.apps.iosched.tv.ui.presenter.DetailsDescriptionPresenter
 import com.google.samples.apps.iosched.tv.ui.presenter.SessionDetailsLogoPresenter
-import com.google.samples.apps.iosched.shared.model.Session
 
 /**
  * Displays the details for a [Session].
@@ -61,7 +60,7 @@ class SessionDetailFragment : DetailsSupportFragment() {
 
         // TODO: inject in view model factory
         val sessionRepository =
-            SessionRepository(
+            DefaultSessionRepository(
                 ConferenceDataRepository(
                     NetworkConferenceDataSource(
                         requireContext()

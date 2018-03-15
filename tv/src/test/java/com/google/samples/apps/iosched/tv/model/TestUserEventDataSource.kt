@@ -20,11 +20,13 @@ import android.arch.lifecycle.LiveData
 import android.arch.lifecycle.MutableLiveData
 import com.google.samples.apps.iosched.shared.data.userevent.UserEventDataSource
 import com.google.samples.apps.iosched.shared.data.userevent.UserEventsResult
+import com.google.samples.apps.iosched.shared.domain.users.ReservationRequestAction
+import com.google.samples.apps.iosched.shared.domain.users.StarUpdatedStatus
+import com.google.samples.apps.iosched.shared.firestore.entity.LastReservationRequested
 import com.google.samples.apps.iosched.shared.model.Session
 import com.google.samples.apps.iosched.shared.result.Result
 
 object TestUserEventDataSource : UserEventDataSource {
-
     override fun getObservableUserEvents(userId: String): LiveData<UserEventsResult> {
         val result = MutableLiveData<UserEventsResult>()
         result.postValue(UserEventsResult(true, TestData.userEvents))
@@ -32,11 +34,20 @@ object TestUserEventDataSource : UserEventDataSource {
     }
 
     override fun updateStarred(userId: String, session: Session, isStarred: Boolean):
-            LiveData<Result<Boolean>> {
-        val result = MutableLiveData<Result<Boolean>>()
-        result.postValue(Result.Success(true))
+            LiveData<Result<StarUpdatedStatus>> {
+        val result = MutableLiveData<Result<StarUpdatedStatus>>()
+        result.postValue(Result.Success(
+                if (isStarred) StarUpdatedStatus.STARRED else StarUpdatedStatus.UNSTARRED))
         return result
     }
 
     override fun getUserEvents(userId: String) = TestData.userEvents
+
+    override fun requestReservation(
+            userId: String, session: Session, action: ReservationRequestAction
+    ): LiveData<Result<LastReservationRequested>> {
+        TODO("not implemented")
+    }
+
+
 }

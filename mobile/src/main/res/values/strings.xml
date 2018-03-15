@@ -28,7 +28,13 @@
     <string name="agenda" translation_description="The title for the agenda screen where user can see all the sessions they plan to attend.">Agenda</string>
     <string name="agenda_duration" translatable="false">%1$s – %2$s</string>
     <string name="event_starred">Event added to your starred items</string>
-    <string name="event_removed">Event removed</string>
+    <string name="event_unstarred">Event removed from starred items</string>
+    <string name="event_star_error">Error adding event to starred items</string>
+    <string name="reservation_error">Error requesting reservation.</string>
+    <string name="reservation_request_succeeded">Reservation requested</string>
+    <string name="reservation_cancel_succeeded">Reservation canceled</string>
+    <string name="reservation_new">Reservation confirmed!</string>
+    <string name="waitlist_new">You have been waitlisted</string>
     <string name="got_it">Got it</string>
 
     <!-- Session Detail -->
@@ -51,6 +57,7 @@
     <string name="a11y_speaker_headshot" translatable="false">TODO a11y content description for speaker headshot</string>
     <string name="a11y_session_item_actions" translatable="false">TODO: a11y content description for session item actions</string>
     <string name="a11y_star_session_actions" translatable="false">TODO: a11y content description for star item actions</string>
+    <string name="a11y_reserve_session_actions" translatable="false">TODO: a11y content description for reserve item actions</string>
     <string name="a11y_login" translatable="false">TODO: a11y content description for login action</string>
     <string name="a11y_logout" translatable="false">TODO: a11y content description for logout action</string>
     <string name="a11y_play_button_description" translatable="false">TODO: a11y content description for video play button</string>

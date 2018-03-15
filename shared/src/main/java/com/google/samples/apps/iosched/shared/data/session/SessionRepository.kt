@@ -19,22 +19,26 @@ package com.google.samples.apps.iosched.shared.data.session
 import com.google.samples.apps.iosched.shared.data.ConferenceDataRepository
 import com.google.samples.apps.iosched.shared.model.Session
 import javax.inject.Inject
-import javax.inject.Singleton
 
 /**
  * Single point of access to session data for the presentation layer.
  *
  * The session data is loaded from the bootstrap file.
  */
-@Singleton
-open class SessionRepository @Inject constructor(
-        private val conferenceDataRepository: ConferenceDataRepository
-) {
+interface SessionRepository {
+    fun getSessions() : List<Session>
 
-    fun getSessions() : List<Session> {
+    fun getSessionsOffline(): List<Session>
+}
+
+class DefaultSessionRepository @Inject constructor(
+        private val conferenceDataRepository: ConferenceDataRepository
+) : SessionRepository {
+
+    override fun getSessions() : List<Session> {
         return conferenceDataRepository.getConferenceData().sessions
     }
 
-    fun getSessionsOffline(): List<Session> =
+    override fun getSessionsOffline(): List<Session> =
             conferenceDataRepository.getOfflineConferenceData().sessions
 }

@@ -30,9 +30,10 @@ import com.google.samples.apps.iosched.shared.data.login.LoginDataSource
 import com.google.samples.apps.iosched.shared.data.login.LoginRemoteDataSource
 import com.google.samples.apps.iosched.shared.data.map.MapMetadataDataSource
 import com.google.samples.apps.iosched.shared.data.map.RemoteMapMetadataDataSource
+import com.google.samples.apps.iosched.shared.data.session.DefaultSessionRepository
 import com.google.samples.apps.iosched.shared.data.session.SessionRepository
 import com.google.samples.apps.iosched.shared.data.userevent.DefaultSessionAndUserEventRepository
-import com.google.samples.apps.iosched.shared.data.userevent.RemoteUserEventDataSource
+import com.google.samples.apps.iosched.shared.data.userevent.FirestoreUserEventDataSource
 import com.google.samples.apps.iosched.shared.data.userevent.SessionAndUserEventRepository
 import com.google.samples.apps.iosched.shared.data.userevent.UserEventDataSource
 import dagger.Module
@@ -73,6 +74,14 @@ class SharedModule {
 
     @Singleton
     @Provides
+    fun provideSessionRepository(
+            conferenceDataRepository: ConferenceDataRepository
+    ): SessionRepository {
+        return DefaultSessionRepository(conferenceDataRepository)
+    }
+
+    @Singleton
+    @Provides
     fun provideMapMetadataDataSource(): MapMetadataDataSource {
         return RemoteMapMetadataDataSource()
     }
@@ -80,7 +89,7 @@ class SharedModule {
     @Singleton
     @Provides
     fun provideUserEventDataSource(firestore: FirebaseFirestore): UserEventDataSource {
-        return RemoteUserEventDataSource(firestore)
+        return FirestoreUserEventDataSource(firestore)
     }
 
     @Singleton
