@@ -48,6 +48,7 @@
     <string name="a11y_star_session_actions" translatable="false">TODO: a11y content description for star item actions</string>
     <string name="a11y_login" translatable="false">TODO: a11y content description for login action</string>
     <string name="a11y_logout" translatable="false">TODO: a11y content description for logout action</string>
+    <string name="a11y_play_button_description" translatable="false">TODO: a11y content discription for video play button</string>
 
     <plurals name="duration_hours">
         <item quantity="one" translation_description="Unit for duration of time by hours. Singular.">%s hour</item>

@@ -39,6 +39,7 @@ class SessionDeserializer : JsonDeserializer<SessionTemp> {
 
         val speakers = getListFromJsonArray(obj, "speakers")
 
+        @Suppress("UNNECESSARY_SAFE_CALL") // obj.get can return null
         return SessionTemp(
                 id = obj.get("id").asString,
                 sessionUrl = obj.get("url").asString,
@@ -47,11 +48,11 @@ class SessionDeserializer : JsonDeserializer<SessionTemp> {
                 endTime = ZonedDateTime.parse(obj.get("endTimestamp").asString),
                 abstract = obj.get("description").asString,
                 photoUrl = obj.get("photoUrl").asString,
-                liveStreamUrl = "",
+                liveStreamUrl = "TODO: Set livestream URL", // TODO Set livestream URL
                 speakers = speakers.toSet(),
                 tags = tags.toList(),
                 relatedSessions = emptySet(),
-                youTubeUrl = "",
+                youTubeUrl = obj.get("youtubeUrl")?.asString ?: "",
                 room = obj.get("room").asString
         )
     }
