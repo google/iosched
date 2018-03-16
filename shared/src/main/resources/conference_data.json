@@ -601,7 +601,7 @@
     ],
     "sessions": [
         {
-            "id": "__keynote__",
+            "id": "keynote",
             "url": "https://events.google.com/io2016/",
             "title": "Keynote",
             "description": "Join us to learn about product and platform innovation at Google, starting with a live kickoff from Google CEO Sundar Pichai.",

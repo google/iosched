@@ -31,8 +31,8 @@ import java.io.IOException
 
 
 //TODO(jalc): Move
-const val URL = "https://firebasestorage.googleapis.com/v0/b/iosched-playground.appspot.com/o/" +
-        "conference_data.json?alt=media&token=0c0a7ce8-f582-4ab2-a66e-29f335680399"
+const val URL = "https://firebasestorage.googleapis.com/v0/b/io2018-festivus/o/" +
+        "conference_data_2016.json?alt=media&token=12c2ffb4-5149-4a1d-a379-456a8dbea369"
 
 /**
  * Downloads session data.
