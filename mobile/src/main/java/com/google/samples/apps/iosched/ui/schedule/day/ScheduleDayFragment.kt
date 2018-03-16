@@ -19,6 +19,7 @@ package com.google.samples.apps.iosched.ui.schedule.day
 import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProvider
 import android.os.Bundle
+import android.support.v4.content.ContextCompat
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView.RecycledViewPool
 import android.view.LayoutInflater
@@ -119,6 +120,7 @@ class ScheduleDayFragment : DaggerFragment() {
                         Snackbar.make(coordinatorLayout,
                                 R.string.event_starred, Snackbar.LENGTH_SHORT).apply {
                             setAction(R.string.got_it, { this.dismiss() })
+                            setActionTextColor(ContextCompat.getColor(context, R.color.teal))
                             show()
                         }
                     }
