@@ -405,6 +405,39 @@
           <rule>
             <match>
               <AND>
+                <NAME>.*:layout_.*</NAME>
+                <XML_NAMESPACE>http://schemas.android.com/apk/res-auto</XML_NAMESPACE>
+              </AND>
+            </match>
+            <order>BY_NAME</order>
+          </rule>
+        </section>
+        <section>
+          <rule>
+            <match>
+              <AND>
+                <NAME>.*</NAME>
+                <XML_NAMESPACE>http://schemas.android.com/apk/res-auto</XML_NAMESPACE>
+              </AND>
+            </match>
+            <order>BY_NAME</order>
+          </rule>
+        </section>
+        <section>
+          <rule>
+            <match>
+              <AND>
+                <NAME>.*:layout_.*</NAME>
+                <XML_NAMESPACE>.*</XML_NAMESPACE>
+              </AND>
+            </match>
+            <order>BY_NAME</order>
+          </rule>
+        </section>
+        <section>
+          <rule>
+            <match>
+              <AND>
                 <NAME>.*</NAME>
                 <XML_NAMESPACE>.*</XML_NAMESPACE>
               </AND>
