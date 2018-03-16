@@ -85,7 +85,7 @@ class ScheduleViewModel @Inject constructor(
     val hasAnyFilters = ObservableBoolean(false)
     val showPinnedEvents = ObservableBoolean(false)
 
-    private val loadSessionsResult: LiveData<Result<LoadUserSessionsByDayUseCaseResult>>
+    private val loadSessionsResult: MediatorLiveData<Result<LoadUserSessionsByDayUseCaseResult>>
     private val loadAgendaResult = MutableLiveData<Result<List<Block>>>()
     private val loadTagsResult = MutableLiveData<Result<List<Tag>>>()
 
@@ -110,10 +110,7 @@ class ScheduleViewModel @Inject constructor(
         get() = _snackBarMessage
 
 
-    // TODO: Remove it once the FirebaseUser is available when the app is launched
-    val tempUser = "user1"
-
-    /** Resource id of the profile button's content description; changes based on login state**/
+    /** Resource id of the profile button's content description; changes based on login state */
     val profileContentDesc: LiveData<Int>
 
     init {
@@ -121,8 +118,9 @@ class ScheduleViewModel @Inject constructor(
 
         // Load sessions and tags and store the result in `LiveData`s
         loadSessionsResult = loadUserSessionsByDayUseCase.observe()
-
-        refreshUserSessions()
+        loadSessionsResult.addSource(currentFirebaseUser) {
+            refreshUserSessions()
+        }
 
         loadAgendaUseCase(loadAgendaResult)
         loadTagsByCategoryUseCase(loadTagsResult)
@@ -185,7 +183,7 @@ class ScheduleViewModel @Inject constructor(
         _snackBarMessage.addSource(loadUserSessionsByDayUseCase.observe()) {
             val message = when (it) {
                 is Result.Success ->
-                    when(it.data.userMessage) {
+                    when (it.data.userMessage) {
                         UserEventsMessage.CHANGES_IN_WAITLIST -> R.string.waitlist_new
                         UserEventsMessage.CHANGES_IN_RESERVATIONS -> R.string.reservation_new
                         else -> null
@@ -269,7 +267,8 @@ class ScheduleViewModel @Inject constructor(
     }
 
     private fun refreshUserSessions() {
-        loadUserSessionsByDayUseCase.execute(userSessionMatcher to tempUser)
+        val uid = (currentFirebaseUser.value as? Success)?.data?.getUid()
+        loadUserSessionsByDayUseCase.execute(userSessionMatcher to (uid ?: ""))
     }
 
     override fun onStarClicked(session: Session, userEvent: UserEvent?) {
@@ -290,7 +289,9 @@ class ScheduleViewModel @Inject constructor(
         }
         _snackBarMessage.postValue(Event(snackbarMessage))
 
-        starEventUseCase.execute(StarEventParameter(tempUser, session, newIsStarredState))
+        // uid should not be null at this moment because the user is logged in
+        val uid = (currentFirebaseUser.value as Success).data.getUid()!!
+        starEventUseCase.execute(StarEventParameter(uid, session, newIsStarredState))
     }
 
     override fun onReservationClicked(session: Session, userEvent: UserEvent?) {
@@ -313,12 +314,16 @@ class ScheduleViewModel @Inject constructor(
 
         // Update the snackbar message optimistically.
         val snackbarMessage = when(action) {
-            ReservationRequestAction.REQUEST -> SnackbarMessage(R.string.reservation_request_succeeded, R.string.got_it)
-            ReservationRequestAction.CANCEL -> SnackbarMessage(R.string.reservation_cancel_succeeded, R.string.got_it)
+            ReservationRequestAction.REQUEST ->
+                SnackbarMessage(R.string.reservation_request_succeeded, R.string.got_it)
+            ReservationRequestAction.CANCEL ->
+                SnackbarMessage(R.string.reservation_cancel_succeeded, R.string.got_it)
         }
         _snackBarMessage.postValue(Event(snackbarMessage))
 
-        reservationActionUseCase.execute(ReservationRequestParameters(tempUser, session, action))
+        // uid should not be null at this moment because the user is logged in
+        val uid = (currentFirebaseUser.value as Success).data.getUid()!!
+        reservationActionUseCase.execute(ReservationRequestParameters(uid, session, action))
     }
 }
 
