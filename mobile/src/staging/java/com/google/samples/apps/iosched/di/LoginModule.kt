@@ -14,18 +14,19 @@
  * limitations under the License.
  */
 
-package com.google.samples.apps.iosched.ui.login
+package com.google.samples.apps.iosched.di
 
 import com.google.samples.apps.iosched.shared.data.login.AuthenticatedUser
+import com.google.samples.apps.iosched.shared.data.login.StagingAuthenticatedUser
+import com.google.samples.apps.iosched.shared.data.login.StagingLoginHandler
+import com.google.samples.apps.iosched.util.login.LoginHandler
 import dagger.Module
 import dagger.Provides
 
 @Module
-class LoginViewModelPluginModule {
-
+internal class LoginModule {
     @Provides
-    fun provideLoginViewModelPlugin(dataSource: AuthenticatedUser):
-            LoginViewModelPlugin {
-        return DefaultLoginViewModelPlugin(dataSource)
+    fun provideLoginHandler(user: AuthenticatedUser): LoginHandler {
+        return StagingLoginHandler(user as StagingAuthenticatedUser)
     }
 }

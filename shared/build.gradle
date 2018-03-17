@@ -53,6 +53,12 @@ android {
             matchingFallbacks = ['debug']
         }
     }
+
+    // debug and release variants share the same source dir
+    sourceSets {
+        debug.java.srcDir 'src/debugRelease/java'
+        release.java.srcDir 'src/debugRelease/java'
+    }
 }
 
 dependencies {
@@ -68,9 +74,7 @@ dependencies {
     implementation("com.google.maps.android:android-maps-utils:$rootProject.googleMapUtilsVersion") {
         exclude group: "com.google.android.gms"
     }
-    api("com.google.android.gms:play-services-maps:$rootProject.googlePlayServicesClientVersion") {
-        exclude group: 'com.android.support', module: 'support-v4'
-    }
+    api("com.google.android.gms:play-services-maps:$rootProject.googlePlayServicesClientVersion")
 
     // Utils
     api "com.jakewharton.timber:timber:$rootProject.timberVersion"
@@ -89,15 +93,9 @@ dependencies {
     kapt "com.google.dagger:dagger-android-processor:$rootProject.dagger"
 
     // Firebase
-    api("com.google.firebase:firebase-core:$rootProject.googlePlayServicesClientVersion") {
-        exclude group: 'com.android.support'
-    }
-    api("com.google.firebase:firebase-firestore:$rootProject.googlePlayServicesClientVersion") {
-        exclude group: 'com.android.support'
-    }
-    api("com.google.firebase:firebase-auth:$rootProject.googlePlayServicesClientVersion") {
-        exclude group: 'com.android.support'
-    }
+    api("com.google.firebase:firebase-core:$rootProject.googlePlayServicesClientVersion")
+    api("com.google.firebase:firebase-firestore:$rootProject.googlePlayServicesClientVersion")
+    api("com.google.firebase:firebase-auth:$rootProject.googlePlayServicesClientVersion")
 
     // ThreeTenBP for the shared module only. Date and time API for Java.
     testImplementation "org.threeten:threetenbp:$rootProject.threetenbpVersion"

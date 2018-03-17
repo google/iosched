@@ -109,7 +109,7 @@ class ScheduleFragment : DaggerFragment() {
     }
 
     private fun requestLogin() {
-        startActivity(loginHandler.makeLoginIntent())
+        loginHandler.makeLoginIntent()?.let { startActivity(it) }
     }
 
     /**

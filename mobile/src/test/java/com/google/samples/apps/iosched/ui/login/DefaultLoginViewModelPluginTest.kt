@@ -18,14 +18,14 @@ package com.google.samples.apps.iosched.ui.login
 
 import android.arch.core.executor.testing.InstantTaskExecutorRule
 import android.net.Uri
-import com.google.firebase.auth.FirebaseUser
+import com.google.firebase.auth.UserInfo
+import com.google.samples.apps.iosched.shared.data.login.AuthenticatedUserInfo
 import com.google.samples.apps.iosched.shared.result.Result
 import com.google.samples.apps.iosched.test.util.LiveDataTestUtil
 import com.google.samples.apps.iosched.test.util.SyncTaskExecutorRule
-import com.google.samples.apps.iosched.test.util.fakes.FakeFirebaseUserDataSource
+import com.google.samples.apps.iosched.test.util.fakes.FakeAuthenticatedUser
 import com.google.samples.apps.iosched.ui.login.LoginEvent.RequestLogin
 import com.google.samples.apps.iosched.ui.login.LoginEvent.RequestLogout
-import com.nhaarman.mockito_kotlin.doReturn
 import com.nhaarman.mockito_kotlin.mock
 import junit.framework.TestCase.assertEquals
 import junit.framework.TestCase.assertFalse
@@ -43,11 +43,11 @@ class DefaultLoginViewModelPluginTest {
 
     @Test
     fun testLoggedOut() {
-        val subject = DefaultLoginViewModelPlugin(FakeFirebaseUserDataSource(null))
+        val subject = DefaultLoginViewModelPlugin(FakeAuthenticatedUser(null))
 
         assertEquals(
                 null,
-                (LiveDataTestUtil.getValue(subject.currentFirebaseUser) as Result.Success).data
+                LiveDataTestUtil.getValue(subject.currentFirebaseUser)
         )
         assertEquals(
                 null,
@@ -58,23 +58,22 @@ class DefaultLoginViewModelPluginTest {
 
     @Test
     fun testLoggedIn() {
-        val mockUri = mock<Uri>()
-        val mockFirebaseUser = mock<FirebaseUser> {
-            on { photoUrl }.doReturn(mockUri)
-        }
+
         val subject =
-                DefaultLoginViewModelPlugin(FakeFirebaseUserDataSource(mockFirebaseUser))
+                DefaultLoginViewModelPlugin(FakeAuthenticatedUser(FakeAuthenticatedUserInfo))
         assertEquals(
-                mockFirebaseUser,
+                FakeAuthenticatedUserInfo,
                 (LiveDataTestUtil.getValue(subject.currentFirebaseUser) as Result.Success).data
         )
-        assertEquals(mockUri, LiveDataTestUtil.getValue(subject.currentUserImageUri))
+        assertEquals(
+                FakeAuthenticatedUserInfo.getPhotoUrl(),
+                LiveDataTestUtil.getValue(subject.currentUserImageUri))
         assertTrue(subject.isLoggedIn())
     }
 
     @Test
     fun testPostLogin() {
-        val subject = DefaultLoginViewModelPlugin(FakeFirebaseUserDataSource(null))
+        val subject = DefaultLoginViewModelPlugin(FakeAuthenticatedUser(null))
 
         subject.emitLoginRequest()
 
@@ -85,7 +84,7 @@ class DefaultLoginViewModelPluginTest {
 
     @Test
     fun testPostLogout() {
-        val subject = DefaultLoginViewModelPlugin(FakeFirebaseUserDataSource(null))
+        val subject = DefaultLoginViewModelPlugin(FakeAuthenticatedUser(null))
 
         subject.emitLogoutRequest()
 
@@ -93,4 +92,36 @@ class DefaultLoginViewModelPluginTest {
                 LiveDataTestUtil.getValue(subject.performLoginEvent)?.peekContent(), RequestLogout
         )
     }
+}
+
+object FakeAuthenticatedUserInfo : AuthenticatedUserInfo {
+
+    val photo = mock<Uri>()
+
+    override fun isLoggedIn(): Boolean = true
+
+    override fun getEmail(): String? = TODO("not implemented")
+
+    override fun getProviderData(): MutableList<out UserInfo>? = TODO("not implemented")
+
+    override fun isAnonymous(): Boolean? = TODO("not implemented")
+
+    override fun getPhoneNumber(): String? = TODO("not implemented")
+
+    override fun getUid(): String? = TODO("not implemented")
+
+    override fun isEmailVerified(): Boolean? = TODO("not implemented")
+
+    override fun getDisplayName(): String? = TODO("not implemented")
+
+    override fun getPhotoUrl(): Uri? = photo
+
+    override fun getProviders(): MutableList<String>? = TODO("not implemented")
+
+    override fun getProviderId(): String? = TODO("not implemented")
+
+    override fun getLastSignInTimestamp(): Long? = TODO("not implemented")
+
+    override fun getCreationTimestamp(): Long? = TODO("not implemented")
+
 }
