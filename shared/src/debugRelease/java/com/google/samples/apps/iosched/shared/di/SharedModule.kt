@@ -17,19 +17,22 @@
 package com.google.samples.apps.iosched.shared.di
 
 import android.content.Context
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.FirebaseFirestoreSettings
 import com.google.samples.apps.iosched.shared.data.BootstrapConferenceDataSource
 import com.google.samples.apps.iosched.shared.data.ConferenceDataRepository
 import com.google.samples.apps.iosched.shared.data.ConferenceDataSource
-import com.google.samples.apps.iosched.shared.data.OfflineConferenceDataSource
+import com.google.samples.apps.iosched.shared.data.NetworkConferenceDataSource
 import com.google.samples.apps.iosched.shared.data.login.AuthenticatedUser
+import com.google.samples.apps.iosched.shared.data.login.FirebaseAuthenticatedUser
 import com.google.samples.apps.iosched.shared.data.login.LoginDataSource
 import com.google.samples.apps.iosched.shared.data.login.LoginRemoteDataSource
-import com.google.samples.apps.iosched.shared.data.login.StagingAuthenticatedUser
-import com.google.samples.apps.iosched.shared.data.map.FakeMapMetadataDataSource
 import com.google.samples.apps.iosched.shared.data.map.MapMetadataDataSource
+import com.google.samples.apps.iosched.shared.data.map.RemoteMapMetadataDataSource
 import com.google.samples.apps.iosched.shared.data.session.SessionRepository
 import com.google.samples.apps.iosched.shared.data.userevent.DefaultSessionAndUserEventRepository
-import com.google.samples.apps.iosched.shared.data.userevent.FakeUserEventDataSource
+import com.google.samples.apps.iosched.shared.data.userevent.RemoteUserEventDataSource
 import com.google.samples.apps.iosched.shared.data.userevent.SessionAndUserEventRepository
 import com.google.samples.apps.iosched.shared.data.userevent.UserEventDataSource
 import dagger.Module
@@ -48,8 +51,8 @@ class SharedModule {
     @Singleton
     @Provides
     @Named("remoteConfDatasource")
-    fun provideConferenceDataSource(): ConferenceDataSource {
-        return OfflineConferenceDataSource()
+    fun provideConferenceDataSource(context: Context): ConferenceDataSource {
+        return NetworkConferenceDataSource(context)
     }
 
     @Singleton
@@ -71,13 +74,13 @@ class SharedModule {
     @Singleton
     @Provides
     fun provideMapMetadataDataSource(): MapMetadataDataSource {
-        return FakeMapMetadataDataSource
+        return RemoteMapMetadataDataSource()
     }
 
     @Singleton
     @Provides
-    fun provideUserEventDataSource(): UserEventDataSource {
-        return FakeUserEventDataSource
+    fun provideUserEventDataSource(firestore: FirebaseFirestore): UserEventDataSource {
+        return RemoteUserEventDataSource(firestore)
     }
 
     @Singleton
@@ -97,7 +100,19 @@ class SharedModule {
 
     @Singleton
     @Provides
-    fun provideAuthenticatedUser(context: Context): AuthenticatedUser {
-        return StagingAuthenticatedUser(context)
+    fun provideAuthenticatedUser(): AuthenticatedUser {
+        return FirebaseAuthenticatedUser(FirebaseAuth.getInstance())
+    }
+
+    @Singleton
+    @Provides
+    fun provideFirebaseFireStore(): FirebaseFirestore {
+        val firestore = FirebaseFirestore.getInstance()
+        firestore.firestoreSettings = FirebaseFirestoreSettings.Builder()
+                // This is to enable the offline data
+                // https://firebase.google.com/docs/firestore/manage-data/enable-offline
+                .setPersistenceEnabled(true)
+                .build()
+        return firestore
     }
 }

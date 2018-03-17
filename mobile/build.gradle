@@ -62,6 +62,12 @@ android {
             storePassword "android"
         }
     }
+
+    // debug and release variants share the same source dir
+    sourceSets {
+        debug.java.srcDir 'src/debugRelease/java'
+        release.java.srcDir 'src/debugRelease/java'
+    }
 }
 
 dependencies {
@@ -94,9 +100,7 @@ dependencies {
     annotationProcessor "com.github.bumptech.glide:compiler:$rootProject.glideVersion"
 
     // Firebase
-    implementation("com.firebaseui:firebase-ui-auth:$rootProject.firebaseUiVersion") {
-        exclude group: 'com.android.support'
-    }
+    implementation("com.firebaseui:firebase-ui-auth:$rootProject.firebaseUiVersion")
 
     // Utils
     // Date and time API for Java.
@@ -116,4 +120,15 @@ dependencies {
     testImplementation "org.mockito:mockito-core:$rootProject.mockitoVersion"
     testImplementation "com.nhaarman:mockito-kotlin:$rootProject.mockitoKotlinVersion"
     testImplementation "org.hamcrest:hamcrest-library:$rootProject.hamcrestVersion"
+}
+
+// Force Dagger's transitive dependencies to use the project's version of the support libraries.
+configurations.all {
+    resolutionStrategy {
+        eachDependency { details ->
+            if (details.requested.group == 'com.android.support') {
+                details.useVersion supportLibraryVersion
+            }
+        }
+    }
 }
