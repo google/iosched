@@ -72,9 +72,9 @@ class RemoteUserEventDataSource @Inject constructor(
                                 snapshot.documentChanges.map { it.document.data[ID] }.toSet()
                         result.postValue(UserEventsResult(false, snapshot.documents.map {
                             UserEvent(id = it.id,
-                                    startTime = it[START_TIME] as Long,
-                                    endTime = it[END_TIME] as Long,
-                                    isStarred = it[IS_STARRED] as Boolean).apply {
+                                    startTime = it[START_TIME] as? Long ?: 0,
+                                    endTime = it[END_TIME] as? Long ?: 0,
+                                    isStarred = it[IS_STARRED] as? Boolean ?: false).apply {
                                 hasPendingWrite = it[ID] in changedIds
                             }
                         }))
@@ -82,9 +82,9 @@ class RemoteUserEventDataSource @Inject constructor(
                         result.postValue(
                                 UserEventsResult(true, snapshot.documents.map {
                                     UserEvent(id = it.id,
-                                            startTime = it[START_TIME] as Long,
-                                            endTime = it[END_TIME] as Long,
-                                            isStarred = it[IS_STARRED] as Boolean).apply {
+                                            startTime = it[START_TIME] as? Long ?: 0,
+                                            endTime = it[END_TIME] as? Long ?: 0,
+                                            isStarred = it[IS_STARRED] as? Boolean ?: false).apply {
                                         hasPendingWrite = false
                                     }
                                 }))
