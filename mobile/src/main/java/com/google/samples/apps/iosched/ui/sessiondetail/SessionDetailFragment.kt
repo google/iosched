@@ -53,8 +53,9 @@ class SessionDetailFragment : DaggerFragment() {
         binding.run {
             viewModel = sessionDetailViewModel
             setLifecycleOwner(this@SessionDetailFragment)
-            sessionDetailToolbar.inflateMenu(R.menu.session_detail_menu)
-            sessionDetailToolbar.setOnMenuItemClickListener { item ->
+            toolbar.inflateMenu(R.menu.session_detail_menu)
+            // todo setup menu & fab based on attendee
+            toolbar.setOnMenuItemClickListener { item ->
                 if (item.itemId == R.id.menu_item_share) {
                     ShareCompat.IntentBuilder.from(activity)
                             .setType("text/plain")
@@ -63,6 +64,9 @@ class SessionDetailFragment : DaggerFragment() {
                             .startChooser()
                 }
                 true
+            }
+            up.setOnClickListener {
+                requireActivity().finishAfterTransition()
             }
         }
 

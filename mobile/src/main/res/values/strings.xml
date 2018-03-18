@@ -33,6 +33,10 @@
 
     <!-- Session Detail -->
     <string name="rate_session" translation_description="The label for the button to rate the session by 5 stars">Rate Session</string>
+    <string name="menu_item_session_location">Session location</string>
+    <string name="session_detail_header_aspect" translatable="false">H,16:9</string>
+    <string name="session_detail_speakers_header">Speakers</string>
+    <string name="session_detail_related_header">Related Events</string>
 
     <!-- Info -->
     <string name="info_title" translation_description="The title for the info screen where user can see various information, such as FAQ and travel info.">Info</string>
@@ -49,7 +53,7 @@
     <string name="a11y_star_session_actions" translatable="false">TODO: a11y content description for star item actions</string>
     <string name="a11y_login" translatable="false">TODO: a11y content description for login action</string>
     <string name="a11y_logout" translatable="false">TODO: a11y content description for logout action</string>
-    <string name="a11y_play_button_description" translatable="false">TODO: a11y content discription for video play button</string>
+    <string name="a11y_play_button_description" translatable="false">TODO: a11y content description for video play button</string>
 
     <plurals name="duration_hours">
         <item quantity="one" translation_description="Unit for duration of time by hours. Singular.">%s hour</item>
@@ -62,7 +66,7 @@
     </plurals>
 
     <!--Strings for sharing session-->
-    <string name="share_session_menu_item" translation_description="The label for the button to share this session on SNS, etc.">Share session</string>
+    <string name="menu_item_share_session" translation_description="The label for the button to share this session on SNS, etc.">Share session</string>
     <string name="share_text_session_detail" translation_description="The default message to be used when user is sharing an I/O session on SNS, etc.">Check out \'%1$s\' at #io18 %2$s</string>
     <string name="intent_chooser_session_detail" translation_description="The label for share screen where user can tell people about an I/O session on SNS, etc.">Share</string>
 
@@ -78,4 +82,5 @@
     <string name="onboarding_label_hours" translation_description="The label for the display of the number of hours until the conference starts">H</string>
     <string name="onboarding_label_mins" translation_description="The label for the display of the number of minutes until the conference starts">M</string>
     <string name="onboarding_label_seconds" translation_description="The label for the display of the number of seconds until the conference starts">S</string>
+
 </resources>
