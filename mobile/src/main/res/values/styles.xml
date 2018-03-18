@@ -24,6 +24,7 @@
         <item name="colorControlActivated">@color/colorPrimary</item>
         <item name="toolbarStyle">@style/Widget.Toolbar</item>
         <item name="tabStyle">@style/Widget.IOSched.Tabs</item>
+        <item name="android:textViewStyle">@style/Widget.IOSched.TextView</item>
         <item name="android:windowBackground">@color/white</item>
         <item name="android:statusBarColor">@color/status_bar</item>
         <item name="android:windowLightStatusBar" tools:targetApi="m">true</item>
@@ -54,6 +55,10 @@
         <item name="popupTheme">@style/AppTheme.PopupTheme</item>
     </style>
 
+    <style name="TextAppearance.IOSched.Body" parent="@style/TextAppearance.AppCompat.Body1">
+        <item name="android:textColor">?android:textColorSecondary</item>
+    </style>
+
     <style name="TextAppearance.IOSched.ToolbarTitle" parent="@style/TextAppearance.Widget.AppCompat.Toolbar.Title">
         <item name="android:fontFamily">@font/google_sans</item>
     </style>
@@ -74,6 +79,11 @@
     <style name="TextAppearance.IOSched.AgendaTitle" parent="@style/TextAppearance.AppCompat.Body1">
         <item name="android:fontFamily">@font/google_sans</item>
         <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="TextAppearance.IOSched.SessionTitle.Display" parent="@style/TextAppearance.AppCompat.Display1">
+        <item name="android:fontFamily">@font/google_sans</item>
+        <item name="android:textColor">?android:textColorPrimary</item>
     </style>
 
     <style name="TextAppearance.IOSched.Tab" parent="@style/TextAppearance.MaterialComponents.Tab">
@@ -102,6 +112,16 @@
         <item name="android:textColor">?android:textColorSecondary</item>
         <item name="android:textSize">18sp</item>
         <item name="android:lineSpacingMultiplier">@dimen/text_line_spacing</item>
+    </style>
+
+    <style name="TextAppearance.IOSched.Subhead" parent="@style/TextAppearance.IOSched.Body">
+        <item name="android:textStyle">bold</item>
+        <item name="android:textColor">?android:textColorSecondary</item>
+        <item name="android:textAllCaps">true</item>
+    </style>
+
+    <style name="TextAppearance.IOSched.SpeakerTitle" parent="@style/TextAppearance.IOSched.SessionTitle">
+        <item name="android:textColor">?colorPrimary</item>
     </style>
 
     <style name="Widget.IOSched" parent="@android:style/Widget" />
@@ -166,6 +186,26 @@
         <item name="android:textAppearance">@style/TextAppearance.IOSched.OnboardingDeck</item>
         <item name="android:lineSpacingMultiplier">@dimen/text_line_spacing</item>
         <item name="android:textAlignment">center</item>
+    </style>
+
+    <style name="Widget.IOSched.HeaderGrid">
+        <item name="android:color">@color/light_grey</item>
+        <item name="gridSize">8dp</item>
+        <item name="gridStrokeWidth">1dp</item>
+    </style>
+
+    <style name="Widget.IOSched.TextView" parent="@android:style/Widget.Material.TextView">
+        <item name="android:textAppearance">@style/TextAppearance.IOSched.Body</item>
+        <item name="android:lineSpacingMultiplier">@dimen/text_line_spacing</item>
+    </style>
+
+    <style name="Widget.IOSched.SessionDetailTitle">
+        <item name="android:gravity">start|bottom</item>
+        <item name="android:textAppearance">@style/TextAppearance.IOSched.SessionTitle.Display</item>
+        <item name="android:breakStrategy" tools:targetApi="m">balanced</item>
+        <item name="android:lineSpacingMultiplier">1</item>
+        <item name="autoSizeTextType">uniform</item>
+        <item name="autoSizeMaxTextSize">34sp</item>
     </style>
 
 </resources>

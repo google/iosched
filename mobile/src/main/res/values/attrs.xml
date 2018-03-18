@@ -33,4 +33,10 @@
         <attr name="dateTextSize" format="dimension" />
         <attr name="dayTextSize" format="dimension" />
     </declare-styleable>
+
+    <declare-styleable name="HeaderGridDrawable">
+        <attr name="android:color" />
+        <attr name="gridSize" format="dimension" />
+        <attr name="gridStrokeWidth" format="dimension" />
+    </declare-styleable>
 </resources>

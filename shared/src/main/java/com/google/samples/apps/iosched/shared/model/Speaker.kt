@@ -54,4 +54,7 @@ data class Speaker(
      * Full URL of the speaker's Twitter profile.
      */
     val twitterUrl: String
-)
+) {
+    val hasCompany
+        get() = !company.isEmpty()
+}

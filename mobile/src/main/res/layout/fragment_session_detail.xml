@@ -15,7 +15,8 @@
   ~ limitations under the License.
   -->
 
-<layout xmlns:android="http://schemas.android.com/apk/res/android"
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
@@ -28,70 +29,20 @@
     <android.support.design.widget.CoordinatorLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:fitsSystemWindows="true"
         tools:ignore="MergeRootFrame">
 
-        <com.google.android.material.widget.AppBarLayout
-            android:id="@+id/session_detail_app_bar"
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/app_bar_height"
-            android:fitsSystemWindows="true"
-            android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
-
-            <com.google.android.material.widget.CollapsingToolbarLayout
-                android:id="@+id/session_detail_toolbar_layout"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:fitsSystemWindows="true"
-                app:title="@{viewModel.session.title}"
-                app:contentScrim="?attr/colorPrimary"
-                app:layout_scrollFlags="scroll|exitUntilCollapsed"
-                app:toolbarId="@+id/toolbar">
-
-                <!-- TODO: replace generic_placeholder image once final mock is available -->
-                <ImageView
-                    android:id="@+id/detail_image"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:contentDescription="@string/a11y_session_detail_video_description"
-                    android:fitsSystemWindows="true"
-                    android:scaleType="centerCrop"
-                    android:src="@mipmap/ic_launcher"
-                    app:layout_collapseMode="parallax" />
-
-                <!-- TODO: add background image protection b/74612528 -->
-                <ImageButton
-                    android:id="@+id/play_button_image"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:contentDescription="@string/a11y_play_button_description"
-                    android:onClick="@{() -> viewModel.onPlayVideo()}"
-                    android:src="@android:drawable/ic_media_play"
-                    app:goneUnless="@{viewModel.isPlayable}" />
-
-                <android.support.v7.widget.Toolbar
-                    android:id="@+id/session_detail_toolbar"
-                    android:layout_width="match_parent"
-                    android:layout_height="?attr/actionBarSize"
-                    app:layout_collapseMode="pin"
-                    app:title="@{viewModel.session.title}"
-                    app:popupTheme="@style/ThemeOverlay.AppCompat.Light" />
-
-            </com.google.android.material.widget.CollapsingToolbarLayout>
-
-        </com.google.android.material.widget.AppBarLayout>
-
         <android.support.v4.widget.NestedScrollView
-            android:id="@+id/session_detail_scroll_view"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            app:layout_behavior="@string/appbar_scrolling_view_behavior">
+            android:paddingBottom="?actionBarSize"
+            android:clipToPadding="false"
+            android:scrollbars="vertical"
+            android:scrollbarStyle="insideOverlay">
 
             <android.support.constraint.ConstraintLayout
-                android:id="@+id/recorded_icon_image_view"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                android:layout_height="wrap_content"
+                android:paddingBottom="@dimen/spacing_normal">
 
                 <android.support.constraint.Guideline
                     android:id="@+id/guideline_start"
@@ -107,58 +58,122 @@
                     android:orientation="vertical"
                     app:layout_constraintGuide_end="@dimen/margin_normal" />
 
+                <ImageView
+                    android:id="@+id/detail_image"
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintDimensionRatio="@string/session_detail_header_aspect"
+                    android:contentDescription="@string/a11y_session_detail_video_description"
+                    app:headerImage="@{viewModel.session.photoUrl}" />
+
+                <!-- TODO add animated image -->
+
+                <ImageView
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    app:layout_constraintStart_toStartOf="@id/detail_image"
+                    app:layout_constraintTop_toTopOf="@id/detail_image"
+                    app:layout_constraintEnd_toEndOf="@id/detail_image"
+                    app:layout_constraintBottom_toBottomOf="@id/detail_image"
+                    android:scaleType="center"
+                    android:background="@color/scrim"
+                    android:foreground="?selectableItemBackground"
+                    android:onClick="@{() -> viewModel.onPlayVideo()}"
+                    android:contentDescription="@string/a11y_play_button_description"
+                    app:srcCompat="@drawable/ic_play"
+                    app:goneUnless="@{viewModel.isPlayable}" />
+
+                <android.support.constraint.Guideline
+                    android:id="@+id/guideline_title_end"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    app:layout_constraintGuide_percent="0.65" />
+
+                <!-- Title on header: only shown if there isn't a photo header. -->
                 <TextView
                     android:id="@+id/session_detail_title"
                     android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/margin_normal"
-                    android:text="@{viewModel.session.title}"
-                    app:layout_constraintEnd_toEndOf="@id/guideline_end"
+                    android:layout_height="0dp"
                     app:layout_constraintStart_toStartOf="@id/guideline_start"
-                    app:layout_constraintTop_toTopOf="parent"
-                    tools:text="Session Title" />
+                    app:layout_constraintTop_toTopOf="@id/detail_image"
+                    app:layout_constraintEnd_toEndOf="@id/guideline_title_end"
+                    app:layout_constraintBottom_toBottomOf="@id/detail_image"
+                    app:layout_constraintVertical_bias="1"
+                    android:paddingTop="72dp"
+                    android:paddingBottom="@dimen/margin_normal"
+                    android:text="@{viewModel.session.title}"
+                    tools:text="Session Title"
+                    app:goneUnless="@{!viewModel.isPlayable}"
+                    style="@style/Widget.IOSched.SessionDetailTitle" />
+
+                <Space
+                    android:id="@+id/spacer"
+                    android:layout_width="0dp"
+                    android:layout_height="24dp"
+                    app:layout_constraintTop_toBottomOf="@id/detail_image" />
+
+                <!-- Title below header: shown if there is a photo header -->
+                <TextView
+                    android:id="@+id/session_detail_with_video_title"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintStart_toStartOf="@id/guideline_start"
+                    app:layout_constraintTop_toBottomOf="@id/spacer"
+                    app:layout_constraintEnd_toEndOf="@id/guideline_end"
+                    android:paddingBottom="@dimen/margin_normal"
+                    android:text="@{viewModel.session.title}"
+                    app:goneUnless="@{viewModel.isPlayable}"
+                    tools:text="Session Title"
+                    style="@style/Widget.IOSched.SessionDetailTitle" />
 
                 <TextView
                     android:id="@+id/session_detail_time"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/spacing_normal"
-                    app:layout_constraintEnd_toEndOf="@id/guideline_end"
                     app:layout_constraintStart_toStartOf="@id/guideline_start"
-                    app:layout_constraintTop_toBottomOf="@id/session_detail_title"
-                    app:sessionDetailStartTime="@{viewModel.session.startTime}"
+                    app:layout_constraintTop_toBottomOf="@id/session_detail_with_video_title"
+                    app:layout_constraintEnd_toEndOf="@id/guideline_end"
                     app:sessionDetailEndTime="@{viewModel.session.endTime}"
+                    app:sessionDetailStartTime="@{viewModel.session.startTime}"
                     tools:text="Session Time" />
 
                 <TextView
                     android:id="@+id/session_detail_room"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/spacing_normal"
-                    android:text="@{viewModel.session.room.name}"
-                    app:layout_constraintEnd_toEndOf="@id/guideline_end"
                     app:layout_constraintStart_toStartOf="@id/guideline_start"
                     app:layout_constraintTop_toBottomOf="@id/session_detail_time"
+                    app:layout_constraintEnd_toEndOf="@id/guideline_end"
+                    android:layout_marginTop="@dimen/spacing_micro"
+                    android:text="@{viewModel.session.room.name}"
                     tools:text="Session Location" />
 
+                <!-- todo(tiem) b/74617185 -->
                 <ImageView
                     android:id="@+id/session_detail_recorded"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:contentDescription="@string/a11y_session_detail_video_icon"
+                    android:layout_marginTop="@dimen/spacing_micro"
                     app:layout_constraintStart_toStartOf="@id/guideline_start"
                     app:layout_constraintTop_toBottomOf="@id/session_detail_room"
-                    app:srcCompat="@android:drawable/presence_video_online" />
+                    android:contentDescription="@string/a11y_session_detail_video_icon"
+                    app:srcCompat="@drawable/ic_livestreamed" />
 
                 <TextView
                     android:id="@+id/session_detail_description"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/spacing_normal"
-                    android:text="@{viewModel.session.abstract}"
-                    app:layout_constraintEnd_toEndOf="@id/guideline_end"
                     app:layout_constraintStart_toStartOf="@id/guideline_start"
                     app:layout_constraintTop_toBottomOf="@id/session_detail_recorded"
+                    app:layout_constraintEnd_toEndOf="@id/guideline_end"
+                    android:layout_marginTop="@dimen/margin_normal"
+                    android:paddingTop="@dimen/spacing_normal"
+                    android:text="@{viewModel.session.abstract}"
+                    android:textColor="?android:textColorPrimary"
                     tools:text="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus et mauris blandit, porttitor leo sit amet, tincidunt tellus. Proin at rutrum risus. Sed volutpat tellus  " />
 
                 <android.support.v7.widget.RecyclerView
@@ -166,13 +181,13 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/spacing_normal"
-                    app:layout_constraintEnd_toEndOf="@id/guideline_end"
-                    app:layout_constraintStart_toStartOf="@id/guideline_start"
-                    app:layout_constraintTop_toBottomOf="@+id/session_detail_description"
-                    app:layoutManager="com.google.android.flexbox.FlexboxLayoutManager"
                     android:orientation="horizontal"
                     app:flexDirection="row"
                     app:flexWrap="wrap"
+                    app:layoutManager="com.google.android.flexbox.FlexboxLayoutManager"
+                    app:layout_constraintEnd_toEndOf="@id/guideline_end"
+                    app:layout_constraintStart_toStartOf="@id/guideline_start"
+                    app:layout_constraintTop_toBottomOf="@+id/session_detail_description"
                     app:sessionTags="@{viewModel.session.tags}" />
 
                 <Button
@@ -191,27 +206,81 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/spacing_normal"
-                    android:orientation="vertical"
-                    app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/session_detail_rate_button"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    android:paddingTop="@dimen/margin_normal"
+                    android:orientation="vertical"
                     app:sessionSpeakers="@{viewModel.session.speakers}"
-                    tools:listitem="@layout/item_speaker_detail" />
+                    app:goneUnless="@{viewModel.hasSpeakers}"
+                    tools:listitem="@layout/item_speaker_detail">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:paddingHorizontal="@dimen/margin_normal"
+                        android:minHeight="?actionBarSize"
+                        android:gravity="start|center_vertical"
+                        android:textAppearance="@style/TextAppearance.IOSched.Subhead"
+                        android:text="@string/session_detail_speakers_header" />
+
+                </LinearLayout>
+
+                <!-- todo bind related sessions b/72689885 -->
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/spacing_normal"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/session_detail_speaker_list"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    android:paddingTop="@dimen/margin_normal"
+                    android:orientation="vertical"
+                    app:goneUnless="@{viewModel.hasRelated}"
+                    tools:listitem="@layout/item_speaker_detail">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:paddingHorizontal="@dimen/margin_normal"
+                        android:minHeight="?actionBarSize"
+                        android:gravity="start|center_vertical"
+                        android:textAppearance="@style/TextAppearance.IOSched.Subhead"
+                        android:text="@string/session_detail_related_header" />
+
+                </LinearLayout>
 
             </android.support.constraint.ConstraintLayout>
 
         </android.support.v4.widget.NestedScrollView>
 
-        <!-- TODO: move or redesign FAB once final mock is available -->
+        <!-- TODO what to do about this when scrolled?? -->
+        <ImageButton
+            android:id="@+id/up"
+            android:layout_width="?actionBarSize"
+            android:layout_height="?actionBarSize"
+            android:layout_gravity="start|top"
+            android:background="?selectableItemBackgroundBorderless"
+            app:srcCompat="@drawable/ic_arrow_back" />
+
+        <!-- TODO work around BAB not casting a shadow b/72034805 -->
+        <com.google.android.material.bottomappbar.BottomAppBar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?actionBarSize"
+            android:layout_gravity="bottom"
+            app:fabAlignmentMode="end"
+            android:elevation="6dp"
+            app:contentInsetStart="@dimen/margin_normal" />
+
+        <!-- TODO user proper icon & bind click event -->
         <com.google.android.material.widget.FloatingActionButton
             android:id="@+id/session_detail_fab"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical|start"
-            android:layout_margin="@dimen/margin_normal"
-            app:layout_anchor="@+id/session_detail_scroll_view"
-            app:layout_anchorGravity="top|end"
-            app:srcCompat="@android:drawable/stat_notify_chat" />
+            app:layout_anchor="@id/toolbar"
+            app:srcCompat="@drawable/ic_star"
+            app:backgroundTint="@color/white" />
 
     </android.support.design.widget.CoordinatorLayout>
 
