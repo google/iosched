@@ -16,30 +16,24 @@
 
 package com.google.samples.apps.iosched.test.util.fakes
 
+import android.arch.lifecycle.LiveData
 import android.arch.lifecycle.MutableLiveData
-import android.net.Uri
+import com.google.samples.apps.iosched.shared.data.login.AuthenticatedUser
 import com.google.samples.apps.iosched.shared.data.login.AuthenticatedUserInfo
 import com.google.samples.apps.iosched.shared.result.Result
-import com.google.samples.apps.iosched.ui.login.LoginEvent
-import com.google.samples.apps.iosched.ui.login.LoginViewModelPlugin
-import com.google.samples.apps.iosched.ui.schedule.Event
 
-class FakeLoginViewModelPlugin : LoginViewModelPlugin {
-    override val currentFirebaseUser = MutableLiveData<Result<AuthenticatedUserInfo>?>()
-    override val currentUserImageUri = MutableLiveData<Uri?>()
-    override val performLoginEvent = MutableLiveData<Event<LoginEvent>>()
+const val FAKE_TOKEN = "3141592"
 
-    var injectIsLoggedIn = true
-    var loginRequestsEmitted = 0
-    var logoutRequestsEmitted = 0
+class FakeAuthenticatedUser(val user: AuthenticatedUserInfo?) :
+        AuthenticatedUser {
 
-    override fun isLoggedIn() = injectIsLoggedIn
-
-    override fun emitLoginRequest() {
-        loginRequestsEmitted++
+    override fun getToken(): LiveData<Result<String>> {
+        return MutableLiveData<Result<String>>().apply { value = Result.Success(FAKE_TOKEN )}
     }
 
-    override fun emitLogoutRequest() {
-        logoutRequestsEmitted++
+    override fun getCurrentUser(): LiveData<Result<AuthenticatedUserInfo>?> {
+        return MutableLiveData<Result<AuthenticatedUserInfo>?>()
+                .apply { value =  user?.let { Result.Success(user) } }
     }
 }
+

@@ -22,8 +22,8 @@ import android.arch.lifecycle.MutableLiveData
 import android.arch.lifecycle.ViewModel
 import android.databinding.ObservableBoolean
 import android.support.annotation.StringRes
-import com.google.firebase.auth.FirebaseUser
 import com.google.samples.apps.iosched.R
+import com.google.samples.apps.iosched.shared.data.login.AuthenticatedUserInfo
 import com.google.samples.apps.iosched.shared.domain.agenda.LoadAgendaUseCase
 import com.google.samples.apps.iosched.shared.domain.invoke
 import com.google.samples.apps.iosched.shared.domain.sessions.LoadUserSessionsByDayUseCase
@@ -215,8 +215,8 @@ class ScheduleViewModel @Inject constructor(
     }
 
     @StringRes
-    private fun getProfileContentDescription(userResult: Result<FirebaseUser?>?): Int {
-        return if (userResult is Success && userResult.data != null) {
+    private fun getProfileContentDescription(userResult: Result<AuthenticatedUserInfo>?): Int {
+        return if (userResult is Success && userResult.data.isLoggedIn()) {
             R.string.a11y_logout
         } else {
             R.string.a11y_login
