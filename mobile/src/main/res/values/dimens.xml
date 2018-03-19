@@ -16,6 +16,7 @@
   -->
 
 <resources>
+    <dimen name="margin_small">8dp</dimen>
     <dimen name="margin_normal">16dp</dimen>
     <dimen name="spacing_normal">8dp</dimen>
     <dimen name="spacing_micro">4dp</dimen>
@@ -37,6 +38,7 @@
     <dimen name="onboarding_actions_height">112dp</dimen>
     <dimen name="onboarding_margins">48dp</dimen>
     <dimen name="onboarding_animation_padding">40dp</dimen>
+    <dimen name="dialog_rounded_corner">8dp</dimen>
 
     <!-- developer.android.com/reference/android/view/ViewGroup.LayoutParams.html#MATCH_PARENT -->
     <item name="match_parent" format="integer" type="dimen">-1</item>
