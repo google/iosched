@@ -109,7 +109,7 @@
             android:orientation="horizontal"
             app:flexDirection="row"
             app:flexWrap="wrap"
-            app:sessionTags="@{session.tags}" />
+            app:sessionTags="@{session.displayTags}" />
 
     </android.support.constraint.ConstraintLayout>
 

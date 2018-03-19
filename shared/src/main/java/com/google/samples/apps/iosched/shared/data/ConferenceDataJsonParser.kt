@@ -56,6 +56,7 @@ object ConferenceDataJsonParser {
         val sessions: MutableList<Session> = mutableListOf()
 
         data.sessions.forEach { session: SessionTemp ->
+            val tags = data.tags.filter { it.id in session.tags }
             val newSession = Session(
                     id = session.id,
                     startTime = session.startTime,
@@ -65,7 +66,8 @@ object ConferenceDataJsonParser {
                     sessionUrl = session.sessionUrl,
                     liveStreamUrl = session.liveStreamUrl,
                     youTubeUrl = session.youTubeUrl,
-                    tags = data.tags.filter { it.id in session.tags },
+                    tags = tags,
+                    displayTags = tags.filter { it.category == Tag.CATEGORY_TRACK },
                     speakers = data.speakers.filter { it.id in session.speakers }.toSet(),
                     photoUrl = session.photoUrl,
                     relatedSessions = session.relatedSessions,
