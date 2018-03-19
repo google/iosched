@@ -19,8 +19,8 @@ package com.google.samples.apps.iosched.ui.login
 import android.arch.lifecycle.LiveData
 import android.arch.lifecycle.MutableLiveData
 import android.net.Uri
-import com.google.firebase.auth.FirebaseUser
-import com.google.samples.apps.iosched.shared.data.login.FirebaseUserDataSource
+import com.google.samples.apps.iosched.shared.data.login.AuthenticatedUser
+import com.google.samples.apps.iosched.shared.data.login.AuthenticatedUserInfo
 import com.google.samples.apps.iosched.shared.result.Result
 import com.google.samples.apps.iosched.shared.util.map
 import com.google.samples.apps.iosched.ui.login.LoginEvent.RequestLogin
@@ -50,7 +50,7 @@ interface LoginViewModelPlugin {
     /**
      * Live updated value of the current firebase user
      */
-    val currentFirebaseUser: LiveData<Result<FirebaseUser?>?>
+    val currentFirebaseUser: LiveData<Result<AuthenticatedUserInfo>?>
 
     /**
      * Live updated value of the current firebase users image url
@@ -79,22 +79,21 @@ interface LoginViewModelPlugin {
  * Implementation of LoginViewModel that can be used as an interface delegate.
  */
 internal class DefaultLoginViewModelPlugin @Inject constructor(
-        dataSource: FirebaseUserDataSource
+        dataSource: AuthenticatedUser
 ) : LoginViewModelPlugin {
     override val performLoginEvent = MutableLiveData<Event<LoginEvent>>()
-    override val currentFirebaseUser: LiveData<Result<FirebaseUser?>?>
+    override val currentFirebaseUser: LiveData<Result<AuthenticatedUserInfo>?>
     override val currentUserImageUri: LiveData<Uri?>
 
     init {
         currentFirebaseUser = dataSource.getCurrentUser()
-        currentUserImageUri = currentFirebaseUser.map { result: Result<FirebaseUser?>? ->
-            (result as? Result.Success)?.data?.photoUrl
+        currentUserImageUri = currentFirebaseUser.map { result: Result<AuthenticatedUserInfo>? ->
+            (result as? Result.Success)?.data?.getPhotoUrl()
         }
     }
 
     override fun isLoggedIn(): Boolean {
-        return currentFirebaseUser.value is Result.Success
-                && (currentFirebaseUser.value as Result.Success).data != null
+        return (currentFirebaseUser.value as? Result.Success)?.data?.isLoggedIn() == true
     }
 
     /**
