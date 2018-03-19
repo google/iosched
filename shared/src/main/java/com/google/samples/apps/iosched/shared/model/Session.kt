@@ -76,6 +76,11 @@ data class Session(
     val tags: List<Tag>,
 
     /**
+     * Subset of [Tag]s that are for visual consumption.
+     */
+    val displayTags: List<Tag>,
+
+    /**
      * The session speakers.
      */
     val speakers: Set<Speaker>,

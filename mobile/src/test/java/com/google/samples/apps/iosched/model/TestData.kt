@@ -64,31 +64,35 @@ object TestData : ConferenceDataSource {
     val session0 = Session(id = "0", title = "Session 0", abstract = "",
         startTime = DAY_1.start, endTime = DAY_1.end,
         room = room, sessionUrl = "", liveStreamUrl = "", youTubeUrl = "", photoUrl = "",
-        tags = listOf(androidTag, webTag), speakers = setOf(speaker),
-        relatedSessions = emptySet())
+        tags = listOf(androidTag, webTag, sessionsTag), displayTags = listOf(androidTag, webTag),
+        speakers = setOf(speaker), relatedSessions = emptySet())
 
     val session1 = Session(id = "1", title = "Session 1", abstract = "",
         startTime = DAY_1.start, endTime = DAY_1.end,
         room = room, sessionUrl = "", liveStreamUrl = "", youTubeUrl = "", photoUrl = "",
-        tags = listOf(androidTag, webTag), speakers = setOf(speaker),
-        relatedSessions = emptySet())
+        tags = listOf(androidTag, webTag, codelabsTag), displayTags = listOf(androidTag, webTag),
+        speakers = setOf(speaker), relatedSessions = emptySet())
 
     val session2 = Session(id = "2", title = "Session 2", abstract = "",
         startTime = DAY_2.start, endTime = DAY_2.end,
         room = room, sessionUrl = "", liveStreamUrl = "", youTubeUrl = "", photoUrl = "",
-        tags = listOf(androidTag), speakers = setOf(speaker), relatedSessions = emptySet())
+        tags = listOf(androidTag, sessionsTag, beginnerTag), displayTags = listOf(androidTag),
+        speakers = setOf(speaker), relatedSessions = emptySet())
 
     val session3 = Session(id = "3", title = "Session 3", abstract = "",
         startTime = DAY_3.start, endTime = DAY_3.end,
         room = room, sessionUrl = "", liveStreamUrl = "", youTubeUrl = "", photoUrl = "",
-        tags = listOf(webTag), speakers = setOf(speaker), relatedSessions = emptySet())
+        tags = listOf(webTag, sessionsTag, intermediateTag), displayTags = listOf(webTag),
+        speakers = setOf(speaker), relatedSessions = emptySet())
 
     val session4 = Session(id = "4", title = "Session 4", abstract = "",
         startTime = DAY_3.start.plusMinutes(1), endTime = DAY_3.end,
         room = room, sessionUrl = "", liveStreamUrl = "", youTubeUrl = "", photoUrl = "",
-        tags = listOf(webTag), speakers = setOf(speaker), relatedSessions = emptySet())
+        tags = listOf(webTag, advancedTag), displayTags = listOf(webTag),
+        speakers = setOf(speaker), relatedSessions = emptySet())
 
     val sessionsList = listOf(session0, session1, session2, session3, session4)
+
     val sessionIDs = sessionsList.map { it.id }.toList()
 
     val sessionsMap = mapOf(
