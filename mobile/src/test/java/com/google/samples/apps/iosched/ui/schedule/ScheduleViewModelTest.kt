@@ -26,15 +26,18 @@ import com.google.samples.apps.iosched.model.TestData
 import com.google.samples.apps.iosched.model.TestDataRepository
 import com.google.samples.apps.iosched.shared.data.login.AuthenticatedUser
 import com.google.samples.apps.iosched.shared.data.login.AuthenticatedUserInfo
-import com.google.samples.apps.iosched.shared.data.session.SessionRepository
+import com.google.samples.apps.iosched.shared.data.session.DefaultSessionRepository
 import com.google.samples.apps.iosched.shared.data.session.agenda.AgendaRepository
 import com.google.samples.apps.iosched.shared.data.tag.TagRepository
 import com.google.samples.apps.iosched.shared.data.userevent.DefaultSessionAndUserEventRepository
+import com.google.samples.apps.iosched.shared.data.userevent.UserEventDataSource
+import com.google.samples.apps.iosched.shared.data.userevent.UserEventsResult
 import com.google.samples.apps.iosched.shared.domain.agenda.LoadAgendaUseCase
 import com.google.samples.apps.iosched.shared.domain.sessions.LoadUserSessionsByDayUseCase
+import com.google.samples.apps.iosched.shared.domain.sessions.UserEventsMessage
 import com.google.samples.apps.iosched.shared.domain.tags.LoadTagsByCategoryUseCase
+import com.google.samples.apps.iosched.shared.domain.users.ReservationActionUseCase
 import com.google.samples.apps.iosched.shared.domain.users.StarEventUseCase
-import com.google.samples.apps.iosched.shared.domain.users.UpdatedStatus
 import com.google.samples.apps.iosched.shared.model.Block
 import com.google.samples.apps.iosched.shared.model.Tag
 import com.google.samples.apps.iosched.shared.result.Result
@@ -44,12 +47,17 @@ import com.google.samples.apps.iosched.test.util.LiveDataTestUtil
 import com.google.samples.apps.iosched.test.util.SyncTaskExecutorRule
 import com.google.samples.apps.iosched.test.util.fakes.FakeLoginViewModelPlugin
 import com.google.samples.apps.iosched.test.util.fakes.FakeStarEventUseCase
+import com.google.samples.apps.iosched.ui.SnackbarMessage
 import com.google.samples.apps.iosched.ui.login.DefaultLoginViewModelPlugin
 import com.google.samples.apps.iosched.ui.login.FakeAuthenticatedUserInfo
 import com.google.samples.apps.iosched.ui.login.LoginViewModelPlugin
 import com.google.samples.apps.iosched.ui.schedule.day.TestUserEventDataSource
+import org.hamcrest.CoreMatchers.equalTo
+import org.hamcrest.CoreMatchers.not
+import org.hamcrest.core.Is.`is`
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
+import org.junit.Assert.assertThat
 import org.junit.Assert.assertTrue
 import org.junit.Rule
 import org.junit.Test
@@ -68,20 +76,16 @@ class ScheduleViewModelTest {
     var syncTaskExecutorRule = SyncTaskExecutorRule()
 
     @Test
-    fun testDataIsLoaded_ObservablesUpdated() {
+    fun testDataIsLoaded_ObservablesUpdated() { // TODO: Very slow test (1s)
         // Create test use cases with test data
         val loadSessionsUseCase = LoadUserSessionsByDayUseCase(
                 DefaultSessionAndUserEventRepository(
-                        TestUserEventDataSource, SessionRepository(TestDataRepository))
+                        TestUserEventDataSource(), DefaultSessionRepository(TestDataRepository))
         )
-        val loadAgendaUseCase = LoadAgendaUseCase(AgendaRepository(TestDataRepository))
         val loadTagsUseCase = LoadTagsByCategoryUseCase(TagRepository(TestDataRepository))
-        val loginViewModelComponent = createLoginViewModelComponent()
-        val updateStarUseCase = createStarEventUseCase()
         // Create ViewModel with the use cases
-        val viewModel = ScheduleViewModel(
-                loadSessionsUseCase, loadAgendaUseCase, loadTagsUseCase, loginViewModelComponent,
-                updateStarUseCase)
+        val viewModel = createScheduleViewModel(loadSessionsUseCase = loadSessionsUseCase,
+                loadTagsUseCase = loadTagsUseCase)
 
         // Check that data were loaded correctly
         // Sessions
@@ -177,67 +181,198 @@ class ScheduleViewModelTest {
     }
 
     private fun createScheduleViewModel(
-            loadSessionsUseCase: LoadUserSessionsByDayUseCase = createSessionsExceptionUseCase(),
+            loadSessionsUseCase: LoadUserSessionsByDayUseCase = createTestLoadUserSessionsByDayUseCase(),
             loadAgendaUseCase: LoadAgendaUseCase = createAgendaExceptionUseCase(),
             loadTagsUseCase: LoadTagsByCategoryUseCase = createTagsExceptionUseCase(),
             loginViewModelDelegate: LoginViewModelPlugin = createLoginViewModelComponent(),
-            starEventUseCase: StarEventUseCase = createStarEventUseCase()
+            starEventUseCase: StarEventUseCase = createStarEventUseCase(),
+            reservationActionUseCase: ReservationActionUseCase = createReservationActionUseCase()
     ): ScheduleViewModel {
         return ScheduleViewModel(
                 loadSessionsUseCase, loadAgendaUseCase, loadTagsUseCase, loginViewModelDelegate,
-                starEventUseCase)
+                starEventUseCase, reservationActionUseCase)
     }
+
+    /** Starring **/
 
     @Test
     fun testStarEvent() {
         // Create test use cases with test data
-        val loadSessionsUseCase = LoadUserSessionsByDayUseCase(
-                DefaultSessionAndUserEventRepository(
-                        TestUserEventDataSource, SessionRepository(TestDataRepository))
-        )
-        val loadAgendaUseCase = LoadAgendaUseCase(AgendaRepository(TestDataRepository))
-        val loadTagsUseCase = LoadTagsByCategoryUseCase(TagRepository(TestDataRepository))
-        val loginViewModelComponent = createLoginViewModelComponent()
-        val updateStarUseCase = createStarEventUseCase()
-        val viewModel = ScheduleViewModel(
-                loadSessionsUseCase, loadAgendaUseCase, loadTagsUseCase, loginViewModelComponent,
-                updateStarUseCase)
+        val viewModel = createScheduleViewModel()
 
         viewModel.onStarClicked(TestData.session0, TestData.userEvents[0])
 
-        val starEvent: Event<UpdatedStatus>? = LiveDataTestUtil.getValue(viewModel.starEvent)
-        assertTrue(starEvent?.getContentIfNotHandled() == UpdatedStatus.STARRED)
+        val starEvent: Event<SnackbarMessage>? =
+                LiveDataTestUtil.getValue(viewModel.snackBarMessage)
+
+        val snackbarEventContent = starEvent?.getContentIfNotHandled()
+
+        assertThat(snackbarEventContent?.messageId,
+                `is`(equalTo(R.string.event_starred)))
+
+        assertThat(snackbarEventContent?.actionId,
+                `is`(equalTo(R.string.got_it)))
+
+        //TODO: check changes in data source
     }
 
     @Test
     fun testUnstarEvent() {
         // Create test use cases with test data
 
-        val loadSessionsUseCase = LoadUserSessionsByDayUseCase(
-                DefaultSessionAndUserEventRepository(
-                        TestUserEventDataSource, SessionRepository(TestDataRepository))
-        )
-        val loadAgendaUseCase = LoadAgendaUseCase(AgendaRepository(TestDataRepository))
-        val loadTagsUseCase = LoadTagsByCategoryUseCase(TagRepository(TestDataRepository))
-        val loginViewModelComponent = createLoginViewModelComponent()
-        val updateStarUseCase = createStarEventUseCase()
-        val viewModel = ScheduleViewModel(
-                loadSessionsUseCase, loadAgendaUseCase, loadTagsUseCase, loginViewModelComponent,
-                updateStarUseCase)
+        val viewModel = createScheduleViewModel()
 
         viewModel.onStarClicked(TestData.session1, TestData.userEvents[1])
 
-        val starEvent: Event<UpdatedStatus>? = LiveDataTestUtil.getValue(viewModel.starEvent)
-        assertTrue(starEvent?.getContentIfNotHandled() == UpdatedStatus.UNSTARRED)
+        val starEvent: Event<SnackbarMessage>?
+                = LiveDataTestUtil.getValue(viewModel.snackBarMessage)
+        val snackbarEventContent = starEvent?.getContentIfNotHandled()
+
+        assertThat(snackbarEventContent?.messageId,
+                `is`(equalTo(R.string.event_unstarred)))
+
+        assertThat(snackbarEventContent?.longDuration,
+                `is`(equalTo(false)))
     }
+
+    @Test
+    fun testStarNullUserEvent() {
+        // Create test use cases with test data
+        val viewModel = createScheduleViewModel()
+
+        viewModel.onStarClicked(TestData.session0, null)
+
+        val starEvent: Event<SnackbarMessage>? =
+                LiveDataTestUtil.getValue(viewModel.snackBarMessage)
+        assertThat(starEvent?.getContentIfNotHandled()?.messageId,
+                `is`(equalTo(R.string.event_starred)))
+    }
+
+    @Test
+    fun testStar_notLoggedInUser() {
+        // Create test use cases with test data
+        val loginDelegate = FakeLoginViewModelPlugin()
+        loginDelegate.injectIsLoggedIn = false
+
+        val viewModel = createScheduleViewModel(loginViewModelDelegate = loginDelegate)
+
+        viewModel.onStarClicked(TestData.session0, TestData.userEvents[1])
+
+        val starEvent: Event<SnackbarMessage>? =
+                LiveDataTestUtil.getValue(viewModel.snackBarMessage)
+        assertThat(starEvent?.getContentIfNotHandled()?.messageId,
+                `is`(not(equalTo(R.string.reservation_request_succeeded))))
+        // TODO change with actual resource used
+    }
+
+    /** Reservations **/
+
+    @Test
+    fun testReserveEvent() {
+        // Create test use cases with test data
+        val viewModel = createScheduleViewModel()
+
+        viewModel.onReservationClicked(TestData.session0, TestData.userEvents[4])
+
+        val event: Event<SnackbarMessage>? = LiveDataTestUtil.getValue(viewModel.snackBarMessage)
+        assertThat(event?.getContentIfNotHandled()?.messageId,
+                `is`(equalTo(R.string.reservation_request_succeeded)))
+    }
+
+    @Test
+    fun testReserveEvent_notLoggedIn() {
+        // Create test use cases with test data
+        val loginDelegate = FakeLoginViewModelPlugin()
+        loginDelegate.injectIsLoggedIn = false
+
+        val viewModel = createScheduleViewModel(loginViewModelDelegate = loginDelegate)
+
+        viewModel.onReservationClicked(TestData.session0, TestData.userEvents[4])
+
+        val event: Event<SnackbarMessage>? = LiveDataTestUtil.getValue(viewModel.snackBarMessage)
+        assertThat(event?.getContentIfNotHandled()?.messageId,
+                `is`(not(equalTo(R.string.reservation_request_succeeded))))
+        // TODO change with actual resource used
+    }
+
+    @Test
+    fun testCancelEvent() {
+        val viewModel = createScheduleViewModel()
+
+        viewModel.onReservationClicked(TestData.session1, TestData.userEvents[0])
+
+        val event: Event<SnackbarMessage>? = LiveDataTestUtil.getValue(viewModel.snackBarMessage)
+        assertThat(event?.getContentIfNotHandled()?.messageId,
+                `is`(equalTo(R.string.reservation_cancel_succeeded)))
+
+    }
+
+    /** New reservation / waitlist **/
+
+    @Test
+    fun reservationReceived() {
+        // Create test use cases with test data
+        val userEventsResult: MutableLiveData<UserEventsResult>
+                = MutableLiveData<UserEventsResult>()
+        val source = TestUserEventDataSource(userEventsResult)
+        val loadSessionsUseCase = createTestLoadUserSessionsByDayUseCase(source)
+        val viewModel = createScheduleViewModel(loadSessionsUseCase = loadSessionsUseCase)
+
+        // A session goes from not-reserved to reserved
+        val oldValue = LiveDataTestUtil.getValue(userEventsResult)
+        val newValue = oldValue!!.copy(userEventsMessage = UserEventsMessage.CHANGES_IN_WAITLIST)
+
+        userEventsResult.postValue(newValue)
+
+        val starEvent: Event<SnackbarMessage>? =
+                LiveDataTestUtil.getValue(viewModel.snackBarMessage)
+        assertThat(starEvent?.getContentIfNotHandled()?.messageId,
+                `is`(equalTo(R.string.waitlist_new)))
+    }
+
+    @Test
+    fun waitlistReceived() {
+        // Create test use cases with test data
+        val userEventsResult: MutableLiveData<UserEventsResult>
+                = MutableLiveData<UserEventsResult>()
+        val source = TestUserEventDataSource(userEventsResult)
+        val loadSessionsUseCase = createTestLoadUserSessionsByDayUseCase(source)
+        val viewModel = createScheduleViewModel(loadSessionsUseCase = loadSessionsUseCase)
+
+        // A session goes from not-reserved to reserved
+        val oldValue = LiveDataTestUtil.getValue(userEventsResult)
+        val newValue = oldValue!!.copy(userEventsMessage = UserEventsMessage.CHANGES_IN_RESERVATIONS)
+
+        userEventsResult.postValue(newValue)
+
+        val starEvent: Event<SnackbarMessage>? =
+                LiveDataTestUtil.getValue(viewModel.snackBarMessage)
+        assertThat(starEvent?.getContentIfNotHandled()?.messageId,
+                `is`(equalTo(R.string.reservation_new)))
+    }
+
+    /**
+     * Creates a test [LoadUserSessionsByDayUseCase].
+     */
+    private fun createTestLoadUserSessionsByDayUseCase(
+            userEventDataSource: UserEventDataSource = TestUserEventDataSource()
+    ): LoadUserSessionsByDayUseCase {
+
+        val sessionRepository = DefaultSessionRepository(TestDataRepository)
+        val userEventRepository = DefaultSessionAndUserEventRepository(
+                userEventDataSource, sessionRepository)
+
+        return LoadUserSessionsByDayUseCase(userEventRepository)
+    }
+
 
     /**
      * Creates a use case that throws an exception.
      */
     private fun createSessionsExceptionUseCase(): LoadUserSessionsByDayUseCase {
-        val sessionRepository = SessionRepository(TestDataRepository)
+        val sessionRepository = DefaultSessionRepository(TestDataRepository)
         val userEventRepository = DefaultSessionAndUserEventRepository(
-                TestUserEventDataSource, sessionRepository)
+                TestUserEventDataSource(), sessionRepository)
 
 
         return object : LoadUserSessionsByDayUseCase(userEventRepository) {
@@ -289,4 +424,8 @@ class ScheduleViewModelTest {
     }
 
     private fun createStarEventUseCase() = FakeStarEventUseCase()
+
+    private fun createReservationActionUseCase() = object: ReservationActionUseCase(
+            DefaultSessionAndUserEventRepository(
+                    TestUserEventDataSource(), DefaultSessionRepository(TestDataRepository))) {}
 }

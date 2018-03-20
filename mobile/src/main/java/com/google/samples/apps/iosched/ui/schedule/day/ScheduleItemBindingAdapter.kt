@@ -18,8 +18,11 @@ package com.google.samples.apps.iosched.ui.schedule.day
 
 import android.content.Context
 import android.databinding.BindingAdapter
+import android.widget.ImageView
 import android.widget.TextView
 import com.google.samples.apps.iosched.R
+import com.google.samples.apps.iosched.shared.firestore.entity.LastReservationRequested
+import com.google.samples.apps.iosched.shared.firestore.entity.UserEvent
 import org.threeten.bp.Duration
 import org.threeten.bp.ZonedDateTime
 
@@ -43,5 +46,26 @@ private fun durationString(context: Context, duration: Duration): String {
     } else {
         val minutes = duration.toMinutes()
         context.resources.getQuantityString(R.plurals.duration_minutes, minutes.toInt(), minutes)
+    }
+}
+
+@BindingAdapter("reservation_status")
+fun reservationStatus(
+        imageView: ImageView,
+        userEvent: UserEvent?
+) {
+
+    val context = imageView.context
+    imageView.background = context.getDrawable(getReservationDrawable(userEvent))
+}
+
+fun getReservationDrawable(userEvent: UserEvent?) : Int {
+
+    return when {
+        userEvent?.isReserved() == true -> R.drawable.ic_reservation_reserved
+        userEvent?.isWaitlisted() == true -> R.drawable.ic_reservation_waitlisted
+        userEvent?.reservationRequested == LastReservationRequested.RESERVATION ->
+            R.drawable.ic_reservation_pending
+        else -> return R.drawable.ic_reservation_default
     }
 }

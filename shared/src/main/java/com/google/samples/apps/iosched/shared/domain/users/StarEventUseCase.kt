@@ -24,7 +24,7 @@ import javax.inject.Inject
 
 open class StarEventUseCase @Inject constructor(
         private val repository: SessionAndUserEventRepository
-) : MediatorUseCase<StarEventParameter, Boolean>() {
+) : MediatorUseCase<StarEventParameter, StarUpdatedStatus>() {
 
     override fun execute(parameters: StarEventParameter) {
         val updateResult = try {
@@ -46,7 +46,7 @@ data class StarEventParameter(val userId: String,
                               val session: Session,
                               val isStarred: Boolean)
 
-enum class UpdatedStatus {
+enum class StarUpdatedStatus {
     STARRED,
     UNSTARRED
 }

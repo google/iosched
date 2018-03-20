@@ -19,6 +19,9 @@ package com.google.samples.apps.iosched.shared.data.userevent
 import android.arch.lifecycle.LiveData
 import android.arch.lifecycle.MutableLiveData
 import com.google.samples.apps.iosched.shared.data.BootstrapConferenceDataSource
+import com.google.samples.apps.iosched.shared.domain.users.ReservationRequestAction
+import com.google.samples.apps.iosched.shared.domain.users.StarUpdatedStatus
+import com.google.samples.apps.iosched.shared.firestore.entity.LastReservationRequested
 import com.google.samples.apps.iosched.shared.firestore.entity.ReservationRequestResult
 import com.google.samples.apps.iosched.shared.firestore.entity.ReservationRequestResult.ReservationRequestStatus.RESERVE_SUCCEEDED
 import com.google.samples.apps.iosched.shared.firestore.entity.UserEvent
@@ -29,7 +32,6 @@ import com.google.samples.apps.iosched.shared.result.Result
  * Returns data loaded from a local JSON file for development and testing.
  */
 object FakeUserEventDataSource : UserEventDataSource {
-
     private val conferenceData = BootstrapConferenceDataSource.getOfflineConferenceData()!!
     private val userEvents = ArrayList<UserEvent>()
 
@@ -55,9 +57,22 @@ object FakeUserEventDataSource : UserEventDataSource {
     }
 
     override fun updateStarred(userId: String, session: Session, isStarred: Boolean):
-            LiveData<Result<Boolean>>{
-        val result = MutableLiveData<Result<Boolean>>()
-        result.postValue(Result.Success(true))
+            LiveData<Result<StarUpdatedStatus>> {
+
+        val result = MutableLiveData<Result<StarUpdatedStatus>>()
+        result.postValue(Result.Success(
+                if (isStarred) StarUpdatedStatus.STARRED else StarUpdatedStatus.UNSTARRED))
+        return result
+    }
+
+    override fun requestReservation(
+            userId: String, session: Session, action: ReservationRequestAction
+    ): LiveData<Result<LastReservationRequested>> {
+
+        val result = MutableLiveData<Result<LastReservationRequested>>()
+        result.postValue(Result.Success(
+                if (action == ReservationRequestAction.REQUEST) LastReservationRequested.RESERVATION
+                else LastReservationRequested.CANCEL))
         return result
     }
 

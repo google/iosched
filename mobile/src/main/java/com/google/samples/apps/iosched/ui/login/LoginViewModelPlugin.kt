@@ -87,7 +87,7 @@ internal class DefaultLoginViewModelPlugin @Inject constructor(
 
     init {
         currentFirebaseUser = dataSource.getCurrentUser()
-        currentUserImageUri = currentFirebaseUser.map { result: Result<AuthenticatedUserInfo>? ->
+        currentUserImageUri = currentFirebaseUser.map { result: Result<AuthenticatedUserInfo?>? ->
             (result as? Result.Success)?.data?.getPhotoUrl()
         }
     }

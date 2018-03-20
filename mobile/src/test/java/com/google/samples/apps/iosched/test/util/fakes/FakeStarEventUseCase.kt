@@ -17,10 +17,10 @@
 package com.google.samples.apps.iosched.test.util.fakes
 
 import com.google.samples.apps.iosched.model.TestDataRepository
-import com.google.samples.apps.iosched.shared.data.session.SessionRepository
+import com.google.samples.apps.iosched.shared.data.session.DefaultSessionRepository
 import com.google.samples.apps.iosched.shared.data.userevent.DefaultSessionAndUserEventRepository
 import com.google.samples.apps.iosched.shared.domain.users.StarEventUseCase
 import com.google.samples.apps.iosched.ui.schedule.day.TestUserEventDataSource
 
 class FakeStarEventUseCase : StarEventUseCase(DefaultSessionAndUserEventRepository(
-        TestUserEventDataSource, SessionRepository(TestDataRepository)))
+        TestUserEventDataSource(), DefaultSessionRepository(TestDataRepository)))
